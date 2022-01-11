@@ -171,7 +171,7 @@ Parameter | Description
 Rows Read | The number of rows read by the statement. The gray bar indicates the mean number of rows read. The blue bar indicates one standard deviation from the mean.
 Disk Bytes Read | The size of the data read by the statement. The gray bar indicates the mean number of bytes read. The blue bar indicates one standard deviation from the mean.
 
-The **Statistics by Node** table provides a breakdown of the number of statements of the selected fingerprint per gateway node. You can use this table to determine whether, for example, you are executing queries on a node that is far from the data you are requesting (see [Make Queries Fast](make-queries-fast.html#cluster-topology)).
+The **Statistics by Node** table provides a breakdown of the number of statements of the selected fingerprint per gateway node. You can use this table to determine whether, for example, you are executing queries on a node that is far from the data you are requesting (see [Optimize Query Performance](make-queries-fast.html#cluster-topology)).
 
 Parameter | Description
 -----|------------
@@ -185,6 +185,6 @@ Latency | Average service latency of statements with this fingerprint within the
 
 - [Troubleshoot Query Behavior](query-behavior-troubleshooting.html)
 - [Transaction retries](transactions.html#transaction-retries)
-- [Make Queries Fast](make-queries-fast.html)
+- [Optimize Query Performance](make-queries-fast.html)
 - [Support Resources](support-resources.html)
 - [Raw Status Endpoints](monitoring-and-alerting.html#raw-status-endpoints)

@@ -7,7 +7,7 @@ toc: true
 This page provides best practices for optimizing query performance in CockroachDB.
 
 {{site.data.alerts.callout_success}}
-For guidance on deployment and data location techniques to minimize network latency, see [Topology Patterns](topology-patterns.html).
+For deployment and data location techniques to minimize network latency in multi-region clusters, see [Topology Patterns](topology-patterns.html).
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
@@ -180,33 +180,7 @@ Note that the above query also follows the [indexing best practice](indexes.html
 
 ### Use `UUID` to generate unique IDs
 
-To auto-generate unique row IDs, use the [`UUID`](uuid.html) column with the `gen_random_uuid()` [function](functions-and-operators.html#id-generation-functions) as the [default value](default-value.html):
-
-{% include copy-clipboard.html %}
-~~~ sql
-> CREATE TABLE t1 (id UUID PRIMARY KEY DEFAULT gen_random_uuid(), name STRING);
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> INSERT INTO t1 (name) VALUES ('a'), ('b'), ('c');
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SELECT * FROM t1;
-~~~
-
-~~~
-+--------------------------------------+------+
-|                  id                  | name |
-+--------------------------------------+------+
-| 60853a85-681d-4620-9677-946bbfdc8fbc | c    |
-| 77c9bc2e-76a5-4ebc-80c3-7ad3159466a1 | b    |
-| bd3a56e1-c75e-476c-b221-0da9d74d66eb | a    |
-+--------------------------------------+------+
-(3 rows)
-~~~
+{% include {{ page.version.version }}/faq/auto-generate-unique-ids.html %}
 
 ### Use `INSERT` with the `RETURNING` clause to generate unique IDs
 
@@ -366,6 +340,8 @@ There are two levels of contention:
 - Transactions that operate on the same index key values (specifically, that operate on the same [column family](column-families.html) for a given index key) will be more strictly serialized to obey transaction isolation semantics.
 
 Transaction contention can also increase the rate of transaction restarts, and thus make the proper implementation of [client-side transaction retries](transactions.html#client-side-intervention) more critical.
+
+For further background on database contention, see [What is Database Contention, and Why Should You Care?](https://www.cockroachlabs.com/blog/what-is-database-contention/).
 
 ### Find contention
 

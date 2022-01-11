@@ -1,0 +1,18 @@
+{
+  "title": "Stream Data",
+  "is_top_level": true,
+  "items": [
+    {
+      "title": "Stream Data Out of CockroachDB Using Changefeeds",
+      "urls": [
+        "/${VERSION}/stream-data-out-of-cockroachdb-using-changefeeds.html"
+      ]
+    },
+    {
+      "title": "Stream a Changefeed from CockroachDB Cloud to Snowflake",
+      "urls": [
+        "/cockroachcloud/stream-changefeed-to-snowflake-aws.html"
+      ]
+    }
+  ]
+}

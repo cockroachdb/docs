@@ -65,7 +65,7 @@ CockroachDB Cloud contract customers cannot scale clusters through the Console. 
 You can add or remove nodes from your cluster through the Console. See [Planning your cluster](#planning-your-cluster) for cluster requirements and recommendations before proceeding.
 
 {{site.data.alerts.callout_info}}
-At this time, you cannot use the Console to scale a multi-node cluster down to a single-node cluster. If you need to do this, contact [Support](https://support.cockroachlabs.com).
+You cannot scale a multi-node cluster down to a single-node cluster. If you need to scale down to a single-node cluster, [backup](run-bulk-operations.html?filters=cloud#backup-and-restore-data) your cluster and [restore](run-bulk-operations.html?filters=cloud#restore-a-cluster) it into a new single-node cluster.
 {{site.data.alerts.end}}
 
 To add or remove nodes from your cluster:
@@ -177,7 +177,7 @@ Deleting a cluster will delete all cluster data.
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
-{{ site.data.products.serverless }} clusters are subject to deletion after 6 months of no activity.
+You will only be billed for a {{ site.data.products.dedicated }} cluster while it is running. You can delete a cluster at any time to stop charges from accumulating.
 {{site.data.alerts.end}}
 
 Proceed with the following steps only if you are sure you want to delete a cluster:

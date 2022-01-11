@@ -1,5 +1,5 @@
 ---
-title: Create Security Certificates using Openssl
+title: Create Security Certificates using OpenSSL
 summary: A secure CockroachDB cluster uses TLS for encrypted inter-node and client-node communication.
 toc: true
 ---

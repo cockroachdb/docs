@@ -33,7 +33,7 @@
         $ kubectl apply -f operator.yaml
         ~~~
 
-    If you want to the default namespace settings:
+    If you want to use the default namespace settings:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell

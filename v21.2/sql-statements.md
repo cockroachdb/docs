@@ -83,7 +83,7 @@ Statement | Usage
 [`SET PRIMARY REGION`](set-primary-region.html) |  Assign a [primary region](multiregion-overview.html#database-regions) to a multi-region database, or change an existing primary region. Note that [multi-region features](multiregion-overview.html) require an [Enterprise license](enterprise-licensing.html).
 [`SHOW COLUMNS`](show-columns.html) | View details about columns in a table.
 [`SHOW CONSTRAINTS`](show-constraints.html) | List constraints on a table.
-[`SHOW CREATE`](show-create.html) | View the `CREATE` statement for a table, view, or sequence.
+[`SHOW CREATE`](show-create.html) | View the `CREATE` statement for a database, table, view, or sequence.
 [`SHOW DATABASES`](show-databases.html) | List databases in the cluster.
 [`SHOW ENUMS`](show-enums.html) |   List user-defined, [enumerated data types](enum.html) in a database.
 [`SHOW FULL TABLE SCANS`](show-full-table-scans.html) |  List recent queries that used a full table scan.

@@ -8,7 +8,7 @@ toc: true
 We strongly recommend only using `cockroach debug job-trace` when working directly with the [Cockroach Labs support team](support-resources.html).
 {{site.data.alerts.end}}
 
-The [`cockroach debug job-trace`](cockroach-commands.html) command connects to your cluster and collects trace payloads for a running [job](show-jobs.html#show-jobs). The trace payloads are helpful for debugging why a job is not running as expected or to add more context to logs gathered from the [`cockroach debug zip`](cockroach-debug-zip.html) command.
+The [`cockroach debug job-trace`](cockroach-commands.html) command connects to your cluster and collects trace payloads for a running, traceable [job](show-jobs.html#show-jobs) ([**imports**](import-into.html) or [**backups**](take-full-and-incremental-backups.html)). The trace payloads are helpful for debugging why a job is not running as expected or to add more context to logs gathered from the [`cockroach debug zip`](cockroach-debug-zip.html) command.
 
 The node that `cockroach debug job-trace` is run against will communicate to all nodes in the cluster in order to retrieve the trace payloads. This will deliver a zip file that contains [trace files](#files) for all the nodes participating in the execution of the job. The files hold information on the executing job's [trace spans](show-trace.html#trace-description), which describe the sub-operations being performed. Specifically, these files will contain the spans that have not yet completed and are associated with the execution of that particular job. Using this command for a job that is not currently running will result in an empty zip file.
 

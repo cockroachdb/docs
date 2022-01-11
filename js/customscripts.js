@@ -284,7 +284,7 @@ $(function() {
       setFilterScope(item);
     });
   }
-  
+
   // On page load, update last list item style to match siblings
   if (_viewport_width <= 992) {
     $('li.active:last a').css({
@@ -413,7 +413,7 @@ $(function() {
   });
 
   //external links
-  $("main a").filter(function() {
+  $("main a, #sidebar a").filter(function() {
 
     if ( $(this).children().length > 0 ) {
       return

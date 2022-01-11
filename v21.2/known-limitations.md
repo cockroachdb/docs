@@ -169,6 +169,10 @@ UNION ALL SELECT * FROM t1 LEFT JOIN t2 ON st_contains(t1.geom, t2.geom) AND t2.
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/71071)
 
+### `SET` does not `ROLLBACK` in a transaction
+
+{% include {{page.version.version}}/known-limitations/set-transaction-no-rollback.md %}
+
 ### `JSONB`/`JSON` comparison operators are not implemented
 
 {% include {{page.version.version}}/sql/jsonb-comparison.md %}
@@ -185,6 +189,14 @@ UNION ALL SELECT * FROM t1 LEFT JOIN t2 ON st_contains(t1.geom, t2.geom) AND t2.
 
 {% include {{page.version.version}}/sql/cannot-refresh-materialized-views-inside-transactions.md %}
 
+### CockroachDB cannot plan locality optimized searches that use partitioned unique indexes on virtual computed columns
+
+{% include {{page.version.version}}/sql/locality-optimized-search-virtual-computed-columns.md %}
+
+### Expressions as `ON CONFLICT` targets are not supported
+
+{% include {{page.version.version}}/sql/expressions-as-on-conflict-targets.md %}
+
 ## Unresolved limitations
 
 ### Optimizer stale statistics deletion when columns are dropped
@@ -193,9 +205,9 @@ UNION ALL SELECT * FROM t1 LEFT JOIN t2 ON st_contains(t1.geom, t2.geom) AND t2.
 
 * {% include {{page.version.version}}/known-limitations/single-col-stats-deletion.md %}
 
-### `BACKUP` of multi-region tables
+### Automatic statistics refresher may not refresh after upgrade
 
-{% include {{page.version.version}}/backups/no-multiregion-table-backups.md %}
+{% include {{page.version.version}}/known-limitations/stats-refresh-upgrade.md %}
 
 ### Differences in syntax and behavior between CockroachDB and PostgreSQL
 
@@ -537,9 +549,9 @@ $ export COCKROACH_SQL_CLI_HISTORY=.cockroachsql_history_shell_2
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/42027)
 
-### Passwords with special characters cannot be passed in connection parameter
+### Passwords with special characters must be passed as query parameters
 
-CockroachDB does not allow passwords with special characters to be passed as a [connection parameter](connection-parameters.html) to [`cockroach` commands](cockroach-commands.html).
+When using [`cockroach` commands](cockroach-commands.html), passwords with special characters must be passed as [query string parameters](connection-parameters.html#additional-connection-parameters) (e.g., `postgres://maxroach@localhost:26257/movr?password=<password>`) and not as a component in the connection URL (e.g., `postgres://maxroach:<password>@localhost:26257/movr`).
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/35998)
 

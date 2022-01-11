@@ -217,7 +217,7 @@ successfully deleted database-backup/data/679645557047099393.sst
 successfully deleted database-backup/data/679645558154264579.sst
 ~~~
 
-`cockroach userfile upload` will not recursively upload files from a directory. See this [known limitation](../{{site.versions["stable"]}}/cockroach-userfile-upload.html#known-limitation). It is possible to programmatically upload your files from the command line.
+`cockroach userfile upload` will not recursively upload files from a directory. It is possible to programmatically upload your files from the command line.
 
 For example, the following command finds all files under `database-backup` and runs `cockroach userfile upload` on each file:
 

@@ -146,7 +146,7 @@ ALTER TABLE rides ADD COLUMN region crdb_internal_region AS (
 
 This feature is disabled by default.
 
-When auto-rehoming is enabled, the [home regions](#crdb_region) of rows in [`REGIONAL BY ROW`](#set-the-table-locality-to-regional-by-row) tables are automatically set to the region of the [gateway node](ui-sessions-page.html#session-details-gateway-node) from which any [`UPDATE`](update.html) or [`UPSERT`](upsert.html) statements that operate on those rows originate. This functionality is provided by adding [an `ON UPDATE` expression](add-column.html#on-update-expressions) to the [home region column](#crdb_region).
+When auto-rehoming is enabled, the [home regions](#crdb_region) of rows in [`REGIONAL BY ROW`](#set-the-table-locality-to-regional-by-row) tables are automatically set to the region of the [gateway node](ui-sessions-page.html#session-details-gateway-node) from which any [`UPDATE`](update.html) or [`UPSERT`](upsert.html) statements that operate on those rows originate. This functionality is provided by adding [an `ON UPDATE` expression](create-table.html#on-update-expressions) to the [home region column](#crdb_region).
 
 Once enabled, the auto-rehoming behavior described here **will only apply to newly created `REGIONAL BY ROW` tables**. Existing `REGIONAL BY ROW` tables will not be auto-rehomed.
 
