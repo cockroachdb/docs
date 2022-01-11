@@ -1495,7 +1495,7 @@
       {
         "title": "Cloud Release Notes",
         "urls": [
-          "/releases/cloud-changelog.html"
+          "/releases/index-cockroachcloud.html"
         ]
       },
       {% include_cached sidebar-releases.json %}
