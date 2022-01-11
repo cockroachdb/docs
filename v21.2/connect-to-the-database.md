@@ -256,7 +256,7 @@ Parameter | Description
 <div class="filter-content" markdown="1" data-scope="serverless">
 
 {{site.data.alerts.callout_info}}
-To connect to a {{ site.data.products.serverless-plan }} cluster from a Python application, you must have a valid CA certificate located at <code>~/.postgresql/root.crt</code>.<br>For instructions on downloading a CA certificate from the {{ site.data.products.db }} Console, see <a href="https://www.cockroachlabs.com/docs/v21.2/cockroachcloud/connect-to-a-serverless-cluster.html">Connect to a {{ site.data.products.serverless-plan }} Cluster</a>.
+To connect to a {{ site.data.products.serverless-plan }} cluster from a Python application, you must have a valid CA certificate located at <code>~/.postgresql/root.crt</code>.<br>For instructions on downloading a CA certificate from the {{ site.data.products.db }} Console, see <a href="../cockroachcloud/connect-to-a-serverless-cluster.html">Connect to a {{ site.data.products.serverless-plan }} Cluster</a>.
 {{site.data.alerts.end}}
 
 </div>
@@ -726,7 +726,7 @@ jdbc:postgresql://{host}:{port}/{database}?user={username}&password={password}&s
 </div>
 
 {{site.data.alerts.callout_info}}
-To connect to CockroachDB with Hibernate, you must specify the [CockroachDB Hibernate dialect](https://www.cockroachlabs.com/docs/v21.2/install-client-drivers?filters=java#hibernate) in your `hibernate.cfg.xml` configuration file.
+To connect to CockroachDB with Hibernate, you must specify the [CockroachDB Hibernate dialect](install-client-drivers.html?filters=java#hibernate) in your `hibernate.cfg.xml` configuration file.
 {{site.data.alerts.end}}
 
 For more information about connecting with Hibernate, see the [official Hibernate documentation](https://hibernate.org/orm/documentation).
@@ -771,7 +771,7 @@ Parameter | Description
 </div>
 
 {{site.data.alerts.callout_info}}
-To connect to a {{ site.data.products.serverless-plan }} cluster from a Ruby application, you must have a valid CA certificate located at <code>~/.postgresql/root.crt</code>.<br>For instructions on downloading a CA certificate from the {{ site.data.products.db }} Console, see <a href="https://www.cockroachlabs.com/docs/v21.2/cockroachcloud/connect-to-a-serverless-cluster.html">Connect to a {{ site.data.products.serverless-plan }} Cluster</a>.
+To connect to a {{ site.data.products.serverless-plan }} cluster from a Ruby application, you must have a valid CA certificate located at <code>~/.postgresql/root.crt</code>.<br>For instructions on downloading a CA certificate from the {{ site.data.products.db }} Console, see <a href="../cockroachcloud/connect-to-a-serverless-cluster.html">Connect to a {{ site.data.products.serverless-plan }} Cluster</a>.
 {{site.data.alerts.end}}
 
 <div class="filter-content" markdown="1" data-scope="ruby-pg">
