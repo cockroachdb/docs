@@ -29,7 +29,7 @@ CockroachDB also supports the single-byte `"char"` special character type. As in
 
 ## Length
 
-To limit the length of a string column, use `STRING(n)`, where `n` is the maximum number of Unicode code points (normally thought of as "characters") allowed. This applies to all related types as well (e.g., to limit the length of a `VARCHAR` type, use `VARCHAR(n)`).
+To limit the length of a string column, use `STRING(n)`, where `n` is the maximum number of Unicode code points (normally thought of as "characters") allowed. This applies to all related types as well (e.g., to limit the length of a `VARCHAR` type, use `VARCHAR(n)`). To reduce performance issues caused by storing very large string values in indexes, Cockroach Labs recommends setting length limits on string-typed columns.
 
 When inserting a `STRING` value or a `STRING`-related-type value:
 
