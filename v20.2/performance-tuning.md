@@ -1280,7 +1280,7 @@ In each of the new zones, SSH to the instance not running a CockroachDB node, an
 
 - [SQL Performance Best Practices](performance-best-practices-overview.html)
 - [Identify slow queries](query-behavior-troubleshooting.html#identify-slow-queries)
-- [Make Queries Fast](make-queries-fast.html)
+- [Optimize Query Performance](make-queries-fast.html)
 - [Performance Benchmarking](performance-benchmarking-with-tpcc-small.html)
 - [Network Latency Page](ui-network-latency-page.html)
 - [Production Checklist](recommended-production-settings.html)

@@ -50,11 +50,11 @@ You can restore:
  `destination` | The URL where the [full backup](take-full-and-incremental-backups.html#full-backups) (and appended [incremental backups](take-full-and-incremental-backups.html#incremental-backups), if applicable) is stored. <br/><br/>For information about this URL structure, see [Backup File URLs](#backup-file-urls).
  `partitioned_backup_location` | The URL where a [locality-aware backup](take-and-restore-locality-aware-backups.html) is stored. When restoring from an incremental locality-aware backup, you need to include _every_ locality ever used, even if it was only used once.<br/><br/>For information about this URL structure, see [Backup File URLs](#backup-file-urls).
  `AS OF SYSTEM TIME timestamp` | Restore data as it existed as of [`timestamp`](as-of-system-time.html). You can restore point-in-time data only if you had taken full or incremental backup [with revision history](take-backups-with-revision-history-and-restore-from-a-point-in-time.html).
- `kv_option_list` | Control your backup's behavior with [these options](#options).
+ `restore_options_list` | Control your backup's behavior with [these options](#options).
 
 ### Options
 
-You can include the following options as key-value pairs in the `kv_option_list` to control the restore process's behavior:
+You can control `RESTORE` behavior using any of the following in the `restore_options_list`. To set multiple `RESTORE` options, use a comma-separated list: 
 
  Option                                                             | <div style="width:75px">Value</div>         | Description
  -------------------------------------------------------------------+---------------+-------------------------------------------------------
@@ -173,7 +173,7 @@ When a `RESTORE` fails or is canceled, partially restored data is properly clean
 
 <span class="version-tag">New in v21.2:</span> Restoring to a [multi-region database](multiregion-overview.html) is supported with some limitations. This section outlines details and settings that should be considered when restoring into multi-region databases.
 
-* A [cluster's regions](multiregion-overview.html#cluster-regions) will be checked before a restore. Mismatched regions between [backup](known-limitations.html#backup-of-multi-region-tables) and restore clusters will be flagged before the restore begins, which allows for a decision between updating the [cluster localities](cockroach-start.html#locality) or restoring with the [`skip_localities_check`](#skip-localities-check) option to continue with the restore regardless.
+* A [cluster's regions](multiregion-overview.html#cluster-regions) will be checked before a restore. Mismatched regions between [backup](backup.html) and restore clusters will be flagged before the restore begins, which allows for a decision between updating the [cluster localities](cockroach-start.html#locality) or restoring with the [`skip_localities_check`](#skip-localities-check) option to continue with the restore regardless.
 
 * A database that is restored with the `sql.defaults.primary_region` [cluster setting](cluster-settings.html) will have the [`PRIMARY REGION`](set-primary-region.html) from this cluster setting assigned to the target database.
 

@@ -179,7 +179,7 @@ The world map is displayed only when [localities are assigned latitude/longitude
 
 If a locality (e.g., region) is not assigned latitude/longitude coordinates, it is displayed using the latitude/longitude of any lower-level localities it contains (e.g., datacenter). If no coordinates are available, localities are plotted in a circular layout.
 
-### Displayed **Used Capacity** value is more than configured Capacity
+### Displayed Used Capacity value is more than configured capacity
 
 {% include {{ page.version.version }}/misc/available-capacity-metric.md %}
 

@@ -1,5 +1,5 @@
 ---
-title: Make Queries Fast
+title: Optimize Query Performance
 summary: How to make your queries run faster during application development
 toc: true
 ---

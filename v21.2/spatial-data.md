@@ -72,7 +72,7 @@ In order to avoid full table scans, make sure to add [indexes](spatial-indexes.h
 
 To use a version of a function from the list above that will explicitly *not* use the index, add an underscore (`_`) to the beginning of the function name, e.g., [`_ST_Covers`](st_covers.html).
 
-You can check which queries are using which indexes using the [`EXPLAIN`](explain.html) statement. For more information about general query tuning (including index usage), see [Make queries fast](make-queries-fast.html).
+You can check which queries are using which indexes using the [`EXPLAIN`](explain.html) statement. For more information about general query tuning (including index usage), see [Optimize Statement Performance](make-queries-fast.html).
 
 The syntax for adding an [index](spatial-indexes.html) to a geometry column is `CREATE INDEX index_name ON table_name USING GIST (column_name)`.
 
@@ -96,11 +96,11 @@ If you encounter behavior that you think is due to a performance issue, please g
 Follow the steps below to load the SQL for the NYC data used in the [Introduction to PostGIS](https://postgis.net/workshops/postgis-intro/) tutorial.
 
 {{site.data.alerts.callout_info}}
-CockroachDB can work with the tutorial up to Chapter 22, with the following exceptions:  
+CockroachDB can work with the tutorial up to Chapter 22, with the following exceptions:
 
-- Do not try to load Shapefiles via the GUI as shown in the tutorial. Instead, follow the steps below to load the SQL data directly into CockroachDB. (We have already converted the tutorial Shapefiles to SQL for you.)  
-- We do not support GML or KML data.  
-- We do not support SVG.  
+- Do not try to load Shapefiles via the GUI as shown in the tutorial. Instead, follow the steps below to load the SQL data directly into CockroachDB. (We have already converted the tutorial Shapefiles to SQL for you.)
+- We do not support GML or KML data.
+- We do not support SVG.
 {{site.data.alerts.end}}
 
 ### Before you begin

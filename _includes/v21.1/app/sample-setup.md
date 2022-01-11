@@ -12,9 +12,9 @@
 
 ### Set up your cluster connection
 
-1. Navigate to the cluster's **SQL Users** page, and create a new user, with a new password.
+1. Navigate to the cluster's **Overview** page, and select **Connect**.
 
-1. Navigate to the **Cluster Overview page**, select **Connect**, and, under the **Connection String** tab, download the cluster certificate.
+1. Under the **Connection String** tab, download the cluster certificate.
 
 1. Take note of the connection string provided. You'll use it to connect to the database later in this tutorial.
 
