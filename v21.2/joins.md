@@ -167,7 +167,9 @@ CockroachDB supports `LATERAL` subquery joins for `INNER` and `LEFT` cross joins
 
 Apply join is the operator that executes a lateral join if the optimizer is not able to de-correlate it (i.e., rewrite the query to use a regular join). Most of the time, the optimizer can de-correlate most queries. However, there are some cases where the optimizer cannot perform this rewrite, and `apply-join` would show up in the [`EXPLAIN`](explain.html#join-queries) output for the query. The optimizer also replaces correlated subqueries with apply joins, and therefore `apply-join` may appear in the `EXPLAIN` output even if `LATERAL` was not used.
 
-Apply joins are inefficient because they must be executed one row at a time. The left side row must be used to construct the right side row, and only then can the execution engine determine if the two rows should be output by the join. This corresponds to an `O(n*m)` time complexity. Hash joins are much more efficient. A hash table is constructed using rows from the smaller side of the join, and then the larger side of the join is used to probe into the hash table using the ON conditions of the join. This corresponds to an `O(n+m)` time complexity.
+Apply joins are inefficient because they must be executed one row at a time. The left side row must be used to construct the right side row, and only then can the execution engine determine if the two rows should be output by the join. This corresponds to an `O(n*m)` time complexity.
+
+Other types of joins supported by CockroachDB (e.g., [hash join](#hashs-join), [merge join](#merge-joins), and [lookup join](#lookup-joins)) are generally much more efficient. For example, with a hash join, a hash table is constructed using rows from the smaller side of the join, and then the larger side of the join is used to probe into the hash table using the `ON` conditions of the join. This corresponds to an `O(n+m)` time complexity.
 
 If you see an `apply-join`, it means the optimizer was not able to perform de-correlation, and you should probably try to rewrite your query in a different way in order to get better performance.
 
