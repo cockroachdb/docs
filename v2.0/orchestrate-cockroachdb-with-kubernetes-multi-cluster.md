@@ -37,7 +37,7 @@ Finally, if you haven't worked with multiple Kubernetes clusters often before, y
 
 #### Kubernetes version
 
-Kubernetes 1.8 or higher is required.
+Kubernetes 1.18 or higher is required.
 
 #### Exposing DNS servers
 
