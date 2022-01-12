@@ -3,15 +3,15 @@
 {% for item in site.data.menus.serverless %}
 <div class="col-md-4">
     <div>
-        <a href="{{ '/product/' | relative_url }}"><img width="209px" class="py-3" src="{{item.params.image | relative_url}}" alt="Product"></a>
+        <a href="https://www.cockroachlabs.com/product/"><img width="209px" class="py-3" src="{{item.params.image | relative_url}}" alt="Product"></a>
         <p class="mb-4 mt-0 text-primary font-weight-medium font-size-16 lh-n">
             {{item.params.text | safeHTML}}
         </p>
         <div class="pb-45">
-            <a class="btn btn-primary rounded-pill px-4 py-2 text-white btn-pill-mmkting" href="{{ '/product' | relative_url }}">Learn more</a>
+            <a class="btn btn-primary rounded-pill px-4 py-2 text-white btn-pill-mmkting" href="https://www.cockroachlabs.com/product">Learn more</a>
             <a class="btn btn-outline-purple text-primary rounded-pill px-4 py-2 ml-3 btn-pill-mmkting" href="/pricing">Pricing</a>
         </div>
-        <a class="pb-2 pb-md-0 d-block  text-primary semibold text-xs " href="{{ '/get-started' | relative_url }}">Compare deployment options <svg width="11" height="10" viewBox="0 0 11 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <a class="pb-2 pb-md-0 d-block  text-primary semibold text-xs " href="https://www.cockroachlabs.com/get-started">Compare deployment options <svg width="11" height="10" viewBox="0 0 11 10" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path fill-rule="evenodd" clip-rule="evenodd" d="M6.7197 0.564462L10.7117 4.55642C10.9566 4.80139 10.9566 5.19856 10.7117 5.44352L6.7197 9.43548C6.47474 9.68045 6.07757 9.68045 5.8326 9.43548C5.58763 9.19052 5.58763 8.79335 5.8326 8.54838L8.75373 5.62725H1.52266C1.17623 5.62725 0.895386 5.34641 0.895386 4.99997C0.895386 4.65354 1.17623 4.3727 1.52266 4.3727H8.75373L5.8326 1.45156C5.58763 1.2066 5.58763 0.809429 5.8326 0.564462C6.07757 0.319496 6.47474 0.319496 6.7197 0.564462Z" fill="#6933FF"/>
             </svg>
             </a>
