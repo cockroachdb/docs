@@ -67,7 +67,7 @@ Scaling application deployments in multiple regions can greatly improve latency 
 
 For guidance on connecting to CockroachDB from an application deployment, see one of the following pages:
 
-- For connecting to managed, {{ site.data.products.db }} deployments, see [Connect to Your {{ site.data.products.dedicated }} Cluster](../cockroachcloud/connect-to-your-cluster.html) and [Connect to the Database ({{ site.data.products.dedicated }})](connect-to-the-database-cockroachcloud.html).
+- For connecting to managed, {{ site.data.products.db }} deployments, see [Connect to Your {{ site.data.products.dedicated }} Cluster](../cockroachcloud/connect-to-your-cluster.html) and [Connect to the Database ({{ site.data.products.dedicated }})](connect-to-the-database.html?filters=dedicated).
 - For connecting to a standard CockroachDB deployment, see [`cockroach sql`](cockroach-sql.html) and [Connect to the Database](connect-to-the-database.html).
 
 To limit the latency between the application and the database, each deployment of the application should communicate with the closest database deployment. For details on configuring database connections for individual application deployments, consult your cloud provider's documentation. For an example using Google Cloud services, see [Multi-region Application Deployment](multi-region-deployment.html).

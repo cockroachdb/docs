@@ -9,7 +9,8 @@ This guide shows you how to develop an application on CockroachDB. After reading
 ## Guide contents
 
 - [Overview](#cockroachdb-basics)
-- [Connect to a Cluster](install-client-drivers.html)
+- [Install a Client Library](install-client-drivers.html)
+- [Connect to a Cluster](connect-to-the-database.html)
 - [Design a Schema](schema-design-overview.html)
 - [Write Data](insert-data.html)
 - [Read Data](query-data.html)
@@ -51,7 +52,7 @@ A growing number of popular third-party database tools offer full support for Co
 
 ## What's next?
 
-- [Start a Local Cluster](secure-a-cluster.html)
+- [Create a {{ site.data.products.serverless }} Cluster](../cockroachcloud/create-a-serverless-cluster.html)
 - [Install a Driver or ORM Framework](install-client-drivers.html)
 - [Connect to CockroachDB](connect-to-the-database.html)
 
