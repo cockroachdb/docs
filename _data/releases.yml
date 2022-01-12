@@ -292,6 +292,8 @@
       no_windows: true
 - title: Testing releases
   releases:
+    - date: Jan 18, 2022
+      version: v22.1.0-alpha.1
     - date: Nov 1, 2021
       version: v21.2.0-rc.3
     - date: Oct 25, 2021
