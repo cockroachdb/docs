@@ -11,7 +11,7 @@ For a list of all supported cluster connection parameters, see the [`cockroach` 
 For a list of community-supported third-party tools, see [Third-Party Tools Supported by the Community](community-tooling.html). CockroachDB supports both native drivers and the PostgreSQL wire protocol. Most client drivers and ORM frameworks connect to CockroachDB like they connect to PostgreSQL.
 
 <div class="filters clearfix">
-  <button class="filter-button page-level" data-scope="serverless">{{ site.data.products.serverless-plan }}</button>
+  <button class="filter-button page-level" data-scope="serverless">{{ site.data.products.serverless }}</button>
   <button class="filter-button page-level" data-scope="dedicated">{{ site.data.products.dedicated }}</button>
 </div>
 
@@ -151,7 +151,7 @@ For example, suppose that you have a file named `ormconfig.ts` in the project's 
 
 <div class="filter-content" markdown="1" data-scope="serverless">
 
-CockroachDB {{ site.data.products.serverless-plan }} requires you to specify the `type`, `url`, `ssl`, and `options: "--cluster"` properties:
+CockroachDB {{ site.data.products.serverless }} requires you to specify the `type`, `url`, `ssl`, and `options: "--cluster"` properties:
 
 {% include copy-clipboard.html %}
 ~~~ ts
@@ -256,7 +256,7 @@ Parameter | Description
 <div class="filter-content" markdown="1" data-scope="serverless">
 
 {{site.data.alerts.callout_info}}
-To connect to a {{ site.data.products.serverless-plan }} cluster from a Python application, you must have a valid CA certificate located at <code>~/.postgresql/root.crt</code>.<br>For instructions on downloading a CA certificate from the {{ site.data.products.db }} Console, see <a href="../cockroachcloud/connect-to-a-serverless-cluster.html">Connect to a {{ site.data.products.serverless-plan }} Cluster</a>.
+To connect to a {{ site.data.products.serverless }} cluster from a Python application, you must have a valid CA certificate located at <code>~/.postgresql/root.crt</code>.<br>For instructions on downloading a CA certificate from the {{ site.data.products.db }} Console, see <a href="../cockroachcloud/connect-to-a-serverless-cluster.html">Connect to a {{ site.data.products.serverless }} Cluster</a>.
 {{site.data.alerts.end}}
 
 </div>
@@ -771,7 +771,7 @@ Parameter | Description
 </div>
 
 {{site.data.alerts.callout_info}}
-To connect to a {{ site.data.products.serverless-plan }} cluster from a Ruby application, you must have a valid CA certificate located at <code>~/.postgresql/root.crt</code>.<br>For instructions on downloading a CA certificate from the {{ site.data.products.db }} Console, see <a href="../cockroachcloud/connect-to-a-serverless-cluster.html">Connect to a {{ site.data.products.serverless-plan }} Cluster</a>.
+To connect to a {{ site.data.products.serverless }} cluster from a Ruby application, you must have a valid CA certificate located at <code>~/.postgresql/root.crt</code>.<br>For instructions on downloading a CA certificate from the {{ site.data.products.db }} Console, see <a href="../cockroachcloud/connect-to-a-serverless-cluster.html">Connect to a {{ site.data.products.serverless }} Cluster</a>.
 {{site.data.alerts.end}}
 
 <div class="filter-content" markdown="1" data-scope="ruby-pg">
