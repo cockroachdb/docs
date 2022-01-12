@@ -2,7 +2,7 @@
 serverless:
   - identifier: product
     name: Product
-    url: /product/
+    url: https://www.cockroachlabs.com/product/
     weight: 100
     params:
         image: /images/menu-product.png
@@ -11,34 +11,34 @@ product_caps:
   # Left
   - identifier: product-capabilities
     name: Elastic Scale
-    url: /product/scale
+    url: https://www.cockroachlabs.com/product/scale
     weight: 100
   - name: Built-in Survivability
-    url: /product/resilience
+    url: https://www.cockroachlabs.com/product/resilience
     # Right
   - name: Global Data
-    url: /product/geo-partitioning
+    url: https://www.cockroachlabs.com/product/geo-partitioning
   - name: Familiar, Consistent SQL
-    url: /product/sql
+    url: https://www.cockroachlabs.com/product/sql
 
 solutions:
   - identifier: solutions
     name: Solutions
-    url: /solutions/
+    url: https://www.cockroachlabs.com/solutions/
     weight: 110
     params:
         # image: /img/menu-product.png
         text: See how our customers use CockroachDB to handle their critical workloads.
 
-solutions_items:
+solutions_industries:
   - name: Finance
-    url: /solutions/verticals/financialservices/
+    url: https://www.cockroachlabs.com/solutions/verticals/financialservices/
     weight: 100
   - name: Gaming
-    url: /solutions/verticals/gaming/
+    url: https://www.cockroachlabs.com/solutions/verticals/gaming/
     weight: 100
   - name: Retail & eCommerce
-    url: /solutions/verticals/retail-ecommerce/
+    url: https://www.cockroachlabs.com/solutions/verticals/retail-ecommerce/
     weight: 100
   - name: Technology
     url: https://resources.cockroachlabs.com/startups
@@ -46,6 +46,7 @@ solutions_items:
   - name: Manufacturing & Logistics
     url: https://resources.cockroachlabs.com/manufacturing-logistics
     weight: 100
+solutions_usecase:
   - name: Cloud-Native & Kubernetes
     url: https://resources.cockroachlabs.com/cloud-native-kubernetes
     weight: 600
@@ -62,7 +63,7 @@ solutions_items:
 resources:
   - identifier: resources
     name: Resources
-    url: /resources/
+    url: https://www.cockroachlabs.com/resources/
     weight: 120
     params:
         # image: /img/menu-product.png
@@ -76,10 +77,10 @@ resources_learn:
     url: https://www.cockroachlabs.com/community/tech-talks/
     weight: 200
   - name: Developers
-    url: /developers/
+    url: https://www.cockroachlabs.com/developers/
     weight: 200
   - name: Blog
-    url: /blog/
+    url: https://www.cockroachlabs.com/blog/
     weight: 200
 resources_support:
   - name: Slack
@@ -94,7 +95,7 @@ resources_support:
 docs:
   - identifier: docs
     name: Docs Hub
-    url: /docs/
+    url: https://www.cockroachlabs.com/docs/
     weight: 120
     params:
         # image: /img/menu-product.png
@@ -118,7 +119,7 @@ docs_items:
 company:
   - identifier: company
     name: Company
-    url: /company/
+    url: https://www.cockroachlabs.com/company/
     weight: 110
     params:
         # image: /img/menu-product.png
