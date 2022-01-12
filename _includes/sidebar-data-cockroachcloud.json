@@ -1,5 +1,5 @@
 {
-  "title": "CockroachDB Cloud",
+  "title": "CockroachDB Cloud", // THIS FILE IS ONLY USED FOR v21.1 and earlier
   "is_top_level": true,
   "urls": [
     "/cockroachcloud/index.html"
@@ -141,7 +141,7 @@
       	  ]
       	},
         {
-          "title": "Perfomance",
+          "title": "Performance",
           "items": [
           	{
           	  "title": "Tune Performance",
@@ -231,6 +231,12 @@
       		       "/cockroachcloud/upgrade-policy.html"
       	      ]
       	    },
+            {
+              "title": "Upgrade to v21.2",
+              "urls": [
+                 "/cockroachcloud/upgrade-to-v21.2.html"
+              ]
+            },
             {
       	      "title": "Upgrade to v21.1",
       	      "urls": [

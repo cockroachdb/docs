@@ -115,7 +115,7 @@ During rollback, nodes will be reverted to v20.2 one at a time without interrupt
 </section>
 
 <section class="filter-content" markdown="1" data-scope="single-node">
-Because your cluster contains a single node, the cluster will be briefly unavailable while the node is stopped and restarted with v20.2. Be sure to prepare for this brief unavailability before starting the rollback.
+Because your cluster contains a single node, the cluster will be briefly unavailable while the node is stopped and restarted with v21.1. Be sure to prepare for this brief unavailability before starting the rollback.
 </section>
 
 ## See also

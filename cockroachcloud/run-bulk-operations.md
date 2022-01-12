@@ -14,7 +14,7 @@ toc: true
 - [`CREATE CHANGEFEED`](../{{site.versions["stable"]}}/create-changefeed.html) (Dedicated)
 
 {{site.data.alerts.callout_info}}
-For {{ site.data.products.serverless }} clusters, you must have [billing information](billing-management.html) on file for your Organization to have access to [cloud storage](../{{site.versions["stable"]}}/use-cloud-storage-for-bulk-operations.html). If you don't have billing set up, [`userfile`](../{{site.versions["stable"]}}/use-userfile-for-bulk-operations.html) is your **only available storage option** for bulk operations. {{ site.data.products.dedicated }} users can run bulk operations with `userfile` or cloud storage.
+For {{ site.data.products.serverless }} clusters, you must have [billing information](billing-management.html) on file for your organization to have access to [cloud storage](../{{site.versions["stable"]}}/use-cloud-storage-for-bulk-operations.html). If you don't have billing set up, [`userfile`](../{{site.versions["stable"]}}/use-userfile-for-bulk-operations.html) is your **only available storage option** for bulk operations. {{ site.data.products.dedicated }} users can run bulk operations with `userfile` or cloud storage.
 {{site.data.alerts.end}}
 
 For information on `userfile` commands, visit the following pages:
@@ -97,7 +97,7 @@ Read the [`IMPORT`](../{{site.versions["stable"]}}/import.html) page for more ex
 ### Export data out of {{ site.data.products.db }}
 
 {{site.data.alerts.callout_info}}
-Using `EXPORT` with `userfile` is not recommended. If you need to export data from a Serverless cluster, you can either [set up billing for your Organization](billing-management.html) to access cloud storage or [export data to a local CSV file](migrate-from-serverless-to-dedicated.html#step-1-export-data-to-a-local-csv-file).
+Using `EXPORT` with `userfile` is not recommended. If you need to export data from a Serverless cluster, you can either [set up billing for your organization](billing-management.html) to access cloud storage or [export data to a local CSV file](migrate-from-serverless-to-dedicated.html#step-1-export-data-to-a-local-csv-file).
 {{site.data.alerts.end}}
 
 The following example exports the `customers` table from the `bank` database into a cloud storage bucket in CSV format:

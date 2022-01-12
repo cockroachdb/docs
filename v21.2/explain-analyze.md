@@ -152,7 +152,7 @@ File                | Description
 
 You can obtain this ZIP file by following the link provided in the `EXPLAIN ANALYZE (DEBUG)` output, or by activating [statement diagnostics](ui-statements-page.html#diagnostics) in the DB Console.
 
-{% include {{ page.version.version }}/sql/statement-bundle-warning.md %}
+{% include common/sql/statement-bundle-warning.md %}
 
 ## Examples
 

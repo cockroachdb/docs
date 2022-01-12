@@ -446,6 +446,10 @@ When setting a time zone, note the following:
 `kv`  | Same as `cluster` except that "kv messages" are collected instead of regular trace messages. See [`SHOW TRACE FOR SESSION`](show-trace.html).
 `results` | Result rows and row counts are copied to the session trace. This must be specified in order for the output of a query to be printed in the session trace.<br><br>Example: `SET tracing = kv, results;`
 
+## Known Limitations
+
+{% include {{page.version.version}}/known-limitations/set-transaction-no-rollback.md %}
+
 ## See also
 
 - [`RESET`](reset-vars.html)

@@ -7,7 +7,7 @@ toc: true
 This page provides best practices for optimizing query performance in CockroachDB.
 
 {{site.data.alerts.callout_success}}
-For guidance on deployment and data location techniques to minimize network latency, see [Topology Patterns](topology-patterns.html).
+For deployment and data location techniques to minimize network latency in multi-region clusters, see [Topology Patterns](topology-patterns.html).
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
@@ -26,6 +26,20 @@ For more information, see:
 - [Update Data](update-data.html)
 - [Delete Data](delete-data.html)
 - [How to improve IoT application performance with multi-row DML](https://www.cockroachlabs.com/blog/multi-row-dml/)
+
+### Use `UPSERT` instead of `INSERT ON CONFLICT` on tables with no secondary indexes
+
+When inserting/updating all columns of a table, and the table has no secondary
+indexes, we recommend using an [`UPSERT`](upsert.html) statement instead of the
+equivalent [`INSERT ON CONFLICT`](insert.html) statement. Whereas `INSERT ON
+CONFLICT` always performs a read to determine the necessary writes, the `UPSERT`
+statement writes without reading, making it faster. For tables with secondary
+indexes, there is no performance difference between `UPSERT` and `INSERT ON
+CONFLICT`.
+
+This issue is particularly relevant when using a simple SQL table of two columns
+to [simulate direct KV access](sql-faqs.html#can-i-use-cockroachdb-as-a-key-value-store).
+In this case, be sure to use the `UPSERT` statement.
 
 ## Bulk-insert best practices
 
@@ -166,33 +180,7 @@ Note that the above query also follows the [indexing best practice](indexes.html
 
 ### Use `UUID` to generate unique IDs
 
-To auto-generate unique row IDs, use the [`UUID`](uuid.html) column with the `gen_random_uuid()` [function](functions-and-operators.html#id-generation-functions) as the [default value](default-value.html):
-
-{% include copy-clipboard.html %}
-~~~ sql
-> CREATE TABLE t1 (id UUID PRIMARY KEY DEFAULT gen_random_uuid(), name STRING);
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> INSERT INTO t1 (name) VALUES ('a'), ('b'), ('c');
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SELECT * FROM t1;
-~~~
-
-~~~
-+--------------------------------------+------+
-|                  id                  | name |
-+--------------------------------------+------+
-| 60853a85-681d-4620-9677-946bbfdc8fbc | c    |
-| 77c9bc2e-76a5-4ebc-80c3-7ad3159466a1 | b    |
-| bd3a56e1-c75e-476c-b221-0da9d74d66eb | a    |
-+--------------------------------------+------+
-(3 rows)
-~~~
+{% include {{ page.version.version }}/faq/auto-generate-unique-ids.html %}
 
 ### Use `INSERT` with the `RETURNING` clause to generate unique IDs
 
@@ -284,6 +272,10 @@ See [Join Performance Best Practices](joins.html#performance-best-practices).
 
 See [Subquery Performance Best Practices](subqueries.html#performance-best-practices).
 
+## Authorization best practices
+
+See [Authorization Best Practices](authorization.html#authorization-best-practices).
+
 ## Table scans best practices
 
 ### Avoid `SELECT *` for large tables
@@ -348,6 +340,8 @@ There are two levels of contention:
 - Transactions that operate on the same index key values (specifically, that operate on the same [column family](column-families.html) for a given index key) will be more strictly serialized to obey transaction isolation semantics.
 
 Transaction contention can also increase the rate of transaction restarts, and thus make the proper implementation of [client-side transaction retries](transactions.html#client-side-intervention) more critical.
+
+For further background on database contention, see [What is Database Contention, and Why Should You Care?](https://www.cockroachlabs.com/blog/what-is-database-contention/).
 
 ### Find contention
 

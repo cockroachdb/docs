@@ -5,9 +5,14 @@ IgnoreDirs:
   - ^docs/dev
   - ^docs/v1.2
 IgnoreURLs:
-  - http://localhost:4000
+  - "http://localhost*"
   - "https://github.com.*"
   - "https://movr.cloud"
+  - "https://support.cockroachlabs.com/*"
+  - "https://www.php.net/*"
+  - "https://crates.io/*"
+  - "https://docs.pipenv.org/*"
+  - "https://arxiv.org/*"
 IgnoreInternalEmptyHash: true
 TestFilesConcurrently: true
 DocumentConcurrencyLimit: 16

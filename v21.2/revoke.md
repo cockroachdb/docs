@@ -16,14 +16,16 @@ You can use `REVOKE` to directly revoke privileges from a role or user, or you c
 
 ### Parameters
 
-Parameter                             | Description
---------------------------------------|------------
-`ALL`<br>`ALL PRIVILEGES`             | Revoke all [privileges](#supported-privileges).
-`targets`                             | A comma-separated list of database, schema, table, or user-defined type names, followed by the name of the object (e.g., `DATABASE mydatabase`).<br>{{site.data.alerts.callout_info}}To revoke privileges on all tables in a database or schema, you can use `REVOKE ... ON TABLE *`. For an example, see [Revoke privileges on all tables in a database or schema](#revoke-privileges-on-all-tables-in-a-database-or-schema).{{site.data.alerts.end}}
-`name_list`                           | A comma-separated list of [users](authorization.html#create-and-manage-users) and/or [roles](authorization.html#create-and-manage-roles) from whom to revoke privileges.
-`privilege_list ON targets FROM ...`  | Specify a comma-separated list of [privileges](authorization.html#assign-privileges) to revoke.
-`privilege_list FROM ...`             | Specify a comma-separated list of [roles](authorization.html#create-and-manage-roles) whose membership to revoke.
-`ADMIN OPTION FOR privilege_list`     | Revoke the user's role admin status.
+Parameter                   | Description
+----------------------------|------------
+`ALL`<br>`ALL PRIVILEGES`   | Revoke all [privileges](#supported-privileges).
+`targets`                   | A comma-separated list of database or table names, preceded by the object type (e.g., `DATABASE mydatabase`).<br>{{site.data.alerts.callout_info}}To revoke privileges on all tables in a database or schema, you can use `REVOKE ... ON TABLE *`. For an example, see [Revoke privileges on all tables in a database or schema](#revoke-privileges-on-all-tables-in-a-database-or-schema).{{site.data.alerts.end}}
+`name_list`                 | A comma-separated list of [users](authorization.html#create-and-manage-users) and/or [roles](authorization.html#create-and-manage-roles).
+`target_types`              | A comma-separated list of [user-defined types](create-type.html).
+`schema_name_list`          | A comma-separated list of [schemas](create-schema.html).
+`ALL TABLES IN SCHEMA`      | <span class="version-tag">New in v21.2</span>: Revoke privileges on all tables in a schema or list of schemas.
+`privilege_list`            | A comma-separated list of [privileges](authorization.html#assign-privileges) to revoke.
+`WITH ADMIN OPTION`         | Designate the user as a role admin. Role admins can [grant](grant.html) or revoke membership for the specified role.
 
 ## Supported privileges
 

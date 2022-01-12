@@ -36,7 +36,7 @@ Table | Description
 `cluster_settings` | Contains information about [cluster settings](cluster-settings.html).
 `cluster_transactions` | Contains information about transactions running on your cluster.
 `create_statements` | Contains information about tables and indexes in your database.
-`create_type_statements` | Contains information about [user-defined types](enum.html) in your database.
+`create_type_statements` | <a name="create_type_statements"></a> Contains information about [user-defined types](enum.html) in your database.
 `cross_db_references` | Contains information about objects that reference other objects, such as [foreign keys](foreign-key.html) or [views](views.html), across databases in your cluster.
 `databases` | Contains information about the databases in your cluster.
 `default_privileges` | Contains information about per-database default [privileges](authorization.html#privileges).

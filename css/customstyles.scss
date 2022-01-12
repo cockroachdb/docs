@@ -92,7 +92,7 @@ h2 {
 
   // for code snippets in section headers
   code {
-    font-size: 17px;
+    font-size: 26px;
   }
 }
 
@@ -109,7 +109,7 @@ h3 {
   }
 
   code {
-    font-size: 16px;
+    font-size: 20px;
   }
 }
 
@@ -118,7 +118,7 @@ h4, .h4 {
   font-weight: bold;
   line-height: 26px;
   code {
-    font-size: 17px;
+    font-size: 18px;
   }
 }
 
@@ -126,7 +126,7 @@ h5, .h5 {
   @include poppins_sb(16px);
   line-height: 24px;
   code {
-    font-size: 17px;
+    font-size: 16px;
   }
 }
 
@@ -832,21 +832,21 @@ a.accordion-toggle {
   font-size: 13px;
   line-height: 1.5em;
   margin-bottom: 1px;
-} 
+}
 
 .redoc-json ol {
   font-family: Courier, monospace;
   font-size: 13px;
   line-height: 1.5em;
   margin-bottom: 1px;
-} 
+}
 
 .redoc-json li {
   font-family: Courier, monospace;
   font-size: 13px;
   line-height: 1.5em;
   margin-bottom: 1px;
-} 
+}
 
 .form-control {
   &:focus {

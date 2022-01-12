@@ -1,10 +1,10 @@
 ---
 title: Release Support Policy
-summary: Learn about Cockroach Lab's policy for supporting major releases of CockroachDB.
+summary: Learn about Cockroach Labs' policy for supporting major releases of CockroachDB.
 toc: true
 ---
 
-This page explains Cockroach Lab's policy for supporting [major releases](../releases/) of CockroachDB.
+This page explains Cockroach Labs' policy for supporting [major releases](../releases/) of CockroachDB.
 
 ## Support cycle
 
@@ -24,7 +24,7 @@ Cockroach Labs will notify you by mail or email 6 months in advance of a major r
 
 ## Current supported releases
 
-As of v19.1, Cockroach Lab uses a three-component calendar versioning scheme. Prior releases use a different versioning scheme. For more details, see [Release Naming](index.html#release-naming).
+As of v19.1, Cockroach Labs uses a three-component calendar versioning scheme. Prior releases use a different versioning scheme. For more details, see [Release Naming](index.html#release-naming).
 
 Date format: YYYY-MM-DD
 
@@ -38,6 +38,12 @@ Date format: YYYY-MM-DD
 		</tr>
 	</thead>
   <tr>
+    <td><a href="v21.2.0.html">v21.2</a></td>
+    <td>2021-11-16</td>
+    <td>2022-11-16</td>
+    <td>2023-05-16</td>
+  </tr>
+  <tr>
     <td><a href="v21.1.0.html">v21.1</a></td>
     <td>2021-05-18</td>
     <td>2022-05-18</td>
@@ -49,8 +55,8 @@ Date format: YYYY-MM-DD
 		<td>2021-11-10</td>
 		<td>2022-05-10</td>
 	</tr>
-	<tr>
-		<td><a href="v20.1.0.html">v20.1</a></td>
+	<tr class=eol>
+		<td><a href="v20.1.0.html">v20.1*</a></td>
 		<td>2020-05-12</td>
 		<td>2021-05-12</td>
 		<td>2021-11-12</td>
