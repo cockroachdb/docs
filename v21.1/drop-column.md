@@ -6,6 +6,10 @@ toc: true
 
 The `DROP COLUMN` [statement](sql-statements.html) is part of `ALTER TABLE` and removes columns from a table.
 
+{{site.data.alerts.callout_danger}}
+When used in an explicit transaction combined with other schema changes to the same table, `DROP COLUMN` can result in data loss if one of the other schema change fails or is canceled. To work around this, move the `DROP COLUMN` statement to its own explicit transaction or run it in a single statement outside the existing transaction. See [tracking issue](https://github.com/cockroachdb/cockroach/issues/46541).
+{{site.data.alerts.end}}
+
 {{site.data.alerts.callout_info}}
  By default, `DROP COLUMN` drops any indexes [indexes](indexes.html) on the column being dropped, and any indexes that reference the column, including [partial indexes](partial-indexes.html) with predicates that reference the column and indexes with [`STORING` clauses](create-index.html#store-columns) that reference the column.
 {{site.data.alerts.end}}
