@@ -1729,11 +1729,23 @@
         ]
       },
       {
-        "title": "Cloud Release Notes",
-        "urls": [
-          "/releases/index-cockroachcloud.html"
+        "title": "Third-Party Support",
+        "items": [
+          {
+            "title": "Tools Supported by Cockroach Labs",
+            "urls": [
+              "/${VERSION}/third-party-database-tools.html"
+            ]
+          },
+          {
+            "title": "Tools Supported by the Community",
+            "urls": [
+              "/${VERSION}/community-tooling.html"
+            ]
+          }
         ]
       },
+      {% include_cached cockroachcloud/sidebar-release-notes.json %},
       {% include_cached sidebar-releases.json %}
     ]
   }

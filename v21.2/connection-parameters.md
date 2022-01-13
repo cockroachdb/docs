@@ -96,7 +96,7 @@ CockroachDB supports the following `options` parameters. After the first `option
 
 Parameter | Description
 ----------|-------------
-`--cluster=<cluster name>` | Specifies the cluster name when connecting to [{{ site.data.products.serverless }}](connect-to-the-database-cockroachcloud.html#connect).
+`--cluster=<routing-id>` | Identifies your tenant cluster on a [multi-tenant host](../cockroachcloud/architecture.html#architecture). For example, `funny-skunk-123`.
 `-c <session_variable>=<value>` |  Sets a [session variable](set-vars.html) for the SQL session.
 
 {{site.data.alerts.callout_info}}
@@ -134,7 +134,7 @@ $ ./cockroach convert-url --url "postgres://foo/bar"
 # Connection URL for libpq (C/C++), psycopg (Python), lib/pq & pgx (Go),node-postgres (JS)
 and most pq-compatible drivers:
   postgresql://root@foo:26257/bar
-# Connection DSN (Data Source Name) for Postgres drivers that accept DSNs - most drivers 
+# Connection DSN (Data Source Name) for Postgres drivers that accept DSNs - most drivers
 and also ODBC:
   database=bar user=root host=foo port=26257
 # Connection URL for JDBC (Java and JVM-based languages):
