@@ -80,8 +80,6 @@ Contact [Support](https://support.cockroachlabs.com/hc/en-us) to change your clu
 
 You can add nodes by accessing the **Clusters** page on the [{{ site.data.products.db }} Console](https://cockroachlabs.cloud/) and clicking the **...** button for the cluster you want to add or delete nodes for. See [Cluster Mangement](cluster-management.html?filters=dedicated#add-or-remove-nodes-from-a-cluster) for more details.
 
-{% include cockroachcloud/nodes-limitation.md %}
-
 ### Do you auto-scale?
 
 Today, we do not automatically scale nodes based on your capacity usage. To add or remove nodes, see [Cluster Mangement](cluster-management.html?filters=dedicated#add-or-remove-nodes-from-a-cluster). There are plans to allow auto-scaling in the future.
