@@ -23,7 +23,7 @@ toc: true
 Now that your simulated multi-region cluster is running, you are presented with a SQL prompt:
 
 ~~~
-root@127.0.0.1:26257/defaultdb> 
+root@127.0.0.1:26257/defaultdb>
 ~~~
 
 You can run some basic [CockroachDB SQL statements](learn-cockroachdb-sql.html):
@@ -93,7 +93,7 @@ When you're done with your demo cluster, you can wipe the cluster by typing the 
 
 - [Install the client driver](install-client-drivers.html) for your preferred language
 - Learn more about [CockroachDB SQL](learn-cockroachdb-sql.html) and the [built-in SQL client](cockroach-sql.html)
-- [Build an app with CockroachDB](hello-world-example-apps.html)
+- [Build an app with CockroachDB](example-apps.html)
 - Further explore CockroachDB capabilities like:
   - [Multi-region SQL performance](demo-low-latency-multi-region-deployment.html)
   - [Fault tolerance and automated repair](demo-fault-tolerance-and-recovery.html)
