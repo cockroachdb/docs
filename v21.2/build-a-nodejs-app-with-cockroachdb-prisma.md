@@ -31,6 +31,7 @@ $ git clone https://github.com/cockroachlabs/example-app-node-prisma
 The project has the following directory structure:
 
 ~~~
+├── README.md
 ├── dbinit.sql
 ├── index.js
 ├── package.json
@@ -52,7 +53,9 @@ The `index.js` file contains the code for `INSERT`, `SELECT`, `UPDATE`, and `DEL
 {% remote_include https://raw.githubusercontent.com/cockroachlabs/example-app-node-prisma/main/index.js %}
 ~~~
 
-All of the database operations are wrapped in a helper function named `retryTxn`. This function attempts to commit statements in the context of an explicit transaction. If a [retry error](transaction-retry-error-reference.html) is thrown, the wrapper will retry committing the transaction, with [exponential backoff](https://en.wikipedia.org/wiki/Exponential_backoff), until the maximum number of retries is reached (by default, 15).
+{{site.data.alerts.callout_info}}
+In [production](recommended-production-settings.html#transaction-retries), we recommend implementing [client-side transaction retries](transactions.html#client-side-intervention) for all database operations.
+{{site.data.alerts.end}}
 
 ## Step 3. Initialize the database
 
@@ -60,13 +63,13 @@ All of the database operations are wrapped in a helper function named `retryTxn`
 CockroachDB does not support Prisma Migrate. We recommend executing DDL SQL statements to initialize your database schema separately. After the database schema is initialized, you can load existing tables into your Prisma schema with the Prisma Client, as demonstrated [here](https://www.prisma.io/docs/concepts/components/introspection).
 {{site.data.alerts.end}}
 
-To initialize the example database schema, use the [`cockroach sql`](cockroach-sql.html) command to execute the SQL statements in the `dbinit.sql` file:
+To initialize the example database schema in CockroachDB, use the [`cockroach sql`](cockroach-sql.html) command to execute the SQL statements in the `dbinit.sql` file:
 
 <div class="filter-content" markdown="1" data-scope="cockroachcloud">
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-cat dbinit.sql | cockroach sql --url "<connection-string>"
+cockroach sql --url "<connection-string>" --file dbinit.sql
 ~~~
 
 Where `<connection-string>` is the connection string you obtained earlier from the {{ site.data.products.db }} Console.
@@ -77,7 +80,7 @@ Where `<connection-string>` is the connection string you obtained earlier from t
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-cat dbinit.sql | cockroach sql --url "postgresql://root@localhost:26257?sslmode=disable"
+cockroach sql --url "postgresql://root@localhost:26257?sslmode=disable" --file dbinit.sql
 ~~~
 
 {{site.data.alerts.callout_info}}
@@ -114,7 +117,7 @@ cat dbinit.sql | cockroach sql --url "postgresql://root@localhost:26257?sslmode=
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ npm install prisma uuid --save-dev @prisma/client
+    $ npm install
     ~~~
 
 1. Load the database schema from the cluster into your Prisma schema file.
@@ -141,27 +144,120 @@ $ node index.js
 ~~~
 
 ~~~
-Initial account values:
+Customer rows inserted. { count: 10 }
+Account rows inserted. { count: 10 }
+Initial Account row values:
  [
-  { id: '081d2b77-1229-4e5b-883e-5d9bd7d369d1', balance: 681n },
-  { id: '5c1f7f62-348d-4f75-a5c1-baab7cc2275f', balance: 73n },
-  { id: '714f0f18-98c1-4bb3-a44a-08f11f792934', balance: 792n },
-  { id: 'df83aeb9-3146-4afc-aef7-1a7094252189', balance: 174n },
-  { id: 'eaf21411-6761-4493-9eea-cce690cf9eff', balance: 106n }
+  {
+    id: '1961432f-f93e-4568-b2a5-ba08f73afde5',
+    customer_id: '079daee3-ecf2-4a0f-980b-4c3ea4c8b6a3',
+    balance: 914n
+  },
+  {
+    id: '4ccd7eea-eb47-4aa9-9819-30b5aae58bf8',
+    customer_id: 'c0eeb465-ab60-4f02-9bf3-3451578d400d',
+    balance: 176n
+  },
+  {
+    id: '53ed4f7d-72ee-4390-9487-9bf318357c77',
+    customer_id: 'a4c9e26e-f9d8-4c1b-ac20-1aa8611b134f',
+    balance: 54n
+  },
+  {
+    id: '79a1f1b2-4050-4329-bf52-5df53fec749e',
+    customer_id: '392c7d15-5ab2-4149-9eee-8a3a44b36e9d',
+    balance: 482n
+  },
+  {
+    id: '7e30f1e0-e873-4565-9ea3-3079a48a4886',
+    customer_id: '12cb3406-264a-417c-b0e6-86593e60dc18',
+    balance: 478n
+  },
+  {
+    id: '94f461d5-3985-46c1-98f4-1896f15f0a16',
+    customer_id: 'e4c909a4-6683-429d-9831-dfcf792f4fb0',
+    balance: 240n
+  },
+  {
+    id: 'a0c081f5-fb15-47cc-8dbb-85c6f15677d2',
+    customer_id: '91ece5f2-df03-4023-b112-2b4d5677981b',
+    balance: 520n
+  },
+  {
+    id: 'a45b7c41-2f62-4620-be69-57d5d61186e4',
+    customer_id: 'c1824327-d6a1-4916-a666-ea157ef2a409',
+    balance: 50n
+  },
+  {
+    id: 'dbe0dec5-257b-42ff-9d36-1b5a57e1a4ac',
+    customer_id: '6739eb2f-bcb1-4074-aab4-5860b04d227d',
+    balance: 468n
+  },
+  {
+    id: 'ebc520b4-8df0-4e2f-8426-104594f6341c',
+    customer_id: 'f83e02cb-77cf-4347-9e0c-28cad65fac34',
+    balance: 336n
+  }
 ]
-Updated account values:
+Account rows updated. { count: 8 }
+Updated Account row values:
  [
-  { id: '081d2b77-1229-4e5b-883e-5d9bd7d369d1', balance: 676n },
-  { id: '5c1f7f62-348d-4f75-a5c1-baab7cc2275f', balance: 73n },
-  { id: '714f0f18-98c1-4bb3-a44a-08f11f792934', balance: 787n },
-  { id: 'df83aeb9-3146-4afc-aef7-1a7094252189', balance: 169n },
-  { id: 'eaf21411-6761-4493-9eea-cce690cf9eff', balance: 101n }
+  {
+    id: '1961432f-f93e-4568-b2a5-ba08f73afde5',
+    customer_id: '079daee3-ecf2-4a0f-980b-4c3ea4c8b6a3',
+    balance: 909n
+  },
+  {
+    id: '4ccd7eea-eb47-4aa9-9819-30b5aae58bf8',
+    customer_id: 'c0eeb465-ab60-4f02-9bf3-3451578d400d',
+    balance: 171n
+  },
+  {
+    id: '53ed4f7d-72ee-4390-9487-9bf318357c77',
+    customer_id: 'a4c9e26e-f9d8-4c1b-ac20-1aa8611b134f',
+    balance: 54n
+  },
+  {
+    id: '79a1f1b2-4050-4329-bf52-5df53fec749e',
+    customer_id: '392c7d15-5ab2-4149-9eee-8a3a44b36e9d',
+    balance: 477n
+  },
+  {
+    id: '7e30f1e0-e873-4565-9ea3-3079a48a4886',
+    customer_id: '12cb3406-264a-417c-b0e6-86593e60dc18',
+    balance: 473n
+  },
+  {
+    id: '94f461d5-3985-46c1-98f4-1896f15f0a16',
+    customer_id: 'e4c909a4-6683-429d-9831-dfcf792f4fb0',
+    balance: 235n
+  },
+  {
+    id: 'a0c081f5-fb15-47cc-8dbb-85c6f15677d2',
+    customer_id: '91ece5f2-df03-4023-b112-2b4d5677981b',
+    balance: 515n
+  },
+  {
+    id: 'a45b7c41-2f62-4620-be69-57d5d61186e4',
+    customer_id: 'c1824327-d6a1-4916-a666-ea157ef2a409',
+    balance: 50n
+  },
+  {
+    id: 'dbe0dec5-257b-42ff-9d36-1b5a57e1a4ac',
+    customer_id: '6739eb2f-bcb1-4074-aab4-5860b04d227d',
+    balance: 463n
+  },
+  {
+    id: 'ebc520b4-8df0-4e2f-8426-104594f6341c',
+    customer_id: 'f83e02cb-77cf-4347-9e0c-28cad65fac34',
+    balance: 331n
+  }
 ]
-Account rows deleted. { count: 5 }
+All Customer rows deleted. { count: 10 }
 ~~~
 
 ## What's next?
 
-Read more about using the [Prisma ORM](https://www.prisma.io/docs/).
+Read more about using [Prisma Client](https://www.prisma.io/docs/).
 
 {% include {{page.version.version}}/app/see-also-links.md %}
