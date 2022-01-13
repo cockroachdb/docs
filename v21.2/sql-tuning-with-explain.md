@@ -434,4 +434,4 @@ Time: 1ms total (execution 1ms / network 0ms)
 
 - [SQL Best Practices](performance-best-practices-overview.html)
 - [Troubleshoot SQL Behavior](query-behavior-troubleshooting.html)
-- [Make Queries Fast](make-queries-fast.html)
+- [Optimize Statement Performance](make-queries-fast.html)

@@ -4,10 +4,13 @@
     "items": [
       {
         "title": "Architecture",
-        "urls": [
-          "/${VERSION}/architecture/overview.html"
-        ],
         "items": [
+          {
+            "title": "Architecture Overview",
+            "urls": [
+              "/${VERSION}/architecture/overview.html"
+            ]
+          },
           {
             "title": "SQL Layer",
             "urls": [
@@ -66,10 +69,19 @@
       },
       {
         "title": "SQL",
-        "urls": [
-          "/${VERSION}/sql-feature-support.html"
-        ],
         "items": [
+          {
+            "title": "SQL Overview",
+            "urls": [
+              "/${VERSION}/sql-feature-support.html"
+            ]
+          },
+          {
+            "title": "PostgreSQL Compatibility",
+            "urls": [
+              "/${VERSION}/postgresql-compatibility.html"
+            ]
+          },
           {
             "title": "SQL Syntax",
             "items": [
@@ -1174,6 +1186,173 @@
                 ]
               }
             ]
+          },
+          {
+            "title": "Spatial Features",
+            "items": [
+              {
+                "title": "Overview",
+                "urls": [
+                  "/${VERSION}/spatial-features.html"
+                ]
+              },
+              {
+                "title": "Working with Spatial Data",
+                "urls": [
+                  "/${VERSION}/spatial-data.html"
+                ]
+              },
+              {
+                "title": "Spatial and GIS Glossary",
+                "urls": [
+                  "/${VERSION}/spatial-glossary.html"
+                ]
+              },
+              {
+                "title": "Spatial Indexes",
+                "urls": [
+                  "/${VERSION}/spatial-indexes.html"
+                ]
+              },
+              {
+                "title": "POINT",
+                "urls": [
+                  "/${VERSION}/point.html"
+                ]
+              },
+              {
+                "title": "LINESTRING",
+                "urls": [
+                  "/${VERSION}/linestring.html"
+                ]
+              },
+              {
+                "title": "POLYGON",
+                "urls": [
+                  "/${VERSION}/polygon.html"
+                ]
+              },
+              {
+                "title": "MULTIPOINT",
+                "urls": [
+                  "/${VERSION}/multipoint.html"
+                ]
+              },
+              {
+                "title": "MULTILINESTRING",
+                "urls": [
+                  "/${VERSION}/multilinestring.html"
+                ]
+              },
+              {
+                "title": "MULTIPOLYGON",
+                "urls": [
+                  "/${VERSION}/multipolygon.html"
+                ]
+              },
+              {
+                "title": "GEOMETRYCOLLECTION",
+                "urls": [
+                  "/${VERSION}/geometrycollection.html"
+                ]
+              },
+              {
+                "title": "Well Known Text (WKT)",
+                "urls": [
+                  "/${VERSION}/well-known-text.html"
+                ]
+              },
+              {
+                "title": "Well Known Binary (WKB)",
+                "urls": [
+                  "/${VERSION}/well-known-binary.html"
+                ]
+              },
+              {
+                "title": "GeoJSON",
+                "urls": [
+                  "/${VERSION}/geojson.html"
+                ]
+              },
+              {
+                "title": "SRID 4326 - longitude and latitude",
+                "urls": [
+                  "/${VERSION}/srid-4326.html"
+                ]
+              },
+              {
+                "title": "ST_Contains",
+                "urls": [
+                  "/${VERSION}/st_contains.html"
+                ]
+              },
+              {
+                "title": "ST_Within",
+                "urls": [
+                  "/${VERSION}/st_within.html"
+                ]
+              },
+              {
+                "title": "ST_Intersects",
+                "urls": [
+                  "/${VERSION}/st_intersects.html"
+                ]
+              },
+              {
+                "title": "ST_CoveredBy",
+                "urls": [
+                  "/${VERSION}/st_coveredby.html"
+                ]
+              },
+              {
+                "title": "ST_Covers",
+                "urls": [
+                  "/${VERSION}/st_covers.html"
+                ]
+              },
+              {
+                "title": "ST_Disjoint",
+                "urls": [
+                  "/${VERSION}/st_disjoint.html"
+                ]
+              },
+              {
+                "title": "ST_Equals",
+                "urls": [
+                  "/${VERSION}/st_equals.html"
+                ]
+              },
+              {
+                "title": "ST_Overlaps",
+                "urls": [
+                  "/${VERSION}/st_overlaps.html"
+                ]
+              },
+              {
+                "title": "ST_Touches",
+                "urls": [
+                  "/${VERSION}/st_touches.html"
+                ]
+              },
+              {
+                "title": "ST_ConvexHull",
+                "urls": [
+                  "/${VERSION}/st_convexhull.html"
+                ]
+              },
+              {
+                "title": "ST_Union",
+                "urls": [
+                  "/${VERSION}/st_union.html"
+                ]
+              }
+            ]
+          },
+          {
+            "title": "Experimental Features",
+            "urls": [
+              "/${VERSION}/experimental-features.html"
+            ]
           }
         ]
       },
@@ -1213,11 +1392,14 @@
         ]
       },
       {
-        "title": "CLI Reference",
-        "urls": [
-          "/${VERSION}/cockroach-commands.html"
-        ],
+        "title": "CLI",
         "items": [
+          {
+            "title": "Cockroach Commands",
+            "urls": [
+              "/${VERSION}/cockroach-commands.html"
+            ]
+          },
           {
             "title": "Client Connection Parameters",
             "urls": [
@@ -1389,10 +1571,13 @@
       },
       {
         "title": "DB Console",
-        "urls": [
-          "/${VERSION}/ui-overview.html"
-        ],
         "items": [
+          {
+            "title": "DB Console Overview",
+            "urls": [
+              "/${VERSION}/ui-overview.html"
+            ]
+          },
           {
             "title": "Cluster Overview Page",
             "urls": [
@@ -1503,17 +1688,26 @@
         ]
       },
       {
+        "title": "Transaction Retry Error Reference",
+        "urls": [
+          "/${VERSION}/transaction-retry-error-reference.html"
+        ]
+      },
+      {
         "title": "Cluster API",
         "urls": [
           "/api/cluster/v2.html"
         ]
       },
       {
-        "title": "Logging Reference",
-        "urls": [
-          "/${VERSION}/logging.html"
-        ],
+        "title": "Logging",
         "items": [
+          {
+            "title": "Logging Levels and Channels",
+            "urls": [
+              "/${VERSION}/logging.html"
+            ]
+          },
           {
             "title": "Log Formats",
             "urls": [
@@ -1532,6 +1726,23 @@
         "title": "Diagnostics Reporting",
         "urls": [
           "/${VERSION}/diagnostics-reporting.html"
+        ]
+      },
+      {
+        "title": "Third-Party Support",
+        "items": [
+          {
+            "title": "Tools Supported by Cockroach Labs",
+            "urls": [
+              "/${VERSION}/third-party-database-tools.html"
+            ]
+          },
+          {
+            "title": "Tools Supported by the Community",
+            "urls": [
+              "/${VERSION}/community-tooling.html"
+            ]
+          }
         ]
       },
       {% include_cached cockroachcloud/sidebar-release-notes.json %},

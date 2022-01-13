@@ -139,13 +139,13 @@ Only the following statements use the plan cache:
 
 For a query involving multiple joins, the cost-based optimizer will explore additional [join orderings](joins.html) in an attempt to find the lowest-cost execution plan, which can lead to significantly better performance in some cases.
 
-Because this process leads to an exponential increase in the number of possible execution plans for such queries, it's only used to reorder subtrees containing 4 or fewer joins by default.
+Because this process leads to an exponential increase in the number of possible execution plans for such queries, it's only used to reorder subtrees containing 8 or fewer joins by default.
 
 To change this setting, which is controlled by the `reorder_joins_limit` [session variable](set-vars.html), run the following statement. To disable this feature, set the variable to `0`.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> SET reorder_joins_limit = 6;
+> SET reorder_joins_limit = 0;
 ~~~
 
 {{site.data.alerts.callout_danger}}
@@ -156,7 +156,7 @@ For more information about the difficulty of selecting an optimal join ordering,
 
 ## Join hints
 
-The optimizer supports hint syntax to force the use of a specific join algorithm even if the optimizer determines that a different plan would have a lower cost. The algorithm is specified between the join type (`INNER`, `LEFT`, etc.) and the `JOIN` keyword, for example:
+To force the use of a specific join algorithm even if the optimizer determines that a different plan would have a lower cost, you can use a _join hint_. You specify a join hint as `<join type> <join algorithm> JOIN`. For example:
 
 - `INNER HASH JOIN`
 - `OUTER MERGE JOIN`
@@ -165,11 +165,11 @@ The optimizer supports hint syntax to force the use of a specific join algorithm
 - `INNER INVERTED JOIN`
 - `LEFT INVERTED JOIN`
 
-You cannot specify the hint with a bare hint keyword (e.g., `MERGE`) - in that case, you must add the `INNER` keyword. For example, `a INNER MERGE JOIN b` will work, but `a MERGE JOIN b` will not work.
-
 {{site.data.alerts.callout_info}}
-You cannot specify join hints with a bare hint keyword (e.g., `MERGE`) due to SQL's implicit `AS` syntax. If you're not careful, you can make `MERGE` an alias for a table; for example, `a MERGE JOIN b` will be interpreted as having an implicit `AS` and be executed as `a AS MERGE JOIN b`, which is just a long way of saying `a JOIN b`. Because the resulting query might execute without returning any hint-related error (because it is valid SQL), it will seem like the join hint "worked", but actually it didn't affect which join algorithm was used. In this case, the correct syntax is `a INNER MERGE JOIN b`.
+Due to SQL's implicit `AS` syntax, you cannot specify a join hint with only the join algorithm keyword (e.g., `MERGE`). For example, `a MERGE JOIN b` will be interpreted as having an implicit `AS` and be executed as `a AS MERGE JOIN b`, which is equivalent to `a JOIN b`. Because the resulting query might execute without returning any hint-related error (because it is valid SQL), it will seem like the join hint "worked", but actually it didn't affect which join algorithm was used. The correct syntax is `a INNER MERGE JOIN b`.
 {{site.data.alerts.end}}
+
+For a join hint example, see [Use the right join type](make-queries-fast.html#rule-3-use-the-right-join-type).
 
 ### Supported join algorithms
 

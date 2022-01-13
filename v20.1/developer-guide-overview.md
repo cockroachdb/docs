@@ -16,7 +16,7 @@ This guide shows you how to do common tasks that come up when you build an appli
 - [Delete Data](delete-data.html)
 - [Run Multi-Statement Transactions](run-multi-statement-transactions.html)
 - [Error Handling and Troubleshooting](error-handling-and-troubleshooting.html)
-- [Make Queries Fast](make-queries-fast.html)
+- [Optimize Query Performance](make-queries-fast.html)
 
 ## Sample Apps and Tutorials
 

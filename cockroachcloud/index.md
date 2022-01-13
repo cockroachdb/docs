@@ -94,7 +94,7 @@ homepage: true
       <div class="landing-column-content">
       <ul>
         <li><a href="../{{site.versions["stable"]}}/developer-guide-overview.html">Common Dev Tasks</a></li>
-        <li><a href="../{{site.versions["stable"]}}/hello-world-example-apps.html">Sample Apps</a></li>
+        <li><a href="../{{site.versions["stable"]}}/example-apps.html">Sample Apps</a></li>
         <li><a href="../{{site.versions["stable"]}}/sql-feature-support.html">SQL Reference</a></li>
         <li><a href="../{{site.versions["stable"]}}/performance-best-practices-overview.html">SQL Best Practices</a></li>
         <li><a href="../{{site.versions["stable"]}}/error-handling-and-troubleshooting.html">SQL Troubleshooting</a></li>

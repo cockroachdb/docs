@@ -12,7 +12,7 @@ CockroachDB is a [distributed SQL](https://www.cockroachlabs.com/blog/what-is-di
 CockroachDB is inspired by Google's [Spanner](http://research.google.com/archive/spanner.html) and [F1](http://research.google.com/pubs/pub38125.html) technologies, and the [source code](https://github.com/cockroachdb/cockroach) is freely available.
 
 {{site.data.alerts.callout_success}}
-For a deeper dive into CockroachDB's capabilities and how it fits into the database landscape, take the free [**Intro to Distributed SQL and CockroachDB**](https://university.cockroachlabs.com/courses/introduction-to-distributed-sql-and-cockroachdb/) course on Cockroach University.
+For a deeper dive into CockroachDB's capabilities and how it fits into the database landscape, take the free [**Intro to Distributed SQL and CockroachDB**](https://university.cockroachlabs.com/courses/course-v1:crl+intro-to-distributed-sql-and-cockroachdb+self-paced/about) course on Cockroach University.
 {{site.data.alerts.end}}
 
 ## When is CockroachDB a good choice?

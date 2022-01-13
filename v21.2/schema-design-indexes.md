@@ -80,6 +80,8 @@ Here are some best practices for creating and using indexes:
 
     [`ALTER PRIMARY KEY`](alter-primary-key.html) creates a secondary index from the old primary key. If you need to [change a primary key](constraints.html#change-constraints), and you do not plan to filter queries on the old primary key column(s), do not use `ALTER PRIMARY KEY`. Instead, use [`DROP CONSTRAINT ... PRIMARY KEY`/`ADD CONSTRAINT ... PRIMARY KEY`](add-constraint.html#changing-primary-keys-with-add-constraint-primary-key), which does not create a secondary index.
 
+- Limit creation and deletion of secondary indexes to off-peak hours. Performance impacts are likely if done during peak business hours.
+
 - [Drop unused indexes](drop-index.html) whenever possible.
 
     To understand usage statistics for an index, query the <a href="performance-recipes.html#slow-writes"><code>crdb_internal.index_usage_statistics</code> table</a>.

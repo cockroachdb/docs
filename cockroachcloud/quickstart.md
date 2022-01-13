@@ -11,7 +11,7 @@ toc: true
 
 This page guides you through the quickest way to get started with CockroachDB. You'll start a free {{ site.data.products.serverless }} cluster, connect with the CockroachDB SQL client, insert some data, and then read the data from a sample application.
 
-For information on how to create a {{ site.data.products.db }} cluster with other options, see the [Learn more](#learn-more) section. For an intro to serverless database concepts, take the free [Intro to Serverless Databases](https://university.cockroachlabs.com/courses/intro-to-serverless/) course on Cockroach University.
+To run CockroachDB on your local machine instead, see [Start a Local Cluster](../stable/secure-a-cluster.html).
 
 {% include cockroachcloud/free-limitations.md %}
 
@@ -391,7 +391,7 @@ You will see a welcome message when you've successfully connected to your cluste
 
     Where:
     - `{host}` is the host for your cluster.
-    - `{database}` is the cluster name and tenant ID plus `.defaultdb`. For example, `funny-duck-3.defaultdb`.
+    - `{database}` is the [routing ID](connect-to-a-serverless-cluster.html?filters=connection-string#step-2-connect-to-your-cluster) plus `.defaultdb`. For example, `funny-duck-3.defaultdb`.
     - `{username}` is the SQL username.
     - `{password}` is the SQL user password.
     - Make sure `ds.setSslRootCert` is set to the correct path for your OS to the `root.crt` CA certificate you downloaded earlier.

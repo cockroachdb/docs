@@ -3,7 +3,6 @@ title: Example Apps
 summary: Examples that show you how to build simple applications with CockroachDB
 tags: golang, python, java
 toc: true
-redirect_from: hello-world-example-apps.html
 ---
 
 The examples in this section show you how to build simple applications using CockroachDB.
@@ -110,6 +109,6 @@ Specific tasks:
 - [Query Data](query-data.html)
 - [Update Data](update-data.html)
 - [Delete Data](delete-data.html)
-- [Make Queries Fast](make-queries-fast.html)
+- [Optimize Statement Performance](make-queries-fast.html)
 - [Run Multi-Statement Transactions](run-multi-statement-transactions.html)
 - [Error Handling and Troubleshooting](error-handling-and-troubleshooting.html)

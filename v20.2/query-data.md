@@ -177,7 +177,7 @@ LIMIT
 	25;
 ~~~
 
-Join performance can be a big factor in your application's performance.  For more information about how to make sure your SQL performs well, see [Make queries fast][fast].
+Join performance can be a big factor in your application's performance.  For more information about how to make sure your SQL performs well, see [Optimize Query Performance][fast].
 
 ## See also
 
@@ -197,7 +197,7 @@ Other common tasks:
 - [Delete Data](delete-data.html)
 - [Run Multi-Statement Transactions](run-multi-statement-transactions.html)
 - [Error Handling and Troubleshooting](error-handling-and-troubleshooting.html)
-- [Make Queries Fast][fast]
+- [Optimize Query Performance][fast]
 - [Hello World Example apps](hello-world-example-apps.html)
 
 <!-- Reference Links -->
