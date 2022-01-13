@@ -6,6 +6,7 @@ toc: true
 
 The `crdb_internal` [system catalog](system-catalogs.html) is a schema that contains information about internal objects, processes, and metrics related to a specific database. `crdb_internal` tables are read-only.
 
+<a id="data-exposed-by-crdb_internal"></a>
 
 ## Tables
 
