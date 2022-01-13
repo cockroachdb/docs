@@ -64,8 +64,6 @@ In the **Regions & nodes** section, select the number of nodes.
 - For multi-region deployments, we require a minimum of 3 nodes per region. For best performance and stability, you should use the same number of nodes in each region.
 - See [Planning your cluster](cluster-management.html?filters=dedicated#planning-your-cluster) for more information about our requirements and recommendations for cluster configuration.
 
-{% include cockroachcloud/nodes-limitation.md %}
-
 Currently, you can add a maximum of 150 nodes to your cluster. For larger configurations, [contact us](https://support.cockroachlabs.com/hc/en-us/requests/new).
 
 ## Step 5. Select the hardware per node
