@@ -127,7 +127,7 @@ transaction and so you should write your transactions to use
 
 #### Bounded staleness reads
 
-In the event [bounded staleness reads](follower-reads.html#bounded-staleness-reads) are used along with either the [`with_min_timestamp` or `with_max_staleness` functions](functions-and-operators.html#date-and-time-functions) and the `nearest_only` parameter set to `true`, the query will throw an error if it can't be served by a nearby replica. 
+In the event [bounded staleness reads](follower-reads.html#bounded-staleness-reads) are used along with either the [`with_min_timestamp` function or the `with_max_staleness` function](functions-and-operators.html#date-and-time-functions) and the `nearest_only` parameter is set to `true`, the query will throw an error if it can't be served by a nearby replica. 
 
 ### Client-side intervention
 
