@@ -91,14 +91,14 @@ Before running the command, update the connection string as follows:
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 $ python3 example.py \
-"postgres://<username>:<password>@<globalhost>:26257/<cluster-name>.bank?sslmode=verify-full&sslrootcert=<certs_directory>/cc-ca.crt"
+"postgres://<username>:<password>@<globalhost>:26257/<routing-id>.bank?sslmode=verify-full&sslrootcert=<certs_directory>/cc-ca.crt"
 ~~~
 
 Before running the command, update the connection string that you copied [earlier](#set-up-your-cluster-connection) from the **Connection info** dialog as follows:
 
 - Replace `<username>` and `<password>` with the SQL username and password that you created earlier.
 - Replace `<globalhost>` with the name of the {{ site.data.products.serverless }} host (e.g., `free-tier.gcp-us-central1.cockroachlabs.cloud`).
-- Replace `<cluster-name>` with the name of your cluster.
+- Replace `<routing-id>` with your cluster's routing ID (e.g., `funky-skunk-123`). The routing ID identifies your tenant cluster on a [multi-tenant host](../cockroachcloud/architecture.html#architecture).
 - Replace `<certs_directory>` with the path to the `cc-ca.crt` file that you downloaded from the {{ site.data.products.db }} Console.
 
 {{site.data.alerts.callout_info}}

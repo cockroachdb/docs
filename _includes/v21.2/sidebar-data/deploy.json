@@ -37,7 +37,7 @@
                 {
               	  "title": "Create a CockroachDB Dedicated Cluster",
               	  "urls": [
-              	    "/cockroachcloud/create-a-serverless-cluster.html"
+              	    "/cockroachcloud/create-your-cluster.html"
               	  ]
               	},
                 {

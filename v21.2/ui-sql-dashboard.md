@@ -20,7 +20,6 @@ The **SQL** dashboard displays the following time series graphs:
 
 - In the cluster view, the graph shows the total number of SQL client connections to all nodes combined, with lines for each node.
 
-
 ## Open SQL Transactions
 
 - In the node view, the graph shows the total number of open SQL transactions on the node.
@@ -61,11 +60,13 @@ See the [Statements page](ui-statements-page.html) for more details on the clust
 
 ## SQL Statement Contention
 
+The statement contention metric is a counter that represents the number of statements that have experienced contention. If a statement experiences at least one contention "event" (i.e., the statement is forced to wait for another transaction), the counter is incremented at most once.
+
 - In the node view, the graph shows the total number of SQL statements that experienced [contention](transactions.html#transaction-contention) on that node.
 
 - In the cluster view, the graph shows the total number of SQL statements that experienced [contention](transactions.html#transaction-contention) across all nodes in the cluster.
 
-See the [Statements page](ui-statements-page.html) for more details on the cluster's SQL statements.
+    See the [Statements page](ui-statements-page.html) for more details on the cluster's SQL statements.
 
 ## Full Table/Index Scans
 
@@ -92,8 +93,6 @@ Connection latency is calculated as the time in nanoseconds between when the clu
 ## Connection Latency: 90th Percentile
 
 Connection latency is calculated as the time in nanoseconds between when the cluster receives a connection request and establishes the connection to the client, including authentication.
-
-
 
 ## Service Latency: SQL, 99th percentile
 
