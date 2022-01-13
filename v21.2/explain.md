@@ -847,7 +847,7 @@ By default, `SELECT FOR UPDATE` locking is enabled for the initial row scan of `
 - [`BACKUP`](backup.html)
 - [`CANCEL JOB`](cancel-job.html)
 - [`CREATE DATABASE`](create-database.html)
-- [`CREATE STATISTIC`](create-statistics.html)
+- [`CREATE STATISTICS`](create-statistics.html)
 - [`DROP DATABASE`](drop-database.html)
 - [`EXECUTE`](sql-grammar.html#execute_stmt)
 - [`EXPLAIN ANALYZE`](explain-analyze.html)
