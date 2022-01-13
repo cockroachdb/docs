@@ -454,7 +454,7 @@ When you repeat the scenario on CockroachDB, you'll see that the anomaly is prev
     ~~~
 
     {{site.data.alerts.callout_success}}
-    For this kind of error, CockroachDB recommends a [client-side transaction retry loop](transactions.html#client-side-intervention) that would transparently observe that the one doctor cannot take time off because the other doctor already succeeded in asking for it. You can find generic transaction retry functions for various languages in our [Build an App](hello-world-example-apps.html) tutorials.
+    For this kind of error, CockroachDB recommends a [client-side transaction retry loop](transactions.html#client-side-intervention) that would transparently observe that the one doctor cannot take time off because the other doctor already succeeded in asking for it. You can find generic transaction retry functions for various languages in our [Build an App](example-apps.html) tutorials.
     {{site.data.alerts.end}}
 
 1. In the terminal for doctor 2, the application tries to commit the transaction:

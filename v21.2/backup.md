@@ -160,7 +160,7 @@ The syntax `BACKUP ... INTO` adds a backup to a collection within the backup des
 
 To take a [full backup](take-full-and-incremental-backups.html#full-backups) of a cluster:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP INTO \
 's3://{BUCKET NAME}/{PATH}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' \
@@ -171,7 +171,7 @@ AS OF SYSTEM TIME '-10s';
 
 To take a [full backup](take-full-and-incremental-backups.html#full-backups) of a single database:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP DATABASE bank \
 INTO 's3://{BUCKET NAME}/{PATH}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' \
@@ -180,7 +180,7 @@ AS OF SYSTEM TIME '-10s';
 
 To take a [full backup](take-full-and-incremental-backups.html#full-backups) of multiple databases:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP DATABASE bank, employees \
 INTO 's3://{BUCKET NAME}/{PATH}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' \
@@ -191,7 +191,7 @@ AS OF SYSTEM TIME '-10s';
 
 To take a [full backup](take-full-and-incremental-backups.html#full-backups) of a single table or view:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP bank.customers \
 INTO 's3://{BUCKET NAME}/{PATH}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' \
@@ -200,10 +200,20 @@ AS OF SYSTEM TIME '-10s';
 
 To take a [full backup](take-full-and-incremental-backups.html#full-backups) of multiple tables:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP bank.customers, bank.accounts \
 INTO 's3://{BUCKET NAME}/{PATH}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' \
+AS OF SYSTEM TIME '-10s';
+~~~
+
+### Specify a subdirectory for backups
+
+To store the backup in a specific subdirectory in the storage location:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+BACKUP DATABASE bank INTO 'subdirectory' IN 's3://{BUCKET NAME}/{PATH}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' \
 AS OF SYSTEM TIME '-10s';
 ~~~
 
@@ -211,7 +221,7 @@ AS OF SYSTEM TIME '-10s';
 
 <span class="version-tag">New in v21.2:</span> To back up all tables in a [specified schema](create-schema.html), use a wildcard with the schema name:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP test_schema.*
 INTO 's3://{BUCKET NAME}/{PATH}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' \
@@ -230,7 +240,7 @@ See [Name Resolution](sql-name-resolution.html) for more details on how naming h
 
 If you backup to a destination already containing a [full backup](take-full-and-incremental-backups.html#full-backups), an [incremental backup](take-full-and-incremental-backups.html#incremental-backups) will be appended to the full backup's path with a date-based name (e.g., `20210324`):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP INTO LATEST IN \
 's3://{BUCKET NAME}/{PATH}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' \
@@ -241,7 +251,7 @@ AS OF SYSTEM TIME '-10s';
 
 Use the `DETACHED` [option](#options) to execute the backup [job](show-jobs.html) asynchronously:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP INTO \
 's3://{BUCKET NAME}/{PATH}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' \
@@ -279,7 +289,7 @@ The syntax `BACKUP ... INTO` adds a backup to a collection within the backup des
 
 To take a [full backup](take-full-and-incremental-backups.html#full-backups) of a cluster:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP INTO \
 'azure://{CONTAINER NAME}/{PATH}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' \
@@ -290,7 +300,7 @@ AS OF SYSTEM TIME '-10s';
 
 To take a [full backup](take-full-and-incremental-backups.html#full-backups) of a single database:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP DATABASE bank \
 INTO 'azure://{CONTAINER NAME}/{PATH}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' \
@@ -299,7 +309,7 @@ AS OF SYSTEM TIME '-10s';
 
 To take a [full backup](take-full-and-incremental-backups.html#full-backups) of multiple databases:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP DATABASE bank, employees \
 INTO 'azure://{CONTAINER NAME}/{PATH}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' \
@@ -310,7 +320,7 @@ AS OF SYSTEM TIME '-10s';
 
 To take a [full backup](take-full-and-incremental-backups.html#full-backups) of a single table or view:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP bank.customers \
 INTO 'azure://{CONTAINER NAME}/{PATH}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' \
@@ -319,10 +329,20 @@ AS OF SYSTEM TIME '-10s';
 
 To take a [full backup](take-full-and-incremental-backups.html#full-backups) of multiple tables:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP bank.customers, bank.accounts \
 INTO 'azure://{CONTAINER NAME}/{PATH}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' \
+AS OF SYSTEM TIME '-10s';
+~~~
+
+### Specify a subdirectory for backups
+
+To store the backup in a specific subdirectory in the storage location:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+BACKUP DATABASE bank INTO 'subdirectory' IN 'azure://{CONTAINER NAME}/{PATH}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' \
 AS OF SYSTEM TIME '-10s';
 ~~~
 
@@ -330,7 +350,7 @@ AS OF SYSTEM TIME '-10s';
 
 <span class="version-tag">New in v21.2:</span> To back up all tables in a [specified schema](create-schema.html), use a wildcard with the schema name:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP test_schema.*
 INTO 'azure://{CONTAINER NAME}/{PATH}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' \
@@ -349,7 +369,7 @@ See [Name Resolution](sql-name-resolution.html) for more details on how naming h
 
 If you backup to a destination already containing a [full backup](take-full-and-incremental-backups.html#full-backups), an [incremental backup](take-full-and-incremental-backups.html#incremental-backups) will be appended to the full backup's path with a date-based name (e.g., `20210324`):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP INTO LATEST IN \
 'azure://{CONTAINER NAME}/{PATH}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' \
@@ -360,7 +380,7 @@ AS OF SYSTEM TIME '-10s';
 
 Use the `DETACHED` [option](#options) to execute the backup [job](show-jobs.html) asynchronously:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP INTO \
 'azure://{CONTAINER NAME}/{PATH}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' \
@@ -400,7 +420,7 @@ The syntax `BACKUP ... INTO` adds a backup to a collection within the backup des
 
 To take a [full backup](take-full-and-incremental-backups.html#full-backups) of a cluster:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP INTO \
 'gs://{BUCKET NAME}/{PATH}?AUTH=specified&CREDENTIALS={ENCODED KEY}' \
@@ -411,7 +431,7 @@ AS OF SYSTEM TIME '-10s';
 
 To take a [full backup](take-full-and-incremental-backups.html#full-backups) of a single database:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP DATABASE bank \
 INTO 'gs://{BUCKET NAME}/{PATH}?AUTH=specified&CREDENTIALS={ENCODED KEY}' \
@@ -420,7 +440,7 @@ AS OF SYSTEM TIME '-10s';
 
 To take a [full backup](take-full-and-incremental-backups.html#full-backups) of multiple databases:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP DATABASE bank, employees \
 INTO 'gs://{BUCKET NAME}/{PATH}?AUTH=specified&CREDENTIALS={ENCODED KEY}' \
@@ -431,7 +451,7 @@ AS OF SYSTEM TIME '-10s';
 
 To take a [full backup](take-full-and-incremental-backups.html#full-backups) of a single table or view:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP bank.customers \
 INTO 'gs://{BUCKET NAME}/{PATH}?AUTH=specified&CREDENTIALS={ENCODED KEY}' \
@@ -440,10 +460,20 @@ AS OF SYSTEM TIME '-10s';
 
 To take a [full backup](take-full-and-incremental-backups.html#full-backups) of multiple tables:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP bank.customers, bank.accounts \
 INTO 'gs://{BUCKET NAME}/{PATH}?AUTH=specified&CREDENTIALS={ENCODED KEY}' \
+AS OF SYSTEM TIME '-10s';
+~~~
+
+### Specify a subdirectory for backups
+
+To store the backup in a specific subdirectory in the storage location:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+BACKUP DATABASE bank INTO 'subdirectory' IN 'gs://{BUCKET NAME}/{PATH}?AUTH=specified&CREDENTIALS={ENCODED KEY}' \
 AS OF SYSTEM TIME '-10s';
 ~~~
 
@@ -451,7 +481,7 @@ AS OF SYSTEM TIME '-10s';
 
 <span class="version-tag">New in v21.2:</span> To back up all tables in a [specified schema](create-schema.html), use a wildcard with the schema name:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP test_schema.*
 INTO 'azure://{CONTAINER NAME}/{PATH}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' \
@@ -470,7 +500,7 @@ See [Name Resolution](sql-name-resolution.html) for more details on how naming h
 
 If you backup to a destination already containing a [full backup](take-full-and-incremental-backups.html#full-backups), an [incremental backup](take-full-and-incremental-backups.html#incremental-backups) will be appended to the full backup's path with a date-based name (e.g., `20210324`):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP INTO LATEST IN \
 'gs://{BUCKET NAME}/{PATH}?AUTH=specified&CREDENTIALS={ENCODED KEY}' \
@@ -481,7 +511,7 @@ AS OF SYSTEM TIME '-10s';
 
 Use the `DETACHED` [option](#options) to execute the backup [job](show-jobs.html) asynchronously:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP INTO \
 'gs://{BUCKET NAME}/{PATH}?AUTH=specified&CREDENTIALS={ENCODED KEY}' \
@@ -512,8 +542,6 @@ job_id             |  status   | fraction_completed | rows | index_entries | byt
 ### Advanced examples
 
 {% include {{ page.version.version }}/backups/advanced-examples-list.md %}
-
-## Known limitations
 
 ## See also
 
