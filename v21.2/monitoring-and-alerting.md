@@ -114,7 +114,7 @@ The [`cockroach node status`](cockroach-node.html) command gives you metrics abo
 
 ### Prometheus endpoint
 
-Every node of a CockroachDB cluster exports granular time series metrics at `http://<host>:<http-port>/_status/vars`. The metrics are formatted for easy integration with [Prometheus](monitor-cockroachdb-with-prometheus), an open source tool for storing, aggregating, and querying time series data, but the format is **easy-to-parse** and can be processed to work with other third-party monitoring systems (e.g., [Sysdig](https://sysdig.atlassian.net/wiki/plugins/servlet/mobile?contentId=64946336#content/view/64946336) and [Stackdriver](https://github.com/GoogleCloudPlatform/k8s-stackdriver/tree/master/prometheus-to-sd)).
+Every node of a CockroachDB cluster exports granular time series metrics at `http://<host>:<http-port>/_status/vars`. The metrics are formatted for easy integration with [Prometheus](monitor-cockroachdb-with-prometheus.html), an open source tool for storing, aggregating, and querying time series data, but the format is **easy-to-parse** and can be processed to work with other third-party monitoring systems (e.g., [Sysdig](https://sysdig.atlassian.net/wiki/plugins/servlet/mobile?contentId=64946336#content/view/64946336) and [Stackdriver](https://github.com/GoogleCloudPlatform/k8s-stackdriver/tree/master/prometheus-to-sd)).
 
 {% include copy-clipboard.html %}
 ~~~ shell
