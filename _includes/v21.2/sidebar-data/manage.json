@@ -312,28 +312,34 @@
               "urls": [
                 "/${VERSION}/cluster-api.html"
               ]
+            }
+          ]
+        },
+        {
+          "title": "Third-Party Monitoring Integrations",
+          "items": [
+            {
+              "title": "Third-Party Monitoring Integration Overview",
+              "urls": [
+                "/${VERSION}/third-party-monitoring-tools.html"
+              ]
             },
             {
-              "title": "Third-Party Monitoring Integrations",
-              "items": [
-                {
-                  "title": "Third-Party Monitoring Integration Overview",
-                  "urls": [
-                    "/${VERSION}/third-party-monitoring-tools.html"
-                  ]
-                },
-                {
-                  "title": "Monitoring with Datadog",
-                  "urls": [
-                    "/${VERSION}/datadog.html"
-                  ]
-                },
-                {
-                  "title": "Monitoring with Kibana",
-                  "urls": [
-                    "/${VERSION}/kibana.html"
-                  ]
-                }
+              "title": "Monitor with Datadog",
+              "urls": [
+                "/${VERSION}/datadog.html"
+              ]
+            },
+            {
+              "title": "Monitor with DBMarlin",
+              "urls": [
+                "/${VERSION}/dbmarlin.html"
+              ]
+            },
+            {
+              "title": "Monitor with Kibana",
+              "urls": [
+                "/${VERSION}/kibana.html"
               ]
             }
           ]
