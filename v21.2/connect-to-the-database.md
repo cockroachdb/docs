@@ -10,9 +10,22 @@ For a list of all supported cluster connection parameters, see the [`cockroach` 
 
 For a list of community-supported third-party tools, see [Third-Party Tools Supported by the Community](community-tooling.html). CockroachDB supports both native drivers and the PostgreSQL wire protocol. Most client drivers and ORM frameworks connect to CockroachDB like they connect to PostgreSQL.
 
+<div class="filter-content" markdown="1" data-scope="core">
+
+{{site.data.alerts.callout_info}}
+The connection information shown on this page uses [client certificate and key authentication](authentication.html#client-authentication) to connect to a secure, {{ site.data.products.core }} cluster.
+
+To connect to a {{ site.data.products.core }} cluster with client certificate and key authentication, you must first [generate server and client certificates](authentication.html#using-digital-certificates-with-cockroachdb).
+
+For instructions on starting a secure cluster, see [Start a Local Cluster (Secure)](secure-a-cluster.html).
+{{site.data.alerts.end}}
+
+</div>
+
 <div class="filters clearfix">
   <button class="filter-button page-level" data-scope="serverless">{{ site.data.products.serverless }}</button>
   <button class="filter-button page-level" data-scope="dedicated">{{ site.data.products.dedicated }}</button>
+  <button class="filter-button page-level" data-scope="core">{{ site.data.products.core }}</button>
 </div>
 
 <div class="filters clearfix">
@@ -71,7 +84,58 @@ postgresql://<username>:<password>@<host>:<port>/<database>?sslmode=verify-full&
 
 </div>
 
+<div class="filter-content" markdown="1" data-scope="core">
+
+{% include copy-clipboard.html %}
+~~~
+postgresql://<username>@<host>:<port>/<database>?sslmode=verify-full&sslrootcert=<root-cert>&sslcert=<client-cert>&sslkey=<client-key>
+~~~
+
+</div>
+
 For more information about connecting with node-postgres, see the [official node-postgres documentation](https://node-postgres.com/features/connecting).
+
+### Connection parameters
+
+<div class="filter-content" markdown="1" data-scope="serverless">
+
+Parameter | Description
+----------|------------
+`<username>`  | The [SQL user](authorization.html#sql-users) connecting to the cluster.
+`<password>`  | The password for the SQL user connecting to the cluster.
+`<host>`  | The host on which the CockroachDB node is running.
+`<port>`  | The port at which the CockroachDB node is listening.
+`<database>`  | The name of the (existing) database.
+`<routing-id>`  | Your cluster's routing ID (e.g., `funky-skunk-123`). The routing ID identifies your tenant cluster on a [multi-tenant host](../cockroachcloud/architecture.html#architecture).
+
+</div>
+
+<div class="filter-content" markdown="1" data-scope="dedicated">
+
+Parameter | Description
+----------|------------
+`<username>`  | The [SQL user](authorization.html#sql-users) connecting to the cluster.
+`<password>`  | The password for the SQL user connecting to the cluster.
+`<host>`  | The host on which the CockroachDB node is running.
+`<port>`  | The port at which the CockroachDB node is listening.
+`<database>`  | The name of the (existing) database.
+`<root-cert>`  | The path to the root certificate that you [downloaded from the CockroachDB Cloud Console](../cockroachcloud/authentication.html#node-identity-verification).
+
+</div>
+
+<div class="filter-content" markdown="1" data-scope="core">
+
+Parameter | Description
+----------|------------
+`<username>`  | The [SQL user](authorization.html#sql-users) connecting to the cluster.
+`<host>`  | The host on which the CockroachDB node is running.
+`<port>`  | The port at which the CockroachDB node is listening.
+`<database>`  | The name of the (existing) database.
+`<root-cert>`  | The path to the root certificate.<br>You can generate this certificate with [`cockroach cert create-ca`](cockroach-cert.html#subcommands), or you can use a [custom CA cert](create-security-certificates-custom-ca.html).
+`<client-cert>`  | The path to the [client certificate](cockroach-cert.html#client-key-and-certificates) for the user connecting to the cluster.<br>You can generate this certificate with [`cockroach cert create-client`](cockroach-cert.html#subcommands).
+`<client-key>`  | The path to the [client key](cockroach-cert.html#client-key-and-certificates) for the user connecting to the cluster.<br>You can generate this key with [`cockroach cert create-client`](cockroach-cert.html#subcommands).
+
+</div>
 
 </div>
 
@@ -111,6 +175,15 @@ postgresql://<username>:<password>@<host>:<port>/<database>?sslmode=verify-full&
 
 </div>
 
+<div class="filter-content" markdown="1" data-scope="core">
+
+{% include copy-clipboard.html %}
+~~~
+postgresql://<username>@<host>:<port>/<database>?sslmode=verify-full&sslrootcert=<root-cert>&sslcert=<client-cert>&sslkey=<client-key>
+~~~
+
+</div>
+
 For Sequelize versions 6.9 and earlier, use the following format:
 
 <div class="filter-content" markdown="1" data-scope="serverless">
@@ -131,11 +204,62 @@ postgresql://<username>:<password>@<host>:<port>/<database>?ssl=true&sslrootcert
 
 </div>
 
+<div class="filter-content" markdown="1" data-scope="core">
+
+{% include copy-clipboard.html %}
+~~~
+postgresql://<username>@<host>:<port>/<database>?ssl=true&sslrootcert=<root-cert>&sslcert=<client-cert>&sslkey=<client-key>
+~~~
+
+</div>
+
 {{site.data.alerts.callout_info}}
 To connect to CockroachDB with Sequelize, you must install the [CockroachDB Sequelize adapter](https://github.com/cockroachdb/sequelize-cockroachdb).
 {{site.data.alerts.end}}
 
 For more information about connecting with Sequelize, see the [official Sequelize documentation](https://sequelize.org/master/index.html).
+
+### Connection parameters
+
+<div class="filter-content" markdown="1" data-scope="serverless">
+
+Parameter | Description
+----------|------------
+`<username>`  | The [SQL user](authorization.html#sql-users) connecting to the cluster.
+`<password>`  | The password for the SQL user connecting to the cluster.
+`<host>`  | The host on which the CockroachDB node is running.
+`<port>`  | The port at which the CockroachDB node is listening.
+`<database>`  | The name of the (existing) database.
+`<routing-id>`  | Your cluster's routing ID (e.g., `funky-skunk-123`). The routing ID identifies your tenant cluster on a [multi-tenant host](../cockroachcloud/architecture.html#architecture).
+
+</div>
+
+<div class="filter-content" markdown="1" data-scope="dedicated">
+
+Parameter | Description
+----------|------------
+`<username>`  | The [SQL user](authorization.html#sql-users) connecting to the cluster.
+`<password>`  | The password for the SQL user connecting to the cluster.
+`<host>`  | The host on which the CockroachDB node is running.
+`<port>`  | The port at which the CockroachDB node is listening.
+`<database>`  | The name of the (existing) database.
+`<root-cert>`  | The path to the root certificate that you [downloaded from the CockroachDB Cloud Console](../cockroachcloud/authentication.html#node-identity-verification).
+
+</div>
+
+<div class="filter-content" markdown="1" data-scope="core">
+
+Parameter | Description
+----------|------------
+`<username>`  | The [SQL user](authorization.html#sql-users) connecting to the cluster.
+`<host>`  | The host on which the CockroachDB node is running.
+`<port>`  | The port at which the CockroachDB node is listening.
+`<database>`  | The name of the (existing) database.
+`<root-cert>`  | The path to the root certificate.<br>You can generate this certificate with [`cockroach cert create-ca`](cockroach-cert.html#subcommands), or you can use a [custom CA cert](create-security-certificates-custom-ca.html).
+`<client-cert>`  | The path to the [client certificate](cockroach-cert.html#client-key-and-certificates) for the user connecting to the cluster.<br>You can generate this certificate with [`cockroach cert create-client`](cockroach-cert.html#subcommands).
+`<client-key>`  | The path to the [client key](cockroach-cert.html#client-key-and-certificates) for the user connecting to the cluster.<br>You can generate this key with [`cockroach cert create-client`](cockroach-cert.html#subcommands).
+
+</div>
 
 </div>
 
@@ -168,6 +292,13 @@ module.exports = {
 
 Where `DATABASE_URL` is an environment variable set to a valid CockroachDB connection string.
 
+TypeORM accepts the following format for CockroachDB connection strings:
+
+{% include copy-clipboard.html %}
+~~~
+postgresql://<username>:<password>@<host>:<port>/<database>
+~~~
+
 </div>
 
 <div class="filter-content" markdown="1" data-scope="dedicated">
@@ -186,9 +317,10 @@ module.exports = {
 };
 ~~~
 
-Where `DATABASE_URL` is an environment variable set to a valid CockroachDB connection string, and `CA_CERT` is an environment variable set to the root certificate [downloaded from the CockroachDB Cloud Console](../cockroachcloud/authentication.html#node-identity-verification).
+Where:
 
-</div>
+- `DATABASE_URL` is an environment variable set to a valid CockroachDB connection string.
+- `CA_CERT` is an environment variable set to the root certificate [downloaded from the CockroachDB Cloud Console](../cockroachcloud/authentication.html#node-identity-verification).
 
 TypeORM accepts the following format for CockroachDB connection strings:
 
@@ -196,6 +328,42 @@ TypeORM accepts the following format for CockroachDB connection strings:
 ~~~
 postgresql://<username>:<password>@<host>:<port>/<database>
 ~~~
+
+</div>
+
+<div class="filter-content" markdown="1" data-scope="core">
+
+CockroachDB {{ site.data.products.core }} requires you to specify the `type`, `url`, and `ssl` properties:
+
+{% include copy-clipboard.html %}
+~~~ ts
+module.exports = {
+  type: "cockroachdb",
+  url: process.env.DATABASE_URL,
+  ssl: {
+    ca: process.env.CA_CERT,
+    key: process.env.CLIENT_KEY,
+    cert: process.env.CLIENT_CERT
+  }
+  ...
+};
+~~~
+
+Where:
+
+- `DATABASE_URL` is an environment variable set to a valid CockroachDB connection string.
+- `CA_CERT` is an environment variable set to the root certificate.<br>You can generate this certificate with [`cockroach cert create-ca`](cockroach-cert.html#subcommands), or you can use a [custom CA cert](create-security-certificates-custom-ca.html).
+- `CLIENT_KEY` is an environment variable set to the [client key](cockroach-cert.html#client-key-and-certificates) for the user connecting to the cluster.<br>You can generate this key with [`cockroach cert create-client`](cockroach-cert.html#subcommands).
+- `CLIENT_CERT` is an environment variable set to the [client certificate](cockroach-cert.html#client-key-and-certificates) for the user connecting to the cluster.<br>You can generate this certificate with [`cockroach cert create-client`](cockroach-cert.html#subcommands).
+
+TypeORM accepts the following format for CockroachDB connection strings:
+
+{% include copy-clipboard.html %}
+~~~
+postgresql://<username>@<host>:<port>/<database>
+~~~
+
+</div>
 
 You can then call `createConnection` without any parameters:
 
@@ -211,8 +379,6 @@ const connection = await createConnection();
 `createConnection` will use the properties in your `ormconfig` file.
 
 For more information about connecting with TypeORM, see the [official TypeORM documentation](https://typeorm.io/#/connection).
-
-</div>
 
 ### Connection parameters
 
@@ -238,7 +404,19 @@ Parameter | Description
 `<host>`  | The host on which the CockroachDB node is running.
 `<port>`  | The port at which the CockroachDB node is listening.
 `<database>`  | The name of the (existing) database.
-`<root-cert>`  | The path to the root certificate that you [downloaded from the CockroachDB Cloud Console](../cockroachcloud/authentication.html#node-identity-verification).
+
+</div>
+
+<div class="filter-content" markdown="1" data-scope="core">
+
+Parameter | Description
+----------|------------
+`<username>`  | The [SQL user](authorization.html#sql-users) connecting to the cluster.
+`<host>`  | The host on which the CockroachDB node is running.
+`<port>`  | The port at which the CockroachDB node is listening.
+`<database>`  | The name of the (existing) database.
+
+</div>
 
 </div>
 
@@ -297,6 +475,15 @@ postgresql://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full&
 
 </div>
 
+<div class="filter-content" markdown="1" data-scope="core">
+
+{% include copy-clipboard.html %}
+~~~
+postgresql://{username}@{host}:{port}/{database}?sslmode=verify-full&sslrootcert={root-cert}&sslcert={client-cert}&sslkey={client-key}
+~~~
+
+</div>
+
 For more information about connecting with Psycopg, see the [official Psycopg documentation](https://www.psycopg.org/docs).
 
 </div>
@@ -334,6 +521,15 @@ cockroachdb://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full
 {% include copy-clipboard.html %}
 ~~~
 cockroachdb://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full&sslrootcert={root-cert}
+~~~
+
+</div>
+
+<div class="filter-content" markdown="1" data-scope="core">
+
+{% include copy-clipboard.html %}
+~~~
+cockroachdb://{username}@{host}:{port}/{database}?sslmode=verify-full&sslrootcert={root-cert}&sslcert={client-cert}&sslkey={client-key}
 ~~~
 
 </div>
@@ -412,6 +608,35 @@ DATABASES = {
 
 </div>
 
+<div class="filter-content" markdown="1" data-scope="core">
+
+{% include copy-clipboard.html %}
+~~~
+## settings.py
+
+...
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django_cockroachdb',
+        'NAME': '{database}',
+        'USER': '{username}',
+        'HOST': '{host}',
+        'PORT': '{port}',
+        'OPTIONS': {
+            'sslmode': 'verify-full',
+            'sslrootcert': os.path.expandvars('{root-cert}'),
+            'sslcert': os.path.expandvars('{client-cert}'),
+            'sslkey': os.path.expandvars('{client-key}'),
+        },
+    },
+}
+
+...
+~~~
+
+</div>
+
 {{site.data.alerts.callout_info}}
 To connect to CockroachDB with Django, you must install the [CockroachDB Django adapter](https://github.com/cockroachdb/django-cockroachdb).
 {{site.data.alerts.end}}
@@ -445,6 +670,20 @@ Parameter | Description
 `{port}`  | The port at which the CockroachDB node is listening.
 `{database}`  | The name of the (existing) database.
 `{root-cert}`  | The path to the root certificate that you [downloaded from the CockroachDB Cloud Console](../cockroachcloud/authentication.html#node-identity-verification).
+
+</div>
+
+<div class="filter-content" markdown="1" data-scope="core">
+
+Parameter | Description
+----------|------------
+`{username}`  | The [SQL user](authorization.html#sql-users) connecting to the cluster.
+`{host}`  | The host on which the CockroachDB node is running.
+`{port}`  | The port at which the CockroachDB node is listening.
+`{database}`  | The name of the (existing) database.
+`{root-cert}`  | The path to the root certificate.<br>You can generate this certificate with [`cockroach cert create-ca`](cockroach-cert.html#subcommands), or you can use a [custom CA cert](create-security-certificates-custom-ca.html).
+`{client-cert}`  | The path to the [client certificate](cockroach-cert.html#client-key-and-certificates) for the user connecting to the cluster.<br>You can generate this certificate with [`cockroach cert create-client`](cockroach-cert.html#subcommands).
+`{client-key}`  | The path to the [client key](cockroach-cert.html#client-key-and-certificates) for the user connecting to the cluster.<br>You can generate this key with [`cockroach cert create-client`](cockroach-cert.html#subcommands).
 
 </div>
 
@@ -506,6 +745,15 @@ postgresql://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full&
 
 </div>
 
+<div class="filter-content" markdown="1" data-scope="core">
+
+{% include copy-clipboard.html %}
+~~~
+postgresql://{username}@{host}:{port}/{database}?sslmode=verify-full&sslrootcert={root-cert}&sslcert={client-cert}&sslkey={client-key}
+~~~
+
+</div>
+
 For more information about connecting with pgx, see the [official pgx documentation](https://pkg.go.dev/github.com/jackc/pgx).
 
 </div>
@@ -558,6 +806,15 @@ postgresql://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full&
 
 </div>
 
+<div class="filter-content" markdown="1" data-scope="core">
+
+{% include copy-clipboard.html %}
+~~~
+postgresql://{username}@{host}:{port}/{database}?sslmode=verify-full&sslrootcert={root-cert}&sslcert={client-cert}&sslkey={client-key}
+~~~
+
+</div>
+
 For more information about connecting with pq, see the [official pq documentation](https://pkg.go.dev/github.com/lib/pq).
 
 </div>
@@ -603,6 +860,15 @@ postgresql://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full&
 
 </div>
 
+<div class="filter-content" markdown="1" data-scope="core">
+
+{% include copy-clipboard.html %}
+~~~
+postgresql://{username}@{host}:{port}/{database}?sslmode=verify-full&sslrootcert={root-cert}&sslcert={client-cert}&sslkey={client-key}
+~~~
+
+</div>
+
 For more information about connecting with GORM, see the [official GORM documentation](https://gorm.io/docs).
 
 </div>
@@ -632,6 +898,20 @@ Parameter | Description
 `{port}`  | The port at which the CockroachDB node is listening.
 `{database}`  | The name of the (existing) database.
 `{root-cert}`  | The path to the root certificate that you [downloaded from the CockroachDB Cloud Console](../cockroachcloud/authentication.html#node-identity-verification).
+
+</div>
+
+<div class="filter-content" markdown="1" data-scope="core">
+
+Parameter | Description
+----------|------------
+`{username}`  | The [SQL user](authorization.html#sql-users) connecting to the cluster.
+`{host}`  | The host on which the CockroachDB node is running.
+`{port}`  | The port at which the CockroachDB node is listening.
+`{database}`  | The name of the (existing) database.
+`{root-cert}`  | The path to the root certificate.<br>You can generate this certificate with [`cockroach cert create-ca`](cockroach-cert.html#subcommands), or you can use a [custom CA cert](create-security-certificates-custom-ca.html).
+`{client-cert}`  | The path to the [client certificate](cockroach-cert.html#client-key-and-certificates) for the user connecting to the cluster.<br>You can generate this certificate with [`cockroach cert create-client`](cockroach-cert.html#subcommands).
+`{client-key}`  | The path to the [client key](cockroach-cert.html#client-key-and-certificates) for the user connecting to the cluster.<br>You can generate this key with [`cockroach cert create-client`](cockroach-cert.html#subcommands).
 
 </div>
 
@@ -675,6 +955,15 @@ jdbc:postgresql://{host}:{port}/{database}?user={username}&password={password}&s
 {% include copy-clipboard.html %}
 ~~~
 jdbc:postgresql://{host}:{port}/{database}?user={username}&password={password}&sslmode=verify-full&sslrootcert={root-cert}
+~~~
+
+</div>
+
+<div class="filter-content" markdown="1" data-scope="core">
+
+{% include copy-clipboard.html %}
+~~~
+jdbc:postgresql://{host}:{port}/{database}?user={username}&sslmode=verify-full&sslrootcert={root-cert}&sslcert={client-cert}&sslkey={client-key}
 ~~~
 
 </div>
@@ -725,6 +1014,15 @@ jdbc:postgresql://{host}:{port}/{database}?user={username}&password={password}&s
 
 </div>
 
+<div class="filter-content" markdown="1" data-scope="core">
+
+{% include copy-clipboard.html %}
+~~~
+jdbc:postgresql://{host}:{port}/{database}?user={username}&sslmode=verify-full&sslrootcert={root-cert}&sslcert={client-cert}&sslkey={client-key}
+~~~
+
+</div>
+
 {{site.data.alerts.callout_info}}
 To connect to CockroachDB with Hibernate, you must specify the [CockroachDB Hibernate dialect](install-client-drivers.html?filters=java#hibernate) in your `hibernate.cfg.xml` configuration file.
 {{site.data.alerts.end}}
@@ -758,6 +1056,20 @@ Parameter | Description
 `{port}`  | The port at which the CockroachDB node is listening.
 `{database}`  | The name of the (existing) database.
 `{root-cert}`  | The path to the root certificate that you [downloaded from the CockroachDB Cloud Console](../cockroachcloud/authentication.html#node-identity-verification).
+
+</div>
+
+<div class="filter-content" markdown="1" data-scope="core">
+
+Parameter | Description
+----------|------------
+`{username}`  | The [SQL user](authorization.html#sql-users) connecting to the cluster.
+`{host}`  | The host on which the CockroachDB node is running.
+`{port}`  | The port at which the CockroachDB node is listening.
+`{database}`  | The name of the (existing) database.
+`{root-cert}`  | The path to the root certificate.<br>You can generate this certificate with [`cockroach cert create-ca`](cockroach-cert.html#subcommands), or you can use a [custom CA cert](create-security-certificates-custom-ca.html).
+`{client-cert}`  | The path to the [client certificate](cockroach-cert.html#client-key-and-certificates) for the user connecting to the cluster.<br>You can generate this certificate with [`cockroach cert create-client`](cockroach-cert.html#subcommands).
+`{client-key}`  | The path to the [PKCS#8](https://tools.ietf.org/html/rfc5208)-formatted [client key](cockroach-cert.html#client-key-and-certificates) for the user connecting to the cluster.<br>You can generate this key with [`cockroach cert create-client --also-generate-pkcs8-key`](cockroach-cert.html#subcommands).
 
 </div>
 
@@ -811,6 +1123,15 @@ postgresql://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full&
 
 </div>
 
+<div class="filter-content" markdown="1" data-scope="core">
+
+{% include copy-clipboard.html %}
+~~~
+postgresql://{username}@{host}:{port}/{database}?sslmode=verify-full&sslrootcert={root-cert}&sslcert={client-cert}&sslkey={client-key}
+~~~
+
+</div>
+
 For more information about connecting with pg, see the [official pg documentation](https://www.rubydoc.info/gems/pg).
 
 </div>
@@ -853,6 +1174,15 @@ postgresql://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full&
 
 </div>
 
+<div class="filter-content" markdown="1" data-scope="core">
+
+{% include copy-clipboard.html %}
+~~~
+postgresql://{username}@{host}:{port}/{database}?sslmode=verify-full&sslrootcert={root-cert}&sslcert={client-cert}&sslkey={client-key}
+~~~
+
+</div>
+
 {{site.data.alerts.callout_info}}
 To connect to CockroachDB with ActiveRecord, you must install the [ActiveRecord CockroachDB adapter](https://rubygems.org/gems/activerecord-cockroachdb-adapter).
 {{site.data.alerts.end}}
@@ -886,6 +1216,20 @@ Parameter | Description
 `{port}`  | The port at which the CockroachDB node is listening.
 `{database}`  | The name of the (existing) database.
 `{root-cert}`  | The path to the root certificate that you [downloaded from the CockroachDB Cloud Console](../cockroachcloud/authentication.html#node-identity-verification).
+
+</div>
+
+<div class="filter-content" markdown="1" data-scope="core">
+
+Parameter | Description
+----------|------------
+`{username}`  | The [SQL user](authorization.html#sql-users) connecting to the cluster.
+`{host}`  | The host on which the CockroachDB node is running.
+`{port}`  | The port at which the CockroachDB node is listening.
+`{database}`  | The name of the (existing) database.
+`{root-cert}`  | The path to the root certificate.<br>You can generate this certificate with [`cockroach cert create-ca`](cockroach-cert.html#subcommands), or you can use a [custom CA cert](create-security-certificates-custom-ca.html).
+`{client-cert}`  | The path to the [client certificate](cockroach-cert.html#client-key-and-certificates) for the user connecting to the cluster.<br>You can generate this certificate with [`cockroach cert create-client`](cockroach-cert.html#subcommands).
+`{client-key}`  | The path to the [client key](cockroach-cert.html#client-key-and-certificates) for the user connecting to the cluster.<br>You can generate this key with [`cockroach cert create-client`](cockroach-cert.html#subcommands).
 
 </div>
 
