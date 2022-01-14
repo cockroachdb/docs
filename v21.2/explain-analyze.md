@@ -269,21 +269,18 @@ Use the [`DEBUG`](#debug-option) option to generate a ZIP file containing files 
                                       info
 --------------------------------------------------------------------------------
   Statement diagnostics bundle generated. Download from the Admin UI (Advanced
-  Debug -> Statement Diagnostics History), via the direct link below, or using
-  the command line.
+  Debug -> Statement Diagnostics History), using the direct link, or using
+  the SQL shell or command line.
   Admin UI: http://127.0.0.1:8080
-  Direct link: http://127.0.0.1:8080/_admin/v1/stmtbundle/645706706591449089
-  Command line: cockroach statement-diag list / download
+  Direct link: http://127.0.0.1:8080/_admin/v1/stmtbundle/727822547420741633 (Not available for {{ site.data.products.serverless }} clusters.)
+  SQL shell: \statement-diag download 727822547420741633
+  Command line: cockroach statement-diag download 727822547420741633
 (6 rows)
 
 Time: 873ms total (execution 873ms / network 0ms)
 ~~~
 
-To download the ZIP file containing the statement diagnostics, open the URL after **Direct link**. You can also obtain the bundle by activating [statement diagnostics](ui-statements-page.html#diagnostics) in the DB Console.
-
-## Known limitations
-
-- `EXPLAIN ANALYZE (DEBUG)` is not supported on CockroachDB Serverless clusters.
+To download the ZIP file containing the statement diagnostics, open the URL after **Direct link**, run the `\statement-diag download` command, or run `cockroach statement-diag download`. You can also obtain the bundle by activating [statement diagnostics](ui-statements-page.html#diagnostics) in the DB Console.
 
 ## See also
 
