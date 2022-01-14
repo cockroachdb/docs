@@ -30,24 +30,6 @@ class CockroachRenderer < Redcarpet::Render::HTML
     @anchors = []
   end
 
-  # Handle duplicate anchors within a page by prefixing with the parent header string
-  Anchor = Struct.new(:value, :level)
-
-  def header(text, level)
-    anchor = Anchor.new(text.downcase.strip.gsub(' ', '-').gsub(/[^\w-]/, ''), level)
-
-    if @anchors.any? {|a| a.value == anchor.value}
-      parent = @anchors.reverse.find {|a| a.level < level }
-      unless parent.nil? || parent.value.nil?
-        anchor.value = [parent.value, anchor.value].join('-')
-      end
-    end
-
-    @anchors << anchor
-
-    %(<h#{level} id="#{anchor.value}">#{text}</h#{level}>)
-  end
-
   include Rouge::Plugins::Redcarpet
 
   def block_code(_code, lang)
@@ -79,5 +61,25 @@ class CockroachRenderer < Redcarpet::Render::HTML
 
   def rouge_formatter(_lexer)
     Rouge::Formatters::HTMLLegacy.new(:wrap => false)
+  end
+
+  # Handle duplicate anchors within a page by prefixing with the parent header string
+  Anchor = Struct.new(:value, :level)
+
+  def header(text, level)
+    re = /<("[^"]*"|'[^']*'|[^'">])*>/
+    anchor = Anchor.new(text.downcase.strip.gsub(re, '').gsub(' ', '-').gsub(/[^\w-]/, ''), level)
+    #anchor = Anchor.new("foo", level)
+
+    if @anchors.any? {|a| a.value == anchor.value}
+      parent = @anchors.reverse.find {|a| a.level < level }
+      unless parent.nil? || parent.value.nil?
+        anchor.value = [parent.value, anchor.value].join('-')
+      end
+    end
+
+    @anchors << anchor
+
+    %(<h#{level} id="#{anchor.value}">#{text}</h#{level}>)
   end
 end
