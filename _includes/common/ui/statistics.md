@@ -6,7 +6,7 @@
   {% assign page_prefix = "ui-" %}
 {% endif %}
 
-Statistics are aggregated once an hour and organized by [Interval Start Time](#statement-fingerprint-properties). Statistics between two hourly intervals belong to the nearest hour rounded down. For example, a statement execution ending at 1:50 would have its statistics aggregated in the 1:00 interval start time.
+Statistics are aggregated once an hour and organized by [Aggregation Interval](#statement-fingerprint-properties). Statistics between two hourly intervals belong to the nearest hour rounded down. For example, a statement execution ending at 1:50 would have its statistics aggregated in the 1:00-2:00 interval.
 
 Statistics are persisted in the `crdb_internal` table. The default retention period of this table is based on the number of rows up to 10 million records. When this threshold is reached, the oldest records are deleted.
 
