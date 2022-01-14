@@ -152,10 +152,10 @@ The **Overview** section displays the SQL statement fingerprint and essential st
 - **Regions**: the regions on which the statements executed. <br><br>**Regions** are not visible for {{ site.data.products.serverless }} clusters.
 - **Database**: the database on which the statements executed.
 - **App**: the name specified by the [`application_name`]({{ link_prefix }}show-vars.html#supported-variables) session setting.
-- **Failed?**: indicates whether the statement failed to execute.
-- **Used cost-based optimizer?**: indicates whether the execution used the [cost-based optimizer]({{ link_prefix }}cost-based-optimizer.html).
-- **Distributed execution?**: indicates whether the execution was distributed.
-- **Vectorized execution?**: indicates whether the execution used the [vectorized execution engine]({{ link_prefix }}vectorized-execution.html).
+- **Failed?**: whether the statement failed to execute.
+- **Used cost-based optimizer?**: whether the execution used the [cost-based optimizer]({{ link_prefix }}cost-based-optimizer.html).
+- **Distributed execution?**: whether the execution was distributed.
+- **Vectorized execution?**: whether the execution used the [vectorized execution engine]({{ link_prefix }}vectorized-execution.html).
 - **Transaction type**: the type of transaction (implicit or explicit).
 - **Last execution time**: when the statement was last executed.
 
