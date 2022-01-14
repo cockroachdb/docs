@@ -4,8 +4,7 @@
   "items": [{
       "title": "Quickstart",
       "urls": [
-        "/cockroachcloud/quickstart.html",
-        "/cockroachcloud/quickstart-trial-cluster.html"
+        "/cockroachcloud/quickstart.html"
       ]
     },
     {

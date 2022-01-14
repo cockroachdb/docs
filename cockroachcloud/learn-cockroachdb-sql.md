@@ -4,15 +4,13 @@ summary: Learn some of the most essential CockroachDB SQL statements on a local 
 toc: true
 ---
 
-This tutorial walks you through some of the most essential CockroachDB SQL statements. For a complete list of supported SQL statements and related details, see [SQL Statements](../{{site.versions["stable"]}}/sql-statements.html).
+This tutorial walks you through some essential SQL statements using a free cloud cluster and the CockroachDB SQL client.
+
+For a complete list of supported SQL statements and related details, see [SQL Statements](../stable/sql-statements.html).
 
 ## Before you begin
 
-Make sure you have already [connected the CockroachDB SQL client](connect-to-your-cluster.html#step-3-connect-to-your-cluster) to your cluster. Alternatively, you can [use a local demo cluster](../{{site.versions["stable"]}}/learn-cockroachdb-sql.html) or click below to run through the tutorial entirely in your browser.
-
-<div class=" clearfix">
-  <a class="btn btn-outline-primary" href="../tutorials/learn-cockroachdb-sql-interactive.html" target="_blank">Run this in your browser &rarr;</a>
-</div>
+Make sure you have already [create a free {{ site.data.products.db }} cluster](quickstart.html#step-1-start-cockroachdb) and [connected the SQL client](quickstart.html#step-2-insert-data).
 
 ## Create a database
 
