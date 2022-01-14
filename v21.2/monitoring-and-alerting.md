@@ -11,7 +11,7 @@ This page explains available monitoring tools and critical events and metrics to
 ## Monitoring tools
 
 {{site.data.alerts.callout_danger}}
-If a cluster becomes unavailable, most of the monitoring tools in the following sections become unavailable. In that case, Cockroach Labs recommends that you use [Prometheus endpoint](#prometheus-endpoint) or consult the [cluster logs](logging-overview.html).
+If a cluster becomes unavailable, most of the monitoring tools in the following sections become unavailable. In that case, Cockroach Labs recommends that you use the [Prometheus endpoint](#prometheus-endpoint) or consult the [cluster logs](logging-overview.html).
 {{site.data.alerts.end}}
 
 ### DB Console
@@ -137,7 +137,7 @@ replicas_quiescent{store="1"} 20
 ...
 ~~~
 
-{{site.data.alerts.callout_info}}In addition to using the exported time series data to monitor a cluster via an external system, you can write alerting rules against them to make sure you are promptly notified of critical events or issues that may require intervention or investigation. See <a href="#events-to-alert-on">Events to Alert On</a> for more details.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}In addition to using the exported time series data to monitor a cluster via an external system, you can write alerting rules against them to make sure you are promptly notified of critical events or issues that may require intervention or investigation. See [Events to Alert On](#events-to-alert-on) for more details.{{site.data.alerts.end}}
 
 ## Events to alert on
 
