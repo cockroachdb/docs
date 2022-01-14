@@ -103,16 +103,17 @@ The Statements table gives details for each SQL statement fingerprint:
 Column | Description
 -----|------------
 Statements | SQL statement [fingerprint](#sql-statement-fingerprints).<br><br>To view additional details, click the SQL statement fingerprint to open its [Transaction Details page]({{ page_prefix }}transactions-page.html#transaction-details-page).
-Interval Start Time (UTC) | The start time of the statistics aggregation interval for a statement. <br><br>For example, if a statement is executed at 1:23PM it will fall in the 1:00PM - 2:00PM time interval.
-Execution Count | Cumulative number of executions of statements with this fingerprint within the last hour. <br><br>The bar indicates the ratio of runtime success (gray) to [retries]({{ link_prefix }}transactions.html#transaction-retries) (red) for the SQL statement fingerprint.
+Aggregation Interval (UTC) | The interval over which statistics are aggregated. <br><br>For example, if a statement is executed at 1:23PM it will fall in the 1:00PM - 2:00PM interval.
+Execution Count | Cumulative number of executions of statements with this fingerprint within the aggregation interval. <br><br>The bar indicates the ratio of runtime success (gray) to [retries]({{ link_prefix }}transactions.html#transaction-retries) (red) for the SQL statement fingerprint.
 Database | The database in which the statement was executed.
-Rows Read | Average number of rows [read from disk]({{ link_prefix }}architecture/life-of-a-distributed-transaction.html#reads-from-the-storage-layer) while executing statements with this fingerprint within the last hour).<br><br>The gray bar indicates the mean number of rows returned. The blue bar indicates one standard deviation from the mean. Hover over the bar to display exact values.
-Bytes Read | Aggregation of all bytes [read from disk]({{ link_prefix }}architecture/life-of-a-distributed-transaction.html#reads-from-the-storage-layer) across all operators for statements with this fingerprint within the last hour. <br><br>The gray bar indicates the mean number of bytes read from disk. The blue bar indicates one standard deviation from the mean. Hover over the bar to display exact values.
-Statement Time | Average [planning and execution time]({{ link_prefix }}architecture/sql-layer.html#sql-parser-planner-executor) of statements with this statement fingerprint within the last hour. <br><br>The gray bar indicates the mean latency. The blue bar indicates one standard deviation from the mean. Hover over the bar to display exact values.
-Contention | Average time statements with this fingerprint were [in contention]({{ link_prefix }}performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention) with other transactions within the last hour. <br><br>The gray bar indicates mean contention time. The blue bar indicates one standard deviation from the mean. Hover over the bar to display exact values.
-Max Memory | Maximum memory used by a statement with this fingerprint at any time during its execution within the last hour. <br><br>The gray bar indicates the average max memory usage. The blue bar indicates one standard deviation from the mean. Hover over the bar to display exact values.
-Network | Amount of [data transferred over the network]({{ link_prefix }}architecture/reads-and-writes-overview.html) for statements with this fingerprint within the last hour. <br><br>If this value is 0, the statement was executed on a single node. <br><br>The gray bar indicates the mean number of bytes sent over the network. The blue bar indicates one standard deviation from the mean. Hover over the bar to display exact values.
-Retries | Cumulative number of [retries]({{ link_prefix }}transactions.html#transaction-retries) of statements with this fingerprint within the last hour.
+Rows Read | Average number of rows [read from disk]({{ link_prefix }}architecture/life-of-a-distributed-transaction.html#reads-from-the-storage-layer) while executing statements with this fingerprint within the aggregation interval).<br><br>The gray bar indicates the mean number of rows returned. The blue bar indicates one standard deviation from the mean. Hover over the bar to display exact values.
+Bytes Read | Aggregation of all bytes [read from disk]({{ link_prefix }}architecture/life-of-a-distributed-transaction.html#reads-from-the-storage-layer) across all operators for statements with this fingerprint within the aggregation interval. <br><br>The gray bar indicates the mean number of bytes read from disk. The blue bar indicates one standard deviation from the mean. Hover over the bar to display exact values.
+Rows Written  | Aggregation of all rows written to disk across all operators for statements with this fingerprint. This column is not displayed by default. <br><br>The gray bar indicates the mean latency. The blue bar indicates one standard deviation from the mean. Hover over the bar to display exact values.
+Statement Time | Average [planning and execution time]({{ link_prefix }}architecture/sql-layer.html#sql-parser-planner-executor) of statements with this statement fingerprint within the aggregation interval. <br><br>The gray bar indicates the mean latency. The blue bar indicates one standard deviation from the mean. Hover over the bar to display exact values.
+Contention | Average time statements with this fingerprint were [in contention]({{ link_prefix }}performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention) with other transactions within the aggregation interval. <br><br>The gray bar indicates mean contention time. The blue bar indicates one standard deviation from the mean. Hover over the bar to display exact values.
+Max Memory | Maximum memory used by a statement with this fingerprint at any time during its execution within the aggregation interval. <br><br>The gray bar indicates the average max memory usage. The blue bar indicates one standard deviation from the mean. Hover over the bar to display exact values.
+Network | Amount of [data transferred over the network]({{ link_prefix }}architecture/reads-and-writes-overview.html) for statements with this fingerprint within the aggregation interval. <br><br>If this value is 0, the statement was executed on a single node. <br><br>The gray bar indicates the mean number of bytes sent over the network. The blue bar indicates one standard deviation from the mean. Hover over the bar to display exact values.
+Retries | Cumulative number of [retries]({{ link_prefix }}transactions.html#transaction-retries) of statements with this fingerprint within the aggregation interval.
 % of All Runtime  | How much time this statement fingerprint took to execute compared to all other statements that were executed within the time period. It is expressed as a percentage. The runtime is the mean execution latency multiplied by the execution count.
 Regions/Nodes | The regions and nodes on which statements with this fingerprint executed. <br><br>**Regions/Nodes** are not visible for {{ site.data.products.serverless }} clusters.
 Diagnostics | Activate and download [diagnostics](#diagnostics) for this fingerprint. To activate, click the **Activate** button. The column displays the status of diagnostics collection (`WAITING`, `READY`, OR `ERROR`). When the status is `READY`, click **Download bundle** to download the most recent diagnostics bundle. <br><br>Statements are periodically cleared from the Statements page based on the start time. To access the full history of diagnostics for the fingerprint, see the [Diagnostics](#diagnostics) section of the Statement Details page. <br><br>**Diagnostics** is not enabled for {{ site.data.products.serverless }} clusters.
@@ -132,38 +133,38 @@ The Statement Details page supports the search param `aggregated_ts`. If set, th
 
 The **Overview** section displays the SQL statement fingerprint and essential statistics:
 
-**Mean statement time** is the cumulative time taken to execute statements with this fingerprint within the last hour.
+**Mean statement time** is the cumulative time taken to execute statements with this fingerprint within the aggregation interval.
 
   - **Planning time** is the cumulative time taken by the [planner]({{ link_prefix }}architecture/sql-layer.html#sql-parser-planner-executor) to create an execution plan for statements with this fingerprint within the specified time interval.
   - **Execution time** is the cumulative time taken to execute statements with this fingerprint in the specified time interval.
 
 **Resource usage** displays statistics about storage, memory, and network usage for the SQL statement fingerprint.
 
-  - **Mean rows/bytes read** displays the mean average number of rows and bytes [read from the storage layer]({{ link_prefix }}architecture/life-of-a-distributed-transaction.html#reads-from-the-storage-layer) for statements with this fingerprint within the last hour .
-  - **Max memory usage** displays the maximum memory used by a statement with this fingerprint at any time during its execution within the last hour or specified time interval.
-  - **Network usage** displays the amount of [data transferred over the network]({{ link_prefix }}architecture/reads-and-writes-overview.html) for statements with this fingerprint within the last hour. If this value is 0, the statement was executed on a single node.
-  - **Max scratch disk usage** displays the maximum amount of data [spilled to temporary storage on disk]({{ link_prefix }}vectorized-execution.html#disk-spilling-operations) while executing statements with this fingerprint within the last hour or specified time interval.
+  - **Mean rows/bytes read** displays the mean average number of rows and bytes [read from the storage layer]({{ link_prefix }}architecture/life-of-a-distributed-transaction.html#reads-from-the-storage-layer) for statements with this fingerprint within the aggregation interval .
+  - **Max memory usage** displays the maximum memory used by a statement with this fingerprint at any time during its execution within the aggregation interval or specified time interval.
+  - **Network usage** displays the amount of [data transferred over the network]({{ link_prefix }}architecture/reads-and-writes-overview.html) for statements with this fingerprint within the aggregation interval. If this value is 0, the statement was executed on a single node.
+  - **Max scratch disk usage** displays the maximum amount of data [spilled to temporary storage on disk]({{ link_prefix }}vectorized-execution.html#disk-spilling-operations) while executing statements with this fingerprint within the aggregation interval.
 
 **Statement details** displays information about the execution of the statement.
 
 - **Interval start time** represents the start time of the statistics aggregation interval for a statement. For example, if a statement is executed at 1:23PM it will fall in the 1:00PM - 2:00PM time interval.
-- **Nodes** displays the nodes on which the statements executed. Click the node ID to view node statistics. <br><br>**Nodes** are not visible for {{ site.data.products.serverless }} clusters.
-- **Regions** displays the regions on which the statements executed. <br><br>**Regions** are not visible for {{ site.data.products.serverless }} clusters.
-- **Database** displays the database on which the statements executed.
-- **App** displays the name specified by the [`application_name`]({{ link_prefix }}show-vars.html#supported-variables) session setting.
-- **Failed?** indicates whether the statement failed to execute.
-- **Used cost-based optimizer?** indicates whether the execution used the [cost-based optimizer]({{ link_prefix }}cost-based-optimizer.html).
-- **Distributed execution?** indicates whether the execution was distributed.
-- **Vectorized execution?** indicates whether the execution used the [vectorized execution engine]({{ link_prefix }}vectorized-execution.html).
-- **Transaction type** displays the type of transaction (implicit or explicit).
-- **Last execution time** shows when the statement was last executed.
+- **Nodes**: the nodes on which the statements executed. Click the node ID to view node statistics. <br><br>**Nodes** are not visible for {{ site.data.products.serverless }} clusters.
+- **Regions**: the regions on which the statements executed. <br><br>**Regions** are not visible for {{ site.data.products.serverless }} clusters.
+- **Database**: the database on which the statements executed.
+- **App**: the name specified by the [`application_name`]({{ link_prefix }}show-vars.html#supported-variables) session setting.
+- **Failed?**: indicates whether the statement failed to execute.
+- **Used cost-based optimizer?**: indicates whether the execution used the [cost-based optimizer]({{ link_prefix }}cost-based-optimizer.html).
+- **Distributed execution?**: indicates whether the execution was distributed.
+- **Vectorized execution?**: indicates whether the execution used the [vectorized execution engine]({{ link_prefix }}vectorized-execution.html).
+- **Transaction type**: the type of transaction (implicit or explicit).
+- **Last execution time**: when the statement was last executed.
 
 **Execution counts** displays execution statistics for the SQL statement fingerprint.
 
-  - **First attempts** is the cumulative number of first attempts at executing statements with this fingerprint within the last hour.
-  - **Total executions** is the total number of executions of statements with this fingerprint. It is calculated as the sum of first attempts and retries.
-  - **Retries** is the cumulative number of [retries]({{ link_prefix }}transactions.html#transaction-retries) of statements with this fingerprint within the last hour.
-  - **Max Retries** is the highest number of retries of a single statement with this fingerprint within the last hour. For example, if three statements with the same fingerprint had to be retried 0, 1, and 5 times, then the Max Retries value for the fingerprint is 5.
+  - **First attempts**: the cumulative number of first attempts at executing statements with this fingerprint within the aggregation interval.
+  - **Total executions**: the total number of executions of statements with this fingerprint. It is calculated as the sum of first attempts and retries.
+  - **Retries**: the cumulative number of [retries]({{ link_prefix }}transactions.html#transaction-retries) of statements with this fingerprint within the aggregation interval.
+  - **Max Retries**: the highest number of retries of a single statement with this fingerprint within the aggregation interval. For example, if three statements with the same fingerprint had to be retried 0, 1, and 5 times, then the Max Retries value for the fingerprint is 5.
 
 ### Diagnostics
 
