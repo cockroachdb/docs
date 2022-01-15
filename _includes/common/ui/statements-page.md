@@ -10,9 +10,17 @@
 
 By default, the Statements page shows SQL statements from all applications and databases running on the cluster.
 
-You can search for statements using the date field or the search field.
+### Search field
 
-To search by date, pick a date range that is within the time period since the statistics were last cleared. Click **reset time** to reset the date.
+To search using the search field, type a string over `Search Statements` and press `Enter`. The list of statements is filtered by the string.
+
+### Date range
+
+To search by date, click the date range selector and pick a date range that is within the time period since the statistics were last cleared. Click **reset time** to reset the date to the last hour.
+
+It's possible to select a date range for which no statement statistics exist. CockroachDB persists statement statistics up to 1 million rows. The retention period of statistics is reduced the more active a workload is and the more distinct statement fingerprints there are.
+
+### Filter
 
 To filter the statements, click the **Filters** field.
 
@@ -26,7 +34,9 @@ To filter by [application]({{ link_prefix }}connection-parameters.html#additiona
 
 You can also filter by one or more databases (**Database**), SQL statement types (**Statement Type**), and for [statement fingerprints](#sql-statement-fingerprints) that take longer than a specified time to run. To display only statements with queries that cause full table scans, click **Only show statements that contain queries with full table scans**.
 
-Click <img src="{{ 'images/common/ui-columns-button.png' | relative_url }}" alt="Column selector" /> to select the columns to display.
+The following screenshot shows the statements that contain the string `rides` for the `movr` application:
+
+<img src="{{ 'images/v21.2/movr-statements-rides.png' | relative_url }}" alt="Movr rides statements" style="border:1px solid #eee;max-width:80%" />
 
 ## Statement statistics
 
@@ -97,6 +107,8 @@ If you haven't yet executed any queries in the cluster as a user, this page will
 <a id="statement-fingerprint-properties"></a>
 
 ### Statements table
+
+Click <img src="{{ 'images/common/ui-columns-button.png' | relative_url }}" alt="Column selector" /> to select the columns to display in the table.
 
 The Statements table gives details for each SQL statement fingerprint:
 

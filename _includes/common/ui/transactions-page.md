@@ -25,9 +25,19 @@ To view this page, click **SQL Activity** in the left-hand navigation of the {{ 
 
 By default, this page shows transactions from all applications and databases running on the cluster.
 
-You can search for transactions using the search field or using the date field.
+You can search for transactions using the search field or the date range selector.
 
-To search by date, pick a date range that is within the time period since the statistics were last cleared. Click **reset time** to reset the date.
+### Search field
+
+To search using the search field, type a string over `Search Transactions` and press `Enter`. The list of transactions is filtered by the string.
+
+### Date range
+
+To search by date, click the date range selector and pick a date range that is within the time period since the statistics were last cleared. Click **reset time** to reset the date to the last hour.
+
+It's possible to select a date range for which no transaction statistics exist. CockroachDB persists transaction statistics up to 1 million rows. The retention period of statistics is reduced the more active a workload is and the more distinct transaction fingerprints there are.
+
+### Filter
 
 To filter the transactions by [`application_name`]({{ link_prefix }}connection-parameters.html#additional-connection-parameters), select **App** and choose one or more applications. When no application is selected internal transactions **are not** displayed.
 
@@ -39,7 +49,9 @@ To filter the transactions by [`application_name`]({{ link_prefix }}connection-p
 
 To filter transactions in which a SQL statement fingerprint exceeds a specified latency value, fill in the fields in **Query fingerprint runs longer than**.
 
-Click <img src="{{ 'images/common/ui-columns-button.png' | relative_url }}" alt="Column selector" /> to select the columns to display.
+The following screenshot shows the transactions that contain the string `rides` for the `movr` application:
+
+<img src="{{ 'images/v21.2/movr-transactions-rides.png' | relative_url }}" alt="Movr rides transactions" style="border:1px solid #eee;max-width:80%" />
 
 ## Transaction statistics
 
@@ -58,6 +70,8 @@ If you haven't yet executed any transactions in the cluster as a user, this page
 <a id="statement-fingerprint-properties"></a>
 
 ### Transactions table
+
+Click <img src="{{ 'images/common/ui-columns-button.png' | relative_url }}" alt="Column selector" /> to select the columns to display in the table.
 
 The Transactions table gives details for each SQL statement fingerprint in the transaction:
 
