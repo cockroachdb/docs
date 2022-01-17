@@ -1055,7 +1055,7 @@ Parameter | Description
 `{host}`  | The host on which the CockroachDB node is running.
 `{port}`  | The port at which the CockroachDB node is listening.
 `{database}`  | The name of the (existing) database.
-`{root-cert}`  | The path to the root certificate that you [downloaded from the CockroachDB Cloud Console](../cockroachcloud/authentication.html#node-identity-verification).
+`{root-cert}`  | The [URL-encoded](https://en.wikipedia.org/wiki/Percent-encoding) path to the root certificate that you [downloaded from the CockroachDB Cloud Console](../cockroachcloud/authentication.html#node-identity-verification).
 
 </div>
 
@@ -1067,9 +1067,9 @@ Parameter | Description
 `{host}`  | The host on which the CockroachDB node is running.
 `{port}`  | The port at which the CockroachDB node is listening.
 `{database}`  | The name of the (existing) database.
-`{root-cert}`  | The path to the root certificate.<br>You can generate this certificate with [`cockroach cert create-ca`](cockroach-cert.html#subcommands), or you can use a [custom CA cert](create-security-certificates-custom-ca.html).
-`{client-cert}`  | The path to the [client certificate](cockroach-cert.html#client-key-and-certificates) for the user connecting to the cluster.<br>You can generate this certificate with [`cockroach cert create-client`](cockroach-cert.html#subcommands).
-`{client-key}`  | The path to the [PKCS#8](https://tools.ietf.org/html/rfc5208)-formatted [client key](cockroach-cert.html#client-key-and-certificates) for the user connecting to the cluster.<br>You can generate this key with [`cockroach cert create-client --also-generate-pkcs8-key`](cockroach-cert.html#subcommands).
+`{root-cert}`  | The [URL-encoded](https://en.wikipedia.org/wiki/Percent-encoding) path to the root certificate.<br>You can generate this certificate with [`cockroach cert create-ca`](cockroach-cert.html#subcommands), or you can use a [custom CA cert](create-security-certificates-custom-ca.html).
+`{client-cert}`  | The [URL-encoded](https://en.wikipedia.org/wiki/Percent-encoding) path to the [client certificate](cockroach-cert.html#client-key-and-certificates) for the user connecting to the cluster.<br>You can generate this certificate with [`cockroach cert create-client`](cockroach-cert.html#subcommands).
+`{client-key}`  | The [URL-encoded](https://en.wikipedia.org/wiki/Percent-encoding) path to the [PKCS#8](https://tools.ietf.org/html/rfc5208)-formatted [client key](cockroach-cert.html#client-key-and-certificates) for the user connecting to the cluster.<br>You can generate this key with [`cockroach cert create-client --also-generate-pkcs8-key`](cockroach-cert.html#subcommands).
 
 </div>
 
