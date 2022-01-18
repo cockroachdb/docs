@@ -4,6 +4,15 @@ summary: Set up and understand the output from changefeeds.
 toc: true
 ---
 
+This page describes the main components to enabling and using changefeeds:
+
+- Enabling changefeed setup through [rangefeeds](#enable-rangefeeds)
+- Emitting for [at-least-once-delivery-guarantees](#ordering-guarantees)
+- Encountering [schema changes on changefeeds](#schema-changes)
+- Understanding [changefeed responses](#responses)
+
+It is recommended to read the following [Considerations](#considerations) before working with changefeeds.
+
 ## Considerations
 
 - It is necessary to [enable rangefeeds](#enable-rangefeeds) for changefeeds to work.
@@ -27,7 +36,9 @@ Any created changefeed will error until this setting is enabled. Note that enabl
 
 The `kv.closed_timestamp.target_duration` [cluster setting](cluster-settings.html) can be used with changefeeds. Resolved timestamps will always be behind by at least this setting's duration; however, decreasing the duration leads to more transaction restarts in your cluster, which can affect performance.
 
-## Ordering guarantees
+## Message emission
+
+### Ordering guarantees
 
 - In most cases, each version of a row will be emitted once. However, some infrequent conditions (e.g., node failures, network partitions) will cause them to be repeated. This gives our changefeeds an **at-least-once delivery guarantee**.
 
@@ -92,7 +103,7 @@ The `kv.closed_timestamp.target_duration` [cluster setting](cluster-settings.htm
 
     The complexity with timestamps is necessary because CockroachDB supports transactions that can affect any part of the cluster, and it is not possible to horizontally divide the transaction log into independent changefeeds. For more information about this, [read our blog post on CDC](https://www.cockroachlabs.com/blog/change-data-capture/).
 
-## Delete messages
+### Delete messages
 
 Deleting a row will result in a changefeed outputting the primary key of the deleted row and a null value. For example, with default options, deleting the row with primary key `5` will output:
 
@@ -102,13 +113,15 @@ Deleting a row will result in a changefeed outputting the primary key of the del
 
 In some unusual situations you may receive a delete message for a row without first seeing an insert message. For example, if an attempt is made to delete a row that does not exist, you may or may not get a delete message because the changefeed behavior is undefined to allow for optimizations at the storage layer. Similarly, if there are multiple writes to a row within a single transaction, only the last one will propagate to a changefeed. This means that creating and deleting a row within the same transaction will never result in an insert message, but may result in a delete message.
 
-## Avro schema changes
+## Schema Changes
+
+### Avro schema changes
 
 To ensure that the Avro schemas that CockroachDB publishes will work with the schema compatibility rules used by the Confluent schema registry, CockroachDB emits all fields in Avro as nullable unions. This ensures that Avro and Confluent consider the schemas to be both backward- and forward-compatible, since the Confluent Schema Registry has a different set of rules than Avro for schemas to be backward- and forward-compatible.
 
 Note that the original CockroachDB column definition is also included in the schema as a doc field, so it's still possible to distinguish between a `NOT NULL` CockroachDB column and a `NULL` CockroachDB column.
 
-## Schema changes with column backfill
+### Schema changes with column backfill
 
 When schema changes with column backfill (e.g., adding a column with a default, adding a computed column, adding a `NOT NULL` column, dropping a column) are made to watched rows, the changefeed will emit some duplicates during the backfill. When it finishes, CockroachDB outputs all watched rows using the new schema. When using Avro, rows that have been backfilled by a schema change are always re-emitted.
 
