@@ -125,9 +125,9 @@ This method has the added benefit of alerting on potential issues with the impor
 
 ### Import into a schema with secondary indexes
 
-When importing data into a table with secondary indexes, the import job will ingest the table data and required secondary index data concurrently. This may result in a longer import time compared to a table without secondary indexes. However, this typically adds less time to the initial import than following it with a separate pass to add the indexes. As a result, importing tables with their secondary indexes is the default workflow, suitable for most import jobs.
+When importing data into a table with secondary indexes, the import job will ingest the table data and required secondary index data concurrently. This may result in a longer import time compared to a table without secondary indexes. Typically, this adds less time to the initial import than following it with a separate pass to add the indexes. As a result, importing tables with their secondary indexes is the default workflow, suitable for most import jobs.
 
-However, in **large** imports, it may be preferable to remove the secondary indexes from the schema, perform the import, and then re-create the indexes separately. This provides increased visibility into its progress and ability to retry each step independently.
+However, in **large** imports, removing the secondary indexes from the schema, performing the import, and then re-creating the indexes separately may be preferable for the increased visibility into its progress and ability to retry each step independently.
 
 - [Remove the secondary indexes](drop-index.html)
 - [Perform the import](import-into.html)
