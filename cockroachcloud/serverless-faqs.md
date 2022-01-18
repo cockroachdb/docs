@@ -19,7 +19,7 @@ This page answers the frequently asked questions about {{ site.data.products.ser
 {{ site.data.products.serverless }} delivers free and pay-as-you-go CockroachDB clusters for you and your Organization. It is a managed instance of CockroachDB that lets you start using your database immediately and auto-scales based on your application traffic.
 
 {{site.data.alerts.callout_success}}
-For a deeper dive into serverless database concepts and how to get started with CockroachDB Serverless, take the free [Intro to Serverless Databases](https://university.cockroachlabs.com/courses/intro-to-serverless/) course on Cockroach University.
+For a deeper dive into serverless database concepts and how to get started with CockroachDB Serverless, take the free [Intro to Serverless Databases](https://university.cockroachlabs.com/courses/course-v1:crl+intro-to-serverless+self-paced/about) course on Cockroach University.
 {{site.data.alerts.end}}
 
 ### How do I start using {{ site.data.products.serverless }}?
