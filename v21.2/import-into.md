@@ -20,6 +20,10 @@ The `IMPORT INTO` [statement](sql-statements.html) imports CSV, Avro, or delimit
 
 <span class="version-tag">New in v21.2:</span> `IMPORT INTO` now supports importing into [`REGIONAL BY ROW`](set-locality.html#regional-by-row) tables.
 
+{{site.data.alerts.callout_info}}
+Optimize import operations in your applications by following our [Import Performance Best Practices](import-performance-best-practices.html).
+{{site.data.alerts.end}}
+
 ## Required privileges
 
 #### Table privileges
