@@ -167,19 +167,19 @@ When a `RESTORE` fails or is canceled, partially restored data is properly clean
 
 <span class="version-tag">New in v21.2:</span> Restoring to a [multi-region database](multiregion-overview.html) is supported with some limitations. This section outlines details and settings that should be considered when restoring into multi-region databases:
 
-* A [cluster's regions](multiregion-overview.html#cluster-regions) will be checked before a restore. Mismatched regions between backup and restore clusters will be flagged before the restore begins, which allows for a decision between updating the [cluster localities](cockroach-start.html#locality) or restoring with the [`skip_localities_check`](#skip-localities-check) option to continue with the restore regardless.
+- A [cluster's regions](multiregion-overview.html#cluster-regions) will be checked before a restore. Mismatched regions between backup and restore clusters will be flagged before the restore begins, which allows for a decision between updating the [cluster localities](cockroach-start.html#locality) or restoring with the [`skip_localities_check`](#skip-localities-check) option to continue with the restore regardless.
 
-* A database that is restored with the `sql.defaults.primary_region` [cluster setting](cluster-settings.html) will have the [`PRIMARY REGION`](set-primary-region.html) from this cluster setting assigned to the target database.
+- A database that is restored with the `sql.defaults.primary_region` [cluster setting](cluster-settings.html) will have the [`PRIMARY REGION`](set-primary-region.html) from this cluster setting assigned to the target database.
 
-* `RESTORE` supports restoring **non**-multi-region tables into a multi-region database and sets the table locality as [`REGIONAL BY TABLE`](multiregion-overview.html#regional-tables) to the primary region of the target database.
+- `RESTORE` supports restoring **non**-multi-region tables into a multi-region database and sets the table locality as [`REGIONAL BY TABLE`](multiregion-overview.html#regional-tables) to the primary region of the target database.
 
-* Restoring tables from multi-region databases with table localities set to [`REGIONAL BY ROW`](multiregion-overview.html#regional-by-row-tables), `REGIONAL BY TABLE`, [`REGIONAL BY TABLE IN PRIMARY REGION`](set-locality.html#regional-by-table), and [`GLOBAL`](set-locality.html#global) to another multi-region database is supported.
+- Restoring tables from multi-region databases with table localities set to [`REGIONAL BY ROW`](multiregion-overview.html#regional-by-row-tables), `REGIONAL BY TABLE`, [`REGIONAL BY TABLE IN PRIMARY REGION`](set-locality.html#regional-by-table), and [`GLOBAL`](set-locality.html#global) to another multi-region database is supported.
 
-* When restoring a `REGIONAL BY TABLE IN PRIMARY REGION` table, if the primary region is different in the source database to the target database this will be implicitly changed on restore.
+- When restoring a `REGIONAL BY TABLE IN PRIMARY REGION` table, if the primary region is different in the source database to the target database this will be implicitly changed on restore.
 
-* Restoring a [partition](partitioning.html) of a `REGIONAL BY ROW` table is not supported.
+- Restoring a [partition](partitioning.html) of a `REGIONAL BY ROW` table is not supported.
 
-* {% include {{ page.version.version }}/known-limitations/restore-multiregion-match.md %}
+- {% include {{ page.version.version }}/known-limitations/restore-multiregion-match.md %}
 
 The ordering of regions and how region matching is determined is a known limitation. See the [Known Limitations](#known-limitations) section for the tracking issues on limitations around `RESTORE` and multi-region support.
 
@@ -744,9 +744,9 @@ After the restore completes, add the `users` to the existing `system.users` tabl
 
 ## Known limitations
 
-* {% include {{ page.version.version }}/known-limitations/restore-aost.md %} [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/53044)
-* To successfully [restore a table into a multi-region database](#restoring-to-multi-region-databases), it is necessary for the order and regions to match between the source and destination database. See the [Known Limitations](known-limitations.html#using-restore-with-multi-region-table-localities) page for detail on ordering and matching regions. [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/71071)
-* {% include {{ page.version.version }}/known-limitations/restore-tables-non-multi-reg.md %}
+- {% include {{ page.version.version }}/known-limitations/restore-aost.md %} [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/53044)
+- To successfully [restore a table into a multi-region database](#restoring-to-multi-region-databases), it is necessary for the order and regions to match between the source and destination database. See the [Known Limitations](known-limitations.html#using-restore-with-multi-region-table-localities) page for detail on ordering and matching regions. [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/71071)
+- {% include {{ page.version.version }}/known-limitations/restore-tables-non-multi-reg.md %}
 
 ## See also
 
