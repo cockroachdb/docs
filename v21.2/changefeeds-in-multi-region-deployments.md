@@ -4,8 +4,6 @@ summary: Understand limitations and usage of changefeeds in multi-region delpoym
 toc: true
 ---
 
-## Changefeeds on regional by row tables
-
 <span class="version-tag">New in v21.2:</span> Changefeeds are supported on [regional by row tables](multiregion-overview.html#regional-by-row-tables). When working with changefeeds on regional by row tables, it is necessary to consider the following:
 
 - Setting a table's locality to [`REGIONAL BY ROW`](set-locality.html#regional-by-row) is equivalent to a [schema change](online-schema-changes.html) as the [`crdb_region` column](set-locality.html#crdb_region) becomes a hidden column for each of the rows in the table and is part of the [primary key](primary-key.html). Therefore, when existing tables targeted by changefeeds are made regional by row, it will trigger a backfill of the table through the changefeed. (See [Schema changes with a column backfill](stream-data-out-of-cockroachdb-using-changefeeds.html#schema-changes-with-column-backfill) for more details on the effects of schema changes on changefeeds.)
@@ -31,4 +29,4 @@ If the [`schema_change_policy`](create-changefeed.html#options) changefeed optio
 . . .
 ~~~
 
-See the changefeed [responses](create-changefeed.html#responses) section for more general information on the messages emitted from a changefeed.
+See the changefeed [responses](use-changefeeds.html#responses) section for more general information on the messages emitted from a changefeed.
