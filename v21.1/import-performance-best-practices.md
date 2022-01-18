@@ -125,11 +125,9 @@ This method has the added benefit of alerting on potential issues with the impor
 
 ### Import into a schema with secondary indexes
 
-Importing data into a schema that has [secondary indexes](schema-design-indexes.html) will increase the import's total time to completion. The import job will perform the import and populate the indexes concurrently, which causes the longer import time.
+When importing data into a table with secondary indexes, the import job will ingest the table data and required secondary index data concurrently. This may result in a longer import time compared to a table without secondary indexes. Typically, this adds less time to the initial import than following it with a separate pass to add the indexes. As a result, importing tables with their secondary indexes is the default workflow, suitable for most import jobs.
 
-The default workflow is suitable for most import jobs; that is, the import and index population taking place concurrently as part of the import job.
-
-For **large** imports, consider removing the secondary indexes from the schema, performing the import, and then re-creating the indexes separately as this will result in the import being faster. This alternative approach does involve more steps overall, however, it offers a clearer view of the work progressing.
+However, in **large** imports, removing the secondary indexes from the schema, performing the import, and then re-creating the indexes separately may be preferable for the increased visibility into its progress and ability to retry each step independently.
 
 - [Remove the secondary indexes](drop-index.html)
 - [Perform the import](import-into.html)
