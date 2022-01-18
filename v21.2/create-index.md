@@ -162,6 +162,10 @@ Storing a column improves the performance of queries that retrieve (but do not f
 
 However, to use stored columns, queries must filter another column in the same index. For example, SQL can retrieve `name` values from the above index only when a query's `WHERE` clause filters `city`.
 
+{{site.data.alerts.callout_info}}
+{% include {{page.version.version}}/sql/covering-index.md %}
+{{site.data.alerts.end}}
+
 ### Change column sort order
 
 To sort columns in descending order, you must explicitly set the option when creating the index. (Ascending order is the default.)
