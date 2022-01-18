@@ -27,25 +27,6 @@ class CockroachRenderer < Redcarpet::Render::HTML
   def initialize(parser, options)
     @parser = parser
     super(options)
-    @anchors = []
-  end
-
-  # Handle duplicate anchors within a page by prefixing with the parent header string
-  Anchor = Struct.new(:value, :level)
-
-  def header(text, level)
-    anchor = Anchor.new(text.downcase.strip.gsub(' ', '-').gsub(/[^\w-]/, ''), level)
-
-    if @anchors.any? {|a| a.value == anchor.value}
-      parent = @anchors.reverse.find {|a| a.level < level }
-      unless parent.nil? || parent.value.nil?
-        anchor.value = [parent.value, anchor.value].join('-')
-      end
-    end
-
-    @anchors << anchor
-
-    %(<h#{level} id="#{anchor.value}">#{text}</h#{level}>)
   end
 
   include Rouge::Plugins::Redcarpet
