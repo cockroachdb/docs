@@ -120,14 +120,14 @@ cockroach sql --url "postgresql://root@localhost:26257?sslmode=disable" --file d
     $ npm install
     ~~~
 
-1. Load the database schema from the cluster into your Prisma schema file.
+1. Load the database schema from the cluster into your Prisma schema file:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ npx prisma db pull
     ~~~
 
-1. Initialize Prisma Client.
+1. Initialize Prisma Client:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -136,7 +136,7 @@ cockroach sql --url "postgresql://root@localhost:26257?sslmode=disable" --file d
 
 ## Step 5. Run the code
 
-Run the application code.
+Run the application code:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
