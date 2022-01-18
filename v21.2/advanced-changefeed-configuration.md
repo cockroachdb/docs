@@ -4,10 +4,8 @@ summary: Tune changefeeds for high durability delivery or throughput.
 toc: true
 ---
 
-## Advanced changefeed configuration
-
 {{site.data.alerts.callout_danger}}
-The configurations and settings explained in these sections will have significant impact on a changefeed's behavior.
+The configurations and settings explained on this page will have significant impact on a changefeed's behavior.
 {{site.data.alerts.end}}
 
 The following sections describe settings, configurations, and details to tune changefeeds for particular use cases:
@@ -15,12 +13,13 @@ The following sections describe settings, configurations, and details to tune ch
 * [High durability delivery](#tuning-for-high-durability-delivery)
 * [High throughput](#tuning-for-high-throughput)
 
-<!--NOTE Add a note or similar that these are on another sink-specific page. -->
-* [Kafka sinks](#kafka-sink-configuration)
-* [Webhook sinks](#webhook-sink-configuration)
+
+Some specific options for the `kafka_sink_config` and `webhook_sink_config` parameters are discussed on this page. However, for more information on more specific tuning for Kafka and Webhook sinks see the following pages:
+
+* [Kafka sinks](changefeed-sinks.html#kafka-sink-configuration)
+* [Webhook sinks](changefeed-sinks.html#webhook-sink-configuration)
 
 ### Tuning for high durability delivery
-
 
 When designing a system that relies on high durability of message delivery — that is, not missing any message acknowledgement at the downstream sink — consider the following settings and configuration. Before tuning these settings we recommend reading details on our [changefeed at-least-once-delivery guarantee](stream-data-out-of-cockroachdb-using-changefeeds.html#ordering-guarantees).
 
