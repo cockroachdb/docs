@@ -156,6 +156,8 @@ CockroachDB uses the URL provided to construct a secure API call to the service 
 
 All nodes are used during the import job, which means all nodes' CPU and RAM will be partially consumed by the `IMPORT` task in addition to serving normal traffic.
 
+For more detail on optimizing import performance, see [Import Performance Best Practices](import-performance-best-practices.html).
+
 ## Viewing and controlling import jobs
 
 After CockroachDB successfully initiates an import into an existing table, it registers the import as a job, which you can view with [`SHOW JOBS`](show-jobs.html).
@@ -479,3 +481,4 @@ For more information about importing data from Avro, including examples, see [Mi
 - [`IMPORT`](import.html)
 - [Migration Overview](migration-overview.html)
 - [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html)
+- [Import Performance Best Practices](import-performance-best-practices.html)
