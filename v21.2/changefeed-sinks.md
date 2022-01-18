@@ -4,7 +4,15 @@ summary: Define a changefeed sink URI and configure specific sinks.
 toc: true
 ---
 
-### Sink URI
+{{ site.data.products.enterprise }} changefeeds emit messages to configurable downstream sinks. CockroachDB supports the following sinks:
+
+- [Kafka](#kafka)
+- [Cloud Storage](#cloud-storage-sink)
+- [Webhook](#webhook-sink)
+
+See [`CREATE CHANGEFEED`](create-changefeed.html) for more detail on the [query parameters](create-changefeed.html#query-parameters) available when setting up a changefeed
+
+## Sink URI
 
 The sink URI follows the basic format of:
 
@@ -19,7 +27,7 @@ URI Component      | Description
 `port`             | The sink's port.
 `query_parameters` | The sink's [query parameters](#query-parameters).
 
-#### Kafka
+## Kafka
 
 Example of a Kafka sink URI:
 
@@ -27,45 +35,7 @@ Example of a Kafka sink URI:
 'kafka://broker.address.com:9092?topic_prefix=bar_&tls_enabled=true&ca_cert=LS0tLS1CRUdJTiBDRVJUSUZ&sasl_enabled=true&sasl_user=petee&sasl_password=bones&sasl_mechanism=SASL-SCRAM-SHA-256'
 ~~~
 
-#### Cloud storage sink
-
-Use a cloud storage sink to deliver changefeed data to OLAP or big data systems without requiring transport via Kafka.
-
-Example of a cloud storage sink URI with Amazon S3:
-
-~~~
-'s3://acme-co/employees?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456'
-~~~
-
-Some considerations when using cloud storage sinks:
-
-- Cloud storage sinks only work with `JSON` and emit newline-delimited `JSON` files.
-- The supported cloud schemes are: `s3`, `gs`, `azure`, `http`, and `https`.
-- Both `http://` and `https://` are cloud storage sinks, **not** webhook sinks. It is necessary to prefix the scheme with `webhook-` for [webhook sinks](#webhook-sink).
-
-[Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html#example-file-urls) provides more detail on sink URI structure and authentication to cloud storage sinks.
-
-#### Webhook sink
-
-{{site.data.alerts.callout_info}}
-The webhook sink is currently in **beta**. For more information, read about its usage considerations available [parameters](../v21.2/create-changefeed.html#parameters), and [options](../v21.2/create-changefeed.html#options) below.
-{{site.data.alerts.end}}
-
-<span class="version-tag">New in v21.2:</span> Use a webhook sink to deliver changefeed messages to an arbitrary HTTP endpoint.
-
-Example of a webhook sink URL:
-
-~~~
-'webhook-https://{your-webhook-endpoint}?insecure_tls_skip_verify=true'
-~~~
-
-The following are considerations when using the webhook sink:
-
-* Only supports HTTPS. Use the [`insecure_tls_skip_verify`](#tls-skip-verify) parameter when testing to disable certificate verification; however, this still requires HTTPS and certificates.
-* Only supports JSON output format.
-* There is no concurrency configurability.
-
-#### Topic naming
+### Topic naming
 
 By default, a Kafka topic has the same name as the table that a changefeed was created on. If a changefeed was created on multiple tables, the changefeed will write to multiple topics corresponding to those table names.
 
@@ -112,6 +82,44 @@ The configurable fields include:
   * `"ONE"`: a write to Kafka is successful once the leader node has committed and acknowledged the write. Note that this has the potential risk of dropped messages; if the leader node acknowledges before replicating to a quorum of other Kafka nodes, but then fails. **This is the default value.**
   * `"NONE"`: no Kafka brokers are required to acknowledge that they have committed the message. This will decrease latency and increase throughput, but comes at the cost of lower consistency.
   * `"ALL"`: a quorum must be reached (that is, most Kafka brokers have committed the message) before the leader can acknowledge. This is the highest consistency level.
+
+## Cloud storage sink
+
+Use a cloud storage sink to deliver changefeed data to OLAP or big data systems without requiring transport via Kafka.
+
+Example of a cloud storage sink URI with Amazon S3:
+
+~~~
+'s3://{BUCKET NAME}/{PATH}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
+~~~
+
+Some considerations when using cloud storage sinks:
+
+- Cloud storage sinks only work with `JSON` and emit newline-delimited `JSON` files.
+- The supported cloud schemes are: `s3`, `gs`, `azure`, `http`, and `https`.
+- Both `http://` and `https://` are cloud storage sinks, **not** webhook sinks. It is necessary to prefix the scheme with `webhook-` for [webhook sinks](#webhook-sink).
+
+[Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html#example-file-urls) provides more detail on sink URI structure and authentication to cloud storage sinks.
+
+## Webhook sink
+
+{{site.data.alerts.callout_info}}
+The webhook sink is currently in **beta**. For more information, read about its usage considerations available [parameters](../v21.2/create-changefeed.html#parameters), and [options](../v21.2/create-changefeed.html#options) below.
+{{site.data.alerts.end}}
+
+<span class="version-tag">New in v21.2:</span> Use a webhook sink to deliver changefeed messages to an arbitrary HTTP endpoint.
+
+Example of a webhook sink URL:
+
+~~~
+'webhook-https://{your-webhook-endpoint}?insecure_tls_skip_verify=true'
+~~~
+
+The following are considerations when using the webhook sink:
+
+* Only supports HTTPS. Use the [`insecure_tls_skip_verify`](#tls-skip-verify) parameter when testing to disable certificate verification; however, this still requires HTTPS and certificates.
+* Only supports JSON output format.
+* There is no concurrency configurability.
 
 ### Webhook sink configuration
 
