@@ -4,6 +4,8 @@ summary: Create and configure a changefeed job for core and enterprise.
 toc: true
 ---
 
+Core and {{ site.data.products.enterprise }} changefeeds offer different levels of configurability. {{ site.data.products.enterprise }} changefeeds allow for active changefeed jobs to be [paused](#pause), [resumed](#resume), and [canceled](#cancel).
+
 ## Create a changefeed (Core)
 
 A core changefeed streams row-level changes to the client indefinitely until the underlying connection is closed or the changefeed is canceled.
@@ -15,15 +17,15 @@ To create a core changefeed:
 > EXPERIMENTAL CHANGEFEED FOR name;
 ~~~
 
-For more information, see [`CHANGEFEED FOR`](changefeed-for.html).
+For more information, see [`EXPERIMENTAL CHANGEFEED FOR`](changefeed-for.html).
 
-## Configure a changefeed (Enterprise)
+## Configure a changefeed ({{ site.data.products.enterprise }})
 
-An Enterprise changefeed streams row-level changes in a configurable format to a configurable sink (i.e., Kafka or a cloud storage sink). You can [create](#create), [pause](#pause), [resume](#resume), [cancel](#cancel), [monitor](#monitor-a-changefeed), and [debug](#debug-a-changefeed) an Enterprise changefeed.
+An {{ site.data.products.enterprise }} changefeed streams row-level changes in a configurable format to a configurable sink (i.e., Kafka or a cloud storage sink). You can [create](#create), [pause](#pause), [resume](#resume), and [cancel](#cancel) an {{ site.data.products.enterprise }} changefeed.
 
 ### Create
 
-To create an Enterprise changefeed:
+To create an {{ site.data.products.enterprise }} changefeed:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -36,7 +38,7 @@ For more information, see [`CREATE CHANGEFEED`](create-changefeed.html).
 
 ### Pause
 
-To pause an Enterprise changefeed:
+To pause an {{ site.data.products.enterprise }} changefeed:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -47,7 +49,7 @@ For more information, see [`PAUSE JOB`](pause-job.html).
 
 ### Resume
 
-To resume a paused Enterprise changefeed:
+To resume a paused {{ site.data.products.enterprise }} changefeed:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -58,7 +60,7 @@ For more information, see [`RESUME JOB`](resume-job.html).
 
 ### Cancel
 
-To cancel an Enterprise changefeed:
+To cancel an {{ site.data.products.enterprise }} changefeed:
 
 {% include copy-clipboard.html %}
 ~~~ sql
