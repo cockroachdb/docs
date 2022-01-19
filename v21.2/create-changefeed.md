@@ -43,7 +43,7 @@ The sink URI follows the basic format of:
 
 URI Component      | Description
 -------------------+------------------------------------------------------------------
-`scheme`           | The type of sink: [`kafka`](#kafka), any [cloud storage sink](#cloud-storage-sink), or [webhook sink](#webhook-sink).
+`scheme`           | The type of sink: [`kafka`](#kafka), any [cloud storage sink](#cloud-storage), or [webhook sink](#webhook).
 `host`             | The sink's hostname or IP address.
 `port`             | The sink's port.
 `query_parameters` | The sink's [query parameters](#query-parameters).
@@ -107,12 +107,12 @@ Option | Value | Description
 <a name="resolved-option"></a>`resolved` | [`INTERVAL`](interval.html) | Emits [resolved timestamp](use-changefeeds.html#resolved-def) events per changefeed in a format dependent on the connected sink. Resolved timestamp events do not emit until all ranges in the changefeed have progressed to a specific point in time. <br><br>Set an optional minimal duration between emitting resolved timestamps. Example: `resolved='10s'`. This option will **only** emit a resolved timestamp event if the timestamp has advanced and at least the optional duration has elapsed. If unspecified, all resolved timestamps are emitted as the high-water mark advances.
 `envelope` | `key_only` / `wrapped` | Use `key_only` to emit only the key and no value, which is faster if you only want to know when the key changes.<br><br>Default: `envelope=wrapped`
 `cursor` | [Timestamp](as-of-system-time.html#parameters)  | Emit any changes after the given timestamp, but does not output the current state of the table first. If `cursor` is not specified, the changefeed starts by doing an initial scan of all the watched rows and emits the current value, then moves to emitting any changes that happen after the scan.<br><br>When starting a changefeed at a specific `cursor`, the `cursor` cannot be before the configured garbage collection window (see [`gc.ttlseconds`](configure-replication-zones.html#replication-zone-variables)) for the table you're trying to follow; otherwise, the changefeed will error. With default garbage collection settings, this means you cannot create a changefeed that starts more than 25 hours in the past.<br><br>`cursor` can be used to [start a new changefeed where a previous changefeed ended.](#start-a-new-changefeed-where-another-ended)<br><br>Example: `CURSOR='1536242855577149065.0000000000'`
-<a name="format"></a>`format` | `json` / `avro` | Format of the emitted record. For mappings of CockroachDB types to Avro types, [see the table](#avro-types) and detail on [Avro limitations](use-changefeeds.html#avro-limitations) below. <br><br>Default: `format=json`.
+<a name="format"></a>`format` | `json` / `avro` | Format of the emitted record. For mappings of CockroachDB types to Avro types, [see the table](use-changefeeds.html#avro-types) and detail on [Avro limitations](use-changefeeds.html#avro-limitations) below. <br><br>Default: `format=json`.
 `mvcc_timestamp` | N/A | <span class="version-tag">New in v21.2:</span> Include the [MVCC](architecture/storage-layer.html#mvcc) timestamp for each emitted row in a changefeed. With the `mvcc_timestamp` option, each emitted row will always contain its MVCC timestamp, even during the changefeed's initial backfill.
 <a name="confluent-registry"></a>`confluent_schema_registry` | Schema Registry address | The [Schema Registry](https://docs.confluent.io/current/schema-registry/docs/index.html#sr) address is required to use `avro`.
 `key_in_value` | N/A | Make the [primary key](primary-key.html) of a deleted row recoverable in sinks where each message has a value but not a key (most have a key and value in each message). `key_in_value` is automatically used for [cloud storage sinks](changefeed-sinks.html#cloud-storage-sink) and [webhook sinks](changefeed-sinks.html#webhook-sink).
 <a name="diff-opt"></a>`diff` | N/A |  Publish a `before` field with each message, which includes the value of the row before the update was applied.
-<a name="compression-opt"></a>`compression` | `gzip` |  Compress changefeed data files written to a [cloud storage sink](#cloud-storage-sink). Currently, only [Gzip](https://www.gnu.org/software/gzip/) is supported for compression.
+<a name="compression-opt"></a>`compression` | `gzip` |  Compress changefeed data files written to a [cloud storage sink](changefeed-sinks.html#cloud-storage-sink). Currently, only [Gzip](https://www.gnu.org/software/gzip/) is supported for compression.
 <a name="on-error"></a>`on_error` | `pause` / `fail` | <span class="version-tag">New in v21.2:</span> Use `on_error=pause` to pause the changefeed when encountering **non**-retryable errors. `on_error=pause` will pause the changefeed instead of sending it into a terminal failure state. **Note:** Retryable errors will continue to be retried with this option specified. <br><br>Use with [`protect_data_from_gc_on_pause`](#protect-pause) to protect changes from [garbage collection](configure-replication-zones.html#gc-ttlseconds).  <br><br>Default: `on_error=fail`
 <a name="protect-pause"></a>`protect_data_from_gc_on_pause` | N/A |  When a [changefeed is paused](pause-job.html), ensure that the data needed to [resume the changefeed](resume-job.html) is not garbage collected.<br><br>Note: If you use this option, changefeeds left paused can prevent garbage collection for long periods of time.
 <a name="schema-events"></a>`schema_change_events` | `default` / `column_changes` |  The type of schema change event that triggers the behavior specified by the `schema_change_policy` option:<ul><li>`default`: Include all [`ADD COLUMN`](add-column.html) events for columns that have a non-`NULL` [`DEFAULT` value](default-value.html) or are [computed](computed-columns.html), and all [`DROP COLUMN`](drop-column.html) events.</li><li>`column_changes`: Include all all schema change events that add or remove any column.</li></ul><br>Default: `schema_change_events=default`
@@ -288,7 +288,7 @@ For more information, see [`CANCEL JOB`](cancel-job.html).
 
 ### Start a new changefeed where another ended
 
-Find the [high-water timestamp](monitor-and-debug-changefeeds.html.html#monitor-a-changefeed) for the ended changefeed:
+Find the [high-water timestamp](monitor-and-debug-changefeeds.html#monitor-a-changefeed) for the ended changefeed:
 
 {% include copy-clipboard.html %}
 ~~~ sql
