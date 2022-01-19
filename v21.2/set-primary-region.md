@@ -227,7 +227,7 @@ SHOW REGIONS FROM DATABASE foo;
 
 ## See also
 
-- [Multi-region overview](multiregion-overview.html)
+- [Multi-Region Capabilities Overview](multiregion-overview.html)
 - [`ADD REGION`](add-region.html)
 - [`DROP REGION`](drop-region.html)
 - [`SHOW REGIONS`](show-regions.html)

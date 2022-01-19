@@ -12,7 +12,7 @@ In a multi-region deployment, follow-the-workload is the default behavior for ta
 - Table data must remain available during a region failure.
 
 {{site.data.alerts.callout_success}}
-If read performance is your main focus for a table, but you want low-latency reads everywhere instead of just in the most active region, consider [Global Tables](global-tables.html) or [Follower Reads](topology-follower-reads.html).
+If read performance is your main focus for a table, but you want low-latency reads everywhere instead of just in the most active region, consider [global tables](global-tables.html) or [follower reads](topology-follower-reads.html).
 
 Note that if you start using the [multi-region SQL abstractions](multiregion-overview.html) for a database, CockroachDB will no longer provide the follow-the-workload behavior described on this page for that database.
 {{site.data.alerts.end}}

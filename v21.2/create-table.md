@@ -713,9 +713,9 @@ Note that the foreign key constraint `fk_owner_id_ref_users` in the source table
 (1 row)
 ~~~
 
-### Create tables in a multi-region database
+### Create a table in a multi-region database
 
- To create a table with a specific [table locality](multiregion-overview.html#table-locality) in a [multi-region database](multiregion-overview.html), add a `LOCALITY` clause to the end of the table's `CREATE TABLE` statement.
+To create a table with a specific [table locality](multiregion-overview.html#table-locality) in a [multi-region database](multiregion-overview.html), add a `LOCALITY` clause to the end of the table's `CREATE TABLE` statement.
 
 {{site.data.alerts.callout_info}}
 In order to set table localities, the database that contains the table must have [database regions](multiregion-overview.html#database-regions).
@@ -896,7 +896,7 @@ For example:
       CASE
         WHEN city IN ('new york', 'boston', 'washington dc', 'chicago', 'detroit', 'minneapolis') THEN 'us-east1'
         WHEN city IN ('san francisco', 'seattle', 'los angeles') THEN 'us-west1'
-        WHEN city IN ('amsterdam', 'paris', 'rome') THEN 'europe-west1'  
+        WHEN city IN ('amsterdam', 'paris', 'rome') THEN 'europe-west1'
       END) STORED,
     owner_id UUID,
     creation_time TIMESTAMP,

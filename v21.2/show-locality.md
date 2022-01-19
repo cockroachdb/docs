@@ -78,7 +78,7 @@ For a more extensive example, see [Create a table with node locality information
 
 ## See also
 
-- [Multi-Region Performance](demo-low-latency-multi-region-deployment.html)
+- [Low Latency Reads and Writes in a Multi-Region Cluster](demo-low-latency-multi-region-deployment.html)
 - [Locality](cockroach-start.html#locality)
 - [Orchestrated Deployment](orchestration.html)
 - [Manual Deployment](manual-deployment.html)

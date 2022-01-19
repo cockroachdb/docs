@@ -6,7 +6,7 @@ toc_not_nested: true
 key: demo-geo-partitioning.html
 ---
 
- CockroachDB has improved multi-region capabilities that make it easier to run global applications. For an overview of these capabilities, see the [Multi-region Overview](multiregion-overview.html).
+CockroachDB multi-region capabilities make it easier to run global applications. For an overview of these capabilities, see [Multi-Region Capabilities Overview](multiregion-overview.html).
 
 In multi-region clusters, the distribution of data becomes a performance consideration. This makes it important to think about the [survival goals](multiregion-overview.html#survival-goals) of each database. Then, for each table in the database, use the right [table locality](multiregion-overview.html#table-locality) to locate data for optimal performance.
 
@@ -138,7 +138,7 @@ You can see by referring back and forth between `\demo ls` and the **Network Lat
 
 ## Step 3. Load and run MovR
 
-Follow the steps below to start 3 instances of MovR. Each instance is pointed at a node in a different region. This will simulate load from that region.
+Follow these steps to start 3 instances of MovR. Each instance is pointed at a node in a different region. This will simulate load from that region.
 
 1. In the SQL shell, create the `movr` database:
 
@@ -252,7 +252,7 @@ In the [DB Console](ui-overview.html) at <a data-proofer-ignore href="http://127
 
 <img src="{{ 'images/v21.2/geo-partitioning-sql-latency-before.png' | relative_url }}" alt="Geo-partitioning SQL latency" style="max-width:100%" />
 
-For each of the 3 nodes that we are pointing the movr workload at, the max latency of 99% of queries are in the 1-2 seconds range. The SQL latency is high because of the network latency between regions.
+For each of the 3 nodes that you are pointing the movr workload at, the max latency of 99% of queries are in the 1-2 seconds range. The SQL latency is high because of the network latency between regions.
 
 To see the network latency between any two nodes in the cluster, click [**Network Latency**](ui-network-latency-page.html) in the left-hand navigation.
 
@@ -267,15 +267,15 @@ For example:
 
 ## Step 5. Execute multi-region SQL statements
 
-The SQL statements described below will tell CockroachDB about:
+The following SQL statements will configure:
 
 - [The database's available regions](#configure-database-regions).
 - [Which data should be optimized for access from which region](#configure-table-localities).
 
-This information is necessary so that CockroachDB can move data around to optimize access to particular data from particular regions. The main focus is reducing latency in a global deployment. For more information about how this works at a high level, see the [Multi-Region Overview](multiregion-overview.html).
+This information is necessary so that CockroachDB can move data around to optimize access to particular data from particular regions. The main focus is reducing latency in a global deployment. For more information about how this works at a high level, see the [Multi-Region Capabilities Overview](multiregion-overview.html).
 
 {{site.data.alerts.callout_info}}
-The `ALTER` statements described below will take some seconds to run, since the cluster is under load.
+The following `ALTER` statements will take some seconds to run, since the cluster is under load.
 {{site.data.alerts.end}}
 
 ### Configure database regions
@@ -428,22 +428,22 @@ Apply this table locality to the remaining tables. These statements use a `CASE`
 
 As the multi-region schema changes complete, you should see changes to the following metrics:
 
-- _SQL Queries_: This number should go up, since the cluster can service more load due to better performance (due to better data locality and lower latency). In this particular run, **the QPS has almost doubled, from 87 to 164**.
-- _Service Latency: SQL, 99th percentile_: In general, even on a small demo cluster like this, the P99 latency should drop and also get less spiky over time, as schema changes finish and data is moved around. For this particular run, **the P99 latency has dropped from ~1200 ms to ~870 ms, an over 25% improvement**.
-- _Replicas per node_: This will increase, since the data needs to be spread across more nodes in order to service the multi-region workload appropriately. There is nothing you need to do about this, except to note that it happens, and is required for CockroachDB's improved multi-region performance features to work.
+- **SQL Queries**: This number should go up, since the cluster can service more load due to better performance (due to better data locality and lower latency). In this particular run, **the QPS has almost doubled, from 87 to 164**.
+- **Service Latency: SQL, 99th percentile**: In general, even on a small demo cluster like this, the P99 latency should drop and also get less spiky over time, as schema changes finish and data is moved around. For this particular run, **the P99 latency has dropped from ~1200 ms to ~870 ms, an over 25% improvement**.
+- **Replicas per Node**: This will increase, since the data needs to be spread across more nodes in order to service the multi-region workload appropriately. There is nothing you need to do about this, except to note that it happens, and is required for CockroachDB's improved multi-region performance features to work.
 
 {{site.data.alerts.callout_info}}
-The small demo cluster used in this example is essentially in a state of overload from the start. The performance numbers shown here only reflect the direction of the performance improvements. You should expect to see much better absolute performance numbers [in a production deployment](recommended-production-settings.html) than those described here.
+The small demo cluster used in this example is essentially in a state of overload from the start. The performance numbers shown here only reflect the direction of the performance improvements. You should expect to see much better absolute performance numbers than those described here [in a production deployment](recommended-production-settings.html).
 {{site.data.alerts.end}}
 
 <img src="{{ 'images/v21.2/geo-partitioning-sql-latency-after-1.png' | relative_url }}" alt="Geo-partitioning SQL latency" style="max-width:100%" />
 
 ## See also
 
-- [Multi-region Overview](multiregion-overview.html)
-- [Choosing a multi-region configuration](choosing-a-multi-region-configuration.html)
-- [When to use `ZONE` vs. `REGION` survival goals](when-to-use-zone-vs-region-survival-goals.html)
-- [When to use `REGIONAL` vs. `GLOBAL` tables](when-to-use-regional-vs-global-tables.html)
-- [Migrate to Multi-region SQL](migrate-to-multiregion-sql.html)
+- [Multi-Region Capabilities Overview](multiregion-overview.html)
+- [How to Choose a Multi-Region Configuration](choosing-a-multi-region-configuration.html)
+- [When to Use `ZONE` vs. `REGION` Survival Goals](when-to-use-zone-vs-region-survival-goals.html)
+- [When to Use `REGIONAL` vs. `GLOBAL` Tables](when-to-use-regional-vs-global-tables.html)
+- [Migrate to Multi-Region SQL](migrate-to-multiregion-sql.html)
 - [Reads and Writes in CockroachDB](architecture/reads-and-writes-overview.html)
 - [Install CockroachDB](install-cockroachdb.html)

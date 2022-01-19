@@ -117,7 +117,7 @@ ALTER DATABASE PLACEMENT
 
 ## See also
 
-- [Multi-region overview](multiregion-overview.html)
+- [Multi-Region Capabilities Overview](multiregion-overview.html)
 - [`ALTER DATABASE`](alter-database.html)
 - [`ADD REGION`](add-region.html)
 - [Ranges](architecture/overview.html#architecture-range)

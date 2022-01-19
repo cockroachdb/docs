@@ -72,6 +72,6 @@ For more information about the region survival goal, see [Surviving region failu
 
 ## See also
 
-- [Multi-region overview](multiregion-overview.html)
+- [Multi-Region Capabilities Overview](multiregion-overview.html)
 - [`ALTER TABLE`](alter-table.html)
 - [Other SQL Statements](sql-statements.html)
