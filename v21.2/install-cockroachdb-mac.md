@@ -173,6 +173,7 @@ true
 
 <div id="build-from-source" class="install-option">
   <h3>Build from source</h3>
+  <p>Consult the <a href="https://wiki.crdb.io/wiki/spaces/CRDB/pages/181338446/Getting+and+building+CockroachDB+from+source">Wiki</a> for specific, up-to-date information.</p>
   <ol>
     <li>
       <p>Install the following prerequisites, as necessary:</p>
@@ -202,17 +203,21 @@ true
       <p>A 64-bit system is strongly recommended. Building or running CockroachDB on 32-bit systems has not been tested. You'll also need at least 2GB of RAM. If you plan to run our test suite, you'll need closer to 4GB of RAM.</p>
     </li>
     <li>
-      <p>Download the <a href="https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.src.tgz" class="mac-source-download" id="mac-source-download-{{page.version.version}}" data-eventcategory="mac-source-download">CockroachDB {{ page.release_info.version }} source archive</a>, and extract the sources:</p>
+      <p>Clone the CockroachDB repository and check out the tag corresponding to {{ page.release_info.version }}:</p>
 
       <div class="copy-clipboard">
         <svg data-eventcategory="mac-source-button" id="copy-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 12"><style>.st0{fill:#A2A2A2;}</style><title>icon/buttons/copy</title><g id="Mask"><path id="path-1_1_" class="st0" d="M4.9 4.9v6h6v-6h-6zM3.8 3.8H12V12H3.8V3.8zM2.7 7.1v1.1H.1S0 5.5 0 0h8.2v2.7H7.1V1.1h-6v6h1.6z"/></g></svg>
         <svg id="copy-check" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 10"><style>.st1{fill:#54B30E;}</style><path id="path-1_2_" class="st1" d="M3.8 9.1c-.3 0-.5-.1-.6-.2L.3 6C0 5.7-.1 5.2.2 4.8c.3-.4.9-.4 1.3-.1L3.8 7 10.6.2c.3-.3.9-.4 1.2 0 .3.3.3.9 0 1.2L4.4 8.9c-.2.1-.4.2-.6.2z"/></svg>
       </div>
-      <div class="highlight"><pre class="highlight"><code data-eventcategory="mac-source-download"><span class="nv language-shell mac-source-download" id="mac-source-download-{{ page.version.version }}" data-eventcategory="mac-source-download">$ </span>curl https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.src.tgz | tar -xz</code></pre></div>
+      <div class="highlight"><pre class="highlight"><code data-eventcategory="linux-source-step1"><span class="nv language-shell linux-source-step1" id="linux-source-step1-{{ page.version.version }}" data-eventcategory="linux-source-step1">$ </span>mkdir -p $(go env GOPATH)/src/github.com/cockroachdb</code></pre></div>
+     <div class="highlight"><pre class="highlight"><code data-eventcategory="linux-source-step1"><span class="nv language-shell linux-source-step1" id="linux-source-step1-{{ page.version.version }}" data-eventcategory="linux-source-step1">$ </span>cd $(go env GOPATH)/src/github.com/cockroachdb</code></pre></div>
+     <div class="highlight"><pre class="highlight"><code data-eventcategory="linux-source-step1"><span class="nv language-shell linux-source-step1" id="linux-source-step1-{{ page.version.version }}" data-eventcategory="linux-source-step1">$ </span>git clone https://github.com/cockroachdb/cockroach</code></pre></div>
     </li>
-    <li><p>In the extracted directory, run <code>make build</code>:</p>
+    <li><p>In the extracted directory, check out the tag corresponding to {{ page.release_info.version }} and run <code>make build</code>:</p>
 
-      {% include copy-clipboard.html %}<div class="highlight"><pre class="highlight"><code><span class="nv language-shell"></span><span class="nb">cd </span>cockroach-{{ page.release_info.version }}</code></pre></div>
+      {% include copy-clipboard.html %}<div class="highlight"><pre class="highlight"><code><span class="nv language-shell"></span><span class="nb">cd </span>cockroach</code></pre></div>
+
+      {% include copy-clipboard.html %}<div class="highlight"><pre class="highlight"><code><span class="nv language-shell"></span>git checkout {{ page.release_info.version }}</code></pre></div>
 
       {% include copy-clipboard.html %}<div class="highlight"><pre class="highlight"><code><span class="nv language-shell"></span>make build</code></pre></div>
 
