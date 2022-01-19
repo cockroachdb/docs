@@ -4,7 +4,7 @@ summary: Monitor a changefeed from the DB console and use logs for debugging.
 toc: true
 ---
 
-[Debugging](#debug-a-changefeed) and [monitoring](#monitor-a-changefeed) a changefeed is available through the [DB console](ui-overview.html), in the SQL shell, and using [logs](logging-overview.html).
+[Debugging](#debug-a-changefeed) and [monitoring](#monitor-a-changefeed) a changefeed is available through the [DB console](ui-overview.html), in the SQL shell, and [logging](logging-overview.html).
 
 ## Monitor a changefeed
 

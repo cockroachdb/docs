@@ -43,7 +43,7 @@ If you have not done so already, [create a cluster](create-your-cluster.html).
     If you haven't connected to your {{ site.data.products.dedicated }} cluster before, see [Connect to your {{ site.data.products.dedicated }} Cluster](connect-to-your-cluster.html) for information on how to initially connect.
     {{site.data.alerts.end}}
 
-2. Enable [rangefeeds](../{{site.versions["stable"]}}/stream-data-out-of-cockroachdb-using-changefeeds.html#enable-rangefeeds):
+2. Enable [rangefeeds](../{{site.versions["stable"]}}/use-changefeeds.html#enable-rangefeeds):
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -109,7 +109,7 @@ Back in the built-in SQL shell, [create an enterprise changefeed](../{{site.vers
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE CHANGEFEED FOR TABLE order_alerts
-    INTO 'experimental-s3://changefeed-example?AWS_ACCESS_KEY_ID=<KEY>&AWS_SECRET_ACCESS_KEY=<SECRET_KEY>'
+    INTO 's3://changefeed-example?AWS_ACCESS_KEY_ID=<KEY>&AWS_SECRET_ACCESS_KEY=<SECRET_KEY>'
     WITH
         updated,
         resolved='10s';
@@ -124,7 +124,7 @@ Back in the built-in SQL shell, [create an enterprise changefeed](../{{site.vers
 Be sure to replace the placeholders with your AWS key ID and AWS secret key.
 
 {{site.data.alerts.callout_info}}
-If your changefeed is running but data is not displaying in your S3 bucket, you might have to [debug your changefeed](../{{site.versions["stable"]}}/stream-data-out-of-cockroachdb-using-changefeeds.html#debug-a-changefeed).
+If your changefeed is running but data is not displaying in your S3 bucket, you might have to [debug your changefeed](monitor-and-debug-changefeeds.html#debug-a-changefeed).
 {{site.data.alerts.end}}
 
 ## Step 7. Insert data into the tables
@@ -145,7 +145,7 @@ If your changefeed is running but data is not displaying in your S3 bucket, you 
 2. Navigate back to the [S3 bucket](https://s3.console.aws.amazon.com/) to confirm that the data is now streaming to the bucket. A new directory should display on the **Overview** tab.
 
     {{site.data.alerts.callout_info}}
-    If your changefeed is running but data is not displaying in your S3 bucket, you might have to [debug your changefeed](../{{site.versions["stable"]}}/stream-data-out-of-cockroachdb-using-changefeeds.html#debug-a-changefeed).
+    If your changefeed is running but data is not displaying in your S3 bucket, you might have to [debug your changefeed](../{{site.versions["stable"]}}/monitor-and-debug-changefeeds.html#debug-a-changefeed).
     {{site.data.alerts.end}}
 
 ## Step 8. Configure Snowflake

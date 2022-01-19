@@ -25,7 +25,7 @@ URI Component      | Description
 `scheme`           | The type of sink: [`kafka`](#kafka), any [cloud storage sink](#cloud-storage-sink), or [webhook sink](#webhook-sink).
 `host`             | The sink's hostname or IP address.
 `port`             | The sink's port.
-`query_parameters` | The sink's [query parameters](#query-parameters).
+`query_parameters` | The sink's [query parameters](create-changefeed.html#query-parameters).
 
 ## Kafka
 
@@ -39,7 +39,7 @@ Example of a Kafka sink URI:
 
 By default, a Kafka topic has the same name as the table that a changefeed was created on. If a changefeed was created on multiple tables, the changefeed will write to multiple topics corresponding to those table names.
 
-To modify the default topic naming, you can specify a [topic prefix](#topic-prefix-param), [an arbitrary topic name](#topic-name-param), or use the [`full_table_name` option](#full-table-option). Using the [`topic_name`](#topic-name-param) parameter, you can specify an arbitrary topic name and feed all tables into that topic.
+To modify the default topic naming, you can specify a [topic prefix](create-changefeed.html#topic-prefix-param), [an arbitrary topic name](create-changefeed.html#topic-name-param), or use the [`full_table_name` option](create-changefeed.html#full-table-option). Using the [`topic_name`](create-changefeed.html#topic-name-param) parameter, you can specify an arbitrary topic name and feed all tables into that topic.
 
 You can either manually create a topic in your Kafka cluster before starting the changefeed, or the topic will be automatically created when the changefeed connects to your Kafka cluster.
 
@@ -104,7 +104,7 @@ Some considerations when using cloud storage sinks:
 ## Webhook sink
 
 {{site.data.alerts.callout_info}}
-The webhook sink is currently in **beta**. For more information, read about its usage considerations available [parameters](../v21.2/create-changefeed.html#parameters), and [options](../v21.2/create-changefeed.html#options) below.
+The webhook sink is currently in **beta**. For more information, read about its usage considerations, available [parameters](create-changefeed.html#parameters), and [options](create-changefeed.html#options) below.
 {{site.data.alerts.end}}
 
 <span class="version-tag">New in v21.2:</span> Use a webhook sink to deliver changefeed messages to an arbitrary HTTP endpoint.
@@ -117,7 +117,7 @@ Example of a webhook sink URL:
 
 The following are considerations when using the webhook sink:
 
-* Only supports HTTPS. Use the [`insecure_tls_skip_verify`](#tls-skip-verify) parameter when testing to disable certificate verification; however, this still requires HTTPS and certificates.
+* Only supports HTTPS. Use the [`insecure_tls_skip_verify`](create-changefeed.html#tls-skip-verify) parameter when testing to disable certificate verification; however, this still requires HTTPS and certificates.
 * Only supports JSON output format.
 * There is no concurrency configurability.
 
