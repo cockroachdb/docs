@@ -124,7 +124,7 @@ Back in the built-in SQL shell, [create an enterprise changefeed](../{{site.vers
 Be sure to replace the placeholders with your AWS key ID and AWS secret key.
 
 {{site.data.alerts.callout_info}}
-If your changefeed is running but data is not displaying in your S3 bucket, you might have to [debug your changefeed](monitor-and-debug-changefeeds.html#debug-a-changefeed).
+If your changefeed is running but data is not displaying in your S3 bucket, you might have to [debug your changefeed](../{{site.versions["stable"]}}monitor-and-debug-changefeeds.html#debug-a-changefeed).
 {{site.data.alerts.end}}
 
 ## Step 7. Insert data into the tables
@@ -234,4 +234,4 @@ Your changefeed is now streaming to Snowflake.
 - Auto-ingest in Snowflake only works with AWS and Azure. Snowflake does not support GCS yet.
 - Snowpipe works best with append-only workloads, as Snowpipe lacks native ETL capabilities to perform updates to data. You may need to pre-process data before uploading it to Snowflake.
 
-See the [Change Data Capture Overview](change-data-capture-overview.html#known-limitations) for more general changefeed known limitations.
+See the [Change Data Capture Overview](../{{site.versions["stable"]}}/change-data-capture-overview.html#known-limitations) for more general changefeed known limitations.
