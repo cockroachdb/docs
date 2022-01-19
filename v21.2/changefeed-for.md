@@ -14,7 +14,7 @@ The `EXPERIMENTAL CHANGEFEED FOR` [statement](sql-statements.html) creates a new
 
 For more information, see [Stream Data Out of CockroachDB Using Changefeeds](change-data-capture-overview.html).
 
-{% include {{ page.version.version }}/misc/experimental-warning.md %}
+{% include common/experimental-warning.md %}
 
 ## Required privileges
 

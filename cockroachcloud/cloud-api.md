@@ -6,94 +6,15 @@ toc: true
 
 The Cloud API is a [REST interface](https://en.wikipedia.org/wiki/Representational_state_transfer) that allows users programmatic access to manage the lifecycle of clusters within their organization.
 
-{{site.data.alerts.callout_danger}}
-This page describes an early access, experimental version of the Cloud API. The interface and output are subject to change, and there may be bugs.
-{{site.data.alerts.end}}
+{% include_cached cockroachcloud/experimental-warning.md %}
 
 ## API reference
 
 Refer to the [full API reference documentation](../api/cloud/v1.html) for detailed descriptions of the API endpoints and options.
 
-{%comment %} START of temporary content while API is still behind a feature-flag{% endcomment %}
-## Service accounts
-
-Service accounts are used by applications accessing the API to manage {{ site.data.products.db }} clusters within the organization. Service accounts are not for human users.
-
-To create a service account:
-
-1. Click **Create Service Account**.
-1. In the **Create service account** dialog:
-    1. Enter the **Account name**.
-    1. (Optional) Enter a **Description** of the service account.
-    1. Set the **Permissions** of the service account.
-
-        Granting `ADMIN` permissions allows the service account full authorization for the organization, where the service account can create, modify, and delete clusters.
-
-        The `CREATE` permission allows the service account to create new clusters within the organization.
-
-        The `DELETE` permission allows the service account to delete clusters within the organization.
-
-        The `EDIT` permission allows the service account to modify clusters within the organization.
-
-        The `READ` permission allows the service account to get details about clusters within the organization.
-
-    1. Click **Create**.
-
-1. [Create an API key](#create-api-keys) for the newly created service account, or click **Skip** to go back to the Service Accounts table.
-
-### Modify a service account
-
-To modify the name, description, or permissions of a service account:
-
-1. Click the **Action** button for the service account name in the **Service Accounts** table.
-1. Select **Edit**.
-1. In the **Edit service account** dialog, modify the name, description, or permissions for the service account.
-1. Click **Save changes**.
-
-### API access
-
-Each service account can have one or more API keys. API keys are used to authenticate and authorize service accounts when using the API. All API keys created by the account are listed under **API Access**.
-
-We recommend creating service accounts with the [principle of least privilege](https://en.wikipedia.org/wiki/Principle_of_least_privilege), and giving each application that accesses the API its own API key. This allows fine-grained permission and API key access to the cluster.
-
-#### Create API keys
-
-To create an API key:
-
-1. Click **Create API Key**.
-1. Enter the **API key name** and click **Create**. The name should identify how the API key will be used. For example, you could name your API key for the application that will use the key.
-1. Copy the **Secret key** and store it in a secure location. There is a **Copy** button to the right of the displayed secret key that will copy the secret key to your OS clipboard.
-
-    The secret key contains the API key and secret. It should never be shared or publicly accessable. Anyone with the secret key can use the API with the permissions of the service account.
-
-    {{site.data.alerts.callout_danger}}
-    The secret key will not be available after closing the **Create API key** dialog. If you have lost your secret key, you should [delete the API key](#delete-api-keys) and create a new one.
-    {{site.data.alerts.end}}
-
-1. Click **Done**.
-
-#### Delete API keys
-
-To delete an API key associated with a service account:
-
-1. Click the **Action** button for the API key ID in the **API Access** table.
-1. Select **Delete**.
-1. In the **Delete API key** dialog enter the name of the service account to confirm the delete operation, then click **Delete**.
-
-#### Edit API key names
-
-To change the API key name for an existing API key:
-
-1. Find the API key ID in the **API Access** table.
-1. Click the **Action** button.
-1. Select **Edit**.
-1. In the **Edit API key name** dialog modify the API key name and click **Save changes**.
-
-{%comment %} END of temporary content while API is still behind a feature-flag{% endcomment %}
-
 ## Call the API
 
-The API uses [bearer token authentication](https://swagger.io/docs/specification/authentication/bearer-authentication/), and each request requires a [secret key](#api-access). The secret key is associated with a service account, and inherits the [permissions of the account](#service-accounts).
+The API uses [bearer token authentication](https://swagger.io/docs/specification/authentication/bearer-authentication/), and each request requires a [secret key](console-access-management.html#api-access). The secret key is associated with a service account, and inherits the [permissions of the account](console-access-management.html#service-accounts).
 
 To send the secret key when making an API call, add the secret key to the `Authorization` HTTP header sent with the request.
 
@@ -118,7 +39,7 @@ Authorization: Bearer {secret key}
 ~~~
 </section>
 
-Where `{secret key}` is the [secret key string you stored when you created the API key in the Console](#create-api-keys).
+Where `{secret key}` is the [secret key string you stored when you created the API key in the Console](console-access-management.html#create-api-keys).
 
 ## Create a new cluster
 
@@ -220,7 +141,10 @@ If the request was successful, the API will return information about the newly c
 
 Where:
 
-  - `{clusterId}` is the unique ID of this cluster. Use this ID when making API requests for this particular cluster.
+  - `{clusterId}` is the unique ID of this cluster. Use this ID when making API requests for this particular cluster. Note:
+    {{site.data.alerts.callout_info}}
+    The cluster ID used in the Cloud API is different than the cluster name and tenant ID used when [connecting to clusters](connect-to-a-serverless-cluster.html).
+    {{site.data.alerts.end}}
   - `{cluster name}` is the name of the cluster you specified when creating the cluster.
   - `{CockroachDB version}` is the version of CockroachDB running on this cluster.
   - `{account ID}` is the ID of the account that created the cluster. If the cluster was created using the API, this will be the service account ID associated with the secret key used when creating the cluster.
@@ -240,6 +164,9 @@ curl --request GET \
 Where:
 
   - `{clusterId}` is the cluster ID returned after creating the cluster.
+  {{site.data.alerts.callout_info}}
+  The cluster ID used in the Cloud API is different than the cluster name and tenant ID used when [connecting to clusters](connect-to-a-serverless-cluster.html).
+  {{site.data.alerts.end}}
   - `{secret key}` is the secret key for the service account.
 
 If the request was successful, the API will return detailed information about the cluster.
@@ -284,6 +211,9 @@ If the request was successful, the API will return detailed information about th
 Where:
 
   - `{clusterId}` is the unique ID of this cluster. Use this ID when making API requests for this particular cluster.
+  {{site.data.alerts.callout_info}}
+  The cluster ID used in the Cloud API is different than the cluster name and tenant ID used when [connecting to clusters](connect-to-a-serverless-cluster.html).
+  {{site.data.alerts.end}}
   - `{cluster name}` is the name of the cluster you specified when creating the cluster.
   - `{CockroachDB version}` is the version of CockroachDB running on this cluster.
   - `{cloud provider}` is the name of the cloud infrastructure provider on which you want your cluster to run. Possible values are: `GCP` and `AWS`. The default value is `GCP`.
@@ -324,6 +254,9 @@ curl --request PUT \
 Where:
 
   - `{clusterId}` is the unique ID of this cluster.
+  {{site.data.alerts.callout_info}}
+  The cluster ID used in the Cloud API is different than the cluster name and tenant ID used when [connecting to clusters](connect-to-a-serverless-cluster.html).
+  {{site.data.alerts.end}}
   - `{secret key}` is the secret key for the service account.
   - `{spend limit}` is the [maximum amount of money, in US cents, you want to spend per month](serverless-cluster-management.html#planning-your-cluster) on this cluster.
 
@@ -344,7 +277,11 @@ curl --request DELETE \
 
 Where:
 
-  - `{clusterId}` is the cluster ID.
+  - `{organizationId}` is the organization ID found in the **Settings** page of the Console.
+  - `{clusterId}` is the unique ID of this cluster.
+  {{site.data.alerts.callout_info}}
+  The cluster ID used in the Cloud API is different than the cluster name and tenant ID used when [connecting to clusters](connect-to-a-serverless-cluster.html).
+  {{site.data.alerts.end}}
   - `{secret key}` is the secret key for the service account.
 
 If the `DELETE` request was successful the client will not receive a response payload.
@@ -397,6 +334,9 @@ If the request was successful, the client will receive a list of all clusters wi
 Where:
 
   - `{clusterId}` is the unique ID of this cluster.
+  {{site.data.alerts.callout_info}}
+  The cluster ID used in the Cloud API is different than the cluster name and tenant ID used when [connecting to clusters](connect-to-a-serverless-cluster.html).
+  {{site.data.alerts.end}}
   - `{cluster name}` is the name of the cluster.
   - `{CockroachDB version}` is the version of CockroachDB running on this cluster.
   - `{cloud provider}` is the name of the cloud infrastructure provider. Possible values are: `GCP` and `AWS`.

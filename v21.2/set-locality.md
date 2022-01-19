@@ -140,7 +140,7 @@ ALTER TABLE rides ADD COLUMN region crdb_internal_region AS (
 
 ### Turn on auto-rehoming for `REGIONAL BY ROW` tables
 
-{% include {{ page.version.version }}/misc/experimental-warning.md %}
+{% include common/experimental-warning.md %}
 
 This feature is disabled by default.
 
