@@ -72,3 +72,9 @@ For more information, see [`CANCEL JOB`](cancel-job.html).
 ### Configuring all changefeeds
 
 {% include {{ page.version.version }}/cdc/configure-all-changefeed.md %}
+
+## See also
+
+- [`SHOW JOBS`](show-jobs.html)
+- [`EXPERIMENTAL CHANGEFEED FOR`](changefeed-for.html)
+- [`CREATE CHANGEFEED`](create-changefeed.html)

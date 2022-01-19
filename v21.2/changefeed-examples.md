@@ -4,13 +4,13 @@ summary: Examples for starting and using changefeeds with different aims.
 toc: true
 ---
 
-This page provides examples for using Core and {{ site.data.products.enterprise }} changefeeds. Creating {{ site.data.products.enterprise }} changefeeds is available in {{ site.data.products.dedicated }} or in clusters with an [{{ site.data.products.enterprise }} license](enterprise-licensing.html). Core changefeeds are available in all products.
+This page provides step-by-step examples for using Core and {{ site.data.products.enterprise }} changefeeds. Creating {{ site.data.products.enterprise }} changefeeds is available on {{ site.data.products.dedicated }} or on clusters with an [{{ site.data.products.enterprise }} license](enterprise-licensing.html). Core changefeeds are available in all products.
 
-For a summary of Core {{ site.data.products.enterprise }} changefeeds, see [What is Change Data Capture?](change-data-capture-overview.html#what-is-change-data-capture).
+For a summary of Core and {{ site.data.products.enterprise }} changefeeds, see [What is Change Data Capture?](change-data-capture-overview.html#what-is-change-data-capture)
 
 <div class="filters clearfix">
-  <button class="filter-button" data-scope="core"</button>
-  <button class="filter-button" data-scope="enterprise"</button>
+  <button class="filter-button" data-scope="core">Core</button>
+  <button class="filter-button" data-scope="enterprise">Enterprise</button>
 </div>
 
 <section class="filter-content" markdown="1" data-scope="core">
@@ -18,7 +18,7 @@ For a summary of Core {{ site.data.products.enterprise }} changefeeds, see [What
 Core changefeeds stream row-level changes to a client until the underlying SQL connection is closed.
 
 {{site.data.alerts.callout_info}}
-Only core changefeeds are available on {{ site.data.products.serverless-plan }}. To create a changefeed into a configurable sink, like cloud storage or Kafka, use {{ site.data.products.dedicated }}, which has this feature enabled by default.
+Only Core changefeeds are available on {{ site.data.products.serverless-plan }}. To create a changefeed into a [configurable sink](changefeed-sinks.html), like cloud storage or Kafka, use {{ site.data.products.dedicated }}, which has this feature enabled by default.
 {{site.data.alerts.end}}
 
 ### Create a core changefeed
@@ -29,7 +29,7 @@ Only core changefeeds are available on {{ site.data.products.serverless-plan }}.
 
 {% include {{ page.version.version }}/cdc/create-core-changefeed-avro.md %}
 
-For further information on core changefeeds, see [`EXPERIMENTAL CHANGEFEED FOR`](changefeed-for.html).
+For further information on Core changefeeds, see [`EXPERIMENTAL CHANGEFEED FOR`](changefeed-for.html).
 
 </section>
 
@@ -38,7 +38,7 @@ For further information on core changefeeds, see [`EXPERIMENTAL CHANGEFEED FOR`]
 ### Create a changefeed connected to Kafka
 
 {{site.data.alerts.callout_info}}
-[`CREATE CHANGEFEED`](create-changefeed.html) is an [{{ site.data.products.enterprise }}-only](enterprise-licensing.html) feature. For the core version, see [the `CHANGEFEED FOR` example](#create-a-core-changefeed).
+[`CREATE CHANGEFEED`](create-changefeed.html) is an [{{ site.data.products.enterprise }}-only](enterprise-licensing.html) feature. For the Core version, see [the `CHANGEFEED FOR` example](#create-a-core-changefeed).
 {{site.data.alerts.end}}
 
 In this example, you'll set up a changefeed for a single-node cluster that is connected to a Kafka sink. The changefeed will watch two tables.
@@ -235,7 +235,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 ### Create a changefeed connected to Kafka using Avro
 
 {{site.data.alerts.callout_info}}
-[`CREATE CHANGEFEED`](create-changefeed.html) is an [Enterprise-only](enterprise-licensing.html) feature. For the core version, see [the `CHANGEFEED FOR` example](#create-a-core-changefeed-using-avro).
+[`CREATE CHANGEFEED`](create-changefeed.html) is an [Enterprise-only](enterprise-licensing.html) feature. For the Core version, see [the `CHANGEFEED FOR` example](#create-a-core-changefeed-using-avro).
 {{site.data.alerts.end}}
 
 In this example, you'll set up a changefeed for a single-node cluster that is connected to a Kafka sink and emits [Avro](https://avro.apache.org/docs/1.8.2/spec.html) records. The changefeed will watch two tables.
@@ -432,7 +432,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 ### Create a changefeed connected to a cloud storage sink
 
 {{site.data.alerts.callout_info}}
-[`CREATE CHANGEFEED`](create-changefeed.html) is an [Enterprise-only](enterprise-licensing.html) feature. For the core version, see [the `CHANGEFEED FOR` example above](#create-a-core-changefeed).
+[`CREATE CHANGEFEED`](create-changefeed.html) is an [Enterprise-only](enterprise-licensing.html) feature. For the Core version, see [the `CHANGEFEED FOR` example above](#create-a-core-changefeed).
 {{site.data.alerts.end}}
 
 In this example, you'll set up a changefeed for a single-node cluster that is connected to an AWS S3 sink. The changefeed watches two tables. Note that you can set up changefeeds for any of [these cloud storage providers](changefeed-sinks.html#cloud-storage-sink).
@@ -553,7 +553,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 ### Create a changefeed connected to a webhook sink
 
 {{site.data.alerts.callout_info}}
-[`CREATE CHANGEFEED`](create-changefeed.html) is an [enterprise-only](enterprise-licensing.html) feature. For the core version, see [the `CHANGEFEED FOR` example above](#create-a-core-changefeed).
+[`CREATE CHANGEFEED`](create-changefeed.html) is an [enterprise-only](enterprise-licensing.html) feature. For the Core version, see [the `CHANGEFEED FOR` example above](#create-a-core-changefeed).
 {{site.data.alerts.end}}
 
 {% include {{ page.version.version }}/cdc/webhook-beta.md %}
@@ -664,3 +664,8 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
     For more detail on emitted changefeed messages, see [responses](use-changefeeds.html#responses).
 
 </section>
+
+## See also
+
+- [`EXPERIMENTAL CHANGEFEED FOR`](changefeed-for.html)
+- [`CREATE CHANGEFEED`](create-changefeed.html)

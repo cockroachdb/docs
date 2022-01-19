@@ -19,7 +19,7 @@ Area | Description
 [SQL Dashboard](ui-sql-dashboard.html) | Metrics about SQL connections, byte traffic, queries, transactions, and service latency.
 [Storage Dashboard](ui-storage-dashboard.html) | Metrics about storage capacity and file descriptors.
 [Replication Dashboard](ui-replication-dashboard.html) | Metrics about how data is replicated across the cluster, e.g., range status, replicas per store, and replica quiescence.
-[Changefeeds Dashboard](ui-cdc-dashboard.html) | Metrics about the [changefeeds](stream-data-out-of-cockroachdb-using-changefeeds.html) created across your cluster.
+[Changefeeds Dashboard](ui-cdc-dashboard.html) | Metrics about the [changefeeds](change-data-capture-overview.html) created across your cluster.
 [Databases](ui-databases-page.html) | Details about the system and user databases in the cluster.
 [Sessions](ui-sessions-page.html) |  Details about open sessions in the cluster.
 [Statements](ui-statements-page.html) | Frequently executed and high latency [SQL statements](sql-statements.html), with the option to collect statement diagnostics.
