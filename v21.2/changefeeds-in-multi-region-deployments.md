@@ -30,3 +30,10 @@ If the [`schema_change_policy`](create-changefeed.html#options) changefeed optio
 ~~~
 
 See the changefeed [responses](use-changefeeds.html#responses) section for more general information on the messages emitted from a changefeed.
+
+## See also
+
+- [Use Changefeeds](use-changefeeds.html)
+- [`SET LOCALITY`](set-locality.html)
+- [Multi-Region Overview](multiregion-overview.html)
+- [Primary Key Constraint](primary-key.html)

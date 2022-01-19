@@ -8,9 +8,9 @@ toc: true
 `CREATE CHANGEFEED` is an [Enterprise-only](enterprise-licensing.html) feature. For the core version, see [`EXPERIMENTAL CHANGEFEED FOR`](changefeed-for.html).
 {{site.data.alerts.end}}
 
-The `CREATE CHANGEFEED` [statement](sql-statements.html) creates a new Enterprise changefeed, which targets an allowlist of tables called "watched rows".  Every change to a watched row is emitted as a record in a configurable format (`JSON` or Avro) to a configurable sink ([Kafka](https://kafka.apache.org/), a [cloud storage sink](#cloud-storage-sink), or a [webhook sink](#webhook-sink)). You can [create](#create-a-changefeed-connected-to-kafka), [pause](#pause-a-changefeed), [resume](#resume-a-paused-changefeed), or [cancel](#cancel-a-changefeed) an Enterprise changefeed.
+The `CREATE CHANGEFEED` [statement](sql-statements.html) creates a new Enterprise changefeed, which targets an allowlist of tables called "watched rows".  Every change to a watched row is emitted as a record in a configurable format (`JSON` or Avro) to a configurable sink ([Kafka](https://kafka.apache.org/), a [cloud storage sink](changefeed-sinks.html#cloud-storage-sink), or a [webhook sink](changefeed-sinks.html#webhook-sink)). You can [create](#create-a-changefeed-connected-to-kafka), [pause](#pause-a-changefeed), [resume](#resume-a-paused-changefeed), or [cancel](#cancel-a-changefeed) an Enterprise changefeed.
 
-For more information, see [Stream Data Out of CockroachDB Using Changefeeds](stream-data-out-of-cockroachdb-using-changefeeds.html).
+For more information, see [Use Changefeeds](use-changefeeds.html).
 
 ## Required privileges
 
@@ -52,17 +52,33 @@ URI Component      | Description
 See [Changefeed Sinks](changefeed-sinks.html) for considerations when using each sink and detail on configuration.
 {{site.data.alerts.end}}
 
-Sink                 | URI
----------------------+------------------------------------------------------------------
-Kafka                | `'kafka://broker.address.com:9092?topic_prefix=bar_&tls_enabled=true&ca_cert=LS0tLS1CRUdJTiBDRVJUSUZ&sasl_enabled=true&sasl_user=petee&sasl_password=bones&sasl_mechanism=SASL-SCRAM-SHA-256'`
-Amazon S3            | `'s3://{BUCKET NAME}/{PATH}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'`
-Azure storage | `'azure://{CONTAINER NAME}/{PATH}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}'`
-Google Cloud Storage        | `'gs://{BUCKET NAME}/{PATH}?AUTH=specified&CREDENTIALS={ENCODED KEY}'`
-Webhook              | `'webhook-https://{your-webhook-endpoint}?insecure_tls_skip_verify=true'`
+#### Kafka
 
-[Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html#example-file-urls) provides more detail on authentication and encryption to cloud storage sinks.
+Example of a Kafka sink URI:
 
-#### Query parameters
+~~~
+'kafka://broker.address.com:9092?topic_prefix=bar_&tls_enabled=true&ca_cert=LS0tLS1CRUdJTiBDRVJUSUZ&sasl_enabled=true&sasl_user=petee&sasl_password=bones&sasl_mechanism=SASL-SCRAM-SHA-256'
+~~~
+
+#### Cloud Storage
+
+Example of a cloud storage sink URI with Amazon S3:
+
+~~~
+'s3://{BUCKET NAME}/{PATH}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
+~~~
+
+[Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html) explains the requirements for authentication and encryption for each supported cloud storage sink. See [Changefeed Sinks](changefeed-sinks.html#cloud-storage-sink) for considerations when using cloud storage and example URIs for Google Cloud Storage and Azure Storage.
+
+#### Webhook
+
+Example of a webhook URI:
+
+~~~
+'webhook-https://{your-webhook-endpoint}?insecure_tls_skip_verify=true'
+~~~
+
+### Query parameters
 
 {% include {{ page.version.version }}/cdc/url-encoding.md %}
 
@@ -114,7 +130,7 @@ Option | Value | Description
  Using the `format=avro`, `envelope=key_only`, and `updated` options together is rejected. `envelope=key_only` prevents any rows with updated fields from being emitted, which makes the `updated` option meaningless.
 {{site.data.alerts.end}}
 
-### Files
+## Files
 
 The files emitted to a sink use the following naming conventions:
 
@@ -125,7 +141,7 @@ The files emitted to a sink use the following naming conventions:
 The timestamp format is `YYYYMMDDHHMMSSNNNNNNNNNLLLLLLLLLL`.
 {{site.data.alerts.end}}
 
-#### General file format
+### General file format
 
 ~~~
 /[date]/[timestamp]-[uniquer]-[topic]-[schema-id]
@@ -137,7 +153,7 @@ For example:
 /2020-04-02/202004022058072107140000000000000-56087568dba1e6b8-1-72-00000000-test_table-1.ndjson
 ~~~
 
-#### Resolved file format
+### Resolved file format
 
 ~~~
 /[date]/[timestamp].RESOLVED

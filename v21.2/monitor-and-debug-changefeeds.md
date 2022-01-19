@@ -4,7 +4,7 @@ summary: Monitor a changefeed from the DB console and use logs for debugging.
 toc: true
 ---
 
-[Debugging](#debug-a-changefeed) and [monitoring](#monitor-a-changefeed) a changefeed is available through the [DB console](ui-overview.html), in the SQL shell, and [logging](logging-overview.html).
+Changefeeds work as jobs in CockroachDB, which allows for [monitoring](#monitor-a-changefeed) and [debugging](#debug-a-changefeed) through the [DB console's](ui-overview.html) [**Jobs**](ui-jobs-page.html) page and [`SHOW JOBS`](show-jobs.html) SQL statements using the job ID.
 
 ## Monitor a changefeed
 
@@ -15,7 +15,7 @@ Monitoring is only available for Enterprise changefeeds.
 Changefeed progress is exposed as a high-water timestamp that advances as the changefeed progresses. This is a guarantee that all changes before or at the timestamp have been emitted. You can monitor a changefeed:
 
 - On the [Changefeed Dashboard](ui-cdc-dashboard.html) of the DB Console.
-- On the [Jobs page](ui-jobs-page.html) of the DB Console. Hover over the high-water timestamp to view the [system time](as-of-system-time.html).
+- On the [**Jobs** page](ui-jobs-page.html) of the DB Console. Hover over the high-water timestamp to view the [system time](as-of-system-time.html).
 - Using `SHOW CHANGEFEED JOB <job_id>`:
 
     {% include copy-clipboard.html %}
@@ -76,3 +76,9 @@ For more information, see [`SHOW JOBS`](show-jobs.html).
 2. Select `changefeed.error_retries` from the **Metric Name** dropdown menu.
 
     A graph of changefeed restarts due to retryable errors will display.
+
+## See also
+
+- [DB Console](ui-overview.html)
+- [Monitoring and Alerting](monitoring-and-alerting.html)
+- [`SHOW JOBS`](show-jobs.html)
