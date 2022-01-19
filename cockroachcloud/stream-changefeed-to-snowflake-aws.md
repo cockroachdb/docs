@@ -6,7 +6,7 @@ toc: true
 
 While CockroachDB is an excellent system of record, it also needs to coexist with other systems. For example, you might want to keep your data mirrored in full-text indexes, analytics engines, or big data pipelines.
 
-This page walks you through a demonstration of how to use an [enterprise changefeed](../{{site.versions["stable"]}}/create-changefeed.html) to stream row-level changes to [Snowflake](https://www.snowflake.com/), an online analytical processing (OLAP) database.
+This page walks you through a demonstration of how to use an [{{ site.data.products.enterprise }} changefeed](../{{site.versions["stable"]}}/create-changefeed.html) to stream row-level changes to [Snowflake](https://www.snowflake.com/), an online analytical processing (OLAP) database.
 
 {{site.data.alerts.callout_info}}
 Snowflake is optimized for `INSERT`s and batch rewrites over streaming updates. This means that CockroachDB changefeeds are unable to send `UPDATE`s and `DELETE`s to Snowflake. If this is necessary, additional setup (not covered in this tutorial) can allow entire tables to be replaced in batch.
@@ -234,6 +234,4 @@ Your changefeed is now streaming to Snowflake.
 - Auto-ingest in Snowflake only works with AWS and Azure. Snowflake does not support GCS yet.
 - Snowpipe works best with append-only workloads, as Snowpipe lacks native ETL capabilities to perform updates to data. You may need to pre-process data before uploading it to Snowflake.
 
-### General change data capture known limitations
-
-{% include cockroachcloud/known-limitations/cdc.md %}
+See the [Change Data Capture Overview](change-data-capture-overview.html#known-limitations) for more general changefeed known limitations.

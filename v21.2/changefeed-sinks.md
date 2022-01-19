@@ -10,7 +10,7 @@ toc: true
 - [Cloud Storage](#cloud-storage-sink)
 - [Webhook](#webhook-sink)
 
-See [`CREATE CHANGEFEED`](create-changefeed.html) for more detail on the [query parameters](create-changefeed.html#query-parameters) available when setting up a changefeed
+See [`CREATE CHANGEFEED`](create-changefeed.html) for more detail on the [query parameters](create-changefeed.html#query-parameters) available when setting up a changefeed.
 
 ## Sink URI
 
@@ -78,7 +78,7 @@ The configurable fields include:
 
 <a name="kafka-required-acks"></a>
 
-* `"RequiredAcks"`: specifies what a successful write to Kafka is. CockroachDB [guarantees at least once delivery of messages](stream-data-out-of-cockroachdb-using-changefeeds.html#ordering-guarantees) — this value defines the _delivery_. Type: `STRING`. The possible values are:
+* `"RequiredAcks"`: specifies what a successful write to Kafka is. CockroachDB [guarantees at least once delivery of messages](use-changefeeds.html#ordering-guarantees) — this value defines the _delivery_. Type: `STRING`. The possible values are:
   * `"ONE"`: a write to Kafka is successful once the leader node has committed and acknowledged the write. Note that this has the potential risk of dropped messages; if the leader node acknowledges before replicating to a quorum of other Kafka nodes, but then fails. **This is the default value.**
   * `"NONE"`: no Kafka brokers are required to acknowledge that they have committed the message. This will decrease latency and increase throughput, but comes at the cost of lower consistency.
   * `"ALL"`: a quorum must be reached (that is, most Kafka brokers have committed the message) before the leader can acknowledge. This is the highest consistency level.
@@ -87,19 +87,33 @@ The configurable fields include:
 
 Use a cloud storage sink to deliver changefeed data to OLAP or big data systems without requiring transport via Kafka.
 
-Example of a cloud storage sink URI with Amazon S3:
-
-~~~
-'s3://{BUCKET NAME}/{PATH}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
-~~~
-
 Some considerations when using cloud storage sinks:
 
 - Cloud storage sinks only work with `JSON` and emit newline-delimited `JSON` files.
 - The supported cloud schemes are: `s3`, `gs`, `azure`, `http`, and `https`.
 - Both `http://` and `https://` are cloud storage sinks, **not** webhook sinks. It is necessary to prefix the scheme with `webhook-` for [webhook sinks](#webhook-sink).
 
-[Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html#example-file-urls) provides more detail on sink URI structure and authentication to cloud storage sinks.
+Examples of supported cloud storage sink URIs:
+
+### Amazon S3
+
+~~~
+'s3://{BUCKET NAME}/{PATH}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
+~~~
+
+### Azure Storage
+
+~~~
+'azure://{CONTAINER NAME}/{PATH}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}'
+~~~
+
+### Google Cloud Storage
+
+~~~
+'gs://{BUCKET NAME}/{PATH}?AUTH=specified&CREDENTIALS={ENCODED KEY}'
+~~~
+
+[Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html#authentication) provides more detail on authentication to cloud storage sinks.
 
 ## Webhook sink
 
@@ -163,3 +177,8 @@ Some complexities to consider when setting `Flush` fields for batching:
   }
 }
 ~~~
+
+## See also
+
+- [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html)
+- [`CREATE CHANGEFEED`](create-changefeed.html)

@@ -21,9 +21,15 @@ The main feature of CDC is the changefeed, which targets an allowlist of tables,
 | Watches one or multiple tables in a comma-separated list. Emits every change to a "watched" row as a record. | Watches one or multiple tables in a comma-separated list. Emits every change to a "watched" row as a record in a <br> configurable format (`JSON` or Avro) to a configurable sink  ([Kafka](https://kafka.apache.org/)). |
 | [`CREATE`](create-and-configure-changefeeds.html#create-a-changefeed-core) changefeed and cancel by closing the connection. | Manage changefeed with [`CREATE`](#create-and-configure-changefeeds.html#create), [`PAUSE`](create-and-configure-changefeeds.html#pause), [`RESUME`](create-and-configure-changefeeds.html#resume), and [`CANCEL`](create-and-configure-changefeeds.html#cancel), as well as [monitor](monitor-and-debug-changefeeds.html#monitor-a-changefeed) and [debug](monitor-and-debug-changefeeds.html#debug-a-changefeed). |
 
+See [Ordering Guarantees](use-changefeeds.html#ordering-guarantees) for detail on CockroachDB's at-least-once-delivery-guarantee as well as explanation on how rows are emitted.
+
 <!--NOTE New section here in follow-up PR:
 
 ## How changefeeds work
 
 Brief, conceptual overview.
  -->
+
+## Known limitations
+
+{% include {{ page.version.version }}/known-limitations/cdc.md %}

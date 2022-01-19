@@ -6,10 +6,10 @@ toc: true
 
 This page describes the main components to enabling and using changefeeds:
 
-- Enabling changefeed setup through [rangefeeds](#enable-rangefeeds)
-- Emitting for [at-least-once-delivery-guarantees](#ordering-guarantees)
-- Encountering [schema changes on changefeeds](#schema-changes)
-- Understanding [changefeed responses](#responses)
+- [Rangefeeds](#enable-rangefeeds)
+- Changefeed [at-least-once-delivery-guarantees](#ordering-guarantees)
+- [Schema changes](#schema-changes) with changefeeds
+- [Changefeed responses](#responses)
 
 It is recommended to read the following [Considerations](#considerations) before working with changefeeds.
 
@@ -36,9 +36,7 @@ Any created changefeed will error until this setting is enabled. Note that enabl
 
 The `kv.closed_timestamp.target_duration` [cluster setting](cluster-settings.html) can be used with changefeeds. Resolved timestamps will always be behind by at least this setting's duration; however, decreasing the duration leads to more transaction restarts in your cluster, which can affect performance.
 
-## Message emission
-
-### Ordering guarantees
+## Ordering guarantees
 
 - In most cases, each version of a row will be emitted once. However, some infrequent conditions (e.g., node failures, network partitions) will cause them to be repeated. This gives our changefeeds an **at-least-once delivery guarantee**.
 
@@ -103,7 +101,7 @@ The `kv.closed_timestamp.target_duration` [cluster setting](cluster-settings.htm
 
     The complexity with timestamps is necessary because CockroachDB supports transactions that can affect any part of the cluster, and it is not possible to horizontally divide the transaction log into independent changefeeds. For more information about this, [read our blog post on CDC](https://www.cockroachlabs.com/blog/change-data-capture/).
 
-### Delete messages
+## Delete messages
 
 Deleting a row will result in a changefeed outputting the primary key of the deleted row and a null value. For example, with default options, deleting the row with primary key `5` will output:
 
@@ -184,6 +182,10 @@ For webhook sinks, the response format comes as a batch of changefeed messages w
 
 See the [Files](create-changefeed.html#files) for more detail on the file naming format for {{ site.data.products.enterprise }} changefeeds.
 
+## Avro
+
+The following sections provide information on Avro usage with CockroachDB changefeeds. Creating a changefeed using Avro is available in Core and {{ site.data.products.enterprise }} changefeeds.
+
 ### Avro limitations
 
 Below are clarifications for particular SQL types and values for Avro changefeeds:
@@ -222,6 +224,8 @@ CockroachDB Type | Avro Type | Avro Logical Type
 The `DECIMAL` type is a union between Avro `STRING` and Avro `DECIMAL` types.
 {{site.data.alerts.end}}
 
-## Known limitations
+## See also
 
-{% include {{ page.version.version }}/known-limitations/cdc.md %}
+- [Online Schema Changes](online-schema-changes.html)
+- [Change Data Capture Overview](change-data-capture-overview.html)
+- [Create and Configure Changefeeds](create-and-configure-changefeeds.html)
