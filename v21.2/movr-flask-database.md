@@ -58,6 +58,8 @@ Note that `movr` has the following [database regions](multiregion-overview.html#
 - `gcp-europe-west1`
 - `gcp-us-west1`
 
+<a id="table-locality"></a>
+
 ### Table localities
 
 After you have added regions to a database, you can control where the data in each table in the database is stored, using [table localities](multiregion-overview.html#table-locality).
