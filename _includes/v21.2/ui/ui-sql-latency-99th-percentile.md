@@ -1,4 +1,4 @@
-Service latency is calculated as the time in nanoseconds between when the cluster [receives a query and finishes executing the query](architecture/sql-layer.html). This time does not include returning results to the client.
+Service latency is calculated as the time in nanoseconds between when the cluster [receives a query and finishes executing the query](architecture/sql-layer.html). This time does not include returning results to the client. Service latency includes metrics only from **DML statements**.
 
 - In the node view, the graph shows the 99th [percentile](https://en.wikipedia.org/wiki/Percentile#The_normal_distribution_and_percentiles) of service latency for the node. Over the last minute this node executed 99% of queries within this time, not including network latency between the node and the client.
 
