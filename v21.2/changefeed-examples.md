@@ -4,6 +4,23 @@ summary: Examples for starting and using changefeeds with different aims.
 toc: true
 ---
 
+This page provides examples for using Core and {{ site.data.products.enterprise }} changefeeds. Creating {{ site.data.products.enterprise }} changefeeds is available in {{ site.data.products.dedicated }} or in clusters with an [{{ site.data.products.enterprise }} license](enterprise-licensing.html). Core changefeeds are available in all products.
+
+For a summary of Core {{ site.data.products.enterprise }} changefeeds, see [What is Change Data Capture?](change-data-capture-overview.html#what-is-change-data-capture).
+
+<div class="filters clearfix">
+  <button class="filter-button" data-scope="core"</button>
+  <button class="filter-button" data-scope="enterprise"</button>
+</div>
+
+<section class="filter-content" markdown="1" data-scope="core">
+
+Core changefeeds stream row-level changes to a client until the underlying SQL connection is closed.
+
+{{site.data.alerts.callout_info}}
+Only core changefeeds are available on {{ site.data.products.serverless-plan }}. To create a changefeed into a configurable sink, like cloud storage or Kafka, use {{ site.data.products.dedicated }}, which has this feature enabled by default.
+{{site.data.alerts.end}}
+
 ### Create a core changefeed
 
 {% include {{ page.version.version }}/cdc/create-core-changefeed.md %}
@@ -12,15 +29,21 @@ toc: true
 
 {% include {{ page.version.version }}/cdc/create-core-changefeed-avro.md %}
 
+For further information on core changefeeds, see [`EXPERIMENTAL CHANGEFEED FOR`](changefeed-for.html).
+
+</section>
+
+<section class="filter-content" markdown="1" data-scope="enterprise">
+
 ### Create a changefeed connected to Kafka
 
 {{site.data.alerts.callout_info}}
-[`CREATE CHANGEFEED`](create-changefeed.html) is an [Enterprise-only](enterprise-licensing.html) feature. For the core version, see [the `CHANGEFEED FOR` example above](#create-a-core-changefeed).
+[`CREATE CHANGEFEED`](create-changefeed.html) is an [{{ site.data.products.enterprise }}-only](enterprise-licensing.html) feature. For the core version, see [the `CHANGEFEED FOR` example](#create-a-core-changefeed).
 {{site.data.alerts.end}}
 
 In this example, you'll set up a changefeed for a single-node cluster that is connected to a Kafka sink. The changefeed will watch two tables.
 
-1. If you do not already have one, [request a trial Enterprise license](enterprise-licensing.html).
+1. If you do not already have one, [request a trial {{ site.data.products.enterprise }} license](enterprise-licensing.html).
 
 2. Use the [`cockroach start-single-node`](cockroach-start-single-node.html) command to start a single-node cluster:
 
@@ -212,7 +235,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 ### Create a changefeed connected to Kafka using Avro
 
 {{site.data.alerts.callout_info}}
-[`CREATE CHANGEFEED`](create-changefeed.html) is an [Enterprise-only](enterprise-licensing.html) feature. For the core version, see [the `CHANGEFEED FOR` example above](#create-a-core-changefeed-using-avro).
+[`CREATE CHANGEFEED`](create-changefeed.html) is an [Enterprise-only](enterprise-licensing.html) feature. For the core version, see [the `CHANGEFEED FOR` example](#create-a-core-changefeed-using-avro).
 {{site.data.alerts.end}}
 
 In this example, you'll set up a changefeed for a single-node cluster that is connected to a Kafka sink and emits [Avro](https://avro.apache.org/docs/1.8.2/spec.html) records. The changefeed will watch two tables.
@@ -412,7 +435,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 [`CREATE CHANGEFEED`](create-changefeed.html) is an [Enterprise-only](enterprise-licensing.html) feature. For the core version, see [the `CHANGEFEED FOR` example above](#create-a-core-changefeed).
 {{site.data.alerts.end}}
 
-In this example, you'll set up a changefeed for a single-node cluster that is connected to an AWS S3 sink. The changefeed watches two tables. Note that you can set up changefeeds for any of [these cloud storage providers](create-changefeed.html#cloud-storage-sink).
+In this example, you'll set up a changefeed for a single-node cluster that is connected to an AWS S3 sink. The changefeed watches two tables. Note that you can set up changefeeds for any of [these cloud storage providers](changefeed-sinks.html#cloud-storage-sink).
 
 1. If you do not already have one, [request a trial Enterprise license](enterprise-licensing.html).
 
@@ -638,50 +661,6 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
     2021/08/24 14:00:22 {"payload":[{"after":{"city":"san francisco","creation_time":"2019-01-02T03:04:05","current_location":"3893 Dunn Fall Apt. 11","ext":{"color":"black"},"id":"21b2ec54-81ad-4af7-a76d-6087b9c7f0f8","owner_id":"8924c3af-ea6e-4e7e-b2c8-2e318f973393","status":"lost","type":"scooter"},"key":["san francisco","21b2ec54-81ad-4af7-a76d-6087b9c7f0f8"],"topic":"vehicles","updated":"1629813621680097993.0000000000"}],"length":1}
     ~~~
 
-    For more detail on emitted changefeed messages, see [responses](create-changefeed.html#responses).
-
-## Cloud
-
-<!--NOTE
-
-Let's include the billing information note here (might want to add this to an include and then replace wherever this appears across the docs):
-
-{{site.data.alerts.callout_info}}
-For {{ site.data.products.serverless }} clusters, you must have [billing information](billing-management.html) on file for your organization to have access to [cloud storage](../{{site.versions["stable"]}}/use-cloud-storage-for-bulk-operations.html). If you don't have billing set up, [`userfile`](../{{site.versions["stable"]}}/use-userfile-for-bulk-operations.html) is your **only available storage option** for bulk operations. {{ site.data.products.dedicated }} users can run bulk operations with `userfile` or cloud storage.
-{{site.data.alerts.end}}
-
-
-
--->
-
-- [`EXPERIMENTAL CHANGEFEED FOR`](../{{site.versions["stable"]}}/changefeed-for.html) (Serverless)
-- [`CREATE CHANGEFEED`](../{{site.versions["stable"]}}/create-changefeed.html) (Dedicated)
-
-### Stream data out of your {{ site.data.products.db }} cluster
-
-Core changefeeds stream row-level changes to a client until the underlying SQL connection is closed.
-
-{{site.data.alerts.callout_info}}
-Only core changefeeds are available on {{ site.data.products.serverless }}. To create a changefeed into a configurable sink, like cloud storage or Kafka, use {{ site.data.products.dedicated }}, which has this feature enabled by default.
-{{site.data.alerts.end}}
-
-<div class="filters clearfix">
-  <button class="filter-button" data-scope="serverless">{{ site.data.products.serverless }}</button>
-  <button class="filter-button" data-scope="dedicated">{{ site.data.products.dedicated }}</button>
-</div>
-
-<section class="filter-content" markdown="1" data-scope="serverless">
-
-To create a core changefeed in {{ site.data.products.serverless }}, use the following example.
-
-{% include cockroachcloud/cdc/create-core-changefeed.md %}
-
-For further information on changefeeds, read [Stream Data Out of CockroachDB](../{{site.versions["stable"]}}/stream-data-out-of-cockroachdb-using-changefeeds.html) and [`EXPERIMENTAL CHANGEFEED FOR`](../{{site.versions["stable"]}}/changefeed-for.html).
-
-</section>
-
-<section class="filter-content" markdown="1" data-scope="dedicated">
-
-{% include cockroachcloud/cdc/cdc-bulk-examples.md %}
+    For more detail on emitted changefeed messages, see [responses](use-changefeeds.html#responses).
 
 </section>
