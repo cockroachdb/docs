@@ -124,7 +124,7 @@ Back in the built-in SQL shell, [create an enterprise changefeed](../{{site.vers
 Be sure to replace the placeholders with your AWS key ID and AWS secret key.
 
 {{site.data.alerts.callout_info}}
-If your changefeed is running but data is not displaying in your S3 bucket, you might have to [debug your changefeed](../{{site.versions["stable"]}}monitor-and-debug-changefeeds.html#debug-a-changefeed).
+If your changefeed is running but data is not displaying in your S3 bucket, you might have to [debug your changefeed](../{{site.versions["stable"]}}/monitor-and-debug-changefeeds.html#debug-a-changefeed).
 {{site.data.alerts.end}}
 
 ## Step 7. Insert data into the tables
