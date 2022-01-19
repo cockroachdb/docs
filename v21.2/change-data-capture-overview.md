@@ -23,6 +23,8 @@ The main feature of CDC is the changefeed, which targets an allowlist of tables,
 
 See [Ordering Guarantees](use-changefeeds.html#ordering-guarantees) for detail on CockroachDB's at-least-once-delivery-guarantee as well as explanation on how rows are emitted.
 
+See [Ordering Guarantees](use-changefeeds.html#ordering-guarantees) for detail on CockroachDB's at-least-once-delivery-guarantee as well as explanation on how rows are emitted.
+
 <!--NOTE New section here in follow-up PR:
 
 ## How changefeeds work
