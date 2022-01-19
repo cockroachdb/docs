@@ -1,6 +1,6 @@
 ---
 title: When to Use REGIONAL vs. GLOBAL Tables
-summary: Learn when to use REGIONAL vs. GLOBAL tables.
+summary: Learn when to use REGIONAL vs. GLOBAL tables in multi-region clusters.
 toc: false
 ---
 

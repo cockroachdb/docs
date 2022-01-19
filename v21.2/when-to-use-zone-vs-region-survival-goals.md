@@ -1,6 +1,6 @@
 ---
 title: When to Use ZONE vs. REGION Survival Goals
-summary: Learn when to use ZONE vs. REGION survival goals
+summary: Learn when to use ZONE vs. REGION survival goals in multi-region clusters.
 toc: false
 ---
 
