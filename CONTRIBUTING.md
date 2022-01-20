@@ -44,7 +44,7 @@ If you get a permissions error, then try re-running the command with `sudo`.
 
 7. Learn the essentials of our [Docs Structure](#docs-structure).
 
-8. Review our simple [Style Guide](https://github.com/cockroachdb/docs/blob/master/StyleGuide.md.
+8. Review our [Style Guide](https://github.com/cockroachdb/docs/blob/master/StyleGuide.md.
 
 ## Get started
 
