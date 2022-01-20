@@ -295,4 +295,4 @@ The content under What’s new in docs on the home page is controlled by the dat
 
 ## Style Guide
 
-See [Style Guide](https://github.com/cockroachdb/docs/wiki/Style-Guide) for more details.
+See [Style Guide](https://github.com/cockroachdb/docs/blob/master/StyleGuide.md) for more details.
