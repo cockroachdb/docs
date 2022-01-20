@@ -8,6 +8,8 @@ The `RENAME INDEX` [statement](sql-statements.html) changes the name of an index
 
 {{site.data.alerts.callout_info}}It is not possible to rename an index referenced by a view. For more details, see <a href="views.html#view-dependencies">View Dependencies</a>.{{site.data.alerts.end}}
 
+{% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
+
 {% include {{ page.version.version }}/misc/schema-change-view-job.md %}
 
 ## Synopsis
@@ -78,3 +80,4 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 - [`RENAME DATABASE`](rename-database.html)
 - [`RENAME TABLE`](rename-table.html)
 - [`SHOW JOBS`](show-jobs.html)
+- [Online Schema Changes](online-schema-changes.html)

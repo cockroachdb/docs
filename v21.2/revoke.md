@@ -8,6 +8,8 @@ The `REVOKE` [statement](sql-statements.html) revokes [privileges](authorization
 
 You can use `REVOKE` to directly revoke privileges from a role or user, or you can revoke membership to an existing role, which effectively revokes that role's privileges.
 
+{% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
+
 ## Syntax
 
 <div>

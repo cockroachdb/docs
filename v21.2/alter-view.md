@@ -6,7 +6,7 @@ toc: true
 
 The `ALTER VIEW` [statement](sql-statements.html) applies a schema change to a [view](views.html).
 
-{% include {{{ page.version.version }}/misc/schema-change-stmt-note.md %}
+{% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
 ## Required privileges
 
