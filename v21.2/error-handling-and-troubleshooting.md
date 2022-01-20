@@ -22,7 +22,7 @@ Take a look at [Troubleshoot SQL Behavior](query-behavior-troubleshooting.html).
 
 ## Transaction retry errors
 
-Messages with the Postgres error code `40001` indicate that a transaction failed because it [conflicted with another concurrent or recent transaction accessing the same data](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention). The transaction needs to be retried by the client.
+Messages with the Postgres error code `40001` indicate that a transaction failed because it [conflicted with another concurrent or recent transaction accessing the same data](performance-best-practices-overview.html#transaction-contention). The transaction needs to be retried by the client.
 
 If your language's client driver or ORM implements transaction retry logic internally (e.g., if you are using Python and [SQLAlchemy with the CockroachDB dialect](build-a-python-app-with-cockroachdb-sqlalchemy.html)), then you do not need to handle this logic from your application.
 
@@ -31,7 +31,7 @@ If your driver or ORM does not implement this logic, then you will need to imple
 {% include {{page.version.version}}/misc/client-side-intervention-example.md %}
 
 {{site.data.alerts.callout_info}}
-If a consistently high percentage of your transactions are resulting in transaction retry errors, then you may need to evaluate your schema design and data access patterns to find and remove sources of contention. For more information about contention, see [Understanding and Avoiding Transaction Contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention).
+If a consistently high percentage of your transactions are resulting in transaction retry errors, then you may need to evaluate your schema design and data access patterns to find and remove sources of contention. For more information about contention, see [Transaction Contention](performance-best-practices-overview.html#transaction-contention).
 
 For more information about what is causing a specific transaction retry error code, see the [Transaction Retry Error Reference](transaction-retry-error-reference.html).
 {{site.data.alerts.end}}
@@ -75,7 +75,7 @@ Reference information related to this page:
 - [Common errors](common-errors.html)
 - [Transactions](transactions.html)
 - [Transaction retries](transactions.html#client-side-intervention)
-- [Understanding and Avoiding Transaction Contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention)
+- [Transaction Contention](performance-best-practices-overview.html#transaction-contention)
 - [SQL Layer][sql]
 
 Other common tasks:

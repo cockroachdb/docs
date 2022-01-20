@@ -1,4 +1,4 @@
-# Contributing to CockroachDB Docs
+# Contribute to CockroachDB Docs
 
 The CockroachDB docs are open source just like the database itself. We welcome your contributions!
 
@@ -44,9 +44,9 @@ If you get a permissions error, then try re-running the command with `sudo`.
 
 7. Learn the essentials of our [Docs Structure](#docs-structure).
 
-8. Review our simple [Style Guide](https://github.com/cockroachdb/docs/wiki/Style-Guide).
+8. Review our [Style Guide](https://github.com/cockroachdb/docs/blob/master/StyleGuide.md.
 
-## Get Started
+## Get started
 
 Once you're ready to contribute:
 
@@ -91,7 +91,7 @@ Once you're ready to contribute:
 
 We'll review your changes, providing feedback and guidance as necessary. Also, Teamcity, the system we use to automate tests, will run the markdown files through Jekyll and then run [htmltest](https://github.com/cockroachdb/htmltest) against the resulting HTML output to check for errors. Teamcity will also attempt to sync the HTML to an AWS server, but since you'll be working on your own fork, this part of the process will fail; do not worry about the Teamcity fail status.
 
-## Keep Contributing
+## Keep contributing
 
 If you want to regularly contribute to the CockroachDB docs, there are a few things we recommend:
 
@@ -126,7 +126,7 @@ Once you've installed Jekyll and have a local clone of the docs repository, you 
 
     Once you're done viewing your changes, use **CTRL-C** to stop the Jekyll server.
 
-## Docs Structure
+## Docs structure
 
 - [Pages](#pages)
 - [Sidebar](#sidebar)
@@ -153,7 +153,7 @@ summary: Short description of page for SEO
 Field | Description | Default
 ------|-------------|--------
 `title`| Used as the h1 header and written in title-case. | Nothing
-`summary` | Used as the page's `meta description` for SEO. Keep this under 155 characters. Consider using the first sentence of the page, or something similar. | Nothing
+`summary` | Used as the page's `meta description` for SEO. Keep this under 155 characters. Consider using the first sentence of the page, or something similar. The summary must be between 50-160 characters. | Nothing
 
 Optionally, you can specify other fields in the front-matter:
 
@@ -179,13 +179,13 @@ The CockroachDB Jekyll theme can auto-generate a page-level table of contents li
 
 - By default, a page TOC includes h2 and h3 headers. To limit a page TOC to h2 headers only, set `toc_not_nested: true` in the page's front-matter.
 
-#### Auto-Included Content
+#### Auto-included content
 
 Some pages auto-include content from the [`_includes`](_includes) directory. For example, each SQL statement page includes a syntax diagram from `_includes/<version>/sql/diagrams`, and the [build-an-app-with-cockroachdb.md](build-an-app-with-cockroachdb.md) tutorials include code samples from `_includes/<version>/app`.
 
 The syntax for including content is `{% include {{ page.version.version }}/<filepath> %}`, for example, `{% include {{ page.version.version }}/app/basic-sample.rb %}`.
 
-#### Version Tags
+#### Version tags
 
 New and changed features should be called out in the documentation using version tags.
 
@@ -203,7 +203,7 @@ New and changed features should be called out in the documentation using version
 
 When calling out a change, rather than something new, change `New in vX.X` to `Changed in vX.X`.
 
-#### Allowed Hashes
+#### Allowed hashes
 
 In a page's front-matter, you can specify a list of allowed hashes
 that do not correspond to a section heading on the page. This is
@@ -213,7 +213,7 @@ attempt to link to, for example, `page-with-toggles.html#toggle-id` without
 listing `toggle-id` in `allowed_hashes`, our HTML tester will complain
 that `toggle-id` does not exist on the page. Listing a hash in
 `allowed_hashes` will generate a placeholder element with that ID at the top
-of the page, which keeps our HTML tester happy.
+of the page, which satisfies our HTML tester.
 
 Here's an example from a page with OS toggles:
 
@@ -223,13 +223,13 @@ allowed_hashes: [os-mac, os-linux, os-windows]
 
 #### Images
 
-For information about how we use images in our docs, see [Images](https://github.com/cockroachdb/docs/wiki/Style-Guide#images) in our [Style Guide](https://github.com/cockroachdb/docs/wiki/Style-Guide).
+For information about how we use images in our docs, see [Images](https://github.com/cockroachdb/docs/wiki/Style-Guide#images) in our [Style Guide](https://github.com/cockroachdb/docs/blob/master/StyleGuide.md).
 
-#### Feedback Widget
+#### Feedback widget
 
 We show "Yes/No" feedback buttons at the bottom of every page by default. To remove these buttons from a page, set `feedback: false` in the page's front-matter.
 
-#### Contributing Options
+#### Contributing options
 
 We show "Contribute" options in the top-right of every page by default. To remove these options from a page, set `contribute: false` in the page's front-matter.
 
@@ -247,7 +247,7 @@ Field | Type | Description
 `items` | Array of objects | The pages in a section of the sidenav.
 `urls` | Array of strings | The URLs for a page in the sidenav, each formatted as `/${VERSION}/<page-name>.html`, e.g., `/${VERSION}/learn-cockroachdb-sql.html`. The first URL is the page to link to. The subsequent URLs are pages that should highlight this title in the sidebar.
 
-#### JSON Example
+#### JSON example
 
 This example shows some of the first section of the sidenav, `Get Started`:
 - The first `title` field defines the section title.
@@ -290,9 +290,6 @@ This example shows some of the first section of the sidenav, `Get Started`:
 ]
 ```
 
-## Homepage What’s new in docs Content
-The content under What’s new in docs on the home page is controlled by the data file `_data/whats_new.yml`
+## Style guide
 
-## Style Guide
-
-See [Style Guide](https://github.com/cockroachdb/docs/wiki/Style-Guide) for more details.
+See [Style Guide](https://github.com/cockroachdb/docs/blob/master/StyleGuide.md) for more details.
