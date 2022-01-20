@@ -72,7 +72,7 @@ Table | Description
 `partitions` | Contains information about [partitions](partitioning.html) in your cluster.
 `predefined_comments` | Contains predefined comments about your cluster.
 `ranges` | Contains information about ranges in your cluster.
-`ranges_no_leases` | Contains information about ranges in your cluster, without leases.
+`ranges_no_leases` <a name="ranges_no_leases"></a> | Contains information about ranges in your cluster, without leases.
 `regions` | Contains information about [cluster regions](multiregion-overview.html#cluster-regions).
 `schema_changes` | Contains information about schema changes in your cluster.
 `session_trace` | Contains session trace information for your cluster.
