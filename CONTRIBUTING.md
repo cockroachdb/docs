@@ -290,9 +290,6 @@ This example shows some of the first section of the sidenav, `Get Started`:
 ]
 ```
 
-## Homepage What’s new in docs Content
-The content under What’s new in docs on the home page is controlled by the data file `_data/whats_new.yml`
-
 ## Style Guide
 
 See [Style Guide](https://github.com/cockroachdb/docs/blob/master/StyleGuide.md) for more details.
