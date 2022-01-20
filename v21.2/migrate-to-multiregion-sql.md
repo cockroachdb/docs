@@ -30,7 +30,7 @@ Replication zone Pattern | Multi-region SQL
 --- | ---
 [Duplicate Indexes][dupe_index] | [`GLOBAL` tables](global-tables.html)
 [Geo-partitioned replicas][geo_replicas] | [`REGIONAL BY ROW` tables](regional-tables.html#regional-by-row-tables) with [`ZONE` survival goals](multiregion-overview.html#surviving-zone-failures)
-[Geo-partitioned leaseholders][geo_leaseholders] | [`REGIONAL` tables](regional-tables.html) with [`REGION` survival goals](multiregion-overview.html#surviving-region-failures)
+[Geo-partitioned leaseholders][geo_leaseholders] | [`REGIONAL BY ROW` tables](regional-tables.html#regional-by-row-tables) with [`REGION` survival goals](multiregion-overview.html#surviving-region-failures)
 
 {{site.data.alerts.callout_info}}
 CockroachDB will no longer provide the [Follow-the-Workload](topology-follow-the-workload.html) pattern's behavior for a database if you use the [multi-region SQL statements](multiregion-overview.html) with that database. In other words, the multi-region SQL statements do not provide a behavior that is analogous to Follow-the-Workload.

@@ -2,7 +2,6 @@
 title: Indexes
 summary: Indexes improve your database's performance by helping SQL locate data without having to look through every row of a table.
 toc: true
-toc_not_nested: true
 ---
 
 Indexes improve your database's performance by helping SQL locate data without having to look through every row of a table.
@@ -61,7 +60,11 @@ For more information about how to tune CockroachDB's performance, see [SQL Perfo
 
 ### Storing columns
 
-The `STORING` clause specifies columns which are not part of the index key but should be stored in the index. This optimizes queries which retrieve those columns without filtering on them, because it prevents the need to read the primary index.
+The `STORING` clause specifies columns which are not part of the index key but should be stored in the index. This optimizes queries which retrieve those columns without filtering on them, because it prevents the need to read the [primary index](primary-key.html).
+
+{% include {{page.version.version}}/sql/covering-index.md %}
+
+Note that the synonym `COVERING` is also supported.
 
 For example, say we have a table with three columns, two of which are indexed:
 
