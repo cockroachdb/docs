@@ -89,7 +89,7 @@ See [Cancel long-running queries](manage-long-running-queries.html#cancel-long-r
 
 Throughput is affected by the disk I/O, CPU usage, and network latency. Use the DB Console to check the following metrics:
 
-- Disk I/O: [Disk IOPS in progress](ui-hardware-dashboard.html#disk-iops-in-progress)
+- Disk I/O: [Disk IOPS in progress](ui-hardware-dashboard.html#disk-ops-in-progress)
 
 - CPU usage: [CPU percent](ui-hardware-dashboard.html#cpu-percent)
 
