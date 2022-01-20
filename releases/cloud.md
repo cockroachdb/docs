@@ -7,11 +7,13 @@ redirect-from: index-cockroachcloud.html
 
 CockroachDB Cloud supports the latest major version of CockroachDB and the version immediately preceding it. All clusters are subject to automatic upgrades to the latest supported minor version. [{{ site.data.products.serverless }}](../cockroachcloud/quickstart.html) clusters are subject to automatic upgrades for both minor and major releases while in beta. For more information, see the [{{ site.data.products.db }} Upgrade Policy](../cockroachcloud/upgrade-policy.html).
 
-New {{ site.data.products.dedicated }} clusters and all {{ site.data.products.serverless }} clusters are running CockroachDB [v21.2.4](v21.2.4.html).
-
 Get future release notes emailed to you: 
 
 {% include marketo.html %}
+
+## Current version
+
+As of January 12, 2021, new {{ site.data.products.dedicated }} clusters and all {{ site.data.products.serverless }} clusters are running CockroachDB [v21.2.4](v21.2.4.html).
 
 ## January 10, 2022
 
@@ -253,3 +255,107 @@ New CockroachCloud clusters will now run CockroachDB [v20.2.3](v20.2.3.html).
 - Fixed a bug where deleting your only organization would prevent your email from being used for a new organization in the future.
 - Fixed a bug where [VPC peering](../cockroachcloud/network-authorization.html#vpc-peering) appeared to be available on clusters that it wasn't supported on.
 
+## December 11, 2020
+
+<h3>General changes</h3>
+
+New CockroachCloud clusters will now run CockroachDB [v20.2.2](v20.2.2.html).
+
+- CockroachCloud is now offering [larger machine sizes](../cockroachcloud/create-your-cluster.html#step-2-select-the-cloud-provider) to be configured directly in the Console. You will now be able to select from four options in the create cluster workflow. The [pricing has also been updated](../cockroachcloud/create-your-cluster.html#step-2-select-the-cloud-provider) for newly created clusters. Existing clusters are not impacted by the pricing changes.
+
+## November 19, 2020
+
+<h3>General changes</h3>
+
+New CockroachCloud clusters will now run CockroachDB [v20.2.0](v20.2.0.html).
+
+- [Create a 30-day free CockroachCloud cluster](../cockroachcloud/quickstart.html).
+- [Add or remove nodes](../cockroachcloud/cluster-management.html#add-or-remove-nodes-from-a-cluster) through the {{ site.data.products.db }} Console.
+- [Set up VPC peering](../cockroachcloud/network-authorization.html) for clusters running on GCP.
+- [View backups](../cockroachcloud/backups-page.html) that Cockroach Labs has taken for your CockroachCloud cluster.
+
+
+## July 6, 2020
+
+You can now [add or remove nodes](../cockroachcloud/cluster-management.html#add-or-remove-nodes-from-a-cluster) from your cluster through the Console.
+
+{{site.data.alerts.callout_info}}
+At this time, you cannot use the Console to scale up a single-node cluster or scale down to a single-node cluster. For these changes, contact [Support](https://support.cockroachlabs.com).
+{{site.data.alerts.end}}
+
+<h3>General changes</h3>
+
+- You can now update your email address and password in your profile.
+
+## June 11, 2020
+
+You can now create a 30-day free CockroachCloud cluster using the code `CRDB30`. The [Quickstart guide](../cockroachcloud/quickstart.html) shows you how to create and connect to your free cluster and run your first query.
+
+<h3>General changes</h3>
+
+- You can now edit your name in your profile.
+
+## May 4, 2020
+
+<h3>General changes</h3>
+
+- Updated the layout of the <a href="https://cockroachlabs.cloud/signup?referralId=docs_cc_release_notes" rel="noopener" target="_blank">Sign up</a> page.
+- [{{ site.data.products.db }} Console Admins](../cockroachcloud/console-access-management.html#console-admin) can now update their [CockroachCloud Organization](../cockroachcloud/console-access-management.html#organization) name.
+- [{{ site.data.products.db }} Console Admins](../cockroachcloud/console-access-management.html#console-admin) can now delete their [CockroachCloud Organization](../cockroachcloud/console-access-management.html#organization).
+
+## April 6, 2020
+
+In addition to various updates, this beta release includes the following major highlights:
+
+- Free trials of CockroachCloud are now available. [Contact us](https://www.cockroachlabs.com/contact-sales/) to request a trial code.
+- CockroachCloud now supports VPC peering for clusters running on GCP. [Contact us](https://support.cockroachlabs.com/hc/en-us) to set up a VPC peering-enabled CockroachCloud cluster.
+
+<h3>Security changes</h3>
+
+CockroachCloud now requires a user to have a CockroachCloud account before accepting an invite to join an Organization.
+
+<h3>General changes</h3>
+
+- The hardware options displayed while [creating a cluster](../cockroachcloud/create-your-cluster.html) have been renamed as "Option 1" and "Option 2".
+- CockroachCloud users who are not a member of an existing Organization can now create an Organization when they log into the {{ site.data.products.db }} Console.
+
+<h3>Doc changes</h3>
+
+- Documented the [upgrade policy](../cockroachcloud/upgrade-policy.html) for CockroachDB upgrades for CockroachCloud clusters.
+
+## March 2, 2020
+
+In addition to various updates, enhancements, and bug fixes, this beta release includes the following major highlights:
+
+- CockroachCloud pricing is now available on the [pricing page](https://www.cockroachlabs.com/pricing/).
+- CockroachCloud clusters running CockroachDB v19.2 have been upgraded to [v19.2.4](https://www.cockroachlabs.com/docs/releases/v19.2.4.html). All new clusters will now be created with CockroachDB v19.2.4.
+- CockroachCloud now offers two options for per-node hardware configuration instead of three options. The hardware configuration [pricing](../cockroachcloud/create-your-cluster.html#step-2-select-the-cloud-provider) has been updated accordingly.
+
+<h3>Security changes</h3>
+
+- CockroachCloud now requires that the password for a SQL user is at least 12 characters in length.
+- CockroachCloud now allows you to download the cluster's CA certificate directly from the shell instead of restricting the download functionality to a web browser.
+
+<h3>General changes</h3>
+
+- Added a **Sign up** link to the [CockroachCloud **Log In** page](https://cockroachlabs.cloud/).
+- While [creating a new cluster](../cockroachcloud/create-your-cluster.html), you can now type in the number of nodes you want in the cluster instead of having to click the `+` sign repeatedly.
+- The [**Create cluster**](../cockroachcloud/create-your-cluster.html) page now displays the estimated hourly cost instead of the monthly cost.
+- Removed the cluster creation banner displayed at the top of the [**Clusters page**](../cockroachcloud/cluster-management.html#view-clusters-page).
+- CockroachCloud now alphabetically sorts the nodes on a [**Cluster Overview page**](../cockroachcloud/cluster-management.html#view-cluster-overview).
+- CockroachCloud no longer displays IOPS per node on the [**Create cluster**](../cockroachcloud/create-your-cluster.html) page.
+- Billing periods are now displayed in the UTC timezone.
+- If you are the only Admin for a CockroachCloud Organization, you can no longer change your role to Developer. Assign another user as Admin and then change your role to Developer.
+
+<h3>Bug fixes</h3>
+
+- Fixed a bug where all organizations with billing enabled and without a billing email address were assigned an internal Cockroach Labs email address.
+- CockroachCloud no longer displays an error message if the internal feature flag for billing is disabled for all organizations.
+- Fixed a bug that required users to update their email address on updating their billing address.
+- Names of deleted clusters can now be reused for new clusters.
+
+<h3>Doc changes</h3>
+
+- Added language-specific connection string examples to the [Connect to your cluster](../cockroachcloud/connect-to-your-cluster.html) document.
+- Added a tutorial on [streaming an enterprise changefeed from CockroachCloud to Snowflake](../cockroachcloud/stream-changefeed-to-snowflake-aws.html).
+- Added a tutorial on [developing and deploying a multi-region web application](../v20.1/multi-region-overview.html).
