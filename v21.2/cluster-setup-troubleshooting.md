@@ -301,7 +301,7 @@ Type | Time Series | What to look for
 RAM capacity | Memory Usage | Any non-zero value
 CPU capacity | CPU Percent | Consistent non-zero values
 Disk capacity | Available Disk Capacity | Any non-zero value
-IOPS | Disk IOPS in Progress | Zero or occasional single-digit values
+Disk I/O | Disk Ops In Progress | Zero or occasional single-digit values
 Network capacity | Network Bytes Received<br/>Network Bytes Sent | Any non-zero value
 
 {{site.data.alerts.callout_info}}
@@ -315,7 +315,7 @@ Type | Time Series | What to look for
 RAM capacity | Memory Usage | Consistently more than 80%
 CPU capacity | CPU Percent | Consistently less than 20% in idle (i.e., 80% busy)
 Disk capacity | Available Disk Capacity | Consistently less than 20% of the [store](cockroach-start.html#store) size
-IOPS | Disk IOPS in Progress | Consistent double-digit values
+Disk I/O | Disk Ops In Progress | Consistent double-digit values
 Network capacity | Network Bytes Received<br/>Network Bytes Sent | Consistently more than 50% capacity for both
 
 ## Storage issues
@@ -438,6 +438,11 @@ If Go allocated memory is larger than a few hundred megabytes, you might have en
 
     {% include {{ page.version.version }}/prod-deployment/healthy-crdb-memory.md %}
 
+    If you observe any of the following, [file an issue](file-an-issue.html):
+      - CGo Allocated is larger than the configured `--cache` size.
+      - RSS minus Go Total and CGo Total is larger than 100 MiB.
+      - Go Total or CGo Total fluctuates or grows steadily over time.
+    
 ### Out-of-memory (OOM) crash
 
 When a node exits without logging an error message, the operating system has likely stopped the node due to insufficient memory.

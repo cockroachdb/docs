@@ -23,50 +23,66 @@ We recommend running a [glibc](https://www.gnu.org/software/libc/)-based Linux d
 
 {% include {{ page.version.version }}/prod-deployment/terminology-vcpu.md %}
 
+### Sizing
+
+The size of your cluster corresponds to its total number of vCPUs. This number depends holistically on your application requirements: total storage capacity, SQL workload response time, SQL [workload concurrency](#connection-pooling), and database service availability.
+
+Working from your total vCPU count, you should then decide how many vCPUs to allocate to each machine. The larger the nodes (i.e., the more vCPUs on the machine), the fewer nodes will be in your cluster.
+
+Carefully consider the following tradeoffs:
+
+- A **smaller number of larger nodes** emphasizes performance consistency.
+
+    - Larger nodes tolerate hotspots more effectively than smaller nodes.
+    - Queries operating on large data sets may strain network transfers if the data is spread widely over many smaller nodes. Having fewer and larger nodes enables more predictable workload performance.
+    - A cluster with fewer nodes may be easier to operate and maintain.
+
+- A **larger number of smaller nodes** emphasizes resiliency across [failure scenarios](disaster-recovery.html).
+
+    - The loss of a small node during failure or routine maintenance has a lesser impact on workload response time and concurrency.
+    - Having more and smaller nodes allows [backup and restore jobs](take-and-restore-encrypted-backups.html) to complete more quickly, since these jobs run in parallel and less data is hosted on each individual node.
+    - Recovery from a failed node is faster when data is spread across more nodes. A smaller node will also take a shorter time to rebuild. 
+
+In general, distribute your total vCPUs into the **largest possible nodes and smallest possible cluster** that meets your fault tolerance goals.
+
+- Each node should have at least {% include {{ page.version.version }}/prod-deployment/provision-cpu.md %}. For good performance, we recommend at least 8 vCPUs per node. 
+
+- Avoid "burstable" or "shared-core" virtual machines that limit the load on CPU resources.
+
+{{site.data.alerts.callout_info}}
+Cockroach Labs does not extensively test nodes with more than 32 vCPUs. This is not a hard limit, especially for deployments using physical hardware rather than cloud instances. However, if you need more vCPUs, we recommend adding more nodes to the cluster instead of adding more than 32 vCPUs to each node.
+{{site.data.alerts.end}}
+
 ### Basic hardware recommendations
+
+Once you have [sized your cluster](#sizing), derive the amount of RAM, storage capacity, and disk I/O from the number of vCPUs.
 
 This hardware guidance is meant to be platform agnostic and can apply to bare-metal, containerized, and orchestrated deployments. Also see our [cloud-specific](#cloud-specific-recommendations) recommendations.
 
 | Value | Recommendation | Reference
 |-------|----------------|----------
-| RAM per vCPU | 4 GiB | [CPU and memory](#cpu-and-memory)
+| RAM per vCPU | 4 GiB | [Memory](#memory)
 | Capacity per vCPU | 150 GiB | [Storage](#storage)
 | IOPS per vCPU | 500 | [Disk I/O](#disk-i-o)
 | MB/s per vCPU | 30 | [Disk I/O](#disk-i-o)
 
-Before deploying to production, test and tune your hardware setup for your application workload. For example, read-heavy and write-heavy workloads will place different emphases on [CPU](#cpu-and-memory), [RAM](#cpu-and-memory), [storage](#storage), [I/O](#disk-i-o), and [network](#networking) capacity.
+Before deploying to production, test and tune your hardware setup for your application workload. For example, read-heavy and write-heavy workloads will place different emphases on [CPU](#sizing), [RAM](#memory), [storage](#storage), [I/O](#disk-i-o), and [network](#networking) capacity.
 
-#### CPU and memory
-
-Each node should have at least {% include {{ page.version.version }}/prod-deployment/provision-cpu.md %}.
+#### Memory
 
 Provision at least {% include {{ page.version.version }}/prod-deployment/provision-memory.md %}. The minimum acceptable ratio is 2 GiB of RAM per vCPU, which is only suitable for testing.
-
-- Distribute your total vCPUs into the largest possible nodes and smallest possible cluster that meets your [fault tolerance goals](disaster-recovery.html).
-
-    - To optimize for throughput, use larger nodes with up to 32 vCPUs. To further increase throughput, add more nodes to the cluster instead of increasing node size.
-
-        {{site.data.alerts.callout_info}}
-        Based on internal testing, 32 vCPUs per node is a sweet spot for OLTP workloads. This is not a hard limit, especially for deployments using physical hardware rather than cloud instances. However, we do not recommend using more than 48 vCPUs per node.
-        {{site.data.alerts.end}}
-
-    - To optimize for resiliency, use many smaller nodes instead of fewer larger nodes. Recovery from a failed node is faster when data is spread across more nodes.
 
 - To optimize for the support of large numbers of tables, increase the amount of RAM. For more information, see [Quantity of tables and other schema objects](schema-design-overview.html#quantity-of-tables-and-other-schema-objects). Supporting a large number of rows is a matter of [Storage](#storage).
 
     {{site.data.alerts.callout_info}} 
-    The benefits to having more RAM decrease as the number of vCPUs increases.
+    The benefits to having more RAM decrease as the [number of vCPUs](#sizing) increases.
     {{site.data.alerts.end}}
-
-- Avoid "burstable" or "shared-core" virtual machines that limit the load on CPU resources.
 
 - To ensure consistent SQL performance, make sure all nodes have a uniform configuration.
 
 - {% include {{ page.version.version }}/prod-deployment/prod-guidance-disable-swap.md %}
     
 - {% include {{ page.version.version }}/prod-deployment/prod-guidance-cache-max-sql-memory.md %} For more details, see [Cache and SQL memory size](#cache-and-sql-memory-size).
-
-- {% include {{ page.version.version }}/prod-deployment/prod-guidance-connection-pooling.md %}. For more details, see [Connection pooling](#connection-pooling).
 
 - Monitor [CPU](common-issues-to-monitor.html#cpu-usage) and [memory](common-issues-to-monitor.html#database-memory-usage) usage. Ensure that they remain within acceptable limits.
 
@@ -266,6 +282,8 @@ Environment | Featured Approach
 
 Creating the appropriate size pool of connections is critical to gaining maximum performance in an application. Too few connections in the pool will result in high latency as each operation waits for a connection to open up. But adding too many connections to the pool can also result in high latency as each connection thread is being run in parallel by the system. The time it takes for many threads to complete in parallel is typically higher than the time it takes a smaller number of threads to run sequentially.
 
+{% include {{ page.version.version }}/prod-deployment/prod-guidance-connection-pooling.md %}. 
+
 For guidance on sizing, validating, and using connection pools with CockroachDB, see [Use Connection Pools](connection-pooling.html).
 
 ## Monitoring and alerting
@@ -278,6 +296,8 @@ For guidance on sizing, validating, and using connection pools with CockroachDB,
 
 ## Cache and SQL memory size
 
+CockroachDB manages its own memory caches, independently of the operating system. These are configured via the [`--cache`](cockroach-start.html#flags) and [`--max-sql-memory`](cockroach-start.html#flags) flags.
+
 Each node has a default cache size of `128MiB` that is passively consumed. The default was chosen to facilitate development and testing, where users are likely to run multiple CockroachDB nodes on a single machine. Increasing the cache size will generally improve the node's read performance.
 
 Each node has a default SQL memory size of `25%`. This memory is used as-needed by active operations to store temporary data for SQL queries.
@@ -289,7 +309,7 @@ Each node has a default SQL memory size of `25%`. This memory is used as-needed 
     SQL memory size applies a limit globally to all sessions at any point in time. Certain disk-spilling operations also respect a memory limit that applies locally to a single operation within a single query. This limit is configured via a separate cluster setting. For details, see [Disk-spilling operations](vectorized-execution.html#disk-spilling-operations).
     {{site.data.alerts.end}}
 
-To manually increase a node's cache size and SQL memory size, start the node using the [`--cache`](cockroach-start.html#flags) and [`--max-sql-memory`](cockroach-start.html#flags) flags. As long as all machines are [provisioned with sufficient RAM](#cpu-and-memory), you can experiment with increasing each value up to `35%`.
+To manually increase a node's cache size and SQL memory size, start the node using the [`--cache`](cockroach-start.html#flags) and [`--max-sql-memory`](cockroach-start.html#flags) flags. As long as all machines are [provisioned with sufficient RAM](#memory), you can experiment with increasing each value up to `35%`.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell

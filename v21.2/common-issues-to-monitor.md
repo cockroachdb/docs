@@ -20,9 +20,9 @@ Issues with CPU most commonly arise when there is insufficient CPU to suppport t
 
 Provision enough CPU to support your operational and workload concurrency requirements:
 
-| Category | Recommendations                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| CPU      | <ul><li>Each node should have at least {% include {{ page.version.version }}/prod-deployment/provision-cpu.md %}.</li><li>Use larger VMs to handle temporary workload spikes and processing hotspots. Based on internal testing, 32 vCPUs per node is a sweet spot for OLTP workloads.</li><li>{% include {{ page.version.version }}/prod-deployment/prod-guidance-connection-pooling.md %} For more details, see [Sizing connection pools](connection-pooling.html#sizing-connection-pools).</li><li>See additional CPU recommendations in the [Production Checklist](recommended-production-settings.html#cpu-and-memory).</li></ul> |
+| Category | Recommendations                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+|----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| CPU      | <ul><li>Each node should have at least {% include {{ page.version.version }}/prod-deployment/provision-cpu.md %}.</li><li>Use larger VMs to handle temporary workload spikes and processing hotspots.</li><li>Use connection pooling to manage workload concurrency. {% include {{ page.version.version }}/prod-deployment/prod-guidance-connection-pooling.md %} For more details, see [Sizing connection pools](connection-pooling.html#sizing-connection-pools).</li><li>See additional CPU recommendations in the [Production Checklist](recommended-production-settings.html#sizing).</li></ul> |
 
 ### CPU monitoring
 
@@ -31,8 +31,8 @@ Monitor possible signs of CPU starvation:
 | Parameter                                     | Description                                                                          |
 |-----------------------------------------------|--------------------------------------------------------------------------------------|
 | [Service latency](#service-latency)           | The time between when the cluster receives a query and finishes executing the query. |
-| [CPU usage](#cpu-usage)                       | The CPU consumption by CockroachDB.                                                  |
-| [Workload concurrency](#workload-concurrency) | The number of SQL statements being executed on the cluster.                          |
+| [CPU usage](#cpu-usage)                       | The CPU consumption by the CockroachDB node process.                                 |
+| [Workload concurrency](#workload-concurrency) | The number of SQL statements being executed on the cluster at the same time.         |
 | [LSM health](#lsm-health)                     | The health of the persistent stores.                                                 |
 | [Node health](#node-health)                   | The operational status of the nodes.                                                 |
 
@@ -54,10 +54,6 @@ Compaction on the [storage layer](architecture/storage-layer.html) uses CPU to r
 - The [**CPU Percent**](ui-overload-dashboard.html#cpu-percent) graph on the Hardware and Overload dashboards shows the CPU consumption by the CockroachDB process, and excludes other processes on the node.
 
     {% include {{ page.version.version }}/prod-deployment/healthy-cpu-percent.md %}
-
-- The [**Runnable Goroutines per CPU**](ui-overload-dashboard.html#runnable-goroutines-per-cpu) graph on the Overload dashboard shows the number of [Goroutines](https://golangbot.com/goroutines/) waiting to run per CPU. This graph should rise and fall based on CPU load.
-
-    {% include {{ page.version.version }}/prod-deployment/healthy-runnable-goroutines.md %}
 
 If CPU usage is high, check whether [workload concurrency](#workload-concurrency) is exceeding CPU resources.
 
@@ -129,7 +125,7 @@ Provision enough memory and allocate an appropriate portion for data caching:
 
 | Category | Recommendations                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
 |----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Memory   | <ul><li>Provision at least {% include {{ page.version.version }}/prod-deployment/provision-memory.md %}.</li><li>{% include {{ page.version.version }}/prod-deployment/prod-guidance-cache-max-sql-memory.md %} For more details, see the [Production Checklist](recommended-production-settings.html#cache-and-sql-memory-size).</li><li>{% include {{ page.version.version }}/prod-deployment/prod-guidance-disable-swap.md %}</li><li>See additional memory recommendations in the [Production Checklist](recommended-production-settings.html#cpu-and-memory).</li> |
+| Memory   | <ul><li>Provision at least {% include {{ page.version.version }}/prod-deployment/provision-memory.md %}.</li><li>{% include {{ page.version.version }}/prod-deployment/prod-guidance-cache-max-sql-memory.md %} For more details, see the [Production Checklist](recommended-production-settings.html#cache-and-sql-memory-size).</li><li>{% include {{ page.version.version }}/prod-deployment/prod-guidance-disable-swap.md %}</li><li>See additional memory recommendations in the [Production Checklist](recommended-production-settings.html#memory).</li> |
 
 ### Memory monitoring
 
@@ -228,7 +224,7 @@ Monitor storage capacity and disk performance:
 | Metric or event                                   | Description                                                                                                          |
 |---------------------------------------------------|----------------------------------------------------------------------------------------------------------------------|
 | [Storage capacity](#storage-capacity)             | The available and used disk capacity in the CockroachDB [store](cockroach-start.html#store).                         |
-| [Disk IOPS](#disk-iops)                           | The number of disk reads and writes in queue.                                                                        |
+| [Disk IOPS](#disk-iops)                           | The I/O requests per second.                                                                                         |
 | [Node heartbeat latency](#node-heartbeat-latency) | The time between [node liveness](cluster-setup-troubleshooting.html#node-liveness-issues) heartbeats.                |
 | [Command commit latency](#command-commit-latency) | The speed at which [Raft commands](architecture/replication-layer.html) are being committed by nodes in the cluster. |
 
@@ -250,11 +246,11 @@ Ensure that you [provision sufficient storage](recommended-production-settings.h
 
 Insufficient disk I/O can cause [poor SQL performance](#service-latency) and potentially [disk stalls](cluster-setup-troubleshooting.html#disk-stalls).
 
-- The [**Disk IOPS in Progress**](ui-hardware-dashboard.html#disk-iops-in-progress) graph on the Hardware dashboard shows the number of disk reads and writes in queue.
+- The [**Disk Ops In Progress**](ui-hardware-dashboard.html#disk-ops-in-progress) graph on the Hardware dashboard shows the number of disk reads and writes in queue.
 
-    {% include {{ page.version.version }}/prod-deployment/healthy-disk-iops-in-progress.md %}
+    {% include {{ page.version.version }}/prod-deployment/healthy-disk-ops-in-progress.md %}
 
-- The Linux tool `iostat` (part of `sysstat`) can be used to monitor IOPS. In the device status output, `avgqu-sz` corresponds to the **Disk IOPS in Progress** metric. If service times persist in double digits on any node, this means that your storage device is saturated and is likely under-provisioned or misconfigured.
+- The Linux tool `iostat` (part of `sysstat`) can be used to monitor IOPS. In the device status output, `avgqu-sz` corresponds to the **Disk Ops In Progress** metric. If service times persist in double digits on any node, this means that your storage device is saturated and is likely under-provisioned or misconfigured.
 
 {{site.data.alerts.callout_success}}
 Ensure that you [properly configure storage](#storage-and-disk-monitoring) to prevent I/O bottlenecks. Afterward, if service times consistently exceed 1-5 ms, you can add more devices or expand the cluster to reduce the disk latency.

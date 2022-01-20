@@ -60,20 +60,18 @@ This graph shows the memory consumption by the CockroachDB process only and is u
 
 - In the cluster view, the graph shows the 10-second average of the number of disk write ops per second for all processes, including CockroachDB, across all nodes.
 
-## Disk IOPS in Progress
-
-<img src="{{ 'images/v21.2/ui_disk_iops.png' | relative_url }}" alt="DB Console Disk IOPS in Progress graph" style="border:1px solid #eee;max-width:100%" />
+## Disk Ops In Progress
 
 - In the node view, the graph shows the number of disk reads and writes in queue for all processes, including CockroachDB, for the selected node.
 
 - In the cluster view, the graph shows the number of disk reads and writes in queue for all processes, including CockroachDB, across all nodes in the cluster.
 
 {{site.data.alerts.callout_info}}
-{% include {{ page.version.version }}/prod-deployment/healthy-disk-iops-in-progress.md %}
+{% include {{ page.version.version }}/prod-deployment/healthy-disk-ops-in-progress.md %}
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
-On macOS, this graph is currently not populated and shows zero disk IOPS in progress.
+On macOS, this graph is currently not populated and shows zero disk ops in progress.
 {{site.data.alerts.end}}
 
 ## Available Disk Capacity

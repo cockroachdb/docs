@@ -1,1 +1,0 @@
-**Expected values for a healthy cluster**: This value should be below 50. Values greater than 50 are considered high.

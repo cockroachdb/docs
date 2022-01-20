@@ -1,1 +1,1 @@
-Disable Linux memory swapping. CockroachDB manages its own memory caches (configured via the [`--cache` and `--max-sql-memory` flags](cockroach-start.html#flags)), independently of the operating system. Over-allocating memory on production machines can lead to unexpected performance issues when pages have to be read back into memory.
+Disable Linux memory swapping. Over-allocating memory on production machines can lead to unexpected performance issues when pages have to be read back into memory.
