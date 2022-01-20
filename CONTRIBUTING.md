@@ -153,7 +153,7 @@ summary: Short description of page for SEO
 Field | Description | Default
 ------|-------------|--------
 `title`| Used as the h1 header and written in title-case. | Nothing
-`summary` | Used as the page's `meta description` for SEO. Keep this under 155 characters. Consider using the first sentence of the page, or something similar. | Nothing
+`summary` | Used as the page's `meta description` for SEO. Keep this under 155 characters. Consider using the first sentence of the page, or something similar. The summary must be between 50-160 characters. | Nothing
 
 Optionally, you can specify other fields in the front-matter:
 
@@ -213,7 +213,7 @@ attempt to link to, for example, `page-with-toggles.html#toggle-id` without
 listing `toggle-id` in `allowed_hashes`, our HTML tester will complain
 that `toggle-id` does not exist on the page. Listing a hash in
 `allowed_hashes` will generate a placeholder element with that ID at the top
-of the page, which keeps our HTML tester happy.
+of the page, which satisfies our HTML tester.
 
 Here's an example from a page with OS toggles:
 
