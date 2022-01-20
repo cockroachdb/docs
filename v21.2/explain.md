@@ -119,13 +119,13 @@ The output also describes a set of properties, some global to the query, and som
     The scan filters on the `revenue` column.
 - `estimated row count`:`125,000 (100% of the table; stats collected 19 minutes ago)`
 
-    The estimated number of rows scanned by the query, in this case, `125,000` rows of data; the percentage of the table the query spans, in this case 100%; and when the statistics for the table were last collected, in this case 19 minutes ago.
+    The estimated number of rows scanned by the query, in this case, `125,000` rows of data; the percentage of the table the query spans, in this case 100%; and when the statistics for the table were last collected, in this case 19 minutes ago. If you do not see statistics, you can manually generate table statistics with [`CREATE STATISTICS`](create-statistics.html) or configure more frequent statistics generation following the steps in [Control automatic statistics](cost-based-optimizer.html#control-automatic-statistics).
 - `table`:`rides@primary`
 
     The table is scanned on the `primary` index.
 - `spans`:`FULL SCAN`
 
-    The table is scanned on all key ranges of the `primary` index (i.e., a full table scan). For more information on indexes and key ranges, see the [example](#find-the-indexes-and-key-ranges-a-query-uses) below.
+    The table is scanned on all key ranges of the `primary` index (i.e., a full table scan). For more information on indexes and key ranges, see the following [example](#find-the-indexes-and-key-ranges-a-query-uses).
 
 If you run `EXPLAIN` on a [join](joins.html) query, the output will display which type of join will be executed. For example, the following `EXPLAIN` output shows that the query will perform a [hash join](joins.html#hash-joins):
 
@@ -847,6 +847,7 @@ By default, `SELECT FOR UPDATE` locking is enabled for the initial row scan of `
 - [`BACKUP`](backup.html)
 - [`CANCEL JOB`](cancel-job.html)
 - [`CREATE DATABASE`](create-database.html)
+- [`CREATE STATISTICS`](create-statistics.html)
 - [`DROP DATABASE`](drop-database.html)
 - [`EXECUTE`](sql-grammar.html#execute_stmt)
 - [`EXPLAIN ANALYZE`](explain-analyze.html)
