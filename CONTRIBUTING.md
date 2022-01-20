@@ -44,7 +44,7 @@ If you get a permissions error, then try re-running the command with `sudo`.
 
 7. Learn the essentials of our [Docs Structure](#docs-structure).
 
-8. Review our simple [Style Guide](https://github.com/cockroachdb/docs/wiki/Style-Guide).
+8. Review our simple [Style Guide](https://github.com/cockroachdb/docs/blob/master/StyleGuide.md.
 
 ## Get Started
 
@@ -223,7 +223,7 @@ allowed_hashes: [os-mac, os-linux, os-windows]
 
 #### Images
 
-For information about how we use images in our docs, see [Images](https://github.com/cockroachdb/docs/wiki/Style-Guide#images) in our [Style Guide](https://github.com/cockroachdb/docs/wiki/Style-Guide).
+For information about how we use images in our docs, see [Images](https://github.com/cockroachdb/docs/wiki/Style-Guide#images) in our [Style Guide](https://github.com/cockroachdb/docs/blob/master/StyleGuide.md).
 
 #### Feedback Widget
 
