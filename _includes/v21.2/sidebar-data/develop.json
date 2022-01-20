@@ -454,6 +454,12 @@
               "urls": [
                 "/${VERSION}/deploy-lambda-function.html"
               ]
+            },
+            {
+              "title": "Netlify",
+              "urls": [
+                "/${VERSION}/deploy-app-netlify.html"
+              ]
             }
           ]
         }
