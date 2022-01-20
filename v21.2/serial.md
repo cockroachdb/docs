@@ -4,13 +4,7 @@ summary: The SERIAL pseudo-type produces integer values automatically.
 toc: true
 ---
 
-The `SERIAL` pseudo [data type](data-types.html) is a keyword that can
-be used *in lieu* of a real data type when defining table columns. It
-is approximately equivalent to using an [integer type](int.html) with
-a [`DEFAULT` expression](default-value.html) that generates different
-values every time it is evaluated. This default expression in turn
-ensures that inserts that do not specify this column will receive an
-automatically generated value instead of `NULL`.
+The `SERIAL` pseudo [data type](data-types.html) is a keyword that can be used *in lieu* of a real data type when defining table columns. It is approximately equivalent to using an [integer type](int.html) with a [`DEFAULT` expression](default-value.html) that generates different values every time it is evaluated. This default expression in turn ensures that inserts that do not specify this column will receive an automatically generated value instead of `NULL`.
 
 {{site.data.alerts.callout_info}}
 `SERIAL` is provided only for compatibility with PostgreSQL. New applications should use real data types and a suitable `DEFAULT` expression.
@@ -22,16 +16,9 @@ See [this FAQ entry](sql-faqs.html#how-do-i-auto-generate-unique-row-ids-in-cock
 
 ## Modes of operation
 
-The keyword `SERIAL` is recognized in `CREATE TABLE` and is
-automatically translated to a real data type and a [`DEFAULT`
-expression](default-value.html) during table creation.
-The result of this translation is then used internally by CockroachDB,
-and can be observed using [`SHOW CREATE`](show-create.html).
+The keyword `SERIAL` is recognized in `CREATE TABLE` and is automatically translated to a real data type and a [`DEFAULT` expression](default-value.html) during table creation. The result of this translation is then used internally by CockroachDB, and can be observed using [`SHOW CREATE`](show-create.html).
 
-The chosen `DEFAULT` expression ensures that different values are
-automatically generated for the column during row insertion.  These
-are not guaranteed to increase monotonically, see [this section
-below](#auto-incrementing-is-not-always-sequential) for details.
+The chosen `DEFAULT` expression ensures that different values are automatically generated for the column during row insertion.  These are not guaranteed to increase monotonically, see [this section below](#auto-incrementing-is-not-always-sequential) for details.
 
 There are three possible translation modes for `SERIAL`:
 
@@ -45,34 +32,21 @@ There are three possible translation modes for `SERIAL`:
 These modes can be configured with the [session variable](set-vars.html) `serial_normalization`.
 
 {{site.data.alerts.callout_info}}
-The particular choice of `DEFAULT` expression when clients use the
-`SERIAL` keyword is subject to change in future versions of
-CockroachDB. Applications that wish to use `unique_rowid()`
-specifically must use the full explicit syntax `INT DEFAULT
-unique_rowid()` and avoid `SERIAL` altogether.
+The particular choice of `DEFAULT` expression when clients use the `SERIAL` keyword is subject to change in future versions of CockroachDB. Applications that wish to use `unique_rowid()` specifically must use the full explicit syntax `INT DEFAULT unique_rowid()` and avoid `SERIAL` altogether.
+{{site.data.alerts.end}}
+
+{{site.data.alerts.callout_info}}
+For technical information about how `unique_rowid()` generates values, see [`unique_rowid()`](#unique_rowid).
 {{site.data.alerts.end}}
 
 ### Generated values for modes `rowid` and `virtual_sequence`
 
-In both modes `rowid` and `virtual_sequence`, a value is automatically
-generated using the `unique_rowid()` function.
-This produces a 64-bit integer (i.e., [`INT8`](int.html)) from the current timestamp and ID of
-the node executing the [`INSERT`](insert.html) or [`UPSERT`](upsert.html) operation.
-This behavior is statistically likely to be globally unique except in
-extreme cases (see [this FAQ
-entry](sql-faqs.html#how-do-i-auto-generate-unique-row-ids-in-cockroachdb)
-for more details).
+In both modes `rowid` and `virtual_sequence`, a value is automatically generated using the `unique_rowid()` function. This produces a 64-bit integer (i.e., [`INT8`](int.html)) from the current timestamp and ID of the node executing the [`INSERT`](insert.html) or [`UPSERT`](upsert.html) operation. This behavior is statistically likely to be globally unique except in extreme cases (see [this FAQ entry](sql-faqs.html#how-do-i-auto-generate-unique-row-ids-in-cockroachdb) for more details).
 
-Also, because value generation using `unique_rowid()` does not require
-inter-node coordination, it is much faster than the other mode
-`sql_sequence` discussed below when multiple SQL clients are writing to
-the table from different nodes.
+Also, because value generation using `unique_rowid()` does not require inter-node coordination, it is much faster than the other mode `sql_sequence` discussed below when multiple SQL clients are writing to the table from different nodes.
 
 {{site.data.alerts.callout_info}}
-The difference between `rowid` and `virtual_sequence` is that the
-latter setting also creates a virtual (pseudo) sequence in the
-database. However in both cases the `unique_rowid()` function is
-ultimately used to generate new values.
+The difference between `rowid` and `virtual_sequence` is that the latter setting also creates a virtual (pseudo) sequence in the database. However in both cases the `unique_rowid()` function is ultimately used to generate new values.
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
@@ -81,8 +55,7 @@ Values generated by the `unique_rowid()` function do not respect the `default_in
 
 ### Generated values for mode `sql_sequence` and `sql_sequence_cached`
 
-In both modes, a regular [SQL sequence](create-sequence.html) is
-automatically created alongside the table where `SERIAL` is specified.
+In both modes, a regular [SQL sequence](create-sequence.html) is automatically created alongside the table where `SERIAL` is specified.
 
 The actual data type is determined as follows:
 
@@ -93,24 +66,15 @@ The actual data type is determined as follows:
 | `SERIAL` | `INT` |
 | `SERIAL8`, `BIGSERIAL` | `INT8` |
 
-Every insert or upsert into the table will then use `nextval()` to
-increment the sequence and produce increasing values.
+Every insert or upsert into the table will then use `nextval()` to increment the sequence and produce increasing values.
 
-Because SQL sequences persist the current sequence value in the
-database, inter-node coordination is required when multiple clients
-use the sequence concurrently via different nodes. This can cause
-[contention](sql-faqs.html#what-is-transaction-contention) and impact
-performance negatively.
+Because SQL sequences persist the current sequence value in the database, inter-node coordination is required when multiple clients use the sequence concurrently via different nodes. This can cause [contention](sql-faqs.html#what-is-transaction-contention) and impact performance negatively.
 
-Therefore, applications should consider using `unique_rowid()` or
-`gen_random_uuid()` as discussed in [this FAQ
-entry](sql-faqs.html#how-do-i-auto-generate-unique-row-ids-in-cockroachdb)
-instead of sequences when possible.
+Therefore, applications should consider using `unique_rowid()` or `gen_random_uuid()` as discussed in [this FAQ entry](sql-faqs.html#how-do-i-auto-generate-unique-row-ids-in-cockroachdb) instead of sequences when possible.
 
 {{site.data.alerts.callout_info}}
 Note that `sql_sequence_cached` will perform fewer distributed calls to increment sequences, resulting in better performance than `sql_sequence`. However, cached sequences may result in large gaps between serial sequence numbers if a session terminates before using all the values in its cache.
 {{site.data.alerts.end}}
-
 
 ## Examples
 
@@ -271,6 +235,10 @@ Scenario 3:
 There is less than a 250-microsecond difference between the system clocks of the two nodes.
 
 If this happens, CockroachDB cannot guarantee whether `x < y` or `x > y`. Even though the transactions "clearly" occurred one "after" the other, perhaps there was a clock skew between the two nodes and the system time of the second node is set earlier than the first node.
+
+## `unique_rowid()`
+
+The `unique_rowid()` function creates a unique integer composed of the current time at a 10-microsecond granularity and the `instance-id`. The `instance-id` is stored in the lower 15 bits of the returned value and the timestamp is stored in the upper 48 bits. The top-most bit is left empty so that negative values are not returned. The 48-bit timestamp field provides for 89 years of timestamps. We use a custom epoch (Jan 1, 2015) in order to utilize the entire timestamp range.
 
 ## See also
 
