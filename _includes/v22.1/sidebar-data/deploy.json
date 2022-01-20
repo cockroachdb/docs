@@ -267,7 +267,7 @@
           ]
         },
         {
-          "title": "Data Domiciling",
+          "title": "Data Domiciling with CockroachDB",
           "urls": [
             "/${VERSION}/data-domiciling.html"
           ]
