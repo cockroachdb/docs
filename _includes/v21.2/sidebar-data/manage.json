@@ -16,6 +16,12 @@
           "urls": [
             "/cockroachcloud/cluster-management.html"
           ]
+        },
+        {
+          "title": "Use the Cloud API",
+          "urls": [
+            "/cockroachcloud/cloud-api.html"
+          ]
         }
       ]
     },
