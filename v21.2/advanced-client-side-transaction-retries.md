@@ -12,7 +12,7 @@ If you are an application developer who needs to implement an application-level 
 
 ## Overview
 
-To improve the performance of transactions that fail due to [contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention), CockroachDB includes a set of statements (listed below) that let you retry those transactions. Retrying transactions using these statements has the following benefits:
+To improve the performance of transactions that fail due to [contention](performance-best-practices-overview.html#transaction-contention), CockroachDB includes a set of statements (listed below) that let you retry those transactions. Retrying transactions using these statements has the following benefits:
 
 1. When you use savepoints, you "hold your place in line" between attempts. Without savepoints, you're starting from scratch every time.
 2. Transactions increase their priority each time they're retried, increasing the likelihood they will succeed. This has a lesser effect than #1.
