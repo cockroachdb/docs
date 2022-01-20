@@ -117,7 +117,7 @@ Yes, you can upgrade your cluster through the Console by [increasing your spend 
 
 ### Can I upgrade the version of CockroachDB my {{ site.data.products.serverless }} cluster is running on?
 
-No, {{ site.data.products.serverless }} clusters are upgraded automatically for you. You can see what version of CockroachDB your cluster is running in the [{{ site.data.products.db }} Console](https://cockroachlabs.cloud/) or in the [latest release notes](../releases/index-cockroachcloud.html).
+No, {{ site.data.products.serverless }} clusters are upgraded automatically for you. You can see what version of CockroachDB your cluster is running in the [{{ site.data.products.db }} Console](https://cockroachlabs.cloud/) or in the [latest release notes](../releases/cloud.html).
 
 ## Product features
 
