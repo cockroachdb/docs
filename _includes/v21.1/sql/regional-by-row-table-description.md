@@ -4,4 +4,8 @@ Use regional by row tables when your application requires low-latency reads and 
 
 For an example of a table that can benefit from the _regional by row_ setting in a multi-region deployment, see the `users` table from the [MovR application](movr.html).
 
-For instructions showing how to set a table's locality to `REGIONAL BY ROW`, see [`ALTER TABLE ... SET LOCALITY`](set-locality.html#regional-by-row)
+For instructions showing how to set a table's locality to `REGIONAL BY ROW`, see [`ALTER TABLE ... SET LOCALITY`](set-locality.html#regional-by-row).
+
+{{site.data.alerts.callout_info}}
+When using `DEFAULT gen_random_uuid()` on columns in `REGIONAL BY ROW` tables, uniqueness checks on those columns are disabled by default for performance purposes. CockroachDB assumes uniqueness based on the way this column generates [`UUIDs`](uuid.html#create-a-table-with-auto-generated-unique-row-ids). To enable this check, you can modify the `sql.optimizer.uniqueness_checks_for_gen_random_uuid.enabled` [cluster setting](cluster-settings.html). Note that while there is virtually no chance of a [collision](https://en.wikipedia.org/wiki/Universally_unique_identifier#Collisions) from occurring when enabling this setting, it is not truly zero.
+{{site.data.alerts.end}}
