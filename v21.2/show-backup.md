@@ -33,9 +33,9 @@ Parameter | Description
 Option       | Value | Description
 -------------+-------+-----------------------------------------------------
 `privileges` | N/A   |  List which users and roles had which privileges on each table in the backup. Displays original ownership of the backup.
-`encryption_passphrase`<a name="with-encryption-passphrase"></a> | [`STRING`](string.html) |  The passphrase used to [encrypt the files](take-and-restore-encrypted-backups.html) (`BACKUP` manifest and data files) that the `BACKUP` statement generates.
+`encryption_passphrase`<a name="with-encryption-passphrase"></a> | [`STRING`](string.html) |  The passphrase used to [encrypt the files](take-and-restore-encrypted-backups.html) that the `BACKUP` statement generates (the data files and its manifest, containing the backup's metadata).
 `debug_ids` |  N/A  | <span class="version-tag">New in v21.2:</span> [Display descriptor IDs](#show-a-backup-with-descriptor-ids) of every object in the backup, including the object's database and parent schema.
-`as_json`   |  N/A  | <span class="version-tag">New in v21.2:</span> Display the backup's manifest as JSON in the response.
+`as_json`   |  N/A  | <span class="version-tag">New in v21.2:</span> [Display the backup's internal metadata](#show-a-backups-internal-metadata) as JSON in the response.
 
 ## Response
 
@@ -295,7 +295,7 @@ Or, use the `kms` option and the same KMS URI that was used to create the backup
 
 {% include copy-clipboard.html %}
 ~~~ sql
-SHOW BACKUP 's3://test/backup-test?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]' WITH debug_ids;
+SHOW BACKUP '/2021/11/15-150703.21' IN 's3://test/backup-test?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]' WITH debug_ids;
 ~~~
 
 ~~~
@@ -315,6 +315,57 @@ movr          |          52 | public             |               29 | rides     
 movr          |          52 | public             |               29 | vehicle_location_histories |        56 | table       | incremental | 2021-10-04 15:18:29.872912 | 2021-10-04 15:18:53.354707 |          0 |     0 |      false
 movr          |          52 | public             |               29 | promo_codes                |        57 | table       | incremental | 2021-10-04 15:18:29.872912 | 2021-10-04 15:18:53.354707 |          0 |     0 |      false
 movr          |          52 | public             |               29 | user_promo_codes           |        58 | table       | incremental | 2021-10-04 15:18:29.872912 | 2021-10-04 15:18:53.354707 |          0 |     0 |      false
+~~~
+
+### Show a backup's internal metadata
+
+Use the `WITH as_json` option to output a backup's internal metadata, contained in its manifest file, as a JSON value:
+
+{% include copy-clipboard.html %}
+~~~ sql
+SHOW BACKUP '/2021/11/15-150703.21' IN 's3://test/backup-test?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]' WITH as_json;
+~~~
+
+The response will include a `manifest` column with the file's contents as the JSON value. Use [JSONB functions](functions-and-operators.html#jsonb-functions) to query particular data or edit the format of the response.
+
+{{site.data.alerts.callout_info}}
+The response returned from `SHOW BACKUP ... WITH as_json` is a backup's internal metadata. This content is subject to change from version to version of CockroachDB and does not offer the same stability guarantees as the other `SHOW BACKUP` [options](#options) and their [responses](#response). As a result, `as_json` should **only** be used for debugging or general inspection purposes.
+{{site.data.alerts.end}}
+
+For example, to return a specific entry from the JSON response as a [`string`](string.html) indented and with newlines use the [`jsonb_pretty()`](functions-and-operators.html#jsonb-functions) function:
+
+{% include copy-clipboard.html %}
+~~~ sql
+SELECT jsonb_pretty(manifest->'entryCounts') AS f FROM [SHOW BACKUP '/2021/11/15-150703.21' IN 's3://test/backup-test?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]' with as_json];
+~~~
+
+~~~ json
+  {
+      "dataSize": "458371",
+      "indexEntries": "1015",
+      "rows": "2565"
+  }
+~~~
+
+To query for particular data, use the [`jsonb_array_elements()` function](functions-and-operators.html#jsonb-functions) to expand the desired elements from the JSON response. The following query returns the paths to each of the data files within the backup:
+
+{% include copy-clipboard.html %}
+~~~ sql
+SELECT f->>'path' FROM (SELECT jsonb_array_elements(manifest->'files') AS f FROM [SHOW BACKUP '/2021/11/15-150703.21' IN 's3://test/backup-test?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]' WITH as_json]);
+~~~
+
+~~~
+          ?column?
+-------------------------------
+  data/710798326337404929.sst
+  data/710798326337404929.sst
+  data/710798328891998209.sst
+  data/710798326337404929.sst
+  data/710798326337404929.sst
+  data/710798328434982913.sst
+  data/710798328891998209.sst
+  data/710798326337404929.sst
+  data/710798326337404929.sst
 ~~~
 
 ## See also

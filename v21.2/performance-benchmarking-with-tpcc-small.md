@@ -4,23 +4,22 @@ summary: Learn how to benchmark CockroachDB against TPC-C with 3 nodes on `c5d.4
 toc: true
 toc_not_nested: true
 key: performance-benchmarking-with-tpc-c-1k-warehouses.html
+filter_category: perf_bench_tpc-c
+filter_html: Small
+filter_sort: 3
 ---
 
-This page shows you how to reproduce [CockroachDB's TPC-C performance benchmarking results](performance.html#scale) on commodity AWS hardware. Across all scales, CockroachDB can process tpmC (new order transactions per minute) at near maximum efficiency. Start by choosing the scale you're interested in:
+This page shows you how to reproduce [CockroachDB's TPC-C performance benchmarking results](performance.html#scale). Across all scales, CockroachDB can process tpmC (new order transactions per minute) at near maximum efficiency. Start by choosing the scale you're interested in:
 
-<div class="filters filters-big clearfix">
-  <a href="performance-benchmarking-with-tpcc-local.html"><button class="filter-button">Local</button></a>
-  <button class="filter-button current"><strong>Small</strong></button>
-  <a href="performance-benchmarking-with-tpcc-medium.html"><button class="filter-button">Medium</button></a>
-  <a href="performance-benchmarking-with-tpcc-large.html"><button class="filter-button">Large</button></a>
-</div>
+{% include filter-tabs.md %}
 
-| Workload | Cluster size                       | Warehouses | Data size |
-|----------+------------------------------------+------------+-----------|
-| Local    | 3 nodes on your laptop             | 10         | 2 GB      |
-| Small    | 3 nodes on `c5d.4xlarge` machines  | 2500       | 200 GB    |
-| Medium   | 15 nodes on `c5d.4xlarge` machines | 13,000     | 1.04 TB   |
-| Large    | 81 nodes on `c5d.9xlarge` machines | 140,000    | 11.2 TB   |
+| Workload             | Cluster size                                            | Warehouses | Data size |
+|----------------------+---------------------------------------------------------+------------+-----------|
+| Local                | 3 nodes on your laptop                                  |         10 | 2 GB      |
+| Local (Multi-region) | 9 in-memory nodes on your laptop using `cockroach demo` |         10 | 2 GB      |
+| Small                | 3 nodes on `c5d.4xlarge` machines                       |       2500 | 200 GB    |
+| Medium               | 15 nodes on `c5d.4xlarge` machines                      |     13,000 | 1.04 TB   |
+| Large                | 81 nodes on `c5d.9xlarge` machines                      |    140,000 | 11.2 TB   |
 
 ## Before you begin
 

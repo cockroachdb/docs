@@ -365,9 +365,15 @@
             ]
           },
           {
-            "title": "Manage Transactions",
+            "title": "Transactions",
             "urls": [
               "/${VERSION}/transactions.html"
+            ]
+          },
+          {
+            "title": "Test Your Application",
+            "urls": [
+              "/${VERSION}/local-testing.html"
             ]
           },
           {
@@ -489,6 +495,7 @@
                     "urls": [
                       "/${VERSION}/build-a-nodejs-app-with-cockroachdb.html",
                       "/${VERSION}/build-a-nodejs-app-with-cockroachdb-sequelize.html",
+                      "/${VERSION}/build-a-nodejs-app-with-cockroachdb-knexjs.html",
                       "/${VERSION}/build-a-typescript-app-with-cockroachdb.html"
                     ]
                   },
@@ -676,6 +683,12 @@
                         "title": "Google Cloud Run",
                         "urls": [
                           "/${VERSION}/deploy-app-gcr.html"
+                        ]
+                      },
+                      {
+                        "title": "AWS Lambda",
+                        "urls": [
+                          "/${VERSION}/deploy-lambda-function.html"
                         ]
                       }
                     ]

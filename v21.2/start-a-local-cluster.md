@@ -3,12 +3,12 @@ title: Start a Local Cluster (Insecure)
 summary: Run an insecure multi-node CockroachDB cluster locally with each node listening on a different port.
 toc: true
 toc_not_nested: true
+filter_category: start_a_cluster
+filter_html: Insecure
+filter_sort: 2
 ---
 
-<div class="filters filters-big clearfix">
-    <a href="secure-a-cluster.html"><button class="filter-button">Secure</button></a>
-    <a href="start-a-local-cluster.html"><button class="filter-button current"><strong>Insecure</strong></button></a>
-</div>
+{% include filter-tabs.md %}
 
 Once you've [installed CockroachDB](install-cockroachdb.html), it's simple to run an insecure multi-node cluster locally.
 
@@ -368,5 +368,5 @@ Adding capacity is as simple as starting more nodes with `cockroach start`.
 
 - [Install the client driver](install-client-drivers.html) for your preferred language
 - Learn more about [CockroachDB SQL](learn-cockroachdb-sql.html) and the [built-in SQL client](cockroach-sql.html)
-- [Build an app with CockroachDB](hello-world-example-apps.html)
+- [Build an app with CockroachDB](example-apps.html)
 - Further explore CockroachDB capabilities like [fault tolerance and automated repair](demo-fault-tolerance-and-recovery.html), [multi-region performance](demo-low-latency-multi-region-deployment.html), [serializable transactions](demo-serializable.html), and [JSON support](demo-json-support.html)

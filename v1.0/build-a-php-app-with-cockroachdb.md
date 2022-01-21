@@ -5,7 +5,7 @@ toc: true
 twitter: false
 ---
 
-This tutorial shows you how build a simple PHP application with CockroachDB using a PostgreSQL-compatible driver. We've tested and can recommend the [php-pgsql driver](http://php.net/manual/en/book.pgsql.php), so that driver is featured here.
+This tutorial shows you how build a simple PHP application with CockroachDB using a PostgreSQL-compatible driver. We've tested and can recommend the [php-pgsql driver](https://www.php.net/manual/en/book.pgsql.php), so that driver is featured here.
 
 
 ## Before You Begin
@@ -14,7 +14,7 @@ Make sure you have already [installed CockroachDB](install-cockroachdb.html).
 
 ## Step 1. Install the php-pgsql driver
 
-Install the php-pgsql driver as described in the [official documentation](http://php.net/manual/en/book.pgsql.php).
+Install the php-pgsql driver as described in the [official documentation](https://www.php.net/manual/en/book.pgsql.php).
 
 {% include {{ page.version.version }}/app/common-steps.md %}
 
@@ -77,7 +77,7 @@ $ cockroach sql --insecure -e 'SELECT id, balance FROM accounts' --database=bank
 
 ## What's Next?
 
-Read more about using the [php-pgsql driver](http://php.net/manual/en/book.pgsql.php).
+Read more about using the [php-pgsql driver](https://www.php.net/manual/en/book.pgsql.php).
 
 You might also be interested in using a local cluster to explore the following core CockroachDB features:
 

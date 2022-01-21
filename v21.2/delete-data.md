@@ -238,7 +238,7 @@ Reference information related to this task:
 - [Disk space usage after deletes](delete.html#disk-space-usage-after-deletes)
 - [`TRUNCATE`](truncate.html)
 - [`DROP TABLE`](drop-table.html)
-- [Understanding and Avoiding Transaction Contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention)
+- [Transaction Contention](performance-best-practices-overview.html#transaction-contention)
 
 Other common tasks:
 
@@ -248,8 +248,8 @@ Other common tasks:
 - [Update Data](update-data.html)
 - [Run Multi-Statement Transactions](run-multi-statement-transactions.html)
 - [Error Handling and Troubleshooting](error-handling-and-troubleshooting.html)
-- [Make Queries Fast][fast]
-- [Hello World Example apps](hello-world-example-apps.html)
+- [Optimize Statement Performance][fast]
+- [Example Apps](example-apps.html)
 
 <!-- Reference Links -->
 

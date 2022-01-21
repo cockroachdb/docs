@@ -38,6 +38,7 @@ Statement | Usage
 [`ADD CONSTRAINT`](add-constraint.html) | Add a constraint to a column.
 [`ALTER COLUMN`](alter-column.html) | Change a column's [Default constraint](default-value.html), [`NOT NULL` constraint](not-null.html), or [data type](data-types.html).
 [`ALTER DATABASE`](alter-database.html) | Apply a schema change to a database.
+[`ALTER DEFAULT PRIVILEGES`](alter-default-privileges.html) | <span class="version-tag">New in v21.2</span>: Change the default [privileges](authorization.html#privileges) for objects created by specific roles/users in the current database.
 [`ALTER INDEX`](alter-index.html) | Apply a schema change to an index.
 [`ALTER PARTITION`](alter-partition.html) | Configure the replication zone for a partition. Note that [partitioning](partitioning.html) requires an [Enterprise license](enterprise-licensing.html).
 [`ALTER PRIMARY KEY`](alter-primary-key.html) |  Change the [primary key](primary-key.html) of a table.
@@ -82,7 +83,7 @@ Statement | Usage
 [`SET PRIMARY REGION`](set-primary-region.html) |  Assign a [primary region](multiregion-overview.html#database-regions) to a multi-region database, or change an existing primary region. Note that [multi-region features](multiregion-overview.html) require an [Enterprise license](enterprise-licensing.html).
 [`SHOW COLUMNS`](show-columns.html) | View details about columns in a table.
 [`SHOW CONSTRAINTS`](show-constraints.html) | List constraints on a table.
-[`SHOW CREATE`](show-create.html) | View the `CREATE` statement for a table, view, or sequence.
+[`SHOW CREATE`](show-create.html) | View the `CREATE` statement for a database, table, view, or sequence.
 [`SHOW DATABASES`](show-databases.html) | List databases in the cluster.
 [`SHOW ENUMS`](show-enums.html) |   List user-defined, [enumerated data types](enum.html) in a database.
 [`SHOW FULL TABLE SCANS`](show-full-table-scans.html) |  List recent queries that used a full table scan.
@@ -129,6 +130,7 @@ Statement | Usage
 [`SHOW GRANTS`](show-grants.html) | View privileges granted to users.
 [`SHOW ROLES`](show-roles.html) | Lists the roles for all databases.
 [`SHOW USERS`](show-users.html) | Lists the users for all databases.
+[`SHOW DEFAULT PRIVILEGES`](show-default-privileges.html) | <span class="version-tag">New in v21.2</span>: Show the default privileges for objects created by specific roles/users in the current database.
 
 ## Session management statements
 

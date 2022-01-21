@@ -2,12 +2,12 @@
 title: Manage a CockroachDB Dedicated Cluster
 summary: Manage your cluster's schema, data, and more.
 toc: true
+filter_category: cluster_mgmt
+filter_html: CockroachDB Dedicated
+filter_sort: 2
 ---
 
-<div class="filters clearfix">
-    <a href="serverless-cluster-management.html"><button class="filter-button page-level">{{ site.data.products.serverless }}</button></a>
-    <a href="cluster-management.html"><button class="filter-button page-level current">{{ site.data.products.dedicated }}</button></a>
-</div>
+{% include filter-tabs.md %}
 
 This page describes the cluster management and cluster deletion workflows.
 
@@ -40,7 +40,7 @@ For each cluster, the following details display:
 To view and manage a specific cluster, click the name of the cluster. The [**Overview**](#view-cluster-overview) page will display.
 
 ## View cluster overview
-    
+
 The **Overview** page displays details about the selected {{ site.data.products.db }} cluster:
 
 - The **Current Charges** and next billing date for the cluster
@@ -49,7 +49,7 @@ The **Overview** page displays details about the selected {{ site.data.products.
 - A list of the selected cluster's nodes.
 
     For each node, the page displays the node's `Name` and `Status`, nested under its region.
-    
+
 From the **Overview** page, you can connect to your cluster. For more information, see [Connect to Your {{ site.data.products.dedicated }} Cluster](connect-to-your-cluster.html).
 
 ## Add or remove nodes from a cluster
@@ -61,7 +61,7 @@ CockroachDB Cloud contract customers cannot scale clusters through the Console. 
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
-At this time, you cannot use the Console to scale a multi-node cluster down to a single-node cluster. If you need to do this, contact [Support](https://support.cockroachlabs.com).
+You cannot scale a multi-node cluster down to a single-node cluster. If you need to scale down to a single-node cluster, [backup](run-bulk-operations.html?filters=cloud#backup-and-restore-data) your cluster and [restore](run-bulk-operations.html?filters=cloud#restore-a-cluster) it into a new single-node cluster.
 {{site.data.alerts.end}}
 
 To add or remove nodes from your cluster:
@@ -95,7 +95,7 @@ You can add or remove up to three regions at a time through the Console. See the
 1. Click **Add a region**.
 
     If you have a GCP cluster with [VPC peering](network-authorization.html) enabled, the IP range will be automatically populated for added regions.
-    
+
 1. From the **Choose a region** dropdown, select the region you want to use.
 1. From the **Nodes** dropdown, select the number of nodes in the new region.
 1. In the **Summary** sidebar, verify the hourly estimated cost for the cluster.
@@ -137,7 +137,7 @@ Deleting a cluster will delete all cluster data.
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
-{{ site.data.products.serverless }} clusters are subject to deletion after 6 months of no activity.
+You will only be billed for a {{ site.data.products.dedicated }} cluster while it is running. You can delete a cluster at any time to stop charges from accumulating.
 {{site.data.alerts.end}}
 
 Proceed with the following steps only if you are sure you want to delete a cluster:

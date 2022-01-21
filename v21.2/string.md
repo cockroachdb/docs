@@ -29,7 +29,7 @@ CockroachDB also supports the single-byte `"char"` special character type. As in
 
 ## Length
 
-To limit the length of a string column, use `STRING(n)`, where `n` is the maximum number of Unicode code points (normally thought of as "characters") allowed. This applies to all related types as well (e.g., to limit the length of a `VARCHAR` type, use `VARCHAR(n)`).
+To limit the length of a string column, use `STRING(n)`, where `n` is the maximum number of Unicode code points (normally thought of as "characters") allowed. This applies to all related types as well (e.g., to limit the length of a `VARCHAR` type, use `VARCHAR(n)`). To reduce performance issues caused by storing very large string values in indexes, Cockroach Labs recommends setting length limits on string-typed columns.
 
 When inserting a `STRING` value or a `STRING`-related-type value:
 
@@ -137,6 +137,7 @@ Type | Details
 `INTERVAL` | Requires supported [`INTERVAL`](interval.html) string format, e.g., `'1h2m3s4ms5us6ns'`.
 `TIME` | Requires supported [`TIME`](time.html) string format, e.g., `'01:22:12'` (microsecond precision).
 `TIMESTAMP` | Requires supported [`TIMESTAMP`](timestamp.html) string format, e.g., `'2016-01-25 10:10:10.555555'`.
+`UUID` | Requires supported [`UUID`](uuid.html) string format, e.g., `'63616665-6630-3064-6465-616462656562'`.
 
 ### `STRING` vs. `BYTES`
 

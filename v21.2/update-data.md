@@ -413,7 +413,7 @@ Reference information related to this task:
 - [Bulk-update Data](bulk-update-data.html)
 - [`UPSERT`](update.html)
 - [`INSERT ... ON CONFLICT`](insert.html#on-conflict-clause)
-- [Understanding and Avoiding Transaction Contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention)
+- [Transaction Contention](performance-best-practices-overview.html#transaction-contention)
 
 Other common tasks:
 
@@ -424,8 +424,8 @@ Other common tasks:
 - [Bulk-update Data](bulk-update-data.html)
 - [Run Multi-Statement Transactions](run-multi-statement-transactions.html)
 - [Error Handling and Troubleshooting][error_handling]
-- [Make Queries Fast](make-queries-fast.html)
-- [Hello World Example apps](hello-world-example-apps.html)
+- [Optimize Statement Performance](make-queries-fast.html)
+- [Example Apps](example-apps.html)
 
 <!-- Reference Links -->
 

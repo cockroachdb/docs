@@ -111,8 +111,8 @@ To perform a [merge join](https://en.wikipedia.org/wiki/Sort-merge_join) of two 
 Merge joins are performed on the indexed columns of two tables as follows:
 
 1. CockroachDB checks for indexes on the equality columns and that they are ordered the same (i.e., `ASC` or `DESC`).
-2. CockroachDB takes one row from each table and compares them.  
-    - For inner joins:  
+2. CockroachDB takes one row from each table and compares them.
+    - For inner joins:
         - If the rows are equal, CockroachDB returns the rows.
         - If there are multiple matches, the cartesian product of the matches is returned.
         - If the rows are not equal, CockroachDB discards the lower-value row and repeats the process with the next row until all rows are processed.
@@ -163,9 +163,19 @@ See the [cost-based optimizer examples](cost-based-optimizer.html#inverted-join-
 
 CockroachDB supports `LATERAL` subquery joins for `INNER` and `LEFT` cross joins. For more information about `LATERAL` subqueries, see [Lateral subqueries](subqueries.html#lateral-subqueries).
 
+## Apply joins
+
+Apply join is the operator that executes a lateral join if the optimizer is not able to de-correlate it (i.e., rewrite the query to use a regular join). Most of the time, the optimizer can de-correlate most queries. However, there are some cases where the optimizer cannot perform this rewrite, and `apply-join` would show up in the [`EXPLAIN`](explain.html#join-queries) output for the query. The optimizer also replaces correlated subqueries with apply joins, and therefore `apply-join` may appear in the `EXPLAIN` output even if `LATERAL` was not used.
+
+Apply joins are inefficient because they must be executed one row at a time. The left side row must be used to construct the right side row, and only then can the execution engine determine if the two rows should be output by the join. This corresponds to an `O(n*m)` time complexity.
+
+Other types of joins supported by CockroachDB (e.g., [hash join](#hash-joins), [merge join](#merge-joins), and [lookup join](#lookup-joins)) are generally much more efficient. For example, with a hash join, a hash table is constructed using rows from the smaller side of the join, and then the larger side of the join is used to probe into the hash table using the `ON` conditions of the join. This corresponds to an `O(n+m)` time complexity.
+
+If you see an `apply-join`, it means the optimizer was not able to perform de-correlation, and you should probably try to rewrite your query in a different way in order to get better performance.
+
 ## Performance best practices
 
-{{site.data.alerts.callout_info}}CockroachDBs is currently undergoing major changes to evolve and improve the performance of queries using joins. The restrictions and workarounds listed in this section will be lifted or made unnecessary over time.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}CockroachDB is currently undergoing major changes to evolve and improve the performance of queries using joins. The restrictions and workarounds listed in this section will be lifted or made unnecessary over time.{{site.data.alerts.end}}
 
 - When no indexes can be used to satisfy a join, CockroachDB may load all the rows in memory that satisfy the condition one of the join operands before starting to return result rows. This may cause joins to fail if the join condition or other `WHERE` clauses are insufficiently selective.
 - Outer joins (i.e., [left outer joins](#left-outer-joins), [right outer joins](#right-outer-joins), and [full outer joins](#full-outer-joins)) are generally processed less efficiently than [inner joins](#inner-joins). Use inner joins whenever possible. Full outer joins are the least optimized.
@@ -182,5 +192,5 @@ CockroachDB supports `LATERAL` subquery joins for `INNER` and `LEFT` cross joins
 - [`EXPLAIN`](explain.html)
 - [Performance Best Practices - Overview](performance-best-practices-overview.html)
 - [SQL join operation (Wikipedia)](https://en.wikipedia.org/wiki/Join_(SQL))
-- [CockroachDB's first implementation of SQL joins (CockroachDB Blog)](https://www.cockroachlabs.com/blog/cockroachdbs-first-join/)
-- [On the Way to Better SQL Joins in CockrochDB (CockroachDB Blog)](https://www.cockroachlabs.com/blog/better-sql-joins-in-cockroachdb/)
+- [Modesty in Simplicity: CockroachDB's JOIN (CockroachDB Blog)](https://www.cockroachlabs.com/blog/cockroachdbs-first-join/)
+- [On the Way to Better SQL Joins in CockroachDB (CockroachDB Blog)](https://www.cockroachlabs.com/blog/better-sql-joins-in-cockroachdb/)

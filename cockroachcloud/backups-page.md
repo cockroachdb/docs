@@ -124,7 +124,7 @@ To restore a table:
 1. In the **Restore to** field, enter the name of the destination database.
 
     {{site.data.alerts.callout_info}}
-    [Resolve any naming conflicts](#resolve-a-table-naming-conflict) by using [`DROP`](../{{site.versions["stable"]}}/drop-table.html) or [`RENAME`](../{{site.versions["stable"]}}/rename-table.html) on the existing table. If you enter a unique name in the **Restore to** field, a new table will be created.
+    If you enter the name of an existing database, the table will be restored into that existing database. To use the name of an existing database, first [resolve any naming conflicts](#resolve-a-database-naming-conflict) by using [`DROP`](../{{site.versions["stable"]}}/drop-database.html) or [`RENAME`](../{{site.versions["stable"]}}/rename-database.html) on the existing database. If you enter a unique name in the **Restore to** field, a new database will be created.
     {{site.data.alerts.end}}  
 
 1. Select any of the **Dependency options** to skip. You can:
@@ -145,7 +145,7 @@ To back up a self-hosted CockroachDB cluster into a {{ site.data.products.db }} 
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    > BACKUP DATABASE example_database TO 'gs://bucket_name/path_to_backup?AUTH=specified';
+    BACKUP DATABASE example_database INTO 'gs://{bucket name}/{path/to/backup}?AUTH=specified&CREDENTIALS={encoded key}';
     ~~~
 
     {{site.data.alerts.callout_danger}}
@@ -163,11 +163,29 @@ To back up a self-hosted CockroachDB cluster into a {{ site.data.products.db }} 
     {% include cockroachcloud/sql-connection-string.md %}
 
 
-1. [Restore](../{{site.versions["stable"]}}/restore.html) to your {{ site.data.products.db }} cluster:
+1. [Restore](../{{site.versions["stable"]}}/restore.html) to your {{ site.data.products.db }} cluster.
+
+    Use `SHOW BACKUPS` with your external location to find the backup's subdirectory:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    > RESTORE DATABASE example_database FROM 'gs://bucket_name/path_to_backup?AUTH=specified';
+    SHOW BACKUPS IN 'gs://{bucket name}/{path/to/backup}?AUTH=specified&CREDENTIALS={encoded key}';
+    ~~~
+
+    ~~~
+            path
+    ------------------------
+    2021/03/23-213101.37
+    2021/03/24-172553.85
+    2021/03/24-210532.53
+    (3 rows)
+    ~~~
+
+    Use the subdirectory to specify the backup to restore:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    RESTORE DATABASE example_database FROM '2021/03/23-213101.37' IN 'gs://{bucket name}/{path/to/backup}?AUTH=specified&CREDENTIALS={encoded key}';
     ~~~
 
 ## Troubleshooting

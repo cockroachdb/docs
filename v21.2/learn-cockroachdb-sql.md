@@ -124,7 +124,7 @@ To insert multiple rows into a table, use a comma-separated list of parentheses,
     ('9eb851eb-851e-4800-8000-00000000001f', 'new york', 'Harry Potter', 'JKL-456', '214 W 43rd St');
 ~~~
 
-[Defaults values](default-value.html) are used when you leave specific columns out of your statement, or when you explicitly request default values. For example, both of the following statements create a row where the `name`, `dl`, and `address` entries each contain their default value, in this case `NULL`:
+[Default values](default-value.html) are used when you leave specific columns out of your statement, or when you explicitly request default values. For example, both of the following statements create a row where the `name`, `dl`, and `address` entries each contain their default value, in this case `NULL`:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -351,5 +351,5 @@ When you no longer need a table, use [`DROP TABLE`](drop-table.html) followed by
 
 - Explore all [SQL Statements](sql-statements.html)
 - [Use the built-in SQL client](cockroach-sql.html) to execute statements from a shell or directly from the command line
-- [Install the client driver](install-client-drivers.html) for your preferred language and [build an app](hello-world-example-apps.html)
+- [Install the client driver](install-client-drivers.html) for your preferred language and [build an app](example-apps.html)
 - [Explore core CockroachDB features](demo-replication-and-rebalancing.html) like automatic replication, rebalancing, and fault tolerance

@@ -121,7 +121,7 @@ This page shows you how the key features of CockroachDB stack up against other d
       <span class="support" data-dbs='["MongoDB", "Cassandra]'>Manual & automated repair RPO &lt;1 min</span>
       <span class="support" data-dbs='["Spanner", "Yugabyte]'>"Automated repair RPO &lt;10 sec"</span>
     </td>
-    <td>Automated repair RPO &lt;10 sec</td>
+    <td>Automated repair RPO = 0 sec</td>
   </tr>
 
   <tr>

@@ -227,6 +227,10 @@ All timezone abbreviations are case-sensitive and must be uppercase, with the ex
 `local` | Trace recording is enabled; only trace messages issued by the local node are collected.
 `results` | Result rows and row counts are copied to the session trace. This must be specified to in order for the output of a query to be printed in the session trace.<br><br>Example: `SET tracing = kv, results;`
 
+## Known Limitations
+
+{% include {{page.version.version}}/known-limitations/set-transaction-no-rollback.md %}
+
 ## See also
 
 - [`RESET`](reset-vars.html)

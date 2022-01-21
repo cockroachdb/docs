@@ -2,12 +2,12 @@
 title: Create a CockroachDB Dedicated Cluster
 summary: Learn how to create your CockroachDB Dedicated cluster.
 toc: true
+filter_category: create_cluster_cloud
+filter_html: CockroachDB Dedicated
+filter_sort: 2
 ---
 
-<div class="filters clearfix">
-    <a href="create-a-serverless-cluster.html"><button class="filter-button page-level">{{ site.data.products.serverless }}</button></a>
-    <a href="create-your-cluster.html"><button class="filter-button page-level current">{{ site.data.products.dedicated }}</button></a>
-</div>
+{% include filter-tabs.md %}
 
 This page walks you through the process of creating a {{ site.data.products.dedicated }} cluster. Note that only [{{ site.data.products.db }} Console Administrators](console-access-management.html#console-admin) can create clusters. If you are a Developer and need to create a cluster, contact your {{ site.data.products.db }} Administrator.
 
@@ -27,7 +27,11 @@ To create and connect to a 30-day free {{ site.data.products.dedicated }} cluste
 
 In the **Cloud provider** section, select either **Google Cloud** or **AWS** as your preferred cloud provider.
 
-{{ site.data.products.db }} GCP clusters use [N1 standard](https://cloud.google.com/compute/docs/machine-types#n1_machine_types) machine types and [Persistent Disk storage](https://cloud.google.com/compute/docs/disks#pdspecs). AWS clusters use [M5 instance types](https://aws.amazon.com/ec2/instance-types/m5/#Product_Details) and [Elastic Block Store (EBS)](https://aws.amazon.com/ebs/features/). The IOPS associated with each node size in GCP is equal to 30 times the storage size, and the IOPS for AWS nodes is listed below.
+{{ site.data.products.db }} GCP clusters use [N2 standard](https://cloud.google.com/compute/docs/machine-types#n2_machine_types) machine types and [Persistent Disk storage](https://cloud.google.com/compute/docs/disks#pdspecs). AWS clusters use [M5 instance types](https://aws.amazon.com/ec2/instance-types/m5/#Product_Details) and [Elastic Block Store (EBS)](https://aws.amazon.com/ebs/features/). The IOPS associated with each node size in GCP is equal to 30 times the storage size, and the IOPS for AWS nodes is equal to 15 times the storage size.
+
+{{site.data.alerts.callout_info}}
+If you created a {{ site.data.products.dedicated }} cluster before December 1, 2021, your cluster may have a different machine type, IOPS, and pricing. Your cluster will be transitioned to the current hardware configuration by the end of the month.
+{{site.data.alerts.end}}
 
 {% include cockroachcloud/cockroachcloud-pricing.md %}
 
@@ -53,7 +57,7 @@ If you want to create a cluster in a disabled region, please [contact Support](h
 
 ## Step 4. Select the number of nodes
 
-In the **Regions & nodes** section, select the number of nodes. 
+In the **Regions & nodes** section, select the number of nodes.
 
 - For single-region application development and testing, you may create a 1-node cluster.
 - For single-region production deployments, we recommend a minimum of 3 nodes. The number of nodes also depends on your storage capacity and performance requirements. See [Example](#example) for further guidance.
@@ -124,6 +128,8 @@ You can use [VPC peering](network-authorization.html#vpc-peering) to connect you
         {{site.data.alerts.end}}
 
 1. Click **Next**.
+        
+        Once your cluster is created, see [Establish VPC Peering or AWS PrivateLink](connect-to-your-cluster.html#establish-vpc-peering-or-aws-privatelink) to finish setting up VPC Peering for your cluster.
 
 ## Step 8. Enter billing details
 

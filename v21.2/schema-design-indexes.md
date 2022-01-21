@@ -68,6 +68,8 @@ Here are some best practices for creating and using indexes:
 
 - Index all columns that you plan to use for [sorting](order-by.html) or [filtering](select-clause.html#filter-rows) data.
 
+    {% include {{page.version.version}}/sql/covering-index.md %}
+
     Columns listed in a filtering [`WHERE` clause](select-clause.html#parameters) with the equality operators (`=` or `IN`) should come first in the index, before those referenced with inequality operators (`<`, `>`).
 
 - Avoid indexing on sequential values. Writes to indexes with sequential keys can result in range hotspots that negatively affect performance. Instead, use [randomly generated unique IDs](performance-best-practices-overview.html#unique-id-best-practices) or [multi-column keys](performance-best-practices-overview.html#use-multi-column-primary-keys).
@@ -80,11 +82,49 @@ Here are some best practices for creating and using indexes:
 
     [`ALTER PRIMARY KEY`](alter-primary-key.html) creates a secondary index from the old primary key. If you need to [change a primary key](constraints.html#change-constraints), and you do not plan to filter queries on the old primary key column(s), do not use `ALTER PRIMARY KEY`. Instead, use [`DROP CONSTRAINT ... PRIMARY KEY`/`ADD CONSTRAINT ... PRIMARY KEY`](add-constraint.html#changing-primary-keys-with-add-constraint-primary-key), which does not create a secondary index.
 
+- Limit creation and deletion of secondary indexes to off-peak hours. Performance impacts are likely if done during peak business hours.
+
 - [Drop unused indexes](drop-index.html) whenever possible.
 
-    To understand usage statistics for an index, query the <a href="performance-recipes-solutions.html?filters=indexusage"><code>crdb_internal.index_usage_statistics</code> table</a>.
+    To understand usage statistics for an index, query the <a href="performance-recipes.html#slow-writes"><code>crdb_internal.index_usage_statistics</code> table</a>.
 
-- Use a [`STORING` clause](create-index.html#parameters) to store columns of data that you want returned by common queries, but that you do not plan to use in query filters.
+    To find which indexes are being used in a database, query the [`crdb_internal.index_usage_statistics`](crdb-internal.html) table, which will show the total reads and time the primary and secondary indexes were last read.
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SELECT * FROM crdb_internal.index_usage_statistics;
+    ~~~
+
+    To get more detailed information about the table and index names, run a join query against `crdb_internal.index_usage_statistics` and `crdb_internal.table_indexes`.
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SELECT ti.descriptor_name as table_name, ti.index_name, total_reads, last_read
+    FROM crdb_internal.index_usage_statistics AS us
+    JOIN crdb_internal.table_indexes ti
+    ON us.index_id = ti.index_id
+    AND us.table_id = ti.descriptor_id
+    ORDER BY total_reads ASC;
+    ~~~
+
+    ~~~
+              table_name         |                  index_name                   | total_reads |           last_read
+-----------------------------+-----------------------------------------------+-------------+--------------------------------
+  vehicle_location_histories | primary                                       |           1 | 2021-09-28 22:59:03.324398+00
+  rides                      | rides_auto_index_fk_city_ref_users            |           1 | 2021-09-28 22:59:01.500962+00
+  rides                      | rides_auto_index_fk_vehicle_city_ref_vehicles |           1 | 2021-09-28 22:59:02.470526+00
+  user_promo_codes           | primary                                       |         456 | 2021-09-29 00:01:17.063418+00
+  promo_codes                | primary                                       |         910 | 2021-09-29 00:01:17.062319+00
+  vehicles                   | primary                                       |        3591 | 2021-09-29 00:01:18.261658+00
+  users                      | primary                                       |        5401 | 2021-09-29 00:01:18.260198+00
+  rides                      | primary                                       |       45658 | 2021-09-29 00:01:18.258208+00
+  vehicles                   | vehicles_auto_index_fk_city_ref_users         |       87119 | 2021-09-29 00:01:19.071476+00
+(9 rows)
+    ~~~
+
+<a name="storing-index"></a>
+
+- Use a [`STORING` clause](create-index.html#parameters) to store columns of data that you want returned by common queries, but that you do not plan to use in query filters.  Note that the synonym `COVERING` is also supported.
 
     The `STORING` clause specifies columns that are not part of the index key but should be stored in the index, without being sorted. If a column is specified in a query, and the column is neither indexed nor stored in an index, CockroachDB will perform a full scan of the table, which can result in poor performance. For an example, see [below](#example).
 

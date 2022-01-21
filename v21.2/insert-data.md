@@ -103,6 +103,8 @@ conn.commit()
 
 If you need to get a lot of data into a CockroachDB cluster quickly, use the [`IMPORT`](import.html) statement instead of sending SQL [`INSERT`s](insert.html) from application code. It will be much faster because it bypasses the SQL layer altogether and writes directly to the data store using low-level commands. For instructions, see the [Migration Overview](migration-overview.html).
 
+{% include {{page.version.version}}/sql/limit-row-size.md %}
+
 ## See also
 
 Reference information related to this task:
@@ -112,7 +114,7 @@ Reference information related to this task:
 - [Import performance](import.html#performance)
 - [`INSERT`](insert.html)
 - [`UPSERT`](upsert.html)
-- [Understanding and Avoiding Transaction Contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention)
+- [Transaction Contention](performance-best-practices-overview.html#transaction-contention)
 - [Multi-row DML best practices](performance-best-practices-overview.html#dml-best-practices)
 - [Insert Multiple Rows](insert.html#insert-multiple-rows-into-an-existing-table)
 
@@ -124,8 +126,8 @@ Other common tasks:
 - [Delete Data](delete-data.html)
 - [Run Multi-Statement Transactions](run-multi-statement-transactions.html)
 - [Error Handling and Troubleshooting](error-handling-and-troubleshooting.html)
-- [Make Queries Fast](make-queries-fast.html)
-- [Hello World Example apps](hello-world-example-apps.html)
+- [Optimize Statement Performance](make-queries-fast.html)
+- [Example Apps](example-apps.html)
 
 <!-- Reference Links -->
 

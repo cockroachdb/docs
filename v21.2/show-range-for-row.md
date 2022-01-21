@@ -6,7 +6,7 @@ toc: true
 
 The `SHOW RANGE ... FOR ROW` [statement](sql-statements.html) shows information about a [range](architecture/overview.html#glossary) for a single row in a table or index. This information is useful for verifying how SQL data maps to underlying ranges, and where the replicas for a range are located.
 
-{% include {{ page.version.version }}/misc/experimental-warning.md %}
+{% include common/experimental-warning.md %}
 
 {{site.data.alerts.callout_info}}
 To show information about the ranges for all data in a table, index, or database, use the [`SHOW RANGES`](show-ranges.html) statement.

@@ -76,7 +76,7 @@ Reference information related to this task:
 - [Transactions](transactions.html)
 - [Transaction retries](transactions.html#client-side-intervention)
 - [Batched statements](transactions.html#batched-statements)
-- [Understanding and Avoiding Transaction Contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention)
+- [Transaction Contention](performance-best-practices-overview.html#transaction-contention)
 - [`BEGIN`](begin-transaction.html)
 - [`COMMIT`](commit-transaction.html)
 
@@ -87,9 +87,9 @@ Other common tasks:
 - [Query Data](query-data.html)
 - [Update Data](update-data.html)
 - [Delete Data](delete-data.html)
-- [Make Queries Fast][fast]
+- [Optimize Statement Performance][fast]
 - [Error Handling and Troubleshooting](error-handling-and-troubleshooting.html)
-- [Hello World Example apps](hello-world-example-apps.html)
+- [Example Apps](example-apps.html)
 
 <!-- Reference Links -->
 

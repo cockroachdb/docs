@@ -36,6 +36,7 @@ An _exact staleness read_ is a historical read as of a static, user-provided tim
 ### When to use exact staleness reads
 
 Use [exact staleness](#exact-staleness-reads) follower reads when:
+
 - You need multi-statement reads inside transactions.
 - You can tolerate reading older data (at least 4.8 seconds in the past), to reduce the chance that the historical query timestamp is not quite old enough to prevent blocking on a conflicting write and thus being able to be served by a local replica.
 - You do not need the increase in availability provided by [bounded staleness reads](#bounded-staleness-reads) in the face of network partitions or other failures.
@@ -173,7 +174,14 @@ Note that follower reads are "read-only" operations; they cannot be used in any 
 {{site.data.alerts.callout_success}}
 Using the [`SET TRANSACTION`](set-transaction.html#use-the-as-of-system-time-option) statement as shown in the example above will make it easier to use exact staleness follower reads from [drivers and ORMs](install-client-drivers.html).
 
- To set `AS OF SYSTEM TIME follower_read_timestamp()` on all implicit and explicit read-only transactions by default, set the `default_transaction_use_follower_reads` [session variable](set-vars.html) to `on`. When `default_transaction_use_follower_reads=on` and follower reads are enabled, all read-only transactions use exact staleness follower reads.
+To set `AS OF SYSTEM TIME follower_read_timestamp()` on all implicit and explicit read-only transactions by default, use one of the following options:
+
+<ul>
+  <li>Set the <code>default_transaction_use_follower_reads</code> <a href="set-vars.html">session variable</a> to <code>on</code>. When <code>default_transaction_use_follower_reads=on</code>, all read-only transactions use exact staleness follower reads.</li>
+  <li>Execute the <code>SET SESSION CHARACTERISTICS AS TRANSACTION AS OF SYSTEM TIME follower_read_timestamp()</code> <a href="set-vars.html#special-syntax-cases">SQL statement</a>. This has the same effect as setting the session variable as shown above.</li>
+</ul>
+
+<span class="version-tag">New in v21.2:</span> You can set `default_transaction_use_follower_reads` on a per-role basis; for instructions, see [Set default session variable values for a role](alter-role.html#set-default-session-variable-values-for-a-role).
 {{site.data.alerts.end}}
 
 ## Limitations

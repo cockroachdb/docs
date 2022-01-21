@@ -9,7 +9,8 @@ This guide shows you how to develop an application on CockroachDB. After reading
 ## Guide contents
 
 - [Overview](#cockroachdb-basics)
-- [Connect to a Cluster](install-client-drivers.html)
+- [Install a Client Library](install-client-drivers.html)
+- [Connect to a Cluster](connect-to-the-database.html)
 - [Design a Schema](schema-design-overview.html)
 - [Write Data](insert-data.html)
 - [Read Data](query-data.html)
@@ -37,7 +38,7 @@ Managing transactions is an important part of CockroachDB application developmen
 
 CockroachDB guarantees [`SERIALIZABLE`](https://en.wikipedia.org/wiki/Serializability) transaction [isolation](https://en.wikipedia.org/wiki/Isolation_(database_systems)) (the "I" of ACID semantics). If transactions are executed concurrently, the final state of the database will appear as if the transactions were executed serially. `SERIALIZABLE` isolation, the strictest level of isolation, provides the highest level of data consistency and protects against concurrency-based attacks and bugs.
 
-To guarantee `SERIALIZABLE` isolation, CockroachDB locks the data targeted by an open transaction. If a separate transaction attempts to modify data that are locked by an open transaction, the newest transaction will not succeed, as committing it could result in a violation of the `SERIALIZABLE` isolation level. This scenario is called *transaction contention*, and should be avoided when possible. For a more detailed explanation of transaction contention, and tips on how to avoid it, see [Understand and Avoid Transaction Contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention).
+To guarantee `SERIALIZABLE` isolation, CockroachDB locks the data targeted by an open transaction. If a separate transaction attempts to modify data that are locked by an open transaction, the newest transaction will not succeed, as committing it could result in a violation of the `SERIALIZABLE` isolation level. This scenario is called *transaction contention*, and should be avoided when possible. For a more detailed explanation of transaction contention, and tips on how to avoid it, see [Understand and Avoid Transaction Contention](performance-best-practices-overview.html#transaction-contention).
 
 #### Transaction retries
 
@@ -51,9 +52,10 @@ A growing number of popular third-party database tools offer full support for Co
 
 ## What's next?
 
-- [Start a Local Cluster](secure-a-cluster.html)
+- [Start a Free {{ site.data.products.serverless }} Cluster](../cockroachcloud/quickstart.html) or [Local Cluster](secure-a-cluster.html)
 - [Install a Driver or ORM Framework](install-client-drivers.html)
 - [Connect to CockroachDB](connect-to-the-database.html)
+- [Build a Sample Application](example-apps.html)
 
 You might also be interested in the following pages:
 
@@ -61,7 +63,6 @@ You might also be interested in the following pages:
 - [Transactions](transactions.html)
 - [CockroachDB Migration](migration-overview.html)
 - [PostgreSQL Compatibility](postgresql-compatibility.html)
-- [Hello World Example Apps](hello-world-example-apps.html)
 - [Build a Spring App with CockroachDB](build-a-spring-app-with-cockroachdb-jdbc.html)
 - [Develop and Deploy a Global Application](movr-flask-overview.html)
 

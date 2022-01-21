@@ -4,7 +4,9 @@ summary: The SQL dashboard lets you monitor the performance of your SQL queries.
 toc: true
 ---
 
-The **SQL** dashboard in the DB Console lets you monitor the performance of your SQL queries. To view this dashboard, [access the DB Console](ui-overview.html#db-console-access), click **Metrics** on the left-hand navigation bar, and then select **Dashboard** > **SQL**.
+The **SQL** dashboard in the DB Console lets you monitor the performance of your SQL queries.
+
+To view this dashboard, [access the DB Console](ui-overview.html#db-console-access), click **Metrics** in the left-hand navigation, and then select **Dashboard** > **SQL**.
 
 {% include {{ page.version.version }}/ui/ui-metrics-navigation.md %}
 
@@ -17,7 +19,6 @@ The **SQL** dashboard displays the following time series graphs:
 - In the node view, the graph shows the number of connections currently open between the client and the selected node.
 
 - In the cluster view, the graph shows the total number of SQL client connections to all nodes combined, with lines for each node.
-
 
 ## Open SQL Transactions
 
@@ -59,11 +60,13 @@ See the [Statements page](ui-statements-page.html) for more details on the clust
 
 ## SQL Statement Contention
 
+The statement contention metric is a counter that represents the number of statements that have experienced contention. If a statement experiences at least one contention "event" (i.e., the statement is forced to wait for another transaction), the counter is incremented at most once.
+
 - In the node view, the graph shows the total number of SQL statements that experienced [contention](transactions.html#transaction-contention) on that node.
 
 - In the cluster view, the graph shows the total number of SQL statements that experienced [contention](transactions.html#transaction-contention) across all nodes in the cluster.
 
-See the [Statements page](ui-statements-page.html) for more details on the cluster's SQL statements.
+    See the [Statements page](ui-statements-page.html) for more details on the cluster's SQL statements.
 
 ## Full Table/Index Scans
 
@@ -90,8 +93,6 @@ Connection latency is calculated as the time in nanoseconds between when the clu
 ## Connection Latency: 90th Percentile
 
 Connection latency is calculated as the time in nanoseconds between when the cluster receives a connection request and establishes the connection to the client, including authentication.
-
-
 
 ## Service Latency: SQL, 99th percentile
 
@@ -123,13 +124,6 @@ KV execution latency is calculated as the time in milliseconds between when the 
 
 ## Transactions
 
-- In the node view, the graph shows the total number of [transactions](transactions.html) initiated (`Begin`), committed (`Commits`), rolled back (`Rollbacks`), and aborted (`Aborts`) per second on this node.
-
-- In the cluster view, the graph shows the total number of [transactions](transactions.html) initiated (`Begin`), committed (`Commits`), rolled back (`Rollbacks`), and aborted (`Aborts`) per second across all nodes in the cluster.
-
-
-## Transactions
-
 - In the node view, the graph shows the 10-second average of the number of opened (`Begin`), committed (`Commits`), rolled back (`Rollbacks`), and aborted (`Aborts`) [transactions](transactions.html) per second issued by SQL clients on the node.
 
 - In the cluster view, the graph shows the sum of the per-node averages, that is, an aggregate estimation of the current [transactions](transactions.html) load over the cluster, assuming the last 10 seconds of activity per node are representative of this load.
@@ -144,7 +138,7 @@ See the [Transactions page](ui-transactions-page.html) for more details on the t
 
 - In the cluster view, the graph shows the number of transactions restarted across the cluster broken down by the errors that caused the restart.
 
-See the [Transaction Retry Error Reference](transaction-retry-error-reference.html) for details on the errors that caused the transaciton to restart.
+See the [Transaction Retry Error Reference](transaction-retry-error-reference.html) for details on the errors that caused the transaction to restart.
 
 ## Transaction Latency: 99th percentile
 

@@ -2,25 +2,22 @@
 title: Quickstart with CockroachDB Cloud
 summary: Learn how to create and use your CockroachDB Cloud cluster.
 toc: true
+filter_category: qs_crdb_cloud
+filter_html: CockroachDB Dedicated
+filter_sort: 2
 ---
 
-<div class="filters clearfix">
-    <a href="quickstart.html"><button class="filter-button page-level">{{ site.data.products.serverless }}</button></a>
-    <a href="quickstart-trial-cluster.html"><button class="filter-button page-level current">{{ site.data.products.dedicated }}</button></a>
-</div>
+{% include filter-tabs.md %}
 
 This page shows you how to deploy a CockroachDB cluster on {{ site.data.products.dedicated }} (free for a 30-day trial for your first cluster), connect to it using a sample workload, and run your first query.
 
-To run CockroachDB on your local machine instead, see [Start a Local Cluster](../{{site.versions["stable"]}}/secure-a-cluster.html).
-
-## Before you begin
-
-If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=docs_quickstart_trial" rel="noopener" target="_blank">sign up for a {{ site.data.products.db }} account</a>.
+To run CockroachDB on your local machine instead, see [Start a Local Cluster](../stable/secure-a-cluster.html).
 
 ## Step 1. Create a free trial cluster
 
 For this tutorial, we will create a 3-node GCP cluster in the `us-west2` region.
 
+1. If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=docs_quickstart_trial" rel="noopener" target="_blank">sign up for a {{ site.data.products.db }} account</a>.
 1. [Log in](https://cockroachlabs.cloud/) to your {{ site.data.products.db }} account.
 1. On the **Overview** page, click **Create Cluster**.
 1. On the **Create new cluster** page, for **Cloud provider**, select **Google Cloud**.
@@ -79,7 +76,7 @@ Once your cluster is created, you will be redirected to the **Cluster Overview**
     {% include cockroachcloud/download-the-binary.md %}
 
 1. In your terminal, run the second command from the dialog to create a new `certs` directory on your local machine and download the CA certificate to that directory.
-    
+
     {% include cockroachcloud/download-the-cert.md %}
 
 ## Step 5. Use the built-in SQL client
@@ -91,7 +88,7 @@ Once your cluster is created, you will be redirected to the **Cluster Overview**
     {{site.data.alerts.end}}
 
     {% include cockroachcloud/sql-connection-string.md %}
-    
+
 1. Enter the SQL user's password and hit enter.
 
     {% include cockroachcloud/postgresql-special-characters.md %}
