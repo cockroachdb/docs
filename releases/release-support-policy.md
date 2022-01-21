@@ -6,6 +6,10 @@ toc: true
 
 This page explains Cockroach Labs' policy for supporting [major releases](../releases/) of CockroachDB.
 
+{{site.data.alerts.callout_info}}
+For {{ site.data.products.db }} clusters, see the [{{ site.data.products.db }} Upgrade Policy](../cockroachcloud/upgrade-policy.html).
+{{site.data.alerts.end}}
+
 ## Support cycle
 
 Each major release of CockroachDB goes through the following support cycle:
