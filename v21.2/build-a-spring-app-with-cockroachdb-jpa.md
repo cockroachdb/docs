@@ -4,12 +4,12 @@ summary: Learn how to use CockroachDB from a Spring application with Spring Data
 toc: true
 twitter: false
 referral_id: docs_roach_data_java_spring_jpa
+filter_category: crud_spring
+filter_html: Use <strong>JPA</strong>
+filter_sort: 2
 ---
 
-<div class="filters filters-big clearfix">
-    <a href="build-a-spring-app-with-cockroachdb-jdbc.html"><button style="width: 28%" class="filter-button">Use <strong>JDBC</strong></button></a>
-    <a href="build-a-spring-app-with-cockroachdb-jpa.html"><button style="width: 28%" class="filter-button current">Use <strong>JPA</strong></button></a>
-</div>
+{% include filter-tabs.md %}
 
 This tutorial shows you how to build a [Spring Boot](https://spring.io/projects/spring-boot) web application with CockroachDB, using the [Spring Data JPA](https://spring.io/projects/spring-data-jpa) module for data access. The code for the example application is available for download from [GitHub](https://github.com/cockroachlabs/roach-data/tree/master), along with identical examples that use [JDBC](https://github.com/cockroachlabs/roach-data/tree/master/roach-data-jdbc), [jOOQ](https://github.com/cockroachlabs/roach-data/tree/master/roach-data-jooq), and [MyBatis](https://github.com/cockroachlabs/roach-data/tree/master/roach-data-mybatis) for data access.
 

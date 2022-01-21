@@ -4,17 +4,14 @@ summary: Learn how to benchmark CockroachDB against TPC-C 13k on 3 nodes on your
 toc: true
 toc_not_nested: true
 key: performance-benchmarking-with-tpc-c-10-warehouses.html
+filter_category: perf_bench_tpc-c
+filter_html: Local
+filter_sort: 1
 ---
 
 This page shows you how to reproduce [CockroachDB's TPC-C performance benchmarking results](performance.html#scale). Across all scales, CockroachDB can process tpmC (new order transactions per minute) at near maximum efficiency. Start by choosing the scale you're interested in:
 
-<div class="filters filters-big clearfix">
-  <button class="filter-button current"><strong>Local</strong></button>
-  <a href="performance-benchmarking-with-tpcc-local-multiregion.html"><button class="filter-button"><strong>Local (Multi-region)</strong></button></a>
-  <a href="performance-benchmarking-with-tpcc-small.html"><button class="filter-button">Small</button></a>
-  <a href="performance-benchmarking-with-tpcc-medium.html"><button class="filter-button">Medium</button></a>
-  <a href="performance-benchmarking-with-tpcc-large.html"><button class="filter-button">Large</button></a>
-</div>
+{% include filter-tabs.md %}
 
 | Workload             | Cluster size                                            | Warehouses | Data size |
 |----------------------+---------------------------------------------------------+------------+-----------|

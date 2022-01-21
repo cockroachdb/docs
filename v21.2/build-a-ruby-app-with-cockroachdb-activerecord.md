@@ -4,12 +4,12 @@ summary: Learn how to use CockroachDB from a simple Ruby script with the ActiveR
 toc: true
 twitter: false
 referral_id: docs_hello_world_ruby_activerecord
+filter_category: crud_ruby
+filter_html: Use <strong>ActiveRecord</strong>
+filter_sort: 2
 ---
 
-<div class="filters filters-big clearfix">
-    <a href="build-a-ruby-app-with-cockroachdb.html"><button style="width: 28%" class="filter-button">Use <strong>pg</strong></button></a>
-    <a href="build-a-ruby-app-with-cockroachdb-activerecord.html"><button style="width: 28%" class="filter-button current">Use <strong>ActiveRecord</strong></button></a>
-</div>
+{% include filter-tabs.md %}
 
 This tutorial shows you how build a simple Ruby application with CockroachDB and [ActiveRecord](http://guides.rubyonrails.org/active_record_basics.html). CockroachDB provides an ActiveRecord adapter for CockroachDB as a [RubyGem](https://rubygems.org/gems/activerecord-cockroachdb-adapter).
 
