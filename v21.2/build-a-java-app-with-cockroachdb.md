@@ -4,14 +4,12 @@ summary: Learn how to use CockroachDB from a simple Java application with the JD
 toc: true
 twitter: false
 referral_id: docs_hello_world_java_jdbc
+filter_category: crud_java
+filter_html: Use <strong>JDBC</strong>
+filter_sort: 1
 ---
 
-<div class="filters filters-big clearfix">
-    <a href="build-a-java-app-with-cockroachdb.html"><button class="filter-button current">Use <strong>JDBC</strong></button></a>
-    <a href="build-a-java-app-with-cockroachdb-hibernate.html"><button class="filter-button">Use <strong>Hibernate</strong></button></a>
-    <a href="build-a-java-app-with-cockroachdb-jooq.html"><button class="filter-button">Use <strong>jOOQ</strong></button></a>
-    <a href="build-a-spring-app-with-cockroachdb-mybatis.html"><button style="width: 25%" class="filter-button">Use <strong>MyBatis-Spring</strong></button></a>
-</div>
+{% include filter-tabs.md %}
 
 This tutorial shows you how to build a simple CRUD Java application with CockroachDB and the Java JDBC driver.
 
