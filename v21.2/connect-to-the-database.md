@@ -2,9 +2,16 @@
 title: Connect to a CockroachDB Cluster
 summary: How to connect to a CockroachDB cluster from your application
 toc: true
+filter_category: connect_db
+filter_html: Local
+filter_sort: 1
 ---
 
+<<<<<<< HEAD
 This page documents the required connection configuration for [fully-supported third-party tools](third-party-database-tools.html).
+=======
+{% include filter-tabs.md %}
+>>>>>>> @{1}
 
 For a list of all supported cluster connection parameters, see the [`cockroach` Connection Parameters](connection-parameters.html).
 

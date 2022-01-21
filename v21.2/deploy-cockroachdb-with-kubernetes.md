@@ -5,17 +5,17 @@ toc: true
 toc_not_nested: true
 secure: true
 redirect_from: orchestrate-cockroachdb-with-kubernetes.html
+filter_category: crdb_single_kubernetes
+filter_html: Secure
+filter_sort: 1
 ---
 
-<div class="filters filters-big clearfix">
-  <button class="filter-button current"><strong>Secure</strong></button>
-  <a href="deploy-cockroachdb-with-kubernetes-insecure.html"><button class="filter-button">Insecure</button></a>
-</div>
+{% include filter-tabs.md %}
 
 This page shows you how to start and stop a secure 3-node CockroachDB cluster in a single [Kubernetes](http://kubernetes.io/) cluster, using one of the following:
 
 - [CockroachDB Kubernetes Operator](https://github.com/cockroachdb/cockroach-operator)
-    
+
     {{site.data.alerts.callout_info}}
     The CockroachDB Kubernetes Operator is also available on platforms such as [Red Hat OpenShift](deploy-cockroachdb-with-kubernetes-openshift.html) and [IBM Cloud Pak for Data](https://www.ibm.com/products/cloud-pak-for-data).
     {{site.data.alerts.end}}

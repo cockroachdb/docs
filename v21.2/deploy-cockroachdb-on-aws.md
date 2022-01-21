@@ -4,13 +4,13 @@ summary: Learn how to deploy CockroachDB on Amazon's AWS EC2 platform.
 toc: true
 toc_not_nested: true
 ssh-link: http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html
+filter_category: deploy_crdb_aws
+filter_html: Secure
+filter_sort: 1
 
 ---
 
-<div class="filters filters-big clearfix">
-  <button class="filter-button current"><strong>Secure</strong></button>
-  <a href="deploy-cockroachdb-on-aws-insecure.html"><button class="filter-button">Insecure</button></a>
-</div>
+{% include filter-tabs.md %}
 
 This page shows you how to manually deploy a secure multi-node CockroachDB cluster on Amazon's AWS EC2 platform, using AWS's managed load balancing service to distribute client traffic.
 
