@@ -31,7 +31,7 @@ In addition to the information listed below, see the following pages for specifi
 - [Migrate from Shapefiles][shp]
 - [Migrate from OpenStreetMap][pbf]
 - [Migrate from GeoPackage][gpkg]
-- [Migrate from GeoPackage][geojson]
+- [Migrate from GeoJSON][geojson]
 
 {% include {{ page.version.version }}/misc/import-perf.md %}
 
