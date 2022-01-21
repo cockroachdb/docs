@@ -13,6 +13,11 @@ IgnoreURLs:
   - "https://crates.io/*"
   - "https://docs.pipenv.org/*"
   - "https://arxiv.org/*"
+  - "https://www.microsoft.com/*"
+  - "https://v1-18.docs.kubernetes.io/*"
+  - "https://anrweb.vt.gov/*"
+  - "https://www.sciencebase.gov/*"
+  - "http://www.tpc.org/*"
 IgnoreInternalEmptyHash: true
 TestFilesConcurrently: true
 DocumentConcurrencyLimit: 16
