@@ -1,9 +1,9 @@
 ---
-title: CockroachDB Cloud FAQs
+title: {{ site.data.products.dedicated }} FAQs
 summary: Get answers to frequently asked questions about CockroachDB Cloud
 toc: true
 filter_category: cloud_faqs
-filter_html: CockroachDB Dedicated
+filter_html: {{ site.data.products.dedicated }}
 filter_sort: 2
 ---
 

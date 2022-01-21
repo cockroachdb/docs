@@ -3,7 +3,7 @@ title: Connect to Your CockroachDB Cloud Cluster
 summary: Learn how to connect and start interacting with your cluster.
 toc: true
 filter_category: conn_crdb_cloud
-filter_html: CockroachDB Dedicated
+filter_html: {{ site.data.products.dedicated }}
 filter_sort: 2
 ---
 

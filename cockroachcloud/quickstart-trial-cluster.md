@@ -3,7 +3,7 @@ title: Quickstart with CockroachDB Cloud
 summary: Learn how to create and use your CockroachDB Cloud cluster.
 toc: true
 filter_category: qs_crdb_cloud
-filter_html: CockroachDB Dedicated
+filter_html: {{ site.data.products.dedicated }}
 filter_sort: 2
 ---
 

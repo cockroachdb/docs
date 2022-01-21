@@ -3,7 +3,7 @@ title: Cluster Management
 summary: Manage your cluster's schema, data, and more.
 toc: true
 filter_category: cluster_mgmt
-filter_html: CockroachDB Dedicated
+filter_html: {{ site.data.products.dedicated }}
 filter_sort: 2
 ---
 

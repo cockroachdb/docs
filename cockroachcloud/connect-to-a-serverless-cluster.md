@@ -1,10 +1,10 @@
 ---
-title: Connect to a CockroachDB Serverless (beta) Cluster
+title: Connect to a {{ site.data.products.serverless }} Cluster
 summary: Learn how to connect and start interacting with your free cluster.
 toc: true
 redirect_from: connect-to-a-free-cluster.html
 filter_category: conn_crdb_cloud
-filter_html: CockroachDB Serverless (beta)
+filter_html: {{ site.data.products.serverless }}
 filter_sort: 1
 ---
 
@@ -16,7 +16,7 @@ This page shows you how to connect to your {{ site.data.products.serverless }} c
 
 ## Before you start
 
-- [Create a Serverless (beta) cluster](create-a-serverless-cluster.html).
+- [Create a {{ site.data.products.serverless }} cluster](create-a-serverless-cluster.html).
 - _(Optional)_ [Create a new SQL user](user-authorization.html#create-a-sql-user).
 
 ## Step 1. Select a connection method

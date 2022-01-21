@@ -1,9 +1,9 @@
 ---
-title: Create a CockroachDB Dedicated Cluster
-summary: Learn how to create your CockroachDB Dedicated cluster.
+title: Create a {{ site.data.products.dedicated }} Cluster
+summary: Learn how to create your {{ site.data.products.dedicated }} cluster.
 toc: true
 filter_category: create_cluster_cloud
-filter_html: CockroachDB Dedicated
+filter_html: {{ site.data.products.dedicated }}
 filter_sort: 2
 ---
 
@@ -120,7 +120,7 @@ You can use [VPC peering](network-authorization.html#vpc-peering) to connect you
         {{site.data.alerts.end}}
 
 1. Click **Next**.
-        
+
         Once your cluster is created, see [Establish VPC Peering or AWS PrivateLink](connect-to-your-cluster.html#establish-vpc-peering-or-aws-privatelink) to finish setting up VPC Peering for your cluster.
 
 ## Step 8. Enter billing details

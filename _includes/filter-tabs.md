@@ -17,6 +17,6 @@ filter_sort: The sort order of that particular page's tab in the filter. If this
 
 <div class="filters clearfix">
     {% for x in fpage %}
-    <a href="/docs{{ x.url }}"><button class="filter-button{% if x.url == page.url %} current{% endif %}">{{ x.filter_html }}</button></a>
+    <a href="/docs{{ x.url }}"><button class="filter-button{% if x.url == page.url %} current{% endif %}">{{ x.filter_html | flatify }}</button></a>
     {% endfor %}
 </div>

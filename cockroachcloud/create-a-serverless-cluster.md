@@ -1,10 +1,10 @@
 ---
-title: Create a CockroachDB Serverless (beta) Cluster
-summary: Learn how to create a cluster using CockroachDB Serverless (beta).
+title: Create a {{ site.data.products.serverless }} Cluster
+summary: Learn how to create a cluster using {{ site.data.products.serverless }}.
 toc: true
 redirect_from: create-a-free-cluster.html
 filter_category: create_cluster_cloud
-filter_html: CockroachDB Serverless (beta)
+filter_html: {{ site.data.products.serverless }}
 filter_sort: 1
 ---
 

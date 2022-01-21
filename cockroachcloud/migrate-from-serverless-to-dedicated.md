@@ -1,6 +1,6 @@
 ---
-title: Migrate from a CockroachDB Serverless (beta) to CockroachDB Dedicated Cluster
-summary: Learn how to migrate data from a CockroachDB Serverless (beta) cluster into a CockroachDB Dedicated cluster.
+title: Migrate from a {{ site.data.products.serverless }} to {{ site.data.products.dedicated }} Cluster
+summary: Learn how to migrate data from a {{ site.data.products.serverless }} cluster into a {{ site.data.products.dedicated }} cluster.
 toc: true
 redirect_from: migrate-from-free-to-dedicated.html
 ---

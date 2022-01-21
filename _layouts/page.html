@@ -19,7 +19,7 @@ layout: default
    {% endunless %}
 {% endunless %}
 ">
-  <h1 class="post-title-main">{{ page.title }}</h1>
+  <h1 class="post-title-main">{{ page.title | flatify }}</h1>
   {% unless page.contribute == false %}
       {% include contribute-options.html %}
   {% endunless %}

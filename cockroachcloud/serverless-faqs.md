@@ -1,10 +1,10 @@
 ---
-title: CockroachDB Serverless (beta) FAQs
-summary: Get answers to frequently asked questions about CockroachDB Serverless (beta)
+title: {{ site.data.products.serverless }} FAQs
+summary: Get answers to frequently asked questions about {{ site.data.products.serverless }}
 toc: true
 redirect_from: free-faqs.html
 filter_category: cloud_faqs
-filter_html: CockroachDB Serverless (beta)
+filter_html: {{ site.data.products.serverless }}
 filter_sort: 1
 ---
 

@@ -1,9 +1,9 @@
 ---
-title: Quickstart with CockroachDB Serverless (beta)
+title: Quickstart with {{ site.data.products.serverless }}
 summary: Learn how to create and use your free CockroachDB Cloud cluster.
 toc: true
 filter_category: qs_crdb_cloud
-filter_html: CockroachDB Serverless (beta)
+filter_html: {{ site.data.products.serverless }}
 filter_sort: 1
 ---
 
