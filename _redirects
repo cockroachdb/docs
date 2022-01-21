@@ -406,6 +406,29 @@ layout: null
 /docs/column-families.html /docs/stable/column-families.html 301
 /docs/performance-recipes-solutions.html /docs/stable/performance-recipes.html 301
 
+#CockroachDB Cloud release notes
+
+/docs/releases/cockroachcloud-01222021.html /docs/releases/cloud.html 301
+/docs/releases/cockroachcloud-01102022.html /docs/releases/cloud.html 301
+/docs/releases/cockroachcloud-02092021.html /docs/releases/cloud.html 301
+/docs/releases/cockroachcloud-03022020.html /docs/releases/cloud.html 301
+/docs/releases/cockroachcloud-03082021.html /docs/releases/cloud.html 301
+/docs/releases/cockroachcloud-04052021.html /docs/releases/cloud.html 301
+/docs/releases/cockroachcloud-04062020.html /docs/releases/cloud.html 301
+/docs/releases/cockroachcloud-05032021.html /docs/releases/cloud.html 301
+/docs/releases/cockroachcloud-05042020.html /docs/releases/cloud.html 301
+/docs/releases/cockroachcloud-06072021.html /docs/releases/cloud.html 301
+/docs/releases/cockroachcloud-06112020.html /docs/releases/cloud.html 301
+/docs/releases/cockroachcloud-07062021.html /docs/releases/cloud.html 301
+/docs/releases/cockroachcloud-07062020.html /docs/releases/cloud.html 301
+/docs/releases/cockroachcloud-08092021.html /docs/releases/cloud.html 301
+/docs/releases/cockroachcloud-09072021.html /docs/releases/cloud.html 301
+/docs/releases/cockroachcloud-10042021.html /docs/releases/cloud.html 301
+/docs/releases/cockroachcloud-11082021.html /docs/releases/cloud.html 301
+/docs/releases/cockroachcloud-11192020.html /docs/releases/cloud.html 301
+/docs/releases/cockroachcloud-12062021.html /docs/releases/cloud.html 301
+/docs/releases/cockroachcloud-12112020.html /docs/releases/cloud.html 301
+
 # Redirects for Homebrew
 /docs/secure-a-cluster.html /docs/stable/secure-a-cluster.html 301
 

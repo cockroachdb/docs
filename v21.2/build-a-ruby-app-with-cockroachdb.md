@@ -4,12 +4,12 @@ summary: Learn how to use CockroachDB from a simple Ruby application with the pg
 toc: true
 twitter: false
 referral_id: docs_hello_world_ruby_pg
+filter_category: crud_ruby
+filter_html: Use <strong>pg</strong>
+filter_sort: 1
 ---
 
-<div class="filters filters-big clearfix">
-    <a href="build-a-ruby-app-with-cockroachdb.html"><button style="width: 28%" class="filter-button current">Use <strong>pg</strong></button></a>
-    <a href="build-a-ruby-app-with-cockroachdb-activerecord.html"><button style="width: 28%" class="filter-button">Use <strong>ActiveRecord</strong></button></a>
-</div>
+{% include filter-tabs.md %}
 
 This tutorial shows you how build a simple Ruby application with CockroachDB and the [Ruby pg driver](https://deveiate.org/code/pg/PG/Connection.html).
 

@@ -4,12 +4,12 @@ summary: Learn how to use CockroachDB from a Hello World Go application with the
 toc: true
 twitter: false
 referral_id: docs_hello_world_go_pgx
+filter_category: hello_world_go
+filter_html: Use <strong>pgx</strong>
+filter_sort: 1
 ---
 
-<div class="filters filters-big clearfix">
-    <a href="hello-world-go-pgx.html"><button class="filter-button current">Use <strong>pgx</strong></button></a>
-    <a href="hello-world-go-gorm.html"><button class="filter-button">Use <strong>GORM</strong></button></a>
-</div>
+{% include filter-tabs.md %}
 
 This tutorial shows you how build a simple Hello World Go application with CockroachDB and the [Go pgx driver](https://pkg.go.dev/github.com/jackc/pgx).
 

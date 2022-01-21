@@ -3,14 +3,14 @@ title: CockroachDB Serverless (beta) FAQs
 summary: Get answers to frequently asked questions about CockroachDB Serverless (beta)
 toc: true
 redirect_from: free-faqs.html
+filter_category: cloud_faqs
+filter_html: CockroachDB Serverless (beta)
+filter_sort: 1
 ---
 
 This page answers the frequently asked questions about {{ site.data.products.serverless }} and {{ site.data.products.dedicated }}.
 
-<div class="filters clearfix">
-    <a href="serverless-faqs.html"><button class="filter-button page-level current">{{ site.data.products.serverless }}</button></a>
-    <a href="frequently-asked-questions.html"><button class="filter-button page-level">{{ site.data.products.dedicated }}</button></a>
-</div>
+{% include filter-tabs.md %}
 
 ## General
 
@@ -117,7 +117,7 @@ Yes, you can upgrade your cluster through the Console by [increasing your spend 
 
 ### Can I upgrade the version of CockroachDB my {{ site.data.products.serverless }} cluster is running on?
 
-No, {{ site.data.products.serverless }} clusters are upgraded automatically for you. You can see what version of CockroachDB your cluster is running in the [{{ site.data.products.db }} Console](https://cockroachlabs.cloud/) or in the [latest release notes](../releases/index-cockroachcloud.html).
+No, {{ site.data.products.serverless }} clusters are upgraded automatically for you. You can see what version of CockroachDB your cluster is running in the [{{ site.data.products.db }} Console](https://cockroachlabs.cloud/) or in the [latest release notes](../releases/cloud.html).
 
 ## Product features
 

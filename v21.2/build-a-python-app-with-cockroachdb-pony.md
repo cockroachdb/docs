@@ -3,15 +3,12 @@ title: Build a Python App with CockroachDB and PonyORM
 summary: Learn how to use CockroachDB from a simple Python application with PonyORM.
 toc: true
 twitter: false
+filter_category: crud_python
+filter_html: <strong>PonyORM</strong>
+filter_sort: 4
 ---
 
-<div class="filters clearfix">
-    <a href="build-a-python-app-with-cockroachdb.html"><button class="filter-button page-level"><strong>psycopg2</strong></button></a>
-    <a href="build-a-python-app-with-cockroachdb-sqlalchemy.html"><button class="filter-button page-level"><strong>SQLAlchemy</strong></button></a>
-    <a href="build-a-python-app-with-cockroachdb-django.html"><button class="filter-button page-level"><strong>Django</strong></button></a>
-    <a href="build-a-python-app-with-cockroachdb-pony.html"><button class="filter-button page-level current"><strong>PonyORM</strong></button></a>
-    <a href="http://docs.peewee-orm.com/en/latest/peewee/playhouse.html#cockroach-database"><button class="filter-button page-level"><strong>peewee</strong></button></a>
-</div>
+{% include filter-tabs.md %}
 
 This tutorial shows you how build a simple Python application with CockroachDB and [PonyORM](https://ponyorm.org/).
 
