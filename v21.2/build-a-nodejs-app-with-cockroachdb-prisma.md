@@ -3,6 +3,7 @@ title: Build a Simple CRUD Node.js App with CockroachDB and Prisma Client
 summary: Learn how to use CockroachDB from a simple CRUD application that uses the Prisma Client ORM.
 toc: true
 twitter: false
+referral_id: docs_node_prisma
 ---
 
 <div class="filters filters-big clearfix">
