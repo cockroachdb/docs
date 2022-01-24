@@ -5,7 +5,7 @@ toc: true
 ---
 
 {{site.data.alerts.callout_danger}}
-The configurations and settings explained on this page will have significant impact on a changefeed's behavior.
+The configurations and settings explained on this page will significantly impact a changefeed's behavior.
 {{site.data.alerts.end}}
 
 The following sections describe settings, configurations, and details to tune changefeeds for particular use cases:
