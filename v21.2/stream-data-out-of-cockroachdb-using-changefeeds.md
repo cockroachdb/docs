@@ -159,7 +159,7 @@ The changefeed emits duplicate records 1, 2, and 3 before outputting the records
 ~~~
 
 {{site.data.alerts.callout_info}}
-Changefeeds will emit [NULL values](null-handling.html) for [`VIRTUAL` computed columns](computed-columns.html) and not the column's computed value.
+Changefeeds will emit [`NULL` values](null-handling.html) for [`VIRTUAL` computed columns](computed-columns.html) and not the column's computed value.
 {{site.data.alerts.end}}
 
 ## Changefeeds on regional by row tables
