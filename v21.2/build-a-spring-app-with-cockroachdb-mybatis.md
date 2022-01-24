@@ -3,14 +3,12 @@ title: Build a Spring App with CockroachDB and MyBatis
 summary: Learn how to use CockroachDB from a simple Spring application with MyBatis.
 toc: true
 twitter: false
+filter_category: crud_java
+filter_html: Use <strong>MyBatis-Spring</strong>
+filter_sort: 4
 ---
 
-<div class="filters filters-big clearfix">
-    <a href="build-a-java-app-with-cockroachdb.html"><button class="filter-button">Use <strong>JDBC</strong></button></a>
-    <a href="build-a-java-app-with-cockroachdb-hibernate.html"><button class="filter-button">Use <strong>Hibernate</strong></button></a>
-    <a href="build-a-java-app-with-cockroachdb-jooq.html"><button class="filter-button">Use <strong>jOOQ</strong></button></a>
-    <a href="build-a-spring-app-with-cockroachdb-mybatis.html"><button style="width: 25%" class="filter-button current">Use <strong>MyBatis-Spring</strong></button></a>
-</div>
+{% include filter-tabs.md %}
 
 This tutorial shows you how to build a simple [Spring Boot](https://spring.io/projects/spring-boot) application with CockroachDB, using the [MyBatis-Spring-Boot-Starter module](http://mybatis.org/spring-boot-starter) for data access.
 
@@ -371,7 +369,7 @@ Instances of the `BatchResults` class, defined in `src/main/java/com/example/coc
 
 MyBatis-Spring supports Spring's [declarative, aspect-oriented transaction management syntax](https://docs.spring.io/spring/docs/current/spring-framework-reference/data-access.html#transaction-declarative), including the [`@Transactional`](https://docs.spring.io/spring/docs/current/spring-framework-reference/data-access.html#transaction-declarative-annotations) annotation and [AspectJ's AOP annotations](https://docs.spring.io/spring/docs/current/spring-framework-reference/data-access.html#transaction-declarative-aspectj).
 
-Transactions may require retries if they experience deadlock or [transaction contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention) that cannot be resolved without allowing [serialization](demo-serializable.html) anomalies. To handle transactions that are aborted due to transient serialization errors, we highly recommend writing [client-side transaction retry logic](transactions.html#client-side-intervention) into applications written on CockroachDB. In this application, transaction retry logic is written into the methods of the `RetryableTransactionAspect` class, defined in `src/main/java/com/example/cockroachdemo/RetryableTransactionAspect.java`:
+Transactions may require retries if they experience deadlock or [transaction contention](performance-best-practices-overview.html#transaction-contention) that cannot be resolved without allowing [serialization](demo-serializable.html) anomalies. To handle transactions that are aborted due to transient serialization errors, we highly recommend writing [client-side transaction retry logic](transactions.html#client-side-intervention) into applications written on CockroachDB. In this application, transaction retry logic is written into the methods of the `RetryableTransactionAspect` class, defined in `src/main/java/com/example/cockroachdemo/RetryableTransactionAspect.java`:
 
 {% include_cached copy-clipboard.html %}
 ~~~ java

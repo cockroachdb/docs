@@ -30,9 +30,7 @@ Area | Description
 
 ## DB Console access
 
-### DB Console URL
-
-The DB Console is accessible from every node at `http://<host>:<http-port>`, or `http://<host>:8080` by default.
+You can access the DB Console from every node at `http://<host>:<http-port>`, or `http://<host>:8080` by default.
 
 - If you included the [`--http-addr`](cockroach-start.html#networking) flag when starting nodes, use the IP address or hostname and port specified by that flag.
 - If you didn't include the [`--http-addr`](cockroach-start.html#networking) flag when starting nodes, use the IP address or hostname specified by the [`--listen-addr`](cockroach-start.html#networking) flag and port `8080`.
