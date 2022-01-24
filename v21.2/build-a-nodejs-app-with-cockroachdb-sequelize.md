@@ -3,7 +3,7 @@ title: Build a Node.js App with CockroachDB and Sequelize
 summary: Learn how to use CockroachDB from a simple Node.js application with the Sequelize ORM.
 toc: true
 twitter: false
-referral_id: docs_hello_world_nodejs_sequelize
+referral_id: docs_node_sequelize
 filter_category: crud_js
 filter_html: Use <strong>Sequelize</strong>
 filter_sort: 2

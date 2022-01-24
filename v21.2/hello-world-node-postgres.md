@@ -3,6 +3,7 @@ title: Build a Hello World App with CockroachDB and the node-postgres Driver
 summary: Learn how to use CockroachDB from a Hello World Node.js application with the node-postgres driver.
 toc: true
 twitter: false
+referral_id: docs_hello_world_node_postgres
 ---
 
 This tutorial shows you how build a simple Hello World Node.js application with CockroachDB and the [node-postgres driver](https://node-postgres.com/).
