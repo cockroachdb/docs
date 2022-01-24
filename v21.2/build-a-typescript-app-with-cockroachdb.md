@@ -6,7 +6,7 @@ twitter: false
 referral_id: docs_hello_world_typescript_typeorm
 filter_category: crud_js
 filter_html: Use <strong>TypeORM</strong>
-filter_sort: 4
+filter_sort: 5
 ---
 
 {% include filter-tabs.md %}
