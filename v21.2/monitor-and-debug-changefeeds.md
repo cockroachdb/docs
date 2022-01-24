@@ -9,7 +9,7 @@ Changefeeds work as jobs in CockroachDB, which allows for [monitoring](#monitor-
 ## Monitor a changefeed
 
 {{site.data.alerts.callout_info}}
-Monitoring is only available for Enterprise changefeeds.
+Monitoring is only available for {{ site.data.products.enterprise }} changefeeds.
 {{site.data.alerts.end}}
 
 Changefeed progress is exposed as a high-water timestamp that advances as the changefeed progresses. This is a guarantee that all changes before or at the timestamp have been emitted. You can monitor a changefeed:
@@ -39,7 +39,7 @@ You can use the high-water timestamp to [start a new changefeed where another en
 
 ### Using logs
 
-For Enterprise changefeeds, [use log information](logging-overview.html) to debug connection issues (i.e., `kafka: client has run out of available brokers to talk to (Is your cluster reachable?)`). Debug by looking for lines in the logs with `[kafka-producer]` in them:
+For {{ site.data.products.enterprise }} changefeeds, [use log information](logging-overview.html) to debug connection issues (i.e., `kafka: client has run out of available brokers to talk to (Is your cluster reachable?)`). Debug by looking for lines in the logs with `[kafka-producer]` in them:
 
 ~~~
 I190312 18:56:53.535646 585 vendor/github.com/Shopify/sarama/client.go:123  [kafka-producer] Initializing new client
@@ -51,7 +51,7 @@ I190312 18:56:53.537686 585 vendor/github.com/Shopify/sarama/client.go:170  [kaf
 
 ### Using `SHOW CHANGEFEED JOBS`
 
-<span class="version-tag">New in v21.2:</span> For Enterprise changefeeds, use `SHOW CHANGEFEED JOBS` to check the status of your changefeed jobs:
+<span class="version-tag">New in v21.2:</span> For {{ site.data.products.enterprise }} changefeeds, use `SHOW CHANGEFEED JOBS` to check the status of your changefeed jobs:
 
 {% include copy-clipboard.html %}
 ~~~ sql

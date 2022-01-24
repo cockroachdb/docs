@@ -37,7 +37,7 @@ Example of a Kafka sink URI:
 
 ### Topic naming
 
-By default, a Kafka topic has the same name as the table that a changefeed was created on. If a changefeed was created on multiple tables, the changefeed will write to multiple topics corresponding to those table names.
+By default, a Kafka topic has the same name as the table on which a changefeed was created. If a changefeed was created on multiple tables, the changefeed will write to multiple topics corresponding to those table names.
 
 To modify the default topic naming, you can specify a [topic prefix](create-changefeed.html#topic-prefix-param), [an arbitrary topic name](create-changefeed.html#topic-name-param), or use the [`full_table_name` option](create-changefeed.html#full-table-option). Using the [`topic_name`](create-changefeed.html#topic-name-param) parameter, you can specify an arbitrary topic name and feed all tables into that topic.
 

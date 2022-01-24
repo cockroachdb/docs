@@ -1,6 +1,6 @@
 ---
 title: Create and Configure Changefeeds
-summary: Create and configure a changefeed job for core and enterprise.
+summary: Create and configure a changefeed job for Core and Enterprise.
 toc: true
 ---
 
