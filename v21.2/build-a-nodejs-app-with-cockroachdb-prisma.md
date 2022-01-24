@@ -4,15 +4,12 @@ summary: Learn how to use CockroachDB from a simple CRUD application that uses t
 toc: true
 twitter: false
 referral_id: docs_node_prisma
+filter_category: crud_js
+filter_html: Use <strong>Prisma</strong>
+filter_sort: 4
 ---
 
-<div class="filters filters-big clearfix">
-    <a href="build-a-nodejs-app-with-cockroachdb.html"><button class="filter-button">Use <strong>node-postgres</strong></button></a>
-    <a href="build-a-nodejs-app-with-cockroachdb-sequelize.html"><button class="filter-button">Use <strong>Sequelize</strong></button></a>
-    <a href="build-a-nodejs-app-with-cockroachdb-knexjs.html"><button class="filter-button">Use <strong>KnexJS</strong></button></a>
-    <a href="build-a-nodejs-app-with-cockroachdb-prisma.html"><button class="filter-button current">Use <strong>Prisma</strong></button></a>
-    <a href="build-a-typescript-app-with-cockroachdb.html"><button class="filter-button">Use <strong>TypeORM</strong></button></a>
-</div>
+{% include filter-tabs.md %}
 
 This tutorial shows you how build a simple Node.js application with CockroachDB and [Prisma Client](https://www.prisma.io).
 
