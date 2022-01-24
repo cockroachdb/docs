@@ -31,7 +31,7 @@ Working from your total vCPU count, you should then decide how many vCPUs to all
 
 Carefully consider the following tradeoffs:
 
-- A **smaller number of larger nodes** emphasizes performance consistency.
+- A **smaller number of larger nodes** emphasizes cluster stability.
 
     - Larger nodes tolerate hotspots more effectively than smaller nodes.
     - Queries operating on large data sets may strain network transfers if the data is spread widely over many smaller nodes. Having fewer and larger nodes enables more predictable workload performance.
@@ -41,11 +41,11 @@ Carefully consider the following tradeoffs:
 
     - The loss of a small node during failure or routine maintenance has a lesser impact on workload response time and concurrency.
     - Having more and smaller nodes allows [backup and restore jobs](take-and-restore-encrypted-backups.html) to complete more quickly, since these jobs run in parallel and less data is hosted on each individual node.
-    - Recovery from a failed node is faster when data is spread across more nodes. A smaller node will also take a shorter time to rebuild. 
+    - Recovery from a failed node is faster when data is spread across more nodes. A smaller node will also take a shorter time to rebalance to a steady state.
 
 In general, distribute your total vCPUs into the **largest possible nodes and smallest possible cluster** that meets your fault tolerance goals.
 
-- Each node should have at least {% include {{ page.version.version }}/prod-deployment/provision-cpu.md %}. For good performance, we recommend at least 8 vCPUs per node. 
+- Each node should have at least {% include {{ page.version.version }}/prod-deployment/provision-cpu.md %}. For more stability, we recommend at least 8 vCPUs per node. 
 
 - Avoid "burstable" or "shared-core" virtual machines that limit the load on CPU resources.
 

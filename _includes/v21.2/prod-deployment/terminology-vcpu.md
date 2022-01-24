@@ -1,3 +1,3 @@
 {{site.data.alerts.callout_info}}
-Mentions of "CPU resources" or "cores" refer to vCPUs, which are also known as hyperthreads.
+In our sizing and production guidance, 1 vCPU is considered equivalent to 1 core in the underlying hardware platform.
 {{site.data.alerts.end}}

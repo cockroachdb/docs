@@ -517,7 +517,7 @@ If you still see under-replicated/unavailable ranges on the Cluster Overview pag
 Common reasons for node liveness issues include:
 
 - Heavy I/O load on the node. Because each node needs to update a liveness record on disk, maxing out disk bandwidth can cause liveness heartbeats to be missed. See also: [Capacity planning issues](#capacity-planning-issues).
-- Outright I/O failure due to a [disk stall](#disk-stalls). This will cause node liveness issues for the same reasons as listed above.
+- A [disk stall](#disk-stalls). This will cause node liveness issues for the same reasons as listed above.
 - [Insufficient CPU for the workload](#cpu-is-insufficient-for-the-workload). This can eventually cause nodes to miss their liveness heartbeats and become unresponsive.
 - [Networking issues](#networking-issues) with the node.
 
