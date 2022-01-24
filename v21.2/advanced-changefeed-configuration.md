@@ -8,7 +8,7 @@ toc: true
 The configurations and settings explained on this page will significantly impact a changefeed's behavior.
 {{site.data.alerts.end}}
 
-The following sections describe settings, configurations, and details to tune changefeeds for particular use cases:
+The following sections describe settings, configurations, and details to tune changefeeds for these use cases:
 
 - [High durability delivery](#tuning-for-high-durability-delivery)
 - [High throughput](#tuning-for-high-throughput)
