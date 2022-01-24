@@ -16,7 +16,7 @@ Command | Usage
 `\du` | List the users for all databases. This command is equivalent to [`SHOW USERS`](show-users.html).
 `\d <table>` | Show details about columns in the specified table. This command is equivalent to [`SHOW COLUMNS`](show-columns.html).
 `\r` | Resets the query input buffer, clearing all SQL statements that have been entered but not yet executed.
-`\statement-diag list`   |  List available diagnostic bundles.
+`\statement-diag list`   |  List available [diagnostic bundles](cockroach-statement-diag.html).
 `\statement-diag download <bundle-id> [<filename>]`  | Download diagnostic bundle.
 `\i <filename>` |   Reads and executes input from the file `<filename>`, in the current working directory.
 `\ir <filename>` |   Reads and executes input from the file `<filename>`.<br>When invoked in the interactive shell, `\i` and `\ir` behave identically (i.e., CockroachDB looks for `<filename>` in the current working directory). When invoked from a script, CockroachDB looks for `<filename>` relative to the directory in which the script is located.
