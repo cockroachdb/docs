@@ -27,13 +27,13 @@ For each cluster, the following details display:
 - The cluster's **Plan Type**, either Serverless or Dedicated
 - The date and time the cluster was **Created**
 - The cluster's current **State**
-- The cluster's cloud provider, either GCP or AWS
+- The cluster's **Cloud** provider, either GCP or AWS
 - The **Version** of CockroachDB the cluster is running
 - The **Action** button, which is used to:
     - [**Add or remove nodes**](?filters=dedicated#add-or-remove-nodes-from-a-cluster)
     - [**Increase storage**](?filters=dedicated#increase-storage-for-a-cluster)
     - [**Change compute**](?filters=dedicated#change-compute-for-a-cluster)
-    - [**Upgrade major version**](upgrade-to-v21.1.html)
+    - [**Upgrade major version**](upgrade-to-v21.2.html)
     {% comment %}
     - [**Add/remove regions**](?filters=dedicated#add-or-remove-regions-from-a-cluster)
     {% endcomment %}
@@ -71,23 +71,20 @@ You cannot scale a multi-node cluster down to a single-node cluster. If you need
 To add or remove nodes from your cluster:
 
 1. Navigate to the cluster's **Overview** page.
-1. Click the **Actions** button in the top right corner.
-1. Select **Add/remove nodes**.
-{% comment %} This button will change {% endcomment %}
+1. Select **Actions > Edit cluster**.
 
     The **Edit cluster** page displays.
 
-1. From the **Nodes** dropdown, select the number of nodes you want in your cluster.
+1. From the **Nodes** dropdown, select the number of nodes you want in each region.
 1. In the **Summary** sidebar, verify the hourly estimated cost for the cluster.
-1. Click **Continue to payment**.
-1. In the **Confirmation** dialog, verify your new cluster configuration.
-1. Click **OK**.
+1. Click **Next: Payment**.
+1. On the **Summary** page, verify your new cluster configuration.
+1. Click **Update**.
 
 ### Increase storage for a cluster
 
 1. Navigate to the cluster's **Overview** page.
-1. Click the **Actions** button in the top right corner.
-1. Select **Edit cluster**.
+1. Select **Actions > Edit cluster**.
 
     The **Edit cluster** page displays.
   
@@ -98,14 +95,15 @@ To add or remove nodes from your cluster:
     Storage space cannot be removed from a node once added.
     {{site.data.alerts.end}}
 
-1. Confirm that your updated configuration and price is correct in the **Settings** sidebar.
-1. Click **Update cluster**.
+1. In the **Summary** sidebar, verify the hourly estimated cost for the cluster.
+1. Click **Next: Payment**.
+1. On the **Summary** page, verify your new cluster configuration.
+1. Click **Update**.
 
 ### Change compute for a cluster
 
 1. Navigate to the cluster's **Overview** page.
-1. Click the **Actions** button in the top right corner.
-1. Select **Edit cluster**.
+1. Select **Actions > Edit cluster**.
 
     The **Edit cluster** page displays.
   
@@ -116,8 +114,10 @@ To add or remove nodes from your cluster:
     When scaling up your cluster, it is generally more effective to increase node size up to 16 vCPUs before adding more nodes. For most production applications, we recommend **at least 4 to 8 vCPUs** per node.
     {{site.data.alerts.end}}
 
-1. Confirm that your updated configuration and price is correct in the **Settings** sidebar.
-1. Click **Update cluster**.
+1. In the **Summary** sidebar, verify the hourly estimated cost for the cluster.
+1. Click **Next: Payment**.
+1. On the **Summary** page, verify your new cluster configuration.
+1. Click **Update**.
 
 {% comment %}
 ### Add or remove regions from a cluster
@@ -127,10 +127,9 @@ You can add or remove up to three regions at a time through the Console. See the
 ### Add a region to your cluster
 
 1. Navigate to the cluster's **Overview** page.
-1. Click the **Actions** button in the top right corner.
-1. Select **Edit regions and nodes**.
+1. Select **Actions > Edit cluster**.
 
-    The **Edit <cluster name>** page displays.
+    The **Edit cluster** page displays.
 
 1. Click **Add a region**.
 
@@ -146,10 +145,9 @@ You can add or remove up to three regions at a time through the Console. See the
 ### Remove a region from your cluster
 
 1. Navigate to the cluster's **Overview** page.
-1. Click the **Actions** button in the top right corner.
-1. Select **Edit regions and nodes**.
+1. Select **Actions > Edit cluster**.
 
-    The **Edit <cluster name>** page displays.
+    The **Edit cluster** page displays.
 
 1. Click the **X** button next to each region you want to remove.
 1. In the **Summary** sidebar, verify the hourly estimated cost for the cluster.
