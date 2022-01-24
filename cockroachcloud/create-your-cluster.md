@@ -27,7 +27,9 @@ To create and connect to a 30-day free {{ site.data.products.dedicated }} cluste
 
 In the **Cloud provider** section, select either **Google Cloud** or **AWS** as your preferred cloud provider.
 
-{{ site.data.products.db }} GCP clusters use [N2 standard](https://cloud.google.com/compute/docs/machine-types#n2_machine_types) machine types and [Persistent Disk storage](https://cloud.google.com/compute/docs/disks#pdspecs). AWS clusters use [M5 instance types](https://aws.amazon.com/ec2/instance-types/m5/#Product_Details) and [Elastic Block Store (EBS)](https://aws.amazon.com/ebs/features/). The IOPS associated with each node size in GCP is equal to 30 times the storage size, and the IOPS for AWS nodes is equal to 15 times the storage size.
+{{ site.data.products.db }} GCP clusters use [N2 standard](https://cloud.google.com/compute/docs/machine-types#n2_machine_types) machine types and [Persistent Disk storage](https://cloud.google.com/compute/docs/disks#pdspecs). AWS clusters use [M5 instance types](https://aws.amazon.com/ec2/instance-types/m5/#Product_Details) and [Elastic Block Store (EBS)](https://aws.amazon.com/ebs/features/). 
+
+For GCP clusters, each GiB of storage costs $0.0012 per hour, and 30 IOPS per GiB are provisioned. For AWS clusters, each GiB of storage costs $0.0005 per hour, and 15 IOPS per GiB are provisioned at an additional cost of $0.0000196 per hour. 
 
 {% include cockroachcloud/cockroachcloud-pricing.md %}
 
@@ -79,12 +81,16 @@ The choice of hardware per node determines the [cost](#step-2-select-the-cloud-p
 
 1. Select the **Storage**.
 
-    You can choose up to 150GiB per vCPU. Each GiB of storage costs $0.0 per hour and comes with 00 IOPS at a cost of $0.0 per hour. When selecting your storage capacity, consider the following factors:
+    {{site.data.alerts.callout_danger}}
+    Storage space cannot be removed from a node once added.
+    {{site.data.alerts.end}}
+
+    You can choose up to 150 GiB per vCPU. See [Step 2](#step-2-select-the-cloud-provider) for pricing information. When selecting your storage capacity, consider the following factors:
     
     Factor | Description
     ----------|------------
     Capacity | Total raw data size you expect to store without replication.
-    Replication | The default replication factor for a CockroachCloud cluster is 3.
+    Replication | The default replication factor for a {{ site.data.products.db }} cluster is 3.
     Buffer | Additional buffer (overhead data, accounting for data growth, etc.). If you are importing an existing dataset, we recommend you provision at least 50% additional storage to account for the import functionality.
     Compression | The percentage of savings you can expect to achieve with compression. With CockroachDB's default compression algorithm, we typically see about a 40% savings on raw data size.
 

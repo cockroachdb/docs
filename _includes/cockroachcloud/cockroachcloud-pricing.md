@@ -1,4 +1,4 @@
-The choice of the cloud provider decides the price per node. For pricing comparison, refer to the following table:
+For a pricing comparison of some example hardware configurations, refer to the following table:
 
 Example hardware configuration   | AWS IOPS                 | GCP Pricing (per node, per hour)	 | AWS Pricing (per node, per hour) 
 ---------------------------------+--------------------------+------------------------------------+---------------------------------
