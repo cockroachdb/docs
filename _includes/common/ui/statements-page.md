@@ -16,9 +16,9 @@ To search using the search field, type a string over `Search Statements` and pre
 
 ### Date range
 
-To search by date, click the date range selector and pick a date range that is within the time period since the statistics were last cleared. Click **reset time** to reset the date to the last hour.
+To search by date, click the date range selector and pick a date range that is within the time period. Click **reset time** to reset the date to the last hour.
 
-It's possible to select a date range for which no statement statistics exist. CockroachDB persists statement statistics up to 1 million rows. The retention period of statistics is reduced the more active a workload is and the more distinct statement fingerprints there are.
+It's possible to select a date range for which no statement statistics exist. CockroachDB persists statement statistics up to 1 million rows before the oldest row is deleted. The retention period of statistics is reduced the more active a workload is and the more distinct statement fingerprints there are.
 
 ### Filter
 

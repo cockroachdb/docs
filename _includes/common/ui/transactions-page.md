@@ -33,9 +33,9 @@ To search using the search field, type a string over `Search Transactions` and p
 
 ### Date range
 
-To search by date, click the date range selector and pick a date range that is within the time period since the statistics were last cleared. Click **reset time** to reset the date to the last hour.
+To search by date, click the date range selector and pick a date range that is within the time period. Click **reset time** to reset the date to the last hour.
 
-It's possible to select a date range for which no transaction statistics exist. CockroachDB persists transaction statistics up to 1 million rows. The retention period of statistics is reduced the more active a workload is and the more distinct transaction fingerprints there are.
+It's possible to select a date range for which no transaction statistics exist. CockroachDB persists transaction statistics up to 1 million rows before the oldest row is deleted. The retention period of statistics is reduced the more active a workload is and the more distinct transaction fingerprints there are.
 
 ### Filter
 
