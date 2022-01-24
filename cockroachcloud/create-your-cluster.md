@@ -29,10 +29,6 @@ In the **Cloud provider** section, select either **Google Cloud** or **AWS** as 
 
 {{ site.data.products.db }} GCP clusters use [N2 standard](https://cloud.google.com/compute/docs/machine-types#n2_machine_types) machine types and [Persistent Disk storage](https://cloud.google.com/compute/docs/disks#pdspecs). AWS clusters use [M5 instance types](https://aws.amazon.com/ec2/instance-types/m5/#Product_Details) and [Elastic Block Store (EBS)](https://aws.amazon.com/ebs/features/). The IOPS associated with each node size in GCP is equal to 30 times the storage size, and the IOPS for AWS nodes is equal to 15 times the storage size.
 
-{{site.data.alerts.callout_info}}
-If you created a {{ site.data.products.dedicated }} cluster before December 1, 2021, your cluster may have a different machine type, IOPS, and pricing. Your cluster will be transitioned to the current hardware configuration by the end of the month.
-{{site.data.alerts.end}}
-
 {% include cockroachcloud/cockroachcloud-pricing.md %}
 
 ## Step 3. Select the region(s)
