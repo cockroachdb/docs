@@ -3,7 +3,7 @@ title: Build a Go App with CockroachDB the Go pq Driver
 summary: Learn how to use CockroachDB from a simple Go application with the Go pq driver.
 toc: true
 twitter: false
-referral_id: docs_hello_world_go_pq
+referral_id: docs_go_pq
 filter_category: crud_go
 filter_html: Use <strong>pq</strong>
 filter_sort: 2

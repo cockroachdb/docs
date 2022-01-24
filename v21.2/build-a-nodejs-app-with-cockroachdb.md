@@ -3,7 +3,7 @@ title: Build a Simple CRUD Node.js App with CockroachDB and the node-postgres Dr
 summary: Learn how to use CockroachDB from a simple CRUD application that uses the node-postgres driver.
 toc: true
 twitter: false
-referral_id: docs_hello_world_nodejs_pg
+referral_id: docs_node_postgres
 filter_category: crud_js
 filter_html: Use <strong>node-postgres</strong>
 filter_sort: 1

@@ -3,7 +3,7 @@ title: Build a Ruby App with CockroachDB and ActiveRecord
 summary: Learn how to use CockroachDB from a simple Ruby script with the ActiveRecord gem.
 toc: true
 twitter: false
-referral_id: docs_hello_world_ruby_activerecord
+referral_id: docs_ruby_activerecord
 filter_category: crud_ruby
 filter_html: Use <strong>ActiveRecord</strong>
 filter_sort: 2

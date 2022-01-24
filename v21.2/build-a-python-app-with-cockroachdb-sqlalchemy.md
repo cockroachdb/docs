@@ -3,7 +3,7 @@ title: Build a Simple CRUD Python App with CockroachDB and SQLAlchemy
 summary: Learn how to use CockroachDB from a simple Python application with SQLAlchemy.
 toc: true
 twitter: false
-referral_id: docs_hello_world_python_sqlalchemy
+referral_id: docs_python_sqlalchemy
 filter_category: crud_python
 filter_html: <strong>SQLAlchemy</strong>
 filter_sort: 2
