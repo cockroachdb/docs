@@ -152,7 +152,7 @@ The [`SESSIONS`](logging.html#sessions) channel logs SQL session events. This in
 These logs perform one disk I/O per event. Enabling each setting will impact performance.
 {{site.data.alerts.end}}
 
-{% include {{ page.version.version }}/misc/experimental-warning.md %}
+{% include common/experimental-warning.md %}
 
 #### Example: Client connection events
 
@@ -227,7 +227,7 @@ The [`SENSITIVE_ACCESS`](logging.html#sensitive_access) channel logs SQL audit e
 Enabling these logs can negatively impact performance. We recommend using `SENSITIVE_ACCESS` for security purposes only.
 {{site.data.alerts.end}}
 
-{% include {{ page.version.version }}/misc/experimental-warning.md %}
+{% include common/experimental-warning.md %}
 
 To log all queries against a specific table, enable auditing on the table with [`ALTER TABLE ... EXPERIMENTAL_AUDIT`](experimental-audit.html). 
 

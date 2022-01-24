@@ -26,7 +26,7 @@
   &__label {
     @include subhead-avenir-sm;
   }
-
+  
   &--success {
     background-color: $shallow-end;
     border-left-color: $aquamarine;
@@ -52,5 +52,14 @@
     h4, .bs-callout__label {
       color: $spanish-roast;
     }
+  }
+  
+  &--version {
+    background-color: $cl_warning;
+    border-left-color: $cl_warning;
+
+    h4, .bs-callout__label {
+      color: $cl_warning;
+    }      
   }
 }

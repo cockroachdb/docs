@@ -1,3 +1,3 @@
 {{site.data.alerts.callout_info}}
-At this time, you cannot add nodes to a single-node cluster once it is created.
+{{ site.data.products.db }} does not support scaling a multi-node cluster down to a single node.
 {{site.data.alerts.end}}

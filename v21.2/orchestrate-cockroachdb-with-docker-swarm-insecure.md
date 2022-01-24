@@ -2,12 +2,12 @@
 title: Orchestrate CockroachDB with Docker Swarm
 summary: How to orchestrate the deployment and management of an insecure three-node CockroachDB cluster as a Docker swarm.
 toc: true
+filter_category: crdb_docker
+filter_html: Insecure
+filter_sort: 2
 ---
 
-<div class="filters filters-big clearfix">
-  <a href="orchestrate-cockroachdb-with-docker-swarm.html"><button class="filter-button">Secure</button></a>
-  <button class="filter-button current"><strong>Insecure</strong></button>
-</div>
+{% include filter-tabs.md %}
 
 This page shows you how to orchestrate the deployment and management of an insecure three-node CockroachDB cluster as a [swarm of Docker Engines](https://docs.docker.com/engine/swarm/).
 

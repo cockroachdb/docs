@@ -72,6 +72,8 @@ Here are some best practices for creating indexes:
 
 - Index all columns that you plan to use for [sorting](order-by.html) or [filtering](select-clause.html#filter-rows) data.
 
+    {% include {{page.version.version}}/sql/covering-index.md %}
+
     Note that columns listed in a filtering [`WHERE` clause](select-clause.html#parameters) with the equality operators (`=` or `IN`) should come first in the index, before those referenced with inequality operators (`<`, `>`).
 
 - Avoid indexing on sequential values.
@@ -88,7 +90,9 @@ Here are some best practices for creating indexes:
 
 - Limit creation and deletion of secondary indexes to off-peak hours. Performance impacts are likely if done during peak business hours.
 
-- Use a [`STORING` clause](create-index.html#parameters) to store columns of data that you want returned by common queries, but that you do not plan to use in query filters.
+<a name="storing-index"></a>
+
+- Use a [`STORING` clause](create-index.html#parameters) to store columns of data that you want returned by common queries, but that you do not plan to use in query filters. Note that the synonym `COVERING` is also supported.
 
     The `STORING` clause specifies columns that are not part of the index key but should be stored in the index, without being sorted. If a column is specified in a query, and the column is neither indexed nor stored in an index, CockroachDB will perform a full scan of the table, which can result in poor performance. For an example, see [below](#example).
 
