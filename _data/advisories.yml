@@ -1,6 +1,6 @@
 - advisory: 74736
   summary: Queries can miss rows in a primary or unique index that is being scanned, causing incorrect query results.
-  versions: 21.1 and 21.2 prior to 21.1.13 and 21.2.4
+  versions: <affected versions>
   date: January 25, 2022
 - advisory: 74385
   summary: Partial indexes can be corrupted by <code>UPDATE</code> statements, resulting in incorrect query results for any queries that use the partial index
