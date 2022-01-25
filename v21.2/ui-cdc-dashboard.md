@@ -4,13 +4,9 @@ summary: The Changefeeds dashboard lets you monitor the changefeeds created acro
 toc: true
 ---
 
-<<<<<<< HEAD
-The **Changefeeds** dashboard in the DB Console lets you monitor the [changefeeds](stream-data-out-of-cockroachdb-using-changefeeds.html) created across your cluster. To view this dashboard, [access the DB Console](ui-overview.html#db-console-access), click **Metrics** on the left-hand navigation bar, and then select **Dashboard** > **Changefeeds**.
-=======
 The **Changefeeds** dashboard in the DB Console lets you monitor the [changefeeds](change-data-capture-overview.html) created across your cluster.
 
 To view this dashboard, [access the DB Console](ui-overview.html#db-console-access), click **Metrics** on the left-hand navigation bar, and then select **Dashboard** > **Changefeeds**.
->>>>>>> 90ab0e528 (Refinements to pages, links, and see also)
 
 {% include {{ page.version.version }}/ui/ui-metrics-navigation.md %}
 
