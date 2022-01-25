@@ -1,24 +1,24 @@
 ---
-title: Inverted Indexes
-summary: Inverted indexes improve your database's performance and usefulness by helping SQL locate data in JSONB or ARRAY columns.
+title: Generalized Inverted Indexes
+summary: Generalized inverted indexes (GIN) improve your database's performance and usefulness by helping SQL locate data in JSONB or ARRAY columns.
 toc: true
 ---
 
-Inverted indexes store mappings from values within a container column (such as a [`JSONB`](jsonb.html) document) to the row that holds that value. They are used to speed up containment searches, e.g., "show me all of the rows from this table which have a JSON column that contains the key-value pair `{"location":"NYC"}`". Inverted indexes are commonly used in [document retrieval systems](https://en.wikipedia.org/wiki/Document_retrieval).
+Generalized inverted indexes, or GIN indexes, store mappings from values within a container column (such as a [`JSONB`](jsonb.html) document) to the row that holds that value. They are used to speed up containment searches, e.g., "show me all of the rows from this table which have a JSON column that contains the key-value pair `{"location":"NYC"}`". GIN indexes are commonly used in [document retrieval systems](https://en.wikipedia.org/wiki/Document_retrieval).
 
-CockroachDB stores the contents of the following data types in inverted indexes:
+CockroachDB stores the contents of the following data types in GIN indexes:
 
 - [JSONB](jsonb.html)
 - [Arrays](array.html)
 - [Spatial data (`GEOMETRY` and `GEOGRAPHY` types)](spatial-indexes.html)
 
-{{site.data.alerts.callout_success}}For a hands-on demonstration of using an inverted index to improve query performance on a <code>JSONB</code> column, see the <a href="demo-json-support.html">JSON tutorial</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_success}}For a hands-on demonstration of using GIN indexes to improve query performance on a <code>JSONB</code> column, see the <a href="demo-json-support.html">JSON tutorial</a>.{{site.data.alerts.end}}
 
-## How do inverted indexes work?
+## How do GIN indexes work?
 
-Standard [indexes](indexes.html) work well for searches based on prefixes of sorted data. However, data types like [`JSONB`](jsonb.html) or [arrays](array.html) cannot be queried without a full table scan, since they do not adhere to ordinary value prefix comparison operators. `JSONB` in particular needs to be indexed in a more detailed way than what a standard index provides. This is where inverted indexes prove useful.
+Standard [indexes](indexes.html) work well for searches based on prefixes of sorted data. However, data types like [`JSONB`](jsonb.html) or [arrays](array.html) cannot be queried without a full table scan, since they do not adhere to ordinary value prefix comparison operators. `JSONB` in particular needs to be indexed in a more detailed way than what a standard index provides. This is where GIN indexes prove useful.
 
-Inverted indexes filter on components of tokenizable data. The `JSONB` data type is built on two structures that can be tokenized:
+GIN indexes filter on components of tokenizable data. The `JSONB` data type is built on two structures that can be tokenized:
 
 - **Objects** - Collections of key-value pairs where each key-value pair is a token.
 - **Arrays** - Ordered lists of values where every value in the array is a token.
@@ -41,7 +41,7 @@ For example, take the following `JSONB` value in column `person`:
 }
 ~~~
 
-An inverted index for this object would have an entry per component, mapping it back to the original object:
+A GIN index for this object would have an entry per component, mapping it back to the original object:
 
 ~~~
 "firstName": "John"
@@ -57,9 +57,9 @@ This lets you search based on subcomponents.
 
 ### Creation
 
-You can use inverted indexes to improve the performance of queries using `JSONB` or `ARRAY` columns. You can create them:
+You can use GIN indexes to improve the performance of queries using `JSONB` or `ARRAY` columns. You can create them:
 
-- At the same time as the table with the `INVERTED INDEX` clause of [`CREATE TABLE`](create-table.html#create-a-table-with-secondary-and-inverted-indexes).
+- At the same time as the table with the `INVERTED INDEX` clause of [`CREATE TABLE`](create-table.html#create-a-table-with-secondary-and-gin-indexes).
 - For existing tables with [`CREATE INVERTED INDEX`](create-index.html).
 - Using the following PostgreSQL-compatible syntax:
 
@@ -69,7 +69,7 @@ You can use inverted indexes to improve the performance of queries using `JSONB`
 
 ### Selection
 
-If a query contains a filter against an indexed `JSONB` or `ARRAY` column that uses any of the supported operators, the inverted index is added to the set of index candidates.
+If a query contains a filter against an indexed `JSONB` or `ARRAY` column that uses any of the supported operators, the GIN index is added to the set of index candidates.
 
 In most cases CockroachDB selects the index it calculates will scan the fewest rows (i.e., the fastest). Cases where CockroachDB will use multiple indexes include certain queries that use disjunctions (i.e., predicates with `OR`), as well as [zigzag joins](cost-based-optimizer.html#zigzag-joins) for some other queries. To learn how to use  the [`EXPLAIN`](explain.html) statement for your query to see which index is being used, see [Index Selection in CockroachDB](https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2/).
 
@@ -93,7 +93,7 @@ This section describes how to perform comparisons on `JSONB` and `ARRAY` columns
 
 #### JSONB
 
-Inverted indexes on `JSONB` columns support the following comparison operators:
+GIN indexes on `JSONB` columns support the following comparison operators:
 
 - **is contained by**: [`<@`](functions-and-operators.html#supported-operations)
 - **contains**: [`@>`](functions-and-operators.html#supported-operations)
@@ -140,14 +140,14 @@ If you require comparisons using [`<`](functions-and-operators.html#supported-op
 
 #### Arrays
 
- Inverted indexes on [`ARRAY`](array.html) columns support the following comparison operators:
+ GIN indexes on [`ARRAY`](array.html) columns support the following comparison operators:
 
 - **is contained by**: [`<@`](functions-and-operators.html#supported-operations)
 - **contains**: [`@>`](functions-and-operators.html#supported-operations)
 
-## Partial inverted indexes
+## Partial GIN indexes
 
- You can create a [partial](partial-indexes.html) inverted index, an inverted index on a subset of `JSON`, `ARRAY`, or geospatial container column data. Just like partial indexes that use non-container data types, create a partial inverted index by including a clause that evaluates to true on a boolean predicate, like a `WHERE` clause.
+ You can create a [partial](partial-indexes.html) GIN index, a GIN index on a subset of `JSON`, `ARRAY`, or geospatial container column data. Just like partial indexes that use non-container data types, create a partial GIN index by including a clause that evaluates to true on a boolean predicate, like a `WHERE` clause.
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -158,15 +158,15 @@ CREATE TABLE test (
 );
 ~~~
 
-## Inverted indexes on `REGIONAL BY ROW` tables in multi-region databases
+## GIN indexes on `REGIONAL BY ROW` tables in multi-region databases
 
 {% include {{page.version.version}}/sql/indexes-regional-by-row.md %}
 
 For an example that uses unique indexes but applies to all indexes on `REGIONAL BY ROW` tables, see [Add a unique index to a `REGIONAL BY ROW` table](add-constraint.html#add-a-unique-index-to-a-regional-by-row-table).
 
-## Multi-column inverted indexes
+## Multi-column GIN indexes
 
-You can create an inverted index with multiple columns. The last indexed column must be one of the inverted types such as `JSON`, `ARRAY`, `GEOMETRY`, and `GEOGRAPHY`. All preceding columns must have types that are indexable. These indexes may be used for queries that constrain all index columns.
+You can create an GIN index with multiple columns. The last indexed column must be one of the inverted types such as `JSON`, `ARRAY`, `GEOMETRY`, and `GEOGRAPHY`. All preceding columns must have types that are indexable. These indexes may be used for queries that constrain all index columns.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -180,9 +180,9 @@ CREATE TABLE users (
 
 ## Examples
 
-### Create a table with inverted index on a JSONB column
+### Create a table with GIN index on a JSONB column
 
-In this example, let's create a table with a `JSONB` column and an inverted index:
+In this example, let's create a table with a `JSONB` column and a GIN index:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -256,9 +256,9 @@ Now, run a query that filters on the `JSONB` column:
 (2 rows)
 ~~~
 
-### Add an inverted index to a table with an array column
+### Add a GIN index to a table with an array column
 
-In this example, let's create a table with an `ARRAY` column first, and add the inverted index later:
+In this example, let's create a table with an `ARRAY` column first, and add the GIN index later:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -298,7 +298,7 @@ Insert a few rows of data:
 (3 rows)
 ~~~
 
-Now, let’s add an inverted index to the table and run a query that filters on the `ARRAY`:
+Now, let’s add an GIN index to the table and run a query that filters on the `ARRAY`:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -322,9 +322,9 @@ Now, let’s add an inverted index to the table and run a query that filters on 
 (2 rows)
 ~~~
 
-### Create a table with a partial inverted index on a JSONB column
+### Create a table with a partial GIN index on a JSONB column
 
-In the same [`users` table in the previous example](#create-a-table-with-inverted-index-on-a-jsonb-column) create a partial inverted index for online users.
+In the same [`users` table in the previous example](#create-a-table-with-gin-index-on-a-jsonb-column) create a partial GIN index for online users.
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -345,7 +345,7 @@ SELECT * FROM users WHERE user_profile -> 'online' = 'true';
 Time: 2ms total (execution 2ms / network 0ms)
 ~~~
 
-Now, use index hinting with the partial inverted index.
+Now, use index hinting with the partial GIN index.
 
 ~~~ sql
 SELECT * FROM users@idx_online_users WHERE user_profile->'online' = 'true' AND user_profile->'location' = '"NYC"';

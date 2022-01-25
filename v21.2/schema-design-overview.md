@@ -122,7 +122,7 @@ CockroachDB has been shown to perform well with clusters containing 2,500 tables
 
 As you scale to a large number of tables, note that:
 
-- The amount of RAM per node is the limiting factor for the number of tables and other schema objects the cluster can support. This includes columns, indexes, inverted indexes, constraints, and partitions. Increasing RAM is likely to have the greatest impact on the number of these objects that a cluster can support, while increasing the number of nodes will not have a substantial effect.
+- The amount of RAM per node is the limiting factor for the number of tables and other schema objects the cluster can support. This includes columns, indexes, GIN indexes, constraints, and partitions. Increasing RAM is likely to have the greatest impact on the number of these objects that a cluster can support, while increasing the number of nodes will not have a substantial effect.
 - The number of databases or schemas on the cluster has minimal impact on the total number of tables that it can support.
 
 See the [Hardware](recommended-production-settings.html#hardware) section for additional recommendations based on your expected workloads.
