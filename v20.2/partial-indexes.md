@@ -82,7 +82,7 @@ You can force queries [to use a specific partial index](table-expressions.html#f
 
 ## Known limitations
 
-- CockroachDB does not currently support partial [inverted indexes](inverted-indexes.html). See [tracking issue](https://github.com/cockroachdb/cockroach/issues/50952).
+- CockroachDB does not currently support partial [GIN indexes](inverted-indexes.html). See [tracking issue](https://github.com/cockroachdb/cockroach/issues/50952).
 - CockroachDB does not currently support [`IMPORT`](import.html) statements on tables with partial indexes. See [tracking issue](https://github.com/cockroachdb/cockroach/issues/50225).
 - CockroachDB does not currently support multiple arbiter indexes for `INSERT ON CONFLICT DO UPDATE`, and will return an error if there are multiple unique or exclusion constraints matching the `ON CONFLICT DO UPDATE` specification. See [tracking issue](https://github.com/cockroachdb/cockroach/issues/53170).
 

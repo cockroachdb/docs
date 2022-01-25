@@ -150,7 +150,7 @@ The output of [`EXPLAIN (VERBOSE)`](explain.html#verbose-option) shows whether `
 
 ### Inverted joins
 
- Inverted joins force the optimizer to use a join using an [inverted index](inverted-indexes.html) on the right side of the join. Inverted joins can only be used with `INNER` and `LEFT` joins.
+ Inverted joins force the optimizer to use a join using a [GIN index](inverted-indexes.html) on the right side of the join. Inverted joins can only be used with `INNER` and `LEFT` joins.
 
 ~~~
 <table expr> INNER INVERTED JOIN <table expr> ON <val expr>

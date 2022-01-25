@@ -536,15 +536,15 @@ If the execution of a [join](joins.html) query exceeds the limit set for memory-
 
 {% include {{ page.version.version }}/known-limitations/unordered-operations.md %}
 
-### Inverted indexes cannot be partitioned
+### GIN indexes cannot be partitioned
 
-CockroachDB does not support partitioning inverted indexes, including [spatial indexes](spatial-indexes.html).
+CockroachDB does not support partitioning GIN indexes, including [spatial indexes](spatial-indexes.html).
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/43643)
 
-### Inverted index scans can't be generated for some statement filters
+### GIN index scans can't be generated for some statement filters
 
-CockroachDB cannot generate [inverted index](inverted-indexes.html) scans for statements with filters that have both JSON fetch values and containment operators. For example the following statement won't be index-accelerated:
+CockroachDB cannot generate [GIN index](inverted-indexes.html) scans for statements with filters that have both JSON fetch values and containment operators. For example the following statement won't be index-accelerated:
 
 ~~~ sql
 SELECT * FROM mytable WHERE j->'a' @> '{"b": "c"}';

@@ -26,7 +26,7 @@ Spatial indexes store information about spatial objects, but they are used for t
 
 Spatial indexes differ from other types of indexes as follows:
 
-- They are specialized to operate on 2-dimensional `GEOMETRY` and `GEOGRAPHY` data types. They are stored by CockroachDB as a special type of [inverted index](inverted-indexes.html). For more details, [see below](#details).
+- They are specialized to operate on 2-dimensional `GEOMETRY` and `GEOGRAPHY` data types. They are stored by CockroachDB as a special type of [GIN index](inverted-indexes.html). For more details, [see below](#details).
 
 - If needed, they can be tuned to store looser or tighter coverings of the shapes being indexed, depending on the needs of your application. Tighter coverings are more expensive to generate, store, and update, but can perform better in some cases because they return fewer false positives during the initial index lookup. Tighter coverings can also lead to worse performance due to more rows in the index, and more scans at the storage layer.  That's why we recommend that most users should not need to change the default settings. For more information, see [Tuning spatial indexes](#tuning-spatial-indexes) below.
 
@@ -68,7 +68,7 @@ Next, let's look at a 3-dimensional image that shows the cube and sphere more cl
 
 When you index a spatial object, a covering is computed using some number of the cells in the quadtree. The number of covering cells can vary per indexed object by passing special arguments to `CREATE INDEX` that tell CockroachDB how many levels of S2 cells to use. The leaf nodes of the S2 quadtree are at level 30, and for `GEOGRAPHY` measure 1cm across the Earth's surface. By default, `GEOGRAPHY` indexes use up to level 30, and get this level of precision. We also use S2 cell coverings in a slightly different way for `GEOMETRY` indexes. The precision you get there is the bounding length of the `GEOMETRY` index divided by 4^30. For more information, see [Tuning spatial indexes](#tuning-spatial-indexes) below.
 
-CockroachDB stores spatial indexes as a special type of [inverted index](inverted-indexes.html). The spatial index maps from a location, which is a square cell in the quadtree, to one or more shapes whose [coverings](spatial-glossary.html#covering) include that location. Since a location can be used in the covering for multiple shapes, and each shape can have multiple locations in its covering, there is a many-to-many relationship between locations and shapes.
+CockroachDB stores spatial indexes as a special type of [GIN index](inverted-indexes.html). The spatial index maps from a location, which is a square cell in the quadtree, to one or more shapes whose [coverings](spatial-glossary.html#covering) include that location. Since a location can be used in the covering for multiple shapes, and each shape can have multiple locations in its covering, there is a many-to-many relationship between locations and shapes.
 
 ## Tuning spatial indexes
 
@@ -241,7 +241,7 @@ CREATE INDEX
 
 ## See also
 
-- [Inverted Indexes](inverted-indexes.html)
+- [GIN Indexes](inverted-indexes.html)
 - [S2 Geometry Library](https://s2geometry.io/)
 - [Indexes](indexes.html)
 - [Spatial Features](spatial-features.html)

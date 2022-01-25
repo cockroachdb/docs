@@ -114,7 +114,7 @@ To ensure uniqueness or fast lookups, create a [secondary index](indexes.html) o
 Indexes are not required to be partitioned, but creating a non-partitioned index on a partitioned table may not perform well.
 
  When you create a non-partitioned index on a partitioned table, CockroachDB sends a [`NOTICE` message](https://www.postgresql.org/docs/current/plpgsql-errors-and-messages.html) to the client stating that creating a non-partitioned index on a partitioned table may not perform well.
- 
+
 ### Replication zones
 
 On their own, partitions are inert and simply apply a label to the rows of the table that satisfy the criteria of the defined partitions. Applying functionality to a partition requires creating and applying [replication zone](configure-replication-zones.html) to the corresponding partitions.
@@ -714,7 +714,7 @@ Other databases use partitioning for three additional use cases: secondary index
 
 - {% include {{ page.version.version }}/known-limitations/partitioning-with-placeholders.md %}
 
-- CockroachDB does not support partitioning [inverted indexes](inverted-indexes.html), including [spatial indexes](spatial-indexes.html). See [tracking issue](https://github.com/cockroachdb/cockroach/issues/43643).
+- CockroachDB does not support partitioning [GIN indexes](inverted-indexes.html), including [spatial indexes](spatial-indexes.html). See [tracking issue](https://github.com/cockroachdb/cockroach/issues/43643).
 
 - Partitions cannot be created on columns of type `ENUM`. See [tracking issue](https://github.com/cockroachdb/cockroach/issues/55342).
 

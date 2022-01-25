@@ -4,7 +4,7 @@ summary: The JSONB data type stores JSON (JavaScript Object Notation) data.
 toc: true
 ---
 
-The `JSONB` [data type](data-types.html) stores JSON (JavaScript Object Notation) data as a binary representation of the `JSONB` value, which eliminates whitespace, duplicate keys, and key ordering. `JSONB` supports [inverted indexes](inverted-indexes.html).
+The `JSONB` [data type](data-types.html) stores JSON (JavaScript Object Notation) data as a binary representation of the `JSONB` value, which eliminates whitespace, duplicate keys, and key ordering. `JSONB` supports [GIN indexes](inverted-indexes.html).
 
 {{site.data.alerts.callout_success}}For a hands-on demonstration of storing and querying JSON data from a third-party API, see the <a href="demo-json-support.html">JSON tutorial</a>.{{site.data.alerts.end}}
 
@@ -18,7 +18,7 @@ In CockroachDB, `JSON` is an alias for `JSONB`.
 ## Considerations
 
 - The [primary key](primary-key.html), [foreign key](foreign-key.html), and [unique](unique.html) [constraints](constraints.html) cannot be used on `JSONB` values.
-- A standard [index](indexes.html) cannot be created on a `JSONB` column; you must use an [inverted index](inverted-indexes.html).
+- A standard [index](indexes.html) cannot be created on a `JSONB` column; you must use a [GIN index](inverted-indexes.html).
 - CockroachDB does not currently key-encode JSON values. As a result, tables cannot be [ordered by](order-by.html) `JSONB`/`JSON`-typed columns. For details, see [tracking issue](https://github.com/cockroachdb/cockroach/issues/35706).
 
 ## Syntax
@@ -309,7 +309,7 @@ Time: 1ms total (execution 1ms / network 0ms)
 ## See also
 
 - [JSON tutorial](demo-json-support.html)
-- [Inverted Indexes](inverted-indexes.html)
+- [GIN Indexes](inverted-indexes.html)
 - [Computed Columns](computed-columns.html)
 - [Data Types](data-types.html)
 - [Functions and Operators](functions-and-operators.html)

@@ -31,7 +31,7 @@ CockroachDB automatically creates an index on the table's [primary key](primary-
 
 To add a secondary index to a table, do one of the following, following the [best practices listed below](#best-practices):
 
-- Add an `INDEX` clause to the end of a [`CREATE TABLE`](create-table.html#create-a-table-with-secondary-and-inverted-indexes) statement.
+- Add an `INDEX` clause to the end of a [`CREATE TABLE`](create-table.html#create-a-table-with-secondary-and-gin-indexes) statement.
 
     `INDEX` clauses generally take the following form:
 
