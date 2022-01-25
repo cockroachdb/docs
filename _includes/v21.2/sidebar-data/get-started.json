@@ -9,6 +9,12 @@
       ]
     },
     {
+      "title": "Choose a Development Environment",
+      "urls": [
+        "/${VERSION}/choose-a-development-environment.html"
+      ]
+    },
+    {
       "title": "Learn CockroachDB SQL",
       "urls": [
         "/cockroachcloud/learn-cockroachdb-sql.html",
