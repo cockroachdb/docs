@@ -2,6 +2,7 @@
 title: Partial Indexes
 summary: Partial indexes allow you to specify a subset of rows and columns to add to an index.
 toc: true
+keywords: gin, gin index, gin indexes, inverted index, inverted indexes, accelerated index, accelerated indexes
 ---
 
  Partial indexes allow you to specify a subset of rows and columns to add to an [index](indexes.html). Partial indexes include the subset of rows in a table that evaluate to true on a boolean *predicate expression* (i.e., a `WHERE` filter) defined at [index creation](#creation).
@@ -76,9 +77,9 @@ For another example, see [Create a partial index that enforces uniqueness on a s
 When [inserted values](insert.html) conflict with a `UNIQUE` constraint on one or more columns, CockroachDB normally returns an error. We recommend adding an [`ON CONFLICT`](insert.html#on-conflict-clause) clause to all `INSERT` statements that might conflict with rows in the unique index.
 {{site.data.alerts.end}}
 
-## Partial inverted indexes
+## Partial GIN indexes
 
- You can create partial [inverted indexes](inverted-indexes.html#partial-inverted-indexes), which are indexes on a subset of `JSON`, `ARRAY`, or geospatial container column data.
+ You can create partial [GIN indexes](inverted-indexes.html#partial-gin-indexes), which are indexes on a subset of `JSON`, `ARRAY`, or geospatial container column data.
 
 ## Index hints
 
