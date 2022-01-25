@@ -78,7 +78,7 @@ When [inserted values](insert.html) conflict with a `UNIQUE` constraint on one o
 
 ## Partial inverted indexes
 
- You can create partial [inverted indexes](inverted-indexes.html#partial-inverted-indexes), which are indexes on a subset of `JSON`, `ARRAY`, or geospatial container column data.
+ You can create partial [inverted indexes](inverted-indexes.html#partial-gin-indexes), which are indexes on a subset of `JSON`, `ARRAY`, or geospatial container column data.
 
 ## Index hints
 
