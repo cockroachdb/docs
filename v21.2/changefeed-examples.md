@@ -89,82 +89,9 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
     You are expected to create any Kafka topics with the necessary number of replications and partitions. [Topics can be created manually](https://kafka.apache.org/documentation/#basic_ops_add_topic) or [Kafka brokers can be configured to automatically create topics](https://kafka.apache.org/documentation/#topicconfigs) with a default partition count and replication factor.
     {{site.data.alerts.end}}
 
-1. As the `root` user, open the [built-in SQL client](cockroach-sql.html):
+{% include {{ page.version.version }}/cdc/sql-cluster-settings-example.md %}
 
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach sql --insecure
-    ~~~
-
-1. Set your organization name and [{{ site.data.products.enterprise }} license](enterprise-licensing.html) key that you received via email:
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    > SET CLUSTER SETTING cluster.organization = '<organization name>';
-    ~~~
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    > SET CLUSTER SETTING enterprise.license = '<secret>';
-    ~~~
-
-1. Enable the `kv.rangefeed.enabled` [cluster setting](cluster-settings.html):
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    > SET CLUSTER SETTING kv.rangefeed.enabled = true;
-    ~~~
-
-1. Create a database called `cdc_demo`:
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    > CREATE DATABASE cdc_demo;
-    ~~~
-
-1. Set the database as the default:
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    > SET DATABASE = cdc_demo;
-    ~~~
-
-1. Create a table and add data:
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    > CREATE TABLE office_dogs (
-         id INT PRIMARY KEY,
-         name STRING);
-    ~~~
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    > INSERT INTO office_dogs VALUES
-       (1, 'Petee'),
-       (2, 'Carl');
-    ~~~
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    > UPDATE office_dogs SET name = 'Petee H' WHERE id = 1;
-    ~~~
-
-1. Create another table and add data:
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    > CREATE TABLE employees (
-         dog_id INT REFERENCES office_dogs (id),
-         employee_name STRING);
-    ~~~
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    > INSERT INTO employees VALUES
-       (1, 'Lauren'),
-       (2, 'Spencer');
-    ~~~
+{% include {{ page.version.version }}/cdc/create-example-db-cdc.md %}
 
 1. Start the changefeed:
 
@@ -286,82 +213,9 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
     You are expected to create any Kafka topics with the necessary number of replications and partitions. [Topics can be created manually](https://kafka.apache.org/documentation/#basic_ops_add_topic) or [Kafka brokers can be configured to automatically create topics](https://kafka.apache.org/documentation/#topicconfigs) with a default partition count and replication factor.
     {{site.data.alerts.end}}
 
-1. As the `root` user, open the [built-in SQL client](cockroach-sql.html):
+{% include {{ page.version.version }}/cdc/sql-cluster-settings-example.md %}
 
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach sql --insecure
-    ~~~
-
-1. Set your organization name and [{{ site.data.products.enterprise }} license](enterprise-licensing.html) key that you received via email:
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    > SET CLUSTER SETTING cluster.organization = '<organization name>';
-    ~~~
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    > SET CLUSTER SETTING enterprise.license = '<secret>';
-    ~~~
-
-1. Enable the `kv.rangefeed.enabled` [cluster setting](cluster-settings.html):
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    > SET CLUSTER SETTING kv.rangefeed.enabled = true;
-    ~~~
-
-1. Create a database called `cdc_demo`:
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    > CREATE DATABASE cdc_demo;
-    ~~~
-
-1. Set the database as the default:
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    > SET DATABASE = cdc_demo;
-    ~~~
-
-1. Create a table and add data:
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    > CREATE TABLE office_dogs (
-         id INT PRIMARY KEY,
-         name STRING);
-    ~~~
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    > INSERT INTO office_dogs VALUES
-       (1, 'Petee'),
-       (2, 'Carl');
-    ~~~
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    > UPDATE office_dogs SET name = 'Petee H' WHERE id = 1;
-    ~~~
-
-1. Create another table and add data:
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    > CREATE TABLE employees (
-         dog_id INT REFERENCES office_dogs_avro (id),
-         employee_name STRING);
-    ~~~
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    > INSERT INTO employees VALUES
-       (1, 'Lauren'),
-       (2, 'Spencer');
-    ~~~
+{% include {{ page.version.version }}/cdc/create-example-db-cdc.md %}
 
 1. Start the changefeed:
 
@@ -446,82 +300,9 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
     $ cockroach start-single-node --insecure --listen-addr=localhost --background
     ~~~
 
-1. As the `root` user, open the [built-in SQL client](cockroach-sql.html):
+{% include {{ page.version.version }}/cdc/sql-cluster-settings-example.md %}
 
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach sql --insecure
-    ~~~
-
-1. Set your organization name and [{{ site.data.products.enterprise }} license](enterprise-licensing.html) key that you received via email:
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    > SET CLUSTER SETTING cluster.organization = '<organization name>';
-    ~~~
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    > SET CLUSTER SETTING enterprise.license = '<secret>';
-    ~~~
-
-1. Enable the `kv.rangefeed.enabled` [cluster setting](cluster-settings.html):
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    > SET CLUSTER SETTING kv.rangefeed.enabled = true;
-    ~~~
-
-1. Create a database called `cdc_demo`:
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    > CREATE DATABASE cdc_demo;
-    ~~~
-
-1. Set the database as the default:
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    > SET DATABASE = cdc_demo;
-    ~~~
-
-1. Create a table and add data:
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    > CREATE TABLE office_dogs (
-         id INT PRIMARY KEY,
-         name STRING);
-    ~~~
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    > INSERT INTO office_dogs VALUES
-       (1, 'Petee'),
-       (2, 'Carl');
-    ~~~
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    > UPDATE office_dogs SET name = 'Petee H' WHERE id = 1;
-    ~~~
-
-1. Create another table and add data:
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    > CREATE TABLE employees (
-         dog_id INT REFERENCES office_dogs (id),
-         employee_name STRING);
-    ~~~
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    > INSERT INTO employees VALUES
-       (1, 'Lauren'),
-       (2, 'Spencer');
-    ~~~
+{% include {{ page.version.version }}/cdc/create-example-db-cdc.md %}
 
 1. Start the changefeed:
 
@@ -585,31 +366,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
      cockroach workload run movr --duration=1m "postgresql://root@127.0.0.1:26257?sslmode=disable"
      ~~~
 
-1. Open the [built-in SQL client](cockroach-sql.html):
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach sql --insecure
-    ~~~
-
-1. Set your organization name and [{{ site.data.products.enterprise }} license](enterprise-licensing.html) key that you received via email:
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    > SET CLUSTER SETTING cluster.organization = '<organization name>';
-    ~~~
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    > SET CLUSTER SETTING enterprise.license = '<secret>';
-    ~~~
-
-1. Enable the `kv.rangefeed.enabled` [cluster setting](cluster-settings.html):
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    > SET CLUSTER SETTING kv.rangefeed.enabled = true;
-    ~~~
+{% include {{ page.version.version }}/cdc/sql-cluster-settings-example.md %}
 
 1. In a separate terminal window, set up your HTTP server. Clone the test repository:
 
