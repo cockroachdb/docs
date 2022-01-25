@@ -150,6 +150,11 @@ Examples:
     **Examples:** CockroachDB, Cockroach Labs, the Overview dashboard, the SQL Queries graph
 
 - Follow SQL capitalization standards.
+- In body text, only capitalize proper nouns. Do not capitalize common nouns, even if the common noun is an important product concept.
+
+  **Example:**
+    - Correct: New clusters will now have admission control enabled by default.
+    - Incorrect New clusters will now have Admission Control enabled by default.
 
 ### Punctuation rules
 
