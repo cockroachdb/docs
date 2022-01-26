@@ -92,7 +92,7 @@ SELECT crdb_region, id FROM {table};
 
 {% include copy-clipboard.html %}
 ~~~ sql
-UPDATE {table} SET crdb_region = "eu-west" WHERE id IN (...)
+UPDATE {table} SET crdb_region = 'eu-west' WHERE id IN (...)
 ~~~
 
 To add a new row to a regional by row table, you must choose one of the following options.
