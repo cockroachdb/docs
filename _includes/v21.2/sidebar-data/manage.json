@@ -318,28 +318,34 @@
               "urls": [
                 "/${VERSION}/cluster-api.html"
               ]
+            }
+          ]
+        },
+        {
+          "title": "Third-Party Monitoring Integrations",
+          "items": [
+            {
+              "title": "Third-Party Monitoring Integration Overview",
+              "urls": [
+                "/${VERSION}/third-party-monitoring-tools.html"
+              ]
             },
             {
-              "title": "Third-Party Monitoring Integrations",
-              "items": [
-                {
-                  "title": "Third-Party Monitoring Integration Overview",
-                  "urls": [
-                    "/${VERSION}/third-party-monitoring-tools.html"
-                  ]
-                },
-                {
-                  "title": "Monitoring with Datadog",
-                  "urls": [
-                    "/${VERSION}/datadog.html"
-                  ]
-                },
-                {
-                  "title": "Monitoring with Kibana",
-                  "urls": [
-                    "/${VERSION}/kibana.html"
-                  ]
-                }
+              "title": "Monitor with Datadog",
+              "urls": [
+                "/${VERSION}/datadog.html"
+              ]
+            },
+            {
+              "title": "Monitor with DBmarlin",
+              "urls": [
+                "/${VERSION}/dbmarlin.html"
+              ]
+            },
+            {
+              "title": "Monitor with Kibana",
+              "urls": [
+                "/${VERSION}/kibana.html"
               ]
             }
           ]
@@ -379,40 +385,35 @@
               "title": "Uprade a CockroachDB Cloud Cluster",
               "items": [
                 {
-              	  "title": "Upgrade a Cluster",
-              	  "items": [
-              	    {
-              	      "title": "Upgrade Policy",
-              	      "urls": [
-              		       "/cockroachcloud/upgrade-policy.html"
-              	      ]
-              	    },
-                    {
-                      "title": "Upgrade to v21.2",
-                      "urls": [
-                         "/cockroachcloud/upgrade-to-v21.2.html"
-                      ]
-                    },
-                    {
-              	      "title": "Upgrade to v21.1",
-              	      "urls": [
-              		       "/cockroachcloud/upgrade-to-v21.1.html"
-              	      ]
-              	    },
-              	    {
-              	      "title": "Upgrade to v20.2",
-              	      "urls": [
-              		       "/cockroachcloud/upgrade-to-v20.2.html"
-              	      ]
-              	    },
-              	    {
-              	      "title": "Upgrade to v20.1",
-              	      "urls": [
-              		       "/cockroachcloud/upgrade-to-v20.1.html"
-              	      ]
-              	    }
-              	  ]
-              	}
+                  "title": "Upgrade Policy",
+                  "urls": [
+                     "/cockroachcloud/upgrade-policy.html"
+                  ]
+                },
+                {
+                  "title": "Upgrade to v21.2",
+                  "urls": [
+                     "/cockroachcloud/upgrade-to-v21.2.html"
+                  ]
+                },
+                {
+                  "title": "Upgrade to v21.1",
+                  "urls": [
+                     "/cockroachcloud/upgrade-to-v21.1.html"
+                  ]
+                },
+                {
+                  "title": "Upgrade to v20.2",
+                  "urls": [
+                     "/cockroachcloud/upgrade-to-v20.2.html"
+                  ]
+                },
+                {
+                  "title": "Upgrade to v20.1",
+                  "urls": [
+                     "/cockroachcloud/upgrade-to-v20.1.html"
+                  ]
+                }
               ]
             },
             {

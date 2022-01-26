@@ -21,7 +21,7 @@ This page is meant to provide information about specific transaction retry error
 
 1. Update your app to retry on serialization errors (where `SQLSTATE` is `40001`), as described in [client-side retry handling](transactions.html#client-side-intervention).
 
-2. Design your schema and queries to reduce contention. For more information about how contention occurs and how to avoid it, see [Understanding and avoiding transaction contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention). In particular, if you are able to [send all of the statements in your transaction in a single batch](transactions.html#batched-statements), CockroachDB can usually automatically retry the entire transaction for you.
+2. Design your schema and queries to reduce contention. For more information about how contention occurs and how to avoid it, see [Transaction Contention](performance-best-practices-overview.html#transaction-contention). In particular, if you are able to [send all of the statements in your transaction in a single batch](transactions.html#batched-statements), CockroachDB can usually automatically retry the entire transaction for you.
 
 3. Use historical reads with [`SELECT ... AS OF SYSTEM TIME`](as-of-system-time.html).
 
@@ -45,7 +45,7 @@ The main reason why CockroachDB cannot auto-retry every serialization error with
 
 Suppose that the client is [a Java application using JDBC](build-a-java-app-with-cockroachdb.html), or an analyst typing [`BEGIN`](begin-transaction.html) directly to [a SQL shell](cockroach-sql.html). In either case, the client is free to issue a `BEGIN`, wait an arbitrary amount of time, and issue additional statements. Meanwhile, other transactions are being processed by the system, potentially writing to the same data.
 
-This "conversational" design means that there is no way for the server to always retry the arbitrary statements sent so far inside an open transaction. If there are different results for any given statement than there were at an earlier point in the currently open transaction's lifetime (likely due to the operations of other, concurrently-executing transactions), CockroachDB must defer to the client to decide how to handle that situation. This is why we recommend [keeping transactions as small as possible](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention).
+This "conversational" design means that there is no way for the server to always retry the arbitrary statements sent so far inside an open transaction. If there are different results for any given statement than there were at an earlier point in the currently open transaction's lifetime (likely due to the operations of other, concurrently-executing transactions), CockroachDB must defer to the client to decide how to handle that situation. This is why we recommend [keeping transactions as small as possible](performance-best-practices-overview.html#transaction-contention).
 
 ## Error reference
 
@@ -74,7 +74,7 @@ The `RETRY_WRITE_TOO_OLD` error occurs when a transaction _A_ tries to write to 
 _Action_:
 
 1. Retry transaction _A_ as described in [client-side retry handling](transactions.html#client-side-intervention).
-2. Design your schema and queries to reduce contention. For more information about how contention occurs and how to avoid it, see [Understanding and avoiding transaction contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention). In particular, if you are able to [send all of the statements in your transaction in a single batch](transactions.html#batched-statements), CockroachDB can usually automatically retry the entire transaction for you.
+2. Design your schema and queries to reduce contention. For more information about how contention occurs and how to avoid it, see [Transaction Contention](performance-best-practices-overview.html#transaction-contention). In particular, if you are able to [send all of the statements in your transaction in a single batch](transactions.html#batched-statements), CockroachDB can usually automatically retry the entire transaction for you.
 
 ### RETRY_SERIALIZABLE
 
@@ -90,23 +90,23 @@ The `RETRY_SERIALIZABLE` error occurs in the following cases:
 
 2. When a [high-priority transaction](transactions.html#transaction-priorities) _A_ does a read that runs into a write intent from another lower-priority transaction _B_, and some other transaction _C_ writes to a key that _B_ has already read. Transaction _B_ will get this error when it tries to commit, because _A_ has already read some of the data touched by _B_ and returned results to the client, and _C_ has written data previously read by _B_.
 
-3. When a transaction _A_ is forced to refresh (i.e., change its timestamp) due to hitting the maximum [_closed timestamp_](architecture/transaction-layer.html#closed-timestamps) interval (closed timestamps enable [Follower Reads](follower-reads.html#how-follower-reads-work) and [Change Data Capture (CDC)](stream-data-out-of-cockroachdb-using-changefeeds.html)). This can happen when transaction _A_ is a long-running transaction, and there is a write by another transaction to data that _A_ has already read. If this is the cause of the error, the solution is to increase the `kv.closed_timestamp.target_duration` setting to a higher value. Unfortunately, there is no indication from this error code that a too-low closed timestamp setting is the issue. Therefore, you may need to rule out cases 1 and 2 (or experiment with increasing the closed timestamp interval, if that is possible for your application - see the note below).
+3. When a transaction _A_ is forced to refresh (i.e., change its timestamp) due to hitting the maximum [_closed timestamp_](architecture/transaction-layer.html#closed-timestamps) interval (closed timestamps enable [Follower Reads](follower-reads.html#how-follower-reads-work) and [Change Data Capture (CDC)](change-data-capture-overview.html)). This can happen when transaction _A_ is a long-running transaction, and there is a write by another transaction to data that _A_ has already read. If this is the cause of the error, the solution is to increase the `kv.closed_timestamp.target_duration` setting to a higher value. Unfortunately, there is no indication from this error code that a too-low closed timestamp setting is the issue. Therefore, you may need to rule out cases 1 and 2 (or experiment with increasing the closed timestamp interval, if that is possible for your application - see the note below).
 
 _Action_:
 
 1. If you encounter case 1 or 2 above, the solution is to:
    1. Retry transaction _A_ as described in [client-side retry handling](transactions.html#client-side-intervention).
-   2. Design your schema and queries to reduce contention. For more information about how contention occurs and how to avoid it, see [Understanding and avoiding transaction contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention). In particular, if you are able to [send all of the statements in your transaction in a single batch](transactions.html#batched-statements), CockroachDB can usually automatically retry the entire transaction for you.
+   2. Design your schema and queries to reduce contention. For more information about how contention occurs and how to avoid it, see [Transaction Contention](performance-best-practices-overview.html#transaction-contention). In particular, if you are able to [send all of the statements in your transaction in a single batch](transactions.html#batched-statements), CockroachDB can usually automatically retry the entire transaction for you.
    3. Use historical reads with [`SELECT ... AS OF SYSTEM TIME`](as-of-system-time.html).
 
 2. If you encounter case 3 above, the solution is to:
-   1. Increase the `kv.closed_timestamp.target_duration` setting to a higher value. As described above, this will impact the freshness of data available via [Follower Reads](follower-reads.html) and [CDC changefeeds](stream-data-out-of-cockroachdb-using-changefeeds.html).
+   1. Increase the `kv.closed_timestamp.target_duration` setting to a higher value. As described above, this will impact the freshness of data available via [Follower Reads](follower-reads.html) and [CDC changefeeds](change-data-capture-overview.html).
    2. Retry transaction _A_ as described in [client-side retry handling](transactions.html#client-side-intervention).
-   3. Design your schema and queries to reduce contention. For more information about how contention occurs and how to avoid it, see [Understanding and avoiding transaction contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention). In particular, if you are able to [send all of the statements in your transaction in a single batch](transactions.html#batched-statements), CockroachDB can usually automatically retry the entire transaction for you.
+   3. Design your schema and queries to reduce contention. For more information about how contention occurs and how to avoid it, see [Transaction Contention](performance-best-practices-overview.html#transaction-contention). In particular, if you are able to [send all of the statements in your transaction in a single batch](transactions.html#batched-statements), CockroachDB can usually automatically retry the entire transaction for you.
    3. Use historical reads with [`SELECT ... AS OF SYSTEM TIME`](as-of-system-time.html).
 
 {{site.data.alerts.callout_info}}
-If you increase the `kv.closed_timestamp.target_duration` setting, it means that you are increasing the amount of time by which the data available in [Follower Reads](follower-reads.html) and [CDC changefeeds](stream-data-out-of-cockroachdb-using-changefeeds.html) lags behind the current state of the cluster. In other words, there is a trade-off here: if you absolutely must execute long-running transactions that execute concurrently with other transactions that are writing to the same data, you may have to settle for longer delays on Follower Reads and/or CDC to avoid frequent serialization errors. The anomaly that would be exhibited if these transactions were not retried is called [write skew](https://www.cockroachlabs.com/blog/what-write-skew-looks-like/).
+If you increase the `kv.closed_timestamp.target_duration` setting, it means that you are increasing the amount of time by which the data available in [Follower Reads](follower-reads.html) and [CDC changefeeds](change-data-capture-overview.html) lags behind the current state of the cluster. In other words, there is a trade-off here: if you absolutely must execute long-running transactions that execute concurrently with other transactions that are writing to the same data, you may have to settle for longer delays on Follower Reads and/or CDC to avoid frequent serialization errors. The anomaly that would be exhibited if these transactions were not retried is called [write skew](https://www.cockroachlabs.com/blog/what-write-skew-looks-like/).
 {{site.data.alerts.end}}
 
 ### RETRY_ASYNC_WRITE_FAILURE
@@ -148,7 +148,7 @@ The solution is to do one of the following:
 
 1. Be prepared to retry on uncertainty (and other) errors, as described in [client-side retry handling](transactions.html#client-side-intervention).
 2. Use historical reads with [`SELECT ... AS OF SYSTEM TIME`](as-of-system-time.html).
-3. Design your schema and queries to reduce contention. For more information about how contention occurs and how to avoid it, see [Understanding and avoiding transaction contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention). In particular, if you are able to [send all of the statements in your transaction in a single batch](transactions.html#batched-statements), CockroachDB can usually automatically retry the entire transaction for you.
+3. Design your schema and queries to reduce contention. For more information about how contention occurs and how to avoid it, see [Transaction Contention](performance-best-practices-overview.html#transaction-contention). In particular, if you are able to [send all of the statements in your transaction in a single batch](transactions.html#batched-statements), CockroachDB can usually automatically retry the entire transaction for you.
 4. If you [trust your clocks](operational-faqs.html#what-happens-when-node-clocks-are-not-properly-synchronized), you can try lowering the [`--max-offset` option to `cockroach start`](cockroach-start.html#flags), which provides an upper limit on how long a transaction can continue to restart due to uncertainty.
 
 {{site.data.alerts.callout_info}}
@@ -175,7 +175,7 @@ This error occurs in the cases described below.
 
 2. When a [high-priority transaction](transactions.html#transaction-priorities) _A_ does a read that runs into a write intent from another lower-priority transaction _B_. Transaction _B_ may get this error when it tries to commit, because _A_ has already read some of the data touched by _B_ and returned results to the client.
 
-3. When a transaction _A_ is forced to refresh (change its timestamp) due to hitting the maximum [_closed timestamp_](architecture/transaction-layer.html#closed-timestamps) interval (closed timestamps enable [Follower Reads](follower-reads.html#how-follower-reads-work) and [Change Data Capture (CDC)](stream-data-out-of-cockroachdb-using-changefeeds.html)). This can happen when transaction _A_ is a long-running transaction, and there is a write by another transaction to data that _A_ has already read.
+3. When a transaction _A_ is forced to refresh (change its timestamp) due to hitting the maximum [_closed timestamp_](architecture/transaction-layer.html#closed-timestamps) interval (closed timestamps enable [Follower Reads](follower-reads.html#how-follower-reads-work) and [Change Data Capture (CDC)](change-data-capture-overview.html)). This can happen when transaction _A_ is a long-running transaction, and there is a write by another transaction to data that _A_ has already read.
 
 _Action_:
 
@@ -183,7 +183,7 @@ _Action_:
 2. If you encounter case 3 above, you can increase the `kv.closed_timestamp.target_duration` setting to a higher value. Unfortunately, there is no indication from this error code that a too-low closed timestamp setting is the issue. Therefore, you may need to rule out cases 1 and 2 (or experiment with increasing the closed timestamp interval, if that is possible for your application - see the note below).
 
 {{site.data.alerts.callout_info}}
-If you increase the `kv.closed_timestamp.target_duration` setting, it means that you are increasing the amount of time by which the data available in [Follower Reads](follower-reads.html) and [CDC changefeeds](stream-data-out-of-cockroachdb-using-changefeeds.html) lags behind the current state of the cluster. In other words, there is a trade-off here: if you absolutely must execute long-running transactions that execute concurrently with other transactions that are writing to the same data, you may have to settle for longer delays on Follower Reads and/or CDC to avoid frequent serialization errors. The anomaly that would be exhibited if these transactions were not retried is called [write skew](https://www.cockroachlabs.com/blog/what-write-skew-looks-like/).
+If you increase the `kv.closed_timestamp.target_duration` setting, it means that you are increasing the amount of time by which the data available in [Follower Reads](follower-reads.html) and [CDC changefeeds](change-data-capture-overview.html) lags behind the current state of the cluster. In other words, there is a trade-off here: if you absolutely must execute long-running transactions that execute concurrently with other transactions that are writing to the same data, you may have to settle for longer delays on Follower Reads and/or CDC to avoid frequent serialization errors. The anomaly that would be exhibited if these transactions were not retried is called [write skew](https://www.cockroachlabs.com/blog/what-write-skew-looks-like/).
 {{site.data.alerts.end}}
 
 ### ABORT_REASON_ABORTED_RECORD_FOUND
@@ -213,7 +213,7 @@ If you are using only default [transaction priorities](transactions.html#transac
 If you are using [high- or low-priority transactions](transactions.html#transaction-priorities):
 
 - Update your app to retry on serialization errors (where `SQLSTATE` is `40001`), as described in [client-side retry handling](transactions.html#client-side-intervention).
-- Design your schema and queries to reduce contention. For more information about how contention occurs and how to avoid it, see [Understanding and avoiding transaction contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention). In particular, if you are able to [send all of the statements in your transaction in a single batch](transactions.html#batched-statements), CockroachDB can usually automatically retry the entire transaction for you.
+- Design your schema and queries to reduce contention. For more information about how contention occurs and how to avoid it, see [Transaction Contention](performance-best-practices-overview.html#transaction-contention). In particular, if you are able to [send all of the statements in your transaction in a single batch](transactions.html#batched-statements), CockroachDB can usually automatically retry the entire transaction for you.
 
 ### ABORT_REASON_CLIENT_REJECT
 
@@ -278,6 +278,6 @@ Retry transaction _A_ as described in [client-side retry handling](transactions.
 - [Common Errors](common-errors.html)
 - [Transactions](transactions.html)
 - [Client-side retry handling](transactions.html#client-side-intervention)
-- [Understanding and avoiding transaction contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention)
+- [Transaction Contention](performance-best-practices-overview.html#transaction-contention)
 - [DB Console Transactions Page](ui-transactions-page.html)
 - [Architecture - Transaction Layer](architecture/transaction-layer.html)

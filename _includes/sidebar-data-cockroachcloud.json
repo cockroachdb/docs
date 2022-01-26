@@ -307,6 +307,11 @@
         "/cockroachcloud/frequently-asked-questions.html"
       ]
     },
-    {% include_cached cockroachcloud/sidebar-release-notes.json %}
+    {
+      "title": "Cloud Release Notes",
+      "urls": [
+        "/releases/cloud.html"
+      ]
+    }
   ]
 }
