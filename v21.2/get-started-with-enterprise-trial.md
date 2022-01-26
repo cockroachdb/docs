@@ -3,6 +3,8 @@ title: Enterprise Trial –– Get Started
 summary: Check out this page to get started with your CockroachDB Enterprise Trial
 toc: true
 license: true
+doc_area: 
+product_area: 
 ---
 
 Congratulations on starting your CockroachDB Enterprise Trial! With it, you'll not only get access to CockroachDB's core capabilities like [high availability](frequently-asked-questions.html#how-does-cockroachdb-survive-failures) and [`SERIALIZABLE` isolation](frequently-asked-questions.html#how-is-cockroachdb-strongly-consistent), but also our Enterprise-only features like distributed [`BACKUP`](backup.html) &amp; [`RESTORE`](restore.html), [multi-region capabilities](multiregion-overview.html), and [cluster visualization](enable-node-map.html).

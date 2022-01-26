@@ -2,6 +2,8 @@
 title: CREATE TYPE
 summary: The CREATE TYPE statement creates a new, enumerated data type in a database.
 toc: true
+doc_area: 
+product_area: 
 ---
 
  The `CREATE TYPE` [statement](sql-statements.html) creates a new, [enumerated data type](enum.html) in a database.

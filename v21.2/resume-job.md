@@ -2,6 +2,8 @@
 title: RESUME JOB
 summary: The RESUME JOB statement lets you resume jobs that were previously paused with PAUSE JOB.
 toc: true
+doc_area: 
+product_area: 
 ---
 
  The `RESUME JOB` [statement](sql-statements.html) lets you resume the following types of jobs:

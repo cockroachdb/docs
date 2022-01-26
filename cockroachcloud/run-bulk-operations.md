@@ -2,6 +2,8 @@
 title: Run Bulk Operations from Your Cluster
 summary: Run backups, restores, and imports from your CockroachDB Cloud cluster.
 toc: true
+doc_area: 
+product_area: 
 ---
 
 {{ site.data.products.serverless }} and {{ site.data.products.dedicated }} offer different levels of support for the following bulk operations. This page provides information on the availability of these operations in both types of {{ site.data.products.db }} cluster and examples.

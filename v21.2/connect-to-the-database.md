@@ -2,6 +2,8 @@
 title: Connect to a CockroachDB Cluster
 summary: How to connect to a CockroachDB cluster from your application
 toc: true
+doc_area: 
+product_area: 
 ---
 
 This page documents the required connection configuration for [fully-supported third-party tools](third-party-database-tools.html).

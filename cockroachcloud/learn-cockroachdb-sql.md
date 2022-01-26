@@ -2,6 +2,8 @@
 title: Learn CockroachDB SQL
 summary: Learn some of the most essential CockroachDB SQL statements on a local cluster.
 toc: true
+doc_area: 
+product_area: 
 ---
 
 This tutorial walks you through some of the most essential CockroachDB SQL statements. For a complete list of supported SQL statements and related details, see [SQL Statements](../{{site.versions["stable"]}}/sql-statements.html).

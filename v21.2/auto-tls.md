@@ -2,6 +2,8 @@
 title: Use Auto TLS (alpha) to generate security certificates
 summary: Let CockroachDB handle TLS cert creation for encrypted inter-node and client-node communication.
 toc: true
+doc_area: 
+product_area: 
 ---
 
 To secure your CockroachDB cluster's inter-node and client-node communication, the cluster requires a certificate authority (CA) certificate that is used to sign keys and certificates (SSLs) for:

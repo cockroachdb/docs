@@ -2,6 +2,8 @@
 title: Spatial Indexes
 summary: How CockroachDB uses spatial indexes for efficiently storing and querying spatial data.
 toc: true
+doc_area: 
+product_area: 
 ---
 
 This page describes CockroachDB's support for indexing [spatial data](spatial-data.html), including:

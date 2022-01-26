@@ -2,6 +2,8 @@
 title: Multi-region Capabilities Overview
 summary: Learn how to use CockroachDB's improved multi-region capabilities.
 toc: true
+doc_area: 
+product_area: 
 ---
 
 ## Overview

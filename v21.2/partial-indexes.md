@@ -2,6 +2,8 @@
 title: Partial Indexes
 summary: Partial indexes allow you to specify a subset of rows and columns to add to an index.
 toc: true
+doc_area: 
+product_area: 
 ---
 
  Partial indexes allow you to specify a subset of rows and columns to add to an [index](indexes.html). Partial indexes include the subset of rows in a table that evaluate to true on a boolean *predicate expression* (i.e., a `WHERE` filter) defined at [index creation](#creation).

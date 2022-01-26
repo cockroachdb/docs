@@ -2,6 +2,8 @@
 title: CREATE DATABASE
 summary: The CREATE DATABASE statement creates a new CockroachDB database.
 toc: true
+doc_area: 
+product_area: 
 ---
 
 The `CREATE DATABASE` [statement](sql-statements.html) creates a new CockroachDB database.

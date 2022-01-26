@@ -2,6 +2,8 @@
 title: JOIN expressions
 summary: JOIN expressions combine data from two or more table expressions.
 toc: true
+doc_area: 
+product_area: 
 ---
 
 `JOIN` expressions, also called "joins", combine the results of two or more table expressions based on conditions on the values of particular columns (i.e., equality columns).

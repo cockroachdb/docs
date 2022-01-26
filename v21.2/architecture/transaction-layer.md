@@ -2,6 +2,8 @@
 title: Transaction Layer
 summary: The transaction layer of CockroachDB's architecture implements support for ACID transactions by coordinating concurrent operations.
 toc: true
+doc_area: 
+product_area: 
 ---
 
 The transaction layer of CockroachDB's architecture implements support for ACID transactions by coordinating concurrent operations.

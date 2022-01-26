@@ -2,6 +2,8 @@
 title: Migration Overview
 summary: Learn how to migrate data into a CockroachDB cluster.
 toc: true
+doc_area: 
+product_area: 
 ---
 
 CockroachDB supports [importing](import.html) data from the following databases:

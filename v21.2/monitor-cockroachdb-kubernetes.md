@@ -3,6 +3,8 @@ title: Cluster monitoring
 summary: How to monitor a secure 3-node CockroachDB cluster with Kubernetes.
 toc: true
 toc_not_nested: true
+doc_area: 
+product_area: 
 ---
 
 {{site.data.alerts.callout_info}}

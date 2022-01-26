@@ -2,6 +2,8 @@
 title: CHECK Constraint
 summary: The CHECK constraint specifies that values for the column in INSERT or UPDATE statements must satisfy a Boolean expression.
 toc: true
+doc_area: 
+product_area: 
 ---
 
 The `CHECK` [constraint](constraints.html) specifies that values for the column in [`INSERT`](insert.html) or [`UPDATE`](update.html) statements must return `TRUE` or `NULL` for a Boolean expression. If any values return `FALSE`, the entire statement is rejected.

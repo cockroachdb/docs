@@ -3,6 +3,8 @@ title: Deploy CockroachDB on Red Hat OpenShift
 summary: Deploy a 3-node CockroachDB cluster on the OpenShift platform.
 toc: true
 secure: true
+doc_area: 
+product_area: 
 ---
 
 This page shows you how to start and stop a secure 3-node CockroachDB cluster on the Red Hat OpenShift platform, using the [CockroachDB Kubernetes Operator](https://marketplace.redhat.com/en-us/products/cockroachdb-operator).

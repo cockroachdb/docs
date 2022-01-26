@@ -2,6 +2,8 @@
 title: Logging
 summary: Overview of the logging system and logging channels.
 toc: true
+doc_area: 
+product_area: 
 ---
 
 If you need to monitor your cluster, tune performance, or [troubleshoot](troubleshooting-overview.html) issues, you can check the CockroachDB logs, which include details about notable cluster, node, and range-level events.

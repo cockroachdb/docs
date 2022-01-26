@@ -2,6 +2,8 @@
 title: SET LOCALITY
 summary: The SET LOCALITY statement changes the locality of a table.
 toc: true
+doc_area: 
+product_area: 
 ---
 
  The `ALTER TABLE .. SET LOCALITY` [statement](sql-statements.html) changes the [table locality](multiregion-overview.html#table-locality) of a [table](create-table.html) in a [multi-region database](multiregion-overview.html).

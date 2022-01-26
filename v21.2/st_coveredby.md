@@ -3,6 +3,8 @@ title: ST_CoveredBy
 summary: ST_CoveredBy(A, B) returns true if no point in shape A lies outside of shape B
 toc: true
 has_prefixed_variant: true
+doc_area: 
+product_area: 
 ---
 
 Given two shapes _A_ and _B_, the predicate function `ST_CoveredBy(A, B)` returns `true` if no point in _A_ lies outside of shape _B_.  Otherwise, it returns `false`.

@@ -2,6 +2,8 @@
 title: Releases
 summary: Release notes for older versions of CockroachDB.
 toc: true
+doc_area: 
+product_area: 
 ---
 
 After downloading your desired release, learn how to [Install CockroachDB](../{{site.versions["stable"]}}/install-cockroachdb.html). Also be sure to review Cockroach Labs' [Release Support Policy](release-support-policy.html).

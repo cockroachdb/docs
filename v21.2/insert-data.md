@@ -2,6 +2,8 @@
 title: Insert Data
 summary: How to insert data into CockroachDB during application development
 toc: true
+doc_area: 
+product_area: 
 ---
 
 This page has instructions for getting data into CockroachDB with various programming languages, using the [`INSERT`](insert.html) SQL statement.

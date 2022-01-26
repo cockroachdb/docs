@@ -2,6 +2,8 @@
 title: Export Spatial Data
 summary: Learn how to export spatial data from CockroachDB into various formats.
 toc: true
+doc_area: 
+product_area: 
 ---
 
  CockroachDB supports efficiently storing and querying spatial data.

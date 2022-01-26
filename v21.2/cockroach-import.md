@@ -2,6 +2,8 @@
 title: cockroach import
 summary: The cockroach import command imports a database or table from a local dump file into a running cluster.
 toc: true
+doc_area: 
+product_area: 
 ---
 
  The `cockroach import` [command](cockroach-commands.html) imports a database or table from a local dump file into a running cluster. This command [uploads a userfile](cockroach-userfile-upload.html), imports its data, then [deletes the userfile](cockroach-userfile-delete.html). `PGDUMP` and `MYSQLDUMP` file formats are currently supported.

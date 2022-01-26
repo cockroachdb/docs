@@ -2,6 +2,8 @@
 title: cockroach start-single-node
 summary: The cockroach start-single-node command starts a single-node cluster with replication disabled.
 toc: true
+doc_area: 
+product_area: 
 ---
 
 This page explains the `cockroach start-single-node` [command](cockroach-commands.html), which you use to start a single-node cluster with replication disabled. A single-node cluster is all you need for quick SQL testing or app development.

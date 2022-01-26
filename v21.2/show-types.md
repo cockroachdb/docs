@@ -2,6 +2,8 @@
 title: SHOW TYPES
 summary: The SHOW TYPES statement lists the user-defined data types in a database.
 toc: true
+doc_area: 
+product_area: 
 ---
 
  The `SHOW TYPES` statement lists the user-defined [data types](data-types.html) in the current database.

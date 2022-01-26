@@ -2,6 +2,8 @@
 title: Well Known Binary
 summary: The Well Known Binary format provides a representation of a geometric shape that is efficient for machine processing and storage.
 toc: true
+doc_area: 
+product_area: 
 ---
 
 The Well Known Binary format (hereafter _WKB_) provides a non-textual, binary representation of a geometric shape. It is used to:

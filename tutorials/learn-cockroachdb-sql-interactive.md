@@ -2,6 +2,8 @@
 title: Learn CockroachDB SQL
 summary: Learn some of the most essential CockroachDB SQL statements on a local cluster.
 layout: tutorial
+doc_area: 
+product_area: 
 ---
 
 <div

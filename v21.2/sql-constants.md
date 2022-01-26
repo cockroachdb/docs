@@ -2,6 +2,8 @@
 title: Constant Values
 summary: SQL Constants represent a simple value that doesn't change.
 toc: true
+doc_area: 
+product_area: 
 ---
 
 SQL Constants represent a simple value that doesn't change.

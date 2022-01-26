@@ -2,6 +2,8 @@
 title: SHOW ENUMS
 summary: The SHOW ENUMS statement lists the enumerated data types in a database.
 toc: true
+doc_area: 
+product_area: 
 ---
 
  The `SHOW ENUMS` statement lists the [enumerated data types](enum.html) in the current database.

@@ -2,6 +2,8 @@
 title: BIT
 summary: The BIT and BIT VARYING data types stores bit arrays.
 toc: true
+doc_area: 
+product_area: 
 ---
 
 The `BIT` and `VARBIT` [data types](data-types.html) stores bit arrays.

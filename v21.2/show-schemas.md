@@ -2,6 +2,8 @@
 title: SHOW SCHEMAS
 summary: The SHOW SCHEMAS statement lists the schemas in a database.
 toc: true
+doc_area: 
+product_area: 
 ---
 
 The `SHOW SCHEMAS` [statement](sql-statements.html) lists all [schemas](sql-name-resolution.html#naming-hierarchy) in a database.

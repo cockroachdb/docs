@@ -2,6 +2,8 @@
 title: Migrate CockroachDB Schemas with Liquibase
 summary: Learn how to use Liquibase with a CockroachDB cluster.
 toc: true
+doc_area: 
+product_area: 
 ---
 
 This page walks you through a series of simple database schema changes using the [Liquibase](https://www.liquibase.org/get-started/how-liquibase-works) command-line tool and the [CockroachDB SQL shell](cockroach-sql.html).

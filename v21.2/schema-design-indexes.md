@@ -2,6 +2,8 @@
 title: Secondary Indexes
 summary: How and when to create secondary indexes in CockroachDB.
 toc: true
+doc_area: 
+product_area: 
 ---
 
 Indexes are [logical objects in a cluster](schema-design-overview.html#database-schema-objects) that help [CockroachDB queries](query-data.html) find data more efficiently. When you create an index, CockroachDB creates a copy of the columns selected for the index, and then sorts the rows of data by indexed column values, without sorting the values in the table itself.

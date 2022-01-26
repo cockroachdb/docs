@@ -7,6 +7,8 @@ referral_id: docs_hello_world_go_gorm
 filter_category: hello_world_go
 filter_html: Use <strong>GORM</strong>
 filter_sort: 2
+doc_area: 
+product_area: 
 ---
 
 {% include filter-tabs.md %}

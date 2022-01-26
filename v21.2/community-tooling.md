@@ -2,6 +2,8 @@
 title: Third-Party Tools Supported by the Community
 summary: Learn about third-party software that works with CockroachDB.
 toc: true
+doc_area: 
+product_area: 
 ---
 
 The following tools have been tested or developed by the CockroachDB community, but are not officially supported by Cockroach Labs.

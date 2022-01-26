@@ -2,6 +2,8 @@
 title: Indexes
 summary: Indexes improve your database's performance by helping SQL locate data without having to look through every row of a table.
 toc: true
+doc_area: 
+product_area: 
 ---
 
 Indexes improve your database's performance by helping SQL locate data without having to look through every row of a table.

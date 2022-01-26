@@ -2,6 +2,8 @@
 title: ALTER VIEW
 summary: The ALTER VIEW statement applies a schema change to a view.
 toc: true
+doc_area: 
+product_area: 
 ---
 
 The `ALTER VIEW` [statement](sql-statements.html) applies a schema change to a [view](views.html).

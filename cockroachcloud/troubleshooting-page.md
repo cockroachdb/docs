@@ -2,6 +2,8 @@
 title: Troubleshoot CockroachDB Cloud
 summary: The SQL Users page displays a list of SQL users who can access the cluster.
 toc: true
+doc_area: 
+product_area: 
 ---
 
 This page describes common {{ site.data.products.db }} errors and their solutions.

@@ -2,6 +2,8 @@
 title: Release Support Policy
 summary: Learn about Cockroach Labs' policy for supporting major releases of CockroachDB.
 toc: true
+doc_area: 
+product_area: 
 ---
 
 This page explains Cockroach Labs' policy for supporting [major releases](../releases/) of CockroachDB.

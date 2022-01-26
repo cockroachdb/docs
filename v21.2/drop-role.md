@@ -2,6 +2,8 @@
 title: DROP ROLE
 summary: The DROP ROLE statement removes one or more SQL roles.
 toc: true
+doc_area: 
+product_area: 
 ---
 
 The `DROP ROLE` [statement](sql-statements.html) removes one or more SQL roles.

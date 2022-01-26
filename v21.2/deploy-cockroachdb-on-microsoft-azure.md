@@ -7,6 +7,8 @@ ssh-link: https://docs.microsoft.com/en-us/azure/virtual-machines/linux/mac-crea
 filter_category: deploy_crdb_ma
 filter_html: Secure
 filter_sort: 1
+doc_area: 
+product_area: 
 ---
 
 {% include filter-tabs.md %}

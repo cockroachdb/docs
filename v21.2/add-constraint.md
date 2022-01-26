@@ -2,6 +2,8 @@
 title: ADD CONSTRAINT
 summary: Use the ADD CONSTRAINT statement to add constraints to columns.
 toc: true
+doc_area: 
+product_area: 
 ---
 
 The `ADD CONSTRAINT` [statement](sql-statements.html) is part of `ALTER TABLE` and can add the following [constraints](constraints.html) to columns:

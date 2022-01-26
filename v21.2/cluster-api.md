@@ -2,6 +2,8 @@
 title: Cluster API v2.0
 summary: Programmatically access and monitor cluster and node status information with a RESTful API.
 toc: true
+doc_area: 
+product_area: 
 ---
 
 The CockroachDB Cluster API is a REST API that provides information about a cluster and its nodes. The API offers programmatic access to much of the information available in the [DB Console](ui-overview.html) user interface, enabling you to monitor and troubleshoot your cluster using your choice of tooling.

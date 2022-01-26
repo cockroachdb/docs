@@ -3,6 +3,8 @@ title: Simple SELECT Clause
 summary: The Simple SELECT clause loads or computes data from various sources.
 toc: true
 key: select.html
+doc_area: 
+product_area: 
 ---
 
 The simple `SELECT` clause is the main SQL syntax to read and process

@@ -2,6 +2,8 @@
 title: SQL Dashboard
 summary: The SQL dashboard lets you monitor the performance of your SQL queries.
 toc: true
+doc_area: 
+product_area: 
 ---
 
 The **SQL** dashboard in the DB Console lets you monitor the performance of your SQL queries.

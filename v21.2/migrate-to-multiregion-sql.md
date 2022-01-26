@@ -2,6 +2,8 @@
 title: Migrate to Multi-region SQL
 summary: Learn how to migrate to CockroachDB's improved multi-region SQL user experience.
 toc: true
+doc_area: 
+product_area: 
 ---
 
 ## Overview

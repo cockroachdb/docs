@@ -2,6 +2,8 @@
 title: SHOW STATEMENTS
 summary: The SHOW STATEMENTS statement lists all currently active queries across the cluster or on the local node.
 toc: true
+doc_area: 
+product_area: 
 ---
 
 The `SHOW STATEMENTS` [statement](sql-statements.html) lists details about currently active SQL queries, including:

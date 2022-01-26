@@ -3,6 +3,8 @@ title: cockroach init
 summary: Perform a one-time-only initialization of a CockroachDB cluster.
 toc: true
 key: initialize-a-cluster.html
+doc_area: 
+product_area: 
 ---
 
 This page explains the `cockroach init` [command](cockroach-commands.html), which you use to perform a one-time initialization of a new multi-node cluster. For a full walk-through of the cluster startup and initialization process, see one of the [Manual Deployment](manual-deployment.html) tutorials.

@@ -2,6 +2,8 @@
 title: VALIDATE CONSTRAINT
 summary: Use the ADD COLUMN statement to add columns to tables.
 toc: true
+doc_area: 
+product_area: 
 ---
 
 The `VALIDATE CONSTRAINT` [statement](sql-statements.html) is part of `ALTER TABLE` and checks whether values in a column match a [constraint](constraints.html) on the column. This statement is especially useful after applying a constraint to an existing column via [`ADD CONSTRAINT`](add-constraint.html). In this case, `VALIDATE CONSTRAINT` can be used to find values already in the column that do not match the constraint.

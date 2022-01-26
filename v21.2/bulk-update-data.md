@@ -2,6 +2,8 @@
 title: Bulk-update Data
 summary: How to to update a large amount of data using batch-update loops.
 toc: true
+doc_area: 
+product_area: 
 ---
 
 To update multiple rows in a table, you can use a single [`UPDATE` statement](update.html), with a `WHERE` clause that filters the rows you want to update.

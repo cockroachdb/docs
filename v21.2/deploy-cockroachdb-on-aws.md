@@ -8,6 +8,8 @@ filter_category: deploy_crdb_aws
 filter_html: Secure
 filter_sort: 1
 
+doc_area: 
+product_area: 
 ---
 
 {% include filter-tabs.md %}

@@ -2,6 +2,8 @@
 title: Manual Deployment
 summary: Learn how to deploy CockroachDB manually on-premises or on popular cloud platforms.
 toc: false
+doc_area: 
+product_area: 
 ---
 
 Use the following guides to deploy CockroachDB manually on-premises or on popular cloud platforms:

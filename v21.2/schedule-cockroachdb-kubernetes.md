@@ -4,6 +4,8 @@ summary: Schedule CockroachDB pods on Kubernetes using the Operator.
 toc: true
 toc_not_nested: true
 secure: true
+doc_area: 
+product_area: 
 ---
 
 This page describes how to configure the following, using the [Operator](https://github.com/cockroachdb/cockroach-operator):

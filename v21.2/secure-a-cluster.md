@@ -5,6 +5,8 @@ toc: true
 filter_category: start_a_cluster
 filter_html: Secure
 filter_sort: 1
+doc_area: 
+product_area: 
 ---
 
 {% include filter-tabs.md %}

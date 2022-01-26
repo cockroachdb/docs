@@ -2,6 +2,8 @@
 title: ADD COLUMN
 summary: Use the ADD COLUMN statement to add columns to tables.
 toc: true
+doc_area: 
+product_area: 
 ---
 
 `ADD COLUMN` is a subcommand of [`ALTER TABLE`](alter-table.html). Use `ADD COLUMN` to add columns to existing tables.

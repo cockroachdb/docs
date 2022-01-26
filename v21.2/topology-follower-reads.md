@@ -2,6 +2,8 @@
 title: Follower Reads Topology
 summary: Guidance on using the follower reads topology in a multi-region deployment.
 toc: true
+doc_area: 
+product_area: 
 ---
 
 In a multi-region deployment, [Follower Reads](follower-reads.html) are a good choice for tables with the following requirements:

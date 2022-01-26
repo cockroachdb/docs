@@ -2,6 +2,8 @@
 title: Connection Pooling
 summary: How to plan, configure, and use connection pools when using drivers or frameworks with CockroachDB.
 toc: true
+doc_area: 
+product_area: 
 ---
 
 This page has information on planning, configuring, and using connection pools when using drivers or frameworks with CockroachDB.

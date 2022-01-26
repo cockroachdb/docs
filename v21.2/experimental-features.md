@@ -2,6 +2,8 @@
 title: Experimental Features
 summary: Learn about the experimental features available in CockroachDB
 toc: true
+doc_area: 
+product_area: 
 ---
 
 This page lists the experimental features that are available in CockroachDB {{ page.version.version }}.

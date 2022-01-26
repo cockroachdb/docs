@@ -2,6 +2,8 @@
 title: Name Resolution
 summary: Object names can exist in multiple places in the naming hierarchy. Resolution decides which one to use.
 toc: true
+doc_area: 
+product_area: 
 ---
 
 This page documents **name resolution** in CockroachDB.

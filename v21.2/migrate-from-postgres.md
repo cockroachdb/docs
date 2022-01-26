@@ -2,6 +2,8 @@
 title: Migrate from Postgres
 summary: Learn how to migrate data from Postgres into a CockroachDB cluster.
 toc: true
+doc_area: 
+product_area: 
 ---
 
 This page has instructions for migrating data from Postgres to CockroachDB using [`IMPORT`][import]'s support for reading [`pg_dump`][pgdump] files.

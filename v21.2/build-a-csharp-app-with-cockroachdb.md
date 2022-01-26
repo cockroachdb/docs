@@ -4,6 +4,8 @@ summary: Learn how to use CockroachDB from a simple C# (.NET) application with a
 toc: true
 twitter: true
 referral_id: docs_csharp
+doc_area: 
+product_area: 
 ---
 
 This tutorial shows you how build a simple C# application with CockroachDB and the .NET Npgsql driver.

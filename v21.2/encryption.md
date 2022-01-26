@@ -2,6 +2,8 @@
 title: Encryption
 summary: Learn about the encryption features for secure CockroachDB clusters.
 toc: true
+doc_area: 
+product_area: 
 ---
 
 Data encryption and decryption is the process of transforming plaintext data to cipher-text and vice versa using a key or password.

@@ -2,6 +2,8 @@
 title: FLOAT
 summary: The FLOAT data type stores inexact, floating-point numbers with up to 17 digits in total and at least one digit to the right of the decimal point.
 toc: true
+doc_area: 
+product_area: 
 ---
 
 CockroachDB supports various inexact, floating-point number [data types](data-types.html) with up to 17 digits of decimal precision.

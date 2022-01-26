@@ -2,6 +2,8 @@
 title: cockroach workload
 summary: Use cockroach workload to run a load generator against a CockroachDB cluster.
 toc: true
+doc_area: 
+product_area: 
 ---
 
 CockroachDB comes with built-in load generators for simulating different types of client workloads, printing per-operation statistics and totals after a specific duration or max number of operations. To run one of these load generators, use the `cockroach workload` [command](cockroach-commands.html) as described below.

@@ -2,6 +2,8 @@
 title: Overview Dashboard
 summary: The Overview dashboard lets you monitor important SQL performance, replication, and storage metrics.
 toc: true
+doc_area: 
+product_area: 
 ---
 
 The **Overview** dashboard lets you monitor important SQL performance, replication, and storage metrics.

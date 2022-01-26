@@ -2,6 +2,8 @@
 title: ALTER INDEX
 summary: Use the ALTER INDEX statement to change an existing index.
 toc: true
+doc_area: 
+product_area: 
 ---
 
 The `ALTER INDEX` [statement](sql-statements.html) applies a schema change to an index. For information on using `ALTER INDEX`, see the pages for its relevant [subcommands](#subcommands).

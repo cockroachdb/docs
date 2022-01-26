@@ -2,6 +2,8 @@
 title: REFRESH
 summary: The REFRESH statement updates the stored query results of a materialized view.
 toc: true
+doc_area: 
+product_area: 
 ---
 
  Stored query results in [materialized view](views.html#materialized-views) are not automatically updated to reflect the latest state of the table(s) they query. The `REFRESH` [statement](sql-statements.html) updates the stored query results of a materialized view.

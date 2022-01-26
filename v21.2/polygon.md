@@ -2,6 +2,8 @@
 title: POLYGON
 summary: A POLYGON is a shape with a closed exterior that is made up of lines.
 toc: true
+doc_area: 
+product_area: 
 ---
 
 A `POLYGON` is a shape with a closed exterior that is made up of lines. Polygons can also contain holes.  Polygons are often used to represent areas such as countries, states, or municipalities.

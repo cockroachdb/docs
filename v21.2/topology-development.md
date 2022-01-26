@@ -2,6 +2,8 @@
 title: Development Topology
 summary: Guidance for a single-node cluster for local development.
 toc: true
+doc_area: 
+product_area: 
 ---
 
 While developing an application against CockroachDB, it's sufficient to deploy a single-node cluster close to your test application, whether that's on a single VM or on your laptop.

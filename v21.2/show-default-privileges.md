@@ -3,6 +3,8 @@ title: SHOW DEFAULT PRIVILEGES
 summary: The SHOW DEFAULT PRIVILEGES statement lists the default privileges for users/roles in the current database.
 keywords: reflection
 toc: true
+doc_area: 
+product_area: 
 ---
 
 <span class="version-tag">New in v21.2</span>: The `SHOW DEFAULT PRIVILEGES` [statement](sql-statements.html) lists the [default privileges](authorization.html#default-privileges) for the objects created by [users/roles](authorization.html#roles) in the current database.

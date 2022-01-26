@@ -5,6 +5,8 @@ toc: true
 filter_category: qs_crdb_cloud
 filter_html: CockroachDB Serverless (beta)
 filter_sort: 1
+doc_area: 
+product_area: 
 ---
 
 {% include filter-tabs.md %}

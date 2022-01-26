@@ -2,6 +2,8 @@
 title: Manage a Backup Schedule
 summary: Learn about how to create, manage, and restore from a schedule of periodic backups.
 toc: true
+doc_area: 
+product_area: 
 ---
 
  You can create schedules in CockroachDB for periodic backups. Once a [backup schedule is created](#create-a-new-backup-schedule), you can do the following:

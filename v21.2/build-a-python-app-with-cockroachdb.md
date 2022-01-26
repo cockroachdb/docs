@@ -7,6 +7,8 @@ referral_id: docs_python_psycopg2
 filter_category: crud_python
 filter_html: <strong>psycopg2</strong>
 filter_sort: 1
+doc_area: 
+product_area: 
 ---
 
 {% include filter-tabs.md %}

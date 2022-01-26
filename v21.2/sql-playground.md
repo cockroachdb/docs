@@ -2,6 +2,8 @@
 title: SQL Playground
 summary: The SQL Playground gives you an interactive SQL shell to a single-node CockroachDB cluster.
 toc: false
+doc_area: 
+product_area: 
 ---
 
 This playground gives you an interactive SQL shell to a single-node CockroachDB cluster. The cluster is pre-loaded with a sample dataset, configured for CockroachDB's <a href="spatial-features.html" target="_blank">spatial</a> functionality, and set up with a DB Console user.

@@ -2,6 +2,8 @@
 title: IMPORT INTO
 summary: Import CSV data into an existing CockroachDB table.
 toc: true
+doc_area: 
+product_area: 
 ---
 
 The `IMPORT INTO` [statement](sql-statements.html) imports CSV, Avro, or delimited data into an [existing table](create-table.html), by appending new rows into the table.

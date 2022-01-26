@@ -3,6 +3,8 @@ title: Build a Clojure App with CockroachDB and java.jdbc
 summary: Learn how to use CockroachDB from a simple Clojure application with a low-level client driver.
 toc: true
 twitter: false
+doc_area: 
+product_area: 
 ---
 
 This tutorial shows you how build a simple Clojure application with CockroachDB using [leiningen](https://leiningen.org/) and the Clojure java.jdbc driver.

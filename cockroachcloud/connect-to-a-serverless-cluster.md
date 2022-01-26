@@ -6,6 +6,8 @@ redirect_from: connect-to-a-free-cluster.html
 filter_category: conn_crdb_cloud
 filter_html: CockroachDB Serverless (beta)
 filter_sort: 1
+doc_area: 
+product_area: 
 ---
 
 {% include filter-tabs.md %}

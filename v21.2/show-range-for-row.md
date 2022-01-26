@@ -2,6 +2,8 @@
 title: SHOW RANGE FOR ROW
 summary: The SHOW RANGE FOR ROW statement shows information about the range for a single row.
 toc: true
+doc_area: 
+product_area: 
 ---
 
 The `SHOW RANGE ... FOR ROW` [statement](sql-statements.html) shows information about a [range](architecture/overview.html#glossary) for a single row in a table or index. This information is useful for verifying how SQL data maps to underlying ranges, and where the replicas for a range are located.

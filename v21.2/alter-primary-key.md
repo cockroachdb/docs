@@ -2,6 +2,8 @@
 title: ALTER PRIMARY KEY
 summary: Use the ALTER PRIMARY KEY statement to change the primary key of a table.
 toc: true
+doc_area: 
+product_area: 
 ---
 
   The `ALTER PRIMARY KEY` [statement](sql-statements.html) is a subcommand of [`ALTER TABLE`](alter-table.html) that can be used to change the [primary key](primary-key.html) of a table.

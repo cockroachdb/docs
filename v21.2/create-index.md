@@ -2,6 +2,8 @@
 title: CREATE INDEX
 summary: The CREATE INDEX statement creates an index for a table. Indexes improve your database's performance by helping SQL quickly locate data.
 toc: true
+doc_area: 
+product_area: 
 ---
 
 The `CREATE INDEX` [statement](sql-statements.html) creates an index for a table. [Indexes](indexes.html) improve your database's performance by helping SQL locate data without having to look through every row of a table.

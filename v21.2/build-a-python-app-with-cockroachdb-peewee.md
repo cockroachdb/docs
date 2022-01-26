@@ -6,6 +6,8 @@ twitter: false
 filter_category: crud_python
 filter_html: <strong>peewee</strong>
 filter_sort: 5
+doc_area: 
+product_area: 
 ---
 
 <html>

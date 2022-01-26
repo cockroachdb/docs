@@ -6,6 +6,8 @@ twitter: false
 filter_category: crud_go
 filter_html: Use <strong>upper/db</strong>
 filter_sort: 4
+doc_area: 
+product_area: 
 ---
 
 {% include filter-tabs.md %}

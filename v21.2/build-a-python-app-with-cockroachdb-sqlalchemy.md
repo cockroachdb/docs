@@ -7,6 +7,8 @@ referral_id: docs_python_sqlalchemy
 filter_category: crud_python
 filter_html: <strong>SQLAlchemy</strong>
 filter_sort: 2
+doc_area: 
+product_area: 
 ---
 
 {% include filter-tabs.md %}

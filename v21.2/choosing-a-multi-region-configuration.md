@@ -2,6 +2,8 @@
 title: Choosing a multi-region configuration
 summary: Learn how to use CockroachDB's improved multi-region user experience.
 toc: true
+doc_area: 
+product_area: 
 ---
 
 This page has high-level information about how to configure a [multi-region cluster's](multiregion-overview.html) [survival goals](multiregion-overview.html#survival-goals) and [table locality](multiregion-overview.html#table-locality).

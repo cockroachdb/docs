@@ -3,6 +3,8 @@ title: SQL Grammar
 summary: The full SQL grammar for CockroachDB, generated automatically from the CockroachDB code.
 toc: true
 back_to_top: true
+doc_area: 
+product_area: 
 ---
 
 <style>

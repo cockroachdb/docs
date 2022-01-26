@@ -2,6 +2,8 @@
 title: Network Latency Page
 summary: The Network Latency page displays round-trip latencies between all nodes in your cluster.
 toc: true
+doc_area: 
+product_area: 
 ---
 
 The **Network Latency** page displays round-trip latencies between all nodes in your cluster. Latency is the time required to transmit a packet across a network, and is highly dependent on your network topology. Use this page to determine whether your latency is appropriate for your [topology pattern](topology-patterns.html), or to identify nodes with unexpected latencies.

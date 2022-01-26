@@ -2,6 +2,8 @@
 title: Multi-Active Availability
 summary: Learn about CockroachDB's high availability model, known as Multi-Active Availability.
 toc: true
+doc_area: 
+product_area: 
 ---
 
 CockroachDB's availability model is described as "Multi-Active Availability." In essence, multi-active availability provides benefits similar to traditional notions of high availability, but also lets you read and write from every node in your cluster without generating any conflicts.

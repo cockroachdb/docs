@@ -2,6 +2,8 @@
 title: SHOW USERS
 summary: The SHOW USERS statement lists the users for all databases.
 toc: true
+doc_area: 
+product_area: 
 ---
 
 The `SHOW USERS` [statement](sql-statements.html) lists the users for all databases.

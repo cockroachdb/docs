@@ -2,6 +2,8 @@
 title: SHOW SESSIONS
 summary: The SHOW SESSIONS statement lists all currently active sessions across the cluster or on the local node.
 toc: true
+doc_area: 
+product_area: 
 ---
 
 The `SHOW SESSIONS` [statement](sql-statements.html) lists details about currently active sessions, including:

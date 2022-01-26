@@ -2,6 +2,8 @@
 title: CREATE SCHEMA
 summary: The CREATE SCHEMA statement creates a new user-defined schema.
 toc: true
+doc_area: 
+product_area: 
 ---
 
  The `CREATE SCHEMA` [statement](sql-statements.html) creates a user-defined [schema](sql-name-resolution.html#naming-hierarchy).

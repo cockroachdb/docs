@@ -3,6 +3,8 @@ title: Performance Tuning Recipes
 summary: Identify, diagnose, and fix common performance problems
 toc: true
 toc_not_nested: true
+doc_area: 
+product_area: 
 ---
 
 This page provides recipes for fixing performance issues in your applications.

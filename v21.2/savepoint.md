@@ -2,6 +2,8 @@
 title: SAVEPOINT
 summary: A savepoint is a marker that defines the beginning of a nested transaction.
 toc: true
+doc_area: 
+product_area: 
 ---
 
 A savepoint is a marker that defines the beginning of a [nested transaction](transactions.html#nested-transactions). This marker can be later used to commit or roll back just the effects of the nested transaction without affecting the progress of the enclosing transaction.

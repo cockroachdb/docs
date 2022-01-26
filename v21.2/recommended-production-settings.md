@@ -3,6 +3,8 @@ title: Production Checklist
 summary: Recommended settings for production deployments of CockroachDB.
 toc: true
 toc_not_nested: true
+doc_area: 
+product_area: 
 ---
 
 This page provides important recommendations for production deployments of CockroachDB.

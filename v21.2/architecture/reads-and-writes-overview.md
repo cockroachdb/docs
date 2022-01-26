@@ -2,6 +2,8 @@
 title: Reads and Writes in CockroachDB
 summary: Learn how reads and writes are affected by the replicated and distributed nature of data in CockroachDB.
 toc: true
+doc_area: 
+product_area: 
 ---
 
 This page explains how reads and writes are affected by the replicated and distributed nature of data in CockroachDB. It starts by summarizing some important [CockroachDB architectural concepts](overview.html) and then walks you through a few simple read and write scenarios.

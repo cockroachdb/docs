@@ -7,6 +7,8 @@ referral_id: docs_go_pq
 filter_category: crud_go
 filter_html: Use <strong>pq</strong>
 filter_sort: 2
+doc_area: 
+product_area: 
 ---
 
 {% include filter-tabs.md %}

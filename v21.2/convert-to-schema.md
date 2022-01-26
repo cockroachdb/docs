@@ -2,6 +2,8 @@
 title: CONVERT TO SCHEMA
 summary: The CONVERT TO SCHEMA statement converts a database to a schema.
 toc: true
+doc_area: 
+product_area: 
 ---
 
  The `CONVERT TO SCHEMA` [statement](sql-statements.html) converts a database to a new, user-defined [schema](sql-name-resolution.html). When you convert a database to a schema, all [tables](create-table.html), [sequences](create-sequence.html), and [user-defined types](enum.html) in the database become child objects of the new schema, and the database is deleted.

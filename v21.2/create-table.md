@@ -2,6 +2,8 @@
 title: CREATE TABLE
 summary: The CREATE TABLE statement creates a new table in a database.
 toc: true
+doc_area: 
+product_area: 
 ---
 
 The `CREATE TABLE` [statement](sql-statements.html) creates a new table in a database.

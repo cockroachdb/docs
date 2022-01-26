@@ -2,6 +2,8 @@
 title: Sessions Page
 summary: The Sessions page provides details of all open sessions in the cluster.
 toc: true
+doc_area: 
+product_area: 
 ---
 
 {{site.data.alerts.callout_info}}

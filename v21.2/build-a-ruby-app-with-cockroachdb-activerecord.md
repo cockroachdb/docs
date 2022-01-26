@@ -7,6 +7,8 @@ referral_id: docs_ruby_activerecord
 filter_category: crud_ruby
 filter_html: Use <strong>ActiveRecord</strong>
 filter_sort: 2
+doc_area: 
+product_area: 
 ---
 
 {% include filter-tabs.md %}

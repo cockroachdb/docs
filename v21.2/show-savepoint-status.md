@@ -2,6 +2,8 @@
 title: SHOW SAVEPOINT STATUS
 summary: The SHOW SAVEPOINT STATUS statement lists the active savepoints in the current transaction.
 toc: true
+doc_area: 
+product_area: 
 ---
 
 The `SHOW SAVEPOINT STATUS` [statement](sql-statements.html) lists the active [savepoints](savepoint.html) in the current [transaction](transactions.html).

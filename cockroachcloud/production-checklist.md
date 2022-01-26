@@ -3,6 +3,8 @@ title: Production Checklist
 summary: Learn how to move from testing to production on your CockroachDB Cloud cluster.
 toc: true
 cloud: true
+doc_area: 
+product_area: 
 ---
 
 This page provides important recommendations for {{ site.data.products.db }} production deployments.

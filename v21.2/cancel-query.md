@@ -2,6 +2,8 @@
 title: CANCEL QUERY
 summary: The CANCEL QUERY statement cancels a running SQL query.
 toc: true
+doc_area: 
+product_area: 
 ---
 
 The `CANCEL QUERY` [statement](sql-statements.html) cancels a running SQL query.

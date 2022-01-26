@@ -2,6 +2,8 @@
 title: JSONB
 summary: The JSONB data type stores JSON (JavaScript Object Notation) data.
 toc: true
+doc_area: 
+product_area: 
 ---
 
 The `JSONB` [data type](data-types.html) stores JSON (JavaScript Object Notation) data as a binary representation of the `JSONB` value, which eliminates whitespace, duplicate keys, and key ordering. `JSONB` supports [inverted indexes](inverted-indexes.html).

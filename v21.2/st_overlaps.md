@@ -3,6 +3,8 @@ title: ST_Overlaps
 summary: ST_Overlaps(A, B) returns true if the shapes intersect, but neither is contained within the other.
 toc: true
 has_prefixed_variant: true
+doc_area: 
+product_area: 
 ---
 
 Given two shapes _A_ and _B_, `ST_Overlaps(A, B)` returns `true` if the following criteria are met:

@@ -3,6 +3,8 @@ title: SQL FAQs
 summary: Get answers to frequently asked questions about CockroachDB SQL.
 toc: true
 toc_not_nested: true
+doc_area: 
+product_area: 
 ---
 
 ## How do I bulk insert data into CockroachDB?

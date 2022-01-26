@@ -2,6 +2,8 @@
 title: Keywords & Identifiers
 summary: Learn about SQL keywords and identifiers in CockroachDB.
 toc: true
+doc_area: 
+product_area: 
 ---
 
 SQL statements consist of two fundamental components:

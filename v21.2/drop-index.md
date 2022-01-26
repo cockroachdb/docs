@@ -2,6 +2,8 @@
 title: DROP INDEX
 summary: The DROP INDEX statement removes indexes from tables.
 toc: true
+doc_area: 
+product_area: 
 ---
 
 The `DROP INDEX` [statement](sql-statements.html) removes indexes from tables.

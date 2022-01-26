@@ -2,6 +2,8 @@
 title: Temporary Tables
 summary: CockroachDB supports session-scoped temporary tables.
 toc: true
+doc_area: 
+product_area: 
 ---
 
  CockroachDB supports session-scoped temporary tables (also called "temp tables"). Unlike [persistent tables](create-table.html), temp tables can only be accessed from the session in which they were created, and they are dropped at the end of the session.

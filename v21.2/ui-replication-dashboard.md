@@ -2,6 +2,8 @@
 title: Replication Dashboard
 summary: The Replication dashboard lets you monitor the replication metrics for your cluster.
 toc: true
+doc_area: 
+product_area: 
 ---
 
 The **Replication** dashboard in the DB Console lets you monitor the replication metrics for your cluster.

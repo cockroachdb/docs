@@ -2,6 +2,8 @@
 title: Load-Based Splitting
 summary: To optimize your cluster's performance, CockroachDB can split frequently accessed keys into their own ranges.
 toc: true
+doc_area: 
+product_area: 
 ---
 
 To optimize your cluster's performance, CockroachDB can split frequently accessed keys into smaller ranges. In conjunction with [load-based rebalancing](architecture/replication-layer.html#load-based-replica-rebalancing), load-based splitting distributes load evenly across your cluster.

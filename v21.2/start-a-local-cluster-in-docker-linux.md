@@ -2,6 +2,8 @@
 title: Start a Cluster in Docker (Insecure)
 summary: Run an insecure multi-node CockroachDB cluster across multiple Docker containers on a single host.
 toc: true
+doc_area: 
+product_area: 
 ---
 
 <div id="os-tabs" class="clearfix">

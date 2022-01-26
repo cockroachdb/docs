@@ -3,6 +3,8 @@ title: DB Console Overview
 summary: Use the DB Console to monitor and optimize cluster performance.
 toc: true
 key: explore-the-admin-ui.html
+doc_area: 
+product_area: 
 ---
 
 The DB Console provides details about your cluster and database configuration, and helps you optimize cluster performance.

@@ -7,6 +7,8 @@ referral_id: docs_node_knexjs
 filter_category: crud_js
 filter_html: Use <strong>KnexJS</strong>
 filter_sort: 3
+doc_area: 
+product_area: 
 ---
 
 {% include filter-tabs.md %}

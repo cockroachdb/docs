@@ -2,6 +2,8 @@
 title: SQL Statements
 summary: Overview of SQL statements supported by CockroachDB.
 toc: true
+doc_area: 
+product_area: 
 ---
 
 CockroachDB supports the following SQL statements. Click a statement for more details.

@@ -2,6 +2,8 @@
 title: Migrate from Avro
 summary: Learn how to migrate data from Avro files into a CockroachDB cluster.
 toc: true
+doc_area: 
+product_area: 
 ---
 
 This page has instructions for migrating data from Avro files into CockroachDB using [`IMPORT`][import].

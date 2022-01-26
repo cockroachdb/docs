@@ -2,6 +2,8 @@
 title: Expression Indexes
 summary: Expression indexes apply a scalar or functional expression to one or more columns.
 toc: true
+doc_area: 
+product_area: 
 ---
 
 <span class="version-tag">New in v21.2</span>

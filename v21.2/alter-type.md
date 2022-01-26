@@ -2,6 +2,8 @@
 title: ALTER TYPE
 summary: The ALTER TYPE statement modifies a user-defined data type in a database.
 toc: true
+doc_area: 
+product_area: 
 ---
 
 The `ALTER TYPE` [statement](sql-statements.html) modifies a user-defined, [enumerated data type](enum.html) in the current database.

@@ -2,6 +2,8 @@
 title: Change and Remove Objects in a Database Schema
 summary: How to change and remove objects in a CockroachDB database schema.
 toc: true
+doc_area: 
+product_area: 
 ---
 
 This page provides an overview on changing and removing the objects in a database schema, with some simple examples based on Cockroach Labs' fictional vehicle-sharing company, [MovR](movr.html).

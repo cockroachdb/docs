@@ -3,6 +3,8 @@ title: SHOW DATABASES
 summary: The SHOW DATABASES statement lists all database in the CockroachDB cluster.
 keywords: reflection
 toc: true
+doc_area: 
+product_area: 
 ---
 
 The `SHOW DATABASES` [statement](sql-statements.html) lists all databases in the CockroachDB cluster.

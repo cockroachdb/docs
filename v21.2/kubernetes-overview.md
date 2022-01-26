@@ -5,6 +5,8 @@ toc: true
 toc_not_nested: true
 secure: true
 redirect_from: orchestration.html
+doc_area: 
+product_area: 
 ---
 
 CockroachDB can be deployed and managed on Kubernetes using the following methods:

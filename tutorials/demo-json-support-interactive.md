@@ -2,6 +2,8 @@
 title: JSON Support
 summary: Use a local cluster to explore how CockroachDB can store and query unstructured JSONB data.
 layout: tutorial
+doc_area: 
+product_area: 
 ---
 
 <div

@@ -7,6 +7,8 @@ referral_id: docs_go_pgx
 filter_category: crud_go
 filter_html: Use <strong>pgx</strong>
 filter_sort: 1
+doc_area: 
+product_area: 
 ---
 
 {% include filter-tabs.md %}

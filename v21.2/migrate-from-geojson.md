@@ -2,6 +2,8 @@
 title: Migrate from GeoJSON
 summary: Learn how to migrate data from GeoJSON into a CockroachDB cluster.
 toc: true
+doc_area: 
+product_area: 
 ---
 
  CockroachDB supports efficiently storing and querying [spatial data](spatial-data.html).

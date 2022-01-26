@@ -2,6 +2,8 @@
 title: Table Expressions
 summary: Table expressions define a data source in selection clauses.
 toc: true
+doc_area: 
+product_area: 
 ---
 
 Table expressions define a data source in the `FROM` sub-clause of

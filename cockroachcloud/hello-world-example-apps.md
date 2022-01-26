@@ -3,6 +3,8 @@ title: Hello World Example Apps for CockroachDB Cloud
 summary: Examples that show you how to build a simple "Hello World" application with CockroachDB
 tags: golang, python, java
 toc: true
+doc_area: 
+product_area: 
 ---
 
 The examples in this section show you how to build simple "Hello World" applications **using {{ site.data.products.serverless }}**. For a full list of sample applications that have been built using CockroachDB, see [Example Apps](../{{site.versions["stable"]}}/example-apps.html).

@@ -2,6 +2,8 @@
 title: Replication Layer
 summary: The replication layer of CockroachDB's architecture copies data between nodes and ensures consistency between copies.
 toc: true
+doc_area: 
+product_area: 
 ---
 
 The replication layer of CockroachDB's architecture copies data between nodes and ensures consistency between these copies by implementing our consensus algorithm.

@@ -2,6 +2,8 @@
 title: Databases Page
 summary: The Databases page provides details about databases configured, the tables in each database, and the grants assigned to each user.
 toc: true
+doc_area: 
+product_area: 
 ---
 
 {% include {{ page.version.version }}/ui/admin-access.md %}

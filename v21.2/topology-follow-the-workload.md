@@ -2,6 +2,8 @@
 title: Follow-the-Workload Topology
 summary: Guidance on using the follow-the-workload topology in a multi-region deployment.
 toc: true
+doc_area: 
+product_area: 
 ---
 
 In a multi-region deployment, follow-the-workload is the default behavior for tables that do not have a [table locality](multiregion-overview.html#table-locality). In general, this is a good choice only for tables with the following requirements:

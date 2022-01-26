@@ -2,6 +2,8 @@
 title: SHOW CLUSTER SETTING
 summary: The SHOW CLUSTER SETTING statement displays the current cluster settings.
 toc: true
+doc_area: 
+product_area: 
 ---
 
 The `SHOW CLUSTER SETTING` [statement](sql-statements.html) displays the values of [cluster settings](cluster-settings.html).

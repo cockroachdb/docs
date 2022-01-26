@@ -2,6 +2,8 @@
 title: Cost-Based Optimizer
 summary: The cost-based optimizer seeks the lowest cost for a query, usually related to time.
 toc: true
+doc_area: 
+product_area: 
 ---
 
 The cost-based optimizer seeks the lowest cost for a query, usually related to time.

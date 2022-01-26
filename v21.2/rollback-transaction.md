@@ -2,6 +2,8 @@
 title: ROLLBACK
 summary: Rolls back the current transaction and all of its nested sub-transactions, discarding all transactional updates made by statements inside the transaction.
 toc: true
+doc_area: 
+product_area: 
 ---
 
 The `ROLLBACK` [statement](sql-statements.html) aborts the current [transaction](transactions.html) and all of its [nested transactions](transactions.html#nested-transactions), discarding all transactional updates made by statements included in the transaction.

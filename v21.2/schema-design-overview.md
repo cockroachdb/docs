@@ -2,6 +2,8 @@
 title: Database Schemas
 summary: An overview of the objects that make up a logical schema
 toc: true
+doc_area: 
+product_area: 
 ---
 
 This page provides an overview of database schemas in CockroachDB.

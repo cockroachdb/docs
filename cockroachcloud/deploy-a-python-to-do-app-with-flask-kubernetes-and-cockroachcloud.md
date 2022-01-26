@@ -3,6 +3,8 @@ title: Deploy a Python To-Do App with Flask, Kubernetes, and CockroachDB Cloud
 summary: Learn how to deploy a sample Python web app with Flask, Kubernetes, and CockroachDB Cloud
 toc: true
 toc_not_nested: true
+doc_area: 
+product_area: 
 ---
 
 This tutorial shows you how to run a sample To-Do app in [Kubernetes](https://kubernetes.io/) with {{ site.data.products.dedicated }} as the datastore. The app is written in Python with Flask as the web framework and SQLAlchemy for working with SQL data, and the code is [open-source and forkable](https://github.com/cockroachdb/examples-python/tree/master/flask-sqlalchemy).
