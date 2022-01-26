@@ -27,9 +27,9 @@ To create and connect to a 30-day free {{ site.data.products.dedicated }} cluste
 
 In the **Cloud provider** section, select either **Google Cloud** or **AWS** as your preferred cloud provider.
 
-{{ site.data.products.db }} GCP clusters use [N2 standard](https://cloud.google.com/compute/docs/machine-types#n2_machine_types) machine types and [Persistent Disk storage](https://cloud.google.com/compute/docs/disks#pdspecs). AWS clusters use [M5 instance types](https://aws.amazon.com/ec2/instance-types/m5/#Product_Details) and [Elastic Block Store (EBS)](https://aws.amazon.com/ebs/features/). 
+{{ site.data.products.db }} GCP clusters use [N1 standard](https://cloud.google.com/compute/docs/machine-types#n1_machine_types) machine types and [Persistent Disk storage](https://cloud.google.com/compute/docs/disks#pdspecs). AWS clusters use [M5 instance types](https://aws.amazon.com/ec2/instance-types/m5/#Product_Details) and [Elastic Block Store (EBS)](https://aws.amazon.com/ebs/features/). 
 
-For GCP clusters, each GiB of storage costs $0.0012 per hour, and 30 IOPS per GiB are provisioned. For AWS clusters, each GiB of storage costs $0.0005 per hour, and 15 IOPS per GiB are provisioned at an additional cost of $0.0000196 per hour. 
+For GCP clusters, each GiB of storage costs $0.0012 per hour, and 30 IOPS per GiB are provisioned. For AWS clusters, each GiB of storage costs $0.0005 per hour, and 15 IOPS per GiB are provisioned at an additional cost of $0.0000196 per IOPS per hour. 
 
 {% include cockroachcloud/cockroachcloud-pricing.md %}
 
