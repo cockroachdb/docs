@@ -11,7 +11,7 @@ This page describes the main components to enabling and using changefeeds:
 - [Schema changes](#schema-changes) with changefeeds
 - [Changefeed responses](#responses)
 
-It is recommended to read the following [Considerations](#considerations) before working with changefeeds.
+Read the following [Considerations](#considerations) before working with changefeeds.
 
 ## Considerations
 
