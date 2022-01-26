@@ -336,7 +336,7 @@ CockroachDB maintains a secure environment for your data. However, there are bad
 
 ### Changefeeds to cloud storage
 
-1. [Cancel the changefeed job](cancel-job.html) immediately and [record the high water timestamp](stream-data-out-of-cockroachdb-using-changefeeds.html#monitor-a-changefeed) for where the changefeed was stopped.
+1. [Cancel the changefeed job](cancel-job.html) immediately and [record the high water timestamp](monitor-and-debug-changefeeds.html#monitor-a-changefeed) for where the changefeed was stopped.
 2. Remove the access keys from the identity management system of your cloud provider and replace with a new set of access keys.
 3. [Create a new changefeed](create-changefeed.html#start-a-new-changefeed-where-another-ended) with the new access credentials using the last high water timestamp.
 

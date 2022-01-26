@@ -10,8 +10,7 @@ toc: true
 - [`RESTORE`](../{{site.versions["stable"]}}/restore.html)
 - [`IMPORT`](../{{site.versions["stable"]}}/import.html)
 - [`EXPORT`](../{{site.versions["stable"]}}/export.html)
-- [`EXPERIMENTAL CHANGEFEED FOR`](../{{site.versions["stable"]}}/changefeed-for.html) (Serverless)
-- [`CREATE CHANGEFEED`](../{{site.versions["stable"]}}/create-changefeed.html) (Dedicated)
+
 
 {{site.data.alerts.callout_info}}
 For {{ site.data.products.serverless }} clusters, you must have [billing information](billing-management.html) on file for your organization to have access to [cloud storage](../{{site.versions["stable"]}}/use-cloud-storage-for-bulk-operations.html). If you don't have billing set up, [`userfile`](../{{site.versions["stable"]}}/use-userfile-for-bulk-operations.html) is your **only available storage option** for bulk operations. {{ site.data.products.dedicated }} users can run bulk operations with `userfile` or cloud storage.
@@ -109,35 +108,6 @@ EXPORT INTO CSV
 ~~~
 
 Read the [`EXPORT`](../{{site.versions["stable"]}}/export.html) page for more examples and guidance.
-
-### Stream data out of your {{ site.data.products.db }} cluster
-
-Core changefeeds stream row-level changes to a client until the underlying SQL connection is closed.
-
-{{site.data.alerts.callout_info}}
-Only core changefeeds are available on {{ site.data.products.serverless }}. To create a changefeed into a configurable sink, like cloud storage or Kafka, use {{ site.data.products.dedicated }}, which has this feature enabled by default.
-{{site.data.alerts.end}}
-
-<div class="filters clearfix">
-  <button class="filter-button" data-scope="serverless">{{ site.data.products.serverless }}</button>
-  <button class="filter-button" data-scope="dedicated">{{ site.data.products.dedicated }}</button>
-</div>
-
-<section class="filter-content" markdown="1" data-scope="serverless">
-
-To create a core changefeed in {{ site.data.products.serverless }}, use the following example.
-
-{% include cockroachcloud/cdc/create-core-changefeed.md %}
-
-For further information on changefeeds, read [Stream Data Out of CockroachDB](../{{site.versions["stable"]}}/stream-data-out-of-cockroachdb-using-changefeeds.html) and [`EXPERIMENTAL CHANGEFEED FOR`](../{{site.versions["stable"]}}/changefeed-for.html).
-
-</section>
-
-<section class="filter-content" markdown="1" data-scope="dedicated">
-
-{% include cockroachcloud/cdc/cdc-bulk-examples.md %}
-
-</section>
 
 ## See also
 
