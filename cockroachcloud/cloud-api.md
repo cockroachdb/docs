@@ -117,38 +117,47 @@ If the request was successful, the API will return information about the newly c
 {% include_cached copy-clipboard.html %}
 ~~~ json
 {
-  "cluster": {
-    "id": "{clusterId}",
-    "name": "{cluster name}",
-    "cockroachVersion": "{CockroachDB version}",
-    "plan": "SERVERLESS",
-    "cloudProvider": "GCP",
-    "state": "CREATING",
-    "creatorId": "{account ID}",
-    "longRunningOperationStatus": "NOT_SET",
+  "cloud_provider": "{cloud provider}",
+  "created_at": "2022-01-24T14:15:22Z",
+  "creator_id": "{account ID}",
+  "deleted_at": "2022-01-24T14:15:22Z",
+  "id": "{clusterId}",
+  "operation_status": "NOT_SET",
+  "name": "{cluster name}",
+  "plan": "SERVERLESS",
+  "regions": [
+    {
+      "name": "{region name}",
+      "sql_dns": "{server host}",
+      "ui_dns": ""
+    }
+  ],
+  "config": {
     "serverless": {
       "regions": [
         "{region name}"
       ],
-      "spendLimit": 0
-    },
-    "createdAt": "2021-09-24T14:15:22Z",
-    "updatedAt": "2021-09-24T14:15:22Z",
-    "deletedAt": "2021-09-24T14:15:22Z"
-  }
+      "spend_limit": 0,
+      "routing_id": "{routingId}"
+    }
+  },
+  "state": "CREATING",
+  "updated_at": "2022-01-24T14:15:22Z"
 }
 ~~~
 
 Where:
 
-  - `{clusterId}` is the unique ID of this cluster. Use this ID when making API requests for this particular cluster. Note:
+  - `{cloud provider}` is the name of the cloud infrastructure provider on which you want your cluster to run. Possible values are: `GCP` and `AWS`. The default value is `GCP`.
+  - `{clusterId}` is the unique ID of this cluster. Use this ID when making API requests for this particular cluster.
     {{site.data.alerts.callout_info}}
-    The cluster ID used in the Cloud API is different than the cluster name and tenant ID used when [connecting to clusters](connect-to-a-serverless-cluster.html).
+    The cluster ID used in the Cloud API is different than the routing ID used when [connecting to clusters](connect-to-a-serverless-cluster.html).
     {{site.data.alerts.end}}
   - `{cluster name}` is the name of the cluster you specified when creating the cluster.
-  - `{CockroachDB version}` is the version of CockroachDB running on this cluster.
   - `{account ID}` is the ID of the account that created the cluster. If the cluster was created using the API, this will be the service account ID associated with the secret key used when creating the cluster.
   - `{region name}` is the zone code of the cloud infrastructure provider where the cluster is located.
+  - `{routingId}` is the cluster name and tenant ID of the cluster used when [connecting to clusters](connect-to-a-serverless-cluster.html).
+  - `{server host}` is the DNS name of the host on which the cluster is located.
 
 ## Retrieve information about a specific cluster
 
@@ -174,37 +183,32 @@ If the request was successful, the API will return detailed information about th
 {% include_cached copy-clipboard.html %}
 ~~~ json
 {
-  "cluster": {
-    "id": "{clusterId}",
-    "name": "{cluster name}",
-    "cockroachVersion": "{CockroachDB version}",
-    "plan": "SERVERLESS",
-    "cloudProvider": "{cloud provider}",
-    "state": "CREATING",
-    "creatorId": "{account ID}",
-    "longRunningOperationStatus": "NOT_SET",
+  "cloud_provider": "{cloud provider}",
+  "created_at": "2022-01-24T14:15:22Z",
+  "creator_id": "{account ID}",
+  "deleted_at": "2022-01-24T14:15:22Z",
+  "id": "{clusterId}",
+  "operation_status": "NOT_SET",
+  "name": "{cluster name}",
+  "plan": "SERVERLESS",
+  "regions": [
+    {
+      "name": "{region name}",
+      "sql_dns": "{server host}",
+      "ui_dns": ""
+    }
+  ],
+  "config": {
     "serverless": {
       "regions": [
         "{region name}"
       ],
-      "spendLimit": {spend limit}
-    },
-    "createdAt": "2021-09-24T14:15:22Z",
-    "updatedAt": "2021-09-24T14:15:22Z",
-    "deletedAt": "2021-09-24T14:15:22Z"
+      "spend_limit": {spend limit},
+      "routing_id": "{routingId}"
+    }
   },
-  "regions": [
-    "name": "string",
-    "sqlDns": "string",
-    "uiDns": "string",
-    "nodes": [
-      {
-        "name": "{node name}",
-        "regionName": "{region name}",
-        "status": "{node status}"
-      }
-    ]
-  ]
+  "state": "CREATING",
+  "updated_at": "2022-01-24T14:15:22Z"
 }
 ~~~
 
@@ -212,16 +216,15 @@ Where:
 
   - `{clusterId}` is the unique ID of this cluster. Use this ID when making API requests for this particular cluster.
   {{site.data.alerts.callout_info}}
-  The cluster ID used in the Cloud API is different than the cluster name and tenant ID used when [connecting to clusters](connect-to-a-serverless-cluster.html).
+  The cluster ID used in the Cloud API is different than the routing ID used when [connecting to clusters](connect-to-a-serverless-cluster.html).
   {{site.data.alerts.end}}
   - `{cluster name}` is the name of the cluster you specified when creating the cluster.
-  - `{CockroachDB version}` is the version of CockroachDB running on this cluster.
   - `{cloud provider}` is the name of the cloud infrastructure provider on which you want your cluster to run. Possible values are: `GCP` and `AWS`. The default value is `GCP`.
   - `{account ID}` is the ID of the account that created the cluster. If the cluster was created using the API, this will be the service account ID associated with the secret key used when creating the cluster.
   - `{region name}` is the cloud infrastructure provider region where the cluster is located.
   - `{spend limit}` is the [maximum amount of money, in US cents, you want to spend per month](serverless-cluster-management.html#planning-your-cluster) on this cluster.
-  - `{node name}` is the name of the node in the cluster.
-  - `{node status}` is the status of the node. Possible values are: `LIVE` and `NOT_READY`
+  - `{routingId}` is the cluster name and tenant ID of the cluster used when [connecting to clusters](connect-to-a-serverless-cluster.html).
+  - `{server host}` is the DNS name of the host on which the cluster is located.
 
 ## Set the maximum spend limit of a Serverless cluster
 
