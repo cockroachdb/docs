@@ -6,7 +6,7 @@ toc: true
 
 As you scale your usage of [multi-region clusters](multiregion-overview.html), you may need to keep certain subsets of data in specific localities. Keeping specific data on servers in specific geographic locations is also known as _data domiciling_.
 
-CockroachDB has basic support for data domiciling in multi-region clusters using the process described in this page. At a high level, this process involves:
+CockroachDB has basic support for data domiciling in multi-region clusters using the process described on this page. At a high level, this process involves:
 
 1. Creating separate databases per domicile.
 1. Adding regions to those databases using the [`ADD REGION`](add-region.html) statement.
