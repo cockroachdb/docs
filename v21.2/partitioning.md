@@ -102,7 +102,7 @@ For instance, consider the database of a global online learning portal that has 
 
 The order in which the columns are defined in the primary key is important. The partitions and subpartitions need to follow that order. In the example of the online learning portal, if you define the primary key as `(country, expected_graduation_date, id)`, the primary partition is by `country`, and then subpartition is by `expected_graduation_date`. You cannot skip `country` and partition by `expected_graduation_date`.
 
-#### Partition using secondary index
+#### Partition using a secondary index
 
 The primary key discussed in the preceding section has two drawbacks:
 

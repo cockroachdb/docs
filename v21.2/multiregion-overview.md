@@ -32,11 +32,13 @@ These steps describe the simplest case, where you accept all of the default sett
 
 ## Cluster regions
 
-You define a cluster region at the node level using the `region` [node startup locality option](cockroach-start.html#locality). For example, the following command adds `us-east-1` to the list of cluster regions:
+You define a cluster region at the node level using the `region` key and the zone using the `zone` key in the [node startup locality options](cockroach-start.html#locality).
+
+For example, the following command adds `us-east-1` to the list of cluster regions and `us-east-1b` to the list of zones:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-cockroach start --locality=region=us-east-1 # ... other required flags go here
+cockroach start --locality=region=us-east-1,zone=us-east-1b # ... other required flags go here
 ~~~
 
 To show all of a cluster's regions, execute the following SQL statement:
@@ -57,6 +59,10 @@ While the database has only one region assigned to it, it is considered a "multi
 To add another database region, use the [`ALTER DATABASE ... ADD REGION` statement](add-region.html).
 
 To show all of a database's regions, execute the [`SHOW REGIONS FROM DATABASE` statement](show-regions.html).
+
+{{site.data.alerts.callout_info}}
+If the default survival goals and table localities meet your needs, there is nothing else you need to do once you have set a database's primary region.
+{{site.data.alerts.end}}
 
 ## Survival goals
 
@@ -111,7 +117,7 @@ For information about the table localities CockroachDB supports, see the section
 - [Global tables](#global-tables) are optimized for low-latency reads from _all regions_.
 
 {{site.data.alerts.callout_info}}
-Regardless of table locality, you can access all data in a multi-region database with low latency from any [database region](#database-regions) by using stale [(follower)](follower-reads.html) reads.
+Table locality settings are used for optimizing latency under different read/write patterns. If you are optimizing for read/write access to all of your tables from a single region (the primary region), there is nothing else you need to do once you set your [database's primary region](#database-regions).
 {{site.data.alerts.end}}
 
 ### Regional tables
