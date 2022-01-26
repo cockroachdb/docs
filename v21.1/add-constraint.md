@@ -298,6 +298,46 @@ To ensure that the uniqueness constraint is enforced properly across regions whe
 
 {% include {{page.version.version}}/sql/locality-optimized-search.md %}
 
+### Using `DEFAULT gen_random_uuid()` in `REGIONAL BY ROW` tables
+
+To auto-generate unique row IDs in `REGIONAL BY ROW` tables, use the [`UUID`](uuid.html) column with the `gen_random_uuid()` [function](functions-and-operators.html#id-generation-functions) as the [default value](default-value.html):
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE TABLE users (
+        id UUID NOT NULL DEFAULT gen_random_uuid(),
+        city STRING NOT NULL,
+        name STRING NULL,
+        address STRING NULL,
+        credit_card STRING NULL,
+        CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
+        FAMILY "primary" (id, city, name, address, credit_card)
+);
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> INSERT INTO users (name, city) VALUES ('Petee', 'new york'), ('Eric', 'seattle'), ('Dan', 'seattle');
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM users;
+~~~
+
+~~~
+                   id                  |   city   | name  | address | credit_card
++--------------------------------------+----------+-------+---------+-------------+
+  cf8ee4e2-cd74-449a-b6e6-a0fb2017baa4 | new york | Petee | NULL    | NULL
+  2382564e-702f-42d9-a139-b6df535ae00a | seattle  | Eric  | NULL    | NULL
+  7d27e40b-263a-4891-b29b-d59135e55650 | seattle  | Dan   | NULL    | NULL
+(3 rows)
+~~~
+
+{{site.data.alerts.callout_info}}
+When using `DEFAULT gen_random_uuid()` on columns in `REGIONAL BY ROW` tables, uniqueness checks on those columns are disabled by default for performance purposes. CockroachDB assumes uniqueness based on the way this column generates [`UUIDs`](uuid.html#create-a-table-with-auto-generated-unique-row-ids). To enable this check, you can modify the `sql.optimizer.uniqueness_checks_for_gen_random_uuid.enabled` [cluster setting](cluster-settings.html). Note that while there is virtually no chance of a [collision](https://en.wikipedia.org/wiki/Universally_unique_identifier#Collisions) occurring when enabling this setting, it is not truly zero.
+{{site.data.alerts.end}}
+
 ### Using implicit vs. explicit index partitioning in `REGIONAL BY ROW` tables
 
 In `REGIONAL BY ROW` tables, all indexes are partitioned on the region column (usually called [`crdb_region`](set-locality.html#crdb_region)).

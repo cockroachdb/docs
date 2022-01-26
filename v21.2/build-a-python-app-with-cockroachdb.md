@@ -3,7 +3,7 @@ title: Build a Python App with CockroachDB and psycopg2
 summary: Learn how to use CockroachDB from a simple Python application with the psycopg2 driver.
 toc: true
 twitter: false
-referral_id: docs_hello_world_python_psycopg2
+referral_id: docs_python_psycopg2
 filter_category: crud_python
 filter_html: <strong>psycopg2</strong>
 filter_sort: 1
