@@ -18,6 +18,10 @@ High latency SQL statements are displayed on the [**Statements page**](ui-statem
 
 You can also check the [service latency graph](ui-sql-dashboard.html#service-latency-sql-99th-percentile) and the [CPU graph](ui-hardware-dashboard.html#cpu-percent) on the SQL and Hardware Dashboards, respectively. If the graphs show latency spikes or CPU usage spikes, these might indicate slow queries in your cluster.
 
+{{site.data.alerts.callout_info}}
+{% include {{ page.version.version }}/prod-deployment/resolution-untuned-query.md %}
+{{site.data.alerts.end}}
+
 ## Visualize statement traces in Jaeger
 
 You can look more closely at the behavior of a statement by visualizing a statement trace in [Jaeger](https://www.jaegertracing.io/). A [statement trace](show-trace.html) contains messages and timing information from all nodes involved in the execution.
@@ -79,13 +83,13 @@ If the query performance is irregular:
 
 ## Cancelling running queries
 
-See [Cancel query](manage-long-running-queries.html#cancel-long-running-queries)
+See [Cancel long-running queries](manage-long-running-queries.html#cancel-long-running-queries).
 
 ## Low throughput
 
 Throughput is affected by the disk I/O, CPU usage, and network latency. Use the DB Console to check the following metrics:
 
-- Disk I/O: [Disk IOPS in progress](ui-hardware-dashboard.html#disk-iops-in-progress)
+- Disk I/O: [Disk IOPS in progress](ui-hardware-dashboard.html#disk-ops-in-progress)
 
 - CPU usage: [CPU percent](ui-hardware-dashboard.html#cpu-percent)
 

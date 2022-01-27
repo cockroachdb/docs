@@ -8,6 +8,8 @@ In addition to CockroachDB's [built-in safeguards against failure](frequently-as
 
 This page explains available monitoring tools and critical events and metrics to alert on.
 
+{% include {{ page.version.version }}/prod-deployment/cluster-unavailable-monitoring.md %}
+
 ## Monitoring tools
 
 {{site.data.alerts.callout_danger}}
@@ -158,7 +160,7 @@ Active monitoring helps you spot problems early, but it is also essential to cre
 - **How to detect:** Calculate this using the number of times the `sys_uptime` metric in the node's `_status/vars` output was reset back to zero. The `sys_uptime` metric gives you the length of time, in seconds, that the `cockroach` process has been running.
 
 ### Node is running low on disk space
-
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
 - **Rule:** Send an alert when a node has less than 15% of free space remaining.
 
 - **How to detect:** Divide the `capacity` metric by the `capacity_available` metric in the node's `_status/vars` output.

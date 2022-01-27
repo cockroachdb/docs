@@ -284,30 +284,38 @@ See the following FAQs:
 
 ## Capacity planning issues
 
-Following are some of the possible issues you might have while planning capacity for your cluster:
+You may encounter the following issues when your cluster nears 100% resource capacity:
 
 -   Running CPU at close to 100% utilization with high run queue will result in poor performance.
 -   Running RAM at close to 100% utilization triggers Linux OOM and/or swapping that will result in poor performance or stability issues.
 -   Running storage at 100% capacity causes writes to fail, which in turn can cause various processes to stop.
--   Running storage at 100% utilization read/write will causes poor service time.
+-   Running storage at 100% utilization read/write causes poor service time and [node shutdown](operational-faqs.html#what-happens-when-a-node-runs-out-of-disk-space).
 -   Running network at 100% utilization causes response between databases and client to be poor.
 
 **Solution:** [Access the DB Console](ui-overview.html#db-console-access) and navigate to **Metrics > Hardware** dashboard to monitor the following metrics:
 
-First, check adequate capacity was available for the incident for the following components.
+Check that adequate capacity was available for the incident:
 
 Type | Time Series | What to look for
 --------|--------|--------|
 RAM capacity | Memory Usage | Any non-zero value
 CPU capacity | CPU Percent | Consistent non-zero values
+Disk capacity | Available Disk Capacity | Any non-zero value
+Disk I/O | Disk Ops In Progress | Zero or occasional single-digit values
 Network capacity | Network Bytes Received<br/>Network Bytes Sent | Any non-zero value
 
-Check Near Out of Capacity Conditions:
+{{site.data.alerts.callout_info}}
+For minimum provisioning guidelines, see [Basic hardware recommendations](recommended-production-settings.html#basic-hardware-recommendations).
+{{site.data.alerts.end}}
+
+Check for resources that are running out of capacity:
 
 Type | Time Series | What to look for
 --------|--------|--------|
 RAM capacity | Memory Usage | Consistently more than 80%
-CPU capacity | CPU Percent | Consistently less than 20% in idle (i.e.:80% busy)
+CPU capacity | CPU Percent | Consistently less than 20% in idle (i.e., 80% busy)
+Disk capacity | Available Disk Capacity | Consistently less than 20% of the [store](cockroach-start.html#store) size
+Disk I/O | Disk Ops In Progress | Consistent double-digit values
 Network capacity | Network Bytes Received<br/>Network Bytes Sent | Consistently more than 50% capacity for both
 
 ## Storage issues
@@ -362,7 +370,7 @@ Symptoms of disk stalls include:
 
 Causes of disk stalls include:
 
-- Disk operations have backed up due to underprovisioned IOPS. Make sure you are deploying with our [recommended production settings for storage](recommended-production-settings.html#storage).
+- Disk operations have slowed due to underprovisioned IOPS. Make sure you are deploying with our [recommended production settings for storage](recommended-production-settings.html#storage) and [monitoring disk IOPS](common-issues-to-monitor.html#disk-iops).
 - Actual hardware-level storage issues that result in slow `fsync` performance.
 - In rare cases, operating-system-level configuration of subsystems such as SELinux can slow down system calls such as `fsync` enough to affect storage engine performance.
 
@@ -376,59 +384,79 @@ CockroachDB's built-in disk stall detection works as follows:
 
 - During [node liveness heartbeats](#node-liveness-issues), the [storage engine](architecture/storage-layer.html) writes to disk as part of the node liveness heartbeat process.
 
+## CPU issues
+
+### CPU is insufficient for the workload
+
+Issues with CPU most commonly arise when there is insufficient CPU to suppport the scale of the workload. If the concurrency of your workload significantly exceeds your provisioned CPU, you will encounter a [degradation in SQL response time](common-issues-to-monitor.html#service-latency). This is the most common symptom of CPU starvation. 
+
+Because compaction requires significant CPU to run concurrent worker threads, a lack of CPU resources will eventually cause compaction to fall behind. This leads to read amplification and inversion of the log-structured merge (LSM) trees on the [storage layer](architecture/storage-layer.html).
+
+If these issues remain unresolved, affected nodes will miss their liveness heartbeats, causing the cluster to lose nodes and eventually become unresponsive.
+
+**Solution:** To diagnose and resolve an excessive workload concurrency issue:
+
+- [Check for high CPU usage.](common-issues-to-monitor.html#cpu-usage)
+
+- [Check your workload concurrency](common-issues-to-monitor.html#workload-concurrency) and compare it to your provisioned CPU.
+
+  - {% include {{ page.version.version }}/prod-deployment/resolution-excessive-concurrency.md %}
+
+- [Check LSM health](common-issues-to-monitor.html#lsm-health), which can be affected over time by CPU starvation.
+
+  - {% include {{ page.version.version }}/prod-deployment/resolution-inverted-lsm.md %}
+
 ## Memory issues
 
 ### Suspected memory leak
 
-A CockroachDB node will grow to consume all of the memory allocated for its `cache`. The default size for the cache is ¼ of physical memory which can be substantial depending on your machine configuration. This growth will occur even if your cluster is otherwise idle due to the internal metrics that a CockroachDB cluster tracks. See the `--cache` flag in [`cockroach start`](cockroach-start.html#general).
+A CockroachDB node will grow to consume all of the memory allocated for its `--cache`, [even if your cluster is idle](operational-faqs.html#why-is-memory-usage-increasing-despite-lack-of-traffic). The default cache size is 25% of physical memory, which can be substantial, depending on your machine configuration. For more information, see [Cache and SQL memory size](recommended-production-settings.html#cache-and-sql-memory-size).
 
 CockroachDB memory usage has the following components:
 
-- **Go allocated memory**: Memory allocated by the Go runtime to support query processing and various caches maintained in Go by CockroachDB. These caches are generally small in comparison to the RocksDB cache size. If Go allocated memory is larger than a few hundred megabytes, something concerning is going on.
-- **CGo allocated memory**: Memory allocated by the C/C++ libraries linked into CockroachDB and primarily concerns the block caches for the storage engine (this is true for both [Pebble (the default engine) and RocksDB](cockroach-start.html#storage-engine)). This is the “cache” mentioned in the note above. The size of CGo allocated memory is usually very close to the configured cache size.
-- **Overhead**: The process resident set size minus Go/CGo allocated memory.
+- **Go allocated memory**: Memory allocated by the Go runtime to support query processing and various caches maintained in Go by CockroachDB.
+- **CGo allocated memory**: Memory allocated by the C/C++ libraries linked into CockroachDB and primarily concerns the block caches for the [Pebble storage engine](cockroach-start.html#storage-engine)). This is the allocation specified with `--cache`. The size of CGo allocated memory is usually very close to the configured `--cache` size.
+- **Overhead**: The RSS (resident set size) minus Go/CGo allocated memory.
 
 If Go allocated memory is larger than a few hundred megabytes, you might have encountered a memory leak. Go comes with a built-in heap profiler which is already enabled on your CockroachDB process. See this [excellent blog post](https://blog.golang.org/profiling-go-programs) on profiling Go programs.
 
-**Solution:** To determine Go/CGo allocated memory:
+**Solution:** To determine Go and CGo allocated memory:
 
 1. [Access the DB Console](ui-overview.html#db-console-access).
 
-2. Navigate to **Metrics > Runtime** dashboard, and check the **Memory Usage** graph.
+1. Navigate to **Metrics > Runtime** dashboard, and check the **Memory Usage** graph.
 
-3. On hovering over the graph, the values for the following metrics are displayed:
+1. On hovering over the graph, the values for the following metrics are displayed:
+  
+    Metric | Description
+    --------|----
+    RSS | Total memory in use by CockroachDB.
+    Go Allocated | Memory allocated by the Go layer.
+    Go Total | Total memory managed by the Go layer.
+    CGo Allocated | Memory allocated by the C layer.
+    CGo Total | Total memory managed by the C layer.
 
-  Metric | Description
-  --------|----
-  RSS | Total memory in use by CockroachDB.
-  Go Allocated | Memory allocated by the Go layer.
-  Go Total | Total memory managed by the Go layer.
-  CGo Allocated | Memory allocated by the C layer.
-  CGo Total | Total memory managed by the C layer.
+    {% include {{ page.version.version }}/prod-deployment/healthy-crdb-memory.md %}
 
-  -   If CGo allocated memory is larger than the configured `cache` size, [file an issue](file-an-issue.html).
-  -   If the resident set size (RSS) minus Go/CGo total memory is larger than 100 megabytes, [file an issue](file-an-issue.html).
+    If you observe any of the following, [file an issue](file-an-issue.html):
+      - CGo Allocated is larger than the configured `--cache` size.
+      - RSS minus Go Total and CGo Total is larger than 100 MiB.
+      - Go Total or CGo Total fluctuates or grows steadily over time.
+    
+### Out-of-memory (OOM) crash
 
-### Node crashes because of insufficient memory
+When a node exits without logging an error message, the operating system has likely stopped the node due to insufficient memory.
 
-Often when a node exits without a trace or logging any form of error message, we’ve found that it is the operating system stopping it suddenly due to low memory. So if you're seeing node crashes where the logs just end abruptly, it's probably because the node is running out of memory. On most Unix systems, you can verify if the `cockroach` process was stopped because the node ran out of memory by running:
+CockroachDB attempts to restart nodes after they crash. Nodes that frequently restart following an abrupt process exit may point to an underlying memory issue. 
 
-{% include_cached copy-clipboard.html %}
-~~~ shell
-$ sudo dmesg | grep -iC 3 "cockroach"
-~~~
+**Solution:** If you [observe nodes restarting after sudden crashes](common-issues-to-monitor.html#node-process-restarts):
 
-If the command returns the following message, then you know the node crashed due to insufficient memory:
+- [Confirm that the node restarts are caused by OOM crashes.](common-issues-to-monitor.html#verify-oom-errors)
 
-~~~ shell
-$ host kernel: Out of Memory: Killed process <process_id> (cockroach).
-~~~
+  - {% include {{ page.version.version }}/prod-deployment/resolution-oom-crash.md %}
 
-<span class="version-tag">New in v21.2</span>: When a node is detected to be under memory pressure, a record of anonymized active queries is written to disk. This "active query dump" is enabled by default with the `diagnostics.active_query_dumps.enabled` cluster setting.
+- [Check whether SQL queries may be responsible.](common-issues-to-monitor.html#sql-memory-usage)
 
-You can use the active query dump to correlate specific queries to OOM crashes. Active query dumps have the filename `activequeryprof.{date-and-time}.csv` and are found in the `heap_profiler` directory in the configured [logging directory](configure-logs.html#logging-directory). They are also included when running [`cockroach debug zip`](cockroach-debug-zip.html).
-
-**Solution:** Either run the CockroachDB process on another node with sufficient memory, or [reduce the CockroachDB memory usage](cockroach-start.html#flags).
 
 ## Decommissioning issues
 
@@ -467,7 +495,7 @@ To identify under-replicated/unavailable ranges:
 
 2.  On the **Cluster Overview** page, check the **Replication Status**. If the **Under-replicated ranges** or **Unavailable ranges** count is non-zero, then you have under-replicated or unavailable ranges in your cluster.
 
-3. Check for a network partition: Click the gear icon on the left-hand navigation bar to access the **Advanced Debugging** page. On the Advanced Debugging page, click **Network Latency**. In the **Latencies** table, check if any cells are marked as “X”. If yes, it indicates that the nodes cannot communicate with those nodes, and might indicate a network partition. If there's no partition, and there's still no upreplication after 5 mins, then [file an issue](file-an-issue.html).
+3. Check for a network partition: Click the gear icon on the left-hand navigation bar to access the **Advanced Debugging** page. On the Advanced Debugging page, click **Network Latency**. In the **Latencies** table, check if any cells are marked as "X". If yes, it indicates that the nodes cannot communicate with those nodes, and might indicate a network partition. If there's no partition, and there's still no upreplication after 5 mins, then [file an issue](file-an-issue.html).
 
 **Add nodes to the cluster:**
 
@@ -489,56 +517,18 @@ If you still see under-replicated/unavailable ranges on the Cluster Overview pag
 Common reasons for node liveness issues include:
 
 - Heavy I/O load on the node. Because each node needs to update a liveness record on disk, maxing out disk bandwidth can cause liveness heartbeats to be missed. See also: [Capacity planning issues](#capacity-planning-issues).
-- Outright I/O failure due to a [disk stall](#disk-stalls). This will cause node liveness issues for the same reasons as listed above.
-- Any [Networking issues](#networking-issues) with the node.
+- A [disk stall](#disk-stalls). This will cause node liveness issues for the same reasons as listed above.
+- [Insufficient CPU for the workload](#cpu-is-insufficient-for-the-workload). This can eventually cause nodes to miss their liveness heartbeats and become unresponsive.
+- [Networking issues](#networking-issues) with the node.
 
 The [DB Console][db_console] provides several ways to check for node liveness issues in your cluster:
 
-- [Check node heartbeat latency](#check-node-heartbeat-latency)
-- [Check node liveness record last update](#check-node-liveness-record-last-update)
-- [Check command commit latency](#check-command-commit-latency)
+- [Check node heartbeat latency](common-issues-to-monitor.html#node-heartbeat-latency)
+- [Check command commit latency](common-issues-to-monitor.html#command-commit-latency)
 
 {{site.data.alerts.callout_info}}
-For more information about how node liveness works, see [the architecture documentation on the replication layer](architecture/replication-layer.html#epoch-based-leases-table-data).
+For more information about how node liveness works, see [Replication Layer](architecture/replication-layer.html#epoch-based-leases-table-data).
 {{site.data.alerts.end}}
-
-### Check node heartbeat latency
-
-To check node heartbeat latency:
-
-1. In the [DB Console][db_console], select the **Metrics** tab from the left-hand side of the page.
-
-2. From the metrics page, select **Dashboard: Distributed** from the dropdown at the top of the page.
-
-3. Scroll down the metrics page to find the **Node Heartbeat Latency: 99th percentile** and **Node Heartbeat Latency: 90th percentile** graphs.
-
-**Expected values for a healthy cluster**: Less than 100ms in addition to the network latency between nodes in the cluster.
-
-### Check node liveness record last update
-
-To see when a node last updated its liveness record:
-
-1. Go to the **Node Diagnostics** page of the [DB Console][db_console], which lives at:
-
-    `https://yourcluster.yourdomain/#/reports/nodes`
-
-2. On the Node Diagnostics page, you will see a table listing information about the nodes in your cluster.  To see when a node last updated its liveness record, check the **Updated at** field at the bottom of that node's column.
-
-**Expected values for a healthy cluster**: When you load this page, the **Updated at** field should be within 4.5 seconds of the current time.  If it's higher than that, you will see errors [in the logs](logging-overview.html).
-
-### Check command commit latency
-
-A good signal of I/O load is the **Command Commit Latency** in the **Storage** section of the dashboards. This dashboard measures how quickly [Raft commands](architecture/replication-layer.html) are being committed by nodes in the cluster.
-
-To view command commit latency:
-
-1. In the [DB Console][db_console], select the **Metrics** tab from the left-hand side of the page.
-
-2. From the Metrics page, select **Dashboard: Storage** from the dropdown at the top of the page.
-
-3. Scroll down the metrics page to find the **Command Commit Latency: 90th percentile** and **Command Commit Latency: 99th percentile** graphs.
-
-**Expected values for a healthy cluster**: On SSDs, this should be between 1 and 100 milliseconds.  On HDDs, this should be no more than 1 second.  Note that we [strongly recommend running CockroachDB on SSDs](recommended-production-settings.html#storage).
 
 ## Check for under-replicated or unavailable data
 
@@ -558,7 +548,7 @@ If we do not have a solution here, you can try using our other [support resource
 
 - [StackOverflow](http://stackoverflow.com/questions/tagged/cockroachdb)
 - [CockroachDB Community Forum](https://forum.cockroachlabs.com)
-- [Chatting with our developers on  Slack](https://cockroachdb.slack.com)
+- [Chatting with our developers on Slack](https://cockroachdb.slack.com)
 
 <!-- Reference Links -->
 

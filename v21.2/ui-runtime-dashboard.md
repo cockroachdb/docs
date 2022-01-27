@@ -38,7 +38,7 @@ Go Total | Total memory managed by the Go layer.
 CGo Allocated | Memory allocated by the C layer.
 CGo Total | Total memory managed by the C layer.
 
-{{site.data.alerts.callout_info}}If Go Total or CGO Total fluctuates or grows steadily over time, <a href="https://forum.cockroachlabs.com/">contact us</a>.{{site.data.alerts.end}}
+{% include {{ page.version.version }}/prod-deployment/healthy-crdb-memory.md %}
 
 ## Runnable Goroutines per CPU
 
@@ -47,7 +47,6 @@ CGo Total | Total memory managed by the C layer.
 ## CPU Time
 
 <img src="{{ 'images/v21.2/ui_cpu_time.png' | relative_url }}" alt="DB Console CPU Time" style="border:1px solid #eee;max-width:100%" />
-
 
 - In the node view, the graph shows the [CPU time](https://en.wikipedia.org/wiki/CPU_time) used by CockroachDB user and system-level operations for the selected node.
 - In the cluster view, the graph shows the [CPU time](https://en.wikipedia.org/wiki/CPU_time) used by CockroachDB user and system-level operations across all nodes in the cluster.

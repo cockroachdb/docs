@@ -113,7 +113,7 @@ When a node runs out of disk space, it shuts down and cannot be restarted until 
 For more information about troubleshooting disk usage issues, see [storage issues](cluster-setup-troubleshooting.html#disks-filling-up).
 
 {{site.data.alerts.callout_info}}
-In addition to using ballast files, it is important to actively [monitor remaining disk space](monitoring-and-alerting.html#events-to-alert-on).
+In addition to using ballast files, it is important to actively [monitor remaining disk space](common-issues-to-monitor.html#storage-capacity).
 {{site.data.alerts.end}}
 
 ## Why would increasing the number of nodes not result in more operations per second?
