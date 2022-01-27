@@ -44,7 +44,7 @@ table td:first-child {
  Parameter | Description
 -----------|-------------
 `name` | The name of the user you want to create.<br><br>Usernames are case-insensitive; must start with a letter, number, or underscore; must contain only letters, numbers, or underscores; and must be between 1 and 63 characters.
-`WITH PASSWORD password`/`WITH PASSWORD NULL` | The credential the role uses to [authenticate their access to a secure cluster](authentication.html#client-authentication). A password should be entered as a [string literal](sql-constants.html#string-literals). For compatibility with PostgreSQL, a password can also be entered as an identifier. <br><br>To prevent a role from using [password authentication](authentication.html#client-authentication) and to mandate [certificate-based client authentication](authentication.html#client-authentication), [set the password as `NULL`](#prevent-a-role-from-using-password-authentication).
+`WITH PASSWORD password`/`WITH PASSWORD NULL` | The credential the role uses to [authenticate their access to a secure cluster](authentication.html#client-authentication). A password should be entered as a [string literal](sql-constants.html#string-literals). For compatibility with PostgreSQL, a password can also be entered as an identifier. <br><br>To prevent a role from using [password authentication](authentication.html#client-authentication) and to mandate [certificate-based client authentication](authentication.html#client-authentication), [set the password as `NULL`](create-role.html#prevent-a-role-from-using-password-authentication).
 `WITH role_option` | Apply a [role option](#role-options) to the role.
 
 ## Role options
