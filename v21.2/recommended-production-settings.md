@@ -53,6 +53,10 @@ In general, distribute your total vCPUs into the **largest possible nodes and sm
 Cockroach Labs does not extensively test nodes with more than 32 vCPUs. This is not a hard limit, especially for deployments using physical hardware rather than cloud instances. However, if you need more vCPUs, we recommend adding more nodes to the cluster instead of adding more than 32 vCPUs to each node.
 {{site.data.alerts.end}}
 
+{{site.data.alerts.callout_info}}
+Under-provisioning CPU generally results in poor performance, and in extreme cases can lead to cluster unavailability. For more information, see [capacity planning issues](cluster-setup-troubleshooting.html#capacity-planning-issues).
+{{site.data.alerts.end}}
+
 ### Basic hardware recommendations
 
 Once you have [sized your cluster](#sizing), derive the amount of RAM, storage capacity, and disk I/O from the number of vCPUs.
@@ -72,11 +76,11 @@ Before deploying to production, test and tune your hardware setup for your appli
 
 Provision at least {% include {{ page.version.version }}/prod-deployment/provision-memory.md %}. The minimum acceptable ratio is 2 GiB of RAM per vCPU, which is only suitable for testing.
 
-- To optimize for the support of large numbers of tables, increase the amount of RAM. For more information, see [Quantity of tables and other schema objects](schema-design-overview.html#quantity-of-tables-and-other-schema-objects). Supporting a large number of rows is a matter of [Storage](#storage).
+{{site.data.alerts.callout_info}} 
+The benefits to having more RAM decrease as the [number of vCPUs](#sizing) increases.
+{{site.data.alerts.end}}
 
-    {{site.data.alerts.callout_info}} 
-    The benefits to having more RAM decrease as the [number of vCPUs](#sizing) increases.
-    {{site.data.alerts.end}}
+- To optimize for the support of large numbers of tables, increase the amount of RAM. For more information, see [Quantity of tables and other schema objects](schema-design-overview.html#quantity-of-tables-and-other-schema-objects). Supporting a large number of rows is a matter of [Storage](#storage).
 
 - To ensure consistent SQL performance, make sure all nodes have a uniform configuration.
 
@@ -87,7 +91,7 @@ Provision at least {% include {{ page.version.version }}/prod-deployment/provisi
 - Monitor [CPU](common-issues-to-monitor.html#cpu-usage) and [memory](common-issues-to-monitor.html#database-memory-usage) usage. Ensure that they remain within acceptable limits.
 
 {{site.data.alerts.callout_info}}
-Under-provisioning CPU generally results in poor performance, and in extreme cases can lead to cluster unavailability. Under-provisioning RAM results in reduced performance (due to reduced caching and increased spilling to disk), and in some cases can cause [OOM crashes](cluster-setup-troubleshooting.html#out-of-memory-oom-crash). For more information, see [capacity planning issues](cluster-setup-troubleshooting.html#capacity-planning-issues) and [memory issues](cluster-setup-troubleshooting.html#memory-issues).
+Under-provisioning RAM results in reduced performance (due to reduced caching and increased spilling to disk), and in some cases can cause [OOM crashes](cluster-setup-troubleshooting.html#out-of-memory-oom-crash). For more information, see [memory issues](cluster-setup-troubleshooting.html#memory-issues).
 {{site.data.alerts.end}}
 
 #### Storage
@@ -113,7 +117,7 @@ We recommend provisioning volumes with {% include {{ page.version.version }}/pro
     This is especially recommended if you are using local disks with no RAID protection rather than a cloud provider's network-attached disks that are often replicated under the hood, because local disks have a greater risk of failure. You can do this for the [entire cluster](configure-replication-zones.html#edit-the-default-replication-zone) or for specific [databases](configure-replication-zones.html#create-a-replication-zone-for-a-database), [tables](configure-replication-zones.html#create-a-replication-zone-for-a-table), or [rows](configure-replication-zones.html#create-a-replication-zone-for-a-partition) (Enterprise-only).
 
 {{site.data.alerts.callout_info}}
-Under-provisioning storage leads to node crashes when the disks fill up. Once this has happened, it is difficult to recover from. To prevent your disks from filling up, provision enough storage for your workload, monitor your disk usage, and use a ballast file as described above. For more information, see [capacity planning issues](cluster-setup-troubleshooting.html#capacity-planning-issues) and [storage issues](cluster-setup-troubleshooting.html#storage-issues).
+Under-provisioning storage leads to node crashes when the disks fill up. Once this has happened, it is difficult to recover from. To prevent your disks from filling up, provision enough storage for your workload, monitor your disk usage, and use a [ballast file](cluster-setup-troubleshooting.html#automatic-ballast-files). For more information, see [capacity planning issues](cluster-setup-troubleshooting.html#capacity-planning-issues) and [storage issues](cluster-setup-troubleshooting.html#storage-issues).
 {{site.data.alerts.end}}
 
 ##### Disk I/O

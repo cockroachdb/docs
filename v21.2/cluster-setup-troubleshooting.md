@@ -370,7 +370,7 @@ Symptoms of disk stalls include:
 
 Causes of disk stalls include:
 
-- Disk operations have backed up due to underprovisioned IOPS. Make sure you are deploying with our [recommended production settings for storage](recommended-production-settings.html#storage) and [monitoring disk IOPS](common-issues-to-monitor.html#disk-iops).
+- Disk operations have slowed due to underprovisioned IOPS. Make sure you are deploying with our [recommended production settings for storage](recommended-production-settings.html#storage) and [monitoring disk IOPS](common-issues-to-monitor.html#disk-iops).
 - Actual hardware-level storage issues that result in slow `fsync` performance.
 - In rare cases, operating-system-level configuration of subsystems such as SELinux can slow down system calls such as `fsync` enough to affect storage engine performance.
 
@@ -410,12 +410,12 @@ If these issues remain unresolved, affected nodes will miss their liveness heart
 
 ### Suspected memory leak
 
-A CockroachDB node will grow to consume all of the memory allocated for its `cache`, [even if your cluster is idle](operational-faqs.html#why-is-memory-usage-increasing-despite-lack-of-traffic). The default cache size is 25% of physical memory, which can be substantial, depending on your machine configuration. For more information, see [Cache and SQL memory size](recommended-production-settings.html#cache-and-sql-memory-size).
+A CockroachDB node will grow to consume all of the memory allocated for its `--cache`, [even if your cluster is idle](operational-faqs.html#why-is-memory-usage-increasing-despite-lack-of-traffic). The default cache size is 25% of physical memory, which can be substantial, depending on your machine configuration. For more information, see [Cache and SQL memory size](recommended-production-settings.html#cache-and-sql-memory-size).
 
 CockroachDB memory usage has the following components:
 
 - **Go allocated memory**: Memory allocated by the Go runtime to support query processing and various caches maintained in Go by CockroachDB.
-- **CGo allocated memory**: Memory allocated by the C/C++ libraries linked into CockroachDB and primarily concerns the block caches for the [Pebble storage engine](cockroach-start.html#storage-engine)). This is the "cache" mentioned in the note above. The size of CGo allocated memory is usually very close to the configured cache size.
+- **CGo allocated memory**: Memory allocated by the C/C++ libraries linked into CockroachDB and primarily concerns the block caches for the [Pebble storage engine](cockroach-start.html#storage-engine)). This is the allocation specified with `--cache`. The size of CGo allocated memory is usually very close to the configured `--cache` size.
 - **Overhead**: The RSS (resident set size) minus Go/CGo allocated memory.
 
 If Go allocated memory is larger than a few hundred megabytes, you might have encountered a memory leak. Go comes with a built-in heap profiler which is already enabled on your CockroachDB process. See this [excellent blog post](https://blog.golang.org/profiling-go-programs) on profiling Go programs.
