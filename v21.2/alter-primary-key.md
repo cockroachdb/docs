@@ -4,7 +4,9 @@ summary: Use the ALTER PRIMARY KEY statement to change the primary key of a tabl
 toc: true
 ---
 
-  The `ALTER PRIMARY KEY` [statement](sql-statements.html) is a subcommand of [`ALTER TABLE`](alter-table.html) that can be used to change the [primary key](primary-key.html) of a table.
+The `ALTER PRIMARY KEY` [statement](sql-statements.html) is a subcommand of [`ALTER TABLE`](alter-table.html) that can be used to change the [primary key](primary-key.html) of a table.
+
+{% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
 ## Watch the demo
 
@@ -107,3 +109,4 @@ Note that the old primary key index becomes a secondary index, in this case, `us
 - [`DROP CONSTRAINT`](drop-constraint.html)
 - [`ALTER TABLE`](alter-table.html)
 - [`SHOW JOBS`](show-jobs.html)
+- [Online Schema Changes](online-schema-changes.html)

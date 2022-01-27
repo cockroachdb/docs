@@ -16,7 +16,7 @@ The following types cannot be included in an index key, but can be stored (and u
 
 To create an index on the schemaless data in a [`JSONB`](jsonb.html) column or on the data in an [`ARRAY`](array.html), use an [inverted index](inverted-indexes.html).
 
-{% include {{{ page.version.version }}/misc/schema-change-stmt-note.md %}
+{% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
 ## Required privileges
 

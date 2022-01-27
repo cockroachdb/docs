@@ -8,6 +8,8 @@ The `GRANT` [statement](sql-statements.html) controls each [role](authorization.
 
 You can use `GRANT` to directly grant privileges to a role or user, or you can grant membership to an existing role, which grants that role's privileges to the grantee.
 
+{% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
+
 ## Syntax
 
 <div>

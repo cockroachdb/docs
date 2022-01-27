@@ -11,6 +11,8 @@ toc: true
 - <span class="version-tag">New in v21.2</span>: Set, change, or drop an [`ON UPDATE` expression](create-table.html#on-update-expressions).
 - Change a column's [data type](data-types.html).
 
+{% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
+
 {{site.data.alerts.callout_info}}
 Support for altering column types is [experimental](experimental-features.html), with certain limitations. For details, see [Altering column data types](#altering-column-data-types).
 {{site.data.alerts.end}}
@@ -283,3 +285,4 @@ NOTICE: ALTER COLUMN TYPE changes are finalized asynchronously; further schema c
 - [`DROP CONSTRAINT`](drop-constraint.html)
 - [`ALTER TABLE`](alter-table.html)
 - [`SHOW JOBS`](show-jobs.html)
+- [Online Schema Changes](online-schema-changes.html)

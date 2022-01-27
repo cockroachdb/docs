@@ -6,6 +6,8 @@ toc: true
 
 The `ALTER TYPE` [statement](sql-statements.html) modifies a user-defined, [enumerated data type](enum.html) in the current database.
 
+{% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
+
 {{site.data.alerts.callout_info}}
 You can only [cancel](cancel-job.html) `ALTER TYPE` [schema change jobs](online-schema-changes.html) that drop values. All other `ALTER TYPE` schema change jobs are non-cancellable.
 {{site.data.alerts.end}}
@@ -162,3 +164,4 @@ Then, to drop a value from the type:
 - [`ENUM`](enum.html)
 - [`SHOW ENUMS`](show-enums.html)
 - [`DROP TYPE`](drop-type.html)
+- [Online Schema Changes](online-schema-changes.html)

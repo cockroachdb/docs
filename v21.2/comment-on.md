@@ -6,6 +6,8 @@ toc: true
 
 The `COMMENT ON` [statement](sql-statements.html) associates comments to [databases](create-database.html), [tables](create-table.html), [columns](add-column.html), or [indexes](indexes.html).
 
+{% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
+
 ## Required privileges
 
 The user must have the `CREATE` [privilege](authorization.html#assign-privileges) on the object they are commenting on.
@@ -186,3 +188,4 @@ To view column comments, use [`SHOW INDEXES ... WITH COMMENT`](show-index.html):
 - [`SHOW TABLES`](show-tables.html)
 - [Other SQL Statements](sql-statements.html)
 - [dBeaver](dbeaver.html)
+- [Online Schema Changes](online-schema-changes.html)

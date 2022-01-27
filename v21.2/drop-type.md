@@ -4,7 +4,9 @@ summary: The DROP TYPE statement drops an enumerated data type from the database
 toc: true
 ---
 
- The `DROP TYPE` [statement](sql-statements.html) drops a specified [enumerated data type](enum.html) from the current database.
+The `DROP TYPE` [statement](sql-statements.html) drops a specified [enumerated data type](enum.html) from the current database.
+
+{% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
 ## Synopsis
 

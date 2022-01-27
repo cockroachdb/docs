@@ -97,3 +97,4 @@ SQLSTATE: 42P04
 - [`SET DATABASE`](set-vars.html)
 - [`DROP DATABASE`](drop-database.html)
 - [Other SQL Statements](sql-statements.html)
+- [Online Schema Changes](online-schema-changes.html)
