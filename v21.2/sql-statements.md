@@ -79,6 +79,7 @@ Statement | Usage
 [`RENAME DATABASE`](rename-database.html) | Rename a database.
 [`RENAME INDEX`](rename-index.html) | Rename an index for a table.
 [`RENAME TABLE`](rename-table.html) | Rename a table or move a table between databases.
+[`SCATTER`](scatter.html) | Redistribute the leaseholders for a set of ranges.
 [`SET SCHEMA`](set-schema.html) |  Change the schema of a table.
 [`SET PRIMARY REGION`](set-primary-region.html) |  Assign a [primary region](multiregion-overview.html#database-regions) to a multi-region database, or change an existing primary region. Note that [multi-region features](multiregion-overview.html) require an [Enterprise license](enterprise-licensing.html).
 [`SHOW COLUMNS`](show-columns.html) | View details about columns in a table.

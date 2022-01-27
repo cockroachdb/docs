@@ -77,6 +77,7 @@ Statement | Usage
 [`RENAME INDEX`](rename-index.html) | Rename an index for a table.
 [`RENAME SEQUENCE`](rename-sequence.html) | Rename a sequence.
 [`RENAME TABLE`](rename-table.html) | Rename a table or move a table between databases.
+[`SCATTER`](scatter.html) | Redistribute the leaseholders for a set of ranges.
 [`SET SCHEMA`](set-schema.html) | <span class="version-tag">New in v20.2</span>: Change the schema of a table, sequence, or view.
 [`SHOW COLUMNS`](show-columns.html) | View details about columns in a table.
 [`SHOW CONSTRAINTS`](show-constraints.html) | List constraints on a table.
