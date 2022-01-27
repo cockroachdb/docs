@@ -11,17 +11,67 @@ Applications may encounter incompatibilities when using advanced or obscure feat
 {{site.data.alerts.end}}
 
 <div class="filters clearfix">
-  <button class="filter-button page-level" data-scope="python">Python</button>
-  <button class="filter-button page-level" data-scope="java">Java</button>
-  <button class="filter-button page-level" data-scope="go">Go</button>
-  <button class="filter-button page-level" data-scope="ruby">Ruby</button>
   <button class="filter-button page-level" data-scope="js-ts">JavaScript/TypeScript</button>
+  <button class="filter-button page-level" data-scope="python">Python</button>
+  <button class="filter-button page-level" data-scope="go">Go</button>
+  <button class="filter-button page-level" data-scope="java">Java</button>
+  <button class="filter-button page-level" data-scope="ruby">Ruby</button>
   <button class="filter-button page-level" data-scope="c">C</button>
   <button class="filter-button page-level" data-scope="c++">C++</button>
   <button class="filter-button page-level" data-scope="c-sharp">C# (.NET)</button>
   <button class="filter-button page-level" data-scope="clojure">Clojure</button>
   <button class="filter-button page-level" data-scope="php">PHP</button>
 </div>
+
+<section class="filter-content" markdown="1" data-scope="js-ts">
+
+## JavaScript Drivers
+
+### pg
+
+**Support level:** Full
+
+To install the [Node.js pg driver](https://www.npmjs.com/package/pg):
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ npm install pg
+~~~
+
+For a simple but complete example app, see [Build a Node.js App with CockroachDB and the Node.js pg Driver](build-a-nodejs-app-with-cockroachdb.html).
+
+## JavaScript/TypeScript ORM frameworks
+
+### Sequelize
+
+**Support level:** Full
+
+To install Sequelize and a [CockroachDB Node.js package](https://github.com/cockroachdb/sequelize-cockroachdb) that accounts for some minor differences between CockroachDB and PostgreSQL:
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ npm install sequelize sequelize-cockroachdb
+~~~
+
+For a simple but complete example app, see [Build a Node.js App with CockroachDB and Sequelize](build-a-nodejs-app-with-cockroachdb-sequelize.html).
+
+### Knex.js
+
+**Support level:** Full
+
+Install Knex.js as described in the [official documentation](https://knexjs.org/#Installation).
+
+For a simple but complete example app, see [Build a Node.js App with CockroachDB and Knex.js](build-a-nodejs-app-with-cockroachdb-knexjs.html).
+
+### TypeORM
+
+**Support level:** Full
+
+Install TypeORM as described in the [official documentation](https://typeorm.io/#/).
+
+For a simple but complete example app, see [Build a TypeScript App with CockroachDB and TypeORM](build-a-typescript-app-with-cockroachdb.html).
+
+</section>
 
 <section class="filter-content" markdown="1" data-scope="python">
 
@@ -125,6 +175,58 @@ For instructions on using peewee with CockroachDB, see the [CockroachDatabase pe
 
 </section>
 
+<section class="filter-content" markdown="1" data-scope="go">
+
+## Go Drivers
+
+### pgx
+
+**Support level:** Full
+
+To install the [Go pgx driver](https://pkg.go.dev/github.com/jackc/pgx):
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ go get -u github.com/jackc/pgx
+~~~
+
+For a simple but complete example app, see [Build a Go App with CockroachDB and the Go pgx Driver](build-a-go-app-with-cockroachdb.html).
+
+### pq
+
+**Support level:** Full
+
+To install the [Go pq driver](https://godoc.org/github.com/lib/pq):
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ go get -u github.com/lib/pq
+~~~
+
+For a simple but complete example app, see [Build a Go App with CockroachDB and the Go pq Driver](build-a-go-app-with-cockroachdb.html).
+
+## Go ORM frameworks
+
+### GORM
+
+**Support level:** Full
+
+To install [GORM](http://gorm.io):
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ go get -u github.com/lib/pq # dependency
+~~~
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ go get -u github.com/jinzhu/gorm
+~~~
+
+For a simple but complete example app, see [Build a Go App with CockroachDB and GORM](build-a-go-app-with-cockroachdb-gorm.html).
+
+</section>
+
 <section class="filter-content" markdown="1" data-scope="java">
 
 {% include {{page.version.version}}/app/java-version-note.md %}
@@ -188,58 +290,6 @@ For a simple but complete example app that uses Maven for dependency management,
 
 </section>
 
-<section class="filter-content" markdown="1" data-scope="go">
-
-## Go Drivers
-
-### pgx
-
-**Support level:** Full
-
-To install the [Go pgx driver](https://pkg.go.dev/github.com/jackc/pgx):
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ go get -u github.com/jackc/pgx
-~~~
-
-For a simple but complete example app, see [Build a Go App with CockroachDB and the Go pgx Driver](build-a-go-app-with-cockroachdb.html).
-
-### pq
-
-**Support level:** Full
-
-To install the [Go pq driver](https://godoc.org/github.com/lib/pq):
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ go get -u github.com/lib/pq
-~~~
-
-For a simple but complete example app, see [Build a Go App with CockroachDB and the Go pq Driver](build-a-go-app-with-cockroachdb.html).
-
-## Go ORM frameworks
-
-### GORM
-
-**Support level:** Full
-
-To install [GORM](http://gorm.io):
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ go get -u github.com/lib/pq # dependency
-~~~
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ go get -u github.com/jinzhu/gorm
-~~~
-
-For a simple but complete example app, see [Build a Go App with CockroachDB and GORM](build-a-go-app-with-cockroachdb-gorm.html).
-
-</section>
-
 <section class="filter-content" markdown="1" data-scope="ruby">
 
 ## Ruby Drivers
@@ -261,7 +311,7 @@ For a simple but complete example app, see [Build a Ruby App with CockroachDB an
 
 ### ActiveRecord
 
-**Support level:** Full (5.2), Beta (6.0)
+**Support level:** Full
 
 To install ActiveRecord, the [pg driver](https://rubygems.org/gems/pg), and a [CockroachDB Ruby package](https://github.com/cockroachdb/activerecord-cockroachdb-adapter) that accounts for some minor differences between CockroachDB and PostgreSQL:
 
@@ -271,59 +321,10 @@ $ gem install activerecord pg activerecord-cockroachdb-adapter
 ~~~
 
 {{site.data.alerts.callout_info}}
-The exact command above will vary depending on the desired version of ActiveRecord. Specifically, version 5.1.x of ActiveRecord requires version 0.2.x of the adapter; version 5.2.x of ActiveRecord requires version 5.2.x of the adapter; version 6.0.x of ActiveRecord requires version 6.0.0betax of the adapter.
+The exact command above will vary depending on the desired version of ActiveRecord. Specifically, version 5.1.x of ActiveRecord requires version 0.2.x of the adapter; version 5.2.x of ActiveRecord requires version 5.2.x of the adapter; version 6.0.x of ActiveRecord requires version 6.0.x of the adapter.
 {{site.data.alerts.end}}
 
 For a simple but complete example app, see [Build a Ruby App with CockroachDB and ActiveRecord](build-a-ruby-app-with-cockroachdb-activerecord.html).
-
-</section>
-
-<section class="filter-content" markdown="1" data-scope="js-ts">
-
-## JavaScript Drivers
-
-### pg
-
-**Support level:** Beta
-
-To install the [Node.js pg driver](https://www.npmjs.com/package/pg):
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ npm install pg
-~~~
-
-Some apps might also requires [`async`](https://www.npmjs.com/package/async):
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ npm install async
-~~~
-
-For a simple but complete example app, see [Build a Node.js App with CockroachDB and the Node.js pg Driver](build-a-nodejs-app-with-cockroachdb.html).
-
-## JavaScript/TypeScript ORM frameworks
-
-### Sequelize
-
-**Support level:** Beta
-
-To install Sequelize and a [CockroachDB Node.js package](https://github.com/cockroachdb/sequelize-cockroachdb) that accounts for some minor differences between CockroachDB and PostgreSQL:
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ npm install sequelize sequelize-cockroachdb
-~~~
-
-For a simple but complete example app, see [Build a Node.js App with CockroachDB and Sequelize](build-a-nodejs-app-with-cockroachdb-sequelize.html).
-
-### TypeORM
-
-**Support level:** Full
-
-Install TypeORM as described in the [official documentation](https://typeorm.io/#/).
-
-For a simple but complete example app, see [Build a TypeScript App with CockroachDB and TypeORM](build-a-typescript-app-with-cockroachdb.html).
 
 </section>
 

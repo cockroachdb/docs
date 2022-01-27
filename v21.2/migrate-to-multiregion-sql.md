@@ -26,11 +26,7 @@ This page describes how to migrate a multi-region cluster from using replication
 
 ## Replication zone patterns and multi-region SQL abstractions
 
-Replication zone Pattern | Multi-region SQL
---- | ---
-[Duplicate Indexes][dupe_index] | [`GLOBAL` tables](global-tables.html)
-[Geo-partitioned replicas][geo_replicas] | [`REGIONAL BY ROW` tables](regional-tables.html#regional-by-row-tables) with [`ZONE` survival goals](multiregion-overview.html#surviving-zone-failures)
-[Geo-partitioned leaseholders][geo_leaseholders] | [`REGIONAL BY ROW` tables](regional-tables.html#regional-by-row-tables) with [`REGION` survival goals](multiregion-overview.html#surviving-region-failures)
+{% include {{page.version.version}}/sql/replication-zone-patterns-to-multiregion-sql-mapping.md %}
 
 {{site.data.alerts.callout_info}}
 CockroachDB will no longer provide the [Follow-the-Workload](topology-follow-the-workload.html) pattern's behavior for a database if you use the [multi-region SQL statements](multiregion-overview.html) with that database. In other words, the multi-region SQL statements do not provide a behavior that is analogous to Follow-the-Workload.
@@ -179,11 +175,7 @@ For each table in your database, apply the [table locality](multiregion-overview
 
 As described above, the mapping from legacy replication zone patterns to multi-region SQL abstractions is:
 
-Replication Zone Pattern | Multi-Region SQL
---- | ---
-[Duplicate Indexes][dupe_index] | [`GLOBAL` tables](global-tables.html)
-[Geo-partitioned replicas][geo_replicas] | [`REGIONAL` tables](regional-tables.html) with [`ZONE` survival goals](multiregion-overview.html#surviving-zone-failures)
-[Geo-partitioned leaseholders][geo_leaseholders] | [`REGIONAL` tables](regional-tables.html) with [`REGION` survival goals](multiregion-overview.html#surviving-region-failures)
+{% include {{page.version.version}}/sql/replication-zone-patterns-to-multiregion-sql-mapping.md %}
 
 For example, to configure the `postal_codes` table from the [duplicate indexes example above](#duplicate-indexes) to use [multi-region SQL](multiregion-overview.html), you would enter the following statements to make the `postal_codes` table a [`GLOBAL` table](global-tables.html):
 

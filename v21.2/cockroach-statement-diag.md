@@ -4,7 +4,7 @@ summary: Use statement-diag to manage and download statement diagnostics bundles
 toc: true
 ---
 
- The `cockroach statement-diag` [command](cockroach-commands.html) can be used to manage and download statement diagnostics bundles generated from the [DB Console](ui-statements-page.html#diagnostics) or [`EXPLAIN ANALYZE (DEBUG)`](explain-analyze.html#explain-analyze-debug).
+Use the `cockroach statement-diag` [command](cockroach-commands.html) to manage and download statement diagnostics bundles generated from the [DB Console](ui-statements-page.html#diagnostics) or [`EXPLAIN ANALYZE (DEBUG)`](explain-analyze.html#explain-analyze-debug).
 
 ## Required privileges
 
@@ -30,7 +30,7 @@ $ cockroach statement-diag list <flags>
 Download a specified diagnostics bundle into a `.zip` file:
 
 ~~~ shell
-$ cockroach statement-diag download <diagnostics ID> <bundle filename> <flags>
+$ cockroach statement-diag download <diagnostics ID> [<bundle filename>] <flags>
 ~~~
 
 Delete a statement diagnostics bundle:
@@ -132,7 +132,7 @@ Outstanding activation requests:
   603811900498804737  2020-11-02 17:46:08 UTC  SELECT * FROM bank.accounts
 ~~~
 
-Delete an activation request:
+### Delete an activation request
 
 ~~~ shell
 $ cockroach statement-diag cancel 603811900498804737 --insecure
