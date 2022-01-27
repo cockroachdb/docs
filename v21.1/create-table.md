@@ -830,7 +830,7 @@ You can then manually set the values of the region with each [`INSERT`](insert.h
 Alternatively, you could update the rows in the `crdb_region` column to compute the region based on the value of another column, like the `city` column.
 
 ~~~ sql
-> UPDATE vehicles SET crdb_region = "us-east1" WHERE city IN (...) ...
+> UPDATE vehicles SET crdb_region = 'us-east1' WHERE city IN (...) ...
 ~~~
 
 #### Create a table with a regional-by-row locality, using a custom region column
