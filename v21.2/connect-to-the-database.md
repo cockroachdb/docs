@@ -54,10 +54,7 @@ For example:
 ~~~ js
 const { Client } = require('pg')
 
-const connectionString = process.env.DATABASE_URL
-const client = new Client({
-  connectionString,
-})
+const client = new Client(process.env.DATABASE_URL)
 
 client.connect()
 ~~~
