@@ -15,7 +15,7 @@ If you want to experiment with CockroachDB SQL but do not have a cluster already
 
 ## Prerequisites
 
-The [role option of the user](create-role.html#role-options) logging in must be `SQLLOGIN`. If the user's role option has been set to `SQLNOLOGIN`, the user cannot log in using the SQL CLI with any authentication method.
+The [role option of the user](create-role.html#role-options) logging in must be `LOGIN` or `SQLLOGIN`, which are granted by default. If the user's role option has been set to `NOLOGIN` or `NOSQLLOGIN`, the user cannot log in using the SQL CLI with any authentication method.
 
 ## Synopsis
 
