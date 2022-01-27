@@ -187,7 +187,7 @@
           },
           {
             "type": "string",
-            "description": "Name of table being looked up. Table may be schema-qualified (schema.table) and each name component that contains sql unsafe characters such as . or uppercase letters must be surrounded in double quotes like \"naughty schema\".table.",
+            "description": "Name of table being looked up. Table may be schema-qualified (schema.table) and each name component that contains sql unsafe characters such as . or uppercase letters must be surrounded in double quotes like \"Naughty schema\".table.",
             "name": "table",
             "in": "path",
             "required": true
@@ -1154,7 +1154,7 @@
           "$ref": "#/definitions/Key"
         },
         "subzone_index": {
-          "description": "The slice index of the Subzone this span belongs to in the\nparent ZoneConfig's Subzones field.",
+          "description": "The slice index of the Subzone this span belongs to in the\nparent ZoneConfig's subzones field.",
           "type": "integer",
           "format": "int32",
           "x-go-name": "SubzoneIndex"
@@ -1608,7 +1608,7 @@
       "description": "The object level at which the configuration is defined. This is needed\nbecause objects without a specifically indicated Zone Configuration will\ninherit the configuration of their \"parent\".",
       "type": "integer",
       "format": "int32",
-      "title": "ZoneConfigurationLevel indicates, for objects with a Zone Configuration,",
+      "title": "ZoneConfigurationLevel indicates, for objects with a Zone Configuration,\nthe object level at which the configuration is defined. This is needed\nbecause objects without a specifically indicated Zone Configuration will\ninherit the configuration of their 'parent'.\nValid levels are unknown (0), cluster (1), database (2), or table (3).",
       "x-go-package": "github.com/cockroachdb/cockroach/pkg/server/serverpb"
     },
     "databaseDetailsResponse": {
