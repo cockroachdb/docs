@@ -3,15 +3,13 @@ title: Build a Node.js App with CockroachDB and Sequelize
 summary: Learn how to use CockroachDB from a simple Node.js application with the Sequelize ORM.
 toc: true
 twitter: false
-referral_id: docs_hello_world_nodejs_sequelize
+referral_id: docs_node_sequelize
+filter_category: crud_js
+filter_html: Use <strong>Sequelize</strong>
+filter_sort: 2
 ---
 
-<div class="filters filters-big clearfix">
-    <a href="build-a-nodejs-app-with-cockroachdb.html"><button class="filter-button">Use <strong>node-postgres</strong></button></a>
-    <a href="build-a-nodejs-app-with-cockroachdb-sequelize.html"><button class="filter-button current">Use <strong>Sequelize</strong></button></a>
-    <a href="build-a-nodejs-app-with-cockroachdb-knexjs.html"><button class="filter-button">Use <strong>KnexJS</strong></button></a>
-    <a href="build-a-typescript-app-with-cockroachdb.html"><button class="filter-button">Use <strong>TypeORM</strong></button></a>
-</div>
+{% include filter-tabs.md %}
 
 This tutorial shows you how build a simple Node.js application with CockroachDB and the Sequelize ORM.
 

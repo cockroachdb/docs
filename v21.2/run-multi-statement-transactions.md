@@ -76,7 +76,7 @@ Reference information related to this task:
 - [Transactions](transactions.html)
 - [Transaction retries](transactions.html#client-side-intervention)
 - [Batched statements](transactions.html#batched-statements)
-- [Understanding and Avoiding Transaction Contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention)
+- [Transaction Contention](performance-best-practices-overview.html#transaction-contention)
 - [`BEGIN`](begin-transaction.html)
 - [`COMMIT`](commit-transaction.html)
 

@@ -6,7 +6,7 @@ toc: true
 
 While CockroachDB is an excellent system of record, it also needs to coexist with other systems. For example, you might want to keep your data mirrored in full-text indexes, analytics engines, or big data pipelines.
 
-This page walks you through a demonstration of how to use an [enterprise changefeed](../{{site.versions["stable"]}}/create-changefeed.html) to stream row-level changes to [Snowflake](https://www.snowflake.com/), an online analytical processing (OLAP) database.
+This page walks you through a demonstration of how to use an [{{ site.data.products.enterprise }} changefeed](../{{site.versions["stable"]}}/create-changefeed.html) to stream row-level changes to [Snowflake](https://www.snowflake.com/), an online analytical processing (OLAP) database.
 
 {{site.data.alerts.callout_info}}
 Snowflake is optimized for `INSERT`s and batch rewrites over streaming updates. This means that CockroachDB changefeeds are unable to send `UPDATE`s and `DELETE`s to Snowflake. If this is necessary, additional setup (not covered in this tutorial) can allow entire tables to be replaced in batch.
@@ -43,7 +43,7 @@ If you have not done so already, [create a cluster](create-your-cluster.html).
     If you haven't connected to your {{ site.data.products.dedicated }} cluster before, see [Connect to your {{ site.data.products.dedicated }} Cluster](connect-to-your-cluster.html) for information on how to initially connect.
     {{site.data.alerts.end}}
 
-2. Enable [rangefeeds](../{{site.versions["stable"]}}/stream-data-out-of-cockroachdb-using-changefeeds.html#enable-rangefeeds):
+2. Enable [rangefeeds](../{{site.versions["stable"]}}/use-changefeeds.html#enable-rangefeeds):
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -109,7 +109,7 @@ Back in the built-in SQL shell, [create an enterprise changefeed](../{{site.vers
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE CHANGEFEED FOR TABLE order_alerts
-    INTO 'experimental-s3://changefeed-example?AWS_ACCESS_KEY_ID=<KEY>&AWS_SECRET_ACCESS_KEY=<SECRET_KEY>'
+    INTO 's3://changefeed-example?AWS_ACCESS_KEY_ID=<KEY>&AWS_SECRET_ACCESS_KEY=<SECRET_KEY>'
     WITH
         updated,
         resolved='10s';
@@ -124,7 +124,7 @@ Back in the built-in SQL shell, [create an enterprise changefeed](../{{site.vers
 Be sure to replace the placeholders with your AWS key ID and AWS secret key.
 
 {{site.data.alerts.callout_info}}
-If your changefeed is running but data is not displaying in your S3 bucket, you might have to [debug your changefeed](../{{site.versions["stable"]}}/stream-data-out-of-cockroachdb-using-changefeeds.html#debug-a-changefeed).
+If your changefeed is running but data is not displaying in your S3 bucket, you might have to [debug your changefeed](../{{site.versions["stable"]}}/monitor-and-debug-changefeeds.html#debug-a-changefeed).
 {{site.data.alerts.end}}
 
 ## Step 7. Insert data into the tables
@@ -145,7 +145,7 @@ If your changefeed is running but data is not displaying in your S3 bucket, you 
 2. Navigate back to the [S3 bucket](https://s3.console.aws.amazon.com/) to confirm that the data is now streaming to the bucket. A new directory should display on the **Overview** tab.
 
     {{site.data.alerts.callout_info}}
-    If your changefeed is running but data is not displaying in your S3 bucket, you might have to [debug your changefeed](../{{site.versions["stable"]}}/stream-data-out-of-cockroachdb-using-changefeeds.html#debug-a-changefeed).
+    If your changefeed is running but data is not displaying in your S3 bucket, you might have to [debug your changefeed](../{{site.versions["stable"]}}/monitor-and-debug-changefeeds.html#debug-a-changefeed).
     {{site.data.alerts.end}}
 
 ## Step 8. Configure Snowflake
@@ -234,6 +234,4 @@ Your changefeed is now streaming to Snowflake.
 - Auto-ingest in Snowflake only works with AWS and Azure. Snowflake does not support GCS yet.
 - Snowpipe works best with append-only workloads, as Snowpipe lacks native ETL capabilities to perform updates to data. You may need to pre-process data before uploading it to Snowflake.
 
-### General change data capture known limitations
-
-{% include cockroachcloud/known-limitations/cdc.md %}
+See the [Change Data Capture Overview](../{{site.versions["stable"]}}/change-data-capture-overview.html#known-limitations) for more general changefeed known limitations.
