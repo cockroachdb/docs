@@ -23,9 +23,236 @@
   "host": "localhost",
   "basePath": "/api/v2/",
   "paths": {
+    "/databases/": {
+      "get": {
+        "description": "List all databases on this cluster.",
+        "produces": [
+          "application/json"
+        ],
+        "summary": "List databases",
+        "operationId": "listDatabases",
+        "parameters": [
+          {
+            "type": "integer",
+            "description": "Maximum number of results to return in this call.",
+            "name": "limit",
+            "in": "query"
+          },
+          {
+            "type": "integer",
+            "description": "Continuation token for results after a past limited run.",
+            "name": "offset",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Databases response",
+            "schema": {
+              "$ref": "#/definitions/databasesResponse"
+            }
+          }
+        }
+      }
+    },
+    "/databases/{database}/": {
+      "get": {
+        "description": "Retrieve the database's descriptor ID.",
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Get database descriptor ID",
+        "operationId": "databaseDetails",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "Name of the database being looked up.",
+            "name": "database",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Database details response",
+            "schema": {
+              "$ref": "#/definitions/databaseDetailsResponse"
+            }
+          },
+          "404": {
+            "description": "Database not found"
+          }
+        }
+      }
+    },
+    "/databases/{database}/grants/": {
+      "get": {
+        "description": "Retrieve grants on a database. Grants are the privileges granted to users\non this database.",
+        "produces": [
+          "application/json"
+        ],
+        "summary": "List grants on a database",
+        "operationId": "databaseGrants",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "Name of the database being looked up.",
+            "name": "database",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "integer",
+            "description": "Maximum number of grants to return in this call.",
+            "name": "limit",
+            "in": "query"
+          },
+          {
+            "type": "integer",
+            "description": "Continuation token for results after a past limited run.",
+            "name": "offset",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Database grants response",
+            "schema": {
+              "$ref": "#/definitions/databaseGrantsResponse"
+            }
+          },
+          "404": {
+            "description": "Database not found"
+          }
+        }
+      }
+    },
+    "/databases/{database}/tables/": {
+      "get": {
+        "description": "List names of all tables in the database. The names of all responses will\nbe schema-qualified.",
+        "produces": [
+          "application/json"
+        ],
+        "summary": "List tables on a database",
+        "operationId": "databaseTables",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "Name of the database being looked up.",
+            "name": "database",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "integer",
+            "description": "Maximum number of tables to return in this call.",
+            "name": "limit",
+            "in": "query"
+          },
+          {
+            "type": "integer",
+            "description": "Continuation token for results after a past limited run.",
+            "name": "offset",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Database tables response",
+            "schema": {
+              "$ref": "#/definitions/databaseTablesResponse"
+            }
+          },
+          "404": {
+            "description": "Database not found"
+          }
+        }
+      }
+    },
+    "/databases/{database}/tables/{table}/": {
+      "get": {
+        "description": "Retrieve details about a table.",
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Get table details",
+        "operationId": "tableDetails",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "Name of the database being looked up.",
+            "name": "database",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "description": "Name of table being looked up. Table may be schema-qualified (schema.table) and each name component that contains sql unsafe characters such as . or uppercase letters must be surrounded in double quotes like \"Naughty schema\".table.",
+            "name": "table",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Database details response",
+            "schema": {
+              "$ref": "#/definitions/tableDetailsResponse"
+            }
+          },
+          "404": {
+            "description": "Database or table not found"
+          }
+        }
+      }
+    },
+    "/events/": {
+      "get": {
+        "description": "List the latest event log entries, in descending order.",
+        "produces": [
+          "application/json"
+        ],
+        "summary": "List events",
+        "operationId": "listEvents",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "Type of events to filter for (e.g., \"create_table\"). Only one event type can be specified at a time.",
+            "name": "type",
+            "in": "query"
+          },
+          {
+            "type": "integer",
+            "description": "Filter for events with this targetID. Only one targetID can be specified at a time.",
+            "name": "targetID",
+            "in": "query"
+          },
+          {
+            "type": "integer",
+            "description": "Maximum number of results to return in this call.",
+            "name": "limit",
+            "in": "query"
+          },
+          {
+            "type": "integer",
+            "description": "Continuation token for results after a past limited run.",
+            "name": "offset",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Events response",
+            "schema": {
+              "$ref": "#/definitions/eventsResponse"
+            }
+          }
+        }
+      }
+    },
     "/health/": {
       "get": {
-        "description": "Helper endpoint to check for node health. If `ready` is true, it also checks\nif this node is fully operational and ready to accept SQL connections.\nOtherwise, this endpoint always returns a successful response (if the API\nserver is up, of course).",
+        "description": "Check for node health. If `ready` is true, also check\nif this node is fully operational and ready to accept SQL connections.\nOtherwise, this endpoint always returns a successful response (if the API\nserver is up).",
         "produces": [
           "application/json"
         ],
@@ -51,7 +278,7 @@
     },
     "/login/": {
       "post": {
-        "description": "Creates an API session for use with API endpoints that require\nauthentication.",
+        "description": "Create an API session for use with API endpoints that require\nauthentication.",
         "consumes": [
           "application/x-www-form-urlencoded"
         ],
@@ -106,7 +333,7 @@
             "api_session": []
           }
         ],
-        "description": "Logs out, invalidating the API session token.",
+        "description": "Log out, invalidating the API session token.",
         "produces": [
           "application/json"
         ],
@@ -169,7 +396,7 @@
             "api_session": []
           }
         ],
-        "description": "Lists information about ranges on a specified node. If a list of range IDs\nis specified, only information about those ranges is returned.\n\nClient must be logged-in as a user with admin privileges.",
+        "description": "List information about ranges on a specified node. If a list of range IDs\nis specified, only information about those ranges is returned.\n\nClient must be logged-in as a user with admin privileges.",
         "produces": [
           "application/json"
         ],
@@ -222,7 +449,7 @@
             "api_session": []
           }
         ],
-        "description": "Lists information about hot ranges. If a list of range IDs\nis specified, only information about those ranges is returned.\n\nClient must be logged in as a user with admin privileges.",
+        "description": "List information about hot ranges. If a list of range IDs\nis specified, only information about those ranges is returned.\n\nClient must be logged in as a user with admin privileges.",
         "produces": [
           "application/json"
         ],
@@ -265,7 +492,7 @@
             "api_session": []
           }
         ],
-        "description": "Retrieves more information about a specific range.\n\nClient must be logged-in as a user with admin privileges.",
+        "description": "Retrieve more information about a specific range.\n\nClient must be logged in as a user with admin privileges.",
         "produces": [
           "application/json"
         ],
@@ -296,7 +523,7 @@
             "api_session": []
           }
         ],
-        "description": "List all sessions on this cluster. If a username is provided, only\nsessions from that user are returned.\n\nClient must be logged-in as a user with admin privileges.",
+        "description": "List all sessions on this cluster. If a username is provided, only\nsessions from that user are returned.\n\nClient must be logged in as a user with admin privileges.",
         "produces": [
           "application/json"
         ],
@@ -327,6 +554,38 @@
             "description": "List sessions response.",
             "schema": {
               "$ref": "#/definitions/listSessionsResp"
+            }
+          }
+        }
+      }
+    },
+    "/users/": {
+      "get": {
+        "description": "List SQL users on this cluster.",
+        "produces": [
+          "application/json"
+        ],
+        "summary": "List users",
+        "operationId": "listUsers",
+        "parameters": [
+          {
+            "type": "integer",
+            "description": "Maximum number of results to return in this call.",
+            "name": "limit",
+            "in": "query"
+          },
+          {
+            "type": "integer",
+            "description": "Continuation token for results after a past limited run.",
+            "name": "offset",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Users response",
+            "schema": {
+              "$ref": "#/definitions/usersResponse"
             }
           }
         }
@@ -362,10 +621,10 @@
           "type": "string",
           "x-go-name": "Sql"
         },
-        "sql_anon": {
+        "sql_no_constants": {
           "description": "The SQL statement fingerprint, compatible with StatementStatisticsKey.",
           "type": "string",
-          "x-go-name": "SqlAnon"
+          "x-go-name": "SqlNoConstants"
         },
         "start": {
           "description": "Start timestamp of this query.",
@@ -405,51 +664,154 @@
       "$ref": "#/definitions/Timestamp"
     },
     "Constraint": {
-        "type": "object",
-        "title": "Constrains the stores that a replica can be stored on.",
-        "properties": {
-          "key": {
-            "description": "Only set if this is a constraint on locality.",
-            "type": "string",
-            "x-go-name": "Key"
-          },
-          "type": {
-            "$ref": "#/definitions/Constraint_Type"
-          },
-          "value": {
-            "description": "Value to constrain to.",
-            "type": "string",
-            "x-go-name": "Value"
-          }
+      "type": "object",
+      "title": "Constrains the stores that a replica can be stored on.",
+      "properties": {
+        "key": {
+          "description": "Only set if this is a constraint on locality.",
+          "type": "string",
+          "x-go-name": "Key"
         },
-        "x-go-package": "github.com/cockroachdb/cockroach/pkg/config/zonepb"
+        "type": {
+          "$ref": "#/definitions/Constraint_Type"
+        },
+        "value": {
+          "description": "Value to constrain to.",
+          "type": "string",
+          "x-go-name": "Value"
+        }
       },
-      "Constraint_Type": {
-        "type": "integer",
-        "format": "int32",
-        "x-go-package": "github.com/cockroachdb/cockroach/pkg/config/zonepb"
-      },
-      "ConstraintsConjunction": {
-        "description": "A set of constraints that need to be satisfied\ntogether by a replica (i.e., by the replica's store).",
-        "type": "object",
-        "properties": {
-          "constraints": {
-            "description": "The set of attributes and/or localities that need to be satisfied by the\nstore.",
-            "type": "array",
-            "items": {
-              "$ref": "#/definitions/Constraint"
-            },
-            "x-go-name": "Constraints"
+      "x-go-package": "github.com/cockroachdb/cockroach/pkg/config/zonepb"
+    },
+    "Constraint_Type": {
+      "type": "integer",
+      "format": "int32",
+      "x-go-package": "github.com/cockroachdb/cockroach/pkg/config/zonepb"
+    },
+    "ConstraintsConjunction": {
+      "description": "A set of constraints that need to be satisfied\ntogether by a replica (i.e., by the replica's store).",
+      "type": "object",
+      "properties": {
+        "constraints": {
+          "description": "The set of attributes and/or localities that need to be satisfied by the\nstore.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Constraint"
           },
-          "num_replicas": {
-            "description": "The number of replicas that should abide by the constraints below. If left\nunspecified (i.e., set to 0), the constraints will apply to all replicas of\nthe range.\nAs of v2.0, only REQUIRED constraints are allowed when num_replicas is\nset to a non-zero value.",
+          "x-go-name": "Constraints"
+        },
+        "num_replicas": {
+          "description": "The number of replicas that should abide by the constraints below. If left\nunspecified (i.e., set to 0), the constraints will apply to all replicas of\nthe range.\nAs of v2.0, only REQUIRED constraints are allowed when num_replicas is\nset to a non-zero value.",
+          "type": "integer",
+          "format": "int32",
+          "x-go-name": "NumReplicas"
+        }
+      },
+      "x-go-package": "github.com/cockroachdb/cockroach/pkg/config/zonepb"
+    },
+    "DatabaseDetailsResponse_Grant": {
+      "type": "object",
+      "properties": {
+        "privileges": {
+          "description": "Privileges granted to the user.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "x-go-name": "Privileges"
+        },
+        "user": {
+          "description": "User that this grant applies to.",
+          "type": "string",
+          "x-go-name": "User"
+        }
+      },
+      "x-go-package": "github.com/cockroachdb/cockroach/pkg/server/serverpb"
+    },
+    "DatabasesResponse": {
+      "type": "object",
+      "title": "DatabasesResponse contains a list of databases.",
+      "properties": {
+        "databases": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "x-go-name": "Databases"
+        }
+      },
+      "x-go-package": "github.com/cockroachdb/cockroach/pkg/server/serverpb"
+    },
+    "EventsResponse": {
+      "description": "A set of event log entries. This is always limited\nto the latest N entries (N is enforced in the associated endpoint).",
+      "type": "object",
+      "properties": {
+        "events": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/EventsResponse_Event"
+          },
+          "x-go-name": "Events"
+        }
+      },
+      "x-go-package": "github.com/cockroachdb/cockroach/pkg/server/serverpb"
+    },
+    "EventsResponse_Event": {
+      "type": "object",
+      "properties": {
+        "event_type": {
+          "description": "The type of event (e.g., \"create_table\", \"drop_table\".",
+          "type": "string",
+          "x-go-name": "EventType"
+        },
+        "info": {
+          "description": "Detailed information for the event. The contents vary\ndepending on the event.",
+          "type": "string",
+          "x-go-name": "Info"
+        },
+        "reporting_id": {
+          "description": "Reporting ID for this event.",
+          "type": "integer",
+          "format": "int64",
+          "x-go-name": "ReportingID"
+        },
+        "target_id": {
+          "description": "Target for this event.",
+          "type": "integer",
+          "format": "int64",
+          "x-go-name": "TargetID"
+        },
+        "timestamp": {
+          "description": "The time at which the event occurred.",
+          "type": "string",
+          "format": "date-time",
+          "x-go-name": "Timestamp"
+        },
+        "unique_id": {
+          "description": "A unique identifier for this event.",
+          "type": "array",
+          "items": {
             "type": "integer",
-            "format": "int32",
-            "x-go-name": "NumReplicas"
-          }
-        },
-        "x-go-package": "github.com/cockroachdb/cockroach/pkg/config/zonepb"
+            "format": "uint8"
+          },
+          "x-go-name": "UniqueID"
+        }
       },
+      "x-go-package": "github.com/cockroachdb/cockroach/pkg/server/serverpb"
+    },
+    "GCPolicy": {
+      "type": "object",
+      "title": "GCPolicy defines garbage collection policies which apply to MVCC\nvalues within a zone.",
+      "properties": {
+        "ttl_seconds": {
+          "description": "TTLSeconds specifies the maximum age of a value before it's\ngarbage collected. Only older versions of values are garbage\ncollected. Specifying \u003c= 0 mean older versions are never GC'd.",
+          "type": "integer",
+          "format": "int32",
+          "x-go-name": "TTLSeconds"
+        }
+      },
+      "x-go-package": "github.com/cockroachdb/cockroach/pkg/config/zonepb"
+    },
     "Key": {
       "description": "Key is a custom type for a byte string in proto\nmessages which refer to Cockroach keys.",
       "type": "array",
@@ -652,7 +1014,7 @@
       "x-go-package": "github.com/cockroachdb/cockroach/pkg/server/serverpb"
     },
     "ReplicaDescriptor": {
-      "description": "Describes a replica location by node ID\n(corresponds to a host:port via lookup on gossip network) and store\nID (identifies the device).\nTODO(jeffreyxiao): All nullable fields in ReplicaDescriptor can be made\nnon-nullable if #38302 is guaranteed to be on all nodes (I.E. 20.1).",
+      "description": "Describes a replica location by node ID\n(corresponds to a host:port via lookup on gossip network) and store\nID (identifies the device).",
       "type": "object",
       "properties": {
         "node_id": {
@@ -728,10 +1090,10 @@
           "type": "string",
           "x-go-name": "LastActiveQuery"
         },
-        "last_active_query_anon": {
+        "last_active_query_no_constants": {
           "description": "SQL statement fingerprint of the last query executed on this session,\ncompatible with StatementStatisticsKey.",
           "type": "string",
-          "x-go-name": "LastActiveQueryAnon"
+          "x-go-name": "LastActiveQueryNoConstants"
         },
         "max_alloc_bytes": {
           "description": "High water mark of allocated bytes in the session memory monitor.",
@@ -762,6 +1124,198 @@
       "title": "StoreID is a custom type for a cockroach store ID.",
       "x-go-package": "github.com/cockroachdb/cockroach/pkg/roachpb"
     },
+    "Subzone": {
+      "type": "object",
+      "properties": {
+        "config": {
+          "$ref": "#/definitions/ZoneConfig"
+        },
+        "index_id": {
+          "description": "The ID of the SQL table index that the subzone represents.\nAlways set.",
+          "type": "integer",
+          "format": "uint32",
+          "x-go-name": "IndexID"
+        },
+        "partition_name": {
+          "description": "The partition of the SQL table index that the subzone\nrepresents. It is empty when the subzone represents the entire index.",
+          "type": "string",
+          "x-go-name": "PartitionName"
+        }
+      },
+      "x-go-package": "github.com/cockroachdb/cockroach/pkg/config/zonepb"
+    },
+    "SubzoneSpan": {
+      "type": "object",
+      "properties": {
+        "end_key": {
+          "$ref": "#/definitions/Key"
+        },
+        "key": {
+          "$ref": "#/definitions/Key"
+        },
+        "subzone_index": {
+          "description": "The slice index of the Subzone this span belongs to in the\nparent ZoneConfig's subzones field.",
+          "type": "integer",
+          "format": "int32",
+          "x-go-name": "SubzoneIndex"
+        }
+      },
+      "x-go-package": "github.com/cockroachdb/cockroach/pkg/config/zonepb"
+    },
+    "TableDetailsResponse": {
+      "description": "Grants, column names, and indexes for\na table.",
+      "type": "object",
+      "properties": {
+        "columns": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TableDetailsResponse_Column"
+          },
+          "x-go-name": "Columns"
+        },
+        "configure_zone_statement": {
+          "description": "The output of \"SHOW ZONE CONFIGURATION FOR TABLE\"\nfor this table. It is a SQL statement that would re-configure the table's current\nzone if executed.",
+          "type": "string",
+          "x-go-name": "ConfigureZoneStatement"
+        },
+        "create_table_statement": {
+          "description": "The output of \"SHOW CREATE\" for this table;\nit is a SQL statement that would re-create the table's current schema if\nexecuted.",
+          "type": "string",
+          "x-go-name": "CreateTableStatement"
+        },
+        "descriptor_id": {
+          "description": "An identifier used to uniquely identify this table.\nIt can be used to find events pertaining to this table by filtering on\nthe `target_id` field of events.",
+          "type": "integer",
+          "format": "int64",
+          "x-go-name": "DescriptorID"
+        },
+        "grants": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TableDetailsResponse_Grant"
+          },
+          "x-go-name": "Grants"
+        },
+        "indexes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TableDetailsResponse_Index"
+          },
+          "x-go-name": "Indexes"
+        },
+        "range_count": {
+          "description": "The size of the table in ranges. This provides a rough\nestimate of the storage requirements for the table.",
+          "type": "integer",
+          "format": "int64",
+          "x-go-name": "RangeCount"
+        },
+        "zone_config": {
+          "$ref": "#/definitions/ZoneConfig"
+        },
+        "zone_config_level": {
+          "$ref": "#/definitions/ZoneConfigurationLevel"
+        }
+      },
+      "x-go-package": "github.com/cockroachdb/cockroach/pkg/server/serverpb"
+    },
+    "TableDetailsResponse_Column": {
+      "type": "object",
+      "properties": {
+        "default_value": {
+          "description": "The default value of this column.",
+          "type": "string",
+          "x-go-name": "DefaultValue"
+        },
+        "generation_expression": {
+          "description": "The generator expression if the column is computed.",
+          "type": "string",
+          "x-go-name": "GenerationExpression"
+        },
+        "hidden": {
+          "description": "Whether this column is hidden.",
+          "type": "boolean",
+          "x-go-name": "Hidden"
+        },
+        "name": {
+          "description": "The name of the column.",
+          "type": "string",
+          "x-go-name": "Name"
+        },
+        "nullable": {
+          "description": "Whether this column can contain NULL.",
+          "type": "boolean",
+          "x-go-name": "Nullable"
+        },
+        "type": {
+          "description": "the SQL type (e.g., INT, STRING) of this column.",
+          "type": "string",
+          "x-go-name": "Type"
+        }
+      },
+      "x-go-package": "github.com/cockroachdb/cockroach/pkg/server/serverpb"
+    },
+    "TableDetailsResponse_Grant": {
+      "type": "object",
+      "title": "Grant is an entry from SHOW GRANTS.",
+      "properties": {
+        "privileges": {
+          "description": "Privileges granted to the user.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "x-go-name": "Privileges"
+        },
+        "user": {
+          "description": "User that this grant applies to.",
+          "type": "string",
+          "x-go-name": "User"
+        }
+      },
+      "x-go-package": "github.com/cockroachdb/cockroach/pkg/server/serverpb"
+    },
+    "TableDetailsResponse_Index": {
+      "type": "object",
+      "properties": {
+        "column": {
+          "description": "The column that this index indexes.",
+          "type": "string",
+          "x-go-name": "Column"
+        },
+        "direction": {
+          "description": "Direction of the response parameters. Either \"ASC\" (ascending) or \"DESC\" (descending).",
+          "type": "string",
+          "x-go-name": "Direction"
+        },
+        "implicit": {
+          "description": "An internal variable that is passed.",
+          "type": "boolean",
+          "x-go-name": "Implicit"
+        },
+        "name": {
+          "description": "The name of this index.",
+          "type": "string",
+          "x-go-name": "Name"
+        },
+        "seq": {
+          "description": "An internal variable that is passed.",
+          "type": "integer",
+          "format": "int64",
+          "x-go-name": "Seq"
+        },
+        "storing": {
+          "description": "An internal variable that is passed.",
+          "type": "boolean",
+          "x-go-name": "Storing"
+        },
+        "unique": {
+          "description": "Whether this a unique index (i.e., CREATE UNIQUE INDEX).",
+          "type": "boolean",
+          "x-go-name": "Unique"
+        }
+      },
+      "x-go-package": "github.com/cockroachdb/cockroach/pkg/server/serverpb"
+    },    
     "Tier": {
       "type": "object",
       "title": "Tier represents one level of the locality hierarchy.",
@@ -903,6 +1457,32 @@
       },
       "x-go-package": "github.com/cockroachdb/cockroach/pkg/util"
     },
+    "UsersResponse": {
+      "type": "object",
+      "title": "UsersResponse returns a list of users.",
+      "properties": {
+        "users": {
+          "description": "A list of users for the cluster.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/UsersResponse_User"
+          },
+          "x-go-name": "Users"
+        }
+      },
+      "x-go-package": "github.com/cockroachdb/cockroach/pkg/server/serverpb"
+    },
+    "UsersResponse_User": {
+      "type": "object",
+      "title": "Username of the user.",
+      "properties": {
+        "username": {
+          "type": "string",
+          "x-go-name": "Username"
+        }
+      },
+      "x-go-package": "github.com/cockroachdb/cockroach/pkg/server/serverpb"
+    },
     "Version": {
       "type": "object",
       "properties": {
@@ -931,6 +1511,201 @@
       },
       "x-go-package": "github.com/cockroachdb/cockroach/pkg/roachpb"
     },
+    "ZoneConfig": {
+      "description": "For internal use only.",
+      "type": "object",
+      "title": "ZoneConfig holds configuration that applies to one or more ranges.",
+      "properties": {
+        "constraints": {
+          "description": "Constrains which stores the replicas can be stored on. The\norder in which the constraints are stored is arbitrary and may change.\nhttps://github.com/cockroachdb/cockroach/blob/master/docs/RFCS/20160706_expressive_zone_config.md#constraint-system",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ConstraintsConjunction"
+          },
+          "x-go-name": "Constraints"
+        },
+        "gc": {
+          "$ref": "#/definitions/GCPolicy"
+        },
+        "global_reads": {
+          "description": "Whether transactions operating over the range(s)\nshould be configured to provide non-blocking behavior, meaning that reads\ncan be served consistently from all replicas and do not block on writes. In\nexchange, writes get pushed into the future and must wait on commit to\nensure linearizability. For more, see:\nhttps://github.com/cockroachdb/cockroach/blob/master/docs/RFCS/20200811_non_blocking_txns.md",
+          "type": "boolean",
+          "x-go-name": "GlobalReads"
+        },
+        "inherited_constraints": {
+          "description": "Whether the value in the Constraints field was\ninherited from the zone's parent or specified explicitly by the user.\n\nNB: We need this extra field because the non-nullable nature of\n`constraints` means that there is no other way to disambiguate between an\nunset `constraints` attribute and an empty one.",
+          "type": "boolean",
+          "x-go-name": "InheritedConstraints"
+        },
+        "inherited_lease_preferences": {
+          "description": "Whether the value in the LeasePreferences field\nwas inherited from the zone's parent or specified explicitly by the user.",
+          "type": "boolean",
+          "x-go-name": "InheritedLeasePreferences"
+        },
+        "lease_preferences": {
+          "description": "Information about where the user would prefer for\nrange leases to be placed. Leases are allowed to be placed elsewhere if\nneeded, but will follow the provided preference when possible.\n\nMore than one lease preference is allowed, but they should be ordered from\nmost preferred to least preferred. The first preference that an existing\nreplica of a range matches will take priority.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/LeasePreference"
+          },
+          "x-go-name": "LeasePreferences"
+        },
+        "null_voter_constraints_is_empty": {
+          "description": "Whether the `VoterConstraints` field\nwas explicitly set to be empty or if it was inherited from its parent.\n\nNB: This extra field is needed because the non-nullable nature of\n`voter_constraints` means that there is no other way to disambiguate\nbetween an unset `voter_constraints` attribute and an empty one.\n\nThis flag is not symmetric with `InheritedConstraints` defined above,\nand should only be checked when the list of `VoterConstraints` is empty (as\notherwise they are assumed to _not_ be inherited) because we want 21.1 (and\nfuture versions) nodes to correctly interpret zone configs persisted by\npre-21.1 nodes. That is, in absence of explicit modifications, we want 21.1\nnodes to interpret that zone configs written by previous versions inherit\n`VoterConstraints` from their parent.",
+          "type": "boolean",
+          "x-go-name": "NullVoterConstraintsIsEmpty"
+        },
+        "num_replicas": {
+          "description": "The desired number of replicas. This includes voting\nand non-voting replicas.",
+          "type": "integer",
+          "format": "int32",
+          "x-go-name": "NumReplicas"
+        },
+        "num_voters": {
+          "description": "The desired number of voter replicas. If unspecified,\nthere are no non-voting replicas and NumReplicas will represent the number\nof voters.",
+          "type": "integer",
+          "format": "int32",
+          "x-go-name": "NumVoters"
+        },
+        "range_max_bytes": {
+          "type": "integer",
+          "format": "int64",
+          "x-go-name": "RangeMaxBytes"
+        },
+        "range_min_bytes": {
+          "type": "integer",
+          "format": "int64",
+          "x-go-name": "RangeMinBytes"
+        },
+        "subzone_spans": {
+          "description": "Each key span in a subzone mapped to the slice index of an entry\nin SubzoneConfig. Spans are non-overlapping and sorted by start key to\nallow binary searching. SubzoneSpans can be easily derived from a\nTableDescriptor, but are denormalized here to make GetZoneConfigForKey\nlookups efficient.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/SubzoneSpan"
+          },
+          "x-go-name": "SubzoneSpans"
+        },
+        "subzones": {
+          "description": "Config overrides for \"subzones\", each of which represents\neither a SQL table index or a partition of a SQL table index. Subzones are\nnot applicable when the zone does not represent a SQL table (i.e., when the\nzone represents a database, a special system range, or is itself a\nsubzone.)",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Subzone"
+          },
+          "x-go-name": "Subzones"
+        },
+        "voter_constraints": {
+          "description": "Constrains which stores the voting replicas can be stored\non. This field must be \"compatible\" with the `Constraints` field above, but\nnot necessarily a subset. The `VoterConstraints` are said to be compatible\nwith `Constraints` if none of the constraints in `Constraints` contradict\nany of the constraints in `VoterConstraints`. In other words, they are\ncompatible if none of the \"prohibitive\" constraints in `Constraints` are\n\"required\" constraints in `VoterConstraints`.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ConstraintsConjunction"
+          },
+          "x-go-name": "VoterConstraints"
+        }
+      },
+      "x-go-package": "github.com/cockroachdb/cockroach/pkg/config/zonepb"
+    },
+    "ZoneConfigurationLevel": {
+      "description": "The object level at which the configuration is defined. This is needed\nbecause objects without a specifically indicated Zone Configuration will\ninherit the configuration of their \"parent\".",
+      "type": "integer",
+      "format": "int32",
+      "title": "ZoneConfigurationLevel indicates, for objects with a Zone Configuration,\nthe object level at which the configuration is defined. This is needed\nbecause objects without a specifically indicated Zone Configuration will\ninherit the configuration of their 'parent'.\nValid levels are unknown (0), cluster (1), database (2), or table (3).",
+      "x-go-package": "github.com/cockroachdb/cockroach/pkg/server/serverpb"
+    },
+    "databaseDetailsResponse": {
+      "type": "object",
+      "title": "Response for databaseDetails.",
+      "properties": {
+        "descriptor_id": {
+          "description": "An identifier used to uniquely identify this database.\nIt can be used to find events pertaining to this database by filtering on\nthe `target_id` field of events.",
+          "type": "integer",
+          "format": "int64",
+          "x-go-name": "DescriptorID"
+        }
+      },
+      "x-go-package": "github.com/cockroachdb/cockroach/pkg/server"
+    },
+    "databaseGrantsResponse": {
+      "type": "object",
+      "title": "Response for databaseGrants.",
+      "properties": {
+        "grants": {
+          "description": "Grants are the privileges granted to users on this database.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/DatabaseDetailsResponse_Grant"
+          },
+          "x-go-name": "Grants"
+        },
+        "next": {
+          "description": "The continuation token, for use in the next paginated call in the `offset`\nparameter.",
+          "type": "integer",
+          "format": "int64",
+          "x-go-name": "Next"
+        }
+      },
+      "x-go-package": "github.com/cockroachdb/cockroach/pkg/server"
+    },
+    "databaseTablesResponse": {
+      "type": "object",
+      "title": "Response for databaseTables.",
+      "properties": {
+        "next": {
+          "description": "The continuation token, for use in the next paginated call in the `offset`\nparameter.",
+          "type": "integer",
+          "format": "int64",
+          "x-go-name": "Next"
+        },
+        "table_names": {
+          "description": "The names of all tables in this database. Note that\nall responses will be schema-qualified (schema.table) and that every schema\nor table that contains a \"sql unsafe character\" such as uppercase letters\nor dots will be surrounded with double quotes, such as \"naughty schema\".table.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "x-go-name": "TableNames"
+        }
+      },
+      "x-go-package": "github.com/cockroachdb/cockroach/pkg/server"
+    },
+    "databasesResponse": {
+      "type": "object",
+      "title": "Response for listDatabases.",
+      "properties": {
+        "databases": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "x-go-name": "Databases"
+        },
+        "next": {
+          "description": "The continuation token, for use in the next paginated call in the `offset`\nparameter.",
+          "type": "integer",
+          "format": "int64",
+          "x-go-name": "Next"
+        }
+      },
+      "x-go-package": "github.com/cockroachdb/cockroach/pkg/server"
+    },
+    "eventsResponse": {
+      "type": "object",
+      "title": "Response for listEvents.",
+      "properties": {
+        "events": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/EventsResponse_Event"
+          },
+          "x-go-name": "Events"
+        },
+        "next": {
+          "description": "The continuation token, for use in the next paginated call in the `offset`\nparameter.",
+          "type": "integer",
+          "format": "int64",
+          "x-go-name": "Next"
+        }
+      },
+      "x-go-package": "github.com/cockroachdb/cockroach/pkg/server"
+    },    
     "hotRangesResponse": {
       "type": "object",
       "title": "Response struct for listHotRanges.",
@@ -1265,8 +2040,33 @@
         }
       },
       "x-go-package": "github.com/cockroachdb/cockroach/pkg/server"
+    },
+    "tableDetailsResponse": {
+      "title": "Response for tableDetails.",
+      "$ref": "#/definitions/TableDetailsResponse"
+    },
+    "usersResponse": {
+      "type": "object",
+      "title": "Response for listUsers.",
+      "properties": {
+        "next": {
+          "description": "The continuation token, for use in the next paginated call in the `offset`\nparameter.",
+          "type": "integer",
+          "format": "int64",
+          "x-go-name": "Next"
+        },
+        "users": {
+          "description": "A list of users for the CockroachDB cluster.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/UsersResponse_User"
+          },
+          "x-go-name": "Users"
+        }
+      },
+      "x-go-package": "github.com/cockroachdb/cockroach/pkg/server"
     }
-  },
+  },  
   "securityDefinitions": {
     "api_session": {
       "description": "Token for logged-in REST session. Use `/login/` to log in and get a session token. For additional information, see cockroachlabs.com/docs/stable/cluster-api.",

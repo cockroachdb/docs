@@ -16,12 +16,19 @@ Each listed endpoint links to its full [API reference documentation](https://coc
 
 Endpoint | Name | Description
 --- | --- | ---
+[`/databases`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/listDatabases) | List databases | Get all databases in the cluster.
+[`/databases/{database}`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/databaseDetails) | Get database details | Get the descriptor ID of a specified database.
+[`/databases/{database}/grants`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/databaseGrants) | List database grants | List all [privileges](authorization.html#assign-privileges) granted to users for a specified database.
+[`/databases/{database}/tables`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/databaseTables) | List database tables | List all tables in a specified database.
+[`/databases/{database}/tables/{table}`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/tableDetails) | Get table details | Get details on a specified table, including schema, grants, indexes, range count, and zone configuration.
+[`/events`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/listEvents) | List events | List the latest [events](eventlog.html) on the cluster, in descending order.
 [`/health`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/health) | Check node health | Determine if the node is running and ready to accept SQL connections.
 [`/nodes`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/listNodes) | List nodes | Get details on all nodes in the cluster, including node IDs, software versions, and hardware.
-[`/nodes/{node_id}/ranges`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/listNodeRanges) | List node ranges | For a specified node, get details on the ranges that it hosts. 
+[`/nodes/{node_id}/ranges`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/listNodeRanges) | List node ranges | Get details on the ranges on a specified node. 
 [`/ranges/hot`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/listHotRanges) | List hot ranges | Get information on ranges receiving a high number of reads or writes.
 [`/ranges/{range_id}`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/listRange) | Get range details | Get detailed technical information on a range. Typically used by Cockroach Labs engineers.
 [`/sessions`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/listSessions) | List sessions | Get SQL session details of all current users or a specified user.
+[`/users`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/listUsers) | List users | List all SQL users on the cluster.
 [`/login`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/login) | Log in | Authenticate as a [SQL role](create-role.html#create-a-role-that-can-log-in-to-the-database) that is a member of the [admin role](authorization.html#admin-role) to retrieve a session token to use with further API calls.
 [`/logout`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/logout) | Log out | Invalidate the session token.
 
