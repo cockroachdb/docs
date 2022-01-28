@@ -22,26 +22,26 @@
           "title": "Hello World",
           "items": [
             {
-              "title": "Go",
+              "title": "Build a Hello World App Using Go",
               "urls": [
                 "/${VERSION}/hello-world-go-pgx.html",
                 "/${VERSION}/hello-world-go-gorm.html"
               ]
             },
             {
-              "title": "Java",
+              "title": "Build a Hello World App Using Java",
               "urls": [
                 "/${VERSION}/hello-world-java-jdbc.html"
               ]
             },
             {
-              "title": "JavaScript (Node.js)",
+              "title": "Build a Hello World App Using JavaScript (Node.js)",
               "urls": [
                 "/${VERSION}/hello-world-node-postgres.html"
               ]
             },
             {
-              "title": "Python",
+              "title": "Build a Hello World App Using Python",
               "urls": [
                 "/${VERSION}/hello-world-python-sqlalchemy.html"
               ]
@@ -52,7 +52,7 @@
           "title": "Simple CRUD",
           "items": [
             {
-              "title": "Go",
+              "title": "Build a Simple CRUD App Using Go",
               "urls": [
                 "/${VERSION}/build-a-go-app-with-cockroachdb.html",
                 "/${VERSION}/build-a-go-app-with-cockroachdb-pq.html",
@@ -61,7 +61,7 @@
               ]
             },
             {
-              "title": "Java",
+              "title": "Build a Simple CRUD App Using Java",
               "urls": [
                 "/${VERSION}/build-a-java-app-with-cockroachdb.html",
                 "/${VERSION}/build-a-java-app-with-cockroachdb-hibernate.html",
@@ -70,7 +70,7 @@
               ]
             },
             {
-              "title": "JavaScript/TypeScript",
+              "title": "Build a Simple CRUD App Using JavaScript/TypeScript",
               "urls": [
                 "/${VERSION}/build-a-nodejs-app-with-cockroachdb.html",
                 "/${VERSION}/build-a-nodejs-app-with-cockroachdb-sequelize.html",
@@ -79,7 +79,7 @@
               ]
             },
             {
-              "title": "Python",
+              "title": "Build a Simple CRUD App Using Python",
               "urls": [
                 "/${VERSION}/build-a-python-app-with-cockroachdb.html",
                 "/${VERSION}/build-a-python-app-with-cockroachdb-sqlalchemy.html",
@@ -88,38 +88,38 @@
               ]
             },
             {
-              "title": "Ruby",
+              "title": "Build a Simple CRUD App Using Ruby",
               "urls": [
                 "/${VERSION}/build-a-ruby-app-with-cockroachdb.html",
                 "/${VERSION}/build-a-ruby-app-with-cockroachdb-activerecord.html"
               ]
             },
             {
-              "title": "C++",
+              "title": "Build a Simple CRUD App Using C++",
               "urls": [
                 "/${VERSION}/build-a-c++-app-with-cockroachdb.html"
               ]
             },
             {
-              "title": "C# (.NET)",
+              "title": "Build a Simple CRUD App Using C# (.NET)",
               "urls": [
                 "/${VERSION}/build-a-csharp-app-with-cockroachdb.html"
               ]
             },
             {
-              "title": "Clojure",
+              "title": "Build a Simple CRUD App Using Clojure",
               "urls": [
                 "/${VERSION}/build-a-clojure-app-with-cockroachdb.html"
               ]
             },
             {
-              "title": "PHP",
+              "title": "Build a Simple CRUD App Using PHP",
               "urls": [
                 "/${VERSION}/build-a-php-app-with-cockroachdb.html"
               ]
             },
             {
-              "title": "Rust",
+              "title": "Build a Simple CRUD App Using Rust",
               "urls": [
                 "/${VERSION}/build-a-rust-app-with-cockroachdb.html"
               ]
