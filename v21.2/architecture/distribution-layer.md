@@ -2,7 +2,7 @@
 title: Distribution Layer
 summary: The distribution layer of CockroachDB's architecture provides a unified view of your cluster's data.
 toc: true
-docs_area: 
+docs_area: reference.architecture 
 ---
 
 The distribution layer of CockroachDB's architecture provides a unified view of your cluster's data.

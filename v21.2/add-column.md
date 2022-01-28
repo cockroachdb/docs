@@ -2,7 +2,7 @@
 title: ADD COLUMN
 summary: Use the ADD COLUMN statement to add columns to tables.
 toc: true
-docs_area: 
+docs_area: reference.sql
 ---
 
 `ADD COLUMN` is a subcommand of [`ALTER TABLE`](alter-table.html). Use `ADD COLUMN` to add columns to existing tables.

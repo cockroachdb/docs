@@ -2,7 +2,7 @@
 title: Vectorized Query Execution
 summary: The CockroachDB vectorized SQL query execution engine processes query plans using a column-oriented model to improve performance.
 toc: true
-docs_area: 
+docs_area: reference.performance_optimization
 ---
 
 CockroachDB supports [column-oriented](https://en.wikipedia.org/wiki/Column-oriented_DBMS#Column-oriented_systems) ("vectorized") query execution on all [CockroachDB data types](data-types.html).

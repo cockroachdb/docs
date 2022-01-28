@@ -2,7 +2,7 @@
 title: Hardware Dashboard
 summary: The Hardware dashboard lets you monitor CPU usage, disk throughput, network traffic, storage capacity, and memory.
 toc: true
-docs_area: 
+docs_area: reference.db_console
 ---
 
 The **Hardware** dashboard lets you monitor the hardware utilization of your cluster. This includes CPU usage, disk throughput, network traffic, storage capacity, and memory.

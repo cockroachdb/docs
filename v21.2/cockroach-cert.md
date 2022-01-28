@@ -6,7 +6,7 @@ key: create-security-certificates.html
 filter_category: security_cert
 filter_html: Use cockroach cert
 filter_sort: 1
-docs_area: 
+docs_area: reference.cli
 ---
 
 To secure your CockroachDB cluster's inter-node and client-node communication, you need to provide a Certificate Authority (CA) certificate that has been used to sign keys and certificates (SSLs) for:

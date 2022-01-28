@@ -3,7 +3,7 @@ title: cockroach debug zip
 summary: Learn the commands for collecting debug information from all nodes in your cluster.
 toc: true
 key: debug-zip.html
-docs_area: 
+docs_area: reference.cli
 ---
 
 The `cockroach debug zip` [command](cockroach-commands.html) connects to your cluster and gathers information from each active node into a single `.zip` file (inactive nodes are not included). For details on the `.zip` contents, see [Files](#files).
