@@ -6,12 +6,6 @@
       "title": "Choose a Deployment Strategy",
       "items": [
         {
-          "title": "Overview",
-          "urls": [
-            "/${VERSION}/choose-a-deployment-strategy.html"
-          ]
-        },
-        {
           "title": "CockroachDB Cloud",
           "items": [
             {

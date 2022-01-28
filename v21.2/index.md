@@ -37,7 +37,7 @@ cta: false
       <div class="col-lg-4 mb-3 mb-lg-0 pb-5">
         <div class="card card-link h-100 d-flex">
         <a href="frequently-asked-questions.html" class="h-100">
-          <div class="card-body p-4 d-flex flex-column h-100 card-header-overlap-text">
+          <div class="card-body p-4 d-flex flex-column h-100 card-header-overlap-text">          
             <h6 class="m-0 text-black">CockroachDB <br>FAQ</h6>
             <p class="text-black">Answers to frequently asked questions</p>
             <h4 class="mt-auto mb-0 text-electric-purple font-poppins-sb text-center">Learn more <img class="m-0 ml-2" src="{{ 'images/icon-arrow-right-purple.svg' | relative_url }}" alt="arrow right" /></h4>
