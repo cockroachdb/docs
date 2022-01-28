@@ -2,6 +2,7 @@
 title: Create and Configure Changefeeds
 summary: Create and configure a changefeed job for Core and Enterprise.
 toc: true
+docs_area: 
 ---
 
 Core and {{ site.data.products.enterprise }} changefeeds offer different levels of configurability. {{ site.data.products.enterprise }} changefeeds allow for active changefeed jobs to be [paused](#pause), [resumed](#resume), and [canceled](#cancel).

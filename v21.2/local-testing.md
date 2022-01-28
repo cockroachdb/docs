@@ -2,6 +2,7 @@
 title: Test Your Application
 summary: Best practices for locally testing an application built on CockroachDB
 toc: true
+docs_area: 
 ---
 
 This page documents best practices for unit testing applications built on CockroachDB.

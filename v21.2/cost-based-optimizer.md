@@ -3,6 +3,7 @@ title: Cost-Based Optimizer
 summary: The cost-based optimizer seeks the lowest cost for a query, usually related to time.
 toc: true
 keywords: gin, gin index, gin indexes, inverted index, inverted indexes, accelerated index, accelerated indexes
+docs_area: 
 ---
 
 The cost-based optimizer seeks the lowest cost for a query, usually related to time.

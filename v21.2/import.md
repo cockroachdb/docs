@@ -3,6 +3,7 @@ title: IMPORT
 summary: The IMPORT statement imports various types of data into CockroachDB.
 toc: true
 keywords: gin, gin index, gin indexes, inverted index, inverted indexes, accelerated index, accelerated indexes
+docs_area: 
 ---
 
 The `IMPORT` [statement](sql-statements.html) imports the following types of data into CockroachDB:

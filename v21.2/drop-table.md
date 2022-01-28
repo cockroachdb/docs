@@ -2,6 +2,7 @@
 title: DROP TABLE
 summary: The DROP TABLE statement removes a table and all its indexes from a database.
 toc: true
+docs_area: 
 ---
 
 The `DROP TABLE` [statement](sql-statements.html) removes a table and all its indexes from a database.

@@ -2,6 +2,7 @@
 title: ADD REGION
 summary: The ADD REGION statement adds a region to a multi-region database.
 toc: true
+docs_area: 
 ---
 
  The `ALTER DATABASE .. ADD REGION` [statement](sql-statements.html) adds a [region](multiregion-overview.html#database-regions) to a [multi-region database](multiregion-overview.html).

@@ -2,6 +2,7 @@
 title: Life of a Distributed Transaction
 summary: Learn how a query moves through the layers of CockroachDB's architecture.
 toc: true
+docs_area: 
 ---
 
 Because CockroachDB is a distributed transactional database, the path queries take is dramatically different from many other database architectures. To help familiarize you with CockroachDB's internals, this guide covers what that path actually is.

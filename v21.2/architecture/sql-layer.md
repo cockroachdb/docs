@@ -2,6 +2,7 @@
 title: SQL Layer
 summary: The SQL layer of CockroachDB's architecture exposes its SQL API to developers and converts SQL statements into key-value operations.
 toc: true
+docs_area: 
 ---
 
 The SQL layer of CockroachDB's architecture exposes a SQL API to developers and converts high-level [SQL statements](../sql-statements.html) into low-level read and write requests to the underlying key-value store, which are passed to the [transaction Layer](transaction-layer.html).

@@ -3,6 +3,7 @@ title: cockroach debug encryption-active-key
 summary: Learn the command for viewing the algorithm and store key for an encrypted store.
 toc: true
 key: debug-encryption-active-key.html
+docs_area: 
 ---
 
 The `cockroach debug encryption-active-key` [command](cockroach-commands.html) displays the encryption algorithm and store key for an encrypted store.

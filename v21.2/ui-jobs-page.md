@@ -2,6 +2,7 @@
 title: Jobs Page
 summary: The Jobs page of the DB Console provides details about long-running tasks performed by your cluster.
 toc: true
+docs_area: 
 ---
 
 The **Jobs** page of the DB Console provides details about long-running tasks performed by your cluster. These can include:

@@ -3,6 +3,7 @@ title: Indexes
 summary: Indexes improve your database's performance by helping SQL locate data without having to look through every row of a table.
 toc: true
 keywords: gin, gin index, gin indexes, inverted index, inverted indexes, accelerated index, accelerated indexes
+docs_area: reference.performance_optimization
 ---
 
 Indexes improve your database's performance by helping SQL locate data without having to look through every row of a table.

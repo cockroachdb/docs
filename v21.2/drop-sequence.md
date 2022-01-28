@@ -2,6 +2,7 @@
 title: DROP SEQUENCE
 summary: The DROP SEQUENCE statement removes a sequence from a database.
 toc: true
+docs_area: 
 ---
 
 The `DROP SEQUENCE` [statement](sql-statements.html) removes a sequence from a database.

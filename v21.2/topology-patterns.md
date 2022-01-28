@@ -3,6 +3,7 @@ title: Topology Patterns Overview
 summary: Recommended patterns for running CockroachDB in a cloud environment.
 toc: true
 key: cluster-topology-patterns.html
+docs_area: 
 ---
 
 This section provides recommended patterns for running CockroachDB in a cloud environment.

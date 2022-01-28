@@ -2,6 +2,7 @@
 title: cockroach demo
 summary: Use cockroach demo to open a SQL shell to a temporary, in-memory, CockroachDB cluster.
 toc: true
+docs_area: 
 ---
 
 The `cockroach demo` [command](cockroach-commands.html) starts a temporary, in-memory CockroachDB cluster of one or more nodes, with or without a preloaded dataset, and opens an interactive SQL shell to the cluster.

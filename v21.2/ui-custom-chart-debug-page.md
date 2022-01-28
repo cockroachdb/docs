@@ -2,6 +2,7 @@
 title: Custom Chart Debug Page
 summary: The Custom Chart debug page can be used to create one or multiple custom charts showing any combination of over 200 available metrics.
 toc: true
+docs_area: 
 ---
 
 The **Custom Chart** debug page in the DB Console lets you create one or multiple custom charts showing any combination of over [200 available metrics](#available-metrics).

@@ -2,6 +2,7 @@
 title: Define Table Partitions
 summary: Partitioning is an Enterprise feature that gives you row-level control of how and where your data is stored.
 toc: true
+docs_area: 
 ---
 
 CockroachDB allows you to define table partitions, thus giving you row-level control of how and where your data is stored. Partitioning enables you to reduce latencies and costs and can assist in meeting regulatory requirements for your data.

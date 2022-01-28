@@ -3,6 +3,7 @@ title: Work with Spatial Data
 summary: CockroachDB has special support for efficiently storing and querying spatial data.
 toc: true
 keywords: gin, gin index, gin indexes, inverted index, inverted indexes, accelerated index, accelerated indexes
+docs_area: 
 ---
 
 This page provides information about working with spatial data in CockroachDB.

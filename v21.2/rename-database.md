@@ -2,6 +2,7 @@
 title: ALTER DATABASE ... RENAME TO
 summary: The ALTER DATABASE ... RENAME TO statement changes the name of a database.
 toc: true
+docs_area: 
 ---
 
 The `RENAME TO` clause is part of [`ALTER DATABASE`](alter-database.html), and changes the name of a database.

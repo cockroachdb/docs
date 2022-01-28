@@ -2,6 +2,7 @@
 title: Advanced Debug Page
 summary: The Advanced Debug page provides links to advanced monitoring and troubleshooting reports and cluster configuration details.
 toc: true
+docs_area: 
 ---
 
 {% include {{ page.version.version }}/ui/admin-access.md %}

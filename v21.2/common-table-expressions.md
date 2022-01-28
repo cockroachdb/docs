@@ -2,6 +2,7 @@
 title: WITH Queries (Common Table Expressions)
 summary: Common table expressions (CTEs) simplify the definition and use of subqueries
 toc: true
+docs_area: 
 ---
 
 `WITH` queries, also called *common table expressions* or CTEs, provide a shorthand name to a possibly complex [subquery](subqueries.html) before it is used in a larger query context. This improves the readability of SQL code.
