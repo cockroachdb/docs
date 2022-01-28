@@ -64,11 +64,7 @@ NFS/Local    | `nodelocal://1/path/employees`, `nodelocal://self/nfsmount/backup
 [Cloud storage sinks (for changefeeds)](change-data-capture-overview.html#known-limitations) only work with `JSON` and emits newline-delimited `JSON` files.
 {{site.data.alerts.end}}
 
-<<<<<<< HEAD
-Example URLs for [`IMPORT`](import.html) or [changefeeds](changefeed-sinks.html) given a bucket or container name of `acme-co` and a filename of `employees`:
-=======
 Example URLs for [`IMPORT`](import.html) given a bucket or container name of `acme-co` and a filename of `employees`:
->>>>>>> ae521c250 (Adjustments to implicit/auth sections & extra GCS detail)
 
 Location     | Example                                                                          
 -------------+----------------------------------------------------------------------------------
@@ -97,6 +93,10 @@ CockroachDB also provides client-side encryption of backup data, for more inform
 ## Authentication
 
 When running bulk operations to and from a storage bucket, authentication setup can vary depending on the cloud provider. This section details the necessary steps to authenticate to each cloud provider.
+
+{{site.data.alerts.callout_info}}
+`implicit` authentication can **not** be used to run bulk operations from {{ site.data.products.db }} clusters—instead, use `AUTH=specified`.
+{{site.data.alerts.end}}
 
 <div class="filters clearfix">
   <button class="filter-button" data-scope="s3">Amazon S3</button>
