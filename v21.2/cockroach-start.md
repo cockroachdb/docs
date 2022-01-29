@@ -313,7 +313,7 @@ $ cockroach init \
 **Scenario:**
 
 - You have a cluster that spans GCE and AWS.
-- The nodes on each cloud can reach each other on private addresses, but the private addresses aren't reachable from the other cloud.
+- The nodes on each cloud can reach each other on public addresses, but the private addresses aren't reachable from the other cloud.
 
 **Approach:**
 
