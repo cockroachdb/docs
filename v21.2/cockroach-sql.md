@@ -14,6 +14,10 @@ To exit the interactive shell, use `\q`, `quit`, `exit`, or `ctrl-d`.
 If you want to experiment with CockroachDB SQL but do not have a cluster already running, you can use the [`cockroach demo`](cockroach-demo.html) command to open a shell to a temporary, in-memory cluster.
 {{site.data.alerts.end}}
 
+## Prerequisites
+
+The [role option of the user](create-role.html#role-options) logging in must be `LOGIN` or `SQLLOGIN`, which are granted by default. If the user's role option has been set to `NOLOGIN` or `NOSQLLOGIN`, the user cannot log in using the SQL CLI with any authentication method.
+
 ## Synopsis
 
 Start the interactive SQL shell:
