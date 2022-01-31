@@ -2,7 +2,6 @@
 title: ORDER BY
 summary: The ORDER BY clause controls the order in which rows are returned or processed.
 toc: true
-docs_area: 
 ---
 
 The `ORDER BY` clause controls the order in which rows are returned or

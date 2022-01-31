@@ -3,7 +3,6 @@ title: cockroach sql
 summary: CockroachDB comes with a built-in client for executing SQL statements from an interactive shell or directly from the command line.
 toc: true
 key: use-the-built-in-sql-client.html
-docs_area: reference.cli
 ---
 
 CockroachDB comes with a built-in client for executing SQL statements from an interactive shell or directly from the command line. To use this client, run the `cockroach sql` [command](cockroach-commands.html) as described below.
@@ -13,10 +12,6 @@ To exit the interactive shell, use `\q`, `quit`, `exit`, or `ctrl-d`.
 {{site.data.alerts.callout_success}}
 If you want to experiment with CockroachDB SQL but do not have a cluster already running, you can use the [`cockroach demo`](cockroach-demo.html) command to open a shell to a temporary, in-memory cluster.
 {{site.data.alerts.end}}
-
-## Prerequisites
-
-The [role option of the user](create-role.html#role-options) logging in must be `LOGIN` or `SQLLOGIN`, which are granted by default. If the user's role option has been set to `NOLOGIN` or `NOSQLLOGIN`, the user cannot log in using the SQL CLI with any authentication method.
 
 ## Synopsis
 

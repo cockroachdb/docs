@@ -2,15 +2,13 @@
 title: Expression Indexes
 summary: Expression indexes apply a scalar or functional expression to one or more columns.
 toc: true
-keywords: gin, gin index, gin indexes, inverted index, inverted indexes, accelerated index, accelerated indexes
-docs_area: 
 ---
 
 <span class="version-tag">New in v21.2</span>
 
 An _expression index_ is an index created by applying an [expression](scalar-expressions.html) to a column. For example, to facilitate fast, case insensitive lookups of user names you could create an index by applying the function `lower` to the `name` column: `CREATE INDEX users_name_idx ON users (lower(name))`. The value of the expression is stored only in the expression index, not in the primary family index.
 
-Both [standard indexes](create-index.html) and [GIN indexes](inverted-indexes.html) support expressions. You can use expressions in [unique indexes](create-index.html#unique-indexes) and [partial indexes](partial-indexes.html).
+Both [standard indexes](create-index.html) and [inverted indexes](inverted-indexes.html) support expressions. You can use expressions in [unique indexes](create-index.html#unique-indexes) and [partial indexes](partial-indexes.html).
 
 You can reference multiple columns in an expression index.
 
@@ -68,7 +66,7 @@ A unique, partial, multi-column index, where one column is defined with an expre
 CREATE UNIQUE INDEX ON t (lower(s), b) WHERE i > 0;
 ~~~
 
-A GIN, partial, multi-column index, where one column is defined with an expression:
+An inverted, partial, multi-column index, where one column is defined with an expression:
 {% include_cached copy-clipboard.html %}
 ~~~sql
 CREATE INVERTED INDEX ON t (lower(s), i, j) WHERE b;
@@ -76,7 +74,7 @@ CREATE INVERTED INDEX ON t (lower(s), i, j) WHERE b;
 
 ### Use an expression to index a field in a `JSONB` column
 
-You can use an expression in an index definition to index a field in a JSON column. You can also use an expression to create a [GIN index](inverted-indexes.html) on a subset of the JSON column.
+You can use an expression in an index definition to index a field in a JSON column. You can also use an expression to create an [inverted index](inverted-indexes.html) on a subset of the JSON column.
 
 Normally an index is used only if the cost of using the index is less than the cost of a full table scan. To disable that optimization, turn off statistics collection:
 

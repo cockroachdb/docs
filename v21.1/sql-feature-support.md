@@ -2,7 +2,6 @@
 title: SQL Feature Support in CockroachDB v21.1
 summary: Summary of CockroachDB's conformance to the SQL standard and which common extensions it supports.
 toc: true
-keywords: gin, gin index, gin indexes, inverted index, inverted indexes, accelerated index, accelerated indexes
 ---
 
 Making CockroachDB easy to use is a top priority for us, so we chose to implement SQL. However, even though SQL has a standard, no database implements all of it, nor do any of them have standard implementations of all features.
@@ -80,7 +79,7 @@ table tr td:nth-child(2) {
  Indexes | ✓ | Common Extension | [Indexes documentation](indexes.html)
  Multi-column indexes | ✓ | Common Extension | We do not limit on the number of columns indexes can include
  Covering indexes | ✓ | Common Extension | [Storing Columns documentation](create-index.html#store-columns)
- GIN indexes | ✓ | Common Extension | [GIN Indexes documentation](inverted-indexes.html)
+ Inverted indexes | ✓ | Common Extension | [Inverted Indexes documentation](inverted-indexes.html)
  Partial indexes | ✓ | Common Extension |  [Partial indexes documentation](partial-indexes.html)
  Spatial indexes | ✓ | Common Extension |  [Spatial indexes documentation](spatial-indexes.html)
  Multiple indexes per query | Partial | Common Extension | [Use multiple indexes for a single query](https://github.com/cockroachdb/cockroach/issues/2142)

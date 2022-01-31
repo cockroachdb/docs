@@ -2,7 +2,6 @@
 title: Online Schema Changes
 summary: Update table schemas without external tools or downtime.
 toc: true
-docs_area: 
 ---
 
 CockroachDB's online schema changes provide a simple way to update a table schema without imposing any negative consequences on an application — including downtime. The schema change engine is a built-in feature requiring no additional tools, resources, or ad hoc sequencing of operations.

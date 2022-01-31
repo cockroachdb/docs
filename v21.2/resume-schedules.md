@@ -2,7 +2,6 @@
 title: RESUME SCHEDULES
 summary: The RESUME SCHEDULES statement lets you resume jobs that were previously paused with PAUSE SCHEDULE.
 toc: true
-docs_area: 
 ---
 
  The `RESUME SCHEDULES` [statement](sql-statements.html) can be used to resume [paused backup schedules](pause-schedules.html). When a schedule is resumed, the `next_run` will be set to the next `TIMESTAMP` that conforms to the schedule.

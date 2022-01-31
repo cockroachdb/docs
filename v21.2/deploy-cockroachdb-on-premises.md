@@ -6,7 +6,6 @@ ssh-link: https://www.digitalocean.com/community/tutorials/how-to-set-up-ssh-key
 filter_category: deploy_crdb_op
 filter_html: Secure
 filter_sort: 1
-docs_area: 
 ---
 
 {% include filter-tabs.md %}

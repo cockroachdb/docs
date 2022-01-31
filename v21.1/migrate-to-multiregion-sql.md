@@ -131,7 +131,7 @@ If you applied the [geo-partitioned leaseholders][geo_leaseholders] pattern, the
     ALTER INDEX users_last_name_index PARTITION BY NOTHING;
     ~~~
 
-The latency and resiliency benefits of the geo-partitioned leaseholders pattern can be replaced by making `users` a [`REGIONAL BY ROW` table](regional-tables.html#regional-by-row-tables) with a [`ZONE` survival goal](multiregion-overview.html#surviving-zone-failures).
+The latency and resiliency benefits of the geo-partitioned leaseholders pattern can be replaced by making `users` a [`REGIONAL` table](regional-tables.html) with a [`ZONE` survival goal](multiregion-overview.html#surviving-zone-failures).
 
 ### Step 2. Add a primary region to your database
 

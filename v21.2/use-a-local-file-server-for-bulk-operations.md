@@ -2,7 +2,6 @@
 title: Use a Local File Server for Bulk Operations
 summary: Learn how to create a simple file server for use with bulk operations within CockroachDB
 toc: true
-docs_area: 
 ---
 
 If you need a location to store files for the [`IMPORT`](import.html) process or [CockroachDB backups](backup.html), but do not have access to (or cannot use) [cloud storage providers](use-cloud-storage-for-bulk-operations.html), you can run a local file server. You can then use this file server by leveraging support for our [HTTP Export Storage API](#http-export-storage-api).

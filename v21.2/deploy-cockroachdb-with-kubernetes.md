@@ -8,7 +8,6 @@ redirect_from: orchestrate-cockroachdb-with-kubernetes.html
 filter_category: crdb_single_kubernetes
 filter_html: Secure
 filter_sort: 1
-docs_area: 
 ---
 
 {% include filter-tabs.md %}

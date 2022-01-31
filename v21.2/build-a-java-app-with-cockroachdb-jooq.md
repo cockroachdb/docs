@@ -6,7 +6,6 @@ twitter: false
 filter_category: crud_java
 filter_html: Use <strong>jOOQ</strong>
 filter_sort: 3
-docs_area: get_started
 ---
 
 {% include filter-tabs.md %}

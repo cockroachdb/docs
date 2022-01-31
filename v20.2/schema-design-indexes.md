@@ -2,7 +2,6 @@
 title: Add Secondary Indexes
 summary: Best practices for working with secondary indexes in CockroachDB.
 toc: true
-keywords: gin, gin index, gin indexes, inverted index, inverted indexes, accelerated index, accelerated indexes
 ---
 
 This page provides best-practice guidance on creating indexes, with a simple example based on Cockroach Labs' fictional vehicle-sharing company, [MovR](movr.html).
@@ -32,7 +31,7 @@ CockroachDB automatically creates an index on the table's [primary key](primary-
 
 To add a secondary index to a table, do one of the following, following the [best practices listed below](#best-practices):
 
-- Add an `INDEX` clause to the end of a [`CREATE TABLE`](create-table.html#create-a-table-with-secondary-and-gin-indexes) statement.
+- Add an `INDEX` clause to the end of a [`CREATE TABLE`](create-table.html#create-a-table-with-secondary-and-inverted-indexes) statement.
 
     `INDEX` clauses generally take the following form:
 

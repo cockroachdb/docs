@@ -2,7 +2,6 @@
 title: DELETE
 summary: The DELETE statement deletes one or more rows from a table.
 toc: true
-docs_area: 
 ---
 
 The `DELETE` [statement](sql-statements.html) deletes rows from a table.

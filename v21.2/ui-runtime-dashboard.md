@@ -2,7 +2,6 @@
 title: Runtime Dashboard
 summary: The Runtime dashboard lets you monitor runtime metrics for you cluster, such as node count, memory usage, and CPU time.
 toc: true
-docs_area: reference.db_console
 ---
 
 The **Runtime** dashboard in the DB Console lets you monitor runtime metrics for you cluster, such as node count, memory usage, and CPU time.

@@ -3,7 +3,6 @@ title: SHOW TABLES
 summary: The SHOW TABLES statement lists the tables in a schema or database.
 keywords: reflection
 toc: true
-docs_area: 
 ---
 
 The `SHOW TABLES` [statement](sql-statements.html) lists the schema, table name, table type, owner, and estimated row count for the tables or [views](views.html) in a schema or database.

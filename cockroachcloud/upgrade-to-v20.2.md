@@ -2,7 +2,6 @@
 title: Upgrade to CockroachDB v20.2
 summary: Learn how to upgrade your CockroachDB cluster to v20.2.
 toc: true
-docs_area: 
 ---
 
 Now that [CockroachDB v20.2](https://www.cockroachlabs.com/docs/releases/v20.2.0.html) is available, your [Console Admin](console-access-management.html#console-admin) can upgrade your cluster directly from the {{ site.data.products.db }} Console. This page walks through the process.

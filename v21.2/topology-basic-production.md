@@ -2,7 +2,6 @@
 title: Basic Production Topology
 summary: Guidance for a single-region production deployment.
 toc: true
-docs_area: 
 ---
 
 When you're ready to run CockroachDB in production in a single region, it's important to deploy at least 3 CockroachDB nodes to take advantage of CockroachDB's automatic replication, distribution, rebalancing, and resiliency capabilities.  

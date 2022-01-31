@@ -3,7 +3,6 @@ title: Example Apps
 summary: Examples that show you how to build simple applications with CockroachDB
 tags: golang, python, java
 toc: true
-docs_area: 
 ---
 
 The examples in this section show you how to build simple applications using CockroachDB.

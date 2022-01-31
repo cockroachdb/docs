@@ -3,7 +3,6 @@ title: Architecture Overview
 summary: Learn about the inner-workings of the CockroachDB architecture.
 toc: true
 key: cockroachdb-architecture.html
-docs_area: reference.architecture
 ---
 
 CockroachDB was designed to create the source-available database we would want to use: one that is both scalable and consistent. Developers often have questions about how we've achieved this, and this guide sets out to detail the inner workings of the `cockroach` process as a means of explanation.

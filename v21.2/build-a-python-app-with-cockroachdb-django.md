@@ -7,7 +7,6 @@ referral_id: docs_python_django
 filter_category: crud_python
 filter_html: <strong>Django</strong>
 filter_sort: 3
-docs_area: get_started
 ---
 
 {% include filter-tabs.md %}

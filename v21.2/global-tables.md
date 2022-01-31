@@ -2,7 +2,6 @@
 title: Global Tables
 summary: Guidance on using Global Tables in a multi-region deployment.
 toc: true
-docs_area: 
 ---
 
 In a [multi-region deployment](multiregion-overview.html), the [`GLOBAL` table locality](multiregion-overview.html#global-tables) is a good choice for tables with the following requirements:

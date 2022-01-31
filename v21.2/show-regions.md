@@ -2,7 +2,6 @@
 title: SHOW REGIONS
 summary: The SHOW REGIONS statement shows the cluster regions or database regions in a multi-region cluster.
 toc: true
-docs_area: 
 ---
 
  The `SHOW REGIONS` [statement](sql-statements.html) lists the [cluster regions](multiregion-overview.html#cluster-regions) for a multi-region cluster, or the [database regions](multiregion-overview.html#database-regions) for the databases in a multi-region cluster.

@@ -2,7 +2,6 @@
 title: information_schema
 summary: The information_schema schema contains read-only views that you can use for introspection into your database's tables, columns, indexes, and views.
 toc: true
-docs_area: 
 ---
 
 The `information_schema` [system catalog](system-catalogs.html) contains information about your database's tables, columns, indexes, and views. This information can be used for introspection and reflection.

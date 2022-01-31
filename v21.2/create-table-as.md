@@ -2,12 +2,10 @@
 title: CREATE TABLE AS
 summary: The CREATE TABLE AS statement persists the result of a query into the database for later reuse.
 toc: true
-docs_area: 
 ---
 
 The `CREATE TABLE ... AS` [statement](sql-statements.html) creates a new table from a [selection query](selection-queries.html).
 
-{% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
 ## Intended use
 
@@ -309,4 +307,3 @@ You can define the [column families](column-families.html) of a new table create
 - [Other SQL Statements](sql-statements.html)
 - [`ALTER PRIMARY KEY`](alter-primary-key.html)
 - [`ALTER TABLE`](alter-table.html)
-- [Online Schema Changes](online-schema-changes.html)

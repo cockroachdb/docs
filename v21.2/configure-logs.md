@@ -2,7 +2,6 @@
 title: Configure logs
 summary: How to configure CockroachDB logs with the --log or --log-config-file flag and YAML payload.
 toc: true
-docs_area: 
 ---
 
 This page describes how to configure CockroachDB logs with the [`--log` or `log-config-file` flag](cockroach-start.html#logging) and a [YAML payload](#yaml-payload). Most logging behaviors are configurable, including:

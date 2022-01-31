@@ -3,7 +3,6 @@ title: cockroach dump
 summary: Learn how to dump schemas and data from a CockroachDB cluster.
 toc: true
 key: sql-dump.html
-docs_area: reference.cli
 ---
 
 {{site.data.alerts.callout_danger}}

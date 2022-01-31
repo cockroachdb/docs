@@ -3,7 +3,6 @@ title: ST_Covers
 summary: ST_Covers(A, B) returns true if no point in shape B lies outside of shape A
 toc: true
 has_prefixed_variant: true
-docs_area: 
 ---
 
 Given two shapes _A_ and _B_, predicate function `ST_Covers(A, B)` returns `true` if no point in _B_ lies outside of shape _A_.  Otherwise, it returns `false`.

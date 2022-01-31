@@ -3,7 +3,6 @@ title: ST_ConvexHull
 summary: ST_ConvexHull(A) returns another shape B that is the convex hull of A.
 toc: true
 has_prefixed_variant: false
-docs_area: 
 ---
 
 Given a shape _A_, `ST_ConvexHull(A)` returns another shape _B_ that is the [convex hull](https://en.wikipedia.org/wiki/Convex_hull) of _A_.  The convex hull of a shape is the smallest [convex set](https://en.wikipedia.org/wiki/Convex_set) of points that [contains](st_contains.html) every point in the set that comprises that shape.

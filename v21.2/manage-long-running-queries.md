@@ -2,7 +2,6 @@
 title: Manage Long-Running Queries
 summary: Learn how to identify and cancel long-running queries.
 toc: true
-docs_area: 
 ---
 
 This page shows you how to identify and, if necessary, cancel SQL queries that are taking longer than expected to process.

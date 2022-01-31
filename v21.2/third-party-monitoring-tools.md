@@ -2,7 +2,6 @@
 title: Third-Party Monitoring Integrations
 summary: Learn about third-party monitoring tools that are integrated with CockroachDB.
 toc: true
-docs_area: 
 ---
 
 CockroachDB is officially integrated with the following third-party monitoring platforms. These integrations enable external tools and interfaces to collect, visualize, and alert on CockroachDB metrics.

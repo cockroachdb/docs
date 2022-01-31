@@ -2,7 +2,6 @@
 title: Single Sign-on (Enterprise)
 summary: Implement single sign-on (SSO) for DB Console access.
 toc: true
-docs_area: 
 ---
 
 Single sign-on (SSO) allows a CockroachDB user to access the DB Console in a secure cluster via an external identity provider. When SSO is configured and enabled, the [DB Console login page](ui-overview.html#db-console-access) will display an OAuth login button in addition to the password access option.

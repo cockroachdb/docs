@@ -2,7 +2,6 @@
 title: Migrate from OpenStreetMap
 summary: Learn how to migrate data from the OpenStreetMap pbf format into a CockroachDB cluster.
 toc: true
-docs_area: 
 ---
 
  CockroachDB supports efficiently storing and querying [spatial data](spatial-data.html).

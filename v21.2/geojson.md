@@ -2,7 +2,6 @@
 title: GeoJSON
 summary: The GeoJSON data format for representing spatial information is based on JavaScript Object Notation (JSON).
 toc: true
-docs_area: 
 ---
 
 GeoJSON is a textual data format for representing spatial information.  It is based on [JavaScript Object Notation (JSON)](https://www.json.org).

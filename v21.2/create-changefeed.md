@@ -2,7 +2,6 @@
 title: CREATE CHANGEFEED
 summary: The CREATE CHANGEFEED statement creates a changefeed of row-level change subscriptions in a configurable format to a configurable sink.
 toc: true
-docs_area: 
 ---
 
 {{site.data.alerts.callout_info}}

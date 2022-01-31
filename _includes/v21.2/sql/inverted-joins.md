@@ -2,7 +2,7 @@ To run these examples, initialize a demo cluster with the MovR workload.
 
 {% include {{ page.version.version }}/demo_movr.md %}
 
-Create a GIN index on the `vehicles` table's `ext` column.
+Create an inverted index on the `vehicles` table's `ext` column.
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -40,7 +40,7 @@ EXPLAIN SELECT * FROM vehicles@primary AS v2 INNER INVERTED JOIN vehicles@idx_ve
 Time: 1ms total (execution 1ms / network 0ms)
 ~~~
 
-You can omit the `INNER INVERTED JOIN` statement by putting `v1.ext` on the left side of a `@>` join condition in a `WHERE` clause and using an index hint for the GIN index.
+You can omit the `INNER INVERTED JOIN` statement by putting `v1.ext` on the left side of a `@>` join condition in a `WHERE` clause and using an index hint for the inverted index.
 
 {% include copy-clipboard.html %}
 ~~~ sql

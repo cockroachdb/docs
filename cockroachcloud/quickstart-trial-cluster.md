@@ -5,7 +5,6 @@ toc: true
 filter_category: qs_crdb_cloud
 filter_html: CockroachDB Dedicated
 filter_sort: 2
-docs_area: get_started
 ---
 
 {% include filter-tabs.md %}

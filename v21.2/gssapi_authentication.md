@@ -2,7 +2,6 @@
 title: GSSAPI Authentication (Enterprise)
 summary: Learn about the GSSAPI authentication features for secure CockroachDB clusters.
 toc: true
-docs_area: 
 ---
 
 CockroachDB supports the Generic Security Services API (GSSAPI) with Kerberos authentication.

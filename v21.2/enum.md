@@ -2,7 +2,6 @@
 title: ENUM
 summary: CockroachDB's ENUM data types comprise a set of values.
 toc: true
-docs_area: 
 ---
 
  User-defined `ENUM` [data types](data-types.html) consist of a set of enumerated, static values.

@@ -7,7 +7,6 @@ referral_id: docs_roach_data_java_spring_jdbc
 filter_category: crud_spring
 filter_html: Use <strong>JDBC</strong>
 filter_sort: 1
-docs_area: 
 ---
 
 {% include filter-tabs.md %}

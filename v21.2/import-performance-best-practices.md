@@ -2,7 +2,6 @@
 title: Import Performance Best Practices
 summary: Best practices for optimizing import performance in CockroachDB.
 toc: true
-docs_area: 
 ---
 
 This page provides best practices for optimizing [import](import.html) performance in CockroachDB.

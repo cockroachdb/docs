@@ -4,7 +4,6 @@ summary: Learn how to use CockroachDB from a Hello World Python application with
 toc: true
 twitter: false
 referral_id: docs_hello_world_python_sqlalchemy
-docs_area: get_started
 ---
 
 This tutorial shows you how build a simple Hello World Python application with CockroachDB and the [SQLAlchemy](https://docs.sqlalchemy.org/en/latest/) ORM.

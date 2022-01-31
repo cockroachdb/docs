@@ -2,7 +2,6 @@
 title: Common Issues to Monitor
 summary: How to configure and monitor your CockroachDB cluster to prevent commonly encountered issues.
 toc: true
-docs_area: 
 ---
 
 This page summarizes how to configure and monitor your cluster to prevent issues commonly encountered with:

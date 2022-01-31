@@ -2,7 +2,6 @@
 title: Spatial Data
 summary: Tutorial for working with spatial data in CockroachDB.
 layout: tutorial
-docs_area: 
 ---
 
 <div

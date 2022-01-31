@@ -3,7 +3,6 @@ title: cockroach debug merge-logs
 summary: Learn the command for merging the collected debug logs from all nodes in your cluster.
 toc: true
 key: debug-merge-logs.html
-docs_area: reference.cli
 ---
 
 The `cockroach debug merge-logs` [command](cockroach-commands.html) merges log files from multiple nodes into a single time-ordered stream of messages with an added per-message prefix to indicate the corresponding node. You can use it in conjunction with logs collected using the [`debug zip`](cockroach-debug-zip.html) command to aid in debugging.

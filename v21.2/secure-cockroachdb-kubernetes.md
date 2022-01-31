@@ -4,7 +4,6 @@ summary: How to authenticate a secure 3-node CockroachDB cluster with Kubernetes
 toc: true
 toc_not_nested: true
 secure: true
-docs_area: 
 ---
 
 {{site.data.alerts.callout_info}}

@@ -2,7 +2,6 @@
 title: Common Errors
 summary: Understand and resolve common error messages written to stderr or logs.
 toc: false
-docs_area: 
 ---
 
 This page helps you understand and resolve error messages written to `stderr` or your [logs](logging-overview.html).

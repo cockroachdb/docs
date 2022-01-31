@@ -2,7 +2,6 @@
 title: cockroach debug ballast
 summary: Create a large, unused file in a node's storage directory that you can delete if the node runs out of disk space.
 toc: true
-docs_area: reference.cli
 ---
 
 <span class="version-tag">New in v21.2</span>: CockroachDB automatically creates an emergency ballast file at startup time.  The `cockroach debug ballast` command is still available but deprecated.  For more information about how automatic ballast file creation works, see [automatic ballast files](cluster-setup-troubleshooting.html#automatic-ballast-files).

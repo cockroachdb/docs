@@ -5,7 +5,6 @@ toc: false
 contribute: false
 cta: false
 homepage: true
-docs_area: 
 ---
 
 <div class="home-header mb-xl-5 bg-cover bg-cover__bg-gradient-purple-blue">

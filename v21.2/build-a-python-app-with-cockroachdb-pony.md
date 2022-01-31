@@ -6,7 +6,6 @@ twitter: false
 filter_category: crud_python
 filter_html: <strong>PonyORM</strong>
 filter_sort: 4
-docs_area: get_started
 ---
 
 {% include filter-tabs.md %}

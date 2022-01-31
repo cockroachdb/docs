@@ -2,7 +2,6 @@
 title: Query Data
 summary: How to send SQL queries to CockroachDB from various programming languages
 toc: true
-docs_area: 
 ---
 
 This page has instructions for making SQL [selection queries][selection] against CockroachDB from various programming languages.

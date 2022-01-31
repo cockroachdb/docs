@@ -4,7 +4,6 @@ summary: Install CockroachDB on Mac, Linux, or Windows. Sign up for product rele
 tags: download, binary, homebrew
 toc: true
 key: install-cockroachdb.html
-docs_area: 
 ---
 
 <div id="os-tabs" class="clearfix">

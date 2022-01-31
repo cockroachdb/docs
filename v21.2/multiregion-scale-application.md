@@ -2,7 +2,6 @@
 title: Scale to Multiple Regions
 summary: Learn how to scale a single-region application to multiple regions.
 toc: true
-docs_area: 
 ---
 
 This page provides guidance for scaling a single-region application to multiple regions.

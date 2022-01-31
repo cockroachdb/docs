@@ -7,7 +7,6 @@ ssh-link: https://www.digitalocean.com/community/tutorials/how-to-connect-to-you
 filter_category: deploy_crdb_do
 filter_html: Secure
 filter_sort: 1
-docs_area: 
 ---
 
 {% include filter-tabs.md %}

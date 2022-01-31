@@ -2,7 +2,6 @@
 title: Support Resources
 summary: There are various ways to reach out for support from Cockroach Labs and our community.
 toc: false
-docs_area: 
 ---
 
 For each major release of CockroachDB, Cockroach Labs provides maintenance support for at least 365 days and assistance support for at least an additional 180 days. For more details, see the [Release Support Policy](../releases/release-support-policy.html).

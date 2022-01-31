@@ -4,7 +4,6 @@ summary: Learn how to use Google Cloud Run (GCR) and CockroachDB Serverless to d
 toc: true
 twitter: false
 referral_id: docs_gcr_django
-docs_area: 
 ---
 
 This tutorial shows you how to use Google Cloud Run to deploy a containerized Django application that communicates with a {{ site.data.products.serverless }} cluster.

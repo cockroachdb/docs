@@ -2,7 +2,6 @@
 title: cockroach statement-diag
 summary: Use statement-diag to manage and download statement diagnostics bundles.
 toc: true
-docs_area: reference.cli
 ---
 
 Use the `cockroach statement-diag` [command](cockroach-commands.html) to manage and download statement diagnostics bundles generated from the [DB Console](ui-statements-page.html#diagnostics) or [`EXPLAIN ANALYZE (DEBUG)`](explain-analyze.html#explain-analyze-debug).

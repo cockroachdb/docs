@@ -2,7 +2,6 @@
 title: MULTIPOINT
 summary: The spatial MULTIPOINT object is a collection of POINTs.
 toc: true
-docs_area: 
 ---
 
 A `MULTIPOINT` is a collection of [Points](point.html).  MultiPoints are useful for gathering a group of Points into one geometry. For example, you may want to gather the points denoting all of the State Capitols in the U.S. into a single geometry.

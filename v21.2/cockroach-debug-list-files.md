@@ -3,7 +3,6 @@ title: cockroach debug list-files
 summary: Learn the command for listing the files collected in the debug zip.
 toc: true
 key: debug-list-files.html
-docs_area: reference.cli
 ---
 
 The `cockroach debug list-files` [command](cockroach-commands.html) shows the files that will be collected by using [`cockroach debug zip`](cockroach-debug-zip.html).
@@ -50,7 +49,7 @@ Flag | Description
 
 ## Examples
 
-### List all collected files
+### List all collected files 
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell

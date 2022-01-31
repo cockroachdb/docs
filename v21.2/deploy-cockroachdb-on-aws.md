@@ -8,7 +8,6 @@ filter_category: deploy_crdb_aws
 filter_html: Secure
 filter_sort: 1
 
-docs_area: 
 ---
 
 {% include filter-tabs.md %}

@@ -3,7 +3,6 @@ title: ST_Disjoint
 summary: ST_Disjoint(A, B) returns true if no point in shape A lies within shape B.
 toc: true
 has_prefixed_variant: false
-docs_area: 
 ---
 
 Given two shapes _A_ and _B_, `ST_Disjoint(A, B)` returns `true` if the shapes do not share any of the same space -- that is, if no point in the set that comprises _A_ is also a member of the set of points that make up _B_.

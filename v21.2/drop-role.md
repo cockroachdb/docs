@@ -2,12 +2,9 @@
 title: DROP ROLE
 summary: The DROP ROLE statement removes one or more SQL roles.
 toc: true
-docs_area: 
 ---
 
 The `DROP ROLE` [statement](sql-statements.html) removes one or more SQL roles.
-
-{% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
 {{site.data.alerts.callout_info}}
  <code>DROP ROLE</code> is no longer an Enterprise feature and is now freely available in the core version of CockroachDB. Also, since the keywords `ROLE` and `USER` can now be used interchangeably in SQL statements for enhanced Postgres compatibility, `DROP ROLE` is now an alias for [`DROP USER`](drop-user.html).
@@ -70,4 +67,3 @@ In this example, first check a role's privileges. Then, revoke the role's privil
 - [`GRANT`](grant.html)
 - [`SHOW GRANTS`](show-grants.html)
 - [Other SQL Statements](sql-statements.html)
-- [Online Schema Changes](online-schema-changes.html)

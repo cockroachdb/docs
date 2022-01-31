@@ -2,7 +2,6 @@
 title: Paginate Results
 summary: Paginate results from queries against your cluster
 toc: true
-docs_area: 
 ---
 
 To iterate through a table one "page" of results at a time (also known as pagination) there are two options, only one of which is recommended:

@@ -6,7 +6,6 @@ redirect_from: free-faqs.html
 filter_category: cloud_faqs
 filter_html: CockroachDB Serverless (beta)
 filter_sort: 1
-docs_area: 
 ---
 
 This page answers the frequently asked questions about {{ site.data.products.serverless }} and {{ site.data.products.dedicated }}.

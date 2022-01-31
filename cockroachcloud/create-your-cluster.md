@@ -5,7 +5,6 @@ toc: true
 filter_category: create_cluster_cloud
 filter_html: CockroachDB Dedicated
 filter_sort: 2
-docs_area: 
 ---
 
 {% include filter-tabs.md %}

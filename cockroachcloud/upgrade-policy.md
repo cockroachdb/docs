@@ -2,7 +2,6 @@
 title: Upgrade Policy
 summary: Learn about the CockroachDB Cloud upgrade policy.
 toc: true
-docs_area: 
 ---
 
 This page describes the upgrade policy for {{ site.data.products.db }}.

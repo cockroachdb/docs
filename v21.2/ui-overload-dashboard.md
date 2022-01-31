@@ -2,7 +2,6 @@
 title: Overload Dashboard
 summary: The Overload dashboard lets you monitor the performance of the admission control system.
 toc: true
-docs_area: reference.db_console
 ---
 
 <span class="version-tag">New in v21.2:</span> The **Overload dashboard** lets you monitor the performance of the parts of your cluster relevant to the cluster's [admission control system](architecture/admission-control.html). This includes CPU usage, the runnable goroutines waiting per CPU, the health of the persistent stores, and the performance of admission control system when it is enabled.

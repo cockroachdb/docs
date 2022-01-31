@@ -2,14 +2,11 @@
 title: REVOKE
 summary: The REVOKE statement revokes privileges from users and/or roles, or revokes privileges from users and/or roles.
 toc: true
-docs_area: 
 ---
 
 The `REVOKE` [statement](sql-statements.html) revokes [privileges](authorization.html#assign-privileges) from [users](authorization.html#create-and-manage-users) and/or [roles](authorization.html#create-and-manage-roles). For the list of privileges that can be granted to and revoked from users and roles, see [`GRANT`](grant.html).
 
 You can use `REVOKE` to directly revoke privileges from a role or user, or you can revoke membership to an existing role, which effectively revokes that role's privileges.
-
-{% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
 ## Syntax
 

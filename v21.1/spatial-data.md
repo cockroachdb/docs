@@ -2,7 +2,6 @@
 title: Working with Spatial Data
 summary: CockroachDB has special support for efficiently storing and querying spatial data.
 toc: true
-keywords: gin, gin index, gin indexes, inverted index, inverted indexes, accelerated index, accelerated indexes
 ---
 
 This page provides information about working with spatial data in CockroachDB.
@@ -84,7 +83,7 @@ For example, to add an index to the `geom` column of the [sample `tornadoes` tab
 CREATE INDEX tornado_geom_idx ON tornadoes USING GIST (geom);
 ~~~
 
-This creates a (spatial) [GIN index](inverted-indexes.html) on the `geom` column.
+This creates a (spatial) [inverted index](inverted-indexes.html) on the `geom` column.
 
 Because CockroachDB is a scale-out, multi-node database, our spatial indexing strategy is based on a [space-filling curve](https://en.wikipedia.org/wiki/Space-filling_curve)/quad-tree design (also known as "divide the space"), rather than the [R-Tree](https://en.wikipedia.org/wiki/R-tree) data structure used by some other spatial databases (also known as "divide the objects"). Other databases that use a "divide the space" strategy include Microsoft SQL Server and MongoDB.
 

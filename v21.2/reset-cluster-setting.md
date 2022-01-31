@@ -2,7 +2,6 @@
 title: RESET CLUSTER SETTING
 summary: The RESET CLUSTER SETTING statement resets a cluster setting to its default value for the client session.
 toc: true
-docs_area: 
 ---
 
 The `RESET` [statement](sql-statements.html) resets a [cluster setting](set-cluster-setting.html) to its default value for the client session..

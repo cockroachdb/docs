@@ -2,7 +2,6 @@
 title: User Authorization
 summary: Learn about the user authorization features for CockroachDB Cloud clusters.
 toc: true
-docs_area: 
 ---
 
 {{ site.data.products.db }} requires you to create SQL users to access the cluster.

@@ -5,7 +5,6 @@ toc: true
 filter_category: crdb_docker
 filter_html: Secure
 filter_sort: 1
-docs_area: 
 ---
 
 {% include filter-tabs.md %}

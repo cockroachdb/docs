@@ -3,7 +3,6 @@ title: ST_Touches
 summary: ST_Touches(A, B) returns true if A and B have at least one point in common, but their interiors do not intersect.
 toc: true
 has_prefixed_variant: true
-docs_area: 
 ---
 
 Given two shapes _A_ and _B_, `ST_Touches(A, B)` returns `true` if both the following are true:

@@ -2,7 +2,6 @@
 title: ALTER USER
 summary: The ALTER USER statement can be used to add or change a user's password.
 toc: true
-docs_area: reference.sql 
 ---
 
 The `ALTER USER` [statement](sql-statements.html) can be used to add, change, or remove a [user's](create-user.html) password and to change the role options for a user.

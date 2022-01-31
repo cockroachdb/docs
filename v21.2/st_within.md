@@ -3,7 +3,6 @@ title: ST_Within
 summary: ST_Within(A, B) returns true if no point in shape A lies outside of shape B, and at least one point in the interior of A lies in the interior of B.
 toc: true
 has_prefixed_variant: true
-docs_area: 
 ---
 
 Given two shapes _A_ and _B_, the predicate function `ST_Within(A, B)` returns `true` if the following criteria are met:

@@ -2,7 +2,6 @@
 title: Changefeeds Dashboard
 summary: The Changefeeds dashboard lets you monitor the changefeeds created across your cluster.
 toc: true
-docs_area: reference.db_console
 ---
 
 The **Changefeeds** dashboard in the DB Console lets you monitor the [changefeeds](change-data-capture-overview.html) created across your cluster.

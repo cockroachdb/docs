@@ -405,7 +405,6 @@ layout: null
 /docs/start-a-local-cluster.html /docs/stable/start-a-local-cluster.html 301
 /docs/column-families.html /docs/stable/column-families.html 301
 /docs/performance-recipes-solutions.html /docs/stable/performance-recipes.html 301
-/docs/stable/stream-data-out-of-cockroachdb-using-changefeeds.html /docs/stable/change-data-capture-overview.html 301
 
 #CockroachDB Cloud release notes
 

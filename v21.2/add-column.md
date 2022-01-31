@@ -2,12 +2,9 @@
 title: ADD COLUMN
 summary: Use the ADD COLUMN statement to add columns to tables.
 toc: true
-docs_area: reference.sql
 ---
 
 `ADD COLUMN` is a subcommand of [`ALTER TABLE`](alter-table.html). Use `ADD COLUMN` to add columns to existing tables.
-
-{% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
 {% include {{ page.version.version }}/sql/combine-alter-table-commands.md %}
 
@@ -385,4 +382,3 @@ When any value in any row of the `bank` table is updated, CockroachDB re-evaluat
 - [Collation](collate.html)
 - [Column Families](column-families.html)
 - [`SHOW JOBS`](show-jobs.html)
-- [Online Schema Changes](online-schema-changes.html)

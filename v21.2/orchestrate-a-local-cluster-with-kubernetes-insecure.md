@@ -5,7 +5,6 @@ toc: true
 filter_category: crdb_kubernetes
 filter_html: Insecure
 filter_sort: 2
-docs_area: 
 ---
 
 {% include filter-tabs.md %}

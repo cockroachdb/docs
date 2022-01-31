@@ -2,8 +2,6 @@
 title: Indexes
 summary: Indexes improve your database's performance by helping SQL locate data without having to look through every row of a table.
 toc: true
-keywords: gin, gin index, gin indexes, inverted index, inverted indexes, accelerated index, accelerated indexes
-docs_area: reference.performance_optimization
 ---
 
 Indexes improve your database's performance by helping SQL locate data without having to look through every row of a table.
@@ -32,7 +30,7 @@ The `primary` index helps filter a table's primary key but doesn't help SQL find
 
 <a name="unique-secondary-indexes"></a>
 
-- At the same time as the table with the `INDEX` clause of [`CREATE TABLE`](create-table.html#create-a-table-with-secondary-and-gin-indexes). In addition to explicitly defined indexes, CockroachDB automatically creates secondary indexes for columns with the [`UNIQUE` constraint](unique.html).
+- At the same time as the table with the `INDEX` clause of [`CREATE TABLE`](create-table.html#create-a-table-with-secondary-and-inverted-indexes). In addition to explicitly defined indexes, CockroachDB automatically creates secondary indexes for columns with the [`UNIQUE` constraint](unique.html).
 - For existing tables with [`CREATE INDEX`](create-index.html).
 - By applying the `UNIQUE` constraint to columns with [`ALTER TABLE`](alter-table.html), which automatically creates an index of the constrained columns.
 
@@ -130,7 +128,7 @@ For best practices, see [Add a Secondary Index: Best Practices](schema-design-in
 
 {% include {{page.version.version}}/sql/indexes-regional-by-row.md %}
 
-This behavior also applies to [GIN indexes](inverted-indexes.html).
+This behavior also applies to [inverted indexes](inverted-indexes.html).
 
 For an example that uses unique indexes but applies to all indexes on `REGIONAL BY ROW` tables, see [Add a unique index to a `REGIONAL BY ROW` table](add-constraint.html#add-a-unique-index-to-a-regional-by-row-table).
 
@@ -138,7 +136,7 @@ For an example that uses unique indexes but applies to all indexes on `REGIONAL 
 
 - [`CREATE INDEX`](create-index.html)
 - [Schema Design: Add Secondary Indexes](schema-design-indexes.html)
-- [GIN Indexes](inverted-indexes.html)
+- [Inverted Indexes](inverted-indexes.html)
 - [Partial Indexes](partial-indexes.html)
 - [Spatial Indexes](spatial-indexes.html)
 - [Hash-sharded Indexes](hash-sharded-indexes.html)

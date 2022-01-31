@@ -2,7 +2,6 @@
 title: pg_extension
 summary: The pg_extension schema contains information about CockroachDB extensions.
 toc: true
-docs_area: 
 ---
 
 The `pg_extension` [system catalogs](system-catalogs.html) provides information about CockroachDB extensions.

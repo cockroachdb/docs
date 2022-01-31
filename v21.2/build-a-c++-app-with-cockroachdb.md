@@ -4,7 +4,6 @@ summary: Learn how to use CockroachDB from a simple C++ application with a low-l
 toc: true
 twitter: false
 referral_id: docs_cxx
-docs_area: get_started
 ---
 
 This tutorial shows you how build a simple C++ application with CockroachDB and the C++ libpqxx driver.

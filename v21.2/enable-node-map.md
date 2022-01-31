@@ -2,7 +2,6 @@
 title: Enable the Node Map
 summary: Learn how to enable the node map in the DB Console.
 toc: true
-docs_area: 
 ---
 
 {% include {{ page.version.version }}/ui/admin-access.md %}

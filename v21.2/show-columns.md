@@ -2,7 +2,6 @@
 title: SHOW COLUMNS
 summary: The SHOW COLUMNS statement shows details about columns in a table, including each column's name, type, default value, and whether or not it's nullable.
 toc: true
-docs_area: 
 ---
 
 The `SHOW COLUMNS` [statement](sql-statements.html) shows details about columns in a table, including each column's name, type, default value, and whether or not it's nullable.

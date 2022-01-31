@@ -7,7 +7,6 @@ ssh-link: https://cloud.google.com/compute/docs/instances/connecting-to-instance
 filter_category: deploy_crdb_gce
 filter_html: Insecure
 filter_sort: 2
-docs_area: 
 ---
 
 {% include filter-tabs.md %}
