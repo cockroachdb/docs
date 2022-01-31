@@ -22,26 +22,26 @@
           "title": "Hello World",
           "items": [
             {
-              "title": "Build a Hello World App Using Go",
+              "title": "Go",
               "urls": [
                 "/${VERSION}/hello-world-go-pgx.html",
                 "/${VERSION}/hello-world-go-gorm.html"
               ]
             },
             {
-              "title": "Build a Hello World App Using Java",
+              "title": "Java",
               "urls": [
                 "/${VERSION}/hello-world-java-jdbc.html"
               ]
             },
             {
-              "title": "Build a Hello World App Using JavaScript (Node.js)",
+              "title": "JavaScript (Node.js)",
               "urls": [
                 "/${VERSION}/hello-world-node-postgres.html"
               ]
             },
             {
-              "title": "Build a Hello World App Using Python",
+              "title": "Python",
               "urls": [
                 "/${VERSION}/hello-world-python-sqlalchemy.html"
               ]
@@ -52,7 +52,7 @@
           "title": "Simple CRUD",
           "items": [
             {
-              "title": "Build a Simple CRUD App Using Go",
+              "title": "Go",
               "urls": [
                 "/${VERSION}/build-a-go-app-with-cockroachdb.html",
                 "/${VERSION}/build-a-go-app-with-cockroachdb-pq.html",
@@ -61,7 +61,7 @@
               ]
             },
             {
-              "title": "Build a Simple CRUD App Using Java",
+              "title": "Java",
               "urls": [
                 "/${VERSION}/build-a-java-app-with-cockroachdb.html",
                 "/${VERSION}/build-a-java-app-with-cockroachdb-hibernate.html",
@@ -70,7 +70,7 @@
               ]
             },
             {
-              "title": "Build a Simple CRUD App Using JavaScript/TypeScript",
+              "title": "JavaScript/TypeScript",
               "urls": [
                 "/${VERSION}/build-a-nodejs-app-with-cockroachdb.html",
                 "/${VERSION}/build-a-nodejs-app-with-cockroachdb-sequelize.html",
@@ -79,7 +79,7 @@
               ]
             },
             {
-              "title": "Build a Simple CRUD App Using Python",
+              "title": "Python",
               "urls": [
                 "/${VERSION}/build-a-python-app-with-cockroachdb.html",
                 "/${VERSION}/build-a-python-app-with-cockroachdb-sqlalchemy.html",
@@ -88,38 +88,38 @@
               ]
             },
             {
-              "title": "Build a Simple CRUD App Using Ruby",
+              "title": "Ruby",
               "urls": [
                 "/${VERSION}/build-a-ruby-app-with-cockroachdb.html",
                 "/${VERSION}/build-a-ruby-app-with-cockroachdb-activerecord.html"
               ]
             },
             {
-              "title": "Build a Simple CRUD App Using C++",
+              "title": "C++",
               "urls": [
                 "/${VERSION}/build-a-c++-app-with-cockroachdb.html"
               ]
             },
             {
-              "title": "Build a Simple CRUD App Using C# (.NET)",
+              "title": "C# (.NET)",
               "urls": [
                 "/${VERSION}/build-a-csharp-app-with-cockroachdb.html"
               ]
             },
             {
-              "title": "Build a Simple CRUD App Using Clojure",
+              "title": "Clojure",
               "urls": [
                 "/${VERSION}/build-a-clojure-app-with-cockroachdb.html"
               ]
             },
             {
-              "title": "Build a Simple CRUD App Using PHP",
+              "title": "PHP",
               "urls": [
                 "/${VERSION}/build-a-php-app-with-cockroachdb.html"
               ]
             },
             {
-              "title": "Build a Simple CRUD App Using Rust",
+              "title": "Rust",
               "urls": [
                 "/${VERSION}/build-a-rust-app-with-cockroachdb.html"
               ]
@@ -131,6 +131,13 @@
     {
       "title": "FAQs",
       "items": [
+        {
+          "title": "CockroachDB Cloud FAQs",
+          "urls": [
+            "/cockroachcloud/serverless-faqs.html",
+            "/cockroachcloud/frequently-asked-questions.html"
+          ]
+        },
         {
           "title": "Product FAQs",
           "urls": [
