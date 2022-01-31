@@ -27,6 +27,7 @@ To filter the statements, click the **Filters** field.
 To filter by [application]({{ link_prefix }}connection-parameters.html#additional-connection-parameters), select **App** and choose one or more applications. When no application is selected internal statements **are not** displayed.
 
 {{site.data.alerts.callout_info}}
+- Internal queries are displayed under the `$ internal` app.
 - Queries from the SQL shell are displayed under the `$ cockroach` app.
 - If you haven't set `application_name` in a client connection string, it appears as `unset`.
 {{site.data.alerts.end}}
