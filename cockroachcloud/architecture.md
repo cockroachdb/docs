@@ -2,6 +2,7 @@
 title: CockroachDB Cloud Architecture
 summary: Learn more about CockroachDB Cloud architecture
 toc: true
+docs_area: 
 ---
 
 {{ site.data.products.db }} is a fully-managed deployment of CockroachDB. This page describes {{ site.data.products.db }}'s architecture and how it relates to CockroachDB.
@@ -58,6 +59,10 @@ Finally, the SQL pods communicate with the KV layer to access data managed by th
 #### Baseline
 
 Baseline performance for a Serverless cluster is 100 RUs per second, and any usage above that is called [burst performance](#concepts). Clusters start with 10M RUs of free burst capacity each month and earn 100 RUs per second up to a maximum of 250M free RUs per month. Earned RUs can be used immediately or accumulated as burst capacity. If you use all of your burst capacity, your cluster will revert to baseline performance.
+
+The following diagram shows how RUs are accumulated and consumed:
+
+<img src="{{ 'images/cockroachcloud/ru-diagram.png' | relative_url }}" alt="RU diagram" style="max-width:100%" />
 
 #### Paid
 

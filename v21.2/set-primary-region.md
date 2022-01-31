@@ -2,6 +2,7 @@
 title: SET PRIMARY REGION
 summary: The SET PRIMARY REGION statement sets the primary region of a multi-region database.
 toc: true
+docs_area: 
 ---
 
  The `ALTER DATABASE .. SET PRIMARY REGION` [statement](sql-statements.html) sets the primary [region](multiregion-overview.html#database-regions) of a [multi-region database](multiregion-overview.html).

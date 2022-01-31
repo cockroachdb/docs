@@ -2,6 +2,7 @@
 title: SHOW JOBS
 summary: The SHOW JOBS statement lists all currently active schema changes and backup/restore jobs.
 toc: true
+docs_area: 
 ---
 
 The `SHOW JOBS` [statement](sql-statements.html) lists all of the types of long-running tasks your cluster has performed in the last 12 hours, including:
@@ -144,7 +145,7 @@ You can filter jobs by using `SHOW AUTOMATIC JOBS` as the data source for a [`SE
 
 <span class="version-tag">New in v21.2:</span> You can display specific fields relating to changefeed jobs by running `SHOW CHANGEFEED JOBS`. These fields include:
 
-* [`high_water_timestamp`](stream-data-out-of-cockroachdb-using-changefeeds.html#monitor-a-changefeed): Guarantees all changes before or at this time have been emitted.
+* [`high_water_timestamp`](monitor-and-debug-changefeeds.html#monitor-a-changefeed): Guarantees all changes before or at this time have been emitted.
 * [`sink_uri`](create-changefeed.html#sink-uri): The destination URI of the configured sink for a changefeed.
 * `full_table_names`: The full [name resolution](sql-name-resolution.html) for a table. For example, `defaultdb.public.mytable` refers to the `defaultdb` database, the `public` schema, and the table `mytable` table.
 
@@ -160,7 +161,7 @@ You can filter jobs by using `SHOW AUTOMATIC JOBS` as the data source for a [`SE
 (2 rows)
 ~~~
 
-Changefeed jobs can be [paused](stream-data-out-of-cockroachdb-using-changefeeds.html#pause), [resumed](stream-data-out-of-cockroachdb-using-changefeeds.html#resume), or [canceled](stream-data-out-of-cockroachdb-using-changefeeds.html#cancel).
+Changefeed jobs can be [paused](create-and-configure-changefeeds.html#pause), [resumed](create-and-configure-changefeeds.html#resume), or [canceled](create-and-configure-changefeeds.html#cancel).
 
 ### Filter changefeed jobs
 

@@ -2,6 +2,7 @@
 title: PAUSE SCHEDULES
 summary: The PAUSE SCHEDULES statement lets you temporarily halt the process of a backup schedule.
 toc: true
+docs_area: 
 ---
 
  The `PAUSE SCHEDULES` [statement](sql-statements.html) can be used to pause [backup schedules](create-schedule-for-backup.html).

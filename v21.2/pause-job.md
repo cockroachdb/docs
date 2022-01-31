@@ -2,6 +2,7 @@
 title: PAUSE JOB
 summary: The PAUSE JOB statement lets you temporarily halt the process of potentially long-running jobs.
 toc: true
+docs_area: 
 ---
 
 The `PAUSE JOB` [statement](sql-statements.html) lets you pause the following types of jobs:
@@ -10,7 +11,7 @@ The `PAUSE JOB` [statement](sql-statements.html) lets you pause the following ty
 - [`BACKUP`](backup.html) and [`RESTORE`](restore.html) jobs
 - [User-created table statistics](create-statistics.html) jobs
 - [Automatic table statistics](cost-based-optimizer.html#table-statistics) jobs
-- [Changefeeds](stream-data-out-of-cockroachdb-using-changefeeds.html)
+- [Changefeeds](use-changefeeds.html)
 - [Schema change](online-schema-changes.html) jobs
 - [Scheduled backup](manage-a-backup-schedule.html) jobs
 

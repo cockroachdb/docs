@@ -2,11 +2,12 @@
 title: ALTER INDEX
 summary: Use the ALTER INDEX statement to change an existing index.
 toc: true
+docs_area: reference.sql 
 ---
 
 The `ALTER INDEX` [statement](sql-statements.html) applies a schema change to an index. For information on using `ALTER INDEX`, see the pages for its relevant [subcommands](#subcommands).
 
-{% include {{{ page.version.version }}/misc/schema-change-stmt-note.md %}
+{% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
 ## Subcommands
 

@@ -2,6 +2,7 @@
 title: CANCEL SESSION
 summary: The CANCEL SESSION statement stops long-running sessions.
 toc: true
+docs_area: 
 ---
 
 The `CANCEL SESSION` [statement](sql-statements.html) lets you stop long-running sessions. `CANCEL SESSION` will attempt to cancel the currently active query and end the session.

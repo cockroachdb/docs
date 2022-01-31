@@ -7,6 +7,7 @@ referral_id: docs_go_gorm
 filter_category: crud_go
 filter_html: Use <strong>GORM</strong></button>
 filter_sort: 3
+docs_area: get_started
 ---
 
 {% include filter-tabs.md %}

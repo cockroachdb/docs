@@ -6,6 +6,7 @@ redirect_from: free-faqs.html
 filter_category: cloud_faqs
 filter_html: CockroachDB Serverless (beta)
 filter_sort: 1
+docs_area: 
 ---
 
 This page answers the frequently asked questions about {{ site.data.products.serverless }} and {{ site.data.products.dedicated }}.
@@ -135,7 +136,7 @@ We don't recommend `userfile` for `EXPORT` operations. You can either add billin
 
 ### Is change data capture available to me?
 
-Yes, {{ site.data.products.serverless-plan }} clusters have access to [Core Changefeeds](run-bulk-operations.html#stream-data-out-of-your-cockroachdb-cloud-cluster).
+Yes, {{ site.data.products.serverless-plan }} clusters have access to [Core Changefeeds](../{{site.versions["stable"]}}/changefeed-examples.html#create-a-core-changefeed).
 
 ### Can I backup my {{ site.data.products.serverless }} cluster? Does Cockroach Labs take backups of my cluster?
 

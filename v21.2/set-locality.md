@@ -2,6 +2,7 @@
 title: SET LOCALITY
 summary: The SET LOCALITY statement changes the locality of a table.
 toc: true
+docs_area: 
 ---
 
  The `ALTER TABLE .. SET LOCALITY` [statement](sql-statements.html) changes the [table locality](multiregion-overview.html#table-locality) of a [table](create-table.html) in a [multi-region database](multiregion-overview.html).
@@ -69,7 +70,7 @@ For more information about how table localities work, see [Regional tables](mult
 ### Set the table locality to `REGIONAL BY ROW`
 
 {{site.data.alerts.callout_info}}
-Before setting the locality to `REGIONAL BY ROW` on a table targeted by a changefeed, read the considerations in [Changefeeds on regional by row tables](stream-data-out-of-cockroachdb-using-changefeeds.html#changefeeds-on-regional-by-row-tables).
+Before setting the locality to `REGIONAL BY ROW` on a table targeted by a changefeed, read the considerations in [Changefeeds on regional by row tables](changefeeds-in-multi-region-deployments.html).
 {{site.data.alerts.end}}
 
 To make an existing table a _regional by row_ table, use the following statement:
@@ -92,7 +93,7 @@ SELECT crdb_region, id FROM {table};
 
 {% include copy-clipboard.html %}
 ~~~ sql
-UPDATE {table} SET crdb_region = "eu-west" WHERE id IN (...)
+UPDATE {table} SET crdb_region = 'eu-west' WHERE id IN (...)
 ~~~
 
 To add a new row to a regional by row table, you must choose one of the following options.

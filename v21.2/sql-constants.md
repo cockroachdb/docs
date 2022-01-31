@@ -2,6 +2,7 @@
 title: Constant Values
 summary: SQL Constants represent a simple value that doesn't change.
 toc: true
+docs_area: reference.sql
 ---
 
 SQL Constants represent a simple value that doesn't change.
@@ -39,11 +40,11 @@ using the context where it appears.
 
 For example:
 
- Expression | Data type of the string literal 
+ Expression | Data type of the string literal
 ------------|---------------------------------
- `length('hello')` | `STRING` 
- `now() + '3 day'`  | `INTERVAL` 
- `INSERT INTO tb(date_col) VALUES ('2013-01-02')` | `DATE` 
+ `length('hello')` | `STRING`
+ `now() + '3 day'`  | `INTERVAL`
+ `INSERT INTO tb(date_col) VALUES ('2013-01-02')` | `DATE`
 
 In general, the data type of a string literal is that demanded by the
 context if there is no ambiguity, or `STRING` otherwise.
@@ -176,12 +177,12 @@ Some examples:
 The actual data type of a numeric constant depends both on the context
 where it is used, its literal format, and its numeric value.
 
- Syntax | Possible data types 
+ Syntax | Possible data types
 --------|---------------------
- Contains a decimal separator | `FLOAT`, `DECIMAL` 
- Contains an exponent | `FLOAT`, `DECIMAL` 
- Contains a value outside of the range -2^63...(2^63)-1 | `FLOAT`, `DECIMAL` 
- Otherwise | `INT`, `DECIMAL`, `FLOAT` 
+ Contains a decimal separator | `FLOAT`, `DECIMAL`
+ Contains an exponent | `FLOAT`, `DECIMAL`
+ Contains a value outside of the range -2^63...(2^63)-1 | `FLOAT`, `DECIMAL`
+ Otherwise | `INT`, `DECIMAL`, `FLOAT`
 
 Of the possible data types, which one is actually used is then further
 refined depending on context.

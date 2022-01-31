@@ -2,6 +2,7 @@
 title: Manage Long-Running Queries
 summary: Learn how to identify and cancel long-running queries.
 toc: true
+docs_area: 
 ---
 
 This page shows you how to identify and, if necessary, cancel SQL queries that are taking longer than expected to process.
@@ -62,7 +63,9 @@ CANCEL QUERIES (SELECT query_id FROM [SHOW CLUSTER QUERIES]
 
 After cancelling a long-running query, use the [`EXPLAIN`](explain.html) statement to examine it. It's possible that the query was slow because it performs a full-table scan. In these cases, you can likely improve the query's performance by [adding an index](create-index.html).
 
-*(More guidance around query performance optimization forthcoming.)*
+{{site.data.alerts.callout_success}}
+For guidance on optimizing SQL performance, see [SQL Performance Best Practices](performance-best-practices-overview.html).
+{{site.data.alerts.end}}
 
 ## See also
 

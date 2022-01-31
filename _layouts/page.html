@@ -50,4 +50,21 @@ layout: default
       {% include_cached feedback-widget.html %}
    {% endif %}
 
+   {% if page.docs_area %}
+     <script>
+         window.dataLayer = window.dataLayer || [];
+         window.dataLayer.push({
+         'docsArea' : '{{ page.docs_area }}'
+     });
+     </script>
+   {% endif %}
+   {% if page.product_area %}
+     <script>
+         window.dataLayer = window.dataLayer || [];
+         window.dataLayer.push({
+         'productArea': '{{ page.product_area }}'
+     });
+     </script>
+   {% endif %}
+
 </div>

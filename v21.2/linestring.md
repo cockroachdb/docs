@@ -2,6 +2,7 @@
 title: LINESTRING
 summary: A LINESTRING is a collection of POINTs joined into a line.
 toc: true
+docs_area: 
 ---
 
 A `LINESTRING` is a collection of [Points](point.html) that are "strung together" into one geometric object. A LineString can be used to represent an arbitrary curve, such as a [Bézier curve](https://en.wikipedia.org/wiki/Bézier_curve).  In practice, this means that LineStrings are useful for representing real-world objects such as roads and rivers.

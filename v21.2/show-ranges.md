@@ -2,6 +2,7 @@
 title: SHOW RANGES
 summary: The SHOW RANGES statement shows information about the ranges that comprise the data for a table, index, or entire database.
 toc: true
+docs_area: 
 ---
 
 The `SHOW RANGES` [statement](sql-statements.html) shows information about the [ranges](architecture/overview.html#glossary) that comprise the data for a table, index, or entire database. This information is useful for verifying how SQL data maps to underlying ranges, and where the replicas for ranges are located. If `SHOW RANGES` displays `NULL` for both the start and end keys of a range, the range is empty and has no splits.

@@ -2,6 +2,7 @@
 title: CANCEL JOB
 summary: The CANCEL JOB statement stops long-running jobs such as imports, backups, and schema changes.such as imports, backups, and schema changes.
 toc: true
+docs_area: 
 ---
 
 The `CANCEL JOB` [statement](sql-statements.html) lets you stop long-running jobs, which include:
@@ -10,7 +11,7 @@ The `CANCEL JOB` [statement](sql-statements.html) lets you stop long-running job
 - [`BACKUP`](backup.html) and [`RESTORE`](restore.html) jobs
 - [User-created table statistics](create-statistics.html) jobs
 - [Automatic table statistics](cost-based-optimizer.html#table-statistics) jobs
-- [Changefeeds](stream-data-out-of-cockroachdb-using-changefeeds.html)
+- [Changefeeds](use-changefeeds.html)
 - [Scheduled backup](manage-a-backup-schedule.html) jobs
 - [Schema change](online-schema-changes.html) jobs (see [Limitations](#limitations) for exceptions)
 
