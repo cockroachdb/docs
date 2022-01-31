@@ -37,7 +37,7 @@ The connection string is pre-populated with your username, cluster name, and oth
 
 ## Step 2. Get the sample code
 
-Open a terminal window and copy the sample code's GitHub repo:
+Open a terminal window and copy the [sample code's GitHub repo](https://github.com/cockroachlabs/examples-aws-lambda):
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
