@@ -3,6 +3,7 @@ title: cockroach start
 summary: Start a new multi-node cluster or add nodes to an existing multi-node cluster.
 toc: true
 key: start-a-node.html
+docs_area: reference.cli
 ---
 
 This page explains the `cockroach start` [command](cockroach-commands.html), which you use to start a new multi-node cluster or add nodes to an existing cluster.

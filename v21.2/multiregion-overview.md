@@ -3,6 +3,7 @@ title: Multi-region Capabilities Overview
 summary: Learn how to use CockroachDB's improved multi-region capabilities.
 toc: true
 keywords: gin, gin index, gin indexes, inverted index, inverted indexes, accelerated index, accelerated indexes
+docs_area: 
 ---
 
 ## Overview

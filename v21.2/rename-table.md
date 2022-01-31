@@ -2,6 +2,7 @@
 title: ALTER TABLE ... RENAME TO
 summary: The ALTER TABLE ... RENAME TO statement changes the name of a table.
 toc: true
+docs_area: 
 ---
 
 The `RENAME TO` [statement](sql-statements.html) is part of [`ALTER TABLE`](alter-table.html), and changes the name of a table.

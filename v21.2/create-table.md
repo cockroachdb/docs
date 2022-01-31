@@ -3,6 +3,7 @@ title: CREATE TABLE
 summary: The CREATE TABLE statement creates a new table in a database.
 toc: true
 keywords: gin, gin index, gin indexes, inverted index, inverted indexes, accelerated index, accelerated indexes
+docs_area: 
 ---
 
 The `CREATE TABLE` [statement](sql-statements.html) creates a new table in a database.

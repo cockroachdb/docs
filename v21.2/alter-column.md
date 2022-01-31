@@ -2,6 +2,7 @@
 title: ALTER COLUMN
 summary: Use the ALTER COLUMN statement to set, change, or drop a column's DEFAULT constraint or to drop the NOT NULL constraint.
 toc: true
+docs_area: reference.sql 
 ---
 
 `ALTER COLUMN` is a subcommand of [`ALTER TABLE`](alter-table.html). You can use `ALTER COLUMN` to do the following:

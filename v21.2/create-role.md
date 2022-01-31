@@ -2,6 +2,7 @@
 title: CREATE ROLE
 summary: The CREATE ROLE statement creates SQL roles, which are groups containing any number of roles and users as members.
 toc: true
+docs_area: 
 ---
 
 The `CREATE ROLE` [statement](sql-statements.html) creates SQL [roles](authorization.html#create-and-manage-roles), which are groups containing any number of roles and users as members. You can assign [privileges](authorization.html#privileges) to roles, and all members of the role (regardless of whether if they are direct or indirect members) will inherit the role's privileges.

@@ -7,6 +7,7 @@ referral_id: docs_java_hibernate
 filter_category: crud_java
 filter_html: Use <strong>Hibernate</strong>
 filter_sort: 2
+docs_area: get_started
 ---
 
 {% include filter-tabs.md %}

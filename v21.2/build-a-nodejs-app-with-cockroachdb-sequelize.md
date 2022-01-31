@@ -7,6 +7,7 @@ referral_id: docs_node_sequelize
 filter_category: crud_js
 filter_html: Use <strong>Sequelize</strong>
 filter_sort: 2
+docs_area: get_started
 ---
 
 {% include filter-tabs.md %}

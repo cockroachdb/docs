@@ -3,6 +3,7 @@ title: SQL Feature Support in CockroachDB v21.2
 summary: Summary of CockroachDB's conformance to the SQL standard and which common extensions it supports.
 toc: true
 keywords: gin, gin index, gin indexes, inverted index, inverted indexes, accelerated index, accelerated indexes
+docs_area: reference.sql
 ---
 
 Making CockroachDB easy to use is a top priority for us, so we chose to implement SQL. However, even though SQL has a standard, no database implements all of it, nor do any of them have standard implementations of all features.

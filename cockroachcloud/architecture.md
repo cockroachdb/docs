@@ -2,6 +2,7 @@
 title: CockroachDB Cloud Architecture
 summary: Learn more about CockroachDB Cloud architecture
 toc: true
+docs_area: 
 ---
 
 {{ site.data.products.db }} is a fully-managed deployment of CockroachDB. This page describes {{ site.data.products.db }}'s architecture and how it relates to CockroachDB.

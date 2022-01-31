@@ -5,6 +5,7 @@ toc: true
 filter_category: cloud_faqs
 filter_html: CockroachDB Dedicated
 filter_sort: 2
+docs_area: 
 ---
 
 This page answers the frequently asked questions about {{ site.data.products.serverless }} and {{ site.data.products.dedicated }}.

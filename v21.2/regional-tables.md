@@ -2,6 +2,7 @@
 title: Regional Tables
 summary: Guidance on using Regional Tables in a multi-region deployment.
 toc: true
+docs_area: 
 ---
 
 In a [multi-region deployment](multiregion-overview.html), the [Regional Table Locality Pattern](multiregion-overview.html#table-locality) is a good choice for tables with the following requirements:
