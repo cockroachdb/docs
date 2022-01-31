@@ -2,6 +2,7 @@
 title: Use Changefeeds
 summary: Set up and understand the output from changefeeds.
 toc: true
+docs_area: 
 ---
 
 This page describes the main components to enabling and using changefeeds:

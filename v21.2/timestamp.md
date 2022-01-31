@@ -2,6 +2,7 @@
 title: TIMESTAMP / TIMESTAMPTZ
 summary: The TIMESTAMP and TIMESTAMPTZ data types stores a date and time pair in UTC.
 toc: true
+docs_area: 
 ---
 
 The `TIMESTAMP` and `TIMESTAMPTZ` [data types](data-types.html) store a date and time pair in UTC.

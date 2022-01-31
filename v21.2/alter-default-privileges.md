@@ -3,6 +3,7 @@ title: ALTER DEFAULT PRIVILEGES
 summary: The ALTER DEFAULT PRIVILEGES statement alters the default privileges for roles in the current database.
 keywords: reflection
 toc: true
+docs_area: reference.sql 
 ---
 
 <span class="version-tag">New in v21.2</span>: The `ALTER DEFAULT PRIVILEGES` [statement](sql-statements.html) changes the [default privileges](authorization.html#default-privileges) on objects created by [users/roles](authorization.html#roles) in the current database.

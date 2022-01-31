@@ -2,6 +2,7 @@
 title: Changefeed Sinks
 summary: Define a changefeed sink URI and configure specific sinks.
 toc: true
+docs_area: 
 ---
 
 {{ site.data.products.enterprise }} changefeeds emit messages to configurable downstream sinks. CockroachDB supports the following sinks:
