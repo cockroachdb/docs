@@ -75,6 +75,8 @@ Here are some best practices for creating and using secondary indexes.
 
     CockroachDB [pushes filters](indexes.html#how-do-indexes-work) (i.e., values listed in a [`WHERE` clause](select-clause.html#parameters)) into an index, which allows it to perform a finite number of sequential scans. In a `WHERE` clause with `n` constrained columns you can filter the first `n-1` columns either on a single constant value using the operator `=` or a list of constant values using the operator `IN`. You can filter column `n` against a range of values using any of the operators `!=`, `<`, `>`, or `NOT IN`.
 
+    Columns with a higher cardinality (higher number of distinct values) should be placed in the index before columns with a lower cardinality. If the cardinality of the columns you wish to add to the index are similar, test multiple column arrangements in a non-production environment to determine the most performant arrangement.
+
 - If you need to index the result of a function applied to one or more columns of a single table, use the function to create a [computed column](computed-columns.html) and index the column.
 
 - Avoid indexing on sequential keys. Writes to indexes with sequential keys can result in range [hot spots](performance-best-practices-overview.html#hot-spots) that negatively affect performance. Instead, use [randomly generated unique IDs](performance-best-practices-overview.html#unique-id-best-practices) or [multi-column keys](performance-best-practices-overview.html#use-multi-column-primary-keys).
