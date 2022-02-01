@@ -4,12 +4,13 @@ summary: Learn how to use CockroachDB from a Hello World Go application with the
 toc: true
 twitter: false
 referral_id: docs_hello_world_go_gorm
+filter_category: hello_world_go
+filter_html: Use <strong>GORM</strong>
+filter_sort: 2
+docs_area: get_started
 ---
 
-<div class="filters filters-big clearfix">
-    <a href="hello-world-go-pgx.html"><button class="filter-button">Use <strong>pgx</strong></button></a>
-    <a href="hello-world-go-gorm.html"><button class="filter-button current">Use <strong>GORM</strong></button></a>
-</div>
+{% include filter-tabs.md %}
 
 This tutorial shows you how build a simple Hello World Go application with CockroachDB and the [GORM ORM](https://gorm.io/index.html).
 

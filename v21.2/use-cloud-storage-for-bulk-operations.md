@@ -2,6 +2,7 @@
 title: Use Cloud Storage for Bulk Operations
 summary: CockroachDB constructs a secure API call to the cloud storage specified in a URL passed to bulk operation statements.
 toc: true
+docs_area: 
 ---
 
 CockroachDB constructs a secure API call to the cloud storage specified in a URL passed to one of the following statements:
@@ -64,7 +65,7 @@ NFS/Local    | `nodelocal://1/path/employees`, `nodelocal://self/nfsmount/backup
 Currently, cloud storage sinks (for changefeeds) only work with `JSON` and emits newline-delimited `JSON` files.
 {{site.data.alerts.end}}
 
-Example URLs for [`IMPORT`](import.html) or [changefeeds](stream-data-out-of-cockroachdb-using-changefeeds.html) given a bucket or container name of `acme-co` and a filename of `employees`:
+Example URLs for [`IMPORT`](import.html) or [changefeeds](changefeed-sinks.html) given a bucket or container name of `acme-co` and a filename of `employees`:
 
 Location     | Example                                                                          
 -------------+----------------------------------------------------------------------------------

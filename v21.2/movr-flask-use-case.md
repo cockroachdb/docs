@@ -3,6 +3,7 @@ title: MovR&#58; A Global Application Use-Case
 summary: This page covers an example use-case for global applications.
 toc: true
 redirect_from: multi-region-use-case.html
+docs_area: 
 ---
 
 This page walks you through an example use-case for global application development and deployment. It is the first section of the [Develop and Deploy a Global Application](movr-flask-overview.html) tutorial.
@@ -25,7 +26,7 @@ In the [example deployment](movr-flask-deployment.html), the application and the
 
 If the MovR application and database are deployed in a single region, latency can become a serious problem when users are located in cities outside the deployment region. Deploying the application and database in multiple regions is not guaranteed to improve latency if client requests are sent to any regional deployment, without consideration for the client's location.
 
-Limiting latency improves the user experience, and it can also help you avoid problems with data integrity, like [transaction contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention).
+Limiting latency improves the user experience, and it can also help you avoid problems with data integrity, like [transaction contention](performance-best-practices-overview.html#transaction-contention).
 
 For the purpose of this tutorial, we'll focus on two types of latency:
 

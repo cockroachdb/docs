@@ -2,6 +2,7 @@
 title: Monitoring Page
 summary: The Monitoring page is under development. It will display CockroachDB time series charts.
 toc: true
+docs_area: 
 ---
 
 The **Monitoring** page is currently under development. In the future, time series charts will display here. In the meantime, you can use the cluster's built-in DB Console to see them.

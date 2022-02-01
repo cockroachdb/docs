@@ -2,9 +2,14 @@
 title: Release Support Policy
 summary: Learn about Cockroach Labs' policy for supporting major releases of CockroachDB.
 toc: true
+docs_area: releases 
 ---
 
 This page explains Cockroach Labs' policy for supporting [major releases](../releases/) of CockroachDB.
+
+{{site.data.alerts.callout_info}}
+For {{ site.data.products.db }} clusters, see the [{{ site.data.products.db }} Upgrade Policy](../cockroachcloud/upgrade-policy.html).
+{{site.data.alerts.end}}
 
 ## Support cycle
 

@@ -2,12 +2,19 @@
 title: DROP COLUMN
 summary: Use the ALTER COLUMN statement to remove columns from tables.
 toc: true
+docs_area: 
 ---
 
 The `DROP COLUMN` [statement](sql-statements.html) is part of `ALTER TABLE` and removes columns from a table.
 
+{% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
+
+{{site.data.alerts.callout_danger}}
+When used in an explicit transaction combined with other schema changes to the same table, `DROP COLUMN` can result in data loss if one of the other schema changes fails or is canceled. To work around this, move the `DROP COLUMN` statement to its own explicit transaction or run it in a single statement outside the existing transaction.
+{{site.data.alerts.end}}
+
 {{site.data.alerts.callout_info}}
- By default, `DROP COLUMN` drops any indexes [indexes](indexes.html) on the column being dropped, and any indexes that reference the column, including [partial indexes](partial-indexes.html) with predicates that reference the column and indexes with [`STORING` clauses](create-index.html#store-columns) that reference the column.
+ By default, `DROP COLUMN` drops any [indexes](indexes.html) on the column being dropped, and any indexes that reference the column, including [partial indexes](partial-indexes.html) with predicates that reference the column and indexes with [`STORING` clauses](create-index.html#store-columns) that reference the column.
 {{site.data.alerts.end}}
 
 {% include {{ page.version.version }}/sql/combine-alter-table-commands.md %}
@@ -201,3 +208,4 @@ ALTER TABLE
 - [`DROP INDEX`](drop-index.html)
 - [`ALTER TABLE`](alter-table.html)
 - [`SHOW JOBS`](show-jobs.html)
+- [Online Schema Changes](online-schema-changes.html)

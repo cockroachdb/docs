@@ -2,6 +2,7 @@
 title: BACKUP
 summary: Back up your CockroachDB cluster to a cloud storage services such as AWS S3, Google Cloud Storage, or other NFS.
 toc: true
+docs_area: reference.sql 
 ---
 
 CockroachDB's `BACKUP` [statement](sql-statements.html) allows you to create [full or incremental backups](take-full-and-incremental-backups.html) of your cluster's schema and data that are consistent as of a given timestamp.
@@ -19,7 +20,7 @@ You can also backup:
 - [An individual database](#backup-a-database), which includes all of its tables and views.
 - [An individual table](#backup-a-table-or-view), which includes its indexes and views.
 
-    `BACKUP` only backs up entire tables; it _does not_ support backing up subsets of a table.
+    `BACKUP` only backs up entire tables; it **does not** support backing up subsets of a table.
 
 Because CockroachDB is designed with high fault tolerance, these backups are designed primarily for disaster recovery (i.e., if your cluster loses a majority of its nodes) through [`RESTORE`](restore.html). Isolated issues (such as small-scale node outages) do not require any intervention.
 

@@ -2,6 +2,7 @@
 title: Install a Driver or ORM Framework
 summary: CockroachDB supports both native drivers and the PostgreSQL wire protocol, so you can use most available PostgreSQL client drivers and ORM frameworks.
 toc: true
+docs_area: 
 ---
 
 CockroachDB supports both native drivers and the PostgreSQL wire protocol, so most available PostgreSQL client drivers and ORM frameworks should work with CockroachDB. Choose a language for supported clients, and follow the installation steps. After you install a client library, you can [connect to the database](connect-to-the-database.html).
@@ -11,17 +12,67 @@ Applications may encounter incompatibilities when using advanced or obscure feat
 {{site.data.alerts.end}}
 
 <div class="filters clearfix">
-  <button class="filter-button page-level" data-scope="python">Python</button>
-  <button class="filter-button page-level" data-scope="java">Java</button>
-  <button class="filter-button page-level" data-scope="go">Go</button>
-  <button class="filter-button page-level" data-scope="ruby">Ruby</button>
   <button class="filter-button page-level" data-scope="js-ts">JavaScript/TypeScript</button>
+  <button class="filter-button page-level" data-scope="python">Python</button>
+  <button class="filter-button page-level" data-scope="go">Go</button>
+  <button class="filter-button page-level" data-scope="java">Java</button>
+  <button class="filter-button page-level" data-scope="ruby">Ruby</button>
   <button class="filter-button page-level" data-scope="c">C</button>
   <button class="filter-button page-level" data-scope="c++">C++</button>
   <button class="filter-button page-level" data-scope="c-sharp">C# (.NET)</button>
   <button class="filter-button page-level" data-scope="clojure">Clojure</button>
   <button class="filter-button page-level" data-scope="php">PHP</button>
 </div>
+
+<section class="filter-content" markdown="1" data-scope="js-ts">
+
+## JavaScript Drivers
+
+### pg
+
+**Support level:** Full
+
+To install the [Node.js pg driver](https://www.npmjs.com/package/pg):
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ npm install pg
+~~~
+
+For a simple but complete example app, see [Build a Node.js App with CockroachDB and the Node.js pg Driver](build-a-nodejs-app-with-cockroachdb.html).
+
+## JavaScript/TypeScript ORM frameworks
+
+### Sequelize
+
+**Support level:** Full
+
+To install Sequelize and a [CockroachDB Node.js package](https://github.com/cockroachdb/sequelize-cockroachdb) that accounts for some minor differences between CockroachDB and PostgreSQL:
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ npm install sequelize sequelize-cockroachdb
+~~~
+
+For a simple but complete example app, see [Build a Node.js App with CockroachDB and Sequelize](build-a-nodejs-app-with-cockroachdb-sequelize.html).
+
+### Knex.js
+
+**Support level:** Full
+
+Install Knex.js as described in the [official documentation](https://knexjs.org/#Installation).
+
+For a simple but complete example app, see [Build a Node.js App with CockroachDB and Knex.js](build-a-nodejs-app-with-cockroachdb-knexjs.html).
+
+### TypeORM
+
+**Support level:** Full
+
+Install TypeORM as described in the [official documentation](https://typeorm.io/#/).
+
+For a simple but complete example app, see [Build a TypeScript App with CockroachDB and TypeORM](build-a-typescript-app-with-cockroachdb.html).
+
+</section>
 
 <section class="filter-content" markdown="1" data-scope="python">
 
@@ -125,71 +176,6 @@ For instructions on using peewee with CockroachDB, see the [CockroachDatabase pe
 
 </section>
 
-<section class="filter-content" markdown="1" data-scope="java">
-
-{% include {{page.version.version}}/app/java-version-note.md %}
-
-{% include {{page.version.version}}/app/java-tls-note.md %}
-
-## Java Drivers
-
-### JDBC
-
-**Support level:** Full
-
-Download and set up the Java JDBC driver as described in the [official documentation](https://jdbc.postgresql.org/documentation/head/setup.html). We recommend using the PostgreSQL JDBC 42.2.9 driver.
-
-For a simple but complete example app, see [Build a Java App with CockroachDB and JDBC](build-a-java-app-with-cockroachdb.html).
-
-## Java ORM frameworks
-
-### Hibernate
-
-**Support level:** Full
-
-You can use [Gradle](https://gradle.org/install) or [Maven](https://maven.apache.org/install.html) to get all dependencies for your application, including Hibernate. Only Hibernate versions 5.4.19 and later support the Hibernate CockroachDB dialect.
-
-If you are using Gradle, add the following to your `dependencies`:
-
-~~~ groovy
-implementation 'org.hibernate:hibernate-core:5.4.19.Final'
-implementation 'org.postgresql:postgresql:42.2.9'
-~~~
-
-For a simple but complete example app that uses Gradle for dependency management, see [Build a Java App with CockroachDB and Hibernate](build-a-java-app-with-cockroachdb-hibernate.html).
-
-If you are using Maven, add the following to your `<dependencies>`:
-
-~~~ xml
-<dependency>
-    <groupId>org.hibernate</groupId>
-    <artifactId>hibernate-core</artifactId>
-    <version>5.4.19.Final</version>
-</dependency>
-<dependency>
-    <groupId>org.postgresql</groupId>
-    <artifactId>postgresql</artifactId>
-</dependency>
-~~~
-
-For a complete example app that uses Maven for dependency management, see [Build a Spring App with CockroachDB and Spring Data JPA (Hibernate)](build-a-spring-app-with-cockroachdb-jpa.html).
-
-You will also need to specify the CockroachDB dialect in your [Hibernate configuration file](https://www.tutorialspoint.com/hibernate/hibernate_configuration.htm). Versions of the Hibernate CockroachDB dialect correspond to the version of CockroachDB installed on your machine. For example, `org.hibernate.dialect.CockroachDB201Dialect` corresponds to CockroachDB v20.1 and later, and `org.hibernate.dialect.CockroachDB192Dialect` corresponds to CockroachDB v19.2 and later.
-
-All dialect versions are forward-compatible (e.g., CockroachDB v20.1 is compatible with `CockroachDB192Dialect`), as long as your application is not affected by any backward-incompatible changes listed in your CockroachDB version's [release notes](../releases/index.html). In the event of a CockroachDB version upgrade, using a previous version of the CockroachDB dialect will not break an application, but, to enable all features available in your version of CockroachDB, we recommend keeping the dialect version in sync with the installed version of CockroachDB.
-
-Not all versions of CockroachDB have a corresponding dialect yet. Use the dialect number that is closest to your installed version of CockroachDB. For example, use `CockroachDB201Dialect` when using CockroachDB v21.1 and later.
-
-### jOOQ
-
-**Support level:** Full
-
-You can use [Gradle](https://gradle.org/install) or [Maven](https://maven.apache.org/install.html) to get all dependencies for your application, including jOOQ.
-
-For a simple but complete example app that uses Maven for dependency management, see [Build a Java App with CockroachDB and jOOQ](build-a-java-app-with-cockroachdb-jooq.html).
-
-</section>
-
 <section class="filter-content" markdown="1" data-scope="go">
 
 ## Go Drivers
@@ -242,6 +228,69 @@ For a simple but complete example app, see [Build a Go App with CockroachDB and 
 
 </section>
 
+<section class="filter-content" markdown="1" data-scope="java">
+
+{% include {{page.version.version}}/app/java-version-note.md %}
+
+{% include {{page.version.version}}/app/java-tls-note.md %}
+
+## Java Drivers
+
+### JDBC
+
+**Support level:** Full
+
+Download and set up the Java JDBC driver as described in the [official documentation](https://jdbc.postgresql.org/documentation/head/setup.html). We recommend using the PostgreSQL JDBC 42.2.9 driver.
+
+For a simple but complete example app, see [Build a Java App with CockroachDB and JDBC](build-a-java-app-with-cockroachdb.html).
+
+## Java ORM frameworks
+
+### Hibernate
+
+**Support level:** Full
+
+You can use [Gradle](https://gradle.org/install) or [Maven](https://maven.apache.org/install.html) to get all dependencies for your application, including Hibernate. Only Hibernate versions 5.4.19 and later support the Hibernate CockroachDB dialect.
+
+If you are using Gradle, add the following to your `dependencies`:
+
+~~~ groovy
+implementation 'org.hibernate:hibernate-core:5.4.19.Final'
+implementation 'org.postgresql:postgresql:42.2.9'
+~~~
+
+For a simple but complete example app that uses Gradle for dependency management, see [Build a Java App with CockroachDB and Hibernate](build-a-java-app-with-cockroachdb-hibernate.html).
+
+If you are using Maven, add the following to your `<dependencies>`:
+
+~~~ xml
+<dependency>
+    <groupId>org.hibernate</groupId>
+    <artifactId>hibernate-core</artifactId>
+    <version>5.4.19.Final</version>
+</dependency>
+<dependency>
+    <groupId>org.postgresql</groupId>
+    <artifactId>postgresql</artifactId>
+</dependency>
+~~~
+
+For a complete example app that uses Maven for dependency management, see [Build a Spring App with CockroachDB and Spring Data JPA (Hibernate)](build-a-spring-app-with-cockroachdb-jpa.html).
+
+You will also need to specify the CockroachDB dialect in your [Hibernate configuration file](https://www.tutorialspoint.com/hibernate/hibernate_configuration.htm).
+
+{% include {{page.version.version}}/app/hibernate-dialects-note.md %}
+
+### jOOQ
+
+**Support level:** Full
+
+You can use [Gradle](https://gradle.org/install) or [Maven](https://maven.apache.org/install.html) to get all dependencies for your application, including jOOQ.
+
+For a simple but complete example app that uses Maven for dependency management, see [Build a Java App with CockroachDB and jOOQ](build-a-java-app-with-cockroachdb-jooq.html).
+
+</section>
+
 <section class="filter-content" markdown="1" data-scope="ruby">
 
 ## Ruby Drivers
@@ -263,7 +312,7 @@ For a simple but complete example app, see [Build a Ruby App with CockroachDB an
 
 ### ActiveRecord
 
-**Support level:** Full (5.2), Beta (6.0)
+**Support level:** Full
 
 To install ActiveRecord, the [pg driver](https://rubygems.org/gems/pg), and a [CockroachDB Ruby package](https://github.com/cockroachdb/activerecord-cockroachdb-adapter) that accounts for some minor differences between CockroachDB and PostgreSQL:
 
@@ -273,59 +322,10 @@ $ gem install activerecord pg activerecord-cockroachdb-adapter
 ~~~
 
 {{site.data.alerts.callout_info}}
-The exact command above will vary depending on the desired version of ActiveRecord. Specifically, version 5.1.x of ActiveRecord requires version 0.2.x of the adapter; version 5.2.x of ActiveRecord requires version 5.2.x of the adapter; version 6.0.x of ActiveRecord requires version 6.0.0betax of the adapter.
+The exact command above will vary depending on the desired version of ActiveRecord. Specifically, version 5.1.x of ActiveRecord requires version 0.2.x of the adapter; version 5.2.x of ActiveRecord requires version 5.2.x of the adapter; version 6.0.x of ActiveRecord requires version 6.0.x of the adapter.
 {{site.data.alerts.end}}
 
 For a simple but complete example app, see [Build a Ruby App with CockroachDB and ActiveRecord](build-a-ruby-app-with-cockroachdb-activerecord.html).
-
-</section>
-
-<section class="filter-content" markdown="1" data-scope="js-ts">
-
-## JavaScript Drivers
-
-### pg
-
-**Support level:** Beta
-
-To install the [Node.js pg driver](https://www.npmjs.com/package/pg):
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ npm install pg
-~~~
-
-Some apps might also requires [`async`](https://www.npmjs.com/package/async):
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ npm install async
-~~~
-
-For a simple but complete example app, see [Build a Node.js App with CockroachDB and the Node.js pg Driver](build-a-nodejs-app-with-cockroachdb.html).
-
-## JavaScript/TypeScript ORM frameworks
-
-### Sequelize
-
-**Support level:** Beta
-
-To install Sequelize and a [CockroachDB Node.js package](https://github.com/cockroachdb/sequelize-cockroachdb) that accounts for some minor differences between CockroachDB and PostgreSQL:
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ npm install sequelize sequelize-cockroachdb
-~~~
-
-For a simple but complete example app, see [Build a Node.js App with CockroachDB and Sequelize](build-a-nodejs-app-with-cockroachdb-sequelize.html).
-
-### TypeORM
-
-**Support level:** Full
-
-Install TypeORM as described in the [official documentation](https://typeorm.io/#/).
-
-For a simple but complete example app, see [Build a TypeScript App with CockroachDB and TypeORM](build-a-typescript-app-with-cockroachdb.html).
 
 </section>
 

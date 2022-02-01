@@ -2,12 +2,14 @@
 title: CREATE STATISTICS
 summary: Use the CREATE STATISTICS statement to generate table statistics for the cost-based optimizer to use.
 toc: true
+docs_area:
 ---
+
 Use the `CREATE STATISTICS` [statement](sql-statements.html) to generate table statistics for the [cost-based optimizer](cost-based-optimizer.html) to use.
 
 Once you [create a table](create-table.html) and load data into it (e.g., [`INSERT`](insert.html), [`IMPORT`](import.html)), table statistics can be generated. Table statistics help the cost-based optimizer determine the cardinality of the rows used in each query, which helps to predict more accurate costs.
 
- For compatibility with PostgreSQL, CockroachDB supports the `ANALYZE`/`ANALYSE` statement as an alias for `CREATE STATISTICS`. For syntax, [see below](#aliases).
+For compatibility with PostgreSQL, CockroachDB supports the `ANALYZE`/`ANALYSE` statement as an alias for `CREATE STATISTICS`. For syntax, [see below](#aliases).
 
 {{site.data.alerts.callout_info}}
 [By default, CockroachDB automatically generates statistics](cost-based-optimizer.html#table-statistics) on all indexed columns, and up to 100 non-indexed columns. As a result, most users do not need to issue `CREATE STATISTICS` statements directly.
@@ -30,13 +32,13 @@ Parameter | Description
 `create_stats_target` | The name of the table you want to create statistics for.
 `opt_as_of_clause`    | Used to create historical stats using the [`AS OF SYSTEM TIME`](as-of-system-time.html) clause.  For instructions, see [Create statistics as of a given time](#create-statistics-as-of-a-given-time).
 
-## Required Privileges
+## Required privileges
 
 The user must have the `CREATE` [privilege](authorization.html#assign-privileges) on the parent database.
 
 ## Aliases
 
- For PostgreSQL compatibility, CockroachDB supports `ANALYZE`/`ANALYSE` as an alias for `CREATE STATISTICS`.
+ For PostgreSQL compatibility, CockroachDB supports `ANALYZE` and `ANALYSE` as aliases for `CREATE STATISTICS`.
 
 ### Alias syntax
 
@@ -86,7 +88,7 @@ Parameter | Description
 (14 rows)
 ~~~
 
-Note that statistics are automatically collected for all columns in the `rides` table, making the `revenue_stats` statistics a duplicate of the statistics automatically collected on the `revenue` column.
+Statistics are automatically collected for all columns in the `rides` table, making the `revenue_stats` statistics a duplicate of the statistics automatically collected on the `revenue` column.
 
 ### Create statistics on multiple columns
 
@@ -121,7 +123,7 @@ Note that statistics are automatically collected for all columns in the `rides` 
 (15 rows)
 ~~~
 
- Multi-column statistics are automatically collected for all columns that prefix an index. In this example, `city` and `revenue` are not an index prefix, making the `city_revenue_stats` statistics unique for the table.
+Multi-column statistics are automatically collected for all columns that prefix an index. In this example, `city` and `revenue` are not an index prefix, making the `city_revenue_stats` statistics unique for the table.
 
 ### Create statistics on a default set of columns
 
@@ -214,7 +216,7 @@ To view statistics jobs, there are two options:
     (6 rows)
     ~~~
 
-## See Also
+## See also
 
 - [Cost-Based Optimizer](cost-based-optimizer.html)
 - [`SHOW STATISTICS`](show-statistics.html)

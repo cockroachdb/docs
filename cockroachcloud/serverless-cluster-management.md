@@ -2,12 +2,13 @@
 title: Manage a CockroachDB Serverless Cluster
 summary: Manage your cluster's schema, data, and more.
 toc: true
+filter_category: cluster_mgmt
+filter_html: CockroachDB Serverless (beta)
+filter_sort: 1
+docs_area: 
 ---
 
-<div class="filters clearfix">
-    <a href="serverless-cluster-management.html"><button class="filter-button page-level current">{{ site.data.products.serverless }}</button></a>
-    <a href="cluster-management.html"><button class="filter-button page-level">{{ site.data.products.dedicated }}</button></a>
-</div>
+{% include filter-tabs.md %}
 
 This page describes the cluster management and cluster deletion workflows for {{ site.data.products.serverless }}.
 
@@ -46,15 +47,15 @@ For more information, see [Cluster Overview Page](cluster-overview-page.html).
 
 ## Edit your spend limit  
 
-You can edit your spend limit from the **Overview** page. The change in your spend limit will affect current and upcoming billing cycles. See [Planning your cluster](#planning-your-cluster) for more information on resource usage. 
+You can edit your spend limit from the **Overview** page. The change in your spend limit will affect current and upcoming billing cycles. See [Planning your cluster](#planning-your-cluster) for more information on resource usage.
 
 1. Navigate to the **Overview** page for the cluster you want to edit.
 1. Click the pencil icon (or **Add a spend limit** if you haven't set one before) next to your **Spend limit** in the **Usage this month** section.
 
-    You will be taken to the **Edit cluster** page with a graph of your cluster's **Recommended spend limit** compare to your current spend limit.
+    You will be taken to the **Edit cluster** page, which shows a graph of your cluster's **Recommended budget** compared to your current budget.
 
 1. Enter a new **Spend limit**.
-    
+
 1. Click **Update**.
 
 ## Restore data from a backup

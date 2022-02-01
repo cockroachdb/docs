@@ -2,6 +2,7 @@
 title: Follower Reads
 summary: To reduce latency for read queries, you can choose to have the closest replica serve the request using the follower reads feature.
 toc: true
+docs_area: 
 ---
 
 CockroachDB can provide faster reads in situations where you can afford to read data that is slightly stale. These stale reads (known as _follower reads_)  are available in read-only transactions that use the [`AS OF SYSTEM TIME`](as-of-system-time.html) clause.
@@ -36,6 +37,7 @@ An _exact staleness read_ is a historical read as of a static, user-provided tim
 ### When to use exact staleness reads
 
 Use [exact staleness](#exact-staleness-reads) follower reads when:
+
 - You need multi-statement reads inside transactions.
 - You can tolerate reading older data (at least 4.8 seconds in the past), to reduce the chance that the historical query timestamp is not quite old enough to prevent blocking on a conflicting write and thus being able to be served by a local replica.
 - You do not need the increase in availability provided by [bounded staleness reads](#bounded-staleness-reads) in the face of network partitions or other failures.

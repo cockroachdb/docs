@@ -2,6 +2,7 @@
 title: SET LOCALITY
 summary: The SET LOCALITY statement changes the locality of a table.
 toc: true
+docs_area: 
 ---
 
  The `ALTER TABLE .. SET LOCALITY` [statement](sql-statements.html) changes the [table locality](multiregion-overview.html#table-locality) of a [table](create-table.html) in a [multi-region database](multiregion-overview.html).
@@ -37,9 +38,7 @@ The user must be a member of the [`admin`](authorization.html#roles) or [owner](
 ## Examples
 
 {{site.data.alerts.callout_info}}
-[`RESTORE`](restore.html) on [`REGIONAL BY TABLE`](#regional-by-table) and [`GLOBAL`](#global) tables is supported with some limitations — see [Restoring to multi-region databases](restore.html#restoring-to-multi-region-databases) for more detail.
-
-Tables set to a [`REGIONAL BY ROW`](#regional-by-row) table locality cannot be restored. See the [Known Limitations](known-limitations.html#using-restore-with-multi-region-table-localities) page for detail.
+[`RESTORE`](restore.html) on [`REGIONAL BY TABLE`](#regional-by-table), [`REGIONAL BY ROW`](#regional-by-row), and [`GLOBAL`](#global) tables is supported with some limitations — see [Restoring to multi-region databases](restore.html#restoring-to-multi-region-databases) for more detail.
 {{site.data.alerts.end}}
 
 <a name="regional-by-table"></a>
@@ -71,7 +70,7 @@ For more information about how table localities work, see [Regional tables](mult
 ### Set the table locality to `REGIONAL BY ROW`
 
 {{site.data.alerts.callout_info}}
-Before setting the locality to `REGIONAL BY ROW` on a table targeted by a changefeed, read the considerations in [Changefeeds on regional by row tables](stream-data-out-of-cockroachdb-using-changefeeds.html#changefeeds-on-regional-by-row-tables).
+Before setting the locality to `REGIONAL BY ROW` on a table targeted by a changefeed, read the considerations in [Changefeeds on regional by row tables](changefeeds-in-multi-region-deployments.html).
 {{site.data.alerts.end}}
 
 To make an existing table a _regional by row_ table, use the following statement:
@@ -94,7 +93,7 @@ SELECT crdb_region, id FROM {table};
 
 {% include copy-clipboard.html %}
 ~~~ sql
-UPDATE {table} SET crdb_region = "eu-west" WHERE id IN (...)
+UPDATE {table} SET crdb_region = 'eu-west' WHERE id IN (...)
 ~~~
 
 To add a new row to a regional by row table, you must choose one of the following options.
@@ -142,7 +141,7 @@ ALTER TABLE rides ADD COLUMN region crdb_internal_region AS (
 
 ### Turn on auto-rehoming for `REGIONAL BY ROW` tables
 
-{% include {{ page.version.version }}/misc/experimental-warning.md %}
+{% include common/experimental-warning.md %}
 
 This feature is disabled by default.
 

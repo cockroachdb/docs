@@ -714,8 +714,6 @@ Other databases use partitioning for three additional use cases: secondary index
 
 - {% include {{ page.version.version }}/known-limitations/partitioning-with-placeholders.md %}
 
-- CockroachDB does not support partitioning [inverted indexes](inverted-indexes.html), including [spatial indexes](spatial-indexes.html). See [tracking issue](https://github.com/cockroachdb/cockroach/issues/43643).
-
 ## See also
 
 - [`CREATE TABLE`](create-table.html)
