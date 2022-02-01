@@ -176,7 +176,7 @@ SHOW REGIONS FROM DATABASE foo;
 
 ## See also
 
-- [Multi-region overview](multiregion-overview.html)
+- [Multi-Region Capabilities Overview](multiregion-overview.html)
 - [`SET PRIMARY REGION`](set-primary-region.html)
 - [`ADD REGION`](add-region.html)
 - [`SHOW REGIONS`](show-regions.html)
