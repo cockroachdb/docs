@@ -1750,6 +1750,8 @@
             ]
           }
         ]
-      }
+      },
+      {% include_cached cockroachcloud/sidebar-release-notes.json %},
+      {% include_cached sidebar-releases.json %}
     ]
   }

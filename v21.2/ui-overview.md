@@ -9,24 +9,49 @@ The DB Console provides details about your cluster and database configuration, a
 
 ## DB Console areas
 
-Area | Description
---------|----
-[Cluster Overview](ui-cluster-overview-page.html) | Essential metrics about the cluster and nodes, including liveness status, replication status, uptime, and hardware usage.
-[Node Map](ui-cluster-overview-page.html#node-map-enterprise) | Geographical configuration of your cluster and metrics at the locality and node levels, visualized on a map.
-[Overview Dashboard](ui-overview-dashboard.html) | Metrics about SQL performance, replication, and storage.
-[Hardware Dashboard](ui-hardware-dashboard.html) | Metrics about CPU usage, disk throughput, network traffic, storage capacity, and memory.
-[Runtime Dashboard](ui-runtime-dashboard.html) | Metrics about node count, CPU time, and memory usage.
-[SQL Dashboard](ui-sql-dashboard.html) | Metrics about SQL connections, byte traffic, queries, transactions, and service latency.
-[Storage Dashboard](ui-storage-dashboard.html) | Metrics about storage capacity and file descriptors.
-[Replication Dashboard](ui-replication-dashboard.html) | Metrics about how data is replicated across the cluster, e.g., range status, replicas per store, and replica quiescence.
-[Changefeeds Dashboard](ui-cdc-dashboard.html) | Metrics about the [changefeeds](change-data-capture-overview.html) created across your cluster.
-[Databases](ui-databases-page.html) | Details about the system and user databases in the cluster.
-[Sessions](ui-sessions-page.html) |  Details about open sessions in the cluster.
-[Statements](ui-statements-page.html) | Frequently executed and high latency [SQL statements](sql-statements.html), with the option to collect statement diagnostics.
-[Transactions](ui-transactions-page.html) |  Details about transactions running on the cluster.
-[Network Latency](ui-network-latency-page.html) | Latencies and lost connections between all nodes in your cluster.
-[Jobs](ui-jobs-page.html) | Details of jobs running in the cluster.
-[Advanced Debug](ui-debug-pages.html) | Advanced monitoring and troubleshooting reports. These include details about data distribution, the state of specific queues, and slow query metrics. These details are largely intended for use by CockroachDB developers.
+### Overview
+
+The Overview page provides a cluster overview and node list and map.
+
+- [Cluster Overview](ui-cluster-overview-page.html) has essential metrics about the cluster and nodes, including liveness status, replication status, uptime, and hardware usage.
+- [Node List](ui-cluster-overview-page.html#node-map-enterprise) has a list of cluster metrics at the locality and node levels.
+- [Node Map](ui-cluster-overview-page.html#node-map-enterprise) displays a geographical configuration of your cluster and metrics at the locality and node levels, visualized on a map.
+
+### Metrics
+
+The Metrics page provides dashboards for all types of CockroachDB metrics.
+
+- [Overview Dashboard](ui-overview-dashboard.html) has metrics about SQL performance, replication, and storage.
+- [Hardware Dashboard](ui-hardware-dashboard.html) has metrics about CPU usage, disk throughput, network traffic, storage capacity, and memory.
+- [Runtime Dashboard](ui-runtime-dashboard.html) has metrics about node count, CPU time, and memory usage.
+- [SQL Dashboard](ui-sql-dashboard.html) has metrics about SQL connections, byte traffic, queries, transactions, and service latency.
+- [Storage Dashboard](ui-storage-dashboard.html) has metrics about storage capacity and file descriptors.
+- [Replication Dashboard](ui-replication-dashboard.html) has metrics about how data is replicated across the cluster, e.g., range status, replicas per store, and replica quiescence.
+- [Changefeeds Dashboard](ui-cdc-dashboard.html) has metrics about the [changefeeds](change-data-capture-overview.html) created across your cluster.
+
+### Databases
+
+The [Databases](ui-databases-page.html) page shows details about the system and user databases in the cluster.
+
+### SQL Activity
+
+The SQL Activity page summarizes SQL activity in your cluster.
+
+- [Statements](ui-statements-page.html) shows frequently executed and high latency [SQL statements](sql-statements.html), with the option to collect statement diagnostics.
+- [Transactions](ui-transactions-page.html) show details about transactions running on the cluster.
+- [Sessions](ui-sessions-page.html) shows details about open sessions in the cluster.
+
+### Network Latency
+
+The [Network Latency](ui-network-latency-page.html) page shows latencies and lost connections between all nodes in your cluster.
+
+### Jobs
+
+The [Jobs](ui-jobs-page.html) page shows details of jobs running in the cluster.
+
+### Advanced Debug
+
+The [Advanced Debug](ui-debug-pages.html) page provides advanced monitoring and troubleshooting reports. These include details about data distribution, the state of specific queues, and slow query metrics. These details are largely intended for use by CockroachDB developers.
 
 ## DB Console access
 
