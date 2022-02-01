@@ -37,6 +37,10 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 
 ### Remove an index with no dependencies
 
+{{site.data.alerts.callout_danger}}
+[`UNIQUE` indexes](create-index.html) created as part of a [`CREATE TABLE`](create-table.html) statement cannot be removed without using [`CASCADE`](#remove-an-index-and-dependent-objects-with-cascade). Unique indexes created with [`CREATE INDEX`](create-index.html) do not have this limitation.
+{{site.data.alerts.end}}
+
 Suppose you create an index on the `name` and `city` columns of the `users` table:
 
 {% include copy-clipboard.html %}
