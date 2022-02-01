@@ -218,7 +218,7 @@ A _task_ provides step-by-step instructions to complete a specific goal. In cont
 - Title or heading should state an actionable goal for the user and is of the form **\<Imperative verb\> a \<noun\>**.
 
   **Example:** Create an Index
-- Verb ideally should be specific. Avoid generic verbs such as **Use**, **Manage** unless naming a folder containing specific tasks.
+- Verb ideally should be specific. Avoid generic verbs such as **Use**, **Manage** unless naming a page containing specific tasks.
 - Avoid **Your** because you may be using an object that you don't "own".
 
   **Example:** Connect to a Cluster, not Connect to Your Cluster
@@ -231,7 +231,7 @@ A _task_ provides step-by-step instructions to complete a specific goal. In cont
 - The title of the page, and the steps on the page, should be second-person imperative. For example, if the first step in starting a cluster is to generate a certificate, then the first header on the page might be **Generate a certificate** (as opposed to **Generating a certificate** or **How to generate a certificate**).
 - Limit the amount of reference information on the page. You can add hyperlinks to the relevant sections of [reference](#reference) in line or in the **See also** section ad the end.
 - When using examples (e.g., code snippets, or dedicated task-based examples), aim for utility and simplicity. Lengthier examples are better for tutorials. A large number of smaller examples is better for reference docs.
-- If the instructions are ordered steps, the headings should include `Step N.` to denote the sequence of steps to follow.
+- If the headings on a page each represent an ordered step of a single task, each heading should start with `Step N.` to denote this sequence, and its substeps should take the form of an ordered list.
 
 #### Examples
 
@@ -241,7 +241,7 @@ A _task_ provides step-by-step instructions to complete a specific goal. In cont
 
 ### Reference
 
-A _reference_ provides information about a specific CockroachDB function, feature, or interface. Reference is detail-oriented, and should include all of the information available on a specific topic, without providing prescriptive guidance. Documents programming constructs or facts about a product that provide quick access to facts, but no explanation of concepts or procedures. Details are typically presented in tabular form.
+A _reference_ provides information about a specific CockroachDB function, feature, or interface. Reference is detail-oriented, and should include all of the information available on a specific topic, without providing prescriptive guidance. Documents programming constructs, interface parameters, or facts about a product that provide quick access to facts, but no explanation of concepts or procedures. Details are typically presented in tabular form.
 
 - Should be comprehensive and (above all else) accurate. This principle might apply to other pages types, but it is especially important for reference, as it is the ultimate source of truth (i.e., the "reference") for a particular feature or interface.
 - Should be succinct. Prose is better suited for [conceptual pages](#conceptual).
@@ -250,10 +250,11 @@ A _reference_ provides information about a specific CockroachDB function, featur
 
 - **SQL reference doc example:** [`CREATE TABLE`](https://www.cockroachlabs.com/docs/stable/create-table.html)
 - **CLI reference doc example:** [`cockroach sql`](https://www.cockroachlabs.com/docs/stable/cockroach-sql.html)
+- **API reference doc example** [Cluster API](https://www.cockroachlabs.com/docs/api/cluster/v2)
 
 ## Page types
 
-In addition to the content types CockroachDB docs include the following page types:
+In addition to the content types, CockroachDB docs include the following page types:
 
 - [Tutorial](#tutorial)
 - [Best practice](#best-practice)
@@ -282,7 +283,7 @@ A _tutorial_ is a task that provides instructions on using CockroachDB in the co
 
 ### Best practice
 
-A _best practice_ guide is a set of recommendations on how to choose among CockroachDB features to achieve specific goals. Goals can include throughput, latency, and survivability.
+A _best practice_ guide is a set of recommendations on how to choose among CockroachDB features and their available configurations to achieve specific goals. Goals can include throughput, latency, survivability, and security.
 
 #### Examples
 
