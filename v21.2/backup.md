@@ -134,7 +134,7 @@ Cancel the backup      | [`CANCEL JOB`](cancel-job.html)
 You can also visit the [**Jobs** page](ui-jobs-page.html) of the DB Console to view job details. The `BACKUP` statement will return when the backup is finished or if it encounters an error.
 
 {{site.data.alerts.callout_info}}
-The presence of a `BACKUP-CHECKPOINT` file in the backup destination usually means the backup is not complete. This file is created when a backup is initiated, and is replaced with a `BACKUP` file once the backup is finished.
+The presence of the `BACKUP MANIFEST` file in the backup destination is an indicator that the backup job completed successfully.
 {{site.data.alerts.end}}
 
 ## Examples
