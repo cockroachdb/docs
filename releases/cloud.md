@@ -16,6 +16,12 @@ Get future release notes emailed to you:
 As of January 12, 2021, new {{ site.data.products.dedicated }} clusters and all {{ site.data.products.serverless }} clusters are running CockroachDB [v21.2.4](v21.2.4.html).
 {{site.data.alerts.end}}
 
+## February 1, 2022
+
+<h3>General changes</h3>
+
+- All of your organization's [invoices](../cockroachcloud/billing-management.html#view-invoices) are now available on the **Billing** page.
+
 ## January 10, 2022
 
 <h3>General changes</h3>
