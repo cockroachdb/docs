@@ -2,6 +2,7 @@
 title: SHOW PARTITIONS
 summary: Use the SHOW PARTITIONS statement to list details about existing partitions.
 toc: true
+docs_area: 
 ---
 
 Use the `SHOW PARTITIONS` [statement](sql-statements.html) to view details about existing [partitions](partitioning.html).

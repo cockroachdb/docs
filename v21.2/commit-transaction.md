@@ -2,6 +2,7 @@
 title: COMMIT
 summary: Commit a transaction with the COMMIT statement in CockroachDB.
 toc: true
+docs_area: 
 ---
 
 The `COMMIT` [statement](sql-statements.html) commits the current [transaction](transactions.html) or, when using [advanced client-side transaction retries](advanced-client-side-transaction-retries.html), clears the connection to allow new transactions to begin.

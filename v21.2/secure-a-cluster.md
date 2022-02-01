@@ -2,12 +2,13 @@
 title: Start a Local Cluster (Secure)
 summary: Run a secure multi-node CockroachDB cluster locally, using TLS certificates to encrypt network communication.
 toc: true
+filter_category: start_a_cluster
+filter_html: Secure
+filter_sort: 1
+docs_area: 
 ---
 
-<div class="filters filters-big clearfix">
-    <a href="secure-a-cluster.html"><button class="filter-button current"><strong>Secure</strong></button></a>
-    <a href="start-a-local-cluster.html"><button class="filter-button">Insecure</button></a>
-</div>
+{% include filter-tabs.md %}
 
 Once you've [installed CockroachDB](install-cockroachdb.html), it's simple to run a secure multi-node cluster locally, using [TLS certificates](cockroach-cert.html) to encrypt network communication.
 
@@ -444,4 +445,4 @@ Adding capacity is as simple as starting more nodes with `cockroach start`.
 You might also be interested in the following pages:
 
 - [CockroachDB SQL client](cockroach-sql.html)
-- [Hello World Example Apps](hello-world-example-apps.html)
+- [Example Apps](example-apps.html)

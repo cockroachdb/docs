@@ -2,6 +2,7 @@
 title: Query Data
 summary: How to send SQL queries to CockroachDB from various programming languages
 toc: true
+docs_area: 
 ---
 
 This page has instructions for making SQL [selection queries][selection] against CockroachDB from various programming languages.
@@ -187,7 +188,7 @@ Reference information related to this task:
 - [`SELECT`](select-clause.html)
 - [Joins][joins]
 - [Paginate through limited results][paginate]
-- [Understanding and Avoiding Transaction Contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention)
+- [Transaction Contention](performance-best-practices-overview.html#transaction-contention)
 
 Other common tasks:
 
@@ -198,7 +199,7 @@ Other common tasks:
 - [Run Multi-Statement Transactions](run-multi-statement-transactions.html)
 - [Error Handling and Troubleshooting](error-handling-and-troubleshooting.html)
 - [Optimize Statement Performance][fast]
-- [Hello World Example apps](hello-world-example-apps.html)
+- [Example Apps](example-apps.html)
 
 <!-- Reference Links -->
 

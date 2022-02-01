@@ -2,15 +2,16 @@
 title: pg_catalog
 summary: The pg_catalog schema contains read-only views that you can use for introspection into your database.
 toc: true
+docs_area: 
 ---
 
-For PostgreSQL compatibility, CockroachDB includes a [system catalog schema](system-catalogs.html) called `pg_catalog`. The tables in the `pg_catalog` schema roughly correspond to the [system catalogs in PostgreSQL](https://www.postgresql.org/docs/13/catalogs.html). `pg_catalog` tables are read-only.
+For PostgreSQL compatibility, CockroachDB includes a [system catalog](system-catalogs.html) called `pg_catalog`. The tables in the `pg_catalog` schema roughly correspond to the [system catalogs in PostgreSQL](https://www.postgresql.org/docs/13/catalogs.html). `pg_catalog` tables are read-only.
 
 ## Data exposed by `pg_catalog`
 
 The tables in CockroachDB's `pg_catalog` schema correspond to a subset of the virtual tables and views that make up the PostgreSQL system catalogs. Not all PostgreSQL system catalogs have a corresponding table in `pg_catalog`, and some of the `pg_catalog` tables are empty. See the following table for a detailed comparison between PostgreSQL 13 system catalogs and `pg_catalog` tables.
 
-PostgreSQL 13 system catalog | `pg_catalog` table  
+PostgreSQL 13 system catalog | `pg_catalog` table
 -----------------------------|--------------
 `pg_aggregate` | `pg_aggregate`
 `pg_am` | `pg_am`

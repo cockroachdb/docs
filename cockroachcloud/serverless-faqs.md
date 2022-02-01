@@ -3,14 +3,15 @@ title: CockroachDB Serverless (beta) FAQs
 summary: Get answers to frequently asked questions about CockroachDB Serverless (beta)
 toc: true
 redirect_from: free-faqs.html
+filter_category: cloud_faqs
+filter_html: CockroachDB Serverless (beta)
+filter_sort: 1
+docs_area: 
 ---
 
 This page answers the frequently asked questions about {{ site.data.products.serverless }} and {{ site.data.products.dedicated }}.
 
-<div class="filters clearfix">
-    <a href="serverless-faqs.html"><button class="filter-button page-level current">{{ site.data.products.serverless }}</button></a>
-    <a href="frequently-asked-questions.html"><button class="filter-button page-level">{{ site.data.products.dedicated }}</button></a>
-</div>
+{% include filter-tabs.md %}
 
 ## General
 
@@ -19,7 +20,7 @@ This page answers the frequently asked questions about {{ site.data.products.ser
 {{ site.data.products.serverless }} delivers free and pay-as-you-go CockroachDB clusters for you and your Organization. It is a managed instance of CockroachDB that lets you start using your database immediately and auto-scales based on your application traffic.
 
 {{site.data.alerts.callout_success}}
-For a deeper dive into serverless database concepts and how to get started with CockroachDB Serverless, take the free [Intro to Serverless Databases](https://university.cockroachlabs.com/courses/intro-to-serverless/) course on Cockroach University.
+For a deeper dive into serverless database concepts and how to get started with CockroachDB Serverless, take the free [Introduction to Serverless Databases and CockroachDB Serverless](https://university.cockroachlabs.com/courses/course-v1:crl+intro-to-serverless+self-paced/about) course on Cockroach University.
 {{site.data.alerts.end}}
 
 ### How do I start using {{ site.data.products.serverless }}?
@@ -41,6 +42,10 @@ All resource usage in {{ site.data.products.serverless }} is measured in Request
 ### Do I have to pay for {{ site.data.products.serverless }}?
 
 No, you can create a Serverless cluster that is free forever. If you choose to set a spend limit for your cluster, you will only be charged for the resources you use up to your spend limit.
+
+### How can I estimate how many RUs my workload will consume?
+
+{% include cockroachcloud/serverless-usage.md %}
 
 ### What can I use {{ site.data.products.serverless }} for?
 
@@ -113,7 +118,7 @@ Yes, you can upgrade your cluster through the Console by [increasing your spend 
 
 ### Can I upgrade the version of CockroachDB my {{ site.data.products.serverless }} cluster is running on?
 
-No, {{ site.data.products.serverless }} clusters are upgraded automatically for you. You can see what version of CockroachDB your cluster is running in the [{{ site.data.products.db }} Console](https://cockroachlabs.cloud/) or in the [latest release notes](../releases/index-cockroachcloud.html).
+No, {{ site.data.products.serverless }} clusters are upgraded automatically for you. You can see what version of CockroachDB your cluster is running in the [{{ site.data.products.db }} Console](https://cockroachlabs.cloud/) or in the [latest release notes](../releases/cloud.html).
 
 ## Product features
 
@@ -131,7 +136,7 @@ We don't recommend `userfile` for `EXPORT` operations. You can either add billin
 
 ### Is change data capture available to me?
 
-Yes, {{ site.data.products.serverless-plan }} clusters have access to [Core Changefeeds](run-bulk-operations.html#stream-data-out-of-your-cockroachdb-cloud-cluster).
+Yes, {{ site.data.products.serverless-plan }} clusters have access to [Core Changefeeds](../{{site.versions["stable"]}}/changefeed-examples.html#create-a-core-changefeed).
 
 ### Can I backup my {{ site.data.products.serverless }} cluster? Does Cockroach Labs take backups of my cluster?
 

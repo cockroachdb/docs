@@ -3,6 +3,7 @@ title: Develop a Global Web Application
 summary: This page includes instructions for building a multi-region web application on CockroachDB, using Flask and SQLAlchemy.
 toc: true
 redirect_from: multi-region-application.html
+docs_area: 
 ---
 
 This page walks you through developing a globally-available web application. It is the fourth section of the [Develop and Deploy a Global Application](movr-flask-overview.html) tutorial.

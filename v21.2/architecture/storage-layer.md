@@ -2,6 +2,7 @@
 title: Storage Layer
 summary: The storage layer of CockroachDB's architecture reads and writes data to disk.
 toc: true
+docs_area: reference.architecture 
 ---
 
 The storage layer of CockroachDB's architecture reads and writes data to disk.
@@ -74,7 +75,7 @@ Garbage collection can only run on MVCC values which are not covered by a *prote
 
 - [Imports](../import.html), including [`IMPORT INTO`](../import-into.html)
 - [Backups](../backup.html)
-- [Streaming data out of CockroachDB using changefeeds](../stream-data-out-of-cockroachdb-using-changefeeds.html)
+- [Changefeeds](../change-data-capture-overview.html)
 - [Online schema changes](../online-schema-changes.html)
 
 Protected timestamps ensure the safety of historical data while also enabling shorter [GC TTLs](../configure-replication-zones.html#gc-ttlseconds). A shorter GC TTL means that fewer previous MVCC values are kept around. This can help lower query execution costs for workloads which update rows frequently throughout the day, since [the SQL layer](sql-layer.html) has to scan over previous MVCC values to find the current value of a row.
@@ -93,4 +94,4 @@ The storage layer commits writes from the Raft log to disk, as well as returns r
 
 ## What's next?
 
-Now that you've learned about our architecture, [start a local cluster](../install-cockroachdb.html) and start [building an app with CockroachDB](../hello-world-example-apps.html).
+Now that you've learned about our architecture, [start up a CockroachDB Serverless cluster](../../cockroachcloud/quickstart.html) or [local cluster](../install-cockroachdb.html) and start [building an app with CockroachDB](../example-apps.html).

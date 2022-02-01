@@ -1700,6 +1700,12 @@
         ]
       },
       {
+        "title": "Cloud API",
+        "urls": [
+          "/api/cloud/v1.html"
+        ]
+      },
+      {
         "title": "Logging",
         "items": [
           {
@@ -1726,6 +1732,23 @@
         "title": "Diagnostics Reporting",
         "urls": [
           "/${VERSION}/diagnostics-reporting.html"
+        ]
+      },
+      {
+        "title": "Third-Party Support",
+        "items": [
+          {
+            "title": "Tools Supported by Cockroach Labs",
+            "urls": [
+              "/${VERSION}/third-party-database-tools.html"
+            ]
+          },
+          {
+            "title": "Tools Supported by the Community",
+            "urls": [
+              "/${VERSION}/community-tooling.html"
+            ]
+          }
         ]
       },
       {% include_cached cockroachcloud/sidebar-release-notes.json %},

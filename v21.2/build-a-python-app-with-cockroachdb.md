@@ -3,16 +3,14 @@ title: Build a Python App with CockroachDB and psycopg2
 summary: Learn how to use CockroachDB from a simple Python application with the psycopg2 driver.
 toc: true
 twitter: false
-referral_id: docs_hello_world_python_psycopg2
+referral_id: docs_python_psycopg2
+filter_category: crud_python
+filter_html: <strong>psycopg2</strong>
+filter_sort: 1
+docs_area: get_started
 ---
 
-<div class="filters clearfix">
-    <a href="build-a-python-app-with-cockroachdb.html"><button class="filter-button page-level current"><strong>psycopg2</strong></button></a>
-    <a href="build-a-python-app-with-cockroachdb-sqlalchemy.html"><button class="filter-button page-level"><strong>SQLAlchemy</strong></button></a>
-    <a href="build-a-python-app-with-cockroachdb-django.html"><button class="filter-button page-level"><strong>Django</strong></button></a>
-    <a href="build-a-python-app-with-cockroachdb-pony.html"><button class="filter-button page-level"><strong>PonyORM</strong></button></a>
-    <a href="http://docs.peewee-orm.com/en/latest/peewee/playhouse.html#cockroach-database"><button class="filter-button page-level"><strong>peewee</strong></button></a>
-</div>
+{% include filter-tabs.md %}
 
 {% include cockroach_u_pydev.md %}
 
@@ -91,14 +89,14 @@ Before running the command, update the connection string as follows:
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 $ python3 example.py \
-"postgres://<username>:<password>@<globalhost>:26257/<cluster-name>.bank?sslmode=verify-full&sslrootcert=<certs_directory>/cc-ca.crt"
+"postgres://<username>:<password>@<globalhost>:26257/<routing-id>.bank?sslmode=verify-full&sslrootcert=<certs_directory>/cc-ca.crt"
 ~~~
 
 Before running the command, update the connection string that you copied [earlier](#set-up-your-cluster-connection) from the **Connection info** dialog as follows:
 
 - Replace `<username>` and `<password>` with the SQL username and password that you created earlier.
 - Replace `<globalhost>` with the name of the {{ site.data.products.serverless }} host (e.g., `free-tier.gcp-us-central1.cockroachlabs.cloud`).
-- Replace `<cluster-name>` with the name of your cluster.
+- Replace `<routing-id>` with your cluster's routing ID (e.g., `funky-skunk-123`). The routing ID identifies your tenant cluster on a [multi-tenant host](../cockroachcloud/architecture.html#architecture).
 - Replace `<certs_directory>` with the path to the `cc-ca.crt` file that you downloaded from the {{ site.data.products.db }} Console.
 
 {{site.data.alerts.callout_info}}

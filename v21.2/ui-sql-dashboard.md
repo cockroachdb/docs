@@ -2,6 +2,7 @@
 title: SQL Dashboard
 summary: The SQL dashboard lets you monitor the performance of your SQL queries.
 toc: true
+docs_area: reference.db_console
 ---
 
 The **SQL** dashboard in the DB Console lets you monitor the performance of your SQL queries.
@@ -19,7 +20,6 @@ The **SQL** dashboard displays the following time series graphs:
 - In the node view, the graph shows the number of connections currently open between the client and the selected node.
 
 - In the cluster view, the graph shows the total number of SQL client connections to all nodes combined, with lines for each node.
-
 
 ## Open SQL Transactions
 
@@ -61,11 +61,13 @@ See the [Statements page](ui-statements-page.html) for more details on the clust
 
 ## SQL Statement Contention
 
+The statement contention metric is a counter that represents the number of statements that have experienced contention. If a statement experiences at least one contention "event" (i.e., the statement is forced to wait for another transaction), the counter is incremented at most once.
+
 - In the node view, the graph shows the total number of SQL statements that experienced [contention](transactions.html#transaction-contention) on that node.
 
 - In the cluster view, the graph shows the total number of SQL statements that experienced [contention](transactions.html#transaction-contention) across all nodes in the cluster.
 
-See the [Statements page](ui-statements-page.html) for more details on the cluster's SQL statements.
+    See the [Statements page](ui-statements-page.html) for more details on the cluster's SQL statements.
 
 ## Full Table/Index Scans
 
@@ -92,8 +94,6 @@ Connection latency is calculated as the time in nanoseconds between when the clu
 ## Connection Latency: 90th Percentile
 
 Connection latency is calculated as the time in nanoseconds between when the cluster receives a connection request and establishes the connection to the client, including authentication.
-
-
 
 ## Service Latency: SQL, 99th percentile
 
@@ -166,6 +166,10 @@ See the [Transactions page](ui-transactions-page.html) for more details on the t
 - In the node view, the graph shows the current amount of memory in KiB allocated to the SQL layer on this node. This amount is what is compared against the node's [`--max-sql-memory` flag](cockroach-start.html#general).
 
 - In the cluster view, the graph shows the current amount of memory in KiB allocated to the SQL layer on all nodes in the cluster. This amount is what is compared against the node's [`--max-sql-memory` flag](cockroach-start.html#general).
+
+{{site.data.alerts.callout_info}}
+{% include {{ page.version.version }}/prod-deployment/healthy-sql-memory.md %}
+{{site.data.alerts.end}}
 
 ## Schema Changes
 

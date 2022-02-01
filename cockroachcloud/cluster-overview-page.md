@@ -2,6 +2,7 @@
 title: Cluster Overview Page
 summary: How to use the Cluster Overview page to view cluster details on {{ site.data.products.serverless }}.
 toc: true
+docs_area: 
 ---
 
 The **Cluster Overview** page displays key metrics about your {{ site.data.products.serverless }} cluster.
