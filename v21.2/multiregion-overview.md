@@ -2,6 +2,8 @@
 title: Multi-Region Capabilities Overview
 summary: Learn how to use CockroachDB multi-region capabilities.
 toc: true
+keywords: gin, gin index, gin indexes, inverted index, inverted indexes, accelerated index, accelerated indexes
+docs_area: 
 ---
 
 This page provides an overview of CockroachDB multi-region features.
@@ -140,7 +142,7 @@ The features listed in this section make working with multi-region clusters easi
 
 {% include {{page.version.version}}/sql/indexes-regional-by-row.md %}
 
-This behavior also applies to [inverted indexes](inverted-indexes.html).
+This behavior also applies to [GIN indexes](inverted-indexes.html).
 
 For an example that uses unique indexes but applies to all indexes on `REGIONAL BY ROW` tables, see [Add a unique index to a `REGIONAL BY ROW` table](add-constraint.html#add-a-unique-index-to-a-regional-by-row-table).
 

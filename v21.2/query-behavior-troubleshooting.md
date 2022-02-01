@@ -2,6 +2,7 @@
 title: Troubleshoot SQL Behavior
 summary: Learn how to troubleshoot issues with specific SQL statements with CockroachDB
 toc: true
+docs_area: 
 ---
 
 If a [SQL statement](sql-statements.html) returns an unexpected result or takes longer than expected to process, this page will help you troubleshoot the issue.
@@ -17,6 +18,10 @@ Use the [slow query log](logging-use-cases.html#sql_perf) or DB Console to detec
 High latency SQL statements are displayed on the [**Statements page**](ui-statements-page.html) of the DB Console. To view the Statements page, [access the DB Console](ui-overview.html#db-console-access) and click **Statements** on the left.
 
 You can also check the [service latency graph](ui-sql-dashboard.html#service-latency-sql-99th-percentile) and the [CPU graph](ui-hardware-dashboard.html#cpu-percent) on the SQL and Hardware Dashboards, respectively. If the graphs show latency spikes or CPU usage spikes, these might indicate slow queries in your cluster.
+
+{{site.data.alerts.callout_info}}
+{% include {{ page.version.version }}/prod-deployment/resolution-untuned-query.md %}
+{{site.data.alerts.end}}
 
 ## Visualize statement traces in Jaeger
 
@@ -79,13 +84,13 @@ If the query performance is irregular:
 
 ## Cancelling running queries
 
-See [Cancel query](manage-long-running-queries.html#cancel-long-running-queries)
+See [Cancel long-running queries](manage-long-running-queries.html#cancel-long-running-queries).
 
 ## Low throughput
 
 Throughput is affected by the disk I/O, CPU usage, and network latency. Use the DB Console to check the following metrics:
 
-- Disk I/O: [Disk IOPS in progress](ui-hardware-dashboard.html#disk-iops-in-progress)
+- Disk I/O: [Disk IOPS in progress](ui-hardware-dashboard.html#disk-ops-in-progress)
 
 - CPU usage: [CPU percent](ui-hardware-dashboard.html#cpu-percent)
 

@@ -2,6 +2,7 @@
 title: Data Domiciling with CockroachDB
 summary: Learn how to use CockroachDB's improved multi-region capabilities to implement data domiciling.
 toc: true
+docs_area: 
 ---
 
 As you scale your usage of [multi-region clusters](multiregion-overview.html), you may need to keep certain subsets of data in specific localities. Keeping specific data on servers in specific geographic locations is also known as _data domiciling_.

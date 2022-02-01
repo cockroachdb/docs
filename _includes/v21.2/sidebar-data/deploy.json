@@ -53,13 +53,6 @@
               	  ]
               	}
               ]
-            },
-            {
-              "title": "CockroachDB Cloud FAQs",
-              "urls": [
-                "/cockroachcloud/serverless-faqs.html",
-                "/cockroachcloud/frequently-asked-questions.html"
-              ]
             }
           ]
         },

@@ -2,6 +2,7 @@
 title: Migrate to Multi-Region SQL
 summary: Learn how to migrate to CockroachDB multi-region SQL user features.
 toc: true
+docs_area: 
 ---
 
 This page describes how to migrate a multi-region cluster from using replication zones to using multi-region SQL abstractions.
@@ -133,7 +134,7 @@ If you applied the [geo-partitioned leaseholders][geo_leaseholders] pattern, the
     ALTER INDEX users_last_name_index PARTITION BY NOTHING;
     ~~~
 
-The latency and resiliency benefits of the geo-partitioned leaseholders pattern can be replaced by making `users` a [`REGIONAL` table](regional-tables.html) with a [`ZONE` survival goal](multiregion-overview.html#surviving-zone-failures).
+The latency and resiliency benefits of the geo-partitioned leaseholders pattern can be replaced by making `users` a [`REGIONAL BY ROW` table](regional-tables.html#regional-by-row-tables) with a [`ZONE` survival goal](multiregion-overview.html#surviving-zone-failures).
 
 ### Step 2. Add a primary region to your database
 

@@ -2,6 +2,7 @@
 title: Developer Guide Overview
 summary: An overview of common tasks that come up when you build an application using CockroachDB
 toc: true
+docs_area: develop
 ---
 
 This guide shows you how to develop an application on CockroachDB. After reading this page, we recommend [starting a CockroachDB cluster](secure-a-cluster.html), and then [installing a client library](install-client-drivers.html).
