@@ -37,6 +37,10 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 
 ### Remove an index with no dependencies
 
+{{site.data.alerts.callout_danger}}
+{% include {{ page.version.version }}/known-limitations/drop-unique-index-from-create-table.md %}
+{{site.data.alerts.end}}
+
 Suppose you create an index on the `name` and `city` columns of the `users` table:
 
 {% include copy-clipboard.html %}
