@@ -3,7 +3,7 @@
   "is_top_level": true,
   "items": [
     {
-      "title": "Overview",
+      "title": "Developer Guide Overview",
       "urls": [
         "/${VERSION}/developer-guide-overview.html"
       ]

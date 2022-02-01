@@ -7,6 +7,6 @@ cloud: true
 
 The **Sessions** page of the {{ site.data.products.db }} Console provides details of all open sessions in the cluster.
 
-To view this page, click **SQL Activity** in the left-hand navigation of the {{ site.data.products.db }} Console. Click the **Sessions** tab.
+To view this page, click **SQL Activity** in the left-hand navigation of the {{ site.data.products.db }} Console. The **Sessions** tab is selected.
 
 {% include common/ui/sessions-page.md %}

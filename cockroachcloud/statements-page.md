@@ -11,6 +11,6 @@ The **Statements** page helps you:
 - View SQL statement [details](#statement-details-page).
 - Download SQL statement [diagnostics](#diagnostics) for troubleshooting.
 
-To view this page, click **SQL Activity** in the left-hand navigation of the {{ site.data.products.db }} Console. The **Statements** tab is selected.
+To view this page, click **SQL Activity** in the left-hand navigation of the {{ site.data.products.db }} Console and then click the **Statements** tab.
 
 {% include common/ui/statements-page.md %}
