@@ -18,7 +18,7 @@ As of January 12, 2021, new {{ site.data.products.dedicated }} clusters and all 
 ## February 1, 2022
 
 <h3>General changes</h3>
-- New {{ site.data.products.dedicated }} clusters can now be [created with custom hardware options](../cockroachcloud/create-your-cluster.htlm). Previously, there were four hardware options, and compute and storage were linked.
+- New {{ site.data.products.dedicated }} clusters can now be [created with custom hardware options](../cockroachcloud/create-your-cluster.html). Previously, there were four hardware options, and compute and storage were linked.
 
 <h3>Console changes</h3>
 - There is now a **Hardware** column on the **Clusters** page that shows the hardware configuration for {{ site.data.products.dedicated }} clusters.
