@@ -207,19 +207,6 @@ $ go get -u github.com/jackc/pgx
 
 For a simple but complete example app, see [Build a Go App with CockroachDB and the Go pgx Driver](build-a-go-app-with-cockroachdb.html).
 
-### pq
-
-**Support level:** Full
-
-To install the [Go pq driver](https://godoc.org/github.com/lib/pq):
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ go get -u github.com/lib/pq
-~~~
-
-For a simple but complete example app, see [Build a Go App with CockroachDB and the Go pq Driver](build-a-go-app-with-cockroachdb.html).
-
 ## Go ORM frameworks
 
 ### GORM
