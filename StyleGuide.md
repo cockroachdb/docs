@@ -324,25 +324,25 @@ A _FAQ_ is a list of frequently asked questions and answers to the questions.
 
 Use headings to demarcate content into a hierarchy to help readers find information easier.
 
-Headings are denoted by number signs (`#`) followed by one space.
+A heading is denoted by one or more number signs (`#`) followed by one space.
 
 Heading 1 (`#`) is reserved for page titles and should be title case.
 
-CockroachDB docs use Heading 2 (`##`), Heading 3 (`###`) and Heading 4 (`####`). Use Heading 4 sparingly. Anything under Heading 4 can be denoted by bolded text, or other layout options should be considered.
+CockroachDB docs use Heading 2 (`##`), Heading 3 (`###`) and Heading 4 (`####`). Use Heading 4 sparingly. Anything under Heading 4 can be denoted by bolded text, or other layout options should be considered. Headings should be sentence case.
 
-Headings should be sentence case. Enter a line break between a heading and its content.
+Enter a line break between a heading and its content.
 
 #### Examples
 
-- `## This is heading 2`
-- `### And this is heading 3`
-- `## Step 2. This is a step in a tutorial`
+- `## Heading 2`
+- `### Heading 3`
+- `## Step 2. A step in a tutorial`
 
 ### Text format
 
 #### Bold
 
-Use bold text to emphasize an important word or phrase, when referring to the name of a UI section or field, or to create visual separation and callouts (e.g., **Example:**). Bold should not be combined with italic.
+Use bold text to emphasize an important word or phrase, when referring to the name of a UI section or field, or to create visual separation and callouts (e.g., **Example:**). Do not combine bold with italic.
 
 To bold a word or phrase, surround the text with two asterisks (`**`).
 
