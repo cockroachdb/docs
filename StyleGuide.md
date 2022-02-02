@@ -60,13 +60,13 @@ Other general guidance about language and tone:
 - Use active voice instead of passive. For more information, refer to the [Purdue Online Writing Lab resource](https://owl.english.purdue.edu/owl/resource/539/02/).
 - Use simple and direct language. Grammar can be incorrect to save simplicity (e.g., many descriptions in [reference docs](#reference-and-task-based-docs) are phrases).
 
-    **Example:** `table name`: The name of the table you want to create audit logs for.
+    **Example:** `table name`: The name of the table to create audit logs for.
 
 - To expand upon the idea of "free from hyperbolic language", avoid the use of the word "simple" (along with "just", "easily", "actually", etc.) since it's not really possible to tell what might be easy or hard for the user. Something you think is simple may be challenging for them.
 
 - Use contractions to simplify language, but not in cases where a clear directive or prohibition is being given (e.g., `do not` / `cannot` / `should not` instead of `don't` / `can't` / `shouldn't`).
 
-    **Example:** A primary key cannot be changed using `ALTER TABLE`.
+    **Example:** You cannot change primary key using `ALTER TABLE`.
 
     **Example:** If you leave versioned binaries on your servers, you do not need to do anything.
 
@@ -78,7 +78,8 @@ We want our education materials to be inclusive and written with diversity in mi
 
 An informal tone can allow for problematic ableist language due to figures of speech and colloquial language. Ableist language includes words like "crazy", "insane", "blind", "dummy", "cripple", and more.
 
-Examples:
+#### Examples
+
 - Replace _dummy_ with **placeholder, sample**
 - Replace _sanity-check_ with **final check, confirm**
 
@@ -88,11 +89,11 @@ Be aware of personal pronouns in examples and outdated gendered terms.
 
 Best practices:
 
-- Try to avoid personal pronouns (i.e., use proper nouns, "the user", etc.)
-- If personal pronoun is needed for clarity or conciseness, default to gender-neutral pronouns (they/them)
+- Avoid personal pronouns (i.e., use proper nouns, "the user", etc.)
+- If a personal pronoun is needed for clarity or conciseness, default to gender-neutral pronouns (they/them)
 - Be aware of other possible gendered language (e.g., man-hours, man-in-the-middle attacks), and find alternatives.
 
-Examples:
+#### Examples
 
 - Replace _man hours_ with one of: **work hours**, **staff hours**, **person hours**.
 - Replace _manning_ with **staffing**.
@@ -111,28 +112,28 @@ Best practices:
 
 Avoid violent or harmful terms.
 
-Examples:
+#### Examples
 
 - Replace "_kill_" with **terminate**
 - Replace "_hit_ Enter" with **press Enter**.
 - Replace "_hit_ your spend limit" with **reach your spend limit**
 - Replace "_hit_ an error" with **experience an error**.
 - Replace "performance _hit_" with **reduced performance**.
-- Replace "want to _hit_ up" with **want to visit**
+- Replace "want to _hit_ up" with **want to visit**.
 
-Note: Terminology around "kill" vs. "stop" vs. "terminate" is nuanced, as described [in this GitHub comment](https://github.com/cockroachdb/docs/issues/7767#issuecomment-662028864). Use your best judgement.
+Terminology around "kill" vs. "stop" vs. "terminate" is nuanced, as described [in this GitHub comment](https://github.com/cockroachdb/docs/issues/7767#issuecomment-662028864). Use your best judgement.
 
 ### Write accessible documentation
 
 - Don't use directional terms as the only clue to location. Left, right, up, down, above, and below aren't very useful for people who use screen-reading software. Good replacements are "preceding" and "following". If you must use a directional term, provide additional text about the location, such as in the Save As dialog box, on the Standard toolbar, or in the title bar.
 - Provide Alt text that adequately summarizes the intent of each image.
-- Link text should be the same as or summarizes the title of the link target. Avoid "here" or "this documentation".
+- Link text should be the same as or summarize the title of the link target. Avoid **here** and **this documentation**.
 
 ### Write about features and users in inclusive ways
 
 Avoid using socially-charged terms for features and technical concepts.
 
-Examples:
+#### Examples
 
 - Replace _blacklist / whitelist_ with **denylist / allowlist**
 - Replace _master / slave_ with **main/principal/primary/manager** and **secondary/subordinate/worker**
@@ -144,7 +145,7 @@ Examples:
 ### Capitalization rules
 
 - Use sentence case instead of title case for all [headings](#headings).
-- Depending on the context, use title case or sentence case for [links](#links).
+- Depending on the target, use title case or sentence case for [links](#links).
 - Capitalize proper nouns, CockroachDB specific terms, and the names of UI features:
 
     **Examples:** CockroachDB, Cockroach Labs, the Overview dashboard, the SQL Queries graph
@@ -152,9 +153,9 @@ Examples:
 - Follow SQL capitalization standards.
 - In body text, only capitalize proper nouns. Do not capitalize common nouns, even if the common noun is an important product concept.
 
-  **Example:**
-    - Correct: New clusters will now have admission control enabled by default.
-    - Incorrect New clusters will now have Admission Control enabled by default.
+    **Example:**
+      - Correct: New clusters will now have admission control enabled by default.
+      - Incorrect New clusters will now have Admission Control enabled by default.
 
 ### Punctuation rules
 
@@ -169,7 +170,7 @@ For more detail about how to format text, see [Components](#components).
 
 CockroachDB docs are mainly comprised of pages (`.md`) and images (`.png` or `.gif`). File names are lowercase with a dash between words, and should be brief but descriptive.
 
-Examples:
+### Examples
 
 - `this-is-a-doc.md`
 - `name-of-your-image.png`
@@ -194,7 +195,8 @@ A page or a heading within a page can be one of these content types.
 
 A _concept_ explains how a particular feature works, or how a specific system is designed. Conceptual pages do not provide prescriptive guidance or instruction.
 
-- Title or heading is a plural noun.
+- A noun representing the concept(s) or entities(s) to be described, optionally followed by a page descriptor, such as **Overview**.
+
   **Example:** Indexes.
 
 - First sentence answers the question "what is?" in the form **A _\<singular noun\>_ is ….**.
@@ -214,8 +216,10 @@ A _concept_ explains how a particular feature works, or how a specific system is
 
 A _task_ provides step-by-step instructions to complete a specific goal. In contrast with [tutorials](#tutorials), tasks are discrete, action-based, and do not need to be limited to a specific use case.
 
+At the page level, a task could take two different forms: a page with multiple, related tasks or a single longer task.
+
 - Answers the question of "how to?" by describing precisely what to do and the order in which to do it.
-- Title or heading should state an actionable goal for the user and is of the form **\<Imperative verb\> a \<noun\>**.
+- Title or heading should state an actionable goal for the user and ideally of the form **\<Imperative verb\> [<article>|<conjunction] \<noun\> or \<proper noun\>**.
 
   **Example:** Create an Index
 - Verb ideally should be specific. Avoid generic verbs such as **Use**, **Manage** unless naming a page containing specific tasks.
@@ -328,7 +332,7 @@ CockroachDB docs use Heading 2 (`##`), Heading 3 (`###`) and Heading 4 (`####`).
 
 Headings should be sentence case. Enter a line break between a heading and its content.
 
-Examples:
+#### Examples
 
 - `## This is heading 2`
 - `### And this is heading 3`
@@ -467,17 +471,12 @@ Each liquid tag should be on its own line. Markdown can be used within the highl
 
 All product names except CockroachDB should be written as liquid variables unless part of front-matter, file names, or non-markdown files. Use the following code in place of product names:
 
-**CockroachDB Serverless (beta)** : `{{ site.data.products.serverless }}`
-
-**CockroachDB Serverless** : `{{ site.data.products.serverless-plan }}`
-
-**CockroachDB Dedicated** : `{{ site.data.products.dedicated }}`
-
-**CockroachDB Self-Hosted** : `{{ site.data.products.core }}`
-
-**Enterprise** : `{{ site.data.products.enterprise }}`
-
-**CockroachDB Cloud** : `{{ site.data.products.db }}`
+- **CockroachDB Serverless (beta)** : `{{ site.data.products.serverless }}`
+- **CockroachDB Serverless** : `{{ site.data.products.serverless-plan }}`
+- **CockroachDB Dedicated** : `{{ site.data.products.dedicated }}`
+- **CockroachDB Self-Hosted** : `{{ site.data.products.core }}`
+- **Enterprise** : `{{ site.data.products.enterprise }}`
+- **CockroachDB Cloud** : `{{ site.data.products.db }}`
 
 ### Code
 
@@ -567,7 +566,7 @@ To insert a version tag, use the following code:
 
 Note: Version tags cannot be used in bulleted lists items. To denote a new feature in a bulleted list, start the bulleted item with "**New in vX.X:**".
 
-Examples:
+#### Examples
 
 - [`CREATE TABLE`](https://www.cockroachlabs.com/docs/stable/create-table.html)
 
