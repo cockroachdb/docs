@@ -709,7 +709,7 @@ Use images to clarify a topic, but only use them as needed. Images are either:
 Use the following HTML and liquid to include an image in a markdown page:
 
 ~~~ html
-<img src="{{ ‘images/v2.1/image-name.png' | relative_url }}" alt="Alternative Text Here" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v2.1/image-name.png' | relative_url }}" alt="Alternative Text Here" style="border:1px solid #eee;max-width:100%" />
 ~~~
 
 Example: [Decommission Nodes](https://www.cockroachlabs.com/docs/stable/remove-nodes.html#step-1-check-the-node-before-decommissioning)
