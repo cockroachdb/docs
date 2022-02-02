@@ -2,6 +2,7 @@
 title: SET (session variable)
 summary: The SET statement modifies the current configuration variables for the client session.
 toc: true
+docs_area: 
 ---
 
 The `SET` [statement](sql-statements.html) can modify one of the session configuration variables. These can also be queried via [`SHOW`](show-vars.html). By default, session variable values are set for the duration of the current session.

@@ -2,6 +2,7 @@
 title: CREATE SCHEDULE FOR BACKUP
 summary: The CREATE SCHEDULE FOR BACKUP statement creates a schedule for periodic backups.
 toc: true
+docs_area: 
 ---
 
  The `CREATE SCHEDULE FOR BACKUP` [statement](sql-statements.html) creates a schedule for periodic [backups](backup.html).

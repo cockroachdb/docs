@@ -2,6 +2,7 @@
 title: Update Data
 summary: How to update the data in CockroachDB from various programming languages
 toc: true
+docs_area: 
 ---
 
 This page has instructions for updating existing rows of data in CockroachDB, using the following [SQL statements](sql-statements.html):
@@ -413,7 +414,7 @@ Reference information related to this task:
 - [Bulk-update Data](bulk-update-data.html)
 - [`UPSERT`](update.html)
 - [`INSERT ... ON CONFLICT`](insert.html#on-conflict-clause)
-- [Understanding and Avoiding Transaction Contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention)
+- [Transaction Contention](performance-best-practices-overview.html#transaction-contention)
 
 Other common tasks:
 

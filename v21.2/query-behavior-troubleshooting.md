@@ -2,6 +2,7 @@
 title: Troubleshoot SQL Behavior
 summary: Learn how to troubleshoot issues with specific SQL statements with CockroachDB
 toc: true
+docs_area: 
 ---
 
 If a [SQL statement](sql-statements.html) returns an unexpected result or takes longer than expected to process, this page will help you troubleshoot the issue.
@@ -17,6 +18,10 @@ Use the [slow query log](logging-use-cases.html#sql_perf) or DB Console to detec
 High latency SQL statements are displayed on the [**Statements page**](ui-statements-page.html) of the DB Console. To view the Statements page, [access the DB Console](ui-overview.html#db-console-access) and click **Statements** on the left.
 
 You can also check the [service latency graph](ui-sql-dashboard.html#service-latency-sql-99th-percentile) and the [CPU graph](ui-hardware-dashboard.html#cpu-percent) on the SQL and Hardware Dashboards, respectively. If the graphs show latency spikes or CPU usage spikes, these might indicate slow queries in your cluster.
+
+{{site.data.alerts.callout_info}}
+{% include {{ page.version.version }}/prod-deployment/resolution-untuned-query.md %}
+{{site.data.alerts.end}}
 
 ## Visualize statement traces in Jaeger
 
@@ -47,7 +52,7 @@ You can look more closely at the behavior of a statement by visualizing a statem
 
     <img src="{{ 'images/v21.2/jaeger-trace-log-messages.png' | relative_url }}" alt="Jaeger Trace Log Messages" style="border:1px solid #eee;max-width:100%" />
 
-1. You can troubleshoot [transaction contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention), for example, by gathering [diagnostics](ui-statements-page.html#diagnostics) on statements with high latency and looking through the log messages in `trace-jaeger.json` for jumps in latency.
+1. You can troubleshoot [transaction contention](performance-best-practices-overview.html#transaction-contention), for example, by gathering [diagnostics](ui-statements-page.html#diagnostics) on statements with high latency and looking through the log messages in `trace-jaeger.json` for jumps in latency.
 
   In the example below, the trace shows that there is significant latency between a push attempt on a transaction that is holding a [lock](architecture/transaction-layer.html#writing) (56.85ms) and that transaction being committed (131.37ms).
 
@@ -57,7 +62,7 @@ You can look more closely at the behavior of a statement by visualizing a statem
 
 The common reasons for a sub-optimal `SELECT` performance are inefficient scans, full scans, and incorrect use of indexes. To improve the performance of `SELECT` statements, refer to the following documents:
 
--  [Table scan best practices](performance-best-practices-overview.html#table-scans-best-practices)
+-  [Table scan best practices](performance-best-practices-overview.html#table-scan-best-practices)
 
 -  [Indexes best practices](schema-design-indexes.html#best-practices)
 
@@ -79,13 +84,13 @@ If the query performance is irregular:
 
 ## Cancelling running queries
 
-See [Cancel query](manage-long-running-queries.html#cancel-long-running-queries)
+See [Cancel long-running queries](manage-long-running-queries.html#cancel-long-running-queries).
 
 ## Low throughput
 
 Throughput is affected by the disk I/O, CPU usage, and network latency. Use the DB Console to check the following metrics:
 
-- Disk I/O: [Disk IOPS in progress](ui-hardware-dashboard.html#disk-iops-in-progress)
+- Disk I/O: [Disk IOPS in progress](ui-hardware-dashboard.html#disk-ops-in-progress)
 
 - CPU usage: [CPU percent](ui-hardware-dashboard.html#cpu-percent)
 
@@ -113,7 +118,7 @@ A hot node is one that has much higher resource usage than other nodes. To deter
 
 -   Check load balancer settings.
 
--   Check for [transaction contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention).
+-   Check for [transaction contention](performance-best-practices-overview.html#transaction-contention).
 
 -   If you have a monotonically increasing index column or Primary Key, then your index or Primary Key should be redesigned. See [Unique ID best practices](performance-best-practices-overview.html#unique-id-best-practices) for more information.
 

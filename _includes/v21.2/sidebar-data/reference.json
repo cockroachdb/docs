@@ -1700,6 +1700,12 @@
         ]
       },
       {
+        "title": "Cloud API",
+        "urls": [
+          "/api/cloud/v1.html"
+        ]
+      },
+      {
         "title": "Logging",
         "items": [
           {
@@ -1744,8 +1750,6 @@
             ]
           }
         ]
-      },
-      {% include_cached cockroachcloud/sidebar-release-notes.json %},
-      {% include_cached sidebar-releases.json %}
+      }
     ]
   }

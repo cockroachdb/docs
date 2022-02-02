@@ -2,6 +2,7 @@
 title: cockroach userfile delete
 summary: The cockroach userfile delete command deletes files stored in user-scoped file storage.
 toc: true
+docs_area: 
 ---
 
  The `cockroach userfile delete` [command](cockroach-commands.html) deletes the files stored in the [user-scoped file storage](use-userfile-for-bulk-operations.html) which match the [provided pattern](cockroach-userfile-upload.html#file-destination), using a SQL connection. If the pattern `'*'` is passed, all files in the specified (or default, if unspecified) user-scoped file storage will be deleted. Deletions are not atomic, and all deletions prior to the first failure will occur.

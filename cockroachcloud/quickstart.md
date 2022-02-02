@@ -2,12 +2,13 @@
 title: Quickstart with CockroachDB Serverless (beta)
 summary: Learn how to create and use your free CockroachDB Cloud cluster.
 toc: true
+filter_category: qs_crdb_cloud
+filter_html: CockroachDB Serverless (beta)
+filter_sort: 1
+docs_area: get_started
 ---
 
-<div class="filters clearfix">
-    <a href="quickstart.html"><button class="filter-button page-level current">{{ site.data.products.serverless }}</button></a>
-    <a href="quickstart-trial-cluster.html"><button class="filter-button page-level">{{ site.data.products.dedicated }}</button></a>
-</div>
+{% include filter-tabs.md %}
 
 This page guides you through the quickest way to get started with CockroachDB. You'll start a free {{ site.data.products.serverless }} cluster, connect with the CockroachDB SQL client, insert some data, and then read the data from a sample application.
 

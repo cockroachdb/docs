@@ -2,6 +2,7 @@
 title: Network Authorization
 summary: Learn about the network authorization features for {{ site.data.products.db }} clusters.
 toc: true
+docs_area: 
 ---
 
 To prevent denial-of-service and brute force password attacks, {{ site.data.products.dedicated }} requires you to authorize networks that can access your cluster by [allowlisting the public IP addresses](#ip-allowlisting) for your application. Optionally, you can [set up Virtual Private Cloud (VPC) peering](#vpc-peering) or [AWS PrivateLink](#aws-privatelink) for your cluster for enhanced network security and lower network latency.

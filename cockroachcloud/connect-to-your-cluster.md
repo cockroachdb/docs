@@ -2,12 +2,13 @@
 title: Connect to Your CockroachDB Cloud Cluster
 summary: Learn how to connect and start interacting with your cluster.
 toc: true
+filter_category: conn_crdb_cloud
+filter_html: CockroachDB Dedicated
+filter_sort: 2
+docs_area: 
 ---
 
-<div class="filters clearfix">
-    <a href="connect-to-a-serverless-cluster.html"><button class="filter-button page-level">{{ site.data.products.serverless }}</button></a>
-    <a href="connect-to-your-cluster.html"><button class="filter-button page-level current">{{ site.data.products.dedicated }}</button></a>
-</div>
+{% include filter-tabs.md %}
 
 This page shows you how to connect to your {{ site.data.products.dedicated }} cluster.
 

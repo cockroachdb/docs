@@ -2,11 +2,14 @@
 title: DROP CONSTRAINT
 summary: Use the ALTER CONSTRAINT statement to remove constraints from columns.
 toc: true
+docs_area: 
 ---
 
 The `DROP CONSTRAINT` [statement](sql-statements.html) is part of [`ALTER TABLE`](alter-table.html) and removes [`CHECK`](check.html) and [`FOREIGN KEY`](foreign-key.html) constraints from columns.
 
- [`PRIMARY KEY`](primary-key.html) constraints can be dropped with `DROP CONSTRAINT` if an [`ADD CONSTRAINT`](add-constraint.html) statement follows the `DROP CONSTRAINT` statement in the same transaction.
+{% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
+
+ `PRIMARY KEY`](primary-key.html) constraints can be dropped with `DROP CONSTRAINT` if an [`ADD CONSTRAINT`](add-constraint.html) statement follows the `DROP CONSTRAINT` statement in the same transaction.
 
 {{site.data.alerts.callout_success}}
 When you change a primary key with [`ALTER TABLE ... ALTER PRIMARY KEY`](alter-primary-key.html), the old primary key index becomes a secondary index. If you do not want the old primary key to become a secondary index, use `DROP CONSTRAINT`/[`ADD CONSTRAINT`](add-constraint.html) to change the primary key.
@@ -153,3 +156,4 @@ Using [`ALTER PRIMARY KEY`](alter-primary-key.html) would have created a `UNIQUE
 - [`ALTER TABLE`](alter-table.html)
 - [`SHOW JOBS`](show-jobs.html)
 - ['ALTER PRIMARY KEY'](alter-primary-key.html)
+- [Online Schema Changes](online-schema-changes.html)

@@ -2,6 +2,7 @@
 title: Well Known Text
 summary: The Well Known Text format provides a text representation of a geometric shape.
 toc: true
+docs_area: 
 ---
 
 The Well Known Text format (hereafter _WKT_) provides a text representation of a geometric shape.  It can be used to:

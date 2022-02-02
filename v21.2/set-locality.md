@@ -2,9 +2,10 @@
 title: SET LOCALITY
 summary: The SET LOCALITY statement changes the locality of a table.
 toc: true
+docs_area: 
 ---
 
- The `ALTER TABLE .. SET LOCALITY` [statement](sql-statements.html) changes the [table locality](multiregion-overview.html#table-locality) of a [table](create-table.html) in a [multi-region database](multiregion-overview.html).
+The `ALTER TABLE .. SET LOCALITY` [statement](sql-statements.html) changes the [table locality](multiregion-overview.html#table-locality) of a [table](create-table.html) in a [multi-region database](multiregion-overview.html).
 
 {{site.data.alerts.callout_info}}
 `SET LOCALITY` is a subcommand of [`ALTER TABLE`](alter-table.html).
@@ -23,12 +24,7 @@ toc: true
 | `table_name` | The table whose [locality](multiregion-overview.html#table-locality) you are configuring.                                                                                                    |
 | `locality`   | The [locality](multiregion-overview.html#table-locality) to apply to this table.  Allowed values: <ul><li>[`REGIONAL BY TABLE`](#regional-by-table) (default)</li><li>[`REGIONAL BY ROW`](#regional-by-row)</li><li>[`GLOBAL`](#global)</li></ul> |
 
-{{site.data.alerts.callout_info}}
-For more information about which table locality is right for your use case, see the following pages:  
-<ul>
-<li>[Multi-region table localities](multiregion-overview.html#table-locality)</li>
-</ul>
-{{site.data.alerts.end}}
+For more information about which table locality is right for your use case, see [Table localities](multiregion-overview.html#table-locality).
 
 ## Required privileges
 
@@ -69,7 +65,7 @@ For more information about how table localities work, see [Regional tables](mult
 ### Set the table locality to `REGIONAL BY ROW`
 
 {{site.data.alerts.callout_info}}
-Before setting the locality to `REGIONAL BY ROW` on a table targeted by a changefeed, read the considerations in [Changefeeds on regional by row tables](stream-data-out-of-cockroachdb-using-changefeeds.html#changefeeds-on-regional-by-row-tables).
+Before setting the locality to `REGIONAL BY ROW` on a table targeted by a changefeed, read the considerations in [Changefeeds on regional by row tables](changefeeds-in-multi-region-deployments.html).
 {{site.data.alerts.end}}
 
 To make an existing table a _regional by row_ table, use the following statement:
@@ -92,7 +88,7 @@ SELECT crdb_region, id FROM {table};
 
 {% include copy-clipboard.html %}
 ~~~ sql
-UPDATE {table} SET crdb_region = "eu-west" WHERE id IN (...)
+UPDATE {table} SET crdb_region = 'eu-west' WHERE id IN (...)
 ~~~
 
 To add a new row to a regional by row table, you must choose one of the following options.
@@ -131,7 +127,7 @@ ALTER TABLE rides ADD COLUMN region crdb_internal_region AS (
   CASE
     WHEN city IN ('new york', 'boston', 'washington dc', 'chicago', 'detroit', 'minneapolis') THEN 'us-east-1'
     WHEN city IN ('san francisco', 'seattle', 'los angeles') THEN 'us-west-1'
-    WHEN city IN ('amsterdam', 'paris', 'rome') THEN 'eu-west-1'  
+    WHEN city IN ('amsterdam', 'paris', 'rome') THEN 'eu-west-1'
   END
 ) STORED;
 ~~~
@@ -140,7 +136,7 @@ ALTER TABLE rides ADD COLUMN region crdb_internal_region AS (
 
 ### Turn on auto-rehoming for `REGIONAL BY ROW` tables
 
-{% include {{ page.version.version }}/misc/experimental-warning.md %}
+{% include common/experimental-warning.md %}
 
 This feature is disabled by default.
 
@@ -298,6 +294,6 @@ For more information about how this table locality works, see [Global tables](mu
 
 ## See also
 
-- [Multi-region overview](multiregion-overview.html)
+- [Multi-Region Capabilities Overview](multiregion-overview.html)
 - [`ALTER TABLE`](alter-table.html)
 - [Other SQL Statements](sql-statements.html)

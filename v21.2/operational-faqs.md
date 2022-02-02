@@ -3,6 +3,7 @@ title: Operational FAQs
 summary: Get answers to frequently asked questions about operating CockroachDB.
 toc: true
 toc_not_nested: true
+docs_area: 
 ---
 
 ## Why is my process hanging when I try to start nodes with the `--background` flag?
@@ -113,14 +114,14 @@ When a node runs out of disk space, it shuts down and cannot be restarted until 
 For more information about troubleshooting disk usage issues, see [storage issues](cluster-setup-troubleshooting.html#disks-filling-up).
 
 {{site.data.alerts.callout_info}}
-In addition to using ballast files, it is important to actively [monitor remaining disk space](monitoring-and-alerting.html#events-to-alert-on).
+In addition to using ballast files, it is important to actively [monitor remaining disk space](common-issues-to-monitor.html#storage-capacity).
 {{site.data.alerts.end}}
 
 ## Why would increasing the number of nodes not result in more operations per second?
 
 If queries operate on different data, then increasing the number of nodes should improve the overall throughput (transactions/second or QPS).
 
-However, if your queries operate on the same data, you may be observing transaction contention. For details, see [SQL Performance Best Practices](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention).
+However, if your queries operate on the same data, you may be observing transaction contention. For details, see [SQL Performance Best Practices](performance-best-practices-overview.html#transaction-contention).
 
 ## Why does CockroachDB collect anonymized cluster usage details by default?
 

@@ -3,6 +3,7 @@ title: ST_Intersects
 summary: ST_Intersects(A, B) returns true if any point in shape A lies within shape B.
 toc: true
 has_prefixed_variant: true
+docs_area: 
 ---
 
 Given two shapes _A_ and _B_, `ST_Intersects(A, B)` returns `true` if the shapes share any of the same space -- that is, if any point in the set that comprises _A_ is also a member of the set of points that make up _B_.

@@ -2,6 +2,7 @@
 title: Configure logs
 summary: How to configure CockroachDB logs with the --log or --log-config-file flag and YAML payload.
 toc: true
+docs_area: 
 ---
 
 This page describes how to configure CockroachDB logs with the [`--log` or `log-config-file` flag](cockroach-start.html#logging) and a [YAML payload](#yaml-payload). Most logging behaviors are configurable, including:
@@ -371,7 +372,9 @@ cockroach-data/logs
 Each Cockroach node generates log files in the directory specified by its logging configuration. These logs detail the internal activity of that node without visibility into the behavior of other nodes. When troubleshooting, it's best to refer to the output directory for the cluster log files, which collect the messages from all active nodes.
 {{site.data.alerts.end}}
 
-In cloud deployments, the main data store will be subject to an IOPS budget. Adding logs to the store directory will excessively consume IOPS. For this reason, cloud deployments should output log files to a separate directory with fewer IOPS restrictions. You can override the default logging directory like this:
+In cloud deployments, the [main data store](cockroach-start.html#store) will be subject to an IOPS budget. Adding logs to the store directory will excessively consume IOPS. For this reason, cloud deployments should output log files to a separate directory with fewer IOPS restrictions.
+
+You can override the default logging directory like this:
 
 ~~~ yaml
 file-defaults:
