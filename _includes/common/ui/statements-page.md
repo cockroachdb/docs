@@ -44,7 +44,7 @@ The following screenshot shows the statements that contain the string `rides` fo
 
 ### Example
 
-See [View historical statement statistics and the sampled logical plan per fingerprint](crdb-internal.html#view-historical-statement-statistics-and-the-sampled-logical-plan-per-fingerprint).
+See [View historical statement statistics and the sampled logical plan per fingerprint](({{ link_prefix }}crdb-internal.html#view-historical-statement-statistics-and-the-sampled-logical-plan-per-fingerprint).
 
 ## SQL statement fingerprints
 
