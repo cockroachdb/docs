@@ -12,8 +12,8 @@ For a summary of Core and {{ site.data.products.enterprise }} changefeed feature
 Enterprise changefeeds can connect to the following sinks:
 
 - [Kafka](#create-a-changefeed-connected-to-kafka)
-- [Cloud Storage](create-a-changefeed-connected-to-a-cloud-storage-sink) (Amazon S3, Google Cloud Storage, Azure Storage)
-- [Webhook](create-a-changefeed-connected-to-a-webhook-sink)
+- [Cloud Storage](#create-a-changefeed-connected-to-a-cloud-storage-sink) (Amazon S3, Google Cloud Storage, Azure Storage)
+- [Webhook](#create-a-changefeed-connected-to-a-webhook-sink)
 
 See the [Changefeed Sinks](changefeed-sinks.html) page for more detail on forming sink URIs and specifics on configuration.
 
