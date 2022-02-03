@@ -2,7 +2,7 @@
 title: OWNER TO
 summary: The OWNER TO subcommand changes the owner of an object.
 toc: true
-docs_area: 
+docs_area: reference.sql
 ---
 
 `OWNER TO` is a subcommand of [`ALTER DATABASE`](alter-database.html), [`ALTER TABLE`](alter-table.html), [`ALTER SCHEMA`](alter-schema.html), and [`ALTER TYPE`](alter-type.html), and is used to change the owner of an object in a cluster.

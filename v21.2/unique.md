@@ -2,7 +2,7 @@
 title: Unique Constraint
 summary: The UNIQUE constraint specifies that each non-NULL value in the constrained column must be unique.
 toc: true
-docs_area: 
+docs_area: reference.sql
 ---
 
 The `UNIQUE` [constraint](constraints.html) specifies that each non-`NULL` value in the constrained column must be unique.

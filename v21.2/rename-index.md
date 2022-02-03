@@ -2,7 +2,7 @@
 title: RENAME INDEX
 summary: The RENAME INDEX statement changes the name of an index for a table.
 toc: true
-docs_area: 
+docs_area: reference.sql
 ---
 
 The `RENAME INDEX` [statement](sql-statements.html) changes the name of an index for a table.

@@ -3,7 +3,7 @@ title: SHOW GRANTS
 summary: The SHOW GRANTS statement lists the privileges granted to users.
 keywords: reflection
 toc: true
-docs_area: 
+docs_area: reference.sql
 ---
 
 The `SHOW GRANTS` [statement](sql-statements.html) lists one of the following:

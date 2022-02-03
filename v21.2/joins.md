@@ -3,7 +3,7 @@ title: JOIN expressions
 summary: JOIN expressions combine data from two or more table expressions.
 toc: true
 keywords: gin, gin index, gin indexes, inverted index, inverted indexes, accelerated index, accelerated indexes
-docs_area: 
+docs_area: reference.sql
 ---
 
 `JOIN` expressions, also called "joins", combine the results of two or more table expressions based on conditions on the values of particular columns (i.e., equality columns).
