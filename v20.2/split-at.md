@@ -184,41 +184,7 @@ Now you can split the table based on the compound primary key. Note that you do 
 
 ### Split an index
 
-Add a new secondary [index](indexes.html) to the `rides` table, on the `revenue` column:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> CREATE INDEX revenue_idx ON rides(revenue);
-~~~
-
-Then split the table ranges by secondary index values:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> ALTER INDEX rides@revenue_idx SPLIT AT VALUES (25.00), (50.00), (75.00);
-~~~
-~~~
-         key        |      pretty      |       split_enforced_until
-+-------------------+------------------+----------------------------------+
-  \277\214*2\000    | /Table/55/4/25   | 2262-04-11 23:47:16.854776+00:00
-  \277\214*d\000    | /Table/55/4/5E+1 | 2262-04-11 23:47:16.854776+00:00
-  \277\214*\226\000 | /Table/55/4/75   | 2262-04-11 23:47:16.854776+00:00
-(3 rows)
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SHOW RANGES FROM INDEX rides@revenue_idx;
-~~~
-~~~
-  start_key | end_key | range_id | range_size_mb | lease_holder | lease_holder_locality | replicas |                  replica_localities
-+-----------+---------+----------+---------------+--------------+-----------------------+----------+------------------------------------------------------+
-  NULL      | /25     |       55 |      0.007446 |            6 | region=us-central1    | {3,6,9}  | {region=us-east1,region=us-central1,region=us-west1}
-  /25       | /5E+1   |       56 |      0.008951 |            6 | region=us-central1    | {3,6,9}  | {region=us-east1,region=us-central1,region=us-west1}
-  /5E+1     | /75     |       57 |      0.008205 |            2 | region=us-east1       | {2,6,9}  | {region=us-east1,region=us-central1,region=us-west1}
-  /75       | NULL    |       60 |      0.009322 |            6 | region=us-central1    | {2,6,9}  | {region=us-east1,region=us-central1,region=us-west1}
-(4 rows)
-~~~
+{% include {{page.version.version}}/sql/split-an-index.md %}
 
 ### Set the expiration on a split enforcement
 

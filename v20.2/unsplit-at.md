@@ -111,74 +111,9 @@ Now unsplit the table to remove the split enforcements:
 
 The `users` table is still split into ranges at `'chicago'`, `'new york'`, and `'seattle'`, but the `split_enforced_until` column is now `NULL` for all ranges in the table. The split is no longer enforced, and CockroachDB can [merge the data](architecture/distribution-layer.html#range-merges) in the table as needed.
 
-### Unsplit an index
+### Unsplit an index at specific points
 
-Add a new secondary [index](indexes.html) to the `rides` table, on the `revenue` column, and then [split](split-at.html) the table ranges by secondary index values:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> CREATE INDEX revenue_idx ON rides(revenue);
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> ALTER INDEX rides@revenue_idx SPLIT AT VALUES (25.00), (50.00), (75.00);
-~~~
-~~~
-         key        |      pretty      |       split_enforced_until
-+-------------------+------------------+----------------------------------+
-  \277\214*2\000    | /Table/55/4/25   | 2262-04-11 23:47:16.854776+00:00
-  \277\214*d\000    | /Table/55/4/5E+1 | 2262-04-11 23:47:16.854776+00:00
-  \277\214*\226\000 | /Table/55/4/75   | 2262-04-11 23:47:16.854776+00:00
-(3 rows)
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SELECT range_id, start_pretty, end_pretty, split_enforced_until FROM crdb_internal.ranges WHERE table_name='rides';
-~~~
-~~~
-  range_id |   start_pretty   |    end_pretty    |       split_enforced_until
-+----------+------------------+------------------+----------------------------------+
-        23 | /Table/55        | /Table/55/4      | NULL
-        32 | /Table/55/4      | /Table/55/4/25   | 2019-09-10 21:27:35.056275+00:00
-        33 | /Table/55/4/25   | /Table/55/4/5E+1 | 2262-04-11 23:47:16.854776+00:00
-        34 | /Table/55/4/5E+1 | /Table/55/4/75   | 2262-04-11 23:47:16.854776+00:00
-        35 | /Table/55/4/75   | /Table/56        | 2262-04-11 23:47:16.854776+00:00
-(5 rows)
-~~~
-
-Now unsplit the index to remove the split enforcements:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> ALTER INDEX rides@revenue_idx UNSPLIT AT VALUES (25.00), (50.00), (75.00);
-~~~
-~~~
-         key        |      pretty
-+-------------------+------------------+
-  \277\214*2\000    | /Table/55/4/25
-  \277\214*d\000    | /Table/55/4/5E+1
-  \277\214*\226\000 | /Table/55/4/75
-(3 rows)
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SELECT range_id, start_pretty, end_pretty, split_enforced_until FROM crdb_internal.ranges WHERE table_name='rides';
-~~~
-~~~
-  range_id |   start_pretty   |    end_pretty    |       split_enforced_until
-+----------+------------------+------------------+----------------------------------+
-        23 | /Table/55        | /Table/55/4      | NULL
-        32 | /Table/55/4      | /Table/55/4/25   | 2019-09-10 21:27:35.056275+00:00
-        33 | /Table/55/4/25   | /Table/55/4/5E+1 | NULL
-        34 | /Table/55/4/5E+1 | /Table/55/4/75   | NULL
-        35 | /Table/55/4/75   | /Table/56        | NULL
-(5 rows)
-~~~
-
-The table is still split into ranges at `25.00`, `50.00`, and `75.00`, but the `split_enforced_until` column is now `NULL` for all ranges in the table. The split is no longer enforced, and CockroachDB can [merge the data](architecture/distribution-layer.html#range-merges) in the table as needed.
+{% include {{page.version.version}}/sql/unsplit-an-index.md %}
 
 ## See also
 

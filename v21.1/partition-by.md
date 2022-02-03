@@ -59,107 +59,23 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 
 ### Define a list partition on a table or secondary index
 
-Suppose we have a table called `students_by_list`, and secondary index on the table called `name_idx`, in a global online learning portal, and the primary key of the table is defined as `(country, id)`. We can define partitions on the table and index by list:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> ALTER TABLE students_by_list PARTITION BY LIST (country) (
-    PARTITION north_america VALUES IN ('CA','US'),
-    PARTITION australia VALUES IN ('AU','NZ'),
-    PARTITION DEFAULT VALUES IN (default)
-  );
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> ALTER INDEX students_by_list@name_idx PARTITION BY LIST (country) (
-    PARTITION north_america VALUES IN ('CA','US'),
-    PARTITION australia VALUES IN ('AU','NZ'),
-    PARTITION DEFAULT VALUES IN (default)
-  );
-~~~
+{% include {{page.version.version}}/sql/define-a-list-partition.md %}
 
 ### Define a range partition on a table or secondary index
 
-Suppose we have another table called `students_by_range`, also with a secondary index called `name_idx`, and the primary key of the table is defined as `(expected_graduation_date, id)`. We can define partitions on the table and index by range:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> ALTER TABLE students_by_range PARTITION BY RANGE (expected_graduation_date) (
-    PARTITION graduated VALUES FROM (MINVALUE) TO ('2017-08-15'),
-    PARTITION current VALUES FROM ('2017-08-15') TO (MAXVALUE)
-  );
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> ALTER INDEX students_by_range@name_idx PARTITION BY RANGE (expected_graduation_date) (
-    PARTITION graduated VALUES FROM (MINVALUE) TO ('2017-08-15'),
-    PARTITION current VALUES FROM ('2017-08-15') TO (MAXVALUE)
-  );
-~~~
+{% include {{page.version.version}}/sql/define-a-range-partition.md %}
 
 ### Define subpartitions on a table or secondary index
 
-Suppose we have an yet another table named `students`, again with a secondary index called `name_idx`, and the primary key is defined as `(country, expected_graduation_date, id)`. We can define partitions and subpartitions on the table and index:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> ALTER TABLE students PARTITION BY LIST (country) (
-    PARTITION australia VALUES IN ('AU','NZ') PARTITION BY RANGE (expected_graduation_date) (
-      PARTITION graduated_au VALUES FROM (MINVALUE) TO ('2017-08-15'),
-      PARTITION current_au VALUES FROM ('2017-08-15') TO (MAXVALUE)
-    ),
-    PARTITION north_america VALUES IN ('US','CA') PARTITION BY RANGE (expected_graduation_date) (
-      PARTITION graduated_us VALUES FROM (MINVALUE) TO ('2017-08-15'),
-      PARTITION current_us VALUES FROM ('2017-08-15') TO (MAXVALUE)
-    )
-  );
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> ALTER INDEX students@name_idx PARTITION BY LIST (country) (
-    PARTITION australia VALUES IN ('AU','NZ') PARTITION BY RANGE (expected_graduation_date) (
-      PARTITION graduated_au VALUES FROM (MINVALUE) TO ('2017-08-15'),
-      PARTITION current_au VALUES FROM ('2017-08-15') TO (MAXVALUE)
-    ),
-    PARTITION north_america VALUES IN ('US','CA') PARTITION BY RANGE (expected_graduation_date) (
-      PARTITION graduated_us VALUES FROM (MINVALUE) TO ('2017-08-15'),
-      PARTITION current_us VALUES FROM ('2017-08-15') TO (MAXVALUE)
-    )
-  );
-~~~
+{% include {{page.version.version}}/sql/define-subpartitions.md %}
 
 ### Repartition a table or secondary index
 
-{% include copy-clipboard.html %}
-~~~ sql
-> ALTER TABLE students_by_range PARTITION BY RANGE (expected_graduation_date) (
-    PARTITION graduated VALUES FROM (MINVALUE) TO ('2018-08-15'),
-    PARTITION current VALUES FROM ('2018-08-15') TO (MAXVALUE)
-  );
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> ALTER INDEX students_by_range@name_idx PARTITION BY RANGE (expected_graduation_date) (
-    PARTITION graduated VALUES FROM (MINVALUE) TO ('2018-08-15'),
-    PARTITION current VALUES FROM ('2018-08-15') TO (MAXVALUE)
-  );
-~~~
+{% include {{page.version.version}}/sql/repartition.md %}
 
 ### Unpartition a table or secondary index
 
-{% include copy-clipboard.html %}
-~~~ sql
-> ALTER TABLE students PARTITION BY NOTHING;
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> ALTER INDEX students@name_idx PARTITION BY NOTHING;
-~~~
+{% include {{page.version.version}}/sql/unpartition.md %}
 
 ## See also
 
