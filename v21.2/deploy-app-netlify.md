@@ -1,20 +1,16 @@
 ---
-title: Create and Deploy a Netlify App Built on CockroachDB
+title: Deploy a Netlify App Built on CockroachDB
 summary: Learn how to use Netlify and CockroachDB Serverless.
 toc: true
 twitter: false
 referral_id: docs_netlify
 ---
 
-This tutorial shows you how to create and deploy a [Netlify](https://www.netlify.com/) web application that communicates with a {{ site.data.products.serverless }} cluster.
+This tutorial shows you how to deploy a [Netlify](https://www.netlify.com/) web application that communicates with a {{ site.data.products.serverless }} cluster.
 
-The sample app used in this tutorial simulates a gaming leaderboard. The [Netlify functions](https://www.netlify.com/products/functions/) used for the app are written in TypeScript. The functions use [Prisma](https://www.prisma.io/) to connect to CockroachDB. The app's frontend, also written in TypeScript, uses React, bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+The sample app used in this tutorial simulates [a gaming leaderboard](https://www.cockroachlabs.com/blog/react-typescript-cockroachdb-sample-app). The [Netlify functions](https://www.netlify.com/products/functions/) used for the app are written in TypeScript. The functions use [Prisma](https://www.prisma.io/) to connect to CockroachDB. The app's frontend, also written in TypeScript, uses React, bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 The source code for the completed app is available on GitHub at [https://github.com/cockroachdb/cockroachdb-typescript](https://github.com/cockroachdb/cockroachdb-typescript).
-
-{{site.data.alerts.callout_success}}
-See the blog post that inspired this tutorial: [How to build a Complete Webapp with React, TypeScript & CockroachDB](https://www.cockroachlabs.com/blog/react-typescript-cockroachdb-sample-app/#deploy-the-application-to-netlify).
-{{site.data.alerts.end}}
 
 ## Prerequisites
 
@@ -24,7 +20,7 @@ Before starting the tutorial, do the following:
 
 1. Create a Starter [Netlify](https://app.netlify.com/signup) account. You can do this with your GitHub login credentials.
 
-1. Install the [`cockroach` binary](install-cockroachdb.html).
+1. Install the [`cockroach` binary](install-cockroachdb.html). You'll use the [`cockroach sql` CLI](cockroach-sql.html) to initialize the database schema for the app.
 
 ## Step 1. Create a {{ site.data.products.serverless }} cluster
 
@@ -38,77 +34,59 @@ After the cluster is created, the **Connection info** window appears. Click the 
 The connection string is pre-populated with your username, cluster name, and other details, including your password. Your password, in particular, will be provided only once. Save it in a secure place (we recommend a password manager) to connect to your cluster in the future. If you forget your password, you can reset it by going to the [**SQL Users** page](../cockroachcloud/user-authorization.html).
 {{site.data.alerts.end}}
 
-## Step 2. Create the app project
+## Step 2. Get the code
 
-1. Open a new terminal and navigate to the directory where you want to create your web app.
-
-1. Generate the React project boilerplate with [Create React App](https://github.com/facebook/create-react-app):
+1. Clone the code's GitHub repo:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ npx create-react-app cockroachdb-typescript --template typescript
+    $ git clone git@github.com:cockroachdb/cockroachdb-typescript.git
     ~~~
 
-1. Follow the prompts to create the app in the `cockroachdb-typescript` directory. After you have installed the required packages, you should see a message in the terminal similar to the following:
+    The project has the following directory structure:
 
     ~~~
-    Success! Created cockroachdb-typescript at /path/cockroachdb-typescript
-    Inside that directory, you can run several commands:
-
-      npm start
-        Starts the development server.
-
-      npm run build
-        Bundles the app into static files for production.
-
-      npm test
-        Starts the test runner.
-
-      npm run eject
-        Removes this tool and copies build dependencies, configuration files
-        and scripts into the app directory. If you do this, you can’t go back!
-
-    We suggest that you begin by typing:
-
-      cd cockroachdb-typescript
-      npm start
-
-    Happy hacking!
-    ~~~
-
-1. Navigate to `cockroachdb-typescript`:
-
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ cd cockroachdb-typescript
-    ~~~
-
-    The directory structure should look like this:
-
-    ~~~
-    cockroachdb-typescript
+    ├── LICENSE.md
     ├── README.md
-    ├── node_modules
+    ├── database
+    │   └── schema.sql
+    ├── netlify
+    │   └── functions
+    │       ├── addScore.ts
+    │       ├── getPlayers.ts
+    │       └── getScores.ts
     ├── package-lock.json
     ├── package.json
+    ├── prisma
+    │   └── schema.prisma
     ├── public
     ├── src
     └── tsconfig.json
     ~~~
 
-## Step 3. Initialize the database
+    In this tutorial, we focus on the files in the `database`, `prisma`, and `netlify` directories. The files in the `public` and `src` directories define the frontend for the app and are outside the scope of the tutorial.
 
-1. Open a new terminal, and use the `cockroach sql` command to open a [SQL shell](cockroach-sql.html) to your {{ site.data.products.serverless }} cluster:
+1. At the top of the repo directory, fork the repo:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    cockroach sql --url "<connection-string>"
+    $ gh repo fork --remote
     ~~~
 
-    Where `<connection-string>` is the connection string you obtained earlier from the {{ site.data.products.db }} Console.
+    To deploy your code to Netlify, you need to have your own repo, or your own fork of the existing repo.
 
-1. To create the database schema in your cluster, run the following SQL commands in the SQL shell:
+## Step 3. Initialize the database
+
+At the top level of the project directory, use the [`cockroach sql` command](cockroach-sql.html) to initialize the `leaderboard` database in your {{ site.data.products.serverless }} cluster:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+cockroach sql --url "<connection-string>" --file ./database/schema.sql
+~~~
+
+Where `<connection-string>` is the connection string you obtained earlier from the {{ site.data.products.db }} Console.
+
+This command runs the SQL commands in the `database/schema.sql` file. These commands initialize the database schema in your cluster:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -120,44 +98,6 @@ CockroachDB does not support Prisma Migrate. We recommend executing DDL SQL stat
 {{site.data.alerts.end}}
 
 ## Step 4. Initialize Prisma Client
-
-1. Install [Prisma Client](https://www.prisma.io/client) to your project:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    npm install --save prisma @prisma/client@3.8.0
-    ~~~
-
-1. Initialize the Prisma schema file and `.env` file in your project:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    npx prisma init
-    ~~~
-
-1. Update the Prisma schema file to specify CockroachDB as the database provider:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~
-    generator client {
-      provider        = "prisma-client-js"
-      previewFeatures = ["cockroachdb"]
-    }
-
-    datasource db {
-      provider = "cockroachdb"
-      url      = env("DATABASE_URL")
-    }
-    ~~~
-
-1. Update the `.env` file to set `DATABASE_URL` to the local `DATABASE_URL` environment variable:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~
-    DATABASE_URL= ${DATABASE_URL}
-    ~~~
-
-    <a name="database-url"></a>
 
 1. Set the local `DATABASE_URL` environment variable to a valid connection string to the `leaderboard` database on your cluster:
 
@@ -177,12 +117,7 @@ CockroachDB does not support Prisma Migrate. We recommend executing DDL SQL stat
     This connection string is identical to the connection string you obtained earlier from the {{ site.data.products.db }} Console, with the exception of the database parameter (`leaderboard`).
     {{site.data.alerts.end}}
 
-1. Load the database schema from the cluster into your Prisma schema file:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ npx prisma db pull
-    ~~~
+     By default, Prisma uses the local `DATABASE_URL` environment variable as the connection string to the database.
 
 1. Initialize Prisma Client:
 
@@ -191,74 +126,18 @@ CockroachDB does not support Prisma Migrate. We recommend executing DDL SQL stat
     $ npx prisma generate
     ~~~
 
-## Step 5. Create Netlify functions
-
-1. Add the [`@netlify/functions`](https://github.com/netlify/functions) module to your project:
+    This command initializes Prisma Client to communicate with your CockroachDB cluster, based on the configuration in the `prisma/schema.prisma` file:
 
     {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    npm install --save @netlify/functions
+    ~~~ sql
+    {% remote_include https://raw.githubusercontent.com/cockroachdb/cockroachdb-typescript/master/prisma/schema.prisma %}
     ~~~
 
-1. Create a `netlify/functions` subdirectory for the functions:
+## Step 5. Deploy the application
 
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ mkdir -p netlify/functions
-    ~~~
+You can deploy web applications directly from GitHub to Netlify. In this tutorial, we use the [Netlify CLI](https://docs.netlify.com/cli/get-started/) to deploy the app.
 
-1. Add the function source code to the `netlify/functions` directory.
-
-Here are three sample functions, which use Prisma Client to [`SELECT`](selection-queries.html) and [`INSERT`](insert.html) data:
-
-[`getScores.ts`](https://raw.githubusercontent.com/cockroachdb/cockroachdb-typescript/master/netlify/functions/getScores.ts) reads all rows from the `player_scores` table and returns values in the `id`, `name`, and `score` columns.
-
-{% include_cached copy-clipboard.html %}
-~~~ js
-{% remote_include https://raw.githubusercontent.com/cockroachdb/cockroachdb-typescript/master/netlify/functions/getScores.ts %}
-~~~
-
-[`getPlayers.ts`](https://raw.githubusercontent.com/cockroachdb/cockroachdb-typescript/master/netlify/functions/getPlayers.ts) reads and returns all rows from the `players` table.
-
-{% include_cached copy-clipboard.html %}
-~~~ js
-{% remote_include https://raw.githubusercontent.com/cockroachdb/cockroachdb-typescript/master/netlify/functions/getPlayers.ts %}
-~~~
-
-[`addScore.ts`](https://raw.githubusercontent.com/cockroachdb/cockroachdb-typescript/master/netlify/functions/addScore.ts) writes new scores to the `player_scores` table.
-
-{% include_cached copy-clipboard.html %}
-~~~ js
-{% remote_include https://raw.githubusercontent.com/cockroachdb/cockroachdb-typescript/master/netlify/functions/addScore.ts %}
-~~~
-
-## Step 6. Create the React frontend
-
-The example app uses React for the frontend. This tutorial focuses on the database layer, so we recommend just copying some files over from the [completed app](https://github.com/cockroachdb/cockroachdb-typescript).
-
-1. Install [React Router](https://github.com/remix-run/react-router):
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ npm install --save react-router-dom@6.1.1
-    ~~~
-
-1. Copy the [`Admin.tsx`](https://raw.githubusercontent.com/cockroachdb/cockroachdb-typescript/master/src/Admin.tsx), [`App.tsx`](https://raw.githubusercontent.com/cockroachdb/cockroachdb-typescript/master/src/App.tsx), and [`Leaderboard.tsx`](https://raw.githubusercontent.com/cockroachdb/cockroachdb-typescript/master/src/Leaderboard.tsx) files to the `cockroachdb-typescript/src` directory.
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ wget  -P ./src/ https://raw.githubusercontent.com/cockroachdb/cockroachdb-typescript/master/src/Admin.tsx \
-    ./src/ https://raw.githubusercontent.com/cockroachdb/cockroachdb-typescript/master/src/App.tsx \
-    ./src/ https://raw.githubusercontent.com/cockroachdb/cockroachdb-typescript/master/src/Leaderboard.tsx
-    ~~~
-
-## Step 7. Deploy the application
-
-You can deploy web applications directly from GitHub to Netlify. In this tutorial, we use the [Netlify CLI](https://docs.netlify.com/cli) to deploy the app.
-
-1. [Initialize a new GitHub repo](https://git-scm.com/docs/git-init) in your `cockroachdb-typescript` directory, or fork [the existing repo](https://github.com/cockroachdb/cockroachdb-typescript) and clone the repo to a local directory.
-
-1. Install the Netlify CLI:
+1. Install the `netlify` CLI:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -270,6 +149,13 @@ You can deploy web applications directly from GitHub to Netlify. In this tutoria
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ netlify login
+    ~~~
+
+1. Verify that you can build the web application locally:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ npm run build
     ~~~
 
 1. Run the app server locally to preview your site:
@@ -291,19 +177,24 @@ You can deploy web applications directly from GitHub to Netlify. In this tutoria
 
     For a preview of the site, visit [http://localhost:8888](http://localhost:8888).
 
+    Interacting with the site triggers the Netlify functions defined in the `netlify/functions` directory. These functions use Prisma Client to run [`SELECT`](selection-queries.html) and [`INSERT`](insert.html) queries against the database:
+    - [`getScores.ts`](https://raw.githubusercontent.com/cockroachdb/cockroachdb-typescript/master/netlify/functions/getScores.ts) reads all rows from the `player_scores` table and returns values in the `id`, `name`, and `score` columns.
+    - [`getPlayers.ts`](https://raw.githubusercontent.com/cockroachdb/cockroachdb-typescript/master/netlify/functions/getPlayers.ts) reads and returns all rows from the `players` table.
+    - [`addScore.ts`](https://raw.githubusercontent.com/cockroachdb/cockroachdb-typescript/master/netlify/functions/addScore.ts) writes new scores to the `player_scores` table.
+
 1. From your repo directory, deploy your app with the Netlify CLI:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ netlify init
+    $ netlify deploy
     ~~~
 
-    Select the default options for each of the prompts. You will be required to authorize Netlify with GitHub.
+    Choose to create a new site, and then select the default options for each of the subsequent prompts. You will be required to authorize Netlify with GitHub.
 
     After the app is deployed, you should see the following message:
 
     ~~~
-    Success! Netlify CI/CD Configured!
+    ✔ Deploy is live!
     ~~~
 
 1. In order for the deployed app to connect to your database, you need to define the `DATABASE_URL` environment variable in the production environment:
@@ -313,7 +204,7 @@ You can deploy web applications directly from GitHub to Netlify. In this tutoria
     $ netlify env:set DATABASE_URL $DATABASE_URL
     ~~~
 
-    This command sets the remote `DATABASE_URL` environment variable for the site to the local `DATABASE_URL` environment variable [that you set earlier to initialize Prisma](#database-url).
+    This command sets the remote `DATABASE_URL` environment variable for the site to the local `DATABASE_URL` environment variable that you set earlier to initialize Prisma.
 
 1. Navigate to the admin URL for your site:
 
@@ -327,7 +218,6 @@ You can deploy web applications directly from GitHub to Netlify. In this tutoria
 ## See also
 
 - [How to build a Complete Webapp with React, TypeScript & CockroachDB](https://www.cockroachlabs.com/blog/react-typescript-cockroachdb-sample-app/#deploy-the-application-to-netlify)
-- [Create and Deploy an AWS Lambda Function Built on CockroachDB](deploy-lambda-function.html)
-- [Deploy a CockroachDB Cloud Application with Google Cloud Run](deploy-app-gcr.html)
+- [Build a Simple CRUD Node.js App with CockroachDB and Prisma Client](build-a-nodejs-app-with-cockroachdb-prisma.html)
 
 {% include {{page.version.version}}/app/see-also-links.md %}
