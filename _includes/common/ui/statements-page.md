@@ -44,28 +44,7 @@ The following screenshot shows the statements that contain the string `rides` fo
 
 ### Example
 
-This example command shows how to query the two most important JSON columns: `metadata` and `statistics`:
-
-~~~sql
-SELECT
-  aggregated_ts,
-  fingerprint_id,
-  app_name,
-  metadata -> 'query' AS statement_text,
-  metadata -> 'stmtTyp' AS statement_type,
-  metadata -> 'db' AS database_name,
-  metadata -> 'distsql' AS is_distsql,
-  metadata -> 'fullScan' AS has_full_scan,
-  metadata -> 'vec' AS used_vec,
-  statistics -> 'execution_statistics' -> 'contentionTime' -> 'mean' AS contention_time_mean,
-  statistics -> 'statistics' -> 'cnt' AS execution_count,
-  statistics -> 'statistics' -> 'firstAttemptCnt' AS number_first_attempts,
-  statistics -> 'statistics' -> 'numRows' -> 'mean' AS number_rows_returned_mean,
-  statistics -> 'statistics' -> 'rowsRead' -> 'mean' AS number_rows_read_mean,
-  statistics -> 'statistics' -> 'runLat' -> 'mean' AS runtime_latecy_mean,
-  sampled_plan
-FROM crdb_internal.statement_statistics;
-~~~
+See [View historical statement statistics and the sampled logical plan per fingerprint](crdb-internal.html#view-historical-statement-statistics-and-the-sampled-logical-plan-per-fingerprint).
 
 ## SQL statement fingerprints
 
