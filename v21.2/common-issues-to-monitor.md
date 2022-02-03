@@ -2,7 +2,7 @@
 title: Common Issues to Monitor
 summary: How to configure and monitor your CockroachDB cluster to prevent commonly encountered issues.
 toc: true
-docs_area: 
+docs_area: manage
 ---
 
 This page summarizes how to configure and monitor your cluster to prevent issues commonly encountered with:
@@ -154,7 +154,7 @@ CockroachDB attempts to restart nodes after they crash. Nodes that frequently re
 
 If you observe nodes frequently restarting, confirm that the crashes are caused by OOM errors:
 
-- Monitor `dmesg` to determine if a node crashed because it ran out of memory: 
+- Monitor `dmesg` to determine if a node crashed because it ran out of memory:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -257,16 +257,16 @@ Insufficient disk I/O can cause [poor SQL performance](#service-latency) and pot
 Ensure that you [properly configure storage](#storage-and-disk-monitoring) to prevent I/O bottlenecks. Afterward, if service times consistently exceed 1-5 ms, you can add more devices or expand the cluster to reduce the disk latency.
 {{site.data.alerts.end}}
 
-With insufficient disk I/O, you may also see: 
+With insufficient disk I/O, you may also see:
 
-- Degradation in [SQL response time](#service-latency). 
+- Degradation in [SQL response time](#service-latency).
 - An [unhealthy LSM](#lsm-health).
 
 #### Node heartbeat latency
 
 Because each node needs to update a liveness record on disk, maxing out disk bandwidth can cause liveness heartbeats to be missed.
 
-- The **Node Heartbeat Latency: 99th percentile** and **Node Heartbeat Latency: 90th percentile** graphs on the Distributed Dashboard show the time elapsed between [node liveness](cluster-setup-troubleshooting.html#node-liveness-issues) heartbeats. 
+- The **Node Heartbeat Latency: 99th percentile** and **Node Heartbeat Latency: 90th percentile** graphs on the Distributed Dashboard show the time elapsed between [node liveness](cluster-setup-troubleshooting.html#node-liveness-issues) heartbeats.
 
     {% include {{ page.version.version }}/prod-deployment/healthy-node-heartbeat-latency.md %}
 

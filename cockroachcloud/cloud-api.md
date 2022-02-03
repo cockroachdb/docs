@@ -2,7 +2,7 @@
 title: Use the Cloud API
 summary: The Cloud API is used to manage clusters within an organization
 toc: true
-docs_area: 
+docs_area: manage
 ---
 
 The Cloud API is a [REST interface](https://en.wikipedia.org/wiki/Representational_state_transfer) that allows users programmatic access to manage the lifecycle of clusters within their organization.

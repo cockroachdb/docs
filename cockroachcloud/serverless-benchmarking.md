@@ -2,7 +2,7 @@
 title: Serverless Performance Benchmarking
 summary: Learn more about CockroachDB Serverless performance benchmarks
 toc: true
-docs_area: 
+docs_area: manage
 ---
 
 This page describes {{ site.data.products.serverless }} performance benchmarking with a KV workload.
