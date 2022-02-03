@@ -2,7 +2,7 @@
 title: SPLIT AT
 summary: The SPLIT AT statement forces a range split at the specified row in a table or index.
 toc: true
-docs_area: 
+docs_area: reference.sql
 ---
 
 The `SPLIT AT` [statement](sql-statements.html) forces a range split at the specified row in a table or index.

@@ -3,7 +3,7 @@ title: ARRAY
 summary: The ARRAY data type stores one-dimensional, 1-indexed, homogeneous arrays of any non-array data types.
 toc: true
 keywords: gin, gin index, gin indexes, inverted index, inverted indexes, accelerated index, accelerated indexes
-docs_area: 
+docs_area: reference.sql
 ---
 
 The `ARRAY` data type stores one-dimensional, 1-indexed, homogeneous arrays of any non-array [data type](data-types.html).

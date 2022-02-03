@@ -2,7 +2,7 @@
 title: CREATE SEQUENCE
 summary: The CREATE SEQUENCE statement creates a new sequence in a database. Use a sequence to auto-increment integers in a table.
 toc: true
-docs_area: 
+docs_area: reference.sql
 ---
 
 The `CREATE SEQUENCE` [statement](sql-statements.html) creates a new sequence in a database. Use a sequence to auto-increment integers in a table.

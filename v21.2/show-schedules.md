@@ -2,7 +2,7 @@
 title: SHOW SCHEDULES
 summary: The SHOW SCHEDULES statement lists all currently active backup schedules.
 toc: true
-docs_area: 
+docs_area: reference.sql
 ---
 
  The `SHOW SCHEDULES` [statement](sql-statements.html) lists all of the currently active [backup schedules](create-schedule-for-backup.html).

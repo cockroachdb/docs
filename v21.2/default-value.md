@@ -2,7 +2,7 @@
 title: Default Value Constraint
 summary: The Default Value constraint specifies a value to populate a column with if none is provided.
 toc: true
-docs_area: 
+docs_area: reference.sql
 ---
 
 The `DEFAULT` value [constraint](constraints.html) specifies a value to write into the constrained column if one is not defined in an `INSERT` statement. The value may be either a hard-coded literal or an expression that is evaluated at the time the row is created.
