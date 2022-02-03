@@ -392,7 +392,7 @@ Column | Type | Description
 
 ### `metadata` column
 
-Column | Type | Description
+Field | Type | Description
 ------------|-----|------------
 `db` | `STRING` | The database on which the statement is executed.
 `distsql` | `BOOLEAN` | Whether the statement is being executed by the Distributed SQL (DistSQL) engine.
@@ -406,12 +406,12 @@ Column | Type | Description
 
 ### `statistics` column
 
-`execution_statistics` are the execution statistics for this statement.
+`execution_statistics` are the execution statistics sent to the DB Console for a statement fingerprint.
 `statistics` are the statement statistics sent to the DB Console for a statement fingerprint.
 
 The `NumericStat` type tracks two running values: the running mean `mean` and the running sum of squared differences `sqDiff` from the mean. Using these along with the total count of values, CockroachDB computes the variance using Welford's method.
 
-Column | Type | Description
+Field | Type | Description
 ------------|-----|------------
 `execution_statistics -> cnt` | `INT64` | The number of times execution statistics were recorded.
 <code>execution_statistics -> contentionTime -> [mean&#124;sqDiff]</code> | `NumericStat` | The time the statement spent contending for resources before being executed.
