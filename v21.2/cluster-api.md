@@ -2,7 +2,7 @@
 title: Cluster API v2.0
 summary: Programmatically access and monitor cluster and node status information with a RESTful API.
 toc: true
-docs_area: 
+docs_area: manage
 ---
 
 The CockroachDB Cluster API is a REST API that provides information about a cluster and its nodes. The API offers programmatic access to much of the information available in the [DB Console](ui-overview.html) user interface, enabling you to monitor and troubleshoot your cluster using your choice of tooling.
@@ -25,7 +25,7 @@ Endpoint | Name | Description
 [`/events`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/listEvents) | List events | List the latest [events](eventlog.html) on the cluster, in descending order.
 [`/health`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/health) | Check node health | Determine if the node is running and ready to accept SQL connections.
 [`/nodes`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/listNodes) | List nodes | Get details on all nodes in the cluster, including node IDs, software versions, and hardware.
-[`/nodes/{node_id}/ranges`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/listNodeRanges) | List node ranges | Get details on the ranges on a specified node. 
+[`/nodes/{node_id}/ranges`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/listNodeRanges) | List node ranges | Get details on the ranges on a specified node.
 [`/ranges/hot`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/listHotRanges) | List hot ranges | Get information on ranges receiving a high number of reads or writes.
 [`/ranges/{range_id}`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/listRange) | Get range details | Get detailed technical information on a range. Typically used by Cockroach Labs engineers.
 [`/sessions`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/listSessions) | List sessions | Get SQL session details of all current users or a specified user.
@@ -71,6 +71,6 @@ To connect with the API on a secure cluster, you will need:
 
 ## Versioning and Stability
 
-Future versions of CockroachDB may provide multiple API versions and will continue to provide access to this v2.0 API until it is deprecated. 
+Future versions of CockroachDB may provide multiple API versions and will continue to provide access to this v2.0 API until it is deprecated.
 
 All endpoint paths and payloads will remain available within a major API version number (v2.x). Minor versions could add new endpoints but will not remove existing endpoints.

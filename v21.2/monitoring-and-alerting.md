@@ -2,7 +2,7 @@
 title: Monitoring and Alerting
 summary: Monitor the health and performance of a cluster and alert on critical events and metrics.
 toc: true
-docs_area: 
+docs_area: manage
 ---
 
 In addition to CockroachDB's [built-in safeguards against failure](frequently-asked-questions.html#how-does-cockroachdb-survive-failures), it is critical to actively monitor the overall health and performance of a cluster running in production and to create alerting rules that promptly send notifications when there are events that require investigation or intervention.
@@ -161,7 +161,7 @@ Active monitoring helps you spot problems early, but it is also essential to cre
 - **How to detect:** Calculate this using the number of times the `sys_uptime` metric in the node's `_status/vars` output was reset back to zero. The `sys_uptime` metric gives you the length of time, in seconds, that the `cockroach` process has been running.
 
 ### Node is running low on disk space
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
+
 - **Rule:** Send an alert when a node has less than 15% of free space remaining.
 
 - **How to detect:** Divide the `capacity` metric by the `capacity_available` metric in the node's `_status/vars` output.

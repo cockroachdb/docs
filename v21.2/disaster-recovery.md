@@ -2,7 +2,7 @@
 title: Disaster Recovery
 summary: Learn how about CockrachDB disaster recovery capabilities and what to do if you encounter an issue.
 toc: true
-docs_area: 
+docs_area: manage
 ---
 
 CockroachDB is built to be [fault-tolerant and to recover automatically](demo-fault-tolerance-and-recovery.html), but sometimes disasters happen. A _disaster_ is any event that puts your cluster at risk, and usually means your cluster is experiencing [hardware failure](#hardware-failure), [data failure](#data-failure), or has [compromised security keys](#compromised-security-keys). Having a disaster recovery plan enables you to recover quickly, while limiting the consequences.
