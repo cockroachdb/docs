@@ -2,6 +2,7 @@
 title: System Catalogs
 summary: CockroachDB includes several virtual schemas that enable you to interface with CockroachDB.
 toc: true
+docs_area: 
 ---
 
 CockroachDB includes a set of system catalogs that provide non-stored data to client applications.

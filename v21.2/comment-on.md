@@ -2,9 +2,12 @@
 title: COMMENT ON
 summary: The COMMENT ON statement associates comments to databases, tables, columns, or indexes.
 toc: true
+docs_area: 
 ---
 
 The `COMMENT ON` [statement](sql-statements.html) associates comments to [databases](create-database.html), [tables](create-table.html), [columns](add-column.html), or [indexes](indexes.html).
+
+{% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
 ## Required privileges
 
@@ -186,3 +189,4 @@ To view column comments, use [`SHOW INDEXES ... WITH COMMENT`](show-index.html):
 - [`SHOW TABLES`](show-tables.html)
 - [Other SQL Statements](sql-statements.html)
 - [dBeaver](dbeaver.html)
+- [Online Schema Changes](online-schema-changes.html)

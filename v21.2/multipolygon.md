@@ -2,6 +2,7 @@
 title: MULTIPOLYGON
 summary: The spatial MULTIPOLYGON object is a collection of POLYGONs.
 toc: true
+docs_area: 
 ---
 
 A `MULTIPOLYGON` is a collection of [Polygons](polygon.html).  MultiPolygons are useful for gathering a group of Polygons into one geometry. For example, you may want to gather the Polygons denoting a group of properties in a particular municipality.  Another use of MultiPolygons is to represent states or countries that include islands, or that are otherwise made up of non-overlapping shapes.

@@ -2,6 +2,7 @@
 title: ADD CONSTRAINT
 summary: Use the ADD CONSTRAINT statement to add constraints to columns.
 toc: true
+docs_area: reference.sql
 ---
 
 The `ADD CONSTRAINT` [statement](sql-statements.html) is part of `ALTER TABLE` and can add the following [constraints](constraints.html) to columns:
@@ -9,6 +10,8 @@ The `ADD CONSTRAINT` [statement](sql-statements.html) is part of `ALTER TABLE` a
 - [`UNIQUE`](#add-the-unique-constraint)
 - [`CHECK`](#add-the-check-constraint)
 - [`FOREIGN KEY`](#add-the-foreign-key-constraint-with-cascade)
+
+{% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
 To add a primary key constraint to a table, you should explicitly define the primary key at [table creation](create-table.html). To replace an existing primary key, you can use `ADD CONSTRAINT ... PRIMARY KEY`. For details, see [Changing primary keys with `ADD CONSTRAINT ... PRIMARY KEY`](#changing-primary-keys-with-add-constraint-primary-key).
 
@@ -565,3 +568,4 @@ To illustrate the different behavior of explicitly vs. implicitly partitioned in
 - [`ALTER TABLE`](alter-table.html)
 - [`SHOW JOBS`](show-jobs.html)
 - ['ALTER PRIMARY KEY'](alter-primary-key.html)
+- [Online Schema Changes](online-schema-changes.html)

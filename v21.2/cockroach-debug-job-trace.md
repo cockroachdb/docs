@@ -2,6 +2,7 @@
 title: cockroach debug job-trace
 summary: Learn the commands for collecting debug information from all nodes in your cluster.
 toc: true
+docs_area: reference.cli
 ---
 
 {{site.data.alerts.callout_danger}}

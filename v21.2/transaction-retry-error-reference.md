@@ -2,6 +2,7 @@
 title: Transaction Retry Error Reference
 summary: A list of the transaction retry (serialization) errors emitted by CockroachDB, including likely causes and user actions for mitigation.
 toc: true
+docs_area: reference.transaction_retry_error_reference
 ---
 
 This page has a list of the transaction retry error codes emitted by CockroachDB.

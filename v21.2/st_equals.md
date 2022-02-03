@@ -3,6 +3,7 @@ title: ST_Equals
 summary: ST_Equals(A, B) returns true if every point that makes up shape A is also part of shape B, and vice versa.
 toc: true
 has_prefixed_variant: true
+docs_area: 
 ---
 
 Given two shapes _A_ and _B_, `ST_Equals(A, B)` returns `true` if every point in the set of points that make up _A_ is also in _B_, and if every point in the set of points that make up _B_ is also in _A_.  The ordering of the points in _A_ and _B_ may differ, but they must be made up of equivalent sets.

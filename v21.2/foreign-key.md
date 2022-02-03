@@ -2,6 +2,7 @@
 title: Foreign Key Constraint
 summary: The `FOREIGN KEY` constraint specifies a column can contain only values exactly matching existing values from the column it references.
 toc: true
+docs_area: 
 ---
 
 A foreign key is a column (or combination of columns) in a table whose values must match values of a column in some other table. `FOREIGN KEY` constraints enforce [referential integrity](https://en.wikipedia.org/wiki/Referential_integrity), which essentially says that if column value A refers to column value B, then column value B must exist.

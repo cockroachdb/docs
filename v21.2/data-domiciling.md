@@ -2,17 +2,16 @@
 title: Data Domiciling with CockroachDB
 summary: Learn how to use CockroachDB's improved multi-region capabilities to implement data domiciling.
 toc: true
+docs_area: 
 ---
 
 As you scale your usage of [multi-region clusters](multiregion-overview.html), you may need to keep certain subsets of data in specific localities. Keeping specific data on servers in specific geographic locations is also known as _data domiciling_.
 
-CockroachDB has basic support for data domiciling in multi-region clusters using the process described below. At a high level, this process involves:
+CockroachDB has basic support for data domiciling in multi-region clusters using the process described on this page. At a high level, this process involves:
 
 1. Creating separate databases per domicile.
-2. Adding regions to those databases using the [`ADD REGION`](add-region.html) statement.
-3. Making sure your application is adding data meant for a specific domicile to the correct database.
-
-For more information, see the sections below.
+1. Adding regions to those databases using the [`ADD REGION`](add-region.html) statement.
+1. Making sure your application is adding data meant for a specific domicile to the correct database.
 
 ## Overview
 
@@ -26,11 +25,11 @@ As of CockroachDB v21.1 and earlier, some metadata about the user data may be st
 
 Therefore, make sure to design your schema such that information that must remain domiciled _cannot_ be deduced from the schema design (e.g., primary keys, table names, column names, usernames).
 
-For a complete list of the limitations of the data domiciling approach described here, see the [Limitations](#limitations) section below.
+For a complete list of the limitations of the data domiciling approach described here, see the [Limitations](#limitations) section.
 
 ### Step 1. Create separate databases per domiciled data requirement
 
-As mentioned above, the best way to keep specific data sets cordoned off from each other in CockroachDB is to keep them in separate databases. To create a separate database for EU-based users, run the following statement:
+As mentioned, the best way to keep specific data sets cordoned off from each other in CockroachDB is to keep them in separate databases. To create a separate database for EU-based users, run the following statement:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -50,14 +49,14 @@ ALTER DATABASE eu_users ADD REGION 'eu-central-1';
 ~~~
 
 {{site.data.alerts.callout_info}}
-In order to be able to add these regions from SQL, you must have started the cluster with these regions using the [`cockroach start --locality`](cockroach-start.html#locality) flag.
+To be able to add these regions from SQL, you must have started the cluster with these regions using the [`cockroach start --locality`](cockroach-start.html#locality) flag.
 {{site.data.alerts.end}}
 
 ### Step 3. Add domiciled data to the right databases
 
 You will need to make sure that user data associated with EU users is only added to the `eu_users` database.
 
-How exactly you will accomplish that is beyond the scope of this document, but you will likely need to add some logic to your application and/or to your load balancing infrastructure to make sure that when your application code is [inserting](insert.html) or [updating](update.html) EU user data, the data only ever hits the `eu_users` database. For example, you can set the target database in your [connection string](connection-parameters.html). For example:
+How exactly you will accomplish that is beyond the scope of this document, but you will likely need to add some logic to your application and/or to your load balancing infrastructure to make sure that when your application code is [inserting](insert.html) or [updating](update.html) EU user data, the data only ever updates the `eu_users` database. For example, you can set the target database in your [connection string](connection-parameters.html):
 
 ~~~
 postgres://maxroach:mypassword@region.cockroachlabs.cloud:26257/eu_users?sslmode=verify-full&sslrootcert=certs/app-ca.crt
@@ -73,22 +72,22 @@ Storing data on EU users in a separate database is made easier by the fact that 
 ~~~ sql
 SELECT us_users.name, eu_users.name
   FROM us_users.users, eu_users.users
- WHERE us_users.users.application_id = eu_users.users.application_id ...
+  WHERE us_users.users.application_id = eu_users.users.application_id ...
 ~~~
 
 ## Limitations
 
-As noted above, there are several limitations to this approach:
+As noted, there are several limitations to this approach:
 
-- As mentioned above, some metadata about the objects in a schema may be stored in system ranges, system tables, etc. CockroachDB synchronizes system ranges and system tables across nodes. This synchronization does not respect any multi-region settings applied via either the multi-region SQL commands described above, or the low-level [zone configs](configure-replication-zones.html) mechanism. This might result in potential "leakage" outside of the desired domicile if your schema includes primary keys, table names, etc., that may reveal information about their contents.
+- Some metadata about the objects in a schema may be stored in system ranges, system tables, etc. CockroachDB synchronizes system ranges and system tables across nodes. This synchronization does not respect any multi-region settings applied via either the multi-region SQL commands described, or the low-level [zone configs](configure-replication-zones.html) mechanism. This might result in potential "leakage" outside of the desired domicile if your schema includes primary keys, table names, etc., that may reveal information about their contents.
 - If you start a node with a [`--locality`](cockroach-start.html#locality) flag that says the node is in region _A_, but the node is actually running in some region _B_, this approach will not work. A CockroachDB node only knows its locality based on the text supplied to the `--locality` flag; it can not ensure that it is actually running in that physical location.
-- Finally, remember that cross-region writes are slower than intra-region writes. This may be an issue depending on your application's performance needs, since following the advice above would result in having different databases' data stored in different regions.
+- Cross-region writes are slower than intra-region writes. This may be an issue depending on your application's performance needs, since following the advice in this page would result in having different databases' data stored in different regions.
 
 ## See also
 
-- [Multi-region overview](multiregion-overview.html)
-- [Choosing a multi-region configuration](choosing-a-multi-region-configuration.html)
-- [When to use ZONE vs REGION survival goals](when-to-use-zone-vs-region-survival-goals.html)
-- [When to use REGIONAL vs GLOBAL tables](when-to-use-regional-vs-global-tables.html)
-- [Multi-region SQL Performance](demo-low-latency-multi-region-deployment.html)
+- [Multi-Region Capabilities Overview](multiregion-overview.html)
+- [How to Choose a Multi-Region Configuration](choosing-a-multi-region-configuration.html)
+- [When to Use ZONE vs. REGION Survival Goals](when-to-use-zone-vs-region-survival-goals.html)
+- [When to Use REGIONAL vs. GLOBAL Tables](when-to-use-regional-vs-global-tables.html)
+- [Low Latency Reads and Writes in a Multi-Region Cluster](demo-low-latency-multi-region-deployment.html)
 - [`ADD REGION`](add-region.html)

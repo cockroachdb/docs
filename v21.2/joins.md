@@ -2,6 +2,8 @@
 title: JOIN expressions
 summary: JOIN expressions combine data from two or more table expressions.
 toc: true
+keywords: gin, gin index, gin indexes, inverted index, inverted indexes, accelerated index, accelerated indexes
+docs_area: 
 ---
 
 `JOIN` expressions, also called "joins", combine the results of two or more table expressions based on conditions on the values of particular columns (i.e., equality columns).
@@ -150,7 +152,7 @@ The output of [`EXPLAIN (VERBOSE)`](explain.html#verbose-option) shows whether `
 
 ### Inverted joins
 
- Inverted joins force the optimizer to use a join using an [inverted index](inverted-indexes.html) on the right side of the join. Inverted joins can only be used with `INNER` and `LEFT` joins.
+ Inverted joins force the optimizer to use a join using a [GIN index](inverted-indexes.html) on the right side of the join. Inverted joins can only be used with `INNER` and `LEFT` joins.
 
 ~~~
 <table expr> INNER INVERTED JOIN <table expr> ON <val expr>
