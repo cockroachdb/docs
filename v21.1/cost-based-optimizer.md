@@ -2,6 +2,7 @@
 title: Cost-Based Optimizer
 summary: The cost-based optimizer seeks the lowest cost for a query, usually related to time.
 toc: true
+keywords: gin, gin index, gin indexes, inverted index, inverted indexes, accelerated index, accelerated indexes
 ---
 
 The cost-based optimizer seeks the lowest cost for a query, usually related to time.
@@ -161,10 +162,10 @@ For a join hint example, see [Use the right join type](make-queries-fast.html#ru
 
 - `LOOKUP`: Forces a lookup join into the right side; the right side must be a table with a suitable index. Note that `LOOKUP` can only be used with `INNER` and `LEFT` joins.
 
-- `INVERTED`:  Forces an inverted join into the right side; the right side must be a table with a suitable [inverted index](inverted-indexes.html). Note that `INVERTED` can only be used with `INNER` and `LEFT` joins.
+- `INVERTED`:  Forces an inverted join into the right side; the right side must be a table with a suitable [GIN index](inverted-indexes.html). Note that `INVERTED` can only be used with `INNER` and `LEFT` joins.
 
     {{site.data.alerts.callout_info}}
-    You cannot use inverted joins on [partial inverted indexes](inverted-indexes.html#partial-inverted-indexes).
+    You cannot use inverted joins on [partial GIN indexes](inverted-indexes.html#partial-gin-indexes).
     {{site.data.alerts.end}}
 
 If it is not possible to use the algorithm specified in the hint, an error is signaled.

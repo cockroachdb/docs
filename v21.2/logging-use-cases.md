@@ -2,6 +2,7 @@
 title: Logging use cases
 summary: Examples of common logging use cases and possible CockroachDB logging sink configurations.
 toc: true
+docs_area: 
 ---
 
 This page describes some common logging use cases, their relevant [logging channels](logging-overview.html#logging-channels), and examples of notable events to be found in the logs:

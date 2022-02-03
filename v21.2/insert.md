@@ -2,6 +2,7 @@
 title: INSERT
 summary: The INSERT statement inserts one or more rows into a table.
 toc: true
+docs_area: 
 ---
 
 The `INSERT` [statement](sql-statements.html) inserts one or more rows into a table. In cases where inserted values conflict with uniqueness constraints, the `ON CONFLICT` clause can be used to update rather than insert rows.

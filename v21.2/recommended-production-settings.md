@@ -3,6 +3,7 @@ title: Production Checklist
 summary: Recommended settings for production deployments of CockroachDB.
 toc: true
 toc_not_nested: true
+docs_area: deploy
 ---
 
 This page provides important recommendations for production deployments of CockroachDB.
@@ -45,7 +46,7 @@ Carefully consider the following tradeoffs:
 
 In general, distribute your total vCPUs into the **largest possible nodes and smallest possible cluster** that meets your fault tolerance goals.
 
-- Each node should have at least {% include {{ page.version.version }}/prod-deployment/provision-cpu.md %}. For greater stability, we recommend at least 8 vCPUs per node. 
+- Each node should have at least {% include {{ page.version.version }}/prod-deployment/provision-cpu.md %}. For greater stability, we recommend at least 8 vCPUs per node.
 
 - Avoid "burstable" or "shared-core" virtual machines that limit the load on CPU resources.
 
@@ -76,7 +77,7 @@ Before deploying to production, test and tune your hardware setup for your appli
 
 Provision at least {% include {{ page.version.version }}/prod-deployment/provision-memory.md %}. The minimum acceptable ratio is 2 GiB of RAM per vCPU, which is only suitable for testing.
 
-{{site.data.alerts.callout_info}} 
+{{site.data.alerts.callout_info}}
 The benefits to having more RAM decrease as the [number of vCPUs](#sizing) increases.
 {{site.data.alerts.end}}
 
@@ -85,7 +86,7 @@ The benefits to having more RAM decrease as the [number of vCPUs](#sizing) incre
 - To ensure consistent SQL performance, make sure all nodes have a uniform configuration.
 
 - {% include {{ page.version.version }}/prod-deployment/prod-guidance-disable-swap.md %}
-    
+
 - {% include {{ page.version.version }}/prod-deployment/prod-guidance-cache-max-sql-memory.md %} For more details, see [Cache and SQL memory size](#cache-and-sql-memory-size).
 
 - Monitor [CPU](common-issues-to-monitor.html#cpu-usage) and [memory](common-issues-to-monitor.html#database-memory-usage) usage. Ensure that they remain within acceptable limits.
@@ -286,7 +287,7 @@ Environment | Featured Approach
 
 Creating the appropriate size pool of connections is critical to gaining maximum performance in an application. Too few connections in the pool will result in high latency as each operation waits for a connection to open up. But adding too many connections to the pool can also result in high latency as each connection thread is being run in parallel by the system. The time it takes for many threads to complete in parallel is typically higher than the time it takes a smaller number of threads to run sequentially.
 
-{% include {{ page.version.version }}/prod-deployment/prod-guidance-connection-pooling.md %}. 
+{% include {{ page.version.version }}/prod-deployment/prod-guidance-connection-pooling.md %}.
 
 For guidance on sizing, validating, and using connection pools with CockroachDB, see [Use Connection Pools](connection-pooling.html).
 

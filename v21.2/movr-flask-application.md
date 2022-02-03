@@ -3,6 +3,7 @@ title: Develop a Global Web Application
 summary: This page includes instructions for building a multi-region web application on CockroachDB, using Flask and SQLAlchemy.
 toc: true
 redirect_from: multi-region-application.html
+docs_area: 
 ---
 
 This page walks you through developing a globally-available web application. It is the fourth section of the [Develop and Deploy a Global Application](movr-flask-overview.html) tutorial.
@@ -205,7 +206,7 @@ Another common query would be to read the registered vehicles in a particular ci
 {% remote_include https://raw.githubusercontent.com/cockroachlabs/movr-flask/v2-doc-includes/movr/transactions.py |# START get_vehicles_txn |# END get_vehicles_txn %}
 ~~~
 
-This function filters the query on the `city` column. `vehicle` rows with the same value for `city` are inserted from the same region, making `city` values implicitly correspond to a specific region. Because the `vehicles` table has a `REGIONAL BY ROW` locality, CockroachDB can locality-optimize queries from nodes with a locality matching the [hidden `crdb_region` column](movr-flask-database.html#table-localities). This limits latency, as the query only needs to travel to database deployments in a single region.
+This function filters the query on the `city` column. `vehicle` rows with the same value for `city` are inserted from the same region, making `city` values implicitly correspond to a specific region. Because the `vehicles` table has a `REGIONAL BY ROW` locality, CockroachDB can locality-optimize queries from nodes with a locality matching the [hidden `crdb_region` column](movr-flask-database.html#table-locality). This limits latency, as the query only needs to travel to database deployments in a single region.
 
 ##### Writing
 

@@ -2,6 +2,7 @@
 title: Changefeeds in Multi-Region Deployments
 summary: Understand limitations and usage of changefeeds in multi-region delpoyments.
 toc: true
+docs_area: 
 ---
 
 <span class="version-tag">New in v21.2:</span> Changefeeds are supported on [regional by row tables](multiregion-overview.html#regional-by-row-tables). When working with changefeeds on regional by row tables, it is necessary to consider the following:
