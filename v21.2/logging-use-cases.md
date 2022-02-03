@@ -2,7 +2,7 @@
 title: Logging use cases
 summary: Examples of common logging use cases and possible CockroachDB logging sink configurations.
 toc: true
-docs_area: 
+docs_area: manage
 ---
 
 This page describes some common logging use cases, their relevant [logging channels](logging-overview.html#logging-channels), and examples of notable events to be found in the logs:
@@ -12,12 +12,12 @@ This page describes some common logging use cases, their relevant [logging chann
 - [Performance tuning](#performance-tuning) (for application developers)
 - [Network logging](#network-logging) (for operators)
 
-We provide an example [file sink configuration](configure-logs.html#output-to-files) for each use case. These configurations are entirely optional and are intended to highlight the contents of each logging channel. A sink can include any combination of logging channels. Moreover, a single logging channel can be used in more than one sink in your logging configuration. 
+We provide an example [file sink configuration](configure-logs.html#output-to-files) for each use case. These configurations are entirely optional and are intended to highlight the contents of each logging channel. A sink can include any combination of logging channels. Moreover, a single logging channel can be used in more than one sink in your logging configuration.
 
 Your deployment may use an external service (e.g., [Elasticsearch](https://www.elastic.co/elastic-stack), [Splunk](https://www.splunk.com/)) to collect and programmatically read logging data.
 
 {{site.data.alerts.callout_info}}
-All log examples on this page use the default `crdb-v2` format, except for the [network logging](#network-logging) configuration, which uses the default `json-fluent-compact` format for network output. Most log entries for non-`DEV` channels record *structured* events, which use a standardized format that can be reliably parsed by an external collector. All structured event types and their fields are detailed in the [Notable events reference](eventlog.html). 
+All log examples on this page use the default `crdb-v2` format, except for the [network logging](#network-logging) configuration, which uses the default `json-fluent-compact` format for network output. Most log entries for non-`DEV` channels record *structured* events, which use a standardized format that can be reliably parsed by an external collector. All structured event types and their fields are detailed in the [Notable events reference](eventlog.html).
 
 Logging channels may also contain events that are *unstructured*. Unstructured events can routinely change between CockroachDB versions, including minor patch revisions, so they are not officially documented.
 {{site.data.alerts.end}}
@@ -188,7 +188,7 @@ To log SQL session authentication events to the `SESSIONS` channel, enable the `
 > SET CLUSTER SETTING server.auth_log.sql_sessions.enabled = true;
 ~~~
 
-These logs show certificate authentication success over a `hostssl` (TLS transport over TCP) connection: 
+These logs show certificate authentication success over a `hostssl` (TLS transport over TCP) connection:
 
 ~~~
 I210323 23:35:19.458098 122619 4@util/log/event_log.go:32 ⋮ [n1,client=‹[::1]:53884›,hostssl,user=‹roach›] 62 ={"Timestamp":1616542519458095000,"EventType":"client_authentication_info","InstanceID":1,"Network":"tcp","RemoteAddress":"‹[::1]:53884›","Transport":"hostssl","User":"‹roach›","Method":"cert-password","Info":"‹HBA rule: host  all all  all cert-password # built-in CockroachDB default›"}
@@ -230,7 +230,7 @@ Enabling these logs can negatively impact performance. We recommend using `SENSI
 
 {% include common/experimental-warning.md %}
 
-To log all queries against a specific table, enable auditing on the table with [`ALTER TABLE ... EXPERIMENTAL_AUDIT`](experimental-audit.html). 
+To log all queries against a specific table, enable auditing on the table with [`ALTER TABLE ... EXPERIMENTAL_AUDIT`](experimental-audit.html).
 
 #### Example: Audit events
 
@@ -310,7 +310,7 @@ sinks:
 
 ### SQL_EXEC
 
-The [`SQL_EXEC`](logging.html#sql_exec) channel reports all SQL executions on the cluster, when enabled. 
+The [`SQL_EXEC`](logging.html#sql_exec) channel reports all SQL executions on the cluster, when enabled.
 
 To log cluster-wide executions, enable the `sql.trace.log_statement_execute` [cluster setting](cluster-settings.html):
 
@@ -319,7 +319,7 @@ To log cluster-wide executions, enable the `sql.trace.log_statement_execute` [cl
 > SET CLUSTER SETTING sql.trace.log_statement_execute = true;
 ~~~
 
-Each node of the cluster will write all SQL queries it executes to the `SQL_EXEC` channel. These are recorded as [`query_execute`](eventlog.html#query_execute) events. 
+Each node of the cluster will write all SQL queries it executes to the `SQL_EXEC` channel. These are recorded as [`query_execute`](eventlog.html#query_execute) events.
 
 #### Example: SQL query
 
@@ -347,7 +347,7 @@ If you no longer need to log queries across the cluster, you can disable the set
 {% include copy-clipboard.html %}
 ~~~ sql
 > SET CLUSTER SETTING sql.trace.log_statement_execute = false;
-~~~	
+~~~
 
 {{site.data.alerts.callout_info}}
 All possible `SQL_EXEC` event types are detailed in the [reference documentation](eventlog.html#sql-execution-log).
@@ -404,7 +404,7 @@ All possible `SQL_PERF` event types are detailed in the [reference documentation
 A database operator can send logs over the network to a [Fluentd](https://www.fluentd.org/) or HTTP server.
 
 {{site.data.alerts.callout_danger}}
-TLS is not supported yet: the connection to the log collector is neither authenticated nor encrypted. Given that logging events may contain sensitive information, care should be taken to keep the log collector and the CockroachDB node close together on a private network, or connect them using a secure VPN. TLS support may be added at a later date. 
+TLS is not supported yet: the connection to the log collector is neither authenticated nor encrypted. Given that logging events may contain sensitive information, care should be taken to keep the log collector and the CockroachDB node close together on a private network, or connect them using a secure VPN. TLS support may be added at a later date.
 {{site.data.alerts.end}}
 
 In this example configuration, [operational](#operational-monitoring) and [security](#security-and-audit-monitoring) logs are grouped into separate `ops` and `security` network sinks. The logs from both sinks are sent to a Fluentd server, which can then route them to a compatible log collector (e.g., [Elasticsearch](https://www.elastic.co/elastic-stack), [Splunk](https://www.splunk.com/)).
@@ -418,12 +418,12 @@ sinks:
   fluent-servers:             
     ops:
       channels: [OPS, HEALTH, SQL_SCHEMA]
-      address: 127.0.0.1:5170 
+      address: 127.0.0.1:5170
       net: tcp                
       redact: true
     security:                
       channels: [SESSIONS, USER_ADMIN, PRIVILEGES, SENSITIVE_ACCESS]
-      address: 127.0.0.1:5170 
+      address: 127.0.0.1:5170
       net: tcp
       auditable: true
 ~~~
