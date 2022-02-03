@@ -2,7 +2,7 @@
 title: DROP TYPE
 summary: The DROP TYPE statement drops an enumerated data type from the database.
 toc: true
-docs_area: 
+docs_area: reference.sql
 ---
 
 The `DROP TYPE` [statement](sql-statements.html) drops a specified [enumerated data type](enum.html) from the current database.
