@@ -434,9 +434,7 @@ Field | Type | Description
 <code>statistics -> runLat -> [mean&#124;sqDiff]</code> | `NumericStat` | The time to run the query and fetch or compute the result rows.
 <code>statistics -> svcLat -> [mean&#124;sqDiff]</code> | `NumericStat` | The time to service the query, from start of parse to end of execute.
 
-#### Example
-
-##### View historical statement statistics and the sampled logical plan per fingerprint
+#### View historical statement statistics and the sampled logical plan per fingerprint
 
 This example command shows how to query the two most important JSON columns: `metadata` and `statistics`. It displays
 the first 60 characters of query text, statement statistics, and sample plan for DDL and DML statements for the [`movr`](movr.html) demo database:
@@ -590,9 +588,7 @@ Column | Type | Description
 `statistics` | `JSONB` | Statistics for the transaction. See [`statistics` column](#statistics-column).
 `aggregation_interval` | `INTERVAL` | The interval of time over which statistics are aggregated.
 
-#### Example
-
-##### View historical transaction statistics per fingerprint
+#### View historical transaction statistics per fingerprint
 
 This example command shows how to query the two most important JSON columns: `metadata` and `statistics`. It displays
 the statistics for transactions on the [`movr`](movr.html) demo database:
