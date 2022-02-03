@@ -2,7 +2,7 @@
 title: SHOW CREATE SCHEDULE
 summary: SHOW CREATE SCHEDULE statement shows the CREATE SCHEDULE statement for a scheduled job.
 toc: true
-docs_area: 
+docs_area: reference.sql
 ---
 
 The `SHOW CREATE SCHEDULE` [statement](sql-statements.html) displays the `CREATE` statement for an existing scheduled job, which can be used to recreate a schedule.

@@ -2,7 +2,7 @@
 title: TRUNCATE
 summary: The TRUNCATE statement deletes all rows from specified tables.
 toc: true
-docs_area: 
+docs_area: reference.sql
 ---
 
 The `TRUNCATE` [statement](sql-statements.html) removes all rows from a table. At a high level, it works by dropping the table and recreating a new table with the same name.

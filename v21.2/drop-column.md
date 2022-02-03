@@ -2,7 +2,7 @@
 title: DROP COLUMN
 summary: Use the ALTER COLUMN statement to remove columns from tables.
 toc: true
-docs_area: 
+docs_area: reference.sql
 ---
 
 The `DROP COLUMN` [statement](sql-statements.html) is part of `ALTER TABLE` and removes columns from a table.

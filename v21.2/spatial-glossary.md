@@ -2,7 +2,7 @@
 title: Spatial and GIS Glossary of Terms
 summary: A summary of CockroachDB's support for storing and querying spatial data.
 toc: true
-docs_area: 
+docs_area: reference.sql
 ---
 
 This page contains a glossary of terms common to spatial databases and geographic information systems (GIS). Where possible, we provide links to further information.

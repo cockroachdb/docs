@@ -3,7 +3,7 @@ title: SELECT FOR UPDATE
 summary: The SELECT FOR UPDATE statement is used to order transactions under contention.
 keywords: concurrency control, locking, transactions, update locking, update, contention
 toc: true
-docs_area: 
+docs_area: reference.sql
 ---
 
 {% include {{page.version.version}}/sql/select-for-update-overview.md %}

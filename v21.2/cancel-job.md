@@ -2,7 +2,7 @@
 title: CANCEL JOB
 summary: The CANCEL JOB statement stops long-running jobs such as imports, backups, and schema changes.such as imports, backups, and schema changes.
 toc: true
-docs_area: 
+docs_area: reference.sql
 ---
 
 The `CANCEL JOB` [statement](sql-statements.html) lets you stop long-running jobs, which include:
