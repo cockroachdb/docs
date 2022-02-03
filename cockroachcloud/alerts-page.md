@@ -2,6 +2,7 @@
 title: Alerts Page
 summary: The Alerts page allows you to toggle CockroachDB Cloud alerts and view alert history.
 toc: true
+docs_area: 
 ---
 
 The **Alerts** page allows you to toggle {{ site.data.products.db }} alerts, send test alerts, and view the email recipients and alert history for your {{ site.data.products.db }} Organization. To view the Alerts page, [log in](https://cockroachlabs.cloud/) and click **Alerts**.

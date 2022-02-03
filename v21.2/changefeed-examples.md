@@ -2,6 +2,7 @@
 title: Changefeed Examples
 summary: Examples for starting and using changefeeds with different aims.
 toc: true
+docs_area: 
 ---
 
 This page provides step-by-step examples for using Core and {{ site.data.products.enterprise }} changefeeds. Creating {{ site.data.products.enterprise }} changefeeds is available on {{ site.data.products.dedicated }} or on clusters with an [{{ site.data.products.enterprise }} license](enterprise-licensing.html). Core changefeeds are available in all products.

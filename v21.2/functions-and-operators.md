@@ -2,6 +2,7 @@
 title: Functions and Operators
 summary: CockroachDB supports many built-in functions, aggregate functions, and operators.
 toc: true
+docs_area: 
 ---
 
 CockroachDB supports the following SQL functions and operators for use in [scalar expressions](scalar-expressions.html).

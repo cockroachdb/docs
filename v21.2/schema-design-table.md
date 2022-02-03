@@ -2,6 +2,7 @@
 title: Create a Table
 summary: Best practices for working with tables in CockroachDB.
 toc: true
+docs_area: 
 ---
 
 This page provides best-practice guidance on creating tables, with some simple examples based on Cockroach Labs' fictional vehicle-sharing company, [MovR](movr.html).

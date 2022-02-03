@@ -86,10 +86,10 @@ Time: 22ms total (execution 21ms / network 0ms)
 Time: 1ms total (execution 1ms / network 0ms)
 ~~~
 
-To force a [partial inverted index](inverted-indexes.html#partial-inverted-indexes) scan, your statement must have a `WHERE` clause that:
+To force a [partial GIN index](inverted-indexes.html#partial-gin-indexes) scan, your statement must have a `WHERE` clause that:
 
 - Implies the partial index.
-- Constrains the inverted index scan.
+- Constrains the GIN index scan.
 
 {% include copy-clipboard.html %}
 ~~~ sql

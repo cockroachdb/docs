@@ -3,6 +3,7 @@ title: Example Apps
 summary: Examples that show you how to build simple applications with CockroachDB
 tags: golang, python, java
 toc: true
+docs_area:
 ---
 
 The examples in this section show you how to build simple applications using CockroachDB.
@@ -22,7 +23,6 @@ Note that tools with [**community-level** support](community-tooling.html) have 
 | Driver/ORM Framework                             | Support level  | Example apps                                            |
 |--------------------------------------------------+----------------+--------------------------------------------------------|
 | [pgx](https://github.com/jackc/pgx/releases)     | Full           | [Hello World](hello-world-go-pgx.html)<br>[Simple CRUD](build-a-go-app-with-cockroachdb.html)
-| [pq](https://github.com/lib/pq)                  | Full           | [Simple CRUD](build-a-go-app-with-cockroachdb-pq.html)
 | [GORM](https://github.com/jinzhu/gorm/releases)  | Full           | [Hello World](hello-world-go-gorm.html)<br>[Simple CRUD](build-a-go-app-with-cockroachdb-gorm.html)
 | [upper/db](https://github.com/upper/db)          | Full           | [Simple CRUD](build-a-go-app-with-cockroachdb-upperdb.html)
 
@@ -41,6 +41,7 @@ Note that tools with [**community-level** support](community-tooling.html) have 
 | [node-postgres](https://www.npmjs.com/package/pg)       | Full           | [Hello World](hello-world-node-postgres.html)<br>[Simple CRUD](build-a-nodejs-app-with-cockroachdb.html)
 | [Sequelize](https://www.npmjs.com/package/sequelize)    | Full           | [Simple CRUD](build-a-nodejs-app-with-cockroachdb-sequelize.html)
 | [Knex.js](https://knexjs.org/)                          | Full           | [Simple CRUD](build-a-nodejs-app-with-cockroachdb-knexjs.html)
+| [Prisma Client](https://knexjs.org/)                    | Full           | [Simple CRUD](build-a-nodejs-app-with-cockroachdb-prisma.html)
 | [TypeORM](https://www.npmjs.com/package/typeorm)        | Full           | [Simple CRUD](build-a-typescript-app-with-cockroachdb.html)
 
 ## Python

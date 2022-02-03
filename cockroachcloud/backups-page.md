@@ -2,6 +2,7 @@
 title: Restore Data from a Backup
 summary: Restore a table or database from a backup in CockroachDB Cloud.
 toc: true
+docs_area: 
 ---
 
 This page describes the **Backups** page and how to restore your data.

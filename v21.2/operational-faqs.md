@@ -3,6 +3,7 @@ title: Operational FAQs
 summary: Get answers to frequently asked questions about operating CockroachDB.
 toc: true
 toc_not_nested: true
+docs_area: 
 ---
 
 ## Why is my process hanging when I try to start nodes with the `--background` flag?

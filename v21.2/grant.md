@@ -2,11 +2,14 @@
 title: GRANT
 summary: The GRANT statement grants user privileges for interacting with specific database objects and adds roles or users as a member of a role.
 toc: true
+docs_area: 
 ---
 
 The `GRANT` [statement](sql-statements.html) controls each [role](authorization.html#create-and-manage-roles) or [user's](authorization.html#create-and-manage-users) SQL [privileges](authorization.html#assign-privileges) for interacting with specific [databases](create-database.html), [schemas](create-schema.html), [tables](create-table.html), or [user-defined types](enum.html). For privileges required by specific statements, see the documentation for the respective [SQL statement](sql-statements.html).
 
 You can use `GRANT` to directly grant privileges to a role or user, or you can grant membership to an existing role, which grants that role's privileges to the grantee.
+
+{% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
 ## Syntax
 
