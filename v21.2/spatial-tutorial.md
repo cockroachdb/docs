@@ -3,7 +3,7 @@ title: Spatial Data
 summary: Tutorial for working with spatial data in CockroachDB.
 toc: true
 toc_not_nested: true
-docs_area: 
+docs_area: deploy 
 ---
 
 In this tutorial, you will plan a vacation from New York City to the [Adirondack Mountains](https://visitadirondacks.com/about) in northern New York State to do some birdwatching while visiting local independent bookstores. In the process, you will explore several of CockroachDB's [spatial capabilities](spatial-features.html):

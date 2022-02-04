@@ -3,7 +3,7 @@ title: JSON Support
 summary: Use a local cluster to explore how CockroachDB can store and query unstructured JSONB data.
 toc: true
 keywords: gin, gin index, gin indexes, inverted index, inverted indexes, accelerated index, accelerated indexes
-docs_area: 
+docs_area: deploy 
 ---
 
 This page walks you through a simple demonstration of how CockroachDB can store and query unstructured [`JSONB`](jsonb.html) data from a third-party API, as well as how a [GIN index](inverted-indexes.html) can optimize your queries.

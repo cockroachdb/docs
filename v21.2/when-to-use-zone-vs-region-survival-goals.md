@@ -2,7 +2,7 @@
 title: When to Use ZONE vs. REGION Survival Goals
 summary: Learn when to use ZONE vs. REGION survival goals in multi-region clusters.
 toc: false
-docs_area: 
+docs_area: deploy 
 ---
 
 A [_survival goal_](multiregion-overview.html#survival-goals) dictates how many simultaneous failure(s) a [multi-region database](multiregion-overview.html) can survive. All tables within the same database operate with the same survival goal. Each database is allowed to have its own survival goal setting.

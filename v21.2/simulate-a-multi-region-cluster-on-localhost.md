@@ -2,7 +2,7 @@
 title: Simulate a Multi-Region Cluster on localhost (Insecure)
 summary: Run a simulated multi-region CockroachDB cluster locally using cockroach demo.
 toc: true
-docs_area: 
+docs_area: deploy 
 ---
 
  Once you've [installed CockroachDB](install-cockroachdb.html), it's simple to simulate multi-region cluster on your local machine using [`cockroach demo`](cockroach-demo.html). This is a useful way to start playing with the [improved multi-region abstractions](multiregion-overview.html) provided by CockroachDB.

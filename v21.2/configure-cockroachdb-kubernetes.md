@@ -4,7 +4,7 @@ summary: Allocate CPU, memory, and storage resources for a secure 3-node Cockroa
 toc: true
 toc_not_nested: true
 secure: true
-docs_area: 
+docs_area: deploy 
 ---
 
 This page explains how to configure Kubernetes cluster resources such as memory, CPU, and storage. 

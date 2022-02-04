@@ -7,7 +7,7 @@ redirect_from: orchestrate-cockroachdb-with-kubernetes-insecure.html
 filter_category: crdb_single_kubernetes
 filter_html: Insecure
 filter_sort: 2
-docs_area: 
+docs_area: deploy 
 ---
 
 {% include filter-tabs.md %}

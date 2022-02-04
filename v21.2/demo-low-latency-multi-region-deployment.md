@@ -4,7 +4,7 @@ summary: Use data topologies to get low-latency reads and writes in a multi-regi
 toc: true
 toc_not_nested: true
 key: demo-geo-partitioning.html
-docs_area: 
+docs_area: deploy 
 ---
 
 CockroachDB multi-region capabilities make it easier to run global applications. For an overview of these capabilities, see [Multi-Region Capabilities Overview](multiregion-overview.html).
