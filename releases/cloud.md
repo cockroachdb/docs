@@ -17,6 +17,16 @@ As of January 12, 2021, new {{ site.data.products.dedicated }} clusters and all 
 
 ## February 7, 2022
 
+<h3>General changes</h3>
+
+- Six new regions are available for {{ site.data.products.serverless }} clusters:
+    
+    GCP                              | AWS
+    ---------------------------------|------------
+    Oregon (`us-west2`)              | Mumbai (`ap-south-1`)
+    Sao Paulo (`southamerica-east1`) | Frankfurt (`eu-central-1`)
+    South Carolina (`us-east1`)      | N. Virginia (`us-east-1`)
+
 <h3>Console changes</h3>
 
 - The [**Terminate session** and **Terminate Statement**](../cockroachcloud/sessions-page.html#sessions-list) options are now enabled for {{ site.data.products.db }} clusters running CockroachDB [v21.2.2](v21.2.2.html) or later.
