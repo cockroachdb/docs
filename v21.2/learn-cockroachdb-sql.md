@@ -2,6 +2,7 @@
 title: Learn CockroachDB SQL
 summary: Learn some of the most essential CockroachDB SQL statements on a local cluster.
 toc: true
+docs_area: 
 ---
 
 This tutorial walks you through some of the most essential CockroachDB SQL statements using an interactive SQL shell connected to a temporary, single-node CockroachDB cluster.
@@ -351,5 +352,5 @@ When you no longer need a table, use [`DROP TABLE`](drop-table.html) followed by
 
 - Explore all [SQL Statements](sql-statements.html)
 - [Use the built-in SQL client](cockroach-sql.html) to execute statements from a shell or directly from the command line
-- [Install the client driver](install-client-drivers.html) for your preferred language and [build an app](hello-world-example-apps.html)
+- [Install the client driver](install-client-drivers.html) for your preferred language and [build an app](example-apps.html)
 - [Explore core CockroachDB features](demo-replication-and-rebalancing.html) like automatic replication, rebalancing, and fault tolerance

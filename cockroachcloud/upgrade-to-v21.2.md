@@ -2,6 +2,7 @@
 title: Upgrade to CockroachDB v21.2
 summary: Learn how to upgrade your CockroachDB cluster to v21.2.
 toc: true
+docs_area: manage
 ---
 
 Now that [CockroachDB v21.2](../releases/v21.2.0.html) is available, a [Console Admin](console-access-management.html#console-admin) can upgrade your {{ site.data.products.dedicated }} cluster from the {{ site.data.products.db }} Console. This page walks through the process for an Admin.
@@ -63,7 +64,7 @@ To start the upgrade process:
 
 2. In the **Clusters** list, select the cluster you want to upgrade.
 
-3. Select **Actions > Upgrade major version**. 
+3. Select **Actions > Upgrade major version**.
 
 4. In the **Upgrade your cluster** dialog, review the pre-upgrade message and then click **Start Upgrade**.
 
@@ -79,7 +80,7 @@ Your single-node cluster will be unavailable for a few minutes while the node is
 
 Once your cluster is running v21.2, you will have approximately 72 hours before the upgrade is automatically finalized. During this time, it is important to [monitor your application](#monitor-your-application) and [respect temporary limitations](#respect-temporary-limitations).
 
-If you see unexpected behavior, you can [roll back](#roll-back-the-upgrade) to v21.1 during the 72-hour window. 
+If you see unexpected behavior, you can [roll back](#roll-back-the-upgrade) to v21.1 during the 72-hour window.
 
 ### Monitor your application
 
@@ -121,7 +122,7 @@ If everything looks good, you can wait for the upgrade to automatically finalize
 
 ### Finalize the upgrade
 
-The upgrade is automatically finalized after 72 hours. 
+The upgrade is automatically finalized after 72 hours.
 
 To manually finalize the upgrade, click **Finalize** in the banner at the top of the {{ site.data.products.db }} Console, and then click **Finalize upgrade**.
 

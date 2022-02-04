@@ -4,6 +4,7 @@ summary: Learn how to use CockroachDB from a Hello World Python application with
 toc: true
 twitter: false
 referral_id: docs_hello_world_python_sqlalchemy
+docs_area: get_started
 ---
 
 This tutorial shows you how build a simple Hello World Python application with CockroachDB and the [SQLAlchemy](https://docs.sqlalchemy.org/en/latest/) ORM.
@@ -80,14 +81,14 @@ For example:
 
 ~~~
 Enter your node's connection string:
-cockroachdb://<username>:<password>@<globalhost>:26257/<cluster-name>.bank?sslmode=verify-full&sslrootcert=<certs_directory>/cc-ca.crt
+cockroachdb://<username>:<password>@<globalhost>:26257/<routing-id>.bank?sslmode=verify-full&sslrootcert=<certs_directory>/cc-ca.crt
 ~~~
 
 Where you update the connection string as follows:
 
 - Replace `<username>` and `<password>` with a SQL username and password.
 - Replace `<globalhost>` with the name of the {{ site.data.products.serverless }} host (e.g., `free-tier.gcp-us-central1.cockroachlabs.cloud`).
-- Replace `<cluster-name>` with the name of your cluster.
+- Replace `<routing-id>` with your cluster's routing ID (e.g., `funky-skunk-123`). The routing ID identifies your tenant cluster on a [multi-tenant host](../cockroachcloud/architecture.html#architecture).
 - Replace `<certs_directory>` with the path to the `cc-ca.crt` file that you downloaded from the {{ site.data.products.db }} Console.
 
 </section>

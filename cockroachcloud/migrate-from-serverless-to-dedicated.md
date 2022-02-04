@@ -3,6 +3,7 @@ title: Migrate from a CockroachDB Serverless (beta) to CockroachDB Dedicated Clu
 summary: Learn how to migrate data from a CockroachDB Serverless (beta) cluster into a CockroachDB Dedicated cluster.
 toc: true
 redirect_from: migrate-from-free-to-dedicated.html
+docs_area: migrate
 ---
 
 This page has instructions for migrating data from a {{ site.data.products.serverless }} cluster to a {{ site.data.products.dedicated }} cluster, by exporting to CSV and using [`IMPORT`](../{{site.versions["stable"]}}/import.html). You may want to migrate to {{ site.data.products.dedicated }} if you want a single-tenant cluster with no shared resources.

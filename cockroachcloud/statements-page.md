@@ -3,6 +3,7 @@ title: Statements Page
 summary: How to use the Statements page to view and manage SQL statements on CockroachDB Cloud.
 toc: true
 cloud: true
+docs_area: manage
 ---
 
 The **Statements** page helps you:

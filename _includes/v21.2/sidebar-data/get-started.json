@@ -19,19 +19,42 @@
       "title": "Build a Sample Application",
       "items": [
         {
-          "title": "Build a Hello World Application",
-          "urls": [
-            "/cockroachcloud/hello-world-example-apps.html"
-            ]
+          "title": "Hello World",
+          "items": [
+            {
+              "title": "Go",
+              "urls": [
+                "/${VERSION}/hello-world-go-pgx.html",
+                "/${VERSION}/hello-world-go-gorm.html"
+              ]
+            },
+            {
+              "title": "Java",
+              "urls": [
+                "/${VERSION}/hello-world-java-jdbc.html"
+              ]
+            },
+            {
+              "title": "JavaScript (Node.js)",
+              "urls": [
+                "/${VERSION}/hello-world-node-postgres.html"
+              ]
+            },
+            {
+              "title": "Python",
+              "urls": [
+                "/${VERSION}/hello-world-python-sqlalchemy.html"
+              ]
+            }
+          ]
         },
         {
-          "title": "Build a Simple CRUD Application",
+          "title": "Simple CRUD",
           "items": [
             {
               "title": "Go",
               "urls": [
                 "/${VERSION}/build-a-go-app-with-cockroachdb.html",
-                "/${VERSION}/build-a-go-app-with-cockroachdb-pq.html",
                 "/${VERSION}/build-a-go-app-with-cockroachdb-gorm.html",
                 "/${VERSION}/build-a-go-app-with-cockroachdb-upperdb.html"
               ]
@@ -51,6 +74,7 @@
                 "/${VERSION}/build-a-nodejs-app-with-cockroachdb.html",
                 "/${VERSION}/build-a-nodejs-app-with-cockroachdb-sequelize.html",
                 "/${VERSION}/build-a-nodejs-app-with-cockroachdb-knexjs.html",
+                "/${VERSION}/build-a-nodejs-app-with-cockroachdb-prisma.html",
                 "/${VERSION}/build-a-typescript-app-with-cockroachdb.html"
               ]
             },
@@ -107,6 +131,13 @@
     {
       "title": "FAQs",
       "items": [
+        {
+          "title": "CockroachDB Cloud FAQs",
+          "urls": [
+            "/cockroachcloud/serverless-faqs.html",
+            "/cockroachcloud/frequently-asked-questions.html"
+          ]
+        },
         {
           "title": "Product FAQs",
           "urls": [

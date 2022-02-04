@@ -2,6 +2,7 @@
 title: Decommission Nodes
 summary: Remove one or more nodes from a CockroachDB cluster.
 toc: true
+docs_area: manage
 ---
 
 This page shows you how to decommission one or more nodes. Decommissioning a node removes it from the CockroachDB cluster.

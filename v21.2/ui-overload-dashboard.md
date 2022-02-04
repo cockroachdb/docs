@@ -2,6 +2,7 @@
 title: Overload Dashboard
 summary: The Overload dashboard lets you monitor the performance of the admission control system.
 toc: true
+docs_area: reference.db_console
 ---
 
 <span class="version-tag">New in v21.2:</span> The **Overload dashboard** lets you monitor the performance of the parts of your cluster relevant to the cluster's [admission control system](architecture/admission-control.html). This includes CPU usage, the runnable goroutines waiting per CPU, the health of the persistent stores, and the performance of admission control system when it is enabled.
@@ -22,12 +23,12 @@ The **Overload** dashboard displays the following time series graphs:
 
 ## LSM L0 Health
 
-This graph shows the health of the [persistent stores](architecture/storage-layer.html), which are implemented as log-structured merge (LSM) trees.
-
-Level 0 is the highest level of the LSM tree and consists of files containing the latest data written to the [Pebble storage engine](cockroach-start.html#storage-engine). High values indicate heavy write load that is causing accumulation of files in level 0. These files are not being compacted fast enough to lower levels.
+This graph shows the health of the [persistent stores](architecture/storage-layer.html), which are implemented as log-structured merge (LSM) trees. Level 0 is the highest level of the LSM tree and consists of files containing the latest data written to the [Pebble storage engine](cockroach-start.html#storage-engine).
 
 - In the node view, the graph shows the health of the persistent store on the selected node.
 - In the cluster view, the graph shows the health of the persistent stores across all nodes in the cluster.
+
+{% include {{ page.version.version }}/prod-deployment/healthy-lsm.md %}
 
 ## KV Admission Slots
 

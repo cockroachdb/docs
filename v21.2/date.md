@@ -2,6 +2,7 @@
 title: DATE
 summary: CockroachDB's DATE data type stores a year, month, and day.
 toc: true
+docs_area: reference.sql
 ---
 
 The `DATE` [data type](data-types.html) stores a year, month, and day.

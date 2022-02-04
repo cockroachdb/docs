@@ -2,6 +2,7 @@
 title: Optimize Statement Performance
 summary: How to make your statements run faster during application development
 toc: true
+docs_area: 
 ---
 
 This page provides an overview for optimizing statement performance in CockroachDB. To get good performance, you need to look at how you're accessing the database through several lenses:
@@ -11,40 +12,30 @@ This page provides an overview for optimizing statement performance in Cockroach
 - [Cluster topology](#cluster-topology): As a distributed system, CockroachDB requires you to trade off latency vs. resiliency. This requires choosing the right cluster topology for your needs.
 
 {{site.data.alerts.callout_info}}
-If you aren't sure whether SQL statement performance needs to be improved on your cluster, see [Identify slow statements](query-behavior-troubleshooting.html#identify-slow-statements).
+If you aren't sure whether SQL statement performance needs to be improved on a cluster, see [Identify slow statements](query-behavior-troubleshooting.html#identify-slow-statements).
 {{site.data.alerts.end}}
 
 ## SQL statement performance
 
-To get good SQL statement performance, follow the rules below (in approximate order of importance):
-
-{{site.data.alerts.callout_info}}
-These rules apply to an environment where thousands of [OLTP](https://en.wikipedia.org/wiki/Online_transaction_processing) statements are being run per second, and each statement needs to run in milliseconds. These rules are not intended to apply to analytical, or [OLAP](https://en.wikipedia.org/wiki/Online_analytical_processing), statements.
-{{site.data.alerts.end}}
+To get good SQL statement performance, follow these rules:
 
 - [Rule 1. Scan as few rows as possible](#rule-1-scan-as-few-rows-as-possible). If your application is scanning more rows than necessary for a given statement, it's going to be difficult to scale.
 - [Rule 2. Use the right index](#rule-2-use-the-right-index): Your statement should use an index on the columns in the `WHERE` clause. You want to avoid the performance hit of a full table scan.
 - [Rule 3. Use the right join type](#rule-3-use-the-right-join-type): Depending on the relative sizes of the tables you are querying, the type of [join][joins] may be important. This should rarely be necessary because the [cost-based optimizer](cost-based-optimizer.html) should pick the best-performing join type if you add the right indexes as described in Rule 2.
 
-{{site.data.alerts.callout_info}}
-To identify poorly performing statements, use the [DB Console and slow query log](query-behavior-troubleshooting.html#identify-slow-statements).
-{{site.data.alerts.end}}
+These rules apply to an environment where thousands of [OLTP](https://en.wikipedia.org/wiki/Online_transaction_processing) statements are being run per second, and each statement needs to run in milliseconds. These rules are not intended to apply to analytical, or [OLAP](https://en.wikipedia.org/wiki/Online_analytical_processing), statements.
 
-To show each of these rules in action, we will optimize a statement against the [MovR data set](movr.html) as follows:
+## Set up demonstration dataset
+
+To show each of these rules in action, you will optimize a statement against the MovR data set.
 
 {% include {{ page.version.version }}/demo_movr.md %}
 
-It's common to offer users promo codes to increase usage and customer loyalty. In this scenario, we want to find the 10 users who have taken the highest number of rides on a given date, and offer them promo codes that provide a 10% discount.
-
-To phrase it in the form of a question: "Who are the top 10 users by number of rides on a given date?"
-
-{% comment %}
-This is a test
-{% endcomment %}
+It's common to offer users promo codes to increase usage and customer loyalty. In this scenario, you want to find the 10 users who have taken the highest number of rides on a given date, and offer them promo codes that provide a 10% discount. To phrase it in the form of a question: "Who are the top 10 users by number of rides on a given date?"
 
 ### Rule 1. Scan as few rows as possible
 
-First, let's study the schema so we understand the relationships between the tables.
+First, study the schema so you understand the relationships between the tables.
 
 Start a SQL shell:
 
@@ -75,7 +66,7 @@ SHOW TABLES;
 Time: 17ms total (execution 17ms / network 0ms)
 ~~~
 
-Let's look at the schema for the `users` table:
+Look at the schema for the `users` table:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -133,32 +124,32 @@ SHOW CREATE TABLE rides;
 Time: 9ms total (execution 8ms / network 1ms)
 ~~~
 
-There is a `rider_id` field that we can use to match each ride to a user. There is also a `start_time` field that we can use to filter the rides by date.
+There is a `rider_id` field that you can use to match each ride to a user. There is also a `start_time` field that you can use to filter the rides by date.
 
-This means that to get the information we want, we'll need to do a [join][joins] on the `users` and `rides` tables.
+This means that to get the information you want, you'll need to do a [join][joins] on the `users` and `rides` tables.
 
-Next, let's get the row counts for the tables that we'll be using in this query. We need to understand which tables are large, and which are small by comparison. We will need this later if we need to verify we are [using the right join type](#rule-3-use-the-right-join-type).
+Next, get the row counts for the tables that you'll be using in this query. You need to understand which tables are large, and which are small by comparison. You will need this later if you need to verify you are [using the right join type](#rule-3-use-the-right-join-type).
 
-As specified above by our [`cockroach workload`](cockroach-workload.html) command, the `users` table has 12,500 records, and the `rides` table has 125,000 records. Because it's so large, we want to avoid scanning the entire `rides` table in our query. In this case, we can avoid scanning `rides` using an index, as shown in the next section.
+As specified by your [`cockroach demo`](cockroach-demo.html) command, the `users` table has 12,500 records, and the `rides` table has 125,000 records. Because it's so large, you want to avoid scanning the entire `rides` table in your query. In this case, you can avoid scanning `rides` using an index, as shown in the next section.
 
 ### Rule 2. Use the right index
 
-Below is a query that fetches the right answer to our question: "Who are the top 10 users by number of rides on a given date?"
+Here is a query that fetches the right answer to your question: "Who are the top 10 users by number of rides on a given date?"
 
 {% include copy-clipboard.html %}
 ~~~ sql
 SELECT
-	name, count(rides.id) AS sum
+  name, count(rides.id) AS sum
 FROM
-	users JOIN rides ON users.id = rides.rider_id
+  users JOIN rides ON users.id = rides.rider_id
 WHERE
-	rides.start_time BETWEEN '2018-12-31 00:00:00' AND '2020-01-01 00:00:00'
+  rides.start_time BETWEEN '2018-12-31 00:00:00' AND '2020-01-01 00:00:00'
 GROUP BY
-	name
+  name
 ORDER BY
-	sum DESC
+  sum DESC
 LIMIT
-	10;
+  10;
 ~~~
 
 ~~~
@@ -169,34 +160,34 @@ LIMIT
   Joseph Smith     |  10
   Paul Nelson      |   9
   Christina Smith  |   9
-  Jennifer Johnson |   8
   Jeffrey Walker   |   8
+  Jennifer Johnson |   8
   Joseph Jones     |   7
-  James Williams   |   7
   Thomas Smith     |   7
+  James Williams   |   7
 (10 rows)
 
 Time: 111ms total (execution 111ms / network 0ms)
 ~~~
 
-Unfortunately, this query is a bit slow. 111 milliseconds puts us [over the limit where a user feels the system is reacting instantaneously](https://www.nngroup.com/articles/response-times-3-important-limits/), and we're still down in the database layer. This data still needs to be shipped back out to your application and displayed to the user.
+Unfortunately, this query is a bit slow. 111 milliseconds puts you [over the limit where a user feels the system is reacting instantaneously](https://www.nngroup.com/articles/response-times-3-important-limits/), and you're still down in the database layer. This data still needs to be sent back to your application and displayed.
 
-We can see why if we look at the output of [`EXPLAIN`](explain.html):
+You can see why if you look at the output of [`EXPLAIN`](explain.html):
 
 {% include copy-clipboard.html %}
 ~~~ sql
 EXPLAIN SELECT
-	name, count(rides.id) AS sum
+    name, count(rides.id) AS sum
 FROM
-	users JOIN rides ON users.id = rides.rider_id
+    users JOIN rides ON users.id = rides.rider_id
 WHERE
-	rides.start_time BETWEEN '2018-12-31 00:00:00' AND '2019-01-01 00:00:00'
+    rides.start_time BETWEEN '2018-12-31 00:00:00' AND '2020-01-01 00:00:00'
 GROUP BY
-	name
+    name
 ORDER BY
-	sum DESC
+    sum DESC
 LIMIT
-	10;
+    10;
 ~~~
 
 ~~~
@@ -210,40 +201,41 @@ LIMIT
   │ count: 10
   │
   └── • sort
-      │ estimated row count: 3,392
+      │ estimated row count: 7,772
       │ order: -count_rows
       │
       └── • group
-          │ estimated row count: 3,392
+          │ estimated row count: 7,772
           │ group by: name
           │
           └── • hash join
-              │ estimated row count: 4,013
-              │ equality: (id) = (rider_id)
+              │ estimated row count: 12,863
+              │ equality: (rider_id) = (id)
               │
-              ├── • scan
-              │     estimated row count: 12,500 (100% of the table; stats collected 4 minutes ago)
-              │     table: users@primary
-              │     spans: FULL SCAN
+              ├── • filter
+              │   │ estimated row count: 12,863
+              │   │ filter: (start_time >= '2018-12-31 00:00:00') AND (start_time <= '2020-01-01 00:00:00')
+              │   │
+              │   └── • scan
+              │         estimated row count: 125,000 (100% of the table; stats collected 54 seconds ago)
+              │         table: rides@primary
+              │         spans: FULL SCAN
               │
-              └── • filter
-                  │ estimated row count: 4,013
-                  │ filter: (start_time >= '2018-12-31 00:00:00') AND (start_time <= '2019-01-01 00:00:00')
-                  │
-                  └── • scan
-                        estimated row count: 125,000 (100% of the table; stats collected 3 minutes ago)
-                        table: rides@primary
-                        spans: FULL SCAN
+              └── • scan
+                    estimated row count: 12,500 (100% of the table; stats collected 2 minutes ago)
+                    table: users@primary
+                    spans: FULL SCAN
 (32 rows)
+
 
 Time: 2ms total (execution 2ms / network 0ms)
 ~~~
 
-The main problem is that we are doing full table scans on both the `users` and `rides` tables (see `spans: FULL SCAN`). This tells us that we do not have indexes on the columns in our `WHERE` clause, which is [an indexing best practice](indexes.html#best-practices).
+The main problem is that you are doing full table scans on both the `users` and `rides` tables (see `spans: FULL SCAN`). This tells you that you do not have indexes on the columns in your `WHERE` clause, which is [an indexing best practice](indexes.html#best-practices).
 
-Therefore, we need to create an index on the column in our `WHERE` clause, in this case: `rides.start_time`.
+Therefore, you need to create an index on the column in your `WHERE` clause, in this case: `rides.start_time`.
 
-It's also possible that there is not an index on the `rider_id` column that we are doing a join against, which will also hurt performance.
+It's also possible that there is not an index on the `rider_id` column that you are doing a join against, which will also hurt performance.
 
 Before creating any more indexes, let's see what indexes already exist on the `rides` table by running [`SHOW INDEXES`](show-index.html):
 
@@ -269,72 +261,72 @@ SHOW INDEXES FROM rides;
 Time: 5ms total (execution 5ms / network 0ms)
 ~~~
 
-As we suspected, there are no indexes on `start_time` or `rider_id`, so we'll need to create indexes on those columns.
+As suspected, there are no indexes on `start_time` or `rider_id`, so you'll need to create indexes on those columns.
 
-Because another performance best practice is to [create an index on the `WHERE` condition storing the join key](sql-tuning-with-explain.html#solution-create-a-secondary-index-on-the-where-condition-storing-the-join-key), we will create an index on `start_time` that stores the join key `rider_id`:
+Because another performance best practice is to [create an index on the `WHERE` condition storing the join key](sql-tuning-with-explain.html#solution-create-a-secondary-index-on-the-where-condition-storing-the-join-key), create an index on `start_time` that stores the join key `rider_id`:
 
 {% include copy-clipboard.html %}
 ~~~ sql
 CREATE INDEX ON rides (start_time) storing (rider_id);
 ~~~
 
-Now that we have an index on the column in our `WHERE` clause that stores the join key, let's run the query again:
+Now that you have an index on the column in your `WHERE` clause that stores the join key, let's run the query again:
 
 {% include copy-clipboard.html %}
 ~~~ sql
 SELECT
-	name, count(rides.id) AS sum
+    name, count(rides.id) AS sum
 FROM
-	users JOIN rides ON users.id = rides.rider_id
+    users JOIN rides ON users.id = rides.rider_id
 WHERE
-	rides.start_time BETWEEN '2018-12-31 00:00:00' AND '2019-01-01 00:00:00'
+    rides.start_time BETWEEN '2018-12-31 00:00:00' AND '2020-01-01 00:00:00'
 GROUP BY
-	name
+    name
 ORDER BY
-	sum DESC
+    sum DESC
 LIMIT
-	10;
+    10;
 ~~~
 
 ~~~
         name       | sum
 -------------------+------
-  William Brown    |   6
-  Laura Marsh      |   5
-  Joseph Smith     |   5
-  David Martinez   |   4
-  Michael Garcia   |   4
-  David Mitchell   |   4
-  Arthur Nielsen   |   4
-  Michael Bradford |   4
-  William Mitchell |   4
-  Jennifer Johnson |   4
+  William Brown    |  14
+  William Mitchell |  10
+  Joseph Smith     |  10
+  Paul Nelson      |   9
+  Christina Smith  |   9
+  Jeffrey Walker   |   8
+  Jennifer Johnson |   8
+  Joseph Jones     |   7
+  Thomas Smith     |   7
+  James Williams   |   7
 (10 rows)
 
-Time: 22ms total (execution 22ms / network 0ms)
+Time: 20ms total (execution 20ms / network 0ms)
 ~~~
 
-This query is now running much faster than it was before we added the indexes (111ms vs. 22ms). This means we have an extra 89 milliseconds we can budget towards other areas of our application.
+This query is now running much faster than it was before you added the indexes (111ms vs. 20ms). This means you have an extra 91 milliseconds you can budget towards other areas of your application.
 
-To see what changed, let's look at the [`EXPLAIN`](explain.html) output:
+To see what changed, look at the [`EXPLAIN`](explain.html) output:
 
 {% include copy-clipboard.html %}
 ~~~ sql
 EXPLAIN SELECT
-	name, count(rides.id) AS sum
+    name, count(rides.id) AS sum
 FROM
-	users JOIN rides ON users.id = rides.rider_id
+    users JOIN rides ON users.id = rides.rider_id
 WHERE
-	rides.start_time BETWEEN '2018-12-31 00:00:00' AND '2019-01-01 00:00:00'
+    rides.start_time BETWEEN '2018-12-31 00:00:00' AND '2020-01-01 00:00:00'
 GROUP BY
-	name
+    name
 ORDER BY
-	sum DESC
+    sum DESC
 LIMIT
-	10;
+    10;
 ~~~
 
-As you can see, this query is no longer scanning the entire (larger) `rides` table. Instead, it is now doing a much smaller range scan against only the values in `rides` that match the index we just created on the `start_time` column (4,013 rows instead of 125,000).
+As you can see, this query is no longer scanning the entire (larger) `rides` table. Instead, it is now doing a much smaller range scan against only the values in `rides` that match the index you just created on the `start_time` column (12,863 rows instead of 125,000).
 
 ~~~
                                                 info
@@ -347,122 +339,124 @@ As you can see, this query is no longer scanning the entire (larger) `rides` tab
   │ count: 10
   │
   └── • sort
-      │ estimated row count: 3,392
+      │ estimated row count: 7,772
       │ order: -count_rows
       │
       └── • group
-          │ estimated row count: 3,392
+          │ estimated row count: 7,772
           │ group by: name
           │
           └── • hash join
-              │ estimated row count: 4,013
-              │ equality: (id) = (rider_id)
+              │ estimated row count: 12,863
+              │ equality: (rider_id) = (id)
               │
               ├── • scan
-              │     estimated row count: 12,500 (100% of the table; stats collected 8 minutes ago)
-              │     table: users@primary
-              │     spans: FULL SCAN
+              │     estimated row count: 12,863 (10% of the table; stats collected 5 minutes ago)
+              │     table: rides@rides_start_time_idx
+              │     spans: [/'2018-12-31 00:00:00' - /'2020-01-01 00:00:00']
               │
               └── • scan
-                    estimated row count: 4,013 (3.2% of the table; stats collected 7 minutes ago)
-                    table: rides@rides_start_time_idx
-                    spans: [/'2018-12-31 00:00:00' - /'2019-01-01 00:00:00']
+                    estimated row count: 12,500 (100% of the table; stats collected 6 minutes ago)
+                    table: users@primary
+                    spans: FULL SCAN
 (28 rows)
 
-Time: 2ms total (execution 1ms / network 0ms)
-~~~
 
+Time: 2ms total (execution 2ms / network 1ms)
+~~~
 
 ### Rule 3. Use the right join type
 
 Out of the box, the [cost-based optimizer](cost-based-optimizer.html) will select the right join type for your statement in the majority of cases. Therefore, you should only provide [join hints](cost-based-optimizer.html#join-hints) in your query if you can **prove** to yourself through experimentation that the optimizer should be using a different [join type](joins.html#join-algorithms) than it is selecting.
 
-We can confirm that in this case the optimizer has already found the right join type for this statement by using a hint to force another join type.
+You can confirm that in this case the optimizer has already found the right join type for this statement by using a hint to force another join type.
 
-For example, we might think that a [lookup join](joins.html#lookup-joins) could perform better in this instance, since one of the tables in the join is 10x smaller than the other.
+For example, you might think that a [lookup join](joins.html#lookup-joins) could perform better in this instance, since one of the tables in the join is 10x smaller than the other.
 
-In order to get CockroachDB to plan a lookup join in this case, we will need to add an explicit index on the join key for the right-hand-side table, in this case, `rides`.
+In order to get CockroachDB to plan a lookup join in this case, you will need to add an explicit index on the join key for the right-hand-side table, in this case, `rides`.
 
 {% include copy-clipboard.html %}
 ~~~ sql
 CREATE INDEX ON rides (rider_id);
 ~~~
 
-Next, we can specify the lookup join with a join hint:
+Next, you can specify the lookup join with a join hint:
 
 {% include copy-clipboard.html %}
 ~~~ sql
 SELECT
-	name, count(rides.id) AS sum
+  name, count(rides.id) AS sum
 FROM
-	users INNER LOOKUP JOIN rides ON users.id = rides.rider_id
+  users INNER LOOKUP JOIN rides ON users.id = rides.rider_id
 WHERE
-	(rides.start_time BETWEEN '2018-12-31 00:00:00' AND '2019-01-01 00:00:00')
+  (rides.start_time BETWEEN '2018-12-31 00:00:00' AND '2020-01-01 00:00:00')
 GROUP BY
-	name
+  name
 ORDER BY
-	sum DESC
+  sum DESC
 LIMIT
-	10;
+  10;
 ~~~
 
 ~~~
         name       | sum
--------------------+------
-  William Brown    |   6
-  Laura Marsh      |   5
-  Joseph Smith     |   5
-  Michael Garcia   |   4
-  David Mitchell   |   4
-  David Martinez   |   4
-  Arthur Nielsen   |   4
-  Jennifer Johnson |   4
-  William Mitchell |   4
-  Michael Bradford |   4
++------------------+-----+
+  William Brown    |  14
+  William Mitchell |  10
+  Joseph Smith     |  10
+  Paul Nelson      |   9
+  Christina Smith  |   9
+  Jeffrey Walker   |   8
+  Jennifer Johnson |   8
+  Joseph Jones     |   7
+  Thomas Smith     |   7
+  James Williams   |   7
 (10 rows)
 
-Time: 1.548s total (execution 1.548s / network 0.000s)
+
+Time: 985ms total (execution 985ms / network 0ms)
 ~~~
 
-The results, however, are not good. The query is much slower using a lookup join than what CockroachDB planned for us earlier.
+The results, however, are not good. The query is much slower using a lookup join than what CockroachDB planned for you earlier.
 
-The query is a little faster when we force CockroachDB to use a merge join:
+The query is faster when you force CockroachDB to use a merge join:
 
 {% include copy-clipboard.html %}
 ~~~ sql
 SELECT
-	name, count(rides.id) AS sum
+  name, count(rides.id) AS sum
 FROM
-	users INNER MERGE JOIN rides ON users.id = rides.rider_id
+  users INNER MERGE JOIN rides ON users.id = rides.rider_id
 WHERE
-	(rides.start_time BETWEEN '2018-12-31 00:00:00' AND '2019-01-01 00:00:00')
+  (rides.start_time BETWEEN '2018-12-31 00:00:00' AND '2020-01-01 00:00:00')
 GROUP BY
-	name
+  name
 ORDER BY
-	sum DESC
+  sum DESC
 LIMIT
-	10;
+  10;
 ~~~
 
 ~~~
-        name        | sum
-+-------------------+-----+
-  William Brown     |   6
-  Laura Marsh       |   5
-  Joseph Smith      |   5
-  Jennifer Ford     |   4
-  David Mitchell    |   4
-  William Mitchell  |   4
-  Christopher Allen |   4
-  Michael Bradford  |   4
-  Michael Garcia    |   4
-  Jennifer Johnson  |   4
+        name       | sum
++------------------+-----+
+  William Brown    |  14
+  William Mitchell |  10
+  Joseph Smith     |  10
+  Paul Nelson      |   9
+  Christina Smith  |   9
+  Jennifer Johnson |   8
+  Jeffrey Walker   |   8
+  Joseph Jones     |   7
+  Thomas Smith     |   7
+  James Williams   |   7
 (10 rows)
 
-Time: 22ms total (execution 22ms / network 0ms)
+
+Time: 23ms total (execution 22ms / network 0ms)
 ~~~
 
-The results are consistently about 20-26ms with a merge join vs. 16-23ms when we let CockroachDB choose the join type as shown in the previous section. In other words, forcing the merge join is slightly slower than if we had done nothing.
+The results are consistently about 20-26ms with a merge join versus 16-23ms when you let CockroachDB choose the join type as shown in the previous section. In other words, forcing the merge join is slightly slower than if you had done nothing.
 
 ## Schema design
 
@@ -474,7 +468,7 @@ You can avoid contention with the following strategies:
 - Make transactions smaller by operating on less data per transaction. This will offer fewer opportunities for transactions' data access to overlap.
 - [Split the table across multiple ranges](split-at.html) to distribute its data across multiple nodes for better load balancing of some write-heavy workloads.
 
-For more information about how to avoid performance problems caused by contention, see [Understanding and Avoiding Transaction Contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention).
+For more information about how to avoid performance problems caused by contention, see [Transaction Contention](performance-best-practices-overview.html#transaction-contention).
 
 ## Cluster topology
 
@@ -487,11 +481,11 @@ For more information about how to choose the cluster topology that is right for 
 Reference information:
 
 - [SQL Performance Best Practices](performance-best-practices-overview.html)
-- [Performance recipes](performance-recipes.html)
+- [Performance Recipes](performance-recipes.html)
 - [SQL Tuning with `EXPLAIN`](sql-tuning-with-explain.html)
 - [Joins](joins.html)
 - [CockroachDB Performance](performance.html)
-- [Understanding and Avoiding Transaction Contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention)
+- [Transaction Contention](performance-best-practices-overview.html#transaction-contention)
 - [Topology Patterns](topology-patterns.html)
 
 Specific tasks:
@@ -504,7 +498,7 @@ Specific tasks:
 - [Run Multi-Statement Transactions](run-multi-statement-transactions.html)
 - [Identify slow queries](query-behavior-troubleshooting.html#identify-slow-statements)
 - [Error Handling and Troubleshooting](error-handling-and-troubleshooting.html)
-- [Hello World Example apps](hello-world-example-apps.html)
+- [Example Apps](example-apps.html)
 
 <!-- Reference Links -->
 

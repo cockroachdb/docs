@@ -3,7 +3,7 @@
   "is_top_level": true,
   "items": [
     {
-      "title": "Overview",
+      "title": "Developer Guide Overview",
       "urls": [
         "/${VERSION}/developer-guide-overview.html"
       ]
@@ -20,8 +20,7 @@
         {
           "title": "Connect to a Cluster",
           "urls": [
-            "/${VERSION}/connect-to-the-database.html",
-            "/${VERSION}/connect-to-the-database-cockroachcloud.html"
+            "/${VERSION}/connect-to-the-database.html"
           ]
         },
         {
@@ -322,36 +321,6 @@
           ]
         },
         {
-          "title": "Build a Hello World Application",
-          "items": [
-            {
-              "title": "Go",
-              "urls": [
-                "/${VERSION}/hello-world-go-pgx.html",
-                "/${VERSION}/hello-world-go-gorm.html"
-              ]
-            },
-            {
-              "title": "Java",
-              "urls": [
-                "/${VERSION}/hello-world-java-jdbc.html"
-              ]
-            },
-            {
-              "title": "JavaScript (Node.js)",
-              "urls": [
-                "/${VERSION}/hello-world-node-postgres.html"
-              ]
-            },
-            {
-              "title": "Python",
-              "urls": [
-                "/${VERSION}/hello-world-python-sqlalchemy.html"
-              ]
-            }
-          ]
-        },
-        {
           "title": "Build the Roach Data Application using Spring Boot",
           "items": [
             {
@@ -429,78 +398,61 @@
       ]
     },
     {
-      "title": "Third-Party Database Tools",
+      "title": "Tutorials",
       "items": [
         {
-          "title": "Supported by Cockroach Labs",
-          "urls": [
-            "/${VERSION}/third-party-database-tools.html"
-          ]
-        },
-        {
-          "title": "Supported by the Community",
-          "urls": [
-            "/${VERSION}/community-tooling.html"
-          ]
-        },
-        {
-          "title": "Tutorials",
+          "title": "Schema Migration Tools",
           "items": [
             {
-              "title": "Schema Migration Tools",
-              "items": [
-                {
-                  "title": "Alembic",
-                  "urls": [
-                    "/${VERSION}/alembic.html"
-                  ]
-                },
-                {
-                  "title": "Flyway",
-                  "urls": [
-                    "/${VERSION}/flyway.html"
-                  ]
-                },
-                {
-                  "title": "Liquibase",
-                  "urls": [
-                    "/${VERSION}/liquibase.html"
-                  ]
-                }
+              "title": "Alembic",
+              "urls": [
+                "/${VERSION}/alembic.html"
               ]
             },
             {
-              "title": "GUIs & IDEs",
-              "items": [
-                {
-                  "title": "DBeaver GUI",
-                  "urls": [
-                    "/${VERSION}/dbeaver.html"
-                  ]
-                },
-                {
-                  "title": "IntelliJ IDEA",
-                  "urls": [
-                    "/${VERSION}/intellij-idea.html"
-                  ]
-                }
+              "title": "Flyway",
+              "urls": [
+                "/${VERSION}/flyway.html"
               ]
             },
             {
-              "title": "Application Deployment Tools",
-              "items": [
-                {
-                  "title": "Google Cloud Run",
-                  "urls": [
-                    "/${VERSION}/deploy-app-gcr.html"
-                  ]
-                },
-                {
-                  "title": "AWS Lambda",
-                  "urls": [
-                    "/${VERSION}/deploy-lambda-function.html"
-                  ]
-                }
+              "title": "Liquibase",
+              "urls": [
+                "/${VERSION}/liquibase.html"
+              ]
+            }
+          ]
+        },
+        {
+          "title": "GUIs & IDEs",
+          "items": [
+            {
+              "title": "DBeaver GUI",
+              "urls": [
+                "/${VERSION}/dbeaver.html"
+              ]
+            },
+            {
+              "title": "IntelliJ IDEA",
+              "urls": [
+                "/${VERSION}/intellij-idea.html"
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Application Deployment Tools",
+          "items": [
+            {
+              "title": "Google Cloud Run",
+              "urls": [
+                "/${VERSION}/deploy-app-gcr.html"
+              ]
+            },
+            {
+              "title": "AWS Lambda",
+              "urls": [
+                "/${VERSION}/deploy-lambda-function.html"
               ]
             }
           ]

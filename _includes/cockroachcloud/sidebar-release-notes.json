@@ -1,35 +1,6 @@
 {
-  "title": "Cloud Release Notes",
-  "items": [
-    {
-      "title": "Latest Release Notes",
-      "urls": [
-        "/releases/cockroachcloud-12062021.html"
-      ]
-    },
-    {
-      "title": "All Release Notes",
-      "urls": [
-        "/releases/index-cockroachcloud.html",
-        "/releases/cockroachcloud-11082021.html",
-        "/releases/cockroachcloud-10042021.html",
-        "/releases/cockroachcloud-09072021.html",
-        "/releases/cockroachcloud-08092021.html",
-        "/releases/cockroachcloud-07062021.html",
-        "/releases/cockroachcloud-06072021.html",
-        "/releases/cockroachcloud-05032021.html",
-        "/releases/cockroachcloud-04052021.html",
-        "/releases/cockroachcloud-03082021.html",
-        "/releases/cockroachcloud-02092021.html",
-        "/releases/cockroachcloud-01222021.html",
-        "/releases/cockroachcloud-12112020.html",
-        "/releases/cockroachcloud-11192020.html",
-        "/releases/cockroachcloud-07062020.html",
-        "/releases/cockroachcloud-06112020.html",
-        "/releases/cockroachcloud-05042020.html",
-        "/releases/cockroachcloud-04062020.html",
-        "/releases/cockroachcloud-03022020.html"
-      ]
-    }
+  "title": "CockroachDB Cloud Release Notes",
+  "urls": [
+    "/releases/cloud.html"
   ]
 }

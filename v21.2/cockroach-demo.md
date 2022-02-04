@@ -2,6 +2,7 @@
 title: cockroach demo
 summary: Use cockroach demo to open a SQL shell to a temporary, in-memory, CockroachDB cluster.
 toc: true
+docs_area: reference.cli
 ---
 
 The `cockroach demo` [command](cockroach-commands.html) starts a temporary, in-memory CockroachDB cluster of one or more nodes, with or without a preloaded dataset, and opens an interactive SQL shell to the cluster.
@@ -494,7 +495,7 @@ For a tutorial that uses a demo cluster to demonstrate CockroachDB's multi-regio
 
 In a multi-node demo cluster, you can use `\demo` [shell commands](#commands) to add, shut down, restart, decommission, and recommission individual nodes.
 
-{% include {{ page.version.version }}/misc/experimental-warning.md %}
+{% include common/experimental-warning.md %}
 
 {% include copy-clipboard.html %}
 ~~~ shell

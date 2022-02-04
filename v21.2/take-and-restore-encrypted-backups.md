@@ -2,6 +2,7 @@
 title: Take and Restore Encrypted Backups
 summary: Learn about the advanced options you can use when you backup and restore a CockroachDB cluster.
 toc: true
+docs_area: manage
 ---
 
 The ability to [backup a full cluster](backup.html#backup-a-cluster) has been added and the syntax for [incremental backups](backup.html#create-incremental-backups) is simplified. Because of these two changes, [basic backup usage](take-full-and-incremental-backups.html) is now sufficient for most CockroachDB clusters. However, you may want to control your backup and restore options more explicitly.
@@ -60,7 +61,7 @@ See below for [examples](#examples).
 
 To take an encrypted backup with AWS KMS, use the `kms` [option](backup.html#options):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP INTO 's3://{BUCKET NAME}/{PATH}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
     WITH kms = 'aws:///<cmk>?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}&REGION=us-east-1';
@@ -77,7 +78,7 @@ To take an encrypted backup with AWS KMS, use the `kms` [option](backup.html#opt
 
 To take a backup with [multi-region encryption](#multi-region), use the `kms` option to specify a comma-separated list of KMS URIs:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP INTO 's3://{BUCKET NAME}/{PATH}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
     WITH KMS=(
@@ -99,9 +100,9 @@ To decrypt an [encrypted backup](#take-an-encrypted-backup-with-aws-kms), use th
 
 For example, the encrypted backup created in the [first example](#take-an-encrypted-backup-with-aws-kms) can be restored with:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
-> RESTORE FROM 's3://{BUCKET NAME}/{PATH}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
+> RESTORE FROM '{subdirectory}' IN 's3://{BUCKET NAME}/{PATH}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
     WITH kms = 'aws:///<cmk>?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}&REGION=us-east-1';
 ~~~
 
@@ -132,9 +133,9 @@ For example, the encrypted backup created in the [first example](#take-an-encryp
 
 To take an encrypted backup, use the [`encryption_passphrase` option](backup.html#with-encryption-passphrase):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
-> BACKUP TO 's3://{BUCKET NAME}/{PATH}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' WITH encryption_passphrase = 'password123';
+> BACKUP INTO 's3://{BUCKET NAME}/{PATH}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' WITH encryption_passphrase = 'password123';
 ~~~
 ~~~
         job_id       |  status   | fraction_completed | rows | index_entries | bytes
@@ -151,9 +152,9 @@ To decrypt an encrypted backup, use the [`encryption_passphrase` option](backup.
 
 For example, the encrypted backup created in the previous example can be restored with:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
-> RESTORE FROM 's3://{BUCKET NAME}/{PATH}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' WITH encryption_passphrase = 'password123';
+> RESTORE FROM '{subdirectory}' IN 's3://{BUCKET NAME}/{PATH}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' WITH encryption_passphrase = 'password123';
 ~~~
 ~~~
         job_id       |  status   | fraction_completed | rows | index_entries | bytes
@@ -170,9 +171,9 @@ For example, the encrypted backup created in the previous example can be restore
 
 To take an encrypted backup, use the [`encryption_passphrase` option](backup.html#with-encryption-passphrase):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
-> BACKUP TO 'gs://{BUCKET NAME}/{PATH}?AUTH=specified&CREDENTIALS={ENCODED KEY}' WITH encryption_passphrase = 'password123';
+> BACKUP INTO 'gs://{BUCKET NAME}/{PATH}?AUTH=specified&CREDENTIALS={ENCODED KEY}' WITH encryption_passphrase = 'password123';
 ~~~
 ~~~
         job_id       |  status   | fraction_completed | rows | index_entries | bytes
@@ -189,9 +190,9 @@ To decrypt an encrypted backup, use the [`encryption_passphrase` option](backup.
 
 For example, the encrypted backup created in the previous example can be restored with:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
-> RESTORE FROM 'gs://{BUCKET NAME}/{PATH}?AUTH=specified&CREDENTIALS={ENCODED KEY}' WITH encryption_passphrase = 'password123';
+> RESTORE FROM '{subdirectory}' IN 'gs://{BUCKET NAME}/{PATH}?AUTH=specified&CREDENTIALS={ENCODED KEY}' WITH encryption_passphrase = 'password123';
 ~~~
 ~~~
         job_id       |  status   | fraction_completed | rows | index_entries | bytes
@@ -208,9 +209,9 @@ For example, the encrypted backup created in the previous example can be restore
 
 To take an encrypted backup, use the [`encryption_passphrase` option](backup.html#with-encryption-passphrase):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
-> BACKUP TO 'azure://{CONTAINER NAME}/{PATH}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' WITH encryption_passphrase = 'password123';
+> BACKUP INTO 'azure://{CONTAINER NAME}/{PATH}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' WITH encryption_passphrase = 'password123';
 ~~~
 ~~~
         job_id       |  status   | fraction_completed | rows | index_entries | bytes
@@ -227,9 +228,9 @@ To decrypt an encrypted backup, use the [`encryption_passphrase` option](backup.
 
 For example, the encrypted backup created in the previous example can be restored with:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
-> RESTORE FROM 'azure://{CONTAINER NAME}/{PATH}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' WITH encryption_passphrase = 'password123';
+> RESTORE FROM '{subdirectory}' IN 'azure://{CONTAINER NAME}/{PATH}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' WITH encryption_passphrase = 'password123';
 ~~~
 ~~~
         job_id       |  status   | fraction_completed | rows | index_entries | bytes

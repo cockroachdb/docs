@@ -4,3 +4,4 @@
 - Changefeed target options are limited to tables. [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/73435)
 - Using a [cloud storage sink](create-changefeed.html#cloud-storage-sink) only works with `JSON` and emits [newline-delimited json](http://ndjson.org) files. [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/73432)
 - {{ site.data.products.enterprise }} changefeeds are currently disabled for [{{ site.data.products.serverless }} clusters](https://www.cockroachlabs.com/docs/cockroachcloud/quickstart). Core changefeeds are enabled. [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/73429)    
+- Changefeeds will emit [`NULL` values](null-handling.html) for [`VIRTUAL` computed columns](computed-columns.html) and not the column's computed value. [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/74688)

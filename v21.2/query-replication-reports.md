@@ -3,6 +3,7 @@ title: Replication Reports
 summary: Verify that your cluster's data replication, data placement, and zone configurations are working as expected.
 keywords: availability zone, zone config, zone configs, zone configuration, constraint, constraints
 toc: true
+docs_area: manage
 ---
 
 Several new and updated tables (listed below) are available to help you query the status of your cluster's data replication, data placement, and zone constraint conformance. For example, you can:
@@ -66,7 +67,7 @@ For an example using this table, see [Find out which databases and tables have u
 
  Ranges are considered under-replicated when one of the replicas is unresponsive. This includes the case when the node where the replica is stored is not running.
 
- This report considers a node to be dead (for the purposes of calculating the `unavailable_ranges` and `under_replicated_ranges` columns) if its [liveness record](cluster-setup-troubleshooting.html#check-node-liveness-record-last-update) is expired, which occurs if the node is unresponsive for more than a few seconds. In versions of CockroachDB prior to 20.1, this report used the value of the [cluster setting](cluster-settings.html) `server.time_until_store_dead`, which defaults to 5 minutes.
+ This report considers a node to be dead (for the purposes of calculating the `unavailable_ranges` and `under_replicated_ranges` columns) if its [liveness record](cluster-setup-troubleshooting.html#node-liveness-issues) is expired, which occurs if the node is unresponsive for more than a few seconds. In versions of CockroachDB prior to 20.1, this report used the value of the [cluster setting](cluster-settings.html) `server.time_until_store_dead`, which defaults to 5 minutes.
 
 #### Columns
 
@@ -90,7 +91,7 @@ As described in [Configure Replication Zones](configure-replication-zones.html#d
 
 For an example using this table, see [Find out which databases and tables have ranges in critical localities](#find-out-which-databases-and-tables-have-ranges-in-critical-localities).
 
- This report considers a node to be dead (for the purposes of calculating the `at_risk_ranges` column) if its [liveness record](cluster-setup-troubleshooting.html#check-node-liveness-record-last-update) is expired, which occurs if the node is unresponsive for more than a few seconds. In versions of CockroachDB prior to 20.1, this report used the value of the [cluster setting](cluster-settings.html) `server.time_until_store_dead`, which defaults to 5 minutes.
+ This report considers a node to be dead (for the purposes of calculating the `at_risk_ranges` column) if its [liveness record](cluster-setup-troubleshooting.html#node-liveness-issues) is expired, which occurs if the node is unresponsive for more than a few seconds. In versions of CockroachDB prior to 20.1, this report used the value of the [cluster setting](cluster-settings.html) `server.time_until_store_dead`, which defaults to 5 minutes.
 
 #### Columns
 

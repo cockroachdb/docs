@@ -2,6 +2,8 @@
 title: Cost-Based Optimizer
 summary: The cost-based optimizer seeks the lowest cost for a query, usually related to time.
 toc: true
+keywords: gin, gin index, gin indexes, inverted index, inverted indexes, accelerated index, accelerated indexes
+docs_area: reference.performance_optimization
 ---
 
 The cost-based optimizer seeks the lowest cost for a query, usually related to time.
@@ -102,15 +104,15 @@ When `sql.stats.histogram_collection.enabled` is set to `false`, histograms are 
 
 In [multi-region deployments](multiregion-overview.html), the optimizer, in concert with the [SQL engine](architecture/sql-layer.html), will avoid sending requests to nodes in other regions when it can instead read a value from a unique column that is stored locally. This capability is known as _locality optimized search_.
 
-Even if the value cannot be read locally, CockroachDB can still take advantage of the fact that some of the other regions are much closer than others (with lower latency). In this case, it performs all lookups against the remote regions in parallel and returns the result once it is retrieved, without having to wait for each lookup to come back.
-
-This can lead to increased performance in multi-region deployments, since it means that results can be returned from wherever they are first found without waiting for all of the other lookups to return.
+Even if a value cannot be read locally, CockroachDB takes advantage of the fact that some of the other regions are much closer than others and thus can be queried with lower latency. In this case, it performs all lookups against the remote regions in parallel and returns the result once it is retrieved, without having to wait for each lookup to come back. This can lead to increased performance in multi-region deployments, since it means that results can be returned from wherever they are first found without waiting for all of the other lookups to return.
 
 {{site.data.alerts.callout_info}}
-The asynchronous parallel lookup behavior described above does not occur if you [disable vectorized execution](vectorized-execution.html#configuring-vectorized-execution).
+The asynchronous parallel lookup behavior does not occur if you [disable vectorized execution](vectorized-execution.html#configuring-vectorized-execution).
 {{site.data.alerts.end}}
 
-Note the following limitations:
+Locality optimized search is supported for scans that are guaranteed to return 100,000 keys or fewer. This optimization allows the execution engine to avoid visiting remote regions if all requested keys are found in the local region, thus reducing the latency of the query.
+
+### Limitations
 
 {% include {{ page.version.version }}/sql/locality-optimized-search-limited-records.md %}
 
@@ -139,13 +141,13 @@ Only the following statements use the plan cache:
 
 For a query involving multiple joins, the cost-based optimizer will explore additional [join orderings](joins.html) in an attempt to find the lowest-cost execution plan, which can lead to significantly better performance in some cases.
 
-Because this process leads to an exponential increase in the number of possible execution plans for such queries, it's only used to reorder subtrees containing 4 or fewer joins by default.
+Because this process leads to an exponential increase in the number of possible execution plans for such queries, it's only used to reorder subtrees containing 8 or fewer joins by default.
 
 To change this setting, which is controlled by the `reorder_joins_limit` [session variable](set-vars.html), run the following statement. To disable this feature, set the variable to `0`.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> SET reorder_joins_limit = 6;
+> SET reorder_joins_limit = 0;
 ~~~
 
 {{site.data.alerts.callout_danger}}
@@ -179,10 +181,10 @@ For a join hint example, see [Use the right join type](make-queries-fast.html#ru
 
 - `LOOKUP`: Forces a lookup join into the right side; the right side must be a table with a suitable index. Note that `LOOKUP` can only be used with `INNER` and `LEFT` joins.
 
-- `INVERTED`:  Forces an inverted join into the right side; the right side must be a table with a suitable [inverted index](inverted-indexes.html). Note that `INVERTED` can only be used with `INNER` and `LEFT` joins.
+- `INVERTED`:  Forces an inverted join into the right side; the right side must be a table with a suitable [GIN index](inverted-indexes.html). Note that `INVERTED` can only be used with `INNER` and `LEFT` joins.
 
     {{site.data.alerts.callout_info}}
-    You cannot use inverted joins on [partial inverted indexes](inverted-indexes.html#partial-inverted-indexes).
+    You cannot use inverted joins on [partial GIN indexes](inverted-indexes.html#partial-gin-indexes).
     {{site.data.alerts.end}}
 
 If it is not possible to use the algorithm specified in the hint, an error is signaled.

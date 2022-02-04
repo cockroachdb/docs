@@ -3,6 +3,7 @@ title: Performance Tuning Recipes
 summary: Identify, diagnose, and fix common performance problems
 toc: true
 toc_not_nested: true
+docs_area: manage
 ---
 
 This page provides recipes for fixing performance issues in your applications.
@@ -34,8 +35,8 @@ This section describes how to use CockroachDB commands and dashboards to identif
       <li>The <a href="ui-sql-dashboard.html#sql-statement-errors">SQL Statement Errors graph</a> in the DB Console is showing spikes in retries over time.</li>
     </ul>
     </td>
-    <td><ul><li>Your application is experiencing contention.</li></ul></td>
-    <td><ul><li><a href="#contention">Reduce contention.</a></li></ul></td>
+    <td><ul><li>Your application is experiencing transaction contention.</li></ul></td>
+    <td><ul><li><a href="#transaction-contention">Reduce transaction contention.</a></li></ul></td>
   </tr>
   <tr>
     <td><ul>
@@ -69,18 +70,18 @@ This section describes how to use CockroachDB commands and dashboards to identif
 
 This section provides solutions for common performance issues in your applications.
 
-### Contention
+### Transaction contention
 
 Transaction contention occurs when transactions issued from multiple clients at the same time operate on the same data. This can cause transactions to wait on each other (like when many people try to check out with the same cashier at a store) and decrease performance.
 
-#### Indicators that your application is experiencing contention
+#### Indicators that your application is experiencing transaction contention
 
 * Your application is experiencing degraded performance with transaction errors like `SQLSTATE: 40001`, `RETRY_WRITE_TOO_OLD`, and `RETRY_SERIALIZABLE`. See [Transaction Retry Error Reference](transaction-retry-error-reference.html).
 * The [SQL Statement Contention graph](ui-sql-dashboard.html#sql-statement-contention) is showing spikes over time.
 <img src="{{ 'images/v21.2/ui-statement-contention.png' | relative_url }}" alt="SQL Statement Contention graph in the DB Console" style="border:1px solid #eee;max-width:100%" />
 * The [Transaction Restarts graph](ui-sql-dashboard.html) is showing spikes in retries over time.
 
-#### Fix contention problems
+#### Fix transaction contention problems
 
 {% include {{ page.version.version }}/performance/statement-contention.md %}
 
@@ -114,7 +115,7 @@ Not every full table scan is an indicator of poor performance. The [cost-based o
 
 [Examine the statements](sql-tuning-with-explain.html) that result in full table scans and consider adding [secondary indexes](schema-design-indexes.html#create-a-secondary-index).
 
-Also see [Table scans best practices](performance-best-practices-overview.html#table-scans-best-practices).
+Also see [Table scans best practices](performance-best-practices-overview.html#table-scan-best-practices).
 
 ### Suboptimal primary keys
 

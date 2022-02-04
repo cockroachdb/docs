@@ -2,6 +2,7 @@
 title: Monitor CockroachDB with Datadog
 summary: The CockroachDB integration with Datadog enables data visualization and alerting on CockroachDB metrics.
 toc: true
+docs_area: manage
 ---
 
 [Datadog](https://www.datadoghq.com/) is a monitoring and security platform for cloud applications. The CockroachDB integration with Datadog enables data collection and alerting on [CockroachDB metrics](https://docs.datadoghq.com/integrations/cockroachdb/?tab=host#data-collected) using the Datadog platform.
@@ -21,7 +22,7 @@ If you run into problems with this integration, please file an issue on the [Dat
 - [Datadog Agent](https://app.datadoghq.com/account/settings#agent)
 
 {{site.data.alerts.callout_info}}
-This tutorial assumes that you have [started a secure CockroachDB cluster](secure-a-cluster.html). Note that [{{ site.data.products.db }}](../cockroachcloud/index.html) does not currently expose a compatible monitoring endpoint.
+This tutorial assumes that you have [started a secure CockroachDB cluster](secure-a-cluster.html). [{{ site.data.products.db }}](../cockroachcloud/index.html) does not expose a compatible monitoring endpoint.
 {{site.data.alerts.end}}
 
 ## Step 1. Enable CockroachDB check
@@ -79,7 +80,7 @@ logs:
      pattern: '[A-Z]\d{6}\s\d+\:\d+\:\d+\.\d+'
 ~~~
 
-The above `path` value specifies the [default](configure-logs.html#default-logging-configuration) CockroachDB log file and location. 
+The `path` value specifies the [default](configure-logs.html#default-logging-configuration) CockroachDB log file and location.
 
 {{site.data.alerts.callout_info}}
 You can configure both the CockroachDB [logging directory](configure-logs.html#set-file-defaults) and [log files](configure-logs.html#output-to-files).
@@ -116,7 +117,7 @@ cockroachdb (1.6.0)
 
 ## Step 4. View CockroachDB dashboards on Datadog
 
-Open your Datadog [Dashboard List](https://app.datadoghq.com/dashboard/lists) and click on `CockroachDB Overview`: 
+Open your Datadog [Dashboard List](https://app.datadoghq.com/dashboard/lists) and click on `CockroachDB Overview`:
 
 <img src="{{ 'images/v21.2/datadog-crdb-dashboard-list.png' | relative_url }}" alt="CockroachDB Overview dashboard in Datadog Dashboard List" style="border:1px solid #eee;max-width:100%" />
 
@@ -167,7 +168,7 @@ The timeseries graph at the top of the page indicates the configured metric and 
 
 <img src="{{ 'images/v21.2/datadog-crdb-storage-alert.png' | relative_url }}" alt="CockroachDB Threshold Alert in Datadog" style="border:1px solid #eee;max-width:100%" />
 
-## See Also
+## See also
 
 - [Monitoring and Alerting](monitoring-and-alerting.html)
 - [DB Console Overview](ui-overview.html)

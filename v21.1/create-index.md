@@ -2,6 +2,7 @@
 title: CREATE INDEX
 summary: The CREATE INDEX statement creates an index for a table. Indexes improve your database's performance by helping SQL quickly locate data.
 toc: true
+keywords: gin, gin index, gin indexes, inverted index, inverted indexes, accelerated index, accelerated indexes
 ---
 
 The `CREATE INDEX` [statement](sql-statements.html) creates an index for a table. [Indexes](indexes.html) improve your database's performance by helping SQL locate data without having to look through every row of a table.
@@ -12,7 +13,7 @@ The following types cannot be included in an index key, but can be stored (and u
 - [`ARRAY`](array.html)
 - The computed [`TUPLE`](scalar-expressions.html#tuple-constructor) type, even if it is constructed from indexed fields
 
-To create an index on the schemaless data in a [`JSONB`](jsonb.html) column, or on the data in an [`ARRAY`](array.html), use an [inverted index](inverted-indexes.html).
+To create an index on the schemaless data in a [`JSONB`](jsonb.html) column, or on the data in an [`ARRAY`](array.html), use a [GIN index](inverted-indexes.html).
 
 {{site.data.alerts.callout_info}}
 Indexes are automatically created for a table's [`PRIMARY KEY`](primary-key.html) and [`UNIQUE`](unique.html) columns. When querying a table, CockroachDB uses the fastest index. For more information about that process, see [Index Selection in CockroachDB](https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2/).
@@ -30,7 +31,7 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 
 <div>{% include {{ page.version.version }}/sql/generated/diagrams/create_index.html %}</div>
 
-**Inverted index:**
+**GIN index:**
 
 <div>{% include {{ page.version.version }}/sql/generated/diagrams/create_inverted_index.html %}</div>
 
@@ -39,11 +40,11 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 Parameter | Description
 ----------|------------
 `UNIQUE` | Apply the [`UNIQUE` constraint](unique.html) to the indexed columns.<br><br>This causes the system to check for existing duplicate values on index creation. It also applies the `UNIQUE` constraint at the table level, so the system checks for duplicate values when inserting or updating data.
-`INVERTED` | Create an [inverted index](inverted-indexes.html) on the schemaless data in the specified [`JSONB`](jsonb.html) column.<br><br> You can also use the PostgreSQL-compatible syntax `USING GIN`. For more details, see [Inverted Indexes](inverted-indexes.html#creation).
+`INVERTED` | Create a [GIN index](inverted-indexes.html) on the schemaless data in the specified [`JSONB`](jsonb.html) column.<br><br> You can also use the PostgreSQL-compatible syntax `USING GIN`. For more details, see [GIN Indexes](inverted-indexes.html#creation).
 `IF NOT EXISTS` | Create a new index only if an index of the same name does not already exist; if one does exist, do not return an error.
 `opt_index_name`<br>`index_name` | The name of the index to create, which must be unique to its table and follow these [identifier rules](keywords-and-identifiers.html#identifiers).<br><br>If you do not specify a name, CockroachDB uses the format `<table>_<columns>_key/idx`. `key` indicates the index applies the `UNIQUE` constraint; `idx` indicates it does not. Example: `accounts_balance_idx`
 `table_name` | The name of the table you want to create the index on.
-`USING name` | An optional clause for compatibility with third-party tools. Accepted values for `name` are `btree`, `gin`, and `gist`, with `btree` for a standard secondary index, `gin` as the PostgreSQL-compatible syntax for an [inverted index](#create-inverted-indexes), and `gist` for a [spatial index](spatial-indexes.html).
+`USING name` | An optional clause for compatibility with third-party tools. Accepted values for `name` are `btree`, `gin`, and `gist`, with `btree` for a standard secondary index, `gin` as the PostgreSQL-compatible syntax for a [GIN index](#create-gin-indexes), and `gist` for a [spatial index](spatial-indexes.html).
 `name` | The name of the column you want to index.
 `ASC` or `DESC`| Sort the column in ascending (`ASC`) or descending (`DESC`) order in the index. How columns are sorted affects query results, particularly when using `LIMIT`.<br><br>__Default:__ `ASC`
 `STORING ...`| Store (but do not sort) each column whose name you include.<br><br>For information on when to use `STORING`, see  [Store Columns](#store-columns).  Note that columns that are part of a table's [`PRIMARY KEY`](primary-key.html) cannot be specified as `STORING` columns in secondary indexes on the table.<br><br>`COVERING` and `INCLUDE` are aliases for `STORING` and work identically.
@@ -107,9 +108,9 @@ This also applies the [`UNIQUE` constraint](unique.html) at the table level, sim
 > ALTER TABLE users ADD CONSTRAINT users_name_id_key UNIQUE (name, id);
 ~~~
 
-### Create inverted indexes
+### Create GIN indexes
 
-[Inverted indexes](inverted-indexes.html) can be created on schemaless data in a [`JSONB`](jsonb.html) column.
+[GIN indexes](inverted-indexes.html) can be created on schemaless data in a [`JSONB`](jsonb.html) column.
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -125,7 +126,7 @@ The above example is equivalent to the following PostgreSQL-compatible syntax:
 
 ### Create spatial indexes
 
-[Spatial indexes](spatial-indexes.html) can be created on `GEOMETRY` and `GEOGRAPHY` columns.  Spatial indexes are a special type of [inverted index](inverted-indexes.html).
+[Spatial indexes](spatial-indexes.html) can be created on `GEOMETRY` and `GEOGRAPHY` columns.  Spatial indexes are a special type of [GIN index](inverted-indexes.html).
 
 To create a spatial index on a `GEOMETRY` column:
 
@@ -159,6 +160,10 @@ Storing a column improves the performance of queries that retrieve (but do not f
 ~~~
 
 However, to use stored columns, queries must filter another column in the same index. For example, SQL can retrieve `name` values from the above index only when a query's `WHERE` clause filters `city`.
+
+{{site.data.alerts.callout_info}}
+{% include {{page.version.version}}/sql/covering-index.md %}
+{{site.data.alerts.end}}
 
 ### Change column sort order
 

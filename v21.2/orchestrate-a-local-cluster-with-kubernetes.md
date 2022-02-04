@@ -3,12 +3,13 @@ title: Deploy a Local Cluster with Kubernetes
 summary: Deploy a local 3-node CockroachDB cluster with Kubernetes.
 toc: true
 secure: true
+filter_category: crdb_kubernetes
+filter_html: Secure
+filter_sort: 1
+docs_area: 
 ---
 
-<div class="filters filters-big clearfix">
-  <button class="filter-button current"><strong>Secure</strong></button>
-  <a href="orchestrate-a-local-cluster-with-kubernetes-insecure.html"><button class="filter-button">Insecure</button></a>
-</div>
+{% include filter-tabs.md %}
 
 On top of CockroachDB's built-in automation, you can use a third-party [orchestration](orchestration.html) system to simplify and automate even more of your operations, from deployment to scaling to overall cluster management.
 

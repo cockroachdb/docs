@@ -2,6 +2,7 @@
 title: Run Multi-Statement Transactions
 summary: How to use multi-statement transactions during application development
 toc: true
+docs_area: 
 ---
 
 This page has instructions for running [multi-statement transactions](transactions.html#batched-statements) against CockroachDB from various programming languages.
@@ -76,7 +77,7 @@ Reference information related to this task:
 - [Transactions](transactions.html)
 - [Transaction retries](transactions.html#client-side-intervention)
 - [Batched statements](transactions.html#batched-statements)
-- [Understanding and Avoiding Transaction Contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention)
+- [Transaction Contention](performance-best-practices-overview.html#transaction-contention)
 - [`BEGIN`](begin-transaction.html)
 - [`COMMIT`](commit-transaction.html)
 
@@ -89,7 +90,7 @@ Other common tasks:
 - [Delete Data](delete-data.html)
 - [Optimize Statement Performance][fast]
 - [Error Handling and Troubleshooting](error-handling-and-troubleshooting.html)
-- [Hello World Example apps](hello-world-example-apps.html)
+- [Example Apps](example-apps.html)
 
 <!-- Reference Links -->
 

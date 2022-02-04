@@ -1,6 +1,6 @@
 #### Kubernetes version
 
-Kubernetes 1.15 or higher is required in order to use our current configuration files. If you need to run on an older version of Kubernetes, we keep configuration files in the versioned subdirectories of [https://github.com/cockroachdb/cockroach/tree/master/cloud/kubernetes](https://github.com/cockroachdb/cockroach/tree/master/cloud/kubernetes) (e.g., [v1.7](https://github.com/cockroachdb/cockroach/tree/master/cloud/kubernetes/v1.7)).
+Kubernetes 1.18 or higher is required in order to use our current configuration files. If you need to run on an older version of Kubernetes, we keep configuration files in the versioned subdirectories of [https://github.com/cockroachdb/cockroach/tree/master/cloud/kubernetes](https://github.com/cockroachdb/cockroach/tree/master/cloud/kubernetes) (e.g., [v1.7](https://github.com/cockroachdb/cockroach/tree/master/cloud/kubernetes/v1.7)).
 
 #### Kubernetes Operator
 

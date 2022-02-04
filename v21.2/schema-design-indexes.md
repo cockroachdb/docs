@@ -2,6 +2,8 @@
 title: Secondary Indexes
 summary: How and when to create secondary indexes in CockroachDB.
 toc: true
+keywords: gin, gin index, gin indexes, inverted index, inverted indexes, accelerated index, accelerated indexes
+docs_area: 
 ---
 
 Indexes are [logical objects in a cluster](schema-design-overview.html#database-schema-objects) that help [CockroachDB queries](query-data.html) find data more efficiently. When you create an index, CockroachDB creates a copy of the columns selected for the index, and then sorts the rows of data by indexed column values, without sorting the values in the table itself.
@@ -28,7 +30,7 @@ Before reading this page, do the following:
 
 To add a secondary index to a table do one of the following:
 
-- Add an `INDEX` clause to the end of a [`CREATE TABLE`](create-table.html#create-a-table-with-secondary-and-inverted-indexes) statement.
+- Add an `INDEX` clause to the end of a [`CREATE TABLE`](create-table.html#create-a-table-with-secondary-and-gin-indexes) statement.
 
     `INDEX` clauses generally take the following form:
 
@@ -67,6 +69,8 @@ For an example, see [Example](#example).
 Here are some best practices for creating and using indexes:
 
 - Index all columns that you plan to use for [sorting](order-by.html) or [filtering](select-clause.html#filter-rows) data.
+
+    {% include {{page.version.version}}/sql/covering-index.md %}
 
     Columns listed in a filtering [`WHERE` clause](select-clause.html#parameters) with the equality operators (`=` or `IN`) should come first in the index, before those referenced with inequality operators (`<`, `>`).
 
@@ -120,7 +124,9 @@ Here are some best practices for creating and using indexes:
 (9 rows)
     ~~~
 
-- Use a [`STORING` clause](create-index.html#parameters) to store columns of data that you want returned by common queries, but that you do not plan to use in query filters.
+<a name="storing-index"></a>
+
+- Use a [`STORING` clause](create-index.html#parameters) to store columns of data that you want returned by common queries, but that you do not plan to use in query filters.  Note that the synonym `COVERING` is also supported.
 
     The `STORING` clause specifies columns that are not part of the index key but should be stored in the index, without being sorted. If a column is specified in a query, and the column is neither indexed nor stored in an index, CockroachDB will perform a full scan of the table, which can result in poor performance. For an example, see [below](#example).
 

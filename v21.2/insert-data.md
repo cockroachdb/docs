@@ -2,6 +2,7 @@
 title: Insert Data
 summary: How to insert data into CockroachDB during application development
 toc: true
+docs_area: 
 ---
 
 This page has instructions for getting data into CockroachDB with various programming languages, using the [`INSERT`](insert.html) SQL statement.
@@ -114,7 +115,7 @@ Reference information related to this task:
 - [Import performance](import.html#performance)
 - [`INSERT`](insert.html)
 - [`UPSERT`](upsert.html)
-- [Understanding and Avoiding Transaction Contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention)
+- [Transaction Contention](performance-best-practices-overview.html#transaction-contention)
 - [Multi-row DML best practices](performance-best-practices-overview.html#dml-best-practices)
 - [Insert Multiple Rows](insert.html#insert-multiple-rows-into-an-existing-table)
 
@@ -127,7 +128,7 @@ Other common tasks:
 - [Run Multi-Statement Transactions](run-multi-statement-transactions.html)
 - [Error Handling and Troubleshooting](error-handling-and-troubleshooting.html)
 - [Optimize Statement Performance](make-queries-fast.html)
-- [Hello World Example apps](hello-world-example-apps.html)
+- [Example Apps](example-apps.html)
 
 <!-- Reference Links -->
 

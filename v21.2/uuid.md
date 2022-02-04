@@ -2,6 +2,7 @@
 title: UUID
 summary: The UUID data type stores 128-bit Universal Unique Identifiers.
 toc: true
+docs_area: reference.sql
 ---
 
 The `UUID` (Universally Unique Identifier) [data type](data-types.html) stores a 128-bit value that is [unique across both space and time](https://www.ietf.org/rfc/rfc4122.txt).

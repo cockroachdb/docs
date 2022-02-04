@@ -2,12 +2,13 @@
 title: Orchestration with Kubernetes (Insecure)
 summary: Orchestrate the deployment and management of a local cluster using Kubernetes.
 toc: true
+filter_category: crdb_kubernetes
+filter_html: Insecure
+filter_sort: 2
+docs_area: 
 ---
 
-<div class="filters filters-big clearfix">
-  <a href="orchestrate-a-local-cluster-with-kubernetes.html"><button class="filter-button">Secure</button></a>
-  <button class="filter-button current"><strong>Insecure</strong></button>
-</div>
+{% include filter-tabs.md %}
 
 On top of CockroachDB's built-in automation, you can use a third-party [orchestration](orchestration.html) system to simplify and automate even more of your operations, from deployment to scaling to overall cluster management.
 

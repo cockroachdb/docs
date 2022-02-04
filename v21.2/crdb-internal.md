@@ -2,6 +2,7 @@
 title: crdb_internal
 summary: The crdb_internal schema contains read-only views that you can use for introspection into CockroachDB internals.
 toc: true
+docs_area: reference.sql
 ---
 
 The `crdb_internal` [system catalog](system-catalogs.html) is a schema that contains information about internal objects, processes, and metrics related to a specific database.
@@ -24,10 +25,10 @@ Table | Description
 `active_range_feeds` | Contains information about [range feeds](architecture/distribution-layer.html) on nodes in your cluster.
 `backward_dependencies` | Contains information about backward dependencies.
 `builtin_functions` | Contains information about supported [functions](functions-and-operators.html).
-`cluster_contended_indexes` | Contains information about [contended](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention) indexes in your cluster.
-`cluster_contended_keys` | Contains information about [contended](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention) keys in your cluster.
-`cluster_contended_tables` | Contains information about [contended](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention) tables in your cluster.
-`cluster_contention_events` | Contains information about [contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention) in your cluster.
+`cluster_contended_indexes` | Contains information about [contended](performance-best-practices-overview.html#transaction-contention) indexes in your cluster.
+`cluster_contended_keys` | Contains information about [contended](performance-best-practices-overview.html#transaction-contention) keys in your cluster.
+`cluster_contended_tables` | Contains information about [contended](performance-best-practices-overview.html#transaction-contention) tables in your cluster.
+`cluster_contention_events` | Contains information about [contention](performance-best-practices-overview.html#transaction-contention) in your cluster.
 `cluster_database_privileges` | Contains information about the [database privileges](authorization.html#privileges) on your cluster.
 `cluster_distsql_flows` | Contains information about the flows of the [DistSQL execution](architecture/sql-layer.html#distsql) scheduled in your cluster.
 `cluster_inflight_traces` | Contains information about in-flight [tracing](show-trace.html) in your cluster.
@@ -36,7 +37,7 @@ Table | Description
 `cluster_settings` | Contains information about [cluster settings](cluster-settings.html).
 `cluster_transactions` | Contains information about transactions running on your cluster.
 `create_statements` | Contains information about tables and indexes in your database.
-`create_type_statements` | Contains information about [user-defined types](enum.html) in your database.
+`create_type_statements` | <a name="create_type_statements"></a> Contains information about [user-defined types](enum.html) in your database.
 `cross_db_references` | Contains information about objects that reference other objects, such as [foreign keys](foreign-key.html) or [views](views.html), across databases in your cluster.
 `databases` | Contains information about the databases in your cluster.
 `default_privileges` | Contains information about per-database default [privileges](authorization.html#privileges).

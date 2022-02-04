@@ -3,6 +3,7 @@ title: cockroach start
 summary: Start a new multi-node cluster or add nodes to an existing multi-node cluster.
 toc: true
 key: start-a-node.html
+docs_area: reference.cli
 ---
 
 This page explains the `cockroach start` [command](cockroach-commands.html), which you use to start a new multi-node cluster or add nodes to an existing cluster.
@@ -138,6 +139,10 @@ The `--store` flag supports the following fields. Note that commas are used to s
 
 {{site.data.alerts.callout_info}}
 In-memory storage is not suitable for production deployments at this time.
+{{site.data.alerts.end}}
+
+{{site.data.alerts.callout_success}}
+{% include {{ page.version.version }}/prod-deployment/prod-guidance-store-volume.md %}
 {{site.data.alerts.end}}
 
 Field | Description
@@ -309,7 +314,7 @@ $ cockroach init \
 **Scenario:**
 
 - You have a cluster that spans GCE and AWS.
-- The nodes on each cloud can reach each other on private addresses, but the private addresses aren't reachable from the other cloud.
+- The nodes on each cloud can reach each other on public addresses, but the private addresses aren't reachable from the other cloud.
 
 **Approach:**
 
