@@ -18,7 +18,7 @@ Subcommand | Usage
 `status` | View the status of one or all nodes, excluding nodes that have been decommissioned and taken offline. Depending on flags used, this can include details about range/replicas, disk usage, and decommissioning progress.
 `decommission` | Decommission nodes for removal from the cluster. See [Decommission Nodes](remove-nodes.html) for more details.
 `recommission` | Recommission nodes that have been decommissioned. See [Recommission Nodes](remove-nodes.html#recommission-nodes) for more details.
-`drain` | Drain nodes of SQL clients, [distributed SQL](architecture/sql-layer.html#distsql) queries, and range leases, and prevent ranges from rebalancing onto the node. This is normally done by sending `SIGTERM` during [node shutdown](cockroach-quit.html), but the `drain` subcommand provides operators an option to interactively monitor, and if necessary intervene in, the draining process.
+`drain` | Drain nodes in preparation for process termination. Draining is normally done by sending `SIGTERM` or `SIGINT` during node shutdown, but the `drain` subcommand provides a way for operators to drain nodes without shutting them down. For details, see [Node Shutdown](node-shutdown.html).
 
 ## Synopsis
 
@@ -187,7 +187,7 @@ Field | Description
 `is_live` | If `true`, the node is currently live. <br><br>For unavailable clusters (with an unresponsive DB Console), running the `node status` command and monitoring the `is_live` field is the only way to identify the live nodes in the cluster. However, you need to run the `node status` command on a live node to identify the other live nodes in an unavailable cluster. Figuring out a live node to run the command is a trial-and-error process, so run the command against each node until you get one that responds. <br><br> See [Identify live nodes in an unavailable cluster](#identify-live-nodes-in-an-unavailable-cluster) for more details. <br><br>**Required flag:** None
 `gossiped_replicas` | The number of replicas on the node that are active members of a range. After the decommissioning process completes, this should be 0.<br><br>**Required flag:** `--decommission` or `--all`
 `is_decommissioning` | If `true`, the node's range replicas are being transferred to other nodes. This happens when a live node is marked for [decommissioning](remove-nodes.html).<br><br>**Required flag:** `--decommission` or `--all`
-`is_draining` | If `true`, the node is being drained of in-flight SQL connections, new SQL connections are rejected, and the [`/health?ready=1` monitoring endpoint](monitoring-and-alerting.html#health-ready-1) starts returning a `503 Service Unavailable` status. This happens when a live node is being [stopped](cockroach-quit.html).<br><br>**Required flag:** `--decommission` or `--all`
+`is_draining` | If `true`, the node is being drained of in-flight SQL connections, new SQL connections are rejected, and the [`/health?ready=1` monitoring endpoint](monitoring-and-alerting.html#health-ready-1) starts returning a `503 Service Unavailable` status. This happens when a live node is being [stopped](node-shutdown.html).<br><br>**Required flag:** `--decommission` or `--all`
 
 ### `node decommission`
 
@@ -309,13 +309,17 @@ $ cockroach node status --host=localhost:26257 --insecure
 You need to run the `node status` command on a live node to identify the other live nodes in an unavailable cluster. Figuring out a live node to run the command is a trial-and-error process, so run the command against each node until you get one that responds.
 {{site.data.alerts.end}}
 
+### Drain nodes
+
+See [Drain a node without shutting it down](node-shutdown.html#drain-a-node-without-shutting-it-down).
+
 ### Decommission nodes
 
-See [Decommission Nodes](remove-nodes.html)
+See [Decommission Nodes](remove-nodes.html).
 
 ### Recommission nodes
 
-See [Recommission Nodes](remove-nodes.html#recommission-nodes)
+See [Recommission Nodes](remove-nodes.html#recommission-nodes).
 
 ## See also
 
