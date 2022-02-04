@@ -5,7 +5,7 @@ toc: true
 filter_category: start_a_cluster
 filter_html: Secure
 filter_sort: 1
-docs_area: 
+docs_area: deploy
 ---
 
 {% include filter-tabs.md %}

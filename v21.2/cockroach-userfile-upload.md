@@ -2,7 +2,7 @@
 title: cockroach userfile upload
 summary: The cockroach userfile upload command uploads a file to user-scoped file storage.
 toc: true
-docs_area: 
+docs_area: reference.cli
 ---
 
  The `cockroach userfile upload` [command](cockroach-commands.html) uploads a file to the [user-scoped file storage](use-userfile-for-bulk-operations.html) using a SQL connection.

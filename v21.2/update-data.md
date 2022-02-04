@@ -2,7 +2,7 @@
 title: Update Data
 summary: How to update the data in CockroachDB from various programming languages
 toc: true
-docs_area:
+docs_area: develop
 ---
 
 This page has instructions for updating existing rows of data in CockroachDB, using the following [SQL statements](sql-statements.html):

@@ -6,7 +6,7 @@ twitter: false
 filter_category: crud_java
 filter_html: Use <strong>MyBatis-Spring</strong>
 filter_sort: 4
-docs_area: 
+docs_area: get_started
 ---
 
 {% include filter-tabs.md %}
