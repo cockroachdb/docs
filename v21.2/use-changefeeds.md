@@ -59,7 +59,7 @@ The `kv.closed_timestamp.target_duration` [cluster setting](cluster-settings.htm
     [1]	{"__crdb__": {"updated": <timestamp 2>}, "id": 1, "name": "Petee"}
     ~~~
 
-    It is also possible that the changefeed emits an out of order duplicate of an earlier value that you already saw:
+    <a name="duplicates"></a>It is also possible that the changefeed emits an out of order duplicate of an earlier value that you already saw:
 
     ~~~ shell
     [1]	{"__crdb__": {"updated": <timestamp 1>}, "id": 1, "name": "Carl"}
@@ -78,7 +78,7 @@ The `kv.closed_timestamp.target_duration` [cluster setting](cluster-settings.htm
 
 - Rows are sharded between Kafka partitions by the row’s [primary key](primary-key.html).
 
-- <a name="resolved-def"></a>The `UPDATED` option adds an "updated" timestamp to each emitted row. You can also use the [`RESOLVED` option](create-changefeed.html#resolved-option) to emit "resolved" timestamp messages to each Kafka partition. A "resolved" timestamp is a guarantee that no (previously unseen) rows with a lower update timestamp will be emitted on that partition.
+- The `UPDATED` option adds an "updated" timestamp to each emitted row. You can also use the [`RESOLVED` option](#resolved-timestamps) to emit "resolved" timestamp messages to each Kafka partition. A "resolved" timestamp is a guarantee that no (previously unseen) rows with a lower update timestamp will be emitted on that partition.
 
     For example:
 
@@ -98,9 +98,15 @@ The `kv.closed_timestamp.target_duration` [cluster setting](cluster-settings.htm
 
     To compare two different rows for [happens-before](https://en.wikipedia.org/wiki/Happened-before), compare the "updated" timestamp. This works across anything in the same cluster (e.g., tables, nodes, etc.).
 
-    Resolved timestamp notifications on every Kafka partition can be used to provide strong ordering and global consistency guarantees by buffering records in between timestamp closures. Use the "resolved" timestamp to see every row that changed at a certain time.
+    The complexity with timestamps is necessary because CockroachDB supports transactions that can affect any part of the cluster, and it is not possible to horizontally divide the transaction log into independent changefeeds. For more information about this, [read our blog post on CDC](https://www.cockroachlabs.com/blog/change-data-capture/) and see the following section on [resolved timestamps](#resolved-timestamps).
 
-    The complexity with timestamps is necessary because CockroachDB supports transactions that can affect any part of the cluster, and it is not possible to horizontally divide the transaction log into independent changefeeds. For more information about this, [read our blog post on CDC](https://www.cockroachlabs.com/blog/change-data-capture/).
+### Resolved timestamps
+
+The resolved timestamp acts as a checkpoint confirming that all change events up to its timestamp have emitted. Resolved messages send when the buffer flushes. Setting the [`resolved` option](create-changefeed.html#resolved-option) (e.g., `resolved='10s'`), indicates the maximum time it will take to flush the buffer.
+
+You can use the resolved timestamp to remove [duplicates](#duplicates) from change notifications. In some cases, it may be preferable to silence duplicate messages (e.g., when a client cannot accept duplicate messages). The resolved timestamp provides a way of identifying which change messages you can clean up. Once you've received a `resolved` message, you can safely ignore any messages that come in with a timestamp less than that resolved timestamp.
+
+Furthermore, you can use resolved timestamps to enforce global ordering between messages by buffering records in between the timestamp closures. In this workflow, you use the  timestamp to see every row that changed at a certain time. For example, using  timestamp notifications sent to each Kafka partition to provide strong ordering and global consistency.
 
 ## Delete messages
 
