@@ -3,7 +3,7 @@ title: Partial Indexes
 summary: Partial indexes allow you to specify a subset of rows and columns to add to an index.
 toc: true
 keywords: gin, gin index, gin indexes, inverted index, inverted indexes, accelerated index, accelerated indexes
-docs_area: 
+docs_area: develop
 ---
 
  Partial indexes allow you to specify a subset of rows and columns to add to an [index](indexes.html). Partial indexes include the subset of rows in a table that evaluate to true on a boolean *predicate expression* (i.e., a `WHERE` filter) defined at [index creation](#creation).

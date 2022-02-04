@@ -3,7 +3,7 @@ title: Expression Indexes
 summary: Expression indexes apply a scalar or functional expression to one or more columns.
 toc: true
 keywords: gin, gin index, gin indexes, inverted index, inverted indexes, accelerated index, accelerated indexes
-docs_area: 
+docs_area: develop
 ---
 
 <span class="version-tag">New in v21.2</span>
