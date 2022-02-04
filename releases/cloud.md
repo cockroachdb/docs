@@ -16,6 +16,12 @@ Get future release notes emailed to you:
 As of January 12, 2021, new {{ site.data.products.dedicated }} clusters and all {{ site.data.products.serverless }} clusters are running CockroachDB [v21.2.4](v21.2.4.html).
 {{site.data.alerts.end}}
 
+## February 10, 2022
+
+<h3>General changes</h3>
+
+- {{ site.data.products.dedicated }} contract customers can now [scale clusters](../cockroachcloud/cluster-management.html) through the Console.
+
 ## January 10, 2022
 
 <h3>General changes</h3>
