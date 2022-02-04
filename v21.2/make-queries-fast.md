@@ -2,7 +2,7 @@
 title: Optimize Statement Performance
 summary: How to make your statements run faster during application development
 toc: true
-docs_area: 
+docs_area: develop 
 ---
 
 This page provides an overview for optimizing statement performance in CockroachDB. To get good performance, you need to look at how you're accessing the database through several lenses:

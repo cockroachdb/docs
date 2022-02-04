@@ -3,7 +3,7 @@ title: Develop and Deploy a Global Application
 summary: Learn how to build and deploy an application built on CockroachDB, using Flask, SQLAlchemy, CockroachDB Cloud, and Google Cloud services.
 toc: true
 redirect_from: multi-region-overview.html
-docs_area: 
+docs_area: develop 
 ---
 
 This tutorial walks you through developing and deploying a global application built on CockroachDB, using Flask, SQLAlchemy, {{ site.data.products.db }}, and [Google Cloud](https://cloud.google.com/) services.

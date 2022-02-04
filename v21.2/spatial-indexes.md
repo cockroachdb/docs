@@ -3,7 +3,7 @@ title: Spatial Indexes
 summary: How CockroachDB uses spatial indexes for efficiently storing and querying spatial data.
 toc: true
 keywords: gin, gin index, gin indexes, inverted index, inverted indexes, accelerated index, accelerated indexes
-docs_area: reference.sql
+docs_area: develop reference.sql
 ---
 
 This page describes CockroachDB's support for indexing [spatial data](spatial-data.html), including:

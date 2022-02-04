@@ -2,7 +2,7 @@
 title: MovR
 summary: The MovR application uses CockroachDB to store information about vehicles, users, and rides.
 toc: true
-docs_area: 
+docs_area: develop 
 ---
 
 MovR is a fictional vehicle-sharing company created to demonstrate CockroachDB's features.

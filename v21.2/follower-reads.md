@@ -2,7 +2,7 @@
 title: Follower Reads
 summary: To reduce latency for read queries, you can choose to have the closest replica serve the request using the follower reads feature.
 toc: true
-docs_area: 
+docs_area: develop 
 ---
 
 CockroachDB can provide faster reads in situations where you can afford to read data that is slightly stale. These stale reads (known as _follower reads_)  are available in read-only transactions that use the [`AS OF SYSTEM TIME`](as-of-system-time.html) clause.

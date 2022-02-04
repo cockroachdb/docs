@@ -3,7 +3,7 @@ title: Deploy a Global, Serverless Application
 summary: This page includes instructions for deploying a multi-region web application using CockroachDB Cloud and Google Cloud services.
 toc: true
 redirect_from: multi-region-deployment.html
-docs_area: 
+docs_area: develop 
 ---
 
 This page walks you through deploying an application and database in multiple regions. It is the fifth and final section of the [Develop and Deploy a Global Application](movr-flask-overview.html) tutorial.

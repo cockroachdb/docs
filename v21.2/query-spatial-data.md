@@ -2,7 +2,7 @@
 title: Query Spatial Data
 summary: How to query a spatial dataset imported into CockroachDB.
 toc: true
-docs_area: 
+docs_area: develop 
 ---
 
 This page has instructions for querying spatial data imported into CockroachDB. On this page, we use a sample [Shapefile dataset](spatial-glossary.html#file-formats) from the National Oceanic and Atmospheric Administration.

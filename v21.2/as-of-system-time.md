@@ -2,7 +2,7 @@
 title: AS OF SYSTEM TIME
 summary: The AS OF SYSTEM TIME clause executes a statement as of a specified time.
 toc: true
-docs_area: reference.sql 
+docs_area: develop reference.sql 
 ---
 
 The `AS OF SYSTEM TIME timestamp` clause causes statements to execute using the database contents "as of" a specified time in the past.
