@@ -2,7 +2,7 @@
 title: Licensing FAQs
 summary: Frequently asked questions about CockroachDB licensing.
 toc: true
-docs_area: 
+docs_area:
 ---
 
 Current CockroachDB code is primarily licensed in two ways:
@@ -34,14 +34,14 @@ For each BSL release all associated alpha, beta, major, and minor (point) releas
 
 ### License conversion timeline
 
-CockroachDB version | License | Converts to Apache 2.0   
+CockroachDB version | License | Converts to Apache 2.0
 --------------------|---------|----------------------------
 21.2 | Business Source License | Nov 16, 2024
 21.1 | Business Source License | May 18, 2024
 20.2 | Business Source License | Nov 10, 2023
-20.1 | Business Source License | May 12, 2023  
+20.1 | Business Source License | May 12, 2023
 19.2 | Business Source License | Oct 01, 2022
-19.1 | Apache 2.0 | -                          
+19.1 | Apache 2.0 | -
 2.1 | Apache 2.0 | -
 2.0 | Apache 2.0 | -
 
@@ -60,7 +60,7 @@ Feature          | BSL | CCL (free)      | CCL (paid)
 **[Core changefeed](create-and-configure-changefeeds.html#create-a-changefeed-core)** | | ✓ |
 **[{{ site.data.products.enterprise }} changefeed](create-and-configure-changefeeds.html#configure-a-changefeed-enterprise)** | | | ✓
 **[Table-level zone configuration](configure-replication-zones.html#replication-zone-levels)** | ✓ | |
-**[Multi-Region Capabilities](multiregion-overview.html)** | | | ✓
+**[Multi-region capabilities](multiregion-overview.html)** | | | ✓
 **[Follower reads](follower-reads.html)** | | | ✓
 **[Bounded staleness reads](follower-reads.html#bounded-staleness-reads)** | | | ✓
 **[Node map](enable-node-map.html)** | | | ✓
