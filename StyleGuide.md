@@ -371,6 +371,8 @@ To insert a warning, use the following code:
 {{site.data.alerts.end}}
 ~~~
 
+There is also a custom purple callout that uses the code `{{site.data.alerts.callout_version}}`. It is used at the top of the CockroachDB Cloud Release Notes to call attention to the latest CockroachDB version that Cloud clusters are running. It should not be used anywhere else.
+
 Each liquid tag should be on its own line. Markdown can be used within the highlighted text.
 
 ### Product names
