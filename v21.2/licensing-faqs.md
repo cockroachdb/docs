@@ -3,6 +3,7 @@ title: Licensing FAQs
 summary: Frequently asked questions about CockroachDB Enterprise and core licensing.
 toc: true
 docs_area: get_started
+---
 
 Current CockroachDB code is primarily licensed in two ways:
 
