@@ -2,7 +2,7 @@
 title: Bulk-delete Data
 summary: How to delete a large amount of data from a cluster
 toc: true
-docs_area: 
+docs_area: develop
 ---
 
 To delete a large number of rows (i.e., tens of thousands of rows or more), we recommend iteratively deleting subsets of the rows that you want to delete, until all of the unwanted rows have been deleted. You can write a script to do this, or you can write a loop into your application.

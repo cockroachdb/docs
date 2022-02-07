@@ -258,27 +258,9 @@
       ]
     },
     {
-      "title": "Debug Your Application",
-      "items":
-      [
-        {
-          "title": "Log Events",
-          "urls": [
-            "/${VERSION}/logging-overview.html"
-          ]
-        },
-        {
-          "title": "Monitor CockroachDB Apps in the DB Console",
-          "urls": [
-            "/${VERSION}/ui-overview.html"
-          ]
-        },
-        {
-          "title": "Troubleshoot Common Problems",
-          "urls": [
-            "/${VERSION}/error-handling-and-troubleshooting.html"
-          ]
-        }
+      "title": "Troubleshoot Common Problems",
+      "urls": [
+        "/${VERSION}/error-handling-and-troubleshooting.html"
       ]
     },
     {
