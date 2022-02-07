@@ -2,6 +2,7 @@
 title: CockroachDB Performance on Kubernetes
 summary: How running CockroachDB in Kubernetes affects its performance and how to get the best possible performance when running in Kubernetes.
 toc: true
+docs_area: deploy
 ---
 
 Kubernetes provides many useful abstractions for deploying and operating distributed systems, but some of the abstractions come with a performance overhead and an increase in underlying system complexity. This page explains potential bottlenecks to be aware of when [running CockroachDB in Kubernetes](orchestrate-cockroachdb-with-kubernetes.html) and shows you how to optimize your deployment for better performance.

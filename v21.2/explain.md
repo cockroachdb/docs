@@ -2,6 +2,7 @@
 title: EXPLAIN
 summary: The EXPLAIN statement provides information you can use to optimize SQL queries.
 toc: true
+docs_area: reference.sql
 ---
 
 The `EXPLAIN` [statement](sql-statements.html) returns CockroachDB's statement plan for a [preparable statement](sql-grammar.html#preparable_stmt). You can use this information to optimize the query.

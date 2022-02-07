@@ -2,6 +2,7 @@
 title: Monitor CockroachDB with Datadog
 summary: The CockroachDB integration with Datadog enables data visualization and alerting on CockroachDB metrics.
 toc: true
+docs_area: manage
 ---
 
 [Datadog](https://www.datadoghq.com/) is a monitoring and security platform for cloud applications. The CockroachDB integration with Datadog enables data collection and alerting on [CockroachDB metrics](https://docs.datadoghq.com/integrations/cockroachdb/?tab=host#data-collected) using the Datadog platform.

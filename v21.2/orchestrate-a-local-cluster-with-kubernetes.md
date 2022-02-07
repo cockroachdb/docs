@@ -6,6 +6,7 @@ secure: true
 filter_category: crdb_kubernetes
 filter_html: Secure
 filter_sort: 1
+docs_area: deploy
 ---
 
 {% include filter-tabs.md %}

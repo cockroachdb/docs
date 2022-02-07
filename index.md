@@ -6,4 +6,5 @@ layout: homepage
 homepage: true
 contribute: false
 main_homepage: true
+docs_area: home
 ---

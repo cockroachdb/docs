@@ -7,6 +7,7 @@ referral_id: docs_java_jdbc
 filter_category: crud_java
 filter_html: Use <strong>JDBC</strong>
 filter_sort: 1
+docs_area: get_started
 ---
 
 {% include filter-tabs.md %}
