@@ -1,7 +1,9 @@
 ---
 title: Upgrade to CockroachDB v21.1
 summary: Learn how to upgrade your CockroachDB cluster to v21.1.
+keywords: gin, gin index, gin indexes, inverted index, inverted indexes, accelerated index, accelerated indexes
 toc: true
+docs_area: manage
 ---
 
 Now that [CockroachDB v21.1](../releases/v21.1.0.html) is available, your [Console Admin](console-access-management.html#console-admin) can upgrade your cluster directly from the {{ site.data.products.db }} Console. This page walks through the process.
@@ -90,7 +92,7 @@ Most v21.1 features can be used right away, but there are some that will be enab
 
 - **Improved multi-region features:** After finalization, it will be possible to use new and improved [multi-region features](../v21.1/multiregion-overview.html), such as the ability to set database regions, survival goals, and table localities. Internal capabilities supporting these features, such as [non-voting replicas](../v21.1/architecture/replication-layer.html#non-voting-replicas) and [non-blocking transactions](../v21.1/architecture/transaction-layer.html#non-blocking-transactions), will be available after finalization as well.
 
-- **Empty arrays in inverted indexes:** After finalization, newly created [inverted indexes](../v21.1/inverted-indexes.html) will contain rows containing empty arrays in [`ARRAY`](../v21.1/array.html) columns, which allows the indexes to be used for more queries. Note, however, that rows containing `NULL` values in an indexed column will still not be included in inverted indexes.
+- **Empty arrays in GIN indexes:** After finalization, newly created [GIN indexes](../v21.1/inverted-indexes.html) will contain rows containing empty arrays in [`ARRAY`](../v21.1/array.html) columns, which allows the indexes to be used for more queries. Note, however, that rows containing `NULL` values in an indexed column will still not be included in GIN indexes.
 
 - **Virtual computed columns:** After finalization, it will be possible to use the `VIRTUAL` keyword to define [virtual computed columns](../v21.1/computed-columns.html).
 

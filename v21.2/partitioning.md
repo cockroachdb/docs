@@ -1,10 +1,11 @@
 ---
-title: Define Table Partitions
-summary: Partitioning is an Enterprise feature that gives you row-level control of how and where your data is stored.
+title: Table Partitioning
+summary: Partitioning gives you row-level control of how and where your data is stored.
 toc: true
+docs_area: deploy
 ---
 
-CockroachDB allows you to define table partitions, thus giving you row-level control of how and where your data is stored. Partitioning enables you to reduce latencies and costs and can assist in meeting regulatory requirements for your data.
+CockroachDB allows you to define table partitions, giving you row-level control of how and where your data is stored. Partitioning enables you to reduce latencies and costs and can assist in meeting regulatory requirements for your data.
 
 {% include enterprise-feature.md %}
 
@@ -21,10 +22,10 @@ Table partitioning helps you reduce latency and cost:
 
 Table partitioning involves a combination of CockroachDB features:
 
-- [Node Attributes](#node-attributes)
-- [Enterprise License](#enterprise-license)
-- [Table Creation](#table-creation)
-- [Replication Zones](#replication-zones)
+- [Node attributes](#node-attributes)
+- [Enterprise license](#enterprise-license)
+- [Table creation](#table-creation)
+- [Replication zones](#replication-zones)
 
 ### Node attributes
 
@@ -40,7 +41,7 @@ For more details about these flags, see the [`cockroach start`](cockroach-start.
 
 You must have a valid Enterprise license to use table partitioning features. For details about requesting and setting a trial or full Enterprise license, see [Enterprise Licensing](enterprise-licensing.html).
 
-Note that the following features do not work with an **expired license**:
+The following features do not work with an **expired license**:
 
 - Creating new table partitions or adding new zone configurations for partitions
 - Changing the partitioning scheme on any table or index
@@ -94,17 +95,17 @@ For instance, consider the database of a global online learning portal that has 
     name STRING,
     email STRING,
     country STRING,
-    expected_graduation_date DATE,   
+    expected_graduation_date DATE,
     PRIMARY KEY (country, id));
 ~~~
 
-**Primary Key Considerations**
+##### Primary key considerations
 
-- The order in which the columns are defined in the primary key is important. The partitions and subpartitions need to follow that order. In the example of the online learning portal, if you define the primary key as `(country, expected_graduation_date, id)`, the primary partition is by `country`, and then subpartition is by `expected_graduation_date`. You cannot skip `country` and partition by `expected_graduation_date`.
+The order in which the columns are defined in the primary key is important. The partitions and subpartitions need to follow that order. In the example of the online learning portal, if you define the primary key as `(country, expected_graduation_date, id)`, the primary partition is by `country`, and then subpartition is by `expected_graduation_date`. You cannot skip `country` and partition by `expected_graduation_date`.
 
-#### Partition using secondary index
+#### Partition using a secondary index
 
-The primary key discussed above has two drawbacks:
+The primary key discussed in the preceding section has two drawbacks:
 
 - It does not enforce that the identifier column is globally unique.
 - It does not provide fast lookups on the identifier.
@@ -307,7 +308,7 @@ See [Set the Trial or Enterprise License Key](licensing-faqs.html#set-a-license)
         name STRING,
         email STRING,
         country STRING,
-        expected_graduation_date DATE,   
+        expected_graduation_date DATE,
         PRIMARY KEY (country, id))
         PARTITION BY LIST (country) (
           PARTITION north_america VALUES IN ('CA','US'),
@@ -326,7 +327,7 @@ See [Set the Trial or Enterprise License Key](licensing-faqs.html#set-a-license)
         name STRING,
         email STRING,
         country STRING,
-        expected_graduation_date DATE,   
+        expected_graduation_date DATE,
         PRIMARY KEY (country, id));
     ~~~
 
@@ -339,7 +340,7 @@ See [Set the Trial or Enterprise License Key](licensing-faqs.html#set-a-license)
         PARTITION australia VALUES IN ('AU','NZ'),
         PARTITION DEFAULT VALUES IN (default)
       );
-    ~~~    
+    ~~~
 
 #### Step 5. Create and apply corresponding replication zones
 
@@ -494,9 +495,9 @@ To set the Enterprise license, see [Set the Trial or Enterprise License Key](lic
 > CREATE TABLE students_by_range (
    id INT DEFAULT unique_rowid(),
    name STRING,
-   email STRING,                                                                                           
+   email STRING,
    country STRING,
-   expected_graduation_date DATE,                                                                                      
+   expected_graduation_date DATE,
    PRIMARY KEY (expected_graduation_date, id))
    PARTITION BY RANGE (expected_graduation_date)
       (PARTITION graduated VALUES FROM (MINVALUE) TO ('2017-08-15'),
@@ -536,7 +537,7 @@ You should see the following output:
 (2 rows)
 ~~~
 
-### Define subpartitions on a Table
+### Define subpartitions on a table
 
 A list partition can itself be partitioned, forming a subpartition. There is no limit on the number of levels of subpartitioning; that is, list partitions can be infinitely nested.
 
@@ -670,7 +671,7 @@ You should see the following output:
 Time: 11.586626ms
 ~~~
 
-### Repartition a Table
+### Repartition a table
 
 Consider the partitioned table of students of RoachLearn. Suppose the table has been partitioned on range to store the current students on fast and expensive storage devices (example: SSD) and store the data of the graduated students on slower, cheaper storage devices(example: HDD). Now suppose we want to change the date after which the students will be considered current to `2018-08-15`. We can achieve this by using the [`PARTITION BY`](partition-by.html) subcommand of the [`ALTER TABLE`](alter-table.html) command.
 
@@ -681,7 +682,7 @@ Consider the partitioned table of students of RoachLearn. Suppose the table has 
     PARTITION current VALUES FROM ('2018-08-15') TO (MAXVALUE));
 ~~~
 
-### Unpartition a Table
+### Unpartition a table
 
 You can remove the partitions on a table by using the [`PARTITION BY NOTHING`](partition-by.html) syntax:
 
@@ -713,8 +714,6 @@ Other databases use partitioning for three additional use cases: secondary index
 ## Known limitations
 
 - {% include {{ page.version.version }}/known-limitations/partitioning-with-placeholders.md %}
-
-- CockroachDB does not support partitioning [inverted indexes](inverted-indexes.html), including [spatial indexes](spatial-indexes.html). See [tracking issue](https://github.com/cockroachdb/cockroach/issues/43643).
 
 ## See also
 

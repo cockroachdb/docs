@@ -3,6 +3,7 @@ title: ST_Contains
 summary: ST_Contains(A, B) returns true if no point in shape B lies outside of shape A, and at least one point in the interior of B lies in the interior of A.
 toc: true
 has_prefixed_variant: true
+docs_area: reference.sql
 ---
 
 Given two shapes _A_ and _B_, the predicate function `ST_Contains(A, B)` returns `true` if:

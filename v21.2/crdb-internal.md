@@ -2,6 +2,7 @@
 title: crdb_internal
 summary: The crdb_internal schema contains read-only views that you can use for introspection into CockroachDB internals.
 toc: true
+docs_area: reference.sql
 ---
 
 The `crdb_internal` [system catalog](system-catalogs.html) is a schema that contains information about internal objects, processes, and metrics related to a specific database.

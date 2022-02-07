@@ -4,6 +4,7 @@ summary: Learn how to use CockroachDB from a Hello World Java application.
 toc: true
 twitter: false
 referral_id: docs_hello_world_java_jdbc
+docs_area: get_started
 ---
 
 This tutorial shows you how build a simple Hello World Java application with CockroachDB and the [JDBC](https://jdbc.postgresql.org/) driver.
@@ -102,4 +103,3 @@ Hey! You successfully connected to your CockroachDB cluster.
 - [Build a Simple CRUD Java App with CockroachDB](build-a-java-app-with-cockroachdb.html)
 
 {% include {{page.version.version}}/app/see-also-links.md %}
-

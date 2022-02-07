@@ -2,6 +2,7 @@
 title: Overview Dashboard
 summary: The Overview dashboard lets you monitor important SQL performance, replication, and storage metrics.
 toc: true
+docs_area: reference.db_console
 ---
 
 The **Overview** dashboard lets you monitor important SQL performance, replication, and storage metrics.
@@ -55,6 +56,8 @@ Metric | Description
 **Capacity** | The maximum store size. This value may be set per node using [`--store`](cockroach-start.html#store). If a store size has not been set, this metric displays the actual disk capacity. See [Capacity metrics](#capacity-metrics).
 **Available** | The free disk space available to CockroachDB data.
 **Used** | The disk space in use by CockroachDB data. This excludes the Cockroach binary, operating system, and other system files.
+
+{% include {{ page.version.version }}/prod-deployment/healthy-storage-capacity.md %}
 
 ### Capacity metrics
 

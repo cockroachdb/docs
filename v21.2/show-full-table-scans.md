@@ -2,6 +2,7 @@
 title: SHOW FULL TABLE SCANS
 summary: The SHOW FULL TABLE SCANS statement lists recent queries that used a full table scan.
 toc: true
+docs_area: reference.sql
 ---
 
  The `SHOW FULL TABLE SCANS` [statement](sql-statements.html) lists recent queries for which CockroachDB performed a full table scan during query execution.

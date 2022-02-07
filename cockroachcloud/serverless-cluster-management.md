@@ -5,6 +5,7 @@ toc: true
 filter_category: cluster_mgmt
 filter_html: CockroachDB Serverless (beta)
 filter_sort: 1
+docs_area: manage
 ---
 
 {% include filter-tabs.md %}

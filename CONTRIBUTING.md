@@ -168,6 +168,8 @@ Field | Description | Default
 `no_sidebar` | If `true`, removes the sidebar from a page. See [Sidebar](#sidebar) for more details. | Nothing
 `block_search` | If `true`, adds meta tags to the header that excludes the page from search indexing/caching. | Nothing
 `back_to_top` | If `true`, adds a back-to-top button to the page. This is only helpful in cases where the page is very long and there is no page toc, e.g., the Full SQL Grammar page.
+`docs_area` | For page analytics. Set this to the main sidenav area where the page is found, e.g., `get_started`, `develop`, `deploy`, `manage`, `migrate`, `stream_data`, `reference`, `releases`. For `reference`, also indicate the subsection, e.g., `reference.sql`, `reference.cli`, `reference.api`. These values will likely change over time. | Nothing
+`product_area` | For page analytics. Set this to the Product Area primary responsible for the page. This field is currently not used, pending team discussion.
 
 #### Page TOC
 

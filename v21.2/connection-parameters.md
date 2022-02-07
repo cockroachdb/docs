@@ -2,6 +2,7 @@
 title: Client Connection Parameters
 summary: This page describes the parameters used to establish a client connection.
 toc: true
+docs_area: reference.cli
 ---
 
 Client applications, including [`cockroach` client

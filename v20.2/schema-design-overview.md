@@ -2,6 +2,7 @@
 title: Database Schemas
 summary: An overview of the objects that make up a logical schema
 toc: true
+keywords: gin, gin index, gin indexes, inverted index, inverted indexes, accelerated index, accelerated indexes
 ---
 
 This page provides an overview of database schemas in CockroachDB.
@@ -113,7 +114,7 @@ The following table lists specific limits imposed by CockroachDB.
 | ------ | ----- | -------- |
 | Role names | 63 bytes | Other [restrictions](create-role.html#role-name-limitations) apply. |
 | User names | 63 bytes | These are [equivalent](create-user.html) to role names. |
-| Identifier length | 128 bytes | This limit is specified in the `max_identifier_length` variable for compatibility with other databases, but is not currently enforced. It may be enforced in future versions of CockroachDB, so we recommended remaining within this limit. | 
+| Identifier length | 128 bytes | This limit is specified in the `max_identifier_length` variable for compatibility with other databases, but is not currently enforced. It may be enforced in future versions of CockroachDB, so we recommended remaining within this limit. |
 
 ### Quantity of tables and other schema objects
 
@@ -121,7 +122,7 @@ CockroachDB has been shown to perform well with clusters containing 2,500 tables
 
 As you scale to a large number of tables, note that:
 
-- The amount of RAM per node is the limiting factor for the number of tables and other schema objects the cluster can support. This includes columns, indexes, inverted indexes, constraints, and partitions. Increasing RAM is likely to have the greatest impact on the number of these objects that a cluster can support, while increasing the number of nodes will not have a substantial effect.
+- The amount of RAM per node is the limiting factor for the number of tables and other schema objects the cluster can support. This includes columns, indexes, GIN indexes, constraints, and partitions. Increasing RAM is likely to have the greatest impact on the number of these objects that a cluster can support, while increasing the number of nodes will not have a substantial effect.
 - The number of databases or schemas on the cluster has minimal impact on the total number of tables that it can support.
 
 See the [Hardware](recommended-production-settings.html#hardware) section for additional recommendations based on your expected workloads.

@@ -7,6 +7,7 @@ key: performance-benchmarking-with-tpc-c-100k-warehouses.html
 filter_category: perf_bench_tpc-c
 filter_html: Large
 filter_sort: 5
+docs_area: manage
 ---
 
 This page shows you how to reproduce [CockroachDB's TPC-C performance benchmarking results](performance.html#scale). Across all scales, CockroachDB can process tpmC (new order transactions per minute) at near maximum efficiency. Start by choosing the scale you're interested in:
@@ -487,4 +488,4 @@ $(cat addrs)
 
 - Performance Tuning
 
-    For guidance on tuning a real workload's performance, see [SQL Best Practices](performance-best-practices-overview.html), and for guidance on techniques to minimize network latency in multi-region or global clusters, see [Multi-Region Overview](multiregion-overview.html).
+    For guidance on tuning a real workload's performance, see [SQL Best Practices](performance-best-practices-overview.html), and for guidance on techniques to minimize network latency in multi-region or global clusters, see [Multi-Region Capabilities Overview](multiregion-overview.html).

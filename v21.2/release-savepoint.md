@@ -2,6 +2,7 @@
 title: RELEASE SAVEPOINT
 summary: The RELEASE SAVEPOINT statement commits the nested transaction starting at the corresponding SAVEPOINT statement using the same savepoint name.
 toc: true
+docs_area: reference.sql
 ---
 
  The `RELEASE SAVEPOINT` statement commits the [nested transaction](transactions.html#nested-transactions) starting at the corresponding `SAVEPOINT` statement using the same savepoint name, including all its nested sub-transactions.  This is in addition to continued support for working with [retry savepoints](savepoint.html#savepoints-for-client-side-transaction-retries).

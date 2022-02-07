@@ -2,6 +2,7 @@
 title: SHOW PARTITIONS
 summary: Use the SHOW PARTITIONS statement to list details about existing partitions.
 toc: true
+docs_area: reference.sql
 ---
 
 Use the `SHOW PARTITIONS` [statement](sql-statements.html) to view details about existing [partitions](partitioning.html).
@@ -236,4 +237,4 @@ If a partitioned table has no zones configured, the `SHOW CREATE TABLE` output i
 
 - [Define Table Partitions](partitioning.html)
 - [SQL Statements](sql-statements.html)
-- [Multi-Region Performance](demo-low-latency-multi-region-deployment.html)
+- [Low Latency Reads and Writes in a Multi-Region Cluster](demo-low-latency-multi-region-deployment.html)
