@@ -1,6 +1,6 @@
 ---
 title: Licensing FAQs
-summary: Frequently asked questions about CockroachDB licensing.
+summary: Frequently asked questions about CockroachDB Enterprise and core licensing.
 toc: true
 docs_area: get_started
 
