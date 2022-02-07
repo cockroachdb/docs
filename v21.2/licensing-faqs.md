@@ -5,7 +5,7 @@ toc: true
 docs_area: get_started
 ---
 
-Current CockroachDB code is primarily licensed in two ways:
+CockroachDB code is primarily licensed in two ways:
 
 -  [Business Source License (BSL)](#bsl)
 -  [Cockroach Community License (CCL)](#ccl)
