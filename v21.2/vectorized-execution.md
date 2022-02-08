@@ -9,7 +9,7 @@ CockroachDB supports [column-oriented](https://en.wikipedia.org/wiki/Column-orie
 
 Many SQL databases execute [query plans](https://en.wikipedia.org/wiki/Query_plan) one row of table data at a time. Row-oriented execution models can offer good performance for [online transaction processing (OLTP)](https://en.wikipedia.org/wiki/Online_transaction_processing) queries, but suboptimal performance for [online analytical processing (OLAP)](https://en.wikipedia.org/wiki/Online_analytical_processing) queries. The CockroachDB vectorized execution engine dramatically improves performance over [row-oriented execution](https://en.wikipedia.org/wiki/Column-oriented_DBMS#Row-oriented_systems) by processing each component of a query plan on type-specific batches of column data.
 
-## Configuring vectorized execution
+## Configure vectorized execution
 
 By default, vectorized execution is enabled in CockroachDB.
 
@@ -26,7 +26,7 @@ For information about setting session variables, see [`SET` &lt;session variable
 To see if CockroachDB will use the vectorized execution engine for a query, run a simple [`EXPLAIN`](explain.html) statement on the query. If `vectorize` is `true`, the query will be executed with the vectorized engine. If it is `false`, the row-oriented execution engine is used instead.
 {{site.data.alerts.end}}
 
-### Setting the row threshold for vectorized execution
+### Set the row threshold for vectorized execution
 
 The efficiency of vectorized execution increases with the number of rows processed. If you are querying a table with a small number of rows, it is more efficient to use row-oriented execution.
 
