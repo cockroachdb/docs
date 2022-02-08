@@ -25,7 +25,7 @@ A locality-aware backup is specified by a list of URIs, each of which has a `COC
 The locality query string parameters must be [URL-encoded](https://en.wikipedia.org/wiki/Percent-encoding).
 {{site.data.alerts.end}}
 
-During locality-aware backups, backup file placement is determined by [leaseholder](replication-layer.html#leases) placement, as each node is responsible for backing up the ranges for which it is the leaseholder. Nodes write files to the backup storage location whose locality matches their own node localities, with a preference for more specific values in the locality hierarchy. If there is no match, the `default` locality is used.
+During locality-aware backups, backup file placement is determined by [leaseholder](architecture/replication-layer.html#leases) placement, as each node is responsible for backing up the ranges for which it is the leaseholder. Nodes write files to the backup storage location whose locality matches their own node localities, with a preference for more specific values in the locality hierarchy. If there is no match, the `default` locality is used.
 
 ## Create a locality-aware backup
 
@@ -54,7 +54,7 @@ For guidance on connecting to other storage options or using other authenticatio
 
 ## Show a node's locality
 
-To determine the locality that a node was started with, run [`SHOW LOCALITY`](show-locality):
+To determine the locality that a node was started with, run [`SHOW LOCALITY`](show-locality.html):
 
 {% include_cached copy-clipboard.html %}
 ~~~sql
