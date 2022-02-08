@@ -580,8 +580,6 @@ WHERE metadata @> '{"db":"movr"}' AND (metadata @> '{"stmtTyp":"TypeDDL"}' OR me
 
 ### `transaction_statistics`
 
-For information
-
 Column | Type | Description
 ------------|-----|------------
 `aggregated_ts` | `TIMESTAMPTZ` | The time that statistics aggregation started.
