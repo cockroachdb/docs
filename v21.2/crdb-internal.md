@@ -390,7 +390,7 @@ Column | Type | Description
 `sampled_plan` | `JSONB NOT NULL` | The sampled query plan of the current statement statistics. This column is unfilled if there is no sampled query plan.
 `aggregation_interval` | `INTERVAL NOT NULL` | The interval over which statistics are aggregated.
 
-### `metadata` column
+#### `metadata` column
 
 Field | Type | Description
 ------------|-----|------------
@@ -404,12 +404,13 @@ Field | Type | Description
 `stmtTyp` | `SQLType` | The type of statement: `TypeDDL`, `TypeDML`, `TypeDCL`, or `TypeTCL`.
 `vec` | `BOOLEAN` | Whether the statement executed in the vectorized query engine.
 
-### `statistics` column
+#### `statistics` column
 
-`execution_statistics` are the execution statistics sent to the DB Console for a statement fingerprint.
-`statistics` are the statement statistics sent to the DB Console for a statement fingerprint.
+The [DB Console](ui-overview.html) [Statements](ui-statements-page.html) and [Statement Details](ui-statements-page.html#statement-details-page) pages display information from `statistics`.
 
-The `NumericStat` type tracks two running values: the running mean `mean` and the running sum of squared differences `sqDiff` from the mean. Using these along with the total count of values, CockroachDB computes the variance using Welford's method.
+The `statistics` column contains a JSONB object with `statistics` and `execution_statistics` subobjects. [`statistics`](ui-statements-page.html#statement-statistics) are always populated and are updated each time a new statement of that statement fingerprint is executed. [`execution_statistics`](ui-statements-page.html#execution-stats) are collected using sampling. CockroachDB probablistically runs a query with tracing enabled to collect fine-grained statistics of the query execution.
+
+The `NumericStat` type tracks two running values: the running mean `mean` and the running sum of squared differences `sqDiff` from the mean. You can use these statistics along with the total number of values to compute the variance using Welford's method. CockroachDB computes the variance and displays it along with `mean` in the [Statements table](ui-statements-page.html#statements-table).
 
 Field | Type | Description
 ------------|-----|------------
@@ -578,6 +579,8 @@ WHERE metadata @> '{"db":"movr"}' AND (metadata @> '{"stmtTyp":"TypeDDL"}' OR me
 ~~~
 
 ### `transaction_statistics`
+
+For information
 
 Column | Type | Description
 ------------|-----|------------
