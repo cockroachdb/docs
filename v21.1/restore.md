@@ -24,6 +24,7 @@ You can restore:
 
 - [Full cluster restores](#full-cluster) can only be run by members of the [`ADMIN` role](authorization.html#admin-role). By default, the `root` user belongs to the `admin` role.
 - For all other restores, the user must have [write access](authorization.html#assign-privileges) (`CREATE` or `INSERT`) on all objects affected.
+- [Zone configurations](configure-zone.html) present on the destination cluster prior to a restore will be **overwritten** during a [cluster restore](#full-cluster) with the zone configurations from the [backed up cluster](backup.html#backup-a-cluster). If there were no customized zone configurations on the cluster when the backup was taken, then the restore will inherit zone configurations from the [`RANGE DEFAULT` configuration](configure-zone.html#view-the-default-replication-zone).
 
 ### Source privileges
 

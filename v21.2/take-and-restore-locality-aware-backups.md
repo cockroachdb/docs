@@ -7,7 +7,7 @@ docs_area: manage
 
 The ability to [backup a full cluster](backup.html#backup-a-cluster) has been added and the syntax for [incremental backups](backup.html#create-incremental-backups) is simplified. Because of these two changes, [basic backup usage](take-full-and-incremental-backups.html) is now sufficient for most CockroachDB clusters. However, you may want to control your backup and restore options more explicitly.
 
-This doc provides information about how to take and restore locality-aware backups.
+This page provides information about how to take and restore locality-aware backups.
 
 {{site.data.alerts.callout_info}}
 Locality-aware [`BACKUP`](backup.html) is an [Enterprise-only](https://www.cockroachlabs.com/product/cockroachdb/) feature. However, you can take [full backups](take-full-and-incremental-backups.html) without an Enterprise license.
@@ -26,29 +26,53 @@ A locality-aware backup is specified by a list of URIs, each of which has a `COC
 The locality query string parameters must be [URL-encoded](https://en.wikipedia.org/wiki/Percent-encoding).
 {{site.data.alerts.end}}
 
-During locality-aware backups, backup file placement is determined by leaseholder placement, as each node is responsible for backing up the ranges for which it is the leaseholder.  Nodes write files to the backup storage location whose locality matches their own node localities, with a preference for more specific values in the locality hierarchy.  If there is no match, the `default` locality is used.
+During locality-aware backups, backup file placement is determined by [leaseholder](replication-layer.html#leases) placement, as each node is responsible for backing up the ranges for which it is the leaseholder. Nodes write files to the backup storage location whose locality matches their own node localities, with a preference for more specific values in the locality hierarchy. If there is no match, the `default` locality is used.
 
 ## Create a locality-aware backup
 
-For example, to create a locality-aware backup where nodes with the locality `region=us-west` write backup files to `s3://us-west-bucket`, and all other nodes write to `s3://us-east-bucket` by default, run:
+To create a locality-aware backup where nodes with the locality `region=us-west` write backup files to `s3://us-west-bucket`, and all other nodes write to `s3://us-east-bucket` by default, run:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP INTO
 	  ('s3://us-east-bucket?COCKROACH_LOCALITY=default', 's3://us-west-bucket?COCKROACH_LOCALITY=region%3Dus-west');
 ~~~
 
-can be restored by running:
+This backup can be restored by running:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > RESTORE FROM ('s3://us-east-bucket', 's3://us-west-bucket');
 ~~~
 
 Note that the first URI in the list has to be the URI specified as the `default` URI when the backup was created. If you have moved your backups to a different location since the backup was originally taken, the first URI must be the new location of the files originally written to the `default` location.
 
+See [Show a node's locality](#show-a-nodes-locality) for guidance on identifying a node's locality to pass in a backup query.
+
 {{site.data.alerts.callout_info}}
 For guidance on connecting to other storage options or using other authentication parameters, read [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html).
+{{site.data.alerts.end}}
+
+## Show a node's locality
+
+To determine the locality that a node was started with, run [`SHOW LOCALITY`](show-locality):
+
+{% include_cached copy-clipboard.html %}
+~~~sql
+SHOW LOCALITY;
+~~~
+
+~~~
+	locality
++---------------------+
+region=us-east,az=az1
+(1 row)
+~~~
+
+The output shows the locality to which the node will write backup data. One of the single locality key-value pairs can be passed to `BACKUP` with the `COCKROACH_LOCALITY` parameter—for example, `'s3://us-east-bucket?COCKROACH_LOCALITY=region%3Dus-east'`.
+
+{{site.data.alerts.callout_info}}
+Specifying both locality tier pairs (e.g., `region=east,az=az1`) from the output will cause the backup query to fail with: `tier must be in the form "key=value"`.
 {{site.data.alerts.end}}
 
 ## Restore from a locality-aware backup
@@ -68,19 +92,19 @@ When restoring a [full backup](take-full-and-incremental-backups.html#full-backu
 		CONFIGURE ZONE USING constraints = '[+region=us-west1]';
 ~~~
 
-And the restored cluster does not have [nodes with the locality](partitioning.html#node-attributes) `region=us-west1`, the restored cluster will still have a zone configuration for `us-west1`. This means that the cluster's data will _not_ be reshuffled to `us-west1` because the region does not exist. The data will be distributed as if the zone configuration does not exist. For the data to be distributed correctly, you can [add node(s)](cockroach-start.html) with the missing region or [remove the zone configuration](configure-zone.html#remove-a-replication-zone).
+And the restored cluster does not have [nodes with the locality](partitioning.html#node-attributes) `region=us-west1`, the restored cluster will still have a zone configuration for `us-west1`. This means that the cluster's data will **not** be reshuffled to `us-west1` because the region does not exist. The data will be distributed as if the zone configuration does not exist. For the data to be distributed correctly, you can [add node(s)](cockroach-start.html) with the missing region or [remove the zone configuration](configure-zone.html#remove-a-replication-zone).
 
 For example, a locality-aware backup created with:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP INTO
 	  ('s3://us-east-bucket?COCKROACH_LOCALITY=default', 's3://us-west-bucket?COCKROACH_LOCALITY=region%3Dus-west')
 ~~~
 
-The backup above can be restored by running:
+This backup can be restored by running:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > RESTORE FROM
   	('s3://us-east-bucket/{path/to/backup/subdirectory}', 's3://us-west-bucket/{path/to/backup/subdirectory}');
@@ -96,7 +120,7 @@ To view the available subdirectories, use [`SHOW BACKUPS`](restore.html#view-the
 
 If you backup to a destination already containing a [full backup](take-full-and-incremental-backups.html#full-backups), an [incremental backup](take-full-and-incremental-backups.html#incremental-backups) will be appended to the full backup in a subdirectory. For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP INTO LATEST IN
 	  ('s3://us-east-bucket?COCKROACH_LOCALITY=default', 's3://us-west-bucket?COCKROACH_LOCALITY=region%3Dus-west');
@@ -110,7 +134,7 @@ It is recommended that the same localities be included for every incremental bac
 
 And if you want to explicitly control where your incremental backups go, specify the subdirectory in the `BACKUP` statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP INTO {subdirectory} IN
 		('s3://us-east-bucket?COCKROACH_LOCALITY=default', 's3://us-west-bucket?COCKROACH_LOCALITY=region%3Dus-west');
@@ -122,9 +146,9 @@ To view the available subdirectories, use [`SHOW BACKUPS`](restore.html#view-the
 
 A locality-aware backup URI can also be used in place of any incremental backup URI in [`RESTORE`](restore.html).
 
-For example, an incremental locality-aware backup created with
+For example, an incremental locality-aware backup created with:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP INTO LATEST IN
 	  ('s3://us-east-bucket?COCKROACH_LOCALITY=default', 's3://us-west-bucket?COCKROACH_LOCALITY=region%3Dus-west')
@@ -132,7 +156,7 @@ For example, an incremental locality-aware backup created with
 
 can be restored by running:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > RESTORE FROM
   	('s3://us-east-bucket/{path/to/backup/subdirectory}', 's3://us-west-bucket/{path/to/backup/subdirectory}');
@@ -150,14 +174,14 @@ During a [locality-aware restore](#restore-from-a-locality-aware-backup), some d
 
 Once the locality-aware restore has started, [pause the restore](pause-job.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > PAUSE JOB 27536791415282;
 ~~~
 
 The `system.zones` table stores your cluster's [zone configurations](configure-replication-zones.html), which will prevent the data from rebalancing. To restore them, you must restore the `system.zones` table into a new database because you cannot drop the existing `system.zones` table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > RESTORE TABLE system.zones \
 FROM 'azure://acme-co-backup?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co' \
@@ -166,21 +190,21 @@ WITH into_db = 'newdb';
 
 After it's restored into a new database, you can write the restored `zones` table data to the cluster's existing `system.zones` table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO system.zones SELECT * FROM newdb.zones;
 ~~~
 
 Then drop the temporary table you created:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP TABLE newdb.zones;
 ~~~
 
 Then, [resume the restore](resume-job.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > RESUME JOB 27536791415282;
 ~~~
