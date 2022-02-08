@@ -2,7 +2,7 @@
 title: Error Handling and Troubleshooting
 summary: How to troubleshoot problems and handle transaction retry errors during application development
 toc: true
-docs_area: 
+docs_area: develop
 ---
 
 This page has instructions for handling errors and troubleshooting problems that may arise during application development.
