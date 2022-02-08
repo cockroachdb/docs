@@ -17,7 +17,7 @@ You can configure vectorized execution with the `vectorize` [session variable](s
 
 Option    | Description
 ----------|------------
-`on`   | Turns on vectorized execution for all queries on rows over the [`vectorize_row_count_threshold`](#setting-the-row-threshold-for-vectorized-execution) (0 rows, by default, meaning all queries will use the vectorized engine).<br><br>**Default:** `vectorize=on`
+`on`   | Turns on vectorized execution for all queries on rows over the [`vectorize_row_count_threshold`](#set-the-row-threshold-for-vectorized-execution) (0 rows, by default, meaning all queries will use the vectorized engine).<br><br>**Default:** `vectorize=on`
 `off`  | Turns off vectorized execution for all queries.
 
 For information about setting session variables, see [`SET` &lt;session variable&gt;](set-vars.html).
