@@ -55,9 +55,11 @@ If you used a {{ site.data.products.dedicated }} trial code while [creating a cl
 Your credit card will be charged after the trial ends.
 {{site.data.alerts.end}}
 
+{% comment %}
 ## View credits balance
 
 If your organization has an annual contract with {{ site.data.products.db }}, the **Overview** tab of the **Billing** page will display your contract amount and the renewal date. Under the **Spend** section, you can also see how many credits your organization has used out of your total contract amount.
+{% endcomment %}
 
 ## View invoices
 
