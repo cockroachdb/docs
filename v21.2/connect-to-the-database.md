@@ -2,6 +2,7 @@
 title: Connect to a CockroachDB Cluster
 summary: How to connect to a CockroachDB cluster from your application
 toc: true
+docs_area: develop
 ---
 
 This page documents the required connection configuration for [fully-supported third-party tools](third-party-database-tools.html).
@@ -54,10 +55,7 @@ For example:
 ~~~ js
 const { Client } = require('pg')
 
-const connectionString = process.env.DATABASE_URL
-const client = new Client({
-  connectionString,
-})
+const client = new Client(process.env.DATABASE_URL)
 
 client.connect()
 ~~~

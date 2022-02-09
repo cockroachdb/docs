@@ -1,6 +1,6 @@
 ### Setup
 
-Only [cluster regions](multiregion-overview.html#cluster-regions) specified [at node startup](cockroach-start.html#locality) can be used as [database regions](multiregion-overview.html#database-regions).
+Only a [cluster region](multiregion-overview.html#cluster-regions) specified [at node startup](cockroach-start.html#locality) can be used as a [database region](multiregion-overview.html#database-regions).
 
 To follow along with the examples below, start a [demo cluster](cockroach-demo.html) with the [`--global` flag](cockroach-demo.html#general) to simulate a multi-region cluster:
 

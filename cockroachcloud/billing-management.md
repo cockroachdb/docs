@@ -2,6 +2,7 @@
 title: Billing Management
 summary: Manage billing for your organization
 toc: true
+docs_area: 
 ---
 
 The **Billing** page contains an overview of your charges and the payment details on file for your {{ site.data.products.db }} organization. To view the **Billing** page, [log in](https://cockroachlabs.cloud/) and click **Billing**.

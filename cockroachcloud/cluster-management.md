@@ -5,6 +5,7 @@ toc: true
 filter_category: cluster_mgmt
 filter_html: CockroachDB Dedicated
 filter_sort: 2
+docs_area: manage
 ---
 
 {% include filter-tabs.md %}

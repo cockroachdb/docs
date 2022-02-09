@@ -1,10 +1,11 @@
 ---
 title: Global Tables
-summary: Guidance on using Global Tables in a multi-region deployment.
+summary: Guidance on using global table locality in a multi-region deployment.
 toc: true
+docs_area: deploy
 ---
 
-In a [multi-region deployment](multiregion-overview.html), the [`GLOBAL` table locality](multiregion-overview.html#global-tables) is a good choice for tables with the following requirements:
+In a [multi-region deployment](multiregion-overview.html), [`GLOBAL` table locality](multiregion-overview.html#global-tables) is a good choice for tables with the following requirements:
 
 - Read latency must be low, but write latency can be much higher.
 - Reads must be up-to-date for business reasons or because the table is referenced by [foreign keys](foreign-key.html).
@@ -18,11 +19,9 @@ Tables with the `GLOBAL` locality can survive zone or region failures, depending
 {% include {{page.version.version}}/misc/multiregion-max-offset.md %}
 {{site.data.alerts.end}}
 
-{{site.data.alerts.callout_info}}
-`GLOBAL` tables (and the other [multi-region capabilities](multiregion-overview.html)) require an [Enterprise license](https://www.cockroachlabs.com/get-cockroachdb).
-{{site.data.alerts.end}}
-
 ## Prerequisites
+
+{% include enterprise-feature.md %}
 
 ### Fundamentals
 
@@ -83,7 +82,7 @@ Writes incur higher latencies than reads, since they require a "commit-wait" ste
 
 Because the `test` database does not specify a [survival goal](multiregion-overview.html#survival-goals), it uses the default [`ZONE` survival goal](multiregion-overview.html#surviving-zone-failures). With the default settings, an entire zone can fail without interrupting access to the database.
 
-For more information about how to choose a database survival goal, see [When to use `ZONE` vs. `REGION` survival goals](when-to-use-zone-vs-region-survival-goals.html).
+For more information about how to choose a database survival goal, see [When to Use `ZONE` vs. `REGION` Survival Goals](when-to-use-zone-vs-region-survival-goals.html).
 
 ## Alternatives
 

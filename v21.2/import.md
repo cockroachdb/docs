@@ -2,6 +2,8 @@
 title: IMPORT
 summary: The IMPORT statement imports various types of data into CockroachDB.
 toc: true
+keywords: gin, gin index, gin indexes, inverted index, inverted indexes, accelerated index, accelerated indexes
+docs_area: reference.sql
 ---
 
 The `IMPORT` [statement](sql-statements.html) imports the following types of data into CockroachDB:
@@ -144,7 +146,7 @@ Your `IMPORT` statement must reference a `CREATE TABLE` statement representing t
 
 - **Recommended**: Since `IMPORT TABLE` will be deprecated from v21.2, use [`CREATE TABLE`](create-table.html) followed by [`IMPORT INTO`](import-into.html). For an example, see [Import into a new table from a CSV file](import-into.html#import-into-a-new-table-from-a-csv-file).
 
-We also recommend [specifying all secondary indexes you want to use in the `CREATE TABLE` statement](create-table.html#create-a-table-with-secondary-and-inverted-indexes). It is possible to [add secondary indexes later](create-index.html), but it is significantly faster to specify them during import.
+We also recommend [specifying all secondary indexes you want to use in the `CREATE TABLE` statement](create-table.html#create-a-table-with-secondary-and-gin-indexes). It is possible to [add secondary indexes later](create-index.html), but it is significantly faster to specify them during import.
 
 {{site.data.alerts.callout_info}}
  `IMPORT` supports [computed columns](computed-columns.html) for Avro and Postgres dump files only. To import CSV data to a table with a computed column or `DEFAULT` expression, use [`IMPORT INTO`](import-into.html).
@@ -669,7 +671,6 @@ WITH
 
 The examples below use CSV data, but `row_limit` is also an option for [Avro files](migrate-from-avro.html#step-3-import-the-avro), [delimited data files](#import-a-delimited-data-file), [Postgres dump files](migrate-from-postgres.html#row-limit), and [MySQL dump files](migrate-from-mysql.html#row-limit).
 
-
 {% include copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers (
@@ -798,7 +799,6 @@ If you want to escape special symbols, use `fields_escaped_by`.
 
 ### Import a table from a delimited data file
 
-
 {% include copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE employees
@@ -843,7 +843,6 @@ For more information about importing data from Avro, including examples, see [Mi
  The `DETACHED` option allows an import to be run asynchronously, returning the job ID immediately once initiated. You can run imports within transactions by specifying the `DETACHED` option.
 
 The following transactions use CSV data as an example. To use the `DETACHED` option with `IMPORT` in a transaction:
-
 
 {% include copy-clipboard.html %}
 ~~~ sql

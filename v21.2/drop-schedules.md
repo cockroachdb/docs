@@ -2,6 +2,7 @@
 title: DROP SCHEDULES
 summary: The DROP SCHEDULES statement lets you remove specified backup schedules.
 toc: true
+docs_area: reference.sql
 ---
 
  The `DROP SCHEDULES` [statement](sql-statements.html) can be used to remove [backup schedules](create-schedule-for-backup.html).

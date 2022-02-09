@@ -2,6 +2,7 @@
 title: EXPORT
 summary: Export tabular data from a CockroachDB cluster in CSV format.
 toc: true
+docs_area: reference.sql
 ---
 
 The `EXPORT` [statement](sql-statements.html) exports tabular data or the results of arbitrary `SELECT` statements to CSV files.

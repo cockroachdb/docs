@@ -2,6 +2,7 @@
 title: SHOW ROLES
 summary: The SHOW ROLES statement lists the roles for all databases.
 toc: true
+docs_area: reference.sql
 ---
 
 The `SHOW ROLES` [statement](sql-statements.html) lists the roles for all databases.

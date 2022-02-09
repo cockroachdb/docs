@@ -7,6 +7,7 @@ referral_id: docs_hello_world_go_pgx
 filter_category: hello_world_go
 filter_html: Use <strong>pgx</strong>
 filter_sort: 1
+docs_area: get_started
 ---
 
 {% include filter-tabs.md %}

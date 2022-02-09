@@ -2,6 +2,7 @@
 title: EXPERIMENTAL CHANGEFEED FOR
 summary: which streams row-level changes to the client indefinitely until the underlying connection is closed or the changefeed is canceled.
 toc: true
+docs_area: reference.sql
 ---
 
 {{site.data.alerts.callout_info}}
@@ -12,7 +13,7 @@ The `EXPERIMENTAL CHANGEFEED FOR` [statement](sql-statements.html) creates a new
 
 {% include {{ page.version.version }}/cdc/core-url.md %}
 
-For more information, see [Stream Data Out of CockroachDB Using Changefeeds](stream-data-out-of-cockroachdb-using-changefeeds.html).
+For more information, see [Stream Data Out of CockroachDB Using Changefeeds](change-data-capture-overview.html).
 
 {% include common/experimental-warning.md %}
 
@@ -26,7 +27,7 @@ Changefeeds can only be created by superusers, i.e., [members of the `admin` rol
 
     This cancellation behavior (i.e., close the underlying connection to cancel the changefeed) also extends to client driver usage; in particular, when a client driver calls `Rows.Close()` after encountering errors for a stream of rows. The pgwire protocol requires that the rows be consumed before the connection is again usable, but in the case of a core changefeed, the rows are never consumed. It is therefore critical that you close the connection, otherwise the application will be blocked forever on `Rows.Close()`.
 
-- In most cases, each version of a row will be emitted once. However, some infrequent conditions (e.g., node failures, network partitions) will cause them to be repeated. This gives our changefeeds an at-least-once delivery guarantee. For more information, see [Change Data Capture - Ordering Guarantees](stream-data-out-of-cockroachdb-using-changefeeds.html#ordering-guarantees).
+- In most cases, each version of a row will be emitted once. However, some infrequent conditions (e.g., node failures, network partitions) will cause them to be repeated. This gives our changefeeds an at-least-once delivery guarantee. For more information, see [Change Data Capture - Ordering Guarantees](use-changefeeds.html#ordering-guarantees).
 
 ## Synopsis
 
@@ -49,11 +50,11 @@ Parameter | Description
 Option | Value | Description
 -------|-------|------------
 `updated` | N/A | Include updated timestamps with each row.
-`resolved` | [`INTERVAL`](interval.html) | Emits [resolved timestamp](stream-data-out-of-cockroachdb-using-changefeeds.html#resolved-def) events for the changefeed. Resolved timestamp events do not emit until all ranges in the changefeed have progressed to a specific point in time. <br><br>Set an optional minimal duration between emitting resolved timestamps. Example: `resolved='10s'`. This option will **only** emit a resolved timestamp event if the timestamp has advanced and at least the optional duration has elapsed. If unspecified, all resolved timestamps are emitted as the high-water mark advances.
+`resolved` | [`INTERVAL`](interval.html) | Emits [resolved timestamp](use-changefeeds.html#resolved-def) events for the changefeed. Resolved timestamp events do not emit until all ranges in the changefeed have progressed to a specific point in time. <br><br>Set an optional minimal duration between emitting resolved timestamps. Example: `resolved='10s'`. This option will **only** emit a resolved timestamp event if the timestamp has advanced and at least the optional duration has elapsed. If unspecified, all resolved timestamps are emitted as the high-water mark advances.
 `envelope` | `key_only` / `row` | Use `key_only` to emit only the key and no value, which is faster if you only want to know when the key changes.<br><br>Default: `envelope=row`
 `cursor` | [Timestamp](as-of-system-time.html#parameters)  | Emits any changes after the given timestamp, but does not output the current state of the table first. If `cursor` is not specified, the changefeed starts by doing a consistent scan of all the watched rows and emits the current value, then moves to emitting any changes that happen after the scan.<br><br>`cursor` can be used to start a new changefeed where a previous changefeed ended.<br><br>Example: `CURSOR=1536242855577149065.0000000000`
 `mvcc_timestamp` | N/A | <span class="version-tag">New in v21.2:</span> Include the [MVCC](architecture/storage-layer.html#mvcc) timestamp for each emitted row in a changefeed. With the `mvcc_timestamp` option, each emitted row will always contain its MVCC timestamp, even during the changefeed's initial backfill.
-`format` | `json` / `avro` | Format of the emitted record. Currently, support for [Avro is limited](#avro-limitations). <br><br>Default: `format=json`.
+`format` | `json` / `avro` | Format of the emitted record. Currently, support for [Avro is limited](use-changefeeds.html#avro-limitations). <br><br>Default: `format=json`.
 `confluent_schema_registry` | Schema Registry address | The [Schema Registry](https://docs.confluent.io/current/schema-registry/docs/index.html#sr) address is required to use `avro`.
 
 #### Avro limitations
@@ -81,5 +82,5 @@ You can pause a changefeed by -->
 
 ## See also
 
-- [Stream Data Out of CockroachDB Using Changefeeds](stream-data-out-of-cockroachdb-using-changefeeds.html)
+- [Change Data Capture Overview](change-data-capture-overview.html)
 - [Other SQL Statements](sql-statements.html)

@@ -7,6 +7,7 @@ referral_id: docs_node_postgres
 filter_category: crud_js
 filter_html: Use <strong>node-postgres</strong>
 filter_sort: 1
+docs_area: get_started
 ---
 
 {% include filter-tabs.md %}
