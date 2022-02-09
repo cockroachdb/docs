@@ -2,7 +2,7 @@
 title: Monitor and Debug Changefeeds
 summary: Monitor a changefeed from the DB console and use logs for debugging.
 toc: true
-docs_area: 
+docs_area: stream_data
 ---
 
 Changefeeds work as jobs in CockroachDB, which allows for [monitoring](#monitor-a-changefeed) and [debugging](#debug-a-changefeed) through the [DB console's](ui-overview.html) [**Jobs**](ui-jobs-page.html) page and [`SHOW JOBS`](show-jobs.html) SQL statements using the job ID.

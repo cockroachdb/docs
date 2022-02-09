@@ -2,7 +2,7 @@
 title: UNSPLIT AT
 summary: The UNSPLIT AT statement removes a range split enforcement at a specified row in the table or index.
 toc: true
-docs_area: 
+docs_area: reference.sql
 ---
 
 The `UNSPLIT AT` [statement](sql-statements.html) removes a [split enforcement](split-at.html) on a [range split](architecture/distribution-layer.html#range-splits), at a specified row in a table or index.

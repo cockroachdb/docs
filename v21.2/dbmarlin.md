@@ -2,7 +2,7 @@
 title: Monitor CockroachDB with DBmarlin
 summary: The CockroachDB integration with DBmarlin enables data visualization and alerting on CockroachDB metrics.
 toc: true
-docs_area: 
+docs_area: manage
 ---
 
 [DBmarlin](https://www.dbmarlin.com/home) is a monitoring platform for databases. The CockroachDB integration with DBmarlin enables DBmarlin to view CockroachDB metrics stored in the [`crdb_internal` system catalog](monitoring-and-alerting.html#crdb_internal-system-catalog).

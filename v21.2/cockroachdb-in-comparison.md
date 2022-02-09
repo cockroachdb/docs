@@ -4,7 +4,7 @@ summary: Learn how CockroachDB compares to other popular databases like PostgreS
 tags: mongodb, mysql, dynamodb
 toc: false
 comparison: true
-docs_area: 
+docs_area: get_started
 ---
 
 This page shows you how the key features of CockroachDB stack up against other databases. Hover over the features for their intended meanings.

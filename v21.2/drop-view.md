@@ -2,7 +2,7 @@
 title: DROP VIEW
 summary: The DROP VIEW statement removes a view from a database.
 toc: true
-docs_area: 
+docs_area: reference.sql
 ---
 
 The `DROP VIEW` [statement](sql-statements.html) removes a [view](views.html) from a database.
