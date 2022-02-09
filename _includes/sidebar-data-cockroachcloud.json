@@ -34,12 +34,6 @@
       	    "/cockroachcloud/learn-cockroachdb-sql.html"
       	  ]
       	},
-      	{
-      	  "title": "Build a 'Hello World' app",
-      	  "urls": [
-            "/cockroachcloud/hello-world-example-apps.html"
-        	  ]
-        },
         {
           "title": "Use the Cloud API",
           "urls": [
