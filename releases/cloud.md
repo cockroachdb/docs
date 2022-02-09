@@ -43,7 +43,12 @@ As of January 12, 2021, new {{ site.data.products.dedicated }} clusters and all 
 
 <h3>General changes</h3>
 
+- New {{ site.data.products.dedicated }} clusters can now be [created with custom hardware options](../cockroachcloud/create-your-cluster.html). Previously, there were four hardware options, and compute and storage were linked.
 - {{ site.data.products.dedicated }} users can now scale a cluster's [compute](../cockroachcloud/cluster-management.html) and [storage](../cockroachcloud/cluster-management.html). Previously, the only way to scale up a {{ site.data.products.dedicated }} cluster was by adding more nodes.
+
+<h3>Console changes</h3>
+
+- There is now a **Hardware** column on the **Clusters** page that shows the hardware configuration for {{ site.data.products.dedicated }} clusters.
 
 ## January 10, 2022
 
