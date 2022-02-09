@@ -39,6 +39,16 @@ As of January 12, 2021, new {{ site.data.products.dedicated }} clusters and all 
 - Fixed a number of broken links throughout the {{ site.data.products.db }} Console.
 - Fixed a bug where {{ site.data.products.serverless }} users were seeing occasional dips and spikes in a cluster's [**Request Units**](../cockroachcloud/cluster-overview-page.html#request-units) usage graph while running a steady workload.
 
+## February 1, 2022
+
+<h3>General changes</h3>
+
+- New {{ site.data.products.dedicated }} clusters can now be [created with custom hardware options](../cockroachcloud/create-your-cluster.html). Previously, there were four hardware options, and compute and storage were linked.
+
+<h3>Console changes</h3>
+
+- There is now a **Hardware** column on the **Clusters** page that shows the hardware configuration for {{ site.data.products.dedicated }} clusters.
+
 ## January 10, 2022
 
 <h3>General changes</h3>
