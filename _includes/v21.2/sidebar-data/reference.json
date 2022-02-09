@@ -3,23 +3,6 @@
     "is_top_level": true,
     "items": [
       {
-        "title": "Security",
-        "items": [
-          {
-            "title": "Authentication Configuration (HBA)",
-            "urls": [
-              "/${VERSION}/security-reference/authentication-configuration-hba.html"
-            ]
-          },
-          {
-            "title": "Security Overview",
-            "urls": [
-              "/${VERSION}/security-reference/security-reference-overview.html"
-            ]
-          }
-        ]
-      },
-      {
         "title": "Architecture",
         "items": [
           {
@@ -1359,6 +1342,17 @@
         "title": "Cluster Settings",
         "urls": [
           "/${VERSION}/cluster-settings.html"
+        ]
+      },
+      {
+        "title": "Security",
+        "items": [
+          {
+            "title": "Authentication Configuration (HBA)",
+            "urls": [
+              "/${VERSION}/security-reference/authentication-configuration-hba.html"
+            ]
+          }
         ]
       },
       {
