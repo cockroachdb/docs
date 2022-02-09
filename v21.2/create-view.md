@@ -2,7 +2,7 @@
 title: CREATE VIEW
 summary: The CREATE VIEW statement creates a view of a table
 toc: true
-docs_area: 
+docs_area: reference.sql
 ---
 
 The `CREATE VIEW` statement creates a new [view](views.html), which is a stored query represented as a virtual table.

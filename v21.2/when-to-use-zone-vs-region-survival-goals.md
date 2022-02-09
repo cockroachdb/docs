@@ -1,11 +1,13 @@
 ---
-title: When to use ZONE vs. REGION survival goals
-summary: Learn how to use CockroachDB's improved multi-region user experience.
+title: When to Use ZONE vs. REGION Survival Goals
+summary: Learn when to use ZONE vs. REGION survival goals in multi-region clusters.
 toc: false
-docs_area: 
+docs_area: deploy
 ---
 
- [_Survival Goals_](multiregion-overview.html#survival-goals) dictate how many simultaneous failure(s) a [multi-region database](multiregion-overview.html) can survive.  All tables within the same database operate with the same survival goal. Each database is allowed to have its own survival goal setting.
+A [_survival goal_](multiregion-overview.html#survival-goals) dictates how many simultaneous failure(s) a [multi-region database](multiregion-overview.html) can survive. All tables within the same database operate with the same survival goal. Each database is allowed to have its own survival goal setting.
+
+{% include enterprise-feature.md %}
 
 Allowed survival goals include:
 
@@ -21,18 +23,12 @@ Set a [`REGION` survival goal](multiregion-overview.html#surviving-region-failur
 - The database must remain available, even if a region goes down.
 - You can accept the performance cost: write latency will be increased by at least as much as the round-trip time to the nearest region. Read performance will be unaffected.
 
-{{site.data.alerts.callout_success}}
-For more information about how to choose a multi-region configuration, see [Choosing a multi-region configuration](choosing-a-multi-region-configuration.html).
-{{site.data.alerts.end}}
-
-{% include enterprise-feature.md %}
-
 ## See also
 
-+ [Multi-region overview](multiregion-overview.html)
-+ [Choosing a multi-region configuration](choosing-a-multi-region-configuration.html)
-+ [When to use `REGIONAL` vs `GLOBAL` tables](when-to-use-regional-vs-global-tables.html)
-- [Multi-region SQL performance](demo-low-latency-multi-region-deployment.html)
++ [Multi-Region Capabilities Overview](multiregion-overview.html)
++ [How to Choose a Multi-Region Configuration](choosing-a-multi-region-configuration.html)
++ [When to Use `REGIONAL` vs. `GLOBAL` Tables](when-to-use-regional-vs-global-tables.html)
+- [Low Latency Reads and Writes in a Multi-Region Cluster](demo-low-latency-multi-region-deployment.html)
 - [Topology Patterns](topology-patterns.html)
 - [Disaster Recovery](disaster-recovery.html)
-- [Migrate to Multi-region SQL](migrate-to-multiregion-sql.html)
+- [Migrate to Multi-Region SQL](migrate-to-multiregion-sql.html)

@@ -2,7 +2,7 @@
 title: Install a Driver or ORM Framework
 summary: CockroachDB supports both native drivers and the PostgreSQL wire protocol, so you can use most available PostgreSQL client drivers and ORM frameworks.
 toc: true
-docs_area: 
+docs_area: develop
 ---
 
 CockroachDB supports both native drivers and the PostgreSQL wire protocol, so most available PostgreSQL client drivers and ORM frameworks should work with CockroachDB. Choose a language for supported clients, and follow the installation steps. After you install a client library, you can [connect to the database](connect-to-the-database.html).
@@ -192,19 +192,6 @@ $ go get -u github.com/jackc/pgx
 ~~~
 
 For a simple but complete example app, see [Build a Go App with CockroachDB and the Go pgx Driver](build-a-go-app-with-cockroachdb.html).
-
-### pq
-
-**Support level:** Full
-
-To install the [Go pq driver](https://godoc.org/github.com/lib/pq):
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ go get -u github.com/lib/pq
-~~~
-
-For a simple but complete example app, see [Build a Go App with CockroachDB and the Go pq Driver](build-a-go-app-with-cockroachdb.html).
 
 ## Go ORM frameworks
 

@@ -2,7 +2,7 @@
 title: Troubleshooting Overview
 summary: Initial steps to take if you run in to issues with CockroachDB.
 toc: false
-docs_area: 
+docs_area: manage
 ---
 
 If you run into issues with CockroachDB, there are a few initial steps you can always take:

@@ -249,19 +249,19 @@
           ]
         },
         {
-          "title": "Choosing a Multi-Region Configuration",
+          "title": "How to Choose a Multi-Region Configuration",
           "urls": [
             "/${VERSION}/choosing-a-multi-region-configuration.html"
           ]
         },
         {
-          "title": "When to use ZONE vs. REGION Survival Goals",
+          "title": "When to Use ZONE vs. REGION Survival Goals",
           "urls": [
             "/${VERSION}/when-to-use-zone-vs-region-survival-goals.html"
           ]
         },
         {
-          "title": "When to use REGIONAL vs. GLOBAL Tables",
+          "title": "When to Use REGIONAL vs. GLOBAL Tables",
           "urls": [
             "/${VERSION}/when-to-use-regional-vs-global-tables.html"
           ]
@@ -372,21 +372,9 @@
           ]
         },
         {
-          "title": "Orchestration with Kubernetes",
-          "urls": [
-            "/${VERSION}/orchestrate-a-local-cluster-with-kubernetes.html"
-          ]
-        },
-        {
           "title": "JSON Support",
           "urls": [
             "/${VERSION}/demo-json-support.html"
-          ]
-        },
-        {
-          "title": "SQL Tuning with <code>EXPLAIN</code>",
-          "urls": [
-            "/${VERSION}/sql-tuning-with-explain.html"
           ]
         }
       ]

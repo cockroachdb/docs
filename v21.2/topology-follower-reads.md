@@ -2,10 +2,10 @@
 title: Follower Reads Topology
 summary: Guidance on using the follower reads topology in a multi-region deployment.
 toc: true
-docs_area: 
+docs_area: deploy
 ---
 
-In a multi-region deployment, [Follower Reads](follower-reads.html) are a good choice for tables with the following requirements:
+In a multi-region deployment, [follower reads](follower-reads.html) are a good choice for tables with the following requirements:
 
 - Read latency must be low, but write latency can be higher.
 - Reads can be historical.
@@ -13,7 +13,7 @@ In a multi-region deployment, [Follower Reads](follower-reads.html) are a good c
 - Table data must remain available during a region failure.
 
 {{site.data.alerts.callout_success}}
-If reads from a table must be exactly up-to-date, use [Global Tables](global-tables.html) or [Regional Tables](regional-tables.html) instead. Up-to-date reads are required by tables referenced by [foreign keys](foreign-key.html), for example.
+If reads from a table must be exactly up-to-date, use [global tables](global-tables.html) or [regional tables](regional-tables.html) instead. Up-to-date reads are required by tables referenced by [foreign keys](foreign-key.html), for example.
 {{site.data.alerts.end}}
 
 ## Prerequisites
@@ -34,7 +34,7 @@ Follower reads requires an [Enterprise license](https://www.cockroachlabs.com/ge
 
 ### Summary
 
-You configure your application to use [follower reads](follower-reads.html) by adding an [`AS OF SYSTEM TIME`](as-of-system-time.html) clause when reading from the table. This tells CockroachDB to read slightly historical data from the closest replica so as to avoid being routed to the leaseholder, which may be in an entirely different region. Writes, however, will still leave the region to get consensus for the table.  
+You configure your application to use [follower reads](follower-reads.html) by adding an [`AS OF SYSTEM TIME`](as-of-system-time.html) clause when reading from the table. This tells CockroachDB to read slightly historical data from the closest replica so as to avoid being routed to the leaseholder, which may be in an entirely different region. Writes, however, will still leave the region to get consensus for the table.
 
 ### Steps
 
@@ -62,37 +62,37 @@ Insert some data:
 2. <span class="version-tag">New in v21.2:</span> Decide which type of follower read you would like to perform: _exact staleness_ reads, or _bounded staleness_ reads. For more information about when to use each type of read, see [when to use exact staleness reads](follower-reads.html#when-to-use-exact-staleness-reads) and [when to use bounded staleness reads](follower-reads.html#when-to-use-bounded-staleness-reads).
 
    - To use [_exact staleness_ follower reads](follower-reads.html#exact-staleness-reads), configure your app to use [`AS OF SYSTEM TIME`](as-of-system-time.html) with the [`follower_read_timestamp()` function](functions-and-operators.html) whenever reading from the table:
-    
+
     {% include copy-clipboard.html %}
     ~~~ sql
     > SELECT code FROM postal_codes
         AS OF SYSTEM TIME follower_read_timestamp()
                 WHERE id = 5;
     ~~~
-    
+
     You can also set the `AS OF SYSTEM TIME` value for all operations in a read-only transaction:
-    
+
     {% include copy-clipboard.html %}
     ~~~ sql
     > BEGIN;
-    
+
     SET TRANSACTION AS OF SYSTEM TIME follower_read_timestamp();
-    
+
       SELECT code FROM postal_codes
         WHERE id = 5;
-    
+
       SELECT code FROM postal_codes
         WHERE id = 6;
-    
+
     COMMIT;
     ~~~
-    
+
     {{site.data.alerts.callout_success}}
     Using the [`SET TRANSACTION`](set-transaction.html#use-the-as-of-system-time-option) statement as shown in the example above will make it easier to use exact staleness follower reads from [drivers and ORMs](install-client-drivers.html).
     {{site.data.alerts.end}}
-    
+
    - <span class="version-tag">New in v21.2:</span> To use [_bounded staleness_ follower reads](follower-reads.html#bounded-staleness-reads), configure your app to use [`AS OF SYSTEM TIME`](as-of-system-time.html) with the [`with_min_timestamp()` or `with_max_staleness()` functions](functions-and-operators.html) whenever reading from the table. Note that only single-row point reads in single-statement (implicit) transactions are supported.
-    
+
     {% include_cached copy-clipboard.html %}
     ~~~ sql
     SELECT code FROM postal_codes AS OF SYSTEM TIME with_max_staleness('10s') where id = 5;

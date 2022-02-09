@@ -2,7 +2,7 @@
 title: ORDER BY
 summary: The ORDER BY clause controls the order in which rows are returned or processed.
 toc: true
-docs_area: 
+docs_area: reference.sql
 ---
 
 The `ORDER BY` clause controls the order in which rows are returned or

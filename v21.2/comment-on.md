@@ -2,7 +2,7 @@
 title: COMMENT ON
 summary: The COMMENT ON statement associates comments to databases, tables, columns, or indexes.
 toc: true
-docs_area: 
+docs_area: reference.sql
 ---
 
 The `COMMENT ON` [statement](sql-statements.html) associates comments to [databases](create-database.html), [tables](create-table.html), [columns](add-column.html), or [indexes](indexes.html).
