@@ -2,7 +2,7 @@
 title: PAUSE JOB
 summary: The PAUSE JOB statement lets you temporarily halt the process of potentially long-running jobs.
 toc: true
-docs_area: 
+docs_area: reference.sql
 ---
 
 The `PAUSE JOB` [statement](sql-statements.html) lets you pause the following types of jobs:

@@ -1,26 +1,24 @@
 ---
 title: Regional Tables
-summary: Guidance on using Regional Tables in a multi-region deployment.
+summary: Guidance on using regional table locality in a multi-region deployment.
 toc: true
-docs_area: 
+docs_area: deploy
 ---
 
-In a [multi-region deployment](multiregion-overview.html), the [Regional Table Locality Pattern](multiregion-overview.html#table-locality) is a good choice for tables with the following requirements:
+In a [multi-region deployment](multiregion-overview.html), [regional table locality](multiregion-overview.html#table-locality) is a good choice for tables with the following requirements:
 
 - Read and write latency must be low.
 - Rows in the table, and all latency-sensitive queries, can be tied to specific regions.
 
-Tables with the Regional Table Locality Pattern can survive zone or region failures, depending on the database-level [survival goal](multiregion-overview.html#survival-goals) setting.
+Tables with regional table locality can survive zone or region failures, depending on the database-level [survival goal](multiregion-overview.html#survival-goals) setting.
 
 {{site.data.alerts.callout_success}}
 {% include {{page.version.version}}/misc/multiregion-max-offset.md %}
 {{site.data.alerts.end}}
 
-{{site.data.alerts.callout_info}}
-Regional tables (and the other [multi-region capabilities](multiregion-overview.html)) require an [Enterprise license](https://www.cockroachlabs.com/get-cockroachdb).
-{{site.data.alerts.end}}
-
 ## Prerequisites
+
+{% include enterprise-feature.md %}
 
 ### Fundamentals
 

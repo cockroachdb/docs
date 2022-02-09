@@ -2,7 +2,7 @@
 title: Spatial Features
 summary: A summary of CockroachDB's support for storing and querying spatial data.
 toc: true
-docs_area: 
+docs_area: reference.sql
 ---
 
  CockroachDB supports efficiently storing and querying spatial data.

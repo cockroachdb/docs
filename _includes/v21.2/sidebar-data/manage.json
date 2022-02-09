@@ -128,24 +128,6 @@
           "urls": [
             "/cockroachcloud/serverless-benchmarking.html"
           ]
-        },
-        {
-          "title": "Tuning Best Practices",
-          "urls": [
-            "/${VERSION}/performance-best-practices-overview.html"
-          ]
-        },
-        {
-          "title": "Improve Statement Performance",
-          "urls": [
-            "/${VERSION}/make-queries-fast.html"
-          ]
-        },
-        {
-          "title": "Tune with <code>EXPLAIN</code>",
-          "urls": [
-            "/${VERSION}/sql-tuning-with-explain.html"
-          ]
         }
       ]
     },
@@ -436,12 +418,6 @@
           ]
         },
         {
-          "title": "Online Schema Changes",
-          "urls": [
-            "/${VERSION}/online-schema-changes.html"
-          ]
-        },
-        {
           "title": "Manage Long-Running Queries",
           "urls": [
             "/${VERSION}/manage-long-running-queries.html"
@@ -498,12 +474,6 @@
           "title": "Troubleshoot Query Behavior",
           "urls": [
             "/${VERSION}/query-behavior-troubleshooting.html"
-          ]
-        },
-        {
-          "title": "Understand Debug Logs",
-          "urls": [
-            "/${VERSION}/logging-overview.html"
           ]
         },
         {

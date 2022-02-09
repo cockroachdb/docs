@@ -6,7 +6,7 @@ redirect-from: index-cockroachcloud.html
 docs_area: releases releases
 ---
 
-CockroachDB Cloud supports the latest major version of CockroachDB and the version immediately preceding it. All clusters are subject to automatic upgrades to the latest supported minor version. [{{ site.data.products.serverless }}](../cockroachcloud/quickstart.html) clusters are subject to automatic upgrades for both minor and major releases while in beta. For more information, see the [{{ site.data.products.db }} Upgrade Policy](../cockroachcloud/upgrade-policy.html).
+CockroachDB Cloud supports the latest major version of CockroachDB and the version immediately preceding it. All clusters are subject to automatic upgrades to the latest supported minor version. [{{ site.data.products.serverless }}](../cockroachcloud/quickstart.html) clusters are subject to automatic upgrades for both minor and major releases while Serverless is in beta. For more information, see the [{{ site.data.products.db }} Upgrade Policy](../cockroachcloud/upgrade-policy.html).
 
 Get future release notes emailed to you:
 
@@ -15,6 +15,29 @@ Get future release notes emailed to you:
 {{site.data.alerts.callout_version}}
 As of January 12, 2021, new {{ site.data.products.dedicated }} clusters and all {{ site.data.products.serverless }} clusters are running CockroachDB [v21.2.4](v21.2.4.html).
 {{site.data.alerts.end}}
+
+## February 7, 2022
+
+<h3>General changes</h3>
+
+- Six new regions are available for {{ site.data.products.serverless }} clusters:
+    
+    GCP                              | AWS
+    ---------------------------------|------------
+    Oregon (`us-west2`)              | Mumbai (`ap-south-1`)
+    Sao Paulo (`southamerica-east1`) | Frankfurt (`eu-central-1`)
+    South Carolina (`us-east1`)      | N. Virginia (`us-east-1`)
+
+<h3>Console changes</h3>
+
+- The [**Terminate Session** and **Terminate Statement**](../cockroachcloud/sessions-page.html#sessions-list) options are now enabled for {{ site.data.products.db }} clusters running CockroachDB [v21.2.2](v21.2.2.html) or later.
+- Selecting a transaction from the [**Transactions** page](../cockroachcloud/transactions-page.html) now opens a new [**Transaction Details**](../cockroachcloud/transactions-page.html#transaction-details-page) page with an improved design.
+- The order of the tabs on the **SQL Activity** page has been changed to [**Statements**](../cockroachcloud/statements-page.html), [**Transactions**](../cockroachcloud/transactions-page.html), and [**Sessions**](../cockroachcloud/sessions-page.html).
+  
+<h3>Bug fixes</h3>
+
+- Fixed a number of broken links throughout the {{ site.data.products.db }} Console.
+- Fixed a bug where {{ site.data.products.serverless }} users were seeing occasional dips and spikes in a cluster's [**Request Units**](../cockroachcloud/cluster-overview-page.html#request-units) usage graph while running a steady workload.
 
 ## February 1, 2022
 

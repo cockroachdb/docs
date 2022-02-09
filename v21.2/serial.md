@@ -2,7 +2,7 @@
 title: SERIAL
 summary: The SERIAL pseudo-type produces integer values automatically.
 toc: true
-docs_area: 
+docs_area: reference.sql
 ---
 
 The `SERIAL` pseudo [data type](data-types.html) is a keyword that can

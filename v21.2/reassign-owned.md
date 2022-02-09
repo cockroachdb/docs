@@ -2,7 +2,7 @@
 title: REASSIGN OWNED
 summary: The REASSIGN OWNED statement changes the ownership of all objects in the current database that are owned by a specific role or user.
 toc: true
-docs_area: 
+docs_area: reference.sql
 ---
 
 The `REASSIGN OWNED` statement changes the [ownership](authorization.html#object-ownership) of all database objects (i.e., tables, types, or schemas) in the current database that are currently owned by a specific [role](authorization.html#roles) or [user](authorization.html#sql-users).

@@ -2,12 +2,12 @@
 title: Scale to Multiple Regions
 summary: Learn how to scale a single-region application to multiple regions.
 toc: true
-docs_area: 
+docs_area: develop
 ---
 
 This page provides guidance for scaling a single-region application to multiple regions.
 
-Before reading this page, we recommend reviewing [CockroachDB's multi-region capabilities](multiregion-overview.html).
+Before reading this page, review [Multi-Region Capabilities Overview](multiregion-overview.html).
 
 ## Overview
 
@@ -71,7 +71,7 @@ For guidance on connecting to CockroachDB from an application deployment, see on
 - For connecting to managed, {{ site.data.products.db }} deployments, see [Connect to Your {{ site.data.products.dedicated }} Cluster](../cockroachcloud/connect-to-your-cluster.html) and [Connect to the Database ({{ site.data.products.dedicated }})](connect-to-the-database.html?filters=dedicated).
 - For connecting to a standard CockroachDB deployment, see [`cockroach sql`](cockroach-sql.html) and [Connect to the Database](connect-to-the-database.html).
 
-To limit the latency between the application and the database, each deployment of the application should communicate with the closest database deployment. For details on configuring database connections for individual application deployments, consult your cloud provider's documentation. For an example using Google Cloud services, see [Multi-region Application Deployment](multi-region-deployment.html).
+To limit the latency between the application and the database, each deployment of the application should communicate with the closest database deployment. For details on configuring database connections for individual application deployments, consult your cloud provider's documentation. For an example using Google Cloud services, see [Multi-Region Application Deployment](multi-region-deployment.html).
 
 {{site.data.alerts.callout_info}}
 A multi-region application deployment does not require a multi-region database deployment. Deploying a global application in multiple regions can yield significant latency benefits for the end user, even if you have not yet scaled your database in multiple regions. For an example, see [Reducing Multi-Region Latency with Follower Reads](https://www.cockroachlabs.com/blog/follower-reads/#:~:text=Deployment%202%3A%20Global%20Application%20Deployment%2C%20No%20Follower%20reads).
@@ -81,7 +81,7 @@ If you do scale the application first, make sure that you reconfigure each appli
 
 ### Step 2. *(Optional)* Update the application code for multi-region
 
-For most table localities, including the default locality `LOCALITY REGIONAL BY TABLE IN PRIMARY REGION`, *you do not need to update your application code after migrating your database schema for multi-region*. CockroachDB automatically optimizes queries against multi-region databases, based on the regional locality of the node executing the query, and on the multi-region configuration of the database. For more details, see [Regional Tables](regional-tables.html#regional-by-row-tables). For an extended example, see [Develop and Deploy a Global Application: Create a Multi-region Database Schema](movr-flask-database.html).
+For most table localities, including the default locality `LOCALITY REGIONAL BY TABLE IN PRIMARY REGION`, *you do not need to update your application code after migrating your database schema for multi-region*. CockroachDB automatically optimizes queries against multi-region databases, based on the regional locality of the node executing the query, and on the multi-region configuration of the database. For more details, see [Regional Tables](regional-tables.html#regional-by-row-tables). For an extended example, see [Develop and Deploy a Global Application: Create a Multi-Region Database Schema](movr-flask-database.html).
 
 However, there are some scenarios in which you might need to update the SQL operations in your application. For example:
 
@@ -146,5 +146,5 @@ In the absence of an explicit, back-filling computed column for the hidden `crdb
 
 ## See also
 
-- [Multi-region Capabilities Overview](multiregion-overview.html)
+- [Multi-Region Capabilities Overview](multiregion-overview.html)
 - [Low Latency Reads and Writes in a Multi-Region Cluster](demo-low-latency-multi-region-deployment.html)

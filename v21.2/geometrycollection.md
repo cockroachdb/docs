@@ -2,7 +2,7 @@
 title: GEOMETRYCOLLECTION
 summary: A GEOMETRYCOLLECTION is used for gathering one or more of the spatial object types into a group.
 toc: true
-docs_area: 
+docs_area: reference.sql
 ---
 
 A `GEOMETRYCOLLECTION` is a collection of heterogeneous [spatial objects](spatial-features.html#spatial-objects), such as [Points](point.html), [LineStrings](linestring.html), [Polygons](polygon.html), or other `GEOMETRYCOLLECTION`s.  It provides a way of referring to a group of spatial objects as one "thing" so that you can operate on it/them more conveniently using various SQL functions.

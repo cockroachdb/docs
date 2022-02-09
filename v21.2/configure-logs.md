@@ -2,7 +2,7 @@
 title: Configure logs
 summary: How to configure CockroachDB logs with the --log or --log-config-file flag and YAML payload.
 toc: true
-docs_area: 
+docs_area: manage
 ---
 
 This page describes how to configure CockroachDB logs with the [`--log` or `log-config-file` flag](cockroach-start.html#logging) and a [YAML payload](#yaml-payload). Most logging behaviors are configurable, including:
@@ -489,7 +489,7 @@ sinks:
 CockroachDB can redact personally identifiable information (PII) from log messages. The logging system includes two parameters that handle this differently:
 
 - `redact` is disabled by default. When enabled, `redact` automatically redacts sensitive data from logging output. We do *not* recommend enabling this on the `DEV` channel because it impairs our ability to troubleshoot problems.
-- `redactable` is enabled by default. This places redaction markers around sensitive fields in log messages. These markers are recognized by [`cockroach debug zip`](cockroach-debug-zip.html) and [`cockroach debug merge-logs`](cockroach-debug-merge-logs.html), which aggregate CockroachDB log files and can be instructed to redact sensitive data from their output. 
+- `redactable` is enabled by default. This places redaction markers around sensitive fields in log messages. These markers are recognized by [`cockroach debug zip`](cockroach-debug-zip.html) and [`cockroach debug merge-logs`](cockroach-debug-merge-logs.html), which aggregate CockroachDB log files and can be instructed to redact sensitive data from their output.
 
 When collecting logs centrally (e.g., in data mining scenarios where non-privileged users have access to logs) or over a network (e.g., to an external log collector), it's safest to enable `redact`:
 
@@ -515,9 +515,9 @@ fluent-defaults:
 
 ### DEV channel
 
-The `DEV` channel is used for debug and uncategorized messages. It can therefore be noisy and contain sensitive (PII) information. 
+The `DEV` channel is used for debug and uncategorized messages. It can therefore be noisy and contain sensitive (PII) information.
 
-We recommend configuring `DEV` separately from the other logging channels. When sending logs to a [Fluentd-compatible](#output-to-fluentd-compatible-network-collectors) or [HTTP](#output-to-http-network-collectors) network collector, `DEV` logs should also be excluded from network collection. 
+We recommend configuring `DEV` separately from the other logging channels. When sending logs to a [Fluentd-compatible](#output-to-fluentd-compatible-network-collectors) or [HTTP](#output-to-http-network-collectors) network collector, `DEV` logs should also be excluded from network collection.
 
 In this example, the `dev` file group is reserved for `DEV` logs. These are output to a `cockroach-dev.log` file in a custom disk `dir`:
 
@@ -538,7 +538,7 @@ To ensure that you are protecting sensitive information, also [redact your logs]
 
 ## Stray error capture
 
-Certain events, such as uncaught software exceptions (panics), bypass the CockroachDB logging system. However, they can be useful in troubleshooting. For example, if CockroachDB crashes, it normally logs a stack trace to what caused the problem. 
+Certain events, such as uncaught software exceptions (panics), bypass the CockroachDB logging system. However, they can be useful in troubleshooting. For example, if CockroachDB crashes, it normally logs a stack trace to what caused the problem.
 
 To ensure that these stray errors can be tracked, CockroachDB does not send them to `stderr` by default. Instead, stray errors are output to a `cockroach-stderr.log` file in the default [logging directory](#logging-directory).
 
@@ -559,7 +559,7 @@ When `capture-stray-errors` is disabled, [`redactable`](#redact-logs) cannot be 
 
 ## Default logging configuration
 
-The YAML payload below represents the default logging behavior of [`cockroach start`](cockroach-start.html) and [`cockroach start-single-node`](cockroach-start-single-node.html). 
+The YAML payload below represents the default logging behavior of [`cockroach start`](cockroach-start.html) and [`cockroach start-single-node`](cockroach-start-single-node.html).
 
 ~~~ yaml
 file-defaults:

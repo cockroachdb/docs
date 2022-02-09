@@ -2,7 +2,7 @@
 title: Troubleshoot Cluster Setup
 summary: Learn how to troubleshoot issues with starting CockroachDB clusters
 toc: true
-docs_area: 
+docs_area: manage
 ---
 
 If you're having trouble starting or scaling your cluster, this page will help you troubleshoot the issue.
@@ -389,7 +389,7 @@ CockroachDB's built-in disk stall detection works as follows:
 
 ### CPU is insufficient for the workload
 
-Issues with CPU most commonly arise when there is insufficient CPU to suppport the scale of the workload. If the concurrency of your workload significantly exceeds your provisioned CPU, you will encounter a [degradation in SQL response time](common-issues-to-monitor.html#service-latency). This is the most common symptom of CPU starvation. 
+Issues with CPU most commonly arise when there is insufficient CPU to suppport the scale of the workload. If the concurrency of your workload significantly exceeds your provisioned CPU, you will encounter a [degradation in SQL response time](common-issues-to-monitor.html#service-latency). This is the most common symptom of CPU starvation.
 
 Because compaction requires significant CPU to run concurrent worker threads, a lack of CPU resources will eventually cause compaction to fall behind. This leads to read amplification and inversion of the log-structured merge (LSM) trees on the [storage layer](architecture/storage-layer.html).
 
@@ -428,7 +428,7 @@ If Go allocated memory is larger than a few hundred megabytes, you might have en
 1. Navigate to **Metrics > Runtime** dashboard, and check the **Memory Usage** graph.
 
 1. On hovering over the graph, the values for the following metrics are displayed:
-  
+
     Metric | Description
     --------|----
     RSS | Total memory in use by CockroachDB.
@@ -443,12 +443,12 @@ If Go allocated memory is larger than a few hundred megabytes, you might have en
       - CGo Allocated is larger than the configured `--cache` size.
       - RSS minus Go Total and CGo Total is larger than 100 MiB.
       - Go Total or CGo Total fluctuates or grows steadily over time.
-    
+
 ### Out-of-memory (OOM) crash
 
 When a node exits without logging an error message, the operating system has likely stopped the node due to insufficient memory.
 
-CockroachDB attempts to restart nodes after they crash. Nodes that frequently restart following an abrupt process exit may point to an underlying memory issue. 
+CockroachDB attempts to restart nodes after they crash. Nodes that frequently restart following an abrupt process exit may point to an underlying memory issue.
 
 **Solution:** If you [observe nodes restarting after sudden crashes](common-issues-to-monitor.html#node-process-restarts):
 

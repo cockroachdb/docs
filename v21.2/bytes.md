@@ -2,7 +2,7 @@
 title: BYTES
 summary: The BYTES data type stores binary strings of variable length.
 toc: true
-docs_area: 
+docs_area: reference.sql
 ---
 
 The `BYTES` [data type](data-types.html) stores binary strings of variable length.

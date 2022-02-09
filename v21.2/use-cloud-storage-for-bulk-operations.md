@@ -2,7 +2,7 @@
 title: Use Cloud Storage for Bulk Operations
 summary: CockroachDB constructs a secure API call to the cloud storage specified in a URL passed to bulk operation statements.
 toc: true
-docs_area: 
+docs_area: manage
 ---
 
 CockroachDB constructs a secure API call to the cloud storage specified in a URL passed to one of the following statements:

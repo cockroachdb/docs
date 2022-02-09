@@ -2,7 +2,7 @@
 title: RENAME CONSTRAINT
 summary: The RENAME CONSTRAINT statement changes the name of a constraint on a column.
 toc: true
-docs_area: 
+docs_area: reference.sql
 ---
 
 The `RENAME CONSTRAINT` [statement](sql-statements.html) changes the name of a constraint on a column.
