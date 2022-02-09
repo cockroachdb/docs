@@ -10,7 +10,7 @@ docs_area: manage
 
 {% include filter-tabs.md %}
 
-This page describes the cluster management and cluster deletion workflows.
+This page describes the cluster management and cluster deletion workflows for {{ site.data.products.serverless }}.
 
 ## Planning your cluster
 

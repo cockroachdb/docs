@@ -97,7 +97,7 @@ The choice of hardware per node determines the [cost](#step-2-select-the-cloud-p
 
     For more detailed disk performance numbers, see the relevant [GCP](https://cloud.google.com/compute/docs/disks/performance) and [AWS](https://aws.amazon.com/ebs/features/#Amazon_EBS_volume_types) documentation.
 
-To change the hardware configuration after the cluster is created, [contact Support](https://support.cockroachlabs.com).
+To change the hardware configuration after the cluster is created, see [Manage a CockroachDB Dedicated Cluster](cluster-management.html).
 
 See [Example](#example) for further guidance.
 
