@@ -16,11 +16,16 @@ To run CockroachDB on your local machine instead, see [Start a Local Cluster](..
 
 ## Step 1. Create a free trial cluster
 
-For this tutorial, we will create a 3-node GCP cluster in the `us-west2` region.
-
-1. If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=docs_quickstart_trial" rel="noopener" target="_blank">sign up for a {{ site.data.products.db }} account</a>.
+<section class="filter-content current" markdown="1" data-scope="default">
+If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=docs_quickstart_trial" rel="noopener" target="_blank">sign up for a {{ site.data.products.db }} account</a>.
+</section>
+<section class="filter-content" markdown="1" data-scope="landing">
+{% comment %}This section lets us customize the sign-up flow for Marketing attribution. It is visible only when the inbound link uses ?filters=landing.{% endcomment %}
+If you haven't already, sign up for a {{ site.data.products.db }} account:
+{% include marketo.html %}
+</section>
 1. [Log in](https://cockroachlabs.cloud/) to your {{ site.data.products.db }} account.
-1. On the **Overview** page, click **Create Cluster**.
+1. On the **Overview** page, click **Create Cluster**. For this tutorial, we will create a 3-node GCP cluster in the `us-west2` region.
 1. On the **Create new cluster** page, for **Cloud provider**, select **Google Cloud**.
 1. For **Regions & nodes**, use the default selection of `California (us-west)` region and 3 nodes.
 1. For **Hardware per node**, select `Option 1` (2vCPU, 60 GB disk).

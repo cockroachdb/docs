@@ -18,7 +18,14 @@ To run CockroachDB on your local machine instead, see [Start a Local Cluster](..
 
 ## Step 1. Create a free cluster
 
-1. If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=docs_quickstart_free" rel="noopener" target="_blank">sign up for a {{ site.data.products.db }} account</a>.
+<section class="filter-content current" markdown="1" data-scope="default">
+If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=docs_quickstart_free" rel="noopener" target="_blank">sign up for a {{ site.data.products.db }} account</a>.
+</section>
+<section class="filter-content" markdown="1" data-scope="landing">
+{% comment %}This section lets us customize the sign-up flow for Marketing attribution. It is visible only when the inbound link uses ?filters=landing.{% endcomment %}
+If you haven't already, sign up for a {{ site.data.products.db }} account:
+{% include marketo.html %}
+</section>
 1. [Log in](https://cockroachlabs.cloud/) to your {{ site.data.products.db }} account.
 1. On the **Clusters** page, click **Create Cluster**.
 1. On the **Create your cluster** page, select **Serverless**.
