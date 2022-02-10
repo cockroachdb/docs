@@ -2,7 +2,7 @@
 title: SHOW (session variables)
 summary: The SHOW statement displays the current settings for the client session.
 toc: true
-docs_area: 
+docs_area: reference.sql
 ---
 
 Use the `SHOW` [statement](sql-statements.html) to display the value of one or all of the session variables. You configure session variables using [`SET`](set-vars.html).

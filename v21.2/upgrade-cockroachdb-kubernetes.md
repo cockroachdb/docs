@@ -4,7 +4,7 @@ summary: How to upgrade a secure 3-node CockroachDB cluster with Kubernetes.
 toc: true
 toc_not_nested: true
 secure: true
-docs_area: 
+docs_area: deploy
 ---
 
 {{site.data.alerts.callout_info}}

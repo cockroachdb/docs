@@ -2,7 +2,7 @@
 title: SET SCHEMA
 summary: The SET SCHEMA statement changes the schema of a table.
 toc: true
-docs_area: 
+docs_area: reference.sql
 ---
 
 The `SET SCHEMA` [statement](sql-statements.html) changes the [schema](sql-name-resolution.html) of a [table](create-table.html).

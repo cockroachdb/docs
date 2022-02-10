@@ -2,7 +2,7 @@
 title: Column Families
 summary: A column family is a group of columns in a table that are stored as a single key-value pair in the underlying key-value store.
 toc: true
-docs_area: 
+docs_area: develop
 ---
 
 A column family is a group of columns in a table that are stored as a single key-value pair in the [underlying key-value store](architecture/storage-layer.html). Column families reduce the number of keys stored in the key-value store, resulting in improved performance during [`INSERT`](insert.html), [`UPDATE`](update.html), and [`DELETE`](delete.html) operations.

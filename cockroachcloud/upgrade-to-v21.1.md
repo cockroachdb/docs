@@ -3,7 +3,7 @@ title: Upgrade to CockroachDB v21.1
 summary: Learn how to upgrade your CockroachDB cluster to v21.1.
 keywords: gin, gin index, gin indexes, inverted index, inverted indexes, accelerated index, accelerated indexes
 toc: true
-docs_area: 
+docs_area: manage
 ---
 
 Now that [CockroachDB v21.1](../releases/v21.1.0.html) is available, your [Console Admin](console-access-management.html#console-admin) can upgrade your cluster directly from the {{ site.data.products.db }} Console. This page walks through the process.

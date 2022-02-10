@@ -3,7 +3,7 @@ title: JSONB
 summary: The JSONB data type stores JSON (JavaScript Object Notation) data.
 toc: true
 keywords: gin, gin index, gin indexes, inverted index, inverted indexes, accelerated index, accelerated indexes
-docs_area: 
+docs_area: reference.sql
 ---
 
 The `JSONB` [data type](data-types.html) stores JSON (JavaScript Object Notation) data as a binary representation of the `JSONB` value, which eliminates whitespace, duplicate keys, and key ordering. `JSONB` supports [GIN indexes](inverted-indexes.html).

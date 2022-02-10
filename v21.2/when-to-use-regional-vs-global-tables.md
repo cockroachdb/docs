@@ -2,7 +2,7 @@
 title: When to Use REGIONAL vs. GLOBAL Tables
 summary: Learn when to use REGIONAL vs. GLOBAL tables in multi-region clusters.
 toc: false
-docs_area: 
+docs_area: deploy
 ---
 
 A [_table locality_](multiregion-overview.html#table-locality) indicates how CockroachDB optimizes access to a table's data in a multi-region cluster. CockroachDB uses the table locality setting to determine how to optimize access to the table's data from that locality.

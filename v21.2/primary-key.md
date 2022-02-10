@@ -2,7 +2,7 @@
 title: Primary Key Constraint
 summary: A primary key constraint specifies columns that can be used to uniquely identify rows in a table.
 toc: true
-docs_area: 
+docs_area: reference.sql
 ---
 
 The `PRIMARY KEY` [constraint](constraints.html) specifies that the constrained columns' values must uniquely identify each row.

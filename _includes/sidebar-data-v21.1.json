@@ -476,7 +476,6 @@
                     "title": "Go",
                     "urls": [
                       "/${VERSION}/build-a-go-app-with-cockroachdb.html",
-                      "/${VERSION}/build-a-go-app-with-cockroachdb-pq.html",
                       "/${VERSION}/build-a-go-app-with-cockroachdb-gorm.html",
                       "/${VERSION}/build-a-go-app-with-cockroachdb-upperdb.html"
                     ]

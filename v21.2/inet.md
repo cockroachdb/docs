@@ -2,7 +2,7 @@
 title: INET
 summary: The INET data type stores an IPv4 or IPv6 address.
 toc: true
-docs_area:
+docs_area: reference.sql
 ---
 
 The `INET` [data type](data-types.html) stores an IPv4 or IPv6 address.
