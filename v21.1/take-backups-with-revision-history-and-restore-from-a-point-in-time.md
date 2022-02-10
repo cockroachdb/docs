@@ -21,9 +21,11 @@ You can configure garbage collection periods using the `ttlseconds` [replication
 
 ## Create a backup with revision history
 
+Use the following to create a backup with revision history to the [backup collection's](take-full-and-incremental-backups.html#backup-collections) storage location:
+
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> BACKUP INTO '{destination}' AS OF SYSTEM TIME '-10s' WITH revision_history;
+> BACKUP INTO '{collection-location}' AS OF SYSTEM TIME '-10s' WITH revision_history;
 ~~~
 
 For guidance on connecting to Amazon S3, Google Cloud Storage, Azure Storage, and other storage options, read [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html).
@@ -38,7 +40,7 @@ If you do not specify a point-in-time, the data will be restored to the backup t
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> RESTORE FROM '/2021/12/13-211056.62' IN '(destination)' AS OF SYSTEM TIME '2021-12-13 10:00:00';
+> RESTORE FROM '/2021/12/13-211056.62' IN '{collection-location}' AS OF SYSTEM TIME '2021-12-13 10:00:00';
 ~~~
 
 To view the available backup subdirectories you can restore from, use [`SHOW BACKUPS`](restore.html#view-the-backup-subdirectories).

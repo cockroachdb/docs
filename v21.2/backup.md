@@ -2,7 +2,7 @@
 title: BACKUP
 summary: Back up your CockroachDB cluster to a cloud storage services such as AWS S3, Google Cloud Storage, or other NFS.
 toc: true
-docs_area: reference.sql 
+docs_area: reference.sql
 ---
 
 CockroachDB's `BACKUP` [statement](sql-statements.html) allows you to create [full or incremental backups](take-full-and-incremental-backups.html) of your cluster's schema and data that are consistent as of a given timestamp.
@@ -26,7 +26,7 @@ Because CockroachDB is designed with high fault tolerance, these backups are des
 
 ## Considerations
 
--  The syntax `BACKUP ... INTO` adds a backup to a collection within the backup destination. The path to the backup is created using a date-based naming scheme. Versions of CockroachDB prior to v21.1 used the syntax `BACKUP ... TO` to backup directly to a specific operator-chosen destination, rather than picking a date-based path. The `BACKUP ... TO` syntax will be **deprecated** in future releases. For more information on this soon-to-be deprecated syntax, [see the docs for v20.2](../v20.2/backup.html) or earlier.
+-  {% include {{ page.version.version }}/backups/backup-into-syntax.md %}
 - Core users can only take [full backups](take-full-and-incremental-backups.html#full-backups). To use the other backup features, you need an [Enterprise license](enterprise-licensing.html). You can also use [{{ site.data.products.dedicated }}](https://cockroachlabs.cloud/signup?referralId=docs-crdb-backup), which runs [full backups daily and incremental backups hourly](../cockroachcloud/backups-page.html).
 - `BACKUP` is a blocking statement. To run a backup job asynchronously, use the `DETACHED` option. See the [options](#options) below.
 - Backups will export [Enterprise license keys](enterprise-licensing.html) during a [full cluster backup](#backup-a-cluster). When you [restore](restore.html) a full cluster with an Enterprise license, it will restore the Enterprise license of the cluster you are restoring from.
@@ -56,7 +56,7 @@ To view the contents of an Enterprise backup created with the `BACKUP` statement
  Parameter | Description
 -----------+-------------
 `targets` | Back up the listed [targets](#targets).
-`subdirectory` | The name of the specific subdirectory (e.g., `2021/03/23-213101.37`) where you want to add an [incremental backup](take-full-and-incremental-backups.html#incremental-backups). To view available subdirectories, use [`SHOW BACKUPS IN destination`](show-backup.html). If the `subdirectory` is not provided, a [full backup](take-full-and-incremental-backups.html#full-backups) will be created in the collection using a date-based naming scheme (i.e., `<year>/<month>/<day>-<timestamp>`).<br><br>**Warning:** If you use an arbitrary `STRING` as the subdirectory, a new full backup will be created, but it will never be shown in `SHOW BACKUPS IN`. We do not recommend using arbitrary strings as subdirectory names.
+`subdirectory` | The name of the specific subdirectory (e.g., `2021/03/23-213101.37`) where you want to add an [incremental backup](take-full-and-incremental-backups.html#incremental-backups). To view available subdirectories, use [`SHOW BACKUPS IN destination`](show-backup.html). If the `subdirectory` is not provided, a [full backup](take-full-and-incremental-backups.html#full-backups) will be created in the [collection](take-full-and-incremental-backups.html#backup-collections) using a date-based naming scheme (i.e., `<year>/<month>/<day>-<timestamp>`).<br><br>**Warning:** If you use an arbitrary `STRING` as the subdirectory, a new full backup will be created, but it will never be shown in `SHOW BACKUPS IN`. We do not recommend using arbitrary strings as subdirectory names.
 `LATEST` | Append an incremental backup to the latest completed full backup's subdirectory.
 `destination` | The URL where you want to store the backup.<br/><br/>For information about this URL structure, see [Backup File URLs](#backup-file-urls).
 `timestamp` | Back up data as it existed as of [`timestamp`](as-of-system-time.html). The `timestamp` must be more recent than your cluster's last garbage collection (which defaults to occur every 25 hours, but is [configurable per table](configure-replication-zones.html#replication-zone-variables)).
@@ -154,7 +154,7 @@ Per our guidance in the [Performance](#performance) section, we recommend starti
 The examples in this section use the **default** `AUTH=specified` parameter. For more detail on how to use `implicit` authentication with Amazon S3 buckets, read [Use Cloud Storage for Bulk Operations — Authentication](use-cloud-storage-for-bulk-operations.html#authentication).
 
 {{site.data.alerts.callout_info}}
-The syntax `BACKUP ... INTO` adds a backup to a collection within the backup destination. The path to the backup is created using a date-based naming scheme. Versions of CockroachDB prior to v21.1 used the syntax `BACKUP ... TO` to backup directly to a specific operator-chosen destination, rather than picking a date-based path. The `BACKUP ... TO` syntax will be **deprecated** in future releases. For more information on this soon-to-be deprecated syntax, [see the docs for v20.2](../v20.2/backup.html) or earlier.
+{% include {{ page.version.version }}/backups/backup-into-syntax.md %}
 {{site.data.alerts.end}}
 
 ### Backup a cluster
@@ -283,7 +283,7 @@ job_id             |  status   | fraction_completed | rows | index_entries | byt
 <section class="filter-content" markdown="1" data-scope="azure">
 
 {{site.data.alerts.callout_info}}
-The syntax `BACKUP ... INTO` adds a backup to a collection within the backup destination. The path to the backup is created using a date-based naming scheme. Versions of CockroachDB prior to v21.1 used the syntax `BACKUP ... TO` to backup directly to a specific operator-chosen destination, rather than picking a date-based path. The `BACKUP ... TO` syntax will be **deprecated** in future releases. For more information on this soon-to-be deprecated syntax, [see the docs for v20.2](../v20.2/backup.html) or earlier.
+{% include {{ page.version.version }}/backups/backup-into-syntax.md %}
 {{site.data.alerts.end}}
 
 ### Backup a cluster
@@ -414,7 +414,7 @@ job_id             |  status   | fraction_completed | rows | index_entries | byt
 The examples in this section use the `AUTH=specified` parameter, which will be the default behavior in v21.2 and beyond for connecting to Google Cloud Storage. For more detail on how to pass your Google Cloud Storage credentials with this parameter, or, how to use `implicit` authentication, read [Use Cloud Storage for Bulk Operations — Authentication](use-cloud-storage-for-bulk-operations.html#authentication).
 
 {{site.data.alerts.callout_info}}
-The syntax `BACKUP ... INTO` adds a backup to a collection within the backup destination. The path to the backup is created using a date-based naming scheme. Versions of CockroachDB prior to v21.1 used the syntax `BACKUP ... TO` to backup directly to a specific operator-chosen destination, rather than picking a date-based path. The `BACKUP ... TO` syntax will be **deprecated** in future releases. For more information on this soon-to-be deprecated syntax, [see the docs for v20.2](../v20.2/backup.html) or earlier.
+{% include {{ page.version.version }}/backups/backup-into-syntax.md %}
 {{site.data.alerts.end}}
 
 ### Backup a cluster

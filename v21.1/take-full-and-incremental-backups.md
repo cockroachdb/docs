@@ -37,14 +37,16 @@ To do a cluster backup, use the [`BACKUP`](backup.html) statement:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> BACKUP INTO '{destination}';
+> BACKUP INTO '{collection-location}';
 ~~~
+
+See the `BACKUP` page for examples running [table](backup.html#backup-a-table-or-view) and [database-level backups](backup.html#backup-a-database).
 
 If it's ever necessary, you can use the [`RESTORE`][restore] statement to restore a table:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> RESTORE TABLE bank.customers FROM '{subdirectory}' IN '{destination}';
+> RESTORE TABLE bank.customers FROM '{subdirectory}' IN '{collection-location}';
 ~~~
 
 To view the available backup subdirectories, use [`SHOW BACKUPS`](show-backup.html).
@@ -53,15 +55,17 @@ Or to restore a  database:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> RESTORE DATABASE bank FROM '{subdirectory}' IN '{destination}';
+> RESTORE DATABASE bank FROM '{subdirectory}' IN '{collection-location}';
 ~~~
 
 Or to restore your full cluster:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> RESTORE FROM '{subdirectory}' IN '{destination}';
+> RESTORE FROM '{subdirectory}' IN '{collection-location}';
 ~~~
+
+See [Backup collections](#backup-collections) for more detail on the directory structure of backup collections.
 
 {{site.data.alerts.callout_info}}
 A full cluster restore can only be run on a target cluster that has _never_ had user-created databases or tables.
@@ -89,14 +93,14 @@ Periodically run the [`BACKUP`][backup] command to take a full backup of your cl
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> BACKUP INTO '{destination}';
+> BACKUP INTO '{collection-location}';
 ~~~
 
 Then, create nightly incremental backups based off of the full backups you've already created. To append an incremental backup to the most recent full backup created in the given destination, use `LATEST`:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> BACKUP INTO LATEST IN '{destination}';
+> BACKUP INTO LATEST IN '{collection-location}';
 ~~~
 
 {{site.data.alerts.callout_info}}
@@ -107,12 +111,69 @@ If it's ever necessary, you can then use the [`RESTORE`][restore] command to res
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> RESTORE FROM '{subdirectory}' IN '{destination}';
+> RESTORE FROM '{subdirectory}' IN '{collection-location}';
 ~~~
 
 {{site.data.alerts.callout_info}}
 <span class="version-tag">New in v21.1:</span> `RESTORE` will re-validate [indexes](indexes.html) when [incremental backups](take-full-and-incremental-backups.html) are created from an older version (v20.2.2 and earlier or v20.1.4 and earlier), but restored by a newer version (v21.1.0+). These earlier releases may have included incomplete data for indexes that were in the process of being created.
 {{site.data.alerts.end}}
+
+## Backup collections
+
+When running a [full backup](#full-backups) to a specified storage location, a **backup collection** will be created in that storage location. A backup collection can contain full backups and subsequent [incremental backups](#incremental-backups). (If a full backup is not present in a collection when an incremental backup is run, then a full backup will be taken.) A collection can hold multiple backup "chains", which consist of a full backup and its incremental backups.
+
+The following will run a full backup to the storage location (named `{collection-location}` here):
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+BACKUP INTO '{collection-location}' AS OF SYSTEM TIME '-10s';
+~~~
+
+`{collection-location}` will hold backup chains taken to this storage location. In the following example, weekly full backups are stored with nightly incremental backups appending to its corresponding full backup.
+
+~~~
+Collection:
+
+|—— 2022
+  |—— 02
+    |—— 09-155340.13/
+      |—— Full backup files (chain 1)
+      |—— 20220210/
+        |—— 155530.50/
+          |—— Incremental backup files
+      |—— 20220211/
+        |—— 155628.07/
+          |—— Incremental backup files
+      [...]
+    |—— 16-143018.72/
+      |—— Full backup files (chain 2)
+      |—— 20220217/
+        |—— 155530.50/
+          |—— Incremental backup files
+      |—— 20220218/
+        |—— 155628.07/
+          |—— Incremental backup files
+      [...]
+~~~
+
+[`SHOW BACKUPS IN`](show-backup.html#view-a-list-of-the-available-full-backup-subdirectories) will display a list of the full backup subdirectories in the collection's storage location.
+
+Incremental backups can then be added to the backup collection:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+BACKUP INTO LATEST IN '{collection-location}' AS OF SYSTEM TIME '-10s';
+~~~
+
+The incremental backup will be appended to its corresponding full backup to create a backup chain. The collection will now contain a full backup directory with an incremental backup subdirectory.
+
+In the event that backup data needs to be restored, the backup's subdirectory path from the collection can be added to the [`RESTORE`](restore.html) statement:
+
+~~~ sql
+RESTORE FROM 'subdirectory' IN '{collection-location}';
+~~~
+
+To view a list of the full and incremental backups in a full backup's subdirectory, see this [`SHOW BACKUP`](show-backup.html#view-a-list-of-the-full-and-incremental-backups-in-a-specific-full-backup-subdirectory) example.
 
 ## Incremental backups with explicitly specified destinations
 
@@ -120,12 +181,12 @@ To explicitly control where your incremental backups go, use the [`INTO {subdire
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> BACKUP DATABASE bank INTO '{subdirectory}' IN '{destination}' \
+> BACKUP DATABASE bank INTO '{subdirectory}' IN '{collection-location}' \
     AS OF SYSTEM TIME '-10s' \
     WITH revision_history;
 ~~~
 
-A full backup must be present in the `destination` for an incremental backup to be stored in a `subdirectory`. If there isn't a full backup present in the `destination` when taking an incremental backup, one will be taken and stored in the `destination`.
+A full backup must be present in the `collection-location` for an incremental backup to be stored in a `subdirectory`. If there isn't a full backup present in the storage location when taking an incremental backup, one will be taken and stored.
 
 {{site.data.alerts.callout_info}}
 To take incremental backups, you need an [Enterprise license](enterprise-licensing.html).
