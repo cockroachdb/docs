@@ -2,7 +2,7 @@
 title: Simulate a Multi-Region Cluster on localhost (Insecure)
 summary: Run a simulated multi-region CockroachDB cluster locally using cockroach demo.
 toc: true
-docs_area: 
+docs_area: deploy
 ---
 
  Once you've [installed CockroachDB](install-cockroachdb.html), it's simple to simulate multi-region cluster on your local machine using [`cockroach demo`](cockroach-demo.html). This is a useful way to start playing with the [improved multi-region abstractions](multiregion-overview.html) provided by CockroachDB.
@@ -96,7 +96,7 @@ When you're done with your demo cluster, you can wipe the cluster by typing the 
 - Learn more about [CockroachDB SQL](learn-cockroachdb-sql.html) and the [built-in SQL client](cockroach-sql.html)
 - [Build an app with CockroachDB](example-apps.html)
 - Further explore CockroachDB capabilities like:
-  - [Multi-region SQL performance](demo-low-latency-multi-region-deployment.html)
+  - [Low Latency Reads and Writes in a Multi-Region Cluster](demo-low-latency-multi-region-deployment.html)
   - [Fault tolerance and automated repair](demo-fault-tolerance-and-recovery.html)
   - [Serializable transactions](demo-serializable.html)
   - [JSON support](demo-json-support.html)

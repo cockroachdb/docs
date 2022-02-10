@@ -2,7 +2,7 @@
 title: Migrate CockroachDB Schemas with Alembic
 summary: Learn how to use Alembic with a CockroachDB cluster.
 toc: true
-docs_area: 
+docs_area: develop
 ---
 
 This page walks you through a series of simple database schema changes using the [Alembic](https://alembic.sqlalchemy.org/en/latest/) schema migration module with a simple Python application built on SQLAlchemy and CockroachDB.

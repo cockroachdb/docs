@@ -2,7 +2,7 @@
 title: SHOW LOCALITY
 summary: The SHOW LOCALITY statement returns the locality of the current node.
 toc: true
-docs_area: 
+docs_area: reference.sql
 ---
 
 The `SHOW LOCALITY` [statement](sql-statements.html) returns the [locality](cockroach-start.html#locality) of the current node.
@@ -79,7 +79,7 @@ For a more extensive example, see [Create a table with node locality information
 
 ## See also
 
-- [Multi-Region Performance](demo-low-latency-multi-region-deployment.html)
+- [Low Latency Reads and Writes in a Multi-Region Cluster](demo-low-latency-multi-region-deployment.html)
 - [Locality](cockroach-start.html#locality)
 - [Orchestrated Deployment](orchestration.html)
 - [Manual Deployment](manual-deployment.html)

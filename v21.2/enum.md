@@ -2,7 +2,7 @@
 title: ENUM
 summary: CockroachDB's ENUM data types comprise a set of values.
 toc: true
-docs_area: 
+docs_area: reference.sql
 ---
 
  User-defined `ENUM` [data types](data-types.html) consist of a set of enumerated, static values.
@@ -25,7 +25,7 @@ where `<name>` is the name of the new type, and `<value1>, <value2>, ...` are st
 You can qualify the `<name>` of an enumerated type with a [database and schema name](sql-name-resolution.html) (e.g., `db.typename`). After the type is created, it can only be referenced from the database that contains the type.
 {{site.data.alerts.end}}
 
-To show all `ENUM` types in the database, use [`SHOW ENUMS`](show-enums.html):
+To show all `ENUM` types in the database, including all `ENUMS` created implicitly for [multi-region databases](multi-region-overview.html), use [`SHOW ENUMS`](show-enums.html):
 
 {% include copy-clipboard.html %}
 ~~~ sql

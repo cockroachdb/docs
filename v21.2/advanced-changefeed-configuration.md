@@ -2,7 +2,7 @@
 title: Advanced Changefeed Configuration
 summary: Tune changefeeds for high durability delivery or throughput.
 toc: true
-docs_area: 
+docs_area: stream_data
 ---
 
 {{site.data.alerts.callout_danger}}

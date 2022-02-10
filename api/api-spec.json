@@ -1656,7 +1656,7 @@
           "x-go-name": "Next"
         },
         "table_names": {
-          "description": "The names of all tables in this database. Note that\nall responses will be schema-qualified (schema.table) and that every schema\nor table that contains a \"sql unsafe character\" such as uppercase letters\nor dots will be surrounded with double quotes, such as \"naughty schema\".table.",
+          "description": "The names of all tables in this database. Note that\nall responses will be schema-qualified (schema.table) and that every schema\nor table that contains a \"sql unsafe character\" such as uppercase letters\nor dots will be surrounded with double quotes, such as \"Naughty schema\".table.",
           "type": "array",
           "items": {
             "type": "string"

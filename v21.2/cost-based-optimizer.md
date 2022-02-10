@@ -107,7 +107,7 @@ In [multi-region deployments](multiregion-overview.html), the optimizer, in conc
 Even if a value cannot be read locally, CockroachDB takes advantage of the fact that some of the other regions are much closer than others and thus can be queried with lower latency. In this case, it performs all lookups against the remote regions in parallel and returns the result once it is retrieved, without having to wait for each lookup to come back. This can lead to increased performance in multi-region deployments, since it means that results can be returned from wherever they are first found without waiting for all of the other lookups to return.
 
 {{site.data.alerts.callout_info}}
-The asynchronous parallel lookup behavior does not occur if you [disable vectorized execution](vectorized-execution.html#configuring-vectorized-execution).
+The asynchronous parallel lookup behavior does not occur if you [disable vectorized execution](vectorized-execution.html#configure-vectorized-execution).
 {{site.data.alerts.end}}
 
 Locality optimized search is supported for scans that are guaranteed to return 100,000 keys or fewer. This optimization allows the execution engine to avoid visiting remote regions if all requested keys are found in the local region, thus reducing the latency of the query.

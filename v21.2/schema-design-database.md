@@ -2,7 +2,7 @@
 title: Create a Database
 summary: Best practices for creating databases in CockroachDB.
 toc: true
-docs_area: 
+docs_area: develop
 ---
 
 This page provides best-practice guidance on creating databases, with a couple examples based on Cockroach Labs' fictional vehicle-sharing company, [MovR](movr.html).
