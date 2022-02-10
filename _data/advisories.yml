@@ -1,6 +1,10 @@
+- advisory: 75758
+  summary: Users without the appropriate permissions may cancel any other users' sessions from the DB Console.
+  versions: 20.2.0-20.2.18, 21.1.0-21.1.13, 21.2.0-21.2.4
+  date: February 10, 2022
 - advisory: 74736
   summary: Queries can miss rows in a primary or unique index that is being scanned, causing incorrect query results.
-  versions: 21.2.0 - 21.2.4
+  versions: 21.2.0-21.2.4
   date: February 7, 2022
 - advisory: 74385
   summary: Partial indexes can be corrupted by <code>UPDATE</code> statements, resulting in incorrect query results for any queries that use the partial index
