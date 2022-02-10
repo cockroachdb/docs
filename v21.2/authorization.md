@@ -5,28 +5,7 @@ toc: true
 docs_area: manage
 ---
 
-User authorization is the act of defining access policies for authenticated CockroachDB users. CockroachDB allows you to create, manage, and remove your cluster's SQL [users](#sql-users) and assign SQL-level [privileges](#assign-privileges) to the users. Additionally, you can use [role-based access management (RBAC)](#roles) for simplified user management.
-
-## Users and roles
-
-There is no technical distinction between a role or user in CockroachDB. A role/user can:
-
-- be permitted to log in to the [SQL shell](cockroach-sql.html).
-- be granted [privileges](#privileges) to specific actions and database objects.
-- be a member of other users/roles, inheriting their privileges.
-- have other users/roles as members that inherit its privileges.
-
-We refer to these as "roles" when they are created for managing the privileges of their member "users" and not for logging in directly, which is typically reserved for "users".
-
-The SQL statements [`CREATE USER`](create-user.html) and [`CREATE ROLE`](create-role.html) will create the same entity with one exception: `CREATE ROLE` will add the `NOLOGIN` option by default, preventing the user/role from being used to log in. Otherwise, for enhanced PostgreSQL compatibility, the keywords `ROLE` and `USER` can be used interchangeably in SQL statements.
-
-Throughout the documentation, however, we will refer to a "user" or "role" based on the intended purpose of the entity.
-
-## SQL users
-
-A SQL user can interact with a CockroachDB database using the [built-in SQL shell](cockroach-sql.html) or through an application.
-
-### Create and manage users
+## Create Cockroach DB Users
 
 Use the [`CREATE USER`](create-user.html) and [`DROP USER`](drop-user.html) statements to create and remove users, the [`ALTER USER`](alter-user.html) statement to add or change a user's password and role options, the [`GRANT`](grant.html) and [`REVOKE`](revoke.html) statements to manage the user’s privileges, and the [`SHOW USERS`](show-users.html) statement to list users.
 
@@ -36,17 +15,9 @@ A new user must be granted the required privileges for each database and table t
 By default, a new user belongs to the `public` role and has no privileges other than those assigned to the `public` role. For more information, see [Public role](#public-role).
 {{site.data.alerts.end}}
 
-### `root` user
 
-The `root` user is created by default for each cluster. The `root` user is assigned to the [`admin` role](#admin-role) and has all privileges across the cluster.
 
-For secure clusters, in addition to [generating the client certificate](authentication.html#client-authentication) for the `root` user, you can assign or change the password for the `root` user using the [`ALTER USER`](alter-user.html) statement.
-
-## Roles
-
-A role is a group of users and/or other roles for which you can grant or revoke privileges as a whole. To simplify access management, create a role and grant privileges to the role, then create SQL users and grant them membership to the role.
-
-### Create and manage roles
+## Create and manage roles
 
 To create and manage your cluster's roles, use the following statements:
 

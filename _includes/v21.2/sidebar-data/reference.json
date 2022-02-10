@@ -1348,9 +1348,27 @@
         "title": "Security",
         "items": [
           {
-            "title": "Authentication Configuration (HBA)",
+            "title": "Authentication",
             "urls": [
-              "/${VERSION}/security-reference/authentication-configuration-hba.html"
+              "/${VERSION}/security-reference/authentication.html"
+            ]
+          },
+          {
+            "title": "Authorization",
+            "urls": [
+              "/${VERSION}/security-reference/authorization.html"
+            ]
+          },
+          {
+            "title": "Network Security",
+            "urls": [
+              "/${VERSION}/security-reference/network-security.html"
+            ]
+          },
+          {
+            "title": "Encryption",
+            "urls": [
+              "/${VERSION}/security-reference/encryption.html"
             ]
           }
         ]
