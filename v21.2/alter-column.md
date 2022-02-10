@@ -2,7 +2,7 @@
 title: ALTER COLUMN
 summary: Use the ALTER COLUMN statement to set, change, or drop a column's DEFAULT constraint or to drop the NOT NULL constraint.
 toc: true
-docs_area: reference.sql 
+docs_area: reference.sql
 ---
 
 `ALTER COLUMN` is a subcommand of [`ALTER TABLE`](alter-table.html). You can use `ALTER COLUMN` to do the following:
@@ -113,6 +113,10 @@ If the column has the [`NOT NULL` constraint](not-null.html) applied to it, you 
 ### Convert a computed column into a regular column
 
 {% include {{ page.version.version }}/computed-columns/convert-computed-column.md %}
+
+### Alter the formula for a computed column
+
+{% include {{ page.version.version }}/computed-columns/alter-computed-column.md %}
 
 ### Convert to a different data type
 
