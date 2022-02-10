@@ -29,7 +29,7 @@ Location                                                    | Scheme      | Host
 ------------------------------------------------------------+-------------+--------------------------------------------------+----------------------------------------------------------------------------
 Amazon                                                      | `s3`        | Bucket name                                      | `AUTH` — optional `implicit` or `specified` (default: `specified`); `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, [`AWS_SESSION_TOKEN`](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp_use-resources.html) <br><br>For more information, see [Authentication - Amazon S3](#authentication).                               
 Azure                                                       | `azure`     | Storage container                                | `AZURE_ACCOUNT_KEY`, `AZURE_ACCOUNT_NAME` <br><br>For more information, see [Authentication - Azure Storage](#authentication).
-Google Cloud                                                | `gs`        | Bucket name                                      | `AUTH` — `implicit`, or `specified`; `CREDENTIALS` <br><br>For more information, see [Authentication - Google Cloud Storage](#authentication).     
+Google Cloud                                                | `gs`        | Bucket name                                      | `AUTH` — `implicit`, or `specified` (default: `specified`); `CREDENTIALS` <br><br>For more information, see [Authentication - Google Cloud Storage](#authentication).     
 HTTP                                                        | `http`      | Remote host                                      | N/A <br><br>For more information, see [Authentication - HTTP](#authentication).      
 NFS/Local&nbsp;[<sup>1</sup>](#considerations)              | `nodelocal` | `nodeID` or `self` [<sup>2</sup>](#considerations) (see [Example file URLs](#example-file-urls)) | N/A
 S3-compatible services                                     | `s3`        | Bucket name                                      | **Warning**: Unlike Amazon S3, Google Cloud Storage, and Azure storage options, the usage of S3-compatible services is not actively tested by Cockroach Labs. <br><br>`AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_SESSION_TOKEN`, `AWS_REGION`&nbsp;[<sup>3</sup>](#considerations) (optional), `AWS_ENDPOINT`<br><br>For more information, see [Authentication - S3-compatible services](#authentication).
@@ -96,7 +96,7 @@ CockroachDB also provides client-side encryption of backup data, for more inform
 When running bulk operations to and from a storage bucket, authentication setup can vary depending on the cloud provider. This section details the necessary steps to authenticate to each cloud provider.
 
 {{site.data.alerts.callout_info}}
-`implicit` authentication can **not** be used to run bulk operations from {{ site.data.products.db }} clusters—instead, use `AUTH=specified`.
+`implicit` authentication **cannot** be used to run bulk operations from {{ site.data.products.db }} clusters—instead, use `AUTH=specified`.
 {{site.data.alerts.end}}
 
 <div class="filters clearfix">
@@ -111,7 +111,7 @@ When running bulk operations to and from a storage bucket, authentication setup 
 
 The `AUTH` parameter passed to the file URL must be set to either `specified` or `implicit`. The following sections describe how to set up each authentication method.
 
-### Specified Authentication
+### Specified authentication
 
 If the `AUTH` parameter is not provided, AWS connections default to `specified` and the access keys must be provided in the URI parameters.
 
@@ -122,7 +122,7 @@ As an example:
 BACKUP DATABASE <database> INTO 's3://{bucket name}/{path in bucket}/?AWS_ACCESS_KEY_ID={access key ID}&AWS_SECRET_ACCESS_KEY={secret access key}';
 ~~~
 
-### Implicit Authentication
+### Implicit authentication
 
 If the `AUTH` parameter is `implicit`, the access keys can be omitted and [the credentials will be loaded from the environment](https://docs.aws.amazon.com/sdk-for-go/api/aws/session/), i.e. the machines running the backup.
 
@@ -144,7 +144,7 @@ aws ec2 associate-iam-instance-profile --iam-instance-profile Name={example prof
 
 The `AUTH` parameter passed to the file URL must be set to either `specified` or `implicit`. The default behavior is `specified` in v21.2+. The following sections describe how to set up each authentication method.
 
-### Specified Authentication
+### Specified authentication
 
 To access the storage bucket with `specified` credentials, it's necessary to [create a service account](https://cloud.google.com/iam/docs/creating-managing-service-accounts) and add the service account address to the permissions on the specific storage bucket.
 
@@ -162,7 +162,7 @@ Pass the encoded JSON object to the `CREDENTIALS` parameter:
 BACKUP DATABASE <database> INTO 'gs://{bucket name}/{path}?AUTH=specified&CREDENTIALS={encoded key}';
 ~~~
 
-### Implicit Authentication
+### Implicit authentication
 
 For CockroachDB instances that are running within a Google Cloud Environment, [environment data](https://cloud.google.com/docs/authentication/production#providing_credentials_to_your_application) can be used from the [service account](https://cloud.google.com/iam/docs/creating-managing-service-accounts) to implicitly access resources within the storage bucket.
 
@@ -179,7 +179,7 @@ For CockroachDB clusters running in other environments, `implicit` authenticatio
     export GOOGLE_APPLICATION_CREDENTIALS="/{cockroach}/gcs_key.json"
     ~~~
 
-    Alternatively, to pass the credentials using [systemd](https://www.freedesktop.org/wiki/Software/systemd/), use `systemctl edit cockroach.service` to add the environment variable `Environment="GOOGLE_APPLICATION_CREDENTIALS=gcs-key.json"` under `[Service]` in the `cockroach.service` unit file. Then, run `systemctl daemon-reload` to reload the systemd process. Restart the `cockroach` process on each of the cluster's nodes with `systemctl restart cockroach`, which will reload the configuration files.
+    Alternatively, to pass the credentials using [`systemd`](https://www.freedesktop.org/wiki/Software/systemd/), use `systemctl edit cockroach.service` to add the environment variable `Environment="GOOGLE_APPLICATION_CREDENTIALS=gcs-key.json"` under `[Service]` in the `cockroach.service` unit file. Then, run `systemctl daemon-reload` to reload the `systemd` process. Restart the `cockroach` process on each of the cluster's nodes with `systemctl restart cockroach`, which will reload the configuration files.
 
     To pass the credentials using code, see [Google's Authentication documentation](https://cloud.google.com/docs/authentication/production#passing_code).
 
