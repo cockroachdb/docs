@@ -9,15 +9,17 @@ This page provides best practices for optimizing the performance of serverless f
 
 ## Configure connection pools based on the concurrency support of the serverless runtime
 
-We recommend using connection pools to manage the lifecycle of database connections established from serverless functions. Connection pools health-check connections and re-establish broken connections in the event of a communication error.
+We recommend using connection pools to manage the lifecycle of database connections established by serverless functions. Connection pools health-check connections and re-establish broken connections in the event of a communication error.
 
-The maximum size of the connection pool should be determined by the concurrency support of the function-as-a-service (FaaS) runtime. Do not exceed the maximum number of concurrent requests allowed by your FaaS provider, and do not set a minimum idle connection count. The connection pool should be free to open connections as needed.
+When you create connection pools in serverless functions:
 
-For example, [AWS Lambda functions](https://docs.aws.amazon.com/lambda/latest/dg/configuration-concurrency.html) and [Google Cloud Functions](https://cloud.google.com/functions/docs/concepts/exec#auto-scaling_and_concurrency) implement concurrency by scaling the number of containers that concurrently execute a function invocation. Each container only executes a single request at a time. As a result, each function in an application should establish and reuse a single database connection from a connection pool with a maximum pool size to 1.
+- The connection pool size should not exceed the maximum number of concurrent requests that a single instance of your serverless function can make to the database.
+
+    [AWS Lambda functions](https://docs.aws.amazon.com/lambda/latest/dg/configuration-concurrency.html) and [Google Cloud Functions](https://cloud.google.com/functions/docs/concepts/exec#auto-scaling_and_concurrency) implement concurrency by scaling the number of function instances that run in parallel. Each instance only executes a single request at a time. As a result, AWS Lambda functions and Google Cloud Functions should establish and reuse a single database connection from a connection pool with a maximum pool size of 1.
+
+- Do not set a minimum idle connection count. The connection pool should be free to open connections as needed.
 
 ## Persist database connections across function invocations
-
-<!-- In the standard function-as-a-service (FaaS) architecture, functions run in containers hosted in the cloud. When you invoke a serverless function, the FaaS provider either creates a new container for the function, or, if the function was just called, reuses an existing container. Each new container that queries a database must create a new connection to the database, and if a container is reused, the FaaS provider could close an existing database connection after a function finishes executing. There is no guarantee that a database connection defined within the scope of a serverless function will be reused. As a result, calling serverless functions can result in a very high number of concurrent connections to your database. -->
 
 If you plan to invoke a serverless function at a high frequency, you should configure your serverless function to persist database connections across function invocations to limit the number of new connections to the database. This is typically done by initializing the database connection outside the scope of the serverless function definition.
 
@@ -95,7 +97,9 @@ def lambda_handler(event, context):
 
 As a database-as-a-service, CockroachDB {{ site.data.products.serverless }} abstracts away the complexity of deploying, scaling, and load-balancing your database. Additionally, idle database connections to CockroachDB use very little memory (~20-30 KiB) when compared to PostgreSQL (~2-10 MiB).
 
-{% include {{page.version.version}}/app/start-cockroachdb.md %}
+To create a free CockroachDB {{ site.data.products.serverless }} cluster:
+
+{% include cockroachcloud/quickstart/create-a-free-cluster.md %}
 
 ## Deploy serverless functions in the same region as your database
 
