@@ -23,11 +23,13 @@ The following types of changes to the CockroachDB SQL interface do not qualify a
 - Removal or change of any SQL functionality documented or named as "experimental", "beta", or otherwise not fully supported.
 - Change in format of SQL output
 
-## `cockroach` CLI
+## Cloud API
 
 ## Cluster API
 
-## Cloud API
+## `cockroach` CLI
+
+## `ccloud` CLI
 
 ## Health endpoints
 
