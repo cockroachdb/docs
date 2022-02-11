@@ -332,11 +332,28 @@ The CockroachDB [DB Console](ui-overview.html) gives you insight into the overal
 
 ## Step 6. Simulate node failure
 
-1. In a new terminal, run the [`cockroach quit`](cockroach-quit.html) command against a node to simulate a node failure:
+1. In a new terminal, gracefully shut down a node to simulate a node failure:
 
-    {% include copy-clipboard.html %}
+    Get the process IDs of the nodes:
+
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ cockroach quit --certs-dir=certs --host=localhost:26259
+    ps -ef | grep cockroach | grep -v grep
+    ~~~
+
+    ~~~
+      501  4482     1   0  2:41PM ttys000    0:09.78 cockroach start --certs-dir=certs --store=node1 --listen-addr=localhost:26257 --http-addr=localhost:8080 --join=localhost:26257,localhost:26258,localhost:26259
+      501  4497     1   0  2:41PM ttys000    0:08.54 cockroach start --certs-dir=certs --store=node2 --listen-addr=localhost:26258 --http-addr=localhost:8081 --join=localhost:26257,localhost:26258,localhost:26259
+      501  4503     1   0  2:41PM ttys000    0:08.54 cockroach start --certs-dir=certs --store=node3 --listen-addr=localhost:26259 --http-addr=localhost:8082 --join=localhost:26257,localhost:26258,localhost:26259
+      501  4510     1   0  2:42PM ttys000    0:08.46 cockroach start --certs-dir=certs --store=node4 --listen-addr=localhost:26260 --http-addr=localhost:8083 --join=localhost:26257,localhost:26258,localhost:26259
+      501  4622     1   0  2:43PM ttys000    0:02.51 cockroach start --certs-dir=certs --store=node5 --listen-addr=localhost:26261 --http-addr=localhost:8084 --join=localhost:26257,localhost:26258,localhost:26259
+    ~~~
+
+    Gracefully shut down node 3, specifying its process ID:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    kill -TERM 4503
     ~~~
 
 2. Back in the DB Console, despite one node being "suspect", notice the continued SQL traffic:
@@ -396,35 +413,52 @@ Adding capacity is as simple as starting more nodes with `cockroach start`.
 
 ## Step 8. Stop the cluster
 
-1. When you're done with your test cluster, use the [`cockroach quit`](cockroach-quit.html) command to gracefully shut down each node.
+1. When you're done with your test cluster, stop the nodes.
 
-    {% include copy-clipboard.html %}
+    Get the process IDs of the nodes:
+
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ cockroach quit --certs-dir=certs --host=localhost:26257
+    ps -ef | grep cockroach | grep -v grep
     ~~~
 
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach quit --certs-dir=certs --host=localhost:26258
+    ~~~
+      501  4482     1   0  2:41PM ttys000    0:09.78 cockroach start --certs-dir=certs --store=node1 --listen-addr=localhost:26257 --http-addr=localhost:8080 --join=localhost:26257,localhost:26258,localhost:26259
+      501  4497     1   0  2:41PM ttys000    0:08.54 cockroach start --certs-dir=certs --store=node2 --listen-addr=localhost:26258 --http-addr=localhost:8081 --join=localhost:26257,localhost:26258,localhost:26259
+      501  4503     1   0  2:41PM ttys000    0:08.54 cockroach start --certs-dir=certs --store=node3 --listen-addr=localhost:26259 --http-addr=localhost:8082 --join=localhost:26257,localhost:26258,localhost:26259
+      501  4510     1   0  2:42PM ttys000    0:08.46 cockroach start --certs-dir=certs --store=node4 --listen-addr=localhost:26260 --http-addr=localhost:8083 --join=localhost:26257,localhost:26258,localhost:26259
+      501  4622     1   0  2:43PM ttys000    0:02.51 cockroach start --certs-dir=certs --store=node5 --listen-addr=localhost:26261 --http-addr=localhost:8084 --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
-    {% include copy-clipboard.html %}
+    Gracefully shut down each node, specifying its process ID:
+
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ cockroach quit --certs-dir=certs --host=localhost:26259
+    kill -TERM 4482
+    ~~~
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    kill -TERM 4497
+    ~~~
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    kill -TERM 4503
     ~~~
 
     {{site.data.alerts.callout_info}}
     For nodes 4 and 5, the shutdown process will take longer (about a minute each) and will eventually force the nodes to stop. This is because, with only 2 of 5 nodes left, a majority of replicas are not available, and so the cluster is no longer operational.
     {{site.data.alerts.end}}
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ cockroach quit --certs-dir=certs --host=localhost:26260
+    kill -TERM 4510
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ cockroach quit --certs-dir=certs --host=localhost:26261
+    kill -TERM 4622
     ~~~
 
 2. To restart the cluster at a later time, run the same `cockroach start` commands as earlier from the directory containing the nodes' data stores.  

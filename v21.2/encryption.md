@@ -170,7 +170,7 @@ The report shows encryption status for all stores on the selected node, includin
 * Active data key information.
 * The fraction of files/bytes encrypted using the active data key.
 
-CockroachDB relies on [storage layer](architecture/storage-layer.html) compactions to write new files using the latest encryption key. It may take several days for all files to be replaced. Some files are only rewritten at startup, and some keep older copies around, requiring multiple restarts. You can force storage compaction with the `cockroach debug compact` command (the node must first be [stopped](cockroach-quit.html)).
+CockroachDB relies on [storage layer](architecture/storage-layer.html) compactions to write new files using the latest encryption key. It may take several days for all files to be replaced. Some files are only rewritten at startup, and some keep older copies around, requiring multiple restarts. You can force storage compaction with the `cockroach debug compact` command (the node must first be [stopped](node-shutdown.html#perform-node-shutdown)).
 
 Information about keys is written to [the logs](logging-overview.html), including:
 

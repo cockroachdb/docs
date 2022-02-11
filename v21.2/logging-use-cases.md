@@ -49,15 +49,15 @@ The [`OPS`](logging.html#ops) channel logs operational events initiated by users
 
 #### Example: Node decommissioning
 
-This [`node_decommissioning`](eventlog.html#node_decommissioning) event shows that a node is in the [decommissioning](remove-nodes.html#how-it-works) state:
+This [`node_decommissioning`](eventlog.html#node_decommissioning) event shows that a node is in the [decommissioning](node-shutdown.html?filters=decommission#decommissioning) state:
 
 ~~~
-I210401 23:30:49.319360 5943 1@util/log/event_log.go:32 ⋮ [-] 42 ={"Timestamp":1617319848793433000,"EventType":"node_decommissioning","RequestingNodeID":4,"TargetNodeID":4}
+I210401 23:30:49.319360 5943 1@util/log/event_log.go:32 ⋮ [-] 42 ={"Timestamp":1617319848793433000,"EventType":"node_decommissioning","RequestingNodeID":1,"TargetNodeID":4}
 ~~~
 
 - Preceding the `=` character is the `crdb-v2` event metadata. See the [reference documentation](log-formats.html#format-crdb-v2) for details on the fields.
 - `TargetNodeID` shows that the decommissioning node is `4`.
-- `RequestingNodeID` shows that decommissioning was also started by node `4`. You will see this when using the `--self` flag with [`cockroach node decommission`](cockroach-node.html).
+- `RequestingNodeID` shows that decommissioning was requested by node `1`. You will see this when specifying the node with the `--host` flag.
 
 #### Example: Node restart
 

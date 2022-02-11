@@ -8,7 +8,7 @@ docs_area: reference.cli
 
 To view details for each node in the cluster, use the `cockroach node` [command](cockroach-commands.html) with the appropriate subcommands and flags.
 
-The `cockroach node` command is also used in the process of decommissioning nodes for removal from the cluster. See [Decommission Nodes](remove-nodes.html) for more details.
+The `cockroach node` command is also used to stop or remove nodes from the cluster. For details, see [Node Shutdown](node-shutdown.html).
 
 ## Subcommands
 
@@ -16,9 +16,9 @@ Subcommand | Usage
 -----------|------
 `ls` | List the ID of each node in the cluster, excluding those that have been decommissioned and are offline.
 `status` | View the status of one or all nodes, excluding nodes that have been decommissioned and taken offline. Depending on flags used, this can include details about range/replicas, disk usage, and decommissioning progress.
-`decommission` | Decommission nodes for removal from the cluster. See [Decommission Nodes](remove-nodes.html) for more details.
-`recommission` | Recommission nodes that have been decommissioned. See [Recommission Nodes](remove-nodes.html#recommission-nodes) for more details.
-`drain` | Drain nodes in preparation for process termination. Draining is normally done by sending `SIGTERM` or `SIGINT` during node shutdown, but the `drain` subcommand provides a way for operators to drain nodes without shutting them down. For details, see [Node Shutdown](node-shutdown.html).
+`decommission` | Decommission nodes for removal from the cluster. For details, see [Node Shutdown](node-shutdown.html?filters=decommission).
+`recommission` | Recommission nodes that are decommissioning. For details, see [Node Shutdown](node-shutdown.html#recommission-nodes).
+`drain` | Drain nodes in preparation for process termination. Draining always occurs when sending a termination signal or decommissioning a node. The `drain` subcommand is used to drain nodes without also decommissioning or shutting them down. For details, see [Node Shutdown](node-shutdown.html).
 
 ## Synopsis
 
@@ -79,7 +79,7 @@ $ cockroach node recommission <node IDs> <flags>
 Drain nodes:
 
 ~~~ shell
-$ cockroach node drain <flags>
+$ cockroach node drain <node ID> <flags>
 ~~~
 
 View help:
@@ -128,7 +128,7 @@ The `node drain` subcommand also supports the following general flag:
 
 Flag | Description
 -----|------------
-`--drain-wait` | Amount of time to wait for the node to drain before returning to the client. <br><br>**Default:** `10m`
+`--drain-wait` | Amount of time to wait for the node to drain before returning to the client. After this duration, `drain` must be re-initiated to continue.<br><br>**Default:** `10m`
 
 The `node recommission` subcommand also supports the following general flag:
 
@@ -186,8 +186,8 @@ Field | Description
 `is_available` | If `true`, the node is currently available.<br><br>**Required flag:** None
 `is_live` | If `true`, the node is currently live. <br><br>For unavailable clusters (with an unresponsive DB Console), running the `node status` command and monitoring the `is_live` field is the only way to identify the live nodes in the cluster. However, you need to run the `node status` command on a live node to identify the other live nodes in an unavailable cluster. Figuring out a live node to run the command is a trial-and-error process, so run the command against each node until you get one that responds. <br><br> See [Identify live nodes in an unavailable cluster](#identify-live-nodes-in-an-unavailable-cluster) for more details. <br><br>**Required flag:** None
 `gossiped_replicas` | The number of replicas on the node that are active members of a range. After the decommissioning process completes, this should be 0.<br><br>**Required flag:** `--decommission` or `--all`
-`is_decommissioning` | If `true`, the node's range replicas are being transferred to other nodes. This happens when a live node is marked for [decommissioning](remove-nodes.html).<br><br>**Required flag:** `--decommission` or `--all`
-`is_draining` | If `true`, the node is being drained of in-flight SQL connections, new SQL connections are rejected, and the [`/health?ready=1` monitoring endpoint](monitoring-and-alerting.html#health-ready-1) starts returning a `503 Service Unavailable` status. This happens when a live node is being [stopped](node-shutdown.html).<br><br>**Required flag:** `--decommission` or `--all`
+`is_decommissioning` | If `true`, the node is either undergoing or has completed the [decommissioning process](node-shutdown.html?filters=decommission#node-shutdown-sequence).<br><br>**Required flag:** `--decommission` or `--all`
+`is_draining` | If `true`, the node is either undergoing or has completed the [draining process](node-shutdown.html#node-shutdown-sequence).<br><br>**Required flag:** `--decommission` or `--all`
 
 ### `node decommission`
 
@@ -196,8 +196,8 @@ Field | Description
 `id` | The ID of the node.
 `is_live` | If `true`, the node is live.
 `replicas` | The number of replicas on the node that are active members of a range. After the decommissioning process completes, this should be 0.
-`is_decommissioning` | If `true`, the node's range replicas are being transferred to other nodes. This happens when a live node is marked for [decommissioning](remove-nodes.html).
-`is_draining` | If `true`, the node is being drained of in-flight SQL connections, new SQL connections are rejected, and the [`/health?ready=1` monitoring endpoint](monitoring-and-alerting.html#health-ready-1) starts returning a `503 Service Unavailable` status. This happens when a live node is being [stopped](cockroach-quit.html).
+`is_decommissioning` | If `true`, the node is either undergoing or has completed the [decommissioning process](node-shutdown.html?filters=decommission#node-shutdown-sequence).
+`is_draining` | If `true`, the node is either undergoing or has completed the [draining process](node-shutdown.html#node-shutdown-sequence).
 
 ### `node recommission`
 
@@ -206,8 +206,8 @@ Field | Description
 `id` | The ID of the node.
 `is_live` | If `true`, the node is live.
 `replicas` | The number of replicas on the node that are active members of a range. After the decommissioning process completes, this should be 0.
-`is_decommissioning` | If `true`, the node's range replicas are being transferred to other nodes. This happens when a live node is marked for [decommissioning](remove-nodes.html).
-`is_draining` | If `true`, the node is being drained of in-flight SQL connections, new SQL connections are rejected, and the [`/health?ready=1` monitoring endpoint](monitoring-and-alerting.html#health-ready-1) starts returning a `503 Service Unavailable` status. This happens when a live node is being [stopped](cockroach-quit.html).
+`is_decommissioning` | If `true`, the node is either undergoing or has completed the [decommissioning process](node-shutdown.html?filters=decommission#node-shutdown-sequence).
+`is_draining` | If `true`, the node is either undergoing or has completed the [draining process](node-shutdown.html#node-shutdown-sequence).
 
 ## Examples
 
@@ -267,11 +267,6 @@ The `is_live` and `is_available` fields are marked as `true` as long as a majori
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach quit --host=localhost:26258 --insecure
-~~~
-
-{% include copy-clipboard.html %}
-~~~ shell
 $ cockroach node status --host=localhost:26257 --insecure
 ~~~
 
@@ -285,11 +280,6 @@ $ cockroach node status --host=localhost:26257 --insecure
 ~~~
 
 If a majority of nodes are down and a quorum cannot be reached, the `is_live` field is marked as `true` for the nodes that are up, but the `is_available` field is marked as `false` for all nodes:
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach quit --host=localhost:26259 --insecure
-~~~
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -311,17 +301,17 @@ You need to run the `node status` command on a live node to identify the other l
 
 ### Drain nodes
 
-See [Drain a node without shutting it down](node-shutdown.html#drain-a-node-without-shutting-it-down).
+See [Drain a node manually](node-shutdown.html#drain-a-node-manually).
 
 ### Decommission nodes
 
-See [Decommission Nodes](remove-nodes.html).
+See [Remove nodes](node-shutdown.html?filters=decommission#remove-nodes).
 
 ### Recommission nodes
 
-See [Recommission Nodes](remove-nodes.html#recommission-nodes).
+See [Recommission Nodes](node-shutdown.html?filters=decommission#recommission-nodes).
 
 ## See also
 
 - [Other Cockroach Commands](cockroach-commands.html)
-- [Decommission Nodes](remove-nodes.html)
+- [Node Shutdown](node-shutdown.html)

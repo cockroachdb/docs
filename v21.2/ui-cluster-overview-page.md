@@ -49,6 +49,10 @@ The **Node List** groups nodes by locality. The lowest-level locality tier is us
 We recommend [defining `--locality` flags when starting nodes](cockroach-start.html#locality). CockroachDB uses locality to distribute replicas and mitigate [network latency](ui-network-latency-page.html). Locality is also a prerequisite for enabling the [Node Map](#node-map-enterprise).
 {{site.data.alerts.end}}
 
+{{site.data.alerts.callout_info}}
+[Decommissioned nodes](node-shutdown.html?filters=decommission) are not included in this list.
+{{site.data.alerts.end}}
+
 ### Node status
 
 Each locality and node is displayed with its current operational status.
@@ -62,12 +66,12 @@ Node Status | Description
 -------|------------
 `LIVE` | Node is online and updating its liveness record.
 `SUSPECT` | Node has an [unavailable liveness status](cluster-setup-troubleshooting.html#node-liveness-issues).
-`DECOMMISSIONING` | Node is in the [process of decommissioning](remove-nodes.html#how-it-works).
-`DECOMMISSIONED` | Node has completed decommissioning, has been stopped, and has not [updated its liveness record](cluster-setup-troubleshooting.html#node-liveness-issues) for 5 minutes.
+`DRAINING` | Node is in the [process of draining](node-shutdown.html#draining) or has been drained.
+`DECOMMISSIONING` | Node is in the [process of decommissioning](node-shutdown.html?filters=decommission#decommissioning).
 `DEAD` | Node has not [updated its liveness record](cluster-setup-troubleshooting.html#node-liveness-issues) for 5 minutes.
 
 {{site.data.alerts.callout_info}}
-Nodes are considered dead once they have not [updated their liveness record](cluster-setup-troubleshooting.html#node-liveness-issues) for a certain amount of time (5 minutes by default). At this point, the [automated repair process](cockroach-quit.html#how-it-works) starts, wherein CockroachDB rebalances replicas from dead nodes to live nodes, using the unaffected replicas as sources.
+Nodes are considered dead once they have not [updated their liveness record](cluster-setup-troubleshooting.html#node-liveness-issues) for the duration of the `server.time_until_store_dead` [cluster setting](cluster-settings.html) (5 minutes by default). At this point, CockroachDB begins to rebalance replicas from dead nodes to live nodes, using the unaffected replicas as sources.
 {{site.data.alerts.end}}
 
 ### Node details
@@ -76,7 +80,7 @@ The following details are also shown.
 
 Column | Description
 -------|------------
-Node Count | Number of nodes in the locality.
+Node Count | Number of nodes in the locality. [Decommissioned nodes](node-shutdown.html?filters=decommission) are not included in this count.
 Nodes | Nodes are grouped by locality and displayed with their address and node ID (the ID is the number that is prepended by `n`). Click the address to view node statistics. Hover over a row and click **Logs** to see the node's log.
 Uptime | Amount of time the node has been running.
 Replicas | Number of replicas on the node or in the locality.
@@ -84,16 +88,6 @@ Capacity Usage | Percentage of usable disk space occupied by CockroachDB data on
 Memory Usage | Memory used by CockroachDB as a percentage of the total memory on the node or in the locality.
 vCPUs | Number of vCPUs on the machine.
 Version | Build tag of the CockroachDB version installed on the node.
-
-### Decommissioned Nodes
-
-Nodes that have been [decommissioned](remove-nodes.html#how-it-works) will be listed in the table of **Recently Decommissioned Nodes**, indicating that they are removed from the cluster. You can see the full history of decommissioned nodes by clicking "View all decommissioned nodes".
-
-<img src="{{ 'images/v21.2/ui-decommissioned-nodes.png' | relative_url }}" alt="DB Console node list" style="border:1px solid #eee;max-width:100%" />
-
-{{site.data.alerts.callout_info}}
-When you initiate the [decommissioning process](remove-nodes.html#how-it-works) on a node, CockroachDB transfers all range replicas and range leases off the node so that it can be safely shut down.
-{{site.data.alerts.end}}
 
 ## Node Map (Enterprise)
 
