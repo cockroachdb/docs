@@ -138,12 +138,6 @@
           "title": "Secure CockroachDB Cloud Clusters",
           "items": [
             {
-              "title": "Security Overview",
-              "urls": [
-                "/cockroachcloud/security-overview.html"
-              ]
-            },
-            {
               "title": "Authentication",
               "urls": [
                 "/cockroachcloud/authentication.html"
@@ -178,12 +172,6 @@
         {
           "title": "Secure CockroachDB Self-Hosted Clusters",
           "items": [
-            {
-              "title": "Overview",
-              "urls": [
-                "/${VERSION}/security-overview.html"
-              ]
-            },
             {
               "title": "Authentication",
               "urls": [

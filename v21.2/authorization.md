@@ -30,89 +30,18 @@ Statement | Description
 [`SHOW ROLES`](show-roles.html) | List the roles for all databases.
 [`SHOW GRANTS`](show-grants.html) | List the privileges granted to users.
 
-### Default roles
 
-The `admin` and `public` roles exist by default.
 
-#### `admin` role
 
-The `admin` role is created by default and cannot be dropped. Users belonging to the `admin` role have all privileges for all database objects across the cluster. The `root` user belongs to the `admin` role by default.
 
-An `admin` user is a member of the `admin` role. Only `admin` users can use [`CREATE ROLE`](create-role.html) and [`DROP ROLE`](drop-role.html).
 
-To assign a user to the `admin` role:
 
-{% include copy-clipboard.html %}
-~~~ sql
-> GRANT admin TO <username>;
-~~~
 
-#### `public` role
 
-All new users and roles belong to the `public` role by default. You can grant and revoke the privileges on the `public` role.
 
-### Terminology
 
-#### Role admin
 
-A `role admin` is a member of the role that's allowed to grant or revoke role membership to other users for that specific role. To create a `role admin`, use [`WITH ADMIN OPTION`](grant.html#grant-the-admin-option).
 
-{{site.data.alerts.callout_success}}
-The terms “`admin` role” and “`role admin`” can be confusing. A user who is a member of the `admin` role has all privileges on all database objects across the entire cluster, whereas a `role admin` has privileges limited to the role they are a member of. Assign the `admin` role to a SQL user if you want the user to have privileges across the cluster. Make a SQL user the `role admin` if you want to limit the user’s privileges to its current role, but with an option to grant or revoke role membership to other users. This applies to the `admin` role as well - only admin users with the `WITH ADMIN OPTION` can add or remove other users from the `admin` role.
-{{site.data.alerts.end}}
-
-#### Direct member
-
-A user or role that is an immediate member of the role.
-
-Example: A is a member of B.
-
-#### Indirect member
-
-A user or role that is a member of the role by association.
-
-Example: A is a member of C ... is a member of B where "..." is an arbitrary number of memberships.
-
-## Object ownership
-
-All CockroachDB objects (such as databases, tables, schemas, and types) must have owners. The user that created the object is the default owner of the object and has `ALL` privileges on the object. Similarly, any roles that are members of the owner role also have all privileges on the object.
-
-All objects that do not have owners (for example, objects created before upgrading to v20.2) have `admin` set as the default owner, with the exception of system objects. System objects without owners have `node` as their owner.
-
-To allow another user to use the object, the owner can [assign privileges](#assign-privileges) to the other user. Members of the `admin` role have `ALL` privileges on all objects.
-
-Users that [own objects](authorization.html#privileges) cannot be dropped until the [ownership is transferred to another user](owner-to.html#change-a-databases-owner).
-
-## Privileges
-
-When a user connects to a database, either via the built-in SQL client or a client driver, CockroachDB checks the user and role's privileges for each statement executed. If the user does not have sufficient privileges for a statement, CockroachDB gives an error.
-
-### Supported privileges
-
-Roles and users can be granted the following privileges:
-
-{% include {{ page.version.version }}/sql/privileges.md %}
-
-### Assign privileges
-
-Use the [`GRANT`](grant.html) and [`REVOKE`](revoke.html) statements to manage privileges for users and roles.
-
-Take the following points into consideration while granting privileges to roles and users:
-
-- When a role or user is granted privileges for a database, new tables created in the database will inherit the privileges, but the privileges can then be changed. To grant privileges to a user on all existing tables in a database, see [Grant privileges on all tables in a database](grant.html#grant-privileges-on-all-tables-in-a-database-or-schema)
-
-    {{site.data.alerts.callout_info}}
-    The user does not get privileges to existing tables in the database.
-    {{site.data.alerts.end}}
-
-- When a role or user is granted privileges for a table, the privileges are limited to the table.
-- In CockroachDB, privileges are granted to users and roles at the database and table levels. They are not yet supported for other granularities such as columns or rows.
-- The `root` user automatically belongs to the `admin` role and has the `ALL` privilege for new databases.
-- For privileges required by specific statements, see the documentation for the respective [SQL statement](sql-statements.html).
-
-### Default privileges
-
-<span class="version-tag">New in v21.2</span>: By default, CockroachDB grants the current role/user `ALL` privileges on the objects that they create.
 
 For example, suppose a cluster contains a role named `cockroachlabs`, and a user named `max` is a member of the `cockroachlabs` role:
 
@@ -160,25 +89,9 @@ max@localhost:26257/db> SHOW CREATE TABLE albums;
 (1 row)
 ~~~
 
-To view the default privileges for a role, or for a set of roles, use the [`SHOW DEFAULT PRIVILEGES`](show-default-privileges.html) statement.
 
-To change the default privileges on objects that a user creates, use the [`ALTER DEFAULT PRIVILEGES`](alter-default-privileges.html) statement.
 
-The creator of an object is also the object's [owner](authorization.html#object-ownership). Any roles that are members of the owner role have `ALL` privileges on the object, independent of the default privileges. Altering the default privileges of objects created by a role does not affect that role's privileges as the object's owner. The default privileges granted to other users/roles are always in addition to the ownership (i.e., `ALL`) privileges given to the creator of the object.
 
-For more examples of default privileges, see the examples on the [`SHOW DEFAULT PRIVILEGES`](show-default-privileges.html#examples) and [`ALTER DEFAULT PRIVILEGES`](alter-default-privileges.html#examples) statement pages.
-
-## Authorization best practices
-
-We recommend the following best practices to set up access control for your clusters:
-
-- Use the `root` user only for database administration tasks such as creating and managing other [users](#sql-users), creating and managing [roles](#roles), and creating and managing databases. Do not use the `root` user for applications; instead, create users or roles with specific [privileges](#assign-privileges) based on your application’s access requirements.
-- Use the ["least privilege model"](https://en.wikipedia.org/wiki/Principle_of_least_privilege) to grant privileges to users and roles.
-
- <span class="version-tag">New in v21.2</span>: For improved performance, CockroachDB securely caches [authentication information for users](authentication.html#client-authentication). To limit the authentication latency of users logging into a new session, we recommend the following best practices for `ROLE` operations ([`CREATE ROLE`](create-role.html), [`ALTER ROLE`](alter-role.html), [`DROP ROLE`](drop-role.html)):
-
-- Run bulk `ROLE` operations inside a transaction.
-- Run regularly-scheduled `ROLE` operations together, rather than at different times throughout the day.
 
 ## Example
 
