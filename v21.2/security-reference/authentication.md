@@ -26,6 +26,7 @@ Future releases will also allow authentication to be configured for specific dat
 	- certificate (TLS client certificate)
 	- GSS
 
+All products also support the `reject` and `trust` auth methods, the former of which denies the authentication attempt altogether, and the latter of which grants access without authentication of the presented user identity.
 
 ## Authentication Configuration
 
@@ -75,9 +76,9 @@ Each rule definition contains <i>up to</i> 6 values.
 
 ## Default Behavior
 
-### Cockroach Cloud Serverless
+### CockroachDB Serverless Cloud
 
-The default authentication configuration for Cockroach Cloud Serverless clusters is equivalent to the following configuration
+The default authentication configuration for CockroachDB Serverless Cloud clusters is equivalent to the following configuration
 
 ```
  # TYPE  DATABASE        USER           ADDRESS             METHOD       OPTIONS
@@ -87,11 +88,17 @@ The default authentication configuration for Cockroach Cloud Serverless clusters
 
 This is convenient for quick usage and experimentation, but is not suitable for clusters containing valuable data.
 
-See [Securing access to your cockroach cloud cluster using CockroachDB Authentication Configuration (HBA)](hba-simple-cloud-tutorial)
 
-### Ded (different?)
+### CockroachDB Dedicated Cloud
 
-### DYI
+CockroachDB Dedicated Cloud clusters enforce IP allow-listing, which can be configured through the Web Console.
+
+See [Managing Network Authorization for CockroachDB Dedicated](cockroachcloud/network-authorization.html).
+
+### Self-Hosted
+
+CockroachDB deploys with the following default HBA configuration.
+
 
 ```
 # TYPE  DATABASE        USER            ADDRESS                 METHOD
@@ -101,14 +108,4 @@ local   all             all                                     password
 ```
 
 
-not great, password access is insecure, so should be either jump-box secured if you gotta have password only for some reason, or use cert only from jumpbox.
-
-ideally, cert only for external traffic, keep certs on your jumpbox and app sever.
-
-
-## Further Reading
-
-
-- [Tutorial: Secure access to your cockroach cloud cluster using CockroachDB Authentication Configuration (HBA)](hba-simple-cloud-tutorial)
-- [Tutorial: Secure access to your Self-Deployed CockroachDB cluster using CockroachDB Authentication Configuration (HBA)](hba-simple-cloud-tutorial)
 

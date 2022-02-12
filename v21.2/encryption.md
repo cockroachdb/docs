@@ -106,27 +106,3 @@ To disable encryption, specify `key=plain`. The data keys will be stored in plai
 
 To rotate keys, specify `key=/path/to/my/new-aes-128.key` and `old-key=/path/to/my/old-aes-128.key`. The data keys
 will be decrypted using the old key and then encrypted using the new key. A new data key will also be generated.
-
-## Encrypted backups (Enterprise)
-
-{% include {{ page.version.version }}/backups/encrypted-backup-description.md %}
-
-## Encryption caveats
-
-### Higher CPU utilization
-
-Enabling Encryption at Rest might result in a higher CPU utilization. We estimate a 5-10% increase in CPU utilization.
-
-### Encryption for touchpoints with other services
-
-- S3 backup encryption
-- Encrypted comms with Kafka
-
-
-## See also
-
-- [Client Connection Parameters](connection-parameters.html)
-- [Manual Deployment](manual-deployment.html)
-- [Orchestrated Deployment](orchestration.html)
-- [Local Deployment](secure-a-cluster.html)
-- [Other Cockroach Commands](cockroach-commands.html)

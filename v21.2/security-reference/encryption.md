@@ -100,3 +100,28 @@ A few other recommendations apply for best security practices:
 {{site.data.alerts.callout_danger}}
 Note that backups taken with the [`BACKUP`](backup.html) statement **are not encrypted** even if Encryption at Rest is enabled. Encryption at Rest only applies to the CockroachDB node's data on the local disk. If you want encrypted backups, you will need to encrypt your backup files using your preferred encryption method.
 {{site.data.alerts.end}}
+
+
+## Encrypted backups (Enterprise)
+
+{% include {{ page.version.version }}/backups/encrypted-backup-description.md %}
+
+## Encryption caveats
+
+### Higher CPU utilization
+
+Enabling Encryption at Rest might result in a higher CPU utilization. We estimate a 5-10% increase in CPU utilization.
+
+### Encryption for touchpoints with other services
+
+- S3 backup encryption
+- Encrypted comms with Kafka
+
+
+## See also
+
+- [Client Connection Parameters](connection-parameters.html)
+- [Manual Deployment](manual-deployment.html)
+- [Orchestrated Deployment](orchestration.html)
+- [Local Deployment](secure-a-cluster.html)
+- [Other Cockroach Commands](cockroach-commands.html)
