@@ -7,7 +7,7 @@ docs_area: develop
 
 This page provides an overview for optimizing statement performance in CockroachDB. To get good performance, you need to look at how you're accessing the database through several lenses:
 
-- [SQL statement performance](#sql-statement-performance): This is the most common cause of performance problems and where you should start.
+- [SQL statement performance](#sql-statement-performance-rules): This is the most common cause of performance problems and where you should start.
 - [Schema design](#schema-design): Depending on your SQL schema and the data access patterns of your workload, you may need to make changes to avoid creating transaction contention or hotspots.
 - [Cluster topology](#cluster-topology): As a distributed system, CockroachDB requires you to trade off latency vs. resiliency. This requires choosing the right cluster topology for your needs.
 
@@ -15,9 +15,9 @@ This page provides an overview for optimizing statement performance in Cockroach
 
 To get good SQL statement performance, follow these rules:
 
-- [Rule 1. Scan as few rows as possible](#rule-1-scan-as-few-rows-as-possible). If your application is scanning more rows than necessary for a given statement, it's going to be difficult to scale.
-- [Rule 2. Use the right index](#rule-2-use-the-right-index). Your statement should use an index on the columns in the `WHERE` clause. You want to avoid the performance hit of a full table scan.
-- [Rule 3. Use the right join type](#rule-3-use-the-right-join-type). Depending on the relative sizes of the tables you are querying, the type of [join][joins] may be important. You should only rarely need to specify the join type because the [cost-based optimizer](cost-based-optimizer.html) should pick the best-performing join type if you add the right indexes as described in Rule 2. However, in some circumstances you may want to specify a [join hint](cost-based-optimizer.html#join-hints).
+- [Rule 1. Scan as few rows as possible](apply-statement-performance-rules.html#rule-1-scan-as-few-rows-as-possible). If your application is scanning more rows than necessary for a given statement, it's going to be difficult to scale.
+- [Rule 2. Use the right index](apply-statement-performance-rules.html#rule-2-use-the-right-index). Your statement should use an index on the columns in the `WHERE` clause. You want to avoid the performance hit of a full table scan.
+- [Rule 3. Use the right join type](apply-statement-performance-rules.html#rule-3-use-the-right-join-type). Depending on the relative sizes of the tables you are querying, the type of [join][joins] may be important. You should only rarely need to specify the join type because the [cost-based optimizer](cost-based-optimizer.html) should pick the best-performing join type if you add the right indexes as described in Rule 2. However, in some circumstances you may want to specify a [join hint](cost-based-optimizer.html#join-hints).
 
 These rules apply to an environment where thousands of [OLTP](https://en.wikipedia.org/wiki/Online_transaction_processing) statements are being run per second, and each statement needs to run in milliseconds. These rules are not intended to apply to analytical, or [OLAP](https://en.wikipedia.org/wiki/Online_analytical_processing), statements.
 

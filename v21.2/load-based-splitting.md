@@ -9,7 +9,7 @@ To optimize your cluster's performance, CockroachDB can split frequently accesse
 
 ## Enable and disable load-based splitting
 
-Load-based splitting is enabled by default. To enable and disable load-based splitting, set the `kv.range_split.by_load_enabled` [cluster setting](cluster-setting.html). For example, to disable load-based splitting, execute:
+Load-based splitting is enabled by default. To enable and disable load-based splitting, set the `kv.range_split.by_load_enabled` [cluster setting](cluster-settings.html). For example, to disable load-based splitting, execute:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -26,7 +26,7 @@ You might want to disable load-based splitting when troubleshooting range-relate
 
 ## Control load-based splitting threshold
 
-To control the load-based splitting threshold, set the `kv.range_split.load_qps_threshold` [cluster setting](cluster-setting.html) to the queries-per-second (QPS) at which you want to consider splitting a range (defaults to `2500`). For example:
+To control the load-based splitting threshold, set the `kv.range_split.load_qps_threshold` [cluster setting](cluster-settings.html) to the queries-per-second (QPS) at which you want to consider splitting a range (defaults to `2500`). For example:
 
 {% include copy-clipboard.html %}
 ~~~ sql
