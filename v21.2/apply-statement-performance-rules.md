@@ -1,6 +1,6 @@
 ---
 title: Apply SQL Statement Performance Rules
-summary: How to apply SQL statement performance rules.
+summary: How to apply SQL statement performance rules to optimize a query.
 toc: true
 docs_area: develop
 ---
