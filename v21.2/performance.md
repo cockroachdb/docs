@@ -3,7 +3,7 @@ title: CockroachDB Performance
 summary: An overview of the performance profiles you can expect from CockroachDB.
 toc: true
 toc_not_nested: true
-docs_area: manage
+docs_area: reference.benchmarking
 ---
 
 CockroachDB delivers predictable throughput and latency at all scales on commodity hardware. This page provides an overview of the performance profiles you can expect, based on Cockroach Labs' extensive testing using industry-standard benchmarks like TPC-C and Sysbench.
@@ -11,7 +11,7 @@ CockroachDB delivers predictable throughput and latency at all scales on commodi
 For instructions to reproduce the TPC-C results listed here, see [Performance Benchmarking with TPC-C](performance-benchmarking-with-tpcc-large.html). If you fail to achieve similar results, there is likely a problem in either the hardware, workload, or test design. Instructions to reproduce Sysbench and KV results are coming soon.
 
 {{site.data.alerts.callout_success}}
-This document is about CockroachDB’s performance on benchmarks. For guidance on tuning real workloads, see [SQL Best Practices](performance-best-practices-overview.html), and for guidance on data location techniques to minimize network latency, see [Topology Patterns](topology-patterns.html).  
+This document is about CockroachDB’s performance on benchmarks. For guidance on tuning real workloads, see [SQL Best Practices](performance-best-practices-overview.html), and for guidance on data location techniques to minimize network latency, see [Topology Patterns](topology-patterns.html).
 {{site.data.alerts.end}}
 
 ## Scale

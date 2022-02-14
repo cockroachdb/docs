@@ -7,7 +7,7 @@ key: performance-benchmarking-with-tpc-c-10-warehouses.html
 filter_category: perf_bench_tpc-c
 filter_html: Local
 filter_sort: 1
-docs_area: manage
+docs_area: reference.benchmarking
 ---
 
 This page shows you how to reproduce [CockroachDB's TPC-C performance benchmarking results](performance.html#scale). Across all scales, CockroachDB can process tpmC (new order transactions per minute) at near maximum efficiency. Start by choosing the scale you're interested in:
@@ -161,7 +161,7 @@ The [TPC-C specification](http://www.tpc.org/tpc_documents_current_versions/pdf/
     $ cockroach quit --insecure --host=localhost:26259
     ~~~
 
-2. To restart the cluster at a later time, run the same `cockroach start` commands as earlier from the directory containing the nodes' data stores.  
+2. To restart the cluster at a later time, run the same `cockroach start` commands as earlier from the directory containing the nodes' data stores.
 
     If you do not plan to restart the cluster, you may want to remove the nodes' data stores:
 

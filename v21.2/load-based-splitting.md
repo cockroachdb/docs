@@ -2,43 +2,38 @@
 title: Load-Based Splitting
 summary: To optimize your cluster's performance, CockroachDB can split frequently accessed keys into their own ranges.
 toc: true
-docs_area: reference.performance_optimization
+docs_area: develop
 ---
 
 To optimize your cluster's performance, CockroachDB can split frequently accessed keys into smaller ranges. In conjunction with [load-based rebalancing](architecture/replication-layer.html#load-based-replica-rebalancing), load-based splitting distributes load evenly across your cluster.
 
-## Settings
+## Enable and disable load-based splitting
 
-### Enable/disable load-based splitting
-
-Use [`SET CLUSTER SETTING`](set-cluster-setting.html) to set `kv.range_split.by_load_enabled` to:
-
-- `true` to enable load-based splitting _(default)_
-- `false` to disable load-based splitting
+Load-based splitting is enabled by default. To enable and disable load-based splitting, set the `kv.range_split.by_load_enabled` [cluster setting](cluster-setting.html). For example, to disable load-based splitting, execute:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SET CLUSTER SETTING kv.range_split.by_load_enabled = true;
+> SET CLUSTER SETTING kv.range_split.by_load_enabled = false;
 ~~~
 
-#### When to enable load-based splitting
+### When to enable load-based splitting
 
 Load-based splitting is on by default and beneficial in almost all situations.
 
-#### When to disable load-based splitting
+### When to disable load-based splitting
 
-You might want to disable load-based splitting when troubleshooting range-related issues under the guidance of our developers.
+You might want to disable load-based splitting when troubleshooting range-related issues under the guidance of Cockroach Labs support.
 
-### Control load-based splitting threshold
+## Control load-based splitting threshold
 
-Use [`SET CLUSTER SETTING`](set-cluster-setting.html) to set `kv.range_split.load_qps_threshold` to the queries-per-second (QPS) at which you want to consider splitting a range (defaults to `2500`):
+To control the load-based splitting threshold, set the `kv.range_split.load_qps_threshold` [cluster setting](cluster-setting.html) to the queries-per-second (QPS) at which you want to consider splitting a range (defaults to `2500`). For example:
 
 {% include copy-clipboard.html %}
 ~~~ sql
 > SET CLUSTER SETTING kv.range_split.load_qps_threshold = 2000;
 ~~~
 
-#### When to modify the load-based splitting threshold
+### When to modify the load-based splitting threshold
 
 Some workloads might find splitting ranges more aggressively (i.e., a lower QPS threshold) can improve performance.
 
@@ -48,19 +43,19 @@ On the other hand, some workloads with very large machines might want to increas
 
 Whenever a range exceeds the cluster's setting for `kv.range_split.load_qps_threshold`, the range becomes eligible for load-based splitting.
 
-At that point, we begin gathering per-key metrics to determine whether or not a split would benefit the cluster's performance based on the following heuristics:
+At that point, begin gathering per-key metrics to determine whether or not a split would benefit the cluster's performance based on the following heuristics:
 
-- **Balance factor:** If we perform a split, would there be a balance of load on both sides of the split? For example, if 99% of the traffic is for a single key, splitting it apart from the others in the range will not have a substantial impact on performance. However, if 60% of the queries are for a single key, it is likely to benefit the cluster to move the key to its own range.
+- **Balance factor:** If you perform a split, would there be a balance of load on both sides of the split? For example, if 99% of the traffic is for a single key, splitting it apart from the others in the range will not have a substantial impact on performance. However, if 60% of the queries are for a single key, it is likely to benefit the cluster to move the key to its own range.
 
-- **Split crossing:** If we perform a split, how many queries would have to cross this new range boundary? Because involving multiple ranges in a query incurs greater overhead than a single range, splitting a range could actually degrade performance. For example, if the range is involved in many `SELECT COUNT(*)...` operations, splitting the range in two could negatively impact performance.
+- **Split crossing:** If you perform a split, how many queries would have to cross this new range boundary? Because involving multiple ranges in a query incurs greater overhead than a single range, splitting a range could actually degrade performance. For example, if the range is involved in many `SELECT COUNT(*)...` operations, splitting the range in two could negatively impact performance.
 
-### Determining a split point
+### Determine a split point
 
-Using the per-key metrics gathered once a node exceeds the `kv.range_split.load_qps_threshold` value, we estimate a good place to perform a split by determining the total operations over the first set of keys that exceed the `kv.range_split.load_qps_threshold`.
+Using the per-key metrics gathered once a node exceeds the `kv.range_split.load_qps_threshold` value, estimate a good place to perform a split by determining the total operations over the first set of keys that exceed the `kv.range_split.load_qps_threshold`.
 
 For example, if the operations on a single key exceed the `kv.range_split.load_qps_threshold` value, it's a good candidate to split the range at that point.
 
-Another example is that if the range has equal access among all keys, whose total operation exceeds `kv.range_split.load_qps_threshold`. By splitting the range at the first set of keys whose total operations exceed the threshold, we can reduce the load on the node. If the "other" range still exceeds the threshold, it will eventually be split again.
+Another example is that if the range has equal access among all keys, whose total operation exceeds `kv.range_split.load_qps_threshold`. By splitting the range at the first set of keys whose total operations exceed the threshold, you can reduce the load on the node. If the "other" range still exceeds the threshold, it will eventually be split again.
 
 In both of these examples, the split would only occur if the balance factor and split crossing heuristics determined the split would produce better results.
 

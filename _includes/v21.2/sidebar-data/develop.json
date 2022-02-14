@@ -127,7 +127,7 @@
               ]
             },
             {
-              "title": "Scale to Multi-region",
+              "title": "Scale to Multiple Regions",
               "urls": [
                 "/${VERSION}/multiregion-scale-application.html"
               ]
@@ -238,7 +238,7 @@
       "title": "Transactions",
       "items": [
         {
-          "title": "Overview of Transactions",
+          "title": "Transactions Overview",
           "urls": [
             "/${VERSION}/transactions.html"
           ]
@@ -264,7 +264,7 @@
       ]
     },
     {
-      "title": "Optimize Performance",
+      "title": "Optimize Statement Performance",
       "items":
       [
         {
@@ -274,21 +274,63 @@
           ]
         },
         {
+          "title": "Statement Tuning with <code>EXPLAIN</code>",
+          "urls": [
+            "/${VERSION}/sql-tuning-with-explain.html"
+          ]
+        },
+        {
+          "title": "Apply Statement Performance Rules",
+          "urls": [
+            "/${VERSION}/apply-statement-performance-rules.html"
+          ]
+        },
+        {
           "title": "Performance Best Practices",
           "urls": [
             "/${VERSION}/performance-best-practices-overview.html"
           ]
         },
         {
-          "title": "Use the EXPLAIN Statement",
-          "urls": [
-            "/${VERSION}/sql-tuning-with-explain.html"
-          ]
-        },
-        {
           "title": "Performance Tuning Recipes",
           "urls": [
             "/${VERSION}/performance-recipes.html"
+          ]
+        },
+        {
+          "title": "Performance Features",
+          "items":
+          [
+            {
+              "title": "Overview",
+              "urls": [
+                "/${VERSION}/performance-features-overview.html"
+              ]
+            },
+            {
+              "title": "Indexes",
+              "urls": [
+                "/${VERSION}/indexes.html"
+              ]
+            },
+            {
+              "title": "Cost-Based Optimizer",
+              "urls": [
+                "/${VERSION}/cost-based-optimizer.html"
+              ]
+            },
+            {
+              "title": "Vectorized Execution Engine",
+              "urls": [
+                "/${VERSION}/vectorized-execution.html"
+              ]
+            },
+            {
+              "title": "Load-Based Splitting",
+              "urls": [
+                "/${VERSION}/load-based-splitting.html"
+              ]
+            }
           ]
         }
       ]
