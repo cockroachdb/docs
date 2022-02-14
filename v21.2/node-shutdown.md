@@ -357,7 +357,7 @@ server drained and shutdown completed
 
 ### `OPS`
 
-During node shutdown, progress messages are generated in the [`OPS` logging channel](configure-logs.html#ops-channel). The frequency of these messages is configured with [`server.shutdown.lease_transfer_wait`](#server-shutdown-lease_transfer_wait). [By default](configure-logs.html#default-logging-configuration), the `OPS` logs output to a `cockroach.log` file.
+During node shutdown, progress messages are generated in the [`OPS` logging channel](logging-overview.html#logging-channels). The frequency of these messages is configured with [`server.shutdown.lease_transfer_wait`](#server-shutdown-lease_transfer_wait). [By default](configure-logs.html#default-logging-configuration), the `OPS` logs output to a `cockroach.log` file.
 
 <section class="filter-content" markdown="1" data-scope="decommission">
 Node decommission progress is reported in [`node_decommissioning`](eventlog.html#node_decommissioning) and [`node_decommissioned`](eventlog.html#node_decommissioned) events:

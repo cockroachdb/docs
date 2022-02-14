@@ -139,7 +139,7 @@ You can also see these metrics in [the Clock Offset graph](ui-runtime-dashboard.
 
 ## How do I prepare for planned node maintenance?
 
-Perform a [node shutdown](node-shutdown.html#initiate-node-shutdown) to temporarily stop a node that you plan to restart.
+Perform a [node shutdown](node-shutdown.html#perform-node-shutdown) to temporarily stop a node that you plan to restart.
 
 ## See also
 
