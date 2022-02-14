@@ -1,6 +1,6 @@
 ---
 title: Node Shutdown
-summary: How to drain, decommission, and shut down a node.
+summary: How to drain, decommission, and gracefully shut down a node.
 toc: true
 ---
 
