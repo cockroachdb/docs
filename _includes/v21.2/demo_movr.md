@@ -1,4 +1,4 @@
-Start the [MovR database](movr.html) on a 3 node CockroachDB demo cluster with a larger data set.
+Start the [MovR database](movr.html) on a 3-node CockroachDB demo cluster with a larger data set.
 
 {% include copy-clipboard.html %}
 ~~~ shell
