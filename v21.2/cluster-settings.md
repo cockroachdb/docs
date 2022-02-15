@@ -16,7 +16,7 @@ In contrast to cluster-wide settings, node-level settings apply to a single node
 ## Settings
 
 {{site.data.alerts.callout_danger}}
-Many cluster settings are intended for tuning CockroachDB internals. Before changing these settings, we strongly encourage you to discuss your goals with Cockroach Labs; otherwise, you use them at your own risk.
+These cluster settings have a broad impact and affect all applications, workloads, and users running on a CockroachDB cluster. For some settings, a [session setting](set-vars.html) could be a more appropriate scope.
 {{site.data.alerts.end}}
 
 {% remote_include https://raw.githubusercontent.com/cockroachdb/cockroach/release-21.2/docs/generated/settings/settings.html %}
