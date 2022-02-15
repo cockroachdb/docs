@@ -30,7 +30,7 @@ All products also support the following no-op 'authentication methods' (authenti
 - `trust`: unconditionally rejects the connection attempt
 
 
-## Authentication Configuration
+## Authentication configuration
 
 CockroachDB's authentication behavior is configured using a domain specific language (DSL), shared with PostgreSQL, called host-based authentication (HBA).
 
@@ -38,7 +38,7 @@ A specific CockroachDB cluster's authentication behavior is configured by settin
 
 See the `show cluster setting` and `set cluster setting` cockroach commands.
 
-### HBA Configuration Syntax
+### HBA configuration syntax
 
 Each line of an Authentication Configuration (HBA) manifest defines a rule.
 Lines commented with '#' are ignored.
@@ -76,9 +76,9 @@ Each rule definition contains <i>up to</i> 6 values.
 
 
 
-## Default Behavior
+## Default behavior
 
-### CockroachDB Serverless Cloud
+### CockroachDB Serverless cloud
 
 The default authentication configuration for CockroachDB Serverless Cloud clusters is equivalent to the following configuration
 
@@ -90,7 +90,7 @@ The default authentication configuration for CockroachDB Serverless Cloud cluste
 
 This is convenient for quick usage and experimentation, but is not suitable for clusters containing valuable data. It is best practice to [configure SQL authentication for hardened CockroachDB Serverless cluster security](config-secure-hba.html).
 
-### CockroachDB Dedicated Cloud
+### CockroachDB Dedicated cloud
 
 CockroachDB Dedicated Cloud clusters enforce IP allow-listing, which can be configured through the Web Console.
 

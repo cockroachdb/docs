@@ -132,9 +132,6 @@ Take the following points into consideration while granting privileges to roles 
 <span class="version-tag">New in v21.2</span>: By default, CockroachDB grants the current role/user `ALL` privileges on the objects that they create.
 
 
-
-
-
 To view the default privileges for a role, or for a set of roles, use the [`SHOW DEFAULT PRIVILEGES`](show-default-privileges.html) statement.
 
 To change the default privileges on objects that a user creates, use the [`ALTER DEFAULT PRIVILEGES`](alter-default-privileges.html) statement.

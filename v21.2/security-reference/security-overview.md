@@ -5,7 +5,7 @@ toc: true
 docs_area: security-reference
 ---
 
-## CockroachDB Security Features
+## CockroachDB security features
 
 The following security features are available in the current [CockroachDB release](../releases/index.html), and in all Cloud offerings.
 
@@ -17,7 +17,7 @@ Security Domain | Description
 Non-Repudiability | [Audit logging](../sql-audit-logging.html) prevents data from being untraceably changed.
 [Avaliability/Resilience](../demo-fault-tolerance-and-recovery.html) | CockroachDB is unique in being a disributed-from-the-ground-up SQL database. A cluster is considered tolerant to failure the amount of nodes that leaves the majority functional. Large, well distributed clusters deployed in reliable infrastructure across multiple regions of the globe&mdash;such as those operated by Cockroach Labs, are highly resilient even in the face of catastrophic infrastructure failures.
 
-## Comparison of Security Features in Cockroach Cloud Serverless vs Dedicated Offerings
+## Comparison of security features in Cockroach Cloud Serverless vs Dedicated offerings
 
 CockroachDB Serverless (beta) provides multi-tenant clusters running on Google Cloud Platform (GCP) or Amazon Web Services (AWS) machines. Compute and networking resources are shared.
 
@@ -109,7 +109,7 @@ CockroachDB Dedicated offers a single-tenant cluster running in its own Virtual 
 </table>
 
 
-## Understanding Database Security
+## Understanding database security
 
 An insecure database cluster comes with serious risks:
 
