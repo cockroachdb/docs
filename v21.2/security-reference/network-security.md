@@ -12,7 +12,7 @@ There are two ways to connect to a CockroachDB Cluster, whether it has been depl
 
 All SQL connections are TLS encrypted (unless an environment has been deployed in `--insecure` mode). See [Encryption in CockroachDB](security-reference/encryption.html).
 
-## CockroachDB Serverless Cloud
+## CockroachDB Serverless cloud
 
 For CockroachDB Cloud offerings (Serverless and Dedicated) the Web Console is found at [https://cockroachlabs.cloud](https://cockroachlabs.cloud).
 
@@ -25,7 +25,7 @@ By default, CockroachDB Serverless clusters accepts web and SQL connections from
 Cockroach Serverless currently only accepts password authentication for web console and SQL client access.
 
 
-## CockroachDB Dedicated Cloud
+## CockroachDB Dedicated cloud
 
 For CockroachDB Cloud offerings (Serverless and Dedicated) the Web Console is found at [https://cockroachlabs.cloud](https://cockroachlabs.cloud).
 
