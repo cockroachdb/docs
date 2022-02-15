@@ -337,6 +337,8 @@ layout: null
 /docs/stable/orchetrate-cockroachdb-with-kubernetes-multi-region.html /docs/stable/orchestrate-cockroachdb-with-kubernetes-multi-cluster.md 301
 
 # Removed pages
+/docs/stable/hello-world-example-apps.html /docs/stable/example-apps.html 301
+/docs/cockroachcloud/hello-world-example-apps.html /docs/stable/example-apps.html 301
 /docs/*/contribute-to-cockroachdb.html https://wiki.crdb.io/wiki/spaces/CRDB/pages/73204033/Contributing+to+CockroachDB 301!
 /docs/*/deploy-a-test-cluster.html /docs/cockroachcloud/quickstart.html 301
 /docs/v20.1/demo-follow-the-workload.html /docs/v20.1/topology-follow-the-workload.html 301
