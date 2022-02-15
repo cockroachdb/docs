@@ -16,17 +16,27 @@ Future releases will also allow authentication to be configured for specific dat
 
 ## Currently supported authentication methods by product
 
-- <b>CockroachDB Cloud</b>
-	- password
-- <b>Self-Hosted CockroachDB</b>
-	- password
-	- certificate (TLS client certificate)
-- <b>Self-Hosted CockroachDB Enterprise</b>
-	- password
-	- certificate (TLS client certificate)
-	- GSS
+### CockroachDB Cloud
 
-All products also support the `reject` and `trust` auth methods, the former of which denies the authentication attempt altogether, and the latter of which grants access without authentication of the presented user identity.
+- password
+
+
+### Self-Hosted CockroachDB
+
+- password
+- certificate (TLS client certificate)
+
+### Self-Hosted CockroachDB Enterprise
+
+- password
+- certificate (TLS client certificate)
+- GSS
+
+All products also support the following values for 'authentication method' (although the name is inaccurate because in either case authentication is not performed):
+
+- `reject`: unconditionally rejects the connection attempt
+- `trust`: unconditionally rejects the connection attempt
+
 
 ## Authentication Configuration
 
@@ -86,14 +96,13 @@ The default authentication configuration for CockroachDB Serverless Cloud cluste
 
 ```
 
-This is convenient for quick usage and experimentation, but is not suitable for clusters containing valuable data.
-
+This is convenient for quick usage and experimentation, but is not suitable for clusters containing valuable data. It is best practice to [configure SQL authentication for hardened CockroachDB Serverless cluster security](config-secure-hba.html).
 
 ### CockroachDB Dedicated Cloud
 
 CockroachDB Dedicated Cloud clusters enforce IP allow-listing, which can be configured through the Web Console.
 
-See [Managing Network Authorization for CockroachDB Dedicated](cockroachcloud/network-authorization.html).
+See [Managing Network Authorization for CockroachDB Dedicated](../cockroachcloud/network-authorization.html).
 
 ### Self-Hosted
 
