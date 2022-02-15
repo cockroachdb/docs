@@ -141,4 +141,5 @@ To prevent the optimizer from planning a full scan for a table, specify the `NO_
 SELECT * FROM table_name@{NO_FULL_SCAN};
 ~~~
 
-To prevent a full scan of a partial index, specify `NO_FULL_SCAN` in combination with a specific partial index using `FORCE_INDEX=index_name`.
+To prevent a full scan of a [partial index](#force-partial-index-scan), you must specify `NO_FULL_SCAN` _in combination with_ the partial index using `FORCE_INDEX=index_name`.
+If you specify only `NO_FULL_SCAN`, a full scan of a partial index may be planned.
