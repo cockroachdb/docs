@@ -15,6 +15,7 @@ Future releases will also allow authentication to be configured for specific dat
 
 ## Currently supported authentication methods by product
 
+<<<<<<< HEAD
 Authentication Method | CockroachDB Cloud | Supported in CockroachDB Core | CockroachDB Enterprise Support  
 -------------|------------|-----|----
 password              |      ✓              |           ✓                    |    ✓
@@ -22,6 +23,17 @@ TLS cert              |      &nbsp;         |           ✓                    |
 GSS                   |      &nbsp;         |           &nbsp;               |    ✓
 
 
+=======
+
+
+Authentication Method | CockroachDB Cloud | Supported in CockroachDB Core | CockroachDB Enterprise Support  
+-------------|------------|-----|----
+password              |      ✓              |           ✓                    |    ✓
+TLS cert              |      &nbsp;         |           ✓                    |    ✓
+GSS                   |      &nbsp;         |           &nbsp;               |    ✓
+
+
+>>>>>>> 9933bdc50 ( Finish authentication configruation for serverless cluster security tutorial)
 All products also support the following no-op 'authentication methods' (authentication is not actually performed):
 
 - `reject`: unconditionally rejects the connection attempt

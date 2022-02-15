@@ -5,6 +5,7 @@ toc: true
 docs_area: manage.security
 ---
 
+## Introduction: Why customize your authentication configuration?
 
 ## Introduction: Why customize your authentication configuration?
 =======
@@ -95,7 +96,13 @@ host    all       all    all                reject
 
 ```
 
+<<<<<<< HEAD
 ## Confirm the IP restriction
+=======
+
+## Confirm the IP resctriction
+
+>>>>>>> 9933bdc50 ( Finish authentication configruation for serverless cluster security tutorial)
 
 Exit the database shell by typing `\q`, and then try to re-establish the connection. This time the attempt will be rejected because we are not making the attempt from the sole allowed IP address.
 
