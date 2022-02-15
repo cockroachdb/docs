@@ -15,8 +15,6 @@ Future releases will also allow authentication to be configured for specific dat
 
 ## Currently supported authentication methods by product
 
-
-
 Authentication Method | CockroachDB Cloud | Supported in CockroachDB Core | CockroachDB Enterprise Support  
 -------------|------------|-----|----
 password              |      ✓              |           ✓                    |    ✓
