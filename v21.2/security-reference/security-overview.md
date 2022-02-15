@@ -47,7 +47,7 @@ CockroachDB Dedicated offers a single-tenant cluster running in its own Virtual 
   <td><a href="https://openid.net/connect/">OIDC authentication</a></td>
  </tr>
  <tr>
-  <td>Certificate protocol</td>
+  <td>&nbsp;</td>
   <td>&nbsp;</td>
   <td>✓</td>
   <td><a href="https://en.wikipedia.org/wiki/Online_Certificate_Status_Protocol">OCSP</a> certificate revocation protocol</td>

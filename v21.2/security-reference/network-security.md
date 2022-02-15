@@ -29,7 +29,7 @@ Cockroach Serverless currently only accepts password authentication for web cons
 
 For CockroachDB Cloud offerings (Serverless and Dedicated) the Web Console is found at [https://cockroachlabs.cloud](https://cockroachlabs.cloud).
 
-CockroachDB Dedicated offers additional network security by enforcing explicit IP allow-listing for SQL client access. Additionally, network access can be enabled for CockroachDB Dedicated Cloud clusters in Google Cloud via [VPC Network Peering](https://cloud.google.com/vpc/docs/vpc-peering), or in Amazon Web Services via [AWS PriveLink](https://aws.amazon.com/privatelink).
+CockroachDB Dedicated enforces network security by requiring explicit IP allow-listing for SQL client access. Additionally, network access can be enabled for CockroachDB Dedicated Cloud clusters in Google Cloud via [VPC Network Peering](https://cloud.google.com/vpc/docs/vpc-peering), or in Amazon Web Services via [AWS PriveLink](https://aws.amazon.com/privatelink).
 
 See [Managing Network Authorization for CockroachDB Dedicated](cockroachcloud/network-authorization.html).
 
