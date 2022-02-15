@@ -5,34 +5,26 @@ toc: true
 docs_area:
 ---
 
-CockroachDB supports fine-grained configuration of its authentication behavior, in terms of combinations of: 
+CockroachDB allows fine grained configuration of which attempts to connect with the database it will allow to proceed to the authentication stage, and which authentication methods it will accept, based on:
 
-- WHO is allowed to connect (SQL users)
-- from WHERE on the internet (IP address ranges)
-- HOW they prove their identity (using which authentication methods)
+- WHO is making the attempt (SQL user), and 
+- WHERE on the internet (IP Address) the attempt is coming from.
 
 Future releases will also allow authentication to be configured for specific databases within clusters. Note that CockroachDB already supports fine-grained authorization at the database and table level via permissions grants.
 
 
 ## Currently supported authentication methods by product
 
-### CockroachDB Cloud
-
-- password
 
 
-### Self-Hosted CockroachDB
+Authentication Method | CockroachDB Cloud | Supported in CockroachDB Core | CockroachDB Enterprise Support  
+-------------|------------|-----|----
+password              |      ✓              |           ✓                    |    ✓
+TLS cert              |      &nbsp;         |           ✓                    |    ✓
+GSS                   |      &nbsp;         |           &nbsp;               |    ✓
 
-- password
-- certificate (TLS client certificate)
 
-### Self-Hosted CockroachDB Enterprise
-
-- password
-- certificate (TLS client certificate)
-- GSS
-
-All products also support the following values for 'authentication method' (although the name is inaccurate because in either case authentication is not performed):
+All products also support the following no-op 'authentication methods' (authentication is not actually performed):
 
 - `reject`: unconditionally rejects the connection attempt
 - `trust`: unconditionally rejects the connection attempt
