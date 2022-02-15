@@ -54,7 +54,7 @@
             ]
           },
           {
-            "title": "Admission control",
+            "title": "Admission Control",
             "urls": [
               "/${VERSION}/architecture/admission-control.html"
             ]
