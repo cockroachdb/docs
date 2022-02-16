@@ -62,7 +62,7 @@ Field        |  Description
 -------------|-----------------------------------------------------------------------------------------------------
 `role_name`  | The name of the role.
 `member`     | The users in the role.
-`is_admin`   | If `true`, the role is an [admin](authorization.html#role-admin) role.
+`is_admin`   | If `true`, the role is an [admin](security-reference/(security-reference/authorization.html#role-admin)) role.
 
 ## Required privileges
 

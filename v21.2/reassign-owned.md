@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `REASSIGN OWNED` statement changes the [ownership](authorization.html#object-ownership) of all database objects (i.e., tables, types, or schemas) in the current database that are currently owned by a specific [role](security-reference/authorization.html#roles) or [user](security-reference/authorization.html#sql-users).
+The `REASSIGN OWNED` statement changes the [ownership](security-reference/authorization.html#object-ownership) of all database objects (i.e., tables, types, or schemas) in the current database that are currently owned by a specific [role](security-reference/authorization.html#roles) or [user](security-reference/authorization.html#sql-users).
 
 {% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 

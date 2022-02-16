@@ -38,7 +38,7 @@ Unless a role is a member of the admin role, additional [privileges](#parameters
 
 - To create other roles, a role must have the [`CREATEROLE`](#create-a-role-that-can-create-other-roles-and-manage-authentication-methods-for-the-new-roles) role option.
 - To add the `LOGIN` capability for other roles so that they may log in as users, a role must also have the [`CREATELOGIN`](#create-a-role-that-can-create-other-roles-and-manage-authentication-methods-for-the-new-roles) role option.
-- To be able to grant or revoke membership to a role for additional roles, a member of the role must be set as a [role admin](authorization.html#role-admin) for that role.
+- To be able to grant or revoke membership to a role for additional roles, a member of the role must be set as a [role admin](security-reference/(security-reference/authorization.html#role-admin)) for that role.
 
 ## Synopsis
 
@@ -331,7 +331,7 @@ root                       |                                       | {admin}
 ## See also
 
 - [Authorization](authorization.html)
-- [Authorization Best Practices](authorization.html#authorization-best-practices)
+- [Authorization Best Practices](security-reference/authorization.html#authorization-best-practices)
 - [`DROP ROLE`](drop-role.html)
 - [`GRANT`](grant.html)
 - [`REVOKE`](revoke.html)

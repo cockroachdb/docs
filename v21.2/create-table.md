@@ -15,8 +15,8 @@ The `CREATE TABLE` [statement](sql-statements.html) creates a new table in a dat
 To create a table, the user must have one of the following:
 
 - Membership to the [`admin`](security-reference/authorization.html#roles) role for the cluster.
-- Membership to the [owner](authorization.html#object-ownership) role for the database.
-- The [`CREATE` privilege](authorization.html#supported-privileges) on the database.
+- Membership to the [owner](security-reference/authorization.html#object-ownership) role for the database.
+- The [`CREATE` privilege](security-reference/authorization.html#supported-privileges) on the database.
 
 ## Synopsis
 

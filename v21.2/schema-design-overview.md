@@ -88,7 +88,7 @@ For guidance on using temporary objects, see [Temporary Tables](temporary-tables
 
 CockroachDB supports both user-based and role-based access control. With roles, or with direct assignment, you can grant a [SQL user](security-reference/authorization.html#sql-users) the [privileges](authorization.html#privileges) required to view, modify, and delete database schema objects.
 
-By default, the user that creates an object is that object's *owner*. [Object owners](authorization.html#object-ownership) have all privileges required to view, modify, or delete that object and the data stored within it.
+By default, the user that creates an object is that object's *owner*. [Object owners](security-reference/authorization.html#object-ownership) have all privileges required to view, modify, or delete that object and the data stored within it.
 
 For more information about ownership, privileges, and authorization, see [Authorization](authorization.html).
 

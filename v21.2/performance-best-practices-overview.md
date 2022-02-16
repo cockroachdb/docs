@@ -267,7 +267,7 @@ See [Subquery Performance Best Practices](subqueries.html#performance-best-pract
 
 ## Authorization best practices
 
-See [Authorization Best Practices](authorization.html#authorization-best-practices).
+See [Authorization Best Practices](security-reference/authorization.html#authorization-best-practices).
 
 ## Table scan best practices
 
