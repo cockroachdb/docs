@@ -7,6 +7,7 @@ referral_id: docs_node_prisma
 filter_category: crud_js
 filter_html: Use <strong>Prisma</strong>
 filter_sort: 4
+docs_area: get_started
 ---
 
 {% include filter-tabs.md %}
