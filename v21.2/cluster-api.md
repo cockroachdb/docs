@@ -19,7 +19,7 @@ Endpoint | Name | Description
 --- | --- | ---
 [`/databases`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/listDatabases) | List databases | Get all databases in the cluster.
 [`/databases/{database}`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/databaseDetails) | Get database details | Get the descriptor ID of a specified database.
-[`/databases/{database}/grants`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/databaseGrants) | List database grants | List all [privileges](authorization.html#assign-privileges) granted to users for a specified database.
+[`/databases/{database}/grants`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/databaseGrants) | List database grants | List all [privileges](security-reference/authorization#managing-privileges) granted to users for a specified database.
 [`/databases/{database}/tables`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/databaseTables) | List database tables | List all tables in a specified database.
 [`/databases/{database}/tables/{table}`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/tableDetails) | Get table details | Get details on a specified table, including schema, grants, indexes, range count, and zone configuration.
 [`/events`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/listEvents) | List events | List the latest [events](eventlog.html) on the cluster, in descending order.

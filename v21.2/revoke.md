@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `REVOKE` [statement](sql-statements.html) revokes [privileges](authorization.html#assign-privileges) from [users](authorization.html#create-and-manage-users) and/or [roles](authorization.html#create-and-manage-roles). For the list of privileges that can be granted to and revoked from users and roles, see [`GRANT`](grant.html).
+The `REVOKE` [statement](sql-statements.html) revokes [privileges](security-reference/authorization#managing-privileges) from [users](authorization.html#create-and-manage-users) and/or [roles](authorization.html#create-and-manage-roles). For the list of privileges that can be granted to and revoked from users and roles, see [`GRANT`](grant.html).
 
 You can use `REVOKE` to directly revoke privileges from a role or user, or you can revoke membership to an existing role, which effectively revokes that role's privileges.
 
@@ -27,7 +27,7 @@ Parameter                   | Description
 `target_types`              | A comma-separated list of [user-defined types](create-type.html).
 `schema_name_list`          | A comma-separated list of [schemas](create-schema.html).
 `ALL TABLES IN SCHEMA`      | <span class="version-tag">New in v21.2</span>: Revoke privileges on all tables in a schema or list of schemas.
-`privilege_list`            | A comma-separated list of [privileges](authorization.html#assign-privileges) to revoke.
+`privilege_list`            | A comma-separated list of [privileges](security-reference/authorization#managing-privileges) to revoke.
 `WITH ADMIN OPTION`         | Designate the user as a role admin. Role admins can [grant](grant.html) or revoke membership for the specified role.
 
 ## Supported privileges

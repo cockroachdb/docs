@@ -29,7 +29,7 @@ Parameter | Description
 
 ## Required privileges
 
-- To create a type, the user must have the `CREATE` [privilege](authorization.html#assign-privileges) on the parent database.
+- To create a type, the user must have the `CREATE` [privilege](security-reference/authorization.html#managing-privileges) on the parent database.
 - To use a user-defined type in a table (e.g., when defining a column's type), the user must have the `USAGE` privilege on the type.
 
 ## Example

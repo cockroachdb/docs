@@ -22,7 +22,7 @@ To create an index on the schemaless data in a [`JSONB`](jsonb.html) column or o
 
 ## Required privileges
 
-The user must have the `CREATE` [privilege](authorization.html#assign-privileges) on the table.
+The user must have the `CREATE` [privilege](security-reference/authorization.html#managing-privileges) on the table.
 
 ## Synopsis
 

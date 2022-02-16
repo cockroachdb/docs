@@ -173,7 +173,7 @@ Column | Description
 `table_schema` | Name of the schema containing the table that contains the column.
 `table_name` | Name of the table.
 `column_name` | Name of the column.
-`privilege_type` | Name of the [privilege](authorization.html#assign-privileges).
+`privilege_type` | Name of the [privilege](security-reference/authorization.html#managing-privileges).
 `is_grantable` | Always `NULL` (unsupported by CockroachDB).
 
 ### column_udt_usage
@@ -248,7 +248,7 @@ Column | Description
 
 ### role_table_grants
 
-`role_table_grants` identifies which [privileges](authorization.html#assign-privileges) have been granted on tables or views where the grantor
+`role_table_grants` identifies which [privileges](security-reference/authorization#managing-privileges) have been granted on tables or views where the grantor
 or grantee is a currently enabled role. This table is identical to [`table_privileges`](#table_privileges).
 
 Column | Description
@@ -258,20 +258,20 @@ Column | Description
 `table_catalog` | Name of the database containing the table.
 `table_schema` | Name of the schema containing the table.
 `table_name` | Name of the table.
-`privilege_type` | Name of the [privilege](authorization.html#assign-privileges).
+`privilege_type` | Name of the [privilege](security-reference/authorization.html#managing-privileges).
 `is_grantable` | Always `NULL` (unsupported by CockroachDB).
 `with_hierarchy` | Always `NULL` (unsupported by CockroachDB).
 
 ### schema_privileges
 
-`schema_privileges` identifies which [privileges](authorization.html#assign-privileges) have been granted to each user at the database level.
+`schema_privileges` identifies which [privileges](security-reference/authorization#managing-privileges) have been granted to each user at the database level.
 
 Column | Description
 -------|-----------
 `grantee` | Username of user with grant.
 `table_catalog` | Name of the database containing the constrained table.
 `table_schema` | Name of the schema containing the constrained table.
-`privilege_type` | Name of the [privilege](authorization.html#assign-privileges).
+`privilege_type` | Name of the [privilege](security-reference/authorization.html#managing-privileges).
 `is_grantable` | Always `NULL` (unsupported by CockroachDB).
 
 ### schemata
@@ -348,7 +348,7 @@ Column | Description
 
 ### table_privileges
 
-`table_privileges` identifies which [privileges](authorization.html#assign-privileges) have been granted to each user at the table level.
+`table_privileges` identifies which [privileges](security-reference/authorization#managing-privileges) have been granted to each user at the table level.
 
 Column | Description
 -------|-----------
@@ -357,7 +357,7 @@ Column | Description
 `table_catalog` | Name of the database that the grant applies to.
 `table_schema` | Name of the schema that the grant applies to.
 `table_name` | Name of the table that the grant applies to.
-`privilege_type` | Type of [privilege](authorization.html#assign-privileges): `SELECT`, `INSERT`, `UPDATE`, `DELETE`, `TRUNCATE`, `REFERENCES`, or `TRIGGER`.
+`privilege_type` | Type of [privilege](security-reference/authorization.html#managing-privileges): `SELECT`, `INSERT`, `UPDATE`, `DELETE`, `TRUNCATE`, `REFERENCES`, or `TRIGGER`.
 `is_grantable` | Always `NULL` (unsupported by CockroachDB).
 `with_hierarchy` | Always `NULL` (unsupported by CockroachDB).
 
@@ -383,17 +383,17 @@ Column | Description
 `type_catalog` | Name of the database that contains the type (always the current database).
 `type_schema` | Name of the schema that contains the type.
 `type_name` | Name of the type.
-`privilege_type` | Type of [privilege](authorization.html#assign-privileges).
+`privilege_type` | Type of [privilege](security-reference/authorization.html#managing-privileges).
 
 ### user_privileges
 
-`user_privileges` identifies global [privileges](authorization.html#assign-privileges).
+`user_privileges` identifies global [privileges](security-reference/authorization#managing-privileges).
 
 Column | Description
 -------|-----------
 `grantee` | Username of user with grant.
 `table_catalog` | Name of the database that the privilege applies to.
-`privilege_type` | Type of [privilege](authorization.html#assign-privileges).
+`privilege_type` | Type of [privilege](security-reference/authorization.html#managing-privileges).
 `is_grantable` | Always `NULL` (unsupported by CockroachDB).
 
 ### views

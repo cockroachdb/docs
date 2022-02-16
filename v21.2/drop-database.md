@@ -11,7 +11,7 @@ The `DROP DATABASE` [statement](sql-statements.html) removes a database and all 
 
 ## Required privileges
 
-The user must have the `DROP` [privilege](authorization.html#assign-privileges) on the database and on all tables in the database.
+The user must have the `DROP` [privilege](security-reference/authorization.html#managing-privileges) on the database and on all tables in the database.
 
 ## Synopsis
 

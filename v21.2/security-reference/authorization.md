@@ -5,7 +5,7 @@ toc: true
 docs_area: security-reference
 ---
 
-User authorization is the act of defining access policies for authenticated CockroachDB users. CockroachDB allows you to create, manage, and remove your cluster's SQL [users](#sql-users) and assign SQL-level [privileges](#assign-privileges) to the users. Additionally, you can use [role-based access management (RBAC)](#roles) for simplified user management.
+User authorization is the act of defining access policies for authenticated CockroachDB users. CockroachDB allows you to create, manage, and remove your cluster's SQL [users](#sql-users) and assign SQL-level [privileges](#managing-privileges) to the users. Additionally, you can use [role-based access management (RBAC)](#roles) for simplified user management.
 
 
 A SQL user can interact with a CockroachDB database using the [built-in SQL shell](cockroach-sql.html) or through an application.
@@ -96,7 +96,7 @@ All CockroachDB objects (such as databases, tables, schemas, and types) must hav
 
 All objects that do not have owners (for example, objects created before upgrading to v20.2) have `admin` set as the default owner, with the exception of system objects. System objects without owners have `node` as their owner.
 
-To allow another user to use the object, the owner can [assign privileges](#assign-privileges) to the other user. Members of the `admin` role have `ALL` privileges on all objects.
+To allow another user to use the object, the owner can [assign privileges](#managing-privileges) to the other user. Members of the `admin` role have `ALL` privileges on all objects.
 
 Users that [own objects](authorization.html#privileges) cannot be dropped until the [ownership is transferred to another user](owner-to.html#change-a-databases-owner).
 
@@ -110,7 +110,7 @@ Roles and users can be granted the following privileges:
 
 {% include {{ page.version.version }}/sql/privileges.md %}
 
-### Assign privileges
+### Managing privileges
 
 Use the [`GRANT`](grant.html) and [`REVOKE`](revoke.html) statements to manage privileges for users and roles.
 
@@ -144,7 +144,7 @@ For more examples of default privileges, see the examples on the [`SHOW DEFAULT 
 
 We recommend the following best practices to set up access control for your clusters:
 
-- Use the `root` user only for database administration tasks such as creating and managing other [users](#sql-users), creating and managing [roles](#roles), and creating and managing databases. Do not use the `root` user for applications; instead, create users or roles with specific [privileges](#assign-privileges) based on your application’s access requirements.
+- Use the `root` user only for database administration tasks such as creating and managing other [users](#sql-users), creating and managing [roles](#roles), and creating and managing databases. Do not use the `root` user for applications; instead, create users or roles with specific [privileges](#managing-privileges) based on your application’s access requirements.
 - Use the ["least privilege model"](https://en.wikipedia.org/wiki/Principle_of_least_privilege) to grant privileges to users and roles.
 
  <span class="version-tag">New in v21.2</span>: For improved performance, CockroachDB securely caches [authentication information for users](authentication.html#client-authentication). To limit the authentication latency of users logging into a new session, we recommend the following best practices for `ROLE` operations ([`CREATE ROLE`](create-role.html), [`ALTER ROLE`](alter-role.html), [`DROP ROLE`](drop-role.html)):

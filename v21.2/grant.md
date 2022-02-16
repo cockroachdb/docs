@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `GRANT` [statement](sql-statements.html) controls each [role](authorization.html#create-and-manage-roles) or [user's](authorization.html#create-and-manage-users) SQL [privileges](authorization.html#assign-privileges) for interacting with specific [databases](create-database.html), [schemas](create-schema.html), [tables](create-table.html), or [user-defined types](enum.html). For privileges required by specific statements, see the documentation for the respective [SQL statement](sql-statements.html).
+The `GRANT` [statement](sql-statements.html) controls each [role](authorization.html#create-and-manage-roles) or [user's](authorization.html#create-and-manage-users) SQL [privileges](security-reference/authorization#managing-privileges) for interacting with specific [databases](create-database.html), [schemas](create-schema.html), [tables](create-table.html), or [user-defined types](enum.html). For privileges required by specific statements, see the documentation for the respective [SQL statement](sql-statements.html).
 
 You can use `GRANT` to directly grant privileges to a role or user, or you can grant membership to an existing role, which grants that role's privileges to the grantee.
 
@@ -27,7 +27,7 @@ Parameter                 | Description
 `target_types`            | A comma-separated list of [user-defined types](create-type.html).
 `schema_name_list`        | A comma-separated list of [schemas](create-schema.html).
 `ALL TABLES IN SCHEMA`    | <span class="version-tag">New in v21.2</span>: Grant privileges on all tables in a schema or list of schemas.
-`privilege_list`          | A comma-separated list of [privileges](authorization.html#assign-privileges) to grant.
+`privilege_list`          | A comma-separated list of [privileges](security-reference/authorization#managing-privileges) to grant.
 `WITH ADMIN OPTION`       | Designate the user as a role admin. Role admins can grant or [revoke](revoke.html) membership for the specified role.
 
 ## Supported privileges

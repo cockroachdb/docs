@@ -17,7 +17,7 @@ CockroachDB also supports `SET SCHEMA` as an [alias for setting the `search_path
 
 ## Required privileges
 
-The user must have the `DROP` [privilege](authorization.html#assign-privileges) on the table, and the `CREATE` privilege on the schema.
+The user must have the `DROP` [privilege](security-reference/authorization.html#managing-privileges) on the table, and the `CREATE` privilege on the schema.
 
 ## Syntax
 

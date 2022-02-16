@@ -19,7 +19,7 @@ The `SHOW USERS` [statement](sql-statements.html) lists the users for all databa
 
 ## Required privileges
 
-The user must have the [`SELECT`](select-clause.html) [privilege](authorization.html#assign-privileges) on the `system.users` and `system.role_members` tables.
+The user must have the [`SELECT`](select-clause.html) [privilege](security-reference/authorization.html#managing-privileges) on the `system.users` and `system.role_members` tables.
 
 ## Example
 

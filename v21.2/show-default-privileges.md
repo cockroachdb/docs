@@ -6,7 +6,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-<span class="version-tag">New in v21.2</span>: The `SHOW DEFAULT PRIVILEGES` [statement](sql-statements.html) lists the [default privileges](authorization.html#default-privileges) for the objects created by [users/roles](authorization.html#roles) in the current database.
+<span class="version-tag">New in v21.2</span>: The `SHOW DEFAULT PRIVILEGES` [statement](sql-statements.html) lists the [default privileges](security-reference/authorization.html#default-privileges) for the objects created by [users/roles](authorization.html#roles) in the current database.
 
 ## Synopsis
 
@@ -27,7 +27,7 @@ If you do not specify a `FOR ...` clause, CockroachDB returns the default privil
 
 ## Required privileges
 
-To show default privileges, the user/role must have any [privilege](authorization.html#assign-privileges) on the current database.
+To show default privileges, the user/role must have any [privilege](security-reference/authorization.html#managing-privileges) on the current database.
 
 ## Examples
 
@@ -89,5 +89,5 @@ To show default privileges, the user/role must have any [privilege](authorizatio
 ## See also
 
 - [`ALTER DEFAULT PRIVILEGES`](alter-default-privileges.html)
-- [Default Privileges](authorization.html#default-privileges)
+- [Default Privileges](security-reference/authorization.html#default-privileges)
 - [Other SQL Statements](sql-statements.html)
