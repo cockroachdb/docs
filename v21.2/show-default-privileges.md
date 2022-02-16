@@ -6,7 +6,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-<span class="version-tag">New in v21.2</span>: The `SHOW DEFAULT PRIVILEGES` [statement](sql-statements.html) lists the [default privileges](security-reference/authorization.html#default-privileges) for the objects created by [users/roles](authorization.html#roles) in the current database.
+<span class="version-tag">New in v21.2</span>: The `SHOW DEFAULT PRIVILEGES` [statement](sql-statements.html) lists the [default privileges](security-reference/authorization.html#default-privileges) for the objects created by [users/roles](security-reference/authorization.html#roles) in the current database.
 
 ## Synopsis
 

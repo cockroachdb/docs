@@ -26,7 +26,7 @@ Parameter | Description
 ## Required privileges
 
 - To rename a schema, the user must be the owner of the schema.
-- To change the owner of a schema, the user must be the current owner of the schema and a member of the new owner [role](authorization.html#roles). The new owner role must also have the `CREATE` [privilege](security-reference/authorization.html#managing-privileges) on the database to which the schema belongs.
+- To change the owner of a schema, the user must be the current owner of the schema and a member of the new owner [role](security-reference/authorization.html#roles). The new owner role must also have the `CREATE` [privilege](security-reference/authorization.html#managing-privileges) on the database to which the schema belongs.
 
 ## Example
 
