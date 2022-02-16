@@ -316,5 +316,5 @@ Note that because the cursor is provided, the initial scan is not performed.
 ## See also
 
 - [Change Data Capture Overview](change-data-capture-overview.html)
-- [Other SQL Statements](sql-statements.html)
+- [SQL Statements](sql-statements.html)
 - [Changefeed Dashboard](ui-cdc-dashboard.html)

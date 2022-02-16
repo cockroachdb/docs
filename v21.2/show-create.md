@@ -397,4 +397,4 @@ The `SHOW CREATE DATABASE` output includes the database regions.
 - [`CREATE VIEW`](create-view.html)
 - [`CREATE TABLE`](create-sequence.html)
 - [Information Schema](information-schema.html)
-- [Other SQL Statements](sql-statements.html)
+- [SQL Statements](sql-statements.html)

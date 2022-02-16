@@ -165,5 +165,5 @@ To move a table from one database to another, use the above syntax but specify t
 - [`SHOW TABLES`](show-tables.html)
 - [`DROP TABLE`](drop-table.html)
 - [`SHOW JOBS`](show-jobs.html)
-- [Other SQL Statements](sql-statements.html)
+- [SQL Statements](sql-statements.html)
 - [Online Schema Changes](online-schema-changes.html)

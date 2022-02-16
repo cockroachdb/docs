@@ -113,4 +113,4 @@ To exclude transactions from the [built-in SQL client](cockroach-sql.html), filt
 ## See also
 
 - [Transactions](transactions.html)
-- [Other SQL Statements](sql-statements.html)
+- [SQL Statements](sql-statements.html)

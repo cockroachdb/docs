@@ -385,4 +385,4 @@ Any tables that previously inherited the database-level privileges retain the pr
 - [`SHOW ROLES`](show-roles.html)
 - [`CREATE USER`](create-user.html)
 - [`DROP USER`](drop-user.html)
-- [Other SQL Statements](sql-statements.html)
+- [SQL Statements](sql-statements.html)

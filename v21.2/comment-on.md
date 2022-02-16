@@ -187,6 +187,6 @@ To view column comments, use [`SHOW INDEXES ... WITH COMMENT`](show-index.html):
 - [`ADD COLUMN`](add-column.html)
 - [`CREATE INDEX`](create-index.html)
 - [`SHOW TABLES`](show-tables.html)
-- [Other SQL Statements](sql-statements.html)
+- [SQL Statements](sql-statements.html)
 - [dBeaver](dbeaver.html)
 - [Online Schema Changes](online-schema-changes.html)

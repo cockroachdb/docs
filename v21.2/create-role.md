@@ -338,5 +338,5 @@ root                       |                                       | {admin}
 - [`SHOW ROLES`](show-roles.html)
 - [`SHOW USERS`](show-users.html)
 - [`SHOW GRANTS`](show-grants.html)
-- [Other SQL Statements](sql-statements.html)
+- [SQL Statements](sql-statements.html)
 - [Online Schema Changes](online-schema-changes.html)

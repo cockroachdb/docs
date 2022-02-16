@@ -306,7 +306,7 @@ You can define the [column families](column-families.html) of a new table create
 - [`CREATE VIEW`](create-view.html)
 - [`INSERT`](insert.html)
 - [`DROP TABLE`](drop-table.html)
-- [Other SQL Statements](sql-statements.html)
+- [SQL Statements](sql-statements.html)
 - [`ALTER PRIMARY KEY`](alter-primary-key.html)
 - [`ALTER TABLE`](alter-table.html)
 - [Online Schema Changes](online-schema-changes.html)

@@ -194,4 +194,4 @@ Alternatively, if you know that you want to cancel the query based on the detail
 
 - [`SHOW STATEMENTS`](show-statements.html)
 - [`CANCEL QUERY`](cancel-query.html)
-- [Other SQL Statements](sql-statements.html)
+- [SQL Statements](sql-statements.html)
