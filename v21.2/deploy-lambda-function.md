@@ -218,13 +218,17 @@ This step is optional, as you do not need to create a new deployment package to 
         --environment Variables={DATABASE_URL='<connection-string>'}
     ~~~
 
+    </section>
+
     Where:
     - `<region>` is the region closest to your CockroachDB deployment.
     - `<account-id>` is your AWS account ID
     - `<connection-string>` is the [connection string to the CockroachDB cluster](#connection-string)
 
+    <section class="filter-content" markdown="1" data-scope="python">
+
     {{site.data.alerts.callout_info}}
-    Psycopg2 requires a trusted CA certificate to connect to {{ site.data.products.serverless }}. Make sure that your connection string points to the local CA certificate in the deployment package.
+    Psycopg2 requires a trusted CA certificate to connect to CockroachDB. Make sure that your connection string points to the local CA certificate in the deployment package (`sslrootcert=./root.crt`).
     {{site.data.alerts.end}}
 
     </section>
