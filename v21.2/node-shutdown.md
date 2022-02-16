@@ -525,7 +525,7 @@ To drain and shut down a node that was started in the foreground with [`cockroac
 
 ### Drain a node manually
 
-You can use [`cockroach node drain`]((cockroach-node.html)) to drain a node separately from decommissioning the node or terminating the node process.
+You can use [`cockroach node drain`](cockroach-node.html) to drain a node separately from decommissioning the node or terminating the node process.
 
 1. Run the `cockroach node drain` command, specifying the ID of the node to drain (and optionally a custom [drain timeout](#drain-timeout) to allow draining more time to complete):
 
