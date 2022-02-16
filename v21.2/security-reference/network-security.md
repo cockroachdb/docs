@@ -10,7 +10,7 @@ There are two ways to connect to a CockroachDB Cluster, whether it has been depl
 - The HTTP client (Web Console)
 - SQL client
 
-All SQL connections are TLS encrypted (unless an environment has been deployed in `--insecure` mode). See [Encryption in CockroachDB](security-reference/encryption.html).
+All SQL connections are TLS encrypted (unless an environment has been deployed in `--insecure` mode). See [Encryption in CockroachDB](encryption.html).
 
 ## CockroachDB Serverless cloud
 
@@ -20,7 +20,7 @@ Once you have created an account, you may provision clusters and perform cluster
 
 To access the SQL client using the Cockroach CLI or a SDK for your programming language of choice, you can obtain a connection string from the Web Console.
 
-By default, CockroachDB Serverless clusters accepts web and SQL connections from anywhere on the internet. Access can be restricted to allow-listed IPs using [CockroachDB Authentication Configuration](security-reference/authentication.html).
+By default, CockroachDB Serverless clusters accepts web and SQL connections from anywhere on the internet. Access can be restricted to allow-listed IPs using [CockroachDB Authentication Configuration](authentication.html).
 
 Cockroach Serverless currently only accepts password authentication for web console and SQL client access.
 

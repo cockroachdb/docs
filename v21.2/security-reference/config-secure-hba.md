@@ -24,7 +24,7 @@ Together, these factors leave data in CockroachDB Serverless clusters vulnerable
 
 ## Provision and access your cluster
 
-First, to follow along, [create your own free CockroachDB Serverless cluster](cockroachcloud/create-a-serverless-cluster.html) and obtain the cockroach CLI command to connection parameters from the <b>Connection Info</b> pane. Save the connection comand in a file called roach_sql.sh, and run `chmod +x roach_sql.sh` to make it executable.
+First, to follow along, [create your own free CockroachDB Serverless cluster](../cockroachcloud/create-a-serverless-cluster.html) and obtain the cockroach CLI command to connection parameters from the <b>Connection Info</b> pane. Save the connection comand in a file called roach_sql.sh, and run `chmod +x roach_sql.sh` to make it executable.
 
 Now you can run `./roach_sql.sh` to connect to your database.
 
