@@ -11,7 +11,7 @@ The `COMMENT ON` [statement](sql-statements.html) associates comments to [databa
 
 ## Required privileges
 
-The user must have the `CREATE` [privilege](authorization.html#assign-privileges) on the object they are commenting on.
+The user must have the `CREATE` [privilege](security-reference/authorization.html#managing-privileges) on the object they are commenting on.
 
 ## Synopsis
 

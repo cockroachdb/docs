@@ -19,7 +19,7 @@ Endpoint | Name | Description
 --- | --- | ---
 [`/databases`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/listDatabases) | List databases | Get all databases in the cluster.
 [`/databases/{database}`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/databaseDetails) | Get database details | Get the descriptor ID of a specified database.
-[`/databases/{database}/grants`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/databaseGrants) | List database grants | List all [privileges](authorization.html#assign-privileges) granted to users for a specified database.
+[`/databases/{database}/grants`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/databaseGrants) | List database grants | List all [privileges](security-reference/authorization#managing-privileges) granted to users for a specified database.
 [`/databases/{database}/tables`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/databaseTables) | List database tables | List all tables in a specified database.
 [`/databases/{database}/tables/{table}`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/tableDetails) | Get table details | Get details on a specified table, including schema, grants, indexes, range count, and zone configuration.
 [`/events`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/listEvents) | List events | List the latest [events](eventlog.html) on the cluster, in descending order.
@@ -30,14 +30,14 @@ Endpoint | Name | Description
 [`/ranges/{range_id}`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/listRange) | Get range details | Get detailed technical information on a range. Typically used by Cockroach Labs engineers.
 [`/sessions`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/listSessions) | List sessions | Get SQL session details of all current users or a specified user.
 [`/users`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/listUsers) | List users | List all SQL users on the cluster.
-[`/login`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/login) | Log in | Authenticate as a [SQL role](create-role.html#create-a-role-that-can-log-in-to-the-database) that is a member of the [admin role](authorization.html#admin-role) to retrieve a session token to use with further API calls.
+[`/login`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/login) | Log in | Authenticate as a [SQL role](create-role.html#create-a-role-that-can-log-in-to-the-database) that is a member of the [admin role](security-reference/authorization.html#admin-role) to retrieve a session token to use with further API calls.
 [`/logout`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/logout) | Log out | Invalidate the session token.
 
 ## Requirements
 
 All endpoints except `/health` and `/login` require authentication using a session token. To obtain a session token, you will need:
 
-* A [SQL role](create-role.html) that is a member of the [`admin` role](authorization.html#admin-role) and has login permissions and a password. You will use these credentials with the `/login` endpoint to retrieve the session token which you can then use with further API calls.
+* A [SQL role](create-role.html) that is a member of the [`admin` role](security-reference/authorization.html#admin-role) and has login permissions and a password. You will use these credentials with the `/login` endpoint to retrieve the session token which you can then use with further API calls.
 
 To connect with the API on a secure cluster, you will need:
 

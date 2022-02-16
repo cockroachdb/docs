@@ -2,7 +2,7 @@
 title: CockroachDB Security Overview
 summary: An overview of CockroachDB Security Features
 toc: true
-docs_area: security-reference
+docs_area: reference.security
 ---
 
 ## CockroachDB security features
@@ -74,7 +74,7 @@ CockroachDB Dedicated offers a single-tenant cluster running in its own Virtual 
   <td>All data on {{ site.data.products.db }} is encrypted-at-rest using the tools provided by the cloud provider that your cluster is running in (i.e., <a href="https://cloud.google.com/compute/docs/disks#pd_encryption">persistent disk encryption</a> for GCP and <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html">EBS encryption-at-rest</a> for AWS). Because we are relying on the cloud provider's encryption implementation, we do not enable CockroachDB's <a href="../{{site.versions["stable"]}}/encryption.html#encryption-at-rest-enterprise">internal implementation of encryption-at-rest</a>. This means that encryption will appear to be disabled in the <a href="../{{site.versions["stable"]}}/ui-overview.html">DB Console</a>, since it is unaware of cloud provider encryption.</td>
  </tr>
  <tr>
-   <td rowspan="2" ><a href="user-authorization.html">User Authorization</a></td>
+   <td rowspan="2" ><a href="authorization.html">Authorization</a></td>
    <td>✓</td>
    <td>✓</td>
    <td>Users and privileges</td>
@@ -85,7 +85,7 @@ CockroachDB Dedicated offers a single-tenant cluster running in its own Virtual 
   <td>Role-based access control</td>
  </tr>
  <tr>
-  <td rowspan="3"><a href="network-authorization.html">Network Authorization</a></td>
+  <td rowspan="3"><a href="network-security.html">Network Security</a></td>
   <td>✓</td>
   <td>✓</td>
   <td>SQL-level configuration of allowed IP addresses</td>
@@ -98,7 +98,7 @@ CockroachDB Dedicated offers a single-tenant cluster running in its own Virtual 
  <tr>
   <td>&nbsp;</td>
   <td>✓</td>
-  <td><a href="network-authorization.html">VPC Peering</a> for GCP clusters and <a href="network-authorization.html">AWS PrivateLink</a> for AWS clusters </td>
+  <td><a href="../cockroachcloud/create-your-cluster.html#step-7-enable-vpc-peering-optional">VPC Peering</a> for GCP clusters and AWS PrivateLink for AWS clusters </td>
  </tr>
  <tr>
    <td><a href="../{{site.versions["stable"]}}/cluster-api.html">Cluster API</a></td>
@@ -131,7 +131,7 @@ CockroachDB uses the [TLS 1.2/1.3](https://en.wikipedia.org/wiki/Transport_Layer
 However, it's not enough to protect data in flight; you also need to protect data at rest. That's where CockroachDB's **Encryption at Rest** feature comes into the picture. Encryption at Rest is an Enterprise feature that allows encryption of all files on disk using [AES](https://en.wikipedia.org/wiki/Advanced_Encryption_Standard) in [counter mode](https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#Counter_(CTR)), with all key
 sizes allowed.
 
-Along with authentication and encryption, we also need to allow CockroachDB to restrict access to **authorized** clients (or nodes acting as clients). CockroachDB allows you to create, manage, and remove your cluster's [users](authorization.html#create-and-manage-users) and assign SQL-level [privileges](../authorization.html#assign-privileges) to the users. Additionally, you can use [role-based access management (RBAC)](../authorization.html#create-and-manage-roles) for simplified user management.
+Along with authentication and encryption, we also need to allow CockroachDB to restrict access to **authorized** clients (or nodes acting as clients). CockroachDB allows you to create, manage, and remove your cluster's [users](security-reference/authorization.html#create-and-manage-users) and assign SQL-level [privileges](../security-reference/authorization#managing-privileges) to the users. Additionally, you can use [role-based access management (RBAC)](../authorization.html#create-and-manage-roles) for simplified user management.
 
 Finally, CockroachDB's **SQL audit logging** gives you detailed information about queries being executed against your system. This feature is especially useful when you want to log all queries that are run against a table containing personally identifiable information (PII).
 

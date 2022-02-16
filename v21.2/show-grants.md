@@ -8,8 +8,8 @@ docs_area: reference.sql
 
 The `SHOW GRANTS` [statement](sql-statements.html) lists one of the following:
 
-- The [roles](authorization.html#sql-users) granted to [users](authorization.html#sql-users) in a cluster.
-- The [privileges](authorization.html#assign-privileges) [granted](grant.html) to [users](authorization.html#sql-users) on [databases](create-database.html), [schemas](create-schema.html), [tables](create-table.html), or [user-defined types](enum.html).
+- The [roles](security-reference/authorization.html#sql-users) granted to [users](security-reference/authorization.html#sql-users) in a cluster.
+- The [privileges](security-reference/authorization#managing-privileges) [granted](grant.html) to [users](security-reference/authorization.html#sql-users) on [databases](create-database.html), [schemas](create-schema.html), [tables](create-table.html), or [user-defined types](enum.html).
 
 ## Syntax
 
@@ -36,7 +36,7 @@ SHOW GRANTS ON ROLE [<roles...>] [FOR <users...>]
 Parameter    | Description
 -------------|-----------------------------------------------------------------------------------------------------
 `targets`    | A comma-separated list of database, schema, table, or user-defined type names.<br><br>{{site.data.alerts.callout_info}}To list the privilege grants for all tables in the current database, you can use `SHOW GRANTS ON TABLE *`.{{site.data.alerts.end}}
-`users`      | A comma-separated list of the [users](authorization.html#sql-users) whose privileges or roles you want to show.
+`users`      | A comma-separated list of the [users](security-reference/authorization.html#sql-users) whose privileges or roles you want to show.
 `roles`      | A comma-separated list of the roles whose grants you want to show.
 
 ## Response
@@ -51,7 +51,7 @@ Field            | Description
 `schema_name`    | The name of the schema.
 `table_name`     | The name of the table.
 `type_name`      | The name of the user-defined type.
-`grantee`        | The name of the user or role that was granted the [privilege](authorization.html#assign-privileges).
+`grantee`        | The name of the user or role that was granted the [privilege](security-reference/authorization.html#managing-privileges).
 `privilege_type` | The name of the privilege.
 
 ### Role grants
@@ -62,13 +62,13 @@ Field        |  Description
 -------------|-----------------------------------------------------------------------------------------------------
 `role_name`  | The name of the role.
 `member`     | The users in the role.
-`is_admin`   | If `true`, the role is an [admin](authorization.html#role-admin) role.
+`is_admin`   | If `true`, the role is an [admin](security-reference/(security-reference/authorization.html#role-admin)) role.
 
 ## Required privileges
 
-- No [privileges](authorization.html#assign-privileges) are required to view privileges granted to users.
+- No [privileges](security-reference/authorization#managing-privileges) are required to view privileges granted to users.
 
-- For `SHOW GRANTS ON ROLES`, the user must have the [`SELECT`](select-clause.html) [privilege](authorization.html#assign-privileges) on the system table.
+- For `SHOW GRANTS ON ROLES`, the user must have the [`SELECT`](select-clause.html) [privilege](security-reference/authorization.html#managing-privileges) on the system table.
 
 ## Examples
 
@@ -394,6 +394,6 @@ To list all grants for all users and roles on the current database and its table
 - [`GRANT`](grant.html)
 - [`REVOKE`](revoke.html)
 - [`SHOW GRANTS`](show-grants.html)
-- [Manage Users](authorization.html#create-and-manage-users)
+- [Manage Users](security-reference/authorization.html#create-and-manage-users)
 - [Other Cockroach Commands](cockroach-commands.html)
 - [Information Schema](information-schema.html)

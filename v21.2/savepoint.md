@@ -19,7 +19,7 @@ A savepoint is a marker that defines the beginning of a [nested transaction](tra
 
 ## Required privileges
 
-No [privileges](authorization.html#assign-privileges) are required to create a savepoint. However, privileges are required for each statement within a transaction.
+No [privileges](security-reference/authorization#managing-privileges) are required to create a savepoint. However, privileges are required for each statement within a transaction.
 
 ## Parameters
 

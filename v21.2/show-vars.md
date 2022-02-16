@@ -9,7 +9,7 @@ Use the `SHOW` [statement](sql-statements.html) to display the value of one or a
 
 ## Required privileges
 
-No [privileges](authorization.html#assign-privileges) are required to display the session variables.
+No [privileges](security-reference/authorization#managing-privileges) are required to display the session variables.
 
 ## Synopsis
 

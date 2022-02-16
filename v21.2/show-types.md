@@ -19,7 +19,7 @@ SHOW TYPES
 
 ## Required privileges
 
-The `CONNECT` [privilege](authorization.html#assign-privileges) on the database is required to list any user-defined types in the database.
+The `CONNECT` [privilege](security-reference/authorization.html#managing-privileges) on the database is required to list any user-defined types in the database.
 
 ## Examples
 

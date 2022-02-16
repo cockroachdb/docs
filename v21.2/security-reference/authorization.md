@@ -2,46 +2,54 @@
 title: Authorization in CockroachDB
 summary: Overview of Authorization in CockroachDB
 toc: true
-docs_area: security-reference
+docs_area: reference.security
 ---
 
-User authorization is the act of defining access policies for authenticated CockroachDB users. CockroachDB allows you to create, manage, and remove your cluster's SQL [users](#sql-users) and assign SQL-level [privileges](#assign-privileges) to the users. Additionally, you can use [role-based access management (RBAC)](#roles) for simplified user management.
+User authorization is the act of defining access policies for authenticated CockroachDB users. CockroachDB allows you to create, manage, and remove your cluster's SQL [users](#sql-users) and assign SQL-level [privileges](#managing-privileges) to the users. Additionally, you can use [role-based access management (RBAC)](#roles) for simplified user management.
 
 
-A SQL user can interact with a CockroachDB database using the [built-in SQL shell](cockroach-sql.html) or through an application.
+A SQL user can interact with a CockroachDB database using the [built-in SQL shell](../cockroach-sql.html) or through an application.
 
 
 ## Users and roles
 
 There is no technical distinction between a role or user in CockroachDB. A role/user can:
 
-- be permitted to log in to the [SQL shell](cockroach-sql.html).
+- be permitted to log in to the [SQL shell](../cockroach-sql.html).
 - be granted [privileges](#privileges) to specific actions and database objects.
 - be a member of other users/roles, inheriting their privileges.
 - have other users/roles as members that inherit its privileges.
 
 We refer to these as "roles" when they are created for managing the privileges of their member "users" and not for logging in directly, which is typically reserved for "users".
 
-The SQL statements [`CREATE USER`](create-user.html) and [`CREATE ROLE`](create-role.html) will create the same entity with one exception: `CREATE ROLE` will add the `NOLOGIN` option by default, preventing the user/role from being used to log in. Otherwise, for enhanced PostgreSQL compatibility, the keywords `ROLE` and `USER` can be used interchangeably in SQL statements.
+The SQL statements [`CREATE USER`](../create-user.html) and [`CREATE ROLE`](../create-role.html) will create the same entity with one exception: `CREATE ROLE` will add the `NOLOGIN` option by default, preventing the user/role from being used to log in. Otherwise, for enhanced PostgreSQL compatibility, the keywords `ROLE` and `USER` can be used interchangeably in SQL statements.
 
 Throughout the documentation, however, we will refer to a "user" or "role" based on the intended purpose of the entity.
+
+## SQL users
+
+A SQL user can interact with a CockroachDB database using the [built-in SQL shell](../cockroach-sql.html) or through an application.
+
+### Create and manage users
+
+Use the [`CREATE USER`](../create-user.html) and [`DROP USER`](../drop-user.html) statements to create and remove users, the [`ALTER USER`](../alter-user.html) statement to add or change a user's password and role options, the [`GRANT`](../grant.html) and [`REVOKE`](../revoke.html) statements to manage the user’s privileges, and the [`SHOW USERS`](../show-users.html) statement to list users.
+
+A new user must be granted the required privileges for each database and table that the user needs to access.
+
+{{site.data.alerts.callout_info}}
+By default, a new user belongs to the `public` role and has no privileges other than those assigned to the `public` role. For more information, see [Public role](#public-role).
+{{site.data.alerts.end}}
 
 
 ### `root` user
 
 The `root` user is created by default for each cluster. The `root` user is assigned to the [`admin` role](#admin-role) and has all privileges across the cluster.
 
-For secure clusters, in addition to [generating the client certificate](authentication.html#client-authentication) for the `root` user, you can assign or change the password for the `root` user using the [`ALTER USER`](alter-user.html) statement.
+For secure clusters, in addition to [generating the client certificate](../authentication.html#client-authentication) for the `root` user, you can assign or change the password for the `root` user using the [`ALTER USER`](alter-user.html) statement.
 
 ## Roles
 
 A role is a group of users and/or other roles for which you can grant or revoke privileges as a whole. To simplify access management, create a role and grant privileges to the role, then create SQL users and grant them membership to the role.
-
-
-
-
-
-
 
 
 
@@ -55,7 +63,7 @@ The `admin` and `public` roles exist by default.
 
 The `admin` role is created by default and cannot be dropped. Users belonging to the `admin` role have all privileges for all database objects across the cluster. The `root` user belongs to the `admin` role by default.
 
-An `admin` user is a member of the `admin` role. Only `admin` users can use [`CREATE ROLE`](create-role.html) and [`DROP ROLE`](drop-role.html).
+An `admin` user is a member of the `admin` role. Only `admin` users can use [`CREATE ROLE`](../create-role.html) and [`DROP ROLE`](../drop-role.html).
 
 To assign a user to the `admin` role:
 
@@ -72,7 +80,7 @@ All new users and roles belong to the `public` role by default. You can grant an
 
 #### Role admin
 
-A `role admin` is a member of the role that's allowed to grant or revoke role membership to other users for that specific role. To create a `role admin`, use [`WITH ADMIN OPTION`](grant.html#grant-the-admin-option).
+A `role admin` is a member of the role that's allowed to grant or revoke role membership to other users for that specific role. To create a `role admin`, use [`WITH ADMIN OPTION`](../grant.html#grant-the-admin-option).
 
 {{site.data.alerts.callout_success}}
 The terms “`admin` role” and “`role admin`” can be confusing. A user who is a member of the `admin` role has all privileges on all database objects across the entire cluster, whereas a `role admin` has privileges limited to the role they are a member of. Assign the `admin` role to a SQL user if you want the user to have privileges across the cluster. Make a SQL user the `role admin` if you want to limit the user’s privileges to its current role, but with an option to grant or revoke role membership to other users. This applies to the `admin` role as well - only admin users with the `WITH ADMIN OPTION` can add or remove other users from the `admin` role.
@@ -96,9 +104,9 @@ All CockroachDB objects (such as databases, tables, schemas, and types) must hav
 
 All objects that do not have owners (for example, objects created before upgrading to v20.2) have `admin` set as the default owner, with the exception of system objects. System objects without owners have `node` as their owner.
 
-To allow another user to use the object, the owner can [assign privileges](#assign-privileges) to the other user. Members of the `admin` role have `ALL` privileges on all objects.
+To allow another user to use the object, the owner can [assign privileges](#managing-privileges) to the other user. Members of the `admin` role have `ALL` privileges on all objects.
 
-Users that [own objects](authorization.html#privileges) cannot be dropped until the [ownership is transferred to another user](owner-to.html#change-a-databases-owner).
+Users that [own objects](security-reference/authorization.html#privileges) cannot be dropped until the [ownership is transferred to another user](owner-to.html#change-a-databases-owner).
 
 ## Privileges
 
@@ -110,7 +118,7 @@ Roles and users can be granted the following privileges:
 
 {% include {{ page.version.version }}/sql/privileges.md %}
 
-### Assign privileges
+### Managing privileges
 
 Use the [`GRANT`](grant.html) and [`REVOKE`](revoke.html) statements to manage privileges for users and roles.
 
@@ -138,16 +146,16 @@ To change the default privileges on objects that a user creates, use the [`ALTER
 
 The creator of an object is also the object's [owner](authorization.html#object-ownership). Any roles that are members of the owner role have `ALL` privileges on the object, independent of the default privileges. Altering the default privileges of objects created by a role does not affect that role's privileges as the object's owner. The default privileges granted to other users/roles are always in addition to the ownership (i.e., `ALL`) privileges given to the creator of the object.
 
-For more examples of default privileges, see the examples on the [`SHOW DEFAULT PRIVILEGES`](show-default-privileges.html#examples) and [`ALTER DEFAULT PRIVILEGES`](alter-default-privileges.html#examples) statement pages.
+For more examples of default privileges, see the examples on the [`SHOW DEFAULT PRIVILEGES`](../show-default-privileges.html#examples) and [`ALTER DEFAULT PRIVILEGES`](../alter-default-privileges.html#examples) statement pages.
 
 ## Authorization best practices
 
 We recommend the following best practices to set up access control for your clusters:
 
-- Use the `root` user only for database administration tasks such as creating and managing other [users](#sql-users), creating and managing [roles](#roles), and creating and managing databases. Do not use the `root` user for applications; instead, create users or roles with specific [privileges](#assign-privileges) based on your application’s access requirements.
-- Use the ["least privilege model"](https://en.wikipedia.org/wiki/Principle_of_least_privilege) to grant privileges to users and roles.
+- Use the `root` user only for database administration tasks such as creating and managing other [users](#sql-users), creating and managing [roles](#roles), and creating and managing databases. Do not use the `root` user for applications; instead, create users or roles with specific [privileges](#managing-privileges) based on your application’s access requirements.
+- Use the [Principle of Least Privilege (PoLP)](https://en.wikipedia.org/wiki/Principle_of_least_privilege) as a golden rule when to designing your system of privilege grants.
 
- <span class="version-tag">New in v21.2</span>: For improved performance, CockroachDB securely caches [authentication information for users](authentication.html#client-authentication). To limit the authentication latency of users logging into a new session, we recommend the following best practices for `ROLE` operations ([`CREATE ROLE`](create-role.html), [`ALTER ROLE`](alter-role.html), [`DROP ROLE`](drop-role.html)):
+ <span class="version-tag">New in v21.2</span>: For improved performance, CockroachDB securely caches [authentication information for users](authentication.html#client-authentication). To limit the authentication latency of users logging into a new session, we recommend the following best practices for `ROLE` operations ([`CREATE ROLE`](../create-role.html), [`ALTER ROLE`](../alter-role.html), [`DROP ROLE`](../drop-role.html)):
 
 - Run bulk `ROLE` operations inside a transaction.
 - Run regularly-scheduled `ROLE` operations together, rather than at different times throughout the day.

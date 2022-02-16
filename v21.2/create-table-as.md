@@ -31,7 +31,7 @@ mentions.
 
 ## Required privileges
 
-The user must have the `CREATE` [privilege](authorization.html#assign-privileges) on the parent database.
+The user must have the `CREATE` [privilege](security-reference/authorization.html#managing-privileges) on the parent database.
 
 ## Synopsis
 <div class="filters clearfix">

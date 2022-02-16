@@ -1,0 +1,1 @@
+cockroach sql --url "postgresql://michael:JISqLDGNJUuMtkjImXjVfw@free-tier14.aws-us-east-1.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full&options=--cluster%3Dwest-hoatzin-337&sslrootcert=$HOME/.postgresql/root.crt"

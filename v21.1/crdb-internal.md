@@ -88,7 +88,7 @@ To list the `crdb_internal` tables for the [current database](sql-name-resolutio
 To get detailed information about objects, processes, or metrics related to your database, you can read from the `crdb_internal` table that corresponds to the item of interest.
 
 {{site.data.alerts.callout_success}}
-To ensure that you can view all of the tables in `crdb_internal`, query the tables as a user with [`admin` privileges](authorization.html#admin-role).
+To ensure that you can view all of the tables in `crdb_internal`, query the tables as a user with [`admin` privileges](security-reference/authorization.html#admin-role).
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}

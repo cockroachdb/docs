@@ -1,0 +1,462 @@
+
+3:21:55 PM: docs/v21.2/show-databases.html
+3:21:55 PM: docs/v21.2/ui-databases-page.html
+3:21:55 PM: docs/v21.2/drop-schedules.html
+3:21:55 PM: docs/v21.2/show-users.html
+3:21:55 PM:   hash does not exist --- docs/v21.2/show-users.html --> authorization.html#create-and-manage-users
+3:21:55 PM: docs/v21.2/validate-constraint.html
+3:21:55 PM: docs/v21.2/demo-replication-and-rebalancing.html
+3:21:55 PM:   hash does not exist --- docs/v21.2/demo-replication-and-rebalancing.html --> authorization.html#admin-role
+3:21:55 PM: docs/v21.2/show-schedules.html
+3:21:55 PM: docs/v21.2/show-grants.html
+3:21:55 PM:   hash does not exist --- docs/v21.2/show-grants.html --> authorization.html#sql-users
+3:21:55 PM:   hash does not exist --- docs/v21.2/show-grants.html --> authorization.html#sql-users
+3:21:55 PM:   hash does not exist --- docs/v21.2/show-grants.html --> authorization.html#sql-users
+3:21:55 PM:   hash does not exist --- docs/v21.2/show-grants.html --> authorization.html#sql-users
+3:21:55 PM:   hash does not exist --- docs/v21.2/show-grants.html --> authorization.html#role-admin
+3:21:55 PM:   hash does not exist --- docs/v21.2/show-grants.html --> authorization.html#create-and-manage-users
+3:21:55 PM: docs/v21.2/cluster-api.html
+3:21:55 PM:   hash does not exist --- docs/v21.2/cluster-api.html --> authorization.html#admin-role
+3:21:55 PM:   hash does not exist --- docs/v21.2/cluster-api.html --> authorization.html#admin-role
+3:21:55 PM: docs/v21.2/alter-view.html
+3:21:56 PM: docs/v21.2/set-vars.html
+3:21:56 PM:   hash does not exist --- docs/v21.2/set-vars.html --> authorization.html#admin-role
+3:21:56 PM:   hash does not exist --- docs/v21.2/set-vars.html --> authorization.html#roles
+3:21:56 PM: docs/v21.2/show-schemas.html
+3:21:56 PM: docs/v21.2/show-columns.html
+3:21:56 PM: docs/v21.2/connection-parameters.html
+3:21:56 PM:   hash does not exist --- docs/v21.2/connection-parameters.html --> authorization.html#create-and-manage-users
+3:21:56 PM: docs/v21.2/show-tables.html
+3:21:56 PM: docs/v21.2/show-index.html
+3:21:56 PM: docs/v21.2/pause-schedules.html
+3:21:56 PM: docs/v21.2/partition-by.html
+3:21:56 PM: docs/v21.2/set-transaction.html
+3:21:56 PM: docs/v21.2/pg-catalog.html
+3:21:56 PM:   hash does not exist --- docs/v21.2/pg-catalog.html --> authorization.html#admin-role
+3:21:56 PM: docs/v21.2/enum.html
+3:21:56 PM: docs/v21.2/schema-design-schema.html
+3:21:56 PM:   hash does not exist --- docs/v21.2/schema-design-schema.html --> authorization.html#admin-role
+3:21:56 PM:   hash does not exist --- docs/v21.2/schema-design-schema.html --> authorization.html#root-user
+3:21:56 PM:   hash does not exist --- docs/v21.2/schema-design-schema.html --> authorization.html#authorization-best-practices
+3:21:56 PM:   hash does not exist --- docs/v21.2/schema-design-schema.html --> authorization.html#object-ownership
+3:21:56 PM:   hash does not exist --- docs/v21.2/schema-design-schema.html --> authorization.html#supported-privileges
+3:21:56 PM: docs/v21.2/show-default-privileges.html
+
+3:21:56 PM:   hash does not exist --- docs/v21.2/show-default-privileges.html --> authorization.html#roles
+
+3:21:56 PM: docs/v21.2/create-type.html
+3:21:56 PM: docs/v21.2/comment-on.html
+3:21:56 PM: docs/v21.2/insert.html
+3:21:56 PM: docs/v21.2/select-for-update.html
+3:21:56 PM: docs/v21.2/resume-schedules.html
+3:21:56 PM: docs/v21.2/migrate-from-oracle.html
+3:21:56 PM:   target does not exist --- docs/v21.2/migrate-from-oracle.html --> security-overview.html
+3:21:56 PM: docs/v21.2/schema-design-database.html
+3:21:56 PM:   hash does not exist --- docs/v21.2/schema-design-database.html --> authorization.html#admin-role
+3:21:56 PM:   hash does not exist --- docs/v21.2/schema-design-database.html --> authorization.html#root-user
+3:21:56 PM:   hash does not exist --- docs/v21.2/schema-design-database.html --> authorization.html#authorization-best-practices
+3:21:56 PM: docs/v21.2/show-range-for-row.html
+3:21:56 PM: docs/v21.2/rename-table.html
+3:21:56 PM: docs/v21.2/show-partitions.html
+3:21:56 PM: docs/v21.2/information-schema.html
+3:21:56 PM:   hash does not exist --- docs/v21.2/information-schema.html --> authorization.html#admin-role
+3:21:56 PM: docs/v21.2/show-vars.html
+3:21:56 PM:   hash does not exist --- docs/v21.2/show-vars.html --> authorization.html#admin-role
+3:21:56 PM: docs/v21.2/show-sequences.html
+3:21:56 PM: docs/v21.2/rename-constraint.html
+3:21:56 PM: docs/v21.2/enterprise-licensing.html
+3:21:56 PM:   hash does not exist --- docs/v21.2/enterprise-licensing.html --> encryption.html#encryption-at-rest-enterprise
+3:21:56 PM: docs/v21.2/reassign-owned.html
+3:21:56 PM:   hash does not exist --- docs/v21.2/reassign-owned.html --> authorization.html#object-ownership
+3:21:56 PM:   hash does not exist --- docs/v21.2/reassign-owned.html --> authorization.html#roles
+3:21:56 PM:   hash does not exist --- docs/v21.2/reassign-owned.html --> authorization.html#sql-users
+3:21:56 PM:   hash does not exist --- docs/v21.2/reassign-owned.html --> authorization.html#admin-role
+3:21:56 PM: docs/v21.2/create-sequence.html
+3:21:56 PM:   hash does not exist --- docs/v21.2/create-sequence.html --> authorization.html#object-ownership
+3:21:56 PM: docs/v21.2/alter-type.html
+3:21:56 PM: docs/v21.2/import-into.html
+3:21:56 PM: docs/v21.2/drop-user.html
+3:21:56 PM:   hash does not exist --- docs/v21.2/drop-user.html --> authorization.html#object-ownership
+3:21:56 PM: docs/v21.2/alter-primary-key.html
+3:21:56 PM: docs/v21.2/schema-design-indexes.html
+3:21:56 PM:   hash does not exist --- docs/v21.2/schema-design-indexes.html --> authorization.html#authorization-best-practices
+3:21:56 PM: docs/v21.2/create-table.html
+3:21:56 PM:   hash does not exist --- docs/v21.2/create-table.html --> authorization.html#roles
+3:21:56 PM:   hash does not exist --- docs/v21.2/create-table.html --> authorization.html#object-ownership
+3:21:56 PM:   hash does not exist --- docs/v21.2/create-table.html --> authorization.html#supported-privileges
+3:21:56 PM: docs/v21.2/drop-schema.html
+3:21:56 PM: docs/v21.2/ui-overview.html
+3:21:56 PM:   hash does not exist --- docs/v21.2/ui-overview.html --> authorization.html#admin-role
+3:21:56 PM: docs/v21.2/add-region.html
+3:21:56 PM:   hash does not exist --- docs/v21.2/add-region.html --> authorization.html#roles
+3:21:56 PM:   hash does not exist --- docs/v21.2/add-region.html --> authorization.html#object-ownership
+3:21:56 PM:   hash does not exist --- docs/v21.2/add-region.html --> authorization.html#supported-privileges
+3:21:56 PM: docs/v21.2/pg-extension.html
+3:21:56 PM:   hash does not exist --- docs/v21.2/pg-extension.html --> authorization.html#admin-role
+3:21:56 PM: docs/v21.2/security-reference/config-secure-hba.html
+3:21:56 PM:   target does not exist --- docs/v21.2/security-reference/config-secure-hba.html --> cockroachcloud/create-a-serverless-cluster.html
+3:21:56 PM: docs/v21.2/security-reference/network-security.html
+3:21:56 PM:   target does not exist --- docs/v21.2/security-reference/network-security.html --> security-reference/encryption.html
+3:21:56 PM:   target does not exist --- docs/v21.2/security-reference/network-security.html --> cockroachcloud/quickstart.html
+3:21:56 PM:   target does not exist --- docs/v21.2/security-reference/network-security.html --> security-reference/authentication.html
+3:21:56 PM:   target does not exist --- docs/v21.2/security-reference/network-security.html --> cockroachcloud/network-authorization.html
+3:21:56 PM:   target does not exist --- docs/v21.2/security-reference/network-security.html --> recommended-production-settings.html
+3:21:56 PM: docs/v21.2/drop-view.html
+3:21:56 PM: docs/v21.2/security-reference/encryption.html
+3:21:56 PM:   target does not exist --- docs/v21.2/security-reference/encryption.html --> architecture/storage-layer.html
+3:21:56 PM:   hash does not exist --- docs/v21.2/security-reference/encryption.html --> #generating-store-key-files
+3:21:56 PM:   target does not exist --- docs/v21.2/security-reference/encryption.html --> architecture/storage-layer.html
+3:21:56 PM:   hash does not exist --- docs/v21.2/security-reference/encryption.html --> #changing-encryption-algorithm-or-keys
+3:21:56 PM:   target does not exist --- docs/v21.2/security-reference/encryption.html --> backup.html
+3:21:56 PM:   target does not exist --- docs/v21.2/security-reference/encryption.html --> backup.html#with-encryption-passphrase
+3:21:56 PM:   target does not exist --- docs/v21.2/security-reference/encryption.html --> restore.html
+3:21:56 PM:   target does not exist --- docs/v21.2/security-reference/encryption.html --> take-full-and-incremental-backups.html#incremental-backups
+3:21:56 PM:   target does not exist --- docs/v21.2/security-reference/encryption.html --> backup.html#backup-file-urls
+3:21:56 PM:   target does not exist --- docs/v21.2/security-reference/encryption.html --> take-and-restore-locality-aware-backups.html
+3:21:56 PM:   target does not exist --- docs/v21.2/security-reference/encryption.html --> take-and-restore-encrypted-backups.html#take-an-encrypted-backup-using-a-passphrase
+3:21:56 PM:   target does not exist --- docs/v21.2/security-reference/encryption.html --> connection-parameters.html
+3:21:56 PM:   target does not exist --- docs/v21.2/security-reference/encryption.html --> manual-deployment.html
+3:21:56 PM:   target does not exist --- docs/v21.2/security-reference/encryption.html --> orchestration.html
+3:21:56 PM:   target does not exist --- docs/v21.2/security-reference/encryption.html --> secure-a-cluster.html
+3:21:56 PM:   target does not exist --- docs/v21.2/security-reference/encryption.html --> cockroach-commands.html
+3:21:56 PM: docs/v21.2/security-reference/authentication.html
+3:21:56 PM:   target does not exist --- docs/v21.2/security-reference/authentication.html --> ../cockroachcloud/network-authorization.html
+3:21:56 PM: docs/v21.2/security-reference/authorization.html
+3:21:56 PM:   hash does not exist --- docs/v21.2/security-reference/authorization.html --> #sql-users
+3:21:56 PM:   target does not exist --- docs/v21.2/security-reference/authorization.html --> cockroach-sql.html
+3:21:56 PM:   target does not exist --- docs/v21.2/security-reference/authorization.html --> cockroach-sql.html
+3:21:56 PM:   target does not exist --- docs/v21.2/security-reference/authorization.html --> create-user.html
+3:21:56 PM:   target does not exist --- docs/v21.2/security-reference/authorization.html --> create-role.html
+3:21:56 PM:   hash does not exist --- docs/v21.2/security-reference/authorization.html --> authentication.html#client-authentication
+3:21:56 PM:   target does not exist --- docs/v21.2/security-reference/authorization.html --> alter-user.html
+3:21:56 PM:   target does not exist --- docs/v21.2/security-reference/authorization.html --> create-role.html
+3:21:56 PM:   target does not exist --- docs/v21.2/security-reference/authorization.html --> drop-role.html
+3:21:56 PM:   target does not exist --- docs/v21.2/security-reference/authorization.html --> grant.html#grant-the-admin-option
+3:21:56 PM:   target does not exist --- docs/v21.2/security-reference/authorization.html --> owner-to.html#change-a-databases-owner
+3:21:56 PM:   target does not exist --- docs/v21.2/security-reference/authorization.html --> grant.html
+3:21:56 PM:   target does not exist --- docs/v21.2/security-reference/authorization.html --> revoke.html
+3:21:56 PM:   target does not exist --- docs/v21.2/security-reference/authorization.html --> grant.html#grant-privileges-on-all-tables-in-a-database-or-schema
+3:21:56 PM:   target does not exist --- docs/v21.2/security-reference/authorization.html --> sql-statements.html
+3:21:56 PM:   target does not exist --- docs/v21.2/security-reference/authorization.html --> show-default-privileges.html
+3:21:56 PM:   target does not exist --- docs/v21.2/security-reference/authorization.html --> alter-default-privileges.html
+3:21:56 PM:   target does not exist --- docs/v21.2/security-reference/authorization.html --> show-default-privileges.html#examples
+3:21:56 PM:   target does not exist --- docs/v21.2/security-reference/authorization.html --> alter-default-privileges.html#examples
+3:21:56 PM:   hash does not exist --- docs/v21.2/security-reference/authorization.html --> #sql-users
+3:21:56 PM:   hash does not exist --- docs/v21.2/security-reference/authorization.html --> authentication.html#client-authentication
+3:21:56 PM:   target does not exist --- docs/v21.2/security-reference/authorization.html --> create-role.html
+3:21:56 PM:   target does not exist --- docs/v21.2/security-reference/authorization.html --> alter-role.html
+3:21:56 PM:   target does not exist --- docs/v21.2/security-reference/authorization.html --> drop-role.html
+3:21:56 PM: docs/v21.2/cockroach-import.html
+3:21:56 PM: docs/v21.2/backup.html
+3:21:56 PM:   hash does not exist --- docs/v21.2/backup.html --> authorization.html#admin-role
+3:21:56 PM:   hash does not exist --- docs/v21.2/backup.html --> authorization.html#admin-role
+3:21:56 PM: docs/v21.2/create-schedule-for-backup.html
+3:21:56 PM: docs/v21.2/drop-constraint.html
+3:21:56 PM: docs/v21.2/show-zone-configurations.html
+3:21:56 PM: docs/v21.2/set-primary-region.html
+3:21:56 PM:   hash does not exist --- docs/v21.2/set-primary-region.html --> authorization.html#roles
+3:21:56 PM:   hash does not exist --- docs/v21.2/set-primary-region.html --> authorization.html#object-ownership
+3:21:56 PM:   hash does not exist --- docs/v21.2/set-primary-region.html --> authorization.html#supported-privileges
+3:21:56 PM:   hash does not exist --- docs/v21.2/set-primary-region.html --> authorization.html#object-ownership
+3:21:56 PM:   hash does not exist --- docs/v21.2/set-primary-region.html --> authorization.html#supported-privileges
+3:21:56 PM: docs/v21.2/unsplit-at.html
+3:21:56 PM: docs/v21.2/reset-vars.html
+3:21:56 PM: docs/v21.2/rename-index.html
+3:21:56 PM: docs/v21.2/grant.html
+3:21:56 PM:   hash does not exist --- docs/v21.2/grant.html --> authorization.html#create-and-manage-users
+3:21:56 PM:   hash does not exist --- docs/v21.2/grant.html --> authorization.html#create-and-manage-users
+3:21:56 PM:   hash does not exist --- docs/v21.2/grant.html --> authorization.html#create-and-manage-users
+3:21:56 PM: docs/v21.2/show-regions.html
+3:21:56 PM:   hash does not exist --- docs/v21.2/show-regions.html --> authorization.html#admin-role
+3:21:56 PM: docs/v21.2/show-backup.html
+3:21:56 PM:   hash does not exist --- docs/v21.2/show-backup.html --> authorization.html#admin-role
+3:21:56 PM: docs/v21.2/security-reference/security-overview.html
+3:21:56 PM:   target does not exist --- docs/v21.2/security-reference/security-overview.html --> ../releases/index.html
+3:21:56 PM:   hash does not exist --- docs/v21.2/security-reference/security-overview.html --> authentication.html#authentication-configration
+3:21:56 PM:   target does not exist --- docs/v21.2/security-reference/security-overview.html --> ../v21.2/encryption.html#encryption-at-rest-enterprise
+3:21:56 PM:   target does not exist --- docs/v21.2/security-reference/security-overview.html --> ../v21.2/ui-overview.html
+3:21:56 PM:   target does not exist --- docs/v21.2/security-reference/security-overview.html --> user-authorization.html
+3:21:56 PM:   target does not exist --- docs/v21.2/security-reference/security-overview.html --> network-authorization.html
+3:21:56 PM:   target does not exist --- docs/v21.2/security-reference/security-overview.html --> network-authorization.html
+3:21:56 PM:   target does not exist --- docs/v21.2/security-reference/security-overview.html --> network-authorization.html
+3:21:56 PM:   target does not exist --- docs/v21.2/security-reference/security-overview.html --> ../v21.2/cluster-api.html
+3:21:56 PM:   hash does not exist --- docs/v21.2/security-reference/security-overview.html --> authorization.html#create-and-manage-users
+3:21:56 PM:   hash does not exist --- docs/v21.2/security-reference/security-overview.html --> ../security
+3:21:56 PM: docs/v21.2/explain-analyze.html
+3:21:56 PM: docs/v21.2/connect-to-the-database.html
+3:21:56 PM:   hash does not exist --- docs/v21.2/connect-to-the-database.html --> authorization.html#sql-users
+3:21:56 PM:   hash does not exist --- docs/v21.2/connect-to-the-database.html --> authorization.html#sql-users
+3:21:56 PM:   hash does not exist --- docs/v21.2/connect-to-the-database.html --> authorization.html#sql-users
+3:21:56 PM:   hash does not exist --- docs/v21.2/connect-to-the-database.html --> authorization.html#sql-users
+3:21:56 PM:   hash does not exist --- docs/v21.2/connect-to-the-database.html --> authorization.html#sql-users
+3:21:56 PM:   hash does not exist --- docs/v21.2/connect-to-the-database.html --> authorization.html#sql-users
+3:21:56 PM:   hash does not exist --- docs/v21.2/connect-to-the-database.html --> authorization.html#sql-users
+3:21:56 PM:   hash does not exist --- docs/v21.2/connect-to-the-database.html --> authorization.html#sql-users
+3:21:56 PM:   hash does not exist --- docs/v21.2/connect-to-the-database.html --> authorization.html#sql-users
+3:21:56 PM:   hash does not exist --- docs/v21.2/connect-to-the-database.html --> authorization.html#sql-users
+3:21:56 PM:   hash does not exist --- docs/v21.2/connect-to-the-database.html --> authorization.html#sql-users
+3:21:56 PM:   hash does not exist --- docs/v21.2/connect-to-the-database.html --> authorization.html#sql-users
+3:21:56 PM:   hash does not exist --- docs/v21.2/connect-to-the-database.html --> authorization.html#sql-users
+3:21:56 PM:   hash does not exist --- docs/v21.2/connect-to-the-database.html --> authorization.html#sql-users
+3:21:56 PM:   hash does not exist --- docs/v21.2/connect-to-the-database.html --> authorization.html#sql-users
+3:21:56 PM:   hash does not exist --- docs/v21.2/connect-to-the-database.html --> authorization.html#sql-users
+3:21:56 PM:   hash does not exist --- docs/v21.2/connect-to-the-database.html --> authorization.html#sql-users
+3:21:56 PM:   hash does not exist --- docs/v21.2/connect-to-the-database.html --> authorization.html#sql-users
+3:21:56 PM:   hash does not exist --- docs/v21.2/connect-to-the-database.html --> authorization.html#sql-users
+3:21:56 PM:   hash does not exist --- docs/v21.2/connect-to-the-database.html --> authorization.html#sql-users
+3:21:56 PM:   hash does not exist --- docs/v21.2/connect-to-the-database.html --> authorization.html#sql-users
+3:21:56 PM: docs/v21.2/alter-default-privileges.html
+
+3:21:56 PM:   hash does not exist --- docs/v21.2/alter-default-privileges.html --> authorization.html#roles
+3:21:56 PM:   hash does not exist --- docs/v21.2/alter-default-privileges.html --> authorization.html#object-ownership
+3:21:56 PM:   hash does not exist --- docs/v21.2/alter-default-privileges.html --> authorization.html#admin-role
+
+3:21:56 PM: docs/v21.2/revoke.html
+3:21:56 PM:   hash does not exist --- docs/v21.2/revoke.html --> authorization.html#create-and-manage-users
+3:21:56 PM:   hash does not exist --- docs/v21.2/revoke.html --> authorization.html#create-and-manage-users
+3:21:56 PM: docs/v21.2/restore.html
+3:21:56 PM:   hash does not exist --- docs/v21.2/restore.html --> authorization.html#admin-role
+3:21:56 PM:   hash does not exist --- docs/v21.2/restore.html --> authorization.html#admin-role
+3:21:56 PM: docs/v21.2/begin-transaction.html
+3:21:56 PM: docs/v21.2/show-types.html
+3:21:56 PM: docs/v21.2/commit-transaction.html
+3:21:56 PM: docs/v21.2/create-user.html
+3:21:56 PM: docs/v21.2/show-statistics.html
+3:21:56 PM: docs/v21.2/drop-database.html
+3:21:56 PM: docs/v21.2/split-at.html
+3:21:56 PM: docs/v21.2/show-roles.html
+3:21:56 PM:   hash does not exist --- docs/v21.2/show-roles.html --> authorization.html#create-and-manage-users
+3:21:56 PM: docs/v21.2/recommended-production-settings.html
+3:21:56 PM:   target does not exist --- docs/v21.2/recommended-production-settings.html --> security-overview.html
+3:21:56 PM: docs/v21.2/show-create.html
+3:21:56 PM: docs/v21.2/get-started-with-enterprise-trial.html
+3:21:56 PM:   hash does not exist --- docs/v21.2/get-started-with-enterprise-trial.html --> encryption.html#encryption-at-rest-enterprise
+3:21:56 PM: docs/v21.2/configure-replication-zones.html
+3:21:56 PM:   hash does not exist --- docs/v21.2/configure-replication-zones.html --> authorization.html#admin-role
+3:21:56 PM:   hash does not exist --- docs/v21.2/configure-replication-zones.html --> authorization.html#supported-privileges
+3:21:56 PM:   hash does not exist --- docs/v21.2/configure-replication-zones.html --> authorization.html#supported-privileges
+3:21:56 PM: docs/v21.2/cockroach-userfile-upload.html
+3:21:56 PM:   hash does not exist --- docs/v21.2/cockroach-userfile-upload.html --> security-reference/authorization#managin
+3:21:56 PM: docs/v21.2/rollback-transaction.html
+3:21:56 PM: docs/v21.2/export.html
+3:21:56 PM: docs/v21.2/owner-to.html
+3:21:56 PM:   hash does not exist --- docs/v21.2/owner-to.html --> authorization.html#roles
+3:21:56 PM:   hash does not exist --- docs/v21.2/owner-to.html --> authorization.html#roles
+3:21:56 PM: docs/v21.2/disaster-recovery.html
+3:21:56 PM:   hash does not exist --- docs/v21.2/disaster-recovery.html --> encryption.html#rotating-keys
+3:21:56 PM: docs/v21.2/cockroach-cert.html
+3:21:56 PM:   hash does not exist --- docs/v21.2/cockroach-cert.html --> authorization.html#root-user
+3:21:56 PM:   target does not exist --- docs/v21.2/cockroach-cert.html --> security-overview.html
+3:21:56 PM: docs/v21.2/show-constraints.html
+3:21:56 PM: docs/v21.2/rename-column.html
+3:21:56 PM: docs/v21.2/drop-region.html
+3:21:56 PM:   hash does not exist --- docs/v21.2/drop-region.html --> authorization.html#roles
+3:21:56 PM:   hash does not exist --- docs/v21.2/drop-region.html --> authorization.html#object-ownership
+3:21:56 PM:   hash does not exist --- docs/v21.2/drop-region.html --> authorization.html#supported-privileges
+3:21:56 PM: docs/v21.2/known-limitations.html
+3:21:56 PM: docs/v21.2/drop-table.html
+3:21:56 PM: docs/v21.2/frequently-asked-questions.html
+3:21:56 PM:   target does not exist --- docs/v21.2/frequently-asked-questions.html --> security-overview.html
+3:21:56 PM: docs/v21.2/set-schema.html
+3:21:56 PM: docs/v21.2/alter-role.html
+3:21:56 PM:   hash does not exist --- docs/v21.2/alter-role.html --> authorization.html#admin-role
+3:21:56 PM:   hash does not exist --- docs/v21.2/alter-role.html --> authorization.html#authorization-best-practices
+3:21:57 PM: docs/v21.2/schema-design-update.html
+3:21:57 PM:   hash does not exist --- docs/v21.2/schema-design-update.html --> authorization.html#authorization-best-practices
+3:21:57 PM: docs/v21.2/drop-sequence.html
+3:21:57 PM: docs/v21.2/logging-use-cases.html
+3:21:57 PM:   hash does not exist --- docs/v21.2/logging-use-cases.html --> authorization.html#admin-role
+3:21:57 PM:   hash does not exist --- docs/v21.2/logging-use-cases.html --> authorization.html#users-and-roles
+3:21:57 PM:   hash does not exist --- docs/v21.2/logging-use-cases.html --> authorization.html#users-and-roles
+3:21:57 PM: docs/v21.2/alter-schema.html
+3:21:57 PM:   hash does not exist --- docs/v21.2/alter-schema.html --> authorization.html#roles
+3:21:57 PM: docs/v21.2/sql-feature-support.html
+3:21:57 PM:   hash does not exist --- docs/v21.2/sql-feature-support.html --> authorization.html#sql-users
+3:21:57 PM:   hash does not exist --- docs/v21.2/sql-feature-support.html --> authorization.html#roles
+3:21:57 PM:   hash does not exist --- docs/v21.2/sql-feature-support.html --> authorization.html#object-ownership
+
+3:21:57 PM: docs/v21.2/cockroach-userfile-list.html
+3:21:57 PM: docs/v21.2/alter-sequence.html
+3:21:57 PM: docs/v21.2/performance-best-practices-overview.html
+3:21:57 PM:   hash does not exist --- docs/v21.2/performance-best-practices-overview.html --> authorization.html#authorization-best-practices
+3:21:57 PM: docs/v21.2/show-transactions.html
+3:21:57 PM: docs/v21.2/update.html
+3:21:57 PM: docs/v21.2/upsert.html
+3:21:57 PM: docs/v21.2/drop-role.html
+3:21:57 PM:   hash does not exist --- docs/v21.2/drop-role.html --> authorization.html#object-ownership
+3:21:57 PM:   hash does not exist --- docs/v21.2/drop-role.html --> authorization.html#authorization-best-practices
+3:21:57 PM: docs/v21.2/create-table-as.html
+3:21:57 PM: docs/v21.2/cockroach-demo.html
+3:21:57 PM:   hash does not exist --- docs/v21.2/cockroach-demo.html --> authorization.html#sql-users
+3:21:57 PM:   hash does not exist --- docs/v21.2/cockroach-demo.html --> authorization.html#admin-role
+3:21:57 PM: docs/v21.2/liquibase.html
+3:21:57 PM:   hash does not exist --- docs/v21.2/liquibase.html --> authorization.html#admin-role
+3:21:57 PM: docs/v21.2/create-statistics.html
+3:21:57 PM: docs/v21.2/cockroach-userfile-get.html
+3:21:57 PM: docs/v21.2/drop-column.html
+3:21:57 PM: docs/v21.2/create-role.html
+3:21:57 PM:   hash does not exist --- docs/v21.2/create-role.html --> authorization.html#role-admin
+3:21:57 PM:   hash does not exist --- docs/v21.2/create-role.html --> authorization.html#authorization-best-practices
+3:21:57 PM: docs/v21.2/set-locality.html
+3:21:57 PM:   hash does not exist --- docs/v21.2/set-locality.html --> authorization.html#roles
+3:21:57 PM:   hash does not exist --- docs/v21.2/set-locality.html --> authorization.html#object-ownership
+3:21:57 PM:   hash does not exist --- docs/v21.2/set-locality.html --> authorization.html#supported-privileges
+3:21:57 PM: docs/v21.2/ui-sessions-page.html
+3:21:57 PM:   hash does not exist --- docs/v21.2/ui-sessions-page.html --> authorization.html#create-and-manage-users
+3:21:57 PM:   hash does not exist --- docs/v21.2/ui-sessions-page.html --> authorization.html#create-and-manage-users
+3:21:57 PM: docs/v21.2/refresh.html
+3:21:57 PM:   hash does not exist --- docs/v21.2/refresh.html --> authorization.html#admin-role
+3:21:57 PM: docs/v21.2/release-savepoint.html
+3:21:57 PM: docs/v21.2/import.html
+3:21:57 PM:   hash does not exist --- docs/v21.2/import.html --> authorization.html#admin-role
+3:21:57 PM: docs/v21.2/placement-restricted.html
+3:21:57 PM:   hash does not exist --- docs/v21.2/placement-restricted.html --> authorization.html#roles
+3:21:57 PM:   hash does not exist --- docs/v21.2/placement-restricted.html --> authorization.html#object-ownership
+3:21:57 PM:   hash does not exist --- docs/v21.2/placement-restricted.html --> authorization.html#supported-privileges
+3:21:57 PM: docs/v21.2/explain.html
+3:21:57 PM: docs/v21.2/create-index.html
+3:21:57 PM: docs/v21.2/savepoint.html
+3:21:57 PM: docs/v21.2/query-replication-reports.html
+3:21:57 PM:   hash does not exist --- docs/v21.2/query-replication-reports.html --> authorization.html#create-and-manage-users
+3:21:57 PM: docs/v21.2/drop-index.html
+3:21:57 PM: docs/v21.2/sql-statements.html
+3:21:57 PM:   hash does not exist --- docs/v21.2/sql-statements.html --> authorization.html#create-and-manage-users
+3:21:57 PM:   hash does not exist --- docs/v21.2/sql-statements.html --> authorization.html#create-and-manage-users
+3:21:57 PM:   hash does not exist --- docs/v21.2/sql-statements.html --> authorization.html#object-ownership
+3:21:57 PM:   hash does not exist --- docs/v21.2/sql-statements.html --> authorization.html#roles
+3:21:57 PM:   hash does not exist --- docs/v21.2/sql-statements.html --> authorization.html#sql-users
+3:21:57 PM:   hash does not exist --- docs/v21.2/sql-statements.html --> authorization.html#create-and-manage-users
+3:21:57 PM:   hash does not exist --- docs/v21.2/sql-statements.html --> authorization.html#create-and-manage-users
+3:21:57 PM: docs/v21.2/crdb-internal.html
+3:21:57 PM:   hash does not exist --- docs/v21.2/crdb-internal.html --> authorization.html#admin-role
+3:21:57 PM: docs/v21.2/show-full-table-scans.html
+3:21:57 PM:   hash does not exist --- docs/v21.2/show-full-table-scans.html --> authorization.html#admin-role
+3:21:57 PM: docs/v21.2/delete.html
+3:21:57 PM: docs/v21.2/truncate.html
+3:21:57 PM: docs/v21.2/add-column.html
+3:21:57 PM: docs/v21.2/alter-column.html
+3:21:57 PM: docs/v21.2/show-create-schedule.html
+3:21:57 PM:   hash does not exist --- docs/v21.2/show-create-schedule.html --> authorization.html#admin-role
+3:21:57 PM:   hash does not exist --- docs/v21.2/show-create-schedule.html --> authorization.html#root-user
+3:21:57 PM: docs/v21.2/select-clause.html
+3:21:57 PM: docs/v21.2/show-ranges.html
+3:21:57 PM:   hash does not exist --- docs/v21.2/show-ranges.html --> authorization.html#admin-role
+3:21:57 PM: docs/v21.2/show-locality.html
+3:21:57 PM: docs/v21.2/schema-design-table.html
+3:21:57 PM:   hash does not exist --- docs/v21.2/schema-design-table.html --> authorization.html#authorization-best-practices
+3:21:57 PM:   hash does not exist --- docs/v21.2/schema-design-table.html --> authorization.html#object-ownership
+3:21:57 PM: docs/v21.2/deploy-cockroachdb-on-aws.html
+3:21:57 PM:   hash does not exist --- docs/v21.2/deploy-cockroachdb-on-aws.html --> authorization.html#roles
+3:21:57 PM: docs/v21.2/schema-design-overview.html
+3:21:57 PM:   hash does not exist --- docs/v21.2/schema-design-overview.html --> authorization.html#sql-users
+3:21:57 PM:   hash does not exist --- docs/v21.2/schema-design-overview.html --> authorization.html#object-ownership
+3:21:57 PM: docs/v21.2/cockroach-userfile-delete.html
+3:21:57 PM:   hash does not exist --- docs/v21.2/cockroach-userfile-delete.html --> security-reference/authorization#managin
+3:21:57 PM: docs/v21.2/show-savepoint-status.html
+3:21:57 PM: docs/v21.2/authorization.html
+3:21:57 PM:   hash does not exist --- docs/v21.2/authorization.html --> #public-role
+3:21:57 PM: docs/v21.2/show-jobs.html
+3:21:57 PM:   hash does not exist --- docs/v21.2/show-jobs.html --> authorization.html#create-and-manage-users
+3:21:57 PM: docs/releases/v21.2.0-rc.1.html
+3:21:57 PM:   hash does not exist --- docs/releases/v21.2.0-rc.1.html --> ../v21.2/authorization.html#admin-role
+3:21:57 PM: docs/v21.2/create-view.html
+3:21:58 PM: docs/v21.2/survive-failure.html
+3:21:58 PM:   hash does not exist --- docs/v21.2/survive-failure.html --> authorization.html#roles
+3:21:58 PM:   hash does not exist --- docs/v21.2/survive-failure.html --> authorization.html#object-ownership
+3:21:58 PM:   hash does not exist --- docs/v21.2/survive-failure.html --> authorization.html#supported-privileges
+3:21:58 PM: docs/v21.2/licensing-faqs.html
+3:21:58 PM:   hash does not exist --- docs/v21.2/licensing-faqs.html --> encryption.html#encryption-at-rest-enterprise
+3:21:58 PM:   hash does not exist --- docs/v21.2/licensing-faqs.html --> authorization.html#roles
+3:21:58 PM: docs/v21.2/add-constraint.html
+3:21:58 PM: docs/releases/v21.2.4.html
+3:21:58 PM: docs/releases/v22.1.0-alpha.1.html
+3:21:58 PM:   hash does not exist --- docs/releases/v22.1.0-alpha.1.html --> ../v21.2/authorization.html#roles
+3:21:58 PM:   hash does not exist --- docs/releases/v22.1.0-alpha.1.html --> ../v21.2/authorization.html#admin-role
+3:21:58 PM:   hash does not exist --- docs/releases/v22.1.0-alpha.1.html --> ../v21.2/authorization.html#admin-role
+3:21:58 PM:   hash does not exist --- docs/releases/v22.1.0-alpha.1.html --> ../v21.2/authorization.html#roles
+3:21:59 PM: docs/releases/v21.2.0-beta.1.html
+3:21:59 PM:   hash does not exist --- docs/releases/v21.2.0-beta.1.html --> ../v21.2/authorization.html#admin-role
+3:21:59 PM:   hash does not exist --- docs/releases/v21.2.0-beta.1.html --> ../v21.2/authorization.html#admin-role
+3:21:59 PM:   hash does not exist --- docs/releases/v21.2.0-beta.1.html --> ../v21.2/authorization.html#roles
+3:21:59 PM:   hash does not exist --- docs/releases/v21.2.0-beta.1.html --> ../v21.2/authorization.html#roles
+3:21:59 PM:   hash does not exist --- docs/releases/v21.2.0-beta.1.html --> ../v21.2/authorization.html#admin-role
+3:21:59 PM:   hash does not exist --- docs/releases/v21.2.0-beta.1.html --> ../v21.2/authorization.html#root-user
+3:21:59 PM:   hash does not exist --- docs/releases/v21.2.0-beta.1.html --> ../v21.2/authorization.html#roles
+3:21:59 PM:   hash does not exist --- docs/releases/v21.2.0-beta.1.html --> ../v21.2/authorization.html#roles
+3:21:59 PM:   hash does not exist --- docs/releases/v21.2.0-beta.1.html --> ../v21.2/authorization.html#admin-role
+3:21:59 PM:   hash does not exist --- docs/releases/v21.2.0-beta.1.html --> ../v21.2/authorization.html#admin-role
+3:21:59 PM:   hash does not exist --- docs/releases/v21.2.0-beta.1.html --> ../v21.2/authorization.html#roles
+3:21:59 PM:   hash does not exist --- docs/releases/v21.2.0-beta.1.html --> ../v21.2/authorization.html#roles
+3:21:59 PM:   hash does not exist --- docs/releases/v21.2.0-beta.1.html --> ../v21.2/authorization.html#roles
+3:21:59 PM:   hash does not exist --- docs/releases/v21.2.0-beta.1.html --> ../v21.2/authorization.html#admin-role
+3:22:00 PM: docs/releases/v21.2.5.html
+3:22:00 PM:   hash does not exist --- docs/releases/v21.2.5.html --> ../v21.2/authorization.html#roles
+3:22:00 PM: docs/releases/v21.2.0.html
+3:22:01 PM: docs/cockroachcloud/serverless-faqs.html
+3:22:01 PM:   hash does not exist --- docs/cockroachcloud/serverless-faqs.html --> ../v21.2/encryption.html#encryption-at-rest-enterprise
+3:22:01 PM: docs/cockroachcloud/frequently-asked-questions.html
+3:22:01 PM:   hash does not exist --- docs/cockroachcloud/frequently-asked-questions.html --> ../v21.2/encryption.html#encryption-at-rest-enterprise
+3:22:01 PM: docs/cockroachcloud/user-authorization.html
+3:22:01 PM:   hash does not exist --- docs/cockroachcloud/user-authorization.html --> ../v21.2/security
+3:22:01 PM:   hash does not exist --- docs/cockroachcloud/user-authorization.html --> ../v21.2/security
+3:22:01 PM:   hash does not exist --- docs/cockroachcloud/user-authorization.html --> ../v21.2/security
+3:22:01 PM: docs/cockroachcloud/security-overview.html
+3:22:01 PM:   hash does not exist --- docs/cockroachcloud/security-overview.html --> ../v21.2/encryption.html#encryption-at-rest-enterprise
+3:22:02 PM: docs/cockroachcloud/sessions-page.html
+3:22:02 PM:   hash does not exist --- docs/cockroachcloud/sessions-page.html --> ../v21.2/authorization.html#create-and-manage-users
+3:22:02 PM: docs/cockroachcloud/console-access-management.html
+3:22:02 PM:   hash does not exist --- docs/cockroachcloud/console-access-management.html --> ../v21.2/security
+3:22:09 PM: ========================================================================
+3:22:09 PM: ✘✘✘ failed in 20.283492056s
+3:22:09 PM: 383 errors in 3804 documents
+3:22:09 PM: ​
+3:22:09 PM: ────────────────────────────────────────────────────────────────
+3:22:09 PM:   "build.command" failed                                        
+3:22:09 PM: ────────────────────────────────────────────────────────────────
+3:22:09 PM: ​
+3:22:09 PM:   Error message
+3:22:09 PM:   Command failed with exit code 1: netlify/build
+3:22:09 PM: ​
+3:22:09 PM:   Error location
+3:22:09 PM:   In Build command from Netlify app:
+3:22:09 PM:   netlify/build
+3:22:09 PM: ​
+3:22:09 PM:   Resolved config
+3:22:09 PM:   build:
+3:22:09 PM:     command: netlify/build
+3:22:09 PM:     commandOrigin: ui
+3:22:09 PM:     environment:
+3:22:09 PM:       - NODE_VERSION
+3:22:09 PM:       - REVIEW_ID
+3:22:09 PM:     publish: /opt/build/repo/_site
+3:22:09 PM:     publishOrigin: ui
+3:22:09 PM: Caching artifacts
+3:22:09 PM: Started saving ruby gems
+3:22:09 PM: Finished saving ruby gems
+3:22:09 PM: Started saving node modules
+3:22:09 PM: Finished saving node modules
+3:22:09 PM: Started saving build plugins
+3:22:09 PM: Finished saving build plugins
+3:22:09 PM: Started saving pip cache
+3:22:10 PM: Finished saving pip cache
+3:22:10 PM: Started saving emacs cask dependencies
+3:22:10 PM: Finished saving emacs cask dependencies
+3:22:10 PM: Started saving maven dependencies
+3:22:10 PM: Finished saving maven dependencies
+3:22:10 PM: Started saving boot dependencies
+3:22:10 PM: Finished saving boot dependencies
+3:22:10 PM: Started saving rust rustup cache
+3:22:10 PM: Finished saving rust rustup cache
+3:22:10 PM: Started saving go dependencies
+3:22:12 PM: Finished saving go dependencies
+3:22:12 PM: Build failed due to a user error: Build script returned non-zero exit code: 2
+3:22:12 PM: Creating deploy upload records
+3:22:12 PM: Failing build: Failed to build site
+3:22:12 PM: Failed during stage 'building site': Build script returned non-zero exit code: 2
+3:22:12 PM: Finished processing build request in 3m33.861903669s
+Docs
+Pricing
+Support
+News
+Terms
+© 2022 Netlify

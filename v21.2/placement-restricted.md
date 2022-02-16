@@ -45,8 +45,8 @@ The replica placement policies available via this statement are:
 
 To use this statement, the user must have one of the following:
 
-- Membership to the [`admin`](authorization.html#roles) role for the cluster.
-- [Ownership](authorization.html#object-ownership) or the [`CREATE` privilege](authorization.html#supported-privileges) for the database and all tables in the database.
+- Membership to the [`admin`](security-reference/authorization.html#roles) role for the cluster.
+- [Ownership](security-reference/authorization.html#object-ownership) or the [`CREATE` privilege](security-reference/authorization.html#supported-privileges) for the database and all tables in the database.
 
 ## Examples
 

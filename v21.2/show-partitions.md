@@ -21,7 +21,7 @@ Use the `SHOW PARTITIONS` [statement](sql-statements.html) to view details about
 
 ## Required privileges
 
-No [privileges](authorization.html#assign-privileges) are required to list partitions.
+No [privileges](security-reference/authorization#managing-privileges) are required to list partitions.
 
 ## Parameters
 

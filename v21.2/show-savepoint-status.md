@@ -9,7 +9,7 @@ The `SHOW SAVEPOINT STATUS` [statement](sql-statements.html) lists the active [s
 
 ## Required privileges
 
-No [privileges](authorization.html#assign-privileges) are required to create or show a savepoint. However, privileges are required for each statement within a transaction.
+No [privileges](security-reference/authorization#managing-privileges) are required to create or show a savepoint. However, privileges are required for each statement within a transaction.
 
 ## Synopsis
 

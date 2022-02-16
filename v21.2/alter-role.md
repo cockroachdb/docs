@@ -17,7 +17,7 @@ Since the keywords `ROLE` and `USER` can now be used interchangeably in SQL stat
 
 ## Required privileges
 
-- To alter an [`admin` role](authorization.html#admin-role), the user must be a member of the `admin` role.
+- To alter an [`admin` role](security-reference/authorization.html#admin-role), the user must be a member of the `admin` role.
 - To alter other roles, the user must be a member of the `admin` role or have the [`CREATEROLE`](create-role.html#create-a-role-that-can-create-other-roles-and-manage-authentication-methods-for-the-new-roles) role option set.
 
 ## Synopsis
@@ -266,4 +266,4 @@ root@:26257/movr> SHOW timezone;
 - [`SHOW GRANTS`](show-grants.html)
 - [Create Security Certificates](cockroach-cert.html)
 - [Other SQL Statements](sql-statements.html)
-- [Authorization Best Practices](authorization.html#authorization-best-practices)
+- [Authorization Best Practices](security-reference/authorization.html#authorization-best-practices)

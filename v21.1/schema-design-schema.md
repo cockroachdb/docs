@@ -33,7 +33,7 @@ Here are some best practices to follow when creating and using user-defined sche
 
 - If you want to separate lower-level objects (e.g., a set of [tables](schema-design-table.html) or [views](views.html)) for access or organizational purposes, do not create those objects in the preloaded [`public` schema](sql-name-resolution.html#naming-hierarchy). Instead, create user-defined schemas, and then create the objects in the user-defined schemas.
 
-- Create user-defined schemas as a member of [the `admin` role](authorization.html#admin-role) (e.g., as the [`root` user](authorization.html#root-user)), and then give ownership of them to a [different user](schema-design-overview.html#controlling-access-to-objects), with fewer privileges across the database, following [authorization best practices](authorization.html#authorization-best-practices).
+- Create user-defined schemas as a member of [the `admin` role](security-reference/authorization.html#admin-role) (e.g., as the [`root` user](authorization.html#root-user)), and then give ownership of them to a [different user](schema-design-overview.html#controlling-access-to-objects), with fewer privileges across the database, following [authorization best practices](authorization.html#authorization-best-practices).
 
 - When you create a user-defined schema, take note of the [object's owner](authorization.html#object-ownership). You can specify the owner in a `CREATE SCHEMA` statement with the [`AUTHORIZATION` keyword](create-schema.html#parameters). If `AUTHORIZATION` is not specified, the owner will be the user creating the user-defined schema.
 

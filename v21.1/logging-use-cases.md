@@ -221,7 +221,7 @@ All possible `SESSIONS` event types are detailed in the [reference documentation
 
 ### SENSITIVE_ACCESS
 
-The [`SENSITIVE_ACCESS`](logging.html#sensitive_access) channel logs SQL audit events. These include all queries being run against [audited tables](experimental-audit.html), when enabled, as well as queries executed by users with the [`admin`](authorization.html#admin-role) role.
+The [`SENSITIVE_ACCESS`](logging.html#sensitive_access) channel logs SQL audit events. These include all queries being run against [audited tables](experimental-audit.html), when enabled, as well as queries executed by users with the [`admin`](security-reference/authorization.html#admin-role) role.
 
 {{site.data.alerts.callout_info}}
 Enabling these logs can negatively impact performance. We recommend using `SENSITIVE_ACCESS` for security purposes only.

@@ -11,7 +11,7 @@ After pausing a schedule, you can resume it with [`RESUME SCHEDULES`](resume-sch
 
 ## Required privileges
 
-Only members of the [`admin` role](authorization.html#default-roles) can pause a schedule. By default, the `root` user belongs to the `admin` role.
+Only members of the [`admin` role](security-reference/authorization.html#default-roles) can pause a schedule. By default, the `root` user belongs to the `admin` role.
 
 ## Synopsis
 

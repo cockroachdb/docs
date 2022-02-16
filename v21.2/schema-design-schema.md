@@ -34,9 +34,9 @@ Here are some best practices to follow when creating and using user-defined sche
 
 - If you want to separate lower-level objects (e.g., a set of [tables](schema-design-table.html) or [views](views.html)) for access or organizational purposes, do not create those objects in the preloaded [`public` schema](sql-name-resolution.html#naming-hierarchy). Instead, create user-defined schemas, and then create the objects in the user-defined schemas.
 
-- Create user-defined schemas as a member of [the `admin` role](authorization.html#admin-role) (e.g., as the [`root` user](authorization.html#root-user)), and then give ownership of them to a [different user](schema-design-overview.html#control-access-to-objects), with fewer privileges across the database, following [authorization best practices](authorization.html#authorization-best-practices).
+- Create user-defined schemas as a member of [the `admin` role](security-reference/authorization.html#admin-role) (e.g., as the [`root` user](authorization.html#root-user)), and then give ownership of them to a [different user](schema-design-overview.html#control-access-to-objects), with fewer privileges across the database, following [authorization best practices](security-reference/authorization.html#authorization-best-practices).
 
-- When you create a user-defined schema, take note of the [object's owner](authorization.html#object-ownership). You can specify the owner in a `CREATE SCHEMA` statement with the [`AUTHORIZATION` keyword](create-schema.html#parameters). If `AUTHORIZATION` is not specified, the owner will be the user creating the user-defined schema.
+- When you create a user-defined schema, take note of the [object's owner](security-reference/authorization.html#object-ownership). You can specify the owner in a `CREATE SCHEMA` statement with the [`AUTHORIZATION` keyword](create-schema.html#parameters). If `AUTHORIZATION` is not specified, the owner will be the user creating the user-defined schema.
 
 - Do not create user-defined schemas in the preloaded `defaultdb` database. Instead, use a database [you have created](schema-design-database.html). If you do not specify a database in the `CREATE SCHEMA` statement, the user-defined schema will be created in your SQL session's [current database](sql-name-resolution.html#current-database).
 
@@ -61,7 +61,7 @@ CREATE USER IF NOT EXISTS abbey;
 GRANT CREATE ON DATABASE movr TO abbey;
 ~~~
 
-The first statement sets the `movr` database as the [current database](sql-name-resolution.html#current-database). The next two sets of statements create SQL users named `max` and `abbey` in the `movr` database, with [`CREATE` privileges on the database](authorization.html#supported-privileges). `CREATE` privileges will allow each user to create tables in the database.
+The first statement sets the `movr` database as the [current database](sql-name-resolution.html#current-database). The next two sets of statements create SQL users named `max` and `abbey` in the `movr` database, with [`CREATE` privileges on the database](security-reference/authorization.html#supported-privileges). `CREATE` privileges will allow each user to create tables in the database.
 
 Now, under the `CREATE USER` statements, add `DROP SCHEMA` and `CREATE SCHEMA` statements for each user's user-defined schema:
 

@@ -2,7 +2,7 @@
 title: Authentication
 summary: An overview of Cluster Auth Config capabilities and interface syntax
 toc: true
-docs_area:
+docs_area: reference.security
 ---
 
 CockroachDB allows fine grained configuration of which attempts to connect with the database it will allow to proceed to the authentication stage, and which authentication methods it will accept, based on:
