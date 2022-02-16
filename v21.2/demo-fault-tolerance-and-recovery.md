@@ -306,7 +306,7 @@ To be able to tolerate 2 of 5 nodes failing simultaneously without any service i
 
 ## Step 9. Simulate two simultaneous node failures
 
-Gracefully shut down two nodes, specifying the [process IDs you retrived earlier](#step-5-simulate-a-single-node-failure):
+Gracefully shut down two nodes, specifying the [process IDs you retrieved earlier](#step-5-simulate-a-single-node-failure):
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell

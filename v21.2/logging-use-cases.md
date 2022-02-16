@@ -57,7 +57,7 @@ I210401 23:30:49.319360 5943 1@util/log/event_log.go:32 ⋮ [-] 42 ={"Timestamp"
 
 - Preceding the `=` character is the `crdb-v2` event metadata. See the [reference documentation](log-formats.html#format-crdb-v2) for details on the fields.
 - `TargetNodeID` shows that the decommissioning node is `4`.
-- `RequestingNodeID` shows that decommissioning was requested by node `1`. You will see this when specifying the node with the `--host` flag.
+- `RequestingNodeID` shows that decommissioning was requested by node `1`. You will see this when specifying the node ID explicitly in addition to the `--host` flag.
 
 #### Example: Node restart
 

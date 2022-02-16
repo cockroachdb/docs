@@ -17,7 +17,7 @@ Subcommand | Usage
 `ls` | List the ID of each node in the cluster, excluding those that have been decommissioned and are offline.
 `status` | View the status of one or all nodes, excluding nodes that have been decommissioned and taken offline. Depending on flags used, this can include details about range/replicas, disk usage, and decommissioning progress.
 `decommission` | Decommission nodes for removal from the cluster. For details, see [Node Shutdown](node-shutdown.html?filters=decommission).
-`recommission` | Recommission nodes that are decommissioning. For details, see [Node Shutdown](node-shutdown.html#recommission-nodes).
+`recommission` | Recommission nodes that are decommissioning. If the decommissioning node has already reached the [draining stage](node-shutdown.html?filters=decommission#draining), you may need to restart the node after it is recommissioned. For details, see [Node Shutdown](node-shutdown.html#recommission-nodes).
 `drain` | Drain nodes in preparation for process termination. Draining always occurs when sending a termination signal or decommissioning a node. The `drain` subcommand is used to drain nodes without also decommissioning or shutting them down. For details, see [Node Shutdown](node-shutdown.html).
 
 ## Synopsis
@@ -122,19 +122,19 @@ The `node decommission` subcommand also supports the following general flags:
 Flag | Description
 -----|------------
 `--wait` | When to return to the client. Possible values: `all`, `none`.<br><br>If `all`, the command returns to the client only after all replicas on all specified nodes have been transferred to other nodes. If any specified nodes are offline, the command will not return to the client until those nodes are back online.<br><br>If `none`, the command does not wait for the decommissioning process to complete; it returns to the client after starting the decommissioning process on all specified nodes that are online. Any specified nodes that are offline will automatically be marked as decommissioning; if they come back online, the cluster will recognize this status and will not rebalance data to the nodes.<br><br>**Default:** `all`
-`--self` | **Deprecated.** Use `--host` instead.
+`--self` | **Deprecated.** Instead, specify a node ID explicitly in addition to the `--host` flag.
 
 The `node drain` subcommand also supports the following general flag:
 
 Flag | Description
 -----|------------
-`--drain-wait` | Amount of time to wait for the node to drain before returning to the client. After this duration, `drain` must be re-initiated to continue.<br><br>**Default:** `10m`
+`--drain-wait` | Amount of time to wait for the node to drain before returning to the client. If draining fails to complete within this duration, you must re-initiate the command to continue the drain. A very long drain may indicate an anomaly, and you should manually inspect the server to determine what blocks the drain.<br><br>**Default:** `10m`
 
 The `node recommission` subcommand also supports the following general flag:
 
 Flag | Description
 -----|------------
-`--self` | **Deprecated.** Use `--host` instead.
+`--self` | Applies the operation to the node against which the command was run (e.g., via `--host`).
 
 ### Client connection
 
