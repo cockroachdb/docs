@@ -15,7 +15,6 @@ docs_area: deploy
 
 - [Data Domiciling with `PLACEMENT RESTRICTED`](data-domiciling-with-placement-restricted.html)
 - [Data Domiciling with Separate Databases](data-domiciling-with-separate-databases.html)
-- [Install CockroachDB](install-cockroachdb.html)
 - [Migrate to Multi-region SQL](migrate-to-multiregion-sql.html)
 - [Multi-region Overview](multiregion-overview.html)
 - [Choosing a multi-region configuration](choosing-a-multi-region-configuration.html)

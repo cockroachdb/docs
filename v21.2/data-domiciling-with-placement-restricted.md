@@ -10,8 +10,8 @@ toc: true
 
 This page has instructions for data domiciling in [multi-region clusters](multiregion-overview.html) using the [`ALTER DATABASE ... PLACEMENT RESTRICTED`](placement-restricted.html) statement. At a high level, this process involves:
 
-1. Controlling the placement of specific row or table data using regional or global tables - specifically, the [`REGIONAL BY ROW`](multiregion-overview.html#regional-by-row-tables), [`REGIONAL BY TABLE`](multiregion-overview.html#regional-tables), and [`GLOBAL`](multiregion-overview.html#global-tables) table localities.
-1. Further restricting where the data in those regional tables is stored using the [`ALTER DATABASE ... PLACEMENT RESTRICTED`](placement-restricted.html) statement, which constrains the replicas for a row or table to be stored in only the [home regions](set-locality.html#crdb_region) associated with those rows or tables.
+1. Controlling the placement of specific row or table data using regional tables - specifically, the [`REGIONAL BY ROW`](multiregion-overview.html#regional-by-row-tables), [`REGIONAL BY TABLE`](multiregion-overview.html#regional-tables).
+1. Further restricting where the data in those regional tables is stored using the [`ALTER DATABASE ... PLACEMENT RESTRICTED`](placement-restricted.html) statement, which constrains the replicas for a partition or table to be stored in only the [home regions](set-locality.html#crdb_region) associated with those rows or tables.
 
 For more information, see the sections below.
 
@@ -24,9 +24,9 @@ This page assumes you are already familiar with:
 
 ## Example
 
-In the following example, you will go through the process of configuring the [MovR](movr.html) data set using [multi-region SQL statements](multiregion-overview.html). Then, as part of implementing a data domiciling strategy, you will apply stricter-than-default replica placement settings using the [`ALTER DATABASE ... PLACEMENT RESTRICTED`](placement-restricted.html) statement. Finally, you will verify that the resulting replica placements are as expected using a combination of [replication reports](query-replication-reports.html), the [`SHOW RANGE FOR ROW`](show-range-for-row.html) statement, and queries against the [`crdb_internal.ranges_no_leases`](crdb-internal.html#ranges_no_leases) table.
+In the following example, you will go through the process of configuring the [MovR](movr.html) data set using [multi-region SQL statements](multiregion-overview.html). Then, as part of implementing a data domiciling strategy, you will apply restricted replica settings using the [`ALTER DATABASE ... PLACEMENT RESTRICTED`](placement-restricted.html) statement. Finally, you will verify that the resulting replica placements are as expected using a combination of [replication reports](query-replication-reports.html), the [`SHOW RANGE FOR ROW`](show-range-for-row.html) statement, and queries against the [`crdb_internal.ranges_no_leases`](crdb-internal.html#ranges_no_leases) table.
 
-For the purposes of this example, the data domiciling requirement is to configure a multi-region deployment of the [MovR database](movr.html) such that data for EMEA-based users, vehicles, etc. is being stored on CockroachDB nodes running in EMEA localities.
+For the purposes of this example, the data domiciling requirement is to configure a multi-region deployment of the [MovR database](movr.html) such that data for EU-based users, vehicles, etc. is being stored on CockroachDB nodes running in EU localities.
 
 ### Step 1. Start a simulated multi-region cluster
 
@@ -71,9 +71,9 @@ ALTER DATABASE movr ADD REGION "us-west1";
 
 ### Step 3. View noncompliant replicas
 
-Next, run a [replication report](query-replication-reports.html) to see which ranges are still not in compliance with your desired domiciling: that data on EMEA-based entities (users, etc.) does not leave EMEA-based nodes.
+Next, run a [replication report](query-replication-reports.html) to see which ranges are still not in compliance with your desired domiciling: that data on EU-based entities (users, etc.) does not leave EU-based nodes.
 
-With the default settings, you should expect some replicas in the cluster to be violating this constraint. This is because [non-voting replicas](architecture/replication-layer.html#non-voting-replicas) are enabled by default in [multi-region clusters](multiregion-overview.html) to enable stale reads of data in [regional tables](regional-tables.html) from outside those tables' [home regions](set-locality.html#crdb_region). For many use cases, this ispreferred, but it keeps you from meeting the domiciling requirements for this example.
+With the default settings, you should expect some replicas in the cluster to be violating this constraint. This is because [non-voting replicas](architecture/replication-layer.html#non-voting-replicas) are enabled by default in [multi-region clusters](multiregion-overview.html) to enable stale reads of data in [regional tables](regional-tables.html) from outside those tables' [home regions](set-locality.html#crdb_region). For many use cases, this is preferred, but it keeps you from meeting the domiciling requirements for this example.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -138,7 +138,7 @@ SELECT * FROM report;
        52 |          0 | DATABASE movr | movr          | NULL       | NULL       | constraint | +region=us-east1:1     | 2022-01-19 16:34:49.930886+00 |               78
 ~~~
 
-This output shows that the `movr` database has ranges out of compliance, which you saw previously. Unfortunately, this output does not contain the table or index names due to a limitation of the replication reports: non-voting replicas are not associated with any tables or indexes by the reports. For more information, see [cockroachdb/cockroach#75821](https://github.com/cockroachdb/cockroach/issues/75821).
+This output shows that the `movr` database has ranges out of compliance, which you saw previously. Unfortunately, this output does not contain the table or index names due to a limitation of the replication reports: non-voting replicas are not associated with any tables or indexes by the reports.
 
 Now that you know some replicas are out of compliance, you need to see exactly where the ranges for a given row of data are stored. To accomplish this, you must use the [`SHOW RANGE FOR ROW`](show-range-for-row.html) statement.
 
@@ -167,7 +167,7 @@ The columns in the primary index are those values of `column_name` where the val
 - `city`
 - `id`
 
-To get the values of those columns for one row in EMEA, use the following [selection query](selection-queries.html):
+To get the values of those columns for one row in EU, use the following [selection query](selection-queries.html):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -199,7 +199,7 @@ The output above shows that:
 
 - The replicas associated with this row of the `users` table have their home region in the `europe-west1` region
 - In particular, the leaseholder is in the `europe-west1` region
-- However, some of the non-leaseholder replicas are not in the `europe-west1` region, according to the value of the `replica_localities` column. That column shows that there are also non-leaseholder replicas located in the `us-east1` and `us-west1` regions. These are the [non-voting replicas](architecture/replication-layer.html#non-voting-replicas) referenced previously. This shows that not all of the replicas associated with this row are meeting the requirement to be stored on nodes within EMEA localities.
+- However, some of the non-leaseholder replicas are not in the `europe-west1` region, according to the value of the `replica_localities` column. That column shows that there are also non-leaseholder replicas located in the `us-east1` and `us-west1` regions. These are the [non-voting replicas](architecture/replication-layer.html#non-voting-replicas) referenced previously. This shows that not all of the replicas associated with this row are meeting the requirement to be stored on nodes within EU localities.
 
 To confirm the above replica placement information by other means, use the statement below to query the [`crdb_internal.ranges_no_leases` table](crdb-internal.html#ranges_no_leases) and see the value of its `replica_localities` column. The value of that column should match the output from the `SHOW RANGE FOR ROW` query above.
 
@@ -217,7 +217,7 @@ SELECT * FROM crdb_internal.ranges_no_leases WHERE range_id = 162 AND database_n
 
 ### Step 4. Apply stricter replica placement settings
 
-To ensure that data on EMEA-based users, vehicles, etc. from [`REGIONAL BY ROW` tables](regional-tables.html#regional-by-row-tables) is stored only on EMEA-based nodes in the cluster, you must disable the use of [non-voting replicas](architecture/replication-layer.html#non-voting-replicas) on all of these tables. You can do this using the [`ALTER DATABASE ... PLACEMENT RESTRICTED`](placement-restricted.html) statement.
+To ensure that data on EU-based users, vehicles, etc. from [`REGIONAL BY ROW` tables](regional-tables.html#regional-by-row-tables) is stored only on EU-based nodes in the cluster, you must disable the use of [non-voting replicas](architecture/replication-layer.html#non-voting-replicas) on all of these tables. You can do this using the [`ALTER DATABASE ... PLACEMENT RESTRICTED`](placement-restricted.html) statement.
 
 To use this statement, you must set the `enable_multiregion_placement_policy` [session setting](set-vars.html) or the `sql.defaults.multiregion_placement_policy.enabled` [cluster setting](cluster-settings.html):
 
@@ -324,7 +324,7 @@ show range from table users for row ('europe-west1', 'amsterdam', 'ae147ae1-47ae
 (1 row)
 ~~~
 
-The output shows that the replicas underlying this data are now in compliance with the data domiciling requirements listed above: that data for EMEA-based entities (users, etc.) does not leave EMEA-based nodes.
+The output shows that the replicas underlying this data are now in compliance with the data domiciling requirements listed above: that data for EU-based entities (users, etc.) does not leave EU-based nodes.
 
 Specifically, the output above shows that:
 

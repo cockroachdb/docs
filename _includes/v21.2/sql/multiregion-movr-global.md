@@ -5,7 +5,7 @@ Because the data in `promo_codes` is not updated frequently (a.k.a., "read-mostl
 ALTER TABLE promo_codes SET locality GLOBAL;
 ~~~
 
-Next, alter the `user_promo_codes` table to have a foreign key into the `promo_codes` table. This step is necessary to modify the MovR schema design to take full advantage of the multi-region features in v21.1+.
+Next, alter the `user_promo_codes` table to have a foreign key into the global `promo_codes` table. This will enable fast reads of the `promo_codes.code` column from any region in the cluster.
 
 {% include copy-clipboard.html %}
 ~~~ sql

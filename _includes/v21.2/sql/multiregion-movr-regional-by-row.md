@@ -1,4 +1,4 @@
-All of the tables except `promo_codes` are geographically specific, and updated very frequently. For these tables, the right table locality for optimizing access to their data is [`REGIONAL BY ROW`](multiregion-overview.html#regional-by-row-tables).
+All of the tables except `promo_codes` contain rows which are partitioned by region, and updated very frequently. For these tables, the right table locality for optimizing access to their data is [`REGIONAL BY ROW`](multiregion-overview.html#regional-by-row-tables).
 
 Apply this table locality to the remaining tables. These statements use a `CASE` statement to put data for a given city in the right region and can take around 1 minute to complete for each table.
 

@@ -51,7 +51,7 @@ In order to be able to add these regions from SQL, you must have started the clu
 
 You will need to make sure that user data associated with EU users is only added to the `eu_users` database.
 
-How exactly you will accomplish that is beyond the scope of this document, but you will likely need to add some logic to your application and/or to your load balancing infrastructure to make sure that when your application code is [inserting](insert.html) or [updating](update.html) EU user data, the data only ever hits the `eu_users` database. For example, you can set the target database in your [connection string](connection-parameters.html). For example:
+The complete steps to ensure this are beyond the scope of this document, but you will likely need to add some logic to your application and/or to your load balancing infrastructure to make sure that when your application code is [inserting](insert.html) or [updating](update.html) EU user data, the data only ever hits the `eu_users` database. For example, you can set the target database in your [connection string](connection-parameters.html). For example:
 
 ~~~
 postgres://maxroach:mypassword@region.cockroachlabs.cloud:26257/eu_users?sslmode=verify-full&sslrootcert=certs/app-ca.crt
@@ -73,8 +73,6 @@ SELECT us_users.name, eu_users.name
 ## Limitations
 
 {% include {{page.version.version}}/sql/data-domiciling-limitations.md %}
-
-- Cross-region writes are slower than intra-region writes. This may be an issue depending on your application's performance needs, since following the advice above would result in having different databases' data stored in different regions.
 
 ## See also
 
