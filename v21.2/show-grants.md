@@ -394,6 +394,6 @@ To list all grants for all users and roles on the current database and its table
 - [`GRANT`](grant.html)
 - [`REVOKE`](revoke.html)
 - [`SHOW GRANTS`](show-grants.html)
-- [Manage Users](authorization.html#create-and-manage-users)
+- [Manage Users](security-reference/authorization.html#create-and-manage-users)
 - [Other Cockroach Commands](cockroach-commands.html)
 - [Information Schema](information-schema.html)

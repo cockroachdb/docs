@@ -45,4 +45,4 @@ The role must have the [`SELECT`](select-clause.html) [privilege](security-refer
 - [`DROP ROLE`](drop-role.html)
 - [`GRANT`](grant.html)
 - [`REVOKE`](revoke.html)
-- [Manage Users](authorization.html#create-and-manage-users)
+- [Manage Users](security-reference/authorization.html#create-and-manage-users)

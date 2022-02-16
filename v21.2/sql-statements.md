@@ -125,9 +125,9 @@ Statement | Usage
 [`CREATE USER`](create-user.html) | Create SQL users, which lets you control [privileges](security-reference/authorization#managing-privileges) on your databases and tables.
 [`DROP ROLE`](drop-role.html) | Remove one or more SQL [roles](authorization.html#create-and-manage-roles).
 [`DROP USER`](drop-user.html) | Remove one or more SQL users.
-[`GRANT`](grant.html) | Grant privileges to [users](authorization.html#create-and-manage-users) or [roles](authorization.html#create-and-manage-roles), or add a [role](authorization.html#create-and-manage-roles) or [user](authorization.html#create-and-manage-users) as a member to a role.
+[`GRANT`](grant.html) | Grant privileges to [users](security-reference/authorization.html#create-and-manage-users) or [roles](authorization.html#create-and-manage-roles), or add a [role](authorization.html#create-and-manage-roles) or [user](security-reference/authorization.html#create-and-manage-users) as a member to a role.
 [`REASSIGN OWNED`](reassign-owned.html) | Change the [ownership](authorization.html#object-ownership) of all database objects in the current database that are currently owned by a specific [role](authorization.html#roles) or [user](authorization.html#sql-users).
-[`REVOKE`](revoke.html) | Revoke privileges from [users](authorization.html#create-and-manage-users) or [roles](authorization.html#create-and-manage-roles), or revoke a [role](authorization.html#create-and-manage-roles) or [user's](authorization.html#create-and-manage-users) membership to a role.
+[`REVOKE`](revoke.html) | Revoke privileges from [users](security-reference/authorization.html#create-and-manage-users) or [roles](authorization.html#create-and-manage-roles), or revoke a [role](authorization.html#create-and-manage-roles) or [user's](security-reference/authorization.html#create-and-manage-users) membership to a role.
 [`SHOW GRANTS`](show-grants.html) | View privileges granted to users.
 [`SHOW ROLES`](show-roles.html) | Lists the roles for all databases.
 [`SHOW USERS`](show-users.html) | Lists the users for all databases.

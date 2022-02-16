@@ -58,4 +58,4 @@ Alternatively, within the built-in SQL shell, you can use the `\du` [shell comma
 ## See also
 
 - [`CREATE USER`](create-user.html)
-- [Manage Users](authorization.html#create-and-manage-users)
+- [Manage Users](security-reference/authorization.html#create-and-manage-users)

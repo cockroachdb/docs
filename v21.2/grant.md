@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `GRANT` [statement](sql-statements.html) controls each [role](authorization.html#create-and-manage-roles) or [user's](authorization.html#create-and-manage-users) SQL [privileges](security-reference/authorization#managing-privileges) for interacting with specific [databases](create-database.html), [schemas](create-schema.html), [tables](create-table.html), or [user-defined types](enum.html). For privileges required by specific statements, see the documentation for the respective [SQL statement](sql-statements.html).
+The `GRANT` [statement](sql-statements.html) controls each [role](authorization.html#create-and-manage-roles) or [user's](security-reference/authorization.html#create-and-manage-users) SQL [privileges](security-reference/authorization#managing-privileges) for interacting with specific [databases](create-database.html), [schemas](create-schema.html), [tables](create-table.html), or [user-defined types](enum.html). For privileges required by specific statements, see the documentation for the respective [SQL statement](sql-statements.html).
 
 You can use `GRANT` to directly grant privileges to a role or user, or you can grant membership to an existing role, which grants that role's privileges to the grantee.
 
@@ -23,7 +23,7 @@ Parameter                 | Description
 --------------------------|------------
 `ALL`<br>`ALL PRIVILEGES` | Grant all [privileges](#supported-privileges).
 `targets`                 | A comma-separated list of database or table names, preceded by the object type (e.g., `DATABASE mydatabase`).<br>{{site.data.alerts.callout_info}}To grant privileges on all tables in a database or schema, you can use `GRANT ... ON TABLE *`. For an example, see [Grant privileges on all tables in a database or schema](#grant-privileges-on-all-tables-in-a-database-or-schema).{{site.data.alerts.end}}
-`name_list`               | A comma-separated list of [users](authorization.html#create-and-manage-users) and/or [roles](authorization.html#create-and-manage-roles).
+`name_list`               | A comma-separated list of [users](security-reference/authorization.html#create-and-manage-users) and/or [roles](authorization.html#create-and-manage-roles).
 `target_types`            | A comma-separated list of [user-defined types](create-type.html).
 `schema_name_list`        | A comma-separated list of [schemas](create-schema.html).
 `ALL TABLES IN SCHEMA`    | <span class="version-tag">New in v21.2</span>: Grant privileges on all tables in a schema or list of schemas.
@@ -291,4 +291,4 @@ The user `max` can then use the [`CONFIGURE ZONE`](configure-zone.html) statemen
 - [`SHOW GRANTS`](show-grants.html)
 - [`SHOW ROLES`](show-roles.html)
 - [`CONFIGURE ZONE`](configure-zone.html)
-- [Manage Users](authorization.html#create-and-manage-users)
+- [Manage Users](security-reference/authorization.html#create-and-manage-users)
