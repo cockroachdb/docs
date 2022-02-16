@@ -7,9 +7,6 @@ docs_area: reference.security
 
 ## Introduction: Why customize your authentication configuration?
 
-## Introduction: Why customize your authentication configuration?
-=======
-
 CockroachDB allows fine grained configuration of which attempts to connect with the database it will allow to proceed to the authentication stage, and which authentication methods it will accept, based on:
 
 - WHO is making the attempt (SQL user), and 
@@ -76,7 +73,6 @@ run `show cluster setting server.host_based_authentication.configuration;` to vi
 ```
 cockroachlabs.cloud:26257/defaultdb> show cluster setting server.host_based_authentication.configuration;
   server.host_based_authentication.configuration
---------------------------------------------------
 
 (1 row)
 
@@ -96,13 +92,7 @@ host    all       all    all                reject
 
 ```
 
-<<<<<<< HEAD
-## Confirm the IP restriction
-=======
-
 ## Confirm the IP resctriction
-
->>>>>>> 9933bdc50 ( Finish authentication configruation for serverless cluster security tutorial)
 
 Exit the database shell by typing `\q`, and then try to re-establish the connection. This time the attempt will be rejected because we are not making the attempt from the sole allowed IP address.
 
