@@ -555,7 +555,7 @@ Column | Description
 You can run [`SELECT` queries](selection-queries.html) on the tables in `information_schema`.
 
 {{site.data.alerts.callout_success}}
-The `information_schema` views typically represent objects that the current user has privilege to access. To ensure you can view all the objects in a database, access it as a user with [`admin` privileges](authorization.html#admin-role).
+The `information_schema` views typically represent objects that the current user has privilege to access. To ensure you can view all the objects in a database, access it as a user with [`admin` privileges](security-reference/authorization.html#admin-role).
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}

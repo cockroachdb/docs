@@ -54,7 +54,7 @@ The default `root` user is a member of the `admin` role. Use the following comma
 
 For security reasons, non-admin users access only the data over which they have privileges (e.g., their tables, jobs, and list of sessions), and data that does not require privileges (e.g., cluster health, node status, metrics).
 
-The following areas of the DB Console can only be accessed by [`admin` users](authorization.html#admin-role). These areas display information from privileged HTTP endpoints that operate with `admin` privilege.
+The following areas of the DB Console can only be accessed by [`admin` users](security-reference/authorization.html#admin-role). These areas display information from privileged HTTP endpoints that operate with `admin` privilege.
 
 Secure area | Privileged information
 -----|-----

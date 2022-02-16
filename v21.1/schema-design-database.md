@@ -30,7 +30,7 @@ Here are some best practices to follow when creating and using databases:
 
 - Do not use the preloaded `defaultdb` database. Instead, create your own database with a `CREATE DATABASE` statement, and change it to the SQL session's [current database](sql-name-resolution.html#current-database) by executing a `USE {databasename};` statement, by passing the `--database={databasename}` flag to the [`cockroach sql` command](cockroach-sql.html#general), or by specifying the `database` parameter in the [connection string](connection-parameters.html#connect-using-a-url) passed to your database schema migration tool.
 
-- Create databases and [user-defined schemas](schema-design-schema.html) as a member of [the `admin` role](authorization.html#admin-role) (e.g., as the [`root` user](authorization.html#root-user)), and create all other lower-level objects as a [different user](schema-design-overview.html#controlling-access-to-objects), with fewer privileges, following [authorization best practices](authorization.html#authorization-best-practices).
+- Create databases and [user-defined schemas](schema-design-schema.html) as a member of [the `admin` role](security-reference/authorization.html#admin-role) (e.g., as the [`root` user](authorization.html#root-user)), and create all other lower-level objects as a [different user](schema-design-overview.html#controlling-access-to-objects), with fewer privileges, following [authorization best practices](authorization.html#authorization-best-practices).
 
 - Limit the number of databases you create. If you need to create multiple tables with the same name in your cluster, do so in different [user-defined schemas](schema-design-schema.html), in the same database.
 
