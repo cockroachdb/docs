@@ -29,7 +29,7 @@ Table name | Description| Use in production
 [`cluster_contended_keys`](#cluster_contended_keys)  | Contains information about [contended](performance-best-practices-overview.html#transaction-contention) keys in your cluster.| ✓
 [`cluster_contended_tables`](#cluster_contended_tables)  | Contains information about [contended](performance-best-practices-overview.html#transaction-contention) tables in your cluster.| ✓
 [`cluster_contention_events`](#cluster_contention_events)  | Contains information about [contention](performance-best-practices-overview.html#transaction-contention) in your cluster.| ✓
-`cluster_database_privileges` | Contains information about the [database privileges](authorization.html#privileges) on your cluster.| ✗
+`cluster_database_privileges` | Contains information about the [database privileges](security-reference/authorization.html#privileges) on your cluster.| ✗
 `cluster_distsql_flows` | Contains information about the flows of the [DistSQL execution](architecture/sql-layer.html#distsql) scheduled in your cluster.| ✗
 `cluster_inflight_traces` | Contains information about in-flight [tracing](show-trace.html) in your cluster.| ✗
 [`cluster_queries`](#cluster_queries) | Contains information about queries running on your cluster.| ✓
@@ -40,7 +40,7 @@ Table name | Description| Use in production
 `create_type_statements` | <a name="create_type_statements"></a> Contains information about [user-defined types](enum.html) in your database.| ✗
 `cross_db_references` | Contains information about objects that reference other objects, such as [foreign keys](foreign-key.html) or [views](views.html), across databases in your cluster.| ✗
 `databases` | Contains information about the databases in your cluster.| ✗
-`default_privileges` | Contains information about per-database default [privileges](authorization.html#privileges).| ✗
+`default_privileges` | Contains information about per-database default [privileges](security-reference/authorization.html#privileges).| ✗
 `feature_usage` | Contains information about feature usage on your cluster.| ✗
 `forward_dependencies` | Contains information about forward dependencies.| ✗
 `gossip_alerts` | Contains information about gossip alerts.| ✗

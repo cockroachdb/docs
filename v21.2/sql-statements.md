@@ -39,7 +39,7 @@ Statement | Usage
 [`ADD CONSTRAINT`](add-constraint.html) | Add a constraint to a column.
 [`ALTER COLUMN`](alter-column.html) | Change a column's [Default constraint](default-value.html), [`NOT NULL` constraint](not-null.html), or [data type](data-types.html).
 [`ALTER DATABASE`](alter-database.html) | Apply a schema change to a database.
-[`ALTER DEFAULT PRIVILEGES`](alter-default-privileges.html) | <span class="version-tag">New in v21.2</span>: Change the default [privileges](authorization.html#privileges) for objects created by specific roles/users in the current database.
+[`ALTER DEFAULT PRIVILEGES`](alter-default-privileges.html) | <span class="version-tag">New in v21.2</span>: Change the default [privileges](security-reference/authorization.html#privileges) for objects created by specific roles/users in the current database.
 [`ALTER INDEX`](alter-index.html) | Apply a schema change to an index.
 [`ALTER PARTITION`](alter-partition.html) | Configure the replication zone for a partition. Note that [partitioning](partitioning.html) requires an [Enterprise license](enterprise-licensing.html).
 [`ALTER PRIMARY KEY`](alter-primary-key.html) |  Change the [primary key](primary-key.html) of a table.

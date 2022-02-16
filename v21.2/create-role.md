@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `CREATE ROLE` [statement](sql-statements.html) creates SQL [roles](authorization.html#create-and-manage-roles), which are groups containing any number of roles and users as members. You can assign [privileges](authorization.html#privileges) to roles, and all members of the role (regardless of whether if they are direct or indirect members) will inherit the role's privileges.
+The `CREATE ROLE` [statement](sql-statements.html) creates SQL [roles](authorization.html#create-and-manage-roles), which are groups containing any number of roles and users as members. You can assign [privileges](security-reference/authorization.html#privileges) to roles, and all members of the role (regardless of whether if they are direct or indirect members) will inherit the role's privileges.
 
 {% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
@@ -27,7 +27,7 @@ The keywords `ROLE` and `USER` can be used interchangeably in SQL statements for
 - After creating roles, you must [grant them privileges to databases and tables](grant.html).
 - Roles and users can be members of roles.
 - Roles and users share the same namespace and must be unique.
-- All [privileges](authorization.html#privileges) of a role are inherited by all of its members.
+- All [privileges](security-reference/authorization.html#privileges) of a role are inherited by all of its members.
 - Role options of a role are not inherited by any of its members.
 - There is no limit to the number of members in a role.
 - Membership loops are not allowed (direct: `A is a member of B is a member of A` or indirect: `A is a member of B is a member of C ... is a member of A`).
