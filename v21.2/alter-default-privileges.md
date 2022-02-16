@@ -40,7 +40,7 @@ If you do not specify a `FOR ...` clause, CockroachDB alters the default privile
 
 ## Required privileges
 
-- To run `ALTER DEFAULT PRIVILEGES FOR ALL ROLES`, the user must be a member of the [`admin`](authorization.html#admin-role) role.
+- To run `ALTER DEFAULT PRIVILEGES FOR ALL ROLES`, the user must be a member of the [`admin`](security-reference/authorization.html#admin-role) role.
 - To alter the default privileges on objects created by a specific role, the user must be a member of that role.
 
 ## Examples
