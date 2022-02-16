@@ -8,8 +8,8 @@ docs_area: reference.sql
 
 The `SHOW GRANTS` [statement](sql-statements.html) lists one of the following:
 
-- The [roles](authorization.html#sql-users) granted to [users](authorization.html#sql-users) in a cluster.
-- The [privileges](security-reference/authorization#managing-privileges) [granted](grant.html) to [users](authorization.html#sql-users) on [databases](create-database.html), [schemas](create-schema.html), [tables](create-table.html), or [user-defined types](enum.html).
+- The [roles](security-reference/authorization.html#sql-users) granted to [users](security-reference/authorization.html#sql-users) in a cluster.
+- The [privileges](security-reference/authorization#managing-privileges) [granted](grant.html) to [users](security-reference/authorization.html#sql-users) on [databases](create-database.html), [schemas](create-schema.html), [tables](create-table.html), or [user-defined types](enum.html).
 
 ## Syntax
 
@@ -36,7 +36,7 @@ SHOW GRANTS ON ROLE [<roles...>] [FOR <users...>]
 Parameter    | Description
 -------------|-----------------------------------------------------------------------------------------------------
 `targets`    | A comma-separated list of database, schema, table, or user-defined type names.<br><br>{{site.data.alerts.callout_info}}To list the privilege grants for all tables in the current database, you can use `SHOW GRANTS ON TABLE *`.{{site.data.alerts.end}}
-`users`      | A comma-separated list of the [users](authorization.html#sql-users) whose privileges or roles you want to show.
+`users`      | A comma-separated list of the [users](security-reference/authorization.html#sql-users) whose privileges or roles you want to show.
 `roles`      | A comma-separated list of the roles whose grants you want to show.
 
 ## Response
