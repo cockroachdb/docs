@@ -92,7 +92,7 @@ host    all       all    all                reject
 
 ```
 
-## Confirm the IP resctriction
+## Confirm the IP restriction
 
 Exit the database shell by typing `\q`, and then try to re-establish the connection. This time the attempt will be rejected because we are not making the attempt from the sole allowed IP address.
 
