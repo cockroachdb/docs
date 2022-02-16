@@ -2,7 +2,7 @@
 title: CockroachDB Security Overview
 summary: An overview of CockroachDB Security Features
 toc: true
-docs_area: security-reference
+docs_area: reference.security
 ---
 
 ## CockroachDB security features

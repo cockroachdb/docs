@@ -2,7 +2,7 @@
 title: Network Security in CockroachDB
 summary: Overview of CockroachDB Network Security Features and Requirements
 toc: true
-docs_area: security-reference
+docs_area: reference.security
 ---
 
 There are two ways to connect to a CockroachDB Cluster, whether it has been deployed by Cockroach Labs as part of their Cloud Serverless or Dedicated offering, or you have deployed it yourself.

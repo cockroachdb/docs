@@ -2,7 +2,7 @@
 title: Authorization in CockroachDB
 summary: Overview of Authorization in CockroachDB
 toc: true
-docs_area: security-reference
+docs_area: reference.security
 ---
 
 User authorization is the act of defining access policies for authenticated CockroachDB users. CockroachDB allows you to create, manage, and remove your cluster's SQL [users](#sql-users) and assign SQL-level [privileges](#managing-privileges) to the users. Additionally, you can use [role-based access management (RBAC)](#roles) for simplified user management.

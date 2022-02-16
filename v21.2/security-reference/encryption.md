@@ -2,7 +2,7 @@
 title: Encryption in CockroachDB
 summary: Overview of CockroachDB encryption features
 toc: true
-docs_area: security-reference
+docs_area: reference.security
 ---
 
 

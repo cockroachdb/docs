@@ -2,7 +2,7 @@
 title: Configure SQL Authentication for Hardened Serverless Cluster Security
 summary: 
 toc: true
-docs_area: manage.security
+docs_area: reference.security
 ---
 
 ## Introduction: Why customize your authentication configuration?
