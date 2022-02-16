@@ -26,6 +26,20 @@ The SQL statements [`CREATE USER`](create-user.html) and [`CREATE ROLE`](create-
 
 Throughout the documentation, however, we will refer to a "user" or "role" based on the intended purpose of the entity.
 
+## SQL users
+
+A SQL user can interact with a CockroachDB database using the [built-in SQL shell](cockroach-sql.html) or through an application.
+
+### Create and manage users
+
+Use the [`CREATE USER`](create-user.html) and [`DROP USER`](drop-user.html) statements to create and remove users, the [`ALTER USER`](alter-user.html) statement to add or change a user's password and role options, the [`GRANT`](grant.html) and [`REVOKE`](revoke.html) statements to manage the user’s privileges, and the [`SHOW USERS`](show-users.html) statement to list users.
+
+A new user must be granted the required privileges for each database and table that the user needs to access.
+
+{{site.data.alerts.callout_info}}
+By default, a new user belongs to the `public` role and has no privileges other than those assigned to the `public` role. For more information, see [Public role](#public-role).
+{{site.data.alerts.end}}
+
 
 ### `root` user
 
