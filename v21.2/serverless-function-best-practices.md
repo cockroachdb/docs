@@ -18,7 +18,7 @@ When creating connection pools in serverless functions:
 
 - Do not set a minimum idle connection count. The connection pool should be free to open connections as needed.
 
-- Set the maximum lifetime on the connection pool to 30 minutes.
+- If supported by your pooling library, set the maximum lifetime on the connection pool to 30 minutes.
 
 ## Persist connection pools across function invocations
 
@@ -57,8 +57,7 @@ exports.handler = async (context) => {
     const connectionString = process.env.DATABASE_URL
     pool = new Pool({
       connectionString,
-      max: 1,
-      maxLifetimeSeconds = 1800
+      max: 1
     })
   }
 
