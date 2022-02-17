@@ -248,7 +248,7 @@ Column | Description
 
 ### role_table_grants
 
-`role_table_grants` identifies which [privileges](security-reference/authorization#managing-privileges) have been granted on tables or views where the grantor
+`role_table_grants` identifies which [privileges](security-reference/authorization.html#managing-privileges) have been granted on tables or views where the grantor
 or grantee is a currently enabled role. This table is identical to [`table_privileges`](#table_privileges).
 
 Column | Description
@@ -264,7 +264,7 @@ Column | Description
 
 ### schema_privileges
 
-`schema_privileges` identifies which [privileges](security-reference/authorization#managing-privileges) have been granted to each user at the database level.
+`schema_privileges` identifies which [privileges](security-reference/authorization.html#managing-privileges) have been granted to each user at the database level.
 
 Column | Description
 -------|-----------
@@ -348,7 +348,7 @@ Column | Description
 
 ### table_privileges
 
-`table_privileges` identifies which [privileges](security-reference/authorization#managing-privileges) have been granted to each user at the table level.
+`table_privileges` identifies which [privileges](security-reference/authorization.html#managing-privileges) have been granted to each user at the table level.
 
 Column | Description
 -------|-----------
@@ -387,7 +387,7 @@ Column | Description
 
 ### user_privileges
 
-`user_privileges` identifies global [privileges](security-reference/authorization#managing-privileges).
+`user_privileges` identifies global [privileges](security-reference/authorization.html#managing-privileges).
 
 Column | Description
 -------|-----------

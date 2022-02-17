@@ -15,7 +15,7 @@ The `SET TRANSACTION` [statement](sql-statements.html) sets the transaction prio
 
 ## Required privileges
 
-No [privileges](security-reference/authorization#managing-privileges) are required to set the transaction priority. However, privileges are required for each statement within a transaction.
+No [privileges](security-reference/authorization.html#managing-privileges) are required to set the transaction priority. However, privileges are required for each statement within a transaction.
 
 ## Parameters
 

@@ -19,7 +19,7 @@ The `UPSERT` [statement](sql-statements.html) is semantically equivalent to [`IN
 
 ## Required privileges
 
-The user must have the `INSERT`, `SELECT` and `UPDATE` [privileges](security-reference/authorization#managing-privileges) on the table.
+The user must have the `INSERT`, `SELECT` and `UPDATE` [privileges](security-reference/authorization.html#managing-privileges) on the table.
 
 ## Synopsis
 

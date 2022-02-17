@@ -10,7 +10,7 @@ The `RESET` [statement](sql-statements.html) resets a [session variable](set-var
 
 ## Required privileges
 
-No [privileges](security-reference/authorization#managing-privileges) are required to reset a session setting.
+No [privileges](security-reference/authorization.html#managing-privileges) are required to reset a session setting.
 
 ## Synopsis
 

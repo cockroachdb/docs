@@ -15,7 +15,7 @@ docs_area: reference.sql
 
 ## Required privileges
 
-No [privileges](security-reference/authorization#managing-privileges) are required to release a savepoint. However, privileges are required for each statement within a transaction.
+No [privileges](security-reference/authorization.html#managing-privileges) are required to release a savepoint. However, privileges are required for each statement within a transaction.
 
 ## Parameters
 

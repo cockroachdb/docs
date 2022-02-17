@@ -15,7 +15,7 @@ Use the `SHOW ZONE CONFIGURATIONS` [statement](sql-statements.html) to view deta
 
 ## Required privileges
 
-No [privileges](security-reference/authorization#managing-privileges) are required to list replication zones.
+No [privileges](security-reference/authorization.html#managing-privileges) are required to list replication zones.
 
 ## Parameters
 

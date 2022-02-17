@@ -122,7 +122,7 @@ Statement | Usage
 Statement | Usage
 ----------|------------
 [`CREATE ROLE`](create-role.html) | Create SQL [roles](authorization.html#create-and-manage-roles), which are groups containing any number of roles and users as members.
-[`CREATE USER`](create-user.html) | Create SQL users, which lets you control [privileges](security-reference/authorization#managing-privileges) on your databases and tables.
+[`CREATE USER`](create-user.html) | Create SQL users, which lets you control [privileges](security-reference/authorization.html#managing-privileges) on your databases and tables.
 [`DROP ROLE`](drop-role.html) | Remove one or more SQL [roles](authorization.html#create-and-manage-roles).
 [`DROP USER`](drop-user.html) | Remove one or more SQL users.
 [`GRANT`](grant.html) | Grant privileges to [users](security-reference/authorization.html#create-and-manage-users) or [roles](authorization.html#create-and-manage-roles), or add a [role](authorization.html#create-and-manage-roles) or [user](security-reference/authorization.html#create-and-manage-users) as a member to a role.

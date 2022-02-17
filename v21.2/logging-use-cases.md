@@ -257,7 +257,7 @@ All possible `SENSITIVE_ACCESS` event types are detailed in the [reference docum
 
 ### PRIVILEGES
 
-The [`PRIVILEGES`](logging.html#privileges) channel logs SQL privilege changes. These include DDL operations performed by SQL operations that [modify the privileges](security-reference/authorization#managing-privileges) granted to [roles and users](authorization.html#users-and-roles) on databases, schemas, tables, and [user-defined types](enum.html).
+The [`PRIVILEGES`](logging.html#privileges) channel logs SQL privilege changes. These include DDL operations performed by SQL operations that [modify the privileges](security-reference/authorization.html#managing-privileges) granted to [roles and users](authorization.html#users-and-roles) on databases, schemas, tables, and [user-defined types](enum.html).
 
 #### Example: Database privileges
 
@@ -277,7 +277,7 @@ All possible `PRIVILEGE` event types are detailed in the [reference documentatio
 
 ### USER_ADMIN
 
-The [`USER_ADMIN`](logging.html#user_admin) channel logs changes to users and roles. This includes user and role [creation and assignment](authorization.html#create-and-manage-roles) and changes to [privileges](security-reference/authorization#managing-privileges), [options](create-role.html#parameters), and [passwords](authentication.html#client-authentication).
+The [`USER_ADMIN`](logging.html#user_admin) channel logs changes to users and roles. This includes user and role [creation and assignment](authorization.html#create-and-manage-roles) and changes to [privileges](security-reference/authorization.html#managing-privileges), [options](create-role.html#parameters), and [passwords](authentication.html#client-authentication).
 
 #### Example: SQL user creation
 

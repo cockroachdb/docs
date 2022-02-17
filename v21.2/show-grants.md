@@ -9,7 +9,7 @@ docs_area: reference.sql
 The `SHOW GRANTS` [statement](sql-statements.html) lists one of the following:
 
 - The [roles](security-reference/authorization.html#sql-users) granted to [users](security-reference/authorization.html#sql-users) in a cluster.
-- The [privileges](security-reference/authorization#managing-privileges) [granted](grant.html) to [users](security-reference/authorization.html#sql-users) on [databases](create-database.html), [schemas](create-schema.html), [tables](create-table.html), or [user-defined types](enum.html).
+- The [privileges](security-reference/authorization.html#managing-privileges) [granted](grant.html) to [users](security-reference/authorization.html#sql-users) on [databases](create-database.html), [schemas](create-schema.html), [tables](create-table.html), or [user-defined types](enum.html).
 
 ## Syntax
 
@@ -66,7 +66,7 @@ Field        |  Description
 
 ## Required privileges
 
-- No [privileges](security-reference/authorization#managing-privileges) are required to view privileges granted to users.
+- No [privileges](security-reference/authorization.html#managing-privileges) are required to view privileges granted to users.
 
 - For `SHOW GRANTS ON ROLES`, the user must have the [`SELECT`](select-clause.html) [privilege](security-reference/authorization.html#managing-privileges) on the system table.
 

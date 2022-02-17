@@ -169,7 +169,7 @@ table tr td:nth-child(2) {
  Users | ✓ | Standard | [Users documentation](security-reference/authorization.html#sql-users)
  Roles | ✓ | Standard | [Roles documentation](security-reference/authorization.html#roles)
  Object ownership | ✓ | Common Extension | [Ownership documentation](security-reference/authorization.html#object-ownership)
- Privileges | ✓ | Standard | [Privileges documentation](security-reference/authorization#managing-privileges)
+ Privileges | ✓ | Standard | [Privileges documentation](security-reference/authorization.html#managing-privileges)
  Default privileges | Partial | PostgreSQL Extension | [Default privileges documentation](security-reference/authorization.html#default-privileges)
 
 ### Miscellaneous

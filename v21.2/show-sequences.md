@@ -9,7 +9,7 @@ The `SHOW SEQUENCES` [statement](sql-statements.html) lists all sequences in a d
 
 ## Required privileges
 
-No [privileges](security-reference/authorization#managing-privileges) are required to list the sequences in a database.
+No [privileges](security-reference/authorization.html#managing-privileges) are required to list the sequences in a database.
 
 ## Synopsis
 

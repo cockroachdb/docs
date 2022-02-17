@@ -20,7 +20,7 @@ For non-retryable transactions, if statements in the transaction [generated any 
 
 ## Required privileges
 
-No [privileges](security-reference/authorization#managing-privileges) are required to commit a transaction. However, privileges are required for each statement within a transaction.
+No [privileges](security-reference/authorization.html#managing-privileges) are required to commit a transaction. However, privileges are required for each statement within a transaction.
 
 ## Aliases
 

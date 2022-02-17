@@ -28,7 +28,7 @@ Optimize import operations in your applications by following our [Import Perform
 
 #### Table privileges
 
-The user must have the `INSERT` and `DROP` [privileges](security-reference/authorization#managing-privileges) on the specified table. (`DROP` is required because the table is taken offline during the `IMPORT INTO`.)
+The user must have the `INSERT` and `DROP` [privileges](security-reference/authorization.html#managing-privileges) on the specified table. (`DROP` is required because the table is taken offline during the `IMPORT INTO`.)
 
 #### Source privileges
 
