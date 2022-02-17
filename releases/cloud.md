@@ -3,7 +3,7 @@ title: CockroachDB Cloud Release Notes
 summary: Changelog for CockroachDB Cloud.
 toc: true
 redirect-from: index-cockroachcloud.html
-docs_area: releases releases
+docs_area: releases
 ---
 
 CockroachDB Cloud supports the latest major version of CockroachDB and the version immediately preceding it. All clusters are subject to automatic upgrades to the latest supported minor version. [{{ site.data.products.serverless }}](../cockroachcloud/quickstart.html) clusters are subject to automatic upgrades for both minor and major releases while Serverless is in beta. For more information, see the [{{ site.data.products.db }} Upgrade Policy](../cockroachcloud/upgrade-policy.html).
@@ -21,7 +21,7 @@ As of January 12, 2021, new {{ site.data.products.dedicated }} clusters and all 
 <h3>General changes</h3>
 
 - Six new regions are available for {{ site.data.products.serverless }} clusters:
-    
+
     GCP                              | AWS
     ---------------------------------|------------
     Oregon (`us-west2`)              | Mumbai (`ap-south-1`)
@@ -33,7 +33,7 @@ As of January 12, 2021, new {{ site.data.products.dedicated }} clusters and all 
 - The [**Terminate Session** and **Terminate Statement**](../cockroachcloud/sessions-page.html#sessions-list) options are now enabled for {{ site.data.products.db }} clusters running CockroachDB [v21.2.2](v21.2.2.html) or later.
 - Selecting a transaction from the [**Transactions** page](../cockroachcloud/transactions-page.html) now opens a new [**Transaction Details**](../cockroachcloud/transactions-page.html#transaction-details-page) page with an improved design.
 - The order of the tabs on the **SQL Activity** page has been changed to [**Statements**](../cockroachcloud/statements-page.html), [**Transactions**](../cockroachcloud/transactions-page.html), and [**Sessions**](../cockroachcloud/sessions-page.html).
-  
+
 <h3>Bug fixes</h3>
 
 - Fixed a number of broken links throughout the {{ site.data.products.db }} Console.

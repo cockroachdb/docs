@@ -9,10 +9,13 @@ toc_not_nested: true
 After downloading your desired release, learn how to [Install CockroachDB](../{{site.versions["stable"]}}/install-cockroachdb.html). Also be sure to review Cockroach Labs' [Release Support Policy](release-support-policy.html).
 
 {% assign sections = site.data.releases | map: "release_type" | uniq | reverse %}
+{% comment %} Fetch the list of all release types (currently Testing, Production) {% endcomment %}
 
 {% assign versions = site.data.versions | sort: "release_date" | reverse %}
+{% comment %} Fetch all major versions (e.g., v21.2), sorted in reverse chronological order. {% endcomment %}
 
-{% assign latest_hotfix = site.data.releases | where_exp: "latest_hotfix", "latest_hotfix.major_version == site.versions['stable']" | sort: "release_date" | reverse | first %}
+{% assign latest_hotfix = site.data.releases | where_exp: "latest_hotfix", "latest_hotfix.major_version == site.versions['stable']" | where: "withdrawn", "false"  | sort: "release_date" | reverse | first %}
+{% comment %} For the latest GA version, find the latest hotfix that is not withdrawn. {% endcomment %}
 
 <div id="os-tabs" class="filters filters-big clearfix">
     <button id="linux" class="filter-button" data-scope="linux">Linux</button>
@@ -22,17 +25,17 @@ After downloading your desired release, learn how to [Install CockroachDB](../{{
     <button id="source" class="filter-button" data-scope="source">Source</button>
 </div>
 
-{% for v in versions %}
+{% for v in versions %} {% comment %} Iterate through all major versions {% endcomment %}
 
 ## {{ v.major_version }}
 
-<section class="filter-content" data-scope="windows">
+<section class="filter-content" data-scope="windows"> {% comment %} Show warning about Windows being in experimental mode. {% endcomment %}
 {% include windows_warning.md %}
 </section>
 
-{% for s in sections %}
+{% for s in sections %} {% comment %} For each major version, iterate through the sections. {% endcomment %}
 
-{% assign releases = site.data.releases | where_exp: "releases", "releases.major_version == v.major_version" | where_exp: "releases", "releases.release_type == s" | sort: "release_date" | reverse %}
+{% assign releases = site.data.releases | where_exp: "releases", "releases.major_version == v.major_version" | where_exp: "releases", "releases.release_type == s" | sort: "release_date" | reverse %} {% comment %} Fetch all releases for that major version based on release type (Production/Testing). {% endcomment %}
 
 {% if releases[0] %}
 
@@ -49,17 +52,17 @@ After downloading your desired release, learn how to [Install CockroachDB](../{{
 
 <tbody>
 {% for r in releases %}
-    <tr {% if r.version == latest_hotfix.version %}class="latest"{% endif %}>
+    <tr {% if r.version == latest_hotfix.version %}class="latest"{% endif %}> {% comment %} Add "Latest" class to release if it's the latest release. {% endcomment %}
         <td>
-            <a href="{{ r.version }}.html">{{ r.version }}</a>
+            <a href="{{ r.version }}.html">{{ r.version }}</a> {% comment %} Add link to each release r. {% endcomment %}
             {% if r.version == latest_hotfix.version %}
-                <span class="badge-new">Latest</span>
+                <span class="badge-new">Latest</span> {% comment %} Add "Latest" badge to release if it's the latest release. {% endcomment %}
             {% endif %}
         </td>
-        <td>{{ r.release_date }}</td>
-        {% if r.withdrawn == "true" %}
+        <td>{{ r.release_date }}</td> {% comment %} Release date of the release. {% endcomment %}
+        {% if r.withdrawn == "true" %} {% comment %} Suppress withdrawn releases. {% endcomment %}
             <td class="os-release-cell"><span class="badge badge-gray">Withdrawn</span></td>
-        {% else %}
+        {% else %} {% comment %} Add download links for all non-withdrawn versions. {% endcomment %}
             <td class="os-release-cell">
                 <section class="filter-content" data-scope="linux">
                     <a class="os-release-link" href="https://binaries.cockroachdb.com/cockroach-{{ r.version }}.linux-amd64.tgz">Precompiled 64-bit Binary</a>
