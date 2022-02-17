@@ -9,7 +9,7 @@ docs_area: reference.security
 
 The following security features are available in the current [CockroachDB release](../releases/index.html), and in all Cloud offerings.
 
-Security Domain | Description
+Security Domain | Feature
 -------------|------------
 [Authentication](authentication.html) | <ul><li>Node-node authentication using TLS 1.3</li><li>Client-node authentication using TLS 1.2/1.3 or username/password</li><li>[Fine-grained configuration of accepted authentication methods](authentication.html#authentication-configration) by user and source IP address </li></ul>
 [Encryption](encryption.html) | <ul><li>Encryption in flight using TLS 1.2/1.3</li><li> Encryption at Rest using AES in counter mode (Enterprise feature)</li></ul>
@@ -26,17 +26,23 @@ CockroachDB Dedicated offers a single-tenant cluster running in its own Virtual 
 <table>
   <tr>
     <th width="120">Security Domain</th>
-    <th>Serverless</th>
-    <th>Dedicated</th>
+    <th>Serverless Cloud</th>
+    <th>Dedicated Cloud</th>
+    <th>Self-Deployed</th>
+    <th>Self-Deployed with Enterprise Support</th>
     <th>Feature</th>
   </tr>
  <tr>
    <td rowspan="3"><a href="authentication.html">Authentication</a></td>
    <td>✓</td>
    <td>✓</td>
+   <td>✓</td>
+   <td>✓</td>
    <td>Inter-node and node identity authentication using TLS 1.3</td>
  </tr>
  <tr>
+  <td>✓</td>
+  <td>✓</td>
   <td>✓</td>
   <td>✓</td>
   <td>Client identity authentication using username/password</td>
