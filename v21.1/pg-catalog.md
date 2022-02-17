@@ -131,7 +131,7 @@ To prohibit queries against empty tables, set the `stub_catalog_tables` [session
 You can run [`SELECT` queries](selection-queries.html) on the tables in `pg_catalog`.
 
 {{site.data.alerts.callout_success}}
-To ensure that you can view all of the tables in `pg_catalog`, query the tables as a user with [`admin` privileges](security-reference/authorization.html#admin-role).
+To ensure that you can view all of the tables in `pg_catalog`, query the tables as a user with [`admin` privileges](authorization.html#admin-role).
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}

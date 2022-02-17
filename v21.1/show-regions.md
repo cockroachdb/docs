@@ -14,7 +14,7 @@ toc: true
 
 ## Required privileges
 
-Only members of the [`admin` role](security-reference/authorization.html#admin-role) can run `SHOW REGIONS`. By default, the `root` user belongs to the `admin` role.
+Only members of the [`admin` role](authorization.html#admin-role) can run `SHOW REGIONS`. By default, the `root` user belongs to the `admin` role.
 
 ## Parameters
 

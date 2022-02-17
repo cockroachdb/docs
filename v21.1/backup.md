@@ -37,7 +37,7 @@ To view the contents of an Enterprise backup created with the `BACKUP` statement
 
 ## Required privileges
 
-- [Full cluster backups](take-full-and-incremental-backups.html#full-backups) can only be run by members of the [`admin` role](security-reference/authorization.html#admin-role). By default, the `root` user belongs to the `admin` role.
+- [Full cluster backups](take-full-and-incremental-backups.html#full-backups) can only be run by members of the [`admin` role](authorization.html#admin-role). By default, the `root` user belongs to the `admin` role.
 - For all other backups, the user must have [read access](authorization.html#assign-privileges) on all objects being backed up. Database and table backups require `SELECT` privileges. Backups of user-defined schemas, or backups containing user-defined types, require `USAGE` privileges.
 - `BACKUP` requires full read and write (including delete and overwrite) permissions to its target destination.
 
