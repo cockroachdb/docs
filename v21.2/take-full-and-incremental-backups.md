@@ -130,7 +130,39 @@ The following will run a full backup to the storage location (named `{collection
 BACKUP INTO '{collection-location}' AS OF SYSTEM TIME '-10s';
 ~~~
 
-`{collection-location}` will hold backup chains taken to this storage location. In the following example, weekly full backups are stored with nightly incremental backups appending to its corresponding full backup.
+~~~
+|—— 2022
+  |—— 02
+    |—— 09-155340.13/
+      |—— Full backup files
+~~~
+
+`{collection-location}` will hold backup chains taken to this storage location.
+
+Use the `LATEST` syntax to run incremental backups to the backup collection:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+BACKUP INTO LATEST IN '{collection-location}' AS OF SYSTEM TIME '-10s';
+~~~
+
+~~~
+|—— 2022
+  |—— 02
+    |—— 09-155340.13/
+      |—— Full backup files
+      |—— 20220210/
+        |—— 155530.50/
+          |—— Incremental backup files
+      |—— 20220211/
+        |—— 155628.07/
+          |—— Incremental backup files
+      [...]
+~~~
+
+The incremental backup will append to its corresponding full backup to create a backup chain. The collection will now contain a full backup directory with an incremental backup subdirectory.
+
+In the following example, a user has taken weekly full backups and nightly incremental backups. There are now multiple backup chains in this collection:
 
 ~~~
 Collection:
@@ -157,24 +189,15 @@ Collection:
       [...]
 ~~~
 
-[`SHOW BACKUPS IN`](show-backup.html#view-a-list-of-the-available-full-backup-subdirectories) will display a list of the full backup subdirectories in the collection's storage location.
+[`SHOW BACKUPS IN {collection-location}`](show-backup.html#view-a-list-of-the-available-full-backup-subdirectories) will display a list of the full backup subdirectories in the collection's storage location.
 
-Incremental backups can then be added to the backup collection:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-BACKUP INTO LATEST IN '{collection-location}' AS OF SYSTEM TIME '-10s';
-~~~
-
-The incremental backup will be appended to its corresponding full backup to create a backup chain. The collection will now contain a full backup directory with an incremental backup subdirectory.
-
-In the event that backup data needs to be restored, the backup's subdirectory path from the collection can be added to the [`RESTORE`](restore.html) statement:
+In the event that backup data needs to be restored, add the backup's subdirectory path from the collection to the [`RESTORE`](restore.html) statement:
 
 ~~~ sql
-RESTORE FROM 'subdirectory' IN '{collection-location}';
+RESTORE FROM '2022/02/16-143018.72' IN '{collection-location}';
 ~~~
 
-To view a list of the full and incremental backups in a full backup's subdirectory, see this [`SHOW BACKUP`](show-backup.html#view-a-list-of-the-full-and-incremental-backups-in-a-specific-full-backup-subdirectory) example.
+To view a list of the full and incremental backups in a full backup's subdirectory, use [`SHOW BACKUP`](show-backup.html#view-a-list-of-the-full-and-incremental-backups-in-a-specific-full-backup-subdirectory).
 
 ## Incremental backups with explicitly specified destinations
 
