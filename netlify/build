@@ -14,6 +14,7 @@ popd
 gem install bundler
 bundle install
 build _config_cockroachdb.yml
+exit $?
 
 cp _site/docs/_redirects _site/_redirects
 cp _site/docs/404.html _site/404.html
@@ -26,7 +27,7 @@ pushd $GOPATH/src/github.com/cockroachdb/htmltest && ./build.sh && popd
 # (see .github/workflows/nightly.yml)
 if [[ "$INCOMING_HOOK_TITLE" = "nightly" ]]; then
 	$GOPATH/src/github.com/cockroachdb/htmltest/bin/htmltest
-	exit $?	
+	exit $?
 fi;
 
 # Run Algolia if building master
