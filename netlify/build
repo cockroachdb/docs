@@ -2,6 +2,7 @@
 
 function build {
 	bundle exec jekyll build --trace --config _config_base.yml,$1
+	exit $?
 }
 
 # Transform API spec for API docs generation
@@ -14,7 +15,6 @@ popd
 gem install bundler
 bundle install
 build _config_cockroachdb.yml
-exit $?
 
 cp _site/docs/_redirects _site/_redirects
 cp _site/docs/404.html _site/404.html
@@ -34,6 +34,10 @@ fi;
 if [[ "$CONTEXT" = "production" ]]; then
 	echo "Building Algolia index..."
 	ALGOLIA_API_KEY=$PROD_ALGOLIA_API_KEY bundle exec jekyll algolia --config _config_base.yml --builds-config _config_cockroachdb.yml
+	if [[ $? != 0 ]]; then
+  exit 1
+	fi;
+
 fi;
 
 # Set up Vale, a text linter
