@@ -1497,6 +1497,7 @@
         "urls": [
           "/releases/cloud.html"
         ]
-      }
+      },
+      {% include_cached sidebar-releases.json %}
     ]
   }
