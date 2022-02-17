@@ -339,6 +339,12 @@ layout: null
 /docs/stable/orchetrate-cockroachdb-with-kubernetes-multi-region.html /docs/stable/orchestrate-cockroachdb-with-kubernetes-multi-cluster.md 301
 
 # Removed pages
+/docs/stable/build-a-c++-app-with-cockroachdb.html /docs/stable/community-tooling.html 301
+/docs/stable/build-a-clojure-app-with-cockroachdb.html /docs/stable/community-tooling.html 301
+/docs/stable/build-a-php-app-with-cockroachdb.html /docs/stable/community-tooling.html 301
+/docs/v21.1/build-a-c++-app-with-cockroachdb.html /docs/stable/community-tooling.html 301
+/docs/v21.1/build-a-clojure-app-with-cockroachdb.html /docs/stable/community-tooling.html 301
+/docs/v21.1/build-a-php-app-with-cockroachdb.html /docs/stable/community-tooling.html 301
 /docs/stable/hello-world-example-apps.html /docs/stable/example-apps.html 301
 /docs/cockroachcloud/hello-world-example-apps.html /docs/stable/example-apps.html 301
 /docs/*/contribute-to-cockroachdb.html https://wiki.crdb.io/wiki/spaces/CRDB/pages/73204033/Contributing+to+CockroachDB 301!

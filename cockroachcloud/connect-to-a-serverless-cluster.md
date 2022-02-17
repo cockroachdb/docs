@@ -152,7 +152,6 @@ For connection examples and code snippets in your language, see the following:
 - [Build a Java App with CockroachDB](../{{site.versions["stable"]}}/build-a-java-app-with-cockroachdb.html)
 - [Build a Ruby App with CockroachDB](../{{site.versions["stable"]}}/build-a-ruby-app-with-cockroachdb.html)
 - [Build a Javascript App with CockroachDB](../{{site.versions["stable"]}}/build-a-nodejs-app-with-cockroachdb.html)
-- [Build a C++ App with CockroachDB](../{{site.versions["stable"]}}/build-a-c++-app-with-cockroachdb.html)
   </section>
 
   <section class="filter-content" markdown="1" data-scope="connection-parameters">
