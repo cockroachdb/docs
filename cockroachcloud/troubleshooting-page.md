@@ -17,7 +17,7 @@ We have updated the CA certificate used by {{ site.data.products.serverless }} c
 
 You see the following error when you are using the `cockroach sql` command to connect to your {{ site.data.products.serverless }} cluster:
 
-~~~ shell
+~~~
 ERROR: cannot load certificates.
 Check your certificate settings, set --certs-dir, or use --insecure for insecure clusters.
 
@@ -33,7 +33,7 @@ Update to the latest [CockroachDB client](../releases/index.html#production-rele
 
 The following error is displayed on the terminal if you use a wrong cluster name in the connection string while trying to connect to a cluster:
 
-~~~ shell
+~~~
 Error: x509: certificate signed by unknown authority
 Failed running "sql"
 ~~~
@@ -44,7 +44,7 @@ Failed running "sql"
 
 The following error is displayed if you try to connect to a [third-party tool](../stable/third-party-database-tools.html) with the wrong cluster or database name. The actual error message may vary depending on your tool:
 
-~~~ shell
+~~~
 FATAL: CodeParamsRoutingFailed: rejected by BackendConfigFromParams: Invalid cluster name
 ~~~
 
@@ -91,7 +91,7 @@ Update this in future if we have more troubleshooting guidance.
 
 The following error is displayed when you supply an incorrect host name:
 
-~~~ shell
+~~~
 ERROR: cannot dial server.
 Is the server running?
 If the server is running, check --host client-side and --advertise server-side.
@@ -109,7 +109,7 @@ You can find your host name in the {{ site.data.products.db }} Console by naviga
 
 The following error may be displayed if your cluster connection is dropped:
 
-~~~ shell
+~~~
 Error: dial tcp 35.240.101.1:26257: connect: connection refused
 ~~~
 
@@ -120,7 +120,7 @@ Error: dial tcp 35.240.101.1:26257: connect: connection refused
 
 The following error is displayed if you try to access cloud storage from an organization without billing information on file:
 
-~~~ shell
+~~~
 ERROR: external network access is disabled
 ~~~
 
@@ -133,7 +133,7 @@ You must [set up billing information](billing-management.html) for your organiza
 
 The following error is displayed if the directory path for the CA certificate is incorrect:
 
-~~~ shell
+~~~
 Error: open test-cluster-ca.crt: no such file or directory
 Failed running "sql"
 ~~~
@@ -144,7 +144,7 @@ Failed running "sql"
 
 The following error is displayed while trying to a run [CockroachDB workload](../{{site.versions["stable"]}}/cockroach-workload.html) with `sslmode=verify-full`:
 
-~~~ shell
+~~~
 Error: x509: certificate signed by unknown authority
 ~~~
 
