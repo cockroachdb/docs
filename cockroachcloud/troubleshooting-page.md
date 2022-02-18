@@ -25,7 +25,7 @@ problem using security settings: no certificates found; does certs dir exist?
 Failed running "sql"
 ~~~
 
-**Solution**
+<h4>Solution</h4>
 
 Update to the latest [CockroachDB client](../releases/index.html#production-releases). You need to use v21.2.5 or later of the CockroachDB client to connect to your cluster without specifying the CA certificate path in the connection string.
 
@@ -38,7 +38,9 @@ Error: x509: certificate signed by unknown authority
 Failed running "sql"
 ~~~
 
-**Solution:** Check if you are using the right cluster name in the [connection method](connect-to-your-cluster.html#step-3-connect-to-your-cluster). You can find your cluster name in the {{ site.data.products.db }} Console by navigating to **Cluster Overview** > **Connect** > **Step 2. Connect** > **Connection string** and locating the parameter `cluster={cluster-name}` in your connection string.
+<h4>Solution</h4>
+
+Check if you are using the right cluster name in the [connection method](connect-to-your-cluster.html#step-3-connect-to-your-cluster). You can find your cluster name in the {{ site.data.products.db }} Console by navigating to **Cluster Overview** > **Connect** > **Step 2. Connect** > **Connection string** and locating the parameter `cluster={cluster-name}` in your connection string.
 
 ### Invalid cluster name in a third-party tool
 
@@ -48,7 +50,9 @@ The following error is displayed if you try to connect to a [third-party tool](.
 FATAL: CodeParamsRoutingFailed: rejected by BackendConfigFromParams: Invalid cluster name
 ~~~
 
-**Solution**: Check that you are using the correct cluster and database names. You can find these parameters in the {{ site.data.products.db }} Console by navigating to **Cluster Overview** > **Connect** > **Step 2. Connect** > **Connection parameters**. For most tools, the full name of your database should be in the format `<routing-id>.<database>` for {{ site.data.products.serverless }} clusters.
+<h4>Solution</h4>
+
+Check that you are using the correct cluster and database names. You can find these parameters in the {{ site.data.products.db }} Console by navigating to **Cluster Overview** > **Connect** > **Step 2. Connect** > **Connection parameters**. For most tools, the full name of your database should be in the format `<routing-id>.<database>` for {{ site.data.products.serverless }} clusters.
 
 For connection examples with your tool, see [these examples](../stable/third-party-database-tools.html).
 
@@ -64,7 +68,7 @@ dial tcp 35.196.33.161:26257: i/o timeout
 Failed running "sql"
 ~~~
 
-**Solution:**
+<h4>Solution</h4>
 
 Check if you have internet access.
 
@@ -100,7 +104,8 @@ dial tcp: lookup gcp-us-east4.crdb.io: no such host
 Failed running "sql"
 ~~~
 
-**Solution:**
+<h4>Solution</h4>
+
 Check if you are using the correct host name.
 
 You can find your host name in the {{ site.data.products.db }} Console by navigating to **Cluster Overview** > **Connect** > **Step 2. Connect** > **Connection parameters** and locating the **Host** field. If the error persists, [contact Support](https://support.cockroachlabs.com/).
@@ -113,7 +118,8 @@ The following error may be displayed if your cluster connection is dropped:
 Error: dial tcp 35.240.101.1:26257: connect: connection refused
 ~~~
 
-**Solution:**
+<h4>Solution</h4>
+
 {{ site.data.products.db }} connections can occasionally become invalid due to upgrades, restarts, or other disruptions. Your application should use a [pool of persistent connections](../{{site.versions["stable"]}}/connection-pooling.html) and connection retry logic to ensure that connections remain current. See the [Production Checklist](production-checklist.html) for more information.
 
 ### External network access disabled
@@ -124,7 +130,8 @@ The following error is displayed if you try to access cloud storage from an orga
 ERROR: external network access is disabled
 ~~~
 
-**Solution:**
+<h4>Solution</h4>
+
 You must [set up billing information](billing-management.html) for your organization to use cloud storage. If you don't have a credit card on file, you will be limited to `userfile` storage for [bulk operations](run-bulk-operations.html).
 
 ## Security errors
@@ -138,7 +145,9 @@ Error: open test-cluster-ca.crt: no such file or directory
 Failed running "sql"
 ~~~
 
-**Solution**: Check the directory path for the [CA certificate in the connection method](connect-to-your-cluster.html#step-3-connect-to-your-cluster). If you have downloaded multiple CA certificates, check that you are using the right one.
+<h4>Solution</h4>
+
+Check the directory path for the [CA certificate in the connection method](connect-to-your-cluster.html#step-3-connect-to-your-cluster). If you have downloaded multiple CA certificates, check that you are using the right one.
 
 ### Issue with CockroachDB workloads
 
@@ -148,7 +157,9 @@ The following error is displayed while trying to a run [CockroachDB workload](..
 Error: x509: certificate signed by unknown authority
 ~~~
 
-**Solution:** This is a known issue. Use `sslmode=require` instead.
+<h4>Solution</h4>
+
+This is a known issue. Use `sslmode=require` instead.
 
 {{site.data.alerts.callout_info}}
 Using `sslmode=require` can leave your cluster vulnerable to MITM and impersonation attacks. For more information, see PostgreSQL's [SSL Support](https://www.postgresql.org/docs/9.4/libpq-ssl.html) document.
