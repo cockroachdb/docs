@@ -13,6 +13,22 @@ We have updated the CA certificate used by {{ site.data.products.serverless }} c
 
 ## Connection errors
 
+### Cannot load certificates
+
+You see the following error when you are using the `cockroach sql` command to connect to your {{ site.data.products.serverless }} cluster:
+
+~~~ shell
+ERROR: cannot load certificates.
+Check your certificate settings, set --certs-dir, or use --insecure for insecure clusters.
+
+problem using security settings: no certificates found; does certs dir exist?
+Failed running "sql"
+~~~
+
+**Solution**
+
+Update to the latest [CockroachDB client](../releases/index.html#production-releases). You need to use v21.2.5 or later of the CockroachDB client to connect to your cluster without specifying the CA certificate path in the connection string.
+
 ### Wrong cluster name in the connection string
 
 The following error is displayed on the terminal if you use a wrong cluster name in the connection string while trying to connect to a cluster:
