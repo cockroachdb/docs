@@ -82,4 +82,4 @@ Field | Description
 - [`VALIDATE CONSTRAINT`](validate-constraint.html)
 - [`CREATE TABLE`](create-table.html)
 - [Information Schema](information-schema.html)
-- [Other SQL Statements](sql-statements.html)
+- [SQL Statements](sql-statements.html)

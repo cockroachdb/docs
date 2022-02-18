@@ -106,4 +106,4 @@ The `postgres` and `defaultdb` databases can be [deleted](drop-database.html) if
 - [`COMMENT ON`](comment-on.html)
 - [`SHOW SCHEMAS`](show-schemas.html)
 - [Information Schema](information-schema.html)
-- [Other SQL Statements](sql-statements.html)
+- [SQL Statements](sql-statements.html)

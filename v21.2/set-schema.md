@@ -97,5 +97,5 @@ Then, change the table's schema:
 - [`ALTER TABLE`](alter-table.html)
 - [`CREATE SCHEMA`](drop-table.html)
 - [`SHOW SCHEMAS`](show-schemas.html)
-- [Other SQL Statements](sql-statements.html)
+- [SQL Statements](sql-statements.html)
 - [Online Schema Changes](online-schema-changes.html)

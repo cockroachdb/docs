@@ -90,4 +90,4 @@ To show default privileges, the user/role must have any [privilege](authorizatio
 
 - [`ALTER DEFAULT PRIVILEGES`](alter-default-privileges.html)
 - [Default Privileges](authorization.html#default-privileges)
-- [Other SQL Statements](sql-statements.html)
+- [SQL Statements](sql-statements.html)

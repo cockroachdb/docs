@@ -303,5 +303,5 @@ Because `max` is the current user, all unqualified `accounts` table names resolv
 - [`SET SCHEMA`](set-schema.html)
 - [`DROP SCHEMA`](drop-schema.html)
 - [`ALTER SCHEMA`](alter-schema.html)
-- [Other SQL Statements](sql-statements.html)
+- [SQL Statements](sql-statements.html)
 - [Online Schema Changes](online-schema-changes.html)

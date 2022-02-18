@@ -161,5 +161,5 @@ SQLSTATE: 2BP01
 - [`CREATE SCHEMA`](create-schema.html)
 - [`SHOW SCHEMAS`](show-schemas.html)
 - [`SHOW JOBS`](show-jobs.html)
-- [Other SQL Statements](sql-statements.html)
+- [SQL Statements](sql-statements.html)
 - [Online Schema Changes](online-schema-changes.html)

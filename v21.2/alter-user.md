@@ -122,4 +122,4 @@ root@:26257/defaultdb> ALTER USER carl WITH MODIFYCLUSTERSETTING;
 - [`GRANT`](grant.html)
 - [`SHOW GRANTS`](show-grants.html)
 - [Create Security Certificates](cockroach-cert.html)
-- [Other SQL Statements](sql-statements.html)
+- [SQL Statements](sql-statements.html)

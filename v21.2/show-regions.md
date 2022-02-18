@@ -194,4 +194,4 @@ SHOW REGIONS FROM ALL DATABASES;
 
 - [Multi-Region Capabilities Overview](multiregion-overview.html)
 - [`ADD REGION`](add-region.html)
-- [Other SQL Statements](sql-statements.html)
+- [SQL Statements](sql-statements.html)

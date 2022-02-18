@@ -106,5 +106,5 @@ You can use [`COMMENT ON`](comment-on.html) to add comments on a column.
 
 - [`CREATE TABLE`](create-table.html)
 - [Information Schema](information-schema.html)
-- [Other SQL Statements](sql-statements.html)
+- [SQL Statements](sql-statements.html)
 - [`COMMENT ON`](comment-on.html)

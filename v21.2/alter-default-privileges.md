@@ -353,4 +353,4 @@ In the same database, run the following statements as any two different users:
 
 - [`SHOW DEFAULT PRIVILEGES`](show-default-privileges.html)
 - [Default Privileges](authorization.html#default-privileges)
-- [Other SQL Statements](sql-statements.html)
+- [SQL Statements](sql-statements.html)

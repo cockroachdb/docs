@@ -176,4 +176,4 @@ To cancel this long-running query, and stop it from consuming resources, you not
 - [`CANCEL QUERY`](cancel-query.html)
 - [`SHOW SESSIONS`](show-sessions.html)
 - [`SHOW JOBS`](show-jobs.html)
-- [Other SQL Statements](sql-statements.html)
+- [SQL Statements](sql-statements.html)

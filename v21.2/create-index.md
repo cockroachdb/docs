@@ -289,5 +289,5 @@ Normally, CockroachDB selects the index that it calculates will scan the fewest 
 - [`DROP INDEX`](drop-index.html)
 - [`RENAME INDEX`](rename-index.html)
 - [`SHOW JOBS`](show-jobs.html)
-- [Other SQL Statements](sql-statements.html)
+- [SQL Statements](sql-statements.html)
 - [Online Schema Changes](online-schema-changes.html)

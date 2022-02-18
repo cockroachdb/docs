@@ -57,4 +57,4 @@ Parameter | Description
 - [`CREATE SCHEMA`](create-schema.html)
 - [`SHOW DATABASES`](show-databases.html)
 - [Information Schema](information-schema.html)
-- [Other SQL Statements](sql-statements.html)
+- [SQL Statements](sql-statements.html)
