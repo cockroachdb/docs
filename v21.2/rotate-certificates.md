@@ -19,6 +19,8 @@ You may need to rotate the node, client, or CA certificates in the following sce
 - The key (for a node, client, or CA) is compromised.
 - You need to modify the contents of a certificate, for example, to add another DNS name or the IP address of a load balancer through which a node can be reached. In this case, you would need to rotate only the node certificates.
 
+{{site.data.alerts.callout_info}}Even after the certificate rotation the old certificate will be valid. To harden your security settings consider using OCSP-enabled setup to be able to revoke old certificates. Refer to <a href="create-security-certificates-custom-ca.html#certificate-revocation-with-ocsp">Certificate revocation with OCSP</a> for further details.{{site.data.alerts.end}}
+
 ### Rotate client certificates
 
 1. Create a new client certificate and key:

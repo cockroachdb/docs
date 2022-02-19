@@ -163,7 +163,7 @@ To enable certificate revocation:
       For production clusters, you might want to set the setting to `strict`.
 
       {{site.data.alerts.callout_info}}
-      In the `strict` mode, all certificates are presumed to be invalid if the OCSP server is not reachable. Setting the cluster setting `security.ocsp.mode` to `strict` will lock you out of your CockroachDB database if your OCSP server goes down.
+      In the `strict` mode, all certificates are presumed to be invalid if the OCSP server is not reachable. Setting the cluster setting `security.ocsp.mode` to `strict` will lock you out of your CockroachDB database if your OCSP server goes down. To avoid this behavior consider using `lax` mode: if the OCSP server didn't respond within `security.ocsp.timeout` period the certificate check will be assumed successful.
       {{site.data.alerts.end}}
 
 
