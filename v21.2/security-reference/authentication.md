@@ -2,7 +2,7 @@
 title: Authentication
 summary: An overview of Cluster Auth Config capabilities and interface syntax
 toc: true
-docs_area:
+docs_area: reference.security
 ---
 
 CockroachDB allows fine grained configuration of which attempts to connect with the database it will allow to proceed to the authentication stage, and which authentication methods it will accept, based on:
@@ -15,14 +15,11 @@ Future releases will also allow authentication to be configured for specific dat
 
 ## Currently supported authentication methods by product
 
-
-
 Authentication Method | CockroachDB Cloud | Supported in CockroachDB Core | CockroachDB Enterprise Support  
 -------------|------------|-----|----
 password              |      ✓              |           ✓                    |    ✓
 TLS cert              |      &nbsp;         |           ✓                    |    ✓
 GSS                   |      &nbsp;         |           &nbsp;               |    ✓
-
 
 All products also support the following no-op 'authentication methods' (authentication is not actually performed):
 
@@ -94,7 +91,7 @@ This is convenient for quick usage and experimentation, but is not suitable for 
 
 CockroachDB Dedicated Cloud clusters enforce IP allow-listing, which can be configured through the Web Console.
 
-See [Managing Network Authorization for CockroachDB Dedicated](../cockroachcloud/network-authorization.html).
+See [Managing Network Authorization for CockroachDB Dedicated](../../cockroachcloud/network-authorization.html).
 
 ### Self-Hosted
 

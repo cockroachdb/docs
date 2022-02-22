@@ -15,7 +15,7 @@ The `CREATE VIEW` statement creates a new [view](views.html), which is a stored 
 
 ## Required privileges
 
-The user must have the `CREATE` [privilege](authorization.html#assign-privileges) on the parent database and the `SELECT` privilege on any table(s) referenced by the view.
+The user must have the `CREATE` [privilege](security-reference/authorization.html#managing-privileges) on the parent database and the `SELECT` privilege on any table(s) referenced by the view.
 
 ## Synopsis
 

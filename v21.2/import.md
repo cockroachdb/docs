@@ -34,7 +34,7 @@ Optimize import operations in your applications by following our [Import Perform
 
 #### Table privileges
 
-The user must have the `CREATE` [privileges](authorization.html#assign-privileges) on the target database.
+The user must have the `CREATE` [privileges](security-reference/authorization.html#managing-privileges) on the target database.
 
 #### Source privileges
 

@@ -76,7 +76,7 @@ On secure clusters, for each user who should have access to the DB Console, you 
 
 All users have access to data over which they have privileges (e.g., [jobs](ui-jobs-page.html) and [list of sessions](ui-sessions-page.html)), and data that does not require privileges (e.g., [cluster health, node status](ui-cluster-overview-page.html), [metrics](ui-overview-dashboard.html)).
 
-[`admin` users](authorization.html#admin-role) also have access to the following areas. These area display information from privileged HTTP endpoints that operate with `admin` privilege.
+[`admin` users](security-reference/authorization.html#admin-role) also have access to the following areas. These area display information from privileged HTTP endpoints that operate with `admin` privilege.
 
 DB Console area | Privileged information
 -----|-----

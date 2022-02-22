@@ -17,7 +17,7 @@ The `TRUNCATE` [statement](sql-statements.html) removes all rows from a table. A
 
 ## Required privileges
 
-The user must have the `DROP` [privilege](authorization.html#assign-privileges) on the table.
+The user must have the `DROP` [privilege](security-reference/authorization.html#managing-privileges) on the table.
 
 ## Parameters
 

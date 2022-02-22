@@ -345,7 +345,7 @@ CockroachDB maintains a secure environment for your data. However, there are bad
 
 If you believe the user-defined store keys have been compromised, quickly attempt to rotate your store keys that are being used for your encryption at rest setup. If this key has already been compromised and the store keys were rotated by a bad actor, the cluster should be wiped if possible and [restored](restore.html) from a prior backup.
 
-If the compromised keys were not rotated by a bad actor, quickly attempt to [rotate the store key](encryption.html#rotating-keys) by restarting each of the nodes with the old key and the new key. For an example on how to do this, see [Encryption](encryption.html#changing-encryption-algorithm-or-keys).
+If the compromised keys were not rotated by a bad actor, quickly attempt to [rotate the store key](security-reference/encryption.html#rotating-keys) by restarting each of the nodes with the old key and the new key. For an example on how to do this, see [Encryption](encryption.html#changing-encryption-algorithm-or-keys).
 
 Once all of the nodes are restarted with the new key, put in a request to revoke the old key from the Certificate Authority.
 

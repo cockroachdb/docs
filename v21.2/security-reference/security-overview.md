@@ -2,36 +2,45 @@
 title: CockroachDB Security Overview
 summary: An overview of CockroachDB Security Features
 toc: true
-docs_area: security-reference
+docs_area: reference.security
 ---
+## Product Definitions
 
-## CockroachDB security features
+### Cloud Products
 
-The following security features are available in the current [CockroachDB release](../releases/index.html), and in all Cloud offerings.
+<b>CockroachDB Serverless</b> (beta) provides fast and easy access (including a *free* tier) to CockroachDB as a web service, hosted by Cockroach Labs. Clusters run in multi-tenant Google Cloud Platform (GCP) or Amazon Web Services (AWS) environments with shared compute and networking resources.
 
-Security Domain | Description
--------------|------------
-[Authentication](authentication.html) | <ul><li>Node-node authentication using TLS 1.3</li><li>Client-node authentication using TLS 1.2/1.3 or username/password</li><li>[Fine-grained configuration of accepted authentication methods](authentication.html#authentication-configration) by user and source IP address </li></ul>
-[Encryption](encryption.html) | <ul><li>Encryption in flight using TLS 1.2/1.3</li><li> Encryption at Rest using AES in counter mode (Enterprise feature)</li></ul>
-[Authorization](authorization.html) | <ul><li>Users and privileges</li><li> Role-based access control</li></ul>
-Non-Repudiability | [Audit logging](../sql-audit-logging.html) prevents data from being untraceably changed.
-[Avaliability/Resilience](../demo-fault-tolerance-and-recovery.html) | CockroachDB is unique in being a disributed-from-the-ground-up SQL database. A cluster is considered tolerant to failure the amount of nodes that leaves the majority functional. Large, well distributed clusters deployed in reliable infrastructure across multiple regions of the globe&mdash;such as those operated by Cockroach Labs, are highly resilient even in the face of catastrophic infrastructure failures.
+<b>CockroachDB Dedicated</b> offers a single-tenant cluster running in its own Virtual Private Cloud (VPC). Compute and networking resources are isolated. Additional security-enhancing features such as single-sign on (SSO) and SQL audit logging are available.
 
-## Comparison of security features in Cockroach Cloud Serverless vs Dedicated offerings
+[Sign up for a CockroachDB Cloud account!](https://www.cockroachlabs.com/get-started-cockroachdb/)
 
-CockroachDB Serverless (beta) provides multi-tenant clusters running on Google Cloud Platform (GCP) or Amazon Web Services (AWS) machines. Compute and networking resources are shared.
+### Self-Hosted Products
 
-CockroachDB Dedicated offers a single-tenant cluster running in its own Virtual Private Cloud (VPC). Compute and networking resources are isolated. Additional features such as SSO and SQL audit logging are available.
+Cockroach Labs maintains <a href="https://github.com/cockroachdb/cockroach">CockroachDB as an open-source core</a>, which is available to operate under a number of different licensing options, including several free options.
+
+<b>Self-Deployed CockroachDB</b> here refers to the situation of a user deploying and operating their own cluster.
+
+<b>Self-Deployed CockroachDB Enterprise</b> refers to an ongoing paid license relationship with Cockroach Labs. This license unlocks advanced features (see below). In this situation the customer maintains full control over their data, compute, and network resources while benefiting from the expertise of the Cockroach Labs' Enterprise Support staff. 
+
+- See the [list of Enterprise features](../enterprise-licensing.html)
+- Read the [licensing FAQ](../licensing-faqs.html)
+- [Contact our sales team](mailto:sales@cockroachlabs.com) for further questions about CockroachDB Enterprise
+
+## Comparison of security features in CockroachDB product offerings
 
 <table>
   <tr>
     <th width="120">Security Domain</th>
-    <th>Serverless</th>
-    <th>Dedicated</th>
+    <th>Serverless Cloud</th>
+    <th>Dedicated Cloud</th>
+    <th>Self-Deployed</th>
+    <th>Self-Deployed Enterprise</th>
     <th>Feature</th>
   </tr>
  <tr>
-   <td rowspan="3"><a href="authentication.html">Authentication</a></td>
+   <td rowspan="4"><a href="authentication.html">Authentication</a></td>
+   <td>✓</td>
+   <td>✓</td>
    <td>✓</td>
    <td>✓</td>
    <td>Inter-node and node identity authentication using TLS 1.3</td>
@@ -39,9 +48,13 @@ CockroachDB Dedicated offers a single-tenant cluster running in its own Virtual 
  <tr>
   <td>✓</td>
   <td>✓</td>
+  <td>✓</td>
+  <td>✓</td>
   <td>Client identity authentication using username/password</td>
  </tr>
  <tr>
+  <td>&nbsp;</td>
+  <td>&nbsp;</td>
   <td>&nbsp;</td>
   <td>✓</td>
   <td><a href="https://openid.net/connect/">OIDC authentication</a></td>
@@ -49,11 +62,14 @@ CockroachDB Dedicated offers a single-tenant cluster running in its own Virtual 
  <tr>
   <td>&nbsp;</td>
   <td>&nbsp;</td>
+  <td>&nbsp;</td>
   <td>✓</td>
   <td><a href="https://en.wikipedia.org/wiki/Online_Certificate_Status_Protocol">OCSP</a> certificate revocation protocol</td>
  </tr>
  <tr>
-   <td rowspan="4" >Encryption</a></td>
+   <td rowspan="5" ><a href="encryption.html">Encryption</a></td>
+   <td>✓</td>
+   <td>✓</td>
    <td>✓</td>
    <td>✓</td>
    <td>Encryption-in-flight using TLS 1.3</td>
@@ -61,9 +77,13 @@ CockroachDB Dedicated offers a single-tenant cluster running in its own Virtual 
  <tr>
   <td>✓</td>
   <td>✓</td>
+  <td>✓</td>
+  <td>✓</td>
   <td>Backups for AWS clusters are encrypted-at-rest using <a href="https://docs.aws.amazon.com/AmazonS3/latest/dev/UsingServerSideEncryption.html">AWS S3’s server-side encryption</a></td>
  </tr>
  <tr>
+  <td>✓</td>
+  <td>✓</td>
   <td>✓</td>
   <td>✓</td>
   <td>Backups for GCP clusters are encrypted-at-rest using <a href="https://cloud.google.com/storage/docs/encryption/default-keys">Google-managed server-side encryption keys</a></td>
@@ -71,10 +91,21 @@ CockroachDB Dedicated offers a single-tenant cluster running in its own Virtual 
  <tr>
   <td>✓</td>
   <td>✓</td>
-  <td>All data on {{ site.data.products.db }} is encrypted-at-rest using the tools provided by the cloud provider that your cluster is running in (i.e., <a href="https://cloud.google.com/compute/docs/disks#pd_encryption">persistent disk encryption</a> for GCP and <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html">EBS encryption-at-rest</a> for AWS). Because we are relying on the cloud provider's encryption implementation, we do not enable CockroachDB's <a href="../{{site.versions["stable"]}}/encryption.html#encryption-at-rest-enterprise">internal implementation of encryption-at-rest</a>. This means that encryption will appear to be disabled in the <a href="../{{site.versions["stable"]}}/ui-overview.html">DB Console</a>, since it is unaware of cloud provider encryption.</td>
+  <td>✓</td>
+  <td>✓</td>
+  <td>Industry standard encryption-at-rest provided at the infrastructure level by your chosen infrastructure-as-a-service (IAAS) provider, either Google Cloud Platform (GCP) or Amazon Web Services (AWS). See documentation for <a href="https://cloud.google.com/compute/docs/disks#pd_encryption">GCP persistent disk encryption</a> or <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html">AWS elastic block storage</a>.
  </tr>
  <tr>
-   <td rowspan="2" ><a href="user-authorization.html">User Authorization</a></td>
+  <td>&nbsp;</td>
+  <td>&nbsp;</td>
+  <td>&nbsp;</td>
+  <td>✓</td>
+  <td>Cockroach Labs' proprietary storage-level encryption-at-rest service using the <a href="https://en.wikipedia.org/wiki/Advanced_Encryption_Standard">Advanced Encryption Standard (AED)</a></td>
+ </tr>
+ <tr>
+   <td rowspan="2" ><a href="authorization.html">Authorization</a></td>
+   <td>✓</td>
+   <td>✓</td>
    <td>✓</td>
    <td>✓</td>
    <td>Users and privileges</td>
@@ -82,31 +113,60 @@ CockroachDB Dedicated offers a single-tenant cluster running in its own Virtual 
  <tr>
   <td>✓</td>
   <td>✓</td>
-  <td>Role-based access control</td>
+  <td>✓</td>
+  <td>✓</td>
+  <td>Role-based access control (RBAC)</td>
  </tr>
  <tr>
-  <td rowspan="3"><a href="network-authorization.html">Network Authorization</a></td>
+  <td rowspan="4"><a href="network-security.html">Network Security</a></td>
   <td>✓</td>
   <td>✓</td>
-  <td>SQL-level configuration of allowed IP addresses</td>
+  <td>✓</td>
+  <td>✓</td>
+  <td><a href="authentication.html"></a>SQL-level configuration allowed authentication attempts by IP address</td>
  </tr>
  <tr>
    <td>&nbsp;</td>
+   <td>✓</td>
+   <td>✓</td>
    <td>✓</td>
    <td>Network-level Configuration of allowed IP addresses</td>
  </tr>
  <tr>
   <td>&nbsp;</td>
   <td>✓</td>
-  <td><a href="network-authorization.html">VPC Peering</a> for GCP clusters and <a href="network-authorization.html">AWS PrivateLink</a> for AWS clusters </td>
+  <td>✓</td>
+  <td>✓</td>
+  <td><a href="../../cockroachcloud/create-your-cluster.html#step-7-enable-vpc-peering-optional">VPC Peering</a> for GCP clusters and AWS PrivateLink for AWS clusters </td>
  </tr>
  <tr>
-   <td><a href="../{{site.versions["stable"]}}/cluster-api.html">Cluster API</a></td>
+   <td>&nbsp;</td>
+   <td>&nbsp;</td>
    <td>&nbsp;</td>
    <td>✓</td>
    <td>HTTP API access using login tokens</td>
  </tr>
+ <tr>
+  <td><a href="https://en.wikipedia.org/wiki/Non-repudiation">Non-Repudiation</a></td>
+  <td>✓</td>
+  <td>✓</td>
+  <td>✓</td>
+  <td>✓</td>
+  <td><a href="../sql-audit-logging.html">SQL Audit Logging</a></td>
+ </tr>
+ <tr>
+  <td><a href="../demo-fault-tolerance-and-recovery.html">Availability/Resilience</a></td>
+  <td>✓</td>
+  <td>✓</td>
+  <td>✓</td>
+  <td>✓</td>
+  <td>CockroachDB, as a disributed-from-the-ground-up SQL database, is uniquely resilient by nature. A cluster can tolerate node-failures as long as the majority of nodes remain functional. Large, well distributed clusters deployed in reliable infrastructure across multiple regions of the globe&mdash;such as those operated by Cockroach Labs, can be highly resilient even in the face of catastrophic infrastructure failures.</td>
+ </tr>
 </table>
+
+!!! Fact check HTTP API access using loging tokens for self-and self-w-ent; self you could surely do this yourself; it's not a feature we offer but our tool is certainly compatible with it Same with VPC Peering. But... further question, for ent *is* it a feature, like will we do it for you?
+
+!!! what about sql audit logging, copy above implies not available in serverless
 
 
 ## Understanding database security
@@ -131,7 +191,7 @@ CockroachDB uses the [TLS 1.2/1.3](https://en.wikipedia.org/wiki/Transport_Layer
 However, it's not enough to protect data in flight; you also need to protect data at rest. That's where CockroachDB's **Encryption at Rest** feature comes into the picture. Encryption at Rest is an Enterprise feature that allows encryption of all files on disk using [AES](https://en.wikipedia.org/wiki/Advanced_Encryption_Standard) in [counter mode](https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#Counter_(CTR)), with all key
 sizes allowed.
 
-Along with authentication and encryption, we also need to allow CockroachDB to restrict access to **authorized** clients (or nodes acting as clients). CockroachDB allows you to create, manage, and remove your cluster's [users](authorization.html#create-and-manage-users) and assign SQL-level [privileges](../authorization.html#assign-privileges) to the users. Additionally, you can use [role-based access management (RBAC)](../authorization.html#create-and-manage-roles) for simplified user management.
+Along with authentication and encryption, we also need to allow CockroachDB to restrict access to **authorized** clients (or nodes acting as clients). CockroachDB allows you to create, manage, and remove your cluster's [users](authorization.html#create-and-manage-users) and assign SQL-level [privileges](authorization.html#managing-privileges) to the users. Additionally, you can use [role-based access management (RBAC)](authorization.html#create-and-manage-users) for simplified user management.
 
 Finally, CockroachDB's **SQL audit logging** gives you detailed information about queries being executed against your system. This feature is especially useful when you want to log all queries that are run against a table containing personally identifiable information (PII).
 

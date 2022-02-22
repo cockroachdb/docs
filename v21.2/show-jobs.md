@@ -62,7 +62,7 @@ Field | Description
 `job_type` | The type of job. Possible values: `SCHEMA CHANGE`, [`BACKUP`](backup.html), [`RESTORE`](restore.html), [`IMPORT`](import.html), and [`CREATE STATS`](create-statistics.html). <br><br> For `SHOW AUTOMATIC JOBS`, the possible value is [`AUTO CREATE STATS`](cost-based-optimizer.html#table-statistics).
 `description` | The statement that started the job, or a textual description of the job.
 `statement` | When `description` is a textual description of the job, the statement that started the job is returned in this column. Currently, this field is populated only for the automatic table statistics jobs.
-`user_name` | The name of the [user](authorization.html#create-and-manage-users) who started the job.
+`user_name` | The name of the [user](security-reference/authorization.html#create-and-manage-users) who started the job.
 `status` | The job's current state. Possible values: `pending`, `running`, `paused`, `failed`, `succeeded`, or `canceled`.
 `running_status` | The job's detailed running status, which provides visibility into the progress of the dropping or truncating of tables (i.e., [`DROP TABLE`](drop-table.html), [`DROP DATABASE`](drop-database.html), or [`TRUNCATE`](truncate.html)). For dropping or truncating jobs, the detailed running status is determined by the status of the table at the earliest stage of the schema change. The job is completed when the GC TTL expires and both the table data and ID is deleted for each of the tables involved. Possible values: `draining names`, `waiting for GC TTL`, `RocksDB compaction`, or `NULL` (when the status cannot be determined). <br><br>For the `SHOW AUTOMATIC JOBS` statement, the value of this field is `NULL`.
 `created` | The `TIMESTAMP` when the job was created.

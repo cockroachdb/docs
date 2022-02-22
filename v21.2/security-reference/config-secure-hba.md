@@ -24,7 +24,7 @@ Together, these factors leave data in CockroachDB Serverless clusters vulnerable
 
 ## Provision and access your cluster
 
-First, to follow along, [create your own free CockroachDB Serverless cluster](cockroachcloud/create-a-serverless-cluster.html) and obtain the cockroach CLI command to connection parameters from the <b>Connection Info</b> pane. Save the connection comand in a file called roach_sql.sh, and run `chmod +x roach_sql.sh` to make it executable.
+First, to follow along, [create your own free CockroachDB Serverless cluster](../../cockroachcloud/create-a-serverless-cluster.html) and obtain the cockroach CLI command to connection parameters from the <b>Connection Info</b> pane. Save the connection comand in a file called roach_sql.sh, and run `chmod +x roach_sql.sh` to make it executable.
 
 Now you can run `./roach_sql.sh` to connect to your database.
 
@@ -73,7 +73,6 @@ run `show cluster setting server.host_based_authentication.configuration;` to vi
 ```
 cockroachlabs.cloud:26257/defaultdb> show cluster setting server.host_based_authentication.configuration;
   server.host_based_authentication.configuration
---------------------------------------------------
 
 (1 row)
 
@@ -93,9 +92,7 @@ host    all       all    all                reject
 
 ```
 
-
 ## Confirm the IP restriction
-
 
 Exit the database shell by typing `\q`, and then try to re-establish the connection. This time the attempt will be rejected because we are not making the attempt from the sole allowed IP address.
 
@@ -145,8 +142,4 @@ host    all       all         all                 reject
 ';
 
 ```
-
-
-
-
 

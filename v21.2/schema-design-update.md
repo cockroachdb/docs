@@ -117,7 +117,7 @@ ALTER TABLE IF EXISTS movr.max_schema.users
 ALTER TABLE IF EXISTS movr.max_schema.users ALTER PRIMARY KEY USING COLUMNS (username, email);
 ~~~
 
-The remaining changes that you want to make will require `ALTER TABLE` statements with the `SET SCHEMA` and `OWNER TO` subcommands. An `ALTER TABLE ... SET SCHEMA` statement will change the contents of two schemas, and an `ALTER TABLE ... OWNER TO` statement will change the privileges of two users. To follow [authorization best practices](authorization.html#authorization-best-practices), you should execute any statements that change databases, user-defined schemas, or user privileges as a member of the `admin` role (e.g., as `root`).
+The remaining changes that you want to make will require `ALTER TABLE` statements with the `SET SCHEMA` and `OWNER TO` subcommands. An `ALTER TABLE ... SET SCHEMA` statement will change the contents of two schemas, and an `ALTER TABLE ... OWNER TO` statement will change the privileges of two users. To follow [authorization best practices](security-reference/authorization.html#authorization-best-practices), you should execute any statements that change databases, user-defined schemas, or user privileges as a member of the `admin` role (e.g., as `root`).
 
 Create a new `.sql` file for the remaining `ALTER TABLE` statements, to be executed by `root`:
 

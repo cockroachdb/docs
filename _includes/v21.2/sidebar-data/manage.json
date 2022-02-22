@@ -138,9 +138,15 @@
           "title": "Secure CockroachDB Cloud Clusters",
           "items": [
             {
-              "title": "Authentication",
+              "title": "Authenticating to CockroachDB Cloud",
               "urls": [
                 "/cockroachcloud/authentication.html"
+              ]
+            },
+            {
+              "title": "Configure SQL Authentication for Hardened Serverless Cluster Security",
+              "urls": [
+                "/security-reference/config-secure-hba.html"
               ]
             },
             {

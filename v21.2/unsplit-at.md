@@ -21,7 +21,7 @@ Removing a split enforcement from a table or index ("unsplitting") allows Cockro
 
 ## Required privileges
 
-The user must have the `INSERT` [privilege](authorization.html#assign-privileges) on the table or index.
+The user must have the `INSERT` [privilege](security-reference/authorization.html#managing-privileges) on the table or index.
 
 ## Parameters
 
