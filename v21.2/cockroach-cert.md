@@ -79,7 +79,7 @@ This check is only relevant on macOS, Linux, and other UNIX-like systems.
 To reduce the likelihood of a malicious user or process accessing a certificate key (files ending in ".key"), we require that the certificate key be owned by one of the following system users:
 
 - The user that the CockroachDB process runs as.
-- The system `root` user (not to be confused with the [CockroachDB `root` user](authorization.html#root-user)) and the group that the CockroachDB process runs in.
+- The system `root` user (not to be confused with the [CockroachDB `root` user](security-reference/authorization.html#root-user)) and the group that the CockroachDB process runs in.
 
 For example, if running the CockroachDB process as a system user named `cockroach`, we can determine the group that the process will run in by running `id cockroach`:
 
@@ -349,7 +349,7 @@ Certificate directory: certs
 
 ## See also
 
-- [Security overview](security-overview.html)
+- [Security overview](security-reference/security-overview.html)
 - [Authentication](authentication.html)
 - [Client Connection Parameters](connection-parameters.html)
 - [Rotate Security Certificates](rotate-certificates.html)

@@ -64,8 +64,8 @@ Feature          | BSL | CCL (free)      | CCL (paid)
 **[Follower reads](follower-reads.html)** | | | ✓
 **[Bounded staleness reads](follower-reads.html#bounded-staleness-reads)** | | | ✓
 **[Node map](enable-node-map.html)** | | | ✓
-**[Encryption at rest](encryption.html#encryption-at-rest-enterprise)** | | | ✓
-**[Role-based access management](authorization.html#roles)** | ✓ | |
+**[Encryption at rest](security-reference/encryption.html#encryption-at-rest-enterprise)** | | | ✓
+**[Role-based access management](security-reference/authorization.html#roles)** | ✓ | |
 **[Password and certificate authentication](authentication.html)** | ✓ | |
 **[GSSAPI with Kerberos authentication](gssapi_authentication.html)** | | | ✓
 **[All other core features](https://www.cockroachlabs.com/compare)** | ✓ | |

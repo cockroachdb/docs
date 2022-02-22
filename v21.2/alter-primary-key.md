@@ -48,7 +48,7 @@ To change an existing primary key without creating a secondary index from that p
 
 ## Required privileges
 
-The user must have the `CREATE` [privilege](authorization.html#assign-privileges) on a table to alter its primary key.
+The user must have the `CREATE` [privilege](security-reference/authorization.html#managing-privileges) on a table to alter its primary key.
 
 ## Viewing schema changes
 

@@ -21,7 +21,7 @@ In some cases, client drivers can drop and restart the connection to the server.
 
 To set the `role` session variable, the current user must be a member of the `admin` role, or a member of the target role.
 
-All other session variables do not require [privileges](authorization.html#assign-privileges) to modify.
+All other session variables do not require [privileges](security-reference/authorization.html#managing-privileges) to modify.
 
 ## Synopsis
 
@@ -287,7 +287,7 @@ SHOW timezone;
 
 ### Assume another role
 
-<span class="version-tag">New in v21.2</span>: To assume another [role](authorization.html#roles) for the duration of a session, use `SET ROLE <role>`. `SET ROLE <role>` is equivalent to `SET role = <role>`.
+<span class="version-tag">New in v21.2</span>: To assume another [role](security-reference/authorization.html#roles) for the duration of a session, use `SET ROLE <role>`. `SET ROLE <role>` is equivalent to `SET role = <role>`.
 
 {{site.data.alerts.callout_info}}
 To assume a new role, the current user must be a member of the `admin` role, or a member of the target role.

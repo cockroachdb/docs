@@ -29,7 +29,7 @@ Table name | Description| Use in production
 [`cluster_contended_keys`](#cluster_contended_keys)  | Contains information about [contended](performance-best-practices-overview.html#transaction-contention) keys in your cluster.| ✓
 [`cluster_contended_tables`](#cluster_contended_tables)  | Contains information about [contended](performance-best-practices-overview.html#transaction-contention) tables in your cluster.| ✓
 [`cluster_contention_events`](#cluster_contention_events)  | Contains information about [contention](performance-best-practices-overview.html#transaction-contention) in your cluster.| ✓
-`cluster_database_privileges` | Contains information about the [database privileges](authorization.html#privileges) on your cluster.| ✗
+`cluster_database_privileges` | Contains information about the [database privileges](security-reference/authorization.html#privileges) on your cluster.| ✗
 `cluster_distsql_flows` | Contains information about the flows of the [DistSQL execution](architecture/sql-layer.html#distsql) scheduled in your cluster.| ✗
 `cluster_inflight_traces` | Contains information about in-flight [tracing](show-trace.html) in your cluster.| ✗
 [`cluster_queries`](#cluster_queries) | Contains information about queries running on your cluster.| ✓
@@ -40,7 +40,7 @@ Table name | Description| Use in production
 `create_type_statements` | <a name="create_type_statements"></a> Contains information about [user-defined types](enum.html) in your database.| ✗
 `cross_db_references` | Contains information about objects that reference other objects, such as [foreign keys](foreign-key.html) or [views](views.html), across databases in your cluster.| ✗
 `databases` | Contains information about the databases in your cluster.| ✗
-`default_privileges` | Contains information about per-database default [privileges](authorization.html#privileges).| ✗
+`default_privileges` | Contains information about per-database default [privileges](security-reference/authorization.html#privileges).| ✗
 `feature_usage` | Contains information about feature usage on your cluster.| ✗
 `forward_dependencies` | Contains information about forward dependencies.| ✗
 `gossip_alerts` | Contains information about gossip alerts.| ✗
@@ -116,7 +116,7 @@ To list the `crdb_internal` tables for the [current database](sql-name-resolutio
 To get detailed information about objects, processes, or metrics related to your database, you can read from the `crdb_internal` table that corresponds to the item of interest.
 
 {{site.data.alerts.callout_success}}
-- To ensure that you can view all of the tables in `crdb_internal`, query the tables as a user with [`admin` privileges](authorization.html#admin-role).
+- To ensure that you can view all of the tables in `crdb_internal`, query the tables as a user with [`admin` privileges](security-reference/authorization.html#admin-role).
 - Unless specified otherwise, queries to `crdb_internal` assume the [current database](sql-name-resolution.html#current-database).
 {{site.data.alerts.end}}
 

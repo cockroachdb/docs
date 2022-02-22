@@ -13,7 +13,7 @@ docs_area: reference.sql
 
 ## Required privileges
 
-Only members of the [`admin` role](authorization.html#default-roles) can drop a schedule. By default, the `root` user belongs to the `admin` role.
+Only members of the [`admin` role](security-reference/authorization.html#default-roles) can drop a schedule. By default, the `root` user belongs to the `admin` role.
 
 ## Synopsis
 
