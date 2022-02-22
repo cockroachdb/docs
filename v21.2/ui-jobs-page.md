@@ -2,16 +2,17 @@
 title: Jobs Page
 summary: The Jobs page of the DB Console provides details about long-running tasks performed by your cluster.
 toc: true
+docs_area: reference.db_console
 ---
 
 The **Jobs** page of the DB Console provides details about long-running tasks performed by your cluster. These can include:
 
 {% include {{ page.version.version }}/sql/schema-changes.md %}.
 - [`IMPORT`](import.html).
-- Enterprise [`BACKUP`](backup.html) and [`RESTORE`](restore.html).
+- {{ site.data.products.enterprise }} [`BACKUP`](backup.html) and [`RESTORE`](restore.html).
 - [User-created table statistics](create-statistics.html) created for use by the [cost-based optimizer](cost-based-optimizer.html).
 - [Automatic table statistics](cost-based-optimizer.html#table-statistics).
-- [Changefeeds](stream-data-out-of-cockroachdb-using-changefeeds.html).
+- [Changefeeds](change-data-capture-overview.html).
 
 All users can see their own jobs, and `admin` users can view all jobs performed across all nodes in the cluster.
 
@@ -35,7 +36,7 @@ The Jobs list is designed for you to manage pending work. It is not intended to 
 
 Use the **Jobs** list to see your recently created and completed jobs.
 
-- For changefeeds, the table displays a [high-water timestamp that advances as the changefeed progresses](stream-data-out-of-cockroachdb-using-changefeeds.html#monitor-a-changefeed). This is a guarantee that all changes before or at the timestamp have been emitted. Hover over the high-water timestamp to view the [system time](as-of-system-time.html).
+- For changefeeds, the table displays a [high-water timestamp that advances as the changefeed progresses](monitor-and-debug-changefeeds.html#monitor-a-changefeed). This is a guarantee that all changes before or at the timestamp have been emitted. Hover over the high-water timestamp to view the [system time](as-of-system-time.html).
 
 - [Automatic table statistics](cost-based-optimizer.html#table-statistics) jobs are not displayed even when the **Type** menu is set to **All**. To view these jobs, set **Type** to **Automatic-Statistics Creation** as described [above](#filter-jobs).
 

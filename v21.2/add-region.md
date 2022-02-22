@@ -2,6 +2,7 @@
 title: ADD REGION
 summary: The ADD REGION statement adds a region to a multi-region database.
 toc: true
+docs_area: reference.sql 
 ---
 
  The `ALTER DATABASE .. ADD REGION` [statement](sql-statements.html) adds a [region](multiregion-overview.html#database-regions) to a [multi-region database](multiregion-overview.html).
@@ -13,7 +14,7 @@ toc: true
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_danger}}
-In order to add a region with `ADD REGION`, you must first set a primary database region with [`SET PRIMARY REGION`](set-primary-region.html), or at [database creation](create-database.html).<br>For an example showing how to add a primary region with `ALTER DATABASE`, see [Set the primary region](#set-the-primary-region).
+In order to add a region with `ADD REGION`, you must first set a primary database region with [`SET PRIMARY REGION`](set-primary-region.html), or at [database creation](create-database.html). For an example showing how to add a primary region with `ALTER DATABASE`, see [Set the primary region](#set-the-primary-region).
 {{site.data.alerts.end}}
 
 ## Synopsis
@@ -127,7 +128,7 @@ SHOW REGIONS FROM DATABASE foo;
 
 ## See also
 
-- [Multi-region overview](multiregion-overview.html)
+- [Multi-Region Capabilities Overview](multiregion-overview.html)
 - [`SET PRIMARY REGION`](set-primary-region.html)
 - [`DROP REGION`](drop-region.html)
 - [`SHOW REGIONS`](show-regions.html)

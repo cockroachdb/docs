@@ -2,6 +2,7 @@
 title: Update Data
 summary: How to update the data in CockroachDB from various programming languages
 toc: true
+docs_area: develop
 ---
 
 This page has instructions for updating existing rows of data in CockroachDB, using the following [SQL statements](sql-statements.html):
@@ -85,14 +86,15 @@ UPDATE vehicle SET status = 'unavailable' WHERE owner_id = 'bd70a3d7-0a3d-4000-8
 
 {% include copy-clipboard.html %}
 ~~~ go
-// 'db' is an open database connection
+// 'conn' is an open database connection
 
 ownerID := "bd70a3d7-0a3d-4000-8000-000000000025"
 
-if _, err := db.Exec("UPDATE vehicle SET status = 'unavailable' WHERE owner_id = $1", ownerID); err != nil {
-  return err
-}
-return nil
+err = conn.QueryRow(context.Background(), "UPDATE vehicle SET status = 'unavailable' WHERE owner_id = $1", ownerID)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "QueryRow failed: %v\n", err)
+		os.Exit(1)
+	}
 ~~~
 
 </section>
@@ -413,7 +415,7 @@ Reference information related to this task:
 - [Bulk-update Data](bulk-update-data.html)
 - [`UPSERT`](update.html)
 - [`INSERT ... ON CONFLICT`](insert.html#on-conflict-clause)
-- [Understanding and Avoiding Transaction Contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention)
+- [Transaction Contention](performance-best-practices-overview.html#transaction-contention)
 
 Other common tasks:
 

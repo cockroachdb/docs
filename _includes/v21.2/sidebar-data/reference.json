@@ -247,12 +247,6 @@
                 ]
               },
               {
-                "title": "<code>AS OF SYSTEM TIME</code>",
-                "urls": [
-                  "/${VERSION}/as-of-system-time.html"
-                ]
-              },
-              {
                 "title": "<code>EXPERIMENTAL_AUDIT</code>",
                 "urls": [
                   "/${VERSION}/experimental-audit.html"
@@ -959,12 +953,6 @@
                 "urls": [
                   "/${VERSION}/validate-constraint.html"
                 ]
-              },
-              {
-                "title": "<code>WITH</code>",
-                "urls": [
-                  "/${VERSION}/common-table-expressions.html"
-                ]
               }
             ]
           },
@@ -1206,12 +1194,6 @@
                 "title": "Spatial and GIS Glossary",
                 "urls": [
                   "/${VERSION}/spatial-glossary.html"
-                ]
-              },
-              {
-                "title": "Spatial Indexes",
-                "urls": [
-                  "/${VERSION}/spatial-indexes.html"
                 ]
               },
               {
@@ -1700,6 +1682,12 @@
         ]
       },
       {
+        "title": "Cloud API",
+        "urls": [
+          "/api/cloud/v1.html"
+        ]
+      },
+      {
         "title": "Logging",
         "items": [
           {
@@ -1744,8 +1732,6 @@
             ]
           }
         ]
-      },
-      {% include_cached cockroachcloud/sidebar-release-notes.json %},
-      {% include_cached sidebar-releases.json %}
+      }
     ]
   }

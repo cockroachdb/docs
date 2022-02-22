@@ -3,6 +3,7 @@ title: SQL FAQs
 summary: Get answers to frequently asked questions about CockroachDB SQL.
 toc: true
 toc_not_nested: true
+docs_area: get_started
 ---
 
 ## How do I bulk insert data into CockroachDB?
@@ -12,7 +13,7 @@ toc_not_nested: true
     {{site.data.alerts.callout_info}}
     You can also use the [`IMPORT INTO`](import-into.html) statement to bulk-insert CSV data into an existing table.
     {{site.data.alerts.end}}
-- To bulk-insert data into a new table, the [`IMPORT`](import.html) statement performs better than `INSERT`. `IMPORT` can also be used to [migrate data from other databases](migration-overview.html) like MySQL, Oracle, and Postgres.  
+- To bulk-insert data into a new table, the [`IMPORT`](import.html) statement performs better than `INSERT`. `IMPORT` can also be used to [migrate data from other databases](migration-overview.html) like MySQL, Oracle, and Postgres.
 
 ## How do I auto-generate unique row IDs in CockroachDB?
 
@@ -48,15 +49,11 @@ For example, this is how you’d use `RETURNING` to return a value auto-generate
 
 ## What is transaction contention?
 
-Transaction contention occurs when transactions issued from multiple
-clients at the same time operate on the same data.
-This can cause transactions to wait on each other and decrease
-performance, like when many people try to check out with the same
-cashier at a store.
+Transaction contention occurs when transactions issued from multiple clients at the same time
+operate on the same data. This can cause transactions to wait on each other and decrease
+performance, like when many people try to check out with the same cashier at a store.
 
-For more information about contention, see [Understanding and Avoiding
-Transaction
-Contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention).
+For more information about contention, see [Transaction Contention](performance-best-practices-overview.html#transaction-contention).
 
 ## Does CockroachDB support `JOIN`?
 

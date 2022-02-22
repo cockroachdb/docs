@@ -3,15 +3,14 @@ title: Build a Go App with CockroachDB and GORM
 summary: Learn how to use CockroachDB from a simple Go application with the GORM ORM.
 toc: true
 twitter: false
-referral_id: docs_hello_world_go_gorm
+referral_id: docs_go_gorm
+filter_category: crud_go
+filter_html: Use <strong>GORM</strong></button>
+filter_sort: 2
+docs_area: get_started
 ---
 
-<div class="filters filters-big clearfix">
-    <a href="build-a-go-app-with-cockroachdb.html"><button class="filter-button">Use <strong>pgx</strong></button></a>
-    <a href="build-a-go-app-with-cockroachdb-pq.html"><button class="filter-button">Use <strong>pq</strong></button></a>
-    <a href="build-a-go-app-with-cockroachdb-gorm.html"><button class="filter-button current">Use <strong>GORM</strong></button></a>
-    <a href="build-a-go-app-with-cockroachdb-upperdb.html"><button class="filter-button">Use <strong>upper/db</strong></button></a>
-</div>
+{% include filter-tabs.md %}
 
 This tutorial shows you how build a simple CRUD Go application with CockroachDB and the [GORM ORM](https://gorm.io/index.html).
 

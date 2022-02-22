@@ -2,6 +2,7 @@
 title: INTERVAL
 summary: The INTERVAL data type stores a value that represents a span of time.
 toc: true
+docs_area: reference.sql
 ---
 
 The `INTERVAL` [data type](data-types.html) stores a value that represents a span of time.

@@ -2,6 +2,7 @@
 title: ALTER TABLE ... RENAME TO
 summary: The ALTER TABLE ... RENAME TO statement changes the name of a table.
 toc: true
+docs_area: reference.sql
 ---
 
 The `RENAME TO` [statement](sql-statements.html) is part of [`ALTER TABLE`](alter-table.html), and changes the name of a table.
@@ -16,7 +17,7 @@ Note that, in a future release, `ALTER TABLE ... RENAME TO` will be limited to c
 It is not possible to rename a table referenced by a view. For more details, see <a href="views.html#view-dependencies">View Dependencies</a>.
 {{site.data.alerts.end}}
 
-{% include {{{ page.version.version }}/misc/schema-change-stmt-note.md %}
+{% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
 ## Required privileges
 
@@ -165,3 +166,4 @@ To move a table from one database to another, use the above syntax but specify t
 - [`DROP TABLE`](drop-table.html)
 - [`SHOW JOBS`](show-jobs.html)
 - [Other SQL Statements](sql-statements.html)
+- [Online Schema Changes](online-schema-changes.html)

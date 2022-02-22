@@ -2,6 +2,7 @@
 title: Learn CockroachDB SQL
 summary: Learn some of the most essential CockroachDB SQL statements on a local cluster.
 toc: true
+docs_area: get_started
 ---
 
 This tutorial walks you through some essential SQL statements using a free cloud cluster and the CockroachDB SQL client.

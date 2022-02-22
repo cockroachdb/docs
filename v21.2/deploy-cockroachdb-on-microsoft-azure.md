@@ -4,12 +4,13 @@ summary: Learn how to deploy CockroachDB on Microsoft Azure.
 toc: true
 toc_not_nested: true
 ssh-link: https://docs.microsoft.com/en-us/azure/virtual-machines/linux/mac-create-ssh-keys
+filter_category: deploy_crdb_ma
+filter_html: Secure
+filter_sort: 1
+docs_area: 
 ---
 
-<div class="filters filters-big clearfix">
-  <button class="filter-button current"><strong>Secure</strong></button>
-  <a href="deploy-cockroachdb-on-microsoft-azure-insecure.html"><button class="filter-button">Insecure</button></a>
-</div>
+{% include filter-tabs.md %}
 
 This page shows you how to manually deploy a secure multi-node CockroachDB cluster on Microsoft Azure, using Azure's managed load balancing service to distribute client traffic.
 

@@ -2,6 +2,7 @@
 title: Migrate CockroachDB Schemas with Flyway
 summary: This tutorial walks you through a series of simple database schema changes using Flyway, an open-source schema migration tool.
 toc: true
+docs_area: develop
 ---
 
 This page walks you through a series of simple database schema changes using Flyway, an open-source schema migration tool. For detailed information about using Flyway, see the [Flyway documentation site](https://flywaydb.org/documentation/).
@@ -163,7 +164,7 @@ When used with most databases, [Flyway wraps the statements in a migration withi
 
 ### Transaction retries
 
-When multiple, concurrent transactions or statements are issued to a single CockroachDB cluster, [transaction contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention) can cause schema migrations to fail. In the event of transaction contention, CockroachDB returns a `40001 SQLSTATE` (i.e., a serialization failure), and Flyway automatically retries the migration. For more information about client-side transaction retries in CockroachDB, see [Transaction Retries](transactions.html#transaction-retries).
+When multiple, concurrent transactions or statements are issued to a single CockroachDB cluster, [transaction contention](performance-best-practices-overview.html#transaction-contention) can cause schema migrations to fail. In the event of transaction contention, CockroachDB returns a `40001 SQLSTATE` (i.e., a serialization failure), and Flyway automatically retries the migration. For more information about client-side transaction retries in CockroachDB, see [Transaction Retries](transactions.html#transaction-retries).
 
 ### Transactional schema changes
 

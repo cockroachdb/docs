@@ -2,6 +2,10 @@
 title: Quickstart with CockroachDB
 summary: Get started with a free CockroachDB Cloud cluster.
 toc: true
+filter_category: qs_crdb_cloud
+filter_html: CockroachDB Serverless (beta)
+filter_sort: 1
+docs_area: get_started
 ---
 
 This page shows you the quickest way to get started with CockroachDB. First, you'll start a free cloud cluster, managed by Cockroach Labs, or you'll download CockroachDB and start a local cluster. Then you'll connect to the cluster with the CockroachDB SQL client and insert some data. Finally, you'll read the data from a sample application.

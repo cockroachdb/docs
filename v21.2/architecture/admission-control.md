@@ -2,6 +2,7 @@
 title: Admission Control
 summary: Learn about admission control system in CockroachDB.
 toc: true
+docs_area: reference.architecture 
 ---
 
 <span class="version-tag">New in v21.2:</span> CockroachDB implements an optional admission control system to maintain cluster performance and availability when some nodes experience high load. When admission control is enabled, CockroachDB sorts request and response operations into work queues by priority, giving preference to higher priority operations. Internal operations critical to node health, like node liveness heartbeats, are high priority. The admission control system also prioritizes transactions that hold locks, to reduce contention by releasing locks in a timely manner.
@@ -39,7 +40,7 @@ Admission control should be used when overall cluster health is good but some no
 
 When admission control is enabled, request and response operations get sorted into work queues where the operations are organized by priority and transaction start time.
 
-Higher priority operations are processed first. The criteria for determining higher and lower priority operations is different at each processing layer, and is determined by the CPU and storage I/O of the operation. Write operations in the [KV storage layer](storage-layer.html) in particular are often the cause of performance bottlenecks, and enabling admission control prevents [the Pebble storage engine](../cockroach-start.html#storage-engine) from experiencing high read amplification. Critical cluster operations like node heartbeats are processed as high priority, as are transactions that hold locks in order to avoid [contention](../performance-recipes.html#contention) by releasing locks.
+Higher priority operations are processed first. The criteria for determining higher and lower priority operations is different at each processing layer, and is determined by the CPU and storage I/O of the operation. Write operations in the [KV storage layer](storage-layer.html) in particular are often the cause of performance bottlenecks, and enabling admission control prevents [the Pebble storage engine](../cockroach-start.html#storage-engine) from experiencing high read amplification. Critical cluster operations like node heartbeats are processed as high priority, as are transactions that hold locks in order to avoid [contention](../performance-recipes.html#transaction-contention) by releasing locks.
 
 The transaction start time is used within the priority queue and gives preference to operations with earlier transaction start times. For example, within the high priority queue operations with an earlier transaction start time are processed first.
 

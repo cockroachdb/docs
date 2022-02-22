@@ -2,6 +2,7 @@
 title: MULTILINESTRING
 summary: The spatial MULTILINESTRING object is a collection of LINESTRINGs.
 toc: true
+docs_area: reference.sql
 ---
 
 A `MULTILINESTRING` is a collection of [LineStrings](linestring.html).  MultiLineStrings are useful for gathering a group of LineStrings into one geometry. For example, you may want to gather the LineStrings denoting all of the roads in a particular municipality.

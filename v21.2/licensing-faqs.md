@@ -2,6 +2,7 @@
 title: Licensing FAQs
 summary: Frequently asked questions about CockroachDB licensing.
 toc: true
+docs_area: get_started
 ---
 
 Current CockroachDB code is primarily licensed in two ways:
@@ -56,8 +57,8 @@ Feature          | BSL | CCL (free)      | CCL (paid)
 **[Full backups](take-full-and-incremental-backups.html#full-backups)** | | ✓ |
 **[Incremental backups](take-full-and-incremental-backups.html#incremental-backups)** | | | ✓
 **[Other advanced backup features](backup.html)** | | | ✓
-**[Core changefeed](stream-data-out-of-cockroachdb-using-changefeeds.html#create-a-core-changefeed)** | | ✓ |
-**[Enterprise changefeed](stream-data-out-of-cockroachdb-using-changefeeds.html#configure-a-changefeed-enterprise)** | | | ✓
+**[Core changefeed](create-and-configure-changefeeds.html#create-a-changefeed-core)** | | ✓ |
+**[{{ site.data.products.enterprise }} changefeed](create-and-configure-changefeeds.html#configure-a-changefeed-enterprise)** | | | ✓
 **[Table-level zone configuration](configure-replication-zones.html#replication-zone-levels)** | ✓ | |
 **[Multi-Region Capabilities](multiregion-overview.html)** | | | ✓
 **[Follower reads](follower-reads.html)** | | | ✓

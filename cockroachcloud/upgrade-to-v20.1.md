@@ -2,6 +2,7 @@
 title: Upgrade to CockroachDB v20.1
 summary: Learn how to upgrade your CockroachDB cluster to v20.1.
 toc: true
+docs_area: manage
 ---
 
 Now that [CockroachDB v20.1](https://www.cockroachlabs.com/docs/releases/v20.1.0.html) is available, your [Console Admin](console-access-management.html#console-admin) can upgrade your cluster directly from the {{ site.data.products.db }} Console. This page walks through the process.
@@ -54,7 +55,7 @@ Review the following list of backward-incompatible changes in v20.1, and if any 
 
 - Casting intervals to integers and floats is now Postgres-compatible and values a year at 365.25 days in seconds instead of 365 days.
 
-- The combination of the [`CHANGEFEED`](../{{site.versions["stable"]}}/stream-data-out-of-cockroachdb-using-changefeeds.html) options `format=experimental_avro`, `envelope=key_only`, and `updated` is now rejected. This is because the use of `key_only` prevents any rows with updated fields from being emitted, which renders the `updated` option meaningless.
+- The combination of the [`CHANGEFEED`](../{{site.versions["stable"]}}/change-data-capture-overview.html) options `format=experimental_avro`, `envelope=key_only`, and `updated` is now rejected. This is because the use of `key_only` prevents any rows with updated fields from being emitted, which renders the `updated` option meaningless.
 
 - The `cockroach user` CLI command has been removed. It was previously deprecated in CockroachDB v19.2. Note that a v19.2 client (supporting `cockroach user`) can still operate user accounts in a v20.1 server.
 

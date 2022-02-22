@@ -2,6 +2,7 @@
 title: SHOW TRANSACTIONS
 summary: The SHOW TRANSACTIONS statement lists all currently active transactions across the cluster or on the gateway node.
 toc: true
+docs_area: reference.sql
 ---
 
  The `SHOW TRANSACTIONS` [statement](sql-statements.html) lists details about currently active transactions, including:

@@ -26,7 +26,7 @@ To read more about how foreign keys work, see our [What is a Foreign Key? (With 
 **Foreign Key Columns**
 
 - Foreign key columns must use their referenced column's [type](data-types.html).
-- A foreign key column cannot be a [computed column](computed-columns.html).
+- A foreign key column cannot be a virtual [computed column](computed-columns.html), but it can be a stored computed column.
 - A single column can have multiple foreign key constraints. For an example, see [Add multiple foreign key constraints to a single column](#add-multiple-foreign-key-constraints-to-a-single-column).
 
 **Referenced Columns**
