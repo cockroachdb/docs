@@ -34,6 +34,14 @@ Choose whether to start a forever-free cloud cluster or a temporary local cluste
 
     Your cluster will be created in a few seconds and the **Connection info** dialog will display.
 
+1. Click the **Connection string** tab in the **Connection info** dialog.
+    1. Run the command in step 1 to download the CA certificate to your local machine.
+    1. Copy the connection string in step 2 to a secure location.
+
+        {{site.data.alerts.callout_danger}}
+        The connection string in the command is pre-populated with your username, password, cluster name, and other details. Your password, in particular, will be provided only once. Save it in a secure place (Cockroach Labs recommends a password manager) to connect to your cluster in the future. If you forget your password, you can reset it by going to the [**SQL Users** page](user-authorization.html).
+        {{site.data.alerts.end}}
+
 </section>
 
 <section class="filter-content" markdown="1" data-scope="local">
@@ -76,8 +84,7 @@ Next, you'll download the CockroachDB SQL client and use it to insert some data.
 1. Open a terminal on your local machine.
 1. Run the commands in each step of the **Command Line** tab:
    1. Run the command in step 1 to install the CockroachDB binary and add it to your OS's `PATH`.
-   1. Run the command in step 2 to download the CA certificate to your local machine.
-   1. Run the command in step 3 to connect to your cluster using the SQL client.
+   1. Run the command in step 2 to connect to your cluster using the SQL client.
 
       You will see a welcome message when you've successfully connected to your cluster:
 

@@ -92,4 +92,4 @@ When using the [`ALTER TABLE .. ADD COLUMN`](add-column.html) statement to add a
 
 - [`CREATE TABLE`](create-table.html)
 - [`ADD COLUMN`](add-column.html)
-- [Other SQL Statements](sql-statements.html)
+- [SQL Statements](sql-statements.html)

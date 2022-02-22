@@ -57,7 +57,7 @@ To create a cluster, send a `POST` request to the `/v1/clusters` endpoint. The s
 curl --request POST \
   --url https://cockroachlabs.cloud/api/v1/clusters \
   --header 'Authorization: Bearer {secret_key}' \
-  --data '{"name":"{cluster_name}","provider":"{cloud_provider}","serverless":{"regions":["{region_name}"],"spendLimit":{spend_limit}}}'
+  --data '{"name":"{cluster_name}","provider":"{cloud_provider}","spec":{"serverless":{"regions":["{region_name}"],"spendLimit":{spend_limit}}}}'
 ~~~
 </section>
 
@@ -67,11 +67,13 @@ curl --request POST \
 {
   "name": "{cluster_name}",
   "provider": "{cloud_provider}",
-  "serverless": {
-    "regions": [
-      "{region_name}"
-    ],
-    "spendLimit": {spend_limit}
+  "spec": {
+    "serverless": {
+      "regions": [
+        "{region_name}"
+      ],
+      "spendLimit": {spend_limit}
+    }
   }
 }
 ~~~
@@ -97,7 +99,7 @@ For example, to create a new free Serverless cluster named "notorious-moose" usi
 curl --request POST \
   --url https://cockroachlabs.cloud/api/v1/clusters \
   --header 'Authorization: Bearer {secret_key}' \
-  --data '{"name":"notorious-moose","serverless":{"regions":["us-central1"],"spendLimit":0}}'
+  --data '{"name":"notorious-moose","provider":"GCP","spec":{"serverless":{"regions":["us-central1"],"spendLimit":0}}}'
 ~~~
 </section>
 
@@ -106,8 +108,11 @@ curl --request POST \
 ~~~ JSON
 {
   "name": "notorious-moose",
-  "serverless": {
-    "spendLimit": 0
+  "provider": "GCP",
+  "spec": {
+    "serverless": {
+      "spendLimit": 0
+    }
   }
 }
 ~~~

@@ -1,0 +1,12 @@
+major_version,release_date,maint_supp_exp_date,asst_supp_exp_date,docker_image
+v1.0,2017-05-10,2018-05-10,2018-11-10,cockroachdb/cockroach
+v1.1,2017-10-12,2018-10-12,2019-04-12,cockroachdb/cockroach
+v2.0,2018-04-04,2019-04-04,2019-10-04,cockroachdb/cockroach
+v2.1,2018-10-30,2019-10-30,2020-04-30,cockroachdb/cockroach
+v19.1,2019-04-30,2020-04-30,2020-10-30,cockroachdb/cockroach
+v19.2,2019-11-12,2020-11-12,2021-05-12,cockroachdb/cockroach
+v20.1,2020-05-12,2021-05-12,2021-11-12,cockroachdb/cockroach
+v20.2,2020-11-10,2021-11-10,2022-05-10,cockroachdb/cockroach
+v21.1,2021-05-18,2022-05-18,2022-11-18,cockroachdb/cockroach
+v21.2,2021-11-16,2022-11-16,2023-05-16,cockroachdb/cockroach
+v22.1,N/A,N/A,N/A,cockroachdb/cockroach-unstable

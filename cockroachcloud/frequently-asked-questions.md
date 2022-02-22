@@ -38,10 +38,11 @@ If you want to create a cluster in a disabled region, please [contact Support](h
 {{ site.data.products.dedicated }} offers a 30-day free trial. Free trials require a credit card so we can validate that you are not a bot and provide a seamless transition into production. Free trials apply when you:
 
 - Create the first cluster in your organization
-- Select 4 or fewer nodes (we recommend starting with 3 so you can try scaling)
+- Select 9 or fewer nodes (we recommend starting with 3 so you can try scaling)
+- Select up to 4 vCPUs of compute and 150 GiB of storage (the trial code will not apply to larger clusters)
 - Don't remove the pre-applied trial code at check out
 
-Once the 30-day period is over, your trial cluster can be scaled beyond 4 nodes. You can create other paid clusters at any time. If Cockroach Labs has provided you with additional codes, you can use those on applicable clusters. For extended trial options, [contact us](https://www.cockroachlabs.com/contact-sales/).
+Once the 30-day period is over, your cluster can be scaled beyond the trial period hardware limitations. You can create other paid clusters at any time. If Cockroach Labs has provided you with additional codes, you can use those on applicable clusters. For extended trial options, [contact us](https://www.cockroachlabs.com/contact-sales/).
 
 ### How do I connect to my cluster?
 

@@ -27,7 +27,6 @@ To filter the statements, click the **Filters** field.
 To filter by [application]({{ link_prefix }}connection-parameters.html#additional-connection-parameters), select **App** and choose one or more applications. When no application is selected internal statements **are not** displayed.
 
 {{site.data.alerts.callout_info}}
-- Internal queries are displayed under the `$ internal` app.
 - Queries from the SQL shell are displayed under the `$ cockroach` app.
 - If you haven't set `application_name` in a client connection string, it appears as `unset`.
 {{site.data.alerts.end}}
@@ -44,28 +43,7 @@ The following screenshot shows the statements that contain the string `rides` fo
 
 ### Example
 
-This example command shows how to query the two most important JSON columns: `metadata` and `statistics`:
-
-~~~sql
-SELECT
-  aggregated_ts,
-  fingerprint_id,
-  app_name,
-  metadata -> 'query' AS statement_text,
-  metadata -> 'stmtTyp' AS statement_type,
-  metadata -> 'db' AS database_name,
-  metadata -> 'distsql' AS is_distsql,
-  metadata -> 'fullScan' AS has_full_scan,
-  metadata -> 'vec' AS used_vec,
-  statistics -> 'execution_statistics' -> 'contentionTime' -> 'mean' AS contention_time_mean,
-  statistics -> 'statistics' -> 'cnt' AS execution_count,
-  statistics -> 'statistics' -> 'firstAttemptCnt' AS number_first_attempts,
-  statistics -> 'statistics' -> 'numRows' -> 'mean' AS number_rows_returned_mean,
-  statistics -> 'statistics' -> 'rowsRead' -> 'mean' AS number_rows_read_mean,
-  statistics -> 'statistics' -> 'runLat' -> 'mean' AS runtime_latecy_mean,
-  sampled_plan
-FROM crdb_internal.statement_statistics;
-~~~
+See [View historical statement statistics and the sampled logical plan per fingerprint]({{ link_prefix }}crdb-internal.html#view-historical-statement-statistics-and-the-sampled-logical-plan-per-fingerprint).
 
 ## SQL statement fingerprints
 
@@ -125,7 +103,7 @@ Statement Time | Average [planning and execution time]({{ link_prefix }}architec
 Contention | Average time statements with this fingerprint were [in contention]({{ link_prefix }}performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention) with other transactions within the aggregation interval. <br><br>The gray bar indicates mean contention time. The blue bar indicates one standard deviation from the mean. Hover over the bar to display exact values.
 Max Memory | Maximum memory used by a statement with this fingerprint at any time during its execution within the aggregation interval. <br><br>The gray bar indicates the average max memory usage. The blue bar indicates one standard deviation from the mean. Hover over the bar to display exact values.
 Network | Amount of [data transferred over the network]({{ link_prefix }}architecture/reads-and-writes-overview.html) for statements with this fingerprint within the aggregation interval. <br><br>If this value is 0, the statement was executed on a single node. <br><br>The gray bar indicates the mean number of bytes sent over the network. The blue bar indicates one standard deviation from the mean. Hover over the bar to display exact values.
-Retries | Cumulative number of [retries]({{ link_prefix }}transactions.html#transaction-retries) of statements with this fingerprint within the aggregation interval.
+Retries | Cumulative number of automatic (internal) [retries]({{ link_prefix }}transactions.html#transaction-retries) by CockroachDB of statements with this fingerprint within the aggregation interval.
 % of All Runtime  | How much time this statement fingerprint took to execute compared to all other statements that were executed within the time period. It is expressed as a percentage. The runtime is the mean execution latency multiplied by the execution count.
 Regions/Nodes | The regions and nodes on which statements with this fingerprint executed. <br><br>**Regions/Nodes** are not visible for {{ site.data.products.serverless }} clusters.
 Diagnostics | Activate and download [diagnostics](#diagnostics) for this fingerprint. To activate, click the **Activate** button. The column displays the status of diagnostics collection (`WAITING`, `READY`, OR `ERROR`). When the status is `READY`, click **Download bundle** to download the most recent diagnostics bundle. <br><br>Statements are periodically cleared from the Statements page based on the start time. To access the full history of diagnostics for the fingerprint, see the [Diagnostics](#diagnostics) section of the Statement Details page. <br><br>**Diagnostics** is not enabled for {{ site.data.products.serverless }} clusters.
