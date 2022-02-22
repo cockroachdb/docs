@@ -48,14 +48,14 @@ An operator [initiates the decommissioning process](#decommission-the-node) on t
 The node's [`is_decommissioning`](cockroach-node.html#node-status) field is set to `true` and its `membership` status is set to `decommissioning`, which causes its replicas to be rebalanced to other nodes. The node's [`/health?ready=1` endpoint](monitoring-and-alerting.html#health-ready-1) continues to consider the node "ready" so that the node can function as a gateway to route client connections to relevant data.
 
 {{site.data.alerts.callout_info}}
-After this stage, the node is automatically drained. However, we recommend manually draining before decommissioning. For more information, see [Perform node shutdown](#perform-node-shutdown).
+After this stage, the node is automatically drained. However, to avoid possible disruptions in query performance, we recommend manually draining before decommissioning. For more information, see [Perform node shutdown](#perform-node-shutdown).
 {{site.data.alerts.end}}
 </section>
 
 #### Draining
 
 <section class="filter-content" markdown="1" data-scope="drain">
-An operator [initiates the draining process](#drain-the-node-and-terminate-the-node-process) on the node. No replicas, other than those holding leases or Raft leaderships, are transferred.
+An operator [initiates the draining process](#drain-the-node-and-terminate-the-node-process) on the node. Draining a node disconnects clients after active queries are completed, and transfers any range leases and Raft leaderships to other nodes, but does not move replicas or data off of the node.
 </section>
 
 <section class="filter-content" markdown="1" data-scope="decommission">
@@ -70,7 +70,7 @@ Node drain consists of the following consecutive phases:
 
 1. **Distributed query phase**: All [distributed statements](architecture/sql-layer.html#distsql) initiated on other gateway nodes are allowed to complete, and DistSQL requests from other nodes are no longer accepted. This step completes either when all transactions have been processed or the [maximum duration set by `server.shutdown.query_wait`](#server-shutdown-query_wait) is reached.
 
-1. **Lease transfer phase:** The node's [`is_draining`](cockroach-node.html#node-status) field is set to `true`, which removes the node as a candidate for replica rebalancing, lease transfers, and query planning. Any replicas holding [range leases](architecture/replication-layer.html#leases) or [Raft leaderships](architecture/replication-layer.html#raft) must be transferred to other nodes. This step completes when all transfers are completed.
+1. **Lease transfer phase:** The node's [`is_draining`](cockroach-node.html#node-status) field is set to `true`, which removes the node as a candidate for replica rebalancing, lease transfers, and query planning. Any [range leases](architecture/replication-layer.html#leases) or [Raft leaderships](architecture/replication-layer.html#raft) must be transferred to other nodes. This step completes when all transfers are completed.
 
     <section class="filter-content" markdown="1" data-scope="decommission">
     Since all range replicas were already removed from the node during the [decommissioning](#decommissioning) stage, this step immediately resolves.
@@ -83,9 +83,9 @@ When [draining manually](#drain-a-node-manually), if the above steps have not co
 <section class="filter-content" markdown="1" data-scope="decommission">
 #### Status change
 
-After decommissioning and draining are both complete, CockroachDB changes the node membership from `decommissioning` to `decommissioned`. 
+After decommissioning and draining are both complete, the node membership changes from `decommissioning` to `decommissioned`.
 
-This node is now cut off from communicating with the rest of the cluster. Any request from this node to the cluster will return a `permission denied` error. A client attempting to connect to a `decommissioned` node and run a query will also get an error.
+This node is now cut off from communicating with the rest of the cluster. A client attempting to connect to a `decommissioned` node and run a query will get an error.
 </section>
 
 At this point, the `cockroach` process is still running. It is only stopped by process termination.
@@ -155,7 +155,7 @@ We also recommend setting your [client connection](connection-pooling.html#about
 
 #### `server.shutdown.query_wait`
 
-`server.shutdown.query_wait` sets the **maximum** duration for the ["local query phase"](#draining) and the **maximum** duration for the ["distributed query phase"](#draining) of node drain. In their respective phases, active local and distributed queries must complete within this duration (`10s` by default).
+`server.shutdown.query_wait` sets the **maximum** duration for the ["local query phase"](#draining) and the **maximum** duration for the ["distributed query phase"](#draining) of node drain. Active local and distributed queries must complete, in turn, within this duration (`10s` by default).
 
 Ensure that `server.shutdown.query_wait` is greater than:
 
@@ -241,11 +241,13 @@ A connection retry loop should:
 
 A write transaction that enters the [commit phase](architecture/transaction-layer.html#commits-phase-2) on a draining node will run to completion, but the node connection can be closed before your client receives a success message. Therefore, the connection retry logic considers the result of a previously open transaction to be unknown, and reissues the transaction.
 
+When reissuing a write statement that relies on a primary key [`UNIQUE`](unique.html) constraint in your schema, for example, interpret a unique constraint violation message (`ERROR: duplicate key value violates unique constraint "primary"`) as a success.
+
 ### Termination grace period
 
 On production deployments, a process manager or orchestration system can disrupt graceful node shutdown if its termination grace period is too short. 
 
-If the `cockroach` process has not terminated at the end of the grace period, a `SIGKILL` signal is sent to perform a "hard" shutdown that bypasses CockroachDB's [node shutdown logic](#node-shutdown-sequence) and forcibly terminates the process. This can corrupt log files and, in certain edge cases, can result in temporary data unavailability, latency spikes, uncertainty errors, ambiguous commit errors, or query timeouts. When decommissioning, a hard shutdown will leave ranges under-replicated and vulnerable to another node failure, causing [quorum](architecture/replication-layer.html#overview) loss in the window before up-replication completes.
+If the `cockroach` process has not terminated at the end of the grace period, a `SIGKILL` signal is sent to perform a "hard" shutdown that bypasses CockroachDB's [node shutdown logic](#node-shutdown-sequence) and forcibly terminates the process. This can corrupt log files and, in certain edge cases, can result in temporary data unavailability, latency spikes, uncertainty errors, ambiguous commit errors, or query timeouts. When decommissioning, a hard shutdown will leave ranges under-replicated and vulnerable to another node failure until up-replication completes, which could cause loss of [quorum](architecture/replication-layer.html#overview).
 
 - When using [`systemd`](https://www.freedesktop.org/wiki/Software/systemd/) to run CockroachDB as a service, set the termination grace period with [`TimeoutStopSec`](https://www.freedesktop.org/software/systemd/man/systemd.service.html#TimeoutStopSec=) setting in the service file.
 
@@ -257,7 +259,7 @@ To determine an appropriate termination grace period:
 
 - On Kubernetes deployments, it is helpful to set `terminationGracePeriodSeconds` to be 5 seconds longer than the configured [drain timeout](#drain-timeout). This allows Kubernetes to remove a pod only after node drain has completed.
 
-- In general, we recommend setting the termination grace period **between 5 and 10 minutes**.
+- In general, we recommend setting the termination grace period **between 5 and 10 minutes**. If a node requires more than 10 minutes to drain successfully, this may indicate a technical issue such as inadequate [cluster sizing](recommended-production-settings.html#sizing).
 
 - Increasing the termination grace period does not increase the duration of a node shutdown. However, the termination grace period should not be excessively long, in case an underlying hardware or software issue causes node shutdown to become "stuck". 
 
@@ -331,7 +333,7 @@ Although [draining automatically follows decommissioning](#draining), we recomme
 Run [`cockroach node decommission`](cockroach-node.html) to decommission the node and rebalance its range replicas. For specific instructions and additional guidelines, see the [example](#remove-nodes).
 
 {{site.data.alerts.callout_danger}}
-Do **not** terminate the node process, delete the storage volume, or remove the VM before a `decommissioning` node has [changed its membership status](#status-change) to `decommissioned`. This will prevent the node from rebalancing all of its range replicas onto other nodes gracefully, can cause transient query errors in client applications, and the remaining ranges will be under-replicated and vulnerable to loss of [quorum](architecture/replication-layer.html#overview) if another node goes down. If the data store is destroyed (e.g., by removing a VM), this will permanently damage the cluster, requiring manual repair with potential data loss.
+Do **not** terminate the node process, delete the storage volume, or remove the VM before a `decommissioning` node has [changed its membership status](#status-change) to `decommissioned`. Prematurely terminating the process will prevent the node from rebalancing all of its range replicas onto other nodes gracefully, can cause transient query errors in client applications, and leave the remaining ranges under-replicated and vulnerable to loss of [quorum](architecture/replication-layer.html#overview) if another node goes down.
 {{site.data.alerts.end}}
 
 ### Terminate the node process
@@ -568,9 +570,9 @@ You can use [`cockroach node drain`](cockroach-node.html) to drain a node separa
 
 In addition to the [graceful node shutdown](#prepare-for-graceful-shutdown) requirements, observe the following guidelines:
 
-- Before decommissioning nodes, verify that there are no [underreplicated or unavailable ranges](ui-cluster-overview-page.html#cluster-overview-panel) on the cluster.
-- Do **not** terminate the node process, delete the storage volume, or remove the VM before a `decommissioning` node has [changed its membership status](#status-change) to `decommissioned`. This will prevent the node from rebalancing all of its range replicas onto other nodes gracefully, can cause transient query errors in client applications, and the remaining ranges will be under-replicated and vulnerable to loss of [quorum](architecture/replication-layer.html#overview) if another node goes down. If the data store is destroyed (e.g., by removing a VM), this will permanently damage the cluster, requiring manual repair with potential data loss.
-- When removing nodes, decommission all nodes at once. Do not decommission the nodes one-by-one. This will incur unnecessary data movement costs due to replicas being passed between decommissioning nodes. All nodes **must** be fully `decommissioned` before the process is terminated and the volume removed.
+- Before decommissioning nodes, verify that there are no [under-replicated or unavailable ranges](ui-cluster-overview-page.html#cluster-overview-panel) on the cluster.
+- Do **not** terminate the node process, delete the storage volume, or remove the VM before a `decommissioning` node has [changed its membership status](#status-change) to `decommissioned`. Prematurely terminating the process will prevent the node from rebalancing all of its range replicas onto other nodes gracefully, can cause transient query errors in client applications, and leave the remaining ranges under-replicated and vulnerable to loss of [quorum](architecture/replication-layer.html#overview) if another node goes down.
+- When removing nodes, decommission all nodes at once. Do not decommission the nodes one-by-one. This will incur unnecessary data movement costs due to replicas being passed between decommissioning nodes. **All** nodes must be fully `decommissioned` before terminating the node process and removing the data storage.
 - If you have a decommissioning node that appears to be hung, you can [recommission](#recommission-nodes) the node.
 
 #### Step 1. Get the IDs of the nodes to decommission
@@ -639,7 +641,7 @@ No more data reported on target nodes. Please verify cluster health before remov
 The `is_decommissioning` field remains `true` after all replicas have been removed from each node.
 
 {{site.data.alerts.callout_danger}}
-Do **not** terminate the node process, delete the storage volume, or remove the VM before a `decommissioning` node has [changed its membership status](#status-change) to `decommissioned`. This will prevent the node from rebalancing all of its range replicas onto other nodes gracefully, can cause transient query errors in client applications, and the remaining ranges will be under-replicated and vulnerable to loss of [quorum](architecture/replication-layer.html#overview) if another node goes down. If the data store is destroyed (e.g., by removing a VM), this will permanently damage the cluster, requiring manual repair with potential data loss.
+Do **not** terminate the node process, delete the storage volume, or remove the VM before a `decommissioning` node has [changed its membership status](#status-change) to `decommissioned`. Prematurely terminating the process will prevent the node from rebalancing all of its range replicas onto other nodes gracefully, can cause transient query errors in client applications, and leave the remaining ranges under-replicated and vulnerable to loss of [quorum](architecture/replication-layer.html#overview) if another node goes down.
 {{site.data.alerts.end}}
 
 #### Step 4. Confirm the nodes are decommissioned
