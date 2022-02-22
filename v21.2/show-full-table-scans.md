@@ -17,7 +17,7 @@ Limiting the number of queries that require full table scans can help you optimi
 
 ## Required privileges
 
-The [`admin` role](authorization.html#admin-role) is required to run `SHOW FULL TABLE SCANS`.
+The [`admin` role](security-reference/authorization.html#admin-role) is required to run `SHOW FULL TABLE SCANS`.
 
 ## Examples
 

@@ -1345,6 +1345,41 @@
         ]
       },
       {
+        "title": "Security",
+        "items": [
+          {
+            "title": "Security Overview",
+            "urls": [
+              "/${VERSION}/security-reference/security-overview.html"
+            ]
+          },
+          {
+            "title": "Authentication",
+            "urls": [
+              "/${VERSION}/security-reference/authentication.html"
+            ]
+          },
+          {
+            "title": "Authorization",
+            "urls": [
+              "/${VERSION}/security-reference/authorization.html"
+            ]
+          },
+          {
+            "title": "Network Security",
+            "urls": [
+              "/${VERSION}/security-reference/network-security.html"
+            ]
+          },
+          {
+            "title": "Encryption",
+            "urls": [
+              "/${VERSION}/security-reference/encryption.html"
+            ]
+          }
+        ]
+      },
+      {
         "title": "Performance Optimization",
         "items": [
           {

@@ -132,7 +132,7 @@ You'll use a non-`root` user for running a client workload and accessing the DB 
     > GRANT admin TO maxroach;
     ~~~
 
-    This role assignment is for convenience for this tutorial; it gives the user access to all data without the need for additional privileges. For more details, see [Authorization](authorization.html#admin-role).
+    This role assignment is for convenience for this tutorial; it gives the user access to all data without the need for additional privileges. For more details, see [Authorization](security-reference/authorization.html#admin-role).
 
 4. Exit the SQL shell:
 

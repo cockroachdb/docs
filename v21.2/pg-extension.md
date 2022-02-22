@@ -40,7 +40,7 @@ To see the list of tables in `pg_extension` for the [current database](sql-name-
 You can run [`SELECT` queries](selection-queries.html) on the tables in `pg_extension`.
 
 {{site.data.alerts.callout_success}}
-To ensure that you can view all of the tables in `pg_extension`, query the tables as a user with [`admin` privileges](authorization.html#admin-role).
+To ensure that you can view all of the tables in `pg_extension`, query the tables as a user with [`admin` privileges](security-reference/authorization.html#admin-role).
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}

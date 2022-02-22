@@ -13,6 +13,12 @@ The `IMPORT INTO` [statement](sql-statements.html) imports CSV or Avro data into
 - `IMPORT INTO` invalidates all [foreign keys](foreign-key.html) on the target table. To validate the foreign key(s), use the [`VALIDATE CONSTRAINT`](validate-constraint.html) statement.
 - `IMPORT INTO` cannot be used to insert data into a column for an existing row. To do this, use [`INSERT`](insert.html).
 
+
+{{site.data.alerts.callout_info}}
+Optimize your applications by following our [Import Performance Best Practices](import-performance-best-practices.html).
+{{site.data.alerts.end}}
+
+
 ## Required privileges
 
 Only members of the `admin` role can run `IMPORT INTO`. By default, the `root` user belongs to the `admin` role.
