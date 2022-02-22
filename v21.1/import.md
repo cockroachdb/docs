@@ -25,6 +25,9 @@ The `IMPORT` [statement](sql-statements.html) imports the following types of dat
 - `IMPORT` cannot be used within a [rolling upgrade](upgrade-cockroach-version.html).
 - {% include {{page.version.version}}/sql/import-into-regional-by-row-table.md %}
 
+{{site.data.alerts.callout_info}}
+Optimize import operations in your applications by following our [Import Performance Best Practices](import-performance-best-practices.html).
+{{site.data.alerts.end}}
 ## Required privileges
 
 #### Table privileges

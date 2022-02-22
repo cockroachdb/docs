@@ -25,7 +25,7 @@ When used in an explicit transaction combined with other schema changes to the s
 
 ## Required privileges
 
-The user must have the `CREATE` [privilege](authorization.html#assign-privileges) on the table.
+The user must have the `CREATE` [privilege](security-reference/authorization.html#managing-privileges) on the table.
 
 ## Parameters
 

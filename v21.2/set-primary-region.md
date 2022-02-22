@@ -36,10 +36,10 @@ To remove existing, manually-configured zones from a database (and unblock `SET 
 
 To add a primary region to a database with no existing regions, the user must have one of the following:
 
-- Membership to the [`admin`](authorization.html#roles) role for the cluster.
-- Membership to the [owner](authorization.html#object-ownership) role, or the [`CREATE` privilege](authorization.html#supported-privileges), for the database and all tables in the database.
+- Membership to the [`admin`](security-reference/authorization.html#roles) role for the cluster.
+- Membership to the [owner](security-reference/authorization.html#object-ownership) role, or the [`CREATE` privilege](security-reference/authorization.html#supported-privileges), for the database and all tables in the database.
 
-To switch primary regions to a region that has already been added to a database, the user must have membership to the [owner](authorization.html#object-ownership) role for the database, or have the [`CREATE` privilege](authorization.html#supported-privileges) on the database.
+To switch primary regions to a region that has already been added to a database, the user must have membership to the [owner](security-reference/authorization.html#object-ownership) role for the database, or have the [`CREATE` privilege](security-reference/authorization.html#supported-privileges) on the database.
 
 ## Examples
 

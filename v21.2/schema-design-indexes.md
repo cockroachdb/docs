@@ -132,7 +132,7 @@ Here are some best practices for creating and using indexes:
 
 - Review the [specialized indexes that CockroachDB supports](schema-design-overview.html#specialized-indexes), and decide if you need to create a specialized index instead of a standard index.
 
-- Do not create indexes as the `root` user. Instead, create indexes as a [different user](schema-design-overview.html#control-access-to-objects), with fewer privileges, following [authorization best practices](authorization.html#authorization-best-practices). This will likely be the same user that created the table to which the index belongs.
+- Do not create indexes as the `root` user. Instead, create indexes as a [different user](schema-design-overview.html#control-access-to-objects), with fewer privileges, following [authorization best practices](security-reference/authorization.html#authorization-best-practices). This will likely be the same user that created the table to which the index belongs.
 
 - {% include {{page.version.version}}/sql/dev-schema-changes.md %}
 

@@ -9,7 +9,7 @@ The `SHOW COLUMNS` [statement](sql-statements.html) shows details about columns 
 
 ## Required privileges
 
-The user must have any [privilege](authorization.html#assign-privileges) on the target table.
+The user must have any [privilege](security-reference/authorization.html#managing-privileges) on the target table.
 
 ## Synopsis
 

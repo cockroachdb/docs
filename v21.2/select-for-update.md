@@ -42,7 +42,7 @@ For documentation on all other parameters of a `SELECT` statement, see [Selectio
 
 ## Required privileges
 
-The user must have the `SELECT` and `UPDATE` [privileges](authorization.html#assign-privileges) on the tables used as operands.
+The user must have the `SELECT` and `UPDATE` [privileges](security-reference/authorization.html#managing-privileges) on the tables used as operands.
 
 ## Examples
 
