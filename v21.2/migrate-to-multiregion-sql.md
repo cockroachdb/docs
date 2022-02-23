@@ -15,7 +15,7 @@ If you are already using [multi-region SQL statements](multiregion-overview.html
 
 CockroachDB v21.1 added support for [improved multi-region capabilities that make it easier to run global applications](multiregion-overview.html). Using high-level SQL statements, you can control where your data is stored and how it is accessed to provide good performance and tunable latency for your application's users.
 
-Prior to v21.1, the only way to accomplish these goals in a multi-region cluster involved using lower-level mechanisms called [replication zones](configure-replication-zones.html) in specific patterns called _Duplicate Indexes_, _Geo-partitioned Replicas_, and _Geo-partitioned leaseholders_.
+Prior to v21.1, the only way to accomplish these goals in a multi-region cluster involved using lower-level mechanisms called [replication zones](configure-replication-zones.html) in specific patterns called _Duplicate indexes_, _Geo-partitioned Replicas_, and _Geo-partitioned leaseholders_.
 
 These patterns and the use of replication zones are still fully supported. However, for most users, they are harder to use and in some cases can result in worse performance than the multi-region SQL abstractions.
 
@@ -153,7 +153,7 @@ To add another region to the database, issue the [`ADD REGION`](add-region.html)
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-ALTER database foo ADD REGION "us-central1";
+ALTER DATABASE foo ADD REGION "us-central1";
 ~~~
 
 ### Step 4. (Optional) Configure your database survival goal
@@ -170,24 +170,24 @@ For example, to set a region survival goal, issue the following SQL statement:
 ALTER DATABASE foo SURVIVE REGION FAILURE;
 ~~~
 
-For more information about when to use `ZONE` vs. `REGION` survival goals, see [When to use `ZONE` vs. `REGION` survival goals](when-to-use-zone-vs-region-survival-goals.html).
+For more information about when to use `ZONE` vs. `REGION` survival goals, see [When to Use `ZONE` vs. `REGION` Survival Goals](when-to-use-zone-vs-region-survival-goals.html).
 
 ### Step 5. Configure table localities
 
 For each table in your database, apply the [table locality](multiregion-overview.html#table-locality) that provides the latency and resiliency requirements you need for that table.
 
-As described above, the mapping from legacy replication zone patterns to multi-region SQL abstractions is:
+As described in [Replication zone patterns and multi-region SQL abstractions](#replication-zone-patterns-and-multi-region-sql-abstractions), the mapping from legacy replication zone patterns to multi-region SQL abstractions is:
 
 {% include {{page.version.version}}/sql/replication-zone-patterns-to-multiregion-sql-mapping.md %}
 
-For example, to configure the `postal_codes` table from the [duplicate indexes example above](#duplicate-indexes) to use [multi-region SQL](multiregion-overview.html), you would enter the following statements to make the `postal_codes` table a [`GLOBAL` table](global-tables.html):
+For example, to configure the `postal_codes` table from the [duplicate indexes example](#duplicate-indexes) to use [multi-region SQL](multiregion-overview.html), you would enter the following statements to make the `postal_codes` table a [`GLOBAL` table](global-tables.html):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER TABLE postal_codes SET LOCALITY GLOBAL;
 ~~~
 
-For more information about when to use `GLOBAL` vs. `REGIONAL` tables, see [When to use `REGIONAL` vs. `GLOBAL` Tables](when-to-use-regional-vs-global-tables.html).
+For more information about when to use `GLOBAL` vs. `REGIONAL` tables, see [When to Use `REGIONAL` vs. `GLOBAL` Tables](when-to-use-regional-vs-global-tables.html).
 
 ### Step 6. (Optional) View the updated zone configurations
 
@@ -306,7 +306,7 @@ SHOW ZONE CONFIGURATION FROM TABLE promo_codes;
 - [Topology Patterns](topology-patterns.html)
 - [Disaster Recovery](disaster-recovery.html)
 - [Low Latency Reads and Writes in a Multi-Region Cluster](demo-low-latency-multi-region-deployment.html)
-- [Configure replication zones](configure-replication-zones.html)
+- [Configure Replication Zones](configure-replication-zones.html)
 - [Non-voting replicas](architecture/replication-layer.html#non-voting-replicas)
 
 <!-- Reference Links -->
