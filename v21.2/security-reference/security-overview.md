@@ -18,9 +18,9 @@ docs_area: reference.security
 
 Cockroach Labs maintains <a href="https://github.com/cockroachdb/cockroach">CockroachDB as an open-source core</a>, which is available to operate under a number of different licensing options, including several free options.
 
-<b>Self-Deployed CockroachDB</b> here refers to the situation of a user deploying and operating their own cluster.
+<b>Self-Hosted CockroachDB</b> here refers to the situation of a user deploying and operating their own cluster.
 
-<b>Self-Deployed CockroachDB Enterprise</b> refers to an ongoing paid license relationship with Cockroach Labs. This license unlocks advanced features (see below). In this situation the customer maintains full control over their data, compute, and network resources while benefiting from the expertise of the Cockroach Labs' Enterprise Support staff. 
+<b>Self-Hosted CockroachDB Enterprise</b> refers to an ongoing paid license relationship with Cockroach Labs. This license unlocks advanced features (see below). In this situation the customer maintains full control over their data, compute, and network resources while benefiting from the expertise of the Cockroach Labs' Enterprise Support staff. 
 
 - See the [list of Enterprise features](../enterprise-licensing.html)
 - Read the [licensing FAQ](../licensing-faqs.html)
@@ -33,12 +33,12 @@ Cockroach Labs maintains <a href="https://github.com/cockroachdb/cockroach">Cock
     <th width="120">Security Domain</th>
     <th>Serverless Cloud</th>
     <th>Dedicated Cloud</th>
-    <th>Self-Deployed</th>
-    <th>Self-Deployed Enterprise</th>
+    <th>Self-Hosted</th>
+    <th>Self-Hosted Enterprise</th>
     <th>Feature</th>
   </tr>
  <tr>
-   <td rowspan="4"><a href="authentication.html">Authentication</a></td>
+   <td rowspan="5"><a href="authentication.html">Authentication</a></td>
    <td>✓</td>
    <td>✓</td>
    <td>✓</td>
@@ -55,9 +55,16 @@ Cockroach Labs maintains <a href="https://github.com/cockroachdb/cockroach">Cock
  <tr>
   <td>&nbsp;</td>
   <td>&nbsp;</td>
+  <td>✓</td>
+  <td>✓</td>
+  <td>Client identity authentication using TLS 1.2/1.3</td>
+ </tr>
+ <tr>
+  <td>&nbsp;</td>
+  <td>&nbsp;</td>
   <td>&nbsp;</td>
   <td>✓</td>
-  <td><a href="https://openid.net/connect/">OIDC authentication</a></td>
+  <td>Client identity authentication with third party <a href="../sso.html">Single Sign On (SSO)</a> using <a href="https://openid.net/connect/">OpenID Connect OIDC</a></td>
  </tr>
  <tr>
   <td>&nbsp;</td>
@@ -164,9 +171,6 @@ Cockroach Labs maintains <a href="https://github.com/cockroachdb/cockroach">Cock
  </tr>
 </table>
 
-!!! Fact check HTTP API access using loging tokens for self-and self-w-ent; self you could surely do this yourself; it's not a feature we offer but our tool is certainly compatible with it Same with VPC Peering. But... further question, for ent *is* it a feature, like will we do it for you?
-
-!!! what about sql audit logging, copy above implies not available in serverless
 
 
 ## Understanding database security

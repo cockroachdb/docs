@@ -5,10 +5,11 @@ toc: true
 docs_area: reference.security
 ---
 
-User authorization is the act of defining access policies for authenticated CockroachDB users. CockroachDB allows you to create, manage, and remove your cluster's SQL [users](#sql-users) and assign SQL-level [privileges](#managing-privileges) to the users. Additionally, you can use [role-based access management (RBAC)](#roles) for simplified user management.
+Authorization, generally, is the control over WHO (users/roles) can do WHAT (e.g read, write, update, delete, grant, etc.) to WHICH RESOURCES (databases, tables, clusters, schemas, rows, users, etc.).
 
-
-A SQL user can interact with a CockroachDB database using the [built-in SQL shell](../cockroach-sql.html) or through an application.
+{{site.data.alerts.callout_info}}
+CockroachDB has a unified authorization model, meaning that a given user's permissions are governed by the same policies in different contexts such as accessing the SQL shell or viewing data from the DB Console.
+{{site.data.alerts.end}}
 
 
 ## Users and roles
