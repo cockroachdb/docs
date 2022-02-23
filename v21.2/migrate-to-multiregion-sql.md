@@ -15,7 +15,7 @@ If you are already using [multi-region SQL statements](multiregion-overview.html
 
 CockroachDB v21.1 added support for [improved multi-region capabilities that make it easier to run global applications](multiregion-overview.html). Using high-level SQL statements, you can control where your data is stored and how it is accessed to provide good performance and tunable latency for your application's users.
 
-Prior to v21.1, the only way to accomplish these goals in a multi-region cluster involved using lower-level mechanisms called [replication zones](configure-replication-zones.html) in specific patterns called _Duplicate indexes_, _Geo-partitioned Replicas_, and _Geo-partitioned leaseholders_.
+Prior to v21.1, the only way to accomplish these goals in a multi-region cluster involved using lower-level mechanisms called [replication zones](configure-replication-zones.html) in specific patterns called _Duplicate indexes_, _Geo-partitioned replicas_, and _Geo-partitioned leaseholders_.
 
 These patterns and the use of replication zones are still fully supported. However, for most users, they are harder to use and in some cases can result in worse performance than the multi-region SQL abstractions.
 
