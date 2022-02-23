@@ -31,9 +31,7 @@ All products also support the following no-op 'authentication methods' (authenti
 
 CockroachDB's authentication behavior is configured using a domain specific language (DSL), shared with PostgreSQL, called host-based authentication (HBA).
 
-A specific CockroachDB cluster's authentication behavior is configured by setting it's `server.host_based_authentication.configuration` cluster setting, which accepts a single text field that must be a correctly formatted HBA manifest.
-
-See the `show cluster setting` and `set cluster setting` cockroach commands.
+A specific CockroachDB cluster's authentication behavior is configured by setting its `server.host_based_authentication.configuration` cluster setting, using the [`set cluster setting` statement](../set-cluster-setting.html), which accepts a single text field that must be a correctly formatted HBA manifest. Inspect the current setting with [`show cluster setting`.](../show-cluster-setting.html)
 
 ### HBA configuration syntax
 
