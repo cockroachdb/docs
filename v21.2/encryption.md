@@ -1,13 +1,11 @@
 ---
-title: Encryption
+title: Managing Encryption for Self-Hosted CockroachDB
 summary: Learn about the encryption features for secure CockroachDB clusters.
 toc: true
 docs_area: manage
 ---
 
-### Examples
-
-#### Generating store key files
+## Generating store key files
 
 Cockroach determines which encryption algorithm to use based on the size of the key file.
 The key file must contain random data making up the key ID (32 bytes) and the actual key (16, 24, or 32
@@ -33,7 +31,7 @@ Or the equivalent [openssl](https://www.openssl.org/docs/man1.1.1/man1/openssl.h
 $ openssl rand -out /path/to/my/aes-128.key 48
 ~~~
 
-#### Starting a node with encryption
+## Starting a node with encryption
 
 Encryption at Rest is configured at node start time using the `--enterprise-encryption` command line flag.
 The flag specifies the encryption options for one of the stores on the node. If multiple stores exist,
@@ -64,7 +62,7 @@ $ cockroach start --store=cockroach-data --enterprise-encryption=path=cockroach-
 Once specified for a given store, the `--enterprise-encryption` flag must always be present.
 {{site.data.alerts.end}}
 
-#### Checking encryption status
+## Checking encryption status
 
 Encryption status can be seen on the node's stores report, reachable through: `http(s)://nodeaddress:8080/#/reports/stores/local` (or replace `local` with the node ID). For example, if you are running a [local cluster](secure-a-cluster.html), you can see the node's stores report at `https://localhost:8080/#/reports/stores/local`.
 
@@ -84,7 +82,7 @@ Information about keys is written to [the logs](logging-overview.html), includin
 
 Alternatively, you can use the [`cockroach debug encryption-active-key`](cockroach-debug-encryption-active-key.html) command to view information about a store's encryption algorithm and store key.
 
-#### Changing encryption algorithm or keys
+## Changing encryption algorithm or keys
 
 Encryption type and keys can be changed at any time by restarting the node.
 To change keys or encryption type, the `key` component of the `--enterprise-encryption` flag is set to the new key,

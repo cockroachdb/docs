@@ -14,13 +14,13 @@ CockroachDB allows fine grained configuration of which attempts to connect with 
 
 Using Cockroach Labs' hosted CockroachDB offerings, whether Serverless or Dedicated, affords industry standard security controls at the network and infrastructure levels, and savvy users can self-deploy CockroachDB with any measure of network security they might desire. Nevertheless, a hardened authentication configuration offers a powerful measure of [security in depth](https://en.wikipedia.org/wiki/Defense_in_depth_(computing)). 
 
-Moreover, because the only authentication method currently available for CockroachDB hosted products is username/password (which is the weakest authentication method in terms of security), limiting allowed database connections to secure IP addresses (those belonging to your application servers and a) can considerably reduce the risk that your cluster is compromised by a malicious actor.
+Moreover, because the only authentication method currently available for CockroachDB hosted products is username/password (which is the least strong authentication method in terms of security), limiting allowed database connections to secure IP addresses (those belonging to your application servers and a) can considerably reduce the risk that your cluster is compromised by a malicious actor.
 
 An endpoint that is both a) open to the public internet and b) protected with a simple username/password combination is vulnerable to brute force password cracking. Furthermore, there are many ways to inadvertently (or advertently) leak a simple username/password combination (for example typing it on a keyboard in a public place where a camera is recording).
 
-CockroachDB (like most databases) does not natively perform rate limiting on authentication requests, which makes brute force password cracking possible, and also makes public endpoints a possible target for denial of service (DOS) attacks.
+CockroachDB does not natively perform rate limiting on authentication requests, which makes brute force password cracking possible, and also makes public endpoints a possible target for denial of service (DOS) attacks.
 
-Together, these factors leave data in CockroachDB Serverless clusters vulnerable to concerted efforts by dedicated attackers to gain access by obtaining these credentials, and afford a vector for DOS attacks. Both of these problems can be ameliorated in a single stroke by setting a hardened authentication configuration that limits authentication attempts to the IP addresses of a secure jumpbox and your application servers. 
+Together, these factors leave data in CockroachDB Serverless clusters vulnerable to concerted efforts by dedicated attackers to gain access by obtaining these credentials, and afford a vector for DOS attacks. Both problems can be ameliorated by setting a hardened authentication configuration that limits authentication attempts to the IP addresses of a secure jumpbox and your application servers. 
 
 ## Provision and access your cluster
 
