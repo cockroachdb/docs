@@ -87,6 +87,8 @@ For more information about the survival goals supported by CockroachDB, see the 
 - [Survive zone failures](#survive-zone-failures)
 - [Survive region failures](#survive-region-failures)
 
+<a id="surviving-zone-failures"></a>
+
 ### Survive zone failures
 
 With the zone level survival goal, the database will remain fully available for reads and writes, even if a zone becomes unavailable. However, the database may not remain fully available if multiple zones in the same region fail. This is the default setting for multi-region databases.
@@ -94,6 +96,8 @@ With the zone level survival goal, the database will remain fully available for 
 You can configure a database to survive zone failures using the [`ALTER DATABASE ... SURVIVE ZONE FAILURE` statement](survive-failure.html).
 
 If your application has performance or availability needs that are different than what the default settings provide, you can explore the other customization options described on this page.
+
+<a id="surviving-region-failures"></a>
 
 ### Survive region failures
 
@@ -106,6 +110,7 @@ To survive region failures, you must add at least 3 [database regions](#database
 {{site.data.alerts.end}}
 
 <a id="table-locality"></a>
+
 ## Table localities
 
 _Table locality_ determines how CockroachDB optimizes access to the table's data from that locality. Every table in a multi-region database has a "table locality setting". By default, all tables in a multi-region database are _regional_ tables -- that is, CockroachDB optimizes access to the table's data from a single region (by default, the database's primary region).
