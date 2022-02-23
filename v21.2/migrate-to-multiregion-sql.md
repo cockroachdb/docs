@@ -2,7 +2,7 @@
 title: Migrate to Multi-Region SQL
 summary: Learn how to migrate to CockroachDB multi-region SQL user features.
 toc: true
-docs_area: 
+docs_area: deploy
 ---
 
 This page describes how to migrate a multi-region cluster from using replication zones to using multi-region SQL abstractions.
