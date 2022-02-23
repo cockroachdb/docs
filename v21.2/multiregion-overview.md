@@ -26,7 +26,7 @@ At a high level, the simplest process for running a multi-region cluster is:
 1. (*Optional*) Change table localities (global, regional by table, regional by row). This step is optional because by default the tables in a database will be homed in the database's primary region (as set during Step 1).
 1. (*Optional*) Change the database's survival goals (zone or region). This step is optional because by default multi-region databases will be configured to survive zone failures.
 
-These steps describe the simplest case, where you accept all of the default settings. If your application has performance or availability needs that are different than what the default settings provide you can explore customization options.
+These steps describe the simplest case, where you accept all of the default settings. The latter two steps are optional, but table locality and survival goals have a significant impact on performance. Therefore Cockroach Labs recommends that you give these aspects some consideration [when you choose a multi-region configuration](choosing-a-multi-region-configuration.html).
 
 {{site.data.alerts.callout_success}}
 {% include {{page.version.version}}/misc/multiregion-max-offset.md %}
@@ -68,14 +68,14 @@ If the default survival goals and table localities meet your needs, there is not
 
 ## Survival goals
 
-A _survival goal_ dictates how many simultaneous failure(s) a database can survive. All tables within the same database operate with the same survival goal. Each database is allowed to have its own survival goal setting.
+A _survival goal_ dictates how many simultaneous failure(s) a database can survive. All tables within the same database operate with the **same survival goal**. Each database can have its own survival goal setting.
 
 The following survival goals are available:
 
 - Zone failure
 - Region failure
 
-Surviving zone failures is the default. You can upgrade a database to survive region failures at the cost of slower write performance (due to network hops) using the following statement:
+The zone failure survival goal is the default. You can configure a database to survive region failures at the cost of slower write performance (due to network hops) using the following statement:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -84,24 +84,22 @@ ALTER DATABASE <db> SURVIVE REGION FAILURE;
 
 For more information about the survival goals supported by CockroachDB, see the following sections:
 
-- [Surviving zone failures](#surviving-zone-failures)
-- [Surviving region failures](#surviving-region-failures)
+- [Survive zone failures](#survive-zone-failures)
+- [Survive region failures](#survive-region-failures)
 
-### Surviving zone failures
+### Survive zone failures
 
-With the zone level survival goal, the database will remain fully available for reads and writes, even if a zone goes down. However, the database may not remain fully available if multiple zones fail in the same region.
+With the zone level survival goal, the database will remain fully available for reads and writes, even if a zone becomes unavailable. However, the database may not remain fully available if multiple zones in the same region fail. This is the default setting for multi-region databases.
 
 You can configure a database to survive zone failures using the [`ALTER DATABASE ... SURVIVE ZONE FAILURE` statement](survive-failure.html).
 
-Surviving zone failures is the default setting for multi-region databases.
-
 If your application has performance or availability needs that are different than what the default settings provide, you can explore the other customization options described on this page.
 
-### Surviving region failures
+### Survive region failures
 
-The region level survival goal has the property that the database will remain fully available for reads and writes, even if an entire region goes down. This added survival comes at a cost: write latency will be increased by at least as much as the round-trip time to the nearest region. Read performance will be unaffected. In other words, you are adding network hops and making writes slower in exchange for robustness.
+The region level survival goal has the property that the database will remain fully available for reads and writes, even if an entire region becomes unavailable. This added survival comes at a cost: write latency will be increased by at least as much as the round-trip time to the nearest region. Read performance will be unaffected. In other words, you are adding network hops and making writes slower in exchange for robustness.
 
-You can configure a database to survive region failures using the [`ALTER DATABASE ... SURVIVE REGION FAILURE` statement](survive-failure.html). This increases the [replication factor](configure-replication-zones.html#num_replicas) of all data in the database from 3 (the default) to 5; this is how CockroachDB is able to provide the resiliency characteristics described above while maintaining a local quorum in the leaseholder's region for good performance.
+You can upgrade a database to survive region failures using the [`ALTER DATABASE ... SURVIVE REGION FAILURE` statement](survive-failure.html). This increases the [replication factor](configure-replication-zones.html#num_replicas) of all data in the database from 3 (the default) to 5; this is how CockroachDB is able to provide the resiliency characteristics while maintaining a local quorum in the leaseholder's region` for good performance`.
 
 {{site.data.alerts.callout_info}}
 To survive region failures, you must add at least 3 [database regions](#database-regions).
@@ -119,7 +117,7 @@ For information about the table localities CockroachDB supports, see the section
 - [Global tables](#global-tables) are optimized for low-latency reads from _all regions_.
 
 {{site.data.alerts.callout_info}}
-Table locality settings are used for optimizing latency under different read/write patterns. If you are optimizing for read/write access to all of your tables from a single region (the primary region), there is nothing else you need to do once you set your [database's primary region](#database-regions).
+Table locality settings are used for optimizing latency under different read and write patterns. If you are optimizing for read and write access to all of your tables from a single region (the primary region), there is nothing else you need to do once you set your [database's primary region](#database-regions).
 {{site.data.alerts.end}}
 
 ### Regional tables
@@ -134,7 +132,7 @@ Table locality settings are used for optimizing latency under different read/wri
 
 {% include {{page.version.version}}/sql/global-table-description.md %}
 
-## Additional Features
+## Additional features
 
 The features listed in this section make working with multi-region clusters easier.
 
@@ -148,7 +146,7 @@ For an example that uses unique indexes but applies to all indexes on `REGIONAL 
 
 ## Next steps
 
-+ [How to Choose a Multi-Region Configuration](choosing-a-multi-region-configuration.html)
+- [How to Choose a Multi-Region Configuration](choosing-a-multi-region-configuration.html)
 
 ## See also
 

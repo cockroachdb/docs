@@ -32,7 +32,7 @@ Tables with regional table locality can survive zone or region failures, dependi
 
 ### Summary
 
-To use this pattern, you tell CockroachDB to set the [table locality](multiregion-overview.html#table-locality) to either [`REGIONAL BY TABLE`](#regional-tables) or [`REGIONAL BY ROW`](#regional-by-row-tables).
+To use this pattern, set the [table locality](multiregion-overview.html#table-locality) to either [`REGIONAL BY TABLE`](#regional-tables) or [`REGIONAL BY ROW`](#regional-by-row-tables).
 
 #### Regional tables
 
@@ -45,69 +45,67 @@ To use this pattern, you tell CockroachDB to set the [table locality](multiregio
 ### Steps
 
 {{site.data.alerts.callout_info}}
-By default, all tables in a multi-region database are [Regional tables](#regional-tables).  Therefore, the steps below show how to set up [Regional by row tables](#regional-by-row-tables).
+By default, all tables in a multi-region database are [regional tables](#regional-tables).  Therefore, the steps below show how to set up [regional by row tables](#regional-by-row-tables).
 {{site.data.alerts.end}}
 
 {% include {{page.version.version}}/topology-patterns/multiregion-db-setup.md %}
 
-Next, create a `users` table:
+1. Create a `users` table:
 
-{% include copy-clipboard.html %}
-~~~ sql
-CREATE TABLE users (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    city STRING NOT NULL,
-    first_name STRING NOT NULL,
-    last_name STRING NOT NULL,
-    address STRING NOT NULL
-);
-~~~
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    CREATE TABLE users (
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+        city STRING NOT NULL,
+        first_name STRING NOT NULL,
+        last_name STRING NOT NULL,
+        address STRING NOT NULL
+    );
+    ~~~
 
-By default, all tables in a multi-region cluster default to the [`REGIONAL BY TABLE`](#regional-tables) locality setting.  To verify this, issue a [`SHOW CREATE`](show-create.html) on the `users` table you just created:
+    By default, all tables in a multi-region cluster default to the [`REGIONAL BY TABLE`](#regional-tables) locality setting.  To verify this, issue a [`SHOW CREATE`](show-create.html) on the `users` table you just created:
 
-{% include copy-clipboard.html %}
-~~~ sql
-SHOW CREATE TABLE users;
-~~~
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    SHOW CREATE TABLE users;
+    ~~~
 
-~~~
-  table_name |                        create_statement
--------------+------------------------------------------------------------------
-  users      | CREATE TABLE public.users (
-             |     id UUID NOT NULL DEFAULT gen_random_uuid(),
-             |     city STRING NOT NULL,
-             |     first_name STRING NOT NULL,
-             |     last_name STRING NOT NULL,
-             |     address STRING NOT NULL,
-             |     CONSTRAINT "primary" PRIMARY KEY (id ASC),
-             |     FAMILY "primary" (id, city, first_name, last_name, address)
-             | ) LOCALITY REGIONAL BY TABLE IN PRIMARY REGION
-~~~
+    ~~~
+      table_name |                        create_statement
+    -------------+------------------------------------------------------------------
+      users      | CREATE TABLE public.users (
+                 |     id UUID NOT NULL DEFAULT gen_random_uuid(),
+                 |     city STRING NOT NULL,
+                 |     first_name STRING NOT NULL,
+                 |     last_name STRING NOT NULL,
+                 |     address STRING NOT NULL,
+                 |     CONSTRAINT "primary" PRIMARY KEY (id ASC),
+                 |     FAMILY "primary" (id, city, first_name, last_name, address)
+                 | ) LOCALITY REGIONAL BY TABLE IN PRIMARY REGION
+    ~~~
 
-Next, set the table's locality to [`REGIONAL BY ROW`](#regional-by-row-tables) using the [`ALTER TABLE ... SET LOCALITY`](set-locality.html) statement:
+1. Set the table's locality to [`REGIONAL BY ROW`](#regional-by-row-tables) using the [`ALTER TABLE ... SET LOCALITY`](set-locality.html) statement:
 
-{% include copy-clipboard.html %}
-~~~ sql
-ALTER TABLE users SET LOCALITY REGIONAL BY ROW;
-~~~
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    ALTER TABLE users SET LOCALITY REGIONAL BY ROW;
+    ~~~
 
-~~~
-NOTICE: LOCALITY changes will be finalized asynchronously; further schema changes on this table may be restricted until the job completes
-ALTER TABLE SET LOCALITY
-~~~
+    ~~~
+    NOTICE: LOCALITY changes will be finalized asynchronously; further schema changes on this table may be restricted until the job completes
+    ALTER TABLE SET LOCALITY
+    ~~~
 
-Now that the table is regional by row, we need to tell CockroachDB which rows need to be optimized for access from which regions.  We do this by issuing [`UPDATE`](update.html) statements that modify the automatically created [`crdb_region`](set-locality.html#crdb_region) column.
+1.  Identify which rows need to be optimized for access from which regions. Issue [`UPDATE`](update.html) statements that modify the automatically created [`crdb_region`](set-locality.html#crdb_region) column. Issue the statements below to associate each row with a home region that depends on its `city` column:
 
-Issue the statements below to associate each row with a home region that depends on its `city` column:
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    UPDATE users SET crdb_region = 'us-central'   WHERE city IN ('chicago', 'milwaukee', 'dallas');
+    UPDATE users SET crdb_region = 'us-east'      WHERE city IN ('washington dc', 'boston', 'new york');
+    UPDATE users SET crdb_region = 'us-west'      WHERE city IN ('los angeles', 'san francisco', 'seattle');
+    ~~~
 
-{% include copy-clipboard.html %}
-~~~ sql
-UPDATE users SET crdb_region = 'us-central'   WHERE city IN ('chicago', 'milwaukee', 'dallas');
-UPDATE users SET crdb_region = 'us-east'      WHERE city IN ('washington dc', 'boston', 'new york');
-UPDATE users SET crdb_region = 'us-west'      WHERE city IN ('los angeles', 'san francisco', 'seattle');
-~~~
-
-By default, the region column will get auto-assigned on insert; this is also known as "auto-homing".  For more information about how the `crdb_region` column works, see [`ALTER TABLE ... SET LOCALITY REGIONAL BY ROW`](set-locality.html#regional-by-row).
+    By default, the region column will get auto-assigned on insert; this is also known as "auto-homing".  For more information about how the `crdb_region` column works, see [`ALTER TABLE ... SET LOCALITY REGIONAL BY ROW`](set-locality.html#regional-by-row).
 
 {% include {{page.version.version}}/sql/locality-optimized-search.md %}
 
