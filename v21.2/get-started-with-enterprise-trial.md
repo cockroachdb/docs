@@ -37,7 +37,7 @@ Also consider checking out [Cockroach University](https://university.cockroachla
 
 ## See also
 
-- [Licensing FAQs](enterprise-licensing.html)
+- [Licensing FAQs](licensing-faqs.html)
 - [`SET CLUSTER SETTING`](set-cluster-setting.html)
 - [`SHOW CLUSTER SETTING`](show-cluster-setting.html)
 - [Cockroach University](https://university.cockroachlabs.com/)
