@@ -138,7 +138,7 @@ SELECT * FROM report;
        52 |          0 | DATABASE movr | movr          | NULL       | NULL       | constraint | +region=us-east1:1     | 2022-01-19 16:34:49.930886+00 |               78
 ~~~
 
-This output shows that the `movr` database has ranges out of compliance, which you saw previously. Unfortunately, this output does not contain the table or index names due to a limitation of the replication reports: non-voting replicas are not associated with any tables or indexes by the reports.
+This output shows that the `movr` database has ranges out of compliance, which you saw previously. Unfortunately, this output does not contain the table or index names due to a current limitation of the replication reports: non-voting replicas are not associated with any tables or indexes by the reports.
 
 Now that you know some replicas are out of compliance, you need to see exactly where the ranges for a given row of data are stored. To accomplish this, you must use the [`SHOW RANGE FOR ROW`](show-range-for-row.html) statement.
 
