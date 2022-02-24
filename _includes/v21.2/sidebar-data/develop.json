@@ -280,13 +280,13 @@
           ]
         },
         {
-          "title": "Apply Statement Performance Rules",
+          "title": "Apply SQL Statement Performance Rules",
           "urls": [
             "/${VERSION}/apply-statement-performance-rules.html"
           ]
         },
         {
-          "title": "Performance Best Practices",
+          "title": "SQL Performance Best Practices",
           "urls": [
             "/${VERSION}/performance-best-practices-overview.html"
           ]
