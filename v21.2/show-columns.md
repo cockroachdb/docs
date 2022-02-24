@@ -69,11 +69,11 @@ Alternatively, within the built-in SQL shell, you can use the `\d <table>` [shel
 ~~~
   column_name | data_type | is_nullable | column_default | generation_expression |  indices  | is_hidden
 +-------------+-----------+-------------+----------------+-----------------------+-----------+-----------+
-  id          | UUID      |    false    | NULL           |                       | {primary} |   false
-  city        | VARCHAR   |    false    | NULL           |                       | {primary} |   false
-  name        | VARCHAR   |    true     | NULL           |                       | {}        |   false
-  address     | VARCHAR   |    true     | NULL           |                       | {}        |   false
-  credit_card | VARCHAR   |    true     | NULL           |                       | {}        |   false
+  id          | UUID      |    false    | NULL           |                       | {primary,users_name_idx} |   false
+  city        | VARCHAR   |    false    | NULL           |                       | {primary,users_name_idx} |   false
+  name        | VARCHAR   |    true     | NULL           |                       | {primary,users_name_idx} |   false
+  address     | VARCHAR   |    true     | NULL           |                       | {primary}                |   false
+  credit_card | VARCHAR   |    true     | NULL           |                       | {primary}                |   false
 (5 rows)
 ~~~
 
@@ -96,9 +96,10 @@ You can use [`COMMENT ON`](comment-on.html) to add comments on a column.
 +-------------+-----------+-------------+----------------+-----------------------+-----------+-----------+------------------------------------------------+
   id          | UUID      |    false    | NULL           |                       | {primary} |   false   | NULL
   city        | VARCHAR   |    false    | NULL           |                       | {primary} |   false   | NULL
-  name        | VARCHAR   |    true     | NULL           |                       | {}        |   false   | NULL
-  address     | VARCHAR   |    true     | NULL           |                       | {}        |   false   | NULL
-  credit_card | VARCHAR   |    true     | NULL           |                       | {}        |   false   | This column contains user payment information.
+  name        | VARCHAR   |    true     | NULL           |                       | {primary} |   false   | NULL
+  address     | VARCHAR   |    true     | NULL           |                       | {primary} |   false   | NULL
+  credit_card | VARCHAR   |    true     | NULL           |                       | {primary} |   false   | This column contains user payment information.
+
 (5 rows)
 ~~~
 
@@ -106,5 +107,5 @@ You can use [`COMMENT ON`](comment-on.html) to add comments on a column.
 
 - [`CREATE TABLE`](create-table.html)
 - [Information Schema](information-schema.html)
-- [Other SQL Statements](sql-statements.html)
+- [SQL Statements](sql-statements.html)
 - [`COMMENT ON`](comment-on.html)

@@ -69,5 +69,5 @@ In this example, first check a role's privileges. Then, revoke the role's privil
 - [`SHOW ROLES`](show-roles.html)
 - [`GRANT`](grant.html)
 - [`SHOW GRANTS`](show-grants.html)
-- [Other SQL Statements](sql-statements.html)
+- [SQL Statements](sql-statements.html)
 - [Online Schema Changes](online-schema-changes.html)

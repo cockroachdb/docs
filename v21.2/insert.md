@@ -128,10 +128,10 @@ If you do not list column names, the statement will use the columns of the table
   column_name | data_type | is_nullable | column_default | generation_expression |  indices  | is_hidden
 +-------------+-----------+-------------+----------------+-----------------------+-----------+-----------+
   id          | UUID      |    false    | NULL           |                       | {primary} |   false
-  city        | STRING    |    false    | NULL           |                       | {primary} |   false
-  name        | STRING    |    true     | NULL           |                       | {}        |   false
-  address     | STRING    |    true     | NULL           |                       | {}        |   false
-  credit_card | STRING    |    true     | NULL           |                       | {}        |   false
+  city        | VARCHAR   |    false    | NULL           |                       | {primary} |   false
+  name        | VARCHAR   |    true     | NULL           |                       | {primary} |   false
+  address     | VARCHAR   |    true     | NULL           |                       | {primary} |   false
+  credit_card | VARCHAR   |    true     | NULL           |                       | {primary} |   false
 (5 rows)
 ~~~
 
@@ -737,4 +737,4 @@ For best performance, avoid using it when the input is known to not contain dupl
 - [`ALTER TABLE`](alter-table.html)
 - [`DROP TABLE`](drop-table.html)
 - [`DROP DATABASE`](drop-database.html)
-- [Other SQL Statements](sql-statements.html)
+- [SQL Statements](sql-statements.html)

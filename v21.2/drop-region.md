@@ -181,4 +181,4 @@ SHOW REGIONS FROM DATABASE foo;
 - [`ADD REGION`](add-region.html)
 - [`SHOW REGIONS`](show-regions.html)
 - [`ALTER TABLE`](alter-table.html)
-- [Other SQL Statements](sql-statements.html)
+- [SQL Statements](sql-statements.html)

@@ -123,5 +123,5 @@ ALTER DATABASE PLACEMENT
 - [`ADD REGION`](add-region.html)
 - [Ranges](architecture/overview.html#architecture-range)
 - [Non-voting replicas](architecture/replication-layer.html#non-voting-replicas)
-- [Other SQL Statements](sql-statements.html)
+- [SQL Statements](sql-statements.html)
 - [Data Domiciling with CockroachDB](data-domiciling.html)

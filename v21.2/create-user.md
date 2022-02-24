@@ -348,5 +348,5 @@ with_password              | VALID UNTIL=2021-10-10 00:00:00+00:00 | {}
 - [`GRANT`](grant.html)
 - [`SHOW GRANTS`](show-grants.html)
 - [Create Security Certificates](cockroach-cert.html)
-- [Other SQL Statements](sql-statements.html)
+- [SQL Statements](sql-statements.html)
 - [Online Schema Changes](online-schema-changes.html)

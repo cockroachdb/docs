@@ -35,7 +35,7 @@ Tables with the `GLOBAL` locality can survive zone or region failures, depending
 
 ### Summary
 
-To use this pattern, you tell CockroachDB to set the [table locality](multiregion-overview.html#table-locality) to `GLOBAL`.
+To use this pattern, set the [table locality](multiregion-overview.html#table-locality) to `GLOBAL`.
 
 {% include {{page.version.version}}/sql/global-table-description.md %}
 
@@ -43,22 +43,22 @@ To use this pattern, you tell CockroachDB to set the [table locality](multiregio
 
 {% include {{page.version.version}}/topology-patterns/multiregion-db-setup.md %}
 
-Next, create a [`GLOBAL` table](multiregion-overview.html#global-tables) by issuing the following statement:
+1. Create a [`GLOBAL` table](multiregion-overview.html#global-tables) by issuing the following statement:
 
-{% include copy-clipboard.html %}
-~~~ sql
-CREATE TABLE postal_codes (
-  id INT PRIMARY KEY,
-  code STRING
-) LOCALITY GLOBAL;
-~~~
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    CREATE TABLE postal_codes (
+      id INT PRIMARY KEY,
+      code STRING
+    ) LOCALITY GLOBAL;
+    ~~~
 
-Alternatively, you can set an existing table's locality to `GLOBAL` using [`ALTER TABLE ... SET LOCALITY`](set-locality.html):
+    Alternatively, you can set an existing table's locality to `GLOBAL` using [`ALTER TABLE ... SET LOCALITY`](set-locality.html):
 
-{% include copy-clipboard.html %}
-~~~ sql
-> ALTER TABLE postal_codes SET LOCALITY GLOBAL;
-~~~
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > ALTER TABLE postal_codes SET LOCALITY GLOBAL;
+    ~~~
 
 {{site.data.alerts.callout_success}}
 A good way to check that your [table locality settings](multiregion-overview.html#table-locality) are having the expected effect is by monitoring how the performance metrics of a workload change as the settings are applied to a running cluster.  For a tutorial showing how table localities can improve performance metrics across a multi-region cluster, see [Low Latency Reads and Writes in a Multi-Region Cluster](demo-low-latency-multi-region-deployment.html).

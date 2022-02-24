@@ -255,5 +255,5 @@ SQLSTATE: 42P01
 - [`DROP SEQUENCE`](drop-sequence.html)
 - [`SHOW SEQUENCES`](show-sequences.html)
 - [Functions and Operators](functions-and-operators.html)
-- [Other SQL Statements](sql-statements.html)
+- [SQL Statements](sql-statements.html)
 - [Online Schema Changes](online-schema-changes.html)

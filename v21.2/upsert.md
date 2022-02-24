@@ -7,6 +7,8 @@ docs_area: reference.sql
 
 The `UPSERT` [statement](sql-statements.html) is semantically equivalent to [`INSERT ON CONFLICT`](insert.html#on-conflict-clause), but the two may have slightly different [performance characteristics](#considerations). It inserts rows in cases where specified values do not violate uniqueness constraints, and it updates rows in cases where values do violate uniqueness constraints.
 
+To learn more about how to perform and when to use an upsert in CockroachDB, PostgreSQL, and MySQL, see [Upsert in SQL: What is an Upsert, and When Should You Use One?](https://www.cockroachlabs.com/blog/sql-upsert/) .
+
 ## Considerations
 
 - `UPSERT` considers uniqueness only for [Primary Key](primary-key.html) columns. `INSERT ON CONFLICT` is more flexible and can be used to consider uniqueness for other columns. For more details, see [How `UPSERT` transforms into `INSERT ON CONFLICT`](#how-upsert-transforms-into-insert-on-conflict) below.
@@ -278,7 +280,7 @@ For best performance, avoid using it when the input is known to not contain dupl
 
 ## See also
 
-- [Ordering of rows in DML statements](order-by.html#ordering-rows-in-dml-statements)
+- [Ordering rows in DML statements](order-by.html#ordering-rows-in-dml-statements)
 - [Selection Queries](selection-queries.html)
 - [`DELETE`](delete.html)
 - [`INSERT`](insert.html)
@@ -287,4 +289,4 @@ For best performance, avoid using it when the input is known to not contain dupl
 - [`ALTER TABLE`](alter-table.html)
 - [`DROP TABLE`](drop-table.html)
 - [`DROP DATABASE`](drop-database.html)
-- [Other SQL Statements](sql-statements.html)
+- [SQL Statements](sql-statements.html)

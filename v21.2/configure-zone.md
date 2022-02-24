@@ -129,4 +129,4 @@ CONFIGURE ZONE 1
 - [`ALTER RANGE`](alter-range.html)
 - [`SHOW JOBS`](show-jobs.html)
 - [Table Partitioning](partitioning.html)
-- [Other SQL Statements](sql-statements.html)
+- [SQL Statements](sql-statements.html)

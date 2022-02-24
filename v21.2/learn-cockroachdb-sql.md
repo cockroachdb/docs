@@ -87,13 +87,13 @@ To show all of the columns from a table, use the [`SHOW COLUMNS FROM <table>`](s
 ~~~
 
 ~~~
-  column_name | data_type | is_nullable | column_default | generation_expression |  indices  | is_hidden
-+-------------+-----------+-------------+----------------+-----------------------+-----------+-----------+
-  id          | UUID      |    false    | NULL           |                       | {primary} |   false
-  city        | STRING    |    false    | NULL           |                       | {primary} |   false
-  name        | STRING    |    true     | NULL           |                       | {}        |   false
-  dl          | STRING    |    true     | NULL           |                       | {}        |   false
-  address     | STRING    |    true     | NULL           |                       | {}        |   false
+  column_name | data_type | is_nullable | column_default | generation_expression |         indices          | is_hidden
+--------------+-----------+-------------+----------------+-----------------------+--------------------------+------------
+  id          | UUID      |    false    | NULL           |                       | {drivers_dl_key,primary} |   false
+  city        | STRING    |    false    | NULL           |                       | {drivers_dl_key,primary} |   false
+  name        | STRING    |    true     | NULL           |                       | {primary}                |   false
+  dl          | STRING    |    true     | NULL           |                       | {drivers_dl_key,primary} |   false
+  address     | STRING    |    true     | NULL           |                       | {primary}                |   false
 (5 rows)
 ~~~
 
@@ -190,12 +190,15 @@ To show the indexes on a table, use [`SHOW INDEX FROM`](show-index.html) followe
 ~~~
   table_name | index_name | non_unique | seq_in_index | column_name | direction | storing | implicit
 +------------+------------+------------+--------------+-------------+-----------+---------+----------+
-  users      | primary    |   false    |            1 | city        | ASC       |  false  |  false
-  users      | primary    |   false    |            2 | id          | ASC       |  false  |  false
   users      | name_idx   |    true    |            1 | name        | DESC      |  false  |  false
   users      | name_idx   |    true    |            2 | city        | ASC       |  false  |   true
   users      | name_idx   |    true    |            3 | id          | ASC       |  false  |   true
-(5 rows)
+  users      | primary    |   false    |            1 | city        | ASC       |  false  |  false
+  users      | primary    |   false    |            2 | id          | ASC       |  false  |  false
+  users      | primary    |   false    |            3 | name        | N/A       |  true   |  false
+  users      | primary    |   false    |            4 | address     | N/A       |  true   |  false
+  users      | primary    |   false    |            5 | credit_card | N/A       |  true   |  false
+(8 rows)
 ~~~
 
 

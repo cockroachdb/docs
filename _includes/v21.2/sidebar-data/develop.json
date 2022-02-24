@@ -463,23 +463,6 @@
               ]
             }
           ]
-        },
-        {
-          "title": "Application Deployment Tools",
-          "items": [
-            {
-              "title": "Google Cloud Run",
-              "urls": [
-                "/${VERSION}/deploy-app-gcr.html"
-              ]
-            },
-            {
-              "title": "AWS Lambda",
-              "urls": [
-                "/${VERSION}/deploy-lambda-function.html"
-              ]
-            }
-          ]
         }
       ]
     },

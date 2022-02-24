@@ -267,15 +267,20 @@ SHOW INDEXES FROM users;
 ~~~
   table_name |    index_name     | non_unique | seq_in_index | column_name | direction | storing | implicit
 -------------+-------------------+------------+--------------+-------------+-----------+---------+-----------
-  users      | primary           |   false    |            1 | region      | ASC       |  false  |  false
+  users      | primary           |   false    |            1 | region      | ASC       |  false  |   true
   users      | primary           |   false    |            2 | id          | ASC       |  false  |  false
-  users      | user_email_unique |   false    |            1 | region      | ASC       |  false  |  false
+  users      | primary           |   false    |            3 | city        | N/A       |  true   |  false
+  users      | primary           |   false    |            4 | name        | N/A       |  true   |  false
+  users      | primary           |   false    |            5 | address     | N/A       |  true   |  false
+  users      | primary           |   false    |            6 | credit_card | N/A       |  true   |  false
+  users      | primary           |   false    |            7 | email       | N/A       |  true   |  false
+  users      | user_email_unique |   false    |            1 | region      | ASC       |  false  |   true
   users      | user_email_unique |   false    |            2 | email       | ASC       |  false  |  false
   users      | user_email_unique |   false    |            3 | id          | ASC       |  false  |   true
-  users      | users_city_idx    |    true    |            1 | region      | ASC       |  false  |  false
+  users      | users_city_idx    |    true    |            1 | region      | ASC       |  false  |   true
   users      | users_city_idx    |    true    |            2 | city        | ASC       |  false  |  false
   users      | users_city_idx    |    true    |            3 | id          | ASC       |  false  |   true
-(8 rows)
+(13 rows)
 ~~~
 
 Next, issue the [`SHOW PARTITIONS`](show-partitions.html) statement. The output below (which is edited for length) will verify that the unique index was automatically [partitioned](partitioning.html) for you. It shows that the `user_email_unique` index is now partitioned by the database regions `europe-west1`, `us-east1`, and `us-west1`.
@@ -286,12 +291,11 @@ SHOW PARTITIONS FROM TABLE users;
 ~~~
 
 ~~~
-  database_name | table_name | partition_name | column_names |       index_name        | partition_value |  ...
-----------------+------------+----------------+--------------+-------------------------+-----------------+-----
-  movr          | users      | europe-west1   | region       | users@user_email_unique | ('europe-west1')|  ...
-  movr          | users      | us-east1       | region       | users@user_email_unique | ('us-east1')    |  ...
-  movr          | users      | us-west1       | region       | users@user_email_unique | ('us-west1')    |  ...
-  ...
+  database_name | table_name | partition_name | column_names |       index_name        | partition_value  |  ...
+----------------+------------+----------------+--------------+-------------------------+------------------+-----
+  movr          | users      | europe-west1   | region       | users@user_email_unique | ('europe-west1') |  ...
+  movr          | users      | us-east1       | region       | users@user_email_unique | ('us-east1')     |  ...
+  movr          | users      | us-west1       | region       | users@user_email_unique | ('us-west1')     |  ...
 ~~~
 
 To ensure that the uniqueness constraint is enforced properly across regions when rows are inserted, or the `email` column of an existing row is updated, the database needs to do the following additional work when indexes are partitioned as shown above:

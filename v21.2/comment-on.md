@@ -137,9 +137,9 @@ To view column comments, use [`SHOW COLUMNS`](show-columns.html):
 +-------------+-----------+-------------+----------------+-----------------------+-----------+-----------+------------------------------------------------+
   id          | UUID      |    false    | NULL           |                       | {primary} |   false   | NULL
   city        | VARCHAR   |    false    | NULL           |                       | {primary} |   false   | NULL
-  name        | VARCHAR   |    true     | NULL           |                       | {}        |   false   | NULL
-  address     | VARCHAR   |    true     | NULL           |                       | {}        |   false   | NULL
-  credit_card | VARCHAR   |    true     | NULL           |                       | {}        |   false   | This column contains user payment information.
+  name        | VARCHAR   |    true     | NULL           |                       | {primary} |   false   | NULL
+  address     | VARCHAR   |    true     | NULL           |                       | {primary} |   false   | NULL
+  credit_card | VARCHAR   |    true     | NULL           |                       | {primary} |   false   | This column contains user payment information.
 (5 rows)
 ~~~
 
@@ -171,13 +171,12 @@ To view column comments, use [`SHOW INDEXES ... WITH COMMENT`](show-index.html):
 -------------+----------------+------------+--------------+-------------+-----------+---------+----------+------------------------------------------------------------------
   users      | primary        |   false    |            1 | city        | ASC       |  false  |  false   | NULL
   users      | primary        |   false    |            2 | id          | ASC       |  false  |  false   | NULL
+  users      | primary        |   false    |            3 | name        | N/A       |  true   |  false   | NULL
+  users      | primary        |   false    |            4 | address     | N/A       |  true   |  false   | NULL
+  users      | primary        |   false    |            5 | credit_card | N/A       |  true   |  false   | NULL
   users      | users_name_idx |    true    |            1 | name        | ASC       |  false  |  false   | This index improves performance on queries that filter by name.
   users      | users_name_idx |    true    |            2 | city        | ASC       |  false  |   true   | This index improves performance on queries that filter by name.
   users      | users_name_idx |    true    |            3 | id          | ASC       |  false  |   true   | This index improves performance on queries that filter by name.
-  users      | primary        |   false    |            1 | city        | ASC       |  false  |  false   | NULL
-  users      | primary        |   false    |            2 | id          | ASC       |  false  |  false   | NULL
-...
-(15 rows)
 ~~~
 
 ## See also
@@ -187,6 +186,6 @@ To view column comments, use [`SHOW INDEXES ... WITH COMMENT`](show-index.html):
 - [`ADD COLUMN`](add-column.html)
 - [`CREATE INDEX`](create-index.html)
 - [`SHOW TABLES`](show-tables.html)
-- [Other SQL Statements](sql-statements.html)
+- [SQL Statements](sql-statements.html)
 - [dBeaver](dbeaver.html)
 - [Online Schema Changes](online-schema-changes.html)

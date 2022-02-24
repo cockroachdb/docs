@@ -105,5 +105,5 @@ If the user running the command is not an admin user, they must own the table an
 - [`SHOW DATABASES`](show-databases.html)
 - [`CREATE TABLE`](create-table.html)
 - [`SHOW TABLES`](show-tables.html)
-- [Other SQL Statements](sql-statements.html)
+- [SQL Statements](sql-statements.html)
 - [Online Schema Changes](online-schema-changes.html)

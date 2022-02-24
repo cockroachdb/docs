@@ -112,4 +112,4 @@ Now suppose you want to change the owner for all of the tables owned by `cockroa
 - [Authorization](authorization.html)
 - [`OWNER TO`](owner-to.html)
 - [`SHOW TABLES`](show-tables.html)
-- [Other SQL Statements](sql-statements.html)
+- [SQL Statements](sql-statements.html)

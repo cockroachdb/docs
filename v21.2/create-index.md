@@ -189,14 +189,18 @@ Normally, CockroachDB selects the index that it calculates will scan the fewest 
 ~~~
 
 ~~~
-  table_name |   index_name   | non_unique | seq_in_index | column_name | direction | storing | implicit
-+------------+----------------+------------+--------------+-------------+-----------+---------+----------+
-  users      | primary        |   false    |            1 | city        | ASC       |  false  |  false
-  users      | primary        |   false    |            2 | id          | ASC       |  false  |  false
-  users      | users_name_idx |    true    |            1 | name        | ASC       |  false  |  false
-  users      | users_name_idx |    true    |            2 | city        | ASC       |  false  |   true
-  users      | users_name_idx |    true    |            3 | id          | ASC       |  false  |   true
-(5 rows)
+  table_name |   index_name        | non_unique | seq_in_index | column_name | direction | storing | implicit
++------------+---------------------+------------+--------------+-------------+-----------+---------+----------+
+  users      | primary             |   false    |            1 | city        | ASC       |  false  |  false
+  users      | primary             |   false    |            2 | id          | ASC       |  false  |  false
+  users      | primary             |   false    |            3 | name        | N/A       |  true   |  false
+  users      | primary             |   false    |            4 | address     | N/A       |  true   |  false
+  users      | primary             |   false    |            5 | credit_card | N/A       |  true   |  false
+  users      | users_city_name_idx |    true    |            1 | city        | DESC      |  false  |  false
+  users      | users_city_name_idx |    true    |            2 | name        | ASC       |  false  |  false
+  users      | users_city_name_idx |    true    |            3 | id          | ASC       |  false  |   true
+(8 rows)
+
 ~~~
 
 {% include copy-clipboard.html %}
@@ -250,7 +254,7 @@ Normally, CockroachDB selects the index that it calculates will scan the fewest 
 ~~~
   table_name |  index_name   | non_unique | seq_in_index |       column_name        | direction | storing | implicit
 -------------+---------------+------------+--------------+--------------------------+-----------+---------+-----------
-  events     | events_ts_idx |    true    |            1 | crdb_internal_ts_shard_8 | ASC       |  false  |  false
+  events     | events_ts_idx |    true    |            1 | crdb_internal_ts_shard_8 | ASC       |  false  |   true
   events     | events_ts_idx |    true    |            2 | ts                       | ASC       |  false  |  false
   events     | events_ts_idx |    true    |            3 | product_id               | ASC       |  false  |   true
   events     | events_ts_idx |    true    |            4 | owner                    | ASC       |  false  |   true
@@ -261,7 +265,10 @@ Normally, CockroachDB selects the index that it calculates will scan the fewest 
   events     | primary       |   false    |            3 | serial_number            | ASC       |  false  |  false
   events     | primary       |   false    |            4 | ts                       | ASC       |  false  |  false
   events     | primary       |   false    |            5 | event_id                 | ASC       |  false  |  false
-(11 rows)
+  events     | primary       |   false    |            6 | data                     | N/A       |  true   |  false
+  events     | primary       |   false    |            7 | crdb_internal_ts_shard_8 | N/A       |  true   |  false
+(13 rows)
+
 ~~~
 
 {% include copy-clipboard.html %}
@@ -272,13 +279,13 @@ Normally, CockroachDB selects the index that it calculates will scan the fewest 
 ~~~
         column_name        | data_type | is_nullable | column_default |              generation_expression              |         indices         | is_hidden
 ---------------------------+-----------+-------------+----------------+-------------------------------------------------+-------------------------+------------
-  product_id               | INT8      |    false    | NULL           |                                                 | {events_ts_idx,primary} |   false
-  owner                    | UUID      |    false    | NULL           |                                                 | {events_ts_idx,primary} |   false
-  serial_number            | VARCHAR   |    false    | NULL           |                                                 | {events_ts_idx,primary} |   false
-  event_id                 | UUID      |    false    | NULL           |                                                 | {events_ts_idx,primary} |   false
-  ts                       | TIMESTAMP |    false    | NULL           |                                                 | {events_ts_idx,primary} |   false
-  data                     | JSONB     |    true     | NULL           |                                                 | {}                      |   false
-  crdb_internal_ts_shard_8 | INT4      |    false    | NULL           | mod(fnv32(COALESCE(CAST(ts AS STRING), '')), 8) | {events_ts_idx}         |   true
+  product_id               | INT8      |    false    | NULL           |                                                  | {events_ts_idx,primary} |   false
+  owner                    | UUID      |    false    | NULL           |                                                  | {events_ts_idx,primary} |   false
+  serial_number            | VARCHAR   |    false    | NULL           |                                                  | {events_ts_idx,primary} |   false
+  event_id                 | UUID      |    false    | NULL           |                                                  | {events_ts_idx,primary} |   false
+  ts                       | TIMESTAMP |    false    | NULL           |                                                  | {events_ts_idx,primary} |   false
+  data                     | JSONB     |    true     | NULL           |                                                  | {primary}               |   false
+  crdb_internal_ts_shard_8 | INT4      |    false    | NULL           | mod(fnv32(crdb_internal.datums_to_bytes(ts)), 8) | {events_ts_idx,primary} |   true
 (7 rows)
 ~~~
 
@@ -289,5 +296,5 @@ Normally, CockroachDB selects the index that it calculates will scan the fewest 
 - [`DROP INDEX`](drop-index.html)
 - [`RENAME INDEX`](rename-index.html)
 - [`SHOW JOBS`](show-jobs.html)
-- [Other SQL Statements](sql-statements.html)
+- [SQL Statements](sql-statements.html)
 - [Online Schema Changes](online-schema-changes.html)

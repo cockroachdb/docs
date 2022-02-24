@@ -23,7 +23,7 @@ For more information, see:
 ### Use `UPSERT` instead of `INSERT ON CONFLICT` on tables with no secondary indexes
 
 When inserting/updating all columns of a table, and the table has no secondary
-indexes, we recommend using an [`UPSERT`](upsert.html) statement instead of the
+indexes, Cockroach Labs recommends using an [`UPSERT`](upsert.html) statement instead of the
 equivalent [`INSERT ON CONFLICT`](insert.html) statement. Whereas `INSERT ON
 CONFLICT` always performs a read to determine the necessary writes, the `UPSERT`
 statement writes without reading, making it faster. For tables with secondary

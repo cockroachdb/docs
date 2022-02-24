@@ -233,4 +233,4 @@ SHOW REGIONS FROM DATABASE foo;
 - [`DROP REGION`](drop-region.html)
 - [`SHOW REGIONS`](show-regions.html)
 - [`ALTER TABLE`](alter-table.html)
-- [Other SQL Statements](sql-statements.html)
+- [SQL Statements](sql-statements.html)
