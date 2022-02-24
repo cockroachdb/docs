@@ -103,7 +103,7 @@ If your application has performance or availability needs that are different tha
 
 The region level survival goal has the property that the database will remain fully available for reads and writes, even if an entire region becomes unavailable. This added survival comes at a cost: write latency will be increased by at least as much as the round-trip time to the nearest region. Read performance will be unaffected. In other words, you are adding network hops and making writes slower in exchange for robustness.
 
-You can upgrade a database to survive region failures using the [`ALTER DATABASE ... SURVIVE REGION FAILURE` statement](survive-failure.html). This increases the [replication factor](configure-replication-zones.html#num_replicas) of all data in the database from 3 (the default) to 5; this is how CockroachDB is able to provide the resiliency characteristics while maintaining a local quorum in the leaseholder's region` for good performance`.
+You can upgrade a database to survive region failures using the [`ALTER DATABASE ... SURVIVE REGION FAILURE` statement](survive-failure.html). This increases the [replication factor](configure-replication-zones.html#num_replicas) of all data in the database from 3 (the default) to 5; this is how CockroachDB is able to provide the resiliency characteristics while maintaining a local quorum in the leaseholder's region for good performance.
 
 {{site.data.alerts.callout_info}}
 To survive region failures, you must add at least 3 [database regions](#database-regions).
