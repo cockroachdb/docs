@@ -151,8 +151,6 @@ For example, [HAProxy](cockroach-gen.html#generate-an-haproxy-config-file) uses 
 SET CLUSTER SETTING server.shutdown.drain_wait = '8s';
 ~~~
 
-We also recommend setting your [client connection](connection-pooling.html#about-connection-pools) lifetime to be shorter than `server.shutdown.drain_wait`. This will cause your client to close its connections and reconnect on non-draining nodes before CockroachDB forcibly closes all connections to the draining node at the end of the ["local query phase"](#draining).
-
 #### `server.shutdown.query_wait`
 
 `server.shutdown.query_wait` sets the **maximum** duration for the ["local query phase"](#draining) and the **maximum** duration for the ["distributed query phase"](#draining) of node drain. Active local and distributed queries must complete, in turn, within this duration (`10s` by default).
@@ -228,9 +226,7 @@ At the end of the ["local query phase"](#draining) of node drain, the server for
 
 These errors are an expected occurrence during node shutdown. To be resilient to such errors, **your application should use a reconnection and retry loop** to reissue transactions that were open when a connection was closed or the server stopped accepting transactions. This allows procedures such as [rolling upgrades](upgrade-cockroach-version.html) to complete without interrupting your service.
 
-{{site.data.alerts.callout_success}}
-You can mitigate connection errors by setting your [client connection](connection-pooling.html#about-connection-pools) lifetime to be shorter than `server.shutdown.drain_wait`. This will cause your client to close its connections and reconnect on non-draining nodes before CockroachDB forcibly closes all connections to the draining node. However, you may still encounter these errors when connections are held open by long-running queries.
-{{site.data.alerts.end}}
+Upon receiving a connection error, your application must handle the result of a previously open transaction as unknown.
 
 A connection retry loop should:
 
@@ -238,10 +234,6 @@ A connection retry loop should:
 - Open a new connection. This will be routed to a non-draining node.
 - Reissue the transaction on the new connection.
 - Repeat while the connection error persists and the retry count has not exceeded a configured maximum.
-
-A write transaction that enters the [commit phase](architecture/transaction-layer.html#commits-phase-2) on a draining node will run to completion, but the node connection can be closed before your client receives a success message. Therefore, the connection retry logic considers the result of a previously open transaction to be unknown, and reissues the transaction.
-
-When reissuing a write statement that relies on a primary key [`UNIQUE`](unique.html) constraint in your schema, for example, interpret a unique constraint violation message (`ERROR: duplicate key value violates unique constraint "primary"`) as a success.
 
 ### Termination grace period
 
@@ -667,7 +659,7 @@ $ cockroach node status --decommission --certs-dir=certs --host={address of any 
 - Membership on the decommissioned nodes should have changed from `decommissioning` to `decommissioned`.
 - `0` replicas should remain on these nodes.
 
-The decommissioned nodes will no longer be visible in the DB Console.
+Once the nodes complete decommissioning, they will appear in the list of [**Recently Decommissioned Nodes**](ui-cluster-overview-page.html#decommissioned-nodes) in the DB Console.
 
 #### Step 5. Terminate the process on decommissioned nodes
 
@@ -682,7 +674,7 @@ server drained and shutdown completed
 
 ### Remove a dead node
 
-If a node is offline for the duration set by `server.time_until_store_dead` (5 minutes by default), the cluster considers the node "dead" and starts to rebalance its range replicas onto other nodes. 
+If a node is offline for the duration set by `server.time_until_store_dead` (5 minutes by default), the cluster considers the node "dead" and starts to rebalance its range replicas onto other nodes.
 
 However, if the dead node is restarted, the cluster will rebalance replicas and leases onto the node. To prevent the cluster from rebalancing data to a dead node that comes back online, do the following:
 
@@ -748,7 +740,7 @@ $ cockroach node status --decommission --certs-dir=certs --host={address of any 
 
 - Membership on the decommissioned node should have changed from `active` to `decommissioned`.
 
-The decommissioned node will no longer be visible in the DB Console.
+Once the node completes decommissioning, it will appear in the list of [**Recently Decommissioned Nodes**](ui-cluster-overview-page.html#decommissioned-nodes) in the DB Console.
 
 ### Recommission nodes
 

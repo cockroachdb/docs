@@ -23,7 +23,7 @@ Use the **Cluster Overview** panel to quickly assess the capacity and health of 
 Metric | Description
 --------|----
 Capacity Usage | <ul><li>Used: The total disk space in use by CockroachDB data across all nodes. This excludes the disk space used by the Cockroach binary, operating system, and other system files.</li><li>Usable: The total disk space usable by CockroachDB data across all nodes. This cannot exceed the store size, if one has been set using [`--store`](cockroach-start.html#store).</li></ul>See [Capacity metrics](#capacity-metrics) for details on how these values are calculated.
-Node Status | <ul><li>The number of `LIVE` nodes in the cluster.</li><li>The number of `SUSPECT` nodes in the cluster. A node is considered suspect if its [liveness status is unavailable](cluster-setup-troubleshooting.html#node-liveness-issues) or the node is in the process of [decommissioning](#node-status).</li><li>The number of `DEAD` nodes in the cluster.</li>
+Node Status | <ul><li>The number of `LIVE` nodes in the cluster.</li><li>The number of `SUSPECT` nodes in the cluster. A node is considered suspect if its [liveness status is unavailable](cluster-setup-troubleshooting.html#node-liveness-issues) or the node is in the process of [decommissioning](#decommissioned-nodes).</li><li>The number of `DEAD` nodes in the cluster.</li>
 Replication Status | <ul><li>The total number of [ranges](architecture/overview.html#glossary) in the cluster.</li><li>The number of [under-replicated ranges](ui-replication-dashboard.html#review-of-cockroachdb-terminology) in the cluster. A non-zero number indicates an unstable cluster.</li><li>The number of [unavailable ranges](ui-replication-dashboard.html#review-of-cockroachdb-terminology) in the cluster. A non-zero number indicates an unstable cluster.</li>
 
 ### Capacity metrics
@@ -47,10 +47,6 @@ The **Node List** groups nodes by locality. The lowest-level locality tier is us
 
 {{site.data.alerts.callout_success}}
 We recommend [defining `--locality` flags when starting nodes](cockroach-start.html#locality). CockroachDB uses locality to distribute replicas and mitigate [network latency](ui-network-latency-page.html). Locality is also a prerequisite for enabling the [Node Map](#node-map-enterprise).
-{{site.data.alerts.end}}
-
-{{site.data.alerts.callout_info}}
-[Decommissioned nodes](node-shutdown.html?filters=decommission) are not included in this list.
 {{site.data.alerts.end}}
 
 ### Node status
@@ -88,6 +84,21 @@ Capacity Usage | Percentage of usable disk space occupied by CockroachDB data on
 Memory Usage | Memory used by CockroachDB as a percentage of the total memory on the node or in the locality.
 vCPUs | Number of vCPUs on the machine.
 Version | Build tag of the CockroachDB version installed on the node.
+
+### Decommissioned nodes
+
+Nodes that have [completed decommissioning](node-shutdown.html?filters=decommission#status-change) are listed in the table of **Recently Decommissioned Nodes**, indicating that they are removed from the cluster.
+
+Node Status | Description
+-------|------------
+`NODE_STATUS_UNAVAILABLE` | Node has been recently decommissioned.
+`NODE_STATUS_DECOMMISSIONED` | Node has been decommissioned for the duration set by the `server.time_until_store_dead` [cluster setting](cluster-settings.html) (5 minutes by default).
+
+You can see the full history of decommissioned nodes by clicking "View all decommissioned nodes".
+
+{{site.data.alerts.callout_info}}
+For details about the decommissioning process, see [Node Shutdown](node-shutdown.html?filters=decommission#node-shutdown-sequence).
+{{site.data.alerts.end}}
 
 ## Node Map (Enterprise)
 
