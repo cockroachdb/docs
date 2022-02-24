@@ -37,7 +37,7 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
  `constraint_name` | The name of the constraint, which must be unique to its table and follow these [identifier rules](keywords-and-identifiers.html#identifiers).
  `constraint_elem` | The [`CHECK`](check.html), [foreign key](foreign-key.html), [`UNIQUE`](unique.html) constraint you want to add. <br/><br/>Adding/changing a `DEFAULT` constraint is done through [`ALTER COLUMN`](alter-column.html). <br/><br/>Adding/changing the table's `PRIMARY KEY` is not supported through `ALTER TABLE`; it can only be specified during [table creation](create-table.html).
 
-## Viewing schema changes
+## View schema changes
 
 {% include {{ page.version.version }}/misc/schema-change-view-job.md %}
 
