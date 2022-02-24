@@ -60,7 +60,7 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 
 ### Add the `UNIQUE` constraint
 
-Adding the [`UNIQUE` constraint](unique.html) requires that all of a column's values be distinct from one another (except for *NULL* values).
+Adding the [`UNIQUE` constraint](unique.html) requires that all of a column's values be distinct from one another (except for `NULL` values).
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -76,7 +76,11 @@ Adding the [`CHECK` constraint](check.html) requires that all of a column's valu
 > ALTER TABLE rides ADD CONSTRAINT check_revenue_positive CHECK (revenue >= 0);
 ~~~
 
-Check constraints can be added to columns that were created earlier in the transaction. For example:
+In the process of adding the constraint CockroachDB will run a background job to validate existing table data. If CockroachDB finds a row that violates the constraint during the validation step, the [`ADD CONSTRAINT`](add-constraint.html) statement will fail.
+
+#### Add constraints to columns created during a transaction
+
+You can add check constraints to columns that were created earlier in the transaction. For example:
 
 {% include copy-clipboard.html %}
 ~~~ sql
