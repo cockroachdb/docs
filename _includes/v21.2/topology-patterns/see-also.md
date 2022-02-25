@@ -1,16 +1,15 @@
 - [Multi-Region Capabilities Overview](multiregion-overview.html)
-- [Choosing a multi-region configuration](choosing-a-multi-region-configuration.html)
-- [When to use `ZONE` vs. `REGION` survival goals](when-to-use-zone-vs-region-survival-goals.html)
-- [When to use `REGIONAL` vs. `GLOBAL` tables](when-to-use-regional-vs-global-tables.html)
-- [Multi-region SQL performance](demo-low-latency-multi-region-deployment.html)
-- [Migrate to Multi-region SQL](migrate-to-multiregion-sql.html)
-- [`ALTER DATABASE ... SURVIVE {ZONE,REGION} FAILURE`](survive-failure.html)
-- [`ALTER TABLE ... SET LOCALITY ...`](set-locality.html)
+- [How to Choose a Multi-Region Configuration](choosing-a-multi-region-configuration.html)
+- [When to Use `ZONE` vs. `REGION` Survival Goals](when-to-use-zone-vs-region-survival-goals.html)
+- [When to Use `REGIONAL` vs. `GLOBAL` Tables](when-to-use-regional-vs-global-tables.html)
+- [Low Latency Reads and Writes in a Multi-Region Cluster](demo-low-latency-multi-region-deployment.html)
+- [Migrate to Multi-Region SQL](migrate-to-multiregion-sql.html)
 - [Topology Patterns Overview](topology-patterns.html)
-  - Single-region
+  - Single-region patterns
       - [Development](topology-development.html)
       - [Basic Production](topology-basic-production.html)
-  - Multi-region
-      - [`REGIONAL` Table Locality Pattern](regional-tables.html)
-      - [`GLOBAL` Table Locality Pattern](global-tables.html)
+  - Multi-region patterns
+      - [`REGIONAL` Tables](regional-tables.html)
+      - [`GLOBAL` Tables](global-tables.html)
+      - [Follower Reads](topology-follower-reads.html)
       - [Follow-the-Workload](topology-follow-the-workload.html)

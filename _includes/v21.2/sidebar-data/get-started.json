@@ -192,6 +192,12 @@
           ]
         },
         {
+          "title": "Enterprise Features",
+          "urls": [
+            "/${VERSION}/enterprise-licensing.html"
+          ]
+        },
+        {
           "title": "CockroachDB in Comparison",
           "urls": [
             "/${VERSION}/cockroachdb-in-comparison.html"
