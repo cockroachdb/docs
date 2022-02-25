@@ -16,7 +16,7 @@ This document is about CockroachDB performance on benchmarks. For guidance on tu
 
 ## Scale
 
-TPC-C provides the most realistic and objective measure for OLTP performance at various scale factors. CockroachDB 21.1 can process **1.68M tpmC with 140,000 warehouses, resulting in an efficiency score of 95%.** As shown in the following chart, this is a 40% improvement over the results from CockroachDB 19.2.
+TPC-C provides the most realistic and objective measure for OLTP performance at various scale factors. CockroachDB can process **1.68M tpmC with 140,000 warehouses, resulting in an efficiency score of 95%.** As shown in the following chart, this is a 40% improvement over the results from CockroachDB 19.2.
 
 For a refresher on what exactly TPC-C is and how it is measured, see [Benchmarks used](#benchmarks-used).
 
