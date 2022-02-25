@@ -41,7 +41,7 @@ Verify the overall health of your cluster using the [DB Console](ui-overview.htm
 
 ### Review breaking changes
 
-Review the [backward-incompatible changes in v21.1](../releases/v21.1.html#backward-incompatible-changes) and [deprecated features](../releases/v21.1.html#deprecations). If any affect your deployment, make the necessary changes before starting the rolling upgrade to v21.1.
+Review the [backward-incompatible changes in v21.1](../releases/v21.1.html#v21-1-0-backward-incompatible-changes) and [deprecated features](../releases/v21.1.html#v21-1-0-deprecations). If any affect your deployment, make the necessary changes before starting the rolling upgrade to v21.1.
 
 Two changes that are particularly important to note:
 

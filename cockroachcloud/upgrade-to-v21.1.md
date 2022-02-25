@@ -52,7 +52,7 @@ Because your cluster will be unavailable while its single node is stopped and re
 
 ### Review breaking changes
 
-Review the [backward-incompatible changes in v21.1](../releases/v21.1.html#backward-incompatible-changes), and if any affect your application, make necessary changes.
+Review the [backward-incompatible changes in v21.1](../releases/v21.1.html#v21-1-0-backward-incompatible-changes), and if any affect your application, make necessary changes.
 
 ## Step 5. Start the upgrade
 

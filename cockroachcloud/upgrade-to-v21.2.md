@@ -54,7 +54,7 @@ The [**SQL Users**](user-authorization.html#create-a-sql-user) and [**Monitoring
 
 ### Review breaking changes
 
-Review the [backward-incompatible changes in v21.2](../releases/v21.2.html#backward-incompatible-changes). If any affect your applications, make the necessary changes before proceeding.
+Review the [backward-incompatible changes in v21.2](../releases/v21.2.html#v21-2-0-backward-incompatible-changes). If any affect your applications, make the necessary changes before proceeding.
 
 ## Step 5. Start the upgrade
 
