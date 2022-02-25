@@ -112,27 +112,6 @@ The asynchronous parallel lookup behavior does not occur if you [disable vectori
 
 Locality optimized search is supported for scans that are guaranteed to return 100,000 keys or fewer. This optimization allows the execution engine to avoid visiting remote regions if all requested keys are found in the local region, thus reducing the latency of the query.
 
-### Requirements
-
-To realize locality optimized search you must specify a [`CHECK` constraint](check.html) when you create the table. For example, if you typically perform a query that has a locality constraint:
-
-{% include_cached copy-clipboard.html %}
-~~~sql
-SELECT * FROM users WHERE id = 2 AND (country = 'FR' OR country = 'BR');
-~~~
-
-you should add the following `CHECK` constraint when you create the table:
-
-{% include_cached copy-clipboard.html %}
-~~~sql
-ALTER TABLE users ADD CONSTRAINT country_check CHECK (country IN ('FR', 'BR'));
-~~~
-
-The constraint improves performance by:
-
-- Limiting the partitions to just the ones that need to be checked. Without this information, the query has to go to all regions and all partitions for that table in those regions.
-- Helping the optimizer determine how many rows match the query. Without this information, to protect against exceeding memory limits, the optimizer checkes those ranges sequentially, which results in extra round trips.
-
 ### Limitations
 
 {% include {{page.version.version}}/sql/locality-optimized-search-limited-records.md %}
