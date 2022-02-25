@@ -276,7 +276,7 @@ Reference content helps users understand the precise meaning and affect of Cockr
 
 ### Definition
 
-A definition is the statement of the meaning of a term, configuration property, or parameter. A _definition_ consists of a _definition term_ and a _definition description_. Definitions typically appear in [glossaries](#glossary) and [reference](#reference) content.
+A _definition_ is the statement of the meaning of a term, configuration property, or parameter. A _definition_ consists of a _definition term_ and a _definition description_. Definitions typically appear in [glossaries](#glossary) and [reference](#reference) content.
 
 The definition description should not repeat the definition term.
 
@@ -289,7 +289,7 @@ The definition description should not repeat the definition term.
 
 ### Glossary
 
-A glossary is a collection (usually in tabular form) of concept [definitions](#definitions).
+A _glossary_ is a collection (usually in tabular form) of concept [definitions](#definitions).
 
 #### Examples
 
@@ -298,11 +298,13 @@ A glossary is a collection (usually in tabular form) of concept [definitions](#d
 
 ### Prerequisites
 
-A prerequisites section describes conditions that must be satisfied before starting a [task](#task) or [tutorial](#tutorial).
+A _prerequisites_ section describes conditions that must be satisfied before starting a [task](#task) or [tutorial](#tutorial).
 
 ### See also
 
-List of related pages. Always the last section in a page.
+A _see also_ section is a list of related pages.
+
+This section is always the last section in a page.
 
 ## Page types
 
@@ -350,7 +352,7 @@ A best practice guide helps users weigh alternative CockroachDB features or feat
 
 A _troubleshooting_ guide describes how to resolve errors. It typically has a series of observed, undesired behavior and recommendations on how to mitigate the behavior.
 
-A troubleshooting guide helps users quickly recognize the source of an error condition and take steps to and mitigate the error.
+A troubleshooting guide helps users quickly recognize the source of an error condition and take steps to mitigate the error.
 
 - Title: **Troubleshoot <XXX>**
 - Filename: `xxx-troubleshooting.md`
@@ -364,7 +366,7 @@ A troubleshooting guide helps users quickly recognize the source of an error con
 
 A _FAQ_ is a list of frequently asked questions and answers to the questions.
 
-A FAQ helps users quickly find answers to questions that arise.
+A FAQ helps users quickly find answers to questions that recur.
 
 - Title: **<XXX> FAQs**
 - Filename: `<title>-faqs.md`.
@@ -378,7 +380,7 @@ A FAQ helps users quickly find answers to questions that arise.
 
 A _release note_ is a description of features and bug fixes related to a specific release of CockroachDB.
 
-Write a release note to explain what a user gains from upgrading to the version of CockroachDB.
+A release note helps users understand what they gain from upgrading to the version of CockroachDB.
 
 #### Examples
 
