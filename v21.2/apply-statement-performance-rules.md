@@ -15,20 +15,10 @@ It's common to offer users promo codes to increase usage and customer loyalty. I
 
 ## Rule 1. Scan as few rows as possible
 
-First, study the schema so you understand the relationships between the tables.
-
-Start a SQL shell:
-
-{% include copy-clipboard.html %}
-~~~ shell
-cockroach sql --insecure
-~~~
-
-Next, set `movr` as the current database and run [`SHOW TABLES`](show-tables.html):
+First, study the schema so you understand the relationships between the tables. Run [`SHOW TABLES`](show-tables.html):
 
 {% include copy-clipboard.html %}
 ~~~ sql
-USE movr;
 SHOW TABLES;
 ~~~
 
@@ -106,7 +96,7 @@ Time: 9ms total (execution 8ms / network 1ms)
 
 There is a `rider_id` field that you can use to match each ride to a user. There is also a `start_time` field that you can use to filter the rides by date.
 
-This means that to get the information you want, you'll need to do a [join][joins] on the `users` and `rides` tables.
+This means that to get the information you want, you'll need to do a [join](joins.html) on the `users` and `rides` tables.
 
 Next, get the row counts for the tables that you'll be using in this query. You need to understand which tables are large, and which are small by comparison. You will need this later if you need to verify you are [using the right join type](#rule-3-use-the-right-join-type).
 

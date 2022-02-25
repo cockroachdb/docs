@@ -22,4 +22,4 @@ If you experience an issue when using CockroachDB, try these steps to resolve th
 
 - If you cannot resolve the issue yourself, the following tools can help you move forward:
   - [Support Resources](support-resources.html) identify ways you can get help with troubleshooting.
-  - [File an Issue](file-an-issue.html) provides details how to file an issue that you're unable to resolve.
+  - [File an Issue](file-an-issue.html) provides details on how to file an issue that you're unable to resolve.
