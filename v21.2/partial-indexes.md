@@ -2,6 +2,8 @@
 title: Partial Indexes
 summary: Partial indexes allow you to specify a subset of rows and columns to add to an index.
 toc: true
+keywords: gin, gin index, gin indexes, inverted index, inverted indexes, accelerated index, accelerated indexes
+docs_area: develop
 ---
 
  Partial indexes allow you to specify a subset of rows and columns to add to an [index](indexes.html). Partial indexes include the subset of rows in a table that evaluate to true on a boolean *predicate expression* (i.e., a `WHERE` filter) defined at [index creation](#creation).
@@ -76,9 +78,9 @@ For another example, see [Create a partial index that enforces uniqueness on a s
 When [inserted values](insert.html) conflict with a `UNIQUE` constraint on one or more columns, CockroachDB normally returns an error. We recommend adding an [`ON CONFLICT`](insert.html#on-conflict-clause) clause to all `INSERT` statements that might conflict with rows in the unique index.
 {{site.data.alerts.end}}
 
-## Partial inverted indexes
+## Partial GIN indexes
 
- You can create partial [inverted indexes](inverted-indexes.html#partial-inverted-indexes), which are indexes on a subset of `JSON`, `ARRAY`, or geospatial container column data.
+ You can create partial [GIN indexes](inverted-indexes.html#partial-gin-indexes), which are indexes on a subset of `JSON`, `ARRAY`, or geospatial container column data.
 
 ## Index hints
 
@@ -160,13 +162,22 @@ To limit the number of rows scanned to just the rows that you are querying, you 
 ~~~
   table_name |                  index_name                   | non_unique | seq_in_index | column_name  | direction | storing | implicit
 -------------+-----------------------------------------------+------------+--------------+--------------+-----------+---------+-----------
-  rides      | primary                                       |   false    |            1 | city         | ASC       |  false  |  false
-  rides      | primary                                       |   false    |            2 | id           | ASC       |  false  |  false
-...
-  rides      | rides_city_revenue_idx                        |    true    |            1 | city         | ASC       |  false  |  false
-  rides      | rides_city_revenue_idx                        |    true    |            2 | revenue      | ASC       |  false  |  false
-  rides      | rides_city_revenue_idx                        |    true    |            3 | id           | ASC       |  false  |   true
-(12 rows)
+  rides      | primary                                       |   false    |            1 | city          | ASC       |  false  |  false
+  rides      | primary                                       |   false    |            2 | id            | ASC       |  false  |  false
+  rides      | primary                                       |   false    |            3 | vehicle_city  | N/A       |  true   |  false
+  rides      | primary                                       |   false    |            4 | rider_id      | N/A       |  true   |  false
+  rides      | primary                                       |   false    |            5 | vehicle_id    | N/A       |  true   |  false
+  rides      | primary                                       |   false    |            6 | start_address | N/A       |  true   |  false
+  rides      | primary                                       |   false    |            7 | end_address   | N/A       |  true   |  false
+  rides      | primary                                       |   false    |            8 | start_time    | N/A       |  true   |  false
+  rides      | primary                                       |   false    |            9 | end_time      | N/A       |  true   |  false
+  rides      | primary                                       |   false    |           10 | revenue       | N/A       |  true   |  false
+  ...
+  rides      | rides_city_revenue_idx                        |    true    |            1 | city          | ASC       |  false  |  false
+  rides      | rides_city_revenue_idx                        |    true    |            2 | revenue       | ASC       |  false  |  false
+  rides      | rides_city_revenue_idx                        |    true    |            3 | id            | ASC       |  false  |   true
+  ...
+(24 rows)
 
 Time: 8ms total (execution 8ms / network 0ms)
 ~~~
@@ -342,13 +353,22 @@ You can create a partial index that excludes these rows, making queries that fil
 ~~~
   table_name |                  index_name                   | non_unique | seq_in_index | column_name  | direction | storing | implicit
 -------------+-----------------------------------------------+------------+--------------+--------------+-----------+---------+-----------
-  rides      | primary                                       |   false    |            1 | city         | ASC       |  false  |  false
-  rides      | primary                                       |   false    |            2 | id           | ASC       |  false  |  false
-...
-  rides      | rides_city_revenue_idx                        |    true    |            1 | city         | ASC       |  false  |  false
-  rides      | rides_city_revenue_idx                        |    true    |            2 | revenue      | ASC       |  false  |  false
-  rides      | rides_city_revenue_idx                        |    true    |            3 | id           | ASC       |  false  |   true
-(12 rows)
+  rides      | primary                                       |   false    |            1 | city          | ASC       |  false  |  false
+  rides      | primary                                       |   false    |            2 | id            | ASC       |  false  |  false
+  rides      | primary                                       |   false    |            3 | vehicle_city  | N/A       |  true   |  false
+  rides      | primary                                       |   false    |            4 | rider_id      | N/A       |  true   |  false
+  rides      | primary                                       |   false    |            5 | vehicle_id    | N/A       |  true   |  false
+  rides      | primary                                       |   false    |            6 | start_address | N/A       |  true   |  false
+  rides      | primary                                       |   false    |            7 | end_address   | N/A       |  true   |  false
+  rides      | primary                                       |   false    |            8 | start_time    | N/A       |  true   |  false
+  rides      | primary                                       |   false    |            9 | end_time      | N/A       |  true   |  false
+  rides      | primary                                       |   false    |           10 | revenue       | N/A       |  true   |  false
+  ...
+  rides      | rides_city_revenue_idx                        |    true    |            1 | city          | ASC       |  false  |  false
+  rides      | rides_city_revenue_idx                        |    true    |            2 | revenue       | ASC       |  false  |  false
+  rides      | rides_city_revenue_idx                        |    true    |            3 | id            | ASC       |  false  |   true
+  ...
+(27 rows)
 ~~~
 
 {% include copy-clipboard.html %}

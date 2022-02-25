@@ -2,15 +2,18 @@
 title: SET SCHEMA
 summary: The SET SCHEMA statement changes the schema of a table.
 toc: true
+docs_area: reference.sql
 ---
 
- The `SET SCHEMA` [statement](sql-statements.html) changes the [schema](sql-name-resolution.html) of a [table](create-table.html).
+The `SET SCHEMA` [statement](sql-statements.html) changes the [schema](sql-name-resolution.html) of a [table](create-table.html).
 
 {{site.data.alerts.callout_info}}
 `SET SCHEMA` is a subcommand of [`ALTER TABLE`](alter-table.html).
 
 CockroachDB also supports `SET SCHEMA` as an [alias for setting the `search_path` session variable](set-vars.html#supported-variables).
 {{site.data.alerts.end}}
+
+{% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
 ## Required privileges
 
@@ -94,4 +97,5 @@ Then, change the table's schema:
 - [`ALTER TABLE`](alter-table.html)
 - [`CREATE SCHEMA`](drop-table.html)
 - [`SHOW SCHEMAS`](show-schemas.html)
-- [Other SQL Statements](sql-statements.html)
+- [SQL Statements](sql-statements.html)
+- [Online Schema Changes](online-schema-changes.html)

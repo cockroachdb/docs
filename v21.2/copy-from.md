@@ -2,6 +2,7 @@
 title: COPY FROM
 summary: Copy data from a third-party client to CockroachDB.
 toc: true
+docs_area: reference.sql
 ---
 
 The `COPY FROM` statement copies data from third-party clients to tables in your cluster.

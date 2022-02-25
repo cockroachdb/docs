@@ -2,6 +2,7 @@
 title: DELETE
 summary: The DELETE statement deletes one or more rows from a table.
 toc: true
+docs_area: reference.sql
 ---
 
 The `DELETE` [statement](sql-statements.html) deletes rows from a table.
@@ -338,5 +339,5 @@ If you provide an index hint (i.e., force the index selection) to use the primar
 - [`ALTER TABLE`](alter-table.html)
 - [`DROP TABLE`](drop-table.html)
 - [`DROP DATABASE`](drop-database.html)
-- [Other SQL Statements](sql-statements.html)
+- [SQL Statements](sql-statements.html)
 - [Limiting Query Results](limit-offset.html)

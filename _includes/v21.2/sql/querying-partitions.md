@@ -1,8 +1,8 @@
-## Querying partitions
+## Query partitions
 
 Similar to [indexes](indexes.html), partitions can improve query performance by limiting the numbers of rows that a query must scan. In the case of [geo-partitioned data](regional-tables.html), partitioning can limit a query scan to data in a specific region.
 
-### Filtering on an indexed column
+### Filter on an indexed column
 
 If you filter the query of a partitioned table on a [column in the index directly following the partition prefix](indexes.html), the [cost-based optimizer](cost-based-optimizer.html) creates a query plan that scans each partition in parallel, rather than performing a costly sequential scan of the entire table.
 
@@ -102,7 +102,7 @@ If you know the set of all possible partitioned values, adding a check constrain
 
 To see the performance improvement over a query that performs a full table scan, compare these queries to a query with a filter on a column that is not in the index.
 
-### Filtering on a non-indexed column
+### Filter on a non-indexed column
 
 Suppose that you want to query the `users` table for information about a specific user, but you only know the user's name.
 
@@ -137,7 +137,7 @@ Suppose that you want to query the `users` table for information about a specifi
 
 The query returns the same result, but because `name` is not an indexed column, the query performs a full table scan that spans across all partition values.
 
-### Filtering on an partitioned column
+### Filter on a partitioned column
 
 If you know which partition contains the data that you are querying, using a filter (e.g., a [`WHERE` clause](select-clause.html#filter-rows)) on the column that is used for the partition can further improve performance by limiting the scan to the specific partition(s) that contain the data that you are querying.
 

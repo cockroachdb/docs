@@ -2,9 +2,12 @@
 title: CREATE TYPE
 summary: The CREATE TYPE statement creates a new, enumerated data type in a database.
 toc: true
+docs_area: reference.sql
 ---
 
- The `CREATE TYPE` [statement](sql-statements.html) creates a new, [enumerated data type](enum.html) in a database.
+The `CREATE TYPE` [statement](sql-statements.html) creates a new, [enumerated data type](enum.html) in a database.
+
+{% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
 {{site.data.alerts.callout_info}}
 CockroachDB currently only supports [enumerated user-defined types](enum.html).
@@ -113,3 +116,4 @@ Parameter | Description
 - [Data types](data-types.html)
 - [`SHOW ENUMS`](show-enums.html)
 - [`DROP TYPE`](drop-type.html)
+- [Online Schema Changes](online-schema-changes.html)

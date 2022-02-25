@@ -1,0 +1,1 @@
+Store CockroachDB [log files](configure-logs.html#logging-directory) in a separate volume from the main data store so that logging is not impacted by I/O throttling.

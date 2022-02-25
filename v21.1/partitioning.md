@@ -113,7 +113,13 @@ To ensure uniqueness or fast lookups, create a [secondary index](indexes.html) o
 
 Indexes are not required to be partitioned, but creating a non-partitioned index on a partitioned table may not perform well.
 
- When you create a non-partitioned index on a partitioned table, CockroachDB sends a [`NOTICE` message](https://www.postgresql.org/docs/current/plpgsql-errors-and-messages.html) to the client stating that creating a non-partitioned index on a partitioned table may not perform well.
+When you create a non-partitioned index on a partitioned table, CockroachDB sends a [`NOTICE` message](https://www.postgresql.org/docs/current/plpgsql-errors-and-messages.html) to the client stating that creating a non-partitioned index on a partitioned table may not perform well.
+
+#### Partition using foreign key reference
+
+If a partitioned table contains a [foreign key reference](foreign-key.html) to a non-partitioned table, the secondary index created automatically for the foreign key reference will not be partitioned. This can impact performance when querying against the partitioned table, as the data may exist in a distant node.
+
+To minimize potential latency issues, configure the non-partitioned table to be a [`GLOBAL` table](global-tables.html).
 
 ### Replication zones
 
@@ -713,8 +719,6 @@ Other databases use partitioning for three additional use cases: secondary index
 ## Known limitations
 
 - {% include {{ page.version.version }}/known-limitations/partitioning-with-placeholders.md %}
-
-- CockroachDB does not support partitioning [inverted indexes](inverted-indexes.html), including [spatial indexes](spatial-indexes.html). See [tracking issue](https://github.com/cockroachdb/cockroach/issues/43643).
 
 ## See also
 

@@ -2,6 +2,7 @@
 title: Migrate CockroachDB Schemas with Alembic
 summary: Learn how to use Alembic with a CockroachDB cluster.
 toc: true
+docs_area: develop
 ---
 
 This page walks you through a series of simple database schema changes using the [Alembic](https://alembic.sqlalchemy.org/en/latest/) schema migration module with a simple Python application built on SQLAlchemy and CockroachDB.
@@ -166,12 +167,12 @@ Before you begin the tutorial, [install CockroachDB](install-cockroachdb.html).
     {% include_cached copy-clipboard.html %}
     ~~~ sql
     > USE bank;
-    ~~~  
+    ~~~
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SHOW TABLES;
-    ~~~  
+    ~~~
 
     ~~~
       schema_name |   table_name    | type  | owner | estimated_row_count | locality
@@ -202,7 +203,7 @@ Before you begin the tutorial, [install CockroachDB](install-cockroachdb.html).
       column_name | data_type | is_nullable | column_default | generation_expression |  indices  | is_hidden
     --------------+-----------+-------------+----------------+-----------------------+-----------+------------
       id          | UUID      |    false    | NULL           |                       | {primary} |   false
-      balance     | INT8      |    true     | NULL           |                       | {}        |   false
+      balance     | INT8      |    true     | NULL           |                       | {primary} |   false
     (2 rows)
     ~~~
 
@@ -297,8 +298,8 @@ Suppose you want to add a new [computed column](computed-columns.html) to the `a
       column_name | data_type | is_nullable | column_default |             generation_expression              |  indices  | is_hidden
     --------------+-----------+-------------+----------------+------------------------------------------------+-----------+------------
       id          | UUID      |    false    | NULL           |                                                | {primary} |   false
-      balance     | INT8      |    true     | NULL           |                                                | {}        |   false
-      overdrawn   | BOOL      |    true     | NULL           | CASE WHEN balance < 0 THEN true ELSE false END | {}        |   false
+      balance     | INT8      |    true     | NULL           |                                                | {primary} |   false
+      overdrawn   | BOOL      |    true     | NULL           | CASE WHEN balance < 0 THEN true ELSE false END | {primary} |   false
     (3 rows)
     ~~~
 
@@ -387,7 +388,7 @@ Then, in the SQL shell to the demo cluster, verify that the `overdrawn` column h
   column_name | data_type | is_nullable | column_default | generation_expression |  indices  | is_hidden
 --------------+-----------+-------------+----------------+-----------------------+-----------+------------
   id          | UUID      |    false    | NULL           |                       | {primary} |   false
-  balance     | INT8      |    true     | NULL           |                       | {}        |   false
+  balance     | INT8      |    true     | NULL           |                       | {primary} |   false
 (2 rows)
 ~~~
 
@@ -415,8 +416,8 @@ And verify that the column has been added to the table:
   column_name | data_type | is_nullable | column_default |             generation_expression              |  indices  | is_hidden
 --------------+-----------+-------------+----------------+------------------------------------------------+-----------+------------
   id          | UUID      |    false    | NULL           |                                                | {primary} |   false
-  balance     | INT8      |    true     | NULL           |                                                | {}        |   false
-  overdrawn   | BOOL      |    true     | NULL           | CASE WHEN balance < 0 THEN true ELSE false END | {}        |   false
+  balance     | INT8      |    true     | NULL           |                                                | {primary} |   false
+  overdrawn   | BOOL      |    true     | NULL           | CASE WHEN balance < 0 THEN true ELSE false END | {primary} |   false
 (3 rows)
 ~~~
 
@@ -448,7 +449,7 @@ INFO  [alembic.runtime.migration] Running downgrade fd88c68af7b5 -> ad72c7ec8b22
   column_name | data_type | is_nullable | column_default | generation_expression |  indices  | is_hidden
 --------------+-----------+-------------+----------------+-----------------------+-----------+------------
   id          | UUID      |    false    | NULL           |                       | {primary} |   false
-  balance     | INT8      |    true     | NULL           |                       | {}        |   false
+  balance     | INT8      |    true     | NULL           |                       | {primary} |   false
 (2 rows)
 ~~~
 
@@ -545,8 +546,8 @@ Verify that the new column exists in the `accounts` table:
   column_name | data_type | is_nullable | column_default |             generation_expression              |  indices  | is_hidden
 --------------+-----------+-------------+----------------+------------------------------------------------+-----------+------------
   id          | UUID      |    false    | NULL           |                                                | {primary} |   false
-  balance     | INT8      |    true     | NULL           |                                                | {}        |   false
-  overdrawn   | BOOL      |    true     | NULL           | CASE WHEN balance < 0 THEN true ELSE false END | {}        |   false
+  balance     | INT8      |    true     | NULL           |                                                | {primary} |   false
+  overdrawn   | BOOL      |    true     | NULL           | CASE WHEN balance < 0 THEN true ELSE false END | {primary} |   false
 (3 rows)
 ~~~
 

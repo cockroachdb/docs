@@ -2,6 +2,7 @@
 title: ALTER COLUMN
 summary: Use the ALTER COLUMN statement to set, change, or drop a column's DEFAULT constraint or to drop the NOT NULL constraint.
 toc: true
+docs_area: reference.sql
 ---
 
 `ALTER COLUMN` is a subcommand of [`ALTER TABLE`](alter-table.html). You can use `ALTER COLUMN` to do the following:
@@ -10,6 +11,8 @@ toc: true
 - Set or drop a column's [`NOT NULL` constraint](not-null.html).
 - <span class="version-tag">New in v21.2</span>: Set, change, or drop an [`ON UPDATE` expression](create-table.html#on-update-expressions).
 - Change a column's [data type](data-types.html).
+
+{% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
 {{site.data.alerts.callout_info}}
 Support for altering column types is [experimental](experimental-features.html), with certain limitations. For details, see [Altering column data types](#altering-column-data-types).
@@ -110,6 +113,10 @@ If the column has the [`NOT NULL` constraint](not-null.html) applied to it, you 
 ### Convert a computed column into a regular column
 
 {% include {{ page.version.version }}/computed-columns/convert-computed-column.md %}
+
+### Alter the formula for a computed column
+
+{% include {{ page.version.version }}/computed-columns/alter-computed-column.md %}
 
 ### Convert to a different data type
 
@@ -283,3 +290,4 @@ NOTICE: ALTER COLUMN TYPE changes are finalized asynchronously; further schema c
 - [`DROP CONSTRAINT`](drop-constraint.html)
 - [`ALTER TABLE`](alter-table.html)
 - [`SHOW JOBS`](show-jobs.html)
+- [Online Schema Changes](online-schema-changes.html)

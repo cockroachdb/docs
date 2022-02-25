@@ -9,6 +9,8 @@ layout: default
 {% endif %}
 {% endunless %}
 
+{% comment %} Show the version switcher only if 1) the current page has a version and 2) the current page isn't the home page of the docs. {% endcomment %}
+
 {% if page.homepage != true %}
 
 <div class="post-header mb-3
@@ -26,6 +28,8 @@ layout: default
 </div>
 {% endif %}
 
+{% comment %} If the page supports it, show the contribution options. {% endcomment %}
+
 <div class="post-content">
   <!--
        TOC LEVEL: By default, a page TOC includes h2 and h3 headers. To limit a
@@ -36,12 +40,34 @@ layout: default
       <div id="toc"></div>
    {% endif %}
 
-   {% if page.url contains "v1.0" or page.url contains 'v1.1' or page.url contains 'v2.0' or page.url contains 'v2.1' or page.url contains 'v19.1'  or page.url contains 'v19.2' or page.url contains 'v20.1'%}
+   {% comment %} If toc=true within the YAML front matter of a doc page, show the table of contents. {% endcomment %}
+
+
+    {% assign today = "today" | date: "%s" %} {% comment %} Fetch today's date and format it in seconds. {% endcomment %}
+
+    {% capture m_raw %}
+    {{ site.data.versions | where_exp: "m", "m.major_version == page.version.version" | map: "maint_supp_exp_date" }}
+    {% endcapture %}
+
+    {% comment %} We use a capture block here because there's an issue with converting string values to dates with an assign block. m_raw iterates through the versions (e.g., v21.2) in _data/versions.csv and filters based on the current page version. We then map the maintenance support expiration date of that version. {% endcomment %}
+
+    {% capture a_raw %}
+    {{ site.data.versions | where_exp: "m", "m.major_version == page.version.version" | map: "asst_supp_exp_date" }}
+    {% endcapture %}
+
+    {% comment %} We use a capture block here because there's an issue with converting string values to dates with an assign block. a_raw iterates through the versions (e.g., v21.2) in _data/versions.csv and filters based on the current page version. We then map the assistance support expiration date of that version. {% endcomment %}
+
+    {% assign asst_supp_exp_date = a_raw | date: "%B %d, %Y" %} {% comment %} asst_supp_exp_date takes a_raw and formats it in a more user-friendly way. {% endcomment %}
+
+    {% assign m = m_raw | date: "%s" %} {% comment %} Format m_raw in seconds. {% endcomment %}
+    {% assign a = a_raw | date: "%s" %} {% comment %} Format a_raw in seconds. {% endcomment %}
+
+   {% if page.version and a < today %} {% comment %} If the assistance support expiration date has passed, show the unsupported message. {% endcomment %}
       {% include_cached unsupported-version.md %}
    {% endif %}
 
-   {% if page.url contains 'v20.2' %}
-      {% include_cached unsupported-version-soon.md %}
+   {% if page.version and a >= today and m < today %} {% comment %} If the maintenance support expiration has passed but the version is still within the assistance support period, show this message nad pass the assistance support expiration date. {% endcomment %}
+      {% include_cached unsupported-version-soon.md exp_date=asst_supp_exp_date %}
    {% endif %}
 
    {{content}}
@@ -49,5 +75,23 @@ layout: default
    {% if page.feedback != false %}
       {% include_cached feedback-widget.html %}
    {% endif %}
+   {% comment %} Show page feedback. {% endcomment %}
+
+   {% if page.docs_area %}
+     <script>
+         window.dataLayer = window.dataLayer || [];
+         window.dataLayer.push({
+         'docsArea' : '{{ page.docs_area }}'
+     });
+     </script>
+   {% endif %} {% comment %} Add JS to track docs area for reporting. {% endcomment %}
+   {% if page.product_area %}
+     <script>
+         window.dataLayer = window.dataLayer || [];
+         window.dataLayer.push({
+         'productArea': '{{ page.product_area }}'
+     });
+     </script>
+   {% endif %} {% comment %} Add JS to track product area for reporting. {% endcomment %}
 
 </div>

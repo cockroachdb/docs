@@ -2,9 +2,12 @@
 title: REASSIGN OWNED
 summary: The REASSIGN OWNED statement changes the ownership of all objects in the current database that are owned by a specific role or user.
 toc: true
+docs_area: reference.sql
 ---
 
 The `REASSIGN OWNED` statement changes the [ownership](authorization.html#object-ownership) of all database objects (i.e., tables, types, or schemas) in the current database that are currently owned by a specific [role](authorization.html#roles) or [user](authorization.html#sql-users).
+
+{% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
 {{site.data.alerts.callout_success}}
 To change the ownership of any single object (e.g., a table or a database), use the [`OWNER TO`](owner-to.html) subcommand of the object's [`ALTER` statement](sql-statements.html).
@@ -109,4 +112,4 @@ Now suppose you want to change the owner for all of the tables owned by `cockroa
 - [Authorization](authorization.html)
 - [`OWNER TO`](owner-to.html)
 - [`SHOW TABLES`](show-tables.html)
-- [Other SQL Statements](sql-statements.html)
+- [SQL Statements](sql-statements.html)

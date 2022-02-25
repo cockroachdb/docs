@@ -2,6 +2,7 @@
 title: Migrate from OpenStreetMap
 summary: Learn how to migrate data from the OpenStreetMap pbf format into a CockroachDB cluster.
 toc: true
+docs_area: migrate
 ---
 
  CockroachDB supports efficiently storing and querying [spatial data](spatial-data.html).
@@ -143,4 +144,3 @@ Osm2pgsql took 2879s overall
 [postgres]: migrate-from-postgres.html
 [mysql]: migrate-from-mysql.html
 [import]: import.html
-

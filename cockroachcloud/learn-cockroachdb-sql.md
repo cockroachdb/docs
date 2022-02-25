@@ -2,6 +2,7 @@
 title: Learn CockroachDB SQL
 summary: Learn some of the most essential CockroachDB SQL statements on a local cluster.
 toc: true
+docs_area: get_started
 ---
 
 This tutorial walks you through some of the most essential CockroachDB SQL statements. For a complete list of supported SQL statements and related details, see [SQL Statements](../{{site.versions["stable"]}}/sql-statements.html).
@@ -230,10 +231,11 @@ To show the indexes on a table, use [`SHOW INDEX FROM`](../{{site.versions["stab
 ~~~
   table_name | index_name  | non_unique | seq_in_index | column_name | direction | storing | implicit
 +------------+-------------+------------+--------------+-------------+-----------+---------+----------+
-  accounts   | primary     |   false    |            1 | id          | ASC       |  false  |  false
   accounts   | balance_idx |    true    |            1 | balance     | DESC      |  false  |  false
   accounts   | balance_idx |    true    |            2 | id          | ASC       |  false  |   true
-(3 rows)
+  accounts   | primary     |   false    |            1 | id          | ASC       |  false  |  false
+  accounts   | primary     |   false    |            2 | balance     | N/A       |  true   |  false
+(4 rows)
 ~~~
 
 ## Query a table

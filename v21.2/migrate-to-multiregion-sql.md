@@ -1,8 +1,11 @@
 ---
-title: Migrate to Multi-region SQL
-summary: Learn how to migrate to CockroachDB's improved multi-region SQL user experience.
+title: Migrate to Multi-Region SQL
+summary: Learn how to migrate to CockroachDB multi-region SQL user features.
 toc: true
+docs_area: deploy
 ---
+
+This page describes how to migrate a multi-region cluster from using replication zones to using multi-region SQL abstractions.
 
 ## Overview
 
@@ -10,13 +13,13 @@ toc: true
 If you are already using [multi-region SQL statements](multiregion-overview.html) to control your multi-region cluster, you can ignore this page.
 {{site.data.alerts.end}}
 
-CockroachDB v21.1 added support for [improved multi-region capabilities that make it easier to run global applications](multiregion-overview.html). Using high-level SQL statements, you can control where your data is stored and how it is accessed to provide good performance and tuneable latency for your application's users.
+CockroachDB v21.1 added support for [improved multi-region capabilities that make it easier to run global applications](multiregion-overview.html). Using high-level SQL statements, you can control where your data is stored and how it is accessed to provide good performance and tunable latency for your application's users.
 
-Prior to v21.1, the only way to accomplish these goals in a multi-region cluster involved using lower-level mechanisms called [replication zones](configure-replication-zones.html) in specific patterns called _Duplicate Indexes_, _Geo-partitioned Replicas_, and _Geo-partitioned leaseholders_.
+Prior to v21.1, the only way to accomplish these goals in a multi-region cluster involved using lower-level mechanisms called [replication zones](configure-replication-zones.html) in specific patterns called _Duplicate indexes_, _Geo-partitioned replicas_, and _Geo-partitioned leaseholders_.
 
 These patterns and the use of replication zones are still fully supported. However, for most users, they are harder to use and in some cases can result in worse performance than the multi-region SQL abstractions.
 
-This page describes how to migrate a multi-region cluster from using replication zones to using multi-region SQL abstractions. It contains:
+This page discusses:
 
 - Mappings from each of the legacy replication-zone-based patterns to the multi-region SQL abstractions that are designed to replace them.
 
@@ -32,9 +35,9 @@ This page describes how to migrate a multi-region cluster from using replication
 CockroachDB will no longer provide the [Follow-the-Workload](topology-follow-the-workload.html) pattern's behavior for a database if you use the [multi-region SQL statements](multiregion-overview.html) with that database. In other words, the multi-region SQL statements do not provide a behavior that is analogous to Follow-the-Workload.
 {{site.data.alerts.end}}
 
-For more information about how to use `ZONE` vs. `REGION` survival goals, see [When to use `ZONE` vs `REGION` survival goals](when-to-use-zone-vs-region-survival-goals.html).
+For more information about how to use `ZONE` vs. `REGION` survival goals, see [When to Use `ZONE` vs. `REGION` Survival Goals](when-to-use-zone-vs-region-survival-goals.html).
 
-For more information about when to use `GLOBAL` vs. `REGIONAL` tables, see [When to use `REGIONAL` vs `GLOBAL` tables](when-to-use-regional-vs-global-tables.html).
+For more information about when to use `GLOBAL` vs. `REGIONAL` tables, see [When to `Use` `REGIONAL` vs. `GLOBAL` Tables](when-to-use-regional-vs-global-tables.html).
 
 ## How to migrate a database to the multi-region SQL abstractions
 
@@ -78,7 +81,7 @@ If you used the [duplicate indexes pattern][dupe_index], the steps for backing o
     ~~~ sql
     ALTER TABLE postal_codes CONFIGURE ZONE DISCARD;
     ~~~
-    
+
 1. Drop the extra indexes you added. This will have the side effect of also deleting the zone configurations you added to those indexes.
 
     {% include_cached copy-clipboard.html %}
@@ -131,7 +134,7 @@ If you applied the [geo-partitioned leaseholders][geo_leaseholders] pattern, the
     ALTER INDEX users_last_name_index PARTITION BY NOTHING;
     ~~~
 
-The latency and resiliency benefits of the geo-partitioned leaseholders pattern can be replaced by making `users` a [`REGIONAL` table](regional-tables.html) with a [`ZONE` survival goal](multiregion-overview.html#surviving-zone-failures).
+The latency and resiliency benefits of the geo-partitioned leaseholders pattern can be replaced by making `users` a [`REGIONAL BY ROW` table](regional-tables.html#regional-by-row-tables) with a [`ZONE` survival goal](multiregion-overview.html#surviving-zone-failures).
 
 ### Step 2. Add a primary region to your database
 
@@ -150,7 +153,7 @@ To add another region to the database, issue the [`ADD REGION`](add-region.html)
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-ALTER database foo ADD REGION "us-central1";
+ALTER DATABASE foo ADD REGION "us-central1";
 ~~~
 
 ### Step 4. (Optional) Configure your database survival goal
@@ -167,30 +170,30 @@ For example, to set a region survival goal, issue the following SQL statement:
 ALTER DATABASE foo SURVIVE REGION FAILURE;
 ~~~
 
-For more information about when to use `ZONE` vs. `REGION` survival goals, see [When to use `ZONE` vs `REGION` survival goals](when-to-use-zone-vs-region-survival-goals.html).
+For more information about when to use `ZONE` vs. `REGION` survival goals, see [When to Use `ZONE` vs. `REGION` Survival Goals](when-to-use-zone-vs-region-survival-goals.html).
 
 ### Step 5. Configure table localities
 
 For each table in your database, apply the [table locality](multiregion-overview.html#table-locality) that provides the latency and resiliency requirements you need for that table.
 
-As described above, the mapping from legacy replication zone patterns to multi-region SQL abstractions is:
+As described in [Replication zone patterns and multi-region SQL abstractions](#replication-zone-patterns-and-multi-region-sql-abstractions), the mapping from legacy replication zone patterns to multi-region SQL abstractions is:
 
 {% include {{page.version.version}}/sql/replication-zone-patterns-to-multiregion-sql-mapping.md %}
 
-For example, to configure the `postal_codes` table from the [duplicate indexes example above](#duplicate-indexes) to use [multi-region SQL](multiregion-overview.html), you would enter the following statements to make the `postal_codes` table a [`GLOBAL` table](global-tables.html):
+For example, to configure the `postal_codes` table from the [duplicate indexes example](#duplicate-indexes) to use [multi-region SQL](multiregion-overview.html), you would enter the following statements to make the `postal_codes` table a [`GLOBAL` table](global-tables.html):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER TABLE postal_codes SET LOCALITY GLOBAL;
 ~~~
 
-For more information about when to use `GLOBAL` vs. `REGIONAL` tables, see [When to use `REGIONAL` vs `GLOBAL` tables](when-to-use-regional-vs-global-tables.html).
+For more information about when to use `GLOBAL` vs. `REGIONAL` tables, see [When to Use `REGIONAL` vs. `GLOBAL` Tables](when-to-use-regional-vs-global-tables.html).
 
 ### Step 6. (Optional) View the updated zone configurations
 
 The multi-region SQL statements operate on the same replication zone configurations that you have access to via the [`ALTER TABLE ... CONFIGURE ZONE`](configure-zone.html) statement. If you are interested in seeing how they work with the lower-level zone config mechanisms, you can use the [`SHOW ZONE CONFIGURATIONS`](show-zone-configurations.html) statement to view the zone configurations.
 
-For example, given a multi-region demo cluster set up using the instructions in [Low latency Reads and Writes in a Multi-Region Cluster](demo-low-latency-multi-region-deployment.html), here is what the zone configs for several tables in the [MovR schema](movr.html) look like.
+For example, given a multi-region demo cluster set up using the instructions in [Low Latency Reads and Writes in a Multi-Region Cluster](demo-low-latency-multi-region-deployment.html), here is what the zone configs for several tables in the [MovR schema](movr.html) look like.
 
 #### Regional by row tables
 
@@ -252,7 +255,7 @@ A [`GLOBAL`](global-tables.html) table differs from the default by setting the f
 - [`num_voters`](configure-replication-zones.html#num_voters)
 - [`constraints`](configure-replication-zones.html#constraints)
 - [`voter_constraints`](configure-replication-zones.html#voter_constraints)
-- [`lease_preferences`](configure-replication-zones.html#lease_preferences) 
+- [`lease_preferences`](configure-replication-zones.html#lease_preferences)
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -297,13 +300,13 @@ SHOW ZONE CONFIGURATION FROM TABLE promo_codes;
 
 ## See also
 
-- [Multi-region overview](multiregion-overview.html)
-- [When to use `REGIONAL` vs. `GLOBAL` tables](when-to-use-regional-vs-global-tables.html)
-- [When to use `ZONE` vs. `REGION` survival goals](when-to-use-zone-vs-region-survival-goals.html)
+- [Multi-Region Capabilities Overview](multiregion-overview.html)
+- [When to Use `REGIONAL` vs. `GLOBAL` Tables](when-to-use-regional-vs-global-tables.html)
+- [When to Use `ZONE` vs. `REGION` Survival Goals](when-to-use-zone-vs-region-survival-goals.html)
 - [Topology Patterns](topology-patterns.html)
 - [Disaster Recovery](disaster-recovery.html)
-- [Multi-region SQL performance](demo-low-latency-multi-region-deployment.html)
-- [Configure replication zones](configure-replication-zones.html)
+- [Low Latency Reads and Writes in a Multi-Region Cluster](demo-low-latency-multi-region-deployment.html)
+- [Configure Replication Zones](configure-replication-zones.html)
 - [Non-voting replicas](architecture/replication-layer.html#non-voting-replicas)
 
 <!-- Reference Links -->

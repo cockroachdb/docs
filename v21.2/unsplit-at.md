@@ -2,6 +2,7 @@
 title: UNSPLIT AT
 summary: The UNSPLIT AT statement removes a range split enforcement at a specified row in the table or index.
 toc: true
+docs_area: reference.sql
 ---
 
 The `UNSPLIT AT` [statement](sql-statements.html) removes a [split enforcement](split-at.html) on a [range split](architecture/distribution-layer.html#range-splits), at a specified row in a table or index.
@@ -32,108 +33,126 @@ The user must have the `INSERT` [privilege](authorization.html#assign-privileges
 
 ## Examples
 
-{% include {{page.version.version}}/sql/movr-statements-nodes.md %}
+{% include {{page.version.version}}/sql/movr-statements.md %}
 
 ### Unsplit a table
 
-The `crdb_internal.ranges` table contains information about ranges in your CockroachDB cluster. At this point, just one range contains the data in the `users` table:
+Suppose that you want MovR to offer ride-sharing services, in addition to vehicle-sharing services. Some users need to sign up to be drivers, so you need a `drivers` table to store driver information.
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT range_id, start_pretty, end_pretty, split_enforced_until FROM crdb_internal.ranges WHERE table_name='users';
-~~~
-~~~
-  range_id |                                        start_pretty                                         |                                         end_pretty                                          |        split_enforced_until
------------+---------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------+--------------------------------------
-        37 | /Table/53                                                                                   | /Table/53/1/"amsterdam"/"\xb333333@\x00\x80\x00\x00\x00\x00\x00\x00#"                       | NULL
-        47 | /Table/53/1/"amsterdam"/"\xb333333@\x00\x80\x00\x00\x00\x00\x00\x00#"                       | /Table/53/1/"boston"/"333333D\x00\x80\x00\x00\x00\x00\x00\x00\n"                            | 2262-04-11 23:47:16.854776+00:00:00
-        46 | /Table/53/1/"boston"/"333333D\x00\x80\x00\x00\x00\x00\x00\x00\n"                            | /Table/53/1/"los angeles"/"\x99\x99\x99\x99\x99\x99H\x00\x80\x00\x00\x00\x00\x00\x00\x1e"   | 2262-04-11 23:47:16.854776+00:00:00
-        44 | /Table/53/1/"los angeles"/"\x99\x99\x99\x99\x99\x99H\x00\x80\x00\x00\x00\x00\x00\x00\x1e"   | /Table/53/1/"new york"/"\x19\x99\x99\x99\x99\x99J\x00\x80\x00\x00\x00\x00\x00\x00\x05"      | 2262-04-11 23:47:16.854776+00:00:00
-        45 | /Table/53/1/"new york"/"\x19\x99\x99\x99\x99\x99J\x00\x80\x00\x00\x00\x00\x00\x00\x05"      | /Table/53/1/"paris"/"\xcc\xcc\xcc\xcc\xcc\xcc@\x00\x80\x00\x00\x00\x00\x00\x00("            | 2262-04-11 23:47:16.854776+00:00:00
-        43 | /Table/53/1/"paris"/"\xcc\xcc\xcc\xcc\xcc\xcc@\x00\x80\x00\x00\x00\x00\x00\x00("            | /Table/53/1/"san francisco"/"\x80\x00\x00\x00\x00\x00@\x00\x80\x00\x00\x00\x00\x00\x00\x19" | 2262-04-11 23:47:16.854776+00:00:00
-        59 | /Table/53/1/"san francisco"/"\x80\x00\x00\x00\x00\x00@\x00\x80\x00\x00\x00\x00\x00\x00\x19" | /Table/53/1/"seattle"/"ffffffH\x00\x80\x00\x00\x00\x00\x00\x00\x14"                         | 2262-04-11 23:47:16.854776+00:00:00
-        57 | /Table/53/1/"seattle"/"ffffffH\x00\x80\x00\x00\x00\x00\x00\x00\x14"                         | /Table/53/1/"washington dc"/"L\xcc\xcc\xcc\xcc\xccL\x00\x80\x00\x00\x00\x00\x00\x00\x0f"    | 2262-04-11 23:47:16.854776+00:00:00
-        58 | /Table/53/1/"washington dc"/"L\xcc\xcc\xcc\xcc\xccL\x00\x80\x00\x00\x00\x00\x00\x00\x0f"    | /Table/54                                                                                   | 2262-04-11 23:47:16.854776+00:00:00
-(9 rows)
+> CREATE TABLE drivers (
+    id UUID DEFAULT gen_random_uuid(),
+    city STRING,
+    name STRING,
+    dl STRING DEFAULT left(md5(random()::text),8) UNIQUE CHECK (LENGTH(dl) < 9),
+    address STRING,
+    CONSTRAINT "primary" PRIMARY KEY (city ASC, dl ASC)
+);
 ~~~
 
-Now [split](split-at.html) the `users` table ranges based on primary key values:
+The table's compound primary key is on the `city` and `dl` columns. Note that the table automatically generates an `id` and a `dl` [using supported SQL functions](functions-and-operators.html), if they are not provided.
+
+Because this table has several columns in common with the `users` table, you can populate the table with values from the `users` table with an `INSERT` statement:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> ALTER TABLE users SPLIT AT VALUES ('chicago'), ('new york'), ('seattle');
-~~~
-~~~
-              key              |   pretty    |        split_enforced_until
--------------------------------+-------------+--------------------------------------
-  \275\211\022chicago\000\001  | /"chicago"  | 2262-04-11 23:47:16.854776+00:00:00
-  \275\211\022new york\000\001 | /"new york" | 2262-04-11 23:47:16.854776+00:00:00
-  \275\211\022seattle\000\001  | /"seattle"  | 2262-04-11 23:47:16.854776+00:00:00
-(3 rows)
+> INSERT INTO drivers (id, city, name, address)
+    SELECT id, city, name, address FROM users;
 ~~~
 
-You can see the additional ranges in the `crdb_internal.ranges` table:
+ At this point, just one range contains the data in the `drivers` table.
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT range_id, start_pretty, end_pretty, split_enforced_until FROM crdb_internal.ranges WHERE table_name='users';
+> SHOW RANGES FROM TABLE drivers;
 ~~~
+
 ~~~
-  range_id |                                        start_pretty                                         |                                         end_pretty                                          |        split_enforced_until
------------+---------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------+--------------------------------------
-        37 | /Table/53                                                                                   | /Table/53/1/"amsterdam"/"\xb333333@\x00\x80\x00\x00\x00\x00\x00\x00#"                       | NULL
-        47 | /Table/53/1/"amsterdam"/"\xb333333@\x00\x80\x00\x00\x00\x00\x00\x00#"                       | /Table/53/1/"boston"/"333333D\x00\x80\x00\x00\x00\x00\x00\x00\n"                            | 2262-04-11 23:47:16.854776+00:00:00
-        46 | /Table/53/1/"boston"/"333333D\x00\x80\x00\x00\x00\x00\x00\x00\n"                            | /Table/53/1/"chicago"                                                                       | 2262-04-11 23:47:16.854776+00:00:00
-        67 | /Table/53/1/"chicago"                                                                       | /Table/53/1/"los angeles"/"\x99\x99\x99\x99\x99\x99H\x00\x80\x00\x00\x00\x00\x00\x00\x1e"   | 2262-04-11 23:47:16.854776+00:00:00
-        44 | /Table/53/1/"los angeles"/"\x99\x99\x99\x99\x99\x99H\x00\x80\x00\x00\x00\x00\x00\x00\x1e"   | /Table/53/1/"new york"                                                                      | 2262-04-11 23:47:16.854776+00:00:00
-        77 | /Table/53/1/"new york"                                                                      | /Table/53/1/"new york"/"\x19\x99\x99\x99\x99\x99J\x00\x80\x00\x00\x00\x00\x00\x00\x05"      | 2262-04-11 23:47:16.854776+00:00:00
-        45 | /Table/53/1/"new york"/"\x19\x99\x99\x99\x99\x99J\x00\x80\x00\x00\x00\x00\x00\x00\x05"      | /Table/53/1/"paris"/"\xcc\xcc\xcc\xcc\xcc\xcc@\x00\x80\x00\x00\x00\x00\x00\x00("            | 2262-04-11 23:47:16.854776+00:00:00
-        43 | /Table/53/1/"paris"/"\xcc\xcc\xcc\xcc\xcc\xcc@\x00\x80\x00\x00\x00\x00\x00\x00("            | /Table/53/1/"san francisco"/"\x80\x00\x00\x00\x00\x00@\x00\x80\x00\x00\x00\x00\x00\x00\x19" | 2262-04-11 23:47:16.854776+00:00:00
-        59 | /Table/53/1/"san francisco"/"\x80\x00\x00\x00\x00\x00@\x00\x80\x00\x00\x00\x00\x00\x00\x19" | /Table/53/1/"seattle"                                                                       | 2262-04-11 23:47:16.854776+00:00:00
-        78 | /Table/53/1/"seattle"                                                                       | /Table/53/1/"seattle"/"ffffffH\x00\x80\x00\x00\x00\x00\x00\x00\x14"                         | 2262-04-11 23:47:16.854776+00:00:00
-        57 | /Table/53/1/"seattle"/"ffffffH\x00\x80\x00\x00\x00\x00\x00\x00\x14"                         | /Table/53/1/"washington dc"/"L\xcc\xcc\xcc\xcc\xccL\x00\x80\x00\x00\x00\x00\x00\x00\x0f"    | 2262-04-11 23:47:16.854776+00:00:00
-        58 | /Table/53/1/"washington dc"/"L\xcc\xcc\xcc\xcc\xccL\x00\x80\x00\x00\x00\x00\x00\x00\x0f"    | /Table/54                                                                                   | 2262-04-11 23:47:16.854776+00:00:00
-(12 rows)
+  start_key | end_key | range_id | range_size_mb | lease_holder | lease_holder_locality | replicas |    replica_localities
+------------+---------+----------+---------------+--------------+-----------------------+----------+---------------------------
+  NULL      | NULL    |       74 |      0.007218 |            1 | region=us-east1,az=b  | {1}      | {"region=us-east1,az=b"}
+(1 row)
+~~~
+
+You can [split](split-at.html) the table based on the compound primary key. Note that you do not have to specify the entire value for the primary key, just the prefix.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> ALTER TABLE drivers SPLIT AT VALUES ('new york', '3'), ('new york', '7'), ('chicago', '3'), ('chicago', '7'), ('seattle', '3'), ('seattle', '7');
+~~~
+
+~~~
+                     key                    |     pretty      |    split_enforced_until
+--------------------------------------------+-----------------+-----------------------------
+  \xc3\x89\x12new york\x00\x01\x123\x00\x01 | /"new york"/"3" | 2262-04-11 23:47:16.854776
+  \xc3\x89\x12new york\x00\x01\x127\x00\x01 | /"new york"/"7" | 2262-04-11 23:47:16.854776
+  \xc3\x89\x12chicago\x00\x01\x123\x00\x01  | /"chicago"/"3"  | 2262-04-11 23:47:16.854776
+  \xc3\x89\x12chicago\x00\x01\x127\x00\x01  | /"chicago"/"7"  | 2262-04-11 23:47:16.854776
+  \xc3\x89\x12seattle\x00\x01\x123\x00\x01  | /"seattle"/"3"  | 2262-04-11 23:47:16.854776
+  \xc3\x89\x12seattle\x00\x01\x127\x00\x01  | /"seattle"/"7"  | 2262-04-11 23:47:16.854776
+(6 rows)
+~~~
+
+The [`crdb_internal.ranges`](crdb-internal.html) view contains additional information about ranges in your CockroachDB cluster, including the expiration of the split enforcement.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT range_id, start_pretty, end_pretty, split_enforced_until FROM crdb_internal.ranges WHERE table_name='drivers';
+~~~
+
+~~~
+  range_id |        start_pretty        |         end_pretty         |    split_enforced_until
+-----------+----------------------------+----------------------------+-----------------------------
+        74 | /Table/59                  | /Table/59/1/"chicago"/"3"  | NULL
+        77 | /Table/59/1/"chicago"/"3"  | /Table/59/1/"chicago"/"7"  | 2262-04-11 23:47:16.854776
+        78 | /Table/59/1/"chicago"/"7"  | /Table/59/1/"new york"/"3" | 2262-04-11 23:47:16.854776
+        75 | /Table/59/1/"new york"/"3" | /Table/59/1/"new york"/"7" | 2262-04-11 23:47:16.854776
+        76 | /Table/59/1/"new york"/"7" | /Table/59/1/"seattle"/"3"  | 2262-04-11 23:47:16.854776
+        79 | /Table/59/1/"seattle"/"3"  | /Table/59/1/"seattle"/"7"  | 2262-04-11 23:47:16.854776
+        80 | /Table/59/1/"seattle"/"7"  | /Max                       | 2262-04-11 23:47:16.854776
+(7 rows)
 ~~~
 
 Now unsplit the table to remove the split enforcements:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> ALTER TABLE users UNSPLIT AT VALUES ('chicago'), ('new york'), ('seattle');
+> ALTER TABLE drivers UNSPLIT AT VALUES ('new york', '3'), ('new york', '7'), ('chicago', '3'), ('chicago', '7'), ('seattle', '3'), ('seattle', '7');
 ~~~
+
 ~~~
-              key              |         pretty
--------------------------------+-------------------------
-  \275\211\022chicago\000\001  | /Table/53/1/"chicago"
-  \275\211\022new york\000\001 | /Table/53/1/"new york"
-  \275\211\022seattle\000\001  | /Table/53/1/"seattle"
-(3 rows)
+                     key                    |           pretty
+--------------------------------------------+-----------------------------
+  \xc3\x89\x12new york\x00\x01\x123\x00\x01 | /Table/59/1/"new york"/"3"
+  \xc3\x89\x12new york\x00\x01\x127\x00\x01 | /Table/59/1/"new york"/"7"
+  \xc3\x89\x12chicago\x00\x01\x123\x00\x01  | /Table/59/1/"chicago"/"3"
+  \xc3\x89\x12chicago\x00\x01\x127\x00\x01  | /Table/59/1/"chicago"/"7"
+  \xc3\x89\x12seattle\x00\x01\x123\x00\x01  | /Table/59/1/"seattle"/"3"
+  \xc3\x89\x12seattle\x00\x01\x127\x00\x01  | /Table/59/1/"seattle"/"7"
+(6 rows)
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT range_id, start_pretty, end_pretty, split_enforced_until FROM crdb_internal.ranges WHERE table_name='users';
-~~~
-~~~
-  range_id |                                        start_pretty                                         |                                         end_pretty                                          |        split_enforced_until
------------+---------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------+--------------------------------------
-        37 | /Table/53                                                                                   | /Table/53/1/"amsterdam"/"\xb333333@\x00\x80\x00\x00\x00\x00\x00\x00#"                       | NULL
-        47 | /Table/53/1/"amsterdam"/"\xb333333@\x00\x80\x00\x00\x00\x00\x00\x00#"                       | /Table/53/1/"boston"/"333333D\x00\x80\x00\x00\x00\x00\x00\x00\n"                            | 2262-04-11 23:47:16.854776+00:00:00
-        46 | /Table/53/1/"boston"/"333333D\x00\x80\x00\x00\x00\x00\x00\x00\n"                            | /Table/53/1/"chicago"                                                                       | 2262-04-11 23:47:16.854776+00:00:00
-        67 | /Table/53/1/"chicago"                                                                       | /Table/53/1/"los angeles"/"\x99\x99\x99\x99\x99\x99H\x00\x80\x00\x00\x00\x00\x00\x00\x1e"   | NULL
-        44 | /Table/53/1/"los angeles"/"\x99\x99\x99\x99\x99\x99H\x00\x80\x00\x00\x00\x00\x00\x00\x1e"   | /Table/53/1/"new york"                                                                      | 2262-04-11 23:47:16.854776+00:00:00
-        77 | /Table/53/1/"new york"                                                                      | /Table/53/1/"new york"/"\x19\x99\x99\x99\x99\x99J\x00\x80\x00\x00\x00\x00\x00\x00\x05"      | NULL
-        45 | /Table/53/1/"new york"/"\x19\x99\x99\x99\x99\x99J\x00\x80\x00\x00\x00\x00\x00\x00\x05"      | /Table/53/1/"paris"/"\xcc\xcc\xcc\xcc\xcc\xcc@\x00\x80\x00\x00\x00\x00\x00\x00("            | 2262-04-11 23:47:16.854776+00:00:00
-        43 | /Table/53/1/"paris"/"\xcc\xcc\xcc\xcc\xcc\xcc@\x00\x80\x00\x00\x00\x00\x00\x00("            | /Table/53/1/"san francisco"/"\x80\x00\x00\x00\x00\x00@\x00\x80\x00\x00\x00\x00\x00\x00\x19" | 2262-04-11 23:47:16.854776+00:00:00
-        59 | /Table/53/1/"san francisco"/"\x80\x00\x00\x00\x00\x00@\x00\x80\x00\x00\x00\x00\x00\x00\x19" | /Table/53/1/"seattle"                                                                       | 2262-04-11 23:47:16.854776+00:00:00
-        78 | /Table/53/1/"seattle"                                                                       | /Table/53/1/"seattle"/"ffffffH\x00\x80\x00\x00\x00\x00\x00\x00\x14"                         | NULL
-        57 | /Table/53/1/"seattle"/"ffffffH\x00\x80\x00\x00\x00\x00\x00\x00\x14"                         | /Table/53/1/"washington dc"/"L\xcc\xcc\xcc\xcc\xccL\x00\x80\x00\x00\x00\x00\x00\x00\x0f"    | 2262-04-11 23:47:16.854776+00:00:00
-        58 | /Table/53/1/"washington dc"/"L\xcc\xcc\xcc\xcc\xccL\x00\x80\x00\x00\x00\x00\x00\x00\x0f"    | /Table/54                                                                                   | 2262-04-11 23:47:16.854776+00:00:00
-(12 rows)
+> SELECT range_id, start_pretty, end_pretty, split_enforced_until FROM crdb_internal.ranges WHERE table_name='drivers';
 ~~~
 
-The `users` table is still split into ranges at `'chicago'`, `'new york'`, and `'seattle'`, but the `split_enforced_until` column is now `NULL` for all ranges in the table. The split is no longer enforced, and CockroachDB can [merge the data](architecture/distribution-layer.html#range-merges) in the table as needed.
+~~~
+  range_id |        start_pretty        |         end_pretty         | split_enforced_until
+-----------+----------------------------+----------------------------+-----------------------
+        74 | /Table/59                  | /Table/59/1/"chicago"/"3"  | NULL
+        77 | /Table/59/1/"chicago"/"3"  | /Table/59/1/"chicago"/"7"  | NULL
+        78 | /Table/59/1/"chicago"/"7"  | /Table/59/1/"new york"/"3" | NULL
+        75 | /Table/59/1/"new york"/"3" | /Table/59/1/"new york"/"7" | NULL
+        76 | /Table/59/1/"new york"/"7" | /Table/59/1/"seattle"/"3"  | NULL
+        79 | /Table/59/1/"seattle"/"3"  | /Table/59/1/"seattle"/"7"  | NULL
+        80 | /Table/59/1/"seattle"/"7"  | /Max                       | NULL
+(7 rows)
+
+~~~
+
+The `drivers` table is still split into ranges at specific primary key column values, but the `split_enforced_until` column is now `NULL` for all ranges in the table. The split is no longer enforced, and CockroachDB can [merge the data](architecture/distribution-layer.html#range-merges) in the table as needed.
 
 ### Unsplit an index
 

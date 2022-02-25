@@ -2,11 +2,12 @@
 title: DROP TABLE
 summary: The DROP TABLE statement removes a table and all its indexes from a database.
 toc: true
+docs_area: reference.sql
 ---
 
 The `DROP TABLE` [statement](sql-statements.html) removes a table and all its indexes from a database.
 
-{% include {{{ page.version.version }}/misc/schema-change-stmt-note.md %}
+{% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
 ## Required privileges
 

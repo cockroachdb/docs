@@ -2,6 +2,7 @@
 title: Transaction Retry Error Reference
 summary: A list of the transaction retry (serialization) errors emitted by CockroachDB, including likely causes and user actions for mitigation.
 toc: true
+docs_area: reference.transaction_retry_error_reference
 ---
 
 This page has a list of the transaction retry error codes emitted by CockroachDB.
@@ -90,7 +91,7 @@ The `RETRY_SERIALIZABLE` error occurs in the following cases:
 
 2. When a [high-priority transaction](transactions.html#transaction-priorities) _A_ does a read that runs into a write intent from another lower-priority transaction _B_, and some other transaction _C_ writes to a key that _B_ has already read. Transaction _B_ will get this error when it tries to commit, because _A_ has already read some of the data touched by _B_ and returned results to the client, and _C_ has written data previously read by _B_.
 
-3. When a transaction _A_ is forced to refresh (i.e., change its timestamp) due to hitting the maximum [_closed timestamp_](architecture/transaction-layer.html#closed-timestamps) interval (closed timestamps enable [Follower Reads](follower-reads.html#how-follower-reads-work) and [Change Data Capture (CDC)](stream-data-out-of-cockroachdb-using-changefeeds.html)). This can happen when transaction _A_ is a long-running transaction, and there is a write by another transaction to data that _A_ has already read. If this is the cause of the error, the solution is to increase the `kv.closed_timestamp.target_duration` setting to a higher value. Unfortunately, there is no indication from this error code that a too-low closed timestamp setting is the issue. Therefore, you may need to rule out cases 1 and 2 (or experiment with increasing the closed timestamp interval, if that is possible for your application - see the note below).
+3. When a transaction _A_ is forced to refresh (i.e., change its timestamp) due to hitting the maximum [_closed timestamp_](architecture/transaction-layer.html#closed-timestamps) interval (closed timestamps enable [Follower Reads](follower-reads.html#how-follower-reads-work) and [Change Data Capture (CDC)](change-data-capture-overview.html)). This can happen when transaction _A_ is a long-running transaction, and there is a write by another transaction to data that _A_ has already read. If this is the cause of the error, the solution is to increase the `kv.closed_timestamp.target_duration` setting to a higher value. Unfortunately, there is no indication from this error code that a too-low closed timestamp setting is the issue. Therefore, you may need to rule out cases 1 and 2 (or experiment with increasing the closed timestamp interval, if that is possible for your application - see the note below).
 
 _Action_:
 
@@ -100,13 +101,13 @@ _Action_:
    3. Use historical reads with [`SELECT ... AS OF SYSTEM TIME`](as-of-system-time.html).
 
 2. If you encounter case 3 above, the solution is to:
-   1. Increase the `kv.closed_timestamp.target_duration` setting to a higher value. As described above, this will impact the freshness of data available via [Follower Reads](follower-reads.html) and [CDC changefeeds](stream-data-out-of-cockroachdb-using-changefeeds.html).
+   1. Increase the `kv.closed_timestamp.target_duration` setting to a higher value. As described above, this will impact the freshness of data available via [Follower Reads](follower-reads.html) and [CDC changefeeds](change-data-capture-overview.html).
    2. Retry transaction _A_ as described in [client-side retry handling](transactions.html#client-side-intervention).
    3. Design your schema and queries to reduce contention. For more information about how contention occurs and how to avoid it, see [Transaction Contention](performance-best-practices-overview.html#transaction-contention). In particular, if you are able to [send all of the statements in your transaction in a single batch](transactions.html#batched-statements), CockroachDB can usually automatically retry the entire transaction for you.
    3. Use historical reads with [`SELECT ... AS OF SYSTEM TIME`](as-of-system-time.html).
 
 {{site.data.alerts.callout_info}}
-If you increase the `kv.closed_timestamp.target_duration` setting, it means that you are increasing the amount of time by which the data available in [Follower Reads](follower-reads.html) and [CDC changefeeds](stream-data-out-of-cockroachdb-using-changefeeds.html) lags behind the current state of the cluster. In other words, there is a trade-off here: if you absolutely must execute long-running transactions that execute concurrently with other transactions that are writing to the same data, you may have to settle for longer delays on Follower Reads and/or CDC to avoid frequent serialization errors. The anomaly that would be exhibited if these transactions were not retried is called [write skew](https://www.cockroachlabs.com/blog/what-write-skew-looks-like/).
+If you increase the `kv.closed_timestamp.target_duration` setting, it means that you are increasing the amount of time by which the data available in [Follower Reads](follower-reads.html) and [CDC changefeeds](change-data-capture-overview.html) lags behind the current state of the cluster. In other words, there is a trade-off here: if you absolutely must execute long-running transactions that execute concurrently with other transactions that are writing to the same data, you may have to settle for longer delays on Follower Reads and/or CDC to avoid frequent serialization errors. The anomaly that would be exhibited if these transactions were not retried is called [write skew](https://www.cockroachlabs.com/blog/what-write-skew-looks-like/).
 {{site.data.alerts.end}}
 
 ### RETRY_ASYNC_WRITE_FAILURE
@@ -175,7 +176,7 @@ This error occurs in the cases described below.
 
 2. When a [high-priority transaction](transactions.html#transaction-priorities) _A_ does a read that runs into a write intent from another lower-priority transaction _B_. Transaction _B_ may get this error when it tries to commit, because _A_ has already read some of the data touched by _B_ and returned results to the client.
 
-3. When a transaction _A_ is forced to refresh (change its timestamp) due to hitting the maximum [_closed timestamp_](architecture/transaction-layer.html#closed-timestamps) interval (closed timestamps enable [Follower Reads](follower-reads.html#how-follower-reads-work) and [Change Data Capture (CDC)](stream-data-out-of-cockroachdb-using-changefeeds.html)). This can happen when transaction _A_ is a long-running transaction, and there is a write by another transaction to data that _A_ has already read.
+3. When a transaction _A_ is forced to refresh (change its timestamp) due to hitting the maximum [_closed timestamp_](architecture/transaction-layer.html#closed-timestamps) interval (closed timestamps enable [Follower Reads](follower-reads.html#how-follower-reads-work) and [Change Data Capture (CDC)](change-data-capture-overview.html)). This can happen when transaction _A_ is a long-running transaction, and there is a write by another transaction to data that _A_ has already read.
 
 _Action_:
 
@@ -183,7 +184,7 @@ _Action_:
 2. If you encounter case 3 above, you can increase the `kv.closed_timestamp.target_duration` setting to a higher value. Unfortunately, there is no indication from this error code that a too-low closed timestamp setting is the issue. Therefore, you may need to rule out cases 1 and 2 (or experiment with increasing the closed timestamp interval, if that is possible for your application - see the note below).
 
 {{site.data.alerts.callout_info}}
-If you increase the `kv.closed_timestamp.target_duration` setting, it means that you are increasing the amount of time by which the data available in [Follower Reads](follower-reads.html) and [CDC changefeeds](stream-data-out-of-cockroachdb-using-changefeeds.html) lags behind the current state of the cluster. In other words, there is a trade-off here: if you absolutely must execute long-running transactions that execute concurrently with other transactions that are writing to the same data, you may have to settle for longer delays on Follower Reads and/or CDC to avoid frequent serialization errors. The anomaly that would be exhibited if these transactions were not retried is called [write skew](https://www.cockroachlabs.com/blog/what-write-skew-looks-like/).
+If you increase the `kv.closed_timestamp.target_duration` setting, it means that you are increasing the amount of time by which the data available in [Follower Reads](follower-reads.html) and [CDC changefeeds](change-data-capture-overview.html) lags behind the current state of the cluster. In other words, there is a trade-off here: if you absolutely must execute long-running transactions that execute concurrently with other transactions that are writing to the same data, you may have to settle for longer delays on Follower Reads and/or CDC to avoid frequent serialization errors. The anomaly that would be exhibited if these transactions were not retried is called [write skew](https://www.cockroachlabs.com/blog/what-write-skew-looks-like/).
 {{site.data.alerts.end}}
 
 ### ABORT_REASON_ABORTED_RECORD_FOUND

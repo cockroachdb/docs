@@ -2,9 +2,12 @@
 title: RENAME COLUMN
 summary: The RENAME COLUMN statement changes the name of a column in a table.
 toc: true
+docs_area: reference.sql
 ---
 
 The `RENAME COLUMN` [statement](sql-statements.html) changes the name of a column in a table.
+
+{% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
 {{site.data.alerts.callout_info}}
 It is not possible to rename a column referenced by a view. For more details, see [View Dependencies](views.html#view-dependencies).
@@ -116,3 +119,4 @@ Then you decide you want distinct columns for each user's first name, last name,
 - [`RENAME TABLE`](rename-table.html)
 - [`RENAME CONSTRAINT`](rename-constraint.html)
 - [`SHOW JOBS`](show-jobs.html)
+- [Online Schema Changes](online-schema-changes.html)

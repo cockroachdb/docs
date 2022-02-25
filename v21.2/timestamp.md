@@ -2,6 +2,7 @@
 title: TIMESTAMP / TIMESTAMPTZ
 summary: The TIMESTAMP and TIMESTAMPTZ data types stores a date and time pair in UTC.
 toc: true
+docs_area: reference.sql
 ---
 
 The `TIMESTAMP` and `TIMESTAMPTZ` [data types](data-types.html) store a date and time pair in UTC.
@@ -81,7 +82,7 @@ You can use an [`ALTER COLUMN ... SET DATA TYPE`](alter-column.html) statement t
   column_name |  data_type  | is_nullable | column_default | generation_expression |  indices  | is_hidden
 +-------------+-------------+-------------+----------------+-----------------------+-----------+-----------+
   a           | INT8        |    false    | NULL           |                       | {primary} |   false
-  b           | TIMESTAMPTZ |    true     | NULL           |                       | {}        |   false
+  b           | TIMESTAMPTZ |    true     | NULL           |                       | {primary} |   false
 (2 rows)
 ~~~
 
@@ -119,7 +120,7 @@ You can use an [`ALTER COLUMN ... SET DATA TYPE`](alter-column.html) statement t
   column_name |  data_type   | is_nullable | column_default | generation_expression |  indices  | is_hidden
 --------------+--------------+-------------+----------------+-----------------------+-----------+------------
   a           | INT8         |    false    | NULL           |                       | {primary} |   false
-  b           | TIMESTAMP(3) |    true     | NULL           |                       | {}        |   false
+  b           | TIMESTAMP(3) |    true     | NULL           |                       | {primary} |   false
 (2 rows)
 ~~~
 
@@ -161,7 +162,7 @@ ALTER TABLE
   column_name |  data_type   | is_nullable | column_default | generation_expression |  indices  | is_hidden
 --------------+--------------+-------------+----------------+-----------------------+-----------+------------
   a           | INT8         |    false    | NULL           |                       | {primary} |   false
-  b           | TIMESTAMP(4) |    true     | NULL           |                       | {}        |   false
+  b           | TIMESTAMP(4) |    true     | NULL           |                       | {primary} |   false
 (2 rows)
 ~~~
 
@@ -185,7 +186,7 @@ ALTER TABLE
   column_name |   data_type    | is_nullable | column_default | generation_expression |  indices  | is_hidden
 --------------+----------------+-------------+----------------+-----------------------+-----------+------------
   a           | INT8           |    false    | NULL           |                       | {primary} |   false
-  b           | TIMESTAMPTZ(5) |    true     | NULL           |                       | {}        |   false
+  b           | TIMESTAMPTZ(5) |    true     | NULL           |                       | {primary} |   false
 (2 rows)
 ~~~
 

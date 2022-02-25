@@ -2,6 +2,7 @@
 title: Cluster Settings
 summary: Learn about cluster settings that apply to all nodes of a CockroachDB cluster.
 toc: false
+docs_area: reference.cluster_settings
 ---
 
 Cluster settings apply to all nodes of a CockroachDB cluster and control, for example, whether or not to share diagnostic details with Cockroach Labs as well as advanced options for debugging and cluster tuning.
@@ -15,7 +16,7 @@ In contrast to cluster-wide settings, node-level settings apply to a single node
 ## Settings
 
 {{site.data.alerts.callout_danger}}
-Many cluster settings are intended for tuning CockroachDB internals. Before changing these settings, we strongly encourage you to discuss your goals with Cockroach Labs; otherwise, you use them at your own risk.
+These cluster settings have a broad impact on CockroachDB internals and affect all applications, workloads, and users running on a CockroachDB cluster. For some settings, a [session setting](set-vars.html#supported-variables) could be a more appropriate scope.
 {{site.data.alerts.end}}
 
 {% remote_include https://raw.githubusercontent.com/cockroachdb/cockroach/release-21.2/docs/generated/settings/settings.html %}

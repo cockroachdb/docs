@@ -2,9 +2,11 @@
 title: JSONB
 summary: The JSONB data type stores JSON (JavaScript Object Notation) data.
 toc: true
+keywords: gin, gin index, gin indexes, inverted index, inverted indexes, accelerated index, accelerated indexes
+docs_area: reference.sql
 ---
 
-The `JSONB` [data type](data-types.html) stores JSON (JavaScript Object Notation) data as a binary representation of the `JSONB` value, which eliminates whitespace, duplicate keys, and key ordering. `JSONB` supports [inverted indexes](inverted-indexes.html).
+The `JSONB` [data type](data-types.html) stores JSON (JavaScript Object Notation) data as a binary representation of the `JSONB` value, which eliminates whitespace, duplicate keys, and key ordering. `JSONB` supports [GIN indexes](inverted-indexes.html).
 
 {{site.data.alerts.callout_success}}For a hands-on demonstration of storing and querying JSON data from a third-party API, see the <a href="demo-json-support.html">JSON tutorial</a>.{{site.data.alerts.end}}
 
@@ -18,7 +20,7 @@ In CockroachDB, `JSON` is an alias for `JSONB`.
 ## Considerations
 
 - You cannot use [primary key](primary-key.html), [foreign key](foreign-key.html), and [unique](unique.html) [constraints](constraints.html) on `JSONB` values.
-- To [index](indexes.html) a `JSONB` column you can use an [inverted index](inverted-indexes.html) or [index an expression on the column](expression-indexes.html#use-an-expression-to-index-a-field-in-a-jsonb-column).
+- To [index](indexes.html) a `JSONB` column you can use a [GIN index](inverted-indexes.html) or [index an expression on the column](expression-indexes.html#use-an-expression-to-index-a-field-in-a-jsonb-column).
 - CockroachDB does not key-encode JSON values. As a result, tables cannot be [ordered by](order-by.html) `JSONB`/`JSON`-typed columns.
 
 ## Syntax
@@ -94,13 +96,11 @@ For details, see [tracking issue](https://github.com/cockroachdb/cockroach/issue
 ~~~
 
 ~~~
-+--------------+-----------+-------------+-------------------+-----------------------+-------------+
-| column_name  | data_type | is_nullable |  column_default   | generation_expression |   indices   |
-+--------------+-----------+-------------+-------------------+-----------------------+-------------+
-| profile_id   | UUID      |    false    | gen_random_uuid() |                       | {"primary"} |
-| last_updated | TIMESTAMP |    true     | now()             |                       | {}          |
-| user_profile | JSON      |    true     | NULL              |                       | {}          |
-+--------------+-----------+-------------+-------------------+-----------------------+-------------+
+  column_name  | data_type | is_nullable |  column_default   | generation_expression |  indices  | is_hidden
+---------------+-----------+-------------+-------------------+-----------------------+-----------+------------
+  profile_id   | UUID      |    false    | gen_random_uuid() |                       | {primary} |   false
+  last_updated | TIMESTAMP |    true     | now():::TIMESTAMP |                       | {primary} |   false
+  user_profile | JSONB     |    true     | NULL              |                       | {primary} |   false
 (3 rows)
 ~~~
 
@@ -354,11 +354,10 @@ Time: 9ms total (execution 9ms / network 0ms)
 Time: 1ms total (execution 1ms / network 0ms)
 ~~~
 
-
 ## See also
 
 - [JSON tutorial](demo-json-support.html)
-- [Inverted Indexes](inverted-indexes.html)
+- [GIN Indexes](inverted-indexes.html)
 - [Expression Indexes](expression-indexes.html)
 - [Computed Columns](computed-columns.html)
 - [Data Types](data-types.html)

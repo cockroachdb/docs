@@ -2,9 +2,12 @@
 title: Admission Control
 summary: Learn about admission control system in CockroachDB.
 toc: true
+docs_area: reference.architecture
 ---
 
 <span class="version-tag">New in v21.2:</span> CockroachDB implements an optional admission control system to maintain cluster performance and availability when some nodes experience high load. When admission control is enabled, CockroachDB sorts request and response operations into work queues by priority, giving preference to higher priority operations. Internal operations critical to node health, like node liveness heartbeats, are high priority. The admission control system also prioritizes transactions that hold locks, to reduce contention by releasing locks in a timely manner.
+
+## Enable admission control
 
 Admission control is disabled by default. To enable admission control:
 
@@ -12,9 +15,9 @@ Admission control is disabled by default. To enable admission control:
 - Set the [`admission.sql_kv_response.enabled`](../cluster-settings.html) cluster setting to `true` for work performed in the SQL layer when receiving [KV responses](distribution-layer.html).
 - Set the [`admission.sql_sql_response.enabled`](../cluster-settings.html) cluster setting to `true` for work performed in the SQL layer when receiving [DistSQL responses](sql-layer.html#distsql).
 
-We recommend enabling admission control on all layers if you decide to use admission control.
+If you decide to use admission control, Cockroach Labs recommends that you enable admission control on all layers.
 
-{{site.data.alerts.important}}
+{{site.data.alerts.callout_info}}
 If you are upgrading to v21.2, first complete the upgrade with admission control disabled, then enable admission control after verifying the upgrade was successful.
 {{site.data.alerts.end}}
 
@@ -32,7 +35,7 @@ If your cluster has degraded performance due to the following types of node over
 - The node is experiencing out-of-memory errors, visible in the **Memory Usage** graph in the [**Hardware** dashboard](../ui-hardware-dashboard.html#memory-usage). Even though admission control does not explicitly target controlling memory usage, it can reduce memory usage as a side effect of delaying the start of operation execution when the CPU is overloaded.
 
 {{site.data.alerts.callout_info}}
-Admission control should be used when overall cluster health is good but some nodes are experiencing overload. If you see these overload scenarios on many nodes in the cluster, that typically means the cluster needs more resources.
+You should use admission control when overall cluster health is good but some nodes are experiencing overload. If you see these overload scenarios on many nodes in the cluster, that typically means the cluster needs more resources.
 {{site.data.alerts.end}}
 
 ## Work queues and ordering
@@ -49,7 +52,7 @@ Admission control works on the level of each node, not at the cluster level. The
 
 Organizing operations by priority can mean that higher priority operations consume all the available resources while lower priority operations remain in the queue until the operation times out.
 
-## Observing admission control performance
+## Observe admission control performance
 
 The [DB Console Overload dashboard](../ui-overload-dashboard.html) shows metrics related to the performance of the admission control system.
 

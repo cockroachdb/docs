@@ -2,9 +2,12 @@
 title: CREATE SCHEMA
 summary: The CREATE SCHEMA statement creates a new user-defined schema.
 toc: true
+docs_area: reference.sql
 ---
 
- The `CREATE SCHEMA` [statement](sql-statements.html) creates a user-defined [schema](sql-name-resolution.html#naming-hierarchy).
+The `CREATE SCHEMA` [statement](sql-statements.html) creates a user-defined [schema](sql-name-resolution.html#naming-hierarchy).
+
+{% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
 {{site.data.alerts.callout_info}}
 You can also create a user-defined schema by converting an existing database to a schema using [`ALTER DATABASE ... CONVERT TO SCHEMA`](convert-to-schema.html).
@@ -300,5 +303,5 @@ Because `max` is the current user, all unqualified `accounts` table names resolv
 - [`SET SCHEMA`](set-schema.html)
 - [`DROP SCHEMA`](drop-schema.html)
 - [`ALTER SCHEMA`](alter-schema.html)
-- [Other SQL Statements](sql-statements.html)
+- [SQL Statements](sql-statements.html)
 - [Online Schema Changes](online-schema-changes.html)
