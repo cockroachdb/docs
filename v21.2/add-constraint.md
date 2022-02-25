@@ -37,7 +37,7 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
  `constraint_name` | The name of the constraint, which must be unique to its table and follow these [identifier rules](keywords-and-identifiers.html#identifiers).
  `constraint_elem` | The [`CHECK`](check.html), [foreign key](foreign-key.html), [`UNIQUE`](unique.html) constraint you want to add. <br/><br/>Adding/changing a `DEFAULT` constraint is done through [`ALTER COLUMN`](alter-column.html). <br/><br/>Adding/changing the table's `PRIMARY KEY` is not supported through `ALTER TABLE`; it can only be specified during [table creation](create-table.html).
 
-## Viewing schema changes
+## View schema changes
 
 {% include {{ page.version.version }}/misc/schema-change-view-job.md %}
 
@@ -60,7 +60,7 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 
 ### Add the `UNIQUE` constraint
 
-Adding the [`UNIQUE` constraint](unique.html) requires that all of a column's values be distinct from one another (except for *NULL* values).
+Adding the [`UNIQUE` constraint](unique.html) requires that all of a column's values be distinct from one another (except for `NULL` values).
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -76,7 +76,11 @@ Adding the [`CHECK` constraint](check.html) requires that all of a column's valu
 > ALTER TABLE rides ADD CONSTRAINT check_revenue_positive CHECK (revenue >= 0);
 ~~~
 
-Check constraints can be added to columns that were created earlier in the transaction. For example:
+In the process of adding the constraint CockroachDB will run a background job to validate existing table data. If CockroachDB finds a row that violates the constraint during the validation step, the [`ADD CONSTRAINT`](add-constraint.html) statement will fail.
+
+#### Add constraints to columns created during a transaction
+
+You can add check constraints to columns that were created earlier in the transaction. For example:
 
 {% include copy-clipboard.html %}
 ~~~ sql
