@@ -216,7 +216,7 @@ Concept content often includes a [glossary](#glossary).
 
   **Example:** Indexes.
 
-- Provide as much relevant information as you can, and then link to other pages as necessary.
+- Provide as much relevant information as you can, and then link to other pages as necessary. If there is a related reference topic, link to it within the topic.
 - Use diagrams and graphs when you can.
 
 #### Examples
@@ -234,11 +234,11 @@ Task content helps users efficiently develop, deploy, and manage applications.
 
 At the page level, a task could take two different forms: a page with multiple, related tasks or a single longer task.
 
-- Answers the question of "how to?" by describing precisely what to do and the order in which to do it.
-- Title or heading should state an actionable goal for the user and ideally of the form **\<Imperative verb\> [\<article\>|\<conjunction\>] \<noun\> or \<proper noun\>**.
+- Answers the question of "how to do \<an action\>?" by describing precisely what to do and the order in which to do it.
+- The title or heading should state an actionable goal for the user and ideally of the form **\<Imperative verb\> [\<article\>|\<conjunction\>] \<noun\> or \<proper noun\>**.
 
   **Example:** Create an Index
-- Verb ideally should be specific. Avoid generic verbs such as **Use**, **Manage** unless naming a page containing specific tasks.
+- The verb ideally should be specific. Avoid generic verbs such as **Use**, **Manage** unless naming a page containing specific tasks.
 - Avoid **Your** because you may be using an object that you don't "own".
 
   **Example:** Connect to a Cluster, not Connect to Your Cluster
@@ -246,10 +246,10 @@ At the page level, a task could take two different forms: a page with multiple, 
 
   **Example:** Access DB Console, not DB Console Access.
 
-- Presented as an ordered list.
+- Present the steps as an ordered list.
 
 - The title of the page, and the steps on the page, should be second-person imperative. For example, if the first step in starting a cluster is to generate a certificate, then the first header on the page might be **Generate a certificate** (as opposed to **Generating a certificate** or **How to generate a certificate**).
-- Limit the amount of reference information on the page. You can add hyperlinks to the relevant sections of [reference](#reference) in line or in the [See also](#see-also) section.
+- Limit the amount of reference information on the page. You can add links to the relevant sections of [reference](#reference) in line or in the [See also](#see-also) section.
 - When using examples (e.g., code snippets, or dedicated task-based examples), aim for utility and simplicity. Lengthier examples are better for tutorials. A large number of smaller examples is better for reference docs.
 - If the headings on a page each represent an ordered step of a single task, each heading should start with `Step N.` to denote this sequence, and its substeps should take the form of an ordered list.
 
@@ -265,8 +265,8 @@ _Reference_ content provides information about a specific CockroachDB function, 
 
 Reference content helps users understand the precise meaning and affect of CockroachDB SQL language constructs, platform, configuration options, and API parameter values, etc.
 
-- Should be comprehensive and accurate. This principle might apply to other pages types, but it is especially important for reference, as it is the ultimate source of truth (i.e., the "reference") for a particular feature or interface.
-- Should be succinct. Details are typically presented in tabular form. Prose is better suited for [conceptual pages](#conceptual).
+- The content should be comprehensive and accurate. This principle might apply to other pages types, but it is especially important for reference, as it is the ultimate source of truth (i.e., the "reference") for a particular feature or interface.
+- The content should be succinct. Details are typically presented in tabular form. Prose is better suited for [conceptual pages](#conceptual).
 
 #### Examples
 
@@ -306,6 +306,8 @@ A _see also_ section is a list of related pages.
 
 This section is always the last section in a page.
 
+Keep the list of links short, and think about whether the related pages should instead be linked within the content itself to give users more context around _why_ another topic is related. For example, if the task describes how to perform an action on the command line, and another task describes how to perform the same action in a GUI, the link to the GUI task should be in the topic's introduction, not in the See also section.
+
 ## Page types
 
 In addition to the content types, CockroachDB docs have the following special purpose page types:
@@ -320,17 +322,17 @@ In addition to the content types, CockroachDB docs have the following special pu
 
 A _tutorial_ is a task that provides instructions on using CockroachDB in the context of a specific use case. Tutorials acquaint users with a specific feature of CockroachDB through an end-to-end example that achieves a concrete result.
 
-A tutorial helps users quickly achieve competence in a CockroachDB feature or understand tradeoffs between different features and feature configurations. The latter usage is complementary to [Best Practice](#best-practice) guide.
+A tutorial helps users quickly achieve competence in a CockroachDB feature or understand tradeoffs between different features and feature configurations. The latter usage is complementary to a [Best Practice](#best-practice) guide.
 
-- Title is of the form **\<Imperative verb\> xxx \<noun\>**.
+- The title is of the form **\<Imperative verb\> xxx \<noun\>**.
 
   **Example:** Stream a Changefeed to Snowflake
 
-- First section describes [prerequisites](#prerequisites). Heading title: **Before you begin** or **Prerequisites**.
+- The first section describes [prerequisites](#prerequisites). Heading title: **Before you begin** or **Prerequisites**.
 - Subsequent headings are **Step 1. \<Imperative verb\> a \<noun\>**, **Step 2. \<Imperative verb\> a \<noun\>**, etc., each containing a small ordered list of steps. Within each **Step**, limit the number of steps. Aim for the heuristic maximum of 10 steps.
-- Should be written in a conversational [tone](#language-and-tone), as if it is teaching the user.
+- Tutorials should be written in a conversational [tone](#language-and-tone), as if it is teaching the user.
 - The instructions should be prescriptive (i.e., tell the user exactly what to do).
-- Should be self-contained. The reader shouldn't have to consult multiple pages to complete the tutorial.
+- Tutorials should be self-contained. The reader shouldn't have to consult multiple pages to complete the tutorial.
 
 #### Examples
 
