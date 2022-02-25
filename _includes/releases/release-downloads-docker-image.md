@@ -2,17 +2,18 @@
 {% assign version = site.data.versions | where_exp: "version", "version.major_version == release.major_version" | first %}
 
 {% if release.withdrawn == "true" %}
+<h3 id="{{ release.version | downcase | replace: ".", "-" }}-downloads">Downloads</h3>
 {{site.data.alerts.callout_danger}}
 This patch release has been withdrawn{% if include.advisory_key %} due to [this technical advisory](../advisories/{{ include.advisory_key }}.html){% endif %}. All the changes listed as part of this release will be in the next release. Do not upgrade to this release.
 {{site.data.alerts.end}}
 
-### Downloads and Docker image
+<h3 id="{{ release.version | downcase | replace: ".", "-" }}-docker-image">Docker image</h3>
 
 {{site.data.alerts.callout_danger}}
 This release was withdrawn, and we've removed the links to the downloads and Docker image.
 {{site.data.alerts.end}}
 {% else %}
-### Downloads
+<h3 id="{{ release.version | downcase | replace: ".", "-" }}-downloads">Downloads</h3>
 
 <div><div id="os-tabs" class="filters clearfix">
     <a href="https://binaries.cockroachdb.com/cockroach-{{ release.version }}.linux-amd64.tgz"><button id="linux" class="filter-button" data-scope="linux" data-eventcategory="linux-binary-release-notes">Linux</button></a>
@@ -27,7 +28,7 @@ This release was withdrawn, and we've removed the links to the downloads and Doc
 
 {% if release.release_type == "Testing" %}{% include releases/experimental-test-release.md %}{% endif %}
 
-### Docker image
+<h3 id="{{ release.version | downcase | replace: ".", "-" }}-docker-image">Docker image</h3>
 
 {% include_cached copy-clipboard.html %}
 ~~~shell
