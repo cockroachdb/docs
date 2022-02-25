@@ -2,6 +2,7 @@
 title: CONFIGURE ZONE
 summary: Use the CONFIGURE ZONE statement to add, modify, reset, and remove replication zones.
 toc: true
+docs_area: reference.sql
 ---
 
 `CONFIGURE ZONE` is a subcommand of the `ALTER DATABASE`, `ALTER TABLE`, `ALTER INDEX`, `ALTER PARTITION`, and `ALTER RANGE` statements and is used to add, modify, reset, or remove [replication zones](configure-replication-zones.html) for those objects. To view details about existing replication zones, see [`SHOW ZONE CONFIGURATIONS`](show-zone-configurations.html).
@@ -128,4 +129,4 @@ CONFIGURE ZONE 1
 - [`ALTER RANGE`](alter-range.html)
 - [`SHOW JOBS`](show-jobs.html)
 - [Table Partitioning](partitioning.html)
-- [Other SQL Statements](sql-statements.html)
+- [SQL Statements](sql-statements.html)

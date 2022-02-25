@@ -2,6 +2,7 @@
 title: Views
 summary: Learn about CockroachDB's dematerialized and materialized views.
 toc: true
+docs_area: develop
 ---
 
 A view is a stored and named [selection query](selection-queries.html). By default, CockroachDB's views are **dematerialized**: they do not store the results of the underlying queries. Instead, the underlying query is executed anew every time the view is used.
@@ -334,9 +335,9 @@ Similarly, because no view depends on the `title` column of the `episodes` table
   column_name | data_type | is_nullable | column_default | generation_expression |  indices  | is_hidden
 --------------+-----------+-------------+----------------+-----------------------+-----------+------------
   id          | INT8      |    false    | NULL           |                       | {primary} |   false
-  season      | INT8      |    true     | NULL           |                       | {}        |   false
-  number      | INT8      |    true     | NULL           |                       | {}        |   false
-  stardate    | DECIMAL   |    true     | NULL           |                       | {}        |   false
+  season      | INT8      |    true     | NULL           |                       | {primary} |   false
+  number      | INT8      |    true     | NULL           |                       | {primary} |   false
+  stardate    | DECIMAL   |    true     | NULL           |                       | {primary} |   false
 (4 rows)
 ~~~
 

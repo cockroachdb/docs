@@ -2,6 +2,7 @@
 title: TIME / TIMETZ
 summary: CockroachDB's TIME data type stores a time of day in UTC.
 toc: true
+docs_area: reference.sql
 ---
 
 The `TIME` [data type](data-types.html) stores the time of day in UTC.
@@ -87,7 +88,7 @@ You can use an [`ALTER COLUMN ... SET DATA TYPE`](alter-column.html) statement t
   column_name | data_type | is_nullable | column_default | generation_expression |  indices  | is_hidden
 +-------------+-----------+-------------+----------------+-----------------------+-----------+-----------+
   time_id     | INT8      |    false    | NULL           |                       | {primary} |   false
-  time_val    | TIME      |    true     | NULL           |                       | {}        |   false
+  time_val    | TIME      |    true     | NULL           |                       | {primary} |   false
 (2 rows)
 ~~~
 
@@ -144,7 +145,7 @@ Comparing `TIME` values:
   column_name | data_type | is_nullable | column_default | generation_expression |  indices  | is_hidden
 --------------+-----------+-------------+----------------+-----------------------+-----------+------------
   time_id     | INT8      |    false    | NULL           |                       | {primary} |   false
-  time_val    | TIME(4)   |    true     | NULL           |                       | {}        |   false
+  time_val    | TIME(4)   |    true     | NULL           |                       | {primary} |   false
 (2 rows)
 ~~~
 
@@ -186,7 +187,7 @@ ALTER TABLE
   column_name | data_type | is_nullable | column_default | generation_expression |  indices  | is_hidden
 --------------+-----------+-------------+----------------+-----------------------+-----------+------------
   time_id     | INT8      |    false    | NULL           |                       | {primary} |   false
-  time_val    | TIME(5)   |    true     | NULL           |                       | {}        |   false
+  time_val    | TIME(5)   |    true     | NULL           |                       | {primary} |   false
 (2 rows)
 ~~~
 

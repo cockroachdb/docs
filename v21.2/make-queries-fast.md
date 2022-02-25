@@ -2,6 +2,7 @@
 title: Optimize Statement Performance
 summary: How to make your statements run faster during application development
 toc: true
+docs_area: develop
 ---
 
 This page provides an overview for optimizing statement performance in CockroachDB. To get good performance, you need to look at how you're accessing the database through several lenses:
@@ -246,16 +247,24 @@ SHOW INDEXES FROM rides;
 ~~~
   table_name |                  index_name                   | non_unique | seq_in_index | column_name  | direction | storing | implicit
 -------------+-----------------------------------------------+------------+--------------+--------------+-----------+---------+-----------
-  rides      | primary                                       |   false    |            1 | city         | ASC       |  false  |  false
-  rides      | primary                                       |   false    |            2 | id           | ASC       |  false  |  false
-  rides      | rides_auto_index_fk_city_ref_users            |    true    |            1 | city         | ASC       |  false  |  false
-  rides      | rides_auto_index_fk_city_ref_users            |    true    |            2 | rider_id     | ASC       |  false  |  false
-  rides      | rides_auto_index_fk_city_ref_users            |    true    |            3 | id           | ASC       |  false  |   true
-  rides      | rides_auto_index_fk_vehicle_city_ref_vehicles |    true    |            1 | vehicle_city | ASC       |  false  |  false
-  rides      | rides_auto_index_fk_vehicle_city_ref_vehicles |    true    |            2 | vehicle_id   | ASC       |  false  |  false
-  rides      | rides_auto_index_fk_vehicle_city_ref_vehicles |    true    |            3 | id           | ASC       |  false  |   true
-  rides      | rides_auto_index_fk_vehicle_city_ref_vehicles |    true    |            4 | city         | ASC       |  false  |   true
-(9 rows)
+  rides      | primary                                       |   false    |            1 | city          | ASC       |  false  |  false
+  rides      | primary                                       |   false    |            2 | id            | ASC       |  false  |  false
+  rides      | primary                                       |   false    |            3 | vehicle_city  | N/A       |  true   |  false
+  rides      | primary                                       |   false    |            4 | rider_id      | N/A       |  true   |  false
+  rides      | primary                                       |   false    |            5 | vehicle_id    | N/A       |  true   |  false
+  rides      | primary                                       |   false    |            6 | start_address | N/A       |  true   |  false
+  rides      | primary                                       |   false    |            7 | end_address   | N/A       |  true   |  false
+  rides      | primary                                       |   false    |            8 | start_time    | N/A       |  true   |  false
+  rides      | primary                                       |   false    |            9 | end_time      | N/A       |  true   |  false
+  rides      | primary                                       |   false    |           10 | revenue       | N/A       |  true   |  false
+  rides      | rides_auto_index_fk_city_ref_users            |    true    |            1 | city          | ASC       |  false  |  false
+  rides      | rides_auto_index_fk_city_ref_users            |    true    |            2 | rider_id      | ASC       |  false  |  false
+  rides      | rides_auto_index_fk_city_ref_users            |    true    |            3 | id            | ASC       |  false  |   true
+  rides      | rides_auto_index_fk_vehicle_city_ref_vehicles |    true    |            1 | vehicle_city  | ASC       |  false  |  false
+  rides      | rides_auto_index_fk_vehicle_city_ref_vehicles |    true    |            2 | vehicle_id    | ASC       |  false  |  false
+  rides      | rides_auto_index_fk_vehicle_city_ref_vehicles |    true    |            3 | city          | ASC       |  false  |   true
+  rides      | rides_auto_index_fk_vehicle_city_ref_vehicles |    true    |            4 | id            | ASC       |  false  |   true
+(17 rows)
 
 Time: 5ms total (execution 5ms / network 0ms)
 ~~~

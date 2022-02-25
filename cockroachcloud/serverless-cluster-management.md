@@ -1,15 +1,16 @@
 ---
-title: Cluster Management
+title: Manage a CockroachDB Serverless Cluster
 summary: Manage your cluster's schema, data, and more.
 toc: true
 filter_category: cluster_mgmt
 filter_html: CockroachDB Serverless (beta)
 filter_sort: 1
+docs_area: manage
 ---
 
 {% include filter-tabs.md %}
 
-This page describes the cluster management and cluster deletion workflows.
+This page describes the cluster management and cluster deletion workflows for {{ site.data.products.serverless }}.
 
 ## Planning your cluster
 

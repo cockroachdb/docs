@@ -6,6 +6,7 @@ toc_not_nested: true
 filter_category: start_a_cluster
 filter_html: Insecure
 filter_sort: 2
+docs_area: deploy
 ---
 
 {% include filter-tabs.md %}
@@ -114,7 +115,7 @@ Once you've [installed CockroachDB](install-cockroachdb.html), it's simple to ru
     The output will look something like this:
 
     ~~~
-    CockroachDB node starting at {{page.release_info.start_time}}
+    CockroachDB node starting at {{ now | date: "%Y-%m-%d %H:%M:%S.%6 +0000 UTC" }}
     build:               CCL {{page.release_info.version}} @ {{page.release_info.build_time}} (go1.12.6)
     webui:               http://localhost:8080
     sql:                 postgresql://root@localhost:26257?sslmode=disable

@@ -4,6 +4,8 @@ By using the explicit index annotation, you can override [CockroachDB's index se
 Index selection can impact [performance](performance-best-practices-overview.html), but does not change the result of a query.
 {{site.data.alerts.end}}
 
+##### Force index scan
+
 The syntax to force a scan of a specific index is:
 
 {% include copy-clipboard.html %}
@@ -18,7 +20,9 @@ This is equivalent to the longer expression:
 > SELECT * FROM table@{FORCE_INDEX=my_idx};
 ~~~
 
-The syntax to force a **reverse scan** of a specific index is:
+##### Force reverse scan
+
+The syntax to force a reverse scan of a specific index is:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -58,6 +62,8 @@ you can check the scan direction with:
 (2 rows)
 ~~~
 
+##### Force partial index scan
+
 To force a [partial index scan](partial-indexes.html), your statement must have a `WHERE` clause that implies the partial index filter.
 
 {% include copy-clipboard.html %}
@@ -86,10 +92,12 @@ Time: 22ms total (execution 21ms / network 0ms)
 Time: 1ms total (execution 1ms / network 0ms)
 ~~~
 
-To force a [partial inverted index](inverted-indexes.html#partial-inverted-indexes) scan, your statement must have a `WHERE` clause that:
+##### Force partial GIN index scan
+
+To force a [partial GIN index](inverted-indexes.html#partial-gin-indexes) scan, your statement must have a `WHERE` clause that:
 
 - Implies the partial index.
-- Constrains the inverted index scan.
+- Constrains the GIN index scan.
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -125,4 +133,13 @@ Time: 22ms total (execution 22ms / network 0ms)
 Time: 1ms total (execution 1ms / network 0ms)
 ~~~
 
-To see all indexes available on a table, use [`SHOW INDEXES`](show-index.html).
+##### Prevent full scan
+
+To prevent the optimizer from planning a full scan for a table, specify the `NO_FULL_SCAN` index hint. For example:
+
+~~~sql
+SELECT * FROM table_name@{NO_FULL_SCAN};
+~~~
+
+To prevent a full scan of a [partial index](#force-partial-index-scan), you must specify `NO_FULL_SCAN` _in combination with_ the partial index using `FORCE_INDEX=index_name`.
+If you specify only `NO_FULL_SCAN`, a full scan of a partial index may be planned.

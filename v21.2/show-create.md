@@ -2,6 +2,7 @@
 title: SHOW CREATE
 summary: The SHOW CREATE statement shows the CREATE statement for an existing database, table, view, or sequence.
 toc: true
+docs_area: reference.sql
 ---
 
 The `SHOW CREATE` [statement](sql-statements.html) shows the `CREATE` statement for an existing [database](create-database.html), [table](create-table.html), [view](create-view.html), or [sequence](create-sequence.html).
@@ -396,4 +397,4 @@ The `SHOW CREATE DATABASE` output includes the database regions.
 - [`CREATE VIEW`](create-view.html)
 - [`CREATE TABLE`](create-sequence.html)
 - [Information Schema](information-schema.html)
-- [Other SQL Statements](sql-statements.html)
+- [SQL Statements](sql-statements.html)

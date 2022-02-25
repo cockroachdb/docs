@@ -3,6 +3,7 @@ title: Using GeoServer with CockroachDB
 summary: Tutorial for configuring GeoServer to use CockroachDB.
 toc: true
 toc_not_nested: true
+docs_area: 
 ---
 
 This page has instructions for configuring [GeoServer](http://geoserver.org) to use CockroachDB as the underlying database.

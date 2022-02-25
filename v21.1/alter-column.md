@@ -114,6 +114,9 @@ If the column has the [`NOT NULL` constraint](not-null.html) applied to it, you 
 
 {% include {{ page.version.version }}/computed-columns/convert-computed-column.md %}
 
+### Alter the formula for a computed column
+
+{% include {{ page.version.version }}/computed-columns/alter-computed-column.md %}
 
 ### Convert to a different data type
 

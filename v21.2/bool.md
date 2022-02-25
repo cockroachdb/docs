@@ -2,6 +2,7 @@
 title: BOOL
 summary: The BOOL data type stores Boolean values of false or true.
 toc: true
+docs_area: reference.sql
 ---
 
 The `BOOL` [data type](data-types.html) stores a Boolean value of `false` or `true`.
@@ -22,7 +23,7 @@ Alternately, a boolean value can be obtained by coercing a numeric value: zero i
 
 ## Size
 
-A `BOOL` value is 1 byte in width, but the total storage size is likely to be larger due to CockroachDB metadata.  
+A `BOOL` value is 1 byte in width, but the total storage size is likely to be larger due to CockroachDB metadata.
 
 ## Examples
 
@@ -37,13 +38,11 @@ A `BOOL` value is 1 byte in width, but the total storage size is likely to be la
 ~~~
 
 ~~~
-+-------------+-----------+-------------+----------------+-----------------------+-------------+
-| column_name | data_type | is_nullable | column_default | generation_expression |   indices   |
-+-------------+-----------+-------------+----------------+-----------------------+-------------+
-| a           | INT       |    false    | NULL           |                       | {"primary"} |
-| b           | BOOL      |    true     | NULL           |                       | {}          |
-| c           | BOOL      |    true     | NULL           |                       | {}          |
-+-------------+-----------+-------------+----------------+-----------------------+-------------+
+  column_name | data_type | is_nullable | column_default | generation_expression |  indices  | is_hidden
+--------------+-----------+-------------+----------------+-----------------------+-----------+------------
+  a           | INT8      |    false    | NULL           |                       | {primary} |   false
+  b           | BOOL      |    true     | NULL           |                       | {primary} |   false
+  c           | BOOL      |    true     | NULL           |                       | {primary} |   false
 (3 rows)
 ~~~
 

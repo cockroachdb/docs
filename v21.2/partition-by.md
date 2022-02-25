@@ -2,6 +2,7 @@
 title: PARTITION BY
 summary: Use the PARTITION BY statement to partition, re-partition, or un-partition a table or secondary index.
 toc: true
+docs_area: reference.sql
 ---
 
 `PARTITION BY` is a subcommand of [`ALTER TABLE`](alter-table.html) and [`ALTER INDEX`](alter-index.html) that is used to partition, re-partition, or un-partition a table or secondary index. After defining partitions, [`CONFIGURE ZONE`](configure-zone.html) is used to control the replication and placement of partitions.

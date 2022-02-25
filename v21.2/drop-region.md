@@ -2,6 +2,7 @@
 title: DROP REGION
 summary: The DROP REGION statement drops a region from a multi-region database.
 toc: true
+docs_area: reference.sql
 ---
 
  The `ALTER DATABASE .. DROP REGION` [statement](sql-statements.html) drops a [region](multiregion-overview.html#database-regions) from a [multi-region database](multiregion-overview.html).
@@ -175,9 +176,9 @@ SHOW REGIONS FROM DATABASE foo;
 
 ## See also
 
-- [Multi-region overview](multiregion-overview.html)
+- [Multi-Region Capabilities Overview](multiregion-overview.html)
 - [`SET PRIMARY REGION`](set-primary-region.html)
 - [`ADD REGION`](add-region.html)
 - [`SHOW REGIONS`](show-regions.html)
 - [`ALTER TABLE`](alter-table.html)
-- [Other SQL Statements](sql-statements.html)
+- [SQL Statements](sql-statements.html)

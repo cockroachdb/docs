@@ -2,6 +2,7 @@
 title: File an Issue
 summary: Learn how to file a GitHub issue with CockroachDB.
 toc: false
+docs_area: manage
 ---
 
 If you've tried to [troubleshoot](troubleshooting-overview.html) an issue yourself, have [reached out for help](support-resources.html), and are still stumped, you can file an issue in GitHub.

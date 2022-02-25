@@ -2,6 +2,7 @@
 title: Name Resolution
 summary: Object names can exist in multiple places in the naming hierarchy. Resolution decides which one to use.
 toc: true
+docs_area: reference.sql
 ---
 
 This page documents **name resolution** in CockroachDB.
@@ -76,10 +77,9 @@ The search path is used when a name is unqualified (i.e., has no prefix). It lis
 
 - You can set the current search path with [`SET search_path`](set-vars.html) and inspected it with [`SHOW
 search_path`](show-vars.html).
-
 - You can inspect the list of valid schemas that can be listed in `search_path` with [`SHOW SCHEMAS`](show-schemas.html).
-
-- By default, the search path contains `$user`, `public`, and `pg_catalog`. For compatibility with PostgreSQL, `pg_catalog` is forced to be present in `search_path` at all times, even when not specified with `SET search_path`.
+- By default, the search path contains `$user`, `public`, `pg_catalog`, and `pg_extension`. For compatibility with PostgreSQL, `pg_catalog` is forced to be present in `search_path` at all times, even when not specified with `SET search_path`.
+- To mimic the behavior in PostgreSQL, CockroachDB will attempt a resolution to `pg_extension` prior to attempting `public`.
 
 ### Current schema
 

@@ -2,11 +2,13 @@
 title: CREATE TABLE
 summary: The CREATE TABLE statement creates a new table in a database.
 toc: true
+keywords: gin, gin index, gin indexes, inverted index, inverted indexes, accelerated index, accelerated indexes
+docs_area: reference.sql
 ---
 
 The `CREATE TABLE` [statement](sql-statements.html) creates a new table in a database.
 
-{% include {{{ page.version.version }}/misc/schema-change-stmt-note.md %}
+{% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
 ## Required privileges
 
@@ -100,7 +102,7 @@ Parameter | Description
 `IF NOT EXISTS` | Create a new table only if a table of the same name does not already exist in the database; if one does exist, do not return an error.<br><br>Note that `IF NOT EXISTS` checks the table name only; it does not check if an existing table has the same columns, indexes, constraints, etc., of the new table.
 `table_name` | The name of the table to create, which must be unique within its database and follow these [identifier rules](keywords-and-identifiers.html#identifiers). When the parent database is not set as the default, the name must be formatted as `database.name`.<br><br>The [`UPSERT`](upsert.html) and [`INSERT ON CONFLICT`](insert.html) statements use a temporary table called `excluded` to handle uniqueness conflicts during execution. It's therefore not recommended to use the name `excluded` for any of your tables.
 `column_def` | A comma-separated list of column definitions. Each column requires a [name/identifier](keywords-and-identifiers.html#identifiers) and [data type](data-types.html). Column names must be unique within the table but can have the same name as indexes or constraints.<br><br>You can optionally specify a [column qualification](#column-qualifications) (e.g., a [column-level constraint](constraints.html)). Any `PRIMARY KEY`, `UNIQUE`, and `CHECK` [constraints](constraints.html) defined at the column level are moved to the table-level as part of the table's creation. Use the [`SHOW CREATE`](show-create.html) statement to view them at the table level.
-`index_def` | An optional, comma-separated list of [index definitions](indexes.html). For each index, the column(s) to index must be specified; optionally, a name can be specified. Index names must be unique within the table and follow these [identifier rules](keywords-and-identifiers.html#identifiers). See the [Create a Table with Secondary Indexes and Inverted Indexes](#create-a-table-with-secondary-and-inverted-indexes) example below.<br><br> To enable [hash-sharded indexes](hash-sharded-indexes.html), set the `experimental_enable_hash_sharded_indexes` [session variable](set-vars.html) to `on`. For examples, see [Create a table with hash-sharded indexes](#create-a-table-with-a-hash-sharded-primary-index) below.<br><br>The [`CREATE INDEX`](create-index.html) statement can be used to create an index separate from table creation.
+`index_def` | An optional, comma-separated list of [index definitions](indexes.html). For each index, the column(s) to index must be specified; optionally, a name can be specified. Index names must be unique within the table and follow these [identifier rules](keywords-and-identifiers.html#identifiers). See the [Create a Table with Secondary Indexes and GIN Indexes](#create-a-table-with-secondary-and-gin-indexes) example below.<br><br> To enable [hash-sharded indexes](hash-sharded-indexes.html), set the `experimental_enable_hash_sharded_indexes` [session variable](set-vars.html) to `on`. For examples, see [Create a table with hash-sharded indexes](#create-a-table-with-a-hash-sharded-primary-index) below.<br><br>The [`CREATE INDEX`](create-index.html) statement can be used to create an index separate from table creation.
 `family_def` | An optional, comma-separated list of [column family definitions](column-families.html). Column family names must be unique within the table but can have the same name as columns, constraints, or indexes.<br><br>A column family is a group of columns that are stored as a single key-value pair in the underlying key-value store. CockroachDB automatically groups columns into families to ensure efficient storage and performance. However, there are cases when you may want to manually assign columns to families. For more details, see [Column Families](column-families.html).
 `table_constraint` | An optional, comma-separated list of [table-level constraints](constraints.html). Constraint names must be unique within the table but can have the same name as columns, column families, or indexes.
 `LIKE table_name like_table_option_list` |  Create a new table based on the schema of an existing table, using supported specifiers. For details, see [Create a table like an existing table](#create-a-table-like-an-existing-table). For examples, see [Create a new table from an existing one](#create-a-new-table-from-an-existing-one).
@@ -225,11 +227,11 @@ For performance recommendations on primary keys, see the [Schema Design: Create 
   column_name | data_type | is_nullable | column_default | generation_expression |  indices  | is_hidden
 +-------------+-----------+-------------+----------------+-----------------------+-----------+-----------+
   id          | UUID      |    false    | NULL           |                       | {primary} |   false
-  city        | STRING    |    true     | NULL           |                       | {}        |   false
-  name        | STRING    |    true     | NULL           |                       | {}        |   false
-  address     | STRING    |    true     | NULL           |                       | {}        |   false
-  credit_card | STRING    |    true     | NULL           |                       | {}        |   false
-  dl          | STRING    |    true     | NULL           |                       | {}        |   false
+  city        | VARCHAR   |    false    | NULL           |                       | {primary} |   false
+  name        | VARCHAR   |    true     | NULL           |                       | {primary} |   false
+  address     | VARCHAR   |    true     | NULL           |                       | {primary} |   false
+  credit_card | VARCHAR   |    true     | NULL           |                       | {primary} |   false
+  dl          | STRING    |    true     | NULL           |                       | {primary} |   false
 (6 rows)
 ~~~
 
@@ -241,13 +243,18 @@ For performance recommendations on primary keys, see the [Schema Design: Create 
 ~~~
   table_name | index_name | non_unique | seq_in_index | column_name | direction | storing | implicit
 +------------+------------+------------+--------------+-------------+-----------+---------+----------+
-  users      | primary    |   false    |            1 | id          | ASC       |  false  |  false
-(1 row)
+  users      | primary    |   false    |            1 | city        | ASC       |  false  |  false
+  users      | primary    |   false    |            2 | id          | ASC       |  false  |  false
+  users      | primary    |   false    |            3 | name        | N/A       |  true   |  false
+  users      | primary    |   false    |            4 | address     | N/A       |  true   |  false
+  users      | primary    |   false    |            5 | credit_card | N/A       |  true   |  false
+  users      | primary    |   false    |            6 | dl          | N/A       |  true   |  false
+(6 rows)
 ~~~
 
-### Create a table with secondary and inverted indexes
+### Create a table with secondary and GIN indexes
 
-In this example, we create secondary and inverted indexes during table creation. Secondary indexes allow efficient access to data with keys other than the primary key. [Inverted indexes](inverted-indexes.html) allow efficient access to the schemaless data in a [`JSONB`](jsonb.html) column.
+In this example, we create secondary and GIN indexes during table creation. Secondary indexes allow efficient access to data with keys other than the primary key. [GIN indexes](inverted-indexes.html) allow efficient access to the schemaless data in a [`JSONB`](jsonb.html) column.
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -275,15 +282,21 @@ In this example, we create secondary and inverted indexes during table creation.
 ~~~
   table_name |   index_name   | non_unique | seq_in_index | column_name | direction | storing | implicit
 -------------+----------------+------------+--------------+-------------+-----------+---------+-----------
-  vehicles   | primary        |   false    |            1 | city        | ASC       |  false  |  false
-  vehicles   | primary        |   false    |            2 | id          | ASC       |  false  |  false
-  vehicles   | index_status   |    true    |            1 | status      | ASC       |  false  |  false
-  vehicles   | index_status   |    true    |            2 | city        | ASC       |  false  |   true
-  vehicles   | index_status   |    true    |            3 | id          | ASC       |  false  |   true
-  vehicles   | ix_vehicle_ext |    true    |            1 | ext         | ASC       |  false  |  false
-  vehicles   | ix_vehicle_ext |    true    |            2 | city        | ASC       |  false  |   true
-  vehicles   | ix_vehicle_ext |    true    |            3 | id          | ASC       |  false  |   true
-(8 rows)
+  vehicles   | index_status   |    true    |            1 | status           | ASC       |  false  |  false
+  vehicles   | index_status   |    true    |            2 | city             | ASC       |  false  |   true
+  vehicles   | index_status   |    true    |            3 | id               | ASC       |  false  |   true
+  vehicles   | ix_vehicle_ext |    true    |            1 | ext              | ASC       |  false  |  false
+  vehicles   | ix_vehicle_ext |    true    |            2 | city             | ASC       |  false  |   true
+  vehicles   | ix_vehicle_ext |    true    |            3 | id               | ASC       |  false  |   true
+  vehicles   | primary        |   false    |            1 | city             | ASC       |  false  |  false
+  vehicles   | primary        |   false    |            2 | id               | ASC       |  false  |  false
+  vehicles   | primary        |   false    |            3 | type             | N/A       |  true   |  false
+  vehicles   | primary        |   false    |            4 | owner_id         | N/A       |  true   |  false
+  vehicles   | primary        |   false    |            5 | creation_time    | N/A       |  true   |  false
+  vehicles   | primary        |   false    |            6 | status           | N/A       |  true   |  false
+  vehicles   | primary        |   false    |            7 | current_location | N/A       |  true   |  false
+  vehicles   | primary        |   false    |            8 | ext              | N/A       |  true   |  false
+(14 rows)
 ~~~
 
 We also have other resources on indexes:
@@ -581,7 +594,7 @@ You can use the [`CREATE TABLE AS`](create-table-as.html) statement to create a 
 ~~~
   table_name |  index_name   | non_unique | seq_in_index |       column_name        | direction | storing | implicit
 -------------+---------------+------------+--------------+--------------------------+-----------+---------+-----------
-  events     | events_ts_idx |    true    |            1 | crdb_internal_ts_shard_8 | ASC       |  false  |  false
+  events     | events_ts_idx |    true    |            1 | crdb_internal_ts_shard_8 | ASC       |  false  |   true
   events     | events_ts_idx |    true    |            2 | ts                       | ASC       |  false  |  false
   events     | events_ts_idx |    true    |            3 | product_id               | ASC       |  false  |   true
   events     | events_ts_idx |    true    |            4 | owner                    | ASC       |  false  |   true
@@ -592,7 +605,9 @@ You can use the [`CREATE TABLE AS`](create-table-as.html) statement to create a 
   events     | primary       |   false    |            3 | serial_number            | ASC       |  false  |  false
   events     | primary       |   false    |            4 | ts                       | ASC       |  false  |  false
   events     | primary       |   false    |            5 | event_id                 | ASC       |  false  |  false
-(11 rows)
+  events     | primary       |   false    |            6 | data                     | N/A       |  true   |  false
+  events     | primary       |   false    |            7 | crdb_internal_ts_shard_8 | N/A       |  true   |  false
+(13 rows)
 ~~~
 
 {% include copy-clipboard.html %}
@@ -713,9 +728,9 @@ Note that the foreign key constraint `fk_owner_id_ref_users` in the source table
 (1 row)
 ~~~
 
-### Create tables in a multi-region database
+### Create a table in a multi-region database
 
- To create a table with a specific [table locality](multiregion-overview.html#table-locality) in a [multi-region database](multiregion-overview.html), add a `LOCALITY` clause to the end of the table's `CREATE TABLE` statement.
+To create a table with a specific [table locality](multiregion-overview.html#table-locality) in a [multi-region database](multiregion-overview.html), add a `LOCALITY` clause to the end of the table's `CREATE TABLE` statement.
 
 {{site.data.alerts.callout_info}}
 In order to set table localities, the database that contains the table must have [database regions](multiregion-overview.html#database-regions).
@@ -875,7 +890,7 @@ You can then manually set the values of the region with each [`INSERT`](insert.h
 Alternatively, you could update the rows in the `crdb_region` column to compute the region based on the value of another column, like the `city` column.
 
 ~~~ sql
-> UPDATE vehicles SET crdb_region = "us-east1" WHERE city IN (...) ...
+> UPDATE vehicles SET crdb_region = 'us-east1' WHERE city IN (...) ...
 ~~~
 
 #### Create a table with a regional-by-row locality, using a custom region column
@@ -896,7 +911,7 @@ For example:
       CASE
         WHEN city IN ('new york', 'boston', 'washington dc', 'chicago', 'detroit', 'minneapolis') THEN 'us-east1'
         WHEN city IN ('san francisco', 'seattle', 'los angeles') THEN 'us-west1'
-        WHEN city IN ('amsterdam', 'paris', 'rome') THEN 'europe-west1'  
+        WHEN city IN ('amsterdam', 'paris', 'rome') THEN 'europe-west1'
       END) STORED,
     owner_id UUID,
     creation_time TIMESTAMP,

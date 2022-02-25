@@ -2,6 +2,7 @@
 title: SERIAL
 summary: The SERIAL pseudo-type produces integer values automatically.
 toc: true
+docs_area: reference.sql
 ---
 
 The `SERIAL` pseudo [data type](data-types.html) is a keyword that can
@@ -134,8 +135,8 @@ The [`SHOW COLUMNS`](show-columns.html) statement shows that the `SERIAL` type i
   column_name | data_type | is_nullable | column_default | generation_expression |  indices  | is_hidden
 --------------+-----------+-------------+----------------+-----------------------+-----------+------------
   a           | INT8      |    false    | unique_rowid() |                       | {primary} |   false
-  b           | STRING    |    true     | NULL           |                       | {}        |   false
-  c           | BOOL      |    true     | NULL           |                       | {}        |   false
+  b           | STRING    |    true     | NULL           |                       | {primary} |   false
+  c           | BOOL      |    true     | NULL           |                       | {primary} |   false
 (3 rows)
 ~~~
 

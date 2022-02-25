@@ -2,6 +2,7 @@
 title: SHOW SEQUENCES
 summary: The SHOW SEQUENCES statement lists the sequences in a database.
 toc: true
+docs_area: reference.sql
 ---
 
 The `SHOW SEQUENCES` [statement](sql-statements.html) lists all sequences in a database.

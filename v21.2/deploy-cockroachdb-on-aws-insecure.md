@@ -7,6 +7,7 @@ ssh-link: http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html
 filter_category: deploy_crdb_aws
 filter_html: Insecure
 filter_sort: 2
+docs_area: 
 ---
 
 {% include filter-tabs.md %}

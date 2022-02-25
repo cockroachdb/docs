@@ -4,6 +4,7 @@ summary: Learn how to use AWS Lambda and CockroachDB Serverless.
 toc: true
 twitter: false
 referral_id: docs_lambda_python
+docs_area: get_started
 ---
 
 This tutorial shows you how to create an [AWS Lambda](https://aws.amazon.com/lambda) function that communicates with a {{ site.data.products.serverless }} cluster.
@@ -36,7 +37,7 @@ The connection string is pre-populated with your username, cluster name, and oth
 
 ## Step 2. Get the sample code
 
-Open a terminal window and copy the sample code's GitHub repo:
+Open a terminal window and copy the [sample code's GitHub repo](https://github.com/cockroachlabs/examples-aws-lambda):
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell

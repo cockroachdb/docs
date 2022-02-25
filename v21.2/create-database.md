@@ -2,11 +2,12 @@
 title: CREATE DATABASE
 summary: The CREATE DATABASE statement creates a new CockroachDB database.
 toc: true
+docs_area: reference.sql
 ---
 
 The `CREATE DATABASE` [statement](sql-statements.html) creates a new CockroachDB database.
 
-{% include {{{ page.version.version }}/misc/schema-change-stmt-note.md %}
+{% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
 ## Required privileges
 
@@ -168,5 +169,5 @@ Use the following command to specify regions and survival goals at database crea
 - [`RENAME DATABASE`](rename-database.html)
 - [`SET DATABASE`](set-vars.html)
 - [`DROP DATABASE`](drop-database.html)
-- [Other SQL Statements](sql-statements.html)
+- [SQL Statements](sql-statements.html)
 - [Online Schema Changes](online-schema-changes.html)

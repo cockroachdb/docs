@@ -2,6 +2,7 @@
 title: Create a CockroachDB Cloud account
 summary: Learn how to create and delete a CockroachDB Cloud account
 toc: true
+docs_area: deploy
 ---
 
 Before you [create a {{ site.data.products.db }} cluster](create-your-cluster.html), you must first create a {{ site.data.products.db }} account. You can register for {{ site.data.products.db }} using a GitHub account or an email address.

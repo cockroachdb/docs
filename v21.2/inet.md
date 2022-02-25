@@ -2,7 +2,9 @@
 title: INET
 summary: The INET data type stores an IPv4 or IPv6 address.
 toc: true
+docs_area: reference.sql
 ---
+
 The `INET` [data type](data-types.html) stores an IPv4 or IPv6 address.
 
 ## Syntax
@@ -45,13 +47,12 @@ An `INET` value is 32 bits for IPv4 or 128 bits for IPv6.
 ~~~
 
 ~~~
-+-------------------+-----------+-------------+----------------+-----------------------+-------------+
-|    column_name    | data_type | is_nullable | column_default | generation_expression |   indices   |
-+-------------------+-----------+-------------+----------------+-----------------------+-------------+
-| ip                | INET      |    false    | NULL           |                       | {"primary"} |
-| user_email        | STRING    |    true     | NULL           |                       | {}          |
-| registration_date | DATE      |    true     | NULL           |                       | {}          |
-+-------------------+-----------+-------------+----------------+-----------------------+-------------+
+     column_name    | data_type | is_nullable | column_default | generation_expression |  indices  | is_hidden
+--------------------+-----------+-------------+----------------+-----------------------+-----------+------------
+  ip                | INET      |    false    | NULL           |                       | {primary} |   false
+  user_email        | STRING    |    true     | NULL           |                       | {primary} |   false
+  registration_date | DATE      |    true     | NULL           |                       | {primary} |   false
+
 (3 rows)
 ~~~
 

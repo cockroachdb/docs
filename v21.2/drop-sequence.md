@@ -2,11 +2,12 @@
 title: DROP SEQUENCE
 summary: The DROP SEQUENCE statement removes a sequence from a database.
 toc: true
+docs_area: reference.sql
 ---
 
 The `DROP SEQUENCE` [statement](sql-statements.html) removes a sequence from a database.
 
-{% include {{{ page.version.version }}/misc/schema-change-stmt-note.md %}
+{% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
 ## Required privileges
 
@@ -90,5 +91,5 @@ DROP SEQUENCE
 - [`ALTER SEQUENCE`](alter-sequence.html)
 - [`SHOW SEQUENCES`](show-sequences.html)
 - [Functions and Operators](functions-and-operators.html)
-- [Other SQL Statements](sql-statements.html)
+- [SQL Statements](sql-statements.html)
 - [Online Schema Changes](online-schema-changes.html)
