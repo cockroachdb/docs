@@ -191,7 +191,7 @@ Each version's images are stored in a versioned directory under the `images` dir
 
 ## Content types
 
-There are three fundamental content types:
+There are four fundamental content types:
 
 - [Concept](#concept)
 - [Task](#task)
