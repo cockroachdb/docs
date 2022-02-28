@@ -1,19 +1,16 @@
 ---
 title: Authentication
-summary: An overview of Cluster Auth Config capabilities and interface syntax
+summary: An overview of Cluster Authentication Configuration capabilities and interface syntax
 toc: true
 docs_area: reference.security
 ---
 
-CockroachDB allows fine grained configuration of which attempts to connect with the database it will allow to proceed to the authentication stage, and which authentication methods it will accept, based on:
+CockroachDB allows fine-grained configuration of which database connection attempts are allowed to proceed to the authentication stage, and which authentication methods it will accept, based on:
 
-- WHO is making the attempt (SQL user), and 
+- WHO is making the attempt (SQL user).
 - WHERE on the internet (IP Address) the attempt is coming from.
 
-Future releases will also allow authentication to be configured for specific databases within clusters. Note that CockroachDB already supports fine-grained authorization at the database and table level via permissions grants.
-
-
-## Currently supported authentication methods by product
+## Currently supported authentication methods
 
 Authentication Method | CockroachDB Cloud | Supported in CockroachDB Core | CockroachDB Enterprise Support  
 -------------|------------|-----|----
@@ -21,35 +18,34 @@ password              |      ✓              |           ✓                   
 TLS cert              |      &nbsp;         |           ✓                    |    ✓
 GSS                   |      &nbsp;         |           &nbsp;               |    ✓
 
-All products also support the following no-op 'authentication methods' (authentication is not actually performed):
+All options also support the following no-op 'authentication methods' (authentication is not actually performed):
 
-- `reject`: unconditionally rejects the connection attempt
-- `trust`: unconditionally rejects the connection attempt
+- `reject`: unconditionally rejects the connection attempt.
+- `trust`: unconditionally rejects the connection attempt.
 
 
 ## Authentication configuration
 
-CockroachDB's authentication behavior is configured using a domain specific language (DSL), shared with PostgreSQL, called host-based authentication (HBA).
+CockroachDB's authentication behavior is configured using a domain-specific language (DSL), shared with PostgreSQL, called host-based authentication (HBA).
 
-A specific CockroachDB cluster's authentication behavior is configured by setting its `server.host_based_authentication.configuration` cluster setting, using the [`set cluster setting` statement](../set-cluster-setting.html), which accepts a single text field that must be a correctly formatted HBA manifest. Inspect the current setting with [`show cluster setting`.](../show-cluster-setting.html)
+A specific CockroachDB cluster's authentication behavior is configured by setting its `server.host_based_authentication.configuration` [cluster setting](../cluster-settings.html), using the [`SET CLUSTER SETTING` statement](../set-cluster-setting.html), which accepts a single text field that must be a correctly formatted HBA manifest. Inspect the current setting with [`SHOW CLUSTER SETTING`.](../show-cluster-setting.html)
 
 ### HBA configuration syntax
 
-Each line of an Authentication Configuration (HBA) manifest defines a rule.
-Lines commented with '#' are ignored.
+Each line of an Authentication Configuration (HBA) manifest defines a rule. Lines commented with `#` are ignored.
 
-For example, the following silly but easy to understand configuration has three rules:
+For example, the following silly but easy-to-understand configuration has three rules:
 
-- the first allows the CEO to connect to the database from their house without even using a password (they fired everyone who told them this was a bad idea),
-- the second rule ensures that a known saboteur cannot even attempt to authenticate with the database from anywhere,
-- the third rule allows all other users to authenticate using a password.
+- The first allows the CEO to connect to the database from their house without even using a password (they fired everyone who told them this was a bad idea).
+- The second rule ensures that a known saboteur cannot even attempt to authenticate with the database from anywhere.
+- The third rule allows all other users to authenticate using a password.
 
 
 ```
- # TYPE  DATABASE        USER           ADDRESS             METHOD       OPTIONS
-  host    all            ceo            555.123.456.789/32  trust
-  host    all            saboteur       all                 reject
-  host    all            all            all                 password
+ # TYPE    DATABASE      USER           ADDRESS             METHOD
+   host    all           ceo            555.123.456.789/32  trust
+   host    all           saboteur       all                 reject
+   host    all           all            all                 password
 ```
 
 Each rule definition contains <i>up to</i> 6 values.
@@ -69,13 +65,11 @@ Each rule definition contains <i>up to</i> 6 values.
 	- reject
 	- trust
 
-
-
 ## Default behavior
 
 ### CockroachDB Serverless cloud
 
-The default authentication configuration for CockroachDB Serverless Cloud clusters is equivalent to the following configuration
+The default authentication configuration for {{ site.data.products.serverless }} clusters is equivalent to the following configuration
 
 ```
  # TYPE  DATABASE        USER           ADDRESS             METHOD       OPTIONS
@@ -83,11 +77,11 @@ The default authentication configuration for CockroachDB Serverless Cloud cluste
 
 ```
 
-This is convenient for quick usage and experimentation, but is not suitable for clusters containing valuable data. It is best practice to [configure SQL authentication for hardened CockroachDB Serverless cluster security](config-secure-hba.html).
+This is convenient for quick usage and experimentation, but is not suitable for clusters containing valuable data. It is best practice to [configure SQL authentication for hardened {{ site.data.products.serverless }} cluster security](config-secure-hba.html).
 
-### CockroachDB Dedicated cloud
+### CockroachDB Dedicated
 
-CockroachDB Dedicated Cloud clusters enforce IP allow-listing, which can be configured through the Web Console.
+{{ site.data.products.dedicated }} clusters enforce IP allow-listing, which can be configured through the Web Console.
 
 See [Managing Network Authorization for CockroachDB Dedicated](../../cockroachcloud/network-authorization.html).
 
