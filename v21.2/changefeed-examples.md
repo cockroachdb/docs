@@ -7,32 +7,22 @@ docs_area: stream_data
 
 This page provides step-by-step examples for using Core and {{ site.data.products.enterprise }} changefeeds. Creating {{ site.data.products.enterprise }} changefeeds is available on {{ site.data.products.dedicated }} or on clusters with an [{{ site.data.products.enterprise }} license](enterprise-licensing.html). Core changefeeds are available in all products.
 
-For a summary of Core and {{ site.data.products.enterprise }} changefeeds, see [What is Change Data Capture?](change-data-capture-overview.html#what-is-change-data-capture)
+For a summary of Core and {{ site.data.products.enterprise }} changefeed features, see [What is Change Data Capture?](change-data-capture-overview.html#what-is-change-data-capture)
+
+Enterprise changefeeds can connect to the following sinks:
+
+- [Kafka](#create-a-changefeed-connected-to-kafka)
+- [Cloud Storage](#create-a-changefeed-connected-to-a-cloud-storage-sink) (Amazon S3, Google Cloud Storage, Azure Storage)
+- [Webhook](#create-a-changefeed-connected-to-a-webhook-sink)
+
+See the [Changefeed Sinks](changefeed-sinks.html) page for more detail on forming sink URIs and specifics on configuration.
+
+Use the following filters to show usage examples for either **Enterprise** or **Core** changefeeds:
 
 <div class="filters clearfix">
-  <button class="filter-button" data-scope="core">Core</button>
-  <button class="filter-button" data-scope="enterprise">Enterprise</button>
+  <button class="filter-button" data-scope="enterprise">Enterprise Changefeeds</button>
+  <button class="filter-button" data-scope="core">Core Changefeeds</button>
 </div>
-
-<section class="filter-content" markdown="1" data-scope="core">
-
-Core changefeeds stream row-level changes to a client until the underlying SQL connection is closed.
-
-{{site.data.alerts.callout_info}}
-Only Core changefeeds are available on {{ site.data.products.serverless-plan }}. To create a changefeed into a [configurable sink](changefeed-sinks.html), like cloud storage or Kafka, use {{ site.data.products.dedicated }}, which has this feature enabled by default.
-{{site.data.alerts.end}}
-
-### Create a core changefeed
-
-{% include {{ page.version.version }}/cdc/create-core-changefeed.md %}
-
-### Create a core changefeed using Avro
-
-{% include {{ page.version.version }}/cdc/create-core-changefeed-avro.md %}
-
-For further information on Core changefeeds, see [`EXPERIMENTAL CHANGEFEED FOR`](changefeed-for.html).
-
-</section>
 
 <section class="filter-content" markdown="1" data-scope="enterprise">
 
@@ -420,6 +410,26 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
     ~~~
 
     For more detail on emitted changefeed messages, see [responses](use-changefeeds.html#responses).
+
+</section>
+
+<section class="filter-content" markdown="1" data-scope="core">
+
+Core changefeeds stream row-level changes to a client until the underlying SQL connection is closed.
+
+{{site.data.alerts.callout_info}}
+Only Core changefeeds are available on {{ site.data.products.serverless-plan }}. To create a changefeed into a [configurable sink](changefeed-sinks.html), like cloud storage or Kafka, use {{ site.data.products.dedicated }}, which has this feature enabled by default.
+{{site.data.alerts.end}}
+
+### Create a Core changefeed
+
+{% include {{ page.version.version }}/cdc/create-core-changefeed.md %}
+
+### Create a Core changefeed using Avro
+
+{% include {{ page.version.version }}/cdc/create-core-changefeed-avro.md %}
+
+For further information on Core changefeeds, see [`EXPERIMENTAL CHANGEFEED FOR`](changefeed-for.html).
 
 </section>
 
