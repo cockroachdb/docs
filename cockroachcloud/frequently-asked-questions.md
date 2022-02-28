@@ -67,7 +67,7 @@ All data in Cockroach Labs' hosted CockroachDB cloud services, whether Serverles
 {{site.data.alerts.callout_info}}
 CockroachDB Serverless and Dedicated cloud offerings delegate responsibility for encryption-at-rest to the cloud provider. Hence, CockroachDB's proprietary storage-layer encryption-at-rest functionality is currently only available for CockroachDB Self-Hosted Enterprise customers, and is not currently available to users of CockroachDB Serverless or Dedicated .
 
-As a result, encryption will appear to be disabled in the [DB Console](../{{site.versions["stable"]}}/ui-overview.html), since it is unaware of cloud provider encryption.
+As a result, encryption will appear to be disabled in the [DB Console](../{{site.versions["stable"]}}/ui-overview.html), since the console is unaware of cloud provider encryption.
 {{site.data.alerts.end}}
 
 
