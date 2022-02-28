@@ -5,9 +5,9 @@ toc: true
 docs_area: reference.security
 ---
 
-CockroachDB allows fine grained configuration of which attempts to connect with the database it will allow to proceed to the authentication stage, and which authentication methods it will accept, based on:
+CockroachDB allows fine-grained configuration of which attempts to connect with the database it will allow to proceed to the authentication stage, and which authentication methods it will accept, based on:
 
-- WHO is making the attempt (SQL user), and 
+- WHO is making the attempt (SQL user).
 - WHERE on the internet (IP Address) the attempt is coming from.
 
 Future releases will also allow authentication to be configured for specific databases within clusters. Note that CockroachDB already supports fine-grained authorization at the database and table level via permissions grants.
@@ -69,13 +69,11 @@ Each rule definition contains <i>up to</i> 6 values.
 	- reject
 	- trust
 
-
-
 ## Default behavior
 
 ### CockroachDB Serverless cloud
 
-The default authentication configuration for CockroachDB Serverless Cloud clusters is equivalent to the following configuration
+The default authentication configuration for {{ site.data.products.serverless }} clusters is equivalent to the following configuration
 
 ```
  # TYPE  DATABASE        USER           ADDRESS             METHOD       OPTIONS
@@ -83,11 +81,11 @@ The default authentication configuration for CockroachDB Serverless Cloud cluste
 
 ```
 
-This is convenient for quick usage and experimentation, but is not suitable for clusters containing valuable data. It is best practice to [configure SQL authentication for hardened CockroachDB Serverless cluster security](config-secure-hba.html).
+This is convenient for quick usage and experimentation, but is not suitable for clusters containing valuable data. It is best practice to [configure SQL authentication for hardened {{ site.data.products.serverless }} cluster security](config-secure-hba.html).
 
-### CockroachDB Dedicated cloud
+### CockroachDB Dedicated
 
-CockroachDB Dedicated Cloud clusters enforce IP allow-listing, which can be configured through the Web Console.
+{{ site.data.products.dedicated }} clusters enforce IP allow-listing, which can be configured through the Web Console.
 
 See [Managing Network Authorization for CockroachDB Dedicated](../../cockroachcloud/network-authorization.html).
 

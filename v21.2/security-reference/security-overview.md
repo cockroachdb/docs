@@ -4,37 +4,37 @@ summary: An overview of CockroachDB Security Features broken by Product, Cloud S
 toc: true
 docs_area: reference.security
 ---
-## Product Definitions
+## Ways to Use CockroachDB
 
-### Cloud Products
+### CockroachDB Cloud
 
-<b>CockroachDB Serverless</b> (beta) provides fast and easy access (including a *free* tier) to CockroachDB as a web service, hosted by Cockroach Labs. Clusters run in multi-tenant Google Cloud Platform (GCP) or Amazon Web Services (AWS) environments with shared compute and networking resources.
+{{ site.data.products.serverless }} provides fast and easy access (including a *free* tier) to CockroachDB as a web service, hosted by Cockroach Labs. Clusters run in multi-tenant Google Cloud Platform (GCP) or Amazon Web Services (AWS) environments with shared compute and networking resources.
 
-<b>CockroachDB Dedicated</b> offers a single-tenant cluster running in its own Virtual Private Cloud (VPC). Compute and networking resources are isolated. Additional security-enhancing features such as single-sign on (SSO) and SQL audit logging are available.
+{{ site.data.products.dedicated }} offers a single-tenant cluster running in its own Virtual Private Cloud (VPC). Compute and networking resources are isolated. Additional security-enhancing features such as single-sign on (SSO) and SQL audit logging are available.
 
 [Sign up for a CockroachDB Cloud account!](https://www.cockroachlabs.com/get-started-cockroachdb/)
 
-### Self-Hosted Products
+### Self-Hosted
 
 Cockroach Labs maintains <a href="https://github.com/cockroachdb/cockroach">CockroachDB as an open-source core</a>, which is available to operate under a number of different licensing options, including several free options.
 
-<b>Self-Hosted CockroachDB</b> here refers to the situation of a user deploying and operating their own cluster.
+{{ site.data.products.core }} here refers to the situation of a user deploying and operating their own cluster.
 
-<b>Self-Hosted CockroachDB Enterprise</b> refers to an ongoing paid license relationship with Cockroach Labs. This license unlocks advanced features (see below). In this situation the customer maintains full control over their data, compute, and network resources while benefiting from the expertise of the Cockroach Labs' Enterprise Support staff. 
+{{ site.data.products.enterprise }} refers to an ongoing paid license relationship with Cockroach Labs. This license unlocks advanced features (see below). In this situation the customer maintains full control over their data, compute, and network resources while benefiting from the expertise of the Cockroach Labs' Enterprise Support staff. 
 
 - See the [list of Enterprise features](../enterprise-licensing.html)
 - Read the [licensing FAQ](../licensing-faqs.html)
-- [Contact our sales team](mailto:sales@cockroachlabs.com) for further questions about CockroachDB Enterprise
+- [Contact our sales team](mailto:sales@cockroachlabs.com) for further questions about {{ site.data.products.enterprise }}
 
-## Comparison of security features in CockroachDB product offerings
+## Comparison of security features
 
 <table>
   <tr>
     <th width="120">Security Domain</th>
-    <th>Serverless Cloud</th>
-    <th>Dedicated Cloud</th>
-    <th>Self-Hosted</th>
-    <th>Self-Hosted Enterprise</th>
+    <th>{{ site.data.products.serverless }}</th>
+    <th>{{ site.data.products.dedicated }}</th>
+    <th>{{ site.data.products.core }}</th>
+    <th>{{ site.data.products.enterprise }}</th>
     <th>Feature</th>
   </tr>
  <tr>
@@ -64,7 +64,7 @@ Cockroach Labs maintains <a href="https://github.com/cockroachdb/cockroach">Cock
   <td>&nbsp;</td>
   <td>&nbsp;</td>
   <td>✓</td>
-  <td>Client identity authentication with third party <a href="../sso.html">Single Sign On (SSO)</a> using <a href="https://openid.net/connect/">OpenID Connect OIDC</a></td>
+  <td>Client identity authentication with third-party <a href="../sso.html">Single Sign On (SSO)</a> using <a href="https://openid.net/connect/">OpenID Connect OIDC</a></td>
  </tr>
  <tr>
   <td>&nbsp;</td>
@@ -139,7 +139,7 @@ Cockroach Labs maintains <a href="https://github.com/cockroachdb/cockroach">Cock
   <td>Role-based access control (RBAC)</td>
  </tr>
  <tr>
-  <td rowspan="3"><a href="network-security.html">Network Security</a></td>
+  <td rowspan="3">Network Security</td>
   <td>✓</td>
   <td>✓</td>
   <td>✓</td>
@@ -174,7 +174,7 @@ Cockroach Labs maintains <a href="https://github.com/cockroachdb/cockroach">Cock
   <td>✓</td>
   <td>✓</td>
   <td>✓</td>
-  <td>CockroachDB, as a disributed-from-the-ground-up SQL database, is uniquely resilient by nature. A cluster can tolerate node-failures as long as the majority of nodes remain functional. Large, well distributed clusters deployed in reliable infrastructure across multiple regions of the globe&mdash;such as those operated by Cockroach Labs, can be highly resilient even in the face of catastrophic infrastructure failures.</td>
+  <td>CockroachDB, as a natively distributed SQL database, is uniquely resilient by nature. Cluster can tolerate node failures as long as the majority of nodes remain functional. See <a href="../demo-fault-tolerance-and-recovery.html">Disaster Recovery.</a></td>
  </tr>
 </table>
 

@@ -19,7 +19,7 @@ Users that [own objects](security-reference/authorization.html#object-ownership)
 
 ## Required privileges
 
-Non-admin users cannot drop admin users. To drop non-admin users, the user must be a member of the `admin role` or have the [`CREATEROLE`](create-user.html#create-a-user-that-can-create-other-users-and-manage-authentication-methods-for-the-new-users) parameter set.
+Non-admin users cannot drop admin users. To drop non-admin users, the user must be a member of the `admin` role or have the [`CREATEROLE`](create-user.html#create-a-user-that-can-create-other-users-and-manage-authentication-methods-for-the-new-users) parameter set.
 
 ## Synopsis
 
