@@ -227,11 +227,11 @@ For performance recommendations on primary keys, see the [Schema Design: Create 
   column_name | data_type | is_nullable | column_default | generation_expression |  indices  | is_hidden
 +-------------+-----------+-------------+----------------+-----------------------+-----------+-----------+
   id          | UUID      |    false    | NULL           |                       | {primary} |   false
-  city        | STRING    |    true     | NULL           |                       | {}        |   false
-  name        | STRING    |    true     | NULL           |                       | {}        |   false
-  address     | STRING    |    true     | NULL           |                       | {}        |   false
-  credit_card | STRING    |    true     | NULL           |                       | {}        |   false
-  dl          | STRING    |    true     | NULL           |                       | {}        |   false
+  city        | VARCHAR   |    false    | NULL           |                       | {primary} |   false
+  name        | VARCHAR   |    true     | NULL           |                       | {primary} |   false
+  address     | VARCHAR   |    true     | NULL           |                       | {primary} |   false
+  credit_card | VARCHAR   |    true     | NULL           |                       | {primary} |   false
+  dl          | STRING    |    true     | NULL           |                       | {primary} |   false
 (6 rows)
 ~~~
 
@@ -243,8 +243,13 @@ For performance recommendations on primary keys, see the [Schema Design: Create 
 ~~~
   table_name | index_name | non_unique | seq_in_index | column_name | direction | storing | implicit
 +------------+------------+------------+--------------+-------------+-----------+---------+----------+
-  users      | primary    |   false    |            1 | id          | ASC       |  false  |  false
-(1 row)
+  users      | primary    |   false    |            1 | city        | ASC       |  false  |  false
+  users      | primary    |   false    |            2 | id          | ASC       |  false  |  false
+  users      | primary    |   false    |            3 | name        | N/A       |  true   |  false
+  users      | primary    |   false    |            4 | address     | N/A       |  true   |  false
+  users      | primary    |   false    |            5 | credit_card | N/A       |  true   |  false
+  users      | primary    |   false    |            6 | dl          | N/A       |  true   |  false
+(6 rows)
 ~~~
 
 ### Create a table with secondary and GIN indexes
@@ -277,15 +282,21 @@ In this example, we create secondary and GIN indexes during table creation. Seco
 ~~~
   table_name |   index_name   | non_unique | seq_in_index | column_name | direction | storing | implicit
 -------------+----------------+------------+--------------+-------------+-----------+---------+-----------
-  vehicles   | primary        |   false    |            1 | city        | ASC       |  false  |  false
-  vehicles   | primary        |   false    |            2 | id          | ASC       |  false  |  false
-  vehicles   | index_status   |    true    |            1 | status      | ASC       |  false  |  false
-  vehicles   | index_status   |    true    |            2 | city        | ASC       |  false  |   true
-  vehicles   | index_status   |    true    |            3 | id          | ASC       |  false  |   true
-  vehicles   | ix_vehicle_ext |    true    |            1 | ext         | ASC       |  false  |  false
-  vehicles   | ix_vehicle_ext |    true    |            2 | city        | ASC       |  false  |   true
-  vehicles   | ix_vehicle_ext |    true    |            3 | id          | ASC       |  false  |   true
-(8 rows)
+  vehicles   | index_status   |    true    |            1 | status           | ASC       |  false  |  false
+  vehicles   | index_status   |    true    |            2 | city             | ASC       |  false  |   true
+  vehicles   | index_status   |    true    |            3 | id               | ASC       |  false  |   true
+  vehicles   | ix_vehicle_ext |    true    |            1 | ext              | ASC       |  false  |  false
+  vehicles   | ix_vehicle_ext |    true    |            2 | city             | ASC       |  false  |   true
+  vehicles   | ix_vehicle_ext |    true    |            3 | id               | ASC       |  false  |   true
+  vehicles   | primary        |   false    |            1 | city             | ASC       |  false  |  false
+  vehicles   | primary        |   false    |            2 | id               | ASC       |  false  |  false
+  vehicles   | primary        |   false    |            3 | type             | N/A       |  true   |  false
+  vehicles   | primary        |   false    |            4 | owner_id         | N/A       |  true   |  false
+  vehicles   | primary        |   false    |            5 | creation_time    | N/A       |  true   |  false
+  vehicles   | primary        |   false    |            6 | status           | N/A       |  true   |  false
+  vehicles   | primary        |   false    |            7 | current_location | N/A       |  true   |  false
+  vehicles   | primary        |   false    |            8 | ext              | N/A       |  true   |  false
+(14 rows)
 ~~~
 
 We also have other resources on indexes:
@@ -583,7 +594,7 @@ You can use the [`CREATE TABLE AS`](create-table-as.html) statement to create a 
 ~~~
   table_name |  index_name   | non_unique | seq_in_index |       column_name        | direction | storing | implicit
 -------------+---------------+------------+--------------+--------------------------+-----------+---------+-----------
-  events     | events_ts_idx |    true    |            1 | crdb_internal_ts_shard_8 | ASC       |  false  |  false
+  events     | events_ts_idx |    true    |            1 | crdb_internal_ts_shard_8 | ASC       |  false  |   true
   events     | events_ts_idx |    true    |            2 | ts                       | ASC       |  false  |  false
   events     | events_ts_idx |    true    |            3 | product_id               | ASC       |  false  |   true
   events     | events_ts_idx |    true    |            4 | owner                    | ASC       |  false  |   true
@@ -594,7 +605,9 @@ You can use the [`CREATE TABLE AS`](create-table-as.html) statement to create a 
   events     | primary       |   false    |            3 | serial_number            | ASC       |  false  |  false
   events     | primary       |   false    |            4 | ts                       | ASC       |  false  |  false
   events     | primary       |   false    |            5 | event_id                 | ASC       |  false  |  false
-(11 rows)
+  events     | primary       |   false    |            6 | data                     | N/A       |  true   |  false
+  events     | primary       |   false    |            7 | crdb_internal_ts_shard_8 | N/A       |  true   |  false
+(13 rows)
 ~~~
 
 {% include copy-clipboard.html %}

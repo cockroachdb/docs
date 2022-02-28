@@ -247,14 +247,18 @@ To view the indexes in the `vehicles` table, issue a [`SHOW INDEXES`](show-index
 ~~~
 
 ~~~
-  table_name |     index_name     | non_unique | seq_in_index |  column_name  | direction | storing | implicit
--------------+--------------------+------------+--------------+---------------+-----------+---------+-----------
+  table_name | index_name | non_unique | seq_in_index |  column_name  | direction | storing | implicit
+-------------+------------+------------+--------------+---------------+-----------+---------+-----------
   vehicles   | primary            |   false    |            1 | id            | ASC       |  false  |  false
+  vehicles   | primary            |   false    |            2 | type          | N/A       |  true   |  false
+  vehicles   | primary            |   false    |            3 | creation_time | N/A       |  true   |  false
+  vehicles   | primary            |   false    |            4 | available     | N/A       |  true   |  false
+  vehicles   | primary            |   false    |            5 | last_location | N/A       |  true   |  false
   vehicles   | type_available_idx |    true    |            1 | type          | ASC       |  false  |  false
   vehicles   | type_available_idx |    true    |            2 | available     | ASC       |  false  |  false
   vehicles   | type_available_idx |    true    |            3 | last_location | N/A       |  true   |  false
   vehicles   | type_available_idx |    true    |            4 | id            | ASC       |  false  |   true
-(5 rows)
+(9 rows)
 ~~~
 
 The output from this `SHOW` statement displays the names and columns of the two indexes on the table (i.e., `primary` and `type_available_idx`).

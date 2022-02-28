@@ -67,7 +67,7 @@ If your application requires arbitrary precision numbers, use the [`DECIMAL`](de
   column_name | data_type | is_nullable | column_default | generation_expression |  indices  | is_hidden
 --------------+-----------+-------------+----------------+-----------------------+-----------+------------
   a           | INT8      |    false    | NULL           |                       | {primary} |   false
-  b           | INT2      |    true     | NULL           |                       | {}        |   false
+  b           | INT2      |    true     | NULL           |                       | {primary} |   false
 (2 rows)
 ~~~
 
