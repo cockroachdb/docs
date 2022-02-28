@@ -30,7 +30,7 @@ Endpoint | Name | Description
 [`/ranges/{range_id}`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/listRange) | Get range details | Get detailed technical information on a range. Typically used by Cockroach Labs engineers.
 [`/sessions`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/listSessions) | List sessions | Get SQL session details of all current users or a specified user.
 [`/users`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/listUsers) | List users | List all SQL users on the cluster.
-[`/login`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/login) | Log in | Authenticate as a [SQL role](create-role.html#create-a-role-that-can-log-in-to-the-database) that is a member of the [admin role](security-reference/authorization.html#admin-role) to retrieve a session token to use with further API calls.
+[`/login`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/login) | Log in | Authenticate as a [SQL role](create-role.html#create-a-role-that-can-log-in-to-the-database) that is a member of the [`admin` role](security-reference/authorization.html#admin-role) to retrieve a session token to use with further API calls.
 [`/logout`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/logout) | Log out | Invalidate the session token.
 
 ## Requirements

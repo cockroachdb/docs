@@ -35,7 +35,7 @@ In order to add a region with `ADD REGION`, you must first set a primary databas
 To add a region to a database, the user must have one of the following:
 
 - Membership to the [`admin`](security-reference/authorization.html#admin-role) role for the cluster.
-- Membership to the [owner](security-reference/authorization.html#object-ownership) role, or the [`CREATE` privilege](security-reference/authorization.html#supported-privileges), for the database and all [`REGIONAL BY ROW`](multiregion-overview.html#regional-by-row-tables) tables in the database.
+- Either [ownership](security-reference/authorization.html#object-ownership) or the [`CREATE` privilege](security-reference/authorization.html#supported-privileges) for the database and all [`REGIONAL BY ROW`](multiregion-overview.html#regional-by-row-tables) tables in the database.
 
 ## Examples
 
