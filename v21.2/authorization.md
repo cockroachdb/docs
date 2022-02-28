@@ -5,7 +5,7 @@ toc: true
 docs_area: manage
 ---
 
-## Create Cockroach DB Users
+## Create CockroachDB Users
 
 Use the [`CREATE USER`](create-user.html) and [`DROP USER`](drop-user.html) statements to create and remove users, the [`ALTER USER`](alter-user.html) statement to add or change a user's password and role options, the [`GRANT`](grant.html) and [`REVOKE`](revoke.html) statements to manage the user’s privileges, and the [`SHOW USERS`](show-users.html) statement to list users.
 

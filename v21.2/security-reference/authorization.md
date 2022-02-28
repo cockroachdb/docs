@@ -5,12 +5,11 @@ toc: true
 docs_area: reference.security
 ---
 
-Authorization, generally, is the control over WHO (users/roles) can do WHAT (e.g read, write, update, delete, grant, etc.) to WHICH RESOURCES (databases, tables, clusters, schemas, rows, users, etc.).
+Authorization, generally, is the control over WHO (users/roles) can perform WHICH ACTIONS (e.g read, write, update, delete, grant, etc.) to WHICH RESOURCES or TARGETS (databases, tables, clusters, schemas, rows, users, jobs, etc.).
 
 {{site.data.alerts.callout_info}}
 CockroachDB has a unified authorization model, meaning that a given user's permissions are governed by the same policies in different contexts such as accessing the SQL shell or viewing data from the DB Console.
 {{site.data.alerts.end}}
-
 
 ## Users and roles
 
@@ -145,6 +144,17 @@ To change the default privileges on objects that a user creates, use the [`ALTER
 The creator of an object is also the object's [owner](#object-ownership). Any roles that are members of the owner role have `ALL` privileges on the object, independent of the default privileges. Altering the default privileges of objects created by a role does not affect that role's privileges as the object's owner. The default privileges granted to other users/roles are always in addition to the ownership (i.e., `ALL`) privileges given to the creator of the object.
 
 For more examples of default privileges, see the examples on the [`SHOW DEFAULT PRIVILEGES`](../show-default-privileges.html#examples) and [`ALTER DEFAULT PRIVILEGES`](../alter-default-privileges.html#examples) statement pages.
+
+## Role options
+
+Users' authorization to perform certain actions are governed not by grants but by [`role options`](../create-user.html#role-options). These options govern whether users can perform actions such as:
+
+- viewing or canceling ongoing queries and sessions owned by other roles
+- pausing, resuming and canceling jobs
+- creating or renaming databases
+- managing authentication for other users
+- modifying cluster settings
+- creating changefeeds
 
 ## Authorization best practices
 
