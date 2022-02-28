@@ -11,7 +11,7 @@ This page offers an overview of CockroachDB's encryption features.
 
 CockroachDB uses either TLS 1.2 or TLS 1.3 for inter-node and client-node [authentication](authentication.html) as well as setting up a secure communication channel. Once the secure channel is set up, all inter-node and client-node network communication is encrypted using a [shared encryption key](https://en.wikipedia.org/wiki/Transport_Layer_Security) as per the TLS 1.2 protocol. This feature is enabled by default for all secure clusters and needs no additional configuration.
 
-## CockroachDB Encryption at Rest in Cloud Offerings
+## CockroachDB Encryption at rest (CockroachDB Cloud)
 
 Industry standard encryption-at-rest provided at the infrastructure level by your chosen infrastructure-as-a-service (IAAS) provider, either Google Cloud Platform (GCP) or Amazon Web Services (AWS). See documentation for <a href="https://cloud.google.com/compute/docs/disks#pd_encryption">GCP persistent disk encryption</a> or <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html">AWS elastic block storage</a>.
 
