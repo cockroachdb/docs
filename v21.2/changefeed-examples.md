@@ -421,11 +421,11 @@ Core changefeeds stream row-level changes to a client until the underlying SQL c
 Only Core changefeeds are available on {{ site.data.products.serverless-plan }}. To create a changefeed into a [configurable sink](changefeed-sinks.html), like cloud storage or Kafka, use {{ site.data.products.dedicated }}, which has this feature enabled by default.
 {{site.data.alerts.end}}
 
-### Create a core changefeed
+### Create a Core changefeed
 
 {% include {{ page.version.version }}/cdc/create-core-changefeed.md %}
 
-### Create a core changefeed using Avro
+### Create a Core changefeed using Avro
 
 {% include {{ page.version.version }}/cdc/create-core-changefeed-avro.md %}
 
