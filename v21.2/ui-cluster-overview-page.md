@@ -94,7 +94,7 @@ Node Status | Description
 `NODE_STATUS_UNAVAILABLE` | Node has been recently decommissioned.
 `NODE_STATUS_DECOMMISSIONED` | Node has been decommissioned for the duration set by the `server.time_until_store_dead` [cluster setting](cluster-settings.html) (5 minutes by default).
 
-You can see the full history of decommissioned nodes by clicking "View all decommissioned nodes".
+You can see the full history of decommissioned nodes by clicking **View all decommissioned nodes**.
 
 {{site.data.alerts.callout_info}}
 For details about the decommissioning process, see [Node Shutdown](node-shutdown.html?filters=decommission#node-shutdown-sequence).

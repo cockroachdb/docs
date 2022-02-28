@@ -223,7 +223,7 @@ Initially, the workload creates a new database called `ycsb`, creates a `usertab
 
 When a node fails, the cluster waits for the node to remain offline for 5 minutes by default before considering it dead, at which point the cluster automatically repairs itself by re-replicating any of the replicas on the down nodes to other available nodes.
 
-1. In a new terminal, [edit the default replication zone](configure-replication-zones.html) to reduce the amount of time the cluster waits before considering a node dead to the minimum allowed of 1 minute and 15 seconds:
+1. In a new terminal, [edit the default replication zone](configure-replication-zones.html#edit-the-default-replication-zone) to reduce the amount of time the cluster waits before considering a node dead to the minimum allowed of 1 minute and 15 seconds:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -379,7 +379,7 @@ kill -TERM 4622
     $ pkill haproxy
     ~~~
 
-3. Gracefully shut down the remaining 4 nodes, specifying the [process IDs you retrived earlier](#step-5-simulate-a-single-node-failure):
+3. Gracefully shut down the remaining 4 nodes, specifying the [process IDs you retrieved earlier](#step-5-simulate-a-single-node-failure):
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell

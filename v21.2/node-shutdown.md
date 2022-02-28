@@ -11,7 +11,7 @@ There are two ways to handle node shutdown:
 
 - To temporarily stop a node and restart it later, **drain** the node and terminate the `cockroach` process. This is done when [upgrading the cluster version](upgrade-cockroach-version.html) or performing cluster maintenance (e.g., upgrading system software). With a drain, the data stored on the node is preserved, and will be reused if the node restarts within a reasonable timeframe. There is little node-to-node traffic involved, which makes a drain lightweight.
 
-- To permanently remove the node from the cluster, **decommission** and drain the node, then terminate the `cockroach` process. This is done when scaling down a cluster or reacting to hardware failures. With a decommission, the data is moved out of the node. Replica rebalancing creates network traffic throughout the cluster, which makes a decommission heavyweight.
+- To permanently remove the node from the cluster, **decommission** the node and then terminate the `cockroach` process. This is done when scaling down a cluster or reacting to hardware failures. With a decommission, the data is moved out of the node. Replica rebalancing creates network traffic throughout the cluster, which makes a decommission heavyweight.
 
 {{site.data.alerts.callout_success}}
 This guidance applies to manual deployments. If you have a Kubernetes deployment, terminating the `cockroach` process is handled through the Kubernetes pods. The `kubectl drain` command is used for routine cluster maintenance. For details on this command, see the [Kubernetes documentation](https://kubernetes.io/docs/tasks/administer-cluster/safely-drain-node/).
@@ -70,7 +70,7 @@ Node drain consists of the following consecutive phases:
 
 1. **Distributed query phase**: All [distributed statements](architecture/sql-layer.html#distsql) initiated on other gateway nodes are allowed to complete, and DistSQL requests from other nodes are no longer accepted. This step completes either when all transactions have been processed or the [maximum duration set by `server.shutdown.query_wait`](#server-shutdown-query_wait) is reached.
 
-1. **Lease transfer phase:** The node's [`is_draining`](cockroach-node.html#node-status) field is set to `true`, which removes the node as a candidate for replica rebalancing, lease transfers, and query planning. Any [range leases](architecture/replication-layer.html#leases) or [Raft leaderships](architecture/replication-layer.html#raft) must be transferred to other nodes. This step completes when all transfers are completed.
+1. **Lease transfer phase:** The node's [`is_draining`](cockroach-node.html#node-status) field is set to `true`, which removes the node as a candidate for replica rebalancing, lease transfers, and query planning. Any [range leases](architecture/replication-layer.html#leases) or [Raft leaderships](architecture/replication-layer.html#raft) must be transferred to other nodes. This step completes when all range leases and Raft leaderships have been transferred.
 
     <section class="filter-content" markdown="1" data-scope="decommission">
     Since all range replicas were already removed from the node during the [decommissioning](#decommissioning) stage, this step immediately resolves.
@@ -144,7 +144,7 @@ To handle node shutdown effectively, the load balancer must be given enough time
 
 Increase `server.shutdown.drain_wait` so that your load balancer is able to make adjustments before this step times out. Because the drain process waits unconditionally for the `server.shutdown.drain_wait` duration, do not set this value too high.
 
-For example, [HAProxy](cockroach-gen.html#generate-an-haproxy-config-file) uses the default settings `inter 2000 fall 3` when checking server health. This means that HAProxy considers a node to be down, and temporarily removes the server from the pool, after 3 unsuccessful health checks being run at intervals of 2000 milliseconds. To ensure HAProxy can run 3 conseuctive checks before timeout, set `server.shutdown.drain_wait` to `8s` or greater: 
+For example, [HAProxy](cockroach-gen.html#generate-an-haproxy-config-file) uses the default settings `inter 2000 fall 3` when checking server health. This means that HAProxy considers a node to be down, and temporarily removes the server from the pool, after 3 unsuccessful health checks being run at intervals of 2000 milliseconds. To ensure HAProxy can run 3 consecutive checks before timeout, set `server.shutdown.drain_wait` to `8s` or greater: 
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -169,7 +169,7 @@ If there are still open transactions on the draining node when the server closes
 
 #### `server.shutdown.lease_transfer_wait`
 
-In the ["lease transfer phase"](#draining) of node drain, the server attempts to transfer all range leases and Raft leaderships from the draining node. `server.shutdown.lease_transfer_wait` sets the maximum duration of each iteration of this attempt `server.shutdown.lease_transfer_wait` (`5s` by default). Because this step does not exit until all transfers are completed, changing this value only affects the frequency at which drain progress messages are printed.
+In the ["lease transfer phase"](#draining) of node drain, the server attempts to transfer all range leases and Raft leaderships from the draining node. `server.shutdown.lease_transfer_wait` sets the maximum duration of each iteration of this attempt (`5s` by default). Because this step does not exit until all transfers are completed, changing this value only affects the frequency at which drain progress messages are printed.
 
 <section class="filter-content" markdown="1" data-scope="drain">
 In most cases, the default value is suitable. Do **not** set `server.shutdown.lease_transfer_wait` to a value lower than `5s`. In this case, leases can fail to transfer and node drain will not be able to complete.
@@ -325,7 +325,7 @@ Although [draining automatically follows decommissioning](#draining), we recomme
 Run [`cockroach node decommission`](cockroach-node.html) to decommission the node and rebalance its range replicas. For specific instructions and additional guidelines, see the [example](#remove-nodes).
 
 {{site.data.alerts.callout_danger}}
-Do **not** terminate the node process, delete the storage volume, or remove the VM before a `decommissioning` node has [changed its membership status](#status-change) to `decommissioned`. Prematurely terminating the process will prevent the node from rebalancing all of its range replicas onto other nodes gracefully, can cause transient query errors in client applications, and leave the remaining ranges under-replicated and vulnerable to loss of [quorum](architecture/replication-layer.html#overview) if another node goes down.
+Do **not** terminate the node process, delete the storage volume, or remove the VM before a `decommissioning` node has [changed its membership status](#status-change) to `decommissioned`. Prematurely terminating the process will prevent the node from rebalancing all of its range replicas onto other nodes gracefully, cause transient query errors in client applications, and leave the remaining ranges under-replicated and vulnerable to loss of [quorum](architecture/replication-layer.html#overview) if another node goes down.
 {{site.data.alerts.end}}
 
 ### Terminate the node process
@@ -401,7 +401,7 @@ cockroach node status --decommission --certs-dir=certs --host={address of any li
 (3 rows)
 ~~~
 
-- `is_draining == true` indicates that the node is either undergoing or has completed the draining process.
+`is_draining == true` indicates that the node is either undergoing or has completed the draining process.
 </section>
 
 <section class="filter-content" markdown="1" data-scope="decommission">
@@ -524,7 +524,7 @@ You can use [`cockroach node drain`](cockroach-node.html) to drain a node separa
 1. Run the `cockroach node drain` command, specifying the ID of the node to drain (and optionally a custom [drain timeout](#drain-timeout) to allow draining more time to complete):
 
     {% include_cached copy-clipboard.html %}
-    ~~~
+    ~~~ shell
     cockroach node drain 1 --host=localhost:{address of any live node} --drain-wait=15m --certs-dir=certs
     ~~~
 
@@ -563,7 +563,7 @@ You can use [`cockroach node drain`](cockroach-node.html) to drain a node separa
 In addition to the [graceful node shutdown](#prepare-for-graceful-shutdown) requirements, observe the following guidelines:
 
 - Before decommissioning nodes, verify that there are no [under-replicated or unavailable ranges](ui-cluster-overview-page.html#cluster-overview-panel) on the cluster.
-- Do **not** terminate the node process, delete the storage volume, or remove the VM before a `decommissioning` node has [changed its membership status](#status-change) to `decommissioned`. Prematurely terminating the process will prevent the node from rebalancing all of its range replicas onto other nodes gracefully, can cause transient query errors in client applications, and leave the remaining ranges under-replicated and vulnerable to loss of [quorum](architecture/replication-layer.html#overview) if another node goes down.
+- Do **not** terminate the node process, delete the storage volume, or remove the VM before a `decommissioning` node has [changed its membership status](#status-change) to `decommissioned`. Prematurely terminating the process will prevent the node from rebalancing all of its range replicas onto other nodes gracefully, cause transient query errors in client applications, and leave the remaining ranges under-replicated and vulnerable to loss of [quorum](architecture/replication-layer.html#overview) if another node goes down.
 - When removing nodes, decommission all nodes at once. Do not decommission the nodes one-by-one. This will incur unnecessary data movement costs due to replicas being passed between decommissioning nodes. **All** nodes must be fully `decommissioned` before terminating the node process and removing the data storage.
 - If you have a decommissioning node that appears to be hung, you can [recommission](#recommission-nodes) the node.
 
@@ -578,12 +578,12 @@ This example assumes you will decommission node IDs `4` and `5` of a 5-node clus
 Run the [`cockroach node drain`](cockroach-node.html) command for each node to be removed, specifying the ID of the node to drain:
 
 {% include_cached copy-clipboard.html %}
-~~~
+~~~ shell
 cockroach node drain 4 --host=localhost:{address of any live node} --certs-dir=certs
 ~~~
 
 {% include_cached copy-clipboard.html %}
-~~~
+~~~ shell
 cockroach node drain 5 --host=localhost:{address of any live node} --certs-dir=certs
 ~~~
 
@@ -633,7 +633,7 @@ No more data reported on target nodes. Please verify cluster health before remov
 The `is_decommissioning` field remains `true` after all replicas have been removed from each node.
 
 {{site.data.alerts.callout_danger}}
-Do **not** terminate the node process, delete the storage volume, or remove the VM before a `decommissioning` node has [changed its membership status](#status-change) to `decommissioned`. Prematurely terminating the process will prevent the node from rebalancing all of its range replicas onto other nodes gracefully, can cause transient query errors in client applications, and leave the remaining ranges under-replicated and vulnerable to loss of [quorum](architecture/replication-layer.html#overview) if another node goes down.
+Do **not** terminate the node process, delete the storage volume, or remove the VM before a `decommissioning` node has [changed its membership status](#status-change) to `decommissioned`. Prematurely terminating the process will prevent the node from rebalancing all of its range replicas onto other nodes gracefully, cause transient query errors in client applications, and leave the remaining ranges under-replicated and vulnerable to loss of [quorum](architecture/replication-layer.html#overview) if another node goes down.
 {{site.data.alerts.end}}
 
 #### Step 4. Confirm the nodes are decommissioned
