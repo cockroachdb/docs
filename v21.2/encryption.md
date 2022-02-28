@@ -5,6 +5,8 @@ toc: true
 docs_area: manage
 ---
 
+This page walks outlines several procedures necessary for managing encryption in {{ site.data.products.core }} clusters.
+
 ## Generating store key files
 
 Cockroach determines which encryption algorithm to use based on the size of the key file.

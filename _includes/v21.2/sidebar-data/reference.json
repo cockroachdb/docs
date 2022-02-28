@@ -1366,12 +1366,6 @@
             ]
           },
           {
-            "title": "Network Security",
-            "urls": [
-              "/${VERSION}/security-reference/network-security.html"
-            ]
-          },
-          {
             "title": "Encryption",
             "urls": [
               "/${VERSION}/security-reference/encryption.html"

@@ -159,7 +159,7 @@ All of a user's privileges must be [revoked](#revoke-a-users-privileges) before 
 
 ## Grant privileges
 
-Access to the data in your cluster is controlled by [privileges](../{{site.versions["stable"]}}/security-reference/authorization.html#managing-privileges). When a user connects to a database, either via the CockroachDB SQL client or a Postgres driver or ORM, CockroachDB checks the user's privileges for each statement executed. If the user does not have sufficient privileges for a statement, CockroachDB returns an error.
+Access to the data in your cluster is controlled by [privileges](../{{site.versions["stable"]}}/security-reference/authorization.html#managing-privileges). When a user connects to a database, either via the CockroachDB SQL client or a PostgreSQL driver or ORM, CockroachDB checks the user's privileges for each statement executed. If the user does not have sufficient privileges for a statement, CockroachDB returns an error.
 
 To grant a user privileges for specific databases and tables in your cluster, use the [`GRANT`](../{{site.versions["stable"]}}/grant.html) statement. For example, to assign a user all privileges for all tables in a database:
 
