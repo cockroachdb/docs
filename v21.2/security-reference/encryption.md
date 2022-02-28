@@ -11,7 +11,7 @@ This page offers an overview of CockroachDB's encryption features.
 
 CockroachDB uses either TLS 1.2 or TLS 1.3 for inter-node and client-node [authentication](authentication.html) as well as setting up a secure communication channel. Once the secure channel is set up, all inter-node and client-node network communication is encrypted using a [shared encryption key](https://en.wikipedia.org/wiki/Transport_Layer_Security) as per the TLS 1.2 protocol. This feature is enabled by default for all secure clusters and needs no additional configuration.
 
-## CockroachDB Encryption at Rest in Cloud Offerings
+## CockroachDB Encryption at rest (CockroachDB Cloud)
 
 Industry standard encryption-at-rest provided at the infrastructure level by your chosen infrastructure-as-a-service (IAAS) provider, either Google Cloud Platform (GCP) or Amazon Web Services (AWS). See documentation for <a href="https://cloud.google.com/compute/docs/disks#pd_encryption">GCP persistent disk encryption</a> or <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html">AWS elastic block storage</a>.
 
@@ -21,8 +21,7 @@ Because we are relying on the cloud provider's encryption implementation, we do 
 
 CockroachDB's Enterprise Encryption at Rest feature provides transparent encryption of a node's data on the local disk. It allows encryption of all files on disk using [AES](https://en.wikipedia.org/wiki/Advanced_Encryption_Standard) in [counter mode](https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#Counter_(CTR)), with all key sizes allowed.
 
-Encryption is performed in the [storage layer](../architecture/storage-layer.html) and configured per store.
-All files used by the store, regardless of contents, are encrypted with the desired algorithm.
+Encryption is performed in the [storage layer](../architecture/storage-layer.html) and configured per store. All files used by the store, regardless of contents, are encrypted with the desired algorithm.
 
 To allow arbitrary rotation schedules and ensure security of the keys, we use two layers of keys:
 
@@ -32,8 +31,7 @@ To allow arbitrary rotation schedules and ensure security of the keys, we use tw
 
 Store keys are specified at node startup by passing a path to a locally readable file. The file must contain 32 bytes (the key ID) followed by the key (16, 24, or 32 bytes). The size of the key dictates the version of AES to use (AES-128, AES-192, or AES-256). For an example showing how to create a store key, see [Generating key files](../encryption.html#generating-store-key-files) below.
 
-Also during node startup, CockroachDB uses a data key with the same length as the store key. If encryption has just been enabled,
-the key size has changed, or the data key is too old (default lifetime is one week), CockroachDB generates a new data key.
+Also during node startup, CockroachDB uses a data key with the same length as the store key. If encryption has just been enabled, the key size has changed, or the data key is too old (default lifetime is one week), CockroachDB generates a new data key.
 
 Any new file created by the store uses the currently-active data key. All data keys (both active and previous) are stored in a key registry file and encrypted with the active store key.
 
@@ -97,9 +95,9 @@ Key management is the most dangerous aspect of encryption. The following rules s
 
 A few other recommendations apply for best security practices:
 
-* Do not switch from encrypted to plaintext, this leaks data keys. When plaintext is selected, all previously encrypted data must be considered reachable.
-* Do not copy the encrypted files, as the data keys are not easily available.
-* If encryption is desired, start a node with it enabled from the first run, without ever running in plaintext.
+- Do not switch from encrypted to plaintext, this leaks data keys. When plaintext is selected, all previously encrypted data must be considered reachable.
+- Do not copy the encrypted files, as the data keys are not easily available.
+- If encryption is desired, start a node with it enabled from the first run, without ever running in plaintext.
 
 {{site.data.alerts.callout_danger}}
 Note that backups taken with the [`BACKUP`](../backup.html) statement **are not encrypted** even if Encryption at Rest is enabled. Encryption at Rest only applies to the CockroachDB node's data on the local disk. If you want encrypted backups, you will need to encrypt your backup files using your preferred encryption method.
