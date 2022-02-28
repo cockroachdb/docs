@@ -5,6 +5,8 @@ toc: true
 docs_area: reference.security
 ---
 
+This page offers an overview of CockroachDB's encryption features.
+
 ## Encryption in flight
 
 CockroachDB uses either TLS 1.2 or TLS 1.3 for inter-node and client-node [authentication](authentication.html) as well as setting up a secure communication channel. Once the secure channel is set up, all inter-node and client-node network communication is encrypted using a [shared encryption key](https://en.wikipedia.org/wiki/Transport_Layer_Security) as per the TLS 1.2 protocol. This feature is enabled by default for all secure clusters and needs no additional configuration.
@@ -17,8 +19,7 @@ Because we are relying on the cloud provider's encryption implementation, we do 
 
 ## Encryption at rest (Enterprise)
 
-Encryption at Rest provides transparent encryption of a node's data on the local disk. It allows encryption of all files on disk using [AES](https://en.wikipedia.org/wiki/Advanced_Encryption_Standard) in [counter mode](https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#Counter_(CTR)), with all key
-sizes allowed.
+CockroachDB's Enterprise Encryption at Rest feature provides transparent encryption of a node's data on the local disk. It allows encryption of all files on disk using [AES](https://en.wikipedia.org/wiki/Advanced_Encryption_Standard) in [counter mode](https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#Counter_(CTR)), with all key sizes allowed.
 
 Encryption is performed in the [storage layer](../architecture/storage-layer.html) and configured per store.
 All files used by the store, regardless of contents, are encrypted with the desired algorithm.

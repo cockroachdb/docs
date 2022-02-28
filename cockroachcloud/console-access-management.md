@@ -22,9 +22,9 @@ To switch between the organizations:
 
 SQL users created in the Console have admin privileges on the cluster by default, even if the user has [Developer](#developer) privileges for the organization. Therefore, anyone with the username and password of a default SQL user has privileges for all resources across the cluster.
 
-For this reason, while creating SQL users in the Console is expedient it is also dangerously powerful, and on clusters with any data of value, users should generally be be [created](../{{site.versions["stable"]}}/create-user.html) from the SQL client instead, and have their database resource access granted explicitly, precisely, and in keeping with the [principle of least privilege](https://en.wikipedia.org/wiki/Principle_of_least_privilege).
+For this reason, while creating SQL users in the Console is quick and easy, it is also dangerously powerful, and on clusters with any data of value, users should generally be be [created](../{{site.versions["stable"]}}/create-user.html) from the SQL client instead, and have their database resource access granted explicitly, precisely, and in keeping with the [principle of least privilege](https://en.wikipedia.org/wiki/Principle_of_least_privilege).
 
-Managing SQL users' privileges requires the [`role admin` role ](../{{site.versions["stable"]}}/security-reference/authorization.html#role-admin).
+Learn more about [managing SQL users' privileges](../{{site.versions["stable"]}}/security-reference/authorization.html#users-and-roles).
 
 ## Roles
 

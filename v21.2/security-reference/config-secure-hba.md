@@ -5,7 +5,9 @@ toc: true
 docs_area: manage.security
 ---
 
-## Introduction: Why customize your authentication configuration?
+This document describes the rationale for restricting database access to specific IP ranges as a security measure, and then walks the user through the procedure using [Authentication Configuration](authentication.html) to achieve that aim.
+
+## Why customize your authentication configuration?
 
 CockroachDB allows fine grained configuration of which attempts to connect with the database it will allow to proceed to the authentication stage, and which authentication methods it will accept, based on:
 
@@ -14,13 +16,7 @@ CockroachDB allows fine grained configuration of which attempts to connect with 
 
 Using Cockroach Labs' hosted CockroachDB offerings, whether Serverless or Dedicated, affords industry standard security controls at the network and infrastructure levels, and savvy users can self-deploy CockroachDB with any measure of network security they might desire. Nevertheless, a hardened authentication configuration offers a powerful measure of [security in depth](https://en.wikipedia.org/wiki/Defense_in_depth_(computing)). 
 
-Moreover, because the only authentication method currently available for CockroachDB hosted products is username/password (which is the least strong authentication method in terms of security), limiting allowed database connections to secure IP addresses (those belonging to your application servers and a) can considerably reduce the risk that your cluster is compromised by a malicious actor.
-
-An endpoint that is both a) open to the public internet and b) protected with a simple username/password combination is vulnerable to brute force password cracking. Furthermore, there are many ways to inadvertently (or advertently) leak a simple username/password combination (for example typing it on a keyboard in a public place where a camera is recording).
-
-CockroachDB does not natively perform rate limiting on authentication requests, which makes brute force password cracking possible, and also makes public endpoints a possible target for denial of service (DOS) attacks.
-
-Together, these factors leave data in CockroachDB Serverless clusters vulnerable to concerted efforts by dedicated attackers to gain access by obtaining these credentials, and afford a vector for DOS attacks. Both problems can be ameliorated by setting a hardened authentication configuration that limits authentication attempts to the IP addresses of a secure jumpbox and your application servers. 
+Moreover, because the only authentication method currently available for CockroachDB hosted products is username/password, limiting allowed database connections to secure IP addresses can considerably reduce the risk that your cluster is compromised, as a potential attack who learned or guessed a username/password combination could still not use it without also gaining infrastructure access, which can be protected with multifactor authentication and restricted to appropriate parties using infrastructure-level IAM.
 
 ## Provision and access your cluster
 
@@ -43,9 +39,7 @@ docs-r-awesome@free-tier14.aws-us-east-1.cockroachlabs.cloud:26257/defaultdb>
 ## Provision a secure jumpbox
 
 
-By default, anyone who knows the parameters in this command can access your database. Let's fix that by creating a secure jumpbox--a compute instance in Google Cloud and restricting access to your cluster to that jumpbox.
-
-This will be far more secure because access to the jumpbox can be protected using Google Cloud's native capacity to require two-factor authentication for SSH access to compute instance. By limiting SQL access to those actors who have access to the jumpbox, we can effectively two factor authentication for access, as well as take advantage of other security measures availabe on Google Cloud compute instances, such as access logs.
+By default, anyone who knows the parameters in this command can access your database. Let's fix that by creating a secure jumpbox--a compute instance that will be used as secure, dedicated access point to our cluster. In our case, the jumpbox will be a Google Cloud compute instance, which allows us to protect access to the jumpbox with Google Cloud's native capacity to require two-factor authentication for SSH access to compute instance. By limiting SQL access to those actors who have access to the jumpbox, we can effectively enforce two factor authentication for access to the database, as well as take advantage of other security measures availabe on Google Cloud compute instances, such as access logs.
 
 In the [Google Cloud Console Compute Instances](https://console.cloud.google.com/compute/instance) page, create a new instance called `roach-jump-box`. The jumpbox will need very little CPU or disk, so use a cheap instance such as an e2-micro.
 
@@ -119,7 +113,7 @@ docs-writer@roach-jump-box:~$ cockroach sql --url "postgresql://$USER:$PASSWORD@
 
 ## Allow IP addresses for applications
 
-Of course, it's likely that an application will also need access the database, in which case, you could add a new rule to allow an IP address to your configuration. You will then need to route the outgoing traffic from your applications through a specific IP. The preferred way is to use a [NAT gateway](https://cloud.google.com/nat/docs/overview), but a quick, lightweight solution is to attach an external IP to a compute instance with acts as a simple proxy. However, in this latter case the proxy as a bottleneck and single point of failure, so this is not suitable for high traffic or uptime-critical services.
+Of course, it's likely that an application will also need access the database, in which case, you could add a new rule to allow an IP address to your configuration. You will then need to route the outgoing traffic from your applications through a specific IP. The preferred way is to use a [NAT gateway](https://cloud.google.com/nat/docs/overview), but a quick, lightweight solution is to attach an external IP to a compute instance with acts as a proxy. However, in this latter case the proxy as a bottleneck and single point of failure, so this is not suitable for high traffic or uptime-critical services.
 
 
 Further, we can fine tune our configuration and improve the overall security and resilience of our system by restricting access from the given IP to the appropriate user. 
