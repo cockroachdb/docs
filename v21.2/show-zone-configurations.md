@@ -13,7 +13,7 @@ Use the `SHOW ZONE CONFIGURATIONS` [statement](sql-statements.html) to view deta
 {% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/show_zone.html %}
 </div>
 
-## Required privileges`
+## Required privileges
 
 No [privileges](security-reference/authorization.html#managing-privileges) are required to list replication zones.
 

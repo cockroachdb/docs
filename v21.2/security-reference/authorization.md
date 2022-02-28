@@ -53,7 +53,6 @@ For secure clusters, in addition to [generating the client certificate](../authe
 A role is a group of users and/or other roles for which you can grant or revoke privileges as a whole. To simplify access management, create a role and grant privileges to the role, then create SQL users and grant them membership to the role.
 
 
-
 ### Default roles
 
 The `admin` and `public` roles exist by default.
