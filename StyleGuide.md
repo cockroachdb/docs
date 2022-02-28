@@ -208,7 +208,7 @@ Concept content helps users understand the foundation of Cockroach Labs services
 
 Concept content often includes a [glossary](#glossary).
 
-- The first sentence answers the question "what is?" in the form **A _\<singular noun\>_ is ….**.
+- The first sentence answers the implicit question "what is a \<singular noun\>?" in the form **A _\<singular noun\>_ is ….**.
 
   **Example:** An _index_ is a data structure that improves the speed of data retrieval operations on a database table at the cost of additional writes and storage space to maintain the index data structure.
 
