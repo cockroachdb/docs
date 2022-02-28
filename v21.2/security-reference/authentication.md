@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.security
 ---
 
-CockroachDB allows fine grained configuration of which attempts to connect with the database it will allow to proceed to the authentication stage, and which authentication methods it will accept, based on:
+CockroachDB allows fine-grained configuration of which attempts to connect with the database it will allow to proceed to the authentication stage, and which authentication methods it will accept, based on:
 
 - WHO is making the attempt (SQL user), and 
 - WHERE on the internet (IP Address) the attempt is coming from.

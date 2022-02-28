@@ -139,7 +139,7 @@ Cockroach Labs maintains <a href="https://github.com/cockroachdb/cockroach">Cock
   <td>Role-based access control (RBAC)</td>
  </tr>
  <tr>
-  <td rowspan="3"><a href="network-security.html">Network Security</a></td>
+  <td rowspan="3">Network Security</td>
   <td>✓</td>
   <td>✓</td>
   <td>✓</td>
