@@ -10,14 +10,14 @@ filter_sort: 3
 docs_area: manage
 ---
 
-This page shows you how to reproduce [CockroachDB's TPC-C performance benchmarking results](performance.html#scale). Across all scales, CockroachDB can process tpmC (new order transactions per minute) at near maximum efficiency. Start by choosing the scale you're interested in:
+This page shows you how to reproduce [CockroachDB TPC-C performance benchmarking results](performance.html#scale). Across all scales, CockroachDB can process tpmC (new order transactions per minute) at near maximum efficiency. Start by choosing the scale you're interested in:
 
 {% include filter-tabs.md %}
 
 | Workload             | Cluster size                                            | Warehouses | Data size |
 |----------------------+---------------------------------------------------------+------------+-----------|
 | Local                | 3 nodes on your laptop                                  |         10 | 2 GB      |
-| Local (Multi-region) | 9 in-memory nodes on your laptop using `cockroach demo` |         10 | 2 GB      |
+| Local (multi-region) | 9 in-memory nodes on your laptop using `cockroach demo` |         10 | 2 GB      |
 | Small                | 3 nodes on `c5d.4xlarge` machines                       |       2500 | 200 GB    |
 | Medium               | 15 nodes on `c5d.4xlarge` machines                      |     13,000 | 1.04 TB   |
 | Large                | 81 nodes on `c5d.9xlarge` machines                      |    140,000 | 11.2 TB   |
@@ -185,7 +185,7 @@ _elapsed_______tpmC____efc__avg(ms)__p50(ms)__p90(ms)__p95(ms)__p99(ms)_pMax(ms)
 
     CockroachDB works well on commodity hardware in public cloud, private cloud, on-prem, and hybrid environments. For hardware recommendations, see our [Production Checklist](recommended-production-settings.html#hardware).
 
-    Also note that CockroachDB creates a yearly cloud report focused on evaluating hardware performance. For more information, see the [2020 Cloud Report](https://www.cockroachlabs.com/blog/2020-cloud-report/).
+    Cockroach Labs creates a yearly cloud report focused on evaluating hardware performance. For more information, see the [2021 Cloud Report](https://www.cockroachlabs.com/blog/2021-cloud-report/).
 
 - Performance Tuning
 
