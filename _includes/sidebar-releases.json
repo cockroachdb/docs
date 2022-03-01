@@ -17,7 +17,7 @@
     },
     {% for x in v_prod %} {% comment %} iterate through all supported versions {% endcomment %}
       {
-        "title": "Latest {{ x }}",
+        "title": "{{ x }}",
         "urls": [
           "/releases/{{ x }}.html"
         ]
