@@ -59,7 +59,7 @@ An operator [initiates the draining process](#drain-the-node-and-terminate-the-n
 </section>
 
 <section class="filter-content" markdown="1" data-scope="decommission">
-After all replicas are transferred, the node is automatically drained.
+After all replicas on a decommissioning node are rebalanced, the node is automatically drained.
 </section>
 
 Node drain consists of the following consecutive phases:
