@@ -16,8 +16,8 @@ layout: null
 /docs/stable/build-an-app-with-cockroachdb.html /docs/stable/example-apps.html 301
 /docs/v21.2/build-an-app-with-cockroachdb.html /docs/stable/example-apps.html 301
 /docs/*/licensing.html /docs/stable/licensing-faqs.html 301
-/docs/v21.2/remove-nodes.html /docs/v21.2/node-shutdown.html 301
-/docs/v21.2/cockroach-quit.html /docs/v21.2/node-shutdown.html 301
+/docs/stable/remove-nodes.html /docs/stable/node-shutdown.html 301
+/docs/stable/cockroach-quit.html /docs/stable/node-shutdown.html 301
 /docs/v19.2/demo-geo-partitioning.html /docs/v19.2/demo-low-latency-multi-region-deployment.html 301
 /docs/v20.1/demo-geo-partitioning.html /docs/v20.1/demo-low-latency-multi-region-deployment.html 301
 /docs/v20.2/demo-geo-partitioning.html /docs/v20.2/demo-low-latency-multi-region-deployment.html 301
