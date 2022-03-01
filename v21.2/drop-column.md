@@ -58,9 +58,9 @@ If you no longer want a column in a table, you can drop it.
 --------------+-----------+-------------+----------------+-----------------------+-----------+------------
   id          | UUID      |    false    | NULL           |                       | {primary} |   false
   city        | VARCHAR   |    false    | NULL           |                       | {primary} |   false
-  name        | VARCHAR   |    true     | NULL           |                       | {}        |   false
-  address     | VARCHAR   |    true     | NULL           |                       | {}        |   false
-  credit_card | VARCHAR   |    true     | NULL           |                       | {}        |   false
+  name        | VARCHAR   |    true     | NULL           |                       | {primary} |   false
+  address     | VARCHAR   |    true     | NULL           |                       | {primary} |   false
+  credit_card | VARCHAR   |    true     | NULL           |                       | {primary} |   false
 (5 rows)
 ~~~
 
@@ -96,8 +96,8 @@ SQLSTATE: 01000
 --------------+-----------+-------------+----------------+-----------------------+-----------+------------
   id          | UUID      |    false    | NULL           |                       | {primary} |   false
   city        | VARCHAR   |    false    | NULL           |                       | {primary} |   false
-  name        | VARCHAR   |    true     | NULL           |                       | {}        |   false
-  address     | VARCHAR   |    true     | NULL           |                       | {}        |   false
+  name        | VARCHAR   |    true     | NULL           |                       | {primary} |   false
+  address     | VARCHAR   |    true     | NULL           |                       | {primary} |   false
 (4 rows)
 ~~~
 

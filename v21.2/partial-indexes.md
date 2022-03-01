@@ -162,13 +162,22 @@ To limit the number of rows scanned to just the rows that you are querying, you 
 ~~~
   table_name |                  index_name                   | non_unique | seq_in_index | column_name  | direction | storing | implicit
 -------------+-----------------------------------------------+------------+--------------+--------------+-----------+---------+-----------
-  rides      | primary                                       |   false    |            1 | city         | ASC       |  false  |  false
-  rides      | primary                                       |   false    |            2 | id           | ASC       |  false  |  false
-...
-  rides      | rides_city_revenue_idx                        |    true    |            1 | city         | ASC       |  false  |  false
-  rides      | rides_city_revenue_idx                        |    true    |            2 | revenue      | ASC       |  false  |  false
-  rides      | rides_city_revenue_idx                        |    true    |            3 | id           | ASC       |  false  |   true
-(12 rows)
+  rides      | primary                                       |   false    |            1 | city          | ASC       |  false  |  false
+  rides      | primary                                       |   false    |            2 | id            | ASC       |  false  |  false
+  rides      | primary                                       |   false    |            3 | vehicle_city  | N/A       |  true   |  false
+  rides      | primary                                       |   false    |            4 | rider_id      | N/A       |  true   |  false
+  rides      | primary                                       |   false    |            5 | vehicle_id    | N/A       |  true   |  false
+  rides      | primary                                       |   false    |            6 | start_address | N/A       |  true   |  false
+  rides      | primary                                       |   false    |            7 | end_address   | N/A       |  true   |  false
+  rides      | primary                                       |   false    |            8 | start_time    | N/A       |  true   |  false
+  rides      | primary                                       |   false    |            9 | end_time      | N/A       |  true   |  false
+  rides      | primary                                       |   false    |           10 | revenue       | N/A       |  true   |  false
+  ...
+  rides      | rides_city_revenue_idx                        |    true    |            1 | city          | ASC       |  false  |  false
+  rides      | rides_city_revenue_idx                        |    true    |            2 | revenue       | ASC       |  false  |  false
+  rides      | rides_city_revenue_idx                        |    true    |            3 | id            | ASC       |  false  |   true
+  ...
+(24 rows)
 
 Time: 8ms total (execution 8ms / network 0ms)
 ~~~
@@ -344,13 +353,22 @@ You can create a partial index that excludes these rows, making queries that fil
 ~~~
   table_name |                  index_name                   | non_unique | seq_in_index | column_name  | direction | storing | implicit
 -------------+-----------------------------------------------+------------+--------------+--------------+-----------+---------+-----------
-  rides      | primary                                       |   false    |            1 | city         | ASC       |  false  |  false
-  rides      | primary                                       |   false    |            2 | id           | ASC       |  false  |  false
-...
-  rides      | rides_city_revenue_idx                        |    true    |            1 | city         | ASC       |  false  |  false
-  rides      | rides_city_revenue_idx                        |    true    |            2 | revenue      | ASC       |  false  |  false
-  rides      | rides_city_revenue_idx                        |    true    |            3 | id           | ASC       |  false  |   true
-(12 rows)
+  rides      | primary                                       |   false    |            1 | city          | ASC       |  false  |  false
+  rides      | primary                                       |   false    |            2 | id            | ASC       |  false  |  false
+  rides      | primary                                       |   false    |            3 | vehicle_city  | N/A       |  true   |  false
+  rides      | primary                                       |   false    |            4 | rider_id      | N/A       |  true   |  false
+  rides      | primary                                       |   false    |            5 | vehicle_id    | N/A       |  true   |  false
+  rides      | primary                                       |   false    |            6 | start_address | N/A       |  true   |  false
+  rides      | primary                                       |   false    |            7 | end_address   | N/A       |  true   |  false
+  rides      | primary                                       |   false    |            8 | start_time    | N/A       |  true   |  false
+  rides      | primary                                       |   false    |            9 | end_time      | N/A       |  true   |  false
+  rides      | primary                                       |   false    |           10 | revenue       | N/A       |  true   |  false
+  ...
+  rides      | rides_city_revenue_idx                        |    true    |            1 | city          | ASC       |  false  |  false
+  rides      | rides_city_revenue_idx                        |    true    |            2 | revenue       | ASC       |  false  |  false
+  rides      | rides_city_revenue_idx                        |    true    |            3 | id            | ASC       |  false  |   true
+  ...
+(27 rows)
 ~~~
 
 {% include copy-clipboard.html %}

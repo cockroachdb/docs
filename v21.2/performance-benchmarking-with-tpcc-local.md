@@ -10,14 +10,14 @@ filter_sort: 1
 docs_area: manage
 ---
 
-This page shows you how to reproduce [CockroachDB's TPC-C performance benchmarking results](performance.html#scale). Across all scales, CockroachDB can process tpmC (new order transactions per minute) at near maximum efficiency. Start by choosing the scale you're interested in:
+This page shows you how to reproduce [CockroachDB TPC-C performance benchmarking results](performance.html#scale). Across all scales, CockroachDB can process tpmC (new order transactions per minute) at near maximum efficiency. Start by choosing the scale you're interested in:
 
 {% include filter-tabs.md %}
 
 | Workload             | Cluster size                                            | Warehouses | Data size |
 |----------------------+---------------------------------------------------------+------------+-----------|
 | Local                | 3 nodes on your laptop                                  |         10 | 2 GB      |
-| Local (Multi-region) | 9 in-memory nodes on your laptop using `cockroach demo` |         10 | 2 GB      |
+| Local (multi-region) | 9 in-memory nodes on your laptop using `cockroach demo` |         10 | 2 GB      |
 | Small                | 3 nodes on `c5d.4xlarge` machines                       |       2500 | 200 GB    |
 | Medium               | 15 nodes on `c5d.4xlarge` machines                      |     13,000 | 1.04 TB   |
 | Large                | 81 nodes on `c5d.9xlarge` machines                      |    140,000 | 11.2 TB   |
@@ -161,7 +161,7 @@ The [TPC-C specification](http://www.tpc.org/tpc_documents_current_versions/pdf/
     $ cockroach quit --insecure --host=localhost:26259
     ~~~
 
-2. To restart the cluster at a later time, run the same `cockroach start` commands as earlier from the directory containing the nodes' data stores.  
+2. To restart the cluster at a later time, run the same `cockroach start` commands as earlier from the directory containing the nodes' data stores.
 
     If you do not plan to restart the cluster, you may want to remove the nodes' data stores:
 

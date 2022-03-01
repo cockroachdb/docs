@@ -96,13 +96,11 @@ For details, see [tracking issue](https://github.com/cockroachdb/cockroach/issue
 ~~~
 
 ~~~
-+--------------+-----------+-------------+-------------------+-----------------------+-------------+
-| column_name  | data_type | is_nullable |  column_default   | generation_expression |   indices   |
-+--------------+-----------+-------------+-------------------+-----------------------+-------------+
-| profile_id   | UUID      |    false    | gen_random_uuid() |                       | {"primary"} |
-| last_updated | TIMESTAMP |    true     | now()             |                       | {}          |
-| user_profile | JSON      |    true     | NULL              |                       | {}          |
-+--------------+-----------+-------------+-------------------+-----------------------+-------------+
+  column_name  | data_type | is_nullable |  column_default   | generation_expression |  indices  | is_hidden
+---------------+-----------+-------------+-------------------+-----------------------+-----------+------------
+  profile_id   | UUID      |    false    | gen_random_uuid() |                       | {primary} |   false
+  last_updated | TIMESTAMP |    true     | now():::TIMESTAMP |                       | {primary} |   false
+  user_profile | JSONB     |    true     | NULL              |                       | {primary} |   false
 (3 rows)
 ~~~
 

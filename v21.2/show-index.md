@@ -29,8 +29,8 @@ In CockroachDB, the following are aliases for `SHOW INDEX`:
 
 Parameter | Description
 ----------|------------
-`table_name` | The name of the table for which you want to show indexes.
-`database_name` | The name of the database for which you want to show indexes.
+`table_name` | The name of the table for which to show indexes.
+`database_name` | The name of the database for which to show indexes.
 
 ## Response
 
@@ -40,12 +40,14 @@ Field | Description
 ----------|------------
 `table_name` | The name of the table.
 `index_name` | The name of the index.
-`non_unique` | Whether or not values in the indexed column are unique. Possible values: `true` or `false`.
-`seq_in_index` | The position of the column in the index, starting with 1.
+`non_unique` | Whether values in the indexed column are unique. Possible values: `true` or `false`.
+`seq_in_index` | The position of the column in the index, starting with `1`.
 `column_name` | The indexed column.
 `direction` | How the column is sorted in the index. Possible values: `ASC` or `DESC` for indexed columns; `N/A` for stored columns.
-`storing` | Whether or not the `STORING` clause was used to index the column during [index creation](create-index.html). Possible values: `true` or `false`.
-`implicit` | Whether or not the column is part of the index despite not being explicitly included during [index creation](create-index.html). Possible values: `true` or `false`<br><br>[Primary key](primary-key.html) columns are the only columns implicitly included in secondary indexes. The inclusion of primary key columns improves performance when retrieving columns not in the index.
+`storing` | Whether the `STORING` clause was used to index the column during [index creation](create-index.html). Possible values: `true` or `false`.
+`implicit` | Whether the column is part of the index despite not being explicitly included during [index creation](create-index.html). Possible values: `true` or `false`<br><br>[Primary key](primary-key.html) columns are the only columns implicitly included in secondary indexes. The inclusion of primary key columns improves performance when retrieving columns not in the index.
+
+A column is in the primary key if the value of the `index_name` column is `primary` and value of the `storing` column is `false`.
 
 ## Example
 
@@ -76,6 +78,8 @@ Field | Description
   users      | users_name_idx |    true    |            3 | id          | ASC       |  false  |   true
 (8 rows)
 ~~~
+
+In this example, the columns where the value of the `index_name` column is `primary` and value of the `storing` column is `false`, and thus are in the primary key, are `city` and `id`.
 
 ### Show indexes for a database
 

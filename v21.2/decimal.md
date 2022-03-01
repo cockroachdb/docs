@@ -22,7 +22,7 @@ When inserting a decimal value:
 
 - If digits to the right of the decimal point exceed the column's `scale`, CockroachDB rounds to the scale.
 - If digits to the right of the decimal point are fewer than the column's `scale`, CockroachDB pads to the scale with `0`s.
-- If digits to the left and right of the decimal point exceed the column's `precision`, CockroachDB gives an error.  
+- If digits to the left and right of the decimal point exceed the column's `precision`, CockroachDB gives an error.
 - If the column's `precision` and `scale` are identical, the inserted value must round to less than 1.
 
 ## Syntax
@@ -39,10 +39,10 @@ from a string literal instead.
 
 The following values are recognized:
 
- Syntax                                 | Value                                           
+ Syntax                                 | Value
 ----------------------------------------|------------------------------------------------
- `inf`, `infinity`, `+inf`, `+infinity` | +&#8734;                                                
- `-inf`, `-infinity`                    | -&#8734;                                                
+ `inf`, `infinity`, `+inf`, `+infinity` | +&#8734;
+ `-inf`, `-infinity`                    | -&#8734;
  `nan`                                  | [NaN (Not-a-Number)](https://en.wikipedia.org/wiki/NaN)
 
 For example:
@@ -53,7 +53,7 @@ For example:
 
 ## Size
 
-The size of a `DECIMAL` value is variable, starting at 9 bytes. It's recommended to keep values under 64 kilobytes to ensure performance. Above that threshold, [write amplification](https://en.wikipedia.org/wiki/Write_amplification) and other considerations may cause significant performance degradation.  
+The size of a `DECIMAL` value is variable, starting at 9 bytes. It's recommended to keep values under 64 kilobytes to ensure performance. Above that threshold, [write amplification](https://en.wikipedia.org/wiki/Write_amplification) and other considerations may cause significant performance degradation.
 
 ## Examples
 
@@ -71,8 +71,8 @@ The size of a `DECIMAL` value is variable, starting at 9 bytes. It's recommended
   column_name |   data_type   | is_nullable | column_default | generation_expression |  indices  | is_hidden
 --------------+---------------+-------------+----------------+-----------------------+-----------+------------
   a           | DECIMAL       |    false    | NULL           |                       | {primary} |   false
-  b           | DECIMAL(10,5) |    true     | NULL           |                       | {}        |   false
-  c           | DECIMAL       |    true     | NULL           |                       | {}        |   false
+  b           | DECIMAL(10,5) |    true     | NULL           |                       | {primary} |   false
+  c           | DECIMAL       |    true     | NULL           |                       | {primary} |   false
 (3 rows)
 ~~~
 
