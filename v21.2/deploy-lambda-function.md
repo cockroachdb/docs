@@ -199,7 +199,7 @@ This step is optional, as you do not need to create a new deployment package to 
         --handler index.handler \
         --runtime nodejs14.x \
         --role arn:aws:iam::<account-id>:role/lambda-ex \
-        --environment Variables={DATABASE_URL='<connection-string>'}
+        --environment "Variables={DATABASE_URL=<connection-string>}"
     ~~~
 
     </section>
@@ -215,20 +215,20 @@ This step is optional, as you do not need to create a new deployment package to 
         --handler init_db.lambda_handler \
         --runtime python3.9 \
         --role arn:aws:iam::<account-id>:role/lambda-ex \
-        --environment Variables={DATABASE_URL='<connection-string>'}
+        --environment "Variables={DATABASE_URL=<connection-string>,PGSSLROOTCERT=./root.crt}"
     ~~~
 
     </section>
 
     Where:
     - `<region>` is the region closest to your CockroachDB deployment.
-    - `<account-id>` is your AWS account ID
-    - `<connection-string>` is the [connection string to the CockroachDB cluster](#connection-string)
+    - `<account-id>` is your AWS account ID.
+    - `<connection-string>` is the [connection string to the CockroachDB cluster](#connection-string).
 
     <section class="filter-content" markdown="1" data-scope="python">
 
     {{site.data.alerts.callout_info}}
-    Psycopg2 requires a trusted CA certificate to connect to CockroachDB. Make sure that your connection string points to the local CA certificate in the deployment package (`sslrootcert=./root.crt`).
+    To connect to a {{ site.data.products.serverless }} cluster with Psycopg2, you must provide the client with a valid CA certificate. By default, Pscyopg2 searches for the certificate at <code>~/.postgresql/root.crt</code>, or in the environment variable `PGSSLROOTCERT`.
     {{site.data.alerts.end}}
 
     </section>
