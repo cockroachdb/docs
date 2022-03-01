@@ -256,11 +256,24 @@ Instead of 103.748ms, the query now takes 6.862ms.
 
 ## Step 10. Clean up
 
-If the program is still running, press CTRL + c to terminate it and then use [`cockroach quit`](cockroach-quit.html) to stop the single-node CockroachDB cluster:
+If the program is still running, press `ctrl-c` to terminate it.
 
-{% include copy-clipboard.html %}
+Get the process ID of the node:
+
+{% include_cached copy-clipboard.html %}
 ~~~ shell
-$ cockroach quit --insecure --host=localhost:26257
+ps -ef | grep cockroach | grep -v grep
+~~~
+
+~~~
+  501  8099     1   0  2:59PM ttys002    0:01.12 cockroach start-single-node --insecure --store=json-test --listen-addr=localhost:26257 --http-addr=localhost:8080
+~~~
+
+Then gracefully shut down the node, specifying its process ID:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+kill -TERM 8099
 ~~~
 
 If you do not plan to restart the cluster, remove the node's data store:

@@ -18,7 +18,6 @@ Command | Usage
 [`cockroach init`](cockroach-init.html) | Initialize a multi-node cluster.
 [`cockroach start-single-node`](cockroach-start-single-node.html) | Start a single-node cluster.
 [`cockroach cert`](cockroach-cert.html) | Create CA, node, and client certificates.
-[`cockroach quit`](cockroach-quit.html) | Temporarily stop a node or permanently remove a node.
 [`cockroach sql`](cockroach-sql.html) | Use the built-in SQL client.
 [`cockroach sqlfmt`](cockroach-sqlfmt.html) | Reformat SQL queries for enhanced clarity.
 [`cockroach node`](cockroach-node.html) | List node IDs, show their status, decommission nodes for removal, or recommission nodes.

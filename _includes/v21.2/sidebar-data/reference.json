@@ -1416,12 +1416,6 @@
                 ]
               },
               {
-                "title": "<code>cockroach quit</code>",
-                "urls": [
-                  "/${VERSION}/cockroach-quit.html"
-                ]
-              },
-              {
                 "title": "<code>cockroach sql</code>",
                 "urls": [
                   "/${VERSION}/cockroach-sql.html"

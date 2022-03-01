@@ -78,7 +78,7 @@ When serving [strongly-consistent (aka "non-stale") reads](transaction-layer.htm
 
 #### Co-location with Raft leadership
 
-The range lease is completely separate from Raft leadership, and so without further efforts, Raft leadership and the Range lease might not be held by the same replica. However, we can optimize query performance by making the same node both Raft leader and the leaseholder; it reduces network round trips if the leaseholder receiving the requests can simply propose the Raft commands to itself, rather than communicating them to another node.
+The range lease is completely separate from Raft leadership, and so without further efforts, Raft leadership and the range lease might not be held by the same replica. However, we can optimize query performance by making the same node both Raft leader and the leaseholder; it reduces network round trips if the leaseholder receiving the requests can simply propose the Raft commands to itself, rather than communicating them to another node.
 
 To achieve this, each lease renewal or transfer also attempts to collocate them. In practice, that means that the mismatch is rare and self-corrects quickly.
 
