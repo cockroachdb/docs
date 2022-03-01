@@ -35,7 +35,7 @@ Transaction Duration | Amount of time the transaction has been active, if there 
 Statement Duration | Amount of time the SQL statement has been active, if there is an active statement.
 Memory Usage | Amount of memory currently allocated to this session, followed by the maximum amount of memory this session has ever been allocated.
 Statement | Active SQL statement. If more than one statement is active, the most recent statement is shown.
-Actions | Options to terminate the active query and/or terminate the session. These require the [`CANCELQUERY`](../{{site.versions["stable"]}/cancel-query.html) role option.<br><br>**Terminate Statement:** Ends the SQL statement. The session running this statement will receive an error.<br><br>**Terminate Session:** Ends the session. The client that holds this session will receive a "connection terminated" event.
+Actions | Options to terminate the active query and/or terminate the session. These require the `CANCELQUERY` role option.<br><br>**Terminate Statement:** Ends the SQL statement. The session running this statement will receive an error.<br><br>**Terminate Session:** Ends the session. The client that holds this session will receive a "connection terminated" event.
 
 {{site.data.alerts.callout_success}}
 Sort by **Transaction Duration** to display all active sessions at the top.
