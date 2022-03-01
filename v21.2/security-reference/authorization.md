@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.security
 ---
 
-Authorization, generally, is the control over WHO (users/roles) can perform WHICH ACTIONS (e.g read, write, update, delete, grant, etc.) to WHICH RESOURCES or TARGETS (databases, tables, clusters, schemas, rows, users, jobs, etc.).
+Authorization, generally, is the control over **who** (users/roles) can perform **which actions** (e.g read, write, update, delete, grant, etc.) to **which resources or targets** (databases, tables, clusters, schemas, rows, users, jobs, etc.).
 
 {{site.data.alerts.callout_info}}
 CockroachDB has a unified authorization model, meaning that a given user's permissions are governed by the same policies in different contexts such as accessing the SQL shell or viewing data from the DB Console.
@@ -15,10 +15,11 @@ CockroachDB has a unified authorization model, meaning that a given user's permi
 
 There is no technical distinction between a role or user in CockroachDB. A role/user can:
 
-- be permitted to log in to the [SQL shell](../cockroach-sql.html).
-- be granted [privileges](#privileges) to specific actions and database objects.
-- be a member of other users/roles, inheriting their privileges.
-- have other users/roles as members that inherit its privileges.
+- Be permitted to log in to the [SQL shell](../cockroach-sql.html).
+- Be granted [privileges](#privileges) to specific actions and database objects.
+- Be a member of other users/roles, inheriting their privileges.
+- Have other users/roles as members that inherit its privileges.
+- Be configured with other [role options](#role-options)
 
 We refer to these as "roles" when they are created for managing the privileges of their member "users" and not for logging in directly, which is typically reserved for "users".
 
@@ -40,7 +41,6 @@ A new user must be granted the required privileges for each database and table t
 By default, a new user belongs to the `public` role and has no privileges other than those assigned to the `public` role.
 {{site.data.alerts.end}}
 
-
 ### `root` user
 
 The `root` user is created by default for each cluster. The `root` user is assigned to the [`admin` role](#admin-role) and has all privileges across the cluster.
@@ -50,7 +50,6 @@ For secure clusters, in addition to [generating the client certificate](../authe
 ## Roles
 
 A role is a group of users and/or other roles for which you can grant or revoke privileges as a whole. To simplify access management, create a role and grant privileges to the role, then create SQL users and grant them membership to the role.
-
 
 ### Default roles
 
@@ -64,7 +63,7 @@ An `admin` user is a member of the `admin` role. Only `admin` users can use [`CR
 
 To assign a user to the `admin` role:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > GRANT admin TO <username>;
 ~~~
@@ -77,10 +76,15 @@ All new users and roles belong to the `public` role by default. You can grant an
 
 #### Role admin
 
-A `role admin` is a member of the role that's allowed to grant or revoke role membership to other users for that specific role. To create a `role admin`, use [`WITH ADMIN OPTION`](../grant.html#grant-the-admin-option).
+`Role admin` is a [role option](#role-options) that allows a given user or role to *administrate* itself, by granting and revoking it to other users and roles.
+
+To create a `role admin`, use [`WITH ADMIN OPTION`](../grant.html#grant-the-admin-option).
 
 {{site.data.alerts.callout_success}}
-The terms “`admin` role” and “`role admin`” can be confusing. A user who is a member of the `admin` role has all privileges on all database objects across the entire cluster, whereas a `role admin` has privileges limited to the role they are a member of. Assign the `admin` role to a SQL user if you want the user to have privileges across the cluster. Make a SQL user the `role admin` if you want to limit the user’s privileges to its current role, but with an option to grant or revoke role membership to other users. This applies to the `admin` role as well - only admin users with the `WITH ADMIN OPTION` can add or remove other users from the `admin` role.
+The terms “`admin` role” and “`role admin`” can be confusing. 
+The `admin` role is a role (specifically the role granting all privileges on all database resources across a cluster), whereas `role admin` is a role option that is either enabled or disabled or not on any given role or grant of a role to another user or role.
+
+Learn more about [`role options`](../create-user.html#role-options).
 {{site.data.alerts.end}}
 
 #### Direct member
@@ -136,7 +140,6 @@ Take the following points into consideration while granting privileges to roles 
 
 <span class="version-tag">New in v21.2</span>: By default, CockroachDB grants the current role/user `ALL` privileges on the objects that they create.
 
-
 To view the default privileges for a role, or for a set of roles, use the [`SHOW DEFAULT PRIVILEGES`](../show-default-privileges.html) statement.
 
 To change the default privileges on objects that a user creates, use the [`ALTER DEFAULT PRIVILEGES`](../alter-default-privileges.html) statement.
@@ -149,12 +152,12 @@ For more examples of default privileges, see the examples on the [`SHOW DEFAULT 
 
 Users' authorization to perform certain actions are governed not by grants but by [`role options`](../create-user.html#role-options). These options govern whether users can perform actions such as:
 
-- viewing or canceling ongoing queries and sessions owned by other roles
-- pausing, resuming and canceling jobs
-- creating or renaming databases
-- managing authentication for other users
-- modifying cluster settings
-- creating changefeeds
+- Viewing or canceling ongoing queries and sessions owned by other roles.
+- Pausing, resuming and canceling jobs.
+- Creating or renaming databases.
+- Managing authentication for other users.
+- Modifying cluster settings.
+- Creating changefeeds.
 
 ## Authorization best practices
 

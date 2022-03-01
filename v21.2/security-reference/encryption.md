@@ -13,13 +13,13 @@ CockroachDB uses either TLS 1.2 or TLS 1.3 for inter-node and client-node [authe
 
 ## CockroachDB Encryption at rest (CockroachDB Cloud)
 
-Industry standard encryption-at-rest provided at the infrastructure level by your chosen infrastructure-as-a-service (IAAS) provider, either Google Cloud Platform (GCP) or Amazon Web Services (AWS). See documentation for <a href="https://cloud.google.com/compute/docs/disks#pd_encryption">GCP persistent disk encryption</a> or <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html">AWS Elastic Block Storage</a>.
+Industry standard encryption-at-rest provided at the infrastructure level by your chosen infrastructure-as-a-service (IAAS) provider, either Google Cloud Platform (GCP) or Amazon Web Services (AWS). See documentation for [GCP persistent disk encryption](https://cloud.google.com/compute/docs/disks#pd_encryption) or [AWS Elastic Block Storage](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html).
 
-Because we are relying on the cloud provider's encryption implementation, we do not enable CockroachDB's internal implementation of encryption-at-rest</a>. This means that encryption will appear to be disabled in the <a href="../ui-overview.html">DB Console</a>, which refers to Cockroach's Enterprse feature (see below).</td>
+In the context of CockroachDB Cloud, we rely on the cloud provider's encryption-at-rest, and do not enable CockroachDB's [Encryption at Rest Enterprise feature](../enterprise-licensing.html) (see below). This means that encryption will appear to be disabled in the [DB Console](../ui-overview.html).
 
-## Encryption at rest (Enterprise)
+## Encryption at Rest (Enterprise)
 
-CockroachDB's Enterprise Encryption at Rest feature provides transparent encryption of a node's data on the local disk. It allows encryption of all files on disk using [AES](https://en.wikipedia.org/wiki/Advanced_Encryption_Standard) in [counter mode](https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#Counter_(CTR)), with all key sizes allowed.
+CockroachDB's Encryption at Rest (Enterprise) feature provides transparent encryption of a node's data on the local disk. It allows encryption of all files on disk using [AES](https://en.wikipedia.org/wiki/Advanced_Encryption_Standard) in [counter mode](https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#Counter_(CTR)), with all key sizes allowed.
 
 Encryption is performed in the [storage layer](../architecture/storage-layer.html) and configured per store. All files used by the store, regardless of contents, are encrypted with the desired algorithm.
 

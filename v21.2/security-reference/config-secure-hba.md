@@ -7,8 +7,8 @@ docs_area: manage.security
 
 CockroachDB allows fine-grained configuration of which attempts to connect with the database it will allow to proceed to the authentication stage, and which authentication methods it will accept, based on:
 
-- WHO is making the attempt (SQL user).
-- WHERE on the internet (IP Address) the attempt is coming from.
+- **WHO** is making the attempt (SQL user).
+- **WHERE** on the internet (IP Address) the attempt is coming from.
 
 This document describes the rationale for restricting database access to specific IP ranges as a security measure, and then walks the user through the procedure using [Authentication Configuration](authentication.html) to achieve that aim.
 
