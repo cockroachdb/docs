@@ -7,8 +7,8 @@ docs_area: reference.security
 
 CockroachDB allows fine-grained configuration of which database connection attempts are allowed to proceed to the authentication stage, and which authentication methods it will accept, based on:
 
-- WHO is making the attempt (SQL user).
-- WHERE on the internet (IP Address) the attempt is coming from.
+- **WHO** is making the attempt (SQL user).
+- **WHERE** on the internet (IP Address) the attempt is coming from.
 
 ## Currently supported authentication methods
 
