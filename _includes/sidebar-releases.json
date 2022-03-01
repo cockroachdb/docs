@@ -16,12 +16,10 @@
       ]
     },
     {% for x in v_prod %} {% comment %} iterate through all supported versions {% endcomment %}
-      {% assign r_latest = site.data.releases | where_exp: "r_latest", "r_latest.major_version == x" | where: "withdrawn", "false" | sort: "release_date" | last | map: "version" %}
-      {% comment %} r_latest iterates through the list of releases (e.g., v21.2.5) in _data/releases.csv and returns the most recent release for major version x that has not been withdrawn. {% endcomment %}
       {
         "title": "Latest {{ x }}",
         "urls": [
-          "/releases/{{ r_latest }}.html"
+          "/releases/{{ x }}.html"
         ]
       },
     {% endfor %}
@@ -29,9 +27,8 @@
     {
       "title": "Latest Testing Release",
       "urls": [
-          {% assign r = site.data.releases | where_exp: "r", "r.major_version == v_test[0]" | where: "withdrawn", "false" | where: "release_type", "Testing" | sort: "release_date" | last | map: "version" %}
           {% comment %} check if a testing version is available and pull the latest testing version {% endcomment %}
-          "/releases/{{ r }}.html"
+          "/releases/{{ v_test[0] }}.html"
       ]
     },
     {% endif %}

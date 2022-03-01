@@ -439,6 +439,18 @@ layout: null
 /docs/releases/cockroachcloud-12062021.html /docs/releases/cloud.html 301
 /docs/releases/cockroachcloud-12112020.html /docs/releases/cloud.html 301
 
+#CockroachDB Self-Hosted release notes
+
+{% assign rn_rdr = "v20.2,v21.1,v21.2" | split: "," -%}
+{%- assign rns = site.data.releases | where_exp: "rns", "rn_rdr contains rns.major_version" -%}
+{%- for r in rns -%}
+{%- capture old_url -%}releases/{{ r.version }}.html{%- endcapture -%}
+{%- capture new_url %}releases/{{ r.major_version }}.html#{{ r.version | replace: ".", "-" }}{% endcapture -%}
+{{ old_url | relative_url }} {{ new_url | relative_url }} 301
+{% endfor %}
+
+/docs/releases/v22.1.0-alpha.1.html /docs/releases/v22.1.html#v22-1-0-alpha-1 301
+
 # Redirects for Homebrew
 /docs/secure-a-cluster.html /docs/stable/secure-a-cluster.html 301
 
