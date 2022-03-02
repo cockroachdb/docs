@@ -19,7 +19,7 @@ The `SHOW STATISTICS` [statement](sql-statements.html) lists [table statistics](
 
 ## Required Privileges
 
-No [privileges](authorization.html#assign-privileges) are required to list table statistics.
+No [privileges](security-reference/authorization.html#managing-privileges) are required to list table statistics.
 
 ## Parameters
 

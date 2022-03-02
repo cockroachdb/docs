@@ -15,7 +15,7 @@ The `DROP INDEX` [statement](sql-statements.html) removes indexes from tables.
 
 ## Required privileges
 
-The user must have the `CREATE` [privilege](authorization.html#assign-privileges) on each specified table.
+The user must have the `CREATE` [privilege](security-reference/authorization.html#managing-privileges) on each specified table.
 
 ## Parameters
 

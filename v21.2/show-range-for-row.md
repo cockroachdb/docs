@@ -22,7 +22,7 @@ SHOW RANGE FROM INDEX [ <tablename> @ ] <indexname> FOR ROW (value1, value2, ...
 
 ## Required privileges
 
-The user must have the `SELECT` [privilege](authorization.html#assign-privileges) on the target table.
+The user must have the `SELECT` [privilege](security-reference/authorization.html#managing-privileges) on the target table.
 
 ## Parameters
 

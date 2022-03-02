@@ -39,7 +39,7 @@ For more information about indexing and table scans, see [Find the Indexes and K
 
 ## Required privileges
 
-The user requires the appropriate [privileges](authorization.html#assign-privileges) for the statement being explained.
+The user requires the appropriate [privileges](security-reference/authorization.html#managing-privileges) for the statement being explained.
 
 ## Parameters
 

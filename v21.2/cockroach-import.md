@@ -13,7 +13,7 @@ We recommend using `cockroach import` for quick imports from your client (about 
 
 ## Required privileges
 
-The user must have `CREATE` [privileges](authorization.html#assign-privileges) on `defaultdb`.
+The user must have `CREATE` [privileges](security-reference/authorization.html#managing-privileges) on `defaultdb`.
 
 ## Synopsis
 
