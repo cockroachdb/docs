@@ -329,7 +329,7 @@ This event details a `SELECT` statement that was issued by user `root`:
 I210401 22:57:20.047235 5475 9@util/log/event_log.go:32 ⋮ [n1,client=‹[::1]:59116›,hostnossl,user=root] 900 ={"Timestamp":1617317840045704000,"EventType":"query_execute","Statement":"‹SELECT * FROM \"\".\"\".users WHERE name = 'Cheyenne Smith'›","User":"‹root›","ApplicationName":"‹$ cockroach sql›","ExecMode":"exec","NumRows":1,"Age":1.583,"FullTableScan":true,"TxnCounter":12}
 ~~~
 
-Note the `FullTableScan` value in the logged event, which shows that this query performed a full table scan and likely caused a performance hit. To learn more about when this issue appears and how it can be resolved, see [SQL Tuning with EXPLAIN](sql-tuning-with-explain.html#issue-full-table-scans).
+Note the `FullTableScan` value in the logged event, which shows that this query performed a full table scan and likely caused a performance hit. To learn more about when this issue appears and how it can be resolved, see [Statement Tuning with `EXPLAIN`](sql-tuning-with-explain.html#issue-full-table-scans).
 
 - Preceding the `=` character is the `crdb-v2` event metadata. See the [reference documentation](log-formats.html#format-crdb-v2) for details on the fields.
 - `ApplicationName` shows that the event originated from the [`cockroach sql`](cockroach-sql.html) shell. You can use this field to filter the logging output by application.
@@ -415,13 +415,13 @@ A network sink can be listed more than once with different `address` values. Thi
 
 ~~~ yaml
 sinks:
-  fluent-servers:             
+  fluent-servers:
     ops:
       channels: [OPS, HEALTH, SQL_SCHEMA]
       address: 127.0.0.1:5170
-      net: tcp                
+      net: tcp
       redact: true
-    security:                
+    security:
       channels: [SESSIONS, USER_ADMIN, PRIVILEGES, SENSITIVE_ACCESS]
       address: 127.0.0.1:5170
       net: tcp

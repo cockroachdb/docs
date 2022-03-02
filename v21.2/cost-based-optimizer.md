@@ -3,7 +3,7 @@ title: Cost-Based Optimizer
 summary: The cost-based optimizer seeks the lowest cost for a query, usually related to time.
 toc: true
 keywords: gin, gin index, gin indexes, inverted index, inverted indexes, accelerated index, accelerated indexes
-docs_area: reference.performance_optimization
+docs_area: develop
 ---
 
 The cost-based optimizer seeks the lowest cost for a query, usually related to time.
@@ -173,7 +173,7 @@ To force the use of a specific join algorithm even if the optimizer determines t
 Due to SQL's implicit `AS` syntax, you cannot specify a join hint with only the join algorithm keyword (e.g., `MERGE`). For example, `a MERGE JOIN b` will be interpreted as having an implicit `AS` and be executed as `a AS MERGE JOIN b`, which is equivalent to `a JOIN b`. Because the resulting query might execute without returning any hint-related error (because it is valid SQL), it will seem like the join hint "worked", but actually it didn't affect which join algorithm was used. The correct syntax is `a INNER MERGE JOIN b`.
 {{site.data.alerts.end}}
 
-For a join hint example, see [Use the right join type](make-queries-fast.html#rule-3-use-the-right-join-type).
+For a join hint example, see [Use the right join type](apply-statement-performance-rules.html#rule-3-use-the-right-join-type).
 
 ### Supported join algorithms
 
@@ -258,7 +258,7 @@ SELECT * FROM abc@{NO_ZIGZAG_JOIN};
 
 {% include {{ page.version.version }}/sql/inverted-joins.md %}
 
-## Known Limitations
+## Known limitations
 
 * {% include {{page.version.version}}/known-limitations/old-multi-col-stats.md %}
 * {% include {{page.version.version}}/known-limitations/single-col-stats-deletion.md %}

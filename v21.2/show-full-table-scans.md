@@ -98,5 +98,5 @@ Now, if you execute a similar query, the query will not perform a full table sca
 ## See also
 
 - [`EXPLAIN`](explain.html)
-- [SQL Tuning with `EXPLAIN`](sql-tuning-with-explain.html)
+- [Statement Tuning with `EXPLAIN`](sql-tuning-with-explain.html)
 - [Selection queries](selection-queries.html)
