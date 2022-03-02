@@ -267,26 +267,9 @@
           ]
         },
         {
-          "title": "Data Domiciling",
-          "items": [
-            {
-              "title": "Overview",
-              "urls": [
-                "/${VERSION}/data-domiciling.html"
-              ]
-            },
-            {
-              "title": "Data Domiciling with PLACEMENT RESTRICTED",
-              "urls": [
-                "/${VERSION}/data-domiciling-with-placement-restricted.html"
-              ]
-            },
-            {
-              "title": "Data Domiciling with Separate Databases",
-              "urls": [
-                "/${VERSION}/data-domiciling-with-separate-databases.html"
-              ]
-            }
+          "title": "Data Domiciling with CockroachDB",
+          "urls": [
+            "/${VERSION}/data-domiciling.html"
           ]
         },
         {

@@ -7,7 +7,7 @@ docs_area: reference.sql
 
 <span class="version-tag">New in v21.2</span>: The `ALTER DATABASE ... PLACEMENT RESTRICTED` [statement](sql-statements.html) is used to constrain the replica placement for a [multi-region database](multiregion-overview.html)'s [regional tables](regional-tables.html) to the [home regions](set-locality.html#crdb_region) associated with those tables. [Regional tables](regional-tables.html) are those with [`REGIONAL BY ROW`](multiregion-overview.html#regional-by-row-tables) or [`REGIONAL BY TABLE`](multiregion-overview.html#regional-tables) localities. `ALTER DATABASE ... PLACEMENT RESTRICTED` is a way of opting out of [non-voting replicas](architecture/replication-layer.html#non-voting-replicas) for [regional tables](regional-tables.html) to accomplish one or more of the following goals:
 
-- Implement a [data domiciling](data-domiciling-with-placement-restricted.html) strategy.
+- Implement a [data domiciling](data-domiciling.html) strategy.
 - Reduce the amount of data stored on the cluster.
 - Reduce the overhead of replicating data across a large number of regions (e.g., 10 or more) for databases with heavier write loads.
 
@@ -124,4 +124,4 @@ ALTER DATABASE PLACEMENT
 - [Ranges](architecture/overview.html#architecture-range)
 - [Non-voting replicas](architecture/replication-layer.html#non-voting-replicas)
 - [Other SQL Statements](sql-statements.html)
-- [Data Domiciling with `PLACEMENT RESTRICTED`](data-domiciling-with-placement-restricted.html)
+- [Data Domiciling with CockroachDB](data-domiciling.html)
