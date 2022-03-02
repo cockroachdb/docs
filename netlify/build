@@ -2,6 +2,9 @@
 
 function build {
 	bundle exec jekyll build --trace --config _config_base.yml,$1
+	if [[ $? != 0 ]]; then
+	  exit 1
+	fi;
 }
 
 # Transform API spec for API docs generation
@@ -26,7 +29,9 @@ pushd $GOPATH/src/github.com/cockroachdb/htmltest && ./build.sh && popd
 # (see .github/workflows/nightly.yml)
 if [[ "$INCOMING_HOOK_TITLE" = "nightly" ]]; then
 	$GOPATH/src/github.com/cockroachdb/htmltest/bin/htmltest
-	exit $?	
+	if [[ $? != 0 ]]; then
+          exit 1
+        fi;
 fi;
 
 # Run Algolia if building master
@@ -39,7 +44,7 @@ fi;
 wget -O- https://github.com/errata-ai/vale/releases/download/v1.2.7/vale_1.2.7_Linux_64-bit.tar.gz | tar -xz vale
 
 # Run Vale, but do not fail the build if it reports errors
-./vale --no-wrap v20.2 || true
+./vale --no-wrap v21.2 || true
 
 # Run htmltest, but skip checking external links to speed things up
 $GOPATH/src/github.com/cockroachdb/htmltest/bin/htmltest --skip-external

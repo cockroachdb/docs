@@ -424,9 +424,9 @@
           ]
         },
         {
-          "title": "Decommission Nodes",
+          "title": "Node Shutdown",
           "urls": [
-            "/${VERSION}/remove-nodes.html"
+            "/${VERSION}/node-shutdown.html"
           ]
         },
         {

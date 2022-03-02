@@ -37,7 +37,7 @@ For more information about how this data set is put together, see the [Data set 
 
 ## Step 2. Start CockroachDB
 
-This tutorial can be accomplished in any CockroachDB cluster running [v20.2](../releases/v20.2.0.html) or later.
+This tutorial can be accomplished in any CockroachDB cluster running [v20.2](../releases/v20.2.html#v20-2-0) or later.
 
 The simplest way to get up and running is with [`cockroach demo`](cockroach-demo.html), which starts a temporary, in-memory CockroachDB cluster and opens an interactive SQL shell:
 

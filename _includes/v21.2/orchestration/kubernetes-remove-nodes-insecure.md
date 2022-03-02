@@ -1,7 +1,7 @@
 To safely remove a node from your cluster, you must first decommission the node and only then adjust the `spec.replicas` value of your StatefulSet configuration to permanently remove it. This sequence is important because the decommissioning process lets a node finish in-flight requests, rejects any new requests, and transfers all range replicas and range leases off the node.
 
 {{site.data.alerts.callout_danger}}
-If you remove nodes without first telling CockroachDB to decommission them, you may cause data or even cluster unavailability. For more details about how this works and what to consider before removing nodes, see [Decommission Nodes](remove-nodes.html).
+If you remove nodes without first telling CockroachDB to decommission them, you may cause data or even cluster unavailability. For more details about how this works and what to consider before removing nodes, see [Prepare for graceful shutdown](node-shutdown.html?filters=decommission#prepare-for-graceful-shutdown).
 {{site.data.alerts.end}}
 
 1. Launch a temporary interactive pod and use the `cockroach node status` command to get the internal IDs of nodes:
@@ -88,18 +88,17 @@ If you remove nodes without first telling CockroachDB to decommission them, you 
     You'll then see the decommissioning status print to `stderr` as it changes:
 
     ~~~
-     id | is_live | replicas | is_decommissioning | is_draining  
-    +---+---------+----------+--------------------+-------------+
-      4 |  true   |       73 |        true        |    false     
-    (1 row)
+      id | is_live | replicas | is_decommissioning |   membership    | is_draining
+    -----+---------+----------+--------------------+-----------------+--------------
+       4 |  true   |       73 |        true        | decommissioning |    false    
     ~~~
 
-    Once the node has been fully decommissioned and stopped, you'll see a confirmation:
+    Once the node has been fully decommissioned, you'll see a confirmation:
 
     ~~~
-     id | is_live | replicas | is_decommissioning | is_draining  
-    +---+---------+----------+--------------------+-------------+
-      4 |  true   |        0 |        true        |    false     
+      id | is_live | replicas | is_decommissioning |   membership    | is_draining
+    -----+---------+----------+--------------------+-----------------+--------------
+       4 |  true   |        0 |        true        | decommissioning |    false    
     (1 row)
 
     No more data reported on target nodes. Please verify cluster health before removing the nodes.

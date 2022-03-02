@@ -57,10 +57,10 @@ other considerations may cause significant performance degradation.
 ~~~
   column_name | data_type | is_nullable | column_default | generation_expression |  indices  | is_hidden
 +-------------+-----------+-------------+----------------+-----------------------+-----------+-----------+
-  x           | BIT       |    true     | NULL           |                       | {}        |   false
-  y           | BIT(3)    |    true     | NULL           |                       | {}        |   false
-  z           | VARBIT    |    true     | NULL           |                       | {}        |   false
-  w           | VARBIT(3) |    true     | NULL           |                       | {}        |   false
+  x           | BIT       |    true     | NULL           |                       | {primary} |   false
+  y           | BIT(3)    |    true     | NULL           |                       | {primary} |   false
+  z           | VARBIT    |    true     | NULL           |                       | {primary} |   false
+  w           | VARBIT(3) |    true     | NULL           |                       | {primary} |   false
   rowid       | INT       |    false    | unique_rowid() |                       | {primary} |   true
 ~~~
 
