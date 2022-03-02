@@ -99,7 +99,7 @@ For more information about connecting with node-postgres, see the [official node
 
 Parameter | Description
 ----------|------------
-`<username>`  | The [SQL user](authorization.html#sql-users) connecting to the cluster.
+`<username>`  | The [SQL user](security-reference/authorization.html#sql-users) connecting to the cluster.
 `<password>`  | The password for the SQL user connecting to the cluster.
 `<host>`  | The host on which the CockroachDB node is running.
 `<port>`  | The port at which the CockroachDB node is listening.
@@ -112,7 +112,7 @@ Parameter | Description
 
 Parameter | Description
 ----------|------------
-`<username>`  | The [SQL user](authorization.html#sql-users) connecting to the cluster.
+`<username>`  | The [SQL user](security-reference/authorization.html#sql-users) connecting to the cluster.
 `<password>`  | The password for the SQL user connecting to the cluster.
 `<host>`  | The host on which the CockroachDB node is running.
 `<port>`  | The port at which the CockroachDB node is listening.
@@ -125,7 +125,7 @@ Parameter | Description
 
 Parameter | Description
 ----------|------------
-`<username>`  | The [SQL user](authorization.html#sql-users) connecting to the cluster.
+`<username>`  | The [SQL user](security-reference/authorization.html#sql-users) connecting to the cluster.
 `<host>`  | The host on which the CockroachDB node is running.
 `<port>`  | The port at which the CockroachDB node is listening.
 `<database>`  | The name of the (existing) database.
@@ -223,7 +223,7 @@ For more information about connecting with Sequelize, see the [official Sequeliz
 
 Parameter | Description
 ----------|------------
-`<username>`  | The [SQL user](authorization.html#sql-users) connecting to the cluster.
+`<username>`  | The [SQL user](security-reference/authorization.html#sql-users) connecting to the cluster.
 `<password>`  | The password for the SQL user connecting to the cluster.
 `<host>`  | The host on which the CockroachDB node is running.
 `<port>`  | The port at which the CockroachDB node is listening.
@@ -236,7 +236,7 @@ Parameter | Description
 
 Parameter | Description
 ----------|------------
-`<username>`  | The [SQL user](authorization.html#sql-users) connecting to the cluster.
+`<username>`  | The [SQL user](security-reference/authorization.html#sql-users) connecting to the cluster.
 `<password>`  | The password for the SQL user connecting to the cluster.
 `<host>`  | The host on which the CockroachDB node is running.
 `<port>`  | The port at which the CockroachDB node is listening.
@@ -249,7 +249,7 @@ Parameter | Description
 
 Parameter | Description
 ----------|------------
-`<username>`  | The [SQL user](authorization.html#sql-users) connecting to the cluster.
+`<username>`  | The [SQL user](security-reference/authorization.html#sql-users) connecting to the cluster.
 `<host>`  | The host on which the CockroachDB node is running.
 `<port>`  | The port at which the CockroachDB node is listening.
 `<database>`  | The name of the (existing) database.
@@ -384,7 +384,7 @@ For more information about connecting with TypeORM, see the [official TypeORM do
 
 Parameter | Description
 ----------|------------
-`<username>`  | The [SQL user](authorization.html#sql-users) connecting to the cluster.
+`<username>`  | The [SQL user](security-reference/authorization.html#sql-users) connecting to the cluster.
 `<password>`  | The password for the SQL user connecting to the cluster.
 `<host>`  | The host on which the CockroachDB node is running.
 `<port>`  | The port at which the CockroachDB node is listening.
@@ -397,7 +397,7 @@ Parameter | Description
 
 Parameter | Description
 ----------|------------
-`<username>`  | The [SQL user](authorization.html#sql-users) connecting to the cluster.
+`<username>`  | The [SQL user](security-reference/authorization.html#sql-users) connecting to the cluster.
 `<password>`  | The password for the SQL user connecting to the cluster.
 `<host>`  | The host on which the CockroachDB node is running.
 `<port>`  | The port at which the CockroachDB node is listening.
@@ -409,7 +409,7 @@ Parameter | Description
 
 Parameter | Description
 ----------|------------
-`<username>`  | The [SQL user](authorization.html#sql-users) connecting to the cluster.
+`<username>`  | The [SQL user](security-reference/authorization.html#sql-users) connecting to the cluster.
 `<host>`  | The host on which the CockroachDB node is running.
 `<port>`  | The port at which the CockroachDB node is listening.
 `<database>`  | The name of the (existing) database.
@@ -649,7 +649,7 @@ For more information about connecting with Django, see the [official Django docu
 
 Parameter | Description
 ----------|------------
-`{username}`  | The [SQL user](authorization.html#sql-users) connecting to the cluster.
+`{username}`  | The [SQL user](security-reference/authorization.html#sql-users) connecting to the cluster.
 `{password}`  | The password for the SQL user connecting to the cluster.
 `{host}`  | The host on which the CockroachDB node is running.
 `{port}`  | The port at which the CockroachDB node is listening.
@@ -662,7 +662,7 @@ Parameter | Description
 
 Parameter | Description
 ----------|------------
-`{username}`  | The [SQL user](authorization.html#sql-users) connecting to the cluster.
+`{username}`  | The [SQL user](security-reference/authorization.html#sql-users) connecting to the cluster.
 `{password}`  | The password for the SQL user connecting to the cluster.
 `{host}`  | The host on which the CockroachDB node is running.
 `{port}`  | The port at which the CockroachDB node is listening.
@@ -675,7 +675,7 @@ Parameter | Description
 
 Parameter | Description
 ----------|------------
-`{username}`  | The [SQL user](authorization.html#sql-users) connecting to the cluster.
+`{username}`  | The [SQL user](security-reference/authorization.html#sql-users) connecting to the cluster.
 `{host}`  | The host on which the CockroachDB node is running.
 `{port}`  | The port at which the CockroachDB node is listening.
 `{database}`  | The name of the (existing) database.
@@ -877,7 +877,7 @@ For more information about connecting with GORM, see the [official GORM document
 
 Parameter | Description
 ----------|------------
-`{username}`  | The [SQL user](authorization.html#sql-users) connecting to the cluster.
+`{username}`  | The [SQL user](security-reference/authorization.html#sql-users) connecting to the cluster.
 `{password}`  | The password for the SQL user connecting to the cluster.
 `{host}`  | The host on which the CockroachDB node is running.
 `{port}`  | The port at which the CockroachDB node is listening.
@@ -890,7 +890,7 @@ Parameter | Description
 
 Parameter | Description
 ----------|------------
-`{username}`  | The [SQL user](authorization.html#sql-users) connecting to the cluster.
+`{username}`  | The [SQL user](security-reference/authorization.html#sql-users) connecting to the cluster.
 `{password}`  | The password for the SQL user connecting to the cluster.
 `{host}`  | The host on which the CockroachDB node is running.
 `{port}`  | The port at which the CockroachDB node is listening.
@@ -903,7 +903,7 @@ Parameter | Description
 
 Parameter | Description
 ----------|------------
-`{username}`  | The [SQL user](authorization.html#sql-users) connecting to the cluster.
+`{username}`  | The [SQL user](security-reference/authorization.html#sql-users) connecting to the cluster.
 `{host}`  | The host on which the CockroachDB node is running.
 `{port}`  | The port at which the CockroachDB node is listening.
 `{database}`  | The name of the (existing) database.
@@ -1035,7 +1035,7 @@ For more information about connecting with Hibernate, see the [official Hibernat
 
 Parameter | Description
 ----------|------------
-`{username}`  | The [SQL user](authorization.html#sql-users) connecting to the cluster.
+`{username}`  | The [SQL user](security-reference/authorization.html#sql-users) connecting to the cluster.
 `{password}`  | The password for the SQL user connecting to the cluster.
 `{host}`  | The host on which the CockroachDB node is running.
 `{port}`  | The port at which the CockroachDB node is listening.
@@ -1048,7 +1048,7 @@ Parameter | Description
 
 Parameter | Description
 ----------|------------
-`{username}`  | The [SQL user](authorization.html#sql-users) connecting to the cluster.
+`{username}`  | The [SQL user](security-reference/authorization.html#sql-users) connecting to the cluster.
 `{password}`  | The password for the SQL user connecting to the cluster.
 `{host}`  | The host on which the CockroachDB node is running.
 `{port}`  | The port at which the CockroachDB node is listening.
@@ -1061,7 +1061,7 @@ Parameter | Description
 
 Parameter | Description
 ----------|------------
-`{username}`  | The [SQL user](authorization.html#sql-users) connecting to the cluster.
+`{username}`  | The [SQL user](security-reference/authorization.html#sql-users) connecting to the cluster.
 `{host}`  | The host on which the CockroachDB node is running.
 `{port}`  | The port at which the CockroachDB node is listening.
 `{database}`  | The name of the (existing) database.
@@ -1195,7 +1195,7 @@ For more information about connecting with ActiveRecord, see the [official Activ
 
 Parameter | Description
 ----------|------------
-`{username}`  | The [SQL user](authorization.html#sql-users) connecting to the cluster.
+`{username}`  | The [SQL user](security-reference/authorization.html#sql-users) connecting to the cluster.
 `{password}`  | The password for the SQL user connecting to the cluster.
 `{host}`  | The host on which the CockroachDB node is running.
 `{port}`  | The port at which the CockroachDB node is listening.
@@ -1208,7 +1208,7 @@ Parameter | Description
 
 Parameter | Description
 ----------|------------
-`{username}`  | The [SQL user](authorization.html#sql-users) connecting to the cluster.
+`{username}`  | The [SQL user](security-reference/authorization.html#sql-users) connecting to the cluster.
 `{password}`  | The password for the SQL user connecting to the cluster.
 `{host}`  | The host on which the CockroachDB node is running.
 `{port}`  | The port at which the CockroachDB node is listening.
@@ -1221,7 +1221,7 @@ Parameter | Description
 
 Parameter | Description
 ----------|------------
-`{username}`  | The [SQL user](authorization.html#sql-users) connecting to the cluster.
+`{username}`  | The [SQL user](security-reference/authorization.html#sql-users) connecting to the cluster.
 `{host}`  | The host on which the CockroachDB node is running.
 `{port}`  | The port at which the CockroachDB node is listening.
 `{database}`  | The name of the (existing) database.

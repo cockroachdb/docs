@@ -222,7 +222,7 @@ All possible `SESSIONS` event types are detailed in the [reference documentation
 
 ### SENSITIVE_ACCESS
 
-The [`SENSITIVE_ACCESS`](logging.html#sensitive_access) channel logs SQL audit events. These include all queries being run against [audited tables](experimental-audit.html), when enabled, as well as queries executed by users with the [`admin`](authorization.html#admin-role) role.
+The [`SENSITIVE_ACCESS`](logging.html#sensitive_access) channel logs SQL audit events. These include all queries being run against [audited tables](experimental-audit.html), when enabled, as well as queries executed by users with the [`admin`](security-reference/authorization.html#admin-role) role.
 
 {{site.data.alerts.callout_info}}
 Enabling these logs can negatively impact performance. We recommend using `SENSITIVE_ACCESS` for security purposes only.
@@ -257,7 +257,7 @@ All possible `SENSITIVE_ACCESS` event types are detailed in the [reference docum
 
 ### PRIVILEGES
 
-The [`PRIVILEGES`](logging.html#privileges) channel logs SQL privilege changes. These include DDL operations performed by SQL operations that [modify the privileges](authorization.html#assign-privileges) granted to [roles and users](authorization.html#users-and-roles) on databases, schemas, tables, and [user-defined types](enum.html).
+The [`PRIVILEGES`](logging.html#privileges) channel logs SQL privilege changes. These include DDL operations performed by SQL operations that [modify the privileges](security-reference/authorization.html#managing-privileges) granted to [roles and users](security-reference/authorization.html#users-and-roles) on databases, schemas, tables, and [user-defined types](enum.html).
 
 #### Example: Database privileges
 
@@ -277,7 +277,7 @@ All possible `PRIVILEGE` event types are detailed in the [reference documentatio
 
 ### USER_ADMIN
 
-The [`USER_ADMIN`](logging.html#user_admin) channel logs changes to users and roles. This includes user and role [creation and assignment](authorization.html#create-and-manage-roles) and changes to [privileges](authorization.html#assign-privileges), [options](create-role.html#parameters), and [passwords](authentication.html#client-authentication).
+The [`USER_ADMIN`](logging.html#user_admin) channel logs changes to users and roles. This includes user and role [creation and assignment](security-reference/authorization.html#create-and-manage-users) and changes to [privileges](security-reference/authorization.html#managing-privileges), [options](create-role.html#parameters), and [passwords](authentication.html#client-authentication).
 
 #### Example: SQL user creation
 
@@ -289,7 +289,7 @@ I210323 20:54:53.122681 1943 6@util/log/event_log.go:32 ⋮ [n1,client=‹[::1]:
 
 - Preceding the `=` character is the `crdb-v2` event metadata. See the [reference documentation](log-formats.html#format-crdb-v2) for details on the fields.
 - `ApplicationName` shows that the event originated from the [`cockroach sql`](cockroach-sql.html) shell. You can use this field to filter the logging output by application.
-- `RoleName` shows the name of the user/role. For details on user and role terminology, see [Users and roles](authorization.html#users-and-roles).
+- `RoleName` shows the name of the user/role. For details on user and role terminology, see [Users and roles](security-reference/authorization.html#users-and-roles).
 
 {{site.data.alerts.callout_info}}
 All possible `USER_ADMIN` event types are detailed in the [reference documentation](eventlog.html#sql-user-and-role-operations).

@@ -11,7 +11,7 @@ The `DROP VIEW` [statement](sql-statements.html) removes a [view](views.html) fr
 
 ## Required privileges
 
-The user must have the `DROP` [privilege](authorization.html#assign-privileges) on the specified view(s). If `CASCADE` is used to drop dependent views, the user must have the `DROP` privilege on each dependent view as well.
+The user must have the `DROP` [privilege](security-reference/authorization.html#managing-privileges) on the specified view(s). If `CASCADE` is used to drop dependent views, the user must have the `DROP` privilege on each dependent view as well.
 
 ## Synopsis
 

@@ -11,7 +11,7 @@ If locality was not specified on node startup, the statement returns an empty ro
 
 ## Required privileges
 
-No [privileges](authorization.html#assign-privileges) are required to list the locality of the current node.
+No [privileges](security-reference/authorization.html#managing-privileges) are required to list the locality of the current node.
 
 ## Synopsis
 

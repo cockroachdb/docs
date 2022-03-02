@@ -21,7 +21,7 @@ It is not possible to rename a table referenced by a view. For more details, see
 
 ## Required privileges
 
-The user must have the `DROP` [privilege](authorization.html#assign-privileges) on the table and the `CREATE` on the parent database. When moving a table from one database to another, the user must have the `CREATE` privilege on both the source and target databases.
+The user must have the `DROP` [privilege](security-reference/authorization.html#managing-privileges) on the table and the `CREATE` on the parent database. When moving a table from one database to another, the user must have the `CREATE` privilege on both the source and target databases.
 
 ## Synopsis
 
