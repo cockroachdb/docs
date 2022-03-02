@@ -140,81 +140,6 @@ SELECT * FROM report;
 
 This output shows that the `movr` database has ranges out of compliance, which you saw previously. Unfortunately, this output does not contain the table or index names due to a current limitation of the replication reports: non-voting replicas are not associated with any tables or indexes by the reports.
 
-Now that you know some replicas are out of compliance, you need to see exactly where the ranges for a given row of data are stored. To accomplish this, you must use the [`SHOW RANGE FOR ROW`](show-range-for-row.html) statement.
-
-The values needed to find a range using `SHOW RANGE FOR ROW` are the columns in the row's [primary index](primary-key.html). To find out which columns are in the primary index for the `users` table, use the [`SHOW INDEXES`](show-index.html) statement:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-show indexes from users;
-~~~
-
-~~~
-  table_name | index_name | non_unique | seq_in_index | column_name | direction | storing | implicit
--------------+------------+------------+--------------+-------------+-----------+---------+-----------
-  users      | primary    |   false    |            1 | region      | ASC       |  false  |   true
-  users      | primary    |   false    |            2 | city        | ASC       |  false  |  false
-  users      | primary    |   false    |            3 | id          | ASC       |  false  |  false
-  users      | primary    |   false    |            4 | name        | N/A       |  true   |  false
-  users      | primary    |   false    |            5 | address     | N/A       |  true   |  false
-  users      | primary    |   false    |            6 | credit_card | N/A       |  true   |  false
-(6 rows)
-~~~
-
-The columns in the primary index are those values of `column_name` where the value of `index_name` is `primary` and the value of `storing` is `false`. The columns that meet these criteria are:
-
-- `region`
-- `city`
-- `id`
-
-To get the values of those columns for one row in EU, use the following [selection query](selection-queries.html):
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-select region, city, id from users where region = 'europe-west1' limit 1;
-~~~
-
-~~~
-     region    |   city    |                  id
----------------+-----------+---------------------------------------
-  europe-west1 | amsterdam | ae147ae1-47ae-4800-8000-000000000022
-(1 row)
-~~~
-
-To see exactly where the ranges for this row of data are stored in the cluster, pass the column values above to the [`SHOW RANGE FOR ROW`](show-range-for-row.html) statement:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-show range from table users for row ('europe-west1', 'amsterdam', 'ae147ae1-47ae-4800-8000-000000000022');
-~~~
-
-~~~
-  start_key |      end_key      | range_id | lease_holder |  lease_holder_locality   |  replicas   |                                                        replica_localities
-------------+-------------------+----------+--------------+--------------------------+-------------+-----------------------------------------------------------------------------------------------------------------------------------
-  /"\x80"   | /"\x80"/PrefixEnd |       75 |            9 | region=europe-west1,az=d | {1,6,7,8,9} | {"region=us-east1,az=b","region=us-west1,az=c","region=europe-west1,az=b","region=europe-west1,az=c","region=europe-west1,az=d"}
-(1 row)
-~~~
-
-The output above shows that:
-
-- The replicas associated with this row of the `users` table have their home region in the `europe-west1` region
-- In particular, the leaseholder is in the `europe-west1` region
-- However, some of the non-leaseholder replicas are not in the `europe-west1` region, according to the value of the `replica_localities` column. That column shows that there are also non-leaseholder replicas located in the `us-east1` and `us-west1` regions. These are the [non-voting replicas](architecture/replication-layer.html#non-voting-replicas) referenced previously. This shows that not all of the replicas associated with this row are meeting the requirement to be stored on nodes within EU localities.
-
-To confirm the above replica placement information by other means, use the statement below to query the [`crdb_internal.ranges_no_leases` table](crdb-internal.html#ranges_no_leases) and see the value of its `replica_localities` column. The value of that column should match the output from the `SHOW RANGE FOR ROW` query above.
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-SELECT * FROM crdb_internal.ranges_no_leases WHERE range_id = 162 AND database_name = 'movr' AND table_name = 'users' ORDER BY start_key ASC LIMIT 1;
-~~~
-
-~~~
-  range_id |        start_key         |    start_pretty    |         end_key          |          end_pretty          | table_id | database_name | schema_name | table_name | index_name |  replicas   |                                                        replica_localities                                                        | voting_replicas | non_voting_replicas | learner_replicas | split_enforced_until
------------+--------------------------+--------------------+--------------------------+------------------------------+----------+---------------+-------------+------------+------------+-------------+----------------------------------------------------------------------------------------------------------------------------------+-----------------+---------------------+------------------+-----------------------
-       162 | \xbd\x8a\x12\x80\x00\x01 | /Table/53/2/"\x80" | \xbd\x8a\x12\x80\x00\x02 | /Table/53/2/"\x80"/PrefixEnd |       53 | movr          |             | users      |            | {3,5,7,8,9} | {"region=us-east1,az=d","region=us-west1,az=b","region=europe-west1,az=b","region=europe-west1,az=c","region=europe-west1,az=d"} | {8,7,9}         | {3,5}               | {}               | NULL
-(1 row)
-~~~
-
 ### Step 4. Apply stricter replica placement settings
 
 To ensure that data on EU-based users, vehicles, etc. from [`REGIONAL BY ROW` tables](regional-tables.html#regional-by-row-tables) is stored only on EU-based nodes in the cluster, you must disable the use of [non-voting replicas](architecture/replication-layer.html#non-voting-replicas) on all of these tables. You can do this using the [`ALTER DATABASE ... PLACEMENT RESTRICTED`](placement-restricted.html) statement.
@@ -310,56 +235,7 @@ SELECT * FROM report;
 
 As expected, these replicas are part of the `promo_codes` table, which was configured to use the [`GLOBAL`](global-tables.html) [table locality](multiregion-overview.html#table-locality) in [Step 2](#step-2-apply-multi-region-sql-abstractions).
 
-To verify the replica placement using [`SHOW RANGE FOR ROW`](show-range-for-row.html) for the same row as in [Step 3](#step-3-view-noncompliant-replicas), run the same query you ran earlier:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-show range from table users for row ('europe-west1', 'amsterdam', 'ae147ae1-47ae-4800-8000-000000000022');
-~~~
-
-~~~
-  start_key |      end_key      | range_id | lease_holder |  lease_holder_locality   | replicas |                                 replica_localities
-------------+-------------------+----------+--------------+--------------------------+----------+-------------------------------------------------------------------------------------
-  /"\x80"   | /"\x80"/PrefixEnd |      137 |            8 | region=europe-west1,az=c | {7,8,9}  | {"region=europe-west1,az=b","region=europe-west1,az=c","region=europe-west1,az=d"}
-(1 row)
-~~~
-
-The output shows that the replicas underlying this data are now in compliance with the data domiciling requirements listed above: that data for EU-based entities (users, etc.) does not leave EU-based nodes.
-
-Specifically, the output above shows that:
-
-- The replicas underlying this row of the `users` table are based in the `europe-west-1` region
-- The leaseholder is in the `europe-west1` region
-- All of the `replica_localities` are in the `europe-west1` region as well (unlike in [Step 3](#step-3-view-noncompliant-replicas)), proving that the replicas underlying this row of data are meeting the domiciling requirement.
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-select replica_localities from [show range from table users for row ('europe-west1', 'amsterdam', 'ae147ae1-47ae-4800-8000-000000000022')];
-~~~
-
-~~~
-                                  replica_localities
---------------------------------------------------------------------------------------
-  {"region=europe-west1,az=b","region=europe-west1,az=c","region=europe-west1,az=d"}
-(1 row)
-~~~
-
-To confirm the above replica placement information by other means, use the statement below to query the [`crdb_internal.ranges_no_leases` table](crdb-internal.html#ranges_no_leases) and see the value of its `replica_localities` column. The value of that column should match the output from the `SHOW RANGE FOR ROW` query above.
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-SELECT replica_localities FROM crdb_internal.ranges_no_leases WHERE range_id = 162 AND database_name = 'movr' AND table_name = 'users' ORDER BY start_key ASC LIMIT 1;
-~~~
-
-~~~ 
-                                  replica_localities
---------------------------------------------------------------------------------------
-  {"region=europe-west1,az=b","region=europe-west1,az=c","region=europe-west1,az=d"}
-(1 row)
-~~~
-
-Now that you have verified that the system is configured to meet the domiciling requirement, it's a good idea to run these verification queries on a regular basis (via automation of some kind) to ensure that the requirement continues to be met.
-
+Now that you have verified that the system is configured to meet the domiciling requirement, it's a good idea to run these replication reports on a regular basis (via automation of some kind) to ensure that the requirement continues to be met.
 
 {{site.data.alerts.callout_info}}
 The steps above are necessary but not sufficient to accomplish a data domiciling solution using CockroachDB. Be sure to review the [limitations of CockroachDB for data domiciling](#limitations) and design your total solution with those limitations in mind.
@@ -371,8 +247,6 @@ The steps above are necessary but not sufficient to accomplish a data domiciling
 
 ## See also
 
-- [Data Domiciling with CockroachDB](data-domiciling.html)
-- [Data Domiciling with Separate Databases](data-domiciling-with-separate-databases.html)
 - [Choosing a multi-region configuration](choosing-a-multi-region-configuration.html)
 - [Install CockroachDB](install-cockroachdb.html)
 - [Migrate to Multi-region SQL](migrate-to-multiregion-sql.html)
