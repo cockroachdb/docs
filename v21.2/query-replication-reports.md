@@ -39,7 +39,7 @@ To configure how often the conformance reports are run, adjust the `kv.replicati
 SET CLUSTER setting kv.replication_reports.interval = '5m';
 ~~~
 
-Only members of the `admin` role can access these tables. By default, the `root` user belongs to the `admin` role. For more information about users and roles, see [Manage Users](authorization.html#create-and-manage-users) and [Manage Roles](authorization.html#create-and-manage-roles).
+Only members of the `admin` role can access these tables. By default, the `root` user belongs to the `admin` role. Learn more about [users and roles](security-reference/authorization.html).
 
 <a name="necessary-attributes"></a>
 

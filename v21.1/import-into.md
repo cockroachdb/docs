@@ -18,6 +18,11 @@ The `IMPORT INTO` [statement](sql-statements.html) imports CSV, Avro, or delimit
 - `IMPORT INTO` will cause any [changefeeds](stream-data-out-of-cockroachdb-using-changefeeds.html) running on the targeted table to fail.
 - {% include {{page.version.version}}/sql/import-into-regional-by-row-table.md %}
 
+
+{{site.data.alerts.callout_info}}
+Optimize import operations in your applications by following our [Import Performance Best Practices](import-performance-best-practices.html).
+{{site.data.alerts.end}}
+
 ## Required privileges
 
 #### Table privileges

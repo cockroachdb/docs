@@ -50,7 +50,7 @@ To drop the type, use [`DROP TYPE`](drop-type.html):
 
 ## Required privileges
 
-- To [create a type](create-type.html) in a database, a user must have the `CREATE` [privilege](authorization.html#assign-privileges) on the database.
+- To [create a type](create-type.html) in a database, a user must have the `CREATE` [privilege](security-reference/authorization.html#managing-privileges) on the database.
 - To [drop a type](drop-type.html), a user must be the owner of the type.
 - To [alter a type](alter-type.html), a user must be the owner of the type.
 - To [grant privileges](grant.html) on a type, a user must have the `GRANT` privilege and the privilege that they want to grant.

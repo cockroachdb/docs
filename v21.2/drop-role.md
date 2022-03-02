@@ -17,11 +17,11 @@ The `DROP ROLE` [statement](sql-statements.html) removes one or more SQL roles.
 
 - The `admin` role cannot be dropped, and `root` must always be a member of `admin`.
 - A role cannot be dropped if it has privileges. Use [`REVOKE`](revoke.html) to remove privileges.
-- Roles that [own objects](authorization.html#object-ownership) (such as databases, tables, schemas, and types) cannot be dropped until the [ownership is transferred to another role](owner-to.html#change-a-databases-owner).
+- Roles that [own objects](security-reference/authorization.html#object-ownership) (such as databases, tables, schemas, and types) cannot be dropped until the [ownership is transferred to another role](owner-to.html#change-a-databases-owner).
 
 ## Required privileges
 
-Non-admin roles cannot drop admin roles. To drop non-admin roles, the role must be a member of the `admin role` or have the [`CREATEROLE`](create-role.html#create-a-role-that-can-create-other-roles-and-manage-authentication-methods-for-the-new-roles) parameter set.
+Non-admin roles cannot drop admin roles. To drop non-admin roles, the role must be a member of the `admin` role or have the [`CREATEROLE`](create-role.html#create-a-role-that-can-create-other-roles-and-manage-authentication-methods-for-the-new-roles) parameter set.
 
 ## Synopsis
 
@@ -64,7 +64,7 @@ In this example, first check a role's privileges. Then, revoke the role's privil
 ## See also
 
 - [Authorization](authorization.html)
-- [Authorization Best Practices](authorization.html#authorization-best-practices)
+- [Authorization Best Practices](security-reference/authorization.html#authorization-best-practices)
 - [`CREATE ROLE`](create-role.html)
 - [`SHOW ROLES`](show-roles.html)
 - [`GRANT`](grant.html)

@@ -1,5 +1,5 @@
 ---
-title: Authentication
+title: Authenticating to CockroachDB Self-Hosted Clusters
 summary: Learn about the authentication features for secure CockroachDB clusters.
 toc: true
 docs_area: manage
@@ -28,7 +28,7 @@ Based on your security setup, you can use the [`cockroach cert` commands](cockro
 
 A CockroachDB cluster consists of multiple nodes and clients. The nodes can communicate with each other, with the SQL clients, and the DB Console. In client-node SQL communication and client-UI communication, the node acts as a server, but in inter-node communication, a node may act as a server or a client. Hence authentication in CockroachDB involves:
 
-- Node authentication using [TLS 1.2](https://en.wikipedia.org/wiki/Transport_Layer_Security) digital certificates.
+- Node authentication using [TLS 1.3](https://en.wikipedia.org/wiki/Transport_Layer_Security) digital certificates.
 - Client authentication using TLS digital certificates, passwords, or [GSSAPI authentication](gssapi_authentication.html) (for Enterprise users).
 
 ### Node authentication

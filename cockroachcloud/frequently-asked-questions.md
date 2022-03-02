@@ -56,13 +56,24 @@ Yes. We create individual sub-accounts and VPCs for each cluster within the clou
 
 The allowlist is comprised of IP addresses that you provide to us, and is an additional layer of protection for your cluster. Connections will only be accepted if they come from an allowlisted IP address, which protects against both compromised passwords and any potential bugs in the server.
 
-We use separate certificate authorities for each cluster, and all connections to the cluster over the internet use TLS 1.2.
+We use separate certificate authorities for each cluster, and all connections to the cluster over the internet use TLS 1.2 or 1.3.
+
+See the [Security Overview page](../{{site.versions["stable"]}}/security-reference/security-overview.html) for more information, and for comparison of security options by CockroachDB product.
 
 ### Is encryption-at-rest enabled on {{ site.data.products.dedicated }}?
 
-Yes. All data on {{ site.data.products.dedicated }} is encrypted-at-rest using the tools provided by the cloud provider that your cluster is running in.
+All data in {{ site.data.products.serverless }} and {{ site.data.products.dedicated }} is encrypted-at-rest by your chosen infrastructre-as-a-service provider, Google Cloud Platform (GCP) or Amazon Web Services (AWS), at the infrastructure level.
 
-Because we are relying on the cloud provider's encryption implementation, we do not enable CockroachDB's [internal implementation of encryption-at-rest](../{{site.versions["stable"]}}/encryption.html#encryption-at-rest-enterprise). This means that encryption will appear to be disabled in the [DB Console](../{{site.versions["stable"]}}/ui-overview.html), since it is unaware of cloud provider encryption. For more information, see the [Security Overview](security-overview.html).
+{{site.data.alerts.callout_info}}
+{{ site.data.products.serverless }} and {{ site.data.products.dedicated }} users delegate responsibility for encryption-at-rest to the cloud provider. Hence, CockroachDB's proprietary storage-layer encryption-at-rest functionality is currently only available for {{ site.data.products.enterprise }} customers, and is not currently available to users of {{ site.data.products.serverless }} or {{ site.data.products.dedicated }}.
+
+As a result, encryption will appear to be disabled in the [DB Console](../{{site.versions["stable"]}}/ui-overview.html), since the console is unaware of cloud provider encryption.
+{{site.data.alerts.end}}
+
+
+See the [Security Overview page](../{{site.versions["stable"]}}/security-reference/security-overview.html) for more information, and for comparison of security options by CockroachDB product.
+
+
 
 ### Is my cluster isolated? Does it share resources with any other clusters?
 
