@@ -19,7 +19,7 @@ If you would like to upload and import data from from a dump file, consider usin
 
 ## Required privileges
 
-The user must have the `CREATE` [privilege](authorization.html#assign-privileges) on the target database. CockroachDB will proactively grant the user `GRANT`, `SELECT`, `INSERT`, `DROP`, `DELETE` on the metadata and file tables.
+The user must have the `CREATE` [privilege](security-reference/authorization.html#managing-privileges) on the target database. CockroachDB will proactively grant the user `GRANT`, `SELECT`, `INSERT`, `DROP`, `DELETE` on the metadata and file tables.
 
 A user can only upload files to their own user-scoped storage, which is accessed through the [userfile URI](#file-destination). CockroachDB will revoke all access from every other user in the cluster except users in the `admin` role.
 
