@@ -26,6 +26,7 @@ include:
 keep_files:
 - _internal
 markdown: Redcarpet
+operator_version: v2.4.0
 plugins:
 - jekyll-include-cache
 release_info:
@@ -90,11 +91,10 @@ release_info:
     start_time: 2022-02-22 11:01:26.34274101 +0000 UTC
     version: v21.2.6
   v22.1:
-    build_time: 2022/01/24 11:00:26 (go1.16.6)
+    build_time: 2022-03-07 00:00:00 (go1.17)
     docker_image: cockroachdb/cockroach-unstable
-    name: v22.1.0-alpha.1
-    start_time: 2022-01-24 11:01:26.34274101 +0000 UTC
-    version: v22.1.0-alpha.1
+    name: v22.1.0-alpha.2
+    start_time: 2022-03-02 09:21:36.669979 +0000 UTC
+    version: v22.1.0-alpha.2
 site_title: CockroachDB Docs
 url: https://www.cockroachlabs.com
-operator_version: v2.4.0
