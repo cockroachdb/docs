@@ -1,5 +1,5 @@
 ---
-title: Error Handling and Troubleshooting
+title: Troubleshoot Common Problems
 summary: How to troubleshoot problems and handle transaction retry errors during application development
 toc: true
 docs_area: develop
@@ -7,11 +7,11 @@ docs_area: develop
 
 This page has instructions for handling errors and troubleshooting problems that may arise during application development.
 
-## Troubleshooting query problems
+## Troubleshoot query problems
 
-If you are not satisfied with your SQL query performance, follow the instructions in [Optimize Statement Performance][fast] to be sure you are avoiding common performance problems like full table scans, missing indexes, etc.
+If you are not satisfied with your SQL query performance, follow the instructions in [Optimize Statement Performance Overview][fast] to be sure you are avoiding common performance problems like full table scans, missing indexes, etc.
 
-If you have already optimized your SQL queries as described in [Optimize Statement Performance][fast] and are still having issues such as:
+If you have already optimized your SQL queries as described in [Optimize Statement Performance Overview][fast] and are still having issues such as:
 
 - Hanging or "stuck" queries
 - Queries that are slow some of the time (but not always)
@@ -51,9 +51,9 @@ However, you may encounter features of SQL or the Postgres dialect that are not 
 
 For more information about the differences between CockroachDB and Postgres feature support, see [PostgreSQL Compatibility](postgresql-compatibility.html).
 
-For more information about the SQL standard features supported by CockroachDB, see [SQL Feature Support](sql-feature-support.html)
+For more information about the SQL standard features supported by CockroachDB, see [SQL Feature Support](sql-feature-support.html).
 
-## Troubleshooting cluster problems
+## Troubleshoot cluster problems
 
 As a developer, you will mostly be working with the CockroachDB [SQL API](sql-statements.html).
 
@@ -69,27 +69,18 @@ For more information about how to troubleshoot cluster-level issues, see [Troubl
 
 ## See also
 
-Reference information related to this page:
+### Tasks
 
-- [Troubleshoot Query Behavior](query-behavior-troubleshooting.html)
-- [Troubleshoot Cluster Setup](cluster-setup-troubleshooting.html)
-- [Common errors](common-errors.html)
+- [Connect to a CockroachDB Cluster](connect-to-the-database.html)
+- [Run Multi-Statement Transactions](run-multi-statement-transactions.html)
+- [Optimize Statement Performance Overview][fast]
+
+### Reference
+
+- [Common Errors and Solutions](common-errors.html)
 - [Transactions](transactions.html)
 - [Transaction retries](transactions.html#client-side-intervention)
-- [Transaction Contention](performance-best-practices-overview.html#transaction-contention)
 - [SQL Layer][sql]
-
-Other common tasks:
-
-- [Connect to the Database](connect-to-the-database.html)
-- [Insert Data](insert-data.html)
-- [Query Data](query-data.html)
-- [Update Data](update-data.html)
-- [Delete Data](delete-data.html)
-- [Run Multi-Statement Transactions](run-multi-statement-transactions.html)
-- [Identify slow queries](query-behavior-troubleshooting.html#identify-slow-statements)
-- [Optimize Statement Performance][fast]
-- [Example Apps](example-apps.html)
 
 <!-- Reference Links -->
 

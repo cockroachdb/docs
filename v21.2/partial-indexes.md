@@ -95,9 +95,7 @@ You can force queries [to use a specific partial index](table-expressions.html#f
 
 ### Setup
 
-The following examples use MovR, a fictional vehicle-sharing application, to demonstrate CockroachDB SQL statements. For more information about the MovR example application and dataset, see [MovR: A Global Vehicle-sharing App](movr.html).
-
-To follow along, run [`cockroach demo`](cockroach-demo.html) to start a temporary, in-memory cluster with the `movr` workload:
+The following examples use the [`movr` example dataset](cockroach-demo.html#datasets).
 
 {% include {{ page.version.version }}/demo_movr.md %}
 

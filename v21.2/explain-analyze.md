@@ -157,7 +157,7 @@ You can obtain this ZIP file by following the link provided in the `EXPLAIN ANAL
 
 ## Examples
 
-To run the examples, initialize a demo cluster with the MovR workload. {% include {{ page.version.version }}/demo_movr.md %}
+{% include {{ page.version.version }}/demo_movr.md %}
 
 ### `EXPLAIN ANALYZE`
 
