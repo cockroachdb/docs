@@ -9,14 +9,14 @@ filter_sort: 2
 docs_area: reference.benchmarking
 ---
 
-This page shows you how to reproduce [CockroachDB's TPC-C performance benchmarking results](performance.html#scale). Across all scales, CockroachDB can process tpmC (new order transactions per minute) at near maximum efficiency. Start by choosing the scale you're interested in:
+This page shows you how to reproduce [CockroachDB TPC-C performance benchmarking results](performance.html#scale). Across all scales, CockroachDB can process tpmC (new order transactions per minute) at near maximum efficiency. Start by choosing the scale you're interested in:
 
 {% include filter-tabs.md %}
 
 | Workload                 | Cluster size                                                | Warehouses | Data size |
 |--------------------------+-------------------------------------------------------------+------------+-----------|
 | Local                    | 3 nodes on your laptop                                      | 10         | 2 GB      |
-| **Local (Multi-region)** | **9 in-memory nodes on your laptop using `cockroach demo`** | **10**     | **2 GB**  |
+| Local (multi-region)     | 9 in-memory nodes on your laptop using `cockroach demo`     | 10         | 2 GB      |
 | Small                    | 3 nodes on `c5d.4xlarge` machines                           | 2500       | 200 GB    |
 | Medium                   | 15 nodes on `c5d.4xlarge` machines                          | 13,000     | 1.04 TB   |
 | Large                    | 81 nodes on `c5d.9xlarge` machines                          | 140,000    | 11.2 TB   |

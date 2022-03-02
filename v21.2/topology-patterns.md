@@ -1,12 +1,12 @@
 ---
 title: Topology Patterns Overview
-summary: Recommended patterns for running CockroachDB in a cloud environment.
+summary: Recommended topology patterns for running CockroachDB in a cloud environment.
 toc: true
 key: cluster-topology-patterns.html
 docs_area: deploy
 ---
 
-This section provides recommended patterns for running CockroachDB in a cloud environment.
+This page describes recommended topology patterns for running CockroachDB in a cloud environment and the expected impacts of these patterns on latency and resiliency.
 
 {{site.data.alerts.callout_info}}
 You can observe latency for your cluster on the [Network Latency page](ui-network-latency-page.html) of the DB Console.
@@ -14,7 +14,7 @@ You can observe latency for your cluster on the [Network Latency page](ui-networ
 
 ## Single-region
 
-When your clients are in a single geographic region, choosing a pattern is straightforward.
+When your clients are in a single geographic region, choosing a topology pattern is straightforward.
 
 Deployment Type | Latency | Resiliency | Configuration
 --------|---------|------------|--------------
@@ -23,16 +23,14 @@ Deployment Type | Latency | Resiliency | Configuration
 
 ## Multi-region
 
-When your clients are in multiple geographic regions, it is important to deploy your cluster across regions properly and then carefully choose:
+When your clients are in multiple geographic regions, it is important to deploy your cluster across regions properly and then carefully choose the right:
 
-1. The right [survival goal](multiregion-overview.html#survival-goals) for each database.
-1. The right [table locality](multiregion-overview.html#table-locality) for each of your tables.
+- [Survival goal](multiregion-overview.html#survival-goals) for each database.
+- [Table locality](multiregion-overview.html#table-locality) for each table.
 
-Not doing so can result in unexpected latency and resiliency.  For more information, see the [Multi-Region Capabilities Overview](multiregion-overview.html).
+Failure to consider either of these aspects can result in unexpected impacts on latency and resiliency. For more information, see the [Multi-Region Capabilities Overview](multiregion-overview.html).
 
-{{site.data.alerts.callout_info}}
-The multi-region patterns described below are almost always table-specific. For example, you might use [Regional Tables](regional-tables.html) for frequently updated tables that are tied to a specific region, and [Global Tables](global-tables.html) for reference tables that are not tied to a specific region, and that are read frequently but updated infrequently.
-{{site.data.alerts.end}}
+The multi-region patterns described in the following table are almost always table-specific. For example, you might use [Regional Tables](regional-tables.html) for frequently updated tables that are tied to a specific region, and [Global Tables](global-tables.html) for reference tables that are not tied to a specific region, and that are read frequently but updated infrequently.
 
 | Pattern                                                  | Latency                                                                                                    |
 |----------------------------------------------------------+------------------------------------------------------------------------------------------------------------|
@@ -45,6 +43,13 @@ The multi-region patterns described below are almost always table-specific. For 
 In [multi-region databases](multiregion-overview.html), the resiliency of each database depends on its [survival goal settings](multiregion-overview.html#survival-goals).
 {{site.data.alerts.end}}
 
+If you want low-latency read-only access to your data in multiple regions, Cockroach Labs recommends that you default to using stale follower reads on `REGIONAL` tables (the default locality). However, there are two reasons you might want to upgrade a table to `GLOBAL`:
+
+- You want low-latency consistent (non-stale) read access to the table in multiple regions from read-write transactions. One case where this is important is if the table is referenced by a [foreign key](foreign-key.html) from a [`REGIONAL BY ROW`](regional-tables.html#regional-by-row-tables) table. In these cases, the foreign key check that accompanies a write cannot use a stale read because it must be transactionally consistent with the write. To keep this foreign key check fast, you can make the reference table `GLOBAL`, at the expense of slower writes to that table.
+- When an [ORM](install-client-drivers.html) or application-level tool makes follower reads too hard to use. In these cases, `GLOBAL` tables can allow you to achieve low-latency reads through a schema-level setting.
+
+In summary, Cockroach Labs recommends that you use follower reads whenever you can, and use `GLOBAL` tables when you can't.
+
 ## Anti-patterns
 
 The following anti-patterns are ineffective or risky:
@@ -54,4 +59,4 @@ The following anti-patterns are ineffective or risky:
 
 ## See also
 
- {% include {{ page.version.version }}/topology-patterns/see-also.md %}
+{% include {{ page.version.version }}/topology-patterns/see-also.md %}

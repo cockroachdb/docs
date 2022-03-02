@@ -55,7 +55,7 @@ Choose a way to deploy and maintain the CockroachDB cluster:
 
 {% include {{ page.version.version }}/orchestration/monitor-cluster.md %}
 
-## Step 8. Stop the cluster
+## Step 5. Stop the cluster
 
 - **If you plan to restart the cluster**, use the `minikube stop` command. This shuts down the minikube virtual machine but preserves all the resources you created:
 
