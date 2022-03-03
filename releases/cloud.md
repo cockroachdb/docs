@@ -16,6 +16,14 @@ Get future release notes emailed to you:
 As of January 12, 2021, new {{ site.data.products.dedicated }} clusters and all {{ site.data.products.serverless }} clusters are running CockroachDB [v21.2.4](v21.2.html#v21-2-4).
 {{site.data.alerts.end}}
 
+## March 03, 2022
+
+<h3>Console changes</h3>
+
+- The [**Cluster overview**](../cockroachcloud/cluster-overview-page.html) page now includes a **Databases** section, which shows your databases, tables, indexes, and grants.
+- When creating or editing a SQL user, generated passwords will now be saved automatically when users click the **Generate and save password** button. Previously, users had to remember to save their passwords after generating and copying them.
+- {{ site.data.products.dedicated }} users can now [restore](../cockroachcloud/backups-page.html) databases configured for multiple regions.
+
 ## February 7, 2022
 
 <h3>General changes</h3>
