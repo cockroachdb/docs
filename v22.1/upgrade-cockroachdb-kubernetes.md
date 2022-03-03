@@ -1,4 +1,4 @@
----
+g---
 title: Cluster upgrades
 summary: How to upgrade a secure 3-node CockroachDB cluster with Kubernetes.
 toc: true
@@ -36,7 +36,7 @@ If you [deployed CockroachDB on Red Hat OpenShift](deploy-cockroachdb-with-kuber
 
     Therefore, in order to upgrade to {{ page.version.version }}, you must be on a production release of {{ previous_version }}.
 
-    1. If you are upgrading to {{ page.version.version }} from a production release earlier than {{ previous_version }}, or from a testing release (alpha/beta), first [upgrade to a production release of {{ previous_version }}](../{{ previous_version }}/kubernetes-overview.html#upgrade-the-cluster). Be sure to complete all the steps.
+    1. If you are upgrading to {{ page.version.version }} from a production release earlier than {{ previous_version }}, or from a testing release (alpha/beta), first [upgrade to a production release of v21.1](../v21.1/operate-cockroachdb-kubernetes.html#upgrade-the-cluster). Be sure to complete all the steps.
 
     1. Then return to this page and perform a second upgrade to {{ page.version.version }}.
 
