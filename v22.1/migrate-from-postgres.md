@@ -7,7 +7,7 @@ docs_area: migrate
 
 This page has instructions for migrating data from Postgres to CockroachDB using [`IMPORT`][import]'s support for reading [`pg_dump`][pgdump] files.
 
-The examples below pull real data from [Amazon S3](https://aws.amazon.com/s3/).  They use the [employees data set](https://github.com/datacharmer/test_db) that is also used in the [MySQL docs](https://dev.mysql.com/doc/employee/en/).  The data was imported to Postgres using [pgloader][pgloader], and then modified for use here as explained below.
+The examples pull real data from [Amazon S3](https://aws.amazon.com/s3/). They use the [employees data set](https://github.com/datacharmer/test_db) that is also used in the [MySQL docs](https://dev.mysql.com/doc/employee/en/). The data was imported to Postgres using [pgloader][pgloader], and then modified for use here as explained below.
 
 {% include {{ page.version.version }}/misc/import-perf.md %}
 
@@ -18,9 +18,9 @@ There are several ways to dump data from Postgres to be imported into CockroachD
 - [Dump the entire database](#dump-the-entire-database)
 - [Dump one table at a time](#dump-one-table-at-a-time)
 
-The import will fail if the dump file contains functions or type definitions.  In addition to calling [`pg_dump`][pgdump] as shown below, you may need to edit the dump file to remove functions and data types.
+The import will fail if the dump file contains functions or type definitions. In addition to calling [`pg_dump`][pgdump] as shown below, you may need to edit the dump file to remove functions and data types.
 
-Also, note that CockroachDB's [`IMPORT`][import] does not support automatically importing data from Postgres' non-public [schemas][pgschema].  As a workaround, you can edit the dump file to change the table and schema names in the `CREATE TABLE` statements.
+Also, note that CockroachDB's [`IMPORT`][import] does not support automatically importing data from Postgres' non-public [schemas][pgschema]. As a workaround, you can edit the dump file to change the table and schema names in the `CREATE TABLE` statements.
 
 ### Dump the entire database
 
@@ -43,7 +43,7 @@ If you only want to import one table from a database dump, see [Import a table f
 
 ### Dump one table at a time
 
-To dump the `employees` table from a Postgres database also named `employees`, run the [`pg_dump`][pgdump] command shown below.  You can import this table using the instructions in [Import a table from a table dump](#import-a-table-from-a-table-dump) below.
+To dump the `employees` table from a Postgres database also named `employees`, run the [`pg_dump`][pgdump] command shown below. You can import this table using the instructions in [Import a table from a table dump](#import-a-table-from-a-table-dump) below.
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -75,8 +75,6 @@ You can choose from several variants of the [`IMPORT`][import] statement, depend
 
 Note that all of the [`IMPORT`][import] statements in this section pull real data from [Amazon S3](https://aws.amazon.com/s3/) and will kick off background import jobs that you can monitor with [`SHOW JOBS`](show-jobs.html).
 
-{% include {{ page.version.version }}/sql/use-import-into.md %}
-
 ### Import a full database dump
 
 This example assumes you [dumped the entire database](#dump-the-entire-database).
@@ -99,7 +97,7 @@ The [`IMPORT`][import] statement below reads the data and [DDL](https://en.wikip
 
 This example assumes you [dumped the entire database](#dump-the-entire-database).
 
-[`IMPORT`][import] can import one table's data from a full database dump.  It reads the data and applies any `CREATE TABLE` statements from the file.
+[`IMPORT`][import] can import one table's data from a full database dump. It reads the data and applies any `CREATE TABLE` statements from the file.
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -117,9 +115,7 @@ This example assumes you [dumped the entire database](#dump-the-entire-database)
 
 ### Import a table from a table dump
 
-The examples below assume you [dumped one table](#dump-one-table-at-a-time).
-
-The simplest way to import a table dump is to run [`IMPORT TABLE`][import] as shown below.  It reads the table data and any `CREATE TABLE` statements from the file.
+The simplest way to import a table dump is to run [`IMPORT`][import]. It reads the table data and any `CREATE TABLE` statements from the file:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -135,48 +131,25 @@ The simplest way to import a table dump is to run [`IMPORT TABLE`][import] as sh
 (1 row)
 ~~~
 
-If you need to specify the table's columns for some reason, you can use an [`IMPORT TABLE`][import] statement like the one below, which will import data but ignore any `CREATE TABLE` statements in the file, instead relying on the columns you specify.
-
-{% include copy-clipboard.html %}
-~~~ sql
-> IMPORT TABLE employees (
-    emp_no INT PRIMARY KEY,
-    birth_date DATE NOT NULL,
-    first_name STRING NOT NULL,
-    last_name STRING NOT NULL,
-    gender STRING NOT NULL,
-    hire_date DATE NOT NULL
-  )
-  PGDUMP DATA ('https://s3-us-west-1.amazonaws.com/cockroachdb-movr/datasets/employees-db/pg_dump/employees.sql.gz') WITH ignore_unsupported_statements;
-~~~
-
 ## Configuration Options
 
-The following options are available to `IMPORT ... PGDUMP`:
+The following options are available to `IMPORT PGDUMP`:
 
-+ [Max row size](#max-row-size)
-+  [Row limit](#row-limit)
-+  [Ignore unsupported statements](#ignore-unsupported-statements)
-+  [Log unsupported statements](#log-unsupported-statements)
-+ [Skip foreign keys](#skip-foreign-keys)
+- [Max row size](#max-row-size)
+- [Row limit](#row-limit)
+- [Ignore unsupported statements](#ignore-unsupported-statements)
+- [Log unsupported statements](#log-unsupported-statements)
+- [Skip foreign keys](#skip-foreign-keys)
 
 ### Max row size
 
-The `max_row_size` option is used to override limits on line size.  **Default: 0.5MB**.  This setting may need to be tweaked if your Postgres dump file has extremely long lines, for example as part of a `COPY` statement.
+The `max_row_size` option is used to override limits on line size. **Default: 0.5MB**. This setting may need to be tweaked if your Postgres dump file has extremely long lines, for example as part of a `COPY` statement.
 
 Example usage:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> IMPORT TABLE employees (
-    emp_no INT PRIMARY KEY,
-    birth_date DATE NOT NULL,
-    first_name STRING NOT NULL,
-    last_name STRING NOT NULL,
-    gender STRING NOT NULL,
-    hire_date DATE NOT NULL
-  )
-  PGDUMP DATA ('s3://your-external-storage/employees.sql?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456') WITH max_row_size = '5MB';
+> IMPORT TABLE employees FROM PGDUMP ('s3://your-external-storage/employees.sql?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456') WITH max_row_size = '5MB';
 ~~~
 
 ### Row limit
@@ -187,7 +160,7 @@ Example usage:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> IMPORT PGDUMP 's3://your-external-storage/employees.sql?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456' WITH row_limit = '10';
+> IMPORT TABLE employees FROM PGDUMP 's3://your-external-storage/employees.sql?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456' WITH row_limit = '10';
 ~~~
 
 ### Ignore unsupported statements
@@ -200,7 +173,7 @@ Example usage:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> IMPORT PGDUMP 's3://your-external-storage/employees.sql?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456' WITH ignore_unsupported_statements;
+> IMPORT TABLE employees FROM PGDUMP's3://your-external-storage/employees.sql?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456' WITH ignore_unsupported_statements;
 ~~~
 
 ### Log unsupported statements
@@ -211,12 +184,12 @@ Example usage:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> IMPORT PGDUMP 's3://your-external-storage/employees.sql?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456' WITH ignore_unsupported_statements, log_ignored_statements='userfile://defaultdb.public.userfiles_root/unsupported-statements.log';
+> IMPORT TABLE employees FROM PGDUMP 's3://your-external-storage/employees.sql?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456' WITH ignore_unsupported_statements, log_ignored_statements='userfile://defaultdb.public.userfiles_root/unsupported-statements.log';
 ~~~
 
 ### Skip foreign keys
 
-By default, [`IMPORT ... PGDUMP`][import] supports foreign keys.  **Default: false**.  Add the `skip_foreign_keys` option to speed up data import by ignoring foreign key constraints in the dump file's DDL.  It will also enable you to import individual tables that would otherwise fail due to dependencies on other tables.
+By default, [`IMPORT PGDUMP`][import] supports foreign keys. **Default: false**. Add the `skip_foreign_keys` option to speed up data import by ignoring foreign key constraints in the dump file's DDL. It will also enable you to import individual tables that would otherwise fail due to dependencies on other tables.
 
 {{site.data.alerts.callout_info}}
 The most common dependency issues are caused by unsatisfied foreign key relationships. You can avoid these issues by adding the `skip_foreign_keys` option to your `IMPORT` statement as needed. For more information, see the list of [import options](import.html#import-options).
@@ -228,14 +201,7 @@ Example usage:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> IMPORT TABLE employees (
-    emp_no INTEGER PRIMARY KEY,
-    birth_date DATE NOT NULL,
-    first_name STRING NOT NULL,
-    last_name STRING NOT NULL,
-    gender STRING NOT NULL,
-    hire_date DATE NOT NULL
-  ) PGDUMP DATA ('s3://your-external-storage/employees.sql?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456') WITH skip_foreign_keys;
+> IMPORT TABLE employees FROM PGDUMP ('s3://your-external-storage/employees.sql?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456') WITH skip_foreign_keys;
 ~~~
 
 [Foreign key constraints](foreign-key.html) can be added by using [`ALTER TABLE ... ADD CONSTRAINT`](add-constraint.html) commands after importing the data.

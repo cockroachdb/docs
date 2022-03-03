@@ -14,20 +14,21 @@ The `IMPORT` [statement](sql-statements.html) imports the following types of dat
 - [CockroachDB dump files](cockroach-dump.html)
 - [Delimited data files](#delimited-data-files)
 
-## Considerations
-
-- `IMPORT` only works for creating new tables. For information on how to import into existing tables, see [`IMPORT INTO`](import-into.html). Also, for instructions and working examples on how to migrate data from other databases, see the [Migration Overview](migration-overview.html).
-
 {% include {{ page.version.version }}/import-table-deprecate.md %}
 
-- `IMPORT` cannot be used with [user-defined types](create-type.html). Use [`IMPORT INTO`](import-into.html) instead.
+## Considerations
+
 - `IMPORT` is a blocking statement. To run an import job asynchronously, use the [`DETACHED`](#options-detached) option.
 - `IMPORT` cannot be used within a [rolling upgrade](upgrade-cockroach-version.html).
+- As of v21.2, `IMPORT TABLE ... CREATE USING` and `IMPORT TABLE` with `CSV`, `DELIMITED`, `PGCOPY`, or `AVRO` data types are **deprecated**. Instead use `CREATE TABLE` and `IMPORT INTO`; see this [example](import-into.html#import-into-a-new-table-from-a-csv-file) for more detail.
+- `IMPORT` only works for creating new tables. For information on how to import into existing tables, see [`IMPORT INTO`](import-into.html). Also, for instructions and working examples on how to migrate data from other databases, see the [Migration Overview](migration-overview.html).
+- `IMPORT` cannot be used with [user-defined types](create-type.html). Use [`IMPORT INTO`](import-into.html) instead.
 - {% include {{page.version.version}}/sql/import-into-regional-by-row-table.md %}
 
-{{site.data.alerts.callout_info}}
+{{site.data.alerts.callout_success}}
 Optimize import operations in your applications by following our [Import Performance Best Practices](import-performance-best-practices.html).
 {{site.data.alerts.end}}
+
 ## Required privileges
 
 #### Table privileges
