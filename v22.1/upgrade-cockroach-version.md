@@ -47,7 +47,7 @@ Verify the overall health of your cluster using the [DB Console](ui-cluster-over
 
 ### Review breaking changes
 
-Review the [changes in {{ page.version.version }}](../releases/{{ page.version.version }}.html#v21-2-0). If any affect your deployment, make the necessary changes before starting the rolling upgrade to {{ page.version.version }}.
+Review the [changes in {{ page.version.version }}](../releases/{{ page.version.version }}.html). If any affect your deployment, make the necessary changes before starting the rolling upgrade to {{ page.version.version }}.
 
 - Interleaved tables and interleaved indexes have been removed as of v21.2. If upgrading to {{ page.version.version }} from a release prior to v21.2, [convert interleaved tables](../v21.1/interleave-in-parent.html#convert-interleaved-tables) and [replace interleaved indexes](../v21.1/interleave-in-parent.html#replace-interleaved-indexes). Clusters with interleaved tables and indexes cannot finalize the {{ page.version.version }} upgrade.
 - Previously, CockroachDB only supported the YMD format for parsing timestamps from strings. It now also supports the MDY format to better align with PostgreSQL. A timestamp such as `1-1-18`, which was previously interpreted as `2001-01-18`, will now be interpreted as `2018-01-01`. To continue interpreting the timestamp in the YMD format, the first number can be represented with 4 digits, `2001-1-18`.
@@ -85,7 +85,7 @@ When upgrading from {{ previous_version }} to {{ page.version.version }}, certai
 - **Restricted and default placement:** You can now use the [`ALTER DATABASE ... PLACEMENT RESTRICTED`](placement-restricted.html) statement to constrain the replica placement for a [multi-region database](multiregion-overview.html)'s [regional tables](regional-tables.html) to the [home regions](set-locality.html#crdb_region) associated with those tables.
 - **`ON UPDATE` expressions:** An [`ON UPDATE` expression](add-column.html#add-a-column-with-an-on-update-expression) can now be added to a column to update column values when an [`UPDATE`](update.html) or [`UPSERT`](upsert.html) statement modifies a different column value in the same row, or when an `ON UPDATE CASCADE` expression on a different column modifies an existing value in the same row.
 
-For an expanded list of features included in the {{ page.version.version }} release, see the [{{ page.version.version }} release notes](../releases/{{ page.version.version }}.html#v21-2-0).
+For an expanded list of features included in the {{ page.version.version }} release, see the [{{ page.version.version }} release notes](../releases/{{ page.version.version }}.html).
 
 ## Step 4. Perform the rolling upgrade
 
