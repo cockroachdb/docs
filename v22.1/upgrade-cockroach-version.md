@@ -5,6 +5,8 @@ toc: true
 docs_area: manage
 ---
 
+{% assign previous_version = site.data.versions | where_exp: "previous_version", "previous_version.major_version == page.version.version" | first | map: "previous_version" %}
+
 Because of CockroachDB's [multi-active availability](multi-active-availability.html) design, you can perform a "rolling upgrade" of your CockroachDB cluster. This means that you can upgrade nodes one at a time without interrupting the cluster's overall health and operations.
 
 ## Step 1. Verify that you can upgrade
@@ -13,11 +15,11 @@ To upgrade to a new version, you must first be on a production [release](../rele
 
 Therefore, to upgrade to {{ page.version.version }}:
 
-- If your current CockroachDB version is a v20.2 release or earlier, or a {{ page.version.previous_version }} testing release (alpha/beta):
-    1. First [upgrade to a production release of {{ page.version.previous_version }}](../{{ page.version.previous_version }}/upgrade-cockroach-version.html). Be sure to complete all the steps.
+- If your current CockroachDB version is a v20.2 release or earlier, or a {{ previous_version }} testing release (alpha/beta):
+    1. First [upgrade to a production release of {{ previous_version }}](../{{ previous_version }}/upgrade-cockroach-version.html). Be sure to complete all the steps.
     1. Return to this page and perform a second rolling upgrade to {{ page.version.version }}, starting from [step 2](#step-2-prepare-to-upgrade).
 
-- If your current CockroachDB version is any {{ page.version.previous_version }} production release, or any earlier {{ page.version.version }} release, you do not have to go through intermediate releases; continue to [step 2](#step-2-prepare-to-upgrade).
+- If your current CockroachDB version is any {{ previous_version }} production release, or any earlier {{ page.version.version }} release, you do not have to go through intermediate releases; continue to [step 2](#step-2-prepare-to-upgrade).
 
 ## Step 2. Prepare to upgrade
 
@@ -55,12 +57,12 @@ Review the [changes in {{ page.version.version }}](../releases/{{ page.version.v
 ## Step 3. Decide how the upgrade will be finalized
 
 {{site.data.alerts.callout_info}}
-This step is relevant only when upgrading from {{ page.version.previous_version }}.x to {{ page.version.version }}. For upgrades within the {{ page.version.version }}.x series, skip this step.
+This step is relevant only when upgrading from {{ previous_version }}.x to {{ page.version.version }}. For upgrades within the {{ page.version.version }}.x series, skip this step.
 {{site.data.alerts.end}}
 
-By default, after all nodes are running the new version, the upgrade process will be **auto-finalized**. This will enable certain [features and performance improvements introduced in {{ page.version.version }}](#features-that-require-upgrade-finalization). However, it will no longer be possible to perform a downgrade to {{ page.version.previous_version }}. In the event of a catastrophic failure or corruption, the only option will be to start a new cluster using the old binary and then restore from one of the backups created prior to performing the upgrade. For this reason, **we recommend disabling auto-finalization** so you can monitor the stability and performance of the upgraded cluster before finalizing the upgrade, but note that you will need to follow all of the subsequent directions, including the manual finalization in [step 5](#step-5-finish-the-upgrade):
+By default, after all nodes are running the new version, the upgrade process will be **auto-finalized**. This will enable certain [features and performance improvements introduced in {{ page.version.version }}](#features-that-require-upgrade-finalization). However, it will no longer be possible to perform a downgrade to {{ previous_version }}. In the event of a catastrophic failure or corruption, the only option will be to start a new cluster using the old binary and then restore from one of the backups created prior to performing the upgrade. For this reason, **we recommend disabling auto-finalization** so you can monitor the stability and performance of the upgraded cluster before finalizing the upgrade, but note that you will need to follow all of the subsequent directions, including the manual finalization in [step 5](#step-5-finish-the-upgrade):
 
-1. [Upgrade to {{ page.version.previous_version }}](../{{ page.version.previous_version }}/upgrade-cockroach-version.html), if you haven't already.
+1. [Upgrade to {{ previous_version }}](../{{ previous_version }}/upgrade-cockroach-version.html), if you haven't already.
 
 2. Start the [`cockroach sql`](cockroach-sql.html) shell against any node in the cluster.
 
@@ -75,7 +77,7 @@ By default, after all nodes are running the new version, the upgrade process wil
 
 ### Features that require upgrade finalization
 
-When upgrading from {{ page.version.previous_version }} to {{ page.version.version }}, certain features and performance improvements will be enabled only after finalizing the upgrade, including but not limited to:
+When upgrading from {{ previous_version }} to {{ page.version.version }}, certain features and performance improvements will be enabled only after finalizing the upgrade, including but not limited to:
 
 - **Expression indexes:** [Indexes on expressions](expression-indexes.html) can now be created. These indexes speed up queries that filter on the result of that expression, and are especially useful for indexing only a specific field of a `JSON` object.
 - **Privilege inheritance:** CockroachDB's model for inheritance of privileges that cascade from schema objects now matches PostgreSQL. Added support for [`ALTER DEFAULT PRIVILEGES`](alter-default-privileges.html) and [`SHOW DEFAULT PRIVILEGES`](show-default-privileges.html).
@@ -195,7 +197,7 @@ We recommend creating scripts to perform these steps instead of performing them 
 ## Step 5. Finish the upgrade
 
 {{site.data.alerts.callout_info}}
-This step is relevant only when upgrading from {{ page.version.previous_version }}.x to {{ page.version.version }}. For upgrades within the {{ page.version.version }}.x series, skip this step.
+This step is relevant only when upgrading from {{ previous_version }}.x to {{ page.version.version }}. For upgrades within the {{ page.version.version }}.x series, skip this step.
 {{site.data.alerts.end}}
 
 If you disabled auto-finalization in [step 3](#step-3-decide-how-the-upgrade-will-be-finalized), monitor the stability and performance of your cluster for as long as you require to feel comfortable with the upgrade (generally at least a day). If during this time you decide to roll back the upgrade, repeat the rolling restart procedure with the old binary.

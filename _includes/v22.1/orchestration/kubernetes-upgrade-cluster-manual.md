@@ -1,14 +1,16 @@
+{% assign previous_version = site.data.versions | where_exp: "previous_version", "previous_version.major_version == page.version.version" | first | map: "previous_version" %}
+
 1. Verify that you can upgrade.
 
     To upgrade to a new major version, you must first be on a production release of the previous version. The release does not need to be the latest production release of the previous version, but it must be a production [release](../releases/index.html) and not a testing release (alpha/beta).
 
-    Therefore, in order to upgrade to {{ page.version.version }}, you must be on a production release of {{ page.version.previous_version }}.
+    Therefore, in order to upgrade to {{ page.version.version }}, you must be on a production release of {{ previous_version }}.
 
-    1. If you are upgrading to {{ page.version.version }} from a production release earlier than {{ page.version.previous_version }}, or from a testing release (alpha/beta), first [upgrade to a production release of {{ page.version.previous_version }}](../{{ page.version.previous_version }}/operate-cockroachdb-kubernetes.html?filters=manual#upgrade-the-cluster). Be sure to complete all the steps.
+    1. If you are upgrading to {{ page.version.version }} from a production release earlier than {{ previous_version }}, or from a testing release (alpha/beta), first [upgrade to a production release of {{ previous_version }}](../{{ previous_version }}/operate-cockroachdb-kubernetes.html?filters=manual#upgrade-the-cluster). Be sure to complete all the steps.
 
     1. Then return to this page and perform a second upgrade to {{ page.version.version }}.
 
-    1. If you are upgrading from any production release of {{ page.version.previous_version }}, or from any earlier {{ page.version.version }} patch release, you do not have to go through intermediate releases; continue to step 2.
+    1. If you are upgrading from any production release of {{ previous_version }}, or from any earlier {{ page.version.version }} patch release, you do not have to go through intermediate releases; continue to step 2.
 
 1. Verify the overall health of your cluster using the [DB Console](ui-overview.html). On the **Overview**:
     - Under **Node Status**, make sure all nodes that should be live are listed as such. If any nodes are unexpectedly listed as suspect or dead, identify why the nodes are offline and either restart them or [decommission](scale-cockroachdb-kubernetes.html?filters=manual#remove-nodes) them before beginning your upgrade. If there are dead and non-decommissioned nodes in your cluster, it will not be possible to finalize the upgrade (either automatically or manually).
@@ -29,10 +31,10 @@
 
 1. Decide how the upgrade will be finalized.
 
-    By default, after all nodes are running the new version, the upgrade process will be **auto-finalized**. This will enable certain [features and performance improvements introduced in {{ page.version.version }}](upgrade-cockroach-version.html#features-that-require-upgrade-finalization). After finalization, however, it will no longer be possible to perform a downgrade to {{ page.version.previous_version }}. In the event of a catastrophic failure or corruption, the only option is to start a new cluster using the old binary and then restore from a [backup](take-full-and-incremental-backups.html) created prior to the upgrade. For this reason, **we recommend disabling auto-finalization** so you can monitor the stability and performance of the upgraded cluster before finalizing the upgrade, but note that you will need to follow all of the subsequent directions, including the manual finalization in a later step.
+    By default, after all nodes are running the new version, the upgrade process will be **auto-finalized**. This will enable certain [features and performance improvements introduced in {{ page.version.version }}](upgrade-cockroach-version.html#features-that-require-upgrade-finalization). After finalization, however, it will no longer be possible to perform a downgrade to {{ previous_version }}. In the event of a catastrophic failure or corruption, the only option is to start a new cluster using the old binary and then restore from a [backup](take-full-and-incremental-backups.html) created prior to the upgrade. For this reason, **we recommend disabling auto-finalization** so you can monitor the stability and performance of the upgraded cluster before finalizing the upgrade, but note that you will need to follow all of the subsequent directions, including the manual finalization in a later step.
 
     {{site.data.alerts.callout_info}}
-    Finalization only applies when performing a major version upgrade (for example, from {{ page.version.previous_version }}.x to {{ page.version.version }}). Patch version upgrades (for example, within the {{ page.version.version }}.x series) can always be downgraded.
+    Finalization only applies when performing a major version upgrade (for example, from {{ previous_version }}.x to {{ page.version.version }}). Patch version upgrades (for example, within the {{ page.version.version }}.x series) can always be downgraded.
     {{site.data.alerts.end}}
 
     {% if page.secure == true %}
@@ -201,7 +203,7 @@
     If you decide to roll back the upgrade, repeat the rolling restart procedure with the old binary.
 
     {{site.data.alerts.callout_info}}
-    This is only possible when performing a major version upgrade (for example, from {{ page.version.previous_version }}.x to {{ page.version.version }}). Patch version upgrades (for example, within the {{ page.version.version }}.x series) are auto-finalized.
+    This is only possible when performing a major version upgrade (for example, from {{ previous_version }}.x to {{ page.version.version }}). Patch version upgrades (for example, within the {{ page.version.version }}.x series) are auto-finalized.
     {{site.data.alerts.end}}
 
     To finalize the upgrade, re-enable auto-finalization:
