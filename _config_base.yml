@@ -95,6 +95,7 @@ release_info:
     name: v22.1.0-alpha.1
     start_time: 2022-01-24 11:01:26.34274101 +0000 UTC
     version: v22.1.0-alpha.1
+    previous_version: v21.2
 site_title: CockroachDB Docs
 url: https://www.cockroachlabs.com
 operator_version: v2.4.0
