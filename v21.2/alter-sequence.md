@@ -11,8 +11,8 @@ The `ALTER SEQUENCE` [statement](sql-statements.html) applies a [schema change](
 
 ## Required privileges
 
-- To alter a sequence, the user must have the `CREATE` [privilege](authorization.html#assign-privileges) on the parent database.
-- To change the schema of a sequence with `ALTER SEQUENCE ... SET SCHEMA`, or to change the database of a sequence with `ALTER SEQUENCE ... RENAME TO`, the user must also have the `DROP` [privilege](authorization.html#assign-privileges) on the sequence.
+- To alter a sequence, the user must have the `CREATE` [privilege](security-reference/authorization.html#managing-privileges) on the parent database.
+- To change the schema of a sequence with `ALTER SEQUENCE ... SET SCHEMA`, or to change the database of a sequence with `ALTER SEQUENCE ... RENAME TO`, the user must also have the `DROP` [privilege](security-reference/authorization.html#managing-privileges) on the sequence.
 
 ## Syntax
 

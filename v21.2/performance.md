@@ -3,7 +3,7 @@ title: Benchmarking Overview
 summary: An overview of the performance profiles you can expect from CockroachDB.
 toc: true
 toc_not_nested: true
-docs_area: manage
+docs_area: reference.benchmarking
 ---
 
 CockroachDB delivers predictable throughput and latency at all scales on commodity hardware. This page provides an overview of the performance profiles you can expect, based on Cockroach Labs' extensive testing using industry-standard benchmarks like TPC-C and Sysbench.
