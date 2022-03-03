@@ -24,6 +24,17 @@ As of January 12, 2021, new {{ site.data.products.dedicated }} clusters and all 
 - When creating or editing a SQL user, generated passwords will now be saved automatically when users click the **Generate and save password** button. Previously, users had to remember to save their passwords after generating and copying them.
 - {{ site.data.products.dedicated }} users can now [restore](../cockroachcloud/backups-page.html) databases configured for multiple regions.
 
+## February 10, 2022
+
+<h3>General changes</h3>
+
+- New {{ site.data.products.dedicated }} clusters can now be [created with custom hardware options](../cockroachcloud/create-your-cluster.html). Previously, there were four hardware options, and compute and storage were linked.
+- {{ site.data.products.dedicated }} users can now scale a cluster's [compute](../cockroachcloud/cluster-management.html) and [storage](../cockroachcloud/cluster-management.html). Previously, the only way to scale up a {{ site.data.products.dedicated }} cluster was by adding more nodes.
+
+<h3>Console changes</h3>
+
+- There is now a **Hardware** column on the **Clusters** page that shows the hardware configuration for {{ site.data.products.dedicated }} clusters.
+
 ## February 7, 2022
 
 <h3>General changes</h3>
@@ -46,17 +57,6 @@ As of January 12, 2021, new {{ site.data.products.dedicated }} clusters and all 
 
 - Fixed a number of broken links throughout the {{ site.data.products.db }} Console.
 - Fixed a bug where {{ site.data.products.serverless }} users were seeing occasional dips and spikes in a cluster's [**Request Units**](../cockroachcloud/cluster-overview-page.html#request-units) usage graph while running a steady workload.
-
-## February 1, 2022
-
-<h3>General changes</h3>
-
-- New {{ site.data.products.dedicated }} clusters can now be [created with custom hardware options](../cockroachcloud/create-your-cluster.html). Previously, there were four hardware options, and compute and storage were linked.
-- {{ site.data.products.dedicated }} users can now scale a cluster's [compute](../cockroachcloud/cluster-management.html) and [storage](../cockroachcloud/cluster-management.html). Previously, the only way to scale up a {{ site.data.products.dedicated }} cluster was by adding more nodes.
-
-<h3>Console changes</h3>
-
-- There is now a **Hardware** column on the **Clusters** page that shows the hardware configuration for {{ site.data.products.dedicated }} clusters.
 
 ## January 10, 2022
 
