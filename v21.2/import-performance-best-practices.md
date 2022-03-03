@@ -7,7 +7,7 @@ docs_area: migrate
 
 This page provides best practices for optimizing [import](import.html) performance in CockroachDB.
 
-Import speed primarily depends on the amount of data the you want to import. However, there are two main factors that have can have a large impact on the amount of time it will take to run an import:
+Import speed primarily depends on the amount of data that you want to import. However, there are two main factors that have can have a large impact on the amount of time it will take to run an import:
 
 - [Splitting data](#split-your-data-into-multiple-files)
 - [Import format](#choose-a-performant-import-format)
