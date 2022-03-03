@@ -22,7 +22,6 @@ If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=d
 ## Step 1. Start the cluster creation process
 
 1. [Log in](https://cockroachlabs.cloud/) to your {{ site.data.products.db }} account.
-{% include cockroachcloud/prefer-sso.md %}
 1. If there are multiple [organizations](console-access-management.html#organization) in your account, select the correct organization in the top right corner.
 1. On the **Overview** page, click **Create Cluster**.
 
