@@ -15,17 +15,19 @@ The `IMPORT` [statement](sql-statements.html) imports the following types of dat
 - [CockroachDB dump files](cockroach-dump.html)
 - [Delimited data files](#delimited-data-files)
 
-## Considerations
-
-- `IMPORT` only works for creating new tables. For information on how to import into existing tables, see [`IMPORT INTO`](import-into.html). Also, for instructions and working examples on how to migrate data from other databases, see the [Migration Overview](migration-overview.html).
-
 {% include {{ page.version.version }}/import-table-deprecate.md %}
 
+## Considerations
+
+- As of v21.2, certain `IMPORT TABLE` statements that do not define the table schema in the same file as the data are **deprecated**. These are **not** supported in v22.1+:
+  - `IMPORT TABLE` with any non-bundle format (`CSV`, `AVRO`, `DELIMITED DATA`, or `PGCOPY`).
+  - Using the `IMPORT TABLE ... CREATE USING` syntax.
+- `IMPORT` only works for creating new tables. For information on how to import into existing tables, see [`IMPORT INTO`](import-into.html). Also, for instructions and working examples on how to migrate data from other databases, see the [Migration Overview](migration-overview.html).
 - `IMPORT` is a blocking statement. To run an import job asynchronously, use the [`DETACHED`](#options-detached) option.
 - `IMPORT` cannot be used within a [rolling upgrade](upgrade-cockroach-version.html).
 - `IMPORT` cannot directly import data to `REGIONAL BY ROW` tables that are part of [multi-region databases](multiregion-overview.html). <span class="version-tag">New in v21.2:</span> Instead, use [`IMPORT INTO`](import-into.html) which supports importing into `REGIONAL BY ROW` tables.
 
-{{site.data.alerts.callout_info}}
+{{site.data.alerts.callout_success}}
 Optimize import operations in your applications by following our [Import Performance Best Practices](import-performance-best-practices.html).
 {{site.data.alerts.end}}
 
@@ -135,7 +137,7 @@ For more information on details to consider when running an IMPORT, see [Conside
 
 {% include {{ page.version.version }}/import-table-deprecate.md %}
 
-To use `IMPORT` in v21.1 and prior, imported tables must not exist and must be created in the `IMPORT` statement. If the table you want to import already exists, you must drop it with [`DROP TABLE`](drop-table.html) or use [`IMPORT INTO`](import-into.html).
+Imported tables must not exist and must be created in the `IMPORT` statement. If the table you want to import already exists, you must drop it with [`DROP TABLE`](drop-table.html) or use [`IMPORT INTO`](import-into.html).
 
 You can specify the target database in the table name in the `IMPORT` statement. If it's not specified there, the active database in the SQL session is used.
 

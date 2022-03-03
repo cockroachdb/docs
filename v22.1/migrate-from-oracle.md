@@ -155,7 +155,6 @@ The following options are available to [`IMPORT ... CSV`](import.html):
 - [Column delimiter](migrate-from-csv.html#column-delimiter)
 - [Comment syntax](migrate-from-csv.html#comment-syntax)
 - [Skip header rows](migrate-from-csv.html#skip-header-rows)
--  [Row limit](migrate-from-csv.html#row-limit)
 - [Null strings](migrate-from-csv.html#null-strings)
 - [File compression](migrate-from-csv.html#file-compression)
 
