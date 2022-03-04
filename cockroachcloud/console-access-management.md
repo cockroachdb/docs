@@ -7,6 +7,8 @@ docs_area: manage
 
 The **Access** page displays the name, email address, role, and invite acceptance status of the Team Members with access to your {{ site.data.products.db }} organization. To view the **Access** page, [log in](https://cockroachlabs.cloud/) and click **Access**.
 
+{% include cockroachcloud/prefer-sso.md %}
+
 ## Organization
 
 An **organization** allows you to manage your clusters under a shared [billing](billing-management.html) account and collaborate with team members. You can belong to multiple organizations.
