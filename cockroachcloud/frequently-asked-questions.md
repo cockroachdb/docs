@@ -18,9 +18,11 @@ This page answers the frequently asked questions about {{ site.data.products.ser
 
 {{ site.data.products.dedicated }} provides fully-managed, single-tenant CockroachDB clusters with no shared resources. {{ site.data.products.dedicated }} supports single and multi-region clusters in AWS and GCP.
 
-### Why are certain regions in AWS and GCP not available?
+### In what clouds and regions is {{ site.data.products.db }} available?
 
-We run {{ site.data.products.db }} in EKS and GKE - the managed Kubernetes offerings for AWS and GCP respectively - and support all regions that the offerings are available in. If a particular region is not available on the {{ site.data.products.db }} Console, that is due to the cloud provider not supporting the managed Kubernetes offering in that region. See
+To see what clouds and regions {{ site.data.products.db }} is available in, begin the cluster creation flow from the web UI and observe which regions are listed in the UI.
+
+We run {{ site.data.products.dedicated }} in EKS and GKE - the managed Kubernetes offerings for AWS and GCP respectively - and support all regions that the offerings are available in. If a particular region is not available on the {{ site.data.products.db }} Console, it is usually due to the cloud provider not supporting the managed Kubernetes offering in that region. See
 [list of EKS regions](https://aws.amazon.com/about-aws/global-infrastructure/regional-product-services/) and [list of GKE regions](https://cloud.google.com/about/locations/) for details.
 
 **Known issue:** In addition to the non-GKE regions, we had to temporarily disable the following GCP regions due to GCP's quota restrictions:
