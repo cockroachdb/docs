@@ -1,9 +1,13 @@
 ---
-title: Authentication
-summary: An overview of Cluster Authentication Configuration capabilities and interface syntax
+title: SQL Client Authentication
+summary: An overview of CockroachDB SQL client authentication Configuration capabilities and interface syntax
 toc: true
 docs_area: reference.security
 ---
+
+This page provides an overview of authentication between CockroachDB clusters and clients, which includes the CockroachDB CLI client and [various supported drivers and ORMs](../{{site.versions["stable"]}}/install-client-drivers.html).
+
+For information about connecting to the {{ site.data.products.db }} console, see [Authenticating to CockroachDB Cloud](../../cockroachcloud/authentication.html).
 
 CockroachDB allows fine-grained configuration of which database connect attempts it allows to proceed to the authentication stage, and which authentication methods it will accept, based on:
 
@@ -23,6 +27,10 @@ All options also support the following no-op 'authentication methods' (authentic
 - `reject`: unconditionally rejects the connection attempt.
 - `trust`: unconditionally rejects the connection attempt.
 
+
+### TLS Support
+
+{{ site.data.products.db }} uses TLS 1.3 for inter-node communication and TLS 1.2 or 1.3 for client-node communication, digital certificates for inter-node authentication, [SSL modes](#ssl-mode-settings) for node identity verification, and password authentication for client identity verification.
 
 ## Authentication configuration
 

@@ -5,6 +5,10 @@ toc: true
 docs_area: manage
 ---
 
+This page concerns authenticating to the [{{ site.data.products.db }} Console](https://cockroachlabs.cloud/), which provides an overview of your {{ site.data.products.db }} account, and offers functionality for administrating or connecting to clusters.
+
+For information about authenticating CockroachDB SQL clients to CockroachDB clusters, see [SQL Client Authentication](../{{site.versions["stable"]}}/security-reference/authentication.html)
+
 Users may connect with {{ site.data.products.db }} in two ways:
 
 - The [{{ site.data.products.db }} Console](https://cockroachlabs.cloud/) provides an overview of your {{ site.data.products.db }} account, and offers functionality for administrating or connecting to clusters.
@@ -18,9 +22,8 @@ You may login to the [{{ site.data.products.db }} Console](https://cockroachlabs
 
 ## SQL authentication
 
-### TLS
+For information about 
 
-{{ site.data.products.db }} uses TLS 1.3 for inter-node communication and TLS 1.2 or 1.3 for client-node communication, digital certificates for inter-node authentication, [SSL modes](#ssl-mode-settings) for node identity verification, and password authentication for client identity verification.
 
 ### Node identity verification
 
@@ -33,20 +36,9 @@ To connect securely to your cluster using the `verify-full` mode:
 
 You can also use the `require` SSL mode, although we do not recommend using it since it can make the cluster susceptible to MITM and impersonation attacks. For more information, see the "Protection Provided in Different Modes" section in PostgreSQL's [SSL Support](https://www.postgresql.org/docs/9.4/libpq-ssl.html) document.
 
-### Client identity verification
-
-{{ site.data.products.db }} uses password authentication for verifying a client’s identity. If no password has been set up for a user, password authentication will always fail for that user and you won’t be able to connect to the cluster.
-
 For more information about creating SQL users and passwords, see [User Authorization](user-authorization.html).
 
-### SSL mode settings
 
-The table below lists the `sslmode` settings you can use to [connect to your cluster](connect-to-your-cluster.html) and their associated security risks. Other settings are not recommended.
-
-`sslmode` | Eavesdropping protection | MITM protection | Description
--------------|------------|------------|------------
-`require` | Yes | No | 	Force a secure connection. An error occurs if the secure connection cannot be established. This is less secure than using a CA certificate and is only recommended for testing or unimportant data.
-`verify-full` | Yes | Yes | Force a secure connection, verify that the server certificate is signed by a known CA, and verify that the server address matches that specified in the certificate.
 
 ## See also
 
