@@ -1,8 +1,7 @@
 ---
 title: Glossary
-summary: Learn about database, CockroachDB, and CockroachCloud concepts.
+summary: Learn about database, CockroachDB architecture and deployment, and CockroachCloud concepts.
 toc: true
-key: cockroachdb-architecture.html
 docs_area: get_started
 ---
 
@@ -41,8 +40,8 @@ Term | Definition
 
 Term | Definition
 -----|-----------
-**Serverless cluster** | A CockroachDB cluster automatically billed and scaled in response to the resources it consumes.
-**Dedicated cluster** | A CockroachDB cluster automatically billed for resources provisioned.
+**Serverless cluster** | A CockroachDB cluster automatically billed for and scaled according to the resources consumed by the cluster.
+**Dedicated cluster** | A CockroachDB cluster automatically billed for the resources provisioned for the cluster.
 **Request Unit (RU)** | Represents the compute and I/O resources used by a query. All database operations in {{ site.data.products.serverless-plan }} cost a certain amount of RUs depending on the resources used. For example, a "small read" might cost 2 RUs, and a "large read" such as a full table scan with indexes could cost a large number of RUs. You can see how many Request Units your cluster has used on the [Cluster Overview](../cockroachcloud/serverless-cluster-management.html#view-cluster-overview) page.
 **Spend limit** | The maximum amount of money you want to spend on a cluster in a particular billing period. The amount you are billed is based on the resources the cluster used during that billing period. A cluster's budget is allocated across storage and burst performance.
 **Baseline performance** | The minimum compute and I/O performance that you can expect from your cluster at all times. This is 100 RUs per second for all Serverless clusters (free and paid). The actual usage of a cluster may be lower than the baseline performance depending on application traffic, because not every application will need 100 RUs per second at all times. When the cluster's usage is lower than the baseline, the cluster accumulates the unused RUs until the load on the cluster increases above the baseline.
