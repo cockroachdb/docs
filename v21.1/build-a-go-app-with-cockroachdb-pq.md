@@ -3,13 +3,13 @@ title: Build a Go App with CockroachDB the Go pq Driver
 summary: Learn how to use CockroachDB from a simple Go application with the Go pq driver.
 toc: true
 twitter: false
-referral_id: docs_hello_world_go_pq
+referral_id: docs_go_pq
 ---
 
 <div class="filters filters-big clearfix">
     <a href="build-a-go-app-with-cockroachdb.html"><button class="filter-button">Use <strong>pgx</strong></button></a>
-    <a href="build-a-go-app-with-cockroachdb-pq.html"><button class="filter-button current">Use <strong>pq</strong></button></a>
     <a href="build-a-go-app-with-cockroachdb-gorm.html"><button class="filter-button">Use <strong>GORM</strong></button></a>
+    <a href="build-a-go-app-with-cockroachdb-pq.html"><button class="filter-button current">Use <strong>pq</strong></button></a>
     <a href="build-a-go-app-with-cockroachdb-upperdb.html"><button class="filter-button">Use <strong>upper/db</strong></button></a>
 </div>
 
@@ -52,7 +52,7 @@ Here are the contents of `main.go`:
 Edit the connection string passed to `sql.Open()` so that:
 
 - `{username}` and `{password}` specify the SQL username and password that you created earlier.
-- `{hostname}` and `{port}` specify the hostname and port in the `(sql/tcp)` connection string from SQL shell welcome text.
+- `{hostname}` and `{port}` specify the hostname and port in the `(sql)` connection string from SQL shell welcome text.
 
 </section>
 

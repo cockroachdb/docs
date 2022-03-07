@@ -24,6 +24,7 @@ Note that tools with [**community-level** support](community-tooling.html) have 
 |--------------------------------------------------+----------------+--------------------------------------------------------|
 | [pgx](https://github.com/jackc/pgx/releases)     | Full           | [Hello World](hello-world-go-pgx.html)<br>[Simple CRUD](build-a-go-app-with-cockroachdb.html)
 | [GORM](https://github.com/jinzhu/gorm/releases)  | Full           | [Hello World](hello-world-go-gorm.html)<br>[Simple CRUD](build-a-go-app-with-cockroachdb-gorm.html)
+| [pq](https://github.com/lib/pq)                  | Full           | [Simple CRUD](build-a-go-app-with-cockroachdb-pq.html)
 | [upper/db](https://github.com/upper/db)          | Full           | [Simple CRUD](build-a-go-app-with-cockroachdb-upperdb.html)
 
 ## Java
@@ -66,29 +67,11 @@ Note that tools with [**community-level** support](community-tooling.html) have 
 |-----------------------------------------------------------+----------------+--------------------------------------------------------|
 | [Npgsql](https://www.npgsql.org/)                        | Beta           | [Simple CRUD](build-a-csharp-app-with-cockroachdb.html)
 
-## C++
-
-| Driver/ORM Framework                          | Support level  | Example apps                                            |
-|-----------------------------------------------+----------------+--------------------------------------------------------|
-| [libpqxx](https://github.com/jtv/libpqxx)     | Beta           | [Simple CRUD](build-a-c++-app-with-cockroachdb.html)
-
-## Clojure
-
-| Driver/ORM Framework                                      | Support level  | Example apps                                            |
-|-----------------------------------------------------------+----------------+--------------------------------------------------------|
-| [java.jdbc](https://github.com/clojure/java.jdbc)         | Community      | [Simple CRUD](build-a-clojure-app-with-cockroachdb.html)
-
-## PHP
-
-| Driver/ORM Framework                                      | Support level  | Example apps                                            |
-|-----------------------------------------------------------+----------------+--------------------------------------------------------|
-| [php-pgsql](https://www.php.net/manual/en/book.pgsql.php) | Community      | [Simple CRUD](build-a-php-app-with-cockroachdb.html)
-
 ## Rust
 
 | Driver/ORM Framework                           | Support level  | Example apps                                            |
 |------------------------------------------------+----------------+--------------------------------------------------------|
-| [postgres](https://crates.io/crates/postgres/) | Community      | [Simple CRUD](build-a-rust-app-with-cockroachdb.html)
+| [Rust-Postgres](https://github.com/sfackler/rust-postgres) | Community      | [Simple CRUD](build-a-rust-app-with-cockroachdb.html)
 
 ## See also
 
