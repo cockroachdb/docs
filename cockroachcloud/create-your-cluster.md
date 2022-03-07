@@ -18,8 +18,7 @@ To create and connect to a 30-day free {{ site.data.products.dedicated }} cluste
 
 ## Step 1. Start the cluster creation process
 
-1. If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=docs_create_dedicated_cluster" rel="noopener" target="_blank">sign up for a {{ site.data.products.db }} account</a>.
-{% include cockroachcloud/prefer-sso.md %}
+1. If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=docs_create_dedicated_cluster" rel="noopener" target="_blank">sign up for a {{ site.data.products.db }} account</a>. {% include cockroachcloud/prefer-sso.md %}
 1. [Log in](https://cockroachlabs.cloud/) to your {{ site.data.products.db }} account.
 1. If there are multiple [organizations](console-access-management.html#organization) in your account, select the correct organization in the top right corner.
 1. On the **Overview** page, click **Create Cluster**.
@@ -29,9 +28,9 @@ To create and connect to a 30-day free {{ site.data.products.dedicated }} cluste
 
 In the **Cloud provider** section, select either **Google Cloud** or **AWS** as your preferred cloud provider.
 
-{{ site.data.products.db }} GCP clusters use [N1 standard](https://cloud.google.com/compute/docs/machine-types#n1_machine_types) machine types and [Persistent Disk storage](https://cloud.google.com/compute/docs/disks#pdspecs). AWS clusters use [M5 instance types](https://aws.amazon.com/ec2/instance-types/m5/#Product_Details) and [Elastic Block Store (EBS)](https://aws.amazon.com/ebs/features/). 
+{{ site.data.products.db }} GCP clusters use [N1 standard](https://cloud.google.com/compute/docs/machine-types#n1_machine_types) machine types and [Persistent Disk storage](https://cloud.google.com/compute/docs/disks#pdspecs). AWS clusters use [M5 instance types](https://aws.amazon.com/ec2/instance-types/m5/#Product_Details) and [Elastic Block Store (EBS)](https://aws.amazon.com/ebs/features/).
 
-For GCP clusters, each GiB of storage costs  $0.0011986 per hour, and 30 IOPS per GiB are provisioned. For AWS clusters, each GiB of storage costs $0.0005088 per hour, and 15 IOPS per GiB are provisioned at an additional cost of $0.0000196 per IOPS per hour. 
+For GCP clusters, each GiB of storage costs  $0.0011986 per hour, and 30 IOPS per GiB are provisioned. For AWS clusters, each GiB of storage costs $0.0005088 per hour, and 15 IOPS per GiB are provisioned at an additional cost of $0.0000196 per IOPS per hour.
 
 {% include cockroachcloud/cockroachcloud-pricing.md %}
 
@@ -88,7 +87,7 @@ The choice of hardware per node determines the [cost](#step-2-select-the-cloud-p
     {{site.data.alerts.end}}
 
     You can choose up to 150 GiB per vCPU. See [Step 2](#step-2-select-the-cloud-provider) for pricing information. When selecting your storage capacity, consider the following factors:
-    
+
     Factor | Description
     ----------|------------
     Capacity | Total raw data size you expect to store without replication.
@@ -132,7 +131,7 @@ You can use [VPC peering](network-authorization.html#vpc-peering) to connect you
         {{site.data.alerts.end}}
 
 1. Click **Next**.
-        
+
         Once your cluster is created, see [Establish VPC Peering or AWS PrivateLink](connect-to-your-cluster.html#establish-vpc-peering-or-aws-privatelink) to finish setting up VPC Peering for your cluster.
 
 ## Step 8. Enter billing details
@@ -192,7 +191,7 @@ If you created a multi-region cluster, it is important to carefully choose:
 
 Not doing so can result in unexpected latency and resiliency.  For more information, see the [Multi-Region Capabilities Overview](../stable/multiregion-overview.html).
 
-<!--
+{% comment %}
 ### [WIP] Select hardware configuration based on performance requirements
 
 Let's say we want to run a TPC-C workload with 500 warehouses on a {{ site.data.products.db }} cluster.
@@ -204,4 +203,4 @@ With a default replication factor of 3, the total amount of data we need to stor
 So for a workload resembling TPC-C, we want to build out your cluster with `Option 2` nodes, and you'll only use 1/3 of the storage.
 
 <Need numbers from the perf tests>
--->
+{% endcomment %}
