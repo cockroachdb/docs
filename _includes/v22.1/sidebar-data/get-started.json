@@ -125,6 +125,12 @@
               ]
             },
             {
+              "title": "Vercel",
+              "urls": [
+                "/${VERSION}/deploy-app-vercel.html"
+              ]
+            },
+            {
               "title": "Serverless Function Best Practices",
               "urls": [
                 "/${VERSION}/serverless-function-best-practices.html"
