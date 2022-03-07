@@ -289,7 +289,7 @@ The definition description should not repeat the definition term.
 
 ### Glossary
 
-A _glossary_ is a collection (usually in tabular form) of concept [definitions](#definitions).
+A _glossary_ is a collection (usually in tabular form) of [definitions](#definition).
 
 #### Examples
 
