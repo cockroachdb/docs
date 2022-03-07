@@ -5,7 +5,11 @@ toc: true
 docs_area: reference.security
 ---
 
-Authorization, generally, is the control over **who** (users/roles) can perform **which actions** (e.g read, write, update, delete, grant, etc.) to **which resources or targets** (databases, tables, clusters, schemas, rows, users, jobs, etc.).
+This page gives of an overview of CockroachDB's authorization system. Authorization, generally, is the control over **who** can perform **which actions** to **which resources or targets**.
+
+In CockroachDB, access to database resources (databases, tables, rows and columns) is delegated in the form of action-specific [**privilege grants**](#privileges), which are either set directly on the user, or on a role that can then be granted to the user. Users' authorization to manage jobs, changefeeds, queries and sessions are governed by [role options](#role-options).
+
+The [`admin` role] is required to create, update or delete users users and roles or to alter cluster settings (fact check!!!)
 
 {{site.data.alerts.callout_info}}
 CockroachDB has a unified authorization model, meaning that a given user's permissions are governed by the same policies in different contexts such as accessing the SQL shell or viewing data from the DB Console.
