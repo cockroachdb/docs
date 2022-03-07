@@ -870,13 +870,6 @@
                 "urls": [
                   "/${VERSION}/kubernetes-performance.html"
                 ]
-              },
-              {
-                "title": "Docker Swarm Deployment",
-                "urls": [
-                  "/${VERSION}/orchestrate-cockroachdb-with-docker-swarm.html",
-                  "/${VERSION}/orchestrate-cockroachdb-with-docker-swarm-insecure.html"
-                ]
               }
             ]
           },
