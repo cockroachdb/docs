@@ -579,7 +579,7 @@ The output should include the following:
 Now that we've set up our indexes the way we want them, we need to insert some data. The first statement below inserts 10,000 rows of placeholder data; the second inserts a row with a specific UUID string that we'll later query against to check which index is used.
 
 {{site.data.alerts.callout_info}}
-On a freshly created cluster like this one, you may need to wait a moment after adding the data to give [automatic statistics](#table-statistics) time to update. Then, the optimizer can generate a query plan that uses the expected index.
+On a freshly created cluster like this one, you may need to wait a moment after adding the data to give [automatic statistics](cost-based-optimizer.html#table-statistics) time to update. Then, the optimizer can generate a query plan that uses the expected index.
 {{site.data.alerts.end}}
 
 {% include_cached copy-clipboard.html %}
