@@ -34,7 +34,7 @@ Term | Definition
 -----|-----------
 **CockroachDB Serverless (beta)** | A multi-tenant CockroachDB deployment managed by Cockroach Labs. A Serverless cluster is an isolated, virtualized tenant running on a large CockroachDB deployment in a single cloud and region. Cockroach Labs guarantees uptime and provides autonomous cluster operations. Other Serverless advantages include the ability to start clusters instantly and eliminates database operations. Consumption based billing and spend limits eliminate cost surprises.
 **CockroachDB Dedicated** | A single tenant CockroachDB deployment managed by Cockroach Labs with no shared resources in a single  multi-region cloud. Cluster, node, and cloud instance Cockroach Labs SRE provide guaranteed uptime, optimization, and operations.
-**CockroachDB Self-Hosted** | A self-managed CockroachDB deployment. Such a deployment offers deep control, per vCPU on any cloud or infrastructure type, in multiple clouds and regions. DB operations backed by Cockroach Labs are provided by your team.
+**CockroachDB Self-Hosted** | A self-managed CockroachDB deployment. Such a deployment offers deep control, per vCPU on any cloud or infrastructure type, in multiple clouds and regions. Database operations backed by Cockroach Labs are provided by your team.
 
 ## CockroachCloud
 
