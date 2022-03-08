@@ -943,7 +943,7 @@ JDBC accepts the following format for CockroachDB connection strings:
 
 {% include copy-clipboard.html %}
 ~~~
-jdbc:postgresql://{host}:{port}/{database}?user={username}&password={password}&sslmode=verify-full&sslfactory=org.postgresql.ssl.DefaultJavaSSLFactory&options=--cluster%3D{routing-id}
+jdbc:postgresql://{host}:{port}/{database}?options=--cluster%3D{routing-id}&password={password}&sslmode=verify-full&user={username}
 ~~~
 
 </div>
@@ -998,7 +998,7 @@ Hibernate accepts the following format for CockroachDB connection strings:
 
 {% include copy-clipboard.html %}
 ~~~
-jdbc:postgresql://{host}:{port}/{database}?user={username}&password={password}&sslmode=verify-full&sslfactory=org.postgresql.ssl.DefaultJavaSSLFactory&options=--cluster%3D{routing-id}
+jdbc:postgresql://{host}:{port}/{database}?options=--cluster%3D{routing-id}&password={password}&sslmode=verify-full&user={username}
 ~~~
 
 </div>
