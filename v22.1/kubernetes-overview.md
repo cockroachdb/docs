@@ -40,7 +40,7 @@ This guide describes how to handle the following tasks when running CockroachDB 
 
 ## Kubernetes terminology
 
-Before starting, review some basic Kubernetes terminology. Note that CockroachDB [nodes](glossary.html#cockroachdb-architecture-concepts) are distinct from Kubernetes "nodes" or "worker nodes".
+Before starting, review some basic Kubernetes terminology. Note that CockroachDB [nodes](glossary.html#cockroachdb-architecture) are distinct from Kubernetes "nodes" or "worker nodes".
 
 Feature | Description
 --------|------------

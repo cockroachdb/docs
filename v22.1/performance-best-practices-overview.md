@@ -318,7 +318,7 @@ However, because `AS OF SYSTEM TIME` returns historical data, your reads might b
 
 ## Hot spots
 
-Transactions that operate on the same range but _different index keys_ are limited by the overall hardware capacity of [the range lease holder](glossary.html#cockroachdb-architecture-concepts) node. These are referred to as _hot spots_.
+Transactions that operate on the same range but _different index keys_ are limited by the overall hardware capacity of [the range lease holder](glossary.html#cockroachdb-architecture) node. These are referred to as _hot spots_.
 
 Hot spots can occur when a range is indexed on a column of data that is sequential in nature such that all incoming writes to the range will be the last (or first) item in the index and appended to the end of the range. As a result, the system cannot find a point in the range that evenly divides the traffic, and the range cannot benefit from [load-based splitting](load-based-splitting.html), creating a hot spot on the single range.
 
