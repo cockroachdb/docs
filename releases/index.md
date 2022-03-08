@@ -6,7 +6,7 @@ docs_area: releases
 toc_not_nested: true
 ---
 
-After downloading your desired release, learn how to [Install CockroachDB](../{{site.versions["stable"]}}/install-cockroachdb.html). Also be sure to review Cockroach Labs' [Release Support Policy](release-support-policy.html).
+After downloading your desired release, learn how to [install CockroachDB](../{{site.versions["stable"]}}/install-cockroachdb.html). Also be sure to review Cockroach Labs' [Release Support Policy](release-support-policy.html).
 
 {% assign sections = site.data.releases | map: "release_type" | uniq | reverse %}
 {% comment %} Fetch the list of all release types (currently Testing, Production) {% endcomment %}
