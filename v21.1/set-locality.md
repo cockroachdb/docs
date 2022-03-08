@@ -4,7 +4,7 @@ summary: The SET LOCALITY statement changes the locality of a table.
 toc: true
 ---
 
-<span class="version-tag">New in v21.1:</span> The `ALTER TABLE .. SET LOCALITY` [statement](sql-statements.html) changes the [table locality](multiregion-overview.html#table-locality) of a [table](create-table.html) in a [multi-region database](multiregion-overview.html).
+<span class="version-tag">New in v21.1:</span> The `ALTER TABLE .. SET LOCALITY` [statement](sql-statements.html) changes the [table locality](multiregion-overview.html#table-locality) of a [table](create-table.html) in a [multi-region database](multiregion-overview.html). While CockroachDB process an [`ADD REGION`](add-region.html) or [`DROP REGION`](drop-region.html) statement on a particular database, the `ALTER TABLE .. SET LOCALITY` will throw an error if enabling or disabling `REGIONAL BY ROW` on a table within that database. Similarly, all [`ADD REGION`](add-region.html) and [`DROP REGION`](drop-region.html) statements will be blocked while this query is running on a `REGIONAL BY ROW` table within the same database.
 
 {{site.data.alerts.callout_info}}
 `SET LOCALITY` is a subcommand of [`ALTER TABLE`](alter-table.html).
