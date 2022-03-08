@@ -5,7 +5,7 @@ toc: true
 twitter: false
 filter_category: crud_go
 filter_html: Use <strong>upper/db</strong>
-filter_sort: 3
+filter_sort: 4
 docs_area: get_started
 ---
 
