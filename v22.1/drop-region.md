@@ -174,6 +174,46 @@ SHOW REGIONS FROM DATABASE foo;
 (0 rows)
 ~~~
 
+You cannot drop a region from a database if the databases uses [`ZONE` survival goal](multiregion-overview.html#surviving-region-failures) and there are only three regions configured on the database:
+
+{% include copy-clipboard.html %}
+~~~ sql
+ALTER DATABASE foo SET PRIMARY REGION "us-east1";
+~~~
+
+~~~
+ALTER DATABASE PRIMARY REGION
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+ALTER DATABASE foo ADD REGION "us-west1";
+~~~
+
+~~~
+ALTER DATABASE ADD REGION
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+ALTER DATABASE foo ADD REGION "europe-west1";
+~~~
+
+~~~
+ALTER DATABASE ADD REGION
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+ALTER DATABASE foo DROP REGION "us-west1";
+~~~
+
+~~~
+ERROR: at least 3 regions are required for surviving a region failure
+SQLSTATE: 22023
+HINT: you must add additional regions to the database or change the survivability goal
+~~~
+
 ## See also
 
 - [Multi-Region Capabilities Overview](multiregion-overview.html)
