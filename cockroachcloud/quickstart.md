@@ -10,9 +10,11 @@ docs_area: get_started
 
 {% include filter-tabs.md %}
 
-This page guides you through the quickest way to get started with CockroachDB. You'll start a free {{ site.data.products.serverless }} cluster, connect with the CockroachDB SQL client, insert some data, and then read the data from a sample application.
+This page shows you how to get started with {{ site.data.products.db }} quickly. You'll create a free {{ site.data.products.serverless }} cluster, connect with the {{ site.data.products.db }} SQL client, insert some data, and then read the data from a sample application.
 
+{{site.data.alerts.callout_success}}
 To run CockroachDB on your local machine instead, see [Start a Local Cluster](../stable/secure-a-cluster.html).
+{{site.data.alerts.end}}
 
 {% include cockroachcloud/free-limitations.md %}
 
@@ -29,29 +31,22 @@ To run CockroachDB on your local machine instead, see [Start a Local Cluster](..
 
     Your cluster will be created in a few seconds and the **Connection info** dialog will display.
 
-1. Click the **Connection string** tab in the **Connection info** dialog.
-    1. Run the command in step 1 to download the CA certificate to your local machine.
-    1. Copy the connection string in step 2 to a secure location.
-
-        {{site.data.alerts.callout_danger}}
-        The connection string in the command is pre-populated with your username, password, cluster name, and other details. Your password, in particular, will be provided only once. Save it in a secure place (Cockroach Labs recommends a password manager) to connect to your cluster in the future. If you forget your password, you can reset it by going to the [**SQL Users** page](user-authorization.html).
-        {{site.data.alerts.end}}
-
 ## Step 2. Connect to the cluster
 
-The **Connection info** dialog shows information about how to connect to your cluster for the client OS.
+The **Connection info** dialog shows information about how to connect to your cluster.
 
-<div class="filters clearfix">
-  <button class="filter-button page-level" data-scope="mac">Mac</button>
-  <button class="filter-button page-level" data-scope="linux">Linux</button>
-  <button class="filter-button page-level" data-scope="windows">Windows</button>
-</div>
+1. Click the **Choose your OS** dropdown, and select the operating system of your local machine.
+1. Click the **Connection string** tab in the **Connection info** dialog.
+    1. Open a new terminal on your local machine, and run the command provided in step **1** to download the CA certificate. This certificate is required by most clients connecting to {{ site.data.products.db }}.
+    1. Copy the connection string provided in step **2** to a secure location.
 
-1. In the **Connection info** dialog, choose your OS.
-1. Open a terminal on your local machine.
-1. Run the commands in each step of the **Command Line** tab of the **Connection info** dialog.
-   1. Run the command in step 1 to install the CockroachDB binary and add it to your OS's `PATH`.
-   1. Run the command in step 2 to connect to your cluster using the SQL client.
+        {{site.data.alerts.callout_info}}
+        The connection string is pre-populated with your username, password, cluster name, and other details. Your password, in particular, will be provided *only once*. Save it in a secure place (Cockroach Labs recommends a password manager) to connect to your cluster in the future. If you forget your password, you can reset it by going to the [**SQL Users** page](user-authorization.html).
+        {{site.data.alerts.end}}
+
+1. Click the **Command Line** tab of the **Connection info** dialog.
+   1. Run the command in step **1** to install the [`cockroach` binary](../stable/cockroach-commands.html) and add it to your OS's `PATH`.
+   1. Run the command in step **2** to connect to your cluster using the [CockroachDB SQL client](../stable/cockroach-sql.html).
 
 You will see a welcome message when you've successfully connected to your cluster:
 
@@ -65,7 +60,7 @@ You will see a welcome message when you've successfully connected to your cluste
 
 ## Step 3. Insert data
 
-1. You can now run [CockroachDB SQL statements](learn-cockroachdb-sql.html):
+1. In the SQL shell, run the following [SQL statements](learn-cockroachdb-sql.html):
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -77,14 +72,23 @@ You will see a welcome message when you've successfully connected to your cluste
     > INSERT INTO messages (message) VALUES ('Hello world!');
     ~~~
 
-1. To exit the SQL shell:
+    These statements create a new table named `messages` and insert a single row into the table.
+
+1. Exit the SQL shell:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
     > \q
     ~~~
 
-## Step 4. Run a sample app
+## Step 4. Run the sample code
+
+The sample code used in this tutorial is located in the [`quickstart-code-samples` GitHub repo](https://github.com/cockroachdb/quickstart-code-samples).
+
+This repo contains code samples written in JavaScript, Python, Go, and Java. Each code sample does the following:
+  1. Attempts to connect to a running cluster.
+  1. Reads the sample data you inserted earlier.
+  1. Prints the data to the terminal.
 
 <div class="filters clearfix">
   <button class="filter-button" data-scope="node">Node.js</button>
@@ -95,143 +99,90 @@ You will see a welcome message when you've successfully connected to your cluste
 
 <section class="filter-content" markdown="1" data-scope="node">
 
-1. Create an `app.js` file on your local machine and copy the following code into it:
+1. Clone the `quickstart-code-samples` repo, and navigate to the `node` directory of the repo:
 
     {% include_cached copy-clipboard.html %}
-    ~~~ javascript
-    const parse = require("pg-connection-string").parse;
-    const { Client } = require("pg");
-    const prompt = require("prompt");
-
-    (async () => {
-
-      prompt.start()
-      const URI = await prompt.get("connectionString");
-      var connectionString;
-      // Expand $env:appdata environment variable in Windows connection string
-      if (URI.connectionString.includes("env:appdata")) {
-        connectionString = await URI.connectionString.replace(
-          "$env:appdata",
-          process.env.APPDATA
-        );
-      }
-      // Expand $HOME environment variable in UNIX connection string
-      else if (URI.connectionString.includes("HOME")) {
-        connectionString = await URI.connectionString.replace(
-          "$HOME",
-          process.env.HOME
-        );
-      }
-      var config = parse(connectionString);
-      config.port = 26257;
-      config.database = 'defaultdb';
-      const client = new Client(config);
-
-      try {
-        await client.connect();
-        const result = await client.query('SELECT message FROM messages')
-        console.log(result.rows[0].message)
-        await client.end()
-      } catch (err) {
-        console.log(`error connecting: ${err}`)
-      }
-
-      // Exit program
-      process.exit();
-    })().catch((err) => console.log(err.stack));
+    ~~~ shell
+    git clone https://github.com/cockroachdb/quickstart-code-samples
     ~~~
-
-    The application:
-
-    1. Attempts to connect to a running cluster, given a connection string.
-    1. Reads the sample data you inserted earlier.
-    1. Prints the data to the terminal.
-
-1. Create a `package.json` file and paste in the following code:
 
     {% include_cached copy-clipboard.html %}
-    ~~~ json
-    {
-      "dependencies": {
-        "pg": "latest",
-        "pg-connection-string": "latest",
-        "prompt": "latest"
-      }
-    }
+    ~~~ shell
+    cd quickstart-code-samples/node
     ~~~
 
-1. Initialize and run the application:
+    The code sample in this directory connects to {{ site.data.products.db }} with the [node-postgres driver](https://node-postgres.com).
+
+1. Set the `DATABASE_URL` environment variable to the connection string that you [copied from the {{ site.data.products.cloud }} Console earlier](#step-2-connect-to-the-cluster):
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    export DATABASE_URL="<connection-string>"
+    ~~~
+
+    The code sample uses the connection string stored in the environment variable `DATABASE_URL` to connect to your cluster.
+
+    {{site.data.alerts.callout_success}}
+    For reference information about connecting to CockroachDB with supported client drivers, see [Connect to a CockroachDB Cluster](../stable/connect-to-the-database.html?filters=js-ts).
+    {{site.data.alerts.end}}
+
+1. Install the code dependencies:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     npm install
     ~~~
 
+1. Run the code:
+
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     node app.js
     ~~~
 
-    In the **Connection info** dialog, go to the **Connection string** tab, copy the connection string from step 2, and paste it in your terminal.
-
-    ~~~
-    prompt: connectionString:
-    ~~~
-
-    After entering the connection string, the program will execute. The output will look like this:
+    The output will look like this:
 
     ~~~
     Hello world!
     ~~~
+
 </section>
 
 <section class="filter-content" markdown="1" data-scope="python">
 
-1. Install SQLAlchemy.
+1. Clone the `quickstart-code-samples` repo, and navigate to the `python` directory of the repo:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    pip install psycopg2-binary
+    git clone https://github.com/cockroachdb/quickstart-code-samples
     ~~~
-
-1. Create a `main.py` file and copy in the following code:
 
     {% include_cached copy-clipboard.html %}
-    ~~~ python
-    import logging
-    import os
-    import psycopg2
-
-
-    def print_hello(conn):
-      with conn.cursor() as cur:
-          cur.execute("SELECT message FROM messages")
-          logging.debug("print_hello(): status message: %s", cur.statusmessage)
-          rows = cur.fetchall()
-          conn.commit()
-          for row in rows:
-              print(row[0])
-
-
-    def main():
-      conn_string = input('Enter a connection string:\n')
-
-      conn = psycopg2.connect(os.path.expandvars(conn_string))
-      print_hello(conn)
-
-      # Close communication with the database.
-      conn.close()
-
-
-    if __name__ == "__main__":
-        main()
+    ~~~ shell
+    cd quickstart-code-samples/python
     ~~~
 
-    The application:
+    The code sample in this directory connects to {{ site.data.products.db }} with the [psycopg2 driver](https://www.psycopg.org).
 
-    1. Attempts to connect to a running cluster, given a connection string.
-    1. Reads the sample data you inserted earlier.
-    1. Prints the data to the terminal.
+1. Set the `DATABASE_URL` environment variable to the connection string that you [copied from the {{ site.data.products.cloud }} Console earlier](#step-2-connect-to-the-cluster):
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    export DATABASE_URL="<connection-string>"
+    ~~~
+
+    The code sample uses the connection string stored in the environment variable `DATABASE_URL` to connect to your cluster.
+
+    {{site.data.alerts.callout_success}}
+    For reference information about connecting to CockroachDB with supported client drivers, see [Connect to a CockroachDB Cluster](../stable/connect-to-the-database.html?filters=python).
+    {{site.data.alerts.end}}
+
+1. Install psycopg2.
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    pip3 install psycopg2-binary
+    ~~~
 
 1. Run the application:
 
@@ -240,80 +191,42 @@ You will see a welcome message when you've successfully connected to your cluste
     python3 main.py
     ~~~
 
-    The program will prompt you for a connection string to the database:
-
-    ~~~
-    Enter a connection string:
-    ~~~
-
-1. Back in the **Connection info** dialog, click **Connection string**, copy the connection string from step 2, and paste it in your terminal after the "Enter a connection string" prompt.
-
-    {{site.data.alerts.callout_info}}
-    If the connection string does not include your SQL user password, replace `<ENTER-PASSWORD>` with the password.
-    {{site.data.alerts.end}}
-
-    The program will then execute. The output should look like this:
+    The output will look like this:
 
     ~~~
     Hello world!
     ~~~
+
 </section>
 
 <section class="filter-content" markdown="1" data-scope="go">
 
-1. Create a `main.go` file on your local machine and copy the following code into it:
+1. Clone the `quickstart-code-samples` repo, and navigate to the `go` directory of the repo:
 
     {% include_cached copy-clipboard.html %}
-    ~~~ go
-    package main
-    import (
-    	"bufio"
-    	"context"
-    	"log"
-    	"os"
-    	"github.com/jackc/pgx/v4"
-    )
-    func readRows(conn *pgx.Conn) error {
-        rows, err := conn.Query(context.Background(), "SELECT message FROM messages")
-        if err != nil {
-            log.Fatal(err)
-        }
-        defer rows.Close()
-        for rows.Next() {
-            var message string
-            if err := rows.Scan(&message); err != nil {
-                log.Fatal(err)
-            }
-            log.Printf(message)
-        }
-        return nil
-    }
-    func main() {
-    	// Read in connection string
-    	scanner := bufio.NewScanner(os.Stdin)
-    	log.Println("Enter a connection string: ")
-    	scanner.Scan()
-    	connstring := scanner.Text()
-    	// Attempt to connect
-    	config, err := pgx.ParseConfig(os.ExpandEnv(connstring))
-    	if err != nil {
-    		log.Fatal("error configuring the database: ", err)
-    	}
-    	conn, err := pgx.ConnectConfig(context.Background(), config)
-    	if err != nil {
-    		log.Fatal("error connecting to the database: ", err)
-    	}
-      // Read rows
-      readRows(conn)
-      defer conn.Close(context.Background())
-    }
+    ~~~ shell
+    git clone https://github.com/cockroachdb/quickstart-code-samples
     ~~~
 
-    The `main` method of this program does the following:
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    cd quickstart-code-samples/go
+    ~~~
 
-    1. Attempts to connect to a running cluster, given a connection string.
-    1. Reads the sample data you inserted earlier.
-    1. Prints the data to the terminal.
+    The code sample in this directory connects to {{ site.data.products.db }} with the [pgx driver](https://github.com/jackc/pgx).
+
+1. Set the `DATABASE_URL` environment variable to the connection string that you [copied from the {{ site.data.products.cloud }} Console earlier](#step-2-connect-to-the-cluster):
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    export DATABASE_URL="<connection-string>"
+    ~~~
+
+    The code sample uses the connection string stored in the environment variable `DATABASE_URL` to connect to your cluster.
+
+    {{site.data.alerts.callout_success}}
+    For reference information about connecting to CockroachDB with supported client drivers, see [Connect to a CockroachDB Cluster](../stable/connect-to-the-database.html?filters=go).
+    {{site.data.alerts.end}}
 
 1. Initialize and run the app:
 
@@ -327,19 +240,7 @@ You will see a welcome message when you've successfully connected to your cluste
     $ go run main.go
     ~~~
 
-    The program will prompt you for a connection string to the database:
-
-    ~~~
-    Enter a connection string:
-    ~~~
-
-1. Back in the **Connection info** dialog, click **Connection string**, copy the connection string from step 2, and paste it in your terminal after the "Enter a connection string" prompt.
-
-    {{site.data.alerts.callout_info}}
-    If the connection string does not include your SQL user password, replace `<ENTER-PASSWORD>` with the password.
-    {{site.data.alerts.end}}
-
-    The program will then execute. The output should look like this:
+    The output will look like this:
 
     ~~~
     Hello world!
@@ -347,56 +248,45 @@ You will see a welcome message when you've successfully connected to your cluste
 
 </section>
 <br/>{% comment %}Need to add this manual break to force Jekyll to render the next section correctly {% endcomment %}
+
 <section class="filter-content" markdown="1" data-scope="java">
 
-1. Clone the following GitHub repository and check out the `serverless` branch:
+1. Clone the `quickstart-code-samples` repo, and navigate to the `java` directory of the repo:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    git clone https://github.com/cockroachlabs/hello-world-java-jdbc.git
-    cd hello-world-java-jdbc
-    git checkout serverless
+    git clone https://github.com/cockroachdb/quickstart-code-samples
     ~~~
 
-1. In a text editor modify `app/src/main/java/example/app/App.java` with the settings from the **Connection parameters** tab of the **Connection info** dialog to connect to the cluster:
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    cd quickstart-code-samples/java
+    ~~~
 
-    <div class="filter-content" markdown="1" data-scope="mac">
-    {% include_cached copy-clipboard.html %}
-    ~~~ java
-    ds.setServerNames(new String[]{"{host}"});
-    ds.setDatabaseName("{database}");
-    ds.setUser("{username}");
-    ds.setPassword("{password}");
-    ds.setSslRootCert(System.getenv("$HOME/.postgresql/root.crt"));
-    ~~~
-    </div>
-    <div class="filter-content" markdown="1" data-scope="linux">
-    {% include_cached copy-clipboard.html %}
-    ~~~ java
-    ds.setServerNames(new String[]{"{host}"});
-    ds.setDatabaseName("{database}");
-    ds.setUser("{username}");
-    ds.setPassword("{password}");
-    ds.setSslRootCert(System.getenv("$HOME/.postgresql/root.crt"));
-    ~~~
-    </div>
-    <div class="filter-content" markdown="1" data-scope="windows">
-    {% include_cached copy-clipboard.html %}
-    ~~~ java
-    ds.setServerNames(new String[]{"{host}"});
-    ds.setDatabaseName("{database}");
-    ds.setUser("{username}");
-    ds.setPassword("{password}");
-    ds.setSslRootCert(System.getenv("%APPDATA%/.postgresql/root.crt"));
-    ~~~
-    </div>
+    The code sample in this directory connects to {{ site.data.products.db }} with the [JDBC driver](https://jdbc.postgresql.org).
 
-    Where:
-    - `{host}` is the host for your cluster.
-    - `{database}` is the [routing ID](connect-to-a-serverless-cluster.html?filters=connection-string#step-2-connect-to-your-cluster) plus `.defaultdb`. For example, `funny-duck-3.defaultdb`.
-    - `{username}` is the SQL username.
-    - `{password}` is the SQL user password.
-    - Make sure `ds.setSslRootCert` is set to the correct path for your OS to the `root.crt` CA certificate you downloaded earlier.
+1. Use the `cockroach convert-url` command to convert the connection string that you [copied from the {{ site.data.products.cloud }} Console earlier](#step-2-connect-to-the-cluster) to a [valid connection string for JDBC connections](../stable/connect-to-the-database.html?filters=java):
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    cockroach convert-url --url "<connection-string>"
+    ~~~
+
+    ~~~
+    ...
+
+    # Connection URL for JDBC (Java and JVM-based languages):
+    jdbc:postgresql://{host}:{port}/{database}?options=--cluster%3D{routing-id}&password={password}&sslmode=verify-full&user={username}
+    ~~~
+
+1. Set the `JDBC_DATABASE_URL` environment variable to the JDBC-compatible connection string:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    export JDBC_DATABASE_URL=<jdbc-connection-string>
+    ~~~
+
+    The code sample uses the connection string stored in the environment variable `DATABASE_URL` to connect to your cluster.
 
 1. Run the application using `gradlew`:
 
@@ -404,8 +294,6 @@ You will see a welcome message when you've successfully connected to your cluste
     ~~~ shell
     ./gradlew run
     ~~~
-
-    The application connects to the cluster using the JDBC parameters specified in the data source, then executes a `SELECT` statement and displays the results.
 
     The output should look like this:
 
