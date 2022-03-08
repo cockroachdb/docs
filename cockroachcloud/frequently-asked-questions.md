@@ -20,7 +20,7 @@ This page answers the frequently asked questions about {{ site.data.products.ser
 
 ### In what clouds and regions is {{ site.data.products.db }} available?
 
-To see what clouds and regions {{ site.data.products.db }} is available in, begin the cluster creation flow from the web UI and observe which regions are listed in the UI.
+The  {{ site.data.products.db }} Console will always show the latest available cloud infrastructure providers and regions. Open the [**Create Cluster**](https://cockroachlabs.cloud/cluster/create) page and select a Plan to see which providers and regions are currently available.
 
 We run {{ site.data.products.dedicated }} in EKS and GKE - the managed Kubernetes offerings for AWS and GCP respectively - and support all regions that the offerings are available in. If a particular region is not available on the {{ site.data.products.db }} Console, it is usually due to the cloud provider not supporting the managed Kubernetes offering in that region. See
 [list of EKS regions](https://aws.amazon.com/about-aws/global-infrastructure/regional-product-services/) and [list of GKE regions](https://cloud.google.com/about/locations/) for details.
