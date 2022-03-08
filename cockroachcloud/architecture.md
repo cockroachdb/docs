@@ -24,7 +24,7 @@ For an intro to CockroachDB's core architecture and capabilities, see [Cockroach
 
 ### Concepts
 
-See [Glossary](../{{site.versions["dev"]}}/glossary.html#cockroachcloud-concepts).
+See [Glossary](../{{site.versions["dev"]}}/glossary.html#cockroachcloud).
 
 ### Architecture
 
