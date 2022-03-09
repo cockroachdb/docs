@@ -23,9 +23,9 @@ The **SQL** dashboard displays the following time series graphs:
 
 ## Open SQL Transactions
 
-- In the node view, the graph shows the total number of open SQL transactions on the node.
+- In the node view, the graph shows the total number of currently open SQL transactions on the node.
 
-- In the cluster view, the graph shows the total number of open SQL transactions across all nodes in the cluster.
+- In the cluster view, the graph shows the total number of currently open SQL transactions across all nodes in the cluster.
 
 See the [Transactions page](ui-transactions-page.html) for more details on the transactions.
 
