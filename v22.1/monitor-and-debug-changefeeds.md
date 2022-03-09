@@ -36,6 +36,84 @@ Changefeed progress is exposed as a high-water timestamp that advances as the ch
 You can use the high-water timestamp to [start a new changefeed where another ended](create-changefeed.html#start-a-new-changefeed-where-another-ended).
 {{site.data.alerts.end}}
 
+### Using changefeed metrics labels
+
+{% include common/experimental-warning.md %}
+
+To measure metrics per changefeed, define a "metrics label" to which one or multiple changefeed(s) will increment each [changefeed metric](#metrics). Metrics label information is sent with time-series metrics to `http://<host>:<http-port>/_status/vars`, viewable via the [Prometheus endpoint](monitoring-and-alerting.html#prometheus-endpoint). An aggregated metric of all changefeeds is also measured.
+
+It is necessary to consider the following when applying metrics labels to changefeeds:
+
+- An {{ site.data.products.enterprise }} license is required to use this feature.
+- Metrics labels are **not** available in {{ site.data.products.db }}.
+- The `COCKROACH_EXPERIMENTAL_ENABLE_PER_CHANGEFEED_METRICS` environment variable must be specified to use this feature.
+- The `server.child_metrics.enabled` [cluster setting](cluster-settings.html) must be set to `true` before using the `metrics_label` option.
+- Metrics label information is sent to the `_status/vars` endpoint, but will **not** show up in `debug.zip` or the [DB Console](ui-overview.html).
+- Introducing labels to isolate a changefeed's metrics can increase cardinality significantly. There is a limit of 1024 unique labels in place to prevent cardinality explosion. That is, when labels are applied to high-cardinality data (data with a higher number of unique values), each changefeed with a label then results in more metrics data to multiply together, which will grow over time. This will have an impact on performance as the metric-series data per changefeed quickly populates against its label.
+- The maximum length of a metrics label is 128 bytes.
+
+Before using the `metrics_label` option, it is necessary to set the `COCKROACH_EXPERIMENTAL_ENABLE_PER_CHANGEFEED_METRICS` [environment variable](cockroach-commands.html#environment-variables) on the cluster.
+
+To start a changefeed with a metrics label, set the following cluster setting to `true`:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SET CLUSTER SETTING server.child_metrics.enabled=true;
+~~~
+
+Create the changefeed passing the `metrics_label` option with the label name as its value:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE CHANGEFEED FOR TABLE movr.users, movr.vehicles INTO 'kafka://host:port' WITH metrics_label=users_vehicles;
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE CHANGEFEED FOR TABLE movr.rides INTO 'kafka://host:port' WITH metrics_label=rides;
+~~~
+
+At `http://<host>:<http-port>/_status/vars`, you will find the defined changefeed by label and the aggregated metric for all changefeeds. This output also shows the `default` scope, which will include changefeeds started without a metrics label:
+
+~~~
+changefeed_running 3
+changefeed_running{scope="default"} 1
+changefeed_running{scope="rides"} 1
+changefeed_running{scope="users_vehicles"} 1
+~~~
+
+~~~
+changefeed_emitted_messages 4144
+changefeed_emitted_messages{scope="default"} 0
+changefeed_emitted_messages{scope="rides"} 2772
+changefeed_emitted_messages{scope="users_vehicles"} 1372
+~~~
+
+~~~
+changefeed_emitted_bytes 781591
+changefeed_emitted_bytes{scope="default"} 0
+changefeed_emitted_bytes{scope="rides"} 598034
+changefeed_emitted_bytes{scope="users_vehicles"} 183557
+~~~
+
+#### Metrics
+
+| Metric             |  Description | Unit
+-------------------+--------------+---------------------------------------------------
+`changefeed_running` | Number of currently running changefeeds, including sinkless changefeeds. | Changefeeds
+`emitted_messages` | Number of messages emitted, which increments when messages are flushed. | Messages
+`emitted_bytes`    | Number of bytes emitted, which increments as messages are flushed. | Bytes
+`flushed_bytes`    | Bytes emitted by all changefeeds. This may differ from `emitted_bytes` when `compression` is enabled. | Bytes
+`changefeed_flushes` | Total number of flushes for a changefeed. | Flushes
+`emit_latency`     | Difference between the event's MVCC timestamp and the time the even was emitted by CockroachDB. | Nanoseconds
+`admit_latency`    | Difference between the event's MVCC timestamp and the time the event is put into the memory buffer. | Nanoseconds
+`commit_latency`   | Different between the event's MVCC timestamp and the time it is acknowledged by the downstream sink. If the sink is batching events, then the difference is between the oldest event and whent he acknowledgment is recorded. | Nanoseconds
+`backfill_count`   | Number of changefeeds currently executing a backfill (schema change or initial scan). | Changefeeds
+`sink_batch_hist_nanos` | Time messages spend batched in the sink buffer before being flushed and acknowledged. | Nanoseconds
+`flush_hist_nanos` | Time spent flushing messages across all changefeeds. | Nanoseconds
+`checkpoint_hist_nanos` | Time spent checkpointing changefeed progress. | Nanoseconds
+`error_retries` | Total retryable errors encountered by changefeeds. | Errors
+
 ## Debug a changefeed
 
 ### Using logs

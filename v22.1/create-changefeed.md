@@ -31,9 +31,6 @@ Parameter | Description
 `sink` | The location of the configurable sink. The scheme of the URI indicates the type. For more information, see [Sink URI](#sink-uri) below.
 `option` / `value` | For a list of available options and their values, see [Options](#options) below.
 
-<!-- `IF NOT EXISTS` | Create a new changefeed only if a changefeed of the same name does not already exist; if one does exist, do not return an error.
-`name` | The name of the changefeed to create, which [must be unique](#create-fails-name-already-in-use) and follow these [identifier rules](keywords-and-identifiers.html#identifiers). -->
-
 ### Sink URI
 
 The sink URI follows the basic format of:
@@ -126,6 +123,7 @@ Option | Value | Description
 `webhook_auth_header`    | [`STRING`](string.html)            |  Pass a value (password, token etc.) to the HTTP [Authorization header](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Authorization) with a webhook request for a "Basic" HTTP authentication scheme. <br><br> Example: With a username of "user" and password of "pwd", add a colon between "user:pwd" and then base64 encode, which results in "dXNlcjpwd2Q=". `WITH webhook_auth_header='Basic dXNlcjpwd2Q='`.
 `topic_in_value`         | [`BOOL`](bool.html)              |  Set to include the topic in each emitted row update. Note this is automatically set for [webhook sinks](changefeed-sinks.html#webhook-sink).
 `webhook_sink_config`    | [`STRING`](string.html)          |  Set fields to configure sink batching and retries. The schema is as follows:<br><br> `{ "Flush": { "Messages": ..., "Bytes": ..., "Frequency": ..., }, "Retry": {"Max": ..., "Backoff": ..., } }`. <br><br>**Note** that if either `Messages` or `Bytes` are nonzero, then a non-zero value for `Frequency` must be provided. <br><br>See [Webhook sink configuration](changefeed-sinks.html#webhook-sink-configuration) for more details on using this option.
+`metrics_label` | [`STRING`](string.html) | This is an **experimental** feature. Define a metrics label to which the metrics for one or multiple changefeeds increment. All changefeeds also have their metrics aggregated.<br><br>The maximum length of a label is 128 bytes. There is a limit of 1024 unique labels.<br><br>`WITH metrics_label=label_name` <br><br>For more detail on usage and considerations, see [Using changefeed metrics labels](monitor-and-debug-changefeeds.html#using-changefeed-metrics-labels).
 
 {{site.data.alerts.callout_info}}
  Using the `format=avro`, `envelope=key_only`, and `updated` options together is rejected. `envelope=key_only` prevents any rows with updated fields from being emitted, which makes the `updated` option meaningless.
@@ -318,3 +316,4 @@ Note that because the cursor is provided, the initial scan is not performed.
 - [Change Data Capture Overview](change-data-capture-overview.html)
 - [SQL Statements](sql-statements.html)
 - [Changefeed Dashboard](ui-cdc-dashboard.html)
+- [Monitor and Debug Changefeeds](monitor-and-debug-changefeeds.html)
