@@ -197,6 +197,10 @@ UNION ALL SELECT * FROM t1 LEFT JOIN t2 ON st_contains(t1.geom, t2.geom) AND t2.
 
 {% include {{page.version.version}}/sql/expressions-as-on-conflict-targets.md %}
 
+### Row-level TTL limitations
+
+{% include {{page.version.version}}/known-limitations/row-level-ttl-limitations.md %}
+
 ## Unresolved limitations
 
 ### Optimizer stale statistics deletion when columns are dropped
