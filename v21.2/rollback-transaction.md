@@ -26,7 +26,7 @@ There are two ways to use `ROLLBACK`:
 
 ## Required privileges
 
-No [privileges](authorization.html#assign-privileges) are required to rollback a transaction. However, privileges are required for each statement within a transaction.
+No [privileges](security-reference/authorization.html#managing-privileges) are required to rollback a transaction. However, privileges are required for each statement within a transaction.
 
 ## Parameters
 

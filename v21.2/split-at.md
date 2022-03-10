@@ -19,7 +19,7 @@ The `SPLIT AT` [statement](sql-statements.html) forces a range split at the spec
 
 ## Required privileges
 
-The user must have the `INSERT` [privilege](authorization.html#assign-privileges) on the table or index.
+The user must have the `INSERT` [privilege](security-reference/authorization.html#managing-privileges) on the table or index.
 
 ## Parameters
 

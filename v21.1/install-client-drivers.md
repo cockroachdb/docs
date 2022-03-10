@@ -17,10 +17,7 @@ Applications may encounter incompatibilities when using advanced or obscure feat
   <button class="filter-button page-level" data-scope="ruby">Ruby</button>
   <button class="filter-button page-level" data-scope="js-ts">JavaScript/TypeScript</button>
   <button class="filter-button page-level" data-scope="c">C</button>
-  <button class="filter-button page-level" data-scope="c++">C++</button>
   <button class="filter-button page-level" data-scope="c-sharp">C# (.NET)</button>
-  <button class="filter-button page-level" data-scope="clojure">Clojure</button>
-  <button class="filter-button page-level" data-scope="php">PHP</button>
 </div>
 
 <section class="filter-content" markdown="1" data-scope="python">
@@ -207,6 +204,19 @@ $ go get -u github.com/jackc/pgx
 
 For a simple but complete example app, see [Build a Go App with CockroachDB and the Go pgx Driver](build-a-go-app-with-cockroachdb.html).
 
+### pq
+
+**Support level:** Full
+
+To install the [Go pq driver](https://godoc.org/github.com/lib/pq):
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ go get -u github.com/lib/pq
+~~~
+
+For a simple but complete example app, see [Build a Go App with CockroachDB and the Go pq Driver](build-a-go-app-with-cockroachdb.html).
+
 ## Go ORM frameworks
 
 ### GORM
@@ -328,24 +338,6 @@ Install the C libpq driver as described in the [official documentation](https://
 
 </section>
 
-<section class="filter-content" markdown="1" data-scope="c++">
-
-## C++ Drivers
-
-### libpqxx
-
-**Support level:** Beta
-
-Install the C++ libpqxx driver as described in the [official documentation](https://github.com/jtv/libpqxx).
-
-{{site.data.alerts.callout_info}}
-If you are running macOS, you need to install version 4.0.1 or higher of the libpqxx driver.
-{{site.data.alerts.end}}
-
-For a simple but complete example app, see [Build a C++ App with CockroachDB and libpqxx](build-a-c++-app-with-cockroachdb.html).
-
-</section>
-
 <section class="filter-content" markdown="1" data-scope="c-sharp">
 
 ## C# Drivers
@@ -376,48 +368,6 @@ For a simple but complete example app, see [Build a C++ App with CockroachDB and
     ~~~
 
 For a simple but complete example app, see [Build a C# App with CockroachDB and the .NET Npgsql Driver](build-a-csharp-app-with-cockroachdb.html).
-
-</section>
-
-<section class="filter-content" markdown="1" data-scope="clojure">
-
-## Clojure Drivers
-
-### leiningen
-
-**Support level:** Beta
-
-Install the Clojure `lein` utility as described in its [official documentation](https://leiningen.org/).
-
-For a simple but complete example app, see [Build a Clojure App with CockroachDB and java.jdbc](build-a-clojure-app-with-cockroachdb.html).
-
-</section>
-
-<section class="filter-content" markdown="1" data-scope="php">
-
-## PHP Drivers
-
-### php-pgsql
-
-**Support level:** Beta
-
-Install the php-pgsql driver as described in the [official documentation](https://www.php.net/manual/en/book.pgsql.php).
-
-For a simple but complete example app, see [Build a PHP App with CockroachDB and the PHP pgsql Driver](build-a-php-app-with-cockroachdb.html).
-
-</section>
-
-<section class="filter-content" markdown="1" data-scope="rust">
-
-## Rust Drivers
-
-### postgres
-
-**Support level:** Beta
-
-Install the Rust Postgres driver as described in the <a href="https://crates.io/crates/postgres" data-proofer-ignore>official documentation</a>.
-
-For a simple but complete example app, see [Build a Rust App with CockroachDB and the Rust Postgres Driver](build-a-rust-app-with-cockroachdb.html).
 
 </section>
 

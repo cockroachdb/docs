@@ -9,7 +9,7 @@ The `SHOW CREATE` [statement](sql-statements.html) shows the `CREATE` statement 
 
 ## Required privileges
 
-The user must have any [privilege](authorization.html#assign-privileges) on the target database, table, view, or sequence.
+The user must have any [privilege](security-reference/authorization.html#managing-privileges) on the target database, table, view, or sequence.
 
 ## Synopsis
 
@@ -397,4 +397,4 @@ The `SHOW CREATE DATABASE` output includes the database regions.
 - [`CREATE VIEW`](create-view.html)
 - [`CREATE TABLE`](create-sequence.html)
 - [Information Schema](information-schema.html)
-- [Other SQL Statements](sql-statements.html)
+- [SQL Statements](sql-statements.html)

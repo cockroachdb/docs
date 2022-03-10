@@ -32,7 +32,7 @@ Parameter          | Description
 
 ## Required privileges
 
-The user requires the appropriate [privileges](authorization.html#assign-privileges) for the statement being explained.
+The user requires the appropriate [privileges](security-reference/authorization.html#managing-privileges) for the statement being explained.
 
 ## Success responses
 
@@ -157,7 +157,7 @@ You can obtain this ZIP file by following the link provided in the `EXPLAIN ANAL
 
 ## Examples
 
-To run the examples, initialize a demo cluster with the MovR workload. {% include {{ page.version.version }}/demo_movr.md %}
+{% include {{ page.version.version }}/demo_movr.md %}
 
 ### `EXPLAIN ANALYZE`
 

@@ -21,16 +21,19 @@ The `IMPORT` [statement](sql-statements.html) imports the following types of dat
 
 {% include {{ page.version.version }}/import-table-deprecate.md %}
 
-- `IMPORT` cannot be used with [user-defined types](create-type.html). Use [`IMPORT INTO`](import-into.html) instead.
 - `IMPORT` is a blocking statement. To run an import job asynchronously, use the [`DETACHED`](#options-detached) option.
 - `IMPORT` cannot be used within a [rolling upgrade](upgrade-cockroach-version.html).
 - `IMPORT` cannot directly import data to `REGIONAL BY ROW` tables that are part of [multi-region databases](multiregion-overview.html). <span class="version-tag">New in v21.2:</span> Instead, use [`IMPORT INTO`](import-into.html) which supports importing into `REGIONAL BY ROW` tables.
+
+{{site.data.alerts.callout_info}}
+Optimize import operations in your applications by following our [Import Performance Best Practices](import-performance-best-practices.html).
+{{site.data.alerts.end}}
 
 ## Required privileges
 
 #### Table privileges
 
-The user must have the `CREATE` [privileges](authorization.html#assign-privileges) on the target database.
+The user must have the `CREATE` [privileges](security-reference/authorization.html#managing-privileges) on the target database.
 
 #### Source privileges
 

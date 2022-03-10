@@ -15,7 +15,7 @@ docs_area: reference.sql
 
 ## Required privileges
 
-Only members of the [`admin` role](authorization.html#admin-role) can run `SHOW REGIONS`. By default, the `root` user belongs to the `admin` role.
+Only members of the [`admin` role](security-reference/authorization.html#admin-role) can run `SHOW REGIONS`. By default, the `root` user belongs to the `admin` role.
 
 ## Parameters
 
@@ -194,4 +194,4 @@ SHOW REGIONS FROM ALL DATABASES;
 
 - [Multi-Region Capabilities Overview](multiregion-overview.html)
 - [`ADD REGION`](add-region.html)
-- [Other SQL Statements](sql-statements.html)
+- [SQL Statements](sql-statements.html)
