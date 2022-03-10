@@ -341,3 +341,6 @@ If you provide an index hint (i.e., force the index selection) to use the primar
 - [`DROP DATABASE`](drop-database.html)
 - [SQL Statements](sql-statements.html)
 - [Limiting Query Results](limit-offset.html)
+- [Delete Data](delete-data.html)
+- [Bulk-delete data](bulk-delete-data.html)
+- [Batch Delete Expired Data with Row-Level TTL](row-level-ttl.html)
