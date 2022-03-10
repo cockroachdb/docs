@@ -337,7 +337,7 @@ A tutorial helps users quickly achieve competence in a CockroachDB feature or un
 #### Examples
 
 - [Deploy a Local Cluster with Kubernetes](https://www.cockroachlabs.com/docs/stable/orchestrate-a-local-cluster-with-kubernetes.html)
-- [Visualize CockroachDB Schemas with DBeaver](https://www.cockroachlabs.com/docs/stable/dbeaver.html)
+- [Visualize CockroachDB Schemas with DBeaver](https://www.cockroachlabs.com/docs/stable/DBeaver.html)
 
 ### Best practice
 

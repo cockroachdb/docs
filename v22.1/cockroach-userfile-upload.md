@@ -14,7 +14,7 @@ A userfile uses storage space in the cluster, and is replicated with the rest of
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_success}}
-If you would like to upload and import data from from a dump file, consider using [`cockroach import`](cockroach-import.html) instead.
+If you would like to upload and import data from a dump file, consider using [`cockroach import`](cockroach-import.html) instead.
 {{site.data.alerts.end}}
 
 ## Required privileges

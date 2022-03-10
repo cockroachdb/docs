@@ -55,6 +55,7 @@ changesets
 chu
 cockroachadmin
 cockroachapp
+cockroachcloud
 cockroachdb
 cockroachweb
 codec
@@ -66,6 +67,7 @@ composability
 concats
 config
 configs
+configurability
 cpu
 crdb
 cron
@@ -76,6 +78,7 @@ ctrl
 cuasing
 datacenter
 datacenters
+datadog
 datalinks
 datasource
 datasources
@@ -84,6 +87,7 @@ datatypes
 datetime
 dayofweek
 dayofyear
+dbeaver
 dchenk
 ddl
 deallocated
@@ -106,6 +110,7 @@ ecto
 elqdusy
 elsif
 emptive
+endcomment
 endfor
 endif
 endunless
@@ -207,6 +212,7 @@ keyspace
 keytab
 keytabs
 keywhiz
+kibana
 kimball
 kiran
 knut
@@ -239,9 +245,11 @@ mahmoud
 mamatsis
 manpages
 mapbox
+marketo
 mayank
 memtable
 metatables
+metricbeat
 meunier
 milli
 minikube
@@ -254,6 +262,7 @@ moreutils
 movr
 msg
 multiargument
+multiregion
 multiset
 multisets
 multiversion
@@ -304,6 +313,7 @@ petersbug
 pgdump
 pgloader
 pgsql
+pgweb
 pgwire
 pgx
 phelanm
@@ -329,6 +339,7 @@ preparable
 prepended
 prepending
 prepends
+prisma
 problemranges
 profiler
 proofer
@@ -336,8 +347,11 @@ protobuf
 protobufs
 proxied
 psql
+psycopg
 pulldown
+pwd
 quadtree
+qual
 qudsi
 queryable
 queueable
@@ -354,6 +368,8 @@ recoverably
 redactable
 redcarpet
 reformats
+rehomed
+rehoming
 relicense
 replacewith
 repo
@@ -383,6 +399,7 @@ seif
 sequelize
 serializability
 serializable
+serverless
 servlet
 sessionmaker
 seto
@@ -408,7 +425,9 @@ southeastasia
 southindia
 spammy
 spinny
+splunk
 sql
+sqlalchemy
 srivatsa
 sstables
 stackdriver
@@ -427,6 +446,7 @@ subcomponents
 subexpressions
 subinterface
 subnet
+subnets
 subpartition
 subpartitioned
 subpartitioning
@@ -443,6 +463,7 @@ subtransactions
 subtrees
 subzone
 sudo
+svg
 swingbench
 sys
 sysbench
@@ -454,6 +475,7 @@ tarek
 tcp
 teamcity
 telecom
+teradata
 thanakom
 theophanes
 thisdcos
@@ -464,6 +486,8 @@ timestamptz
 toc
 tocs
 tokenizable
+toleration
+tolerations
 toolchain
 toolchains
 tooltip
@@ -475,12 +499,15 @@ ttl
 txn
 txns
 typechecking
+udt
 ui
+uid
 uksouth
 ukwest
 unanonymized
 unarchived
 unary
+uncategorized
 uncollated
 uncomment
 uncontended
