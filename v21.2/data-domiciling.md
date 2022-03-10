@@ -1,6 +1,6 @@
 ---
 title: Data Domiciling with CockroachDB
-summary: Learn how to implement data domiciling using CockroachDB's multi-region SQL capabilities and the ALTER DATABASE ... PLACEMENT RESTRICTED statement.
+summary: Learn how to use CockroachDB's multi-region SQL capabilities and the ALTER DATABASE ... PLACEMENT RESTRICTED statement as part of your data domiciling approach
 toc: true
 docs_area: deploy
 ---
@@ -10,7 +10,7 @@ As you scale your usage of [multi-region clusters](multiregion-overview.html), y
 CockroachDB has basic support for data domiciling in multi-region clusters using the [`ALTER DATABASE ... PLACEMENT RESTRICTED`](placement-restricted.html) statement.
 
 {{site.data.alerts.callout_danger}}
-Using CockroachDB as part of your approach to data domiciling has several limitations.  For more information, see [Limitations](#limitations).
+Using CockroachDB as part of your approach to data domiciling has several limitations. For more information, see [Limitations](#limitations).
 {{site.data.alerts.end}}
 
 ## Overview
@@ -26,7 +26,7 @@ For more information, see the sections below.
 
 This page assumes you are already familiar with:
 
-- CockroachDB's [multi-region SQL abstractions](multiregion-overview.html).
+- CockroachDB's [multi-region SQL abstractions](multiregion-overview.html). If you are not using them, the instructions on this page will not apply.
 - The fact that CockroachDB stores your data in [a distributed key-value store, which is split into chunks called ranges](architecture/distribution-layer.html#overview).
 
 ## Example
@@ -78,7 +78,9 @@ ALTER DATABASE movr ADD REGION "us-west1";
 
 ### Step 3. View noncompliant replicas
 
-Next, run a [replication report](query-replication-reports.html) to see which ranges are still not in compliance with your desired domiciling: that data on EU-based entities (users, etc.) does not leave EU-based nodes.
+Next, run a [replication report](query-replication-reports.html) to see which ranges are still not in compliance with your desired domiciling: that data on EU-based entities (users, etc.) does not leave EU-based nodes. 
+
+On a small demo cluster like this one, the data movement from the previous step should have finished almost instantly; on larger clusters, the rebalancing process may take longer. For more information about the performance considerations of rebalancing data in multi-region clusters, see [Performance considerations](migrate-to-multiregion-sql.html#performance-considerations).
 
 With the default settings, you should expect some replicas in the cluster to be violating this constraint. This is because [non-voting replicas](architecture/replication-layer.html#non-voting-replicas) are enabled by default in [multi-region clusters](multiregion-overview.html) to enable stale reads of data in [regional tables](regional-tables.html) from outside those tables' [home regions](set-locality.html#crdb_region). For many use cases, this is preferred, but it keeps you from meeting the domiciling requirements for this example.
 
@@ -149,7 +151,7 @@ This output shows that the `movr` database has ranges out of compliance, which y
 
 ### Step 4. Apply stricter replica placement settings
 
-To ensure that data on EU-based users, vehicles, etc. from [`REGIONAL BY ROW` tables](regional-tables.html#regional-by-row-tables) is stored only on EU-based nodes in the cluster, you must disable the use of [non-voting replicas](architecture/replication-layer.html#non-voting-replicas) on all of these tables. You can do this using the [`ALTER DATABASE ... PLACEMENT RESTRICTED`](placement-restricted.html) statement.
+To ensure that data on EU-based users, vehicles, etc. from [`REGIONAL BY ROW` tables](regional-tables.html#regional-by-row-tables) is stored only on EU-based nodes in the cluster, you must disable the use of [non-voting replicas](architecture/replication-layer.html#non-voting-replicas) on all of the [regional tables](regional-tables.html) in this database. You can do this using the [`ALTER DATABASE ... PLACEMENT RESTRICTED`](placement-restricted.html) statement.
 
 To use this statement, you must set the `enable_multiregion_placement_policy` [session setting](set-vars.html) or the `sql.defaults.multiregion_placement_policy.enabled` [cluster setting](cluster-settings.html):
 
@@ -252,7 +254,7 @@ The steps above are necessary but not sufficient to accomplish a data domiciling
 
 Using CockroachDB as part of your approach to data domiciling has several limitations:
 
-- When columns are [indexed](indexes.html), a subset (or sample) of data from the indexed columns may appear in [meta ranges](architecture/distribution-layer.html#meta-ranges) or other system tables. CockroachDB synchronizes these system ranges and system tables across nodes. This synchronization does not respect any multi-region settings applied via either the [multi-region SQL statements](multiregion-overview.html), or the low-level [zone configs](configure-replication-zones.html) mechanism.
+- When columns are [indexed](indexes.html), a subset of data from the indexed columns may appear in [meta ranges](architecture/distribution-layer.html#meta-ranges) or other system tables. CockroachDB synchronizes these system ranges and system tables across nodes. This synchronization does not respect any multi-region settings applied via either the [multi-region SQL statements](multiregion-overview.html), or the low-level [zone configs](configure-replication-zones.html) mechanism.
 - [Zone configs](configure-replication-zones.html) can be used for data placement but these features were historically built for performance, not for domiciling. Further, the way CockroachDB performs replica placement is currently heuristic-based, and the zone config settings may leave some decision making capacity to the system, and it may not place replicas according to your domiciling needs. For more information, see [Configure Replication Zones](configure-replication-zones.html#types-of-constraints).
 - If your [log files](logging-overview.html) are kept in the region where they were generated, there is some cross-region leakage (like the system tables described previously), but the majority of user data that makes it into the logs is going to be homed in that region. If that's not strong enough, you can use the [log redaction functionality](configure-logs.html#redact-logs) to strip all raw data from the logs. You can also limit your log retention entirely.
 - If you start a node with a [`--locality`](cockroach-start.html#locality) flag that says the node is in region _A_, but the node is actually running in some region _B_, data domiciling based on the inferred node placement will not work. A CockroachDB node only knows its locality based on the text supplied to the `--locality` flag; it can not ensure that it is actually running in that physical location.
