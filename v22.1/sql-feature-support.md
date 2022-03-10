@@ -190,3 +190,4 @@ table tr td:nth-child(2) {
  Stored procedures | ✗ | Common Extension | Execute a procedure explicitly.
  Cursors | ✗ | Standard | Traverse a table's rows.
  Triggers | ✗ | Standard | Execute a set of commands whenever a specified event occurs.
+ Row-level TTL | | ✓ | Common Extension | XXX - see [Batch-delete expired data with Row-Level TTL](row-level-ttl.md)

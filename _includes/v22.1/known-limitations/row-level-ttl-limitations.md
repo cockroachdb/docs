@@ -1,0 +1,2 @@
+- You cannot use [foreign keys](foreign-key.html) to create references to or from a table that uses Row-Level TTL.
+- [`SELECT` queries](selection-queries.html) against tables with Row-Level TTL enabled do not filter out expired rows from the result set. This feature may be added in a future release. For now, follow the instructions in [Filter out expired rows from a selection query](row-level-ttl.html#filter-out-expired-rows-from-a-selection-query).
