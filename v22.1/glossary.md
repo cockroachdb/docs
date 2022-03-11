@@ -20,7 +20,7 @@ Term | Definition
 
 Term | Definition
 -----|------------
-**Cluster** | A CockroachDB deployment, which acts as a single logical application.
+**Cluster** | A CockroachDB deployment that acts as a single logical application.
 **Node** | An individual machine running CockroachDB. One or more nodes join together to create a cluster.
 **Range** | <a name="architecture-range"></a> CockroachDB stores all user data (tables, indexes, etc.) and almost all system data in a sorted map of key-value pairs. This keyspace is divided into contiguous chunks called "ranges," such that every key is found in one range.<br/><br/>From a SQL perspective, a table and its secondary indexes initially map to a single range, where each key-value pair in the range represents a single row in the table (also called the _primary index_ because the table is sorted by the primary key) or a single row in a secondary index. As soon as the size of a range reaches 512 MiB ([the default](configure-replication-zones.html#range-max-bytes)), it is split into two ranges. This process continues for these new ranges as the table and its indexes continue growing.
 **Replica** <a name="architecture-replica"></a> | A copy of a range (three [by default](configure-replication-zones.html#num_replicas)) and stored on a node.
@@ -32,16 +32,18 @@ Term | Definition
 
 Term | Definition
 -----|-----------
-**CockroachDB Serverless (beta)** | A multi-tenant CockroachDB deployment managed by Cockroach Labs. A Serverless cluster is an isolated, virtualized tenant running on a large CockroachDB deployment in a single cloud and region. Cockroach Labs guarantees uptime and provides autonomous cluster operations. Other Serverless advantages include the ability to start clusters instantly and eliminates database operations. Consumption based billing and spend limits eliminate cost surprises.
-**CockroachDB Dedicated** | A single tenant CockroachDB deployment managed by Cockroach Labs with no shared resources in a single  multi-region cloud. Cluster, node, and cloud instance Cockroach Labs SRE provide guaranteed uptime, optimization, and operations.
-**CockroachDB Self-Hosted** | A self-managed CockroachDB deployment. Such a deployment offers deep control, per vCPU on any cloud or infrastructure type, in multiple clouds and regions. Database operations backed by Cockroach Labs are provided by your team.
+**single tenant** | A single instance of CockroachDB and supporting infrastructure. In a single tenant deployment, customers have their own instance of CockroachDB software and infrastructure. There are no shared resources.
+**multi-tenant** | A single instance of CockroachDB and its supporting infrastructure. In a multi-tenant deployment, customers share CockroachDB software and infrastructure. Customer data is isolated and remains invisible to other customers.
+**CockroachDB Serverless (beta)** | A multi-tenant CockroachDB deployment managed by Cockroach Labs in a single cloud and region. A Serverless cluster is an isolated, virtualized tenant running on a shared CockroachDB deployment. Cockroach Labs SRE provides guaranteed uptime and operations. Includes the ability to start clusters instantly and eliminates database operations. Consumption based billing and spend limits enforce budget requirements.
+**CockroachDB Dedicated** | A single tenant CockroachDB deployment managed by Cockroach Labs in a single multi-region cloud. Cockroach Labs SRE provides guaranteed uptime, optimization, and operations for cluster, node, and cloud instances.
+**CockroachDB Self-Hosted** | A self-managed CockroachDB deployment backed by Cockroach Labs Support available for in multiple clouds and regions. Charged per vCPU on any cloud or infrastructure type.
 
 ## CockroachCloud
 
 Term | Definition
 -----|-----------
-**Serverless cluster** | A CockroachDB cluster automatically billed for and scaled according to the resources consumed by the cluster.
-**Dedicated cluster** | A CockroachDB cluster automatically billed for the resources provisioned for the cluster.
+**Serverless cluster** | A CockroachDB cluster billed and scaled according to the resources _consumed_ by the cluster.
+**Dedicated cluster** | A CockroachDB cluster billed according to the resources _provisioned for_ the cluster.
 **Request Unit (RU)** | Represents the compute and I/O resources used by a query. All database operations in {{ site.data.products.serverless-plan }} cost a certain amount of RUs depending on the resources used. For example, a "small read" might cost 2 RUs, and a "large read" such as a full table scan with indexes could cost a large number of RUs. You can see how many Request Units your cluster has used on the [Cluster Overview](../cockroachcloud/serverless-cluster-management.html#view-cluster-overview) page.
 **Spend limit** | The maximum amount of money you want to spend on a cluster in a particular billing period. The amount you are billed is based on the resources the cluster used during that billing period. A cluster's budget is allocated across storage and burst performance.
 **Baseline performance** | The minimum compute and I/O performance that you can expect from your cluster at all times. This is 100 RUs per second for all Serverless clusters (free and paid). The actual usage of a cluster may be lower than the baseline performance depending on application traffic, because not every application will need 100 RUs per second at all times. When the cluster's usage is lower than the baseline, the cluster accumulates the unused RUs until the load on the cluster increases above the baseline.
