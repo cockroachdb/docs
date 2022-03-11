@@ -52,8 +52,6 @@ Such a deployment offers deep control, per vCPU on any cloud or infrastructure t
 - **Support**: Provided by Cockroach Labs.
 - **Isolation**: Customers manage their own instance of CockroachDB software and infrastructure.
 - **Enterprise features**: available. See [Enterprise Features](enterprise-licensing.html).
--
-Direct control and ability to run anywhere. Self-deployed on any cloud, public or private.
 
 ### Use cases
 
