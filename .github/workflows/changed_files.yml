@@ -29,7 +29,7 @@ jobs:
             then
               html_file=${file%.md}.html
               file="<a href=\"https://deploy-preview-$pr_num--cockroachdb-docs.netlify.app/docs/$html_file\" target=\"_blank\" rel=\"noopener\">$file</a>"
-              output+="$file%0A"
+              output+="$file<br/>"
             elif [[ $file == *.md ]] && [[ $file == _includes/releases/* ]]
             then
               OLDIFS=$IFS
@@ -40,7 +40,7 @@ jobs:
               file="<a href=\"https://deploy-preview-$pr_num--cockroachdb-docs.netlify.app/docs/releases/${major_version}.html\" target=\"_blank\" rel=\"noopener\">releases/${major_version}.md</a>"
               [[ " ${output[*]} " != *"releases/${major_version}.md"* ]] && output+="$file%0A"
             else
-              output+="$file%0A"
+              output+="$file<br/>"
             fi
           done;
           body="${output[@]}"
@@ -61,6 +61,4 @@ jobs:
           issue-number: ${{ github.event.pull_request.number }}
           edit-mode: replace
           body: |
-            Files changed:
-
-            ${{ steps.format.outputs.body }}
+            Files changed:<br/><br/>${{ steps.format.outputs.body }}
