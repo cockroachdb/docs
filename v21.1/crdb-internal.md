@@ -31,6 +31,7 @@ Table | Description
 `cluster_transactions` | Contains information about transactions running on your cluster.
 `create_statements` | Contains information about tables and indexes in your database.
 `create_type_statements` | Contains information about [user-defined types](enum.html) in your database.
+`cross_db_references` | Contains information about cross-database references in your cluster.
 `databases` | Contains information about the databases in your cluster.
 `feature_usage` | Contains information about feature usage on your cluster.
 `forward_dependencies` | Contains information about forward dependencies.
@@ -39,6 +40,8 @@ Table | Description
 `gossip_network` | Contains information about your cluster's gossip network.
 `gossip_nodes` | Contains information about nodes in your cluster's gossip network.
 `index_columns` | Contains information about indexed columns in your cluster.
+`interleaved_tables` | Contains information about interleaved tables in your cluster.
+`interleaved_views` | Contains information about interleaved views in your cluster.
 `invalid_objects` | Contains information about invalid objects in your cluster.
 `jobs` | Contains information about [jobs](show-jobs.html) running on your cluster.
 `kv_node_status` | Contains information about node status at the [key-value layer](architecture/storage-layer.html).
