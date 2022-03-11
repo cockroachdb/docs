@@ -39,7 +39,7 @@ jobs:
               major_version=${path[-2]}
               file="<a href=\"https://deploy-preview-$pr_num--cockroachdb-docs.netlify.app/docs/releases/${major_version}.html\" target=\"_blank\" rel=\"noopener\">releases/${major_version}.md</a>"
               [[ " ${output[*]} " != *"releases/${major_version}.md"* ]] && output+="$file%0A"
-            elif [[ $file == _includes/v* ]] || [[ $file == _includes/cockroachcloud* ]]
+            elif [[ $file == _includes/v* && $file != *sidebar* ]] || [[ $file == _includes/cockroachcloud* && $file != *sidebar* ]]
             then
               output+="${file}:<ul>"
               OLDIFS=$IFS
