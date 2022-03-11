@@ -11,7 +11,7 @@ This page describes the properties of the three options and gives use cases for 
 
 ## CockroachDB Serverless (beta)
 
-CockroachDB Serverless (beta) is a multi-tenant CockroachDB deployment, managed by Cockroach Labs, in a single region and cloud (AWS or GCP). A Serverless cluster is an isolated, virtualized tenant running on a shared CockroachDB deployment. CockroachDB Serverless lets you create and start clusters instantly.
+CockroachDB Serverless (beta) is a multi-tenant CockroachDB deployment, managed by Cockroach Labs, in a single region and cloud (AWS or GCP). CockroachDB Serverless lets you create and start clusters instantly.
 
 - **Isolation**: Customers share CockroachDB software and infrastructure. Customer data is isolated and remains invisible to other customers.
 - **CockroachDB version**: Managed by Cockroach Labs and upgraded periodically.
@@ -48,8 +48,6 @@ CockroachDB Dedicated is a single tenant CockroachDB deployment, managed by Cock
 ## CockroachDB Self-Hosted
 
 CockroachDB Self-Hosted is a self-managed CockroachDB deployment, backed by Cockroach Labs Support, for multiple clouds and regions.
-
-Such a deployment offers deep control, per vCPU on any cloud or infrastructure type, in multiple clouds and regions. Database operations backed by Cockroach Labs are provided by your team.
 
 - **Isolation**: Customers manage their own instance of CockroachDB software and infrastructure.
 - **CockroachDB version**: Choose when installing CockroachDB.
