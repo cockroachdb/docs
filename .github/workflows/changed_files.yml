@@ -29,7 +29,7 @@ jobs:
             then
               html_file=${file%.md}.html
               file="<a href=\"https://deploy-preview-$pr_num--cockroachdb-docs.netlify.app/docs/$html_file\" target=\"_blank\" rel=\"noopener\">$file</a>"
-              output+="$file<br/>"
+              output+="$file%0A"
             elif [[ $file == *.md ]] && [[ $file == _includes/releases/* ]]
             then
               OLDIFS=$IFS
@@ -38,25 +38,9 @@ jobs:
               IFS=$OLDIFS
               major_version=${path[-2]}
               file="<a href=\"https://deploy-preview-$pr_num--cockroachdb-docs.netlify.app/docs/releases/${major_version}.html\" target=\"_blank\" rel=\"noopener\">releases/${major_version}.md</a>"
-              [[ " ${output[*]} " != *"releases/${major_version}.md"* ]] && output+="$file<br/>"
-            elif [[ $file == _includes/v* ]] || [[ $file == _includes/cockroachcloud* ]]
-            then
-              output+="${file}:<ul>"
-              OLDIFS=$IFS
-              IFS='/'
-              read -ra path <<< "$file"
-              IFS=$OLDIFS
-              major_version=${path[1]}
-              file_name=${path[-1]}
-              refs=($(grep -irl ${file_name} ${major_version}))
-              for ref in ${refs[@]}; do
-                html_file=${ref%.md}.html
-                file="<li><a href=\"https://deploy-preview-$pr_num--cockroachdb-docs.netlify.app/docs/$html_file\" target=\"_blank\" rel=\"noopener\">$ref</a></li>"
-                output+="$file"
-              done
-              output+="</ul><br/>"
+              [[ " ${output[*]} " != *"releases/${major_version}.md"* ]] && output+="$file%0A"
             else
-              output+="$file<br/>"
+              output+="$file%0A"
             fi
           done;
           body="${output[@]}"
@@ -77,4 +61,6 @@ jobs:
           issue-number: ${{ github.event.pull_request.number }}
           edit-mode: replace
           body: |
-            Files changed:<br/><br/>${{ steps.format.outputs.body }}
+            Files changed:
+
+            ${{ steps.format.outputs.body }}
