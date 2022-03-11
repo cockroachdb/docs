@@ -11,13 +11,14 @@ This page describes the properties of the three options and gives use cases for 
 
 ## CockroachDB Serverless (beta)
 
-CockroachDB Serverless (beta) is a multi-tenant CockroachDB deployment managed by Cockroach Labs in a single cloud (AWS or GCP) and region. A Serverless cluster is an isolated, virtualized tenant running on a shared CockroachDB deployment. Includes the ability to start clusters instantly and eliminates database operations.
+CockroachDB Serverless (beta) is a multi-tenant CockroachDB deployment managed by Cockroach Labs in a single cloud (AWS or GCP) and region. A Serverless cluster is an isolated, virtualized tenant running on a shared CockroachDB deployment. CockroachDB Serverless lets you start clusters instantly and eliminates database operations.
 
+- **Isolation**: Customers share CockroachDB software and infrastructure. Customer data is isolated and remains invisible to other customers.
+- **CockroachDB version**: Managed by Cockroach Labs and upgraded periodically.
 - **Operations**: Cockroach Labs SRE provides guaranteed uptime and backups every three hours.
 - **Cost**: Consumption based billing and spend limits enforce budget requirements.
 - **Support**: Provided by community.
-- **Isolation**: Customers share CockroachDB software and infrastructure. Customer data is isolated and remains invisible to other customers.
-- **Enterprise features**: not available.
+- **Enterprise features**: Not available.
 
 ### Use cases
 
@@ -28,17 +29,17 @@ CockroachDB Serverless (beta) is a multi-tenant CockroachDB deployment managed b
 
 CockroachDB Dedicated is a single tenant CockroachDB deployment managed by Cockroach Labs in a single multi-region cloud. (AWS or GCP).
 
+- **Isolation**: Customers have their own instance of CockroachDB software and infrastructure.
+- **CockroachDB version**: Choose when creating a cluster.
 - **Operations**: Cockroach Labs SRE provides guaranteed uptime, optimization, security, and operations for cluster, node, and cloud instances with daily and hourly backups.
 - **Cost**: Per node, cloud instances, and cluster SRE all inclusive. Cockroach Labs packages all the costs of hardware, IOPs, network, load balancers, and the SRE resources required to manage the environment in one price so you have a firm understanding and predictability of your database costs.
 - **Support**: Enterprise grade support provided by Cockroach Labs.
-- **Isolation**: Customers have their own instance of CockroachDB software and infrastructure.
-- **Enterprise features**: available. See [Enterprise Features](enterprise-licensing.html).
+- **Enterprise features**: Available. See [Enterprise Features](enterprise-licensing.html).
 
 ### Use cases
 
 - Mission-critical databases.
-- Spend more time delivering your application and less time on operations.
-- Simple to add new regions serve customers in new markets.
+- Future need to add new regions serve customers in new markets.
 - Take advantage of Enterprise features.
 
 ## CockroachDB Self-Hosted
@@ -47,15 +48,16 @@ CockroachDB Self-Hosted is a self-managed CockroachDB deployment backed by Cockr
 
 Such a deployment offers deep control, per vCPU on any cloud or infrastructure type, in multiple clouds and regions. Database operations backed by Cockroach Labs are provided by your team.
 
+- **Isolation**: Customers manage their own instance of CockroachDB software and infrastructure.
+- **CockroachDB version**: Choose when installing CockroachDB.
 - **Operations**: Self deployed and managed. Manual scaling.
 - **Cost**: Per vCPU on any cloud or infrastructure type.
 - **Support**: Provided by Cockroach Labs.
-- **Isolation**: Customers manage their own instance of CockroachDB software and infrastructure.
-- **Enterprise features**: available. See [Enterprise Features](enterprise-licensing.html).
+- **Enterprise features**: Available. See [Enterprise Features](enterprise-licensing.html).
 
 ### Use cases
 
-- Most control over your environment.
+- Require complete control over the database environment.
 - Run in multi-cloud and inter-cloud deployments.
 - Run in a cloud, e.g. Azure, not supported by managed services.
 - Take advantage of Enterprise features.
