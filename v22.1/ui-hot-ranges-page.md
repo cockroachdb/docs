@@ -46,6 +46,6 @@ If your aim is to [reduce hot spots](performance-best-practices-overview.html#ho
 
 ## See also
 
-architecture/overview.html
-https://www.cockroachlabs.com/docs/v21.2/performance-best-practices-overview.html#hot-spots
-https://www.cockroachlabs.com/docs/stable/hash-sharded-indexes.html
+- [Hot spots](performance-best-practices-overview.html#hot-spots)
+- [Hash-sharded Indexes](hash-sharded-indexes.html)
+- [Architecture Overview](architecture/overview.html)
