@@ -125,6 +125,12 @@
               ]
             },
             {
+              "title": "Estimate Serverless Usage with MovR",
+              "urls": [
+                "/cockroachcloud/serverless-movr.html"
+              ]
+            },
+            {
               "title": "Serverless Function Best Practices",
               "urls": [
                 "/${VERSION}/serverless-function-best-practices.html"
