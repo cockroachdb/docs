@@ -28,9 +28,36 @@ jobs:
             if [[ $file == *.md ]] && [[ $file != _* ]]
             then
               html_file=${file%.md}.html
-              file="<a href=\"https://deploy-preview-$pr_num--cockroachdb-docs.netlify.app/docs/$html_file\" target=\"_blank\">$file</a>"
+              file="<li><a href=\"https://deploy-preview-$pr_num--cockroachdb-docs.netlify.app/docs/$html_file\" target=\"_blank\" rel=\"noopener\">$file</a></li>"
+              output+="$file"
+            elif [[ $file == *.md ]] && [[ $file == _includes/releases/* ]]
+            then
+              OLDIFS=$IFS
+              IFS='/'
+              read -ra path <<< "$file"
+              IFS=$OLDIFS
+              major_version=${path[-2]}
+              file="<li><a href=\"https://deploy-preview-$pr_num--cockroachdb-docs.netlify.app/docs/releases/${major_version}.html\" target=\"_blank\" rel=\"noopener\">releases/${major_version}.md</a></li>"
+              [[ " ${output[*]} " != *"releases/${major_version}.md"* ]] && output+="$file"
+            elif [[ $file == _includes/v* && $file != *sidebar* ]] || [[ $file == _includes/cockroachcloud* && $file != *sidebar* ]]
+            then
+              output+="<li>${file}:</li><ul>"
+              OLDIFS=$IFS
+              IFS='/'
+              read -ra path <<< "$file"
+              IFS=$OLDIFS
+              major_version=${path[1]}
+              file_name=${path[-1]}
+              refs=($(grep -irl ${file_name} ${major_version}))
+              for ref in ${refs[@]}; do
+                html_file=${ref%.md}.html
+                file="<li><a href=\"https://deploy-preview-$pr_num--cockroachdb-docs.netlify.app/docs/$html_file\" target=\"_blank\" rel=\"noopener\">$ref</a></li>"
+                output+="$file"
+              done
+              output+="</ul>"
+            else
+              output+="<li>$file</li>"
             fi
-            output+="$file%0A"
           done;
           body="${output[@]}"
           echo ::set-output name=body::$body
@@ -50,6 +77,4 @@ jobs:
           issue-number: ${{ github.event.pull_request.number }}
           edit-mode: replace
           body: |
-            Files changed:
-
-            ${{ steps.format.outputs.body }}
+            <h3>Files changed:</h3><ul>${{ steps.format.outputs.body }}</ul>
