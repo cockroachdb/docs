@@ -257,7 +257,7 @@ To restore from a scheduled backup, use the [`RESTORE`](restore.html) statement:
 {% include copy-clipboard.html %}
 ~~~ sql
 > RESTORE
-    FROM 's3://test/backups/test_schedule_1/2020/08/19-035600.00?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
+    FROM '2020/08/19-035600.00' IN 's3://test/backups/test_schedule_1?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
     AS OF SYSTEM TIME '2020-08-19 03:50:00+00:00';
 ~~~
 
