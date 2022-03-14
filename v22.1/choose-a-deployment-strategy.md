@@ -26,7 +26,7 @@ Cockroach Labs offers three ways to use and deploy CockroachDB: two managed serv
         <li><b>CockroachDB version</b>: Managed by Cockroach Labs and upgraded periodically.</li>
         <li><b>Operations</b>: Cockroach Labs SRE provides guaranteed uptime and backups every three hours.</li>
         <li><b>Scaling</b>: By increasing spend limits in Cloud Console.</li>
-        <li><b>Cost</b>: Consumption based billing and spend limits enforce budget requirements.</li>
+        <li><b>Cost</b>: Free for 5GiB of storage and 250M <a href="../cockroachcloud/serverless-faqs.html#what-is-a-request-unit">Request Units</a>. Consumption based billing and spend limits enforce budget requirements.</li>
         <li><b>Support</b>: Provided by CockroachDB <a href="https://forum.cockroachlabs.com/">community forum</a> and <a href="https://cockroachdb.slack.com/">Slack instance</a>.</li>
         <li><b>Enterprise features</b>: ✗</li>
       </ul></td>
