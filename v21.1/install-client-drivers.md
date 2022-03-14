@@ -371,6 +371,20 @@ For a simple but complete example app, see [Build a C# App with CockroachDB and 
 
 </section>
 
+<section class="filter-content" markdown="1" data-scope="rust">
+
+## Rust Drivers
+
+### rust-postgres
+
+**Support level:** Beta
+
+Install the Rust Postgres driver as described in the <a href="https://crates.io/crates/postgres" data-proofer-ignore>official documentation</a>.
+
+For a simple but complete example app, see [Build a Rust App with CockroachDB and the Rust Postgres Driver](build-a-rust-app-with-cockroachdb.html).
+
+</section>
+
 ## What's next?
 
 - [Connect to CockroachDB](connect-to-the-database.html)

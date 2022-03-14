@@ -19,6 +19,7 @@ Applications may encounter incompatibilities when using advanced or obscure feat
   <button class="filter-button page-level" data-scope="ruby">Ruby</button>
   <button class="filter-button page-level" data-scope="c">C</button>
   <button class="filter-button page-level" data-scope="c-sharp">C# (.NET)</button>
+  <button class="filter-button page-level" data-scope="rust">Rust</button>
 </div>
 
 <section class="filter-content" markdown="1" data-scope="js-ts">
@@ -368,6 +369,20 @@ Install the C libpq driver as described in the [official documentation](https://
     ~~~
 
 For a simple but complete example app, see [Build a C# App with CockroachDB and the .NET Npgsql Driver](build-a-csharp-app-with-cockroachdb.html).
+
+</section>
+
+<section class="filter-content" markdown="1" data-scope="rust">
+
+## Rust Drivers
+
+### rust-postgres
+
+**Support level:** Beta
+
+Install the Rust Postgres driver as described in the <a href="https://crates.io/crates/postgres" data-proofer-ignore>official documentation</a>.
+
+For a simple but complete example app, see [Build a Rust App with CockroachDB and the Rust Postgres Driver](build-a-rust-app-with-cockroachdb.html).
 
 </section>
 
