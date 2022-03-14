@@ -16,17 +16,18 @@ The `SHOW BACKUP` [statement](sql-statements.html) lists the contents of a backu
 ## Synopsis
 
 <div>
-{% include {{ page.version.version }}/sql/generated/diagrams/show_backup.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/master/grammar_svg/show_backup.html %}
 </div>
 
 ## Parameters
 
 Parameter | Description
 ----------|------------
-`SHOW BACKUPS IN location` | List the backup paths in the given [`location`](backup.html#backup-file-urls). [See the example below](#view-a-list-of-the-available-full-backup-subdirectories).
-`SHOW BACKUP location` | Show the details of the backup in the given [`location`](backup.html#backup-file-urls). [See the example below](#show-a-backup).
-`SHOW BACKUP SCHEMAS location` | Show the schema details of the backup in the given [`location`](backup.html#backup-file-urls). [See the example below](#show-a-backup-with-schemas).
-`SHOW BACKUP subdirectory IN location` |  List the full and incremental backups that are stored in the given full backup's `subdirectory` within a [`location`](backup.html#backup-file-urls). [See the example below](#show-details-for-scheduled-backups).
+`SHOW BACKUPS FROM subdir IN location` | List the backup paths in the given [`location`](backup.html#backup-file-urls). [See the example](#view-a-list-of-the-available-full-backup-subdirectories).
+`SHOW BACKUP FROM location` | Show the details of the backup in the given [`location`](backup.html#backup-file-urls). [See the example](#show-a-backup).
+`SHOW BACKUP FROM LATEST IN location` | Show the most recent backup added in the given [`location`](backup.html#backup-file-urls). [See the example](#show-the-most-recent-backup)
+`SHOW BACKUP FROM SCHEMAS location` | Show the schema details of the backup in the given [`location`](backup.html#backup-file-urls). [See the example](#show-a-backup-with-schemas).
+`SHOW BACKUP subdirectory IN location` |  List the full and incremental backups that are stored in the given full backup's `subdirectory` within a [`location`](backup.html#backup-file-urls). [See the example](#show-details-for-scheduled-backups).
 `kv_option_list` | Control the behavior of `SHOW BACKUP` with a comma-separated list of [these options](#options).
 
 ### Options
@@ -37,6 +38,7 @@ Option       | Value | Description
 `encryption_passphrase`<a name="with-encryption-passphrase"></a> | [`STRING`](string.html) |  The passphrase used to [encrypt the files](take-and-restore-encrypted-backups.html) that the `BACKUP` statement generates (the data files and its manifest, containing the backup's metadata).
 `debug_ids` |  N/A  |  [Display descriptor IDs](#show-a-backup-with-descriptor-ids) of every object in the backup, including the object's database and parent schema.
 `as_json`   |  N/A  |  [Display the backup's internal metadata](#show-a-backups-internal-metadata) as JSON in the response.
+`incremental_location` | [`STRING`](string.html) | [List the details of an incremental backup](#show-an-incremental-backup-at-a-different-location) taken with the [`incremental_location` option](backup.html#incr-location).
 
 ## Response
 
@@ -62,9 +64,9 @@ See [Show a backup with descriptor IDs](#show-a-backup-with-descriptor-ids) for 
 
 ### Show a backup
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
-> SHOW BACKUP 's3://test/backup-test?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]';
+> SHOW BACKUP 's3://{bucket name}?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]';
 ~~~
 
 ~~~
@@ -97,9 +99,9 @@ See [Show a backup with descriptor IDs](#show-a-backup-with-descriptor-ids) for 
 
 <a name="show-backups-in"></a>To view a list of the available [full backups](take-full-and-incremental-backups.html#full-backups) subdirectories, use the following command:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
-> SHOW BACKUPS IN 's3://test/backup-test?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]';
+> SHOW BACKUPS IN 's3://{bucket name}?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]';
 ~~~
 
 ~~~
@@ -114,13 +116,31 @@ See [Show a backup with descriptor IDs](#show-a-backup-with-descriptor-ids) for 
 
 The path format is `<year>/<month>/<day>-<timestamp>`.
 
+### Show the most recent backup
+
+<span class="version-tag">New in v22.1:</span> To view the most recent backup, use the `LATEST` syntax:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> SHOW BACKUP LATEST IN 's3://{bucket name}?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]';
+~~~
+
+~~~
+database_name | parent_schema_name | object_name | object_type | backup_type | start_time |          end_time          | size_bytes | rows | is_full_cluster
+--------------+--------------------+-------------+-------------+-------------+------------+----------------------------+------------+------+------------------
+NULL          | NULL               | movr        | database    | full        | NULL       | 2022-03-25 16:53:48.001825 |       NULL | NULL |      false
+movr          | NULL               | public      | schema      | full        | NULL       | 2022-03-25 16:53:48.001825 |       NULL | NULL |      false
+movr          | public             | users       | table       | full        | NULL       | 2022-03-25 16:53:48.001825 |     135144 | 1474 |      false
+(3 rows)
+~~~
+
 ### View a list of the full and incremental backups in a specific full backup subdirectory
 
 To view a list of the [full](take-full-and-incremental-backups.html#full-backups) and [incremental](take-full-and-incremental-backups.html#incremental-backups) backups in a specific subdirectory, use the following command:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
-> SHOW BACKUP '2020/09/24-204152.88' IN 's3://test/backup-test?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]';
+> SHOW BACKUP '2020/09/24-204152.88' IN 's3://{bucket name}?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]';
 ~~~
 
 ~~~
@@ -169,11 +189,41 @@ To view a list of the [full](take-full-and-incremental-backups.html#full-backups
 (40 rows)
 ~~~
 
+### Show an incremental backup at a different location
+
+<span class="version-tag">New in v22.1:</span> To view an incremental backup that was taken with the `incremental_location` option, run `SHOW BACKUP` with the full backup and incremental backup location following the original `BACKUP` statement.
+
+You can use the option to show the most recent backup where `incremental_location` has stored the backup:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SHOW BACKUP LATEST IN 's3://{full backup location}?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]' WITH incremental_location = 's3://{incremental backup location}?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]';
+~~~
+
+You can also show a specific backup with:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SHOW BACKUP '2022/03/31-174429.55' IN 's3://{full backup location}?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]' WITH incremental_location = 's3://{incremental backup location}?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]';
+~~~
+
+~~~
+database_name | parent_schema_name |        object_name         | object_type | backup_type |         start_time         |          end_time          | size_bytes | rows  | is_full_cluster
+----------------+--------------------+----------------------------+-------------+-------------+----------------------------+----------------------------+------------+-------+------------------
+NULL          | NULL               | system                     | database    | full        | NULL                       | 2022-03-31 17:44:29.554597 |       NULL |  NULL |      true
+system        | public             | users                      | table       | full        | NULL                       | 2022-03-31 17:44:29.554597 |         99 |     2 |      true
+system        | public             | zones                      | table       | full        | NULL                       | 2022-03-31 17:44:29.554597 |        236 |     8 |      true
+system        | public             | settings                   | table       | full        | NULL                       | 2022-03-31 17:44:29.554597 |        372 |     5 |      true
+system        | public             | ui                         | table       | full        | NULL                       | 2022-03-31 17:44:29.554597 |          0 |     0 |      true
+system        | public             | jobs                       | table       | full        | NULL                       | 2022-03-31 17:44:29.554597 |      30379 |    30 |      true
+
+~~~
+
 ### Show a backup with schemas
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
-> SHOW BACKUP SCHEMAS 's3://test/backup-test?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]';
+> SHOW BACKUP SCHEMAS 's3://{bucket name}?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]';
 ~~~
 
 ~~~  
@@ -206,9 +256,9 @@ movr          | public             | users       | table       | incremental | 2
 
 Use the `WITH privileges` [option](#options) to view a list of which users and roles had which privileges on each database and table in the backup. This parameter also displays the original owner of objects in the backup:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
-> SHOW BACKUP 's3://test/backup-test?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]' WITH privileges;
+> SHOW BACKUP 's3://{bucket name}?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]' WITH privileges;
 ~~~
 
 ~~~
@@ -218,23 +268,7 @@ database_name   | parent_schema_name | object_name                | object_type 
   system        | public             | users                      | table       | full        | NULL       | 2020-09-24 19:05:40.542168+00:00 |        144 |    3 |      true       | GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON users TO admin; GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON users TO root;                                              | root
   system        | public             | zones                      | table       | full        | NULL       | 2020-09-24 19:05:40.542168+00:00 |        201 |    7 |      true       | GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON zones TO admin; GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON zones TO root;                                              | root
   system        | public             | settings                   | table       | full        | NULL       | 2020-09-24 19:05:40.542168+00:00 |        431 |    6 |      true       | GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON settings TO admin; GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON settings TO root;                                        | root
-  system        | public             | ui                         | table       | full        | NULL       | 2020-09-24 19:05:40.542168+00:00 |          0 |    0 |      true       | GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON ui TO admin; GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON ui TO root;                                                    | root
-  system        | public             | jobs                       | table       | full        | NULL       | 2020-09-24 19:05:40.542168+00:00 |     434302 |   62 |      true       | GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON jobs TO admin; GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON jobs TO root;                                                | root
-  system        | public             | locations                  | table       | full        | NULL       | 2020-09-24 19:05:40.542168+00:00 |        261 |    5 |      true       | GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON locations TO admin; GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON locations TO root;                                      | root
-  system        | public             | role_members               | table       | full        | NULL       | 2020-09-24 19:05:40.542168+00:00 |        184 |    2 |      true       | GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON role_members TO admin; GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON role_members TO root;                                | root
-  system        | public             | comments                   | table       | full        | NULL       | 2020-09-24 19:05:40.542168+00:00 |          0 |    0 |      true       | GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON comments TO admin; GRANT SELECT ON comments TO public; GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON comments TO root;    | root
-  system        | public             | scheduled_jobs             | table       | full        | NULL       | 2020-09-24 19:05:40.542168+00:00 |        875 |    2 |      true       | GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON scheduled_jobs TO admin; GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON scheduled_jobs TO root;                            | root
-  NULL          | NULL               | defaultdb                  | database    | full        | NULL       | 2020-09-24 19:05:40.542168+00:00 |       NULL | NULL |      true       | GRANT ALL ON defaultdb TO admin; GRANT CREATE ON defaultdb TO max; GRANT ALL ON defaultdb TO root;                                                                        | root
-  NULL          | NULL               | postgres                   | database    | full        | NULL       | 2020-09-24 19:05:40.542168+00:00 |       NULL | NULL |      true       | GRANT ALL ON postgres TO admin; GRANT ALL ON postgres TO root;                                                                                                            | root
-  NULL          | NULL               | movr                       | database    | full        | NULL       | 2020-09-24 19:05:40.542168+00:00 |       NULL | NULL |      true       | GRANT ALL ON movr TO admin; GRANT ALL ON movr TO root;                                                                                                                    | root
-  movr          | public             | users                      | table       | full        | NULL       | 2020-09-24 19:05:40.542168+00:00 |       4911 |   50 |      true       | GRANT ALL ON users TO admin; GRANT ALL ON users TO root;                                                                                                                  | root
-  movr          | public             | vehicles                   | table       | full        | NULL       | 2020-09-24 19:05:40.542168+00:00 |       3182 |   15 |      true       | GRANT ALL ON vehicles TO admin; GRANT ALL ON vehicles TO root;                                                                                                            | root
-  movr          | public             | rides                      | table       | full        | NULL       | 2020-09-24 19:05:40.542168+00:00 |     156387 |  500 |      true       | GRANT ALL ON rides TO admin; GRANT ALL ON rides TO root;                                                                                                                  | root
-  movr          | public             | vehicle_location_histories | table       | full        | NULL       | 2020-09-24 19:05:40.542168+00:00 |      73918 | 1000 |      true       | GRANT ALL ON vehicle_location_histories TO admin; GRANT ALL ON vehicle_location_histories TO root;                                                                        | root
-  movr          | public             | promo_codes                | table       | full        | NULL       | 2020-09-24 19:05:40.542168+00:00 |     216083 | 1000 |      true       | GRANT ALL ON promo_codes TO admin; GRANT ALL ON promo_codes TO root;                                                                                                      | root
-  movr          | public             | user_promo_codes           | table       | full        | NULL       | 2020-09-24 19:05:40.542168+00:00 |          0 |    0 |      true       | GRANT ALL ON user_promo_codes TO admin; GRANT ALL ON user_promo_codes TO root;                                                                                            | root
-  defaultdb     | NULL               | org_one                    | schema      | full        | NULL       | 2020-09-24 19:05:40.542168+00:00 |       NULL | NULL |      true       |                                                                                                                                                                           | root
-(20 rows)
+...
 ~~~
 
 You will receive an error if there is a collection of backups in the storage location that you pass to `SHOW BACKUP`. It is necessary to run `SHOW BACKUP` with the specific backup directory rather than the backup collection's top-level directory. Use [`SHOW BACKUPS IN`](#show-backups-in) with your storage location to list the backup directories it contains, which can then be run with `SHOW BACKUP` to inspect the metadata.
@@ -250,15 +284,15 @@ You will receive an error if there is a collection of backups in the storage loc
 
 Depending on how the backup was [encrypted](take-and-restore-encrypted-backups.html), use the [`encryption_passphrase` option](backup.html#with-encryption-passphrase) and the same passphrase that was used to create the backup:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
-> SHOW BACKUP 's3://test/backup-test?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]'
+> SHOW BACKUP 's3://{bucket name}?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]'
       WITH encryption_passphrase = 'password123';
 ~~~
 
 Or, use the `kms` option and the same KMS URI that was used to create the backup:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW BACKUP 's3://test/backups/test_explicit_kms?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=123'
       WITH kms = 'aws:///arn:aws:kms:us-east-1:123456789:key/1234-abcd-5678-efgh-90ij?AWS_ACCESS_KEY_ID=123456&AWS_SECRET_ACCESS_KEY=123456&REGION=us-east-1';
@@ -294,9 +328,9 @@ Or, use the `kms` option and the same KMS URI that was used to create the backup
 
  Use `WITH debug_ids` to display the descriptor IDs related to each object in the backup:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
-SHOW BACKUP '/2021/11/15-150703.21' IN 's3://test/backup-test?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]' WITH debug_ids;
+SHOW BACKUP '/2021/11/15-150703.21' IN 's3://{bucket name}?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]' WITH debug_ids;
 ~~~
 
 ~~~
@@ -322,9 +356,9 @@ movr          |          52 | public             |               29 | user_promo
 
 Use the `WITH as_json` option to output a backup's internal metadata, contained in its manifest file, as a JSON value:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
-SHOW BACKUP '/2021/11/15-150703.21' IN 's3://test/backup-test?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]' WITH as_json;
+SHOW BACKUP '/2021/11/15-150703.21' IN 's3://{bucket name}?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]' WITH as_json;
 ~~~
 
 The response will include a `manifest` column with the file's contents as the JSON value. Use [JSONB functions](functions-and-operators.html#jsonb-functions) to query particular data or edit the format of the response.
@@ -335,9 +369,9 @@ The response returned from `SHOW BACKUP ... WITH as_json` is a backup's internal
 
 For example, to return a specific entry from the JSON response as a [`string`](string.html) indented and with newlines use the [`jsonb_pretty()`](functions-and-operators.html#jsonb-functions) function:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
-SELECT jsonb_pretty(manifest->'entryCounts') AS f FROM [SHOW BACKUP '/2021/11/15-150703.21' IN 's3://test/backup-test?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]' with as_json];
+SELECT jsonb_pretty(manifest->'entryCounts') AS f FROM [SHOW BACKUP '/2021/11/15-150703.21' IN 's3://{bucket name}?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]' with as_json];
 ~~~
 
 ~~~ json
@@ -350,9 +384,9 @@ SELECT jsonb_pretty(manifest->'entryCounts') AS f FROM [SHOW BACKUP '/2021/11/15
 
 To query for particular data, use the [`jsonb_array_elements()` function](functions-and-operators.html#jsonb-functions) to expand the desired elements from the JSON response. The following query returns the paths to each of the data files within the backup:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
-SELECT f->>'path' FROM (SELECT jsonb_array_elements(manifest->'files') AS f FROM [SHOW BACKUP '/2021/11/15-150703.21' IN 's3://test/backup-test?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]' WITH as_json]);
+SELECT f->>'path' FROM (SELECT jsonb_array_elements(manifest->'files') AS f FROM [SHOW BACKUP '/2021/11/15-150703.21' IN 's3://{bucket name}?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]' WITH as_json]);
 ~~~
 
 ~~~
