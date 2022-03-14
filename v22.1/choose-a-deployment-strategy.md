@@ -5,64 +5,73 @@ toc: true
 docs_area: deploy
 ---
 
-Cockroach Labs offers three ways to use and deploy CockroachDB: two managed services -- CockroachDB Serverless and CockroachDB Dedicated -- and a self managed option -- CockroachDB Self-Hosted.
+Cockroach Labs offers three ways to use and deploy CockroachDB: two managed services -- CockroachDB Serverless and CockroachDB Dedicated -- and a self managed option -- CockroachDB Self-Hosted. To help you choose which option would best satisfy your requirements, this page describes use cases for each option and lists the features that support the use cases.
 
-This page describes the properties of the three options and gives use cases for each option.
-
-## CockroachDB Serverless (beta)
-
-CockroachDB Serverless (beta) is a multi-tenant CockroachDB deployment, managed by Cockroach Labs, in a single region and cloud (AWS or GCP). CockroachDB Serverless lets you create and start clusters instantly.
-
-- **Isolation**: Customers share CockroachDB software and infrastructure. Customer data is isolated and remains invisible to other customers.
-- **CockroachDB version**: Managed by Cockroach Labs and upgraded periodically.
-- **Operations**: Cockroach Labs SRE provides guaranteed uptime and backups every three hours.
-- **Scaling**: Scale by increasing spend limits in Cloud Console.
-- **Cost**: Consumption based billing and spend limits enforce budget requirements.
-- **Support**: Provided by community.
-- **Enterprise features**: Not available.
-
-### Use cases
-
-- Starter projects and evaluations.
-- Only need a single region.
-
-## CockroachDB Dedicated
-
-CockroachDB Dedicated is a single tenant CockroachDB deployment, managed by Cockroach Labs, in a single, multi-region cloud (AWS or GCP).
-
-- **Isolation**: Customers have their own instance of CockroachDB software and infrastructure.
-- **CockroachDB version**: Choose when creating a cluster.
-- **Operations**: Cockroach Labs SRE provides guaranteed uptime, optimization, security, and operations for cluster, node, and cloud instances with daily and hourly backups.
-- **Scaling**: Scale by adding nodes in Cloud Console.
-- **Cost**: Per node, cloud instances, and cluster SRE all inclusive. Cockroach Labs packages all the costs of hardware, IOPs, network, load balancers, and the SRE resources required to manage the environment in one price so you have a firm understanding and predictability of your database costs.
-- **Support**: Enterprise grade support provided by Cockroach Labs.
-- **Enterprise features**: Available. See [Enterprise Features](enterprise-licensing.html).
-
-### Use cases
-
-- Mission-critical databases.
-- Future need to add new resources to expand application service.
-- Future need to add new regions serve customers in new markets.
-- Take advantage of Enterprise features.
-
-## CockroachDB Self-Hosted
-
-CockroachDB Self-Hosted is a self-managed CockroachDB deployment, backed by Cockroach Labs Support, for multiple clouds and regions.
-
-- **Isolation**: Customers manage their own instance of CockroachDB software and infrastructure.
-- **CockroachDB version**: Choose when installing CockroachDB.
-- **Scaling**: Scale by adding nodes and clusters in DB Console.
-- **Operations**: Self deployed and managed. Manual scaling.
-- **Cost**: Per vCPU on any cloud or infrastructure type.
-- **Support**: Provided by Cockroach Labs.
-- **Enterprise features**: Available. See [Enterprise Features](enterprise-licensing.html).
-
-### Use cases
-
-- Require complete control over the database environment.
-- Run in multi-cloud and inter-cloud deployments.
-- Run in a cloud, e.g. Azure, not supported by managed services.
-- Take advantage of Enterprise features.
+<table>
+  <tr>
+    <th><b>Use cases</b></th>
+    <th><b>Deployment type</b></th>
+    <th><b>Features</b></th>
+  </tr>
+  <tr>
+      <td><ul>
+        <li>Starter projects and evaluations.</li>
+        <li>Only need a single region.</li>
+      </ul></td>
+      <td><ul>
+        <li><b>CockroachDB Serverless (beta)</b>: A multi-tenant CockroachDB deployment, managed by Cockroach Labs, in a single region and cloud (AWS or GCP). CockroachDB Serverless lets you create and start clusters instantly.</li>
+      </ul></td>
+      <td><ul>
+        <li><b>Isolation</b>: Shared CockroachDB software and infrastructure. Data is is not shared between deployments.</li>
+        <li><b>CockroachDB version</b>: Managed by Cockroach Labs and upgraded periodically.</li>
+        <li><b>Operations</b>: Cockroach Labs SRE provides guaranteed uptime and backups every three hours.</li>
+        <li><b>Scaling</b>: By increasing spend limits in Cloud Console.</li>
+        <li><b>Cost</b>: Consumption based billing and spend limits enforce budget requirements.</li>
+        <li><b>Support</b>: Provided by CockroachDB <a href="https://forum.cockroachlabs.com/">community forum</a> and <a href="https://cockroachdb.slack.com/">Slack instance</a>.</li>
+        <li><b>Enterprise features</b>: ✗</li>
+      </ul></td>
+  </tr>
+  <tr>
+      <td><ul>
+        <li>Mission-critical databases.</li>
+        <li>Future need to add new resources to expand application service.</li>
+        <li>Future need to add new regions to serve customers in new markets.</li>
+        <li>Require Enterprise features.</li>
+      </ul></td>
+      <td><ul>
+        <li><b>CockroachDB Dedicated</b>: A single tenant CockroachDB deployment, managed by Cockroach Labs, in a single, multi-region cloud (AWS or GCP).</li>
+      </ul></td>
+      <td><ul>
+        <li><b>Isolation</b>: Own instance of CockroachDB software and infrastructure.</li>
+        <li><b>CockroachDB version</b>: Choose when creating a cluster.</li>
+        <li><b>Operations</b>: Cockroach Labs SRE provides guaranteed uptime, optimization, security, and operations for cluster, node, and cloud instances with daily and hourly backups.</li>
+        <li><b>Scaling</b>: By adding nodes in Cloud Console.</li>
+        <li><b>Cost</b>: Per node, cloud instances, and cluster SRE all inclusive. Cockroach Labs packages all the costs of hardware, IOPs, network, load balancers, and the SRE resources required to manage the environment in one price so you have a firm understanding and predictability of your database costs.</li>
+        <li><b>Support</b>: Enterprise grade <a href="https://support.cockroachlabs.com/">support</a> provided by Cockroach Labs.</li>
+        <li><b>Enterprise features</b>:  ✓ See <a href="enterprise-licensing.html">Enterprise Features</a>.</li>
+      </ul></td>
+  </tr>
+  <tr>
+      <td><ul>
+        <li>Require complete control over the database environment.</li>
+        <li>Run in multi-cloud and inter-cloud deployments.</li>
+        <li>Run in a cloud, e.g. Azure, not supported by managed services.</li>
+        <li>Require Enterprise features.</li>
+      </ul></td>
+      <td><ul>
+        <li><b>CockroachDB Self-Hosted</b>: A self-managed CockroachDB deployment, backed by Cockroach Labs Support, for multiple clouds and regions.</li>
+      </ul></td>
+      <td><ul>
+        <li><b>Isolation</b>: Customers manage their own instance of CockroachDB software and infrastructure.</li>
+        <li><b>CockroachDB version</b>: Choose when installing CockroachDB.</li>
+        <li><b>Operations</b>: <Self deployed and managed. Manual scaling./li>
+        <li><b>Scaling</b>: By adding nodes and clusters in DB Console.</li>
+        <li><b>Cost</b>: Per vCPU on any cloud or infrastructure type.</li>
+        <li><b>Support</b>: Enterprise grade <a href="https://support.cockroachlabs.com/">support</a> provided by Cockroach Labs.</li>
+        <li><b>Enterprise features</b>:  ✓ See <a href="enterprise-licensing.html">Enterprise Features</a>.</li>
+      </ul></td>
+  </tr>
+</table>
 
 ## See also
 
