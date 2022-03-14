@@ -33,7 +33,7 @@ Term | Definition
 Term | Definition
 -----|-----------
 **single tenant** | A single instance of CockroachDB and supporting infrastructure. In a single tenant deployment, customers have their own instance of CockroachDB software and infrastructure. There are no shared resources.
-**multi-tenant** | A single instance of CockroachDB and its supporting infrastructure. In a multi-tenant deployment, customers share CockroachDB software and infrastructure. Customer data is isolated and remains invisible to other customers.
+**multi-tenant** | A single instance of CockroachDB and supporting infrastructure. In a multi-tenant deployment, customers share CockroachDB software and infrastructure. Customer data is isolated and remains invisible to other customers.
 **CockroachDB Serverless (beta)** | A multi-tenant CockroachDB deployment managed by Cockroach Labs in a single cloud and region. A Serverless cluster is an isolated, virtualized tenant running on a shared CockroachDB deployment. Cockroach Labs SRE provides guaranteed uptime and operations. Includes the ability to start clusters instantly and eliminates database operations. Consumption based billing and spend limits enforce budget requirements.
 **CockroachDB Dedicated** | A single tenant CockroachDB deployment managed by Cockroach Labs in a single multi-region cloud. Cockroach Labs SRE provides guaranteed uptime, optimization, security, and operations for cluster, node, and cloud instances.
 **CockroachDB Self-Hosted** | A self-managed CockroachDB deployment backed by Cockroach Labs Support available for in multiple clouds and regions. Charged per vCPU on any cloud or infrastructure type.
