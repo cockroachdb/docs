@@ -64,7 +64,7 @@ Cockroach Labs offers three ways to use and deploy CockroachDB: two managed serv
       <td><ul>
         <li><b>Isolation</b>: Customers manage their own instance of CockroachDB software and infrastructure.</li>
         <li><b>CockroachDB version</b>: Choose when installing CockroachDB.</li>
-        <li><b>Operations</b>: <Self deployed and managed. Manual scaling./li>
+        <li><b>Operations</b>: Self deployed and managed. Manual scaling.</li>
         <li><b>Scaling</b>: By adding nodes and clusters in DB Console.</li>
         <li><b>Cost</b>: Per vCPU on any cloud or infrastructure type.</li>
         <li><b>Support</b>: Enterprise grade <a href="https://support.cockroachlabs.com/">support</a> provided by Cockroach Labs.</li>
