@@ -19,13 +19,20 @@ You can also back up:
 - [An individual database](#backup-a-database), which includes all of its tables and views
 - [An individual table](#backup-a-table-or-view), which includes its indexes and views
 
-    `BACKUP` only backs up entire tables; it _does not_ support backing up subsets of a table.
+    `BACKUP` only backs up entire tables; it **does not** support backing up subsets of a table.
 
 Because CockroachDB is designed with high fault tolerance, these backups are designed primarily for disaster recovery (i.e., if your cluster loses a majority of its nodes) through [`RESTORE`](restore.html). Isolated issues (such as small-scale node outages) do not require any intervention.
 
+{{site.data.alerts.callout_info}}
+The [`BACKUP ... TO`](../v20.2/backup.html) and [`RESTORE ... FROM`](../v20.2/restore.html) syntax is **deprecated** as of v22.1 and will be removed in a future release.
+
+We recommend using the `BACKUP ... INTO {collection}` syntax, which creates or adds to a [backup collection](take-full-and-incremental-backups.html#backup-collections) in your storage location. For restoring backups, we recommend using `RESTORE FROM {backup} IN {collection}` with `{backup}` being `LATEST` or a specific subdirectory.
+
+For guidance on the syntax for backups and restores, see the [`BACKUP`](backup.html#examples) and [`RESTORE`](restore.html#examples) examples.
+{{site.data.alerts.end}}
+
 ## Considerations
 
--  <span class="version-tag">New in v21.1:</span> The syntax `BACKUP ... INTO` adds a backup to a collection within the backup destination. The path to the backup is created using a date-based naming scheme. Versions of CockroachDB prior to v21.1 used the syntax `BACKUP ... TO` to backup directly to a specific operator-chosen destination, rather than picking a date-based path. The `BACKUP ... TO` syntax will be **deprecated** in future releases. For more information on this soon-to-be deprecated syntax, [see the docs for v20.2](../v20.2/backup.html) or earlier.
 - Core users can only take [full backups](take-full-and-incremental-backups.html#full-backups). To use the other backup features, you need an [Enterprise license](enterprise-licensing.html). You can also use [{{ site.data.products.dedicated }}](https://cockroachlabs.cloud/signup?referralId=docs-crdb-backup), which runs [full backups daily and incremental backups hourly](../cockroachcloud/backups-page.html).
 - `BACKUP` is a blocking statement. To run a backup job asynchronously, use the `DETACHED` option. See the [options](#options) below.
 - Backups will export [Enterprise license keys](enterprise-licensing.html) during a [full cluster backup](#backup-a-cluster). When you [restore](restore.html) a full cluster with an Enterprise license, it will restore the Enterprise license of the cluster you are restoring from.
@@ -58,7 +65,7 @@ To view the contents of an Enterprise backup created with the `BACKUP` statement
  Parameter | Description
 -----------+-------------
 `targets` | Back up the listed [targets](#targets).
-`subdirectory` | The name of the specific subdirectory (e.g., `2021/03/23-213101.37`) where you want to add an [incremental backup](take-full-and-incremental-backups.html#incremental-backups). To view available subdirectories, use [`SHOW BACKUPS IN destination`](show-backup.html). If the `subdirectory` is not provided, a [full backup](take-full-and-incremental-backups.html#full-backups) will be created in the collection using a date-based naming scheme (i.e., `<year>/<month>/<day>-<timestamp>`).<br><br>**Warning:** If you use an arbitrary `STRING` as the subdirectory, a new full backup will be created, but it will never be shown in `SHOW BACKUPS IN`. We do not recommend using arbitrary strings as subdirectory names.
+`subdirectory` | The name of the specific backup (e.g., `2021/03/23-213101.37`) in the collection to which you want to add an [incremental backup](take-full-and-incremental-backups.html#incremental-backups). To view available backup subdirectories, use [`SHOW BACKUPS IN destination`](show-backup.html). If the backup `subdirectory` is not provided, a [full backup](take-full-and-incremental-backups.html#full-backups) will be created in the collection using a date-based naming scheme (i.e., `<year>/<month>/<day>-<timestamp>`).<br><br>**Warning:** If you use an arbitrary `STRING` as the subdirectory, a new full backup will be created, but it will never be shown in `SHOW BACKUPS IN`. We do not recommend using arbitrary strings as subdirectory names.
 `LATEST` | Append an incremental backup to the latest completed full backup's subdirectory.
 `destination` | The URL where you want to store the backup.<br/><br/>For information about this URL structure, see [Backup File URLs](#backup-file-urls).
 `timestamp` | Back up data as it existed as of [`timestamp`](as-of-system-time.html). The `timestamp` must be more recent than your cluster's last garbage collection (which defaults to occur every 25 hours, but is [configurable per table](configure-replication-zones.html#replication-zone-variables)).

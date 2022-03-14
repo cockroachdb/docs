@@ -17,6 +17,38 @@ You can use the [`BACKUP`](backup.html) statement to efficiently back up your cl
  You can create [schedules for periodic backups](manage-a-backup-schedule.html) in CockroachDB. We recommend using scheduled backups to automate daily backups of your cluster.
 {{site.data.alerts.end}}
 
+## Backup collections
+
+When running a [full backup](#full-backups) to a specified storage location, a _backup collection_ will be created in that storage location. A backup collection defines a **logical** set of backups, which can contain multiple full backups and their subsequent [incremental backups](#incremental-backups). (If a full backup is not present in a collection when an incremental backup is run, then a full backup will be taken.) The path to a backup is created using a date-based naming scheme.
+
+In the following example, a user has taken weekly full backups and nightly incremental backups to their collection location:
+
+~~~
+Collection:
+|—— 2022
+  |—— 02
+    |—— 09-155340.13/
+      |—— Full backup files
+      |—— 20220210/
+        |—— 155530.50/
+          |—— Incremental backup files
+      |—— 20220211/
+        |—— 155628.07/
+          |—— Incremental backup files
+      [...]
+    |—— 16-143018.72/
+      |—— Full backup files
+      |—— 20220217/
+        |—— 155530.50/
+          |—— Incremental backup files
+      |—— 20220218/
+        |—— 155628.07/
+          |—— Incremental backup files
+      [...]
+~~~
+
+[`SHOW BACKUPS IN {collection-location}`](show-backup.html#view-a-list-of-the-available-full-backup-subdirectories) will display a list of the full backup subdirectories in the collection's storage location.
+
 ## Full backups
 
 Full backups are now available to both core and Enterprise users.
@@ -37,35 +69,44 @@ To do a cluster backup, use the [`BACKUP`](backup.html) statement:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> BACKUP INTO '{destination}';
+> BACKUP INTO '{collection location}';
 ~~~
 
-If it's ever necessary, you can use the [`RESTORE`][restore] statement to restore a table:
+If it's ever necessary, you can use the [`RESTORE`][restore] statement with `LATEST` to restore the most recent backup added to the [collection]:
+
+To restore a table:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> RESTORE TABLE bank.customers FROM '{subdirectory}' IN '{destination}';
+> RESTORE TABLE bank.customers FROM LATEST IN '{collection location}';
 ~~~
 
-To view the available backup subdirectories, use [`SHOW BACKUPS`](show-backup.html).
-
-Or to restore a  database:
+To restore a database:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> RESTORE DATABASE bank FROM '{subdirectory}' IN '{destination}';
+> RESTORE DATABASE bank FROM LATEST IN '{collection location}';
 ~~~
 
-Or to restore your full cluster:
+To restore your full cluster:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> RESTORE FROM '{subdirectory}' IN '{destination}';
+> RESTORE FROM LATEST IN '{collection location}';
 ~~~
 
 {{site.data.alerts.callout_info}}
-A full cluster restore can only be run on a target cluster that has _never_ had user-created databases or tables.
+A full cluster restore can only be run on a target cluster that has **never** had user-created databases or tables.
 {{site.data.alerts.end}}
+
+To restore a backup from a specific subdirectory:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> RESTORE DATABASE bank FROM {subdirectory} IN '{collection location}';
+~~~
+
+To view the available backup subdirectories, use [`SHOW BACKUPS`](show-backup.html).
 
 ## Incremental backups
 
@@ -89,25 +130,32 @@ Periodically run the [`BACKUP`][backup] command to take a full backup of your cl
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> BACKUP INTO '{destination}';
+> BACKUP INTO '{collection-location}';
 ~~~
 
 Then, create nightly incremental backups based off of the full backups you've already created. To append an incremental backup to the most recent full backup created in the given destination, use `LATEST`:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> BACKUP INTO LATEST IN '{destination}';
+> BACKUP INTO LATEST IN '{collection-location}';
 ~~~
 
-{{site.data.alerts.callout_info}}
-For an example on how to specify the destination of an incremental backup, see [Incremental backups with explicitly specified destinations](#incremental-backups-with-explicitly-specified-destinations)
-{{site.data.alerts.end}}
+For an example on how to specify the destination of an incremental backup, see [Incremental backups with explicitly specified destinations](#incremental-backups-with-explicitly-specified-destinations).
 
-If it's ever necessary, you can then use the [`RESTORE`][restore] command to restore your cluster, database(s), and/or table(s). Restoring from incremental backups requires previous full and incremental backups. To restore from a destination containing the full backup, as well as the appended incremental backups:
+If it's ever necessary, you can then use the [`RESTORE`][restore] command to restore your cluster, database(s), and/or table(s). Restoring from incremental backups requires previous full and incremental backups.
+
+To restore from the most recent incremental backup, run the following:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> RESTORE FROM '{subdirectory}' IN '{destination}';
+> RESTORE FROM LATEST IN '{collection location}';
+~~~
+
+To restore a specific incremental backup, run `RESTORE` with the backup's subdirectory:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> RESTORE FROM '{subdirectory}' IN '{collection-location}';
 ~~~
 
 {{site.data.alerts.callout_info}}
@@ -120,7 +168,7 @@ To explicitly control where your incremental backups go, use the [`INTO {subdire
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> BACKUP DATABASE bank INTO '{subdirectory}' IN '{destination}' \
+> BACKUP DATABASE bank INTO '{subdirectory}' IN '{collection-location}' \
     AS OF SYSTEM TIME '-10s' \
     WITH revision_history;
 ~~~
