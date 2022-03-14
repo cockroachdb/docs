@@ -2,6 +2,7 @@
 title: Quickstart with CockroachDB Serverless (beta)
 summary: Learn how to create and use your free CockroachDB Cloud cluster.
 toc: true
+referral_id: docs_quickstart_free
 filter_category: qs_crdb_cloud
 filter_html: CockroachDB Serverless (beta)
 filter_sort: 1
@@ -10,85 +11,11 @@ docs_area: get_started
 
 {% include filter-tabs.md %}
 
-This page shows you how to get started with {{ site.data.products.db }} quickly. You'll create a free {{ site.data.products.serverless }} cluster, connect with the {{ site.data.products.db }} SQL client, insert some data, and then read the data from a sample application.
+This page shows you how to get started with {{ site.data.products.db }} quickly. You'll create a free {{ site.data.products.serverless }} cluster, and then insert and read some sample data from a sample application.
 
-{{site.data.alerts.callout_success}}
-To run CockroachDB on your local machine instead, see [Start a Local Cluster](../stable/secure-a-cluster.html).
-{{site.data.alerts.end}}
+The sample code used in this tutorial is located in the [`quickstart-code-samples` GitHub repo](https://github.com/cockroachdb/quickstart-code-samples). This repo contains code samples written in JavaScript, Python, Go, and Java.
 
-{% include cockroachcloud/free-limitations.md %}
-
-## Step 1. Create a free cluster
-
-1. If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=docs_quickstart_free" rel="noopener" target="_blank">sign up for a {{ site.data.products.db }} account</a>.
-1. [Log in](https://cockroachlabs.cloud/) to your {{ site.data.products.db }} account.
-1. On the **Clusters** page, click **Create Cluster**.
-1. On the **Create your cluster** page, select **Serverless**.
-
-    Unless you change your monthly budget, this cluster will be free forever.
-
-1. Click **Create cluster**.
-
-    Your cluster will be created in a few seconds and the **Connection info** dialog will display.
-
-## Step 2. Connect to the cluster
-
-The **Connection info** dialog shows information about how to connect to your cluster.
-
-1. Click the **Choose your OS** dropdown, and select the operating system of your local machine.
-1. Click the **Connection string** tab in the **Connection info** dialog.
-    1. Open a new terminal on your local machine, and run the command provided in step **1** to download the CA certificate. This certificate is required by most clients connecting to {{ site.data.products.db }}.
-    1. Copy the connection string provided in step **2** to a secure location.
-
-        {{site.data.alerts.callout_info}}
-        The connection string is pre-populated with your username, password, cluster name, and other details. Your password, in particular, will be provided *only once*. Save it in a secure place (Cockroach Labs recommends a password manager) to connect to your cluster in the future. If you forget your password, you can reset it by going to the [**SQL Users** page](user-authorization.html).
-        {{site.data.alerts.end}}
-
-1. Click the **Command Line** tab of the **Connection info** dialog.
-   1. Run the command in step **1** to install the [`cockroach` binary](../stable/cockroach-commands.html) and add it to your OS's `PATH`.
-   1. Run the command in step **2** to connect to your cluster using the [CockroachDB SQL client](../stable/cockroach-sql.html).
-
-You will see a welcome message when you've successfully connected to your cluster:
-
-~~~ text
-#
-# Welcome to the CockroachDB SQL shell.
-# All statements must be terminated by a semicolon.
-# To exit, type: \q.
-#
-~~~
-
-## Step 3. Insert data
-
-1. In the SQL shell, run the following [SQL statements](learn-cockroachdb-sql.html):
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ sql
-    > CREATE TABLE messages (id UUID PRIMARY KEY DEFAULT gen_random_uuid(), message STRING);
-    ~~~
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ sql
-    > INSERT INTO messages (message) VALUES ('Hello world!');
-    ~~~
-
-    These statements create a new table named `messages` and insert a single row into the table.
-
-1. Exit the SQL shell:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ sql
-    > \q
-    ~~~
-
-## Step 4. Run the sample code
-
-The sample code used in this tutorial is located in the [`quickstart-code-samples` GitHub repo](https://github.com/cockroachdb/quickstart-code-samples).
-
-This repo contains code samples written in JavaScript, Python, Go, and Java. Each code sample does the following:
-  1. Attempts to connect to a running cluster.
-  1. Reads the sample data you inserted earlier.
-  1. Prints the data to the terminal.
+Select the language that you want to use:
 
 <div class="filters clearfix">
   <button class="filter-button" data-scope="node">Node.js</button>
@@ -97,9 +24,68 @@ This repo contains code samples written in JavaScript, Python, Go, and Java. Eac
   <button class="filter-button" data-scope="java">Java</button>
 </div>
 
+{% include cockroachcloud/free-limitations.md %}
+
+## Step 1. Create a free cluster
+
+{% include cockroachcloud/quickstart/create-a-free-cluster.md %}
+
+## Step 2. Connect to the cluster
+
+<section class="filter-content" markdown="1" data-scope="python">
+
+The **Connection info** dialog shows information about how to connect to your cluster.
+
+1. Click the **Choose your OS** dropdown, and select the operating system of your local machine.
+
+1. Open a new terminal on your local machine, and run the command provided in step **1** to download the CA certificate. This certificate is required by most clients connecting to {{ site.data.products.db }}.
+
+1. Click the **Connection string** tab in the **Connection info** dialog.
+    1. Copy the connection string provided in step **2** to a secure location.
+
+        {{site.data.alerts.callout_info}}
+        The connection string is pre-populated with your username, password, cluster name, and other details. Your password, in particular, will be provided *only once*. Save it in a secure place (Cockroach Labs recommends a password manager) to connect to your cluster in the future. If you forget your password, you can reset it by going to the [**SQL Users** page](user-authorization.html).
+        {{site.data.alerts.end}}
+
+<section>
+
 <section class="filter-content" markdown="1" data-scope="node">
 
-1. Clone the `quickstart-code-samples` repo, and navigate to the `node` directory of the repo:
+{% include cockroachcloud/quickstart/get-connection-string.md %}
+
+<section>
+
+<section class="filter-content" markdown="1" data-scope="go">
+
+{% include cockroachcloud/quickstart/get-connection-string.md %}
+
+<section>
+
+<section class="filter-content" markdown="1" data-scope="java">
+
+{% include cockroachcloud/quickstart/get-connection-string.md %}
+
+1. Click the **Choose your OS** dropdown, and select the operating system of your local machine.
+
+1. Click the **Command Line** tab of the **Connection info** dialog.
+   1. Run the command in step **1** to install the [`cockroach` binary](../stable/cockroach-commands.html) and add it to your OS's `PATH`.
+
+<section>
+
+## Step 3. Run the sample code
+
+1. Clone the `quickstart-code-samples` repo.
+
+  The code sample in each language's subdirectory does the following:
+    1. Attempts to connect to a running cluster.
+    1. Creates a table.
+    1. Inserts some data into the table.
+    1. Reads the inserted data.
+    1. Prints the data to the terminal.
+
+    <section class="filter-content" markdown="1" data-scope="node">
+
+1. Navigate to the `node` directory of the repo:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -146,16 +132,11 @@ This repo contains code samples written in JavaScript, Python, Go, and Java. Eac
     Hello world!
     ~~~
 
-</section>
+    </section>
 
-<section class="filter-content" markdown="1" data-scope="python">
+    <section class="filter-content" markdown="1" data-scope="python">
 
-1. Clone the `quickstart-code-samples` repo, and navigate to the `python` directory of the repo:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    git clone https://github.com/cockroachdb/quickstart-code-samples
-    ~~~
+1. Navigate to the `python` directory of the repo:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -181,14 +162,14 @@ This repo contains code samples written in JavaScript, Python, Go, and Java. Eac
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    pip3 install psycopg2-binary
+    pip install -r requirements.txt
     ~~~
 
 1. Run the application:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    python3 main.py
+    python main.py
     ~~~
 
     The output will look like this:
@@ -197,16 +178,11 @@ This repo contains code samples written in JavaScript, Python, Go, and Java. Eac
     Hello world!
     ~~~
 
-</section>
+    </section>
 
-<section class="filter-content" markdown="1" data-scope="go">
+    <section class="filter-content" markdown="1" data-scope="go">
 
-1. Clone the `quickstart-code-samples` repo, and navigate to the `go` directory of the repo:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    git clone https://github.com/cockroachdb/quickstart-code-samples
-    ~~~
+1. Navigate to the `go` directory of the repo:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -246,17 +222,12 @@ This repo contains code samples written in JavaScript, Python, Go, and Java. Eac
     Hello world!
     ~~~
 
-</section>
-<br/>{% comment %}Need to add this manual break to force Jekyll to render the next section correctly {% endcomment %}
+    </section>
+    <br/>{% comment %}Need to add this manual break to force Jekyll to render the next section correctly {% endcomment %}
 
-<section class="filter-content" markdown="1" data-scope="java">
+    <section class="filter-content" markdown="1" data-scope="java">
 
-1. Clone the `quickstart-code-samples` repo, and navigate to the `java` directory of the repo:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    git clone https://github.com/cockroachdb/quickstart-code-samples
-    ~~~
+1. Navigate to the `java` directory of the repo:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -305,7 +276,7 @@ This repo contains code samples written in JavaScript, Python, Go, and Java. Eac
     2 actionable tasks: 2 executed
     ~~~
 
-</section>
+    </section>
 
 ## Next steps
 
