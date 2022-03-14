@@ -18,6 +18,12 @@
           ]
         },
         {
+          "title": "Manage Billing",
+          "urls": [
+             "/cockroachcloud/billing-management.html"
+          ]
+        },
+        {
           "title": "Use the Cloud API",
           "urls": [
             "/cockroachcloud/cloud-api.html"
