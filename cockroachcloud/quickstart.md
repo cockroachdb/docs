@@ -13,9 +13,9 @@ docs_area: get_started
 
 This page shows you how to get started with {{ site.data.products.db }} quickly. You'll create a free {{ site.data.products.serverless }} cluster, and then insert and read some sample data from a sample application.
 
-The sample code used in this tutorial is located in the [`quickstart-code-samples` GitHub repo](https://github.com/cockroachdb/quickstart-code-samples). This repo contains code samples written in JavaScript, Python, Go, and Java.
+{% include cockroachcloud/free-limitations.md %}
 
-Select the language that you want to use:
+The sample code used in this tutorial is located in the [`quickstart-code-samples` GitHub repo](https://github.com/cockroachdb/quickstart-code-samples). This repo contains code samples written in JavaScript, Python, Go, and Java. Select the language that you want to use:
 
 <div class="filters clearfix">
   <button class="filter-button" data-scope="node">Node.js</button>
@@ -24,13 +24,17 @@ Select the language that you want to use:
   <button class="filter-button" data-scope="java">Java</button>
 </div>
 
-{% include cockroachcloud/free-limitations.md %}
-
 ## Step 1. Create a free cluster
 
 {% include cockroachcloud/quickstart/create-a-free-cluster.md %}
 
 ## Step 2. Connect to the cluster
+
+<section class="filter-content" markdown="1" data-scope="node">
+
+{% include cockroachcloud/quickstart/get-connection-string.md %}
+
+</section>
 
 <section class="filter-content" markdown="1" data-scope="python">
 
@@ -38,28 +42,23 @@ The **Connection info** dialog shows information about how to connect to your cl
 
 1. Click the **Choose your OS** dropdown, and select the operating system of your local machine.
 
-1. Open a new terminal on your local machine, and run the command provided in step **1** to download the CA certificate. This certificate is required by most clients connecting to {{ site.data.products.db }}.
-
 1. Click the **Connection string** tab in the **Connection info** dialog.
-    1. Copy the connection string provided in step **2** to a secure location.
 
-        {{site.data.alerts.callout_info}}
-        The connection string is pre-populated with your username, password, cluster name, and other details. Your password, in particular, will be provided *only once*. Save it in a secure place (Cockroach Labs recommends a password manager) to connect to your cluster in the future. If you forget your password, you can reset it by going to the [**SQL Users** page](user-authorization.html).
-        {{site.data.alerts.end}}
+1. Open a new terminal on your local machine, and run the command provided in step **1** to download the CA certificate. This certificate is required by most Python clients connecting to {{ site.data.products.db }}.
 
-<section>
+1. Copy the connection string provided in step **2** to a secure location.
 
-<section class="filter-content" markdown="1" data-scope="node">
+    {{site.data.alerts.callout_info}}
+    The connection string is pre-populated with your username, password, cluster name, and other details. Your password, in particular, will be provided *only once*. Save it in a secure place (Cockroach Labs recommends a password manager) to connect to your cluster in the future. If you forget your password, you can reset it by going to the [**SQL Users** page](user-authorization.html).
+    {{site.data.alerts.end}}
 
-{% include cockroachcloud/quickstart/get-connection-string.md %}
-
-<section>
+</section>
 
 <section class="filter-content" markdown="1" data-scope="go">
 
 {% include cockroachcloud/quickstart/get-connection-string.md %}
 
-<section>
+</section>
 
 <section class="filter-content" markdown="1" data-scope="java">
 
@@ -68,36 +67,35 @@ The **Connection info** dialog shows information about how to connect to your cl
 1. Click the **Choose your OS** dropdown, and select the operating system of your local machine.
 
 1. Click the **Command Line** tab of the **Connection info** dialog.
-   1. Run the command in step **1** to install the [`cockroach` binary](../stable/cockroach-commands.html) and add it to your OS's `PATH`.
 
-<section>
+1. Run the command in step **1** to install the [`cockroach` binary](../stable/cockroach-commands.html) and add it to your OS's `PATH`.
+
+</section>
 
 ## Step 3. Run the sample code
 
-1. Clone the `quickstart-code-samples` repo.
-
-  The code sample in each language's subdirectory does the following:
-    1. Attempts to connect to a running cluster.
-    1. Creates a table.
-    1. Inserts some data into the table.
-    1. Reads the inserted data.
-    1. Prints the data to the terminal.
-
-    <section class="filter-content" markdown="1" data-scope="node">
-
-1. Navigate to the `node` directory of the repo:
+1. Clone the `quickstart-code-samples` repo:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     git clone https://github.com/cockroachdb/quickstart-code-samples
     ~~~
 
+  <section class="filter-content" markdown="1" data-scope="node">
+
+1. Navigate to the `node` directory of the repo:
+
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     cd quickstart-code-samples/node
     ~~~
 
-    The code sample in this directory connects to {{ site.data.products.db }} with the [node-postgres driver](https://node-postgres.com).
+    The code sample in this directory does the following:
+      1. Connects to {{ site.data.products.db }} with the [node-postgres driver](https://node-postgres.com).
+      1. Creates a table.
+      1. Inserts some data into the table.
+      1. Reads the inserted data.
+      1. Prints the data to the terminal.
 
 1. Set the `DATABASE_URL` environment variable to the connection string that you [copied from the {{ site.data.products.cloud }} Console earlier](#step-2-connect-to-the-cluster):
 
@@ -132,9 +130,9 @@ The **Connection info** dialog shows information about how to connect to your cl
     Hello world!
     ~~~
 
-    </section>
+  </section>
 
-    <section class="filter-content" markdown="1" data-scope="python">
+  <section class="filter-content" markdown="1" data-scope="python">
 
 1. Navigate to the `python` directory of the repo:
 
@@ -143,7 +141,12 @@ The **Connection info** dialog shows information about how to connect to your cl
     cd quickstart-code-samples/python
     ~~~
 
-    The code sample in this directory connects to {{ site.data.products.db }} with the [psycopg2 driver](https://www.psycopg.org).
+    The code sample in this directory does the following:
+      1. Connects to {{ site.data.products.db }} with the [psycopg2 driver](https://www.psycopg.org).
+      1. Creates a table.
+      1. Inserts some data into the table.
+      1. Reads the inserted data.
+      1. Prints the data to the terminal.
 
 1. Set the `DATABASE_URL` environment variable to the connection string that you [copied from the {{ site.data.products.cloud }} Console earlier](#step-2-connect-to-the-cluster):
 
@@ -178,9 +181,9 @@ The **Connection info** dialog shows information about how to connect to your cl
     Hello world!
     ~~~
 
-    </section>
+  </section>
 
-    <section class="filter-content" markdown="1" data-scope="go">
+  <section class="filter-content" markdown="1" data-scope="go">
 
 1. Navigate to the `go` directory of the repo:
 
@@ -189,7 +192,12 @@ The **Connection info** dialog shows information about how to connect to your cl
     cd quickstart-code-samples/go
     ~~~
 
-    The code sample in this directory connects to {{ site.data.products.db }} with the [pgx driver](https://github.com/jackc/pgx).
+    The code sample in this directory does the following:
+      1. Connects to {{ site.data.products.db }} with the [pgx driver](https://github.com/jackc/pgx).
+      1. Creates a table.
+      1. Inserts some data into the table.
+      1. Reads the inserted data.
+      1. Prints the data to the terminal.
 
 1. Set the `DATABASE_URL` environment variable to the connection string that you [copied from the {{ site.data.products.cloud }} Console earlier](#step-2-connect-to-the-cluster):
 
@@ -222,10 +230,9 @@ The **Connection info** dialog shows information about how to connect to your cl
     Hello world!
     ~~~
 
-    </section>
-    <br/>{% comment %}Need to add this manual break to force Jekyll to render the next section correctly {% endcomment %}
+  </section>
 
-    <section class="filter-content" markdown="1" data-scope="java">
+  <section class="filter-content" markdown="1" data-scope="java">
 
 1. Navigate to the `java` directory of the repo:
 
@@ -234,7 +241,12 @@ The **Connection info** dialog shows information about how to connect to your cl
     cd quickstart-code-samples/java
     ~~~
 
-    The code sample in this directory connects to {{ site.data.products.db }} with the [JDBC driver](https://jdbc.postgresql.org).
+    The code sample in this directory does the following:
+      1. Connects to {{ site.data.products.db }} with the [JDBC driver](https://jdbc.postgresql.org).
+      1. Creates a table.
+      1. Inserts some data into the table.
+      1. Reads the inserted data.
+      1. Prints the data to the terminal.
 
 1. Use the `cockroach convert-url` command to convert the connection string that you [copied from the {{ site.data.products.cloud }} Console earlier](#step-2-connect-to-the-cluster) to a [valid connection string for JDBC connections](../stable/connect-to-the-database.html?filters=java):
 
@@ -276,7 +288,7 @@ The **Connection info** dialog shows information about how to connect to your cl
     2 actionable tasks: 2 executed
     ~~~
 
-    </section>
+  </section>
 
 ## Next steps
 
