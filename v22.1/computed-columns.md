@@ -35,7 +35,7 @@ Virtual computed columns:
 
 - Are not stored in the table's primary index.
 - Are recomputed as the column data in the expression changes.
-- Cannot be used as part of a primary key, `FAMILY` definition, in `CHECK` constraints, or `FOREIGN KEY` constraints.
+- Cannot be used as part of a `FAMILY` definition, in `CHECK` constraints, or in `FOREIGN KEY` constraints.
 - Cannot be a [foreign key](foreign-key.html) reference.
 - Cannot be stored in indexes.
 - Can be index columns.

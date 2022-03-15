@@ -155,8 +155,7 @@ For example, suppose that every morning you want to delete all rows in the [`rid
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    SET experimental_enable_hash_sharded_indexes=on;
-    CREATE INDEX ON rides(last_updated) USING HASH WITH BUCKET_COUNT=8;
+    CREATE INDEX ON rides(last_updated) USING HASH;
     ~~~
 
 1. Write a script with a batch-delete loop, following the [batch delete on an indexed column pattern](#batch-delete-on-an-indexed-column):
