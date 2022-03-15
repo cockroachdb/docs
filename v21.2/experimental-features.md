@@ -172,7 +172,7 @@ The table below lists the experimental SQL functions and operators available in 
 
 {% include {{ page.version.version }}/cdc/metrics-labels.md %}
 
-For usage details, see the [Monitor and Debug Changefeeds](monitor-and-dbug-changefeeds.html) page.
+For usage details, see the [Monitor and Debug Changefeeds](monitor-and-debug-changefeeds.html) page.
 
 ## See Also
 
