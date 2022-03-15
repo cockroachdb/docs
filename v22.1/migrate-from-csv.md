@@ -218,7 +218,6 @@ Example usage:
 - [Import Performance Best Practices](import-performance-best-practices.html)
 - [Migrate from MySQL][mysql]
 - [Migrate from Postgres][postgres]
-- [SQL Dump (Export)](cockroach-dump.html)
 - [Back Up and Restore Data](take-full-and-incremental-backups.html)
 - [Use the Built-in SQL Client](cockroach-sql.html)
 - [Other Cockroach Commands](cockroach-commands.html)

@@ -424,6 +424,9 @@ layout: null
 /docs/column-families.html /docs/stable/column-families.html 301
 /docs/performance-recipes-solutions.html /docs/stable/performance-recipes.html 301
 /docs/stable/stream-data-out-of-cockroachdb-using-changefeeds.html /docs/stable/change-data-capture-overview.html 301
+/docs/stable/cockroach-dump.html /docs/v21.1/cockroach-dump.html 301
+/docs/v21.2/cockroach-dump.html /docs/v21.1/cockroach-dump.html 301
+/docs/v22.1/cockroach-dump.html /docs/v21.1/cockroach-dump.html 301
 
 #CockroachDB Cloud release notes
 
