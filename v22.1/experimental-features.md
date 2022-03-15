@@ -168,6 +168,12 @@ The table below lists the experimental SQL functions and operators available in 
     Enter password:
   ~~~
 
+## Changefeed metrics labels
+
+{% include {{ page.version.version }}/cdc/metrics-labels.md %}
+
+For usage details, see the [Monitor and Debug Changefeeds](monitor-and-dbug-changefeeds.html) page.
+
 ## See Also
 
 - [`SHOW` (session)](show-vars.html)

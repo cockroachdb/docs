@@ -40,19 +40,11 @@ You can use the high-water timestamp to [start a new changefeed where another en
 
 {% include common/experimental-warning.md %}
 
-To measure metrics per changefeed, define a "metrics label" to which one or multiple changefeed(s) will increment each [changefeed metric](#metrics). Metrics label information is sent with time-series metrics to `http://<host>:<http-port>/_status/vars`, viewable via the [Prometheus endpoint](monitoring-and-alerting.html#prometheus-endpoint). An aggregated metric of all changefeeds is also measured.
+{{site.data.alerts.callout_info}}
+An {{ site.data.products.enterprise }} license is required to use metrics labels in changefeeds.
+{{site.data.alerts.end}}
 
-It is necessary to consider the following when applying metrics labels to changefeeds:
-
-- An {{ site.data.products.enterprise }} license is required to use this feature.
-- Metrics labels are **not** available in {{ site.data.products.db }}.
-- The `COCKROACH_EXPERIMENTAL_ENABLE_PER_CHANGEFEED_METRICS` environment variable must be specified to use this feature.
-- The `server.child_metrics.enabled` [cluster setting](cluster-settings.html) must be set to `true` before using the `metrics_label` option.
-- Metrics label information is sent to the `_status/vars` endpoint, but will **not** show up in [`debug.zip`](cockroach-debug-zip.html) or the [DB Console](ui-overview.html).
-- Introducing labels to isolate a changefeed's metrics can increase cardinality significantly. There is a limit of 1024 unique labels in place to prevent cardinality explosion. That is, when labels are applied to high-cardinality data (data with a higher number of unique values), each changefeed with a label then results in more metrics data to multiply together, which will grow over time. This will have an impact on performance as the metric-series data per changefeed quickly populates against its label.
-- The maximum length of a metrics label is 128 bytes.
-
-Before using the `metrics_label` option, it is necessary to set the `COCKROACH_EXPERIMENTAL_ENABLE_PER_CHANGEFEED_METRICS` [environment variable](cockroach-commands.html#environment-variables) on the cluster.
+{% include {{ page.version.version }}/cdc/metrics-labels.md %}
 
 To start a changefeed with a metrics label, set the following cluster setting to `true`:
 
@@ -61,7 +53,7 @@ To start a changefeed with a metrics label, set the following cluster setting to
 SET CLUSTER SETTING server.child_metrics.enabled=true;
 ~~~
 
-Create the changefeed passing the `metrics_label` option with the label name as its value:
+Create the changefeed, passing the `metrics_label` option with the label name as its value:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -80,7 +72,7 @@ Multiple changefeeds can be added to a label:
 CREATE CHANGEFEED FOR TABLE movr.vehicle_location_histories INTO 'kafka://host:port' WITH metrics_label=vehicles;
 ~~~
 
-`http://<host>:<http-port>/_status/vars` shows the defined changefeed(s) by label and the aggregated metric for all changefeeds. This output also shows the `default` scope, which will include changefeeds started without a metrics label:
+`http://{host}:{http-port}/_status/vars` shows the defined changefeed(s) by label and the aggregated metric for all changefeeds. This output also shows the `default` scope, which will include changefeeds started without a metrics label:
 
 ~~~
 changefeed_running 4
@@ -114,7 +106,7 @@ changefeed_emitted_bytes{scope="vehicles"} 183557
 `changefeed_flushes` | Total number of flushes for a changefeed. | Flushes
 `emit_latency`     | Difference between the event's [MVCC](architecture/storage-layer.html#mvcc) timestamp and the time the event was emitted by CockroachDB. | Nanoseconds
 `admit_latency`    | Difference between the event's MVCC timestamp and the time the event is put into the memory buffer. | Nanoseconds
-`commit_latency`   | Different between the event's MVCC timestamp and the time it is acknowledged by the [downstream sink](changefeed-sinks.html). If the sink is batching events, then the difference is between the oldest event and when the acknowledgment is recorded. | Nanoseconds
+`commit_latency`   | Difference between the event's MVCC timestamp and the time it is acknowledged by the [downstream sink](changefeed-sinks.html). If the sink is batching events, then the difference is between the oldest event and when the acknowledgment is recorded. | Nanoseconds
 `backfill_count`   | Number of changefeeds currently executing a backfill ([schema change](use-changefeeds.html#schema-changes) or initial scan). | Changefeeds
 `sink_batch_hist_nanos` | Time messages spend batched in the sink buffer before being flushed and acknowledged. | Nanoseconds
 `flush_hist_nanos` | Time spent flushing messages across all changefeeds. | Nanoseconds
