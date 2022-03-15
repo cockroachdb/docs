@@ -41,8 +41,8 @@ The **Range Report** is typically used for [advanced debugging](ui-debug-pages.h
 
 If your aim is to [reduce hot spots](performance-best-practices-overview.html#hot-spots), refer to the following fields:
 
-- `Key Range` shows the interval of the [key space](architecture/distribution-layer#range-descriptors) that is "hottest" (i.e., read by the processor). This is expressed as a span of key values.
-- `Lease Holder QPS` shows the queries executed per second on the node that holds the [range lease](architecture/replication-layer#leases). If a hot range is not properly using [load-based splitting](load-based-splitting.html), this will be greater than the value configured by the `kv.range_split.load_qps_threshold` [cluster setting](cluster-settings.html) (`2500` by default).
+- `Key Range` shows the interval of the [key space](architecture/distribution-layer.html#range-descriptors) that is "hottest" (i.e., read by the processor). This is expressed as a span of key values.
+- `Lease Holder QPS` shows the queries executed per second on the node that holds the [range lease](architecture/replication-layer.html#leases). If a hot range is not properly using [load-based splitting](load-based-splitting.html), this will be greater than the value configured by the `kv.range_split.load_qps_threshold` [cluster setting](cluster-settings.html) (`2500` by default).
 
 ## See also
 
