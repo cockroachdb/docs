@@ -19,7 +19,7 @@ Set a [`REGION` survival goal](multiregion-overview.html#surviving-region-failur
 
 - The database must remain available, even if a region goes down.
 - You can accept the performance cost: write latency will be increased by at least as much as the round-trip time to the nearest region. Read performance will be unaffected.
-- The database can be or already is configured with 3 or more [database regions](multiregion-overview.html#database-regions). At least three database regions are required to survive region failures.
+- The database is or can be configured with three or more [database regions](multiregion-overview.html#database-regions). At least three database regions are required to survive region failures.
 
 {{site.data.alerts.callout_success}}
 For more information about how to choose a multi-region configuration, see [Choosing a multi-region configuration](choosing-a-multi-region-configuration.html).
