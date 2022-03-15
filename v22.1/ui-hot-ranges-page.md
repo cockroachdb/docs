@@ -5,11 +5,11 @@ toc: true
 docs_area: reference.db_console
 ---
 
-The **Hot Ranges** page of the DB Console provides details about ranges receiving a high number of reads or writes. These are known as "hot ranges".
+The **Hot Ranges** page of the DB Console provides details about ranges receiving a high number of reads or writes. These are known as *hot ranges*.
 
 When [optimizing](performance-best-practices-overview.html#hot-spots) or [troubleshooting](query-behavior-troubleshooting.html#single-hot-node) statement performance, this page can help you identify nodes, ranges, or tables that are experiencing hot spots.
 
-To view this page, [access the DB Console](ui-overview.html#db-console-access) and click **Hot Ranges** in the left navigation.
+To view this page, [access the DB Console](ui-overview.html#db-console-access) and click **Hot Ranges** in the left-hand navigation.
 
 ## Hot ranges list
 
