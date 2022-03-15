@@ -53,8 +53,6 @@ Make sure your queries have been [optimized for performance](../{{site.versions[
 
 For example, if your statement uses filters in a `WHERE` clause but you don't have [indexes on the filter columns](../{{site.versions["stable"]}}/schema-design-indexes.html#best-practices), you will consume more RUs because the statement causes a full table scan when doing the join. Use the [`EXPLAIN` statement](../{{site.versions["stable"]}}/explain.html) with your queries to find full table scans or other costly operations. Adding the correct index will result in better performance for the statement, and also consume fewer RUs.
 
-If you use too many indexes, however, write operations can take longer and that will consume more RUs. Choose the correct performance optimizations and tradeoffs based on your workload. For example, write-heavy workloads may have better performance and consume fewer RUs by using fewer secondary indexes, as the cost of a full table scan is less than the cost of sorting and updating indexes.
-
 The size of the data in your columns also directly affects RU consumption and query performance. For example, we [recommend keeping `JSONB` column data under 1 MB](../{{site.versions["stable"]}}/jsonb.html#size) to maximize performance. Statements that read or write large `JSONB` values will consume more RUs as the storage and I/O costs are higher. Adding [GIN indexes](../{{site.versions["stable"]}}/inverted-indexes.html) or [partial GIN indexes](../{{site.versions["stable"]}}/partial-indexes.html#partial-gin-indexes) when querying `JSONB` columns can help improve performance and reduce the RU usage of these statements.
 
 ### What can I use {{ site.data.products.serverless }} for?
