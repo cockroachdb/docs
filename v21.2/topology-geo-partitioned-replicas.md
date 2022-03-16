@@ -6,7 +6,7 @@ docs_area: deploy
 ---
 
 {{site.data.alerts.callout_info}}
-This pattern and the use of replication zones are fully supported. However, for most users, they are harder to use and in some cases can result in worse performance than the multi-region SQL abstractions. Cockroach Labs recommends that you [migrate to multi-region SQL](migrate-to-multiregion-sql.html) whenever possible.
+This pattern and the use of replication zones are fully supported. However, for most users, they are harder to use and in some cases can result in worse performance than the [multi-region SQL abstractions](multiregion-overview.html). Cockroach Labs recommends that you migrate to [regional by row tables](regional-tables.html#regional-by-row-tables) and [zone level survival goals](multiregion-overview.html#survive-zone-failures) whenever possible.
 {{site.data.alerts.end}}
 
 In a multi-region deployment, the geo-partitioned replicas topology is a good choice for tables with the following requirements:

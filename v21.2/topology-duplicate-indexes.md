@@ -6,7 +6,7 @@ docs_area: deploy
 ---
 
 {{site.data.alerts.callout_info}}
-This pattern and the use of replication zones are fully supported. However, for most users, they are harder to use and in some cases can result in worse performance than the multi-region SQL abstractions. Cockroach Labs recommends that you [migrate to multi-region SQL](migrate-to-multiregion-sql.html) whenever possible.
+This pattern and the use of replication zones are fully supported. However, for most users, they are harder to use and in some cases can result in worse performance than the [multi-region SQL abstractions](multiregion-overview.html). Cockroach Labs recommends that you migrate to [global tables](global-tables.html) whenever possible.
 {{site.data.alerts.end}}
 
 In a multi-region deployment, the duplicate indexes pattern is a good choice for tables with the following requirements:
