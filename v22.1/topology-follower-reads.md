@@ -12,9 +12,7 @@ In a multi-region deployment, [follower reads](follower-reads.html) are a good c
 - Rows in the table, and all latency-sensitive queries, **cannot** be tied to specific geographies (e.g., a reference table).
 - Table data must remain available during a region failure.
 
-{{site.data.alerts.callout_success}}
-If reads from a table must be exactly up-to-date, use [global tables](global-tables.html) or [regional tables](regional-tables.html) instead. Up-to-date reads are required by tables referenced by [foreign keys](foreign-key.html), for example.
-{{site.data.alerts.end}}
+If reads can use stale data, use [stale follower reads](follower-reads.html#stale-follower-reads). If reads must be exactly up-to-date, use [global tables](global-tables.html) to achieve [strong follower reads](follower-reads.html#follower-read-types). Up-to-date reads are required by tables referenced by [foreign keys](foreign-key.html), for example.
 
 ## Prerequisites
 
@@ -38,8 +36,6 @@ With each node started with the [`--locality`](cockroach-start.html#locality) fl
 
 You configure your application to use [follower reads](follower-reads.html) by adding an [`AS OF SYSTEM TIME`](as-of-system-time.html) clause when reading from the table. With this clause CockroachDB reads slightly historical data from the closest replica so as to avoid being routed to the leaseholder, which may be in an entirely different region. Writes, however, will still leave the region to get consensus for the table.
 
-To set `AS OF SYSTEM TIME follower_read_timestamp()` on all implicit and explicit read-only transactions, set the `default_transaction_use_follower_reads` [session variable](set-vars.html) to `on`. When follower reads are enabled, all read-only transactions use follower reads.
-
 ### Steps
 
 1. Create the `postal_codes` table:
@@ -59,7 +55,7 @@ To set `AS OF SYSTEM TIME follower_read_timestamp()` on all implicit and explici
     > INSERT INTO postal_codes (ID, code) VALUES (1, '10001'), (2, '10002'), (3, '10003'), (4,'60601'), (5,'60602'), (6,'60603'), (7,'90001'), (8,'90002'), (9,'90003');
     ~~~
 
-1. Decide which type of follower read to perform: exact staleness reads or  bounded staleness reads. For more information about when to use each type of read, see [when to use exact staleness reads](follower-reads.html#when-to-use-exact-staleness-reads) and [when to use bounded staleness reads](follower-reads.html#when-to-use-bounded-staleness-reads).
+1. Decide which type of follower read to perform: exact staleness or  bounded staleness. For more information about when to use each type of read, see [when to use exact staleness reads](follower-reads.html#when-to-use-exact-staleness-reads) and [when to use bounded staleness reads](follower-reads.html#when-to-use-bounded-staleness-reads).
     - To use [exact staleness follower reads](follower-reads.html#exact-staleness-reads), configure your app to use [`AS OF SYSTEM TIME`](as-of-system-time.html) with the [`follower_read_timestamp()` function](functions-and-operators.html) whenever reading from the table:
 
         {% include copy-clipboard.html %}
@@ -89,7 +85,7 @@ To set `AS OF SYSTEM TIME follower_read_timestamp()` on all implicit and explici
         {{site.data.alerts.callout_success}}
         Using the [`SET TRANSACTION`](set-transaction.html#use-the-as-of-system-time-option) statement as shown in the preceding example will make it easier to use exact staleness follower reads from [drivers and ORMs](install-client-drivers.html).
         {{site.data.alerts.end}}
-    - To use [bounded staleness follower reads](follower-reads.html#bounded-staleness-reads), configure your app to use [`AS OF SYSTEM TIME`](as-of-system-time.html) with the [`with_min_timestamp()` or `with_max_staleness()` function](functions-and-operators.html) whenever reading from the table. Note that only single-row point reads in single-statement (implicit) transactions are supported.
+    - To use [bounded staleness follower reads](follower-reads.html#bounded-staleness-reads), configure your app to use [`AS OF SYSTEM TIME`](as-of-system-time.html) with the [`with_min_timestamp()` or `with_max_staleness()` function](functions-and-operators.html#date-and-time-functions) whenever reading from the table. Note that only single-row point reads in single-statement (implicit) transactions are supported.
 
         {% include_cached copy-clipboard.html %}
         ~~~ sql
