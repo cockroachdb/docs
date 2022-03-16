@@ -47,6 +47,14 @@ No, you can create a Serverless cluster that is free forever. If you choose to s
 
 {% include cockroachcloud/serverless-usage.md %}
 
+### How can I reduce the number of RUs my workload consumes?
+
+Make sure your queries have been [optimized for performance](../{{site.versions["stable"]}}/make-queries-fast.html), and follow the [SQL best practices recommendations](../{{site.versions["stable"]}}/performance-best-practices-overview.html).
+
+For example, if your statement uses filters in a `WHERE` clause but you don't have [indexes on the filter columns](../{{site.versions["stable"]}}/schema-design-indexes.html#best-practices), you will consume more RUs because the statement causes a full table scan when doing the join. Use the [`EXPLAIN` statement](../{{site.versions["stable"]}}/explain.html) with your queries to find full table scans or other costly operations. Adding the correct index will result in better performance for the statement, and also consume fewer RUs.
+
+The size of the data in your columns also directly affects RU consumption and query performance. For example, Cockroach Labs recommends [keeping `JSONB` column data under 1 MB](../{{site.versions["stable"]}}/jsonb.html#size) to maximize performance. Statements that read or write large `JSONB` values will consume more RUs as the storage and I/O costs are higher. Adding [GIN indexes](../{{site.versions["stable"]}}/inverted-indexes.html) or [partial GIN indexes](../{{site.versions["stable"]}}/partial-indexes.html#partial-gin-indexes) when querying `JSONB` columns can help improve performance and reduce the RU usage of these statements.
+
 ### What can I use {{ site.data.products.serverless }} for?
 
 Free {{ site.data.products.serverless }} clusters can be used for proofs-of-concept, toy programs, or to use while completing [Cockroach University](https://www.cockroachlabs.com/cockroach-university/).
