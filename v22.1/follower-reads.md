@@ -13,7 +13,7 @@ A _follower read_, which is performed on the nearest replica regardless of the r
 
 A _strong follower read_ is a read taken from a [`GLOBAL`](global-tables.html) table. Such tables are optimized for low-latency reads from every region in the database. The tradeoff is that writes will incur higher latencies from any given region, since writes have to be replicated across every region to make the global low-latency reads possible.
 
-A [_stale follower read_](#stale-follower-read-types) is a historical read taken from the nearest [replica](architecture/overview.html#architecture-replica). You should use stale follower reads only when your application can tolerate reading stale data, since the results of stale follower reads may not reflect the latest writes against the tables you are querying.
+A [_stale follower read_](#stale-follower-reads) is a historical read taken from the nearest [replica](architecture/overview.html#architecture-replica). You should use stale follower reads only when your application can tolerate reading stale data, since the results of stale follower reads may not reflect the latest writes against the tables you are querying.
 
 The following table summarizes the read types and how to accomplish them.
 
