@@ -244,19 +244,16 @@ EXPLAIN SELECT * FROM abc WHERE a = 10 AND b = 20;
 
 ### Prevent zigzag joins
 
-
-
 The join hint `NO_ZIGZAG_JOIN` prevents the optimizer from planning a zigzag join for the specified table. Apply the hint in the same way as other existing [index hints](table-expressions.html#force-index-selection). For example:
 
 ~~~sql
 SELECT * FROM abc@{NO_ZIGZAG_JOIN};
 ~~~
 
-## Examples
-
-### Inverted join examples
+## Inverted join examples
 
 {% include {{ page.version.version }}/sql/inverted-joins.md %}
+
 
 ## Known limitations
 
