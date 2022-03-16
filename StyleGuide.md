@@ -631,19 +631,21 @@ Examples help show the feature in action. Examples follow a basic format:
 
 ### Version tags
 
-Use HTML version tags to denote new or updated features for the version. Version tags can be put at the end of a heading, if the whole section describes something that is new or updated. Otherwise, version tags can introduce a paragraph, sentence, or description in a table cell.
+Version tags inform users of new and updated features in CockroachDB, and could motivate users to upgrade to the latest major or minor version of CockroachDB. Version tags also help us identify new and updated features that we can call out in [our GA release notes](https://cockroachlabs.atlassian.net/wiki/spaces/ED/pages/402718726/GA+Release+Checklist).
 
-To insert a version tag, use the following code:
+To add a version tag, use the following HTML `span`:
 
 ~~~
 <span class="version-tag">New in vX.X:</span>
 ~~~
 
+Version tags can be put at the end of a heading, if the whole section describes something that is new or updated. Otherwise, version tags can introduce a paragraph, sentence, or description in a table cell.
+
 Note: Version tags cannot be used in bulleted lists items. To denote a new feature in a bulleted list, start the bulleted item with "**New in vX.X:**".
 
-#### Examples
+If a feature is new in a GA release, use the major release number for the release version tag (e.g., `New in v22.1`).
 
-- [`CREATE TABLE`](https://www.cockroachlabs.com/docs/stable/create-table.html)
+If a feature has been backported to a previous version in a patch release, use the minor release number for the release version tag (e.g., `New in v21.1.9`).
 
 ### Tables
 
