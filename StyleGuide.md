@@ -607,6 +607,24 @@ $ go get -u github.com/lib/pq
 
 **Copy to Clipboard** should be used for every code block that can be **executed**.
 
+#### Placeholders
+
+Code samples often include placeholder values, to be replaced by values specific to a user's environment. To denote that a value in a code sample is a placeholder value that should be replaced, use curly brackets (`{}`).
+
+For example, suppose you have the following sample SQL statement: `SELECT * FROM TABLE {mytable};`. In this code sample, `{mytable}` would be replaced by some table name before the code could actually run (e.g., `SELECT * FROM TABLE realtable;`).
+
+When you use placeholders, you usually need to define the value within the brackets, if the placeholder value (or the fact that the placeholder is a placeholder) isn't clear. If you are defining a placeholder value, do so immediately following the code sample/bracket. To determine the format of the value definition, you can roughly follow these guidelines:
+
+- Always include the placeholder delimiters (i.e., the curly brackets `{}`) in the definitions.
+- For a single placeholder value, use a follow-up sentence.
+- For multiple placeholder values, use a [bulleted list](#lists).
+- For many placeholder values (10+), and for placeholder values with complex definitions, use a [table](#tables).
+- For large code blocks, define the placeholder values inside the code block, with an inline code comment.
+
+If the code sample you are using is sensitive to curly bracket characters (e.g., JavaScript), you can use `<>` instead.
+
+For some examples, see [Connect to a CockroachDB Cluster](https://www.cockroachlabs.com/docs/stable/connect-to-the-database.html?filters=python).
+
 ### Examples
 
 Examples help show the feature in action. Examples follow a basic format:
