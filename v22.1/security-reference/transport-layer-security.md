@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.security
 ---
 
-This pages provides a conceptual overview of Transport Layer Security (TLS) and details its role in securing cluster traffic in CockroachDB.
+This pages provides a conceptual overview of Transport Layer Security (TLS) and details its role in securing CockroachDB.
 
 ## What is TLS?
 
@@ -13,9 +13,9 @@ Transport Layer Security (TLS) is a protocol used to establish securely authenti
 
 ### Key pairs
 
-The fundamental mechanism of TLS is a mathematically pair of cryptographic keys (usually referred to as a 'key pair' for short):
+The fundamental mechanism of TLS is a pair of cryptographic keys (usually referred to as a 'key pair' for short):
 
-- The **private key** is randomly generated.
+- The **private key** is randomly (unguessably) generated.
 - The **public key** is derived mathematically from the private key in such a way that:
 	- Text encrypted with either can be decrypted with the other.
 	- It is prohibitively computationally expensive to compute the private from the public key.
@@ -35,16 +35,18 @@ TLS connections can be either *one-sided*, meaning that only one party must prov
 {{site.data.alerts.callout_info}}
 Encryption using a key pair is "asymmetric", in that a different key is used to encrypt and decrypt. Encryption is called "symmetric" where the same key is used to encrypt and decrypt&mdash;as the metal key in a mechanical lock-and-key system is used to both lock and unlock.
 
-Symmetric encryption is more efficient and straightforward, but it requires all parties to have the single key, unlike in assymetric encryption, where everyone can share their public key, allowing anyone to send them messages that only they can decrypt with their private key.
+Symmetric encryption is more efficient than asymmetric encryiption, but it requires all parties to have the single key shared key prior to the exchange.
 
-In the TLS protocol, asymmetric encryption using the public/private key pairs is used to securely exchange random data from that is used to create **session keys**, which are then used by both parties to symmetrically encrypt data for the remainder of the session. This is more computationally efficient that continuing to use asymmetric encryption for message exchange.
+With asymmetric encryption, by contrast, each party can share their public key, allowing anyone to send them messages that only they can decrypt with their private key. In the context of internet communication
 
-The generation and management of session keys is fully automated within the TLS protocol. You do not ever need to provision or TLS manage session keys.
+In the TLS protocol, asymmetric encryption using the public/private key pairs is used to securely exchange random data from that is used to create shared **session keys**, which are then used by both parties to (symmetrically) encrypt and decrypt data for the remainder of the session. Since a session key is created with information shared using asymmetric encryption, and is used only for the duration of a session, TLS combines the best of both asymmetric encryption (the ability to establish an encrypted communication channel without having to have first securely shared a key) and symmetric encryption (computational efficiency).
+
+The generation and management of session keys is fully automated within the TLS protocol. You do not ever need to provision or manage TLS session keys.
 {{site.data.alerts.end}}
 
 ### Who certifies the certificate? (The Certificate Authority)
 
-If you encrypt a message with a TLS public certificate, you know that only a holder of the matching private key will be able to decrypt it. And perhaps the holder of the public certificate identifies themself as your friend, your bank, your employer, or the government. But how do you know that the certificate was ever actually held by the party you want to reach, rather than an imposter?
+If you encrypt a message with a TLS public certificate, you know that only a holder of the matching private key will be able to decrypt it. And perhaps the holder of the public certificate identifies themself as your friend, your bank, your employer, or a government. But how do you know that the certificate was ever actually held by the party you want to reach, rather than an imposter?
 
 This is solved via the notion of a **Certificate Authority.** When TLS key pairs are cryptographicall generated, they are 'signed' by another cryptographic key, known as a 'root certificate' or 'certificate authority certificate' (CA cert). The CA certificate is held by a party responsible for issuing key pairs.  The signed public key is known as the **public certificate**, and is the file that is actually shared with clients. Given that you can put your trust in the organization that backs the Certificate Authority who has signed a server's TLS public certificate, you can extend your trust that the operator of a website or service at a particular network domain or IP address is actually who they claim to be.
 
@@ -52,12 +54,14 @@ On the public internet, Certificate Authority providers such as Identrust, Digic
 
 ## TLS in CockroachDB
 
+TLS is used for authentication and encryption in all communication between CockroachDB nodes, and from clients to nodes.
 
 ### Communication between CockroachDB nodes
 
 Connections between CockroachDB nodes, and from SQL clients and web consoles are always mutually TLS authenticated, meaning that both client and server must each have their own key pair.
 
 #### CockroachDB Cloud
+
 Customers using {{ site.data.products.db }} need not worry about managing TLS keys for CockroachDB nodes, as cluster management is delegated to the Cockroach Labs team.
 
 
@@ -77,36 +81,32 @@ To enable a CockroachDB client, these files (`node.key`, `node.crt`, and `ca.crt
 [Learn how to provision TLS certificates for a CockroachDB Cluster CockroachDB CLI command.](../cockroach-cert.html)
 {{site.data.alerts.end}}
 
-### Communication Cockroachdb SQL client to CockroachDB node
+### Communication from a Cockroachdb SQL client to a CockroachDB node
 
-CockroachDB provides a number of SQL clients including a CLI, and several drivers and object-relational mapping (ORM) tools.
-
-Connections from any of these SQL clients can be either one-sidedly or mutually authenticated.
-
-All secure communication must involve TLS authentication of the server (i.e., the CockroachDB node); therefore, your client must have access to the *public certificate*
+CockroachDB provides a number of SQL clients, including a CLI, and several drivers and object-relational mapping (ORM) tools. For any of these, TLS configuration depends on whether the client is using TLS authentication or another method of authentication. In turn, which authentication methods are available depends on the sort of environment in which your CockroachDB cluster is deployed, as follow.
 
 #### CockroachDB Cloud
 
-{{ site.data.products.db }} currently does not support certificate-authenticated client requests, as required for mutually authenticated TLS, and client requests can only be authenticated with username/password.
+{{ site.data.products.db }} currently does not support certificate-authenticated client requests. TLS is still used to authenticate the server and encrypt all traffic, but the user must authenticate to the database using another method (currently limited to username/password combination).
 
-must have public cert of ca
+Because the server must still be TLS authenticated, the client must know to trust the certificate authority that signed the public certificate identifying the server. Therefore, the root CA certificate, called `ca.crt`, must be provided to client authentication attempts. For example, this is passed as the `sslrootcert` parameter in a [database connecton string](../connect-to-the-database.html), or by being placed in the directory specified by the `certs-dir` argument in a connection made with the [`cockroach sql`](../cockroach-sql.html) CLI command.
 
 #### Self-Hosted CockroachDB
 
-TLS connections to nodes in Cockroach-DB Self-Hosted clusters may be either mutually or one-way authenticated, as determined by your [Authentication Configuration](!!!)
+{{ site.data.products.serverless }} clusters support TLS authentication for clients, as well as other methods such as username/password, and GSSAPI/Kerberos (Enterprise only).
 
-##### To support one way-authentication:
+CockroachDB supports fine-grained [configuration of its authentication behavior by user, method, and source IP address](authentication.html).
 
-just have the thingy
+##### Non-TLS client authentication
 
-Clients must have access to a copy of the public cert of the ca authority, so ...
+When using a non-TLS client authentication method, such as username/password or GSSAPI/Kerberos (Enterprise only), the server must still be TLS authenticated. Therefore, the client must know to trust the certificate authority that signed the public certificate identifying the server. Therefore, the root CA certificate, called `ca.crt`, must be provided to client authentication attempts. This can be passed as the `sslrootcert` parameter in a [database connecton string](../connect-to-the-database.html), or by being placed in the directory specified by the `certs-dir` argument in a connection made with the [`cockroach sql`](../cockroach-sql.html) CLI command.
 
-##### To support mutual authentication:
+##### TLS client authentication
 
- Therefore, a client must be provisioned with a key-pair:
+For a SQL client to authenticate using TLS, that client must be provisioned with its own key-pair:
 
-- `client.<username>.crt`
-- `client.<username>.key`
+- `client.<username>.crt` is the client's public certificate.
+- `client.<username>.key` is the client's private key.
 
 `<username>` here corresponds to the username of the SQL user as which the client will issue SQL statements if authentication is successful.
 
