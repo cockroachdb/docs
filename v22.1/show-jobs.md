@@ -156,12 +156,15 @@ You can filter jobs by using `SHOW AUTOMATIC JOBS` as the data source for a [`SE
 
 ~~~
     job_id             |                                                                                   description                                                                  | ...
++----------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------+ ...
   685724608744325121   | CREATE CHANGEFEED FOR TABLE mytable INTO 'kafka://localhost:9092' WITH confluent_schema_registry = 'http://localhost:8081', format = 'avro', resolved, updated | ...
   685723987509116929   | CREATE CHANGEFEED FOR TABLE mytable INTO 'kafka://localhost:9092' WITH confluent_schema_registry = 'http://localhost:8081', format = 'avro', resolved, updated | ...
 (2 rows)
 ~~~
 
-Changefeed jobs can be [paused](create-and-configure-changefeeds.html#pause), [resumed](create-and-configure-changefeeds.html#resume), or [canceled](create-and-configure-changefeeds.html#cancel).
+Changefeed jobs can be [paused](create-and-configure-changefeeds.html#pause), [resumed](create-and-configure-changefeeds.html#resume), [altered](alter-changefeed.html), or [canceled](create-and-configure-changefeeds.html#cancel).
+
+If you have modified a changefeed with the `ALTER CHANGEFEED` statement, the response from `SHOW CHANGEFEED JOB` for that changefeed will also show options that were set implicitly on the changefeed when it was created. For more detail, see [Modify a changefeed](alter-changefeed.html#show-output-post-alter).
 
 ### Filter changefeed jobs
 
@@ -174,6 +177,7 @@ SELECT * FROM [SHOW CHANGEFEED JOBS] WHERE status = ('paused');
 
 ~~~
     job_id           |                                                              description         | ...
++--------------------+----------------------------------------------------------------------------------+ ...
   685723987509116929 | CREATE CHANGEFEED FOR TABLE mytable INTO 'kafka://localhost:9092' WITH confluent | ...
 (1 row)
 ~~~
