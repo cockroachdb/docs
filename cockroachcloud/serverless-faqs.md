@@ -105,6 +105,14 @@ You can submit feedback or log any bugs you find through [this survey](https://f
 
 Yes, we use separate certificate authorities for each cluster, and all connections to the cluster over the internet use TLS 1.3.
 
+### What certificates do I need to connect to my cluster?
+
+All connections to {{ site.data.products.serverless }} require SSL encryption. When connecting to your cluster using the CockroachDB SQL client or many drivers and ORMs, you don't need to download a root certificate and configure your client to use that certificate because the client will connect using the system root certificates. If you configure your client to use SSL and to verify the certificates (for example, by setting `sslmode=verify-full` in your [connection string](../{{site.versions["stable"]}}/connection-parameters.html#additional-connection-parameters)), your connection will be encrypted.
+
+Some drivers and ORMs don't use the system root certificates, however. In those cases, you need to download a root certificate file and configure your client to use that certificate when connecting to your cluster. You can [download the certificate](connect-to-a-serverless-cluster.html#step-2-connect-to-your-cluster) by following the instructions in the {{ site.data.products.db }} Console. Configure your client to use this certificate (for example, by setting `sslrootcert=<path to the root certificate>` in your connection string) and to use SSL (for example, by setting `sslmode=verify-full` in your connection string) to connect to your cluster.
+
+See [Connect to a CockroachDB Cluster](../{{site.versions["stable"]}}/connect-to-the-database.html) for detailed information on connecting to your cluster using CockroachDB supported languages, drivers, and ORMs
+
 ### Is encryption-at-rest enabled on {{ site.data.products.serverless }}?
 
 Yes. All data on {{ site.data.products.db }} is encrypted-at-rest using the tools provided by the cloud provider that your cluster is running in.
