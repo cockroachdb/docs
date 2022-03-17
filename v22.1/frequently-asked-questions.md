@@ -1,5 +1,5 @@
 ---
-title: CockroachDB Frequently Asked Questions
+title: Frequently Asked Questions
 summary: CockroachDB FAQ - What is CockroachDB? How does it work? What makes it different from other databases?
 tags: postgres, cassandra, google cloud spanner
 toc: true
@@ -30,19 +30,35 @@ CockroachDB is well suited for applications that require reliable, available, an
 
 CockroachDB returns single-row reads in 2ms or less and single-row writes in 4ms or less, and supports a variety of [SQL and operational tuning practices](performance-best-practices-overview.html) for optimizing query performance. However, CockroachDB is not yet suitable for heavy analytics / OLAP.
 
-## How easy is it to install CockroachDB?
+## How easy is it to get started with CockroachDB?
 
-It's as easy as downloading a binary or running our official Kubernetes configurations or Docker image. There are other simple install methods as well, such as running our Homebrew recipe on OS X or building from source files on both OS X and Linux.
+You can get started with CockroachDB with just a few clicks. Sign up for a {{ site.data.products.db }} account to create a free {{ site.data.products.serverless }} cluster. For more details, see [Quickstart](../cockroachcloud/quickstart.html).
 
-For more details, see [Install CockroachDB](install-cockroachdb.html).
+Alternatively, you can download a binary or run our official Kubernetes configurations or Docker image. For more details, see [Install CockroachDB](install-cockroachdb.html).
+
+## How do I know which CockroachDB deployment strategy is right for my project?
+
+There are three way to use and deploy CockroachDB:
+
+- **{{ site.data.products.serverless }}**: A multi-tenant CockroachDB deployment, managed by Cockroach Labs, in a single region and cloud (AWS or GCP). {{ site.data.products.serverless-plan }} lets you create and start clusters instantly. This deployment strategy is good for starter projects and evaluations.
+- **{{ site.data.products.dedicated }}**: A single tenant CockroachDB deployment, managed by Cockroach Labs, in a single, multi-region cloud (AWS or GCP). This deployment strategy is good for mission-critical databases and require Enterprise features.
+- **{{ site.data.products.core }}**: A self-managed CockroachDB deployment, backed by Cockroach Labs Support, for multiple clouds and regions. This deployment strategy is good if you require complete control over the database environment and require Enterprise features.
+
+For more details, see [Choose a Deployment Strategy](choose-a-deployment-strategy.html).
 
 ## How does CockroachDB scale?
 
-CockroachDB scales horizontally with minimal operator overhead. You can run it on your local computer, a single server, a corporate development cluster, or a private or public cloud. [Adding capacity](cockroach-start.html) is as easy as pointing a new node at the running cluster.
+CockroachDB scales horizontally with minimal operator overhead.
 
 At the key-value level, CockroachDB starts off with a single, empty range. As you put data in, this single range eventually reaches a threshold size (512 MiB by default). When that happens, the data splits into two ranges, each covering a contiguous segment of the entire key-value space. This process continues indefinitely; as new data flows in, existing ranges continue to split into new ranges, aiming to keep a relatively small and consistent range size.
 
 When your cluster spans multiple nodes (physical machines, virtual machines, or containers), newly split ranges are automatically rebalanced to nodes with more capacity. CockroachDB communicates opportunities for rebalancing using a peer-to-peer [gossip protocol](https://en.wikipedia.org/wiki/Gossip_protocol) by which nodes exchange network addresses, store capacity, and other information.
+
+For more information about scaling a CockroachDB cluster, see the following docs:
+
+- [Manage Your Serverless Cluster - Cluster scaling](../cockroachcloud/serverless-cluster-management.html#cluster-scaling)
+- [Manage Your Dedicated Cluster - Scale your cluster](../cockroachcloud/cluster-management#scale-your-cluster)
+- [`cockroach start` - Add a node to a cluster](cockroach-start.html#add-a-node-to-a-cluster)
 
 ## How does CockroachDB survive failures?
 
@@ -118,14 +134,13 @@ For more details on how CockroachDB handles unsynchronized clocks, see [Clock Sy
 
 CockroachDB supports the PostgreSQL wire protocol, so you can use any available PostgreSQL client drivers. We've tested it from the following languages:
 
-- Go
+- JavaScript/TypeScript
 - Python
-- Ruby
+- Go
 - Java
-- JavaScript (node.js)
-- C++/C
-- Clojure
-- PHP
+- Ruby
+- C
+- C#(.NET)
 - Rust
 
 See [Install Client Drivers](install-client-drivers.html) for more details.
@@ -161,25 +176,6 @@ For more insight, see [CockroachDB in Comparison](cockroachdb-in-comparison.html
 Yes. Most users should be able to follow the instructions in [Migrate from Postgres](migrate-from-postgres.html) or [Migrate from MySQL](migrate-from-mysql.html). Due to differences in available features and syntax, some features supported by these databases may require manual effort to port to CockroachDB. Check those pages for details.
 
 We also fully support [importing your data via CSV](migrate-from-csv.html).
-
-## Does Cockroach Labs offer a cloud database as a service?
-
-Yes. The {{ site.data.products.db }} offering is currently in Limited Availability and accepting customers on a qualified basis. The offering provides a running CockroachDB cluster suitable to your needs, fully managed by Cockroach Labs on GCP or AWS. Benefits include:
-
-- No provisioning or deployment efforts for you
-- Daily full backups and hourly incremental backups of your data
-- Upgrades to the latest stable release of CockroachDB
-- Monitoring to provide SLA-level support
-
-For more details, see the [{{ site.data.products.db }}](../cockroachcloud/quickstart.html) docs.
-
-## Why did Cockroach Labs change the license for CockroachDB?
-
-Our past outlook on the right business model relied on a crucial norm in the OSS world: that companies could build a business around a strong open source core product without a much larger technology platform company coming along and offering the same product as a service.
-
-Recently, however, OSS companies have seen the rise of highly-integrated providers take advantage of their unique position to offer “as-a-service” versions of OSS products, and offer a superior user experience as a consequence of their integrations. We’ve most recently seen it happen with Amazon’s forked version of ElasticSearch.
-
-To respond to this breed of competitor, we changed our software licensing terms. To learn more about our motivations, see the [Licensing FAQs](licensing-faqs.html) as well as our [blog post](https://www.cockroachlabs.com/blog/oss-relicensing-cockroachdb/) about the license change.
 
 ## Have questions that weren’t answered?
 
