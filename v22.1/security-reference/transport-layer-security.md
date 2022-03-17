@@ -17,6 +17,7 @@ The fundamental mechanism of TLS is a pair of cryptographic keys (usually referr
 
 - The **private key** is randomly (unguessably) generated.
 - The **public key** is derived mathematically from the private key in such a way that:
+
 	- Text encrypted with either can be decrypted with the other.
 	- It is prohibitively computationally expensive to compute the private from the public key.
 
@@ -30,9 +31,18 @@ TLS therefore provides two critical security features:
 - **Encryption**: it prevents message from being eavesdropped or tampered with.
 - **Authentication**: it allows one or both parties to prove their identity that cannot be impersonated (or 'spoofed' in cyberspeak).
 
-TLS connections can be either *one-sided*, meaning that only one party must prove its identity before an encrypted session is established, or *two-sided* (or *mutual*), meaning that both must prove their identities. In mutually authenticated TLS connections, each parties must have a key-pair issued by a jointly trusted CA.
+### Mutual vs one-sided TLS authentication
 
-{{site.data.alerts.callout_info}}
+TLS connections can be either *one-sided*, meaning that only one party must prove its identity before an encrypted session is established, or *two-sided* (or *mutual*), meaning that both must prove their identities.
+
+In mutually authenticated TLS connections, each party must have a key pair issued by a jointly trusted CA. This is a good system for internal components within a distributed system, and generally works well for long-lived clients.
+
+In one-sided TLS authentication, only the server must have a key pair; the user may be able to access information without any authentication. This works well when:
+- The client needs no authentication, for example, for a public read-only website or API.
+- When the user must authenticate to the application being served with another mechanism, such as a username/password combination or a Single Sign-On (SSO)  or by logging in to an application with a username/password combination once TLS-encrypted communication is already established.
+
+### Symmetric and asymmetric encryption in TLS
+
 Encryption using a key pair is "asymmetric", in that a different key is used to encrypt and decrypt. Encryption is called "symmetric" where the same key is used to encrypt and decrypt&mdash;as the metal key in a mechanical lock-and-key system is used to both lock and unlock.
 
 Symmetric encryption is more efficient than asymmetric encryiption, but it requires all parties to have the single key shared key prior to the exchange.
@@ -41,6 +51,7 @@ With asymmetric encryption, by contrast, each party can share their public key, 
 
 In the TLS protocol, asymmetric encryption using the public/private key pairs is used to securely exchange random data from that is used to create shared **session keys**, which are then used by both parties to (symmetrically) encrypt and decrypt data for the remainder of the session. Since a session key is created with information shared using asymmetric encryption, and is used only for the duration of a session, TLS combines the best of both asymmetric encryption (the ability to establish an encrypted communication channel without having to have first securely shared a key) and symmetric encryption (computational efficiency).
 
+{{site.data.alerts.callout_info}}
 The generation and management of session keys is fully automated within the TLS protocol. You do not ever need to provision or manage TLS session keys.
 {{site.data.alerts.end}}
 
@@ -54,9 +65,22 @@ On the public internet, Certificate Authority providers such as Identrust, Digic
 
 ## TLS in CockroachDB
 
-TLS is used for authentication and encryption in all communication between CockroachDB nodes, and from clients to nodes.
+TLS authentication and encryption is supported in all communication between CockroachDB nodes, and from clients to nodes.
 
-### Communication between CockroachDB nodes
+### SSL modes
+
+#### Disabling TLS
+
+CockroachDB can be operated entirely without TLS. This can be useful to quickly deploy a short-lived cluster for testing and hands on experimentation, but should is entirely unsuitable for production usage.
+
+To run a CockroachDB cluster without TLS, add the `--insecure` flag to the [`cockroach run`]() command.
+
+`--accept-sql-without-tlc` what is the deal? Send that note in the eng channel !!!
+
+[SSL modes](#ssl-mode-settings)
+
+
+### Communication between nodes
 
 Connections between CockroachDB nodes, and from SQL clients and web consoles are always mutually TLS authenticated, meaning that both client and server must each have their own key pair.
 
@@ -67,23 +91,35 @@ Customers using {{ site.data.products.db }} need not worry about managing TLS ke
 
 #### CockroachDB Self-Hosted
 
-Customers who deploy and manage their own CockroachDB clusters must provision and manage TLS certificates on each nodes. In order to communicate with other nodes and hence participate in the cluster, each CockroachDB node must have the following files (or a [valid alternative set]()):
+Customers who deploy and manage their own CockroachDB clusters must provision and manage TLS certificates on each nodes. The CockroachDB CLI makes this easy; all required keys and certificates can be generated with the [`cockroach cert`](../cockroach-cert.html) command.
+
+By default, CockroachDB nodes make double use of their key-pairs, using them as client credentials when they initiate connections to other nodes, and as server credentials when recieving requests.
+
+In this case, each CockroachDB node must have the following files:
 
 - The node's private key, `node.key`
 - The node's public certificate, `node.crt`
-- The public CA certificate of the root Certifiate Authority, (which may be the cluster itself, if the root certificate was generated using the [`cockroach certs`]() CLI command), called `ca.crt`. A single root CA must have signed all of the node certificates (???!!!).
-
-CockroachDB nodes make double use of their key-pairs, using them as client credentials when they initiate connections to other nodes, and as server credentials when recieving requests.
+- The public CA certificate of the root Certificate Authority, (which may be the cluster itself), called `ca.crt`.
 
 {{site.data.alerts.callout_info}}
-To enable a CockroachDB client, these files (`node.key`, `node.crt`, and `ca.crt`) must be present in a single directory, the path to which must be supplied to the CockroachDB client with the argument `certs-dir`.
-
-[Learn how to provision TLS certificates for a CockroachDB Cluster CockroachDB CLI command.](../cockroach-cert.html)
+To enable a CockroachDB client, the required files (`node.key`, `node.crt`, and `ca.crt`) must be present in a single directory, the path to which must be supplied to the CockroachDB client with the argument `certs-dir`.
 {{site.data.alerts.end}}
 
-### Communication from a Cockroachdb SQL client to a CockroachDB node
 
-CockroachDB provides a number of SQL clients, including a CLI, and several drivers and object-relational mapping (ORM) tools. For any of these, TLS configuration depends on whether the client is using TLS authentication or another method of authentication. In turn, which authentication methods are available depends on the sort of environment in which your CockroachDB cluster is deployed, as follow.
+
+More complex scenarios with external CAs are described [here.](authentication.html#using-a-custom-ca)
+
+
+
+### Communication from a SQL client to a node
+
+CockroachDB provides a number of SQL clients, including a CLI, and several drivers and object-relational mapping (ORM) tools. Regardless of which client you are using, how you are able to authenticate to a CockroachDB cluster depends on that cluster's [authentication configuration](authentication.html), specifically whether that configuration requires the user to authenticate with TLS or another method.
+
+In turn, which authentication methods are available depends on the sort of environment in which a CockroachDB cluster is deployed, as described in the following.
+
+Try it out:
+- [Connect with the CockroachDB CLI's `cockroach sql` command.](../cockroach-sql.html#start-a-sql-shell)
+- [Connect with a software driver or ORM.](../install-client-drivers.html)
 
 #### CockroachDB Cloud
 
@@ -93,9 +129,7 @@ Because the server must still be TLS authenticated, the client must know to trus
 
 #### Self-Hosted CockroachDB
 
-{{ site.data.products.serverless }} clusters support TLS authentication for clients, as well as other methods such as username/password, and GSSAPI/Kerberos (Enterprise only).
-
-CockroachDB supports fine-grained [configuration of its authentication behavior by user, method, and source IP address](authentication.html).
+{{ site.data.products.serverless }} clusters support TLS authentication for clients. Other supported methods are username/password combination, and GSSAPI/Kerberos (Enterprise only).
 
 ##### Non-TLS client authentication
 
@@ -114,7 +148,11 @@ These key files are used with the CockroachDB CLI by placing them in a directory
 
 ### Certificate Authority in CockroachDB
 
-CockroachDB clusters can generate their own CA certificates, allowing them to act as their own Certificate Authorities for TLS connections between nodes and from SQL clients to nodes. Alternatively, an external CA (such as your organization's CA) can be used to generate your certificates. It is even possible to employ a ['split certificate'](../create-security-certificates-custom-ca.html#split-node-certificates) scenario, where one set of key pairs is used for authentication in inter-node connections, and another pair is used for authentication in connections originated from SQL clients.
+A CockroachDB may act as its own Certificate Authority.
 
+
+CockroachDB clusters can generate their own CA certificates, allowing them to act as their own Certificate Authorities for TLS connections between nodes and from SQL clients to nodes.
+
+Alternatively, an external CA (such as your organization's CA) can be used to generate your certificates. It is even possible to employ a ['split certificate'](../create-security-certificates-custom-ca.html#split-node-certificates) scenario, where one set of key pairs is used for authentication in inter-node connections, and another pair is used for authentication in connections originated from SQL clients.
 
 Revokation!!!
