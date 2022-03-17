@@ -10,17 +10,24 @@ Users may connect with {{ site.data.products.db }} in two ways:
 - The [{{ site.data.products.db }} Console](https://cockroachlabs.cloud/) provides an overview of your {{ site.data.products.db }} account, and offers functionality for administrating or connecting to clusters.
 - SQL clients, including the CockroachDB CLI client and the [various supported drivers and ORMs](../{{site.versions["stable"]}}/install-client-drivers.html), connect directly to CockroachDB clusters using the [CockroachDB SQL interface](../{{site.versions["stable"]}}/sql-feature-support.html).
 
+
 ## {{ site.data.products.db }} authentication
 
-You may login to the [{{ site.data.products.db }} Console](https://cockroachlabs.cloud/) with a username and password, or using [Single Sign-On (SSO) for Cockroach Cloud](cloud-sso.html).
+You may log in to the [{{ site.data.products.db }} Console](https://cockroachlabs.cloud/) with a username and password, or using [Single Sign-On (SSO) for Cockroach Cloud](cloud-sso.html).
 
 {% include cockroachcloud/prefer-sso.md %}
 
-## SQL authentication
+If you have not done so,[create your own free {{ site.data.products.serverless }} cluster](../../cockroachcloud/create-a-serverless-cluster.html).
 
-### TLS
+## Connecting SQL clients
 
-{{ site.data.products.db }} uses TLS 1.3 for inter-node communication and TLS 1.2 or 1.3 for client-node communication, digital certificates for inter-node authentication, [SSL modes](#ssl-mode-settings) for node identity verification, and password authentication for client identity verification.
+To execute SQL statements or perform database administration functions on a cluster, you must connect to the cluster with a SQL client. CockroachDB clients include the [CockroachDB CLI](), and numerous [drivers and object-relational mapping (ORM) tools]().
+
+To connect any SQL client to a {{ site.data.products.db }} cluster, you must have a username/password combination, and the [TLS public root certificate authority (CA) certificate of the cluster](../{{site.versions["dev"]}}/security-reference/transport-layer-security.html#certificate-authority-in-cockroachdb).
+
+
+### Connect with the CockroachDB CLI
+
 
 ### Node identity verification
 
