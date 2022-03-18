@@ -39,14 +39,14 @@ For requirements and limitations, see [Exact staleness reads and long-running wr
 
 Use exact staleness follower reads when you:
 
-- Need multi-statement reads inside transactions.
+- Need multi-statement reads inside [transactions](transactions.html).
 - Can tolerate reading older data (at least 4.8 seconds in the past), to reduce the chance that the historical query timestamp is not quite old enough to prevent blocking on a conflicting write and thus being able to be served by a local replica.
-- Do not need the increase in availability provided by [bounded staleness reads](#bounded-staleness-reads) in the face of network partitions or other failures.
+- Do not need the increase in availability provided by [bounded staleness reads](#bounded-staleness-reads) in the face of [network partitions](cluster-setup-troubleshooting.html#network-partition) or other failures.
 - Need a read that is slightly cheaper to perform than a [bounded staleness read](#bounded-staleness-reads), because exact staleness reads don't need to dynamically compute the query timestamp.
 
 #### Run queries that use exact staleness follower reads
 
-An [`SELECT` statement](select-clause.html) with an appropriate [`AS OF SYSTEM TIME`](as-of-system-time.html) value is an exact staleness follower read. You can use the convenience [function](functions-and-operators.html#date-and-time-functions) `follower_read_timestamp()`, which returns a [`TIMESTAMP`](timestamp.html) that provides a high probability of being served locally while not [blocking on conflicting writes](#exact-staleness-reads-and-long-running-writes).
+Any [`SELECT` statement](select-clause.html) with an appropriate [`AS OF SYSTEM TIME`](as-of-system-time.html) value is an exact staleness follower read. You can use the convenience [function](functions-and-operators.html#date-and-time-functions) `follower_read_timestamp()`, which returns a [`TIMESTAMP`](timestamp.html) that provides a high probability of being served locally while not [blocking on conflicting writes](#exact-staleness-reads-and-long-running-writes).
 
 Use this function in an `AS OF SYSTEM TIME` statement as follows:
 
@@ -61,7 +61,7 @@ The following video describes and demonstrates [exact staleness](#exact-stalenes
 
 #### Exact staleness follower reads in read-only transactions
 
-You can set the [`AS OF SYSTEM TIME`](as-of-system-time.html) clause's value for all operations in a read-only transaction:
+You can set the [`AS OF SYSTEM TIME`](as-of-system-time.html) clause's value for all operations in a read-only [transaction](transactions.html):
 
 ```sql
 BEGIN;
@@ -94,9 +94,9 @@ A _bounded staleness read_ is a historical read that uses a dynamic, system-dete
 
 Use bounded staleness follower reads when you:
 
-- Need minimally stale reads from the nearest replica without blocking on conflicting transactions. This is possible because the historical timestamp is chosen dynamically and the least stale timestamp that can be served locally without blocking is used.
+- Need minimally stale reads from the nearest replica without blocking on [conflicting transactions](transactions.html#transaction-contention). This is possible because the historical timestamp is chosen dynamically and the least stale timestamp that can be served locally without blocking is used.
 - Can confine the read to a single statement that meets the [bounded staleness limitations](#bounded-staleness-read-limitations).
-- Need higher availability than is provided by exact staleness reads. Specifically, what we mean by availability in this context is:
+- Need higher availability than is provided by [exact staleness reads](#exact-staleness-reads). Specifically, what we mean by availability in this context is:
   - The ability to serve a read with low latency from a local replica rather than a leaseholder.
   - The ability to serve reads from local replicas even in the presence of a network partition or other failure event that prevents the SQL gateway from communicating with the leaseholder. Once a replica begins serving follower reads at a timestamp, it will always continue to serve follower reads at that timestamp. Even if the replica becomes completely partitioned away from the rest of its range, it will continue to stay available for (increasingly) stale reads.
 
@@ -185,9 +185,9 @@ For further details, see [An Epic Read on Follower Reads](https://www.cockroachl
 
 #### Exact staleness reads and long-running writes
 
-Long-running write transactions will create [write intents](architecture/transaction-layer.html#write-intents) with a timestamp near when the transaction began. When an exact staleness follower read encounters a write intent, it will often end up in a "transaction wait queue", waiting for the operation to complete; however, this runs counter to the benefit exact staleness reads provide.
+Long-running write transactions will create [write intents](architecture/transaction-layer.html#write-intents) with a timestamp near when the transaction began. When an exact staleness follower read encounters a write intent, it will often end up in a ["transaction wait queue"](architecture/transaction-layer.html#txnwaitqueue), waiting for the operation to complete; however, this runs counter to the benefit exact staleness reads provide.
 
-To counteract this, you can issue all follower reads in explicit transactions set with `HIGH` priority:
+To counteract this, you can issue all follower reads in explicit [transactions set with `HIGH` priority](transactions.html#transaction-priorities):
 
 ```sql
 BEGIN PRIORITY HIGH AS OF SYSTEM TIME follower_read_timestamp();
