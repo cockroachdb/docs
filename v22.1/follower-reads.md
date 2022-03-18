@@ -175,6 +175,8 @@ With follower reads, any replica in a range can serve a read for a key as long a
 
 When a gateway node in a cluster receives a request to read a key with a sufficiently old [`AS OF SYSTEM TIME`](as-of-system-time.html) value, it forwards the request to the closest node that contains a replica of the data&mdash;whether it be a follower or the leaseholder.
 
+For further details, see [An Epic Read on Follower Reads](https://www.cockroachlabs.com/blog/follower-reads-stale-data/).
+
 ### Limitations
 
 - [Exact staleness reads and long-running writes](#exact-staleness-reads-and-long-running-writes)
