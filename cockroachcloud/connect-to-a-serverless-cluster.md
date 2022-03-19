@@ -62,10 +62,6 @@ To connect to your cluster with the [built-in SQL client](../{{site.versions["st
 
     {% include cockroachcloud/download-the-binary.md %}
 
-1. In your terminal, run the second command from the dialog to download the CA certificate to the default PostgreSQL certificate directory:
-
-    {% include cockroachcloud/download-the-cert-free.md %}
-
 1. Copy the [`cockroach sql`](../{{site.versions["stable"]}}/cockroach-sql.html) command and connection string provided in the **Connect** modal, which will be used in the next step (and to connect to your cluster in the future):
 
     {% include cockroachcloud/sql-connection-string-free.md %}
@@ -101,7 +97,7 @@ To connect to your cluster with your application, use the connection string prov
       <button class="filter-button page-level" data-scope="windows">Windows</button>
     </div>
 
-1. In your terminal, run the first command from the dialog to create a new `certs` directory on your local machine and download the CA certificate to that directory:
+1. In your terminal, run the first command from the dialog to download the CA certificate to the default PostgreSQL certificate directory:
 
     {% include cockroachcloud/download-the-cert-free.md %}
 
