@@ -6,6 +6,8 @@ toc: true
 docs_area: get_started
 ---
 
+# Choosing CockroachDB
+
 ## What is CockroachDB?
 
 CockroachDB is a [distributed SQL](https://www.cockroachlabs.com/blog/what-is-distributed-sql/) database built on a transactional and strongly-consistent key-value store. It **scales** horizontally; **survives** disk, machine, rack, and even datacenter failures with minimal latency disruption and no manual intervention; supports **strongly-consistent** ACID transactions; and provides a familiar **SQL** API for structuring, manipulating, and querying data.
@@ -45,6 +47,8 @@ There are three way to use and deploy CockroachDB:
 - **{{ site.data.products.core }}**: A self-managed CockroachDB deployment, backed by Cockroach Labs Support, for multiple clouds and regions. This deployment strategy is good if you require complete control over the database environment and require Enterprise features.
 
 <!-- For more details, see [Choose a Deployment Strategy](choose-a-deployment-strategy.html). -->
+
+# About the database
 
 ## How does CockroachDB scale?
 
@@ -151,6 +155,12 @@ CockroachDB uses the PostgreSQL wire protocol because it is better documented th
 
 Note, however, that the protocol used doesn't significantly impact how easy it is to port applications. Swapping out SQL network drivers is rather straightforward in nearly every language. What makes it hard to move from one database to another is the dialect of SQL in use. CockroachDB's dialect is based on PostgreSQL as well.
 
+## Can a PostgreSQL or MySQL application be migrated to CockroachDB?
+
+Yes. Most users should be able to follow the instructions in [Migrate from Postgres](migrate-from-postgres.html) or [Migrate from MySQL](migrate-from-mysql.html). Due to differences in available features and syntax, some features supported by these databases may require manual effort to port to CockroachDB. Check those pages for details.
+
+We also fully support [importing your data via CSV](migrate-from-csv.html).
+
 ## What is CockroachDB’s security model?
 
 You can run a secure or insecure CockroachDB cluster. When secure, client/node and inter-node communication is encrypted, and SSL certificates authenticate the identity of both clients and nodes. When insecure, there's no encryption or authentication.
@@ -158,6 +168,8 @@ You can run a secure or insecure CockroachDB cluster. When secure, client/node a
 Also, CockroachDB supports common SQL privileges on databases and tables. The `root` user has privileges for all databases, while unique users can be granted privileges for specific statements at the database and table-levels.
 
 For more details, see our [Security Overview](security-reference/security-overview.html).
+
+# How CockroachDB compares
 
 ## How does CockroachDB compare to MySQL or PostgreSQL?
 
@@ -171,13 +183,7 @@ While all of these are distributed databases, only CockroachDB supports distribu
 
 For more insight, see [CockroachDB in Comparison](cockroachdb-in-comparison.html).
 
-## Can a PostgreSQL or MySQL application be migrated to CockroachDB?
-
-Yes. Most users should be able to follow the instructions in [Migrate from Postgres](migrate-from-postgres.html) or [Migrate from MySQL](migrate-from-mysql.html). Due to differences in available features and syntax, some features supported by these databases may require manual effort to port to CockroachDB. Check those pages for details.
-
-We also fully support [importing your data via CSV](migrate-from-csv.html).
-
-## Have questions that weren’t answered?
+# Have questions that weren’t answered?
 
 Try searching the rest of our docs for answers or using our other [support resources](support-resources.html), including:
 
