@@ -91,9 +91,10 @@ CockroachDB types map to [Parquet types](https://github.com/apache/parquet-forma
 | [`COLLATE`](collate.html) | byte array | `STRING` |
 | [`INET`](inet.html) | byte array | `STRING` |
 | [`JSONB`](jsonb.html) | byte array | `JSON` |
-| [`INT`](int.html) `INT8` <br>(all `INT` aliases besides `INT4` `INT2`) | `INT64` | `nil` |
-| [`INT4`](int.html) `INT2` | `INT32` | `nil` |
-| [`FLOAT`](float.html) | `FLOAT64` | `nil` |
+| [`INT`](int.html) [`INT8`](int.html) | `INT64` | `nil` |
+| [`INT2`](int.html) [`INT4`](int.html) | `INT32` | `nil` |
+| [`FLOAT`](float.html) [`FLOAT8`](float.html) | `FLOAT64` | `nil` |
+| [`FLOAT4`](float.html) | `FLOAT32` | `nil` |
 | [`DECIMAL`](decimal.html) | byte array | `DECIMAL` <br>Note: scale and precision data are preserved in the Parquet file |
 | [`UUID`](uuid.html) | `fixed_len_byte_array` | `nil` |
 | [`BYTES`](bytes.html) | byte array | `nil` |
@@ -221,7 +222,7 @@ This example uses the `delimiter` option to define the ASCII character that deli
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPORT INTO CSV
-  's3://{BUCKET NAME}/{customer-export-data}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
+  'azure://{CONTAINER NAME}/{customer-export-data}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}'
   WITH delimiter = '|' FROM TABLE bank.customers;
 ~~~
 
@@ -230,7 +231,7 @@ This examples uses the `nullas` option to define the string that represents `NUL
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPORT INTO CSV
-  's3://{BUCKET NAME}/{customer-export-data}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
+  'azure://{CONTAINER NAME}/{customer-export-data}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}'
   WITH nullas = '' FROM TABLE bank.customers;
 ~~~
 
@@ -269,7 +270,7 @@ For more information, about the SQL client, see [`cockroach sql`](cockroach-sql.
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPORT INTO CSV
-  's3://{BUCKET NAME}/{customer-export-data}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
+  'azure://{CONTAINER NAME}/{customer-export-data}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}'
   WITH compression = 'gzip' FROM TABLE bank.customers;
 ~~~
 
@@ -285,7 +286,7 @@ export16808a04292505c80000000000000001-n1.0.csv.gz |   17 |   824
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPORT INTO PARQUET
-  's3://{BUCKET NAME}/{customer-export-data}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
+  'azure://{CONTAINER NAME}/{customer-export-data}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}'
   WITH compression = 'snappy' FROM TABLE bank.customers;
 ~~~
 
@@ -311,7 +312,7 @@ This example uses the `delimiter` option to define the ASCII character that deli
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPORT INTO CSV
-  's3://{BUCKET NAME}/{customer-export-data}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
+  'gs://{BUCKET NAME}/{customer-export-data}?AUTH=specified&CREDENTIALS={ENCODED KEY}'
   WITH delimiter = '|' FROM TABLE bank.customers;
 ~~~
 
@@ -320,7 +321,7 @@ This examples uses the `nullas` option to define the string that represents `NUL
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPORT INTO CSV
-  's3://{BUCKET NAME}/{customer-export-data}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
+  'gs://{BUCKET NAME}/{customer-export-data}?AUTH=specified&CREDENTIALS={ENCODED KEY}'
   WITH nullas = '' FROM TABLE bank.customers;
 ~~~
 
@@ -359,7 +360,7 @@ For more information, about the SQL client, see [`cockroach sql`](cockroach-sql.
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPORT INTO CSV
-  's3://{BUCKET NAME}/{customer-export-data}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
+  'gs://{BUCKET NAME}/{customer-export-data}?AUTH=specified&CREDENTIALS={ENCODED KEY}'
   WITH compression = 'gzip' FROM TABLE bank.customers;
 ~~~
 
@@ -375,7 +376,7 @@ export16808a04292505c80000000000000001-n1.0.csv.gz |   17 |   824
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPORT INTO PARQUET
-  's3://{BUCKET NAME}/{customer-export-data}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
+  'gs://{BUCKET NAME}/{customer-export-data}?AUTH=specified&CREDENTIALS={ENCODED KEY}'
   WITH compression = 'snappy' FROM TABLE bank.customers;
 ~~~
 
