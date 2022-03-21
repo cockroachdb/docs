@@ -39,9 +39,9 @@ Term | Definition
 **multi-tenant** | A type of CockroachDB deployment where multiple customers share a single storage cluster. Each customer sees a virtual CockroachDB cluster. Data in each virtual cluster is isolated and is invisible to other customers.
 **region**  | A logical identification of how nodes and data are clustered around [geographical locations](multiregion-overview.html). A _cluster region_ is the set of locations where cluster nodes are running. A _database region_ is the subset of cluster regions database data should be restricted to.
 **availability zone**  | A part of a data center that is considered to form a unit with regards to failures and fault tolerance. There can be multiple nodes in a single availability zone, however Cockroach Labs recommends that you to place different replicas of your data in different availability zones.
-**CockroachDB Serverless (beta)** | A product where customers pay for clusters virtualized on top of a shared CockroachDB deployment managed by Cockroach Labs. Hardware resources may be shared with other customers. Includes the ability to start clusters instantly and eliminates database operations. Consumption based billing and spend limits enforce budget requirements. Cockroach Labs SRE provide guaranteed uptime, security and operations.
-**CockroachDB Dedicated** | A product where customers pay for clusters that have exclusive access to their CockroachDB deployment managed by Cockroach Labs. Cockroach Labs SRE provides guaranteed uptime, security, and operations.
-**CockroachDB Self-Hosted** | A self-managed CockroachDB deployment backed by Cockroach Labs Support available for in multiple clouds and regions. Charged per vCPU on any cloud or infrastructure type.
+**CockroachDB Serverless (beta)** | A fully managed, multi-tenant CockroachDB deployment, in a single region and cloud (AWS or GCP). It delivers an autoscaling (up and down) and instant database. and offers a generous free tier and consumption based billing once these limits are exceeded (up to user set limits).
+**CockroachDB Dedicated** | A fully managed, single tenant CockroachDB deployment, managed by Cockroach Labs, in a single, multi-region cloud (AWS or GCP).
+**CockroachDB Self-Hosted** | A self-managed CockroachDB deployment, with node-based scale, built for mission-critical workloads.
 
 For more information on deployment types and guidelines on how to choose a deployment type, see [Choose a Deployment Type](choose-a-deployment-type.html).
 
