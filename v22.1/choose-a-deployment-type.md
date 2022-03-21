@@ -25,7 +25,7 @@ Cockroach Labs offers three ways to deploy CockroachDB: two managed services&mda
       </ul></td>
       <td><ul>
         <li><b>Scale</b>: Automatic transactional capacity scaling (up and down) depending on database activity. Ability to scale down to zero and consume no resources.</li>
-        <li><b>Availability</b>: Service availability guaranteed with 99.99% uptime. Data replication in triplicate within a single region to ensure survival of small regional issues.</li>
+        <li><b>Availability</b>: Service availability guaranteed with 99.99% uptime. Configurable data replication within a single region.</li>
         <li><b>Operations</b>: Cockroach Labs SRE provides guaranteed uptime and backups every three hours.</li>
         <li><b>Cost</b>: Free for 5GiB of storage and 250M <a href="../cockroachcloud/serverless-faqs.html#what-is-a-request-unit">Request Units</a>. Consumption based billing and spend limits enforce budget requirements.</li>
         <li><b>Resource isolation</b>: Shared CockroachDB software and infrastructure. Data is is not shared between deployments.</li>
@@ -46,7 +46,7 @@ Cockroach Labs offers three ways to deploy CockroachDB: two managed services&mda
       </ul></td>
       <td><ul>
         <li><b>Scale</b>: Node-based; simply add or remove nodes.</li>
-        <li><b>Availability</b>: Service availability guaranteed with 99.99% uptime. Data replication in triplicate within a single region to ensure survival of small regional issues.</li>
+        <li><b>Availability</b>: Service availability guaranteed with 99.99% uptime. Configurable data replication within a single region.</li>
         <li><b>Operations</b>: Cockroach Labs SRE provides guaranteed uptime, optimization, security, and operations for cluster, node, and cloud instances with daily and hourly backups.</li>
         <li><b>Cost</b>: Pricing based on disk size and storage. A single, predictable price packages hardware costs with SRE resources and Support.</li>
         <li><b>Resource isolation</b>: Dedicated, single-tenant instance of CockroachDB software and infrastructure.</li>
