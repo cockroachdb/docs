@@ -14,7 +14,7 @@ Replication zones give you the power to control what data goes where in your Coc
 - Indexes ([Enterprise-only](enterprise-licensing.html))
 - All data in the cluster, including internal system data ([via the default replication zone](#view-the-default-replication-zone))
 
-For each of the above objects you can control:
+For each of these objects you can control:
 
 - How many copies of each range to spread through the cluster.
 - Which constraints are applied to which data, e.g., "table X's data can only be stored in the German availability zones".
@@ -576,7 +576,7 @@ There's no need to make zone configuration changes; by default, the cluster is c
 
     ~~~ shell
     $ cockroach start --insecure --advertise-addr=<node1 hostname> --locality=az=us-1 \
-    --join=<node1 hostname>,<node2 hostname>,<node3 hostname>   
+    --join=<node1 hostname>,<node2 hostname>,<node3 hostname>
     $ cockroach start --insecure --advertise-addr=<node2 hostname> --locality=az=us-2 \
     --join=<node1 hostname>,<node2 hostname>,<node3 hostname>
     $ cockroach start --insecure --advertise-addr=<node3 hostname> --locality=az=us-3 \

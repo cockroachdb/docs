@@ -5,7 +5,7 @@ toc: true
 docs_area: develop
 ---
 
-A _follower read_ is performed on the [nearest replica](architecture/overview.html#architecture-replica) relative to the SQL gateway that is executing the SQL statement regardless of the replica's [leaseholder](architecture/overview.html#architecture-leaseholder) status. Using the nearest replica can reduce read latencies and increase throughput. Applications in [multi-region deployments](topology-follower-reads.html) especially can use follower reads to get improved performance.
+A _follower read_ is performed on the [nearest replica](glossary.html#architecture-replica) relative to the SQL gateway that is executing the SQL statement regardless of the replica's [leaseholder](glossary.html#architecture-leaseholder) status. Using the nearest replica can reduce read latencies and increase throughput. Applications in [multi-region deployments](topology-follower-reads.html) especially can use follower reads to get improved performance.
 
 {% include enterprise-feature.md %}
 
