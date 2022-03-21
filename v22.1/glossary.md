@@ -29,6 +29,8 @@ Term | Definition
 **Raft leader** | For each range, the replica that is the "leader" for write requests. The leader uses the Raft protocol to ensure that a majority of replicas (the leader and enough followers) agree, based on their Raft logs, before committing the write. The Raft leader is almost always the same replica as the leaseholder.
 **Raft log** | A time-ordered log of writes to a range that its replicas have agreed on. This log exists on-disk with each replica and is the range's source of truth for consistent replication.
 
+For more information on CockroachDB architecture, see [Architecture Overview](architecture/overview.html#overview).
+
 ## CockroachDB deployment
 
 Term | Definition
@@ -41,6 +43,8 @@ Term | Definition
 **CockroachDB Dedicated** | A product where customers pay for clusters that have exclusive access to their CockroachDB deployment managed by Cockroach Labs. Cockroach Labs SRE provides guaranteed uptime, security, and operations.
 **CockroachDB Self-Hosted** | A self-managed CockroachDB deployment backed by Cockroach Labs Support available for in multiple clouds and regions. Charged per vCPU on any cloud or infrastructure type.
 
+For more information on deployment types and guidelines on how to choose a deployment type, see [Choose a Deployment Type](choose-a-deployment-type.html).
+
 ## CockroachCloud
 
 Term | Definition
@@ -52,3 +56,5 @@ Term | Definition
 **baseline performance** | The minimum compute and I/O performance that you can expect from your cluster at all times. This is 100 RUs per second for all Serverless clusters (free and paid). The actual usage of a cluster may be lower than the baseline performance depending on application traffic, because not every application will need 100 RUs per second at all times. When the cluster's usage is lower than the baseline, the cluster accumulates the unused RUs until the load on the cluster increases above the baseline.
 **burst performance** | The ability of the Serverless cluster to perform above the baseline. Supporting application traffic that "bursts," i.e., can fluctuate above baseline traffic, is a key feature of Serverless clusters. Every Serverless cluster starts with a certain amount of burst performance capacity. If the actual usage of a cluster is lower than the baseline performance, the cluster can earn Request Units that can be used for burst performance for the rest of the month. 
 **storage** | Disk space for permanently storing data over time. All data in {{ site.data.products.serverless }} is automatically replicated three times and distributed across Availability Zones to survive outages. Storage is measured in units of GiB-months, which is the amount of data stored multiplied by how long it was stored. Storing 10 GiB for a month and storing 1 GiB for 10 months are both 10 GiB-months. The storage you see in the [Cluster Overview](../cockroachcloud/serverless-cluster-management.html#view-cluster-overview) page is the amount of data before considering the replication multiplier.
+
+For more information on CockroachDB Cloud, see [CockroachDB Cloud Architecture](../cockroachcloud/architecture.html#architecture).
