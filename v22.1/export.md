@@ -95,7 +95,7 @@ CockroachDB types map to [Parquet types](https://github.com/apache/parquet-forma
 | [`INT2`](int.html) [`INT4`](int.html) | `INT32` | `nil` |
 | [`FLOAT`](float.html) [`FLOAT8`](float.html) | `FLOAT64` | `nil` |
 | [`FLOAT4`](float.html) | `FLOAT32` | `nil` |
-| [`DECIMAL`](decimal.html) | byte array | `DECIMAL` <br>Note: scale and precision data are preserved in the Parquet file |
+| [`DECIMAL`](decimal.html) | byte array | `DECIMAL` <br>Note: scale and precision data are preserved in the Parquet file. |
 | [`UUID`](uuid.html) | `fixed_len_byte_array` | `nil` |
 | [`BYTES`](bytes.html) | byte array | `nil` |
 | [`BIT`](bit.html) | byte array | `nil` |
@@ -106,7 +106,7 @@ CockroachDB types map to [Parquet types](https://github.com/apache/parquet-forma
 | [`DATE`](date.html) | byte array | `STRING` |
 | [`TIME`](time.html) | `INT64` | `TIME` <br>Note: microseconds after midnight; <br>exporting to microsecond precision. |
 | [`TIMETZ`](time.html) | byte array | `STRING` <br>Note: exporting to microsecond precision. |
-| [`INTERVAL`](interval.html) | byte array | `STRING` <br>Note: specifically represented as ISO8601 |
+| [`INTERVAL`](interval.html) | byte array | `STRING` <br>Note: specifically represented as ISO8601. |
 | [`TIMESTAMP`](timestamp.html) | byte array | `STRING` <br>Note: exporting to microsecond precision. |
 | [`TIMESTAMPTZ`](timestamp.html) | byte array | `STRING` <br>Note: exporting to microsecond precision. |
 | [`ARRAY`](array.html) | Encoded as a repeated field; <br>each array value is encoded as per the preceding types. | `nil` |
@@ -173,7 +173,7 @@ For more information, see [selection queries](selection-queries.html).
 $ cockroach sql -e "SELECT * from bank.customers WHERE id>=100;" --format=csv > my.csv
 ~~~
 
-For more information, about the SQL client, see [`cockroach sql`](cockroach-sql.html).
+For more information about the SQL client, see [`cockroach sql`](cockroach-sql.html).
 
 ### Export compressed files
 
@@ -261,7 +261,7 @@ For more information, see [selection queries](selection-queries.html).
 $ cockroach sql -e "SELECT * from bank.customers WHERE id>=100;" --format=csv > my.csv
 ~~~
 
-For more information, about the SQL client, see [`cockroach sql`](cockroach-sql.html).
+For more information about the SQL client, see [`cockroach sql`](cockroach-sql.html).
 
 ### Export compressed files
 
@@ -351,7 +351,7 @@ For more information, see [selection queries](selection-queries.html).
 $ cockroach sql -e "SELECT * from bank.customers WHERE id>=100;" --format=csv > my.csv
 ~~~
 
-For more information, about the SQL client, see [`cockroach sql`](cockroach-sql.html).
+For more information about the SQL client, see [`cockroach sql`](cockroach-sql.html).
 
 ### Export compressed files
 
