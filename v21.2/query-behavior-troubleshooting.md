@@ -1,5 +1,5 @@
 ---
-title: Troubleshoot SQL Behavior
+title: Troubleshoot Statement Behavior
 summary: Learn how to troubleshoot issues with specific SQL statements with CockroachDB
 toc: true
 docs_area: manage
@@ -8,14 +8,14 @@ docs_area: manage
 If a [SQL statement](sql-statements.html) returns an unexpected result or takes longer than expected to process, this page will help you troubleshoot the issue.
 
 {{site.data.alerts.callout_success}}
-For a developer-centric walkthrough of optimizing SQL query performance, see [Optimize Statement Performance](make-queries-fast.html).
+For a developer-centric overview of optimizing SQL statement performance, see [Optimize Statement Performance Overview](make-queries-fast.html).
 {{site.data.alerts.end}}
 
 ## Identify slow statements
 
 Use the [slow query log](logging-use-cases.html#sql_perf) or DB Console to detect slow queries in your cluster.
 
-High latency SQL statements are displayed on the [**Statements page**](ui-statements-page.html) of the DB Console. To view the Statements page, [access the DB Console](ui-overview.html#db-console-access) and click **Statements** on the left.
+High latency SQL statements are displayed on the [Statements](ui-statements-page.html) page of the DB Console. To view the Statements page, [access the DB Console](ui-overview.html#db-console-access) and click **Statements** on the left.
 
 You can also check the [service latency graph](ui-sql-dashboard.html#service-latency-sql-99th-percentile) and the [CPU graph](ui-hardware-dashboard.html#cpu-percent) on the SQL and Hardware Dashboards, respectively. If the graphs show latency spikes or CPU usage spikes, these might indicate slow queries in your cluster.
 
@@ -38,17 +38,17 @@ You can look more closely at the behavior of a statement by visualizing a statem
 
 1. Access the Jaeger UI at `http://localhost:16686/search`.
 
-1. Click on **JSON File** in the Jaeger UI and upload `trace-jaeger.json` from the diagnostics bundle. The trace will appear in the list on the right.
+1. Click **JSON File** in the Jaeger UI and upload `trace-jaeger.json` from the diagnostics bundle. The trace will appear in the list on the right.
 
     <img src="{{ 'images/v21.2/jaeger-trace-json.png' | relative_url }}" alt="Jaeger Trace Upload JSON" style="border:1px solid #eee;max-width:40%" />
 
-1. Click on the trace to view its details. It is visualized as a collection of spans with timestamps. These may include operations executed by different nodes.
+1. Click the trace to view its details. It is visualized as a collection of spans with timestamps. These may include operations executed by different nodes.
 
     <img src="{{ 'images/v21.2/jaeger-trace-spans.png' | relative_url }}" alt="Jaeger Trace Spans" style="border:1px solid #eee;max-width:100%" />
 
     The full timeline displays the execution time and [execution phases](architecture/sql-layer.html#sql-parser-planner-executor) for the statement.
 
-1. Click on a span to view details for that span and log messages.
+1. Click a span to view details for that span and log messages.
 
     <img src="{{ 'images/v21.2/jaeger-trace-log-messages.png' | relative_url }}" alt="Jaeger Trace Log Messages" style="border:1px solid #eee;max-width:100%" />
 
@@ -72,7 +72,7 @@ If you have consistently slow queries in your cluster, use the [Statement Detail
 
 You can also use an [`EXPLAIN ANALYZE`](explain-analyze.html) statement, which executes a SQL query and returns a physical query plan with execution statistics. Query plans can be used to troubleshoot slow queries by indicating where time is being spent, how long a processor (i.e., a component that takes streams of input rows and processes them according to a specification) is not doing work, etc.
 
-We recommend sending either the diagnostics bundle or the `EXPLAIN ANALYZE` output to our [support team](support-resources.html) for analysis.
+Cockroach Labs recommends sending either the diagnostics bundle (preferred) or the `EXPLAIN ANALYZE` output to our [support team](support-resources.html) for analysis.
 
 ## Query is sometimes slow
 
@@ -82,7 +82,7 @@ If the query performance is irregular:
 
 2.  [Contact us](support-resources.html) to analyze the outputs of the `SHOW TRACE` command.
 
-## Cancelling running queries
+## Cancel running queries
 
 See [Cancel long-running queries](manage-long-running-queries.html#cancel-long-running-queries).
 
@@ -114,7 +114,7 @@ A hot node is one that has much higher resource usage than other nodes. To deter
 
 -   If you have a small table that fits into one range, then only one of the nodes will be used. This is expected behavior. However, you can [split your range](split-at.html) to distribute the table across multiple nodes.
 
--   If the **SQL Connections** graph shows that one node has a higher number of SQL connections and other nodes have zero connections, check if your app is set to talk to only one node.
+-   If the SQL Connections graph shows that one node has a higher number of SQL connections and other nodes have zero connections, check if your app is set to talk to only one node.
 
 -   Check load balancer settings.
 

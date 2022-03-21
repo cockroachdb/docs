@@ -2,7 +2,7 @@
 title: ALTER ROLE
 summary: The ALTER ROLE statement can be used to add or change a role's password.
 toc: true
-docs_area: reference.sql 
+docs_area: reference.sql
 ---
 
 Use the `ALTER ROLE` [statement](sql-statements.html) to add, change, or remove a [role's](create-role.html) password, change the role options for a role, and set default [session variable](set-vars.html) values for a role.
@@ -17,7 +17,7 @@ Since the keywords `ROLE` and `USER` can now be used interchangeably in SQL stat
 
 ## Required privileges
 
-- To alter an [`admin` role](authorization.html#admin-role), the user must be a member of the `admin` role.
+- To alter an [`admin` role](security-reference/authorization.html#admin-role), the user must be a member of the `admin` role.
 - To alter other roles, the user must be a member of the `admin` role or have the [`CREATEROLE`](create-role.html#create-a-role-that-can-create-other-roles-and-manage-authentication-methods-for-the-new-roles) role option set.
 
 ## Synopsis
@@ -264,6 +264,7 @@ root@:26257/movr> SHOW timezone;
 - [`SHOW ROLES`](show-roles.html)
 - [`GRANT`](grant.html)
 - [`SHOW GRANTS`](show-grants.html)
-- [Create Security Certificates](cockroach-cert.html)
-- [Other SQL Statements](sql-statements.html)
-- [Authorization Best Practices](authorization.html#authorization-best-practices)
+- [`cockroach cert`](cockroach-cert.html)
+- [SQL Statements](sql-statements.html)
+- [Authorization Best Practices](security-reference/authorization.html#authorization-best-practices)
+

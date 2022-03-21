@@ -78,7 +78,7 @@ If you used the [duplicate indexes pattern][dupe_index], the steps for backing o
     ~~~ sql
     ALTER TABLE postal_codes CONFIGURE ZONE DISCARD;
     ~~~
-    
+
 1. Drop the extra indexes you added. This will have the side effect of also deleting the zone configurations you added to those indexes.
 
     {% include_cached copy-clipboard.html %}
@@ -252,7 +252,7 @@ A [`GLOBAL`](global-tables.html) table differs from the default by setting the f
 - [`num_voters`](configure-replication-zones.html#num_voters)
 - [`constraints`](configure-replication-zones.html#constraints)
 - [`voter_constraints`](configure-replication-zones.html#voter_constraints)
-- [`lease_preferences`](configure-replication-zones.html#lease_preferences) 
+- [`lease_preferences`](configure-replication-zones.html#lease_preferences)
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -305,9 +305,3 @@ SHOW ZONE CONFIGURATION FROM TABLE promo_codes;
 - [Multi-region SQL performance](demo-low-latency-multi-region-deployment.html)
 - [Configure replication zones](configure-replication-zones.html)
 - [Non-voting replicas](architecture/replication-layer.html#non-voting-replicas)
-
-<!-- Reference Links -->
-
-[dupe_index]:       https://www.cockroachlabs.com/docs/v20.2/topology-duplicate-indexes.html
-[geo_replicas]:     https://www.cockroachlabs.com/docs/v20.2/topology-geo-partitioned-replicas.html
-[geo_leaseholders]: https://www.cockroachlabs.com/docs/v20.2/topology-geo-partitioned-leaseholders.html

@@ -31,7 +31,7 @@ mentions.
 
 ## Required privileges
 
-The user must have the `CREATE` [privilege](authorization.html#assign-privileges) on the parent database.
+The user must have the `CREATE` [privilege](security-reference/authorization.html#managing-privileges) on the parent database.
 
 ## Synopsis
 <div class="filters clearfix">
@@ -306,7 +306,7 @@ You can define the [column families](column-families.html) of a new table create
 - [`CREATE VIEW`](create-view.html)
 - [`INSERT`](insert.html)
 - [`DROP TABLE`](drop-table.html)
-- [Other SQL Statements](sql-statements.html)
+- [SQL Statements](sql-statements.html)
 - [`ALTER PRIMARY KEY`](alter-primary-key.html)
 - [`ALTER TABLE`](alter-table.html)
 - [Online Schema Changes](online-schema-changes.html)

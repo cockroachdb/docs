@@ -9,7 +9,7 @@ The `SHOW CONSTRAINTS` [statement](sql-statements.html) lists all named [constra
 
 ## Required privileges
 
-The user must have any [privilege](authorization.html#assign-privileges) on the target table.
+The user must have any [privilege](security-reference/authorization.html#managing-privileges) on the target table.
 
 ## Aliases
 
@@ -82,4 +82,4 @@ Field | Description
 - [`VALIDATE CONSTRAINT`](validate-constraint.html)
 - [`CREATE TABLE`](create-table.html)
 - [Information Schema](information-schema.html)
-- [Other SQL Statements](sql-statements.html)
+- [SQL Statements](sql-statements.html)

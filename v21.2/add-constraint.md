@@ -27,7 +27,7 @@ The [`DEFAULT`](default-value.html) and [`NOT NULL`](not-null.html) constraints 
 
 ## Required privileges
 
-The user must have the `CREATE` [privilege](authorization.html#assign-privileges) on the table.
+The user must have the `CREATE` [privilege](security-reference/authorization.html#managing-privileges) on the table.
 
 ## Parameters
 
@@ -37,7 +37,7 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
  `constraint_name` | The name of the constraint, which must be unique to its table and follow these [identifier rules](keywords-and-identifiers.html#identifiers).
  `constraint_elem` | The [`CHECK`](check.html), [foreign key](foreign-key.html), [`UNIQUE`](unique.html) constraint you want to add. <br/><br/>Adding/changing a `DEFAULT` constraint is done through [`ALTER COLUMN`](alter-column.html). <br/><br/>Adding/changing the table's `PRIMARY KEY` is not supported through `ALTER TABLE`; it can only be specified during [table creation](create-table.html).
 
-## Viewing schema changes
+## View schema changes
 
 {% include {{ page.version.version }}/misc/schema-change-view-job.md %}
 
@@ -60,7 +60,7 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 
 ### Add the `UNIQUE` constraint
 
-Adding the [`UNIQUE` constraint](unique.html) requires that all of a column's values be distinct from one another (except for *NULL* values).
+Adding the [`UNIQUE` constraint](unique.html) requires that all of a column's values be distinct from one another (except for `NULL` values).
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -76,7 +76,11 @@ Adding the [`CHECK` constraint](check.html) requires that all of a column's valu
 > ALTER TABLE rides ADD CONSTRAINT check_revenue_positive CHECK (revenue >= 0);
 ~~~
 
-Check constraints can be added to columns that were created earlier in the transaction. For example:
+In the process of adding the constraint CockroachDB will run a background job to validate existing table data. If CockroachDB finds a row that violates the constraint during the validation step, the [`ADD CONSTRAINT`](add-constraint.html) statement will fail.
+
+#### Add constraints to columns created during a transaction
+
+You can add check constraints to columns that were created earlier in the transaction. For example:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -267,15 +271,20 @@ SHOW INDEXES FROM users;
 ~~~
   table_name |    index_name     | non_unique | seq_in_index | column_name | direction | storing | implicit
 -------------+-------------------+------------+--------------+-------------+-----------+---------+-----------
-  users      | primary           |   false    |            1 | region      | ASC       |  false  |  false
+  users      | primary           |   false    |            1 | region      | ASC       |  false  |   true
   users      | primary           |   false    |            2 | id          | ASC       |  false  |  false
-  users      | user_email_unique |   false    |            1 | region      | ASC       |  false  |  false
+  users      | primary           |   false    |            3 | city        | N/A       |  true   |  false
+  users      | primary           |   false    |            4 | name        | N/A       |  true   |  false
+  users      | primary           |   false    |            5 | address     | N/A       |  true   |  false
+  users      | primary           |   false    |            6 | credit_card | N/A       |  true   |  false
+  users      | primary           |   false    |            7 | email       | N/A       |  true   |  false
+  users      | user_email_unique |   false    |            1 | region      | ASC       |  false  |   true
   users      | user_email_unique |   false    |            2 | email       | ASC       |  false  |  false
   users      | user_email_unique |   false    |            3 | id          | ASC       |  false  |   true
-  users      | users_city_idx    |    true    |            1 | region      | ASC       |  false  |  false
+  users      | users_city_idx    |    true    |            1 | region      | ASC       |  false  |   true
   users      | users_city_idx    |    true    |            2 | city        | ASC       |  false  |  false
   users      | users_city_idx    |    true    |            3 | id          | ASC       |  false  |   true
-(8 rows)
+(13 rows)
 ~~~
 
 Next, issue the [`SHOW PARTITIONS`](show-partitions.html) statement. The output below (which is edited for length) will verify that the unique index was automatically [partitioned](partitioning.html) for you. It shows that the `user_email_unique` index is now partitioned by the database regions `europe-west1`, `us-east1`, and `us-west1`.
@@ -286,12 +295,11 @@ SHOW PARTITIONS FROM TABLE users;
 ~~~
 
 ~~~
-  database_name | table_name | partition_name | column_names |       index_name        | partition_value |  ...
-----------------+------------+----------------+--------------+-------------------------+-----------------+-----
-  movr          | users      | europe-west1   | region       | users@user_email_unique | ('europe-west1')|  ...
-  movr          | users      | us-east1       | region       | users@user_email_unique | ('us-east1')    |  ...
-  movr          | users      | us-west1       | region       | users@user_email_unique | ('us-west1')    |  ...
-  ...
+  database_name | table_name | partition_name | column_names |       index_name        | partition_value  |  ...
+----------------+------------+----------------+--------------+-------------------------+------------------+-----
+  movr          | users      | europe-west1   | region       | users@user_email_unique | ('europe-west1') |  ...
+  movr          | users      | us-east1       | region       | users@user_email_unique | ('us-east1')     |  ...
+  movr          | users      | us-west1       | region       | users@user_email_unique | ('us-west1')     |  ...
 ~~~
 
 To ensure that the uniqueness constraint is enforced properly across regions when rows are inserted, or the `email` column of an existing row is updated, the database needs to do the following additional work when indexes are partitioned as shown above:

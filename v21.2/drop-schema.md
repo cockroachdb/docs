@@ -11,7 +11,7 @@ The `DROP SCHEMA` [statement](sql-statements.html) removes a user-defined [schem
 
 ## Required privileges
 
-The user must have the `DROP` [privilege](authorization.html#assign-privileges) on the schema and on all tables in the schema. If the user is the owner of the schema, `DROP` privileges are not necessary.
+The user must have the `DROP` [privilege](security-reference/authorization.html#managing-privileges) on the schema and on all tables in the schema. If the user is the owner of the schema, `DROP` privileges are not necessary.
 
 ## Syntax
 
@@ -161,5 +161,5 @@ SQLSTATE: 2BP01
 - [`CREATE SCHEMA`](create-schema.html)
 - [`SHOW SCHEMAS`](show-schemas.html)
 - [`SHOW JOBS`](show-jobs.html)
-- [Other SQL Statements](sql-statements.html)
+- [SQL Statements](sql-statements.html)
 - [Online Schema Changes](online-schema-changes.html)

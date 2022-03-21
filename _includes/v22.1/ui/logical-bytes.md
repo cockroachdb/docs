@@ -1,0 +1,1 @@
+Logical bytes reflect the approximate number of bytes stored in the database. This value may deviate from the number of physical bytes on disk, due to factors such as compression and [write amplification](https://en.wikipedia.org/wiki/Write_amplification).

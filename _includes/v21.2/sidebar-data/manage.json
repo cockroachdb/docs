@@ -18,6 +18,12 @@
           ]
         },
         {
+          "title": "Manage Billing",
+          "urls": [
+             "/cockroachcloud/billing-management.html"
+          ]
+        },
+        {
           "title": "Use the Cloud API",
           "urls": [
             "/cockroachcloud/cloud-api.html"
@@ -37,12 +43,12 @@
                 "/cockroachcloud/run-bulk-operations.html"
               ]
             },
-          	{
-          	  "title": "Restore Data from a Backup",
-          	  "urls": [
-          	    "/cockroachcloud/backups-page.html"
-          	  ]
-          	}
+            {
+              "title": "Restore Data from a Backup",
+              "urls": [
+                "/cockroachcloud/backups-page.html"
+              ]
+            }
           ]
         },
         {
@@ -106,47 +112,21 @@
       ]
     },
     {
-      "title": "Performance",
-      "items": [
-        {
-          "title": "Overview",
-          "urls": [
-            "/${VERSION}/performance.html"
-          ]
-        },
-        {
-          "title": "Benchmarking Instructions",
-          "urls": [
-            "/${VERSION}/performance-benchmarking-with-tpcc-local.html",
-            "/${VERSION}/performance-benchmarking-with-tpcc-small.html",
-            "/${VERSION}/performance-benchmarking-with-tpcc-medium.html",
-            "/${VERSION}/performance-benchmarking-with-tpcc-large.html"
-          ]
-        },
-        {
-          "title": "Serverless Performance Benchmarking",
-          "urls": [
-            "/cockroachcloud/serverless-benchmarking.html"
-          ]
-        }
-      ]
-    },
-    {
       "title": "Security",
       "items": [
         {
           "title": "Secure CockroachDB Cloud Clusters",
           "items": [
             {
-              "title": "Security Overview",
+              "title": "Authenticating to CockroachDB Cloud",
               "urls": [
-                "/cockroachcloud/security-overview.html"
+                "/cockroachcloud/authentication.html"
               ]
             },
             {
-              "title": "Authentication",
+              "title": "Configure SQL Authentication for Hardened Serverless Cluster Security",
               "urls": [
-                "/cockroachcloud/authentication.html"
+                "/${VERSION}/security-reference/config-secure-hba.html"
               ]
             },
             {
@@ -170,7 +150,7 @@
             {
               "title": "Manage Console Access",
               "urls": [
-        	       "/cockroachcloud/console-access-management.html"
+                 "/cockroachcloud/console-access-management.html"
               ]
             }
           ]
@@ -178,12 +158,6 @@
         {
           "title": "Secure CockroachDB Self-Hosted Clusters",
           "items": [
-            {
-              "title": "Overview",
-              "urls": [
-                "/${VERSION}/security-overview.html"
-              ]
-            },
             {
               "title": "Authentication",
               "urls": [
@@ -424,9 +398,9 @@
           ]
         },
         {
-          "title": "Decommission Nodes",
+          "title": "Node Shutdown",
           "urls": [
-            "/${VERSION}/remove-nodes.html"
+            "/${VERSION}/node-shutdown.html"
           ]
         },
         {
@@ -444,7 +418,7 @@
       ]
     },
     {
-      "title": "Troubleshoot a Cluster",
+      "title": "Troubleshooting",
       "items": [
         {
           "title": "Troubleshooting Overview",
@@ -453,13 +427,7 @@
           ]
         },
         {
-      	  "title": "Troubleshoot Your CockroachDB Cloud Cluster",
-      	  "urls": [
-      	    "/cockroachcloud/troubleshooting-page.html"
-      	  ]
-      	},
-        {
-          "title": "Common Errors",
+          "title": "Common Errors and Solutions",
           "urls": [
             "/${VERSION}/common-errors.html"
           ]
@@ -471,9 +439,15 @@
           ]
         },
         {
-          "title": "Troubleshoot Query Behavior",
+          "title": "Troubleshoot Statement Behavior",
           "urls": [
             "/${VERSION}/query-behavior-troubleshooting.html"
+          ]
+        },
+        {
+          "title": "Troubleshoot CockroachDB Cloud",
+          "urls": [
+            "/cockroachcloud/troubleshooting-page.html"
           ]
         },
         {

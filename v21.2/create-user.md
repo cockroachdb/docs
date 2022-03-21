@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `CREATE USER` [statement](sql-statements.html) creates SQL users, which let you control [privileges](authorization.html#assign-privileges) on your databases and tables.
+The `CREATE USER` [statement](sql-statements.html) creates SQL users, which let you control [privileges](security-reference/authorization.html#managing-privileges) on your databases and tables.
 
 {% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
@@ -348,5 +348,5 @@ with_password              | VALID UNTIL=2021-10-10 00:00:00+00:00 | {}
 - [`GRANT`](grant.html)
 - [`SHOW GRANTS`](show-grants.html)
 - [Create Security Certificates](cockroach-cert.html)
-- [Other SQL Statements](sql-statements.html)
+- [SQL Statements](sql-statements.html)
 - [Online Schema Changes](online-schema-changes.html)

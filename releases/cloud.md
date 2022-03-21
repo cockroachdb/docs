@@ -3,7 +3,7 @@ title: CockroachDB Cloud Release Notes
 summary: Changelog for CockroachDB Cloud.
 toc: true
 redirect-from: index-cockroachcloud.html
-docs_area: releases releases
+docs_area: releases
 ---
 
 CockroachDB Cloud supports the latest major version of CockroachDB and the version immediately preceding it. All clusters are subject to automatic upgrades to the latest supported minor version. [{{ site.data.products.serverless }}](../cockroachcloud/quickstart.html) clusters are subject to automatic upgrades for both minor and major releases while Serverless is in beta. For more information, see the [{{ site.data.products.db }} Upgrade Policy](../cockroachcloud/upgrade-policy.html).
@@ -13,33 +13,18 @@ Get future release notes emailed to you:
 {% include marketo.html %}
 
 {{site.data.alerts.callout_version}}
-As of January 12, 2021, new {{ site.data.products.dedicated }} clusters and all {{ site.data.products.serverless }} clusters are running CockroachDB [v21.2.4](v21.2.4.html).
+As of March 2, 2022, new {{ site.data.products.dedicated }} clusters and all {{ site.data.products.serverless }} clusters are running CockroachDB [v21.2.6](v21.2.html).
 {{site.data.alerts.end}}
 
-## February 7, 2022
-
-<h3>General changes</h3>
-
-- Six new regions are available for {{ site.data.products.serverless }} clusters:
-    
-    GCP                              | AWS
-    ---------------------------------|------------
-    Oregon (`us-west2`)              | Mumbai (`ap-south-1`)
-    Sao Paulo (`southamerica-east1`) | Frankfurt (`eu-central-1`)
-    South Carolina (`us-east1`)      | N. Virginia (`us-east-1`)
+## March 7, 2022
 
 <h3>Console changes</h3>
 
-- The [**Terminate Session** and **Terminate Statement**](../cockroachcloud/sessions-page.html#sessions-list) options are now enabled for {{ site.data.products.db }} clusters running CockroachDB [v21.2.2](v21.2.2.html) or later.
-- Selecting a transaction from the [**Transactions** page](../cockroachcloud/transactions-page.html) now opens a new [**Transaction Details**](../cockroachcloud/transactions-page.html#transaction-details-page) page with an improved design.
-- The order of the tabs on the **SQL Activity** page has been changed to [**Statements**](../cockroachcloud/statements-page.html), [**Transactions**](../cockroachcloud/transactions-page.html), and [**Sessions**](../cockroachcloud/sessions-page.html).
-  
-<h3>Bug fixes</h3>
+- {{ site.data.products.db }} clusters now have a **Databases** page in the Console, which shows your databases, tables, indexes, and grants.
+- When creating or editing a SQL user, passwords are now generated and saved automatically when users click the **Generate and save password** button. Previously, users had to enter passwords manually and remember to save them.
+- {{ site.data.products.dedicated }} users can now [restore](../cockroachcloud/backups-page.html) databases configured for multiple regions.
 
-- Fixed a number of broken links throughout the {{ site.data.products.db }} Console.
-- Fixed a bug where {{ site.data.products.serverless }} users were seeing occasional dips and spikes in a cluster's [**Request Units**](../cockroachcloud/cluster-overview-page.html#request-units) usage graph while running a steady workload.
-
-## February 1, 2022
+## February 10, 2022
 
 <h3>General changes</h3>
 
@@ -50,12 +35,35 @@ As of January 12, 2021, new {{ site.data.products.dedicated }} clusters and all 
 
 - There is now a **Hardware** column on the **Clusters** page that shows the hardware configuration for {{ site.data.products.dedicated }} clusters.
 
+## February 7, 2022
+
+<h3>General changes</h3>
+
+- Six new regions are available for {{ site.data.products.serverless }} clusters:
+
+    GCP                              | AWS
+    ---------------------------------|------------
+    Oregon (`us-west2`)              | Mumbai (`ap-south-1`)
+    Sao Paulo (`southamerica-east1`) | Frankfurt (`eu-central-1`)
+    South Carolina (`us-east1`)      | N. Virginia (`us-east-1`)
+
+<h3>Console changes</h3>
+
+- The [**Terminate Session** and **Terminate Statement**](../cockroachcloud/sessions-page.html#sessions-list) options are now enabled for {{ site.data.products.db }} clusters running CockroachDB [v21.2.2](v21.2.html#v21-2-2) or later.
+- Selecting a transaction from the [**Transactions** page](../cockroachcloud/transactions-page.html) now opens a new [**Transaction Details**](../cockroachcloud/transactions-page.html#transaction-details-page) page with an improved design.
+- The order of the tabs on the **SQL Activity** page has been changed to [**Statements**](../cockroachcloud/statements-page.html), [**Transactions**](../cockroachcloud/transactions-page.html), and [**Sessions**](../cockroachcloud/sessions-page.html).
+
+<h3>Bug fixes</h3>
+
+- Fixed a number of broken links throughout the {{ site.data.products.db }} Console.
+- Fixed a bug where {{ site.data.products.serverless }} users were seeing occasional dips and spikes in a cluster's [**Request Units**](../cockroachcloud/cluster-overview-page.html#request-units) usage graph while running a steady workload.
+
 ## January 10, 2022
 
 <h3>General changes</h3>
 
-- New {{ site.data.products.dedicated }} clusters will now run [v21.2.3](v21.2.3.html).
-- {{ site.data.products.serverless }} clusters will now run CockroachDB [v21.2.0-beta.4](v21.2.0-beta.4.html).
+- New {{ site.data.products.dedicated }} clusters will now run [v21.2.3](v21.2.html#v21-2-3).
+- {{ site.data.products.serverless }} clusters will now run CockroachDB [v21.2.0-beta.4](v21.2.html#v21-2-0-beta-4).
 - The CockroachDB documentation navigation is now organized by user task instead of by product for {{ site.data.products.serverless }}, {{ site.data.products.dedicated }}, and {{ site.data.products.core }} v21.2. Topics specific to Serverless and Dedicated clusters are within the new top-level user task categories. {{ site.data.products.db }} release notes are under Reference.
 
 <h3>Console changes</h3>
@@ -66,8 +74,8 @@ As of January 12, 2021, new {{ site.data.products.dedicated }} clusters and all 
 
 <h3>General changes</h3>
 
-- New {{ site.data.products.dedicated }} clusters will now run [v21.2.1](v21.2.1.html).
-- {{ site.data.products.serverless }} clusters will now run CockroachDB [v21.2.0-beta.4](v21.2.0-beta.4.html).
+- New {{ site.data.products.dedicated }} clusters will now run [v21.2.1](v21.2.html#v21-2-1).
+- {{ site.data.products.serverless }} clusters will now run CockroachDB [v21.2.0-beta.4](v21.2.html#v21-2-0-beta-4).
 - New {{ site.data.products.db }} clusters will now have [Admission Control](../{{site.versions["stable"]}}/architecture/admission-control.html) enabled by default.
 - {{ site.data.products.dedicated }} clusters will now run on new [machine types and disks](../cockroachcloud/create-your-cluster.html#step-2-select-the-cloud-provider). Clusters created before December 1, 2021 will be transitioned to the new hardware configurations by the end of the month, and pricing may change slightly.
 
@@ -88,8 +96,8 @@ As of January 12, 2021, new {{ site.data.products.dedicated }} clusters and all 
 
 - [{{ site.data.products.serverless }}](https://www.cockroachlabs.com/blog/announcing-cockroachdb-serverless/), a fully-managed, auto-scaling deployment of CockroachDB, is now available. To get started with {{ site.data.products.serverless }} for free, see the [Quickstart](../cockroachcloud/quickstart.html).
 - CockroachCloud Free (beta) and CockroachCloud are now {{ site.data.products.serverless }} and {{ site.data.products.dedicated }}, respectively. Your ability to use your cluster will not be affected.
-- {{ site.data.products.serverless }} clusters will now run CockroachDB [v21.2.0-beta.4](v21.2.0-beta.4.html).
-- New {{ site.data.products.dedicated }} clusters will now run CockroachDB [v21.1.11](v21.1.11.html).
+- {{ site.data.products.serverless }} clusters will now run CockroachDB [v21.2.0-beta.4](v21.2.html#v21-2-0-beta-4).
+- New {{ site.data.products.dedicated }} clusters will now run CockroachDB [v21.1.11](v21.1.html#v21-1-11).
 
 <h3>Console changes</h3>
 
@@ -116,7 +124,7 @@ As of January 12, 2021, new {{ site.data.products.dedicated }} clusters and all 
 
 <h3>General changes</h3>
 
-- New CockroachCloud clusters will now run CockroachDB [v21.1.9](v21.1.9.html).
+- New CockroachCloud clusters will now run CockroachDB [v21.1.9](v21.1.html#v21-1-9).
 
 <h3>Bug fixes</h3>
 
@@ -130,7 +138,7 @@ As of January 12, 2021, new {{ site.data.products.dedicated }} clusters and all 
 
 <h3>General changes</h3>
 
-- New CockroachCloud clusters will now run CockroachDB [v21.1.7](v21.1.7.html).
+- New CockroachCloud clusters will now run CockroachDB [v21.1.7](v21.1.html#v21-1-7).
 
 <h3>Console changes</h3>
 
@@ -148,7 +156,7 @@ As of January 12, 2021, new {{ site.data.products.dedicated }} clusters and all 
 
 <h3>General changes</h3>
 
-- New CockroachCloud clusters will now run CockroachDB [v21.1.6](v21.1.6.html).
+- New CockroachCloud clusters will now run CockroachDB [v21.1.6](v21.1.html#v21-1-6).
 - CockroachCloud Free (beta) users can now perform [bulk operations](../cockroachcloud/run-bulk-operations.html) (`IMPORT`, `BACKUP`, `RESTORE` and CDC) with `userfile` storage.
 
 <h3>Console changes</h3>
@@ -168,7 +176,7 @@ As of January 12, 2021, new {{ site.data.products.dedicated }} clusters and all 
 
 <h3>General changes</h3>
 
-- New CockroachCloud clusters will now run CockroachDB [v21.1.5](v21.1.5.html).
+- New CockroachCloud clusters will now run CockroachDB [v21.1.5](v21.1.html#v21-1-5).
 - Starting this month, paid CockroachCloud clusters will be billed monthly instead of every two weeks.
 
 <h3>Console changes</h3>
@@ -178,12 +186,12 @@ As of January 12, 2021, new {{ site.data.products.dedicated }} clusters and all 
 - All CockroachCloud users now have access to the [**Transactions** page](../cockroachcloud/transactions-page.html) in the Console.
 - Navigation on the **Clusters** page is now a vertical sidebar instead of horizontal tabs.
 - Added a tooltip to the **Upgrade** option in the **Action** Menu, which gives users more version-specific context.
-- Users can now **Clear SQL Stats** from the [**Statements** page](../cockroachcloud/statements-page.html) for clusters running [v21.1.3](v21.1.3.html) or later.
+- Users can now **Clear SQL Stats** from the [**Statements** page](../cockroachcloud/statements-page.html) for clusters running [v21.1.3](v21.1.html#v21-1-3) or later.
 
 <h3>Bug fixes</h3>
 
 - Fixed a bug where clicking on the [**Alerts** page](../cockroachcloud/alerts-page.html) broke the Organization header for users with multiple Organizations.
-- Fixed a bug where nodes were cycling in clusters running [v21.1.4](v21.1.4.html).
+- Fixed a bug where nodes were cycling in clusters running [v21.1.4](v21.1.html#v21-1-4).
 - Fixed several broken links to documentation throughout the Console.
 - Users will no longer see alerts for clusters that are not in a **ready** state.
 - Fixed a bug that was causing users to receive false positive CPU alerts.
@@ -192,7 +200,7 @@ As of January 12, 2021, new {{ site.data.products.dedicated }} clusters and all 
 
 <h3>General changes</h3>
 
-- New CockroachCloud clusters will now run CockroachDB [v21.1.1](v21.1.1.html).
+- New CockroachCloud clusters will now run CockroachDB [v21.1.1](v21.1.html#v21-1-1).
 
 <h3>Console changes</h3>
 
@@ -212,7 +220,7 @@ As of January 12, 2021, new {{ site.data.products.dedicated }} clusters and all 
 
 <h3>General changes</h3>
 
-- New CockroachCloud clusters will now run CockroachDB [v20.2.8](v20.2.8.html).
+- New CockroachCloud clusters will now run CockroachDB [v20.2.8](v20.2.html#v20-2-8).
 - [CockroachCloud Free](../cockroachcloud/quickstart.html) clusters are now available in four additional regions:
     - GCP: `europe-west1`, `asia-southeast1`
     - AWS: `eu-west-1`, `ap-southeast-1`
@@ -231,7 +239,7 @@ As of January 12, 2021, new {{ site.data.products.dedicated }} clusters and all 
 
 <h3>General changes</h3>
 
-New CockroachCloud clusters will now run CockroachDB [v20.2.7](v20.2.7.html).
+New CockroachCloud clusters will now run CockroachDB [v20.2.7](v20.2.html#v20-2-7).
 
 <h3>Console changes</h3>
 
@@ -249,7 +257,7 @@ New CockroachCloud clusters will now run CockroachDB [v20.2.7](v20.2.7.html).
 
 <h3>General changes</h3>
 
-New CockroachCloud clusters will now run CockroachDB [v20.2.5](v20.2.5.html).
+New CockroachCloud clusters will now run CockroachDB [v20.2.5](v20.2.html#v20-2-5).
 
 <h3>Console changes</h3>
 
@@ -269,7 +277,7 @@ New CockroachCloud clusters will now run CockroachDB [v20.2.5](v20.2.5.html).
 
 <h3>General changes</h3>
 
-New CockroachCloud clusters will now run CockroachDB [v20.2.4](v20.2.4.html).
+New CockroachCloud clusters will now run CockroachDB [v20.2.4](v20.2.html#v20-2-4).
 
 - [CockroachCloud Free](../cockroachcloud/serverless-faqs.html) is now in beta. CockroachCloud Free (beta) delivers free CockroachDB clusters for you and your organization. It is a managed instance of CockroachDB that removes the friction of initial cluster sizing and auto-scales based on your application traffic. There is an upper limit of usage of up to 1 vCPU and 5GB storage per free cluster.
 
@@ -283,7 +291,7 @@ New CockroachCloud clusters will now run CockroachDB [v20.2.4](v20.2.4.html).
 
 <h3>General changes</h3>
 
-New CockroachCloud clusters will now run CockroachDB [v20.2.3](v20.2.3.html).
+New CockroachCloud clusters will now run CockroachDB [v20.2.3](v20.2.html#v20-2-3).
 
 <h3>Bug fixes</h3>
 
@@ -294,7 +302,7 @@ New CockroachCloud clusters will now run CockroachDB [v20.2.3](v20.2.3.html).
 
 <h3>General changes</h3>
 
-New CockroachCloud clusters will now run CockroachDB [v20.2.2](v20.2.2.html).
+New CockroachCloud clusters will now run CockroachDB [v20.2.2](v20.2.html#v20-2-2).
 
 - CockroachCloud is now offering [larger machine sizes](../cockroachcloud/create-your-cluster.html#step-2-select-the-cloud-provider) to be configured directly in the Console. You will now be able to select from four options in the create cluster workflow. The [pricing has also been updated](../cockroachcloud/create-your-cluster.html#step-2-select-the-cloud-provider) for newly created clusters. Existing clusters are not impacted by the pricing changes.
 
@@ -302,7 +310,7 @@ New CockroachCloud clusters will now run CockroachDB [v20.2.2](v20.2.2.html).
 
 <h3>General changes</h3>
 
-New CockroachCloud clusters will now run CockroachDB [v20.2.0](v20.2.0.html).
+New CockroachCloud clusters will now run CockroachDB [v20.2.0](v20.2.html#v20-2-0).
 
 - [Create a 30-day free CockroachCloud cluster](../cockroachcloud/quickstart.html).
 - [Add or remove nodes](../cockroachcloud/cluster-management.html#add-or-remove-nodes-from-a-cluster) through the {{ site.data.products.db }} Console.
@@ -363,7 +371,7 @@ CockroachCloud now requires a user to have a CockroachCloud account before accep
 In addition to various updates, enhancements, and bug fixes, this beta release includes the following major highlights:
 
 - CockroachCloud pricing is now available on the [pricing page](https://www.cockroachlabs.com/pricing/).
-- CockroachCloud clusters running CockroachDB v19.2 have been upgraded to [v19.2.4](https://www.cockroachlabs.com/docs/releases/v19.2.4.html). All new clusters will now be created with CockroachDB v19.2.4.
+- CockroachCloud clusters running CockroachDB v19.2 have been upgraded to [v19.2.4](https://www.cockroachlabs.com/docs/releases/v19.2.html#v19-2-4). All new clusters will now be created with CockroachDB v19.2.4.
 - CockroachCloud now offers two options for per-node hardware configuration instead of three options. The hardware configuration [pricing](../cockroachcloud/create-your-cluster.html#step-2-select-the-cloud-provider) has been updated accordingly.
 
 <h3>Security changes</h3>

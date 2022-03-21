@@ -68,7 +68,7 @@ The `/health` endpoint does not returns details about the node such as its priva
 
 The `http://<node-host>:<http-port>/health?ready=1` endpoint returns an HTTP `503 Service Unavailable` status response code with an error in the following scenarios:
 
-- The node is draining open SQL connections and rejecting new SQL connections because it is in the process of shutting down (e.g., after being [decommissioned](remove-nodes.html#how-it-works)). This is especially useful for making sure load balancers do not direct traffic to nodes that are live but not "ready", which is a necessary check during [rolling upgrades](upgrade-cockroach-version.html).
+- The node is in the [wait phase of the node shutdown sequence](node-shutdown.html#draining). This causes load balancers and connection managers to reroute traffic to other nodes before the node is drained of client connections and leases, and is a necessary check during [rolling upgrades](upgrade-cockroach-version.html).
 
     {{site.data.alerts.callout_success}}
     If you find that your load balancer's health check is not always recognizing a node as unready before the node shuts down, you can increase the `server.shutdown.drain_wait` [cluster setting](cluster-settings.html) to cause a node to return `503 Service Unavailable` even before it has started shutting down.
@@ -112,7 +112,7 @@ The [`cockroach node status`](cockroach-node.html) command gives you metrics abo
 
 - With the `--ranges` flag, you get granular range and replica details, including unavailability and under-replication.
 - With the `--stats` flag, you get granular disk usage details.
-- With the `--decommission` flag, you get details about the [node decommissioning](remove-nodes.html) process.
+- With the `--decommission` flag, you get details about the [node decommissioning](node-shutdown.html?filters=decommission#cockroach-node-status) process.
 - With the `--all` flag, you get all of the above.
 
 ### Prometheus endpoint

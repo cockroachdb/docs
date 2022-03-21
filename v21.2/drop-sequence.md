@@ -11,7 +11,7 @@ The `DROP SEQUENCE` [statement](sql-statements.html) removes a sequence from a d
 
 ## Required privileges
 
-The user must have the `DROP` [privilege](authorization.html#assign-privileges) on the specified sequence(s).
+The user must have the `DROP` [privilege](security-reference/authorization.html#managing-privileges) on the specified sequence(s).
 
 ## Synopsis
 
@@ -91,5 +91,5 @@ DROP SEQUENCE
 - [`ALTER SEQUENCE`](alter-sequence.html)
 - [`SHOW SEQUENCES`](show-sequences.html)
 - [Functions and Operators](functions-and-operators.html)
-- [Other SQL Statements](sql-statements.html)
+- [SQL Statements](sql-statements.html)
 - [Online Schema Changes](online-schema-changes.html)
