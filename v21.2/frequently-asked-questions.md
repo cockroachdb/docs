@@ -44,7 +44,7 @@ There are three way to use and deploy CockroachDB:
 - **{{ site.data.products.dedicated }}**: A single tenant CockroachDB deployment, managed by Cockroach Labs, in a single, multi-region cloud (AWS or GCP). This deployment strategy is good for mission-critical databases and require Enterprise features.
 - **{{ site.data.products.core }}**: A self-managed CockroachDB deployment, backed by Cockroach Labs Support, for multiple clouds and regions. This deployment strategy is good if you require complete control over the database environment and require Enterprise features.
 
-For more details, see [Choose a Deployment Strategy](choose-a-deployment-strategy.html).
+<!-- For more details, see [Choose a Deployment Strategy](choose-a-deployment-strategy.html). -->
 
 ## How does CockroachDB scale?
 
@@ -57,7 +57,7 @@ When your cluster spans multiple nodes (physical machines, virtual machines, or 
 For more information about scaling a CockroachDB cluster, see the following docs:
 
 - [Manage Your Serverless Cluster - Cluster scaling](../cockroachcloud/serverless-cluster-management.html#cluster-scaling)
-- [Manage Your Dedicated Cluster - Scale your cluster](../cockroachcloud/cluster-management#scale-your-cluster)
+- [Manage Your Dedicated Cluster - Scale your cluster](../cockroachcloud/cluster-management.html#scale-your-cluster)
 - [`cockroach start` - Add a node to a cluster](cockroach-start.html#add-a-node-to-a-cluster)
 
 ## How does CockroachDB survive failures?
