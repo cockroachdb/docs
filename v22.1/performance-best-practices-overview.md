@@ -318,7 +318,7 @@ However, because `AS OF SYSTEM TIME` returns historical data, your reads might b
 
 ## Hot spots
 
-A *hot spot* is any location on the cluster, such as a range, receiving significantly more traffic than another. Hot spots can cause problems as traffic increases.
+A *hot spot* is any location on the cluster, such as a range, receiving significantly more requests than another. Hot spots can cause problems as requests increase.
 
 They commonly occur with transactions that operate on the **same range but different index keys**, which are limited by the overall hardware capacity of [the range leaseholder](architecture/overview.html#terms) node.
 
