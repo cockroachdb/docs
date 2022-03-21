@@ -1406,7 +1406,7 @@
         "title": "CLI",
         "items": [
           {
-            "title": "Cockroach Commands",
+            "title": "<code>cockroach</code> Commands Overview",
             "urls": [
               "/${VERSION}/cockroach-commands.html"
             ]

@@ -324,13 +324,13 @@ In terms of the SQL snippet shown above, all of the waiting for write intents to
 
 ### Parallel Commits
 
-The *Parallel Commits* feature introduces a new, optimized atomic commit protocol that cuts the commit latency of a transaction in half, from two rounds of consensus down to one. Combined with [Transaction pipelining](#transaction-pipelining), this brings the latency incurred by common OLTP transactions to near the theoretical minimum: the sum of all read latencies plus one round of consensus latency.
+*Parallel Commits* is an optimized atomic commit protocol that cuts the commit latency of a transaction in half, from two rounds of consensus down to one. Combined with [transaction pipelining](#transaction-pipelining), this brings the latency incurred by common OLTP transactions to near the theoretical minimum: the sum of all read latencies plus one round of consensus latency.
 
-Under the new atomic commit protocol, the transaction coordinator can return to the client eagerly when it knows that the writes in the transaction have succeeded. Once this occurs, the transaction coordinator can set the transaction record's state to `COMMITTED` and resolve the transaction's write intents asynchronously.
+Under this atomic commit protocol, the transaction coordinator can return to the client eagerly when it knows that the writes in the transaction have succeeded. Once this occurs, the transaction coordinator can set the transaction record's state to `COMMITTED` and resolve the transaction's write intents asynchronously.
 
 The transaction coordinator is able to do this while maintaining correctness guarantees because it populates the transaction record with enough information (via a new `STAGING` state, and an array of in-flight writes) for other transactions to determine whether all writes in the transaction are present, and thus prove whether or not the transaction is committed.
 
-For an example showing how the Parallel Commits feature works in more detail, see [Parallel Commits - step by step](#parallel-commits-step-by-step).
+For an example showing how Parallel Commits works in more detail, see [Parallel Commits - step by step](#parallel-commits-step-by-step).
 
 {{site.data.alerts.callout_info}}
 The latency until intents are resolved is unchanged by the introduction of Parallel Commits: two rounds of consensus are still required to resolve intents. This means that [contended workloads](../performance-best-practices-overview.html#transaction-contention) are expected to profit less from this feature.
@@ -338,7 +338,7 @@ The latency until intents are resolved is unchanged by the introduction of Paral
 
 #### Parallel Commits - step by step
 
-This section contains a step by step example of a transaction that writes its data using the Parallel Commits atomic commit protocol and does not encounter any errors or conflicts.
+This section contains a step-by-step example of a transaction that writes its data using the Parallel Commits atomic commit protocol and does not encounter any errors or conflicts.
 
 ##### Step 1
 
