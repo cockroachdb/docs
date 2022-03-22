@@ -72,7 +72,7 @@ region=us-east,az=az1
 The output shows the locality to which the node will write backup data. One of the single locality key-value pairs can be passed to `BACKUP` with the `COCKROACH_LOCALITY` parameter (e.g., `'s3://us-east-bucket?COCKROACH_LOCALITY=region%3Dus-east'`).
 
 {{site.data.alerts.callout_info}}
-Specifying both locality tier pairs (e.g., `region=east,az=az1`) from the output will cause the backup query to fail with: `tier must be in the form "key=value"`.
+Specifying both locality tier pairs (e.g., `region=us-east,az=az1`) from the output will cause the backup query to fail with: `tier must be in the form "key=value"`.
 {{site.data.alerts.end}}
 
 ## Restore from a locality-aware backup
