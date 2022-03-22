@@ -82,7 +82,7 @@ To run a CockroachDB cluster without TLS, add the `--insecure` flag to the [`coc
 
 ### Communication between nodes
 
-Connections between CockroachDB nodes, and from SQL clients and web consoles are always mutually TLS authenticated, meaning that both client and server must each have their own key pair.
+Connections between CockroachDB nodes are always mutually TLS authenticated. Each node must have at least one TLS key pair, as described in the following.
 
 #### CockroachDB Cloud
 
@@ -104,7 +104,6 @@ In this case, each CockroachDB node must have the following files:
 {{site.data.alerts.callout_info}}
 To enable a CockroachDB client, the required files (`node.key`, `node.crt`, and `ca.crt`) must be present in a single directory, the path to which must be supplied to the CockroachDB client with the argument `certs-dir`.
 {{site.data.alerts.end}}
-
 
 
 More complex scenarios with external CAs are described [here.](authentication.html#using-a-custom-ca)

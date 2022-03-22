@@ -5,11 +5,25 @@ toc: true
 docs_area: manage
 ---
 
+Users may connect with {{ site.data.products.core }} clusters in 2 main ways:
+
+- SQL clients connections, including the CockroachDB CLI client and the [various supported drivers and ORMs](../{{site.versions["stable"]}}/install-client-drivers.html), connect directly to CockroachDB clusters using the [CockroachDB SQL interface](../{{site.versions["stable"]}}/sql-feature-support.html).
+
+- A read-only monitoring service, which provides cluster and database details, and information useful for troubleshooting and performance tuning. Each CockroachDB node also acts as an `http` server, providing both a [browser UI DB console](../ui-overview.html) and the [cluster API](../cluster-api.html), which provides much of the same information as the DB console, but as a rest API suitable for programmatic access.
+
+
+
+
+
+
+
 Authentication refers to the act of verifying the identity of the other party in communication. CockroachDB requires TLS 1.3 digital certificates for inter-node authentication and accepts TLS 1.2 and TLS 1.3 certificates for client-node authentication. This document discusses how CockroachDB uses digital certificates and what your options are for configuring user authentication for SQL clients and the DB Console UI. It also offers a [conceptual overview](#background-on-public-key-cryptography-and-digital-certificates) of public key cryptography and digital certificates.
 
 - If you are familiar with public key cryptography and digital certificates, then reading the [Using digital certificates with CockroachDB](#using-digital-certificates-with-cockroachdb) section should be enough.
 - If you are unfamiliar with public key cryptography and digital certificates, you might want to skip over to the [conceptual overview](#background-on-public-key-cryptography-and-digital-certificates) first and then come back to the [Using digital certificates with CockroachDB](#using-digital-certificates-with-cockroachdb) section.
 - If you want to know how to create CockroachDB security certificates, see [Create Security Certificates](cockroach-cert.html).
+
+
 
 ## Using digital certificates with CockroachDB
 
