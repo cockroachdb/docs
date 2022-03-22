@@ -279,6 +279,64 @@ Normally, CockroachDB selects the index that it calculates will scan the fewest 
 (7 rows)
 ~~~
 
+### Create an index on a `PARTITION ALL BY` table
+
+{% include enterprise-feature.md %}
+
+In this example, we create the `vehicles3` table partitioned with the `PARTITION ALL BY` statement. We then create a secondary index on top of that to show the partitioning scheme on the index is inherited from the table to which it belongs:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SET experimental_enable_implicit_column_partitioning = true;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE TABLE vehicles3 (
+        id UUID NOT NULL,
+        city STRING NOT NULL,
+        type STRING,
+        owner_id UUID,
+        creation_time TIMESTAMP,
+        status STRING,
+        current_location STRING,
+        ext JSONB,
+        CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
+        FAMILY "primary" (id, city, type, owner_id, creation_time, status, current_location, ext)
+)   PARTITION ALL BY RANGE (creation_time) (
+    PARTITION archived VALUES FROM (MINVALUE) TO ('2021-12-31'),
+    PARTITION current VALUES FROM ('2022-01-01') TO (MAXVALUE)
+);
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE INDEX index_status ON vehicles3 (status);
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW PARTITIONS FROM INDEX vehicles3@status;
+~~~
+
+~~~
+  database_name | table_name | partition_name | parent_partition | column_names  |       index_name       |            partition_value            | zone_config |       full_zone_config
+----------------+------------+----------------+------------------+---------------+------------------------+---------------------------------------+-------------+-------------------------------
+  defaultdb     | vehicles3  | archived       | NULL             | creation_time | vehicles3@index_status | (MINVALUE) TO ('2021-12-31 00:00:00') | NULL        | range_min_bytes = 134217728,
+                |            |                |                  |               |                        |                                       |             | range_max_bytes = 536870912,
+                |            |                |                  |               |                        |                                       |             | gc.ttlseconds = 90000,
+                |            |                |                  |               |                        |                                       |             | num_replicas = 1,
+                |            |                |                  |               |                        |                                       |             | constraints = '[]',
+                |            |                |                  |               |                        |                                       |             | lease_preferences = '[]'
+  defaultdb     | vehicles3  | current        | NULL             | creation_time | vehicles3@index_status | ('2022-01-01 00:00:00') TO (MAXVALUE) | NULL        | range_min_bytes = 134217728,
+                |            |                |                  |               |                        |                                       |             | range_max_bytes = 536870912,
+                |            |                |                  |               |                        |                                       |             | gc.ttlseconds = 90000,
+                |            |                |                  |               |                        |                                       |             | num_replicas = 1,
+                |            |                |                  |               |                        |                                       |             | constraints = '[]',
+                |            |                |                  |               |                        |                                       |             | lease_preferences = '[]'
+(2 rows)
+~~~
+
 ## See also
 
 - [Indexes](indexes.html)
