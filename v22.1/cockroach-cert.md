@@ -72,85 +72,99 @@ Note the following:
 
 ### Key file permissions
 
+The CockroachDB CLI's `cockroach cert` command allows you to create transport layer security (TLS) certificates. The CLI offers the following functionality:
+- Generate a root certificate authority (CA) certificate for your cluster, and use it to sign public certificates.
+- Generate key pair for use by a CockroachDB node.
+- Generate a key pair for use by a TLS-authenticated CockroachDB client.
+
 {{site.data.alerts.callout_info}}
-This check is only relevant on macOS, Linux, and other UNIX-like systems.
+`cockroach cert` can only be used to sign key pairs with a certificate authority (CA) private key that is **present on the local file-system** where the command is being run. This limitation may be incompatible
 {{site.data.alerts.end}}
 
-To reduce the likelihood of a malicious user or process accessing a certificate key (files ending in ".key"), we require that the certificate key be owned by one of the following system users:
+!!! {
+ cockroach-cert.html should only provide informationa about the command.
+ Declarative specifications about tls should go to [Reference / Security / Transport Layer Security](security-refence/transport-layer-security.html)
+How to make certs stuff should go to:
+-[Manage / Security / TLS Keys and Certificates / Managing TLS Credentials with the CockroachDB CLI]()
+-[Manage / Security / TLS Certificates / Managing TLS Credentials with OpenSSL](../create-security-certificates-openssl.html)
 
-- The user that the CockroachDB process runs as.
-- The system `root` user (not to be confused with the [CockroachDB `root` user](security-reference/authorization.html#root-user)) and the group that the CockroachDB process runs in.
+With a distinct (less funneled but easy to search) discoverability for:
+-[Manage / Security / TLS Certificates / Managing TLS Credentials Using a Custom Certificate Authority (CA)](create-security-certificates-custom-ca.html)
 
-For example, if running the CockroachDB process as a system user named `cockroach`, we can determine the group that the process will run in by running `id cockroach`:
+also remove this one from the filter tabs thing.
 
-```shell
-id cockroach
-uid=1000(cockroach) gid=1000(cockroach) groups=1000(cockroach),1000(cockroach)
-```
+}!!!
 
-In the output, we can see that the system user `cockroach` is also in the `cockroach` group (with the group id or gid of 1000).
+## Subcommands
 
-If the key file is owned by the system `root` user (who has a user ID of 0), CockroachDB won't be able to read it unless it has permission to read because of its group membership. Because we know that CockroachDB is running in the `cockroach` group, we can allow CockroachDB to read the key by changing the group owner of the key file to the `cockroach` group. We then give the group read permissions by running `chmod`.
+### `create-ca`
 
-```shell
-sudo chgrp cockroach ui.key
-sudo chmod 0740 ui.key
-```
+Create a certificate authorit a self-signed certificate authority (CA) key pair (private key and public certificate), which you'll use to create and authenticate certificates for your entire cluster.
 
-However, if the `ui.key` file is owned by the `cockroach` system user, CockroachDB ignores the group ownership of the file, and requires that the permissions only allow the `cockroach` system user to interact with it (`0700` or `rwx------`).
-
-Note the following:
-
-- When running in Kubernetes, you will not be able to change the user that owns a certificate file mounted from a Secret or another Volume, but you will be able to override the group by setting the `fsGroup` flag in a Pod or Container's Security Context. In our example above, you would set `fsGroup` to "1000". You will also need to set the key's "mode" using the `mode` flag on individual items or the `defaultMode` flag if applying to the entire secret.
-
-- This check can be disabled by setting the environment variable `COCKROACH_SKIP_KEY_PERMISSION_CHECK` to `true`.
-
-## Synopsis
-
-Create the CA certificate and key:
-
+{% include_cached copy-clipboard.html %}
 ~~~ shell
-$ cockroach cert create-ca \
+cockroach cert create-ca \
  --certs-dir=[path-to-certs-directory] \
  --ca-key=[path-to-ca-key]
 ~~~
+
+### `create-node`
+
+Create a certificate and key for a specific node in the cluster. You specify all addresses at which the node can be reached and pass appropriate flags.
 
 Create a node certificate and key:
 
+{% include_cached copy-clipboard.html %}
 ~~~ shell
-$ cockroach cert create-node \
- [node-hostname] \
- [node-other-hostname] \
- [node-yet-another-hostname] \
- [hostname-in-wildcard-notation] \
- --certs-dir=[path-to-certs-directory] \
- --ca-key=[path-to-ca-key]
+cockroach cert create-node \
+  [node-hostname] \
+  [node-other-hostname] \
+  [node-yet-another-hostname] \
+  [hostname-in-wildcard-notation] \
+  --certs-dir=[path-to-certs-directory] \
+  --ca-key=[path-to-ca-key]
 ~~~
+
+### `create-client`
+
+Create a certificate and key for a [specific user](create-user.html) accessing the cluster from a client. You specify the username of the user who will use the certificate and pass appropriate flags.
 
 Create a client certificate and key:
 
+{% include_cached copy-clipboard.html %}
 ~~~ shell
-$ cockroach cert create-client \
+cockroach cert create-client \
  [username] \
  --certs-dir=[path-to-certs-directory] \
  --ca-key=[path-to-ca-key]
 ~~~
 
-List certificates and keys:
+
+### `list`
+
+List certificates and keys found in the certificate directory.
 
 ~~~ shell
-$ cockroach cert list \
+cockroach cert list \
  --certs-dir=[path-to-certs-directory]
 ~~~
 
-View help:
+### View help
 
+For the `cert` command overall:
+
+{% include_cached copy-clipboard.html %}
 ~~~ shell
-$ cockroach cert --help
+cockroach cert --help
 ~~~
+
+For a subcommand:
+
+{% include_cached copy-clipboard.html %}
 ~~~ shell
-$ cockroach cert <subcommand> --help
+cockroach cert <subcommand> --help
 ~~~
+
 
 ## Flags
 
@@ -170,6 +184,7 @@ Flag | Description
 
 ### Logging
 
+[The `--log` and `--log-config-file` flags can be used to configure logging behavior for all CockroachDB CLI commands](../configure-logs.html), including `cockroach cert`.
 {% include {{ page.version.version }}/misc/logging-defaults.md %}
 
 ## Examples
