@@ -3,12 +3,12 @@
   "is_top_level": true,
   "items": [
     {
-      "title": "Deployment Types",
+      "title": "Deployment Options",
       "items": [
           {
-            "title": "Choose a Deployment Type",
+            "title": "Choose a Deployment Option",
             "urls": [
-              "/${VERSION}/choose-a-deployment-type.html"
+              "/${VERSION}/choose-a-deployment-option.html"
             ]
           },
           {

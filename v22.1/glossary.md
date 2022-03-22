@@ -25,7 +25,7 @@ Term | Definition
 **range** | <a name="architecture-range"></a> CockroachDB stores all user data (tables, indexes, etc.) and almost all system data in a sorted map of key-value pairs. This keyspace is divided into contiguous chunks called _ranges_, such that every key is found in one range.<br/><br/>From a SQL perspective, a table and its secondary indexes initially map to a single range, where each key-value pair in the range represents a single row in the table (also called the _primary index_ because the table is sorted by the primary key) or a single row in a secondary index. As soon as the size of a range reaches 512 MiB ([the default](configure-replication-zones.html#range-max-bytes)), it is split into two ranges. This process continues for these new ranges as the table and its indexes continue growing.
 **replica** <a name="architecture-replica"></a> | A copy of a range stored on a node. By default, there are three [replicas](configure-replication-zones.html#num_replicas) of each range on different nodes.
 **leaseholder** <a name="architecture-leaseholder"></a> | The replica that holds the "range lease." This replica receives and coordinates all read and write requests for the range.<br/><br/>For most types of tables and queries, the leaseholder is the only replica that can serve consistent reads (reads that return "the latest" data).
-**Raft protocol** | The [consensus protocol](architecture/replication-layer.html#raft) employed in CockroachDB that makes sure that your data is safely stored on multiple nodes and that those nodes agree on the current state even if some of them are temporarily disconnected.
+**Raft protocol** | The [consensus protocol](architecture/replication-layer.html#raft) employed in CockroachDB that ensures that your data is safely stored on multiple nodes and that those nodes agree on the current state even if some of them are temporarily disconnected.
 **Raft leader** | For each range, the replica that is the "leader" for write requests. The leader uses the Raft protocol to ensure that a majority of replicas (the leader and enough followers) agree, based on their Raft logs, before committing the write. The Raft leader is almost always the same replica as the leaseholder.
 **Raft log** | A time-ordered log of writes to a range that its replicas have agreed on. This log exists on-disk with each replica and is the range's source of truth for consistent replication.
 
@@ -37,15 +37,15 @@ Term | Definition
 -----|-----------
 **single tenant** | A type of CockroachDB deployment where a single customer uses the database cluster.
 **multi-tenant** | A type of CockroachDB deployment where multiple customers share a single storage cluster. Each customer sees a virtual CockroachDB cluster. Data in each virtual cluster is isolated and is invisible to other customers.
-**region**  | A logical identification of how nodes and data are clustered around [geographical locations](multiregion-overview.html). A _cluster region_ is the set of locations where cluster nodes are running. A _database region_ is the subset of cluster regions database data should be restricted to.
+**region** | A logical identification of how nodes and data are clustered around [geographical locations](multiregion-overview.html). A _cluster region_ is the set of locations where cluster nodes are running. A _database region_ is the subset of cluster regions database data should be restricted to.
 **availability zone**  | A part of a data center that is considered to form a unit with regards to failures and fault tolerance. There can be multiple nodes in a single availability zone, however Cockroach Labs recommends that you to place different replicas of your data in different availability zones.
-**CockroachDB Serverless (beta)** | A fully managed, multi-tenant CockroachDB deployment, in a single region and cloud (AWS or GCP). It delivers an autoscaling (up and down) and instant database. and offers a generous free tier and consumption based billing once these limits are exceeded (up to user set limits).
-**CockroachDB Dedicated** | A fully managed, single tenant CockroachDB deployment, managed by Cockroach Labs, in a single, multi-region cloud (AWS or GCP).
-**CockroachDB Self-Hosted** | A self-managed CockroachDB deployment, with node-based scale, built for mission-critical workloads.
+**[CockroachDB Serverless (beta)](../cockroachcloud/quickstart.html)** | A fully managed, multi-tenant CockroachDB deployment, in a single region and cloud (AWS or GCP). Delivers an instant, autoscaling database and offers a generous free tier and consumption based billing once free limits are exceeded.
+**[CockroachDB Dedicated](../cockroachcloud/quickstart-trial-cluster.html)** | A fully managed, single tenant CockroachDB deployment in a single region or multi-region cloud (AWS or GCP).
+**[CockroachDB Self-Hosted](start-a-local-cluster.html)** | A full featured, self-managed CockroachDB deployment.
 
-For more information on deployment types and guidelines on how to choose a deployment type, see [Choose a Deployment Type](choose-a-deployment-type.html).
+For more information on deployment types and guidelines on how to choose a deployment type, see [How to Choose a Deployment Option](choose-a-deployment-option.html).
 
-## CockroachCloud
+## CockroachDB Cloud
 
 Term | Definition
 -----|-----------
