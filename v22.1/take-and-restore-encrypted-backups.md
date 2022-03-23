@@ -252,7 +252,7 @@ For example, the encrypted backup created in the previous example can be restore
 - [`SQL DUMP`](cockroach-dump.html)
 - [`IMPORT`](migration-overview.html)
 - [Use the Built-in SQL Client](cockroach-sql.html)
-- [Other Cockroach Commands](cockroach-commands.html)
+- [`cockroach` Commands Overview](cockroach-commands.html)
 
 <!-- Reference links -->
 

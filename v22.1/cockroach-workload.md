@@ -76,7 +76,7 @@ Workload | Description
 ## Flags
 
 {{site.data.alerts.callout_info}}
-The `cockroach workload` command does not support connection or security flags like other [`cockroach` commands](cockroach-commands.html). Instead, you must use a [connection string](connection-parameters.html) at the end of the command.
+The `cockroach workload` command does not support connection or security flags like other [`cockroach` Commands Overview](cockroach-commands.html). Instead, you must use a [connection string](connection-parameters.html) at the end of the command.
 {{site.data.alerts.end}}
 
 ### `bank` workload
@@ -660,5 +660,5 @@ To customize the frequency of per-operation statistics, use the `--display-every
 ## See also
 
 - [`cockroach demo`](cockroach-demo.html)
-- [Other Cockroach Commands](cockroach-commands.html)
+- [`cockroach` Commands Overview](cockroach-commands.html)
 - [Performance Benchmarking with TPC-C](performance-benchmarking-with-tpcc-small.html)

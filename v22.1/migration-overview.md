@@ -65,7 +65,7 @@ Above a certain size, many data types such as [`STRING`](string.html)s, [`DECIMA
 - [SQL Dump (Export)](cockroach-dump.html)
 - [Back Up and Restore](take-full-and-incremental-backups.html)
 - [Use the Built-in SQL Client](cockroach-sql.html)
-- [Other Cockroach Commands](cockroach-commands.html)
+- [`cockroach` Commands Overview](cockroach-commands.html)
 
 <!-- Links -->
 

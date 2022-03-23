@@ -156,4 +156,4 @@ SELECT (1 * 2) + 3, (1 + 2) * 3
 - [Sequel Fumpt](https://sqlfum.pt/)
 - [`cockroach demo`](cockroach-demo.html)
 - [`cockroach sql`](cockroach-sql.html)
-- [Other Cockroach Commands](cockroach-commands.html)
+- [`cockroach` Commands Overview](cockroach-commands.html)

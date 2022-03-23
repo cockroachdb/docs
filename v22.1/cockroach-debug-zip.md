@@ -160,5 +160,5 @@ server/server.go:1423 ⋮ password of user ‹×› was set to ‹×›
 ## See also
 
 - [File an Issue](file-an-issue.html)
-- [Other Cockroach Commands](cockroach-commands.html)
+- [`cockroach` Commands Overview](cockroach-commands.html)
 - [Troubleshooting Overview](troubleshooting-overview.html)

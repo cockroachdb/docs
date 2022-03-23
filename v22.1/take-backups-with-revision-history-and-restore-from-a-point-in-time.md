@@ -54,7 +54,7 @@ To view the available backup subdirectories you can restore from, use [`SHOW BAC
 - [`SQL DUMP`](cockroach-dump.html)
 - [`IMPORT`](migration-overview.html)
 - [Use the Built-in SQL Client](cockroach-sql.html)
-- [Other Cockroach Commands](cockroach-commands.html)
+- [`cockroach` Commands Overview](cockroach-commands.html)
 
 <!-- Reference links -->
 

@@ -551,7 +551,7 @@ $ export COCKROACH_SQL_CLI_HISTORY=.cockroachsql_history_shell_2
 
 ### Passwords with special characters must be passed as query parameters
 
-When using [`cockroach` commands](cockroach-commands.html), passwords with special characters must be passed as [query string parameters](connection-parameters.html#additional-connection-parameters) (e.g., `postgres://maxroach@localhost:26257/movr?password=<password>`) and not as a component in the connection URL (e.g., `postgres://maxroach:<password>@localhost:26257/movr`).
+When using [`cockroach` Commands Overview](cockroach-commands.html), passwords with special characters must be passed as [query string parameters](connection-parameters.html#additional-connection-parameters) (e.g., `postgres://maxroach@localhost:26257/movr?password=<password>`) and not as a component in the connection URL (e.g., `postgres://maxroach:<password>@localhost:26257/movr`).
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/35998)
 
