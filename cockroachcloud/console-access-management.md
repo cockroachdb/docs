@@ -7,6 +7,8 @@ docs_area: manage
 
 The **Access** page displays the name, email address, role, and invite acceptance status of the Team Members with access to your {{ site.data.products.db }} organization. To view the **Access** page, [log in](https://cockroachlabs.cloud/) and click **Access**.
 
+{% include cockroachcloud/prefer-sso.md %}
+
 ## Organization
 
 An **organization** allows you to manage your clusters under a shared [billing](billing-management.html) account and collaborate with team members. You can belong to multiple organizations.
@@ -20,9 +22,11 @@ To switch between the organizations:
 
 [Console Admins](#console-admin) can [create and manage SQL users](user-authorization.html#create-a-sql-user). A SQL user can interact with a CockroachDB database using the built-in SQL shell or through an application.
 
-SQL users created in the Console have admin privileges on the database by default, even if the user has [Developer](#developer) privileges for the organization. Therefore, anyone with the username and password of a default SQL user has privileges for all database objects across the cluster.
+SQL users created in the Console have the [`admin` role](../{{site.versions["stable"]}}/security-reference/authorization.html#admin-role) on the cluster by default, even if the user has [Developer](#developer) privileges for the organization. Therefore, anyone with the username and password of a default SQL user has privileges for all resources across the cluster.
 
-Anyone with database admin privileges can [change a SQL user's databases privileges](../{{site.versions["stable"]}}/authorization.html#assign-privileges).
+For this reason, while creating SQL users in the Console is quick and easy, it is also dangerously powerful, and on clusters with any data of value, users should generally be be [created](../{{site.versions["stable"]}}/create-user.html) from the SQL client instead, and have their database resource access granted explicitly, precisely, and in keeping with the [principle of least privilege](https://en.wikipedia.org/wiki/Principle_of_least_privilege).
+
+Learn more about [managing SQL users' privileges](../{{site.versions["stable"]}}/security-reference/authorization.html#users-and-roles).
 
 ## Roles
 

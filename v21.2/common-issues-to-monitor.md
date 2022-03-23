@@ -280,7 +280,7 @@ Because each node needs to update a liveness record on disk, maxing out disk ban
 
 - [Production Checklist](recommended-production-settings.html)
 - [Monitoring and Alerting](monitoring-and-alerting.html)
-- [Common Errors](common-errors.html)
+- [Common Errors and Solutions](common-errors.html)
 - [Operational FAQs](operational-faqs.html)
 - [Performance Tuning Recipes](performance-recipes.html)
 - [Troubleshoot Cluster Setup](cluster-setup-troubleshooting.html)

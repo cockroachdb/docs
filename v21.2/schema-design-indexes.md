@@ -132,7 +132,7 @@ Here are some best practices for creating and using indexes:
 
 - Review the [specialized indexes that CockroachDB supports](schema-design-overview.html#specialized-indexes), and decide if you need to create a specialized index instead of a standard index.
 
-- Do not create indexes as the `root` user. Instead, create indexes as a [different user](schema-design-overview.html#control-access-to-objects), with fewer privileges, following [authorization best practices](authorization.html#authorization-best-practices). This will likely be the same user that created the table to which the index belongs.
+- Do not create indexes as the `root` user. Instead, create indexes as a [different user](schema-design-overview.html#control-access-to-objects), with fewer privileges, following [authorization best practices](security-reference/authorization.html#authorization-best-practices). This will likely be the same user that created the table to which the index belongs.
 
 - {% include {{page.version.version}}/sql/dev-schema-changes.md %}
 
@@ -247,14 +247,18 @@ To view the indexes in the `vehicles` table, issue a [`SHOW INDEXES`](show-index
 ~~~
 
 ~~~
-  table_name |     index_name     | non_unique | seq_in_index |  column_name  | direction | storing | implicit
--------------+--------------------+------------+--------------+---------------+-----------+---------+-----------
+  table_name | index_name | non_unique | seq_in_index |  column_name  | direction | storing | implicit
+-------------+------------+------------+--------------+---------------+-----------+---------+-----------
   vehicles   | primary            |   false    |            1 | id            | ASC       |  false  |  false
+  vehicles   | primary            |   false    |            2 | type          | N/A       |  true   |  false
+  vehicles   | primary            |   false    |            3 | creation_time | N/A       |  true   |  false
+  vehicles   | primary            |   false    |            4 | available     | N/A       |  true   |  false
+  vehicles   | primary            |   false    |            5 | last_location | N/A       |  true   |  false
   vehicles   | type_available_idx |    true    |            1 | type          | ASC       |  false  |  false
   vehicles   | type_available_idx |    true    |            2 | available     | ASC       |  false  |  false
   vehicles   | type_available_idx |    true    |            3 | last_location | N/A       |  true   |  false
   vehicles   | type_available_idx |    true    |            4 | id            | ASC       |  false  |   true
-(5 rows)
+(9 rows)
 ~~~
 
 The output from this `SHOW` statement displays the names and columns of the two indexes on the table (i.e., `primary` and `type_available_idx`).

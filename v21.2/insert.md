@@ -25,7 +25,7 @@ The `INSERT` [statement](sql-statements.html) inserts one or more rows into a ta
 
 ## Required privileges
 
-The user must have the `INSERT` [privilege](authorization.html#assign-privileges) on the table.
+The user must have the `INSERT` [privilege](security-reference/authorization.html#managing-privileges) on the table.
 To use `ON CONFLICT`, the user must also have the `SELECT` privilege on the table.
 To use `ON CONFLICT DO UPDATE`, the user must additionally have the `UPDATE` privilege on the table.
 
@@ -128,10 +128,10 @@ If you do not list column names, the statement will use the columns of the table
   column_name | data_type | is_nullable | column_default | generation_expression |  indices  | is_hidden
 +-------------+-----------+-------------+----------------+-----------------------+-----------+-----------+
   id          | UUID      |    false    | NULL           |                       | {primary} |   false
-  city        | STRING    |    false    | NULL           |                       | {primary} |   false
-  name        | STRING    |    true     | NULL           |                       | {}        |   false
-  address     | STRING    |    true     | NULL           |                       | {}        |   false
-  credit_card | STRING    |    true     | NULL           |                       | {}        |   false
+  city        | VARCHAR   |    false    | NULL           |                       | {primary} |   false
+  name        | VARCHAR   |    true     | NULL           |                       | {primary} |   false
+  address     | VARCHAR   |    true     | NULL           |                       | {primary} |   false
+  credit_card | VARCHAR   |    true     | NULL           |                       | {primary} |   false
 (5 rows)
 ~~~
 

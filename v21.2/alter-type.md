@@ -34,7 +34,7 @@ Parameter | Description
 ## Required privileges
 
 - To [alter a type](alter-type.html), the user must be the owner of the type.
-- To set the schema of a user-defined type, the user must have the `CREATE` [privilege](authorization.html#assign-privileges) on the schema and the `DROP` privilege
+- To set the schema of a user-defined type, the user must have the `CREATE` [privilege](security-reference/authorization.html#managing-privileges) on the schema and the `DROP` privilege
 on the type.
 - To alter the owner of a user-defined type:
     - The user executing the command must be a member of the new owner role.

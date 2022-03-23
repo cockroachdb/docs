@@ -55,6 +55,7 @@
               "urls": [
                 "/${VERSION}/build-a-go-app-with-cockroachdb.html",
                 "/${VERSION}/build-a-go-app-with-cockroachdb-gorm.html",
+                "/${VERSION}/build-a-go-app-with-cockroachdb-pq.html",
                 "/${VERSION}/build-a-go-app-with-cockroachdb-upperdb.html"
               ]
             },
@@ -94,27 +95,9 @@
               ]
             },
             {
-              "title": "C++",
-              "urls": [
-                "/${VERSION}/build-a-c++-app-with-cockroachdb.html"
-              ]
-            },
-            {
               "title": "C# (.NET)",
               "urls": [
                 "/${VERSION}/build-a-csharp-app-with-cockroachdb.html"
-              ]
-            },
-            {
-              "title": "Clojure",
-              "urls": [
-                "/${VERSION}/build-a-clojure-app-with-cockroachdb.html"
-              ]
-            },
-            {
-              "title": "PHP",
-              "urls": [
-                "/${VERSION}/build-a-php-app-with-cockroachdb.html"
               ]
             },
             {
@@ -188,6 +171,12 @@
           "title": "Licensing FAQs",
           "urls": [
             "/${VERSION}/licensing-faqs.html"
+          ]
+        },
+        {
+          "title": "Enterprise Features",
+          "urls": [
+            "/${VERSION}/enterprise-licensing.html"
           ]
         },
         {

@@ -1345,6 +1345,35 @@
         ]
       },
       {
+        "title": "Security",
+        "items": [
+          {
+            "title": "Security Overview",
+            "urls": [
+              "/${VERSION}/security-reference/security-overview.html"
+            ]
+          },
+          {
+            "title": "Authentication",
+            "urls": [
+              "/${VERSION}/security-reference/authentication.html"
+            ]
+          },
+          {
+            "title": "Authorization",
+            "urls": [
+              "/${VERSION}/security-reference/authorization.html"
+            ]
+          },
+          {
+            "title": "Encryption",
+            "urls": [
+              "/${VERSION}/security-reference/encryption.html"
+            ]
+          }
+        ]
+      },
+      {
         "title": "Performance Optimization",
         "items": [
           {
@@ -1413,12 +1442,6 @@
                 "title": "<code>cockroach cert</code>",
                 "urls": [
                   "/${VERSION}/cockroach-cert.html"
-                ]
-              },
-              {
-                "title": "<code>cockroach quit</code>",
-                "urls": [
-                  "/${VERSION}/cockroach-quit.html"
                 ]
               },
               {
@@ -1714,6 +1737,33 @@
         "title": "Diagnostics Reporting",
         "urls": [
           "/${VERSION}/diagnostics-reporting.html"
+        ]
+      },
+      {
+        "title": "Benchmarking",
+        "items": [
+          {
+            "title": "Overview",
+            "urls": [
+              "/${VERSION}/performance.html"
+            ]
+          },
+          {
+            "title": "Benchmarking Instructions",
+            "urls": [
+              "/${VERSION}/performance-benchmarking-with-tpcc-local.html",
+              "/${VERSION}/performance-benchmarking-with-tpcc-local-multiregion.html",
+              "/${VERSION}/performance-benchmarking-with-tpcc-small.html",
+              "/${VERSION}/performance-benchmarking-with-tpcc-medium.html",
+              "/${VERSION}/performance-benchmarking-with-tpcc-large.html"
+            ]
+          },
+          {
+            "title": "Serverless Performance Benchmarking",
+            "urls": [
+              "/cockroachcloud/serverless-benchmarking.html"
+            ]
+          }
         ]
       },
       {
