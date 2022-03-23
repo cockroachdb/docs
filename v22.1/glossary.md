@@ -45,7 +45,7 @@ Term | Definition
 **[CockroachDB Dedicated](../cockroachcloud/quickstart-trial-cluster.html)** | A fully managed, single tenant CockroachDB deployment in a single region or multi-region cloud (AWS or GCP).
 **[CockroachDB Self-Hosted](start-a-local-cluster.html)** | A full featured, self-managed CockroachDB deployment.
 
-For more information on deployment types and guidelines on how to choose a deployment type, see [How to Choose a Deployment Option](choose-a-deployment-option.html).
+For more information on deployment options and guidelines on how to choose a deployment option, see [How to Choose a Deployment Option](choose-a-deployment-option.html).
 
 ## CockroachDB Cloud
 
