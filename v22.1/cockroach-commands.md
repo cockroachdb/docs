@@ -9,7 +9,6 @@ This page introduces the `cockroach` commands for configuring, starting, and man
 
 You can run `cockroach help` in your shell to get similar guidance.
 
-
 ## Commands
 
 Command | Usage
@@ -29,12 +28,13 @@ Command | Usage
 [`cockroach debug job-trace`](cockroach-debug-job-trace.html) | Generate trace payloads for an executing job from a particular node.
 [`cockroach debug list-files`](cockroach-debug-list-files.html) | Show the files that will be collected by using `cockroach debug zip`.
 [`cockroach debug merge-logs`](cockroach-debug-merge-logs.html) | Merge log files from multiple nodes into a single time-ordered stream of messages with an added per-message prefix to indicate the corresponding node.
+[`cockroach debug zip`](cockroach-debug-zip.html) | Generate a `.zip` file that can help Cockroach Labs troubleshoot issues with your cluster.
 [`cockroach gen`](cockroach-gen.html) | Generate man pages, a bash completion file, example SQL data, or an HAProxy configuration file for a running cluster.
 [`cockroach statement-diag`](cockroach-statement-diag.html)  | Manage and download statement diagnostics bundles.
-[`cockroach userfile delete`](cockroach-userfile-delete.html) | Delete the files stored in the user-scoped file storage.
-[`cockroach userfile get`](cockroach-userfile-get.html) | Fetch a file from the user-scoped file storage.
-[`cockroach userfile list`](cockroach-userfile-list.html) | List the files stored in the user-scoped file storage.
 [`cockroach userfile upload`](cockroach-userfile-upload.html) | Upload a file to user-scoped file storage.
+[`cockroach userfile list`](cockroach-userfile-list.html) | List the files stored in the user-scoped file storage.
+[`cockroach userfile get`](cockroach-userfile-get.html) | Fetch a file from the user-scoped file storage.
+[`cockroach userfile delete`](cockroach-userfile-delete.html) | Delete the files stored in the user-scoped file storage.
 [`cockroach version`](cockroach-version.html) | Output CockroachDB version details.
 [`cockroach workload`](cockroach-workload.html) | Run a built-in load generator against a cluster.
 [`cockroach import`](cockroach-import.html) | Import a table or database from a local dump file into a running cluster. Supported file formats are `PGDUMP` and `MYSQLDUMP`.
