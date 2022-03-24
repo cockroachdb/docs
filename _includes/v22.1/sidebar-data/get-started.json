@@ -137,7 +137,7 @@
     {
       "title": "Glossary",
       "urls": [
-        "/${VERSION}/glossary.html"
+        "/${VERSION}/architecture/glossary.html"
       ]
     },
     {
