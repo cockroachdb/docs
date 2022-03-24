@@ -16,12 +16,6 @@
       ]
     },
     {
-      "title": "Glossary",
-      "urls": [
-        "/${VERSION}/glossary.html"
-      ]
-    },
-    {
       "title": "Build a Sample Application",
       "items": [
         {
@@ -138,6 +132,12 @@
             }
           ]
         }
+      ]
+    },
+    {
+      "title": "Glossary",
+      "urls": [
+        "/${VERSION}/glossary.html"
       ]
     },
     {

@@ -11,9 +11,9 @@ This page explains how reads and writes are affected by the replicated and distr
 For a more detailed information about how transactions work in CockroachDB, see the [Transaction Layer](transaction-layer.html) documentation.
 {{site.data.alerts.end}}
 
-## Query execution
+{% include {{ page.version.version }}/misc/basic-terms.md %}
 
-See [CockroachDB architecture concepts](../glossary.html#cockroachdb-architecture) to review the CockroachDB features involved in query execution.
+## Query execution
 
 When CockroachDB executes a query, the cluster routes the request to the leaseholder for the range containing the relevant data. If the query touches multiple ranges, the request goes to multiple leaseholders. For a read request, only the leaseholder of the relevant range retrieves the data. For a write request, the Raft consensus protocol dictates that a majority of the replicas of the relevant range must agree before the write is committed.
 
