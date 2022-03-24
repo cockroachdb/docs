@@ -51,7 +51,6 @@ To view the available backup subdirectories you can restore from, use [`SHOW BAC
 - [Take Full and Incremental Backups](take-full-and-incremental-backups.html)
 - [Take and Restore Encrypted Backups](take-and-restore-encrypted-backups.html)
 - [Take and Restore Locality-aware Backups](take-and-restore-locality-aware-backups.html)
-- [`SQL DUMP`](cockroach-dump.html)
 - [`IMPORT`](migration-overview.html)
 - [Use the Built-in SQL Client](cockroach-sql.html)
 - [`cockroach` Commands Overview](cockroach-commands.html)
