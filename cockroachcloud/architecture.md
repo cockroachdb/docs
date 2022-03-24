@@ -11,7 +11,7 @@ docs_area: reference.architecture
 For an intro to CockroachDB's core architecture and capabilities, see [CockroachDB Architecture](../stable/architecture/overview.html) or take the free [Introduction to Distributed SQL and CockroachDB](https://university.cockroachlabs.com/courses/course-v1:crl+intro-to-distributed-sql-and-cockroachdb+self-paced/about) course on Cockroach University.
 {{site.data.alerts.end}}
 
-{% include cockroachcloud/basic-terms.md %}
+{% include common/basic-terms.md %}
 
 <div class="filters clearfix">
   <button class="filter-button" data-scope="serverless">{{ site.data.products.serverless-plan }}</button>
