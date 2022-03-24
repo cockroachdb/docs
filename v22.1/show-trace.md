@@ -217,7 +217,7 @@ You can configure the CockroachDB tracer to route to the OpenTelemetry tracer, w
 
 - A collector that uses the OTLP protocol, such as Lightstep and special builds of Jaeger.
 - The OpenTelemetry (OTEL) collector, which can in turn route them to other tools. The OTEL collector is a canonical collector, using the OTLP protocol, that can buffer traces and perform some processing on them before exporting them to Jaeger, Zipkin, and other OTLP tools.
-- To Jaeger or Zipkin using their native protocols. This is implemented by using the Jaeger and Zipkin dedicated "exporters" from the OTEL SDK.
+- Jaeger or Zipkin using their native protocols. This is implemented by using the Jaeger and Zipkin dedicated "exporters" from the OTEL SDK.
 
 The following [cluster settings](cluster-settings.html) are supported:
 
