@@ -39,7 +39,7 @@ Parameter | Description
 ## Trace description
 
 CockroachDB's definition of a "trace" is a specialization of [OpenTracing](https://opentracing.io/docs/overview/what-is-tracing/#what-is-opentracing). Internally, CockroachDB uses OpenTracing libraries for tracing, which also means that
-it can be easily integrated with OpenTracing-compatible trace collectors. CockroachDB supports [Jaeger](https://www.jaegertracing.io/), [Lightstep](https://lightstep.com/), and [Zipkin](https://zipkin.io/).
+it can be easily integrated with OpenTracing-compatible [trace collectors](#route-traces-to-a-third-party-collector).
 
 Concept | Description
 --------|------------
@@ -207,7 +207,7 @@ This example uses two terminals concurrently to generate conflicting transaction
 
 ## Route traces to a third-party collector
 
-You can configure CockroachDB to send all the traces to a collector like Jaeger and Zipkin. Enabling tracing also activates all the log messages, at all verbosity levels, as traces include the log messages printed in the respective trace context.
+You can configure CockroachDB to send all the traces to a third-party collector. CockroachDB supports [Jaeger](https://www.jaegertracing.io/), [Lightstep](https://lightstep.com/), and [Zipkin](https://zipkin.io/). Enabling tracing also activates all the log messages, at all verbosity levels, as traces include the log messages printed in the respective trace context.
 
 {{site.data.alerts.callout_info}}
 Enabling full tracing is expensive both in terms of CPU usage and memory footprint, and is not suitable for high throughput  production environments.
