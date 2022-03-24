@@ -16,11 +16,15 @@ Get future release notes emailed to you:
 As of March 2, 2022, new {{ site.data.products.dedicated }} clusters and all {{ site.data.products.serverless }} clusters are running CockroachDB [v21.2.6](v21.2.html).
 {{site.data.alerts.end}}
 
-## March 21, 2022
+## March 31, 2022
 
 <h3>General changes</h3>
 
 - {{ site.data.products.dedicated }} contract customers can now [scale clusters](../cockroachcloud/cluster-management.html) through the Console.
+
+<h3>Console changes</h3>
+
+- Contract customers can now view information about their organization's credit grants on the **Overview** tab of the [**Billing** page](../cockroachcloud/billing-management).
 
 ## March 7, 2022
 
