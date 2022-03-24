@@ -30,9 +30,9 @@ This message indicates a client is trying to connect to a node that is either no
 To resolve this issue, do one of the following:
 
 - If the node hasn't yet been started, [start the node](cockroach-start.html).
-- If you specified a [`--listen-addr` and/or a `--advertise-addr` flag](cockroach-start.html#networking) when starting the node, you must include the specified IP address/hostname and port with all other [`cockroach` Commands Overview](cockroach-commands.html) or change the `COCKROACH_HOST` environment variable.
+- If you specified a [`--listen-addr` and/or a `--advertise-addr` flag](cockroach-start.html#networking) when starting the node, you must include the specified IP address/hostname and port with all other [`cockroach` commands](cockroach-commands.html) or change the `COCKROACH_HOST` environment variable.
 
-If you're not sure what the IP address/hostname and port values might have been, you can look in the node's [logs](logging-overview.html). 
+If you're not sure what the IP address/hostname and port values might have been, you can look in the node's [logs](logging-overview.html).
 
 If necessary, you can also [shut down](node-shutdown.html) and then restart the node:
 
