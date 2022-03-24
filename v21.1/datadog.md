@@ -25,7 +25,7 @@ If you run into problems with this integration, please file an issue on the [Dat
 This tutorial assumes that you have [started a secure CockroachDB cluster](secure-a-cluster.html). [{{ site.data.products.db }}](../cockroachcloud/index.html) does not expose a compatible monitoring endpoint.
 {{site.data.alerts.end}}
 
-## Step 1. Enable CockroachDB Integration
+## Step 1. Enable CockroachDB integration
 
 To enable the CockroachDB check for your installed Datadog Agent, navigate to the [Integrations page](https://app.datadoghq.com/account/settings#integrations) and find CockroachDB in the list of available integrations. Hover over the icon and click **+ Install**.
 
@@ -128,7 +128,7 @@ This sample dashboard presents metrics on cluster availability, query performanc
 <img src="{{ 'images/v21.1/datadog-crdb-overview-dashboard.png' | relative_url }}" alt="CockroachDB Overview dashboard for Datadog" style="border:1px solid #eee;max-width:100%" />
 
 {{site.data.alerts.callout_info}}
-If you wish to customize your CockroachDB dashboard, it's recommended that you clone the default `CockroachDB Overview` dashboard before adding and removing widgets. If you leave the default dashboard intact, Datadog will update it when new versions of the Integration's dashboard are released.
+If you wish to customize your CockroachDB dashboard, it's recommended that you clone the default `CockroachDB Overview` dashboard before adding and removing widgets. If you leave the default dashboard intact, Datadog will update it when new versions of the integration's dashboard are released.
 {{site.data.alerts.end}}
 
 ## Step 5. Run a sample workload
@@ -163,7 +163,7 @@ The example alert below will trigger when [a node has less than 15% of storage c
 
 <img src="{{ 'images/v21.1/datadog-crdb-threshold-alert.png' | relative_url }}" alt="CockroachDB Threshold Alert in Datadog" style="border:1px solid #eee;max-width:100%" />
 
-- `cockroachdb.capacity.available` is divided by `cockroachdb.capacity.total` to determine the fraction of available capacity on the node's [store](architecture/storage-layer) (the directory on each node where CockroachDB reads and writes its data).
+- `cockroachdb.capacity.available` is divided by `cockroachdb.capacity.total` to determine the fraction of available capacity on the node's [store](architecture/storage-layer.html) (the directory on each node where CockroachDB reads and writes its data).
 - The alert threshold is set to `0.15`.
 
 The timeseries graph at the top of the page indicates the configured metric and threshold:
