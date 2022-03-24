@@ -2,7 +2,7 @@
 title: BEGIN
 summary: Initiate a SQL transaction with the BEGIN statement in CockroachDB.
 toc: true
-docs_area: reference.sql 
+docs_area: reference.sql
 ---
 
 The `BEGIN` [statement](sql-statements.html) initiates a [transaction](transactions.html), which either successfully executes all of the statements it contains or none at all.
@@ -35,7 +35,7 @@ In CockroachDB, the following are aliases for the `BEGIN` statement:
 -----------|-------------
 `PRIORITY` | If you do not want the transaction to run with `NORMAL` priority, you can set it to `LOW` or `HIGH`.<br/><br/>Transactions with higher priority are less likely to need to be retried.<br/><br/>For more information, see [Transactions: Priorities](transactions.html#transaction-priorities).<br/><br/>**Default**: `NORMAL`
 `READ` | Set the transaction access mode to `READ ONLY` or `READ WRITE`. The current transaction access mode is also exposed as the [session variable](show-vars.html) `transaction_read_only`.<br><br>**Default**: `READ WRITE`
-`AS OF SYSTEM TIME` | Execute the transaction using the database contents "as of" a specified time in the past.<br/><br/> The `AS OF SYSTEM TIME` clause can be used only when the transaction is read-only. If the transaction contains any writes, or if the `READ WRITE` mode is specified, an error will be returned.<br/><br/>For more information, see [AS OF SYSTEM TIME](as-of-system-time.html).
+`AS OF SYSTEM TIME` | Execute the transaction using the database contents "as of" a specified time in the past.<br/><br/> The `AS OF SYSTEM TIME` clause can be used only when the transaction is read-only. If the transaction contains any writes, or if the `READ WRITE` mode is specified, an error will be returned.<br/><br/>For more information, see [`AS OF SYSTEM TIME`](as-of-system-time.html).
 `NOT DEFERRABLE`<br>`DEFERRABLE` |  This clause is supported for compatibility with PostgreSQL. `NOT DEFERRABLE` is a no-op and the default behavior for CockroachDB. `DEFERRABLE` returns an `unimplemented` error.
 
  CockroachDB now only supports `SERIALIZABLE` isolation, so transactions can no longer be meaningfully set to any other `ISOLATION LEVEL`. In previous versions of CockroachDB, you could set transactions to `SNAPSHOT` isolation, but that feature has been removed.

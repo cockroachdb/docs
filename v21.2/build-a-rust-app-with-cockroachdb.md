@@ -8,11 +8,7 @@ docs_area: get_started
 
 This tutorial shows you how build a simple Rust application with CockroachDB and the [Rust-Postgres driver](https://github.com/sfackler/rust-postgres).
 
-{{site.data.alerts.callout_info}}
-Rust-Postgres is not [officially supported by Cockroach Labs](community-tooling.html). If you encounter problems with compatibility, please [contact the maintainer of the tool](https://github.com/sfackler/rust-postgres) with details.
-
-The sample code used in this tutorial is located in the [`community-tooling-samples`](https://github.com/cockroachdb/community-tooling-samples) repo. If you encounter problems with the sample code, please file an issue in that repo.
-{{site.data.alerts.end}}
+We have tested the Rust-Postgres driver enough to claim **beta-level** support. If you encounter problems, please [open an issue](https://github.com/cockroachdb/cockroach/issues/new) with details to help us make progress toward full support.
 
 ## Before you begin
 
@@ -43,14 +39,12 @@ Now that you have a database and a user, you'll run code to create a table and i
 
 ### Get the code
 
-Clone the [`community-tooling-samples`](https://github.com/cockroachdb/community-tooling-samples) GitHub repo:
+Clone the [`example-app-rust-postgres`](https://github.com/cockroachdb/example-app-rust-postgres) GitHub repo:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-$ git clone https://github.com/cockroachdb/community-tooling-samples
+$ git clone https://github.com/cockroachdb/example-app-rust-postgres
 ~~~
-
-The sample code for this tutorial is located in the `rust` directory.
 
 ### Basic statements
 
@@ -58,7 +52,7 @@ First, run `basic-sample.rs` to connect as the `maxroach` user and execute some 
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-{% remote_include https://raw.githubusercontent.com/cockroachdb/community-tooling-samples/main/rust/basic-sample.rs %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/example-app-rust-postgres/main/basic-sample.rs %}
 ~~~
 
 ### Transaction (with retry logic)
@@ -71,7 +65,7 @@ CockroachDB may require the [client to retry a transaction](transactions.html#tr
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-{% remote_include https://raw.githubusercontent.com/cockroachdb/community-tooling-samples/main/rust/txn-sample.rs %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/example-app-rust-postgres/main/txn-sample.rs %}
 ~~~
 
 After running the code, use the [built-in SQL client](cockroach-sql.html) to verify that funds were transferred from one account to another:
