@@ -53,7 +53,7 @@ To view the available backup subdirectories you can restore from, use [`SHOW BAC
 - [Take and Restore Locality-aware Backups](take-and-restore-locality-aware-backups.html)
 - [`IMPORT`](migration-overview.html)
 - [Use the Built-in SQL Client](cockroach-sql.html)
-- [Other Cockroach Commands](cockroach-commands.html)
+- [`cockroach` Commands Overview](cockroach-commands.html)
 
 <!-- Reference links -->
 
