@@ -11,7 +11,7 @@ For a complete list of supported SQL statements and related details, see [SQL St
 
 ## Before you begin
 
-Make sure you have already [create a free {{ site.data.products.db }} cluster](quickstart.html#step-1-start-cockroachdb) and [connected the SQL client](quickstart.html#step-2-insert-data).
+Make sure you have already [create a free {{ site.data.products.db }} cluster](quickstart.html) and [connected the SQL client](../{{site.versions["stable"]}}/connect-to-the-database.html?filters=sql).
 
 ## Create a database
 

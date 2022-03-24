@@ -35,6 +35,7 @@ For instructions on starting a secure cluster, see [Start a Local Cluster (Secur
   <button class="filter-button page-level" data-scope="go">Go</button>
   <button class="filter-button page-level" data-scope="java">Java</button>
   <button class="filter-button page-level" data-scope="ruby">Ruby</button>
+  <button class="filter-button page-level" data-scope="sql">SQL client</button>
 </div>
 
 <div class="filter-content" markdown="1" data-scope="js-ts">
@@ -1230,6 +1231,48 @@ Parameter | Description
 `{client-key}`  | The path to the [client key](cockroach-cert.html#client-key-and-certificates) for the user connecting to the cluster.<br>You can generate this key with [`cockroach cert create-client`](cockroach-cert.html#subcommands).
 
 </div>
+
+</div>
+
+<div class="filter-content" markdown="1" data-scope="sql">
+
+<div class="filter-content" markdown="1" data-scope="serverless">
+
+1. [Log in](https://cockroachlabs.cloud/) to your {{ site.data.products.db }} account.
+1. On the **Clusters** page, select your cluster.
+1. Click **Connect** to open the **Connection info** dialog.
+
+    The **Connection info** dialog shows information about how to connect to your cluster.
+
+1. Choose your OS from the drop-down.
+1. Follow the steps in the **Command Line** tab to connect to your cluster using [`cockroach sql`](cockroach-sql.html).
+
+</div>
+
+<div class="filter-content" markdown="1" data-scope="dedicated">
+
+Follow steps 1-5 in the [{{ site.data.products.dedicated }} quickstart.](../cockroachcloud/quickstart-trial-cluster.html) to connect to your cluster using [`cockroach sql`](cockroach-sql.html).
+
+</div>
+
+<div class="filter-content" markdown="1" data-scope="core">
+
+To connect to a node running on your local machine open a terminal and enter:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+cockroach sql
+~~~
+
+To connect to a remote note, use a [connection URL](connection-parameters.html#connect-using-a-url):
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+cockroach sql --url "<connection url>"
+~~~
+
+</div>
+
 
 </div>
 
