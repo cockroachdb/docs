@@ -21,7 +21,6 @@ Command | Usage
 [`cockroach sql`](cockroach-sql.html) | Use the built-in SQL client.
 [`cockroach sqlfmt`](cockroach-sqlfmt.html) | Reformat SQL queries for enhanced clarity.
 [`cockroach node`](cockroach-node.html) | List node IDs, show their status, decommission nodes for removal, or recommission nodes.
-[`cockroach dump`](cockroach-dump.html) | **Deprecated.** Use one of the following instead:<ul><li>To back up your data, take a [full backup](take-full-and-incremental-backups.html).</li><li>To export your data in plaintext format, use [`EXPORT`](export.html).</li><li>To view table schema in plaintext, use [`SHOW CREATE TABLE`](show-create.html).</li></ul>
 [`cockroach demo`](cockroach-demo.html) | Start a temporary, in-memory CockroachDB cluster, and open an interactive SQL shell to it.
 [`cockroach gen`](cockroach-gen.html) | Generate manpages, a bash completion file, example SQL data, or an HAProxy configuration file for a running cluster.
 [`cockroach version`](cockroach-version.html) | Output CockroachDB version details.
