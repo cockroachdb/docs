@@ -123,7 +123,7 @@ For an example using this table, see [Find out which of your tables have a const
 | config           | [`STRING`](string.html)         | The YAML key-value pair used to configure the zone, e.g., `+region=europe-west1`.                       |
 | report_id        | [`INT8`](int.html)              | The ID of the [report](#system-reports_meta) that generated all of the rows in this table.              |
 | violation_start  | [`TIMESTAMPTZ`](timestamp.html) | The time when the violation was detected. Will return `NULL` if the number of `violating_ranges` is 0.  |
-| violating_ranges | [`INT8`](int.html)              | The [ranges](glossary.html#architecture-range) that are in violation of the configuration. |
+| violating_ranges | [`INT8`](int.html)              | The [ranges](architecture/glossary.html#architecture-range) that are in violation of the configuration. |
 
 ### system.reports_meta
 

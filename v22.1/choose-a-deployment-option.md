@@ -79,7 +79,7 @@ Cockroach Labs offers three ways to deploy CockroachDB: two managed services&mda
 
 ## See also
 
-- [CockroachDB deployment](glossary.html#cockroachdb-deployment-terms)
+- [CockroachDB deployment](architecture/glossary.html#cockroachdb-deployment-terms)
 - [CockroachDB pricing](https://www.cockroachlabs.com/get-started-cockroachdb/)
 - [CockroachDB Cloud FAQs](../cockroachcloud/serverless-faqs.html)
 - [CockroachDB Cloud Architecture](../cockroachcloud/architecture.html)
