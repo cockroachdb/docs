@@ -6,9 +6,9 @@ key: sql-dump.html
 ---
 
 {{site.data.alerts.callout_danger}}
-`cockroach dump` is no longer fully supported and has been deprecated in v20.2. [`cockroach dump --dump-mode=schema`](#dump-just-a-tables-schema) is still supported, but is deprecated. Use [`SHOW CREATE ALL TABLES`](show-create.html) instead. All `cockroach dump` commands will be removed in v21.2+.
+`cockroach dump` is no longer fully supported and has been deprecated in v20.2. [`cockroach dump --dump-mode=schema`](#dump-just-a-tables-schema) is still supported, but is deprecated. Use [`SHOW CREATE ALL TABLES`](show-create.html) instead. All `cockroach dump` commands will be removed in v21.2 and later versions.
 
-Instead, back up your data in a [full backup](take-full-and-incremental-backups.html), [export](export.html) your data in plain text format, or view table schema in plaintext with [`SHOW CREATE TABLE`](show-create.html).
+Instead, back up your data in a [full backup](take-full-and-incremental-backups.html), [export](export.html) your data in plain text format, or view table schema in plain text with [`SHOW CREATE TABLE`](show-create.html).
 {{site.data.alerts.end}}
 
 The `cockroach dump` [command](cockroach-commands.html) outputs the SQL statements required to recreate tables, views, and sequences. This command can be used to back up or export each database in a cluster. The output should also be suitable for importing into other relational databases, with minimal adjustments.
