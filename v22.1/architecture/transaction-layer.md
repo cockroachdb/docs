@@ -396,7 +396,7 @@ Additionally, when other transactions encounter a transaction in `STAGING` state
 
 The non-blocking transaction protocol and replication scheme differ from standard read-write transactions as follows:
 
-- Non-blocking transactions use a replication scheme over the [ranges](architecture/overview.html#architecture-range) they operate on that allows all followers in these ranges to serve consistent (non-stale) reads.
+- Non-blocking transactions use a replication scheme over the [ranges](overview.html#architecture-range) they operate on that allows all followers in these ranges to serve consistent (non-stale) reads.
 - Non-blocking transactions are minimally disruptive to reads over the data they modify, even in the presence of read/write [contention](../performance-best-practices-overview.html#transaction-contention).
 
 These properties of non-blocking transactions combine to provide predictable read latency for a configurable subset of data in [global deployments](../multiregion-overview.html). This is useful since there exists a sizable class of data which is heavily skewed towards read traffic.
