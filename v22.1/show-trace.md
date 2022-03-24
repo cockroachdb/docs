@@ -9,20 +9,15 @@ The `SHOW TRACE FOR SESSION` [statement](sql-statements.html) returns details ab
 
 You can use `SHOW TRACE FOR SESSION` to debug why a query is not performing as expected, to add more information to bug reports, or to generally learn more about how CockroachDB works.
 
-{{site.data.alerts.callout_info}}
-Statement traces can be obtained in plaintext, JSON, and [Jaeger-compatible](query-behavior-troubleshooting.html#visualize-statement-traces-in-jaeger) formats by activating [statement diagnostics](ui-statements-page.html#diagnostics) on the DB Console Statements Page or running [`EXPLAIN ANALYZE (DEBUG)`](explain-analyze.html#debug-option).
-{{site.data.alerts.end}}
+A [statement diagnostics bundle](ui-statements-page.html#diagnostics) contains statement traces in plaintext, JSON, and [Jaeger-compatible](query-behavior-troubleshooting.html#visualize-statement-traces-in-jaeger) format.
 
 ## Usage overview
 
-`SHOW TRACE FOR SESSION` returns messages and timing information for all statements recorded during a session. It's important to note the following:
+`SHOW TRACE FOR SESSION` returns messages and timing information for all statements recorded during a session.  `SHOW TRACE FOR SESSION` returns only the most recently recorded traces.
 
-- `SHOW TRACE FOR SESSION` only returns the most recently recorded traces, or for a currently active recording of traces.
-    - To start recording traces during a session, enable the `tracing` session variable via [`SET tracing = on;`](set-vars.html#set-tracing).
-    - To stop recording traces during a session, disable the `tracing` session variable via [`SET tracing = off;`](set-vars.html#set-tracing).
+To start recording traces during a session, enable the `tracing` session variable via [`SET tracing = on;`](set-vars.html#set-tracing). To stop recording traces during a session, disable the `tracing` session variable via [`SET tracing = off;`](set-vars.html#set-tracing).
 
-- Recording traces during a session does not effect the execution of any statements traced. This means that errors encountered by statements during a recording are returned to clients. CockroachDB will [automatically retry](transactions.html#automatic-retries) individual statements (considered implicit transactions) and multi-statement transactions sent as a single batch when [retry errors](transactions.html#error-handling) are encountered due to contention. Also, clients will receive retry errors required to handle [client-side retries](transactions.html#client-side-intervention). As a result, traces of all transaction retries will be captured during a recording.
-
+Recording traces during a session does not effect the execution of any statements traced. This means that errors encountered by statements during a recording are returned to clients. CockroachDB will [automatically retry](transactions.html#automatic-retries) individual statements (considered implicit transactions) and multi-statement transactions sent as a single batch when [retry errors](transactions.html#error-handling) are encountered due to contention. Also, clients will receive retry errors required to handle [client-side retries](transactions.html#client-side-intervention). As a result, traces of all transaction retries will be captured during a recording.
 
 ## Required privileges
 
@@ -43,8 +38,8 @@ Parameter | Description
 
 ## Trace description
 
-CockroachDB's definition of a "trace" is a specialization of [OpenTracing's](https://opentracing.io/docs/overview/what-is-tracing/#what-is-opentracing) definition. Internally, CockroachDB uses OpenTracing libraries for tracing, which also means that
-it can be easily integrated with OpenTracing-compatible trace collectors; for example, [Jaeger](query-behavior-troubleshooting.html#visualize-statement-traces-in-jaeger), Lightstep, and Zipkin are already supported.
+CockroachDB's definition of a "trace" is a specialization of [OpenTracing](https://opentracing.io/docs/overview/what-is-tracing/#what-is-opentracing). Internally, CockroachDB uses OpenTracing libraries for tracing, which also means that
+it can be easily integrated with OpenTracing-compatible trace collectors. CockroachDB supports [Jaeger](https://www.jaegertracing.io/), [Lightstep](https://lightstep.com/), and [Zipkin](https://zipkin.io/).
 
 Concept | Description
 --------|------------
@@ -52,7 +47,7 @@ Concept | Description
 **span** | A named, timed operation that describes a contiguous segment of work in a trace. Each span links to "child spans", representing sub-operations; their children would be sub-sub-operations of the grandparent span, etc.<br><br>Different spans can represent (sub-)operations that executed either sequentially or in parallel with respect to each other. (This possibly-parallel nature of execution is one of the important things that a trace is supposed to describe.) The operations described by a trace may be _distributed_, that is, different spans may describe operations executed by different nodes.
 **message** | A string with timing information. Each span can contain a list of these. They are produced by CockroachDB's logging infrastructure and are the same messages that can be found in node [log files](logging-overview.html) except that a trace contains message across all severity levels, whereas log files, by default, do not. Thus, a trace is much more verbose than logs but only contains messages produced in the context of one particular traced operation.
 
-To further clarify these concepts, let's look at a visualization of a trace for one statement. This particular trace is [visualized by Jaeger](query-behavior-troubleshooting.html#visualize-statement-traces-in-jaeger). The image shows spans and log messages. You can see names of operations and sub-operations, along with parent-child relationships and timing information, and it's easy to see which operations are executed in parallel.
+To further clarify, consider a visualization of a trace for one statement as [visualized by Jaeger](query-behavior-troubleshooting.html#visualize-statement-traces-in-jaeger). The image shows spans and log messages. You can see names of operations and sub-operations, along with parent-child relationships and timing information, and it's easy to see which operations are executed in parallel.
 
 <img src="{{ 'images/v22.1/jaeger-trace-log-messages.png' | relative_url }}" alt="Jaeger Trace Log Messages" style="border:1px solid #eee;max-width:100%" />
 
@@ -94,7 +89,7 @@ Column | Type | Description
 `operation` | string | The name of the operation (or sub-operation) on whose behalf the message was logged.
 `span` | int | The index of the span within the virtual list of all spans if they were ordered by the span's start time.
 
-{{site.data.alerts.callout_info}}If the <code>COMPACT</code> keyword was specified, only the <code>age</code>, <code>message</code>, <code>tag</code> and <code>operation</code> columns are returned. In addition, the value of the <code>location</code> columns is prepended to <code>message</code>.{{site.data.alerts.end}}
+If you specify the `COMPACT` parameter, only the `age`, `message`, `tag`, and `operation` columns are returned. In addition, the value of the `location` column is prepended to `message`.
 
 ## Examples
 
@@ -130,7 +125,7 @@ SET TRACING
 
 ### Trace conflicting transactions
 
-In this example, we use two terminals concurrently to generate conflicting transactions.
+This example uses two terminals concurrently to generate conflicting transactions.
 
 1. In terminal 1, create a table:
 
@@ -139,7 +134,7 @@ In this example, we use two terminals concurrently to generate conflicting trans
     > CREATE TABLE t (k INT);
     ~~~
 
-2. Still in terminal 1, open a transaction and perform a write without closing the transaction:
+2. In terminal 1, open a transaction and perform a write without closing the transaction:
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -159,7 +154,7 @@ In this example, we use two terminals concurrently to generate conflicting trans
     > SET tracing = on;
     ~~~
 
-4.  Still in terminal 2, execute a conflicting read:
+4.  In terminal 2, execute a conflicting read:
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -168,7 +163,7 @@ In this example, we use two terminals concurrently to generate conflicting trans
 
     You'll see that this statement is blocked until the transaction in terminal 1 finishes.
 
-4. Back in terminal 1, finish the transaction:
+4. In terminal 1, finish the transaction:
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -184,7 +179,7 @@ In this example, we use two terminals concurrently to generate conflicting trans
     (1 row)
     ~~~
 
-6. Still in terminal 2, stop tracing and then view the completed trace:
+6. In terminal 2, stop tracing and then view the completed trace:
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -210,6 +205,65 @@ In this example, we use two terminals concurrently to generate conflicting trans
     (200 rows)
     ~~~
 
+## Route traces to a third-party collector
+
+You can configure CockroachDB to send all the traces to a collector like Jaeger and Zipkin. Enabling tracing also activates all the log messages, at all verbosity levels, as traces include the log messages printed in the respective trace context.
+
+{{site.data.alerts.callout_info}}
+Enabling full tracing is expensive both in terms of CPU usage and memory footprint, and is not suitable for high throughput  production environments.
+{{site.data.alerts.end}}
+
+You can configure the CockroachDB tracer to route to the OpenTelemetry tracer, with OpenTelemetry being supported by all observability tools. In particular, you can configure CockroachDB to output traces to:
+
+- A collector that uses the OTLP protocol, such as Lightstep and special builds of Jaeger.
+- The OpenTelemetry (OTEL) collector, which can in turn route them to other tools. The OTEL collector is a canonical collector, using the OTLP protocol, that can buffer traces and perform some processing on them before exporting them to Jaeger, Zipkin, and other OTLP tools.
+- To Jaeger or Zipkin using their native protocols. This is implemented by using the Jaeger and Zipkin dedicated "exporters" from the OTEL SDK.
+
+The following [cluster settings](cluster-settings.html) are supported:
+
+<table>
+<thead><tr><th>Setting</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+<tbody>
+<tr><td><code>trace.debug.enable</code></td><td>boolean</td><td><code>false</code></td><td>If set, traces for recent requests can be seen at <code>https://&ltui&gt;/debug/requests</code>.</td></tr>
+<tr><td><code>trace.jaeger.agent</code></td><td>string</td><td><code></code></td><td>The address of a Jaeger agent to receive traces using the Jaeger UDP Thrift protocol, as <code>&lt;host&gt;:&lt;port&gt;</code>. If no port is specified, <code>6381</code> is used.</td></tr>
+<tr><td><code>trace.opentelemetry.collector</code></td><td>string</td><td><code></code></td><td>The address of an OpenTelemetry trace collector to receive traces using the OTEL gRPC protocol, as <code>&lt;host&gt;:&lt;port&gt;</code>. If no port is specified, <code>4317</code> is used.</td></tr>
+<tr><td><code>trace.span_registry.enabled</code></td><td>boolean</td><td><code>true</code></td><td>If set, ongoing traces can be seen at <code>https://&ltui&gt;/#/debug/tracez</code>.</td></tr>
+<tr><td><code>trace.zipkin.collector</code></td><td>string</td><td><code></code></td><td>The address of a Zipkin instance to receive traces, as <code>&lt;host&gt;:&lt;port&gt;</code>. If no port is specified, <code>9411</code> is used.</td></tr>
+</tbody>
+</table>
+
+### Jaeger example
+
+This example shows how to run Jaeger in Docker and configure CockroachDB to route traces to Jaeger.
+
+1. Run Jaeger in Docker:
+
+    ~~~ shell
+    docker run -d --name jaeger -p 6831:6831/udp -p 16686:16686 jaegertracing/all-in-one:latest
+    ~~~
+
+    This runs the latest version of Jaeger, and forwards two ports to the container. `6831` is the trace ingestion port, `16686` is the UI port. By default, Jaeger will store all received traces in memory.
+
+1. Run CockroachDB and set the Jaeger agent configuration:
+
+    ~~~ sql
+    SET CLUSTER SETTING trace.jaeger.agent='localhost:6831'
+    ~~~
+
+1. Go to [http://localhost:16686](http://localhost:16686).
+1. Select the CockroachDB service, and view traces streaming in.
+
+Instead of searching through log messages in an unstructured fashion, the logs are now graphed in a tree format based on how the contexts were passed around. This also traverses machine boundaries so you don't have to look at different flat `.log` files to correlate events.
+
+Jaeger's memory storage works well for small use cases, but can result in out of memory errors when collecting many traces over a long period of time. Jaeger also supports disk-backed local storage using Badger. To use this, start Jaeger by running the following Docker command:
+
+~~~ shell
+docker run -d --name jaeger \
+-e SPAN_STORAGE_TYPE=badger -e BADGER_EPHEMERAL=false \
+-e BADGER_DIRECTORY_VALUE=/badger/data -e BADGER_DIRECTORY_KEY=/badger/key \
+-v /mnt/data1/jaeger:/badger \
+-p 6831:6831/udp -p 16686:16686 jaegertracing/all-in-one:latest
+~~~
 
 ## See also
 
