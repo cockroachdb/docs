@@ -8,7 +8,7 @@ docs_area: manage
 Users may connect with {{ site.data.products.db }} in two ways:
 
 - The [{{ site.data.products.db }} Console](https://cockroachlabs.cloud/) provides an overview of your {{ site.data.products.db }} account, and offers functionality for administrating or connecting to clusters.
-- SQL clients, including the CockroachDB CLI client and the [various supported drivers and ORMs](../{{site.versions["stable"]}}/install-client-drivers.html), connect directly to CockroachDB clusters using the [CockroachDB SQL interface](../{{site.versions["stable"]}}/sql-feature-support.html).
+- SQL clients, including the [CockroachDB CLI](cockroach-start.html) client and the [various supported drivers and ORMs](../{{site.versions["stable"]}}/install-client-drivers.html), connect directly to CockroachDB clusters using the [CockroachDB SQL interface](../{{site.versions["stable"]}}/sql-feature-support.html).
 
 
 ## {{ site.data.products.db }} authentication
