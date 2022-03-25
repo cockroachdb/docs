@@ -56,6 +56,6 @@ $ cockroach debug ballast cockroach-data/ballast.txt --size=2GB
 
 ## See also
 
-- [Other Cockroach Commands](cockroach-commands.html)
+- [`cockroach` Commands Overview](cockroach-commands.html)
 - [Troubleshooting Overview](troubleshooting-overview.html)
 - [Production Checklist](recommended-production-settings.html)

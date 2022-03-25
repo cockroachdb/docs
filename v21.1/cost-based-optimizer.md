@@ -190,9 +190,7 @@ To make the optimizer prefer lookup joins to merge joins when performing foreign
 
 - You should reconsider hint usage with each new release of CockroachDB. Due to improvements in the optimizer, hints specified to work with an older version may cause decreased performance in a newer version.
 
-## Examples
-
-### Inverted join examples
+## Inverted join examples
 
 {% include {{ page.version.version }}/sql/inverted-joins.md %}
 

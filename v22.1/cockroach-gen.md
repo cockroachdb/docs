@@ -390,5 +390,5 @@ For full details on these and other configuration settings, see the [HAProxy Con
 
 ## See also
 
-- [Other Cockroach Commands](cockroach-commands.html)
+- [`cockroach` Commands Overview](cockroach-commands.html)
 - [Deploy CockroachDB On-Premises](deploy-cockroachdb-on-premises.html) (using HAProxy for load balancing)

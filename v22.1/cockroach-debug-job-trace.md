@@ -71,6 +71,6 @@ You will find the zip file in the directory you ran the command from:
 ## See also
 
 - [File an Issue](file-an-issue.html)
-- [Other Cockroach Commands](cockroach-commands.html)
+- [`cockroach` Commands Overview](cockroach-commands.html)
 - [Troubleshooting Overview](troubleshooting-overview.html)
 - [Support Resources](support-resources.html)

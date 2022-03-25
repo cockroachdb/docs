@@ -210,20 +210,15 @@
           ]
         },
         {
-          "title": "Read Historical Data",
-          "items": [
-            {
-              "title": "AS OF SYSTEM TIME",
-              "urls": [
-                "/${VERSION}/as-of-system-time.html"
-              ]
-            },
-            {
-              "title": "Follower Reads",
-              "urls": [
-                "/${VERSION}/follower-reads.html"
-              ]
-            }
+          "title": "Follower Reads",
+          "urls": [
+            "/${VERSION}/follower-reads.html"
+          ]
+        },
+        {
+          "title": "<code>AS OF SYSTEM TIME</code>",
+          "urls": [
+            "/${VERSION}/as-of-system-time.html"
           ]
         },
         {

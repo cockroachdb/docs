@@ -85,7 +85,7 @@ If you cannot index the column that identifies the unwanted rows, we recommend d
 
 1. Execute a [`SELECT` query](selection-queries.html) that returns the primary key values for the rows that you want to delete. When writing the `SELECT` query:
     - Use a `WHERE` clause that filters on the column identifying the rows.
-    - Add an [`AS OF SYSTEM TIME` clause](as-of-system-time.html) to the end of the selection subquery, or run the selection query in a separate, read-only transaction with [`SET TRANSACTION AS OF SYSTEM TIME`](as-of-system-time.html#using-as-of-system-time-in-transactions). This helps to reduce [transaction contention](transactions.html#transaction-contention).
+    - Add an [`AS OF SYSTEM TIME` clause](as-of-system-time.html) to the end of the selection subquery, or run the selection query in a separate, read-only transaction with [`SET TRANSACTION AS OF SYSTEM TIME`](as-of-system-time.html#use-as-of-system-time-in-transactions). This helps to reduce [transaction contention](transactions.html#transaction-contention).
     - Use a [`LIMIT`](limit-offset.html) clause to limit the number of rows queried to a subset of the rows that you want to delete. To determine the optimal `SELECT` batch size, try out different sizes (10,000 rows, 100,000 rows, 1,000,000 rows, etc.), and monitor the change in performance. Note that this `SELECT` batch size can be much larger than the batch size of rows that are deleted in the subsequent `DELETE` query.
     - To ensure that rows are efficiently scanned in the subsequent `DELETE` query, include an [`ORDER BY`](order-by.html) clause on the primary key.
 
