@@ -8,6 +8,8 @@ docs_area: develop
 
 {% include {{page.version.version}}/sql/row-level-ttl.md %}
 
+Row-Level TTL is in **beta** because it may not satisfy production requirements due to performance issues that may occur in large volume data sets.  For more information see [Limitations](row-level-ttl.html#limitations).
+
 By using Row-Level TTL, you can avoid the complexity of writing and managing scheduled jobs from the application layer to mark rows as expired and perform the necessary deletions. Doing it yourself can become complicated due to the need to balance the timeliness of the deletions vs. the potentially negative performance impact of those deletions on foreground traffic from your application.
 
 Use cases for row-level TTL include:
@@ -22,11 +24,11 @@ Use cases for row-level TTL include:
 
 At a high level, Row-Level TTL works by:
 
-1. Issuing a [selection query](selection-queries.html) at a [historical timestamp](as-of-system-time.html), yielding a set of rows that are eligible for deletion.
-1. Given the set of rows eligible for deletion, split what would logically be a single [`DELETE`](delete.html) statement to remove those rows into multiple SQL queries that will eventually have the equivalent effect by operating on a subset of the eligible rows.
-1. As part of the above process, deciding how many rows to [`SELECT`](select-clause.html) and [`DELETE`](delete.html) at once in each of the above queries.
-1. Running the SQL queries described above in parallel as [background jobs](show-jobs.html).
-1. All the while applying a rate limit to control the rate of those background deletion queries to minimize the performance impact on foreground application queries.
+- Issuing a [selection query](selection-queries.html) at a [historical timestamp](as-of-system-time.html), yielding a set of rows that are eligible for deletion.
+- Given the set of rows eligible for deletion, split what would logically be a single [`DELETE`](delete.html) statement to remove those rows into multiple SQL queries that will eventually have the equivalent effect by operating on a subset of the eligible rows.
+- As part of the above process, deciding how many rows to [`SELECT`](select-clause.html) and [`DELETE`](delete.html) at once in each of the above queries.
+- Running the SQL queries described above in parallel as [background jobs](show-jobs.html).
+- To minimize the performance impact on foreground application queries, the background deletion queries are rate limited; they are also submitted at a lower priority level using the [admission control system](architecture/admission-control.html).
 
 The process above is conceptually similar to the process described by [Batch delete on an indexed column](bulk-delete-data.html#batch-delete-on-an-indexed-column), except that Row-Level TTL is built into CockroachDB, so it saves you from having to write code to manage the process from your application and/or external job processing framework, including tuning the rate and performance of your background queries so they don't affect foreground application query performance.
 
@@ -51,11 +53,11 @@ has the following effects:
 
 <a name="crdb-internal-expiration"></a>
 
-1. Creates a repeating [scheduled job](#view-ttl-jobs) for the `events` table.
+1. Creates a repeating [scheduled job](#view-ttl-jobs) for the `ttl_test` table.
 2. Adds a hidden column `crdb_internal_expiration` of type [`TIMESTAMPTZ`](timestamp.html) to represent the TTL.
 3. Implicitly adds the `ttl` and `ttl_automatic_column` [storage parameters](#ttl-storage-parameters).
 
-To see the hidden column and the storage parameters on the `events` table, enter the [`SHOW CREATE TABLE`](show-create.html) statement:
+To see the hidden column and the storage parameters, enter the [`SHOW CREATE TABLE`](show-create.html) statement:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -75,22 +77,39 @@ SHOW CREATE TABLE ttl_test;
 (1 row)
 ~~~
 
+To view the scheduled job, use [`SHOW SCHEDULES`](show-schedules.html):
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SHOW SCHEDULES;
+~~~
+
+~~~
+          id         |        label         | schedule_status |        next_run        |  state  | recurrence | jobsrunning | owner |            created            |     command
+---------------------+----------------------+-----------------+------------------------+---------+------------+-------------+-------+-------------------------------+-------------------
+  747608117920104449 | sql-stats-compaction | ACTIVE          | 2022-03-25 16:00:00+00 | pending | @hourly    |           0 | node  | 2022-03-25 15:31:31.444067+00 | {}
+  747609229470433281 | row-level-ttl-112    | ACTIVE          | 2022-03-25 16:00:00+00 | NULL    | @hourly    |           0 | root  | 2022-03-25 15:37:10.613056+00 | {"tableId": 112}
+(2 rows)
+~~~
+
 ## TTL storage parameters
 
 The settings that control the behavior of Row-Level TTL are provided using [storage parameters](sql-grammar.html#opt_with_storage_parameter_list). These parameters can be set during table creation using [`CREATE TABLE`](#create-a-table-with-row-level-ttl), added to an existing table using the [`ALTER TABLE`](#add-row-level-ttl-to-an-existing-table) statement, or [reset to default values](#reset-a-storage-parameter-to-its-default-value).
 
-| Description                                              | Option                                                                                                                                                                       |
-|----------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `ttl_expire_after` <a name="param-ttl-expire-after"></a> | The [interval](interval.html) when a TTL will expire. Default: '30 days'. Minimum value: '5 minutes'.                                                                        |
-| `ttl` <a name="param-ttl"></a>                           | Signifies if a TTL is active. Automatically set.                                                                                                                             |
-| `ttl_select_batch_size`                                  | How many rows to [select](select-clause.html) at one time from the set of expired rows. Default: 500. Minimum: 1.                                                            |
-| `ttl_delete_batch_size`                                  | How many rows to [delete](delete.html) at a time. Default: 100. Minimum: 1.                                                                                                  |
-| `ttl_delete_rate_limit`                                  | Maximum number of rows to be deleted per second (rate limit). Default: 0 (no limit).                                                                                         |
-| `ttl_range_concurrency`                                  | How many concurrent batches of expired rows are being worked on at a time. Default: `cpu_core_count`. Minimum: 1.                                                            |
-| `ttl_row_stats_poll_interval`                            | If set, counts rows and expired rows on the table to report as Prometheus metrics while the TTL job is running. Unset by default, meaning no stats are fetched and reported. |
-| `ttl_pause` <a name="param-ttl-pause"></a>               | If set, stops the TTL job from executing.                                                                                                                                    |
-| `ttl_job_cron` <a name="param-ttl-job-cron"></a>         | Frequency at which the TTL job runs, specified using [CRON syntax](https://cron.help).                                                                                       |
-| `ttl_automatic_column`                                   | If set, use the value of the `crdb_internal_expiration` hidden column. This is unset when `ttl_expiration_expression` is used.                                               |
+| Description                                              | Option                                                                                                                                                                       | Associated cluster setting          |
+|----------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------|
+| `ttl_expire_after` <a name="param-ttl-expire-after"></a> | The [interval](interval.html) when a TTL will expire. Default: '30 days'. Minimum value: '1 microsecond'.                                                                    | N/A                                 |
+| `ttl` <a name="param-ttl"></a>                           | Signifies if a TTL is active. Automatically set.                                                                                                                             | `sql.ttl.job.enabled`               |
+| `ttl_select_batch_size`                                  | How many rows to [select](select-clause.html) at one time from the set of expired rows. Default: 500. Minimum: 1.                                                            | `sql.ttl.default_select_batch_size` |
+| `ttl_delete_batch_size`                                  | How many rows to [delete](delete.html) at a time. Default: 100. Minimum: 1.                                                                                                  | `sql.ttl.default_delete_batch_size` |
+| `ttl_delete_rate_limit`                                  | Maximum number of rows to be deleted per second (rate limit). Default: 0 (no limit).                                                                                         | `sql.ttl.default_delete_rate_limit` |
+| `ttl_range_concurrency`                                  | The Row-Level TTL queries split up scans by ranges, and this determines how many concurrent ranges are processed at a time. Default: 1. Minimum: 1.                          | `sql.ttl.default_range_concurrency` |
+| `ttl_row_stats_poll_interval`                            | If set, counts rows and expired rows on the table to report as Prometheus metrics while the TTL job is running. Unset by default, meaning no stats are fetched and reported. | N/A                                 |
+| `ttl_pause` <a name="param-ttl-pause"></a>               | If set, stops the TTL job from executing.                                                                                                                                    | N/A                                 |
+| `ttl_job_cron` <a name="param-ttl-job-cron"></a>         | Frequency at which the TTL job runs, specified using [CRON syntax](https://cron.help).                                                                                       | N/A                                 |
+| `ttl_automatic_column`                                   | If set, use the value of the `crdb_internal_expiration` hidden column.                                                                                                       | N/A                                 |
+
+For more information about TTL-related cluster settings, see [View TTL-related cluster settings](#view-ttl-related-cluster-settings).
 
 ## Examples
 

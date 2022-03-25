@@ -1,2 +1,5 @@
 - You cannot use [foreign keys](foreign-key.html) to create references to or from a table that uses Row-Level TTL.
-- [`SELECT` queries](selection-queries.html) against tables with Row-Level TTL enabled do not filter out expired rows from the result set. This feature may be added in a future release. For now, follow the instructions in [Filter out expired rows from a selection query](row-level-ttl.html#filter-out-expired-rows-from-a-selection-query).
+- Any queries you run against tables with Row-Level TTL enabled do not filter out expired rows from the result set (this includes [`UPDATE`s](update.html) and [`DELETE`s](delete.html)). This feature may be added in a future release. For now, follow the instructions in [Filter out expired rows from a selection query](row-level-ttl.html#filter-out-expired-rows-from-a-selection-query).
+- The queries executed by Row-Level TTL are not yet optimized for performance:
+  - They do not use any indexes that may be available on the [`crdb_internal_expiration` column](row-level-ttl.html#crdb-internal-expiration).
+  - They do not take into account [node localities](cockroach-start.html#locality).
