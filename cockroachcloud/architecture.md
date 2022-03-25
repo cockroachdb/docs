@@ -25,7 +25,6 @@ For an intro to CockroachDB's core architecture and capabilities, see [Cockroach
 
 {{ site.data.products.serverless }} is a fully-managed, auto-scaling deployment of CockroachDB. Being familiar with the following concepts will help you understand our Serverless architecture.
 
-
 ## Architecture
 
 {{ site.data.products.serverless }} is a managed multi-tenant deployment of CockroachDB. A Serverless cluster is an isolated, virtualized tenant running on a much larger physical CockroachDB deployment.
