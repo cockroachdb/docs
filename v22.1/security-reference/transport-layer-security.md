@@ -1,13 +1,13 @@
 ---
-title: Transport Layer Security (TLS) in CockroachDB
-summary: Overview of Transport Layer Security (TLS) in CockroachDB
+title: Public Key Infrastructure (PKI) and Transport Layer Security (TLS) in CockroachDB
+summary: Overview of PKI and TLS and how to implement them with CockroachDB
 toc: true
 docs_area: reference.security
 ---
 
-This pages provides a conceptual overview of Transport Layer Security (TLS) and details its role in securing CockroachDB.
+This pages provides a conceptual overview of Public Key Infrastructre (PKI) and Transport Layer Security (TLS), and details how to implement these critical dimensions of security using CockroachDB.
 
-## What is TLS?
+## What is Transport Layer Security (TLS)?
 
 Transport Layer Security (TLS) is a protocol used to establish securely authenticated and encrypted traffic between a client (the party who initiates the session) and a server (the party receiving the connection request).
 
@@ -55,13 +55,43 @@ In the TLS protocol, asymmetric encryption using the public/private key pairs is
 The generation and management of session keys is fully automated within the TLS protocol. You do not ever need to provision or manage TLS session keys.
 {{site.data.alerts.end}}
 
-### Who certifies the certificate? (The Certificate Authority)
 
-If you encrypt a message with a TLS public certificate, you know that only a holder of the matching private key will be able to decrypt it. And perhaps the holder of the public certificate identifies themself as your friend, your bank, your employer, or a government. But how do you know that the certificate was ever actually held by the party you want to reach, rather than an imposter?
+## Public Key Infrastructure (PKI)
 
-This is solved via the notion of a **Certificate Authority.** When TLS key pairs are cryptographicall generated, they are 'signed' by another cryptographic key, known as a 'root certificate' or 'certificate authority certificate' (CA cert). The CA certificate is held by a party responsible for issuing key pairs.  The signed public key is known as the **public certificate**, and is the file that is actually shared with clients. Given that you can put your trust in the organization that backs the Certificate Authority who has signed a server's TLS public certificate, you can extend your trust that the operator of a website or service at a particular network domain or IP address is actually who they claim to be.
+Encryption is powerful and important, but without identity authentication, it's not very useful: if you don't know who is sending you messages in first place, it's small comfort that nobody *else* is tampering with the contents or eavesdropping on the conversation.
 
-On the public internet, Certificate Authority providers such as Identrust, Digicert, and Let's Encrypt provide this service. Some large companies and other organizations maintain their own Certificate Authorities. Often, distributed systems such as K8s clusters, or (spoiler alert) CockroachDB clusters, may maintain their own Certificate Authority to allow their internal components to authenticate to one another.
+If you encrypt a  message with a TLS public key, you know that only a holder of the matching private key will be able to decrypt it. And perhaps the holder of the public certificate identifies themself as your friend, your bank, your employer, or a government. But how can you trust that the certificate was ever actually held by the party you want to reach, rather than an imposter?
+
+This problem is solved with the mechanism of a **public key infrastructure (PKI) certficate**, and the broader notion of PKI, which will be explained in what follows.
+
+### PKI certificates
+
+A PKI certificate (often abbreviated "cert") is a document containing:
+A) A public key to be used for TLS encryption.
+B) Some metadata about the party that allegedly holds the corresponding private key and who therefore is the only one capable of decrypting messages encrypted with **A**, most importantly their name, any organization they might belong to, and a contact email address.
+C) A list of actions the holder of the certificate is thereby authorized to perform.
+
+On its own, such a digital certificate is of no more value than a paper certificate. Indeed, less value, as it can be neither scribbled upon nor burned.
+
+However, digital certificates have the advantage that they can be cryptographically **signed**, again using the mechanism of a public/private key pair.
+
+This is solved via the notion of a **Certificate Authority.** 
+
+A TLS public key 
+
+When TLS key pairs are cryptographicall generated, they are 'signed' by another cryptographic key, known as a 'root certificate' or 'certificate authority certificate' (CA cert). The CA certificate is held by a party responsible for issuing key pairs.  The signed public key is known as the **public certificate**, and is the file that is actually shared with clients. Given that you can put your trust in the organization that backs the Certificate Authority who has signed a server's TLS public certificate, you can extend your trust that the operator of a website or service at a particular network domain or IP address is actually who they claim to be.
+
+### Trust hierarchies
+
+A "tree" or hierarchy of cryptographic signatures, when such delegated trust relationships and its use together with key pair cryptography in establishing secure identity authentication and encrypted communication, is what's known as **Public Key Infrastructure (PKI)**. PKI is a critical supporting component of the World Wide Web and our global computing ecosystem more broadly.
+
+On the public internet, Certificate Authority providers such as Identrust, Digicert, and Let's Encrypt provide the role of trust anchors to the entire system.... yada yada
+
+What makes them "trust-worthy" or "legit"? In practice, just the fact that they are **trusted** by the parties that distribute trust stores along with hardware and software components such as browsers, operating system distributions and laptop and mobile devices.
+
+Large organizations often maintain their own internal, private PKI, anchored by their own Certificate Authorities.... yada yada
+
+Distributed systems such as K8s clusters, or (spoiler alert) CockroachDB clusters, may maintain their own internal Certificate Authority to allow their internal components to authenticate to one another. However, for users to trust the security of their connection to computing or data resources, they must be able to securely identify it. So, for any database or other application to be truly useful to remote users across the internet, it must be integrated into the internet's PKI. This means it must ultimately belong to a trust anchored by a broadly accepted certificate authority.
 
 ## TLS in CockroachDB
 
@@ -108,8 +138,6 @@ To enable a CockroachDB client, the required files (`node.key`, `node.crt`, and 
 
 More complex scenarios with external CAs are described [here.](authentication.html#using-a-custom-ca)
 
-
-
 ### Communication from a SQL client to a node
 
 CockroachDB provides a number of SQL clients, including a CLI, and several drivers and object-relational mapping (ORM) tools. Regardless of which client you are using, how you are able to authenticate to a CockroachDB cluster depends on that cluster's [authentication configuration](authentication.html), specifically whether that configuration requires the user to authenticate with TLS or another method.
@@ -149,9 +177,12 @@ These key files are used with the CockroachDB CLI by placing them in a directory
 
 A CockroachDB may act as its own Certificate Authority.
 
-
 CockroachDB clusters can generate their own CA certificates, allowing them to act as their own Certificate Authorities for TLS connections between nodes and from SQL clients to nodes.
 
 Alternatively, an external CA (such as your organization's CA) can be used to generate your certificates. It is even possible to employ a ['split certificate'](../create-security-certificates-custom-ca.html#split-node-certificates) scenario, where one set of key pairs is used for authentication in inter-node connections, and another pair is used for authentication in connections originated from SQL clients.
 
-Revokation!!!
+## Revoking of Certificates
+
+## Maintaining PKI
+
+
