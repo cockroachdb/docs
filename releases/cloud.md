@@ -24,7 +24,7 @@ As of March 2, 2022, new {{ site.data.products.dedicated }} clusters and all {{ 
 
 <h3>Console changes</h3>
 
-- Contract customers can now view information about their organization's credit grants on the **Overview** tab of the [**Billing** page](../cockroachcloud/billing-management).
+- Contract customers can now view information about their organization's credit grants on the **Overview** tab of the [**Billing** page](../cockroachcloud/billing-management.html).
 
 ## March 7, 2022
 
