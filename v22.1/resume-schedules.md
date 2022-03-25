@@ -80,4 +80,4 @@ All schedules with the label `schedule_database` are resumed.
 - [`CANCEL JOB`](cancel-job.html)
 - [Take Full and Incremental Backups](take-full-and-incremental-backups.html)
 - [Use the Built-in SQL Client](cockroach-sql.html)
-- [Other Cockroach Commands](cockroach-commands.html)
+- [`cockroach` Commands Overview](cockroach-commands.html)

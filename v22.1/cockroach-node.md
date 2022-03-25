@@ -313,5 +313,5 @@ See [Recommission Nodes](node-shutdown.html?filters=decommission#recommission-no
 
 ## See also
 
-- [Other Cockroach Commands](cockroach-commands.html)
+- [`cockroach` Commands Overview](cockroach-commands.html)
 - [Node Shutdown](node-shutdown.html)

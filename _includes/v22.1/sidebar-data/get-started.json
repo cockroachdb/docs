@@ -125,6 +125,12 @@
               ]
             },
             {
+              "title": "Netlify",
+              "urls": [
+                "/${VERSION}/deploy-app-netlify.html"
+              ]
+            },
+            {
               "title": "Serverless Function Best Practices",
               "urls": [
                 "/${VERSION}/serverless-function-best-practices.html"
