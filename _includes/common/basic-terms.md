@@ -1,7 +1,7 @@
 {% if page.cloud == true %}
   {% assign link_prefix = "../cockroachcloud/" %}
 {% else %}
-  {% assign link_prefix = "../../cockroachcloud/" %}
+  {% assign link_prefix = "" %}
 {% endif %}
 
 ## CockroachDB Cloud terms
