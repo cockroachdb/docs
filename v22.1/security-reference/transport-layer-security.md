@@ -66,10 +66,11 @@ This problem is solved with the mechanism of a **public key infrastructure (PKI)
 
 ### PKI certificates
 
-A PKI certificate (often abbreviated "cert") is a document containing:
-A) A public key to be used for TLS encryption.
-B) Some metadata about the party that allegedly holds the corresponding private key and who therefore is the only one capable of decrypting messages encrypted with **A**, most importantly their name, any organization they might belong to, and a contact email address.
-C) A list of actions the holder of the certificate is thereby authorized to perform.
+A PKI certificate (often abbreviated "cert") is a document containing the following:
+
+- A) A public key to be used for TLS encryption.
+- B) Some metadata about the party that allegedly holds the corresponding private key and who therefore is the only one capable of decrypting messages encrypted with **A**, most importantly at least one **name**, such as a domain name in a domain name registry system (DNS). The certifiate essentially functions as a badge or nametage, allowing the holder to claim to be the named party.
+- C) A list of actions the holder of the certificate is thereby authorized to perform.
 
 On its own, such a digital certificate is of no more value than a paper certificate. Indeed, less value, as it can be neither scribbled upon nor burned.
 
@@ -101,7 +102,7 @@ TLS authentication and encryption is supported in all communication between Cock
 
 #### Disabling TLS
 
-CockroachDB can be operated entirely without TLS. This can be useful to quickly deploy a short-lived cluster for testing and hands on experimentation, but should is entirely unsuitable for production usage.
+CockroachDB can be operated entirely without TLS. This can be useful to quickly deploy a short-lived cluster for testing and hands on experimentation, but is entirely unsuitable for production usage.
 
 To run a CockroachDB cluster without TLS, add the `--insecure` flag to the [`cockroach run`]() command.
 
