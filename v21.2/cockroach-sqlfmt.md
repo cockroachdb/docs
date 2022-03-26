@@ -3,6 +3,7 @@ title: cockroach sqlfmt
 summary: Use cockroach sqlfmt to enhance the text layout of a SQL query.
 toc: true
 key: use-the-query-formatter.html
+docs_area: reference.cli
 ---
 
 The `cockroach sqlfmt`
@@ -12,7 +13,7 @@ CockroachDB.
 
 A [web interface to this feature](https://sqlfum.pt/) is also available.
 
-{% include {{ page.version.version }}/misc/experimental-warning.md %}
+{% include common/experimental-warning.md %}
 
 ## Synopsis
 

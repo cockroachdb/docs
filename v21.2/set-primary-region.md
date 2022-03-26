@@ -2,6 +2,7 @@
 title: SET PRIMARY REGION
 summary: The SET PRIMARY REGION statement sets the primary region of a multi-region database.
 toc: true
+docs_area: reference.sql
 ---
 
  The `ALTER DATABASE .. SET PRIMARY REGION` [statement](sql-statements.html) sets the primary [region](multiregion-overview.html#database-regions) of a [multi-region database](multiregion-overview.html).
@@ -35,10 +36,10 @@ To remove existing, manually-configured zones from a database (and unblock `SET 
 
 To add a primary region to a database with no existing regions, the user must have one of the following:
 
-- Membership to the [`admin`](authorization.html#roles) role for the cluster.
-- Membership to the [owner](authorization.html#object-ownership) role, or the [`CREATE` privilege](authorization.html#supported-privileges), for the database and all tables in the database.
+- Membership to the [`admin`](security-reference/authorization.html#roles) role for the cluster.
+- Membership to the [owner](security-reference/authorization.html#object-ownership) role, or the [`CREATE` privilege](security-reference/authorization.html#supported-privileges), for the database and all tables in the database.
 
-To switch primary regions to a region that has already been added to a database, the user must have membership to the [owner](authorization.html#object-ownership) role for the database, or have the [`CREATE` privilege](authorization.html#supported-privileges) on the database.
+To switch primary regions to a region that has already been added to a database, the user must have membership to the [owner](security-reference/authorization.html#object-ownership) role for the database, or have the [`CREATE` privilege](security-reference/authorization.html#supported-privileges) on the database.
 
 ## Examples
 
@@ -227,9 +228,9 @@ SHOW REGIONS FROM DATABASE foo;
 
 ## See also
 
-- [Multi-region overview](multiregion-overview.html)
+- [Multi-Region Capabilities Overview](multiregion-overview.html)
 - [`ADD REGION`](add-region.html)
 - [`DROP REGION`](drop-region.html)
 - [`SHOW REGIONS`](show-regions.html)
 - [`ALTER TABLE`](alter-table.html)
-- [Other SQL Statements](sql-statements.html)
+- [SQL Statements](sql-statements.html)

@@ -2,6 +2,7 @@
 title: SHOW USERS
 summary: The SHOW USERS statement lists the users for all databases.
 toc: true
+docs_area: reference.sql
 ---
 
 The `SHOW USERS` [statement](sql-statements.html) lists the users for all databases.
@@ -18,7 +19,7 @@ The `SHOW USERS` [statement](sql-statements.html) lists the users for all databa
 
 ## Required privileges
 
-The user must have the [`SELECT`](select-clause.html) [privilege](authorization.html#assign-privileges) on the `system.users` and `system.role_members` tables.
+The user must have the [`SELECT`](select-clause.html) [privilege](security-reference/authorization.html#managing-privileges) on the `system.users` and `system.role_members` tables.
 
 ## Example
 
@@ -57,4 +58,4 @@ Alternatively, within the built-in SQL shell, you can use the `\du` [shell comma
 ## See also
 
 - [`CREATE USER`](create-user.html)
-- [Manage Users](authorization.html#create-and-manage-users)
+- [Manage Users](security-reference/authorization.html#create-and-manage-users)

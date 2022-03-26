@@ -2,7 +2,10 @@
 title: Enable the Node Map
 summary: Learn how to enable the node map in the DB Console.
 toc: true
+docs_area: manage
 ---
+
+{% include {{ page.version.version }}/ui/admin-access.md %}
 
 The **Node Map** is useful for:
 
@@ -11,10 +14,6 @@ The **Node Map** is useful for:
 - Drilling down to individual nodes for monitoring health and performance.
 
 This page walks you through the process of setting up and enabling the Node Map.
-
-{{site.data.alerts.callout_info}}
-On a secure cluster, this area of the DB Console can only be accessed by an `admin` user. See [DB Console access](ui-overview.html#db-console-access).
-{{site.data.alerts.end}}
 
 {% include enterprise-feature.md %}
 
@@ -41,66 +40,70 @@ Consider a four-node geo-distributed cluster with the following configuration:
 
 To start a new cluster with the correct `--locality` flags:
 
-Start Node 1:
+1. Start Node 1:
 
-{% include copy-clipboard.html %}
-~~~
-$ cockroach start \
---insecure \
---locality=region=us-east-1,datacenter=us-east-1a  \
---advertise-addr=<node1 address> \
---cache=.25 \
---max-sql-memory=.25 \
---join=<node1 address>,<node2 address>,<node3 address>,<node4 address>
-~~~
+    {% include copy-clipboard.html %}
+    ~~~
+    $ cockroach start \
+    --insecure \
+    --locality=region=us-east-1,datacenter=us-east-1a  \
+    --advertise-addr=<node1 address> \
+    --cache=.25 \
+    --max-sql-memory=.25 \
+    --join=<node1 address>,<node2 address>,<node3 address>,<node4 address>
+    ~~~
 
-Start Node 2:
+1. Start Node 2:
 
-{% include copy-clipboard.html %}
-~~~
-$ cockroach start \
---insecure \
---locality=region=us-east-1,datacenter=us-east-1b \
---advertise-addr=<node2 address> \
---cache=.25 \
---max-sql-memory=.25 \
---join=<node1 address>,<node2 address>,<node3 address>,<node4 address>
-~~~
+    {% include copy-clipboard.html %}
+    ~~~
+    $ cockroach start \
+    --insecure \
+    --locality=region=us-east-1,datacenter=us-east-1b \
+    --advertise-addr=<node2 address> \
+    --cache=.25 \
+    --max-sql-memory=.25 \
+    --join=<node1 address>,<node2 address>,<node3 address>,<node4 address>
+    ~~~
 
-Start Node 3:
+1. Start Node 3:
 
-{% include copy-clipboard.html %}
-~~~
-$ cockroach start \
---insecure \
---locality=region=us-west-1,datacenter=us-west-1a \
---advertise-addr=<node3 address> \
---cache=.25 \
---max-sql-memory=.25 \
---join=<node1 address>,<node2 address>,<node3 address>,<node4 address>
-~~~
+    {% include copy-clipboard.html %}
+    ~~~
+    $ cockroach start \
+    --insecure \
+    --locality=region=us-west-1,datacenter=us-west-1a \
+    --advertise-addr=<node3 address> \
+    --cache=.25 \
+    --max-sql-memory=.25 \
+    --join=<node1 address>,<node2 address>,<node3 address>,<node4 address>
+    ~~~
 
-Start Node 4:
+1. Start Node 4:
 
-{% include copy-clipboard.html %}
-~~~
-$ cockroach start \
---insecure \
---locality=region=eu-west-1,datacenter=eu-west-1a \
---advertise-addr=<node4 address> \
---cache=.25 \
---max-sql-memory=.25 \
---join=<node1 address>,<node2 address>,<node3 address>,<node4 address>
-~~~
+    {% include copy-clipboard.html %}
+    ~~~
+    $ cockroach start \
+    --insecure \
+    --locality=region=eu-west-1,datacenter=eu-west-1a \
+    --advertise-addr=<node4 address> \
+    --cache=.25 \
+    --max-sql-memory=.25 \
+    --join=<node1 address>,<node2 address>,<node3 address>,<node4 address>
+    ~~~
 
-Use the [`cockroach init`](cockroach-init.html) command to perform a one-time initialization of the cluster:
+1. Use the [`cockroach init`](cockroach-init.html) command to perform a one-time initialization of the cluster:
 
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach init --insecure --host=<address of any node>
-~~~
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach init --insecure --host=<address of any node>
+    ~~~
 
-[Access the DB Console](ui-overview.html#db-console-access). The following page is displayed:
+1. [Access the DB Console](ui-overview.html#db-console-access).
+
+1. If the node list displays, click the selector <img src="{{ 'images/v21.2/node-map.png' | relative_url }}" alt="Node map selector" /> and select **Node Map**.
+
+The following page is displayed:
 
 <img src="{{ 'images/v21.2/ui-node-map-before-license.png' | relative_url }}" alt="DB Console" style="border:1px solid #eee;max-width:100%" />
 
@@ -116,22 +119,22 @@ To be displayed on the world map, localities must be assigned a corresponding la
 
 ### Step 3. Set the latitudes and longitudes for the localities
 
-Launch the built-in SQL client:
+1. Launch the built-in SQL client:
 
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach sql --insecure --host=<address of any node>
-~~~
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach sql --insecure --host=<address of any node>
+    ~~~
 
-Insert the approximate latitude and longitude of each region into the `system.locations` table:
+1. Insert the approximate latitude and longitude of each region into the `system.locations` table:
 
-{% include copy-clipboard.html %}
-~~~ sql
-> INSERT INTO system.locations VALUES
-  ('region', 'us-east-1', 37.478397, -76.453077),
-  ('region', 'us-west-1', 38.837522, -120.895824),
-  ('region', 'eu-west-1', 53.142367, -7.692054);
-~~~
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > INSERT INTO system.locations VALUES
+      ('region', 'us-east-1', 37.478397, -76.453077),
+      ('region', 'us-west-1', 38.837522, -120.895824),
+      ('region', 'eu-west-1', 53.142367, -7.692054);
+    ~~~
 
 For the latitudes and longitudes of AWS, Azure, and Google Cloud regions, see [Location Coordinates for Reference](#location-coordinates).
 
@@ -143,47 +146,49 @@ Refresh the DB Console to see the updated Node Map:
 
 ### Step 5. Navigate the Node Map
 
-Let's say you want to navigate to Node 2, which is in datacenter `us-east-1a` in the `us-east-1` region:
+To navigate to Node 2, which is in datacenter `us-east-1a` in the `us-east-1` region:
 
-1. Click on the map component marked as **region=us-east-1** on the Node Map. The [locality component](ui-cluster-overview-page.html#locality-component) for the datacenter is displayed.
+1. Click the map component marked as **region=us-east-1** on the Node Map. The [locality component](ui-cluster-overview-page.html#locality-component) for the datacenter is displayed.
 
-	<img src="{{ 'images/v21.2/ui-node-map-navigation1.png' | relative_url }}" alt="DB Console" style="border:1px solid #eee;max-width:100%" />
+     <img src="{{ 'images/v21.2/ui-node-map-navigation1.png' | relative_url }}" alt="DB Console" style="border:1px solid #eee;max-width:100%" />
 
-1. Click on the datacenter component marked as **datacenter=us-east-1a**. The individual [node components](ui-cluster-overview-page.html#node-component) are displayed.
+1. Click the datacenter component marked as **datacenter=us-east-1a**. The individual [node components](ui-cluster-overview-page.html#node-component) are displayed.
 
-	<img src="{{ 'images/v21.2/ui-node-map-navigation2.png' | relative_url }}" alt="DB Console" style="border:1px solid #eee;max-width:100%" />
+     <img src="{{ 'images/v21.2/ui-node-map-navigation2.png' | relative_url }}" alt="DB Console" style="border:1px solid #eee;max-width:100%" />
 
-1. To navigate back to the cluster view, either click on **Cluster** in the breadcrumb trail at the top of the Node Map, or click **Up to REGION=US-EAST-1** and then click **Up to CLUSTER** in the lower left-hand side of the Node Map.
+1. To navigate back to the cluster view, either click **Cluster** in the breadcrumb trail at the top of the Node Map, or click **Up to REGION=US-EAST-1** and then click **Up to CLUSTER** in the lower left-hand side of the Node Map.
 
 ## Troubleshoot the Node Map
 
 ### Node Map not displayed
 
-The Node Map requires an [Enterprise license](enterprise-licensing.html).
+- The Node Map requires an [Enterprise license](enterprise-licensing.html).
+- All nodes in the cluster must be assigned [localities](cockroach-start.html#locality).
+- Localities must be [assigned a corresponding latitude and longitude](#step-3-set-the-latitudes-and-longitudes-for-the-localities).
 
-All nodes in the cluster must be assigned [localities](cockroach-start.html#locality). To be displayed on the world map, localities must be [assigned a corresponding latitude and longitude](#step-3-set-the-latitudes-and-longitudes-for-the-localities).
-
-To verify both of the above, navigate to the Localities debug page (`https://<address of any node>:8080/#/reports/localities`) in the DB Console.
+To verify all requirements, navigate to the [**Localities**](ui-debug-pages.html#configuration) debug page in the DB Console.
 
 <img src="{{ 'images/v21.2/ui-localities-debug.png' | relative_url }}" alt="DB Console" style="border:1px solid #eee;max-width:100%" />
 
-The Localities debug page displays the following:
+The **Localities** debug page displays the following:
 
 - Localities configuration that you set up while starting the nodes with the `--locality` flags.
 - Nodes corresponding to each locality.
-- Latitude and longitude coordinates for each locality/node.
+- Latitude and longitude coordinates for each locality.
 
 ### World Map not displayed for all locality levels
 
-The world map is displayed only when [localities are assigned latitude/longitude coordinates](#step-3-set-the-latitudes-and-longitudes-for-the-localities).
+The world map is displayed only when [localities are assigned latitude and longitude coordinates](#step-3-set-the-latitudes-and-longitudes-for-the-localities).
 
-If a locality (e.g., region) is not assigned latitude/longitude coordinates, it is displayed using the latitude/longitude of any lower-level localities it contains (e.g., datacenter). If no coordinates are available, localities are plotted in a circular layout.
+If a locality (e.g., region) is not assigned latitude and longitude coordinates, it is displayed using the latitude and longitude of any lower-level localities it contains (e.g., datacenter). If no coordinates are available, localities are plotted in a circular layout.
 
-### Displayed **Used Capacity** value is more than configured Capacity
+### Displayed Used Capacity value is more than configured Capacity
 
 {% include {{ page.version.version }}/misc/available-capacity-metric.md %}
 
 ## Location coordinates
+
+This section lists the latitudes and longitudes of AWS, Azure, and Google Cloud regions.
 
 ### AWS locations
 

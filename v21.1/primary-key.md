@@ -25,7 +25,7 @@ You can [change the primary key](#changing-primary-key-columns) of an existing t
  Parameter | Description
 -----------|-------------
  `table_name` | The name of the table you're creating.
- `column_name` | The name of the Primary Key column.
+ `column_name` | The name of the Primary Key column. For [multi-region tables](multiregion-overview.html#table-locality), you can use the `crdb_region` column within a composite primary key in the event the original primary key may contain non-unique entries across multiple, unique regions.
  `column_type` | The Primary Key column's [data type](data-types.html).
  `column_constraints` | Any other column-level [constraints](constraints.html) you want to apply to this column.
  `column_def` | Definitions for any other columns in the table.

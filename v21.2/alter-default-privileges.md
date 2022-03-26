@@ -3,12 +3,13 @@ title: ALTER DEFAULT PRIVILEGES
 summary: The ALTER DEFAULT PRIVILEGES statement alters the default privileges for roles in the current database.
 keywords: reflection
 toc: true
+docs_area: reference.sql 
 ---
 
-<span class="version-tag">New in v21.2</span>: The `ALTER DEFAULT PRIVILEGES` [statement](sql-statements.html) changes the [default privileges](authorization.html#default-privileges) on objects created by [users/roles](authorization.html#roles) in the current database.
+<span class="version-tag">New in v21.2</span>: The `ALTER DEFAULT PRIVILEGES` [statement](sql-statements.html) changes the [default privileges](security-reference/authorization.html#default-privileges) on objects created by [users/roles](security-reference/authorization.html#roles) in the current database.
 
 {{site.data.alerts.callout_info}}
-The creator of an object is also the object's [owner](authorization.html#object-ownership). Any roles that are members of the owner role have `ALL` privileges on the object. Altering the default privileges of objects created by a role does not affect that role's privileges as the object's owner. The default privileges granted to other users/roles are always in addition to the ownership (i.e., `ALL`) privileges given to the creator of the object.
+The creator of an object is also the object's [owner](security-reference/authorization.html#object-ownership). Any roles that are members of the owner role have `ALL` privileges on the object. Altering the default privileges of objects created by a role does not affect that role's privileges as the object's owner. The default privileges granted to other users/roles are always in addition to the ownership (i.e., `ALL`) privileges given to the creator of the object.
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
@@ -39,7 +40,7 @@ If you do not specify a `FOR ...` clause, CockroachDB alters the default privile
 
 ## Required privileges
 
-- To run `ALTER DEFAULT PRIVILEGES FOR ALL ROLES`, the user must be a member of the [`admin`](authorization.html#admin-role) role.
+- To run `ALTER DEFAULT PRIVILEGES FOR ALL ROLES`, the user must be a member of the [`admin`](security-reference/authorization.html#admin-role) role.
 - To alter the default privileges on objects created by a specific role, the user must be a member of that role.
 
 ## Examples
@@ -351,5 +352,5 @@ In the same database, run the following statements as any two different users:
 ## See also
 
 - [`SHOW DEFAULT PRIVILEGES`](show-default-privileges.html)
-- [Default Privileges](authorization.html#default-privileges)
-- [Other SQL Statements](sql-statements.html)
+- [SQL Statements](sql-statements.html)
+- [Default Privileges](security-reference/authorization.html#default-privileges)

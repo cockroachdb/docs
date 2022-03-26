@@ -2,17 +2,10 @@
 title: BACKUP
 summary: Back up your CockroachDB cluster to a cloud storage services such as AWS S3, Google Cloud Storage, or other NFS.
 toc: true
+docs_area: reference.sql
 ---
 
 CockroachDB's `BACKUP` [statement](sql-statements.html) allows you to create [full or incremental backups](take-full-and-incremental-backups.html) of your cluster's schema and data that are consistent as of a given timestamp.
-
-{{site.data.alerts.callout_info}}
- The syntax `BACKUP ... INTO` adds a backup to a collection within the backup destination. The path to the backup is created using a date-based naming scheme. Versions of CockroachDB prior to v21.1 used the syntax `BACKUP ... TO` to backup directly to a specific operator-chosen destination, rather than picking a date-based path. The `BACKUP ... TO` syntax will be deprecated in future releases. For more information on this soon-to-be deprecated syntax, [see the docs for v20.2](../v20.2/backup.html) or earlier.
-{{site.data.alerts.end}}
-
-{{site.data.alerts.callout_info}}
-Core users can only take [full backups](take-full-and-incremental-backups.html#full-backups). To use the other backup features, you need an [Enterprise license](enterprise-licensing.html). You can also use [{{ site.data.products.dedicated }}](https://cockroachlabs.cloud/signup?referralId=docs-crdb-backup), which runs [full backups daily and incremental backups hourly](../cockroachcloud/backups-page.html).
-{{site.data.alerts.end}}
 
 You can [backup a full cluster](#backup-a-cluster), which includes:
 
@@ -24,25 +17,29 @@ You can [backup a full cluster](#backup-a-cluster), which includes:
 
 You can also backup:
 
-- [An individual database](#backup-a-database), which includes all of its tables and views
-- [An individual table](#backup-a-table-or-view), which includes its indexes and views
+- [An individual database](#backup-a-database), which includes all of its tables and views.
+- [An individual table](#backup-a-table-or-view), which includes its indexes and views.
 
-    `BACKUP` only backs up entire tables; it _does not_ support backing up subsets of a table.
+    `BACKUP` only backs up entire tables; it **does not** support backing up subsets of a table.
 
 Because CockroachDB is designed with high fault tolerance, these backups are designed primarily for disaster recovery (i.e., if your cluster loses a majority of its nodes) through [`RESTORE`](restore.html). Isolated issues (such as small-scale node outages) do not require any intervention.
+
+## Considerations
+
+-  The syntax `BACKUP ... INTO` adds a backup to a collection within the backup destination. The path to the backup is created using a date-based naming scheme. Versions of CockroachDB prior to v21.1 used the syntax `BACKUP ... TO` to backup directly to a specific operator-chosen destination, rather than picking a date-based path. The `BACKUP ... TO` syntax will be **deprecated** in future releases. For more information on this soon-to-be deprecated syntax, [see the docs for v20.2](../v20.2/backup.html) or earlier.
+- Core users can only take [full backups](take-full-and-incremental-backups.html#full-backups). To use the other backup features, you need an [Enterprise license](enterprise-licensing.html). You can also use [{{ site.data.products.dedicated }}](https://cockroachlabs.cloud/signup?referralId=docs-crdb-backup), which runs [full backups daily and incremental backups hourly](../cockroachcloud/backups-page.html).
+- `BACKUP` is a blocking statement. To run a backup job asynchronously, use the `DETACHED` option. See the [options](#options) below.
+- Backups will export [Enterprise license keys](enterprise-licensing.html) during a [full cluster backup](#backup-a-cluster). When you [restore](restore.html) a full cluster with an Enterprise license, it will restore the Enterprise license of the cluster you are restoring from.
+- [Zone configurations](configure-zone.html) present on the destination cluster prior to a restore will be **overwritten** during a [cluster restore](restore.html#full-cluster) with the zone configurations from the [backed up cluster](#backup-a-cluster). If there were no customized zone configurations on the cluster when the backup was taken, then after the restore the destination cluster will use the zone configuration from the [`RANGE DEFAULT` configuration](configure-replication-zones.html#view-the-default-replication-zone).
 
 {{site.data.alerts.callout_success}}
 To view the contents of an Enterprise backup created with the `BACKUP` statement, use [`SHOW BACKUP`](show-backup.html).
 {{site.data.alerts.end}}
 
-{{site.data.alerts.callout_info}}
-`BACKUP` is a blocking statement. To run a backup job asynchronously, use the `DETACHED` option. See the [options](#options) below.
-{{site.data.alerts.end}}
-
 ## Required privileges
 
-- [Full cluster backups](take-full-and-incremental-backups.html#full-backups) can only be run by members of the [`admin` role](authorization.html#admin-role). By default, the `root` user belongs to the `admin` role.
-- For all other backups, the user must have [read access](authorization.html#assign-privileges) on all objects being backed up. Database backups require `CONNECT` privileges, and table backups require `SELECT` privileges. Backups of user-defined schemas, or backups containing user-defined types, require `USAGE` privileges.
+- [Full cluster backups](take-full-and-incremental-backups.html#full-backups) can only be run by members of the [`admin` role](security-reference/authorization.html#admin-role). By default, the `root` user belongs to the `admin` role.
+- For all other backups, the user must have [read access](security-reference/authorization.html#managing-privileges) on all objects being backed up. Database backups require `CONNECT` privileges, and table backups require `SELECT` privileges. Backups of user-defined schemas, or backups containing user-defined types, require `USAGE` privileges.
 - `BACKUP` requires full read and write (including delete and overwrite) permissions to its target destination.
 
 ### Destination privileges
@@ -138,7 +135,7 @@ Cancel the backup      | [`CANCEL JOB`](cancel-job.html)
 You can also visit the [**Jobs** page](ui-jobs-page.html) of the DB Console to view job details. The `BACKUP` statement will return when the backup is finished or if it encounters an error.
 
 {{site.data.alerts.callout_info}}
-The presence of a `BACKUP-CHECKPOINT` file in the backup destination usually means the backup is not complete. This file is created when a backup is initiated, and is replaced with a `BACKUP` file once the backup is finished.
+The presence of the `BACKUP MANIFEST` file in the backup destination is an indicator that the backup job completed successfully.
 {{site.data.alerts.end}}
 
 ## Examples
@@ -155,15 +152,17 @@ Per our guidance in the [Performance](#performance) section, we recommend starti
 
 <section class="filter-content" markdown="1" data-scope="s3">
 
-{{site.data.alerts.callout_info}}
 The examples in this section use the **default** `AUTH=specified` parameter. For more detail on how to use `implicit` authentication with Amazon S3 buckets, read [Use Cloud Storage for Bulk Operations — Authentication](use-cloud-storage-for-bulk-operations.html#authentication).
+
+{{site.data.alerts.callout_info}}
+The syntax `BACKUP ... INTO` adds a backup to a collection within the backup destination. The path to the backup is created using a date-based naming scheme. Versions of CockroachDB prior to v21.1 used the syntax `BACKUP ... TO` to backup directly to a specific operator-chosen destination, rather than picking a date-based path. The `BACKUP ... TO` syntax will be **deprecated** in future releases. For more information on this soon-to-be deprecated syntax, [see the docs for v20.2](../v20.2/backup.html) or earlier.
 {{site.data.alerts.end}}
 
 ### Backup a cluster
 
 To take a [full backup](take-full-and-incremental-backups.html#full-backups) of a cluster:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP INTO \
 's3://{BUCKET NAME}/{PATH}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' \
@@ -174,7 +173,7 @@ AS OF SYSTEM TIME '-10s';
 
 To take a [full backup](take-full-and-incremental-backups.html#full-backups) of a single database:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP DATABASE bank \
 INTO 's3://{BUCKET NAME}/{PATH}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' \
@@ -183,7 +182,7 @@ AS OF SYSTEM TIME '-10s';
 
 To take a [full backup](take-full-and-incremental-backups.html#full-backups) of multiple databases:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP DATABASE bank, employees \
 INTO 's3://{BUCKET NAME}/{PATH}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' \
@@ -194,7 +193,7 @@ AS OF SYSTEM TIME '-10s';
 
 To take a [full backup](take-full-and-incremental-backups.html#full-backups) of a single table or view:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP bank.customers \
 INTO 's3://{BUCKET NAME}/{PATH}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' \
@@ -203,22 +202,28 @@ AS OF SYSTEM TIME '-10s';
 
 To take a [full backup](take-full-and-incremental-backups.html#full-backups) of multiple tables:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP bank.customers, bank.accounts \
 INTO 's3://{BUCKET NAME}/{PATH}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' \
 AS OF SYSTEM TIME '-10s';
 ~~~
 
-{{site.data.alerts.callout_danger}}
-{% include {{page.version.version}}/backups/no-multiregion-table-backups.md %}
-{{site.data.alerts.end}}
+### Specify a subdirectory for backups
+
+To store the backup in a specific subdirectory in the storage location:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+BACKUP DATABASE bank INTO 'subdirectory' IN 's3://{BUCKET NAME}/{PATH}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' \
+AS OF SYSTEM TIME '-10s';
+~~~
 
 ### Backup all tables in a schema
 
 <span class="version-tag">New in v21.2:</span> To back up all tables in a [specified schema](create-schema.html), use a wildcard with the schema name:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP test_schema.*
 INTO 's3://{BUCKET NAME}/{PATH}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' \
@@ -237,7 +242,7 @@ See [Name Resolution](sql-name-resolution.html) for more details on how naming h
 
 If you backup to a destination already containing a [full backup](take-full-and-incremental-backups.html#full-backups), an [incremental backup](take-full-and-incremental-backups.html#incremental-backups) will be appended to the full backup's path with a date-based name (e.g., `20210324`):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP INTO LATEST IN \
 's3://{BUCKET NAME}/{PATH}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' \
@@ -248,7 +253,7 @@ AS OF SYSTEM TIME '-10s';
 
 Use the `DETACHED` [option](#options) to execute the backup [job](show-jobs.html) asynchronously:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP INTO \
 's3://{BUCKET NAME}/{PATH}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' \
@@ -278,11 +283,15 @@ job_id             |  status   | fraction_completed | rows | index_entries | byt
 
 <section class="filter-content" markdown="1" data-scope="azure">
 
+{{site.data.alerts.callout_info}}
+The syntax `BACKUP ... INTO` adds a backup to a collection within the backup destination. The path to the backup is created using a date-based naming scheme. Versions of CockroachDB prior to v21.1 used the syntax `BACKUP ... TO` to backup directly to a specific operator-chosen destination, rather than picking a date-based path. The `BACKUP ... TO` syntax will be **deprecated** in future releases. For more information on this soon-to-be deprecated syntax, [see the docs for v20.2](../v20.2/backup.html) or earlier.
+{{site.data.alerts.end}}
+
 ### Backup a cluster
 
 To take a [full backup](take-full-and-incremental-backups.html#full-backups) of a cluster:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP INTO \
 'azure://{CONTAINER NAME}/{PATH}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' \
@@ -293,7 +302,7 @@ AS OF SYSTEM TIME '-10s';
 
 To take a [full backup](take-full-and-incremental-backups.html#full-backups) of a single database:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP DATABASE bank \
 INTO 'azure://{CONTAINER NAME}/{PATH}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' \
@@ -302,7 +311,7 @@ AS OF SYSTEM TIME '-10s';
 
 To take a [full backup](take-full-and-incremental-backups.html#full-backups) of multiple databases:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP DATABASE bank, employees \
 INTO 'azure://{CONTAINER NAME}/{PATH}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' \
@@ -313,7 +322,7 @@ AS OF SYSTEM TIME '-10s';
 
 To take a [full backup](take-full-and-incremental-backups.html#full-backups) of a single table or view:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP bank.customers \
 INTO 'azure://{CONTAINER NAME}/{PATH}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' \
@@ -322,22 +331,28 @@ AS OF SYSTEM TIME '-10s';
 
 To take a [full backup](take-full-and-incremental-backups.html#full-backups) of multiple tables:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP bank.customers, bank.accounts \
 INTO 'azure://{CONTAINER NAME}/{PATH}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' \
 AS OF SYSTEM TIME '-10s';
 ~~~
 
-{{site.data.alerts.callout_danger}}
-{% include {{page.version.version}}/backups/no-multiregion-table-backups.md %}
-{{site.data.alerts.end}}
+### Specify a subdirectory for backups
+
+To store the backup in a specific subdirectory in the storage location:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+BACKUP DATABASE bank INTO 'subdirectory' IN 'azure://{CONTAINER NAME}/{PATH}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' \
+AS OF SYSTEM TIME '-10s';
+~~~
 
 ### Backup all tables in a schema
 
 <span class="version-tag">New in v21.2:</span> To back up all tables in a [specified schema](create-schema.html), use a wildcard with the schema name:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP test_schema.*
 INTO 'azure://{CONTAINER NAME}/{PATH}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' \
@@ -356,7 +371,7 @@ See [Name Resolution](sql-name-resolution.html) for more details on how naming h
 
 If you backup to a destination already containing a [full backup](take-full-and-incremental-backups.html#full-backups), an [incremental backup](take-full-and-incremental-backups.html#incremental-backups) will be appended to the full backup's path with a date-based name (e.g., `20210324`):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP INTO LATEST IN \
 'azure://{CONTAINER NAME}/{PATH}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' \
@@ -367,7 +382,7 @@ AS OF SYSTEM TIME '-10s';
 
 Use the `DETACHED` [option](#options) to execute the backup [job](show-jobs.html) asynchronously:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP INTO \
 'azure://{CONTAINER NAME}/{PATH}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' \
@@ -397,15 +412,17 @@ job_id             |  status   | fraction_completed | rows | index_entries | byt
 
 <section class="filter-content" markdown="1" data-scope="gcs">
 
-{{site.data.alerts.callout_info}}
 The examples in this section use the `AUTH=specified` parameter, which will be the default behavior in v21.2 and beyond for connecting to Google Cloud Storage. For more detail on how to pass your Google Cloud Storage credentials with this parameter, or, how to use `implicit` authentication, read [Use Cloud Storage for Bulk Operations — Authentication](use-cloud-storage-for-bulk-operations.html#authentication).
+
+{{site.data.alerts.callout_info}}
+The syntax `BACKUP ... INTO` adds a backup to a collection within the backup destination. The path to the backup is created using a date-based naming scheme. Versions of CockroachDB prior to v21.1 used the syntax `BACKUP ... TO` to backup directly to a specific operator-chosen destination, rather than picking a date-based path. The `BACKUP ... TO` syntax will be **deprecated** in future releases. For more information on this soon-to-be deprecated syntax, [see the docs for v20.2](../v20.2/backup.html) or earlier.
 {{site.data.alerts.end}}
 
 ### Backup a cluster
 
 To take a [full backup](take-full-and-incremental-backups.html#full-backups) of a cluster:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP INTO \
 'gs://{BUCKET NAME}/{PATH}?AUTH=specified&CREDENTIALS={ENCODED KEY}' \
@@ -416,7 +433,7 @@ AS OF SYSTEM TIME '-10s';
 
 To take a [full backup](take-full-and-incremental-backups.html#full-backups) of a single database:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP DATABASE bank \
 INTO 'gs://{BUCKET NAME}/{PATH}?AUTH=specified&CREDENTIALS={ENCODED KEY}' \
@@ -425,7 +442,7 @@ AS OF SYSTEM TIME '-10s';
 
 To take a [full backup](take-full-and-incremental-backups.html#full-backups) of multiple databases:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP DATABASE bank, employees \
 INTO 'gs://{BUCKET NAME}/{PATH}?AUTH=specified&CREDENTIALS={ENCODED KEY}' \
@@ -436,7 +453,7 @@ AS OF SYSTEM TIME '-10s';
 
 To take a [full backup](take-full-and-incremental-backups.html#full-backups) of a single table or view:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP bank.customers \
 INTO 'gs://{BUCKET NAME}/{PATH}?AUTH=specified&CREDENTIALS={ENCODED KEY}' \
@@ -445,22 +462,28 @@ AS OF SYSTEM TIME '-10s';
 
 To take a [full backup](take-full-and-incremental-backups.html#full-backups) of multiple tables:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP bank.customers, bank.accounts \
 INTO 'gs://{BUCKET NAME}/{PATH}?AUTH=specified&CREDENTIALS={ENCODED KEY}' \
 AS OF SYSTEM TIME '-10s';
 ~~~
 
-{{site.data.alerts.callout_danger}}
-{% include {{page.version.version}}/backups/no-multiregion-table-backups.md %}
-{{site.data.alerts.end}}
+### Specify a subdirectory for backups
+
+To store the backup in a specific subdirectory in the storage location:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+BACKUP DATABASE bank INTO 'subdirectory' IN 'gs://{BUCKET NAME}/{PATH}?AUTH=specified&CREDENTIALS={ENCODED KEY}' \
+AS OF SYSTEM TIME '-10s';
+~~~
 
 ### Backup all tables in a schema
 
 <span class="version-tag">New in v21.2:</span> To back up all tables in a [specified schema](create-schema.html), use a wildcard with the schema name:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP test_schema.*
 INTO 'azure://{CONTAINER NAME}/{PATH}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' \
@@ -479,7 +502,7 @@ See [Name Resolution](sql-name-resolution.html) for more details on how naming h
 
 If you backup to a destination already containing a [full backup](take-full-and-incremental-backups.html#full-backups), an [incremental backup](take-full-and-incremental-backups.html#incremental-backups) will be appended to the full backup's path with a date-based name (e.g., `20210324`):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP INTO LATEST IN \
 'gs://{BUCKET NAME}/{PATH}?AUTH=specified&CREDENTIALS={ENCODED KEY}' \
@@ -490,7 +513,7 @@ AS OF SYSTEM TIME '-10s';
 
 Use the `DETACHED` [option](#options) to execute the backup [job](show-jobs.html) asynchronously:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP INTO \
 'gs://{BUCKET NAME}/{PATH}?AUTH=specified&CREDENTIALS={ENCODED KEY}' \
@@ -521,12 +544,6 @@ job_id             |  status   | fraction_completed | rows | index_entries | byt
 ### Advanced examples
 
 {% include {{ page.version.version }}/backups/advanced-examples-list.md %}
-
-## Known limitations
-
-### `BACKUP` of multi-region tables
-
-{% include {{page.version.version}}/backups/no-multiregion-table-backups.md %}
 
 ## See also
 

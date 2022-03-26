@@ -2,6 +2,7 @@
 title: Migrate from Avro
 summary: Learn how to migrate data from Avro files into a CockroachDB cluster.
 toc: true
+docs_area: migrate
 ---
 
 This page has instructions for migrating data from Avro files into CockroachDB using [`IMPORT`][import].
@@ -210,7 +211,6 @@ You will need to run [`ALTER TABLE ... ADD CONSTRAINT`](add-constraint.html) to 
 - [Migrate from CSV][csv]
 - [Migrate from MySQL][mysql]
 - [Migrate from Postgres][postgres]
-- [SQL Dump (Export)](cockroach-dump.html)
 - [Back Up and Restore Data](take-full-and-incremental-backups.html)
 - [Use the Built-in SQL Client](cockroach-sql.html)
 - [Other Cockroach Commands](cockroach-commands.html)

@@ -2,6 +2,7 @@
 title: Migrate from Shapefiles
 summary: Learn how to migrate data from ESRI Shapefiles into a CockroachDB cluster.
 toc: true
+docs_area: migrate
 ---
 
  CockroachDB supports efficiently storing and querying [spatial data](spatial-data.html).
@@ -113,7 +114,6 @@ IMPORT PGDUMP ('http://localhost:3000/tornado-points.sql') WITH ignore_unsupport
 - [Migration Overview](migration-overview.html)
 - [Migrate from MySQL][mysql]
 - [Migrate from Postgres][postgres]
-- [SQL Dump (Export)](cockroach-dump.html)
 - [Back Up and Restore Data](take-full-and-incremental-backups.html)
 - [Use the Built-in SQL Client](cockroach-sql.html)
 - [Other Cockroach Commands](cockroach-commands.html)

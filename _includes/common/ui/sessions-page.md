@@ -15,7 +15,7 @@ A session is *active* if it has an open transaction (including implicit transact
 {{site.data.alerts.end}}
 
 - If a session is active, the most recent SQL statement is displayed in the **Statement** column.
-- If a session is idle, **Transaction Duration**, **Statement Duration**, and **Statement** will display `N/A`.
+- If a session is idle, the **Transaction Duration**, **Statement Duration**, and **Statement** columns will display `N/A`.
 - To view [details of a session](#session-details), click **Session Duration**.
 
 {{site.data.alerts.callout_info}}
@@ -35,7 +35,7 @@ Transaction Duration | Amount of time the transaction has been active, if there 
 Statement Duration | Amount of time the SQL statement has been active, if there is an active statement.
 Memory Usage | Amount of memory currently allocated to this session, followed by the maximum amount of memory this session has ever been allocated.
 Statement | Active SQL statement. If more than one statement is active, the most recent statement is shown.
-Actions | Options to terminate the active query and/or terminate the session. These require the [`CANCELQUERY` role option]({{ link_prefix }}authorization.html#create-and-manage-users).<br><br>**Terminate Statement:** Ends the SQL statement. The session running this statement will receive an error.<br><br>**Terminate Session:** Ends the session. The client that holds this session will receive a "connection terminated" event.
+Actions | Options to terminate the active query and/or terminate the session. These require the `CANCELQUERY` role option.<br><br>**Terminate Statement:** Ends the SQL statement. The session running this statement will receive an error.<br><br>**Terminate Session:** Ends the session. The client that holds this session will receive a "connection terminated" event.
 
 {{site.data.alerts.callout_success}}
 Sort by **Transaction Duration** to display all active sessions at the top.

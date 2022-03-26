@@ -2,6 +2,7 @@
 title: Create a Table
 summary: Best practices for working with tables in CockroachDB.
 toc: true
+docs_area: develop
 ---
 
 This page provides best-practice guidance on creating tables, with some simple examples based on Cockroach Labs' fictional vehicle-sharing company, [MovR](movr.html).
@@ -416,7 +417,7 @@ After you have defined `CREATE TABLE` statements for your tables, you can execut
 
 Here are some general best practices to follow when executing `CREATE TABLE` statements:
 
-- Do not create tables as the `root` user. Instead, create tables as a [different user](schema-design-overview.html#control-access-to-objects), with fewer privileges, following [authorization best practices](authorization.html#authorization-best-practices). The user that creates an object becomes that [object's owner](authorization.html#object-ownership).
+- Do not create tables as the `root` user. Instead, create tables as a [different user](schema-design-overview.html#control-access-to-objects), with fewer privileges, following [authorization best practices](security-reference/authorization.html#authorization-best-practices). The user that creates an object becomes that [object's owner](security-reference/authorization.html#object-ownership).
 
 - {% include {{page.version.version}}/sql/dev-schema-changes.md %}
 

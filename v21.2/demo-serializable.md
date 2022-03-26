@@ -3,6 +3,7 @@ title: Serializable Transactions
 summary: Walk through a demonstration of the importance of SERIALIZABLE isolation for data correctness
 toc: true
 toc_not_nested: true
+docs_area: deploy
 ---
 
 In contrast to most databases, CockroachDB always uses `SERIALIZABLE` isolation, which is the strongest of the four [transaction isolation levels](https://en.wikipedia.org/wiki/Isolation_(database_systems)) defined by the SQL standard and is stronger than the `SNAPSHOT` isolation level developed later. `SERIALIZABLE` isolation guarantees that even though transactions may execute in parallel, the result is the same as if they had executed one at a time, without any concurrency. This ensures data correctness by preventing all "anomalies" allowed by weaker isolation levels.
@@ -454,7 +455,7 @@ When you repeat the scenario on CockroachDB, you'll see that the anomaly is prev
     ~~~
 
     {{site.data.alerts.callout_success}}
-    For this kind of error, CockroachDB recommends a [client-side transaction retry loop](transactions.html#client-side-intervention) that would transparently observe that the one doctor cannot take time off because the other doctor already succeeded in asking for it. You can find generic transaction retry functions for various languages in our [Build an App](hello-world-example-apps.html) tutorials.
+    For this kind of error, CockroachDB recommends a [client-side transaction retry loop](transactions.html#client-side-intervention) that would transparently observe that the one doctor cannot take time off because the other doctor already succeeded in asking for it. You can find generic transaction retry functions for various languages in our [Build an App](example-apps.html) tutorials.
     {{site.data.alerts.end}}
 
 1. In the terminal for doctor 2, the application tries to commit the transaction:

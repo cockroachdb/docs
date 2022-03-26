@@ -3,6 +3,7 @@ title: Simple SELECT Clause
 summary: The Simple SELECT clause loads or computes data from various sources.
 toc: true
 key: select.html
+docs_area: reference.sql
 ---
 
 The simple `SELECT` clause is the main SQL syntax to read and process
@@ -27,7 +28,7 @@ The simple `SELECT` clause also has other applications not covered here, such as
 
 ## Required privileges
 
-The user must have the `SELECT` [privilege](authorization.html#assign-privileges) on the tables used as operands.
+The user must have the `SELECT` [privilege](security-reference/authorization.html#managing-privileges) on the tables used as operands.
 
 ## Parameters
 
@@ -38,7 +39,7 @@ Parameter | Description
 `target_elem` | A [scalar expression](scalar-expressions.html) to compute a column in each result row, or `*` to automatically retrieve all columns from the `FROM` clause.<br><br>If `target_elem` contains an [aggregate function](functions-and-operators.html#aggregate-functions), a `GROUP BY` clause can be used to further control the aggregation.
 `table_ref` | The [table expression](table-expressions.html) you want to retrieve data from.<br><br>Using two or more table expressions in the `FROM` sub-clause, separated with a comma, is equivalent to a [`CROSS JOIN`](joins.html) expression.
 `AS OF SYSTEM TIME timestamp` | Retrieve data as it existed [as of `timestamp`](as-of-system-time.html). <br><br>**Note**: Because `AS OF SYSTEM TIME` returns historical data, your reads might be stale.
-`WHERE a_expr` | Only retrieve rows that return `TRUE` for `a_expr`, which must be a [scalar expression](scalar-expressions.html) that returns Boolean values using columns (e.g., `<column> = <value>`).
+`WHERE a_expr` | <a name="where-clause"></a> Only retrieve rows that return `TRUE` for `a_expr`, which must be a [scalar expression](scalar-expressions.html) that returns Boolean values using columns (e.g., `<column> = <value>`).
 `GROUP BY a_expr` | Group results on one or more columns.<br><br>When an [aggregate function](functions-and-operators.html#aggregate-functions) follows `SELECT` as a `target_elem`, or `HAVING` as an `a_expr`, you can [create aggregate groups](#create-aggregate-groups) on column groupings listed after `GROUP BY`.<br> You can group columns by an alias (i.e., a label assigned to the column with an `AS` clause) rather than the column name.<br> If aggregate groups are created on a full primary key, any column in the table can be selected as a `target_elem`, or specified in a `HAVING` clause.<br> If a selected column is in a [subquery](subqueries.html), and the column references a higher scope, the column does not need to be included in the `GROUP BY` clause (if one exists).<br><br>Using a `GROUP BY` clause in a statement without an aggregate function is equivalent to using a [`DISTINCT ON`](#eliminate-duplicate-rows) clause on the grouping columns.
 `HAVING a_expr` | Only retrieve aggregate function groups that return `TRUE` for `a_expr`, which must be a [scalar expression](scalar-expressions.html) that returns Boolean values using an aggregate function (e.g., `<aggregate function> = <value>`). <br/><br/>`HAVING` works like the `WHERE` clause, but for aggregate functions.
 `WINDOW window_definition_list` | A list of [window definitions](window-functions.html#window-definitions).

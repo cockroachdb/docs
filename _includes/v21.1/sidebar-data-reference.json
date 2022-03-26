@@ -1183,7 +1183,7 @@
         ]
       },
       {
-        "title": "CLI Reference",
+        "title": "CLI",
         "urls": [
           "/${VERSION}/cockroach-commands.html"
         ],
@@ -1467,7 +1467,7 @@
         ]
       },
       {
-        "title": "Logging Reference",
+        "title": "Logging",
         "urls": [
           "/${VERSION}/logging.html"
         ],
@@ -1492,7 +1492,11 @@
           "/${VERSION}/diagnostics-reporting.html"
         ]
       },
-      {% include_cached cockroachcloud/sidebar-release-notes.json %},
-      {% include_cached sidebar-releases.json %}
+      {
+        "title": "Cloud Release Notes",
+        "urls": [
+          "/releases/cloud.html"
+        ]
+      }
     ]
   }

@@ -306,7 +306,17 @@
    <td>
     <code>is_superuser</code>
    </td>
-   <td><span class="version-tag">New in v21.2</span>: If <code>on</code> or <code>true</code>, the current user is a member of the <a href="authorization.html#admin-role">admin</a> role.</td>
+   <td><span class="version-tag">New in v21.2</span>: If <code>on</code> or <code>true</code>, the current user is a member of the <a href="security-reference/authorization.html#admin-role">`admin` role</a>.</td>
+   <td>User-dependent</td>
+   <td>No</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
+    <code>large_full_scan_rows</code>
+   </td>
+   <td><span class="version-tag">New in v21.2</span>: Determines which tables are considered "large" such that <code>disallow_full_table_scans</code> rejects full table or index scans of "large" tables. The default value is <code>1000</code>. To reject all full table or index scans, set to <code>0</code>.</td>
    <td>User-dependent</td>
    <td>No</td>
    <td>Yes</td>
@@ -391,7 +401,7 @@
    <td>Maximum number of joins that the optimizer will attempt to reorder when searching for an optimal query execution plan.
        <br>For more information, see <a href="cost-based-optimizer.html#join-reordering">Join reordering</a>.</td>
    <td>
-    <code>4</code>
+    <code>8</code>
    </td>
    <td>Yes</td>
    <td>Yes</td>
@@ -600,7 +610,7 @@
    <td>
     <code>transaction_rows_read_err</code>
    </td>
-   <td><span class="version-tag">New in v21.2</span>: The limit for the number of rows read by a SQL transaction which - once exceeded - will fail the transaction (or will trigger a logging event to SQL_INTERNAL_PERF for internal transactions).</td>
+   <td><span class="version-tag">New in v21.2</span>: The limit for the number of rows read by a SQL transaction. If this value is exceeded the transaction will fail (or the event will be logged to <code>SQL_INTERNAL_PERF</code> for internal transactions).</td>
    <td>
     <code>0</code>
    </td>
@@ -612,7 +622,7 @@
    <td>
     <code>transaction_rows_read_log</code>
    </td>
-   <td><span class="version-tag">New in v21.2</span>: The threshold for the number of rows read by a SQL transaction which - once exceeded - will trigger a logging event to <code>SQL_PERF</code> (or <code>SQL_INTERNAL_PERF</code>  for internal transactions).</td>
+   <td><span class="version-tag">New in v21.2</span>: The threshold for the number of rows read by a SQL transaction. If this value is exceeded, the event will be logged to <code>SQL_PERF</code> (or <code>SQL_INTERNAL_PERF</code> for internal transactions).</td>
    <td>
     <code>0</code>
    </td>
@@ -624,7 +634,7 @@
    <td>
     <code>transaction_rows_written_err</code>
    </td>
-   <td><span class="version-tag">New in v21.2</span>: The limit for the number of rows written by a SQL transaction which - once exceeded - will fail the transaction (or will trigger a logging event to <code>SQL_INTERNAL_PERF</code> for internal transactions).</td>
+   <td><span class="version-tag">New in v21.2</span>: The limit for the number of rows written by a SQL transaction. If this value is exceeded the transaction will fail (or the event will be logged to <code>SQL_INTERNAL_PERF</code> for internal transactions).</td>
    <td>
     <code>0</code>
    </td>
@@ -636,7 +646,7 @@
    <td>
     <code>transaction_rows_written_log</code>
    </td>
-   <td><span class="version-tag">New in v21.2</span>: The threshold for the number of rows written by a SQL transaction which - once exceeded - will trigger a logging event to <code>SQL_PERF</code> (or <code>SQL_INTERNAL_PERF</code> for internal transactions).</td>
+   <td><span class="version-tag">New in v21.2</span>: The threshold for the number of rows written by a SQL transaction. If this value is exceeded, the event will be logged to <code>SQL_PERF</code> (or <code>SQL_INTERNAL_PERF</code> for internal transactions).</td>
    <td>
     <code>0</code>
    </td>
@@ -664,7 +674,7 @@
    </td>
    <td>The vectorized execution engine mode.
        <br>Options include <code>on</code> and <code>off</code>.
-       <br>For more details, see <a href="vectorized-execution.html#configuring-vectorized-execution">Configuring vectorized execution for CockroachDB</a>.
+       <br>For more details, see <a href="vectorized-execution.html#configure-vectorized-execution">Configure vectorized execution for CockroachDB</a>.
    </td>
    <td>
     <code>on</code>

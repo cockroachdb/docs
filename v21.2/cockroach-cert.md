@@ -3,6 +3,10 @@ title: cockroach cert
 summary: A secure CockroachDB cluster uses TLS for encrypted inter-node and client-node communication.
 toc: true
 key: create-security-certificates.html
+filter_category: security_cert
+filter_html: Use cockroach cert
+filter_sort: 1
+docs_area: reference.cli
 ---
 
 To secure your CockroachDB cluster's inter-node and client-node communication, you need to provide a Certificate Authority (CA) certificate that has been used to sign keys and certificates (SSLs) for:
@@ -13,11 +17,7 @@ To secure your CockroachDB cluster's inter-node and client-node communication, y
 
 To create these certificates and keys, use the `cockroach cert` [commands](cockroach-commands.html) with the appropriate subcommands and flags, use [`openssl` commands](https://wiki.openssl.org/index.php/), or use a [custom CA](create-security-certificates-custom-ca.html) (for example, a public CA or your organizational CA).
 
-<div class="filters filters-big clearfix">
-  <button style="width:28%" class="filter-button current">Use <strong>cockroach cert</strong></button>
-  <a href="create-security-certificates-openssl.html"><button style="width:28%" class="filter-button">Use Openssl</button></a>
-  <a href="create-security-certificates-custom-ca.html"><button style="width:28%" class="filter-button">Use custom CA</button></a>
-</div>
+{% include filter-tabs.md %}
 
 {{site.data.alerts.callout_success}}For details about when and how to change security certificates without restarting nodes, see <a href="rotate-certificates.html">Rotate Security Certificates</a>.{{site.data.alerts.end}}
 
@@ -79,7 +79,7 @@ This check is only relevant on macOS, Linux, and other UNIX-like systems.
 To reduce the likelihood of a malicious user or process accessing a certificate key (files ending in ".key"), we require that the certificate key be owned by one of the following system users:
 
 - The user that the CockroachDB process runs as.
-- The system `root` user (not to be confused with the [CockroachDB `root` user](authorization.html#root-user)) and the group that the CockroachDB process runs in.
+- The system `root` user (not to be confused with the [CockroachDB `root` user](security-reference/authorization.html#root-user)) and the group that the CockroachDB process runs in.
 
 For example, if running the CockroachDB process as a system user named `cockroach`, we can determine the group that the process will run in by running `id cockroach`:
 
@@ -349,7 +349,7 @@ Certificate directory: certs
 
 ## See also
 
-- [Security overview](security-overview.html)
+- [Security overview](security-reference/security-overview.html)
 - [Authentication](authentication.html)
 - [Client Connection Parameters](connection-parameters.html)
 - [Rotate Security Certificates](rotate-certificates.html)

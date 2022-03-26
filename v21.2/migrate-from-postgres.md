@@ -2,6 +2,7 @@
 title: Migrate from Postgres
 summary: Learn how to migrate data from Postgres into a CockroachDB cluster.
 toc: true
+docs_area: migrate
 ---
 
 This page has instructions for migrating data from Postgres to CockroachDB using [`IMPORT`][import]'s support for reading [`pg_dump`][pgdump] files.
@@ -246,7 +247,6 @@ Example usage:
 - [Migrate from CSV][csv]
 - [Migrate from MySQL][mysql]
 - [Can a Postgres or MySQL application be migrated to CockroachDB?](frequently-asked-questions.html#can-a-postgresql-or-mysql-application-be-migrated-to-cockroachdb)
-- [SQL Dump (Export)](cockroach-dump.html)
 - [Back up Data](take-full-and-incremental-backups.html)
 - [Restore Data](take-full-and-incremental-backups.html)
 - [Use the Built-in SQL Client](cockroach-sql.html)

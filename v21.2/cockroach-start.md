@@ -3,6 +3,7 @@ title: cockroach start
 summary: Start a new multi-node cluster or add nodes to an existing multi-node cluster.
 toc: true
 key: start-a-node.html
+docs_area: reference.cli
 ---
 
 This page explains the `cockroach start` [command](cockroach-commands.html), which you use to start a new multi-node cluster or add nodes to an existing cluster.
@@ -140,6 +141,10 @@ The `--store` flag supports the following fields. Note that commas are used to s
 In-memory storage is not suitable for production deployments at this time.
 {{site.data.alerts.end}}
 
+{{site.data.alerts.callout_success}}
+{% include {{ page.version.version }}/prod-deployment/prod-guidance-store-volume.md %}
+{{site.data.alerts.end}}
+
 Field | Description
 ------|------------
 `type` | For in-memory storage, set this field to `mem`; otherwise, leave this field out. The `path` field must not be set when `type=mem`.
@@ -163,10 +168,11 @@ See the [default logging configuration](configure-logs.html#default-logging-conf
 When you run `cockroach start`, some helpful details are printed to the standard output:
 
 ~~~ shell
-CockroachDB node starting at {{page.release_info.start_time}}
+CockroachDB node starting at {{ now | date: "%Y-%m-%d %H:%M:%S.%6 +0000 UTC" }}
 build:               CCL {{page.release_info.version}} @ {{page.release_info.build_time}} (go1.12.6)
 webui:               http://localhost:8080
 sql:                 postgresql://root@localhost:26257?sslmode=disable
+sql (JDBC):          jdbc:postgresql://localhost:26257/defaultdb?sslmode=disable&user=root
 RPC client flags:    cockroach <client cmd> --host=localhost:26257 --insecure
 logs:                /Users/<username>/node1/logs
 temp dir:            /Users/<username>/node1/cockroach-temp242232154
@@ -308,7 +314,7 @@ $ cockroach init \
 **Scenario:**
 
 - You have a cluster that spans GCE and AWS.
-- The nodes on each cloud can reach each other on private addresses, but the private addresses aren't reachable from the other cloud.
+- The nodes on each cloud can reach each other on public addresses, but the private addresses aren't reachable from the other cloud.
 
 **Approach:**
 
@@ -491,7 +497,7 @@ For example, suppose you want to use port `26257` for SQL connections and `26258
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach start --sql-addr=:26267 --listen-addr=:26258 --join=node1:26258,node2:26258,node3:26258 --certs-dir=~/cockroach-certs
+$ cockroach start --sql-addr=:26257 --listen-addr=:26258 --join=node1:26258,node2:26258,node3:26258 --certs-dir=~/cockroach-certs
 ~~~
 
 Note the use of port `26258` (the value for `listen-addr`, not `sql-addr`) in the `--join` flag. Also, if your environment requires the use of the `--advertise-addr` flag, you should probably also use the `--advertise-sql-addr` flag when using a separate SQL address.

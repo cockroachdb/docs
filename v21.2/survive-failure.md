@@ -2,6 +2,7 @@
 title: SURVIVE {ZONE, REGION} FAILURE
 summary: The SURVIVE {ZONE,REGION} FAILURE statement configures a multi-region database.
 toc: true
+docs_area: reference.sql
 ---
 
  The `ALTER DATABASE ... SURVIVE {ZONE,REGION} FAILURE` [statement](sql-statements.html) sets the [survival goal](multiregion-overview.html#survival-goals) for a [multi-region database](multiregion-overview.html).
@@ -24,7 +25,7 @@ toc: true
 
 ## Required privileges
 
-The user must be a member of the [`admin`](authorization.html#roles) or [owner](authorization.html#object-ownership) roles, or have the [`CREATE` privilege](authorization.html#supported-privileges) on the database.
+The user must be a member of the [`admin`](security-reference/authorization.html#roles) or [owner](security-reference/authorization.html#object-ownership) roles, or have the [`CREATE` privilege](security-reference/authorization.html#supported-privileges) on the database.
 
 ## Examples
 
@@ -72,6 +73,6 @@ For more information about the region survival goal, see [Surviving region failu
 
 ## See also
 
-- [Multi-region overview](multiregion-overview.html)
+- [Multi-Region Capabilities Overview](multiregion-overview.html)
 - [`ALTER TABLE`](alter-table.html)
-- [Other SQL Statements](sql-statements.html)
+- [SQL Statements](sql-statements.html)

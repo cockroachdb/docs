@@ -2,9 +2,12 @@
 title: Runtime Dashboard
 summary: The Runtime dashboard lets you monitor runtime metrics for you cluster, such as node count, memory usage, and CPU time.
 toc: true
+docs_area: reference.db_console
 ---
 
-The **Runtime** dashboard in the DB Console lets you monitor runtime metrics for you cluster, such as node count, memory usage, and CPU time. To view this dashboard, [access the DB Console](ui-overview.html#db-console-access), click **Metrics** on the left-hand navigation bar, and then select **Dashboard** > **Runtime**.
+The **Runtime** dashboard in the DB Console lets you monitor runtime metrics for you cluster, such as node count, memory usage, and CPU time.
+
+To view this dashboard, [access the DB Console](ui-overview.html#db-console-access), click **Metrics** on the left-hand navigation bar, and select **Dashboard** > **Runtime**.
 
 {% include {{ page.version.version }}/ui/ui-metrics-navigation.md %}
 
@@ -36,7 +39,7 @@ Go Total | Total memory managed by the Go layer.
 CGo Allocated | Memory allocated by the C layer.
 CGo Total | Total memory managed by the C layer.
 
-{{site.data.alerts.callout_info}}If Go Total or CGO Total fluctuates or grows steadily over time, <a href="https://forum.cockroachlabs.com/">contact us</a>.{{site.data.alerts.end}}
+{% include {{ page.version.version }}/prod-deployment/healthy-crdb-memory.md %}
 
 ## Runnable Goroutines per CPU
 
@@ -45,7 +48,6 @@ CGo Total | Total memory managed by the C layer.
 ## CPU Time
 
 <img src="{{ 'images/v21.2/ui_cpu_time.png' | relative_url }}" alt="DB Console CPU Time" style="border:1px solid #eee;max-width:100%" />
-
 
 - In the node view, the graph shows the [CPU time](https://en.wikipedia.org/wiki/CPU_time) used by CockroachDB user and system-level operations for the selected node.
 - In the cluster view, the graph shows the [CPU time](https://en.wikipedia.org/wiki/CPU_time) used by CockroachDB user and system-level operations across all nodes in the cluster.

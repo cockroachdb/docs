@@ -2,6 +2,7 @@
 title: SHOW SESSIONS
 summary: The SHOW SESSIONS statement lists all currently active sessions across the cluster or on the local node.
 toc: true
+docs_area: reference.sql
 ---
 
 The `SHOW SESSIONS` [statement](sql-statements.html) lists details about currently active sessions, including:
@@ -193,4 +194,4 @@ Alternatively, if you know that you want to cancel the query based on the detail
 
 - [`SHOW STATEMENTS`](show-statements.html)
 - [`CANCEL QUERY`](cancel-query.html)
-- [Other SQL Statements](sql-statements.html)
+- [SQL Statements](sql-statements.html)

@@ -2,6 +2,7 @@
 title: Migrate from GeoPackages
 summary: Learn how to migrate data from GeoPackages into a CockroachDB cluster.
 toc: true
+docs_area: migrate
 ---
 
  CockroachDB supports efficiently storing and querying [spatial data](spatial-data.html).
@@ -107,7 +108,6 @@ IMPORT PGDUMP ('http://localhost:3000/springs.sql');
 - [Migration Overview](migration-overview.html)
 - [Migrate from MySQL][mysql]
 - [Migrate from Postgres][postgres]
-- [SQL Dump (Export)](cockroach-dump.html)
 - [Back Up and Restore Data](take-full-and-incremental-backups.html)
 - [Use the Built-in SQL Client](cockroach-sql.html)
 - [Other Cockroach Commands](cockroach-commands.html)

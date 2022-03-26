@@ -2,9 +2,10 @@
 title: DROP REGION
 summary: The DROP REGION statement drops a region from a multi-region database.
 toc: true
+docs_area: reference.sql
 ---
 
- The `ALTER DATABASE .. DROP REGION` [statement](sql-statements.html) drops a [region](multiregion-overview.html#database-regions) from a [multi-region database](multiregion-overview.html).
+The `ALTER DATABASE .. DROP REGION` [statement](sql-statements.html) drops a [region](multiregion-overview.html#database-regions) from a [multi-region database](multiregion-overview.html). While CockroachDB processes an index modification or changing a table to or from a [`REGIONAL BY ROW` table](multiregion-overview.html#regional-by-row-tables), attempting to drop a region from the database containing that `REGIONAL BY ROW` table will produce an error. Similarly, while this statement is running, all index modifications and locality changes on [`REGIONAL BY ROW`](multiregion-overview.html#regional-by-row-tables) tables will be blocked.
 
 {% include enterprise-feature.md %}
 
@@ -29,8 +30,8 @@ toc: true
 
 To drop a region from a database, the user must have one of the following:
 
-- Membership to the [`admin`](authorization.html#roles) role for the cluster.
-- Membership to the [owner](authorization.html#object-ownership) role, or the [`CREATE` privilege](authorization.html#supported-privileges), for the database and all [`REGIONAL BY ROW`](multiregion-overview.html#regional-by-row-tables) tables in the database.
+- Membership to the [`admin`](security-reference/authorization.html#roles) role for the cluster.
+- Membership to the [owner](security-reference/authorization.html#object-ownership) role, or the [`CREATE` privilege](security-reference/authorization.html#supported-privileges), for the database and all [`REGIONAL BY ROW`](multiregion-overview.html#regional-by-row-tables) tables in the database.
 
 ## Examples
 
@@ -173,11 +174,51 @@ SHOW REGIONS FROM DATABASE foo;
 (0 rows)
 ~~~
 
+You cannot drop a region from a database if the databases uses [`REGION` survival goal](multiregion-overview.html#surviving-region-failures) and there are only three regions configured on the database:
+
+{% include copy-clipboard.html %}
+~~~ sql
+ALTER DATABASE foo SET PRIMARY REGION "us-east1";
+~~~
+
+~~~
+ALTER DATABASE PRIMARY REGION
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+ALTER DATABASE foo ADD REGION "us-west1";
+~~~
+
+~~~
+ALTER DATABASE ADD REGION
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+ALTER DATABASE foo ADD REGION "europe-west1";
+~~~
+
+~~~
+ALTER DATABASE ADD REGION
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+ALTER DATABASE foo DROP REGION "us-west1";
+~~~
+
+~~~
+ERROR: at least 3 regions are required for surviving a region failure
+SQLSTATE: 22023
+HINT: you must add additional regions to the database or change the survivability goal
+~~~
+
 ## See also
 
-- [Multi-region overview](multiregion-overview.html)
+- [Multi-Region Capabilities Overview](multiregion-overview.html)
 - [`SET PRIMARY REGION`](set-primary-region.html)
 - [`ADD REGION`](add-region.html)
 - [`SHOW REGIONS`](show-regions.html)
 - [`ALTER TABLE`](alter-table.html)
-- [Other SQL Statements](sql-statements.html)
+- [SQL Statements](sql-statements.html)

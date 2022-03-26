@@ -2,6 +2,7 @@
 title: Take Backups with Revision History and Restore from a Point-in-time
 summary: Learn about the advanced options you can use when you backup and restore a CockroachDB cluster.
 toc: true
+docs_area: manage
 ---
 
 The ability to [backup a full cluster](backup.html#backup-a-cluster) has been added and the syntax for [incremental backups](backup.html#create-incremental-backups) is simplified. Because of these two changes, [basic backup usage](take-full-and-incremental-backups.html) is now sufficient for most CockroachDB clusters. However, you may want to control your backup and restore options more explicitly.
@@ -21,7 +22,7 @@ You can configure garbage collection periods using the `ttlseconds` [replication
 
 ## Create a backup with revision history
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP INTO '{destination}' AS OF SYSTEM TIME '-10s' WITH revision_history;
 ~~~
@@ -36,9 +37,9 @@ Additionally, if you want to restore a specific incremental backup, you can do s
 
 If you do not specify a point-in-time, the data will be restored to the backup timestamp; that is, the restore will work as if the data was backed up without revision history.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
-> RESTORE FROM '{destination}' AS OF SYSTEM TIME '2017-02-26 10:00:00';
+> RESTORE FROM '/2021/12/13-211056.62' IN '(destination)' AS OF SYSTEM TIME '2021-12-13 10:00:00';
 ~~~
 
 To view the available backup subdirectories you can restore from, use [`SHOW BACKUPS`](restore.html#view-the-backup-subdirectories).
@@ -50,7 +51,6 @@ To view the available backup subdirectories you can restore from, use [`SHOW BAC
 - [Take Full and Incremental Backups](take-full-and-incremental-backups.html)
 - [Take and Restore Encrypted Backups](take-and-restore-encrypted-backups.html)
 - [Take and Restore Locality-aware Backups](take-and-restore-locality-aware-backups.html)
-- [`SQL DUMP`](cockroach-dump.html)
 - [`IMPORT`](migration-overview.html)
 - [Use the Built-in SQL Client](cockroach-sql.html)
 - [Other Cockroach Commands](cockroach-commands.html)

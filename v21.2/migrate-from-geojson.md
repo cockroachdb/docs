@@ -2,13 +2,14 @@
 title: Migrate from GeoJSON
 summary: Learn how to migrate data from GeoJSON into a CockroachDB cluster.
 toc: true
+docs_area: migrate
 ---
 
  CockroachDB supports efficiently storing and querying [spatial data](spatial-data.html).
 
 This page has instructions for migrating data from the [GeoJSON](https://en.wikipedia.org/wiki/GeoJSON) format into CockroachDB using [`ogr2ogr`](https://gdal.org/programs/ogr2ogr.html) and [`IMPORT`][import].
 
-In the example below we will import a data set with [the locations of underground storage tanks in the state of Vermont (USA)](https://anrweb.vt.gov/DEC/ERT/UST.aspx?ustfacilityid=96) that is made available via [data.gov](https://catalog.data.gov/dataset/underground-storage-tank-working).
+In the example below we will import a data set with [the locations of underground storage tanks in the state of Vermont (USA)](https://anrweb.vt.gov/DEC/ERT/UST.aspx?ustfacilityid=96) that is made available via [data.gov](https://catalog.data.gov/sr_Latn/dataset/underground-storage-tanks-usts-facility-and-tank-details).
 
 ## Before You Begin
 
@@ -95,7 +96,6 @@ IMPORT PGDUMP ('http://localhost:3000/tanks.sql');
 - [Migration Overview](migration-overview.html)
 - [Migrate from MySQL][mysql]
 - [Migrate from Postgres][postgres]
-- [SQL Dump (Export)](cockroach-dump.html)
 - [Back Up and Restore Data](take-full-and-incremental-backups.html)
 - [Use the Built-in SQL Client](cockroach-sql.html)
 - [Other Cockroach Commands](cockroach-commands.html)

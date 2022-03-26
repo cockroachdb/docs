@@ -2,6 +2,7 @@
 title: Known Limitations in CockroachDB v20.2
 summary: Learn about newly identified limitations in CockroachDB as well as unresolved limitations identified in earlier releases.
 toc: true
+keywords: gin, gin index, gin indexes, inverted index, inverted indexes, accelerated index, accelerated indexes
 ---
 
 This page describes newly identified limitations in the CockroachDB {{page.release_info.version}} release as well as unresolved limitations identified in earlier releases.
@@ -174,7 +175,7 @@ As a workaround, take a cluster backup instead, as the `system.comments` table i
 ### Cold starts of large clusters may require manual intervention
 
 {{site.data.alerts.callout_info}}
-Resolved as of [v20.2.9](../releases/v20.2.9.html). See [#64567](https://github.com/cockroachdb/cockroach/pull/64567).
+Resolved as of [v20.2.9](../releases/v20.2.html#v20-2-9). See [#64567](https://github.com/cockroachdb/cockroach/pull/64567).
 {{site.data.alerts.end}}
 
 If a cluster contains a large amount of data (>500GiB / node), and all nodes are stopped and then started at the same time, clusters can enter a state where they're unable to startup without manual intervention. In this state, logs fill up rapidly with messages like `refusing gossip from node x; forwarding to node y`, and data and metrics may become inaccessible.
@@ -192,7 +193,7 @@ Once restarted, monitor the Replica Quiescence graph on the [**Replication Dashb
 ### Requests to restarted node in need of snapshots may hang
 
 {{site.data.alerts.callout_info}}
-Resolved as of [v20.2.4](../releases/v20.2.4.html). See [#57789](https://github.com/cockroachdb/cockroach/pull/57789).
+Resolved as of [v20.2.4](../releases/v20.2.html#v20-2-4). See [#57789](https://github.com/cockroachdb/cockroach/pull/57789).
 {{site.data.alerts.end}}
 
 When a node is offline, the [Raft logs](architecture/replication-layer.html#raft-logs) for the ranges on the node get truncated. When the node comes back online, it therefore often needs [Raft snapshots](architecture/replication-layer.html#snapshots) to get many of its ranges back up-to-date. While in this state, requests to a range will hang until its snapshot has been applied, which can take a long time.
@@ -536,15 +537,15 @@ If the execution of a [join](joins.html) query exceeds the limit set for memory-
 
 {% include {{ page.version.version }}/known-limitations/unordered-operations.md %}
 
-### Inverted indexes cannot be partitioned
+### GIN indexes cannot be partitioned
 
-CockroachDB does not support partitioning inverted indexes, including [spatial indexes](spatial-indexes.html).
+CockroachDB does not support partitioning GIN indexes, including [spatial indexes](spatial-indexes.html).
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/43643)
 
-### Inverted index scans can't be generated for some statement filters
+### GIN index scans can't be generated for some statement filters
 
-CockroachDB cannot generate [inverted index](inverted-indexes.html) scans for statements with filters that have both JSON fetch values and containment operators. For example the following statement won't be index-accelerated:
+CockroachDB cannot generate [GIN index](inverted-indexes.html) scans for statements with filters that have both JSON fetch values and containment operators. For example the following statement won't be index-accelerated:
 
 ~~~ sql
 SELECT * FROM mytable WHERE j->'a' @> '{"b": "c"}';

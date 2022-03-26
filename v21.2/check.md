@@ -2,33 +2,36 @@
 title: CHECK Constraint
 summary: The CHECK constraint specifies that values for the column in INSERT or UPDATE statements must satisfy a Boolean expression.
 toc: true
+docs_area: reference.sql
 ---
 
 The `CHECK` [constraint](constraints.html) specifies that values for the column in [`INSERT`](insert.html) or [`UPDATE`](update.html) statements must return `TRUE` or `NULL` for a Boolean expression. If any values return `FALSE`, the entire statement is rejected.
 
 ## Details
 
-- If you add a `CHECK` constraint to an existing table, CockroachDB will run a background job to validate existing table data in the process of adding the constraint. If a row is found that violates the constraint during the validation step, the [`ADD CONSTRAINT`](add-constraint.html) statement will fail. This differs from previous versions of CockroachDB, which allowed you to add a check constraint that was enforced for writes but could be violated by rows that existed prior to adding the constraint.
-- Check constraints can be added to columns that were created earlier in the same transaction. For an example, see [Add the `CHECK` constraint](add-constraint.html#add-the-check-constraint).
-- `CHECK` constraints may be specified at the column or table level and can reference other columns within the table. Internally, all column-level `CHECK` constraints are converted to table-level constraints so they can be handled consistently.
-- You can have multiple `CHECK` constraints on a single column but ideally, for performance optimization, these should be combined using the logical operators. For example:
+- You can specify `CHECK` constraints at the column or table level and can reference other columns within the table. Internally, all column-level `CHECK` constraints are converted to table-level constraints so they can be handled consistently.
 
-  ~~~ sql
-  warranty_period INT CHECK (warranty_period >= 0) CHECK (warranty_period <= 24)
-  ~~~
+- You can add `CHECK` constraints to columns that were created earlier in the same transaction. For an example, see [Add the `CHECK` constraint](add-constraint.html#add-constraints-to-columns-created-during-a-transaction).
 
-  should be specified as:
+- You can have multiple `CHECK` constraints on a single column but for performance optimization you should combine them using logical operators. For example, you should specify:
 
-  ~~~ sql
-  warranty_period INT CHECK (warranty_period BETWEEN 0 AND 24)
-  ~~~
-- When a column with a `CHECK` constraint is dropped, the `CHECK` constraint is also dropped.
+    ~~~ sql
+    warranty_period INT CHECK (warranty_period >= 0) CHECK (warranty_period <= 24)
+    ~~~
+
+    as:
+
+    ~~~ sql
+    warranty_period INT CHECK (warranty_period BETWEEN 0 AND 24)
+    ~~~
+
+- When you drop a column with a `CHECK` constraint, the `CHECK` constraint is also dropped.
 
 ## Syntax
 
-`CHECK` constraints can be defined at the [table level](#table-level). However, if you only want the constraint to apply to a single column, it can be applied at the [column level](#column-level).
+You can define `CHECK` constraints at the [column level](#column-level), where the constraint applies only to a single column, and at the [table level](#table-level).
 
-{{site.data.alerts.callout_info}}You can also add the <code>CHECK</code> constraint to existing tables through <a href="add-constraint.html#add-the-check-constraint"><code>ADD CONSTRAINT</code></a>.{{site.data.alerts.end}}
+You can also add `CHECK` constraints to a table using [`ADD CONSTRAINT`](add-constraint.html#add-the-check-constraint).
 
 ### Column level
 
@@ -38,15 +41,17 @@ The `CHECK` [constraint](constraints.html) specifies that values for the column 
 
  Parameter | Description
 -----------|-------------
- `table_name` | The name of the table you're creating.
- `column_name` | The name of the constrained column.
- `column_type` | The constrained column's [data type](data-types.html).
- `check_expr` | An expression that returns a Boolean value; if the expression evaluates to `FALSE`, the value cannot be inserted.
- `column_constraints` | Any other column-level [constraints](constraints.html) you want to apply to this column.
- `column_def` | Definitions for any other columns in the table.
- `table_constraints` | Any table-level [constraints](constraints.html) you want to apply.
+`table_name` | The name of the table you're creating.
+`column_name` | The name of the constrained column.
+`column_type` | The constrained column's [data type](data-types.html).
+`check_expr` | An expression that returns a Boolean value; if the expression evaluates to `FALSE`, the value cannot be inserted.
+`column_constraints` | Any other column-level [constraints](constraints.html) you want to apply to this column.
+`column_def` | Definitions for any other columns in the table.
+`table_constraints` | Any table-level [constraints](constraints.html) you want to apply.
 
-**Example**
+#### Example
+
+The following example specifies the column-level `CHECK` constraint that a `quantity_on_hand` value must be greater than `0`.
 
 ~~~ sql
 > CREATE TABLE inventories (
@@ -65,13 +70,15 @@ The `CHECK` [constraint](constraints.html) specifies that values for the column 
 
  Parameter | Description
 -----------|-------------
- `table_name` | The name of the table you're creating.
- `column_def` | Definitions for any other columns in the table.
- `name` | The name you want to use for the constraint, which must be unique to its table and follow these [identifier rules](keywords-and-identifiers.html#identifiers).
- `check_expr` | An expression that returns a Boolean value; if the expression evaluates to `FALSE`, the value cannot be inserted.
- `table_constraints` | Any other table-level [constraints](constraints.html) you want to apply.
+`table_name` | The name of the table you're creating.
+`column_def` | Definitions for any other columns in the table.
+`constraint_name` | The name to use for the constraint, which must be unique to its table and follow these [identifier rules](keywords-and-identifiers.html#identifiers).
+`check_expr` | An expression that returns a Boolean value. If the expression evaluates to `FALSE`, the value cannot be inserted.
+`table_constraints` | Any other table-level [constraints](constraints.html) to apply.
 
-**Example**
+#### Example
+
+The following example specifies the table-level `CHECK` constraint named `ok_to_supply` that a `quantity_on_hand` value must be greater than `0` and a `warehouse_id` must be between `100` and `200`.
 
 ~~~ sql
 > CREATE TABLE inventories (
@@ -85,7 +92,7 @@ The `CHECK` [constraint](constraints.html) specifies that values for the column 
 
 ## Usage example
 
-`CHECK` constraints may be specified at the column or table level and can reference other columns within the table. Internally, all column-level `CHECK` constraints are converted to table-level constraints so they can be handled in a consistent fashion.
+The following example demonstrates that when you specify the `CHECK` constraint that a `quantity_on_hand` value must be greater than `0`, and you attempt to insert the value `0`, CockroachDB returns an error.
 
 ~~~ sql
 > CREATE TABLE inventories (
@@ -100,6 +107,7 @@ The `CHECK` [constraint](constraints.html) specifies that values for the column 
 ~~~
 pq: failed to satisfy CHECK constraint (quantity_on_hand > 0)
 ~~~
+
 
 ## See also
 

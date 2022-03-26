@@ -2,6 +2,7 @@
 title: Transactions
 summary: CockroachDB supports bundling multiple SQL statements into a single all-or-nothing transaction.
 toc: true
+docs_area: develop
 ---
 
 CockroachDB supports bundling multiple SQL statements into a single all-or-nothing transaction. Each transaction guarantees [ACID semantics](https://en.wikipedia.org/wiki/ACID) spanning arbitrary tables and rows, even when data is distributed. If a transaction succeeds, all mutations are applied together with virtual simultaneity. If any part of a transaction fails, the entire transaction is aborted, and the database is left unchanged. CockroachDB guarantees that while a transaction is pending, it is isolated from other concurrent transactions with serializable [isolation](#isolation-levels).
@@ -62,7 +63,7 @@ Type | Description
 
 ## Transaction retries
 
-Transactions may require retries if they experience deadlock or [read/write contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention) with other concurrent transactions which cannot be resolved without allowing potential [serializable anomalies](https://en.wikipedia.org/wiki/Serializability).
+Transactions may require retries if they experience deadlock or [read/write contention](performance-best-practices-overview.html#transaction-contention) with other concurrent transactions which cannot be resolved without allowing potential [serializable anomalies](https://en.wikipedia.org/wiki/Serializability).
 
 To mitigate read-write contention and reduce the need for transaction retries, use the following techniques:
 
@@ -125,6 +126,10 @@ transaction to retry, the client needs to be involved in retrying the whole
 transaction and so you should write your transactions to use
 [client-side intervention](#client-side-intervention).
 
+#### Bounded staleness reads
+
+In the event [bounded staleness reads](follower-reads.html#bounded-staleness-reads) are used along with either the [`with_min_timestamp` function or the `with_max_staleness` function](functions-and-operators.html#date-and-time-functions) and the `nearest_only` parameter is set to `true`, the query will throw an error if it can't be served by a nearby replica. 
+
 ### Client-side intervention
 
 Your application should include client-side retry handling when the statements are sent individually, such as:
@@ -161,7 +166,7 @@ To handle these types of errors, you have the following options:
 
 Transactions in CockroachDB lock data resources that are written during their execution. When a pending write from one transaction conflicts with a write of a concurrent transaction, the concurrent transaction must wait for the earlier transaction to complete before proceeding. When a dependency cycle is detected between transactions, the transaction with the higher priority aborts the dependent transaction to avoid deadlock, which must be [retried](#client-side-intervention).
 
-For more details about transaction contention and best practices for avoiding contention, see [Understanding and Avoiding Transaction Contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention).
+For more details about transaction contention and best practices for avoiding contention, see [Transaction Contention](performance-best-practices-overview.html#transaction-contention).
 
 ## Nested transactions
 
@@ -186,7 +191,7 @@ Every transaction in CockroachDB is assigned an initial **priority**. By default
 
 ### Set transaction priority
 
-For transactions that should be given higher or lower preference in [high-contention scenarios](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention), you can set the priority in the [`BEGIN`](begin-transaction.html) statement:
+For transactions that should be given higher or lower preference in [high-contention scenarios](performance-best-practices-overview.html#transaction-contention), you can set the priority in the [`BEGIN`](begin-transaction.html) statement:
 
 ~~~ sql
 > BEGIN PRIORITY <LOW | NORMAL | HIGH>;
@@ -263,7 +268,7 @@ CockroachDB uses slightly different isolation levels than [ANSI SQL isolation le
 
 The CockroachDB `SERIALIZABLE` level is stronger than the ANSI SQL `READ UNCOMMITTED`, `READ COMMITTED`, and `REPEATABLE READ` levels and equivalent to the ANSI SQL `SERIALIZABLE` level.
 
-For more information about the relationship between these levels, see [A Critique of ANSI SQL Isolation Levels](http://arxiv.org/ftp/cs/papers/0701/0701157.pdf).
+For more information about the relationship between these levels, see [A Critique of ANSI SQL Isolation Levels](https://arxiv.org/ftp/cs/papers/0701/0701157.pdf).
 
 ## Limit the number of rows written or read in a transaction
 

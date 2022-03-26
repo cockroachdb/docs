@@ -41,6 +41,8 @@ When converting interleaved tables with `ALTER PRIMARY KEY`, note the following:
 - CockroachDB executes `ALTER PRIMARY KEY` statements as [online schema changes](online-schema-changes.html). This means that you can convert your interleaved tables to non-interleaved tables without experiencing any downtime.
 - `ALTER PRIMARY KEY` statements can only convert a child table if that table is not a parent. If your cluster has child tables that are also parents, you must start from the bottom of the interleaving hierarchy and work your way up (i.e., start with child tables that are not parents).
 
+You can identify interleaved objects by querying the `crdb_internal.interleaved_tables` and `crdb_internal.interleaved_views` system tables.
+
 For example, suppose you created an interleaved hierarchy between the `customers`, `orders`, and `packages` tables, using the following [`CREATE TABLE`](create-table.html) statements:
 
 {% include copy-clipboard.html %}
@@ -177,4 +179,3 @@ To convert these tables to non-interleaved tables, use `ALTER PRIMARY KEY` state
 ### Replace interleaved indexes
 
 Interleaved [secondary indexes](indexes.html) cannot be converted to non-interleaved indexes. You must [drop the existing index](drop-index.html), and then [create a new index](create-index.html) without an `INTERLEAVE IN PARENT` clause.
-

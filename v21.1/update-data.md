@@ -85,14 +85,15 @@ UPDATE vehicle SET status = 'unavailable' WHERE owner_id = 'bd70a3d7-0a3d-4000-8
 
 {% include copy-clipboard.html %}
 ~~~ go
-// 'db' is an open database connection
+// 'conn' is an open database connection
 
 ownerID := "bd70a3d7-0a3d-4000-8000-000000000025"
 
-if _, err := db.Exec("UPDATE vehicle SET status = 'unavailable' WHERE owner_id = $1", ownerID); err != nil {
-  return err
-}
-return nil
+err = conn.QueryRow(context.Background(), "UPDATE vehicle SET status = 'unavailable' WHERE owner_id = $1", ownerID)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "QueryRow failed: %v\n", err)
+		os.Exit(1)
+	}
 ~~~
 
 </section>
@@ -424,7 +425,7 @@ Other common tasks:
 - [Bulk-update Data](bulk-update-data.html)
 - [Run Multi-Statement Transactions](run-multi-statement-transactions.html)
 - [Error Handling and Troubleshooting][error_handling]
-- [Make Queries Fast](make-queries-fast.html)
+- [Optimize Statement Performance](make-queries-fast.html)
 - [Hello World Example apps](hello-world-example-apps.html)
 
 <!-- Reference Links -->

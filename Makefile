@@ -74,10 +74,13 @@ vendor:
 	gem install bundler
 	bundle install
 
-bootstrap: Gemfile Gemfile.lock | vendor
+bootstrap: Gemfile | vendor
 	touch $@
 
 clean:
 	rm -rf vendor
 	rm -rf _site
 	rm -rf .jekyll-cache/Jekyll/Cache/RemoteInclude
+
+clean-site:
+	rm -rf _site

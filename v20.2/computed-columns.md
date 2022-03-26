@@ -26,6 +26,8 @@ Computed columns:
 - Behave like any other column, with the exception that they cannot be written to directly.
 - Are mutually exclusive with [`DEFAULT`](default-value.html).
 
+Once a computed column is created, you cannot directly alter the formula. To make modifications to a computed column's formula, see the [example](#alter-the-formula-for-a-computed-column) below.
+
 ## Creation
 
 To define a computed column, use the following syntax:
@@ -70,6 +72,10 @@ For more information, see [`ADD COLUMN`](add-column.html).
 ### Convert a computed column into a regular column
 
 {% include {{ page.version.version }}/computed-columns/convert-computed-column.md %}
+
+### Alter the formula for a computed column
+
+{% include {{ page.version.version }}/computed-columns/alter-computed-column.md %}
 
 ## See also
 

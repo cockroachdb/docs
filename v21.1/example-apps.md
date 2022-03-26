@@ -23,8 +23,8 @@ Note that tools with [**community-level** support](community-tooling.html) have 
 | Driver/ORM Framework                             | Support level  | Example apps                                            |
 |--------------------------------------------------+----------------+--------------------------------------------------------|
 | [pgx](https://github.com/jackc/pgx/releases)     | Full           | [Hello World](hello-world-go-pgx.html)<br>[Simple CRUD](build-a-go-app-with-cockroachdb.html)
-| [pq](https://github.com/lib/pq)                  | Full           | [Simple CRUD](build-a-go-app-with-cockroachdb-pq.html)
 | [GORM](https://github.com/jinzhu/gorm/releases)  | Full           | [Hello World](hello-world-go-gorm.html)<br>[Simple CRUD](build-a-go-app-with-cockroachdb-gorm.html)
+| [pq](https://github.com/lib/pq)                  | Full           | [Simple CRUD](build-a-go-app-with-cockroachdb-pq.html)
 | [upper/db](https://github.com/upper/db)          | Full           | [Simple CRUD](build-a-go-app-with-cockroachdb-upperdb.html)
 
 ## Java
@@ -41,13 +41,15 @@ Note that tools with [**community-level** support](community-tooling.html) have 
 |---------------------------------------------------------+----------------+--------------------------------------------------------|
 | [node-postgres](https://www.npmjs.com/package/pg)       | Full           | [Hello World](hello-world-node-postgres.html)<br>[Simple CRUD](build-a-nodejs-app-with-cockroachdb.html)
 | [Sequelize](https://www.npmjs.com/package/sequelize)    | Full           | [Simple CRUD](build-a-nodejs-app-with-cockroachdb-sequelize.html)
+| [Knex.js](https://knexjs.org/)                          | Full           | [Simple CRUD](build-a-nodejs-app-with-cockroachdb-knexjs.html)
+| [Prisma Client](https://knexjs.org/)                    | Full           | [Simple CRUD](build-a-nodejs-app-with-cockroachdb-prisma.html)
 | [TypeORM](https://www.npmjs.com/package/typeorm)        | Full           | [Simple CRUD](build-a-typescript-app-with-cockroachdb.html)
 
 ## Python
 
 | Driver/ORM Framework                                            | Support level  | Example apps                                            |
 |-----------------------------------------------------------------+----------------+--------------------------------------------------------|
-| [psycopg2](https://www.psycopg.org/docs/install.html)           | Full           | [Simple CRUD](build-a-python-app-with-cockroachdb.html)
+| [psycopg2](https://www.psycopg.org/docs/install.html)           | Full           | [Simple CRUD](build-a-python-app-with-cockroachdb.html)<br>[AWS Lambda](deploy-lambda-function.html)
 | [SQLAlchemy](https://www.sqlalchemy.org/)                       | Full           | [Hello World](hello-world-python-sqlalchemy.html)<br>[Simple CRUD](build-a-python-app-with-cockroachdb-sqlalchemy.html)<br>[MovR-Flask (Global Web App)](movr-flask-overview.html)
 | [Django](https://pypi.org/project/Django/)                      | Full           | [Simple CRUD](build-a-python-app-with-cockroachdb-django.html)
 | [PonyORM](https://ponyorm.org/)                                 | Full           | [Simple CRUD](build-a-python-app-with-cockroachdb-pony.html)
@@ -65,29 +67,11 @@ Note that tools with [**community-level** support](community-tooling.html) have 
 |-----------------------------------------------------------+----------------+--------------------------------------------------------|
 | [Npgsql](https://www.npgsql.org/)                        | Beta           | [Simple CRUD](build-a-csharp-app-with-cockroachdb.html)
 
-## C++
-
-| Driver/ORM Framework                          | Support level  | Example apps                                            |
-|-----------------------------------------------+----------------+--------------------------------------------------------|
-| [libpqxx](https://github.com/jtv/libpqxx)     | Beta           | [Simple CRUD](build-a-c++-app-with-cockroachdb.html)
-
-## Clojure
-
-| Driver/ORM Framework                                      | Support level  | Example apps                                            |
-|-----------------------------------------------------------+----------------+--------------------------------------------------------|
-| [java.jdbc](https://github.com/clojure/java.jdbc)         | Community      | [Simple CRUD](build-a-clojure-app-with-cockroachdb.html)
-
-## PHP
-
-| Driver/ORM Framework                                      | Support level  | Example apps                                            |
-|-----------------------------------------------------------+----------------+--------------------------------------------------------|
-| [php-pgsql](https://www.php.net/manual/en/book.pgsql.php) | Community      | [Simple CRUD](build-a-php-app-with-cockroachdb.html)
-
 ## Rust
 
 | Driver/ORM Framework                           | Support level  | Example apps                                            |
 |------------------------------------------------+----------------+--------------------------------------------------------|
-| [postgres](https://crates.io/crates/postgres/) | Community      | [Simple CRUD](build-a-rust-app-with-cockroachdb.html)
+| [Rust-Postgres](https://github.com/sfackler/rust-postgres) | Beta      | [Simple CRUD](build-a-rust-app-with-cockroachdb.html)
 
 ## See also
 
@@ -109,6 +93,6 @@ Specific tasks:
 - [Query Data](query-data.html)
 - [Update Data](update-data.html)
 - [Delete Data](delete-data.html)
-- [Make Queries Fast](make-queries-fast.html)
+- [Optimize Statement Performance](make-queries-fast.html)
 - [Run Multi-Statement Transactions](run-multi-statement-transactions.html)
 - [Error Handling and Troubleshooting](error-handling-and-troubleshooting.html)

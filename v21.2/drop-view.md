@@ -2,15 +2,16 @@
 title: DROP VIEW
 summary: The DROP VIEW statement removes a view from a database.
 toc: true
+docs_area: reference.sql
 ---
 
 The `DROP VIEW` [statement](sql-statements.html) removes a [view](views.html) from a database.
 
-{% include {{{ page.version.version }}/misc/schema-change-stmt-note.md %}
+{% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
 ## Required privileges
 
-The user must have the `DROP` [privilege](authorization.html#assign-privileges) on the specified view(s). If `CASCADE` is used to drop dependent views, the user must have the `DROP` privilege on each dependent view as well.
+The user must have the `DROP` [privilege](security-reference/authorization.html#managing-privileges) on the specified view(s). If `CASCADE` is used to drop dependent views, the user must have the `DROP` privilege on each dependent view as well.
 
 ## Synopsis
 

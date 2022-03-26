@@ -371,6 +371,12 @@
             ]
           },
           {
+            "title": "Test Your Application",
+            "urls": [
+              "/${VERSION}/local-testing.html"
+            ]
+          },
+          {
             "title": "Debug Your Application",
             "items":
             [
@@ -470,8 +476,8 @@
                     "title": "Go",
                     "urls": [
                       "/${VERSION}/build-a-go-app-with-cockroachdb.html",
-                      "/${VERSION}/build-a-go-app-with-cockroachdb-pq.html",
                       "/${VERSION}/build-a-go-app-with-cockroachdb-gorm.html",
+                      "/${VERSION}/build-a-go-app-with-cockroachdb-pq.html",
                       "/${VERSION}/build-a-go-app-with-cockroachdb-upperdb.html"
                     ]
                   },
@@ -489,6 +495,8 @@
                     "urls": [
                       "/${VERSION}/build-a-nodejs-app-with-cockroachdb.html",
                       "/${VERSION}/build-a-nodejs-app-with-cockroachdb-sequelize.html",
+                      "/${VERSION}/build-a-nodejs-app-with-cockroachdb-knexjs.html",
+                      "/${VERSION}/build-a-nodejs-app-with-cockroachdb-prisma.html",
                       "/${VERSION}/build-a-typescript-app-with-cockroachdb.html"
                     ]
                   },
@@ -509,27 +517,9 @@
                     ]
                   },
                   {
-                    "title": "C++",
-                    "urls": [
-                      "/${VERSION}/build-a-c++-app-with-cockroachdb.html"
-                    ]
-                  },
-                  {
                     "title": "C# (.NET)",
                     "urls": [
                       "/${VERSION}/build-a-csharp-app-with-cockroachdb.html"
-                    ]
-                  },
-                  {
-                    "title": "Clojure",
-                    "urls": [
-                      "/${VERSION}/build-a-clojure-app-with-cockroachdb.html"
-                    ]
-                  },
-                  {
-                    "title": "PHP",
-                    "urls": [
-                      "/${VERSION}/build-a-php-app-with-cockroachdb.html"
                     ]
                   },
                   {
@@ -676,6 +666,12 @@
                         "title": "Google Cloud Run",
                         "urls": [
                           "/${VERSION}/deploy-app-gcr.html"
+                        ]
+                      },
+                      {
+                        "title": "AWS Lambda",
+                        "urls": [
+                          "/${VERSION}/deploy-lambda-function.html"
                         ]
                       }
                     ]
@@ -873,13 +869,6 @@
                 "title": "Kubernetes Performance Optimization",
                 "urls": [
                   "/${VERSION}/kubernetes-performance.html"
-                ]
-              },
-              {
-                "title": "Docker Swarm Deployment",
-                "urls": [
-                  "/${VERSION}/orchestrate-cockroachdb-with-docker-swarm.html",
-                  "/${VERSION}/orchestrate-cockroachdb-with-docker-swarm-insecure.html"
                 ]
               }
             ]

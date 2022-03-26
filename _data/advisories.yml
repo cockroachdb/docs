@@ -1,3 +1,31 @@
+- advisory: 76522
+  summary: The optimizer can omit ON conditions of joins in query plans, causing incorrect results.
+  versions: 20.2.0-20.2.19, 21.1.0-21.1.15, 21.2.0-21.2.6
+  date: March 09, 2022
+- advisory: 75758
+  summary: Users without the appropriate permissions may cancel any other users' sessions from the DB Console.
+  versions: 20.2.0-20.2.18, 21.1.0-21.1.13, 21.2.0-21.2.4
+  date: February 10, 2022
+- advisory: 74736
+  summary: Queries can miss rows in a primary or unique index that is being scanned, causing incorrect query results.
+  versions: 21.2.0-21.2.4
+  date: February 7, 2022
+- advisory: 74385
+  summary: Partial indexes can be corrupted by <code>UPDATE</code> statements, resulting in incorrect query results for any queries that use the partial index
+  versions: 21.1 and 21.2 prior to 21.1.13 and 21.2.4
+  date: January 6, 2022
+- advisory: CVE-2021-44228
+  summary: No Cockroach Labs products or services are affected by the recent CVE-2021-44228 Apache Log4j vulnerability.
+  versions: None
+  date: December 14, 2021
+- advisory: 73629
+  summary: Planning queries over partitioned tables with a <code>DEFAULT</code> partition in a <code>PARTITION BY LIST</code> clause could cause a spurious internal error
+  versions: 21.1 and 21.2 prior to 21.1.13 and 21.2.3
+  date: December 14, 2021
+- advisory: 73024
+  summary: The optimizer could plan queries that use semi-joins against multi-region <code>REGIONAL BY ROW</code> tables incorrectly
+  versions: 21.2.0
+  date: November 29, 2021
 - advisory: 72839
   summary: Backups fail during upgrade process
   versions: 21.2.0

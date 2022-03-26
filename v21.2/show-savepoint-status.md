@@ -2,13 +2,14 @@
 title: SHOW SAVEPOINT STATUS
 summary: The SHOW SAVEPOINT STATUS statement lists the active savepoints in the current transaction.
 toc: true
+docs_area: reference.sql
 ---
 
 The `SHOW SAVEPOINT STATUS` [statement](sql-statements.html) lists the active [savepoints](savepoint.html) in the current [transaction](transactions.html).
 
 ## Required privileges
 
-No [privileges](authorization.html#assign-privileges) are required to create or show a savepoint. However, privileges are required for each statement within a transaction.
+No [privileges](security-reference/authorization.html#managing-privileges) are required to create or show a savepoint. However, privileges are required for each statement within a transaction.
 
 ## Synopsis
 

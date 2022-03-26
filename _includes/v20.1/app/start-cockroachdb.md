@@ -43,7 +43,7 @@ Choose whether to run a temporary local cluster or a free CockroachDB cluster on
 1. On the **Overview** page, click **Create Cluster**.
 1. On the **Create new cluster** page, for **Cloud provider**, select **Google Cloud**.
 1. For **Regions & nodes**, use the default selection of `California (us-west)` region and 1 node.
-1. For **Hardware per node**, select `Option 1` (2vCPU, 60 GB disk).
+1. Under **Hardware per node**, select 2vCPU for **Compute** and a 35 GiB disk for **Storage**.
 1. Name the cluster. The cluster name must be 6-20 characters in length, and can include lowercase letters, numbers, and dashes (but no leading or trailing dashes).
 1. Click **Next**.
 1. On the **Summary** page, enter your credit card details.

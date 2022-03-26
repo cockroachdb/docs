@@ -3,6 +3,7 @@ title: Frequently Asked Questions
 summary: CockroachDB FAQ - What is CockroachDB? How does it work? What makes it different from other databases?
 tags: postgres, cassandra, google cloud spanner
 toc: true
+docs_area: get_started
 ---
 
 ## What is CockroachDB?
@@ -10,6 +11,10 @@ toc: true
 CockroachDB is a [distributed SQL](https://www.cockroachlabs.com/blog/what-is-distributed-sql/) database built on a transactional and strongly-consistent key-value store. It **scales** horizontally; **survives** disk, machine, rack, and even datacenter failures with minimal latency disruption and no manual intervention; supports **strongly-consistent** ACID transactions; and provides a familiar **SQL** API for structuring, manipulating, and querying data.
 
 CockroachDB is inspired by Google's [Spanner](http://research.google.com/archive/spanner.html) and [F1](http://research.google.com/pubs/pub38125.html) technologies, and the [source code](https://github.com/cockroachdb/cockroach) is freely available.
+
+{{site.data.alerts.callout_success}}
+For a deeper dive into CockroachDB's capabilities and how it fits into the database landscape, take the free [**Intro to Distributed SQL and CockroachDB**](https://university.cockroachlabs.com/courses/course-v1:crl+intro-to-distributed-sql-and-cockroachdb+self-paced/about) course on Cockroach University.
+{{site.data.alerts.end}}
 
 ## When is CockroachDB a good choice?
 
@@ -137,7 +142,7 @@ You can run a secure or insecure CockroachDB cluster. When secure, client/node a
 
 Also, CockroachDB supports common SQL privileges on databases and tables. The `root` user has privileges for all databases, while unique users can be granted privileges for specific statements at the database and table-levels.
 
-For more details, see our [Security Overview](security-overview.html).
+For more details, see our [Security Overview](security-reference/security-overview.html).
 
 ## How does CockroachDB compare to MySQL or PostgreSQL?
 

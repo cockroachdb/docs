@@ -2,9 +2,12 @@
 title: RENAME CONSTRAINT
 summary: The RENAME CONSTRAINT statement changes the name of a constraint on a column.
 toc: true
+docs_area: reference.sql
 ---
 
 The `RENAME CONSTRAINT` [statement](sql-statements.html) changes the name of a constraint on a column.
+
+{% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
 {{site.data.alerts.callout_info}}
 It is not possible to rename a constraint for a column referenced by a view. For more details, see [View Dependencies](views.html#view-dependencies).
@@ -20,7 +23,7 @@ It is not possible to rename a constraint for a column referenced by a view. For
 
 ## Required privileges
 
-The user must have the `CREATE` [privilege](authorization.html#assign-privileges) on the table.
+The user must have the `CREATE` [privilege](security-reference/authorization.html#managing-privileges) on the table.
 
 ## Parameters
 
@@ -90,3 +93,4 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 - [`RENAME DATABASE`](rename-database.html)
 - [`RENAME TABLE`](rename-table.html)
 - [`RENAME COLUMN`](rename-column.html)
+- [Online Schema Changes](online-schema-changes.html)

@@ -2,6 +2,7 @@
 title: CONFIGURE ZONE
 summary: Use the CONFIGURE ZONE statement to add, modify, reset, and remove replication zones.
 toc: true
+docs_area: reference.sql
 ---
 
 `CONFIGURE ZONE` is a subcommand of the `ALTER DATABASE`, `ALTER TABLE`, `ALTER INDEX`, `ALTER PARTITION`, and `ALTER RANGE` statements and is used to add, modify, reset, or remove [replication zones](configure-replication-zones.html) for those objects. To view details about existing replication zones, see [`SHOW ZONE CONFIGURATIONS`](show-zone-configurations.html).
@@ -46,7 +47,7 @@ Adding replication zones for secondary indexes and partitions is an [Enterprise-
 
 ## Required privileges
 
-If the target is a [`system` range](#create-a-replication-zone-for-a-system-range), the [`system` database](show-databases.html#preloaded-databases), or a table in the `system` database, the user must be a member of the [`admin` role](authorization.html#create-and-manage-roles). For all other databases and tables, the user must have been granted either the [`CREATE`](grant.html#supported-privileges) or the [`ZONECONFIG`](grant.html#supported-privileges) privilege on the target database or table.
+If the target is a [`system` range](#create-a-replication-zone-for-a-system-range), the [`system` database](show-databases.html#preloaded-databases), or a table in the `system` database, the user must be a member of the [`admin` role](security-reference/authorization.html#admin-role). For all other databases and tables, the user must have been granted either the [`CREATE`](grant.html#supported-privileges) or the [`ZONECONFIG`](grant.html#supported-privileges) privilege on the target database or table.
 
 ## Parameters
 
@@ -128,4 +129,4 @@ CONFIGURE ZONE 1
 - [`ALTER RANGE`](alter-range.html)
 - [`SHOW JOBS`](show-jobs.html)
 - [Table Partitioning](partitioning.html)
-- [Other SQL Statements](sql-statements.html)
+- [SQL Statements](sql-statements.html)

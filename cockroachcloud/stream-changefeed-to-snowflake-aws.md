@@ -2,11 +2,12 @@
 title: Stream a Changefeed to Snowflake
 summary: Use a CockroachDB Cloud cluster to stream changefeed messages to a Snowflake cluster.
 toc: true
+docs_area: stream_data
 ---
 
 While CockroachDB is an excellent system of record, it also needs to coexist with other systems. For example, you might want to keep your data mirrored in full-text indexes, analytics engines, or big data pipelines.
 
-This page walks you through a demonstration of how to use an [enterprise changefeed](../{{site.versions["stable"]}}/create-changefeed.html) to stream row-level changes to [Snowflake](https://www.snowflake.com/), an online analytical processing (OLAP) database.
+This page walks you through a demonstration of how to use an [{{ site.data.products.enterprise }} changefeed](../{{site.versions["stable"]}}/create-changefeed.html) to stream row-level changes to [Snowflake](https://www.snowflake.com/), an online analytical processing (OLAP) database.
 
 {{site.data.alerts.callout_info}}
 Snowflake is optimized for `INSERT`s and batch rewrites over streaming updates. This means that CockroachDB changefeeds are unable to send `UPDATE`s and `DELETE`s to Snowflake. If this is necessary, additional setup (not covered in this tutorial) can allow entire tables to be replaced in batch.
@@ -20,7 +21,7 @@ Before you begin, make sure you have:
 - Write access to an [AWS S3 bucket](https://s3.console.aws.amazon.com)
 
     {{site.data.alerts.callout_info}}
-    This tutorial uses AWS S3 for cloud storage, but Snowflake also supports [Azure](https://docs.snowflake.net/manuals/user-guide/data-load-snowpipe-auto-azure.html). Snowflake does not support GCS yet.
+    This tutorial uses AWS S3 for cloud storage, but Snowflake also supports [Azure](https://docs.snowflake.net/manuals/user-guide/data-load-snowpipe-auto-azure.html) and [Google Cloud Storage](https://docs.snowflake.com/en/user-guide/data-load-snowpipe-auto-gcs.html).
     {{site.data.alerts.end}}
 
 - [Read and write access](https://docs.snowflake.net/manuals/user-guide/security-access-control-overview.html) to a Snowflake cluster
@@ -43,7 +44,7 @@ If you have not done so already, [create a cluster](create-your-cluster.html).
     If you haven't connected to your {{ site.data.products.dedicated }} cluster before, see [Connect to your {{ site.data.products.dedicated }} Cluster](connect-to-your-cluster.html) for information on how to initially connect.
     {{site.data.alerts.end}}
 
-2. Enable [rangefeeds](../{{site.versions["stable"]}}/stream-data-out-of-cockroachdb-using-changefeeds.html#enable-rangefeeds):
+2. Enable [rangefeeds](../{{site.versions["stable"]}}/use-changefeeds.html#enable-rangefeeds):
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -109,10 +110,9 @@ Back in the built-in SQL shell, [create an enterprise changefeed](../{{site.vers
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE CHANGEFEED FOR TABLE order_alerts
-    INTO 'experimental-s3://changefeed-example?AWS_ACCESS_KEY_ID=<KEY>&AWS_SECRET_ACCESS_KEY=<SECRET_KEY>'
+    INTO 's3://changefeed-example?AWS_ACCESS_KEY_ID={access key ID}&AWS_SECRET_ACCESS_KEY={secret access key}'
     WITH
-        updated,
-        resolved='10s';
+        updated;
 ~~~
 ~~~
         job_id
@@ -121,10 +121,10 @@ Back in the built-in SQL shell, [create an enterprise changefeed](../{{site.vers
 (1 row)
 ~~~
 
-Be sure to replace the placeholders with your AWS key ID and AWS secret key.
+Be sure to replace the placeholders with your AWS access key ID and AWS secret access key. See [Use Cloud Storage for Bulk Operations — Authentication](../{{site.versions["stable"]}}/use-cloud-storage-for-bulk-operations.html#authentication) for more detail on authenticating to Amazon S3.
 
 {{site.data.alerts.callout_info}}
-If your changefeed is running but data is not displaying in your S3 bucket, you might have to [debug your changefeed](../{{site.versions["stable"]}}/stream-data-out-of-cockroachdb-using-changefeeds.html#debug-a-changefeed).
+If your changefeed is running but data is not displaying in your S3 bucket, you might have to [debug your changefeed](../{{site.versions["stable"]}}/monitor-and-debug-changefeeds.html#debug-a-changefeed).
 {{site.data.alerts.end}}
 
 ## Step 7. Insert data into the tables
@@ -145,7 +145,7 @@ If your changefeed is running but data is not displaying in your S3 bucket, you 
 2. Navigate back to the [S3 bucket](https://s3.console.aws.amazon.com/) to confirm that the data is now streaming to the bucket. A new directory should display on the **Overview** tab.
 
     {{site.data.alerts.callout_info}}
-    If your changefeed is running but data is not displaying in your S3 bucket, you might have to [debug your changefeed](../{{site.versions["stable"]}}/stream-data-out-of-cockroachdb-using-changefeeds.html#debug-a-changefeed).
+    If your changefeed is running but data is not displaying in your S3 bucket, you might have to [debug your changefeed](../{{site.versions["stable"]}}/monitor-and-debug-changefeeds.html#debug-a-changefeed).
     {{site.data.alerts.end}}
 
 ## Step 8. Configure Snowflake
@@ -174,9 +174,9 @@ If your changefeed is running but data is not displaying in your S3 bucket, you 
     > CREATE STAGE cdc_stage url='s3://changefeed-example/' credentials=(aws_key_id='<KEY>' aws_secret_key='<SECRET_KEY>') file_format = (type = json);
     ~~~
 
-    Be sure to replace the placeholders with your AWS key ID and AWS secret key.
+    Be sure to replace the placeholders with your AWS access key ID and AWS secret access key.
 
-6. In the Worksheet, create a snowpipe called `cdc-pipe`, which tells Snowflake to auto-ingest data:
+6. In the Worksheet, create a Snowpipe called `cdc-pipe`, which tells Snowflake to auto-ingest data:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -184,17 +184,17 @@ If your changefeed is running but data is not displaying in your S3 bucket, you 
     ~~~
 
     {{site.data.alerts.callout_info}}
-    Currently, auto-ingest in Snowflake only works with AWS and [Azure](https://docs.snowflake.net/manuals/user-guide/data-load-snowpipe-auto-azure.html). Snowflake does not support GCS yet.
+    Auto-ingest in Snowflake works with [AWS](https://docs.snowflake.com/en/user-guide/data-load-snowpipe-auto-s3.html), [Azure](https://docs.snowflake.net/manuals/user-guide/data-load-snowpipe-auto-azure.html), and [Google Cloud Storage](https://docs.snowflake.com/en/user-guide/data-load-snowpipe-auto-gcs.html).
     {{site.data.alerts.end}}
 
-7. In the Worksheet, view the snowpipe:
+7. In the Worksheet, view the Snowpipe:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SHOW PIPES;
     ~~~
 
-8. Copy the **ARN** of the SQS queue for your stage (displays in the **notification_channel** column). You will use this information to [configure the S3 bucket](#step-9-configure-the-s3-bucket).
+8. Copy the **ARN** of the SQS queue for your stage (this displays in the **notification_channel** column). You will use this information to [configure the S3 bucket](#step-9-configure-the-s3-bucket).
 
 ## Step 9. Configure the S3 bucket
 
@@ -216,24 +216,21 @@ If your changefeed is running but data is not displaying in your S3 bucket, you 
     > ALTER PIPE cdc_pipe refresh;
     ~~~
 
-5. To view the data Snowflake, query the `order_alerts` table:
+5. To view the data in Snowflake, query the `order_alerts` table:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT * FROM order_alerts;
     ~~~
 
-    The ingested rows will display in the **Results** panel. It may take a few minutes for the data to load into the Snowflake cluster.
+    The ingested rows will display in the **Results** panel. It may take a few minutes for the data to load into the Snowflake cluster. To check on the progress of data being written to the destination table, see [Snowflake's documentation on querying a stage](https://docs.snowflake.com/en/user-guide/querying-stage.html).
 
 Your changefeed is now streaming to Snowflake.
 
 ## Known limitations
 
 - Snowflake cannot filter streaming updates by table. Because of this, we recommend creating a changefeed that watches only one table.
-- Snowpipe is unaware of CockroachDB resolved timestamps. This means CockroachDB transactions will not be loaded atomically and partial transactions can briefly be returned from Snowflake.
-- Auto-ingest in Snowflake only works with AWS and Azure. Snowflake does not support GCS yet.
+- Snowpipe is unaware of CockroachDB [resolved timestamps](../{{site.versions["stable"]}}/create-changefeed.html#resolved-option). This means CockroachDB transactions will not be loaded atomically and partial transactions can briefly be returned from Snowflake.
 - Snowpipe works best with append-only workloads, as Snowpipe lacks native ETL capabilities to perform updates to data. You may need to pre-process data before uploading it to Snowflake.
 
-### General change data capture known limitations
-
-{% include cockroachcloud/known-limitations/cdc.md %}
+See the [Change Data Capture Overview](../{{site.versions["stable"]}}/change-data-capture-overview.html#known-limitations) for more general changefeed known limitations.

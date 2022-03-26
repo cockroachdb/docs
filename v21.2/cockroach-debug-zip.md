@@ -3,6 +3,7 @@ title: cockroach debug zip
 summary: Learn the commands for collecting debug information from all nodes in your cluster.
 toc: true
 key: debug-zip.html
+docs_area: reference.cli
 ---
 
 The `cockroach debug zip` [command](cockroach-commands.html) connects to your cluster and gathers information from each active node into a single `.zip` file (inactive nodes are not included). For details on the `.zip` contents, see [Files](#files).
@@ -37,13 +38,14 @@ These files can greatly increase the size of the `cockroach debug zip` output. T
 
 The following files collected by `cockroach debug zip`, which are found in the individual node directories, can be filtered using the `--exclude-files`, `--include-files`, `--files-from`, and/or `--files-until` [flags](#flags):
 
-| Information                                      | Filename                                                                             |
-|--------------------------------------------------|--------------------------------------------------------------------------------------|
-| [Log files](configure-logs.html#log-file-naming) | `cockroach-{log-file-group}.{host}.{user}.{start timestamp in UTC}.{process ID}.log` |
-| Goroutine dumps                                  | `goroutine_dump.{date-and-time}.{metadata}.double_since_last_dump.{metadata}.txt.gz` |
-| Heap profiles                                    | `memprof.{date-and-time}.{heapsize}.pprof`                                           |
-| Memory statistics                                | `memstats.{date-and-time}.{heapsize}.txt`                                            |
-| CPU profiles                                     | `cpuprof.{date-and-time}`                                                            |
+| Information                                                                                          | Filename                                                                             |
+|------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------|
+| [Log files](configure-logs.html#log-file-naming)                                                     | `cockroach-{log-file-group}.{host}.{user}.{start timestamp in UTC}.{process ID}.log` |
+| Goroutine dumps                                                                                      | `goroutine_dump.{date-and-time}.{metadata}.double_since_last_dump.{metadata}.txt.gz` |
+| Heap profiles                                                                                        | `memprof.{date-and-time}.{heapsize}.pprof`                                           |
+| Memory statistics                                                                                    | `memstats.{date-and-time}.{heapsize}.txt`                                            |
+| CPU profiles                                                                                         | `cpuprof.{date-and-time}`                                                            |
+| [Active query dumps](cluster-setup-troubleshooting.html#out-of-memory-oom-crash) | `activequeryprof.{date-and-time}.csv`                                                |
 
 The following information is also contained in the `.zip` file, and cannot be filtered:
 
@@ -60,7 +62,6 @@ The following information is also contained in the `.zip` file, and cannot be fi
 - [Cluster Settings](cluster-settings.html)
 - [Metrics](ui-custom-chart-debug-page.html#available-metrics)
 - Problem ranges
-- Thread stack traces (Linux only)
 - CPU profiles
 - A script (`hot-ranges.sh`) that summarizes the hottest ranges (ranges receiving a high number of reads or writes)
 

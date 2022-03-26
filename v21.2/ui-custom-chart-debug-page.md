@@ -2,22 +2,16 @@
 title: Custom Chart Debug Page
 summary: The Custom Chart debug page can be used to create one or multiple custom charts showing any combination of over 200 available metrics.
 toc: true
+docs_area: reference.db_console
 ---
 
-The **Custom Chart** debug page in the DB Console can be used to create one or multiple custom charts showing any combination of over [200 available metrics](#available-metrics).
+The **Custom Chart** debug page in the DB Console lets you create one or multiple custom charts showing any combination of over [200 available metrics](#available-metrics).
 
 The definition of the customized dashboard is encoded in the URL. To share the dashboard with someone, send them the URL. Like any other URL, it can be bookmarked, sit in a pinned tab in your browser, etc.
 
+To view the Custom Chart page, [access the DB Console](ui-overview.html), click **Advanced Debug** In the left-hand navigation bar, and in the **Reports** section select **Custom Time Series Chart**.
 
-## Accessing the **Custom Chart** page
-
-To access the **Custom Chart** debug page, [access the DB Console](ui-overview.html), and either:
-
-- Open <a href="http://localhost:8080/#/debug/chart" data-proofer-ignore>http://localhost:8080/#/debug/chart</a> in your browser (replacing `localhost` and `8080` with your node's host and port).
-
-- Click the gear icon on the left to access the **Advanced Debugging Page**. In the **Reports** section, click **Custom TimeSeries Chart**.
-
-## Using the **Custom Chart** page
+## Use the Custom Chart page
 
 <img src="{{ 'images/v21.2/ui-custom-chart-debug-00.png' | relative_url }}" alt="DB Console" style="border:1px solid #eee;max-width:100%" />
 

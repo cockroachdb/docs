@@ -2,6 +2,7 @@
 title: Client Connection Parameters
 summary: This page describes the parameters used to establish a client connection.
 toc: true
+docs_area: reference.cli
 ---
 
 Client applications, including [`cockroach` client
@@ -96,7 +97,7 @@ CockroachDB supports the following `options` parameters. After the first `option
 
 Parameter | Description
 ----------|-------------
-`--cluster=<cluster name>` | Specifies the cluster name when connecting to [{{ site.data.products.serverless }}](connect-to-the-database-cockroachcloud.html#connect).
+`--cluster=<routing-id>` | Identifies your tenant cluster on a [multi-tenant host](../cockroachcloud/architecture.html#architecture). For example, `funny-skunk-123`.
 `-c <session_variable>=<value>` |  Sets a [session variable](set-vars.html) for the SQL session.
 
 {{site.data.alerts.callout_info}}
@@ -121,6 +122,25 @@ Some client drivers and the `cockroach` commands do not support
 `sslmode=allow` and `sslmode=prefer`. Check the documentation of your
 SQL driver to determine whether these options are supported.
 {{site.data.alerts.end}}
+
+### Convert a URL for different drivers
+
+<span class="version-tag">New in v21.2:</span> The subcommand `cockroach convert-url` converts a connection URL, such as those printed out by [`cockroach start`](cockroach-start.html) or included in the online documentation, to the syntax recognized by various [client drivers](third-party-database-tools.html#drivers). For example:
+
+~~~
+$ ./cockroach convert-url --url "postgres://foo/bar"
+~~~
+
+~~~
+# Connection URL for libpq (C/C++), psycopg (Python), lib/pq & pgx (Go),node-postgres (JS)
+and most pq-compatible drivers:
+  postgresql://root@foo:26257/bar
+# Connection DSN (Data Source Name) for Postgres drivers that accept DSNs - most drivers
+and also ODBC:
+  database=bar user=root host=foo port=26257
+# Connection URL for JDBC (Java and JVM-based languages):
+  jdbc:postgresql://foo:26257/bar?user=root
+~~~
 
 ### Example URL for an insecure connection
 
@@ -254,4 +274,4 @@ cockroach sql --url "postgres://root@servername:26257/mydb?sslmode=disable"
 - [`cockroach` commands](cockroach-commands.html)
 - [Create Security Certificates](cockroach-cert.html)
 - [Secure a Cluster](secure-a-cluster.html)
-- [Create and Manage Users](authorization.html#create-and-manage-users)
+- [Create and Manage Users](security-reference/authorization.html#create-and-manage-users)

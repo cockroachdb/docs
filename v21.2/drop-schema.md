@@ -2,13 +2,16 @@
 title: DROP SCHEMA
 summary: The DROP SCHEMA statement removes a schema and all its objects from a CockroachDB cluster.
 toc: true
+docs_area: reference.sql
 ---
 
- The `DROP SCHEMA` [statement](sql-statements.html) removes a user-defined [schema](sql-name-resolution.html#naming-hierarchy).
+The `DROP SCHEMA` [statement](sql-statements.html) removes a user-defined [schema](sql-name-resolution.html#naming-hierarchy).
+
+{% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
 ## Required privileges
 
-The user must have the `DROP` [privilege](authorization.html#assign-privileges) on the schema and on all tables in the schema. If the user is the owner of the schema, `DROP` privileges are not necessary.
+The user must have the `DROP` [privilege](security-reference/authorization.html#managing-privileges) on the schema and on all tables in the schema. If the user is the owner of the schema, `DROP` privileges are not necessary.
 
 ## Syntax
 
@@ -158,5 +161,5 @@ SQLSTATE: 2BP01
 - [`CREATE SCHEMA`](create-schema.html)
 - [`SHOW SCHEMAS`](show-schemas.html)
 - [`SHOW JOBS`](show-jobs.html)
-- [Other SQL Statements](sql-statements.html)
+- [SQL Statements](sql-statements.html)
 - [Online Schema Changes](online-schema-changes.html)

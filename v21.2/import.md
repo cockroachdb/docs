@@ -2,6 +2,8 @@
 title: IMPORT
 summary: The IMPORT statement imports various types of data into CockroachDB.
 toc: true
+keywords: gin, gin index, gin indexes, inverted index, inverted indexes, accelerated index, accelerated indexes
+docs_area: reference.sql
 ---
 
 The `IMPORT` [statement](sql-statements.html) imports the following types of data into CockroachDB:
@@ -10,7 +12,6 @@ The `IMPORT` [statement](sql-statements.html) imports the following types of dat
 - [CSV/TSV][csv]
 - [Postgres dump files][postgres]
 - [MySQL dump files][mysql]
-- [CockroachDB dump files](cockroach-dump.html)
 - [Delimited data files](#delimited-data-files)
 
 ## Considerations
@@ -19,16 +20,19 @@ The `IMPORT` [statement](sql-statements.html) imports the following types of dat
 
 {% include {{ page.version.version }}/import-table-deprecate.md %}
 
-- `IMPORT` cannot be used with [user-defined types](create-type.html). Use [`IMPORT INTO`](import-into.html) instead.
 - `IMPORT` is a blocking statement. To run an import job asynchronously, use the [`DETACHED`](#options-detached) option.
 - `IMPORT` cannot be used within a [rolling upgrade](upgrade-cockroach-version.html).
 - `IMPORT` cannot directly import data to `REGIONAL BY ROW` tables that are part of [multi-region databases](multiregion-overview.html). <span class="version-tag">New in v21.2:</span> Instead, use [`IMPORT INTO`](import-into.html) which supports importing into `REGIONAL BY ROW` tables.
+
+{{site.data.alerts.callout_info}}
+Optimize import operations in your applications by following our [Import Performance Best Practices](import-performance-best-practices.html).
+{{site.data.alerts.end}}
 
 ## Required privileges
 
 #### Table privileges
 
-The user must have the `CREATE` [privileges](authorization.html#assign-privileges) on the target database.
+The user must have the `CREATE` [privileges](security-reference/authorization.html#managing-privileges) on the target database.
 
 #### Source privileges
 
@@ -144,7 +148,7 @@ Your `IMPORT` statement must reference a `CREATE TABLE` statement representing t
 
 - **Recommended**: Since `IMPORT TABLE` will be deprecated from v21.2, use [`CREATE TABLE`](create-table.html) followed by [`IMPORT INTO`](import-into.html). For an example, see [Import into a new table from a CSV file](import-into.html#import-into-a-new-table-from-a-csv-file).
 
-We also recommend [specifying all secondary indexes you want to use in the `CREATE TABLE` statement](create-table.html#create-a-table-with-secondary-and-inverted-indexes). It is possible to [add secondary indexes later](create-index.html), but it is significantly faster to specify them during import.
+We also recommend [specifying all secondary indexes you want to use in the `CREATE TABLE` statement](create-table.html#create-a-table-with-secondary-and-gin-indexes). It is possible to [add secondary indexes later](create-index.html), but it is significantly faster to specify them during import.
 
 {{site.data.alerts.callout_info}}
  `IMPORT` supports [computed columns](computed-columns.html) for Avro and Postgres dump files only. To import CSV data to a table with a computed column or `DEFAULT` expression, use [`IMPORT INTO`](import-into.html).
@@ -177,6 +181,8 @@ Imported tables are treated as new tables, so you must [`GRANT`](grant.html) pri
 - All nodes are used during the import job, which means all nodes' CPU and RAM will be partially consumed by the `IMPORT` task in addition to serving normal traffic.
 - To improve performance, import at least as many files as you have nodes (i.e., there is at least one file for each node to import) to increase parallelism.
 - To further improve performance, order the data in the imported files by [primary key](primary-key.html) and ensure the primary keys do not overlap between files.
+
+For more detail on optimizing import performance, see [Import Performance Best Practices](import-performance-best-practices.html).
 
 ## Viewing and controlling import jobs
 
@@ -407,17 +413,6 @@ For the command above to succeed, you need to have created the dump file with sp
 If the table schema specifies foreign keys into tables that do not exist yet, the `WITH skip_foreign_keys` shown may be needed. For more information, see the list of [import options](#import-options).
 
 For the command above to succeed, you need to have created the dump file with specific flags to `pg_dump`.  For more information, see [Migrate from Postgres](migrate-from-postgres.html).
-
-### Import a CockroachDB dump file
-
-Cockroach dump files can be imported using the `IMPORT PGDUMP` statement.
-
-{% include copy-clipboard.html %}
-~~~ sql
-> IMPORT PGDUMP 's3://{BUCKET NAME}/{employees-full.sql}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}';
-~~~
-
-For more information, see [SQL Dump (Export)](cockroach-dump.html).
 
 ### Import a MySQL database dump
 
@@ -667,7 +662,6 @@ WITH
 
 The examples below use CSV data, but `row_limit` is also an option for [Avro files](migrate-from-avro.html#step-3-import-the-avro), [delimited data files](#import-a-delimited-data-file), [Postgres dump files](migrate-from-postgres.html#row-limit), and [MySQL dump files](migrate-from-mysql.html#row-limit).
 
-
 {% include copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers (
@@ -748,17 +742,6 @@ If the table schema specifies foreign keys into tables that do not exist yet, th
 
 For the command above to succeed, you need to have created the dump file with specific flags to `pg_dump`.  For more information, see [Migrate from Postgres](migrate-from-postgres.html).
 
-### Import a CockroachDB dump file
-
-Cockroach dump files can be imported using the `IMPORT PGDUMP` statement.
-
-{% include copy-clipboard.html %}
-~~~ sql
-> IMPORT PGDUMP 'azure://{CONTAINER NAME}/{employees.sql}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}';
-~~~
-
-For more information, see [SQL Dump (Export)](cockroach-dump.html).
-
 ### Import a MySQL database dump
 
 {% include copy-clipboard.html %}
@@ -795,7 +778,6 @@ If you want to escape special symbols, use `fields_escaped_by`.
 {{site.data.alerts.end}}
 
 ### Import a table from a delimited data file
-
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -841,7 +823,6 @@ For more information about importing data from Avro, including examples, see [Mi
  The `DETACHED` option allows an import to be run asynchronously, returning the job ID immediately once initiated. You can run imports within transactions by specifying the `DETACHED` option.
 
 The following transactions use CSV data as an example. To use the `DETACHED` option with `IMPORT` in a transaction:
-
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -1091,17 +1072,6 @@ For the commands above to succeed, you need to have created the dump file with s
 If the table schema specifies foreign keys into tables that do not exist yet, the `WITH skip_foreign_keys` shown may be needed. For more information, see the list of [import options](#import-options).
 
 For the command above to succeed, you need to have created the dump file with specific flags to `pg_dump`.  For more information, see [Migrate from Postgres](migrate-from-postgres.html).
-
-### Import a CockroachDB dump file
-
-Cockroach dump files can be imported using the `IMPORT PGDUMP` statement.
-
-{% include copy-clipboard.html %}
-~~~ sql
-> IMPORT PGDUMP 'gs://{BUCKET NAME}/{employees.sql}?AUTH=specified&CREDENTIALS={ENCODED KEY}';
-~~~
-
-For more information, see [SQL Dump (Export)](cockroach-dump.html).
 
 ### Import a MySQL database dump
 

@@ -2,6 +2,7 @@
 title: Take Full and Incremental Backups
 summary: Learn how to back up and restore a CockroachDB cluster.
 toc: true
+docs_area: manage
 ---
 
 Because CockroachDB is designed with high fault tolerance, backups are primarily needed for [disaster recovery](disaster-recovery.html) (i.e., if your cluster loses a majority of its nodes). Isolated issues (such as small-scale node outages) do not require any intervention. However, as an operational best practice, **we recommend taking regular backups of your data**.
@@ -29,36 +30,40 @@ In most cases, **it's recommended to take nightly full backups of your cluster**
 - Restore database(s) from the cluster
 - Restore a full cluster
 
+Backups will export [Enterprise license keys](enterprise-licensing.html) during a [full cluster backup](backup.html#backup-a-cluster). When you [restore](restore.html) a full cluster with an Enterprise license, it will restore the Enterprise license of the cluster you are restoring from.
+
 {% include {{ page.version.version }}/backups/file-size-setting.md %}
 
 ### Take a full backup
 
 To do a cluster backup, use the [`BACKUP`](backup.html) statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP INTO '{destination}';
 ~~~
 
 If it's ever necessary, you can use the [`RESTORE`][restore] statement to restore a table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
-> RESTORE TABLE bank.customers FROM '{destination}';
+> RESTORE TABLE bank.customers FROM '{subdirectory}' IN '{destination}';
 ~~~
+
+To view the available backup subdirectories, use [`SHOW BACKUPS`](show-backup.html).
 
 Or to restore a  database:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
-> RESTORE DATABASE bank FROM '{destination}';
+> RESTORE DATABASE bank FROM '{subdirectory}' IN '{destination}';
 ~~~
 
 Or to restore your full cluster:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
-> RESTORE FROM '{destination}';
+> RESTORE FROM '{subdirectory}' IN '{destination}';
 ~~~
 
 {{site.data.alerts.callout_info}}
@@ -85,14 +90,14 @@ You can configure garbage collection periods using the `ttlseconds` [replication
 
 Periodically run the [`BACKUP`][backup] command to take a full backup of your cluster:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP INTO '{destination}';
 ~~~
 
 Then, create nightly incremental backups based off of the full backups you've already created. To append an incremental backup to the most recent full backup created in the given destination, use `LATEST`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP INTO LATEST IN '{destination}';
 ~~~
@@ -101,7 +106,7 @@ For an example on how to specify the destination of an incremental backup, see [
 
 If it's ever necessary, you can then use the [`RESTORE`][restore] command to restore your cluster, database(s), and/or table(s). Restoring from incremental backups requires previous full and incremental backups. To restore from a destination containing the full backup, as well as the appended incremental backups:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > RESTORE FROM '{subdirectory}' IN '{destination}';
 ~~~
@@ -114,7 +119,7 @@ If it's ever necessary, you can then use the [`RESTORE`][restore] command to res
 
 To explicitly control where your incremental backups go, use the [`INTO {subdirectory} IN (destination)`](backup.html#synopsis) syntax:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP DATABASE bank INTO '{subdirectory}' IN '{destination}' \
     AS OF SYSTEM TIME '-10s' \
@@ -143,7 +148,7 @@ To take incremental backups, you need an [Enterprise license](enterprise-licensi
 
 Both core and Enterprise users can use backup scheduling for full backups of clusters, databases, or tables. To create schedules that only take full backups, include the `FULL BACKUP ALWAYS` clause. For example, to create a schedule for taking full cluster backups:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE SCHEDULE core_schedule_label
   FOR BACKUP INTO 's3://{BUCKET NAME}/{PATH}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
@@ -166,7 +171,7 @@ Both core and Enterprise users can use backup scheduling for full backups of clu
 
 Both core and Enterprise users can use backup scheduling for full backups of clusters, databases, or tables. To create schedules that only take full backups, include the `FULL BACKUP ALWAYS` clause. For example, to create a schedule for taking full cluster backups:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE SCHEDULE core_schedule_label
   FOR BACKUP INTO 'azure://{CONTAINER NAME}/{PATH}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}'
@@ -189,7 +194,7 @@ Both core and Enterprise users can use backup scheduling for full backups of clu
 
 Both core and Enterprise users can use backup scheduling for full backups of clusters, databases, or tables. To create schedules that only take full backups, include the `FULL BACKUP ALWAYS` clause. For example, to create a schedule for taking full cluster backups:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE SCHEDULE core_schedule_label
   FOR BACKUP INTO 'gs://{BUCKET NAME}/{PATH}?AUTH=specified&CREDENTIALS={ENCODED KEY}'
@@ -223,7 +228,6 @@ To take incremental backups, backups with revision history, locality-aware backu
 - [Take and Restore Encrypted Backups](take-and-restore-encrypted-backups.html)
 - [Take and Restore Locality-aware Backups](take-and-restore-locality-aware-backups.html)
 - [Take Backups with Revision History and Restore from a Point-in-time](take-backups-with-revision-history-and-restore-from-a-point-in-time.html)
-- [`SQL DUMP`](cockroach-dump.html)
 - [`IMPORT`](migration-overview.html)
 - [Use the Built-in SQL Client](cockroach-sql.html)
 - [Other Cockroach Commands](cockroach-commands.html)

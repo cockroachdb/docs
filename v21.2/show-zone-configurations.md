@@ -2,6 +2,7 @@
 title: SHOW ZONE CONFIGURATIONS
 summary: Use the SHOW ZONE CONFIGURATIONS statement to list details about existing replication zones.
 toc: true
+docs_area: reference.sql
 ---
 
 Use the `SHOW ZONE CONFIGURATIONS` [statement](sql-statements.html) to view details about existing [replication zones](configure-replication-zones.html).
@@ -14,7 +15,7 @@ Use the `SHOW ZONE CONFIGURATIONS` [statement](sql-statements.html) to view deta
 
 ## Required privileges
 
-No [privileges](authorization.html#assign-privileges) are required to list replication zones.
+No [privileges](security-reference/authorization.html#managing-privileges) are required to list replication zones.
 
 ## Parameters
 

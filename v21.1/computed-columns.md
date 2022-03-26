@@ -19,7 +19,6 @@ Computed columns are especially useful when used with [`JSONB`](jsonb.html) colu
 Computed columns:
 
 - Cannot be used to generate other computed columns.
-- Cannot reference a [foreign key](foreign-key.html).
 - Behave like any other column, with the exception that they cannot be written to directly.
 - Are mutually exclusive with [`DEFAULT`](default-value.html).
 
@@ -31,6 +30,8 @@ Virtual computed columns:
 - Cannot be a [foreign key](foreign-key.html) reference.
 - Cannot be stored in indexes.
 - Can be index columns.
+
+Once a computed column is created, you cannot directly alter the formula. To make modifications to a computed column's formula, see the [example](#alter-the-formula-for-a-computed-column) below.
 
 ## Creation
 
@@ -83,6 +84,10 @@ For more information, see [`ADD COLUMN`](add-column.html).
 ### Convert a computed column into a regular column
 
 {% include {{ page.version.version }}/computed-columns/convert-computed-column.md %}
+
+### Alter the formula for a computed column
+
+{% include {{ page.version.version }}/computed-columns/alter-computed-column.md %}
 
 ## See also
 

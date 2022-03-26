@@ -8,9 +8,9 @@ This page has instructions for handling errors and troubleshooting problems that
 
 ## Troubleshooting query problems
 
-If you are not satisfied with your SQL query performance, follow the instructions in [Make Queries Fast][fast] to be sure you are avoiding common performance problems like full table scans, missing indexes, etc.
+If you are not satisfied with your SQL query performance, follow the instructions in [Optimize Query Performance][fast] to be sure you are avoiding common performance problems like full table scans, missing indexes, etc.
 
-If you have already optimized your SQL queries as described in [Make Queries Fast][fast] and are still having issues such as:
+If you have already optimized your SQL queries as described in [Optimize Query Performance][fast] and are still having issues such as:
 
 - Hanging or "stuck" queries
 - Queries that are slow some of the time (but not always)
@@ -89,7 +89,7 @@ Other common tasks:
 - [Delete Data](delete-data.html)
 - [Run Multi-Statement Transactions](run-multi-statement-transactions.html)
 - [Identify slow queries](query-behavior-troubleshooting.html#identify-slow-queries)
-- [Make Queries Fast][fast]
+- [Optimize Query Performance][fast]
 - [Hello World Example apps](hello-world-example-apps.html)
 
 <!-- Reference Links -->

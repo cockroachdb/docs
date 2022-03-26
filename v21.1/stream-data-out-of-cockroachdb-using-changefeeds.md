@@ -21,6 +21,14 @@ The main feature of CDC is the changefeed, which targets an allowlist of tables,
 | Watches one or multiple tables in a comma-separated list. Emits every change to a "watched" row as a record. | Watches one or multiple tables in a comma-separated list. Emits every change to a "watched" row as a record in a <br> configurable format (`JSON` or Avro) to a configurable sink  ([Kafka](https://kafka.apache.org/)). |
 | [`CREATE`](#create-a-changefeed-core) changefeed and cancel by closing the connection. | Manage changefeed with [`CREATE`](#create), [`PAUSE`](#pause), [`RESUME`](#resume), and [`CANCEL`](#cancel), as well as [monitor](#monitor-a-changefeed) and [debug](#debug-a-changefeed). |
 
+## Considerations
+
+- It is necessary to [enable rangefeeds](#enable-rangefeeds) for changefeeds to work.
+- Changefeeds do not share internal buffers, so each running changefeed will increase total memory usage. To watch multiple tables, we recommend creating a changefeed with a comma-separated list of tables.
+- Many DDL queries (including [`TRUNCATE`](truncate.html), [`DROP TABLE`](drop-table.html), and queries that add a column family) will cause errors on a changefeed watching the affected tables. You will need to [start a new changefeed](create-changefeed.html#start-a-new-changefeed-where-another-ended).
+- Partial or intermittent sink unavailability may impact changefeed stability. If a sink is unavailable, messages can't send, which means that a changefeed's high-water mark timestamp is at risk of falling behind the cluster's [garbage collection window](configure-replication-zones.html#replication-zone-variables). Throughput and latency can be affected once the sink is available again. However, [ordering guarantees](stream-data-out-of-cockroachdb-using-changefeeds.html#ordering-guarantees) will still hold for as long as a changefeed [remains active](stream-data-out-of-cockroachdb-using-changefeeds.html#monitor-a-changefeed).
+- When an [`IMPORT INTO`](import-into.html) statement is run, any current changefeed jobs targeting that table will fail.
+
 ## Enable rangefeeds
 
 Changefeeds connect to a long-lived request (i.e., a rangefeed), which pushes changes as they happen. This reduces the latency of row changes, as well as reduces transaction restarts on tables being watched by a changefeed for some workloads.
@@ -149,6 +157,10 @@ The changefeed emits duplicate records 1, 2, and 3 before outputting the records
 [2]	{"id": 2, "likes_treats": true, "name": "Carl"}
 [3]	{"id": 3, "likes_treats": true, "name": "Ernie"}
 ~~~
+
+{{site.data.alerts.callout_info}}
+Changefeeds will emit [`NULL` values](null-handling.html) for [`VIRTUAL` computed columns](computed-columns.html) and not the column's computed value.
+{{site.data.alerts.end}}
 
 ## Changefeeds on regional by row tables
 
