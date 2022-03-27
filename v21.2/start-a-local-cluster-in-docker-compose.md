@@ -27,51 +27,13 @@ When using cockroachdb need minimal tree nodes, for use cluster.
 2. Create docker-compose file
     {% include copy-clipboard.html %}
     ~~~ yml
-   version: '3.5'
-
-    services:
-
-    roach1:
-        image: cockroachdb/cockroach:v21.1.11
-        container_name: roach1
-        command: start --insecure --join=roach1,roach2,roach3  --accept-sql-without-tls 
-        volumes:
-        - "${PWD}/cockroach-data/roach1:/cockroach/cockroach-data"
-        networks:
-        cockroachdb_net:
-            aliases:
-            - roach1
-
-    roach2:
-        image: cockroachdb/cockroach:v21.1.11
-        container_name: roach2
-        command: start --insecure --join=roach1,roach2,roach3   --accept-sql-without-tls 
-        volumes:
-        - "${PWD}/cockroach-data/roach2:/cockroach/cockroach-data"
-        networks:
-        cockroachdb_net:
-            aliases:
-            - roach2
-
-    roach3:
-        image: cockroachdb/cockroach:v21.1.11
-        container_name: roach3
-        command: start --insecure --join=roach1,roach2,roach3  --accept-sql-without-tls 
-        volumes:
-        - "${PWD}/cockroach-data/roach3:/cockroach/cockroach-data"
-        networks:
-        cockroachdb_net:
-            aliases:
-            - roach3
-        
-    networks:
-        cockroachdb_net:
-            driver: bridge
+    {% remote_include https://raw.githubusercontent.com/devalexandre/cockroachdb/master/docker-compose.yml %}
     ~~~
 
 After run , output is this information appeared for roach2 and roach3 as well.
 
     ~~~ shell
+
     * WARNING: neither --listen-addr nor --advertise-addr was specified.
 
     roach1     | * The server will advertise "9a6077013273" to other nodes, is this routable?
@@ -96,13 +58,6 @@ After run , output is this information appeared for roach2 and roach3 as well.
     roach1     | nodeID:              2
 
     ~~~
-### Note
-
-for init all cluster exec
-
-~~~ shell
- docker exec -it roach1 cockroach init --insecure
-~~~
 
 ## Step 2. Create Loadbalance for Cluster with Haproxy
 haproxy is an open source load balancer and very easy to use
@@ -110,37 +65,13 @@ haproxy is an open source load balancer and very easy to use
 1. Create a haproxy.cfg in root project folder
     {% include copy-clipboard.html %}
     ~~~ shell
-        global
-        maxconn 4096
-
-        defaults
-            mode                tcp
-            # Timeout values should be configured for your specific use.
-            # See: https://cbonte.github.io/haproxy-dconv/1.8/configuration.html#4-timeout%20connect
-            timeout connect     10s
-            timeout client      1m
-            timeout server      1m
-            # TCP keep-alive on client side. Server already enables them.
-            option              clitcpka
-
-        listen psql
-            bind :26257
-            mode tcp
-            balance roundrobin
-            option httpchk GET /health?ready=1
-            server cockroach1 roach1:26257 check port 8080
-            server cockroach2 roach2:26257 check port 8080
-            server cockroach3 roach3:26257 check port 8080
-
-        listen cockroach-ui
-            bind :8080
-            mode tcp
-            balance roundrobin
-            option httpchk GET /health
-            server roach1 roach1:8080 check port 8080
-            server roach2 roach2:8080 check port 8080
-            server roach3 roach3:8080 check port 8080
+    {% remote_include https://raw.githubusercontent.com/devalexandre/cockroachdb/master/haproxy/haproxy.cfg %}
     ~~~
+  Create a image for to use the config 
+   ~~~ shell
+    {% remote_include https://raw.githubusercontent.com/devalexandre/cockroachdb/master/haproxy/Dockerfile %}
+    ~~~
+  
  Now use localhost:26257 for connect in database
 
  Now open [http://localhost:8080](http://localhost:8080)
