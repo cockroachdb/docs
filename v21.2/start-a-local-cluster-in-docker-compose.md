@@ -19,7 +19,6 @@ For use with docker-compose need data folder, where will be saved node files, wh
 
 When using cockroachdb need minimal tree nodes, for use cluster.
     {% include copy-clipboard.html %}
-
     ~~~ shell
     $ mkdir -p cockroach-data/roach1 cockroach-data/roach2 cockroach-data/roach3
     ~~~
@@ -33,7 +32,6 @@ When using cockroachdb need minimal tree nodes, for use cluster.
 After run , output is this information appeared for roach2 and roach3 as well.
 
     ~~~ shell
-
     * WARNING: neither --listen-addr nor --advertise-addr was specified.
 
     roach1     | * The server will advertise "9a6077013273" to other nodes, is this routable?
@@ -56,21 +54,22 @@ After run , output is this information appeared for roach2 and roach3 as well.
     roach1     | status:              restarted pre-existing node
     roach1     | clusterID:           88f38c62-1e8e-4a3b-a7ad-09bf2970bd06
     roach1     | nodeID:              2
-
     ~~~
 
 ## Step 2. Create Loadbalance for Cluster with Haproxy
 haproxy is an open source load balancer and very easy to use
 
 1. Create a haproxy.cfg in root project folder
-    {% include copy-clipboard.html %}
+   
+   {% include copy-clipboard.html %}
     ~~~ shell
     {% remote_include https://raw.githubusercontent.com/devalexandre/cockroachdb/master/haproxy/haproxy.cfg %}
     ~~~
   Create a image for to use the config 
+   
    ~~~ shell
-    {% remote_include https://raw.githubusercontent.com/devalexandre/cockroachdb/master/haproxy/Dockerfile %}
-    ~~~
+   {% remote_include https://raw.githubusercontent.com/devalexandre/cockroachdb/master/haproxy/Dockerfile %}
+   ~~~
   
  Now use localhost:26257 for connect in database
 
