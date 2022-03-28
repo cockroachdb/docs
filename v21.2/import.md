@@ -21,7 +21,7 @@ The `IMPORT` [statement](sql-statements.html) imports the following types of dat
 
 - `IMPORT` is a blocking statement. To run an import job asynchronously, use the [`DETACHED`](#options-detached) option.
 - `IMPORT` cannot be used within a [rolling upgrade](upgrade-cockroach-version.html).
-- As of v21.2, `IMPORT TABLE ... CREATE USING` and `IMPORT TABLE` with `CSV`, `DELIMITED`, `PGCOPY`, or `AVRO` data types are **deprecated**. Instead, use `CREATE TABLE` and `IMPORT INTO`; see this [example](import-into.html#import-into-a-new-table-from-a-csv-file) for more detail.
+- As of v21.2, certain `IMPORT TABLE` statements that defined the table schema inline are **deprecated**. These include running `IMPORT TABLE ... CREATE USING` and `IMPORT TABLE` with any non-bundle format (`CSV`, `DELIMITED`, `PGCOPY`, or `AVRO`) data types. Instead, use `CREATE TABLE` and `IMPORT INTO`; see this [example](import-into.html#import-into-a-new-table-from-a-csv-file) for more detail.
 - `IMPORT` can only import data to a new table. For information on how to import into existing tables, see [`IMPORT INTO`](import-into.html).
 - For instructions and working examples on how to migrate data from other databases, see the [Migration Overview](migration-overview.html).
 - `IMPORT` cannot directly import data to `REGIONAL BY ROW` tables that are part of [multi-region databases](multiregion-overview.html). <span class="version-tag">New in v21.2:</span> Instead, use [`IMPORT INTO`](import-into.html) which supports importing into `REGIONAL BY ROW` tables.

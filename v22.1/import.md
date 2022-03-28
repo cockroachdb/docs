@@ -25,7 +25,7 @@ To import data into a new table, use [`CREATE TABLE`](create-table.html) followe
 
 - `IMPORT` is a blocking statement. To run an import job asynchronously, use the [`DETACHED`](#options-detached) option.
 - `IMPORT` cannot be used within a [rolling upgrade](upgrade-cockroach-version.html).
-- As of v22.1, `IMPORT TABLE ... CREATE USING` and `IMPORT TABLE` with `CSV`, `DELIMITED`, `PGCOPY`, or `AVRO` data types are **not** supported. Instead, use `CREATE TABLE` and `IMPORT INTO`; see this [example](import-into.html#import-into-a-new-table-from-a-csv-file) for more detail.
+- Certain `IMPORT TABLE` statements that defined the table schema inline are **not** supported in v22.1 and later versions. These include running `IMPORT TABLE ... CREATE USING` and `IMPORT TABLE` with any non-bundle format (`CSV`, `DELIMITED`, `PGCOPY`, or `AVRO`) data types. Instead, use `CREATE TABLE` and `IMPORT INTO`; see this [example](import-into.html#import-into-a-new-table-from-a-csv-file) for more detail.
 - For instructions and working examples on how to migrate data from other databases, see the [Migration Overview](migration-overview.html).
 - `IMPORT` cannot directly import data to `REGIONAL BY ROW` tables that are part of [multi-region databases](multiregion-overview.html). Instead, use [`IMPORT INTO`](import-into.html) which supports importing into `REGIONAL BY ROW` tables.
 
