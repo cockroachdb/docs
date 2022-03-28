@@ -100,6 +100,6 @@ For more information, see [`cockroach import`](cockroach-import.html).
 - [`cockroach userfile list`](cockroach-userfile-list.html)
 - [`cockroach userfile get`](cockroach-userfile-get.html)
 - [`cockroach userfile delete`](cockroach-userfile-delete.html)
-- [Other Cockroach Commands](cockroach-commands.html)
+- [`cockroach` Commands Overview](cockroach-commands.html)
 - [`IMPORT`](import.html)
 - [`IMPORT INTO`](import-into.html)

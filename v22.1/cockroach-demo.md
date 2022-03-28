@@ -670,7 +670,7 @@ In addition to using one of the [pre-loaded dataset](#datasets), you can create 
 
 - [`cockroach sql`](cockroach-sql.html)
 - [`cockroach workload`](cockroach-workload.html)
-- [Other Cockroach Commands](cockroach-commands.html)
+- [`cockroach` Commands Overview](cockroach-commands.html)
 - [SQL Statements](sql-statements.html)
 - [Learn CockroachDB SQL](learn-cockroachdb-sql.html)
 - [MovR: Vehicle-Sharing App](movr.html)

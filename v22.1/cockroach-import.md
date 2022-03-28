@@ -107,7 +107,7 @@ successfully imported table test_table from pgdump file /Users/maxroach/Desktop/
 
 ## See also
 
-- [Other Cockroach Commands](cockroach-commands.html)
+- [`cockroach` Commands Overview](cockroach-commands.html)
 - [`IMPORT`](import.html)
 - [`IMPORT INTO`](import-into.html)
 - [Migrate from Postgres](migrate-from-postgres.html)
