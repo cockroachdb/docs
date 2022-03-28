@@ -12,7 +12,6 @@ The `IMPORT` [statement](sql-statements.html) imports the following types of dat
 - [CSV/TSV][csv]
 - [PostgreSQL dump files][postgres]
 - [MySQL dump files][mysql]
-- [CockroachDB dump files](cockroach-dump.html)
 - [Delimited data files](#delimited-data-files)
 
 {% include {{ page.version.version }}/import-table-deprecate.md %}
@@ -416,17 +415,6 @@ If the table schema specifies foreign keys into tables that do not exist yet, th
 
 For this command to succeed, you need to have created the dump file with specific flags to `pg_dump`.  For more information, see [Migrate from Postgres](migrate-from-postgres.html).
 
-### Import a CockroachDB dump file
-
-Cockroach dump files can be imported using the `IMPORT PGDUMP` statement.
-
-{% include copy-clipboard.html %}
-~~~ sql
-> IMPORT PGDUMP 's3://{BUCKET NAME}/{employees-full.sql}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}';
-~~~
-
-For more information, see [SQL Dump (Export)](cockroach-dump.html).
-
 ### Import a MySQL database dump
 
 {% include copy-clipboard.html %}
@@ -754,17 +742,6 @@ For the commands above to succeed, you need to have created the dump file with s
 If the table schema specifies foreign keys into tables that do not exist yet, the `WITH skip_foreign_keys` shown may be needed. For more information, see the list of [import options](#import-options).
 
 For this command to succeed, you need to have created the dump file with specific flags to `pg_dump`.  For more information, see [Migrate from Postgres](migrate-from-postgres.html).
-
-### Import a CockroachDB dump file
-
-Cockroach dump files can be imported using the `IMPORT PGDUMP` statement.
-
-{% include copy-clipboard.html %}
-~~~ sql
-> IMPORT PGDUMP 'azure://{CONTAINER NAME}/{employees.sql}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}';
-~~~
-
-For more information, see [SQL Dump (Export)](cockroach-dump.html).
 
 ### Import a MySQL database dump
 
@@ -1096,17 +1073,6 @@ For the commands above to succeed, you need to have created the dump file with s
 If the table schema specifies foreign keys into tables that do not exist yet, the `WITH skip_foreign_keys` shown may be needed. For more information, see the list of [import options](#import-options).
 
 For this command to succeed, you need to have created the dump file with specific flags to `pg_dump`.  For more information, see [Migrate from Postgres](migrate-from-postgres.html).
-
-### Import a CockroachDB dump file
-
-Cockroach dump files can be imported using the `IMPORT PGDUMP` statement.
-
-{% include copy-clipboard.html %}
-~~~ sql
-> IMPORT PGDUMP 'gs://{BUCKET NAME}/{employees.sql}?AUTH=specified&CREDENTIALS={ENCODED KEY}';
-~~~
-
-For more information, see [SQL Dump (Export)](cockroach-dump.html).
 
 ### Import a MySQL database dump
 

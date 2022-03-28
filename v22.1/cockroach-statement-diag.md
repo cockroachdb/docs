@@ -143,6 +143,4 @@ $ cockroach statement-diag cancel 603811900498804737 --insecure
 
 - [DB Console Statement Details page](ui-statements-page.html#statement-details-page)
 - [`EXPLAIN ANALYZE (DEBUG)`](explain-analyze.html#explain-analyze-debug)
-- [SQL Statements](sql-statements.html)
-- [Learn CockroachDB SQL](learn-cockroachdb-sql.html)
-- [Other Cockroach Commands](cockroach-commands.html)
+- [`cockroach` Commands Overview](cockroach-commands.html)

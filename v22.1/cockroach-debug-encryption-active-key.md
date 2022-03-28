@@ -41,5 +41,5 @@ AES128_CTR:be235c29239aa84a48e5e1874d76aebf7fb3c1bdc438cec2eb98de82f06a57a0
 ## See also
 
 - [File an Issue](file-an-issue.html)
-- [Other Cockroach Commands](cockroach-commands.html)
+- [`cockroach` Commands Overview](cockroach-commands.html)
 - [Troubleshooting Overview](troubleshooting-overview.html)

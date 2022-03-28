@@ -57,14 +57,14 @@ Cockroach Labs maintains <a href="https://github.com/cockroachdb/cockroach">Cock
   <td>&nbsp;</td>
   <td>✓</td>
   <td>✓</td>
-  <td>Client identity authentication using TLS 1.2/1.3</td>
+  <td>SQL client identity authentication using TLS 1.2/1.3</td>
  </tr>
  <tr>
   <td>&nbsp;</td>
-  <td>&nbsp;</td>
-  <td>&nbsp;</td>
   <td>✓</td>
-  <td>Client identity authentication with third-party <a href="../sso.html">Single Sign On (SSO)</a> using <a href="https://openid.net/connect/">OpenID Connect OIDC</a></td>
+  <td>✓</td>
+  <td>✓</td>
+  <td>Web console authentication with third-party <a href="../sso.html">Single Sign On (SSO)</a> using <a href="https://openid.net/connect/">OpenID Connect OIDC</a></td>
  </tr>
  <tr>
   <td>&nbsp;</td>
