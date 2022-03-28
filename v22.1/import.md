@@ -70,8 +70,8 @@ Key                 | <div style="width:130px">Context</div> | Value            
 --------------------+-----------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 `decompress`           | General         | The decompression codec to be used: `gzip`, `bzip`, `auto`, or `none`. **Default:** `'auto'`, which guesses based on file extension (`.gz`, `.bz`, `.bz2`). `none` disables decompression.
 `row_limit`           | General         | The number of rows to import. Useful for doing a test run of an import and finding errors quickly. This option will import the first *n* rows from each table in the dump file.
-`skip_foreign_keys`    | `PGDUMP`, `MYSQLDUMP` | Ignore foreign key constraints in the dump file's DDL. **Default:** Off. May be necessary to import a table with unsatisfied foreign key constraints from a full database dump.
-`max_row_size`         | `PGDUMP`        | Override limit on line size. **Default:** 0.5MB. This setting may need to be tweaked if your PostgreSQL dump file has extremely long lines, for example as part of a `COPY` statement.
+`skip_foreign_keys`    | `PGDUMP`, `MYSQLDUMP` | Ignore foreign key constraints in the dump file's DDL. **Default:** `Off`. May be necessary to import a table with unsatisfied foreign key constraints from a full database dump.
+`max_row_size`         | `PGDUMP`        | Override limit on line size. **Default:** `0.5MB`. This setting may need to be tweaked if your PostgreSQL dump file has extremely long lines, for example as part of a `COPY` statement.
 `ignore_unsupported_statements` | `PGDUMP`  |  Ignore SQL statements in the dump file that are unsupported by CockroachDB.
 `log_ignored_statements` | `PGDUMP` |  Log unsupported statements when using `ignore_unsupported_statements` to a specified destination (i.e., [cloud storage](use-cloud-storage-for-bulk-operations.html) or [userfile storage](use-userfile-for-bulk-operations.html)).
 <a name="options-detached"></a>`DETACHED`             | N/A            |  When an import runs in `DETACHED` mode, it will execute asynchronously and the job ID will be returned immediately without waiting for the job to finish. Note that with `DETACHED` specified, further job information and the job completion status will not be returned. For more on the differences between the returned job data, see the [example](import.html#run-an-import-within-a-transaction) below. To check on the job status, use the [`SHOW JOBS`](show-jobs.html) statement. <br><br>To run an import within a [transaction](transactions.html), use the `DETACHED` option.
@@ -286,7 +286,7 @@ IMPORT PGDUMP 'azure://{CONTAINER NAME}/{employees.sql}?AZURE_ACCOUNT_NAME={ACCO
     WITH ignore_unsupported_statements;
 ~~~
 
-For the command above to succeed, you need to have created the dump file with specific flags to `pg_dump`, and use the `WITH ignore_unsupported_statements` clause. For more information, see [Migrate from Postgres](migrate-from-postgres.html).
+For this command to succeed, you need to have created the dump file with specific flags to `pg_dump`, and use the `WITH ignore_unsupported_statements` clause. For more information, see [Migrate from Postgres](migrate-from-postgres.html).
 
 ### Import a table from a PostgreSQL database dump
 

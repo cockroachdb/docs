@@ -143,7 +143,7 @@ The following options are available to `IMPORT PGDUMP`:
 
 ### Max row size
 
-The `max_row_size` option is used to override limits on line size. **Default:** 0.5MB. This setting may need to be tweaked if your Postgres dump file has extremely long lines, for example as part of a `COPY` statement.
+The `max_row_size` option is used to override limits on line size. **Default:** `0.5MB`. This setting may need to be tweaked if your Postgres dump file has extremely long lines, for example as part of a `COPY` statement.
 
 Example usage:
 
@@ -165,7 +165,7 @@ Example usage:
 
 ### Ignore unsupported statements
 
- The [`ignore_unsupported_statements` option](import.html#import-options) specifies whether the import will ignore unsupported statements in the `PGDUMP` file. **Default: false**.
+ The [`ignore_unsupported_statements` option](import.html#import-options) specifies whether the import will ignore unsupported statements in the `PGDUMP` file. **Default:** `false`.
 
 If `ignore_unsupported_statements` is omitted, the import will fail if it encounters a statement that is unsupported by CockroachDB. Use `ignore_unsupported_statements` with `log_ignored_statements` to log unsupported statements.
 
