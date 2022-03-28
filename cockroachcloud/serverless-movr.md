@@ -10,7 +10,7 @@ This tutorial shows you how to intialize and run Movr on a Serverless cluster to
 
 ## Before you begin
 
-Make sure you have already [installed COckroachDB](../install-cockroachdb.html).
+Make sure you have already [installed CockroachDB](../{{site.versions["stable"]}}/install-cockroachdb.html).
 
 ## Step 1. Create a {{ site.data.products.serverless }} cluster
 
