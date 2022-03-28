@@ -168,7 +168,7 @@ ALTER CHANGEFEED {job ID} SET resolved='10s', envelope=key_only;
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-ALTER CHANGEFEED 747047191994826753
+ALTER CHANGEFEED {job ID}
     SET sink = 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={ACCESS_KEY_ID}&AWS_SECRET_ACCESS_KEY={SECRET_ACCESS_KEY}'
     UNSET resolved;
 ~~~
@@ -183,7 +183,7 @@ To remove options from a changefeed, use `UNSET`:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-ALTER CHANGEFEED 747047191994826753 {job ID} UNSET resolved, diff;
+ALTER CHANGEFEED {job ID} UNSET resolved, diff;
 ~~~
 
 ## Known Limitations
