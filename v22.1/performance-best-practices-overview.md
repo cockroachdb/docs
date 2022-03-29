@@ -322,7 +322,7 @@ Transactions that operate on the same range but _different index keys_ are limit
 
 Hot spots can occur when a range is indexed on a column of data that is sequential in nature such that all incoming writes to the range will be the last (or first) item in the index and appended to the end of the range. As a result, the system cannot find a point in the range that evenly divides the traffic, and the range cannot benefit from [load-based splitting](load-based-splitting.html), creating a hot spot on the single range.
 
-Read hot spots can occur if you perform lots of scans of an portion of a table index or a single key.
+Read hot spots can occur if you perform lots of scans of a portion of a table index or a single key.
 
 ### Find hot spots
 
