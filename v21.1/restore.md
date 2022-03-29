@@ -4,7 +4,7 @@ summary: Restore your CockroachDB cluster to a cloud storage services such as AW
 toc: true
 ---
 
-The `RESTORE` [statement](sql-statements.html) restores your cluster's schemas and data from [a `BACKUP`](backup.html) stored on services such as AWS S3, Google Cloud Storage, NFS, or HTTP storage.
+The `RESTORE` [statement](sql-statements.html) restores your cluster's schemas and data from [a `BACKUP`](backup.html) stored on services such as AWS S3, Google Cloud Storage, or NFS.
 
 Because CockroachDB is designed with high fault tolerance, restores are designed primarily for disaster recovery, i.e., restarting your cluster if it loses a majority of its nodes. Isolated issues (such as small-scale node outages) do not require any intervention.
 
@@ -28,7 +28,7 @@ You can restore:
 
 ### Source privileges
 
-{% include {{ page.version.version }}/misc/source-privileges.md %}
+{% include {{ page.version.version }}/misc/restore-source-privileges.md %}
 
 ## Synopsis
 
@@ -66,6 +66,11 @@ You can control `RESTORE` behavior using any of the following in the `restore_op
 CockroachDB uses the URL provided to construct a secure API call to the service you specify. The URL structure depends on the type of file storage you are using. For more information, see the following:
 
 - [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html)
+
+    {{site.data.alerts.callout_info}}
+    HTTP storage is not supported for `BACKUP` and `RESTORE`.
+    {{site.data.alerts.end}}
+
 - [Use a Local File Server for Bulk Operations](use-a-local-file-server-for-bulk-operations.html)
 
 ## Functional details
