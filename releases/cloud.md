@@ -20,7 +20,11 @@ As of March 24, 2022, new {{ site.data.products.dedicated }} clusters and all {{
 
 <h3>Console changes</h3>
 
+<<<<<<< HEAD
 - You no longer need to download a CA certificate to [connect to a {{ site.data.products.db }}](../cockroachcloud/connect-to-your-cluster.html) cluster running [v21.2.5](v21.2.html) or later.
+=======
+- You no longer need to download a CA certificate to [connect to a {{ site.data.products.db }}](../cockroachcloud/connect-to-your-cluster.html) cluster running [v21.2.5](v21.2.5) or later.
+>>>>>>> 2d94162e6a0fc8f28e9c3a9c59199438b3ff2fc3
 - When [creating a {{ site.data.products.dedicated }} cluster](../cockroachcloud/create-your-cluster.html), the approximate monthly cost is now displayed in the **Summary** sidebar along with the hourly cost.
 
 ## March 7, 2022
