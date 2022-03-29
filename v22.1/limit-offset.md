@@ -1,5 +1,5 @@
 ---
-title: Limiting Query Results
+title: Limit Query Results
 summary: LIMIT and OFFSET restrict an operation to a few row.
 toc: true
 docs_area: reference.sql

@@ -32,8 +32,8 @@ Parameter | Description
 `common_table_expr` | See [Common Table Expressions](common-table-expressions.html).
 `select_clause` | A valid [selection clause](#selection-clauses), either simple or using [set operations](#set-operations).
 `sort_clause` | An optional `ORDER BY` clause. See [Ordering Query Results](order-by.html) for details.
-`limit_clause` | An optional `LIMIT` clause. See [Limiting Query Results](limit-offset.html) for details.
-`offset_clause` | An optional `OFFSET` clause. See [Limiting Query Results](limit-offset.html) for details.
+`limit_clause` | An optional `LIMIT` clause. See [Limit Query Results](limit-offset.html) for details.
+`offset_clause` | An optional `OFFSET` clause. See [Limit Query Results](limit-offset.html) for details.
 `for_locking_clause` |  The `FOR UPDATE` locking clause is used to order transactions by controlling concurrent access to one or more rows of a table.  For more information, see [`SELECT FOR UPDATE`](select-for-update.html).
 
 The optional `LIMIT` and `OFFSET` clauses can appear in any order, but if also present, must appear **after** `ORDER BY`.
@@ -449,4 +449,4 @@ For example:
 - [`SELECT FOR UPDATE`](select-for-update.html)
 - [Table Expressions](table-expressions.html)
 - [Ordering Query Results](order-by.html)
-- [Limiting Query Results](limit-offset.html)
+- [Limit Query Results](limit-offset.html)
