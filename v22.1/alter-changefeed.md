@@ -16,7 +16,7 @@ docs_area: reference.sql
 
 The statement will return a job ID and the new job description.
 
-It is necessary to **pause** a changefeed before running an `ALTER CHANGEFEED` on it. For an example of creating a changefeed and then modifying it with `ALTER CHANGEFEED`, see [Modify a changefeed](#modify-a-changefeed).
+It is necessary to **pause** a changefeed before running the `ALTER CHANGEFEED` statement against it. For an example of creating a changefeed and then modifying it with `ALTER CHANGEFEED`, see [Modify a changefeed](#modify-a-changefeed).
 
 ## Synopsis
 
@@ -31,10 +31,10 @@ It is necessary to **pause** a changefeed before running an `ALTER CHANGEFEED` o
 Parameter                               | Description
 ----------------------------------------+-------------------------------------------------------------------------------------------------------------------------
 `job ID`                               | Include the `job ID` to specify the changefeed job to modify.
-`WITH`                                 | Use `ADD <tables> WITH initial_scan` to perform a scan when adding a target table or multiple target tables. By default, there is not an initial scan after an `ALTER CHANGEFEED` statement regardless of whether [`initial_scan`](create-changefeed.html#initial-scan) was set with the **original** `CREATE CHANGEFEED` statement. It is also possible to explicitly state `ADD <tables> WITH no_initial_scan` (although the default makes this unnecessary). See further details in the [Options](#scan-details) section.
+`WITH`                                 | Use `ADD {tables} WITH initial_scan` to perform a scan when adding a target table or multiple target tables. By default, there is not an initial scan after an `ALTER CHANGEFEED` statement regardless of whether [`initial_scan`](create-changefeed.html#initial-scan) was set with the **original** `CREATE CHANGEFEED` statement. It is also possible to explicitly state `ADD {tables} WITH no_initial_scan` (although the default makes this unnecessary). See further details in the [Options](#scan-details) section.
 `ADD`                                  | Add a new target table to a changefeed. See the [example](#add-targets-to-a-changefeed).
 `DROP`                                 | Drop a target table from a changefeed. It is **not** possible to drop all target tables from a changefeed. See the [example](#drop-targets-from-a-changefeed).
-`SET`                                  | Set new options on a changefeed. `SET` uses the [`CREATE CHANGEFEED`](create-changefeed.html#options) options. The following [Options](#options) section provides more detail on these. **Note:** There are some [exceptions](#option-exceptions) to options compatible with `ALTER CHANGEFEED`. To set options, see the [example](#set-options-on-a-changefeed).
+`SET`                                  | Set new options on a changefeed. `SET` uses the [`CREATE CHANGEFEED`](create-changefeed.html#options) options. The following [Options](#options) section provides more detail on these. **Note:** There are some [exceptions](#option-exceptions) to compatibel options with `ALTER CHANGEFEED`. To set options, see the [example](#set-options-on-a-changefeed).
 `UNSET`                                | Remove options that were set with the original `CREATE CHANGEFEED` statement. See the [example](#unset-options-on-a-changefeed).
 
 When the listed parameters are used together in the same statement, all changes will apply at the same time—there is not a particular order of operations.
@@ -45,20 +45,20 @@ Consider the following when specifying options with `ALTER CHANGEFEED`:
 
 - You can set a different [sink URI](changefeed-sinks.html#sink-uri) for an existing changefeed with the `sink` option. It is **not** possible to change the sink type. For example, you can use `SET sink = 'gs://{BUCKET NAME}?AUTH=IMPLICIT'` to use a different Google Cloud Storage bucket. However, you cannot use the `sink` option to move to Amazon S3 (`s3://`) or Kafka (`kafka://`). See the [Set options on a changefeed](#set-options-on-a-changefeed) example.
 
-- <a name="option-exceptions"></a> The [`CREATE CHANGEFEED`](create-changefeed.html#options) options are compatible with `SET`/`UNSET`. This excludes the following options, which you **cannot** use in an `ALTER CHANGEFEED` statement:
+- <a name="option-exceptions"></a> The majority of [`CREATE CHANGEFEED`](create-changefeed.html#options) options are compatible with `SET`/`UNSET`. This excludes the following options, which you **cannot** use in an `ALTER CHANGEFEED` statement:
   - [`cursor`](create-changefeed.html#cursor-option)
   - `end_time`
-  - `initial_scan_only` <!--TODO These options have not been released yet (should be in the next one)-->
+  - `initial_scan_only` <!--TODO These latter two options have not been released yet (should be in the next one)-->
 
-- <a name="scan-details"></a> To use `initial_scan`or `no_initial_scan` with `ALTER CHANGEFEED`, it is necessary to define a `WITH` clause. This will set these options on a specific table when the table (or tables) is included as a newly added target:
+- <a name="scan-details"></a> To use `initial_scan` or `no_initial_scan` with `ALTER CHANGEFEED`, it is necessary to define a `WITH` clause when running `ADD`. This will set these options on the specific table(s):
 
     ~~~ sql
-    ALTER CHANGEFEED {job ID} ADD movr.rides WITH initial_scan SET updated UNSET resolved;
+    ALTER CHANGEFEED {job ID} ADD movr.rides, movr.vehicles WITH initial_scan SET updated UNSET resolved;
     ~~~
 
-    Explicitly adding the `initial_scan` option will trigger an initial scan on the newly added table. Even though the default behavior during an `ALTER CHANGEFEED` statement is that there will be no initial scan, you can still explicitly define that there should be no initial scan by adding the `no_initial_scan` option in the same way. The changefeed does not track the application of this option post-scan. This means that you will not see the option listed in output or after a `SHOW CHANGEFEED JOB` statament.
+    Explicitly adding the `initial_scan` option will trigger an initial scan on the newly added table. Even though the default behavior during an `ALTER CHANGEFEED` statement is that there will be no initial scan, you can still explicitly define that there should be no initial scan by adding the `no_initial_scan` option in the same way. The changefeed does not track the application of this option post scan. This means that you will not see the option listed in output or after a `SHOW CHANGEFEED JOB` statement.
 
-## Required Privileges
+## Required privileges
 
 To alter a changefeed, the user must be a member of the `admin` role or have the [`CREATECHANGEFEED`](create-user.html#create-a-user-that-can-control-changefeeds) parameter set.
 
@@ -67,6 +67,10 @@ To alter a changefeed, the user must be a member of the `admin` role or have the
 ### Modify a changefeed
 
 To use the `ALTER CHANGEFEED` statement to modify a changefeed, it is necessary to first pause the running changefeed. The following example demonstrates creating a changefeed, pausing the changefeed, modifying it, and then resuming the changefeed.
+
+{{site.data.alerts.callout_info}}
+For more information on enabling and using changefeeds, see [Use Changefeeds](use-changefeeds.html).
+{{site.data.alerts.end}}
 
 1. First, create the changefeed. This example changefeed will emit change messages to a cloud storage sink on two watched tables. The emitted messages will include the [`resolved`](create-changefeed.html#resolved-option), [`updated`](create-changefeed.html#updated-option), and [`schema_change_policy`](create-changefeed.html#schema-policy) options:
 
@@ -189,7 +193,7 @@ To remove options from a changefeed, use `UNSET`:
 ALTER CHANGEFEED {job ID} UNSET resolved, diff;
 ~~~
 
-## Known Limitations
+## Known limitations
 
 - The `SHOW CHANGEFEED JOB` output after an `ALTER CHANGEFEED` statement will show the implicit options that CockroachDB uses to create the changefeed internally. [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/78420)
 - It is necessary to pause the changefeed before performing any `ALTER CHANGEFEED` statement. [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/77171)
