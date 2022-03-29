@@ -6,7 +6,7 @@ referral_id: docs_serverless_movr
 docs_area: get_started
 ---
 
-This tutorial shows you how to intialize and run Movr on a Serverless cluster to show how to estimate RU usage over a period of time to see if your max spend is sufficient.
+This tutorial shows you how to initialize and run the MovR workload on a {{ site.data.products.serverless }} cluster, then use your Request Unit consumption data to estimate a sufficient budget for your cluster.
 
 ## Before you begin
 
@@ -24,58 +24,59 @@ Make sure you have already [installed CockroachDB](../{{site.versions["stable"]}
 
 Load the dataset using the SQL connection string you copied in [Step 2](#step-2-set-up-your-cluster-connection):
 
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach workload init movr \
-    'postgresql://<username>:<password>@serverless-host>:26257/movr?sslmode=verify-full&options=--cluster%3D<routing-id>'
-    ~~~
-    
-    Where:
-    - `<username>` is the SQL user. By default, this is your {{ site.data.products.db }} account username.
-    - `<password>` is the password for the SQL user. The password will be shown only once in the **Connection info** dialog after creating the cluster.
-    - `<serverless-host>` is the hostname of the {{ site.data.products.serverless }} cluster.
-    - `<routing-id>` identifies your tenant cluster on a [multi-tenant host](https://www.cockroachlabs.com/docs/cockroachcloud/architecture.html#architecture). For example, `funny-skunk-123`.
+  {% include copy-clipboard.html %}
+  ~~~ shell
+  $ cockroach workload init movr \
+  'postgresql://<username>:<password>@serverless-host>:26257/movr?sslmode=verify-full&options=--cluster%3D<routing-id>'
+  ~~~
+
+  Where:
+  
+  - `<username>` is the SQL user. By default, this is your {{ site.data.products.db }} account username.
+  - `<password>` is the password for the SQL user. The password will be shown only once in the **Connection info** dialog after creating the cluster.
+  - `<serverless-host>` is the hostname of the {{ site.data.products.serverless }} cluster.
+  - `<routing-id>` identifies your tenant cluster on a [multi-tenant host](https://www.cockroachlabs.com/docs/cockroachcloud/architecture.html#architecture). For example, `funny-skunk-123`.
 
 ## Step 4. Run the workload
 
 Run the `movr` workload for 1 minute using the same SQL connection string as before:
 
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach workload run movr \
-    --duration=1m \
-    'postgresql://<username>:<password>@serverless-host>:26257/movr?sslmode=verify-full&options=--cluster%3D<routing-id>'
-    ~~~
+  {% include copy-clipboard.html %}
+  ~~~ shell
+  $ cockroach workload run movr \
+  --duration=1m \
+  'postgresql://<username>:<password>@serverless-host>:26257/movr?sslmode=verify-full&options=--cluster%3D<routing-id>'
+  ~~~
 
-    You'll see per-operation statistics print to standard output every second:
+  You'll see per-operation statistics print to standard output every second:
 
-    ~~~
-    _elapsed___errors__ops/sec(inst)___ops/sec(cum)__p50(ms)__p95(ms)__p99(ms)_pMax(ms)
-        1.0s        0           31.9           32.0      0.5      0.6      1.4      1.4 addUser
-        1.0s        0            6.0            6.0      1.2      1.4      1.4      1.4 addVehicle
-        1.0s        0           10.0           10.0      2.2      6.3      6.3      6.3 applyPromoCode
-        1.0s        0            2.0            2.0      0.5      0.6      0.6      0.6 createPromoCode
-        1.0s        0            9.0            9.0      0.9      1.6      1.6      1.6 endRide
-        1.0s        0         1407.5         1407.8      0.3      0.5      0.7      4.1 readVehicles
-        1.0s        0           27.0           27.0      2.1      3.1      4.7      4.7 startRide
-        1.0s        0           86.8           86.9      4.7      8.4     11.5     15.2 updateActiveRides
-        2.0s        0           26.0           29.0      0.5      1.1      1.4      1.4 addUser
-        2.0s        0            8.0            7.0      1.2      2.8      2.8      2.8 addVehicle
-        2.0s        0            2.0            6.0      2.6      2.8      2.8      2.8 applyPromoCode
-        2.0s        0            0.0            1.0      0.0      0.0      0.0      0.0 createPromoCode
-        2.0s        0            6.0            7.5      0.8      1.7      1.7      1.7 endRide
-        2.0s        0         1450.4         1429.1      0.3      0.6      0.9      2.6 readVehicles
-        2.0s        0           17.0           22.0      2.1      3.3      5.5      5.5 startRide
-        2.0s        0           59.0           72.9      6.3     11.5     11.5     14.2 updateActiveRides
-    ...
-    ~~~
+  ~~~
+  _elapsed___errors__ops/sec(inst)___ops/sec(cum)__p50(ms)__p95(ms)__p99(ms)_pMax(ms)
+      1.0s        0           31.9           32.0      0.5      0.6      1.4      1.4 addUser
+      1.0s        0            6.0            6.0      1.2      1.4      1.4      1.4 addVehicle
+      1.0s        0           10.0           10.0      2.2      6.3      6.3      6.3 applyPromoCode
+      1.0s        0            2.0            2.0      0.5      0.6      0.6      0.6 createPromoCode
+      1.0s        0            9.0            9.0      0.9      1.6      1.6      1.6 endRide
+      1.0s        0         1407.5         1407.8      0.3      0.5      0.7      4.1 readVehicles
+      1.0s        0           27.0           27.0      2.1      3.1      4.7      4.7 startRide
+      1.0s        0           86.8           86.9      4.7      8.4     11.5     15.2 updateActiveRides
+      2.0s        0           26.0           29.0      0.5      1.1      1.4      1.4 addUser
+      2.0s        0            8.0            7.0      1.2      2.8      2.8      2.8 addVehicle
+      2.0s        0            2.0            6.0      2.6      2.8      2.8      2.8 applyPromoCode
+      2.0s        0            0.0            1.0      0.0      0.0      0.0      0.0 createPromoCode
+      2.0s        0            6.0            7.5      0.8      1.7      1.7      1.7 endRide
+      2.0s        0         1450.4         1429.1      0.3      0.6      0.9      2.6 readVehicles
+      2.0s        0           17.0           22.0      2.1      3.3      5.5      5.5 startRide
+      2.0s        0           59.0           72.9      6.3     11.5     11.5     14.2 updateActiveRides
+  ...
+  ~~~
 
-    After the specified duration (1 minute in this case), the workload will stop and you'll see totals printed to standard output:
+  After the specified duration (1 minute in this case), the workload will stop and you'll see totals printed to standard output:
 
-    ~~~
-    _elapsed___errors_____ops(total)___ops/sec(cum)__avg(ms)__p50(ms)__p95(ms)__p99(ms)_pMax(ms)__result
-       60.0s        0          85297         1421.6      0.7      0.3      2.6      7.1     30.4
-    ~~~
+  ~~~
+  _elapsed___errors_____ops(total)___ops/sec(cum)__avg(ms)__p50(ms)__p95(ms)__p99(ms)_pMax(ms)__result
+     60.0s        0          85297         1421.6      0.7      0.3      2.6      7.1     30.4
+  ~~~
     
 ## Step 5. Analyze your usage
 
@@ -88,6 +89,9 @@ Run the `movr` workload for 1 minute using the same SQL connection string as bef
 convert minutes (19444) to days (13.5)
 about 2 weeks of running the movr workload before you get throttled
 
+## Next steps
+
+To estimate an actual budget for your cluster, you should run your real workload and gather actual usage data. You can always [edit your spend limit](serverless-cluster-management.html) if your initial estimate turns out to be too high or too low.
 
 ## See also
 
