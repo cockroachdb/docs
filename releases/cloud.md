@@ -13,14 +13,14 @@ Get future release notes emailed to you:
 {% include marketo.html %}
 
 {{site.data.alerts.callout_version}}
-As of January 12, 2021, new {{ site.data.products.dedicated }} clusters and all {{ site.data.products.serverless }} clusters are running CockroachDB [v21.2.4](v21.2.html#v21-2-4).
+As of March 24, 2022, new {{ site.data.products.dedicated }} clusters and all {{ site.data.products.serverless }} clusters are running CockroachDB [v21.2.7](v21.2.html).
 {{site.data.alerts.end}}
 
 ## March 7, 2022
 
 <h3>Console changes</h3>
 
-- The [**Cluster overview**](../cockroachcloud/cluster-overview-page.html) page now includes a **Databases** section, which shows your databases, tables, indexes, and grants.
+- {{ site.data.products.db }} clusters now have a **Databases** page in the Console, which shows your databases, tables, indexes, and grants.
 - When creating or editing a SQL user, passwords are now generated and saved automatically when users click the **Generate and save password** button. Previously, users had to enter passwords manually and remember to save them.
 - {{ site.data.products.dedicated }} users can now [restore](../cockroachcloud/backups-page.html) databases configured for multiple regions.
 

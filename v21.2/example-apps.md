@@ -61,7 +61,7 @@ Note that tools with [**community-level** support](community-tooling.html) have 
 | [pg](https://rubygems.org/gems/pg)                        | Full           | [Simple CRUD](build-a-ruby-app-with-cockroachdb.html)
 | [ActiveRecord](https://rubygems.org/gems/activerecord)    | Full           | [Simple CRUD](build-a-ruby-app-with-cockroachdb-activerecord.html)
 
-## C#
+## C# 
 
 | Driver/ORM Framework                                      | Support level  | Example apps                                           |
 |-----------------------------------------------------------+----------------+--------------------------------------------------------|
@@ -71,7 +71,7 @@ Note that tools with [**community-level** support](community-tooling.html) have 
 
 | Driver/ORM Framework                           | Support level  | Example apps                                           |
 |------------------------------------------------+----------------+--------------------------------------------------------|
-| [Rust-Postgres](https://github.com/sfackler/rust-postgres) | Community      | [Simple CRUD](build-a-rust-app-with-cockroachdb.html)
+| [Rust-Postgres](https://github.com/sfackler/rust-postgres) | Beta      | [Simple CRUD](build-a-rust-app-with-cockroachdb.html)
 
 
 ## See also

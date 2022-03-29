@@ -125,6 +125,18 @@
               ]
             },
             {
+              "title": "Netlify",
+              "urls": [
+                "/${VERSION}/deploy-app-netlify.html"
+              ]
+            },
+            {
+              "title": "Vercel",
+              "urls": [
+                "/${VERSION}/deploy-app-vercel.html"
+              ]
+            },
+            {
               "title": "Serverless Function Best Practices",
               "urls": [
                 "/${VERSION}/serverless-function-best-practices.html"
@@ -145,7 +157,7 @@
           ]
         },
         {
-          "title": "Product FAQs",
+          "title": "CockroachDB FAQs",
           "urls": [
             "/${VERSION}/frequently-asked-questions.html"
           ]

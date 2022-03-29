@@ -61,6 +61,7 @@ This "conversational" design means that there is no way for the server to always
 - [ABORT_REASON_ABORT_SPAN](#abort_reason_abort_span)
 - [ABORT_REASON_NEW_LEASE_PREVENTS_TXN](#abort_reason_new_lease_prevents_txn)
 - [ABORT_REASON_TIMESTAMP_CACHE_REJECTED](#abort_reason_timestamp_cache_rejected)
+- [injected by `inject_retry_errors_enabled` session variable](#injected-by-inject_retry_errors_enabled-session-variable)
 
 ### RETRY_WRITE_TOO_OLD
 
@@ -91,7 +92,7 @@ The `RETRY_SERIALIZABLE` error occurs in the following cases:
 
 2. When a [high-priority transaction](transactions.html#transaction-priorities) _A_ does a read that runs into a write intent from another lower-priority transaction _B_, and some other transaction _C_ writes to a key that _B_ has already read. Transaction _B_ will get this error when it tries to commit, because _A_ has already read some of the data touched by _B_ and returned results to the client, and _C_ has written data previously read by _B_.
 
-3. When a transaction _A_ is forced to refresh (i.e., change its timestamp) due to hitting the maximum [_closed timestamp_](architecture/transaction-layer.html#closed-timestamps) interval (closed timestamps enable [Follower Reads](follower-reads.html#how-follower-reads-work) and [Change Data Capture (CDC)](change-data-capture-overview.html)). This can happen when transaction _A_ is a long-running transaction, and there is a write by another transaction to data that _A_ has already read. If this is the cause of the error, the solution is to increase the `kv.closed_timestamp.target_duration` setting to a higher value. Unfortunately, there is no indication from this error code that a too-low closed timestamp setting is the issue. Therefore, you may need to rule out cases 1 and 2 (or experiment with increasing the closed timestamp interval, if that is possible for your application - see the note below).
+3. When a transaction _A_ is forced to refresh (i.e., change its timestamp) due to hitting the maximum [_closed timestamp_](architecture/transaction-layer.html#closed-timestamps) interval (closed timestamps enable [Follower Reads](follower-reads.html#how-stale-follower-reads-work) and [Change Data Capture (CDC)](change-data-capture-overview.html)). This can happen when transaction _A_ is a long-running transaction, and there is a write by another transaction to data that _A_ has already read. If this is the cause of the error, the solution is to increase the `kv.closed_timestamp.target_duration` setting to a higher value. Unfortunately, there is no indication from this error code that a too-low closed timestamp setting is the issue. Therefore, you may need to rule out cases 1 and 2 (or experiment with increasing the closed timestamp interval, if that is possible for your application - see the note below).
 
 _Action_:
 
@@ -176,7 +177,7 @@ This error occurs in the cases described below.
 
 2. When a [high-priority transaction](transactions.html#transaction-priorities) _A_ does a read that runs into a write intent from another lower-priority transaction _B_. Transaction _B_ may get this error when it tries to commit, because _A_ has already read some of the data touched by _B_ and returned results to the client.
 
-3. When a transaction _A_ is forced to refresh (change its timestamp) due to hitting the maximum [_closed timestamp_](architecture/transaction-layer.html#closed-timestamps) interval (closed timestamps enable [Follower Reads](follower-reads.html#how-follower-reads-work) and [Change Data Capture (CDC)](change-data-capture-overview.html)). This can happen when transaction _A_ is a long-running transaction, and there is a write by another transaction to data that _A_ has already read.
+3. When a transaction _A_ is forced to refresh (change its timestamp) due to hitting the maximum [_closed timestamp_](architecture/transaction-layer.html#closed-timestamps) interval (closed timestamps enable [Follower Reads](follower-reads.html#how-stale-follower-reads-work) and [Change Data Capture (CDC)](change-data-capture-overview.html)). This can happen when transaction _A_ is a long-running transaction, and there is a write by another transaction to data that _A_ has already read.
 
 _Action_:
 
@@ -273,6 +274,22 @@ The `ABORT_REASON_TIMESTAMP_CACHE_REJECTED` error occurs when the timestamp cach
 _Action_:
 
 Retry transaction _A_ as described in [client-side retry handling](transactions.html#client-side-intervention).
+
+### injected by `inject_retry_errors_enabled` session variable
+
+```
+ TransactionRetryWithProtoRefreshError: injected by `inject_retry_errors_enabled` session variable
+```
+
+_Description_:
+
+<span class="version-tag">New in v22.1:</span> When the `inject_retry_errors_enabled` [session variable](set-vars.html) is set to `true`, any statement (with the exception of [`SET` statements](set-vars.html)) executed in the session inside of an explicit transaction will return this error.
+
+For more details, see [Testing transaction retry logic](transactions.html#testing-transaction-retry-logic).
+
+_Action_:
+
+To turn off error injection, set the `inject_retry_errors_enabled` session variable to `false`.
 
 ## See also
 

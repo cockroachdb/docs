@@ -79,7 +79,7 @@ To follow along with the examples below:
 
 ### Create a database with the replica placement policy set to restricted
 
-If you know at table creation time that you'd like to set the table's replica placement policy to ["restricted"](#parameters-restricted), you can do so in a [`CREATE TABLE`](create-table.html) statement as shown below:
+If you know at database creation time that you'd like to set the database's replica placement policy to ["restricted"](#parameters-restricted), you can do so in a [`CREATE DATABASE`](create-database.html) statement as shown below:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
