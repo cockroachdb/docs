@@ -78,7 +78,7 @@ Run the `movr` workload for 1 minute using the same SQL connection string as bef
      60.0s        0          85297         1421.6      0.7      0.3      2.6      7.1     30.4
   ~~~
     
-## Step 5. Analyze your usage
+## Step 5. Calculate your budget
 
 1. In the {{ site.data.products.db }} Console, **Close** the **Connection info** dialog to return to your cluster's [**Overview** page](cluster-overview-page.html).
 
