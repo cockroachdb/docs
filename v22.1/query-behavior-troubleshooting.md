@@ -60,6 +60,8 @@ You can look more closely at the behavior of a statement by visualizing a statem
 
     <img src="{{ 'images/v22.1/jaeger-trace-transaction-contention.png' | relative_url }}" alt="Jaeger Trace Log Messages" style="border:1px solid #eee;max-width:100%" />
 
+<a id="query-is-always-slow"></a>
+
 ### Queries are always slow
 
 If you have consistently slow queries in your cluster, use the [Statement Details](ui-statements-page.html#statement-details-page) page to drill down to an individual statement and [collect diagnostics](ui-statements-page.html#diagnostics) for the statement. A diagnostics bundle contains a record of transaction events across nodes for the SQL statement.
