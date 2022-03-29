@@ -98,9 +98,9 @@ Throughput is affected by the disk I/O, CPU usage, and network latency. Use the 
 
 ## Single hot node
 
-A hot node is one that has much higher resource usage than other nodes. To determine if you have a hot node in your cluster, [access the DB Console](ui-overview.html#db-console-access) and check the following:
+A *hot node* is one that has much higher resource usage than other nodes. To determine if you have a hot node in your cluster, [access the DB Console](ui-overview.html#db-console-access) and check the following:
 
-- Click **Metrics** and navigate to the following graphs. Hover over each of the following graphs to see the per-node values of the metrics. If one of the nodes has a higher value, you have a hot node in your cluster.
+- Click **Metrics** and navigate to the following graphs. Hover over each graph to see the per-node values of the metrics. If one of the nodes has a higher value, you have a hot node in your cluster.
   - [**Replication** dashboard](ui-replication-dashboard.html) > **Average Queries per Store** graph
   - [**Overview** dashboard](ui-overview-dashboard.html) > **Service Latency** graph
   - [**Hardware** dashboard](ui-hardware-dashboard.html) > **CPU Percent** graph
