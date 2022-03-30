@@ -190,6 +190,120 @@ Cluster info
 ~~~
 </section>
 
+## Use a SQL client with a cluster using ccloud cluster sql
+
+Use the `ccloud cluster sql` command to start a CockroachDB SQL shell connection to the specified cluster using the cluster ID. If you haven't created a SQL user for the specified cluster, you will be prompted to create a new user and set the user password.
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+ccloud cluster sql 041d4c6b-69b9-4121-9c5a-8dd6ffd6b73d
+~~~
+
+~~~
+∙∙∙ Retrieving cluster info...
+∙∙∙ Retrieving SQL user list...
+No SQL users found. Create one now: y
+Create a new SQL user:
+Username: user
+Password: ****************
+∙∙∙ Creating SQL user...
+Success! Created SQL user
+ name: user
+ cluster: 041d4c6b-69b9-4121-9c5a-8dd6ffd6b73d
+Starting CockroachDB SQL shell...
+#
+# Welcome to the CockroachDB SQL shell.
+# All statements must be terminated by a semicolon.
+# To exit, type: \q.
+#
+# Client version: CockroachDB CCL v21.2.5 (x86_64-apple-darwin19, built 2022/02/07 21:04:05, go1.16.6)
+# Server version: CockroachDB CCL v21.2.4-1-g70835279ac (x86_64-unknown-linux-gnu, built 2022/02/03 22:31:25, go1.16.6)
+
+warning: server version older than client! proceed with caution; some features may not be available.
+
+# Cluster ID: 041d4c6b-69b9-4121-9c5a-8dd6ffd6b73d
+#
+# Enter \? for a brief introduction.
+#
+user@free-tier7.gcp-us-central1.crdb.io:26257/defaultdb>
+~~~
+
+## Get the connection information for your cluster using ccloud cluster sql
+
+Use the `ccloud cluster sql` command to get connection information for the specified cluster using the cluster ID.
+
+To get the [connection URL](../{{site.versions["stable"]}}/connection-parameters.html#connect-using-a-url), use the `--connection-url` option.
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+ccloud cluster sql --connection-url 041d4c6b-69b9-4121-9c5a-8dd6ffd6b73d
+~~~
+
+<section class="filter-content" markdown="1" data-scope="serverless">
+
+~~~
+∙∙∙ Retrieving cluster info...
+postgresql://free-tier7.gcp-us-central1.crdb.io:26257/defaultdb?options=--cluster%3Ddim-dog-1567&sslmode=verify-full&sslrootcert=%2FUsers%2Fuser%2F.postgresql%2Froot.crt
+~~~
+
+</section>
+
+<section class="filter-content" markdown="1" data-scope="dedicated">
+
+~~~
+∙∙∙ Retrieving cluster info...
+postgresql://dim-dog-5bct.gcp-us-east4.crdb.io:26257/defaultdb?sslmode=verify-full&sslrootcert=%2FUsers%2Fuser%2FLibrary%2FCockroachCloud%2Fcerts%2Fdim-dog-ca.crt
+~~~
+
+</section>
+
+To get the individual connection parameters, use the `--connection-params` option.
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+ccloud cluster sql --connection-params 041d4c6b-69b9-4121-9c5a-8dd6ffd6b73d
+~~~
+
+<section class="filter-content" markdown="1" data-scope="serverless">
+
+~~~
+Connection parameters
+ Database:  defaultdb
+ Host:      free-tier7.gcp-us-central1.crdb.io
+ Options:   --cluster=dim-dog-1567
+ Port:      26257
+~~~
+
+</section>
+
+<section class="filter-content" markdown="1" data-scope="dedicated">
+
+~~~
+∙∙∙ Retrieving cluster info...
+Connection parameters
+ Database:  defaultdb
+ Host:      dim-dog-5bct.gcp-us-east4.crdb.io
+ Port:      26257
+~~~
+
+</section>
+
+## Create a SQL user using ccloud cluster user create
+
+Use the `ccloud cluster user create` command to create a new SQL user for the specified cluster.
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+ccloud cluster user create maxroach 041d4c6b-69b9-4121-9c5a-8dd6ffd6b73d
+~~~
+
+{% comment %}
+~~~
+Password: ****************
+∙∙● Creating SQL user...
+~~~
+{% endcomment %}
+
 ## Delete a cluster using ccloud cluster delete
 
 Use the `ccloud cluster delete` command to delete the specified cluster using the cluster ID.
