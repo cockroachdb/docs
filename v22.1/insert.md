@@ -79,17 +79,16 @@ When generating and retrieving unique IDs, use the `RETURNING` clause with `INSE
 ### Bulk inserts
 
 - **Existing table**
-    - **Multiple row inserts**: Do not use large batches of 100,000 rows or more. Instead, experimentally determine the optimal batch size for your application by monitoring the performance for different batch sizes (10, 100, 1000) rows. Once you determine the best size, batch them in one [multi-row `INSERT`](#insert-multiple-rows-into-an-existing-table) statement; do not include multi-row `INSERT`s within an explicit transaction.
 
-        Large multi-row `INSERT`s can lead to long-running transactions that result in [transaction retry errors](transaction-retry-error-reference.html). If a multi-row `INSERT` results in an error code [`40001` with the message `"transaction deadline exceeded"`](transaction-retry-error-reference.html#retry_commit_deadline_exceeded), Cockroach Labs recommends that you break up the `INSERT` into smaller batches.
+    - Do not use large batches of 100,000 rows or more.
 
-    - **Single row inserts**: In some cases, for example, when a table has no secondary indexes, single row `INSERT`s may perform best in terms of total system throughput. Therefore, you should also test with single row batches.
+    - Large multi-row `INSERT`s can lead to long-running transactions that result in [transaction retry errors](transaction-retry-error-reference.html). If a multi-row `INSERT` results in an error code [`40001` with the message `"transaction deadline exceeded"`](transaction-retry-error-reference.html#retry_commit_deadline_exceeded), Cockroach Labs recommends that you break up the `INSERT` into smaller batches.
 
-      {{site.data.alerts.callout_success}}
-      You can also use the [`IMPORT INTO`](import-into.html) statement to bulk-insert CSV data into an existing table.
-      {{site.data.alerts.end}}
+        Experimentally determine the optimal batch size for your application by monitoring the performance for different batch sizes (1, 10, 100, 1000) rows in an implicit transaction. In some cases, for example, when a table has no secondary indexes, single row `INSERT`s may perform best in terms of total system throughput. Once you determine the best size, batch inserts into one [multi-row `INSERT`](#insert-multiple-rows-into-an-existing-table) statement in an implicit transaction; do not include multi-row `INSERT`s within an explicit transaction.
 
-- **New table**: the [`IMPORT`](import.html) statement performs better than `INSERT`.
+    - You can also use the [`IMPORT INTO`](import-into.html) statement to bulk-insert CSV data into an existing table.
+
+- **New table**: Cockroach Labs recommends that you use the [`IMPORT`](import.html) statement as it performs better than `INSERT`.
 
 ## Examples
 
@@ -170,7 +169,7 @@ If you do not list column names, the statement will use the columns of the table
 
 ### Insert multiple rows into an existing table
 
-Multi-row inserts are faster than multiple single-row `INSERT` statements. As a performance best practice, we recommend batching multiple rows in one multi-row `INSERT` statement instead of using multiple single-row `INSERT` statements. Experimentally determine the optimal batch size for your application by monitoring the performance for different batch sizes (10 rows, 100 rows, 1000 rows).
+See [bulk inserts](#bulk-inserts) for best practices.
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -202,13 +201,9 @@ Multi-row inserts are faster than multiple single-row `INSERT` statements. As a 
 (12 rows)
 ~~~
 
-{{site.data.alerts.callout_info}}
-You can also use the [`IMPORT INTO`](import-into.html) statement to bulk-insert CSV data into an existing table.
-{{site.data.alerts.end}}
-
 ### Insert multiple rows into a new table
 
-The [`IMPORT`](import.html) statement performs better than `INSERT` when inserting rows into a new table.
+See [bulk inserts](#bulk-inserts) for best practices.
 
 ### Insert from a `SELECT` statement
 
