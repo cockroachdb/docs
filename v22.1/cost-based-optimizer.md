@@ -160,7 +160,7 @@ For more information about the difficulty of selecting an optimal join ordering,
 
 ### Reduce planning time for plans with many joins
 
-The cost-based optimizer explores multiple join orderings to find the lowest-cost plan. If there are many joins or join subtrees in the query, this can increase the number of execution plans the optimizer explores, and therefore the exploration and planning time. If the plan phase of a query takes a long time (on the order of multiple seconds or minutes) to plan, or the query plan involves many joins, consider the following alternatives to reduce the planning time:
+The cost-based optimizer explores multiple join orderings to find the lowest-cost plan. If there are many joins or join subtrees in the query, this can increase the number of execution plans the optimizer explores, and therefore the exploration and planning time. If the planning phase of a query takes a long time (on the order of multiple seconds or minutes) to plan, or the query plan involves many joins, consider the following alternatives to reduce the planning time:
 
 - To limit the size of the subtree that can be reordered, set the `reorder_joins_limit` session variable to a lower value, for example:
 
@@ -168,7 +168,7 @@ The cost-based optimizer explores multiple join orderings to find the lowest-cos
     SET reorder_joins_limit = 2;
     ~~~
 
-    If the ordering is acceptable, for the shortest planning time, you can set `reorder_joins_limit` to `0`.
+    If the join ordering inherent in the query is acceptable, for the shortest planning time, you can set `reorder_joins_limit` to `0`. This disables exploration of join orderings entirely.
 
     If one query has a slow planning time, you can avoid interfering with other query plans by setting `reorder_joins_limit` to the desired lower value before executing that query and resetting the session variable to the default after executing the query.
 
