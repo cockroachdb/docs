@@ -29,7 +29,7 @@ You can restore:
 
 ### Source privileges
 
-{% include {{ page.version.version }}/misc/restore-source-privileges.md %}
+{% include {{ page.version.version }}/misc/non-http-source-privileges.md %}
 
 ## Synopsis
 
