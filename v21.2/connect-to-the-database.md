@@ -93,7 +93,7 @@ postgresql://<username>@<host>:<port>/<database>?sslmode=verify-full&sslrootcert
 
 For more information about connecting with node-postgres, see the [official node-postgres documentation](https://node-postgres.com/features/connecting).
 
-### Connection parameters
+## Connection parameters
 
 <div class="filter-content" markdown="1" data-scope="serverless">
 
@@ -217,7 +217,7 @@ To connect to CockroachDB with Sequelize, you must install the [CockroachDB Sequ
 
 For more information about connecting with Sequelize, see the [official Sequelize documentation](https://sequelize.org/master/index.html).
 
-### Connection parameters
+## Connection parameters
 
 <div class="filter-content" markdown="1" data-scope="serverless">
 
@@ -378,7 +378,7 @@ const connection = await createConnection();
 
 For more information about connecting with TypeORM, see the [official TypeORM documentation](https://typeorm.io/#/connection).
 
-### Connection parameters
+## Connection parameters
 
 <div class="filter-content" markdown="1" data-scope="serverless">
 
@@ -643,7 +643,7 @@ For more information about connecting with Django, see the [official Django docu
 
 </div>
 
-### Connection parameters
+## Connection parameters
 
 <div class="filter-content" markdown="1" data-scope="serverless">
 
@@ -871,7 +871,7 @@ For more information about connecting with GORM, see the [official GORM document
 
 </div>
 
-### Connection parameters
+## Connection parameters
 
 <div class="filter-content" markdown="1" data-scope="serverless">
 
@@ -1029,7 +1029,7 @@ For more information about connecting with Hibernate, see the [official Hibernat
 
 </div>
 
-### Connection parameters
+## Connection parameters
 
 <div class="filter-content" markdown="1" data-scope="serverless">
 
@@ -1189,7 +1189,7 @@ For more information about connecting with ActiveRecord, see the [official Activ
 
 </div>
 
-### Connection parameters
+## Connection parameters
 
 <div class="filter-content" markdown="1" data-scope="serverless">
 
