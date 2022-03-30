@@ -147,6 +147,12 @@
       ]
     },
     {
+      "title": "Glossary",
+      "urls": [
+        "/${VERSION}/architecture/glossary.html"
+      ]
+    },
+    {
       "title": "FAQs",
       "items": [
         {
