@@ -82,7 +82,7 @@ When generating and retrieving unique IDs, use the `RETURNING` clause with `INSE
 
     - Perform a [multi-row `INSERT`](#insert-multiple-rows-into-an-existing-table) in one statement in an implicit transaction.
 
-    - Do not use large batches of 100,000 rows or more which can lead to long-running transactions that result in [transaction retry errors](transaction-retry-error-reference.html). If a multi-row `INSERT` results in an error code [`40001` with the message `"transaction deadline exceeded"`](transaction-retry-error-reference.html#retry_commit_deadline_exceeded), Cockroach Labs recommends that you break up the `INSERT` into smaller batches.
+    - Do not use large batches of 100,000 rows or more, which can lead to long-running transactions that result in [transaction retry errors](transaction-retry-error-reference.html). If a multi-row `INSERT` results in an error code [`40001` with the message `"transaction deadline exceeded"`](transaction-retry-error-reference.html#retry_commit_deadline_exceeded), Cockroach Labs recommends that you break up the `INSERT` into smaller batches.
 
         Experimentally determine the optimal batch size for your application by monitoring the performance for different batch sizes (1, 10, 100, 1000) rows in an implicit transaction. In some cases, for example, when a table has no secondary indexes, single row `INSERT`s may perform best in terms of total system throughput.
 
