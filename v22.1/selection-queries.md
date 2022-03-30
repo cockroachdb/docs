@@ -16,7 +16,7 @@ Selection queries can occur:
 
 - At the top level of a query like other [SQL statements](sql-statements.html).
 - Between parentheses as a [subquery](table-expressions.html#subqueries-as-table-expressions).
-- As [operand to other statements](#using-selection-queries-with-other-statements) that take tabular data as input, for example [`INSERT`](insert.html), [`UPSERT`](upsert.html),  [`CREATE TABLE AS`](create-table-as.html), or [`ALTER ... SPLIT AT`](split-at.html).
+- As [operand to other statements](#use-selection-queries-with-other-statements) that take tabular data as input, for example [`INSERT`](insert.html), [`UPSERT`](upsert.html),  [`CREATE TABLE AS`](create-table-as.html), or [`ALTER ... SPLIT AT`](split-at.html).
 
 
 ## Synopsis
