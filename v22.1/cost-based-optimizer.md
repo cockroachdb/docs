@@ -145,18 +145,20 @@ For a query involving multiple joins, the cost-based optimizer will explore addi
 
 Because this process leads to an exponential increase in the number of possible execution plans for such queries, it's only used to reorder subtrees containing 8 or fewer joins by default.
 
-To change this setting, which is controlled by the `reorder_joins_limit` [session variable](set-vars.html), run the following statement. To disable this feature, set the variable to `0`.
+To change this setting, which is controlled by the `reorder_joins_limit` [session variable](set-vars.html), run the following statement:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET reorder_joins_limit = 0;
 ~~~
 
+To disable this feature, set the variable to `0`. You can configure the default `reorder_joins_limit` session setting with the [cluster setting](cluster-settings.html) `sql.defaults.reorder_joins_limit`, which has a default value of `8`.
+
 {{site.data.alerts.callout_danger}}
-We strongly recommend not setting this value higher than 8 to avoid performance degradation. If set too high, the cost of generating and costing execution plans can end up dominating the total execution time of the query.
+To avoid performance degradation, Cockroach Labs strongly recommends setting this value to a maximum of 8. If set too high, the cost of generating and costing execution plans can end up dominating the total execution time of the query.
 {{site.data.alerts.end}}
 
-For more information about the difficulty of selecting an optimal join ordering, see our blog post [An Introduction to Join Ordering](https://www.cockroachlabs.com/blog/join-ordering-pt1/).
+For more information about selecting an optimal join ordering, see our blog post [An Introduction to Join Ordering](https://www.cockroachlabs.com/blog/join-ordering-pt1/).
 
 ### Reduce planning time for plans with many joins
 
@@ -175,7 +177,7 @@ The cost-based optimizer explores multiple join orderings to find the lowest-cos
     If one query has a slow planning time, you can avoid interfering with other query plans by setting `reorder_joins_limit` to the desired lower value before executing that query and resetting the session variable to the default after executing the query.
 
 - If setting and reseting the session variable is cumbersome or if there are multiple independent joins in the query where some may benefit from join reordering, you can use a [join hint](#join-hints). If the join has a hint specifying the type of join to something other than the default `INNER` (i.e. `INNER LOOKUP`, `MERGE`, `HASH`, etc.), join reordering will be disabled and the plan will respect the join order inherent in the way the query is written. This works at the expression level and doesn't affect the entire query (for instance, if you have a union of two joins they are independent join expressions).
-
+-
 ## Join hints
 
 To force the use of a specific join algorithm even if the optimizer determines that a different plan would have a lower cost, you can use a _join hint_. You specify a join hint as `<join type> <join algorithm> JOIN`. For example:
