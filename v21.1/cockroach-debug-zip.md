@@ -84,7 +84,7 @@ The `debug zip` subcommand supports the following [general-use](#general), [clie
 
 Flag | Description
 -----|-----------
-`--cpu-profile-duration` | Fetch CPU profiles from the cluster with the specified sample duration in seconds. The zip command will block for the duration specified. A value of `0` disables this feature.<br /><br />**Default:** `5`
+`--cpu-profile-duration` | Fetch CPU profiles from the cluster with the specified sample duration in seconds. The `debug zip` command will block for the duration specified. A value of `0` disables this feature.<br /><br />**Default:** `5`
 `--concurrency` | The maximum number of nodes to concurrently poll for data. This can be any value between `1` and `15`.
 `--exclude-files` | [Files](#files) to exclude from the generated `.zip`. This can be used to limit the size of the generated `.zip`, and affects logs, heap profiles, goroutine dumps, and/or CPU profiles. The files are specified as a comma-separated list of [glob patterns](https://en.wikipedia.org/wiki/Glob_(programming)). For example:<br /><br />`--exclude-files=*.log`<br /><br />Note that this flag is applied _after_ `--include_files`. Use [`cockroach debug list-files`](cockroach-debug-list-files.html) with this flag to see a list of files that will be contained in the `.zip`.
 `--exclude-nodes` | Specify nodes to exclude from inspection as a comma-separated list or range of node IDs. For example:<br /><br />`--exclude-nodes=1,10,13-15`
