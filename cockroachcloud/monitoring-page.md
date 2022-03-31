@@ -56,7 +56,7 @@ Open your Datadog [Dashboard List](https://docs.datadoghq.com/dashboards/#dashbo
 
 To create your own {{ site.data.products.dedicated }} dashboard, you can either [clone](https://docs.datadoghq.com/dashboards/#clone-dashboard) the default `TK` dashboard and edit the widgets, or [create a new dashboard](https://docs.datadoghq.com/dashboards/#new-dashboard).
 
-The available metrics are drawn from the CockroachdB [Prometheus endpoint](monitoring-and-alerting.html#prometheus-endpoint)and listed in the [Datadog documentation](https://docs.datadoghq.com/integrations/tk). To preview the metrics being collected, you can:
+The available metrics are drawn from the CockroachdB [Prometheus endpoint](monitoring-and-alerting.html#prometheus-endpoint) and listed in the [Datadog documentation](https://docs.datadoghq.com/integrations/tk). To preview the metrics being collected, you can:
 
 - Click on your cluster's entry in the [Infrastructure List](https://docs.datadoghq.com/infrastructure/list/). The time-series graphs for each available metric are displayed.
 - Use the [Metrics Explorer](https://docs.datadoghq.com/metrics/explorer/) to search for and view `crdb_dedicated` metrics.
