@@ -74,6 +74,8 @@ Success! Created cluster
   id: ec5e50eb-67dd-4d25-93b0-91ee7ece778d
 ~~~
 
+The `id` in the output is the cluster ID, which is used in other `ccloud` commands to identify the cluster on which the `ccloud` command operates.
+
 The cluster name, cloud infrastructure provider, region, and spend limit can be set as command options. The following command is equivalent to the previous command that uses the default values.
 
 {% include_cached copy-clipboard.html %}
@@ -106,6 +108,8 @@ Success! Created cluster
   name: dim-dog
   id: ec5e50eb-67dd-4d25-93b0-91ee7ece778d
 ~~~
+
+The `id` in the output is the cluster ID, which is used in other `ccloud` commands to identify the cluster on which the `ccloud` command operates.
 
 When creating multi node clusters, you must specify how many nodes should be in each region supported by the cloud infrastructure provider. For example, the following command creates a 3 node cluster where 2 nodes are in `us-central1` and 1 node is in `us-west2`:
 
@@ -192,7 +196,7 @@ Cluster info
 
 ## Use a SQL client with a cluster using ccloud cluster sql
 
-Use the `ccloud cluster sql` command to start a CockroachDB SQL shell connection to the specified cluster using the cluster ID. If you haven't created a SQL user for the specified cluster, you will be prompted to create a new user and set the user password.
+Use the `ccloud cluster sql` command to start a CockroachDB SQL shell connection to the specified cluster using the [cluster ID](#get-information-about-your-cluster-using-ccloud-cluster-info). If you haven't created a SQL user for the specified cluster, you will be prompted to create a new user and set the user password.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -230,7 +234,7 @@ user@free-tier7.gcp-us-central1.crdb.io:26257/defaultdb>
 
 ## Get the connection information for your cluster using ccloud cluster sql
 
-Use the `ccloud cluster sql` command to get connection information for the specified cluster using the cluster ID.
+Use the `ccloud cluster sql` command to get connection information for the specified cluster using the [cluster ID](#get-information-about-your-cluster-using-ccloud-cluster-info).
 
 To get the [connection URL](../{{site.versions["stable"]}}/connection-parameters.html#connect-using-a-url), use the `--connection-url` option.
 
@@ -290,7 +294,7 @@ Connection parameters
 
 ## Create a SQL user using ccloud cluster user create
 
-Use the `ccloud cluster user create` command to create a new SQL user for the specified cluster.
+Use the `ccloud cluster user create` command to create a new SQL user by passing in the username and the [cluster ID](#get-information-about-your-cluster-using-ccloud-cluster-info).
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -300,13 +304,13 @@ ccloud cluster user create maxroach 041d4c6b-69b9-4121-9c5a-8dd6ffd6b73d
 {% comment %}
 ~~~
 Password: ****************
-∙∙● Creating SQL user...
+∙∙∙ Creating SQL user...
 ~~~
 {% endcomment %}
 
 ## Delete a cluster using ccloud cluster delete
 
-Use the `ccloud cluster delete` command to delete the specified cluster using the cluster ID.
+Use the `ccloud cluster delete` command to delete the specified cluster using the [cluster ID](#get-information-about-your-cluster-using-ccloud-cluster-info).
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
