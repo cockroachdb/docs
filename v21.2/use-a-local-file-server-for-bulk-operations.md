@@ -94,8 +94,8 @@ $ ruby -run -ehttpd . -p3000 # files available at e.g., 'http://localhost:3000/d
 ## See also
 
 - [`IMPORT`][import]
-- [`BACKUP`](backup.html) (*Enterprise only*)
-- [`RESTORE`](restore.html) (*Enterprise only*)
+- [`BACKUP`](backup.html)
+- [`RESTORE`](restore.html)
 
 <!-- Reference Links -->
 
