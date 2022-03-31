@@ -1469,12 +1469,6 @@
                 ]
               },
               {
-                "title": "<code>cockroach dump</code>",
-                "urls": [
-                  "/${VERSION}/cockroach-dump.html"
-                ]
-              },
-              {
                 "title": "<code>cockroach demo</code>",
                 "urls": [
                   "/${VERSION}/cockroach-demo.html"

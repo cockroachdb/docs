@@ -79,7 +79,7 @@ To follow along with the examples below:
 
 ### Create a database with the replica placement policy set to restricted
 
-If you know at table creation time that you'd like to set the table's replica placement policy to ["restricted"](#parameters-restricted), you can do so in a [`CREATE TABLE`](create-table.html) statement as shown below:
+If you know at database creation time that you'd like to set the database's replica placement policy to ["restricted"](#parameters-restricted), you can do so in a [`CREATE DATABASE`](create-database.html) statement as shown below:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -121,7 +121,7 @@ ALTER DATABASE PLACEMENT
 - [Multi-Region Capabilities Overview](multiregion-overview.html)
 - [`ALTER DATABASE`](alter-database.html)
 - [`ADD REGION`](add-region.html)
-- [Ranges](architecture/overview.html#architecture-range)
+- [Range](architecture/overview.html#architecture-range)
 - [Non-voting replicas](architecture/replication-layer.html#non-voting-replicas)
 - [SQL Statements](sql-statements.html)
 - [Data Domiciling with CockroachDB](data-domiciling.html)

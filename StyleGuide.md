@@ -294,7 +294,7 @@ A _glossary_ is a collection (usually in tabular form) of [definitions](#definit
 #### Examples
 
 - [Architecture Glossary](https://www.cockroachlabs.com/docs/v21.2/architecture/overview.html#glossary)
-- [Cockroach Cloud Concepts](https://www.cockroachlabs.com/docs/cockroachcloud/architecture.html#concepts)
+- [Cockroach Cloud Concepts](https://www.cockroachlabs.com/docs/cockroachcloud/architecture.html#cockroachdb-cloud-terms)
 
 ### Prerequisites
 

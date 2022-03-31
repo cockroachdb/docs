@@ -9,7 +9,6 @@ This page introduces the `cockroach` commands for configuring, starting, and man
 
 You can run `cockroach help` in your shell to get similar guidance.
 
-
 ## Commands
 
 Command | Usage
@@ -21,22 +20,23 @@ Command | Usage
 [`cockroach sql`](cockroach-sql.html) | Use the built-in SQL client.
 [`cockroach sqlfmt`](cockroach-sqlfmt.html) | Reformat SQL queries for enhanced clarity.
 [`cockroach node`](cockroach-node.html) | List node IDs, show their status, decommission nodes for removal, or recommission nodes.
-[`cockroach dump`](cockroach-dump.html) | **Deprecated.** Use one of the following instead:<ul><li>To back up your data, take a [full backup](take-full-and-incremental-backups.html).</li><li>To export your data in plaintext format, use [`EXPORT`](export.html).</li><li>To view table schema in plaintext, use [`SHOW CREATE TABLE`](show-create.html).</li></ul>
+[`cockroach nodelocal upload`](cockroach-nodelocal-upload.html) | Upload a file to the `externalIODir` on a node's local file system.
 [`cockroach demo`](cockroach-demo.html) | Start a temporary, in-memory CockroachDB cluster, and open an interactive SQL shell to it.
-[`cockroach gen`](cockroach-gen.html) | Generate manpages, a bash completion file, example SQL data, or an HAProxy configuration file for a running cluster.
-[`cockroach version`](cockroach-version.html) | Output CockroachDB version details.
 [`cockroach debug ballast`](cockroach-debug-ballast.html) | Create a large, unused file in a node's storage directory that you can delete if the node runs out of disk space.
 [`cockroach debug encryption-active-key`](cockroach-debug-encryption-active-key.html) | View the encryption algorithm and store key.
 [`cockroach debug job-trace`](cockroach-debug-job-trace.html) | Generate trace payloads for an executing job from a particular node.
+[`cockroach debug list-files`](cockroach-debug-list-files.html) | Show the files that will be collected by using `cockroach debug zip`.
+[`cockroach debug merge-logs`](cockroach-debug-merge-logs.html) | Merge log files from multiple nodes into a single time-ordered stream of messages with an added per-message prefix to indicate the corresponding node.
 [`cockroach debug zip`](cockroach-debug-zip.html) | Generate a `.zip` file that can help Cockroach Labs troubleshoot issues with your cluster.
-[`cockroach debug merge-logs`](cockroach-debug-merge-logs.html) | Merge multiple log files from different machines into a single stream.
+[`cockroach gen`](cockroach-gen.html) | Generate man pages, a bash completion file, example SQL data, or an HAProxy configuration file for a running cluster.
+[`cockroach statement-diag`](cockroach-statement-diag.html)  | Manage and download statement diagnostics bundles.
+[`cockroach userfile upload`](cockroach-userfile-upload.html) | Upload a file to user-scoped file storage.
+[`cockroach userfile list`](cockroach-userfile-list.html) | List the files stored in the user-scoped file storage.
+[`cockroach userfile get`](cockroach-userfile-get.html) | Fetch a file from the user-scoped file storage.
+[`cockroach userfile delete`](cockroach-userfile-delete.html) | Delete the files stored in the user-scoped file storage.
+[`cockroach version`](cockroach-version.html) | Output CockroachDB version details.
 [`cockroach workload`](cockroach-workload.html) | Run a built-in load generator against a cluster.
-[`cockroach nodelocal upload`](cockroach-nodelocal-upload.html) |  Upload a file to the `externalIODir` on a node's local file system.
-[`cockroach userfile upload`](cockroach-userfile-upload.html)   |  The cockroach userfile upload command uploads a file to user-scoped file storage.
-[`cockroach userfile list`](cockroach-userfile-list.html)       |  List the files stored in the user-scoped file storage.
-[`cockroach userfile delete`](cockroach-userfile-delete.html)   |  Deletes the files stored in the user-scoped file storage.
-[`cockroach userfile get`](cockroach-userfile-get.html)         |  Fetch a file from the user-scoped file storage.
-[`cockroach import`](cockroach-import.html)   |   Import a table or database from a local dump file into a running cluster. `PGDUMP` and `MYSQLDUMP` file formats are currently supported.
+[`cockroach import`](cockroach-import.html) | Import a table or database from a local dump file into a running cluster. Supported file formats are `PGDUMP` and `MYSQLDUMP`.
 
 ## Environment variables
 

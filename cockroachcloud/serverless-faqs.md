@@ -75,10 +75,6 @@ To connect to a cluster, download the CA certificate, and then generate a connec
 
 Yes, your free cluster has been automatically migrated to {{ site.data.products.serverless }}. Your ability to use your cluster should not be affected, and you will now have the option to [add a spend limit](serverless-cluster-management.html#edit-your-spend-limit) for your cluster with no downtime.
 
-### My cluster doesn't have any current connections, but I'm seeing my RU usage go up while observing the cluster. Why is the cluster using RUs when there are no connections?
-
-Some pages on the Console runs background queries against your cluster, which means they consume a small number of RUs, up to 8 RUs per second. The baseline performance of 100 RUs per second includes the RUs used while observing an idle cluster.
-
 ### Why does my RU usage briefly spike when I'm running a steady workload?
 
 CockroachDB [automatically collects statistics](../{{site.versions["stable"]}}/cost-based-optimizer.html#control-statistics-refresh-rate) in a background process when certain conditions are met (for example, when more than 20% of rows in a table are modified). The statistics are used by the cost-based optimizer to tune statements for higher performance.
@@ -104,6 +100,14 @@ You can submit feedback or log any bugs you find through [this survey](https://f
 ### Is my cluster secure?
 
 Yes, we use separate certificate authorities for each cluster, and all connections to the cluster over the internet use TLS 1.3.
+
+### What certificates do I need to connect to my cluster?
+
+All connections to {{ site.data.products.serverless }} require SSL encryption. When connecting to your cluster using the CockroachDB SQL client or many drivers and ORMs, you don't need to download a root certificate and configure your client to use that certificate because the client will connect using the system root certificates. If you configure your client to use SSL and to verify the certificates (for example, by setting `sslmode=verify-full` in your [connection string](../{{site.versions["stable"]}}/connection-parameters.html#additional-connection-parameters)), your connection will be encrypted.
+
+However, some drivers and ORMs don't use the system root certificates. In those cases, you need to download a root certificate file and configure your client to use that certificate when connecting to your cluster. You can [download the certificate](connect-to-a-serverless-cluster.html?filters=connection-string#step-2-connect-to-your-cluster) by following the instructions in the {{ site.data.products.db }} Console. Configure your client to use this certificate (for example, by setting `sslrootcert=<path to the root certificate>` in your connection string) and to use SSL (for example, by setting `sslmode=verify-full` in your connection string) to connect to your cluster.
+
+See [Connect to a CockroachDB Cluster](../{{site.versions["stable"]}}/connect-to-the-database.html) for detailed information on connecting to your cluster using CockroachDB supported languages, drivers, and ORMs
 
 ### Is encryption-at-rest enabled on {{ site.data.products.serverless }}?
 
