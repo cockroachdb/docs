@@ -80,7 +80,7 @@ When generating and retrieving unique IDs, use the `RETURNING` clause with `INSE
 
 - **Existing table**
 
-    - Perform a [multi-row `INSERT`](#insert-multiple-rows-into-an-existing-table) in one statement in an implicit transaction.
+    - Perform a [multi-row `INSERT`](#insert-multiple-rows-into-an-existing-table) in one statement in an [implicit transaction](transactions.html#individual-statements).
 
     - Do not use large batches of 100,000 rows or more, which can lead to long-running transactions that result in [transaction retry errors](transaction-retry-error-reference.html). If a multi-row `INSERT` results in an error code [`40001` with the message `"transaction deadline exceeded"`](transaction-retry-error-reference.html#retry_commit_deadline_exceeded), Cockroach Labs recommends that you break up the `INSERT` into smaller batches.
 
@@ -88,7 +88,7 @@ When generating and retrieving unique IDs, use the `RETURNING` clause with `INSE
 
     - You can also use the [`IMPORT INTO`](import-into.html) statement to bulk-insert CSV data.
 
-- **New table**: Cockroach Labs recommends that you use the [`IMPORT`](import.html) statement as it performs better than `INSERT`.
+- **New table**: Cockroach Labs recommends that you use the [`IMPORT`](import.html) statement, as it performs better than `INSERT`.
 
 ## Examples
 
