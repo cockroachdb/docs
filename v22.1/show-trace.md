@@ -13,7 +13,7 @@ A [statement diagnostics bundle](ui-statements-page.html#diagnostics) contains s
 
 ## Usage overview
 
-`SHOW TRACE FOR SESSION` returns [statement traces](trace-description) for the most recently executed statements.
+`SHOW TRACE FOR SESSION` returns [statement traces](#trace-description) for the most recently executed statements.
 
 To start recording statement traces during a session, enable the `tracing` session variable via [`SET tracing = on;`](set-vars.html#set-tracing). To stop recording statement traces during a session, disable the `tracing` session variable via [`SET tracing = off;`](set-vars.html#set-tracing).
 
