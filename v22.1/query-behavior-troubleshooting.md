@@ -33,10 +33,10 @@ You can look more closely at the behavior of a statement by visualizing a statem
 
   {% include copy-clipboard.html %}
   ~~~ shell
-  docker run -d --name jaeger -p 16686:16686 jaegertracing/all-in-one:1.17
+  docker run -d --name jaeger -p 16686:16686 jaegertracing/all-in-one:latest
   ~~~
 
-1. Access the Jaeger UI at `http://localhost:16686/search`.
+1. Access the Jaeger UI at [http://localhost:16686/search](http://localhost:16686/search).
 
 1. Click **JSON File** in the Jaeger UI and upload `trace-jaeger.json` from the diagnostics bundle. The trace will appear in the list on the right.
 
