@@ -88,7 +88,13 @@ The common reasons for a sub-optimal `SELECT` performance are inefficient scans,
 
 ### `SELECT` statements with `GROUP BY` columns are slow
 
-Suppose you have a slow query has a `GROUP BY` clause, uses an index that has a `STORING` clause, and some or all of the columns in the query's `GROUP BY` clause are part of the index's `STORING` clause and are not index key columns. For example:
+Suppose you have a slow query that
+
+-  Has a `GROUP BY` clause.
+-  Uses an index that has a `STORING` clause.
+-  Where some or all of the columns in the query's `GROUP BY` clause are part of the index's `STORING` clause and are **not** index key columns. 
+
+For example:
 
 ~~~ sql
 SELECT
