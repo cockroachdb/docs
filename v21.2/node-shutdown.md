@@ -16,7 +16,7 @@ There are two ways to handle node shutdown:
 {{site.data.alerts.callout_success}}
 This guidance applies to manual deployments. If you have a Kubernetes deployment, terminating the `cockroach` process is handled through the Kubernetes pods. The `kubectl drain` command is used for routine cluster maintenance. For details on this command, see the [Kubernetes documentation](https://kubernetes.io/docs/tasks/administer-cluster/safely-drain-node/).
 
-Also see our documentation for [cluster upgrades](upgrade-cockroachdb-kubernetes.html) and [cluster scaling](scale-cockroachdb-kubernetes.html) on Kubernetes. 
+Also see our documentation for [cluster upgrades](upgrade-cockroachdb-kubernetes.html) and [cluster scaling](scale-cockroachdb-kubernetes.html) on Kubernetes.
 {{site.data.alerts.end}}
 
 This page describes:
@@ -45,7 +45,9 @@ When a node is permanently removed, the following stages occur in sequence:
 
 An operator [initiates the decommissioning process](#decommission-the-node) on the node.
 
-The node's [`is_decommissioning`](cockroach-node.html#node-status) field is set to `true` and its `membership` status is set to `decommissioning`, which causes its replicas to be rebalanced to other nodes. The node's [`/health?ready=1` endpoint](monitoring-and-alerting.html#health-ready-1) continues to consider the node "ready" so that the node can function as a gateway to route client connections to relevant data.
+The node's [`is_decommissioning`](cockroach-node.html#node-status) field is set to `true` and its `membership` status is set to `decommissioning`, which causes its replicas to be rebalanced to other nodes.
+
+The node's [`/health?ready=1` endpoint](monitoring-and-alerting.html#health-ready-1) continues to consider the node "ready" so that the node can function as a gateway to route client connections to relevant data.
 
 {{site.data.alerts.callout_info}}
 After this stage, the node is automatically drained. However, to avoid possible disruptions in query performance, we recommend manually draining before decommissioning. For more information, see [Perform node shutdown](#perform-node-shutdown).
@@ -64,7 +66,7 @@ After all replicas on a decommissioning node are rebalanced, the node is automat
 
 Node drain consists of the following consecutive phases:
 
-1. **Wait phase:** The node's [`/health?ready=1` endpoint](monitoring-and-alerting.html#health-ready-1) returns an HTTP `503 Service Unavailable` response code, which causes load balancers and connection managers to reroute traffic to other nodes. This phase completes when the [fixed duration set by `server.shutdown.drain_wait`](#server-shutdown-drain_wait) is reached.
+1. **Unready phase:** The node's [`/health?ready=1` endpoint](monitoring-and-alerting.html#health-ready-1) returns an HTTP `503 Service Unavailable` response code, which causes load balancers and connection managers to reroute traffic to other nodes. This phase completes when the [fixed duration set by `server.shutdown.drain_wait`](#server-shutdown-drain_wait) is reached.
 
 1. **Local query phase:** All active transactions and statements for which the node is a [gateway](architecture/life-of-a-distributed-transaction.html#gateway) are allowed to complete. After this phase completes, CockroachDB closes all client connections to the node. This phase completes either when all transactions have been processed or the [maximum duration set by `server.shutdown.query_wait`](#server-shutdown-query_wait) is reached.
 
@@ -140,11 +142,11 @@ To handle node shutdown effectively, the load balancer must be given enough time
 
 #### `server.shutdown.drain_wait`
 
-`server.shutdown.drain_wait` sets a **fixed** duration for the ["wait phase"](#draining) of node drain. Because a load balancer reroutes connections to non-draining nodes within this duration (`0s` by default), this setting should be coordinated with the load balancer settings.
+`server.shutdown.drain_wait` sets a **fixed** duration for the ["unready phase"](#draining) of node drain. Because a load balancer reroutes connections to non-draining nodes within this duration (`0s` by default), this setting should be coordinated with the load balancer settings.
 
-Increase `server.shutdown.drain_wait` so that your load balancer is able to make adjustments before this step times out. Because the drain process waits unconditionally for the `server.shutdown.drain_wait` duration, do not set this value too high.
+Increase `server.shutdown.drain_wait` so that your load balancer is able to make adjustments before this phase times out. Because the drain process waits unconditionally for the `server.shutdown.drain_wait` duration, do not set this value too high.
 
-For example, [HAProxy](cockroach-gen.html#generate-an-haproxy-config-file) uses the default settings `inter 2000 fall 3` when checking server health. This means that HAProxy considers a node to be down (and temporarily removes the server from the pool) after 3 unsuccessful health checks being run at intervals of 2000 milliseconds. To ensure HAProxy can run 3 consecutive checks before timeout, set `server.shutdown.drain_wait` to `8s` or greater: 
+For example, [HAProxy](cockroach-gen.html#generate-an-haproxy-config-file) uses the default settings `inter 2000 fall 3` when checking server health. This means that HAProxy considers a node to be down (and temporarily removes the server from the pool) after 3 unsuccessful health checks being run at intervals of 2000 milliseconds. To ensure HAProxy can run 3 consecutive checks before timeout, set `server.shutdown.drain_wait` to `8s` or greater:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -215,7 +217,7 @@ When [draining manually](#drain-a-node-manually) with `cockroach node drain`, al
 A very long drain may indicate an anomaly, and you should manually inspect the server to determine what blocks the drain.
 {{site.data.alerts.end}}
 
-`--drain-wait` sets the timeout for [all draining phases](#draining) and is **not** related to the `server.shutdown.drain_wait` cluster setting, which configures the "wait phase" of draining. The value of `--drain-wait` should be greater than the sum of [`server.shutdown.drain_wait`](#server-shutdown-drain_wait), [`server.shutdown.query_wait`](#server-shutdown-query_wait) times two, and [`server.shutdown.lease_transfer_wait`](#server-shutdown-lease_transfer_wait).
+`--drain-wait` sets the timeout for [all draining phases](#draining) and is **not** related to the `server.shutdown.drain_wait` cluster setting, which configures the "unready phase" of draining. The value of `--drain-wait` should be greater than the sum of [`server.shutdown.drain_wait`](#server-shutdown-drain_wait), [`server.shutdown.query_wait`](#server-shutdown-query_wait) times two, and [`server.shutdown.lease_transfer_wait`](#server-shutdown-lease_transfer_wait).
 
 ### Connection retry loop
 
@@ -237,7 +239,7 @@ A connection retry loop should:
 
 ### Termination grace period
 
-On production deployments, a process manager or orchestration system can disrupt graceful node shutdown if its termination grace period is too short. 
+On production deployments, a process manager or orchestration system can disrupt graceful node shutdown if its termination grace period is too short.
 
 If the `cockroach` process has not terminated at the end of the grace period, a `SIGKILL` signal is sent to perform a "hard" shutdown that bypasses CockroachDB's [node shutdown logic](#node-shutdown-sequence) and forcibly terminates the process. This can corrupt log files and, in certain edge cases, can result in temporary data unavailability, latency spikes, uncertainty errors, ambiguous commit errors, or query timeouts. When decommissioning, a hard shutdown will leave ranges under-replicated and vulnerable to another node failure until up-replication completes, which could cause loss of [quorum](architecture/replication-layer.html#overview).
 
@@ -245,7 +247,7 @@ If the `cockroach` process has not terminated at the end of the grace period, a 
 
 - When using [Kubernetes](kubernetes-overview.html) to orchestrate CockroachDB, set the termination grace period with `terminationGracePeriodSeconds` in the [StatefulSet manifest](deploy-cockroachdb-with-kubernetes.html?filters=manual#configure-the-cluster).
 
-To determine an appropriate termination grace period: 
+To determine an appropriate termination grace period:
 
 - [Run `cockroach node drain` with `--drain-wait`](#drain-a-node-manually) and observe the amount of time it takes node drain to successfully complete.
 
@@ -253,7 +255,7 @@ To determine an appropriate termination grace period:
 
 - In general, we recommend setting the termination grace period **between 5 and 10 minutes**. If a node requires more than 10 minutes to drain successfully, this may indicate a technical issue such as inadequate [cluster sizing](recommended-production-settings.html#sizing).
 
-- Increasing the termination grace period does not increase the duration of a node shutdown. However, the termination grace period should not be excessively long, in case an underlying hardware or software issue causes node shutdown to become "stuck". 
+- Increasing the termination grace period does not increase the duration of a node shutdown. However, the termination grace period should not be excessively long, in case an underlying hardware or software issue causes node shutdown to become "stuck".
 
 <section class="filter-content" markdown="1" data-scope="decommission">
 ### Size and replication factor
@@ -312,7 +314,7 @@ After [preparing for graceful shutdown](#prepare-for-graceful-shutdown), do the 
 {{site.data.alerts.callout_success}}
 This guidance applies to manual deployments. If you have a Kubernetes deployment, terminating the `cockroach` process is handled through the Kubernetes pods. The `kubectl drain` command is used for routine cluster maintenance. For details on this command, see the [Kubernetes documentation](https://kubernetes.io/docs/tasks/administer-cluster/safely-drain-node/).
 
-Also see our documentation for [cluster upgrades](upgrade-cockroachdb-kubernetes.html) and [cluster scaling](scale-cockroachdb-kubernetes.html) on Kubernetes. 
+Also see our documentation for [cluster upgrades](upgrade-cockroachdb-kubernetes.html) and [cluster scaling](scale-cockroachdb-kubernetes.html) on Kubernetes.
 {{site.data.alerts.end}}
 
 <section class="filter-content" markdown="1" data-scope="decommission">
@@ -349,7 +351,7 @@ During node shutdown, progress messages are generated in the [`OPS` logging chan
 
 <section class="filter-content" markdown="1" data-scope="decommission">
 Node decommission progress is reported in [`node_decommissioning`](eventlog.html#node_decommissioning) and [`node_decommissioned`](eventlog.html#node_decommissioned) events:
-    
+
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 grep 'decommission' node1/logs/cockroach.log
@@ -465,7 +467,7 @@ To drain and shut down a node that was started in the foreground with [`cockroac
     ~~~
 
 1. Filter the logs for draining progress messages. [By default](configure-logs.html#default-logging-configuration), the `OPS` logs output to a `cockroach.log` file:
-	
+
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     grep 'drain' node1/logs/cockroach.log
@@ -483,7 +485,7 @@ To drain and shut down a node that was started in the foreground with [`cockroac
     I220202 20:51:24.984089 1 1@cli/start.go:868 ⋮ [n1] 332  server drained and shutdown completed
     ~~~
 
-    The `server drained and shutdown completed` message indicates that the `cockroach` process has stopped. 
+    The `server drained and shutdown completed` message indicates that the `cockroach` process has stopped.
 
 1. Start the node to have it rejoin the cluster.
 
@@ -571,7 +573,7 @@ In addition to the [graceful node shutdown](#prepare-for-graceful-shutdown) requ
 
 Open the **Cluster Overview** page of the DB Console and [note the node IDs](ui-cluster-overview-page.html#node-details) of the nodes you want to decommission.
 
-This example assumes you will decommission node IDs `4` and `5` of a 5-node cluster. 
+This example assumes you will decommission node IDs `4` and `5` of a 5-node cluster.
 
 #### Step 2. Drain the nodes manually
 
@@ -595,7 +597,7 @@ node is draining... remaining: 0 (complete)
 ok
 ~~~
 
-Manually draining before decommissioning nodes is optional, but prevents possible disruptions in query performance. 
+Manually draining before decommissioning nodes is optional, but prevents possible disruptions in query performance.
 
 #### Step 3. Decommission the nodes
 
