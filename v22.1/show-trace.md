@@ -204,7 +204,7 @@ This example uses two terminals concurrently to generate conflicting transaction
 
 ## Route traces to a third-party collector
 
-You can configure CockroachDB to send traces to a third-party collector. CockroachDB supports [Jaeger](https://www.jaegertracing.io/), [Lightstep](https://lightstep.com/), and [Zipkin](https://zipkin.io/). Enabling tracing also activates all the log messages, at all verbosity levels, as traces include the log messages printed in the respective trace context.
+You can configure CockroachDB to send traces to a third-party collector. CockroachDB supports [Jaeger](https://www.jaegertracing.io/), [Zipkin](https://zipkin.io/), and any trace collector that can ingest traces over the standard OTLP protocol. Enabling tracing also activates all the log messages, at all verbosity levels, as traces include the log messages printed in the respective trace context.
 
 {{site.data.alerts.callout_info}}
 Enabling full tracing is expensive both in terms of CPU usage and memory footprint, and is not suitable for high throughput  production environments.
@@ -221,10 +221,9 @@ The following [cluster settings](cluster-settings.html) are supported:
 <table>
 <thead><tr><th>Setting</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
 <tbody>
-<tr><td><code>trace.debug.enable</code></td><td>boolean</td><td><code>false</code></td><td>If set, traces for recent requests can be seen at <code>https://&ltui&gt;/debug/requests</code>.</td></tr>
-<tr><td><code>trace.jaeger.agent</code></td><td>string</td><td><code></code></td><td>The address of a Jaeger agent to receive traces using the Jaeger UDP Thrift protocol, as <code>&lt;host&gt;:&lt;port&gt;</code>. If no port is specified, <code>6381</code> is used.</td></tr>
-<tr><td><code>trace.opentelemetry.collector</code></td><td>string</td><td><code></code></td><td>The address of an OpenTelemetry trace collector to receive traces using the OTEL gRPC protocol, as <code>&lt;host&gt;:&lt;port&gt;</code>. If no port is specified, <code>4317</code> is used.</td></tr>
 <tr><td><code>trace.span_registry.enabled</code></td><td>boolean</td><td><code>true</code></td><td>If set, ongoing traces can be seen at <code>https://&ltui&gt;/#/debug/tracez</code>.</td></tr>
+<tr><td><code>trace.opentelemetry.collector</code></td><td>string</td><td><code></code></td><td>The address of an OpenTelemetry trace collector to receive traces using the OTEL gRPC protocol, as <code>&lt;host&gt;:&lt;port&gt;</code>. If no port is specified, <code>4317</code> is used.</td></tr>
+<tr><td><code>trace.jaeger.agent</code></td><td>string</td><td><code></code></td><td>The address of a Jaeger agent to receive traces using the Jaeger UDP Thrift protocol, as <code>&lt;host&gt;:&lt;port&gt;</code>. If no port is specified, <code>6381</code> is used.</td></tr>
 <tr><td><code>trace.zipkin.collector</code></td><td>string</td><td><code></code></td><td>The address of a Zipkin instance to receive traces, as <code>&lt;host&gt;:&lt;port&gt;</code>. If no port is specified, <code>9411</code> is used.</td></tr>
 </tbody>
 </table>
