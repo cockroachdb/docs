@@ -113,13 +113,7 @@ To ensure uniqueness or fast lookups, create a [secondary index](indexes.html) o
 
 Indexes are not required to be partitioned, but creating a non-partitioned index on a partitioned table may not perform well.
 
-When you create a non-partitioned index on a partitioned table, CockroachDB sends a [`NOTICE` message](https://www.postgresql.org/docs/current/plpgsql-errors-and-messages.html) to the client stating that creating a non-partitioned index on a partitioned table may not perform well.
-
-#### Partition using foreign key reference
-
-If a partitioned table contains a [foreign key reference](foreign-key.html) to a non-partitioned table, the secondary index created automatically for the foreign key reference will not be partitioned. This can impact performance when querying against the partitioned table, as the data may exist in a distant node.
-
-To minimize potential latency issues, configure the non-partitioned table to be a [`GLOBAL` table](global-tables.html).
+ When you create a non-partitioned index on a partitioned table, CockroachDB sends a [`NOTICE` message](https://www.postgresql.org/docs/current/plpgsql-errors-and-messages.html) to the client stating that creating a non-partitioned index on a partitioned table may not perform well.
 
 ### Replication zones
 
@@ -715,10 +709,13 @@ Other databases use partitioning for three additional use cases: secondary index
 - **Changes to secondary indexes:** CockroachDB solves these changes through online schema changes. Online schema changes are a superior feature to partitioning because they require zero-downtime and eliminate the potential for consistency problems.
 - **Sharding:** CockroachDB automatically shards data as a part of its distributed database architecture.
 - **Bulk Loading & Deleting:** CockroachDB does not have a feature that supports this use case as of now.
+- **Logical structure of partitions:** CockroachDB partitions point to the same table but allow the distribution of data across nodes based on geographical and access frequency requirements. This is different from other databases where a partition is effectively its own table. CockroachDB allows enabling and disabling partitioning on tables, whereas other databases may not. Because of this, deleting data within partitions could be expensive resource-wise.
 
 ## Known limitations
 
 - {% include {{ page.version.version }}/known-limitations/partitioning-with-placeholders.md %}
+
+- CockroachDB does not currently support dropping a single partition from a table. In order to remove partitions, you can [repartition](#repartition-a-table) the table.
 
 ## See also
 

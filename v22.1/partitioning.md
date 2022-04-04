@@ -716,10 +716,13 @@ Other databases use partitioning for three additional use cases: secondary index
 - **Changes to secondary indexes:** CockroachDB solves these changes through online schema changes. Online schema changes are a superior feature to partitioning because they require zero-downtime and eliminate the potential for consistency problems.
 - **Sharding:** CockroachDB automatically shards data as a part of its distributed database architecture.
 - **Bulk Loading & Deleting:** CockroachDB does not have a feature that supports this use case as of now.
+- **Logical structure of partitions:** CockroachDB partitions point to the same table but allow the distribution of data across nodes based on geographical and access frequency requirements. This is different from other databases where a partition is effectively its own table. CockroachDB allows enabling and disabling partitioning on tables, whereas other databases may not. Because of this, deleting data within partitions could be expensive resource-wise.
 
 ## Known limitations
 
 - {% include {{ page.version.version }}/known-limitations/partitioning-with-placeholders.md %}
+
+- CockroachDB does not currently support dropping a single partition from a table. In order to remove partitions, you can [repartition](#repartition-a-table) the table.
 
 ## See also
 
