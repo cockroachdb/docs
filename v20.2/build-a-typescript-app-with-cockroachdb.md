@@ -24,7 +24,7 @@ This tutorial shows you how run a simple application built with [TypeORM](https:
 
 ## Step 3. Get the code
 
-Clone [the code's GitHub repository](https://github.com/cockroachlabs/hello-world-typescript-typeorm).
+Clone [the code's GitHub repository](https://github.com/cockroachlabs/example-app-typescript-typeorm).
 
 ## Step 4. Update the connection parameters
 
@@ -63,7 +63,7 @@ Open a terminal window, and install the [Node.js pg driver](https://www.npmjs.co
 $ npm install pg --save
 ~~~
 
-Navigate to the top directory of the application project (e.g., `hello-world-typescript-typeorm`), and initialize the project:
+Navigate to the top directory of the application project (e.g., `example-app-typescript-typeorm`), and initialize the project:
 
 {% include copy-clipboard.html %}
 ~~~ shell
