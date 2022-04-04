@@ -5,16 +5,10 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `RENAME TO` [statement](sql-statements.html) is part of [`ALTER TABLE`](alter-table.html), and changes the name of a table.
+The `RENAME TO` [statement](sql-statements.html) is part of [`ALTER TABLE`](alter-table.html) and changes the name of a table.
 
-{{site.data.alerts.callout_info}}
-`ALTER TABLE ... RENAME TO` can be used to move a table from one database to another, but it cannot be used to move a table from one schema to another. To change a table's schema, use [`SET SCHEMA`](set-schema.html).
-
-Note that, in a future release, `ALTER TABLE ... RENAME TO` will be limited to changing the name of a table, and will not have to the ability to change a table's database.
-{{site.data.alerts.end}}
-
-{{site.data.alerts.callout_info}}
-It is not possible to rename a table referenced by a view. For more details, see <a href="views.html#view-dependencies">View Dependencies</a>.
+{{site.data.alerts.callout_danger}}
+Using `ALTER TABLE ... RENAME TO` to move a table from one database to another is deprecated.
 {{site.data.alerts.end}}
 
 {% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
@@ -40,6 +34,11 @@ The user must have the `DROP` [privilege](security-reference/authorization.html#
 ## Viewing schema changes
 
 {% include {{ page.version.version }}/misc/schema-change-view-job.md %}
+
+## Usage notes
+
+- It is not possible to rename a table referenced by a view. For more details, see [View Dependencies](views.html#view-dependencies).
+- `ALTER TABLE ... RENAME TO` cannot change a table's schema. To change a table's schema, use [`SET SCHEMA`](set-schema.html).
 
 ## Examples
 
