@@ -5,7 +5,7 @@ toc: true
 docs_area: manage
 ---
 
-CockroachDB allows you to rotate security certificates without restarting nodes.
+CockroachDB allows you to rotate [public key infrastructure (PKI)security certificates](security-reference/transport-layer-security.html) without restarting nodes.
 
 {{site.data.alerts.callout_success}}For an introduction to how security certificates work in a secure CockroachDB cluster, see <a href="cockroach-cert.html">Create Security Certificates</a>.{{site.data.alerts.end}}
 
