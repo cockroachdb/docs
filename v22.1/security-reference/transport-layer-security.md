@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.security
 ---
 
-This pages provides a conceptual overview of Public Key Infrastructre (PKI) and Transport Layer Security (TLS), and details how to implement these critical dimensions of security using CockroachDB.
+This page provides a conceptual overview of Public Key Infrastructre (PKI) and Transport Layer Security (TLS), and details how to implement these critical dimensions of security using CockroachDB.
 
 ## What is Transport Layer Security (TLS)?
 
@@ -68,7 +68,7 @@ This problem is solved with the mechanism of a **public key infrastructure (PKI)
 
 A PKI certificate (often abbreviated "cert") is a document containing the following:
 
-- A) A public key to be used for TLS encryption.
+- A) A public key to be used for [TLS encryption](#what-is-transport-layer-security-tls).
 - B) Some metadata about the party that allegedly holds the corresponding private key and who therefore is the only one capable of decrypting messages encrypted with **A**, most importantly at least one **name**, such as a domain name in a domain name registry system (DNS). The certifiate essentially functions as a badge or nametage, allowing the holder to claim to be the named party.
 - C) A list of actions the holder of the certificate is thereby authorized to perform.
 
