@@ -1,8 +1,8 @@
 ---
 title: Statement Tuning with EXPLAIN
-summary: How to use `EXPLAIN to identify and resolve SQL statement performance issues
+summary: How to use EXPLAIN to identify and resolve SQL statement performance issues
 toc: true
-docs_area: manage
+docs_area: develop
 ---
 
 This tutorial walks you through the common reasons for [slow SQL statements](query-behavior-troubleshooting.html#identify-slow-statements) and describes how to use [`EXPLAIN`](explain.html) to troubleshoot the issues in queries against the [`movr` example dataset](cockroach-demo.html#datasets).
