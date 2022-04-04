@@ -265,9 +265,9 @@ Parameter | Description
 
 <div>
 
-To connect to CockroachDB with [TypeORM](https://typeorm.io), update your project's `ormconfig` file with the required connection properties.
+To connect to CockroachDB with [TypeORM](https://typeorm.io), update your project's [`DataSource`](https://typeorm.io/data-source) with the required connection properties.
 
-For example, suppose that you have a file named `ormconfig.ts` in the project's root directory.
+For example, suppose that you are defining the `DataSource` for your application in a file named `datasource.ts`.
 
 </div>
 
@@ -277,15 +277,15 @@ CockroachDB {{ site.data.products.serverless }} requires you to specify the `typ
 
 {% include copy-clipboard.html %}
 ~~~ ts
-module.exports = {
-  type: "cockroachdb",
-  url: process.env.DATABASE_URL,
-  ssl: true,
-  extra: {
-      options: "--cluster=<routing-id>"
-  },
-  ...
-};
+export const AppDataSource = new DataSource({
+    type: "cockroachdb",
+    url: process.env.DATABASE_URL,
+    ssl: true,
+    extra: {
+        options: "--cluster=<routing-id>"
+    },
+    ...
+});
 ~~~
 
 Where `DATABASE_URL` is an environment variable set to a valid CockroachDB connection string.
@@ -305,14 +305,14 @@ CockroachDB {{ site.data.products.dedicated }} requires you to specify the `type
 
 {% include copy-clipboard.html %}
 ~~~ ts
-module.exports = {
-  type: "cockroachdb",
-  url: process.env.DATABASE_URL,
-  ssl: {
-    ca: process.env.CA_CERT
-  }
-  ...
-};
+export const AppDataSource = new DataSource({
+    type: "cockroachdb",
+    url: process.env.DATABASE_URL,
+    ssl: {
+      ca: process.env.CA_CERT
+    },
+    ...
+});
 ~~~
 
 Where:
@@ -335,16 +335,16 @@ CockroachDB {{ site.data.products.core }} requires you to specify the `type`, `u
 
 {% include copy-clipboard.html %}
 ~~~ ts
-module.exports = {
-  type: "cockroachdb",
-  url: process.env.DATABASE_URL,
-  ssl: {
-    ca: process.env.CA_CERT,
-    key: process.env.CLIENT_KEY,
-    cert: process.env.CLIENT_CERT
-  }
+export const AppDataSource = new DataSource({
+    type: "cockroachdb",
+    url: process.env.DATABASE_URL,
+    ssl: {
+      ca: process.env.CA_CERT,
+      key: process.env.CLIENT_KEY,
+      cert: process.env.CLIENT_CERT
+    },
   ...
-};
+});
 ~~~
 
 Where:
@@ -363,18 +363,17 @@ postgresql://<username>@<host>:<port>/<database>
 
 </div>
 
-You can then call `createConnection` without any parameters:
+You can then import the `AppDataSource` into any file in your project and call `AppDataSource.initialize()` to connect to CockroachDB:
 
 {% include copy-clipboard.html %}
 ~~~ ts
-import {createConnection} from "typeorm";
+import { AppDataSource } from "./datasource";
 
-// createConnection method will automatically read connection options
-// from your ormconfig file or environment variables
-const connection = await createConnection();
+AppDataSource.initialize()
+  .then(async () => {
+    // Execute operations
+  });
 ~~~
-
-`createConnection` will use the properties in your `ormconfig` file.
 
 For more information about connecting with TypeORM, see the [official TypeORM documentation](https://typeorm.io/#/connection).
 
