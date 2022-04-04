@@ -12,7 +12,6 @@ Instead, you might be looking for:
 - [Logging in to the {{ site.data.products.db }} web console. ](../../cockroachcloud/authentication.html).
 - [Accessing the DB console on {{ site.data.products.core }} clusters](../ui-overview.html).
 
-
 ## Authentication configuration
 
 CockroachDB allows fine-grained configuration of which database connect attempts it allows to proceed to the authentication stage, and which authentication methods it will accept, based on:
