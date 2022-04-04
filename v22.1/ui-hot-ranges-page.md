@@ -29,7 +29,7 @@ Range ID | The ID of the hot range. Click the range ID to view the [Range Report
 QPS | Total number of `SELECT`, `UPDATE`, `INSERT`, and `DELETE` queries executed per second on this range.
 Nodes | The ID of each node where the range data is found.
 Store ID | The ID of the store where the range data is found.
-Leaseholder | The ID of the node that has the [range lease](architecture/reads-and-writes-overview.html#important-concepts).
+Leaseholder | The ID of the node that has the [range lease](architecture/reads-and-writes-overview.html#cockroachdb-architecture-terms).
 Database | The database where the range data is found.
 Table | The table where the range data is found.
 Index | The index where the range data is indexed, if applicable.
