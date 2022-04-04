@@ -94,7 +94,7 @@ For instance, consider the database of a global online learning portal that has 
     name STRING,
     email STRING,
     country STRING,
-    expected_graduation_date DATE,   
+    expected_graduation_date DATE,
     PRIMARY KEY (country, id));
 ~~~
 
@@ -113,13 +113,7 @@ To ensure uniqueness or fast lookups, create a [secondary index](indexes.html) o
 
 Indexes are not required to be partitioned, but creating a non-partitioned index on a partitioned table may not perform well.
 
-When you create a non-partitioned index on a partitioned table, CockroachDB sends a [`NOTICE` message](https://www.postgresql.org/docs/current/plpgsql-errors-and-messages.html) to the client stating that creating a non-partitioned index on a partitioned table may not perform well.
-
-#### Partition using foreign key reference
-
-If a partitioned table contains a [foreign key reference](foreign-key.html) to a non-partitioned table, the secondary index created automatically for the foreign key reference will not be partitioned. This can impact performance when querying against the partitioned table, as the data may exist in a distant node.
-
-To minimize potential latency issues, configure the non-partitioned table to be a [`GLOBAL` table](global-tables.html).
+ When you create a non-partitioned index on a partitioned table, CockroachDB sends a [`NOTICE` message](https://www.postgresql.org/docs/current/plpgsql-errors-and-messages.html) to the client stating that creating a non-partitioned index on a partitioned table may not perform well.
 
 ### Replication zones
 
@@ -313,7 +307,7 @@ See [Set the Trial or Enterprise License Key](licensing-faqs.html#set-a-license)
         name STRING,
         email STRING,
         country STRING,
-        expected_graduation_date DATE,   
+        expected_graduation_date DATE,
         PRIMARY KEY (country, id))
         PARTITION BY LIST (country) (
           PARTITION north_america VALUES IN ('CA','US'),
@@ -332,7 +326,7 @@ See [Set the Trial or Enterprise License Key](licensing-faqs.html#set-a-license)
         name STRING,
         email STRING,
         country STRING,
-        expected_graduation_date DATE,   
+        expected_graduation_date DATE,
         PRIMARY KEY (country, id));
     ~~~
 
@@ -345,7 +339,7 @@ See [Set the Trial or Enterprise License Key](licensing-faqs.html#set-a-license)
         PARTITION australia VALUES IN ('AU','NZ'),
         PARTITION DEFAULT VALUES IN (default)
       );
-    ~~~    
+    ~~~
 
 #### Step 5. Create and apply corresponding replication zones
 
@@ -500,9 +494,9 @@ To set the Enterprise license, see [Set the Trial or Enterprise License Key](lic
 > CREATE TABLE students_by_range (
    id INT DEFAULT unique_rowid(),
    name STRING,
-   email STRING,                                                                                           
+   email STRING,
    country STRING,
-   expected_graduation_date DATE,                                                                                      
+   expected_graduation_date DATE,
    PRIMARY KEY (expected_graduation_date, id))
    PARTITION BY RANGE (expected_graduation_date)
       (PARTITION graduated VALUES FROM (MINVALUE) TO ('2017-08-15'),
@@ -715,10 +709,13 @@ Other databases use partitioning for three additional use cases: secondary index
 - **Changes to secondary indexes:** CockroachDB solves these changes through online schema changes. Online schema changes are a superior feature to partitioning because they require zero-downtime and eliminate the potential for consistency problems.
 - **Sharding:** CockroachDB automatically shards data as a part of its distributed database architecture.
 - **Bulk Loading & Deleting:** CockroachDB does not have a feature that supports this use case as of now.
+- **Logical structure of partitions:** CockroachDB uses the partitioning concept to allow users to logically subdivide a single physical table to enable independent configuration of those partitions using zone configurations. Other databases sometimes implement partitioning as the logical union of physically separate tables. This difference means that CockroachDB is able to permit inexpensive repartitioning in contrast to other databases. Consequently, CockroachDB is unable to provide the same bulk data deletion operations over table partitions that other databases achieve by physically dropping the underlying table represented by the partition.
 
 ## Known limitations
 
 - {% include {{ page.version.version }}/known-limitations/partitioning-with-placeholders.md %}
+
+- CockroachDB does not currently support dropping a single partition from a table. In order to remove partitions, you can [repartition](#repartition-a-table) the table.
 
 ## See also
 
