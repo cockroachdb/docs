@@ -88,11 +88,11 @@ The common reasons for a sub-optimal `SELECT` performance are inefficient scans,
 
 ### `SELECT` statements with `GROUP BY` columns are slow
 
-Suppose you have a slow query that
+Suppose you have a [slow selection query](selection-queries.html) that
 
 -  Has a `GROUP BY` clause.
 -  Uses an index that has a `STORING` clause.
--  Where some or all of the columns in the query's `GROUP BY` clause are part of the index's `STORING` clause and are **not** index key columns. 
+-  Where some or all of the columns in the query's `GROUP BY` clause are part of the index's `STORING` clause and are **not** index key columns.
 
 For example:
 
@@ -178,7 +178,7 @@ The `nodes_lastseen_organization_storing` index has the `GROUP BY` column `organ
 Create a new secondary index that has all of the `GROUP BY` columns as key columns in the index.
 
 ~~~ sql
-INDEX "nodes_lastseen_organization_os_version" (lastseen, organization, os, version)
+CREATE INDEX "nodes_lastseen_organization_os_version" (lastseen, organization, os, version)
 ~~~
 
 This index allows CockroachDB to perform a streaming `GROUP BY` rather than a hash `GROUP BY`. After you make this change, you should notice an improvement in the latency of the example query.
