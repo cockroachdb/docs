@@ -164,7 +164,7 @@ For more information about selecting an optimal join ordering, see our blog post
 
 The cost-based optimizer explores multiple join orderings to find the lowest-cost plan. If there are many joins or join subtrees in the query, this can increase the number of execution plans the optimizer explores, and therefore the exploration and planning time. If the planning phase of a query takes a long time (on the order of multiple seconds or minutes) to plan, or the query plan involves many joins, consider the following alternatives to reduce the planning time:
 
-- To limit the size of the subtree that can be reordered, set the `reorder_joins_limit` session variable to a lower value, for example:
+- To limit the size of the subtree that can be reordered, set the `reorder_joins_limit` [session variable](set-vars.html) to a lower value, for example:
 
     ~~~ sql
     SET reorder_joins_limit = 2;
@@ -176,8 +176,8 @@ The cost-based optimizer explores multiple join orderings to find the lowest-cos
 
     If one query has a slow planning time, you can avoid interfering with other query plans by setting `reorder_joins_limit` to the desired lower value before executing that query and resetting the session variable to the default after executing the query.
 
-- If setting and reseting the session variable is cumbersome or if there are multiple independent joins in the query where some may benefit from join reordering, you can use a [join hint](#join-hints). If the join has a hint specifying the type of join to something other than the default `INNER` (i.e. `INNER LOOKUP`, `MERGE`, `HASH`, etc.), join reordering will be disabled and the plan will respect the join order inherent in the way the query is written. This works at the expression level and doesn't affect the entire query (for instance, if you have a union of two joins they are independent join expressions).
--
+- If setting and resetting the session variable is cumbersome or if there are multiple independent joins in the query where some may benefit from join reordering, you can use a [join hint](#join-hints). If the join has a hint specifying the type of join to something other than the default `INNER` (i.e. `INNER LOOKUP`, `MERGE`, `HASH`, etc.), join reordering will be disabled and the plan will respect the join order inherent in the way the query is written. This works at the expression level and doesn't affect the entire query (for instance, if you have a union of two joins they are independent join expressions).
+
 ## Join hints
 
 To force the use of a specific join algorithm even if the optimizer determines that a different plan would have a lower cost, you can use a _join hint_. You specify a join hint as `<join type> <join algorithm> JOIN`. For example:
