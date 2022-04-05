@@ -126,7 +126,7 @@ When schema changes with column backfill (e.g., adding a column with a default, 
 
 For an example of a schema change with column backfill, start with the changefeed created in this [Kafka example](changefeed-examples.html#create-a-changefeed-connected-to-kafka):
 
-~~~ shell
+~~~
 [1]	{"id": 1, "name": "Petee H"}
 [2]	{"id": 2, "name": "Carl"}
 [3]	{"id": 3, "name": "Ernie"}
@@ -141,7 +141,7 @@ Add a column to the watched table:
 
 The changefeed emits duplicate records 1, 2, and 3 before outputting the records using the new schema:
 
-~~~ shell
+~~~
 [1]	{"id": 1, "name": "Petee H"}
 [2]	{"id": 2, "name": "Carl"}
 [3]	{"id": 3, "name": "Ernie"}
@@ -152,6 +152,8 @@ The changefeed emits duplicate records 1, 2, and 3 before outputting the records
 [2]	{"id": 2, "likes_treats": true, "name": "Carl"}
 [3]	{"id": 3, "likes_treats": true, "name": "Ernie"}
 ~~~
+
+When using the [`schema_change_policy = nobackfill` option](create-changefeed.html#schema-policy), the changefeed will still emit duplicate records for the table that is being altered. In the preceding output, the records marked as `# Duplicate` will still emit with this option, but not the new schema records.
 
 {{site.data.alerts.callout_info}}
 Changefeeds will emit [`NULL` values](null-handling.html) for [`VIRTUAL` computed columns](computed-columns.html) and not the column's computed value.

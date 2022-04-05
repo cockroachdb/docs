@@ -7,22 +7,6 @@ docs_area: reference.sql
 
 The `INSERT` [statement](sql-statements.html) inserts one or more rows into a table. In cases where inserted values conflict with uniqueness constraints, the `ON CONFLICT` clause can be used to update rather than insert rows.
 
-
-## Performance best practices
-
-- To bulk-insert data into an existing table, batch multiple rows in one [multi-row `INSERT`](#insert-multiple-rows-into-an-existing-table) statement. Experimentally determine the optimal batch size for your application by monitoring the performance for different batch sizes (10 rows, 100 rows, 1000 rows). Do not include multi-row `INSERT` statements within an explicit transaction.
-
-    {{site.data.alerts.callout_success}}
-    You can also use the [`IMPORT INTO`](import-into.html) statement to bulk-insert CSV data into an existing table.
-    {{site.data.alerts.end}}
-
-    {{site.data.alerts.callout_info}}
-    Large multi-row `INSERT` queries can lead to long-running transactions that result in [transaction retry errors](transaction-retry-error-reference.html). If a multi-row `INSERT` query results in an error code [`40001` with the message `"transaction deadline exceeded"`](transaction-retry-error-reference.html#retry_commit_deadline_exceeded), we recommend breaking up the query up into smaller batches of rows.
-    {{site.data.alerts.end}}
-
-- To bulk-insert data into a new table, the [`IMPORT`](import.html) statement performs better than `INSERT`.
-- In traditional SQL databases, generating and retrieving unique IDs involves using `INSERT` with `SELECT`. In CockroachDB, use `RETURNING` clause with `INSERT` instead. See [Insert and Return Values](#insert-and-return-values) for more details.
-
 ## Required privileges
 
 The user must have the `INSERT` [privilege](security-reference/authorization.html#managing-privileges) on the table.
@@ -87,6 +71,24 @@ no performance difference between `UPSERT` and `INSERT ON CONFLICT`.
 This issue is particularly relevant when using a simple SQL table of two columns
 to [simulate direct KV access](sql-faqs.html#can-i-use-cockroachdb-as-a-key-value-store).
 In this case, be sure to use the `UPSERT` statement.
+
+## Performance best practices
+
+When generating and retrieving unique IDs, use the `RETURNING` clause with `INSERT`. See [Insert and Return Values](#insert-and-return-values) for details. In traditional SQL databases, you would do this using `INSERT` with `SELECT`, which is less performant.
+
+### Bulk inserts
+
+- **Existing table**
+
+    - Perform a [multi-row `INSERT`](#insert-multiple-rows-into-an-existing-table) in one statement in an [implicit transaction](transactions.html#individual-statements).
+
+    - Do not use large batches of 100,000 rows or more, which can lead to long-running transactions that result in [transaction retry errors](transaction-retry-error-reference.html). If a multi-row `INSERT` results in an error code [`40001` with the message `"transaction deadline exceeded"`](transaction-retry-error-reference.html#retry_commit_deadline_exceeded), Cockroach Labs recommends that you break up the `INSERT` into smaller batches.
+
+        Experimentally determine the optimal batch size for your application by monitoring the performance for different batch sizes (1, 10, 100, 1000) rows in an implicit transaction. In some cases, for example, when a table has no secondary indexes, single row `INSERT`s may perform best in terms of total system throughput.
+
+    - You can also use the [`IMPORT INTO`](import-into.html) statement to bulk-insert CSV data.
+
+- **New table**: Cockroach Labs recommends that you use the [`IMPORT`](import.html) statement, as it performs better than `INSERT`.
 
 ## Examples
 
@@ -167,7 +169,7 @@ If you do not list column names, the statement will use the columns of the table
 
 ### Insert multiple rows into an existing table
 
-Multi-row inserts are faster than multiple single-row `INSERT` statements. As a performance best practice, we recommend batching multiple rows in one multi-row `INSERT` statement instead of using multiple single-row `INSERT` statements. Experimentally determine the optimal batch size for your application by monitoring the performance for different batch sizes (10 rows, 100 rows, 1000 rows).
+See [bulk inserts](#bulk-inserts) for best practices.
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -199,13 +201,9 @@ Multi-row inserts are faster than multiple single-row `INSERT` statements. As a 
 (12 rows)
 ~~~
 
-{{site.data.alerts.callout_info}}
-You can also use the [`IMPORT INTO`](import-into.html) statement to bulk-insert CSV data into an existing table.
-{{site.data.alerts.end}}
-
 ### Insert multiple rows into a new table
 
-The [`IMPORT`](import.html) statement performs better than `INSERT` when inserting rows into a new table.
+See [bulk inserts](#bulk-inserts) for best practices.
 
 ### Insert from a `SELECT` statement
 

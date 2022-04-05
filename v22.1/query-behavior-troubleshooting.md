@@ -211,31 +211,31 @@ Throughput is affected by the disk I/O, CPU usage, and network latency. Use the 
 
 ### Single hot node
 
-A hot node is one that has much higher resource usage than other nodes. To determine if you have a hot node in your cluster, [access the DB Console](ui-overview.html#db-console-access), click **Metrics** on the left, and navigate to the following graphs.
+A *hot node* is one that has much higher resource usage than other nodes. To determine if you have a hot node in your cluster, [access the DB Console](ui-overview.html#db-console-access) and check the following:
 
--   Replication Dashboard > [Average queries per store](ui-replication-dashboard.html#other-graphs)
-
--   Overview Dashboard > [Service Latency](ui-overview-dashboard.html#service-latency-sql-99th-percentile)
-
--   Hardware Dashboard > [CPU percent](ui-hardware-dashboard.html#cpu-percent)
-
--   SQL Dashboard > [Connection Latency](ui-sql-dashboard.html#connection-latency-99th-percentile)
-
--   Hardware Dashboard > [Disk IOPS in progress](ui-hardware-dashboard.html#disk-ops-in-progress)
-
-Hover over each graph to see the per-node values of the metrics. If one of the nodes has a higher value, you have a hot node in your cluster.
+- Click **Metrics** and navigate to the following graphs. Hover over each graph to see the per-node values of the metrics. If one of the nodes has a higher value, you have a hot node in your cluster.
+  - [**Replication** dashboard](ui-replication-dashboard.html#other-graphs) > **Average Queries per Store** graph
+  - [**Overview** dashboard](ui-overview-dashboard.html#service-latency-sql-99th-percentile) > **Service Latency** graph
+  - [**Hardware** dashboard](ui-hardware-dashboard.html#cpu-percent) > **CPU Percent** graph
+  - [**SQL** dashboard](ui-sql-dashboard.html#connection-latency-99th-percentile) > **SQL Connections** graph
+  - [**Hardware** dashboard](ui-hardware-dashboard.html#disk-ops-in-progress) > **Disk IOPS in Progress** graph
+- Open the [**Hot Ranges** page](ui-hot-ranges-page.html) and check for ranges with significantly higher QPS on any nodes.
 
 #### Solution
 
--   If you have a small table that fits into one range, then only one of the nodes will be used. This is expected behavior. However, you can [split your range](split-at.html) to distribute the table across multiple nodes.
+- If you have a small table that fits into one range, then only one of the nodes will be used. This is expected behavior. However, you can [split your range](split-at.html) to distribute the table across multiple nodes.
 
--   If the SQL Connections graph shows that one node has a higher number of SQL connections and other nodes have zero connections, check if your app is set to talk to only one node.
+- If the SQL Connections graph shows that one node has a higher number of SQL connections and other nodes have zero connections, check if your app is set to talk to only one node.
 
--   Check load balancer settings.
+- Check load balancer settings.
 
--   See [Reduce hot spots](performance-best-practices-overview.html#reduce-hot-spots).
+- Check for [transaction contention](performance-best-practices-overview.html#transaction-contention).
 
--   If you have a monotonically increasing index column or primary key, then your index or primary key should be redesigned. See [Unique ID best practices](performance-best-practices-overview.html#unique-id-best-practices) for more information.
+- If you have a monotonically increasing index column or primary Key, then your index or primary key should be redesigned. For more information, see [Unique ID best practices](performance-best-practices-overview.html#unique-id-best-practices).
+
+- If a range has significantly higher QPS on a node, there may be a hot spot on the range that needs to be reduced. For more information, see [Hot spots](performance-best-practices-overview.html#hot-spots).
+
+- If you have a monotonically increasing index column or primary key, then your index or primary key should be redesigned. See [Unique ID best practices](performance-best-practices-overview.html#unique-id-best-practices) for more information.
 
 ### Per-node queries per second (QPS) is high
 

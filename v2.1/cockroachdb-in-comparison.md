@@ -219,7 +219,7 @@ This page shows you how key features of CockroachDB stack up against other datab
       <span class="support" data-dbs='["MySQL", "PostgreSQL", "Cassandra", "HBase", "MongoDB"]'>Yes</span>
       <span class="support gray" data-dbs='["Oracle", "SQL Server", "DynamoDB", "Spanner"]'>No</span>
     </td>
-    <td><a class="comparison-chart__link" href="https://wiki.crdb.io/wiki/spaces/CRDB/pages/73204033/Contributing+to+CockroachDB" target="_blank">Yes</a></td>
+    <td><a class="comparison-chart__link" href="https://wiki.crdb.io/wiki/spaces/CRDB/pages/73204033/Contributing+to+CockroachDB" target="_blank" rel="noopener">Yes</a></td>
   </tr>
   <tr>
     <td class="comparison-chart__feature">

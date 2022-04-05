@@ -93,7 +93,7 @@ postgresql://<username>@<host>:<port>/<database>?sslmode=verify-full&sslrootcert
 
 For more information about connecting with node-postgres, see the [official node-postgres documentation](https://node-postgres.com/features/connecting).
 
-### Connection parameters
+## Connection parameters
 
 <div class="filter-content" markdown="1" data-scope="serverless">
 
@@ -217,7 +217,7 @@ To connect to CockroachDB with Sequelize, you must install the [CockroachDB Sequ
 
 For more information about connecting with Sequelize, see the [official Sequelize documentation](https://sequelize.org/master/index.html).
 
-### Connection parameters
+## Connection parameters
 
 <div class="filter-content" markdown="1" data-scope="serverless">
 
@@ -378,7 +378,7 @@ const connection = await createConnection();
 
 For more information about connecting with TypeORM, see the [official TypeORM documentation](https://typeorm.io/#/connection).
 
-### Connection parameters
+## Connection parameters
 
 <div class="filter-content" markdown="1" data-scope="serverless">
 
@@ -643,7 +643,7 @@ For more information about connecting with Django, see the [official Django docu
 
 </div>
 
-### Connection parameters
+## Connection parameters
 
 <div class="filter-content" markdown="1" data-scope="serverless">
 
@@ -706,22 +706,20 @@ For example:
 package main
 
 import (
-  "context"
-  "os"
+	"context"
+	"log"
 
-  "github.com/jackc/pgx/v4"
+	"github.com/jackc/pgx/v4"
 )
 
 func main() {
-  conn, err := pgx.Connect(context.Background(), os.Getenv("DATABASE_URL"))
-  if err != nil {
-    log.Fatal(err)
-  }
-  defer conn.Close(context.Background())
+	conn, err := pgx.Connect(context.Background(), "<connection-string>")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer conn.Close(context.Background())
 }
 ~~~
-
-Where `DATABASE_URL` is an environment variable set to a valid CockroachDB connection string.
 
 pgx accepts the following format for CockroachDB connection strings:
 
@@ -768,21 +766,19 @@ package main
 
 import (
 	"database/sql"
-  "os"
+	"log"
 
 	_ "github.com/lib/pq"
 )
 
 func main() {
-	db, err := sql.Open("postgres", os.Getenv("DATABASE_URL"))
+	db, err := sql.Open("postgres", "<connection-string>")
 	if err != nil {
 		log.Fatal(err)
 	}
-
+	defer db.Close()
 }
 ~~~
-
-Where `DATABASE_URL` is an environment variable set to a valid CockroachDB connection string.
 
 pq accepts the following format for CockroachDB connection strings:
 
@@ -826,17 +822,22 @@ For example:
 
 {% include copy-clipboard.html %}
 ~~~ go
-import (
-  "os"
+package main
 
-  "gorm.io/driver/postgres"
-  "gorm.io/gorm"
+import (
+	"log"
+
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
 )
 
-db, err := gorm.Open(postgres.Open(os.Getenv("DATABASE_URL")), &gorm.Config{})
+func main() {
+	db, err := gorm.Open(postgres.Open("<connection-string>"), &gorm.Config{})
+	if err != nil {
+		log.Fatal(err)
+	}
+}
 ~~~
-
-Where `DATABASE_URL` is an environment variable set to a valid CockroachDB connection string.
 
 GORM accepts the following format for CockroachDB connection strings:
 
@@ -871,7 +872,7 @@ For more information about connecting with GORM, see the [official GORM document
 
 </div>
 
-### Connection parameters
+## Connection parameters
 
 <div class="filter-content" markdown="1" data-scope="serverless">
 
@@ -1029,7 +1030,7 @@ For more information about connecting with Hibernate, see the [official Hibernat
 
 </div>
 
-### Connection parameters
+## Connection parameters
 
 <div class="filter-content" markdown="1" data-scope="serverless">
 
@@ -1189,7 +1190,7 @@ For more information about connecting with ActiveRecord, see the [official Activ
 
 </div>
 
-### Connection parameters
+## Connection parameters
 
 <div class="filter-content" markdown="1" data-scope="serverless">
 
