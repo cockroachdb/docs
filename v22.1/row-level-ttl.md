@@ -8,7 +8,7 @@ docs_area: develop
 
 {% include {{page.version.version}}/sql/row-level-ttl.md %}
 
-Row-Level TTL is in **beta** because it may not satisfy production requirements due to performance issues that may occur in large volume data sets.  For more information see [Limitations](row-level-ttl.html#limitations).
+Row-Level TTL is in **beta** because it may not satisfy production requirements due to performance issues that may occur in large volume data sets. For more information see [Limitations](row-level-ttl.html#limitations).
 
 By using Row-Level TTL, you can avoid the complexity of writing and managing scheduled jobs from the application layer to mark rows as expired and perform the necessary deletions. Doing it yourself can become complicated due to the need to balance the timeliness of the deletions vs. the potentially negative performance impact of those deletions on foreground traffic from your application.
 
@@ -107,15 +107,35 @@ The settings that control the behavior of Row-Level TTL are provided using [stor
 | `ttl_row_stats_poll_interval`                            | If set, counts rows and expired rows on the table to report as Prometheus metrics while the TTL job is running. Unset by default, meaning no stats are fetched and reported. | N/A                                 |
 | `ttl_pause` <a name="param-ttl-pause"></a>               | If set, stops the TTL job from executing.                                                                                                                                    | N/A                                 |
 | `ttl_job_cron` <a name="param-ttl-job-cron"></a>         | Frequency at which the TTL job runs, specified using [CRON syntax](https://cron.help).                                                                                       | N/A                                 |
-| `ttl_automatic_column`                                   | If set, use the value of the `crdb_internal_expiration` hidden column.                                                                                                       | N/A                                 |
+| `ttl_automatic_column`                                   | If set, use the value of the `crdb_internal_expiration` hidden column. (Currently always set.)                                                                               | N/A                                 |
 
 For more information about TTL-related cluster settings, see [View TTL-related cluster settings](#view-ttl-related-cluster-settings).
+
+## TTL metrics
+
+The table below lists the metrics you can use to monitor the effectiveness of your TTL settings.
+
+| Name                                      | Description                                                      | Measurement          | Type      |
+|-------------------------------------------+------------------------------------------------------------------+----------------------+-----------|
+| `jobs.row_level_ttl.range_total_duration` | Duration for processing a range during row level TTL.            | `nanoseconds`        | Histogram |
+| `jobs.row_level_ttl.select_duration`      | Duration for select requests during row level TTL.               | `nanoseconds`        | Histogram |
+| `jobs.row_level_ttl.delete_duration`      | Duration for delete requests during row level TTL.               | `nanoseconds`        | Histogram |
+| `jobs.row_level_ttl.rows_selected`        | Number of rows selected for deletion by the row level TTL job.   | `num_rows`           | Counter   |
+| `jobs.row_level_ttl.rows_deleted`         | Number of rows deleted by the row level TTL job.                 | `num_rows`           | Counter   |
+| `jobs.row_level_ttl.num_active_ranges`    | Number of active workers attempting to delete for row level TTL. | `num_active_workers` | Count     |
+| `jobs.row_level_ttl.total_rows`           | Approximate number of rows on the TTL table.                     | `total_rows`         | Count     |
+| `jobs.row_level_ttl.total_expired_rows`   | Approximate number of expired rows on the TTL table.             | `total_expired_rows` | Count     |
+
+By default, these metrics are aggregated. If you want to have metrics broken out by table, you must take the following steps:
+
+- Set the `server.child_metrics.enabled` [cluster setting](cluster-settings.html) to `true`.
+- Set the `ttl_label_metrics` storage parameter to `true`. (This step is necessary to reduce the cardinality of the metrics.)
 
 ## Examples
 
 ### Create a table with row-level TTL
 
-To specify a TTL when creating a table, use the SQL syntax shown below. For example, to create a new table with rows that expire after 15 minutes, execute a statement like the following:
+To specify a TTL when creating a table, use the SQL syntax shown below. For example, to create a new table with rows that expire after an interval [other than the default](#param-ttl-expire-after), execute a statement like the following:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -139,6 +159,22 @@ INSERT INTO events (description) VALUES ('a thing'), ('another thing'), ('yet an
 
 ~~~
 INSERT 3
+~~~
+
+To see the rows and their expirations, enter the following query:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT *, crdb_internal_expiration FROM events;
+~~~
+
+~~~
+                   id                  |    description    |        inserted_at         |   crdb_internal_expiration
+---------------------------------------+-------------------+----------------------------+--------------------------------
+  34c3acbb-846b-4115-a2fb-db528b3a8155 | another thing     | 2022-04-05 19:38:27.638598 | 2022-04-05 19:41:27.638598+00
+  4db953f1-5715-4cf2-bc84-1a2a6c8980a9 | a thing           | 2022-04-05 19:38:27.638598 | 2022-04-05 19:41:27.638598+00
+  c24dc626-1df3-4efa-8643-5e0e6a43b847 | yet another thing | 2022-04-05 19:38:27.638598 | 2022-04-05 19:41:27.638598+00
+(3 rows)
 ~~~
 
 ### Add row-level TTL to an existing table
@@ -182,6 +218,28 @@ ALTER TABLE
 ~~~
 
 ### View TTL storage parameters on a table
+
+To view TTL storage parameters on a table, you can use [`SHOW CREATE TABLE`](show-create.html):
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SHOW CREATE TABLE events;
+~~~
+
+~~~
+  table_name |                                                                                          create_statement
+-------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  events     | CREATE TABLE public.events (
+             |     id UUID NOT NULL DEFAULT gen_random_uuid(),
+             |     description STRING NULL,
+             |     inserted_at TIMESTAMP NULL DEFAULT current_timestamp():::TIMESTAMP,
+             |     crdb_internal_expiration TIMESTAMPTZ NOT VISIBLE NOT NULL DEFAULT current_timestamp():::TIMESTAMPTZ + '90 days':::INTERVAL ON UPDATE current_timestamp():::TIMESTAMPTZ + '90 days':::INTERVAL,
+             |     CONSTRAINT events_pkey PRIMARY KEY (id ASC)
+             | ) WITH (ttl = 'on', ttl_automatic_column = 'on', ttl_expire_after = '90 days':::INTERVAL)
+(1 row)
+~~~
+
+You can also use the following query:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
