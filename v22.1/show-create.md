@@ -23,6 +23,8 @@ Parameter | Description
 ----------|------------
 `object_name` | The name of the database, table, view, or sequence for which to show the `CREATE` statement.
 `ALL TABLES` |  Show the `CREATE` statements for all tables, views, and sequences in the current database.<br>This option is intended to provide the statements required to recreate the objects in the current database. As a result, `SHOW CREATE ALL TABLES` also returns the [`ALTER` statements](alter-table.html) that add, modify, and validate an object's [constraints](constraints.html). The `ALTER` statements follow the `CREATE` statements to guarantee that all objects are added before their references.
+`ALL SCHEMAS` |  Show the `CREATE` statements for all [schemas](create-schema.html) in the current database.
+`ALL TYPES` |  Show the `CREATE` statements for all [types](create-type.html) in the current database.
 
 ## Response
 
@@ -388,6 +390,20 @@ The `SHOW CREATE DATABASE` output includes the database regions.
   database_name |                                                   create_statement
 ----------------+-----------------------------------------------------------------------------------------------------------------------
   movr          | CREATE DATABASE movr PRIMARY REGION "us-east1" REGIONS = "europe-west1", "us-east1", "us-west1" SURVIVE ZONE FAILURE
+(1 row)
+~~~
+
+### Show the `CREATE SCHEMA` statement for all schemas within a database
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW CREATE ALL SCHEMAS;
+~~~
+
+~~~
+    create_statement
+-------------------------
+  CREATE SCHEMA public;
 (1 row)
 ~~~
 

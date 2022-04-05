@@ -61,7 +61,7 @@ In both of these examples, the split would only occur if the balance factor and 
 
 ## Why load-based splitting works
 
-CockroachDB creates a relatively even distribution of leaseholders throughout your cluster. ([Leaseholders](architecture/replication-layer.html#leases) are a single replica of a range that both serve reads and coordinate writes operations.)
+CockroachDB creates a relatively even distribution of leaseholders throughout your cluster. ([Leaseholders](architecture/replication-layer.html#leases) are a single replica of a range that both serve reads and coordinate write operations.)
 
 However, without load-based splitting this distribution is created without considering the load present on any set of keys. This means that even with an equitable distribution of leases throughout the cluster, some leases will generate more traffic for the node that houses them than others. Because each node can only provide so much throughput, a single node can become a bottleneck for providing access to a subset of data in your cluster.
 

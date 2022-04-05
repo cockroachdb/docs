@@ -18,7 +18,7 @@ These pages are experimental and undocumented. If you find an issue, let us know
 On the right-side of the page, the following information is displayed:
 
 - [**License type**](licensing-faqs.html): Determines if you have access to Enterprise features.
-- **Web server**: Identifies the current node when viewing the DB Console through a load balancer.
+- **Web server**: Allows you to route DB Console access from the currently accessed node to a specific node on the cluster. Afterward, identifies the node to which DB Console access is being routed. To cancel this behavior, click **Reset**.
 
 ## Reports
 

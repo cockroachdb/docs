@@ -23,7 +23,7 @@ If you are upgrading to {{ page.version.version }}, first complete the upgrade w
 
 ## Use cases for admission control
 
-A well-provisioned CockroachDB cluster may still encounter performance bottlenecks at the node level, as stateful nodes can develop hotspots that last until the cluster rebalances itself. When hotspots occur, they should not cause failures or degraded performance for important work.
+A well-provisioned CockroachDB cluster may still encounter performance bottlenecks at the node level, as stateful nodes can develop hot spots that last until the cluster rebalances itself. When hot spots occur, they should not cause failures or degraded performance for important work.
 
 This is particularly important for {{ site.data.products.serverless }}, where one user tenant cluster experiencing high load should not degrade the performance or availability of a different, isolated tenant cluster running on the same host.
 
