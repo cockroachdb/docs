@@ -128,4 +128,4 @@ Usage of `cockroach init` assumes that nodes have already been started with [`co
 - [Orchestrated Deployment](orchestration.html)
 - [Local Deployment](start-a-local-cluster.html)
 - [`cockroach start`](cockroach-start.html)
-- [Other Cockroach Commands](cockroach-commands.html)
+- [`cockroach` Commands Overview](cockroach-commands.html)

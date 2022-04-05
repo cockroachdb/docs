@@ -510,4 +510,4 @@ Clusters using this configuration with client certificate authentication may als
 - [Manual Deployment](manual-deployment.html)
 - [Orchestrated Deployment](orchestration.html)
 - [Local Deployment](start-a-local-cluster.html)
-- [Other Cockroach Commands](cockroach-commands.html)
+- [`cockroach` Commands Overview](cockroach-commands.html)

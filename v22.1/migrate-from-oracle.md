@@ -155,7 +155,6 @@ The following options are available to [`IMPORT ... CSV`](import.html):
 - [Column delimiter](migrate-from-csv.html#column-delimiter)
 - [Comment syntax](migrate-from-csv.html#comment-syntax)
 - [Skip header rows](migrate-from-csv.html#skip-header-rows)
--  [Row limit](migrate-from-csv.html#row-limit)
 - [Null strings](migrate-from-csv.html#null-strings)
 - [File compression](migrate-from-csv.html#file-compression)
 
@@ -389,4 +388,4 @@ You will have to refactor Oracle SQL and functions that do not comply with [ANSI
 - [Migrate from Postgres](migrate-from-postgres.html)
 - [Back Up and Restore Data](take-full-and-incremental-backups.html)
 - [Use the Built-in SQL Client](cockroach-sql.html)
-- [Other Cockroach Commands](cockroach-commands.html)
+- [`cockroach` Commands Overview](cockroach-commands.html)

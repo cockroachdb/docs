@@ -7,7 +7,7 @@ redirect_from: multi-region-application.html
 
 This page walks you through developing a globally-available web application. It is the fourth section of the [Develop and Deploy a Global Application](movr-flask-overview.html) tutorial.
 
-{% include {{ page.version.version }}/misc/movr-live-demo.md %}
+<!-- {% include {{ page.version.version }}/misc/movr-live-demo.md %} -->
 
 ## Before you begin
 
@@ -383,7 +383,7 @@ After you finish developing and debugging your application, you can start [deplo
 
 ## See also
 
-- [MovR (live demo)](https://movr.cloud)
+<!-- [MovR (live demo)](https://movr.cloud)-->
 - [SQLAlchemy documentation](https://docs.sqlalchemy.org/en/latest/)
 - [Transactions](transactions.html)
 - [Flask documentation](https://flask.palletsprojects.com/en/1.1.x/)
