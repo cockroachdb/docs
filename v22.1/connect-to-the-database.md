@@ -706,22 +706,20 @@ For example:
 package main
 
 import (
-  "context"
-  "os"
+	"context"
+	"log"
 
-  "github.com/jackc/pgx/v4"
+	"github.com/jackc/pgx/v4"
 )
 
 func main() {
-  conn, err := pgx.Connect(context.Background(), os.Getenv("DATABASE_URL"))
-  if err != nil {
-    log.Fatal(err)
-  }
-  defer conn.Close(context.Background())
+	conn, err := pgx.Connect(context.Background(), "<connection-string>")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer conn.Close(context.Background())
 }
 ~~~
-
-Where `DATABASE_URL` is an environment variable set to a valid CockroachDB connection string.
 
 pgx accepts the following format for CockroachDB connection strings:
 
@@ -768,21 +766,19 @@ package main
 
 import (
 	"database/sql"
-  "os"
+	"log"
 
 	_ "github.com/lib/pq"
 )
 
 func main() {
-	db, err := sql.Open("postgres", os.Getenv("DATABASE_URL"))
+	db, err := sql.Open("postgres", "<connection-string>")
 	if err != nil {
 		log.Fatal(err)
 	}
-
+	defer db.Close()
 }
 ~~~
-
-Where `DATABASE_URL` is an environment variable set to a valid CockroachDB connection string.
 
 pq accepts the following format for CockroachDB connection strings:
 
@@ -826,17 +822,22 @@ For example:
 
 {% include copy-clipboard.html %}
 ~~~ go
-import (
-  "os"
+package main
 
-  "gorm.io/driver/postgres"
-  "gorm.io/gorm"
+import (
+	"log"
+
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
 )
 
-db, err := gorm.Open(postgres.Open(os.Getenv("DATABASE_URL")), &gorm.Config{})
+func main() {
+	db, err := gorm.Open(postgres.Open("<connection-string>"), &gorm.Config{})
+	if err != nil {
+		log.Fatal(err)
+	}
+}
 ~~~
-
-Where `DATABASE_URL` is an environment variable set to a valid CockroachDB connection string.
 
 GORM accepts the following format for CockroachDB connection strings:
 
