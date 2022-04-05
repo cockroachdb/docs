@@ -164,8 +164,6 @@ You can filter jobs by using `SHOW AUTOMATIC JOBS` as the data source for a [`SE
 
 Changefeed jobs can be [paused](create-and-configure-changefeeds.html#pause), [resumed](create-and-configure-changefeeds.html#resume), [altered](alter-changefeed.html), or [canceled](create-and-configure-changefeeds.html#cancel).
 
-If you have modified a changefeed with the `ALTER CHANGEFEED` statement, the response from `SHOW CHANGEFEED JOB` for that changefeed will also show options that were set implicitly on the changefeed when it was created. For more detail, see [Modify a changefeed](alter-changefeed.html#show-output-post-alter).
-
 ### Filter changefeed jobs
 
 You can filter jobs by using `SHOW CHANGEFEED JOBS` as the data source for a [`SELECT`](select-clause.html) statement, and then filtering the values with a `WHERE` clause. For example, you can filter by the `status` of changefeed jobs:
