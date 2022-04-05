@@ -818,3 +818,4 @@ Term | Classification | Note
 --- |:---:| ---
 Postgres | 🔴 | This is a nickname for PostgreSQL. Use PostgreSQL instead: it's the official name, our docs site and Google treat these as synonyms, and Cmd+F on `Postgres` will still find `PostgreSQL`.
 PostgreSQL | 🟢 | Preferred over Postgres.
+vxx.x.x | 🟢 | This is the correct way to refer to any version of CockroachDB (for example, `v21.1.8`). Preferred over `version xx.x.x`.
