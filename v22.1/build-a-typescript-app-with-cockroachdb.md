@@ -24,19 +24,55 @@ This tutorial shows you how run a simple application built with [TypeORM](https:
 
 ## Step 3. Get the code
 
-Clone [the code's GitHub repository](https://github.com/cockroachlabs/example-app-typescript-typeorm).
+1. Clone [the code's GitHub repository](https://github.com/cockroachlabs/example-app-typescript-typeorm):
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ git clone git@github.com:cockroachlabs/example-app-typescript-typeorm.git
+    ~~~
+
+1. Navigate to the repo directory and install the application dependencies:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cd example-app-typescript-typeorm
+    ~~~
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ npm install
+    ~~~
 
 ## Step 4. Configure your CockroachDB connection
 
 <section class="filter-content" markdown="1" data-scope="local">
 
-1. Open the `datasource.ts` file, and comment out the `extra` and `options` configuration properties.
+1. Open the `datasource.ts` file, and comment out the `ssl: true`, `extra` and `options` configuration properties.
 
-1. In the `datasource.ts` file, replace `ssl: true` with `ssl: { rejectUnauthorized: false }`.
+1. In the `datasource.ts` file, uncomment `ssl: { rejectUnauthorized: false }`.
 
     {{site.data.alerts.callout_danger}}
     Only use `ssl: { rejectUnauthorized: false }` in development, for insecure connections.
     {{site.data.alerts.end}}
+
+    The `DataSource` configuration should look similar to the following:
+
+    ~~~ ts
+    export const AppDataSource = new DataSource({
+        type: "cockroachdb",
+        url: process.env.DATABASE_URL,
+        ssl: { rejectUnauthorized: false }, // For insecure connections only
+        /* ssl: true,
+        extra: {
+            options: "--cluster=<routing-id>"
+        }, */
+        synchronize: true,
+        logging: false,
+        entities: ["src/entity/**/*.ts"],
+        migrations: ["src/migration/**/*.ts"],
+        subscribers: ["src/subscriber/**/*.ts"],
+    })
+    ~~~
 
 1. Set the `DATABASE_URL` environment variable to the connection string provided in the `cockroach demo` welcome text.
 
@@ -58,13 +94,6 @@ Clone [the code's GitHub repository](https://github.com/cockroachlabs/example-ap
 </section>
 
 ## Step 5. Run the code
-
-Open a terminal window, and install the application dependencies:
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ npm install
-~~~
 
 Start the application:
 

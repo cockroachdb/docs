@@ -277,6 +277,8 @@ CockroachDB {{ site.data.products.serverless }} requires you to specify the `typ
 
 {% include copy-clipboard.html %}
 ~~~ ts
+import { DataSource } from "typeorm"
+
 export const AppDataSource = new DataSource({
     type: "cockroachdb",
     url: process.env.DATABASE_URL,
@@ -305,6 +307,8 @@ CockroachDB {{ site.data.products.dedicated }} requires you to specify the `type
 
 {% include copy-clipboard.html %}
 ~~~ ts
+import { DataSource } from "typeorm"
+
 export const AppDataSource = new DataSource({
     type: "cockroachdb",
     url: process.env.DATABASE_URL,
@@ -335,6 +339,8 @@ CockroachDB {{ site.data.products.core }} requires you to specify the `type`, `u
 
 {% include copy-clipboard.html %}
 ~~~ ts
+import { DataSource } from "typeorm"
+
 export const AppDataSource = new DataSource({
     type: "cockroachdb",
     url: process.env.DATABASE_URL,
