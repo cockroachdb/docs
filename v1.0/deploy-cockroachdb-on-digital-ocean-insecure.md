@@ -29,7 +29,7 @@ You must have [SSH access](https://www.digitalocean.com/community/tutorials/how-
 
 - For guidance on cluster topology, clock synchronization, and file descriptor limits, see [Recommended Production Settings](recommended-production-settings.html).
 
-- Set up your Droplets using [private networking](https://www.digitalocean.com/community/tutorials/how-to-set-up-and-use-digitalocean-private-networking).
+- Set up your Droplets using [private networking](https://docs.digitalocean.com/products/networking/vpc/how-to/create/).
 
 - Decide how you want to access your Admin UI:
 	- Only from specific IP addresses, which requires you to set firewall rules to allow communication on port `8080` *(documented on this page)*.
@@ -38,7 +38,7 @@ You must have [SSH access](https://www.digitalocean.com/community/tutorials/how-
 
 ## Step 1. Create Droplets
 
-[Create Droplets with private networking](https://www.digitalocean.com/community/tutorials/how-to-set-up-and-use-digitalocean-private-networking) for each node you plan to have in your cluster. We [recommend](recommended-production-settings.html#cluster-topology):
+[Create Droplets with private networking](https://docs.digitalocean.com/products/networking/vpc/how-to/create/) for each node you plan to have in your cluster. We [recommend](recommended-production-settings.html#cluster-topology):
 
 - Running at least 3 nodes to ensure survivability.
 - Selecting the same continent for all of your Droplets for best performance.

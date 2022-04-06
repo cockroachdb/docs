@@ -129,4 +129,4 @@ To view a specific schedule, use the schedule's `id`:
 - [`CANCEL JOB`](cancel-job.html)
 - [Take Full and Incremental Backups](take-full-and-incremental-backups.html)
 - [Use the Built-in SQL Client](cockroach-sql.html)
-- [Other Cockroach Commands](cockroach-commands.html)
+- [`cockroach` Commands Overview](cockroach-commands.html)

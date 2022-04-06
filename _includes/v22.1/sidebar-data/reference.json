@@ -1406,7 +1406,7 @@
         "title": "CLI",
         "items": [
           {
-            "title": "Cockroach Commands",
+            "title": "<code>cockroach</code> Commands Overview",
             "urls": [
               "/${VERSION}/cockroach-commands.html"
             ]
@@ -1466,12 +1466,6 @@
                 "title": "<code>cockroach nodelocal upload</code>",
                 "urls": [
                   "/${VERSION}/cockroach-nodelocal-upload.html"
-                ]
-              },
-              {
-                "title": "<code>cockroach dump</code>",
-                "urls": [
-                  "/${VERSION}/cockroach-dump.html"
                 ]
               },
               {
@@ -1676,6 +1670,12 @@
             "title": "Network Latency Page",
             "urls": [
               "/${VERSION}/ui-network-latency-page.html"
+            ]
+          },
+          {
+            "title": "Hot Ranges Page",
+            "urls": [
+              "/${VERSION}/ui-hot-ranges-page.html"
             ]
           },
           {

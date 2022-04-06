@@ -780,6 +780,6 @@ $ cockroach sql --url='postgres://root@?host=/tmp&port=26257'
 
 - [Client Connection Parameters](connection-parameters.html)
 - [`cockroach demo`](cockroach-demo.html)
-- [Other Cockroach Commands](cockroach-commands.html)
+- [`cockroach` Commands Overview](cockroach-commands.html)
 - [SQL Statements](sql-statements.html)
 - [Learn CockroachDB SQL](learn-cockroachdb-sql.html)

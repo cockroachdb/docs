@@ -62,7 +62,6 @@ Above a certain size, many data types such as [`STRING`](string.html)s, [`DECIMA
 - [Migrate from Avro][avro]
 - [Can a Postgres or MySQL application be migrated to CockroachDB?](frequently-asked-questions.html#can-a-postgresql-or-mysql-application-be-migrated-to-cockroachdb)
 - [PostgreSQL Compatibility](postgresql-compatibility.html)
-- [SQL Dump (Export)](cockroach-dump.html)
 - [Back Up and Restore](take-full-and-incremental-backups.html)
 - [Use the Built-in SQL Client](cockroach-sql.html)
 - [Other Cockroach Commands](cockroach-commands.html)

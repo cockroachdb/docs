@@ -61,7 +61,7 @@ Note that tools with [**community-level** support](community-tooling.html) have 
 | [pg](https://rubygems.org/gems/pg)                        | Full           | [Simple CRUD](build-a-ruby-app-with-cockroachdb.html)
 | [ActiveRecord](https://rubygems.org/gems/activerecord)    | Full           | [Simple CRUD](build-a-ruby-app-with-cockroachdb-activerecord.html)
 
-## C#
+## C# 
 
 | Driver/ORM Framework                                      | Support level  | Example apps                                           |
 |-----------------------------------------------------------+----------------+--------------------------------------------------------|

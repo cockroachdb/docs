@@ -80,5 +80,5 @@ cockroach debug merge-logs --redact debug/nodes/*/logs/*
 ## See also
 
 - [File an Issue](file-an-issue.html)
-- [Other Cockroach Commands](cockroach-commands.html)
+- [`cockroach` Commands Overview](cockroach-commands.html)
 - [Troubleshooting Overview](troubleshooting-overview.html)
