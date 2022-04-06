@@ -6,7 +6,7 @@ To follow along with the examples below, start a [demo cluster](cockroach-demo.h
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach demo --global --nodes 9 --no-example-database
+$ cockroach demo --global --nodes 9
 ~~~
 
 To see the regions available to the databases in the cluster, use a `SHOW REGIONS FROM CLUSTER` statement:
