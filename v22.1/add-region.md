@@ -132,5 +132,8 @@ SHOW REGIONS FROM DATABASE foo;
 - [`SET PRIMARY REGION`](set-primary-region.html)
 - [`DROP REGION`](drop-region.html)
 - [`SHOW REGIONS`](show-regions.html)
+- [`ADD SUPER REGION`](add-super-region.html)
+- [`DROP SUPER REGION`](drop-super-region.html)
+- [`SHOW SUPER REGIONS`](show-super-regions.html)
 - [`ALTER TABLE`](alter-table.html)
 - [SQL Statements](sql-statements.html)
