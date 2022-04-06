@@ -66,6 +66,31 @@ To show all of a database's regions, execute the [`SHOW REGIONS FROM DATABASE` s
 If the default survival goals and table localities meet your needs, there is nothing else you need to do once you have set a database's primary region.
 {{site.data.alerts.end}}
 
+## Super regions
+
+{% include common/experimental-warning.md %}
+
+<span class="version-tag">New in v22.1:</span> Super regions allow you to define a set of [database regions](#database-regions) such that the following [schema objects](schema-design-overview.html#database-schema-objects) will have all of their replicas stored _only_ in regions that are members of the super region:
+
+- [Regional tables](#regional-tables) whose home region is a member of the super region.
+- Any row of a [regional by row table](#regional-by-row-tables) whose [home region](set-locality.html#crdb_region) is a member of the super region.
+
+The primary use case for super regions is data domiciling.
+
+{% include {{page.version.version}}/sql/super-region-considerations.md %}
+
+<a name="enable-super-regions"></a>
+
+For more information about how to enable and use super regions, see:
+
+- [`ADD SUPER REGION`](add-super-region.html)
+- [`DROP SUPER REGION`](drop-super-region.html)
+- [`SHOW SUPER REGIONS`](show-super-regions.html)
+
+Note that super regions take a different approach to data domiciling than [`ALTER DATABASE ... PLACEMENT RESTRICTED`](placement-restricted.html). Specifically, super regions make it so that all [replicas](architecture/overview.html#architecture-replica) (both voting and [non-voting](architecture/replication-layer.html#non-voting-replicas)) are placed within the super region, whereas `PLACEMENT RESTRICTED` makes it so that there are no non-voting replicas.
+
+For more information about data domiciling using `PLACEMENT RESTRICTED`, see [Data Domiciling with CockroachDB](data-domiciling.html).
+
 ## Survival goals
 
 A _survival goal_ dictates how many simultaneous failure(s) a database can survive. All tables within the same database operate with the **same survival goal**. Each database can have its own survival goal setting.

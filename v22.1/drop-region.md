@@ -220,5 +220,8 @@ HINT: you must add additional regions to the database or change the survivabilit
 - [`SET PRIMARY REGION`](set-primary-region.html)
 - [`ADD REGION`](add-region.html)
 - [`SHOW REGIONS`](show-regions.html)
+- [`ADD SUPER REGION`](add-super-region.html)
+- [`DROP SUPER REGION`](drop-super-region.html)
+- [`SHOW SUPER REGIONS`](show-super-regions.html)
 - [`ALTER TABLE`](alter-table.html)
 - [SQL Statements](sql-statements.html)
