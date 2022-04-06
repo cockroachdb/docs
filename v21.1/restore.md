@@ -19,6 +19,7 @@ You can restore:
 - `RESTORE` cannot restore backups made by newer versions of CockroachDB.
 - `RESTORE` is a blocking statement. To run a restore job asynchronously, use the `DETACHED` option. See [Options](#options) for more usage detail.
 - `RESTORE` no longer requires an Enterprise license, regardless of the options passed to it or to the backup it is restoring.
+- You cannot restore a backup of a multi-region database into a single-region database.
 
 ## Required privileges
 

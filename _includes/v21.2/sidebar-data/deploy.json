@@ -3,8 +3,14 @@
   "is_top_level": true,
   "items": [
     {
-      "title": "Choose a Deployment Strategy",
+      "title": "Deployment Options",
       "items": [
+        {
+          "title": "Choose a Deployment Option",
+          "urls": [
+            "/${VERSION}/choose-a-deployment-option.html"
+          ]
+        },
         {
           "title": "CockroachDB Cloud",
           "items": [

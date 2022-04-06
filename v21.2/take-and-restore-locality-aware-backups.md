@@ -5,8 +5,6 @@ toc: true
 docs_area: manage
 ---
 
-The ability to [backup a full cluster](backup.html#backup-a-cluster) has been added and the syntax for [incremental backups](backup.html#create-incremental-backups) is simplified. Because of these two changes, [basic backup usage](take-full-and-incremental-backups.html) is now sufficient for most CockroachDB clusters. However, you may want to control your backup and restore options more explicitly.
-
 This page provides information about how to take and restore locality-aware backups.
 
 {{site.data.alerts.callout_info}}

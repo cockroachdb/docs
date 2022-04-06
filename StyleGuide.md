@@ -294,7 +294,7 @@ A _glossary_ is a collection (usually in tabular form) of [definitions](#definit
 #### Examples
 
 - [Architecture Glossary](https://www.cockroachlabs.com/docs/v21.2/architecture/overview.html#glossary)
-- [Cockroach Cloud Concepts](https://www.cockroachlabs.com/docs/cockroachcloud/architecture.html#concepts)
+- [Cockroach Cloud Concepts](https://www.cockroachlabs.com/docs/cockroachcloud/architecture.html#cockroachdb-cloud-terms)
 
 ### Prerequisites
 
@@ -607,6 +607,24 @@ $ go get -u github.com/lib/pq
 
 **Copy to Clipboard** should be used for every code block that can be **executed**.
 
+#### Placeholders
+
+Code samples often include placeholder values, to be replaced by values specific to a user's environment. To denote that a value in a code sample is a placeholder value that should be replaced, use curly brackets (`{}`).
+
+For example, suppose you have the following sample SQL statement: `SELECT * FROM TABLE {mytable};`. In this code sample, `{mytable}` would be replaced by some table name before the code could actually run (e.g., `SELECT * FROM TABLE realtable;`).
+
+When you use placeholders, you usually need to define the value within the brackets, if the placeholder value (or the fact that the placeholder is a placeholder) isn't clear. If you are defining a placeholder value, do so immediately following the code sample/bracket. To determine the format of the value definition, you can roughly follow these guidelines:
+
+- Always include the placeholder delimiters (i.e., the curly brackets `{}`) in the definitions.
+- For a single placeholder value, use a follow-up sentence.
+- For multiple placeholder values, use a [bulleted list](#lists).
+- For many placeholder values (10+), and for placeholder values with complex definitions, use a [table](#tables).
+- For large code blocks, define the placeholder values inside the code block, with an inline code comment.
+
+If the code sample you are using is sensitive to curly bracket characters (e.g., JavaScript), you can use `<>` instead.
+
+For some examples, see [Connect to a CockroachDB Cluster](https://www.cockroachlabs.com/docs/stable/connect-to-the-database.html?filters=python).
+
 ### Examples
 
 Examples help show the feature in action. Examples follow a basic format:
@@ -631,19 +649,23 @@ Examples help show the feature in action. Examples follow a basic format:
 
 ### Version tags
 
-Use HTML version tags to denote new or updated features for the version. Version tags can be put at the end of a heading, if the whole section describes something that is new or updated. Otherwise, version tags can introduce a paragraph, sentence, or description in a table cell.
+Version tags inform users of new and updated features in CockroachDB, and could motivate users to upgrade to the latest major or minor version of CockroachDB. Version tags also help us identify new and updated features that we can call out in [our GA release notes](https://cockroachlabs.atlassian.net/wiki/spaces/ED/pages/402718726/GA+Release+Checklist).
 
-To insert a version tag, use the following code:
+To add a version tag, use the following HTML `span`:
 
 ~~~
 <span class="version-tag">New in vX.X:</span>
 ~~~
 
-Note: Version tags cannot be used in bulleted lists items. To denote a new feature in a bulleted list, start the bulleted item with "**New in vX.X:**".
+You can put version tags at the end of a heading, if the whole section describes something that is new or updated. Otherwise, put version tags at the beginning of a paragraph, sentence, or description in a table cell.
 
-#### Examples
+Note: Do not use version tags in bulleted lists items. To denote a new feature in a bulleted list, start the bulleted item with "**New in vX.X:**".
 
-- [`CREATE TABLE`](https://www.cockroachlabs.com/docs/stable/create-table.html)
+If a feature is new in a GA release, use the major release number for the release version tag (e.g., `New in v22.1`).
+
+If a feature has been backported to a previous version in a patch release, use the minor release number for the release version tag (e.g., `New in v21.1.9`).
+
+Version tags should only refer to the version of the docset that contains them. For example, the version tag `<span class="version-tag">New in v21.1.9</span>` should only be on pages in `v21.1` directories.
 
 ### Tables
 

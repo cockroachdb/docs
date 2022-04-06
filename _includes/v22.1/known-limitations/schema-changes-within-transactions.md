@@ -1,6 +1,5 @@
 Within a single [transaction](transactions.html):
 
-- DDL statements cannot be mixed with DML statements. As a workaround, you can split the statements into separate transactions. For more details, [see examples of unsupported statements](online-schema-changes.html#examples-of-statements-that-fail).
 - As of version v2.1, you can run schema changes inside the same transaction as a [`CREATE TABLE`](create-table.html) statement. For more information, [see this example](online-schema-changes.html#run-schema-changes-inside-a-transaction-with-create-table).
 - A `CREATE TABLE` statement containing [`FOREIGN KEY`](foreign-key.html) clauses cannot be followed by statements that reference the new table.
 - Database, schema, table, and user-defined type names cannot be reused. For example, you cannot drop a table named `a` and then create (or rename) a different table with the name `a`. Similarly, you cannot rename a database named `a` to `b` and then create (or rename) a different database with the name `a`. As a workaround, split `RENAME TO`, `DROP`, and `CREATE` statements that reuse object names into separate transactions.
