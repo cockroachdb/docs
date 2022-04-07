@@ -33,10 +33,10 @@ You can look more closely at the behavior of a statement by visualizing a statem
 
 1. Start Jaeger:
 
-  {% include copy-clipboard.html %}
-  ~~~ shell
-  docker run -d --name jaeger -p 16686:16686 jaegertracing/all-in-one:latest
-  ~~~
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    docker run -d --name jaeger -p 16686:16686 jaegertracing/all-in-one:latest
+    ~~~
 
 1. Access the Jaeger UI at [http://localhost:16686/search](http://localhost:16686/search).
 
