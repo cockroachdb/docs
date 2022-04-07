@@ -1426,7 +1426,7 @@
             ]
           },
           {
-            "title": "Transport Layer Security (TLS)",
+            "title": "Public Key Infrastructure (PKI) and Transport Layer Security (TLS)",
             "urls": [
               "/${VERSION}/security-reference/transport-layer-security.html"
             ]

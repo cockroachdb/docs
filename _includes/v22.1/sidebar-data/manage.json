@@ -254,6 +254,23 @@
           "title": "Secure CockroachDB Self-Hosted Clusters",
           "items": [
             {
+              "title": "Managing Security Certificates",
+              "items": [
+                {
+                  "title": "Using `cockroach cert` (development only)",
+                  "urls": [
+                    "/${VERSION}/manage-certs-cli.html"
+                  ]
+                },
+                {
+                  "title": "Using Google Cloud Platform Certificate Authority Service",
+                  "urls": [
+                    "/${VERSION}/manage-certs-cli.html"
+                  ]
+                }                
+              ]
+            },
+            {
               "title": "Authentication",
               "urls": [
                 "/${VERSION}/authentication.html"

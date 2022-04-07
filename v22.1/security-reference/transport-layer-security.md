@@ -1,5 +1,5 @@
 ---
-title: Public Key Infrastructure (PKI) and Transport Layer Security (TLS) in CockroachDB
+title: Public Key Infrastructure (PKI) and Transport Layer Security (TLS)
 summary: Overview of PKI and TLS and how to implement them with CockroachDB
 toc: true
 docs_area: reference.security
@@ -184,6 +184,15 @@ Alternatively, an external CA (such as your organization's CA) can be used to ge
 
 ## Revoking of Certificates
 
+some things 
+- blah blah blah
+- blah
+
+~~~shell
+ e = mc^2
+~~~
+
 ## Maintaining PKI
 
+google cloud thingy make an intermediary, make server and client certs.
 
