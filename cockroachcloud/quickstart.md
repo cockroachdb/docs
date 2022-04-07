@@ -42,19 +42,7 @@ The sample code used in this tutorial is located in the [`quickstart-code-sample
 
 <section class="filter-content" markdown="1" data-scope="python">
 
-The **Connection info** dialog shows information about how to connect to your cluster.
-
-1. Click the **Choose your OS** dropdown, and select the operating system of your local machine.
-
-1. Click the **Connection string** tab in the **Connection info** dialog.
-
-1. Open a new terminal on your local machine, and run the command provided in **Step 1** to download the CA certificate. This certificate is required by most Python clients connecting to {{ site.data.products.db }}.
-
-1. Copy the connection string provided in **Step 2** to a secure location.
-
-    {{site.data.alerts.callout_info}}
-    The connection string is pre-populated with your username, password, cluster name, and other details. Your password, in particular, will be provided *only once*. Save it in a secure place (Cockroach Labs recommends a password manager) to connect to your cluster in the future. If you forget your password, you can reset it by going to the [**SQL Users** page](user-authorization.html).
-    {{site.data.alerts.end}}
+{% include cockroachcloud/quickstart/get-connection-string.md %}
 
 </section>
 
@@ -291,7 +279,7 @@ The **Connection info** dialog shows information about how to connect to your cl
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    export JDBC_DATABASE_URL=<jdbc-connection-string>
+    export JDBC_DATABASE_URL="<jdbc-connection-string>"
     ~~~
 
     The code sample uses the connection string stored in the environment variable `DATABASE_URL` to connect to your cluster.
