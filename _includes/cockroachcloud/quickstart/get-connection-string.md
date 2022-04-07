@@ -1,7 +1,6 @@
 The **Connect to your cluster** dialog shows information about how to connect to your cluster.
 
 1. Select **General connection string** from the **Select option/language** dropdown.
-1. Open a new terminal on your local machine, and run the **CA Cert download command** provided in the **Download CA Cert** section.
 1. Copy the connection string displayed in the **General connection string** section and save it in a secure location.
 
     {{site.data.alerts.callout_info}}

@@ -42,7 +42,15 @@ The sample code used in this tutorial is located in the [`quickstart-code-sample
 
 <section class="filter-content" markdown="1" data-scope="python">
 
-{% include cockroachcloud/quickstart/get-connection-string.md %}
+The **Connect to your cluster** dialog shows information about how to connect to your cluster.
+
+1. Select **General connection string** from the **Select option/language** dropdown.
+1. Open a new terminal on your local machine, and run the **CA Cert download command** provided in the **Download CA Cert** section. This certificate is required by most Python clients connecting to {{ site.data.products.db }}.
+1. Copy the connection string displayed in the **General connection string** section and save it in a secure location.
+
+    {{site.data.alerts.callout_info}}
+    The connection string is pre-populated with your username, password, cluster name, and other details. Your password, in particular, will be provided *only once*. Save it in a secure place (Cockroach Labs recommends a password manager) to connect to your cluster in the future. If you forget your password, you can reset it by going to the [**SQL Users** page](user-authorization.html).
+    {{site.data.alerts.end}}
 
 </section>
 
@@ -56,11 +64,7 @@ The sample code used in this tutorial is located in the [`quickstart-code-sample
 
 {% include cockroachcloud/quickstart/get-connection-string.md %}
 
-1. Click the **Choose your OS** dropdown, and select the operating system of your local machine.
-
-1. Click the **Command Line** tab of the **Connection info** dialog.
-
-1. Run the command in **Step 1** to install the [`cockroach` binary](../stable/cockroach-commands.html) and add it to your OS's `PATH`.
+1. If you haven't already, install the [`cockroach` binary](../stable/install-cockroachdb.html) and add it to your OS's `PATH`.
 
 </section>
 
@@ -89,7 +93,7 @@ The sample code used in this tutorial is located in the [`quickstart-code-sample
       1. Reads the inserted data.
       1. Prints the data to the terminal.
 
-1. Set the `DATABASE_URL` environment variable to the connection string that you [copied from the {{ site.data.products.cloud }} Console earlier](#step-2-connect-to-the-cluster):
+1. Set the `DATABASE_URL` environment variable to the connection string that you [copied from the {{ site.data.products.cloud }} Console earlier](#step-3-connect-to-the-cluster):
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -147,7 +151,7 @@ The sample code used in this tutorial is located in the [`quickstart-code-sample
       1. Reads the inserted data.
       1. Prints the data to the terminal.
 
-1. Set the `DATABASE_URL` environment variable to the connection string that you [copied from the {{ site.data.products.cloud }} Console earlier](#step-2-connect-to-the-cluster):
+1. Set the `DATABASE_URL` environment variable to the connection string that you [copied from the {{ site.data.products.cloud }} Console earlier](#step-3-connect-to-the-cluster):
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -205,7 +209,7 @@ The sample code used in this tutorial is located in the [`quickstart-code-sample
       1. Reads the inserted data.
       1. Prints the data to the terminal.
 
-1. Set the `DATABASE_URL` environment variable to the connection string that you [copied from the {{ site.data.products.cloud }} Console earlier](#step-2-connect-to-the-cluster):
+1. Set the `DATABASE_URL` environment variable to the connection string that you [copied from the {{ site.data.products.cloud }} Console earlier](#step-3-connect-to-the-cluster):
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -261,7 +265,7 @@ The sample code used in this tutorial is located in the [`quickstart-code-sample
       1. Reads the inserted data.
       1. Prints the data to the terminal.
 
-1. Use the `cockroach convert-url` command to convert the connection string that you [copied from the {{ site.data.products.cloud }} Console earlier](#step-2-connect-to-the-cluster) to a [valid connection string for JDBC connections](../stable/connect-to-the-database.html?filters=java):
+1. Use the `cockroach convert-url` command to convert the connection string that you [copied from the {{ site.data.products.cloud }} Console earlier](#step-3-connect-to-the-cluster) to a [valid connection string for JDBC connections](../stable/connect-to-the-database.html?filters=java):
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
