@@ -42,7 +42,7 @@ In the **Regions & nodes** section, select a region. For optimal performance, se
 To create a multi-region cluster, click **Add regions** until you have the desired number of regions.
 
 {{site.data.alerts.callout_info}}
-Multi-region clusters must contain at least 3 regions to ensure that data spread across regions can survive the loss of one region. See [Planning your cluster](cluster-management.html?filters=dedicated#planning-your-cluster) for more information about our requirements and recommendations for cluster configuration.
+Multi-region clusters must contain at least 3 regions to ensure that data spread across regions can survive the loss of one region. See [Planning your cluster](plan-your-cluster.html?filters=dedicated) for more information about our requirements and recommendations for cluster configuration.
 {{site.data.alerts.end}}
 
 **Known issue:** We had to temporarily disable the following GCP regions due to GCP's quota restrictions:
@@ -62,7 +62,7 @@ In the **Regions & nodes** section, select the number of nodes.
 - For single-region application development and testing, you may create a 1-node cluster.
 - For single-region production deployments, we recommend a minimum of 3 nodes. The number of nodes also depends on your storage capacity and performance requirements. See [Example](#example) for further guidance.
 - For multi-region deployments, we require a minimum of 3 nodes per region. For best performance and stability, you should use the same number of nodes in each region.
-- See [Planning your cluster](cluster-management.html?filters=dedicated#planning-your-cluster) for more information about our requirements and recommendations for cluster configuration.
+- See [Planning your cluster](plan-your-cluster.html?filters=dedicated) for more information about our requirements and recommendations for cluster configuration.
 
 {% include cockroachcloud/nodes-limitation.md %}
 

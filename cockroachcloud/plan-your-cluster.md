@@ -19,7 +19,7 @@ Before making any changes to your cluster's nodes or regions, review our require
 <section class="filter-content" markdown="1" data-scope="serverless">
 ### Request Units
 
-{{ site.data.products.serverless }} cluster resource usage is measured by two metrics: storage and Request Units, or RUs. RUs represent the compute and I/O resources used by a query. All database operations cost a certain amount of RUs depending on the resources used. For example, a "small read" might cost 2 RUs, and a "large read" such as a full table scan with indexes could cost a large number of RUs. You can see how many Request Units your cluster has used on the [**Cluster Overview**](#view-cluster-overview) page.
+{{ site.data.products.serverless }} cluster resource usage is measured by two metrics: storage and Request Units, or RUs. RUs represent the compute and I/O resources used by a query. All database operations cost a certain amount of RUs depending on the resources used. For example, a "small read" might cost 2 RUs, and a "large read" such as a full table scan with indexes could cost a large number of RUs. You can see how many Request Units your cluster has used on the [**Cluster Overview**](serverless-cluster-management.html#view-cluster-overview) page.
 
 ### Cluster scaling
 
