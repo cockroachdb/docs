@@ -38,7 +38,7 @@ Parameter | Description
 
 ## Trace description
 
-CockroachDB uses [OpenTelemetry](https://opentelemetry.io/docs/concepts/data-sources/) libraries for tracing, which also means that it can be easily integrated with OpenTelemetry-compatible [trace collectors](query-behavior-troubleshooting.html#route-traces-to-a-third-party-collector). CockroachDB traces map to OpenTelemetry trace and span concepts as follows:
+CockroachDB uses [OpenTelemetry](https://opentelemetry.io/docs/concepts/data-sources/) libraries for tracing, which also means that it can be easily integrated with OpenTelemetry-compatible [trace collectors](query-behavior-troubleshooting.html#configure-cockroach-db-to-send-traces-to-a-third-party-trace-collector). CockroachDB traces map to OpenTelemetry trace and span concepts as follows:
 
 Concept         | Description
 ----------------|------------
