@@ -14,7 +14,7 @@ This page describes the cluster management and cluster deletion workflows for {{
 
 ## Planning your cluster
 
-{% include cockroachcloud/planning-your-serverless-cluster.md %}
+Before making any changes to your cluster's configuration, review our [requirements and recommendations](plan-your-cluster.html) for {{ site.data.products.db }} cluster configuration.
 
 ## View Clusters page
 
