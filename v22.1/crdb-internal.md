@@ -429,6 +429,7 @@ Field | Type | Description
 <code>statistics -> numRows -> [mean&#124;sqDiff]</code> | `NumericStat` | The number of rows returned or observed.
 <code>statistics -> ovhLat -> [mean&#124;sqDiff]</code> | `NumericStat` | The difference between `svcLat` and the sum of `parseLat+planLat+runLat` latencies.
 <code>statistics -> parseLat -> [mean&#124;sqDiff]</code> | `NumericStat` | The time to transform the SQL string into an abstract syntax tree (AST).
+<code>statistics -> planGists | `String` | A sequence of bytes representing the flattened tree of operators and various operator specific metadata of the statement plan.
 <code>statistics -> planLat -> [mean&#124;sqDiff]</code> | `NumericStat` | The time to transform the AST into a logical query plan.
 <code>statistics -> rowsRead -> [mean&#124;sqDiff]</code> | `NumericStat` | The number of rows read from disk.
 <code>statistics -> rowsWritten -> [mean&#124;sqDiff]</code> | `NumericStat` | The number of rows written to disk.
@@ -575,6 +576,57 @@ WHERE metadata @> '{"db":"movr"}' AND (metadata @> '{"stmtTyp":"TypeDDL"}' OR me
                                                                |                |            |               |          |                      |                 |                    |                        |                    |                      |     "Into": "rides(id, city, vehicle_city, rider_id, vehicle_id, start_address, end_address, start_time, end_time, revenue)",
                                                                |                |            |               |          |                      |                 |                    |                        |                    |                      |     "Name": "insert"
                                                                |                |            |               |          |                      |                 |                    |                        |                    |                      | }
+
+~~~
+
+#### Detect suboptimal and regressed plans
+
+To detect suboptimal and regressed plans over time you can compare plans for the same query by extracting them from `statistics->'statistics'->'planGists'`.
+
+Suppose you wanted to compare plans of the following query:
+
+~~~ sql
+SELECT
+  name, count(rides.id) AS sum
+FROM
+  users JOIN rides ON users.id = rides.rider_id
+WHERE
+  rides.start_time BETWEEN '2018-12-31 00:00:00' AND '2020-01-01 00:00:00'
+GROUP BY
+  name
+ORDER BY
+  sum DESC
+LIMIT
+  10;
+~~~
+
+To decode plan gists stored in `statistics->'statistics'->'planGists'`, you use the `crdb_internal.decode_plan_gist` function. Because a plan is several lines, you should select only the `planGists` column and apply the function as follows; if you were to select more than one column the select would display only the first line of the plan.
+
+~~~ sql
+SELECT crdb_internal.decode_plan_gist(statistics->'statistics'->'planGists'->>0) AS plan FROM movr.crdb_internal.statement_statistics WHERE substring(metadata ->> 'query',1,35)='SELECT name, count(rides.id) AS sum';
+~~~
+
+~~~
+                    plan
+---------------------------------------------
+  • top-k
+  │ order
+  │
+  └── • group (hash)
+      │ group by: id
+      │
+      └── • hash join
+          │ equality: (id) = (rider_id)
+          │
+          ├── • scan
+          │     table: users@users_pkey
+          │     spans: FULL SCAN
+          │
+          └── • filter
+              │
+              └── • scan
+                    table: rides@rides_pkey
+                    spans: FULL SCAN
 
 ~~~
 
