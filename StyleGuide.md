@@ -34,13 +34,14 @@ Included in this guide:
   - [Best practice](#best-practice)
   - [Troubleshooting](#troubleshooting)
   - [FAQ](#faq)
-  - [Release note](release-note)
+  - [Release note](#release-note)
 - [Components](#components)
   - [Page title](#page-title)
   - [Headings](#headings)
   - [Text format](#text-format)
   - [Links](#links)
   - [Tips, notes, and warnings](#tips-notes-and-warnings)
+  - [Known limitations](#known-limitations)
   - [Product names](#product-names)
   - [Code](#code)
   - [Examples](#examples)
@@ -541,6 +542,94 @@ To insert a warning, use the following code:
 There is also a custom purple callout that uses the code `{{site.data.alerts.callout_version}}`. It is used at the top of the CockroachDB Cloud Release Notes to call attention to the latest CockroachDB version that Cloud clusters are running. It should not be used anywhere else.
 
 Each Liquid tag should be on its own line. You can use Markdown within the highlighted text.
+
+### Known limitations
+
+#### What are known limitations?
+
+Sometimes CockroachDB does not behave the way that users expect it to behave. These deviations from expected behavior can be in the form of:
+
+- A difference in syntax between CockroachDB and [SQL Standard](https://blog.ansi.org/2018/10/sql-standard-iso-iec-9075-2016-ansi-x3-135)
+- A difference in the behavior of CockroachDB and PostgreSQL
+- A feature that is functional, but not yet fully implemented
+- A feature that is fully implemented, but has some *long-standing* bugs (i.e., bugs that have existed across minor and/or major releases)
+- A feature that limits performance
+
+We list the general differences between CockroachDB and the SQL Standard on our [SQL Feature Support](https://www.cockroachlabs.com/docs/stable/sql-feature-support.html) page, and we provide more details on the differences between CockroachDB and PostgreSQL on our [PostgreSQL Compatibility](https://www.cockroachlabs.com/docs/stable/postgresql-compatibility.html). All other instances of known, but possibly unexpected, database behavior are known as **known limitations**.
+
+Known limitations often have [associated GitHub issues in the `cockroach` repo](https://github.com/cockroachdb/cockroach/issues), meaning the limitation could be resolved one day. *Not all known limitations have GitHub issues, and not all known limitations will be resolved.*
+
+The purpose of documenting known limitations is to help our users know more about using our product safely and effectively.
+
+#### Where to find known limitations
+
+Known limitations are generally listed in two places:
+
+1. (More common) In the `cockroach` repo, as [open issues with the `docs-known-limitations` label, but *not* with the `docs-done` label](https://github.com/cockroachdb/cockroach/issues?q=is%3Aissue+label%3Adocs-known-limitation+-label%3Adocs-done+is%3Aopen). Usually, engineers and product managers add these labels to issues in the weeks leading up to the release.
+
+1. (Less common) In the `docs` repo, as [open issues with the `T-known-limitation` label](https://github.com/cockroachdb/docs/issues?q=is%3Aopen+is%3Aissue+label%3AT-known-limitation).
+
+If you come across some behavior that you believe qualifies as a known limitation, first open an issue in the `cockroach` repo, get some engineering/PM feedback on the issue, and then add a `docs-known-limitations` label to an issue.
+
+#### When to document known limitations
+
+Documenting known limitations should happen in the [weeks leading up to a GA release](https://cockroachlabs.atlassian.net/wiki/spaces/ED/pages/402718726/GA+Release+Checklist).
+
+You might also need to document a known limitation that is discovered after the GA release. In this case, you will likely be notified by your product area PM and should coordinate with them to determine how best to document the limitation.
+
+*Avoid documenting known limitations too early. Some "limitations" could be bugs that engineering finds the time to fix during the stability period leading up to a GA release.*
+
+#### Who documents known limitations
+
+In the past, the person assigned to known limitations is usually someone with extra bandwidth at the end of the GA release cycle. You might volunteer for this task, or your manager might assign it to you.
+
+#### Where to document known limitations
+
+Document all known limitations on the [Known Limitations](https://www.cockroachlabs.com/docs/stable/known-limitations.html) page.
+
+If the limitation is related to a feature documented elsewhere on our docs site, you should also add the limitation to the page that documents that feature, under a dedicated "Known limitations" header. To avoid duplication, create a file in `_includes/vX.X/known-limitations` and include the file in both places.
+
+#### How to document known limitations
+
+Known limitations should generally follow this template:
+
+~~~
+<Level-3 header with a descriptive, concise title>
+
+<Descriptive summary, with more details and possibly a workaround and/or an example>
+
+<A link to the tracking issue on GitHub, if one exists>
+~~~
+
+For example:
+
+~~~
+### Feature doesn't do this thing
+
+Feature doesn't do this thing because it doesn't do it. To get around this, do this other thing. For example, instead of `do this thing`, use `do this other thing`.
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/number)
+~~~
+
+For more examples, check out the [Known Limitations](https://www.cockroachlabs.com/docs/stable/known-limitations.html) page.
+
+When the time comes to document known limitations, keep in mind that you are documenting known limitations for a specific release, just like you document any other feature. This means that you have to update all documented known limitations be relevant to the upcoming release
+
+1. In the latest version's docset, move all existing known limitations from the ["New limitations"](https://www.cockroachlabs.com/docs/stable/known-limitations.html#new-limitations) header, and place them under the ["Unresolved limitations"](https://www.cockroachlabs.com/docs/stable/known-limitations.html#unresolved-limitations) header.
+
+1. Verify that each of the limitations under "Unresolved limitations" is, in fact, still a limitation:
+
+    1. Navigate to the linked GitHub tracking issue. If there is no GitHub issue associated with the limitation, you can assume that the limitation will not be resolved.
+
+    1. If the tracking GitHub issue is still open, you should leave the known limitation as unresolved. If it is closed, you need to find the PR that resolved the issue, and see if it was backported to a previous release.
+
+    1. Remove the limitation from the Known Limitations page, and from all other pages in the docs *for each version in which the resolving PR was merged*. If the resolving PR was not backported, then you can remove the limitation from just the latest release's docs.
+
+1. [Document all new limitations](#where-to-find-known-limitations) under the "New limitations" header. Note that undocumented known limitations might apply to more than just one release. If the limitation applies to previous releases, then add the limitation under the "Existing limitations" header for each supported versioned docset to which the limitation applies.
+
+1. After you document a known limitation, add the `docs-done` label to the limitation's tracking issue in the `cockroach` repo (it will have both `docs-known-limitations` and `docs-done` labels). *Do not close the issue* if it is in the `cockroach` repo. Documenting a limitation does not resolve the limitation.
+
+1. Open a single PR with all of the known limitations updates for a GA release to the `docs` repo and add a manager as the reviewer. Known limitations are part of the GA checklist for docs, so managers need to be aware of the work.
 
 ### Product names
 
