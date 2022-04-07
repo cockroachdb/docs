@@ -7,4 +7,4 @@
 
 1. Click **Create cluster**.
 
-    Your cluster will be created in a few seconds and the **Connection info** dialog will display.
+    Your cluster will be created in a few seconds and the **Create SQL user** dialog will display.

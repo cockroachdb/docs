@@ -28,7 +28,11 @@ The sample code used in this tutorial is located in the [`quickstart-code-sample
 
 {% include cockroachcloud/quickstart/create-a-free-cluster.md %}
 
-## Step 2. Connect to the cluster
+## Step 2. Create a SQL user
+
+{% include cockroachcloud/quickstart/create-first-sql-user.md %}
+
+## Step 3. Connect to the cluster
 
 <section class="filter-content" markdown="1" data-scope="node">
 
@@ -44,9 +48,9 @@ The **Connection info** dialog shows information about how to connect to your cl
 
 1. Click the **Connection string** tab in the **Connection info** dialog.
 
-1. Open a new terminal on your local machine, and run the command provided in step **1** to download the CA certificate. This certificate is required by most Python clients connecting to {{ site.data.products.db }}.
+1. Open a new terminal on your local machine, and run the command provided in **Step 1** to download the CA certificate. This certificate is required by most Python clients connecting to {{ site.data.products.db }}.
 
-1. Copy the connection string provided in step **2** to a secure location.
+1. Copy the connection string provided in **Step 2** to a secure location.
 
     {{site.data.alerts.callout_info}}
     The connection string is pre-populated with your username, password, cluster name, and other details. Your password, in particular, will be provided *only once*. Save it in a secure place (Cockroach Labs recommends a password manager) to connect to your cluster in the future. If you forget your password, you can reset it by going to the [**SQL Users** page](user-authorization.html).
@@ -68,7 +72,7 @@ The **Connection info** dialog shows information about how to connect to your cl
 
 1. Click the **Command Line** tab of the **Connection info** dialog.
 
-1. Run the command in step **1** to install the [`cockroach` binary](../stable/cockroach-commands.html) and add it to your OS's `PATH`.
+1. Run the command in **Step 1** to install the [`cockroach` binary](../stable/cockroach-commands.html) and add it to your OS's `PATH`.
 
 </section>
 
