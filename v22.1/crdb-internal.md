@@ -630,6 +630,48 @@ SELECT crdb_internal.decode_plan_gist(statistics->'statistics'->'planGists'->>0)
 
 ~~~
 
+After you add an [index on the `start_time` column in the `rides` table](apply-statement-performance-rules.html#rule-2-use-the-right-index), you can see the change in the plans for the same query.
+
+~~~ sql
+SELECT crdb_internal.decode_plan_gist(statistics->'statistics'->'planGists'->>0) AS plan FROM movr.crdb_internal.statement_statistics WHERE substring(metadata ->> 'query',1,35)='SELECT name, count(rides.id) AS sum';
+                       plan
+---------------------------------------------------
+  • top-k
+  │ order
+  │
+  └── • group (hash)
+      │ group by: id
+      │
+      └── • hash join
+          │ equality: (id) = (rider_id)
+          │
+          ├── • scan
+          │     table: users@users_pkey
+          │     spans: FULL SCAN
+          │
+          └── • scan
+                table: rides@rides_start_time_idx
+                spans: 1 span
+  • top-k
+  │ order
+  │
+  └── • group (hash)
+      │ group by: id
+      │
+      └── • hash join
+          │ equality: (id) = (rider_id)
+          │
+          ├── • scan
+          │     table: users@users_pkey
+          │     spans: FULL SCAN
+          │
+          └── • filter
+              │
+              └── • scan
+                    table: rides@rides_pkey
+                    spans: FULL SCAN
+~~~
+
 ### `transaction_statistics`
 
 Column | Type | Description
