@@ -585,6 +585,7 @@ To detect suboptimal and regressed plans over time you can compare plans for the
 
 Suppose you wanted to compare plans of the following query:
 
+{% include copy-clipboard.html %}
 ~~~ sql
 SELECT
   name, count(rides.id) AS sum
@@ -602,6 +603,7 @@ LIMIT
 
 To decode plan gists stored in `statistics->'statistics'->'planGists'`, you use the `crdb_internal.decode_plan_gist` function. Because a plan is several lines, you should select only the `planGists` column and apply the function as follows; if you were to select more than one column the select would display only the first line of the plan.
 
+{% include copy-clipboard.html %}
 ~~~ sql
 SELECT crdb_internal.decode_plan_gist(statistics->'statistics'->'planGists'->>0) AS plan FROM movr.crdb_internal.statement_statistics WHERE substring(metadata ->> 'query',1,35)='SELECT name, count(rides.id) AS sum';
 ~~~
@@ -632,6 +634,7 @@ SELECT crdb_internal.decode_plan_gist(statistics->'statistics'->'planGists'->>0)
 
 After you add an [index on the `start_time` column in the `rides` table](apply-statement-performance-rules.html#rule-2-use-the-right-index), you can see the change in the plans for the same query.
 
+{% include copy-clipboard.html %}
 ~~~ sql
 SELECT crdb_internal.decode_plan_gist(statistics->'statistics'->'planGists'->>0) AS plan FROM movr.crdb_internal.statement_statistics WHERE substring(metadata ->> 'query',1,35)='SELECT name, count(rides.id) AS sum';
                        plan
