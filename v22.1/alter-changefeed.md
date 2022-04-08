@@ -147,6 +147,8 @@ The following statement adds the `vehicles` and `rides` tables as new table targ
  ALTER CHANGEFEED {job_ID} ADD movr.rides, movr.vehicles;
 ~~~
 
+To add a table that has [column families](column-families.html), see the [example](#modify-a-changefeed-targeting-tables-with-column-families).
+
 ### Drop targets from a changefeed
 
 The following statement removes the `rides` table from the changefeed's table targets:
@@ -188,6 +190,33 @@ To remove options from a changefeed, use `UNSET`:
 ~~~ sql
 ALTER CHANGEFEED {job_ID} UNSET resolved, diff;
 ~~~
+
+### Modify a changefeed targeting tables with column families
+
+To add a table with [column families](column-families.html) when modifying a changefeed, it is necessary to use the `FAMILY` keyword to define specific families:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER CHANGEFEED {job_ID} ADD database.table FAMILY f1;
+~~~
+
+Or, set the [`split_column_families`](create-changefeed.html#split-column-families) option:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER CHANGEFEED {job_ID} ADD database.table SET split_column_families;
+~~~
+
+If you then want to remove the table with column families as a target from the changefeed, you must include the `FAMILY` keyword when using `DROP`:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER CHANGEFEED {job_ID} DROP database.table FAMILY f1;
+~~~
+
+You will receive an error if you try to remove a table without specifying the `FAMILY` keyword.
+
+For more description on using the `FAMILY` keyword and `split_column_families`, see [Tables with column families in changefeeds](use-changefeeds.html#changefeeds-on-tables-with-column-families).
 
 ## Known limitations
 

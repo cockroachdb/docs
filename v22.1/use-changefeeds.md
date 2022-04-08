@@ -28,7 +28,7 @@ Changefeeds connect to a long-lived request (i.e., a rangefeed), which pushes ch
 
 **Rangefeeds must be enabled for a changefeed to work.** To [enable the cluster setting](set-cluster-setting.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET CLUSTER SETTING kv.rangefeed.enabled = true;
 ~~~
@@ -181,13 +181,77 @@ Statement                                      | Response
 `INSERT INTO office_dogs VALUES (1, 'Petee');` | JSON: `[1]	{"after": {"id": 1, "name": "Petee"}}` </br>Avro: `{"id":{"long":1}}	{"after":{"office_dogs":{"id":{"long":1},"name":{"string":"Petee"}}}}`
 `DELETE FROM office_dogs WHERE name = 'Petee'` | JSON: `[1]	{"after": null}` </br>Avro: `{"id":{"long":1}}	{"after":null}`
 
+When a changefeed targets a table with multiple column families, the family name is appended to the table name as part of the topic. See [Tables with columns families in changefeeds](#col-family-response) for guidance.
+
 For webhook sinks, the response format comes as a batch of changefeed messages with a `payload` and `length`. Batching is done with a per-key guarantee, which means that the messages with the same key are considered for the same batch. Note that batches are only collected for row updates and not [resolved timestamps](create-changefeed.html#resolved-option):
 
 ~~~
 {"payload": [{"after" : {"a" : 1, "b" : "a"}, "key": [1], "topic": "foo"}, {"after": {"a": 1, "b": "b"}, "key": [1], "topic": "foo" }], "length":2}
 ~~~
 
-See the [Files](create-changefeed.html#files) for more detail on the file naming format for {{ site.data.products.enterprise }} changefeeds.
+See [Files](create-changefeed.html#files) for more detail on the file naming format for {{ site.data.products.enterprise }} changefeeds.
+
+## Changefeeds on tables with column families
+
+<span class="version-tag">New in v22.1:</span> You can create changefeeds on tables with more than one [column family](column-families.html). Changefeeds will emit individual messages per column family on a table.
+
+To target a table with multiple column families, set the [`split_column_families` option](create-changefeed.html#split-column-families) when creating a changefeed:
+
+~~~ sql
+CREATE CHANGEFEED FOR TABLE {table} INTO {sink} WITH split_column_families;
+~~~
+
+To emit messages for a specific column family, use the `FAMILY` keyword:
+
+~~~ sql
+CREATE CHANGEFEED FOR TABLE {table} FAMILY {family} INTO {sink};
+~~~
+
+{{site.data.alerts.callout_info}}
+You can also use [Core changefeeds](changefeed-examples.html#create-a-core-changefeed-on-a-table-with-column-families) on tables with column families by using the [`EXPERIMENTAL CHANGEFEED FOR`](changefeed-for.html) statement with `split_column_families` or the `FAMILY` keyword.
+{{site.data.alerts.end}}
+
+If a table has multiple column families, the `FAMILY` keyword will ensure the changefeed emits messages for **each** column family you define with `FAMILY` in the `CREATE CHANGEFEED` statement. If do not specify `FAMILY`, then the changefeed will emit messages for **all** the table's column families.
+
+<a name="col-family-response"></a>The response will follow a typical [changefeed message format](#messages), but with the family name appended to the table name: `table.family`:
+
+~~~
+{"after":{"column":"value"},"key":[1],"topic":"table.family"}
+~~~
+
+For [cloud storage sinks](changefeed-sinks.html#cloud-storage-sink), the filename will include the family separated by a `+`. For example, `table+primary`.
+
+[Avro](#avro) schema names will include the family name concatenated to the table name.
+
+The primary key columns will appear in the `key` for all column families. It will also appear in the value **only** for the families that they are in. For example, if the table `office_dogs` has a column family `primary`, containing the primary key and a `STRING` column, and a `secondary` column family containing a different `STRING` column, then you'll receive two messages for an insert.
+
+~~~ sql
+CREATE TABLE office_dogs (
+   id INT PRIMARY KEY,
+   name STRING,
+   owner STRING,
+   FAMILY primary (id, name),
+   FAMILY secondary (owner)
+ );
+~~~
+
+The changefeed targeting this table (started with `split_column_families`) will emit the following when there are inserts to the table:
+
+~~~
+{"after":{"id":4,"name":"Toby"},"key":[4],"topic":"office_dogs.primary"}],"length":1}
+{"after":{"owner":"Ashley"},"key":[4],"topic":"office_dogs.secondary"}],"length":1}
+~~~
+
+The output shows the `primary` column family with `4` in the value (`{"id":4,"name":"Toby"}`) and the key (`"key":[4]`). The `secondary` family doesn't contain the `id` column, so the primary key `4` is only in the key and **not** the value. For an update that only affects data in one column family, the changefeed will send one message for that update relating to the family.
+
+It is important to consider the following when creating a changefeed on a table with multiple column families:
+
+- If you create a table **without** column families, and then start a changefeed with the `split_column_families` option, it is not possible to add column families. A subsequent `ALTER TABLE` statement adding a column family to the table, will cause the changefeed to fail.
+- When you do not specify column family names in the `CREATE` or `ALTER TABLE` statement, the family names will default to either of the following:
+    - `primary`: Since `primary` is a key word, you'll receive a syntax error if you run `CREATE CHANGEFEED FOR table FAMILY primary`. To avoid this syntax error, use double quotes: `CREATE CHANGEFEED FOR table FAMILY "primary"`. You'll receive output from the changefeed like: `table.primary`.
+    - `fam_<zero-indexed family id>_<delimited list of columns>`: For a table that does not include a name for the family: `FAMILY (id, name)`. You'll receive output from the changefeed containing: `table.fam_0_id_name`. This references the table, the family ID and the two columns that this column family includes.
+
+For an example of starting changefeeds on tables with column families, see the [Changefeed Examples](changefeed-examples.html#create-a-changefeed-on-a-table-with-column-families) page.
 
 ## Avro
 
