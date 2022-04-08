@@ -163,6 +163,12 @@
                 ]
               },
               {
+                "title": "<code>ALTER BACKUP</code> (Enterprise)",
+                "urls": [
+                  "/${VERSION}/alter-backup.html"
+                ]
+              },
+              {
                 "title": "<code>ALTER COLUMN</code>",
                 "urls": [
                   "/${VERSION}/alter-column.html"
