@@ -49,7 +49,7 @@ This page shows you how to connect to your {{ site.data.products.serverless }} c
     
 ## Step 3. Connect to your cluster
 
-1. Select a connection method from the **Select option/language** dropdown (the instructions in **Step 2** below will adjust accordingly):
+1. Select a connection method from the **Select option/language** dropdown (the instructions below will adjust accordingly):
 
     <div class="filters clearfix">
         <button class="filter-button page-level" data-scope="connection-string">General connection string</button>
@@ -120,17 +120,17 @@ For connection examples and code snippets in your language, see the following:
 
     Parameter | Description
     ----------|------------
-    `{username}`  | The [SQL user](security-reference/authorization.html#sql-users) connecting to the cluster.
+    `{username}`  | The [SQL user](user-authorization.html#create-a-sql-user) connecting to the cluster.
     `{password}`  | The password for the SQL user connecting to the cluster.
     `{host}`  | The host on which the CockroachDB node is running.
     `{port}`  | The port at which the CockroachDB node is listening.
     `{database}`  | The name of the (existing) database.
-    `{routing-id}`  | Your cluster's routing ID (e.g., `funky-skunk-123`). The routing ID identifies your tenant cluster on a [multi-tenant host](../cockroachcloud/architecture.html#architecture).
+    `{routing-id}`  | Your cluster's routing ID (e.g., `funky-skunk-123`). The routing ID identifies your tenant cluster on a [multi-tenant host](architecture.html).
 
   </section>
   <section class="filter-content" markdown="1" data-scope="cockroachdb-client">
 
-1. Copy the [`cockroach sql`](../{{site.versions["stable"]}}/cockroach-sql.html) command and connection string provided in the **Connect** modal, which will be used in the next step (and to connect to your cluster in the future):
+1. Copy the [`cockroach sql`](../stable/cockroach-sql.html) command and connection string provided in the **Connect** modal, which will be used in the next step (and to connect to your cluster in the future):
 
     {% include cockroachcloud/sql-connection-string-free.md %}
 
