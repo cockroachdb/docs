@@ -28,9 +28,9 @@ For guidance on the syntax for backups and restores, see the [`BACKUP`](backup.h
 
 ## Backup collections
 
-When running a [full backup](#full-backups) to a specified storage location, a _backup collection_ will be created in that storage location. A backup collection defines a **logical** set of backups, which can contain multiple full backups and their subsequent [incremental backups](#incremental-backups). (If a full backup is not present in a collection when an incremental backup is run, then a full backup will be taken.) The path to a backup is created using a date-based naming scheme.
+A _backup collection_ defines a set of backups and their metadata. When running a [full backup](#full-backups) to a specified storage location URI, a backup collection will be created in that storage location. The collection can contain multiple full backups and their subsequent [incremental backups](#incremental-backups). (If a full backup is not present in a collection when you run an incremental backup, then a full backup will be taken.) The path to a backup is created using a date-based naming scheme and stored at the URI passed with the `BACKUP` statement.
 
-In the following example, a user has taken weekly full backups and nightly incremental backups to their collection location:
+In the following example, a user has taken weekly full backups and nightly incremental backups to their `collectionURI`:
 
 ~~~
 Collection:
@@ -56,7 +56,11 @@ Collection:
       [...]
 ~~~
 
-[`SHOW BACKUPS IN {collection-location}`](show-backup.html#view-a-list-of-the-available-full-backup-subdirectories) will display a list of the full backup subdirectories in the collection's storage location.
+[`SHOW BACKUPS IN {collectionURI}`](show-backup.html#view-a-list-of-the-available-full-backup-subdirectories) will display a list of the full backup subdirectories in the collection's storage location.
+
+A [locality-aware backup](take-and-restore-locality-aware-backups.html) is a specific case where part of the collection data is stored at a different URI. The backup collection will be stored according to the URIs passed with the `BACKUP` statement: `BACKUP INTO LATEST IN {collectionURI}, {localityURI}, {localityURI}`. Here, the `collectionURI` represents the default locality.
+
+In the examples on this page, `{collectionURI}` is a placeholder for the storage location that will contain the example backup.
 
 ## Full backups
 
@@ -80,7 +84,7 @@ To do a cluster backup, use the [`BACKUP`](backup.html) statement:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> BACKUP INTO '{collection location}';
+> BACKUP INTO '{collectionURI}';
 ~~~
 
 If it's ever necessary, you can use the [`RESTORE`][restore] statement with `LATEST` to restore the most recent backup added to the [collection]:
@@ -89,21 +93,21 @@ To restore a table:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> RESTORE TABLE bank.customers FROM LATEST IN '{collection location}';
+> RESTORE TABLE bank.customers FROM LATEST IN '{collectionURI}';
 ~~~
 
 To restore a database:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> RESTORE DATABASE bank FROM LATEST IN '{collection location}';
+> RESTORE DATABASE bank FROM LATEST IN '{collectionURI}';
 ~~~
 
 To restore your full cluster:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> RESTORE FROM LATEST IN '{collection location}';
+> RESTORE FROM LATEST IN '{collectionURI}';
 ~~~
 
 {{site.data.alerts.callout_info}}
@@ -114,7 +118,7 @@ To restore a backup from a specific subdirectory:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> RESTORE DATABASE bank FROM {subdirectory} IN '{collection location}';
+> RESTORE DATABASE bank FROM {subdirectory} IN '{collectionURI}';
 ~~~
 
 To view the available backup subdirectories, use [`SHOW BACKUPS`](show-backup.html).
@@ -141,14 +145,14 @@ Periodically run the [`BACKUP`][backup] command to take a full backup of your cl
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> BACKUP INTO '{collection-location}';
+> BACKUP INTO '{collectionURI}';
 ~~~
 
 Then, create nightly incremental backups based off of the full backups you've already created. To append an incremental backup to the most recent full backup created in the given destination, use `LATEST`:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> BACKUP INTO LATEST IN '{collection-location}';
+> BACKUP INTO LATEST IN '{collectionURI}';
 ~~~
 
 For an example on how to specify the destination of an incremental backup, see [Incremental backups with explicitly specified destinations](#incremental-backups-with-explicitly-specified-destinations).
@@ -159,14 +163,14 @@ To restore from the most recent incremental backup, run the following:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> RESTORE FROM LATEST IN '{collection location}';
+> RESTORE FROM LATEST IN '{collectionURI}';
 ~~~
 
 To restore a specific incremental backup, run `RESTORE` with the backup's subdirectory:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> RESTORE FROM '{subdirectory}' IN '{collection-location}';
+> RESTORE FROM '{subdirectory}' IN '{collectionURI}';
 ~~~
 
 {{site.data.alerts.callout_info}}
@@ -179,7 +183,7 @@ To explicitly control where your incremental backups go, use the [`INTO {subdire
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> BACKUP DATABASE bank INTO '{subdirectory}' IN '{collection-location}' \
+> BACKUP DATABASE bank INTO '{subdirectory}' IN '{collectionURI}' \
     AS OF SYSTEM TIME '-10s' \
     WITH revision_history;
 ~~~

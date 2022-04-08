@@ -56,13 +56,16 @@ To view the contents of an Enterprise backup created with the `BACKUP` statement
 
 ## Parameters
 
+CockroachDB stores full backups in a backup collection. Each full backup in a collection may also have incremental backups. For more detail on this, see [Backup collections](take-full-and-incremental-backups.html#backup-collections).
+
  Parameter | Description
 -----------+-------------
 `targets` | Back up the listed [targets](#targets).
-`subdirectory` | The name of the specific backup (e.g., `2021/03/23-213101.37`) in the collection to which you want to add an [incremental backup](take-full-and-incremental-backups.html#incremental-backups). To view available backup subdirectories, use [`SHOW BACKUPS IN destination`](show-backup.html). If the backup `subdirectory` is not provided, a [full backup](take-full-and-incremental-backups.html#full-backups) will be created in the collection using a date-based naming scheme (i.e., `<year>/<month>/<day>-<timestamp>`).<br><br>**Warning:** If you use an arbitrary `STRING` as the subdirectory, a new full backup will be created, but it will never be shown in `SHOW BACKUPS IN`. We do not recommend using arbitrary strings as subdirectory names.
+`subdirectory` | The name of the specific backup (e.g., `2021/03/23-213101.37`) in the collection to which you want to add an [incremental backup](take-full-and-incremental-backups.html#incremental-backups). To view available backup subdirectories, use [`SHOW BACKUPS IN collectionURI`](show-backup.html). If the backup `subdirectory` is not provided, a [full backup](take-full-and-incremental-backups.html#full-backups) will be created in the collection using a date-based naming scheme (i.e., `<year>/<month>/<day>-<timestamp>`).<br><br>**Warning:** If you use an arbitrary `STRING` as the subdirectory, a new full backup will be created, but it will never be shown in `SHOW BACKUPS IN`. We do not recommend using arbitrary strings as subdirectory names.
 `LATEST` | Append an incremental backup to the latest completed full backup's subdirectory.
-`destination` | The URL where you want to store the backup.<br/><br/>For information about this URL structure, see [Backup File URLs](#backup-file-urls).
-`timestamp` | Back up data as it existed as of [`timestamp`](as-of-system-time.html). The `timestamp` must be more recent than your cluster's last garbage collection (which defaults to occur every 25 hours, but is [configurable per table](configure-replication-zones.html#replication-zone-variables)).
+`collectionURI` | The URI where you want to store the backup. (Or, the default locality for a locality-aware backup.)<br/><br/>For information about this URL structure, see [Backup File URLs](#backup-file-urls).
+`localityURI`   | The URI containing the `COCKROACH_LOCALITY` parameter for a non-default locality that is part of a single locality-aware backup.
+`timestamp` | Back-up data as it existed as of [`timestamp`](as-of-system-time.html). The `timestamp` must be more recent than your cluster's last garbage collection (which defaults to occur every 25 hours, but is [configurable per table](configure-replication-zones.html#replication-zone-variables)).
 `backup_options` | Control the backup behavior with a comma-separated list of [these options](#options).
 
 ### Targets
@@ -137,7 +140,7 @@ Cancel the backup      | [`CANCEL JOB`](cancel-job.html)
 You can also visit the [**Jobs** page](ui-jobs-page.html) of the DB Console to view job details. The `BACKUP` statement will return when the backup is finished or if it encounters an error.
 
 {{site.data.alerts.callout_info}}
-The presence of the `BACKUP MANIFEST` file in the backup destination is an indicator that the backup job completed successfully.
+The presence of the `BACKUP MANIFEST` file in the backup collection's storage location is an indicator that the backup job completed successfully.
 {{site.data.alerts.end}}
 
 ## Examples
@@ -213,16 +216,6 @@ INTO 's3://{BUCKET NAME}/{PATH}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY
 AS OF SYSTEM TIME '-10s';
 ~~~
 
-### Specify a subdirectory for backups
-
-To store the backup in a specific subdirectory in the storage location:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-BACKUP DATABASE bank INTO 'subdirectory' IN 's3://{BUCKET NAME}/{PATH}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' \
-AS OF SYSTEM TIME '-10s';
-~~~
-
 ### Backup all tables in a schema
 
  To back up all tables in a [specified schema](create-schema.html), use a wildcard with the schema name:
@@ -244,7 +237,7 @@ See [Name Resolution](sql-name-resolution.html) for more details on how naming h
 
 ### Create incremental backups
 
-If you back up to a destination already containing a [full backup](take-full-and-incremental-backups.html#full-backups), an incremental backup will be added to the default `/incrementals` directory at the root of the [collection](take-full-and-incremental-backups.html#backup-collections) storage location:
+If you back up to a collection URI already containing a [full backup](take-full-and-incremental-backups.html#full-backups), an incremental backup will be added to the default `/incrementals` directory at the root of the [collection](take-full-and-incremental-backups.html#backup-collections) storage location:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -253,17 +246,19 @@ If you back up to a destination already containing a [full backup](take-full-and
     AS OF SYSTEM TIME '-10s';
 ~~~
 
-To explicitly control where you store your incremental backups, use the [`incremental_location`](backup.html#options) option. In the following example, the cloud storage bucket specifies the collection location containing the full backup. The value passed to `incremental_location` is the alternative location that the incremental backup will be stored:
+To store the backup in a specific subdirectory in the storage location:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-BACKUP INTO LATEST IN 's3://{BUCKET NAME}/{PATH}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' AS OF SYSTEM TIME '-10s'
-    WITH incremental_location = '{incremental_backup_location}';
+BACKUP DATABASE bank INTO {'subdirectory'} IN 's3://{BUCKET NAME}/{PATH}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' \
+AS OF SYSTEM TIME '-10s';
 ~~~
 
-The `{incremental_backup_location}` placeholder could be another cloud storage bucket, or a specified subdirectory in the full backup location (e.g., `full_backup_location/subdirectory`).
+{{site.data.alerts.callout_info}}
+If you intend to take a **full** backup, we recommend running `BACKUP INTO {collectionURI}` without specifying a subdirectory.
+{{site.data.alerts.end}}
 
-For more detail on using the `incremental_location` option, including how to restore incremental backups taken with it, see [Incremental backups with explicitly specified destinations](take-full-and-incremental-backups.html#incremental-backups-with-explicitly-specified-destinations).
+To explicitly control where you store your incremental backups, use the [`incremental_location`](backup.html#options) option. For more detail, see [this example](take-full-and-incremental-backups.html#incremental-backups-with-explicitly-specified-destinations) on using the `incremental_location` option.
 
 ### Run a backup asynchronously
 
@@ -356,16 +351,6 @@ INTO 'azure://{CONTAINER NAME}/{PATH}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_AC
 AS OF SYSTEM TIME '-10s';
 ~~~
 
-### Specify a subdirectory for backups
-
-To store the backup in a specific subdirectory in the storage location:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-BACKUP DATABASE bank INTO 'subdirectory' IN 'azure://{CONTAINER NAME}/{PATH}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' \
-AS OF SYSTEM TIME '-10s';
-~~~
-
 ### Backup all tables in a schema
 
  To back up all tables in a [specified schema](create-schema.html), use a wildcard with the schema name:
@@ -387,7 +372,7 @@ See [Name Resolution](sql-name-resolution.html) for more details on how naming h
 
 ### Create incremental backups
 
-If you back up to a destination already containing a [full backup](take-full-and-incremental-backups.html#full-backups), an incremental backup will be added to the default `/incrementals` directory at the root of the [collection](take-full-and-incremental-backups.html#backup-collections) storage location:
+If you back up to a collection URI already containing a [full backup](take-full-and-incremental-backups.html#full-backups), an incremental backup will be added to the default `/incrementals` directory at the root of the [collection](take-full-and-incremental-backups.html#backup-collections) storage location:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -396,17 +381,19 @@ If you back up to a destination already containing a [full backup](take-full-and
     AS OF SYSTEM TIME '-10s';
 ~~~
 
-To explicitly control where you store your incremental backups, use the [`incremental_location`](backup.html#options) option. In the following example, the cloud storage bucket specifies the collection location containing the full backup. The value passed to `incremental_location` is the alternative location that the incremental backup will be stored:
+To store the backup in a specific subdirectory in the storage location:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-BACKUP INTO LATEST IN 'azure://{CONTAINER NAME}/{PATH}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' AS OF SYSTEM TIME '-10s'
-    WITH incremental_location = '{incremental_backup_location}';
+BACKUP DATABASE bank INTO 'subdirectory' IN 'azure://{CONTAINER NAME}/{PATH}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' \
+AS OF SYSTEM TIME '-10s';
 ~~~
 
-The `{incremental_backup_location}` placeholder could be another cloud storage bucket, or a specified subdirectory in the full backup location (e.g., `full_backup_location/subdirectory`).
+{{site.data.alerts.callout_info}}
+If you intend to take a **full** backup, we recommend running `BACKUP INTO {collectionURI}` without specifying a subdirectory.
+{{site.data.alerts.end}}
 
-For more detail on using the `incremental_location` option, including how to restore incremental backups taken with it, see [Incremental backups with explicitly specified destinations](take-full-and-incremental-backups.html#incremental-backups-with-explicitly-specified-destinations).
+To explicitly control where you store your incremental backups, use the [`incremental_location`](backup.html#options) option. For more detail, see [this example](take-full-and-incremental-backups.html#incremental-backups-with-explicitly-specified-destinations) on using the `incremental_location` option.
 
 ### Run a backup asynchronously
 
@@ -501,16 +488,6 @@ INTO 'gs://{BUCKET NAME}/{PATH}?AUTH=specified&CREDENTIALS={ENCODED KEY}' \
 AS OF SYSTEM TIME '-10s';
 ~~~
 
-### Specify a subdirectory for backups
-
-To store the backup in a specific subdirectory in the storage location:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-BACKUP DATABASE bank INTO 'subdirectory' IN 'gs://{BUCKET NAME}/{PATH}?AUTH=specified&CREDENTIALS={ENCODED KEY}' \
-AS OF SYSTEM TIME '-10s';
-~~~
-
 ### Backup all tables in a schema
 
  To back up all tables in a [specified schema](create-schema.html), use a wildcard with the schema name:
@@ -532,7 +509,7 @@ See [Name Resolution](sql-name-resolution.html) for more details on how naming h
 
 ### Create incremental backups
 
-If you back up to a destination already containing a [full backup](take-full-and-incremental-backups.html#full-backups), an incremental backup will be added to the default `/incrementals` directory at the root of the [collection](take-full-and-incremental-backups.html#backup-collections) storage location:
+If you back up to a collection URI already containing a [full backup](take-full-and-incremental-backups.html#full-backups), an incremental backup will be added to the default `/incrementals` directory at the root of the [collection](take-full-and-incremental-backups.html#backup-collections) storage location:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -541,17 +518,19 @@ If you back up to a destination already containing a [full backup](take-full-and
     AS OF SYSTEM TIME '-10s';
 ~~~
 
-To explicitly control where you store your incremental backups, use the [`incremental_location`](backup.html#options) option. In the following example, the cloud storage bucket specifies the collection location containing the full backup. The value passed to `incremental_location` is the alternative location that the incremental backup will be stored:
+To store the backup in a specific subdirectory in the storage location:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-BACKUP INTO LATEST IN 'gs://{BUCKET NAME}/{PATH}?AUTH=specified&CREDENTIALS={ENCODED KEY}' AS OF SYSTEM TIME '-10s'
-    WITH incremental_location = '{incremental_backup_location}';
+BACKUP DATABASE bank INTO 'subdirectory' IN 'gs://{BUCKET NAME}/{PATH}?AUTH=specified&CREDENTIALS={ENCODED KEY}' \
+AS OF SYSTEM TIME '-10s';
 ~~~
 
-The `{incremental_backup_location}` placeholder could be another cloud storage bucket, or a specified subdirectory in the full backup location (e.g., `full_backup_location/subdirectory`).
+{{site.data.alerts.callout_info}}
+If you intend to take a **full** backup, we recommend running `BACKUP INTO {collectionURI}` without specifying a subdirectory.
+{{site.data.alerts.end}}
 
-For more detail on using the `incremental_location` option, including how to restore incremental backups taken with it, see [Incremental backups with explicitly specified destinations](take-full-and-incremental-backups.html#incremental-backups-with-explicitly-specified-destinations).
+To explicitly control where you store your incremental backups, use the [`incremental_location`](backup.html#options) option. For more detail, see [this example](take-full-and-incremental-backups.html#incremental-backups-with-explicitly-specified-destinations) on using the `incremental_location` option including how to restore incremental backups taken with it.
 
 ### Run a backup asynchronously
 
