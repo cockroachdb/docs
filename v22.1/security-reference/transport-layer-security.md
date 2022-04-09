@@ -62,27 +62,38 @@ Encryption is powerful and important, but without identity authentication, it's 
 
 If you encrypt a  message with a TLS public key, you know that only a holder of the matching private key will be able to decrypt it. And perhaps the holder of the public certificate identifies themself as your friend, your bank, your employer, or a government. But how can you trust that the certificate was ever actually held by the party you want to reach, rather than an imposter?
 
-This problem is solved with the mechanism of a **public key infrastructure (PKI) certficate**, and the broader notion of PKI, which will be explained in what follows.
+This is a complex social and technological problem, and the solution used for the internet as a whole, as well as for many large organizations across the world, is also a complex mix of social and digital technologies. It is what is known as Public Key Infrastructure (PKI).
 
-### PKI certificates
+At its core, PKI is a hierarchy of cryptographically backed trust relationships between the following categories of interested party:
+- Subscribers wish to use the PKI to prove their identity to the world and offer secure services to others.
+- Relying parties wish to connect with subscribers, secure in the their knownledge of the identity of the latter.
+- Certificate Authorities (CA) are responsible for verifying the identity of subscribers (which can include subornidate certificate authorties).
 
-A PKI certificate (often abbreviated "cert") is a document containing the following:
+### Certificates, signing, trust and authority
 
-- A) A public key to be used for [TLS encryption](#what-is-transport-layer-security-tls).
-- B) Some metadata about the party that allegedly holds the corresponding private key and who therefore is the only one capable of decrypting messages encrypted with **A**, most importantly at least one **name**, such as a domain name in a domain name registry system (DNS). The certifiate essentially functions as a badge or nametage, allowing the holder to claim to be the named party.
+The core mechanism of PKI is a the PKI certificate, also known simply as a 'security certificate', 'digital certificate' or 'TLS certificate' (because it is used in TLS), or abbreviated "cert".
+
+A PKI certificate is a file containing the following:
+
+- A) A public key to be used for [key pair encryption, often including TLS](#what-is-transport-layer-security-tls).
+- B) Some metadata about:
+	- the party that allegedly holds the corresponding private key and who therefore is the only one capable of decrypting messages encrypted with **A**, most importantly at least one **name**, such as a domain name in a domain name registry system (DNS). The certifiate essentially functions as a badge or nametage, allowing the holder to claim to be the named party.
+	- the party signing the certificate, and the certificate authority (if any) that signed its public certificate
 - C) A list of actions the holder of the certificate is thereby authorized to perform.
 
 On its own, such a digital certificate is of no more value than a paper certificate. Indeed, less value, as it can be neither scribbled upon nor burned.
 
 However, digital certificates have the advantage that they can be cryptographically **signed**, again using the mechanism of a public/private key pair.
 
-This is solved via the notion of a **Certificate Authority.** 
+Signing simply means encrypting the certificate using a private key, so that it can be decrypted with a public key. So how does that help? This is the point where the boundaries between computing systems and social systems become very murky. By signing a certificate (and anyone with a private key can do this) a party is acting as a "certificate authority"; they are in effect asserting the validity of the identity claim being made by the certificate holder.
 
-A TLS public key 
+The premise of PKI is that if I present you with a certificate, and you can decrypt it with, for example, Cockroach Labs' public certificate, and the decrypted version says that I work for the Cockroach Labs documentation team, essentially you may interpret that Cockroach Labs offers its guarantee that I work for the documentation team (or at least, I did when the certificate was signed).
 
-When TLS key pairs are cryptographicall generated, they are 'signed' by another cryptographic key, known as a 'root certificate' or 'certificate authority certificate' (CA cert). The CA certificate is held by a party responsible for issuing key pairs.  The signed public key is known as the **public certificate**, and is the file that is actually shared with clients. Given that you can put your trust in the organization that backs the Certificate Authority who has signed a server's TLS public certificate, you can extend your trust that the operator of a website or service at a particular network domain or IP address is actually who they claim to be.
+Generally, given that you can put your trust in the organization that backs the Certificate Authority who has signed a server's public certificate, you can extend your trust that the holder of the private key corresponding to that certificate is who the certificate says they are. For example, this is how your web browser or mobile app knows that it's actually talking to your bank, rather than an imposter.
 
-### Trust hierarchies
+### Trust hierarchies, tradeoffs of security and access
+
+
 
 A "tree" or hierarchy of cryptographic signatures, when such delegated trust relationships and its use together with key pair cryptography in establishing secure identity authentication and encrypted communication, is what's known as **Public Key Infrastructure (PKI)**. PKI is a critical supporting component of the World Wide Web and our global computing ecosystem more broadly.
 
@@ -94,22 +105,54 @@ Large organizations often maintain their own internal, private PKI, anchored by 
 
 Distributed systems such as K8s clusters, or (spoiler alert) CockroachDB clusters, may maintain their own internal Certificate Authority to allow their internal components to authenticate to one another. However, for users to trust the security of their connection to computing or data resources, they must be able to securely identify it. So, for any database or other application to be truly useful to remote users across the internet, it must be integrated into the internet's PKI. This means it must ultimately belong to a trust anchored by a broadly accepted certificate authority.
 
+### Revoking certification
+
+In this dynamic world, nothing lasts for ever. Employment and business relationships change, computing systems are deployed and destroyed, and even the most carefully hidden passwords and private keys may be accidentally leaked or intentionally stolen. For all of these reasons, in order to maintain its trustworthiness, a certificate authority (CA) must be able to revoke guarantees it has issued in the form of signed certificates when those guarantees no longer hold.
+
+
+The two main solutions to this problem are **Certificate revocation lists (CRLs)**, which are not supported by CockroachDB, and 
+- **Online Certificate Revocation Protocol (OCSP)**:
+
+
+#### OCSP 
+
+CockroachDB can be configured to check an OCSP responder.
+
+Umm... so google cloud [tells you](https://cloud.google.com/certificate-authority-service/docs/ocsp-support?hl=en_US&_ga=2.152118393.-1303736573.1642571080) to use this [unsupported open source thing](https://github.com/googlecloudplatform/gcp-ca-service-ocsp).
+
+
+So what are we telling people to do?
+
+Just run your own OCSP and configure it like so: https://www.cockroachlabs.com/docs/v21.2/create-security-certificates-custom-ca.html#certificate-revocation-with-ocsp
+
+
+
+#### CRL
+
+
 ## TLS in CockroachDB
 
-TLS authentication and encryption is supported in all communication between CockroachDB nodes, and from clients to nodes.
+TLS authentication and encryption are supported in all communication between CockroachDB nodes, and from clients to nodes.
 
 ### SSL modes
 
-#### Disabling TLS
+#### Default mode 
 
-CockroachDB can be operated entirely without TLS. This can be useful to quickly deploy a short-lived cluster for testing and hands on experimentation, but is entirely unsuitable for production usage.
+requires TLS. Client must be set to `sslmode=on`
+
+#### `--accept-sql-without-tls`
+
+uses tls encryption.
+works with Client: `sslmode=on`
+works with Client: `sslmode=off`
+
+#### `--insecure`
+
+CockroachDB can be operated entirely without TLS. This can be useful to quickly deploy a short-lived local cluster for testing and hands on experimentation, but is unsuitable for long-lived deployments, as all traffic is unencrypted.
 
 To run a CockroachDB cluster without TLS, add the `--insecure` flag to the [`cockroach run`]() command.
 
-`--accept-sql-without-tlc` what is the deal? Send that note in the eng channel !!!
-
-[SSL modes](#ssl-mode-settings)
-
+Note that client connections must also be made insecurely, or the connection request will fail. Do this by using the `--insecure` flag with the `cockroach sql` CLI command, or by setting `sslmode=off` in the database connection string.
 
 ### Communication between nodes
 
@@ -118,7 +161,6 @@ Connections between CockroachDB nodes are always mutually TLS authenticated. Eac
 #### CockroachDB Cloud
 
 Customers using {{ site.data.products.db }} need not worry about managing TLS keys for CockroachDB nodes, as cluster management is delegated to the Cockroach Labs team.
-
 
 #### CockroachDB Self-Hosted
 
@@ -130,14 +172,11 @@ In this case, each CockroachDB node must have the following files:
 
 - The node's private key, `node.key`
 - The node's public certificate, `node.crt`
-- The public CA certificate of the root Certificate Authority, (which may be the cluster itself), called `ca.crt`.
+- The public CA certificate of the Certificate Authority that signed the nodes' public certificates, called `ca.crt`.
 
 {{site.data.alerts.callout_info}}
 To enable a CockroachDB client, the required files (`node.key`, `node.crt`, and `ca.crt`) must be present in a single directory, the path to which must be supplied to the CockroachDB client with the argument `certs-dir`.
 {{site.data.alerts.end}}
-
-
-More complex scenarios with external CAs are described [here.](authentication.html#using-a-custom-ca)
 
 ### Communication from a SQL client to a node
 
@@ -182,7 +221,7 @@ CockroachDB clusters can generate their own CA certificates, allowing them to ac
 
 Alternatively, an external CA (such as your organization's CA) can be used to generate your certificates. It is even possible to employ a ['split certificate'](../create-security-certificates-custom-ca.html#split-node-certificates) scenario, where one set of key pairs is used for authentication in inter-node connections, and another pair is used for authentication in connections originated from SQL clients.
 
-## Revoking of Certificates
+### Revoking of Certificates
 
 some things 
 - blah blah blah
