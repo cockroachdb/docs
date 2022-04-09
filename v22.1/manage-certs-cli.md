@@ -1,5 +1,5 @@
 ---
-title: Using `cockroach cert` to provision a development cluster
+title: Using the CockroachDB CLI to provision a development cluster
 summary: A secure CockroachDB cluster uses TLS for encrypted inter-node and client-node communication.
 toc: true
 docs_area: manage.security
