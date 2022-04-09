@@ -271,7 +271,7 @@
                 {
                   "title": "Using Google Cloud Platform Certificate Authority Service",
                   "urls": [
-                    "/${VERSION}/manage-certs-cli.html"
+                    "/${VERSION}/manage-certs-gcloud.html"
                   ]
                 }                
               ]
