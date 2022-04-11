@@ -123,11 +123,11 @@ For more information on enabling and using changefeeds, see [Use Changefeeds](us
     ~~~
     job_id             |                                                                     job_description
     -------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    745448689649516545 | CREATE CHANGEFEED FOR TABLE users INTO 's3://{BUCKET_NAME}?AWS_ACCESS_KEY_ID={ACCESS_KEY_ID}&AWS_SECRET_ACCESS_KEY=redacted' WITH diff, schema_change_policy = 'backfill', updated
+    745448689649516545 | CREATE CHANGEFEED FOR TABLE movr.public.users INTO 's3://{BUCKET_NAME}?AWS_ACCESS_KEY_ID={ACCESS_KEY_ID}&AWS_SECRET_ACCESS_KEY=redacted' WITH diff, schema_change_policy = 'backfill', updated
     (1 row)
     ~~~
 
-    The output from `ALTER CHANGEFEED` will show the `CREATE CHANGEFEED` statement with the options you've defined.
+    The output from `ALTER CHANGEFEED` will show the `CREATE CHANGEFEED` statement with the options you've defined. After modifying a changefeed with `ALTER CHANGEFEED`, the `CREATE` description will show the fully qualified table name.
 
     For an explanation on each of these options, see the `CREATE CHANGEFEED` [options](create-changefeed.html#options).  
 
