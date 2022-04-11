@@ -1,6 +1,6 @@
 ---
-title: Using Google Cloud Platform to manage PKI certificates
-summary: Using Google Cloud Platform to manage PKI certificates
+title: Using Google Cloud Platform to implement a Split-CA PKI
+summary: Using Google Cloud Platform to manage PKI in a spit-CA deployment
 toc: true
 docs_area: manage.security
 ---
@@ -10,44 +10,48 @@ docs_area: manage.security
 - mention IAM/credentials
 }
 
-This tutorial walks the user through provisioning a private key infrastructure (PKI) certificate authority (CA) hierarchy appropriate for securing authentication and encryption-in-flight between a CRDB cluster and its clients.
+
+This tutorial walks the user through implementing a split-CA Private Key Infrastruture (PKI) for a CockroachDB Cluster, i.e. a  a private key infrastructure (PKI) split between an internal-to-the-cluster root CA (used only for internode communication) and an external-to-the-cluster root CA for connections to the cluster from external clients.
 
 prerequisites:
-Node names and addresses for three compute nodes, and the load balancer
 
-**COMMAND**
+Node names and addresses for three compute nodes that will house the cluster, and an external IP addres such as a TCP load balancer
 
-{% include_cached copy-clipboard.html %}
 ```
 {% include {{page.version.version}}/certs-tutorials/manage-certs-gcloud/cockroach-cluster.env %}
 ```
 
-## Provision a CRDB CA
+## Provision a CRDB cluster root CA for internode communication
+
+I mean do we just  pick a node and call it the CA node and do `cockroach cert` stuff there and SCP between nodes in the cluster? that has the advantage of consolidated IAM and limited moving around... but you probably don't really want it actually on one of the nodes... except in this case do you? it'll only ever be used on the nodes so why have it elsewhere? it's no good elsewhere and the nodes are no good if it isn't there
+
+The CA node needs SCP access, that's all... limited IAM SCP access... Talk  to Catherine about this
+
+
+## Provision a CRDB client CA for client-to-cluster communication
 
 Let's begin by provisioning a Certificate Authority (CA) for managing CRDB. In a realistic scenario, this CA would itself be subordinate to an organizational root CA, but in this case we will make it a self-signed root CA.
 
 We will use [Google CA Service](https://console.cloud.google.com/security/cas) to perform most operations.
 
-### Create a roach test CA Pool
+### Create a roach test client-CA Pool
 
 In GCP, CAs are organized into CA pools. Signing requests are issued by default to a CA pool rather than a particular CA. Create a CA pool.
 
-{% include_cached copy-clipboard.html %}
-```shell
-{% include {{page.version.version}}/certs-tutorials/manage-certs-gcloud/gcloud-create-roach-test-ca-pool.sh %}
-```
+~~~shell
+gcloud privateca pools create roach-test-client-CA-pool
 
-```text
-{% include {{page.version.version}}/certs-tutorials/manage-certs-gcloud/gcloud-create-roach-test-ca-pool.res %}
-```
+Creating CA Pool....done.
+Created CA Pool [projects/noobtest123/locations/us-east1/caPools/roach-test-pool].
+~~~
 
 Either:
-- A: Create a root CA *solely for use in development*, as shown here.
-- B: Create a subordinate CA by issuing a certificate signing request (CSR) to your organization's CA administrators.
+- A: Create a *root* client-CA *solely for use in development*, as shown here.
+- B: Create a subordinate client-CA by issuing a certificate signing request (CSR) to your organization's CA administrators.
 
-### Create your roach test CA
+### Create your roach test client-CA
 
-#### Option A: Create a root CA for CRDB (only suitable for development)
+#### Option A: Create a root CA for CRDB clients (only suitable for development)
 
 to create a root CA to use for your whole cluster, called RoachTestSubCA. Answer `y` to enable the CA
 
@@ -73,34 +77,7 @@ Otherwise, you must create a subordinate certifcate authority by [submitting a c
 
 View the CA in the GCP CAS console and ensure that its status is set to **enabled**.
 
-## Provision the node and client Signing CAs
 
-### Create CA Pools
-
-{% include_cached copy-clipboard.html %}
-```shell
-{% include {{page.version.version}}/certs-tutorials/manage-certs-gcloud/create-ca-signing-pools.sh %}
-```
-
-```txt
-{% include {{page.version.version}}/certs-tutorials/manage-certs-gcloud/create-ca-signing-pools.res %}
-
-```
-
-### Create the signing CAs
-    
-Create, sign and enable signing CAs to use for generating node and client credentials. These CAs will be subordinate to our previously created CRDB CA.
-
-!!! Should we set validity here? Shorter than the above? 
-
-{% include_cached copy-clipboard.html %}
-```shell
-{% include {{page.version.version}}/certs-tutorials/manage-certs-gcloud/create-sub-cas.sh %}
-```
-
-```txt
-{% include {{page.version.version}}/certs-tutorials/manage-certs-gcloud/create-sub-cas.res %}
-```
 
 ## Issue and provision node keys and certificates
 
@@ -108,37 +85,63 @@ Create, sign and enable signing CAs to use for generating node and client creden
 
 !!! what should the validity duration be?
 
-{% include_cached copy-clipboard.html %}
-```shell
-{% include {{page.version.version}}/certs-tutorials/manage-certs-gcloud/create-node-certs.sh %}
-```
+~~~shell
+gcloud privateca certificates create \
+  --issuer-pool roach-test-node-ca-pool \
+  --generate-key \
+  --key-output-file node1/node.key \
+  --cert-output-file node1/node.crt \
+  --dns-san "$node1name,localhost" \
+  --ip-san "$node1addr,$ex_ip" \
+  --subject "CN=node"
 
-```txt
-{% include {{page.version.version}}/certs-tutorials/manage-certs-gcloud/create-node-certs.res %}
-```
+gcloud privateca certificates create \
+  --issuer-pool roach-test-node-ca-pool \
+  --generate-key \
+  --key-output-file node2/node.key \
+  --cert-output-file node2/node.crt \
+  --dns-san "$node2name,localhost" \
+  --ip-san "$node2addr,$ex_ip" \
+  --subject "CN=node"
+
+gcloud privateca certificates create \
+  --issuer-pool roach-test-node-ca-pool \
+  --generate-key \
+  --key-output-file node3/node.key \
+  --cert-output-file node3/node.crt \
+  --dns-san "$node3name,localhost" \
+  --ip-san "$node3addr,$ex_ip" \
+  --subject "CN=node"
+~~~
 
 ### Propagate key pairs to the nodes.
 
-{% include_cached copy-clipboard.html %}
-```shell
-{% include {{page.version.version}}/prop-keys-to-nodes.sh %}
-```
+~~~shell
+gcloud compute ssh $node1name \
+--command 'rm -rf ~/certs && mkdir ~/certs'
 
-```txt
-{% include {{page.version.version}}/certs-tutorials/prop-keys-to-nodes.res %}
-```
+gcloud compute scp ./node1/node.* ${node1name}:~/certs
+
+gcloud compute ssh $node2name \
+--command 'rm -rf ~/certs && mkdir ~/certs'
+
+gcloud compute scp ./node2/node.* ${node2name}:~/certs
+
+gcloud compute ssh $node3name \
+--command 'rm -rf ~/certs && mkdir ~/certs'
+
+gcloud compute scp ./node3/node.* ${node3name}:~/certs
+~~~
+
 ### Provision the CA's public cert on the nodes
 
 Download the CA's pulic cert into a file called `ca.cert`. If it is a self-signed cert, you can download it from the [GCP console](https://console.cloud.google.com/security/cas/), otherwise you must obtain it from your organization's CA.
 
-{% include_cached copy-clipboard.html %}
-```shell
-{% include {{page.version.version}}/certs-tutorials/manage-certs-gcloud/prop-cert-to-nodes.sh %}
-```
-
-```txt
-{% include {{page.version.version}}/certs-tutorials/manage-certs-gcloud/path.res %}
-```
+~~~shell
+gcloud compute scp certs/ca.crt ${node1name}:~/certs
+gcloud compute scp certs/ca.crt ${node2name}:~/certs
+gcloud compute scp certs/ca.crt ${node3name}:~/certs
+~~~
 
 ### Start and Initialize the cluster
 

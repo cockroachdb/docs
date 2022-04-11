@@ -126,9 +126,9 @@ So what are we telling people to do?
 Just run your own OCSP and configure it like so: https://www.cockroachlabs.com/docs/v21.2/create-security-certificates-custom-ca.html#certificate-revocation-with-ocsp
 
 
+#### CRLs
 
-#### CRL
-
+CockroachDB does not support certificate revocation lists.
 
 ## TLS in CockroachDB
 
