@@ -51,6 +51,8 @@ Choose your OS:
 
 The `ccloud cluster create` command creates new CockroachDB clusters in your organization. You can create {{ site.data.products.serverless }} or {{ site.data.products.dedicated }} clusters.
 
+If you would like to interactively create a {{ site.data.products.serverless }} cluster, the `ccloud quickstart` command will guide you through the process.
+
 <div class="filters clearfix">
     <button class="filter-button page-level" data-scope="serverless">{{ site.data.products.serverless }}<strong></strong></button>
     <button class="filter-button page-level" data-scope="dedicated"><strong>{{ site.data.products.dedicated }}</strong></button>
