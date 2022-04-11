@@ -1,10 +1,11 @@
-CockroachDB docs should be:
+CockroachDB docs follow these principles:
 
-- Clear
-- Correct
-- Concise
+- **Commit to Excellence:** We commit to publishing documentation that serves our users and customers with a focus on excellence. We take pride in writing clear, concise, and correct docs, constantly iterating, and aiming to produce great work to help our users.
+- **Communicate Openly and Honestly:** We produce our best documentation when we communicate openly and honestly with our users. Documenting features and limitations transparently enables users to effectively use Cockroach Labs products while instilling confidence in the docs as a trusted resource.
+- **Respect:** We aim to write humble, positive, friendly, and above all else helpful documentation. We appreciate every user through inclusive, accessible, and non-hyperbolic language.
+- **Establish balance:** We establish balance between complexity and accessibility for all users. We describe complex problems through accessible technical language and links to further information, without obfuscating meaning through unnecessarily complicated language. We also establish balance by always considering our style guidelines, but we can break these rules—or propose new rules—when it’s better for the user or promotes our other values.
 
-The following guidance is provided to ensure consistency.
+The following guidance is provided to benefit authors and reviewers by reflecting past style decisions, and to benefit readers by promoting consistency and readability across our content.
 
 Included in this guide:
 
