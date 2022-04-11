@@ -85,7 +85,7 @@ release_info:
     start_time: 2022-03-31 13:54:16.133695 +0000 UTC
     version: v21.1.17
   v21.2:
-    build_time: 2022-04-12 00:00:00 (go1.16)
+    build_time: 2022-04-13 00:00:00 (go1.16)
     docker_image: cockroachdb/cockroach
     name: v21.2.9
     start_time: 2022-04-11 10:44:59.752757 +0000 UTC
