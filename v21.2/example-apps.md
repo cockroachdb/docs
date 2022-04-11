@@ -22,18 +22,18 @@ Note that tools with [**community-level** support](community-tooling.html) have 
 
 | Driver/ORM Framework                                    | Support level  | Example apps                                            |
 |---------------------------------------------------------+----------------+--------------------------------------------------------|
-| [node-postgres](https://www.npmjs.com/package/pg)       | Full           | [Quickstart](../cockroachcloud/quickstart.html?filters=node)<br>[Simple CRUD](build-a-nodejs-app-with-cockroachdb.html)
+| [node-postgres](https://www.npmjs.com/package/pg)       | Full           | [Quickstart](../cockroachcloud/quickstart.html?filters=node)<br>[AWS Lambda](deploy-lambda-function.html)<br>[Simple CRUD](build-a-nodejs-app-with-cockroachdb.html)
 | [Sequelize](https://www.npmjs.com/package/sequelize)    | Full           | [Simple CRUD](build-a-nodejs-app-with-cockroachdb-sequelize.html)
 | [Knex.js](https://knexjs.org/)                          | Full           | [Simple CRUD](build-a-nodejs-app-with-cockroachdb-knexjs.html)
-| [Prisma Client](https://knexjs.org/)                    | Full           | [Simple CRUD](build-a-nodejs-app-with-cockroachdb-prisma.html)
+| [Prisma](https://prisma.io)                             | Full           | [Simple CRUD](build-a-nodejs-app-with-cockroachdb-prisma.html)<br>[React Web App (Netlify)](deploy-app-netlify.html)<br>[React Web App (Next.js/Vercel)](deploy-app-vercel.html)
 | [TypeORM](https://www.npmjs.com/package/typeorm)        | Full           | [Simple CRUD](build-a-typescript-app-with-cockroachdb.html)
 
 ## Python
 
 | Driver/ORM Framework                                            | Support level  | Example apps                                            |
 |-----------------------------------------------------------------+----------------+--------------------------------------------------------|
-| [psycopg2](https://www.psycopg.org/docs/install.html)           | Full           | [Quickstart](../cockroachcloud/quickstart.html?filters=python)<br>[Simple CRUD](build-a-python-app-with-cockroachdb.html)<br>[AWS Lambda](deploy-lambda-function.html)
-| [SQLAlchemy](https://www.sqlalchemy.org/)                       | Full           | [Simple CRUD](build-a-python-app-with-cockroachdb-sqlalchemy.html)<br>[MovR-Flask (Global Web App)](movr-flask-overview.html)
+| [psycopg2](https://www.psycopg.org/docs/install.html)           | Full           | [Quickstart](../cockroachcloud/quickstart.html?filters=python)<br>[AWS Lambda](deploy-lambda-function.html)<br>[Simple CRUD](build-a-python-app-with-cockroachdb.html)
+| [SQLAlchemy](https://www.sqlalchemy.org/)                       | Full           | [Simple CRUD](build-a-python-app-with-cockroachdb-sqlalchemy.html)<br>[Multi-region Flask Web App](movr-flask-overview.html)
 | [Django](https://pypi.org/project/Django/)                      | Full           | [Simple CRUD](build-a-python-app-with-cockroachdb-django.html)
 | [PonyORM](https://ponyorm.org/)                                 | Full           | [Simple CRUD](build-a-python-app-with-cockroachdb-pony.html)
 
