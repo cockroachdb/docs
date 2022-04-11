@@ -14,9 +14,12 @@
 
 {% include cockroachcloud/quickstart/create-first-sql-user.md %}
 
-### Get the connection string
+### Get the connection information
 
-{% include cockroachcloud/quickstart/get-connection-string.md %}
+The **Connect to your cluster** dialog shows information about how to connect to your cluster.
+
+1. Select **Parameters** from the **Select option/language** dropdown.
+1. Copy the connection information for each parameter displayed and save it in a secure location.
 
 </section>
 

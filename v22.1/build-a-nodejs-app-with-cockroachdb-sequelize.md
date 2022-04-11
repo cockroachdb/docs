@@ -16,13 +16,9 @@ This tutorial shows you how build a simple Node.js application with CockroachDB 
 
 ## Step 1. Start CockroachDB
 
-{% include {{page.version.version}}/app/start-cockroachdb-no-cert.md %}
+{% include {{ page.version.version }}/app/sample-setup.md %}
 
-## Step 2. Create a database
-
-{% include {{page.version.version}}/app/create-a-database.md %}
-
-## Step 3. Get the code
+## Step 2. Get the code
 
 Clone the sample code's GitHub repo:
 
@@ -33,28 +29,33 @@ $ git clone https://github.com/cockroachlabs/example-app-node-sequelize/
 
 The sample code uses Sequelize to map Node.js-specific objects to some read and write SQL operations.
 
-## Step 4. Run the code
+## Step 3. Run the code
 
 To start the app:
 
 1. Set the `DATABASE_URL` environment variable to the connection string:
+
+    <section class="filter-content" markdown="1" data-scope="local">
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ export DATABASE_URL="postgresql://root@localhost:26257?sslmode=disable"
+    ~~~
+
+    </section>
+
+    <section class="filter-content" markdown="1" data-scope="cockroachcloud">
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ export DATABASE_URL="<connection-string>"
     ~~~
 
-    <section class="filter-content" markdown="1" data-scope="local">
-
-    Where `<connection-string>` is the `sql` connection URL provided in the cluster's welcome text.
+    Where `<connection-string>` is the connection string you obtained from the {{ site.data.products.db }} Console.
 
     </section>
 
-    <section class="filter-content" markdown="1" data-scope="cockroachcloud">
-
-    Where `<connection-string>` is the connection string provided in the **Connection info** window of the {{ site.data.products.db }} Console.
-
-    </section>
+    The app uses the connection string saved to the `DATABASE_URL` environment variable to connect to your cluster and execute the code.
 
 1. Install the app dependencies:
 

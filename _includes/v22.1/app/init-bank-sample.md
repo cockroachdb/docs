@@ -1,54 +1,38 @@
+1. Set the `DATABASE_URL` environment variable to the connection string to your cluster:
 
-To initialize the example database, use the [`cockroach sql`](cockroach-sql.html) command to execute the SQL statements in the `dbinit.sql` file:
+    <section class="filter-content" markdown="1" data-scope="local">
 
-<div class="filter-content" markdown="1" data-scope="cockroachcloud">
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    export DATABASE_URL="postgresql://root@localhost:26257?sslmode=disable"
+    ~~~
 
-{% include_cached copy-clipboard.html %}
-~~~ shell
-cat dbinit.sql | cockroach sql --url "<connection-string>"
-~~~
+    </section>
 
-Where `<connection-string>` is the connection string you obtained earlier from the {{ site.data.products.db }} Console.
+    <section class="filter-content" markdown="1" data-scope="cockroachcloud">
 
-</div>
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    export DATABASE_URL="{connection-string}"
+    ~~~
 
-<div class="filter-content" markdown="1" data-scope="local">
+    Where `{connection-string}` is the connection string you obtained from the {{ site.data.products.db }} Console.
 
-{% include_cached copy-clipboard.html %}
-~~~ shell
-cat dbinit.sql | cockroach sql --url "postgresql://root@localhost:26257?sslmode=disable"
-~~~
+    </section>
 
-{{site.data.alerts.callout_info}}
-`postgresql://root@localhost:26257?sslmode=disable` is the `sql` connection string you obtained earlier from the `cockroach` welcome text.
-{{site.data.alerts.end}}
 
-</div>
+1. To initialize the example database, use the [`cockroach sql`](cockroach-sql.html) command to execute the SQL statements in the `dbinit.sql` file:
 
-The SQL statements in the initialization file should execute:
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    cat dbinit.sql | cockroach sql --url $DATABASE_URL
+    ~~~
 
-~~~
-SET
+    The SQL statement in the initialization file should execute:
 
-Time: 1ms
+    ~~~
+    CREATE TABLE
 
-SET
 
-Time: 2ms
-
-DROP DATABASE
-
-Time: 1ms
-
-CREATE DATABASE
-
-Time: 2ms
-
-SET
-
-Time: 10ms
-
-CREATE TABLE
-
-Time: 4ms
-~~~
+    Time: 102ms
+    ~~~

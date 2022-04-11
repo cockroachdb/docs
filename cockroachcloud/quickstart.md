@@ -290,7 +290,7 @@ The **Connection info** dialog shows information about how to connect to your cl
     export JDBC_DATABASE_URL=<jdbc-connection-string>
     ~~~
 
-    The code sample uses the connection string stored in the environment variable `DATABASE_URL` to connect to your cluster.
+    The code sample uses the connection string stored in the environment variable `JDBC_DATABASE_URL` to connect to your cluster.
 
 1. Run the application using `gradlew`:
 

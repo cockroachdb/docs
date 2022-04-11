@@ -16,36 +16,11 @@ This tutorial shows you how build a simple Node.js application with CockroachDB 
 
 ## Step 1. Start CockroachDB
 
-<div class="filters clearfix">
-  <button class="filter-button page-level" data-scope="cockroachcloud">Use {{ site.data.products.serverless }}</button>
-  <button class="filter-button page-level" data-scope="local">Use a Local Cluster</button>
-</div>
-
-<section class="filter-content" markdown="1" data-scope="cockroachcloud">
-
-{% include cockroachcloud/quickstart/create-a-free-cluster.md %}
-
-{% include cockroachcloud/quickstart/set-up-your-cluster-connection-no-cert.md %}
-
-</section>
-
-<section class="filter-content" markdown="1" data-scope="local">
-
-1. If you haven't already, [download the CockroachDB binary](install-cockroachdb.html).
-1. Run the [`cockroach start-single-node`](cockroach-start-single-node.html) command:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach start-single-node --advertise-addr 'localhost' --insecure
-    ~~~
-
-    This starts an insecure, single-node cluster.
-
-{% include {{ page.version.version }}/prod-deployment/insecure-flag.md %}
-
-</section>
+{% include {{ page.version.version }}/app/sample-setup-parameters.md %}
 
 ## Step 2. Get the code
+
+<section class="filter-content" markdown="1" data-scope="local">
 
 Clone the code's GitHub repo:
 
@@ -54,16 +29,25 @@ Clone the code's GitHub repo:
 $ git clone https://github.com/cockroachlabs/example-app-node-knex
 ~~~
 
+</section>
+
 <section class="filter-content" markdown="1" data-scope="cockroachcloud">
 
-Check out the `serverless` branch:
+1. Clone the code's GitHub repo:
 
-{% include_cached copy-clipboard.html %}
-~~~ shell
-git checkout serverless
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ git clone https://github.com/cockroachlabs/example-app-node-knex
+    ~~~
 
-Update the configuration settings in the `app.js` file using the connection information that you retrieved from the {{ site.data.products.db }} Console.
+1. Check out the `serverless` branch:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    git checkout serverless
+    ~~~
+
+1. Update the configuration settings in the `app.js` file using the connection information that you retrieved from the {{ site.data.products.db }} Console.
 
 </section>
 

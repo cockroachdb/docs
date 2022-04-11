@@ -96,71 +96,54 @@ The `main.py` uses SQLAlchemy to map Python methods to SQL operations:
 
 ## Step 5. Run the code
 
-1. Set the `DATABASE_URL` environment variable to the connection string for your cluster:
+`main.py` uses the connection string saved to the `DATABASE_URL` environment variable to connect to your cluster and execute the code.
 
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ export DATABASE_URL=<connection-string>
-    ~~~
+Run the app:
 
-    <section class="filter-content" markdown="1" data-scope="local">
+{% include_cached copy-clipboard.html %}
+~~~ shell
+$ python main.py
+~~~
 
-    Where `<connection_string>` is the `sql` connection URL provided in the cluster's welcome text, but **with the `database` parameter set to `bank` instead of `defaultdb`.**
+The application will connect to CockroachDB, and then perform some simple row inserts, updates, and deletes.
 
-    </section>
+The output should look something like the following:
 
-    <section class="filter-content" markdown="1" data-scope="cockroachcloud">
+~~~
+Creating new accounts...
+Created new account with id 3a8b74c8-6a05-4247-9c60-24b46e3a88fd and balance 248835.
+Created new account with id c3985926-5b77-4c6d-a73d-7c0d4b2a51e7 and balance 781972.
+...
+Created new account with id 7b41386c-11d3-465e-a2a0-56e0dcd2e7db and balance 984387.
+Random account balances:
+Account 7ad14d02-217f-48ca-a53c-2c3a2528a0d9: 800795
+Account 4040aeba-7194-4f29-b8e5-a27ed4c7a297: 149861
+Transferring 400397 from account 7ad14d02-217f-48ca-a53c-2c3a2528a0d9 to account 4040aeba-7194-4f29-b8e5-a27ed4c7a297...
+Transfer complete.
+New balances:
+Account 7ad14d02-217f-48ca-a53c-2c3a2528a0d9: 400398
+Account 4040aeba-7194-4f29-b8e5-a27ed4c7a297: 550258
+Deleting existing accounts...
+Deleted account 41247e24-6210-4032-b622-c10b3c7222de.
+Deleted account 502450e4-6daa-4ced-869c-4dff62dc52de.
+Deleted account 6ff06ef0-423a-4b08-8b87-48af2221bc18.
+Deleted account a1acb134-950c-4882-9ac7-6d6fbdaaaee1.
+Deleted account e4f33c55-7230-4080-b5ac-5dde8a7ae41d.
+~~~
 
-    Where `<connection_string>` is the connection string you obtained earlier from the {{ site.data.products.db }} Console, but **with the `database` parameter set to `bank` instead of `defaultdb`.**
+In a SQL shell connected to the cluster, you can verify that the rows were inserted, updated, and deleted successfully:
 
-    </section>
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> SELECT COUNT(*) FROM accounts;
+~~~
 
-1. Run the app:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ python main.py
-    ~~~
-
-    The application will connect to CockroachDB, and then perform some simple row inserts, updates, and deletes.
-
-    The output should look something like the following:
-
-    ~~~
-    Creating new accounts...
-    Created new account with id 3a8b74c8-6a05-4247-9c60-24b46e3a88fd and balance 248835.
-    Created new account with id c3985926-5b77-4c6d-a73d-7c0d4b2a51e7 and balance 781972.
-    ...
-    Created new account with id 7b41386c-11d3-465e-a2a0-56e0dcd2e7db and balance 984387.
-    Random account balances:
-    Account 7ad14d02-217f-48ca-a53c-2c3a2528a0d9: 800795
-    Account 4040aeba-7194-4f29-b8e5-a27ed4c7a297: 149861
-    Transferring 400397 from account 7ad14d02-217f-48ca-a53c-2c3a2528a0d9 to account 4040aeba-7194-4f29-b8e5-a27ed4c7a297...
-    Transfer complete.
-    New balances:
-    Account 7ad14d02-217f-48ca-a53c-2c3a2528a0d9: 400398
-    Account 4040aeba-7194-4f29-b8e5-a27ed4c7a297: 550258
-    Deleting existing accounts...
-    Deleted account 41247e24-6210-4032-b622-c10b3c7222de.
-    Deleted account 502450e4-6daa-4ced-869c-4dff62dc52de.
-    Deleted account 6ff06ef0-423a-4b08-8b87-48af2221bc18.
-    Deleted account a1acb134-950c-4882-9ac7-6d6fbdaaaee1.
-    Deleted account e4f33c55-7230-4080-b5ac-5dde8a7ae41d.
-    ~~~
-
-    In a SQL shell connected to the cluster, you can verify that the rows were inserted, updated, and deleted successfully:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ sql
-    > SELECT COUNT(*) FROM bank.accounts;
-    ~~~
-
-    ~~~
-      count
-    ---------
-         95
-    (1 row)
-    ~~~
+~~~
+  count
+---------
+     95
+(1 row)
+~~~
 
 ## Best practices
 
