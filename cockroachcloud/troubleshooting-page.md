@@ -8,7 +8,7 @@ docs_area: manage
 This page describes common {{ site.data.products.db }} errors and their solutions.
 
 {{site.data.alerts.callout_danger}}
-We have updated the CA certificate used by {{ site.data.products.serverless }} clusters. If you downloaded this certificate prior to June 17, 2021, **you must [download the updated certificate](connect-to-a-serverless-cluster.html#step-3-connect-to-your-cluster) by September 30, 2021** to avoid disruptions to your service.
+We have updated the CA certificate used by {{ site.data.products.serverless }} clusters. If you downloaded this certificate prior to June 17, 2021, **you must [download the updated certificate](connect-to-a-serverless-cluster.html#step-2-connect-to-your-cluster) by September 30, 2021** to avoid disruptions to your service.
 {{site.data.alerts.end}}
 
 ## Connection errors

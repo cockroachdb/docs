@@ -19,7 +19,6 @@ This page shows you how to connect to your {{ site.data.products.serverless }} c
 
 - [Create a Serverless (beta) cluster](create-a-serverless-cluster.html).
 - _(Optional)_ [Create a new SQL user](user-authorization.html#create-a-sql-user).
-- [Install CockroachDB](../stable/install-cockroachdb.html)
 
 ## Step 1. Select a connection method
 
@@ -27,27 +26,13 @@ This page shows you how to connect to your {{ site.data.products.serverless }} c
 
 1. In the top right corner of the {{ site.data.products.db }} Console, click the **Connect** button.
 
-    The **Connect to your cluster** dialog displays.
+    The **Connect to cluster** dialog displays.
 
 1. _(Optional)_ If you have multiple SQL users or databases, you can:
     - Select the SQL user you want to connect with from the **SQL user** dropdown.
     - Select the database you want to connect to from the **Database** dropdown.
-
-## Step 2. Download the CA certificate
-
-1. In the **Download CA Cert** section of the dialog, select **Mac**, **Linux**, or **Windows** to adjust the commands used in the next steps accordingly.
-
-    <div class="filters clearfix">
-      <button class="filter-button page-level" data-scope="mac">Mac</button>
-      <button class="filter-button page-level" data-scope="linux">Linux</button>
-      <button class="filter-button page-level" data-scope="windows">Windows</button>
-    </div>
-
-1. In your terminal, run the **CA Cert download command** from the dialog to download the CA certificate to the default PostgreSQL certificate directory:
-
-    {% include cockroachcloud/download-the-cert-free.md %}
     
-## Step 3. Connect to your cluster
+## Step 2. Connect to your cluster
 
 1. Select a connection method from the **Select option/language** dropdown (the instructions below will adjust accordingly):
 
@@ -55,47 +40,13 @@ This page shows you how to connect to your {{ site.data.products.serverless }} c
         <button class="filter-button page-level" data-scope="connection-string">General connection string</button>
         <button class="filter-button page-level" data-scope="connection-parameters">Connection parameters</button>
         <button class="filter-button page-level" data-scope="cockroachdb-client">CockroachDB client</button>
-        <button class="filter-button page-level" data-scope="python">Python</button>
-        <button class="filter-button page-level" data-scope="js-ts">JavaScript/TypeScript</button>
-        <button class="filter-button page-level" data-scope="go">Go</button>
-        <button class="filter-button page-level" data-scope="java">Java</button>
-        <button class="filter-button page-level" data-scope="ruby">Ruby</button>
     </div>
-    
+
   <section class="filter-content" markdown="1" data-scope="connection-string">
 
-1. Copy the connection string provided in the **General connection string** section of the dialog, which will be used to connect your application to {{ site.data.products.serverless }}:
-
-    <section class="filter-content" markdown="1" data-scope="mac">
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    'postgresql://<username>:<password>@<serverless-host>:26257/defaultdb?sslmode=verify-full&sslrootcert='$HOME'/.postgresql/root.crt&options=--cluster=<routing-id>'
-    ~~~
-    </section>
-
-    <section class="filter-content" markdown="1" data-scope="linux">
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    'postgresql://<username>:<password>@<serverless-host>:26257/defaultdb?sslmode=verify-full&sslrootcert='$HOME'/.postgresql/root.crt&options=--cluster=<routing-id>'
-    ~~~
-    </section>
-
-    <section class="filter-content" markdown="1" data-scope="windows">
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    "postgresql://<username>:<password>@<serverless-host>:26257/defaultdb?sslmode=verify-full&sslrootcert=$env:appdata/.postgresql/root.crt&options=--cluster=<routing-id>"
-    ~~~
-    </section>
-
-    Where:
-    - `<username>` is the SQL user. By default, this is your {{ site.data.products.db }} account username.
-    - `<password>` is the password for the SQL user. The password will be shown only once in the **Connection info** dialog after creating the cluster.
-    - `<serverless-host>` is the hostname of the {{ site.data.products.serverless }} cluster.
-    - `<routing-id>` identifies your tenant cluster on a [multi-tenant host](architecture.html#architecture). For example, `funny-skunk-123`.
-    - `<cluster-id>` is a unique string used to identify your cluster when downloading the CA certificate. For example, `12a3bcde-4fa5-6789-1234-56bc7890d123`.
-    You can find these settings by selecting the **Paramters only** option of the **Select option/language** dropdown.
-
-1. Add your copied connection string to your application code.
+1. In the **Download CA Cert** section of the dialog, select your operating system, and use the command provided to download the CA certificate to the default PostgreSQL certificate directory on your machine.
+1. Copy the connection string provided in the **General connection string** section of the dialog, which will be used to connect your application to {{ site.data.products.serverless }}.
+1. Add your copied connection string to your application code. For information about connecting to {{ site.data.products.serverless }} with a [supported client](../stable/third-party-database-tools.html), see [Connect to a CockroachDB Cluster](../stable/connect-to-the-database.html).
 
 {% include cockroachcloud/postgresql-special-characters.md %}
 
@@ -113,7 +64,8 @@ For connection examples and code snippets in your language, see the following:
 
   </section>
   <section class="filter-content" markdown="1" data-scope="connection-parameters">
-  
+
+1. In the **Download CA Cert** section of the dialog, select your operating system, and use the command provided to download the CA certificate to the default PostgreSQL certificate directory on your machine.
 1. Select the **Parameters only** option of the **Select option/language** dropdown.
 
 1. Use the connection parameters provided in the dialog to connect to your cluster using a [CockroachDB-compatible tool](../{{site.versions["stable"]}}/third-party-database-tools.html).
@@ -130,10 +82,9 @@ For connection examples and code snippets in your language, see the following:
   </section>
   <section class="filter-content" markdown="1" data-scope="cockroachdb-client">
 
-1. Copy the [`cockroach sql`](../stable/cockroach-sql.html) command and connection string provided in the **Connect** modal, which will be used in the next step (and to connect to your cluster in the future):
-
-    {% include cockroachcloud/sql-connection-string-free.md %}
-
+1. In the **Download CA Cert** section of the dialog, select your operating system, and use the command provided to download the CA certificate to the default PostgreSQL certificate directory on your machine.
+1. In the **Download the latest CockroachDB Client** section of the dialog, select your operating system, and use the command provided to install CockroachDB.
+1. Copy the [`cockroach sql`](../stable/cockroach-sql.html) command and connection string provided in the **Connect** modal, which will be used in the next step (and to connect to your cluster in the future).
 1. In your terminal, enter the copied `cockroach sql` command and connection string to start the [built-in SQL client](../{{site.versions["stable"]}}/cockroach-sql.html).
 
 1. Enter the SQL user's password and hit enter.
@@ -152,51 +103,6 @@ For connection examples and code snippets in your language, see the following:
 
     You are now connected to the built-in SQL client, and can now run [CockroachDB SQL statements](learn-cockroachdb-sql.html).
     
-  </section>
-  <section class="filter-content" markdown="1" data-scope="python">
-  
-1. Select **Python** from the **Select option/language** dropdown.
-1. Select your tool from the **Select preferred tool** dropdown.
-1. Copy the connection code shown in the dialog and add it to your application code.
-    
-    For more information, see the [documentation for your tool](../stable/connect-to-the-database.html?filters=python).
-    
-  </section>    
-  <section class="filter-content" markdown="1" data-scope="js-ts">
-  
-1. Select **JavaScript/TypeScript** from the **Select option/language** dropdown.
-1. Select your tool from the **Select preferred tool** dropdown.
-1. Copy the connection code shown in the dialog and add it to your application code.
-    
-    For more information, see the [documentation for your tool](../stable/connect-to-the-database.html?filters=js-ts).
-      
-  </section>
-  <section class="filter-content" markdown="1" data-scope="go">
-  
-1. Select **Go** from the **Select option/language** dropdown.
-1. Select your tool from the **Select preferred tool** dropdown.
-1. Copy the connection code shown in the dialog and add it to your application code.
-    
-    For more information, see the [documentation for your tool](../stable/connect-to-the-database.html?filters=go).
-      
-  </section>
-  <section class="filter-content" markdown="1" data-scope="java">
-
-1. Select **Java** from the **Select option/language** dropdown.
-1. Select your tool from the **Select preferred tool** dropdown.
-1. Copy the connection code shown in the dialog and add it to your application code.
-    
-    For more information, see the [documentation for your tool](../stable/connect-to-the-database.html?filters=java).
-      
-  </section>
-  <section class="filter-content" markdown="1" data-scope="ruby">
-  
-1. Select **Ruby** from the **Select option/language** dropdown.
-1. Select your tool from the **Select preferred tool** dropdown.
-1. Copy the connection code shown in the dialog and add it to your application code.
-    
-    For more information, see the [documentation for your tool](../stable/connect-to-the-database.html?filters=ruby).
-      
   </section>
 
 ## What's next

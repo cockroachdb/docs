@@ -42,7 +42,7 @@ The sample code used in this tutorial is located in the [`quickstart-code-sample
 
 <section class="filter-content" markdown="1" data-scope="python">
 
-The **Connect to your cluster** dialog shows information about how to connect to your cluster.
+The **Connect to cluster** dialog shows information about how to connect to your cluster.
 
 1. Select **General connection string** from the **Select option/language** dropdown.
 1. Open a new terminal on your local machine, and run the **CA Cert download command** provided in the **Download CA Cert** section. This certificate is required by most Python clients connecting to {{ site.data.products.db }}.
@@ -68,7 +68,7 @@ The **Connect to your cluster** dialog shows information about how to connect to
 
 </section>
 
-## Step 3. Run the sample code
+## Step 4. Run the sample code
 
 <section class="filter-content" markdown="1" data-scope="node">
 
