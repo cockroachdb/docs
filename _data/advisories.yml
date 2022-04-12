@@ -2,6 +2,10 @@
   summary: The optimizer has been found to create logically incorrect query plans in some cases.
   versions: 21.1.0-21.1.16, 21.2.0-21.1.7, 22.1.0-alpha.1-22.1.0-alpha.5
   date: April 11, 2022
+- advisory: 79281
+  summary: The optimizer can omit ON conditions of joins in query plans, causing incorrect results.
+  versions: 20.2.0-20.2.19, 21.1.0-21.1.15, 21.2.0-21.2.6
+  date: March 09, 2022
 - advisory: 76522
   summary: The optimizer can omit ON conditions of joins in query plans, causing incorrect results.
   versions: 20.2.0-20.2.19, 21.1.0-21.1.15, 21.2.0-21.2.6
