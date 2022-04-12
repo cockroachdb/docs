@@ -135,53 +135,6 @@
                   ]
                 },
                 {
-                  "title": "Operate CockroachDB on Kubernetes",
-                  "items": [
-                    {
-                      "title": "Pod Scheduling",
-                      "urls": [
-                        "/${VERSION}/schedule-cockroachdb-kubernetes.html"
-                      ]
-                    },
-                    {
-                      "title": "Resource Management",
-                      "urls": [
-                        "/${VERSION}/configure-cockroachdb-kubernetes.html"
-                      ]
-                    },
-                    {
-                      "title": "Certificate Management",
-                      "urls": [
-                        "/${VERSION}/secure-cockroachdb-kubernetes.html"
-                      ]
-                    },
-                    {
-                      "title": "Cluster Scaling",
-                      "urls": [
-                        "/${VERSION}/scale-cockroachdb-kubernetes.html"
-                      ]
-                    },
-                    {
-                      "title": "Cluster Monitoring",
-                      "urls": [
-                        "/${VERSION}/monitor-cockroachdb-kubernetes.html"
-                      ]
-                    },
-                    {
-                      "title": "Cluster Upgrades",
-                      "urls": [
-                        "/${VERSION}/upgrade-cockroachdb-kubernetes.html"
-                      ]
-                    },
-                    {
-                      "title": "Optimizing Performance",
-                      "urls": [
-                        "/${VERSION}/kubernetes-performance.html"
-                      ]
-                    }
-                  ]
-                },
-                {
                   "title": "OpenShift Deployment",
                   "urls": [
                     "/${VERSION}/deploy-cockroachdb-with-kubernetes-openshift.html"
