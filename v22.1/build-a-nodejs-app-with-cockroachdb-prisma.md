@@ -31,7 +31,7 @@ Prisma versions 3.11+ have [Preview](https://prisma.io/docs/about/prisma/release
     $ git clone https://github.com/cockroachlabs/example-app-node-prisma
     ~~~
 
-1. Navigate to the project directory and install the application dependencies:
+1. Install the application dependencies:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
