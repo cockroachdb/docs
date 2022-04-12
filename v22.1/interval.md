@@ -24,12 +24,6 @@ Abbreviated PostgreSQL | `INTERVAL '1 yr 2 mons 3 d 4 hrs 5 mins 6 secs'`
 
 The value of `intervalstyle` affects how CockroachDB parses certain `INTERVAL` values. Specifically, when `intervalstyle = 'sql_standard'`, and when the `INTERVAL` value begins with a negative symbol, CockroachDB parses all fields as negative values (e.g., `-3 years 1 day` is parsed as `-(3 years 1 day)`, or `-3 years, -1 day`). When `intervalstyle = 'postgres'` (the default format), and when the `INTERVAL` value begins with a negative symbol, CockroachDB only applies the negative symbol to the field that it directly precedes (e.g., `-3 years 1 day` is parsed as `-3 years, +1 day`).
 
-To set the `intervalstyle` session variable, the `intervalstyle_enabled` session variable must be set to `true`. At the beginning of each session, the `intervalstyle_enabled` variable is set to the value of the `sql.defaults.intervalstyle.enabled` cluster setting (`false`, by default).
-
-{{site.data.alerts.callout_info}}
-When the `intervalstyle_enabled` [session variable](set-vars.html) is set to `true`, you cannot [cast values](#supported-casting-and-conversion) from `INTERVAL` to `STRING` or from `STRING` to `INTERVAL` if the value belongs to a [computed column](computed-columns.html), a [partially-indexed column](partial-indexes.html), or a [geo-partitioned column](partitioning.html). To work around this limitation, use the `to_char_with_style(interval, style)` or `parse_interval(interval, intervalstyle)` [built-in functions](functions-and-operators.html).
-{{site.data.alerts.end}}
-
 ### Details on SQL Standard input
 
 Without a [precision](#precision) or [duration field](#duration-fields) specified, expect the following behavior from SQL Standard input (`Y-M D H:M:S`):
