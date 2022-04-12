@@ -110,8 +110,11 @@ Distributed systems such as K8s clusters, or (spoiler alert) CockroachDB cluster
 In this dynamic world, nothing lasts for ever. Employment and business relationships change, computing systems are deployed and destroyed, and even the most carefully hidden passwords and private keys may be accidentally leaked or intentionally stolen. For all of these reasons, in order to maintain its trustworthiness, a certificate authority (CA) must be able to revoke guarantees it has issued in the form of signed certificates when those guarantees no longer hold.
 
 
-The two main solutions to this problem are **Certificate revocation lists (CRLs)**, which are not supported by CockroachDB, and 
-- **Online Certificate Revocation Protocol (OCSP)**:
+The main solutions to this problem are:
+- Short-lived certificates
+- **Certificate Revocation Lists (CRLs)**
+- **Online Certificate Revocation Protocol (OCSP)**
+ 
 
 
 #### OCSP 
@@ -119,7 +122,6 @@ The two main solutions to this problem are **Certificate revocation lists (CRLs)
 CockroachDB can be configured to check an OCSP responder.
 
 Umm... so google cloud [tells you](https://cloud.google.com/certificate-authority-service/docs/ocsp-support?hl=en_US&_ga=2.152118393.-1303736573.1642571080) to use this [unsupported open source thing](https://github.com/googlecloudplatform/gcp-ca-service-ocsp).
-
 
 So what are we telling people to do?
 
@@ -130,7 +132,8 @@ Just run your own OCSP and configure it like so: https://www.cockroachlabs.com/d
 
 CockroachDB does not support certificate revocation lists.
 
-## TLS in CockroachDB
+
+## TLS Considerations in CockroachDB
 
 TLS authentication and encryption are supported in all communication between CockroachDB nodes, and from clients to nodes.
 
@@ -213,25 +216,44 @@ For a SQL client to authenticate using TLS, that client must be provisioned with
 
 These key files are used with the CockroachDB CLI by placing them in a directory and  `--certs-dir`
 
-### Certificate Authority in CockroachDB
 
-A CockroachDB may act as its own Certificate Authority.
+## PKI Architectures for CockroachDB
 
-CockroachDB clusters can generate their own CA certificates, allowing them to act as their own Certificate Authorities for TLS connections between nodes and from SQL clients to nodes.
+### Cluster as Root CA
 
-Alternatively, an external CA (such as your organization's CA) can be used to generate your certificates. It is even possible to employ a ['split certificate'](../create-security-certificates-custom-ca.html#split-node-certificates) scenario, where one set of key pairs is used for authentication in inter-node connections, and another pair is used for authentication in connections originated from SQL clients.
+A CockroachDB cluster may act as its own root Certificate Authority.
 
-### Revoking of Certificates
+CockroachDB clusters can generate their own self-signed CA certificates, allowing them to act as their own root Certificate Authorities.
 
-some things 
-- blah blah blah
-- blah
+- Ok for development
+- Ok for internode coms (split-CA PKI)
 
-~~~shell
- e = mc^2
-~~~
+### Cluster as Subordinate CA
 
-## Maintaining PKI
+See: [Using Google Cloud Platform to manage PKI certificates](../manage-certs-gcloud.md)
 
-google cloud thingy make an intermediary, make server and client certs.
+### Split-CA PKI
+
+See: [Using Google Cloud Platform to implement a Split-CA PKI](../manage-certs-gcloud-split.md)
+
+## PKI Considerations
+
+The following are some things you need to do in any architecture.
+
+### Protecting your keys
+
+If you lose your CA private key that's real bad.
+
+#### Cloud secrets
+
+You can keep things in a cloud.
+
+#### Offline serets
+
+You can bury things in a cave.
+
+### Revoking Certificates
+
+- Short-lived certificates
+- OCSP
 

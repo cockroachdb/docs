@@ -1,0 +1,1 @@
+gcloud privateca pools create roach-test-CA3-pool

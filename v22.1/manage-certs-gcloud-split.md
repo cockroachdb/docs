@@ -5,10 +5,6 @@ toc: true
 docs_area: manage.security
 ---
 
-!!!{
-- example values for validity duration?
-- mention IAM/credentials
-}
 
 
 This tutorial walks the user through implementing a split-CA Private Key Infrastruture (PKI) for a CockroachDB Cluster, i.e. a  a private key infrastructure (PKI) split between an internal-to-the-cluster root CA (used only for internode communication) and an external-to-the-cluster root CA for connections to the cluster from external clients.
