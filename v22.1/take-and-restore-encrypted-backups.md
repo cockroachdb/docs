@@ -57,7 +57,7 @@ See AWS's [KMS keys](https://docs.aws.amazon.com/kms/latest/developerguide/creat
 The Google Cloud KMS URI must use the following format:
 
 ~~~
-gs:///projects/{project name}/locations/{location}/keyRings/{key ring name}/cryptoKeys/{key name}?AUTH={auth_type}{&CREDENTIALS=}
+gs:///projects/{project name}/locations/{location}/keyRings/{key ring name}/cryptoKeys/{key name}?AUTH={auth_type}
 ~~~
 
 The Google Cloud URI **requires** the following:

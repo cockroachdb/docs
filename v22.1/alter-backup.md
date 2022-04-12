@@ -33,7 +33,7 @@ Parameter         | Description
 ## Required privileges
 
 - `ALTER BACKUP` can only be run by members of the [`admin` role](security-reference/authorization.html#admin-role). By default, the `root` user belongs to the `admin` role.
-- `ALTER BACKUP` requires full read and write (including delete and overwrite) permissions to the target cloud storage bucket.
+- `ALTER BACKUP` requires full read and write permissions to the target cloud storage bucket.
 
 The backup collection's URI does **not** require the [`admin` role](security-reference/authorization.html#admin-role) when using `s3` or `gs` using `SPECIFIED` credentials. The backup collection's URI **does** require the [`admin` role](security-reference/authorization.html#admin-role) when using `s3` or `gs` with `IMPLICIT` credentials.
 
@@ -50,8 +50,8 @@ To add a new KMS key to the most recent backup:
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER BACKUP LATEST IN 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
-    ADD NEW_KMS = 'aws:///{new-key}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}&REGION=us-east-1'
-    WITH OLD_KMS = 'aws:///{old-key}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}&REGION=us-east-1';
+    ADD NEW_KMS = 'aws:///{new-key}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}&REGION={location}'
+    WITH OLD_KMS = 'aws:///{old-key}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}&REGION={location}';
 ~~~  
 
 To add a new KMS key to a specific backup:
@@ -59,8 +59,8 @@ To add a new KMS key to a specific backup:
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER BACKUP '2022/03/23-213101.37' IN 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
-    ADD NEW_KMS = 'aws:///{new-key}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}&REGION=us-east-1'
-    WITH OLD_KMS = 'aws:///{old-key}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}&REGION=us-east-1';
+    ADD NEW_KMS = 'aws:///{new-key}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}&REGION={location}'
+    WITH OLD_KMS = 'aws:///{old-key}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}&REGION={location}';
 ~~~  
 
 To list backup directories at a collection's URI, see [`SHOW BACKUP`](show-backup.html).
@@ -72,8 +72,8 @@ To add a new KMS key to the most recent backup:
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER BACKUP LATEST IN 'gs://{BUCKET NAME}?AUTH=specified&CREDENTIALS={ENCODED KEY}'
-    ADD NEW_KMS = 'gs:///projects/{project name}/locations/us-east1/keyRings/{key ring name}/cryptoKeys/{new key}?AUTH=specified&CREDENTIALS={encoded key}'
-    WITH OLD_KMS = 'gs:///projects/{project name}/locations/us-east1/keyRings/{key ring name}/cryptoKeys/{old key}?AUTH=specified&CREDENTIALS={encoded key}';
+    ADD NEW_KMS = 'gs:///projects/{project name}/locations/{location}/keyRings/{key ring name}/cryptoKeys/{new key}?AUTH=specified&CREDENTIALS={encoded key}'
+    WITH OLD_KMS = 'gs:///projects/{project name}/locations/{location}/keyRings/{key ring name}/cryptoKeys/{old key}?AUTH=specified&CREDENTIALS={encoded key}';
 ~~~  
 
 To add a new KMS key to a specific backup:
@@ -81,8 +81,8 @@ To add a new KMS key to a specific backup:
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER BACKUP '2022/03/23-213101.37' IN 'gs://{BUCKET NAME}?AUTH=specified&CREDENTIALS={ENCODED KEY}'
-    ADD NEW_KMS = 'gs:///projects/{project name}/locations/us-east1/keyRings/{key ring name}/cryptoKeys/{new key}?AUTH=specified&CREDENTIALS={encoded key}'
-    WITH OLD_KMS = 'gs:///projects/{project name}/locations/us-east1/keyRings/{key ring name}/cryptoKeys/{old key}?AUTH=specified&CREDENTIALS={encoded key}';
+    ADD NEW_KMS = 'gs:///projects/{project name}/locations/{location}/keyRings/{key ring name}/cryptoKeys/{new key}?AUTH=specified&CREDENTIALS={encoded key}'
+    WITH OLD_KMS = 'gs:///projects/{project name}/locations/{location}/keyRings/{key ring name}/cryptoKeys/{old key}?AUTH=specified&CREDENTIALS={encoded key}';
 ~~~  
 
 To list backup directories at a collection's URI, see [`SHOW BACKUP`](show-backup.html).
