@@ -1,3 +1,7 @@
+- advisory: 79281
+  summary: The optimizer can omit ON conditions of joins in query plans, causing incorrect results.
+  versions: 20.2.0-20.2.19, 21.1.0-21.1.15, 21.2.0-21.2.6
+  date: March 09, 2022
 - advisory: 76522
   summary: The optimizer can omit ON conditions of joins in query plans, causing incorrect results.
   versions: 20.2.0-20.2.19, 21.1.0-21.1.15, 21.2.0-21.2.6
