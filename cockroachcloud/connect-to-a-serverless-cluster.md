@@ -34,7 +34,7 @@ This page shows you how to connect to your {{ site.data.products.serverless }} c
     
 ## Step 2. Connect to your cluster
 
-1. Select a connection method from the **Select option/language** dropdown (the instructions below will adjust accordingly):
+1. Select a connection method from the **Select option** dropdown (the instructions below will adjust accordingly):
 
     <div class="filters clearfix">
         <button class="filter-button page-level" data-scope="connection-string">General connection string</button>
@@ -66,7 +66,7 @@ For connection examples and code snippets in your language, see the following:
   <section class="filter-content" markdown="1" data-scope="connection-parameters">
 
 1. In the **Download CA Cert** section of the dialog, select your operating system, and use the command provided to download the CA certificate to the default PostgreSQL certificate directory on your machine.
-1. Select the **Parameters only** option of the **Select option/language** dropdown.
+1. Select the **Parameters only** option of the **Select option** dropdown.
 
 1. Use the connection parameters provided in the dialog to connect to your cluster using a [CockroachDB-compatible tool](../{{site.versions["stable"]}}/third-party-database-tools.html).
 
