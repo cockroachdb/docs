@@ -15,7 +15,7 @@ To create a core changefeed:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> EXPERIMENTAL CHANGEFEED FOR name;
+> EXPERIMENTAL CHANGEFEED FOR table_name;
 ~~~
 
 For more information, see [`EXPERIMENTAL CHANGEFEED FOR`](changefeed-for.html).
@@ -69,6 +69,10 @@ To cancel an {{ site.data.products.enterprise }} changefeed:
 ~~~
 
 For more information, see [`CANCEL JOB`](cancel-job.html).
+
+### Modify a changefeed
+
+{% include {{ page.version.version }}/cdc/modify-changefeed.md %}
 
 ### Configuring all changefeeds
 
