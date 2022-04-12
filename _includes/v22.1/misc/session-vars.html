@@ -282,6 +282,17 @@
 
   <tr>
    <td>
+    <code>index_recommendations_enabled</code>
+   </td>
+   <td><span class="version-tag">New in v22.1:</span> If <code>true</code>, display recommendations to create indexes required to eliminate full table scans.
+    <br/>For more details, see <a href="explain.html#default-statement-plans">Default statement plans</a>.</td>
+   <td><code>true</code></td>
+   <td>Yes</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
     <code>inject_retry_errors_enabled</code>
    </td>
    <td><span class="version-tag">New in v22.1:</span> If <code>true</code>, any statement executed inside of an explicit transaction (with the exception of <a href="set-vars.html"><code>SET</code></a> statements) will return a transaction retry error.
