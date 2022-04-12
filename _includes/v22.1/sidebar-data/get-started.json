@@ -156,16 +156,16 @@
       "title": "FAQs",
       "items": [
         {
+          "title": "CockroachDB FAQs",
+          "urls": [
+            "/${VERSION}/frequently-asked-questions.html"
+          ]
+        },
+        {
           "title": "CockroachDB Cloud FAQs",
           "urls": [
             "/cockroachcloud/serverless-faqs.html",
             "/cockroachcloud/frequently-asked-questions.html"
-          ]
-        },
-        {
-          "title": "CockroachDB FAQs",
-          "urls": [
-            "/${VERSION}/frequently-asked-questions.html"
           ]
         },
         {
