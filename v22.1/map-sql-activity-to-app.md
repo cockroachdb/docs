@@ -9,7 +9,7 @@ Many relational database management systems enable you to programmatically creat
 
 ## Set the application name
 
-It is best practice to set the application name with CockroachDB. You can do this in the [connection string](connection-parameters.html#additional-connection-parameters) `postgres://root@<servername>:26257/mydb?movr_app` or at the [session level](set-vars.html):
+It is best practice to set the application name with CockroachDB. You can do this in the [connection string](connection-parameters.html#additional-connection-parameters) `postgres://root@<servername>:26257/mydb?application_name=movr_app` or at the [session level](set-vars.html):
 
 {% include copy-clipboard.html %}
 ~~~sql
@@ -22,7 +22,7 @@ Once you set the application name, the [DB Console](ui-overview.html) lets you [
 
 <img src="{{ 'images/v22.1/movr-app.png' | relative_url }}" alt="Movr app filter" style="border:1px solid #eee;max-width:80%" />
 
-If parts of your applications or known microservices are experiencing performance degradation, you can filter for the database workload tracing back to that part of your application directly in the DB Console. You can quickly identify whether there were database performance problems and if so, troubleshoot the issue using native [SQL observability touch points](#trace-sql-activity-using-metrics) in the DB Console.
+If parts of your applications or known microservices are experiencing performance degradation, you can filter for the database workload tracing statements and transactions back to that part of your application directly in the DB Console. You can quickly identify whether there were database performance problems and if so, troubleshoot the issue using native [SQL observability touch points](#trace-sql-activity-using-metrics) in the DB Console.
 
 You can also programmatically filter `crdb_internal` tables [`crdb_internal.statement_statistics`](crdb-internal.html#statement_statistics) and [`crdb_internal.transaction_statistics`](crdb-internal.html#transaction_statistics) by application name. This example shows the first 60 characters of query text and statement statistics for queries associated with the `movr_app` application:
 
