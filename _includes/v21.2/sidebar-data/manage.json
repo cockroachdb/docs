@@ -6,6 +6,12 @@
       "title": "Manage CockroachDB Cloud Clusters",
       "items": [
         {
+          "title": "Plan Your Cluster",
+          "urls": [
+            "/cockroachcloud/plan-your-cluster.html"
+          ]
+        },
+        {
           "title": "Manage Your Serverless Cluster",
           "urls": [
             "/cockroachcloud/serverless-cluster-management.html"
