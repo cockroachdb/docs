@@ -21,7 +21,7 @@ Cockroach Labs offers three ways to deploy CockroachDB: two managed services&mda
         <li>Applications with explicit budget constraints.</li>
       </ul></td>
       <td><ul>
-        <li><b><a href="../cockroachcloud/quickstart.html">CockroachDB Serverless (beta)</a></b>: A fully managed, multi-tenant CockroachDB deployment, in a single region and cloud (AWS or GCP). Delivers an instant, autoscaling database and offers a generous free tier and consumption based billing once free limits are exceeded.</li>
+        <li><a id="serverless"></a><b><a href="../cockroachcloud/quickstart.html">CockroachDB Serverless (beta)</a></b>: A fully managed, multi-tenant CockroachDB deployment, in a single region and cloud (AWS or GCP). Delivers an instant, autoscaling database and offers a generous free tier and consumption based billing once free limits are exceeded.</li>
       </ul></td>
       <td><ul>
         <li><b>Scale</b>: Automatic transactional capacity scaling (up and down) depending on database activity. Ability to scale down to zero and consume zero resources.</li>
@@ -40,7 +40,7 @@ Cockroach Labs offers three ways to deploy CockroachDB: two managed services&mda
         <li>Applications that require real-time integration with other systems.</li>
       </ul></td>
       <td><ul>
-        <li><b><a href="../cockroachcloud/quickstart-trial-cluster.html">CockroachDB Dedicated</a></b>: A fully managed, single tenant CockroachDB deployment in a single region or multi-region cloud (AWS or GCP).</li>
+        <li><a id="dedicated"></a><b><a href="../cockroachcloud/quickstart-trial-cluster.html">CockroachDB Dedicated</a></b>: A fully managed, single tenant CockroachDB deployment in a single region or multi-region cloud (AWS or GCP).</li>
       </ul></td>
       <td><ul>
         <li><b>Scale</b>: Node-based; self-service add and remove nodes.</li>
@@ -63,7 +63,7 @@ Cockroach Labs offers three ways to deploy CockroachDB: two managed services&mda
         <li>Applications that require real-time integration with other systems.</li>
       </ul></td>
       <td><ul>
-        <li><b><a href="start-a-local-cluster.html">CockroachDB Self-Hosted</a></b>: A full featured, self-managed CockroachDB deployment.</li>
+        <li><a id="self-hosted"></a><b><a href="start-a-local-cluster.html">CockroachDB Self-Hosted</a></b>: A full featured, self-managed CockroachDB deployment.</li>
       </ul></td>
       <td><ul>
         <li><b>Scale</b>: Node-based; self-service add and remove nodes.</li>
