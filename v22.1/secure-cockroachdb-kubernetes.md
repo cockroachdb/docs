@@ -35,7 +35,7 @@ If you are running a secure Helm deployment on Kubernetes 1.22 and later, you mu
 <section class="filter-content" markdown="1" data-scope="operator">
 By default, the Operator will generate and sign 1 client and 1 node certificate to secure the cluster.
 
-To use your own certificate authority instead, add the following to the Operator's custom resource, which is used to [deploy the cluster](deploy-cockroachdb-with-kubernetes.html#initialize-the-cluster):
+To use your own certificate authority instead, add the following to the Operator's custom resource **before** [initializing the cluster](deploy-cockroachdb-with-kubernetes.html#initialize-the-cluster):
 
 ~~~ yaml
 spec:
@@ -85,6 +85,10 @@ The below steps use [`cockroach cert` commands](cockroach-cert.html) to quickly 
 {{site.data.alerts.end}}
 
 <section class="filter-content" markdown="1" data-scope="operator">
+{{site.data.alerts.callout_info}}
+Complete the following steps **before** [initializing the cluster](deploy-cockroachdb-with-kubernetes.html#initialize-the-cluster).
+{{site.data.alerts.end}}
+
 1. Create two directories:
 
     {% include_cached copy-clipboard.html %}
@@ -183,13 +187,6 @@ The below steps use [`cockroach cert` commands](cockroach-cert.html) to quickly 
       clientTLSSecret: cockroachdb.client.root
       nodeTLSSecret: cockroachdb.node
     ~~~
-
-1. Apply the new settings to the cluster:
-
-	{% include_cached copy-clipboard.html %}
-	~~~ shell
-	$ kubectl apply -f example.yaml
-	~~~
 </section>
 
 <section class="filter-content" markdown="1" data-scope="helm">
