@@ -6,7 +6,7 @@
       "title": "Manage CockroachDB Cloud Clusters",
       "items": [
         {
-          "title": "Manage Your Serverless Cluster",
+          "title": "Manage a Serverless Cluster",
           "urls": [
             "/cockroachcloud/serverless-cluster-management.html"
           ]
