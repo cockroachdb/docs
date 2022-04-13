@@ -585,7 +585,7 @@ To detect suboptimal and regressed plans over time you can compare plans for the
 
 Suppose you wanted to compare plans of the following query:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT
   name, count(rides.id) AS sum
@@ -601,78 +601,61 @@ LIMIT
   10;
 ~~~
 
-To decode plan gists stored in `statistics->'statistics'->'planGists'`, you use the `crdb_internal.decode_plan_gist` function. Because a plan is several lines, you should select only the `planGists` column and apply the function as follows; if you were to select more than one column the select would display only the first line of the plan.
+To decode plan gists stored in `statistics->'statistics'->'planGists'`, you use the `crdb_internal.decode_plan_gist` function. The following example shows a query before (2nd row) and after (1st row) you add an [index on the `start_time` column in the `rides` table](apply-statement-performance-rules.html#rule-2-use-the-right-index). You can see the change in the plans for the same query and the reduced number of rows read and latency when you use the index.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
-SELECT crdb_internal.decode_plan_gist(statistics->'statistics'->'planGists'->>0) AS plan FROM movr.crdb_internal.statement_statistics WHERE substring(metadata ->> 'query',1,35)='SELECT name, count(rides.id) AS sum';
+SELECT
+substring(metadata ->> 'query',1,60) AS statement_text,
+  string_agg(  crdb_internal.decode_plan_gist(statistics->'statistics'->'planGists'->>0), '
+  ') AS plan,
+  max(aggregated_ts) as timestamp_interval,
+  max(statistics -> 'statistics' -> 'rowsRead' -> 'mean') AS num_rows_read_mean,
+  max(statistics -> 'statistics' -> 'runLat' -> 'mean') AS runtime_latency_mean,
+  statistics->'statistics'->'planGists'->>0 as plan_id
+FROM movr.crdb_internal.statement_statistics
+WHERE substring(metadata ->> 'query',1,35)='SELECT name, count(rides.id) AS sum'
+group by metadata ->> 'query', statistics->'statistics'->'planGists'->>0;
 ~~~
 
 ~~~
-                    plan
----------------------------------------------
-  • top-k
-  │ order
-  │
-  └── • group (hash)
-      │ group by: id
-      │
-      └── • hash join
-          │ equality: (id) = (rider_id)
-          │
-          ├── • scan
-          │     table: users@users_pkey
-          │     spans: FULL SCAN
-          │
-          └── • filter
-              │
-              └── • scan
-                    table: rides@rides_pkey
-                    spans: FULL SCAN
-
-~~~
-
-After you add an [index on the `start_time` column in the `rides` table](apply-statement-performance-rules.html#rule-2-use-the-right-index), you can see the change in the plans for the same query.
-
-{% include copy-clipboard.html %}
-~~~ sql
-SELECT crdb_internal.decode_plan_gist(statistics->'statistics'->'planGists'->>0) AS plan FROM movr.crdb_internal.statement_statistics WHERE substring(metadata ->> 'query',1,35)='SELECT name, count(rides.id) AS sum';
-                       plan
----------------------------------------------------
-  • top-k
-  │ order
-  │
-  └── • group (hash)
-      │ group by: id
-      │
-      └── • hash join
-          │ equality: (id) = (rider_id)
-          │
-          ├── • scan
-          │     table: users@users_pkey
-          │     spans: FULL SCAN
-          │
-          └── • scan
-                table: rides@rides_start_time_idx
-                spans: 1 span
-  • top-k
-  │ order
-  │
-  └── • group (hash)
-      │ group by: id
-      │
-      └── • hash join
-          │ equality: (id) = (rider_id)
-          │
-          ├── • scan
-          │     table: users@users_pkey
-          │     spans: FULL SCAN
-          │
-          └── • filter
-              │
-              └── • scan
-                    table: rides@rides_pkey
-                    spans: FULL SCAN
+                         statement_text                        |                        plan                         |   timestamp_interval   | num_rows_read_mean | runtime_latency_mean |                     plan_id
+---------------------------------------------------------------+-----------------------------------------------------+------------------------+--------------------+----------------------+---------------------------------------------------
+  SELECT name, count(rides.id) AS sum FROM users JOIN rides ON | • top-k                                             | 2022-04-12 22:00:00+00 |              24786 |             0.028525 | AgHYAQgAiAECAAAB1AEEAAUAAAAJAAICAAAFAgsCGAYE
+                                                               |   │ order                                           |                        |                    |                      |
+                                                               |   │                                                 |                        |                    |                      |
+                                                               |   └── • group (hash)                                |                        |                    |                      |
+                                                               |       │ group by: rider_id                          |                        |                    |                      |
+                                                               |       │                                             |                        |                    |                      |
+                                                               |       └── • hash join                               |                        |                    |                      |
+                                                               |           │ equality: (rider_id) = (id)             |                        |                    |                      |
+                                                               |           │                                         |                        |                    |                      |
+                                                               |           ├── • scan                                |                        |                    |                      |
+                                                               |           │     table: rides@rides_start_time_idx   |                        |                    |                      |
+                                                               |           │     spans: 1 span                       |                        |                    |                      |
+                                                               |           │                                         |                        |                    |                      |
+                                                               |           └── • scan                                |                        |                    |                      |
+                                                               |                 table: users@users_city_id_name_key |                        |                    |                      |
+                                                               |                 spans: FULL SCAN                    |                        |                    |                      |
+  SELECT name, count(rides.id) AS sum FROM users JOIN rides ON | • top-k                                             | 2022-04-12 22:00:00+00 | 1.375E+5           |             0.279083 | AgHYAQIAiAEAAAADAdQBBAAFAAAACQACAgAABQILAhgGBA==
+                                                               |   │ order                                           |                        |                    |                      |
+                                                               |   │                                                 |                        |                    |                      |
+                                                               |   └── • group (hash)                                |                        |                    |                      |
+                                                               |       │ group by: rider_id                          |                        |                    |                      |
+                                                               |       │                                             |                        |                    |                      |
+                                                               |       └── • hash join                               |                        |                    |                      |
+                                                               |           │ equality: (rider_id) = (id)             |                        |                    |                      |
+                                                               |           │                                         |                        |                    |                      |
+                                                               |           ├── • filter                              |                        |                    |                      |
+                                                               |           │   │                                     |                        |                    |                      |
+                                                               |           │   └── • scan                            |                        |                    |                      |
+                                                               |           │         table: rides@rides_pkey         |                        |                    |                      |
+                                                               |           │         spans: FULL SCAN                |                        |                    |                      |
+                                                               |           │                                         |                        |                    |                      |
+                                                               |           └── • scan                                |                        |                    |                      |
+                                                               |                 table: users@users_city_id_name_key |                        |                    |                      |
+                                                               |                 spans: FULL SCAN                    |                        |                    |                      |
+(2 rows)
 ~~~
 
 ### `transaction_statistics`
