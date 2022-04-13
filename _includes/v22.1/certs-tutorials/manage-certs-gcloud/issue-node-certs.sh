@@ -1,5 +1,5 @@
 gcloud privateca certificates create \
-  --issuer-pool roach-test-CA3-pool \
+  --issuer-pool $node_CA_pool \
   --generate-key \
   --key-output-file "${node1name}/node.key" \
   --cert-output-file "${node1name}/node.crt" \
@@ -9,7 +9,7 @@ gcloud privateca certificates create \
   --subject "CN=node"
 
 gcloud privateca certificates create \
-  --issuer-pool roach-test-CA3-pool \
+  --issuer-pool $node_CA_pool \
   --generate-key \
   --key-output-file "${node2name}/node.key" \
   --cert-output-file "${node2name}/node.crt" \
@@ -19,7 +19,7 @@ gcloud privateca certificates create \
   --subject "CN=node"
 
 gcloud privateca certificates create \
-  --issuer-pool roach-test-CA3-pool \
+  --issuer-pool $node_CA_pool \
   --generate-key \
   --key-output-file "${node3name}/node.key" \
   --cert-output-file "${node3name}/node.crt" \
