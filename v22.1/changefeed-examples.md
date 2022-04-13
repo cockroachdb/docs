@@ -423,7 +423,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
 <span class="version-tag">New in v22.1:</span> In this example, you'll set up changefeeds on two tables that have [column families](column-families.html). You'll use a single-node cluster sending changes to a webhook sink for this example, but you can use any [changefeed sink](changefeed-sinks.html) to work with tables that include column families.
 
-For more detail on a changefeed's output when targeting tables with column families, see [Tables with column families in changefeeds](use-changefeeds.html#changefeeds-on-tables-with-column-families).
+For more detail on a changefeed's output when targeting tables with column families, see [Changefeeds on tables with column families](use-changefeeds.html#changefeeds-on-tables-with-column-families).
 
 1. If you do not already have one, [request a trial {{ site.data.products.enterprise }} license](enterprise-licensing.html).
 
@@ -628,7 +628,7 @@ For further information on Core changefeeds, see [`EXPERIMENTAL CHANGEFEED FOR`]
 
 <span class="version-tag">New in v22.1:</span> In this example, you'll set up Core changefeeds on two tables that have [column families](column-families.html). You'll use a single-node cluster with the Core changefeed sending changes to the client.
 
-For more detail on a changefeed's output when targeting tables with column families, see [Changefeeds on tables with column families](use-changefeeds.html#changfeeds-on-tables-with-column-families).
+For more detail on a changefeed's output when targeting tables with column families, see [Changefeeds on tables with column families](use-changefeeds.html#changefeeds-on-tables-with-column-families).
 
 1. Use the [`cockroach start-single-node`](cockroach-start-single-node.html) command to start a single-node cluster:
 
