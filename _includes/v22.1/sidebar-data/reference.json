@@ -163,14 +163,15 @@
                 ]
               },
               {
-                "title": "<code>ALTER CHANGEFEED</code> (Enterprise)",
-                "urls": [
-                  "/${VERSION}/alter-changefeed.html"
-              },
-              {
                 "title": "<code>ALTER BACKUP</code> (Enterprise)",
                 "urls": [
                   "/${VERSION}/alter-backup.html"
+                ]
+              },
+              {
+                "title": "<code>ALTER CHANGEFEED</code> (Enterprise)",
+                "urls": [
+                  "/${VERSION}/alter-changefeed.html"
                 ]
               },
               {

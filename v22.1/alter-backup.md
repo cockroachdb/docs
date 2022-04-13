@@ -1,13 +1,13 @@
 ---
 title: ALTER BACKUP
-summary: Use the ALTER BACKUP statement to add `NEW_KMS` encryption keys to backups.
+summary: Use the ALTER BACKUP statement to add new KMS encryption keys to backups.
 toc: true
 docs_area: reference.sql
 ---
 
 {% include enterprise-feature.md %}
 
-<span class="version-tag">New in v22.1:</span> The `ALTER BACKUP` statement allows for new KMS encryption keys to be applied to existing encrypted backups. Each `ALTER BACKUP` statement must include the new KMS encryption key with `NEW_KMS`, and use `WITH OLD_KMS` to refer to at least one of the KMS URIs that were originally used to encrypt the backup.
+<span class="version-tag">New in v22.1:</span> The `ALTER BACKUP` statement allows for new KMS encryption keys to be applied to existing encrypted full backups. Each `ALTER BACKUP` statement must include the new KMS encryption key with `NEW_KMS`, and use `WITH OLD_KMS` to refer to at least one of the KMS URIs that were originally used to encrypt the backup.
 
 After an `ALTER BACKUP` statement successfully completes, subsequent `BACKUP`, `RESTORE`, and `SHOW BACKUP` statements can use any of the existing or new KMS URIs to decrypt the backup.
 
@@ -23,7 +23,7 @@ CockroachDB supports AWS and Google Cloud KMS keys. For more detail on encrypted
 
 Parameter         | Description
 ------------------+-------------------------------------------------------------------------------------------------------------------------
-`subdirectory`    | The subdirectory that contains the target backup at the given `collectionURI`.
+`subdirectory`    | The subdirectory containing the target **full** backup at the given `collectionURI`.
 `LATEST`          | The most recent backup at the given `collectionURI`.
 `collectionURI`   | The URI that holds the backup collection.
 `ADD NEW_KMS`     | Apply the new KMS encryption key to the target backup.
@@ -41,6 +41,10 @@ We recommend using [cloud storage for bulk operations](use-cloud-storage-for-bul
 
 ## Examples
 
+{{site.data.alerts.callout_info}}
+When running `ALTER BACKUP` with a subdirectory, the statement must point to a [full backup](take-full-and-incremental-backups.html#full-backups) in the backup collection.
+{{site.data.alerts.end}}
+
 See [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html) for more detail on authenticating to your cloud storage bucket.
 
 ### Add an AWS KMS key to an encrypted backup
@@ -54,7 +58,7 @@ ALTER BACKUP LATEST IN 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET
     WITH OLD_KMS = 'aws:///{old-key}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}&REGION={location}';
 ~~~  
 
-To add a new KMS key to a specific backup:
+To add a new KMS key to a specific full backup:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -76,7 +80,7 @@ ALTER BACKUP LATEST IN 'gs://{BUCKET NAME}?AUTH=specified&CREDENTIALS={ENCODED K
     WITH OLD_KMS = 'gs:///projects/{project name}/locations/{location}/keyRings/{key ring name}/cryptoKeys/{old key}?AUTH=specified&CREDENTIALS={encoded key}';
 ~~~  
 
-To add a new KMS key to a specific backup:
+To add a new KMS key to a specific full backup:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
