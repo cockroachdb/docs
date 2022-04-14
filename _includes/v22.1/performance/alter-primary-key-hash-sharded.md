@@ -14,7 +14,7 @@ Let's assume the `events` table already exists:
 );
 ~~~
 
-You can change an existing primary key to use hash sharding simply by adding the `USING HASH` clause at the end of the key definition:
+You can change an existing primary key to use hash sharding by adding the `USING HASH` clause at the end of the key definition:
 
 {% include copy-clipboard.html %}
 ~~~ sql
