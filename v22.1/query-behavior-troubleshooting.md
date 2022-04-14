@@ -27,18 +27,24 @@ You can also check the [service latency graph](ui-sql-dashboard.html#service-lat
 
 ### Visualize statement traces in Jaeger
 
-You can look more closely at the behavior of a statement by visualizing a statement trace in [Jaeger](https://www.jaegertracing.io/). A [statement trace](show-trace.html) contains messages and timing information from all nodes involved in the execution.
+You can look more closely at the behavior of a statement by visualizing a [statement trace](show-trace.html#trace-description) in [Jaeger](https://www.jaegertracing.io/). A statement trace contains messages and timing information from all nodes involved in the execution.
 
-1. Activate [statement diagnostics](ui-statements-page.html#diagnostics) on the DB Console Statements Page or run [`EXPLAIN ANALYZE (DEBUG)`](explain-analyze.html#debug-option) to obtain a diagnostics bundle for the statement.
+#### Run Jaeger
 
 1. Start Jaeger:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    docker run -d --name jaeger -p 16686:16686 jaegertracing/all-in-one:1.17
+    docker run -d --name jaeger -p 6831:6831/udp -p 16686:16686 jaegertracing/all-in-one:latest
     ~~~
+    This runs the latest version of Jaeger, and forwards two ports to the container. `6831` is the trace ingestion port, `16686` is the UI port. By default, Jaeger will store all received traces in memory.
 
-1. Access the Jaeger UI at `http://localhost:16686/search`.
+
+#### Import a trace from a diagnostics bundle into Jaeger
+
+1. Activate [statement diagnostics](ui-statements-page.html#diagnostics) on the DB Console Statements Page or run [`EXPLAIN ANALYZE (DEBUG)`](explain-analyze.html#debug-option) to obtain a diagnostics bundle for the statement.
+
+1. Go to [`http://localhost:16686`](http://localhost:16686).
 
 1. Click **JSON File** in the Jaeger UI and upload `trace-jaeger.json` from the diagnostics bundle. The trace will appear in the list on the right.
 
@@ -60,6 +66,39 @@ You can look more closely at the behavior of a statement by visualizing a statem
 
     <img src="{{ 'images/v22.1/jaeger-trace-transaction-contention.png' | relative_url }}" alt="Jaeger Trace Log Messages" style="border:1px solid #eee;max-width:100%" />
 
+#### Visualize traces sent directly from CockroachDB
+
+This example shows how to configure CockroachDB to route all traces to Jaeger. For details on sending traces from CockroachDB to Jaeger and other trace collectors, see [Configure CockroachDB to send traces to a third-party trace collector](#configure-cockroachdb-to-send-traces-to-a-third-party-trace-collector).
+
+{{site.data.alerts.callout_danger}}
+Enabling full tracing is expensive both in terms of CPU usage and memory footprint, and is not suitable for high throughput production environments.
+{{site.data.alerts.end}}
+
+1. Run CockroachDB and set the Jaeger agent configuration:
+
+    ~~~ sql
+    SET CLUSTER SETTING trace.jaeger.agent='localhost:6831'
+    ~~~
+
+1. Go to [`http://localhost:16686`](http://localhost:16686).
+1. In the Service field, select **CockroachDB**.
+
+    <img src="{{ 'images/v22.1/jaeger-cockroachdb.png' | relative_url }}" alt="Jaeger Trace Log Messages" style="border:1px solid #eee;max-width:100%" />
+
+1. Click **Find Traces**.
+
+Instead of searching through log messages in an unstructured fashion, the logs are now graphed in a tree format based on how the contexts were passed around. This also traverses machine boundaries so you don't have to look at different flat `.log` files to correlate events.
+
+Jaeger's memory storage works well for small use cases, but can result in out of memory errors when collecting many traces over a long period of time. Jaeger also supports disk-backed local storage using [Badger](https://www.jaegertracing.io/docs/1.32/deployment/#badger---local-storage). To use this, start Jaeger by running the following Docker command:
+
+~~~ shell
+docker run -d --name jaeger \
+-e SPAN_STORAGE_TYPE=badger -e BADGER_EPHEMERAL=false \
+-e BADGER_DIRECTORY_VALUE=/badger/data -e BADGER_DIRECTORY_KEY=/badger/key \
+-v /mnt/data1/jaeger:/badger \
+-p 6831:6831/udp -p 16686:16686 jaegertracing/all-in-one:latest
+~~~
+
 <a id="query-is-always-slow"></a>
 
 ### Queries are always slow
@@ -74,7 +113,7 @@ Cockroach Labs recommends sending either the diagnostics bundle (preferred) or t
 
 If the query performance is irregular:
 
-1.  Run [`SHOW TRACE`](show-trace.html) for the query twice: once when the query is performing as expected and once when the query is slow.
+1.  Run [`SHOW TRACE FOR SESSION`](show-trace.html) for the query twice: once when the query is performing as expected and once when the query is slow.
 
 2.  [Contact support](support-resources.html) to help analyze the outputs of the `SHOW TRACE` command.
 
@@ -288,6 +327,31 @@ Once the logging is enabled, all client-generated SQL queries executed by the no
 ~~~
 I180402 19:12:28.112957 394661 sql/exec_log.go:173  [n1,client=127.0.0.1:50155,user=root] exec "psql" {} "SELECT version()" {} 0.795 1 ""
 ~~~
+
+## Configure CockroachDB to send traces to a third-party trace collector
+
+You can configure CockroachDB to send traces to a third-party collector. CockroachDB supports [Jaeger](https://www.jaegertracing.io/), [Zipkin](https://zipkin.io/), and any trace collector that can ingest traces over the standard OTLP protocol. Enabling tracing also activates all the log messages, at all verbosity levels, as traces include the log messages printed in the respective trace context.
+
+{{site.data.alerts.callout_danger}}
+Enabling full tracing is expensive both in terms of CPU usage and memory footprint, and is not suitable for high throughput production environments.
+{{site.data.alerts.end}}
+
+You can configure the CockroachDB tracer to route to the OpenTelemetry tracer, with OpenTelemetry being supported by all observability tools. In particular, you can configure CockroachDB to output traces to:
+
+- A collector that uses the OpenTelemetry Protocol (OTLP).
+- The OpenTelemetry (OTEL) collector, which can in turn route them to other tools. The OTEL collector is a canonical collector, using the OTLP protocol, that can buffer traces and perform some processing on them before exporting them to Jaeger, Zipkin, and other OTLP tools.
+- Jaeger or Zipkin using their native protocols. This is implemented by using the Jaeger and Zipkin dedicated "exporters" from the OTEL SDK.
+
+The following [cluster settings](cluster-settings.html) are supported:
+
+<table>
+<thead><tr><th>Setting</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+<tbody>
+<tr><td><code>trace.opentelemetry.collector</code></td><td>string</td><td><code></code></td><td>The address of an OpenTelemetry trace collector to receive traces using the OTEL gRPC protocol, as <code>&lt;host&gt;:&lt;port&gt;</code>. If no port is specified, <code>4317</code> is used.</td></tr>
+<tr><td><code>trace.jaeger.agent</code></td><td>string</td><td><code></code></td><td>The address of a Jaeger agent to receive traces using the Jaeger UDP Thrift protocol, as <code>&lt;host&gt;:&lt;port&gt;</code>. If no port is specified, <code>6381</code> is used.</td></tr>
+<tr><td><code>trace.zipkin.collector</code></td><td>string</td><td><code></code></td><td>The address of a Zipkin instance to receive traces, as <code>&lt;host&gt;:&lt;port&gt;</code>. If no port is specified, <code>9411</code> is used.</td></tr>
+</tbody>
+</table>
 
 ## Something else?
 
