@@ -3,34 +3,25 @@ title: cockroach cert
 summary: A secure CockroachDB cluster uses TLS for encrypted inter-node and client-node communication.
 toc: true
 key: create-security-certificates.html
-filter_category: security_cert
-filter_html: Use cockroach cert
-filter_sort: 1
 docs_area: reference.cli
 ---
 
-The CockroachDB CLI's `cockroach cert` command allows you to create transport layer security (TLS) certificates. The CLI offers the following functionality:
+The CockroachDB CLI's `cockroach cert` command allows you to generate [private key/public certificate pairs for TLS authentication and encryption](security-reference/transport-layer-security.html) in communication between CockroachDB nodes, and from SQL clients to the cluster.
+
+{{site.data.alerts.callout_info}}
+
+The ability to rapidly and locally generate private key/public certificate pairs is handy for development, but careful management of security certificates is an essential component of cluster security, and performing these tasks with a cloud-native tool such as Google Cloud Platform's Certificate Authority Service (CAS) offers many security advantages.
+
+See [Using the CockroachDB CLI to provision a development cluster](manage-certs-cli.html).
+See [Using Google Cloud Platform to manage PKI certificates](manage-certs-gcloud.html).
+
+{{site.data.alerts.end}}
+
+The CLI offers the following functionality:
+
 - Generate a root certificate authority (CA) certificate for your cluster, and use it to sign public certificates.
 - Generate key pair for use by a CockroachDB node.
 - Generate a key pair for use by a TLS-authenticated CockroachDB client.
-
-{{site.data.alerts.callout_info}}
-`cockroach cert` can only be used to sign key pairs with a certificate authority (CA) private key that is **present on the local file-system** where the command is being run. This limitation may be incompatible
-{{site.data.alerts.end}}
-
-!!! {
- cockroach-cert.html should only provide informationa about the command.
- Declarative specifications about tls should go to [Reference / Security / Transport Layer Security](security-refence/transport-layer-security.html)
-How to make certs stuff should go to:
--[Manage / Security / TLS Keys and Certificates / Managing TLS Credentials with the CockroachDB CLI]()
--[Manage / Security / TLS Certificates / Managing TLS Credentials with OpenSSL](../create-security-certificates-openssl.html)
-
-With a distinct (less funneled but easy to search) discoverability for:
--[Manage / Security / TLS Certificates / Managing TLS Credentials Using a Custom Certificate Authority (CA)](create-security-certificates-custom-ca.html)
-
-also remove this one from the filter tabs thing.
-
-}!!!
 
 ## Subcommands
 
