@@ -243,6 +243,7 @@ mahmoud
 mamatsis
 manpages
 mapbox
+marketo
 mayank
 memtable
 metatables
@@ -443,6 +444,8 @@ subinterface
 sublayers
 subnet
 subobjects
+suboption
+suboptions
 subpartition
 subpartitioned
 subpartitioning
@@ -495,6 +498,7 @@ txn
 txns
 typechecking
 ui
+uid
 uksouth
 ukwest
 unanonymized
@@ -534,6 +538,7 @@ vaidya
 variadic
 vasilev
 vawter
+Vercel
 vectorize
 vectorizing
 vijay
