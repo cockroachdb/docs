@@ -5,6 +5,18 @@ toc: true
 docs_area: manage.security
 ---
 
+
+The CockroachDB CLI's [`cockroach cert`](cockroach-cert.html) command allows you to generate [private key/public certificate pairs for TLS authentication and encryption](security-reference/transport-layer-security.html) in communication between CockroachDB nodes, and from SQL clients to the cluster.
+
+{{site.data.alerts.callout_info}}
+
+The ability to rapidly and locally generate private key/public certificate pairs is handy for development, but careful management of security certificates is an essential component of cluster security, and performing these tasks with a cloud-native tool such as Google Cloud Platform's Certificate Authority Service (CAS) offers many security advantages.
+
+See [Using Google Cloud Platform to manage PKI certificates](manage-certs-gcloud.html).
+
+{{site.data.alerts.end}}
+
+
 ## Create the CA certificate and key pair
 
 1. Create two directories:

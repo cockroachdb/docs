@@ -8,17 +8,13 @@ filter_sort: 3
 docs_area: 
 ---
 
-To secure your CockroachDB cluster's inter-node and client-node communication, you need to provide a Certificate Authority (CA) certificate that has been used to sign keys and certificates (SSLs) for:
+This document discusses the advanced use cases for using security certificates with CockroachDB.
 
-- Nodes
-- Clients
-- DB Console (optional)
 
-To create these certificates and keys, use the `cockroach cert` [commands](cockroach-commands.html) with the appropriate subcommands and flags, use [`openssl` commands](https://wiki.openssl.org/index.php/), or use a [custom CA](create-security-certificates-custom-ca.html) (for example, a public CA or your organizational CA).
-
-{% include filter-tabs.md %}
-
-This document discusses the following advanced use cases for using security certificates with CockroachDB:
+See also:
+- [Public Key Infrastructure (PKI) and Transport Layer Security (TLS)](security-reference/transport-layer-security.html)
+- [Using the CockroachDB CLI to provision a development cluster](manage-certs-cli.html).
+- See [Using Google Cloud Platform to manage PKI certificates](manage-certs-gcloud.html).
 
 Approach | Use case description
 -------------|------------
@@ -167,7 +163,6 @@ To enable certificate revocation:
       {{site.data.alerts.callout_info}}
       In the `strict` mode, all certificates are presumed to be invalid if the OCSP server is not reachable. Setting the cluster setting `security.ocsp.mode` to `strict` will lock you out of your CockroachDB database if your OCSP server goes down.
       {{site.data.alerts.end}}
-
 
 ## See also
 

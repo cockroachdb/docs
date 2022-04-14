@@ -274,10 +274,16 @@
                     "/${VERSION}/manage-certs-gcloud.html"
                   ]
                 },
-                                {
-                  "title": "Using Google Cloud Platform Certificate Authority Service to Implement Split-CA PKI",
+                {
+                  "title": "Create Security Certificates using OpenSSL",
                   "urls": [
-                    "/${VERSION}/manage-certs-gcloud.html"
+                    "/${VERSION}/create-security-certificates-openssl.html"
+                  ]
+                },
+                {
+                  "title": "Using Online Certificate Status Protocol (OCSP) with CockroachDB",
+                  "urls": [
+                    "/${VERSION}/manage-certs-revoke-ocsp.html"
                   ]
                 }
               ]
