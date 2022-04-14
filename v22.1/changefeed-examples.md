@@ -555,6 +555,10 @@ For more detail on a changefeed's output when targeting tables with column famil
     {"payload":[{"after":{"dog_owner":"Ashley"},"key":[4],"topic":"office_dogs.employee"}],"length":1}
     ~~~
 
+    {{site.data.alerts.callout_info}}
+    The ordering of messages is not guaranteed. That is, you may not always receive messages for the same row, or even the same change to the same row, next to each other.
+    {{site.data.alerts.end}}
+
     Alternatively, create a changefeed using the `FAMILY` keyword across two tables:
 
     {% include_cached copy-clipboard.html %}
@@ -574,6 +578,12 @@ For more detail on a changefeed's output when targeting tables with column famil
     ~~~
 
     This allows you to define particular column families for the changefeed to target, without necessarily specifying every family in a table.
+
+    {{site.data.alerts.callout_info}}
+    To create a changefeed specifying two families on **one** table, ensure that you define the table and family in both instances:
+
+    `CREATE CHANGEFEED FOR TABLE office_dogs FAMILY employee, TABLE office_dogs FAMILY dogs INTO {sink};`
+    {{site.data.alerts.end}}
 
 1. To create a changefeed that emits messages for all column families in a table, use the `split_column_families` option:
 
@@ -723,6 +733,10 @@ For more detail on a changefeed's output when targeting tables with column famil
     office_dogs.employee,[4],"{""after"": {""owner"": ""Ashley""}}"
     ~~~
 
+    {{site.data.alerts.callout_info}}
+    The ordering of messages is not guaranteed. That is, you may not always receive messages for the same row, or even the same change to the same row, next to each other.
+    {{site.data.alerts.end}}
+
     Alternatively, create a changefeed using the `FAMILY` keyword across two tables:
 
     {% include_cached copy-clipboard.html %}
@@ -743,6 +757,12 @@ For more detail on a changefeed's output when targeting tables with column famil
     ~~~
 
     This allows you to define particular column families for the changefeed to target, without necessarily specifying every family in a table.
+
+    {{site.data.alerts.callout_info}}
+    To create a changefeed specifying two families on **one** table, ensure that you define the table and family in both instances:
+
+    `EXPERIMENTAL CHANGEFEED FOR TABLE office_dogs FAMILY employee, TABLE office_dogs FAMILY dogs;`
+    {{site.data.alerts.end}}
 
 1. To create a changefeed that emits messages for all column families in a table, use the `split_column_families` option:
 

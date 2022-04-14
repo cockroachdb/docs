@@ -211,7 +211,13 @@ CREATE CHANGEFEED FOR TABLE {table} FAMILY {family} INTO {sink};
 You can also use [Core changefeeds](changefeed-examples.html#create-a-core-changefeed-on-a-table-with-column-families) on tables with column families by using the [`EXPERIMENTAL CHANGEFEED FOR`](changefeed-for.html) statement with `split_column_families` or the `FAMILY` keyword.
 {{site.data.alerts.end}}
 
-If a table has multiple column families, the `FAMILY` keyword will ensure the changefeed emits messages for **each** column family you define with `FAMILY` in the `CREATE CHANGEFEED` statement. If do not specify `FAMILY`, then the changefeed will emit messages for **all** the table's column families.
+If a table has multiple column families, the `FAMILY` keyword will ensure the changefeed emits messages for **each** column family you define with `FAMILY` in the `CREATE CHANGEFEED` statement. If you do not specify `FAMILY`, then the changefeed will emit messages for **all** the table's column families.
+
+To specify multiple families on the same table, it is necessary to define the table and family in both instances:
+
+~~~ sql
+CREATE CHANGEFEED FOR TABLE tbl FAMILY f_1, TABLE tbl FAMILY f_2;
+~~~
 
 <a name="col-family-response"></a>The response will follow a typical [changefeed message format](#messages), but with the family name appended to the table name: `table.family`:
 

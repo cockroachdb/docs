@@ -197,7 +197,7 @@ To add a table with [column families](column-families.html) when modifying a cha
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-ALTER CHANGEFEED {job_ID} ADD database.table FAMILY f1;
+ALTER CHANGEFEED {job_ID} ADD database.table FAMILY f1, database.table FAMILY f2;
 ~~~
 
 Or, set the [`split_column_families`](create-changefeed.html#split-column-families) option:
@@ -209,12 +209,21 @@ ALTER CHANGEFEED {job_ID} ADD database.table SET split_column_families;
 
 If you then want to remove the table with column families as a target from the changefeed, you must include the `FAMILY` keyword when using `DROP`:
 
+To remove a table with column families as a target from the changefeed, you must `DROP` it in the same way that you added it originally as a changefeed target. For example, if you used `FAMILY` to add the table to the changefeed, use `FAMILY` when removing it:
+
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-ALTER CHANGEFEED {job_ID} DROP database.table FAMILY f1;
+ALTER CHANGEFEED {job_ID} DROP database.table FAMILY f1, database.table FAMILY f2;
 ~~~
 
-You will receive an error if you try to remove a table without specifying the `FAMILY` keyword.
+When using the `FAMILY` keyword, it is possible to remove only one family at a time as needed. You will receive an error if you try to remove a table without specifying the `FAMILY` keyword.
+
+If you originally added the whole table and its column families with `split_column_families`, then remove it without using the `FAMILY` keyword:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER CHANGEFEED {job_ID} DROP database.table;
+~~~
 
 For more description on using the `FAMILY` keyword and `split_column_families`, see [Tables with column families in changefeeds](use-changefeeds.html#changefeeds-on-tables-with-column-families).
 
