@@ -9,7 +9,7 @@ docs_area: reference.sql
 
 <span class="version-tag">New in v22.1:</span> The `ALTER BACKUP` statement allows for new KMS encryption keys to be applied to an existing chain of encrypted backups ([full](take-full-and-incremental-backups.html#full-backups) and [incremental](take-full-and-incremental-backups.html#incremental-backups)). Each `ALTER BACKUP` statement must include the new KMS encryption key with `NEW_KMS`, and use `WITH OLD_KMS` to refer to at least one of the KMS URIs that were originally used to encrypt the backup.
 
-After an `ALTER BACKUP` statement successfully completes, subsequent `BACKUP`, `RESTORE`, and `SHOW BACKUP` statements can use any of the existing or new KMS URIs to decrypt the backup.
+After an `ALTER BACKUP` statement successfully completes, subsequent [`BACKUP`](backup.html), [`RESTORE`](restore.html), and [`SHOW BACKUP`](show-backup.html) statements can use any of the existing or new KMS URIs to decrypt the backup.
 
 CockroachDB supports AWS and Google Cloud KMS keys. For more detail on encrypted backups and restores, see [Take and Restore Encrypted Backups](take-and-restore-encrypted-backups.html).
 
@@ -35,13 +35,13 @@ Parameter         | Description
 - `ALTER BACKUP` can only be run by members of the [`admin` role](security-reference/authorization.html#admin-role). By default, the `root` user belongs to the `admin` role.
 - `ALTER BACKUP` requires full read and write permissions to the target cloud storage bucket.
 
-The backup collection's URI does **not** require the [`admin` role](security-reference/authorization.html#admin-role) when using `s3` or `gs` using `SPECIFIED` credentials. The backup collection's URI **does** require the [`admin` role](security-reference/authorization.html#admin-role) when using `s3` or `gs` with `IMPLICIT` credentials.
+The backup collection's URI does **not** require the [`admin` role](security-reference/authorization.html#admin-role) when using `s3` or `gs` using [`SPECIFIED`](use-cloud-storage-for-bulk-operations.html#authentication) credentials. The backup collection's URI **does** require the [`admin` role](security-reference/authorization.html#admin-role) when using `s3` or `gs` with [`IMPLICIT`](use-cloud-storage-for-bulk-operations.html#authentication) credentials.
 
 We recommend using [cloud storage for bulk operations](use-cloud-storage-for-bulk-operations.html).
 
 ## Examples
 
-`ALTER BACKUP` will apply the new encryption information to the entire chain of backups ([full](take-full-and-incremental-backups.html#full-backups) and [incremental](take-full-and-incremental-backups.html#incremental-backups).
+`ALTER BACKUP` will apply the new encryption information to the entire chain of backups ([full](take-full-and-incremental-backups.html#full-backups) and [incremental](take-full-and-incremental-backups.html#incremental-backups)).
 
 {{site.data.alerts.callout_info}}
 When running `ALTER BACKUP` with a subdirectory, the statement must point to a [full backup](take-full-and-incremental-backups.html#full-backups) in the backup collection.
