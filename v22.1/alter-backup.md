@@ -7,7 +7,7 @@ docs_area: reference.sql
 
 {% include enterprise-feature.md %}
 
-<span class="version-tag">New in v22.1:</span> The `ALTER BACKUP` statement allows for new KMS encryption keys to be applied to existing encrypted full backups. Each `ALTER BACKUP` statement must include the new KMS encryption key with `NEW_KMS`, and use `WITH OLD_KMS` to refer to at least one of the KMS URIs that were originally used to encrypt the backup.
+<span class="version-tag">New in v22.1:</span> The `ALTER BACKUP` statement allows for new KMS encryption keys to be applied to an existing chain of encrypted backups ([full](take-full-and-incremental-backups.html#full-backups) and [incremental](take-full-and-incremental-backups.html#incremental-backups)). Each `ALTER BACKUP` statement must include the new KMS encryption key with `NEW_KMS`, and use `WITH OLD_KMS` to refer to at least one of the KMS URIs that were originally used to encrypt the backup.
 
 After an `ALTER BACKUP` statement successfully completes, subsequent `BACKUP`, `RESTORE`, and `SHOW BACKUP` statements can use any of the existing or new KMS URIs to decrypt the backup.
 
@@ -41,6 +41,8 @@ We recommend using [cloud storage for bulk operations](use-cloud-storage-for-bul
 
 ## Examples
 
+`ALTER BACKUP` will apply the new encryption information to the entire chain of backups ([full](take-full-and-incremental-backups.html#full-backups) and [incremental](take-full-and-incremental-backups.html#incremental-backups).
+
 {{site.data.alerts.callout_info}}
 When running `ALTER BACKUP` with a subdirectory, the statement must point to a [full backup](take-full-and-incremental-backups.html#full-backups) in the backup collection.
 {{site.data.alerts.end}}
@@ -58,7 +60,7 @@ ALTER BACKUP LATEST IN 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET
     WITH OLD_KMS = 'aws:///{old-key}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}&REGION={location}';
 ~~~  
 
-To add a new KMS key to a specific full backup:
+To add a new KMS key to a specific backup, issue an `ALTER BACKUP` statement that points to the full backup:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -80,7 +82,7 @@ ALTER BACKUP LATEST IN 'gs://{BUCKET NAME}?AUTH=specified&CREDENTIALS={ENCODED K
     WITH OLD_KMS = 'gs:///projects/{project name}/locations/{location}/keyRings/{key ring name}/cryptoKeys/{old key}?AUTH=specified&CREDENTIALS={encoded key}';
 ~~~  
 
-To add a new KMS key to a specific full backup:
+To add a new KMS key to a specific backup, issue an `ALTER BACKUP` statement that points to the full backup:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
