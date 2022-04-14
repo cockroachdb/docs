@@ -5,19 +5,32 @@ toc: true
 docs_area: manage.security
 ---
 
+This tutorial walks the user through provisioning a [secure certificate authority (CA) infrastructure](security-reference/transport-layer-security.html) for a {{ site.data.products.core }} cluster deployed in Google Cloud Platform (GCP).
 
-This tutorial walks the user through provisioning a private key infrastructure (PKI) certificate authority (CA) hierarchy appropriate for securing authentication and encryption-in-flight between a CRDB cluster and its clients.
+The solution demonstrated here has the advantages of making full use of GCP's strong IAM model. By managing CA operations, network and compute resource access, and secrets acces in Google cloud, we can confidently manage access according to the principle of least privelege, ensuring best security.
 
-prerequisites:
+We will provision 2 root CAs, one for issuing certificates for internode communication, and one for issuing certificates for SQL client connections.
+
+We will issue private key/public certificate pairs for use by the CockroachDB nodes comprising our cluster.
+
+After using these key pairs to get our cluster running, we will use the client CA to issue client credentials, and use these to access the cluster.
+
+## Prerequisites
+
+Before proceeding, you must provision three compute node in a properly configured network, as described here.
+
+Provision either a static IP on one of the nodes,  
 
 Three compute nodes and an external IP for one of the nodes or a load balancer.
+
+Create a manifest with the network names and IP addresses of these resources:
 
 {% include_cached copy-clipboard.html %}
 ```
 {% include {{page.version.version}}/certs-tutorials/manage-certs-gcloud/cockroach-cluster.env %}
 ```
 
-## Provision a roach test Certificate Authority
+## Provision node and client certificate authorities
 
 Let's begin by provisioning a Certificate Authority (CA) for managing Cockroachdb. In a realistic scenario, this CA would itself be subordinate to an organizational root CA, but in this case we will make it a self-signed root CA.
 
@@ -29,11 +42,11 @@ In GCP, CAs are organized into CA pools. Signing requests are issued by default 
 
 {% include_cached copy-clipboard.html %}
 ```shell
-{% include {{page.version.version}}/certs-tutorials/manage-certs-gcloud/create-roach-test-ca-pool.sh %}
+{% include {{page.version.version}}/certs-tutorials/manage-certs-gcloud/create-root-ca.sh %}
 ```
 
 ```text
-{% include {{page.version.version}}/certs-tutorials/manage-certs-gcloud/create-roach-test-ca-pool.res %}
+{% include {{page.version.version}}/certs-tutorials/manage-certs-gcloud/create-root-ca.res %}
 ```
 
 ### Create your roach test CA
@@ -66,8 +79,6 @@ View the CA in the GCP CAS console and ensure that its status is set to **enable
 ## Issue and provision node keys and certificates
 
 ### Create a private key and public certifiate for each node in the cluster.
-
-!!! what should the validity duration be?
 
 {% include_cached copy-clipboard.html %}
 ```shell
