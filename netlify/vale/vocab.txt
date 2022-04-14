@@ -61,6 +61,7 @@ cockroachdb
 cockroachweb
 codec
 codelab
+collatable
 collatedstring
 comms
 comodo
@@ -195,6 +196,7 @@ johan
 johnstown
 json
 jsonb
+jumpbox
 juniwal
 kakadia
 kaneda
@@ -363,6 +365,8 @@ recordset
 recoverably
 redactable
 redcarpet
+rehomed
+rehoming
 reformats
 relicense
 replacewith
@@ -486,6 +490,7 @@ timestamptz
 toc
 tocs
 tokenizable
+tolerations
 toolchain
 toolchains
 tooltip
