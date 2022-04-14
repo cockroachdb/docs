@@ -1,11 +1,15 @@
+- advisory: 79384
+  summary: The optimizer has been found to create logically incorrect query plans in some cases.
+  versions: 21.1.0-21.1.17, 21.2.0-21.2.8, 22.1.0-alpha.1-22.1.0-beta.1
+  date: April 14, 2022
+- advisory: 79281
+  summary: Importing duplicate keys can cause violations of UNIQUE constraints.
+  versions: 21.2.0-21.2.7, 22.1.0-alpha.1-22.1.0-alpha.5, 22.1.0-beta.1.
+  date: April 12, 2022
 - advisory: 78681
   summary: The optimizer has been found to create logically incorrect query plans in some cases.
   versions: 21.1.0-21.1.16, 21.2.0-21.1.7, 22.1.0-alpha.1-22.1.0-alpha.5
   date: April 11, 2022
-- advisory: 79281
-  summary: The optimizer can omit ON conditions of joins in query plans, causing incorrect results.
-  versions: 20.2.0-20.2.19, 21.1.0-21.1.15, 21.2.0-21.2.6
-  date: March 09, 2022
 - advisory: 76522
   summary: The optimizer can omit ON conditions of joins in query plans, causing incorrect results.
   versions: 20.2.0-20.2.19, 21.1.0-21.1.15, 21.2.0-21.2.6
