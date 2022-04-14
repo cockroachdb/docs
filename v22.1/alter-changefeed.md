@@ -207,8 +207,6 @@ Or, set the [`split_column_families`](create-changefeed.html#split-column-famili
 ALTER CHANGEFEED {job_ID} ADD database.table SET split_column_families;
 ~~~
 
-If you then want to remove the table with column families as a target from the changefeed, you must include the `FAMILY` keyword when using `DROP`:
-
 To remove a table with column families as a target from the changefeed, you must `DROP` it in the same way that you added it originally as a changefeed target. For example, if you used `FAMILY` to add the table to the changefeed, use `FAMILY` when removing it:
 
 {% include_cached copy-clipboard.html %}
