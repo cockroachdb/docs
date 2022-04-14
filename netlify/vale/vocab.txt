@@ -14,6 +14,7 @@ australiaeast
 australiasoutheast
 autocommit
 autogenerates
+autoscaling
 avro
 backfilled
 backfilling
@@ -54,6 +55,7 @@ changeset
 changesets
 checkpointing
 chu
+cleartext
 cockroachadmin
 cockroachapp
 cockroachcloud
@@ -69,6 +71,7 @@ composability
 concats
 config
 configs
+configurability
 cpu
 crdb
 cron
@@ -110,6 +113,7 @@ ecto
 elqdusy
 elsif
 emptive
+endcomment
 endfor
 endif
 endunless
@@ -131,6 +135,7 @@ fortran
 francecentral
 francesouth
 fsync
+Fullstack
 fumpt
 garvit
 gati
@@ -163,6 +168,7 @@ heartbeating
 heredocs
 hiatt
 highwater
+Hikari
 hoc
 hostname
 hostnames
@@ -174,6 +180,7 @@ htmltest
 http
 https
 hueypark
+hyperthread
 hyperthreads
 inconsolata
 indexable
@@ -262,6 +269,7 @@ moreutils
 movr
 msg
 multiargument
+multifactor
 multiregion
 multiset
 multisets
@@ -300,10 +308,13 @@ openid
 openssl
 orchstrations
 ordinality
+overallocating
 owsiany
+Pak
 panos
 parallelization
 parsable
+passwd
 paulo
 paxos
 peresypkin
@@ -316,6 +327,7 @@ pgloader
 pgsql
 pgwire
 pgx
+pgxpool
 phelanm
 php
 phynalle
@@ -328,6 +340,7 @@ pocockn
 pointcut
 postgres
 postgresql
+Postico
 pq
 pre
 precompiled
@@ -347,6 +360,7 @@ protobuf
 protobufs
 proxied
 psql
+Psycopg
 pulldown
 pwd
 quadtree
@@ -371,6 +385,7 @@ reformats
 relicense
 replacewith
 repo
+repudiability
 rescanned
 retryable
 riak
@@ -414,6 +429,7 @@ sharding
 shinkevich
 sideloaded
 sidenav
+sinkless
 sizeless
 skiplist
 skylake
@@ -427,6 +443,7 @@ spammy
 spinny
 Splunk
 sql
+sqlalchemy
 srivatsa
 sstables
 stackdriver
@@ -447,6 +464,7 @@ subfolder
 subinterface
 sublayers
 subnet
+Subnets
 subobjects
 suboption
 suboptions
@@ -463,6 +481,7 @@ substr
 substring
 subtables
 subtransactions
+subtree
 subtrees
 subzone
 sudo
@@ -497,11 +516,15 @@ tooltip
 tooltips
 toreplace
 touchpoints
+trac
 transactionally
 ttl
+twirp
 txn
 txns
 typechecking
+tz
+udt
 ui
 uid
 uksouth
@@ -509,6 +532,8 @@ ukwest
 unanonymized
 unarchived
 unary
+uncategorized
+Uncategorized
 uncollated
 uncomment
 uncontended
@@ -552,6 +577,7 @@ vorobev
 wabada
 walkthrough
 wallclock
+Webapp
 westcentralus
 westeurope
 westindia
