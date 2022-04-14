@@ -47,6 +47,7 @@
     {
       "title": "Technical Advisories",
       "urls": [
+        "/advisories/index.html",
         {% for x in site.data.advisories %}
           "/advisories/{{ x.advisory }}.html",
         {% endfor %}
