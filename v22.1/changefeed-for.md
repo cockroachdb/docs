@@ -13,7 +13,7 @@ The `EXPERIMENTAL CHANGEFEED FOR` [statement](sql-statements.html) creates a new
 
 {% include {{ page.version.version }}/cdc/core-url.md %}
 
-For more information, see [Stream Data Out of CockroachDB Using Changefeeds](change-data-capture-overview.html).
+For more information, see [Change Data Capture Overview](change-data-capture-overview.html).
 
 {% include common/experimental-warning.md %}
 
@@ -56,7 +56,7 @@ Option | Value | Description
 `mvcc_timestamp` | N/A |  Include the [MVCC](architecture/storage-layer.html#mvcc) timestamp for each emitted row in a changefeed. With the `mvcc_timestamp` option, each emitted row will always contain its MVCC timestamp, even during the changefeed's initial backfill.
 `format` | `json` / `avro` | Format of the emitted record. Currently, support for [Avro is limited](use-changefeeds.html#avro-limitations). <br><br>Default: `format=json`.
 `confluent_schema_registry` | Schema Registry address | The [Schema Registry](https://docs.confluent.io/current/schema-registry/docs/index.html#sr) address is required to use `avro`.
-`split_column_families` | N/A | Target a table with multiple columns families. Emit messages for each column family in the target table. Each message will be labeled for `table.family`.
+`split_column_families` | N/A | Target a table with multiple columns families. Emit messages for each column family in the target table. Each message will include the label: `table.family`.
 
 #### Avro limitations
 

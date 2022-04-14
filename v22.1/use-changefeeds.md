@@ -219,17 +219,19 @@ To specify multiple families on the same table, it is necessary to define the ta
 CREATE CHANGEFEED FOR TABLE tbl FAMILY f_1, TABLE tbl FAMILY f_2;
 ~~~
 
-<a name="col-family-response"></a>The response will follow a typical [changefeed message format](#messages), but with the family name appended to the table name: `table.family`:
+<a name="col-family-response"></a>The response will follow a typical [changefeed message format](#messages), but with the family name appended to the table name with a `.`, in the format `table.family`:
 
 ~~~
 {"after":{"column":"value"},"key":[1],"topic":"table.family"}
 ~~~
 
-For [cloud storage sinks](changefeed-sinks.html#cloud-storage-sink), the filename will include the family separated by a `+`. For example, `table+primary`.
+For [cloud storage sinks](changefeed-sinks.html#cloud-storage-sink), the filename will include the family name appended to the table name with a `+`, in the format `table+primary`.
 
 [Avro](#avro) schema names will include the family name concatenated to the table name.
 
-The primary key columns will appear in the `key` for all column families. It will also appear in the value **only** for the families that they are in. For example, if the table `office_dogs` has a column family `primary`, containing the primary key and a `STRING` column, and a `secondary` column family containing a different `STRING` column, then you'll receive two messages for an insert.
+The primary key columns will appear in the `key` for **all** column families, and will also appear in the value **only** for the families that they are a member of.
+
+For example, if the table `office_dogs` has a column family `primary`, containing the primary key and a `STRING` column, and a `secondary` column family containing a different `STRING` column, then you'll receive two messages for an insert.
 
 ~~~ sql
 CREATE TABLE office_dogs (
@@ -252,10 +254,10 @@ The output shows the `primary` column family with `4` in the value (`{"id":4,"na
 
 It is important to consider the following when creating a changefeed on a table with multiple column families:
 
-- If you create a table **without** column families and then start a changefeed with the `split_column_families` option, it is not possible to add column families. A subsequent `ALTER TABLE` statement adding a column family to the table, will cause the changefeed to fail.
+- If you create a table **without** column families and then start a changefeed with the `split_column_families` option, it is not possible to add column families. A subsequent `ALTER TABLE` statement adding a column family to the table will cause the changefeed to fail.
 - When you do not specify column family names in the `CREATE` or `ALTER TABLE` statement, the family names will default to either of the following:
     - `primary`: Since `primary` is a key word, you'll receive a syntax error if you run `CREATE CHANGEFEED FOR table FAMILY primary`. To avoid this syntax error, use double quotes: `CREATE CHANGEFEED FOR table FAMILY "primary"`. You'll receive output from the changefeed like: `table.primary`.
-    - `fam_<zero-indexed family id>_<delimited list of columns>`: For a table that does not include a name for the family: `FAMILY (id, name)`. You'll receive output from the changefeed containing: `table.fam_0_id_name`. This references the table, the family ID and the two columns that this column family includes.
+    - `fam_<zero-indexed family id>_<delimited list of columns>`: For a table that does not include a name for the family: `FAMILY (id, name)`, you'll receive output from the changefeed containing: `table.fam_0_id_name`. This references the table, the family ID and the two columns that this column family includes.
 
 For an example of starting changefeeds on tables with column families, see the [Changefeed Examples](changefeed-examples.html#create-a-changefeed-on-a-table-with-column-families) page.
 

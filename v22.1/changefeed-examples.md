@@ -518,7 +518,7 @@ For more detail on a changefeed's output when targeting tables with column famil
     INSERT INTO office_dogs (id, name, dog_owner) VALUES (1, 'Petee', 'Lauren'), (2, 'Max', 'Taylor'), (3, 'Patch', 'Sammy'), (4, 'Roach', 'Ashley');
     ~~~
 
-1. Create another table:
+1. Create a second table that also defines column families:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -566,6 +566,8 @@ For more detail on a changefeed's output when targeting tables with column famil
     CREATE CHANGEFEED FOR TABLE office_dogs FAMILY employee, TABLE office_plants FAMILY dog_friendly INTO 'webhook-https://localhost:3000?insecure_tls_skip_verify=true';
     ~~~
 
+    You'll receive one message for each insert that affects the specified column families:
+
     ~~~
     {"payload":[{"after":{"dog_owner":"Lauren"},"key":[1],"topic":"office_dogs.employee"}],"length":1}
     {"payload":[{"after":{"office_floor":11,"safe_for_dogs":false},"key":[1],"topic":"office_plants.dog_friendly"}],"length":1}
@@ -585,7 +587,7 @@ For more detail on a changefeed's output when targeting tables with column famil
     `CREATE CHANGEFEED FOR TABLE office_dogs FAMILY employee, TABLE office_dogs FAMILY dogs INTO {sink};`
     {{site.data.alerts.end}}
 
-1. To create a changefeed that emits messages for all column families in a table, use the `split_column_families` option:
+1. To create a changefeed that emits messages for all column families in a table, use the [`split_column_families`](create-changefeed.html#split-column-families) option:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -695,7 +697,7 @@ For more detail on a changefeed's output when targeting tables with column famil
     INSERT INTO office_dogs (id, name, dog_owner) VALUES (1, 'Petee', 'Lauren'), (2, 'Max', 'Taylor'), (3, 'Patch', 'Sammy'), (4, 'Roach', 'Ashley');
     ~~~
 
-1. Create another table with a column family:
+1. Create another table that also defines two column families:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -744,6 +746,8 @@ For more detail on a changefeed's output when targeting tables with column famil
     EXPERIMENTAL CHANGEFEED FOR TABLE office_dogs FAMILY employee, TABLE office_plants FAMILY dog_friendly;
     ~~~
 
+    You'll receive one message for each insert that affects the specified column families:
+
     ~~~
     table,key,value
     office_plants.dog_friendly,[1],"{""after"": {""office_floor"": 11, ""safe_for_dogs"": false}}"
@@ -764,7 +768,7 @@ For more detail on a changefeed's output when targeting tables with column famil
     `EXPERIMENTAL CHANGEFEED FOR TABLE office_dogs FAMILY employee, TABLE office_dogs FAMILY dogs;`
     {{site.data.alerts.end}}
 
-1. To create a changefeed that emits messages for all column families in a table, use the `split_column_families` option:
+1. To create a changefeed that emits messages for all column families in a table, use the [`split_column_families`](create-changefeed.html#split-column-families) option:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
