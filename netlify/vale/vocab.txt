@@ -52,9 +52,11 @@ changefeed
 changefeeds
 changeset
 changesets
+checkpointing
 chu
 cockroachadmin
 cockroachapp
+cockroachcloud
 cockroachdb
 cockroachweb
 codec
@@ -76,6 +78,7 @@ ctrl
 cuasing
 datacenter
 datacenters
+Datadog
 datalinks
 datasource
 datasources
@@ -207,6 +210,7 @@ keyspace
 keytab
 keytabs
 keywhiz
+Kibana
 kimball
 kiran
 knut
@@ -242,6 +246,7 @@ mapbox
 mayank
 memtable
 metatables
+Metricbeat
 meunier
 milli
 minikube
@@ -254,6 +259,7 @@ moreutils
 movr
 msg
 multiargument
+multiregion
 multiset
 multisets
 multiversion
@@ -267,6 +273,7 @@ namespace
 namespaces
 navicat
 neeral
+Netlify
 nexdrew
 nextval
 nginx
@@ -329,6 +336,7 @@ preparable
 prepended
 prepending
 prepends
+Prisma
 problemranges
 profiler
 proofer
@@ -337,6 +345,7 @@ protobufs
 proxied
 psql
 pulldown
+pwd
 quadtree
 qudsi
 queryable
@@ -366,6 +375,7 @@ rollups
 roundtrips
 routable
 rss
+runtimes
 rushi
 rwx
 sangnetra
@@ -384,6 +394,8 @@ sequelize
 serializability
 serializable
 servlet
+serverless
+Serverless
 sessionmaker
 seto
 setof
@@ -408,6 +420,7 @@ southeastasia
 southindia
 spammy
 spinny
+Splunk
 sql
 srivatsa
 sstables
@@ -425,8 +438,11 @@ subcommand
 subcommands
 subcomponents
 subexpressions
+subfolder
 subinterface
+sublayers
 subnet
+subobjects
 subpartition
 subpartitioned
 subpartitioning
@@ -443,14 +459,17 @@ subtransactions
 subtrees
 subzone
 sudo
+svg
 swingbench
 sys
 sysbench
 sysdig
+Syslog
 systemd
 tablespace
 takuya
 tarek
+Teradata
 tcp
 teamcity
 telecom
