@@ -2,21 +2,17 @@
 title: Create Security Certificates using OpenSSL
 summary: A secure CockroachDB cluster uses TLS for encrypted inter-node and client-node communication.
 toc: true
-filter_category: security_cert
-filter_html: Use OpenSSL
-filter_sort: 2
 docs_area: 
 ---
 
-To secure your CockroachDB cluster's inter-node and client-node communication, you need to provide a Certificate Authority (CA) certificate that has been used to sign keys and certificates (SSLs) for:
+This tutorial walks the user through provisioning a [public key infrastructure (PKI) certificate authority (CA)](security-reference/transport-layer-security.html) for a {{ site.data.products.core }} cluster deployed in Google Cloud Platform (GCP).
 
-- Nodes
-- Clients
-- DB Console (optional)
+See also:
+- [Public Key Infrastructure (PKI) and Transport Layer Security (TLS)](security-reference/transport-layer-security.html)
+- [Using the CockroachDB CLI to provision a development cluster](manage-certs-cli.html).
+- See [Using Google Cloud Platform to manage PKI certificates](manage-certs-gcloud.html).
 
 To create these certificates and keys, use the `cockroach cert` [commands](cockroach-commands.html) with the appropriate subcommands and flags, use [`openssl` commands](https://wiki.openssl.org/index.php/), or use a [custom CA](create-security-certificates-custom-ca.html) (for example, a public CA or your organizational CA).
-
-{% include filter-tabs.md %}
 
 ## Subcommands
 
