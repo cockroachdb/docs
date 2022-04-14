@@ -252,7 +252,7 @@ The output shows the `primary` column family with `4` in the value (`{"id":4,"na
 
 It is important to consider the following when creating a changefeed on a table with multiple column families:
 
-- If you create a table **without** column families, and then start a changefeed with the `split_column_families` option, it is not possible to add column families. A subsequent `ALTER TABLE` statement adding a column family to the table, will cause the changefeed to fail.
+- If you create a table **without** column families and then start a changefeed with the `split_column_families` option, it is not possible to add column families. A subsequent `ALTER TABLE` statement adding a column family to the table, will cause the changefeed to fail.
 - When you do not specify column family names in the `CREATE` or `ALTER TABLE` statement, the family names will default to either of the following:
     - `primary`: Since `primary` is a key word, you'll receive a syntax error if you run `CREATE CHANGEFEED FOR table FAMILY primary`. To avoid this syntax error, use double quotes: `CREATE CHANGEFEED FOR table FAMILY "primary"`. You'll receive output from the changefeed like: `table.primary`.
     - `fam_<zero-indexed family id>_<delimited list of columns>`: For a table that does not include a name for the family: `FAMILY (id, name)`. You'll receive output from the changefeed containing: `table.fam_0_id_name`. This references the table, the family ID and the two columns that this column family includes.
