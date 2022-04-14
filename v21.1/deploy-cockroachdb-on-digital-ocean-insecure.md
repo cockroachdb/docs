@@ -27,7 +27,7 @@ This page shows you how to deploy an insecure multi-node CockroachDB cluster on 
 
 {% include {{ page.version.version }}/prod-deployment/insecure-recommendations.md %}
 
-- If all of your CockroachDB nodes and clients will run on Droplets in a single region, consider using [private networking](https://www.digitalocean.com/community/tutorials/how-to-set-up-and-use-digitalocean-private-networking).
+- If all of your CockroachDB nodes and clients will run on Droplets in a single region, consider using [private networking](https://docs.digitalocean.com/products/networking/vpc/how-to/create/).
 
 ## Step 1. Create Droplets
 

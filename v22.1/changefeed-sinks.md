@@ -28,6 +28,8 @@ URI Component      | Description
 `port`             | The sink's port.
 `query_parameters` | The sink's [query parameters](create-changefeed.html#query-parameters).
 
+To set a different sink URI to an existing changefeed, use the [`sink` option](alter-changefeed.html#sink-example) with `ALTER CHANGEFEED`.
+
 ## Kafka
 
 Example of a Kafka sink URI:

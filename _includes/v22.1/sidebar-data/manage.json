@@ -6,7 +6,7 @@
       "title": "Manage CockroachDB Cloud Clusters",
       "items": [
         {
-          "title": "Manage Your Serverless Cluster",
+          "title": "Manage a CockroachDB Serverless Cluster",
           "urls": [
             "/cockroachcloud/serverless-cluster-management.html"
           ]
@@ -18,9 +18,62 @@
           ]
         },
         {
+          "title": "Manage Billing",
+          "urls": [
+             "/cockroachcloud/billing-management.html"
+          ]
+        },
+        {
           "title": "Use the Cloud API",
           "urls": [
             "/cockroachcloud/cloud-api.html"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Operate CockroachDB on Kubernetes",
+      "items": [
+        {
+          "title": "Pod Scheduling",
+          "urls": [
+            "/${VERSION}/schedule-cockroachdb-kubernetes.html"
+          ]
+        },
+        {
+          "title": "Resource Management",
+          "urls": [
+            "/${VERSION}/configure-cockroachdb-kubernetes.html"
+          ]
+        },
+        {
+          "title": "Certificate Management",
+          "urls": [
+            "/${VERSION}/secure-cockroachdb-kubernetes.html"
+          ]
+        },
+        {
+          "title": "Cluster Scaling",
+          "urls": [
+            "/${VERSION}/scale-cockroachdb-kubernetes.html"
+          ]
+        },
+        {
+          "title": "Cluster Monitoring",
+          "urls": [
+            "/${VERSION}/monitor-cockroachdb-kubernetes.html"
+          ]
+        },
+        {
+          "title": "Cluster Upgrades",
+          "urls": [
+            "/${VERSION}/upgrade-cockroachdb-kubernetes.html"
+          ]
+        },
+        {
+          "title": "Optimizing Performance",
+          "urls": [
+            "/${VERSION}/kubernetes-performance.html"
           ]
         }
       ]

@@ -5,8 +5,6 @@ toc: true
 docs_area: manage
 ---
 
-The ability to [backup a full cluster](backup.html#backup-a-cluster) has been added and the syntax for [incremental backups](backup.html#create-incremental-backups) is simplified. Because of these two changes, [basic backup usage](take-full-and-incremental-backups.html) is now sufficient for most CockroachDB clusters. However, you may want to control your backup and restore options more explicitly.
-
 This doc provides information about how to take and restore encrypted backups in the following ways:
 
 -  [Using AWS Key Management Service (KMS)](#use-aws-key-management-service)
@@ -249,10 +247,9 @@ For example, the encrypted backup created in the previous example can be restore
 - [Take Full and Incremental Backups](take-full-and-incremental-backups.html)
 - [Take and Restore Locality-aware Backups](take-and-restore-locality-aware-backups.html)
 - [Take Backups with Revision History and Restore from a Point-in-time](take-backups-with-revision-history-and-restore-from-a-point-in-time.html)
-- [`SQL DUMP`](cockroach-dump.html)
 - [`IMPORT`](migration-overview.html)
 - [Use the Built-in SQL Client](cockroach-sql.html)
-- [Other Cockroach Commands](cockroach-commands.html)
+- [`cockroach` Commands Overview](cockroach-commands.html)
 
 <!-- Reference links -->
 

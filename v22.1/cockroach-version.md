@@ -42,4 +42,4 @@ Field | Description
 ## See also
 
 - [Install CockroachDB](install-cockroachdb.html)
-- [Other Cockroach Commands](cockroach-commands.html)
+- [`cockroach` Commands Overview](cockroach-commands.html)

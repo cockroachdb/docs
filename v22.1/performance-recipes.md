@@ -2,8 +2,8 @@
 title: Performance Tuning Recipes
 summary: Identify, diagnose, and fix common performance problems
 toc: true
-toc_not_nested: true
-docs_area: manage
+toc_not_nested: false
+docs_area: develop
 ---
 
 This page provides recipes for fixing performance issues in your applications.
@@ -157,4 +157,4 @@ Use the values in the `total_reads` and `last_read` columns to identify indexes 
 
 ## See also
 
-If you aren't sure whether SQL query performance needs to be improved, see [Identify slow queries](query-behavior-troubleshooting.html#identify-slow-statements).
+If you aren't sure whether SQL query performance needs to be improved, see [Identify slow queries](query-behavior-troubleshooting.html#identify-slow-queries).

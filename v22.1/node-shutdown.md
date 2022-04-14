@@ -528,7 +528,7 @@ You can use [`cockroach node drain`](cockroach-node.html) to drain a node separa
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    cockroach node drain 1 --host=localhost:{address of any live node} --drain-wait=15m --certs-dir=certs
+    cockroach node drain 1 --host={address of any live node} --drain-wait=15m --certs-dir=certs
     ~~~
 
     You will see the draining status print to `stderr`:
@@ -582,12 +582,12 @@ Run the [`cockroach node drain`](cockroach-node.html) command for each node to b
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-cockroach node drain 4 --host=localhost:{address of any live node} --certs-dir=certs
+cockroach node drain 4 --host={address of any live node} --certs-dir=certs
 ~~~
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-cockroach node drain 5 --host=localhost:{address of any live node} --certs-dir=certs
+cockroach node drain 5 --host={address of any live node} --certs-dir=certs
 ~~~
 
 You will see the draining status of each node print to `stderr`:

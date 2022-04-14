@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `RESTORE` [statement](sql-statements.html) restores your cluster's schemas and data from [a `BACKUP`](backup.html) stored on services such as AWS S3, Google Cloud Storage, NFS, or HTTP storage.
+The `RESTORE` [statement](sql-statements.html) restores your cluster's schemas and data from [a `BACKUP`](backup.html) stored on services such as AWS S3, Google Cloud Storage, or NFS.
 
 Because CockroachDB is designed with high fault tolerance, restores are designed primarily for disaster recovery, i.e., restarting your cluster if it loses a majority of its nodes. Isolated issues (such as small-scale node outages) do not require any intervention.
 
@@ -20,6 +20,8 @@ You can restore:
 - `RESTORE` cannot restore backups made by newer versions of CockroachDB.
 - `RESTORE` is a blocking statement. To run a restore job asynchronously, use the `DETACHED` option. See [Options](#options) for more usage detail.
 - `RESTORE` no longer requires an Enterprise license, regardless of the options passed to it or to the backup it is restoring.
+- [Zone configurations](configure-zone.html) present on the destination cluster prior to a restore will be **overwritten** during a [cluster restore](restore.html#full-cluster) with the zone configurations from the [backed up cluster](backup.html#backup-a-cluster). If there were no customized zone configurations on the cluster when the backup was taken, then after the restore the destination cluster will use the zone configuration from the [`RANGE DEFAULT` configuration](configure-replication-zones.html#view-the-default-replication-zone).
+- You cannot restore a backup of a multi-region database into a single-region database.
 
 ## Required privileges
 
@@ -28,7 +30,7 @@ You can restore:
 
 ### Source privileges
 
-{% include {{ page.version.version }}/misc/source-privileges.md %}
+{% include {{ page.version.version }}/misc/non-http-source-privileges.md %}
 
 ## Synopsis
 
@@ -68,6 +70,11 @@ You can control `RESTORE` behavior using any of the following in the `restore_op
 CockroachDB uses the URL provided to construct a secure API call to the service you specify. The URL structure depends on the type of file storage you are using. For more information, see the following:
 
 - [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html)
+
+    {{site.data.alerts.callout_info}}
+    HTTP storage is not supported for `BACKUP` and `RESTORE`.
+    {{site.data.alerts.end}}
+
 - [Use a Local File Server for Bulk Operations](use-a-local-file-server-for-bulk-operations.html)
 
 ## Functional details

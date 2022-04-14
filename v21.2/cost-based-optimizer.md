@@ -252,9 +252,7 @@ The join hint `NO_ZIGZAG_JOIN` prevents the optimizer from planning a zigzag joi
 SELECT * FROM abc@{NO_ZIGZAG_JOIN};
 ~~~
 
-## Examples
-
-### Inverted join examples
+## Inverted join examples
 
 {% include {{ page.version.version }}/sql/inverted-joins.md %}
 

@@ -300,14 +300,14 @@ ALTER DATABASE movr ADD REGION "us-west1";
 
 #### Configure GLOBAL tables
 
-As mentioned earlier, all of the tables except `promo_codes` are geographically specific. Because the data in `promo_codes` is not updated frequently (a.k.a., "read-mostly"), and needs to be available from any region, the right table locality is [`GLOBAL`](multiregion-overview.html#global-tables).
+All of the tables except `promo_codes` contain rows which are partitioned by region, and updated very frequently. Because the data in `promo_codes` is not updated frequently (a.k.a., "read-mostly"), and needs to be available from any region, the right table locality is [`GLOBAL`](multiregion-overview.html#global-tables).
 
 {% include copy-clipboard.html %}
 ~~~ sql
 ALTER TABLE promo_codes SET locality GLOBAL;
 ~~~
 
-Next, alter the `user_promo_codes` table to have a foreign key into the `promo_codes` table. This step is necessary to modify the MovR schema design to take full advantage of the multi-region features in v21.1+.
+Next, alter the `user_promo_codes` table to have a foreign key into the global `promo_codes` table. This will enable fast reads of the `promo_codes.code` column from any region in the cluster.
 
 {% include copy-clipboard.html %}
 ~~~ sql

@@ -1469,12 +1469,6 @@
                 ]
               },
               {
-                "title": "<code>cockroach dump</code>",
-                "urls": [
-                  "/${VERSION}/cockroach-dump.html"
-                ]
-              },
-              {
                 "title": "<code>cockroach demo</code>",
                 "urls": [
                   "/${VERSION}/cockroach-demo.html"
@@ -1676,6 +1670,12 @@
             "title": "Network Latency Page",
             "urls": [
               "/${VERSION}/ui-network-latency-page.html"
+            ]
+          },
+          {
+            "title": "Hot Ranges Page",
+            "urls": [
+              "/${VERSION}/ui-hot-ranges-page.html"
             ]
           },
           {

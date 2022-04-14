@@ -273,7 +273,7 @@ sinks:
 Along with the [common sink parameters](#common-sink-parameters), `stderr` accepts the following parameters:
 
 {{site.data.alerts.callout_info}}
-The `format` parameter for `stderr` is set to [`crdb-v2-tty`](log-formats.html#format-crdb-v2-tty) and cannot be changed.      
+The `format` parameter for `stderr` is set to [`crdb-v2-tty`](log-formats.html#format-crdb-v2-tty) and cannot be changed.
 {{site.data.alerts.end}}
 
 | Parameter  | Description                                                       |

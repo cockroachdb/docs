@@ -59,7 +59,7 @@ For multiple SQL statements to be represented by a fingerprint, they must be ide
 
 The preceding SQL statements have the fingerprint:
 
-`INSERT INTO new_order(product_id, customer_id, no_w_id) VALUES (_, _, _)`
+`INSERT INTO new_order(product_id, customer_id, transaction_id) VALUES (_, _, _)`
 
 The following statements cannot be represented by the same fingerprint:
 

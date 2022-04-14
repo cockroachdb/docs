@@ -20,4 +20,4 @@ Throughout the tutorial, we reference the source code for an example web applica
 
 The repo's [README](https://github.com/cockroachlabs/movr-flask/blob/master/README.md) also includes instructions on debugging and deploying the application using Google Cloud services. Those instructions are reproduced in [Set Up a Virtual Environment for Developing Global Applications](movr-flask-setup.html) and [Deploy a Global Application](movr-flask-deployment.html).
 
-{% include {{ page.version.version }}/misc/movr-live-demo.md %}
+<!-- {% include {{ page.version.version }}/misc/movr-live-demo.md %} -->
