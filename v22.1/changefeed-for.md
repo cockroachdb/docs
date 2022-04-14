@@ -13,7 +13,7 @@ The `EXPERIMENTAL CHANGEFEED FOR` [statement](sql-statements.html) creates a new
 
 {% include {{ page.version.version }}/cdc/core-url.md %}
 
-For more information, see [Stream Data Out of CockroachDB Using Changefeeds](change-data-capture-overview.html).
+For more information, see [Change Data Capture Overview](change-data-capture-overview.html).
 
 {% include common/experimental-warning.md %}
 
@@ -56,6 +56,7 @@ Option | Value | Description
 `mvcc_timestamp` | N/A |  Include the [MVCC](architecture/storage-layer.html#mvcc) timestamp for each emitted row in a changefeed. With the `mvcc_timestamp` option, each emitted row will always contain its MVCC timestamp, even during the changefeed's initial backfill.
 `format` | `json` / `avro` | Format of the emitted record. Currently, support for [Avro is limited](use-changefeeds.html#avro-limitations). <br><br>Default: `format=json`.
 `confluent_schema_registry` | Schema Registry address | The [Schema Registry](https://docs.confluent.io/current/schema-registry/docs/index.html#sr) address is required to use `avro`.
+`split_column_families` | N/A | Target a table with multiple columns families. Emit messages for each column family in the target table. Each message will include the label: `table.family`.
 
 #### Avro limitations
 
@@ -70,15 +71,59 @@ Below are clarifications for particular SQL types and values for Avro changefeed
 
 ### Create a changefeed
 
-{% include {{ page.version.version }}/cdc/create-core-changefeed.md %}
+To start a changefeed:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+EXPERIMENTAL CHANGEFEED FOR cdc_test;
+~~~
+
+In the terminal where the core changefeed is streaming, the output will appear:
+
+~~~
+table,key,value
+cdc_test,[0],"{""after"": {""a"": 0}}"
+~~~
+
+For step-by-step guidance on creating a Core changefeed, see [Changefeed Examples](changefeed-examples.html).
 
 ### Create a changefeed with Avro
 
-{% include {{ page.version.version }}/cdc/create-core-changefeed-avro.md %}
+To start a changefeed in Avro format:
 
-<!-- ### Pause and resume a changefeed
+{% include_cached copy-clipboard.html %}
+~~~ sql
+EXPERIMENTAL CHANGEFEED FOR cdc_test WITH format = avro, confluent_schema_registry = 'http://localhost:8081';
+~~~
 
-You can pause a changefeed by -->
+In the terminal where the core changefeed is streaming, the output will appear:
+
+~~~
+table,key,value
+cdc_test,\000\000\000\000\001\002\000,\000\000\000\000\002\002\002\000
+~~~
+
+For step-by-step guidance on creating a Core changefeed with Avro, see [Changefeed Examples](changefeed-examples.html).
+
+### Create a changefeed on a table with column families
+
+To create a changefeed on a table with column families, use the `FAMILY` keyword for a specific column family:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+EXPERIMENTAL CHANGEFEED FOR TABLE cdc_test FAMILY f1;
+~~~
+
+To create a changefeed on a table and output changes for each column family, use the `split_column_families` option:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+EXPERIMENTAL CHANGEFEED FOR TABLE cdc_test WITH split_column_families;
+~~~
+
+For step-by-step guidance creating a Core changefeed on a table with multiple column families, see [Changefeed Examples](changefeed-examples.html).
+
+### Create a changefeed with
 
 ## See also
 

@@ -1,4 +1,3 @@
-- Changefeeds only work on tables with a single [column family](column-families.html) (which is the default for new tables). [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/28667)
 - Changefeeds cannot be [backed up](backup.html) or [restored](restore.html). [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/73434)
 - Changefeed target options are limited to tables. [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/73435)
 - Using a [cloud storage sink](changefeed-sinks.html#cloud-storage-sink) only works with `JSON` and emits [newline-delimited json](http://ndjson.org) files. [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/73432)
@@ -7,3 +6,4 @@
 - There is no concurrency configurability for [webhook sinks](changefeed-sinks.html#webhook-sink). [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/73430)
 - {{ site.data.products.enterprise }} changefeeds are currently disabled for [{{ site.data.products.serverless }} clusters](https://www.cockroachlabs.com/docs/cockroachcloud/quickstart). Core changefeeds are enabled. [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/73429)    
 - Changefeeds will emit [`NULL` values](null-handling.html) for [`VIRTUAL` computed columns](computed-columns.html) and not the column's computed value. [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/74688)
+- Using the [`split_column_families`](create-changefeed.html#split-column-families) and [`resolved`](create-changefeed.html#resolved-option) options on the same changefeed will cause an error when using the following [sinks](changefeed-sinks.html): Kafka and Google Cloud Pub/Sub. Instead, use the individual `FAMILY` keyword to specify column families when creating a changefeed. [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/79452) 
