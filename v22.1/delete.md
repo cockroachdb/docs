@@ -36,7 +36,7 @@ table td:first-child {
  `AS table_alias_name` | An alias for the table name. When an alias is provided, it completely hides the actual table name.
 `WHERE a_expr`| `a_expr` must be an expression that returns Boolean values using columns (e.g., `<column> = <value>`). Delete rows that return   `TRUE`.<br><br/>__Without a `WHERE` clause in your statement, `DELETE` removes all rows from the table. To delete all rows in a table, we recommend using [`TRUNCATE`](truncate.html) instead of `DELETE`.__
  `sort_clause` | An `ORDER BY` clause. <br /><br />See [Ordering of rows in DML statements](order-by.html#ordering-rows-in-dml-statements) for more details.
- `limit_clause` | A `LIMIT` clause. See [Limiting Query Results](limit-offset.html) for more details.
+ `limit_clause` | A `LIMIT` clause. See [Limit Query Results](limit-offset.html) for more details.
  `RETURNING target_list` | Return values based on rows deleted, where `target_list` can be specific column names from the table, `*` for all columns, or computations using [scalar expressions](scalar-expressions.html). <br><br>To return nothing in the response, not even the number of rows updated, use `RETURNING NOTHING`.
  `ONLY ... *` |  Supported for compatibility with PostgreSQL table inheritance syntax. This clause is a no-op, as CockroachDB does not currently support table inheritance.
 
@@ -340,4 +340,4 @@ If you provide an index hint (i.e., force the index selection) to use the primar
 - [`DROP TABLE`](drop-table.html)
 - [`DROP DATABASE`](drop-database.html)
 - [SQL Statements](sql-statements.html)
-- [Limiting Query Results](limit-offset.html)
+- [Limit Query Results](limit-offset.html)

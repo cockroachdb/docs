@@ -85,4 +85,4 @@ $ cockroach userfile get '*.csv' --certs-dir=certs
 - [`cockroach userfile delete`](cockroach-userfile-delete.html)
 - [`cockroach userfile list`](cockroach-userfile-list.html)
 - [Use `userfile` for Bulk Operations](use-userfile-for-bulk-operations.html)
-- [Other Cockroach Commands](cockroach-commands.html)
+- [`cockroach` Commands Overview](cockroach-commands.html)

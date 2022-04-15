@@ -566,5 +566,5 @@ For an example showing how to use it, see  [`SELECT FOR UPDATE`](select-for-upda
 - [Set Operations](selection-queries.html#set-operations)
 - [Table Expressions](table-expressions.html)
 - [Ordering Query Results](order-by.html)
-- [Limiting Query Results](limit-offset.html)
+- [Limit Query Results](limit-offset.html)
 - [SQL Performance Best Practices](performance-best-practices-overview.html)

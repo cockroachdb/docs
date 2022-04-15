@@ -80,6 +80,10 @@ To add or remove nodes from your cluster:
 
 ### Increase storage for a cluster
 
+{{site.data.alerts.callout_danger}}
+AWS disks can only be scaled once every six hours.
+{{site.data.alerts.end}}
+
 1. Navigate to the cluster's **Overview** page.
 1. Select **Actions > Edit cluster**.
 

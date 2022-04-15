@@ -74,19 +74,8 @@
     <code>datestyle</code>
    </td>
    <td> The input string format for <a href="date.html"><code>DATE</code></a> and <a href="timestamp.html"><code>TIMESTAMP</code></a> values.
-     <br>Accepted values include <code>ISO,MDY</code>, <code>ISO,DMY</code>, and <code>ISO,YMD</code>.
-     <br>To set <code>datestyle</code> to a value other than the default (<code>ISO,MDY</code>), you must first set the <code>datestyle_enabled</code> session variable to <code>true</code>.</td>
+     <br>Accepted values include <code>ISO,MDY</code>, <code>ISO,DMY</code>, and <code>ISO,YMD</code>.</td>
    <td>The value set by the <code>sql.defaults.datestyle</code> <a href="cluster-settings.html">cluster setting</a> (<code>ISO,MDY</code>, by default).</td>
-   <td>Yes</td>
-   <td>Yes</td>
-  </tr>
-
-  <tr>
-   <td>
-    <code>datestyle_enabled</code>
-   </td>
-   <td> Enables setting the <code>datestyle</code> session variable to a supported format.</td>
-   <td>The value set by the <code>sql.defaults.datestyle.enabled</code> <a href="cluster-settings.html">cluster setting</a> (<code>false</code>, by default).</td>
    <td>Yes</td>
    <td>Yes</td>
   </tr>
@@ -282,22 +271,24 @@
 
   <tr>
    <td>
-    <code>intervalstyle</code>
+    <code>inject_retry_errors_enabled</code>
    </td>
-   <td> The input string format for <a href="interval.html"><code>INTERVAL</code></a> values.
-     <br>Accepted values include <code>postgres</code>, <code>iso_8601</code>, and <code>sql_standard</code>.
-     <br>To set <code>intervalstyle</code> to a value other than the default (<code>postgres</code>), you must first set the <code>intervalstyle_enabled</code> session variable to <code>true</code>.</td>
-   <td>The value set by the <code>sql.defaults.intervalstyle</code> <a href="cluster-settings.html">cluster setting</a> (<code>postgres</code>, by default).</td>
+   <td><span class="version-tag">New in v22.1:</span> If <code>true</code>, any statement executed inside of an explicit transaction (with the exception of <a href="set-vars.html"><code>SET</code></a> statements) will return a transaction retry error.
+     <br/>If the client retries the transaction using the special <a href="savepoint.html#savepoints-for-client-side-transaction-retries"><code>cockroach_restart</code> <code>SAVEPOINT</code> name</a>, after the 3rd retry error, the transaction will proceed as normal.
+  Otherwise, the errors will continue until <code>inject_retry_errors_enabled</code> is set to <code>false</code>.
+    <br/>For more details, see <a href="transactions.html#testing-transaction-retry-logic">Testing transaction retry logic</a>.</td>
+   <td><code>false</code></td>
    <td>Yes</td>
    <td>Yes</td>
   </tr>
 
   <tr>
    <td>
-    <code>intervalstyle_enabled</code>
+    <code>intervalstyle</code>
    </td>
-   <td> Enables setting the <code>intervalstyle</code> session variable to a supported format.</td>
-   <td>The value set by the <code>sql.defaults.intervalstyle.enabled</code> <a href="cluster-settings.html">cluster setting</a> (<code>false</code>, by default).</td>
+   <td> The input string format for <a href="interval.html"><code>INTERVAL</code></a> values.
+     <br>Accepted values include <code>postgres</code>, <code>iso_8601</code>, and <code>sql_standard</code>.</td>
+   <td>The value set by the <code>sql.defaults.intervalstyle</code> <a href="cluster-settings.html">cluster setting</a> (<code>postgres</code>, by default).</td>
    <td>Yes</td>
    <td>Yes</td>
   </tr>

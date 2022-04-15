@@ -660,5 +660,5 @@ To customize the frequency of per-operation statistics, use the `--display-every
 ## See also
 
 - [`cockroach demo`](cockroach-demo.html)
-- [Other Cockroach Commands](cockroach-commands.html)
+- [`cockroach` Commands Overview](cockroach-commands.html)
 - [Performance Benchmarking with TPC-C](performance-benchmarking-with-tpcc-small.html)

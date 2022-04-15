@@ -8,7 +8,7 @@ This page walks you through deploying an application and database in multiple re
 
 {% include {{ page.version.version }}/misc/movr-flask-211.md %}
 
-{% include {{ page.version.version }}/misc/movr-live-demo.md %}
+<!-- {% include {{ page.version.version }}/misc/movr-live-demo.md %} -->
 
 ## Before you begin
 
@@ -268,7 +268,7 @@ Some time after you have deployed your application, you will likely need to push
 
 ## See also
 
-- [MovR (live demo)](https://movr.cloud)
+<!-- [MovR (live demo)](https://movr.cloud)-->
 - [CockroachCloud documentation](../cockroachcloud/quickstart.html)
 - [Google Cloud Platform documentation](https://cloud.google.com/docs/)
 - [Docker documentation](https://docs.docker.com/)
