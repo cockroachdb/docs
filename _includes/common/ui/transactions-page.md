@@ -77,7 +77,7 @@ The Transactions table gives details for each SQL statement fingerprint in the t
 
 Column | Description
 -----|------------
-Transactions | The [SQL statement fingerprints]({{ page_prefix }}statements-page.html#sql-statement-fingerprints) that make up the transaction.<br><br>To view the transaction fingerprint and details, click to open the [Transaction Details page](#transaction-details-page).
+Transactions | The [SQL statement fingerprints]({{ page_prefix }}statements-page.html#sql-statement-fingerprints) that make up the transaction. To view the transaction fingerprint and details, click to open the [Transaction Details page](#transaction-details-page).
 Aggregation Interval (UTC) | The interval over which statistics are aggregated. <br><br>For example, if a transaction is executed at 1:23PM it will fall in the 1:00PM - 2:00PM interval.
 Execution Count | Cumulative number of executions of this transaction within the aggregation interval. <br><br>The bar indicates the ratio of runtime success (gray) to [retries]({{ link_prefix }}transactions.html#transaction-retries) (red) for the transaction.
 Rows Read | Average number of rows [read from disk]({{ link_prefix }}architecture/life-of-a-distributed-transaction.html#reads-from-the-storage-layer) while executing this transaction within the aggregation interval.<br><br>The gray bar indicates the mean number of rows returned. The blue bar indicates one standard deviation from the mean.
