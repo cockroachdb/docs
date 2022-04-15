@@ -16,3 +16,7 @@ The **Statements** page helps you:
 To view this page, click **SQL Activity** in the left-hand navigation of the DB Console. The **Statements** tab is selected.
 
 {% include common/ui/statements-page.md %}
+
+{% include {{ page.version.version }}/ui/statements-table.md %}
+
+{% include {{ page.version.version }}/ui/statement-details.md %}

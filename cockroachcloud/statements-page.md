@@ -6,6 +6,8 @@ cloud: true
 docs_area: manage
 ---
 
+{% capture version_prefix %}{{site.versions["stable"]}}/{% endcapture %}
+
 The **Statements** page helps you:
 
 - Identify frequently executed or high latency [SQL statements](../{{site.versions["stable"]}}/sql-statements.html).
@@ -15,3 +17,7 @@ The **Statements** page helps you:
 To view this page, click **SQL Activity** in the left-hand navigation of the {{ site.data.products.db }} Console. The **Statements** tab is selected.
 
 {% include common/ui/statements-page.md %}
+
+{% include {{version_prefix}}ui/statements-table.md %}
+
+{% include {{version_prefix}}ui/statement-details.md %}
