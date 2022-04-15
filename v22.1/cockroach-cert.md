@@ -6,83 +6,17 @@ key: create-security-certificates.html
 docs_area: reference.cli
 ---
 
-To secure your CockroachDB cluster's inter-node and client-node communication, you need to provide a Certificate Authority (CA) certificate that has been used to sign keys and certificates (SSLs) for:
+The CockroachDB CLI's `cockroach cert` command allows you to generate [private key/public certificate pairs for TLS authentication and encryption in communication between CockroachDB nodes, and from SQL clients to the cluster.
 
-- Nodes
-- Clients
-- DB Console (optional)
+To learn more, explore:
 
-To create these certificates and keys, use the `cockroach cert` [commands](cockroach-commands.html) with the appropriate subcommands and flags, use [`openssl` commands](https://wiki.openssl.org/index.php/), or use a [custom CA](create-security-certificates-custom-ca.html) (for example, a public CA or your organizational CA).
-
-{% include filter-tabs.md %}
-
-{{site.data.alerts.callout_success}}For details about when and how to change security certificates without restarting nodes, see <a href="rotate-certificates.html">Rotate Security Certificates</a>.{{site.data.alerts.end}}
-
-## How security certificates work
-
-1. Using the `cockroach cert` command, you create a CA certificate and key and then node and client certificates that are signed by the CA certificate. Since you need access to a copy of the CA certificate and key to create node and client certs, it's best to create everything in one place.
-
-2. You then upload the appropriate node certificate and key and the CA certificate to each node, and you upload the appropriate client certificate and key and the CA certificate to each client.
-
-3. When nodes establish contact to each other, and when clients establish contact to nodes, they use the CA certificate to verify each other's identity.
-
-## Subcommands
-
-Subcommand | Usage
------------|------
-`create-ca` | Create the self-signed certificate authority (CA), which you'll use to create and authenticate certificates for your entire cluster.
-`create-node` | Create a certificate and key for a specific node in the cluster. You specify all addresses at which the node can be reached and pass appropriate flags.
-`create-client` | Create a certificate and key for a [specific user](create-user.html) accessing the cluster from a client. You specify the username of the user who will use the certificate and pass appropriate flags.
-`list` | List certificates and keys found in the certificate directory.
-
-## Certificate directory
-
-When using `cockroach cert` to create node and client certificates, you will need access to a local copy of the CA certificate and key. It is therefore recommended to create all certificates and keys in one place and then distribute node and client certificates and keys appropriately. For the CA key, be sure to store it somewhere safe and keep a backup; if you lose it, you will not be able to add new nodes or clients to your cluster. For a tutorial of this process, see [Manual Deployment](manual-deployment.html).
-
-## Required keys and certificates
-
-The `create-*` subcommands generate the CA certificate and all node and client certificates and keys in a single directory specified by the `--certs-dir` flag, with the files named as follows:
-
-### Node key and certificates
-
-File name pattern | File usage
--------------|------------
-`ca.crt`     | CA certificate.
-`node.crt`   | Server certificate. <br><br>`node.crt` must be signed by `ca.crt` and must have `CN=node` and the list of IP addresses and DNS names listed in `Subject Alternative Name` field. CockroachDB also supports [wildcard notation in DNS names](https://en.wikipedia.org/wiki/Wildcard_certificate).
-`node.key`   | Key for server certificate.
-
-### Client key and certificates
-
-File name pattern | File usage
--------------|------------
-`ca.crt`     | CA certificate.
-`client.<user>.crt` | Client certificate for `<user>` (e.g., `client.root.crt` for user `root`). <br><br> Must be signed  by `ca.crt`. Also, `client.<username>.crt` must have `CN=<user>` (for example, `CN=marc` for `client.marc.crt`)
-`client.<user>.key` | Key for the client certificate.
-
-Optionally, if you have a certificate issued by a public CA to securely access the DB Console, you need to place the certificate and key (`ui.crt` and `ui.key` respectively) in the directory specified by the `--certs-dir` flag. For more information, refer to [Use a UI certificate and key to access the DB Console](create-security-certificates-custom-ca.html#accessing-the-db-console-for-a-secure-cluster).
-
-Note the following:
-
-- By default, the `node.crt` is multi-functional, as in the same certificate is used for both incoming connections (from SQL and DB Console clients, and from other CockroachDB nodes) and for outgoing connections to other CockroachDB nodes. To make this possible, the `node.crt` created using the `cockroach cert` command has `CN=node` and the list of IP addresses and DNS names listed in `Subject Alternative Name` field.
-
-- The CA key is never loaded automatically by `cockroach` commands, so it should be created in a separate directory, identified by the `--ca-key` flag.
-
-### Key file permissions
-
-The CockroachDB CLI's `cockroach cert` command allows you to create transport layer security (TLS) certificates. The CLI offers the following functionality:
-- Generate a root certificate authority (CA) certificate for your cluster, and use it to sign public certificates.
-- Generate key pair for use by a CockroachDB node.
-- Generate a key pair for use by a TLS-authenticated CockroachDB client.
-
-The CockroachDB CLI's `cockroach cert` command allows you to generate [private key/public certificate pairs for TLS authentication and encryption](security-reference/transport-layer-security.html) in communication between CockroachDB nodes, and from SQL clients to the cluster.
-
+- [Transport Layer Security (TLS) and Public Key Infrastructure (PKI)](security-reference/transport-layer-security.html)
+- [Using the CockroachDB CLI to provision a development cluster](manage-certs-cli.html).
+- [Using Google Cloud Platform to manage PKI certificates](manage-certs-gcloud.html).
 
 {{site.data.alerts.callout_info}}
 
 The ability to rapidly and locally generate private key/public certificate pairs is handy for development, but careful management of security certificates is an essential component of cluster security, and performing these tasks with a cloud-native tool such as Google Cloud Platform's Certificate Authority Service (CAS) offers many security advantages.
-
-See [Using the CockroachDB CLI to provision a development cluster](manage-certs-cli.html).
-See [Using Google Cloud Platform to manage PKI certificates](manage-certs-gcloud.html).
 
 {{site.data.alerts.end}}
 

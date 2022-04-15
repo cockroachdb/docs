@@ -1,11 +1,16 @@
 ---
-title: Public Key Infrastructure (PKI) and Transport Layer Security (TLS)
+title: Transport Layer Security (TLS) and Public Key Infrastructure (PKI)
 summary: Overview of PKI and TLS and how to implement them with CockroachDB
 toc: true
 docs_area: reference.security
 ---
 
-This page provides a conceptual overview of Public Key Infrastructre (PKI) and Transport Layer Security (TLS), and sketches the security-architecture considerations in play when using CockroachDB.
+This page provides a conceptual overview of Transport Layer Security (TLS) and the related notion of Public Key Infrastructre (PKI), and sketches the security-architecture considerations in play when using CockroachDB.
+
+See:
+
+- [Using Google Cloud Platform to manage PKI certificates.](../manage-certs-gcloud.html)
+- [Using the CockroachDB CLI to provision a development cluster.](../manage-certs-cli.html)
 
 ## What is Transport Layer Security (TLS)?
 
@@ -40,8 +45,9 @@ TLS connections can be either *one-sided*, meaning that only one party must prov
 In mutually authenticated TLS connections, each party must have a key pair issued by a jointly trusted CA. This is a good system for internal components within a distributed system, and generally works well for long-lived clients.
 
 In one-sided TLS authentication, only the server must have a key pair; the user may be able to access information without any authentication. This works well when:
+
 - The client needs no authentication, for example, for a public read-only website or API.
-- When the user must authenticate to the application being served with another mechanism, such as a username/password combination or a Single Sign-On (SSO)  or by logging in to an application with a username/password combination once TLS-encrypted communication is already established.
+- When the user must authenticate with another mechanism, such as a username/password combination or Single Sign-On (SSO).
 
 ### Symmetric and asymmetric encryption in TLS
 
@@ -63,12 +69,12 @@ Encryption is powerful and important, but without identity authentication, it's 
 
 If you encrypt a  message with a TLS public key, you know that only a holder of the matching private key will be able to decrypt it. And perhaps the holder of the public certificate identifies themself as your friend, your bank, your employer, or a government. But how can you trust that the certificate was ever actually held by the party you want to reach, rather than an imposter?
 
-This is a complex social and technological problem, and the solution used for the internet as a whole, as well as for many large organizations across the world, is also a complex mix of social and digital technologies. It is what is known as Public Key Infrastructure (PKI).
+This is a complex social and technological problem, and the primary solution used today by the internet as a whole, as well as organizations across the world, is mix of careful practices, social relationships, and digital technologies. It is what is known as Public Key Infrastructure (PKI).
 
 At its core, PKI is a hierarchy of cryptographically backed trust relationships between the following categories of interested party:
-- Subscribers wish to use the PKI to prove their identity to the world and offer secure services to others.
-- Relying parties wish to connect with subscribers, secure in the their knownledge of the identity of the latter.
-- Certificate Authorities (CA) are responsible for verifying the identity of subscribers (which can include subornidate certificate authorties).
+- **Subscribers** wish to use the PKI to prove their identity to the world and offer secure services to others.
+- **Relying parties** wish to connect with subscribers, secure in the their knownledge of the identity of the latter.
+- **Certificate Authorities (CA)** are responsible for verifying the identity of subscribers (which can include subornidate certificate authorties).
 
 ### Certificates, signing, trust and authority
 
@@ -90,17 +96,15 @@ Signing simply means encrypting the certificate using a private key, so that it 
 
 The premise of PKI is that if I present you with a certificate, and you can decrypt it with, for example, Cockroach Labs' public certificate, and the decrypted version says that I work for the Cockroach Labs documentation team, essentially you may interpret that Cockroach Labs offers its guarantee that I work for the documentation team (or at least, I did when the certificate was signed).
 
-Generally, given that you can put your trust in the organization that backs the Certificate Authority who has signed a server's public certificate, you can extend your trust that the holder of the private key corresponding to that certificate is who the certificate says they are. For example, this is how your web browser or mobile app knows that it's actually talking to your bank, rather than an imposter.
+Generally, given that you can put your trust in the organization that backs the Certificate Authority who has signed a server's public certificate, you can extend your trust that the holder of the private key corresponding to that certificate is who the certificate says they are. For example, this is how your web browser or mobile app knows that it's actually talking to your bank, rather than an imposter. Furthermore, one Certificate Authority may grant certify that another party is authorized to issue certificates on its behalf, acting as a **subordinate CA**.
 
-A "tree" or hierarchy of cryptographic signatures, when such delegated trust relationships and its use together with key pair cryptography in establishing secure identity authentication and encrypted communication, is what's known as **Public Key Infrastructure (PKI)**. PKI is a critical supporting component of the World Wide Web and our global computing ecosystem more broadly.
+A "tree" or hierarchy of delegated trust relationships encoded as cryptographic signatures is the core idea of **Public Key Infrastructure (PKI)**.
 
 ### Public and private PKIs
 
-On the public internet, Certificate Authority providers such as Identrust, Digicert, and Let's Encrypt provide the role of trust anchors to the entire system.... yada yada
+On the public internet, Certificate Authority providers such as Identrust, Digicert, and Let's Encrypt provide the role of trust anchors to the entire system. What makes them "trust-worthy"? In practice, just the fact that they are **trusted** by the parties that distribute hardware and software (such as operating system distributions and browsers) packages that come pre-loaded with **trust stores**, i.e. list of public certificates for trusted CAs. By using such a package, you are trusting the judgment of the company selected the CAs to add to the package's trust store.
 
-What makes them "trust-worthy" or "legit"? In practice, just the fact that they are **trusted** by the parties that distribute **trust stores** (list of trusted CAs)along with hardware and software components such as browsers, operating system distributions and laptop and mobile devices.
-
-Organizations must maintain their own trust architectures, operating their own private certificate authority to verify identify in ways that make sense in context, and certify that identity with a cryptographic signature.
+Internally, organizations must must maintain their own trust architectures, deciding what parties (individual persons), should have access to what network, computing, data, financial, and meat-space resources, and using certificates or other means to authenticate identity and establish encryption. Certificates and TLS are powerful tools, but only provide security when deployed properly, and in particular when access to the CAs and to the cluster itself are carefully protected according to the [principle of least privilege](https://en.wikipedia.org/wiki/Principle_of_least_privilege).
 
 See our tutorial on [using Google Cloud Platform to manage PKI certificates](../manage-certs-gcloud.html)
 
@@ -152,6 +156,10 @@ CockroachDB can be operated entirely without TLS. If a CockroachDB cluster is st
 
 Note that client connections must also be made insecurely, or the connection request will fail. Do this by using `cockroach sql --insecure` on the CLI, or by setting `sslmode=off` in the database connection string.
 
+## The CockroachDB certificate Trust Store
+
+A node's [**trust store**](#public-and-private-pkis) is the set of public CA certificates contained in its `certs` directory. The node will accept all valid certificates signed by the CA or any CA subordinate to it, for any CA whose public certificate is in the trust store. CockroachDB ignores operating system certificate trust stores.
+
 ## TLS between CockroachDB nodes
 
 Connections between CockroachDB nodes are always mutually TLS authenticated. Each node must have at least one TLS key pair, which it can use both as server and as client when initiating internode traffic.
@@ -162,37 +170,44 @@ Customers using {{ site.data.products.db }} need not worry about managing TLS ke
 
 ### CockroachDB Self-Hosted
 
-Customers who deploy and manage their own CockroachDB clusters must provision and manage certificates on each nodes.
+{{site.data.alerts.callout_info}}
+Customers who deploy and manage their own CockroachDB clusters must provision and manage certificates on each nodes, implementing their own PKI security. This entails ensuring that credentials are carefully controlled, monitoring for signs of compromise and mitigating the impact of potential credential leaks. Authorization for issuing credentials is particularly critical, and this includes issuing private key/public certificate pairs for CockroachDB nodes or clients. Unmitigated compromise of either of these can have devastating business impact.
+
+Choosing a strategy for maintaining solid private PKI is important and complex, and depends on your total system requirements, total security threat model, and available resources.
+
+- Review our [breakdown of security features by offering](security-overview.html).
+- Contact our <a href="mailto:sales@cockroachlabs.com">sales team</a> to discuss your needs and the range of solutions offered by Cockroach Labs.
+{{site.data.alerts.end}}
 
 By default, a CockroachDB node makes double use of a single key pair, using it to authenticate both as client when initiating a connection to another node, and as server when recieving requests.
 
-In this case, each CockroachDB node must have the following files:
-
-- The node's private key, `node.key`
-- The node's public certificate, `node.crt`
-- The public CA certificate of the Certificate Authority that signed the nodes' public certificates, called `ca.crt`.
-
-See [Using Google Cloud Platform to manage PKI certificates] for a walkthrough of provisioning a cluster with the required keys and certificates, or 
+The node must also have a trust store containing the public certificate of at least one trusted CA&mdash;the one that issued the public certificates of any nodes it must connect with.
 
 ## TLS in CockroachDB SQL client connections
 
-CockroachDB provides a number of SQL clients, including a CLI, and several drivers and object-relational mapping (ORM) tools. Regardless of which client you are using, how you are able to authenticate to a CockroachDB cluster depends on that cluster's [authentication configuration](authentication.html), specifically whether that configuration requires the user to authenticate with TLS or another method.
+CockroachDB provides a number of SQL clients, including a [CLI](../cockroach-sql.html#start-a-sql-shell), and a number of [drivers and object-relational mapping (ORM) tools](../install-client-drivers.html). Regardless of which client you are using, how you are able to authenticate to a CockroachDB cluster depends on that cluster's [authentication configuration](authentication.html), specifically whether that configuration requires the user to authenticate with username/password combination, certificate or another method.
 
 In turn, which authentication methods are available depends on the sort of environment in which a CockroachDB cluster is deployed, as described in the following.
 
-Try it out:
-- [Connect with the CockroachDB CLI's `cockroach sql` command.](../cockroach-sql.html#start-a-sql-shell)
-- [Connect with a software driver or ORM.](../install-client-drivers.html)
 
 ### CockroachDB Cloud
 
-{{ site.data.products.db }} currently does not support certificate-authenticated client requests. TLS is still used to authenticate the server and encrypt all traffic, but the user must authenticate to the database using another method (currently limited to username/password combination).
+{{ site.data.products.db }} currently does not support certificate-authenticated client requests. TLS is still used to authenticate the server and encrypt all traffic, but the user must authenticate to the database with a username/password combination.
 
-Because the server must still be TLS authenticated, the client must know to trust the certificate authority that signed the public certificate identifying the server. Therefore, the root CA certificate, called `ca.crt`, must be provided to client authentication attempts. For example, this is passed as the `sslrootcert` parameter in a [database connecton string](../connect-to-the-database.html), or by being placed in the directory specified by the `certs-dir` argument in a connection made with the [`cockroach sql`](../cockroach-sql.html) CLI command.
+Because the server must still be TLS authenticated, the client must know to trust the certificate authority that signed the public certificate identifying the server. The path to the CA's public certificate is passed as the `sslrootcert` parameter in a [database connecton string](../connect-to-the-database.html), or by being placed in the directory specified by the `certs-dir` argument in a connection made with the [`cockroach sql`](../cockroach-sql.html) CLI command.
 
 ### Self-Hosted CockroachDB
 
-{{ site.data.products.serverless }} clusters support TLS authentication for clients. Other supported methods are username/password combination, and GSSAPI/Kerberos (Enterprise only).
+{{site.data.alerts.callout_info}}
+Customers who deploy and manage their own CockroachDB clusters must provision and manage certificates on each nodes, implementing their own PKI security. This entails ensuring that credentials are carefully controlled, monitoring for signs of compromise and mitigating the impact of potential credential leaks. Authorization for issuing credentials is particularly critical, and this includes issuing private key/public certificate pairs for CockroachDB nodes or clients. Unmitigated compromise of either of these can have devastating business impact.
+
+Choosing a strategy for maintaining solid private PKI is important and complex, and depends on your total system requirements, total security threat model, and available resources.
+
+- Review our [breakdown of security features by offering](security-overview.html).
+- Contact our <a href="mailto:sales@cockroachlabs.com">sales team</a> to discuss your needs and the range of solutions offered by Cockroach Labs.
+{{site.data.alerts.end}}
+
+{{ site.data.products.serverless }} clusters support TLS authentication for clients, i.e. mutual TLS authentication. Other supported authentication methods are username/password combination, and GSSAPI/Kerberos (Enterprise only).
 
 #### Non-TLS client authentication
 
@@ -211,16 +226,29 @@ These key files are used with the CockroachDB CLI by placing them in a directory
 
 ## Revoking Certificates in CockroachDB
 
-CockroachDB does not support certificate revocation lists (CRLs). The remaining options are the Online Certificate Status Protocol (OCSP), or to rely on a rapid cycle of generating and propagating short-lived certificates.
+### CockroachDB Cloud
 
-### Short-lived certificates
+Customers of {{ site.data.products.db }} delegate responsibility for maintaining cluster internal PKI to the Cockroach Labs team, and need not worry about securing authentication and encryption between cluster nodes.
 
-Securely operating an OCSP responder is a significant task, and it would not be recommended to undertake this solely for the purposes of securing a CockroachDB cluster. Therefore, for many self-hosted customers, we recommend a strategy of relying on a short "lifetime", i.e., validity duration, for credentials (private key/public certificate pairs) issued to CRDB nodes and SQL clients. This strategy is relatively easy to implement in an automated pipeline using cloud native secrets management tools such as GCP secrets manager or Hashicorp Vault to securely propogate certificates, and synergizes with the use of cloud native CA tools, such as GCP's Certficiate Authority Service (CAS). By relying on certficiates with a short validity duration, for example, only an hour, we can greatly reduce the threat posed by such a certificate being leaked. To maintain connection to the network, a would-be-attacker would need to maintain access to the GCP secret manager endpoint, in order to receive fresh versions of the certificate. This (nearly) consolidates the risk surface of the certificate itself into the shadow of access to the secrets manager.
+{{ site.data.products.db }} clusters do not support certificate based client authentication, but rely instead on username/password combination.
 
-Using these tools, an operator can create an automation pipeline to generate and propagate certificates.
+### CockroachDB Self-Hosted 
 
-See: [Using Google Cloud Platform to manage PKI certificates](../manage-certs-gcloud.html)
+CockroachDB does not support certificate revocation lists (CRLs). The remaining options are the Online Certificate Status Protocol (OCSP), and reliance on a rapid cycle of generating and propagating short-lived certificates.
 
-### OCSP 
+#### OCSP 
+
+Securely operating an OCSP responder is a significant task, and it would not be recommended to undertake this solely for the purposes of securing a CockroachDB cluster.
 
 CockroachDB can be [configured to check an OCSP responder](../manage-certs-revoke-ocsp.html).
+
+#### Short-lived certificates
+
+For many self-hosted customers, we recommend a strategy of relying on a short "lifetime", i.e., validity duration, for credentials (private key/public certificate pairs) issued to CRDB nodes and SQL clients. This strategy is relatively easy to implement in an automated pipeline using cloud native secrets management tools such as GCP secrets manager or Hashicorp Vault to securely propagate certificates, and synergizes with the use of cloud native CA tools, such as GCP's Certficiate Authority Service (CAS). Using these tools, an operator can create an automation pipeline to generate and propagate certificates.
+
+By relying on certficiates with a short validity duration, we can greatly reduce the threat posed by such a certificate being leaked, since the certificate's value to an attacker is limited by its validity duration.
+To maintain connection to a network secured by short-lived credentials, a would-be-attacker must maintain access to the secret manager used to propagate the credentials. This consolidates the risk surface of the certificate itself into the shadow of access to the secrets manager.
+
+The trade-off with short-lived certificates (or requiring any low-latency revocation system), is that it can become a single point of failure for service availability. If network connections depend on hourly propagation of fresh credentials, then a leaked credential only offers an attacker a one hour window of exploitation, but taking the credential automation offline for more than an hour can take the entire system offline. Fine tuning the validity duration to meet your threat model and available resources is an important component of designing a minimally secure private PKI without using another revocation mechanism.
+
+See: [Using Google Cloud Platform to manage PKI certificates](../manage-certs-gcloud.html)
