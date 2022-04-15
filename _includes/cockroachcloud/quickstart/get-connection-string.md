@@ -1,4 +1,4 @@
-The **Connect to your cluster** dialog shows information about how to connect to your cluster.
+The **Connect to cluster** dialog shows information about how to connect to your cluster.
 
 1. Select **General connection string** from the **Select option** dropdown.
 1. Open the **General connection string** section, then copy the connection string provided and save it in a secure location.
