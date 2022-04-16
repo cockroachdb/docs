@@ -15,7 +15,6 @@ To learn more, explore:
 - [Using Google Cloud Platform to manage PKI certificates](manage-certs-gcloud.html).
 
 {{site.data.alerts.callout_info}}
-
 The ability to rapidly and locally generate private key/public certificate pairs is handy for development, but careful management of security certificates is an essential component of cluster security, and performing these tasks with a cloud-native tool such as Google Cloud Platform's Certificate Authority Service (CAS) offers many security advantages.
 
 {{site.data.alerts.end}}
@@ -103,7 +102,7 @@ The `cert` command and subcommands support the following [general-use](#general)
 
 Flag | Description
 -----|-----------
-`--certs-dir` | The path to the [certificate directory](#certificate-directory) containing all certificates and keys needed by `cockroach` commands.<br><br>This flag is used by all subcommands.<br><br>**Default:** `${HOME}/.cockroach-certs/`
+`--certs-dir` | The path to the combined [trust store/secrets store](security-reference/transport-layer-security.html#trust-store) containing all certificates and keys needed by `cockroach` commands.<br><br>This flag is used by all subcommands.<br><br>**Default:** `${HOME}/.cockroach-certs/`
 `--ca-key` | The path to the private key protecting the CA certificate. <br><br>This flag is required for all `create-*` subcommands. When used with `create-ca` in particular, it defines where to create the CA key; the specified directory must exist.<br><br>**Env Variable:** `COCKROACH_CA_KEY`
 `--allow-ca-key-reuse` | When running the `create-ca` subcommand, pass this flag to re-use an existing CA key identified by `--ca-key`. Otherwise, a new CA key will be generated.<br><br>This flag is used only by the `create-ca` subcommand. It helps avoid accidentally re-using an existing CA key.
 `--overwrite` | When running `create-*` subcommands, pass this flag to allow existing files in the certificate directory (`--certs-dir`) to be overwritten.<br><br>This flag helps avoid accidentally overwriting sensitive certificates and keys.
@@ -113,8 +112,75 @@ Flag | Description
 
 ### Logging
 
-[The `--log` and `--log-config-file` flags can be used to configure logging behavior for all CockroachDB CLI commands](../configure-logs.html), including `cockroach cert`.
+[The `--log` and `--log-config-file` flags can be used to configure logging behavior for all CockroachDB CLI commands](configure-logs.html), including `cockroach cert`.
 {% include {{ page.version.version }}/misc/logging-defaults.md %}
+
+## Certificate directory
+
+When using `cockroach cert` to create node and client certificates, you will need access to a local copy of the CA certificate and key. It is therefore recommended to create all certificates and keys in one place and then distribute node and client certificates and keys appropriately. For the CA key, be sure to store it somewhere safe and keep a backup; if you lose it, you will not be able to add new nodes or clients to your cluster. For a walkthrough of this process, see [Manual Deployment](manual-deployment.html).
+
+## Required keys and certificates
+
+The `create-*` subcommands generate the CA certificate and all node and client certificates and keys in a single directory specified by the `--certs-dir` flag, with the files named as follows:
+
+### Node key and certificates
+
+File name pattern | File usage
+-------------|------------
+`ca.crt`     | CA certificate.
+`node.crt`   | Server certificate. <br><br>`node.crt` must be signed by `ca.crt` and must have `CN=node` and the list of IP addresses and DNS names listed in `Subject Alternative Name` field. CockroachDB also supports [wildcard notation in DNS names](https://en.wikipedia.org/wiki/Wildcard_certificate).
+`node.key`   | Key for server certificate.
+
+### Client key and certificates
+
+File name pattern | File usage
+-------------|------------
+`ca.crt`     | CA certificate.
+`client.<user>.crt` | Client certificate for `<user>` (e.g., `client.root.crt` for user `root`). <br><br> Must be signed  by `ca.crt`. Also, `client.<username>.crt` must have `CN=<user>` (for example, `CN=marc` for `client.marc.crt`)
+`client.<user>.key` | Key for the client certificate.
+
+Optionally, if you have a certificate issued by a public CA to securely access the DB Console, you need to place the certificate and key (`ui.crt` and `ui.key` respectively) in the directory specified by the `--certs-dir` flag. For more information, refer to [Use a UI certificate and key to access the DB Console](create-security-certificates-custom-ca.html#accessing-the-db-console-for-a-secure-cluster).
+
+Note the following:
+
+- By default, the `node.crt` is multi-functional, as in the same certificate is used for both incoming connections (from SQL and DB Console clients, and from other CockroachDB nodes) and for outgoing connections to other CockroachDB nodes. To make this possible, the `node.crt` created using the `cockroach cert` command has `CN=node` and the list of IP addresses and DNS names listed in `Subject Alternative Name` field.
+
+- The CA key is never loaded automatically by `cockroach` commands, so it should be created in a separate directory, identified by the `--ca-key` flag.
+
+### Key file permissions
+
+{{site.data.alerts.callout_info}}
+This check is only relevant on macOS, Linux, and other UNIX-like systems.
+{{site.data.alerts.end}}
+
+To reduce the likelihood of a malicious user or process accessing a certificate key (files ending in ".key"), we require that the certificate key be owned by one of the following system users:
+
+- The user that the CockroachDB process runs as.
+- The system `root` user (not to be confused with the [CockroachDB `root` user](security-reference/authorization.html#root-user)) and the group that the CockroachDB process runs in.
+
+For example, if running the CockroachDB process as a system user named `cockroach`, we can determine the group that the process will run in by running `id cockroach`:
+
+```shell
+id cockroach
+uid=1000(cockroach) gid=1000(cockroach) groups=1000(cockroach),1000(cockroach)
+```
+
+In the output, we can see that the system user `cockroach` is also in the `cockroach` group (with the group id or gid of 1000).
+
+If the key file is owned by the system `root` user (who has a user ID of 0), CockroachDB won't be able to read it unless it has permission to read because of its group membership. Because we know that CockroachDB is running in the `cockroach` group, we can allow CockroachDB to read the key by changing the group owner of the key file to the `cockroach` group. We then give the group read permissions by running `chmod`.
+
+```shell
+sudo chgrp cockroach ui.key
+sudo chmod 0740 ui.key
+```
+
+However, if the `ui.key` file is owned by the `cockroach` system user, CockroachDB ignores the group ownership of the file, and requires that the permissions only allow the `cockroach` system user to interact with it (`0700` or `rwx------`).
+
+Note the following:
+
+- When running in Kubernetes, you will not be able to change the user that owns a certificate file mounted from a Secret or another Volume, but you will be able to override the group by setting the `fsGroup` flag in a Pod or Container's Security Context. In our example above, you would set `fsGroup` to "1000". You will also need to set the key's "mode" using the `mode` flag on individual items or the `defaultMode` flag if applying to the entire secret.
+
+- This check can be disabled by setting the environment variable `COCKROACH_SKIP_KEY_PERMISSION_CHECK` to `true`.
 
 ## Examples
 

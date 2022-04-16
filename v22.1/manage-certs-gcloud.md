@@ -23,7 +23,7 @@ The solution demonstrated here has the advantages of making full use of GCP's st
 - Google Cloud Platform (GCP):
 	- Create a GCP account and project.
 	- Install and configure the Google Cloud CLI (gcloud) and enable [Google CA Service](https://console.cloud.google.com/security/cas).
-- Provision [three compute nodes](deploy-cockroachdb-on-google-cloud-platform.html#step-2-create-instances) in a [properly configured network](../deploy-cockroachdb-on-google-cloud-platform.html#step-1-configure-your-network.html).
+- Provision [three compute nodes](deploy-cockroachdb-on-google-cloud-platform.html#step-2-create-instances) in a [properly configured network](deploy-cockroachdb-on-google-cloud-platform.html#step-1-configure-your-network).
 - Provision either a static IP on one of the nodes, or a load balancer sitting in front of the instance group.
 
 ## Create an environment manifest
@@ -259,7 +259,7 @@ gcloud beta compute ssh --command './start_roach.sh' $node3name
 
 ### Install CockroachDB locally
 
-Install Cockroach locally [another way](../install-cockroachdb-mac.html) or with docker as follows:
+Install Cockroach locally [another way](install-cockroachdb-mac.html) or with docker as follows:
 
 {% include_cached copy-clipboard.html %}
 ```shell

@@ -110,7 +110,7 @@ If you are using Liquibase in the context of a separate Java application, we rec
 
 When you [started a secure CockroachDB cluster](secure-a-cluster.html), you should have created a user `max`. You should have also given this user the [`admin` role](security-reference/authorization.html#admin-role), which grants all privileges to all databases on the cluster. In this tutorial, Liquibase runs schema changes as the `max` user.
 
-To authenticate connection requests to CockroachDB from the Liquibase client, you need to generate some certificates for `max`. Use [`cockroach cert`](cockroach-cert.html#synopsis) to generate the certificates:
+To authenticate connection requests to CockroachDB from the Liquibase client, you need to generate some certificates for `max`. Use [`cockroach cert`](cockroach-cert.html) to generate the certificates:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
