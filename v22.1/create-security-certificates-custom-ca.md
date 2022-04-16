@@ -12,6 +12,7 @@ This document discusses the advanced use cases for using security certificates w
 
 
 See also:
+
 - [Public Key Infrastructure (PKI) and Transport Layer Security (TLS)](security-reference/transport-layer-security.html)
 - [Using the CockroachDB CLI to provision a development cluster](manage-certs-cli.html).
 - See [Using Google Cloud Platform to manage PKI certificates](manage-certs-gcloud.html).
@@ -30,7 +31,7 @@ For secure clusters, you can avoid getting the warning message by using a certif
 
 1. Request a certificate from a public CA (for example, [Let's Encrypt](https://letsencrypt.org/)). The certificate must have the IP addresses and DNS names used to reach the DB Console listed in the `Subject Alternative Name` field.
 2. Rename the certificate and key as `ui.crt` and `ui.key`.
-3. Add the `ui.crt` and `ui.key` to the [certificate directory](cockroach-cert.html#certificate-directory). `ui.key` must meet the [permission requirements check](cockroach-cert.html#key-file-permissions) on macOS, Linux, and other UNIX-like systems. If your cluster is deployed using containers, update the containers to include the new certificate and key.
+3. Add the `ui.crt` and `ui.key` to the [trust store](security-reference/transport-layer-security.html#trust-store). `ui.key` must meet the [permission requirements check](cockroach-cert.html#key-file-permissions) on macOS, Linux, and other UNIX-like systems. If your cluster is deployed using containers, update the containers to include the new certificate and key.
 4. The cockroach process reads certificates only when the process starts.
 
    - In a manually-deployed cluster, load the `ui.crt` certificate without restarting the node by issuing a `SIGHUP` signal to the cockroach process:
