@@ -25,6 +25,8 @@ To execute SQL statements or perform database administration functions on a clus
 
 To connect any SQL client to a {{ site.data.products.db }} cluster, you must have a username/password combination, and the [TLS public root certificate authority (CA) certificate of the cluster](../{{site.versions["dev"]}}/security-reference/transport-layer-security.html#certificates-signing-trust-and-authority).
 
+To connect any SQL client to a {{ site.data.products.db }} cluster, you must have a username/password combination, and the [TLS public root certificate authority (CA) certificate of the cluster](../{{site.versions["dev"]}}/security-reference/transport-layer-security.html#certificates-signing-trust-and-authority).
+
 ### Node identity verification
 
 The [connection string](connect-to-your-cluster.html) generated to connect to your application uses the `verify-full` [SSL mode](#ssl-mode-settings) by default to verify a node’s identity. This mode encrypts the data in-flight as well as verifies the identity of the CockroachDB node, thus ensuring a secure connection to your cluster. Using this mode prevents MITM (Machine in the Middle) attacks, impersonation attacks, and eavesdropping.
