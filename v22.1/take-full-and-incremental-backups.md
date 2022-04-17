@@ -22,7 +22,7 @@ You can use the [`BACKUP`](backup.html) statement to efficiently back up your cl
 
 ## Backup collections
 
- A _backup collection_ defines a set of backups and their metadata. When running a [full backup](#full-backups) to a specified storage location URI, a backup collection will be created in that storage location. The collection can contain multiple full backups and their subsequent [incremental backups](#incremental-backups). (If a full backup is not present in a collection when you run an incremental backup, then a full backup will be taken.) The path to a backup is created using a date-based naming scheme and stored at the URI passed with the `BACKUP` statement.
+ A _backup collection_ defines a set of backups and their metadata. The collection can contain multiple full backups and their subsequent [incremental backups](#incremental-backups). The path to a backup is created using a date-based naming scheme and stored at the URI passed with the `BACKUP` statement.
 
 There are some specific cases where part of the collection data is stored at a different URI:
 
@@ -41,10 +41,9 @@ Collection:
 |—— incrementals
 ~~~
 
-<!--TODO syntax to change here -->
 [`SHOW BACKUPS IN {collectionURI}`](show-backup.html#view-a-list-of-the-available-full-backup-subdirectories) will display a list of the full backup subdirectories at the collection's URI.
 
-Alternately, the following directories also constitute a backup collection. There are multiple backups in two separate collection URIs. Each individual backup is a full backup and its related incremental backup(s). Despite using the [`incremental_location`](#incremental-backups-with-explicitly-specified-destinations) option to store the incremental backup in an alternative location, that incremental backup is still part of this backup collection as it depends on the full backup in the first cloud storage bucket:
+<a name="incremental-location-structure"></a> Alternately, the following directories also constitute a backup collection. There are multiple backups in two separate collection URIs. Each individual backup is a full backup and its related incremental backup(s). Despite using the [`incremental_location`](#incremental-backups-with-explicitly-specified-destinations) option to store the incremental backup in an alternative location, that incremental backup is still part of this backup collection as it depends on the full backup in the first cloud storage bucket:
 
 ~~~
 Cloud storage bucket 1
@@ -167,19 +166,19 @@ Then, create nightly incremental backups based off of the full backups you've al
 <span class="version-tag">New in v22.1:</span> This will add the incremental backup to the default `/incrementals` directory at the root of the backup collection's directory. With incremental backups in the `/incrementals` directory, you can apply different lifecycle/retention policies from cloud storage providers to the `/incrementals` directory as needed.
 
 {{site.data.alerts.callout_info}}
-If there are existing incremental backups in the storage location taken with v21.2 or earlier, new incremental backups will add to the existing incremental directory, (e.g., `{collectionURI}/{subdirectory}`). This follows how [incremental backups](take-full-and-incremental-backups.html#take-an-incremental-backup) were stored by default in v21.2 and earlier. To back up using the prior behavior, see this [example](#backup-earlier-behavior) for details on using the `incremental_location` option to achieve this.
+In v21.2 and earlier, incremental backups were stored in the same directory as their full backup (i.e., `collectionURI/subdirectory`). If an incremental backup points to a subdirectory with incremental backups created in v21.2 and earlier, v22.1 will write the incremental backup to the v21.2 default location. To back up using the prior behavior, see this [example](#backup-earlier-behavior) for details on using the `incremental_location` option to achieve this.
 {{site.data.alerts.end}}
 
 If it's ever necessary, you can then use the [`RESTORE`][restore] statement to restore your cluster, database(s), and/or table(s). Restoring from incremental backups requires previous full and incremental backups.
 
-To restore from an incremental backup, stored in the default `/incrementals` collection subdirectory, run:
+To restore from the latest backup in the collection, stored in the default `/incrementals` collection subdirectory, run:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > RESTORE FROM LATEST IN '{collectionURI}';
 ~~~
 
-To define a specific subdirectory in the collection to restore from:
+To restore from a specific backup in the collection:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -192,7 +191,7 @@ To define a specific subdirectory in the collection to restore from:
 
 ## Incremental backups with explicitly specified destinations
 
-<span class="version-tag">New in v22.1:</span> To explicitly control where your incremental backups go, use the [`incremental_location`](backup.html#options) option.
+<span class="version-tag">New in v22.1:</span> To explicitly control where your incremental backups go, use the [`incremental_location`](backup.html#options) option. By default, incremental backups are stored in the `/incrementals` subdirectory at the root of the collection. However, there are some advanced cases where you may want to store incremental backups in a different storage location.
 
 In the following examples, the `{collectionURI}` specifies the storage location containing the full backup. The `{explicit_incrementalsURI}` is the alternative location that you can store an incremental backup:
 
@@ -204,6 +203,8 @@ BACKUP INTO LATEST IN '{collectionURI}' AS OF SYSTEM TIME '-10s' WITH incrementa
 Although the incremental backup will be in a different storage location, it is still part of the logical [backup collection](#backup-collections).
 
 A full backup must be present in the `{collectionURI}` in order to take an incremental backup to the alternative `{explicit_incrementalsURI}`. If there isn't a full backup present in `{collectionURI}` when taking an incremental backup with `incremental_location`, the error `path does not contain a completed latest backup` will be returned.
+
+For details on the backup directory structure when taking incremental backups with `incremental_location`, see [Backup collections](#incremental-location-structure)
 
 <a name="backup-earlier-behavior"></a> To take incremental backups to a subdirectory in the `collectionURI` that you define (rather than the default `/incrementals` directory), use the `incremental_location` option:
 
