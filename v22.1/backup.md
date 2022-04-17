@@ -140,7 +140,7 @@ Cancel the backup      | [`CANCEL JOB`](cancel-job.html)
 You can also visit the [**Jobs** page](ui-jobs-page.html) of the DB Console to view job details. The `BACKUP` statement will return when the backup is finished or if it encounters an error.
 
 {{site.data.alerts.callout_info}}
-The presence of the `BACKUP MANIFEST` file in the backup collection's storage location is an indicator that the backup job completed successfully.
+The presence of the `BACKUP MANIFEST` file in the backup subdirectory is an indicator that the backup job completed successfully.
 {{site.data.alerts.end}}
 
 ## Examples
@@ -237,7 +237,9 @@ See [Name Resolution](sql-name-resolution.html) for more details on how naming h
 
 ### Create incremental backups
 
-If you back up to a collection URI already containing a [full backup](take-full-and-incremental-backups.html#full-backups), an incremental backup will be added to the default `/incrementals` directory at the root of the [collection](take-full-and-incremental-backups.html#backup-collections) storage location:
+When a `BACKUP` statement specifies an existing subdirectory in the collection, explicitly or via the `LATEST` keyword, an incremental backup will be added to the default `/incrementals` directory at the root of the [collection](take-full-and-incremental-backups.html#backup-collections) storage location.
+
+To take an incremental backup using the `LATEST` keyword:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -246,7 +248,7 @@ If you back up to a collection URI already containing a [full backup](take-full-
     AS OF SYSTEM TIME '-10s';
 ~~~
 
-To store the backup in a specific subdirectory in the storage location:
+To store the backup in an existing subdirectory in the collection:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -372,7 +374,9 @@ See [Name Resolution](sql-name-resolution.html) for more details on how naming h
 
 ### Create incremental backups
 
-If you back up to a collection URI already containing a [full backup](take-full-and-incremental-backups.html#full-backups), an incremental backup will be added to the default `/incrementals` directory at the root of the [collection](take-full-and-incremental-backups.html#backup-collections) storage location:
+When a `BACKUP` statement specifies an existing subdirectory in the collection, explicitly or via the `LATEST` keyword, an incremental backup will be added to the default `/incrementals` directory at the root of the [collection](take-full-and-incremental-backups.html#backup-collections) storage location.
+
+To take an incremental backup using the `LATEST` keyword:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -381,7 +385,7 @@ If you back up to a collection URI already containing a [full backup](take-full-
     AS OF SYSTEM TIME '-10s';
 ~~~
 
-To store the backup in a specific subdirectory in the storage location:
+To store the backup in an existing subdirectory in the collection:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -509,7 +513,9 @@ See [Name Resolution](sql-name-resolution.html) for more details on how naming h
 
 ### Create incremental backups
 
-If you back up to a collection URI already containing a [full backup](take-full-and-incremental-backups.html#full-backups), an incremental backup will be added to the default `/incrementals` directory at the root of the [collection](take-full-and-incremental-backups.html#backup-collections) storage location:
+When a `BACKUP` statement specifies an existing subdirectory in the collection, explicitly or via the `LATEST` keyword, an incremental backup will be added to the default `/incrementals` directory at the root of the [collection](take-full-and-incremental-backups.html#backup-collections) storage location.
+
+To take an incremental backup using the `LATEST` keyword:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -518,7 +524,7 @@ If you back up to a collection URI already containing a [full backup](take-full-
     AS OF SYSTEM TIME '-10s';
 ~~~
 
-To store the backup in a specific subdirectory in the storage location:
+To store the backup in an existing subdirectory in the collection:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

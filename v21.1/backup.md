@@ -142,7 +142,7 @@ Cancel the backup      | [`CANCEL JOB`](cancel-job.html)
 You can also visit the [**Jobs** page](ui-jobs-page.html) of the DB Console to view job details. The `BACKUP` statement will return when the backup is finished or if it encounters an error.
 
 {{site.data.alerts.callout_info}}
-The presence of the `BACKUP MANIFEST` file in the backup destination is an indicator that the backup job completed successfully.
+The presence of the `BACKUP MANIFEST` file in the backup subdirectory is an indicator that the backup job completed successfully.
 {{site.data.alerts.end}}
 
 ## Examples
