@@ -8,7 +8,7 @@ docs_area: reference.sql
 The `SHOW BACKUP` [statement](sql-statements.html) lists the contents of a backup created with the [`BACKUP`](backup.html) statement.
 
 {{site.data.alerts.callout_danger}}
-The `SHOW BACKUP` syntax **without** the `FROM` keyword is **deprecated** as of v22.1 and will be removed in a future release.
+The `SHOW BACKUP` syntax **without** the `IN` keyword is **deprecated** as of v22.1 and will be removed in a future release.
 
 We recommend using `SHOW BACKUP FROM {subdirectory} IN {collectionURI}` to view backups in a subdirectory at a collection's URI.
 
@@ -31,7 +31,7 @@ For guidance on the syntax for `SHOW BACKUP FROM`, see the [examples](#examples)
 
 Parameter | Description
 ----------|------------
-`SHOW BACKUPS IN location` | List the backup paths in the given [collection URI](backup.html#backup-file-urls). [See the example](#view-a-list-of-the-available-full-backup-subdirectories).
+`SHOW BACKUPS IN collectionURI` | List the backup paths in the given [collection URI](backup.html#backup-file-urls). [See the example](#view-a-list-of-the-available-full-backup-subdirectories).
 `SHOW BACKUP FROM subdirectory IN collectionURI` | Show the details of backups in the subdirectory at the given [collection URI](backup.html#backup-file-urls). Also, use `FROM LATEST in collectionURI` to show the most recent backup. [See the example](#show-the-most-recent-backup).
 `SHOW BACKUP SCHEMAS FROM subdirectory IN collectionURI` | Show the schema details of the backup in the given [collection URI](backup.html#backup-file-urls). [See the example](#show-a-backup-with-schemas).
 `kv_option_list` | Control the behavior of `SHOW BACKUP` with a comma-separated list of [these options](#options).
@@ -228,8 +228,8 @@ You will receive an error if there is a collection of backups in the storage loc
 
  When a [backup is created by a schedule](create-schedule-for-backup.html), it is stored within a collection of backups in the given collection URI. To view details for a backup created by a schedule, you can use the following:
 
-- `SHOW BACKUPS IN y` statement to [view a list of the available full backup subdirectories](#view-a-list-of-the-available-full-backup-subdirectories).
-- `SHOW BACKUP FROM x IN y` statement to [view a list of the full and incremental backups that are stored in a specific full backup's subdirectory](#view-a-list-of-the-full-and-incremental-backups-in-a-specific-full-backup-subdirectory).
+- `SHOW BACKUPS IN collectionURI` statement to [view a list of the available full backup subdirectories](#view-a-list-of-the-available-full-backup-subdirectories).
+- `SHOW BACKUP FROM subdirectory IN collectionURI` statement to [view a list of the full and incremental backups that are stored in a specific full backup's subdirectory](#view-a-list-of-the-full-and-incremental-backups-in-a-specific-full-backup-subdirectory).
 
 ### Show an encrypted backup
 

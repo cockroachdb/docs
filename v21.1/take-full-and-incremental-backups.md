@@ -19,7 +19,7 @@ You can use the [`BACKUP`](backup.html) statement to efficiently back up your cl
 
 ## Backup collections
 
-A _backup collection_ defines a set of backups and their metadata. When running a [full backup](#full-backups) to a specified storage location URI, a backup collection will be created in that storage location. The collection can contain multiple full backups and their subsequent [incremental backups](#incremental-backups). (If a full backup is not present in a collection when you run an incremental backup, then a full backup will be taken.) The path to a backup is created using a date-based naming scheme and stored at the URI passed with the `BACKUP` statement.
+A _backup collection_ defines a set of backups and their metadata. The collection can contain multiple full backups and their subsequent [incremental backups](#incremental-backups). The path to a backup is created using a date-based naming scheme and stored at the URI passed with the `BACKUP` statement.
 
 In the following example, a user has taken weekly full backups and nightly incremental backups to their `collectionURI`:
 
