@@ -56,21 +56,21 @@ The transaction start time is used within the priority queue and gives preferenc
 
 <span class="version-tag">New in v22.1</span> To set the priority of work submitted to the different admission control queues on behalf of SQL requests submitted in a session, use the `default_transaction_quality_of_service` [session variable](set-vars.html). The valid values are `critical`, `background`, and `regular`. Admission control must be enabled for this setting to have an effect.
 
-To increase admission control priority of subsequent SQL requests, run:
+To increase the priority of subsequent SQL requests, run:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 SET default_transaction_quality_of_service=critical;
 ~~~
 
-To decrease admission control priority of subsequent SQL requests, run:
+To decrease the priority of subsequent SQL requests, run:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 SET default_transaction_quality_of_service=background;
 ~~~
 
-To reset admission control priority to the default session setting (in between background and critical), run:
+To reset the priority to the default session setting (in between background and critical), run:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
