@@ -19,10 +19,10 @@ This is particularly important for {{ site.data.products.serverless }}, where on
 
 Admission control can help if your cluster has degraded performance due to the following types of node overload scenarios:
 
-- The node has more than 50 runnable goroutines per CPU, visible in the **Runnable goroutines per CPU** graph in the [**Overload** dashboard](../ui-overload-dashboard.html#runnable-goroutines-per-cpu).
-- The node has a high number of files in level 0 of the Pebble LSM tree, visible in the **LSM L0 Health** graph in the [**Overload** dashboard](../ui-overload-dashboard.html#lsm-l0-health).
-- The node has high CPU usage, visible in the **CPU percent** graph in the [**Overload** dashboard](../ui-overload-dashboard.html#cpu-percent).
-- The node is experiencing out-of-memory errors, visible in the **Memory Usage** graph in the [**Hardware** dashboard](../ui-hardware-dashboard.html#memory-usage). Even though admission control does not explicitly target controlling memory usage, it can reduce memory usage as a side effect of delaying the start of operation execution when the CPU is overloaded.
+- The node has more than 50 runnable goroutines per CPU, visible in the **Runnable goroutines per CPU** graph in the [**Overload** dashboard](ui-overload-dashboard.html#runnable-goroutines-per-cpu).
+- The node has a high number of files in level 0 of the Pebble LSM tree, visible in the **LSM L0 Health** graph in the [**Overload** dashboard](ui-overload-dashboard.html#lsm-l0-health).
+- The node has high CPU usage, visible in the **CPU percent** graph in the [**Overload** dashboard](ui-overload-dashboard.html#cpu-percent).
+- The node is experiencing out-of-memory errors, visible in the **Memory Usage** graph in the [**Hardware** dashboard](ui-hardware-dashboard.html#memory-usage). Even though admission control does not explicitly target controlling memory usage, it can reduce memory usage as a side effect of delaying the start of operation execution when the CPU is overloaded.
 
 {{site.data.alerts.callout_info}}
 You should use admission control when overall cluster health is good but some nodes are experiencing overload. If you see these overload scenarios on many nodes in the cluster, that typically means the cluster needs more resources.
@@ -30,11 +30,11 @@ You should use admission control when overall cluster health is good but some no
 
 ## Enable and disable admission control
 
-To enable and disable admission control, use the following [cluster settings](../cluster-settings.html):
+To enable and disable admission control, use the following [cluster settings](cluster-settings.html):
 
-- `admission.kv.enabled` for work performed by the [KV layer](distribution-layer.html).
-- `admission.sql_kv_response.enabled` for work performed in the SQL layer when receiving [KV responses](distribution-layer.html).
-- `admission.sql_sql_response.enabled` for work performed in the SQL layer when receiving [DistSQL responses](sql-layer.html#distsql).
+- `admission.kv.enabled` for work performed by the [KV layer](architecture/distribution-layer.html).
+- `admission.sql_kv_response.enabled` for work performed in the SQL layer when receiving [KV responses](architecture/distribution-layer.html).
+- `admission.sql_sql_response.enabled` for work performed in the SQL layer when receiving [DistSQL responses](architecture/sql-layer.html#distsql).
 
 When you enable admission control Cockroach Labs recommends that you enable it for **all layers**.
 
@@ -48,7 +48,7 @@ If you are upgrading to {{ page.version.version }}, first complete the upgrade w
 
 When admission control is enabled, request and response operations are sorted into work queues where the operations are organized by priority and transaction start time.
 
-Higher priority operations are processed first. The criteria for determining higher and lower priority operations is different at each processing layer, and is determined by the CPU and storage I/O of the operation. Write operations in the [KV storage layer](storage-layer.html) in particular are often the cause of performance bottlenecks, and admission control prevents [the Pebble storage engine](../cockroach-start.html#storage-engine) from experiencing high read amplification. Critical cluster operations like node heartbeats are processed as high priority, as are transactions that hold locks in order to avoid [contention](../performance-recipes.html#transaction-contention) by releasing locks.
+Higher priority operations are processed first. The criteria for determining higher and lower priority operations is different at each processing layer, and is determined by the CPU and storage I/O of the operation. Write operations in the [KV storage layer](architecture/storage-layer.html) in particular are often the cause of performance bottlenecks, and admission control prevents [the Pebble storage engine](cockroach-start.html#storage-engine) from experiencing high read amplification. Critical cluster operations like node heartbeats are processed as high priority, as are transactions that hold locks in order to avoid [contention](performance-recipes.html#transaction-contention) by releasing locks.
 
 The transaction start time is used within the priority queue and gives preference to operations with earlier transaction start times. For example, within the high priority queue operations with an earlier transaction start time are processed first.
 
@@ -79,13 +79,13 @@ SET default_transaction_quality_of_service=regular;
 
 ## Limitations
 
-Admission control works on the level of each node, not at the cluster level. The admission control system queues requests until the operations are processed or the request exceeds the timeout value (for example by using [`SET statement_timeout`](../set-vars.html#supported-variables)). If you specify aggressive timeout values, the system may operate correctly but have low throughput as the operations exceed the timeout value while only completing part of the work. There is no mechanism for preemptively rejecting requests when the work queues are long.
+Admission control works on the level of each node, not at the cluster level. The admission control system queues requests until the operations are processed or the request exceeds the timeout value (for example by using [`SET statement_timeout`](set-vars.html#supported-variables)). If you specify aggressive timeout values, the system may operate correctly but have low throughput as the operations exceed the timeout value while only completing part of the work. There is no mechanism for preemptively rejecting requests when the work queues are long.
 
 Organizing operations by priority can mean that higher priority operations consume all the available resources while lower priority operations remain in the queue until the operation times out.
 
 ## Observe admission control performance
 
-The [DB Console Overload dashboard](../ui-overload-dashboard.html) shows metrics related to the performance of the admission control system.
+The [DB Console Overload dashboard](ui-overload-dashboard.html) shows metrics related to the performance of the admission control system.
 
 ## See also
 
