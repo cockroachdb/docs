@@ -62,4 +62,4 @@ The [DB Console Overload dashboard](../ui-overload-dashboard.html) shows metrics
 
 ## See also
 
-- The [technical note for admission control](https://github.com/cockroachdb/cockroach/blob/master/docs/tech-notes/admission_control.md) for details on the design of the admission control system.
+The [technical note for admission control](https://github.com/cockroachdb/cockroach/blob/master/docs/tech-notes/admission_control.md) for details on the design of the admission control system.
