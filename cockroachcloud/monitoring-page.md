@@ -42,13 +42,16 @@ To enable Datadog monitoring for a {{ site.data.products.dedicated }} cluster:
 
 The **Integration status** in the **Datadog** panel reports the following:
 
-- `Active` indicates that the integration has been successfully deployed. It does **not** imply that CockroachDB metrics are being exported to Datadog.
+- `Active` indicates that the integration has been successfully deployed.
 - `Inactive` indicates that the integration has not been successfully deployed.
+- `Unhealthy` indicates that the integration API key is invalid and needs to be [updated](#update-integration).
 
 Metrics export from CockroachDB can be interrupted in the event of:
 
-- A stale API key. In this case, [update](#update-integration) your integration with a new API key.
-- Any issue that causes transient CockroachDB unavailbility. In this case, [deactivate](#deactivate-integration) and reactivate the integration from the **Datadog** panel. If this doesn't resolve the problem, contact our [support team](https://support.cockroachlabs.com/).
+- A stale API key. In this case, the integration status will be `Unhealthy`. To resolve the issue, [update](#update-integration) your integration with a new API key.
+- Any issue that causes transient CockroachDB unavailbility. In this case, the integration status will continue to be `Active`. To resolve the issue, try [deactivating](#deactivate-integration) and reactivating the integration from the **Datadog** panel. If this does not resolve the issue, contact our [support team](https://support.cockroachlabs.com/).
+
+To monitor the health of metrics export, you can [create a custom Monitor](#monitor-health-of-metrics-export) in Datadog. 
 
 ### View and configure dashboards
 
@@ -66,6 +69,28 @@ To preview the metrics being collected, you can:
 
 - Click on your cluster's entry in the [Infrastructure List](https://docs.datadoghq.com/infrastructure/list/). The time-series graphs for each available metric are displayed.
 - Use the [Metrics Explorer](https://docs.datadoghq.com/metrics/explorer/) to search for and view `crdb_dedicated` metrics.
+
+### Monitor health of metrics export
+
+To monitor the health of metrics export, we recommend that you create a new Monitor, following the steps in the [Datadog documentation](https://docs.datadoghq.com/monitors/create/types/metric/?tab=threshold).
+
+Select **Threshold Alert** as the detection method. You can use this option to configure an alert that is sent when a [supported metric](https://docs.datadoghq.com/integrations/cockroachdb/?tab=host#data-collected) reaches a given threshold. For descriptions of some useful CockroachDB alerts, see [Monitoring and Alerting](monitoring-and-alerting.html#events-to-alert-on).
+
+- To **Define the metric**:
+
+    - Select the `otel.datadog_exporter.metrics.running` metric.
+
+    - Export the metric **from** your {{ site.data.products.dedicated }} cluster (the cluster name in the [Infrastructure List](https://docs.datadoghq.com/infrastructure/list/).
+
+- To **Set alert conditions**:
+
+    - Trigger when the metric is `below` the threshold `on average` during the last `15 minutes`.
+
+    - Set **Alert threshold** to `1`.
+
+    - `Notify` if data is missing for more than `15` minutes.
+
+This monitor will notify your organization if Datadog is no longer receiving data from your {{ site.data.products.dedicated }} cluster.
 
 ### Update integration
 
