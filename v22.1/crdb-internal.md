@@ -582,7 +582,7 @@ WHERE metadata @> '{"db":"movr"}' AND (metadata @> '{"stmtTyp":"TypeDDL"}' OR me
 
 Requires either the `VIEWACTIVITY` or `VIEWACTIVITYREDACTED` [role option](alter-role.html#role-options) to access. If you have the `VIEWACTIVITYREDACTED` role, `contending_key` will be redacted.
 
-Contention events are stored in memory and the amount of contention events stored is controlled via the `sql.contention.event_store.capacity` [cluster setting](cluster-settings.html).
+Contention events are stored in memory. You can control the amount of contention events stored per node via the `sql.contention.event_store.capacity` [cluster setting](cluster-settings.html).
 
 Column | Type | Description
 ------------|-----|------------
@@ -622,7 +622,7 @@ WHERE
 (2 rows)
 ~~~
 
-##### Display counts for each blocking and waiting transaction pair
+##### Display counts for each blocking and waiting transaction fingerprint pair
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
