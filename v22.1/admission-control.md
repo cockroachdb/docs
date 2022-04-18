@@ -52,9 +52,9 @@ Higher priority operations are processed first. The criteria for determining hig
 
 The transaction start time is used within the priority queue and gives preference to operations with earlier transaction start times. For example, within the high priority queue operations with an earlier transaction start time are processed first.
 
-### Manage operation priority for a session
+### Set operation priority for a session
 
-<span class="version-tag">New in v22.1</span> To control the priority of work submitted to the different admission control queues on behalf of SQL requests submitted in a session, use the `default_transaction_quality_of_service` [session variable](set-vars.html). The valid values are `critical`, `background`, and `regular`. Admission control must be enabled for this setting to have an effect.
+<span class="version-tag">New in v22.1</span> To set the priority of work submitted to the different admission control queues on behalf of SQL requests submitted in a session, use the `default_transaction_quality_of_service` [session variable](set-vars.html). The valid values are `critical`, `background`, and `regular`. Admission control must be enabled for this setting to have an effect.
 
 To increase admission control priority of subsequent SQL requests, run:
 
