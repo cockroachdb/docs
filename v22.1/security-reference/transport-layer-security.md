@@ -176,6 +176,7 @@ Customers who deploy and manage their own CockroachDB clusters must provision an
 
 Choosing a strategy for maintaining solid private PKI is important and complex, and depends on your total system requirements, total security threat model, and available resources.
 
+- Consider [Using Google Cloud Platform to manage PKI certificates.](../manage-certs-gcloud.html)
 - Review our [breakdown of security features by offering](security-overview.html).
 - Contact our <a href="mailto:sales@cockroachlabs.com">sales team</a> to discuss your needs and the range of solutions offered by Cockroach Labs.
 {{site.data.alerts.end}}
@@ -190,7 +191,6 @@ CockroachDB provides a number of SQL clients, including a [CLI](../cockroach-sql
 
 In turn, which authentication methods are available depends on the sort of environment in which a CockroachDB cluster is deployed, as described in the following.
 
-
 ### CockroachDB Cloud
 
 {{ site.data.products.db }} currently does not support certificate-authenticated client requests. TLS is still used to authenticate the server and encrypt all traffic, but the user must authenticate to the database with a username/password combination.
@@ -204,11 +204,12 @@ Customers who deploy and manage their own CockroachDB clusters must provision an
 
 Choosing a strategy for maintaining solid private PKI is important and complex, and depends on your total system requirements, total security threat model, and available resources.
 
+- Consider [Using Google Cloud Platform to manage PKI certificates.](../manage-certs-gcloud.html)
 - Review our [breakdown of security features by offering](security-overview.html).
 - Contact our <a href="mailto:sales@cockroachlabs.com">sales team</a> to discuss your needs and the range of solutions offered by Cockroach Labs.
 {{site.data.alerts.end}}
 
-{{ site.data.products.serverless }} clusters support TLS authentication for clients, i.e. mutual TLS authentication. Other supported authentication methods are username/password combination, and GSSAPI/Kerberos (Enterprise only).
+{{ site.data.products.core }} clusters support TLS authentication for clients, i.e. mutual TLS authentication. Other supported authentication methods are username/password combination, and GSSAPI/Kerberos (Enterprise only).
 
 #### Non-TLS client authentication
 

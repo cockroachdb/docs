@@ -75,6 +75,19 @@ Each rule definition contains up to 6 values.
   - `reject`: server rejects connection without performing authentication.
   - `trust`: server allows connection without performing authentication.
 
+## The unstated, unchangeable `root` access rule
+
+The `root` SQL user can always authenticate using username/password or certificate, as if the first rule of the configuration were:
+```
+# TYPE    DATABASE      USER           ADDRESS             METHOD
+  host    all           root           all                 root
+```
+
+This rule is not displayed in the configuration, and cannot be overridden.
+This ensures that access to the cluster can always be recovered, but it also means that access with root credentials cannot be restricted by IP range at the authentication configuration level.
+
+{{ site.data.products.dedicated }} or {{ site.data.products.core }} customers can and should enforce network protections, preventing access attempts from any sources other than a valid ones such as application servers or a secure operations jumpbox.
+
 ## Default behavior
 
 ### {{ site.data.products.serverless }}
