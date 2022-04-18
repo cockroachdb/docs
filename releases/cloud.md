@@ -83,7 +83,7 @@ As of March 24, 2022, new {{ site.data.products.dedicated }} clusters and all {{
 
 - New {{ site.data.products.dedicated }} clusters will now run [v21.2.1](v21.2.html#v21-2-1).
 - {{ site.data.products.serverless }} clusters will now run CockroachDB [v21.2.0-beta.4](v21.2.html#v21-2-0-beta-4).
-- New {{ site.data.products.db }} clusters will now have [Admission Control](../21.2/architecture/admission-control.html) enabled by default.
+- New {{ site.data.products.db }} clusters will now have [Admission Control](../v21.2/architecture/admission-control.html) enabled by default.
 - {{ site.data.products.dedicated }} clusters will now run on new [machine types and disks](../cockroachcloud/create-your-cluster.html#step-2-select-the-cloud-provider). Clusters created before December 1, 2021 will be transitioned to the new hardware configurations by the end of the month, and pricing may change slightly.
 
 <h3>Console changes</h3>
