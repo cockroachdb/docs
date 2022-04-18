@@ -53,6 +53,7 @@ Field            | Description
 `type_name`      | The name of the user-defined type.
 `grantee`        | The name of the user or role that was granted the [privilege](security-reference/authorization.html#managing-privileges).
 `privilege_type` | The name of the privilege.
+`is_grantable`   | <span class="version-tag">New in v22.1:</span> `TRUE` if the grantee has the admin option on the table; `FALSE` if not.
 
 ### Role grants
 
@@ -183,11 +184,11 @@ To list all grants for all users and roles on the current database and its table
 ~~~
 
 ~~~
-  database_name | schema_name | table_name | grantee | privilege_type
-----------------+-------------+------------+---------+-----------------
-  movr          | public      | users      | admin   | ALL
-  movr          | public      | users      | max     | ALL
-  movr          | public      | users      | root    | ALL
+  database_name | schema_name | table_name | grantee | privilege_type  | is_grantable
+----------------+-------------+------------+---------+-----------------+---------------
+  movr          | public      | users      | admin   | ALL             | true
+  movr          | public      | users      | max     | ALL             | false
+  movr          | public      | users      | root    | ALL             | false
 (3 rows)
 ~~~
 
@@ -199,9 +200,9 @@ To list all grants for all users and roles on the current database and its table
 ~~~
 
 ~~~
-  database_name | schema_name | table_name | grantee | privilege_type
-----------------+-------------+------------+---------+-----------------
-  movr          | public      | users      | max     | ALL
+  database_name | schema_name | table_name | grantee | privilege_type  | is_grantable
+----------------+-------------+------------+---------+-----------------+---------------
+  movr          | public      | users      | max     | ALL             | true
 (1 row)
 ~~~
 
@@ -213,21 +214,21 @@ To list all grants for all users and roles on the current database and its table
 ~~~
 
 ~~~
-  database_name | schema_name |         table_name         | grantee | privilege_type
-----------------+-------------+----------------------------+---------+-----------------
-  movr          | public      | promo_codes                | admin   | ALL
-  movr          | public      | promo_codes                | root    | ALL
-  movr          | public      | rides                      | admin   | ALL
-  movr          | public      | rides                      | root    | ALL
-  movr          | public      | user_promo_codes           | admin   | ALL
-  movr          | public      | user_promo_codes           | root    | ALL
-  movr          | public      | users                      | admin   | ALL
-  movr          | public      | users                      | max     | ALL
-  movr          | public      | users                      | root    | ALL
-  movr          | public      | vehicle_location_histories | admin   | ALL
-  movr          | public      | vehicle_location_histories | root    | ALL
-  movr          | public      | vehicles                   | admin   | ALL
-  movr          | public      | vehicles                   | root    | ALL
+  database_name | schema_name |         table_name         | grantee | privilege_type  | is_grantable
+----------------+-------------+----------------------------+---------+-----------------+---------------
+  movr          | public      | promo_codes                | admin   | ALL             | true
+  movr          | public      | promo_codes                | root    | ALL             | false
+  movr          | public      | rides                      | admin   | ALL             | true
+  movr          | public      | rides                      | root    | ALL             | false
+  movr          | public      | user_promo_codes           | admin   | ALL             | true
+  movr          | public      | user_promo_codes           | root    | ALL             | false
+  movr          | public      | users                      | admin   | ALL             | true
+  movr          | public      | users                      | max     | ALL             | false
+  movr          | public      | users                      | root    | ALL             | false
+  movr          | public      | vehicle_location_histories | admin   | ALL             | true
+  movr          | public      | vehicle_location_histories | root    | ALL             | false
+  movr          | public      | vehicles                   | admin   | ALL             | true
+  movr          | public      | vehicles                   | root    | ALL             | false
 (13 rows)
 ~~~
 
@@ -239,9 +240,9 @@ To list all grants for all users and roles on the current database and its table
 ~~~
 
 ~~~
-  database_name | schema_name | table_name | grantee | privilege_type
-----------------+-------------+------------+---------+-----------------
-  movr          | public      | users      | max     | ALL
+  database_name | schema_name | table_name | grantee | privilege_type  | is_grantable
+----------------+-------------+------------+---------+-----------------+---------------
+  movr          | public      | users      | max     | ALL             | true
 (1 row)
 ~~~
 
