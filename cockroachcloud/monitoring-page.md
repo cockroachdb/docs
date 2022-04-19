@@ -43,8 +43,9 @@ To enable Datadog monitoring for a {{ site.data.products.dedicated }} cluster:
 The **Integration status** in the **Datadog** panel reports the following:
 
 - `Active` indicates that the integration has been successfully deployed.
-- `Inactive` indicates that the integration has not been successfully deployed.
+- `Inactive` indicates that the integration has not been successfully deployed. Setup has either not been attempted or has encountered an error.
 - `Unhealthy` indicates that the integration API key is invalid and needs to be [updated](#update-integration).
+- `Unknown` indicates that an unknown error has occurred. If this status is displayed, contact our [support team](https://support.cockroachlabs.com/).
 
 Metrics export from CockroachDB can be interrupted in the event of:
 
