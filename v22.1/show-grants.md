@@ -131,23 +131,23 @@ To list all grants for all users and roles on the current database and its table
 ~~~
 
 ~~~
-  database_name |    schema_name     | grantee | privilege_type
+  database_name |    schema_name     | grantee | privilege_type  | is_grantable
 ----------------+--------------------+---------+-----------------
-  movr          | crdb_internal      | admin   | ALL
-  movr          | crdb_internal      | max     | ALL
-  movr          | crdb_internal      | root    | ALL
-  movr          | information_schema | admin   | ALL
-  movr          | information_schema | max     | ALL
-  movr          | information_schema | root    | ALL
-  movr          | pg_catalog         | admin   | ALL
-  movr          | pg_catalog         | max     | ALL
-  movr          | pg_catalog         | root    | ALL
-  movr          | pg_extension       | admin   | ALL
-  movr          | pg_extension       | max     | ALL
-  movr          | pg_extension       | root    | ALL
-  movr          | public             | admin   | ALL
-  movr          | public             | max     | ALL
-  movr          | public             | root    | ALL
+  movr          | crdb_internal      | admin   | ALL             | true
+  movr          | crdb_internal      | max     | ALL             | false
+  movr          | crdb_internal      | root    | ALL             | false
+  movr          | information_schema | admin   | ALL             | true
+  movr          | information_schema | max     | ALL             | false
+  movr          | information_schema | root    | ALL             | false
+  movr          | pg_catalog         | admin   | ALL             | true
+  movr          | pg_catalog         | max     | ALL             | false
+  movr          | pg_catalog         | root    | ALL             | false
+  movr          | pg_extension       | admin   | ALL             | true
+  movr          | pg_extension       | max     | ALL             | false
+  movr          | pg_extension       | root    | ALL             | false
+  movr          | public             | admin   | ALL             | true
+  movr          | public             | max     | ALL             | false
+  movr          | public             | root    | ALL             | false
 (15 rows)
 ~~~
 
@@ -159,13 +159,13 @@ To list all grants for all users and roles on the current database and its table
 ~~~
 
 ~~~
-  database_name |    schema_name     | grantee | privilege_type
-----------------+--------------------+---------+-----------------
-  movr          | crdb_internal      | max     | ALL
-  movr          | information_schema | max     | ALL
-  movr          | pg_catalog         | max     | ALL
-  movr          | pg_extension       | max     | ALL
-  movr          | public             | max     | ALL
+  database_name |    schema_name     | grantee | privilege_type  | is_grantable
+----------------+--------------------+---------+-----------------+--------------
+  movr          | crdb_internal      | max     | ALL             | false
+  movr          | information_schema | max     | ALL             | false
+  movr          | pg_catalog         | max     | ALL             | false
+  movr          | pg_extension       | max     | ALL             | false
+  movr          | public             | max     | ALL             | false
 (5 rows)
 ~~~
 
@@ -242,7 +242,7 @@ To list all grants for all users and roles on the current database and its table
 ~~~
   database_name | schema_name | table_name | grantee | privilege_type  | is_grantable
 ----------------+-------------+------------+---------+-----------------+---------------
-  movr          | public      | users      | max     | ALL             | true
+  movr          | public      | users      | max     | ALL             | false
 (1 row)
 ~~~
 
@@ -266,11 +266,11 @@ To list all grants for all users and roles on the current database and its table
 ~~~
 
 ~~~
-  database_name |  schema_name   | grantee | privilege_type
-----------------+----------------+---------+-----------------
-  movr          | cockroach_labs | admin   | ALL
-  movr          | cockroach_labs | max     | ALL
-  movr          | cockroach_labs | root    | ALL
+  database_name |  schema_name   | grantee | privilege_type  | is_grantable
+----------------+----------------+---------+-----------------+---------------
+  movr          | cockroach_labs | admin   | ALL             | true
+  movr          | cockroach_labs | max     | ALL             | false
+  movr          | cockroach_labs | root    | ALL             | false
 (3 rows)
 ~~~
 
@@ -282,9 +282,9 @@ To list all grants for all users and roles on the current database and its table
 ~~~
 
 ~~~
-  database_name |  schema_name   | grantee | privilege_type
-----------------+----------------+---------+-----------------
-  movr          | cockroach_labs | max     | ALL
+  database_name |  schema_name   | grantee | privilege_type  | is_grantable
+----------------+----------------+---------+-----------------+---------------
+  movr          | cockroach_labs | max     | ALL             | false
 (1 row)
 ~~~
 
@@ -308,12 +308,12 @@ To list all grants for all users and roles on the current database and its table
 ~~~
 
 ~~~
-  database_name | schema_name | type_name | grantee | privilege_type
-----------------+-------------+-----------+---------+-----------------
-  movr          | public      | status    | admin   | ALL
-  movr          | public      | status    | max     | ALL
-  movr          | public      | status    | public  | USAGE
-  movr          | public      | status    | root    | ALL
+  database_name | schema_name | type_name | grantee | privilege_type  | is_grantable
+----------------+-------------+-----------+---------+-----------------+---------------
+  movr          | public      | status    | admin   | ALL             | true
+  movr          | public      | status    | max     | ALL             | false
+  movr          | public      | status    | public  | USAGE           | false
+  movr          | public      | status    | root    | ALL             | false
 (4 rows)
 ~~~
 
@@ -325,9 +325,9 @@ To list all grants for all users and roles on the current database and its table
 ~~~
 
 ~~~
-  database_name | schema_name | type_name | grantee | privilege_type
-----------------+-------------+-----------+---------+-----------------
-  movr          | public      | status    | max     | ALL
+  database_name | schema_name | type_name | grantee | privilege_type  | is_grantable
+----------------+-------------+-----------+---------+-----------------+---------------
+  movr          | public      | status    | max     | ALL             | false
 (1 row)
 ~~~
 
@@ -351,10 +351,10 @@ To list all grants for all users and roles on the current database and its table
 ~~~
 
 ~~~
-  role_name | member | is_admin
-------------+--------+-----------
-  admin     | root   |   true
-  moderator | max    |  false
+  role_name | member | is_admin  | is_grantable
+------------+--------+-----------+---------------
+  admin     | root   |   true    | false
+  moderator | max    |  false    | false
 (2 rows)
 ~~~
 
@@ -366,9 +366,9 @@ To list all grants for all users and roles on the current database and its table
 ~~~
 
 ~~~
-  role_name | member | is_admin
-------------+--------+-----------
-  moderator | max    |  false
+  role_name | member | is_admin  | is_grantable
+------------+--------+-----------+---------------
+  moderator | max    |  false    | false
 (1 row)
 ~~~
 
@@ -380,9 +380,9 @@ To list all grants for all users and roles on the current database and its table
 ~~~
 
 ~~~
-  role_name | member | is_admin
-------------+--------+-----------
-  moderator | max    |  false
+  role_name | member | is_admin  | is_grantable
+------------+--------+-----------+---------------
+  moderator | max    |  false    | false
 (1 row)
 ~~~
 
