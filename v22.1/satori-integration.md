@@ -1,6 +1,6 @@
 ---
 title: Satori Integration
-summary: Fine-grained access and data masking with Satori
+summary: Row or column-level access control and dynamic masking of data with Satori
 toc: true
 docs_area: reference.third_party_support
 ---
@@ -17,4 +17,4 @@ With a Satori integration enabled, CockroachDB users gain the following capabili
 
 ## [Dynamic data masking](https://satoricyber.com/dynamic-data-masking/)
 
-Admins can configure dynamic data masking for PII or other organizational confidential data, to prevent access to sensitive data and potential data exfiltration.
+Admins can configure dynamic data masking for PII or other organizational confidential data, to prevent access to sensitive data and add a level of defense-in-depth against any possible data theft.
