@@ -14,7 +14,7 @@ See:
 
 ## What is Transport Layer Security (TLS)?
 
-How do you send data over a network connection to a specific receiving party, and guarantee that nobody else can eavesdrop on the message or tamper with the contents? For much modern network communication, the Transport Layer Security (TLS) protocol is part of the solution. This protocol is used to establish securely authenticated and encrypted traffic between a client (the party who initiates the session) and a server (the party receiving the connection request).
+Modern communication systems pose a general problem: How is it possible send data over a network connection to a specific receiving party, and guarantee that nobody else can eavesdrop on the message or tamper with the contents? For much of the internet and the systems that support it, the Transport Layer Security (TLS) protocol is part of the solution. TLS can be used to establish securely authenticated and encrypted traffic between a client (the party who initiates the session) and a server (the party receiving the connection request).
 
 ### Keys and key pairs
 
@@ -72,6 +72,7 @@ If you encrypt a  message with a TLS public key, you know that only a holder of 
 This is a complex social and technological problem, and the primary solution used today by the internet as a whole, as well as organizations across the world, is mix of careful practices, social relationships, and digital technologies. It is what is known as Public Key Infrastructure (PKI).
 
 At its core, PKI is a hierarchy of cryptographically backed trust relationships between the following categories of interested party:
+
 - **Subscribers** wish to use the PKI to prove their identity to the world and offer secure services to others.
 - **Relying parties** wish to connect with subscribers, secure in the their knownledge of the identity of the latter.
 - **Certificate Authorities (CA)** are responsible for verifying the identity of subscribers (which can include subornidate certificate authorties).
