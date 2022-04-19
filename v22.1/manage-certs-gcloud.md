@@ -55,7 +55,21 @@ The approach taken here is intended to be automation friendly. Users should cons
 
 For example, a broad baseline recommendation might be to issue new certificates daily, keeping the validity duration under two days.
 
-## Preliminaries
+## Provision IAM, compute, and network resources
+
+The following service accounts will encapsulate the permissions required for the three modules of work involved in maintaining our PKI:
+
+- `ca-admin`
+- `node-operator`
+- `client-operator`
+
+Our cluster will contain three classes of compute instance:
+
+- The CA administrative jumpbox, where sensitive credentials will be handled and secure operations related to certificate authority performed.
+- Three database nodes.
+- A client, which could represent, in a more realistic scenario, either an operations jumpbox or an application server.
+
+Additionally, our project's firewall rules must be configured to allow communication between nodes and from client to nodes.
 
 ### Create the service accounts
 
@@ -82,15 +96,7 @@ Created service account [client-operator].
 ```
 
 
-### Provision compute instances
-
-Our cluster will actually contain three classes of compute instance:
-
-- The CA administrative jumpbox, where sensitive credentials will be handled and secure operations related to certificate authority performed.
-- Three database nodes.
-- A client, which could represent, in a more realistic scenario, either an operations jumpbox or an application server.
-
-#### Create the CA admin jumpbox
+### Create the CA admin jumpbox
 
 Specify the ca-admin service account, and grant the `cloud-platform` scope, so that the service account can access the secrets API.
 
@@ -107,18 +113,114 @@ NAME              ZONE           MACHINE_TYPE   PREEMPTIBLE  INTERNAL_IP  EXTERN
 ca-admin-jumpbox  us-central1-a  n1-standard-1               10.128.0.59  35.184.145.196  RUNNING
 ```
 
-#### Create node instances
+Now, add CA admin permissions to the ca-admin service account, so that after SSHing into the CA admin jumpbox, authorized users will be able to perform CA admin functions.
+
+{% include_cached copy-clipboard.html %}
+```shell
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+  --member=ca-admin@noobtest123.iam.gserviceaccount.com \
+  --role=roles/privateca.admin
+```
+
+```txt
+gcloud projects add-iam-policy-binding noobtest123 \
+  --member=serviceAccount:ca-admin@noobtest123.iam.gserviceaccount.com \
+  --role=roles/privateca.admin
+Updated IAM policy for project [noobtest123].
+bindings:
+- members:
+  - user:michael.a.trestman@gmail.com
+  role: projects/noobtest123/roles/CustomRole
+- members:
+  - serviceAccount:service-35961569477@gcp-sa-cloudkms.iam.gserviceaccount.com
+  role: roles/cloudkms.serviceAgent
+- members:
+  - serviceAccount:service-35961569477@compute-system.iam.gserviceaccount.com
+  role: roles/compute.serviceAgent
+- members:
+  - serviceAccount:service-35961569477@container-engine-robot.iam.gserviceaccount.com
+  role: roles/container.serviceAgent
+- members:
+  - serviceAccount:service-35961569477@containerregistry.iam.gserviceaccount.com
+  role: roles/containerregistry.ServiceAgent
+- members:
+  - serviceAccount:35961569477-compute@developer.gserviceaccount.com
+  - serviceAccount:35961569477@cloudservices.gserviceaccount.com
+  role: roles/editor
+- members:
+  - user:trestman@cockroachlabs.com
+  role: roles/owner
+- members:
+  - serviceAccount:ca-admin@noobtest123.iam.gserviceaccount.com
+  role: roles/privateca.admin
+- members:
+  - serviceAccount:service-35961569477@gcp-sa-pubsub.iam.gserviceaccount.com
+  role: roles/pubsub.serviceAgent
+```
+
+### Create node instances
 
 Create three compute instances to use as CockroachDB nodes. Follow the guidelines described [here](deploy-cockroachdb-on-google-cloud-platform.html#step-2-create-instances), and additionally, specify the `node-operator` service account as the managing service account.
 
-Additionally, you must create an external IP address for the node cluster. Either create a static IP address and allocate it to one of the nodes, or provision a TCP load balancer in front of an instance group containing the nodes.
+Note that we also add the network tag 'roach-node', which will allow our firewall rule to apply to the nodes instances.
 
-#### Create the client instance
+{% include_cached copy-clipboard.html %}
+```shell
+gcloud compute instances create roach-node-1 \
+--service-account node-operator@noobtest123.iam.gserviceaccount.com \
+--machine-type=n2-standard-2 --network-interface=network-tier=PREMIUM,subnet=default \
+--scopes=https://www.googleapis.com/auth/cloud-platform \
+--tags=roach-node \
+--scopes "https://www.googleapis.com/auth/cloud-platform"
+
+gcloud compute instances create roach-node-2 \
+--service-account node-operator@noobtest123.iam.gserviceaccount.com \
+--machine-type=n2-standard-2 --network-interface=network-tier=PREMIUM,subnet=default \
+--scopes=https://www.googleapis.com/auth/cloud-platform \
+--tags=roach-node \
+--scopes "https://www.googleapis.com/auth/cloud-platform"
+
+gcloud compute instances create roach-node-3 \
+--service-account node-operator@noobtest123.iam.gserviceaccount.com \
+--machine-type=n2-standard-2 --network-interface=network-tier=PREMIUM,subnet=default \
+--scopes=https://www.googleapis.com/auth/cloud-platform \
+--tags=roach-node \
+--scopes "https://www.googleapis.com/auth/cloud-platform"
+```
+
+```txt
+Created [https://www.googleapis.com/compute/v1/projects/noobtest123/zones/us-central1-a/instances/roach-node-1].
+Created [https://www.googleapis.com/compute/v1/projects/noobtest123/zones/us-central1-a/instances/roach-node-2].
+Created [https://www.googleapis.com/compute/v1/projects/noobtest123/zones/us-central1-a/instances/roach-node-3].
+```
+
+### Configure cluster firewall rules
+
+Our rules will allow nodes to send requests to eachother, and to recieve requests from clients (as specified with tags).
+
+{% include_cached copy-clipboard.html %}
+ ```shell
+gcloud compute firewall-rules create roach-talk \
+  --direction ingress \
+  --action allow  \
+  --source-tags roach-node,roach-client \
+  --target-tags roach-node \
+  --rules TCP:26257,TCP:8080
+ ```
+ 
+ ```txt
+Creating firewall...done.
+NAME        NETWORK  DIRECTION  PRIORITY  ALLOW               DENY  DISABLED
+roach-talk  default  INGRESS    1000      tcp:26257,tcp:8080        False 
+ ``` 
+
+### Create the client instance
 
 {% include_cached copy-clipboard.html %}
 ```shell
 gcloud compute instances create roach-client \
 --service-account client-operator@noobtest123.iam.gserviceaccount.com \
+--tags=roach-client \
 --scopes "https://www.googleapis.com/auth/cloud-platform"
 ```
 
@@ -129,6 +231,9 @@ Collect the network names and IP addresses of these resources, which you should 
 {% include_cached copy-clipboard.html %}
 ```shell
 # cockroach-cluster.env
+
+# replace with your project ID
+export PROJECT_ID=noobtest123
 
 # replace with names for your node CA and CA pool
 export node_CA=cucaracha_node_CA
@@ -156,10 +261,10 @@ export node3addr=10.128.0.54
 ## CA admin functions
 
 The operations in this section fall under the role of CA administrator
-SSH on to the CA admin jumpbox 
 
+SSH on to the CA admin jumpbox to perform the following tasks.
 
-### Create certificate authorities (CA admin role) 
+### Create certificate authorities
 
 In GCP, CAs must be organized into certificate authority pools. By default, signing requests are targeted to a CA pool rather than an individual CA.
 
@@ -208,12 +313,13 @@ Enabling CA....done.
 
 #### Create a local secrets directory
 
-We need somewhere to put key and certificate files while we work. Make sure the directory is not under source control; either add it your `.gitignore` or place it in a dedicated directory.
+We need somewhere to put key and certificate files while we work. By working on the secure jumpbox, which can be carefully gated behind IAM policies controlling SSH access, we minimize the risk of leaking a sensitive credential. Remember that credentials can be leaked other ways&mdash;for example by printing out a private key or plain-text password to your terminal in a public place where a camera is pointed at your laptop's screen.
 
 Public certificates are not such an issue if they leak, but private keys for nodes and clients are critical secrets and must be managed with extreme care.
 
 {% include_cached copy-clipboard.html %}
 ```shell
+
 secrets_dir= #fill you path to your secrets directory
 mkdir "${secrets_dir}"
 mkdir "${secrets_dir}/certs"
@@ -222,7 +328,7 @@ mkdir "${secrets_dir}/$node2name"
 mkdir "${secrets_dir}/$node3name"
 mkdir "${secrets_dir}/clients"
 ```
-### Acquire CA certificates (CA admin role)
+### Acquire CA certificates
 
 #### Pull the public certificate from each CA.
 
@@ -260,7 +366,7 @@ gcloud compute scp ${secrets_dir}/certs/ca.crt ${node3name}:~/certs
 gcloud compute scp ${secrets_dir}/certs/ca-client.crt ${node3name}:~/certs
 ```
 
-### Issue and provision node keys and certificates (CA admin role)
+### Issue and provision node keys and certificates
 
 #### Create a private key and public certifiate for each node in the cluster.
 
