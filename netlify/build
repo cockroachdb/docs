@@ -1,5 +1,7 @@
 #!/bin/bash
 
+echo "BEGIN REVIEW_ID ${REVIEW_ID} END REVIEW_ID"
+
 function build {
 	bundle exec jekyll build --trace --config _config_base.yml,$1
 	if [[ $? != 0 ]]; then
@@ -44,7 +46,7 @@ fi;
 wget -O- https://github.com/errata-ai/vale/releases/download/v1.2.7/vale_1.2.7_Linux_64-bit.tar.gz | tar -xz vale
 
 # Run Vale, but do not fail the build if it reports errors
-./vale --no-wrap v22.1 || true
+./vale --no-wrap stable || true
 
 # Run htmltest, but skip checking external links to speed things up
 $GOPATH/src/github.com/cockroachdb/htmltest/bin/htmltest --skip-external
