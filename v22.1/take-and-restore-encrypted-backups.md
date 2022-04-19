@@ -262,7 +262,7 @@ For example, the encrypted backup created in the previous example can be restore
 (1 row)
 ~~~
 
-To restore from a backup, use [`RESTORE FROM {subdirectory} IN ...`](restore.html#restore-a-specific-backup).
+To restore from a specific backup, use [`RESTORE FROM {subdirectory} IN ...`](restore.html#restore-a-specific-backup).
 
 </section>
 
@@ -340,7 +340,7 @@ For example, the encrypted backup created in the previous example can be restore
 (1 row)
 ~~~
 
-To restore from a backup, use [`RESTORE FROM {subdirectory} IN ...`](restore.html#restore-a-specific-backup).
+To restore from a specific backup, use [`RESTORE FROM {subdirectory} IN ...`](restore.html#restore-a-specific-backup).
 
 </section>
 

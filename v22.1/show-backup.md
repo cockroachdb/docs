@@ -22,7 +22,7 @@ For guidance on the syntax for `SHOW BACKUP FROM`, see the [examples](#examples)
 {% include {{ page.version.version }}/misc/non-http-source-privileges.md %}
 
 ## Synopsis
-<!--TODO to update-->
+
 <div>
 {% include {{ page.version.version }}/sql/generated/diagrams/show_backup.html %}
 </div>

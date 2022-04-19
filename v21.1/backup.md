@@ -26,7 +26,7 @@ Because CockroachDB is designed with high fault tolerance, these backups are des
 {{site.data.alerts.callout_info}}
 The [`BACKUP ... TO`](../v20.2/backup.html) and [`RESTORE ... FROM`](../v20.2/restore.html) syntax is **deprecated** as of v22.1 and will be removed in a future release.
 
-We recommend using the `BACKUP ... INTO {collection}` syntax, which creates or adds to a [backup collection](take-full-and-incremental-backups.html#backup-collections) in your storage location. For restoring backups, we recommend using `RESTORE FROM {backup} IN {collection}` with `{backup}` being `LATEST` or a specific subdirectory.
+We recommend using the `BACKUP ... INTO {collection}` syntax, which creates or adds to a [backup collection](take-full-and-incremental-backups.html#backup-collections) in your storage location. For restoring backups, we recommend using `RESTORE FROM {backup} IN {collection}` with `{backup}` being [`LATEST`](restore.html#restore-the-most-recent-backup) or a specific [subdirectory](restore.html#subdir-param).
 
 For guidance on the syntax for backups and restores, see the [`BACKUP`](backup.html#examples) and [`RESTORE`](restore.html#examples) examples.
 {{site.data.alerts.end}}
@@ -286,7 +286,7 @@ To take a [full backup](take-full-and-incremental-backups.html#full-backups) of 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP INTO \
-'azure://{CONTAINER NAME}/{PATH}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' \
+'azure://{CONTAINER NAME}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' \
 AS OF SYSTEM TIME '-10s';
 ~~~
 
@@ -297,7 +297,7 @@ To take a [full backup](take-full-and-incremental-backups.html#full-backups) of 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP DATABASE bank \
-INTO 'azure://{CONTAINER NAME}/{PATH}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' \
+INTO 'azure://{CONTAINER NAME}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' \
 AS OF SYSTEM TIME '-10s';
 ~~~
 
@@ -306,7 +306,7 @@ To take a [full backup](take-full-and-incremental-backups.html#full-backups) of 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP DATABASE bank, employees \
-INTO 'azure://{CONTAINER NAME}/{PATH}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' \
+INTO 'azure://{CONTAINER NAME}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' \
 AS OF SYSTEM TIME '-10s';
 ~~~
 
@@ -317,7 +317,7 @@ To take a [full backup](take-full-and-incremental-backups.html#full-backups) of 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP bank.customers \
-INTO 'azure://{CONTAINER NAME}/{PATH}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' \
+INTO 'azure://{CONTAINER NAME}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' \
 AS OF SYSTEM TIME '-10s';
 ~~~
 
@@ -326,7 +326,7 @@ To take a [full backup](take-full-and-incremental-backups.html#full-backups) of 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP bank.customers, bank.accounts \
-INTO 'azure://{CONTAINER NAME}/{PATH}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' \
+INTO 'azure://{CONTAINER NAME}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' \
 AS OF SYSTEM TIME '-10s';
 ~~~
 
@@ -340,7 +340,7 @@ To store the backup in a specific subdirectory in the storage location:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-BACKUP DATABASE bank INTO 'subdirectory' IN 'azure://{CONTAINER NAME}/{PATH}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' \
+BACKUP DATABASE bank INTO 'subdirectory' IN 'azure://{CONTAINER NAME}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' \
 AS OF SYSTEM TIME '-10s';
 ~~~
 
@@ -351,7 +351,7 @@ If you backup to a destination already containing a [full backup](take-full-and-
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP INTO LATEST IN \
-'azure://{CONTAINER NAME}/{PATH}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' \
+'azure://{CONTAINER NAME}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' \
 AS OF SYSTEM TIME '-10s';
 ~~~
 
@@ -362,7 +362,7 @@ Use the `DETACHED` [option](#options) to execute the backup [job](show-jobs.html
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP INTO \
-'azure://{CONTAINER NAME}/{PATH}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' \
+'azure://{CONTAINER NAME}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' \
 AS OF SYSTEM TIME '-10s'
 WITH DETACHED;
 ~~~
