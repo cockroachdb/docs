@@ -109,7 +109,7 @@ Click a transaction fingerprint to open **Transaction Details**.
     - **Max scratch disk usage**: the maximum amount of data [spilled to temporary storage on disk]({{ link_prefix }}vectorized-execution.html#disk-spilling-operations) while executing this transaction within the aggregation interval.
 
 
-The Statements table displays the statement fingerprints of all the statements in the transaction. To display the [details of a statement]({{ page_prefix }}statements-page.html#statement-details-page), click a statement fingerprint.
+The [Statements table]({{ page_prefix }}statements-page.html#statements-table) displays the statement fingerprints of all the statements in the transaction. To display the [details of a statement]({{ page_prefix }}statements-page.html#statement-details-page), click a statement fingerprint.
 
 ## See also
 
