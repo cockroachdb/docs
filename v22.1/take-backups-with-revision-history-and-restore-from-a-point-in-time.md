@@ -9,7 +9,7 @@ docs_area: manage
 [`BACKUP`](backup.html) with revision history is an [Enterprise-only](https://www.cockroachlabs.com/product/cockroachdb/) feature. However, you can take [full backups](take-full-and-incremental-backups.html) without an Enterprise license.
 {{site.data.alerts.end}}
 
-This doc provides information about how to take backups with revision history and restore from a point-in-time.
+This page provides information about how to take backups with revision history and restore from a point-in-time.
 
 You can create full or incremental backups [with revision history](backup.html#with-revision-history):
 
@@ -22,7 +22,7 @@ You can configure garbage collection periods using the `ttlseconds` [replication
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> BACKUP INTO '{collection location}' AS OF SYSTEM TIME '-10s' WITH revision_history;
+> BACKUP INTO '{collectionURI}' AS OF SYSTEM TIME '-10s' WITH revision_history;
 ~~~
 
 For guidance on connecting to Amazon S3, Google Cloud Storage, Azure Storage, and other storage options, read [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html).
@@ -37,7 +37,7 @@ If you do not specify a point-in-time, the data will be restored to the backup t
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> RESTORE FROM '/2021/12/13-211056.62' IN '{collection location}' AS OF SYSTEM TIME '2021-12-13 10:00:00';
+> RESTORE FROM '/2021/12/13-211056.62' IN '{collectionURI}' AS OF SYSTEM TIME '2021-12-13 10:00:00';
 ~~~
 
 To view the available backup subdirectories you can restore from, use [`SHOW BACKUPS`](restore.html#view-the-backup-subdirectories).

@@ -18,7 +18,7 @@ You can restore:
 {{site.data.alerts.callout_info}}
 The [`BACKUP ... TO`](../v20.2/backup.html) and [`RESTORE ... FROM`](../v20.2/restore.html) syntax is **deprecated** as of v22.1 and will be removed in a future release.
 
-We recommend using the `BACKUP ... INTO {collection}` syntax, which creates or adds to a [backup collection](take-full-and-incremental-backups.html#backup-collections) in your storage location. For restoring backups, we recommend using `RESTORE FROM {backup} IN {collection}` with `{backup}` being `LATEST` or a specific subdirectory.
+We recommend using the `BACKUP ... INTO {collection}` syntax, which creates or adds to a [backup collection](take-full-and-incremental-backups.html#backup-collections) in your storage location. For restoring backups, we recommend using `RESTORE FROM {backup} IN {collection}` with `{backup}` being [`LATEST`](#restore-the-most-recent-backup) or a specific [subdirectory](#subdir-param).
 
 For guidance on the syntax for backups and restores, see the [`BACKUP`](backup.html#examples) and [`RESTORE`](restore.html#examples) examples.
 {{site.data.alerts.end}}
@@ -54,6 +54,7 @@ For guidance on the syntax for backups and restores, see the [`BACKUP`](backup.h
  `database_name` | The name of the database you want to restore (i.e., restore all tables and views in the database). You can restore an entire database only if you had backed up the entire database.
  `destination` | The URL where the [full backup](take-full-and-incremental-backups.html#full-backups) (and appended [incremental backups](take-full-and-incremental-backups.html#incremental-backups), if applicable) is stored. <br/><br/>For information about this URL structure, see [Backup File URLs](#backup-file-urls).
 `LATEST` | Restore the most recent backup in the given location. See the [Restore the most recent backup](#restore-the-most-recent-backup) example.
+<a name="subdir-param"></a>`subdirectory` | Restore from a specific subdirectory in the given collection URI. See the [Restore a specific backup](#restore-a-specific-backup) example.
  `partitioned_backup_location` | The URL where a [locality-aware backup](take-and-restore-locality-aware-backups.html) is stored. When restoring from an incremental locality-aware backup, you need to include _every_ locality ever used, even if it was only used once.<br/><br/>For information about this URL structure, see [Backup File URLs](#backup-file-urls).
  `AS OF SYSTEM TIME timestamp` | Restore data as it existed as of [`timestamp`](as-of-system-time.html). You can restore point-in-time data only if you had taken full or incremental backup [with revision history](take-backups-with-revision-history-and-restore-from-a-point-in-time.html).
  `restore_options_list` | Control your backup's behavior with [these options](#options).
@@ -267,7 +268,7 @@ See [Incremental backups with explicitly specified destinations](take-full-and-i
 
 ### Restore the most recent backup
 
-<span class="version-tag">New in v21.2:</span> To restore from the most recent backup in the collection's location, use the `LATEST syntax`:
+<span class="version-tag">New in v21.2.3:</span> To restore from the most recent backup in the collection's location, use the `LATEST syntax`:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -276,7 +277,7 @@ RESTORE FROM LATEST IN 's3://{bucket_name}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET
 
 ### Restore a specific backup
 
-To restore a specific backup, use the backup's subdirectory in the collection's location:
+To restore a specific backup, use the backup's [subdirectory](#subdir-param) in the collection's location:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -407,7 +408,7 @@ First, create the new database that you'll restore the `system.users` table into
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> RESTORE system.users  FROM LATEST IN 's3://{bucket_name}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={access_key}'
+> RESTORE system.users FROM LATEST IN 's3://{bucket_name}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={access_key}'
 WITH into_db = 'newdb';
 ~~~
 
@@ -475,7 +476,7 @@ RESTORE FROM LATEST IN 'azure://{container name}?AZURE_ACCOUNT_NAME={account nam
 
 ### Restore a specific backup
 
-To restore a specific backup, use the backup's subdirectory in the collection's location:
+To restore a specific backup, use the backup's [subdirectory](#subdir-param) in the collection's location:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -674,7 +675,7 @@ RESTORE FROM LATEST IN 'gs://{bucket name}?AUTH=specified&CREDENTIALS={encoded k
 
 ### Restore a specific backup
 
-To restore a specific backup, use the backup's subdirectory in the collection's location:
+To restore a specific backup, use the backup's [subdirectory](#subdir-param) in the collection's location:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

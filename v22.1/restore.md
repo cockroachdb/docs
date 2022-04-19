@@ -48,6 +48,7 @@ You can restore:
  `database_name` | The name of the database you want to restore (i.e., restore all tables and views in the database). You can restore an entire database only if you had backed up the entire database.
  `collectionURI` | The [collection](take-full-and-incremental-backups.html#backup-collections) URI where the [full backup](take-full-and-incremental-backups.html#full-backups) (and appended [incremental backups](take-full-and-incremental-backups.html#incremental-backups), if applicable) is stored. <br/><br/>For information about this URL structure, see [Backup File URLs](#backup-file-urls).
  `LATEST` | Restore the most recent backup in the given collection URI. See the [Restore from the most recent backup](#restore-from-the-most-recent-backup) example.
+ <a name="subdir-param"></a>`subdirectory` | Restore from a specific subdirectory in the given collection URI. See the [Restore a specific backup](#restore-a-specific-backup) example.
  `localityURI` | The URI where a [locality-aware backup](take-and-restore-locality-aware-backups.html) is stored. When restoring from an incremental locality-aware backup, you need to include **every** locality ever used, even if it was only used once.<br/><br/>For information about this URL structure, see [Backup File URLs](#backup-file-urls).
  `AS OF SYSTEM TIME timestamp` | Restore data as it existed as of [`timestamp`](as-of-system-time.html). You can restore point-in-time data only if you had taken full or incremental backup [with revision history](take-backups-with-revision-history-and-restore-from-a-point-in-time.html).
  `restore_options_list` | Control your backup's behavior with [these options](#options).
@@ -222,7 +223,7 @@ There are two ways to specify a backup to restore:
 - [Restoring from the most recent backup](#restore-from-the-most-recent-backup)
 - [Restoring from a specific backup](#restore-from-a-specific-backup)
 
-The examples in this section use the `LATEST` syntax; however, you can also [restore a specific directory](#restore-a-specific-backup).
+The examples in this section demonstrate restoring from the most recent backup using the `LATEST` syntax.
 
 <section class="filter-content" markdown="1" data-scope="s3">
 
@@ -252,7 +253,7 @@ When you want to [restore a specific backup](#restore-a-specific-backup), add th
 
 ### Restore the most recent backup
 
-<span class="version-tag">New in v22.1:</span> To restore from the most recent backup in the collection's location, use the `LATEST syntax`:
+<span class="version-tag">New in v22.1:</span> To restore from the most recent backup in the collection's location, use the `LATEST` syntax:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -410,7 +411,10 @@ After the restore completes, add the `users` to the existing `system.users` tabl
 
 #### Restore from incremental backups in a different location
 
-<span class="version-tag">New in v22.1:</span> To restore an incremental backup that was taken using the [`incremental_location` option](backup.html#incr-location), you must run the `RESTORE` statement with the full backup's collection location URI and the `incremental_location` option referencing the collection URI passed in the original `BACKUP` statement:
+<span class="version-tag">New in v22.1:</span> To restore an incremental backup that was taken using the [`incremental_location` option](backup.html#incr-location), you must run the `RESTORE` statement with both:
+
+- the collection URI of the full backup
+- the `incremental_location` option referencing the incremental backup's collection URI, as passed in the original `BACKUP` statement
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -445,7 +449,7 @@ When you want restore a specific backup, add the backup's subdirectory path (e.g
 
 ### Restore from the most recent backup
 
-<span class="version-tag">New in v22.1:</span> To restore from the most recent backup in the collection's location, use the `LATEST syntax`:
+<span class="version-tag">New in v22.1:</span> To restore from the most recent backup in the collection's location, use the `LATEST` syntax:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -599,7 +603,10 @@ After the restore completes, add the `users` to the existing `system.users` tabl
 
 #### Restore from incremental backups in a different location
 
-<span class="version-tag">New in v22.1:</span> To restore an incremental backup that was taken using the [`incremental_location` option](backup.html#incr-location), you must run the `RESTORE` statement with the full backup's collection location URI and the `incremental_location` option referencing the collection URI passed in the original `BACKUP` statement:
+<span class="version-tag">New in v22.1:</span> To restore an incremental backup that was taken using the [`incremental_location` option](backup.html#incr-location), you must run the `RESTORE` statement with both:
+
+- the collection URI of the full backup
+- the `incremental_location` option referencing the incremental backup's collection URI, as passed in the original `BACKUP` statement
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -618,7 +625,7 @@ The examples in this section use the `AUTH=specified` parameter, which will be t
 
 ### View the backup subdirectories
 
-`BACKUP ... INTO` adds a backup to a [backup collection] location. To view the backup paths in a given collection location, use [`SHOW BACKUPS`](show-backup.html):
+`BACKUP ... INTO` adds a backup to a [backup collection](take-full-and-incremental-backups.html#backup-collections) location. To view the backup paths in a given collection location, use [`SHOW BACKUPS`](show-backup.html):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -638,7 +645,7 @@ When you want restore a specific backup, add the backup's subdirectory path (e.g
 
 ### Restore from the most recent backup
 
-<span class="version-tag">New in v22.1:</span> To restore from the most recent backup in the collection's location, use the `LATEST syntax`:
+<span class="version-tag">New in v22.1:</span> To restore from the most recent backup in the collection's location, use the `LATEST` syntax:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -792,7 +799,10 @@ After the restore completes, add the `users` to the existing `system.users` tabl
 
 #### Restore from incremental backups in a different location
 
-<span class="version-tag">New in v22.1:</span> To restore an incremental backup that was taken using the [`incremental_location` option](backup.html#incr-location), you must run the `RESTORE` statement with the full backup's collection location URI and the `incremental_location` option referencing the collection URI passed in the original `BACKUP` statement:
+<span class="version-tag">New in v22.1:</span> To restore an incremental backup that was taken using the [`incremental_location` option](backup.html#incr-location), you must run the `RESTORE` statement with both:
+
+- the collection URI of the full backup
+- the `incremental_location` option referencing the incremental backup's collection URI, as passed in the original `BACKUP` statement
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

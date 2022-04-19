@@ -61,11 +61,11 @@ CockroachDB stores full backups in a backup collection. Each full backup in a co
  Parameter | Description
 -----------+-------------
 `targets` | Back up the listed [targets](#targets).
-`subdirectory` | The name of the specific backup (e.g., `2021/03/23-213101.37`) in the collection to which you want to add an [incremental backup](take-full-and-incremental-backups.html#incremental-backups). To view available backup subdirectories, use [`SHOW BACKUPS IN collectionURI`](show-backup.html). If the backup `subdirectory` is not provided, a [full backup](take-full-and-incremental-backups.html#full-backups) will be created in the collection using a date-based naming scheme (i.e., `<year>/<month>/<day>-<timestamp>`).<br><br>**Warning:** If you use an arbitrary `STRING` as the subdirectory, a new full backup will be created, but it will never be shown in `SHOW BACKUPS IN`. We do not recommend using arbitrary strings as subdirectory names.
+`subdirectory` | The name of the specific backup (e.g., `2021/03/23-213101.37`) in the collection to which you want to add an [incremental backup](take-full-and-incremental-backups.html#incremental-backups). To view available backup subdirectories, use [`SHOW BACKUPS IN collectionURI`](show-backup.html). If the backup `subdirectory` is not provided, incremental backups will be stored in the default `/incrementals` directory at the root of the collection URI. See the [Create incremental backups](#create-incremental-backups) example.<br><br>**Warning:** If you use an arbitrary `STRING` as the subdirectory, a new full backup will be created, but it will never be shown in `SHOW BACKUPS IN`. We do not recommend using arbitrary strings as subdirectory names.
 `LATEST` | Append an incremental backup to the latest completed full backup's subdirectory.
-`collectionURI` | The URI where you want to store the backup. (Or, the default locality for a locality-aware backup.)<br/><br/>For information about this URL structure, see [Backup File URLs](#backup-file-urls).
+<a name="collectionURI-param"></a> `collectionURI` | The URI where you want to store the backup. (Or, the default locality for a locality-aware backup.)<br/><br/>For information about this URL structure, see [Backup File URLs](#backup-file-urls).
 `localityURI`   | The URI containing the `COCKROACH_LOCALITY` parameter for a non-default locality that is part of a single locality-aware backup.
-`timestamp` | Back-up data as it existed as of [`timestamp`](as-of-system-time.html). The `timestamp` must be more recent than your cluster's last garbage collection (which defaults to occur every 25 hours, but is [configurable per table](configure-replication-zones.html#replication-zone-variables)).
+`timestamp` | Back up data as it existed as of [`timestamp`](as-of-system-time.html). The `timestamp` must be more recent than your cluster's last garbage collection (which defaults to occur every 25 hours, but is [configurable per table](configure-replication-zones.html#replication-zone-variables)).
 `backup_options` | Control the backup behavior with a comma-separated list of [these options](#options).
 
 ### Targets
@@ -172,7 +172,7 @@ To take a [full backup](take-full-and-incremental-backups.html#full-backups) of 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP INTO \
-'s3://{BUCKET NAME}/{PATH}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' \
+'s3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' \
 AS OF SYSTEM TIME '-10s';
 ~~~
 
@@ -183,7 +183,7 @@ To take a [full backup](take-full-and-incremental-backups.html#full-backups) of 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP DATABASE bank \
-INTO 's3://{BUCKET NAME}/{PATH}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' \
+INTO 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' \
 AS OF SYSTEM TIME '-10s';
 ~~~
 
@@ -192,7 +192,7 @@ To take a [full backup](take-full-and-incremental-backups.html#full-backups) of 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP DATABASE bank, employees \
-INTO 's3://{BUCKET NAME}/{PATH}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' \
+INTO 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' \
 AS OF SYSTEM TIME '-10s';
 ~~~
 
@@ -203,7 +203,7 @@ To take a [full backup](take-full-and-incremental-backups.html#full-backups) of 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP bank.customers \
-INTO 's3://{BUCKET NAME}/{PATH}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' \
+INTO 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' \
 AS OF SYSTEM TIME '-10s';
 ~~~
 
@@ -212,7 +212,7 @@ To take a [full backup](take-full-and-incremental-backups.html#full-backups) of 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP bank.customers, bank.accounts \
-INTO 's3://{BUCKET NAME}/{PATH}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' \
+INTO 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' \
 AS OF SYSTEM TIME '-10s';
 ~~~
 
@@ -223,7 +223,7 @@ AS OF SYSTEM TIME '-10s';
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP test_schema.*
-INTO 's3://{BUCKET NAME}/{PATH}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' \
+INTO 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' \
 AS OF SYSTEM TIME '-10s';
 ~~~
 
@@ -244,7 +244,7 @@ To take an incremental backup using the `LATEST` keyword:
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP INTO LATEST IN \
-    's3://{BUCKET NAME}/{PATH}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' \
+    's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' \
     AS OF SYSTEM TIME '-10s';
 ~~~
 
@@ -252,7 +252,7 @@ To store the backup in an existing subdirectory in the collection:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-BACKUP DATABASE bank INTO {'subdirectory'} IN 's3://{BUCKET NAME}/{PATH}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' \
+BACKUP INTO {'subdirectory'} IN 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' \
 AS OF SYSTEM TIME '-10s';
 ~~~
 
@@ -260,7 +260,7 @@ AS OF SYSTEM TIME '-10s';
 If you intend to take a **full** backup, we recommend running `BACKUP INTO {collectionURI}` without specifying a subdirectory.
 {{site.data.alerts.end}}
 
-To explicitly control where you store your incremental backups, use the [`incremental_location`](backup.html#options) option. For more detail, see [this example](take-full-and-incremental-backups.html#incremental-backups-with-explicitly-specified-destinations) on using the `incremental_location` option.
+To explicitly control where you store your incremental backups, use the [`incremental_location`](backup.html#options) option. For more detail, see [this example](take-full-and-incremental-backups.html#incremental-backups-with-explicitly-specified-destinations) demonstrating the `incremental_location` option.
 
 ### Run a backup asynchronously
 
@@ -269,7 +269,7 @@ Use the `DETACHED` [option](#options) to execute the backup [job](show-jobs.html
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP INTO \
-'s3://{BUCKET NAME}/{PATH}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' \
+'s3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' \
 AS OF SYSTEM TIME '-10s'
 WITH DETACHED;
 ~~~
@@ -309,7 +309,7 @@ To take a [full backup](take-full-and-incremental-backups.html#full-backups) of 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP INTO \
-'azure://{CONTAINER NAME}/{PATH}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' \
+'azure://{CONTAINER NAME}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' \
 AS OF SYSTEM TIME '-10s';
 ~~~
 
@@ -320,7 +320,7 @@ To take a [full backup](take-full-and-incremental-backups.html#full-backups) of 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP DATABASE bank \
-INTO 'azure://{CONTAINER NAME}/{PATH}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' \
+INTO 'azure://{CONTAINER NAME}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' \
 AS OF SYSTEM TIME '-10s';
 ~~~
 
@@ -329,7 +329,7 @@ To take a [full backup](take-full-and-incremental-backups.html#full-backups) of 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP DATABASE bank, employees \
-INTO 'azure://{CONTAINER NAME}/{PATH}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' \
+INTO 'azure://{CONTAINER NAME}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' \
 AS OF SYSTEM TIME '-10s';
 ~~~
 
@@ -340,7 +340,7 @@ To take a [full backup](take-full-and-incremental-backups.html#full-backups) of 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP bank.customers \
-INTO 'azure://{CONTAINER NAME}/{PATH}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' \
+INTO 'azure://{CONTAINER NAME}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' \
 AS OF SYSTEM TIME '-10s';
 ~~~
 
@@ -349,7 +349,7 @@ To take a [full backup](take-full-and-incremental-backups.html#full-backups) of 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP bank.customers, bank.accounts \
-INTO 'azure://{CONTAINER NAME}/{PATH}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' \
+INTO 'azure://{CONTAINER NAME}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' \
 AS OF SYSTEM TIME '-10s';
 ~~~
 
@@ -360,7 +360,7 @@ AS OF SYSTEM TIME '-10s';
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP test_schema.*
-INTO 'azure://{CONTAINER NAME}/{PATH}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' \
+INTO 'azure://{CONTAINER NAME}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' \
 AS OF SYSTEM TIME '-10s';
 ~~~
 
@@ -381,7 +381,7 @@ To take an incremental backup using the `LATEST` keyword:
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP INTO LATEST IN \
-    'azure://{CONTAINER NAME}/{PATH}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' \
+    'azure://{CONTAINER NAME}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' \
     AS OF SYSTEM TIME '-10s';
 ~~~
 
@@ -389,7 +389,7 @@ To store the backup in an existing subdirectory in the collection:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-BACKUP DATABASE bank INTO 'subdirectory' IN 'azure://{CONTAINER NAME}/{PATH}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' \
+BACKUP INTO 'subdirectory' IN 'azure://{CONTAINER NAME}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' \
 AS OF SYSTEM TIME '-10s';
 ~~~
 
@@ -397,7 +397,7 @@ AS OF SYSTEM TIME '-10s';
 If you intend to take a **full** backup, we recommend running `BACKUP INTO {collectionURI}` without specifying a subdirectory.
 {{site.data.alerts.end}}
 
-To explicitly control where you store your incremental backups, use the [`incremental_location`](backup.html#options) option. For more detail, see [this example](take-full-and-incremental-backups.html#incremental-backups-with-explicitly-specified-destinations) on using the `incremental_location` option.
+To explicitly control where you store your incremental backups, use the [`incremental_location`](backup.html#options) option. For more detail, see [this example](take-full-and-incremental-backups.html#incremental-backups-with-explicitly-specified-destinations) demonstrating the `incremental_location` option.
 
 ### Run a backup asynchronously
 
@@ -406,7 +406,7 @@ Use the `DETACHED` [option](#options) to execute the backup [job](show-jobs.html
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP INTO \
-'azure://{CONTAINER NAME}/{PATH}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' \
+'azure://{CONTAINER NAME}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' \
 AS OF SYSTEM TIME '-10s'
 WITH DETACHED;
 ~~~
@@ -448,7 +448,7 @@ To take a [full backup](take-full-and-incremental-backups.html#full-backups) of 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP INTO \
-'gs://{BUCKET NAME}/{PATH}?AUTH=specified&CREDENTIALS={ENCODED KEY}' \
+'gs://{BUCKET NAME}?AUTH=specified&CREDENTIALS={ENCODED KEY}' \
 AS OF SYSTEM TIME '-10s';
 ~~~
 
@@ -459,7 +459,7 @@ To take a [full backup](take-full-and-incremental-backups.html#full-backups) of 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP DATABASE bank \
-INTO 'gs://{BUCKET NAME}/{PATH}?AUTH=specified&CREDENTIALS={ENCODED KEY}' \
+INTO 'gs://{BUCKET NAME}?AUTH=specified&CREDENTIALS={ENCODED KEY}' \
 AS OF SYSTEM TIME '-10s';
 ~~~
 
@@ -468,7 +468,7 @@ To take a [full backup](take-full-and-incremental-backups.html#full-backups) of 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP DATABASE bank, employees \
-INTO 'gs://{BUCKET NAME}/{PATH}?AUTH=specified&CREDENTIALS={ENCODED KEY}' \
+INTO 'gs://{BUCKET NAME}?AUTH=specified&CREDENTIALS={ENCODED KEY}' \
 AS OF SYSTEM TIME '-10s';
 ~~~
 
@@ -479,7 +479,7 @@ To take a [full backup](take-full-and-incremental-backups.html#full-backups) of 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP bank.customers \
-INTO 'gs://{BUCKET NAME}/{PATH}?AUTH=specified&CREDENTIALS={ENCODED KEY}' \
+INTO 'gs://{BUCKET NAME}?AUTH=specified&CREDENTIALS={ENCODED KEY}' \
 AS OF SYSTEM TIME '-10s';
 ~~~
 
@@ -488,7 +488,7 @@ To take a [full backup](take-full-and-incremental-backups.html#full-backups) of 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP bank.customers, bank.accounts \
-INTO 'gs://{BUCKET NAME}/{PATH}?AUTH=specified&CREDENTIALS={ENCODED KEY}' \
+INTO 'gs://{BUCKET NAME}?AUTH=specified&CREDENTIALS={ENCODED KEY}' \
 AS OF SYSTEM TIME '-10s';
 ~~~
 
@@ -499,7 +499,7 @@ AS OF SYSTEM TIME '-10s';
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP test_schema.*
-INTO 'gs://{BUCKET NAME}/{PATH}?AUTH=specified&CREDENTIALS={ENCODED KEY}' \
+INTO 'gs://{BUCKET NAME}?AUTH=specified&CREDENTIALS={ENCODED KEY}' \
 AS OF SYSTEM TIME '-10s';
 ~~~
 
@@ -520,7 +520,7 @@ To take an incremental backup using the `LATEST` keyword:
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP INTO LATEST IN \
-    'gs://{BUCKET NAME}/{PATH}?AUTH=specified&CREDENTIALS={ENCODED KEY}' \
+    'gs://{BUCKET NAME}?AUTH=specified&CREDENTIALS={ENCODED KEY}' \
     AS OF SYSTEM TIME '-10s';
 ~~~
 
@@ -528,7 +528,7 @@ To store the backup in an existing subdirectory in the collection:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-BACKUP DATABASE bank INTO 'subdirectory' IN 'gs://{BUCKET NAME}/{PATH}?AUTH=specified&CREDENTIALS={ENCODED KEY}' \
+BACKUP INTO 'subdirectory' IN 'gs://{BUCKET NAME}?AUTH=specified&CREDENTIALS={ENCODED KEY}' \
 AS OF SYSTEM TIME '-10s';
 ~~~
 
@@ -536,7 +536,7 @@ AS OF SYSTEM TIME '-10s';
 If you intend to take a **full** backup, we recommend running `BACKUP INTO {collectionURI}` without specifying a subdirectory.
 {{site.data.alerts.end}}
 
-To explicitly control where you store your incremental backups, use the [`incremental_location`](backup.html#options) option. For more detail, see [this example](take-full-and-incremental-backups.html#incremental-backups-with-explicitly-specified-destinations) on using the `incremental_location` option including how to restore incremental backups taken with it.
+To explicitly control where you store your incremental backups, use the [`incremental_location`](backup.html#options) option. For more detail, see [this example](take-full-and-incremental-backups.html#incremental-backups-with-explicitly-specified-destinations) demonstrating the `incremental_location` option and how to restore incremental backups taken with it.
 
 ### Run a backup asynchronously
 
@@ -545,7 +545,7 @@ Use the `DETACHED` [option](#options) to execute the backup [job](show-jobs.html
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP INTO \
-'gs://{BUCKET NAME}/{PATH}?AUTH=specified&CREDENTIALS={ENCODED KEY}' \
+'gs://{BUCKET NAME}?AUTH=specified&CREDENTIALS={ENCODED KEY}' \
 AS OF SYSTEM TIME '-10s'
 WITH DETACHED;
 ~~~

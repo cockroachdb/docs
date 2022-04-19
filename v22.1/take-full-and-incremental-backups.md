@@ -22,14 +22,14 @@ You can use the [`BACKUP`](backup.html) statement to efficiently back up your cl
 
 ## Backup collections
 
- A _backup collection_ defines a set of backups and their metadata. The collection can contain multiple full backups and their subsequent [incremental backups](#incremental-backups). The path to a backup is created using a date-based naming scheme and stored at the URI passed with the `BACKUP` statement.
+ A _backup collection_ defines a set of backups and their metadata. The collection can contain multiple full backups and their subsequent [incremental backups](#incremental-backups). The path to a backup is created using a date-based naming scheme and stored at the [URI](backup.html#collectionURI-param) passed with the `BACKUP` statement.
 
 There are some specific cases where part of the collection data is stored at a different URI:
 
 - A [locality-aware backup](take-and-restore-locality-aware-backups.html). The backup collection will be stored according to the URIs passed with the `BACKUP` statement: `BACKUP INTO LATEST IN {collectionURI}, {localityURI}, {localityURI}`. Here, the `collectionURI` represents the default locality.
 - As of v22.1, it is possible to store incremental backups at a [different URI](#incremental-backups-with-explicitly-specified-destinations) to the related full backup. This means that one or multiple storage locations can hold one backup collection.
 
-In the following example, one storage bucket is holding the backup collection. The full backups are stored at the root of the collection's URI in a date-based path. The `/incrementals` directory holds all incremental backups by default.
+By default, full backups are stored at the root of the collection's URI in a date-based path, and incremental backups are stored in the `/incrementals` directory. The following example shows a backup collection created using these default values, where all backups reside in one storage bucket:
 
 ~~~
 Collection:
@@ -88,46 +88,46 @@ Backups will export [Enterprise license keys](enterprise-licensing.html) during 
 
 ### Take a full backup
 
-To do a cluster backup, use the [`BACKUP`](backup.html) statement:
+To perform a full cluster backup, use the [`BACKUP`](backup.html) statement:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP INTO '{collectionURI}';
 ~~~
 
-If it's ever necessary, you can use the [`RESTORE`][restore] statement with `LATEST` to restore the most recent backup added to the [collection](#backup-collections):
+To restore a backup, use the [`RESTORE`](restore.html) statement, specifying what you want to restore as well as the [collection's](#backup-collections) URI:
 
-To restore a table:
+- To restore the latest backup of a table:
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> RESTORE TABLE bank.customers FROM LATEST IN '{collectionURI}';
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    > RESTORE TABLE bank.customers FROM LATEST IN '{collectionURI}';
+    ~~~
 
-To restore a database:
+- To restore the latest backup of a database:
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> RESTORE DATABASE bank FROM LATEST IN '{collectionURI}';
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    > RESTORE DATABASE bank FROM LATEST IN '{collectionURI}';
+    ~~~
 
-To restore your full cluster:
+- To restore the latest backup of your full cluster:
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> RESTORE FROM LATEST IN '{collectionURI}';
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    > RESTORE FROM LATEST IN '{collectionURI}';
+    ~~~
 
 {{site.data.alerts.callout_info}}
 A full cluster restore can only be run on a target cluster that has **never** had user-created databases or tables.
 {{site.data.alerts.end}}
 
-To restore a backup from a specific subdirectory:
+- To restore a backup from a specific subdirectory:
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> RESTORE DATABASE bank FROM {subdirectory} IN '{collectionURI}';
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    > RESTORE DATABASE bank FROM {subdirectory} IN '{collectionURI}';
+    ~~~
 
 To view the available backup subdirectories, use [`SHOW BACKUPS`](show-backup.html).
 
@@ -166,7 +166,7 @@ Then, create nightly incremental backups based off of the full backups you've al
 <span class="version-tag">New in v22.1:</span> This will add the incremental backup to the default `/incrementals` directory at the root of the backup collection's directory. With incremental backups in the `/incrementals` directory, you can apply different lifecycle/retention policies from cloud storage providers to the `/incrementals` directory as needed.
 
 {{site.data.alerts.callout_info}}
-In v21.2 and earlier, incremental backups were stored in the same directory as their full backup (i.e., `collectionURI/subdirectory`). If an incremental backup points to a subdirectory with incremental backups created in v21.2 and earlier, v22.1 will write the incremental backup to the v21.2 default location. To back up using the prior behavior, see this [example](#backup-earlier-behavior) for details on using the `incremental_location` option to achieve this.
+In v21.2 and earlier, incremental backups were stored in the same directory as their full backup (i.e., `collectionURI/subdirectory`). If an incremental backup points to a subdirectory with incremental backups created in v21.2 and earlier, v22.1 will write the incremental backup to the v21.2 default location. To back up using the prior behavior, use the `incremental_location` option, as shown in this [example](#backup-earlier-behavior).
 {{site.data.alerts.end}}
 
 If it's ever necessary, you can then use the [`RESTORE`][restore] statement to restore your cluster, database(s), and/or table(s). Restoring from incremental backups requires previous full and incremental backups.
@@ -204,7 +204,7 @@ Although the incremental backup will be in a different storage location, it is s
 
 A full backup must be present in the `{collectionURI}` in order to take an incremental backup to the alternative `{explicit_incrementalsURI}`. If there isn't a full backup present in `{collectionURI}` when taking an incremental backup with `incremental_location`, the error `path does not contain a completed latest backup` will be returned.
 
-For details on the backup directory structure when taking incremental backups with `incremental_location`, see [Backup collections](#incremental-location-structure)
+For details on the backup directory structure when taking incremental backups with `incremental_location`, see this [incremental location directory structure](#incremental-location-structure) example.
 
 <a name="backup-earlier-behavior"></a> To take incremental backups to a subdirectory in the `collectionURI` that you define (rather than the default `/incrementals` directory), use the `incremental_location` option:
 
@@ -262,7 +262,7 @@ Both core and Enterprise users can use backup scheduling for full backups of clu
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE SCHEDULE core_schedule_label
-  FOR BACKUP INTO 'azure://{CONTAINER NAME}/{PATH}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}'
+  FOR BACKUP INTO 'azure://{CONTAINER NAME}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}'
     RECURRING '@daily'
     FULL BACKUP ALWAYS
     WITH SCHEDULE OPTIONS first_run = 'now';
@@ -270,7 +270,7 @@ Both core and Enterprise users can use backup scheduling for full backups of clu
 ~~~
      schedule_id     |        name         | status |         first_run         | schedule |                                                                                       backup_stmt
 ---------------------+---------------------+--------+---------------------------+----------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  588799238330220545 | core_schedule_label | ACTIVE | 2020-09-11 00:00:00+00:00 | @daily   | BACKUP INTO 'azure://{CONTAINER NAME}/{PATH}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' WITH detached
+  588799238330220545 | core_schedule_label | ACTIVE | 2020-09-11 00:00:00+00:00 | @daily   | BACKUP INTO 'azure://{CONTAINER NAME}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' WITH detached
 (1 row)
 ~~~
 

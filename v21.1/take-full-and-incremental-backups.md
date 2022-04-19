@@ -69,46 +69,46 @@ Backups will export [Enterprise license keys](enterprise-licensing.html) during 
 
 ### Take a full backup
 
-To do a cluster backup, use the [`BACKUP`](backup.html) statement:
+To perform a full cluster backup, use the [`BACKUP`](backup.html) statement:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP INTO '{collectionURI}';
 ~~~
 
-If it's ever necessary, you can use the [`RESTORE`][restore] statement with `LATEST` to restore the most recent backup added to the [collection]:
+To restore a backup, use the [`RESTORE`][restore.html] statement, specifying what you want to restore as well as the [collection's](#backup-collections) URI:
 
-To restore a table:
+- To restore the latest backup of a table:
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> RESTORE TABLE bank.customers FROM LATEST IN '{collectionURI}';
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    > RESTORE TABLE bank.customers FROM LATEST IN '{collectionURI}';
+    ~~~
 
-To restore a database:
+- To restore the latest backup of a database:
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> RESTORE DATABASE bank FROM LATEST IN '{collectionURI}';
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    > RESTORE DATABASE bank FROM LATEST IN '{collectionURI}';
+    ~~~
 
-To restore your full cluster:
+- To restore the latest backup of your full cluster:
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> RESTORE FROM LATEST IN '{collectionURI}';
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    > RESTORE FROM LATEST IN '{collectionURI}';
+    ~~~
 
 {{site.data.alerts.callout_info}}
 A full cluster restore can only be run on a target cluster that has **never** had user-created databases or tables.
 {{site.data.alerts.end}}
 
-To restore a backup from a specific subdirectory:
+- To restore a backup from a specific subdirectory:
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> RESTORE DATABASE bank FROM {subdirectory} IN '{collectionURI}';
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    > RESTORE DATABASE bank FROM {subdirectory} IN '{collectionURI}';
+    ~~~
 
 To view the available backup subdirectories, use [`SHOW BACKUPS`](show-backup.html).
 
@@ -146,16 +146,16 @@ Then, create nightly incremental backups based off of the full backups you've al
 
 For an example on how to specify the destination of an incremental backup, see [Incremental backups with explicitly specified destinations](#incremental-backups-with-explicitly-specified-destinations).
 
-If it's ever necessary, you can then use the [`RESTORE`][restore] command to restore your cluster, database(s), and/or table(s). Restoring from incremental backups requires previous full and incremental backups.
+If it's ever necessary, you can then use the [`RESTORE`][restore.html] command to restore your cluster, database(s), and/or table(s). Restoring from incremental backups requires previous full and incremental backups.
 
-To restore from the most recent incremental backup, run the following:
+To restore from the most recent backup, run the following:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > RESTORE FROM LATEST IN '{collectionURI}';
 ~~~
 
-To restore a specific incremental backup, run `RESTORE` with the backup's subdirectory:
+To restore a specific backup, run `RESTORE` with the backup's subdirectory:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -225,7 +225,7 @@ Both core and Enterprise users can use backup scheduling for full backups of clu
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE SCHEDULE core_schedule_label
-  FOR BACKUP INTO 'azure://{CONTAINER NAME}/{PATH}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}'
+  FOR BACKUP INTO 'azure://{CONTAINER NAME}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}'
     RECURRING '@daily'
     FULL BACKUP ALWAYS
     WITH SCHEDULE OPTIONS first_run = 'now';
@@ -233,7 +233,7 @@ Both core and Enterprise users can use backup scheduling for full backups of clu
 ~~~
      schedule_id     |        name         | status |         first_run         | schedule |                                                                                       backup_stmt
 ---------------------+---------------------+--------+---------------------------+----------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  588799238330220545 | core_schedule_label | ACTIVE | 2020-09-11 00:00:00+00:00 | @daily   | BACKUP INTO 'azure://{CONTAINER NAME}/{PATH}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' WITH detached
+  588799238330220545 | core_schedule_label | ACTIVE | 2020-09-11 00:00:00+00:00 | @daily   | BACKUP INTO 'azure://{CONTAINER NAME}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' WITH detached
 (1 row)
 ~~~
 

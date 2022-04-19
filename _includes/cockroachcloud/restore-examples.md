@@ -16,7 +16,7 @@ To restore a full cluster:
 RESTORE FROM LATEST IN 's3://{bucket_name}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={access_key}';
 ~~~
 
-To view the available subdirectories to restore a backup, use [`SHOW BACKUPS`](../{{site.versions["stable"]}}/restore.html#view-the-backup-subdirectories).
+To view the available subdirectories to restore a backup from, use [`SHOW BACKUPS`](../{{site.versions["stable"]}}/restore.html#view-the-backup-subdirectories).
 
 #### Restore a database
 
@@ -27,7 +27,7 @@ To restore a database:
 RESTORE DATABASE bank FROM LATEST IN 's3://{bucket_name}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={access_key}';
 ~~~
 
-To view the available subdirectories to restore a backup, use [`SHOW BACKUPS`](../{{site.versions["stable"]}}/restore.html#view-the-backup-subdirectories).
+To view the available subdirectories to restore a backup from, use [`SHOW BACKUPS`](../{{site.versions["stable"]}}/restore.html#view-the-backup-subdirectories).
 
 {{site.data.alerts.callout_info}}
 `RESTORE DATABASE` can only be used if the entire database was backed up.
@@ -49,4 +49,4 @@ To restore multiple tables:
 > RESTORE TABLE bank.customers, bank.accounts FROM LATEST IN 's3://{bucket_name}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={access_key}';
 ~~~
 
-To view the available subdirectories to restore a backup, use [`SHOW BACKUPS`](../{{site.versions["stable"]}}/restore.html#view-the-backup-subdirectories).
+To view the available subdirectories to restore a backup from, use [`SHOW BACKUPS`](../{{site.versions["stable"]}}/restore.html#view-the-backup-subdirectories).
