@@ -579,9 +579,9 @@ WHERE metadata @> '{"db":"movr"}' AND (metadata @> '{"stmtTyp":"TypeDDL"}' OR me
 
 ~~~
 
-#### Detect suboptimal and regressed plans <span class="version-tag">New in v22.1</span>
+#### Detect suboptimal and regressed plans
 
-To detect suboptimal and regressed plans over time you can compare plans for the same query by extracting them from `statistics->'statistics'->'planGists'`.
+ <span class="version-tag">New in v22.1</span> Historical plans are stored in plan gists in `statistics->'statistics'->'planGists'`. To detect suboptimal and regressed plans over time you can compare plans for the same query by extracting them from the plan gists.
 
 Suppose you wanted to compare plans of the following query:
 
@@ -601,7 +601,7 @@ LIMIT
   10;
 ~~~
 
-To decode plan gists stored in `statistics->'statistics'->'planGists'`, you use the `crdb_internal.decode_plan_gist` function. The following example shows a query before (2nd row) and after (1st row) you add an [index on the `start_time` column in the `rides` table](apply-statement-performance-rules.html#rule-2-use-the-right-index). You can see the change in the plans for the same query and the reduced number of rows read and latency when you use the index.
+To decode plan gists, use the `crdb_internal.decode_plan_gist` function, as shown in the following query. The example shows the performance impact of adding an [index on the `start_time` column in the `rides` table](apply-statement-performance-rules.html#rule-2-use-the-right-index). The first row of the output shows the improved performance (reduced number of rows read and latency) after the index was added. Tne second row shows the query, which performs a full scan on the `rides` table, before the index was added.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
