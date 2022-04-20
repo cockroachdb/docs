@@ -3,6 +3,7 @@ title: Simple SELECT Clause
 summary: The Simple SELECT clause loads or computes data from various sources.
 toc: true
 key: select.html
+docs_area: reference.sql
 ---
 
 The simple `SELECT` clause is the main SQL syntax to read and process
@@ -27,7 +28,7 @@ The simple `SELECT` clause also has other applications not covered here, such as
 
 ## Required privileges
 
-The user must have the `SELECT` [privilege](authorization.html#assign-privileges) on the tables used as operands.
+The user must have the `SELECT` [privilege](security-reference/authorization.html#managing-privileges) on the tables used as operands.
 
 ## Parameters
 

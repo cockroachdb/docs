@@ -2,9 +2,12 @@
 title: ALTER SCHEMA
 summary: The ALTER SCHEMA statement modifies a user-defined schema in a database.
 toc: true
+docs_area: reference.sql 
 ---
 
- The `ALTER SCHEMA` [statement](sql-statements.html) modifies a user-defined [schema](sql-name-resolution.html#naming-hierarchy). CockroachDB currently supports changing the name of the schema and the owner of the schema.
+The `ALTER SCHEMA` [statement](sql-statements.html) modifies a user-defined [schema](sql-name-resolution.html#naming-hierarchy). CockroachDB currently supports changing the name of the schema and the owner of the schema.
+
+{% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
 ## Syntax
 
@@ -23,7 +26,7 @@ Parameter | Description
 ## Required privileges
 
 - To rename a schema, the user must be the owner of the schema.
-- To change the owner of a schema, the user must be the current owner of the schema and a member of the new owner [role](authorization.html#roles). The new owner role must also have the `CREATE` [privilege](authorization.html#assign-privileges) on the database to which the schema belongs.
+- To change the owner of a schema, the user must be the current owner of the schema and a member of the new owner [role](security-reference/authorization.html#roles). The new owner role must also have the `CREATE` [privilege](security-reference/authorization.html#managing-privileges) on the database to which the schema belongs.
 
 ## Example
 
@@ -198,3 +201,4 @@ WHERE
 - [`CREATE SCHEMA`](create-schema.html)
 - [`SHOW SCHEMAS`](show-schemas.html)
 - [`DROP SCHEMA`](drop-schema.html)
+- [Online Schema Changes](online-schema-changes.html)

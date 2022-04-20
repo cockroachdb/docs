@@ -2,6 +2,7 @@
 title: Overview Dashboard
 summary: The Overview dashboard lets you monitor important SQL performance, replication, and storage metrics.
 toc: true
+docs_area: reference.db_console
 ---
 
 The **Overview** dashboard lets you monitor important SQL performance, replication, and storage metrics.
@@ -27,6 +28,16 @@ See the [Statements page](ui-statements-page.html) for more details on the clust
 ## Service Latency: SQL, 99th percentile
 
 {% include {{ page.version.version }}/ui/ui-sql-latency-99th-percentile.md %}
+
+## SQL Statement Contention
+
+The statement contention metric is a counter that represents the number of statements that have experienced contention. If a statement experiences at least one contention "event" (i.e., the statement is forced to wait for another transaction), the counter is incremented at most once.
+
+- In the node view, the graph shows the total number of SQL statements that experienced [contention](transactions.html#transaction-contention) on that node.
+
+- In the cluster view, the graph shows the total number of SQL statements that experienced [contention](transactions.html#transaction-contention) across all nodes in the cluster.
+
+    See the [Statements page](ui-statements-page.html) for more details on the cluster's SQL statements.
 
 ## Replicas per Node
 
@@ -55,6 +66,8 @@ Metric | Description
 **Capacity** | The maximum store size. This value may be set per node using [`--store`](cockroach-start.html#store). If a store size has not been set, this metric displays the actual disk capacity. See [Capacity metrics](#capacity-metrics).
 **Available** | The free disk space available to CockroachDB data.
 **Used** | The disk space in use by CockroachDB data. This excludes the Cockroach binary, operating system, and other system files.
+
+{% include {{ page.version.version }}/prod-deployment/healthy-storage-capacity.md %}
 
 ### Capacity metrics
 

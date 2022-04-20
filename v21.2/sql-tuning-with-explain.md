@@ -1,12 +1,22 @@
 ---
-title: SQL Tuning with EXPLAIN
-summary: How to use `EXPLAIN to identify and resolve SQL performance issues
+title: Statement Tuning with EXPLAIN
+summary: How to use EXPLAIN to identify and resolve SQL statement performance issues
 toc: true
+docs_area: develop
 ---
 
-This tutorial walks you through the common reasons for [slow SQL statements](query-behavior-troubleshooting.html#identify-slow-statements) and describes how to use [`EXPLAIN`](explain.html) to troubleshoot the issues.
+This tutorial walks you through the common reasons for [slow SQL statements](query-behavior-troubleshooting.html#identify-slow-statements) and describes how to use [`EXPLAIN`](explain.html) to troubleshoot the issues in queries against the [`movr` example dataset](cockroach-demo.html#datasets).
 
-The following examples use [MovR](movr.html), a fictional vehicle-sharing application, to demonstrate CockroachDB SQL statements. Run [`cockroach demo movr --num-users 1250000`](cockroach-demo.html) to open an interactive SQL shell to a temporary, in-memory cluster with the `movr` database preloaded and set as the [current database](sql-name-resolution.html#current-database).
+## Before you begin
+
+Start the [MovR database](movr.html) on a CockroachDB demo cluster with a larger data set.
+
+{% include copy-clipboard.html %}
+~~~ shell
+cockroach demo movr --num-users 1250000
+~~~
+
+This command opens an interactive SQL shell to a temporary, in-memory cluster with the `movr` database preloaded and set as the [current database](sql-name-resolution.html#current-database).
 
 ## Issue: Full table scans
 
@@ -434,4 +444,4 @@ Time: 1ms total (execution 1ms / network 0ms)
 
 - [SQL Best Practices](performance-best-practices-overview.html)
 - [Troubleshoot SQL Behavior](query-behavior-troubleshooting.html)
-- [Optimize Statement Performance](make-queries-fast.html)
+- [Indexes](indexes.html)

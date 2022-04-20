@@ -7553,6 +7553,11 @@ section.footer {
     border-left-color: #24CAFF; }
     .bs-callout--info h4, .bs-callout--info .bs-callout__label {
       color: #190F33; }
+  .bs-callout--version {
+    background-color: #FF7595;
+    border-left-color: #FF7595; }
+    .bs-callout--version h4, .bs-callout--version .bs-callout__label {
+      color: #FF7595; }
 
 .toc-col {
   display: none; }
@@ -10293,7 +10298,7 @@ code {
   -moz-osx-font-smoothing: grayscale;
   line-height: 24px;
   border-radius: 3px;
-  padding: 2px 8px;
+  padding: 2px 2px;
   background-color: #F5F7FA;
   color: #475872; }
   @media screen and (min-width: 0) and (max-width: 767px) {
@@ -10308,7 +10313,7 @@ pre, code {
   -moz-osx-font-smoothing: grayscale;
   line-height: 24px;
   border-radius: 3px;
-  padding: 2px 8px;
+  padding: 2px 2px;
   font-size: 14px;
   line-height: 25px;
   hyphens: none; }

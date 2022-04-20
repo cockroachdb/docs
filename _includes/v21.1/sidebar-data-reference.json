@@ -1492,7 +1492,11 @@
           "/${VERSION}/diagnostics-reporting.html"
         ]
       },
-      {% include_cached cockroachcloud/sidebar-release-notes.json %},
-      {% include_cached sidebar-releases.json %}
+      {
+        "title": "Cloud Release Notes",
+        "urls": [
+          "/releases/cloud.html"
+        ]
+      }
     ]
   }

@@ -2,6 +2,7 @@
 title: ALTER DATABASE ... RENAME TO
 summary: The ALTER DATABASE ... RENAME TO statement changes the name of a database.
 toc: true
+docs_area: reference.sql
 ---
 
 The `RENAME TO` clause is part of [`ALTER DATABASE`](alter-database.html), and changes the name of a database.
@@ -96,4 +97,5 @@ SQLSTATE: 42P04
 - [`SHOW DATABASES`](show-databases.html)
 - [`SET DATABASE`](set-vars.html)
 - [`DROP DATABASE`](drop-database.html)
-- [Other SQL Statements](sql-statements.html)
+- [SQL Statements](sql-statements.html)
+- [Online Schema Changes](online-schema-changes.html)

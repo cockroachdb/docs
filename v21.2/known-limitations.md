@@ -2,15 +2,17 @@
 title: Known Limitations in CockroachDB v21.2
 summary: Learn about newly identified limitations in CockroachDB as well as unresolved limitations identified in earlier releases.
 toc: true
+keywords: gin, gin index, gin indexes, inverted index, inverted indexes, accelerated index, accelerated indexes
+docs_area: 
 ---
 
 This page describes newly identified limitations in the CockroachDB {{page.release_info.version}} release as well as unresolved limitations identified in earlier releases.
 
 ## New limitations
 
-### CockroachDB does not properly optimize some left and anti joins with inverted indexes
+### CockroachDB does not properly optimize some left and anti joins with GIN indexes
 
-[Left joins](joins.html#left-outer-joins) and anti joins involving [`JSONB`](jsonb.html), [`ARRAY`](array.html), or [spatial-typed](spatial-data.html) columns with a multi-column or [partitioned](partition-by.html) [inverted index](inverted-indexes.html) will not take advantage of the index if the prefix columns of the index are unconstrained, or if they are constrained to multiple, constant values.
+[Left joins](joins.html#left-outer-joins) and anti joins involving [`JSONB`](jsonb.html), [`ARRAY`](array.html), or [spatial-typed](spatial-data.html) columns with a multi-column or [partitioned](partition-by.html) [GIN index](inverted-indexes.html) will not take advantage of the index if the prefix columns of the index are unconstrained, or if they are constrained to multiple, constant values.
 
 To work around this limitation, make sure that the prefix columns of the index are either constrained to single constant values, or are part of an equality condition with an input column (e.g., `col1 = col2`, where `col1` is a prefix column and `col2` is an input column).
 
@@ -161,11 +163,9 @@ UNION ALL SELECT * FROM t1 LEFT JOIN t2 ON st_contains(t1.geom, t2.geom) AND t2.
 
 ### Using `RESTORE` with multi-region table localities
 
-* {% include {{ page.version.version }}/known-limitations/rbr-restore-no-support.md %}
+- {% include {{ page.version.version }}/known-limitations/restore-tables-non-multi-reg.md %}
 
-* {% include {{ page.version.version }}/known-limitations/restore-tables-non-multi-reg.md %}
-
-* {% include {{ page.version.version }}/known-limitations/restore-multiregion-match.md %}
+- {% include {{ page.version.version }}/known-limitations/restore-multiregion-match.md %}
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/71071)
 
@@ -201,9 +201,9 @@ UNION ALL SELECT * FROM t1 LEFT JOIN t2 ON st_contains(t1.geom, t2.geom) AND t2.
 
 ### Optimizer stale statistics deletion when columns are dropped
 
-* {% include {{page.version.version}}/known-limitations/old-multi-col-stats.md %}
+- {% include {{page.version.version}}/known-limitations/old-multi-col-stats.md %}
 
-* {% include {{page.version.version}}/known-limitations/single-col-stats-deletion.md %}
+- {% include {{page.version.version}}/known-limitations/single-col-stats-deletion.md %}
 
 ### Automatic statistics refresher may not refresh after upgrade
 
@@ -512,7 +512,7 @@ To prevent memory exhaustion, monitor each node's memory usage and ensure there 
 
 ### Privileges for `DELETE` and `UPDATE`
 
-Every [`DELETE`](delete.html) or [`UPDATE`](update.html) statement constructs a `SELECT` statement, even when no `WHERE` clause is involved. As a result, the user executing `DELETE` or `UPDATE` requires both the `DELETE` and `SELECT` or `UPDATE` and `SELECT` [privileges](authorization.html#assign-privileges) on the table.
+Every [`DELETE`](delete.html) or [`UPDATE`](update.html) statement constructs a `SELECT` statement, even when no `WHERE` clause is involved. As a result, the user executing `DELETE` or `UPDATE` requires both the `DELETE` and `SELECT` or `UPDATE` and `SELECT` [privileges](security-reference/authorization.html#managing-privileges) on the table.
 
 ### `ROLLBACK TO SAVEPOINT` in high-priority transactions containing DDL
 

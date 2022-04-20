@@ -2,6 +2,7 @@
 title: SHOW BACKUP
 summary: The SHOW BACKUP statement lists the contents of a backup.
 toc: true
+docs_area: reference.sql
 ---
 
 The `SHOW BACKUP` [statement](sql-statements.html) lists the contents of a backup created with the [`BACKUP`](backup.html) statement.
@@ -10,7 +11,7 @@ The `SHOW BACKUP` [statement](sql-statements.html) lists the contents of a backu
 
 `SHOW BACKUP` requires read permissions to its target destination.
 
-{% include {{ page.version.version }}/misc/source-privileges.md %}
+{% include {{ page.version.version }}/misc/non-http-source-privileges.md %}
 
 ## Synopsis
 

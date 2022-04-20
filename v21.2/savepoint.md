@@ -2,6 +2,7 @@
 title: SAVEPOINT
 summary: A savepoint is a marker that defines the beginning of a nested transaction.
 toc: true
+docs_area: reference.sql
 ---
 
 A savepoint is a marker that defines the beginning of a [nested transaction](transactions.html#nested-transactions). This marker can be later used to commit or roll back just the effects of the nested transaction without affecting the progress of the enclosing transaction.
@@ -18,7 +19,7 @@ A savepoint is a marker that defines the beginning of a [nested transaction](tra
 
 ## Required privileges
 
-No [privileges](authorization.html#assign-privileges) are required to create a savepoint. However, privileges are required for each statement within a transaction.
+No [privileges](security-reference/authorization.html#managing-privileges) are required to create a savepoint. However, privileges are required for each statement within a transaction.
 
 ## Parameters
 

@@ -2,16 +2,17 @@
 title: ALTER SEQUENCE
 summary: Use the ALTER SEQUENCE statement to change the name, increment values, and other settings of a sequence.
 toc: true
+docs_area: reference.sql 
 ---
 
 The `ALTER SEQUENCE` [statement](sql-statements.html) applies a [schema change](online-schema-changes.html) to a sequence.
 
-{% include {{{ page.version.version }}/misc/schema-change-stmt-note.md %}
+{% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
 ## Required privileges
 
-- To alter a sequence, the user must have the `CREATE` [privilege](authorization.html#assign-privileges) on the parent database.
-- To change the schema of a sequence with `ALTER SEQUENCE ... SET SCHEMA`, or to change the database of a sequence with `ALTER SEQUENCE ... RENAME TO`, the user must also have the `DROP` [privilege](authorization.html#assign-privileges) on the sequence.
+- To alter a sequence, the user must have the `CREATE` [privilege](security-reference/authorization.html#managing-privileges) on the parent database.
+- To change the schema of a sequence with `ALTER SEQUENCE ... SET SCHEMA`, or to change the database of a sequence with `ALTER SEQUENCE ... RENAME TO`, the user must also have the `DROP` [privilege](security-reference/authorization.html#managing-privileges) on the sequence.
 
 ## Syntax
 
@@ -254,5 +255,5 @@ SQLSTATE: 42P01
 - [`DROP SEQUENCE`](drop-sequence.html)
 - [`SHOW SEQUENCES`](show-sequences.html)
 - [Functions and Operators](functions-and-operators.html)
-- [Other SQL Statements](sql-statements.html)
+- [SQL Statements](sql-statements.html)
 - [Online Schema Changes](online-schema-changes.html)

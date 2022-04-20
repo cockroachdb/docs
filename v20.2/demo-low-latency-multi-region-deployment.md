@@ -33,7 +33,7 @@ Read about how an [electronic lock manufacturer](https://www.cockroachlabs.com/c
 
 ### Request a trial license
 
-Some CockroachDB features used in this tutorial require an Enterprise license, so [request a 30-day trial license](https://www.cockroachlabs.com/get-cockroachdb/) before you get started.
+Some CockroachDB features used in this tutorial require an Enterprise license, so [request a 30-day trial license](https://www.cockroachlabs.com/get-cockroachdb/enterprise) before you get started.
 
 You should receive your trial license via email within a few minutes. You'll enable your license once your cluster is up-and-running.
 

@@ -119,6 +119,12 @@ You can check on the status of the schema change jobs on your system at any time
 
 All schema change jobs can be [paused](pause-job.html), [resumed](resume-job.html), and [canceled](cancel-job.html).
 
+## Undoing a schema change
+
+Prior to [garbage collection](architecture/storage-layer.html#garbage-collection), it's possible to recover data that may have been lost prior to schema changes by using the [`AS OF SYSTEM TIME`](as-of-system-time.html) parameter. However, this solution is limited in terms of time, and doesn't work beyond the designated garbage collection window.
+
+For more long-term recovery solutions, consider taking either a [full or incremental backup](take-full-and-incremental-backups.html) of your cluster.
+
 ## Limitations
 
 ### Overview

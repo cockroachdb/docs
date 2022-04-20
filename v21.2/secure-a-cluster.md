@@ -2,12 +2,13 @@
 title: Start a Local Cluster (Secure)
 summary: Run a secure multi-node CockroachDB cluster locally, using TLS certificates to encrypt network communication.
 toc: true
+filter_category: start_a_cluster
+filter_html: Secure
+filter_sort: 1
+docs_area: deploy
 ---
 
-<div class="filters filters-big clearfix">
-    <a href="secure-a-cluster.html"><button class="filter-button current"><strong>Secure</strong></button></a>
-    <a href="start-a-local-cluster.html"><button class="filter-button">Insecure</button></a>
-</div>
+{% include filter-tabs.md %}
 
 Once you've [installed CockroachDB](install-cockroachdb.html), it's simple to run a secure multi-node cluster locally, using [TLS certificates](cockroach-cert.html) to encrypt network communication.
 
@@ -151,7 +152,7 @@ You can use either [`cockroach cert`](cockroach-cert.html) commands or [`openssl
     The output will look something like this:
 
     ~~~
-    CockroachDB node starting at {{page.release_info.start_time}}
+    CockroachDB node starting at {{ now | date: "%Y-%m-%d %H:%M:%S.%6 +0000 UTC" }}
     build:               CCL {{page.release_info.version}} @ {{page.release_info.build_time}} (go1.12.6)
     webui:               https://localhost:8080
     sql:                 postgresql://root@localhost:26257?sslcert=certs%2Fclient.root.crt&sslkey=certs%2Fclient.root.key&sslmode=verify-full&sslrootcert=certs%2Fca.crt
@@ -329,22 +330,35 @@ The CockroachDB [DB Console](ui-overview.html) gives you insight into the overal
 
 8. Use the [**Databases**](ui-databases-page.html), [**Statements**](ui-statements-page.html), and [**Jobs**](ui-jobs-page.html) pages to view details about your databases and tables, to assess the performance of specific queries, and to monitor the status of long-running operations like schema changes, respectively.
 
-## Step 6. Simulate node failure
+## Step 6. Simulate node maintenance
 
-1. In a new terminal, run the [`cockroach quit`](cockroach-quit.html) command against a node to simulate a node failure:
+1. In a new terminal, gracefully shut down a node. This is normally done prior to node maintenance:
 
-    {% include copy-clipboard.html %}
+    Get the process IDs of the nodes:
+
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ cockroach quit --certs-dir=certs --host=localhost:26259
+    ps -ef | grep cockroach | grep -v grep
     ~~~
 
-2. Back in the DB Console, despite one node being "suspect", notice the continued SQL traffic:
+    ~~~
+      501  4482     1   0  2:41PM ttys000    0:09.78 cockroach start --certs-dir=certs --store=node1 --listen-addr=localhost:26257 --http-addr=localhost:8080 --join=localhost:26257,localhost:26258,localhost:26259
+      501  4497     1   0  2:41PM ttys000    0:08.54 cockroach start --certs-dir=certs --store=node2 --listen-addr=localhost:26258 --http-addr=localhost:8081 --join=localhost:26257,localhost:26258,localhost:26259
+      501  4503     1   0  2:41PM ttys000    0:08.54 cockroach start --certs-dir=certs --store=node3 --listen-addr=localhost:26259 --http-addr=localhost:8082 --join=localhost:26257,localhost:26258,localhost:26259
+    ~~~
+
+    Gracefully shut down node 3, specifying its process ID:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    kill -TERM 4503
+    ~~~
+
+1. Back in the DB Console, despite one node being "suspect", notice the continued SQL traffic:
 
     <img src="{{ 'images/v21.2/ui_overview_dashboard_1_suspect.png' | relative_url }}" alt="DB Console" style="border:1px solid #eee;max-width:100%" />
 
-    This demonstrates CockroachDB's use of the Raft consensus protocol to [maintain availability and consistency in the face of failure](demo-fault-tolerance-and-recovery.html); as long as a majority of replicas remain online, the cluster and client traffic continue uninterrupted.
-
-4. Restart node 3:
+1. Restart node 3:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -395,35 +409,52 @@ Adding capacity is as simple as starting more nodes with `cockroach start`.
 
 ## Step 8. Stop the cluster
 
-1. When you're done with your test cluster, use the [`cockroach quit`](cockroach-quit.html) command to gracefully shut down each node.
+1. When you're done with your test cluster, stop the nodes.
 
-    {% include copy-clipboard.html %}
+    Get the process IDs of the nodes:
+
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ cockroach quit --certs-dir=certs --host=localhost:26257
+    ps -ef | grep cockroach | grep -v grep
     ~~~
 
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach quit --certs-dir=certs --host=localhost:26258
+    ~~~
+      501  4482     1   0  2:41PM ttys000    0:09.78 cockroach start --certs-dir=certs --store=node1 --listen-addr=localhost:26257 --http-addr=localhost:8080 --join=localhost:26257,localhost:26258,localhost:26259
+      501  4497     1   0  2:41PM ttys000    0:08.54 cockroach start --certs-dir=certs --store=node2 --listen-addr=localhost:26258 --http-addr=localhost:8081 --join=localhost:26257,localhost:26258,localhost:26259
+      501  4503     1   0  2:41PM ttys000    0:08.54 cockroach start --certs-dir=certs --store=node3 --listen-addr=localhost:26259 --http-addr=localhost:8082 --join=localhost:26257,localhost:26258,localhost:26259
+      501  4510     1   0  2:42PM ttys000    0:08.46 cockroach start --certs-dir=certs --store=node4 --listen-addr=localhost:26260 --http-addr=localhost:8083 --join=localhost:26257,localhost:26258,localhost:26259
+      501  4622     1   0  2:43PM ttys000    0:02.51 cockroach start --certs-dir=certs --store=node5 --listen-addr=localhost:26261 --http-addr=localhost:8084 --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
-    {% include copy-clipboard.html %}
+    Gracefully shut down each node, specifying its process ID:
+
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ cockroach quit --certs-dir=certs --host=localhost:26259
+    kill -TERM 4482
+    ~~~
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    kill -TERM 4497
+    ~~~
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    kill -TERM 4503
     ~~~
 
     {{site.data.alerts.callout_info}}
     For nodes 4 and 5, the shutdown process will take longer (about a minute each) and will eventually force the nodes to stop. This is because, with only 2 of 5 nodes left, a majority of replicas are not available, and so the cluster is no longer operational.
     {{site.data.alerts.end}}
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ cockroach quit --certs-dir=certs --host=localhost:26260
+    kill -TERM 4510
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ cockroach quit --certs-dir=certs --host=localhost:26261
+    kill -TERM 4622
     ~~~
 
 2. To restart the cluster at a later time, run the same `cockroach start` commands as earlier from the directory containing the nodes' data stores.  
@@ -444,4 +475,4 @@ Adding capacity is as simple as starting more nodes with `cockroach start`.
 You might also be interested in the following pages:
 
 - [CockroachDB SQL client](cockroach-sql.html)
-- [Hello World Example Apps](hello-world-example-apps.html)
+- [Example Apps](example-apps.html)

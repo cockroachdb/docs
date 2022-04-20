@@ -3,6 +3,7 @@ title: Spatial Data
 summary: Tutorial for working with spatial data in CockroachDB.
 toc: true
 toc_not_nested: true
+docs_area: deploy
 ---
 
 In this tutorial, you will plan a vacation from New York City to the [Adirondack Mountains](https://visitadirondacks.com/about) in northern New York State to do some birdwatching while visiting local independent bookstores. In the process, you will explore several of CockroachDB's [spatial capabilities](spatial-features.html):
@@ -15,7 +16,7 @@ In this tutorial, you will plan a vacation from New York City to the [Adirondack
 + Visualizing the output of your queries using free tools like <https://geojson.io>
 
 <div class="clearfix">
-  <a class="btn btn-outline-primary" href="../tutorials/spatial-tutorial-interactive.html" target="_blank">Run this in your browser &rarr;</a>
+  <a class="btn btn-outline-primary" href="../tutorials/spatial-tutorial-interactive.html" target="_blank" rel="noopener">Run this in your browser &rarr;</a>
 </div>
 
 ## Step 1. Review the scenario
@@ -41,7 +42,7 @@ For more information about how this data set is put together, see the [Data set 
 
 ## Step 2. Start CockroachDB
 
-This tutorial can be accomplished in any CockroachDB cluster running [v20.2](../releases/v20.2.0.html) or later.
+This tutorial can be accomplished in any CockroachDB cluster running [v20.2](../releases/v20.2.html#v20-2-0) or later.
 
 The simplest way to get up and running is with [`cockroach demo`](cockroach-demo.html), which starts a temporary, in-memory CockroachDB cluster and opens an interactive SQL shell:
 

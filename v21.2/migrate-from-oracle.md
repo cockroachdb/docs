@@ -2,6 +2,7 @@
 title: Migrate from Oracle
 summary: Learn how to migrate data from Oracle into a CockroachDB cluster.
 toc: true
+docs_area: migrate
 ---
 
 This page has instructions for migrating data from Oracle into CockroachDB by [importing](import.html) CSV files. Note that `IMPORT` only works for creating new tables. For information on how to add CSV data to existing tables, see [`IMPORT INTO`](import-into.html).
@@ -251,7 +252,7 @@ For more information and examples, refer to the following:
 
 ### Privileges for users and roles
 
-The Oracle privileges for [users](create-user.html) and [roles](create-role.html) must be rewritten for CockroachDB. Once the CockroachDB cluster is [secured](security-overview.html), CockroachDB follows the same [role-based access control](authorization.html) methodology as Oracle.   
+The Oracle privileges for [users](create-user.html) and [roles](create-role.html) must be rewritten for CockroachDB. Once the CockroachDB cluster is [secured](security-reference/security-overview.html), CockroachDB follows the same [role-based access control](authorization.html) methodology as Oracle.   
 
 
 ## Step 8. Import the CSV
@@ -325,7 +326,7 @@ Both Oracle and CockroachDB support [multi-statement transactions](transactions.
 
 Regarding locks, Cockroach utilizes a [lightweight latch](architecture/transaction-layer.html#latch-manager) to serialize access to common keys across concurrent transactions. Oracle and CockroachDB transaction control flows only have a few minor differences; for more details, refer to [Transactions - SQL statements](transactions.html#sql-statements).  
 
-As CockroachDB does not allow serializable anomalies, [transactions](begin-transaction.html) may experience deadlocks or [read/write contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention). This is expected during concurrency on the same keys. These can be addressed with either [automatic retries](transactions.html#automatic-retries) or [client-side intervention techniques](transactions.html#client-side-intervention).  
+As CockroachDB does not allow serializable anomalies, [transactions](begin-transaction.html) may experience deadlocks or [read/write contention](performance-best-practices-overview.html#transaction-contention). This is expected during concurrency on the same keys. These can be addressed with either [automatic retries](transactions.html#automatic-retries) or [client-side intervention techniques](transactions.html#client-side-intervention).  
 
 ### SQL dialect
 
@@ -386,7 +387,6 @@ You will have to refactor Oracle SQL and functions that do not comply with [ANSI
 - [Migrate from CSV](migrate-from-csv.html)
 - [Migrate from MySQL](migrate-from-mysql.html)
 - [Migrate from Postgres](migrate-from-postgres.html)
-- [SQL Dump (Export)](cockroach-dump.html)
 - [Back Up and Restore Data](take-full-and-incremental-backups.html)
 - [Use the Built-in SQL Client](cockroach-sql.html)
 - [Other Cockroach Commands](cockroach-commands.html)

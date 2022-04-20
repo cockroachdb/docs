@@ -3,6 +3,7 @@ title: cockroach gen
 summary: Use cockroach gen to generate command-line interface utlities, such as man pages, and example data.
 toc: true
 key: generate-cockroachdb-resources.html
+docs_area: reference.cli
 ---
 
 The `cockroach gen` [command](cockroach-commands.html) can generate command-line interface (CLI) utilities ([`man` pages](https://en.wikipedia.org/wiki/Man_page) and a `bash` autocompletion script), example SQL data suitable to populate test databases, and an HAProxy configuration file for load balancing a running cluster.
@@ -14,7 +15,7 @@ Subcommand | Usage
 `man` | Generate man pages for CockroachDB.
 `autocomplete` | Generate `bash` or `zsh` autocompletion script for CockroachDB.<br><br>**Default:** `bash`
 `example-data` | Generate example SQL datasets. You can also use the [`cockroach workload`](cockroach-workload.html) command to generate these sample datasets in a persistent cluster and the [`cockroach demo <dataset>`](cockroach-demo.html) command to generate these datasets in a temporary, in-memory cluster.
-`haproxy` | Generate an HAProxy config file for a running CockroachDB cluster. The node addresses included in the config are those advertised by the nodes. Make sure hostnames are resolvable and IP addresses are routable from HAProxy.<br><br> [Decommissioned nodes](remove-nodes.html) are excluded from the config file.
+`haproxy` | Generate an HAProxy config file for a running CockroachDB cluster. The node addresses included in the config are those advertised by the nodes. Make sure hostnames are resolvable and IP addresses are routable from HAProxy.<br><br> [Decommissioned nodes](node-shutdown.html?filters=decommission) are excluded from the config file.
 
 ## Synopsis
 

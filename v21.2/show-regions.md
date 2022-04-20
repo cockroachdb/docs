@@ -2,6 +2,7 @@
 title: SHOW REGIONS
 summary: The SHOW REGIONS statement shows the cluster regions or database regions in a multi-region cluster.
 toc: true
+docs_area: reference.sql
 ---
 
  The `SHOW REGIONS` [statement](sql-statements.html) lists the [cluster regions](multiregion-overview.html#cluster-regions) for a multi-region cluster, or the [database regions](multiregion-overview.html#database-regions) for the databases in a multi-region cluster.
@@ -14,7 +15,7 @@ toc: true
 
 ## Required privileges
 
-Only members of the [`admin` role](authorization.html#admin-role) can run `SHOW REGIONS`. By default, the `root` user belongs to the `admin` role.
+Only members of the [`admin` role](security-reference/authorization.html#admin-role) can run `SHOW REGIONS`. By default, the `root` user belongs to the `admin` role.
 
 ## Parameters
 
@@ -191,6 +192,6 @@ SHOW REGIONS FROM ALL DATABASES;
 
 ## See also
 
-- [Multi-region overview](multiregion-overview.html)
+- [Multi-Region Capabilities Overview](multiregion-overview.html)
 - [`ADD REGION`](add-region.html)
-- [Other SQL Statements](sql-statements.html)
+- [SQL Statements](sql-statements.html)

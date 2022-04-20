@@ -2,16 +2,17 @@
 title: ALTER VIEW
 summary: The ALTER VIEW statement applies a schema change to a view.
 toc: true
+docs_area: reference.sql 
 ---
 
 The `ALTER VIEW` [statement](sql-statements.html) applies a schema change to a [view](views.html).
 
-{% include {{{ page.version.version }}/misc/schema-change-stmt-note.md %}
+{% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
 ## Required privileges
 
-- To alter a view, the user must have the `CREATE` [privilege](authorization.html#assign-privileges) on the parent database.
-- To change the schema of a view with `ALTER VIEW ... SET SCHEMA`, or to change the database of a view with `ALTER VIEW ... RENAME TO`, the user must also have the `DROP` [privilege](authorization.html#assign-privileges) on the view.
+- To alter a view, the user must have the `CREATE` [privilege](security-reference/authorization.html#managing-privileges) on the parent database.
+- To change the schema of a view with `ALTER VIEW ... SET SCHEMA`, or to change the database of a view with `ALTER VIEW ... RENAME TO`, the user must also have the `DROP` [privilege](security-reference/authorization.html#managing-privileges) on the view.
 
 ## Syntax
 

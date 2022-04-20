@@ -2,9 +2,12 @@
 title: DROP ROLE
 summary: The DROP ROLE statement removes one or more SQL roles.
 toc: true
+docs_area: reference.sql
 ---
 
 The `DROP ROLE` [statement](sql-statements.html) removes one or more SQL roles.
+
+{% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
 {{site.data.alerts.callout_info}}
  <code>DROP ROLE</code> is no longer an Enterprise feature and is now freely available in the core version of CockroachDB. Also, since the keywords `ROLE` and `USER` can now be used interchangeably in SQL statements for enhanced Postgres compatibility, `DROP ROLE` is now an alias for [`DROP USER`](drop-user.html).
@@ -14,11 +17,11 @@ The `DROP ROLE` [statement](sql-statements.html) removes one or more SQL roles.
 
 - The `admin` role cannot be dropped, and `root` must always be a member of `admin`.
 - A role cannot be dropped if it has privileges. Use [`REVOKE`](revoke.html) to remove privileges.
-- Roles that [own objects](authorization.html#object-ownership) (such as databases, tables, schemas, and types) cannot be dropped until the [ownership is transferred to another role](owner-to.html#change-a-databases-owner).
+- Roles that [own objects](security-reference/authorization.html#object-ownership) (such as databases, tables, schemas, and types) cannot be dropped until the [ownership is transferred to another role](owner-to.html#change-a-databases-owner).
 
 ## Required privileges
 
-Non-admin roles cannot drop admin roles. To drop non-admin roles, the role must be a member of the `admin role` or have the [`CREATEROLE`](create-role.html#create-a-role-that-can-create-other-roles-and-manage-authentication-methods-for-the-new-roles) parameter set.
+Non-admin roles cannot drop admin roles. To drop non-admin roles, the role must be a member of the `admin` role or have the [`CREATEROLE`](create-role.html#create-a-role-that-can-create-other-roles-and-manage-authentication-methods-for-the-new-roles) parameter set.
 
 ## Synopsis
 
@@ -61,9 +64,10 @@ In this example, first check a role's privileges. Then, revoke the role's privil
 ## See also
 
 - [Authorization](authorization.html)
-- [Authorization Best Practices](authorization.html#authorization-best-practices)
+- [Authorization Best Practices](security-reference/authorization.html#authorization-best-practices)
 - [`CREATE ROLE`](create-role.html)
 - [`SHOW ROLES`](show-roles.html)
 - [`GRANT`](grant.html)
 - [`SHOW GRANTS`](show-grants.html)
-- [Other SQL Statements](sql-statements.html)
+- [SQL Statements](sql-statements.html)
+- [Online Schema Changes](online-schema-changes.html)

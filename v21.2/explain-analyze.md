@@ -2,6 +2,7 @@
 title: EXPLAIN ANALYZE
 summary: The EXPLAIN ANALYZE statement executes a query and generates a physical statement plan with execution statistics.
 toc: true
+docs_area: reference.sql
 ---
 
 The `EXPLAIN ANALYZE` [statement](sql-statements.html) **executes a SQL query** and generates a statement plan with execution statistics. The `(DEBUG)` option generates a URL to download a bundle with more details about the statement plan for advanced debugging. Statement plans provide information around SQL execution, which can be used to troubleshoot slow queries by figuring out where time is being spent, how long a processor (i.e., a component that takes streams of input rows and processes them according to a specification) is not doing work, etc. For more information about distributed SQL queries, see the [DistSQL section of our SQL Layer Architecture docs](architecture/sql-layer.html#distsql).
@@ -31,7 +32,7 @@ Parameter          | Description
 
 ## Required privileges
 
-The user requires the appropriate [privileges](authorization.html#assign-privileges) for the statement being explained.
+The user requires the appropriate [privileges](security-reference/authorization.html#managing-privileges) for the statement being explained.
 
 ## Success responses
 
@@ -156,7 +157,7 @@ You can obtain this ZIP file by following the link provided in the `EXPLAIN ANAL
 
 ## Examples
 
-To run the examples, initialize a demo cluster with the MovR workload. {% include {{ page.version.version }}/demo_movr.md %}
+{% include {{ page.version.version }}/demo_movr.md %}
 
 ### `EXPLAIN ANALYZE`
 
@@ -269,21 +270,18 @@ Use the [`DEBUG`](#debug-option) option to generate a ZIP file containing files 
                                       info
 --------------------------------------------------------------------------------
   Statement diagnostics bundle generated. Download from the Admin UI (Advanced
-  Debug -> Statement Diagnostics History), via the direct link below, or using
-  the command line.
+  Debug -> Statement Diagnostics History), using the direct link, or using
+  the SQL shell or command line.
   Admin UI: http://127.0.0.1:8080
-  Direct link: http://127.0.0.1:8080/_admin/v1/stmtbundle/645706706591449089
-  Command line: cockroach statement-diag list / download
+  Direct link: http://127.0.0.1:8080/_admin/v1/stmtbundle/727822547420741633 (Not available for {{ site.data.products.serverless }} clusters.)
+  SQL shell: \statement-diag download 727822547420741633
+  Command line: cockroach statement-diag download 727822547420741633
 (6 rows)
 
 Time: 873ms total (execution 873ms / network 0ms)
 ~~~
 
-To download the ZIP file containing the statement diagnostics, open the URL after **Direct link**. You can also obtain the bundle by activating [statement diagnostics](ui-statements-page.html#diagnostics) in the DB Console.
-
-## Known limitations
-
-- `EXPLAIN ANALYZE (DEBUG)` is not supported on CockroachDB Serverless clusters.
+To download the ZIP file containing the statement diagnostics, open the URL after **Direct link**, run the `\statement-diag download` command, or run `cockroach statement-diag download`. You can also obtain the bundle by activating [statement diagnostics](ui-statements-page.html#diagnostics) in the DB Console.
 
 ## See also
 

@@ -2,6 +2,7 @@
 title: EXPERIMENTAL_AUDIT
 summary: Use the EXPERIMENTAL_AUDIT subcommand to turn SQL audit logging on or off for a table.
 toc: true
+docs_area: reference.sql 
 ---
 
 `EXPERIMENTAL_AUDIT` is a subcommand of [`ALTER TABLE`](alter-table.html). When applied to a table, it enables or disables the recording of SQL audit events to the [`SENSITIVE_ACCESS`](logging.html#sensitive_access) logging channel for that table.
@@ -23,7 +24,7 @@ For descriptions of all SQL audit event types and their fields, see [Notable Eve
 
 CockroachDB stores audit log information in a way that ensures durability, but negatively impacts performance. As a result, we recommend using SQL audit logs for security purposes only. For more information, see [Performance considerations](#performance-considerations).
 
-{% include {{ page.version.version }}/misc/experimental-warning.md %}
+{% include common/experimental-warning.md %}
 
 {% include {{ page.version.version }}/sql/combine-alter-table-commands.md %}
 

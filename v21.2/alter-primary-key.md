@@ -2,9 +2,12 @@
 title: ALTER PRIMARY KEY
 summary: Use the ALTER PRIMARY KEY statement to change the primary key of a table.
 toc: true
+docs_area: reference.sql
 ---
 
-  The `ALTER PRIMARY KEY` [statement](sql-statements.html) is a subcommand of [`ALTER TABLE`](alter-table.html) that can be used to change the [primary key](primary-key.html) of a table.
+The `ALTER PRIMARY KEY` [statement](sql-statements.html) is a subcommand of [`ALTER TABLE`](alter-table.html) that can be used to change the [primary key](primary-key.html) of a table.
+
+{% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
 ## Watch the demo
 
@@ -40,12 +43,12 @@ To change an existing primary key without creating a secondary index from that p
 -----------|-------------
  `table_name` | The name of the table with the primary key that you want to modify.
  `index_params` | The name of the column(s) that you want to use for the primary key. These columns replace the current primary key column(s).
- `USING HASH WITH BUCKET COUNT` | Creates a [hash-sharded index](hash-sharded-indexes.html) with `n_buckets` number of buckets.<br>{{site.data.alerts.callout_info}}To enable hash-sharded indexes, set the `experimental_enable_hash_sharded_indexes` [session variable](set-vars.html) to `on`.{{site.data.alerts.end}}
+ `USING HASH WITH BUCKET_COUNT` | Creates a [hash-sharded index](hash-sharded-indexes.html) with `n_buckets` number of buckets.<br>{{site.data.alerts.callout_info}}To enable hash-sharded indexes, set the `experimental_enable_hash_sharded_indexes` [session variable](set-vars.html) to `on`.{{site.data.alerts.end}}
  `opt_interleave` | {% include {{ page.version.version }}/misc/interleave-deprecation-note.md %}
 
 ## Required privileges
 
-The user must have the `CREATE` [privilege](authorization.html#assign-privileges) on a table to alter its primary key.
+The user must have the `CREATE` [privilege](security-reference/authorization.html#managing-privileges) on a table to alter its primary key.
 
 ## Viewing schema changes
 
@@ -107,3 +110,4 @@ Note that the old primary key index becomes a secondary index, in this case, `us
 - [`DROP CONSTRAINT`](drop-constraint.html)
 - [`ALTER TABLE`](alter-table.html)
 - [`SHOW JOBS`](show-jobs.html)
+- [Online Schema Changes](online-schema-changes.html)

@@ -2,6 +2,7 @@
 title: UPDATE
 summary: The UPDATE statement updates one or more rows in a table.
 toc: true
+docs_area: reference.sql
 ---
 
 The `UPDATE` [statement](sql-statements.html) updates rows in a table.
@@ -13,7 +14,7 @@ If you update a row that contains a column referenced by a [foreign key constrai
 
 ## Required privileges
 
-The user must have the `SELECT` and `UPDATE` [privileges](authorization.html#assign-privileges) on the table.
+The user must have the `SELECT` and `UPDATE` [privileges](security-reference/authorization.html#managing-privileges) on the table.
 
 ## Synopsis
 
@@ -40,7 +41,7 @@ Parameter | Description
 
 ## Force index selection for updates
 
-By using the explicit index annotation (also known as "index hinting"), you can override [CockroachDB's index selection](https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2/) and use a specific [index](indexes.html) for updating rows of a named table.
+By using the [explicit index annotation](table-expressions.html#force-index-selection) (also known as "index hinting"), you can override [CockroachDB's index selection](https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2/) and use a specific [index](indexes.html) for updating rows of a named table.
 
 {{site.data.alerts.callout_info}}
 Index selection can impact [performance](performance-best-practices-overview.html), but does not change the result of a query.
@@ -603,6 +604,6 @@ Although `users_name_city_idx` is likely the most efficient index for the table 
 - [`ALTER TABLE`](alter-table.html)
 - [`DROP TABLE`](drop-table.html)
 - [`DROP DATABASE`](drop-database.html)
-- [Other SQL Statements](sql-statements.html)
+- [SQL Statements](sql-statements.html)
 - [Limiting Query Results](limit-offset.html)
 - [Ordering of rows in DML statements](order-by.html#ordering-rows-in-dml-statements)

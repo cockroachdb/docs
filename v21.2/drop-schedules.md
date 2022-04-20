@@ -2,6 +2,7 @@
 title: DROP SCHEDULES
 summary: The DROP SCHEDULES statement lets you remove specified backup schedules.
 toc: true
+docs_area: reference.sql
 ---
 
  The `DROP SCHEDULES` [statement](sql-statements.html) can be used to remove [backup schedules](create-schedule-for-backup.html).
@@ -12,7 +13,7 @@ toc: true
 
 ## Required privileges
 
-Only members of the [`admin` role](authorization.html#default-roles) can drop a schedule. By default, the `root` user belongs to the `admin` role.
+Only members of the [`admin` role](security-reference/authorization.html#default-roles) can drop a schedule. By default, the `root` user belongs to the `admin` role.
 
 ## Synopsis
 

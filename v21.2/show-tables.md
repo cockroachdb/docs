@@ -3,6 +3,7 @@ title: SHOW TABLES
 summary: The SHOW TABLES statement lists the tables in a schema or database.
 keywords: reflection
 toc: true
+docs_area: reference.sql
 ---
 
 The `SHOW TABLES` [statement](sql-statements.html) lists the schema, table name, table type, owner, and estimated row count for the tables or [views](views.html) in a schema or database.
@@ -19,7 +20,7 @@ While a table or view is being [dropped](drop-table.html), `SHOW TABLES` will li
 
 ## Required privileges
 
-The `SELECT` [privilege](authorization.html#assign-privileges) on a table is required to list it with `SHOW TABLES`.
+The `CONNECT` [privilege](security-reference/authorization.html#managing-privileges) on the database of the concerned table is required to list it with SHOW TABLES.
 
 ## Parameters
 
@@ -41,7 +42,7 @@ To optimize the performance of the `SHOW TABLES` statement, you can do the follo
 
 ## Examples
 
-{% include {{page.version.version}}/sql/movr-statements.md %}
+{% include {{page.version.version}}/sql/movr-statements-nodes.md %}
 
 ### Show tables in the current database
 
@@ -53,14 +54,14 @@ To optimize the performance of the `SHOW TABLES` statement, you can do the follo
 ~~~
 
 ~~~
-  schema_name |         table_name         | type  | estimated_row_count
---------------+----------------------------+-------+----------------------
-  public      | promo_codes                | table |                1000
-  public      | rides                      | table |                 500
-  public      | user_promo_codes           | table |                   0
-  public      | users                      | table |                  50
-  public      | vehicle_location_histories | table |                1000
-  public      | vehicles                   | table |                  15
+  schema_name |         table_name         | type  | owner | estimated_row_count | locality
+--------------+----------------------------+-------+-------+---------------------+-----------
+  public      | promo_codes                | table | demo  |                   0 | NULL
+  public      | rides                      | table | demo  |                   0 | NULL
+  public      | user_promo_codes           | table | demo  |                   0 | NULL
+  public      | users                      | table | demo  |                   0 | NULL
+  public      | vehicle_location_histories | table | demo  |                   0 | NULL
+  public      | vehicles                   | table | demo  |                   0 | NULL
 (6 rows)
 ~~~
 
@@ -72,14 +73,14 @@ Alternatively, within the built-in SQL shell, you can use the `\dt` [shell comma
 ~~~
 
 ~~~
-  schema_name |         table_name         | type  | estimated_row_count
---------------+----------------------------+-------+----------------------
-  public      | promo_codes                | table |                1000
-  public      | rides                      | table |                 500
-  public      | user_promo_codes           | table |                   0
-  public      | users                      | table |                  50
-  public      | vehicle_location_histories | table |                1000
-  public      | vehicles                   | table |                  15
+  schema_name |         table_name         | type  | owner | estimated_row_count | locality
+--------------+----------------------------+-------+-------+---------------------+-----------
+  public      | promo_codes                | table | demo  |                   0 | NULL
+  public      | rides                      | table | demo  |                   0 | NULL
+  public      | user_promo_codes           | table | demo  |                   0 | NULL
+  public      | users                      | table | demo  |                   0 | NULL
+  public      | vehicle_location_histories | table | demo  |                   0 | NULL
+  public      | vehicles                   | table | demo  |                   0 | NULL
 (6 rows)
 ~~~
 
@@ -100,14 +101,14 @@ You can show the tables in schemas other than the current schema. You can also s
 Because `movr` is the current database, these statements return the same output:
 
 ~~~
-     schema_name     |            table_name             | type  | estimated_row_count
----------------------+-----------------------------------+-------+----------------------
-  information_schema | administrable_role_authorizations | table |                NULL
-  information_schema | applicable_roles                  | table |                NULL
-  information_schema | check_constraints                 | table |                NULL
-  information_schema | column_privileges                 | table |                NULL
+     schema_name     |              table_name               | type  | owner | estimated_row_count | locality
+---------------------+---------------------------------------+-------+-------+---------------------+-----------
+  information_schema | administrable_role_authorizations     | table | NULL  |                NULL | NULL
+  information_schema | applicable_roles                      | table | NULL  |                NULL | NULL
+  information_schema | attributes                            | table | NULL  |                NULL | NULL
+  information_schema | character_sets                        | table | NULL  |                NULL | NULL
   ...
-(23 rows)
+(86 rows)
 ~~~
 
 
@@ -128,14 +129,14 @@ You can also show tables from a different database.
 Because `public` is the current schema, these statements return the same output:
 
 ~~~
-  schema_name |           table_name            | type  | estimated_row_count
---------------+---------------------------------+-------+----------------------
-  public      | comments                        | table |                NULL
-  public      | descriptor                      | table |                NULL
-  public      | eventlog                        | table |                NULL
-  public      | jobs                            | table |                NULL
+  schema_name |           table_name            | type  | owner | estimated_row_count | locality
+--------------+---------------------------------+-------+-------+---------------------+-----------
+  public      | comments                        | table | NULL  |                   0 | NULL
+  public      | database_role_settings          | table | NULL  |                   0 | NULL
+  public      | descriptor                      | table | NULL  |                   0 | NULL
+  public      | eventlog                        | table | NULL  |                   0 | NULL
   ...
-(29 rows)
+(36 rows)
 ~~~
 
 ### Show user-defined tables with comments
@@ -155,18 +156,18 @@ To view a table's comments:
 ~~~
 
 ~~~
-  schema_name |         table_name         | type  | estimated_row_count |                   comment
---------------+----------------------------+-------+---------------------+-----------------------------------------------
-  public      | promo_codes                | table |                1000 |
-  public      | rides                      | table |                 500 |
-  public      | user_promo_codes           | table |                   0 |
-  public      | users                      | table |                  50 | This table contains information about users.
-  public      | vehicle_location_histories | table |                1000 |
-  public      | vehicles                   | table |                  15 |
+  schema_name |         table_name         | type  | owner | estimated_row_count | locality |                   comment
+--------------+----------------------------+-------+-------+---------------------+----------+-----------------------------------------------
+  public      | promo_codes                | table | demo  |                1000 | NULL     |
+  public      | rides                      | table | demo  |                 500 | NULL     |
+  public      | user_promo_codes           | table | demo  |                   0 | NULL     |
+  public      | users                      | table | demo  |                  50 | NULL     | This table contains information about users.
+  public      | vehicle_location_histories | table | demo  |                1000 | NULL     |
+  public      | vehicles                   | table | demo  |                  15 | NULL     |
 (6 rows)
 ~~~
 
- You can also view comments on a table with [`SHOW CREATE`](show-create.html):
+You can also view comments on a table with [`SHOW CREATE`](show-create.html):
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -203,20 +204,68 @@ To view virtual tables with comments and documentation links, use `SHOW TABLES F
 ~~~
 
 ~~~
-     schema_name     |            table_name             | type  | estimated_row_count |                                                              comment
----------------------+-----------------------------------+-------+---------------------+-------------------------------------------------------------------------------------------------------------------------------------
-  information_schema | administrable_role_authorizations | table |                NULL | roles for which the current user has admin option
-                     |                                   |       |                     | https://www.cockroachlabs.com/docs/v21.2/information-schema.html#administrable_role_authorizations
-                     |                                   |       |                     | https://www.postgresql.org/docs/9.5/infoschema-administrable-role-authorizations.html
-  information_schema | applicable_roles                  | table |                NULL | roles available to the current user
-                     |                                   |       |                     | https://www.cockroachlabs.com/docs/v21.2/information-schema.html#applicable_roles
-                     |                                   |       |                     | https://www.postgresql.org/docs/9.5/infoschema-applicable-roles.html
-  information_schema | check_constraints                 | table |                NULL | check constraints
-                     |                                   |       |                     | https://www.cockroachlabs.com/docs/v21.2/information-schema.html#check_constraints
-                     |                                   |       |                     | https://www.postgresql.org/docs/9.5/infoschema-check-constraints.html
-...
-(23 rows)
+     schema_name     |              table_name               | type  | owner | estimated_row_count | locality |                                                              comment
+---------------------+---------------------------------------+-------+-------+---------------------+----------+-------------------------------------------------------------------------------------------------------------------------------------
+  information_schema | administrable_role_authorizations     | table | NULL  |                NULL | NULL     | roles for which the current user has admin option
+                     |                                       |       |       |                     |          | https://www.cockroachlabs.com/docs/v21.2/information-schema.html#administrable_role_authorizations
+                     |                                       |       |       |                     |          | https://www.postgresql.org/docs/9.5/infoschema-administrable-role-authorizations.html
+  information_schema | applicable_roles                      | table | NULL  |                NULL | NULL     | roles available to the current user
+                     |                                       |       |       |                     |          | https://www.cockroachlabs.com/docs/v21.2/information-schema.html#applicable_roles
+                     |                                       |       |       |                     |          | https://www.postgresql.org/docs/9.5/infoschema-applicable-roles.html
+  information_schema | attributes                            | table | NULL  |                NULL | NULL     | attributes was created for compatibility and is currently unimplemented
+  information_schema | character_sets                        | table | NULL  |                NULL | NULL     | character sets available in the current database
+                     |                                       |       |       |                     |          | https://www.cockroachlabs.com/docs/v21.2/information-schema.html#character_sets
+                     |                                       |       |       |                     |          | https://www.postgresql.org/docs/9.5/infoschema-character-sets.html
+  information_schema | check_constraint_routine_usage        | table | NULL  |                NULL | NULL     | check_constraint_routine_usage was created for compatibility and is currently unimplemented
+  information_schema | check_constraints                     | table | NULL  |                NULL | NULL     | check constraints
+                     |                                       |       |       |                     |          | https://www.cockroachlabs.com/docs/v21.2/information-schema.html#check_constraints
+                     |                                       |       |       |                     |          | https://www.postgresql.org/docs/9.5/infoschema-check-constraints.html
+  ...
+(86 rows)
 ~~~
+
+### Show locality of tables
+
+For [multi-region](multiregion-overview.html) tables, you can display the locality of each table using the `SHOW TABLES` command.
+
+{% include enterprise-feature.md %}
+
+First, [set the primary region](set-primary-region.html) on `movr` to `us-east`:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> ALTER DATABASE movr SET PRIMARY REGION "us-east";
+~~~
+
+All tables will be [`REGIONAL BY TABLE`](set-locality.html#set-the-table-locality-to-regional-by-table) in the primary region by default.
+
+Next, configure the `users` table to be [`REGIONAL BY ROW`](set-locality.html#set-the-table-locality-to-regional-by-row):
+
+{% include copy-clipboard.html %}
+~~~ sql
+> ALTER TABLE users SET LOCALITY REGIONAL BY ROW;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW TABLES;
+~~~
+
+~~~
+  schema_name |         table_name         | type  | owner | estimated_row_count |              locality
+--------------+----------------------------+-------+-------+---------------------+--------------------------------------
+  public      | promo_codes                | table | demo  |                1000 | REGIONAL BY TABLE IN PRIMARY REGION
+  public      | rides                      | table | demo  |                 500 | REGIONAL BY TABLE IN PRIMARY REGION
+  public      | user_promo_codes           | table | demo  |                   0 | REGIONAL BY TABLE IN PRIMARY REGION
+  public      | users                      | table | demo  |                  50 | REGIONAL BY ROW
+  public      | vehicle_location_histories | table | demo  |                1000 | REGIONAL BY TABLE IN PRIMARY REGION
+  public      | vehicles                   | table | demo  |                  15 | REGIONAL BY TABLE IN PRIMARY REGION
+(6 rows)
+~~~
+
+{{site.data.alerts.callout_info}}
+Locality information for tables is also available in the `locality` column within the [`crdb_internal.tables`](crdb-internal.html) table.
+{{site.data.alerts.end}}
 
 ## See also
 

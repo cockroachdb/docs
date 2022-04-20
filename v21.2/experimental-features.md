@@ -2,6 +2,7 @@
 title: Experimental Features
 summary: Learn about the experimental features available in CockroachDB
 toc: true
+docs_area: reference.sql
 ---
 
 This page lists the experimental features that are available in CockroachDB {{ page.version.version }}.
@@ -145,7 +146,7 @@ The table below lists the experimental SQL functions and operators available in 
 
 ## Hash-sharded indexes
 
- CockroachDB supports hash-sharded indexes with the [`USING HASH`](create-index.html#parameters) keywords. Hash-sharded indexes distribute sequential traffic uniformly across ranges, eliminating single-range hotspots and improving write performance on sequentially-keyed indexes at a small cost to read performance. For more information, see [Hash-sharded indexes](hash-sharded-indexes.html).
+ CockroachDB supports hash-sharded indexes with the [`USING HASH`](create-index.html#parameters) keywords. Hash-sharded indexes distribute sequential traffic uniformly across ranges, eliminating single-range hot spots and improving write performance on sequentially-keyed indexes at a small cost to read performance. For more information, see [Hash-sharded indexes](hash-sharded-indexes.html).
 
 ## Password authentication without TLS
 
@@ -166,6 +167,12 @@ The table below lists the experimental SQL functions and operators available in 
     #
     Enter password:
   ~~~
+
+## Changefeed metrics labels
+
+{% include {{ page.version.version }}/cdc/metrics-labels.md %}
+
+For usage details, see the [Monitor and Debug Changefeeds](monitor-and-debug-changefeeds.html) page.
 
 ## See Also
 

@@ -2,6 +2,7 @@
 title: IMPORT
 summary: The IMPORT statement imports various types of data into CockroachDB.
 toc: true
+keywords: gin, gin index, gin indexes, inverted index, inverted indexes, accelerated index, accelerated indexes
 ---
 
 The `IMPORT` [statement](sql-statements.html) imports the following types of data into CockroachDB:
@@ -19,6 +20,10 @@ The `IMPORT` [statement](sql-statements.html) imports the following types of dat
 - `IMPORT` is a blocking statement and cannot be used within a [transaction](transactions.html).
 - `IMPORT` cannot be used during a [rolling upgrade](upgrade-cockroach-version.html).
 - <span class="version-tag">New in v20.2:</span> `IMPORT` cannot be used with [user-defined types](create-type.html). Use [`IMPORT INTO`](import-into.html) instead.
+
+{{site.data.alerts.callout_info}}
+Optimize import operations in your applications by following our [Import Performance Best Practices](import-performance-best-practices.html).
+{{site.data.alerts.end}}
 
 ## Required privileges
 
@@ -132,7 +137,7 @@ Your `IMPORT` statement must reference a `CREATE TABLE` statement representing t
 
 - Load a file that already contains a `CREATE TABLE` statement. For an example, see [Import a Postgres database dump](#import-a-postgres-database-dump) below.
 
-We also recommend [specifying all secondary indexes you want to use in the `CREATE TABLE` statement](create-table.html#create-a-table-with-secondary-and-inverted-indexes). It is possible to [add secondary indexes later](create-index.html), but it is significantly faster to specify them during import.
+We also recommend [specifying all secondary indexes you want to use in the `CREATE TABLE` statement](create-table.html#create-a-table-with-secondary-and-gin-indexes). It is possible to [add secondary indexes later](create-index.html), but it is significantly faster to specify them during import.
 
 {{site.data.alerts.callout_info}}
 <span class="version-tag">New in v20.2:</span> `IMPORT` supports [computed columns](computed-columns.html) for Avro and Postgres dump files only. To import CSV data to a table with a computed column or `DEFAULT` expression, use [`IMPORT INTO`](import-into.html).

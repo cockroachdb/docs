@@ -2,6 +2,7 @@
 title: Databases Page
 summary: The Databases page provides details about databases configured, the tables in each database, and the grants assigned to each user.
 toc: true
+docs_area: reference.db_console
 ---
 
 {% include {{ page.version.version }}/ui/admin-access.md %}
@@ -62,7 +63,7 @@ Click any table name in [**Tables**](#tables-view) view to display details for t
 
 ## Grants view
 
-The **Grants** view shows the [privileges](authorization.html#assign-privileges) granted to users for each database. On the [Tables page](#tables-view), make sure that **View: Grants** is selected in the pulldown menu.
+The **Grants** view shows the [privileges](security-reference/authorization.html#managing-privileges) granted to users for each database. On the [Tables page](#tables-view), make sure that **View: Grants** is selected in the pulldown menu.
 
 The following information is displayed for each table:
 
@@ -78,6 +79,6 @@ For more details about grants and privileges, see [`GRANT`](grant.html).
 ## See also
 
 - [Statements page](ui-statements-page.html)
-- [Assign privileges](authorization.html#assign-privileges)
+- [Assign privileges](security-reference/authorization.html#managing-privileges)
 - [`GRANT`](grant.html)
 - [Raw status endpoints](monitoring-and-alerting.html#raw-status-endpoints)

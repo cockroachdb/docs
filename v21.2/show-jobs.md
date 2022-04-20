@@ -2,6 +2,7 @@
 title: SHOW JOBS
 summary: The SHOW JOBS statement lists all currently active schema changes and backup/restore jobs.
 toc: true
+docs_area: reference.sql
 ---
 
 The `SHOW JOBS` [statement](sql-statements.html) lists all of the types of long-running tasks your cluster has performed in the last 12 hours, including:
@@ -61,7 +62,7 @@ Field | Description
 `job_type` | The type of job. Possible values: `SCHEMA CHANGE`, [`BACKUP`](backup.html), [`RESTORE`](restore.html), [`IMPORT`](import.html), and [`CREATE STATS`](create-statistics.html). <br><br> For `SHOW AUTOMATIC JOBS`, the possible value is [`AUTO CREATE STATS`](cost-based-optimizer.html#table-statistics).
 `description` | The statement that started the job, or a textual description of the job.
 `statement` | When `description` is a textual description of the job, the statement that started the job is returned in this column. Currently, this field is populated only for the automatic table statistics jobs.
-`user_name` | The name of the [user](authorization.html#create-and-manage-users) who started the job.
+`user_name` | The name of the [user](security-reference/authorization.html#create-and-manage-users) who started the job.
 `status` | The job's current state. Possible values: `pending`, `running`, `paused`, `failed`, `succeeded`, or `canceled`.
 `running_status` | The job's detailed running status, which provides visibility into the progress of the dropping or truncating of tables (i.e., [`DROP TABLE`](drop-table.html), [`DROP DATABASE`](drop-database.html), or [`TRUNCATE`](truncate.html)). For dropping or truncating jobs, the detailed running status is determined by the status of the table at the earliest stage of the schema change. The job is completed when the GC TTL expires and both the table data and ID is deleted for each of the tables involved. Possible values: `draining names`, `waiting for GC TTL`, `RocksDB compaction`, or `NULL` (when the status cannot be determined). <br><br>For the `SHOW AUTOMATIC JOBS` statement, the value of this field is `NULL`.
 `created` | The `TIMESTAMP` when the job was created.
@@ -144,7 +145,7 @@ You can filter jobs by using `SHOW AUTOMATIC JOBS` as the data source for a [`SE
 
 <span class="version-tag">New in v21.2:</span> You can display specific fields relating to changefeed jobs by running `SHOW CHANGEFEED JOBS`. These fields include:
 
-* [`high_water_timestamp`](stream-data-out-of-cockroachdb-using-changefeeds.html#monitor-a-changefeed): Guarantees all changes before or at this time have been emitted.
+* [`high_water_timestamp`](monitor-and-debug-changefeeds.html#monitor-a-changefeed): Guarantees all changes before or at this time have been emitted.
 * [`sink_uri`](create-changefeed.html#sink-uri): The destination URI of the configured sink for a changefeed.
 * `full_table_names`: The full [name resolution](sql-name-resolution.html) for a table. For example, `defaultdb.public.mytable` refers to the `defaultdb` database, the `public` schema, and the table `mytable` table.
 
@@ -160,7 +161,7 @@ You can filter jobs by using `SHOW AUTOMATIC JOBS` as the data source for a [`SE
 (2 rows)
 ~~~
 
-Changefeed jobs can be [paused](stream-data-out-of-cockroachdb-using-changefeeds.html#pause), [resumed](stream-data-out-of-cockroachdb-using-changefeeds.html#resume), or [canceled](stream-data-out-of-cockroachdb-using-changefeeds.html#cancel).
+Changefeed jobs can be [paused](create-and-configure-changefeeds.html#pause), [resumed](create-and-configure-changefeeds.html#resume), or [canceled](create-and-configure-changefeeds.html#cancel).
 
 ### Filter changefeed jobs
 

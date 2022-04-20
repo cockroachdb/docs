@@ -6,6 +6,8 @@ toc: true
 
 <span class="version-tag">New in v21.1:</span> The `ALTER TABLE .. SET LOCALITY` [statement](sql-statements.html) changes the [table locality](multiregion-overview.html#table-locality) of a [table](create-table.html) in a [multi-region database](multiregion-overview.html).
 
+While CockroachDB is processing an `ALTER TABLE .. SET LOCALITY` statement that enables or disables `REGIONAL BY ROW` on a table within a database, any [`ADD REGION`](add-region.html) and [`DROP REGION`](drop-region.html) statements on that database will fail.
+
 {{site.data.alerts.callout_info}}
 `SET LOCALITY` is a subcommand of [`ALTER TABLE`](alter-table.html).
 {{site.data.alerts.end}}
@@ -88,7 +90,7 @@ SELECT crdb_region, id FROM {table};
 
 {% include copy-clipboard.html %}
 ~~~ sql
-UPDATE {table} SET crdb_region = "eu-west" WHERE id IN (...)
+UPDATE {table} SET crdb_region = 'eu-west' WHERE id IN (...)
 ~~~
 
 To add a new row to a regional by row table, you must choose one of the following options.

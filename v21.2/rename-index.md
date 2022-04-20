@@ -2,11 +2,14 @@
 title: RENAME INDEX
 summary: The RENAME INDEX statement changes the name of an index for a table.
 toc: true
+docs_area: reference.sql
 ---
 
 The `RENAME INDEX` [statement](sql-statements.html) changes the name of an index for a table.
 
 {{site.data.alerts.callout_info}}It is not possible to rename an index referenced by a view. For more details, see <a href="views.html#view-dependencies">View Dependencies</a>.{{site.data.alerts.end}}
+
+{% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
 {% include {{ page.version.version }}/misc/schema-change-view-job.md %}
 
@@ -18,7 +21,7 @@ The `RENAME INDEX` [statement](sql-statements.html) changes the name of an index
 
 ## Required privileges
 
-The user must have the `CREATE` [privilege](authorization.html#assign-privileges) on the table.
+The user must have the `CREATE` [privilege](security-reference/authorization.html#managing-privileges) on the table.
 
 ## Parameters
 
@@ -39,14 +42,17 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 ~~~
 
 ~~~
-+------------+------------+------------+--------------+-------------+-----------+---------+----------+
-| table_name | index_name | non_unique | seq_in_index | column_name | direction | storing | implicit |
-+------------+------------+------------+--------------+-------------+-----------+---------+----------+
-| users      | primary    |   false    |            1 | id          | ASC       |  false  |  false   |
-| users      | name_idx   |    true    |            1 | name        | ASC       |  false  |  false   |
-| users      | name_idx   |    true    |            2 | id          | ASC       |  false  |   true   |
-+------------+------------+------------+--------------+-------------+-----------+---------+----------+
-(3 rows)
+  table_name | index_name | non_unique | seq_in_index | column_name | direction | storing | implicit
+ ------------+------------+------------+--------------+-------------+-----------+---------+----------
+  users      | name_idx   |    true    |            1 | name        | DESC      |  false  |  false
+  users      | name_idx   |    true    |            2 | city        | ASC       |  false  |   true
+  users      | name_idx   |    true    |            3 | id          | ASC       |  false  |   true
+  users      | primary    |   false    |            1 | city        | ASC       |  false  |  false
+  users      | primary    |   false    |            2 | id          | ASC       |  false  |  false
+  users      | primary    |   false    |            3 | name        | N/A       |  true   |  false
+  users      | primary    |   false    |            4 | address     | N/A       |  true   |  false
+  users      | primary    |   false    |            5 | credit_card | N/A       |  true   |  false
+(8 rows)
 ~~~
 
 {% include copy-clipboard.html %}
@@ -60,14 +66,17 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 ~~~
 
 ~~~
-+------------+----------------+------------+--------------+-------------+-----------+---------+----------+
-| table_name |   index_name   | non_unique | seq_in_index | column_name | direction | storing | implicit |
-+------------+----------------+------------+--------------+-------------+-----------+---------+----------+
-| users      | primary        |   false    |            1 | id          | ASC       |  false  |  false   |
-| users      | users_name_idx |    true    |            1 | name        | ASC       |  false  |  false   |
-| users      | users_name_idx |    true    |            2 | id          | ASC       |  false  |   true   |
-+------------+----------------+------------+--------------+-------------+-----------+---------+----------+
-(3 rows)
+  table_name | index_name     | non_unique | seq_in_index | column_name | direction | storing | implicit
+ ------------+----------------+------------+--------------+-------------+-----------+---------+----------
+  users      | primary        |   false    |            1 | city        | ASC       |  false  |  false
+  users      | primary        |   false    |            2 | id          | ASC       |  false  |  false
+  users      | primary        |   false    |            3 | name        | N/A       |  true   |  false
+  users      | primary        |   false    |            4 | address     | N/A       |  true   |  false
+  users      | primary        |   false    |            5 | credit_card | N/A       |  true   |  false
+  users      | users_name_idx |    true    |            1 | name        | DESC      |  false  |  false
+  users      | users_name_idx |    true    |            2 | city        | ASC       |  false  |   true
+  users      | users_name_idx |    true    |            3 | id          | ASC       |  false  |   true
+(8 rows)
 ~~~
 
 ## See also
@@ -78,3 +87,4 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 - [`RENAME DATABASE`](rename-database.html)
 - [`RENAME TABLE`](rename-table.html)
 - [`SHOW JOBS`](show-jobs.html)
+- [Online Schema Changes](online-schema-changes.html)

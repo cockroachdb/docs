@@ -18,6 +18,11 @@ The `IMPORT INTO` [statement](sql-statements.html) imports CSV, Avro, or delimit
 - `IMPORT INTO` will cause any [changefeeds](stream-data-out-of-cockroachdb-using-changefeeds.html) running on the targeted table to fail.
 - {% include {{page.version.version}}/sql/import-into-regional-by-row-table.md %}
 
+
+{{site.data.alerts.callout_info}}
+Optimize import operations in your applications by following our [Import Performance Best Practices](import-performance-best-practices.html).
+{{site.data.alerts.end}}
+
 ## Required privileges
 
 #### Table privileges
@@ -148,6 +153,8 @@ CockroachDB uses the URL provided to construct a secure API call to the service 
 ## Performance
 
 All nodes are used during the import job, which means all nodes' CPU and RAM will be partially consumed by the `IMPORT` task in addition to serving normal traffic.
+
+For more detail on optimizing import performance, see [Import Performance Best Practices](import-performance-best-practices.html).
 
 ## Viewing and controlling import jobs
 
@@ -472,3 +479,4 @@ For more information about importing data from Avro, including examples, see [Mi
 - [`IMPORT`](import.html)
 - [Migration Overview](migration-overview.html)
 - [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html)
+- [Import Performance Best Practices](import-performance-best-practices.html)

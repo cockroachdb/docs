@@ -2,6 +2,7 @@
 title: Take Full and Incremental Backups
 summary: Learn how to back up and restore a CockroachDB cluster.
 toc: true
+docs_area: manage
 ---
 
 Because CockroachDB is designed with high fault tolerance, backups are primarily needed for [disaster recovery](disaster-recovery.html) (i.e., if your cluster loses a majority of its nodes). Isolated issues (such as small-scale node outages) do not require any intervention. However, as an operational best practice, **we recommend taking regular backups of your data**.
@@ -227,7 +228,6 @@ To take incremental backups, backups with revision history, locality-aware backu
 - [Take and Restore Encrypted Backups](take-and-restore-encrypted-backups.html)
 - [Take and Restore Locality-aware Backups](take-and-restore-locality-aware-backups.html)
 - [Take Backups with Revision History and Restore from a Point-in-time](take-backups-with-revision-history-and-restore-from-a-point-in-time.html)
-- [`SQL DUMP`](cockroach-dump.html)
 - [`IMPORT`](migration-overview.html)
 - [Use the Built-in SQL Client](cockroach-sql.html)
 - [Other Cockroach Commands](cockroach-commands.html)

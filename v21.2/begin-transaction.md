@@ -2,6 +2,7 @@
 title: BEGIN
 summary: Initiate a SQL transaction with the BEGIN statement in CockroachDB.
 toc: true
+docs_area: reference.sql 
 ---
 
 The `BEGIN` [statement](sql-statements.html) initiates a [transaction](transactions.html), which either successfully executes all of the statements it contains or none at all.
@@ -19,7 +20,7 @@ When using transactions, your application should include logic to [retry transac
 
 ## Required privileges
 
-No [privileges](authorization.html#assign-privileges) are required to initiate a transaction. However, privileges are required for each statement within a transaction.
+No [privileges](security-reference/authorization.html#managing-privileges) are required to initiate a transaction. However, privileges are required for each statement within a transaction.
 
 ## Aliases
 

@@ -2,22 +2,23 @@
 title: CREATE SEQUENCE
 summary: The CREATE SEQUENCE statement creates a new sequence in a database. Use a sequence to auto-increment integers in a table.
 toc: true
+docs_area: reference.sql
 ---
 
 The `CREATE SEQUENCE` [statement](sql-statements.html) creates a new sequence in a database. Use a sequence to auto-increment integers in a table.
 
-{% include {{{ page.version.version }}/misc/schema-change-stmt-note.md %}
+{% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
 ## Considerations
 
 - Using a sequence is slower than [auto-generating unique IDs with the `gen_random_uuid()`, `uuid_v4()` or `unique_rowid()` built-in functions](sql-faqs.html#how-do-i-auto-generate-unique-row-ids-in-cockroachdb). Incrementing a sequence requires a write to persistent storage, whereas auto-generating a unique ID does not. Therefore, use auto-generated unique IDs unless an incremental sequence is preferred or required.
 - A column that uses a sequence can have a gap in the sequence values if a transaction advances the sequence and is then rolled back. Sequence updates are committed immediately and aren't rolled back along with their containing transaction. This is done to avoid blocking concurrent transactions that use the same sequence.
 - {% include {{page.version.version}}/performance/use-hash-sharded-indexes.md %}
--  By default, you cannot create sequences that are [owned by](authorization.html#object-ownership) columns in tables in other databases. You can enable such sequence creation by setting the `sql.cross_db_sequence_owners.enabled` [cluster setting](cluster-settings.html) to `true`.
+-  By default, you cannot create sequences that are [owned by](security-reference/authorization.html#object-ownership) columns in tables in other databases. You can enable such sequence creation by setting the `sql.cross_db_sequence_owners.enabled` [cluster setting](cluster-settings.html) to `true`.
 
 ## Required privileges
 
-The user must have the `CREATE` [privilege](authorization.html#assign-privileges) on the parent database.
+The user must have the `CREATE` [privilege](security-reference/authorization.html#managing-privileges) on the parent database.
 
 ## Synopsis
 
@@ -307,5 +308,5 @@ For example, to cache 10 sequence values in memory:
 - [`SHOW CREATE`](show-create.html)
 - [`SHOW SEQUENCES`](show-sequences.html)
 - [Functions and Operators](functions-and-operators.html)
-- [Other SQL Statements](sql-statements.html)
+- [SQL Statements](sql-statements.html)
 - [Online Schema Changes](online-schema-changes.html)

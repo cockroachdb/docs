@@ -34,11 +34,11 @@
       	    "/cockroachcloud/learn-cockroachdb-sql.html"
       	  ]
       	},
-      	{
-      	  "title": "Build a 'Hello World' app",
-      	  "urls": [
-            "/cockroachcloud/hello-world-example-apps.html"
-        	  ]
+        {
+          "title": "Use the Cloud API",
+          "urls": [
+            "/cockroachcloud/cloud-api.html"
+          ]
         }
       ]
     },
@@ -301,6 +301,11 @@
         "/cockroachcloud/frequently-asked-questions.html"
       ]
     },
-    {% include_cached cockroachcloud/sidebar-release-notes.json %}
+    {
+      "title": "Cloud Release Notes",
+      "urls": [
+        "/releases/cloud.html"
+      ]
+    }
   ]
 }

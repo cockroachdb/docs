@@ -2,6 +2,8 @@
 title: Secondary Indexes
 summary: How and when to create secondary indexes in CockroachDB.
 toc: true
+keywords: gin, gin index, gin indexes, inverted index, inverted indexes, accelerated index, accelerated indexes
+docs_area: develop
 ---
 
 Indexes are [logical objects in a cluster](schema-design-overview.html#database-schema-objects) that help [CockroachDB queries](query-data.html) find data more efficiently. When you create an index, CockroachDB creates a copy of the columns selected for the index, and then sorts the rows of data by indexed column values, without sorting the values in the table itself.
@@ -28,7 +30,7 @@ Before reading this page, do the following:
 
 To add a secondary index to a table do one of the following:
 
-- Add an `INDEX` clause to the end of a [`CREATE TABLE`](create-table.html#create-a-table-with-secondary-and-inverted-indexes) statement.
+- Add an `INDEX` clause to the end of a [`CREATE TABLE`](create-table.html#create-a-table-with-secondary-and-gin-indexes) statement.
 
     `INDEX` clauses generally take the following form:
 
@@ -68,9 +70,11 @@ Here are some best practices for creating and using indexes:
 
 - Index all columns that you plan to use for [sorting](order-by.html) or [filtering](select-clause.html#filter-rows) data.
 
+    {% include {{page.version.version}}/sql/covering-index.md %}
+
     Columns listed in a filtering [`WHERE` clause](select-clause.html#parameters) with the equality operators (`=` or `IN`) should come first in the index, before those referenced with inequality operators (`<`, `>`).
 
-- Avoid indexing on sequential values. Writes to indexes with sequential keys can result in range hotspots that negatively affect performance. Instead, use [randomly generated unique IDs](performance-best-practices-overview.html#unique-id-best-practices) or [multi-column keys](performance-best-practices-overview.html#use-multi-column-primary-keys).
+- Avoid indexing on sequential values. Writes to indexes with sequential keys can result in range hot spots that negatively affect performance. Instead, use [randomly generated unique IDs](performance-best-practices-overview.html#unique-id-best-practices) or [multi-column keys](performance-best-practices-overview.html#use-multi-column-primary-keys).
 
     If you are working with a table that *must* be indexed on sequential keys, use [hash-sharded indexes](hash-sharded-indexes.html). For details about the mechanics and performance improvements of hash-sharded indexes in CockroachDB, see our [Hash Sharded Indexes Unlock Linear Scaling for Sequential Workloads](https://www.cockroachlabs.com/blog/hash-sharded-indexes-unlock-linear-scaling-for-sequential-workloads/) blog post.
 
@@ -120,13 +124,15 @@ Here are some best practices for creating and using indexes:
 (9 rows)
     ~~~
 
-- Use a [`STORING` clause](create-index.html#parameters) to store columns of data that you want returned by common queries, but that you do not plan to use in query filters.
+<a name="storing-index"></a>
+
+- Use a [`STORING` clause](create-index.html#parameters) to store columns of data that you want returned by common queries, but that you do not plan to use in query filters.  Note that the synonym `COVERING` is also supported.
 
     The `STORING` clause specifies columns that are not part of the index key but should be stored in the index, without being sorted. If a column is specified in a query, and the column is neither indexed nor stored in an index, CockroachDB will perform a full scan of the table, which can result in poor performance. For an example, see [below](#example).
 
 - Review the [specialized indexes that CockroachDB supports](schema-design-overview.html#specialized-indexes), and decide if you need to create a specialized index instead of a standard index.
 
-- Do not create indexes as the `root` user. Instead, create indexes as a [different user](schema-design-overview.html#control-access-to-objects), with fewer privileges, following [authorization best practices](authorization.html#authorization-best-practices). This will likely be the same user that created the table to which the index belongs.
+- Do not create indexes as the `root` user. Instead, create indexes as a [different user](schema-design-overview.html#control-access-to-objects), with fewer privileges, following [authorization best practices](security-reference/authorization.html#authorization-best-practices). This will likely be the same user that created the table to which the index belongs.
 
 - {% include {{page.version.version}}/sql/dev-schema-changes.md %}
 
@@ -241,14 +247,18 @@ To view the indexes in the `vehicles` table, issue a [`SHOW INDEXES`](show-index
 ~~~
 
 ~~~
-  table_name |     index_name     | non_unique | seq_in_index |  column_name  | direction | storing | implicit
--------------+--------------------+------------+--------------+---------------+-----------+---------+-----------
+  table_name | index_name | non_unique | seq_in_index |  column_name  | direction | storing | implicit
+-------------+------------+------------+--------------+---------------+-----------+---------+-----------
   vehicles   | primary            |   false    |            1 | id            | ASC       |  false  |  false
+  vehicles   | primary            |   false    |            2 | type          | N/A       |  true   |  false
+  vehicles   | primary            |   false    |            3 | creation_time | N/A       |  true   |  false
+  vehicles   | primary            |   false    |            4 | available     | N/A       |  true   |  false
+  vehicles   | primary            |   false    |            5 | last_location | N/A       |  true   |  false
   vehicles   | type_available_idx |    true    |            1 | type          | ASC       |  false  |  false
   vehicles   | type_available_idx |    true    |            2 | available     | ASC       |  false  |  false
   vehicles   | type_available_idx |    true    |            3 | last_location | N/A       |  true   |  false
   vehicles   | type_available_idx |    true    |            4 | id            | ASC       |  false  |   true
-(5 rows)
+(9 rows)
 ~~~
 
 The output from this `SHOW` statement displays the names and columns of the two indexes on the table (i.e., `primary` and `type_available_idx`).

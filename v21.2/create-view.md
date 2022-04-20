@@ -2,6 +2,7 @@
 title: CREATE VIEW
 summary: The CREATE VIEW statement creates a view of a table
 toc: true
+docs_area: reference.sql
 ---
 
 The `CREATE VIEW` statement creates a new [view](views.html), which is a stored query represented as a virtual table.
@@ -10,11 +11,11 @@ The `CREATE VIEW` statement creates a new [view](views.html), which is a stored 
  By default, views created in a database cannot reference objects in a different database. To enable cross-database references for views, set the `sql.cross_db_views.enabled` [cluster setting](cluster-settings.html) to `true`.
 {{site.data.alerts.end}}
 
-{% include {{{ page.version.version }}/misc/schema-change-stmt-note.md %}
+{% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
 ## Required privileges
 
-The user must have the `CREATE` [privilege](authorization.html#assign-privileges) on the parent database and the `SELECT` privilege on any table(s) referenced by the view.
+The user must have the `CREATE` [privilege](security-reference/authorization.html#managing-privileges) on the parent database and the `SELECT` privilege on any table(s) referenced by the view.
 
 ## Synopsis
 

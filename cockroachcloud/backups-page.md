@@ -2,6 +2,7 @@
 title: Restore Data from a Backup
 summary: Restore a table or database from a backup in CockroachDB Cloud.
 toc: true
+docs_area: manage
 ---
 
 This page describes the **Backups** page and how to restore your data.
@@ -13,7 +14,7 @@ The backups that Cockroach Labs runs for you can be viewed on the [Backups page]
 {{site.data.alerts.callout_info}}
 Currently, you can only restore [databases](#restore-a-database) and [tables](#restore-a-table) to the same cluster that the backup was taken from.
 
-In the meantime, you can [back up and restore data manually](run-bulk-operations.html) or [back up from a self-hosted CockroachDB cluster and restore into a {{ site.data.products.db }} cluster](#back-up-a-self-hosted-cockroachdb-cluster-and-restore-into-a-cockroachdb-cloud-cluster).
+In the meantime, you can [back up and restore data manually](run-bulk-operations.html) or [back up from a self-hosted CockroachDB cluster and restore into a {{ site.data.products.db }} cluster](#back-up-a-self-hosted-cockroachdb-cluster-and-restore-into-a-cockroachdb-cloud-cluster). Note that you cannot restore a backup of a multi-region database into a single-region database.
 {{site.data.alerts.end}}
 
 ## Backups page

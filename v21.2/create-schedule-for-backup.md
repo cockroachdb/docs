@@ -2,6 +2,7 @@
 title: CREATE SCHEDULE FOR BACKUP
 summary: The CREATE SCHEDULE FOR BACKUP statement creates a schedule for periodic backups.
 toc: true
+docs_area: reference.sql
 ---
 
  The `CREATE SCHEDULE FOR BACKUP` [statement](sql-statements.html) creates a schedule for periodic [backups](backup.html).
@@ -16,7 +17,7 @@ To use the other backup features, you need an [Enterprise license](enterprise-li
 
 ## Required privileges
 
-- Only members of the [`admin` role](authorization.html#default-roles) can run `CREATE SCHEDULE FOR BACKUP`. By default, the `root` user belongs to the `admin` role.
+- Only members of the [`admin` role](security-reference/authorization.html#default-roles) can run `CREATE SCHEDULE FOR BACKUP`. By default, the `root` user belongs to the `admin` role.
 - `BACKUP` requires full read and write (including delete and overwrite) permissions to its target destination.
 
 ## Synopsis

@@ -2,6 +2,7 @@
 title: ST_Union
 summary: ST_Union is an aggregate function that combines a set of shapes into a single shape.
 toc: true
+docs_area: reference.sql
 ---
 
 Given a set of shapes (e.g., from a [selection query](selection-queries.html)), `ST_Union` combines that set of shapes into a single shape. The resulting shape can then be passed to functions that operate on a single shape, such as [`ST_ConvexHull`](st_convexhull.html).

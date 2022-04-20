@@ -2,6 +2,7 @@
 title: Migrate from CSV
 summary: Learn how to migrate data from CSV files into a CockroachDB cluster.
 toc: true
+docs_area: migrate
 ---
 
 This page has instructions for migrating data from CSV files into CockroachDB using [`IMPORT`][import].
@@ -217,7 +218,6 @@ Example usage:
 - [Import Performance Best Practices](import-performance-best-practices.html)
 - [Migrate from MySQL][mysql]
 - [Migrate from Postgres][postgres]
-- [SQL Dump (Export)](cockroach-dump.html)
 - [Back Up and Restore Data](take-full-and-incremental-backups.html)
 - [Use the Built-in SQL Client](cockroach-sql.html)
 - [Other Cockroach Commands](cockroach-commands.html)

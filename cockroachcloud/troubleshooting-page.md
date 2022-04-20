@@ -2,6 +2,7 @@
 title: Troubleshoot CockroachDB Cloud
 summary: The SQL Users page displays a list of SQL users who can access the cluster.
 toc: true
+docs_area: manage
 ---
 
 This page describes common {{ site.data.products.db }} errors and their solutions.
@@ -12,26 +13,46 @@ We have updated the CA certificate used by {{ site.data.products.serverless }} c
 
 ## Connection errors
 
+### Cannot load certificates
+
+You see the following error when you are using the `cockroach sql` command to connect to your {{ site.data.products.serverless }} cluster:
+
+~~~
+ERROR: cannot load certificates.
+Check your certificate settings, set --certs-dir, or use --insecure for insecure clusters.
+
+problem using security settings: no certificates found; does certs dir exist?
+Failed running "sql"
+~~~
+
+<h4>Solution</h4>
+
+Update to the latest [CockroachDB client](../releases/index.html#production-releases). You need to use v21.2.5 or later of the CockroachDB client to connect to your cluster without specifying the CA certificate path in the connection string.
+
 ### Wrong cluster name in the connection string
 
 The following error is displayed on the terminal if you use a wrong cluster name in the connection string while trying to connect to a cluster:
 
-~~~ shell
+~~~
 Error: x509: certificate signed by unknown authority
 Failed running "sql"
 ~~~
 
-**Solution:** Check if you are using the right cluster name in the [connection method](connect-to-your-cluster.html#step-3-connect-to-your-cluster). You can find your cluster name in the {{ site.data.products.db }} Console by navigating to **Cluster Overview** > **Connect** > **Step 2. Connect** > **Connection string** and locating the parameter `cluster={cluster-name}` in your connection string.
+<h4>Solution</h4>
+
+Check if you are using the right cluster name in the [connection method](connect-to-your-cluster.html#step-3-connect-to-your-cluster). You can find your cluster name in the {{ site.data.products.db }} Console by navigating to **Cluster Overview** > **Connect** > **Step 2. Connect** > **Connection string** and locating the parameter `cluster={cluster-name}` in your connection string.
 
 ### Invalid cluster name in a third-party tool
 
 The following error is displayed if you try to connect to a [third-party tool](../stable/third-party-database-tools.html) with the wrong cluster or database name. The actual error message may vary depending on your tool:
 
-~~~ shell
+~~~
 FATAL: CodeParamsRoutingFailed: rejected by BackendConfigFromParams: Invalid cluster name
 ~~~
 
-**Solution**: Check that you are using the correct cluster and database names. You can find these parameters in the {{ site.data.products.db }} Console by navigating to **Cluster Overview** > **Connect** > **Step 2. Connect** > **Connection parameters**. For most tools, the full name of your database should be in the format `<routing-id>.<database>` for {{ site.data.products.serverless }} clusters.
+<h4>Solution</h4>
+
+Check that you are using the correct cluster and database names. You can find these parameters in the {{ site.data.products.db }} Console by navigating to **Cluster Overview** > **Connect** > **Step 2. Connect** > **Connection parameters**. For most tools, the full name of your database should be in the format `<routing-id>.<database>` for {{ site.data.products.serverless }} clusters.
 
 For connection examples with your tool, see [these examples](../stable/third-party-database-tools.html).
 
@@ -47,7 +68,7 @@ dial tcp 35.196.33.161:26257: i/o timeout
 Failed running "sql"
 ~~~
 
-**Solution:**
+<h4>Solution</h4>
 
 Check if you have internet access.
 
@@ -74,7 +95,7 @@ Update this in future if we have more troubleshooting guidance.
 
 The following error is displayed when you supply an incorrect host name:
 
-~~~ shell
+~~~
 ERROR: cannot dial server.
 Is the server running?
 If the server is running, check --host client-side and --advertise server-side.
@@ -83,32 +104,76 @@ dial tcp: lookup gcp-us-east4.crdb.io: no such host
 Failed running "sql"
 ~~~
 
-**Solution:**
+<h4>Solution</h4>
+
 Check if you are using the correct host name.
 
 You can find your host name in the {{ site.data.products.db }} Console by navigating to **Cluster Overview** > **Connect** > **Step 2. Connect** > **Connection parameters** and locating the **Host** field. If the error persists, [contact Support](https://support.cockroachlabs.com/).
 
 ### Connection refused
 
-The following error may be displayed if your cluster connection is dropped:
+The following error is displayed if your cluster connection is dropped:
 
-~~~ shell
+~~~
 Error: dial tcp 35.240.101.1:26257: connect: connection refused
 ~~~
 
-**Solution:**
+<h4>Solution</h4>
+
 {{ site.data.products.db }} connections can occasionally become invalid due to upgrades, restarts, or other disruptions. Your application should use a [pool of persistent connections](../{{site.versions["stable"]}}/connection-pooling.html) and connection retry logic to ensure that connections remain current. See the [Production Checklist](production-checklist.html) for more information.
 
 ### External network access disabled
 
 The following error is displayed if you try to access cloud storage from an organization without billing information on file:
 
-~~~ shell
+~~~
 ERROR: external network access is disabled
 ~~~
 
-**Solution:**
+<h4>Solution</h4>
+
 You must [set up billing information](billing-management.html) for your organization to use cloud storage. If you don't have a credit card on file, you will be limited to `userfile` storage for [bulk operations](run-bulk-operations.html).
+
+### Deleted non-system databases
+
+If you deleted all non-system databases on your cluster, you will see errors in the {{ site.data.products.db }} Console.
+
+<h4>Solution</h4>
+
+Connect to the `system` database using `cockroach sql` and create a new database.
+
+1. Copy your connection string in the {{ site.data.products.db }} Console by navigating to **Cluster Overview** > **Connect** > **Step 2. Connect** > **Connection string**.
+1. Change the database name in the connection string to `system`. For example, for the following connection string:
+
+    ~~~
+    postgresql://<username>:<password>@<serverless-host>:26257/defaultdb?sslmode=verify-full&options=--cluster%3D<routing-id>
+    ~~~
+
+    Change `defaultdb` to `system`.
+
+    ~~~
+    postgresql://<username>:<password>@<serverless-host>:26257/system?sslmode=verify-full&options=--cluster%3D<routing-id>
+    ~~~
+
+    Where:
+    - `<username>` is the SQL user. By default, this is your {{ site.data.products.db }} account username.
+    - `<password>` is the password for the SQL user. The password will be shown only once in the **Connection info** dialog after creating the cluster.
+    - `<serverless-host>` is the hostname of the {{ site.data.products.serverless }} cluster.
+    - `<routing-id>` identifies your tenant cluster on a [multi-tenant host](architecture.html#architecture). For example, `funny-skunk-123`.
+
+1. Connect to the cluster using the modified connection string with `cockroach sql`.
+
+    ~~~ shell
+    cockroach sql --url "postgresql://<username>:<password>@<serverless-host>:26257/system?sslmode=verify-full&options=--cluster%3D<routing-id>"
+    ~~~
+
+    You will connect to the `system` database on your cluster.
+
+1. Create a new `defaultdb` database.
+
+    ~~~ sql
+    CREATE DATABASE IF NOT EXISTS defaultdb;
+    ~~~
 
 ## Security errors
 
@@ -116,22 +181,26 @@ You must [set up billing information](billing-management.html) for your organiza
 
 The following error is displayed if the directory path for the CA certificate is incorrect:
 
-~~~ shell
+~~~
 Error: open test-cluster-ca.crt: no such file or directory
 Failed running "sql"
 ~~~
 
-**Solution**: Check the directory path for the [CA certificate in the connection method](connect-to-your-cluster.html#step-3-connect-to-your-cluster). If you have downloaded multiple CA certificates, check that you are using the right one.
+<h4>Solution</h4>
+
+Check the directory path for the [CA certificate in the connection method](connect-to-your-cluster.html#step-3-connect-to-your-cluster). If you have downloaded multiple CA certificates, check that you are using the right one.
 
 ### Issue with CockroachDB workloads
 
 The following error is displayed while trying to a run [CockroachDB workload](../{{site.versions["stable"]}}/cockroach-workload.html) with `sslmode=verify-full`:
 
-~~~ shell
+~~~
 Error: x509: certificate signed by unknown authority
 ~~~
 
-**Solution:** This is a known issue. Use `sslmode=require` instead.
+<h4>Solution</h4>
+
+This is a known issue. Use `sslmode=require` instead.
 
 {{site.data.alerts.callout_info}}
 Using `sslmode=require` can leave your cluster vulnerable to MITM and impersonation attacks. For more information, see PostgreSQL's [SSL Support](https://www.postgresql.org/docs/9.4/libpq-ssl.html) document.

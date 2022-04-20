@@ -2,11 +2,12 @@
 title: DROP INDEX
 summary: The DROP INDEX statement removes indexes from tables.
 toc: true
+docs_area: reference.sql
 ---
 
 The `DROP INDEX` [statement](sql-statements.html) removes indexes from tables.
 
-{% include {{{ page.version.version }}/misc/schema-change-stmt-note.md %}
+{% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
 ## Synopsis
 
@@ -14,7 +15,7 @@ The `DROP INDEX` [statement](sql-statements.html) removes indexes from tables.
 
 ## Required privileges
 
-The user must have the `CREATE` [privilege](authorization.html#assign-privileges) on each specified table.
+The user must have the `CREATE` [privilege](security-reference/authorization.html#managing-privileges) on each specified table.
 
 ## Parameters
 
@@ -54,10 +55,13 @@ Suppose you create an index on the `name` and `city` columns of the `users` tabl
 -------------+---------------------+------------+--------------+-------------+-----------+---------+-----------
   users      | primary             |   false    |            1 | city        | ASC       |  false  |  false
   users      | primary             |   false    |            2 | id          | ASC       |  false  |  false
+  users      | primary             |   false    |            3 | name        | N/A       |  true   |  false
+  users      | primary             |   false    |            4 | address     | N/A       |  true   |  false
+  users      | primary             |   false    |            5 | credit_card | N/A       |  true   |  false
   users      | users_name_city_idx |    true    |            1 | name        | ASC       |  false  |  false
   users      | users_name_city_idx |    true    |            2 | city        | ASC       |  false  |  false
   users      | users_name_city_idx |    true    |            3 | id          | ASC       |  false  |   true
-(5 rows)
+(8 rows)
 ~~~
 
 You can drop this index with the `DROP INDEX` statement:
@@ -77,7 +81,10 @@ You can drop this index with the `DROP INDEX` statement:
 -------------+------------+------------+--------------+-------------+-----------+---------+-----------
   users      | primary    |   false    |            1 | city        | ASC       |  false  |  false
   users      | primary    |   false    |            2 | id          | ASC       |  false  |  false
-(2 rows)
+  users      | primary    |   false    |            3 | name        | N/A       |  true   |  false
+  users      | primary    |   false    |            4 | address     | N/A       |  true   |  false
+  users      | primary    |   false    |            5 | credit_card | N/A       |  true   |  false
+(5 rows)
 ~~~
 
 ### Remove an index and dependent objects with `CASCADE`
@@ -101,9 +108,15 @@ Suppose you create a [`UNIQUE`](unique.html) constraint on the `id` and `name` c
 ~~~
   table_name | constraint_name | constraint_type |            details             | validated
 -------------+-----------------+-----------------+--------------------------------+------------
-  users      | id_name_unique  | UNIQUE          | UNIQUE (id ASC, name ASC)      |   true
-  users      | primary         | PRIMARY KEY     | PRIMARY KEY (city ASC, id ASC) |   true
-(2 rows)
+  users      | id_name_unique |   false    |            1 | id          | ASC       |  false  |  false
+  users      | id_name_unique |   false    |            2 | name        | ASC       |  false  |  false
+  users      | id_name_unique |   false    |            3 | city        | ASC       |  false  |   true
+  users      | primary        |   false    |            1 | city        | ASC       |  false  |  false
+  users      | primary        |   false    |            2 | id          | ASC       |  false  |  false
+  users      | primary        |   false    |            3 | name        | N/A       |  true   |  false
+  users      | primary        |   false    |            4 | address     | N/A       |  true   |  false
+  users      | primary        |   false    |            5 | credit_card | N/A       |  true   |  false
+(8 rows)
 ~~~
 
 If no index exists on `id` and `name`, CockroachDB automatically creates an index:
@@ -154,7 +167,10 @@ To drop an index and its dependent objects, you can use `CASCADE`:
 -------------+------------+------------+--------------+-------------+-----------+---------+-----------
   users      | primary    |   false    |            1 | city        | ASC       |  false  |  false
   users      | primary    |   false    |            2 | id          | ASC       |  false  |  false
-(2 rows)
+  users      | primary    |   false    |            3 | name        | N/A       |  true   |  false
+  users      | primary    |   false    |            4 | address     | N/A       |  true   |  false
+  users      | primary    |   false    |            5 | credit_card | N/A       |  true   |  false
+(5 rows)
 ~~~
 
 {% include copy-clipboard.html %}
@@ -169,7 +185,7 @@ To drop an index and its dependent objects, you can use `CASCADE`:
 (1 row)
 ~~~
 
-## See Also
+## See also
 
 - [Indexes](indexes.html)
 - [Online Schema Changes](online-schema-changes.html)

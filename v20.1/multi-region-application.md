@@ -8,7 +8,7 @@ This page walks you through developing a multi-region application. It is the fou
 
 {% include {{ page.version.version }}/misc/movr-flask-211.md %}
 
-{% include {{ page.version.version }}/misc/movr-live-demo.md %}
+<!-- {% include {{ page.version.version }}/misc/movr-live-demo.md %} -->
 
 ## Before you begin
 
@@ -372,7 +372,7 @@ Most load-balancing services require you to enable header forwarding, or the ori
 
 We discuss the details of configuring custom request header fields in our [example production deployment](multi-region-deployment.html#multi-region-application-deployment-gke). For now, let's assume that you receive the location of your client from a request header field named "`X-City`".
 
-Suppose that a user is coming to the website for the first time. They type in the address of the website, let's say `https://movr.cloud`, into their browser, and hit enter. The following example routing function gathers the client's location, stores it in a persistent Flask `session` variable, and then renders the home page:
+Suppose that a user is coming to the website for the first time. They type in the address of the website, let's say `https://movr.com`, into their browser, and hit enter. The following example routing function gathers the client's location, stores it in a persistent Flask `session` variable, and then renders the home page:
 
 ~~~ python
 {% remote_include https://raw.githubusercontent.com/cockroachlabs/movr-flask/v1-doc-includes/server.py |# START index |# END index %}
@@ -396,7 +396,7 @@ After you finish developing and debugging your application, you can start [deplo
 
 ## See also
 
-- [MovR (live demo)](https://movr.cloud)
+<!-- [MovR (live demo)](https://movr.cloud)-->
 - [SQLAlchemy documentation](https://docs.sqlalchemy.org/en/latest/)
 - [Transactions](transactions.html)
 - [Flask documentation](https://flask.palletsprojects.com/en/1.1.x/)

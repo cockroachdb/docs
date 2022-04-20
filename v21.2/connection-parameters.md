@@ -2,6 +2,7 @@
 title: Client Connection Parameters
 summary: This page describes the parameters used to establish a client connection.
 toc: true
+docs_area: reference.cli
 ---
 
 Client applications, including [`cockroach` client
@@ -273,4 +274,4 @@ cockroach sql --url "postgres://root@servername:26257/mydb?sslmode=disable"
 - [`cockroach` commands](cockroach-commands.html)
 - [Create Security Certificates](cockroach-cert.html)
 - [Secure a Cluster](secure-a-cluster.html)
-- [Create and Manage Users](authorization.html#create-and-manage-users)
+- [Create and Manage Users](security-reference/authorization.html#create-and-manage-users)

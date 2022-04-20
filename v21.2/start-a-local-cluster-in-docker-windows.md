@@ -2,6 +2,7 @@
 title: Start a Cluster in Docker (Insecure)
 summary: Run an insecure multi-node CockroachDB cluster across multiple Docker containers on a single host.
 toc: true
+docs_area: deploy
 ---
 
 <div id="os-tabs" class="clearfix">
@@ -20,7 +21,7 @@ Once you've [installed the official CockroachDB Docker image](install-cockroachd
 
 - Make sure you have already [installed the official CockroachDB Docker image](install-cockroachdb.html).
 - For quick SQL testing or app development, consider [running a single-node cluster](cockroach-start-single-node.html) instead.
-- Note that running multiple nodes on a single host is useful for testing CockroachDB, but it's not suitable for production. To run a physically distributed cluster in containers, use an orchestration tool like Kubernetes or Docker Swarm. See [Orchestration](orchestration.html) for more details, and review the [Production Checklist](recommended-production-settings.html).
+- Note that running multiple nodes on a single host is useful for testing CockroachDB, but it's not suitable for production. To run a physically distributed cluster in containers, use an orchestration tool like Kubernetes. See [Orchestration](orchestration.html) for more details, and review the [Production Checklist](recommended-production-settings.html).
 
 ## Step 1. Create a bridge network
 
@@ -234,5 +235,5 @@ PS C:\Users\username> Remove-Item cockroach-data -recurse
 
 - Learn more about [CockroachDB SQL](learn-cockroachdb-sql.html) and the [built-in SQL client](cockroach-sql.html)
 - [Install the client driver](install-client-drivers.html) for your preferred language
-- [Build an app with CockroachDB](hello-world-example-apps.html)
+- [Build an app with CockroachDB](example-apps.html)
 - Further explore CockroachDB capabilities like [fault tolerance and automated repair](demo-fault-tolerance-and-recovery.html), [multi-region performance](demo-low-latency-multi-region-deployment.html), [serializable transactions](demo-serializable.html), and [JSON support](demo-json-support.html)

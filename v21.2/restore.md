@@ -2,9 +2,10 @@
 title: RESTORE
 summary: Restore your CockroachDB cluster to a cloud storage services such as AWS S3, Google Cloud Storage, or other NFS.
 toc: true
+docs_area: reference.sql
 ---
 
-The `RESTORE` [statement](sql-statements.html) restores your cluster's schemas and data from [a `BACKUP`](backup.html) stored on services such as AWS S3, Google Cloud Storage, NFS, or HTTP storage.
+The `RESTORE` [statement](sql-statements.html) restores your cluster's schemas and data from [a `BACKUP`](backup.html) stored on services such as AWS S3, Google Cloud Storage, or NFS.
 
 Because CockroachDB is designed with high fault tolerance, restores are designed primarily for disaster recovery, i.e., restarting your cluster if it loses a majority of its nodes. Isolated issues (such as small-scale node outages) do not require any intervention.
 
@@ -19,15 +20,17 @@ You can restore:
 - `RESTORE` cannot restore backups made by newer versions of CockroachDB.
 - `RESTORE` is a blocking statement. To run a restore job asynchronously, use the `DETACHED` option. See [Options](#options) for more usage detail.
 - `RESTORE` no longer requires an Enterprise license, regardless of the options passed to it or to the backup it is restoring.
+- [Zone configurations](configure-zone.html) present on the destination cluster prior to a restore will be **overwritten** during a [cluster restore](restore.html#full-cluster) with the zone configurations from the [backed up cluster](backup.html#backup-a-cluster). If there were no customized zone configurations on the cluster when the backup was taken, then after the restore the destination cluster will use the zone configuration from the [`RANGE DEFAULT` configuration](configure-replication-zones.html#view-the-default-replication-zone).
+- You cannot restore a backup of a multi-region database into a single-region database.
 
 ## Required privileges
 
-- [Full cluster restores](#full-cluster) can only be run by members of the [`ADMIN` role](authorization.html#admin-role). By default, the `root` user belongs to the `admin` role.
-- For all other restores, the user must have [write access](authorization.html#assign-privileges) (`CREATE` or `INSERT`) on all objects affected.
+- [Full cluster restores](#full-cluster) can only be run by members of the [`ADMIN` role](security-reference/authorization.html#admin-role). By default, the `root` user belongs to the `admin` role.
+- For all other restores, the user must have [write access](security-reference/authorization.html#managing-privileges) (`CREATE` or `INSERT`) on all objects affected.
 
 ### Source privileges
 
-{% include {{ page.version.version }}/misc/source-privileges.md %}
+{% include {{ page.version.version }}/misc/non-http-source-privileges.md %}
 
 ## Synopsis
 
@@ -67,6 +70,11 @@ You can control `RESTORE` behavior using any of the following in the `restore_op
 CockroachDB uses the URL provided to construct a secure API call to the service you specify. The URL structure depends on the type of file storage you are using. For more information, see the following:
 
 - [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html)
+
+    {{site.data.alerts.callout_info}}
+    HTTP storage is not supported for `BACKUP` and `RESTORE`.
+    {{site.data.alerts.end}}
+
 - [Use a Local File Server for Bulk Operations](use-a-local-file-server-for-bulk-operations.html)
 
 ## Functional details
@@ -115,7 +123,7 @@ The target database must not have tables or views with the same name as the tabl
 - [Restore the table or view into a different database](#into_db).
 
 {{site.data.alerts.callout_info}}
-`RESTORE` only offers table-level granularity; it _does not_ support restoring subsets of a table.
+`RESTORE` only offers table-level granularity; it **does not** support restoring subsets of a table.
 {{site.data.alerts.end}}
 
 When restoring an individual table that references a user-defined type (e.g., [`ENUM`](enum.html)), CockroachDB will first check to see if the type already exists. The restore will attempt the following for each user-defined type within a table backup:
@@ -144,7 +152,7 @@ Table with a [sequence](create-sequence.html) | The sequence.
 
 The owner of restored objects will be the user running the restore job. To restore your users and privilege [grants](grant.html), you can do a cluster backup and restore the cluster to a fresh cluster with no user data.
 
-If you are not doing a full cluster restore, the table-level privileges need to be granted to the users after the restore is complete. To do this, backup the `system.users` table, [restore users and their passwords](restore.html#restoring-users-from-system-users-backup), and then [grant](grant.html) the table-level privileges.
+If you are not doing a full cluster restore, the table-level privileges need to be granted to the users after the restore is complete. (By default, the user restoring will become the owner of the restored objects.) To grant table-level privileges after a restore, backup the `system.users` table, [restore users and their passwords](restore.html#restoring-users-from-system-users-backup), and then [grant](grant.html) the table-level privileges.
 
 ### Restore types
 
@@ -165,23 +173,21 @@ When a `RESTORE` fails or is canceled, partially restored data is properly clean
 
 ## Restoring to multi-region databases
 
-<span class="version-tag">New in v21.2:</span> Restoring to a [multi-region database](multiregion-overview.html) is supported with some limitations. This section outlines details and settings that should be considered when restoring into multi-region databases.
+<span class="version-tag">New in v21.2:</span> Restoring to a [multi-region database](multiregion-overview.html) is supported with some limitations. This section outlines details and settings that should be considered when restoring into multi-region databases:
 
-* A [cluster's regions](multiregion-overview.html#cluster-regions) will be checked before a restore. Mismatched regions between [backup](backup.html) and restore clusters will be flagged before the restore begins, which allows for a decision between updating the [cluster localities](cockroach-start.html#locality) or restoring with the [`skip_localities_check`](#skip-localities-check) option to continue with the restore regardless.
+- A [cluster's regions](multiregion-overview.html#cluster-regions) will be checked before a restore. Mismatched regions between backup and restore clusters will be flagged before the restore begins, which allows for a decision between updating the [cluster localities](cockroach-start.html#locality) or restoring with the [`skip_localities_check`](#skip-localities-check) option to continue with the restore regardless.
 
-* A database that is restored with the `sql.defaults.primary_region` [cluster setting](cluster-settings.html) will have the [`PRIMARY REGION`](set-primary-region.html) from this cluster setting assigned to the target database.
+- A database that is restored with the `sql.defaults.primary_region` [cluster setting](cluster-settings.html) will have the [`PRIMARY REGION`](set-primary-region.html) from this cluster setting assigned to the target database.
 
-{{site.data.alerts.callout_info}}
-Tables with a [`REGIONAL BY ROW`](multiregion-overview.html#regional-by-row-tables) locality cannot be restored.
-{{site.data.alerts.end}}
+- `RESTORE` supports restoring **non**-multi-region tables into a multi-region database and sets the table locality as [`REGIONAL BY TABLE`](multiregion-overview.html#regional-tables) to the primary region of the target database.
 
-* `RESTORE` supports restoring **non**-multi-region tables into a multi-region database and sets the table locality as [`REGIONAL BY TABLE`](multiregion-overview.html#regional-tables) to the primary region of the target database.
+- Restoring tables from multi-region databases with table localities set to [`REGIONAL BY ROW`](multiregion-overview.html#regional-by-row-tables), `REGIONAL BY TABLE`, [`REGIONAL BY TABLE IN PRIMARY REGION`](set-locality.html#regional-by-table), and [`GLOBAL`](set-locality.html#global) to another multi-region database is supported.
 
-* Restoring tables from multi-region databases with table localities set to `REGIONAL BY TABLE`, [`REGIONAL BY TABLE IN PRIMARY REGION`](set-locality.html#regional-by-table), and [`GLOBAL`](set-locality.html#global) to another multi-region database is supported.
+- When restoring a `REGIONAL BY TABLE IN PRIMARY REGION` table, if the primary region is different in the source database to the target database this will be implicitly changed on restore.
 
-* When restoring a `REGIONAL BY TABLE IN PRIMARY REGION` table, if the primary region is different in the source database to the target database this will be implicitly changed on restore.
+- Restoring a [partition](partitioning.html) of a `REGIONAL BY ROW` table is not supported.
 
-* {% include {{ page.version.version }}/known-limitations/restore-multiregion-match.md %}
+- {% include {{ page.version.version }}/known-limitations/restore-multiregion-match.md %}
 
 The ordering of regions and how region matching is determined is a known limitation. See the [Known Limitations](#known-limitations) section for the tracking issues on limitations around `RESTORE` and multi-region support.
 
@@ -746,10 +752,9 @@ After the restore completes, add the `users` to the existing `system.users` tabl
 
 ## Known limitations
 
-* {% include {{ page.version.version }}/known-limitations/restore-aost.md %} [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/53044)
-* To successfully [restore a table into a multi-region database](#restoring-to-multi-region-databases), it is necessary for the order and regions to match between the source and destination database. See the [Known Limitations](known-limitations.html#using-restore-with-multi-region-table-localities) page for detail on ordering and matching regions. [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/71071)
-* {% include {{ page.version.version }}/known-limitations/rbr-restore-no-support.md %}
-* {% include {{ page.version.version }}/known-limitations/restore-tables-non-multi-reg.md %}
+- {% include {{ page.version.version }}/known-limitations/restore-aost.md %} [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/53044)
+- To successfully [restore a table into a multi-region database](#restoring-to-multi-region-databases), it is necessary for the order and regions to match between the source and destination database. See the [Known Limitations](known-limitations.html#using-restore-with-multi-region-table-localities) page for detail on ordering and matching regions. [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/71071)
+- {% include {{ page.version.version }}/known-limitations/restore-tables-non-multi-reg.md %}
 
 ## See also
 

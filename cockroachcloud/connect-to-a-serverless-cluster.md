@@ -3,12 +3,13 @@ title: Connect to a CockroachDB Serverless (beta) Cluster
 summary: Learn how to connect and start interacting with your free cluster.
 toc: true
 redirect_from: connect-to-a-free-cluster.html
+filter_category: conn_crdb_cloud
+filter_html: CockroachDB Serverless (beta)
+filter_sort: 1
+docs_area: deploy
 ---
 
-<div class="filters clearfix">
-    <a href="connect-to-a-serverless-cluster.html"><button class="filter-button page-level current">{{ site.data.products.serverless }}</button></a>
-    <a href="connect-to-your-cluster.html"><button class="filter-button page-level">{{ site.data.products.dedicated }}</button></a>
-</div>
+{% include filter-tabs.md %}
 
 This page shows you how to connect to your {{ site.data.products.serverless }} cluster. If you'd like to follow along with a video walkthrough, see [How to connect to {{ site.data.products.db }} and Import Data](https://www.youtube.com/watch?v=XJZD1rorEQE).
 
@@ -61,10 +62,6 @@ To connect to your cluster with the [built-in SQL client](../{{site.versions["st
 
     {% include cockroachcloud/download-the-binary.md %}
 
-1. In your terminal, run the second command from the dialog to create a new `certs` directory on your local machine and download the CA certificate to that directory:
-
-    {% include cockroachcloud/download-the-cert-free.md %}
-
 1. Copy the [`cockroach sql`](../{{site.versions["stable"]}}/cockroach-sql.html) command and connection string provided in the **Connect** modal, which will be used in the next step (and to connect to your cluster in the future):
 
     {% include cockroachcloud/sql-connection-string-free.md %}
@@ -100,7 +97,7 @@ To connect to your cluster with your application, use the connection string prov
       <button class="filter-button page-level" data-scope="windows">Windows</button>
     </div>
 
-1. In your terminal, run the first command from the dialog to create a new `certs` directory on your local machine and download the CA certificate to that directory:
+1. In your terminal, run the first command from the dialog to download the CA certificate to the default PostgreSQL certificate directory:
 
     {% include cockroachcloud/download-the-cert-free.md %}
 
@@ -151,7 +148,6 @@ For connection examples and code snippets in your language, see the following:
 - [Build a Java App with CockroachDB](../{{site.versions["stable"]}}/build-a-java-app-with-cockroachdb.html)
 - [Build a Ruby App with CockroachDB](../{{site.versions["stable"]}}/build-a-ruby-app-with-cockroachdb.html)
 - [Build a Javascript App with CockroachDB](../{{site.versions["stable"]}}/build-a-nodejs-app-with-cockroachdb.html)
-- [Build a C++ App with CockroachDB](../{{site.versions["stable"]}}/build-a-c++-app-with-cockroachdb.html)
   </section>
 
   <section class="filter-content" markdown="1" data-scope="connection-parameters">

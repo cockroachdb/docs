@@ -26,11 +26,7 @@ This page describes how to migrate a multi-region cluster from using replication
 
 ## Replication zone patterns and multi-region SQL abstractions
 
-Replication zone Pattern | Multi-region SQL
---- | ---
-[Duplicate Indexes][dupe_index] | [`GLOBAL` tables](global-tables.html)
-[Geo-partitioned replicas][geo_replicas] | [`REGIONAL BY ROW` tables](regional-tables.html#regional-by-row-tables) with [`ZONE` survival goals](multiregion-overview.html#surviving-zone-failures)
-[Geo-partitioned leaseholders][geo_leaseholders] | [`REGIONAL` tables](regional-tables.html) with [`REGION` survival goals](multiregion-overview.html#surviving-region-failures)
+{% include {{page.version.version}}/sql/replication-zone-patterns-to-multiregion-sql-mapping.md %}
 
 {{site.data.alerts.callout_info}}
 CockroachDB will no longer provide the [Follow-the-Workload](topology-follow-the-workload.html) pattern's behavior for a database if you use the [multi-region SQL statements](multiregion-overview.html) with that database. In other words, the multi-region SQL statements do not provide a behavior that is analogous to Follow-the-Workload.
@@ -82,7 +78,7 @@ If you used the [duplicate indexes pattern][dupe_index], the steps for backing o
     ~~~ sql
     ALTER TABLE postal_codes CONFIGURE ZONE DISCARD;
     ~~~
-    
+
 1. Drop the extra indexes you added. This will have the side effect of also deleting the zone configurations you added to those indexes.
 
     {% include_cached copy-clipboard.html %}
@@ -135,7 +131,7 @@ If you applied the [geo-partitioned leaseholders][geo_leaseholders] pattern, the
     ALTER INDEX users_last_name_index PARTITION BY NOTHING;
     ~~~
 
-The latency and resiliency benefits of the geo-partitioned leaseholders pattern can be replaced by making `users` a [`REGIONAL` table](regional-tables.html) with a [`ZONE` survival goal](multiregion-overview.html#surviving-zone-failures).
+The latency and resiliency benefits of the geo-partitioned leaseholders pattern can be replaced by making `users` a [`REGIONAL BY ROW` table](regional-tables.html#regional-by-row-tables) with a [`ZONE` survival goal](multiregion-overview.html#surviving-zone-failures).
 
 ### Step 2. Add a primary region to your database
 
@@ -179,11 +175,7 @@ For each table in your database, apply the [table locality](multiregion-overview
 
 As described above, the mapping from legacy replication zone patterns to multi-region SQL abstractions is:
 
-Replication Zone Pattern | Multi-Region SQL
---- | ---
-[Duplicate Indexes][dupe_index] | [`GLOBAL` tables](global-tables.html)
-[Geo-partitioned replicas][geo_replicas] | [`REGIONAL` tables](regional-tables.html) with [`ZONE` survival goals](multiregion-overview.html#surviving-zone-failures)
-[Geo-partitioned leaseholders][geo_leaseholders] | [`REGIONAL` tables](regional-tables.html) with [`REGION` survival goals](multiregion-overview.html#surviving-region-failures)
+{% include {{page.version.version}}/sql/replication-zone-patterns-to-multiregion-sql-mapping.md %}
 
 For example, to configure the `postal_codes` table from the [duplicate indexes example above](#duplicate-indexes) to use [multi-region SQL](multiregion-overview.html), you would enter the following statements to make the `postal_codes` table a [`GLOBAL` table](global-tables.html):
 
@@ -260,7 +252,7 @@ A [`GLOBAL`](global-tables.html) table differs from the default by setting the f
 - [`num_voters`](configure-replication-zones.html#num_voters)
 - [`constraints`](configure-replication-zones.html#constraints)
 - [`voter_constraints`](configure-replication-zones.html#voter_constraints)
-- [`lease_preferences`](configure-replication-zones.html#lease_preferences) 
+- [`lease_preferences`](configure-replication-zones.html#lease_preferences)
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -313,9 +305,3 @@ SHOW ZONE CONFIGURATION FROM TABLE promo_codes;
 - [Multi-region SQL performance](demo-low-latency-multi-region-deployment.html)
 - [Configure replication zones](configure-replication-zones.html)
 - [Non-voting replicas](architecture/replication-layer.html#non-voting-replicas)
-
-<!-- Reference Links -->
-
-[dupe_index]:       https://www.cockroachlabs.com/docs/v20.2/topology-duplicate-indexes.html
-[geo_replicas]:     https://www.cockroachlabs.com/docs/v20.2/topology-geo-partitioned-replicas.html
-[geo_leaseholders]: https://www.cockroachlabs.com/docs/v20.2/topology-geo-partitioned-leaseholders.html

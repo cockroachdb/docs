@@ -138,9 +138,8 @@ cta: false
     <div class="col-xs-12 col-sm-6 col-lg-3">
       <p class="landing-column-title">Releases</p>
       <ul>
-        <li><a href="../releases/{{page.release_info.version}}.html">Latest Stable Release</a></li>
-        <li><a href="../releases/#production-releases">All Stable Releases</a></li>
-        <li><a href="../releases/#testing-releases">All Testing Releases</a></li>
+        <li><a href="../releases/{{page.version.version}}.html">{{page.version.version}} Release</a></li>
+        <li><a href="../releases/index.html">All Releases</a></li>
         <li><a href="../releases/release-support-policy.html">Release Support Policy</a></li>
         <li><a href="known-limitations.html">Known Limitations</a></li>
       </ul>

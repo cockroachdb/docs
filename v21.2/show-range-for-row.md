@@ -2,11 +2,12 @@
 title: SHOW RANGE FOR ROW
 summary: The SHOW RANGE FOR ROW statement shows information about the range for a single row.
 toc: true
+docs_area: reference.sql
 ---
 
 The `SHOW RANGE ... FOR ROW` [statement](sql-statements.html) shows information about a [range](architecture/overview.html#glossary) for a single row in a table or index. This information is useful for verifying how SQL data maps to underlying ranges, and where the replicas for a range are located.
 
-{% include {{ page.version.version }}/misc/experimental-warning.md %}
+{% include common/experimental-warning.md %}
 
 {{site.data.alerts.callout_info}}
 To show information about the ranges for all data in a table, index, or database, use the [`SHOW RANGES`](show-ranges.html) statement.
@@ -21,7 +22,7 @@ SHOW RANGE FROM INDEX [ <tablename> @ ] <indexname> FOR ROW (value1, value2, ...
 
 ## Required privileges
 
-The user must have the `SELECT` [privilege](authorization.html#assign-privileges) on the target table.
+The user must have the `SELECT` [privilege](security-reference/authorization.html#managing-privileges) on the target table.
 
 ## Parameters
 
@@ -61,12 +62,18 @@ To show information about a row in a table, you must know the values of the colu
 ~~~
   table_name |              index_name               | non_unique | seq_in_index | column_name | direction | storing | implicit
 -------------+---------------------------------------+------------+--------------+-------------+-----------+---------+-----------
-  vehicles   | primary                               |   false    |            1 | city        | ASC       |  false  |  false
-  vehicles   | primary                               |   false    |            2 | id          | ASC       |  false  |  false
-  vehicles   | vehicles_auto_index_fk_city_ref_users |    true    |            1 | city        | ASC       |  false  |  false
-  vehicles   | vehicles_auto_index_fk_city_ref_users |    true    |            2 | owner_id    | ASC       |  false  |  false
-  vehicles   | vehicles_auto_index_fk_city_ref_users |    true    |            3 | id          | ASC       |  false  |   true
-(5 rows)
+  vehicles   | primary                               |   false    |            1 | city             | ASC       |  false  |  false
+  vehicles   | primary                               |   false    |            2 | id               | ASC       |  false  |  false
+  vehicles   | primary                               |   false    |            3 | type             | N/A       |  true   |  false
+  vehicles   | primary                               |   false    |            4 | owner_id         | N/A       |  true   |  false
+  vehicles   | primary                               |   false    |            5 | creation_time    | N/A       |  true   |  false
+  vehicles   | primary                               |   false    |            6 | status           | N/A       |  true   |  false
+  vehicles   | primary                               |   false    |            7 | current_location | N/A       |  true   |  false
+  vehicles   | primary                               |   false    |            8 | ext              | N/A       |  true   |  false
+  vehicles   | vehicles_auto_index_fk_city_ref_users |    true    |            1 | city             | ASC       |  false  |  false
+  vehicles   | vehicles_auto_index_fk_city_ref_users |    true    |            2 | owner_id         | ASC       |  false  |  false
+  vehicles   | vehicles_auto_index_fk_city_ref_users |    true    |            3 | id               | ASC       |  false  |   true
+(11 rows)
 ~~~
 
 {% include copy-clipboard.html %}
@@ -112,12 +119,18 @@ To show information about a row in a secondary index, you must know the values o
 ~~~
   table_name |              index_name               | non_unique | seq_in_index | column_name | direction | storing | implicit
 -------------+---------------------------------------+------------+--------------+-------------+-----------+---------+-----------
-  vehicles   | primary                               |   false    |            1 | city        | ASC       |  false  |  false
-  vehicles   | primary                               |   false    |            2 | id          | ASC       |  false  |  false
-  vehicles   | vehicles_auto_index_fk_city_ref_users |    true    |            1 | city        | ASC       |  false  |  false
-  vehicles   | vehicles_auto_index_fk_city_ref_users |    true    |            2 | owner_id    | ASC       |  false  |  false
-  vehicles   | vehicles_auto_index_fk_city_ref_users |    true    |            3 | id          | ASC       |  false  |   true
-(5 rows)
+  vehicles   | primary                               |   false    |            1 | city             | ASC       |  false  |  false
+  vehicles   | primary                               |   false    |            2 | id               | ASC       |  false  |  false
+  vehicles   | primary                               |   false    |            3 | type             | N/A       |  true   |  false
+  vehicles   | primary                               |   false    |            4 | owner_id         | N/A       |  true   |  false
+  vehicles   | primary                               |   false    |            5 | creation_time    | N/A       |  true   |  false
+  vehicles   | primary                               |   false    |            6 | status           | N/A       |  true   |  false
+  vehicles   | primary                               |   false    |            7 | current_location | N/A       |  true   |  false
+  vehicles   | primary                               |   false    |            8 | ext              | N/A       |  true   |  false
+  vehicles   | vehicles_auto_index_fk_city_ref_users |    true    |            1 | city             | ASC       |  false  |  false
+  vehicles   | vehicles_auto_index_fk_city_ref_users |    true    |            2 | owner_id         | ASC       |  false  |  false
+  vehicles   | vehicles_auto_index_fk_city_ref_users |    true    |            3 | id               | ASC       |  false  |   true
+(11 rows)
 ~~~
 
 {% include copy-clipboard.html %}

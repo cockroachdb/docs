@@ -2,9 +2,12 @@
 title: ALTER TYPE
 summary: The ALTER TYPE statement modifies a user-defined data type in a database.
 toc: true
+docs_area: reference.sql 
 ---
 
 The `ALTER TYPE` [statement](sql-statements.html) modifies a user-defined, [enumerated data type](enum.html) in the current database.
+
+{% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
 {{site.data.alerts.callout_info}}
 You can only [cancel](cancel-job.html) `ALTER TYPE` [schema change jobs](online-schema-changes.html) that drop values. All other `ALTER TYPE` schema change jobs are non-cancellable.
@@ -31,7 +34,7 @@ Parameter | Description
 ## Required privileges
 
 - To [alter a type](alter-type.html), the user must be the owner of the type.
-- To set the schema of a user-defined type, the user must have the `CREATE` [privilege](authorization.html#assign-privileges) on the schema and the `DROP` privilege
+- To set the schema of a user-defined type, the user must have the `CREATE` [privilege](security-reference/authorization.html#managing-privileges) on the schema and the `DROP` privilege
 on the type.
 - To alter the owner of a user-defined type:
     - The user executing the command must be a member of the new owner role.
@@ -162,3 +165,4 @@ Then, to drop a value from the type:
 - [`ENUM`](enum.html)
 - [`SHOW ENUMS`](show-enums.html)
 - [`DROP TYPE`](drop-type.html)
+- [Online Schema Changes](online-schema-changes.html)

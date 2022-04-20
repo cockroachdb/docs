@@ -2,6 +2,7 @@
 title: ROLLBACK
 summary: Rolls back the current transaction and all of its nested sub-transactions, discarding all transactional updates made by statements inside the transaction.
 toc: true
+docs_area: reference.sql
 ---
 
 The `ROLLBACK` [statement](sql-statements.html) aborts the current [transaction](transactions.html) and all of its [nested transactions](transactions.html#nested-transactions), discarding all transactional updates made by statements included in the transaction.
@@ -25,7 +26,7 @@ There are two ways to use `ROLLBACK`:
 
 ## Required privileges
 
-No [privileges](authorization.html#assign-privileges) are required to rollback a transaction. However, privileges are required for each statement within a transaction.
+No [privileges](security-reference/authorization.html#managing-privileges) are required to rollback a transaction. However, privileges are required for each statement within a transaction.
 
 ## Parameters
 
@@ -104,7 +105,7 @@ When using [advanced client-side transaction retries](advanced-client-side-trans
 > ROLLBACK TO SAVEPOINT cockroach_restart;
 ~~~
 
-For examples of retrying transactions in an application, check out the transaction code samples in our [Build an App with CockroachDB](hello-world-example-apps.html) tutorials.
+For examples of retrying transactions in an application, check out the transaction code samples in our [Build an App with CockroachDB](example-apps.html) tutorials.
 
 ## See also
 

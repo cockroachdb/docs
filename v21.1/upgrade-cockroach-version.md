@@ -2,13 +2,14 @@
 title: Upgrade to CockroachDB v21.1
 summary: Learn how to upgrade your CockroachDB cluster to a new version.
 toc: true
+keywords: gin, gin index, gin indexes, inverted index, inverted indexes, accelerated index, accelerated indexes
 ---
 
 Because of CockroachDB's [multi-active availability](multi-active-availability.html) design, you can perform a "rolling upgrade" of your CockroachDB cluster. This means that you can upgrade nodes one at a time without interrupting the cluster's overall health and operations.
 
 ## Step 1. Verify that you can upgrade
 
-To upgrade to a new version, you must first be on a [production release](../releases/#production-releases) of the previous version. The release does not need to be the **latest** production release of the previous version, but it must be a production release rather than a testing release (alpha/beta).
+To upgrade to a new version, you must first be on a production [release](../releases/) of the previous version. The release does not need to be the **latest** production release of the previous version, but it must be a production release rather than a testing release (alpha/beta).
 
 Therefore, if you are upgrading from v20.1 to v21.1, or from a testing release (alpha/beta) of v20.2 to v21.1:
 
@@ -40,7 +41,7 @@ Verify the overall health of your cluster using the [DB Console](ui-overview.htm
 
 ### Review breaking changes
 
-Review the [backward-incompatible changes in v21.1](../releases/v21.1.0.html#backward-incompatible-changes) and [deprecated features](../releases/v21.1.0.html#deprecations). If any affect your deployment, make the necessary changes before starting the rolling upgrade to v21.1.
+Review the [backward-incompatible changes in v21.1](../releases/v21.1.html#v21-1-0-backward-incompatible-changes) and [deprecated features](../releases/v21.1.html#v21-1-0-deprecations). If any affect your deployment, make the necessary changes before starting the rolling upgrade to v21.1.
 
 Two changes that are particularly important to note:
 
@@ -77,7 +78,7 @@ When upgrading from v20.2 to v21.1, certain features and performance improvement
 
 - **Improved multi-region features:** After finalization, it will be possible to use new and improved [multi-region features](multiregion-overview.html), such as the ability to set database regions, survival goals, and table localities. Internal capabilities supporting these features, such as [non-voting replicas](architecture/replication-layer.html#non-voting-replicas) and [non-blocking transactions](architecture/transaction-layer.html#non-blocking-transactions), will be available after finalization as well.
 
-- **Empty arrays in inverted indexes:** After finalization, newly created [inverted indexes](inverted-indexes.html) will contain rows containing empty arrays in [`ARRAY`](array.html) columns, which allows the indexes to be used for more queries. Note, however, that rows containing `NULL` values in an indexed column will still not be included in inverted indexes.
+- **Empty arrays in GIN indexes:** After finalization, newly created [GIN indexes](inverted-indexes.html) will contain rows containing empty arrays in [`ARRAY`](array.html) columns, which allows the indexes to be used for more queries. Note, however, that rows containing `NULL` values in an indexed column will still not be included in GIN indexes.
 
 - **Virtual computed columns:** After finalization, it will be possible to use the `VIRTUAL` keyword to define [virtual computed columns](computed-columns.html).
 
@@ -243,4 +244,4 @@ In the event of catastrophic failure or corruption, the only option will be to s
 - [View Node Details](cockroach-node.html)
 - [Collect Debug Information](cockroach-debug-zip.html)
 - [View Version Details](cockroach-version.html)
-- [Release notes for our latest version](../releases/{{page.release_info.version}}.html)
+- [Release notes for our latest version](../releases/{{page.version.version}}.html)

@@ -2,6 +2,7 @@
 title: Migrate from MySQL
 summary: Learn how to migrate data from MySQL into a CockroachDB cluster.
 toc: true
+docs_area: migrate
 ---
 
 This page has instructions for migrating data from MySQL to CockroachDB using [`IMPORT`](import.html)'s support for reading [`mysqldump`][mysqldump] files.
@@ -216,7 +217,6 @@ Example usage:
 - [Migrate from CSV][csv]
 - [Migrate from Postgres][postgres]
 - [Can a Postgres or MySQL application be migrated to CockroachDB?](frequently-asked-questions.html#can-a-postgresql-or-mysql-application-be-migrated-to-cockroachdb)
-- [SQL Dump (Export)](cockroach-dump.html)
 - [Back up Data](take-full-and-incremental-backups.html)
 - [Restore Data](take-full-and-incremental-backups.html)
 - [Use the Built-in SQL Client](cockroach-sql.html)

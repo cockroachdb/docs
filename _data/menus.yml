@@ -34,18 +34,22 @@ solutions_industries:
   - name: Finance
     url: https://www.cockroachlabs.com/solutions/verticals/financialservices/
     weight: 100
+  - name: Gambling
+    url: https://www.cockroachlabs.com/solutions/verticals/gambling/
+    weight: 100
   - name: Gaming
     url: https://www.cockroachlabs.com/solutions/verticals/gaming/
-    weight: 100
-  - name: Retail & eCommerce
-    url: https://www.cockroachlabs.com/solutions/verticals/retail-ecommerce/
-    weight: 100
-  - name: Technology
-    url: https://resources.cockroachlabs.com/startups
     weight: 100
   - name: Manufacturing & Logistics
     url: https://resources.cockroachlabs.com/manufacturing-logistics
     weight: 100
+  - name: Retail & eCommerce
+    url: https://www.cockroachlabs.com/solutions/verticals/retail-ecommerce/
+    weight: 100
+  - name: Startups
+    url: https://resources.cockroachlabs.com/startups
+    weight: 100
+
 solutions_usecase:
   - name: Cloud-Native & Kubernetes
     url: https://resources.cockroachlabs.com/cloud-native-kubernetes
@@ -73,24 +77,25 @@ resources_learn:
   - name: Guides & Tech Breifs
     url: https://resources.cockroachlabs.com/guides
     weight: 100
-  - name: Tech Talks
-    url: https://www.cockroachlabs.com/community/tech-talks/
-    weight: 200
-  - name: Developers
-    url: https://www.cockroachlabs.com/developers/
-    weight: 200
   - name: Blog
     url: https://www.cockroachlabs.com/blog/
     weight: 200
+  - name: Developers
+    url: https://www.cockroachlabs.com/developers/
+    weight: 200    
+  - name: Tech Talks
+    url: https://www.cockroachlabs.com/community/tech-talks/
+    weight: 200
+
+
+
 resources_support:
+  - name: GitHub
+    url: https://github.com/cockroachdb/cockroach
   - name: Slack
     url: https://www.cockroachlabs.com/join-community/
   - name: Support Portal
     url: https://support.cockroachlabs.com/hc/en-us?__hstc=181257784.2bc4222d759d3d555572287e7b610f03.1579111962927.1604502276741.1604544514798.361&__hssc=181257784.63.1604544514798&__hsfp=407609322
-  - name: Forum
-    url: https://forum.cockroachlabs.com/
-  - name: GitHub
-    url: https://github.com/cockroachdb/cockroach
 
 docs:
   - identifier: docs
@@ -109,7 +114,7 @@ docs_items:
     url: https://www.cockroachlabs.com/docs/stable/frequently-asked-questions.html
     weight: 200
   - name: Example applications
-    url: https://www.cockroachlabs.com/docs/v21.1/example-apps.html
+    url: https://www.cockroachlabs.com/docs/stable/example-apps.html
     weight: 300
   - name: Architecture Overview
     url: https://www.cockroachlabs.com/docs/stable/architecture/overview.html
@@ -126,14 +131,14 @@ company:
         text: CockroachDB is trusted by innovators around the world, big and small. Take a look at how they use CockroachDB to build future-proofed applications.
 
 company_items:
-  - name: Our Story
-    url: https://www.cockroachlabs.com/about/
-  - name: Work at Cockroach Labs
-    url: https://www.cockroachlabs.com/careers
   - name: Company News & Culture
     url: https://www.cockroachlabs.com/blog/culture/
+  - name: Our Story
+    url: https://www.cockroachlabs.com/about/
   - name: Partners
     url: https://www.cockroachlabs.com/partners/
+  - name: Work at Cockroach Labs
+    url: https://www.cockroachlabs.com/careers
 # End New Serverless Nav 
 
 main_right:
