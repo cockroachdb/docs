@@ -162,7 +162,7 @@ The examples in this section use the **default** `AUTH=specified` parameter. For
 {{site.data.alerts.callout_info}}
 The `BACKUP ... TO` syntax is **deprecated** as of v22.1 and will be removed in a future release.
 
-We recommend using the `BACKUP ... INTO {collection}` syntax as per the following examples.
+We recommend using the `BACKUP ... INTO {collectionURI}` syntax as per the following examples.
 {{site.data.alerts.end}}
 
 ### Backup a cluster
@@ -299,7 +299,7 @@ job_id             |  status   | fraction_completed | rows | index_entries | byt
 {{site.data.alerts.callout_info}}
 The `BACKUP ... TO` syntax is **deprecated** as of v22.1 and will be removed in a future release.
 
-We recommend using the `BACKUP ... INTO {collection}` syntax as per the following examples.
+We recommend using the `BACKUP ... INTO {collectionURI}` syntax as per the following examples.
 {{site.data.alerts.end}}
 
 ### Backup a cluster
@@ -438,7 +438,7 @@ The examples in this section use the `AUTH=specified` parameter, which will be t
 {{site.data.alerts.callout_info}}
 The `BACKUP ... TO` syntax is **deprecated** as of v22.1 and will be removed in a future release.
 
-We recommend using the `BACKUP ... INTO {collection}` syntax as per the following examples.
+We recommend using the `BACKUP ... INTO {collectionURI}` syntax as per the following examples.
 {{site.data.alerts.end}}
 
 ### Backup a cluster
