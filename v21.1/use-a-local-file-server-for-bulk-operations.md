@@ -11,6 +11,10 @@ This is especially useful for:
 - Implementing a compatibility layer in front of custom or proprietary storage providers for which CockroachDB does not yet have built-in support
 - Using on-premises storage
 
+{{site.data.alerts.callout_info}}
+HTTP file servers are not supported as storage for [backups](take-full-and-incremental-backups.html).
+{{site.data.alerts.end}}
+
 ## HTTP export storage API
 
 CockroachDB [`IMPORT`](import.html) that requires reading or writing external files can use the HTTP Export Storage API by prefacing the address with `http`, e.g., `http://fileserver/mnt/cockroach-exports`.
