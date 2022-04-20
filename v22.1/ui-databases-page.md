@@ -76,9 +76,9 @@ The table details include:
 
 #### Index details
 
-<span class="version-tag">New in v22.1</span> The **Index Stats** table displays index statistics for a table. The statistics accumulate from the time an index was created or when statistics were reset.
+<span class="version-tag">New in v22.1</span> The **Index Stats** table displays index statistics for a table.
 
-To reset index statistics for the entire cluster, click **Reset all index stats**.
+Index statistics accumulate from the time an index was created or when statistics were reset. To reset index statistics for the cluster, click **Reset all index stats**.
 
 The following information is displayed for each index:
 
