@@ -57,7 +57,7 @@ Click a **table name** to view table details.
 
 ### Table details
 
-The table details page contains details of a table. It contains an **Overview** tab and a **Grants** tab displays the users and [grants](grants.html) associated with the table.
+The table details page contains details of a table. It contains an **Overview** tab and a **Grants** tab displays the users and [grants](grant.html) associated with the table.
 
 #### Overview tab
 
