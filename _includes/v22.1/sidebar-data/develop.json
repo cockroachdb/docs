@@ -168,6 +168,12 @@
           "urls": [
             "/${VERSION}/bulk-delete-data.html"
           ]
+        },
+        {
+          "title": "Batch Delete Expired Data with Row-Level TTL",
+          "urls": [
+            "/${VERSION}/row-level-ttl.html"
+          ]
         }
       ]
     },
