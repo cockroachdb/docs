@@ -32,21 +32,27 @@ There are some specific cases where part of the collection data is stored at a d
 By default, full backups are stored at the root of the collection's URI in a date-based path, and incremental backups are stored in the `/incrementals` directory. The following example shows a backup collection created using these default values, where all backups reside in one storage bucket:
 
 ~~~
-Collection:
+Collection URI:
 |—— 2022
   |—— 02
     |—— 09-155340.13/
       |—— Full backup files
 [...]
 |—— incrementals
+  |—— 2022
+  |—— 02
+    |—— 25-172907.21/
+      |—— 20220325
+        |—— 17921.23
+          |—— incremental backup files
 ~~~
 
 [`SHOW BACKUPS IN {collectionURI}`](show-backup.html#view-a-list-of-the-available-full-backup-subdirectories) will display a list of the full backup subdirectories at the collection's URI.
 
-<a name="incremental-location-structure"></a> Alternately, the following directories also constitute a backup collection. There are multiple backups in two separate collection URIs. Each individual backup is a full backup and its related incremental backup(s). Despite using the [`incremental_location`](#incremental-backups-with-explicitly-specified-destinations) option to store the incremental backup in an alternative location, that incremental backup is still part of this backup collection as it depends on the full backup in the first cloud storage bucket:
+<a name="incremental-location-structure"></a> Alternately, the following directories also constitute a backup collection. There are multiple backups in two separate URIs. Each individual backup is a full backup and its related incremental backup(s). Despite using the [`incremental_location`](#incremental-backups-with-explicitly-specified-destinations) option to store the incremental backup in an alternative location, that incremental backup is still part of this backup collection as it depends on the full backup in the first cloud storage bucket:
 
 ~~~
-Cloud storage bucket 1
+Collection URI
 |—— 2022
   |—— 02
     |—— 09-155340.13/
@@ -56,10 +62,16 @@ Cloud storage bucket 1
         |—— 16-143018.72/
           |—— Full backup files
 |—— incrementals
+  |—— 2022
+  |—— 02
+    |—— 25-172907.21/
+      |—— 20220325
+        |—— 17921.23
+          |—— incremental backup files
 ~~~
 
 ~~~
-Cloud storage bucket 2
+Explicit Incrementals URI
 |—— 2022
   |—— 02
     |—— 25-172907.21/
@@ -206,11 +218,13 @@ A full backup must be present in the `{collectionURI}` in order to take an incre
 
 For details on the backup directory structure when taking incremental backups with `incremental_location`, see this [incremental location directory structure](#incremental-location-structure) example.
 
-<a name="backup-earlier-behavior"></a> To take incremental backups to a subdirectory in the `collectionURI` that you define (rather than the default `/incrementals` directory), use the `incremental_location` option:
+<a name="backup-earlier-behavior"></a>To take incremental backups that are [stored in the same way as v21.2](../v21.2/take-full-and-incremental-backups.html#backup-collections) and earlier, you can use the `incremental_location` option. You can specify the same `collectionURI` with `incremental_location` and the backup will place the incremental backups in a date-based path under the full backup, rather than in the default `/incrementals` directory:
 
 ~~~ sql
-BACKUP INTO LATEST IN '{collectionURI}' AS OF SYSTEM TIME '-10s' WITH incremental_location = '{collectionURI/subdirectory}';
+BACKUP INTO LATEST IN '{collectionURI}' AS OF SYSTEM TIME '-10s' WITH incremental_location = '{collectionURI}';
 ~~~
+
+When you append incrementals to this backup, they will continue to be stored in a date-based path under the full backup.
 
 To restore an incremental backup that was taken using the [`incremental_location` option](restore.html#incr-location), you must run `RESTORE` with the full backup's location and the `incremental_location` option referencing the location passed in the original `BACKUP` statement:
 
