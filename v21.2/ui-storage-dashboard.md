@@ -81,7 +81,7 @@ The **Storage** dashboard shows other time series graphs that are important for 
 - Log Commit Latency: 50th Percentile
 - Command Commit Latency: 99th Percentile
 - Command Commit Latency: 50th Percentile
-- Read Amplification
+- [read amplification](architecture/storage-layer.html#read-amplification)
 - SSTables
 - Compactions/Flushes
 - Time Series Writes
