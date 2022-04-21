@@ -34,7 +34,7 @@ The user must have the `CREATE` [privilege](security-reference/authorization.htm
 
 ## Aliases
 
-For [PostgreSQL compatibility](postgresql-compatibility), CockroachDB supports `ANALYZE` and `ANALYSE` as aliases for `CREATE STATISTICS`.
+For [PostgreSQL compatibility](postgresql-compatibility.html), CockroachDB supports `ANALYZE` and `ANALYSE` as aliases for `CREATE STATISTICS`.
 
 ### Alias syntax
 
