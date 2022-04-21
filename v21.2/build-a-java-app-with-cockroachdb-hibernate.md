@@ -24,17 +24,26 @@ For another use of Hibernate with CockroachDB, see our [`examples-orms`](https:/
 
 ## Step 1. Start CockroachDB
 
-{% include {{page.version.version}}/app/start-cockroachdb.md %}
+{% include {{ page.version.version }}/setup/sample-setup-parameters.md %}
 
-## Step 2. Create a database
+## Step 2. Get the sample code
 
-{% include {{page.version.version}}/app/create-a-database.md %}
+Clone the `example-app-java-hibernate` repo to your machine:
 
-## Step 3. Run the Java code
+{% include_cached copy-clipboard.html %}
+~~~ shell
+git clone https://github.com/cockroachlabs/example-app-java-hibernate/
+~~~
 
-The sample code in this tutorial ([`Sample.java`](#code-contents))uses Hibernate to map Java methods to SQL operations. The code performs the following operations, which roughly correspond to method calls in the `Sample` class:
+{{site.data.alerts.callout_info}}
+The version of the CockroachDB Hibernate dialect in `hibernate.cfg.xml` corresponds to a version of CockroachDB. For more information, see [Install Client Drivers: Hibernate](install-client-drivers.html).
+{{site.data.alerts.end}}
 
-1. Creates an `accounts` table in the `bank` database as specified by the `Account` mapping class.
+## Step 3. Run the code
+
+The sample code in this tutorial ([`Sample.java`](#code-contents)) uses Hibernate to map Java methods to SQL operations. The code performs the following operations, which roughly correspond to method calls in the `Sample` class:
+
+1. Creates an `accounts` table as specified by the `Account` mapping class.
 1. Inserts rows into the table with the `addAccounts()` method.
 1. Transfers money from one account to another with the `transferFunds()` method.
 1. Prints out account balances before and after the transfer with the `getAccountBalance()` method.
@@ -51,55 +60,29 @@ The contents of `Sample.java`:
 {% remote_include https://raw.githubusercontent.com/cockroachlabs/example-app-java-hibernate/master/src/main/java/com/cockroachlabs/Sample.java %}
 ~~~
 
-### Get the code
-
-Clone the `example-app-java-hibernate` repo to your machine:
-
-{% include_cached copy-clipboard.html %}
-~~~ shell
-git clone https://github.com/cockroachlabs/example-app-java-hibernate/
-~~~
-
-{{site.data.alerts.callout_info}}
-The version of the CockroachDB Hibernate dialect in `hibernate.cfg.xml` corresponds to a version of CockroachDB. For more information, see [Install Client Drivers: Hibernate](install-client-drivers.html).
-{{site.data.alerts.end}}
-
-### Update the connection parameters
-
-Edit `src/main/resources/hibernate.cfg.xml` in a text editor.
-
-<section class="filter-content" markdown="1" data-scope="local">
-
-1. Modify the `hibernate.connection.url` property with the port number from the connection string above:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ xml
-    <property name="hibernate.connection.url">jdbc:postgresql://localhost:{port}/bank?ssl=true&amp;sslmode=require</property>
-    ~~~
-
-    Where `{port}` is the port number on which the CockroachDB demo cluster is listening.
-
-1. Set the `hibernate.connection.username` property to the username you created earlier.
-
-1. Set the `hibernate.connection.password` property to the user's password.
-
-</section>
-
 <section class="filter-content" markdown="1" data-scope="cockroachcloud">
 
-1. Modify the `hibernate.connection.url` property with the information from the connection string you copied [earlier](#set-up-your-cluster-connection) host, cluster and database name, and path to the SSL certificate:
+### Update the connection configuration
 
-  {% include_cached copy-clipboard.html %}
-  ~~~ xml
-  <property name="hibernate.connection.url">jdbc:postgresql://{globalhost}:26257/{cluster_name}.bank?sslmode=verify-full&amp;sslrootcert={path to the CA certificate}</property>
-  ~~~
-  {% include {{page.version.version}}/app/cc-free-tier-params.md %}
+Open `src/main/resources/hibernate.cfg.xml`, and set the `hibernate.connection.url`, `hibernate.connection.username`, and `hibernate.connection.password` properties, using the connection information that you obtained from the {{ site.data.products.cloud }} Console:
+
+{% include_cached copy-clipboard.html %}
+~~~ xml
+<property name="hibernate.connection.url">jdbc:postgresql://{host}:{port}/defaultdb?options=--cluster%3D{routing-id}&amp;sslmode=verify-full</property>
+<property name="hibernate.connection.username">{username}</property>
+<property name="hibernate.connection.password">{password}</property>
+~~~
 
 </section>
 
 ### Run the code
 
-Compile and run the code using `gradlew`, which will also download the dependencies.
+Compile and run the code using `gradlew`, which will also download the dependencies:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+$ cd example-app-java-hibernate
+~~~
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -133,34 +116,6 @@ APP: COMMIT;
 APP: getAccountBalance(1) --> 900.00
 APP: getAccountBalance(2) --> 350.00
 ~~~
-
-To verify that the account balances were updated successfully, start the [built-in SQL client](cockroach-sql.html):
-
-{% include_cached copy-clipboard.html %}
-~~~ shell
-$ cockroach sql --certs-dir={certs_dir}
-~~~
-
-Where:
-- `{certs_dir}` is the path to the directory containing the certificates and keys you generated earlier.
-
-To check the account balances, issue the following statement:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-SELECT id, balance FROM accounts;
-~~~
-
-~~~
-id |  balance
------+------------
- 1 |    900.00
- 2 |    350.00
- 3 | 314159.00
-(3 rows)
-~~~
-
-</section>
 
 ## Recommended Practices
 

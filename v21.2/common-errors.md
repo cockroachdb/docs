@@ -32,7 +32,7 @@ To resolve this issue, do one of the following:
 - If the node hasn't yet been started, [start the node](cockroach-start.html).
 - If you specified a [`--listen-addr` and/or a `--advertise-addr` flag](cockroach-start.html#networking) when starting the node, you must include the specified IP address/hostname and port with all other [`cockroach` commands](cockroach-commands.html) or change the `COCKROACH_HOST` environment variable.
 
-If you're not sure what the IP address/hostname and port values might have been, you can look in the node's [logs](logging-overview.html). 
+If you're not sure what the IP address/hostname and port values might have been, you can look in the node's [logs](logging-overview.html).
 
 If necessary, you can also [shut down](node-shutdown.html) and then restart the node:
 
@@ -141,7 +141,7 @@ To resolve this issue, make sure you are not repeatedly updating a single row. I
 
 This message occurs when a component of CockroachDB gives up because it was relying on another component that has not behaved as expected, for example, another node dropped a network connection. To investigate further, look in the node's logs for the primary failure that is the root cause.
 
-## protected ts verification error...
+## protected ts verification error
 
 Messages that begin with `protected ts verification error…` indicate that your [incremental backup](take-full-and-incremental-backups.html#incremental-backups) failed because the data you are trying to backup was garbage collected. This happens when incremental backups are taken less frequently than the garbage collection periods for any of the objects in the base backup. For example, if your incremental backups recur daily, but the garbage collection period of one table in your backup is less than one day, all of your incremental backups will fail.
 

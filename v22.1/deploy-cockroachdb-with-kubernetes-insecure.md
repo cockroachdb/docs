@@ -7,7 +7,7 @@ redirect_from: orchestrate-cockroachdb-with-kubernetes-insecure.html
 filter_category: crdb_single_kubernetes
 filter_html: Insecure
 filter_sort: 2
-docs_area: 
+docs_area:
 ---
 
 {% include filter-tabs.md %}
@@ -122,7 +122,7 @@ To shut down the CockroachDB cluster, delete the resources you created, includin
     ~~~
     </section>
 
-### Stop Kubernetes:
+### Stop Kubernetes
 
 To delete the Kubernetes cluster:
 
@@ -137,7 +137,7 @@ To delete the Kubernetes cluster:
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ eksctl delete cluster --name cockroachdb
-    ~~~    
+    ~~~
 - Manual GCE:
 
     {% include_cached copy-clipboard.html %}

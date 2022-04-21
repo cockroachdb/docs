@@ -236,6 +236,7 @@ Reference information related to this task:
 
 - [`DELETE`](delete.html)
 - [Bulk-delete data](bulk-delete-data.html)
+- [Batch Delete Expired Data with Row-Level TTL](row-level-ttl.html)
 - [Disk space usage after deletes](delete.html#disk-space-usage-after-deletes)
 - [`TRUNCATE`](truncate.html)
 - [`DROP TABLE`](drop-table.html)

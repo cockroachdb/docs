@@ -34,7 +34,11 @@ The sample code used in this tutorial is located in the [`quickstart-code-sample
 
 {% include cockroachcloud/quickstart/create-a-free-cluster.md %}
 
-## Step 2. Connect to the cluster
+## Step 2. Create a SQL user
+
+{% include cockroachcloud/quickstart/create-first-sql-user.md %}
+
+## Step 3. Connect to the cluster
 
 </section>
 
@@ -54,15 +58,11 @@ The sample code used in this tutorial is located in the [`quickstart-code-sample
 
 <section class="filter-content" markdown="1" data-scope="python">
 
-The **Connection info** dialog shows information about how to connect to your cluster.
+The **Connect to cluster** dialog shows information about how to connect to your cluster.
 
-1. Click the **Choose your OS** dropdown, and select the operating system of your local machine.
-
-1. Click the **Connection string** tab in the **Connection info** dialog.
-
-1. Open a new terminal on your local machine, and run the command provided in step **1** to download the CA certificate. This certificate is required by most Python clients connecting to {{ site.data.products.db }}.
-
-1. Copy the connection string provided in step **2** to a secure location.
+1. Select **General connection string** from the **Select option** dropdown.
+1. Open a new terminal on your local machine, and run the **CA Cert download command** provided in the **Download CA Cert** section. This certificate is required by most Python clients connecting to {{ site.data.products.db }}.
+1. Open the **General connection string** section, then copy the connection string provided and save it in a secure location.
 
     {{site.data.alerts.callout_info}}
     The connection string is pre-populated with your username, password, cluster name, and other details. Your password, in particular, will be provided *only once*. Save it in a secure place (Cockroach Labs recommends a password manager) to connect to your cluster in the future. If you forget your password, you can reset it by going to the [**SQL Users** page](user-authorization.html).
@@ -72,11 +72,9 @@ The **Connection info** dialog shows information about how to connect to your cl
 
 <section class="filter-content" markdown="1" data-scope="java">
 
-1. Click the **Choose your OS** dropdown, and select the operating system of your local machine.
+{% include cockroachcloud/quickstart/get-connection-string.md %}
 
-1. Click the **Command Line** tab of the **Connection info** dialog.
-
-1. Run the command in step **1** to install the [`cockroach` binary](../stable/cockroach-commands.html) and add it to your OS's `PATH`.
+1. If you haven't already, install the [`cockroach` binary](../stable/install-cockroachdb.html) and add it to your OS's `PATH`.
 
 </section>
 
@@ -193,6 +191,19 @@ For reference information about connecting to CockroachDB with supported client 
       1. Reads the inserted data.
       1. Prints the data to the terminal.
 
+1. Set the `DATABASE_URL` environment variable to the connection string that you [copied from the {{ site.data.products.cloud }} Console earlier](#step-3-connect-to-the-cluster):
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    export DATABASE_URL="<connection-string>"
+    ~~~
+
+    The code sample uses the connection string stored in the environment variable `DATABASE_URL` to connect to your cluster.
+
+    {{site.data.alerts.callout_success}}
+    For reference information about connecting to CockroachDB with supported client drivers, see [Connect to a CockroachDB Cluster](../stable/connect-to-the-database.html?filters=js-ts).
+    {{site.data.alerts.end}}
+
 1. Install the code dependencies:
 
     {% include_cached copy-clipboard.html %}
@@ -237,6 +248,19 @@ For reference information about connecting to CockroachDB with supported client 
       1. Inserts some data into the table.
       1. Reads the inserted data.
       1. Prints the data to the terminal.
+
+1. Set the `DATABASE_URL` environment variable to the connection string that you [copied from the {{ site.data.products.cloud }} Console earlier](#step-3-connect-to-the-cluster):
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    export DATABASE_URL="<connection-string>"
+    ~~~
+
+    The code sample uses the connection string stored in the environment variable `DATABASE_URL` to connect to your cluster.
+
+    {{site.data.alerts.callout_success}}
+    For reference information about connecting to CockroachDB with supported client drivers, see [Connect to a CockroachDB Cluster](../stable/connect-to-the-database.html?filters=python).
+    {{site.data.alerts.end}}
 
 1. Install psycopg2.
 
@@ -283,6 +307,19 @@ For reference information about connecting to CockroachDB with supported client 
       1. Reads the inserted data.
       1. Prints the data to the terminal.
 
+1. Set the `DATABASE_URL` environment variable to the connection string that you [copied from the {{ site.data.products.cloud }} Console earlier](#step-3-connect-to-the-cluster):
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    export DATABASE_URL="<connection-string>"
+    ~~~
+
+    The code sample uses the connection string stored in the environment variable `DATABASE_URL` to connect to your cluster.
+
+    {{site.data.alerts.callout_success}}
+    For reference information about connecting to CockroachDB with supported client drivers, see [Connect to a CockroachDB Cluster](../stable/connect-to-the-database.html?filters=go).
+    {{site.data.alerts.end}}
+
 1. Initialize and run the app:
 
     {% include_cached copy-clipboard.html %}
@@ -325,6 +362,29 @@ For reference information about connecting to CockroachDB with supported client 
       1. Inserts some data into the table.
       1. Reads the inserted data.
       1. Prints the data to the terminal.
+
+1. Use the `cockroach convert-url` command to convert the connection string that you [copied from the {{ site.data.products.cloud }} Console earlier](#step-3-connect-to-the-cluster) to a [valid connection string for JDBC connections](../stable/connect-to-the-database.html?filters=java):
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    cockroach convert-url --url "<connection-string>"
+    ~~~
+
+    ~~~
+    ...
+
+    # Connection URL for JDBC (Java and JVM-based languages):
+    jdbc:postgresql://{host}:{port}/{database}?options=--cluster%3D{routing-id}&password={password}&sslmode=verify-full&user={username}
+    ~~~
+
+1. Set the `JDBC_DATABASE_URL` environment variable to the JDBC-compatible connection string:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    export JDBC_DATABASE_URL="<jdbc-connection-string>"
+    ~~~
+
+    The code sample uses the connection string stored in the environment variable `JDBC_DATABASE_URL` to connect to your cluster.
 
 1. Run the application using `gradlew`:
 

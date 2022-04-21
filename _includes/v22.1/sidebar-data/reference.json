@@ -163,6 +163,18 @@
                 ]
               },
               {
+                "title": "<code>ALTER BACKUP</code> (Enterprise)",
+                "urls": [
+                  "/${VERSION}/alter-backup.html"
+                ]
+              },
+              {
+                "title": "<code>ALTER CHANGEFEED</code> (Enterprise)",
+                "urls": [
+                  "/${VERSION}/alter-changefeed.html"
+                ]
+              },
+              {
                 "title": "<code>ALTER COLUMN</code>",
                 "urls": [
                   "/${VERSION}/alter-column.html"
@@ -1670,6 +1682,12 @@
             "title": "Network Latency Page",
             "urls": [
               "/${VERSION}/ui-network-latency-page.html"
+            ]
+          },
+          {
+            "title": "Hot Ranges Page",
+            "urls": [
+              "/${VERSION}/ui-hot-ranges-page.html"
             ]
           },
           {

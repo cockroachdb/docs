@@ -68,7 +68,7 @@ The `/health` endpoint does not returns details about the node such as its priva
 
 The `http://<node-host>:<http-port>/health?ready=1` endpoint returns an HTTP `503 Service Unavailable` status response code with an error in the following scenarios:
 
-- The node is in the [wait phase of the node shutdown sequence](node-shutdown.html#draining). This causes load balancers and connection managers to reroute traffic to other nodes before the node is drained of client connections and leases, and is a necessary check during [rolling upgrades](upgrade-cockroach-version.html).
+- The node is in the [wait phase of the node shutdown sequence](node-shutdown.html#draining). This causes load balancers and connection managers to reroute traffic to other nodes before the node is drained of SQL client connections and leases, and is a necessary check during [rolling upgrades](upgrade-cockroach-version.html).
 
     {{site.data.alerts.callout_success}}
     If you find that your load balancer's health check is not always recognizing a node as unready before the node shuts down, you can increase the `server.shutdown.drain_wait` [cluster setting](cluster-settings.html) to cause a node to return `503 Service Unavailable` even before it has started shutting down.

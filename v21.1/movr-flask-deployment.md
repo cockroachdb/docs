@@ -7,7 +7,7 @@ redirect_from: multi-region-deployment.html
 
 This page walks you through deploying an application and database in multiple regions. It is the fifth and final section of the [Develop and Deploy a Global Application](movr-flask-overview.html) tutorial.
 
-{% include {{ page.version.version }}/misc/movr-live-demo.md %}
+<!-- {% include {{ page.version.version }}/misc/movr-live-demo.md %} -->
 
 ## Before you begin
 
@@ -234,7 +234,7 @@ Some time after you have deployed your application, you will likely need to push
 
 ## See also
 
-- [MovR (live demo)](https://movr.cloud)
+<!-- [MovR (live demo)](https://movr.cloud)-->
 - [{{ site.data.products.dedicated }} documentation](../cockroachcloud/quickstart-trial-cluster.html)
 - [Google Cloud Platform documentation](https://cloud.google.com/docs/)
 - [Docker documentation](https://docs.docker.com/)

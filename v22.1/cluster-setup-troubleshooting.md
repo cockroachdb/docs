@@ -509,7 +509,7 @@ If you still see under-replicated/unavailable ranges on the Cluster Overview pag
 2.  Click **Problem Ranges**.
 3.  In the **Connections** table, identify the node with the under-replicated/unavailable ranges and click the node ID in the Node column.
 4.  To view the **Range Report** for a range, click on the range number in the **Under-replicated (or slow)** table or **Unavailable** table.
-5. On the Range Report page, scroll down to the **Simulated Allocator Output** section. The table contains an error message which explains the reason for the under-replicated range. Follow the guidance in the message to resolve the issue. If you need help understanding the error or the guidance, [file an issue](file-an-issue.html). Please be sure to include the full range report and error message when you submit the issue.
+5. On the Range Report page, scroll down to the **Simulated Allocator Output** section. The table contains an error message which explains the reason for the under-replicated range. Follow the guidance in the message to resolve the issue. If you need help understanding the error or the guidance, [file an issue](file-an-issue.html). Please be sure to include the full Range Report and error message when you submit the issue.
 
 ## Node liveness issues
 
