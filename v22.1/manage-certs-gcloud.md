@@ -258,7 +258,7 @@ export node3addr=10.128.0.54
 ```
 
 
-## CA admin functions
+## CA admin operations
 
 The operations in this section fall under the role of CA administrator
 
@@ -518,7 +518,7 @@ rm ${secrets_dir}/${node2name}/node.*
 rm ${secrets_dir}/${node3name}/node.*
 rm ${secrets_dir}/clients/*
 ```
-## Node operator functions
+## Node operations
 
 ### Prepare CockroachDB on each node
 
@@ -656,9 +656,9 @@ gcloud beta compute ssh "$node2name" --command 'pkill -SIGHUP -x cockroach'
 gcloud beta compute ssh "$node3name" --command 'pkill -SIGHUP -x cockroach'
 ```
 
-## Client operator functions
+## Client operations
 
-### Provision the client (Client Operator role)
+### Provision the client
 
 #### Install CockroachDB
 
