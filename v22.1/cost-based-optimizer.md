@@ -82,6 +82,18 @@ To turn off automatic statistics collection, follow these steps:
 
 To see how to manually generate statistics, see the [`CREATE STATISTICS` examples](create-statistics.html#examples).
 
+#### Control whether the `avg_size` statistic is used to scan row cost
+
+<span class="version-tag">New in v22.1</span> The `avg_size` table statistic represents the average size of a table column.
+If a table does not have an average size statistic available for a column, it uses the default value of 4 bytes.
+
+The optimizer uses `avg_size` to cost scans and relevant joins. Costing scans per row regardless of the size of the columns comprising the row doesn't account for time
+to read or transport a large number of bytes over the network and can lead to undesirable plans when there are multiple options for scans
+or joins that read directly from tables.
+
+Cockroach Labs recommends that you allow the optimizer to consider column size when costing plans. If you are an advanced user and need to disable using `avg_size` troubleshooting or performance tuning reasons,
+you can disable it by setting the `cost_scans_with_default_col_size` [session variable](set-vars.html) to true with `SET cost_scans_with_default_col_size=true`.
+
 #### Control histogram collection
 
 By default, the optimizer collects histograms for all index columns (specifically the first column in each index) during automatic statistics collection. If a single column statistic is explicitly requested using manual invocation of [`CREATE STATISTICS`](create-statistics.html), a histogram will be collected, regardless of whether or not the column is part of an index.
