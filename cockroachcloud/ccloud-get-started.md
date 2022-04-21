@@ -30,7 +30,16 @@ Choose your OS:
 1. Extract the ccloud binary and add it to your `PATH`.
 </section>
 
-## Log in to CockroachDB Cloud using ccloud
+## Using `ccloud quickstart`
+
+The `ccloud quickstart` command guides you through logging in to CockroachDB Cloud, creating a new {{ site.data.products.serverless }} with a $0 spend limit, and connecting to the new cluster. Run `ccloud quickstar` and follow the instructions:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+ccloud quickstart
+~~~
+
+## Log in to CockroachDB Cloud using `ccloud`
 
 1. Run the `ccloud auth login` command and hit **Enter** to open a browser window.:
 
@@ -47,11 +56,13 @@ Choose your OS:
 
 1. Close the browser window and return to your terminal.
 
-## Create a new cluster using ccloud
+## Create a new cluster using `ccloud`
 
-The `ccloud cluster create` command creates new CockroachDB clusters in your organization. You can create {{ site.data.products.serverless }} or {{ site.data.products.dedicated }} clusters.
+There are two ways to create clusters using `ccloud`: `ccloud quickstart create` and `ccloud cluster create`.
 
-If you would like to interactively create a {{ site.data.products.serverless }} cluster, the `ccloud quickstart` command will guide you through the process.
+The `ccloud quickstart create` command interactively guides you through creating and connecting to a new {{ site.data.products.serverless }} cluster.
+
+The `ccloud cluster create` command creates new {{ site.data.products.serverless }} and {{ site.data.products.dedicated }} CockroachDB clusters in your organization.
 
 <div class="filters clearfix">
     <button class="filter-button page-level" data-scope="serverless">{{ site.data.products.serverless }}<strong></strong></button>
@@ -125,6 +136,84 @@ ccloud cluster create dedicated dim-dog us-central1:2 us-west2:1 --cloud GCP --v
 If you set a maximum spend limit greater than $0 on a {{ site.data.products.serverless }} cluster, or create a {{ site.data.products.dedicated }} cluster, you must [add a credit card](billing-management.html) to your organization.
 {{site.data.alerts.end}}
 
+<section class="filter-content" markdown="1" data-scope="dedicated">
+
+## Create and manage IP allowlists using `ccloud cluster networking allowlist`
+
+Use the `ccloud cluster networking allowlist create` command to create an [IP allowlist](network-authorization.html#ip-allowlisting), which allows incoming network connections from the specified network IP range. Use the `--sql` flag to allow incoming CockroachDB SQL shell connections from the specified network. Use the `--ui` flag to allow access to the DB Console from the specified network.
+
+The IP range must be in [Classless Inter-Domain Routing (CIDR) format](https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing). For more information on CIDR, see Digital Ocean's [Understanding IP Addresses, Subnets, and CIDR Notation for Networking](https://www.digitalocean.com/community/tutorials/understanding-ip-addresses-subnets-and-cidr-notation-for-networking#cidr-notation).
+
+For example, to allow incoming connections from a single IP address, 1.1.1.1, to your cluster, including the CockroachDB SQL shell and DB Console, use the following command:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+ccloud cluster networking allowlist create 041d4c6b-69b9-4121-9c5a-8dd6ffd6b73d 1.1.1.1/32 --sql --ui
+~~~
+
+~~~
+∙∙∙ Creating IP allowlist entry...
+Success! Created IP allowlist entry for
+ network: 1.1.1.1/32
+ cluster: 041d4c6b-69b9-4121-9c5a-8dd6ffd6b73d
+~~~
+
+Use the `ccloud cluster networking allowlist list` command to list the IP allowlists for your cluster:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+ccloud cluster networking allowlist list 041d4c6b-69b9-4121-9c5a-8dd6ffd6b73d
+~~~
+
+~~~
+∙●∙ Retrieving cluster allowlist...
+NETWORK         NAME  UI  SQL
+1.1.1.1/32            ✔   ✔
+~~~
+
+To modify an allowlist entry, use the `ccloud cluster networking allowlist update`. The following command adds a descriptive name to the previously created entry.
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+ccloud cluster networking allowlist update 041d4c6b-69b9-4121-9c5a-8dd6ffd6b73d 1.1.1.1/32 --name home
+~~~
+
+~~~
+∙∙● Updating IP allowlist entry...
+Success! Updated IP allowlist entry for
+ network: 1.1.1.1/32
+ cluster: 041d4c6b-69b9-4121-9c5a-8dd6ffd6b73d
+~~~
+
+Rerunning the `allowlist list` command shows the updated entry:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+ccloud cluster networking allowlist list 041d4c6b-69b9-4121-9c5a-8dd6ffd6b73d
+~~~
+
+~~~
+∙∙∙ Retrieving cluster allowlist...
+NETWORK         NAME  UI  SQL
+1.1.1.1/32      home  ✔   ✔
+~~~
+
+To delete an entry, run the `ccloud cluster networking allowlist delete` command.
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+ccloud cluster networking allowlist delete 041d4c6b-69b9-4121-9c5a-8dd6ffd6b73d 1.1.1.1/32
+~~~
+
+~~~
+∙∙∙ Deleting IP allowlist entry...
+Success! Deleted IP allowlist entry for
+ network: 1.1.1.1/32
+ cluster: 041d4c6b-69b9-4121-9c5a-8dd6ffd6b73d
+~~~
+
+</section>
+
 ## Get a list of all the clusters in your organization
 
 Use the `ccloud cluster list` command to show information about the clusters in your organization. It outputs columns with the cluster name, the cluster ID, the cluster plan, the creation date, the cluster's current state, the cloud provider, and the version of CockroachDB.
@@ -152,7 +241,7 @@ dim-dog   041d4c6b-69b9-4121-9c5a-8dd6ffd6b73d  PLAN_DEDICATED   2022-03-22 21:0
 ~~~
 </section>
 
-## Get information about your cluster using ccloud cluster info
+## Get information about your cluster using `ccloud cluster info`
 
 Use the `ccloud cluster info` command to show detailed information about your cluster. Find the **ID** column in the output of `ccloud cluster list` to identify the cluster.
 
@@ -196,7 +285,7 @@ Cluster info
 ~~~
 </section>
 
-## Use a SQL client with a cluster using ccloud cluster sql
+## Use a SQL client with a cluster using `ccloud cluster sql`
 
 Use the `ccloud cluster sql` command to start a CockroachDB SQL shell connection to the specified cluster using the [cluster ID](#get-information-about-your-cluster-using-ccloud-cluster-info). If you haven't created a SQL user for the specified cluster, you will be prompted to create a new user and set the user password.
 
@@ -234,7 +323,7 @@ warning: server version older than client! proceed with caution; some features m
 user@free-tier7.gcp-us-central1.crdb.io:26257/defaultdb>
 ~~~
 
-## Get the connection information for your cluster using ccloud cluster sql
+## Get the connection information for your cluster using `ccloud cluster sql`
 
 Use the `ccloud cluster sql` command to get connection information for the specified cluster using the [cluster ID](#get-information-about-your-cluster-using-ccloud-cluster-info).
 
@@ -294,7 +383,7 @@ Connection parameters
 
 </section>
 
-## Create a SQL user using ccloud cluster user create
+## Create a SQL user using `ccloud cluster user create`
 
 Use the `ccloud cluster user create` command to create a new SQL user by passing in the username and the [cluster ID](#get-information-about-your-cluster-using-ccloud-cluster-info).
 
@@ -310,7 +399,7 @@ Password: ****************
 ~~~
 {% endcomment %}
 
-## Delete a cluster using ccloud cluster delete
+## Delete a cluster using `ccloud cluster delete`
 
 Use the `ccloud cluster delete` command to delete the specified cluster using the [cluster ID](#get-information-about-your-cluster-using-ccloud-cluster-info).
 
