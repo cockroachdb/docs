@@ -225,6 +225,18 @@ A custom root CA can be appended to the system's default CAs by setting the `clo
 
 </section>
 
+## Additional cloud storage feature support
+
+### Object locking
+
+<span class="version-tag">New in v22.1:</span> To complete a backup successfully, `BACKUP` requires [read and write permissions](backup.html#required-privileges) to cloud storage buckets. Delete and overwrite permissions are **not** required. As a result, you can write backups to cloud storage buckets with object locking enabled. This allows you to store backup data using a _write-once-read-many (WORM)_ model, which refers to storage that prevents any kind of deletion or modification to the objects once written.
+
+For specific cloud-storage provider documentation, see the following:
+
+- [AWS S3 Object Lock](https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lock.html)
+- [Retention policies and Bucket Lock in Google Cloud Storage](https://cloud.google.com/storage/docs/bucket-lock)
+- [Immutable storage in Azure Storage](https://docs.microsoft.com/en-us/azure/storage/blobs/immutable-storage-overview)
+
 ## See also
 
 - [`BACKUP`](backup.html)
