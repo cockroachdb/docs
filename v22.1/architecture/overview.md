@@ -36,6 +36,8 @@ CockroachDB was designed to meet the following goals:
 
 With the confluence of these features, we hope that CockroachDB helps you build global, scalable, resilient deployments and applications.
 
+{% include {{ page.version.version }}/misc/database-terms.md %}
+
 {% include {{ page.version.version }}/misc/basic-terms.md %}
 
 ## Overview
