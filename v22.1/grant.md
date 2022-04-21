@@ -78,7 +78,7 @@ Roles and users can be granted the following privileges:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> GRANT ALL ON DATABASE movr TO max;
+> GRANT ALL ON DATABASE movr TO max WITH GRANT OPTION;
 ~~~
 
 {% include copy-clipboard.html %}
@@ -90,7 +90,7 @@ Roles and users can be granted the following privileges:
   database_name | grantee | privilege_type  | is_grantable
 ----------------+---------+-----------------+--------------
   movr          | admin   | ALL             | true
-  movr          | max     | ALL             | false
+  movr          | max     | ALL             | true
   movr          | root    | ALL             | true
 (3 rows)
 ~~~
@@ -184,7 +184,7 @@ Roles and users can be granted the following privileges:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> GRANT ALL ON SCHEMA cockroach_labs TO max;
+> GRANT ALL ON SCHEMA cockroach_labs TO max WITH GRANT OPTION;
 ~~~
 
 {% include copy-clipboard.html %}
@@ -196,7 +196,7 @@ Roles and users can be granted the following privileges:
   database_name |  schema_name   | grantee | privilege_type  | is_grantable
 ----------------+----------------+---------+-----------------+--------------
   movr          | cockroach_labs | admin   | ALL             | true
-  movr          | cockroach_labs | max     | ALL             | false
+  movr          | cockroach_labs | max     | ALL             | true
   movr          | cockroach_labs | root    | ALL             | true
 (3 rows)
 ~~~
@@ -210,7 +210,7 @@ Roles and users can be granted the following privileges:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> GRANT ALL ON TYPE status TO max;
+> GRANT ALL ON TYPE status TO max WITH GRANT OPTION;
 ~~~
 
 {% include copy-clipboard.html %}
@@ -223,7 +223,7 @@ Roles and users can be granted the following privileges:
 ----------------+-------------+-----------+---------+-----------------+--------------
   movr          | public      | status    | admin   | ALL             | true
   movr          | public      | status    | demo    | ALL             | false
-  movr          | public      | status    | max     | ALL             | false
+  movr          | public      | status    | max     | ALL             | true
   movr          | public      | status    | public  | USAGE           | false
   movr          | public      | status    | root    | ALL             | true
 (5 rows)
