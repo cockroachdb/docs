@@ -22,7 +22,7 @@ You can use the [`BACKUP`](backup.html) statement to efficiently back up your cl
 
 ## Backup collections
 
- A _backup collection_ defines a set of backups and their metadata. The collection can contain multiple full backups and their subsequent [incremental backups](#incremental-backups). The path to a backup is created using a date-based naming scheme and stored at the [URI](backup.html#collectionURI-param) passed with the `BACKUP` statement.
+ A _backup collection_ defines a set of backups and their metadata. The collection can contain multiple full backups and their subsequent [incremental backups](#incremental-backups). The path to a backup is created using a date-based naming scheme and stored at the [collection URI](backup.html#collectionURI-param) passed with the `BACKUP` statement.
 
 There are some specific cases where part of the collection data is stored at a different URI:
 
@@ -130,9 +130,9 @@ To restore a backup, use the [`RESTORE`](restore.html) statement, specifying wha
     > RESTORE FROM LATEST IN '{collectionURI}';
     ~~~
 
-{{site.data.alerts.callout_info}}
-A full cluster restore can only be run on a target cluster that has **never** had user-created databases or tables.
-{{site.data.alerts.end}}
+    {{site.data.alerts.callout_info}}
+    A full cluster restore can only be run on a target cluster that has **never** had user-created databases or tables.
+    {{site.data.alerts.end}}
 
 - To restore a backup from a specific subdirectory:
 

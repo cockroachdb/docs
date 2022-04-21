@@ -110,9 +110,9 @@ To restore a backup, use the [`RESTORE`](restore.html) statement, specifying wha
     > RESTORE FROM LATEST IN '{collectionURI}';
     ~~~
 
-{{site.data.alerts.callout_info}}
-A full cluster restore can only be run on a target cluster that has **never** had user-created databases or tables.
-{{site.data.alerts.end}}
+    {{site.data.alerts.callout_info}}
+    A full cluster restore can only be run on a target cluster that has **never** had user-created databases or tables.
+    {{site.data.alerts.end}}
 
 - To restore a backup from a specific subdirectory:
 
