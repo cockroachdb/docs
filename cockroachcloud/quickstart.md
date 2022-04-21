@@ -143,7 +143,7 @@ The **Connect to cluster** dialog shows information about how to connect to your
 <section class="filter-content" markdown="1" data-scope="java">
 
 <section class="filter-content" markdown="1" data-scope="unix">
-1. Use the `cockroach convert-url` command to convert the connection string that you copied in Step 2 to a [valid connection string for JDBC connections](../stable/connect-to-the-database.html?filters=java):
+1. Use the `cockroach convert-url` command to convert the connection string that you copied earlier to a [valid connection string for JDBC connections](../stable/connect-to-the-database.html?filters=java):
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -168,7 +168,7 @@ The **Connect to cluster** dialog shows information about how to connect to your
 </section>
 
 <section class="filter-content" markdown="1" data-scope="windows">
-1. Use the `cockroach convert-url` command to convert the connection string that you copied in Step 2 to a [valid connection string for JDBC connections](../stable/connect-to-the-database.html?filters=java):
+1. Use the `cockroach convert-url` command to convert the connection string that you copied earlier to a [valid connection string for JDBC connections](../stable/connect-to-the-database.html?filters=java):
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell

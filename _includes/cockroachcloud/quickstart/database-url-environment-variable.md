@@ -1,5 +1,5 @@
 <section class="filter-content" markdown="1" data-scope="unix">
-1. Set the `DATABASE_URL` environment variable to the connection string that you copied in Step 2:
+1. Set the `DATABASE_URL` environment variable to the connection string that you copied earlier:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -11,7 +11,7 @@
 
 <section class="filter-content" markdown="1" data-scope="windows">
 
-1. Set the `DATABASE_URL` environment variable to the connection string that you copied in Step 2:
+1. Set the `DATABASE_URL` environment variable to the connection string that you copied earlier:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
