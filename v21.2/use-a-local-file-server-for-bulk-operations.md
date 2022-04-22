@@ -18,7 +18,7 @@ HTTP file servers are not supported as storage for [backups](take-full-and-incre
 
 ## HTTP export storage API
 
-CockroachDB [`IMPORT`](import.html) that requires reading or writing external files can use the HTTP Export Storage API by prefacing the address with `http`, e.g., `http://fileserver/mnt/cockroach-exports`.
+A CockroachDB [`IMPORT`](import.html) process that requires reading or writing external files can use the HTTP Export Storage API by prefacing the address with `http`, e.g., `http://fileserver/mnt/cockroach-exports`.
 
 This API uses the `GET`, `PUT` and `DELETE` methods. This behaves like you would expect typical HTTP requests to work. After a `PUT` request to some path, a subsequent `GET` request should return the content sent in the `PUT` request body, at least until a `DELETE` request is received for that path.
 
