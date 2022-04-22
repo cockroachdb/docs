@@ -2,6 +2,17 @@
 <img src="{{ 'images/v22.1/ui-sessions-page.png' | relative_url }}" alt="Sessions Page" style="border:1px solid #eee;max-width:100%" />
 {% endif %}
 
+To filter the sessions, click the **Filters** field.
+
+<img src="{{ 'images/v22.1/ui-session-filter.png' | relative_url }}" alt="Session filter" />
+
+To filter by [application]({{ link_prefix }}connection-parameters.html#additional-connection-parameters), select **App** and choose one or more applications.
+
+- Queries from the SQL shell are displayed under the `$ cockroach` app.
+- If you haven't set `application_name` in a client connection string, it appears as `unset`.
+
+To filter by session duration, specify the session time and unit.
+
 Click <img src="{{ 'images/common/ui-columns-button.png' | relative_url }}" alt="Column selector" /> to select the columns to display in the table.
 
 The following are displayed for each active session:
