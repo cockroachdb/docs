@@ -17,7 +17,7 @@ Memory Usage | Amount of memory currently allocated to this session, followed by
 Client IP Address | The IP address/port of the client that opened the session.
 User Name | The user that opened the session.
 Application Name | The user that opened the session.
-Actions | Options to cancel the active query and/or cancel the session. These require the `CANCELQUERY` [role option](alter-role.html#role-options).<ul><li>**Cancel Statement:** Ends the SQL statement. The session running this statement will receive an error. </li> <li>**Cancel Session:** Ends the session. The client that holds this session will receive a "connection terminated" event.</li></ul>
+Actions | Options to cancel the active query and/or cancel the session. These require the `CANCELQUERY` [role option]({{ link_prefix }}alter-role.html#role-options).<ul><li>**Cancel Statement:** Ends the SQL statement. The session running this statement will receive an error. </li> <li>**Cancel Session:** Ends the session. The client that holds this session will receive a "connection terminated" event.</li></ul>
 
 To view details of a session, click a **Session Start Time (UTC)** to display session details.
 

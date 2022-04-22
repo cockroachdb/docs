@@ -15,7 +15,7 @@ Transaction Duration | Amount of time the transaction has been active, if there 
 Statement Duration | Amount of time the SQL statement has been active, if there is an active statement. If a session is idle, this column will display `N/A`.
 Memory Usage | Amount of memory currently allocated to this session, followed by the maximum amount of memory this session has ever been allocated.
 Statement | Active SQL statement. If more than one statement is active, the most recent statement is shown. If a session is idle, this column will display `N/A`.
-Actions | Options to terminate the active query and/or terminate the session. These require the `CANCELQUERY` [role option](alter-role.html#role-options).<ul><li>**Terminate Statement:** Ends the SQL statement. The session running this statement will receive an error.</li> <li>**Terminate Session:** Ends the session. The client that holds this session will receive a "connection terminated" event.</li></ul>
+Actions | Options to terminate the active query and/or terminate the session. These require the `CANCELQUERY` [role option]({{ link_prefix }}alter-role.html#role-options).<ul><li>**Terminate Statement:** Ends the SQL statement. The session running this statement will receive an error.</li> <li>**Terminate Session:** Ends the session. The client that holds this session will receive a "connection terminated" event.</li></ul>
 
 {{site.data.alerts.callout_success}}
 Sort by **Transaction Duration** to display all active sessions at the top.
