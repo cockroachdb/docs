@@ -1,3 +1,7 @@
+- advisory: 79066
+  summary: Data key rotation is inadvertently disabled if the store key hasn't changed since the last node start.
+  versions: All clusters with encryption-at-rest enabled running versions of CockroachDB 21.2 and 21.1 older than the fixed version.
+  date: April xx, 2022
 - advisory: a79384
   summary: The optimizer has been found to create logically incorrect query plans in some cases.
   versions: 21.1.0-21.1.17, 21.2.0-21.2.8, 22.1.0-alpha.1-22.1.0-beta.1
