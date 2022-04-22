@@ -10884,4 +10884,7 @@ a.accordion-toggle {
 ::marker {
   color: #242A35; }
 
+a.btn-primary:hover {
+  color: #fff; }
+
 /*# sourceMappingURL=customstyles.css.map */

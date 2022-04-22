@@ -880,3 +880,9 @@ a.accordion-toggle {
 }
 
 @import "theme-blue.css";
+
+a.btn-primary {
+  &:hover {
+    color: #fff;
+  }
+}
