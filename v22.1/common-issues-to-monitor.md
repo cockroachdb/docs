@@ -15,7 +15,7 @@ This page summarizes how to configure and monitor your cluster to prevent issues
 
 {% include {{ page.version.version }}/prod-deployment/terminology-vcpu.md %}
 
-Issues with CPU most commonly arise when there is insufficient CPU to suppport the scale of the workload.
+Issues with CPU most commonly arise when there is insufficient CPU to support the scale of the workload.
 
 ### CPU planning
 

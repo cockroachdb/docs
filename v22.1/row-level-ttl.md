@@ -428,7 +428,7 @@ ERROR: "ttl_expire_after" must be set
 SQLSTATE: 22023
 ~~~
 
-If you try to reset a [TTL storage parameter](#ttl-storage-parameters) but resetting that paraemeter would result in an invalid state of the TTL subsystem, CockroachDB will signal an error. For example, there is only one way to [remove Row-Level TTL from a table](#remove-row-level-ttl-from-a-table). If you try to remove the TTL from a table by resetting the `ttl_expire_after` storage parameter you set earlier, you will get the following error:
+If you try to reset a [TTL storage parameter](#ttl-storage-parameters) but resetting that parameter would result in an invalid state of the TTL subsystem, CockroachDB will signal an error. For example, there is only one way to [remove Row-Level TTL from a table](#remove-row-level-ttl-from-a-table). If you try to remove the TTL from a table by resetting the `ttl_expire_after` storage parameter you set earlier, you will get the following error:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
