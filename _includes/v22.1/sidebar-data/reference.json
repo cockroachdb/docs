@@ -1369,6 +1369,12 @@
             "title": "Authentication",
             "urls": [
               "/${VERSION}/security-reference/authentication.html"
+            ],
+            "items": [
+              {
+                "title": "Salted Challenge Response Authentication Mechanism (scram-sha-256)",
+                "urls": [ "/${VERSION}/security-reference/scram-sha-256.html" ]
+              }
             ]
           },
           {
