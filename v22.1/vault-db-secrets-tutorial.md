@@ -30,15 +30,15 @@ Sound strategy and proper tooling for managing database credentials are essentia
 	- Diligent rotation and revocation practices are automated by implication, requiring no additional effort or oversight.
 
 
-
-
-
 ## Administrating Vault and CRDB
 
 
 In this phase of the tutorial we will act as an administrator for our organization, provisioning access for a class of database clients.
 
-Initialize your shell for Vault by setting your target and authenticating with an admin 
+You'll need admin credentials for both a Vault cluster and a CockroachDB cluster, allowing you to create and manage access for roles in both domains.
+
+
+Initialize your shell for Vault by setting your target and authenticating as admin.
 
 {% include_cached copy-clipboard.html %}
 ```shell
@@ -46,6 +46,16 @@ $ export VAULT_ADDR= # your Vault cluster URL
 $ vault login
 ```
 
+### Enable that database secrets engine
+
+{% include_cached copy-clipboard.html %}
+```shell
+vault secrets enable database
+```
+
+```txt
+Success! Enabled the database secrets engine at: database/
+```
 
 ### Binding your Vault to your CRDB cluster
 
@@ -53,17 +63,41 @@ The connection lies in a Vault configuration, which will store your CRDB admin c
 
 {% include_cached copy-clipboard.html %}
 ```shell
+USER_NAME=bloop # CRDB admin username
+PASSWORD=5S9qKgoLT_LYfnxzu-lfmw # CRDB admin password
+DB_NAME=defaultdb
+HOST=free-tier14.aws-us-east-1.cockroachlabs.cloud
+TLS_OPTS="sslmode=verify-full&options=--cluster%3Dcheery-spectre-1469&sslrootcert=${PWD}/root.crt"
+CONNECTION_URL="postgresql://${USER_NAME}:${PASSWORD}@${HOST}:26257/${DB_NAME}?${TLS_OPTS}"
+
+echo $CONNECTION_URL
 vault write database/config/crdb-config \
   plugin_name=postgresql-database-plugin \
   allowed_roles="crdb-role" \
-  username="vault" \
+  username="root" \
   password="password" \
-  connection_url="postgresql://{{username}}:{{password}}@patrick-vault-gdk.gcp-europe-west1.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full&sslrootcert=${path_to_ca_crt}"
+  connection_url=$CONNECTION_URL
+
+
+USER_NAME=root # CRDB admin username
+PASSWORD=root # CRDB admin password
+DB_NAME=defaultdb
+HOST=localhost
+TLS_OPTS="sslmode=disable"
+CONNECTION_URL="postgresql://${USER_NAME}:${PASSWORD}@${HOST}:26257/${DB_NAME}?${TLS_OPTS}"
+
+
+
+cockroach sql --url $CONNECTION_URL
+postgresql://${USER_NAME}:${PASSWORD}@free-tier14.aws-us-east-1.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full&options=--cluster%3Dcheery-spectre-1469
+
 ```
 
 ```txt
 
 ```
+
+
 
 
 ### Create a Vault Policy for clients to access their CRDB 
@@ -85,6 +119,12 @@ EOF
 ```
 
 ### Provision a Dynamic Secret for SQL client access credentials
+
+A 'dynamic secret' is really a secret template, which will be used to generate particular short lived secrets on demand, according to the template.
+
+The template is defined by its `creation_statements`, SQL statements that create the role.
+
+For, example, let's create a 'default role'
 
 {% include_cached copy-clipboard.html %}
 ```shell
