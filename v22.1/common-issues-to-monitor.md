@@ -78,7 +78,7 @@ If workload concurrency exceeds CPU resources, you will observe:
 
 #### LSM health
 
-Issues at the [storage layer](architecture/storage-layer.html), including a misshapen LSM and high read amplification, can be observed when compaction falls behind due to insufficient CPU.
+Issues at the [storage layer](architecture/storage-layer.html), including a misshapen LSM and high [read amplification](architecture/storage-layer.html#read-amplification), can be observed when compaction falls behind due to insufficient CPU.
 
 - The [**LSM L0 Health**](ui-overload-dashboard.html#lsm-l0-health) graph on the Overload dashboard shows the health of the [persistent stores](architecture/storage-layer.html), which are implemented as log-structured merge (LSM) trees. Level 0 is the highest level of the LSM tree and consists of files containing the latest data written to the [Pebble storage engine](cockroach-start.html#storage-engine). For more information about LSM levels and how LSMs work, see [Log-structured Merge-trees](architecture/storage-layer.html#log-structured-merge-trees).
 
@@ -88,7 +88,7 @@ Issues at the [storage layer](architecture/storage-layer.html), including a miss
     An unhealthy LSM can be caused by other factors, including [under-provisioned storage](#storage-and-disk-i-o). To correlate this symptom with CPU starvation, check for high [CPU usage](#cpu-usage) and excessive [workload concurrency](#workload-concurrency).
     {{site.data.alerts.end}}
 
-- The **Read Amplification** graph on the [Storage Dashboard](ui-storage-dashboard.html) shows the average number of disk reads per logical SQL statement, also known as the read amplification factor.
+- The **Read Amplification** graph on the [Storage Dashboard](ui-storage-dashboard.html) shows the average number of disk reads per logical SQL statement, also known as the [read amplification](architecture/storage-layer.html#read-amplification) factor.
 
     {% include {{ page.version.version }}/prod-deployment/healthy-read-amplification.md %}
 
