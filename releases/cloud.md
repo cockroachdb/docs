@@ -13,10 +13,10 @@ Get future release notes emailed to you:
 {% include marketo.html %}
 
 {{site.data.alerts.callout_version}}
-As of March 24, 2022, new {{ site.data.products.dedicated }} clusters and all {{ site.data.products.serverless }} clusters are running CockroachDB [v21.2.7](v21.2.html).
+As of April 20, 2022, new {{ site.data.products.dedicated }} clusters and all {{ site.data.products.serverless }} clusters are running CockroachDB [v21.2.9](v21.2.html).
 {{site.data.alerts.end}}
 
-## April 19, 2022
+## April 27, 2022
 
 <h3>General changes</h3>
 
@@ -26,11 +26,22 @@ As of March 24, 2022, new {{ site.data.products.dedicated }} clusters and all {{
 
 - Contract customers can now view information about their organization's credit grants on the **Overview** tab of the [**Billing** page](../cockroachcloud/billing-management.html).
 
+## April 20, 2022
+
+<h3>Console changes</h3>
+
+- [SQL user passwords](../cockroachcloud/console-access-management.html#sql-users) are now generated and saved automatically to simplify the connection experience.
+- When [connecting to your cluster](../cockroachcloud/connect-to-a-serverless-cluster.html), the CA certificate download is now hidden once you have already downloaded the certificate.
+
+<h3>Documentation changes</h3>
+
+- Improved {{ site.data.products.serverless }} [cluster connection](../cockroachcloud/connect-to-a-serverless-cluster.html) documentation, including a [third-party tool connection guide](../stable/connect-to-the-database.html), improved [Quickstart](../cockroachcloud/quickstart.html), and CRUD app examples.
+
 ## April 4, 2022
 
 <h3>Console changes</h3>
 
-- You no longer need to download a CA certificate to [connect to a {{ site.data.products.db }}](../cockroachcloud/connect-to-your-cluster.html) cluster running [v21.2.5](v21.2.html) or later.
+- You no longer need to download a CA certificate to [connect to a {{ site.data.products.serverless }}](../cockroachcloud/connect-to-a-serverless-cluster.html) cluster through the CockroachDB SQL client if your cluster is running [v21.2.5](v21.2.html) or later.
 - When [creating a {{ site.data.products.dedicated }} cluster](../cockroachcloud/create-your-cluster.html), the approximate monthly cost is now displayed in the **Summary** sidebar along with the hourly cost.
 
 ## March 7, 2022

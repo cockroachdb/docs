@@ -149,3 +149,8 @@ $font-family-sans-serif: 'SourceSansPro-Regular';
 
 $navbar-light-color: #000;
 $navbar-light-brand-color: #000;
+
+$spacer: 1rem;
+$spacers: (
+  45: $spacer * 1.875 // 30px
+);

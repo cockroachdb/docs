@@ -46,6 +46,8 @@ RESTORE DATABASE bank FROM '2021/03/24-210532.53' IN 'userfile://defaultdb.publi
 
 It is also possible to run `userfile:///bank-backup` as `userfile:///` refers to the default path `userfile://defaultdb.public.userfiles_$user/`.
 
+To restore from the most recent backup, use [`RESTORE FROM LATEST IN ...`](../{{site.versions["stable"]}}/restore.html#restore-the-most-recent-backup).
+
 Once the backup data is no longer needed, delete from the `userfile` storage:
 
 {% include_cached copy-clipboard.html %}

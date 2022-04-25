@@ -714,7 +714,6 @@ Open the URL. You should see the following:
 
 <img src="{{ 'images/v22.1/explain-distsql-types-plan.png' | relative_url }}" alt="EXPLAIN (DISTSQL)" style="border:1px solid #eee;max-width:100%" />
 
-
 ### Find the indexes and key ranges a query uses
 
 You can use `EXPLAIN` to understand which indexes and key ranges queries use, which can help you ensure a query isn't performing a full table scan.
@@ -846,6 +845,8 @@ Time: 1ms total (execution 1ms / network 0ms)
 ~~~
 
 By default, `SELECT FOR UPDATE` locking is enabled for the initial row scan of `UPDATE` and `UPSERT` statements. To disable it, toggle the [`enable_implicit_select_for_update` session setting](show-vars.html#enable-implicit-select-for-update).
+
+
 
 ## See also
 
