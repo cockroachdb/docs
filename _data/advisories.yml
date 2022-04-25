@@ -30,8 +30,8 @@
   summary: Partial indexes can be corrupted by <code>UPDATE</code> statements, resulting in incorrect query results for any queries that use the partial index
   versions: v21.1 and v21.2 prior to v21.1.13 and v21.2.4
   date: January 6, 2022
-- advisory: aCVE-v2021-44228
-  summary: No Cockroach Labs products or services are affected by the recent CVE-v2021-44228 Apache Log4j vulnerability.
+- advisory: aCVE-2021-44228
+  summary: No Cockroach Labs products or services are affected by the recent CVE-2021-44228 Apache Log4j vulnerability.
   versions: None
   date: December 14, 2021
 - advisory: a73629
