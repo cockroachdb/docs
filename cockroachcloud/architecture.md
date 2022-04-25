@@ -34,7 +34,7 @@ We use the Kubernetes offerings in AWS and GCP (EKS and GKE respectively) to run
 
 The diagram below shows a high-level representation of a {{ site.data.products.dedicated }} multi-region cluster:
 
-<img src="{{ 'images/cockroachcloud/multiregion-diagram.png' | relative_url }}" alt="Multi-region architecture" style="max-width:100%" />
+<img src="{{ 'images/cockroachcloud/multiregion-diagram.png' | relative_url }}" alt="Multi-region architecture" style="width:100%; max-width:800px" />
 
 ## {{ site.data.products.serverless-plan }}
 
@@ -50,7 +50,7 @@ Traffic comes in from the public internet and is routed by the cloud provider’
 
 The following diagram is a high-level representation of what a typical Serverless cluster looks like:
 
-<img src="{{ 'images/cockroachcloud/serverless-diagram.png' | relative_url }}" alt="Serverless architecture" style="max-width:100%" />
+<img src="{{ 'images/cockroachcloud/serverless-diagram.png' | relative_url }}" alt="Serverless architecture" style="width:100%; max-width:800px" />
 
 Proxy pods allow many users to share the same IP address, balance loads across a user's available SQL pods, and automatically resume clusters that have been paused due to inactivity. They also detect and respond to suspected abuse of the service.
 
@@ -66,7 +66,7 @@ Baseline performance for a Serverless cluster is 100 RUs per second, and any usa
 
 The following diagram shows how RUs are accumulated and consumed:
 
-<img src="{{ 'images/cockroachcloud/ru-diagram.png' | relative_url }}" alt="RU diagram" style="max-width:100%" />
+<img src="{{ 'images/cockroachcloud/ru-diagram.png' | relative_url }}" alt="RU diagram" style="width:100%; max-width:800px" />
 
 #### Paid
 
@@ -82,9 +82,9 @@ Serverless clusters also have the ability to scale to zero and consume no comput
 
 The diagrams below shows how {{ site.data.products.serverless }} autoscales with your application's traffic:
 
-<img src="{{ 'images/cockroachcloud/serverless-low-traffic.png' | relative_url }}" alt="Serverless low traffic state" style="max-width:100%" />
+<img src="{{ 'images/cockroachcloud/serverless-low-traffic.png' | relative_url }}" alt="Serverless low traffic state" style="width:100%; max-width:800px" />
 
-<img src="{{ 'images/cockroachcloud/serverless-high-traffic.png' | relative_url }}" alt="Serverless scaling" style="max-width:100%" />
+<img src="{{ 'images/cockroachcloud/serverless-high-traffic.png' | relative_url }}" alt="Serverless scaling" style="width:100%; max-width:800px" />
 
 ## Learn more
 
