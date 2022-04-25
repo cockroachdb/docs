@@ -22,13 +22,13 @@ Column | Description
 Session Start Time (UTC) | The timestamp at which the session started.
 Session Duration | The amount of time the session has been open.
 Status  | The status of the session: Active or Idle. A session is active if it has an open transaction (including implicit transactions, which are individual SQL statements), and idle if it has no open transaction.
-Most Recent Statement | If more than one statement is active, the most recent statement is shown. If the session is idle, the last statement is shown.
-Statement Start Time (UTC) | The timestamp at which the statement started. If a session is idle, this column will display `N/A`.
-Memory Usage | Amount of memory currently allocated to this session, followed by the maximum amount of memory this session has ever been allocated.
-Client IP Address | The IP address/port of the client that opened the session.
+Most Recent Statement | If more than one statement is active, the most recent statement. If the session is idle, the last statement.
+Statement Start Time (UTC) | The timestamp at which the statement started.
+Memory Usage | Amount of memory currently allocated to the session followed by the maximum amount of memory the session has ever been allocated.
+Client IP Address | The IP address and port of the client that opened the session.
 User Name | The user that opened the session.
-Application Name | The user that opened the session.
-Actions | Options to cancel the active query and/or cancel the session. These require the `CANCELQUERY` [role option]({{ link_prefix }}alter-role.html#role-options).<ul><li>**Cancel Statement:** Ends the SQL statement. The session running this statement will receive an error. </li> <li>**Cancel Session:** Ends the session. The client that holds this session will receive a "connection terminated" event.</li></ul>
+Application Name | The application that ran the session.
+Actions | Options to cancel the active statement and cancel the session. These require the `CANCELQUERY` [role option]({{ link_prefix }}alter-role.html#role-options).<ul><li>**Cancel Statement:** Ends the SQL statement. The session running this statement will receive an error. </li> <li>**Cancel Session:** Ends the session. The client that holds this session will receive a "connection terminated" event.</li></ul>
 
 To view details of a session, click a **Session Start Time (UTC)** to display session details.
 
