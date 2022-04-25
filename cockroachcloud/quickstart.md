@@ -6,7 +6,7 @@ referral_id: docs_quickstart_free
 docs_area: get_started
 ---
 
-This page shows you how to get started with {{ site.data.products.db }} quickly. You'll create a CockroachDB cluster, and then insert and read some sample data from a sample application.
+This page shows you how to get started with CockroachDB quickly. You'll create a CockroachDB cluster, and then insert and read some sample data from a sample application.
 
 <div class="filters clearfix">
     <button class="filter-button page-level" data-scope="serverless"><strong>Use a cloud cluster</strong></button>
@@ -15,7 +15,18 @@ This page shows you how to get started with {{ site.data.products.db }} quickly.
 
 <section class="filter-content" markdown="1" data-scope="serverless">
 
+
+{{ site.data.products.serverless }} is the easiest way to get started with CockroachDB Cloud. Follow these steps to create a new {{ site.data.products.serverless }} cluster.
+
+To get started with {{ site.data.products.db }} using {{ site.data.products.dedicated }} clusters, see [Quickstart with {{ site.data.products.dedicated }}](quickstart-trial-cluster.html).
+
 {% include cockroachcloud/free-limitations.md %}
+
+</section>
+
+<section class="filter-content" markdown="1" data-scope="local">
+
+Follow these steps to get started with CockroachDB using a {{ site.data.products.core }} cluster.
 
 </section>
 
@@ -34,11 +45,11 @@ The sample code used in this tutorial is located in the [`quickstart-code-sample
 
 {% include cockroachcloud/quickstart/create-a-free-cluster.md %}
 
-### Create a SQL user
+## Step 2. Create a SQL user
 
 {% include cockroachcloud/quickstart/create-first-sql-user.md %}
 
-## Step 2. Connect to the cluster
+## Step 3. Connect to the cluster
 
 </section>
 
@@ -78,15 +89,15 @@ The **Connect to cluster** dialog shows information about how to connect to your
 
 </section>
 
+## Step 4. Configure the connection environment variable
+
 </section>
 
 <section class="filter-content" markdown="1" data-scope="local">
 
-## Step 1. Get CockroachDB
+## Step 1. Start CockroachDB
 
 1. If you haven't already, [download the latest version of CockroachDB](../stable/install-cockroachdb.html).
-
-## Step 2. Start CockroachDB
 
 1. Run the [`cockroach demo`](../stable/cockroach-demo.html) command:
 
@@ -113,9 +124,10 @@ The **Connect to cluster** dialog shows information about how to connect to your
 
     You'll use the `sql/unix` connection string to connect to the cluster later in this tutorial.
 
+## Step 2. Configure the connection environment variable
+
 </section>
 
-## Step 3. Configure the connection environment variable
 
 <div class="filters clearfix">
   <button class="filter-button" data-scope="unix">Linux or Mac</button>
@@ -194,7 +206,18 @@ The **Connect to cluster** dialog shows information about how to connect to your
 
 </section>
 
-## Step 4. Run the sample code
+
+<section class="filter-content" markdown="1" data-scope="serverless">
+
+## Step 5. Run the sample code
+
+</section>
+
+<section class="filter-content" markdown="1" data-scope="local">
+
+## Step 3. Run the sample code
+
+</section>
 
 <section class="filter-content" markdown="1" data-scope="node">
 
