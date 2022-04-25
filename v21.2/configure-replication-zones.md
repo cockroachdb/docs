@@ -30,7 +30,7 @@ To configure replication zones, a user must be a member of the [`admin` role](se
 
 ## Overview
 
-Every [range](architecture/overview.html#glossary) in the cluster is part of a replication zone.  Each range's zone configuration is taken into account as ranges are rebalanced across the cluster to ensure that any constraints are honored.
+Every [range](architecture/overview.html#architecture-range) in the cluster is part of a replication zone.  Each range's zone configuration is taken into account as ranges are rebalanced across the cluster to ensure that any constraints are honored.
 
 When a cluster starts, there are two categories of replication zone:
 
@@ -576,7 +576,7 @@ There's no need to make zone configuration changes; by default, the cluster is c
 
     ~~~ shell
     $ cockroach start --insecure --advertise-addr=<node1 hostname> --locality=az=us-1 \
-    --join=<node1 hostname>,<node2 hostname>,<node3 hostname>   
+    --join=<node1 hostname>,<node2 hostname>,<node3 hostname>
     $ cockroach start --insecure --advertise-addr=<node2 hostname> --locality=az=us-2 \
     --join=<node1 hostname>,<node2 hostname>,<node3 hostname>
     $ cockroach start --insecure --advertise-addr=<node3 hostname> --locality=az=us-3 \
