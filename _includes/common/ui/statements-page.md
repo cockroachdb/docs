@@ -73,13 +73,3 @@ It is possible to see the same fingerprint listed multiple times in the followin
 
 - Statements with this fingerprint were executed by more than one [`application_name`]({{ link_prefix }}show-vars.html#supported-variables).
 - Statements with this fingerprint were executed both successfully and unsuccessfully.
-
-## Understand the Statements page
-
-Use the Statements page to identify SQL statements that you want to [troubleshoot]({{ link_prefix }}query-behavior-troubleshooting.html). This might include statements that are experiencing high latencies, multiple [retries]({{ link_prefix }}transactions.html#transaction-retries), or execution failures. You can optionally create and retrieve [diagnostics](#diagnostics) for these statements.
-
-{{site.data.alerts.callout_success}}
-If you haven't yet executed any queries in the cluster as a user, this page will be blank.
-{{site.data.alerts.end}}
-
-<a id="statement-fingerprint-properties"></a>
