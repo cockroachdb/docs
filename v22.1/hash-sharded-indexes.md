@@ -5,7 +5,7 @@ toc: true
 docs_area: develop
 ---
 
-If you are working with a table that must be indexed on sequential keys, you should use **hash-sharded indexes**. Hash-sharded indexes distribute sequential traffic uniformly across ranges, eliminating single-range hot spots and improving write performance on sequentially-keyed indexes at a small cost to read performance.
+Hash-sharded indexes distribute sequential traffic uniformly across ranges, eliminating single-range hot spots and improving write performance on sequentially-keyed indexes. Hash-sharded indexes are ideal for tables that require frequent writing of sequential data and infrequent range scanning of such data.
 
 {{site.data.alerts.callout_info}}
 Hash-sharded indexes are an implementation of hash partitioning, not hash indexing.
@@ -17,7 +17,7 @@ Hash-sharded indexes are an implementation of hash partitioning, not hash indexi
 
 CockroachDB automatically splits ranges of data in [the key-value store](architecture/storage-layer.html) based on [the size of the range](architecture/distribution-layer.html#range-splits) and on [the load streaming to the range](load-based-splitting.html). To split a range based on load, the system looks for a point in the range that evenly divides incoming traffic. If the range is indexed on a column of data that is sequential in nature (e.g., [an ordered sequence](sql-faqs.html#what-are-the-differences-between-uuid-sequences-and-unique_rowid) or a series of increasing, non-repeating [`TIMESTAMP`s](timestamp.html)), then all incoming writes to the range will be the last (or first) item in the index and appended to the end of the range. As a result, the system cannot find a point in the range that evenly divides the traffic, and the range cannot benefit from load-based splitting, creating a [hot spot](performance-best-practices-overview.html#hot-spots) on the single range.
 
-Hash-sharded indexes solve this problem by distributing sequential data across multiple nodes within your cluster, eliminating hotspots. The trade-off to this, however, is a small performance impact on reading sequential data or ranges of data, as it's not guaranteed that sequentially close values will be on the same node.
+Hash-sharded indexes solve this problem by distributing sequential data across multiple nodes within your cluster, eliminating hotspots. The trade-off to this, however, is a performance impact on reading sequential data or ranges of data, as it's not guaranteed that sequentially close values will be on the same node. You should thoroughly test the performance of any new hash-sharded indexes prior to release to production.
 
 Hash-sharded indexes contain a [virtual computed column](computed-columns.html#virtual-computed-columns), known as a shard column. CockroachDB uses this shard column, as opposed to the sequential column in the index, to control the distribution of values across the index. The shard column is hidden by default but can be seen with [`SHOW COLUMNS`](show-columns.html).
 
@@ -35,7 +35,7 @@ For most use cases, no changes to the cluster setting are needed, and hash-shard
 
 A larger number of buckets allows for greater load-balancing and thus greater write throughput. More buckets disadvantages operations that need to scan over the data to fulfill their query; such queries will now need to scan over each bucket and combine the results.
 
-We recommend doing thorough performance testing of your workload with different `bucket_count`s if the default `bucket_count` does not satisfy your use case.
+You should thoroughly test the performance of your workload with different `bucket_count`s if the default `bucket_count` does not satisfy your use case.
 
 ### Hash-sharded indexes on partitioned tables
 
