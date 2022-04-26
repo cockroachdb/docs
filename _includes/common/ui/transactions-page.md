@@ -67,8 +67,6 @@ Use the Transactions page to identify transactions that you want to [troubleshoo
 If you haven't yet executed any transactions in the cluster as a user, this page will be blank.
 {{site.data.alerts.end}}
 
-<a id="statement-fingerprint-properties"></a>
-
 ### Transactions table
 
 Click <img src="{{ 'images/common/ui-columns-button.png' | relative_url }}" alt="Column selector" /> to select the columns to display in the table.
