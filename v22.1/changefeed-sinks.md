@@ -115,7 +115,7 @@ When using Pub/Sub as your downstream sink, consider the following:
 
 When running a `CREATE CHANGEFEED` statement to Pub/Sub, it will try to create a topic automatically. When you do not specify the topic in the URI with the [`topic_name`](create-changefeed.html#topic-name-param) parameter, the changefeed will use the table name to create the topic name. If the topic already exists in your Pub/Sub sink, the changefeed will write to it. You can also use the [`full_table_name` option](create-changefeed.html#full-table-option) to create a topic using the fully qualified table name.
 
-You can manually create a topic in your Pub/Sub sink before starting the changefeed. See the [Creating a changefeed to Google Cloud Pub/Sub](changefeed-examples.html#create-a-changefeed-connected-to-google-cloud-pub-sub-sink) example for more detail.
+You can manually create a topic in your Pub/Sub sink before starting the changefeed. See the [Creating a changefeed to Google Cloud Pub/Sub](changefeed-examples.html#create-a-changefeed-connected-to-a-google-cloud-pub-sub-sink) example for more detail.
 
 ## Cloud storage sink
 
