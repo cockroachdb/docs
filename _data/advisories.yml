@@ -1,7 +1,7 @@
 - advisory: a79066
   summary: Data key rotation is inadvertently disabled if the store key hasn't changed since the last node start.
   versions: All clusters with encryption-at-rest enabled running versions of CockroachDB v20.2.x, v21.1.0-v21.1.18, v21.2.0-v21.2.9, and v22.1.0.
-  date: April xx, 2022
+  date: May 9, 2022
 - advisory: a79384
   summary: The optimizer has been found to create logically incorrect query plans in some cases.
   versions: v21.1.0-v21.1.17, v21.2.0-v21.2.8, v22.1.0-alpha.1-v22.1.0-beta.1
@@ -17,7 +17,7 @@
 - advisory: a76522
   summary: The optimizer can omit ON conditions of joins in query plans, causing incorrect results.
   versions: v20.2.0-v20.2.19, v21.1.0-v21.1.15, v21.2.0-v21.2.6
-  date: March 09, 2022
+  date: March 9, 2022
 - advisory: a75758
   summary: Users without the appropriate permissions may cancel any other users' sessions from the DB Console.
   versions: v20.2.0-v20.2.18, v21.1.0-v21.1.13, v21.2.0-v21.2.4
@@ -101,24 +101,24 @@
 - advisory: a44299
   summary: Schema changes may cause cluster unavailability
   versions: v19.1.0-v19.1.7, v19.2.0-v19.2.3
-  date: Feb 12, 2020
+  date: February 12, 2020
 - advisory: a44348
   summary: Data leak in statement details
   versions: 2.1.0-2.1.11, v19.1.0-v19.1.7, v19.2.0-v19.2.3
-  date: Feb 12, 2020
+  date: February 12, 2020
 - advisory: a44166
   summary: <code>SHOW JOBS</code> and Jobs page can endanger cluster stability
   versions: v19.2.0-v19.2.2
-  date: Feb 12, 2020
+  date: February 12, 2020
 - advisory: a43870
   summary: HTTP authentication for non-Enterprise users
   versions: v2.1.10-onward, v19.1.6-onward, v19.2.2
-  date: Jan 22, 2020
+  date: January 22, 2020
 - advisory: a42567
   summary: HTTP endpoint vulnerability
   versions: v2.1.0-v2.1.8, v19.1.0-v19.1.5, v19.2.0-v19.2.1
-  date: Jan 22, 2020
+  date: January 22, 2020
 - advisory: a30821
   summary: Authentication bypass for internal RPCs
   versions: v1.1.0-v1.1.8, v2.0.0-v2.0.4
-  date: Oct 1, v2018
+  date: October 1, 2018
