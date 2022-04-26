@@ -11,7 +11,7 @@ There are two ways to handle node shutdown:
 
 - To temporarily stop a node and restart it later, **drain** the node and terminate the `cockroach` process. This is done when [upgrading the cluster version](upgrade-cockroach-version.html) or performing cluster maintenance (e.g., upgrading system software). With a drain, the data stored on the node is preserved, and will be reused if the node restarts within a reasonable timeframe. There is little node-to-node traffic involved, which makes a drain lightweight.
 
-- To permanently remove the node from the cluster, **decommission** the node and then terminate the `cockroach` process. This is done when scaling down a cluster or reacting to hardware failures. With a decommission, the data is moved out of the node. Replica rebalancing creates network traffic throughout the cluster, which makes a decommission heavyweight.
+- To permanently remove the node from the cluster, **drain** and then **decommission** the node prior to terminating the `cockroach` process. This is done when scaling down a cluster or reacting to hardware failures. With a decommission, the data is moved out of the node. Replica rebalancing creates network traffic throughout the cluster, which makes a decommission heavyweight.
 
 {{site.data.alerts.callout_success}}
 This guidance applies to manual deployments. If you have a Kubernetes deployment, terminating the `cockroach` process is handled through the Kubernetes pods. The `kubectl drain` command is used for routine cluster maintenance. For details on this command, see the [Kubernetes documentation](https://kubernetes.io/docs/tasks/administer-cluster/safely-drain-node/).
@@ -43,15 +43,15 @@ When a node is permanently removed, the following stages occur in sequence:
 <section class="filter-content" markdown="1" data-scope="decommission">
 #### Decommissioning
 
+{{site.data.alerts.callout_danger}}
+To avoid disruptions in query performance, you should manually drain before decommissioning. For more information, see [Perform node shutdown](#perform-node-shutdown).
+{{site.data.alerts.end}}
+
 An operator [initiates the decommissioning process](#decommission-the-node) on the node.
 
 The node's [`is_decommissioning`](cockroach-node.html#node-status) field is set to `true` and its `membership` status is set to `decommissioning`, which causes its replicas to be rebalanced to other nodes.
 
 The node's [`/health?ready=1` endpoint](monitoring-and-alerting.html#health-ready-1) continues to consider the node "ready" so that the node can function as a gateway to route SQL client connections to relevant data.
-
-{{site.data.alerts.callout_info}}
-After this stage, the node is automatically drained. However, to avoid possible disruptions in query performance, we recommend manually draining before decommissioning. For more information, see [Perform node shutdown](#perform-node-shutdown).
-{{site.data.alerts.end}}
 </section>
 
 #### Draining
@@ -320,7 +320,7 @@ Also see our documentation for [cluster upgrades](upgrade-cockroachdb-kubernetes
 <section class="filter-content" markdown="1" data-scope="decommission">
 ### Drain the node
 
-Although [draining automatically follows decommissioning](#draining), we recommend first running [`cockroach node drain`](cockroach-node.html) to manually drain the node of active queries, SQL client connections, and leases before decommissioning. This is optional, but prevents possible disruptions in query performance. For specific instructions, see the [example](#drain-a-node-manually).
+Although [draining automatically follows decommissioning](#draining), you should first run [`cockroach node drain`](cockroach-node.html) to manually drain the node of active queries, SQL client connections, and leases before decommissioning. This prevents possible disruptions in query performance. For specific instructions, see the [example](#drain-a-node-manually).
 
 ### Decommission the node
 
@@ -597,7 +597,7 @@ node is draining... remaining: 0 (complete)
 ok
 ~~~
 
-Manually draining before decommissioning nodes is optional, but prevents possible disruptions in query performance.
+Manually draining the nodes before decommissioning prevents possible disruptions in query performance.
 
 #### Step 3. Decommission the nodes
 
