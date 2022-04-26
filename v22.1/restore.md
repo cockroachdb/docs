@@ -69,6 +69,7 @@ You can control `RESTORE` behavior using any of the following in the `restore_op
 `DETACHED`                                                          | N/A                                         |  When `RESTORE` runs with `DETACHED`, the job will execute asynchronously and the job ID will be returned immediately without waiting for the job to finish. Note that with `DETACHED` specified, further job information and the job completion status will not be returned. For more on the differences between the returned job data, see the [example](restore.html#restore-a-backup-asynchronously) below. To check on the job status, use the [`SHOW JOBS`](show-jobs.html) statement. <br><br>To run a restore within a [transaction](transactions.html), use the `DETACHED` option.
 `debug_pause_on`                                                    | `"error" `                                    |  Use to have a `RESTORE` [job](show-jobs.html) self pause when it encounters an error. The `RESTORE` job can then be [resumed](resume-job.html) after the error has been fixed or [canceled](cancel-job.html) to rollback the job. <br><br>Example: `WITH debug_pause_on='error'`
 `incremental_location`<a name="incr-location"></a> | [`STRING`](string.html) | Restore an incremental backup from the alternate collection URI the backup was originally taken with. <br><br>See [Restore incremental backups](#restore-from-incremental-backups) for more detail.
+<a name="new-db-name"></a>`new_db_name`                             | Database name                                 | Rename a database during a restore with `RESTORE DATABASE movr ... WITH new_db_name = new_movr`. The existing backed-up database can remain active while the same database is restored with a different name. <br><br> See [Rename a database on restore](#rename-a-database-on-restore).
 
 ### Backup file URLs
 
@@ -106,11 +107,13 @@ When you restore a full cluster with an Enterprise license, it will restore the 
 
 #### Databases
 
-**The database cannot already exist in the target cluster.** Restoring a database will create a new database and restore all of its tables and views. The created database will have the name of the database in the backup.
+Restoring a database will create a new database and restore all of its tables and views. The created database will have the name of the database in the backup.
 
 ~~~ sql
 RESTORE DATABASE backup_database_name FROM LATEST in 'your_backup_collection_URI';
 ~~~
+
+<span class="version-tag">New in v22.1:</span> To restore a database that already exists in a cluster, use the `new_db_name` option with `RESTORE` to provide a new name for the database. See the [Rename a database on restore](#rename-a-database-on-restore) example.
 
 {{site.data.alerts.callout_success}}
 If [dropping](drop-database.html) or [renaming](rename-database.html) an existing database is not an option, you can use [_table_ restore](#restore-a-table) to restore all tables into the existing database by using the [`WITH into_db` option](#options).
@@ -368,6 +371,28 @@ By default, tables and views are restored to the database they originally belong
 WITH into_db = 'newdb';
 ~~~
 
+#### Rename a database on restore
+
+<span class="version-tag">New in v22.1:</span> To rename a database on restore, use the [`new_db_name`](#new-db-name) option:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+RESTORE bank.customers FROM LATEST IN 's3://{bucket_name}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={access_key}'
+WITH new_db_name = new_bank;
+~~~
+
+When you run `RESTORE` with `new_db_name`, the existing database that was originally backed up can remain active:
+
+~~~
+database_name
+--------------+
+defaultdb     
+bank          
+new_bank      
+postgres      
+system        
+~~~
+
 #### Remove the foreign key before restore
 
 By default, tables with [foreign key](foreign-key.html) constraints must be restored at the same time as the tables they reference. However, using the [`skip_missing_foreign_keys`](restore.html#skip_missing_foreign_keys) option you can remove the foreign key constraint from the table and then restore it.
@@ -560,6 +585,28 @@ By default, tables and views are restored to the database they originally belong
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > RESTORE bank.customers FROM LATEST IN 'azure://{container name}?AZURE_ACCOUNT_NAME={account name}&AZURE_ACCOUNT_KEY={url-encoded key}' WITH into_db = 'newdb';
+~~~
+
+#### Rename a database on restore
+
+<span class="version-tag">New in v22.1:</span> To rename a database on restore, use the [`new_db_name`](#new-db-name) option:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+RESTORE bank.customers FROM LATEST IN 'azure://{container name}?AZURE_ACCOUNT_NAME={account name}&AZURE_ACCOUNT_KEY={url-encoded key}'
+WITH new_db_name = new_bank;
+~~~
+
+When you run `RESTORE` with `new_db_name`, the existing database that was originally backed up can remain active:
+
+~~~
+database_name
+--------------+
+defaultdb     
+bank          
+new_bank      
+postgres      
+system        
 ~~~
 
 #### Remove the foreign key before restore
@@ -756,6 +803,28 @@ By default, tables and views are restored to the database they originally belong
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > RESTORE bank.customers FROM LATEST IN 'gs://{bucket name}?AUTH=specified&CREDENTIALS={encoded key}' WITH into_db = 'newdb';
+~~~
+
+#### Rename a database on restore
+
+<span class="version-tag">New in v22.1:</span> To rename a database on restore, use the [`new_db_name`](#new-db-name) option:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+RESTORE bank.customers FROM LATEST IN 'gs://{bucket name}?AUTH=specified&CREDENTIALS={encoded key}'
+WITH new_db_name = new_bank;
+~~~
+
+When you run `RESTORE` with `new_db_name`, the existing database that was originally backed up can remain active:
+
+~~~
+database_name
+--------------+
+defaultdb     
+bank          
+new_bank      
+postgres      
+system        
 ~~~
 
 #### Remove the foreign key before restore
