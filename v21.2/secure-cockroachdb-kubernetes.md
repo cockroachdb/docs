@@ -135,7 +135,7 @@ Complete the following steps **before** [initializing the cluster](deploy-cockro
     secret/cockroachdb.client.root created
     ~~~
 
-1. Create the certificate and key pair for your CockroachDB nodes, specifying the namespace you used when [deploying the cluster](deploy-cockroachdb-with-kubernetes.html#initialize-the-cluster). This example uses the Operator's default namespace:
+1. Create the certificate and key pair for your CockroachDB nodes, specifying the namespace you used when [deploying the cluster](deploy-cockroachdb-with-kubernetes.html#initialize-the-cluster). This example uses the Operator's default namespace (`cockroach-operator-system`):
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -341,7 +341,7 @@ If you previously [authenticated with `cockroach cert`](#example-authenticating-
     secret/cockroachdb.client.root created
     ~~~
 
-1. Create a new certificate and key pair for your CockroachDB nodes, overwriting the previous certificate and key. Specify the namespace you used when [deploying the cluster](deploy-cockroachdb-with-kubernetes.html#initialize-the-cluster). This example uses the Operator's default namespace:
+1. Create a new certificate and key pair for your CockroachDB nodes, overwriting the previous certificate and key. Specify the namespace you used when [deploying the cluster](deploy-cockroachdb-with-kubernetes.html#initialize-the-cluster). This example uses the Operator's default namespace (`cockroach-operator-system`):
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
