@@ -41,7 +41,7 @@ The sink URI follows the basic format of:
 
 URI Component      | Description
 -------------------+------------------------------------------------------------------
-`scheme`           | The type of sink: [`kafka`](#kafka), [`gcpubsub`](#google-cloud-pub-sub), any [cloud storage sink](#cloud-storage-sink), or [webhook sink](#webhook-sink).
+`scheme`           | The type of sink: [`kafka`](#kafka), [`gcpubsub`](#google-cloud-pub-sub), any [cloud storage sink](#cloud-storage), or [webhook sink](#webhook).
 `host`             | The sink's hostname or IP address.
 `port`             | The sink's port.
 `query_parameters` | The sink's [query parameters](#query-parameters).
