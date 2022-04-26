@@ -8,6 +8,7 @@ docs_area: stream_data
 {{ site.data.products.enterprise }} changefeeds emit messages to configurable downstream sinks. CockroachDB supports the following sinks:
 
 - [Kafka](#kafka)
+- [Google Cloud Pub/Sub](#google-cloud-pub-sub)
 - [Cloud Storage](#cloud-storage-sink)
 - [Webhook](#webhook-sink)
 
@@ -23,7 +24,7 @@ The sink URI follows the basic format of:
 
 URI Component      | Description
 -------------------+------------------------------------------------------------------
-`scheme`           | The type of sink: [`kafka`](#kafka), any [cloud storage sink](#cloud-storage-sink), or [webhook sink](#webhook-sink).
+`scheme`           | The type of sink: [`kafka`](#kafka), [`gcpubsub`](#google-cloud-pub-sub), any [cloud storage sink](#cloud-storage-sink), or [webhook sink](#webhook-sink).
 `host`             | The sink's hostname or IP address.
 `port`             | The sink's port.
 `query_parameters` | The sink's [query parameters](create-changefeed.html#query-parameters).
@@ -85,6 +86,36 @@ The configurable fields include:
   * `"ONE"`: a write to Kafka is successful once the leader node has committed and acknowledged the write. Note that this has the potential risk of dropped messages; if the leader node acknowledges before replicating to a quorum of other Kafka nodes, but then fails. **This is the default value.**
   * `"NONE"`: no Kafka brokers are required to acknowledge that they have committed the message. This will decrease latency and increase throughput, but comes at the cost of lower consistency.
   * `"ALL"`: a quorum must be reached (that is, most Kafka brokers have committed the message) before the leader can acknowledge. This is the highest consistency level.
+
+## Google Cloud Pub/Sub
+
+{{site.data.alerts.callout_info}}
+The Google Cloud Pub/Sub sink is currently in **beta**. For more information, read about its usage considerations, available [parameters](create-changefeed.html#parameters), and [options](create-changefeed.html#options).
+{{site.data.alerts.end}}
+
+<span class="version-tag">New in v22.1:</span> Changefeeds can deliver messages to a Google Cloud Pub/Sub sink, which is integrated with Google Cloud Platform.
+
+A Pub/Sub sink URI follows this example:
+
+~~~
+'gcpubsub://{project name}?region={region}&topic_name={topic name}&AUTH=specified&CREDENTIALS={base64-encoded key}'
+~~~
+
+To connect to a Pub/Sub sink, it is necessary to specify the [Google Cloud Project](https://cloud.google.com/resource-manager/docs/creating-managing-projects) name and the authentication parameter containing your Google [Service Account](https://cloud.google.com/iam/docs/understanding-service-accounts) credentials. You can also use `IMPLICIT` authentication where credentials are stored in your environment. [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html#authentication) provides more detail on authentication to cloud storage sinks.
+
+Setting the topic name with the `topic_name` parameter in the URI is optional. See the following section on [Topic Naming](#topic-naming) for more detail and [Parameters](create-changefeed.html#parameters) for a list of the compatible parameters and options with Pub/Sub.
+
+When using Pub/Sub as your downstream sink, consider the following:
+
+- It only supports `JSON` message format.
+- Your Google Service Account must have the [Pub/Sub Editor](https://cloud.google.com/iam/docs/understanding-roles#pub-sub-roles) role.
+- Changefeeds connecting to a Pub/Sub sink do not support the `topic_prefix` option.
+
+### Topic naming
+
+When running a `CREATE CHANGEFEED` statement to Pub/Sub, it will try to create a topic automatically. When you do not specify the topic in the URI with the [`topic_name`](create-changefeed.html#topic-name-param) parameter, the changefeed will use the table name to create the topic name. If the topic already exists in your Pub/Sub sink, the changefeed will write to it. You can also use the [`full_table_name` option](create-changefeed.html#full-table-option) to create a topic using the fully qualified table name.
+
+You can manually create a topic in your Pub/Sub sink before starting the changefeed. See the [Creating a changefeed to Google Cloud Pub/Sub](changefeed-examples.html#create-a-changefeed-to-google-cloud-pub-sub) example for more detail.
 
 ## Cloud storage sink
 
