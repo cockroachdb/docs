@@ -15,10 +15,19 @@ CockroachDB allows fine-grained configuration of which database connect attempts
 Authentication Method | CockroachDB Cloud | Supported in CockroachDB Core | CockroachDB Enterprise Support  
 -------------|------------|-----|----
 password              |      ✓              |           ✓                    |    ✓
+SCRAM-SHA-256         |      ✓              |           ✓                    |    ✓
 TLS cert              |      &nbsp;         |           ✓                    |    ✓
 GSS                   |      &nbsp;         |           &nbsp;               |    ✓
 
 All options also support the following no-op 'authentication methods' (authentication is not actually performed):
+
+### `password`
+
+User must supply a password (what is a valid password?)
+
+### `SCRAM-SHA-256`
+
+See: 
 
 - `reject`: unconditionally rejects the connection attempt.
 - `trust`: unconditionally rejects the connection attempt.
@@ -57,12 +66,13 @@ Each rule definition contains up to 6 values.
 1. **`ADDRESS`** specifies the IP range which the rule will allow or block, either with the keyword "all", or with a valid IP address. The IP address can include an IP mask (the value of the field can be of the format XXX.XXX.XXX.XXX/X), or not, in which case the *next* value must be the mask (the value of this field will be of the form XXX.XXX.XXX.XXX, in which case the next field must be a valid IP mask).
 1. **`IP MASK`** (unless the Address in the prior field included or did not require an IP mask).
 1. Authentication **METHOD** by which specified user(s) may authenticate from specified addresses.
-  - `password`
-  - `cert`
-  - `cert-password`
-  - `gss`
-  - `reject`
-  - `trust`
+  - `password`: user may authenticate with a plain-text password.
+  - `SCRAM-SHA-256`: user may authenticate via [Salted Challenge-Response](SCRAM-SHA-256.html)
+  - `cert`: user may authenticate with a PKI certificate signed by a trusted certificate authority CA.
+  - `cert-password` user may authenticate with either a certificate or a password.
+  - `gss` user may authenticate with a GSSAPI token.
+  - `reject` server rejects connection without performing authentication.
+  - `trust` server allows connection without performing authentication.
 
 ## Default behavior
 
