@@ -351,10 +351,10 @@ To list all grants for all users and roles on the current database and its table
 ~~~
 
 ~~~
-  role_name | member | is_admin  | is_grantable
-------------+--------+-----------+---------------
-  admin     | root   |   true    | true
-  moderator | max    |  false    | false
+  role_name | member | is_admin
+------------+--------+-----------
+  admin     | root   |   true
+  moderator | max    |  false
 (2 rows)
 ~~~
 
@@ -366,9 +366,9 @@ To list all grants for all users and roles on the current database and its table
 ~~~
 
 ~~~
-  role_name | member | is_admin  | is_grantable
-------------+--------+-----------+---------------
-  moderator | max    |  false    | false
+  role_name | member | is_admin
+------------+--------+-----------
+  moderator | max    |  false
 (1 row)
 ~~~
 
@@ -380,9 +380,9 @@ To list all grants for all users and roles on the current database and its table
 ~~~
 
 ~~~
-  role_name | member | is_admin  | is_grantable
-------------+--------+-----------+---------------
-  moderator | max    |  false    | false
+  role_name | member | is_admin
+------------+--------+-----------
+  moderator | max    |  false
 (1 row)
 ~~~
 
