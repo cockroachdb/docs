@@ -25,7 +25,7 @@ Admission control can help if your cluster has degraded performance due to the f
 - The node is experiencing out-of-memory errors, visible in the **Memory Usage** graph in the [**Hardware** dashboard](ui-hardware-dashboard.html#memory-usage). Even though admission control does not explicitly target controlling memory usage, it can reduce memory usage as a side effect of delaying the start of operation execution when the CPU is overloaded.
 
 {{site.data.alerts.callout_info}}
-You should use admission control when overall cluster health is good but some nodes are experiencing overload. If you see these overload scenarios on many nodes in the cluster, that typically means the cluster needs more resources.
+Admission control is beneficial when overall cluster health is good but some nodes are experiencing overload. If you see these overload scenarios on many nodes in the cluster, that typically means the cluster needs more resources.
 {{site.data.alerts.end}}
 
 ## Enable and disable admission control
@@ -40,10 +40,6 @@ When you enable admission control Cockroach Labs recommends that you enable it f
 
 <span class="version-tag">New in v22.1</span> Admission control is enabled  by default for all layers.
 
-{{site.data.alerts.callout_info}}
-If you are upgrading to {{ page.version.version }}, first complete the upgrade with admission control disabled, then enable admission control after verifying the upgrade was successful.
-{{site.data.alerts.end}}
-
 ## Work queues and ordering
 
 When admission control is enabled, request and response operations are sorted into work queues where the operations are organized by priority and transaction start time.
@@ -52,9 +48,11 @@ Higher priority operations are processed first. The criteria for determining hig
 
 The transaction start time is used within the priority queue and gives preference to operations with earlier transaction start times. For example, within the high priority queue operations with an earlier transaction start time are processed first.
 
-### Set operation priority for a session
+### Set quality of service level for a session
 
-<span class="version-tag">New in v22.1</span> To set the priority of work submitted to the different admission control queues on behalf of SQL requests submitted in a session, use the `default_transaction_quality_of_service` [session variable](set-vars.html). The valid values are `critical`, `background`, and `regular`. Admission control must be enabled for this setting to have an effect.
+<span class="version-tag">New in v22.1</span>
+
+In an overload scenario where CockroachDB cannot service all requests, you can identify which requests should be prioritized. This is often referred to as _quality of service_ (QoS). Admission control queues work throughout the system. To set the quality of service level on the admission control queues on behalf of SQL requests submitted in a session, use the `default_transaction_quality_of_service` [session variable](set-vars.html). The valid values are `critical`, `background`, and `regular`. Admission control must be enabled for this setting to have an effect.
 
 To increase the priority of subsequent SQL requests, run:
 
