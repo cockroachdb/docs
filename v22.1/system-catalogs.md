@@ -15,7 +15,7 @@ The following system catalogs are available as schemas preloaded to every databa
 - [`pg_extension`](pg-extension.html), a schema catalog with information about CockroachDB extensions.
 
 {{site.data.alerts.callout_danger}}
-Tables in the system catalogs have varying levels of stability. Not all system catalog tables are meant for programmatic purposes.
+Tables in the system catalogs have varying levels of stability. Not all system catalog tables are meant for programmatic purposes. For more information, see [API Support Policy](api-support-policy.html).
 {{site.data.alerts.end}}
 
 To see all of the system catalogs for the [current database](sql-name-resolution.html#current-database), you can use a [`SHOW SCHEMAS`](show-schemas.html) statement:
