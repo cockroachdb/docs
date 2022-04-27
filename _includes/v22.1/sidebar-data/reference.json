@@ -1765,6 +1765,12 @@
         ]
       },
       {
+        "title": "API Support Policy",
+        "urls": [
+          "/${VERSION}/api-support-policy.html"
+        ]
+      },
+      {
         "title": "Diagnostics Reporting",
         "urls": [
           "/${VERSION}/diagnostics-reporting.html"
