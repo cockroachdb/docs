@@ -7,6 +7,8 @@ docs_area: get_started
 
 This page defines terms that you will encounter throughout the documentation.
 
+{% include {{ page.version.version }}/misc/database-terms.md %}
+
 {% include {{ page.version.version }}/misc/basic-terms.md %}
 
 For more information on CockroachDB architecture, see [Architecture Overview](overview.html#overview).

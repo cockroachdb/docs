@@ -7,7 +7,7 @@ docs_area: manage
 
 This doc provides information about how to take and restore encrypted backups in the following ways:
 
--  [Using AWS Key Management Service (KMS)](#use-aws-key-management-service)
+- [Using AWS Key Management Service (KMS)](#use-aws-key-management-service)
 - [Using a passphrase](#use-a-passphrase)
 
 {{site.data.alerts.callout_info}}
@@ -61,7 +61,7 @@ To take an encrypted backup with AWS KMS, use the `kms` [option](backup.html#opt
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> BACKUP INTO 's3://{BUCKET NAME}/{PATH}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
+> BACKUP INTO 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
     WITH kms = 'aws:///<cmk>?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}&REGION=us-east-1';
 ~~~
 
@@ -78,7 +78,7 @@ To take a backup with [multi-region encryption](#multi-region), use the `kms` op
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> BACKUP INTO 's3://{BUCKET NAME}/{PATH}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
+> BACKUP INTO 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
     WITH KMS=(
       'aws:///<cmk>?AUTH=implicit&REGION=us-east-1',
       'aws:///<cmk>?AUTH=implict&REGION=us-west-1'
@@ -100,7 +100,7 @@ For example, the encrypted backup created in the [first example](#take-an-encryp
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> RESTORE FROM '{subdirectory}' IN 's3://{BUCKET NAME}/{PATH}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
+> RESTORE FROM LATEST IN 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
     WITH kms = 'aws:///<cmk>?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}&REGION=us-east-1';
 ~~~
 
@@ -110,6 +110,8 @@ For example, the encrypted backup created in the [first example](#take-an-encryp
   594193600274956291 | succeeded |                  1 | 2689 |          1217 | 1420108
 (1 row)
 ~~~
+
+To restore from a specific backup, use [`RESTORE FROM {subdirectory} IN ...`](restore.html#restore-a-specific-backup).
 
 ## Use a passphrase
 
@@ -133,7 +135,7 @@ To take an encrypted backup, use the [`encryption_passphrase` option](backup.htm
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> BACKUP INTO 's3://{BUCKET NAME}/{PATH}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' WITH encryption_passphrase = 'password123';
+> BACKUP INTO 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' WITH encryption_passphrase = 'password123';
 ~~~
 ~~~
         job_id       |  status   | fraction_completed | rows | index_entries | bytes
@@ -152,7 +154,7 @@ For example, the encrypted backup created in the previous example can be restore
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> RESTORE FROM '{subdirectory}' IN 's3://{BUCKET NAME}/{PATH}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' WITH encryption_passphrase = 'password123';
+> RESTORE FROM LATEST IN 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' WITH encryption_passphrase = 'password123';
 ~~~
 ~~~
         job_id       |  status   | fraction_completed | rows | index_entries | bytes
@@ -160,6 +162,8 @@ For example, the encrypted backup created in the previous example can be restore
   543217488273801217 | succeeded |                  1 | 2597 |          1028 | 467701
 (1 row)
 ~~~
+
+To restore from a specific backup, use [`RESTORE FROM {subdirectory} IN ...`](restore.html#restore-a-specific-backup).
 
 </section>
 
@@ -171,7 +175,7 @@ To take an encrypted backup, use the [`encryption_passphrase` option](backup.htm
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> BACKUP INTO 'gs://{BUCKET NAME}/{PATH}?AUTH=specified&CREDENTIALS={ENCODED KEY}' WITH encryption_passphrase = 'password123';
+> BACKUP INTO 'gs://{BUCKET NAME}?AUTH=specified&CREDENTIALS={ENCODED KEY}' WITH encryption_passphrase = 'password123';
 ~~~
 ~~~
         job_id       |  status   | fraction_completed | rows | index_entries | bytes
@@ -190,7 +194,7 @@ For example, the encrypted backup created in the previous example can be restore
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> RESTORE FROM '{subdirectory}' IN 'gs://{BUCKET NAME}/{PATH}?AUTH=specified&CREDENTIALS={ENCODED KEY}' WITH encryption_passphrase = 'password123';
+> RESTORE FROM LATEST IN 'gs://{BUCKET NAME}?AUTH=specified&CREDENTIALS={ENCODED KEY}' WITH encryption_passphrase = 'password123';
 ~~~
 ~~~
         job_id       |  status   | fraction_completed | rows | index_entries | bytes
@@ -198,6 +202,8 @@ For example, the encrypted backup created in the previous example can be restore
   543217488273801217 | succeeded |                  1 | 2597 |          1028 | 467701
 (1 row)
 ~~~
+
+To restore from a specific backup, use [`RESTORE FROM {subdirectory} IN ...`](restore.html#restore-a-specific-backup).
 
 </section>
 
@@ -209,7 +215,7 @@ To take an encrypted backup, use the [`encryption_passphrase` option](backup.htm
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> BACKUP INTO 'azure://{CONTAINER NAME}/{PATH}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' WITH encryption_passphrase = 'password123';
+> BACKUP INTO 'azure://{CONTAINER NAME}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' WITH encryption_passphrase = 'password123';
 ~~~
 ~~~
         job_id       |  status   | fraction_completed | rows | index_entries | bytes
@@ -228,7 +234,7 @@ For example, the encrypted backup created in the previous example can be restore
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> RESTORE FROM '{subdirectory}' IN 'azure://{CONTAINER NAME}/{PATH}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' WITH encryption_passphrase = 'password123';
+> RESTORE FROM LATEST IN 'azure://{CONTAINER NAME}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' WITH encryption_passphrase = 'password123';
 ~~~
 ~~~
         job_id       |  status   | fraction_completed | rows | index_entries | bytes
@@ -236,6 +242,8 @@ For example, the encrypted backup created in the previous example can be restore
   543217488273801217 | succeeded |                  1 | 2597 |          1028 | 467701
 (1 row)
 ~~~
+
+To restore from a specific backup, use [`RESTORE FROM {subdirectory} IN ...`](restore.html#restore-a-specific-backup).
 
 </section>
 

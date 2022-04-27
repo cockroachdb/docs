@@ -16,13 +16,9 @@ This tutorial shows you how run a simple application built with [TypeORM](https:
 
 ## Step 1. Start CockroachDB
 
-{% include {{page.version.version}}/app/start-cockroachdb.md %}
+{% include {{ page.version.version }}/setup/sample-setup-parameters.md %}
 
-## Step 2. Create a database
-
-{% include {{page.version.version}}/app/create-a-database.md %}
-
-## Step 3. Get the code
+## Step 2. Get the code
 
 1. Clone [the code's GitHub repository](https://github.com/cockroachlabs/example-app-typescript-typeorm):
 
@@ -43,7 +39,7 @@ This tutorial shows you how run a simple application built with [TypeORM](https:
     $ npm install
     ~~~
 
-## Step 4. Configure your CockroachDB connection
+## Step 3. Configure your CockroachDB connection
 
 <section class="filter-content" markdown="1" data-scope="local">
 
@@ -74,15 +70,26 @@ This tutorial shows you how run a simple application built with [TypeORM](https:
     })
     ~~~
 
-1. Set the `DATABASE_URL` environment variable to the connection string provided in the `cockroach demo` welcome text.
+1. Set the `DATABASE_URL` environment variable to the connection string provided in the `cockroach` welcome text:
+
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    export DATABASE_URL="postgresql://root@localhost:26257?sslmode=disable"
+    ~~~
 
 </section>
 
 <section class="filter-content" markdown="1" data-scope="cockroachcloud">
 
-1. Open the `datasource.ts` file, and edit the `--cluster=<routing-id>` configuration property to specify the routing ID to your serverless cluster.
+1. Open the `datasource.ts` file, and edit the `options: "--cluster=<routing-id>"` configuration property to specify the routing ID to your serverless cluster.
 
 1. Set the `DATABASE_URL` environment variable to a CockroachDB connection string compatible with TypeORM.
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    export DATABASE_URL="<connection-string>"
+    ~~~
 
     TypeORM accepts the following format for {{ site.data.products.serverless }} connection strings:
 
@@ -93,7 +100,7 @@ This tutorial shows you how run a simple application built with [TypeORM](https:
 
 </section>
 
-## Step 5. Run the code
+## Step 4. Run the code
 
 Start the application:
 

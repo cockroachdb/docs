@@ -747,7 +747,7 @@ To add a version tag, use the following HTML `span`:
 <span class="version-tag">New in vX.X:</span>
 ~~~
 
-You can put version tags at the end of a heading, if the whole section describes something that is new or updated. Otherwise, put version tags at the beginning of a paragraph, sentence, or description in a table cell.
+Put version tags at the beginning of a paragraph, sentence, or description in a table cell.
 
 Note: Do not use version tags in bulleted lists items. To denote a new feature in a bulleted list, start the bulleted item with "**New in vX.X:**".
 

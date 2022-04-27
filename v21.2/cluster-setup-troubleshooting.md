@@ -391,7 +391,7 @@ CockroachDB's built-in disk stall detection works as follows:
 
 Issues with CPU most commonly arise when there is insufficient CPU to suppport the scale of the workload. If the concurrency of your workload significantly exceeds your provisioned CPU, you will encounter a [degradation in SQL response time](common-issues-to-monitor.html#service-latency). This is the most common symptom of CPU starvation.
 
-Because compaction requires significant CPU to run concurrent worker threads, a lack of CPU resources will eventually cause compaction to fall behind. This leads to read amplification and inversion of the log-structured merge (LSM) trees on the [storage layer](architecture/storage-layer.html).
+Because compaction requires significant CPU to run concurrent worker threads, a lack of CPU resources will eventually cause compaction to fall behind. This leads to [read amplification](architecture/storage-layer.html#read-amplification) and inversion of the log-structured merge (LSM) trees on the [storage layer](architecture/storage-layer.html).
 
 If these issues remain unresolved, affected nodes will miss their liveness heartbeats, causing the cluster to lose nodes and eventually become unresponsive.
 

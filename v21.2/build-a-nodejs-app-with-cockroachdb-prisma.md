@@ -20,7 +20,7 @@ Prisma versions 3.11+ have [Preview](https://prisma.io/docs/about/prisma/release
 
 ## Step 1. Start CockroachDB
 
-{% include {{ page.version.version }}/app/start-cockroachdb-no-cert.md %}
+{% include {{ page.version.version }}/setup/sample-setup.md %}
 
 ## Step 2. Get the code
 
