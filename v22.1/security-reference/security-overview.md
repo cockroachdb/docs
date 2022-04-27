@@ -57,7 +57,7 @@ Cockroach Labs maintains <a href="https://github.com/cockroachdb/cockroach">Cock
   <td>✓</td>
   <td>✓</td>
   <td>✓</td>
-  <td>Client identity authentication with Salted Challenge Response (<a href="scram-sha-256.html">scram-sha-256</a>)</td>
+  <td>Client identity authentication with Salted Challenge Response (<a href="SCRAM-SHA-256.html">SCRAM-SHA-256</a>)</td>
  </tr>
  <tr>
   <td>&nbsp;</td>
