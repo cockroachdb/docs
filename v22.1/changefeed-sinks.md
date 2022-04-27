@@ -101,14 +101,18 @@ A Pub/Sub sink URI follows this example:
 'gcpubsub://{project name}?region={region}&topic_name={topic name}&AUTH=specified&CREDENTIALS={base64-encoded key}'
 ~~~
 
-To connect to a Pub/Sub sink, it is necessary to specify the [Google Cloud Project](https://cloud.google.com/resource-manager/docs/creating-managing-projects) name and the authentication parameter containing your Google [Service Account](https://cloud.google.com/iam/docs/understanding-service-accounts) credentials. You can also use `IMPLICIT` authentication where credentials are stored in your environment. [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html#authentication) provides more detail on authentication to cloud storage sinks.
-
-Setting the topic name with the `topic_name` parameter in the URI is optional. See the following section on [Topic Naming](#topic-naming) for more detail and [Parameters](create-changefeed.html#parameters) for a list of the compatible parameters and options with Pub/Sub.
+URI Parameter      | Description
+-------------------+------------------------------------------------------------------
+`project name`     | The [Google Cloud Project](https://cloud.google.com/resource-manager/docs/creating-managing-projects) name.
+`region`           | The single region to which all output will be sent.
+`topic_name`       | (Optional) The topic name to which messages will be sent. See the following section on [Topic Naming](#topic-naming) for detail on how topics are created.
+`AUTH`             | The authentication parameter can define either `specified` or `implicit` authentication. Passing your [Service Account](https://cloud.google.com/iam/docs/understanding-service-accounts) credentials with the URI or implicitly in your environment respectively. [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html#authentication) provides more detail on authentication to cloud storage sinks.
+`CREDENTIALS`      | (Optional) The base64-encoded credentials of your Google [Service Account](https://cloud.google.com/iam/docs/understanding-service-accounts) credentials. Include with `AUTH=specified`.
 
 When using Pub/Sub as your downstream sink, consider the following:
 
 - It only supports `JSON` message format.
-- Your Google Service Account must have the [Pub/Sub Editor](https://cloud.google.com/iam/docs/understanding-roles#pub-sub-roles) role.
+- Your Google Service Account must have the [Pub/Sub Editor](https://cloud.google.com/iam/docs/understanding-roles#pub-sub-roles) role assigned at the [project level](https://cloud.google.com/resource-manager/docs/access-control-proj#using_predefined_roles).
 - Changefeeds connecting to a Pub/Sub sink do not support the `topic_prefix` option.
 
 ### Topic naming
@@ -116,6 +120,8 @@ When using Pub/Sub as your downstream sink, consider the following:
 When running a `CREATE CHANGEFEED` statement to Pub/Sub, it will try to create a topic automatically. When you do not specify the topic in the URI with the [`topic_name`](create-changefeed.html#topic-name-param) parameter, the changefeed will use the table name to create the topic name. If the topic already exists in your Pub/Sub sink, the changefeed will write to it. You can also use the [`full_table_name` option](create-changefeed.html#full-table-option) to create a topic using the fully qualified table name.
 
 You can manually create a topic in your Pub/Sub sink before starting the changefeed. See the [Creating a changefeed to Google Cloud Pub/Sub](changefeed-examples.html#create-a-changefeed-connected-to-a-google-cloud-pub-sub-sink) example for more detail.
+
+For a list of compatible parameters and options, see [Parameters](create-changefeed.html#parameters) on the `CREATE CHANGEFEED` page.
 
 ## Cloud storage sink
 
