@@ -55,7 +55,7 @@ The following types of API changes qualify as *backward-compatible*. This list i
 - Change in SQL response format or unstructured log format.
 
 {{site.data.alerts.callout_success}}
-Backward-incompatible changes to CockroachDB, including those affecting programmable APIs, are identified in the [release notes](releases/index.html#production-releases) for major CockroachDB versions. Users are asked to [consider backward-incompatible changes before upgrading](upgrade-cockroach-version.html#review-breaking-changes) to a new CockroachDB version.
+Backward-incompatible changes to CockroachDB, including those affecting programmable APIs, are identified in the [release notes](../releases/index.html#production-releases) for major CockroachDB versions. Users are asked to [consider backward-incompatible changes before upgrading](upgrade-cockroach-version.html#review-breaking-changes) to a new CockroachDB version.
 {{site.data.alerts.end}}
 
 #### Versioning
@@ -105,5 +105,5 @@ These interfaces are available in {{ site.data.products.serverless-plan }} and {
 
 ## See also
 
-- [Release Support Policy](release-support-policy.html)
+- [Release Support Policy](../releases/release-support-policy.html)
 - [Monitoring and Alerting](monitoring-and-alerting.html)
