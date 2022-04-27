@@ -1,6 +1,6 @@
 ---
 title: ADD SUPER REGION
-summary: The ADD SUPER REGION statement adds a super region made up of a set of regions such that data from regional tables will be stored in those regions. 
+summary: The ADD SUPER REGION statement adds a super region made up of a set of regions such that all data from regional tables or regional by row tables with home rows in the super region is stored in the super region
 toc: true
 docs_area: reference.sql
 ---
@@ -23,18 +23,18 @@ docs_area: reference.sql
 
 ## Parameters
 
-| Parameter       | Description                                                                                                       |
-|-----------------+-------------------------------------------------------------------------------------------------------------------|
-| `database_name` | The database to which you are adding a [super region](multiregion-overview.html#super-regions).                   |
-| `name`          | The name of the [super region](multiregion-overview.html#super-regions) being added to this database.             |
-| `name_list`     | The names of the [database regions](multiregion-overview.html#database-regions) being added to this super region. |
+| Parameter       | Description                                                                                              |
+|-----------------+----------------------------------------------------------------------------------------------------------|
+| `database_name` | The database to which you are adding a [super region](multiregion-overview.html#super-regions).          |
+| `name`          | The name of the [super region](multiregion-overview.html#super-regions) being added to this database.    |
+| `name_list`     | The super region consists of this set of [database regions](multiregion-overview.html#database-regions). |
 
 ## Required privileges
 
 To add a super region to a database, the user must have one of the following:
 
 - Membership to the [`admin`](security-reference/authorization.html#admin-role) role for the cluster.
-- Either [ownership](security-reference/authorization.html#object-ownership) or the [`CREATE` privilege](security-reference/authorization.html#supported-privileges) for the database and all [`REGIONAL BY ROW`](multiregion-overview.html#regional-by-row-tables) tables in the database.
+- Either [ownership](security-reference/authorization.html#object-ownership) or the [`CREATE` privilege](security-reference/authorization.html#supported-privileges) for the database.
 
 ## Considerations
 
