@@ -69,8 +69,10 @@ To connect with the API on a secure cluster, you will need:
     https://localhost:8080/api/v2/nodes/
     ~~~
 
-## Versioning and Stability
+## Versioning and stability
+
+The Cluster API version is defined in the request path. For example: `<cluster>/api/v2/health`.
 
 Future versions of CockroachDB may provide multiple API versions and will continue to provide access to this v2.0 API until it is deprecated.
 
-All endpoint paths and payloads will remain available within a major API version number (v2.x). Minor versions could add new endpoints but will not remove existing endpoints.
+All endpoint paths and payloads will remain available within a major API version number (`v2.x`). Minor versions could add new endpoints but will not remove existing endpoints. For more information, see [API Support Policy](api-support-policy.html).
