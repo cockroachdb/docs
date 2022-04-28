@@ -142,20 +142,27 @@ SET CLUSTER SETTING server.user_login.upgrade_bcrypt_stored_passwords_to_scram.e
 
 ## Implementing strict isolation of plaintext credentials 
 
-While the simple measures [described previously](#implementing-scram-authentication-in-your-cockroachdb-cluster) allow CockroachDB to avoid storing plaintext passwords or 
+Plaintext credentials are a valuable asset to malicious agents of all stripes; known as ["credential stuffing,"](https://en.wikipedia.org/wiki/Credential_stuffing) re-use of stolen passwords is a persistent problem throughout the ecosystem of internet services. Hence, any system that handles plaintext credentials becomes both an intrinsically juicy target to enemies and a potential weak point in your armor.
 
-It is possible to operate a CockroachDB cluster in such a way that it never handles plaintext passwords in any form. This prevents the malicious use of stolen credentials, in case the CockroachDB server itself is maliciously taken over. Known as ["credential stuffing,"](https://en.wikipedia.org/wiki/Credential_stuffing) re-use of stolen passwords is a persistent problem throughout the ecosystem of internet services.
+While the simple measures [described previously](#implementing-scram-authentication-in-your-cockroachdb-cluster) allow CockroachDB to avoid storing plaintext passwords or weak hashes in the database, the  credentials still have a footprint within CockroachDB: they are transmitted in plaintext from the CockroachDB client to the server, and are hence vulnerable in transit. While the secrets are protected in transit by TLS, CA certificate server authentication is not infallible.
+
+Moreover, the plaintext credentials must be handled in memory by CockroachDB in order to generate the hashes on the server, and this offers a potential opportunity for hypothetical attackers who have compromised your node's runtime environment. It is architecturally stronger to perform all handling of plaintext credentials for your system with a dedicated, hardened, specialized environment and process. This entails removing all handling of plaintext credentials from CockroachDB.
+
+It is possible to operate a CockroachDB cluster in such a way that it never handles plaintext passwords in any form. This prevents the malicious use of stolen credentials, even in case the CockroachDB node is compromised. 
 
 ### Requirements for strict isolation
 
-1. Instead of creating and rotating user passwords by passing plaintext passwords into SQL statements, as described [previously](#enabling-scram-sha-256-authentication-for-new-users-roles), you must instead generate SCRAM-SHA-256 hashes, and enter those directly in, instead of a plaintext password, as described in the [following section](#managing-users-with-pre-hashed-passwords).
-2. You must block clients from sending plaintext passwords to CockroachDB during authentication by [customizing your cluster's authentication](#configuring-the-authentication-cluster-setting-hba).
-3. After steps (1) and (2) are complete, you must update any previously created passwords 
+- Correct handling of plaintext credentials
+- Configuring your cluster settings
+- Managing users with pre-hashed passwords
+
+### Migrating from password to SCRAM
 
 If a cluster had previously allowed plaintext password authentication (i.e., any cluster that began on a version prior to v22.1), you must carefully migrate to SCRAM-SHA-256 authentication in the following phases:
 
-2. Block clients from sending plaintext passwords to CockroachDB during authentication. This can be achieved by [setting your authentication configuration to `scram-sha-256` or `cert-scram-sha-256`](#configuring-the-authentication-cluster-setting-hba).
-3. Re-define new password credentials using ALTER USER WITH PASSWORD and a pre-hashed password in the SCRAM format. (that one cluster setting makes users reset it on next login right?)
+1. Instead of creating and rotating user passwords by passing plaintext passwords into SQL statements, as described [previously](#enabling-scram-sha-256-authentication-for-new-users-roles), you must instead generate CockroachDB/PostgreSQL-formatted SCRAM-SHA-256 hashes and enter those directly into the client, as described in the [following section](#managing-users-with-pre-hashed-passwords).
+2. You must block clients from sending plaintext passwords to CockroachDB during authentication by [customizing your cluster's authentication](#configuring-the-authentication-cluster-setting-hba) so that only the `scram-sha-256` and `cert-scram-sha-256` methods, and neither `password` nor `cert-password`, are allowed.
+3. After steps (1) and (2) are complete, you must update any previously created passwords with externally generated SCRAM-SHA-256 hashes, and continue to generate your own hashes for all user creation and password update operations.
 
 Note the importance of rotating passwords twice, both in steps (1) and again in (3), with different passwords (as should go without saying, as password re-use is always discouraged).  Step (1) ensures that clients at step (2) can continue to connect after non-SCRAM logins are blocked. However, between step (1) and step (2) it is still possible for CockroachDB to receive plaintext passwords from clients, and so the passwords used at step (1) are not fully protected yet. After step (2), CockroachDB will not learn plaintext passwords from clients any more; then after step 3 it will not know plaintext passwords at all.
 
@@ -191,6 +198,8 @@ SET server.user_login.store_client_pre_hashed_passwords.enabled = true;
 
 ### Start a python shell
 
+For example, with docker.
+
 {% include_cached copy-clipboard.html %}
 ```bash
 docker run -it python:latest python
@@ -198,11 +207,13 @@ docker run -it python:latest python
 
 ### Compute salted password hashes
 
-In the Python shell, use Passlib's SCRAM library to create a SCRAM-SCHA-256 salted password hash in the format accepted by CockroachDB (which follows PostgreSQL's format).
+In the Python shell, use another tool or the [script in the Appendix](#appendix-python-scram-hashing-script) to create a SCRAM-SCHA-256 salted password hash in the format accepted by CockroachDB (which follows PostgreSQL's format).
 
 {% include_cached copy-clipboard.html %}
 ```python
-from roach_scram_hasher import *
+# Either copy-paste the hashing script directly into the shell, or into a file named roach_scram_hasher.py and import by un-commenting the following line
+# from roach_scram_hasher import *
+
 pg_scram_sha256("password")
 ```
 ```txt
