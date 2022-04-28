@@ -1164,7 +1164,7 @@ ActiveRecord accepts the following format for CockroachDB connection strings:
 
 {% include copy-clipboard.html %}
 ~~~
-postgresql://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full&options=--cluster%3D{routing-id}
+cockroachdb://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full&options=--cluster%3D{routing-id}
 ~~~
 
 </div>
@@ -1173,7 +1173,7 @@ postgresql://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full&
 
 {% include copy-clipboard.html %}
 ~~~
-postgresql://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full&sslrootcert={root-cert}
+cockroachdb://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full&sslrootcert={root-cert}
 ~~~
 
 </div>
@@ -1182,7 +1182,7 @@ postgresql://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full&
 
 {% include copy-clipboard.html %}
 ~~~
-postgresql://{username}@{host}:{port}/{database}?sslmode=verify-full&sslrootcert={root-cert}&sslcert={client-cert}&sslkey={client-key}
+cockroachdb://{username}@{host}:{port}/{database}?sslmode=verify-full&sslrootcert={root-cert}&sslcert={client-cert}&sslkey={client-key}
 ~~~
 
 </div>

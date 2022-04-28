@@ -1,0 +1,241 @@
+{{ $currentPage := . }}
+<div class="shadow-sm main-nav-wrapper position-fixed w-100">
+
+<div class="container-xl main-nav main-nav-contained-800 ">
+  <nav class="navbar navbar-expand-lg navbar-light">
+    <a class="navbar-brand mr-0 mr-md-2 d-xl-block mt-auto" href="{{ '/' | relative_url }}"><img width="170" height="24" alt="Cockroach Labs" class="br0 db mb0" src="{{ '/images/cockroachlabs-logo-170.png' | relative_url }}"></a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-toggle="collapse"
+      data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+      <!-- Mobile nav -->
+      <div class="d-lg-none pt-2">
+        <div class="accordion " id="accordionExample">
+
+          <!-- Mobile product -->
+          <div class="card">
+            <div class="card-header bg-white" id="mobileProduct">
+                <h2 class="mb-0">
+                    <button class="btn btn-link btn-block text-left d-flex justify-content-between align-items-center" type="button" data-toggle="collapse"
+                        data-target="#collapseProduct" aria-expanded="false" aria-controls="mobileProduct">
+                        Product
+                    </button>
+                </h2>
+            </div>
+            <div id="collapseProduct" class="collapse" aria-labelledby="mobileProduct" data-parent="#accordionExample">
+              <div class="card-body bg-gray-f4">
+                {% include nav-product.html %}
+              </div>
+            </div>
+          </div>
+
+          <!-- Mobile solutions -->
+          <div class="card">
+            <div class="card-header bg-white" id="mobileSolutions">
+                <h2 class="mb-0">
+                    <button class="btn btn-link btn-block text-left d-flex justify-content-between align-items-center" type="button" data-toggle="collapse"
+                        data-target="#collapseSolutions" aria-expanded="false" aria-controls="mobileSolutions">
+                        Solutions
+                    </button>
+                </h2>
+            </div>
+            <div id="collapseSolutions" class="collapse" aria-labelledby="mobileSolutions" data-parent="#accordionExample">
+              <div class="card-body bg-gray-f4">
+                {% include nav-solutions.html %}
+              </div>
+            </div>
+          </div>
+
+          <!-- Mobile Resources -->
+
+          <div class="card">
+            <div class="card-header bg-white" id="mobileResources">
+                <h2 class="mb-0">
+                    <button class="btn btn-link btn-block text-left d-flex justify-content-between align-items-center" type="button" data-toggle="collapse"
+                        data-target="#collapseResources" aria-expanded="false" aria-controls="mobileResources">
+                        Resources
+                    </button>
+                </h2>
+            </div>
+            <div id="collapseResources" class="collapse" aria-labelledby="mobileResources" data-parent="#accordionExample">
+              <div class="card-body bg-gray-f4">
+                {% include nav-resources.html %}
+              </div>
+            </div>
+          </div>
+
+          <!-- Mobile Docs -->
+
+          <div class="card">
+            <div class="card-header bg-white" id="mobileDocs">
+                <h2 class="mb-0">
+                    <button class="btn btn-link btn-block text-left d-flex justify-content-between align-items-center" type="button" data-toggle="collapse"
+                        data-target="#collapseDocs" aria-expanded="false" aria-controls="mobileDocs">
+                        Docs
+                    </button>
+                </h2>
+            </div>
+            <div id="collapseDocs" class="collapse" aria-labelledby="mobileDocs" data-parent="#accordionExample">
+              <div class="card-body bg-gray-f4">
+                {% include nav-docs.html %}
+              </div>
+            </div>
+          </div>
+
+          <!-- Mobile Company -->
+
+          <div class="card">
+            <div class="card-header bg-white" id="mobileCompany">
+                <h2 class="mb-0">
+                    <button class="btn btn-link btn-block text-left d-flex justify-content-between align-items-center" type="button" data-toggle="collapse"
+                        data-target="#collapseCompany" aria-expanded="false" aria-controls="mobileCompany">
+                        Company
+                    </button>
+                </h2>
+            </div>
+            <div id="collapseCompany" class="collapse" aria-labelledby="mobileCompany" data-parent="#accordionExample">
+              <div class="card-body bg-gray-f4">
+                {% include nav-company.html %}
+              </div>
+            </div>
+          </div>
+
+          <!-- blog -->
+          <div class="card">
+            <div class="card-header bg-white" id="mobileBlog">
+                <h2 class="mb-0">
+                    <a class="btn btn-link btn-block text-left btn-link-chevron-right d-flex justify-content-between align-items-center" href="https://www.cockroachlabs.com/featured-blog/">Blog</a>
+                </h2>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header bg-white" id="">
+                <h2 class="mb-0">
+                    <a class="btn btn-link btn-block text-left btn-link-chevron-right d-flex justify-content-between align-items-center" href="https://www.cockroachlabs.com/contact/">Contact Us</a>
+                </h2>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header bg-white" id="">
+                <h2 class="mb-0">
+                    <a class="btn btn-link btn-block text-left" href="https://cockroachlabs.cloud/">Sign In</a>
+                </h2>
+            </div>
+          </div>
+
+
+        </div>
+      </div>
+      <!-- end mobile nav -->
+      <!-- Desktop nav -->
+      <ul class="d-none d-lg-flex navbar-nav mr-auto mb-2 mb-lg-0 mt-auto">
+        <li class="nav-item dropdown position-static">
+          <a
+          class="nav-link dropdown-toggle"
+          href="#"
+          id="navbarDropdown"
+          role="button"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false">Product</a>
+          <div class="dropdown-menu w-100 p-45" aria-labelledby="navbarDropdown">
+            {% include nav-product.html %}
+          </div>
+        </li>
+
+        <li class="nav-item dropdown position-static">
+          <a
+          class="nav-link dropdown-toggle"
+          href="#"
+          id="navbarDropdown"
+          role="button"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false">Solutions</a>
+          <div class="dropdown-menu w-100 p-45" aria-labelledby="navbarDropdown">
+            {% include nav-solutions.html %}
+          </div>
+        </li>
+
+        <li class="nav-item dropdown position-static">
+          <a
+          class="nav-link dropdown-toggle"
+          href="#"
+          id="navbarDropdown"
+          role="button"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false">Resources</a>
+          <div class="dropdown-menu w-100 p-45" aria-labelledby="navbarDropdown">
+            {% include nav-resources.html %}
+          </div>
+        </li>
+
+
+        <li class="nav-item dropdown position-static">
+          <a
+          class="nav-link dropdown-toggle"
+          href="#"
+          id="navbarDropdown"
+          role="button"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false">Docs</a>
+          <div class="dropdown-menu w-100 p-45 docs" aria-labelledby="navbarDropdown">
+            {% include nav-docs.html %}
+          </div>
+        </li>
+
+        <li class="nav-item dropdown position-static">
+          <a
+          class="nav-link dropdown-toggle"
+          href="#"
+          id="navbarDropdown"
+          role="button"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false">Company</a>
+          <div class="dropdown-menu w-100 p-45 company" aria-labelledby="navbarDropdown">
+            {% include nav-company.html %}
+          </div>
+        </li>
+      </ul>
+      <!-- end desktop nav -->
+
+      <!-- right side nave -->
+      <div class="ml-auto">
+        <ul class="d-none d-lg-flex navbar-nav mr-auto mb-2 mb-lg-0 mt-auto">
+          <li class="nav-item">
+            <a class="nav-link nav-text-md" href="https://www.cockroachlabs.com/contact/" role="button"> Contact Us</a>
+            <a class="nav-link nav-icon-md" href="https://www.cockroachlabs.com/contact/" role="button"><img class="" width="32" src="{{ '/images/icons/icon-envelope.png' | relative_url }}" alt="Sign in"></a>
+          </li>
+          <li class="nav-item">
+            <a href="https://cockroachlabs.cloud/" class="nav-link nav-text-md">Sign In</a>
+            <a href="https://cockroachlabs.cloud/" class="nav-link nav-icon-md">
+              <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="11" cy="11" r="10.25" fill="white" stroke="black" stroke-width="1.5"/>
+              <circle cx="11" cy="9" r="2.25" stroke="black" stroke-width="1.5"/>
+              <path d="M6 16C6.47619 14.6667 8.14286 12 11 12C13.8571 12 15.5238 14.6667 16 16" stroke="black" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+              </a>
+          </li>
+          <li class="nav-item d-flex justify-content-center flex-column">
+            <a class="btn btn-primary rounded-pill px-3 font-family-poppins py-1 ml-2" href="https://www.cockroachlabs.com/get-started-cockroachdb/">Start Instantly</a>
+          </li>
+        </ul>
+      </div>
+      <!-- End right side nav -->
+    </div>
+  </nav>
+</div>
+</div>
