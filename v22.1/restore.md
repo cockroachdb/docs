@@ -377,7 +377,7 @@ WITH into_db = 'newdb';
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-RESTORE bank FROM LATEST IN 's3://{bucket_name}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={access_key}'
+RESTORE DATABASE bank FROM LATEST IN 's3://{bucket_name}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={access_key}'
 WITH new_db_name = new_bank;
 ~~~
 
@@ -593,7 +593,7 @@ By default, tables and views are restored to the database they originally belong
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-RESTORE bank FROM LATEST IN 'azure://{container name}?AZURE_ACCOUNT_NAME={account name}&AZURE_ACCOUNT_KEY={url-encoded key}'
+RESTORE DATABASE bank FROM LATEST IN 'azure://{container name}?AZURE_ACCOUNT_NAME={account name}&AZURE_ACCOUNT_KEY={url-encoded key}'
 WITH new_db_name = new_bank;
 ~~~
 
@@ -811,7 +811,7 @@ By default, tables and views are restored to the database they originally belong
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-RESTORE bank FROM LATEST IN 'gs://{bucket name}?AUTH=specified&CREDENTIALS={encoded key}'
+RESTORE DATABASE bank FROM LATEST IN 'gs://{bucket name}?AUTH=specified&CREDENTIALS={encoded key}'
 WITH new_db_name = new_bank;
 ~~~
 
