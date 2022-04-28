@@ -15,14 +15,14 @@ To filter by session duration, specify the session time and unit.
 
 Click <img src="{{ 'images/common/ui-columns-button.png' | relative_url }}" alt="Column selector" /> to select the columns to display in the table.
 
-The following are displayed for each active session:
+The following are displayed for each session:
 
 Column | Description
 --------- | -----------
 Session Start Time (UTC) | The timestamp at which the session started.
 Session Duration | The amount of time the session has been open.
-Status  | The status of the session: Active or Idle. A session is active if it has an open transaction (including implicit transactions, which are individual SQL statements), and idle if it has no open transaction.
-Most Recent Statement | If more than one statement is active, the most recent statement. If the session is idle, the last statement.
+Status  | The status of the session: Active or Idle. A session is Active if it has an open explicit or implicit transaction (individual SQL statement) with a statement that is actively running or waiting to acquire a lock. A session is Idle if it is not executing a statement.
+Most Recent Statement | If more than one statement is executing, the most recent statement. If the session is Idle, the last statement.
 Statement Start Time (UTC) | The timestamp at which the statement started.
 Memory Usage | Amount of memory currently allocated to the session followed by the maximum amount of memory the session has ever been allocated.
 Client IP Address | The IP address and port of the client that opened the session.
