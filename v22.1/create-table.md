@@ -947,6 +947,25 @@ Inserting explicit values does not affect the next value of the sequence:
 If the `numerical` column were to follow the `ALWAYS` rule instead, then the sequence values in the column could not be overwritten.
 {{site.data.alerts.end}}
 
+### Create a table with data excluded from backup
+
+<span class="version-tag">New in v22.1:</span> In some situations, you may want to exclude a table's row data from a [backup](backup.html). For example, a table could contain high-churn data that you would like to [garbage collect](architecture/storage-layer.html#garbage-collection) more quickly than the [incremental backup](take-full-and-incremental-backups.html#incremental-backups) schedule for the database or cluster that will hold the table. You can use the `exclude_data_from_backup = true` parameter with `CREATE TABLE` to mark a table's row data for exclusion from a backup:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE TABLE promo_codes (
+    code VARCHAR NOT NULL,
+    description VARCHAR NULL,
+    creation_time TIMESTAMP NULL,
+    expiration_time TIMESTAMP NULL,
+    rules JSONB NULL,
+    CONSTRAINT promo_codes_pkey PRIMARY KEY (code ASC)
+  )
+WITH (exclude_data_from_backup = true);
+~~~
+
+To set `exclude_data_from_backup` on an existing table, see the [Exclude a table's data from backups](take-full-and-incremental-backups.html#exclude-a-tables-data-from-backups) example.
+
 ## See also
 
 - [`INSERT`](insert.html)
