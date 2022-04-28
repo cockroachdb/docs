@@ -17,7 +17,7 @@ As of v22.1, CockroachDB supports SCRAM-SHA-256 authentication for clients, acro
 
 ## SASL, SCRAM and SCRAM-SHA-256
 
-Simple Authentication and Security Layer (SASL) is a framework for authentication and data security in Internet protocols. SASL defines requirements for challenge-and-response authentication protocols, which has been [formalized](https://www.rfc-editor.org/info/rfc4422) by the [Internet Engineering Task Force (IETF)](https://www.ietf.org/). The SASL framework, authentication mechanisms are separated from applications and interact via a structured interface.
+[Simple Authentication and Security Layer [(SASL)](https://www.rfc-editor.org/info/rfc4422) is a framework for authentication and data security in Internet protocols. SASL formalizes the requirements for challenge-and-response authentication protocols designed by the [Internet Engineering Task Force (IETF)](https://www.ietf.org/), chiefly on the principle of **Separation of Concerns**: authentication mechanisms must be independent from applications and interact via a structured interface.
 
 [Salted Challenge Response Authentication Mechanism (SCRAM)](https://en.wikipedia.org/wiki/Salted_Challenge_Response_Authentication_Mechanism) is a modern, SASL-compliant, general solution to the security problems posed by the use of plain-text (unencrypted) passwords for authentication.
 
@@ -51,7 +51,7 @@ SCRAM offers strong protection against [replay attacks](https://en.wikipedia.org
 
 #### Separation of concerns
 
-Because a server that authenticates users with SCRAM does not need to store or handle plaintext passwords, a system that employs SCRAM authentication can consolidate responsibility for handling plaintext credentials to a dedicated secrets-management service and isolate those credentials to the minimum exposure to possible egress both at rest and in flight. In keeping with the principle of "seperation of concerns", wherein each high-level functionality or "concern" should be handled by a dedicated component, enterprise IT infrastructures often enforce such a consolidation.
+Because a server that authenticates users with SCRAM does not need to store or handle plaintext passwords, a system that employs SASL-compliant SCRAM authentication can consolidate responsibility for handling plaintext credentials to a dedicated secrets-management service and isolate those credentials to the minimum exposure to possible egress both at rest and in flight. In keeping with the principle of "seperation of concerns", wherein each high-level functionality or "concern" should be handled by a dedicated component, enterprise IT infrastructures often enforce such a consolidation.
 
 Isolation of credential-handling offers many advantages to a delegated service (whether self-hosted or used as a cloud-based external service), but most salient here is that it completely removes the possibility of a credential spill from your CockroachDB cluster's authentication database (i.e. the cluster's `system.users` table), since the latter now contains no credentials. This not only reduces the impact of any compromise of that database that does it occur, but as a correlary makes it far less attractive as a target, since an attacker gains nothing by stealing what it contains.
 
@@ -84,9 +84,19 @@ For example:
 
 {% include_cached copy-clipboard.html %}
 ```shell
+
+SET CLUSTER SETTING server.host_based_authentication.configuration TO '
+# TYPE    DATABASE  USER     ADDRESS    METHOD
+  host    all       all      all        scram-sha-256';
+
+ALTER USER cool_user WITH PASSWORD "$scram$100000$vZcyRiil1BojRGhN$sha-1=pRLECKY8rLwZKkmhKu02b8RfIeQ,sha-256=ClkmygvxmE9tOx8swe2lD5kb/4rjE3qa2BF6mAhshHE,sha-512=l3zLEbJLHqRZGi5uCdwDqkNzk4bfoZTcvyKRXyu6YP3mtoh7JFclxKdAKXKQTBAWMQDv.pbNgUt3/KOX4Hgteg";
+
+
 SET CLUSTER SETTING server.user_login.password_encryption = 'scram-sha-256';
 CREATE USER hypothetical_user WITH PASSWORD "hypothetical-plain-text-password-123";
 SELECT username, "hashedPassword" FROM system.users WHERE username='hypothetical_user'; 
+```
+```
   username |                     hashedPassword
 -----------+---------------------------------------------------------
   hypothetical_user   | SCRAM-SHA-256$119680:e0tDGk...
@@ -114,14 +124,15 @@ SET CLUSTER SETTING server.user_login.upgrade_bcrypt_stored_passwords_to_scram.e
 
 ## Implementing strict isolation of plaintext credentials 
 
-It is possible to operate a CockroachDB cluster in such a way that it never needs to handle plaintext passwords in any form. This prevents the malicious use of stolen credentials, in case the CockroachDB server itself is maliciously taken over. Known as ["credential stuffing,"](https://en.wikipedia.org/wiki/Credential_stuffing) re-use of stolen passwords is a persistent problem throughout the ecosystem of internet services.
+While the simple measures [described previously](#Implementing-SCRAM-authentication-in-your-CockroachDB-Cluster) allow CockroachDB to avoid storing plaintext passwords or 
 
-The additional requirements for strict isolation are as follows:
+It is possible to operate a CockroachDB cluster in such a way that it never handles plaintext passwords in any form. This prevents the malicious use of stolen credentials, in case the CockroachDB server itself is maliciously taken over. Known as ["credential stuffing,"](https://en.wikipedia.org/wiki/Credential_stuffing) re-use of stolen passwords is a persistent problem throughout the ecosystem of internet services.
+
+### Requirements for strict isolation are as follows
 
 1. Instead of creating and rotating user passwords by passing plaintext passwords into SQL statements, as described [previously](#enabling-SCRAM-SHA-256-authentication-for-new-users/roles), you must instead generate SCRAM-SHA-256 hashes, and enter those directly in instead of a plaintext password. CockroachDB will recognize the SCRAM-SHA-256 format 
 2. You must block clients from sending plaintext passwords to CockroachDB during authentication by [customizing your cluster's authentication](#customizing-hba-for-scram).
 3. After steps (1) and (2) are complete, you must update any previously created passwords 
-
 
 If a cluster had previously allowed plaintext password authentication (i.e., any cluster that began on a version prior to v22.1), you must carefully migrate to SCRAM-SHA-256 authentication in the following phases:
 
@@ -129,51 +140,96 @@ If a cluster had previously allowed plaintext password authentication (i.e., any
 2. Block clients from sending plaintext passwords to CockroachDB during authentication. This can be achieved by [setting your authentication configuration to `scram-sha-256` or `cert-scram-sha-256`]().
 3. Re-define new password credentials using ALTER USER WITH PASSWORD and a pre-hashed password in the SCRAM format. (that one cluster setting makes users reset it on next login right?)
 
-
-Note the importance of rotating passwords twice (in steps 1 and 3), with different passwords (as should go without saying, as password re-use is always discouraged).  Step 1 ensures that clients at step 2 can continue to connect after non-SCRAM logins are blocked. However, between step 1 and step 2 it is still possible for CockroachDB to receive plaintext passwords from clients, and so the passwords used at step 1 are not fully protected yet. After step 2, CockroachDB will not learn plaintext passwords from clients any more; then after step 3 it will not know plaintext passwords at all.
-
-
+Note the importance of rotating passwords twice, both in steps (1) and again in (3), with different passwords (as should go without saying, as password re-use is always discouraged).  Step (1) ensures that clients at step (2) can continue to connect after non-SCRAM logins are blocked. However, between step (1) and step (2) it is still possible for CockroachDB to receive plaintext passwords from clients, and so the passwords used at step (1) are not fully protected yet. After step (2), CockroachDB will not learn plaintext passwords from clients any more; then after step 3 it will not know plaintext passwords at all.
 
 ### Correct handling of plaintext credentials
 
 Using SCRAM authentication, a CockroachdDB cluster need not store or handle the plaintext passwords used by clients to authenticate. When managing SQL users and roles, only salt and hash(salt, password) need be stored.
 
-I guess you need to have a compute instance (or secure workstation) be your cred management environment and carefully manage access.
+However, to achieve full separation of concerns, the plaintext credentials must be isolated to the extent possible: they must be exposed as little as possible in transit, storage and during computation.
 
-That instance needs to be a provisioned with:
-- a CRDB client with ['USER CREATE/ALTER privileges'](/create-user#create-a-user-that-can-create-other-users-and-manage-authentication-methods-for-the-new-users)
-- Vault, GCP or AWS secrets manager client with suffient rights to manage secrets in the correct project/account.
-- A tool for creating SCRAM-SHA-256 hashes, such as the Python library PassLib or the Ruby 'pg' gem.
+Handle plaintext credentials only in a dedicated credential management environment, such as a secure compute instance or secure physical workstation.
 
-On that instance, generate credentials, manage the CRDB users via CRDB client and persist the secrets in the secrets store.
+That environemnt must be a provisioned with:
+
+- A tool for [creating SCRAM-SHA-256 hashes](#managing-users-with-pre-hashed-passwords), such as the Python library PassLib or the Ruby 'pg' gem.
+- A CRDB client with ['USER CREATE/ALTER privileges'](/create-user#create-a-user-that-can-create-other-users-and-manage-authentication-methods-for-the-new-users)
+- Access, with write privileges, to a secrets store where the plaintext passwords will be persisted. Recommended solutions include Hashicorp Vault, GCP secrets manager or AWS secrets manager.
+
+On that instance, [generate SCRAM salted password hashes](#managing-users-with-pre-hashed-passwords), manage the CRDB users via CRDB client and persist the secrets in the secrets store, as described in the following section.
 
 ## Managing users with pre-hashed passwords
 
+[Many database tools](https://passlib.readthedocs.io/en/stable/lib/passlib.hash.scram.html) support SCRAM-SHA-256 and can be used to calculate the hashes servers will need for authentication.
 
-https://passlib.readthedocs.io/en/stable/lib/passlib.hash.scram.html
+In this example, we'll use the Python library Passlib.
 
+### Install and run Python and Passlib
+
+{% include_cached copy-clipboard.html %}
 ```bash
 docker run -it python:latest /bin/bash
 root@0ecc79701283:/# pip install passlib
-Collecting passlib
-  Downloading passlib-1.7.4-py2.py3-none-any.whl (525 kB)
-     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 525.6/525.6 KB 5.6 MB/s eta 0:00:00
-Installing collected packages: passlib
-Successfully installed passlib-1.7.4
-WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
 root@0ecc79701283:/# python
-Python 3.10.4 (main, Apr 20 2022, 18:21:23) [GCC 10.2.1 20210110] on linux
-Type "help", "copyright", "credits" or "license" for more information.
 ```
 
+### Hash credentials
+
+In the Python shell, use Passlib's SCRAM library to create a SCRAM-SCHA-256 salted password hashes.
+
+{% include_cached copy-clipboard.html %}
 ```python
 import passlib
 from passlib.hash import scram
-hash = scram.hash("password")
-scram.extract_digest_info(hash, "scram-sha-256")
+pw_hash = scram.hash("password")
+print(pw_hash)
 ```
+```txt
+'$scram$100000$1nrvfY/xnvN.r/Xe$sha-1=AH89UKd6Qkk53fRxXOHcvwlpHMc,sha-256=S7i4.nNSpzw81ySRj9jwQ55rvmvaQ4Hmg6yumYq0h3o,sha-512=OxYwCx1aa8.wuKqsxPuIIyyk/jUnVx3Ej8g3NnQexTPPRsm9cwNMRxLkSdIbuQP4UJg5EHsfyzTy3W1.QdtKtg'
 ```
+
+### Examine the SCRAM-SHA-256 server payload
+
+
+This hash contains all the information the server will need for SCRAM authentication, including the salted password hash, the salt itself, the hashing iteration count used to compute the final hash.
+
+{% include_cached copy-clipboard.html %}
+```python
+scram.extract_digest_info(pw_hash, "scram-sha-256")
+```
+```txt
 (b'\xc7X+e\x8c\x91\xd2\xda;gLi', 100000, b'w\xf8o\x85\xe1&\xf0-\x0b?\xa7\x1er~OX\x85\x1ccFN\xab\xe9\xed\xf1d<2\x10x \x13')
+```
+
+### Create a SCRAM-SHA-256-authenitcated SQL user
+
+In the CockroachDB SQL shell, use the computed hash as the value of `PASSWORD` when creating a user.
+
+{% include_cached copy-clipboard.html %}
+```sql
+CREATE USER cool_user WITH PASSWORD "$scram$100000$1nrvfY/xnvN.r/Xe$sha-1=AH89UKd6Qkk53fRxXOHcvwlpHMc,sha-256=S7i4.nNSpzw81ySRj9jwQ55rvmvaQ4Hmg6yumYq0h3o,sha-512=OxYwCx1aa8.wuKqsxPuIIyyk/jUnVx3Ej8g3NnQexTPPRsm9cwNMRxLkSdIbuQP4UJg55
+EHsfyzTy3W1.QdtKtg";
+```
+```
+CREATE ROLE
+
+
+Time: 156ms total (execution 156ms / network 0ms)
+```
+
+### Inspect the user
+
+In this way, the server stores the information needed for SCRAM authentication, despite the plaintext password never having been conveyed to CockroachDB. The 'concern' with plaintext passwords has been cleanly 'separated' from CockroachDB.
+
+{% include_cached copy-clipboard.html %}
+```sql
+SELECT username, "hashedPassword" FROM system.users WHERE username='cool_user'; 
+SELECT *  FROM system.users WHERE username = "cool_user";
+```
+```
+  username  |                                                             hashedPassword
+------------+------------------------------------------------------------------------------------------------------------------------------------------
+  cool_user | SCRAM-SHA-256$119680:6XN0y7A83hylmX+3uMRPvQ==$mOI18rsucBjSrNMDDqNJ1/q4cROvRDLIUqjC0BzQHEg=:4zPCVFflWWHD53ZEIrcH4q3X1+le86TBIV0Dce6fIuc=
 ```
 
 ## References
