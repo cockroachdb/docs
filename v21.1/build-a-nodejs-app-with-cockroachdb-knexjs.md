@@ -3,7 +3,7 @@ title: Build a Simple CRUD Node.js App with CockroachDB and Knex.js
 summary: Learn how to use CockroachDB from a simple CRUD application that uses the Knex.js query builder.
 toc: true
 twitter: false
-referral_id: docs_nodejs_knexjs
+referral_id: docs_node_knexjs
 ---
 
 <div class="filters filters-big clearfix">
