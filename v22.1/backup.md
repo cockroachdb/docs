@@ -42,11 +42,8 @@ To view the contents of an Enterprise backup created with the `BACKUP` statement
 
 - [Full cluster backups](take-full-and-incremental-backups.html#full-backups) can only be run by members of the [`admin` role](security-reference/authorization.html#admin-role). By default, the `root` user belongs to the `admin` role.
 - For all other backups, the user must have [read access](security-reference/authorization.html#managing-privileges) on all objects being backed up. Database backups require `CONNECT` privileges, and table backups require `SELECT` privileges. Backups of user-defined schemas, or backups containing user-defined types, require `USAGE` privileges.
-- **New in v22.1:** `BACKUP` requires full read and write permissions to its target destination. `BACKUP` does **not** require delete or overwrite permissions to its target destination.
-
-{{site.data.alerts.callout_success}}
-As of v22.1, it is possible to write backups to a cloud storage bucket that you have configured with [object locking](use-cloud-storage-for-bulk-operations.html#object-locking).
-{{site.data.alerts.end}}
+- `BACKUP` requires full read and write permissions to its target destination.
+- **New in v22.1:** `BACKUP` does **not** require delete or overwrite permissions to its target destination. This allows `BACKUP` to write to cloud storage buckets that have [object locking](use-cloud-storage-for-bulk-operations.html#object-locking) configured.
 
 ### Destination privileges
 
