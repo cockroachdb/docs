@@ -32,6 +32,7 @@ bitwise
 bogdan
 bolded
 bool
+boolean
 booleans
 brandhorst
 brazilsouth
@@ -187,10 +188,12 @@ indexable
 inet
 ing
 ingestions
+initializr
 intellij
 interleavings
 intra
 ints
+io
 jaewan
 japaneast
 japanwest
@@ -544,8 +547,10 @@ underprovisioning
 underreplicated
 underreplication
 unencrypted
+unicode
 unindexed
 uniquness
+unix
 unpartition
 unpartitioned
 unpartitioning
