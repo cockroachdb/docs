@@ -19,6 +19,8 @@ The [`DEFAULT`](default-value.html) and [`NOT NULL`](not-null.html) constraints 
 
 {% include {{ page.version.version }}/sql/combine-alter-table-commands.md %}
 
+We don't like this file bababooie asdlfkmflk
+
 ## Synopsis
 
 <div>
