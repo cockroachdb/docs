@@ -5,13 +5,12 @@ toc: true
 docs_area: reference.sql
 ---
 
-This page summarizes how `NULL` values are handled in CockroachDB
-SQL. Each topic is demonstrated via the [built-in SQL
-client](cockroach-sql.html).
 
-{{site.data.alerts.callout_info}}
-When using the built-in client, `NULL` values are displayed using the word `NULL`. This distinguishes them from a character field that contains an empty string ("").
-{{site.data.alerts.end}}
+`NULL` is the term used to represent a missing value. A `NULL` value in a table is a value in a field that appears to be blank. A field with a `NULL` value is a field with no value.
+
+This page summarizes how `NULL` values are handled in CockroachDB SQL. Each topic is demonstrated via the [built-in SQL client](cockroach-sql.html).
+
+When using the built-in client, `NULL` values are displayed using the word `NULL`. This distinguishes them from a character field that contains an empty string (`""`).
 
 ## NULLs and simple comparisons
 
@@ -218,35 +217,35 @@ the second operand is `NULL`.
  `FALSE AND TRUE`  | `FALSE`
  `FALSE AND NULL`  | `FALSE`
  `TRUE AND FALSE`  | `FALSE`
- `TRUE AND TRUE`   | `TRUE`  
- `TRUE AND NULL`   | `NULL`  
+ `TRUE AND TRUE`   | `TRUE`
+ `TRUE AND NULL`   | `NULL`
  `NULL AND FALSE`  | `FALSE`
- `NULL AND TRUE`   | `NULL`  
- `NULL AND NULL`   | `NULL`  
+ `NULL AND TRUE`   | `NULL`
+ `NULL AND NULL`   | `NULL`
 
 | Expression      | Result |
 ------------------|---------
  `FALSE OR FALSE` | `FALSE`
- `FALSE OR TRUE`  | `TRUE`  
- `FALSE OR NULL`  | `NULL`  
- `TRUE OR FALSE`  | `TRUE`  
- `TRUE OR TRUE`   | `TRUE`  
- `TRUE OR NULL`   | `TRUE`  
- `NULL OR FALSE`  | `NULL`  
- `NULL OR TRUE`   | `TRUE`  
- `NULL OR NULL`   | `NULL`  
+ `FALSE OR TRUE`  | `TRUE`
+ `FALSE OR NULL`  | `NULL`
+ `TRUE OR FALSE`  | `TRUE`
+ `TRUE OR TRUE`   | `TRUE`
+ `TRUE OR NULL`   | `TRUE`
+ `NULL OR FALSE`  | `NULL`
+ `NULL OR TRUE`   | `TRUE`
+ `NULL OR NULL`   | `NULL`
 
 | Expression      | Result  |
 ------------------|---------
- `FALSE IS FALSE` | `TRUE`  
+ `FALSE IS FALSE` | `TRUE`
  `FALSE IS TRUE`  | `FALSE`
  `FALSE IS NULL`  | `FALSE`
  `TRUE IS FALSE`  | `FALSE`
- `TRUE IS TRUE`   | `TRUE`  
+ `TRUE IS TRUE`   | `TRUE`
  `TRUE IS NULL`   | `FALSE`
  `NULL IS FALSE`  | `FALSE`
  `NULL IS TRUE`   | `FALSE`
- `NULL IS NULL`   | `TRUE`  
+ `NULL IS NULL`   | `TRUE`
 
 ## NULLs and arithmetic
 

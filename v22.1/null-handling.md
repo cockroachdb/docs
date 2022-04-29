@@ -5,13 +5,11 @@ toc: true
 docs_area: reference.sql
 ---
 
-This page summarizes how `NULL` values are handled in CockroachDB
-SQL. Each topic is demonstrated via the [built-in SQL
-client](cockroach-sql.html).
+`NULL` is the term used to represent a missing value. A `NULL` value in a table is a value in a field that appears to be blank. A field with a `NULL` value is a field with no value.
 
-{{site.data.alerts.callout_info}}
-When using the built-in client, `NULL` values are displayed using the word `NULL`. This distinguishes them from a character field that contains an empty string ("").
-{{site.data.alerts.end}}
+This page summarizes how `NULL` values are handled in CockroachDB SQL. Each topic is demonstrated via the [built-in SQL client](cockroach-sql.html).
+
+When using the built-in client, `NULL` values are displayed using the word `NULL`. This distinguishes them from a character field that contains an empty string (`""`).
 
 ## NULLs and simple comparisons
 
