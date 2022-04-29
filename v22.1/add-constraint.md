@@ -311,7 +311,7 @@ To ensure that the uniqueness constraint is enforced properly across regions whe
 
 ### Using `DEFAULT gen_random_uuid()` in `REGIONAL BY ROW` tables
 
-To auto-generate unique row IDs in `REGIONAL BY ROW` tables, use the [`UUID`](uuid.html) column with the `gen_random_uuid()` [function](functions-and-operators.html#id-generation-functions) as the [default value](default-value.html):
+To auto-generate unique row identifiers in `REGIONAL BY ROW` tables, use the [`UUID`](uuid.html) column with the `gen_random_uuid()` [function](functions-and-operators.html#id-generation-functions) as the [default value](default-value.html):
 
 {% include copy-clipboard.html %}
 ~~~ sql
