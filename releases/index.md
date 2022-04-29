@@ -25,6 +25,8 @@ After downloading your desired release, learn how to [install CockroachDB](../{{
   {% assign old_release_format = "True" %}
 {% endif %} {% comment %} For all releases prior to and including 20.1, we use different logic to generate the page (vXX.Y.Z.html vs vXX.Y.html#vXX-Y-Z). {% endcomment %}
 
+{% assign shareleases = "v21.1,v21.2,v22.1" | split: "," %} {% comment %} For all Production releases 21.1 and later, we provide shasum files as well. {% endcomment %}
+
 ## {{ v.major_version }}
 
 <div id="os-tabs" class="filters filters-big clearfix">
@@ -72,15 +74,30 @@ After downloading your desired release, learn how to [install CockroachDB](../{{
             <td class="os-release-cell">
                 <section class="filter-content" data-scope="linux">
                     <a class="os-release-link" href="https://binaries.cockroachdb.com/cockroach-{{ r.version }}.linux-amd64.tgz">Precompiled 64-bit Binary</a>
+                    {% if shareleases contains v.major_version %}
+                        {% if s == "Production" %}
+                            <a class="os-release-link" href="https://binaries.cockroachdb.com/cockroach-{{ r.version }}.linux-amd64.tgz.sha256sum">SHA256</a>
+                        {% endif %}
+                    {% endif %}
                 </section>
                 <section class="filter-content" data-scope="mac">
                     <a class="os-release-link" href="https://binaries.cockroachdb.com/cockroach-{{ r.version }}.darwin-10.9-amd64.tgz">Precompiled 64-bit Binary</a>
+                    {% if shareleases contains v.major_version %}
+                        {% if s == "Production" %}
+                        <a class="os-release-link" href="https://binaries.cockroachdb.com/cockroach-{{ r.version }}.darwin-10.9-amd64.tgz.sha256sum">SHA256</a>
+                        {% endif %}
+                    {% endif %}
                 </section>
                 <section class="filter-content" data-scope="windows">
                 {% if r.no_windows == "true" %}
                     N/A
                 {% else %}
                     <a class="os-release-link" href="https://binaries.cockroachdb.com/cockroach-{{ r.version }}.windows-6.2-amd64.zip">Precompiled 64-bit Binary</a>
+                    {% if shareleases contains v.major_version %}
+                        {% if s == "Production" %}
+                        <a class="os-release-link" href="https://binaries.cockroachdb.com/cockroach-{{ r.version }}.windows-6.2-amd64.zip.sha256sum">SHA256</a>
+                        {% endif %}
+                    {% endif %}
                 {% endif %}
                 </section>
                 <section class="filter-content" data-scope="docker">
