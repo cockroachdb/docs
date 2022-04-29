@@ -131,8 +131,9 @@ The Execution Stats section has three subsections:
 
     Statistic | Description
     ----------|------------
-    Rows Read | The number of rows read by the statement. The gray bar indicates the mean number of rows read. The blue bar indicates one standard deviation from the mean.
-    Disk Bytes Read | The size of the data read by the statement. The gray bar indicates the mean number of bytes read. The blue bar indicates one standard deviation from the mean.
+    Rows Read | The number of rows read by the statement. The gray bar indicates the mean number of rows read.
+    Disk Bytes Read | The size of the data read by the statement. The gray bar indicates the mean number of bytes read.
+    Rows Written | The number of rows written by statements with this fingerprint within the aggregation interval.
 
 - **Stats by Node** provides a breakdown of the number of statements of the selected fingerprint per gateway node. You can use this table to determine whether, for example, you are executing queries on a node that is far from the data you are requesting (see [Optimize Statement Performance]({{ link_prefix }}make-queries-fast.html#cluster-topology)). <br><br>**Stats by Node** are not visible for {{ site.data.products.serverless }} clusters.
 
