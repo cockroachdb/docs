@@ -59,10 +59,10 @@ If you want to create a cluster in a disabled region, please [contact Support](h
 
 In the **Regions & nodes** section, select the number of nodes.
 
-- For single-region application development and testing, you may create a 1-node cluster.
-- For single-region production deployments, we recommend a minimum of 3 nodes. The number of nodes also depends on your storage capacity and performance requirements. See [Example](plan-your-cluster.html?filters=dedicated#example) for further guidance.
+- For single-region application development and testing, you may create a 1 node cluster.
+- For single-region production deployments, we recommend a minimum of 3 nodes. The number of nodes also depends on your storage capacity and performance requirements. See [Example](plan-your-cluster.html?filters=dedicated#dedicated-example) for further guidance.
 - For multi-region deployments, we require a minimum of 3 nodes per region. For best performance and stability, you should use the same number of nodes in each region.
-- See [Plan a CockroachDB Cloud cluster](plan-your-cluster.html?filters=dedicated) for more information about our requirements and recommendations for cluster configuration.
+- See [Plan a CockroachDB Cloud cluster](plan-your-cluster.html?filters=dedicated) for the requirements and recommendations for {{ site.data.products.dedicated }} cluster configuration.
 
 {% include cockroachcloud/nodes-limitation.md %}
 
@@ -100,7 +100,7 @@ The choice of hardware per node determines the [cost](#step-2-select-the-cloud-p
 
 To change the hardware configuration after the cluster is created, see [Manage a CockroachDB Dedicated Cluster](cluster-management.html).
 
-See the [Example](plan-your-cluster.html?filters=dedicated#example) for further guidance.
+See the [Example](plan-your-cluster.html?filters=dedicated#dedicated-example) for further guidance.
 
 ## Step 6. Name the cluster
 
