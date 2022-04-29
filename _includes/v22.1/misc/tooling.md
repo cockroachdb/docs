@@ -60,6 +60,7 @@ For a list of tools supported by the CockroachDB community, see [Third-Party Too
 | Tool | Latest tested version | Support level | Tutorial |
 |-----+------------------------+----------------+----------|
 | [Alembic](https://alembic.sqlalchemy.org/en/latest/) | 1.7 | Full | [Migrate CockroachDB Schemas with Alembic](alembic.html)
+| [AWS DMS](https://aws.amazon.com/dms/) | 3.4.6 | Beta | [Migrate CockroachDB Schemas with AWS DMS](aws-dms.html)
 | [Flyway](https://flywaydb.org/documentation/commandline/#download-and-installation) | 7.1.0 | Full | [Migrate CockroachDB Schemas with Flyway](flyway.html)
 | [Liquibase](https://www.liquibase.org/download) | 4.2.0 | Full | [Migrate CockroachDB Schemas with Liquibase](liquibase.html)
 

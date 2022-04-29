@@ -85,7 +85,7 @@ jobs:
               major_version=${path[-2]}
               file="<li>${file}:<ul><li><a href=\"https://deploy-preview-$pr_num--cockroachdb-docs.netlify.app/docs/releases/${major_version}.html\" target=\"_blank\" rel=\"noopener\">releases/${major_version}.md</a></li></ul></li>"
               output+="$file"
-            elif [[ $file == _includes/v* || $file == _includes/cockroachcloud* ]] && [[ $file != *.json ]] && [[ $file != *.gitignore* ]]
+            elif [[ $file == _includes/v* || $file == _includes/cockroachcloud* || $file == images/* ]] && [[ $file != *.json ]] && [[ $file != *.gitignore* ]]
             then
               generateIncludes $file
             else
