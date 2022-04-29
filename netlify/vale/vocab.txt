@@ -37,6 +37,7 @@ brandhorst
 brazilsouth
 burstable
 bzip
+cacert
 caddy
 caddyfile
 callout
@@ -150,6 +151,7 @@ geographiclib
 geojson
 geos
 geospatial
+gists
 github
 glibc
 goroutine
@@ -253,6 +255,7 @@ mamatsis
 manpages
 mapbox
 marketo
+maxroach
 mayank
 memtable
 metatables
