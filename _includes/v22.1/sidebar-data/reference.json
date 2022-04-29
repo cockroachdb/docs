@@ -1372,7 +1372,7 @@
             ],
             "items": [
               {
-                "title": "Salted Challenge Response Authentication Mechanism (scram-sha-256)",
+                "title": "SASL Authentication with SCRAM-SHA-256",
                 "urls": [ "/${VERSION}/security-reference/scram-sha-256.html" ]
               }
             ]
