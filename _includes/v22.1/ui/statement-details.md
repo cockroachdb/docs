@@ -20,7 +20,8 @@ The **Overview** section displays the SQL statement fingerprint and essential st
 
 **Resource usage** displays statistics about storage, memory, and network usage for the SQL statement fingerprint.
 
-  - **Mean rows/bytes read** displays the mean average number of rows and bytes [read from the storage layer]({{ link_prefix }}architecture/life-of-a-distributed-transaction.html#reads-from-the-storage-layer) for statements with this fingerprint within the aggregation interval .
+  - **Mean rows/bytes read** displays the mean number of rows and bytes [read from the storage layer]({{ link_prefix }}architecture/life-of-a-distributed-transaction.html#reads-from-the-storage-layer) for statements with this fingerprint within the aggregation interval.
+  - **Mean rows written** displays the mean number of rows written by statements with this fingerprint within the aggregation interval.
   - **Max memory usage** displays the maximum memory used by a statement with this fingerprint at any time during its execution within the aggregation interval or specified time interval.
   - **Network usage** displays the amount of [data transferred over the network]({{ link_prefix }}architecture/reads-and-writes-overview.html) for statements with this fingerprint within the aggregation interval. If this value is 0, the statement was executed on a single node.
   - **Max scratch disk usage** displays the maximum amount of data [spilled to temporary storage on disk]({{ link_prefix }}vectorized-execution.html#disk-spilling-operations) while executing statements with this fingerprint within the aggregation interval.
