@@ -1,5 +1,5 @@
 ---
-title: Plan a CockroachDB Cluster
+title: Plan a CockroachDB Cloud Cluster
 summary: Plan your cluster's configuration.
 toc: true
 docs_area: manage
@@ -47,25 +47,58 @@ If you have a free cluster, it will be throttled to baseline performance once al
 If your cluster gets throttled after using all of its burst capacity during the high load period, it will still earn RUs during lower load periods and be able to burst again. At the end of the month, your usage will reset and you will receive another 10M free burst RUs.
 </section>
 <section class="filter-content" markdown="1" data-scope="dedicated">
-### Requirements
 
-- Multi-region clusters must contain at least 3 regions to ensure that data replicated across regions can survive the loss of one region. For example, this applies to internal system data that is important for overall cluster operations as well as tables with the [`GLOBAL`](../{{site.versions["stable"]}}/global-tables.html) table locality or the [`REGIONAL BY TABLE`](../{{site.versions["stable"]}}/regional-tables.html#regional-tables) table locality and [`REGION` survival goal](../{{site.versions["stable"]}}/multiregion-overview.html#surviving-region-failures). 
--  Each region of a multi-region cluster must contain at least 3 nodes to ensure that data located entirely in a region can survive the loss of one node in that region. For example, this applies to tables with the [`REGIONAL BY ROW`](../{{site.versions["stable"]}}/regional-tables.html#regional-by-row-tables) table locality. 
-- You can have a maximum of 9 regions per cluster through the Console. If you need to add more regions, [contact us](https://support.cockroachlabs.com).
+### Cluster configuration
 
-### Recommendations
+A single node cluster is only appropriate for single-region application development and testing. For single-region production deployments, we recommend a minimum of 3 nodes. The number of nodes you choose also affects your storage capacity and performance. See the [Example](#example) for more information.
+
+All {{ site.data.products.db }} clusters use 3 Availability Zones (AZs). For balanced data distribution and best performance, we recommend using a number of nodes that is a multiple of 3 (e.g., 3, 6, or 9 nodes per region).
+
+#### Multi-region clusters
+
+Multi-region clusters must contain at least 3 regions to ensure that data replicated across regions can survive the loss of one region. For example, this applies to internal system data that is important for overall cluster operations as well as tables with the [`GLOBAL`](../{{site.versions["stable"]}}/global-tables.html) table locality or the [`REGIONAL BY TABLE`](../{{site.versions["stable"]}}/regional-tables.html#regional-tables) table locality and [`REGION` survival goal](../{{site.versions["stable"]}}/multiregion-overview.html#surviving-region-failures). 
+
+Each region of a multi-region cluster must contain at least 3 nodes to ensure that data located entirely in a region can survive the loss of one node in that region. For example, this applies to tables with the [`REGIONAL BY ROW`](../{{site.versions["stable"]}}/regional-tables.html#regional-by-row-tables) table locality. We recommend you use the same number of nodes in each region of your cluster for best performance and stability.
+
+You can have a maximum of 9 regions per cluster through the Console. If you need to add more regions, [contact us](https://support.cockroachlabs.com). 
+
+### Cluster scaling
+
+When scaling up your cluster, it is generally more effective to increase node size up to 16 vCPUs before adding more nodes. For example, if you have a 3-node cluster with 2 vCPUs per node, consider scaling up to 8 vCPUs before adding a fourth node. For most production applications, we recommend at least 4 to 8 vCPUs per node.
+
+We recommend you add or remove nodes from a cluster when the cluster isn't experiencing heavy traffic. Adding or removing nodes incurs a non-trivial amount of load on the cluster. Changing the cluster configuration during times of heavy traffic can result in degraded application performance or longer times for node modifications. Before removing nodes from a cluster, ensure that the reduced disk space will be sufficient for the existing and anticipated data. 
+
+If you have changed the [replication factor](../{{site.versions["stable"]}}/configure-zone.html) for a cluster, you might not be able to remove nodes from the cluster. For example, suppose you have a 5-node cluster and you had previously changed the replication factor from its default value of 3 to 5. Now if you want to scale down the cluster to 3 nodes, the decommissioning nodes operation to remove nodes from the cluster might fail. To successfully remove nodes from the cluster, you will have to change the replication factor back to 3.
+
 {% comment %}
 When AZ zones are updated:
-- All {{ site.data.products.db }} clusters use 3 Availability Zones (AZs). For balanced data distribution and best performance, we recommend using a number of nodes that is a multiple of 3 (e.g., 3, 6, or 9 nodes per region).
-
 When add/remove regions is available:
 - We recommend you add or remove regions or nodes from a cluster when the cluster isn't experiencing heavy traffic. Adding or removing regions or nodes incurs a non-trivial amount of load on the cluster. Changing the cluster configuration during times of heavy traffic can result in degraded application performance or longer times for node modifications.
 - Before removing regions from a cluster, be aware that access to the database from that region will no longer be as fast.
 {% endcomment %}
 
-- We recommend you use the same number of nodes in each region of your cluster for best performance and stability.
-- When scaling up your cluster, it is generally more effective to increase node size up to 16 vCPUs before adding more nodes. For example, if you have a 3-node cluster with 2 vCPUs per node, consider scaling up to 8 vCPUs before adding a fourth node. For most production applications, we recommend at least 4 to 8 vCPUs per node.
-- We recommend you add or remove nodes from a cluster when the cluster isn't experiencing heavy traffic. Adding or removing nodes incurs a non-trivial amount of load on the cluster. Changing the cluster configuration during times of heavy traffic can result in degraded application performance or longer times for node modifications.
-- Before removing nodes from a cluster, ensure that the reduced disk space will be sufficient for the existing and anticipated data. 
-- If you have changed the [replication factor](../{{site.versions["stable"]}}/configure-zone.html) for a cluster, you might not be able to remove nodes from the cluster. For example, suppose you have a 5-node cluster and you had previously changed the replication factor from its default value of 3 to 5. Now if you want to scale down the cluster to 3 nodes, the decommissioning nodes operation to remove nodes from the cluster might fail. To successfully remove nodes from the cluster, you will have to change the replication factor back to 3.
+### Example
+
+Let's say we want to create a cluster to connect with an application with a requirement of 2000 TPS that is running on the Google Cloud Platform in the `us-east1` region.
+
+Suppose the raw data amount we expect to store without replication is 500 GB.
+At 40% Compression, we can expect a savings of 200 GB. Then the amount of data we need to store is 300 GB.
+
+Let's consider a storage buffer of 50% to account for overhead and data growth. Then net raw data amount to be stored is 450 GB.
+
+With the default replication factor of 3, the total amount of data stored is (3 * 450 GB) = 1350 GB.
+
+To determine the number of nodes and the hardware configuration to store 1350 GB of data, refer to the table in [Create Your Cluster](create-your-cluster.html#step-2-select-the-cloud-provider). One way to reach a 1350 GB storage capacity is 3 nodes with 480 GiB per node, which gives us a capacity of (3*480 GiB) = 1440 GiB.
+
+Let's see how many vCPUs we need to meet our performance requirement of 2000 TPS. We know that 2 vCPU nodes are not recommended for production, so the first compute power we should check is 3 nodes with 4 vCPUs per node. We can calculate that this configuration would have (3*4 vCPUs) = 12 vCPUs. Since each vCPU can handle around 1000 TPS, 4 vCPU nodes can meet our performance requirements.
+
+Thus our final configuration is as follows:
+
+Component | Selection
+----------|----------
+Cloud provider | GCP
+Region | us-east1
+Number of nodes | 3
+Compute | 4 vCPU
+Storage | 480 GiB
 </dedicated>

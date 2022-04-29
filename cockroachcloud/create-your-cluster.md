@@ -60,9 +60,9 @@ If you want to create a cluster in a disabled region, please [contact Support](h
 In the **Regions & nodes** section, select the number of nodes.
 
 - For single-region application development and testing, you may create a 1-node cluster.
-- For single-region production deployments, we recommend a minimum of 3 nodes. The number of nodes also depends on your storage capacity and performance requirements. See [Example](#example) for further guidance.
+- For single-region production deployments, we recommend a minimum of 3 nodes. The number of nodes also depends on your storage capacity and performance requirements. See [Example](plan-your-cluster.html?filters=dedicated#example) for further guidance.
 - For multi-region deployments, we require a minimum of 3 nodes per region. For best performance and stability, you should use the same number of nodes in each region.
-- See [Planning your cluster](plan-your-cluster.html?filters=dedicated) for more information about our requirements and recommendations for cluster configuration.
+- See [Plan a CockroachDB Cloud cluster](plan-your-cluster.html?filters=dedicated) for more information about our requirements and recommendations for cluster configuration.
 
 {% include cockroachcloud/nodes-limitation.md %}
 
@@ -100,7 +100,7 @@ The choice of hardware per node determines the [cost](#step-2-select-the-cloud-p
 
 To change the hardware configuration after the cluster is created, see [Manage a CockroachDB Dedicated Cluster](cluster-management.html).
 
-See [Example](#example) for further guidance.
+See the [Example](plan-your-cluster.html?filters=dedicated#example) for further guidance.
 
 ## Step 6. Name the cluster
 
@@ -151,31 +151,6 @@ You can use [VPC peering](network-authorization.html#vpc-peering) to connect you
 1. Click **Create cluster**.
 
 Your cluster will be created in approximately 20-30 minutes.
-
-## Example
-
-Let's say we want to create a cluster to connect with an application with a requirement of 2000 TPS that is running on the Google Cloud Platform in the `us-east1` region.
-
-Suppose the raw data amount we expect to store without replication is 500 GB.
-At 40% Compression, we can expect a savings of 200 GB. Then the amount of data we need to store is 300 GB.
-
-Let's consider a storage buffer of 50% to account for overhead and data growth. Then net raw data amount to be stored is 450 GB.
-
-With the default replication factor of 3, the total amount of data stored is (3 * 450 GB) = 1350 GB.
-
-To determine the number of nodes and the hardware configuration to store 1350 GB of data, refer to the table in [Step 2](#step-2-select-the-cloud-provider). One way to reach a 1350 GB storage capacity is 3 nodes with 480 GiB per node, which gives us a capacity of (3*480 GiB) = 1440 GiB.
-
-Let's see how many vCPUs we need to meet our performance requirement of 2000 TPS. We know that 2 vCPU nodes are not recommended for production, so the first compute power we should check is 3 nodes with 4 vCPUs per node. We can calculate that this configuration would have (3*4 vCPUs) = 12 vCPUs. Since each vCPU can handle around 1000 TPS, 4 vCPU nodes can meet our performance requirements.
-
-Thus our final configuration is as follows:
-
-Component | Selection
-----------|----------
-Cloud provider | GCP
-Region | us-east1
-Number of nodes | 3
-Compute | 4 vCPU
-Storage | 480 GiB
 
 ## What's next
 
