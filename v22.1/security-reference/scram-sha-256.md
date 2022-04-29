@@ -1,5 +1,5 @@
 ---
-title: SASL Authentication with SCRAM-SHA-256
+title: SASL/SCRAM-SHA-256 Secure Password-based Authentication
 summary: A discussion of the security and performance considerations for using SASL/SCRAM-SHA-256 in CockroachDB.
 toc: true
 docs_area: reference.security

@@ -1372,7 +1372,7 @@
             ],
             "items": [
               {
-                "title": "SASL Authentication with SCRAM-SHA-256",
+                "title": "SASL/SCRAM-SHA-256 Secure Password-based Authentication",
                 "urls": [ "/${VERSION}/security-reference/scram-sha-256.html" ]
               }
             ]
