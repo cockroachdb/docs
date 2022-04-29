@@ -10,7 +10,7 @@ The `SHOW BACKUP` [statement](sql-statements.html) lists the contents of a backu
 
 `SHOW BACKUP` requires read permissions to its target destination.
 
-{% include {{ page.version.version }}/misc/source-privileges.md %}
+{% include {{ page.version.version }}/misc/non-http-source-privileges.md %}
 
 ## Synopsis
 
@@ -22,10 +22,11 @@ The `SHOW BACKUP` [statement](sql-statements.html) lists the contents of a backu
 
 Parameter | Description
 ----------|------------
-`SHOW BACKUPS IN location` | List the backup paths in the given [`location`](backup.html#backup-file-urls). [See the example below](#view-a-list-of-the-available-full-backup-subdirectories).
-`SHOW BACKUP location` | Show the details of the backup in the given [`location`](backup.html#backup-file-urls). [See the example below](#show-a-backup).
-`SHOW BACKUP SCHEMAS location` | Show the schema details of the backup in the given [`location`](backup.html#backup-file-urls). [See the example below](#show-a-backup-with-schemas).
-`SHOW BACKUP subdirectory IN location` |  List the full and incremental backups that are stored in the given full backup's `subdirectory` within a [`location`](backup.html#backup-file-urls). [See the example below](#show-details-for-scheduled-backups).
+`SHOW BACKUPS IN location` | List the backup paths in the given [`location`](backup.html#backup-file-urls). [See the example](#view-a-list-of-the-available-full-backup-subdirectories).
+`SHOW BACKUP location` | Show the details of the backup in the given [`location`](backup.html#backup-file-urls). [See the example](#show-a-backup).
+`SHOW BACKUP LATEST IN location` | Show the most recent backup added in the given [`location`](backup.html#backup-file-urls). [See the example](#show-the-most-recent-backup).
+`SHOW BACKUP SCHEMAS location` | Show the schema details of the backup in the given [`location`](backup.html#backup-file-urls). [See the example](#show-a-backup-with-schemas).
+`SHOW BACKUP subdirectory IN location` |  List the full and incremental backups that are stored in the given full backup's `subdirectory` within a [`location`](backup.html#backup-file-urls). [See the example](#show-details-for-scheduled-backups).
 `kv_option_list` | Control the behavior of `SHOW BACKUP` with a comma-separated list of [these options](#options).
 
 ### Options
@@ -110,6 +111,24 @@ You will receive an error if there is a collection of backups in the storage loc
 ~~~
 
 The path format is `<year>/<month>/<day>-<timestamp>`.
+
+### Show the most recent backup
+
+<span class="version-tag">New in v21.1:</span> To view the most recent backup, use the `LATEST` syntax:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> SHOW BACKUP LATEST IN 's3://{bucket name}?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]';
+~~~
+
+~~~
+database_name | parent_schema_name | object_name | object_type | backup_type | start_time |          end_time          | size_bytes | rows | is_full_cluster
+--------------+--------------------+-------------+-------------+-------------+------------+----------------------------+------------+------+------------------
+NULL          | NULL               | movr        | database    | full        | NULL       | 2022-03-25 16:53:48.001825 |       NULL | NULL |      false
+movr          | NULL               | public      | schema      | full        | NULL       | 2022-03-25 16:53:48.001825 |       NULL | NULL |      false
+movr          | public             | users       | table       | full        | NULL       | 2022-03-25 16:53:48.001825 |     135144 | 1474 |      false
+(3 rows)
+~~~
 
 ### View a list of the full and incremental backups in a specific full backup subdirectory
 

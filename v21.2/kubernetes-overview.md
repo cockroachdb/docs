@@ -22,25 +22,16 @@ CockroachDB can be deployed and managed on Kubernetes using the following method
 
 ## CockroachDB on Kubernetes
 
-This guide describes how to handle the following tasks when running CockroachDB on Kubernetes:
+This section describes how to:
 
-- [Deploying CockroachDB on a single Kubernetes cluster](deploy-cockroachdb-with-kubernetes.html)
-- [Scheduling CockroachDB pods onto worker nodes](schedule-cockroachdb-kubernetes.html)
-- [Managing CockroachDB resources on Kubernetes](configure-cockroachdb-kubernetes.html)
-- [Managing certificates on Kubernetes](secure-cockroachdb-kubernetes.html)
-- [Scaling CockroachDB on Kubernetes](scale-cockroachdb-kubernetes.html)
-- [Monitoring CockroachDB on Kubernetes using Prometheus and Alertmanager](monitor-cockroachdb-kubernetes.html)
-- [Upgrading CockroachDB on Kubernetes](upgrade-cockroachdb-kubernetes.html)
-- [Optimizing CockroachDB performance on Kubernetes](kubernetes-performance.html)
+- [Deploy CockroachDB on a single Kubernetes cluster](deploy-cockroachdb-with-kubernetes.html)
+- [Deploy CockroachDB on Red Hat OpenShift](deploy-cockroachdb-with-kubernetes-openshift.html)
+- [Orchestrate CockroachDB across multiple Kubernetes clusters](orchestrate-cockroachdb-with-kubernetes-multi-cluster.html)
 
-### Additional topics
-
-- [Deploying CockroachDB on Red Hat OpenShift](deploy-cockroachdb-with-kubernetes-openshift.html)
-- [Orchestrating CockroachDB across multiple Kubernetes clusters](orchestrate-cockroachdb-with-kubernetes-multi-cluster.html)
 
 ## Kubernetes terminology
 
-Before starting, review some basic Kubernetes terminology. Note that CockroachDB [nodes](architecture/overview.html#terms) are distinct from Kubernetes "nodes" or "worker nodes".
+Before starting, review some basic Kubernetes terminology. Note that CockroachDB [nodes](architecture/overview.html#cockroachdb-architecture-terms) are distinct from Kubernetes "nodes" or "worker nodes".
 
 Feature | Description
 --------|------------

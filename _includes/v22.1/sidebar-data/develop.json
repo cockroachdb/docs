@@ -168,6 +168,12 @@
           "urls": [
             "/${VERSION}/bulk-delete-data.html"
           ]
+        },
+        {
+          "title": "Batch Delete Expired Data with Row-Level TTL",
+          "urls": [
+            "/${VERSION}/row-level-ttl.html"
+          ]
         }
       ]
     },
@@ -278,6 +284,12 @@
           "title": "Apply SQL Statement Performance Rules",
           "urls": [
             "/${VERSION}/apply-statement-performance-rules.html"
+          ]
+        },
+        {
+          "title": "Map SQL Activity using an Application Name",
+          "urls": [
+            "/${VERSION}/map-sql-activity-to-app.html"
           ]
         },
         {

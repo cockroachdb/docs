@@ -1,5 +1,5 @@
 ---
-title: Limiting Query Results
+title: Limit Query Results
 summary: LIMIT and OFFSET restrict an operation to a few row.
 toc: true
 docs_area: reference.sql
@@ -35,7 +35,7 @@ OFFSET <offset_value> [ ROW | ROWS ]
 
 ## Examples
 
-For example uses with `SELECT`, see [Limiting Row Count](selection-queries.html#limiting-row-count).
+For example uses with `SELECT`, see [Limit Row Count](selection-queries.html#limit-row-count).
 
 ## See also
 

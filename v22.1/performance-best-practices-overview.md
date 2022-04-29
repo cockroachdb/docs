@@ -2,7 +2,7 @@
 title: SQL Performance Best Practices
 summary: Best practices for optimizing SQL performance in CockroachDB.
 toc: true
-docs_area: manage
+docs_area: develop
 ---
 
 This page provides best practices for optimizing query performance in CockroachDB.
@@ -72,7 +72,9 @@ To delete a large number of rows, we recommend iteratively deleting batches of r
 
 ### Batch delete "expired" data
 
-CockroachDB does not support Time to Live (TTL) on table rows. To delete "expired" rows, we recommend automating a batch delete process with a job scheduler like `cron`. For an example, see [Batch-delete "expired" data](bulk-delete-data.html#batch-delete-expired-data).
+{% include {{page.version.version}}/sql/row-level-ttl.md %}
+
+For more information, see [Batch delete expired data with Row-Level TTL](row-level-ttl.html).
 
 ## Assign column families
 

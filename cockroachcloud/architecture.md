@@ -14,18 +14,33 @@ For an intro to CockroachDB's core architecture and capabilities, see [Cockroach
 
 {% include common/basic-terms.md %}
 
-<div class="filters clearfix">
-  <button class="filter-button" data-scope="serverless">{{ site.data.products.serverless-plan }}</button>
-  <button class="filter-button" data-scope="dedicated">{{ site.data.products.dedicated }}</button>
-</div>
+## {{ site.data.products.dedicated }}
 
-<section class="filter-content" markdown="1" data-scope="serverless">
+If you need a single tenant cluster with no shared resources, we recommend {{ site.data.products.dedicated }}. {{ site.data.products.dedicated }} supports single and multi-region clusters in Amazon Web Services and Google Cloud Platform. {{ site.data.products.dedicated }} is recommended for all workloads: lightweight and critical production.
+
+### Hardware
+
+We use the Kubernetes offerings in AWS and GCP (EKS and GKE respectively) to run {{ site.data.products.db }} offerings. GCP clusters use [N1 standard](https://cloud.google.com/compute/docs/machine-types#n1_machine_types) machine types and [Persistent Disk storage](https://cloud.google.com/compute/docs/disks#pdspecs). AWS clusters use [M5 instance types](https://aws.amazon.com/ec2/instance-types/m5/#Product_Details) and [Elastic Block Store (EBS)](https://aws.amazon.com/ebs/features/). Each single-region cluster has a minimum of three nodes spread across three availability zones (AZ) in a cloud provider region. Multi-region clusters are similar to single-region clusters, with nodes spread across three or more AZs in each region.
+
+### Security and Connection
+
+{{ site.data.products.dedicated }} clusters are single tenant. This means each new cluster gets its own project in GCP or its own account in AWS. No two {{ site.data.products.dedicated }} clusters share any resources with each other. Since these clusters are within their own accounts and projects, they are also in a default virtual private cloud (VPC). Users connect to a {{ site.data.products.dedicated }} cluster by using a load balancer in front of each region which leads to one connection string per region. Unless you set up [VPC peering](network-authorization.html#vpc-peering) or [AWS PrivateLink](network-authorization.html#aws-privatelink), your cluster will use TLS 1.3 protocol for encrypting inter-node and client-node communication.
+
+{{ site.data.products.db }} clusters also use digital certificates for inter-node authentication, [SSL modes](authentication.html#ssl-mode-settings) for node identity verification, and password authentication for client identity verification. See [Authentication](authentication.html) for more details.
+
+[Backups](backups-page.html) are encrypted in S3 and GCS buckets using the cloud provider keys.
+
+### Multi-region architecture
+
+The diagram below shows a high-level representation of a {{ site.data.products.dedicated }} multi-region cluster:
+
+<img src="{{ 'images/cockroachcloud/multiregion-diagram.png' | relative_url }}" alt="Multi-region architecture" style="width:100%; max-width:800px" />
 
 ## {{ site.data.products.serverless-plan }}
 
-{{ site.data.products.serverless }} is a fully-managed, auto-scaling deployment of CockroachDB. Being familiar with the following concepts will help you understand our Serverless architecture.
+{{ site.data.products.serverless }} is a fully-managed, auto-scaling deployment of CockroachDB. Being familiar with the following concepts will help you understand our Serverless architecture. While CockroachDB Serverless is in beta, it is ideal for lightweight applications, starter projects, development environments, and proofs of concept.
 
-## Architecture
+### Architecture
 
 {{ site.data.products.serverless }} is a managed multi-tenant deployment of CockroachDB. A Serverless cluster is an isolated, virtualized tenant running on a much larger physical CockroachDB deployment.
 
@@ -35,7 +50,7 @@ Traffic comes in from the public internet and is routed by the cloud provider’
 
 The following diagram is a high-level representation of what a typical Serverless cluster looks like:
 
-<img src="{{ 'images/cockroachcloud/serverless-diagram.png' | relative_url }}" alt="Serverless architecture" style="max-width:100%" />
+<img src="{{ 'images/cockroachcloud/serverless-diagram.png' | relative_url }}" alt="Serverless architecture" style="width:100%; max-width:800px" />
 
 Proxy pods allow many users to share the same IP address, balance loads across a user's available SQL pods, and automatically resume clusters that have been paused due to inactivity. They also detect and respond to suspected abuse of the service.
 
@@ -43,17 +58,17 @@ After the cloud load balancer routes a new connection to one of the proxy pods, 
 
 Finally, the SQL pods communicate with the KV layer to access data managed by the shared storage pods, each of which stores that data in an [AWS](https://aws.amazon.com/ebs/features/) or [GCP](https://cloud.google.com/compute/docs/disks#pdspecs) block storage system.
 
-## Performance
+### Performance
 
-### Baseline
+#### Baseline
 
 Baseline performance for a Serverless cluster is 100 RUs per second, and any usage above that is called [burst performance](#cockroachdb-cloud-terms). Clusters start with 10M RUs of free burst capacity each month and earn 100 RUs per second up to a maximum of 250M free RUs per month. Earned RUs can be used immediately or accumulated as burst capacity. If you use all of your burst capacity, your cluster will revert to baseline performance.
 
 The following diagram shows how RUs are accumulated and consumed:
 
-<img src="{{ 'images/cockroachcloud/ru-diagram.png' | relative_url }}" alt="RU diagram" style="max-width:100%" />
+<img src="{{ 'images/cockroachcloud/ru-diagram.png' | relative_url }}" alt="RU diagram" style="width:100%; max-width:800px" />
 
-### Paid
+#### Paid
 
 You can set your spend limit higher to maintain a high level of performance with larger workloads. If you have a spend limit, your cluster will not be throttled to baseline performance once you use all of your free earned RUs. Instead, it will continue to use burst performance as needed until you reach your spend limit. You will only be charged for the resources you use up to your spend limit. If you reach your spend limit, your cluster will revert to the baseline performance of 100 RUs per second.
 
@@ -67,37 +82,9 @@ Serverless clusters also have the ability to scale to zero and consume no comput
 
 The diagrams below shows how {{ site.data.products.serverless }} autoscales with your application's traffic:
 
-<img src="{{ 'images/cockroachcloud/serverless-low-traffic.png' | relative_url }}" alt="Serverless low traffic state" style="max-width:100%" />
+<img src="{{ 'images/cockroachcloud/serverless-low-traffic.png' | relative_url }}" alt="Serverless low traffic state" style="width:100%; max-width:800px" />
 
-<img src="{{ 'images/cockroachcloud/serverless-high-traffic.png' | relative_url }}" alt="Serverless scaling" style="max-width:100%" />
-
-</section>
-
-<section class="filter-content" markdown="1" data-scope="dedicated">
-
-## {{ site.data.products.dedicated }}
-
-If you need a single tenant cluster with no shared resources, we recommend {{ site.data.products.dedicated }}. {{ site.data.products.dedicated }} supports single and multi-region clusters in Amazon Web Services and Google Cloud Platform.
-
-## Hardware
-
-We use the Kubernetes offerings in AWS and GCP (EKS and GKE respectively) to run {{ site.data.products.db }} offerings. GCP clusters use [N1 standard](https://cloud.google.com/compute/docs/machine-types#n1_machine_types) machine types and [Persistent Disk storage](https://cloud.google.com/compute/docs/disks#pdspecs). AWS clusters use [M5 instance types](https://aws.amazon.com/ec2/instance-types/m5/#Product_Details) and [Elastic Block Store (EBS)](https://aws.amazon.com/ebs/features/). Each single-region cluster has a minimum of three nodes spread across three availability zones (AZ) in a cloud provider region. Multi-region clusters are similar to single-region clusters, with nodes spread across three or more AZs in each region.
-
-## Security and Connection
-
-{{ site.data.products.dedicated }} clusters are single tenant. This means each new cluster gets its own project in GCP or its own account in AWS. No two {{ site.data.products.dedicated }} clusters share any resources with each other. Since these clusters are within their own accounts and projects, they are also in a default virtual private cloud (VPC). Users connect to a {{ site.data.products.dedicated }} cluster by using a load balancer in front of each region which leads to one connection string per region. Unless you set up [VPC peering](network-authorization.html#vpc-peering) or [AWS PrivateLink](network-authorization.html#aws-privatelink), your cluster will use TLS 1.3 protocol for encrypting inter-node and client-node communication.
-
-{{ site.data.products.db }} clusters also use digital certificates for inter-node authentication, [SSL modes](authentication.html#ssl-mode-settings) for node identity verification, and password authentication for client identity verification. See [Authentication](authentication.html) for more details.
-
-[Backups](backups-page.html) are encrypted in S3 and GCS buckets using the cloud provider keys.
-
-## Multi-region architecture
-
-The diagram below shows a high-level representation of a {{ site.data.products.dedicated }} multi-region cluster:
-
-<img src="{{ 'images/cockroachcloud/multiregion-diagram.png' | relative_url }}" alt="Multi-region architecture" style="max-width:100%" />
-
-</section>
+<img src="{{ 'images/cockroachcloud/serverless-high-traffic.png' | relative_url }}" alt="Serverless scaling" style="width:100%; max-width:800px" />
 
 ## Learn more
 

@@ -2,7 +2,7 @@
 title: Technical Advisories
 summary: Advisories about important security and stability aspects of CockroachDB.
 toc: true
-docs_area: releases 
+docs_area: releases
 ---
 
 Technical advisories report major issues with CockroachDB that may
@@ -31,7 +31,7 @@ mitigation actions independently from their version upgrade schedule.
 {% for advisory in site.data.advisories %}
 <tr>
 	<td>
-		<a href="a{{ advisory.advisory }}.html">A-{{ advisory.advisory }}</a>
+		<a href="{{ advisory.advisory }}.html">A-{{ advisory.advisory | remove_first: "a" }}</a>
 	</td>
 	<td>{{ advisory.summary }}</td>
 	<td>{{ advisory.versions }}</td>

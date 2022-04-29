@@ -381,7 +381,7 @@ WHERE total_reads = 0;
 Column | Type | Description
 ------------|-----|------------
 `aggregated_ts` | `TIMESTAMPTZ NOT NULL` | The time that statistics aggregation started.
-`fingerprint_id` | `BYTES NOT NULL` | Unique identifier of the statement statistics. This is constructed using the statement fingerprint text, and statement metadata (e.g. query type, database name, etc.)
+`fingerprint_id` | `BYTES NOT NULL` | Unique identifier of the statement statistics. This is constructed using the statement fingerprint text, and statement metadata (e.g., query type, database name, etc.)
 `transaction_fingerprint_id` | `BYTES NOT NULL` | Uniquely identifies a transaction statistics. The transaction fingerprint ID that this statement statistic belongs to.
 `plan_hash` | `BYTES NOT NULL` | Uniquely identifies a query plan that was executed by the current statement. The query plan can be retrieved from the `sampled_plan` column.
 `app_name` | `STRING NOT NULL`| The name of the application that executed the statement.
@@ -416,7 +416,7 @@ Field | Type | Description
 ------------|-----|------------
 `execution_statistics -> cnt` | `INT64` | The number of times execution statistics were recorded.
 <code>execution_statistics -> contentionTime -> [mean&#124;sqDiff]</code> | `NumericStat` | The time the statement spent contending for resources before being executed.
-<code>execution_statistics -> maxDiskUsage -> [mean&#124;sqDiff]</code> | `NumericStat` | The maximum temporary disk usage that occurred while executing this statement. This is set in cases where a query had to spill to disk, e.g. when performing a large sort where not all of the tuples fit in memory.
+<code>execution_statistics -> maxDiskUsage -> [mean&#124;sqDiff]</code> | `NumericStat` | The maximum temporary disk usage that occurred while executing this statement. This is set in cases where a query had to spill to disk, e.g., when performing a large sort where not all of the tuples fit in memory.
 <code>execution_statistics -> maxMemUsage -> [mean&#124;sqDiff]</code> | `NumericStat` | The maximum memory usage that occurred on a node.
 <code>execution_statistics -> networkBytes -> [mean&#124;sqDiff]</code> | `NumericStat` | The number of bytes sent over the network.
 <code>execution_statistics -> networkMsgs -> [mean&#124;sqDiff]</code> | `NumericStat` | The number of messages sent over the network.
@@ -429,6 +429,7 @@ Field | Type | Description
 <code>statistics -> numRows -> [mean&#124;sqDiff]</code> | `NumericStat` | The number of rows returned or observed.
 <code>statistics -> ovhLat -> [mean&#124;sqDiff]</code> | `NumericStat` | The difference between `svcLat` and the sum of `parseLat+planLat+runLat` latencies.
 <code>statistics -> parseLat -> [mean&#124;sqDiff]</code> | `NumericStat` | The time to transform the SQL string into an abstract syntax tree (AST).
+<code>statistics -> planGists | `String` | <span class="version-tag">New in v22.1:</span> A sequence of bytes representing the flattened tree of operators and various operator specific metadata of the statement plan.
 <code>statistics -> planLat -> [mean&#124;sqDiff]</code> | `NumericStat` | The time to transform the AST into a logical query plan.
 <code>statistics -> rowsRead -> [mean&#124;sqDiff]</code> | `NumericStat` | The number of rows read from disk.
 <code>statistics -> rowsWritten -> [mean&#124;sqDiff]</code> | `NumericStat` | The number of rows written to disk.
@@ -576,6 +577,85 @@ WHERE metadata @> '{"db":"movr"}' AND (metadata @> '{"stmtTyp":"TypeDDL"}' OR me
                                                                |                |            |               |          |                      |                 |                    |                        |                    |                      |     "Name": "insert"
                                                                |                |            |               |          |                      |                 |                    |                        |                    |                      | }
 
+~~~
+
+#### Detect suboptimal and regressed plans
+
+ <span class="version-tag">New in v22.1</span> Historical plans are stored in plan gists in `statistics->'statistics'->'planGists'`. To detect suboptimal and regressed plans over time you can compare plans for the same query by extracting them from the plan gists.
+
+Suppose you wanted to compare plans of the following query:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT
+  name, count(rides.id) AS sum
+FROM
+  users JOIN rides ON users.id = rides.rider_id
+WHERE
+  rides.start_time BETWEEN '2018-12-31 00:00:00' AND '2020-01-01 00:00:00'
+GROUP BY
+  name
+ORDER BY
+  sum DESC
+LIMIT
+  10;
+~~~
+
+To decode plan gists, use the `crdb_internal.decode_plan_gist` function, as shown in the following query. The example shows the performance impact of adding an [index on the `start_time` column in the `rides` table](apply-statement-performance-rules.html#rule-2-use-the-right-index). The first row of the output shows the improved performance (reduced number of rows read and latency) after the index was added. The second row shows the query, which performs a full scan on the `rides` table, before the index was added.
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT
+substring(metadata ->> 'query',1,60) AS statement_text,
+  string_agg(  crdb_internal.decode_plan_gist(statistics->'statistics'->'planGists'->>0), '
+  ') AS plan,
+  max(aggregated_ts) as timestamp_interval,
+  max(statistics -> 'statistics' -> 'rowsRead' -> 'mean') AS num_rows_read_mean,
+  max(statistics -> 'statistics' -> 'runLat' -> 'mean') AS runtime_latency_mean,
+  statistics->'statistics'->'planGists'->>0 as plan_id
+FROM movr.crdb_internal.statement_statistics
+WHERE substring(metadata ->> 'query',1,35)='SELECT name, count(rides.id) AS sum'
+group by metadata ->> 'query', statistics->'statistics'->'planGists'->>0;
+~~~
+
+~~~
+                         statement_text                        |                        plan                         |   timestamp_interval   | num_rows_read_mean | runtime_latency_mean |                     plan_id
+---------------------------------------------------------------+-----------------------------------------------------+------------------------+--------------------+----------------------+---------------------------------------------------
+  SELECT name, count(rides.id) AS sum FROM users JOIN rides ON | • top-k                                             | 2022-04-12 22:00:00+00 |              24786 |             0.028525 | AgHYAQgAiAECAAAB1AEEAAUAAAAJAAICAAAFAgsCGAYE
+                                                               |   │ order                                           |                        |                    |                      |
+                                                               |   │                                                 |                        |                    |                      |
+                                                               |   └── • group (hash)                                |                        |                    |                      |
+                                                               |       │ group by: rider_id                          |                        |                    |                      |
+                                                               |       │                                             |                        |                    |                      |
+                                                               |       └── • hash join                               |                        |                    |                      |
+                                                               |           │ equality: (rider_id) = (id)             |                        |                    |                      |
+                                                               |           │                                         |                        |                    |                      |
+                                                               |           ├── • scan                                |                        |                    |                      |
+                                                               |           │     table: rides@rides_start_time_idx   |                        |                    |                      |
+                                                               |           │     spans: 1 span                       |                        |                    |                      |
+                                                               |           │                                         |                        |                    |                      |
+                                                               |           └── • scan                                |                        |                    |                      |
+                                                               |                 table: users@users_city_id_name_key |                        |                    |                      |
+                                                               |                 spans: FULL SCAN                    |                        |                    |                      |
+  SELECT name, count(rides.id) AS sum FROM users JOIN rides ON | • top-k                                             | 2022-04-12 22:00:00+00 | 1.375E+5           |             0.279083 | AgHYAQIAiAEAAAADAdQBBAAFAAAACQACAgAABQILAhgGBA==
+                                                               |   │ order                                           |                        |                    |                      |
+                                                               |   │                                                 |                        |                    |                      |
+                                                               |   └── • group (hash)                                |                        |                    |                      |
+                                                               |       │ group by: rider_id                          |                        |                    |                      |
+                                                               |       │                                             |                        |                    |                      |
+                                                               |       └── • hash join                               |                        |                    |                      |
+                                                               |           │ equality: (rider_id) = (id)             |                        |                    |                      |
+                                                               |           │                                         |                        |                    |                      |
+                                                               |           ├── • filter                              |                        |                    |                      |
+                                                               |           │   │                                     |                        |                    |                      |
+                                                               |           │   └── • scan                            |                        |                    |                      |
+                                                               |           │         table: rides@rides_pkey         |                        |                    |                      |
+                                                               |           │         spans: FULL SCAN                |                        |                    |                      |
+                                                               |           │                                         |                        |                    |                      |
+                                                               |           └── • scan                                |                        |                    |                      |
+                                                               |                 table: users@users_city_id_name_key |                        |                    |                      |
+                                                               |                 spans: FULL SCAN                    |                        |                    |                      |
+(2 rows)
 ~~~
 
 ### `transaction_statistics`
