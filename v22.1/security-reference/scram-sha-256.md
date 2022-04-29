@@ -117,6 +117,8 @@ The procedure documented here, creating a SCRAM-SHA-256-authenticated user by pa
 
 ### Migrating existing users/roles to SCRAM-SHA-256 authentication
 
+#### Eventual migration
+
 It is possible to automatically convert the records for previously created users from plaintext passwords to SCRAM-compatible hash encodings. This will cause CockroachDB to use SCRAM authentication when client apps connect to CockroachDB, provided that the cluster's authentication configuration has also been set to accept SCRAM-SHA-256.
 
 To convert existing users to SCRAM-SHA-256, enable the `server.user_login.upgrade_bcrypt_stored_passwords_to_scram.enabled` cluster setting. When this setting is enabled, the conversion occurs the first time a client app connects with the previously-defined password. During that first connection, the previous mechanism will be used to establish the connection, and then CockroachDB will re-encode the password using the SCRAM algorithm. Subsequent connections will then use the SCRAM handshake for authentication.
@@ -127,6 +129,10 @@ To enable the cluster setting:
 ```shell
 SET CLUSTER SETTING server.user_login.upgrade_bcrypt_stored_passwords_to_scram.enabled = true;
 ```
+
+#### Immediate Migration
+
+It is not possible to automatically convert credentials to SCRAM in bulk, without client participation. To implement SCRAM for all SQL user accounts simultaneously, use `ALTER USER <USERNAME> WITH PASSWORD` statements instead.
 
 ### Configuring the authentication cluster setting (HBA)
 
