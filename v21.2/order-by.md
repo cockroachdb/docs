@@ -40,7 +40,7 @@ the sorting key as-is, and thus is meaningless.
 The optional keyword `DESC` inverts the direction of the column(s)
 selected by the selection that immediately precedes.
 
-CockroachDB supports `NULLS FIRST` and `NULLS LAST` in `ORDER BY` clauses for compatibility with [PostgreSQL row-sorting syntax](https://www.postgresql.org/docs/current/queries-order.html). However, support for `NULLS LAST` is syntax-only. If you specify `NULLS LAST` in an `ORDER BY` clause, CockroachDB uses `NULLS FIRST` and returns an error.
+CockroachDB supports `NULLS FIRST` and `NULLS LAST` in `ORDER BY` clauses for compatibility with [PostgreSQL row-sorting syntax](https://www.postgresql.org/docs/current/queries-order.html). However, support for `NULLS LAST` is syntax-only. If you specify `NULLS LAST` in an `ORDER BY` clause, CockroachDB uses `NULLS FIRST` and returns an error if the `NULLS FIRST` or `NULLS LAST` specification doesn't "match" the internal structure of the used index. If the index is ascending, the error is returned for `NULLS LAST` (because CRDB internally stores nulls first); if the index is descending, the error is returned for `NULLS FIRST`.
 
 ## Order preservation
 
