@@ -7,3 +7,4 @@ For examples of advanced `BACKUP` and `RESTORE` use cases, see:
 - [Restore into a different database](restore.html#restore-tables-into-a-different-database)
 - [Remove the foreign key before restore](restore.html#remove-the-foreign-key-before-restore)
 - [Restoring users from `system.users` backup](restore.html#restoring-users-from-system-users-backup)
+- [Show an incremental backup at a different location](show-backup.html#show-a-backup-taken-with-the-incremental-location-option)

@@ -24,9 +24,10 @@ You can also backup:
 
 Because CockroachDB is designed with high fault tolerance, these backups are designed primarily for disaster recovery (i.e., if your cluster loses a majority of its nodes) through [`RESTORE`](restore.html). Isolated issues (such as small-scale node outages) do not require any intervention.
 
+{% include {{ page.version.version }}/backups/backup-to-deprec.md %}
+
 ## Considerations
 
--  The syntax `BACKUP ... INTO` adds a backup to a collection within the backup destination. The path to the backup is created using a date-based naming scheme. Versions of CockroachDB prior to v21.1 used the syntax `BACKUP ... TO` to backup directly to a specific operator-chosen destination, rather than picking a date-based path. The `BACKUP ... TO` syntax will be **deprecated** in future releases. For more information on this soon-to-be deprecated syntax, [see the docs for v20.2](../v20.2/backup.html) or earlier.
 - Core users can only take [full backups](take-full-and-incremental-backups.html#full-backups). To use the other backup features, you need an [Enterprise license](enterprise-licensing.html). You can also use [{{ site.data.products.dedicated }}](https://cockroachlabs.cloud/signup?referralId=docs-crdb-backup), which runs [full backups daily and incremental backups hourly](../cockroachcloud/backups-page.html).
 - `BACKUP` is a blocking statement. To run a backup job asynchronously, use the `DETACHED` option. See the [options](#options) below.
 - Backups will export [Enterprise license keys](enterprise-licensing.html) during a [full cluster backup](#backup-a-cluster). When you [restore](restore.html) a full cluster with an Enterprise license, it will restore the Enterprise license of the cluster you are restoring from.
@@ -41,7 +42,8 @@ To view the contents of an Enterprise backup created with the `BACKUP` statement
 
 - [Full cluster backups](take-full-and-incremental-backups.html#full-backups) can only be run by members of the [`admin` role](security-reference/authorization.html#admin-role). By default, the `root` user belongs to the `admin` role.
 - For all other backups, the user must have [read access](security-reference/authorization.html#managing-privileges) on all objects being backed up. Database backups require `CONNECT` privileges, and table backups require `SELECT` privileges. Backups of user-defined schemas, or backups containing user-defined types, require `USAGE` privileges.
-- `BACKUP` requires full read and write (including delete and overwrite) permissions to its target destination.
+- `BACKUP` requires full read and write permissions to its target destination.
+- **New in v22.1:** `BACKUP` does **not** require delete or overwrite permissions to its target destination. This allows `BACKUP` to write to cloud storage buckets that have [object locking](use-cloud-storage-for-bulk-operations.html#object-locking) configured.
 
 ### Destination privileges
 
@@ -55,12 +57,15 @@ To view the contents of an Enterprise backup created with the `BACKUP` statement
 
 ## Parameters
 
+CockroachDB stores full backups in a backup collection. Each full backup in a collection may also have incremental backups. For more detail on this, see [Backup collections](take-full-and-incremental-backups.html#backup-collections).
+
  Parameter | Description
 -----------+-------------
 `targets` | Back up the listed [targets](#targets).
-`subdirectory` | The name of the specific subdirectory (e.g., `2021/03/23-213101.37`) where you want to add an [incremental backup](take-full-and-incremental-backups.html#incremental-backups). To view available subdirectories, use [`SHOW BACKUPS IN destination`](show-backup.html). If the `subdirectory` is not provided, a [full backup](take-full-and-incremental-backups.html#full-backups) will be created in the collection using a date-based naming scheme (i.e., `<year>/<month>/<day>-<timestamp>`).<br><br>**Warning:** If you use an arbitrary `STRING` as the subdirectory, a new full backup will be created, but it will never be shown in `SHOW BACKUPS IN`. We do not recommend using arbitrary strings as subdirectory names.
+`subdirectory` | The name of the specific backup (e.g., `2021/03/23-213101.37`) in the collection to which you want to add an [incremental backup](take-full-and-incremental-backups.html#incremental-backups). To view available backup subdirectories, use [`SHOW BACKUPS IN collectionURI`](show-backup.html). If the backup `subdirectory` is not provided, incremental backups will be stored in the default `/incrementals` directory at the root of the collection URI. See the [Create incremental backups](#create-incremental-backups) example.<br><br>**Warning:** If you use an arbitrary `STRING` as the subdirectory, a new full backup will be created, but it will never be shown in `SHOW BACKUPS IN`. We do not recommend using arbitrary strings as subdirectory names.
 `LATEST` | Append an incremental backup to the latest completed full backup's subdirectory.
-`destination` | The URL where you want to store the backup.<br/><br/>For information about this URL structure, see [Backup File URLs](#backup-file-urls).
+<a name="collectionURI-param"></a> `collectionURI` | The URI where you want to store the backup. (Or, the default locality for a locality-aware backup.)<br/><br/>For information about this URL structure, see [Backup File URLs](#backup-file-urls).
+`localityURI`   | The URI containing the `COCKROACH_LOCALITY` parameter for a non-default locality that is part of a single locality-aware backup.
 `timestamp` | Back up data as it existed as of [`timestamp`](as-of-system-time.html). The `timestamp` must be more recent than your cluster's last garbage collection (which defaults to occur every 25 hours, but is [configurable per table](configure-replication-zones.html#replication-zone-variables)).
 `backup_options` | Control the backup behavior with a comma-separated list of [these options](#options).
 
@@ -106,7 +111,7 @@ The `system.users` table stores your users and their passwords. To restore your 
 
 ## Performance
 
-The `BACKUP` process minimizes its impact to the cluster's performance by distributing work to all nodes. Each node backs up only a specific subset of the data it stores (those for which it serves writes; more details about this architectural concept forthcoming), with no two nodes backing up the same data.
+The `BACKUP` process minimizes its impact to the cluster's performance by distributing work to all nodes. Each node backs up only a specific subset of the data it stores (those for which it serves writes), with no two nodes backing up the same data.
 
 `BACKUP`, like any read, cannot export a range if the range contains an [unresolved intent](architecture/transaction-layer.html#resolving-write-intents). While you typically will want bulk, background jobs like `BACKUP` to have as little impact on your foreground traffic as possible, it's more important for backups to actually complete (which maintains your [recovery point objective (RPO)](https://en.wikipedia.org/wiki/Disaster_recovery#Recovery_Point_Objective)). Unlike a normal read transaction that will block until any uncommitted writes it encounters are resolved, `BACKUP` will block only for a configurable duration before invoking priority to ensure it can complete on-time.
 
@@ -136,7 +141,7 @@ Cancel the backup      | [`CANCEL JOB`](cancel-job.html)
 You can also visit the [**Jobs** page](ui-jobs-page.html) of the DB Console to view job details. The `BACKUP` statement will return when the backup is finished or if it encounters an error.
 
 {{site.data.alerts.callout_info}}
-The presence of the `BACKUP MANIFEST` file in the backup destination is an indicator that the backup job completed successfully.
+The presence of the `BACKUP MANIFEST` file in the backup subdirectory is an indicator that the backup job completed successfully.
 {{site.data.alerts.end}}
 
 ## Examples
@@ -156,7 +161,9 @@ Per our guidance in the [Performance](#performance) section, we recommend starti
 The examples in this section use the **default** `AUTH=specified` parameter. For more detail on how to use `implicit` authentication with Amazon S3 buckets, read [Use Cloud Storage for Bulk Operations — Authentication](use-cloud-storage-for-bulk-operations.html#authentication).
 
 {{site.data.alerts.callout_info}}
-The syntax `BACKUP ... INTO` adds a backup to a collection within the backup destination. The path to the backup is created using a date-based naming scheme. Versions of CockroachDB prior to v21.1 used the syntax `BACKUP ... TO` to backup directly to a specific operator-chosen destination, rather than picking a date-based path. The `BACKUP ... TO` syntax will be **deprecated** in future releases. For more information on this soon-to-be deprecated syntax, [see the docs for v20.2](../v20.2/backup.html) or earlier.
+The `BACKUP ... TO` syntax is **deprecated** as of v22.1 and will be removed in a future release.
+
+We recommend using the `BACKUP ... INTO {collectionURI}` syntax as per the following examples.
 {{site.data.alerts.end}}
 
 ### Backup a cluster
@@ -166,7 +173,7 @@ To take a [full backup](take-full-and-incremental-backups.html#full-backups) of 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP INTO \
-'s3://{BUCKET NAME}/{PATH}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' \
+'s3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' \
 AS OF SYSTEM TIME '-10s';
 ~~~
 
@@ -177,7 +184,7 @@ To take a [full backup](take-full-and-incremental-backups.html#full-backups) of 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP DATABASE bank \
-INTO 's3://{BUCKET NAME}/{PATH}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' \
+INTO 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' \
 AS OF SYSTEM TIME '-10s';
 ~~~
 
@@ -186,7 +193,7 @@ To take a [full backup](take-full-and-incremental-backups.html#full-backups) of 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP DATABASE bank, employees \
-INTO 's3://{BUCKET NAME}/{PATH}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' \
+INTO 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' \
 AS OF SYSTEM TIME '-10s';
 ~~~
 
@@ -197,7 +204,7 @@ To take a [full backup](take-full-and-incremental-backups.html#full-backups) of 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP bank.customers \
-INTO 's3://{BUCKET NAME}/{PATH}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' \
+INTO 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' \
 AS OF SYSTEM TIME '-10s';
 ~~~
 
@@ -206,17 +213,7 @@ To take a [full backup](take-full-and-incremental-backups.html#full-backups) of 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP bank.customers, bank.accounts \
-INTO 's3://{BUCKET NAME}/{PATH}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' \
-AS OF SYSTEM TIME '-10s';
-~~~
-
-### Specify a subdirectory for backups
-
-To store the backup in a specific subdirectory in the storage location:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-BACKUP DATABASE bank INTO 'subdirectory' IN 's3://{BUCKET NAME}/{PATH}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' \
+INTO 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' \
 AS OF SYSTEM TIME '-10s';
 ~~~
 
@@ -227,7 +224,7 @@ AS OF SYSTEM TIME '-10s';
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP test_schema.*
-INTO 's3://{BUCKET NAME}/{PATH}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' \
+INTO 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' \
 AS OF SYSTEM TIME '-10s';
 ~~~
 
@@ -241,14 +238,30 @@ See [Name Resolution](sql-name-resolution.html) for more details on how naming h
 
 ### Create incremental backups
 
-If you backup to a destination already containing a [full backup](take-full-and-incremental-backups.html#full-backups), an [incremental backup](take-full-and-incremental-backups.html#incremental-backups) will be appended to the full backup's path with a date-based name (e.g., `20210324`):
+When a `BACKUP` statement specifies an existing subdirectory in the collection, explicitly or via the `LATEST` keyword, an incremental backup will be added to the default `/incrementals` directory at the root of the [collection](take-full-and-incremental-backups.html#backup-collections) storage location.
+
+To take an incremental backup using the `LATEST` keyword:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP INTO LATEST IN \
-'s3://{BUCKET NAME}/{PATH}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' \
+    's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' \
+    AS OF SYSTEM TIME '-10s';
+~~~
+
+To store the backup in an existing subdirectory in the collection:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+BACKUP INTO {'subdirectory'} IN 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' \
 AS OF SYSTEM TIME '-10s';
 ~~~
+
+{{site.data.alerts.callout_info}}
+If you intend to take a **full** backup, we recommend running `BACKUP INTO {collectionURI}` without specifying a subdirectory.
+{{site.data.alerts.end}}
+
+To explicitly control where you store your incremental backups, use the [`incremental_location`](backup.html#options) option. For more detail, see [this example](take-full-and-incremental-backups.html#incremental-backups-with-explicitly-specified-destinations) demonstrating the `incremental_location` option.
 
 ### Run a backup asynchronously
 
@@ -257,7 +270,7 @@ Use the `DETACHED` [option](#options) to execute the backup [job](show-jobs.html
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP INTO \
-'s3://{BUCKET NAME}/{PATH}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' \
+'s3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' \
 AS OF SYSTEM TIME '-10s'
 WITH DETACHED;
 ~~~
@@ -285,7 +298,9 @@ job_id             |  status   | fraction_completed | rows | index_entries | byt
 <section class="filter-content" markdown="1" data-scope="azure">
 
 {{site.data.alerts.callout_info}}
-The syntax `BACKUP ... INTO` adds a backup to a collection within the backup destination. The path to the backup is created using a date-based naming scheme. Versions of CockroachDB prior to v21.1 used the syntax `BACKUP ... TO` to backup directly to a specific operator-chosen destination, rather than picking a date-based path. The `BACKUP ... TO` syntax will be **deprecated** in future releases. For more information on this soon-to-be deprecated syntax, [see the docs for v20.2](../v20.2/backup.html) or earlier.
+The `BACKUP ... TO` syntax is **deprecated** as of v22.1 and will be removed in a future release.
+
+We recommend using the `BACKUP ... INTO {collectionURI}` syntax as per the following examples.
 {{site.data.alerts.end}}
 
 ### Backup a cluster
@@ -295,7 +310,7 @@ To take a [full backup](take-full-and-incremental-backups.html#full-backups) of 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP INTO \
-'azure://{CONTAINER NAME}/{PATH}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' \
+'azure://{CONTAINER NAME}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' \
 AS OF SYSTEM TIME '-10s';
 ~~~
 
@@ -306,7 +321,7 @@ To take a [full backup](take-full-and-incremental-backups.html#full-backups) of 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP DATABASE bank \
-INTO 'azure://{CONTAINER NAME}/{PATH}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' \
+INTO 'azure://{CONTAINER NAME}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' \
 AS OF SYSTEM TIME '-10s';
 ~~~
 
@@ -315,7 +330,7 @@ To take a [full backup](take-full-and-incremental-backups.html#full-backups) of 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP DATABASE bank, employees \
-INTO 'azure://{CONTAINER NAME}/{PATH}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' \
+INTO 'azure://{CONTAINER NAME}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' \
 AS OF SYSTEM TIME '-10s';
 ~~~
 
@@ -326,7 +341,7 @@ To take a [full backup](take-full-and-incremental-backups.html#full-backups) of 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP bank.customers \
-INTO 'azure://{CONTAINER NAME}/{PATH}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' \
+INTO 'azure://{CONTAINER NAME}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' \
 AS OF SYSTEM TIME '-10s';
 ~~~
 
@@ -335,17 +350,7 @@ To take a [full backup](take-full-and-incremental-backups.html#full-backups) of 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP bank.customers, bank.accounts \
-INTO 'azure://{CONTAINER NAME}/{PATH}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' \
-AS OF SYSTEM TIME '-10s';
-~~~
-
-### Specify a subdirectory for backups
-
-To store the backup in a specific subdirectory in the storage location:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-BACKUP DATABASE bank INTO 'subdirectory' IN 'azure://{CONTAINER NAME}/{PATH}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' \
+INTO 'azure://{CONTAINER NAME}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' \
 AS OF SYSTEM TIME '-10s';
 ~~~
 
@@ -356,7 +361,7 @@ AS OF SYSTEM TIME '-10s';
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP test_schema.*
-INTO 'azure://{CONTAINER NAME}/{PATH}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' \
+INTO 'azure://{CONTAINER NAME}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' \
 AS OF SYSTEM TIME '-10s';
 ~~~
 
@@ -370,14 +375,30 @@ See [Name Resolution](sql-name-resolution.html) for more details on how naming h
 
 ### Create incremental backups
 
-If you backup to a destination already containing a [full backup](take-full-and-incremental-backups.html#full-backups), an [incremental backup](take-full-and-incremental-backups.html#incremental-backups) will be appended to the full backup's path with a date-based name (e.g., `20210324`):
+When a `BACKUP` statement specifies an existing subdirectory in the collection, explicitly or via the `LATEST` keyword, an incremental backup will be added to the default `/incrementals` directory at the root of the [collection](take-full-and-incremental-backups.html#backup-collections) storage location.
+
+To take an incremental backup using the `LATEST` keyword:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP INTO LATEST IN \
-'azure://{CONTAINER NAME}/{PATH}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' \
+    'azure://{CONTAINER NAME}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' \
+    AS OF SYSTEM TIME '-10s';
+~~~
+
+To store the backup in an existing subdirectory in the collection:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+BACKUP INTO 'subdirectory' IN 'azure://{CONTAINER NAME}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' \
 AS OF SYSTEM TIME '-10s';
 ~~~
+
+{{site.data.alerts.callout_info}}
+If you intend to take a **full** backup, we recommend running `BACKUP INTO {collectionURI}` without specifying a subdirectory.
+{{site.data.alerts.end}}
+
+To explicitly control where you store your incremental backups, use the [`incremental_location`](backup.html#options) option. For more detail, see [this example](take-full-and-incremental-backups.html#incremental-backups-with-explicitly-specified-destinations) demonstrating the `incremental_location` option.
 
 ### Run a backup asynchronously
 
@@ -386,7 +407,7 @@ Use the `DETACHED` [option](#options) to execute the backup [job](show-jobs.html
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP INTO \
-'azure://{CONTAINER NAME}/{PATH}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' \
+'azure://{CONTAINER NAME}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' \
 AS OF SYSTEM TIME '-10s'
 WITH DETACHED;
 ~~~
@@ -416,7 +437,9 @@ job_id             |  status   | fraction_completed | rows | index_entries | byt
 The examples in this section use the `AUTH=specified` parameter, which will be the default behavior in v21.2 and beyond for connecting to Google Cloud Storage. For more detail on how to pass your Google Cloud Storage credentials with this parameter, or, how to use `implicit` authentication, read [Use Cloud Storage for Bulk Operations — Authentication](use-cloud-storage-for-bulk-operations.html#authentication).
 
 {{site.data.alerts.callout_info}}
-The syntax `BACKUP ... INTO` adds a backup to a collection within the backup destination. The path to the backup is created using a date-based naming scheme. Versions of CockroachDB prior to v21.1 used the syntax `BACKUP ... TO` to backup directly to a specific operator-chosen destination, rather than picking a date-based path. The `BACKUP ... TO` syntax will be **deprecated** in future releases. For more information on this soon-to-be deprecated syntax, [see the docs for v20.2](../v20.2/backup.html) or earlier.
+The `BACKUP ... TO` syntax is **deprecated** as of v22.1 and will be removed in a future release.
+
+We recommend using the `BACKUP ... INTO {collectionURI}` syntax as per the following examples.
 {{site.data.alerts.end}}
 
 ### Backup a cluster
@@ -426,7 +449,7 @@ To take a [full backup](take-full-and-incremental-backups.html#full-backups) of 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP INTO \
-'gs://{BUCKET NAME}/{PATH}?AUTH=specified&CREDENTIALS={ENCODED KEY}' \
+'gs://{BUCKET NAME}?AUTH=specified&CREDENTIALS={ENCODED KEY}' \
 AS OF SYSTEM TIME '-10s';
 ~~~
 
@@ -437,7 +460,7 @@ To take a [full backup](take-full-and-incremental-backups.html#full-backups) of 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP DATABASE bank \
-INTO 'gs://{BUCKET NAME}/{PATH}?AUTH=specified&CREDENTIALS={ENCODED KEY}' \
+INTO 'gs://{BUCKET NAME}?AUTH=specified&CREDENTIALS={ENCODED KEY}' \
 AS OF SYSTEM TIME '-10s';
 ~~~
 
@@ -446,7 +469,7 @@ To take a [full backup](take-full-and-incremental-backups.html#full-backups) of 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP DATABASE bank, employees \
-INTO 'gs://{BUCKET NAME}/{PATH}?AUTH=specified&CREDENTIALS={ENCODED KEY}' \
+INTO 'gs://{BUCKET NAME}?AUTH=specified&CREDENTIALS={ENCODED KEY}' \
 AS OF SYSTEM TIME '-10s';
 ~~~
 
@@ -457,7 +480,7 @@ To take a [full backup](take-full-and-incremental-backups.html#full-backups) of 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP bank.customers \
-INTO 'gs://{BUCKET NAME}/{PATH}?AUTH=specified&CREDENTIALS={ENCODED KEY}' \
+INTO 'gs://{BUCKET NAME}?AUTH=specified&CREDENTIALS={ENCODED KEY}' \
 AS OF SYSTEM TIME '-10s';
 ~~~
 
@@ -466,17 +489,7 @@ To take a [full backup](take-full-and-incremental-backups.html#full-backups) of 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP bank.customers, bank.accounts \
-INTO 'gs://{BUCKET NAME}/{PATH}?AUTH=specified&CREDENTIALS={ENCODED KEY}' \
-AS OF SYSTEM TIME '-10s';
-~~~
-
-### Specify a subdirectory for backups
-
-To store the backup in a specific subdirectory in the storage location:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-BACKUP DATABASE bank INTO 'subdirectory' IN 'gs://{BUCKET NAME}/{PATH}?AUTH=specified&CREDENTIALS={ENCODED KEY}' \
+INTO 'gs://{BUCKET NAME}?AUTH=specified&CREDENTIALS={ENCODED KEY}' \
 AS OF SYSTEM TIME '-10s';
 ~~~
 
@@ -487,7 +500,7 @@ AS OF SYSTEM TIME '-10s';
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP test_schema.*
-INTO 'azure://{CONTAINER NAME}/{PATH}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' \
+INTO 'gs://{BUCKET NAME}?AUTH=specified&CREDENTIALS={ENCODED KEY}' \
 AS OF SYSTEM TIME '-10s';
 ~~~
 
@@ -501,14 +514,30 @@ See [Name Resolution](sql-name-resolution.html) for more details on how naming h
 
 ### Create incremental backups
 
-If you backup to a destination already containing a [full backup](take-full-and-incremental-backups.html#full-backups), an [incremental backup](take-full-and-incremental-backups.html#incremental-backups) will be appended to the full backup's path with a date-based name (e.g., `20210324`):
+When a `BACKUP` statement specifies an existing subdirectory in the collection, explicitly or via the `LATEST` keyword, an incremental backup will be added to the default `/incrementals` directory at the root of the [collection](take-full-and-incremental-backups.html#backup-collections) storage location.
+
+To take an incremental backup using the `LATEST` keyword:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP INTO LATEST IN \
-'gs://{BUCKET NAME}/{PATH}?AUTH=specified&CREDENTIALS={ENCODED KEY}' \
+    'gs://{BUCKET NAME}?AUTH=specified&CREDENTIALS={ENCODED KEY}' \
+    AS OF SYSTEM TIME '-10s';
+~~~
+
+To store the backup in an existing subdirectory in the collection:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+BACKUP INTO 'subdirectory' IN 'gs://{BUCKET NAME}?AUTH=specified&CREDENTIALS={ENCODED KEY}' \
 AS OF SYSTEM TIME '-10s';
 ~~~
+
+{{site.data.alerts.callout_info}}
+If you intend to take a **full** backup, we recommend running `BACKUP INTO {collectionURI}` without specifying a subdirectory.
+{{site.data.alerts.end}}
+
+To explicitly control where you store your incremental backups, use the [`incremental_location`](backup.html#options) option. For more detail, see [this example](take-full-and-incremental-backups.html#incremental-backups-with-explicitly-specified-destinations) demonstrating the `incremental_location` option and how to restore incremental backups taken with it.
 
 ### Run a backup asynchronously
 
@@ -517,7 +546,7 @@ Use the `DETACHED` [option](#options) to execute the backup [job](show-jobs.html
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP INTO \
-'gs://{BUCKET NAME}/{PATH}?AUTH=specified&CREDENTIALS={ENCODED KEY}' \
+'gs://{BUCKET NAME}?AUTH=specified&CREDENTIALS={ENCODED KEY}' \
 AS OF SYSTEM TIME '-10s'
 WITH DETACHED;
 ~~~

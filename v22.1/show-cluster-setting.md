@@ -43,7 +43,7 @@ The `SHOW` statement for cluster settings is unrelated to the other `SHOW` state
 
 ## Required privileges
 
-Only members of the `admin` role can display cluster settings. By default, the `root` user belongs to the `admin` role.
+To use the `SHOW CLUSTER SETTING` statement, a user must either be a member of the `admin` role (the `root` user belongs to the `admin` role by default) or have the `VIEWCLUSTERSETTING` [role option](security-reference/authorization.html#role-options) defined.
 
 ## Synopsis
 
