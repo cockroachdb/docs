@@ -17,7 +17,7 @@ Industry standard encryption-at-rest provided at the infrastructure level by you
 
 In the context of {{ site.data.products.db }}, we rely on the cloud provider's encryption-at-rest, and do not enable CockroachDB's [Encryption at Rest Enterprise feature](../enterprise-licensing.html) (see below).
 
-In the context of {{ site.data.products.core }}, customers are responsbile for managing their own encryption at rest. Usage of recommended IAAS providers such as GCP and AWS includes the encryption at rest services they offer by default.
+In the context of {{ site.data.products.core }}, customers are responsible for managing their own encryption at rest. Usage of recommended IAAS providers such as GCP and AWS includes the encryption at rest services they offer by default.
 
 In both of the above contexts, encryption will appear to be disabled in the [DB Console](../ui-overview.html), as it there refers to the Encryption at Rest (Enterprise) feature.
 
