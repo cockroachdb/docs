@@ -29,6 +29,7 @@ Command | Usage
 [`cockroach debug job-trace`](cockroach-debug-job-trace.html) | Generate trace payloads for an executing job from a particular node.
 [`cockroach debug zip`](cockroach-debug-zip.html) | Generate a `.zip` file that can help Cockroach Labs troubleshoot issues with your cluster.
 [`cockroach debug merge-logs`](cockroach-debug-merge-logs.html) | Merge multiple log files from different machines into a single stream.
+[`cockroach convert-url`](connection-parameters.html#convert-a-url-for-different-drivers) | <span class="version-tag">New in v21.2:</span> Convert a connection URL to a format recognized by a [supported client driver](third-party-database-tools.html#drivers).
 [`cockroach workload`](cockroach-workload.html) | Run a built-in load generator against a cluster.
 [`cockroach nodelocal upload`](cockroach-nodelocal-upload.html) |  Upload a file to the `externalIODir` on a node's local file system.
 [`cockroach userfile upload`](cockroach-userfile-upload.html)   |  The cockroach userfile upload command uploads a file to user-scoped file storage.

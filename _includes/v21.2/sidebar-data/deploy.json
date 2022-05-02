@@ -41,6 +41,12 @@
               "title": "CockroachDB Dedicated",
               "items": [
                 {
+                  "title": "Quickstart with CockroachDB Dedicated",
+                  "urls": [
+                    "/cockroachcloud/quickstart-trial-cluster.html"
+                  ]
+                },
+                {
               	  "title": "Create a CockroachDB Dedicated Cluster",
               	  "urls": [
               	    "/cockroachcloud/create-your-cluster.html"

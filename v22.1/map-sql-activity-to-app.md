@@ -5,7 +5,7 @@ toc: true
 docs_area: develop
 ---
 
-CockroachDB enables you to programmatically create and tag your SQL connections with a custom name or label. This practice lets you to quickly identify which part of your application is potentially degraded due to database health and design. By identifying problematic transactions and statements, you can quickly trace back to parts of your applications that generated those transactions and statements for a holistic understanding of the application performance impact as well as potential mitigations and [optimization opportunities](make-queries-fast.html).
+CockroachDB enables you to programmatically create and tag your SQL connections with a custom name or label. This practice lets you to quickly identify which part of your application is potentially degraded due to database health and design. By identifying problematic transactions and statements, you can quickly trace back to parts of your applications that generated those transactions and statements for a holistic understanding of the application performance impact as well as potential mitigation and [optimization opportunities](make-queries-fast.html).
 
 This page shows how to set and filter database workloads by application name.
 

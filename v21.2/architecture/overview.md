@@ -36,26 +36,11 @@ CockroachDB was designed to meet the following goals:
 
 With the confluence of these features, we hope that CockroachDB helps you build global, scalable, resilient deployments and applications.
 
-## Glossary
-
-### Terms
-
 It's helpful to understand a few terms before reading our architecture documentation.
 
+{% include {{ page.version.version }}/misc/database-terms.md %}
+
 {% include {{ page.version.version }}/misc/basic-terms.md %}
-
-### Concepts
-
-CockroachDB relies heavily on the following concepts. Being familiar with them will help you understand what our architecture achieves.
-
-Term | Definition
------|-----------
-**Consistency** | CockroachDB uses "consistency" in both the sense of [ACID semantics](https://en.wikipedia.org/wiki/Consistency_(database_systems)) and the [CAP theorem](https://en.wikipedia.org/wiki/CAP_theorem), albeit less formally than either definition. What we try to express with this term is that your data should be anomaly-free.
-**Isolation** | CockroachDB provides the [`SERIALIZABLE`](https://en.wikipedia.org/wiki/Serializability) isolation level, which provides the highest level of data consistency and protects against concurrency-based attacks and bugs.
-**Consensus** | <a name="architecture-overview-consensus"></a> When a range receives a write, a quorum of nodes containing replicas of the range acknowledge the write. This means your data is safely stored and a majority of nodes agree on the database's current state, even if some of the nodes are offline.<br/><br/>When a write does not achieve consensus, forward progress halts to maintain consistency within the cluster.
-**Replication** | Replication involves creating and distributing copies of data, as well as ensuring that those copies remain consistent. There are two types of replication: _synchronous_ and _asynchronous_.<br/><br/>Synchronous replication is used by CockroachDB. Synchronous replication requires all writes to propagate to a [quorum](https://en.wikipedia.org/wiki/Quorum_%28distributed_computing%29) of copies of the data before being considered committed. This ensures the consistency of your data.<br/><br/>Asynchronous replication is not used by CockroachDB. It only requires a single node to receive the write to be considered committed; state is then propagated to each copy of the data after the fact. This is more or less equivalent to ["eventual consistency"](https://en.wikipedia.org/wiki/Eventual_consistency), which was popularized by NoSQL databases. This method of replication is likely to cause anomalies and loss of data.
-**Transactions** | A set of operations performed on your database that satisfy the requirements of [ACID semantics](https://en.wikipedia.org/wiki/Database_transaction). This is a crucial component for a consistent system to ensure developers can trust the data in their database. For more information about how transactions work, see the [Transaction Layer](transaction-layer.html) documentation.
-**Multi-Active Availability** | Our consensus-based notion of high availability that lets each node in the cluster handle reads and writes for a subset of the stored data (on a per-range basis). This is in contrast to active-passive replication, in which the active node receives 100% of request traffic, as well as active-active replication, in which all nodes accept requests but typically cannot guarantee that reads are both up-to-date and fast.
 
 ## Overview
 
