@@ -58,7 +58,7 @@ Table name | Description| Use in production
 `leases` | Contains information about [leases](architecture/replication-layer.html#leases) in your cluster.| ✗
 `lost_descriptors_with_data` | Contains information about table descriptors that have been deleted but still have data left over in storage.| ✗
 `node_build_info` | Contains information about nodes in your cluster.| ✗
-`node_contention_events`| Contains information about contention on the gateway node of your cluster.| ✓
+`node_contention_events`| Contains information about contention on the gateway node of your cluster.| ✗
 `node_distsql_flows` | Contains information about the flows of the [DistSQL execution](architecture/sql-layer.html#distsql) scheduled on nodes in your cluster.| ✗
 `node_inflight_trace_spans` | Contains information about currently in-flight spans in the current node.| ✗
 `node_metrics` | Contains metrics for nodes in your cluster.| ✗
