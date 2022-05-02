@@ -5,7 +5,7 @@ toc: true
 twitter: false
 referral_id: docs_node_knexjs
 filter_category: crud_js
-filter_html: Use <strong>KnexJS</strong>
+filter_html: Use <strong>Knex.js</strong>
 filter_sort: 3
 docs_area: get_started
 ---
@@ -16,11 +16,9 @@ This tutorial shows you how build a simple Node.js application with CockroachDB 
 
 ## Step 1. Start CockroachDB
 
-{% include {{ page.version.version }}/setup/sample-setup-parameters.md %}
+{% include {{ page.version.version }}/setup/sample-setup.md %}
 
 ## Step 2. Get the code
-
-<section class="filter-content" markdown="1" data-scope="local">
 
 Clone the code's GitHub repo:
 
@@ -29,34 +27,31 @@ Clone the code's GitHub repo:
 $ git clone https://github.com/cockroachlabs/example-app-node-knex
 ~~~
 
-</section>
-
-<section class="filter-content" markdown="1" data-scope="cockroachcloud">
-
-1. Clone the code's GitHub repo:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ git clone https://github.com/cockroachlabs/example-app-node-knex
-    ~~~
-
-1. Check out the `serverless` branch:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    cd example-app-node-knex
-    ~~~
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    git checkout serverless
-    ~~~
-
-1. Update the configuration settings in the `app.js` file using the connection information that you retrieved from the {{ site.data.products.db }} Console.
-
-</section>
-
 ## Step 3. Run the code
+
+1. Set the `DATABASE_URL` environment variable to the connection string:
+
+    <section class="filter-content" markdown="1" data-scope="local">
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ export DATABASE_URL="postgresql://root@localhost:26257?sslmode=disable"
+    ~~~
+
+    </section>
+
+    <section class="filter-content" markdown="1" data-scope="cockroachcloud">
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ export DATABASE_URL="<connection-string>"
+    ~~~
+
+    Where `<connection-string>` is the connection string you obtained from the {{ site.data.products.db }} Console.
+
+    </section>
+
+    The app uses the connection string saved to the `DATABASE_URL` environment variable to connect to your cluster and execute the code.
 
 1. Install the app requirements:
 

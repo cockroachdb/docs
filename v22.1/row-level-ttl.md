@@ -28,7 +28,7 @@ At a high level, Row-Level TTL works by:
 - Issuing batched [`DELETE`](delete.html) statements for the expired rows.
 - As part of the above process, deciding how many rows to [`SELECT`](select-clause.html) and [`DELETE`](delete.html) at once in each of the above queries.
 - Running the SQL queries described above in parallel as [background jobs](show-jobs.html).
-- To minimize the performance impact on foreground application queries, the background deletion queries are rate limited; they are also submitted at a lower priority level using the [admission control system](architecture/admission-control.html).
+- To minimize the performance impact on foreground application queries, the background deletion queries are rate limited; they are also submitted at a lower priority level using the [admission control system](admission-control.html).
 
 The process above is conceptually similar to the process described by [Batch delete on an indexed column](bulk-delete-data.html#batch-delete-on-an-indexed-column), except that Row-Level TTL is built into CockroachDB, so it saves you from having to write code to manage the process from your application and/or external job processing framework, including tuning the rate and performance of your background queries so they don't affect foreground application query performance.
 
@@ -423,12 +423,12 @@ If you attempt to update a [TTL storage parameter](#ttl-storage-parameters) on a
 ALTER TABLE events SET (ttl_job_cron = '@weekly');
 ~~~
 
-~~~ 
+~~~
 ERROR: "ttl_expire_after" must be set
 SQLSTATE: 22023
 ~~~
 
-If you try to reset a [TTL storage parameter](#ttl-storage-parameters) but resetting that paraemeter would result in an invalid state of the TTL subsystem, CockroachDB will signal an error. For example, there is only one way to [remove Row-Level TTL from a table](#remove-row-level-ttl-from-a-table). If you try to remove the TTL from a table by resetting the `ttl_expire_after` storage parameter you set earlier, you will get the following error:
+If you try to reset a [TTL storage parameter](#ttl-storage-parameters) but resetting that parameter would result in an invalid state of the TTL subsystem, CockroachDB will signal an error. For example, there is only one way to [remove Row-Level TTL from a table](#remove-row-level-ttl-from-a-table). If you try to remove the TTL from a table by resetting the `ttl_expire_after` storage parameter you set earlier, you will get the following error:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
