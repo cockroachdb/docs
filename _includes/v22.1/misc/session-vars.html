@@ -109,9 +109,22 @@
     <code>default_transaction_priority</code>
    </td>
    <td>The default transaction priority for the current session.
-       <br>The supported options include <code>LOW</code>, <code>NORMAL</code>, and <code>HIGH</code>.</td>
+       <br>The supported options are <code>low</code>, <code>normal</code>, and <code>high</code>.</td>
    <td>
-    <code>NORMAL</code>
+    <code>normal</code>
+   </td>
+   <td>Yes</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
+    <code>default_transaction_quality_of_service</code>
+   </td>
+   <td><span class="version-tag">New in v22.1:</span> The default transaction quality of service for the current session.
+       <br>The supported options are <code>regular</code>, <code>critical</code>, and <code>background</code>. See [Set quality of service level](admission-control.html#set-quality-of-service-level-for-a-session).</td>
+   <td>
+    <code>regular</code>
    </td>
    <td>Yes</td>
    <td>Yes</td>
