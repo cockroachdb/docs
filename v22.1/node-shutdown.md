@@ -808,3 +808,4 @@ On the **Cluster Overview** page of the DB Console, the [node status](ui-cluster
 - [`cockroach start`](cockroach-start.html)
 - [Node status](ui-cluster-overview-page.html#node-status)
 - [Replication Layer](architecture/replication-layer.html)
+- [Decommissioning issues](cluster-setup-troubleshooting.html#decommissioning-issues)
