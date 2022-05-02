@@ -392,7 +392,7 @@ For example, let's say you want to calculate the average value of column `b` as 
 
 When [sorting a column](order-by.html) containing `NULL` values, CockroachDB sorts `NULL` values first with `ASC` and last with `DESC`. This differs from PostgreSQL, which sorts `NULL` values last with `ASC` and first with `DESC`.
 
-Note that the `NULLS FIRST` and `NULLS LAST` options of the `ORDER BY` clause are not implemented in CockroachDB, so you cannot change where `NULL` values appear in the sort order.
+CockroachDB supports `NULLS FIRST` and `NULLS LAST` in [`ORDER BY`](order-by.html) clauses. However, in some cases the support is syntax-only&mdash;an error is returned if `NULLS FIRST` or `NULLS LAST` specification doesn't "match" the internal structure of the used index. If the index is ascending, the error is returned for `NULLS LAST`; if the index is descending, the error is returned for `NULLS FIRST`.
 
 {% include copy-clipboard.html %}
 ~~~ sql
