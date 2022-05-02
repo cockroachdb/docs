@@ -14,7 +14,7 @@ To view this dashboard, [access the DB Console](ui-overview.html#db-console-acce
 - **Range**: CockroachDB stores all user data and almost all system data in a giant sorted map of key-value pairs. This keyspace is divided into "ranges", contiguous chunks of the keyspace, so that every key can always be found in a single range.
 - **Range Replica:** CockroachDB replicates each range (3 times by default) and stores each replica on a different node.
 - **Range Lease:** For each range, one of the replicas holds the "range lease". This replica, referred to as the "leaseholder", is the one that receives and coordinates all read and write requests for the range.
-- **Under-replicated Ranges:** <a name="under-replicated-ranges"></a> When a cluster is first initialized, the few default starting ranges will only have a single replica, but as soon as other nodes are available, they will replicate to them until they've reached their desired replication factor, the default being 3. If a range does not have enough replicas, the range is said to be "under-replicated".
+- **Under-replicated Ranges:** <a name="under-replicated-ranges"></a> When a cluster is first initialized, the few default starting ranges have a single replica. As more nodes become available, the cluster replicates these ranges to other nodes until the number of replicas for each range reaches the desired [replication factor](configure-replication-zones.html#num_replicas) (3 by default). If a range has fewer replicas than the replication factor, the range is said to be "under-replicated". [Non-voting replicas](architecture/replication-layer.html#non-voting-replicas), if configured, are not counted when calculating replication status.
 - **Unavailable Ranges:** <a name="unavailable-ranges"></a> If a majority of a range's replicas are on nodes that are unavailable, then the entire range is unavailable and will be unable to process queries.
 
 For more details, see [Scalable SQL Made Easy: How CockroachDB Automates Operations](https://www.cockroachlabs.com/blog/automated-rebalance-and-repair/).
@@ -42,7 +42,7 @@ Leaders | The number of ranges with leaders. If the number does not match the nu
 Lease Holders | The number of ranges that have leases.
 Leaders w/o Leases | The number of Raft leaders without leases. If the number if non-zero for a long time, troubleshoot your cluster.
 Unavailable | The number of unavailable ranges. If the number if non-zero for a long time, troubleshoot your cluster.
-Under-replicated | The number of under-replicated ranges.
+Under-replicated | The number of under-replicated ranges. Non-voting replicas are not included in this value.
 
 ## Logical Bytes per Store
 
