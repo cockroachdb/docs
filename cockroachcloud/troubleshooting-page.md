@@ -38,11 +38,11 @@ Error: x509: certificate signed by unknown authority
 Failed running "sql"
 ~~~
 
-There are two possible causes of this error: incorrect cluster names in the connection string, and CA certificate conflicts in the `cockroach` certificate search path.
+There are two possible causes of this error: incorrect [routing ID](../{{site.versions["stable"]}}/connect-to-the-database.html#connection-parameters) in the connection string, and CA certificate conflicts in the `cockroach` certificate search path.
 
-<h4>Solution: incorrect cluster name in the connection string</h4>
+<h4>Solution: incorrect routing ID in the connection string</h4>
 
-Check if you are using the right cluster name in the [connection method](connect-to-your-cluster.html#step-3-connect-to-your-cluster). You can find your cluster name in the {{ site.data.products.db }} Console by navigating to **Cluster Overview** > **Connect** > **Step 2. Connect** and locating the parameter `cluster={cluster-name}` in your connection string.
+Check if you are using the right routing ID in the [connection method](connect-to-your-cluster.html#step-3-connect-to-your-cluster). You can find your routing ID in the {{ site.data.products.db }} Console by navigating to **Cluster Overview** > **Connect** > **Select option/language** and select **General connection string**, and then locating the parameter `cluster={routing-id}` in your connection string.
 
 <h4>Solution: CA certificate conflicts</h4>
 
