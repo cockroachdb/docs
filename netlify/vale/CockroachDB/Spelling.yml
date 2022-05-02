@@ -4,3 +4,5 @@ level: error
 ignore:
   - vocab.txt
   - extensions.txt
+filters:
+  - '(?s)We would like to thank the following contributors from the CockroachDB community.*'

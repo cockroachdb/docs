@@ -24,8 +24,8 @@ swap:
   Transaction Layer: transaction layer
   Leaseholder: leaseholder
   Key-Value: key-value
-  Replication Zone: replication zone
-  Replication Zones: replication zones
+  '(?<!^#+.*)(?<!\[.*?)Replication Zone': replication zone
+  '(?<!^#+.*)(?<!\[.*?)Replication Zones': replication zones
   Write Intent: write intent
   Transaction Record: transaction record
   Timestamp Cache: timestamp cache

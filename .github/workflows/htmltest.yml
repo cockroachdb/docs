@@ -1,0 +1,15 @@
+name: Link Validation
+on:
+  workflow_run:
+    workflows: ["deploy/netlify"]
+    types:
+      - completed
+
+jobs:
+  htmltest:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Run htmltest
+      uses: wjdp/htmltest-action@master
+      with:
+        config: https://raw.githubusercontent.com/cockroachdb/docs/master/.htmltest.yml

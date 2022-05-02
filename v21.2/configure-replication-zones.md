@@ -28,6 +28,8 @@ This page explains how replication zones work and how to use the [`CONFIGURE ZON
 To configure replication zones, a user must be a member of the [`admin` role](security-reference/authorization.html#admin-role) or have been granted [`CREATE`](security-reference/authorization.html#supported-privileges) or [`ZONECONFIG`](security-reference/authorization.html#supported-privileges) privileges. To configure [`system` objects](#for-system-data), the user must be a member of the `admin` role.
 {{site.data.alerts.end}}
 
+test Replication Zone
+
 ## Overview
 
 Every [range](architecture/overview.html#architecture-range) in the cluster is part of a replication zone.  Each range's zone configuration is taken into account as ranges are rebalanced across the cluster to ensure that any constraints are honored.
