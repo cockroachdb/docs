@@ -476,6 +476,17 @@
               ]
             }
           ]
+        },
+        {
+          "title": "Data Security Tools",
+          "items": [
+            {
+              "title": "Satori",
+              "urls": [
+                "/${VERSION}/satori-integration.html"
+              ]
+            }
+          ]
         }
       ]
     },
