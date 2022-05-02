@@ -266,7 +266,6 @@ Column | Type | Description
 `distributed` | `BOOLEAN` | Whether the query is executing in a distributed cluster.
 `phase` | `STRING` | The phase that the query is in.
 
-
 #### Example
 
 ##### View all active queries
