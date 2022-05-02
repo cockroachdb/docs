@@ -104,13 +104,14 @@ A Pub/Sub sink URI follows this example:
 URI Parameter      | Description
 -------------------+------------------------------------------------------------------
 `project name`     | The [Google Cloud Project](https://cloud.google.com/resource-manager/docs/creating-managing-projects) name.
-`region`           | The single region to which all output will be sent.
+`region`           | (Required) The single region to which all output will be sent.
 `topic_name`       | (Optional) The topic name to which messages will be sent. See the following section on [Topic Naming](#topic-naming) for detail on how topics are created.
-`AUTH`             | The authentication parameter can define either `specified` or `implicit` authentication. Passing your [Service Account](https://cloud.google.com/iam/docs/understanding-service-accounts) credentials with the URI or implicitly in your environment respectively. [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html#authentication) provides more detail on authentication to cloud storage sinks.
-`CREDENTIALS`      | (Optional) The base64-encoded credentials of your Google [Service Account](https://cloud.google.com/iam/docs/understanding-service-accounts) credentials. Include with `AUTH=specified`.
+`AUTH`             | The authentication parameter can define either `specified` (default) or `implicit` authentication. Passing your [Service Account](https://cloud.google.com/iam/docs/understanding-service-accounts) credentials with the URI or implicitly in your environment respectively. [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html#authentication) provides more detail on authentication to cloud storage sinks.
+`CREDENTIALS`      | Include with `AUTH=specified`. The base64-encoded credentials of your Google [Service Account](https://cloud.google.com/iam/docs/understanding-service-accounts) credentials.
 
 When using Pub/Sub as your downstream sink, consider the following:
 
+- You must specify the `region` parameter in the URI
 - It only supports `JSON` message format.
 - Your Google Service Account must have the [Pub/Sub Editor](https://cloud.google.com/iam/docs/understanding-roles#pub-sub-roles) role assigned at the [project level](https://cloud.google.com/resource-manager/docs/access-control-proj#using_predefined_roles).
 - Changefeeds connecting to a Pub/Sub sink do not support the `topic_prefix` option.
