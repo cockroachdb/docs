@@ -81,6 +81,11 @@ Other general guidance about language and tone:
 
     **Example:** If you leave versioned binaries on your servers, you do not need to do anything.
 
+- To help users set reasonable expectations for the future of CockroachDB's feature set, avoid using forward-looking language when writing about supported syntax and behavior:
+    - Do not suggest that a feature may or may not be added in a future release.
+    - Do not use the words "yet" and "currently" when writing about a feature that we do or do not support.
+    - Do not reference the internal product roadmap.
+
 ## Inclusive language
 
 We want our education materials to be inclusive and written with diversity in mind. This section provides general guidelines, best practices, and examples when writing docs or training materials. This is a work in progress and we welcome any feedback and additions.
