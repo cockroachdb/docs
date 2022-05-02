@@ -1785,14 +1785,6 @@
             "title": "Tools Supported by Cockroach Labs",
             "urls": [
               "/${VERSION}/third-party-database-tools.html"
-            ],
-            "items": [
-              {
-                "title": "Satori Integration",
-                "urls": [
-                  "/${VERSION}/satori-integration.html"
-                ]
-              }
             ]
           },
           {

@@ -55,9 +55,11 @@ For a list of tools supported by the CockroachDB community, see [Third-Party Too
 | [DataGrip](https://www.jetbrains.com/datagrip/) | 2021.1 | Full | N/A
 | [IntelliJ IDEA](https://www.jetbrains.com/idea/) | 2021.1 | Full | [Use IntelliJ IDEA with CockroachDB](intellij-idea.html)
 
-## Enhanced data access control tools
+## Enhanced data security tools
 
-[Satori](satori-integration.html) offers fine-grained access control and dymamic data masking.
+| Tool | Support level | Integration |
+|-----+---------------+----------|
+| [Satori](https://satoricyber.com/) | Partner supported | [Satori Integration](satori-integration.html) |
 
 ## Schema migration tools
 
