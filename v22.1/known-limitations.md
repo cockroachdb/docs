@@ -323,7 +323,7 @@ As a workaround, take a cluster backup instead, as the `system.comments` table i
 
 ### Change data capture
 
-Change data capture (CDC) provides efficient, distributed, row-level change feeds into Apache Kafka for downstream processing such as reporting, caching, or full-text indexing. It has the following known limitations:
+Change data capture (CDC) provides efficient, distributed, row-level changefeeds into Apache Kafka for downstream processing such as reporting, caching, or full-text indexing. It has the following known limitations:
 
 {% include {{ page.version.version }}/known-limitations/cdc.md %}
 
