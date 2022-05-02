@@ -5,4 +5,5 @@ ignore:
   - vocab.txt
   - extensions.txt
 filters:
-  - '(?s)We would like to thank the following contributors from the CockroachDB community.*'
+  # Exclude checking list of contributor names on release notes:
+  - '(?s)<h3 id=.*>Contributors</h3>.*'
