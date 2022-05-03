@@ -19,6 +19,14 @@ To view this page, click **SQL Activity** in the left-hand navigation of the DB 
 If you haven't yet executed any queries in the cluster as a user, this page will be blank.
 {{site.data.alerts.end}}
 
+## Search and filter
+
+By default, the Statements page shows SQL statements from all applications and databases running on the cluster.
+
+### Search statements
+
+To search using the search field, type a string over `Search Statements` and press `Enter`. The list of statements is filtered by the string.
+
 {% include common/ui/statements-page.md %}
 
 {% include {{ page.version.version }}/ui/statements-table.md %}

@@ -6,13 +6,6 @@
   {% assign page_prefix = "ui-" %}
 {% endif %}
 
-## Search and filter
-
-By default, the Statements page shows SQL statements from all applications and databases running on the cluster.
-
-### Search field
-
-To search using the search field, type a string over `Search Statements` and press `Enter`. The list of statements is filtered by the string.
 
 ### Date range
 
