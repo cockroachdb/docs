@@ -15,7 +15,7 @@ CockroachDB allows fine-grained configuration of which database connect attempts
 Authentication Method | CockroachDB Cloud | Supported in CockroachDB Core | CockroachDB Enterprise Support  
 -------------|------------|-----|----
 password              |      ✓              |           ✓                    |    ✓
-<a href="scram-sha-256.html">SCRAM-SHA-256</a>         |      ✓              |           ✓                    |    ✓
+<a href="scram-authentication.html">SCRAM-SHA-256</a>         |      ✓              |           ✓                    |    ✓
 certificate              |      &nbsp;         |           ✓                    |    ✓
 GSS                   |      &nbsp;         |           &nbsp;               |    ✓
 
@@ -59,12 +59,13 @@ Each rule definition contains up to 6 values.
 1. **`IP MASK`** (unless the Address in the prior field included or did not require an IP mask).
 1. Authentication **METHOD** by which specified user(s) may authenticate from specified addresses.
   - `password`: user may authenticate with a plain-text password.
-  - `SCRAM-SHA-256`: user may authenticate via [Salted Challenge-Response](scram-sha-256.html)
+  - `scram-sha-256`: user may authenticate via [Salted Challenge-Response](scram-authentication.html)
   - `cert`: user may authenticate with a PKI certificate signed by a trusted certificate authority CA.
-  - `cert-password` user may authenticate with either a certificate or a password.
-  - `gss` user may authenticate with a GSSAPI token.
-  - `reject` server rejects connection without performing authentication.
-  - `trust` server allows connection without performing authentication.
+  - `cert-password`: user may authenticate with either a certificate or a password. Additionally, the user may use a [SCRAM](scram-authentication.html) exchange, if the cluster setting `server.user_login.cert_password_method.auto_scram_promotion.enabled` is set to `true`.
+  - `cert-scram-sha-25`: user may authenticate with either a certificate or a [SCRAM](scram-authentication.html) exchange.
+  - `gss`: user may authenticate with a GSSAPI token.
+  - `reject`: server rejects connection without performing authentication.
+  - `trust`: server allows connection without performing authentication.
 
 ## Default behavior
 

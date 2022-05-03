@@ -57,7 +57,7 @@ Cockroach Labs maintains <a href="https://github.com/cockroachdb/cockroach">Cock
   <td>✓</td>
   <td>✓</td>
   <td>✓</td>
-  <td><a href="scram-sha-256.html">SASL/SCRAM-SHA-256 secure password-based authentication</a></td>
+  <td><a href="scram-authentication.html">SASL/SCRAM-SHA-256 secure password-based authentication</a></td>
  </tr>
  <tr>
   <td>&nbsp;</td>
