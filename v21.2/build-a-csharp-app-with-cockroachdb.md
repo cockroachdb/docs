@@ -114,7 +114,7 @@ connStringBuilder.SslMode = SslMode.Require;
 connStringBuilder.Username = "{username}";
 connStringBuilder.Password = "{password}";
 connStringBuilder.Database = "{routing-id}.bank";
-connStringBuilder.RootCertificate = "~/.postgres/root.crt";
+connStringBuilder.RootCertificate = "~/.postgresql/root.crt";
 connStringBuilder.TrustServerCertificate = true;
 ~~~
 
