@@ -278,13 +278,13 @@ Active monitoring helps you spot problems early, but it is also essential to sen
 <section class="filter-content" markdown="1" data-scope="operator">
 ## Configure logging
 
-When running CockroachDB v21.1 and later, you can use the Operator to configure the CockroachDB logging system. This allows you to output logs to specified [file or network log sinks](configure-logs.html#configure-log-sinks). For more information about the logging system, see [Configure log sinks](configure-logs.html#configure-log-sinks).
+When running CockroachDB v21.1 and later, you can use the Operator to configure the CockroachDB logging system. This allows you to output logs to [configurable log sinks] (configure-logs.html#configure-log-sinks) such as file or network logging destinations.
 
 {{site.data.alerts.callout_info}}
 By default, Kubernetes deployments running CockroachDB v20.2 or earlier output all logs to `stderr`.
 {{site.data.alerts.end}}
 
-The logging configuration is defined in a [ConfigMap](https://kubernetes.io/docs/concepts/configuration/configmap/) object, using the key `logging.yaml`. For example:
+The logging configuration is defined in a [ConfigMap](https://kubernetes.io/docs/concepts/configuration/configmap/) object, using a key named `logging.yaml`. For example:
 
 ~~~ yaml
 apiVersion: v1
@@ -314,10 +314,10 @@ metadata:
 
 The above configuration overrides the [default logging configuration](configure-logs.html#default-logging-configuration) and reflects our recommended Kubernetes logging configuration:
 
-- Save [`DEV`](logging.html#dev) channel logs to disk for troubleshooting.
-- Send operational- and security-related logs to a [network collector](logging-use-cases.html#network-logging).
+- Save debug-level logs (the `DEV` [log channel](logging-overview.html#logging-channels)) to disk for troubleshooting.
+- Send operational- and security-level logs to a [network collector](logging-use-cases.html#network-logging), in this case [Fluentd](configure-logs.html#fluentd-logging-format).
 
-The ConfigMap `name` is specified in the `logConfigMap` object of the Operator's custom resource, which is used to [deploy the cluster](deploy-cockroachdb-with-kubernetes.html#initialize-the-cluster):
+The ConfigMap `name` must match the `logConfigMap` object of the Operator's custom resource, which is used to [deploy the cluster](deploy-cockroachdb-with-kubernetes.html#initialize-the-cluster):
 
 ~~~ yaml
 spec:
@@ -358,13 +358,17 @@ In this example, CockroachDB has already been deployed on a Kubernetes cluster. 
 
     For simplicity, also name the YAML file `logconfig.yaml`.
 
-    This configuration outputs `DEV` logs with severity [`WARNING`](logging.html#logging-levels-severities) to a `cockroach-dev.log` file on each pod.
+    {{site.data.alerts.callout_info}}
+    The ConfigMap key is not related to the ConfigMap `name` or YAML filename, and **must** be named `logging.yaml`.
+    {{site.data.alerts.end}}
+
+    This configuration outputs `DEV` logs that have severity [`WARNING`](logging.html#logging-levels-severities) to a `cockroach-dev.log` file on each pod.
 
 1. Apply the ConfigMap to the cluster:
 
     {% include copy-clipboard.html %}
     ~~~
-    kubectl apply -f log.yaml
+    kubectl apply -f logconfig.yaml
     ~~~
 
     ~~~
@@ -387,7 +391,7 @@ In this example, CockroachDB has already been deployed on a Kubernetes cluster. 
 
     The changes will be rolled out to each pod.
 
-1. See the log files on a pod:
+1. See the log files available on a pod:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -410,7 +414,7 @@ In this example, CockroachDB has already been deployed on a Kubernetes cluster. 
     ...
     ~~~
 
-1. View a log file:
+1. View a specific log file:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
