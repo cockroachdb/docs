@@ -463,6 +463,8 @@ CockroachDB attempts to restart nodes after they crash. Nodes that frequently re
 
 ### Decommissioning process hangs indefinitely
 
+If the [decommissioning process](node-shutdown.html?filters=decommission#remove-nodes) appears to be hung on a node, a message like the following will print to `stderr`:
+
 ~~~
 possible decommission stall detected
 n3 still has replica id 2 for range r1
