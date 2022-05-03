@@ -5,7 +5,7 @@ toc: true
 docs_area: stream_data
 ---
 
-This page provides step-by-step examples for using Core and {{ site.data.products.enterprise }} changefeeds. Creating {{ site.data.products.enterprise }} changefeeds is available on {{ site.data.products.dedicated }} or on clusters with an [{{ site.data.products.enterprise }} license](enterprise-licensing.html). Core changefeeds are available in all products.
+This page provides step-by-step examples for using Core and {{ site.data.products.enterprise }} changefeeds. Creating {{ site.data.products.enterprise }} changefeeds is available on {{ site.data.products.dedicated }}, on {{ site.data.products.serverless }} clusters with an [{{ site.data.products.enterprise }} license](enterprise-licensing.html), and on {{ site.data.products.core }} clusters with an [{{ site.data.products.enterprise }} license](enterprise-licensing.html). Core changefeeds are available in all products.
 
 For a summary of Core and {{ site.data.products.enterprise }} changefeed features, see [What is Change Data Capture?](change-data-capture-overview.html#what-is-change-data-capture)
 
@@ -16,10 +16,6 @@ Enterprise changefeeds can connect to the following sinks:
 - [Webhook](#create-a-changefeed-connected-to-a-webhook-sink)
 
 See the [Changefeed Sinks](changefeed-sinks.html) page for more detail on forming sink URIs and specifics on configuration.
-
-{{site.data.alerts.callout_info}}
-Only Core changefeeds are available on {{ site.data.products.serverless-plan }}. To create a changefeed into a [configurable sink](changefeed-sinks.html), like cloud storage or Kafka, use {{ site.data.products.dedicated }}, which has this feature enabled by default.
-{{site.data.alerts.end}}
 
 Use the following filters to show usage examples for either **Enterprise** or **Core** changefeeds:
 

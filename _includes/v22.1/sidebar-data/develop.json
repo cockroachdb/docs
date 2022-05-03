@@ -337,6 +337,12 @@
               "urls": [
                 "/${VERSION}/load-based-splitting.html"
               ]
+            },
+            {
+              "title": "Admission Control",
+              "urls": [
+                "/${VERSION}/admission-control.html"
+              ]
             }
           ]
         }
