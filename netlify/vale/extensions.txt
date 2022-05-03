@@ -1,0 +1,5 @@
+html
+json
+md
+png
+tgz
