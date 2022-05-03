@@ -334,7 +334,7 @@ You'll need access to a [Google Cloud Project](https://cloud.google.com/resource
     gcloud projects add-iam-policy-binding cockroach-project --member='serviceAccount:cdc-demo@cockroach-project.iam.gserviceaccount.com' --role='roles/pubsub.editor'
     ~~~
 
-1. Create the Pub/Sub topic to which your changefeed will emit messages:
+1. Create the Pub/Sub [topic](changefeed-sinks.html#pub-sub-topic-naming) to which your changefeed will emit messages:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
