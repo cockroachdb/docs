@@ -120,6 +120,7 @@ elqdusy
 elsif
 emptive
 enablement
+endcapture
 endcomment
 endfor
 endif
@@ -309,6 +310,7 @@ noonan
 northamerica
 northcentralus
 northeurope
+nosha
 npgsql
 nuget
 nullability
@@ -337,7 +339,7 @@ perf
 performant
 permutable
 petersbug
-pbcrypto
+pgcrypto
 pgdump
 pgloader
 pgsql

@@ -2,7 +2,7 @@
 title: Storage Layer
 summary: The storage layer of CockroachDB's architecture reads and writes data to disk.
 toc: true
-docs_area: reference.architecture 
+docs_area: reference.architecture
 ---
 
 The storage layer of CockroachDB's architecture reads and writes data to disk.
@@ -69,7 +69,7 @@ SST files are immutable; they are never modified, even during the [compaction pr
 
 ##### LSM levels
 
-The levels of the LSM are organized from L0 to L6. L0 is the top-most level. L6 is the bottom-most level. New data is added into L0 (e.g. using [`INSERT`](../insert.html) or [`IMPORT`](../import.html)) and then merged down into lower levels over time.
+The levels of the LSM are organized from L0 to L6. L0 is the top-most level. L6 is the bottom-most level. New data is added into L0 (e.g., using [`INSERT`](../insert.html) or [`IMPORT`](../import.html)) and then merged down into lower levels over time.
 
 The diagram below shows what an LSM looks like at a high level. Each level is associated with a set of SSTs. Each SST is immutable and has a unique, monotonically increasing number.
 
@@ -86,7 +86,7 @@ The process of merging SSTs and moving them from L0 down to L6 in the LSM is cal
 
 The compaction process is necessary in order for an LSM to work efficiently; from L0 down to L6, each level of the tree should have about 1/10 as much data as the next level below. E.g., L1 should have about 1/10 as much data as L2, and so on. Ideally as much of the data as possible will be stored in larger SSTs referenced at lower levels of the LSM. If the compaction process falls behind, it can result in an [inverted LSM](#inverted-lsms).
 
-SST files are never modified during the compaction process. Instead, new SSTs are written, and old SSTs are deleted. This design takes advantage of the fact that sequential disk access is much, much faster than random disk access. 
+SST files are never modified during the compaction process. Instead, new SSTs are written, and old SSTs are deleted. This design takes advantage of the fact that sequential disk access is much, much faster than random disk access.
 
 The process of compaction works like this: if two SST files _A_ and _B_ need to be merged, their contents (key-value pairs) are read into memory. From there, the contents are sorted and merged together in memory, and a new file _C_ is opened and written to disk with the new, larger sorted list of key-value pairs. This step is conceptually similar to a [merge sort](https://en.wikipedia.org/wiki/Merge_sort). Finally, the old files _A_ and _B_ are deleted.
 
@@ -108,7 +108,7 @@ A certain amount of read amplification is expected in a normally functioning Coc
 
 <a name="write-amplification"></a>
 
-_Write amplification_ is more complicated than read amplification, but can be defined broadly as: "how many physical files am I rewriting during compactions?" For example, if the storage engine is doing a lot of [compactions](#compaction) in L5, it will be rewriting SST files in L5 over and over again. This is a tradeoff, since if the engine doesn't perform compactions often enough, the size of L0 will get too large, and an inverted LSM will result, which also has ill effects. 
+_Write amplification_ is more complicated than read amplification, but can be defined broadly as: "how many physical files am I rewriting during compactions?" For example, if the storage engine is doing a lot of [compactions](#compaction) in L5, it will be rewriting SST files in L5 over and over again. This is a tradeoff, since if the engine doesn't perform compactions often enough, the size of L0 will get too large, and an inverted LSM will result, which also has ill effects.
 
 Read amplification and write amplification are key metrics for LSM performance. Neither is inherently "good" or "bad", but they must not occur in excess, and for optimum performance they must be kept in balance. That balance involves tradeoffs.
 
