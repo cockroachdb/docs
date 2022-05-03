@@ -54,7 +54,7 @@ Global property | Description
 ----------------|------------
 planning time | The total time the planner took to create a statement plan.
 execution time | The time it took for the final statement plan to complete.
-distribution | Shows whether the statement was distributed or local. If `distribution` is `full`, execution of the statement is performed by multiple nodes in parallel, then the final results are returned by the gateway node. If `local`, the execution plan is performed only on the gateway node. Even if the execution plan is `local`, row data may be fetched from remote nodes, but the processing of the data is performed by the local node.
+distribution | Shows whether the statement was distributed or local. If `distribution` is `full`, execution of the statement is performed by multiple nodes in parallel, then the results are returned by the gateway node. If `local`, the execution plan is performed only on the gateway node. Even if the execution plan is `local`, row data may be fetched from remote nodes, but the processing of the data is performed by the local node.
 vectorized | Indicates whether the [vectorized execution engine](vectorized-execution.html) was used in this statement.
 rows read from KV | The number of rows read from the [Storage layer](architecture/storage-layer.html).
 cumulative time spent in KV | The total amount of time spent in the [Storage layer](architecture/storage-layer.html).

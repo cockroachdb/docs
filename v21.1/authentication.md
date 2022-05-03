@@ -256,7 +256,7 @@ To solve this problem, cryptographers came up with **asymmetric encryption** to 
 
 Asymmetric encryption involves a pair of keys instead of a single key. The two keys are called the **public key** and the **private key**. The keys consist of very long numbers linked mathematically in a way such that a message encrypted using a public key can only be decrypted using the private key and vice versa. The message cannot be decrypted using the same key that was used to encrypt the message.
 
-So going back to our example, Amy and Rosa both have their own public-private key pairs. They keep their private keys safe with themselves and publicly distribute their public keys. Now when Amy wants to send a message to Rosa, she requests Rosa's public key, encrypts the message using Rosa’s public key, and sends the encrypted message. Rosa uses her own private key to decrypt the message.
+Going back to our example, Amy and Rosa both have their own public-private key pairs. They keep their private keys safe with themselves and publicly distribute their public keys. Now when Amy wants to send a message to Rosa, she requests Rosa's public key, encrypts the message using Rosa’s public key, and sends the encrypted message. Rosa uses her own private key to decrypt the message.
 
 But what if a malicious imposter intercepts the communication? The imposter might pose as Rosa and send their public key instead of Rosa’s. There's no way for Amy to know that the public key she received isn’t Rosa’s, so she would end up using the imposter's public key to encrypt the message and send it to the imposter. The imposter can use their own private key and decrypt and read the message, thus compromising the secure communication channel between Amy and Rosa.
 

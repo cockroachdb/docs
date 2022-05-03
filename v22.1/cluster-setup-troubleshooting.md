@@ -463,18 +463,20 @@ CockroachDB attempts to restart nodes after they crash. Nodes that frequently re
 
 ### Decommissioning process hangs indefinitely
 
-**Explanation:** Before decommissioning a node, you need to make sure other nodes are available to take over the range replicas from the node. If no other nodes are available, the decommission process will hang indefinitely.
+If the [decommissioning process](node-shutdown.html?filters=decommission#remove-nodes) appears to be hung on a node, a message like the following will print to `stderr`:
+
+~~~
+possible decommission stall detected
+n3 still has replica id 2 for range r1
+n3 still has replica id 3 for range r2
+n3 still has replica id 2 for range r3
+n3 still has replica id 3 for range r4
+n3 still has replica id 2 for range r5
+~~~
+
+**Explanation:** Before decommissioning a node, you need to make sure other nodes are available to take over the range replicas from the node. If no other nodes are available, the decommission process will hang indefinitely. For more information, see [Node Shutdown](node-shutdown.html?filters=decommission#size-and-replication-factor).
 
 **Solution:** Confirm that there are enough nodes with sufficient storage space to take over the replicas from the node you want to remove.
-
-### Decommissioned nodes displayed in UI forever
-
-By design, decommissioned nodes are displayed in the DB Console forever. We retain the list of decommissioned nodes for the following reasons:
-
--   Decommissioning is not entirely free, so showing those decommissioned nodes in the UI reminds you of the baggage your cluster will have to carry around forever.
--   It also explains to future administrations why your node IDs have gaps (e.g., why the nodes are numbered n1, n2, and n8).
-
-You can follow the discussion here: [https://github.com/cockroachdb/cockroach/issues/24636](https://github.com/cockroachdb/cockroach/issues/24636)
 
 ## Replication issues
 
