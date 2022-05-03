@@ -312,7 +312,7 @@ metadata:
   namespace: cockroach-operator-system
 ~~~
 
-The above configuration overrides the [default logging configuration](#default-logging-configuration) and reflects our recommended Kubernetes logging configuration:
+The above configuration overrides the [default logging configuration](configure-logs.html#default-logging-configuration) and reflects our recommended Kubernetes logging configuration:
 
 - Save [`DEV`](logging.html#dev) channel logs to disk for troubleshooting.
 - Send operational- and security-related logs to a [network collector](logging-use-cases.html#network-logging).
@@ -324,7 +324,7 @@ spec:
   logConfigMap: logconfig
 ~~~
 
-By default, the Operator also modifies the [default logging configuration](#default-logging-configuration) with the following:
+By default, the Operator also modifies the [default logging configuration](configure-logs.html#default-logging-configuration) with the following:
 
 ~~~ yaml
 sinks:
@@ -337,7 +337,7 @@ This outputs logging events in the [`OPS`](logging.html#ops) channel to a `cockr
 
 ### Example: Creating a troubleshooting log file on pods
 
-In this example, CockroachDB has already been deployed on a Kubernetes cluster. We override the [default logging configuration](#default-logging-configuration) to output [`DEV`](logging.html#dev) logs to a `cockroach-dev.log` file.
+In this example, CockroachDB has already been deployed on a Kubernetes cluster. We override the [default logging configuration](configure-logs.html#default-logging-configuration) to output [`DEV`](logging.html#dev) logs to a `cockroach-dev.log` file.
 
 1. Create a ConfigMap named `logconfig`. Note that `namespace` is set to the Operator's default namespace (`cockroach-operator-system`):
 
