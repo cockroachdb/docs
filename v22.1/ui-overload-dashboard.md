@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.db_console
 ---
 
- The **Overload dashboard** lets you monitor the performance of the parts of your cluster relevant to the cluster's [admission control system](architecture/admission-control.html). This includes CPU usage, the runnable goroutines waiting per CPU, the health of the persistent stores, and the performance of admission control system when it is enabled.
+ The **Overload dashboard** lets you monitor the performance of the parts of your cluster relevant to the cluster's [admission control system](admission-control.html). This includes CPU usage, the runnable goroutines waiting per CPU, the health of the persistent stores, and the performance of admission control system when it is enabled.
 
 To view this dashboard, [access the DB Console](ui-overview.html#db-console-access), click **Metrics** in the left-hand navigation, and select **Dashboard** > **Overload**.
 
@@ -32,7 +32,7 @@ This graph shows the health of the [persistent stores](architecture/storage-laye
 
 ## KV Admission Slots
 
-This graph shows the number of slots used internally by the [KV layer of the admission control system](architecture/admission-control.html). There are lines for available slots and used slots.
+This graph shows the number of slots used internally by the [KV layer of the admission control system](admission-control.html). There are lines for available slots and used slots.
 
 KV admission slots are an internal aspect of the admission control system, and are dynamically adjusted to allow for high CPU utilization, but without causing CPU overload. If the used slots are often equal to the available slots, then the admission control system is queueing work in order to prevent overload. A shortage of KV slots will cause queuing not only at the KV layer, but also at the SQL layer, since both layers can be significant consumers of CPU.
 

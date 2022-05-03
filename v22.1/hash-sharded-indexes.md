@@ -44,7 +44,7 @@ You can create hash-sharded indexes with implicit partitioning under the followi
 - The table is partitioned implicitly with [`REGIONAL BY ROW`](multiregion-overview.html#regional-by-row-tables), and the `crdb_region` column is not part of the columns in the hash-sharded index.
 - The table is partitioned implicitly with `PARTITION ALL BY`, and the partition columns are not part of the columns in the hash-sharded index.
 
-However, if an index of a table, whether it be a primary key or secondary index, is explicitly partitioned with `PARTITION BY`, then that index cannot be hash-sharded. Paritioning columns cannot be placed explicitly as key columns of a hash-sharded index as well, including `REGIONAL BY ROW` table's `crdb_region` column.
+However, if an index of a table, whether it be a primary key or secondary index, is explicitly partitioned with `PARTITION BY`, then that index cannot be hash-sharded. Partitioning columns cannot be placed explicitly as key columns of a hash-sharded index as well, including `REGIONAL BY ROW` table's `crdb_region` column.
 
 ## Create a hash-sharded index
 
