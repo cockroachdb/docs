@@ -580,7 +580,7 @@ WHERE metadata @> '{"db":"movr"}' AND (metadata @> '{"stmtTyp":"TypeDDL"}' OR me
 
 #### Detect suboptimal and regressed plans
 
- <span class="version-tag">New in v22.1</span> Historical plans are stored in plan gists in `statistics->'statistics'->'planGists'`. To detect suboptimal and regressed plans over time you can compare plans for the same query by extracting them from the plan gists.
+<span class="version-tag">New in v22.1</span> Historical plans are stored in plan gists in `statistics->'statistics'->'planGists'`. To detect suboptimal and regressed plans over time you can compare plans for the same query by extracting them from the plan gists.
 
 Suppose you wanted to compare plans of the following query:
 
