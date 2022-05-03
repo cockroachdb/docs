@@ -111,9 +111,9 @@ URI Parameter      | Description
 
 When using Pub/Sub as your downstream sink, consider the following:
 
-- You must specify the `region` parameter in the URI
 - It only supports `JSON` message format.
 - Your Google Service Account must have the [Pub/Sub Editor](https://cloud.google.com/iam/docs/understanding-roles#pub-sub-roles) role assigned at the [project level](https://cloud.google.com/resource-manager/docs/access-control-proj#using_predefined_roles).
+- You must specify the `region` parameter in the URI to maintain [ordering guarantees](use-changefeeds.html#ordering-guarantees). There is not an option for unordered messages, see [Known Limitations](change-data-capture-overview.html#known-limitations) for more information.
 - Changefeeds connecting to a Pub/Sub sink do not support the `topic_prefix` option.
 
 ### Topic naming
