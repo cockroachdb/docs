@@ -1,1 +1,4 @@
-- {% if page.name == "cost-based-optimizer.md" %} Locality optimized search {% else %} [Locality optimized search](cost-based-optimizer.html#locality-optimized-search-in-multi-region-clusters) {% endif %} works only for queries selecting a limited number of records (up to 100,000 unique keys). It does not work with [`LIMIT`](limit-offset.html) clauses. [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/64862)
+-  A query with a `LIMIT` clause scans a table with {% if page.name == "cost-based-optimizer.md" %} improved latency {% else %} [improved latency](cost-based-optimizer.html#locality-optimized-search-in-multi-region-clusters) {% endif %} only if:
+
+    - The table is defined with `LOCALITY REGIONAL BY ROW`.
+    - The number of qualified rows (the sum of the `LIMIT` clause and optional `OFFSET` clause values) residing in the local region is less than or equal to `100000`.
