@@ -5,9 +5,6 @@ toc: true
 docs_area: manage
 ---
 
-{{ site.data.versions | where_exp: "m", "m.major_version == page.version.version" }}
-
-
 A node **shutdown** terminates the `cockroach` process on the node.
 
 There are two ways to handle node shutdown:
