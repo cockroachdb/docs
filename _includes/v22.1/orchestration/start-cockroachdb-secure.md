@@ -78,7 +78,7 @@ The StatefulSet configuration sets all CockroachDB nodes to log to `stderr`, so 
         pvc-9e4f57f0-fb2e-11e9-a65c-42010a8e0fca   100Gi      RWO            Delete           Bound    default/datadir-cockroachdb-2   standard                51m
         ~~~
 
-    1. Run `cockroach init` on one of the pods to complete the node startup process and have them join together as a cluster:
+    1. Run `cockroach init` on one of the pods to complete the node startup process and have them combine as a cluster:
 
         {% include_cached copy-clipboard.html %}
         ~~~ shell

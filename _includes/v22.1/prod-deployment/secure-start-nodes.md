@@ -11,7 +11,7 @@ You can start the nodes manually or automate the process using [systemd](https:/
 For each initial node of your cluster, complete the following steps:
 
 {{site.data.alerts.callout_info}}
-After completing these steps, nodes will not yet be live. They will complete the startup process and join together to form a cluster as soon as the cluster is initialized in the next step.
+After completing these steps, nodes will not yet be live. They will complete the startup process and combine to form a cluster as soon as the cluster is initialized in the next step.
 {{site.data.alerts.end}}
 
 1. SSH to the machine where you want the node to run.
@@ -88,7 +88,7 @@ After completing these steps, nodes will not yet be live. They will complete the
 For each initial node of your cluster, complete the following steps:
 
 {{site.data.alerts.callout_info}}
-After completing these steps, nodes will not yet be live. They will complete the startup process and join together to form a cluster as soon as the cluster is initialized in the next step.
+After completing these steps, nodes will not yet be live. They will complete the startup process and combine to form a cluster as soon as the cluster is initialized in the next step.
 {{site.data.alerts.end}}
 
 1. SSH to the machine where you want the node to run. Ensure you are logged in as the `root` user.

@@ -1,4 +1,4 @@
-On your local machine, run the [`cockroach init`](cockroach-init.html) command to complete the node startup process and have them join together as a cluster:
+On your local machine, run the [`cockroach init`](cockroach-init.html) command to complete the node startup process and have them combine as a cluster:
 
 {% include copy-clipboard.html %}
 ~~~ shell

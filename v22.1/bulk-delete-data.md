@@ -134,7 +134,7 @@ CockroachDB records the timestamp of each row created in a table in the `crdb_in
 
 `crdb_internal_mvcc_timestamp` cannot be indexed. If you plan to use `crdb_internal_mvcc_timestamp` as a filter for large deletes, you must follow the [non-indexed column pattern](#batch-delete-on-a-non-indexed-column).
 
-**Exercise caution when using `crdb_internal_mvcc_timestamp` in production, as the column is subject to change without prior notice in new releases of CockroachDB. Instead, we recommend creating a column with an [`ON UPDATE` expression](create-table.html#on-update-expressions) to avoid any conflicts due to internal changes to `crdb_internal_mvcc_timestamp`.**
+**Exercise caution when using `crdb_internal_mvcc_timestamp` in production, as the column is subject to change without notice in new releases of CockroachDB. Instead, we recommend creating a column with an [`ON UPDATE` expression](create-table.html#on-update-expressions) to avoid any conflicts due to internal changes to `crdb_internal_mvcc_timestamp`.**
 {{site.data.alerts.end}}
 
 ## Batch-delete "expired" data

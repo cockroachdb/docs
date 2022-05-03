@@ -753,7 +753,7 @@ The below steps use [`cockroach cert` commands](cockroach-cert.html) to quickly 
     $ kubectl create -f <statefulset-3> --context <cluster-context-3> --namespace <cluster-namespace-3>
     ~~~
 
-1. Run `cockroach init` on one of the pods to complete the node startup process and have them join together as a cluster:
+1. Run `cockroach init` on one of the pods to complete the node startup process and have them combine as a cluster:
 
     {% include copy-clipboard.html %}
     ~~~

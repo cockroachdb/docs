@@ -1,4 +1,4 @@
-On your local machine, complete the node startup process and have them join together as a cluster:
+On your local machine, complete the node startup process and have them combine as a cluster:
 
 1. [Install CockroachDB](install-cockroachdb.html) on your local machine, if you haven't already.
 

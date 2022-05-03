@@ -14,7 +14,7 @@ The `crdb_internal` [system catalog](system-catalogs.html) is a schema that cont
 {{site.data.alerts.callout_danger}}
 Do not use the `crdb_internal` tables marked with ✗ in production environments for the following reasons:
 
-- The contents of these tables are unstable, and subject to change in new releases of CockroachDB, without prior notice.
+- The contents of these tables are unstable, and subject to change in new releases of CockroachDB, without notice.
 - There are memory and latency costs associated with each table in `crdb_internal`. Accessing the tables in the schema can impact cluster stability and performance.
 {{site.data.alerts.end}}
 

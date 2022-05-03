@@ -198,6 +198,8 @@ inet
 ing
 ingestions
 initializr
+inode
+inodes
 intellij
 interleavings
 intra
@@ -598,6 +600,7 @@ vectorizing
 vijay
 vlaue
 vorobev
+Voronoi
 wabada
 walkthrough
 wallclock

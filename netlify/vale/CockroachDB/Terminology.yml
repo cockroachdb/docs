@@ -3,6 +3,8 @@ message: Prefer '%s' over '%s'
 ignorecase: false
 level: warning
 swap:
+  builtin: built-in
+  builtins: built-ins
   '[^\/\-\.]cockroachdb[^\/\-\.]': CockroachDB
   'CockroachCloud Serverless': "{{ site.data.products.serverless }}"
   'CockroachCloud Dedicated': "{{ site.data.products.dedicated }}"

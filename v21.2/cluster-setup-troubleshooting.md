@@ -467,15 +467,6 @@ CockroachDB attempts to restart nodes after they crash. Nodes that frequently re
 
 **Solution:** Confirm that there are enough nodes with sufficient storage space to take over the replicas from the node you want to remove.
 
-### Decommissioned nodes displayed in UI forever
-
-By design, decommissioned nodes are displayed in the DB Console forever. We retain the list of decommissioned nodes for the following reasons:
-
--   Decommissioning is not entirely free, so showing those decommissioned nodes in the UI reminds you of the baggage your cluster will have to carry around forever.
--   It also explains to future administrations why your node IDs have gaps (e.g., why the nodes are numbered n1, n2, and n8).
-
-You can follow the discussion here: [https://github.com/cockroachdb/cockroach/issues/24636](https://github.com/cockroachdb/cockroach/issues/24636)
-
 ## Replication issues
 
 ### DB Console shows under-replicated/unavailable ranges

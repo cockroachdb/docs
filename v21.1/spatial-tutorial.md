@@ -1757,7 +1757,7 @@ The `roads` table was imported from a [shapefile](https://prd-tnm.s3.amazonaws.c
 
 #### The `birds` database
 
-The `birds` database contains several tables that you will have to [join](joins.html) together in most of the queries shown elsewhere on this page. The multi-table design reflects [the schema of the actual data set](https://www.sciencebase.gov/catalog/file/get/5ea04e9a82cefae35a129d65?f=__disk__b4%2F2f%2Fcf%2Fb42fcfe28a799db6e8c97200829ea1ebaccbf8ea&transform=1&allowOpen=true), which is split across files that map to these tables.
+The `birds` database contains several tables to which you will have to [join](joins.html) in most of the queries shown elsewhere on this page. The multi-table design reflects [the schema of the actual data set](https://www.sciencebase.gov/catalog/file/get/5ea04e9a82cefae35a129d65?f=__disk__b4%2F2f%2Fcf%2Fb42fcfe28a799db6e8c97200829ea1ebaccbf8ea&transform=1&allowOpen=true), which is split across files that map to these tables.
 
 The tables in the `birds` database are diagrammed below:
 
