@@ -16,6 +16,16 @@ Get future release notes emailed to you:
 As of April 20, 2022, new {{ site.data.products.dedicated }} clusters and all {{ site.data.products.serverless }} clusters are running CockroachDB [v21.2.9](v21.2.html).
 {{site.data.alerts.end}}
 
+## April 27, 2022
+
+<h3>General changes</h3>
+
+- {{ site.data.products.dedicated }} contract customers can now [scale clusters](../cockroachcloud/cluster-management.html) through the Console.
+
+<h3>Console changes</h3>
+
+- Contract customers can now view information about their organization's credit grants on the **Overview** tab of the [**Billing** page](../cockroachcloud/billing-management.html).
+
 ## April 20, 2022
 
 <h3>Console changes</h3>
@@ -94,7 +104,7 @@ As of April 20, 2022, new {{ site.data.products.dedicated }} clusters and all {{
 
 - New {{ site.data.products.dedicated }} clusters will now run [v21.2.1](v21.2.html#v21-2-1).
 - {{ site.data.products.serverless }} clusters will now run CockroachDB [v21.2.0-beta.4](v21.2.html#v21-2-0-beta-4).
-- New {{ site.data.products.db }} clusters will now have [Admission Control](../{{site.versions["stable"]}}/architecture/admission-control.html) enabled by default.
+- New {{ site.data.products.db }} clusters will now have [Admission Control](../v21.2/architecture/admission-control.html) enabled by default.
 - {{ site.data.products.dedicated }} clusters will now run on new [machine types and disks](../cockroachcloud/create-your-cluster.html#step-2-select-the-cloud-provider). Clusters created before December 1, 2021 will be transitioned to the new hardware configurations by the end of the month, and pricing may change slightly.
 
 <h3>Console changes</h3>

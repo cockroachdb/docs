@@ -82,6 +82,17 @@ To turn off automatic statistics collection, follow these steps:
 
 To see how to manually generate statistics, see the [`CREATE STATISTICS` examples](create-statistics.html#examples).
 
+#### Control whether the `avg_size` statistic is used to cost scans
+
+<span class="version-tag">New in v22.1</span> The `avg_size` table statistic represents the average size of a table column.
+If a table does not have an average size statistic available for a column, it uses the default value of 4 bytes.
+
+The optimizer uses `avg_size` to cost scans and relevant joins. Costing scans per row regardless of the size of the columns comprising the row doesn't account for time
+to read or transport a large number of bytes over the network and can lead to undesirable plans when there are multiple options for scans
+or joins that read directly from tables.
+
+Cockroach Labs recommends that you allow the optimizer to consider column size when costing plans. If you are an advanced user and need to disable using `avg_size` for troubleshooting or performance tuning reasons, you can disable it by setting the `cost_scans_with_default_col_size` [session variable](set-vars.html) to true with `SET cost_scans_with_default_col_size=true`.
+
 #### Control histogram collection
 
 By default, the optimizer collects histograms for all index columns (specifically the first column in each index) during automatic statistics collection. If a single column statistic is explicitly requested using manual invocation of [`CREATE STATISTICS`](create-statistics.html), a histogram will be collected, regardless of whether or not the column is part of an index.
@@ -176,7 +187,7 @@ The cost-based optimizer explores multiple join orderings to find the lowest-cos
 
     If one query has a slow planning time, you can avoid interfering with other query plans by setting `reorder_joins_limit` to the desired lower value before executing that query and resetting the session variable to the default after executing the query.
 
-- If setting and resetting the session variable is cumbersome or if there are multiple independent joins in the query where some may benefit from join reordering, you can use a [join hint](#join-hints). If the join has a hint specifying the type of join to something other than the default `INNER` (i.e. `INNER LOOKUP`, `MERGE`, `HASH`, etc.), join reordering will be disabled and the plan will respect the join order inherent in the way the query is written. This works at the expression level and doesn't affect the entire query (for instance, if you have a union of two joins they are independent join expressions).
+- If setting and resetting the session variable is cumbersome or if there are multiple independent joins in the query where some may benefit from join reordering, you can use a [join hint](#join-hints). If the join has a hint specifying the type of join to something other than the default `INNER` (i.e., `INNER LOOKUP`, `MERGE`, `HASH`, etc.), join reordering will be disabled and the plan will respect the join order inherent in the way the query is written. This works at the expression level and doesn't affect the entire query (for instance, if you have a union of two joins they are independent join expressions).
 
 ## Join hints
 
