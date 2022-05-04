@@ -22,7 +22,7 @@ Download and extract the `ccloud` binary and add it to your `PATH`.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-curl https://binaries.cockroachdb.com/ccloud_darwin-amd64-latest.tar.gz | tar -xJ && cp -i ccloud_darwin-amd64-latest.tar.gz/ccloud /usr/local/bin/
+curl https://binaries.cockroachdb.com/ccloud_darwin-amd64-latest.tar.gz | tar -xJ && cp -i dist/darwin-amd64/ccloud /usr/local/bin/
 ~~~
 
 </section>
@@ -31,7 +31,7 @@ Download and extract the `ccloud` binary and add it to your `PATH`.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-curl https://binaries.cockroachdb.com/ccloud_linux-amd64-latest.tar.gz | tar -xJ && cp -i ccloud_linux-amd64-latest.tar.gz/ccloud /usr/local/bin/
+curl https://binaries.cockroachdb.com/ccloud_linux-amd64-latest.tar.gz | tar -xJ && cp -i dist/linux-amd64/ccloud /usr/local/bin/
 ~~~
 
 </section>
