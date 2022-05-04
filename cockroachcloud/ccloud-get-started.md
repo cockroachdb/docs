@@ -7,7 +7,7 @@ docs_area: manage
 
 The `ccloud` tool is a command line interface (CLI) tool that allows you to create, manage, and connect to CockroachDB Cloud clusters.
 
-## Install ccloud
+## Install `ccloud`
 
 Choose your OS:
 
