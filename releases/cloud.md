@@ -21,14 +21,7 @@ As of April 20, 2022, new {{ site.data.products.dedicated }} clusters and all {{
 <h3>Console changes</h3>
 
 - Added **Distributed execution** and **Vectorized execution** information to the **Overview** tab of the **Statement Details** page.
-- Added `FULL SCAN` information to the **Explain plan** tab of the **Statement Details** page.
-- Added the following metrics chart to {{ site.data.products.serverless }} clusters' **Metrics** page:
-
-  - **SQL Open Sessions**
-  - **SQL Statement Contention**
-  - **SQL Connection Latency**
-  - **SQL Connection Attempts**
-  
+- Added `FULL SCAN` information to the **Explain plan** tab of the **Statement Details** page.  
 - Users without accounts can now accept invitations by creating a user using SSO-based authorization such as GitHub.
 - Timeseries charts are now displayed in UTC.
 
