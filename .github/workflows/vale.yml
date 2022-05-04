@@ -14,5 +14,6 @@ jobs:
         config: https://raw.githubusercontent.com/cockroachdb/docs/master/.vale.ini
         files: __onlyModified
         onlyAnnotateModifiedLines: true
+        debug: true
       env:
         GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
