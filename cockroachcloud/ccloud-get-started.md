@@ -14,7 +14,7 @@ Choose your OS:
 <div class="filters clearfix">
     <button class="filter-button page-level" data-scope="mac"><strong>Mac</strong></button>
     <button class="filter-button page-level" data-scope="linux"><strong>Linux</strong></button>
-    {% comment %}<button class="filter-button page-level" data-scope="windows"><strong>Windows</strong></button>{% endcomment %}
+    <button class="filter-button page-level" data-scope="windows"><strong>Windows</strong></button>
 </div>
 
 <section class="filter-content" markdown="1" data-scope="mac">
@@ -35,16 +35,14 @@ curl https://binaries.cockroachdb.com/ccloud_linux-amd64-latest.tar.gz | tar -xJ
 ~~~
 
 </section>
-{% comment %}
 <section class="filter-content" markdown="1" data-scope="windows">
 Download and extract the `ccloud` binary and add it to your `PATH`.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-PS $ErrorActionPreference = "Stop"; [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12;$ProgressPreference = 'SilentlyContinue'; $null = New-Item -Type Directory -Force $env:appdata/ccloud; Invoke-WebRequest -Uri https://binaries.cockroachdb.com/ccloud_windows-amd64-latest.tar.gz -OutFile ccloud.tar.gz; tar -zxvf ccloud.tar.gz -C $env:TEMP/ccloud; Copy-Item -Force "$env:TEMP/dist/windows-amd64/ccloud.exe" -Destination $env:appdata/ccloud; $Env:PATH += ";$env:appdata/ccloud"
+$ErrorActionPreference = "Stop"; [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; $ProgressPreference = 'SilentlyContinue'; $null = New-Item -Type Directory -Force $env:appdata/ccloud; Invoke-WebRequest -Uri https://binaries.cockroachdb.com/ccloud-windows-amd64-0.1.1.zip -OutFile ccloud.zip; Expand-Archive -Force -Path ccloud.zip; Copy-Item -Force dist/windows-amd64/ccloud.exe -Destination $env:appdata/ccloud; $Env:PATH += ";$env:appdata/ccloud"; # We recommend adding ";$env:appdata/ccloud" to the Path variable for your system environment. See https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_environment_variables#saving-changes-to-environment-variables for more information.
 ~~~
 </section>
-{% endcomment %}
 
 ## Using `ccloud quickstart`
 
