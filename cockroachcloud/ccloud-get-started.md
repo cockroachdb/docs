@@ -14,21 +14,37 @@ Choose your OS:
 <div class="filters clearfix">
     <button class="filter-button page-level" data-scope="mac"><strong>Mac</strong></button>
     <button class="filter-button page-level" data-scope="linux"><strong>Linux</strong></button>
-    <button class="filter-button page-level" data-scope="windows"><strong>Windows</strong></button>
+    {% comment %}<button class="filter-button page-level" data-scope="windows"><strong>Windows</strong></button>{% endcomment %}
 </div>
 
 <section class="filter-content" markdown="1" data-scope="mac">
-1. Download the ccloud binary.
-1. Extract the ccloud binary and add it to your `PATH`.
+Download and extract the `ccloud` binary and add it to your `PATH`.
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+curl https://binaries.cockroachdb.com/ccloud_darwin-amd64-latest.tar.gz | tar -xJ && cp -i ccloud_darwin-amd64-latest.tar.gz/ccloud /usr/local/bin/
+~~~
+
 </section>
 <section class="filter-content" markdown="1" data-scope="linux">
-1. Download the ccloud binary.
-1. Extract the ccloud binary and add it to your `PATH`.
+Download and extract the `ccloud` binary and add it to your `PATH`.
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+curl https://binaries.cockroachdb.com/ccloud_linux-amd64-latest.tar.gz | tar -xJ && cp -i ccloud_linux-amd64-latest.tar.gz/ccloud /usr/local/bin/
+~~~
+
 </section>
+{% comment %}
 <section class="filter-content" markdown="1" data-scope="windows">
-1. Download the ccloud binary.
-1. Extract the ccloud binary and add it to your `PATH`.
+Download and extract the `ccloud` binary and add it to your `PATH`.
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+PS $ErrorActionPreference = "Stop"; [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12;$ProgressPreference = 'SilentlyContinue'; $null = New-Item -Type Directory -Force $env:appdata/ccloud; Invoke-WebRequest -Uri https://binaries.cockroachdb.com/ccloud_windows-amd64-latest.tar.gz -OutFile ccloud.tar.gz; tar -zxvf ccloud.tar.gz -C $env:TEMP/ccloud; Copy-Item -Force "$env:TEMP/dist/windows-amd64/ccloud.exe" -Destination $env:appdata/ccloud; $Env:PATH += ";$env:appdata/ccloud"
+~~~
 </section>
+{% endcomment %}
 
 ## Using `ccloud quickstart`
 
