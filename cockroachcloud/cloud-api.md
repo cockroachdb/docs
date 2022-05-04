@@ -7,8 +7,6 @@ docs_area: manage
 
 The Cloud API is a [REST interface](https://en.wikipedia.org/wiki/Representational_state_transfer) that allows users programmatic access to manage the lifecycle of clusters within their organization.
 
-{% include_cached cockroachcloud/experimental-warning.md %}
-
 ## API reference
 
 Refer to the [full API reference documentation](../api/cloud/v1.html) for detailed descriptions of the API endpoints and options.
