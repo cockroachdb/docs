@@ -60,7 +60,7 @@ Open your Datadog [Dashboard List](https://docs.datadoghq.com/dashboards/#dashbo
 
 To create your own {{ site.data.products.dedicated }} dashboard, you can either [clone](https://docs.datadoghq.com/dashboards/#clone-dashboard) the default `TK` dashboard and edit the widgets, or [create a new dashboard](https://docs.datadoghq.com/dashboards/#new-dashboard).
 
-The [available metrics](https://docs.datadoghq.com/integrations/tk) are drawn directly from the CockroachDB [Prometheus endpoint](monitoring-and-alerting.html#prometheus-endpoint) and are intended for use as building blocks for your own charts.
+The [available metrics](https://docs.datadoghq.com/integrations/tk) are drawn directly from the CockroachDB [Prometheus endpoint](../monitoring-and-alerting.html#prometheus-endpoint) and are intended for use as building blocks for your own charts.
 
 {{site.data.alerts.callout_info}}
 Metric values and time-series graphs in Datadog are not guaranteed to match those in the [DB Console](#access-the-db-console), due to differences in how CockroachDB and Datadog calculate and display metrics.
@@ -75,7 +75,7 @@ To preview the metrics being collected, you can:
 
 To monitor the health of metrics export, we recommend that you create a new Monitor, following the steps in the [Datadog documentation](https://docs.datadoghq.com/monitors/create/types/metric/?tab=threshold).
 
-Select **Threshold Alert** as the detection method. You can use this option to configure an alert that is sent when a [supported metric](https://docs.datadoghq.com/integrations/cockroachdb/?tab=host#data-collected) reaches a given threshold. For descriptions of some useful CockroachDB alerts, see [Monitoring and Alerting](monitoring-and-alerting.html#events-to-alert-on).
+Select **Threshold Alert** as the detection method. You can use this option to configure an alert that is sent when a [supported metric](https://docs.datadoghq.com/integrations/cockroachdb/?tab=host#data-collected) reaches a given threshold. For descriptions of some useful CockroachDB alerts, see [Monitoring and Alerting](../monitoring-and-alerting.html#events-to-alert-on).
 
 - To **Define the metric**:
 
