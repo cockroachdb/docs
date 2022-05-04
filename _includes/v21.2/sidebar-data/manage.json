@@ -28,6 +28,12 @@
           "urls": [
             "/cockroachcloud/cloud-api.html"
           ]
+        },
+        {
+          "title": "Use the <code>ccloud</code> command",
+          "urls": [
+            "/cockroachcloud/ccloud-get-started.html"
+          ]
         }
       ]
     },
