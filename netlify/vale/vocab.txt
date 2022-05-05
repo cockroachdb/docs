@@ -192,6 +192,7 @@ https
 hueypark
 hyperthread
 hyperthreads
+img
 inconsolata
 incrementals
 indexable
@@ -463,6 +464,7 @@ Splunk
 sql
 sqlx
 sqlalchemy
+src
 srivatsa
 sstables
 stackdriver
@@ -529,6 +531,7 @@ timestamptz
 toc
 tocs
 tokenizable
+tokio
 tolerations
 toolchain
 toolchains

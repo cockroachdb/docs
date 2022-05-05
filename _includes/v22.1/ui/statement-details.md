@@ -7,8 +7,6 @@ Click a SQL statement fingerprint to open **Statement Details**. For each statem
 - [Diagnostics](#diagnostics)
 - [Execution Stats](#execution-stats)
 
-The Statement Details page supports the search param `aggregated_ts`. If set, the page displays the statement statistics aggregated at that interval. If unset, the page displays the statement statistics aggregated over the date range specified on the Statements page.
-
 ### Overview
 
 The **Overview** section displays the SQL statement fingerprint and essential statistics:
