@@ -53,7 +53,7 @@ The `ccloud quickstart` command guides you through logging in to CockroachDB Clo
 ccloud quickstart
 ~~~
 
-## Log in to CockroachDB Cloud using `ccloud`
+## Log in to CockroachDB Cloud using `ccloud auth`
 
 1. Run the `ccloud auth login` command and hit **Enter** to open a browser window:
 
@@ -70,7 +70,7 @@ ccloud quickstart
 
 1. Close the browser window and return to your terminal.
 
-## Create a new cluster using `ccloud`
+## Create a new cluster using `ccloud cluster create`
 
 There are two ways to create clusters using `ccloud`: `ccloud quickstart create` and `ccloud cluster create`.
 
@@ -101,7 +101,7 @@ Success! Created cluster
   id: ec5e50eb-67dd-4d25-93b0-91ee7ece778d
 ~~~
 
-The `id` in the output is the cluster ID. The `name` is used in other `ccloud` commands to identify the cluster on which the `ccloud` command operates.
+The `id` in the output is the cluster ID. You use the `name` in other `ccloud` commands to identify the cluster on which the `ccloud` command operates.
 
 You can set the cluster name, cloud infrastructure provider, region, and spend limit as command options. The following command is equivalent to the previous command that uses the default values.
 
@@ -122,7 +122,7 @@ ccloud cluster create dedicated
 
 This command creates a 1 node {{ site.data.products.dedicated }} cluster with 2 virtual CPUs (vCPUs) and 15 GiB of storage in the default cloud infrastructure provider (GCP) and the closest region for that provider. It will generate a cluster name. The CockroachDB version will be the latest stable version.
 
-The cluster name, cloud infrastructure provider, region, number of nodes, and storage can be set as command options. The following command is equivalent to the previous command that uses the default values.
+You can set the cluster name, cloud infrastructure provider, region, number of nodes, and storage as command options. The following command is equivalent to the previous command that uses the default values.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -136,7 +136,7 @@ Success! Created cluster
   id: ec5e50eb-67dd-4d25-93b0-91ee7ece778d
 ~~~
 
-The `id` in the output is the cluster ID. The `name` is used in other `ccloud` commands to identify the cluster on which the `ccloud` command operates.
+The `id` in the output is the cluster ID. You use the `name` in other `ccloud` commands to identify the cluster on which the `ccloud` command operates.
 
 When creating multi node clusters, you must specify how many nodes should be in each region supported by the cloud infrastructure provider. For example, the following command creates a 3 node cluster where 2 nodes are in `us-central1` and 1 node is in `us-west2`:
 
@@ -228,7 +228,7 @@ Success! Deleted IP allowlist entry for
 
 </section>
 
-## Get a list of all the clusters in your organization
+## Get a list of all the clusters in your organization using `ccloud cluster list`
 
 Use the `ccloud cluster list` command to show information about the clusters in your organization. It outputs columns with the cluster name, the cluster ID, the cluster plan, the creation date, the cluster's current state, the cloud provider, and the version of CockroachDB.
 
