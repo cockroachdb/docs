@@ -10,11 +10,11 @@ The **Monitoring** page is accessible on {{ site.data.products.dedicated }} clus
 - Set up cluster [monitoring with Datadog](#monitor-with-datadog).
 - Access the cluster's [built-in DB Console](#access-the-db-console) to view time-series data on SQL queries, troubleshoot query performance, view a list of jobs, and more.
 
-To view the **Monitoring** page, [log in](https://cockroachlabs.cloud/) and click **Monitoring**.
+To view the **Monitoring** page, [log in](https://cockroachlabs.cloud/) and click **Monitoring** on the left-hand navigation.
 
 ## Monitor with Datadog
 
-The {{ site.data.products.dedicated }} integration for Datadog enables data collection and alerting on [CockroachDB metrics](https://docs.datadoghq.com/integrations/tk) using the Datadog platform.
+The {{ site.data.products.dedicated }} integration for Datadog enables data collection and alerting on all [CockroachDB metrics](https://docs.datadoghq.com/integrations/tk) available at the [Prometheus endpoint](../{{site.versions["stable"]}}/monitoring-and-alerting.html#prometheus-endpoint), using the Datadog platform.
 
 To set up Datadog monitoring with {{ site.data.products.dedicated }}, your Datadog account must be associated with a [Datadog organization](https://docs.datadoghq.com/account_management/#organizations).
 
@@ -30,27 +30,26 @@ To enable Datadog monitoring for a {{ site.data.products.dedicated }} cluster:
 
 1. Fill in the **API key** and **Datadog Site** fields with the corresponding values.
     - The **API key** is associated with your Datadog organization. If you don't have an API key to use with your {{ site.data.products.dedicated }} cluster, you need to create one. For instructions, see the [Datadog documentation](https://docs.datadoghq.com/account_management/api-app-keys/#add-an-api-key-or-client-token).
-    - Your **Datadog Site** corresponds to your Datadog URL. For more details, see the [Datadog documentation](https://docs.datadoghq.com/getting_started/site/).
+    - Your **Datadog Site** corresponds to your Datadog Site URL. For more details, see the [Datadog documentation](https://docs.datadoghq.com/getting_started/site/).
 
-1. Click **Create**. The integration will take approximately 15 seconds to 2 minutes to enable, depending on the size of your cluster and the current load on the system.
+1. Click **Create**.  Depending on the size of your cluster and the current load on the system, the integration might take some time to become enabled.
 
-1. When enabled, the **Integration status** in the panel will show as `Active`.
-
-    The cluster will also appear on your Datadog [Infrastructure List](https://docs.datadoghq.com/infrastructure/list/) once it is registered on Datadog. This can take up to several minutes.
+1. Once it is registered on Datadog, the cluster will appear on your Datadog [Infrastructure List](https://docs.datadoghq.com/infrastructure/list/). This can take up to several minutes.
 
 ### Verify integration status
 
-The **Integration status** in the **Datadog** panel reports the following:
+Once enabled, the **Integration status** in the **Datadog** panel on the **Monitoring** page will show as `Active`.
 
+If an issue is encountered during the integration, one of the following statuses may appear instead:
 - `Active` indicates that the integration has been successfully deployed.
 - `Inactive` indicates that the integration has not been successfully deployed. Setup has either not been attempted or has encountered an error.
 - `Unhealthy` indicates that the integration API key is invalid and needs to be [updated](#update-integration).
-- `Unknown` indicates that an unknown error has occurred. If this status is displayed, contact our [support team](https://support.cockroachlabs.com/).
+- `Unknown` indicates that an unknown error has occurred. If this status is displayed, [contact our support team](https://support.cockroachlabs.com/).
 
 Metrics export from CockroachDB can be interrupted in the event of:
 
-- A stale API key. In this case, the integration status will be `Unhealthy`. To resolve the issue, [update](#update-integration) your integration with a new API key.
-- Any issue that causes transient CockroachDB unavailbility. In this case, the integration status will continue to be `Active`. To resolve the issue, try [deactivating](#deactivate-integration) and reactivating the integration from the **Datadog** panel. If this does not resolve the issue, contact our [support team](https://support.cockroachlabs.com/).
+- A stale API key. In this case, the integration status will be `Unhealthy`. To resolve the issue, [update your integration](#update-integration) with a new API key.
+- Transient CockroachDB unavailbility. In this case, the integration status will continue to be `Active`. To resolve the issue, try [deactivating](#deactivate-integration) and reactivating the integration from the **Datadog** panel. If this does not resolve the issue, [contact our support team](https://support.cockroachlabs.com/).
 
 To monitor the health of metrics export, you can [create a custom Monitor](#monitor-health-of-metrics-export) in Datadog. 
 
@@ -68,14 +67,14 @@ Metric values and time-series graphs in Datadog are not guaranteed to match thos
 
 To preview the metrics being collected, you can:
 
-- Click on your cluster's entry in the [Infrastructure List](https://docs.datadoghq.com/infrastructure/list/). The time-series graphs for each available metric are displayed.
+- Click on your cluster's entry in the [Infrastructure List](https://docs.datadoghq.com/infrastructure/list/) to display time-series graphs for each available metric.
 - Use the [Metrics Explorer](https://docs.datadoghq.com/metrics/explorer/) to search for and view `crdb_dedicated` metrics.
 
 ### Monitor health of metrics export
 
-To monitor the health of metrics export, we recommend that you create a new Monitor, following the steps in the [Datadog documentation](https://docs.datadoghq.com/monitors/create/types/metric/?tab=threshold).
+To monitor the health of metrics export, we recommend that you [create a new Monitor](https://docs.datadoghq.com/monitors/create/types/metric/?tab=threshold).
 
-Select **Threshold Alert** as the detection method. You can use this option to configure an alert that is sent when a [supported metric](https://docs.datadoghq.com/integrations/cockroachdb/?tab=host#data-collected) reaches a given threshold. For descriptions of some useful CockroachDB alerts, see [Monitoring and Alerting](../{{site.versions["stable"]}}/monitoring-and-alerting.html#events-to-alert-on).
+Select **Threshold Alert** as the detection method, which configures an alert that is sent when a [supported metric](https://docs.datadoghq.com/integrations/cockroachdb/?tab=host#data-collected) reaches a given threshold. For descriptions of some useful CockroachDB alerts, see [Monitoring and Alerting](../{{site.versions["stable"]}}/monitoring-and-alerting.html#events-to-alert-on).
 
 - To **Define the metric**:
 
