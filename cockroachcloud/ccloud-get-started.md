@@ -5,7 +5,7 @@ toc: true
 docs_area: manage
 ---
 
-The `ccloud` tool is a command-line interface (CLI) tool that allows you to create, manage, and connect to CockroachDB Cloud clusters.
+The `ccloud` tool is a command-line interface (CLI) tool that allows you to create, manage, and connect to CockroachDB Cloud clusters. If you are new to CockroachDB Cloud, [install `ccloud`](#install-ccloud) and use the [`ccloud quickstart` command](#use-ccloud-quickstart) to interactively log in and create a new {{ site.data.products.serverless }} cluster.
 
 ## Install `ccloud`
 
@@ -53,14 +53,18 @@ $ErrorActionPreference = "Stop"; [Net.ServicePointManager]::SecurityProtocol = [
 
 ## Use `ccloud quickstart`
 
-The `ccloud quickstart` command guides you through logging in to CockroachDB Cloud, creating a new {{ site.data.products.serverless }} with a $0 spend limit, and connecting to the new cluster. Run `ccloud quickstart` and follow the instructions:
+The easiest way of getting started with CockroachDB Cloud is to use `ccloud quickstart`. The `ccloud quickstart` command guides you through logging in to CockroachDB Cloud, creating a new {{ site.data.products.serverless }} with a $0 spend limit, and connecting to the new cluster. Run `ccloud quickstart` and follow the instructions:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 ccloud quickstart
 ~~~
 
+The `ccloud quickstart` command will open a browser window to log you in to CockroachDB Cloud. If you are new to CockroachDB Cloud, you can log in using your GitHub account, or create a new account using an email address.
+
 ## Log in to CockroachDB Cloud using `ccloud auth`
+
+In order to use the `ccloud` commands to configure and manage your clusters, you first need to log in to CockroachDB Cloud. Use the `ccloud auth login` command to open a browser window to log in to CockroachDB Cloud.
 
 1. Run the `ccloud auth login` command and hit **Enter** to open a browser window:
 
