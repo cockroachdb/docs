@@ -7,6 +7,8 @@ docs_area: reference.sql
 
 The `UPSERT` [statement](sql-statements.html) is semantically equivalent to [`INSERT ON CONFLICT`](insert.html#on-conflict-clause), but the two may have slightly different [performance characteristics](#considerations). It inserts rows in cases where specified values do not violate uniqueness constraints, and it updates rows in cases where values do violate uniqueness constraints.
 
+An `UPSERT` statement that affects a proper subset of columns in the target table behaves differently depending on whether or not the target columns are explicit in the statement. If no target columns are explicitly specified, `UPSERT` will always write the default values for columns without explicit values in the `UPSERT` statement. If target columns are explicitly specified, `UPSERT` will not override the values of existing columns that do not have new values in the `UPSERT` statement. For more details, see [`UPSERT` TODO](#upsert-a-proper-subset-of-columns) below.
+
 To learn more about how to perform and when to use an upsert in CockroachDB, PostgreSQL, and MySQL, see [Upsert in SQL: What is an Upsert, and When Should You Use One?](https://www.cockroachlabs.com/blog/sql-upsert/) .
 
 ## Considerations
@@ -235,6 +237,77 @@ In such a case, you would need to use the [`INSERT ON CONFLICT`](insert.html) st
 | 3 | 3 |
 | 4 | 1 |
 +---+---+
+~~~
+
+### Upsert a proper subset of columns
+
+~~~ sql
+> CREATE TABLE accounts (
+    id INT PRIMARY KEY,
+    name STRING,
+    balance DECIMAL(10, 2) DEFAULT 0
+);
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> INSERT INTO accounts (id, name, balance) VALUES
+    (1, 'a1', 10000.5),
+    (2, 'b1', 20000.75),
+    (3, 'c1',  6325.2);
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM accounts;
+~~~
+
+~~~
++----+------+----------+
+| id | name | balance  |
++----+------+----------+
+|  1 |   a1 | 10000.50 |
+|  2 |   b1 | 20000.75 |
+|  3 |   c1 |  6325.20 |
++----+------+----------+
+~~~
+
+Upserting a proper subset of columns without specifying the column names will write the default values of the unspecified columns when there is a conflict on the primary key. Notice how the account with `id` of `1` has a balance of `0` (the column's default value) after the `UPSERT`:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> UPSERT INTO accounts VALUES (1, 'a2');
+
+> SELECT * FROM accounts;
+~~~
+
+~~~
++----+------+----------+
+| id | name | balance  |
++----+------+----------+
+|  1 |   a2 |     0.00 |
+|  2 |   b1 | 20000.75 |
+|  3 |   c1 |  6325.20 |
++----+------+----------+
+~~~
+
+If the target column names are included in the `UPSERT`, then the subset of columns without values will not change when there is a conflict on the primary key. Notice how the `balance` of the account with `id` of `2` is unchanged after the `UPSERT`:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> UPSERT INTO accounts (id, name) VALUES (2, 'b2');
+
+> SELECT * FROM accounts;
+~~~
+
+~~~
++----+------+----------+
+| id | name | balance  |
++----+------+----------+
+|  1 |   a2 |     0.00 |
+|  2 |   b2 | 20000.75 |
+|  3 |   c1 |  6325.20 |
++----+------+----------+
 ~~~
 
 ### Import data containing duplicate rows using `DISTINCT ON`
