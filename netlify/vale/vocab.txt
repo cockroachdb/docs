@@ -49,6 +49,7 @@ canadacentral
 canadaeast
 castagnoli
 casted
+ccloud
 centralindia
 centralus
 cgo

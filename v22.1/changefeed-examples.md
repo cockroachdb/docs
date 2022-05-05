@@ -12,6 +12,7 @@ For a summary of Core and {{ site.data.products.enterprise }} changefeed feature
 Enterprise changefeeds can connect to the following sinks:
 
 - [Kafka](#create-a-changefeed-connected-to-kafka)
+- [Google Cloud Pub/Sub](#create-a-changefeed-connected-to-a-google-cloud-pub-sub-sink)
 - [Cloud Storage](#create-a-changefeed-connected-to-a-cloud-storage-sink) (Amazon S3, Google Cloud Storage, Azure Storage)
 - [Webhook](#create-a-changefeed-connected-to-a-webhook-sink)
 
@@ -272,6 +273,139 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ ./bin/confluent local services stop
+    ~~~
+
+### Create a changefeed connected to a Google Cloud Pub/Sub sink
+
+{{site.data.alerts.callout_info}}
+The Google Cloud Pub/Sub sink is currently in **beta**.
+{{site.data.alerts.end}}
+
+<span class="version-tag">New in v22.1:</span> In this example, you'll set up a changefeed for a single-node cluster that is connected to a [Google Cloud Pub/Sub](https://cloud.google.com/pubsub/docs/overview) sink. The changefeed will watch a table and send messages to the sink.
+
+You'll need access to a [Google Cloud Project](https://cloud.google.com/resource-manager/docs/creating-managing-projects) to set up a Pub/Sub sink. In this example, the [Google Cloud CLI](https://cloud.google.com/sdk/docs/install-sdk) (`gcloud`) is used, but you can also complete each of these steps within your [Google Cloud Console](https://cloud.google.com/storage/docs/cloud-console).
+
+1. If you do not already have one, [request a trial {{ site.data.products.enterprise }} license](enterprise-licensing.html).
+
+1. Use the [`cockroach start-single-node`](cockroach-start-single-node.html) command to start a single-node cluster:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    cockroach start-single-node --insecure --listen-addr=localhost --background
+    ~~~
+
+1. In this example, you'll run CockroachDB's [Movr](movr.html) application workload to set up some data for your changefeed.
+
+     First create the schema for the workload:
+
+     {% include_cached copy-clipboard.html %}
+     ~~~shell
+     cockroach workload init movr "postgresql://root@127.0.0.1:26257?sslmode=disable"
+     ~~~
+
+     Then run the workload:
+
+     {% include_cached copy-clipboard.html %}
+     ~~~shell
+     cockroach workload run movr --duration=1m "postgresql://root@127.0.0.1:26257?sslmode=disable"
+     ~~~
+
+{% include {{ page.version.version }}/cdc/sql-cluster-settings-example.md %}
+
+1. Next, you'll prepare your Pub/Sub sink.
+
+    In a new terminal window, create a [Service Account](https://cloud.google.com/iam/docs/understanding-service-accounts) attached to your Google Project:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    gcloud iam service-accounts create cdc-demo --project cockroach-project
+    ~~~
+
+    In this example, `cdc-demo` will represent the name of the service account, and `cockroach-project` is the name of the Google Project.
+
+    To ensure that your Service Account has the correct permissions to publish to the sink, use the following command to give the Service Account the predefined [Pub/Sub Editor](https://cloud.google.com/iam/docs/understanding-roles#pub-sub-roles) role:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    gcloud projects add-iam-policy-binding cockroach-project --member='serviceAccount:cdc-demo@cockroach-project.iam.gserviceaccount.com' --role='roles/pubsub.editor'
+    ~~~
+
+1. Create the Pub/Sub [topic](changefeed-sinks.html#pub-sub-topic-naming) to which your changefeed will emit messages:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    gcloud pubsub topics create movr-users --project cockroach-project
+    ~~~
+
+    Run the following command to create a subscription within the `movr-users` topic:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    gcloud pubsub subscriptions create movr-users-sub --topic=movr-users --topic-project=cockroach-project
+    ~~~
+
+1. With the topic and subscription set up, you can now download your Service Account's key. Use the following command to specify where to download the json key file (`key.json`):
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    gcloud iam service-accounts keys create key.json --iam-account=cdc-demo@cockroach-project.iam.gserviceaccount.com
+    ~~~
+
+    Next, base64 encode your credentials key:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    cat key.json | base64
+    ~~~
+
+    Copy the output so that you can add it to your [`CREATE CHANGEFEED`](create-changefeed.html) statement in the next step. When you create your changefeed, it is necessary that the key is base64 encoded before passing it in the URI.
+
+1. Back in the SQL shell, create a changefeed that will emit messages to your Pub/Sub topic. Ensure that you pass the base64-encoded credentials for your Service Account and add your topic's region:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    CREATE CHANGEFEED FOR TABLE users INTO 'gcpubsub://cockroach-project?region=us-east1&topic_name=movr-users&AUTH=specified&CREDENTIALS={base64-encoded key}';
+    ~~~
+
+    The output will confirm the topic where the changefeed will emit messages to.
+
+    ~~~
+           job_id
+    ----------------------
+    756641304964792321
+    (1 row)
+
+    NOTICE: changefeed will emit to topic movr-users
+    ~~~
+
+    To view all the messages delivered to your topic, you can use the Cloud Console. You'll see the messages emitted to the `movr-users-sub` subscription.
+
+    <img src="{{ 'images/v22.1/changefeed-pubsub-output.png' | relative_url }}" alt="Google Cloud Console changefeed message output from movr database" style="border:1px solid #eee;max-width:100%" />
+
+    To view published messages from your terminal, run the following command:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    gcloud pubsub subscriptions pull movr-users-sub --auto-ack --limit=10
+    ~~~
+
+    This command will **only** pull these messages once per subscription. For example, if you ran this command again you would receive 10 different messages in your output. To receive more than one message at a time, pass the `--limit` flag. For more details, see the [gcloud pubsub subscriptions pull](https://cloud.google.com/sdk/gcloud/reference/pubsub/subscriptions/pull) documentation.
+
+    ~~~
+    ┌──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┬──────────────────┬─────────────────────────────────────────────────────────┬────────────┬──────────────────┐
+    │                                                                                                                                 DATA                                                                                                                                 │    MESSAGE_ID    │                       ORDERING_KEY                      │ ATTRIBUTES │ DELIVERY_ATTEMPT │
+    ├──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┼──────────────────┼─────────────────────────────────────────────────────────┼────────────┼──────────────────┤
+    │ {"key":["boston","40ef7cfa-5e16-4bd3-9e14-2f23407a66df"],"value":{"after":{"address":"14980 Gentry Plains Apt. 64","city":"boston","credit_card":"2466765790","id":"40ef7cfa-5e16-4bd3-9e14-2f23407a66df","name":"Vickie Fitzpatrick"}},"topic":"movr-users"}         │ 4466153049158588 │ ["boston", "40ef7cfa-5e16-4bd3-9e14-2f23407a66df"]      │            │                  │
+    │ {"key":["los angeles","947ae147-ae14-4800-8000-00000000001d"],"value":{"after":{"address":"35627 Chelsey Tunnel Suite 94","city":"los angeles","credit_card":"2099932769","id":"947ae147-ae14-4800-8000-00000000001d","name":"Kenneth Barnes"}},"topic":"movr-users"} │ 4466144577818136 │ ["los angeles", "947ae147-ae14-4800-8000-00000000001d"] │            │                  │
+    │ {"key":["amsterdam","c28f5c28-f5c2-4000-8000-000000000026"],"value":{"after":{"address":"14729 Karen Radial","city":"amsterdam","credit_card":"5844236997","id":"c28f5c28-f5c2-4000-8000-000000000026","name":"Maria Weber"}},"topic":"movr-users"}                   │ 4466151194002912 │ ["amsterdam", "c28f5c28-f5c2-4000-8000-000000000026"]   │            │                  │
+    │ {"key":["new york","6c8ab772-584a-439d-b7b4-fda37767c74c"],"value":{"after":{"address":"34196 Roger Row Suite 6","city":"new york","credit_card":"3117945420","id":"6c8ab772-584a-439d-b7b4-fda37767c74c","name":"James Lang"}},"topic":"movr-users"}                 │ 4466147099992681 │ ["new york", "6c8ab772-584a-439d-b7b4-fda37767c74c"]    │            │                  │
+    │ {"key":["boston","c56dab0a-63e7-4fbb-a9af-54362c481c41"],"value":{"after":{"address":"83781 Ross Overpass","city":"boston","credit_card":"7044597874","id":"c56dab0a-63e7-4fbb-a9af-54362c481c41","name":"Mark Butler"}},"topic":"movr-users"}                        │ 4466150752442731 │ ["boston", "c56dab0a-63e7-4fbb-a9af-54362c481c41"]      │            │                  │
+    │ {"key":["amsterdam","f27e09d5-d7cd-4f88-8b65-abb910036f45"],"value":{"after":{"address":"77153 Donald Road Apt. 62","city":"amsterdam","credit_card":"7531160744","id":"f27e09d5-d7cd-4f88-8b65-abb910036f45","name":"Lisa Sandoval"}},"topic":"movr-users"}          │ 4466147182359256 │ ["amsterdam", "f27e09d5-d7cd-4f88-8b65-abb910036f45"]   │            │                  │
+    │ {"key":["new york","46d200c0-6924-4cc7-b3c9-3398997acb84"],"value":{"after":{"address":"92843 Carlos Grove","city":"new york","credit_card":"8822366402","id":"46d200c0-6924-4cc7-b3c9-3398997acb84","name":"Mackenzie Malone"}},"topic":"movr-users"}                │ 4466142864542016 │ ["new york", "46d200c0-6924-4cc7-b3c9-3398997acb84"]    │            │                  │
+    │ {"key":["boston","52ecbb26-0eab-4e0b-a160-90caa6a7d350"],"value":{"after":{"address":"95044 Eric Corner Suite 33","city":"boston","credit_card":"3982363300","id":"52ecbb26-0eab-4e0b-a160-90caa6a7d350","name":"Brett Porter"}},"topic":"movr-users"}                │ 4466152539161631 │ ["boston", "52ecbb26-0eab-4e0b-a160-90caa6a7d350"]      │            │                  │
+    │ {"key":["amsterdam","ae147ae1-47ae-4800-8000-000000000022"],"value":{"after":{"address":"88194 Angela Gardens Suite 94","city":"amsterdam","credit_card":"4443538758","id":"ae147ae1-47ae-4800-8000-000000000022","name":"Tyler Dalton"}},"topic":"movr-users"}       │ 4466151398997150 │ ["amsterdam", "ae147ae1-47ae-4800-8000-000000000022"]   │            │                  │
+    │ {"key":["paris","dc28f5c2-8f5c-4800-8000-00000000002b"],"value":{"after":{"address":"2058 Rodriguez Stream","city":"paris","credit_card":"9584502537","id":"dc28f5c2-8f5c-4800-8000-00000000002b","name":"Tony Ortiz"}},"topic":"movr-users"}                         │ 4466146372222914 │ ["paris", "dc28f5c2-8f5c-4800-8000-00000000002b"]       │            │                  │
+    └──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┴──────────────────┴─────────────────────────────────────────────────────────┴────────────┴──────────────────┘
     ~~~
 
 ### Create a changefeed connected to a cloud storage sink

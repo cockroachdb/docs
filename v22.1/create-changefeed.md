@@ -9,7 +9,7 @@ docs_area: reference.sql
 `CREATE CHANGEFEED` is an [Enterprise-only](enterprise-licensing.html) feature. For the core version, see [`EXPERIMENTAL CHANGEFEED FOR`](changefeed-for.html).
 {{site.data.alerts.end}}
 
-The `CREATE CHANGEFEED` [statement](sql-statements.html) creates a new Enterprise changefeed, which targets an allowlist of tables called "watched rows".  Every change to a watched row is emitted as a record in a configurable format (`JSON` or Avro) to a configurable sink ([Kafka](https://kafka.apache.org/), a [cloud storage sink](changefeed-sinks.html#cloud-storage-sink), or a [webhook sink](changefeed-sinks.html#webhook-sink)). You can [create](#create-a-changefeed-connected-to-kafka), [pause](#pause-a-changefeed), [resume](#resume-a-paused-changefeed), [alter](alter-changefeed.html), or [cancel](#cancel-a-changefeed) an Enterprise changefeed.
+The `CREATE CHANGEFEED` [statement](sql-statements.html) creates a new Enterprise changefeed, which targets an allowlist of tables called "watched rows".  Every change to a watched row is emitted as a record in a configurable format (`JSON` or Avro) to a configurable sink ([Kafka](https://kafka.apache.org/), [Google Cloud Pub/Sub](https://cloud.google.com/pubsub), a [cloud storage sink](changefeed-sinks.html#cloud-storage-sink), or a [webhook sink](changefeed-sinks.html#webhook-sink)). You can [create](#create-a-changefeed-connected-to-kafka), [pause](#pause-a-changefeed), [resume](#resume-a-paused-changefeed), [alter](alter-changefeed.html), or [cancel](#cancel-a-changefeed) an Enterprise changefeed.
 
 For more information, see [Use Changefeeds](use-changefeeds.html).
 
@@ -41,7 +41,7 @@ The sink URI follows the basic format of:
 
 URI Component      | Description
 -------------------+------------------------------------------------------------------
-`scheme`           | The type of sink: [`kafka`](#kafka), any [cloud storage sink](#cloud-storage), or [webhook sink](#webhook).
+`scheme`           | The type of sink: [`kafka`](#kafka), [`gcpubsub`](#google-cloud-pub-sub), any [cloud storage sink](#cloud-storage), or [webhook sink](#webhook).
 `host`             | The sink's hostname or IP address.
 `port`             | The sink's port.
 `query_parameters` | The sink's [query parameters](#query-parameters).
@@ -58,6 +58,20 @@ Example of a Kafka sink URI:
 'kafka://broker.address.com:9092?topic_prefix=bar_&tls_enabled=true&ca_cert=LS0tLS1CRUdJTiBDRVJUSUZ&sasl_enabled=true&sasl_user={sasl user}&sasl_password={url-encoded password}&sasl_mechanism=SASL-SCRAM-SHA-256'
 ~~~
 
+#### Google Cloud Pub/Sub
+
+{{site.data.alerts.callout_info}}
+The Google Cloud Pub/Sub sink is currently in **beta**.
+{{site.data.alerts.end}}
+
+<span class="version-tag">New in v22.1:</span> Example of a Google Cloud Pub/Sub sink URI:
+
+~~~
+'gcpubsub://{project name}?region={region}&topic_name={topic name}&AUTH=specified&CREDENTIALS={base64-encoded key}'
+~~~
+
+[Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html?filters=gcs#authentication) explains the requirements for the authentication parameter with `specified` or `implicit`. See [Changefeed Sinks](changefeed-sinks.html#google-cloud-pub-sub) for further consideration.
+
 #### Cloud Storage
 
 Example of a cloud storage sink URI with Amazon S3:
@@ -69,6 +83,10 @@ Example of a cloud storage sink URI with Amazon S3:
 [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html) explains the requirements for authentication and encryption for each supported cloud storage sink. See [Changefeed Sinks](changefeed-sinks.html#cloud-storage-sink) for considerations when using cloud storage and example URIs for Google Cloud Storage and Azure Storage.
 
 #### Webhook
+
+{{site.data.alerts.callout_info}}
+The webhook sink is currently in **beta**.
+{{site.data.alerts.end}}
 
 Example of a webhook URI:
 
@@ -84,7 +102,7 @@ Query parameters include:
 
 Parameter          | <div style="width:100px">Sink Type</div>      | <div style="width:75px">Type</div>  | Description
 -------------------+-----------------------------------------------+-------------------------------------+------------------------------------------------------------
-<a name="topic-name-param"></a>`topic_name`       | [Kafka](changefeed-sinks.html#kafka)                               | [`STRING`](string.html)             | Allows arbitrary topic naming for Kafka topics. See the [Kafka topic naming limitations](changefeed-sinks.html#topic-naming) for detail on supported characters etc. <br><br>For example, `CREATE CHANGEFEED FOR foo,bar INTO 'kafka://sink?topic_name=all'` will emit all records to a topic named `all`. Note that schemas will still be registered separately. Can be combined with the [`topic_prefix` option](#topic-prefix-param). <br><br>**Default:** table name.
+<a name="topic-name-param"></a>`topic_name`       | [Kafka](changefeed-sinks.html#kafka), [GC Pub/Sub](changefeed-sinks.html#google-cloud-pub-sub) | [`STRING`](string.html)             | Allows arbitrary topic naming for Kafka and GC Pub/Sub topics. See the [Kafka topic naming limitations](changefeed-sinks.html#topic-naming) or [GC Pub/Sub topic naming](changefeed-sinks.html#pub-sub-topic-naming) for detail on supported characters etc. <br><br>For example, `CREATE CHANGEFEED FOR foo,bar INTO 'kafka://sink?topic_name=all'` will emit all records to a topic named `all`. Note that schemas will still be registered separately. When using Kafka, this option can be combined with the [`topic_prefix` option](#topic-prefix-param) (this is not supported for GC Pub/Sub). <br><br>**Default:** table name.
 <a name="topic-prefix-param"></a>`topic_prefix`     | [Kafka](changefeed-sinks.html#kafka), [cloud](changefeed-sinks.html#cloud-storage-sink) | [`STRING`](string.html)             | Adds a prefix to all topic names.<br><br>For example, `CREATE CHANGEFEED FOR TABLE foo INTO 'kafka://...?topic_prefix=bar_'` would emit rows under the topic `bar_foo` instead of `foo`.
 `tls_enabled`      | [Kafka](changefeed-sinks.html#kafka)                               | [`BOOL`](bool.html)                 | If `true`, enable Transport Layer Security (TLS) on the connection to Kafka. This can be used with a `ca_cert` (see below). <br><br>**Default:** `false`
 `ca_cert`          | [Kafka](changefeed-sinks.html#kafka), [webhook](changefeed-sinks.html#webhook-sink), ([Confluent schema registry](https://docs.confluent.io/platform/current/schema-registry/index.html)) | [`STRING`](string.html)            | The base64-encoded `ca_cert` file. Specify `ca_cert` for a Kafka sink, webhook sink, and/or a Confluent schema registry. <br><br>For usage with a Kafka sink, see [Kafka Sink URI](changefeed-sinks.html#kafka). <br><br> It's necessary to state `https` in the schema registry's address when passing `ca_cert`: <br>`confluent_schema_registry='https://schema_registry:8081?ca_cert=LS0tLS1CRUdJTiBDRVJUSUZ'` <br> See [`confluent_schema_registry`](#confluent-registry) for more detail on using this option. <br><br>Note: To encode your `ca.cert`, run `base64 -w 0 ca.cert`.
@@ -108,7 +126,7 @@ Option | Value | Description
 <a name="format"></a>`format` | `json` / `avro` | Format of the emitted record. For mappings of CockroachDB types to Avro types, [see the table](use-changefeeds.html#avro-types) and detail on [Avro limitations](use-changefeeds.html#avro-limitations) below. <br><br>Default: `format=json`.
 `mvcc_timestamp` | N/A |  Include the [MVCC](architecture/storage-layer.html#mvcc) timestamp for each emitted row in a changefeed. With the `mvcc_timestamp` option, each emitted row will always contain its MVCC timestamp, even during the changefeed's initial backfill.
 <a name="confluent-registry"></a>`confluent_schema_registry` | Schema Registry address | The [Schema Registry](https://docs.confluent.io/current/schema-registry/docs/index.html#sr) address is required to use `avro`.
-`key_in_value` | N/A | Make the [primary key](primary-key.html) of a deleted row recoverable in sinks where each message has a value but not a key (most have a key and value in each message). `key_in_value` is automatically used for [cloud storage sinks](changefeed-sinks.html#cloud-storage-sink) and [webhook sinks](changefeed-sinks.html#webhook-sink).
+`key_in_value` | N/A | Make the [primary key](primary-key.html) of a deleted row recoverable in sinks where each message has a value but not a key (most have a key and value in each message). `key_in_value` is automatically used for [cloud storage sinks](changefeed-sinks.html#cloud-storage-sink), [webhook sinks](changefeed-sinks.html#webhook-sink), and [GC Pub/Sub sinks](changefeed-sinks.html#google-cloud-pub-sub).
 <a name="diff-opt"></a>`diff` | N/A |  Publish a `before` field with each message, which includes the value of the row before the update was applied.
 <a name="compression-opt"></a>`compression` | `gzip` |  Compress changefeed data files written to a [cloud storage sink](changefeed-sinks.html#cloud-storage-sink). Currently, only [Gzip](https://www.gnu.org/software/gzip/) is supported for compression.
 <a name="on-error"></a>`on_error` | `pause` / `fail` |  Use `on_error=pause` to pause the changefeed when encountering **non**-retryable errors. `on_error=pause` will pause the changefeed instead of sending it into a terminal failure state. **Note:** Retryable errors will continue to be retried with this option specified. <br><br>Use with [`protect_data_from_gc_on_pause`](#protect-pause) to protect changes from [garbage collection](configure-replication-zones.html#gc-ttlseconds).  <br><br>Default: `on_error=fail`
