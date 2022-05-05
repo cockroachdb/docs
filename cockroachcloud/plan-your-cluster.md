@@ -9,7 +9,7 @@ This page describes how to plan your {{ site.data.products.dedicated }} or {{ si
 
 ## Planning your cluster
 
-Before making any changes to your cluster's configuration, review our requirements and recommendations for {{ site.data.products.db }} clusters.
+Before making any changes to your cluster's configuration, review the requirements and recommendations for {{ site.data.products.db }} clusters.
 
 <div class="filters clearfix">
   <button class="filter-button page-level" data-scope="serverless">{{ site.data.products.serverless }}</button>
@@ -78,20 +78,20 @@ When add/remove regions is available:
 
 ### Dedicated Example
 
-Let's say we want to create a cluster to connect with an application with a requirement of 2000 TPS that is running on the Google Cloud Platform in the `us-east1` region.
+Let's say you want to create a cluster to connect with an application with a requirement of 2000 TPS that is running on the Google Cloud Platform in the `us-east1` region.
 
-Suppose the raw data amount we expect to store without replication is 500 GB.
-At 40% Compression, we can expect a savings of 200 GB. Then the amount of data we need to store is 300 GB.
+Suppose the raw data amount you expect to store without replication is 500 GiB.
+At 40% compression, you can expect a savings of 200 GiB, making the amount of data you need to store is 300 GiB.
 
-Let's consider a storage buffer of 50% to account for overhead and data growth. Then net raw data amount to be stored is 450 GB.
+Assume a storage buffer of 50% to account for overhead and data growth. The net raw data amount you need to store is now 450 GiB.
 
-With the default replication factor of 3, the total amount of data stored is (3 * 450 GB) = 1350 GB.
+With the default replication factor of 3, the total amount of data stored is (3 * 450 GiB) = 1350 GiB.
 
-To determine the number of nodes and the hardware configuration to store 1350 GB of data, refer to the table in [Create Your Cluster](create-your-cluster.html#step-2-select-the-cloud-provider). One way to reach a 1350 GB storage capacity is 3 nodes with 480 GiB per node, which gives us a capacity of (3*480 GiB) = 1440 GiB.
+To determine the number of nodes and the hardware configuration to store 1350 GiB of data, refer to the table in [Create Your Cluster](create-your-cluster.html#step-2-select-the-cloud-provider). One way to reach a 1350 GiB storage capacity is 3 nodes with 480 GiB per node, which gives you a capacity of (3*480 GiB) = 1440 GiB.
 
-Let's see how many vCPUs we need to meet our performance requirement of 2000 TPS. We know that 2 vCPU nodes are not recommended for production, so the first compute power we should check is 3 nodes with 4 vCPUs per node. We can calculate that this configuration would have (3*4 vCPUs) = 12 vCPUs. Since each vCPU can handle around 1000 TPS, 4 vCPU nodes can meet our performance requirements.
+Let's see how many vCPUs you need to meet your performance requirement of 2000 TPS. We don't recommend 2 vCPU nodes for production, so the first compute configuration you should check is 3 nodes with 4 vCPUs per node. This configuration has (3*4 vCPUs) = 12 vCPUs. Since each vCPU can handle around 1000 TPS, a configuration of 4 vCPUs per node meets your performance requirements.
 
-Thus our final configuration is as follows:
+Your final configuration is as follows:
 
 Component | Selection
 ----------|----------

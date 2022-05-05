@@ -14,7 +14,7 @@ This page describes the cluster management and cluster deletion workflows for {{
 
 ## Planning your cluster
 
-Before making any changes to your cluster's configuration, review our [requirements and recommendations](plan-your-cluster.html) for {{ site.data.products.db }} cluster configuration.
+Before making any changes to your cluster's configuration, review the [requirements and recommendations](plan-your-cluster.html) for {{ site.data.products.db }} cluster configuration.
 
 ## View Clusters page
 

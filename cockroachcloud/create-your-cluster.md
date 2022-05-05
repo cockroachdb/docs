@@ -42,7 +42,7 @@ In the **Regions & nodes** section, select a region. For optimal performance, se
 To create a multi-region cluster, click **Add regions** until you have the desired number of regions.
 
 {{site.data.alerts.callout_info}}
-Multi-region clusters must contain at least 3 regions to ensure that data spread across regions can survive the loss of one region. See [Planning your cluster](plan-your-cluster.html?filters=dedicated) for more information about our requirements and recommendations for cluster configuration.
+Multi-region clusters must contain at least 3 regions to ensure that data spread across regions can survive the loss of one region. See [Planning your cluster](plan-your-cluster.html?filters=dedicated) for the requirements and recommendations for {{ site.data.products.dedicated }} cluster configuration.
 {{site.data.alerts.end}}
 
 **Known issue:** We had to temporarily disable the following GCP regions due to GCP's quota restrictions:
