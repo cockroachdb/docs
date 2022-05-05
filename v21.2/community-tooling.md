@@ -64,6 +64,10 @@ If you have a tested or developed a third-party tool with CockroachDB, and would
 - [golang-migrate](https://github.com/golang-migrate/migrate/tree/master/database/cockroachdb)
 - [db-migrate](https://db-migrate.readthedocs.io/en/latest/)
 
+## Data migration and sync tools
+
+- [DBConvert](https://dbconvert.com/cockroachdb)
+
 ## Connection pooling tools
 
 - [PGBouncer](https://dzone.com/articles/using-pgbouncer-with-cockroachdb)
