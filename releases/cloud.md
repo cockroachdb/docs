@@ -16,6 +16,13 @@ Get future release notes emailed to you:
 As of April 20, 2022, new {{ site.data.products.dedicated }} clusters and all {{ site.data.products.serverless }} clusters are running CockroachDB [v21.2.9](v21.2.html).
 {{site.data.alerts.end}}
 
+## May 5, 2022
+
+<h3>Console changes</h3>
+
+- All organizations can now create [service accounts](../cockroachcloud/console-access-management.html#service-accounts) and [API keys](../cockroachcloud/console-access-management.html#api-access), and have access to the [Cloud API](../cockroachcloud/cloud-api.html).
+- The [`ccloud` command line tool](../cockroachcloud/ccloud-get-started.html) for creating, managing, and connecting to CockroachDB Cloud clusters is now in public beta.
+
 ## May 2, 2022
 
 <h3>Console changes</h3>
