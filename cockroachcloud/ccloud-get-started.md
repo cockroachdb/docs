@@ -428,7 +428,7 @@ Success! Deleted cluster
  id: 041d4c6b-69b9-4121-9c5a-8dd6ffd6b73d
 ~~~
 
-{{site.data.alerts.callout_danger}}
+{{site.data.alerts.callout_info}}
 If the cluster state is `CLUSTER_STATE_CREATING` you cannot delete the cluster. You must wait until the cluster has been provisioned and started, with a status of `CLUSTER_STATE_CREATED`, before you can delete the cluster. {{ site.data.products.serverless }} clusters are created in less than a minute. {{ site.data.products.dedicated }} clusters can take an hour or more to provision and start.
 {{site.data.alerts.end}}
 
