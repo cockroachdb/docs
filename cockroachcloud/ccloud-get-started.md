@@ -403,7 +403,7 @@ Use the `ccloud cluster user create` command to create a new SQL user by passing
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-ccloud cluster user create maxroach dim-dog
+ccloud cluster user create dim-dog maxroach
 ~~~
 
 {% comment %}
