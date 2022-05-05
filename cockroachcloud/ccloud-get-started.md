@@ -1,11 +1,11 @@
 ---
 title: Get Started with the ccloud CLI
-summary: The ccloud CLI is used to create, manage, and connect to CockroachDB Cloud clusters
+summary: Use the ccloud CLI to create, manage, and connect to CockroachDB Cloud clusters
 toc: true
 docs_area: manage
 ---
 
-The `ccloud` tool is a command line interface (CLI) tool that allows you to create, manage, and connect to CockroachDB Cloud clusters.
+The `ccloud` tool is a command-line interface (CLI) tool that allows you to create, manage, and connect to CockroachDB Cloud clusters.
 
 ## Install `ccloud`
 
@@ -44,7 +44,7 @@ $ErrorActionPreference = "Stop"; [Net.ServicePointManager]::SecurityProtocol = [
 ~~~
 </section>
 
-## Using `ccloud quickstart`
+## Use `ccloud quickstart`
 
 The `ccloud quickstart` command guides you through logging in to CockroachDB Cloud, creating a new {{ site.data.products.serverless }} with a $0 spend limit, and connecting to the new cluster. Run `ccloud quickstart` and follow the instructions:
 
@@ -55,7 +55,7 @@ ccloud quickstart
 
 ## Log in to CockroachDB Cloud using `ccloud`
 
-1. Run the `ccloud auth login` command and hit **Enter** to open a browser window.:
+1. Run the `ccloud auth login` command and hit **Enter** to open a browser window:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -76,7 +76,7 @@ There are two ways to create clusters using `ccloud`: `ccloud quickstart create`
 
 The `ccloud quickstart create` command interactively guides you through creating and connecting to a new {{ site.data.products.serverless }} cluster.
 
-The `ccloud cluster create` command creates new {{ site.data.products.serverless }} and {{ site.data.products.dedicated }} CockroachDB clusters in your organization.
+The `ccloud cluster create` command creates a new {{ site.data.products.serverless }} or {{ site.data.products.dedicated }} CockroachDB cluster in your organization.
 
 <div class="filters clearfix">
     <button class="filter-button page-level" data-scope="serverless">{{ site.data.products.serverless }}<strong></strong></button>
@@ -103,7 +103,7 @@ Success! Created cluster
 
 The `id` in the output is the cluster ID. The `name` is used in other `ccloud` commands to identify the cluster on which the `ccloud` command operates.
 
-The cluster name, cloud infrastructure provider, region, and spend limit can be set as command options. The following command is equivalent to the previous command that uses the default values.
+You can set the cluster name, cloud infrastructure provider, region, and spend limit as command options. The following command is equivalent to the previous command that uses the default values.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -156,7 +156,7 @@ If you set a maximum spend limit greater than $0 on a {{ site.data.products.serv
 
 Use the `ccloud cluster networking allowlist create` command to create an [IP allowlist](network-authorization.html#ip-allowlisting), which allows incoming network connections from the specified network IP range. Use the `--sql` flag to allow incoming CockroachDB SQL shell connections from the specified network. Use the `--ui` flag to allow access to the DB Console from the specified network.
 
-The IP range must be in [Classless Inter-Domain Routing (CIDR) format](https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing). For more information on CIDR, see Digital Ocean's [Understanding IP Addresses, Subnets, and CIDR Notation for Networking](https://www.digitalocean.com/community/tutorials/understanding-ip-addresses-subnets-and-cidr-notation-for-networking#cidr-notation).
+The IP range must be in [Classless Inter-Domain Routing (CIDR) format](https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing). For more information on CIDR, see [Understanding IP Addresses, Subnets, and CIDR Notation for Networking](https://www.digitalocean.com/community/tutorials/understanding-ip-addresses-subnets-and-cidr-notation-for-networking#cidr-notation).
 
 For example, to allow incoming connections from a single IP address, 1.1.1.1, to your cluster, including the CockroachDB SQL shell and DB Console, use the following command:
 
@@ -185,7 +185,7 @@ NETWORK         NAME  UI  SQL
 1.1.1.1/32            ✔   ✔
 ~~~
 
-To modify an allowlist entry, use the `ccloud cluster networking allowlist update`. The following command adds a descriptive name to the previously created entry.
+To modify an allowlist entry, use the `ccloud cluster networking allowlist update` command. The following command adds a descriptive name to the previously created entry.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
