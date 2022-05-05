@@ -760,7 +760,7 @@ If a feature is new in a GA release, use the major release number for the releas
 
 If a feature has been backported to a previous version in a patch release, use the minor release number for the release version tag (e.g., `New in v21.1.9`).
 
-Version tags should only refer to the version of the docset that contains them. For example, the version tag `<span class="version-tag">New in v21.1.9</span>` should only be on pages in `v21.1` directories.
+Version tags should only refer to the version of the docset that contains them. For example, the version tag `<span class="version-tag">New in v21.1.9:</span>` should only be on pages in `v21.1` directories.
 
 ### Tables
 
