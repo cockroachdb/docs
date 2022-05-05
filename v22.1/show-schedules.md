@@ -130,6 +130,6 @@ To view a specific schedule, use the schedule's `id`:
 - [`RESUME JOB`](pause-job.html)
 - [`CANCEL JOB`](cancel-job.html)
 - [Take Full and Incremental Backups](take-full-and-incremental-backups.html)
-- [Row-Level TTL](row-level-ttl.html) <span class="version-tag">New in v22.1</span>
+- [Row-Level TTL](row-level-ttl.html) <span class="version-tag">New in v22.1:</span>
 - [Use the Built-in SQL Client](cockroach-sql.html)
 - [`cockroach` Commands Overview](cockroach-commands.html)
