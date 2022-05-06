@@ -1,3 +1,4 @@
+absentia
 accipitridae
 addons
 agrawal
@@ -26,12 +27,14 @@ backtraces
 badr
 bardea
 batog
+bcrypt
 bergin
 biles
 bitwise
 bogdan
 bolded
 bool
+boolean
 booleans
 brandhorst
 brazilsouth
@@ -46,6 +49,7 @@ canadacentral
 canadaeast
 castagnoli
 casted
+ccloud
 centralindia
 centralus
 cgo
@@ -66,6 +70,7 @@ codec
 codelab
 collatable
 collatedstring
+colocated
 comms
 comodo
 composability
@@ -73,6 +78,7 @@ concats
 config
 configs
 configurability
+const
 cpu
 crdb
 cron
@@ -114,6 +120,7 @@ ecto
 elqdusy
 elsif
 emptive
+enablement
 endcomment
 endfor
 endif
@@ -125,6 +132,7 @@ erroring
 escobar
 esri
 evgeniy
+expirations
 failover
 favicons
 fdw
@@ -185,14 +193,17 @@ hueypark
 hyperthread
 hyperthreads
 inconsolata
+incrementals
 indexable
 inet
 ing
 ingestions
+initializr
 intellij
 interleavings
 intra
 ints
+io
 jaewan
 japaneast
 japanwest
@@ -258,6 +269,7 @@ marketo
 maxroach
 mayank
 memtable
+memtables
 metatables
 Metricbeat
 meunier
@@ -302,6 +314,7 @@ npgsql
 nuget
 nullability
 nullable
+numerics
 offlined
 oid
 oli
@@ -325,6 +338,7 @@ perf
 performant
 permutable
 petersbug
+pbcrypto
 pgdump
 pgloader
 pgsql
@@ -446,6 +460,7 @@ spammy
 spinny
 Splunk
 sql
+sqlx
 sqlalchemy
 srivatsa
 sstables
@@ -487,6 +502,7 @@ subtransactions
 subtree
 subtrees
 subzone
+subzones
 sudo
 svg
 swingbench
@@ -543,16 +559,21 @@ uncontended
 undercount
 underfull
 underly
+underperform
+underprovisioned
 underprovisioning
 underreplicated
 underreplication
 unencrypted
+unicode
 unindexed
 uniquness
+unix
 unpartition
 unpartitioned
 unpartitioning
 unported
+unredacted
 unreplicated
 unsplit
 unsplitting
@@ -560,6 +581,7 @@ unsychronized
 unsynchronized
 untyped
 updatable
+upreplication
 upsert
 uris
 url

@@ -3,10 +3,12 @@ message: Prefer '%s' over '%s'
 ignorecase: false
 level: warning
 swap:
-  cockroachdb: CockroachDB
-  CockroachCloud: {{ site.data.products.db }}
-  CockroachCloud Serverless: {{ site.data.products.serverless }}
-  CockroachCloud Dedicated: {{ site.data.products.dedicated }}
+  '[^\/\-\.]cockroachdb[^\/\-\.]': CockroachDB
+  'CockroachCloud Serverless': "{{ site.data.products.serverless }}"
+  'CockroachCloud Dedicated': "{{ site.data.products.dedicated }}"
+  'CockroachDB Serverless': "{{ site.data.products.serverless }}"
+  'CockroachDB Dedicated': "{{ site.data.products.dedicated }}"
+  CockroachCloud: "{{ site.data.products.db }}"
   Enterprise: Enterprise
   raft: Raft
   Raft Group: Raft group
