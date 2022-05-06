@@ -35,7 +35,7 @@ To learn more about how to perform and when to use an upsert in CockroachDB, Pos
 - An `UPSERT` statement affecting a proper subset of columns behaves differently depending on whether or not you specify the target columns in the statement.
 
     - If you specify target columns (e.g., `UPSERT INTO accounts (id, name) VALUES (2, 'b2');`), the values of columns that do not have new values in the `UPSERT` statement will not be updated.
-    - If you do not specify the target columns (e.g., `UPSERT INTO accounts VALUES (2, 'b2');`), the value of columns that do not have new values in the `UPSERT` statement will be updated to the default values.
+    - If you do not specify the target columns (e.g., `UPSERT INTO accounts VALUES (2, 'b2');`), the value of columns that do not have new values in the `UPSERT` statement will be updated to their default values.
 
     For examples, see [Upsert a proper subset of columns](#upsert-a-proper-subset-of-columns).
 
