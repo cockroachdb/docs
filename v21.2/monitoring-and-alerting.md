@@ -140,7 +140,9 @@ replicas_quiescent{store="1"} 20
 ...
 ~~~
 
-{{site.data.alerts.callout_info}}In addition to using the exported time series data to monitor a cluster via an external system, you can write alerting rules against them to make sure you are promptly notified of critical events or issues that may require intervention or investigation. See [Events to Alert On](#events-to-alert-on) for more details.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}
+In addition to using the exported time-series data to monitor a cluster via an external system, you can write alerting rules against them to make sure you are promptly notified of critical events or issues that may require intervention or investigation. See [Events to Alert On](#events-to-alert-on) for more details.
+{{site.data.alerts.end}}
 
 ## Events to alert on
 
