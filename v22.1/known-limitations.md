@@ -177,7 +177,7 @@ UNION ALL SELECT * FROM t1 LEFT JOIN t2 ON st_contains(t1.geom, t2.geom) AND t2.
 
 {% include {{page.version.version}}/sql/jsonb-comparison.md %}
 
-### Locality-optimized search only works for queries selecting a limited number of records
+### Locality-optimized search works only for queries selecting a limited number of records
 
 {% include {{ page.version.version }}/sql/locality-optimized-search-limited-records.md %}
 
@@ -323,7 +323,7 @@ As a workaround, take a cluster backup instead, as the `system.comments` table i
 
 ### Change data capture
 
-Change data capture (CDC) provides efficient, distributed, row-level change feeds into Apache Kafka for downstream processing such as reporting, caching, or full-text indexing. It has the following known limitations:
+Change data capture (CDC) provides efficient, distributed, row-level changefeeds into Apache Kafka for downstream processing such as reporting, caching, or full-text indexing. It has the following known limitations:
 
 {% include {{ page.version.version }}/known-limitations/cdc.md %}
 
