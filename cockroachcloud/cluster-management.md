@@ -14,9 +14,7 @@ This page describes the cluster management and cluster deletion workflows for {{
 
 ## Planning your cluster
 
-Before making any changes to your cluster's nodes or regions, review our requirements and recommendations for {{ site.data.products.db }} cluster configuration.
-
-{% include cockroachcloud/planning-your-cluster.md %}
+Before making any changes to your cluster's nodes or regions, review the [requirements and recommendations](plan-your-cluster.html) for {{ site.data.products.db }} cluster configuration.
 
 ## View Clusters page
 
@@ -59,7 +57,7 @@ From the **Overview** page, you can connect to your cluster. For more informatio
 
 ### Add or remove nodes from a cluster
 
-You can add or remove nodes from your cluster through the Console. See [Planning your cluster](#planning-your-cluster) for cluster requirements and recommendations before proceeding.
+You can add or remove nodes from your cluster through the Console. See [Planning your cluster](plan-your-cluster.html) for cluster requirements and recommendations before proceeding.
 
 {{site.data.alerts.callout_info}}
 You cannot scale a multi-node cluster down to a single-node cluster. If you need to scale down to a single-node cluster, [backup](run-bulk-operations.html?filters=cloud#backup-and-restore-data) your cluster and [restore](run-bulk-operations.html?filters=cloud#restore-a-cluster) it into a new single-node cluster.
@@ -123,7 +121,7 @@ AWS disks can only be scaled once every six hours.
 {% comment %}
 ### Add or remove regions from a cluster
 
-You can add or remove up to three regions at a time through the Console. See the [Planning your cluster](#planning-your-cluster) section of this page for cluster requirements and recommendations before proceeding.
+You can add or remove up to three regions at a time through the Console. See the [Planning your cluster](plan-your-cluster.html) section of this page for cluster requirements and recommendations before proceeding.
 
 ### Add a region to your cluster
 
