@@ -79,7 +79,7 @@ $ cockroach node recommission <node IDs> <flags>
 Drain nodes:
 
 ~~~ shell
-$ cockroach node drain <node ID> <flags>
+$ cockroach node drain
 ~~~
 
 View help:
