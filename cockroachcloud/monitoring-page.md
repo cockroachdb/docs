@@ -14,7 +14,7 @@ To view the **Monitoring** page, [log in](https://cockroachlabs.cloud/) and clic
 
 ## Monitor with Datadog
 
-The {{ site.data.products.dedicated }} integration for Datadog enables data collection and alerting on all [CockroachDB metrics](https://docs.datadoghq.com/integrations/tk) available at the [Prometheus endpoint](../{{site.versions["stable"]}}/monitoring-and-alerting.html#prometheus-endpoint), using the Datadog platform.
+The {{ site.data.products.dedicated }} integration for Datadog enables data collection and alerting on a subset of CockroachDB metrics available at the [Prometheus endpoint](../{{site.versions["stable"]}}/monitoring-and-alerting.html#prometheus-endpoint), using the Datadog platform. For details about the available metrics, see the [Datadog documentation](https://docs.datadoghq.com/integrations/tk).
 
 To set up Datadog monitoring with {{ site.data.products.dedicated }}, your Datadog account must be associated with a [Datadog organization](https://docs.datadoghq.com/account_management/#organizations).
 
@@ -130,5 +130,5 @@ For details on creating additional users that can connect to the cluster and acc
 - Be sure to check out the [**Node Map**](../{{site.versions["stable"]}}/ui-overview.html), which visualizes the geographic configuration of your cluster on a world map and provides real-time cluster metrics, with the ability to drill down to individual nodes. This Enterprise feature has been pre-configured and enabled for you.
 
 {{site.data.alerts.callout_info}}
-If you have a single-node cluster, you may see a warning that you have under-replicated ranges. This is expected because the default replication factor is set to 3, and you can only have one [replica](../{{site.versions["stable"]}}/architecture/overview.html#terms) per node. For more information about replication issues, see [Cluster Setup Troubleshooting](../{{site.versions["stable"]}}/cluster-setup-troubleshooting.html#db-console-shows-under-replicated-unavailable-ranges).
+If you have a single-node cluster, you may see a warning that you have under-replicated ranges. This is expected because the default replication factor is set to 3, and you can only have one [replica](../{{site.versions["stable"]}}/architecture/overview.html#architecture-replica) per node. For more information about replication issues, see [Cluster Setup Troubleshooting](../{{site.versions["stable"]}}/cluster-setup-troubleshooting.html#db-console-shows-under-replicated-unavailable-ranges).
 {{site.data.alerts.end}}
