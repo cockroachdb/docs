@@ -8,7 +8,7 @@ It's possible to select a date range for which no statement statistics exist. Co
 
 To filter the statements, click the **Filters** field.
 
-To filter by [application]({{ version_prefix }}connection-parameters.html#additional-connection-parameters), select **App** and choose one or more applications. When no application is selected internal statements **are not** displayed.
+To filter by [application]({{ link_prefix }}connection-parameters.html#additional-connection-parameters), select **App** and choose one or more applications. When no application is selected internal statements **are not** displayed.
 
 {{site.data.alerts.callout_info}}
 - Queries from the SQL shell are displayed under the `$ cockroach` app.
