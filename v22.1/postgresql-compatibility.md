@@ -28,7 +28,6 @@ The following PostgreSQL features are not supported in CockroachDB {{ page.versi
 The following features of the PostgreSQL wire protocol are not supported in CockroachDB {{ page.version.version }}:
 
 - [Multiple active portals](https://github.com/cockroachdb/cockroach/issues/40195)
-- [Query cancellation](https://github.com/cockroachdb/cockroach/issues/41335)
 
 ## Features that differ from PostgreSQL
 
