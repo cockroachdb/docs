@@ -27,6 +27,8 @@ By default, the Statements page shows SQL statements from all applications and d
 
 To search using the search field, type a string over `Search Statements` and press `Enter`. The list of statements is filtered by the string.
 
+{% include {{ page.version.version }}/ui/statements-filter.md %}
+
 {% include common/ui/statements-page.md %}
 
 {% include {{ page.version.version }}/ui/statements-table.md %}

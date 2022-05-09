@@ -16,6 +16,8 @@ The **Statements** page helps you:
 
 To view this page, click **SQL Activity** in the left-hand navigation of the {{ site.data.products.db }} Console. The **Statements** tab is selected.
 
+{% include {{version_prefix}}ui/statements-filter.md %}
+
 {% include common/ui/statements-page.md %}
 
 {% include {{version_prefix}}ui/statements-table.md %}
