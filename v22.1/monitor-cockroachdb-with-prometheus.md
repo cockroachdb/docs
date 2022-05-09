@@ -17,7 +17,7 @@ CockroachDB generates detailed time series metrics for each node in a cluster. T
 
 1. Download the [2.x Prometheus tarball](https://prometheus.io/download/) for your OS.
 
-2. Extract the binary and add it to your `PATH`. This makes it easy to start Prometheus from any shell.
+2. Extract the binary and add it to your system `PATH`. This makes it easy to start Prometheus from any shell.
 
 3. Make sure Prometheus installed successfully:
 
@@ -27,10 +27,10 @@ CockroachDB generates detailed time series metrics for each node in a cluster. T
     ~~~
 
     ~~~
-    prometheus, version 2.2.1 (branch: HEAD, revision: bc6058c81272a8d938c05e75607371284236aadc)
-      build user:       root@149e5b3f0829
-      build date:       20180314-14:21:40
-      go version:       go1.10
+    prometheus, version 2.34.0 (branch: HEAD, revision: 881111fec4332c33094a6fb2680c71fffc427275)
+      build user:       root@d80b449ae319
+      build date:       20220315-15:04:36
+      go version:       go1.17.8
     ~~~
 
 ## Step 2. Configure Prometheus
@@ -89,13 +89,14 @@ CockroachDB generates detailed time series metrics for each node in a cluster. T
     ~~~
 
     ~~~
-    INFO[0000] Starting prometheus (version=1.4.1, branch=master, revision=2a89e8733f240d3cd57a6520b52c36ac4744ce12)  source=main.go:77
-    INFO[0000] Build context (go=go1.7.3, user=root@e685d23d8809, date=20161128-10:02:41)  source=main.go:78
-    INFO[0000] Loading configuration file prometheus.yml     source=main.go:250
-    INFO[0000] Loading series map and head chunks...         source=storage.go:354
-    INFO[0000] 0 series loaded.                              source=storage.go:359
-    INFO[0000] Listening on :9090                            source=web.go:248
-    INFO[0000] Starting target manager...                    source=targetmanager.go:63
+    ts=2022-04-20T18:57:45.857Z caller=main.go:516 level=info msg="Starting Prometheus" version="(version=2.34.0, branch=HEAD, revision=881111fec4332c33094a6fb2680c71fffc427275)"
+    ts=2022-04-20T18:57:45.857Z caller=main.go:521 level=info build_context="(go=go1.17.8, user=root@d80b449ae319, date=20220315-15:04:36)"
+    ...
+    ts=2022-04-20T18:57:45.859Z caller=web.go:540 level=info component=web msg="Start listening for connections" address=localhost:9090
+    ...
+    ts=2022-04-20T18:57:46.811Z caller=main.go:1142 level=info msg="Loading configuration file" filename=prometheus.yml
+    ts=2022-04-20T18:57:46.973Z caller=main.go:1179 level=info msg="Completed loading of configuration file" filename=prometheus.yml totalDuration=162.470967ms db_storage=1.057µs remote_storage=5.151µs web_handler=457ns query_engine=889ns scrape=150.34215ms scrape_sd=74.253µs notify=94.531µs notify_sd=26.921µs rules=11.488407ms tracing=19.58µs
+    ts=2022-04-20T18:57:46.973Z caller=main.go:910 level=info msg="Server is ready to receive web requests."
     ~~~
 
 2. Point your browser to `http://<hostname of machine running prometheus>:9090`, where you can use the Prometheus UI to query, aggregate, and graph CockroachDB time series metrics.
@@ -108,7 +109,7 @@ Active monitoring helps you spot problems early, but it is also essential to sen
 
 1. Download the [latest Alertmanager tarball](https://prometheus.io/download/#alertmanager) for your OS.
 
-2. Extract the binary and add it to your `PATH`. This makes it easy to start Alertmanager from any shell.
+2. Extract the binary and add it to your system `PATH`. This makes it easy to start Alertmanager from any shell.
 
 3. Make sure Alertmanager installed successfully:
 
@@ -118,19 +119,19 @@ Active monitoring helps you spot problems early, but it is also essential to sen
     ~~~
 
     ~~~
-    alertmanager, version 0.15.0-rc.1 (branch: HEAD, revision: acb111e812530bec1ac6d908bc14725793e07cf3)
-      build user:       root@f278953f13ef
-      build date:       20180323-13:07:06
-      go version:       go1.10
+    alertmanager, version 0.24.0 (branch: HEAD, revision: f484b17fa3c583ed1b2c8bbcec20ba1db2aa5f11)
+      build user:       root@8fd670bfea94
+      build date:       20220325-09:24:35
+      go version:       go1.17.8
     ~~~
 
-4. [Edit the Alertmanager configuration file](https://prometheus.io/docs/alerting/configuration/) that came with the binary, `simple.yml`, to specify the desired receivers for notifications.
+4. [Edit the Alertmanager configuration file](https://prometheus.io/docs/alerting/configuration/) that came with the binary, `alertmanager.yml`, to specify the desired receivers for notifications.
 
 5. Start the Alertmanager server, with the `--config.file` flag pointing to the configuration file:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ alertmanager --config.file=simple.yml
+    $ alertmanager --config.file=alertmanager.yml
     ~~~
 
 6. Point your browser to `http://<hostname of machine running alertmanager>:9093`, where you can use the Alertmanager UI to define rules for [silencing alerts](https://prometheus.io/docs/alerting/alertmanager/#silences).
