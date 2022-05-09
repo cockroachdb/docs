@@ -1,3 +1,11 @@
+{% if page.cloud == true %}
+  {% capture link_prefix %}../{{site.versions["stable"]}}/{% endcapture %}
+  {% assign page_prefix = "" %}
+{% else %}
+  {% assign link_prefix = "" %}
+  {% assign page_prefix = "ui-" %}
+{% endif %}
+
 ## Date range
 
 To search by date, click the date range selector and pick a date range that is within the time period. Click **reset time** to reset the date to the last hour.
