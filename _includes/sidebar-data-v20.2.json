@@ -461,27 +461,9 @@
                     ]
                   },
                   {
-                    "title": "C++",
-                    "urls": [
-                      "/${VERSION}/build-a-c++-app-with-cockroachdb.html"
-                    ]
-                  },
-                  {
                     "title": "C# (.NET)",
                     "urls": [
                       "/${VERSION}/build-a-csharp-app-with-cockroachdb.html"
-                    ]
-                  },
-                  {
-                    "title": "Clojure",
-                    "urls": [
-                      "/${VERSION}/build-a-clojure-app-with-cockroachdb.html"
-                    ]
-                  },
-                  {
-                    "title": "PHP",
-                    "urls": [
-                      "/${VERSION}/build-a-php-app-with-cockroachdb.html"
                     ]
                   },
                   {
@@ -2823,13 +2805,6 @@
         ]
       },
       {% include_cached sidebar-releases.json %}
-    ]
-  },
-  {
-    "title": "SQL Playground",
-    "is_top_level": true,
-    "urls": [
-      "/${VERSION}/sql-playground.html"
     ]
   }
 ]

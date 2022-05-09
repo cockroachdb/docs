@@ -7554,10 +7554,10 @@ section.footer {
     .bs-callout--info h4, .bs-callout--info .bs-callout__label {
       color: #190F33; }
   .bs-callout--version {
-    background-color: #FF7595;
-    border-left-color: #FF7595; }
+    background-color: rgba(105, 51, 255, 0.2);
+    border-left-color: #6933FF }
     .bs-callout--version h4, .bs-callout--version .bs-callout__label {
-      color: #FF7595; }
+      color: #190F33; }
 
 .toc-col {
   display: none; }
@@ -10883,5 +10883,8 @@ a.accordion-toggle {
     border-bottom: 1px solid #C0C6D9; } }
 ::marker {
   color: #242A35; }
+
+a.btn-primary:hover {
+  color: #fff; }
 
 /*# sourceMappingURL=customstyles.css.map */

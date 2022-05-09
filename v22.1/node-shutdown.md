@@ -5,9 +5,6 @@ toc: true
 docs_area: manage
 ---
 
-{{ site.data.versions | where_exp: "m", "m.major_version == page.version.version" }}
-
-
 A node **shutdown** terminates the `cockroach` process on the node.
 
 There are two ways to handle node shutdown:
@@ -808,3 +805,4 @@ On the **Cluster Overview** page of the DB Console, the [node status](ui-cluster
 - [`cockroach start`](cockroach-start.html)
 - [Node status](ui-cluster-overview-page.html#node-status)
 - [Replication Layer](architecture/replication-layer.html)
+- [Decommissioning issues](cluster-setup-troubleshooting.html#decommissioning-issues)

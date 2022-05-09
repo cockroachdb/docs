@@ -81,6 +81,11 @@ Other general guidance about language and tone:
 
     **Example:** If you leave versioned binaries on your servers, you do not need to do anything.
 
+- Avoid using forward-looking language when writing about supported syntax and behavior:
+    - Do not suggest that a feature may or may not be added in a future release.
+    - Do not use the words "yet" and "currently" when writing about a feature that we do or do not support.
+    - Do not reference the internal product roadmap.
+
 ## Inclusive language
 
 We want our education materials to be inclusive and written with diversity in mind. This section provides general guidelines, best practices, and examples when writing docs or training materials. This is a work in progress and we welcome any feedback and additions.
@@ -755,7 +760,7 @@ If a feature is new in a GA release, use the major release number for the releas
 
 If a feature has been backported to a previous version in a patch release, use the minor release number for the release version tag (e.g., `New in v21.1.9`).
 
-Version tags should only refer to the version of the docset that contains them. For example, the version tag `<span class="version-tag">New in v21.1.9</span>` should only be on pages in `v21.1` directories.
+Version tags should only refer to the version of the docset that contains them. For example, the version tag `<span class="version-tag">New in v21.1.9:</span>` should only be on pages in `v21.1` directories.
 
 ### Tables
 

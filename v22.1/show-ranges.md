@@ -19,7 +19,7 @@ To show range information for a specific row in a table or index, use the [`SHOW
 
 ## Required privileges
 
-Only members of the [`admin` role](security-reference/authorization.html#admin-role) can run `SHOW RANGES`. By default, the `root` user belongs to the `admin` role.
+To use the `SHOW RANGES` statement, a user must either be a member of the [`admin`](security-reference/authorization.html#admin-role) role (the `root` user belongs to the `admin` role by default) or have the `ZONECONFIG` [privilege](security-reference/authorization.html#managing-privileges) defined.
 
 ## Parameters
 
