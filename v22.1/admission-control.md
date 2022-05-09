@@ -88,3 +88,5 @@ The [DB Console Overload dashboard](ui-overload-dashboard.html) shows metrics re
 ## See also
 
 The [technical note for admission control](https://github.com/cockroachdb/cockroach/blob/master/docs/tech-notes/admission_control.md) for details on the design of the admission control system.
+
+{% include {{page.version.version}}/sql/server-side-connection-limit.md %}  This may be useful in addition to your admission control settings.
