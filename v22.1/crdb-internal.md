@@ -659,7 +659,7 @@ group by metadata ->> 'query', statistics->'statistics'->'planGists'->>0;
 
 ### `transaction_contention_events`
 
-<span class="version-tag">New in v22.1</span> Contains one row for each transaction contention event.
+<span class="version-tag">New in v22.1:</span> Contains one row for each transaction contention event.
 
 Requires either the `VIEWACTIVITY` or `VIEWACTIVITYREDACTED` [role option](alter-role.html#role-options) to access. If you have the `VIEWACTIVITYREDACTED` role, `contending_key` will be redacted.
 
