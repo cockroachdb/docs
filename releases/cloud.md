@@ -103,7 +103,7 @@ As of April 20, 2022, new {{ site.data.products.dedicated }} clusters and all {{
 
 <h3>Console changes</h3>
 
-- The [**Terminate Session** and **Terminate Statement**](../cockroachcloud/sessions-page.html#sessions-list) options are now enabled for {{ site.data.products.db }} clusters running CockroachDB [v21.2.2](v21.2.html#v21-2-2) or later.
+- The [**Terminate Session** and **Terminate Statement**](../cockroachcloud/sessions-page.html#sessions-table) options are now enabled for {{ site.data.products.db }} clusters running CockroachDB [v21.2.2](v21.2.html#v21-2-2) or later.
 - Selecting a transaction from the [**Transactions** page](../cockroachcloud/transactions-page.html) now opens a new [**Transaction Details**](../cockroachcloud/transactions-page.html#transaction-details-page) page with an improved design.
 - The order of the tabs on the **SQL Activity** page has been changed to [**Statements**](../cockroachcloud/statements-page.html), [**Transactions**](../cockroachcloud/transactions-page.html), and [**Sessions**](../cockroachcloud/sessions-page.html).
 

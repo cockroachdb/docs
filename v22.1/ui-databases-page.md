@@ -68,8 +68,8 @@ The table details include:
 - **Size**: the approximate disk size of all replicas of this table on the cluster.
 - **Replicas**: the number of [replicas](architecture/replication-layer.html) of this table on the cluster.
 - **Ranges**: the number of [ranges](architecture/glossary.html#architecture-range) in this table.
-- **Table Stats Last Updated**: <span class="version-tag">New in v22.1:</span> the last time table statistics were created or updated.
-- **Auto Stats Collection**: <span class="version-tag">New in v22.1:</span> whether [automatic statistics collection](cost-based-optimizer.html#control-automatic-statistics) is enabled.
+- **New in v22.1:** **Table Stats Last Updated**: the last time table statistics were created or updated.
+- **New in v22.1:** **Auto Stats Collection**: whether [automatic statistics collection](cost-based-optimizer.html#control-automatic-statistics) is enabled.
 - **Regions/nodes**: the regions and nodes on which the table data is stored. This is not displayed on a single-node cluster.
 - **Database**: the database in which the table is found.
 - **Indexes**: the names of the indexes defined on the table.

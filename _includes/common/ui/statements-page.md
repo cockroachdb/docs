@@ -6,8 +6,6 @@
   {% assign page_prefix = "ui-" %}
 {% endif %}
 
-
-
 ## Statement statistics
 
 {% include common/ui/statistics.md %}
