@@ -1,0 +1,20 @@
+extends: substitution
+message: Prefer '%s' over '%s'
+ignorecase: true
+level: warning
+swap:
+  dummy: placeholder or sample
+  'sanity.check': final check or confirm
+  '(?:he|she)': they
+  his: their or theirs
+  her: their or them
+  hers: theirs
+  him: them
+  blacklist: denylist or blocklist
+  whitelist: allowlist
+  master: main, principal, primary, or manager
+  slave: secondary, subordinate, or worker
+  native: core, built-in, top-level, integrated, or "built for"
+  old: existing, previous, first, or original
+  hit: select, reach, experience, reduction, or visit
+  hits: visits, results

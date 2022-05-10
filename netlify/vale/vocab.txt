@@ -105,6 +105,8 @@ decorrelated
 decorrelation
 denormalization
 dereference
+deserialize
+deserialized
 deserialization
 dev
 dharmesh
@@ -198,6 +200,8 @@ inet
 ing
 ingestions
 initializr
+inode
+inodes
 intellij
 interleavings
 intra
@@ -372,6 +376,8 @@ Prisma
 problemranges
 profiler
 proofer
+proto
+protos
 protobuf
 protobufs
 proxied
@@ -598,6 +604,7 @@ vectorizing
 vijay
 vlaue
 vorobev
+Voronoi
 wabada
 walkthrough
 wallclock
