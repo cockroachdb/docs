@@ -6,13 +6,13 @@
   {% assign page_prefix = "ui-" %}
 {% endif %}
 
-## Date range
+### Date range
 
 To search by date, click the date range selector and pick a date range that is within the time period. Click **reset time** to reset the date to the last hour.
 
 It's possible to select a date range for which no transaction statistics exist. CockroachDB persists transaction statistics up to 1 million rows before the oldest row is deleted. The retention period of statistics is reduced the more active a workload is and the more distinct transaction fingerprints there are.
 
-## Filter
+### Filter
 
 To filter the transactions by [`application_name`]({{ link_prefix }}connection-parameters.html#additional-connection-parameters), select **App** and choose one or more applications. When no application is selected internal transactions **are not** displayed.
 

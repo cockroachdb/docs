@@ -13,7 +13,7 @@ The **Transactions** page helps you:
 - View transaction [details](#transaction-details-page).
 
 {{site.data.alerts.callout_success}}
-In contrast to the [**Statements** page]({{ page_prefix }}statements-page.html), which displays [SQL statement fingerprints]({{ page_prefix }}statements-page.html#sql-statement-fingerprints), the **Transactions** page displays SQL statement fingerprints grouped by [transaction]({{ link_prefix }}transactions.html).
+In contrast to the [**Statements** page](ui-statements-page.html), which displays [SQL statement fingerprints](ui-statements-page.html#sql-statement-fingerprints), the **Transactions** page displays SQL statement fingerprints grouped by [transaction](transactions.html).
 {{site.data.alerts.end}}
 
 {% if page.cloud != true %}
