@@ -7,4 +7,10 @@ docs_area: reference.db_console
 
 {% include {{ page.version.version }}/ui/admin-access.md %}
 
+{% include {{ page.version.version }}/ui/transactions-filter.md %}
+
 {% include common/ui/transactions-page.md %}
+
+{% include {{ page.version.version }}/ui/transactions-table.md %}
+
+{% include {{ page.version.version }}/ui/transaction-details.md %}
