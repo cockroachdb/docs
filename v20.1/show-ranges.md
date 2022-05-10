@@ -50,7 +50,9 @@ Field | Description
 
 ### Show ranges for a table (primary index)
 
-The following query only selects rows whose start_key does not have prefix as a substring. 
+{{site.data.alerts.callout_info}}
+The following query only selects rows whose `start_key` does not have prefix as a substring.
+{{site.data.alerts.end}}
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -73,7 +75,9 @@ The following query only selects rows whose start_key does not have prefix as a 
 
 ### Show ranges for an index
 
-The following query only selects rows whose start_key does not have prefix as a substring. 
+{{site.data.alerts.callout_info}}
+The following query only selects rows whose `start_key` does not have prefix as a substring.
+{{site.data.alerts.end}}
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -96,7 +100,9 @@ The following query only selects rows whose start_key does not have prefix as a 
 
 ### Show ranges for a database
 
-The following query only selects rows whose start_key does not have prefix as a substring. 
+{{site.data.alerts.callout_info}}
+The following query only selects rows whose `start_key` does not have prefix as a substring.
+{{site.data.alerts.end}}
 
 {% include copy-clipboard.html %}
 ~~~ sql
