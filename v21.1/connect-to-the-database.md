@@ -84,7 +84,7 @@ ds.setSsl(true);
 ds.setSslMode("require");
 ds.setSslCert("certs/client.maxroach.crt");
 ds.setSslKey("certs/client.maxroach.key.pk8");
-ds.setReWriteBatchedInserts(true); // add `rewriteBatchedInserts=true` to pg connection string
+ds.setReWriteBatchedInserts(true); // add `reWriteBatchedInserts=true` to pg connection string
 ds.setApplicationName("BasicExample");
 ~~~
 

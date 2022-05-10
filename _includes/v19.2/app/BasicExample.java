@@ -42,7 +42,7 @@ public class BasicExample {
         ds.setSslRootCert("certs/client.root.crt");
         ds.setSslCert("certs/client.maxroach.crt");
         ds.setSslKey("certs/client.maxroach.key.pk8");
-        ds.setReWriteBatchedInserts(true); // add `rewriteBatchedInserts=true` to pg connection string
+        ds.setReWriteBatchedInserts(true); // add `reWriteBatchedInserts=true` to pg connection string
         ds.setApplicationName("BasicExample");
 
         // Create DAO.
@@ -368,7 +368,7 @@ class BasicExampleDAO {
      * ingest from the application using INSERT statements, the best
      * option is the method shown here. It will require the following:
      *
-     * 1. Add `rewriteBatchedInserts=true` to your JDBC connection
+     * 1. Add `reWriteBatchedInserts=true` to your JDBC connection
      *    settings (see the connection info in 'BasicExample.main').
      *
      * 2. Inserting in batches of 128 rows, as used inside this method

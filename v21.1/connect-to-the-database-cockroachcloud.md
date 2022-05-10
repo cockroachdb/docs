@@ -90,7 +90,7 @@ ds.setPassword("{password}");
 ds.setSsl(true);
 ds.setSslMode("verify-full");
 ds.setSslrootCert("{path to the CA certificate}");
-ds.setReWriteBatchedInserts(true); // add `rewriteBatchedInserts=true` to pg connection string
+ds.setReWriteBatchedInserts(true); // add `reWriteBatchedInserts=true` to pg connection string
 ds.setApplicationName("BasicExample");
 ~~~
 
