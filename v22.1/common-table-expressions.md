@@ -197,10 +197,10 @@ CockroachDB supports [recursive common table expressions](https://en.wikipedia.o
 
 Recursive CTE definitions take the following form:
 
-~~~ sql
+~~~
 WITH RECURSIVE <cte name> (<columns>) AS (
     <initial subquery>
-  UNION ALL
+  [UNION | UNION ALL]
     <recursive subquery>
 )
 <query>
@@ -210,7 +210,7 @@ To write a recursive CTE:
 
 1. Add the `RECURSIVE` keyword directly after the `WITH` operator in the CTE definition, and before the CTE name.
 1. Define an initial, non-recursive subquery. This subquery defines the initial values of the CTE.
-1. Add the `UNION ALL` keyword after the initial subquery.
+1. Add the `UNION` or `UNION ALL` keyword after the initial subquery. The `UNION` variant deduplicates rows.
 1. Define a recursive subquery that references its own output. This subquery can also reference the CTE name, unlike the initial subquery.
 1. Write a parent query that evaluates the results of the CTE.
 
@@ -298,16 +298,9 @@ SELECT * FROM cte LIMIT 10;
 (10 rows)
 ~~~
 
-While this practice works for testing and debugging, we do not recommend it in production.
-
-{{site.data.alerts.callout_info}}
-CockroachDB does not support the [Postgres recursive CTE variant](https://www.postgresql.org/docs/10/queries-with.html) with the keyword `UNION`.
-{{site.data.alerts.end}}
-
+While this practice works for testing and debugging, Cockroach Labs does not recommend it in production.
 
 ## Correlated common table expressions
-
-
 
 If a common table expression is contained in a subquery, the CTE can reference columns defined outside of the subquery. This is called a _correlated common table expression_. For example, in the following query, the expression `(SELECT 1 + x)` references `x` in the outer scope.
 
@@ -327,7 +320,7 @@ FROM
 (2 rows)
 ~~~
 
-CTEs containing statements (`INSERT`, `UPSERT`, `UPDATE`, `DELETE`) that modify data can appear only at the upper level, so they _cannot_ be correlated.
+CTEs containing statements (`INSERT`, `UPSERT`, `UPDATE`, `DELETE`) that modify data can appear only at the upper level, so they **cannot** be correlated.
 
 ## See also
 
