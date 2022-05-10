@@ -665,6 +665,8 @@ Requires either the `VIEWACTIVITY` or `VIEWACTIVITYREDACTED` [role option](alter
 
 Contention events are stored in memory. You can control the amount of contention events stored per node via the `sql.contention.event_store.capacity` [cluster setting](cluster-settings.html).
 
+The `sql.contention.event_store.duration_threshold` [cluster setting](cluster-settings.html) specifies the minimum contention duration to cause the contention events to be collected into the `crdb_internal.transaction_contention_events` table. The default value is `0`. If contention event collection is overwhelming the CPU or memory you can raise this value to reduce the load.
+
 Column | Type | Description
 ------------|-----|------------
 `collection_ts` | `TIMESTAMPTZ NOT NULL` | The timestamp when the transaction contention event was collected.
