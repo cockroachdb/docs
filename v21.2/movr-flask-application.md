@@ -8,8 +8,6 @@ docs_area: develop
 
 This page walks you through developing a globally-available web application. It is the fourth section of the [Develop and Deploy a Global Application](movr-flask-overview.html) tutorial.
 
-<!-- {% include {{ page.version.version }}/misc/movr-live-demo.md %} -->
-
 ## Before you begin
 
 Before you begin this section, complete the previous section of the tutorial, [Set Up a Virtual Environment for Developing Global Applications](movr-flask-setup.html).
