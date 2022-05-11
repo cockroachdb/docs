@@ -99,7 +99,7 @@ You can use a [`SELECT`](select-clause.html) statement to filter the list of act
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM [SHOW CLUSTER STATEMENTS]
+> WITH x as (SHOW CLUSTER STATEMENTS) SELECT * FROM x
       WHERE node_id = 2;
 ~~~
 
@@ -114,7 +114,7 @@ You can use a [`SELECT`](select-clause.html) statement to filter the list of act
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM [SHOW CLUSTER STATEMENTS]
+> WITH x as (SHOW CLUSTER STATEMENTS) SELECT * FROM x
       WHERE client_address = '127.0.0.1:65196' AND user_name = 'maxroach';
 ~~~
 
@@ -131,7 +131,7 @@ To exclude queries from the [built-in SQL client](cockroach-sql.html), filter fo
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM [SHOW CLUSTER STATEMENTS]
+> WITH x as (SHOW CLUSTER STATEMENTS) SELECT * FROM x
       WHERE application_name != '$ cockroach sql';
 ~~~
 
@@ -152,7 +152,7 @@ For example, let's say you use `SHOW CLUSTER STATEMENTS` to find queries that ha
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM [SHOW CLUSTER STATEMENTS]
+> WITH x as (SHOW CLUSTER STATEMENTS) SELECT * FROM x
       WHERE start < (now() - INTERVAL '3 hours');
 ~~~
 

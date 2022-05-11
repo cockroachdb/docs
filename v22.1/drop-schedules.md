@@ -49,7 +49,7 @@ To drop multiple schedules, nest a [`SELECT` clause](select-clause.html) that re
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> DROP SCHEDULES SELECT id FROM [SHOW SCHEDULES] WHERE label = 'schedule_database';
+> DROP SCHEDULES WITH x AS (SHOW SCHEDULES) SELECT id FROM x WHERE label = 'schedule_database';
 ~~~
 
 ~~~

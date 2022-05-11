@@ -57,7 +57,7 @@ If both `start_key` and `end_key` show `NULL`, the range is empty and has no spl
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM [SHOW RANGES FROM TABLE vehicles] WHERE "start_key" NOT LIKE '%Prefix%';
+> WITH x as (SHOW RANGES FROM TABLE vehicles) SELECT * FROM x WHERE "start_key" NOT LIKE '%Prefix%';
 ~~~
 ~~~
      start_key     |          end_key           | range_id | range_size_mb | lease_holder |  lease_holder_locality   | replicas |                                 replica_localities
@@ -78,7 +78,7 @@ If both `start_key` and `end_key` show `NULL`, the range is empty and has no spl
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM [SHOW RANGES FROM INDEX vehicles_auto_index_fk_city_ref_users] WHERE "start_key" NOT LIKE '%Prefix%';
+> WITH x AS (SHOW RANGES FROM INDEX vehicles_auto_index_fk_city_ref_users) SELECT * FROM x WHERE "start_key" NOT LIKE '%Prefix%';
 ~~~
 ~~~
      start_key     |          end_key           | range_id | range_size_mb | lease_holder |  lease_holder_locality   | replicas |                                 replica_localities
@@ -99,7 +99,7 @@ If both `start_key` and `end_key` show `NULL`, the range is empty and has no spl
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM [SHOW RANGES FROM database movr] WHERE "start_key" NOT LIKE '%Prefix%';
+> WITH x as (SHOW RANGES FROM database movr) SELECT * FROM x WHERE "start_key" NOT LIKE '%Prefix%';
 ~~~
 ~~~
           table_name         |    start_key     |          end_key           | range_id | range_size_mb | lease_holder |  lease_holder_locality   | replicas |                                 replica_localities

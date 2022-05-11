@@ -180,7 +180,7 @@ To view statistics jobs, there are two options:
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > SELECT * FROM [SHOW JOBS] WHERE job_type LIKE '%CREATE STATS%';
+    > WITH x AS (SHOW JOBS) SELECT * FROM x WHERE job_type LIKE '%CREATE STATS%';
     ~~~
 
     ~~~
@@ -198,7 +198,7 @@ To view statistics jobs, there are two options:
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > SELECT * FROM [SHOW AUTOMATIC JOBS] WHERE job_type LIKE '%CREATE STATS%';
+    > WITH x AS (SHOW AUTOMATIC JOBS) SELECT * FROM x WHERE job_type LIKE '%CREATE STATS%';
     ~~~
 
     ~~~

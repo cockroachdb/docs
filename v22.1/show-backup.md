@@ -177,7 +177,7 @@ movr          | public             | vehicles                   | table       | 
 > SHOW BACKUP SCHEMAS FROM '2022/04/08-142601.69' IN 's3://{bucket name}?AWS_ACCESS_KEY_ID={placeholder}&AWS_SECRET_ACCESS_KEY={placeholder}';
 ~~~
 
-~~~  
+~~~
 database_name | parent_schema_name |        object_name         | object_type | backup_type |        start_time         |          end_time          | size_bytes | rows  | is_full_cluster |                                                                                                                create_statement
 --------------+--------------------+----------------------------+-------------+-------------+---------------------------+----------------------------+------------+-------+-----------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 NULL          | NULL               | movr                       | database    | full        | NULL                      | 2022-04-08 14:23:55.33557  |       NULL |  NULL |      false      | NULL
@@ -322,7 +322,7 @@ For example, to return a specific entry from the JSON response as a [`string`](s
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-SELECT jsonb_pretty(manifest->'entryCounts') AS f FROM [SHOW BACKUP FROM '/2021/11/15-150703.21' IN 's3://{bucket name}?AWS_ACCESS_KEY_ID={placeholder}&AWS_SECRET_ACCESS_KEY={placeholder}' with as_json];
+WITH x AS (SHOW BACKUP FROM '/2021/11/15-150703.21' IN 's3://{bucket name}?AWS_ACCESS_KEY_ID={placeholder}&AWS_SECRET_ACCESS_KEY={placeholder}' with as_json) SELECT jsonb_pretty(manifest->'entryCounts') AS f FROM x;
 ~~~
 
 ~~~ json
@@ -337,7 +337,7 @@ To query for particular data, use the [`jsonb_array_elements()` function](functi
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-SELECT f->>'path' FROM (SELECT jsonb_array_elements(manifest->'files') AS f FROM [SHOW BACKUP FROM '/2021/11/15-150703.21' IN 's3://{bucket name}?AWS_ACCESS_KEY_ID={placeholder}&AWS_SECRET_ACCESS_KEY={placeholder}' WITH as_json]);
+WITH x AS (SHOW BACKUP FROM '/2021/11/15-150703.21' IN 's3://{bucket name}?AWS_ACCESS_KEY_ID={placeholder}&AWS_SECRET_ACCESS_KEY={placeholder}' WITH as_json) SELECT f->>'path' FROM (SELECT jsonb_array_elements(manifest->'files') AS f FROM x);
 ~~~
 
 ~~~

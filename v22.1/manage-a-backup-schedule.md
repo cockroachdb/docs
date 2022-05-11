@@ -95,7 +95,7 @@ Or nest a [`SELECT` clause](select-clause.html) that retrieves `id`(s) inside th
 
 {% include copy-clipboard.html %}
 ~~~~ sql
-> PAUSE SCHEDULES SELECT id FROM [SHOW SCHEDULES] WHERE label = 'schedule_database';
+> PAUSE SCHEDULES WITH x AS (SHOW SCHEDULES) SELECT id FROM x WHERE label = 'schedule_database';
 ~~~~
 
 For more information, see [`PAUSE SCHEDULES`](pause-schedules.html).
@@ -113,7 +113,7 @@ Or nest a [`SELECT` clause](select-clause.html) that retrieves `id`(s) inside th
 
 {% include copy-clipboard.html %}
 ~~~~ sql
-> RESUME SCHEDULES SELECT id FROM [SHOW SCHEDULES] WHERE label = 'schedule_database';
+> RESUME SCHEDULES WITH x AS (SHOW SCHEDULES) SELECT id FROM x WHERE label = 'schedule_database';
 ~~~~
 
 For more information, see [`RESUME SCHEDULES`](resume-schedules.html).
@@ -131,7 +131,7 @@ Or nest a [`SELECT` clause](select-clause.html) that retrieves `id`(s) inside th
 
 {% include copy-clipboard.html %}
 ~~~~ sql
-> DROP SCHEDULES SELECT id FROM [SHOW SCHEDULES] WHERE label = 'schedule_database';
+> DROP SCHEDULES WITH x AS (SHOW SCHEDULES) SELECT id FROM x WHERE label = 'schedule_database';
 ~~~~
 
 For more information, see [`DROP SCHEDULES`](drop-schedules.html).
@@ -163,7 +163,7 @@ You can also view multiple schedules by nesting a [`SELECT` clause](select-claus
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW JOBS FOR SCHEDULES SELECT id FROM [SHOW SCHEDULES] WHERE label = 'test_schedule';
+> SHOW JOBS FOR SCHEDULES WITH x AS (SHOW SCHEDULES) SELECT id FROM x WHERE label = 'test_schedule';
 ~~~
 
 ~~~
@@ -192,7 +192,7 @@ You can also pause multiple schedules by nesting a [`SELECT` clause](select-clau
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> PAUSE JOBS FOR SCHEDULES SELECT id FROM [SHOW SCHEDULES] WHERE label = 'test_schedule';
+> PAUSE JOBS FOR SCHEDULES WITH x AS (SHOW SCHEDULES) SELECT id FROM x WHERE label = 'test_schedule';
 ~~~
 
 ~~~
@@ -217,7 +217,7 @@ You can also resume multiple schedules by nesting a [`SELECT` clause](select-cla
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> RESUME JOBS FOR SCHEDULES SELECT id FROM [SHOW SCHEDULES] WHERE label = 'test_schedule';
+> RESUME JOBS FOR SCHEDULES WITH x AS (SHOW SCHEDULES) SELECT id FROM x WHERE label = 'test_schedule';
 ~~~
 
 ~~~
@@ -242,7 +242,7 @@ You can also CANCEL multiple schedules by nesting a [`SELECT` clause](select-cla
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CANCEL JOBS FOR SCHEDULES SELECT id FROM [SHOW SCHEDULES] WHERE label = 'test_schedule';
+> CANCEL JOBS FOR SCHEDULES WITH x AS (SHOW SCHEDULES) SELECT id FROM x WHERE label = 'test_schedule';
 ~~~
 
 ~~~

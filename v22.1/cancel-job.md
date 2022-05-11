@@ -62,7 +62,7 @@ To cancel multiple jobs, nest a [`SELECT` clause](select-clause.html) that retri
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CANCEL JOBS (SELECT job_id FROM [SHOW JOBS]
+> CANCEL JOBS (WITH x AS (SHOW JOBS) SELECT job_id FROM x
       WHERE user_name = 'maxroach');
 ~~~
 
@@ -93,7 +93,7 @@ You can also CANCEL multiple schedules by nesting a [`SELECT` clause](select-cla
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CANCEL JOBS FOR SCHEDULES SELECT id FROM [SHOW SCHEDULES] WHERE label = 'test_schedule';
+> CANCEL JOBS FOR SCHEDULES WITH x AS (SHOW SCHEDULES) SELECT id FROM x WHERE label = 'test_schedule';
 ~~~
 
 ~~~

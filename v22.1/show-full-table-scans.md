@@ -51,7 +51,7 @@ This `SELECT` statement requires a full table scan at execution. As a result, th
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM [SHOW FULL TABLE SCANS] WHERE query LIKE 'SELECT * FROM rides WHERE revenue > %';
+> WITH x AS (SHOW FULL TABLE SCANS) SELECT * FROM x WHERE query LIKE 'SELECT * FROM rides WHERE revenue > %';
 ~~~
 
 ~~~
@@ -86,7 +86,7 @@ Now, if you execute a similar query, the query will not perform a full table sca
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM [SHOW FULL TABLE SCANS] WHERE query LIKE 'SELECT * FROM rides WHERE revenue < %';
+> WITH x AS (SHOW FULL TABLE SCANS) SELECT * FROM x WHERE query LIKE 'SELECT * FROM rides WHERE revenue < %';
 ~~~
 
 ~~~

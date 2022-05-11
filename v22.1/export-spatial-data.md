@@ -45,7 +45,7 @@ To combine multiple CSVs into one file:
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    SELECT string_agg(column_name, ',') FROM [SHOW COLUMNS FROM "1950-2018-torn-initpoint"];
+    WITH x AS (SHOW COLUMNS FROM "1950-2018-torn-initpoint") SELECT string_agg(column_name, ',') FROM x;
     ~~~
 
     ~~~

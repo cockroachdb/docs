@@ -124,7 +124,7 @@ The [TPC-C](performance-benchmarking-with-tpcc-small.html) database has a `custo
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT column_name, data_type FROM [SHOW COLUMNS FROM customer] WHERE column_name='c_credit_lim';
+> WITH x AS (SHOW COLUMNS FROM customer) SELECT column_name, data_type FROM x WHERE column_name='c_credit_lim';
 ~~~
 
 ~~~
@@ -158,7 +158,7 @@ To change the data type from `DECIMAL` to `STRING`:
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > SELECT column_name, data_type FROM [SHOW COLUMNS FROM customer] WHERE column_name='c_credit_lim';
+    > WITH x AS (SHOW COLUMNS FROM customer) SELECT column_name, data_type FROM x WHERE column_name='c_credit_lim';
     ~~~
 
     ~~~
@@ -175,7 +175,7 @@ The [TPC-C](performance-benchmarking-with-tpcc-small.html) `customer` table cont
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT column_name, data_type FROM [SHOW COLUMNS FROM customer] WHERE column_name='c_balance';
+> WITH x AS (SHOW COLUMNS FROM customer) SELECT column_name, data_type FROM x WHERE column_name='c_balance';
 ~~~
 
 ~~~
@@ -194,7 +194,7 @@ To increase the precision of the `c_balance` column from `DECIMAL(12,2)` to `DEC
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT column_name, data_type FROM [SHOW COLUMNS FROM customer] WHERE column_name='c_balance';
+> WITH x AS (SHOW COLUMNS FROM customer) SELECT column_name, data_type FROM x WHERE column_name='c_balance';
 ~~~
 
 ~~~
@@ -210,7 +210,7 @@ You can change the data type of a column and create a new, computed value from t
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT column_name, data_type FROM [SHOW COLUMNS FROM customer] WHERE column_name='c_discount';
+> WITH x AS (SHOW COLUMNS FROM customer) SELECT column_name, data_type FROM x WHERE column_name='c_discount';
 ~~~
 
 ~~~
@@ -252,7 +252,7 @@ NOTICE: ALTER COLUMN TYPE changes are finalized asynchronously; further schema c
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT column_name, data_type FROM [SHOW COLUMNS FROM customer] WHERE column_name='c_discount';
+> WITH x AS (SHOW COLUMNS FROM customer) SELECT column_name, data_type FROM x WHERE column_name='c_discount';
 ~~~
 
 ~~~

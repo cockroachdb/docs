@@ -105,7 +105,7 @@ Suppose that you want to query the subset of `rides` with a `revenue` greater th
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM [SHOW TABLES] WHERE table_name='rides';
+> WITH x AS (SHOW TABLES) SELECT * FROM x WHERE table_name='rides';
 ~~~
 
 ~~~

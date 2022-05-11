@@ -16,7 +16,7 @@ Use the [`SHOW STATEMENTS`](show-statements.html) statement to list details abou
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM [SHOW CLUSTER STATEMENTS]
+> WITH x AS (SHOW CLUSTER STATEMENTS) SELECT * FROM x
       WHERE application_name != '$ cockroach sql';
 ~~~
 
@@ -33,7 +33,7 @@ You can also filter for queries that have been running for a certain amount of t
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM [SHOW CLUSTER STATEMENTS]
+> WITH x AS (SHOW CLUSTER STATEMENTS) SELECT * FROM x
       WHERE start < (now() - INTERVAL '3 hours');
 ~~~
 
@@ -55,7 +55,7 @@ You can cancel all queries from a particular application by using a subquery.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-CANCEL QUERIES (SELECT query_id FROM [SHOW CLUSTER QUERIES]
+CANCEL QUERIES (WITH x AS (SHOW CLUSTER QUERIES) SELECT query_id FROM x
       WHERE application_name = 'test_app');
 ~~~
 
