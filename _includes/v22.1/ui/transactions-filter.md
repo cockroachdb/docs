@@ -17,12 +17,13 @@ It's possible to select a date range for which no transaction statistics exist. 
 To filter the transactions by [`application_name`]({{ link_prefix }}connection-parameters.html#additional-connection-parameters), select **App** and choose one or more applications. When no application is selected internal transactions **are not** displayed.
 
 {{site.data.alerts.callout_info}}
-- Internal transactions are displayed under the `$ internal` app.
 - Transactions from the SQL shell are displayed under the `$ cockroach` app.
 - If you haven't set `application_name` in a client connection string, it appears as `unset`.
 {{site.data.alerts.end}}
 
-To filter transactions in which a SQL statement fingerprint exceeds a specified latency value, fill in the fields in **Query fingerprint runs longer than**.
+To filter transactions by the node on which the transaction ran, select **Node** and chose one or more nodes.
+
+To filter transactions in which a SQL statement fingerprint exceeds a specified latency value, fill in the fields in **Statement fingerprint runs longer than**.
 
 The following screenshot shows the transactions that contain the string `rides` for the `movr` application:
 

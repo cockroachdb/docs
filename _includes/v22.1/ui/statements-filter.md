@@ -25,6 +25,8 @@ To filter by [application]({{ link_prefix }}connection-parameters.html#additiona
 
 You can also filter by one or more databases (**Database**), SQL statement types (**Statement Type**), and for [statement fingerprints](#sql-statement-fingerprints) that take longer than a specified time to run. To display only statements with queries that cause full table scans, click **Only show statements that contain queries with full table scans**.
 
+To filter statements by the node on which the statement ran, select **Node** and chose one or more nodes.
+
 The following screenshot shows the statements that contain the string `rides` for the `movr` application:
 
 <img src="{{ 'images/v22.1/movr-statements-rides.png' | relative_url }}" alt="Movr rides statements" style="border:1px solid #eee;max-width:80%" />
