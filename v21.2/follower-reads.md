@@ -47,7 +47,7 @@ You should **not** use follower reads when your application cannot tolerate read
 
 A _bounded staleness read_ is a historical read that uses a dynamic, system-determined timestamp to minimize staleness while being more tolerant to replication lag than exact staleness reads. They also help increase system availability, since they provide the ability to serve reads from local replicas even in the presence of network partitions or other failures that prevent the SQL gateway from communicating with the leaseholder. For more information about when to use bounded staleness reads, see [When to use bounded staleness reads](#when-to-use-bounded-staleness-reads).
 
-To get a bounded staleness read, use one of the following builtin functions:
+To get a bounded staleness read, use one of the following built-in functions:
 
 Name | Description
 ---- | -----------

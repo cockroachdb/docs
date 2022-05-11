@@ -1,9 +1,9 @@
-The source file URL does _not_ require the [`admin` role](authorization.html#admin-role) role in the following scenarios:
+The source file URL does _not_ require the [`admin` role](authorization.html#admin-role) in the following scenarios:
 
 - S3 and GS using `SPECIFIED` (and not `IMPLICIT`) credentials. Azure is always `SPECIFIED` by default.
 - [Userfile](use-userfile-for-bulk-operations.html)
 
-The source file URL _does_ require the [`admin` role](authorization.html#admin-role) role in the following scenarios:
+The source file URL _does_ require the [`admin` role](authorization.html#admin-role) in the following scenarios:
 
 - S3 or GS using `IMPLICIT` credentials
 - Use of a [custom endpoint](https://docs.aws.amazon.com/sdk-for-go/api/aws/endpoints/) on S3
