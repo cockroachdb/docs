@@ -383,7 +383,7 @@ clause and thus can also be used as a selection query on its own:
 
 You can use a [table expression](table-expressions.html) as a selection clause (and thus also a selection query) by prefixing it with `TABLE` or by using it as an operand to `SELECT * FROM`.
 
-For example, the [simple table name](table-expressions.html#table-or-view-names) `customers` is a table expression, which designates all rows in that table. The expressions [`TABLE accounts`](selection-queries.html#table-clause) and [`SELECT * FROM accounts`](select-clause.html) are valid selection clauses.
+For example, the [simple table name](table-expressions.html#table-and-view-names) `customers` is a table expression, which designates all rows in that table. The expressions [`TABLE accounts`](selection-queries.html#table-clause) and [`SELECT * FROM accounts`](select-clause.html) are valid selection clauses.
 
 Likewise, the [SQL join expression](joins.html) `customers c JOIN orders o ON c.id = o.customer_id` is a table expression. You can turn it into a valid selection clause, and thus a valid selection query as follows:
 
@@ -401,7 +401,7 @@ Likewise, the [SQL join expression](joins.html) `customers c JOIN orders o ON c.
 
 You can use a selection query (or [selection clause](#selection-clauses)) as a [table
 expression](table-expressions.html) by enclosing it between parentheses, which forms a
-[subquery](table-expressions.html#subqueries-as-table-expressions).
+[subquery](table-expressions.html#use-a-subquery).
 
 For example, the following construct is a selection query, but is not a valid table expression:
 

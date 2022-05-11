@@ -21,13 +21,13 @@ A [join](joins.html) is a particular kind of table expression.
 
 Parameter | Description
 ----------|------------
-`table_name` | A [table or view name](#table-or-view-names).
+`table_name` | A [table or view name](#table-and-view-names).
 `table_alias_name` | A name to use in an [aliased table expression](#aliased-table-expressions).
 `name` | One or more aliases for the column names, to use in an [aliased table expression](#aliased-table-expressions).
 `index_name` | Optional syntax to [force index selection](#force-index-selection).
-`func_application` | [Results from a function](#results-from-a-function).
+`func_application` | [Result from a function](#result-from-a-function).
 `row_source_extension_stmt` | [Result rows](#using-the-output-of-other-statements) from a [supported statement](sql-grammar.html#row_source_extension_stmt).
-`select_stmt` | A [selection query](selection-queries.html) to use as [subquery](#subqueries-as-table-expressions).
+`select_stmt` | A [selection query](selection-queries.html) to use as [subquery](#use-a-subquery).
 `joined_table` | A [join expression](joins.html).
 
 ## Table expressions language
@@ -36,12 +36,12 @@ The synopsis defines a mini-language to construct complex table expressions from
 
 Construct | Description | Examples
 ----------|-------------|------------
-`table_name [@ scan_parameters]` | [Access a table or view](#access-a-table-or-view). | `accounts`, `accounts@name_idx`
+`table_name [@ scan_parameters]` | [Access a table or view](#table-and-view-names). | `accounts`, `accounts@name_idx`
 `function_name ( exprs ... )` | Generate tabular data using a [scalar function](#scalar-function-as-data-source) or [table generator function](#table-generator-functions). | `sin(1.2)`, `generate_series(1,10)`
 `<table expr> [AS] name [( name [, ...] )]` | [Rename a table and optionally columns](#aliased-table-expressions). | `accounts a`, `accounts AS a`, `accounts AS a(id, b)`
 `<table expr> WITH ORDINALITY` | [Enumerate the result rows](#ordinality-annotation). | `accounts WITH ORDINALITY`
 `<table expr> JOIN <table expr> ON ...` | [Join expression](joins.html). | `orders o JOIN customers c ON o.customer_id = c.id`
-`(... subquery ...)` | A [selection query](selection-queries.html) used as [subquery](#subqueries-as-table-expressions). | `(SELECT * FROM customers c)`
+`(... subquery ...)` | A [selection query](selection-queries.html) used as [subquery](#use-a-subquery). | `(SELECT * FROM customers c)`
 `[... statement ...]` | Use the result rows of an [explainable statement](sql-grammar.html#preparable_stmt).<br><br>This is a CockroachDB extension. However, Cockroach Labs recommends that you use the standard SQL [CTE syntax](common-table-expressions.html) instead. See [Use the output of another statement](#use-the-output-of-another-statement) for an example. | `[SHOW COLUMNS FROM accounts]`
 
 The following sections provide details on each of these options.
