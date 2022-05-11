@@ -10,7 +10,8 @@ docs_area: manage
 
 The **Transactions** page helps you:
 
-- Identify frequently retried or high latency transactions.
+- Identify frequently [retried](../{{ version_prefix }}transactions.html#transaction-retries) transactions.
+- [Troubleshoot](../{{ version_prefix }}query-behavior-troubleshooting.html) high latency transactions or execution failures.
 - View transaction [details](#transaction-details-page).
 
 {{site.data.alerts.callout_success}}
