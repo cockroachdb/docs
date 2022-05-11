@@ -211,6 +211,12 @@
                 ]
               },
               {
+                "title": "<code>ALTER RANGE ... RELOCATE</code>",
+                "urls": [
+                  "/${VERSION}/alter-range-relocate.html"
+                ]
+              },
+              {
                 "title": "<code>ALTER ROLE</code>",
                 "urls": [
                   "/${VERSION}/alter-role.html"
