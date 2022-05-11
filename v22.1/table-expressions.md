@@ -26,7 +26,7 @@ Parameter | Description
 `name` | One or more aliases for the column names, to use in an [aliased table expression](#aliased-table-expressions).
 `index_name` | Optional syntax to [force index selection](#force-index-selection).
 `func_application` | [Result from a function](#result-from-a-function).
-`row_source_extension_stmt` | [Result rows](#using-the-output-of-other-statements) from a [supported statement](sql-grammar.html#row_source_extension_stmt).
+`row_source_extension_stmt` | [Result rows](#use-the-output-of-another-statement) from a [supported statement](sql-grammar.html#row_source_extension_stmt).
 `select_stmt` | A [selection query](selection-queries.html) to use as [subquery](#use-a-subquery).
 `joined_table` | A [join expression](joins.html).
 
