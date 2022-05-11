@@ -55,6 +55,10 @@ To relocate just the lease without moving the replicas, run a statement like the
 > ALTER TABLE t EXPERIMENTAL_RELOCATE LEASE SELECT 1, 'foo';
 ~~~
 
+{{site.data.alerts.callout_info}}
+<span class="version-tag">New in v22.1:</span> If you prefer to use an approach to relocating replicas and leases based on store IDs, see the [`ALTER RANGE ... RELOCATE`](alter-range-relocate.html) statement.
+{{site.data.alerts.end}}
+
 ### Show table fingerprints
 
 Table fingerprints are used to compute an identification string of an entire table, for the purpose of gauging whether two tables have the same data. This is useful, for example, when restoring a table from backup.
