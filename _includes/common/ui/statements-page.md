@@ -26,10 +26,8 @@ To filter the statements, click the **Filters** field.
 
 To filter by [application]({{ link_prefix }}connection-parameters.html#additional-connection-parameters), select **App** and choose one or more applications. When no application is selected internal statements **are not** displayed.
 
-{{site.data.alerts.callout_info}}
 - Queries from the SQL shell are displayed under the `$ cockroach` app.
 - If you haven't set `application_name` in a client connection string, it appears as `unset`.
-{{site.data.alerts.end}}
 
 You can also filter by one or more databases (**Database**), SQL statement types (**Statement Type**), and for [statement fingerprints](#sql-statement-fingerprints) that take longer than a specified time to run. To display only statements with queries that cause full table scans, click **Only show statements that contain queries with full table scans**.
 
