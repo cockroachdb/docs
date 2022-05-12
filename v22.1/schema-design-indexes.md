@@ -6,7 +6,7 @@ keywords: gin, gin index, gin indexes, inverted index, inverted indexes, acceler
 docs_area: develop
 ---
 
-Indexes are [logical objects in a cluster](schema-design-overview.html#database-schema-objects) that help [CockroachDB queries](query-data.html) find data more efficiently. When you create an index, CockroachDB creates a copy of the columns selected for the index, and then sorts the rows of data by indexed column values, without sorting the values in the table itself.
+An [_index_](indexes.html) is a [logical object](schema-design-overview.html#database-schema-objects) that helps [CockroachDB queries](query-data.html) find data more efficiently. When you create an index, CockroachDB creates a copy of the columns selected for the index, and then sorts the rows of data by indexed column values, without sorting the values in the table itself.
 
 CockroachDB automatically creates an index on the table's [primary key](primary-key.html) columns. This index is called the *primary index*. The primary index helps CockroachDB more efficiently scan rows, as sorted by the table's primary key columns, but it does not help find values as identified by any other columns.
 
@@ -72,13 +72,13 @@ Here are some best practices for creating and using indexes:
 
     {% include {{page.version.version}}/sql/covering-index.md %}
 
-    Columns listed in a filtering [`WHERE` clause](select-clause.html#parameters) with the equality operators (`=` or `IN`) should come first in the index, before those referenced with inequality operators (`<`, `>`).
+    CockroachDB can [push filters](indexes.html#how-do-indexes-work) (i.e., values listed in a [`WHERE` clause](select-clause.html#parameters)) into an index that allows it to perform a finite number of sequential scans. To guarantee that, the resulting scan that has `n` columns constrained must have the first `n-1` columns filtering on a single constant value (`=`) or a list of constant values (`IN`). The final column can filter against a range of values (`!=`, `<`, `>`, `NOT IN`).
 
 - A _functional index_ is an index is defined on the result of a function applied to one or more columns of a single table. The best approach is to use a [computed column](computed-columns.html) and index the column. This allows you to compute the function once and use it many times.
 
 - Avoid indexing on sequential values. Writes to indexes with sequential keys can result in range hotspots that negatively affect performance. Instead, use [randomly generated unique IDs](performance-best-practices-overview.html#unique-id-best-practices) or [multi-column keys](performance-best-practices-overview.html#use-multi-column-primary-keys).
 
-    If you are working with a table that *must* be indexed on sequential keys, use [hash-sharded indexes](hash-sharded-indexes.html). For details about the mechanics and performance improvements of hash-sharded indexes in CockroachDB, see our [Hash Sharded Indexes Unlock Linear Scaling for Sequential Workloads](https://www.cockroachlabs.com/blog/hash-sharded-indexes-unlock-linear-scaling-for-sequential-workloads/) blog post.
+    If you are working with a table that **must** be indexed on sequential keys, use [hash-sharded indexes](hash-sharded-indexes.html). For details about the mechanics and performance improvements of hash-sharded indexes in CockroachDB, see our [Hash Sharded Indexes Unlock Linear Scaling for Sequential Workloads](https://www.cockroachlabs.com/blog/hash-sharded-indexes-unlock-linear-scaling-for-sequential-workloads/) blog post.
 
 - Avoid creating secondary indexes that you do not need. Secondary indexes can slow down write performance and take up node memory.
 
@@ -90,47 +90,20 @@ Here are some best practices for creating and using indexes:
 
 - [Drop unused indexes](drop-index.html) whenever possible.
 
-    To understand usage statistics for an index, query the <a href="performance-recipes.html#slow-writes"><code>crdb_internal.index_usage_statistics</code> table</a>.
-
-    To find which indexes are being used in a database, query the [`crdb_internal.index_usage_statistics`](crdb-internal.html) table, which will show the total reads and time the primary and secondary indexes were last read.
+    To understand usage statistics for an index, query the [`crdb_internal.index_usage_statistics`](crdb-internal.html#index_usage_statistics) table.
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
     SELECT * FROM crdb_internal.index_usage_statistics;
     ~~~
 
-    To get more detailed information about the table and index names, run a join query against `crdb_internal.index_usage_statistics` and `crdb_internal.table_indexes`.
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ sql
-    SELECT ti.descriptor_name as table_name, ti.index_name, total_reads, last_read
-    FROM crdb_internal.index_usage_statistics AS us
-    JOIN crdb_internal.table_indexes ti
-    ON us.index_id = ti.index_id
-    AND us.table_id = ti.descriptor_id
-    ORDER BY total_reads ASC;
-    ~~~
-
-    ~~~
-              table_name         |                  index_name                   | total_reads |           last_read
------------------------------+-----------------------------------------------+-------------+--------------------------------
-  vehicle_location_histories | primary                                       |           1 | 2021-09-28 22:59:03.324398+00
-  rides                      | rides_auto_index_fk_city_ref_users            |           1 | 2021-09-28 22:59:01.500962+00
-  rides                      | rides_auto_index_fk_vehicle_city_ref_vehicles |           1 | 2021-09-28 22:59:02.470526+00
-  user_promo_codes           | primary                                       |         456 | 2021-09-29 00:01:17.063418+00
-  promo_codes                | primary                                       |         910 | 2021-09-29 00:01:17.062319+00
-  vehicles                   | primary                                       |        3591 | 2021-09-29 00:01:18.261658+00
-  users                      | primary                                       |        5401 | 2021-09-29 00:01:18.260198+00
-  rides                      | primary                                       |       45658 | 2021-09-29 00:01:18.258208+00
-  vehicles                   | vehicles_auto_index_fk_city_ref_users         |       87119 | 2021-09-29 00:01:19.071476+00
-(9 rows)
-    ~~~
+    To get more detailed information about the table and index names, run a join query against `crdb_internal.index_usage_statistics` and `crdb_internal.table_indexes`. For an example, see [Fix slow writes](performance-recipes.html#fix-slow-writes).
 
 <a name="storing-index"></a>
 
 - Use a [`STORING` clause](create-index.html#parameters) to store columns of data that you want returned by common queries, but that you do not plan to use in query filters.  Note that the synonym `COVERING` is also supported.
 
-    The `STORING` clause specifies columns that are not part of the index key but should be stored in the index, without being sorted. If a column is specified in a query, and the column is neither indexed nor stored in an index, CockroachDB will perform a full scan of the table, which can result in poor performance. For an example, see [below](#example).
+    The `STORING` clause specifies columns that are not part of the index key but should be stored in the index, without being sorted. If a column is specified in a query, and the column is neither indexed nor stored in an index, CockroachDB will perform a full scan of the table, which can result in poor performance. For an example, see [Example](#example).
 
 - Review the [specialized indexes that CockroachDB supports](schema-design-overview.html#specialized-indexes), and decide if you need to create a specialized index instead of a standard index.
 
@@ -150,7 +123,7 @@ Open `max_init.sql`, and, under the `CREATE TABLE` statement for the `vehicles` 
 
 {% include copy-clipboard.html %}
 ~~~ sql
-CREATE INDEX type_available_idx ON movr.vehicles (type, available));
+CREATE INDEX type_available_idx ON movr.vehicles (type, available);
 ~~~
 
 This statement creates a secondary index named `type_available_idx`, on the `vehicles` table.
