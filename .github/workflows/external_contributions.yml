@@ -1,0 +1,35 @@
+name: External Contributions
+
+on:
+  pull_request
+
+jobs:
+  check-membership:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check cockroachdb membership
+        id: membership-check
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          USERNAME: ${{ github.event.pull_request.user.login }}
+        run: |
+          extcont=`gh api -H "Accept: application/vnd.github.v3+json" -H "Authorization: token $GITHUB_TOKEN" /orgs/cockroachdb/members/$USERNAME`
+
+          echo ::set-output name=extcont::$extcont
+
+      - name: Find Comment
+        uses: peter-evans/find-comment@v1
+        id: find-comment
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          comment-author: 'Cockroach Labs'
+          body-includes: Files changed
+
+      - name: Create comment
+        uses: peter-evans/create-or-update-comment@v1
+        with:
+          comment-id: ${{ steps.find-comment.outputs.comment-id }}
+          issue-number: ${{ github.event.pull_request.number }}
+          edit-mode: replace
+          body: |
+            <h3>${{ steps.membership-check.outputs.extcont }}</h3>
