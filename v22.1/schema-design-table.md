@@ -515,7 +515,6 @@ To see the individual `CREATE TABLE` statements for each table, use a [`SHOW CRE
                            |     last_location STRING NULL,
                            |     CONSTRAINT vehicles_pkey PRIMARY KEY (id ASC)
                            | )
-
 (1 row)
 ~~~
 
@@ -581,7 +580,6 @@ $ cockroach sql \
                                      |     CONSTRAINT "primary" PRIMARY KEY (code ASC, user_email ASC),
                                      |     CONSTRAINT user_promo_codes_user_email_fkey FOREIGN KEY (user_email) REFERENCES max_schema.users(email)
                                      | )
-
 (1 row)
 ~~~
 
