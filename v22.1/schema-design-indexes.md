@@ -74,7 +74,7 @@ Here are some best practices for creating and using secondary indexes.
 
     {% include {{page.version.version}}/sql/covering-index.md %}
 
-    CockroachDB [pushes filters](indexes.html#how-do-indexes-work) (i.e., values listed in a [`WHERE` clause](select-clause.html#parameters)) into an index, which allows it to perform a finite number of sequential scans. A `WHERE` clause with `n` constrained columns must have the first `n-1` columns filtering either on a single constant value using the operator `=` or a list of constant values using the operator `IN`. The `n`th column can filter against a range of values using any of the operators `!=`, `<`, `>`, or `NOT IN`.
+    CockroachDB [pushes filters](indexes.html#how-do-indexes-work) (i.e., values listed in a [`WHERE` clause](select-clause.html#parameters)) into an index, which allows it to perform a finite number of sequential scans. In a `WHERE` clause with `n` constrained columns you can filter the first `n-1` columns either on a single constant value using the operator `=` or a list of constant values using the operator `IN`. You can filter column `n` against a range of values using any of the operators `!=`, `<`, `>`, or `NOT IN`.
 
 - If you need to index the result of a function applied to one or more columns of a single table, use the function to create a [computed column](computed-columns.html) and index the column.
 
