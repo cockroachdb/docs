@@ -1,0 +1,26 @@
+name: Link Validation
+on:
+  pull_request
+
+jobs:
+  htmltest:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Calculate site_name
+        id: calculate-site-name
+        uses: greguintow/concat-string-action@v1
+        env:
+          pr_num: ${{ github.event.pull_request.number }}
+        with:
+          string: "deploy-preview-{pr_num}--cockroachdb-docs"
+
+      - name: Waiting for Netlify Preview
+        uses: josephduffy/wait-for-netlify-action@v1
+        with:
+          site_name: ${{ steps.calculate-site-name.outputs.replaced }}
+          max_timeout: 1800
+
+      - name: Run htmltest
+        uses: wjdp/htmltest-action@master
+        with:
+          config: https://raw.githubusercontent.com/cockroachdb/docs/${{github.sha}}/.htmltest.yml
