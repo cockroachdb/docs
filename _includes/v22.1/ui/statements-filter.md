@@ -6,6 +6,8 @@
   {% assign page_prefix = "ui-" %}
 {% endif %}
 
+<a id="time-interval"></a>
+
 ### Date range
 
 To search by date, click the date range selector and pick a date range that is within the time period. Click **reset time** to reset the date to the last hour.
