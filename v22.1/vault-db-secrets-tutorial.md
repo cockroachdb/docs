@@ -11,13 +11,14 @@ This tutorial discusses and demonstrates best security practices for managing Co
 
 **Prerequisites**:
 
-- Access as `root` SQL user to a CockroachDB cluster. You could either [spin up a {{ site.data.products.serverless }} cluster]() or [Start a Development Cluster locally](). In either case you must have the public CA certificate for your cluster, and a username/password combination for the root SQL user (or another SQL user with the admin role).
+To follow along with this tutorial you will need the following:
 
-- Access to a Vault cluster. You can spin up a free cluster in Hashicorp cloud (!!!) or start a development cluster locally... !!! hashicorp docs links
+- Access as `root` SQL user to a CockroachDB cluster. You may either [spin up a {{ site.data.products.serverless }} cluster](create-a-serverless-cluster.md) or [Start a Development Cluster locally](../{{site.versions["stable"]}}/start-a-local-cluster.md). In either case you must have the public CA certificate for your cluster, and a username/password combination for the root SQL user (or another SQL user with the admin role).
+- Access to a Vault cluster with an admin token. You may either spin up a [free cluster in Hashicorp cloud](https://learn.hashicorp.com/collections/vault/cloud) or [start a development cluster locally](https://learn.hashicorp.com/tutorials/vault/getting-started-dev-server).
 
 ## Introduction
 
-Sound strategy and proper tooling for managing database credentials are essential to the overall strength of your security posture. Managing your CockroachDB database credentials with Hashicorp Vault affords several distinct advantages:
+Sound strategy and proper tooling for managing database credentials are essential to the overall strength of your security posture. Managing your CockroachDB database credentials with Hashicorp Vault affords several security advantages:
 
 - General advantages of delegated, consolidated secrets management, as opposed to the industry standard of the past, which involves storing credentials in a variety of shared and individually owned file-systems, repositories and data stores, and sharing them via email, messaging, and other means of network communication:
 	- Access is managed by a single coherent set of policies.
@@ -28,23 +29,30 @@ Sound strategy and proper tooling for managing database credentials are essentia
 	- Database credentials are generated and issued only on demand, from pre-configured templates, for specific clients and short validity durations, further minimizing both probability of credential compromise and possible impact of any compromise that does occur.
 	- Diligent rotation and revocation practices are automated by implication, requiring no additional effort or oversight.
 
-
 ## Administrating Vault and CRDB
-
 
 In this phase of the tutorial we will act as an administrator for our organization, provisioning access for a class of database clients.
 
 You'll need admin credentials for both a Vault cluster and a CockroachDB cluster, allowing you to create and manage access for roles in both domains.
 
-Initialize your shell for Vault by setting your target and authenticating as admin.
+In the first phase of the tutorial, we will act as administrators, provisioning access to a Vault dynamic secret endpoint for a CockroachDB client operator to use to provision credentials for an app that needs to access the CockroachDB database.
+
+In the second phase, acting as client operator, we will pull credentials from Vault and use them to access the database via the CockroachDB client CLI.
+
+
+### Initize your shell for Vault
+
+Set your Vault target and authenticate with an admin token.
 
 {% include_cached copy-clipboard.html %}
 ```shell
-$ export VAULT_ADDR= # your Vault cluster URL
-$ vault login
+export VAULT_ADDR= # your Vault cluster URL
+vault login
 ```
 
 ### Enable the database secrets engine
+
+This only needs to be done once for an individual Vault cluster.
 
 {% include_cached copy-clipboard.html %}
 ```shell
@@ -55,13 +63,9 @@ vault secrets enable database
 Success! Enabled the database secrets engine at: database/
 ```
 
+### Initialize your shell for CRDB
 
-
-
-### Binding your Vault to your CRDB cluster
-
-The connection lies in a Vault configuration, which will store your CRDB admin credentials, allowing Vault to administrate CRDB credentials.
-
+Set your CRDB cluster credentials and other configuration information as environment variables
 {% include_cached copy-clipboard.html %}
 ```shell
 USER_NAME=bloop # CRDB admin username
@@ -69,10 +73,58 @@ PASSWORD=UL1IdEv-HzYSeUzJw_o_Gw # CRDB admin password
 DB_NAME=defaultdb
 CLUSTER_NAME=lilac-grizzly-684
 HOST=free-tier21.aws-us-west-2.crdb.io
-# TLS_OPTS="sslmode=require&options=--cluster=${CLUSTER_NAME}"
-TLS_OPTS="sslinline=true&sslrootcert=root.crt&sslmode=verify-full&options=--cluster=${CLUSTER_NAME}"
-CONNECTION_URL="postgresql://{{username}}:{{password}}@${HOST}:26257/${DB_NAME}?${TLS_OPTS}"
 
+```
+#### Obtain your cluster's CA public certificate
+
+1. Visit the [CockroachDB Cloud Console's cluster page.](https://cockroachlabs.cloud/cluster/). 
+1. Select your cluster.
+1. Click the **Connect** button.
+1. Select **"Download CA Cert (Required only once)"** and use the generated `curl` command to download the certificate.
+```shell
+curl --create-dirs -o root.crt -O https://management-staging.crdb.io/clusters/505a138c-37ff-46b7-9c50-4119cf0881f6/cert
+```
+1. Place the certificate on the path specified by `sslrootcert` in the following command, the run it. A successful display of the output of "show tables;" proves that our connection works.
+
+{% include_cached copy-clipboard.html %}
+```shell
+TLS_OPTS="sslrootcert=root.crt&sslmode=verify-full&options=--cluster=${CLUSTER_NAME}"
+CONNECTION_URL="postgresql://$USER_NAME:$PASSWORD@${HOST}:26257/${DB_NAME}?${TLS_OPTS}"
+cockroach sql --url $CONNECTION_URL --execute "show tables;"
+```
+
+```txt
+SHOW TABLES 0
+
+Time: 107ms
+```
+
+### Binding your Vault cluster to your CRDB cluster
+
+The connection lies in a Vault configuration, which will store your CRDB admin credentials, allowing Vault to administrate CRDB credentials.
+
+
+Create the `crdb-config` database configuration in Vault, specifying admin credentials that will be used by Vault to 
+{% include_cached copy-clipboard.html %}
+```shell
+
+
+
+
+```
+
+
+
+{% include_cached copy-clipboard.html %}
+```shell
+
+```
+
+
+{% include_cached copy-clipboard.html %}
+```shell
+TLS_OPTS="sslmode=require&options=--cluster=${CLUSTER_NAME}"
+CONNECTION_URL="postgresql://{{username}}:{{password}}@${HOST}:26257/${DB_NAME}?${TLS_OPTS}"
 
 vault write database/config/crdb-config \
 plugin_name=postgresql-database-plugin \
@@ -86,7 +138,6 @@ connection_url=$CONNECTION_URL
 ```txt
 Success! Data written to: database/config/crdb-config
 ```
-
 
 ### Create a Vault policy for use by the CRDB client operator
 
@@ -111,7 +162,7 @@ The template is defined by its `creation_statements`, SQL statements that create
 
 For, example, let's create a 'default role'
 
-NOTE: `db_name` is actually not theh database name but the vault secrets engine thingy (i.e. `crdb-config` in the example)
+NOTE: `db_name` is actually not the database name but the vault secrets engine thingy (i.e. `crdb-config` in the example)
 
 
 {% include_cached copy-clipboard.html %}
