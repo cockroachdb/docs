@@ -36,7 +36,7 @@ The `primary` index helps filter a table's primary key but doesn't help SQL find
 - For existing tables with [`CREATE INDEX`](create-index.html).
 - By applying the `UNIQUE` constraint to columns with [`ALTER TABLE`](alter-table.html), which automatically creates an index of the constrained columns.
 
-To create the most useful secondary indexes, see [Secondary Indexes: Best practices](schema-design-indexes.html#best-practices).
+To review guidelines for creating the most useful secondary indexes, see [Secondary Indexes: Best practices](schema-design-indexes.html#best-practices).
 
 ### Selection
 
@@ -46,7 +46,7 @@ To override CockroachDB index selection, you can also force queries [to use a sp
 
 ### Storage
 
-CockroachDB stores indexes directly in your key-value store. You can find more information in our blog post [Mapping Table Data to Key-Value Storage](https://www.cockroachlabs.com/blog/sql-in-cockroachdb-mapping-table-data-to-key-value-storage/).
+CockroachDB stores indexes directly in its key-value store. You can find more information in our blog post [Mapping Table Data to Key-Value Storage](https://www.cockroachlabs.com/blog/sql-in-cockroachdb-mapping-table-data-to-key-value-storage/).
 
 ### Locking
 

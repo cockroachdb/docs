@@ -66,29 +66,43 @@ For an example, see [Example](#example).
 
 ## Best practices
 
-Here are some best practices for creating and using indexes:
+Here are some best practices for creating and using secondary indexes.
+
+### Index contents
 
 - Index all columns that you plan to use for [sorting](order-by.html) or [filtering](select-clause.html#filter-rows) data.
 
     {% include {{page.version.version}}/sql/covering-index.md %}
 
-    CockroachDB can [push filters](indexes.html#how-do-indexes-work) (i.e., values listed in a [`WHERE` clause](select-clause.html#parameters)) into an index that allows it to perform a finite number of sequential scans. To guarantee that, the resulting scan that has `n` columns constrained must have the first `n-1` columns filtering on a single constant value (`=`) or a list of constant values (`IN`). The final column can filter against a range of values (`!=`, `<`, `>`, `NOT IN`).
+    CockroachDB [pushes filters](indexes.html#how-do-indexes-work) (i.e., values listed in a [`WHERE` clause](select-clause.html#parameters)) into an index, which allows it to perform a finite number of sequential scans. A `WHERE` clause with `n` constrained columns must have the first `n-1` columns filtering either on a single constant value using the operator `=` or a list of constant values using the operator `IN`. The `n`th column can filter against a range of values using any of the operators `!=`, `<`, `>`, or `NOT IN`.
 
-- A _functional index_ is an index is defined on the result of a function applied to one or more columns of a single table. The best approach is to use a [computed column](computed-columns.html) and index the column. This allows you to compute the function once and use it many times.
+- If you need to index the result of a function applied to one or more columns of a single table, use the function to create a [computed column](computed-columns.html) and index the column.
 
-- Avoid indexing on sequential values. Writes to indexes with sequential keys can result in range hotspots that negatively affect performance. Instead, use [randomly generated unique IDs](performance-best-practices-overview.html#unique-id-best-practices) or [multi-column keys](performance-best-practices-overview.html#use-multi-column-primary-keys).
+- Avoid indexing on sequential keys. Writes to indexes with sequential keys can result in range [hot spots](performance-best-practices-overview.html#hot-spots) that negatively affect performance. Instead, use [randomly generated unique IDs](performance-best-practices-overview.html#unique-id-best-practices) or [multi-column keys](performance-best-practices-overview.html#use-multi-column-primary-keys).
 
     If you are working with a table that **must** be indexed on sequential keys, use [hash-sharded indexes](hash-sharded-indexes.html). For details about the mechanics and performance improvements of hash-sharded indexes in CockroachDB, see our [Hash Sharded Indexes Unlock Linear Scaling for Sequential Workloads](https://www.cockroachlabs.com/blog/hash-sharded-indexes-unlock-linear-scaling-for-sequential-workloads/) blog post.
 
-- Avoid creating secondary indexes that you do not need. Secondary indexes can slow down write performance and take up node memory.
+<a name="storing-index"></a>
 
-    Queries can benefit from an index even if they only filter a prefix of its columns. For example, if you create an index of columns `(A, B, C)`, queries filtering `(A)` or `(A, B)` can still use the index. However, queries that do not filter `(A)` will not benefit from the index. This feature also lets you avoid using single-column indexes. Instead, use the column as the first column in a multiple-column index, which is useful to more queries.
+- Use a [`STORING` clause](create-index.html#parameters) to store columns of data that you want returned by common queries, but that you do not plan to use in query filters.
 
-    [`ALTER PRIMARY KEY`](alter-primary-key.html) creates a secondary index from the old primary key. If you need to [change a primary key](constraints.html#change-constraints), and you do not plan to filter queries on the old primary key column(s), do not use `ALTER PRIMARY KEY`. Instead, use [`DROP CONSTRAINT ... PRIMARY KEY`/`ADD CONSTRAINT ... PRIMARY KEY`](add-constraint.html#changing-primary-keys-with-add-constraint-primary-key), which does not create a secondary index.
+    The `STORING` clause specifies columns that are not part of the index key but should be stored in the index. If a column is specified in a query, and the column is neither indexed nor stored in an index, CockroachDB will perform a full scan of the table, which can result in poor performance. For an example, see [Example](#example).
+
+- Review the [specialized indexes](schema-design-overview.html#specialized-indexes) and decide if you need to create a specialized index instead of a standard index.
+
+- Avoid creating secondary indexes that you do not need.
+
+    - Queries can benefit from an index even if they only filter a prefix of its columns. For example, if you create an index of columns `(A, B, C)`, queries filtering `(A)` or `(A, B)` can use the index, so you don't need to also index `(A)`.
+
+    - If you need to [change a primary key](constraints.html#change-constraints), and you do not plan to filter queries on the existing primary key column(s), do not use [`ALTER PRIMARY KEY`](alter-primary-key.html) because it creates a secondary index from an existing primary key. Instead, use [`DROP CONSTRAINT ... PRIMARY KEY`/`ADD CONSTRAINT ... PRIMARY KEY`](add-constraint.html#changing-primary-keys-with-add-constraint-primary-key), which does not create a secondary index.
+
+### Index management
 
 - Limit creation and deletion of secondary indexes to off-peak hours. Performance impacts are likely if done during peak business hours.
 
-- [Drop unused indexes](drop-index.html) whenever possible.
+- Do not create indexes as the `root` user. Instead, create indexes as a [different user](schema-design-overview.html#control-access-to-objects), with fewer privileges, following [authorization best practices](security-reference/authorization.html#authorization-best-practices). This will likely be the same user that created the table to which the index belongs.
+
+- Drop unused indexes whenever possible.
 
     To understand usage statistics for an index, query the [`crdb_internal.index_usage_statistics`](crdb-internal.html#index_usage_statistics) table.
 
@@ -98,16 +112,6 @@ Here are some best practices for creating and using indexes:
     ~~~
 
     To get more detailed information about the table and index names, run a join query against `crdb_internal.index_usage_statistics` and `crdb_internal.table_indexes`. For an example, see [Fix slow writes](performance-recipes.html#fix-slow-writes).
-
-<a name="storing-index"></a>
-
-- Use a [`STORING` clause](create-index.html#parameters) to store columns of data that you want returned by common queries, but that you do not plan to use in query filters.  Note that the synonym `COVERING` is also supported.
-
-    The `STORING` clause specifies columns that are not part of the index key but should be stored in the index, without being sorted. If a column is specified in a query, and the column is neither indexed nor stored in an index, CockroachDB will perform a full scan of the table, which can result in poor performance. For an example, see [Example](#example).
-
-- Review the [specialized indexes that CockroachDB supports](schema-design-overview.html#specialized-indexes), and decide if you need to create a specialized index instead of a standard index.
-
-- Do not create indexes as the `root` user. Instead, create indexes as a [different user](schema-design-overview.html#control-access-to-objects), with fewer privileges, following [authorization best practices](security-reference/authorization.html#authorization-best-practices). This will likely be the same user that created the table to which the index belongs.
 
 - {% include {{page.version.version}}/sql/dev-schema-changes.md %}
 
