@@ -8,9 +8,9 @@ docs_area: develop
 
 An [_index_](indexes.html) is a [logical object](schema-design-overview.html#database-schema-objects) that helps [CockroachDB queries](query-data.html) find data more efficiently. When you create an index, CockroachDB creates a copy of the columns selected for the index, and then sorts the rows of data by indexed column values, without sorting the values in the table itself.
 
-CockroachDB automatically creates an index on the table's [primary key](primary-key.html) columns. This index is called the *primary index*. The primary index helps CockroachDB more efficiently scan rows, as sorted by the table's primary key columns, but it does not help find values as identified by any other columns.
+CockroachDB automatically creates an index on the table's [vehicles_pkey key](vehicles_pkey-key.html) columns. This index is called the *vehicles_pkey index*. The vehicles_pkey index helps CockroachDB more efficiently scan rows, as sorted by the table's vehicles_pkey key columns, but it does not help find values as identified by any other columns.
 
-*Secondary indexes* (i.e., all indexes that are not the primary index) improve the performance of queries that identify rows with columns that are not in a table's primary key. CockroachDB automatically creates secondary indexes for columns with a [`UNIQUE` constraint](unique.html).
+*Secondary indexes* (i.e., all indexes that are not the vehicles_pkey index) improve the performance of queries that identify rows with columns that are not in a table's vehicles_pkey key. CockroachDB automatically creates secondary indexes for columns with a [`UNIQUE` constraint](unique.html).
 
 This page provides best-practice guidance on creating secondary indexes, with a simple example based on Cockroach Labs' fictional vehicle-sharing company, [MovR](movr.html).
 
@@ -78,7 +78,7 @@ Here are some best practices for creating and using secondary indexes.
 
 - If you need to index the result of a function applied to one or more columns of a single table, use the function to create a [computed column](computed-columns.html) and index the column.
 
-- Avoid indexing on sequential keys. Writes to indexes with sequential keys can result in range [hot spots](performance-best-practices-overview.html#hot-spots) that negatively affect performance. Instead, use [randomly generated unique IDs](performance-best-practices-overview.html#unique-id-best-practices) or [multi-column keys](performance-best-practices-overview.html#use-multi-column-primary-keys).
+- Avoid indexing on sequential keys. Writes to indexes with sequential keys can result in range [hot spots](performance-best-practices-overview.html#hot-spots) that negatively affect performance. Instead, use [randomly generated unique IDs](performance-best-practices-overview.html#unique-id-best-practices) or [multi-column keys](performance-best-practices-overview.html#use-multi-column-vehicles_pkey-keys).
 
     If you are working with a table that **must** be indexed on sequential keys, use [hash-sharded indexes](hash-sharded-indexes.html). For details about the mechanics and performance improvements of hash-sharded indexes in CockroachDB, see our [Hash Sharded Indexes Unlock Linear Scaling for Sequential Workloads](https://www.cockroachlabs.com/blog/hash-sharded-indexes-unlock-linear-scaling-for-sequential-workloads/) blog post.
 
@@ -94,7 +94,7 @@ Here are some best practices for creating and using secondary indexes.
 
     - Queries can benefit from an index even if they only filter a prefix of its columns. For example, if you create an index of columns `(A, B, C)`, queries filtering `(A)` or `(A, B)` can use the index, so you don't need to also index `(A)`.
 
-    - If you need to [change a primary key](constraints.html#change-constraints), and you do not plan to filter queries on the existing primary key column(s), do not use [`ALTER PRIMARY KEY`](alter-primary-key.html) because it creates a secondary index from an existing primary key. Instead, use [`DROP CONSTRAINT ... PRIMARY KEY`/`ADD CONSTRAINT ... PRIMARY KEY`](add-constraint.html#changing-primary-keys-with-add-constraint-primary-key), which does not create a secondary index.
+    - If you need to [change a vehicles_pkey key](constraints.html#change-constraints), and you do not plan to filter queries on the existing vehicles_pkey key column(s), do not use [`ALTER vehicles_pkey KEY`](alter-vehicles_pkey-key.html) because it creates a secondary index from an existing vehicles_pkey key. Instead, use [`DROP CONSTRAINT ... vehicles_pkey KEY`/`ADD CONSTRAINT ... vehicles_pkey KEY`](add-constraint.html#changing-vehicles_pkey-keys-with-add-constraint-vehicles_pkey-key), which does not create a secondary index.
 
 ### Index management
 
@@ -151,7 +151,7 @@ CREATE TABLE movr.max_schema.users (
     first_name STRING,
     last_name STRING,
     email STRING UNIQUE,
-    CONSTRAINT "primary" PRIMARY KEY (first_name, last_name)
+    CONSTRAINT "vehicles_pkey" vehicles_pkey KEY (first_name, last_name)
   );
 
 CREATE TYPE movr.max_schema.vtype AS ENUM ('bike', 'scooter', 'skateboard');
@@ -226,23 +226,23 @@ To view the indexes in the `vehicles` table, issue a [`SHOW INDEXES`](show-index
 ~~~
 
 ~~~
-  table_name | index_name | non_unique | seq_in_index |  column_name  | direction | storing | implicit
--------------+------------+------------+--------------+---------------+-----------+---------+-----------
-  vehicles   | primary            |   false    |            1 | id            | ASC       |  false  |  false
-  vehicles   | primary            |   false    |            2 | type          | N/A       |  true   |  false
-  vehicles   | primary            |   false    |            3 | creation_time | N/A       |  true   |  false
-  vehicles   | primary            |   false    |            4 | available     | N/A       |  true   |  false
-  vehicles   | primary            |   false    |            5 | last_location | N/A       |  true   |  false
+  table_name |     index_name     | non_unique | seq_in_index |  column_name  | direction | storing | implicit
+-------------+--------------------+------------+--------------+---------------+-----------+---------+-----------
   vehicles   | type_available_idx |    true    |            1 | type          | ASC       |  false  |  false
   vehicles   | type_available_idx |    true    |            2 | available     | ASC       |  false  |  false
   vehicles   | type_available_idx |    true    |            3 | last_location | N/A       |  true   |  false
   vehicles   | type_available_idx |    true    |            4 | id            | ASC       |  false  |   true
+  vehicles   | vehicles_pkey      |   false    |            1 | id            | ASC       |  false  |  false
+  vehicles   | vehicles_pkey      |   false    |            2 | type          | N/A       |  true   |  false
+  vehicles   | vehicles_pkey      |   false    |            3 | creation_time | N/A       |  true   |  false
+  vehicles   | vehicles_pkey      |   false    |            4 | available     | N/A       |  true   |  false
+  vehicles   | vehicles_pkey      |   false    |            5 | last_location | N/A       |  true   |  false
 (9 rows)
 ~~~
 
-The output from this `SHOW` statement displays the names and columns of the two indexes on the table (i.e., `primary` and `type_available_idx`).
+The output from this `SHOW` statement displays the names and columns of the two indexes on the table (i.e., `vehicles_pkey` and `type_available_idx`).
 
-Note that the `last_location` column's `storing` value is `true` in the `type_available_idx` index, and is therefore not sorted. Also note that the primary key column `id` is implicit in the index, meaning the `id` column is implicitly indexed in `type_available_idx`.
+Note that the `last_location` column's `storing` value is `true` in the `type_available_idx` index, and is therefore not sorted. Also note that the vehicles_pkey key column `id` is implicit in the index, meaning the `id` column is implicitly indexed in `type_available_idx`.
 
 To see an index definition, use a [`SHOW CREATE`](show-create.html) statement on the table that contains the index:
 
@@ -253,16 +253,15 @@ To see an index definition, use a [`SHOW CREATE`](show-create.html) statement on
 
 ~~~
          table_name        |                                create_statement
----------------------------+----------------------------------------------------------------------------------
+---------------------------+---------------------------------------------------------------------------------
   movr.max_schema.vehicles | CREATE TABLE max_schema.vehicles (
                            |     id UUID NOT NULL DEFAULT gen_random_uuid(),
                            |     type max_schema.vtype NULL,
                            |     creation_time TIMESTAMPTZ NULL DEFAULT now():::TIMESTAMPTZ,
                            |     available BOOL NULL,
                            |     last_location STRING NULL,
-                           |     CONSTRAINT "primary" PRIMARY KEY (id ASC),
-                           |     INDEX type_available_idx (available ASC, type ASC) STORING (last_location),
-                           |     FAMILY "primary" (id, type, creation_time, available, last_location)
+                           |     CONSTRAINT vehicles_pkey PRIMARY KEY (id ASC),
+                           |     INDEX type_available_idx (type ASC, available ASC) STORING (last_location)
                            | )
 (1 row)
 ~~~
