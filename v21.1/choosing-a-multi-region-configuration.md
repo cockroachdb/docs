@@ -53,6 +53,10 @@ Different databases and tables within the same cluster can each use different co
 {% include {{page.version.version}}/misc/multiregion-max-offset.md %}
 {{site.data.alerts.end}}
 
+{{site.data.alerts.callout_success}}
+Consider setting a leasing preference for the system databse, when setting up multi-region databases.
+{{site.data.alerts.end}}
+
 ## See also
 
 - [Multi-region overview](multiregion-overview.html)
