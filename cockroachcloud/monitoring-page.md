@@ -28,7 +28,7 @@ To enable Datadog monitoring for a {{ site.data.products.dedicated }} cluster:
 
 1. On the cluster's **Monitoring** page, click **Setup** in the **Datadog** panel.
 
-1. Fill in the **API key** and **Datadog Site** fields with the corresponding values.
+1. Fill in the **API key** and **Datadog Site** fields with their corresponding values.
     - The **API key** is associated with your Datadog organization. If you don't have an API key to use with your {{ site.data.products.dedicated }} cluster, you need to create one. For instructions, see the [Datadog documentation](https://docs.datadoghq.com/account_management/api-app-keys/#add-an-api-key-or-client-token).
     - Your **Datadog Site** corresponds to your Datadog Site URL. For more details, see the [Datadog documentation](https://docs.datadoghq.com/getting_started/site/).
 
@@ -49,7 +49,7 @@ If an issue is encountered during the integration, one of the following statuses
 Metrics export from CockroachDB can be interrupted in the event of:
 
 - A stale API key. In this case, the integration status will be `Unhealthy`. To resolve the issue, [update your integration](#update-integration) with a new API key.
-- Transient CockroachDB unavailbility. In this case, the integration status will continue to be `Active`. To resolve the issue, try [deactivating](#deactivate-integration) and reactivating the integration from the **Datadog** panel. If this does not resolve the issue, [contact our support team](https://support.cockroachlabs.com/).
+- Transient CockroachDB unavailbility or issues with the OpenTelemetry Collector that exports the metrics. In each case, the integration status will continue to be `Active` but you might experience incomplete metrics exports in Datadog. To resolve the issue, try [deactivating](#deactivate-integration) and reactivating the integration from the **Datadog** panel. If this does not resolve the issue, [contact our support team](https://support.cockroachlabs.com/).
 
 To monitor the health of metrics export, you can [create a custom Monitor](#monitor-health-of-metrics-export) in Datadog. 
 
