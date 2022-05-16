@@ -17,6 +17,10 @@ The `PAUSE JOB` [statement](sql-statements.html) lets you pause the following ty
 
 After pausing jobs, you can resume them with [`RESUME JOB`](resume-job.html).
 
+{{site.data.alerts.callout_info}}
+If a schema change job is paused, any jobs waiting on that schema change will stop waiting and return an error.
+{{site.data.alerts.end}}
+
 ## Required privileges
 
 To pause a job, the user must be a member of the `admin` role or must have the [`CONTROLJOB`](create-user.html#create-a-user-that-can-pause-resume-and-cancel-non-admin-jobs) parameter set.

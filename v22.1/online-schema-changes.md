@@ -46,6 +46,10 @@ For more technical details, see [How online schema changes are possible in Cockr
 If a schema change fails, the schema change job will be cleaned up automatically. However, there are limitations with rolling back schema changes within a transaction; for more information, [see below](#schema-change-ddl-statements-inside-a-multi-statement-transaction-can-fail-while-other-statements-succeed).
 {{site.data.alerts.end}}
 
+{{site.data.alerts.callout_info}}
+If a schema change job is paused, any jobs waiting on that schema change will stop waiting and return an error.
+{{site.data.alerts.end}}
+
 ## Examples
 
 {{site.data.alerts.callout_success}}
