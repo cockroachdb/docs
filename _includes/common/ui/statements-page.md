@@ -6,10 +6,6 @@
   {% assign page_prefix = "ui-" %}
 {% endif %}
 
-## Statement statistics
-
-{% include common/ui/statistics.md %}
-
 ### Example
 
 See [View historical statement statistics and the sampled logical plan per fingerprint]({{ link_prefix }}crdb-internal.html#view-historical-statement-statistics-and-the-sampled-logical-plan-per-fingerprint).

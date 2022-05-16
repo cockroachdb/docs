@@ -11,18 +11,18 @@ Click a SQL statement fingerprint to open **Statement Details**. For each statem
 
 The **Overview** section displays the SQL statement fingerprint and essential statistics:
 
-**Mean statement time** is the cumulative time taken to execute statements with this fingerprint within the aggregation interval.
+**Mean statement time** is the cumulative time taken to execute statements with this fingerprint within the [date range](#date-range).
 
   - **Planning time** is the cumulative time taken by the [planner]({{ link_prefix }}architecture/sql-layer.html#sql-parser-planner-executor) to create an execution plan for statements with this fingerprint within the specified time interval.
   - **Execution time** is the cumulative time taken to execute statements with this fingerprint in the specified time interval.
 
 **Resource usage** displays statistics about storage, memory, and network usage for the SQL statement fingerprint.
 
-  - **Mean rows/bytes read** displays the mean number of rows and bytes [read from the storage layer]({{ link_prefix }}architecture/life-of-a-distributed-transaction.html#reads-from-the-storage-layer) for statements with this fingerprint within the aggregation interval.
-  - **Mean rows written** displays the mean number of rows written by statements with this fingerprint within the aggregation interval.
-  - **Max memory usage** displays the maximum memory used by a statement with this fingerprint at any time during its execution within the aggregation interval or specified time interval.
-  - **Network usage** displays the amount of [data transferred over the network]({{ link_prefix }}architecture/reads-and-writes-overview.html) for statements with this fingerprint within the aggregation interval. If this value is 0, the statement was executed on a single node.
-  - **Max scratch disk usage** displays the maximum amount of data [spilled to temporary storage on disk]({{ link_prefix }}vectorized-execution.html#disk-spilling-operations) while executing statements with this fingerprint within the aggregation interval.
+  - **Mean rows/bytes read** displays the mean number of rows and bytes [read from the storage layer]({{ link_prefix }}architecture/life-of-a-distributed-transaction.html#reads-from-the-storage-layer) for statements with this fingerprint within the date range.
+  - **Mean rows written** displays the mean number of rows written by statements with this fingerprint within the date range.
+  - **Max memory usage** displays the maximum memory used by a statement with this fingerprint at any time during its execution within the date range or specified time interval.
+  - **Network usage** displays the amount of [data transferred over the network]({{ link_prefix }}architecture/reads-and-writes-overview.html) for statements with this fingerprint within the date range. If this value is 0, the statement was executed on a single node.
+  - **Max scratch disk usage** displays the maximum amount of data [spilled to temporary storage on disk]({{ link_prefix }}vectorized-execution.html#disk-spilling-operations) while executing statements with this fingerprint within the date range.
 
 **Statement details** displays information about the execution of the statement.
 
@@ -39,10 +39,10 @@ The **Overview** section displays the SQL statement fingerprint and essential st
 
 **Execution counts** displays execution statistics for the SQL statement fingerprint.
 
-  - **First attempts**: the cumulative number of first attempts at executing statements with this fingerprint within the aggregation interval.
+  - **First attempts**: the cumulative number of first attempts at executing statements with this fingerprint within the date range.
   - **Total executions**: the total number of executions of statements with this fingerprint. It is calculated as the sum of first attempts and retries.
-  - **Retries**: the cumulative number of [retries]({{ link_prefix }}transactions.html#transaction-retries) of statements with this fingerprint within the aggregation interval.
-  - **Max retries**: the highest number of retries of a single statement with this fingerprint within the aggregation interval. For example, if three statements with the same fingerprint had to be retried 0, 1, and 5 times, then the Max Retries value for the fingerprint is 5.
+  - **Retries**: the cumulative number of [retries]({{ link_prefix }}transactions.html#transaction-retries) of statements with this fingerprint within the date range.
+  - **Max retries**: the highest number of retries of a single statement with this fingerprint within the date range. For example, if three statements with the same fingerprint had to be retried 0, 1, and 5 times, then the Max Retries value for the fingerprint is 5.
 
 ### Explain Plans
 

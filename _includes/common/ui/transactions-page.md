@@ -6,11 +6,6 @@
   {% assign page_prefix = "ui-" %}
 {% endif %}
 
-
-## Transaction statistics
-
-{% include common/ui/statistics.md %}
-
 For an example of querying the statistics table, see [Example]({{ page_prefix}}statements-page.html#example).
 
 {{site.data.alerts.callout_success}}

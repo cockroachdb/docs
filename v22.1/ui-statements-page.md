@@ -32,6 +32,10 @@ To search using the search field, type a string over `Search Statements` and pre
 
 {% include {{ page.version.version }}/ui/statements-filter.md %}
 
+## Statement statistics
+
+{% include {{ page.version.version }}/ui/statistics.md %}
+
 {% include common/ui/statements-page.md %}
 
 {% include {{ page.version.version }}/ui/statements-table.md %}

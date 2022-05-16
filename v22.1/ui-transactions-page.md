@@ -35,6 +35,10 @@ To search using the search field, type a string over `Search Transactions` and p
 
 {% include {{ page.version.version }}/ui/transactions-filter.md %}
 
+## Transaction statistics
+
+{% include {{ page.version.version }}/ui/statistics.md %}
+
 {% include common/ui/transactions-page.md %}
 
 {% include {{ page.version.version }}/ui/transactions-table.md %}
