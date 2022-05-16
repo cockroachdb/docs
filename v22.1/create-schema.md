@@ -9,10 +9,6 @@ The `CREATE SCHEMA` [statement](sql-statements.html) creates a user-defined [sch
 
 {% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
-{{site.data.alerts.callout_info}}
-You can also create a user-defined schema by converting an existing database to a schema using [`ALTER DATABASE ... CONVERT TO SCHEMA`](convert-to-schema.html).
-{{site.data.alerts.end}}
-
 ## Required privileges
 
 - Only members of the `admin` role can create new schemas. By default, the `root` user belongs to the `admin` role.

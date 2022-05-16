@@ -110,7 +110,6 @@ table tr td:nth-child(2) {
  Adding user-defined schemas | ✓ | Standard |  [`CREATE SCHEMA` documentation](create-schema.html)
  Removing user-defined schemas | ✓ | Standard |  [`DROP SCHEMA` documentation](drop-schema.html)
  Altering user-defined schemas | ✓ | Standard |  [`ALTER SCHEMA` documentation](create-schema.html)
- Converting a database to a user-defined schema | ✓ | CockroachDB Extension |  [`CONVERT TO SCHEMA` documentation](convert-to-schema.html)
 
 ### Statements
 

@@ -307,12 +307,6 @@
                 ]
               },
               {
-                "title": "<code>CONVERT TO SCHEMA</code>",
-                "urls": [
-                  "/${VERSION}/convert-to-schema.html"
-                ]
-              },
-              {
                 "title": "<code>COPY FROM</code>",
                 "urls": [
                   "/${VERSION}/copy-from.html"

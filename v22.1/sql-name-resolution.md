@@ -33,9 +33,7 @@ In CockroachDB versions < v20.2, [user-defined schemas](create-schema.html) are 
 
 In CockroachDB versions >= v20.2, we recommend using schema namespaces, not database namespaces, to create a naming structure that is more similar to [PostgreSQL](http://www.postgresql.cn/docs/current/ddl-schemas.html).
 
-If you are upgrading to v20.2, take any combination of the following actions after the upgrade is complete:
-
-- Use the [`ALTER DATABASE ... CONVERT TO SCHEMA`](convert-to-schema.html) statement to convert databases into schemas. This statement is particularly useful if you created databases for the sole purpose of creating a multi-level naming structure. When you convert a database to a schema, all tables, [sequences](create-sequence.html), and [user-defined types](enum.html) in the database become child objects of a new schema, and the database is deleted. Note that you cannot convert databases that contain user-defined schemas or [views](views.html).
+If you are upgrading to {{ page.version.version }}, take any combination of the following actions after the upgrade is complete:
 
 - [Create new schemas](create-schema.html) in databases on your cluster. After the schemas are created, use [`ALTER TABLE ... RENAME`](rename-table.html), [`ALTER SEQUENCE ... RENAME`](alter-sequence.html), [`ALTER TYPE ... RENAME`](alter-type.html), or [`ALTER VIEW ... RENAME`](alter-view.html) statements to move objects between databases as needed. To move objects between schemas, use [`ALTER TABLE ... SET SCHEMA`](set-schema.html), [`ALTER SEQUENCE ... SET SCHEMA`](alter-sequence.html), or [`ALTER VIEW ... SET SCHEMA`](alter-view.html).
 
