@@ -51,17 +51,17 @@ SHOW CREATE user_promo_codes;
 ~~~
 
 ~~~
-table_name    |                                                create_statement
+table_name         |                                                create_statement
 -------------------+------------------------------------------------------------------------------------------------------------------
-user_promo_codes | CREATE TABLE public.user_promo_codes (
-              |     city VARCHAR NOT NULL,
-              |     user_id UUID NOT NULL,
-              |     code VARCHAR NOT NULL,
-              |     "timestamp" TIMESTAMP NULL,
-              |     usage_count INT8 NULL,
-              |     CONSTRAINT user_promo_codes_pkey PRIMARY KEY (city ASC, user_id ASC, code ASC),
-              |     CONSTRAINT user_promo_codes_city_user_id_fkey FOREIGN KEY (city, user_id) REFERENCES public.users(city, id)
-              | ) WITH (exclude_data_from_backup = true)
+user_promo_codes   | CREATE TABLE public.user_promo_codes (
+                   |     city VARCHAR NOT NULL,
+                   |     user_id UUID NOT NULL,
+                   |     code VARCHAR NOT NULL,
+                   |     "timestamp" TIMESTAMP NULL,
+                   |     usage_count INT8 NULL,
+                   |     CONSTRAINT user_promo_codes_pkey PRIMARY KEY (city ASC, user_id ASC, code ASC),
+                   |     CONSTRAINT user_promo_codes_city_user_id_fkey FOREIGN KEY (city, user_id) REFERENCES public.users(city, id)
+                   | ) WITH (exclude_data_from_backup = true)
 (1 row)
 ~~~
 

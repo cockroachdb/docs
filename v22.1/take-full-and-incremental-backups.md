@@ -500,14 +500,14 @@ Using the `movr` database as an example:
 SHOW TABLES;
 ~~~
 ~~~
-schema_name |         table_name         | type  | owner | estimated_row_count | locality
+schema_name   |         table_name         | type  | owner | estimated_row_count | locality
 --------------+----------------------------+-------+-------+---------------------+-----------
-public      | promo_codes                | table | root  |                1021 | NULL
-public      | rides                      | table | root  |                 730 | NULL
-public      | user_promo_codes           | table | root  |                  58 | NULL
-public      | users                      | table | root  |                 211 | NULL
-public      | vehicle_location_histories | table | root  |               10722 | NULL
-public      | vehicles                   | table | root  |                  69 | NULL
+public        | promo_codes                | table | root  |                1021 | NULL
+public        | rides                      | table | root  |                 730 | NULL
+public        | user_promo_codes           | table | root  |                  58 | NULL
+public        | users                      | table | root  |                 211 | NULL
+public        | vehicle_location_histories | table | root  |               10722 | NULL
+public        | vehicles                   | table | root  |                  69 | NULL
 ~~~
 
 If the `user_promo_codes` table's data does not need to be included in future backups, you can run the following to exclude the table's row data:
@@ -545,17 +545,17 @@ You'll find that the table schema is restored:
 SHOW CREATE user_promo_codes;
 ~~~
 ~~~
-table_name    |                                                create_statement
+table_name         |                                                create_statement
 -------------------+------------------------------------------------------------------------------------------------------------------
-user_promo_codes | CREATE TABLE public.user_promo_codes (
-              |     city VARCHAR NOT NULL,
-              |     user_id UUID NOT NULL,
-              |     code VARCHAR NOT NULL,
-              |     "timestamp" TIMESTAMP NULL,
-              |     usage_count INT8 NULL,
-              |     CONSTRAINT user_promo_codes_pkey PRIMARY KEY (city ASC, user_id ASC, code ASC),
-              |     CONSTRAINT user_promo_codes_city_user_id_fkey FOREIGN KEY (city, user_id) REFERENCES public.users(city, id)
-              | ) WITH (exclude_data_from_backup = true)
+user_promo_codes   | CREATE TABLE public.user_promo_codes (
+                   |     city VARCHAR NOT NULL,
+                   |     user_id UUID NOT NULL,
+                   |     code VARCHAR NOT NULL,
+                   |     "timestamp" TIMESTAMP NULL,
+                   |     usage_count INT8 NULL,
+                   |     CONSTRAINT user_promo_codes_pkey PRIMARY KEY (city ASC, user_id ASC, code ASC),
+                   |     CONSTRAINT user_promo_codes_city_user_id_fkey FOREIGN KEY (city, user_id) REFERENCES public.users(city, id)
+                   | ) WITH (exclude_data_from_backup = true)
 ~~~
 
 However, the `user_promo_codes` table has no row data:
