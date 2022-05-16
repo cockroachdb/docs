@@ -27,7 +27,7 @@ Use the following filters to show usage examples for either **Enterprise** or **
 
 <section class="filter-content" markdown="1" data-scope="enterprise">
 
-### Create a changefeed connected to Kafka
+## Create a changefeed connected to Kafka
 
 {{site.data.alerts.callout_info}}
 [`CREATE CHANGEFEED`](create-changefeed.html) is an [{{ site.data.products.enterprise }}-only](enterprise-licensing.html) feature. For the Core version, see [the `CHANGEFEED FOR` example](#create-a-core-changefeed).
@@ -151,7 +151,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
     $ ./bin/confluent local services stop
     ~~~
 
-### Create a changefeed connected to Kafka using Avro
+## Create a changefeed connected to Kafka using Avro
 
 {{site.data.alerts.callout_info}}
 [`CREATE CHANGEFEED`](create-changefeed.html) is an [Enterprise-only](enterprise-licensing.html) feature. For the Core version, see [the `CHANGEFEED FOR` example](#create-a-core-changefeed-using-avro).
@@ -275,7 +275,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
     $ ./bin/confluent local services stop
     ~~~
 
-### Create a changefeed connected to a Google Cloud Pub/Sub sink
+## Create a changefeed connected to a Google Cloud Pub/Sub sink
 
 {{site.data.alerts.callout_info}}
 The Google Cloud Pub/Sub sink is currently in **beta**.
@@ -408,7 +408,7 @@ You'll need access to a [Google Cloud Project](https://cloud.google.com/resource
     └──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┴──────────────────┴─────────────────────────────────────────────────────────┴────────────┴──────────────────┘
     ~~~
 
-### Create a changefeed connected to a cloud storage sink
+## Create a changefeed connected to a cloud storage sink
 
 {{site.data.alerts.callout_info}}
 [`CREATE CHANGEFEED`](create-changefeed.html) is an [Enterprise-only](enterprise-licensing.html) feature. For the Core version, see [the `CHANGEFEED FOR` example](#create-a-core-changefeed).
@@ -456,7 +456,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
     $ cockroach quit --insecure
     ~~~
 
-### Create a changefeed connected to a webhook sink
+## Create a changefeed connected to a webhook sink
 
 {{site.data.alerts.callout_info}}
 [`CREATE CHANGEFEED`](create-changefeed.html) is an [enterprise-only](enterprise-licensing.html) feature. For the Core version, see [the `CHANGEFEED FOR` example](#create-a-core-changefeed).
@@ -545,7 +545,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     For more detail on emitted changefeed messages, see [responses](use-changefeeds.html#responses).
 
-### Create a changefeed on a table with column families
+## Create a changefeed on a table with column families
 
 {{site.data.alerts.callout_info}}
 [`CREATE CHANGEFEED`](create-changefeed.html) is an [Enterprise-only](enterprise-licensing.html) feature. For the Core version, see [the `CHANGEFEED FOR` example](#create-a-core-changefeed-on-a-table-with-column-families).
@@ -756,17 +756,17 @@ For more detail on a changefeed's output when targeting tables with column famil
 
 Core changefeeds stream row-level changes to a client until the underlying SQL connection is closed.
 
-### Create a Core changefeed
+## Create a Core changefeed
 
 {% include {{ page.version.version }}/cdc/create-core-changefeed.md %}
 
-### Create a Core changefeed using Avro
+## Create a Core changefeed using Avro
 
 {% include {{ page.version.version }}/cdc/create-core-changefeed-avro.md %}
 
 For further information on Core changefeeds, see [`EXPERIMENTAL CHANGEFEED FOR`](changefeed-for.html).
 
-### Create a Core changefeed on a table with column families
+## Create a Core changefeed on a table with column families
 
 <span class="version-tag">New in v22.1:</span> In this example, you'll set up Core changefeeds on two tables that have [column families](column-families.html). You'll use a single-node cluster with the Core changefeed sending changes to the client.
 
