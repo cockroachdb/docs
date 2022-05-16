@@ -13,3 +13,4 @@ bootstrap
 vendor/
 Gemfile.lock
 tmp/
+node_modules
