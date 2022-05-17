@@ -56,7 +56,7 @@ Parameter   | Description
 
 ### Supported variables
 
-{% include {{ page.version.version }}/misc/session-vars.html %}
+{% include {{ page.version.version }}/misc/session-vars.md %}
 
 ### Special syntax cases
 
