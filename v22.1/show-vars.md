@@ -29,7 +29,7 @@ The `SHOW` statement for session variables is unrelated to the other `SHOW` stat
 
 ### Supported variables
 
-{% include {{ page.version.version }}/misc/session-vars.html %}
+{% include {{ page.version.version }}/misc/session-vars.md %}
 
 For session variables on experimental features, see [Experimental Features](experimental-features.html).
 
