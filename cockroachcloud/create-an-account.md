@@ -5,7 +5,9 @@ toc: true
 docs_area: deploy
 ---
 
-Before you [create a {{ site.data.products.db }} cluster](create-your-cluster.html), you must first create a {{ site.data.products.db }} account. You can register for {{ site.data.products.db }} using a GitHub account or an email address.
+Before you [create a {{ site.data.products.db }} cluster](create-your-cluster.html), you must first create a {{ site.data.products.db }} account. You can register for {{ site.data.products.db }} using a GitHub, Google, or Microsoft account or an email address and password.
+
+{% include cockroachcloud/prefer-sso.md %}
 
 ## Register a new account
 
@@ -130,34 +132,6 @@ If you are a [Console Admin](console-access-management.html#console-admin), you 
 
 ## Change your login method
 
-If you want to change your login method, you can do so at any time:
+You can change your method of login authentication (email/password or SSO with a specific provider), in the [Cockroach Cloud Console **“My Account”** page](https://cockroachlabs.cloud/account/profile).
 
-- [Switch from a GitHub login to email](#switch-from-a-github-login-to-email)
-- [Switch from an email login to GitHub](#switch-from-an-email-login-to-github)
-
-### Switch from a GitHub login to email
-
-1. Click the account icon in the top right corner.
-1. From the dropdown, select **My Account**.
-1. Click **Switch to email login**.
-1. In the **Log in with email and password** dialog, click **Continue**.
-1. Enter a **Password**.
-1. Click **Save**.
-
-    A confirmation email will be sent.
-
-{{site.data.alerts.callout_info}}
-As a best security practice, you can also [remove {{ site.data.products.db }}'s access to your GitHub account details](https://docs.github.com/en/developers/apps/deleting-an-oauth-app).
-{{site.data.alerts.end}}
-
-### Switch from an email login to GitHub
-
-1. Click the account icon in the top right corner.
-1. From the dropdown, select **My Account**.
-1. Click **Switch to GitHub login**.
-1. In the **Log in with GitHub** dialog, enter your **Password**.
-1. Click **Continue**.
-1. Log in to GitHub if you haven't already.
-1. Click **Authorize {{ site.data.products.db }} by Cockroach Labs**.
-
-    A confirmation email will be sent.
+You will receive a confirmation email.

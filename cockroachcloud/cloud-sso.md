@@ -1,6 +1,6 @@
 ---
 title: Single Sign-On (SSO) for Cockroach Cloud
-summary: Learn about SSO Authentication for the Cockroach Cloud COnsole
+summary: Learn about SSO Authentication for the Cockroach Cloud Console
 toc: true
 docs_area: manage
 ---
@@ -36,15 +36,12 @@ No. Only one authentication method can be active for each Cockroach Cloud Consol
 At the moment, no. The [workflow for inviting team members](console-access-management.html#invite-team-members-to-cockroachdb-cloud) to {{ site.data.products.db }} remains the same.
 
 A future release will provide an auto-onboarding feature allowing administrators to share an organization-specific sign-in URL, which will generate a new {{ site.data.products.db }} identity when it is first used.
-n their CC organization.
 
 ### As an admin, how do I deprovision a user's access to Cockroach Cloud Console if they leave the relevant project?
 
 If a user is using SSO, deleting the user's identity at the level of the SSO provider (e.g., deleting their work Google account), will remove their access to the {{ site.data.products.db }} organization.
 
-To remove a user's access to {{ site.data.products.db }} without deleting their SSO identity, you can [delete their {{ site.data.products.db }} team member user identity](console-access-management.html#delete-a-team-member) in the console.
-
-If the user is leaving the customer company, the admins don’t need to do anything to remove them from the CC organization, provided they’re using one of the new SSO login methods.
+To remove a user's access to {{ site.data.products.db }} without deleting their SSO identity, you can [remove their {{ site.data.products.db }} user identity from your org](console-access-management.html#delete-a-team-member) in the console.
 
 ### Can admins require a particular login method for their Cockroach Cloud organization?
 
