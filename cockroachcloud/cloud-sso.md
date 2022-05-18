@@ -1,5 +1,5 @@
 ---
-title: Single Sign-On (SSO) for Cockroach Cloud
+title: Single Sign-On (SSO) for CockroachDB Cloud
 summary: Learn about SSO Authentication for the Cockroach Cloud Console
 toc: true
 docs_area: manage
@@ -11,7 +11,7 @@ Authentication with a centralized identity managed by a dedicated provider offer
 
 - All supported SSO providers (Google, Microsoft, and GitHub) support multi-factor authentication (MFA).
 - Administrators avoid having to manage an additional set of credentials and tie those to other identities and credentials. Every additional credential or identity management operation introduces risk as well as costing effort, so minimizing these is doubly advantageous.
-- Administrators can onboard and offboard users quickly and efficiently
+- Administrators can onboard and offboard users quickly and efficiently.
 
 ## Frequently Asked Questions (FAQ)
 
