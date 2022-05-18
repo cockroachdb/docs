@@ -15,7 +15,6 @@ This page shows you how to get started with CockroachDB quickly. You'll create a
 
 <section class="filter-content" markdown="1" data-scope="serverless">
 
-
 {{ site.data.products.serverless }} is the easiest way to get started with CockroachDB Cloud. Follow these steps to create a new {{ site.data.products.serverless }} cluster.
 
 To get started with {{ site.data.products.db }} using {{ site.data.products.dedicated }} clusters, see [Quickstart with {{ site.data.products.dedicated }}](quickstart-trial-cluster.html).
@@ -30,30 +29,65 @@ Follow these steps to get started with CockroachDB using a {{ site.data.products
 
 </section>
 
-The sample code used in this tutorial is located in the [`quickstart-code-samples` GitHub repo](https://github.com/cockroachdb/quickstart-code-samples). This repo contains code samples written in JavaScript, Python, Go, and Java.
-
-<div class="filters clearfix">
-  <button class="filter-button" data-scope="node">Node.js</button>
-  <button class="filter-button" data-scope="python">Python</button>
-  <button class="filter-button" data-scope="go">Go</button>
-  <button class="filter-button" data-scope="java">Java</button>
-</div>
-
 <section class="filter-content" markdown="1" data-scope="serverless">
 
-## Step 1. Create a free cluster
+<h2>Choose your installation method</h2>
+
+You can install a {{ site.data.products.serverless }} cluster using either the CockroachDB Cloud Console, a web-based graphical user interface (GUI) tool, or <code>ccloud</code>, a command line interface (CLI) tool.
+
+<div class="filters clearfix">
+    <button class="filter-button page-level" data-scope="console">Use the Cloud Console (GUI)<strong></strong></button>
+    <button class="filter-button page-level" data-scope="ccloud"><strong>Use <code>ccloud</code> (CLI)</strong></button>
+</div>
+
+<section class="filter-content" markdown="1" data-scope="console">
+
+Follow these steps to create a {{ site.data.products.serverless }} cluster using the CockroachDB Cloud Console, a web based GUI.
+
+## Create a free cluster
 
 {% include cockroachcloud/quickstart/create-a-free-cluster.md %}
 
-## Step 2. Create a SQL user
+## Create a SQL user
 
 {% include cockroachcloud/quickstart/create-first-sql-user.md %}
 
-## Step 3. Connect to the cluster
+## Connect to the cluster
+
+</section>
+
+<section class="filter-content" markdown="1" data-scope="ccloud">
+
+Follow these steps to create a {{ site.data.products.serverless }} cluster using the <code>ccloud</code> CLI tool.
+
+{{site.data.alerts.callout_info}}
+The <code>ccloud</code> CLI tool is currently in beta.
+{{site.data.alerts.end}}
+
+<h2>Install <code>ccloud</code></h2>
+
+{% include cockroachcloud/ccloud/install-ccloud.md %}
+
+## Run `ccloud quickstart` to create a new cluster, create a SQL user, and retrive the connection string.
+
+{% include cockroachcloud/ccloud/quickstart.md %}
+
+Select the **General connection string**, then copy the connection string displayed and save it in a secure location. The connection string is the line starting `postgresql://`.
+
+~~~
+? How would you like to connect? General connection string
+Retrieving cluster info: succeeded
+ Downloading cluster cert to /Users/maxroach/.postgresql/root.crt: succeeded
+postgresql://maxroach:ThisIsNotAGoodPassword@free-tier4.aws-us-west-2.cockroachlabs.cloud:26257/defaultdb?options=--cluster%3Ddim-dog-147&sslmode=verify-full&sslrootcert=%2FUsers%2Fmaxroach%2F.postgresql%2Froot.crt
+~~~
+
+</section>
 
 </section>
 
 <section class="filter-content" markdown="1" data-scope="serverless">
+
+<section class="filter-content" markdown="1" data-scope="console">
 
 <section class="filter-content" markdown="1" data-scope="node">
 
@@ -85,21 +119,50 @@ The **Connect to cluster** dialog shows information about how to connect to your
 
 {% include cockroachcloud/quickstart/get-connection-string.md %}
 
-1. If you haven't already, install the [`cockroach` binary](../stable/install-cockroachdb.html) and add it to your OS's `PATH`.
+1. If you haven't already, install the [`cockroach` binary](../{{site.versions["stable"]}}/install-cockroachdb.html) and add it to your OS's `PATH`.
 
 </section>
 
-## Step 4. Configure the connection environment variable
+</section>
+
+## Choose your language
+
+The sample code used in this tutorial is located in the [`quickstart-code-samples` GitHub repo](https://github.com/cockroachdb/quickstart-code-samples). This repo contains code samples written in JavaScript, Python, Go, and Java.
+
+<div class="filters clearfix">
+  <button class="filter-button" data-scope="node">Node.js</button>
+  <button class="filter-button" data-scope="python">Python</button>
+  <button class="filter-button" data-scope="go">Go</button>
+  <button class="filter-button" data-scope="java">Java</button>
+</div>
+
+<section class="filter-content" markdown="1" data-scope="node">
+Use the [node-postgres](https://node-postgres.com/) driver in a Node.js application.
+</section>
+
+<section class="filter-content" markdown="1" data-scope="python">
+Use the [psycopg2](https://www.psycopg.org/) driver in a Python application.
+</section>
+
+<section class="filter-content" markdown="1" data-scope="go">
+Use the [pgx](https://github.com/jackc/pgx) driver in a Go application.
+</section>
+
+<section class="filter-content" markdown="1" data-scope="java">
+Use the [JDBC driver](https://jdbc.postgresql.org/) in a Java application.
+</section>
+
+## Configure the connection environment variable
 
 </section>
 
 <section class="filter-content" markdown="1" data-scope="local">
 
-## Step 1. Start CockroachDB
+## Start CockroachDB
 
-1. If you haven't already, [download the latest version of CockroachDB](../stable/install-cockroachdb.html).
+1. If you haven't already, [download the latest version of CockroachDB](../{{site.versions["stable"]}}/install-cockroachdb.html).
 
-1. Run the [`cockroach demo`](../stable/cockroach-demo.html) command:
+1. Run the [`cockroach demo`](../{{site.versions["stable"]}}/cockroach-demo.html) command:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -124,13 +187,14 @@ The **Connect to cluster** dialog shows information about how to connect to your
 
     You'll use the `sql/unix` connection string to connect to the cluster later in this tutorial.
 
-## Step 2. Configure the connection environment variable
+## Configure the connection environment variable
 
 </section>
 
 
 <div class="filters clearfix">
-  <button class="filter-button" data-scope="unix">Linux or Mac</button>
+  <button class="filter-button" data-scope="mac">Mac</button>
+  <button class="filter-button" data-scope="linux">Linux</button>
   <button class="filter-button" data-scope="windows">Windows</button>
 </div>
 
@@ -154,8 +218,33 @@ The **Connect to cluster** dialog shows information about how to connect to your
 
 <section class="filter-content" markdown="1" data-scope="java">
 
-<section class="filter-content" markdown="1" data-scope="unix">
-1. Use the `cockroach convert-url` command to convert the connection string that you copied earlier to a [valid connection string for JDBC connections](../stable/connect-to-the-database.html?filters=java):
+<section class="filter-content" markdown="1" data-scope="mac">
+1. Use the `cockroach convert-url` command to convert the connection string that you copied earlier to a [valid connection string for JDBC connections](../{{site.versions["stable"]}}/connect-to-the-database.html?filters=java):
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    cockroach convert-url --url "<connection-string>"
+    ~~~
+
+    ~~~
+    ...
+
+    # Connection URL for JDBC (Java and JVM-based languages):
+    jdbc:postgresql://{host}:{port}/{database}?options=--cluster%3D{routing-id}&password={password}&sslmode=verify-full&user={username}
+    ~~~
+
+1. Set the `JDBC_DATABASE_URL` environment variable to the JDBC-compatible connection string:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    export JDBC_DATABASE_URL="<jdbc-connection-string>"
+    ~~~
+
+    The code sample uses the connection string stored in the environment variable `JDBC_DATABASE_URL` to connect to your cluster.
+</section>
+
+<section class="filter-content" markdown="1" data-scope="linux">
+1. Use the `cockroach convert-url` command to convert the connection string that you copied earlier to a [valid connection string for JDBC connections](../{{site.versions["stable"]}}/connect-to-the-database.html?filters=java):
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -180,7 +269,7 @@ The **Connect to cluster** dialog shows information about how to connect to your
 </section>
 
 <section class="filter-content" markdown="1" data-scope="windows">
-1. Use the `cockroach convert-url` command to convert the connection string that you copied earlier to a [valid connection string for JDBC connections](../stable/connect-to-the-database.html?filters=java):
+1. Use the `cockroach convert-url` command to convert the connection string that you copied earlier to a [valid connection string for JDBC connections](../{{site.versions["stable"]}}/connect-to-the-database.html?filters=java):
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -209,13 +298,13 @@ The **Connect to cluster** dialog shows information about how to connect to your
 
 <section class="filter-content" markdown="1" data-scope="serverless">
 
-## Step 5. Run the sample code
+## Run the sample code
 
 </section>
 
 <section class="filter-content" markdown="1" data-scope="local">
 
-## Step 3. Run the sample code
+## Run the sample code
 
 </section>
 
@@ -411,5 +500,5 @@ The **Connect to cluster** dialog shows information about how to connect to your
 This page outlines the quickest way to get started with CockroachDB. For information on other options that are available when creating a CockroachDB cluster, see the following:
 
 - To create a free cluster with other configurations (e.g., a different cloud provider, region, or monthly budget), see [Create a {{ site.data.products.serverless }} Cluster](create-a-serverless-cluster.html).
-- To connect to a free cluster with other options (e.g., a different SQL user) and connection methods (with an application or [CockroachDB compatible tool](../stable/third-party-database-tools.html)), see [Connect to a {{ site.data.products.serverless }} Cluster](connect-to-a-serverless-cluster.html).
+- To connect to a free cluster with other options (e.g., a different SQL user) and connection methods (with an application or [CockroachDB compatible tool](../{{site.versions["stable"]}}/third-party-database-tools.html)), see [Connect to a {{ site.data.products.serverless }} Cluster](connect-to-a-serverless-cluster.html).
 - To watch a video walkthrough of connecting to a cluster, see [How to connect to {{ site.data.products.db }} and Import Data](https://www.youtube.com/watch?v=XJZD1rorEQE).
