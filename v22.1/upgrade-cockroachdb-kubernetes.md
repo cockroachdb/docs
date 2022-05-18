@@ -36,7 +36,7 @@ If you [deployed CockroachDB on Red Hat OpenShift](deploy-cockroachdb-with-kuber
 
     Therefore, in order to upgrade to {{ page.version.version }}, you must be on a production release of {{ previous_version }}.
 
-    1. If you are upgrading to {{ page.version.version }} from a production release earlier than {{ previous_version }}, or from a testing release (alpha/beta), first [upgrade to a production release of v21.1](../v21.1/operate-cockroachdb-kubernetes.html#upgrade-the-cluster). Be sure to complete all the steps.
+    1. If you are upgrading to {{ page.version.version }} from a production release earlier than {{ previous_version }}, or from a testing release (alpha/beta), first [upgrade to a production release of {{ previous_version }}](../v21.1/operate-cockroachdb-kubernetes.html#upgrade-the-cluster). Be sure to complete all the steps.
 
     1. Then return to this page and perform a second upgrade to {{ page.version.version }}.
 
@@ -49,11 +49,7 @@ If you [deployed CockroachDB on Red Hat OpenShift](deploy-cockroachdb-with-kuber
         - Make sure all nodes are on the same version. If not all nodes are on the same version, upgrade them to the cluster's highest current version first, and then start this process over.
         - Make sure capacity and memory usage are reasonable for each node. Nodes must be able to tolerate some increase in case the new version uses more resources for your workload. Also go to **Metrics > Dashboard: Hardware** and make sure CPU percent is reasonable across the cluster. If there's not enough headroom on any of these metrics, consider [adding nodes](scale-cockroachdb-kubernetes.html#add-nodes) to your cluster before beginning your upgrade.
 
-{% comment %}
 1. Review the [backward-incompatible changes in {{ page.version.version }}](../releases/{{ page.version.version }}.html#v21-2-0-backward-incompatible-changes) and [deprecated features](../releases/{{ page.version.version }}.html#v21-2-0-deprecations). If any affect your deployment, make the necessary changes before starting the rolling upgrade to {{ page.version.version }}.
-{% endcomment %}
-
-1. Review the backward-incompatible changes in {{ page.version.version }} and deprecated features. If any affect your deployment, make the necessary changes before starting the rolling upgrade to {{ page.version.version }}.
 
 1. Change the desired Docker image in the custom resource:
 

@@ -1,6 +1,6 @@
 ---
-title: Upgrade to CockroachDB {{ page.version.version }}
-summary: Learn how to upgrade your CockroachDB cluster to a new version.
+title: Upgrade to CockroachDB v22.1
+summary: Learn how to upgrade your CockroachDB cluster to v22.1.
 toc: true
 docs_area: manage
 ---
@@ -15,7 +15,7 @@ To upgrade to a new version, you must first be on a production [release](../rele
 
 Therefore, to upgrade to {{ page.version.version }}:
 
-- If your current CockroachDB version is a v20.2 release or earlier, or a {{ previous_version }} testing release (alpha/beta):
+- If your current CockroachDB version is a production release earlier than {{ previous_version }}, or is a {{ previous_version }} testing release (alpha/beta):
     1. First [upgrade to a production release of {{ previous_version }}](../{{ previous_version }}/upgrade-cockroach-version.html). Be sure to complete all the steps.
     1. Return to this page and perform a second rolling upgrade to {{ page.version.version }}, starting from [step 2](#step-2-prepare-to-upgrade).
 
@@ -47,12 +47,9 @@ Verify the overall health of your cluster using the [DB Console](ui-cluster-over
 
 ### Review breaking changes
 
-Review the [changes in {{ page.version.version }}](../releases/{{ page.version.version }}.html). If any affect your deployment, make the necessary changes before starting the rolling upgrade to {{ page.version.version }}.
+{% assign rd = site.data.versions | where_exp: "rd", "rd.major_version == page.version.version" | map: "release_date" %}
 
-- Interleaved tables and interleaved indexes have been removed as of v21.2. If upgrading to {{ page.version.version }} from a release prior to v21.2, [convert interleaved tables](../v21.1/interleave-in-parent.html#convert-interleaved-tables) and [replace interleaved indexes](../v21.1/interleave-in-parent.html#replace-interleaved-indexes). Clusters with interleaved tables and indexes cannot finalize the {{ page.version.version }} upgrade.
-- Previously, CockroachDB only supported the YMD format for parsing timestamps from strings. It now also supports the MDY format to better align with PostgreSQL. A timestamp such as `1-1-18`, which was previously interpreted as `2001-01-18`, will now be interpreted as `2018-01-01`. To continue interpreting the timestamp in the YMD format, the first number can be represented with 4 digits, `2001-1-18`.
-- The deprecated [cluster setting](cluster-settings.html) `cloudstorage.gs.default.key` has been removed, and the behavior of the `AUTH` parameter in Google Cloud Storage [`BACKUP`](../{{ page.version.version }}/backup.html) and `IMPORT` URIs has been changed. The default behavior is now that of `AUTH=specified`, which uses the credentials passed in the `CREDENTIALS` parameter, and the previous default behavior of using the node's implicit access (via its machine account or role) now requires explicitly passing `AUTH=implicit`.
-- We have switched types from `TEXT` to `"char"` for compatibility with PostgreSQL in the following columns: `pg_constraint` (`confdeltype`, `confmatchtype`, `confudptype`, `contype`) `pg_operator` (`oprkind`), `pg_prog` (`proargmodes`), `pg_rewrite` (`ev_enabled`, `ev_type`), and `pg_trigger` (`tgenabled`).
+Review the [backward-incompatible changes in {{ page.version.version }}](../releases/{{ page.version.version }}.html{% unless rd == "N/A" or rd > today %}#{{ page.version.version | replace: ".", "-" }}-0-backward-incompatible-changes{% endunless %}) and [deprecated features](../releases/{{ page.version.version }}.html#{% unless rd == "N/A" or rd > today %}{{ page.version.version | replace: ".", "-" }}-0-deprecations{% endunless %}). If any affect your deployment, make the necessary changes before starting the rolling upgrade to {{ page.version.version }}.
 
 ## Step 3. Decide how the upgrade will be finalized
 
@@ -70,7 +67,7 @@ By default, after all nodes are running the new version, the upgrade process wil
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > SET CLUSTER SETTING cluster.preserve_downgrade_option = '21.1';
+    > SET CLUSTER SETTING cluster.preserve_downgrade_option = '{{ previous_version }}';
     ~~~
 
     It is only possible to set this setting to the current cluster version.
@@ -79,11 +76,9 @@ By default, after all nodes are running the new version, the upgrade process wil
 
 When upgrading from {{ previous_version }} to {{ page.version.version }}, certain features and performance improvements will be enabled only after finalizing the upgrade, including but not limited to:
 
-- **Expression indexes:** [Indexes on expressions](expression-indexes.html) can now be created. These indexes speed up queries that filter on the result of that expression, and are especially useful for indexing only a specific field of a `JSON` object.
-- **Privilege inheritance:** CockroachDB's model for inheritance of privileges that cascade from schema objects now matches PostgreSQL. Added support for [`ALTER DEFAULT PRIVILEGES`](alter-default-privileges.html) and [`SHOW DEFAULT PRIVILEGES`](show-default-privileges.html).
-- **Bounded staleness reads:** [Bounded staleness reads](follower-reads.html#bounded-staleness-reads) are now available in CockroachDB. These use a dynamic, system-determined timestamp to minimize staleness while being more tolerant to replication lag than exact staleness reads. This dynamic timestamp is returned by the `with_min_timestamp()` or `with_max_staleness()` [functions](functions-and-operators.html). In addition, bounded staleness reads provide the ability to serve reads from local replicas even in the presence of network partitions or other failures.
-- **Restricted and default placement:** You can now use the [`ALTER DATABASE ... PLACEMENT RESTRICTED`](placement-restricted.html) statement to constrain the replica placement for a [multi-region database](multiregion-overview.html)'s [regional tables](regional-tables.html) to the [home regions](set-locality.html#crdb_region) associated with those tables.
-- **`ON UPDATE` expressions:** An [`ON UPDATE` expression](add-column.html#add-a-column-with-an-on-update-expression) can now be added to a column to update column values when an [`UPDATE`](update.html) or [`UPSERT`](upsert.html) statement modifies a different column value in the same row, or when an `ON UPDATE CASCADE` expression on a different column modifies an existing value in the same row.
+- SCRAM authentication
+- Row-level time to live (TTL)
+- Table-level automatic statistics collection
 
 For an expanded list of features included in the {{ page.version.version }} release, see the [{{ page.version.version }} release notes](../releases/{{ page.version.version }}.html).
 

@@ -19,14 +19,9 @@
         - Make sure all nodes are on the same version. If not all nodes are on the same version, upgrade them to the cluster's highest current version first, and then start this process over.
         - Make sure capacity and memory usage are reasonable for each node. Nodes must be able to tolerate some increase in case the new version uses more resources for your workload. Also go to **Metrics > Dashboard: Hardware** and make sure CPU percent is reasonable across the cluster. If there's not enough headroom on any of these metrics, consider [adding nodes](scale-cockroachdb-kubernetes.html?filters=helm#add-nodes) to your cluster before beginning your upgrade.
 
-{% comment %}
-
 {% assign rd = site.data.versions | where_exp: "rd", "rd.major_version == page.version.version" | map: "release_date" %}
 
 1. Review the [backward-incompatible changes in {{ page.version.version }}](../releases/{{ page.version.version }}.html{% unless rd == "N/A" or rd > today %}#{{ page.version.version | replace: ".", "-" }}-0-backward-incompatible-changes{% endunless %}) and [deprecated features](../releases/{{ page.version.version }}.html#{% unless rd == "N/A" or rd > today %}{{ page.version.version | replace: ".", "-" }}-0-deprecations{% endunless %}). If any affect your deployment, make the necessary changes before starting the rolling upgrade to {{ page.version.version }}.
-{% endcomment %}
-
-1. Review the backward-incompatible changes in {{ page.version.version }} and deprecated features. If any affect your deployment, make the necessary changes before starting the rolling upgrade to {{ page.version.version }}.
 
 1. Decide how the upgrade will be finalized.
 
@@ -69,7 +64,7 @@
 
         {% include_cached copy-clipboard.html %}
         ~~~ sql
-        > SET CLUSTER SETTING cluster.preserve_downgrade_option = '21.1';
+        > SET CLUSTER SETTING cluster.preserve_downgrade_option = '{{ previous_version }}';
         ~~~
 
     1. Exit the SQL shell and delete the temporary pod:
