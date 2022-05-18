@@ -53,7 +53,6 @@ Statement | Usage
 [`ALTER VIEW`](alter-view.html) | Apply a schema change to a view.
 [`COMMENT ON`](comment-on.html) | Associate a comment to a database, table, or column.
 [`CONFIGURE ZONE`](configure-zone.html) | Add, modify, reset, or remove a [replication zone](configure-replication-zones.html) for a database, table, index, partition, or system range.
-[`CONVERT TO SCHEMA`](convert-to-schema.html) |  Convert a database to a schema.
 [`CREATE DATABASE`](create-database.html) | Create a new database.
 [`CREATE INDEX`](create-index.html) | Create an index for a table.
 [`CREATE SCHEMA`](create-schema.html) |  Create a user-defined schema.

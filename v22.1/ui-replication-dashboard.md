@@ -25,7 +25,7 @@ The **Replication** dashboard displays the following time series graphs:
 
 ## Ranges
 
-<img src="{{ 'images/v22.1/ui_ranges.png' | relative_url }}" alt="DB Console Replicas per Store" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v22.1/ui_ranges.png' | relative_url }}" alt="DB Console Ranges" style="border:1px solid #eee;max-width:100%" />
 
 The **Ranges** graph shows you various details about the status of ranges.
 
@@ -46,7 +46,7 @@ Under-replicated | The number of under-replicated ranges.
 
 ## Logical Bytes per Store
 
-<img src="{{ 'images/v22.1/ui_logical_bytes_per_store.png' | relative_url }}" alt="DB Console Replicas per Store" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v22.1/ui_logical_bytes_per_store.png' | relative_url }}" alt="DB Console Logical Bytes per Store" style="border:1px solid #eee;max-width:100%" />
 
 Metric | Description
 --------|--------
@@ -94,6 +94,36 @@ Applied (Raft-initiated) | The number of snapshots applied to nodes per second t
 Applied (Learner) | The number of snapshots applied to nodes per second that were anticipated ahead of time (e.g., because a node was about to be added to a Raft group).  This metric replaces the `Applied (Preemptive)` metric in 19.2 and onwards.
 Applied (Preemptive) | The number of snapshots applied to nodes per second that were anticipated ahead of time (e.g., because a node was about to be added to a Raft group). This metric was used in pre-v19.2 releases and will be removed in future releases.
 Reserved | The number of slots reserved per second for incoming snapshots that will be sent to a node.
+
+## Circuit Breaker Tripped Replicas
+
+<img src="{{ 'images/v22.1/ui_replica_circuitbreaker_replicas.png' | relative_url }}" alt="DB Console Circuit Breaker Tripped Replicas" style="border:1px solid #eee;max-width:100%" />
+
+When individual ranges become temporarily unavailable, requests to those ranges are refused by a [per-replica circuit breaker](architecture/replication-layer.html#per-replica-circuit-breaker-overview) instead of hanging indefinitely. 
+
+- In the node view, the graph shows the number of replicas for which the per-replica circuit breaker is currently tripped, for the selected node.
+
+- In the cluster view, the graph shows the number of replicas for which the per-replica circuit breaker is currently tripped, for each node in the cluster.
+
+On hovering over the graph, the value for the following metric is displayed:
+
+Metric | Description
+-------|------------
+`<node>` | The number of replicas on that node for which the per-replica circuit breaker is currently tripped.
+
+## Circuit Breaker Tripped Events
+
+<img src="{{ 'images/v22.1/ui_replica_circuitbreaker_events.png' | relative_url }}" alt="DB Console Circuit Breaker Tripped Events" style="border:1px solid #eee;max-width:100%" />
+
+When individual ranges become temporarily unavailable, requests to those ranges are refused by a [per-replica circuit breaker](architecture/replication-layer.html#per-replica-circuit-breaker-overview) instead of hanging indefinitely. While a range's per-replica circuit breaker remains tripped, each incoming request to that range triggers a `ReplicaUnavailableError` event until the range becomes available again.
+
+- In the node view, the graph shows the total number of `ReplicaUnavailableError` events logged since the `cockroach` process started, for the selected node.
+
+- In the cluster view, the graph shows the total number of `ReplicaUnavailableError` events logged since the `cockroach` process started, for each node in the cluster.
+
+Metric | Description
+-------|------------
+`<node>` | The number of `ReplicaUnavailableError` events on that node since the `cockroach` process started.
 
 ## Other graphs
 

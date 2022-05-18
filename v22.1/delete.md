@@ -104,6 +104,8 @@ To view how the index hint modifies the query plan that CockroachDB follows for 
 
 For examples, see [Delete with index hints](#delete-with-index-hints).
 
+You can use the `@primary` alias to use the table's primary key in your query if no secondary index explicitly named `primary` exists on that table.
+
 ### Preserving `DELETE` performance over time
 
 CockroachDB relies on [multi-version concurrency control (MVCC)](architecture/storage-layer.html#mvcc) to process concurrent requests while guaranteeing [strong consistency](frequently-asked-questions.html#how-is-cockroachdb-strongly-consistent). As such, when you delete a row, it is not immediately removed from disk. The MVCC values for the row will remain until the garbage collection period defined by the [`gc.ttlseconds`](configure-replication-zones.html#gc-ttlseconds) variable in the applicable [zone configuration](show-zone-configurations.html) has passed. By default, this period is 25 hours.

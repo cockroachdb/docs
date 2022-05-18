@@ -110,7 +110,7 @@ If [issues at the storage layer](#lsm-health) remain unresolved, affected nodes 
 
 - The `/health` endpoint of the [Cluster API](cluster-api.html) returns a `500` error when a node is unhealthy.
 
-- A [Prometheus alert](monitoring-and-alerting.html#node-is-down) can notify when a node has been down for 5 minutes or more.
+- A [Prometheus alert](monitoring-and-alerting.html#node-is-down) can notify when a node has been down for 15 minutes or more.
 
 If nodes have shut down, this can also be caused by [insufficient storage capacity](#storage-capacity).
 
@@ -148,7 +148,7 @@ CockroachDB attempts to restart nodes after they crash. Nodes that frequently re
 
 - The `OPS` [logging channel](logging-overview.html#logging-channels) will record a [`node_restart` event](eventlog.html#node_restart) whenever a node rejoins the cluster after being offline.
 
-- A [Prometheus alert](monitoring-and-alerting.html#node-is-restarting-too-frequently) can notify when a node has restarted more than 5 times in 10 minutes.
+- A [Prometheus alert](monitoring-and-alerting.html#node-is-restarting-too-frequently) can notify when a node has restarted more than once in the last 10 minutes.
 
 ##### Verify OOM errors
 

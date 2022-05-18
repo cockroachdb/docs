@@ -60,8 +60,8 @@ When your cluster spans multiple nodes (physical machines, virtual machines, or 
 
 For more information about scaling a CockroachDB cluster, see the following docs:
 
-- [Manage Your Serverless Cluster - Cluster scaling](../cockroachcloud/serverless-cluster-management.html#cluster-scaling)
-- [Manage Your Dedicated Cluster - Scale your cluster](../cockroachcloud/cluster-management.html#scale-your-cluster)
+- [Plan Your CockroachDB Serverless Cluster - Cluster scaling](../cockroachcloud/plan-your-cluster.html#cluster-scaling)
+- [Plan Your CockroachDB Dedicated Cluster - Cluster scaling](../cockroachcloud/plan-your-cluster.html?filter=dedicated#cluster-scaling)
 - [`cockroach start` - Add a node to a cluster](cockroach-start.html#add-a-node-to-a-cluster)
 
 ### How does CockroachDB survive failures?

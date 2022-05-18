@@ -11,7 +11,7 @@ jobs:
     - name: Vale
       uses: errata-ai/vale-action@v1.5.0
       with:
-        config: https://raw.githubusercontent.com/cockroachdb/docs/master/.vale.ini
+        config: https://raw.githubusercontent.com/cockroachdb/docs/${{github.sha}}/.vale.ini
         files: __onlyModified
         onlyAnnotateModifiedLines: true
       env:

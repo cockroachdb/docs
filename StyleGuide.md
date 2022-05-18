@@ -1,6 +1,6 @@
 CockroachDB docs follow these principles:
 
-- **Commit to Excellence:** We commit to publishing documentation that serves our users and customers with a focus on excellence. We take pride in writing clear, concise, and correct docs, constantly iterating, and aiming to produce great work to help our users.
+- **Commit to Excellence:** We commit to publishing documentation that serves our users and customers with a focus on excellence. We take pride in writing clear, concise, and correct docs, iterating constantly, and aiming to produce great work to help our users.
 - **Communicate Openly and Honestly:** We produce our best documentation when we communicate openly and honestly with our users. Documenting features and limitations transparently enables users to effectively use Cockroach Labs products while instilling confidence in the docs as a trusted resource.
 - **Respect:** We aim to write humble, positive, friendly, and above all else helpful documentation. We appreciate every user through inclusive, accessible, and non-hyperbolic language.
 - **Establish balance:** We establish balance between complexity and accessibility for all users. We describe complex problems through accessible technical language and links to further information, without obfuscating meaning through unnecessarily complicated language. We also establish balance by always considering our style guidelines, but we can break these rules—or propose new rules—when it’s better for the user or promotes our other values.
@@ -760,7 +760,7 @@ If a feature is new in a GA release, use the major release number for the releas
 
 If a feature has been backported to a previous version in a patch release, use the minor release number for the release version tag (e.g., `New in v21.1.9`).
 
-Version tags should only refer to the version of the docset that contains them. For example, the version tag `<span class="version-tag">New in v21.1.9</span>` should only be on pages in `v21.1` directories.
+Version tags should only refer to the version of the docset that contains them. For example, the version tag `<span class="version-tag">New in v21.1.9:</span>` should only be on pages in `v21.1` directories.
 
 ### Tables
 

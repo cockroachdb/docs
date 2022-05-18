@@ -28,14 +28,7 @@ As of April 20, 2022, new {{ site.data.products.dedicated }} clusters and all {{
 <h3>Console changes</h3>
 
 - Added **Distributed execution** and **Vectorized execution** information to the **Overview** tab of the **Statement Details** page.
-- Added `FULL SCAN` information to the **Explain plan** tab of the **Statement Details** page.
-- Added the following metrics chart to {{ site.data.products.serverless }} clusters' **Metrics** page:
-
-  - **SQL Open Sessions**
-  - **SQL Statement Contention**
-  - **SQL Connection Latency**
-  - **SQL Connection Attempts**
-  
+- Added `FULL SCAN` information to the **Explain plan** tab of the **Statement Details** page.  
 - Users without accounts can now accept invitations by creating a user using SSO-based authorization such as GitHub.
 - Timeseries charts are now displayed in UTC.
 
@@ -110,7 +103,7 @@ As of April 20, 2022, new {{ site.data.products.dedicated }} clusters and all {{
 
 <h3>Console changes</h3>
 
-- The [**Terminate Session** and **Terminate Statement**](../cockroachcloud/sessions-page.html#sessions-list) options are now enabled for {{ site.data.products.db }} clusters running CockroachDB [v21.2.2](v21.2.html#v21-2-2) or later.
+- The [**Terminate Session** and **Terminate Statement**](../cockroachcloud/sessions-page.html#sessions-table) options are now enabled for {{ site.data.products.db }} clusters running CockroachDB [v21.2.2](v21.2.html#v21-2-2) or later.
 - Selecting a transaction from the [**Transactions** page](../cockroachcloud/transactions-page.html) now opens a new [**Transaction Details**](../cockroachcloud/transactions-page.html#transaction-details-page) page with an improved design.
 - The order of the tabs on the **SQL Activity** page has been changed to [**Statements**](../cockroachcloud/statements-page.html), [**Transactions**](../cockroachcloud/transactions-page.html), and [**Sessions**](../cockroachcloud/sessions-page.html).
 
@@ -242,7 +235,7 @@ As of April 20, 2022, new {{ site.data.products.dedicated }} clusters and all {{
 
 <h3>Console changes</h3>
 
-- [Multi-region](../cockroachcloud/create-your-cluster.html#step-3-select-the-region-s) clusters can now be created through the Console. To learn more about creating a multi-region cluster, see [Planning your cluster](../cockroachcloud/cluster-management.html?filters=dedicated#planning-your-cluster).
+- [Multi-region](../cockroachcloud/create-your-cluster.html#step-3-select-the-region-s) clusters can now be created through the Console. To learn more about creating a multi-region cluster, see [Planning your cluster](../cockroachcloud/plan-your-cluster.html?filters=dedicated).
 - The **Connect** modal now has updated commands to make [connecting to your cluster](../cockroachcloud/connect-to-a-serverless-cluster.html) a smoother experience on Mac, Linux, and Windows.
 - All CockroachCloud users now have access to the [**Transactions** page](../cockroachcloud/transactions-page.html) in the Console.
 - Navigation on the **Clusters** page is now a vertical sidebar instead of horizontal tabs.

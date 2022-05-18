@@ -113,7 +113,7 @@ The output also describes a set of properties, some global to the query, some sp
 
 - `distribution`:`full`
 
-    The planner chose a distributed execution plan, where execution of the query is performed by multiple nodes in parallel, then the final results are returned by the gateway node. An execution plan with `full` distribution doesn't process on all nodes in the cluster. It is executed simultaneously on multiple nodes. An execution plan with `local` distribution is performed only on the gateway node. Even if the execution plan is `local`, row data may be fetched from remote nodes, but the processing of the data is performed by the local node.
+    The planner chose a distributed execution plan, where execution of the query is performed by multiple nodes in parallel, then the results are returned by the gateway node. An execution plan with `full` distribution doesn't process on all nodes in the cluster. It is executed simultaneously on multiple nodes. An execution plan with `local` distribution is performed only on the gateway node. Even if the execution plan is `local`, row data may be fetched from remote nodes, but the processing of the data is performed by the local node.
 - `vectorized`:`true`
 
     The plan will be executed with the [vectorized execution engine](vectorized-execution.html).

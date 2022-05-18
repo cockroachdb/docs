@@ -110,7 +110,6 @@ table tr td:nth-child(2) {
  Adding user-defined schemas | ✓ | Standard |  [`CREATE SCHEMA` documentation](create-schema.html)
  Removing user-defined schemas | ✓ | Standard |  [`DROP SCHEMA` documentation](drop-schema.html)
  Altering user-defined schemas | ✓ | Standard |  [`ALTER SCHEMA` documentation](create-schema.html)
- Converting a database to a user-defined schema | ✓ | CockroachDB Extension |  [`CONVERT TO SCHEMA` documentation](convert-to-schema.html)
 
 ### Statements
 
@@ -187,7 +186,7 @@ table tr td:nth-child(2) {
  Materialized views | ✓ | Common Extension |  [Materialized views documentation](views.html#materialized-views)
  Window functions | ✓ | Standard | [Window Functions documentation](window-functions.html)
  Common table expressions | Partial | Common Extension | [Common Table Expressions documentation](common-table-expressions.html)
- Stored procedures | ✗ | Common Extension | Execute a procedure explicitly.
+ Stored procedures | ✗ | Common Extension | Execute a procedure explicitly. [GitHub issue tracking stored procedures support](https://github.com/cockroachdb/cockroach/issues/17511).
  Cursors | ✗ | Standard | Traverse a table's rows.
- Triggers | ✗ | Standard | Execute a set of commands whenever a specified event occurs.
+ Triggers | ✗ | Standard | Execute a set of commands whenever a specified event occurs. [GitHub issue tracking trigger support](https://github.com/cockroachdb/cockroach/issues/28296).
  Row-level TTL | ✓ | Common Extension | Automatically delete expired rows.  For more information, see [Batch-delete expired data with Row-Level TTL](row-level-ttl.html).
