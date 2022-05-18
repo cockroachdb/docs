@@ -200,6 +200,9 @@ Name | Help
 `sql.mem.txn.current` | Current sql transaction memory usage
 `sql.mem.txn.max` | Memory usage per sql transaction
 `sql.misc.count` | Number of other SQL statements
+`sql.pgwire_cancel.total` | Counter of the number of pgwire query cancel requests
+`sql.pgwire_cancel.ignored` | Counter of the number of pgwire query cancel requests that were ignored due to rate limiting
+`sql.pgwire_cancel.successful` | Counter of the number of pgwire query cancel requests that were successful
 `sql.query.count` | Number of SQL queries
 `sql.select.count` | Number of SQL SELECT statements
 `sql.service.latency` | Latency in nanoseconds of SQL request execution, including the time to parse and plan the statement.

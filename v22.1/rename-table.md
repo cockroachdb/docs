@@ -8,9 +8,9 @@ docs_area: reference.sql
 The `RENAME TO` [statement](sql-statements.html) is part of [`ALTER TABLE`](alter-table.html), and changes the name of a table.
 
 {{site.data.alerts.callout_info}}
-`ALTER TABLE ... RENAME TO` can be used to move a table from one database to another, but it cannot be used to move a table from one schema to another. To change a table's schema, use [`SET SCHEMA`](set-schema.html).
+`ALTER TABLE ... RENAME TO` cannot be used to move a table from one schema to another. To change a table's schema, use [`SET SCHEMA`](set-schema.html).
 
-Note that, in a future release, `ALTER TABLE ... RENAME TO` will be limited to changing the name of a table, and will not have to the ability to change a table's database.
+`ALTER TABLE ... RENAME TO` cannot be used to move a table from one database to another. To change a table's database, use [`BACKUP`](backup.html#backup-a-table-or-view) and [`RESTORE`](restore.html#restore-a-table).
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
@@ -91,71 +91,6 @@ To avoid an error in case the table does not exist, you can include `IF EXISTS`:
 {% include copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE IF EXISTS customers RENAME TO clients;
-~~~
-
-### Move a table
-
-To move a table from one database to another, use the above syntax but specify the source database after `ALTER TABLE` and the target database after `RENAME TO`:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SHOW TABLES FROM movr;
-~~~
-
-~~~
-  schema_name |         table_name         | type  | estimated_row_count
---------------+----------------------------+-------+----------------------
-  public      | promo_codes                | table |                1000
-  public      | rides                      | table |                 500
-  public      | user_promo_codes           | table |                   0
-  public      | riders                     | table |                  50
-  public      | vehicle_location_histories | table |                1000
-  public      | vehicles                   | table |                  15
-(6 rows)
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SHOW TABLES FROM defaultdb;
-~~~
-
-~~~
-  schema_name | table_name | type | estimated_row_count
---------------+------------+------+----------------------
-(0 rows)
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> ALTER TABLE movr.promo_codes RENAME TO defaultdb.promos;
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SHOW TABLES FROM movr;
-~~~
-
-~~~
-  schema_name |         table_name         | type  | estimated_row_count
---------------+----------------------------+-------+----------------------
-  public      | rides                      | table |                 500
-  public      | user_promo_codes           | table |                   0
-  public      | riders                     | table |                  50
-  public      | vehicle_location_histories | table |                1000
-  public      | vehicles                   | table |                  15
-(5 rows)
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SHOW TABLES FROM defaultdb;
-~~~
-
-~~~
-  schema_name | table_name | type  | estimated_row_count
---------------+------------+-------+----------------------
-  public      | promos     | table |                1000
-(1 row)
 ~~~
 
 ## See also

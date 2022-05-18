@@ -307,12 +307,6 @@
                 ]
               },
               {
-                "title": "<code>CONVERT TO SCHEMA</code>",
-                "urls": [
-                  "/${VERSION}/convert-to-schema.html"
-                ]
-              },
-              {
                 "title": "<code>COPY FROM</code>",
                 "urls": [
                   "/${VERSION}/copy-from.html"
@@ -688,6 +682,12 @@
                 "title": "<code>SET</code> &lt;session variable&gt;",
                 "urls": [
                   "/${VERSION}/set-vars.html"
+                ]
+              },
+              {
+                "title": "<code>SET</code> &lt;storage parameter&gt;",
+                "urls": [
+                  "/${VERSION}/set-storage-parameter.html"
                 ]
               },
               {

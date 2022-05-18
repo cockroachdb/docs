@@ -219,6 +219,8 @@ Normally, CockroachDB selects the index that it calculates will scan the fewest 
 (5 rows)
 ~~~
 
+You can use the `@primary` alias to use the table's primary key in your query if no secondary index explicitly named `primary` exists on that table.
+
 ### Create a hash-sharded secondary index
 
 {% include {{page.version.version}}/performance/use-hash-sharded-indexes.md %}

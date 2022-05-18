@@ -449,6 +449,7 @@ layout: null
 /docs/stable/cockroach-dump.html /docs/v21.1/cockroach-dump.html 301
 /docs/v21.2/cockroach-dump.html /docs/v21.1/cockroach-dump.html 301
 /docs/v22.1/cockroach-dump.html /docs/v21.1/cockroach-dump.html 301
+/docs/v22.1/convert-to-schema.html /docs/v22.1/create-schema.html 301
 
 #CockroachDB Cloud release notes
 

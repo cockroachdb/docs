@@ -33,6 +33,7 @@ Because CockroachDB is designed with high fault tolerance, these backups are des
 - Backups will export [Enterprise license keys](enterprise-licensing.html) during a [full cluster backup](#backup-a-cluster). When you [restore](restore.html) a full cluster with an Enterprise license, it will restore the Enterprise license of the cluster you are restoring from.
 - [Zone configurations](configure-zone.html) present on the destination cluster prior to a restore will be **overwritten** during a [cluster restore](restore.html#full-cluster) with the zone configurations from the [backed up cluster](#backup-a-cluster). If there were no customized zone configurations on the cluster when the backup was taken, then after the restore the destination cluster will use the zone configuration from the [`RANGE DEFAULT` configuration](configure-replication-zones.html#view-the-default-replication-zone).
 - You cannot restore a backup of a multi-region database into a single-region database.
+- Exclude a table's row data from a backup using the [`exclude_data_from_backup`](take-full-and-incremental-backups.html#exclude-a-tables-data-from-backups) parameter.
 
 {{site.data.alerts.callout_success}}
 To view the contents of an Enterprise backup created with the `BACKUP` statement, use [`SHOW BACKUP`](show-backup.html).
@@ -104,6 +105,12 @@ Object | Depends On
 Table with [foreign key](foreign-key.html) constraints | The table it `REFERENCES`; however, this dependency can be [removed during the restore](restore.html#skip_missing_foreign_keys).
 Table with a [sequence](create-sequence.html) | The sequence it uses; however, this dependency can be [removed during the restore](restore.html#skip_missing_sequences).
 [Views](views.html) | The tables used in the view's `SELECT` statement.
+
+{{site.data.alerts.callout_info}}
+To exclude a table's row data from a backup, use the `exclude_data_from_backup` parameter with [`CREATE TABLE`](create-table.html#create-a-table-with-data-excluded-from-backup) or [`ALTER TABLE`](set-storage-parameter.html#exclude-a-tables-data-from-backups).
+
+For more detail, see the [Exclude a table's data from backups](take-full-and-incremental-backups.html#exclude-a-tables-data-from-backups) example.
+{{site.data.alerts.end}}
 
 ### Users and privileges
 
