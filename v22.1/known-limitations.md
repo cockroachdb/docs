@@ -14,11 +14,11 @@ This page describes newly identified limitations in the CockroachDB {{page.relea
 
 {% include {{page.version.version}}/known-limitations/row-level-ttl-limitations.md %}
 
-### The `split_column_families` and `resolved` options cannot be used on the same changefeed
+### Change data capture limitations
 
-A changefeed will error if the [`split_column_families`](create-changefeed.html#split-column-families) and [`resolved`](create-changefeed.html#resolved-option) options are used together. Instead, use the individual family feed syntax or use a sink that gets "global" resolved timestamps.
+Change data capture (CDC) provides efficient, distributed, row-level changefeeds into Apache Kafka for downstream processing such as reporting, caching, or full-text indexing. It has the following known limitations:
 
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/79452)
+{% include {{ page.version.version }}/known-limitations/cdc.md %}
 
 ## Unresolved limitations
 
@@ -316,12 +316,6 @@ The [`COMMENT ON`](comment-on.html) statement associates comments to databases, 
 As a workaround, take a cluster backup instead, as the `system.comments` table is included in cluster backups.
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/44396)
-
-### Change data capture
-
-Change data capture (CDC) provides efficient, distributed, row-level changefeeds into Apache Kafka for downstream processing such as reporting, caching, or full-text indexing. It has the following known limitations:
-
-{% include {{ page.version.version }}/known-limitations/cdc.md %}
 
 ### DB Console may become inaccessible for secure clusters
 
