@@ -296,7 +296,7 @@ If you provide an index hint (i.e., force the index selection) to use the primar
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> EXPLAIN (OPT) DELETE FROM users@primary WHERE id IN ('70a3d70a-3d70-4400-8000-000000000016', '3d70a3d7-0a3d-4000-8000-00000000000c');
+> EXPLAIN (OPT) DELETE FROM users@users_pkey WHERE id IN ('70a3d70a-3d70-4400-8000-000000000016', '3d70a3d7-0a3d-4000-8000-00000000000c');
 ~~~
 
 ~~~

@@ -115,8 +115,7 @@ To drop the type, use [`DROP TYPE`](drop-type.html):
              |     id UUID NOT NULL DEFAULT gen_random_uuid(),
              |     balance DECIMAL NULL,
              |     status public.status NULL,
-             |     CONSTRAINT "primary" PRIMARY KEY (id ASC),
-             |     FAMILY "primary" (id, balance, status)
+             |     CONSTRAINT accounts_pkey PRIMARY KEY (id ASC)
              | )
 (1 row)
 ~~~

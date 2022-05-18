@@ -82,13 +82,13 @@ Given a list of URIs that together contain the locations of all of the files for
 When restoring a [full backup](take-full-and-incremental-backups.html#full-backups), the cluster data is restored first, then the system table data "as is." This means that the restored zone configurations can point to regions that do not have active nodes in the new cluster. For example, if your full backup has the following [zone configurations](configure-zone.html):
 
 ~~~ sql
-> ALTER PARTITION europe_west OF INDEX movr.public.rides@primary \
+> ALTER PARTITION europe_west OF INDEX movr.public.rides@rides_pkey \
 		CONFIGURE ZONE USING constraints = '[+region=europe-west1]';
 
-> ALTER PARTITION us_east OF INDEX movr.public.rides@primary \
+> ALTER PARTITION us_east OF INDEX movr.public.rides@rides_pkey \
 		CONFIGURE ZONE USING constraints = '[+region=us-east1]';
 
-> ALTER PARTITION us_west OF INDEX movr.public.rides@primary \
+> ALTER PARTITION us_west OF INDEX movr.public.rides@rides_pkey \
 		CONFIGURE ZONE USING constraints = '[+region=us-west1]';
 ~~~
 

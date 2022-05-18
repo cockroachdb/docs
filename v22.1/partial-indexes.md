@@ -136,7 +136,7 @@ Without a partial index, querying the `rides` table with a `WHERE revenue > 90` 
   │
   └── • scan
         estimated row count: 125,000 (100% of the table; stats collected 12 seconds ago)
-        table: rides@primary
+        table: rides@rides_pkey
         spans: FULL SCAN
 (11 rows)
 
@@ -195,7 +195,7 @@ Another `EXPLAIN` statement shows that the number of rows scanned by the origina
 
   • index join
   │ estimated row count: 12,472
-  │ table: rides@primary
+  │ table: rides@rides_pkey
   │
   └── • scan
         estimated row count: 12,472 (10.0% of the table; stats collected 36 seconds ago)
@@ -299,7 +299,7 @@ Refining the `revenue` filter expression to match just a subset of the partial i
   │
   └── • scan
         estimated row count: 14,187 (11% of the table; stats collected 6 minutes ago)
-        table: rides@primary
+        table: rides@rides_pkey
         spans: [/'new york' - /'new york']
 (11 rows)
 
@@ -329,7 +329,7 @@ A selection query on these values will require a full table scan, using the prim
   │
   └── • scan
         estimated row count: 125,000 (100% of the table; stats collected 7 minutes ago)
-        table: rides@primary
+        table: rides@rides_pkey
         spans: FULL SCAN
 (11 rows)
 
