@@ -3,19 +3,16 @@ title: Known Limitations in CockroachDB v22.1
 summary: Learn about newly identified limitations in CockroachDB as well as unresolved limitations identified in earlier releases.
 toc: true
 keywords: gin, gin index, gin indexes, inverted index, inverted indexes, accelerated index, accelerated indexes
-docs_area: known_limitations
+docs_area: releases
 ---
 
 This page describes newly identified limitations in the CockroachDB {{page.release_info.version}} release as well as unresolved limitations identified in earlier releases.
 
 ## New limitations
 
-### Row-level TTL
+### Row-Level TTL limitations
 
-CockroachDB does not yet fully support row-level TTL. It has the following known limitations:
-
--  The TTL job has outstanding performance improvements. [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/76914)
-- The `ttl_expiration_expression` column is not yet supported. This would allow for an override expression for row-level TTL. [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/76916)
+{% include {{page.version.version}}/known-limitations/row-level-ttl-limitations.md %}
 
 ### The `split_column_families` and `resolved` options cannot be used on the same changefeed
 
@@ -211,10 +208,6 @@ UNION ALL SELECT * FROM t1 LEFT JOIN t2 ON st_contains(t1.geom, t2.geom) AND t2.
 ### Expressions as `ON CONFLICT` targets are not supported
 
 {% include {{page.version.version}}/sql/expressions-as-on-conflict-targets.md %}
-
-### Row-Level TTL limitations
-
-{% include {{page.version.version}}/known-limitations/row-level-ttl-limitations.md %}
 
 ### Optimizer stale statistics deletion when columns are dropped
 
