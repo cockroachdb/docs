@@ -86,9 +86,9 @@ Here are some best practices for creating and using secondary indexes.
 
 - Use a [`STORING` clause](create-index.html#parameters) to store columns of data that you want returned by common queries, but that you do not plan to use in query filters.
 
-    The `STORING` clause specifies columns that are not part of the index key but should be stored in the index. If a column is specified in a query, and the column is neither indexed nor stored in an index, CockroachDB will perform a full scan of the table, which can result in poor performance. For an example, see [Example](#example).
+    The `STORING` clause specifies columns that are not part of the index key but should be stored in the index. If a column is specified in a query, and the column is neither indexed nor stored in an index, CockroachDB may perform a full scan in this case, but we may perform an index join instead if a suitable secondary index exists. However, if the optimizer determines that the index join is too expensive, then CockroachDB will perform a full table scan, which can result in poor performance. For an example, see [Example](#example).
 
-- Review the [specialized indexes](schema-design-overview.html#specialized-indexes) and decide if you need to create a specialized index instead of a standard index.
+- Review the [specialized indexes](schema-design-overview.html#specialized-indexes), such as partial and inverted indexes, and decide if you need to create a specialized index instead of a standard index.
 
 - Avoid creating secondary indexes that you do not need.
 
