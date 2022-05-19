@@ -10,6 +10,30 @@ This page describes newly identified limitations in the CockroachDB {{page.relea
 
 ## New limitations
 
+### A multi-region table cannot be restored into a non-multi-region table
+
+You cannot [restore](restore.html) a multi-region table into a non-multi-region table.
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/71502)
+
+### Multiple CTEs with mutations on the same row can cause inconsistency
+
+You can [`UPSERT`](upsert.html) the same row multiple times in a single statement using [common table expressions](common-table-expressions.html) (CTEs), which could lead to inconsistencies due to the upsert operator not reading its own writes.
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/70731)
+
+### Limit on the number of rows read or written by a single transaction
+
+A [transaction](transactions.html#limit-the-number-of-rows-written-or-read-in-a-transaction) reading more than `transaction_rows_read_err` rows (or writing more than `transaction_rows_written_err` rows) fails with an error.
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/70473)
+
+### `sql.guardrails.max_row_size_err` misses indexed virtual computed columns
+
+The `sql.guardrails.max_row_size_err` [cluster setting](cluster-settings.html) misses large rows caused by indexed virtual computed columns. This is because the guardrail only checks the size of primary key rows, not secondary index rows.
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/69540)
+
 ### Row-Level TTL limitations
 
 {% include {{page.version.version}}/known-limitations/row-level-ttl-limitations.md %}
