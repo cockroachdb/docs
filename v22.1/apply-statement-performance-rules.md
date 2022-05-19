@@ -52,8 +52,7 @@ SHOW CREATE TABLE users;
              |     name VARCHAR NULL,
              |     address VARCHAR NULL,
              |     credit_card VARCHAR NULL,
-             |     CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
-             |     FAMILY "primary" (id, city, name, address, credit_card)
+             |     CONSTRAINT users_pkey PRIMARY KEY (city ASC, id ASC)
              | )
 (1 row)
 
@@ -188,12 +187,12 @@ LIMIT
               │   │
               │   └── • scan
               │         estimated row count: 125,000 (100% of the table; stats collected 54 seconds ago)
-              │         table: rides@primary
+              │         table: rides@rides_pkey
               │         spans: FULL SCAN
               │
               └── • scan
                     estimated row count: 12,500 (100% of the table; stats collected 2 minutes ago)
-                    table: users@primary
+                    table: users@users_pkey
                     spans: FULL SCAN
 (32 rows)
 
@@ -327,7 +326,7 @@ As you can see, this query is no longer scanning the entire (larger) `rides` tab
               │
               └── • scan
                     estimated row count: 12,500 (100% of the table; stats collected 6 minutes ago)
-                    table: users@primary
+                    table: users@users_pkey
                     spans: FULL SCAN
 (28 rows)
 

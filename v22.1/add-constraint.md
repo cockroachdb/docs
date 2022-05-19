@@ -43,12 +43,12 @@ The user must have the `CREATE` [privilege](security-reference/authorization.htm
 
 ## Changing primary keys with `ADD CONSTRAINT ... PRIMARY KEY`
 
- When you change a primary key with [`ALTER TABLE ... ALTER PRIMARY KEY`](alter-primary-key.html), the old primary key index becomes a secondary index. The secondary index created by `ALTER PRIMARY KEY` takes up node memory and can slow down write performance to a cluster. If you do not have queries that filter on the primary key that you are replacing, you can use `ADD CONSTRAINT` to replace the old primary index without creating a secondary index.
+When you change a primary key with [`ALTER TABLE ... ALTER PRIMARY KEY`](alter-primary-key.html), the old primary key index becomes a secondary index. The secondary index created by `ALTER PRIMARY KEY` takes up node memory and can slow down write performance to a cluster. If you do not have queries that filter on the primary key that you are replacing, you can use `ADD CONSTRAINT` to replace the old primary index without creating a secondary index.
 
-`ADD CONSTRAINT ... PRIMARY KEY` can be used to add a primary key to an existing table if one of the following is true:
+You can use `ADD CONSTRAINT ... PRIMARY KEY` to add a primary key to an existing table if one of the following is true:
 
-  - No primary key was explicitly defined at [table creation](create-table.html). In this case, the table is created with a default [primary key on `rowid`](indexes.html#creation). Using `ADD CONSTRAINT ... PRIMARY KEY` drops the default primary key and replaces it with a new primary key.
-  - A [`DROP CONSTRAINT`](drop-constraint.html) statement precedes the `ADD CONSTRAINT ... PRIMARY KEY` statement, in the same transaction. For an example, see [Drop and add the primary key constraint](#drop-and-add-a-primary-key-constraint) below.
+- No primary key was explicitly defined at [table creation](create-table.html). In this case, the table is created with a default [primary key on `rowid`](indexes.html#creation). Using `ADD CONSTRAINT ... PRIMARY KEY` drops the default primary key and replaces it with a new primary key.
+- A [`DROP CONSTRAINT`](drop-constraint.html) statement precedes the `ADD CONSTRAINT ... PRIMARY KEY` statement, in the same transaction. For an example, see [Drop and add the primary key constraint](#drop-and-add-a-primary-key-constraint).
 
 {{site.data.alerts.callout_info}}
 `ALTER TABLE ... ADD PRIMARY KEY` is an alias for `ALTER TABLE ... ADD CONSTRAINT ... PRIMARY KEY`.
@@ -124,8 +124,7 @@ Given two tables, `users` and `vehicles`, without foreign key constraints:
              |     name VARCHAR NULL,
              |     address VARCHAR NULL,
              |     credit_card VARCHAR NULL,
-             |     CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
-             |     FAMILY "primary" (id, city, name, address, credit_card)
+             |     CONSTRAINT users_pkey PRIMARY KEY (city ASC, id ASC)
              | )
 (1 row)
 ~~~
@@ -147,8 +146,7 @@ Given two tables, `users` and `vehicles`, without foreign key constraints:
              |     status VARCHAR NULL,
              |     current_location VARCHAR NULL,
              |     ext JSONB NULL,
-             |     CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
-             |     FAMILY "primary" (id, city, type, owner_id, creation_time, status, current_location, ext)
+             |     CONSTRAINT vehicles_pkey PRIMARY KEY (city ASC, id ASC),
              | )
 (1 row)
 ~~~
@@ -188,8 +186,7 @@ Suppose that you want to add `name` to the composite primary key of the `users` 
              |     name VARCHAR NULL,
              |     address VARCHAR NULL,
              |     credit_card VARCHAR NULL,
-             |     CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
-             |     FAMILY "primary" (id, city, name, address, credit_card)
+             |     CONSTRAINT users_pkey PRIMARY KEY (city ASC, id ASC)
              | )
 (1 row)
 ~~~
@@ -229,8 +226,7 @@ NOTICE: primary key changes are finalized asynchronously; further schema changes
              |     name VARCHAR NOT NULL,
              |     address VARCHAR NULL,
              |     credit_card VARCHAR NULL,
-             |     CONSTRAINT "primary" PRIMARY KEY (city ASC, name ASC, id ASC),
-             |     FAMILY "primary" (id, city, name, address, credit_card)
+             |     CONSTRAINT users_pkey PRIMARY KEY (city ASC, name ASC, id ASC),
              | )
 (1 row)
 ~~~
@@ -321,8 +317,7 @@ To auto-generate unique row IDs in `REGIONAL BY ROW` tables, use the [`UUID`](uu
         name STRING NULL,
         address STRING NULL,
         credit_card STRING NULL,
-        CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
-        FAMILY "primary" (id, city, name, address, credit_card)
+        CONSTRAINT users_pkey PRIMARY KEY (city ASC, id ASC)
 );
 ~~~
 

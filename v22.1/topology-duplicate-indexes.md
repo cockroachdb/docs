@@ -118,10 +118,9 @@ Assuming you have a [cluster deployed across three regions](#cluster-setup) and 
       postal_codes | CREATE TABLE postal_codes (
                    |     id INT8 NOT NULL,
                    |     code STRING NULL,
-                   |     CONSTRAINT "primary" PRIMARY KEY (id ASC),
+                   |     CONSTRAINT postal_codes_pkey PRIMARY KEY (id ASC),
                    |     INDEX idx_central (id ASC) STORING (code),
-                   |     INDEX idx_east (id ASC) STORING (code),
-                   |     FAMILY "primary" (id, code)
+                   |     INDEX idx_east (id ASC) STORING (code)
                    | );
                    | ALTER TABLE defaultdb.public.postal_codes CONFIGURE ZONE USING
                    |     num_replicas = 3,

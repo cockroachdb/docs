@@ -126,23 +126,22 @@ A geo-partitioned table does not require a secondary index. However, if the tabl
                  |     first_name STRING NOT NULL,
                  |     last_name STRING NOT NULL,
                  |     address STRING NOT NULL,
-                 |     CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
+                 |     CONSTRAINT users_pkey PRIMARY KEY (city ASC, id ASC),
                  |     INDEX users_last_name_index (city ASC, last_name ASC) PARTITION BY LIST (city) (
                  |         PARTITION la VALUES IN (('los angeles')),
                  |         PARTITION chicago VALUES IN (('chicago')),
                  |         PARTITION ny VALUES IN (('new york'))
-                 |     ),
-                 |     FAMILY "primary" (id, city, first_name, last_name, address)
+                 |     )
                  | ) PARTITION BY LIST (city) (
                  |     PARTITION la VALUES IN (('los angeles')),
                  |     PARTITION chicago VALUES IN (('chicago')),
                  |     PARTITION ny VALUES IN (('new york'))
                  | );
-                 | ALTER PARTITION chicago OF INDEX defaultdb.public.users@primary CONFIGURE ZONE USING
+                 | ALTER PARTITION chicago OF INDEX defaultdb.public.users@users_pkey CONFIGURE ZONE USING
                  |     constraints = '[+region=us-central]';
-                 | ALTER PARTITION la OF INDEX defaultdb.public.users@primary CONFIGURE ZONE USING
+                 | ALTER PARTITION la OF INDEX defaultdb.public.users@users_pkey CONFIGURE ZONE USING
                  |     constraints = '[+region=us-west]';
-                 | ALTER PARTITION ny OF INDEX defaultdb.public.users@primary CONFIGURE ZONE USING
+                 | ALTER PARTITION ny OF INDEX defaultdb.public.users@users_pkey CONFIGURE ZONE USING
                  |     constraints = '[+region=us-east]';
                  | ALTER PARTITION chicago OF INDEX defaultdb.public.users@users_last_name_index CONFIGURE ZONE USING
                  |     constraints = '[+region=us-central]';
@@ -159,14 +158,14 @@ A geo-partitioned table does not require a secondary index. However, if the tabl
     ~~~
 
     ~~~
-      database_name | table_name | partition_name | parent_partition | column_names |         index_name          | partition_value |              zone_config
-    +---------------+------------+----------------+------------------+--------------+-----------------------------+-----------------+---------------------------------------+
-      defaultdb     | users      | la             | NULL             | city         | users@primary               | ('los angeles') | constraints = '[+region=us-west]'
-      defaultdb     | users      | chicago        | NULL             | city         | users@primary               | ('chicago')     | constraints = '[+region=us-central]'
-      defaultdb     | users      | ny             | NULL             | city         | users@primary               | ('new york')    | constraints = '[+region=us-east]'
-      defaultdb     | users      | la             | NULL             | city         | users@users_last_name_index | ('los angeles') | constraints = '[+region=us-west]'
-      defaultdb     | users      | chicago        | NULL             | city         | users@users_last_name_index | ('chicago')     | constraints = '[+region=us-central]'
-      defaultdb     | users      | ny             | NULL             | city         | users@users_last_name_index | ('new york')    | constraints = '[+region=us-east]'
+      database_name | table_name | partition_name | parent_partition | column_names |         index_name             | partition_value |              zone_config
+    +---------------+------------+----------------+------------------+--------------+--------------------------------+-----------------+---------------------------------------+
+      defaultdb     | users      | la             | NULL             | city         | users@users_pkey               | ('los angeles') | constraints = '[+region=us-west]'
+      defaultdb     | users      | chicago        | NULL             | city         | users@users_pkey               | ('chicago')     | constraints = '[+region=us-central]'
+      defaultdb     | users      | ny             | NULL             | city         | users@users_pkey               | ('new york')    | constraints = '[+region=us-east]'
+      defaultdb     | users      | la             | NULL             | city         | users@users_last_name_index    | ('los angeles') | constraints = '[+region=us-west]'
+      defaultdb     | users      | chicago        | NULL             | city         | users@users_last_name_index    | ('chicago')     | constraints = '[+region=us-central]'
+      defaultdb     | users      | ny             | NULL             | city         | users@users_last_name_index    | ('new york')    | constraints = '[+region=us-east]'
     (6 rows)
     ~~~
 

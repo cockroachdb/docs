@@ -128,27 +128,26 @@ Assuming you have a [cluster deployed across three regions](#cluster-setup) and 
                  |     first_name STRING NOT NULL,
                  |     last_name STRING NOT NULL,
                  |     address STRING NOT NULL,
-                 |     CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
+                 |     CONSTRAINT users_pkey PRIMARY KEY (city ASC, id ASC),
                  |     INDEX users_last_name_index (city ASC, last_name ASC) PARTITION BY LIST (city) (
                  |         PARTITION la VALUES IN (('los angeles')),
                  |         PARTITION chicago VALUES IN (('chicago')),
                  |         PARTITION ny VALUES IN (('new york'))
-                 |     ),
-                 |     FAMILY "primary" (id, city, first_name, last_name, address)
+                 |     )
                  | ) PARTITION BY LIST (city) (
                  |     PARTITION la VALUES IN (('los angeles')),
                  |     PARTITION chicago VALUES IN (('chicago')),
                  |     PARTITION ny VALUES IN (('new york'))
                  | );
-                 | ALTER PARTITION chicago OF INDEX defaultdb.public.users@primary CONFIGURE ZONE USING
+                 | ALTER PARTITION chicago OF INDEX defaultdb.public.users@users_pkey CONFIGURE ZONE USING
                  |     num_replicas = 3,
                  |     constraints = '{+region=us-central: 1}',
                  |     lease_preferences = '[[+region=us-central]]';
-                 | ALTER PARTITION la OF INDEX defaultdb.public.users@primary CONFIGURE ZONE USING
+                 | ALTER PARTITION la OF INDEX defaultdb.public.users@users_pkey CONFIGURE ZONE USING
                  |     num_replicas = 3,
                  |     constraints = '{+region=us-west: 1}',
                  |     lease_preferences = '[[+region=us-west]]';
-                 | ALTER PARTITION ny OF INDEX defaultdb.public.users@primary CONFIGURE ZONE USING
+                 | ALTER PARTITION ny OF INDEX defaultdb.public.users@users_pkey CONFIGURE ZONE USING
                  |     num_replicas = 3,
                  |     constraints = '{+region=us-east: 1}',
                  |     lease_preferences = '[[+region=us-east]]';
@@ -175,13 +174,13 @@ Assuming you have a [cluster deployed across three regions](#cluster-setup) and 
     ~~~
       database_name | table_name | partition_name | parent_partition | column_names |         index_name          | partition_value |                  zone_config
     +---------------+------------+----------------+------------------+--------------+-----------------------------+-----------------+-----------------------------------------------+
-      defaultdb     | users      | la             | NULL             | city         | users@primary               | ('los angeles') | num_replicas = 3,
+      defaultdb     | users      | la             | NULL             | city         | users@users_pkey            | ('los angeles') | num_replicas = 3,
                     |            |                |                  |              |                             |                 | constraints = '{+region=us-west1: 1}',
                     |            |                |                  |              |                             |                 | lease_preferences = '[[+region=us-west1]]'
-      defaultdb     | users      | chicago        | NULL             | city         | users@primary               | ('chicago')     | num_replicas = 3,
+      defaultdb     | users      | chicago        | NULL             | city         | users@users_pkey            | ('chicago')     | num_replicas = 3,
                     |            |                |                  |              |                             |                 | constraints = '{+region=us-central1: 1}',
                     |            |                |                  |              |                             |                 | lease_preferences = '[[+region=us-central1]]'
-      defaultdb     | users      | ny             | NULL             | city         | users@primary               | ('new york')    | num_replicas = 3,
+      defaultdb     | users      | ny             | NULL             | city         | users@users_pkey            | ('new york')    | num_replicas = 3,
                     |            |                |                  |              |                             |                 | constraints = '{+region=us-east1: 1}',
                     |            |                |                  |              |                             |                 | lease_preferences = '[[+region=us-east1]]'
       defaultdb     | users      | la             | NULL             | city         | users@users_last_name_index | ('los angeles') | num_replicas = 3,

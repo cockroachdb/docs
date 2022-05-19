@@ -59,7 +59,7 @@
           ]
         },
         {
-          "title": "Add Secondary Indexes",
+          "title": "Secondary Indexes",
           "urls": [
             "/${VERSION}/schema-design-indexes.html"
           ]

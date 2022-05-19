@@ -93,7 +93,7 @@ Multiple-column indexes sort columns in the order you list them.
 > CREATE INDEX ON users (name, city);
 ~~~
 
-To create the most useful multiple-column indexes, we recommend reviewing our [best practices](schema-design-indexes.html).
+To create the most useful multiple-column indexes, we recommend reviewing our [best practices](schema-design-indexes.html#best-practices).
 
 #### Unique indexes
 
@@ -177,7 +177,7 @@ To sort columns in descending order, you must explicitly set the option when cre
 > CREATE INDEX ON users (city DESC, name);
 ~~~
 
-Note that how a column is ordered in the index will affect the ordering of the index keys, and may affect the efficiency of queries that include an `ORDER BY` clause.
+How a column is ordered in the index will affect the ordering of the index keys, and may affect the efficiency of queries that include an `ORDER BY` clause.
 
 ### Query specific indexes
 
@@ -191,11 +191,11 @@ Normally, CockroachDB selects the index that it calculates will scan the fewest 
 ~~~
   table_name |   index_name        | non_unique | seq_in_index | column_name | direction | storing | implicit
 +------------+---------------------+------------+--------------+-------------+-----------+---------+----------+
-  users      | primary             |   false    |            1 | city        | ASC       |  false  |  false
-  users      | primary             |   false    |            2 | id          | ASC       |  false  |  false
-  users      | primary             |   false    |            3 | name        | N/A       |  true   |  false
-  users      | primary             |   false    |            4 | address     | N/A       |  true   |  false
-  users      | primary             |   false    |            5 | credit_card | N/A       |  true   |  false
+  users      | users_pkey          |   false    |            1 | city        | ASC       |  false  |  false
+  users      | users_pkey          |   false    |            2 | id          | ASC       |  false  |  false
+  users      | users_pkey          |   false    |            3 | name        | N/A       |  true   |  false
+  users      | users_pkey          |   false    |            4 | address     | N/A       |  true   |  false
+  users      | users_pkey          |   false    |            5 | credit_card | N/A       |  true   |  false
   users      | users_city_name_idx |    true    |            1 | city        | DESC      |  false  |  false
   users      | users_city_name_idx |    true    |            2 | name        | ASC       |  false  |  false
   users      | users_city_name_idx |    true    |            3 | id          | ASC       |  false  |   true
