@@ -447,6 +447,12 @@
               ]
             },
             {
+              "title": "AWS DMS",
+              "urls": [
+                "/${VERSION}/aws-dms.html"
+              ]
+            },
+            {
               "title": "Flyway",
               "urls": [
                 "/${VERSION}/flyway.html"
