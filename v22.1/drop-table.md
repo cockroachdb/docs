@@ -9,6 +9,8 @@ The `DROP TABLE` [statement](sql-statements.html) removes a table and all its in
 
 {% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
+{% include {{ page.version.version }}/misc/declarative-schema-changer-note.md %}
+
 ## Required privileges
 
 The user must have the `DROP` [privilege](security-reference/authorization.html#managing-privileges) on the specified table(s). If `CASCADE` is used, the user must have the privileges required to drop each dependent object as well.
