@@ -1387,6 +1387,12 @@
             "title": "Authentication",
             "urls": [
               "/${VERSION}/security-reference/authentication.html"
+            ],
+            "items": [
+              {
+                "title": "SASL/SCRAM-SHA-256 Secure Password-based Authentication",
+                "urls": [ "/${VERSION}/security-reference/scram-authentication.html" ]
+              }
             ]
           },
           {
