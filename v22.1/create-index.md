@@ -111,6 +111,8 @@ This also applies the [`UNIQUE` constraint](unique.html) at the table level, sim
 > ALTER TABLE users ADD CONSTRAINT users_name_id_key UNIQUE (name, id);
 ~~~
 
+Primary key columns that are not specified within a unique index are automatically marked as [`STORING`](indexes.html#storing-columns) in the [`information_schema.statistics`](information-schema.html#statistics) table and in [`SHOW INDEX`](show-index.html).
+
 ### Create GIN indexes
 
 You can create [GIN indexes](inverted-indexes.html) on schemaless data in a [`JSONB`](jsonb.html) column.
