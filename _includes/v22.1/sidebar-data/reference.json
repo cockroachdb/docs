@@ -163,6 +163,12 @@
                 ]
               },
               {
+                "title": "<code>ADD SUPER REGION</code> (Enterprise)",
+                "urls": [
+                  "/${VERSION}/add-super-region.html"
+                ]
+              },
+              {
                 "title": "<code>ALTER CHANGEFEED</code> (Enterprise)",
                 "urls": [
                   "/${VERSION}/alter-changefeed.html"
@@ -226,6 +232,12 @@
                 "title": "<code>ALTER SEQUENCE</code>",
                 "urls": [
                   "/${VERSION}/alter-sequence.html"
+                ]
+              },
+              {
+                "title": "<code>ALTER SUPER REGION</code> (Enterprise)",
+                "urls": [
+                  "/${VERSION}/alter-super-region.html"
                 ]
               },
               {
@@ -418,6 +430,12 @@
                 "title": "<code>DROP REGION (Enterprise)</code>",
                 "urls": [
                   "/${VERSION}/drop-region.html"
+                ]
+              },
+              {
+                "title": "<code>DROP SUPER REGION</code> (Enterprise)",
+                "urls": [
+                  "/${VERSION}/drop-super-region.html"
                 ]
               },
               {
@@ -832,6 +850,12 @@
                 "title": "<code>SHOW REGIONS</code>",
                 "urls": [
                   "/${VERSION}/show-regions.html"
+                ]
+              },
+              {
+                "title": "<code>SHOW SUPER REGIONS</code>",
+                "urls": [
+                  "/${VERSION}/show-super-regions.html"
                 ]
               },
               {
