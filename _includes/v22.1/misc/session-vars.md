@@ -14,7 +14,6 @@
 | <a name="default-transaction-use-follower-reads"></a> `default_transaction_use_follower_reads` | If set to on, all read-only transactions use [`AS OF SYSTEM TIME follower_read_timestamp()`](as-of-system-time.html) to allow the transaction to use follower reads. <br/>If set to `off`, read-only transactions will only use follower reads if an `AS OF SYSTEM TIME` clause is specified in the statement, with an interval of at least 4.8 seconds. | `off` | Yes | Yes |
 | <a name="disallow-full-table-scans"></a> `disallow_full_table_scans` | If set to `on`, all queries that have planned a full table or full secondary index scan will return an error message. This setting does not apply to internal queries, which may plan full table or index scans without checking the session variable. | `off` | Yes | Yes |
 | <a name="distsql"></a> `distsql` | The query distribution mode for the session. By default, CockroachDB determines which queries are faster to execute if distributed across multiple nodes, and all other queries are run through the gateway node. | `auto` | Yes | Yes |
-| <a name="enable-drop-enum-value"></a> `enable_drop_enum_value` | Indicates whether `DROP VALUE` clauses are enabled for [`ALTER TYPE`](alter-type.html) statements. | `off` | Yes | Yes |
 | <a name="enable-implicit-select-for-update"></a> `enable_implicit_select_for_update` | Indicates whether [`UPDATE`](update.html) and [`UPSERT`](upsert.html) statements acquire locks using the `FOR UPDATE` locking mode during their initial row scan, which improves performance for contended workloads.<br/><br/>For more information about how `FOR UPDATE` locking works, see the documentation for [`SELECT FOR UPDATE`](select-for-update.html). | `on` | Yes | Yes |
 | <a name="enable-insert-fast-path"></a> `enable_insert_fast_path` | Indicates whether CockroachDB will use a specialized execution operator for inserting into a table. We recommend leaving this setting `on`. | `on` | Yes | Yes |
 | <a name="enable-zigzag-join"></a> `enable_zigzag_join` | Indicates whether the [cost-based optimizer](cost-based-optimizer.html) will plan certain queries using a zig-zag merge join algorithm, which searches for the desired intersection by jumping back and forth between the indexes based on the fact that after constraining indexes, they share an ordering. | `on` | Yes | Yes |
@@ -67,6 +66,7 @@ The following session variables are exposed only for backwards compatibility wit
 | <a name="backslash-quote"></a> `backslash_quote` | `safe_encoding` | No | Yes |
 | <a name="client-encoding"></a> `client_encoding` | `UTF8` | No | Yes |
 | <a name="default-tablespace"></a> `default_tablespace` | | No | Yes |
+| <a name="enable-drop-enum-value"></a> `enable_drop_enum_value` | `off` | Yes | Yes |
 | <a name="enable-seqscan"></a> `enable_seqscan` | `on` | Yes | Yes |
 | <a name="escape-string-warning"></a> `escape_string_warning` | `on` | No | Yes |
 | <a name="experimental-enable-hash-sharded-indexes"></a> `experimental_enable_hash_sharded_indexes` | `off` | Yes | Yes |
