@@ -74,7 +74,7 @@ If you [deployed CockroachDB on Red Hat OpenShift](deploy-cockroachdb-with-kuber
     {{site.data.alerts.callout_info}}
     The Operator automatically sets the `cluster.preserve_downgrade_option` [cluster setting](cluster-settings.html) to the version you are upgrading from. This disables auto-finalization of the upgrade so that you can monitor the stability and performance of the upgraded cluster before manually finalizing the upgrade. This will enable certain [features and performance improvements introduced in {{ page.version.version }}](upgrade-cockroach-version.html#features-that-require-upgrade-finalization).
 
-    Note that after finalization, it will no longer be possible to perform a downgrade to {{ previous_version }}. In the event of a catastrophic failure or corruption, the only option will be to start a new cluster using the old binary and then restore from a [backup](take-full-and-incremental-backups.html) created prior to performing the upgrade.
+    Note that after finalization, it will no longer be possible to perform a downgrade to {{ previous_version }}. In the event of a catastrophic failure or corruption, the only option will be to start a new cluster using the previous binary and then restore from a [backup](take-full-and-incremental-backups.html) created prior to performing the upgrade.
 
     Finalization only applies when performing a major version upgrade (for example, from {{ previous_version }}.x to {{ page.version.version }}). Patch version upgrades (for example, within the {{ page.version.version }}.x series) can always be downgraded.
     {{site.data.alerts.end}}

@@ -244,7 +244,7 @@ For more details about the application code, see [Application details](#applicat
 
 ## Application details
 
-This section walks you through the different components of the application project in detail.
+This section guides you through the different components of the application project in detail.
 
 ### Main process
 

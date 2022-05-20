@@ -5,7 +5,7 @@ toc: true
 redirect_from: multi-region-deployment.html
 ---
 
-This page walks you through deploying an application and database in multiple regions. It is the fifth and final section of the [Develop and Deploy a Global Application](movr-flask-overview.html) tutorial.
+This page guides you through deploying an application and database in multiple regions. It is the fifth and final section of the [Develop and Deploy a Global Application](movr-flask-overview.html) tutorial.
 
 <!-- {% include {{ page.version.version }}/misc/movr-live-demo.md %} -->
 
