@@ -96,10 +96,8 @@ Use the [DB Console](monitoring-page.html) or your own tooling to monitor your a
 
 Most v22.1 features can be used right away, but some will be enabled only after the upgrade has been finalized. Attempting to use these features before finalization will result in errors:
 
-- SCRAM authentication
-- Row-level time to live (TTL)
-- Table-level automatic statistics collection
-- `DATE` and `INTERVAL` style settings available by default
+- **SCRAM-SHA-256 authentication:** CockroachDB supports [SCRAM-SHA-256](../{{site.versions["stable"]}}/security-reference/scram-authentication.html) authentication for clients in both CockroachDB Cloud and CockroachDB Self-Hosted. For SQL client sessions, it is now possible to use the authentication methods `password` (cleartext passwords), and `cert-password` (TLS client cert or cleartext password) with either CRDB-BCRYPT or SCRAM-SHA-256 stored credentials.
+- **Row-Level Time to Live (TTL):** CockroachDB has preview support for Time to Live ("TTL") expiration on table rows, also known as [Row-Level TTL](../{{site.versions["stable"]}}/row-level-ttl.html). Row-Level TTL is a mechanism whereby rows from a table are considered "expired" and can be automatically deleted once those rows have been stored longer than a specified expiration time.
 
 For an expanded list of features included in the v22.1 release, see the [v22.1 release notes](../releases/v22.1.html).
 
