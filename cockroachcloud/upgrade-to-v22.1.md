@@ -3,6 +3,7 @@ title: Upgrade to CockroachDB v22.1
 summary: Learn how to upgrade your CockroachDB cluster to v22.1.
 toc: true
 docs_area: manage
+page_version: v22.1
 ---
 
 Now that [CockroachDB v22.1](../releases/v22.1.html) is available, a [Console Admin](console-access-management.html#console-admin) can upgrade your {{ site.data.products.dedicated }} cluster from the {{ site.data.products.db }} Console. This page walks through the process for an Admin.
