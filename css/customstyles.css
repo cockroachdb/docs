@@ -7554,10 +7554,10 @@ section.footer {
     .bs-callout--info h4, .bs-callout--info .bs-callout__label {
       color: #190F33; }
   .bs-callout--version {
-    background-color: rgba(105, 51, 255, 0.2);
-    border-left-color: #6933FF }
+    background-color: #FF7595;
+    border-left-color: #FF7595; }
     .bs-callout--version h4, .bs-callout--version .bs-callout__label {
-      color: #190F33; }
+      color: #FF7595; }
 
 .toc-col {
   display: none; }
@@ -10273,6 +10273,7 @@ pre.prettyprint {
 
 pre {
   overflow: auto;
+  max-height: 320px;
   display: block;
   padding: 20px;
   margin: 0 0 15px;
