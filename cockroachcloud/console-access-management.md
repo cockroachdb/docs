@@ -52,8 +52,6 @@ A Console Admin is an all-access role. A Console Admin can perform the following
 
 ## Service accounts
 
-{% include_cached cockroachcloud/experimental-warning.md %}
-
 Service accounts are used by applications accessing the [Cloud API](cloud-api.html) to manage {{ site.data.products.db }} clusters within the organization. Service accounts are not for human users.
 
 To create a service account:
@@ -89,8 +87,6 @@ To modify the name, description, or permissions of a service account:
 1. Click **Save changes**.
 
 ### API access
-
-{% include_cached cockroachcloud/experimental-warning.md %}
 
 Each service account can have one or more API keys. API keys are used to authenticate and authorize service accounts when using the API. All API keys created by the account are listed under **API Access**.
 

@@ -2,7 +2,7 @@
 title: ALTER TABLE
 summary: Use the ALTER TABLE statement to change the schema of a table.
 toc: true
-docs_area: reference.sql 
+docs_area: reference.sql
 ---
 
 The `ALTER TABLE` [statement](sql-statements.html) applies a schema change to a table. For information on using `ALTER TABLE`, see the pages for its relevant [subcommands](#subcommands).
@@ -34,6 +34,7 @@ Subcommand | Description | Can combine with other subcommands?
 [`UNSPLIT AT`](unsplit-at.html) | Remove a range split enforcement at a specified row in the table. | No
 [`VALIDATE CONSTRAINT`](validate-constraint.html) | Check whether values in a column match a [constraint](constraints.html) on the column. | Yes
 [`SET LOCALITY {REGIONAL BY TABLE, REGIONAL BY ROW, GLOBAL}`](set-locality.html) |  Set the table locality for a table in a [multi-region database](multiregion-overview.html). | No
+[`SET (storage parameter)`](set-storage-parameter.html) | Set a storage parameter on a table. | Yes
 
 ## Viewing schema changes
 

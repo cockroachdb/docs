@@ -53,6 +53,13 @@ Cockroach Labs maintains <a href="https://github.com/cockroachdb/cockroach">Cock
   <td>Client identity authentication using username/password</td>
  </tr>
  <tr>
+  <td>✓</td>
+  <td>✓</td>
+  <td>✓</td>
+  <td>✓</td>
+  <td><a href="scram-authentication.html">SASL/SCRAM-SHA-256 secure password-based authentication</a></td>
+ </tr>
+ <tr>
   <td>&nbsp;</td>
   <td>&nbsp;</td>
   <td>✓</td>

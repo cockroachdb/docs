@@ -169,20 +169,20 @@ CREATE TYPE movr.max_schema.vtype AS ENUM ('bike', 'scooter', 'skateboard');
 For detailed reference documentation on the `CREATE TYPE` statement, including additional examples, see the [`CREATE TYPE` syntax page](create-type.html).<br>For detailed reference documentation on enumerated data types, including additional examples, see [`ENUM`](enum.html).
 {{site.data.alerts.end}}
 
-You can then use `vtype` as the `type` column's data type:
+You can then use `movr.max_schema.vtype` as the `type` column's data type:
 
 {% include copy-clipboard.html %}
 ~~~ sql
 CREATE TABLE movr.max_schema.vehicles (
       id UUID,
-      type vtype,
+      type movr.max_schema.vtype,
       creation_time TIMESTAMPTZ,
       available BOOL,
       last_location STRING
   );
 ~~~
 
-Only values in the set of `vtype` values will be allowed in the `type` column.
+Only values in the set of `movr.max_schema.vtype` values will be allowed in the `type` column.
 
 The `users` and `vehicles` tables now have syntactically valid column definitions. As a best practice, you should explicitly [select primary key columns](#select-primary-key-columns) and add any [additional constraints](#add-additional-constraints) before executing the `CREATE TABLE` statements.
 
@@ -254,7 +254,7 @@ In the `vehicles` table definition, add a `PRIMARY KEY` constraint on the `id` c
 ~~~ sql
 CREATE TABLE movr.max_schema.vehicles (
       id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-      type vtype,
+      type movr.max_schema.vtype,
       creation_time TIMESTAMPTZ,
       available BOOL,
       last_location STRING
@@ -287,7 +287,7 @@ For example, in the `vehicles` table definition in `max_init.sql`, you added a `
 ~~~ sql
 CREATE TABLE movr.max_schema.vehicles (
       id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-      type vtype,
+      type movr.max_schema.vtype,
       creation_time TIMESTAMPTZ DEFAULT now(),
       available BOOL,
       last_location STRING

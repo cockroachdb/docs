@@ -1,1 +1,1 @@
-As a general best practice, we discourage the use of client libraries to execute [database schema changes](online-schema-changes.html). Instead, use a database schema migration tool, or the [CockroachDB SQL client](cockroach-sql.html).
+Use a [database schema migration tool](third-party-database-tools.html#schema-migration-tools) or the [CockroachDB SQL client](cockroach-sql.html) instead of a [client library](third-party-database-tools.html#drivers) to execute [database schema changes](online-schema-changes.html).

@@ -183,8 +183,7 @@ You can also view comments on a table with [`SHOW CREATE`](show-create.html):
              |     name VARCHAR NULL,
              |     address VARCHAR NULL,
              |     credit_card VARCHAR NULL,
-             |     CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
-             |     FAMILY "primary" (id, city, name, address, credit_card)
+             |     CONSTRAINT users_pkey PRIMARY KEY (city ASC, id ASC)
              | );
              | COMMENT ON TABLE users IS 'This table contains information about users.'
 (1 row)

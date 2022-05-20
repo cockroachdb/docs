@@ -187,6 +187,6 @@ table tr td:nth-child(2) {
  Materialized views | ✓ | Common Extension |  [Materialized views documentation](views.html#materialized-views)
  Window functions | ✓ | Standard | [Window Functions documentation](window-functions.html)
  Common table expressions | Partial | Common Extension | [Common Table Expressions documentation](common-table-expressions.html)
- Stored procedures | ✗ | Common Extension | Execute a procedure explicitly.
+ Stored procedures | ✗ | Common Extension | Execute a procedure explicitly. [GitHub issue tracking stored procedures support](https://github.com/cockroachdb/cockroach/issues/17511).
  Cursors | ✗ | Standard | Traverse a table's rows.
- Triggers | ✗ | Standard | Execute a set of commands whenever a specified event occurs.
+ Triggers | ✗ | Standard | Execute a set of commands whenever a specified event occurs. [GitHub issue tracking trigger support](https://github.com/cockroachdb/cockroach/issues/28296).

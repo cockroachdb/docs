@@ -59,7 +59,7 @@
           ]
         },
         {
-          "title": "Add Secondary Indexes",
+          "title": "Secondary Indexes",
           "urls": [
             "/${VERSION}/schema-design-indexes.html"
           ]
@@ -447,6 +447,12 @@
               ]
             },
             {
+              "title": "AWS DMS",
+              "urls": [
+                "/${VERSION}/aws-dms.html"
+              ]
+            },
+            {
               "title": "Flyway",
               "urls": [
                 "/${VERSION}/flyway.html"
@@ -473,6 +479,17 @@
               "title": "IntelliJ IDEA",
               "urls": [
                 "/${VERSION}/intellij-idea.html"
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Data Security Tools",
+          "items": [
+            {
+              "title": "Satori",
+              "urls": [
+                "/${VERSION}/satori-integration.html"
               ]
             }
           ]

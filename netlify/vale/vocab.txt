@@ -49,6 +49,7 @@ canadacentral
 canadaeast
 castagnoli
 casted
+ccloud
 centralindia
 centralus
 cgo
@@ -105,6 +106,8 @@ decorrelated
 decorrelation
 denormalization
 dereference
+deserialize
+deserialized
 deserialization
 dev
 dharmesh
@@ -198,6 +201,8 @@ inet
 ing
 ingestions
 initializr
+inode
+inodes
 intellij
 interleavings
 intra
@@ -372,6 +377,8 @@ Prisma
 problemranges
 profiler
 proofer
+proto
+protos
 protobuf
 protobufs
 proxied
@@ -582,6 +589,7 @@ untyped
 updatable
 upreplication
 upsert
+upserting
 uris
 url
 userfile
@@ -598,6 +606,7 @@ vectorizing
 vijay
 vlaue
 vorobev
+Voronoi
 wabada
 walkthrough
 wallclock

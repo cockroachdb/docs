@@ -55,7 +55,7 @@ Property        | Description
 ----------------|------------
 planning time | The total time the planner took to create a statement plan.
 execution time | The time it took for the final statement plan to complete.
-distribution | Whether the statement was distributed or local. If `distribution` is `full`, execution of the statement is performed by multiple nodes in parallel, then the final results are returned by the gateway node. If `local`, the execution plan is performed only on the gateway node. Even if the execution plan is `local`, row data may be fetched from remote nodes, but the processing of the data is performed by the local node.
+distribution | Whether the statement was distributed or local. If `distribution` is `full`, execution of the statement is performed by multiple nodes in parallel, then the results are returned by the gateway node. If `local`, the execution plan is performed only on the gateway node. Even if the execution plan is `local`, row data may be fetched from remote nodes, but the processing of the data is performed by the local node.
 vectorized | Indicates whether the [vectorized execution engine](vectorized-execution.html) was used in this statement.
 rows read from KV | The number of rows read from the [storage layer](architecture/storage-layer.html).
 cumulative time spent in KV | The total amount of time spent in the storage layer.
@@ -199,7 +199,7 @@ For example, the following `EXPLAIN ANALYZE` statement executes a simple query a
         KV rows read: 125,000
         KV bytes read: 21 MiB
         missing stats
-        table: rides@primary
+        table: rides@rides_pkey
         spans: FULL SCAN
 (28 rows)
 
@@ -245,7 +245,7 @@ EXPLAIN ANALYZE (DISTSQL) SELECT city, AVG(revenue) FROM rides GROUP BY city;
         KV rows read: 125,000
         KV bytes read: 21 MiB
         estimated row count: 125,000 (100% of the table; stats collected 45 seconds ago)
-        table: rides@primary
+        table: rides@rides_pkey
         spans: FULL SCAN
 
   Diagram: https://cockroachdb.github.io/distsqlplan/decode.html#eJzMV-9u2zYQ_76nIPgpxdRZJGVL1ic3RbsFTewifwYUUxDQ0sURaosuSSfOguxJBuwp9gJ7lD3JQMlebFmmZcdp-8UQeeLx7nf3-_n0gNWXIQ7x2bvjd2_PUZzqewfx28GBhFvIJvAKvT_tnSCZJqDQz6e9i4_o8FP-GnZwJhLo8hEoHP6GCXYwxQ5m-NLBYyliUEpIY3rIXzxKpjh0HZxm44k225cOjoUEHD5gneoh4BCf8_4QToEnIBsudnACmqfD3H0eQWcs0xGX5u6zMc9UiF43ItwXSosswo0IB__-9WcUTSGIomnSPoyiqetG0TRw508rP8PCjLGDexMdog51OsTc_eFXpNMRhIgxMlLFRiwyDZlORTazuf_8PTNJcaeQBJ6EiPqO77eK7f69hvm-91MLnaSH2MEjPkUjGAl5j_hwKGKuwdibLvqQ2_tcxzegkJjosQmKBtjB-Q3_7xR3XD46uNiaIao0HwAOyaNTH_U3g4GEAddCNtgy6B1T1J5MQJr48tWb7qerbu_8qntxfHzQIa9MKS5ODjrUPL3tXXTPZ88whXiyABXNQSxnRlYSK-X0FGb_Ht1wdbMS4eXjU950bd5PfkSRT9nPj4UjCzit54FzdnFydWTgYWZ1ClkC0pxzUIc2OqwCMi8o2msjaGxtI7AagEyyKkgq0eiK12LcaC8DsVLp6qi9ctTttVF7S1GT-qJBaonGvjTDiM-Yy1TlfowPZiz8DxVFU87gl82-SBRN-7RYYsSzBBEk9A3I9Xrk-952etRqO57nreoRoTvKUWtFjmZX1JOjDfVcYJz3cnLk1ZMjf49yRPYrR_7XlqO2W01sWgatWVOOaH1i07rE3icfDb8Vz9C15FmcqljM_QbQMr_XUdR_H0VTct2p59m97tgnjfb2k0bgVk0a_l4njcCtSe0NFV3o3uY3nzTKf5rPoTbdL7WDr01tWnfSIDtMGhW5noIai0xBaeKo9uwatCAZQIGuEhMZw0cp4vyaYtnLz-UbCShdWEmxOMoKkwlw8TApHyaLh-nSYZJHoyvnHcZY3nHVXCNzqhmz-jJEGkZjlKTqM5ooPjDURlVMdMvQ5xzcJoPW2gwy0HdCfkZDriGL70NUfOHMt-94qku5JaBApnyY_s4X24YVbTM_OJOmGNJbkzpdMM3laW5jTZqnPbePQBk0ll6p_b2wDSrtF0elaQXFtYDiboKE7tgo1MoTtgxJ-TCzk8y1s8yznm7aDzd3pGj9UnqetcFday2ZrcEDby8NzlaraUdlPe1XZmCPWoSL7Shcz89gHxS115UE1roSW13pRpbWqitZRaW1DUt3QsX3fQsqvl3OmxZUWl6wCRWv9qfDMiq-FZXALiDBiwsI8wrQ1kD6PfaZHZQtxga6DpRW0wYKJbuPDaz1UmODHZX1mlRW1Vly1aJKX3AabH9j-aDezs1O_f1Mg_k32uMP_wUAAP__K-8jbQ==

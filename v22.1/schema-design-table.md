@@ -169,20 +169,20 @@ CREATE TYPE movr.max_schema.vtype AS ENUM ('bike', 'scooter', 'skateboard');
 For detailed reference documentation on the `CREATE TYPE` statement, including additional examples, see the [`CREATE TYPE` syntax page](create-type.html).<br>For detailed reference documentation on enumerated data types, including additional examples, see [`ENUM`](enum.html).
 {{site.data.alerts.end}}
 
-You can then use `vtype` as the `type` column's data type:
+You can then use `movr.max_schema.vtype` as the `type` column's data type:
 
 {% include copy-clipboard.html %}
 ~~~ sql
 CREATE TABLE movr.max_schema.vehicles (
       id UUID,
-      type vtype,
+      type movr.max_schema.vtype,
       creation_time TIMESTAMPTZ,
       available BOOL,
       last_location STRING
   );
 ~~~
 
-Only values in the set of `vtype` values will be allowed in the `type` column.
+Only values in the set of `movr.max_schema.vtype` values will be allowed in the `type` column.
 
 The `users` and `vehicles` tables now have syntactically valid column definitions. As a best practice, you should explicitly [select primary key columns](#select-primary-key-columns) and add any [additional constraints](#add-additional-constraints) before executing the `CREATE TABLE` statements.
 
@@ -254,7 +254,7 @@ In the `vehicles` table definition, add a `PRIMARY KEY` constraint on the `id` c
 ~~~ sql
 CREATE TABLE movr.max_schema.vehicles (
       id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-      type vtype,
+      type movr.max_schema.vtype,
       creation_time TIMESTAMPTZ,
       available BOOL,
       last_location STRING
@@ -287,7 +287,7 @@ For example, in the `vehicles` table definition in `max_init.sql`, you added a `
 ~~~ sql
 CREATE TABLE movr.max_schema.vehicles (
       id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-      type vtype,
+      type movr.max_schema.vtype,
       creation_time TIMESTAMPTZ DEFAULT now(),
       available BOOL,
       last_location STRING
@@ -505,16 +505,15 @@ To see the individual `CREATE TABLE` statements for each table, use a [`SHOW CRE
 ~~~
 
 ~~~
-         table_name        |                             create_statement
----------------------------+---------------------------------------------------------------------------
+         table_name        |                        create_statement
+---------------------------+------------------------------------------------------------------
   movr.max_schema.vehicles | CREATE TABLE max_schema.vehicles (
                            |     id UUID NOT NULL DEFAULT gen_random_uuid(),
                            |     type max_schema.vtype NULL,
                            |     creation_time TIMESTAMPTZ NULL DEFAULT now():::TIMESTAMPTZ,
                            |     available BOOL NULL,
                            |     last_location STRING NULL,
-                           |     CONSTRAINT "primary" PRIMARY KEY (id ASC),
-                           |     FAMILY "primary" (id, type, creation_time, available, last_location)
+                           |     CONSTRAINT vehicles_pkey PRIMARY KEY (id ASC)
                            | )
 (1 row)
 ~~~
@@ -572,15 +571,14 @@ $ cockroach sql \
 ~~~
 
 ~~~
-              table_name             |                                          create_statement
--------------------------------------+------------------------------------------------------------------------------------------------------
+              table_name             |                                              create_statement
+-------------------------------------+--------------------------------------------------------------------------------------------------------------
   movr.abbey_schema.user_promo_codes | CREATE TABLE abbey_schema.user_promo_codes (
                                      |     code STRING NOT NULL,
                                      |     user_email STRING NOT NULL,
                                      |     valid BOOL NULL,
                                      |     CONSTRAINT "primary" PRIMARY KEY (code ASC, user_email ASC),
-                                     |     CONSTRAINT fk_user_email_ref_users FOREIGN KEY (user_email) REFERENCES max_schema.users(email),
-                                     |     FAMILY "primary" (code, user_email, usage_count)
+                                     |     CONSTRAINT user_promo_codes_user_email_fkey FOREIGN KEY (user_email) REFERENCES max_schema.users(email)
                                      | )
 (1 row)
 ~~~

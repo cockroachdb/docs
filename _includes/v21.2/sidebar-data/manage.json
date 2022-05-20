@@ -6,6 +6,12 @@
       "title": "Manage CockroachDB Cloud Clusters",
       "items": [
         {
+          "title": "Plan Your Cluster",
+          "urls": [
+            "/cockroachcloud/plan-your-cluster.html"
+          ]
+        },
+        {
           "title": "Manage a CockroachDB Serverless Cluster",
           "urls": [
             "/cockroachcloud/serverless-cluster-management.html"
@@ -27,6 +33,12 @@
           "title": "Use the Cloud API",
           "urls": [
             "/cockroachcloud/cloud-api.html"
+          ]
+        },
+        {
+          "title": "Use the <code>ccloud</code> command",
+          "urls": [
+            "/cockroachcloud/ccloud-get-started.html"
           ]
         }
       ]

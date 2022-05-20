@@ -81,7 +81,7 @@ All new users and roles belong to the `public` role by default. You can grant an
 To create a `role admin`, use [`WITH ADMIN OPTION`](../grant.html#grant-the-admin-option).
 
 {{site.data.alerts.callout_success}}
-The terms “`admin` role” and “`role admin`” can be confusing. 
+The terms “`admin` role” and “`role admin`” can be confusing.
 The `admin` role is a role (specifically the role granting all privileges on all database resources across a cluster), whereas `role admin` is a role option that is either enabled or disabled or not on any given role or grant of a role to another user or role.
 
 Learn more about [`role options`](../create-user.html#role-options).
@@ -153,7 +153,7 @@ For more examples of default privileges, see the examples on the [`SHOW DEFAULT 
 Users' authorization to perform certain actions are governed not by grants but by [`role options`](../create-user.html#role-options). These options govern whether users can perform actions such as:
 
 - Viewing or canceling ongoing queries and sessions owned by other roles.
-- Pausing, resuming and canceling jobs.
+- Pausing, resuming, and canceling jobs.
 - Creating or renaming databases.
 - Managing authentication for other users.
 - Modifying cluster settings.
