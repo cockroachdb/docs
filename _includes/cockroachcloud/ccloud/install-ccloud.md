@@ -28,7 +28,7 @@ In a terminal, enter the following command to download and extract the `ccloud` 
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-curl https://binaries.cockroachdb.com/ccloud/ccloud_linux-amd64_0.1.1.tar.gz | tar -xJ && cp -i ccloud /usr/local/bin/
+curl https://binaries.cockroachdb.com/ccloud/ccloud_linux-amd64_0.1.1.tar.gz | tar -xz && cp -i ccloud /usr/local/bin/
 ~~~
 
 </section>
