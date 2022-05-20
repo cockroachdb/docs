@@ -55,7 +55,7 @@ In the common case, it sets the transaction record's state to `STAGING`, and che
 
 If the transaction passes these checks, CockroachDB responds with the transaction's success to the client, and moves on to the cleanup phase. At this point, the transaction is committed, and the client is free to begin sending more requests to the cluster.
 
-For a more detailed walkthrough of the commit protocol, see [Parallel Commits](#parallel-commits).
+For a more detailed tutorial of the commit protocol, see [Parallel Commits](#parallel-commits).
 
 ### Cleanup (asynchronous phase 3)
 

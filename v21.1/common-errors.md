@@ -45,7 +45,7 @@ $ cockroach start [flags]
 
 This message indicates that the cluster is using TLS encryption to protect network communication, and the client is trying to open a connection without using the required TLS certificates.
 
-To resolve this issue, use the [`cockroach cert create-client`](cockroach-cert.html) command to generate a client certificate and key for the user trying to connect. For a secure deployment walkthrough, including generating security certificates and connecting clients, see [Manual Deployment](manual-deployment.html).
+To resolve this issue, use the [`cockroach cert create-client`](cockroach-cert.html) command to generate a client certificate and key for the user trying to connect. For a secure deployment tutorial, including generating security certificates and connecting clients, see [Manual Deployment](manual-deployment.html).
 
 ## restart transaction
 

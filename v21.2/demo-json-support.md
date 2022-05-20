@@ -6,7 +6,7 @@ keywords: gin, gin index, gin indexes, inverted index, inverted indexes, acceler
 docs_area: deploy
 ---
 
-This page walks you through a simple demonstration of how CockroachDB can store and query unstructured [`JSONB`](jsonb.html) data from a third-party API, as well as how a [GIN index](inverted-indexes.html) can optimize your queries.
+This page guides you through a simple demonstration of how CockroachDB can store and query unstructured [`JSONB`](jsonb.html) data from a third-party API, as well as how a [GIN index](inverted-indexes.html) can optimize your queries.
 
 ## Step 1. Install prerequisites
 
