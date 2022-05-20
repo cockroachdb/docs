@@ -38,7 +38,7 @@ Download and extract the `ccloud` binary and add it to your `PATH`.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-curl https://binaries.cockroachdb.com/ccloud/ccloud_linux-amd64_0.1.1.tar.gz | tar -xJ && cp -i ccloud /usr/local/bin/
+curl https://binaries.cockroachdb.com/ccloud/ccloud_linux-amd64_0.1.1.tar.gz | tar -xz && cp -i ccloud /usr/local/bin/
 ~~~
 
 </section>
