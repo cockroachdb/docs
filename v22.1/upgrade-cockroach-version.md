@@ -47,7 +47,7 @@ Verify the overall health of your cluster using the [DB Console](ui-cluster-over
 
 ### Review breaking changes
 
-{% assign rd = site.data.versions | where_exp: "rd", "rd.major_version == page.version.version" | map: "release_date" %}
+{% assign rd = site.data.versions | where_exp: "rd", "rd.major_version == page.version.version" | first %}
 
 Review the [backward-incompatible changes in {{ page.version.version }}](../releases/{{ page.version.version }}.html{% unless rd == "N/A" or rd > today %}#{{ page.version.version | replace: ".", "-" }}-0-backward-incompatible-changes{% endunless %}) and [deprecated features](../releases/{{ page.version.version }}.html#{% unless rd == "N/A" or rd > today %}{{ page.version.version | replace: ".", "-" }}-0-deprecations{% endunless %}). If any affect your deployment, make the necessary changes before starting the rolling upgrade to {{ page.version.version }}.
 
@@ -79,6 +79,7 @@ When upgrading from {{ previous_version }} to {{ page.version.version }}, certai
 - SCRAM authentication
 - Row-level time to live (TTL)
 - Table-level automatic statistics collection
+- `DATE` and `INTERVAL` style settings available by default
 
 For an expanded list of features included in the {{ page.version.version }} release, see the [{{ page.version.version }} release notes](../releases/{{ page.version.version }}.html).
 

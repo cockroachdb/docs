@@ -29,13 +29,13 @@ The upgrade process depends on the number of nodes in your cluster. Select wheth
 <section class="filter-content" markdown="1" data-scope="multi-node">
 In a multi-node cluster, the upgrade does not interrupt the cluster's overall health and availability. One node is stopped and restarted with the new version, then the next, and so on, pausing for a few minutes between each node. This "rolling upgrade" takes approximately 4-5 minutes per node and is enabled by CockroachDB's [multi-active availability](../{{site.versions["stable"]}}/multi-active-availability.html) design.
 
-Approximately 72 hours after all nodes are running v22.1, the upgrade will be automatically finalized. This enables certain [features and performance improvements introduced in v22.1](#respect-temporary-limitations). Finalization also removes the ability to roll back to v21.2, so it's important to monitor your application during this 72-hour window and, if you see unexpected behavior, [roll back the upgrade](#roll-back-the-upgrade) from the {{ site.data.products.db }} Console.
+Approximately 72 hours after all nodes are running v22.1, the upgrade will be automatically finalized. This enables certain [features and performance improvements introduced in v22.1](#expect-temporary-limitations). Finalization also removes the ability to roll back to v21.2, so it's important to monitor your application during this 72-hour window and, if you see unexpected behavior, [roll back the upgrade](#roll-back-the-upgrade) from the {{ site.data.products.db }} Console.
 </section>
 
 <section class="filter-content" markdown="1" data-scope="single-node">
 When you start the upgrade, the cluster will be unavailable for a few minutes while the node is stopped and restarted with v22.1.
 
-Approximately 72 hours after the node has been restarted, the upgrade will be automatically finalized. This enables certain [features and performance improvements introduced in v22.1](#respect-temporary-limitations). Finalization also removes the ability to roll back to v21.2, so it's important to monitor your application during this 72-hour window and, if you see unexpected behavior, [roll back the upgrade](#roll-back-the-upgrade) from the {{ site.data.products.db }} Console.
+Approximately 72 hours after the node has been restarted, the upgrade will be automatically finalized. This enables certain [features and performance improvements introduced in v22.1](#expect-temporary-limitations). Finalization also removes the ability to roll back to v21.2, so it's important to monitor your application during this 72-hour window and, if you see unexpected behavior, [roll back the upgrade](#roll-back-the-upgrade) from the {{ site.data.products.db }} Console.
 </section>
 
 ## Step 4. Prepare to upgrade
@@ -54,9 +54,9 @@ The [**SQL Users**](user-authorization.html#create-a-sql-user) and [**Monitoring
 
 ### Review breaking changes
 
-{% assign rd = site.data.versions | where_exp: "rd", "rd.major_version == page.version.version" | map: "release_date" %}
+{% assign rd = site.data.versions | where_exp: "rd", "rd.major_version == page.page_version" | first %}
 
-Review the [backward-incompatible changes in {{ page.version.version }}](../releases/{{ page.version.version }}.html{% unless rd == "N/A" or rd > today %}#{{ page.version.version | replace: ".", "-" }}-0-backward-incompatible-changes{% endunless %}) and [deprecated features](../releases/{{ page.version.version }}.html#{% unless rd == "N/A" or rd > today %}{{ page.version.version | replace: ".", "-" }}-0-deprecations{% endunless %}). If any affect your applications, make the necessary changes before proceeding.
+Review the [backward-incompatible changes in {{ page.page_version }}](../releases/{{ page.page_version }}.html{% unless rd.release_date == "N/A" or rd.release_date > today %}#{{ page.page_version | replace: ".", "-" }}-0-backward-incompatible-changes{% endunless %}) and [deprecated features](../releases/{{ page.page_version }}.html#{% unless rd.release_date == "N/A" or rd.release_date > today %}{{ page.page_version | replace: ".", "-" }}-0-deprecations{% endunless %}). If any affect your applications, make the necessary changes before proceeding.
 
 ## Step 5. Start the upgrade
 
@@ -80,7 +80,7 @@ Your single-node cluster will be unavailable for a few minutes while the node is
 
 ## Step 6. Monitor the upgrade
 
-Once your cluster is running v22.1, you will have approximately 72 hours before the upgrade is automatically finalized. During this time, it is important to [monitor your application](#monitor-your-application) and [respect temporary limitations](#respect-temporary-limitations).
+Once your cluster is running v22.1, you will have approximately 72 hours before the upgrade is automatically finalized. During this time, it is important to [monitor your application](#monitor-your-application) and [respect temporary limitations](#expect-temporary-limitations).
 
 If you see unexpected behavior, you can [roll back](#roll-back-the-upgrade) to v21.2 during the 72-hour window.
 
@@ -92,13 +92,14 @@ Use the [DB Console](monitoring-page.html) or your own tooling to monitor your a
 
 - If you see unexpected behavior, you can [roll back to v21.2](#roll-back-the-upgrade) during the 72-hour window.
 
-### Respect temporary limitations
+### Expect temporary limitations
 
 Most v22.1 features can be used right away, but some will be enabled only after the upgrade has been finalized. Attempting to use these features before finalization will result in errors:
 
 - SCRAM authentication
 - Row-level time to live (TTL)
 - Table-level automatic statistics collection
+- `DATE` and `INTERVAL` style settings available by default
 
 For an expanded list of features included in the v22.1 release, see the [v22.1 release notes](../releases/v22.1.html).
 
@@ -118,7 +119,7 @@ Because your cluster contains a single node, the cluster will be briefly unavail
 
 ## Step 7. Complete the upgrade
 
-If everything looks good, you can wait for the upgrade to automatically finalize, or you can manually trigger finalization to lift the [temporary limitations](#respect-temporary-limitations) on the cluster more quickly.
+If everything looks good, you can wait for the upgrade to automatically finalize, or you can manually finalize the upgrade to lift the [temporary limitations](#expect-temporary-limitations) on the cluster more quickly.
 
 ### Finalize the upgrade
 
@@ -126,7 +127,7 @@ The upgrade is automatically finalized after 72 hours.
 
 To manually finalize the upgrade, click **Finalize** in the banner at the top of the {{ site.data.products.db }} Console, and then click **Finalize upgrade**.
 
-After finalization, all [temporary limitations](#respect-temporary-limitations) will be lifted, and all v22.1 features are available for use. However, it will no longer be possible to roll back to v21.2. If you see unexpected behavior after the upgrade has been finalized, [contact support](https://support.cockroachlabs.com/hc/en-us/requests/new).
+After finalization, all [temporary limitations](#expect-temporary-limitations) will be lifted, and all v22.1 features are available for use. However, it will no longer be possible to roll back to v21.2. If you see unexpected behavior after the upgrade has been finalized, [contact support](https://support.cockroachlabs.com/hc/en-us/requests/new).
 
 ## See also
 
