@@ -13,7 +13,7 @@ The **Node Map** is useful for:
 - Viewing real-time cluster metrics.
 - Drilling down to individual nodes for monitoring health and performance.
 
-This page walks you through the process of setting up and enabling the Node Map.
+This page guides you through the process of setting up and enabling the Node Map.
 
 {% include enterprise-feature.md %}
 

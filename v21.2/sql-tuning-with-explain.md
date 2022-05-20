@@ -5,7 +5,7 @@ toc: true
 docs_area: develop
 ---
 
-This tutorial walks you through the common reasons for [slow SQL statements](query-behavior-troubleshooting.html#identify-slow-statements) and describes how to use [`EXPLAIN`](explain.html) to troubleshoot the issues in queries against the [`movr` example dataset](cockroach-demo.html#datasets).
+This tutorial guides you through the common reasons for [slow SQL statements](query-behavior-troubleshooting.html#identify-slow-statements) and describes how to use [`EXPLAIN`](explain.html) to troubleshoot the issues in queries against the [`movr` example dataset](cockroach-demo.html#datasets).
 
 ## Before you begin
 
