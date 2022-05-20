@@ -45,6 +45,8 @@ If you have a large number of services connecting to the same cluster, make sure
 
 In addition to setting a maximum connection pool size, set the maximum number of idle connections if possible. Cockroach Labs recommends setting the maximum number of idle connections to the maximum pool size. While this uses more memory, it allows many connections when concurrency is high without having to create a new connection for every new operation.
 
+{% include {{page.version.version}}/sql/server-side-connection-limit.md %} This may be useful in addition to your connection pool settings.
+
 ## Validating connections in a pool
 
 After a connection pool initializes connections to CockroachDB clusters, those connections can occasionally break. This could be due to changes in the cluster topography, or rolling upgrades and restarts, or network disruptions. {{ site.data.products.db }} clusters periodically are restarted for patch version updates, for example, so previously established connections would be invalid after the restart.
