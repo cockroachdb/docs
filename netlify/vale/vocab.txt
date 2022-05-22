@@ -123,6 +123,7 @@ elqdusy
 elsif
 emptive
 enablement
+endcapture
 endcomment
 endfor
 endif
@@ -194,6 +195,7 @@ https
 hueypark
 hyperthread
 hyperthreads
+img
 inconsolata
 incrementals
 indexable
@@ -314,6 +316,7 @@ noonan
 northamerica
 northcentralus
 northeurope
+nosha
 npgsql
 nuget
 nullability
@@ -342,7 +345,7 @@ perf
 performant
 permutable
 petersbug
-pbcrypto
+pgcrypto
 pgdump
 pgloader
 pgsql
@@ -468,6 +471,7 @@ Splunk
 sql
 sqlx
 sqlalchemy
+src
 srivatsa
 sstables
 stackdriver
@@ -534,6 +538,7 @@ timestamptz
 toc
 tocs
 tokenizable
+tokio
 tolerations
 toolchain
 toolchains
