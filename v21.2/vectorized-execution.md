@@ -75,10 +75,6 @@ The vectorized engine does not support queries containing:
 
 The vectorized engine does not support [working with spatial data](spatial-data.html). Queries with [geospatial functions](functions-and-operators.html#spatial-functions) or [spatial data](spatial-data.html) will revert to the row-oriented execution engine.
 
-### Unordered distinct operations
-
-{% include {{ page.version.version }}/known-limitations/unordered-distinct-operations.md %}
-
 ## See also
 
 - [SQL Layer](architecture/sql-layer.html)
