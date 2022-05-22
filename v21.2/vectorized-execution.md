@@ -17,7 +17,7 @@ You can configure vectorized execution with the `vectorize` [session variable](s
 
 Option    | Description
 ----------|------------
-`on`   | Turns on vectorized execution for all queries on rows over the [`vectorize_row_count_threshold`](#set-the-row-threshold-for-vectorized-execution) (0 rows, by default, meaning all queries will use the vectorized engine).<br><br>**Default:** `vectorize=on`
+`on`   | Turns on vectorized execution for all queries.<br><br>**Default:** `vectorize=on`
 `off`  | Turns off vectorized execution for all queries.
 
 For information about setting session variables, see [`SET` &lt;session variable&gt;](set-vars.html).
@@ -25,14 +25,6 @@ For information about setting session variables, see [`SET` &lt;session variable
 {{site.data.alerts.callout_success}}
 To see if CockroachDB will use the vectorized execution engine for a query, run a simple [`EXPLAIN`](explain.html) statement on the query. If `vectorize` is `true`, the query will be executed with the vectorized engine. If it is `false`, the row-oriented execution engine is used instead.
 {{site.data.alerts.end}}
-
-### Set the row threshold for vectorized execution
-
-The efficiency of vectorized execution increases with the number of rows processed. If you are querying a table with a small number of rows, it is more efficient to use row-oriented execution.
-
-By default, vectorized execution is enabled for all queries.
-
-For performance tuning, you can change the minimum number of rows required to use the vectorized engine to execute a query plan in the current session with the `vectorize_row_count_threshold` [session variable](set-vars.html).
 
 ## How vectorized execution works
 

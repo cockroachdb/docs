@@ -57,7 +57,6 @@
 | <a name="transaction-rows-written-log"></a> `transaction_rows_written_log` | The threshold for the number of rows written by a SQL transaction. If this value is exceeded, the event will be logged to `SQL_PERF` (or `SQL_INTERNAL_PERF` for internal transactions). | `0` | Yes | Yes |
 | <a name="transaction-status"></a> `transaction_status` | The state of the current transaction. See [Transactions](transactions.html) for more details. This session variable was called `transaction status` (with a space) in CockroachDB 1.x. It has been renamed for compatibility with PostgreSQL. | `NoTxn` | No | Yes |
 | <a name="vectorize"></a> `vectorize` | The vectorized execution engine mode. Options include `on` and `off`. For more details, see [Configure vectorized execution for CockroachDB](vectorized-execution.html#configure-vectorized-execution). | `on` | Yes | Yes |
-| <a name="vectorize-row-count-threshold"></a> `vectorize_row_count_threshold` | The minimum number of rows required to use the vectorized engine to execute a query plan. | `1000` | Yes | Yes |
 
 The following session variables are exposed only for backwards compatibility with earlier CockroachDB releases and have no impact on how CockroachDB runs:
 
