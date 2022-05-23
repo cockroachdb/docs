@@ -14,7 +14,7 @@ To view the **Monitoring** page, [log in](https://cockroachlabs.cloud/) and clic
 
 ## Monitor with Datadog
 
-The {{ site.data.products.dedicated }} integration for Datadog enables data collection and alerting on a subset of CockroachDB metrics available at the [Prometheus endpoint](../{{site.versions["stable"]}}/monitoring-and-alerting.html#prometheus-endpoint), using the Datadog platform. For details about the available metrics, see the [Datadog documentation](https://docs.datadoghq.com/integrations/tk).
+The {{ site.data.products.dedicated }} integration for Datadog enables data collection and alerting on a subset of CockroachDB metrics available at the [Prometheus endpoint](../{{site.versions["stable"]}}/monitoring-and-alerting.html#prometheus-endpoint), using the Datadog platform. For details about the available metrics, see the [Datadog documentation](https://docs.datadoghq.com/integrations/cockroach-cloud).
 
 To set up Datadog monitoring with {{ site.data.products.dedicated }}, your Datadog account must be associated with a [Datadog organization](https://docs.datadoghq.com/account_management/#organizations).
 
@@ -41,6 +41,7 @@ To enable Datadog monitoring for a {{ site.data.products.dedicated }} cluster:
 Once enabled, the **Integration status** in the **Datadog** panel on the **Monitoring** page will show as `Active`.
 
 If an issue is encountered during the integration, one of the following statuses may appear instead:
+
 - `Active` indicates that the integration has been successfully deployed.
 - `Inactive` indicates that the integration has not been successfully deployed. Setup has either not been attempted or has encountered an error.
 - `Unhealthy` indicates that the integration API key is invalid and needs to be [updated](#update-integration).
@@ -49,17 +50,25 @@ If an issue is encountered during the integration, one of the following statuses
 Metrics export from CockroachDB can be interrupted in the event of:
 
 - A stale API key. In this case, the integration status will be `Unhealthy`. To resolve the issue, [update your integration](#update-integration) with a new API key.
-- Transient CockroachDB unavailbility or issues with the OpenTelemetry Collector that exports the metrics. In each case, the integration status will continue to be `Active` but you might experience incomplete metrics exports in Datadog. To resolve the issue, try [deactivating](#deactivate-integration) and reactivating the integration from the **Datadog** panel. If this does not resolve the issue, [contact our support team](https://support.cockroachlabs.com/).
+- Transient CockroachDB unavailbility. In this case, the integration status will continue to be `Active` but you might experience incomplete metrics exports in Datadog. To resolve the issue, try [deactivating](#deactivate-integration) and reactivating the integration from the **Datadog** panel. If this does not resolve the issue, [contact our support team](https://support.cockroachlabs.com/).
+
+{{site.data.alerts.callout_info}}
+Gaps in metrics within Datadog do not necessarily point to an availability issue with CockroachDB. If you encounter any gaps in metrics, we recommend [contacting support](https://support.cockroachlabs.com/).
+{{site.data.alerts.end}}
 
 To monitor the health of metrics export, you can [create a custom Monitor](#monitor-health-of-metrics-export) in Datadog. 
 
 ### View and configure dashboards
 
+{% comment %}
 Open your Datadog [Dashboard List](https://docs.datadoghq.com/dashboards/#dashboard-list) and click `TK`. This sample dashboard presents metrics on TK.
 
 To create your own {{ site.data.products.dedicated }} dashboard, you can either [clone](https://docs.datadoghq.com/dashboards/#clone-dashboard) the default `TK` dashboard and edit the widgets, or [create a new dashboard](https://docs.datadoghq.com/dashboards/#new-dashboard).
+{% endcomment %}
 
-The [available metrics](https://docs.datadoghq.com/integrations/tk) are drawn directly from the CockroachDB [Prometheus endpoint](../{{site.versions["stable"]}}/monitoring-and-alerting.html#prometheus-endpoint) and are intended for use as building blocks for your own charts.
+To create your own {{ site.data.products.dedicated }} dashboard, see the [Datadog documentation](https://docs.datadoghq.com/dashboards/#new-dashboard).
+
+The [available metrics](https://docs.datadoghq.com/integrations/cockroach-cloud) are drawn directly from the CockroachDB [Prometheus endpoint](../{{site.versions["stable"]}}/monitoring-and-alerting.html#prometheus-endpoint) and are intended for use as building blocks for your own charts.
 
 {{site.data.alerts.callout_info}}
 Metric values and time-series graphs in Datadog are not guaranteed to match those in the [DB Console](#access-the-db-console), due to differences in how CockroachDB and Datadog calculate and display metrics.
@@ -74,7 +83,7 @@ To preview the metrics being collected, you can:
 
 To monitor the health of metrics export, we recommend that you [create a new Monitor](https://docs.datadoghq.com/monitors/create/types/metric/?tab=threshold).
 
-Select **Threshold Alert** as the detection method, which configures an alert that is sent when a [supported metric](https://docs.datadoghq.com/integrations/cockroachdb/?tab=host#data-collected) reaches a given threshold. For descriptions of some useful CockroachDB alerts, see [Monitoring and Alerting](../{{site.versions["stable"]}}/monitoring-and-alerting.html#events-to-alert-on).
+Select **Threshold Alert** as the detection method, which configures an alert that is sent when a [supported metric](https://docs.datadoghq.com/integrations/cockroach-cloud) reaches a given threshold. For descriptions of some useful CockroachDB alerts, see [Monitoring and Alerting](../{{site.versions["stable"]}}/monitoring-and-alerting.html#events-to-alert-on).
 
 - To **Define the metric**:
 
