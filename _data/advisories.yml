@@ -1,3 +1,7 @@
+- advisory: a81315
+  summary: Prepared SELECT queries that filter a column with a constant casted to the wrong type fail to return the expected results.
+  versions: v21.2.0 to v21.2.10, v22.1.0.
+  date: May 23, 2022
 - advisory: a79066
   summary: Data key rotation is inadvertently disabled if the store key hasn't changed since the last node start.
   versions: All clusters with encryption-at-rest enabled running versions of CockroachDB v20.2.x, v21.1.0-v21.1.18, and v21.2.0-v21.2.9.
