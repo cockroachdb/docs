@@ -27,9 +27,11 @@ Note that if multiple mutations inside the same statement affect different table
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/70731)
 
-### Limit on the number of rows read or written by a single transaction
+### `transaction_rows_read_err` and `transaction_rows_written_err` do not halt query execution
 
-A [transaction](transactions.html#limit-the-number-of-rows-written-or-read-in-a-transaction) reading more than `transaction_rows_read_err` rows (or writing more than `transaction_rows_written_err` rows) fails with an error.
+Limit on the number of rows read or written by a single transaction
+
+A [transaction](transactions.html#limit-the-number-of-rows-written-or-read-in-a-transaction) reading more than `transaction_rows_read_err` rows (or writing more than `transaction_rows_written_err` rows) fails with an error, but do not halt query execution. The error is returned after query execution has finished and the results have been returned to the client.
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/70473)
 
