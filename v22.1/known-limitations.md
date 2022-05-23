@@ -16,9 +16,14 @@ You cannot [restore](restore.html) a multi-region table into a non-multi-region 
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/71502)
 
-### Multiple CTEs with mutations on the same row can cause inconsistency
+### Statements containing multiple modification subqueries of the same table are disallowed
 
-You can [`UPSERT`](upsert.html) the same row multiple times in a single statement using [common table expressions](common-table-expressions.html) (CTEs), which could lead to inconsistencies due to the `UPSERT` operator not reading its own writes.
+Statements containing multiple modification subqueries mutating the same row could cause corruption. These statements are disallowed by default, but you can enable multiple modification subqueries with one the following:
+
+- Set the `sql.multiple_modifications_of_table.enabled` [cluster setting](cluster-settings.html) to `true`.
+- Use the `enable_multiple_modifications_of_table` [session variable](set-vars.html).
+
+Note that if multiple mutations inside the same statement affect different tables with [`FOREIGN KEY`](foreign-key.html) relations and `ON CASCADE` clauses between them, the results will be different from what is expected in PostgreSQL.
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/70731)
 
