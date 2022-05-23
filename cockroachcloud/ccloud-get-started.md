@@ -18,6 +18,21 @@ Choose your OS:
 </div>
 
 <section class="filter-content" markdown="1" data-scope="mac">
+
+You can install `ccloud` using either Homebrew or by downloading the binary.
+
+### Use Homebrew
+
+1. [Install Homebrew](http://brew.sh/).
+1. Install using the `ccloud` tap:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    brew install cockroachdb/tap/ccloud
+    ~~~
+
+### Download the binary
+
 Download and extract the `ccloud` binary and add it to your `PATH`.
 
 {% include_cached copy-clipboard.html %}
