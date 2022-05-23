@@ -14,7 +14,7 @@ To view the **Monitoring** page, [log in](https://cockroachlabs.cloud/) and clic
 
 ## Monitor with Datadog
 
-The {{ site.data.products.dedicated }} integration for Datadog enables data collection and alerting on a subset of CockroachDB metrics available at the [Prometheus endpoint](../{{site.versions["stable"]}}/monitoring-and-alerting.html#prometheus-endpoint), using the Datadog platform. For details about the available metrics, see the [Datadog documentation](https://docs.datadoghq.com/integrations/cockroach-cloud).
+The [{{ site.data.products.dedicated }} integration for Datadog](https://docs.datadoghq.com/integrations/cockroach_cloud/) enables data collection and alerting on a [subset of CockroachDB metrics](#available-metrics) available at the [Prometheus endpoint](../{{site.versions["stable"]}}/monitoring-and-alerting.html#prometheus-endpoint), using the Datadog platform.
 
 To set up Datadog monitoring with {{ site.data.products.dedicated }}, your Datadog account must be associated with a [Datadog organization](https://docs.datadoghq.com/account_management/#organizations).
 
@@ -32,7 +32,7 @@ To enable Datadog monitoring for a {{ site.data.products.dedicated }} cluster:
     - The **API key** is associated with your Datadog organization. If you don't have an API key to use with your {{ site.data.products.dedicated }} cluster, you need to create one. For instructions, see the [Datadog documentation](https://docs.datadoghq.com/account_management/api-app-keys/#add-an-api-key-or-client-token).
     - Your **Datadog Site** corresponds to your Datadog Site URL. For more details, see the [Datadog documentation](https://docs.datadoghq.com/getting_started/site/).
 
-1. Click **Create**.  Depending on the size of your cluster and the current load on the system, the integration might take some time to become enabled.
+1. Click **Create**. Depending on the size of your cluster and the current load on the system, the integration might take some time to become enabled.
 
 1. Once it is registered on Datadog, the cluster will appear on your Datadog [Infrastructure List](https://docs.datadoghq.com/infrastructure/list/). This can take up to several minutes.
 
@@ -60,19 +60,17 @@ To monitor the health of metrics export, you can [create a custom Monitor](#moni
 
 ### View and configure dashboards
 
-{% comment %}
-Open your Datadog [Dashboard List](https://docs.datadoghq.com/dashboards/#dashboard-list) and click `TK`. This sample dashboard presents metrics on TK.
+Open your Datadog [Dashboard List](https://docs.datadoghq.com/dashboards/#dashboard-list) and click `CockroachDB Dedicated Overview`. This sample dashboard presents a high-level view of SQL performance and latency, and information about resource consumption to help aid in capacity planning. It provides the ability to drill down to specific nodes (identified by a `(node, region)` tag pair) within your cluster.
 
-To create your own {{ site.data.products.dedicated }} dashboard, you can either [clone](https://docs.datadoghq.com/dashboards/#clone-dashboard) the default `TK` dashboard and edit the widgets, or [create a new dashboard](https://docs.datadoghq.com/dashboards/#new-dashboard).
-{% endcomment %}
+To create your own {{ site.data.products.dedicated }} dashboard, you can either [clone](https://docs.datadoghq.com/dashboards/#clone-dashboard) the default `CockroachDB Dedicated Overview` dashboard and edit the widgets, or [create a new dashboard](https://docs.datadoghq.com/dashboards/#new-dashboard).
 
-To create your own {{ site.data.products.dedicated }} dashboard, see the [Datadog documentation](https://docs.datadoghq.com/dashboards/#new-dashboard).
-
-The [available metrics](https://docs.datadoghq.com/integrations/cockroach-cloud) are drawn directly from the CockroachDB [Prometheus endpoint](../{{site.versions["stable"]}}/monitoring-and-alerting.html#prometheus-endpoint) and are intended for use as building blocks for your own charts.
+The [available metrics](#available-metrics) are drawn directly from the CockroachDB [Prometheus endpoint](../{{site.versions["stable"]}}/monitoring-and-alerting.html#prometheus-endpoint) and are intended for use as building blocks for your own charts.
 
 {{site.data.alerts.callout_info}}
 Metric values and time-series graphs in Datadog are not guaranteed to match those in the [DB Console](#access-the-db-console), due to differences in how CockroachDB and Datadog calculate and display metrics.
 {{site.data.alerts.end}}
+
+#### Available metrics
 
 To preview the metrics being collected, you can:
 
@@ -83,7 +81,7 @@ To preview the metrics being collected, you can:
 
 To monitor the health of metrics export, we recommend that you [create a new Monitor](https://docs.datadoghq.com/monitors/create/types/metric/?tab=threshold).
 
-Select **Threshold Alert** as the detection method, which configures an alert that is sent when a [supported metric](https://docs.datadoghq.com/integrations/cockroach-cloud) reaches a given threshold. For descriptions of some useful CockroachDB alerts, see [Monitoring and Alerting](../{{site.versions["stable"]}}/monitoring-and-alerting.html#events-to-alert-on).
+Select **Threshold Alert** as the detection method, which configures an alert that is sent when a supported metric reaches a given threshold. For descriptions of some useful CockroachDB alerts, see [Monitoring and Alerting](../{{site.versions["stable"]}}/monitoring-and-alerting.html#events-to-alert-on).
 
 - To **Define the metric**:
 
