@@ -34,7 +34,7 @@ Carefully consider the following tradeoffs:
 
 - A **smaller number of larger nodes** emphasizes cluster stability.
 
-    - Larger nodes tolerate hotspots more effectively than smaller nodes.
+    - Larger nodes tolerate hot spots more effectively than smaller nodes.
     - Queries operating on large data sets may strain network transfers if the data is spread widely over many smaller nodes. Having fewer and larger nodes enables more predictable workload performance.
     - A cluster with fewer nodes may be easier to operate and maintain.
 

@@ -21,7 +21,6 @@ The table below lists the experimental session settings that are available.  For
 | Variable                            | Default Value | Description                                                                                                                                                                                                                                                                                             |
 |-------------------------------------+---------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `enable_experimental_alter_column_type_general`       | `'false'`       |  If set to `'true'`, enables [column type altering](#alter-column-types) for general cases, with some limitations.                                                                                                                                                                                   |
-| `experimental_enable_hash_sharded_indexes`       | `'off'`       |  If set to `'on'`, enables [hash-sharded indexes](#hash-sharded-indexes) with `USING HASH`.                                                                                                                                                                                   |
 | `experimental_enable_temp_tables`       | `'off'`       |  If set to `'on'`, enables [temporary objects](#temporary-objects), including [temporary tables](temporary-tables.html), [temporary views](views.html#temporary-views), and [temporary sequences](create-sequence.html#temporary-sequences).                                                                                                                                                                                   |
 
 ## SQL statements
@@ -68,7 +67,7 @@ Example:
 ~~~
 
 ~~~
- index_name |     fingerprint     
+ index_name |     fingerprint
 ------------+---------------------
  primary    | 1999042440040364641
 (1 row)
@@ -109,7 +108,7 @@ This example uses the `users` table from our open-source, fictional peer-to-peer
 ~~~
 
 ~~~
- job_uuid |        error_type        | database | table |                       primary_key                        |         timestamp         | repaired |                                                                                                                                                                         details                                                                                                                                                                         
+ job_uuid |        error_type        | database | table |                       primary_key                        |         timestamp         | repaired |                                                                                                                                                                         details
 ----------+--------------------------+----------+-------+----------------------------------------------------------+---------------------------+----------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
           | index_key_decoding_error | movr     | users | ('boston','0009eeb5-d779-4bf8-b1bd-8566533b105c')        | 2018-10-18 16:00:38.65916 | f        | {"error_message": "key ordering did not match datum ordering. IndexDescriptor=ASC", "index_name": "primary", "row_data": {"address": "e'06484 Christine Villages\\nGrantport, TN 01572'", "city": "'boston'", "credit_card": "'4634253150884'", "id": "'0009eeb5-d779-4bf8-b1bd-8566533b105c'", "name": "'Jessica Webb'"}}
           | index_key_decoding_error | movr     | users | ('los angeles','0001252c-fc16-4006-b6dc-c6b1a0fd1f5b')   | 2018-10-18 16:00:38.65916 | f        | {"error_message": "key ordering did not match datum ordering. IndexDescriptor=ASC", "index_name": "primary", "row_data": {"address": "e'91309 Warner Springs\\nLake Danielmouth, PR 33400'", "city": "'los angeles'", "credit_card": "'3584736360686445'", "id": "'0001252c-fc16-4006-b6dc-c6b1a0fd1f5b'", "name": "'Rebecca Gibson'"}}
@@ -124,7 +123,7 @@ This example uses the `users` table from our open-source, fictional peer-to-peer
 
 ### Show range information for a specific row
 
-The [`SHOW RANGE ... FOR ROW`](show-range-for-row.html) statement shows information about a [range](architecture/overview.html#glossary) for a particular row of data. This information is useful for verifying how SQL data maps to underlying ranges, and where the replicas for a range are located.
+The [`SHOW RANGE ... FOR ROW`](show-range-for-row.html) statement shows information about a [range](architecture/overview.html#architecture-range) for a particular row of data. This information is useful for verifying how SQL data maps to underlying ranges, and where the replicas for a range are located.
 
 ## Functions and Operators
 
@@ -146,7 +145,7 @@ The table below lists the experimental SQL functions and operators available in 
 
 ## Hash-sharded indexes
 
- CockroachDB supports hash-sharded indexes with the [`USING HASH`](create-index.html#parameters) keywords. Hash-sharded indexes distribute sequential traffic uniformly across ranges, eliminating single-range hotspots and improving write performance on sequentially-keyed indexes at a small cost to read performance. For more information, see [Hash-sharded indexes](hash-sharded-indexes.html).
+ CockroachDB supports hash-sharded indexes with the [`USING HASH`](create-index.html#parameters) keywords. Hash-sharded indexes distribute sequential traffic uniformly across ranges, eliminating single-range hot spots and improving write performance on sequentially-keyed indexes at a small cost to read performance. For more information, see [Hash-sharded indexes](hash-sharded-indexes.html).
 
 ## Password authentication without TLS
 

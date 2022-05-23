@@ -53,7 +53,7 @@ Parameter | Description
 `STORING ...`| Store (but do not sort) each column whose name you include.<br><br>For information on when to use `STORING`, see  [Store Columns](#store-columns).  Note that columns that are part of a table's [`PRIMARY KEY`](primary-key.html) cannot be specified as `STORING` columns in secondary indexes on the table.<br><br>`COVERING` and `INCLUDE` are aliases for `STORING` and work identically.
 `opt_partition_by` | An [Enterprise-only](enterprise-licensing.html) option that lets you [define index partitions at the row level](partitioning.html). As of CockroachDB v21.1 and later, most users should use [`REGIONAL BY ROW` tables](multiregion-overview.html#regional-by-row-tables). Indexes against regional by row tables are automatically partitioned, so explicit index partitioning is not required.
 `opt_where_clause` |  An optional `WHERE` clause that defines the predicate boolean expression of a [partial index](partial-indexes.html).
-`USING HASH WITH BUCKET COUNT` |  Creates a [hash-sharded index](hash-sharded-indexes.html) with `n_buckets` number of buckets.<br>{{site.data.alerts.callout_info}}To enable hash-sharded indexes, set the `experimental_enable_hash_sharded_indexes` [session variable](set-vars.html) to `on`.{{site.data.alerts.end}}
+`USING HASH` |  Creates a [hash-sharded index](hash-sharded-indexes.html).
 `WITH storage_parameter` |  A comma-separated list of [spatial index tuning parameters](spatial-indexes.html#index-tuning-parameters). Supported parameters include `fillfactor`, `s2_max_level`, `s2_level_mod`, `s2_max_cells`, `geometry_min_x`, `geometry_max_x`, `geometry_min_y`, and `geometry_max_y`. The `fillfactor` parameter is a no-op, allowed for PostgreSQL-compatibility.<br><br>For details, see [Spatial index tuning parameters](spatial-indexes.html#index-tuning-parameters). For an example, see [Create a spatial index that uses all of the tuning parameters](spatial-indexes.html#create-a-spatial-index-that-uses-all-of-the-tuning-parameters).
 `CONCURRENTLY` |  Optional, no-op syntax for PostgreSQL compatibility. All indexes are created concurrently in CockroachDB.
 `opt_interleave` | {% include {{ page.version.version }}/misc/interleave-deprecation-note.md %}
@@ -93,7 +93,7 @@ Multiple-column indexes sort columns in the order you list them.
 > CREATE INDEX ON users (name, city);
 ~~~
 
-To create the most useful multiple-column indexes, we recommend reviewing our [best practices](schema-design-indexes.html).
+To create the most useful multiple-column indexes, we recommend reviewing our [best practices](schema-design-indexes.html#best-practices).
 
 #### Unique indexes
 
@@ -110,6 +110,8 @@ This also applies the [`UNIQUE` constraint](unique.html) at the table level, sim
 ~~~ sql
 > ALTER TABLE users ADD CONSTRAINT users_name_id_key UNIQUE (name, id);
 ~~~
+
+Primary key columns that are not specified within a unique index are automatically marked as [`STORING`](indexes.html#storing-columns) in the [`information_schema.statistics`](information-schema.html#statistics) table and in [`SHOW INDEX`](show-index.html).
 
 ### Create GIN indexes
 
@@ -177,7 +179,7 @@ To sort columns in descending order, you must explicitly set the option when cre
 > CREATE INDEX ON users (city DESC, name);
 ~~~
 
-Note that how a column is ordered in the index will affect the ordering of the index keys, and may affect the efficiency of queries that include an `ORDER BY` clause.
+How a column is ordered in the index will affect the ordering of the index keys, and may affect the efficiency of queries that include an `ORDER BY` clause.
 
 ### Query specific indexes
 
@@ -191,11 +193,11 @@ Normally, CockroachDB selects the index that it calculates will scan the fewest 
 ~~~
   table_name |   index_name        | non_unique | seq_in_index | column_name | direction | storing | implicit
 +------------+---------------------+------------+--------------+-------------+-----------+---------+----------+
-  users      | primary             |   false    |            1 | city        | ASC       |  false  |  false
-  users      | primary             |   false    |            2 | id          | ASC       |  false  |  false
-  users      | primary             |   false    |            3 | name        | N/A       |  true   |  false
-  users      | primary             |   false    |            4 | address     | N/A       |  true   |  false
-  users      | primary             |   false    |            5 | credit_card | N/A       |  true   |  false
+  users      | users_pkey          |   false    |            1 | city        | ASC       |  false  |  false
+  users      | users_pkey          |   false    |            2 | id          | ASC       |  false  |  false
+  users      | users_pkey          |   false    |            3 | name        | N/A       |  true   |  false
+  users      | users_pkey          |   false    |            4 | address     | N/A       |  true   |  false
+  users      | users_pkey          |   false    |            5 | credit_card | N/A       |  true   |  false
   users      | users_city_name_idx |    true    |            1 | city        | DESC      |  false  |  false
   users      | users_city_name_idx |    true    |            2 | name        | ASC       |  false  |  false
   users      | users_city_name_idx |    true    |            3 | id          | ASC       |  false  |   true
@@ -219,75 +221,13 @@ Normally, CockroachDB selects the index that it calculates will scan the fewest 
 (5 rows)
 ~~~
 
+You can use the `@primary` alias to use the table's primary key in your query if no secondary index explicitly named `primary` exists on that table.
+
 ### Create a hash-sharded secondary index
 
 {% include {{page.version.version}}/performance/use-hash-sharded-indexes.md %}
 
-{% include copy-clipboard.html %}
-~~~ sql
-> CREATE TABLE events (
-    product_id INT8,
-    owner UUID,
-    serial_number VARCHAR,
-    event_id UUID,
-    ts TIMESTAMP,
-    data JSONB,
-    PRIMARY KEY (product_id, owner, serial_number, ts, event_id)
-);
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SET experimental_enable_hash_sharded_indexes=on;
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> CREATE INDEX ON events(ts) USING HASH WITH BUCKET_COUNT=8;
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SHOW INDEX FROM events;
-~~~
-
-~~~
-  table_name |  index_name   | non_unique | seq_in_index |       column_name        | direction | storing | implicit
--------------+---------------+------------+--------------+--------------------------+-----------+---------+-----------
-  events     | events_ts_idx |    true    |            1 | crdb_internal_ts_shard_8 | ASC       |  false  |   true
-  events     | events_ts_idx |    true    |            2 | ts                       | ASC       |  false  |  false
-  events     | events_ts_idx |    true    |            3 | product_id               | ASC       |  false  |   true
-  events     | events_ts_idx |    true    |            4 | owner                    | ASC       |  false  |   true
-  events     | events_ts_idx |    true    |            5 | serial_number            | ASC       |  false  |   true
-  events     | events_ts_idx |    true    |            6 | event_id                 | ASC       |  false  |   true
-  events     | primary       |   false    |            1 | product_id               | ASC       |  false  |  false
-  events     | primary       |   false    |            2 | owner                    | ASC       |  false  |  false
-  events     | primary       |   false    |            3 | serial_number            | ASC       |  false  |  false
-  events     | primary       |   false    |            4 | ts                       | ASC       |  false  |  false
-  events     | primary       |   false    |            5 | event_id                 | ASC       |  false  |  false
-  events     | primary       |   false    |            6 | data                     | N/A       |  true   |  false
-  events     | primary       |   false    |            7 | crdb_internal_ts_shard_8 | N/A       |  true   |  false
-(13 rows)
-
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SHOW COLUMNS FROM events;
-~~~
-
-~~~
-        column_name        | data_type | is_nullable | column_default |              generation_expression              |         indices         | is_hidden
----------------------------+-----------+-------------+----------------+-------------------------------------------------+-------------------------+------------
-  product_id               | INT8      |    false    | NULL           |                                                  | {events_ts_idx,primary} |   false
-  owner                    | UUID      |    false    | NULL           |                                                  | {events_ts_idx,primary} |   false
-  serial_number            | VARCHAR   |    false    | NULL           |                                                  | {events_ts_idx,primary} |   false
-  event_id                 | UUID      |    false    | NULL           |                                                  | {events_ts_idx,primary} |   false
-  ts                       | TIMESTAMP |    false    | NULL           |                                                  | {events_ts_idx,primary} |   false
-  data                     | JSONB     |    true     | NULL           |                                                  | {primary}               |   false
-  crdb_internal_ts_shard_8 | INT4      |    false    | NULL           | mod(fnv32(crdb_internal.datums_to_bytes(ts)), 8) | {events_ts_idx,primary} |   true
-(7 rows)
-~~~
+{% include {{page.version.version}}/performance/create-index-hash-sharded-secondary-index.md %}
 
 ## See also
 

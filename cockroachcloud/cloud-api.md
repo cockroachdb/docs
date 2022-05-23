@@ -5,9 +5,7 @@ toc: true
 docs_area: manage
 ---
 
-The Cloud API is a [REST interface](https://en.wikipedia.org/wiki/Representational_state_transfer) that allows users programmatic access to manage the lifecycle of clusters within their organization.
-
-{% include_cached cockroachcloud/experimental-warning.md %}
+The Cloud API is a [REST interface](https://en.wikipedia.org/wiki/Representational_state_transfer) that allows you programmatic access to manage the lifecycle of clusters within your organization.
 
 ## API reference
 
@@ -82,9 +80,9 @@ curl --request POST \
 Where:
 
   - `{cluster_name}` is the name of the cluster. This should be a short string with no whitespace.
-  - `{cloud_provider}` is the name of the cloud infrastructure provider on which you want your cluster to run. Possible values are: `CLOUD_PROVIDER_GCP` and `CLOUD_PROVIDER_AWS`.
+  - `{cloud_provider}` is the name of the cloud infrastructure provider on which you want your cluster to run. Possible values are: `GCP` and `AWS`.
   - `{region_name}` is the zone code of the cloud infrastructure provider. For example, on GCP you can set the "us-west2" zone code.
-  - `{spend_limit}` is the [maximum amount of money, in US cents, you want to spend per month](serverless-cluster-management.html#planning-your-cluster) on this cluster.
+  - `{spend_limit}` is the [maximum amount of money, in US cents, you want to spend per month](plan-your-cluster.html) on this cluster.
 
 For example, to create a new free Serverless cluster named "notorious-moose" using the default values for the cloud infrastructure provider and region:
 
@@ -99,7 +97,7 @@ For example, to create a new free Serverless cluster named "notorious-moose" usi
 curl --request POST \
   --url https://cockroachlabs.cloud/api/v1/clusters \
   --header 'Authorization: Bearer {secret_key}' \
-  --data '{"name":"notorious-moose","provider":"CLOUD_PROVIDER_GCP","spec":{"serverless":{"regions":["us-central1"],"spendLimit":0}}}'
+  --data '{"name":"notorious-moose","provider":"GCP","spec":{"serverless":{"regions":["us-central1"],"spendLimit":0}}}'
 ~~~
 </section>
 
@@ -108,7 +106,7 @@ curl --request POST \
 ~~~ JSON
 {
   "name": "notorious-moose",
-  "provider": "CLOUD_PROVIDER_GCP",
+  "provider": "GCP",
   "spec": {
     "serverless": {
       "regions": [
@@ -133,7 +131,7 @@ If the request was successful, the API will return information about the newly c
   "id": "{cluster_id}",
   "operation_status": "CLUSTER_STATUS_UNSPECIFIED",
   "name": "{cluster_name}",
-  "plan": "PLAN_SERVERLESS",
+  "plan": "SERVERLESS",
   "regions": [
     {
       "name": "{region_name}",
@@ -150,14 +148,14 @@ If the request was successful, the API will return information about the newly c
       "routing_id": "{routing_id}"
     }
   },
-  "state": "CLUSTER_STATE_CREATING",
+  "state": "CREATING",
   "updated_at": "2022-03-14T14:15:22Z"
 }
 ~~~
 
 Where:
 
-  - `{cloud_provider}` is the name of the cloud infrastructure provider on which you want your cluster to run. Possible values are: `CLOUD_PROVIDER_GCP` and `CLOUD_PROVIDER_AWS`. The default value is `CLOUD_PROVIDER_UNSPECIFIED`.
+  - `{cloud_provider}` is the name of the cloud infrastructure provider on which you want your cluster to run. Possible values are: `GCP` and `AWS`.
   - `{cluster_id}` is the unique ID of this cluster. Use this ID when making API requests for this particular cluster.
     {{site.data.alerts.callout_info}}
     The cluster ID used in the Cloud API is different than the routing ID used when [connecting to clusters](connect-to-a-serverless-cluster.html).
@@ -199,7 +197,7 @@ If the request was successful, the API will return detailed information about th
   "id": "{cluster_id}",
   "operation_status": "CLUSTER_STATUS_UNSPECIFIED",
   "name": "{cluster_name}",
-  "plan": "PLAN_SERVERLESS",
+  "plan": "SERVERLESS",
   "regions": [
     {
       "name": "{region_name}",
@@ -216,7 +214,7 @@ If the request was successful, the API will return detailed information about th
       "routing_id": "{routing_id}"
     }
   },
-  "state": "CLUSTER_STATE_CREATING",
+  "state": "CREATING",
   "updated_at": "2022-03-14T14:15:22Z"
 }
 ~~~
@@ -228,10 +226,10 @@ Where:
   The cluster ID used in the Cloud API is different than the routing ID used when [connecting to clusters](connect-to-a-serverless-cluster.html).
   {{site.data.alerts.end}}
   - `{cluster_name}` is the name of the cluster you specified when creating the cluster.
-  - `{cloud_provider}` is the name of the cloud infrastructure provider on which you want your cluster to run. Possible values are: `CLOUD_PROVIDER_GCP` and `CLOUD_PROVIDER_AWS`. The default value is `CLOUD_PROVIDER_UNSPECIFIED`.
+  - `{cloud_provider}` is the name of the cloud infrastructure provider on which you want your cluster to run. Possible values are: `GCP` and `AWS`.
   - `{account_id}` is the ID of the account that created the cluster. If the cluster was created using the API, this will be the service account ID associated with the secret key used when creating the cluster.
   - `{region_name}` is the cloud infrastructure provider region where the cluster is located.
-  - `{spend_limit}` is the [maximum amount of money, in US cents, you want to spend per month](serverless-cluster-management.html#planning-your-cluster) on this cluster.
+  - `{spend_limit}` is the [maximum amount of money, in US cents, you want to spend per month](plan-your-cluster.html) on this cluster.
   - `{routing_id}` is the cluster name and tenant ID of the cluster used when [connecting to clusters](connect-to-a-serverless-cluster.html). For example, `funky-skunk-123`.
   - `{server_host}` is the DNS name of the host on which the cluster is located.
 
@@ -281,7 +279,7 @@ Where:
 
 - `{node_name}` is the name of the node.
 - `{region_name}` is the cloud infrastructure provider region where the cluster is located.
-- `{status}` is the status of the node. Possible values are: `NODE_STATUS_LIVE` and `NODE_STATUS_NOT_READY`.
+- `{status}` is the status of the node. Possible values are: `LIVE` and `NOT_READY`.
 
 ## Set the maximum spend limit of a Serverless cluster
 
@@ -318,7 +316,7 @@ Where:
   The cluster ID used in the Cloud API is different than the routing ID used when [connecting to clusters](connect-to-a-serverless-cluster.html).
   {{site.data.alerts.end}}
   - `{secret_key}` is the secret key for the service account.
-  - `{spend_limit}` is the [maximum amount of money, in US cents, you want to spend per month](serverless-cluster-management.html#planning-your-cluster) on this cluster.
+  - `{spend_limit}` is the [maximum amount of money, in US cents, you want to spend per month](plan-your-cluster.html) on this cluster.
 
 If the request was successful, the client will not receive a response payload.
 
@@ -383,7 +381,7 @@ If the request was successful, the client will receive a list of all clusters wi
       "id": "{cluster_id}",
       "operation_status": "CLUSTER_STATUS_UNSPECIFIED",
       "name": "{cluster_name}",
-      "plan": "PLAN_SERVERLESS",
+      "plan": "SERVERLESS",
       "regions": [
         {
           "name": "{region_name}",
@@ -400,7 +398,7 @@ If the request was successful, the client will receive a list of all clusters wi
           "routing_id": "{routing_id}"
         }
       },
-      "state": "CLUSTER_STATE_CREATING",
+      "state": "CREATING",
       "updated_at": "2022-03-14T14:15:22Z"
     }
   ],
@@ -416,10 +414,10 @@ Where:
   The cluster ID used in the Cloud API is different than the routing ID used when [connecting to clusters](connect-to-a-serverless-cluster.html).
   {{site.data.alerts.end}}
   - `{cluster_name}` is the name of the cluster.
-  - `{cloud_provider}` is the name of the cloud infrastructure provider. Possible values are: `CLOUD_PROVIDER_GCP` and `CLOUD_PROVIDER_AWS`.
+  - `{cloud_provider}` is the name of the cloud infrastructure provider. Possible values are: `GCP` and `AWS`.
   - `{account_id}` is the ID of the account that created the cluster. If the cluster was created using the API, this will be the service account ID associated with the secret key used when creating the cluster.
   - `{region_name}` is the zone code of the cloud infrastructure provider where the cluster is located.
-  - `{spend_limit}` is the [maximum amount of money, in US cents, you want to spend per month](serverless-cluster-management.html#planning-your-cluster) on this cluster.
+  - `{spend_limit}` is the [maximum amount of money, in US cents, you want to spend per month](plan-your-cluster.html) on this cluster.
 
 ## List the available regions for a cloud infrastructure provider
 
@@ -434,7 +432,7 @@ curl --request GET \
 
 Where:
 
-  - `{cloud_provider}` is the name of the cloud infrastructure provider. Possible values are: `CLOUD_PROVIDER_GCP` and `CLOUD_PROVIDER_AWS`.
+  - `{cloud_provider}` is the name of the cloud infrastructure provider. Possible values are: `GCP` and `AWS`.
   - `{secret_key}` is the secret key for the service account.
 
 If the request was successful, the client will receive a list of available regions for the specified cloud infrastructure provider.

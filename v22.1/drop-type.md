@@ -9,6 +9,8 @@ The `DROP TYPE` [statement](sql-statements.html) drops a specified [enumerated d
 
 {% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
+{% include {{ page.version.version }}/misc/declarative-schema-changer-note.md %}
+
 ## Synopsis
 
 <div>

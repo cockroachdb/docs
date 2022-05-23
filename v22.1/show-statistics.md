@@ -5,11 +5,7 @@ toc: true
 ---
 The `SHOW STATISTICS` [statement](sql-statements.html) lists [table statistics](create-statistics.html) used by the [cost-based optimizer](cost-based-optimizer.html).
 
-{{site.data.alerts.callout_info}}
-[By default, CockroachDB automatically generates statistics](cost-based-optimizer.html#table-statistics) on all indexed columns, and up to 100 non-indexed columns.
-
- CockroachDB also automatically collects [multi-column statistics](create-statistics.html#create-statistics-on-multiple-columns) on the columns that prefix each index.
-{{site.data.alerts.end}}
+By default, CockroachDB [automatically generates statistics](cost-based-optimizer.html#table-statistics) on all indexed columns and up to 100 non-indexed columns, and automatically collects [multi-column statistics](create-statistics.html#create-statistics-on-multiple-columns) on the columns that prefix each index.
 
 ## Synopsis
 
@@ -25,7 +21,20 @@ No [privileges](security-reference/authorization.html#managing-privileges) are r
 
 Parameter      | Description
 ---------------+---------------
-`table_name`   | The name of the table you want to view statistics for.
+`table_name`   | The name of the table to view statistics for.
+
+## Output
+
+| Column | Description |
+|-----------|-------------|
+| `statistics_name` | The name of the statistics. If `__auto__`, the statistics were created automatically. |
+| `column_names` | The name of the columns on which the statistics were created. |
+| `created` | The timestamp when the statistics were created. |
+| `row_count` | The number of rows for which the statistics were computed. |
+| `distinct_count` |  The number of distinct values for which the statistics were computed. |
+| `null_count` |  The number of null values for which the statistics were computed.  |
+| `avg_size` |  <span class="version-tag">New in v22.1:</span> The average size in bytes of the values of the columns for which the statistics were computed. |
+| `histogram_id` |  The ID of the [histogram](cost-based-optimizer.html#control-histogram-collection) used to compute statistics. |
 
 ## Examples
 
@@ -39,21 +48,21 @@ Parameter      | Description
 ~~~
 
 ~~~
-  statistics_name |       column_names        |             created              | row_count | distinct_count | null_count |    histogram_id
-------------------+---------------------------+----------------------------------+-----------+----------------+------------+---------------------
-  __auto__        | {city}                    | 2020-08-26 16:55:24.725089+00:00 |       500 |              9 |          0 | 584550071425531905
-  __auto__        | {id}                      | 2020-08-26 16:55:24.725089+00:00 |       500 |            500 |          0 | 584550071432740865
-  __auto__        | {city,id}                 | 2020-08-26 16:55:24.725089+00:00 |       500 |            500 |          0 |               NULL
-  __auto__        | {rider_id}                | 2020-08-26 16:55:24.725089+00:00 |       500 |             50 |          0 | 584550071446732801
-  __auto__        | {city,rider_id}           | 2020-08-26 16:55:24.725089+00:00 |       500 |             50 |          0 |               NULL
-  __auto__        | {vehicle_city}            | 2020-08-26 16:55:24.725089+00:00 |       500 |              9 |          0 | 584550071461019649
-  __auto__        | {vehicle_id}              | 2020-08-26 16:55:24.725089+00:00 |       500 |             15 |          0 | 584550071467966465
-  __auto__        | {vehicle_city,vehicle_id} | 2020-08-26 16:55:24.725089+00:00 |       500 |             15 |          0 |               NULL
-  __auto__        | {start_address}           | 2020-08-26 16:55:24.725089+00:00 |       500 |            500 |          0 | 584550071482122241
-  __auto__        | {end_address}             | 2020-08-26 16:55:24.725089+00:00 |       500 |            500 |          0 | 584550071489167361
-  __auto__        | {start_time}              | 2020-08-26 16:55:24.725089+00:00 |       500 |             30 |          0 | 584550071496671233
-  __auto__        | {end_time}                | 2020-08-26 16:55:24.725089+00:00 |       500 |            367 |          0 | 584550071504437249
-  __auto__        | {revenue}                 | 2020-08-26 16:55:24.725089+00:00 |       500 |            100 |          0 | 584550071512137729
+  statistics_name |       column_names        |          created           | row_count | distinct_count | null_count | avg_size |    histogram_id
+------------------+---------------------------+----------------------------+-----------+----------------+------------+----------+---------------------
+  __auto__        | {city}                    | 2022-04-20 22:43:08.851613 |       500 |              9 |          0 |       12 | 755053982033936385
+  __auto__        | {id}                      | 2022-04-20 22:43:08.851613 |       500 |            500 |          0 |       26 | 755053982039703553
+  __auto__        | {city,id}                 | 2022-04-20 22:43:08.851613 |       500 |            500 |          0 |       37 |               NULL
+  __auto__        | {rider_id}                | 2022-04-20 22:43:08.851613 |       500 |             50 |          0 |       17 | 755053982050910209
+  __auto__        | {city,rider_id}           | 2022-04-20 22:43:08.851613 |       500 |             50 |          0 |       29 |               NULL
+  __auto__        | {vehicle_city}            | 2022-04-20 22:43:08.851613 |       500 |              9 |          0 |       11 | 755053982061690881
+  __auto__        | {vehicle_id}              | 2022-04-20 22:43:08.851613 |       500 |             15 |          0 |       17 | 755053982067392513
+  __auto__        | {vehicle_city,vehicle_id} | 2022-04-20 22:43:08.851613 |       500 |             15 |          0 |       28 |               NULL
+  __auto__        | {start_address}           | 2022-04-20 22:43:08.851613 |       500 |            500 |          0 |       25 | 755053982080991233
+  __auto__        | {end_address}             | 2022-04-20 22:43:08.851613 |       500 |            500 |          0 |       25 | 755053982087544833
+  __auto__        | {start_time}              | 2022-04-20 22:43:08.851613 |       500 |             30 |          0 |        7 | 755053982093443073
+  __auto__        | {end_time}                | 2022-04-20 22:43:08.851613 |       500 |            367 |          0 |        7 | 755053982099472385
+  __auto__        | {revenue}                 | 2022-04-20 22:43:08.851613 |       500 |            100 |          0 |        6 | 755053982105337857
 (13 rows)
 ~~~
 
@@ -61,7 +70,7 @@ Parameter      | Description
 
 {% include {{ page.version.version }}/misc/delete-statistics.md %}
 
-## See Also
+## See also
 
 - [Cost-Based Optimizer](cost-based-optimizer.html)
 - [`CREATE STATISTICS`](create-statistics.html)

@@ -41,7 +41,7 @@ If you have not done so already, [create a cluster](create-your-cluster.html).
     ~~~
 
     {{site.data.alerts.callout_info}}
-    If you haven't connected to your {{ site.data.products.dedicated }} cluster before, see [Connect to your {{ site.data.products.dedicated }} Cluster](connect-to-your-cluster.html) for information on how to initially connect.
+    If you haven't connected to your cluster before, see [Connect to your {{ site.data.products.dedicated }} Cluster](connect-to-your-cluster.html) or [Connect to your {{ site.data.products.serverless }} Cluster](connect-to-a-serverless-cluster.html) for information on how to initially connect.
     {{site.data.alerts.end}}
 
 2. Enable [rangefeeds](../{{site.versions["stable"]}}/use-changefeeds.html#enable-rangefeeds):

@@ -3,12 +3,13 @@ title: Build a Simple CRUD Node.js App with CockroachDB and Knex.js
 summary: Learn how to use CockroachDB from a simple CRUD application that uses the Knex.js query builder.
 toc: true
 twitter: false
+referral_id: docs_node_knexjs
 ---
 
 <div class="filters filters-big clearfix">
     <a href="build-a-nodejs-app-with-cockroachdb.html"><button class="filter-button">Use <strong>node-postgres</strong></button></a>
     <a href="build-a-nodejs-app-with-cockroachdb-sequelize.html"><button class="filter-button">Use <strong>Sequelize</strong></button></a>
-    <a href="build-a-nodejs-app-with-cockroachdb-knexjs.html"><button class="filter-button current">Use <strong>KnexJS</strong></button></a>
+    <a href="build-a-nodejs-app-with-cockroachdb-knexjs.html"><button class="filter-button current">Use <strong>Knex.js</strong></button></a>
     <a href="build-a-nodejs-app-with-cockroachdb-prisma.html"><button class="filter-button">Use <strong>Prisma</strong></button></a>
     <a href="build-a-typescript-app-with-cockroachdb.html"><button class="filter-button">Use <strong>TypeORM</strong></button></a>
 </div>
@@ -17,34 +18,7 @@ This tutorial shows you how build a simple Node.js application with CockroachDB 
 
 ## Step 1. Start CockroachDB
 
-<div class="filters clearfix">
-  <button class="filter-button page-level" data-scope="cockroachcloud">Use {{ site.data.products.serverless }}</button>
-  <button class="filter-button page-level" data-scope="local">Use a Local Cluster</button>
-</div>
-
-<section class="filter-content" markdown="1" data-scope="cockroachcloud">
-
-{% include cockroachcloud/quickstart/create-a-free-cluster.md %}
-
-{% include cockroachcloud/quickstart/set-up-your-cluster-connection-no-cert.md %}
-
-</section>
-
-<section class="filter-content" markdown="1" data-scope="local">
-
-1. If you haven't already, [download the CockroachDB binary](install-cockroachdb.html).
-1. Run the [`cockroach start-single-node`](cockroach-start-single-node.html) command:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach start-single-node --advertise-addr 'localhost' --insecure
-    ~~~
-
-    This starts an insecure, single-node cluster.
-
-{% include {{ page.version.version }}/prod-deployment/insecure-flag.md %}
-
-</section>
+{% include {{ page.version.version }}/app/sample-setup.md %}
 
 ## Step 2. Get the code
 
@@ -55,20 +29,33 @@ Clone the code's GitHub repo:
 $ git clone https://github.com/cockroachlabs/example-app-node-knex
 ~~~
 
-<section class="filter-content" markdown="1" data-scope="cockroachcloud">
-
-Check out the `serverless` branch:
-
-{% include_cached copy-clipboard.html %}
-~~~ shell
-git checkout serverless
-~~~
-
-Update the configuration settings in the `app.js` file using the connection information that you retrieved from the {{ site.data.products.db }} Console.
-
-</section>
-
 ## Step 3. Run the code
+
+To start the app:
+
+1. Set the `DATABASE_URL` environment variable to the connection string:
+
+    <section class="filter-content" markdown="1" data-scope="local">
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ export DATABASE_URL="postgresql://root@localhost:26257?sslmode=disable"
+    ~~~
+
+    </section>
+
+    <section class="filter-content" markdown="1" data-scope="cockroachcloud">
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ export DATABASE_URL="<connection-string>"
+    ~~~
+
+    Where `<connection-string>` is the connection string you obtained from the {{ site.data.products.db }} Console.
+
+    </section>
+
+    The app uses the connection string saved to the `DATABASE_URL` environment variable to connect to your cluster and execute the code.
 
 1. Install the app requirements:
 

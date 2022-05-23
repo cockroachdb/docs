@@ -59,7 +59,7 @@
           ]
         },
         {
-          "title": "Add Secondary Indexes",
+          "title": "Secondary Indexes",
           "urls": [
             "/${VERSION}/schema-design-indexes.html"
           ]
@@ -167,6 +167,12 @@
           "title": "Bulk-delete Data",
           "urls": [
             "/${VERSION}/bulk-delete-data.html"
+          ]
+        },
+        {
+          "title": "Batch Delete Expired Data with Row-Level TTL",
+          "urls": [
+            "/${VERSION}/row-level-ttl.html"
           ]
         }
       ]
@@ -281,6 +287,12 @@
           ]
         },
         {
+          "title": "Map SQL Activity using an Application Name",
+          "urls": [
+            "/${VERSION}/map-sql-activity-to-app.html"
+          ]
+        },
+        {
           "title": "SQL Performance Best Practices",
           "urls": [
             "/${VERSION}/performance-best-practices-overview.html"
@@ -324,6 +336,12 @@
               "title": "Load-Based Splitting",
               "urls": [
                 "/${VERSION}/load-based-splitting.html"
+              ]
+            },
+            {
+              "title": "Admission Control",
+              "urls": [
+                "/${VERSION}/admission-control.html"
               ]
             }
           ]
@@ -429,6 +447,12 @@
               ]
             },
             {
+              "title": "AWS DMS",
+              "urls": [
+                "/${VERSION}/aws-dms.html"
+              ]
+            },
+            {
               "title": "Flyway",
               "urls": [
                 "/${VERSION}/flyway.html"
@@ -455,6 +479,17 @@
               "title": "IntelliJ IDEA",
               "urls": [
                 "/${VERSION}/intellij-idea.html"
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Data Security Tools",
+          "items": [
+            {
+              "title": "Satori",
+              "urls": [
+                "/${VERSION}/satori-integration.html"
               ]
             }
           ]

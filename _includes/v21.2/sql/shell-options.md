@@ -2,7 +2,7 @@
 - To enable or disable an option, use `\set <option> <value>` or `\unset <option> <value>`. You can also use the form `<option>=<value>`.
 - If an option accepts a boolean value:
     - `\set <option>` without `<value>` is equivalent to `\set <option> true`, and `\unset <option>` without `<value>` is equivalent to `\set <option> false`.
-    - `on`, `yes`, and `0` are aliases for `true`, and `off`, `no`, and `1` are aliases for `false`.
+    - `on`, `yes`, and `1` are aliases for `true`, and `off`, `no`, and `0` are aliases for `false`.
 
 Client Options | Description
 ---------------|------------

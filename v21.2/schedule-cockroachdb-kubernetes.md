@@ -13,6 +13,7 @@ This page describes how to configure the following, using the [Operator](https:/
 - [Node affinities](#add-a-node-affinity)
 - [Pod affinities and anti-affinities](#add-a-pod-affinity-or-anti-affinity)
 - [Taints and tolerations](#taints-and-tolerations)
+- [Topology spread constraints](#topology-spread-constraints)
 - [Resource labels and annotations](#resource-labels-and-annotations)
 
 These settings control how CockroachDB pods can be identified or scheduled onto worker nodes.
@@ -21,14 +22,14 @@ These settings control how CockroachDB pods can be identified or scheduled onto 
 
 ## Enable feature gates
 
-The [affinity](#affinities-and-anti-affinities) and [toleration](#taints-and-tolerations) rules are not yet fully supported. To enable them, [download the Operator manifest](https://raw.githubusercontent.com/cockroachdb/cockroach-operator/{{site.operator_version}}/install/operator.yaml) and add the following line to the `spec.containers.args` field:
+To enable the [affinity](#affinities-and-anti-affinities), [toleration](#taints-and-tolerations), and [topology spread constraint](#topology-spread-constraints) rules, [download the Operator manifest](https://raw.githubusercontent.com/cockroachdb/cockroach-operator/{{site.operator_version}}/install/operator.yaml) and add the following line to the `spec.containers.args` field:
 
 {% include_cached copy-clipboard.html %}
 ~~~ yaml
 spec:
   containers:
   - args:
-    - -feature-gates=TolerationRules=true,AffinityRules=true
+    - -feature-gates=TolerationRules=true,AffinityRules=true,TopologySpreadRules=true
 ~~~
 
 ## Node selectors
@@ -79,7 +80,7 @@ spec:
     nodeAffinity:
       requiredDuringSchedulingIgnoredDuringExecution:
         nodeSelectorTerms:
-        -	matchExpressions:
+        - matchExpressions:
           - key: kubernetes.io/arch
             operator: In
             values: 
@@ -348,6 +349,36 @@ In this example, CockroachDB has already been deployed on a Kubernetes cluster. 
 	~~~
 
 	`cockroachdb-2` is now scheduled onto the `gke-cockroachdb-default-pool-4e5ce539-68p5` node.
+
+## Topology spread constraints
+
+{{site.data.alerts.callout_info}}
+To use the topology spread constraint rules, first [enable the feature gates](#enable-feature-gates).
+{{site.data.alerts.end}}
+
+A pod with a *topology spread constraint* must satisfy its conditions when being deployed to a given topology. This is used to control the degree to which pods are unevenly distributed across failure domains.
+
+### Add a topology spread constraint
+
+Specify pod topology spread constraints in the `topologySpreadConstraints` object of the Operator's custom resource, which is used to [deploy the cluster](deploy-cockroachdb-with-kubernetes.html#initialize-the-cluster). If you specify multiple `topologySpreadConstraints` objects, the matching pods must satisfy all of the constraints.
+
+The following topology spread constraint ensures that CockroachDB pods deployed with the label `environment=production` will not be unevenly distributed across zones by more than `1` pod:
+
+{% include_cached copy-clipboard.html %}
+~~~ yaml
+spec:
+  topologySpreadConstraints:
+  - maxSkew: 1
+    topologyKey: topology.kubernetes.io/zone
+    whenUnsatisfiable: DoNotSchedule
+    labelSelector:
+      matchLabels:
+        environment: production
+~~~
+
+The `DoNotSchedule` condition prevents labeled pods from being scheduled onto Kubernetes worker nodes when doing so would fail to meet the spread and topology constraints specified with `maxSkew` and `topologyKey`, respectively.
+
+For more context on how these rules work, see the [Kubernetes documentation](https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/). The [custom resource definition](https://github.com/cockroachdb/cockroach-operator/blob/master/config/crd/bases/crdb.cockroachlabs.com_crdbclusters.yaml) details the fields supported by the Operator.
 
 ## Resource labels and annotations
 

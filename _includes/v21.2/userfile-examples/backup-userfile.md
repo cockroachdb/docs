@@ -9,7 +9,7 @@ When working on the same cluster, `userfile` storage allows for database and tab
 First, run the following statement to backup a database to a directory in the default `userfile` space:
 
 ~~~sql
-BACKUP DATABASE bank TO 'userfile://defaultdb.public.userfiles_$user/bank-backup' AS OF SYSTEM TIME '-10s';
+BACKUP DATABASE bank INTO 'userfile://defaultdb.public.userfiles_$user/bank-backup' AS OF SYSTEM TIME '-10s';
 ~~~
 
 This directory will hold the files that make up a backup; including the manifest file and data files.
@@ -21,7 +21,7 @@ When backing up from a cluster and restoring a database or table that is stored 
 In cases when your database needs to be restored, run the following:
 
 ~~~sql
-RESTORE DATABASE bank FROM 'userfile://defaultdb.public.userfiles_$user/bank-backup';
+RESTORE DATABASE bank FROM LATEST IN 'userfile://defaultdb.public.userfiles_$user/bank-backup';
 ~~~
 
 It is also possible to run `userfile:///bank-backup` as `userfile:///` refers to the default path `userfile://defaultdb.public.userfiles_$user/`.

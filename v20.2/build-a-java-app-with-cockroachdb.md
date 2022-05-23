@@ -169,9 +169,9 @@ Time: 4ms
 
 ## Step 4. Run the code
 
-### Update the connection parameters
-
 <section class="filter-content" markdown="1" data-scope="cockroachcloud">
+
+### Update the connection parameters
 
 In a text editor modify `app/src/main/java/com/cockroachlabs/BasicExample.java` with the settings to connect to the cluster:
 
@@ -186,11 +186,11 @@ ds.setSslRootCert(System.getenv("{path to the CA certificate}"));
 
 {% include {{page.version.version}}/app/cc-free-tier-params.md %}
 
-</section>
-
 {{site.data.alerts.callout_success}}
 For guidance on connection pooling, with an example using JDBC and [HikariCP](https://github.com/brettwooldridge/HikariCP), see [Connection Pooling](connection-pooling.html).
 {{site.data.alerts.end}}
+
+</section>
 
 Compile and run the code:
 

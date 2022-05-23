@@ -49,7 +49,7 @@ In general, you are likely to have to make changes to your schema, and how your 
 
 ## Data type sizes
 
-Above a certain size, many data types such as [`STRING`](string.html)s, [`DECIMAL`](decimal.html)s, [`ARRAY`](array.html), [`BYTES`](bytes.html), and [`JSONB`](jsonb.html) may run into performance issues due to [write amplification](https://en.wikipedia.org/wiki/Write_amplification).  See each data type's documentation for its recommended size limits.
+Above a certain size, many data types such as [`STRING`](string.html)s, [`DECIMAL`](decimal.html)s, [`ARRAY`](array.html), [`BYTES`](bytes.html), and [`JSONB`](jsonb.html) may run into performance issues due to [write amplification](architecture/storage-layer.html#write-amplification).  See each data type's documentation for its recommended size limits.
 
 ## See also
 

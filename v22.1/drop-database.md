@@ -9,6 +9,8 @@ The `DROP DATABASE` [statement](sql-statements.html) removes a database and all 
 
 {% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
+{% include {{ page.version.version }}/misc/declarative-schema-changer-note.md %}
+
 ## Required privileges
 
 The user must have the `DROP` [privilege](security-reference/authorization.html#managing-privileges) on the database and on all tables in the database.

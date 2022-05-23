@@ -204,7 +204,7 @@ You can also set the priority immediately after a transaction is started:
 <span class="version-tag">New in v20.2:</span> To set the default transaction priority for all transactions in a session, use the `default_transaction_priority` [session variable](set-vars.html). For example:
 
 ~~~ sql
-> SET default_transaction_priority 'high';
+> SET default_transaction_priority = 'high';
 ~~~
 
 To see the current priority of a transaction, use [`SHOW TRANSACTION PRIORITY`](show-vars.html) or `SHOW transaction_priority`:

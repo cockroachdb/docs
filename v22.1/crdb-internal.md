@@ -58,7 +58,7 @@ Table name | Description| Use in production
 `leases` | Contains information about [leases](architecture/replication-layer.html#leases) in your cluster.| ✗
 `lost_descriptors_with_data` | Contains information about table descriptors that have been deleted but still have data left over in storage.| ✗
 `node_build_info` | Contains information about nodes in your cluster.| ✗
-`node_contention_events` | Contains information about contention on the gateway node of your cluster.| ✗
+`node_contention_events`| Contains information about contention on the gateway node of your cluster.| ✗
 `node_distsql_flows` | Contains information about the flows of the [DistSQL execution](architecture/sql-layer.html#distsql) scheduled on nodes in your cluster.| ✗
 `node_inflight_trace_spans` | Contains information about currently in-flight spans in the current node.| ✗
 `node_metrics` | Contains metrics for nodes in your cluster.| ✗
@@ -82,9 +82,9 @@ Table name | Description| Use in production
 `table_indexes` | Contains information about table indexes in your cluster.| ✗
 `table_row_statistics` | Contains row count statistics for tables in the current database.| ✗
 `tables` | Contains information about tables in your cluster.| ✗
+[`transaction_contention_events`](#transaction_contention_events)| Contains information about historical transaction contention events. | ✓
 [`transaction_statistics`](#transaction_statistics) | Aggregates in-memory and persisted [statistics](ui-transactions-page.html#transaction-statistics) from `system.transaction_statistics` within hourly time intervals based on UTC time, rounded down to the nearest hour. To reset the statistics call `SELECT crdb_internal.reset_sql_stats()`.| ✓
 `zones` | Contains information about [zone configurations](configure-replication-zones.html) in your cluster.| ✗
-
 
 ## List `crdb_internal` tables
 
@@ -266,7 +266,6 @@ Column | Type | Description
 `distributed` | `BOOLEAN` | Whether the query is executing in a distributed cluster.
 `phase` | `STRING` | The phase that the query is in.
 
-
 #### Example
 
 ##### View all active queries
@@ -381,7 +380,7 @@ WHERE total_reads = 0;
 Column | Type | Description
 ------------|-----|------------
 `aggregated_ts` | `TIMESTAMPTZ NOT NULL` | The time that statistics aggregation started.
-`fingerprint_id` | `BYTES NOT NULL` | Unique identifier of the statement statistics. This is constructed using the statement fingerprint text, and statement metadata (e.g. query type, database name, etc.)
+`fingerprint_id` | `BYTES NOT NULL` | Unique identifier of the statement statistics. This is constructed using the statement fingerprint text, and statement metadata (e.g., query type, database name, etc.)
 `transaction_fingerprint_id` | `BYTES NOT NULL` | Uniquely identifies a transaction statistics. The transaction fingerprint ID that this statement statistic belongs to.
 `plan_hash` | `BYTES NOT NULL` | Uniquely identifies a query plan that was executed by the current statement. The query plan can be retrieved from the `sampled_plan` column.
 `app_name` | `STRING NOT NULL`| The name of the application that executed the statement.
@@ -408,7 +407,7 @@ Field | Type | Description
 
 The [DB Console](ui-overview.html) [Statements](ui-statements-page.html) and [Statement Details](ui-statements-page.html#statement-details-page) pages display information from `statistics`.
 
-The `statistics` column contains a JSONB object with `statistics` and `execution_statistics` subobjects. [`statistics`](ui-statements-page.html#statement-statistics) are always populated and are updated each time a new statement of that statement fingerprint is executed. [`execution_statistics`](ui-statements-page.html#execution-stats) are collected using sampling. CockroachDB probablistically runs a query with tracing enabled to collect fine-grained statistics of the query execution.
+The `statistics` column contains a JSONB object with `statistics` and `execution_statistics` subobjects. [`statistics`](ui-statements-page.html#statement-statistics) are always populated and are updated each time a new statement of that statement fingerprint is executed. [`execution_statistics`](ui-statements-page.html#execution-stats) are collected using sampling. CockroachDB probabilistically runs a query with tracing enabled to collect fine-grained statistics of the query execution.
 
 The `NumericStat` type tracks two running values: the running mean `mean` and the running sum of squared differences `sqDiff` from the mean. You can use these statistics along with the total number of values to compute the variance using Welford's method. CockroachDB computes the variance and displays it along with `mean` in the [Statements table](ui-statements-page.html#statements-table).
 
@@ -416,7 +415,7 @@ Field | Type | Description
 ------------|-----|------------
 `execution_statistics -> cnt` | `INT64` | The number of times execution statistics were recorded.
 <code>execution_statistics -> contentionTime -> [mean&#124;sqDiff]</code> | `NumericStat` | The time the statement spent contending for resources before being executed.
-<code>execution_statistics -> maxDiskUsage -> [mean&#124;sqDiff]</code> | `NumericStat` | The maximum temporary disk usage that occurred while executing this statement. This is set in cases where a query had to spill to disk, e.g. when performing a large sort where not all of the tuples fit in memory.
+<code>execution_statistics -> maxDiskUsage -> [mean&#124;sqDiff]</code> | `NumericStat` | The maximum temporary disk usage that occurred while executing this statement. This is set in cases where a query had to spill to disk, e.g., when performing a large sort where not all of the tuples fit in memory.
 <code>execution_statistics -> maxMemUsage -> [mean&#124;sqDiff]</code> | `NumericStat` | The maximum memory usage that occurred on a node.
 <code>execution_statistics -> networkBytes -> [mean&#124;sqDiff]</code> | `NumericStat` | The number of bytes sent over the network.
 <code>execution_statistics -> networkMsgs -> [mean&#124;sqDiff]</code> | `NumericStat` | The number of messages sent over the network.
@@ -429,6 +428,7 @@ Field | Type | Description
 <code>statistics -> numRows -> [mean&#124;sqDiff]</code> | `NumericStat` | The number of rows returned or observed.
 <code>statistics -> ovhLat -> [mean&#124;sqDiff]</code> | `NumericStat` | The difference between `svcLat` and the sum of `parseLat+planLat+runLat` latencies.
 <code>statistics -> parseLat -> [mean&#124;sqDiff]</code> | `NumericStat` | The time to transform the SQL string into an abstract syntax tree (AST).
+<code>statistics -> planGists | `String` | <span class="version-tag">New in v22.1:</span> A sequence of bytes representing the flattened tree of operators and various operator specific metadata of the statement plan.
 <code>statistics -> planLat -> [mean&#124;sqDiff]</code> | `NumericStat` | The time to transform the AST into a logical query plan.
 <code>statistics -> rowsRead -> [mean&#124;sqDiff]</code> | `NumericStat` | The number of rows read from disk.
 <code>statistics -> rowsWritten -> [mean&#124;sqDiff]</code> | `NumericStat` | The number of rows written to disk.
@@ -576,6 +576,203 @@ WHERE metadata @> '{"db":"movr"}' AND (metadata @> '{"stmtTyp":"TypeDDL"}' OR me
                                                                |                |            |               |          |                      |                 |                    |                        |                    |                      |     "Name": "insert"
                                                                |                |            |               |          |                      |                 |                    |                        |                    |                      | }
 
+~~~
+
+#### Detect suboptimal and regressed plans
+
+<span class="version-tag">New in v22.1:</span> Historical plans are stored in plan gists in `statistics->'statistics'->'planGists'`. To detect suboptimal and regressed plans over time you can compare plans for the same query by extracting them from the plan gists.
+
+Suppose you wanted to compare plans of the following query:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT
+  name, count(rides.id) AS sum
+FROM
+  users JOIN rides ON users.id = rides.rider_id
+WHERE
+  rides.start_time BETWEEN '2018-12-31 00:00:00' AND '2020-01-01 00:00:00'
+GROUP BY
+  name
+ORDER BY
+  sum DESC
+LIMIT
+  10;
+~~~
+
+To decode plan gists, use the `crdb_internal.decode_plan_gist` function, as shown in the following query. The example shows the performance impact of adding an [index on the `start_time` column in the `rides` table](apply-statement-performance-rules.html#rule-2-use-the-right-index). The first row of the output shows the improved performance (reduced number of rows read and latency) after the index was added. The second row shows the query, which performs a full scan on the `rides` table, before the index was added.
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT
+substring(metadata ->> 'query',1,60) AS statement_text,
+  string_agg(  crdb_internal.decode_plan_gist(statistics->'statistics'->'planGists'->>0), '
+  ') AS plan,
+  max(aggregated_ts) as timestamp_interval,
+  max(statistics -> 'statistics' -> 'rowsRead' -> 'mean') AS num_rows_read_mean,
+  max(statistics -> 'statistics' -> 'runLat' -> 'mean') AS runtime_latency_mean,
+  statistics->'statistics'->'planGists'->>0 as plan_id
+FROM movr.crdb_internal.statement_statistics
+WHERE substring(metadata ->> 'query',1,35)='SELECT name, count(rides.id) AS sum'
+group by metadata ->> 'query', statistics->'statistics'->'planGists'->>0;
+~~~
+
+~~~
+                         statement_text                        |                        plan                         |   timestamp_interval   | num_rows_read_mean | runtime_latency_mean |                     plan_id
+---------------------------------------------------------------+-----------------------------------------------------+------------------------+--------------------+----------------------+---------------------------------------------------
+  SELECT name, count(rides.id) AS sum FROM users JOIN rides ON | • top-k                                             | 2022-04-12 22:00:00+00 |              24786 |             0.028525 | AgHYAQgAiAECAAAB1AEEAAUAAAAJAAICAAAFAgsCGAYE
+                                                               |   │ order                                           |                        |                    |                      |
+                                                               |   │                                                 |                        |                    |                      |
+                                                               |   └── • group (hash)                                |                        |                    |                      |
+                                                               |       │ group by: rider_id                          |                        |                    |                      |
+                                                               |       │                                             |                        |                    |                      |
+                                                               |       └── • hash join                               |                        |                    |                      |
+                                                               |           │ equality: (rider_id) = (id)             |                        |                    |                      |
+                                                               |           │                                         |                        |                    |                      |
+                                                               |           ├── • scan                                |                        |                    |                      |
+                                                               |           │     table: rides@rides_start_time_idx   |                        |                    |                      |
+                                                               |           │     spans: 1 span                       |                        |                    |                      |
+                                                               |           │                                         |                        |                    |                      |
+                                                               |           └── • scan                                |                        |                    |                      |
+                                                               |                 table: users@users_city_id_name_key |                        |                    |                      |
+                                                               |                 spans: FULL SCAN                    |                        |                    |                      |
+  SELECT name, count(rides.id) AS sum FROM users JOIN rides ON | • top-k                                             | 2022-04-12 22:00:00+00 | 1.375E+5           |             0.279083 | AgHYAQIAiAEAAAADAdQBBAAFAAAACQACAgAABQILAhgGBA==
+                                                               |   │ order                                           |                        |                    |                      |
+                                                               |   │                                                 |                        |                    |                      |
+                                                               |   └── • group (hash)                                |                        |                    |                      |
+                                                               |       │ group by: rider_id                          |                        |                    |                      |
+                                                               |       │                                             |                        |                    |                      |
+                                                               |       └── • hash join                               |                        |                    |                      |
+                                                               |           │ equality: (rider_id) = (id)             |                        |                    |                      |
+                                                               |           │                                         |                        |                    |                      |
+                                                               |           ├── • filter                              |                        |                    |                      |
+                                                               |           │   │                                     |                        |                    |                      |
+                                                               |           │   └── • scan                            |                        |                    |                      |
+                                                               |           │         table: rides@rides_pkey         |                        |                    |                      |
+                                                               |           │         spans: FULL SCAN                |                        |                    |                      |
+                                                               |           │                                         |                        |                    |                      |
+                                                               |           └── • scan                                |                        |                    |                      |
+                                                               |                 table: users@users_city_id_name_key |                        |                    |                      |
+                                                               |                 spans: FULL SCAN                    |                        |                    |                      |
+(2 rows)
+~~~
+
+### `transaction_contention_events`
+
+<span class="version-tag">New in v22.1:</span> Contains one row for each transaction contention event.
+
+Requires either the `VIEWACTIVITY` or `VIEWACTIVITYREDACTED` [role option](alter-role.html#role-options) to access. If you have the `VIEWACTIVITYREDACTED` role, `contending_key` will be redacted.
+
+Contention events are stored in memory. You can control the amount of contention events stored per node via the `sql.contention.event_store.capacity` [cluster setting](cluster-settings.html).
+
+The `sql.contention.event_store.duration_threshold` [cluster setting](cluster-settings.html) specifies the minimum contention duration to cause the contention events to be collected into the `crdb_internal.transaction_contention_events` table. The default value is `0`. If contention event collection is overwhelming the CPU or memory you can raise this value to reduce the load.
+
+Column | Type | Description
+------------|-----|------------
+`collection_ts` | `TIMESTAMPTZ NOT NULL` | The timestamp when the transaction contention event was collected.
+`blocking_txn_id` | `UUID NOT NULL` | The ID of the blocking transaction. You can join this column into the [`cluster_contention_events`](#cluster_contention_events).
+`blocking_txn_fingerprint_id` | `BYTES NOT NULL`| The ID of the blocking transaction fingerprint. To surface historical information about the transactions that caused the contention, you can join this column into the [`statement_statistics`](#statement_statistics) and [`transaction_statistics`](#transaction_statistics) tables to surface historical information about the transactions that caused the contention.
+`waiting_txn_id` | `UUID NOT NULL` |  The ID of the waiting transaction. You can join this column into the [`cluster_contention_events`](#cluster_contention_events).
+`waiting_txn_fingerprint_id` | `BYTES NOT NULL` |  The ID of the waiting transaction fingerprint. To surface historical information about the transactions that caused the contention, you can join this column into the [`statement_statistics`](#statement_statistics) and [`transaction_statistics`](#transaction_statistics) tables
+`contention_duration` | `INTERVAL NOT NULL` | The interval of time the waiting transaction spent waiting for the blocking transaction.
+`contending_key` | `BYTES NOT NULL` | The key on which the transactions contended.
+
+#### Example
+
+The following example shows how to join the `transaction_contention_events` table with `transaction_statistics` and `statement_statistics` tables to extract blocking and waiting transaction information.
+
+##### Display contention table removing in-progress transactions
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT
+  collection_ts,
+  blocking_txn_id,
+  encode(blocking_txn_fingerprint_id, 'hex') as blocking_txn_fingerprint_id,
+  waiting_txn_id,
+  encode(waiting_txn_fingerprint_id, 'hex') as waiting_txn_fingerprint_id
+FROM
+  crdb_internal.transaction_contention_events
+WHERE
+  encode(blocking_txn_fingerprint_id, 'hex') != '0000000000000000' AND encode(waiting_txn_fingerprint_id, 'hex') != '0000000000000000';
+~~~
+
+~~~
+          collection_ts         |           blocking_txn_id            | blocking_txn_fingerprint_id |            waiting_txn_id            | waiting_txn_fingerprint_id
+--------------------------------+--------------------------------------+-----------------------------+--------------------------------------+-----------------------------
+  2022-04-11 23:41:56.951687+00 | 921e3d5b-22ab-4a94-a7a4-407e143cfa73 | 79ac4a19cff03b60            | 74ac5efa-a1e4-4c24-a648-58b82a192f9d | b7a98a63d6932458
+  2022-04-12 22:55:55.968825+00 | 25c75267-c091-44d4-8c33-8f5247409da5 | f07b4a806f8b7a2e            | 5397acb0-69f3-4c5c-b7a3-75d51180df44 | b7a98a63d6932458
+(2 rows)
+~~~
+
+##### Display counts for each blocking and waiting transaction fingerprint pair
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT
+  encode(hce.blocking_txn_fingerprint_id, 'hex') as blocking_txn_fingerprint_id,
+  encode(hce.waiting_txn_fingerprint_id, 'hex') as waiting_txn_fingerprint_id,
+  count(*) AS contention_count
+FROM
+  crdb_internal.transaction_contention_events hce
+WHERE
+  encode(blocking_txn_fingerprint_id, 'hex') != '0000000000000000' AND encode(waiting_txn_fingerprint_id, 'hex') != '0000000000000000'
+GROUP BY
+  hce.blocking_txn_fingerprint_id, hce.waiting_txn_fingerprint_id
+ORDER BY
+  contention_count
+DESC;
+~~~
+
+~~~
+  blocking_txn_fingerprint_id | waiting_txn_fingerprint_id | contention_count
+------------------------------+----------------------------+-------------------
+  79ac4a19cff03b60            | b7a98a63d6932458           |                1
+  f07b4a806f8b7a2e            | b7a98a63d6932458           |                1
+(3 rows)
+~~~
+
+##### Join to show blocking statements text
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT DISTINCT
+  hce.blocking_statement,
+  substring(ss2.metadata ->> 'query', 1, 60) AS waiting_statement,
+  hce.contention_count
+FROM [SELECT
+        hce.blocking_txn_fingerprint_id,
+        hce.waiting_txn_fingerprint_id,
+        hce.contention_count,
+        substring(ss.metadata ->> 'query', 1, 60) AS blocking_statement
+      FROM [SELECT
+              encode(hce.blocking_txn_fingerprint_id, 'hex') as blocking_txn_fingerprint_id,
+              encode(hce.waiting_txn_fingerprint_id, 'hex') as waiting_txn_fingerprint_id,
+              count(*) AS contention_count
+            FROM
+              crdb_internal.transaction_contention_events hce
+            GROUP BY
+              hce.blocking_txn_fingerprint_id, hce.waiting_txn_fingerprint_id
+            ] hce,
+          crdb_internal.statement_statistics ss
+      WHERE
+        hce.blocking_txn_fingerprint_id = encode(ss.transaction_fingerprint_id, 'hex')] hce,
+      crdb_internal.statement_statistics ss2
+WHERE
+  hce.blocking_txn_fingerprint_id != '0000000000000000' AND
+  hce.waiting_txn_fingerprint_id != '0000000000000000' AND
+  hce.waiting_txn_fingerprint_id = encode(ss2.transaction_fingerprint_id, 'hex')
+ORDER BY
+  contention_count
+DESC;
+~~~
+
+~~~
+                   blocking_statement                   |                      waiting_statement                       | contention_count
+--------------------------------------------------------+--------------------------------------------------------------+-------------------
+  CREATE UNIQUE INDEX ON users (city, id, name)         | SELECT status, payload, progress, crdb_internal.sql_liveness |                1
+  CREATE INDEX ON rides (start_time) STORING (rider_id) | SELECT status, payload, progress, crdb_internal.sql_liveness |                1
+(2 rows)
 ~~~
 
 ### `transaction_statistics`

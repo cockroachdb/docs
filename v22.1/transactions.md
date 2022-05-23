@@ -145,7 +145,7 @@ Your application should include client-side retry handling when the statements a
 > COMMIT;
 ~~~
 
-To indicate that a transaction must be retried, CockroachDB signals an error with the code `40001` and an error message that begins with the string `"retry transaction"`.  For a complete list of transaction retry error codes, see [Transaction retry error reference](transaction-retry-error-reference.html).
+To indicate that a transaction must be retried, CockroachDB signals an error with the `SQLSTATE` error code `40001` (serialization error) and an error message that begins with the string `"restart transaction"`.  For a complete list of transaction retry error codes, see [Transaction retry error reference](transaction-retry-error-reference.html).
 
 To handle these types of errors, you have the following options:
 
@@ -161,6 +161,101 @@ To handle these types of errors, you have the following options:
 #### Client-side intervention example
 
 {% include {{page.version.version}}/misc/client-side-intervention-example.md %}
+
+#### Testing transaction retry logic
+
+<span class="version-tag">New in v22.1:</span> To test your transaction retry logic, use the [`inject_retry_errors_enabled` session variable](set-vars.html#supported-variables). When `inject_retry_errors_enabled` is set to `true`, any statement (with the exception of [`SET` statements](set-vars.html)) executed in the session inside of an explicit transaction will return a [transaction retry error](transaction-retry-error-reference.html) with the message ```restart transaction: TransactionRetryWithProtoRefreshError: injected by `inject_retry_errors_enabled` session variable```.
+
+If the client retries the transaction using the special [`cockroach_restart` `SAVEPOINT` name](savepoint.html#savepoints-for-client-side-transaction-retries), after the 3rd retry, the transaction will proceed as normal. Otherwise, the errors will continue until the client issues a `SET inject_retry_errors_enabled=false` statement.
+
+For example, suppose you've written a wrapper function with some retry logic that you want to use to execute statements across a [`psycopg2`](https://www.psycopg.org/) connection:
+
+~~~ python
+def run_transaction(conn, op, max_retries=3):    
+    """
+    Execute the operation *op(conn)* retrying serialization failures.
+
+    If the database returns an error asking to retry the transaction, retry it
+    *max_retries* times before giving up (and propagate it).
+    """
+    # leaving this block the transaction will commit or rollback
+    # (if leaving with an exception)
+    with conn:
+        for retry in range(1, max_retries + 1):
+            try:
+                op(conn)
+                # If we reach this point, we were able to commit, so we break
+                # from the retry loop.
+                return
+
+            except SerializationFailure as e:
+                # This is a retry error, so we roll back the current
+                # transaction and sleep for a bit before retrying. The
+                # sleep time increases for each failed transaction.
+                logging.debug("got error: %s", e)
+                conn.rollback()
+                sleep_ms = (2 ** retry) * 0.1 * (random.random() + 0.5)
+                logging.debug("Sleeping %s seconds", sleep_ms)
+                time.sleep(sleep_ms)
+
+            except psycopg2.Error as e:
+                logging.debug("got error: %s", e)
+                raise e
+
+        raise ValueError(f"Transaction did not succeed after {max_retries} retries")
+~~~
+
+`run_transaction` takes a SQL-executing function `op(conn)` and attempts to run the function, retrying on serialization failures (exposed in pscyopg2 as the [`SerializationFailure` exception class](https://www.psycopg.org/docs/errors.html#sqlstate-exception-classes)) with exponential backoff, until reaching a maximum number of tries.
+
+You can add a quick test to this function using the `inject_retry_errors_enabled` session variable.
+
+~~~ python
+def run_transaction(conn, op=None, max_retries=3):
+    """
+    Execute the operation *op(conn)* retrying serialization failure.
+    If no op is specified, the function runs a test, using the
+    inject_retry_errors_enabled session variable to inject errors.
+
+    If the database returns an error asking to retry the transaction, retry it
+    *max_retries* times before giving up (and propagate it).
+    """
+    # leaving this block the transaction will commit or rollback
+    # (if leaving with an exception)
+    with conn:
+        for retry in range(1, max_retries + 1):
+            try:
+                if not op:
+                    with conn.cursor() as cur:
+                        if retry == 1:
+                            cur.execute("SET inject_retry_errors_enabled = 'true'")
+                        if retry == max_retries:
+                            cur.execute("SET inject_retry_errors_enabled = 'false'")
+                        cur.execute("SELECT now()")
+                        logging.debug("status message: %s", cur.statusmessage)
+                else:
+                    op(conn)
+                # If we reach this point, we were able to commit, so we break
+                # from the retry loop.
+                return
+
+            except SerializationFailure as e:
+                # This is a retry error, so we roll back the current
+                # transaction and sleep for a bit before retrying. The
+                # sleep time increases for each failed transaction.
+                logging.debug("got error: %s", e)
+                conn.rollback()
+                sleep_ms = (2 ** retry) * 0.1 * (random.random() + 0.5)
+                logging.debug("Sleeping %s seconds", sleep_ms)
+                time.sleep(sleep_ms)
+
+            except psycopg2.Error as e:
+                logging.debug("got error: %s", e)
+                raise e
+
+        raise ValueError(f"Transaction did not succeed after {max_retries} retries")
+~~~
+
+Calling `run_transaction` without an `op` input sets `inject_retry_errors_enabled` as `true` until the final retry attempt, before which the `inject_retry_errors_enabled` is set back to `false`. For all attempts except the last one, CockroachDB will inject a retryable serialization error for the client to handle. If the client cannot handle the error properly, the retry logic isn't working properly.
 
 ## Transaction contention
 
@@ -206,7 +301,7 @@ You can also set the priority immediately after a transaction is started:
 To set the default transaction priority for all transactions in a session, use the `default_transaction_priority` [session variable](set-vars.html). For example:
 
 ~~~ sql
-> SET default_transaction_priority 'high';
+> SET default_transaction_priority = 'high';
 ~~~
 
 {{site.data.alerts.callout_info}}

@@ -54,12 +54,6 @@
             ]
           },
           {
-            "title": "Admission Control",
-            "urls": [
-              "/${VERSION}/architecture/admission-control.html"
-            ]
-          },
-          {
             "title": "CockroachDB Cloud Architecture",
             "urls": [
               "/cockroachcloud/architecture.html"
@@ -163,6 +157,24 @@
                 ]
               },
               {
+                "title": "<code>ALTER BACKUP</code> (Enterprise)",
+                "urls": [
+                  "/${VERSION}/alter-backup.html"
+                ]
+              },
+              {
+                "title": "<code>ADD SUPER REGION</code> (Enterprise)",
+                "urls": [
+                  "/${VERSION}/add-super-region.html"
+                ]
+              },
+              {
+                "title": "<code>ALTER CHANGEFEED</code> (Enterprise)",
+                "urls": [
+                  "/${VERSION}/alter-changefeed.html"
+                ]
+              },
+              {
                 "title": "<code>ALTER COLUMN</code>",
                 "urls": [
                   "/${VERSION}/alter-column.html"
@@ -220,6 +232,12 @@
                 "title": "<code>ALTER SEQUENCE</code>",
                 "urls": [
                   "/${VERSION}/alter-sequence.html"
+                ]
+              },
+              {
+                "title": "<code>ALTER SUPER REGION</code> (Enterprise)",
+                "urls": [
+                  "/${VERSION}/alter-super-region.html"
                 ]
               },
               {
@@ -298,12 +316,6 @@
                 "title": "<code>CONFIGURE ZONE</code>",
                 "urls": [
                   "/${VERSION}/configure-zone.html"
-                ]
-              },
-              {
-                "title": "<code>CONVERT TO SCHEMA</code>",
-                "urls": [
-                  "/${VERSION}/convert-to-schema.html"
                 ]
               },
               {
@@ -418,6 +430,12 @@
                 "title": "<code>DROP REGION (Enterprise)</code>",
                 "urls": [
                   "/${VERSION}/drop-region.html"
+                ]
+              },
+              {
+                "title": "<code>DROP SUPER REGION</code> (Enterprise)",
+                "urls": [
+                  "/${VERSION}/drop-super-region.html"
                 ]
               },
               {
@@ -685,6 +703,12 @@
                 ]
               },
               {
+                "title": "<code>SET</code> &lt;storage parameter&gt;",
+                "urls": [
+                  "/${VERSION}/set-storage-parameter.html"
+                ]
+              },
+              {
                 "title": "<code>SET CLUSTER SETTING</code>",
                 "urls": [
                   "/${VERSION}/set-cluster-setting.html"
@@ -826,6 +850,12 @@
                 "title": "<code>SHOW REGIONS</code>",
                 "urls": [
                   "/${VERSION}/show-regions.html"
+                ]
+              },
+              {
+                "title": "<code>SHOW SUPER REGIONS</code>",
+                "urls": [
+                  "/${VERSION}/show-super-regions.html"
                 ]
               },
               {
@@ -1357,6 +1387,12 @@
             "title": "Authentication",
             "urls": [
               "/${VERSION}/security-reference/authentication.html"
+            ],
+            "items": [
+              {
+                "title": "SASL/SCRAM-SHA-256 Secure Password-based Authentication",
+                "urls": [ "/${VERSION}/security-reference/scram-authentication.html" ]
+              }
             ]
           },
           {
@@ -1670,6 +1706,12 @@
             "title": "Network Latency Page",
             "urls": [
               "/${VERSION}/ui-network-latency-page.html"
+            ]
+          },
+          {
+            "title": "Hot Ranges Page",
+            "urls": [
+              "/${VERSION}/ui-hot-ranges-page.html"
             ]
           },
           {

@@ -18,7 +18,7 @@ This tutorial shows you how build a simple CRUD Python application with Cockroac
 
 ## Step 1. Start CockroachDB
 
-{% include {{ page.version.version }}/app/sample-setup.md %}
+{% include {{ page.version.version }}/setup/sample-setup-certs.md %}
 
 ## Step 2. Get the code
 
@@ -71,6 +71,15 @@ The `main.py` uses SQLAlchemy to map Python methods to SQL operations:
 
 ## Step 3. Install the application requirements
 
+This tutorial uses [`virtualenv`](https://virtualenv.pypa.io) for dependency management.
+
+1. Install `virtualenv`:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ pip install virtualenv
+    ~~~
+
 1. At the top level of the app's project directory, create and then activate a virtual environment:
 
     {% include_cached copy-clipboard.html %}
@@ -92,32 +101,20 @@ The `main.py` uses SQLAlchemy to map Python methods to SQL operations:
 
 ## Step 4. Initialize the database
 
-{% include {{ page.version.version }}/app/init-bank-sample.md %}
+{% include {{ page.version.version }}/setup/init-bank-sample.md %}
 
 ## Step 5. Run the code
 
-To run the app, pass the connection string for your cluster to `main.py`:
+`main.py` uses the connection string saved to the `DATABASE_URL` environment variable to connect to your cluster and execute the code.
+
+Run the app:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-$ python3 main.py '<connection_string>'
+$ python main.py
 ~~~
 
-<section class="filter-content" markdown="1" data-scope="local">
-
-Where `<connection_string>` is the `sql` connection URL provided in the cluster's welcome text.
-
-</section>
-
-<section class="filter-content" markdown="1" data-scope="cockroachcloud">
-
-Where `<connection_string>` is the connection string provided in the **Connection info** window of the {{ site.data.products.db }} Console.
-
-Note that you need to provide a SQL user password in order to securely connect to a {{ site.data.products.db }} cluster. The connection string should have a placeholder for the password (`<ENTER-PASSWORD>`).
-
-</section>
-
-The application will format the connection string to fit the CockroachDB SQLAlchemy dialect requirements, and then perform some simple row inserts, updates, and deletes.
+The application will connect to CockroachDB, and then perform some simple row inserts, updates, and deletes.
 
 The output should look something like the following:
 
@@ -147,7 +144,7 @@ In a SQL shell connected to the cluster, you can verify that the rows were inser
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> SELECT COUNT(*) FROM bank.accounts;
+> SELECT COUNT(*) FROM accounts;
 ~~~
 
 ~~~

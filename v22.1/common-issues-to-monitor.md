@@ -15,7 +15,7 @@ This page summarizes how to configure and monitor your cluster to prevent issues
 
 {% include {{ page.version.version }}/prod-deployment/terminology-vcpu.md %}
 
-Issues with CPU most commonly arise when there is insufficient CPU to suppport the scale of the workload.
+Issues with CPU most commonly arise when there is insufficient CPU to support the scale of the workload.
 
 ### CPU planning
 
@@ -23,7 +23,7 @@ Provision enough CPU to support your operational and workload concurrency requir
 
 | Category | Recommendations                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
 |----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| CPU      | <ul><li>Each node should have at least {% include {{ page.version.version }}/prod-deployment/provision-cpu.md %}.</li><li>Use larger VMs to handle temporary workload spikes and processing hotspots.</li><li>Use connection pooling to manage workload concurrency. {% include {{ page.version.version }}/prod-deployment/prod-guidance-connection-pooling.md %} For more details, see [Sizing connection pools](connection-pooling.html#sizing-connection-pools).</li><li>See additional CPU recommendations in the [Production Checklist](recommended-production-settings.html#sizing).</li></ul> |
+| CPU      | <ul><li>Each node should have at least {% include {{ page.version.version }}/prod-deployment/provision-cpu.md %}.</li><li>Use larger VMs to handle temporary workload spikes and processing hot spots.</li><li>Use connection pooling to manage workload concurrency. {% include {{ page.version.version }}/prod-deployment/prod-guidance-connection-pooling.md %} For more details, see [Sizing connection pools](connection-pooling.html#sizing-connection-pools).</li><li>See additional CPU recommendations in the [Production Checklist](recommended-production-settings.html#sizing).</li></ul> |
 
 ### CPU monitoring
 
@@ -78,9 +78,9 @@ If workload concurrency exceeds CPU resources, you will observe:
 
 #### LSM health
 
-Issues at the [storage layer](architecture/storage-layer.html), including a misshapen LSM and high read amplification, can be observed when compaction falls behind due to insufficient CPU.
+Issues at the [storage layer](architecture/storage-layer.html), including a misshapen LSM and high [read amplification](architecture/storage-layer.html#read-amplification), can be observed when compaction falls behind due to insufficient CPU.
 
-- The [**LSM L0 Health**](ui-overload-dashboard.html#lsm-l0-health) graph on the Overload dashboard shows the health of the [persistent stores](architecture/storage-layer.html), which are implemented as log-structured merge (LSM) trees. Level 0 is the highest level of the LSM tree and consists of files containing the latest data written to the [Pebble storage engine](cockroach-start.html#storage-engine).
+- The [**LSM L0 Health**](ui-overload-dashboard.html#lsm-l0-health) graph on the Overload dashboard shows the health of the [persistent stores](architecture/storage-layer.html), which are implemented as log-structured merge (LSM) trees. Level 0 is the highest level of the LSM tree and consists of files containing the latest data written to the [Pebble storage engine](cockroach-start.html#storage-engine). For more information about LSM levels and how LSMs work, see [Log-structured Merge-trees](architecture/storage-layer.html#log-structured-merge-trees).
 
     {% include {{ page.version.version }}/prod-deployment/healthy-lsm.md %}
 
@@ -88,7 +88,7 @@ Issues at the [storage layer](architecture/storage-layer.html), including a miss
     An unhealthy LSM can be caused by other factors, including [under-provisioned storage](#storage-and-disk-i-o). To correlate this symptom with CPU starvation, check for high [CPU usage](#cpu-usage) and excessive [workload concurrency](#workload-concurrency).
     {{site.data.alerts.end}}
 
-- The **Read Amplification** graph on the [Storage Dashboard](ui-storage-dashboard.html) shows the average number of disk reads per logical SQL statement, also known as the read amplification factor.
+- The **Read Amplification** graph on the [Storage Dashboard](ui-storage-dashboard.html) shows the average number of disk reads per logical SQL statement, also known as the [read amplification](architecture/storage-layer.html#read-amplification) factor.
 
     {% include {{ page.version.version }}/prod-deployment/healthy-read-amplification.md %}
 
@@ -110,7 +110,7 @@ If [issues at the storage layer](#lsm-health) remain unresolved, affected nodes 
 
 - The `/health` endpoint of the [Cluster API](cluster-api.html) returns a `500` error when a node is unhealthy.
 
-- A [Prometheus alert](monitoring-and-alerting.html#node-is-down) can notify when a node has been down for 5 minutes or more.
+- A [Prometheus alert](monitoring-and-alerting.html#node-is-down) can notify when a node has been down for 15 minutes or more.
 
 If nodes have shut down, this can also be caused by [insufficient storage capacity](#storage-capacity).
 
@@ -148,7 +148,7 @@ CockroachDB attempts to restart nodes after they crash. Nodes that frequently re
 
 - The `OPS` [logging channel](logging-overview.html#logging-channels) will record a [`node_restart` event](eventlog.html#node_restart) whenever a node rejoins the cluster after being offline.
 
-- A [Prometheus alert](monitoring-and-alerting.html#node-is-restarting-too-frequently) can notify when a node has restarted more than 5 times in 10 minutes.
+- A [Prometheus alert](monitoring-and-alerting.html#node-is-restarting-too-frequently) can notify when a node has restarted more than once in the last 10 minutes.
 
 ##### Verify OOM errors
 
@@ -285,5 +285,5 @@ Because each node needs to update a liveness record on disk, maxing out disk ban
 - [Performance Tuning Recipes](performance-recipes.html)
 - [Troubleshoot Cluster Setup](cluster-setup-troubleshooting.html)
 - [Troubleshoot SQL Behavior](query-behavior-troubleshooting.html)
-- [Admission Control](architecture/admission-control.html)
+- [Admission Control](admission-control.html)
 - [Alerts Page](../cockroachcloud/alerts-page.html) ({{ site.data.products.dedicated }})

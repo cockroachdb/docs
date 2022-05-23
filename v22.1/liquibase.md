@@ -136,7 +136,6 @@ Let's define a changelog with the [XML format](https://docs.liquibase.com/concep
 
     {% include copy-clipboard.html %}
     ~~~ xml
-    <?xml version="1.0" encoding="UTF-8"?>
     <databaseChangeLog
             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
             xmlns="http://www.liquibase.org/xml/ns/dbchangelog"

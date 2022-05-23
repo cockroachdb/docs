@@ -35,7 +35,7 @@ Parameter | Description
 `select_stmt` | A [selection query](selection-queries.html). Each value must match the [data type](data-types.html) of its column on the left side of `=`.
 `WHERE a_expr`| `a_expr` must be a [scalar expression](scalar-expressions.html) that returns Boolean values using columns (e.g., `<column> = <value>`). Update rows that return `TRUE`.<br><br/>**Without a `WHERE` clause in your statement, `UPDATE` updates all rows in the table.**
 `sort_clause` | An `ORDER BY` clause. See [Ordering Query Results](order-by.html) and [Ordering of rows in DML statements](order-by.html#ordering-rows-in-dml-statements) for more details.
-`limit_clause` | A `LIMIT` clause. See [Limiting Query Results](limit-offset.html) for more details.
+`limit_clause` | A `LIMIT` clause. See [Limit Query Results](limit-offset.html) for more details.
 `RETURNING target_list` | Return values based on rows updated, where `target_list` can be specific column names from the table, `*` for all columns, or computations using [scalar expressions](scalar-expressions.html). <br><br>To return nothing in the response, not even the number of rows updated, use `RETURNING NOTHING`.
 `ONLY ... *` |  Supported for compatibility with PostgreSQL table inheritance syntax. This clause is a no-op, as CockroachDB does not currently support table inheritance.
 
@@ -575,7 +575,7 @@ Although `users_name_city_idx` is likely the most efficient index for the table 
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> EXPLAIN (opt) UPDATE users@primary SET name='Patricia Smith (there are two)' WHERE name='Patricia Smith';
+> EXPLAIN (opt) UPDATE users@users_pkey SET name='Patricia Smith (there are two)' WHERE name='Patricia Smith';
 ~~~
 
 ~~~
@@ -605,5 +605,5 @@ Although `users_name_city_idx` is likely the most efficient index for the table 
 - [`DROP TABLE`](drop-table.html)
 - [`DROP DATABASE`](drop-database.html)
 - [SQL Statements](sql-statements.html)
-- [Limiting Query Results](limit-offset.html)
+- [Limit Query Results](limit-offset.html)
 - [Ordering of rows in DML statements](order-by.html#ordering-rows-in-dml-statements)

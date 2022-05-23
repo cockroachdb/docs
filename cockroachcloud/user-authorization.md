@@ -23,13 +23,13 @@ By default, a new SQL user created using a [Console Admin](console-access-manage
 Once you are [logged in](https://cockroachlabs.cloud/), you can use the Console to create a new user:
 
 1. Navigate to your cluster's **SQL Users** page.
-2. Click the **Add User** button in the top right corner.
+1. Click the **Add User** button in the top right corner.
 
-    The **Add User** modal displays.
+    The **Create SQL user** modal displays.
 
-3. Enter a **Username**.
-4. Enter and confirm the **Password**.
-5. Click **Create**.
+1. Enter a **Username**.
+1. Click **Generate & save password**.
+1. Copy the generated password and save it in a secure location.
 
     Currently, all new users are created with full privileges. For more information and to change the default settings, see [Grant privileges](#grant-privileges) and [Use roles](#use-roles).
 </section>
@@ -106,11 +106,9 @@ To change a user's password:
     <img src="{{ 'images/cockroachcloud/sql-users-actions.png' | relative_url }}" alt="Change SQL password" style="border:1px solid #eee;max-width:100%" />
 
 1. From the dropdown, select **Change Password**.
-1. In the **New Password** field, enter the new password.
+1. Click **Generate & save password**.
+1. Copy the generated password and save it in a secure location.
 
-    The password must be at least 12 characters long.
-
-1. Click **Save**.
 </section>
 
 <section class="filter-content" markdown="1" data-scope="client">

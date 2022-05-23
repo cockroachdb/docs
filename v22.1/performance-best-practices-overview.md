@@ -2,7 +2,7 @@
 title: SQL Performance Best Practices
 summary: Best practices for optimizing SQL performance in CockroachDB.
 toc: true
-docs_area: manage
+docs_area: develop
 ---
 
 This page provides best practices for optimizing query performance in CockroachDB.
@@ -72,7 +72,9 @@ To delete a large number of rows, we recommend iteratively deleting batches of r
 
 ### Batch delete "expired" data
 
-CockroachDB does not support Time to Live (TTL) on table rows. To delete "expired" rows, we recommend automating a batch delete process with a job scheduler like `cron`. For an example, see [Batch-delete "expired" data](bulk-delete-data.html#batch-delete-expired-data).
+{% include {{page.version.version}}/sql/row-level-ttl.md %}
+
+For more information, see [Batch delete expired data with Row-Level TTL](row-level-ttl.html).
 
 ## Assign column families
 
@@ -318,15 +320,17 @@ However, because `AS OF SYSTEM TIME` returns historical data, your reads might b
 
 ## Hot spots
 
-Transactions that operate on the same range but _different index keys_ are limited by the overall hardware capacity of [the range lease holder](architecture/overview.html#terms) node. These are referred to as _hot spots_.
+A *hot spot* is any location on the cluster receiving significantly more requests than another. Hot spots can cause problems as requests increase.
 
-Hot spots can occur when a range is indexed on a column of data that is sequential in nature such that all incoming writes to the range will be the last (or first) item in the index and appended to the end of the range. As a result, the system cannot find a point in the range that evenly divides the traffic, and the range cannot benefit from [load-based splitting](load-based-splitting.html), creating a hot spot on the single range.
+They commonly occur with transactions that operate on the **same range but different index keys**, which are limited by the overall hardware capacity of [the range leaseholder](architecture/overview.html#cockroachdb-architecture-terms) node.
 
-Read hot spots can occur if you perform lots of scans of an portion of a table index or a single key.
+A hot spot can occur on a range that is indexed on a column of data that is sequential in nature (e.g., [an ordered sequence](sql-faqs.html#what-are-the-differences-between-uuid-sequences-and-unique_rowid), or a series of increasing, non-repeating [`TIMESTAMP`s](timestamp.html)), such that all incoming writes to the range will be the last (or first) item in the index and appended to the end of the range. Because the system is unable to find a split point in the range that evenly divides the traffic, the range cannot benefit from [load-based splitting](load-based-splitting.html). This creates a hot spot at the single range.
+
+Read hot spots can occur if you perform lots of scans of a portion of a table index or a single key.
 
 ### Find hot spots
 
-To track down the nodes experiencing hot spots, use the [hot ranges API endpoint](cluster-api.html#resources).
+To track down the nodes experiencing hot spots, use the [Hot Ranges page](ui-hot-ranges-page.html) and [Range Report](ui-hot-ranges-page.html#range-report).
 
 ### Reduce hot spots
 
@@ -337,6 +341,7 @@ To reduce hot spots:
 - Place parts of the records that are modified by different transactions in different tables. That is, increase [normalization](https://en.wikipedia.org/wiki/Database_normalization). However, there are benefits and drawbacks to increasing normalization.
 
     - Benefits:
+
         - Allows separate transactions to modify related underlying data without causing contention.
         - Can improve performance for read-heavy workloads.
 
@@ -349,7 +354,7 @@ To reduce hot spots:
 
 - If the application strictly requires operating on very few different index keys, consider using [`ALTER ... SPLIT AT`](split-at.html) so that each index key can be served by a separate group of nodes in the cluster.
 
-- If you are working with a table that *must* be indexed on sequential keys, use [hash-sharded indexes](hash-sharded-indexes.html). For details about the mechanics and performance improvements of hash-sharded indexes in CockroachDB, see the blog post [Hash Sharded Indexes Unlock Linear Scaling for Sequential Workloads](https://www.cockroachlabs.com/blog/hash-sharded-indexes-unlock-linear-scaling-for-sequential-workloads/).
+- If you are working with a table that **must** be indexed on sequential keys, use [hash-sharded indexes](hash-sharded-indexes.html). For details about the mechanics and performance improvements of hash-sharded indexes in CockroachDB, see the blog post [Hash Sharded Indexes Unlock Linear Scaling for Sequential Workloads](https://www.cockroachlabs.com/blog/hash-sharded-indexes-unlock-linear-scaling-for-sequential-workloads/).
 
 - To avoid read hot spots:
 
@@ -410,6 +415,6 @@ To maximize transaction performance, you'll need to maximize the performance of 
 
 ## See also
 
-If you aren't sure whether SQL query performance needs to be improved on your cluster, see [Identify slow queries](query-behavior-troubleshooting.html#identify-slow-statements).
+If you aren't sure whether SQL query performance needs to be improved on your cluster, see [Identify slow queries](query-behavior-troubleshooting.html#identify-slow-queries).
 
 For deployment and data location techniques to minimize network latency in multi-region clusters, see [Topology Patterns](topology-patterns.html).

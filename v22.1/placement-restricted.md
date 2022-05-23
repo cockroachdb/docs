@@ -121,7 +121,7 @@ ALTER DATABASE PLACEMENT
 - [Multi-Region Capabilities Overview](multiregion-overview.html)
 - [`ALTER DATABASE`](alter-database.html)
 - [`ADD REGION`](add-region.html)
-- [Ranges](architecture/overview.html#architecture-range)
+- [Range](architecture/overview.html#architecture-range)
 - [Non-voting replicas](architecture/replication-layer.html#non-voting-replicas)
 - [SQL Statements](sql-statements.html)
 - [Data Domiciling with CockroachDB](data-domiciling.html)

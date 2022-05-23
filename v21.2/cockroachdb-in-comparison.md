@@ -49,13 +49,13 @@ This page shows you how the key features of CockroachDB stack up against other d
     <td class="comparison-chart__column-one">
       <span class="support" data-dbs='["MySQL", "PostgreSQL"]'>Manual Sharding</span>
       <span class="support" data-dbs='["Oracle"]'>Add on configuration</span>
-      <span class="support" data-dbs='["AWS Aurora", "MongoDB", "Spanner", "Yugobyte"]'>Node based, automated read scale, limited write</span>
+      <span class="support" data-dbs='["AWS Aurora", "MongoDB", "Spanner", "Yugabyte"]'>Node based, automated read scale, limited write</span>
       <span class="support" data-dbs='["Cassandra"]'>Node based, automated for both reads and writes</span>
     </td>
     <td class="comparison-chart__column-two">
       <span class="support" data-dbs='["MySQL", "PostgreSQL"]'>Manual Sharding</span>
       <span class="support" data-dbs='["Oracle"]'>Add on configuration</span>
-      <span class="support" data-dbs='["AWS Aurora", "MongoDB", "Spanner", "Yugobyte"]'>Node based, automated read scale, limited write</span>
+      <span class="support" data-dbs='["AWS Aurora", "MongoDB", "Spanner", "Yugabyte"]'>Node based, automated read scale, limited write</span>
       <span class="support" data-dbs='["Cassandra"]'>Node based, automated for both reads and writes</span>
     </td>
     <td>Node based, automated for both reads and writes</a></td>
@@ -71,14 +71,14 @@ This page shows you how the key features of CockroachDB stack up against other d
     <td class="comparison-chart__column-one">
       <span class="support" data-dbs='["MySQL", "PostgreSQL", "Oracle"]'>Manual - not part of database</span>
       <span class="support" data-dbs='["AWS Aurora"]'>None and full copies across regions</span>
-      <span class="support" data-dbs='["Cassandra", "MongoDB", "Spanner", "Yugobyte"]'>Even distribution to optimize storage</span>
+      <span class="support" data-dbs='["Cassandra", "MongoDB", "Spanner", "Yugabyte"]'>Even distribution to optimize storage</span>
     </td>
     <td class="comparison-chart__column-two">
           <span class="support" data-dbs='["MySQL", "PostgreSQL", "Oracle"]'>Manual - not part of database</span>
       <span class="support" data-dbs='["AWS Aurora"]'>None and full copies across regions</span>
-      <span class="support" data-dbs='["Cassandra", "MongoDB", "Spanner", "Yugobyte"]'>Even distribution to optimize storage</span>
+      <span class="support" data-dbs='["Cassandra", "MongoDB", "Spanner", "Yugabyte"]'>Even distribution to optimize storage</span>
     </td>
-    <td>Detailed options to optimize storage, compute and latency</td>
+    <td>Detailed options to optimize storage, compute, and latency</td>
   </tr>
 
   <tr>
@@ -153,12 +153,12 @@ This page shows you how the key features of CockroachDB stack up against other d
     <td class="comparison-chart__column-one">
       <span class="support " data-dbs='["MySQL", "PostgreSQL", "Oracle", "AWS Aurora"]'>No</span>
       <span class="support " data-dbs='["MongoDB", "Cassandra"]'>Lightweight transactions only</span>
-      <span class="support " data-dbs='["Spanner", "Yugabyrte"]'>Yes</span>
+      <span class="support " data-dbs='["Spanner", "Yugabyte"]'>Yes</span>
     </td>
     <td class="comparison-chart__column-two">
           <span class="support " data-dbs='["MySQL", "PostgreSQL", "Oracle", "AWS Aurora"]'>No</span>
       <span class="support " data-dbs='["MongoDB", "Cassandra"]'>Lightweight transactions only</span>
-      <span class="support " data-dbs='["Spanner", "Yugabyrte"]'>Yes</span>
+      <span class="support " data-dbs='["Spanner", "Yugabyte"]'>Yes</span>
     </td>
     <td>Yes</td>
   </tr>
@@ -244,9 +244,9 @@ This page shows you how the key features of CockroachDB stack up against other d
     <td class="comparison-chart__column-two">
       <span class="support " data-dbs='["MySQL", "PostgreSQL", "Oracle"]'>Yes</span>
       <span class="support " data-dbs='["AWS Aurora","MongoDB", "Cassandra"]'>Offline</span>
-      <span class="support " data-dbs='["Spanner", "Yugabyte"]'>Online, Active and Dynamic</span>
+      <span class="support " data-dbs='["Spanner", "Yugabyte"]'>Online, Active, and Dynamic</span>
     </td>
-    <td>Online, Active and Dynamic</td>
+    <td>Online, Active, and Dynamic</td>
   </tr>
 
   <tr>

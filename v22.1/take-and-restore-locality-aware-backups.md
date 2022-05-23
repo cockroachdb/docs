@@ -5,8 +5,6 @@ toc: true
 docs_area: manage
 ---
 
-The ability to [backup a full cluster](backup.html#backup-a-cluster) has been added and the syntax for [incremental backups](backup.html#create-incremental-backups) is simplified. Because of these two changes, [basic backup usage](take-full-and-incremental-backups.html) is now sufficient for most CockroachDB clusters. However, you may want to control your backup and restore options more explicitly.
-
 This page provides information about how to take and restore locality-aware backups.
 
 {{site.data.alerts.callout_info}}
@@ -42,10 +40,12 @@ You can restore the backup by running:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> RESTORE FROM '{path/to/backup/subdirectory}' IN ('s3://us-east-bucket', 's3://us-west-bucket');
+> RESTORE FROM LATEST IN ('s3://us-east-bucket', 's3://us-west-bucket');
 ~~~
 
 Note that the first URI in the list has to be the URI specified as the `default` URI when the backup was created. If you have moved your backups to a different location since the backup was originally taken, the first URI must be the new location of the files originally written to the `default` location.
+
+To restore from a specific backup, use [`RESTORE FROM {subdirectory} IN ...`](restore.html#restore-a-specific-backup)
 
 For guidance on how to identify the locality of a node to pass in a backup query, see [Show a node's locality](#show-a-nodes-locality).
 
@@ -82,13 +82,13 @@ Given a list of URIs that together contain the locations of all of the files for
 When restoring a [full backup](take-full-and-incremental-backups.html#full-backups), the cluster data is restored first, then the system table data "as is." This means that the restored zone configurations can point to regions that do not have active nodes in the new cluster. For example, if your full backup has the following [zone configurations](configure-zone.html):
 
 ~~~ sql
-> ALTER PARTITION europe_west OF INDEX movr.public.rides@primary \
+> ALTER PARTITION europe_west OF INDEX movr.public.rides@rides_pkey \
 		CONFIGURE ZONE USING constraints = '[+region=europe-west1]';
 
-> ALTER PARTITION us_east OF INDEX movr.public.rides@primary \
+> ALTER PARTITION us_east OF INDEX movr.public.rides@rides_pkey \
 		CONFIGURE ZONE USING constraints = '[+region=us-east1]';
 
-> ALTER PARTITION us_west OF INDEX movr.public.rides@primary \
+> ALTER PARTITION us_west OF INDEX movr.public.rides@rides_pkey \
 		CONFIGURE ZONE USING constraints = '[+region=us-west1]';
 ~~~
 
@@ -106,10 +106,10 @@ Restore a locality-aware backup with:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> RESTORE FROM '2021/03/23-213101.37' IN ('s3://us-east-bucket/', 's3://us-west-bucket/');
+> RESTORE FROM LATEST IN ('s3://us-east-bucket/', 's3://us-west-bucket/');
 ~~~
 
-The date-based subdirectory `'2021/03/23-213101.37'` represents the path to the backup. To view the available subdirectories, use [`SHOW BACKUPS`](restore.html#view-the-backup-subdirectories).
+To restore from a specific backup, use [`RESTORE FROM {subdirectory} IN ...`](restore.html#restore-a-specific-backup).
 
 {{site.data.alerts.callout_info}}
 [`RESTORE`](restore.html) is not truly locality-aware; while restoring from backups, a node may read from a store that does not match its locality. This can happen in the cases that either the [`BACKUP`](backup.html) or [`RESTORE`](restore.html) was not of a [full cluster](take-full-and-incremental-backups.html#full-backups). Note that during a locality-aware restore, some data may be temporarily located on another node before it is eventually relocated to the appropriate node. To avoid this, you can [manually restore zone configurations from a locality-aware backup](#manually-restore-zone-configurations-from-a-locality-aware-backup).
@@ -126,7 +126,7 @@ If you backup to a destination already containing a [full backup](take-full-and-
 ~~~
 
 {{site.data.alerts.callout_info}}
-When [restoring from an incremental locality-aware backup](#restore-from-an-incremental-locality-aware-backup), you need to include _every_ locality ever used, even if it was only used once.
+When [restoring from an incremental locality-aware backup](#restore-from-an-incremental-locality-aware-backup), you need to include **every** locality ever used, even if it was only used once.
 
 It is recommended that the same localities be included for every incremental backup in the series of backups; however, only the `default` locality is required.
 {{site.data.alerts.end}}
@@ -157,13 +157,13 @@ can be restored by running:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> RESTORE FROM '2021/03/23-213101.37' IN ('s3://us-east-bucket/', 's3://us-west-bucket/');
+> RESTORE FROM LATEST IN ('s3://us-east-bucket/', 's3://us-west-bucket/');
 ~~~
 
-To view the available subdirectories, use [`SHOW BACKUPS`](restore.html#view-the-backup-subdirectories).
+To restore from a specific backup, use [`RESTORE FROM {subdirectory} IN ...`](restore.html#restore-a-specific-backup).
 
 {{site.data.alerts.callout_info}}
-When [restoring from an incremental locality-aware backup](take-and-restore-locality-aware-backups.html#restore-from-an-incremental-locality-aware-backup), you need to include _every_ locality ever used, even if it was only used once.
+When [restoring from an incremental locality-aware backup](take-and-restore-locality-aware-backups.html#restore-from-an-incremental-locality-aware-backup), you need to include **every** locality ever used, even if it was only used once.
 {{site.data.alerts.end}}
 
 ## Manually restore zone configurations from a locality-aware backup

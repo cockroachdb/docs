@@ -32,7 +32,7 @@ Field | Description
 
 ## Example
 
-{% include {{page.version.version}}/sql/movr-statements.md %}
+{% include {{page.version.version}}/sql/movr-statements-nodes.md %}
 
 ### Show the `CREATE TABLE` statement for a table
 
@@ -235,6 +235,55 @@ To return just the `create_statement` value:
 
 For more information, see [`COMMENT ON`](comment-on.html).
 
+### Show the `CREATE TABLE` statement for a table with a multi-region locality
+
+<span class="version-tag">New in v21.1:</span> Use the `SHOW CREATE TABLE` command to view [multi-region-defined](multiregion-overview.html) table localities.
+
+{% include enterprise-feature.md %}
+
+To add the first region to the database, or to set an already-added region as the primary region, use a [`SET PRIMARY REGION`](set-primary-region.html) statement:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> ALTER DATABASE movr SET PRIMARY REGION "us-east";
+~~~
+
+~~~
+ALTER DATABASE PRIMARY REGION
+
+
+Time: 49ms total (execution 48ms / network 0ms)
+~~~
+
+All tables will be [`REGIONAL BY TABLE`](set-locality.html#regional-by-table) in `us-east` by default. To configure the `users` table to be [`REGIONAL BY ROW`](set-locality.html#regional-by-row) instead:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> ALTER TABLE users SET LOCALITY REGIONAL BY ROW;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW CREATE TABLE users;
+~~~
+
+~~~
+  table_name |                                                                      create_statement
+-------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+  users      | CREATE TABLE public.users (
+             |     id UUID NOT NULL,
+             |     city VARCHAR NOT NULL,
+             |     name VARCHAR NULL,
+             |     address VARCHAR NULL,
+             |     credit_card VARCHAR NULL,
+             |     crdb_region public.crdb_internal_region NOT VISIBLE NOT NULL DEFAULT default_to_database_primary_region(gateway_region())::public.crdb_internal_region,
+             |     CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
+             |     FAMILY "primary" (id, city, name, address, credit_card, crdb_region)
+             | ) LOCALITY REGIONAL BY ROW;
+             | COMMENT ON TABLE public.users IS 'This table contains information about users.'
+(1 row)
+~~~
+
 ### Show the statements needed to recreate all tables, views, and sequences in the current database
 
 <span class="version-tag">New in v21.1:</span> To return the `CREATE` statements for all of the tables, views, and sequences in the current database, use `SHOW CREATE ALL TABLES`.
@@ -243,31 +292,23 @@ Note that this statement also returns the [`ALTER` statements](alter-table.html)
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE VIEW user_view (city, name) AS SELECT city, name FROM users;
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> CREATE SEQUENCE desc_customer_list START -1 INCREMENT -2;
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
 > SHOW CREATE ALL TABLES;
 ~~~
 
 ~~~
-                                                                  create_statement
------------------------------------------------------------------------------------------------------------------------------------------------------
+                                                                       create_statement
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
   CREATE TABLE public.users (
       id UUID NOT NULL,
       city VARCHAR NOT NULL,
       name VARCHAR NULL,
       address VARCHAR NULL,
       credit_card VARCHAR NULL,
+      crdb_region public.crdb_internal_region NOT VISIBLE NOT NULL DEFAULT default_to_database_primary_region(gateway_region())::public.crdb_internal_region,
       CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
-      FAMILY "primary" (id, city, name, address, credit_card)
-  );
+      FAMILY "primary" (id, city, name, address, credit_card, crdb_region)
+  ) LOCALITY REGIONAL BY ROW;
+  COMMENT ON TABLE public.users IS 'This table contains information about users.';
   CREATE TABLE public.vehicles (
       id UUID NOT NULL,
       city VARCHAR NOT NULL,
@@ -280,7 +321,7 @@ Note that this statement also returns the [`ALTER` statements](alter-table.html)
       CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
       INDEX vehicles_auto_index_fk_city_ref_users (city ASC, owner_id ASC),
       FAMILY "primary" (id, city, type, owner_id, creation_time, status, current_location, ext)
-  );
+  ) LOCALITY REGIONAL BY TABLE IN PRIMARY REGION;
   CREATE TABLE public.rides (
       id UUID NOT NULL,
       city VARCHAR NOT NULL,
@@ -297,7 +338,7 @@ Note that this statement also returns the [`ALTER` statements](alter-table.html)
       INDEX rides_auto_index_fk_vehicle_city_ref_vehicles (vehicle_city ASC, vehicle_id ASC),
       FAMILY "primary" (id, city, vehicle_city, rider_id, vehicle_id, start_address, end_address, start_time, end_time, revenue),
       CONSTRAINT check_vehicle_city_city CHECK (vehicle_city = city)
-  );
+  ) LOCALITY REGIONAL BY TABLE IN PRIMARY REGION;
   CREATE TABLE public.vehicle_location_histories (
       city VARCHAR NOT NULL,
       ride_id UUID NOT NULL,
@@ -306,7 +347,7 @@ Note that this statement also returns the [`ALTER` statements](alter-table.html)
       long FLOAT8 NULL,
       CONSTRAINT "primary" PRIMARY KEY (city ASC, ride_id ASC, "timestamp" ASC),
       FAMILY "primary" (city, ride_id, "timestamp", lat, long)
-  );
+  ) LOCALITY REGIONAL BY TABLE IN PRIMARY REGION;
   CREATE TABLE public.promo_codes (
       code VARCHAR NOT NULL,
       description VARCHAR NULL,
@@ -315,7 +356,7 @@ Note that this statement also returns the [`ALTER` statements](alter-table.html)
       rules JSONB NULL,
       CONSTRAINT "primary" PRIMARY KEY (code ASC),
       FAMILY "primary" (code, description, creation_time, expiration_time, rules)
-  );
+  ) LOCALITY REGIONAL BY TABLE IN PRIMARY REGION;
   CREATE TABLE public.user_promo_codes (
       city VARCHAR NOT NULL,
       user_id UUID NOT NULL,
@@ -324,7 +365,17 @@ Note that this statement also returns the [`ALTER` statements](alter-table.html)
       usage_count INT8 NULL,
       CONSTRAINT "primary" PRIMARY KEY (city ASC, user_id ASC, code ASC),
       FAMILY "primary" (city, user_id, code, "timestamp", usage_count)
-  );
+  ) LOCALITY REGIONAL BY TABLE IN PRIMARY REGION;
+  CREATE TABLE public.drivers (
+      id UUID NOT NULL,
+      city STRING NOT NULL,
+      name STRING NULL,
+      dl STRING NULL,
+      address STRING NULL,
+      CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
+      UNIQUE INDEX drivers_dl_key (dl ASC),
+      FAMILY "primary" (id, city, name, dl, address)
+  ) LOCALITY REGIONAL BY TABLE IN PRIMARY REGION;
   CREATE VIEW public.user_view (city, name) AS SELECT city, name FROM movr.public.users;
   CREATE SEQUENCE public.desc_customer_list MINVALUE -9223372036854775808 MAXVALUE -1 INCREMENT -2 START -1;
   ALTER TABLE public.vehicles ADD CONSTRAINT fk_city_ref_users FOREIGN KEY (city, owner_id) REFERENCES public.users(city, id);
@@ -338,9 +389,8 @@ Note that this statement also returns the [`ALTER` statements](alter-table.html)
   ALTER TABLE public.rides VALIDATE CONSTRAINT fk_vehicle_city_ref_vehicles;
   ALTER TABLE public.vehicle_location_histories VALIDATE CONSTRAINT fk_city_ref_rides;
   ALTER TABLE public.user_promo_codes VALIDATE CONSTRAINT fk_city_ref_users;
-(19 rows)
+(20 rows)
 ~~~
-
 
 ## See also
 

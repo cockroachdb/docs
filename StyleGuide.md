@@ -1,10 +1,11 @@
-CockroachDB docs should be:
+CockroachDB docs follow these principles:
 
-- Clear
-- Correct
-- Concise
+- **Commit to Excellence:** We commit to publishing documentation that serves our users and customers with a focus on excellence. We take pride in writing clear, concise, and correct docs, iterating constantly, and aiming to produce great work to help our users.
+- **Communicate Openly and Honestly:** We produce our best documentation when we communicate openly and honestly with our users. Documenting features and limitations transparently enables users to effectively use Cockroach Labs products while instilling confidence in the docs as a trusted resource.
+- **Respect:** We aim to write humble, positive, friendly, and above all else helpful documentation. We appreciate every user through inclusive, accessible, and non-hyperbolic language.
+- **Establish balance:** We establish balance between complexity and accessibility for all users. We describe complex problems through accessible technical language and links to further information, without obfuscating meaning through unnecessarily complicated language. We also establish balance by always considering our style guidelines, but we can break these rules—or propose new rules—when it’s better for the user or promotes our other values.
 
-The following guidance is provided to ensure consistency.
+The following guidance is provided to benefit authors and reviewers by reflecting past style decisions, and to benefit readers by promoting consistency and readability across our content.
 
 Included in this guide:
 
@@ -34,13 +35,14 @@ Included in this guide:
   - [Best practice](#best-practice)
   - [Troubleshooting](#troubleshooting)
   - [FAQ](#faq)
-  - [Release note](release-note)
+  - [Release note](#release-note)
 - [Components](#components)
   - [Page title](#page-title)
   - [Headings](#headings)
   - [Text format](#text-format)
   - [Links](#links)
   - [Tips, notes, and warnings](#tips-notes-and-warnings)
+  - [Known limitations](#known-limitations)
   - [Product names](#product-names)
   - [Code](#code)
   - [Examples](#examples)
@@ -78,6 +80,11 @@ Other general guidance about language and tone:
     **Example:** You cannot change primary key using `ALTER TABLE`.
 
     **Example:** If you leave versioned binaries on your servers, you do not need to do anything.
+
+- Avoid using forward-looking language when writing about supported syntax and behavior:
+    - Do not suggest that a feature may or may not be added in a future release.
+    - Do not use the words "yet" and "currently" when writing about a feature that we do or do not support.
+    - Do not reference the internal product roadmap.
 
 ## Inclusive language
 
@@ -294,7 +301,7 @@ A _glossary_ is a collection (usually in tabular form) of [definitions](#definit
 #### Examples
 
 - [Architecture Glossary](https://www.cockroachlabs.com/docs/v21.2/architecture/overview.html#glossary)
-- [Cockroach Cloud Concepts](https://www.cockroachlabs.com/docs/cockroachcloud/architecture.html#concepts)
+- [Cockroach Cloud Concepts](https://www.cockroachlabs.com/docs/cockroachcloud/architecture.html#cockroachdb-cloud-terms)
 
 ### Prerequisites
 
@@ -542,6 +549,94 @@ There is also a custom purple callout that uses the code `{{site.data.alerts.cal
 
 Each Liquid tag should be on its own line. You can use Markdown within the highlighted text.
 
+### Known limitations
+
+#### What are known limitations?
+
+Sometimes CockroachDB does not behave the way that users expect it to behave. These deviations from expected behavior can be in the form of:
+
+- A difference in syntax between CockroachDB and [SQL Standard](https://blog.ansi.org/2018/10/sql-standard-iso-iec-9075-2016-ansi-x3-135)
+- A difference in the behavior of CockroachDB and PostgreSQL
+- A feature that is functional, but not yet fully implemented
+- A feature that is fully implemented, but has some *long-standing* bugs (i.e., bugs that have existed across minor and/or major releases)
+- A feature that limits performance
+
+We list the general differences between CockroachDB and the SQL Standard on our [SQL Feature Support](https://www.cockroachlabs.com/docs/stable/sql-feature-support.html) page, and we provide more details on the differences between CockroachDB and PostgreSQL on our [PostgreSQL Compatibility](https://www.cockroachlabs.com/docs/stable/postgresql-compatibility.html). All other instances of known, but possibly unexpected, database behavior are known as **known limitations**.
+
+Known limitations often have [associated GitHub issues in the `cockroach` repo](https://github.com/cockroachdb/cockroach/issues), meaning the limitation could be resolved one day. *Not all known limitations have GitHub issues, and not all known limitations will be resolved.*
+
+The purpose of documenting known limitations is to help our users know more about using our product safely and effectively.
+
+#### Where to find known limitations
+
+Known limitations are generally listed in two places:
+
+1. (More common) In the `cockroach` repo, as [open issues with the `docs-known-limitations` label, but *not* with the `docs-done` label](https://github.com/cockroachdb/cockroach/issues?q=is%3Aissue+label%3Adocs-known-limitation+-label%3Adocs-done+is%3Aopen). Usually, engineers and product managers add these labels to issues in the weeks leading up to the release.
+
+1. (Less common) In the `docs` repo, as [open issues with the `T-known-limitation` label](https://github.com/cockroachdb/docs/issues?q=is%3Aopen+is%3Aissue+label%3AT-known-limitation).
+
+If you come across some behavior that you believe qualifies as a known limitation, first open an issue in the `cockroach` repo, get some engineering/PM feedback on the issue, and then add a `docs-known-limitations` label to an issue.
+
+#### When to document known limitations
+
+Documenting known limitations should happen in the [weeks leading up to a GA release](https://cockroachlabs.atlassian.net/wiki/spaces/ED/pages/402718726/GA+Release+Checklist).
+
+You might also need to document a known limitation that is discovered after the GA release. In this case, you will likely be notified by your product area PM and should coordinate with them to determine how best to document the limitation.
+
+*Avoid documenting known limitations too early. Some "limitations" could be bugs that engineering finds the time to fix during the stability period leading up to a GA release.*
+
+#### Who documents known limitations
+
+In the past, the person assigned to known limitations is usually someone with extra bandwidth at the end of the GA release cycle. You might volunteer for this task, or your manager might assign it to you.
+
+#### Where to document known limitations
+
+Document all known limitations on the [Known Limitations](https://www.cockroachlabs.com/docs/stable/known-limitations.html) page.
+
+If the limitation is related to a feature documented elsewhere on our docs site, you should also add the limitation to the page that documents that feature, under a dedicated "Known limitations" header. To avoid duplication, create a file in `_includes/vX.X/known-limitations` and include the file in both places.
+
+#### How to document known limitations
+
+Known limitations should generally follow this template:
+
+~~~
+<Level-3 header with a descriptive, concise title>
+
+<Descriptive summary, with more details and possibly a workaround and/or an example>
+
+<A link to the tracking issue on GitHub, if one exists>
+~~~
+
+For example:
+
+~~~
+### Feature doesn't do this thing
+
+Feature doesn't do this thing because it doesn't do it. To get around this, do this other thing. For example, instead of `do this thing`, use `do this other thing`.
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/number)
+~~~
+
+For more examples, check out the [Known Limitations](https://www.cockroachlabs.com/docs/stable/known-limitations.html) page.
+
+When the time comes to document known limitations, keep in mind that you are documenting known limitations for a specific release, just like you document any other feature. This means that you have to update all documented known limitations be relevant to the upcoming release
+
+1. In the latest version's docset, move all existing known limitations from the ["New limitations"](https://www.cockroachlabs.com/docs/stable/known-limitations.html#new-limitations) header, and place them under the ["Unresolved limitations"](https://www.cockroachlabs.com/docs/stable/known-limitations.html#unresolved-limitations) header.
+
+1. Verify that each of the limitations under "Unresolved limitations" is, in fact, still a limitation:
+
+    1. Navigate to the linked GitHub tracking issue. If there is no GitHub issue associated with the limitation, you can assume that the limitation will not be resolved.
+
+    1. If the tracking GitHub issue is still open, you should leave the known limitation as unresolved. If it is closed, you need to find the PR that resolved the issue, and see if it was backported to a previous release.
+
+    1. Remove the limitation from the Known Limitations page, and from all other pages in the docs *for each version in which the resolving PR was merged*. If the resolving PR was not backported, then you can remove the limitation from just the latest release's docs.
+
+1. [Document all new limitations](#where-to-find-known-limitations) under the "New limitations" header. Note that undocumented known limitations might apply to more than just one release. If the limitation applies to previous releases, then add the limitation under the "Existing limitations" header for each supported versioned docset to which the limitation applies.
+
+1. After you document a known limitation, add the `docs-done` label to the limitation's tracking issue in the `cockroach` repo (it will have both `docs-known-limitations` and `docs-done` labels). *Do not close the issue* if it is in the `cockroach` repo. Documenting a limitation does not resolve the limitation.
+
+1. Open a single PR with all of the known limitations updates for a GA release to the `docs` repo and add a manager as the reviewer. Known limitations are part of the GA checklist for docs, so managers need to be aware of the work.
+
 ### Product names
 
 All product names except CockroachDB should be written as Liquid variables unless part of front-matter, file names, or non-Markdown files. Use the following code in place of product names:
@@ -607,6 +702,24 @@ $ go get -u github.com/lib/pq
 
 **Copy to Clipboard** should be used for every code block that can be **executed**.
 
+#### Placeholders
+
+Code samples often include placeholder values, to be replaced by values specific to a user's environment. To denote that a value in a code sample is a placeholder value that should be replaced, use curly brackets (`{}`).
+
+For example, suppose you have the following sample SQL statement: `SELECT * FROM TABLE {mytable};`. In this code sample, `{mytable}` would be replaced by some table name before the code could actually run (e.g., `SELECT * FROM TABLE realtable;`).
+
+When you use placeholders, you usually need to define the value within the brackets, if the placeholder value (or the fact that the placeholder is a placeholder) isn't clear. If you are defining a placeholder value, do so immediately following the code sample/bracket. To determine the format of the value definition, you can roughly follow these guidelines:
+
+- Always include the placeholder delimiters (i.e., the curly brackets `{}`) in the definitions.
+- For a single placeholder value, use a follow-up sentence.
+- For multiple placeholder values, use a [bulleted list](#lists).
+- For many placeholder values (10+), and for placeholder values with complex definitions, use a [table](#tables).
+- For large code blocks, define the placeholder values inside the code block, with an inline code comment.
+
+If the code sample you are using is sensitive to curly bracket characters (e.g., JavaScript), you can use `<>` instead.
+
+For some examples, see [Connect to a CockroachDB Cluster](https://www.cockroachlabs.com/docs/stable/connect-to-the-database.html?filters=python).
+
 ### Examples
 
 Examples help show the feature in action. Examples follow a basic format:
@@ -631,19 +744,23 @@ Examples help show the feature in action. Examples follow a basic format:
 
 ### Version tags
 
-Use HTML version tags to denote new or updated features for the version. Version tags can be put at the end of a heading, if the whole section describes something that is new or updated. Otherwise, version tags can introduce a paragraph, sentence, or description in a table cell.
+Version tags inform users of new and updated features in CockroachDB, and could motivate users to upgrade to the latest major or minor version of CockroachDB. Version tags also help us identify new and updated features that we can call out in [our GA release notes](https://cockroachlabs.atlassian.net/wiki/spaces/ED/pages/402718726/GA+Release+Checklist).
 
-To insert a version tag, use the following code:
+To add a version tag, use the following HTML `span`:
 
 ~~~
 <span class="version-tag">New in vX.X:</span>
 ~~~
 
-Note: Version tags cannot be used in bulleted lists items. To denote a new feature in a bulleted list, start the bulleted item with "**New in vX.X:**".
+Put version tags at the beginning of a paragraph, sentence, or description in a table cell.
 
-#### Examples
+Note: Do not use version tags in bulleted lists items. To denote a new feature in a bulleted list, start the bulleted item with "**New in vX.X:**".
 
-- [`CREATE TABLE`](https://www.cockroachlabs.com/docs/stable/create-table.html)
+If a feature is new in a GA release, use the major release number for the release version tag (e.g., `New in v22.1`).
+
+If a feature has been backported to a previous version in a patch release, use the minor release number for the release version tag (e.g., `New in v21.1.9`).
+
+Version tags should only refer to the version of the docset that contains them. For example, the version tag `<span class="version-tag">New in v21.1.9:</span>` should only be on pages in `v21.1` directories.
 
 ### Tables
 
@@ -796,3 +913,4 @@ Term | Classification | Note
 --- |:---:| ---
 Postgres | 🔴 | This is a nickname for PostgreSQL. Use PostgreSQL instead: it's the official name, our docs site and Google treat these as synonyms, and Cmd+F on `Postgres` will still find `PostgreSQL`.
 PostgreSQL | 🟢 | Preferred over Postgres.
+vxx.x.x | 🟢 | This is the correct way to refer to any version of CockroachDB (for example, `v21.1.8`). Preferred over `version xx.x.x`.

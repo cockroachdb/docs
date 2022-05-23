@@ -2,8 +2,8 @@
 title: Performance Tuning Recipes
 summary: Identify, diagnose, and fix common performance problems
 toc: true
-toc_not_nested: true
-docs_area: manage
+toc_not_nested: false
+docs_area: develop
 ---
 
 This page provides recipes for fixing performance issues in your applications.
@@ -138,23 +138,35 @@ If the [Overview dashboard](ui-overview-dashboard.html) in the DB Console shows 
 
 #### Fix slow writes
 
-Secondary indexes can improve application read performance. However, there is overhead in maintaining secondary indexes that can affect your write performance. You should profile your tables periodically to determine whether an index is worth the overhead. To identify infrequently accessed indexes that could be candidates to drop, query the `crdb_internal.index_usage_statistics` table:
+[Secondary indexes](schema-design-indexes.html) can improve application read performance. However, there is overhead in maintaining secondary indexes that can affect your write performance. You should profile your tables periodically to determine whether an index is worth the overhead. To identify infrequently accessed indexes that could be candidates to drop, run a join query against the [`crdb_internal.index_usage_statistics`](crdb-internal.html#index_usage_statistics) and `crdb_internal.table_indexes` tables:
 
-~~~sql
-SELECT
- ti.descriptor_name as table_name,
- ti.index_name,
- total_reads,
- last_read
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT ti.descriptor_name as table_name, ti.index_name, total_reads, last_read
 FROM crdb_internal.index_usage_statistics AS us
 JOIN crdb_internal.table_indexes ti
 ON us.index_id = ti.index_id
- AND us.table_id = ti.descriptor_id
+AND us.table_id = ti.descriptor_id
 ORDER BY total_reads ASC;
+~~~
+
+~~~
+              table_name     |                  index_name                   | total_reads |           last_read
+-----------------------------+-----------------------------------------------+-------------+--------------------------------
+  vehicle_location_histories | primary                                       |           1 | 2021-09-28 22:59:03.324398+00
+  rides                      | rides_auto_index_fk_city_ref_users            |           1 | 2021-09-28 22:59:01.500962+00
+  rides                      | rides_auto_index_fk_vehicle_city_ref_vehicles |           1 | 2021-09-28 22:59:02.470526+00
+  user_promo_codes           | primary                                       |         456 | 2021-09-29 00:01:17.063418+00
+  promo_codes                | primary                                       |         910 | 2021-09-29 00:01:17.062319+00
+  vehicles                   | primary                                       |        3591 | 2021-09-29 00:01:18.261658+00
+  users                      | primary                                       |        5401 | 2021-09-29 00:01:18.260198+00
+  rides                      | primary                                       |       45658 | 2021-09-29 00:01:18.258208+00
+  vehicles                   | vehicles_auto_index_fk_city_ref_users         |       87119 | 2021-09-29 00:01:19.071476+00
+(9 rows)
 ~~~
 
 Use the values in the `total_reads` and `last_read` columns to identify indexes that have low usage or are stale and could be dropped.
 
 ## See also
 
-If you aren't sure whether SQL query performance needs to be improved, see [Identify slow queries](query-behavior-troubleshooting.html#identify-slow-statements).
+If you aren't sure whether SQL query performance needs to be improved, see [Identify slow queries](query-behavior-troubleshooting.html#identify-slow-queries).

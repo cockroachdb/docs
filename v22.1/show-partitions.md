@@ -60,26 +60,26 @@ The `movr` database in this example is pre-partitioned. For information about pa
 ~~~
 
 ~~~
-  database_name | table_name | partition_name | parent_partition | column_names |  index_name   |                 partition_value                 |              zone_config               |            full_zone_config
-+---------------+------------+----------------+------------------+--------------+---------------+-------------------------------------------------+----------------------------------------+-----------------------------------------+
-  movr          | users      | us_west        | NULL             | city         | users@primary | ('seattle'), ('san francisco'), ('los angeles') | constraints = '[+region=us-west1]'     | range_min_bytes = 134217728,
-                |            |                |                  |              |               |                                                 |                                        | range_max_bytes = 536870912,
-                |            |                |                  |              |               |                                                 |                                        | gc.ttlseconds = 90000,
-                |            |                |                  |              |               |                                                 |                                        | num_replicas = 3,
-                |            |                |                  |              |               |                                                 |                                        | constraints = '[+region=us-west1]',
-                |            |                |                  |              |               |                                                 |                                        | lease_preferences = '[]'
-  movr          | users      | us_east        | NULL             | city         | users@primary | ('new york'), ('boston'), ('washington dc')     | constraints = '[+region=us-east1]'     | range_min_bytes = 134217728,
-                |            |                |                  |              |               |                                                 |                                        | range_max_bytes = 536870912,
-                |            |                |                  |              |               |                                                 |                                        | gc.ttlseconds = 90000,
-                |            |                |                  |              |               |                                                 |                                        | num_replicas = 3,
-                |            |                |                  |              |               |                                                 |                                        | constraints = '[+region=us-east1]',
-                |            |                |                  |              |               |                                                 |                                        | lease_preferences = '[]'
-  movr          | users      | europe_west    | NULL             | city         | users@primary | ('amsterdam'), ('paris'), ('rome')              | constraints = '[+region=europe-west1]' | range_min_bytes = 134217728,
-                |            |                |                  |              |               |                                                 |                                        | range_max_bytes = 536870912,
-                |            |                |                  |              |               |                                                 |                                        | gc.ttlseconds = 90000,
-                |            |                |                  |              |               |                                                 |                                        | num_replicas = 3,
-                |            |                |                  |              |               |                                                 |                                        | constraints = '[+region=europe-west1]',
-                |            |                |                  |              |               |                                                 |                                        | lease_preferences = '[]'
+  database_name | table_name | partition_name | parent_partition | column_names |  index_name      |                 partition_value                 |              zone_config               |            full_zone_config
++---------------+------------+----------------+------------------+--------------+------------------+-------------------------------------------------+----------------------------------------+-----------------------------------------+
+  movr          | users      | us_west        | NULL             | city         | users@users_pkey | ('seattle'), ('san francisco'), ('los angeles') | constraints = '[+region=us-west1]'     | range_min_bytes = 134217728,
+                |            |                |                  |              |                  |                                                 |                                        | range_max_bytes = 536870912,
+                |            |                |                  |              |                  |                                                 |                                        | gc.ttlseconds = 90000,
+                |            |                |                  |              |                  |                                                 |                                        | num_replicas = 3,
+                |            |                |                  |              |                  |                                                 |                                        | constraints = '[+region=us-west1]',
+                |            |                |                  |              |                  |                                                 |                                        | lease_preferences = '[]'
+  movr          | users      | us_east        | NULL             | city         | users@users_pkey | ('new york'), ('boston'), ('washington dc')     | constraints = '[+region=us-east1]'     | range_min_bytes = 134217728,
+                |            |                |                  |              |                  |                                                 |                                        | range_max_bytes = 536870912,
+                |            |                |                  |              |                  |                                                 |                                        | gc.ttlseconds = 90000,
+                |            |                |                  |              |                  |                                                 |                                        | num_replicas = 3,
+                |            |                |                  |              |                  |                                                 |                                        | constraints = '[+region=us-east1]',
+                |            |                |                  |              |                  |                                                 |                                        | lease_preferences = '[]'
+  movr          | users      | europe_west    | NULL             | city         | users@users_pkey | ('amsterdam'), ('paris'), ('rome')              | constraints = '[+region=europe-west1]' | range_min_bytes = 134217728,
+                |            |                |                  |              |                  |                                                 |                                        | range_max_bytes = 536870912,
+                |            |                |                  |              |                  |                                                 |                                        | gc.ttlseconds = 90000,
+                |            |                |                  |              |                  |                                                 |                                        | num_replicas = 3,
+                |            |                |                  |              |                  |                                                 |                                        | constraints = '[+region=europe-west1]',
+                |            |                |                  |              |                  |                                                 |                                        | lease_preferences = '[]'
 (3 rows)
 ~~~
 
@@ -106,11 +106,11 @@ You can also use [`SHOW CREATE TABLE`](show-create.html) to view partitions on a
              |     PARTITION us_east VALUES IN (('new york'), ('boston'), ('washington dc')),
              |     PARTITION europe_west VALUES IN (('amsterdam'), ('paris'), ('rome'))
              | );
-             | ALTER PARTITION europe_west OF INDEX movr.public.users@primary CONFIGURE ZONE USING
+             | ALTER PARTITION europe_west OF INDEX movr.public.users@users_pkey CONFIGURE ZONE USING
              |     constraints = '[+region=europe-west1]';
-             | ALTER PARTITION us_east OF INDEX movr.public.users@primary CONFIGURE ZONE USING
+             | ALTER PARTITION us_east OF INDEX movr.public.users@users_pkey CONFIGURE ZONE USING
              |     constraints = '[+region=us-east1]';
-             | ALTER PARTITION us_west OF INDEX movr.public.users@primary CONFIGURE ZONE USING
+             | ALTER PARTITION us_west OF INDEX movr.public.users@users_pkey CONFIGURE ZONE USING
              |     constraints = '[+region=us-west1]'
 (1 row)
 ~~~
@@ -189,44 +189,44 @@ If a partitioned table has no zones configured, the `SHOW CREATE TABLE` output i
 ~~~
 
 ~~~
-  database_name | table_name | partition_name | parent_partition | column_names |    index_name    |                 partition_value                 |              zone_config               |            full_zone_config
-+---------------+------------+----------------+------------------+--------------+------------------+-------------------------------------------------+----------------------------------------+-----------------------------------------+
-  movr          | users      | us_west        | NULL             | city         | users@primary    | ('seattle'), ('san francisco'), ('los angeles') | NULL                                   | range_min_bytes = 134217728,
-                |            |                |                  |              |                  |                                                 |                                        | range_max_bytes = 536870912,
-                |            |                |                  |              |                  |                                                 |                                        | gc.ttlseconds = 90000,
-                |            |                |                  |              |                  |                                                 |                                        | num_replicas = 3,
-                |            |                |                  |              |                  |                                                 |                                        | constraints = '[]',
-                |            |                |                  |              |                  |                                                 |                                        | lease_preferences = '[]'
-  movr          | users      | us_east        | NULL             | city         | users@primary    | ('new york'), ('boston'), ('washington dc')     | NULL                                   | range_min_bytes = 134217728,
-                |            |                |                  |              |                  |                                                 |                                        | range_max_bytes = 536870912,
-                |            |                |                  |              |                  |                                                 |                                        | gc.ttlseconds = 90000,
-                |            |                |                  |              |                  |                                                 |                                        | num_replicas = 3,
-                |            |                |                  |              |                  |                                                 |                                        | constraints = '[]',
-                |            |                |                  |              |                  |                                                 |                                        | lease_preferences = '[]'
-  movr          | users      | europe_west    | NULL             | city         | users@primary    | ('amsterdam'), ('paris'), ('rome')              | NULL                                   | range_min_bytes = 134217728,
-                |            |                |                  |              |                  |                                                 |                                        | range_max_bytes = 536870912,
-                |            |                |                  |              |                  |                                                 |                                        | gc.ttlseconds = 90000,
-                |            |                |                  |              |                  |                                                 |                                        | num_replicas = 3,
-                |            |                |                  |              |                  |                                                 |                                        | constraints = '[]',
-                |            |                |                  |              |                  |                                                 |                                        | lease_preferences = '[]'
-  movr          | vehicles   | us_west        | NULL             | city         | vehicles@primary | ('seattle'), ('san francisco'), ('los angeles') | constraints = '[+region=us-west1]'     | range_min_bytes = 134217728,
-                |            |                |                  |              |                  |                                                 |                                        | range_max_bytes = 536870912,
-                |            |                |                  |              |                  |                                                 |                                        | gc.ttlseconds = 90000,
-                |            |                |                  |              |                  |                                                 |                                        | num_replicas = 3,
-                |            |                |                  |              |                  |                                                 |                                        | constraints = '[+region=us-west1]',
-                |            |                |                  |              |                  |                                                 |                                        | lease_preferences = '[]'
-  movr          | vehicles   | us_east        | NULL             | city         | vehicles@primary | ('new york'), ('boston'), ('washington dc')     | constraints = '[+region=us-east1]'     | range_min_bytes = 134217728,
-                |            |                |                  |              |                  |                                                 |                                        | range_max_bytes = 536870912,
-                |            |                |                  |              |                  |                                                 |                                        | gc.ttlseconds = 90000,
-                |            |                |                  |              |                  |                                                 |                                        | num_replicas = 3,
-                |            |                |                  |              |                  |                                                 |                                        | constraints = '[+region=us-east1]',
-                |            |                |                  |              |                  |                                                 |                                        | lease_preferences = '[]'
-  movr          | vehicles   | europe_west    | NULL             | city         | vehicles@primary | ('amsterdam'), ('paris'), ('rome')              | constraints = '[+region=europe-west1]' | range_min_bytes = 134217728,
-                |            |                |                  |              |                  |                                                 |                                        | range_max_bytes = 536870912,
-                |            |                |                  |              |                  |                                                 |                                        | gc.ttlseconds = 90000,
-                |            |                |                  |              |                  |                                                 |                                        | num_replicas = 3,
-                |            |                |                  |              |                  |                                                 |                                        | constraints = '[+region=europe-west1]',
-                |            |                |                  |              |                  |                                                 |                                        | lease_preferences = '[]'
+  database_name | table_name | partition_name | parent_partition | column_names |    index_name          |                 partition_value                 |              zone_config               |            full_zone_config
++---------------+------------+----------------+------------------+--------------+------------------------+-------------------------------------------------+----------------------------------------+-----------------------------------------+
+  movr          | users      | us_west        | NULL             | city         | users@users_pkey       | ('seattle'), ('san francisco'), ('los angeles') | NULL                                   | range_min_bytes = 134217728,
+                |            |                |                  |              |                        |                                                 |                                        | range_max_bytes = 536870912,
+                |            |                |                  |              |                        |                                                 |                                        | gc.ttlseconds = 90000,
+                |            |                |                  |              |                        |                                                 |                                        | num_replicas = 3,
+                |            |                |                  |              |                        |                                                 |                                        | constraints = '[]',
+                |            |                |                  |              |                        |                                                 |                                        | lease_preferences = '[]'
+  movr          | users      | us_east        | NULL             | city         | users@users_pkey       | ('new york'), ('boston'), ('washington dc')     | NULL                                   | range_min_bytes = 134217728,
+                |            |                |                  |              |                        |                                                 |                                        | range_max_bytes = 536870912,
+                |            |                |                  |              |                        |                                                 |                                        | gc.ttlseconds = 90000,
+                |            |                |                  |              |                        |                                                 |                                        | num_replicas = 3,
+                |            |                |                  |              |                        |                                                 |                                        | constraints = '[]',
+                |            |                |                  |              |                        |                                                 |                                        | lease_preferences = '[]'
+  movr          | users      | europe_west    | NULL             | city         | users@users_pkey       | ('amsterdam'), ('paris'), ('rome')              | NULL                                   | range_min_bytes = 134217728,
+                |            |                |                  |              |                        |                                                 |                                        | range_max_bytes = 536870912,
+                |            |                |                  |              |                        |                                                 |                                        | gc.ttlseconds = 90000,
+                |            |                |                  |              |                        |                                                 |                                        | num_replicas = 3,
+                |            |                |                  |              |                        |                                                 |                                        | constraints = '[]',
+                |            |                |                  |              |                        |                                                 |                                        | lease_preferences = '[]'
+  movr          | vehicles   | us_west        | NULL             | city         | vehicles@vehicles_pkey | ('seattle'), ('san francisco'), ('los angeles') | constraints = '[+region=us-west1]'     | range_min_bytes = 134217728,
+                |            |                |                  |              |                        |                                                 |                                        | range_max_bytes = 536870912,
+                |            |                |                  |              |                        |                                                 |                                        | gc.ttlseconds = 90000,
+                |            |                |                  |              |                        |                                                 |                                        | num_replicas = 3,
+                |            |                |                  |              |                        |                                                 |                                        | constraints = '[+region=us-west1]',
+                |            |                |                  |              |                        |                                                 |                                        | lease_preferences = '[]'
+  movr          | vehicles   | us_east        | NULL             | city         | vehicles@vehicles_pkey | ('new york'), ('boston'), ('washington dc')     | constraints = '[+region=us-east1]'     | range_min_bytes = 134217728,
+                |            |                |                  |              |                        |                                                 |                                        | range_max_bytes = 536870912,
+                |            |                |                  |              |                        |                                                 |                                        | gc.ttlseconds = 90000,
+                |            |                |                  |              |                        |                                                 |                                        | num_replicas = 3,
+                |            |                |                  |              |                        |                                                 |                                        | constraints = '[+region=us-east1]',
+                |            |                |                  |              |                        |                                                 |                                        | lease_preferences = '[]'
+  movr          | vehicles   | europe_west    | NULL             | city         | vehicles@vehicles_pkey | ('amsterdam'), ('paris'), ('rome')              | constraints = '[+region=europe-west1]' | range_min_bytes = 134217728,
+                |            |                |                  |              |                        |                                                 |                                        | range_max_bytes = 536870912,
+                |            |                |                  |              |                        |                                                 |                                        | gc.ttlseconds = 90000,
+                |            |                |                  |              |                        |                                                 |                                        | num_replicas = 3,
+                |            |                |                  |              |                        |                                                 |                                        | constraints = '[+region=europe-west1]',
+                |            |                |                  |              |                        |                                                 |                                        | lease_preferences = '[]'
 ...
 (24 rows)
 ~~~

@@ -194,4 +194,8 @@ SHOW REGIONS FROM ALL DATABASES;
 
 - [Multi-Region Capabilities Overview](multiregion-overview.html)
 - [`ADD REGION`](add-region.html)
+- [`DROP REGION`](drop-region.html)
+- [`ADD SUPER REGION`](add-super-region.html)
+- [`DROP SUPER REGION`](drop-super-region.html)
+- [`SHOW SUPER REGIONS`](show-super-regions.html)
 - [SQL Statements](sql-statements.html)

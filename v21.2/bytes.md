@@ -29,7 +29,7 @@ is otherwise expected.
 
 ## Size
 
-The size of a `BYTES` value is variable, but it's recommended to keep values under 1 MB to ensure performance. Above that threshold, [write amplification](https://en.wikipedia.org/wiki/Write_amplification) and other considerations may cause significant performance degradation.  
+The size of a `BYTES` value is variable, but it's recommended to keep values under 1 MB to ensure performance. Above that threshold, [write amplification](architecture/storage-layer.html#write-amplification) and other considerations may cause significant performance degradation.  
 
 {{site.data.alerts.callout_success}}
 If your application requires large binary input in single queries, you can store the blobs somewhere your client can access them (using a cloud storage service, for example), and then reference their addresses from a statement.

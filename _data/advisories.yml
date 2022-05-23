@@ -1,108 +1,124 @@
-- advisory: 76522
+- advisory: a79066
+  summary: Data key rotation is inadvertently disabled if the store key hasn't changed since the last node start.
+  versions: All clusters with encryption-at-rest enabled running versions of CockroachDB v20.2.x, v21.1.0-v21.1.18, and v21.2.0-v21.2.9.
+  date: May 2, 2022
+- advisory: a79384
+  summary: The optimizer has been found to create logically incorrect query plans in some cases.
+  versions: v21.1.0-v21.1.17, v21.2.0-v21.2.8, v22.1.0-alpha.1-v22.1.0-beta.1
+  date: April 14, 2022
+- advisory: a79281
+  summary: Importing duplicate keys can cause violations of UNIQUE constraints.
+  versions: v21.2.0-v21.2.7, 22.1.0-alpha.1-22.1.0-alpha.5, v22.1.0-beta.1.
+  date: April 12, 2022
+- advisory: a78681
+  summary: The optimizer has been found to create logically incorrect query plans in some cases.
+  versions: v21.1.0-v21.1.16, v21.2.0-v21.1.7, 22.1.0-alpha.1-22.1.0-alpha.5
+  date: April 11, 2022
+- advisory: a76522
   summary: The optimizer can omit ON conditions of joins in query plans, causing incorrect results.
-  versions: 20.2.0-20.2.19, 21.1.0-21.1.15, 21.2.0-21.2.6
-  date: March 09, 2022
-- advisory: 75758
+  versions: v20.2.0-v20.2.19, v21.1.0-v21.1.15, v21.2.0-v21.2.6
+  date: March 9, 2022
+- advisory: a75758
   summary: Users without the appropriate permissions may cancel any other users' sessions from the DB Console.
-  versions: 20.2.0-20.2.18, 21.1.0-21.1.13, 21.2.0-21.2.4
+  versions: v20.2.0-v20.2.18, v21.1.0-v21.1.13, v21.2.0-v21.2.4
   date: February 10, 2022
-- advisory: 74736
+- advisory: a74736
   summary: Queries can miss rows in a primary or unique index that is being scanned, causing incorrect query results.
-  versions: 21.2.0-21.2.4
+  versions: v21.2.0-v21.2.4
   date: February 7, 2022
-- advisory: 74385
+- advisory: a74385
   summary: Partial indexes can be corrupted by <code>UPDATE</code> statements, resulting in incorrect query results for any queries that use the partial index
-  versions: 21.1 and 21.2 prior to 21.1.13 and 21.2.4
+  versions: v21.1 and v21.2 prior to v21.1.13 and v21.2.4
   date: January 6, 2022
-- advisory: CVE-2021-44228
+- advisory: aCVE-2021-44228
   summary: No Cockroach Labs products or services are affected by the recent CVE-2021-44228 Apache Log4j vulnerability.
   versions: None
   date: December 14, 2021
-- advisory: 73629
+- advisory: a73629
   summary: Planning queries over partitioned tables with a <code>DEFAULT</code> partition in a <code>PARTITION BY LIST</code> clause could cause a spurious internal error
-  versions: 21.1 and 21.2 prior to 21.1.13 and 21.2.3
+  versions: v21.1 and v21.2 prior to v21.1.13 and v21.2.3
   date: December 14, 2021
-- advisory: 73024
+- advisory: a73024
   summary: The optimizer could plan queries that use semi-joins against multi-region <code>REGIONAL BY ROW</code> tables incorrectly
-  versions: 21.2.0
+  versions: v21.2.0
   date: November 29, 2021
-- advisory: 72839
+- advisory: a72839
   summary: Backups fail during upgrade process
-  versions: 21.2.0
+  versions: v21.2.0
   date: November 18, 2021
-- advisory: 71553
+- advisory: a71553
   summary: SQL statements that used secondary unique indexes that were created as a result of an <code>ALTER PRIMARY KEY</code> statement can return incorrect results.
-  versions: 20.2, 21.1
+  versions: v20.2, v21.1
   date: November 8, 2021
-- advisory: 71655
+- advisory: a71655
   summary: Zigzag joins could potentially produce incorrect results
-  versions: 19.2, 20.1, 20.2, 21.1
+  versions: v19.2, v20.1, v20.2, v21.1
   date: November 2, 2021
-- advisory: 71002
-  summary: CockroachDB 21.1.9 drops <code>WHERE</code> predicates from prepared statements in specific circumstances
-  versions: 21.1.9
+- advisory: a71002
+  summary: CockroachDB v21.1.9 drops <code>WHERE</code> predicates from prepared statements in specific circumstances
+  versions: v21.1.9
   date: October 7, 2021
-- advisory: 69874
-  summary: CockroachDB 21.1.8 can not be downgraded
-  versions: 21.1.8
+- advisory: a69874
+  summary: CockroachDB v21.1.8 can not be downgraded
+  versions: v21.1.8
   date: September 7, 2021
-- advisory: 68005
+- advisory: a68005
   summary: <code>sql.trace.txn.enable_threshold</code> cluster setting causes crash loops
-  versions: 21.1.0-21.1.6
+  versions: v21.1.0-v21.1.6
   date: August 20, 2021
-- advisory: 62842
+- advisory: a62842
   summary: <code>TRUNCATE TABLE</code> during <code>CREATE/ALTER INDEX</code> can cause data corruption
-  versions: 20.2.0-20.2.8
+  versions: v20.2.0-v20.2.8
   date: July 29, 2021
-- advisory: 64325
+- advisory: a64325
   summary: Race condition between reads and replica removal
-  versions: 20.1 and later
+  versions: v20.1 and later
   date: May 3, 2021
-- advisory: 63162
+- advisory: a63162
   summary: Invalid incremental backups under certain circumstances
-  versions: 19.1.0-19.1.11, 19.2.0-19.2.12, 20.1.0-20.1.14, 20.2.0-20.2.7
+  versions: v19.1.0-v19.1.11, v19.2.0-v19.2.12, v20.1.0-v20.1.14, v20.2.0-v20.2.7
   date: April 30, 2021
-- advisory: 58932
+- advisory: a58932
   summary: HTTP requests can cause full-cluster denial of service (DoS)
-  versions: 19.2.0-19.2.11, 20.1.0-20.1.10, 20.2.0-20.2.3
+  versions: v19.2.0-v19.2.11, v20.1.0-v20.1.10, v20.2.0-v20.2.3
   date: February 2, 2021
-- advisory: 56116
+- advisory: a56116
   summary: Incorrect timezone calculations with "slim" zoneinfo format
   versions: All
   date: October 29, 2020
-- advisory: 54418
+- advisory: a54418
   summary: Incorrect behavior with large batch <code>UPSERT</code>s
-  versions: 20.1.4, 20.1.5
+  versions: v20.1.4, v20.1.5
   date: September 24, 2020
-- advisory: 50587
+- advisory: a50587
   summary: <code>TRUNCATE</code> prevents table renaming
-  versions: 19.1.0-19.1.10, 19.2.0-19.2.8
+  versions: v19.1.0-v19.1.10, v19.2.0-v19.2.8
   date: July 6, 2020
-- advisory: 48860
+- advisory: a48860
   summary: Data corruption/loss issue with snapshots and delete range
-  versions: 2.1.0-2.1.9, 19.1.0-19.1.8, 19.2.0-19.2.6
+  versions: v2.1.0-v2.1.9, v19.1.0-v19.1.8, v19.2.0-v19.2.6
   date: May 20, 2020
-- advisory: 44299
+- advisory: a44299
   summary: Schema changes may cause cluster unavailability
-  versions: 19.1.0-19.1.7, 19.2.0-19.2.3
-  date: Feb 12, 2020
-- advisory: 44348
+  versions: v19.1.0-v19.1.7, v19.2.0-v19.2.3
+  date: February 12, 2020
+- advisory: a44348
   summary: Data leak in statement details
-  versions: 2.1.0-2.1.11, 19.1.0-19.1.7, 19.2.0-19.2.3
-  date: Feb 12, 2020
-- advisory: 44166
+  versions: 2.1.0-2.1.11, v19.1.0-v19.1.7, v19.2.0-v19.2.3
+  date: February 12, 2020
+- advisory: a44166
   summary: <code>SHOW JOBS</code> and Jobs page can endanger cluster stability
-  versions: 19.2.0-19.2.2
-  date: Feb 12, 2020
-- advisory: 43870
+  versions: v19.2.0-v19.2.2
+  date: February 12, 2020
+- advisory: a43870
   summary: HTTP authentication for non-Enterprise users
-  versions: 2.1.10-onward, 19.1.6-onward, 19.2.2
-  date: Jan 22, 2020
-- advisory: 42567
+  versions: v2.1.10-onward, v19.1.6-onward, v19.2.2
+  date: January 22, 2020
+- advisory: a42567
   summary: HTTP endpoint vulnerability
-  versions: 2.1.0-2.1.8, 19.1.0-19.1.5, 19.2.0-19.2.1
-  date: Jan 22, 2020
-- advisory: 30821
+  versions: v2.1.0-v2.1.8, v19.1.0-v19.1.5, v19.2.0-v19.2.1
+  date: January 22, 2020
+- advisory: a30821
   summary: Authentication bypass for internal RPCs
-  versions: 1.1.0-1.1.8, 2.0.0-2.0.4
-  date: Oct 1, 2018
+  versions: v1.1.0-v1.1.8, v2.0.0-v2.0.4
+  date: October 1, 2018

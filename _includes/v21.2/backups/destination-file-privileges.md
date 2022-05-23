@@ -1,12 +1,12 @@
-The destination file URL does _not_ require the [`admin` role](security-reference/authorization.html#admin-role) in the following scenarios:
+The destination file URL does **not** require the [`admin` role](security-reference/authorization.html#admin-role) in the following scenarios:
 
 - S3 and GS using `SPECIFIED` (and not `IMPLICIT`) credentials. Azure is always `SPECIFIED` by default.
 - [Userfile](use-userfile-for-bulk-operations.html)
 
-The destination file URL _does_ require the [`admin` role](security-reference/authorization.html#admin-role) in the following scenarios:
+The destination file URL **does** require the [`admin` role](security-reference/authorization.html#admin-role) in the following scenarios:
 
 - S3 or GS using `IMPLICIT` credentials
 - Use of a [custom endpoint](https://docs.aws.amazon.com/sdk-for-go/api/aws/endpoints/) on S3
-- [Nodelocal](cockroach-nodelocal-upload.html), [HTTP](use-a-local-file-server-for-bulk-operations.html) or [HTTPS] (use-a-local-file-server-for-bulk-operations.html)
+- [Nodelocal](cockroach-nodelocal-upload.html)
 
 We recommend using [cloud storage for bulk operations](use-cloud-storage-for-bulk-operations.html).

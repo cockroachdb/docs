@@ -177,7 +177,7 @@ UNION ALL SELECT * FROM t1 LEFT JOIN t2 ON st_contains(t1.geom, t2.geom) AND t2.
 
 {% include {{page.version.version}}/sql/jsonb-comparison.md %}
 
-### Locality-optimized search only works for queries selecting a limited number of records
+### Locality-optimized search works only for queries selecting a limited number of records
 
 {% include {{ page.version.version }}/sql/locality-optimized-search-limited-records.md %}
 
@@ -196,6 +196,10 @@ UNION ALL SELECT * FROM t1 LEFT JOIN t2 ON st_contains(t1.geom, t2.geom) AND t2.
 ### Expressions as `ON CONFLICT` targets are not supported
 
 {% include {{page.version.version}}/sql/expressions-as-on-conflict-targets.md %}
+
+### Row-Level TTL limitations
+
+{% include {{page.version.version}}/known-limitations/row-level-ttl-limitations.md %}
 
 ## Unresolved limitations
 
@@ -319,7 +323,7 @@ As a workaround, take a cluster backup instead, as the `system.comments` table i
 
 ### Change data capture
 
-Change data capture (CDC) provides efficient, distributed, row-level change feeds into Apache Kafka for downstream processing such as reporting, caching, or full-text indexing. It has the following known limitations:
+Change data capture (CDC) provides efficient, distributed, row-level changefeeds into Apache Kafka for downstream processing such as reporting, caching, or full-text indexing. It has the following known limitations:
 
 {% include {{ page.version.version }}/known-limitations/cdc.md %}
 
@@ -509,6 +513,8 @@ As a workaround, you can either [manually split a table's columns into multiple 
 When a node has both a high number of client connections and running queries, the node may crash due to memory exhaustion. This is due to CockroachDB not accurately limiting the number of clients and queries based on the amount of available RAM on the node.
 
 To prevent memory exhaustion, monitor each node's memory usage and ensure there is some margin between maximum CockroachDB memory usage and available system RAM. For more details about memory usage in CockroachDB, see [this blog post](https://www.cockroachlabs.com/blog/memory-usage-cockroachdb/).
+
+{% include {{page.version.version}}/sql/server-side-connection-limit.md %} This may be useful in addition to your memory monitoring.
 
 ### Privileges for `DELETE` and `UPDATE`
 

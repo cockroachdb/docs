@@ -48,33 +48,10 @@
       "title": "Technical Advisories",
       "urls": [
         "/advisories/index.html",
-        "/advisories/a30821.html",
-        "/advisories/a42567.html",
-        "/advisories/a43870.html",
-        "/advisories/a44166.html",
-        "/advisories/a44299.html",
-        "/advisories/a44348.html",
-        "/advisories/a48860.html",
-        "/advisories/a50587.html",
-        "/advisories/a54418.html",
-        "/advisories/a56116.html",
-        "/advisories/a58932.html",
-        "/advisories/a62842.html",
-        "/advisories/a63162.html",
-        "/advisories/a64325.html",
-        "/advisories/a68005.html",
-        "/advisories/a69874.html",
-        "/advisories/a71002.html",
-        "/advisories/a71655.html",
-        "/advisories/a71553.html",
-        "/advisories/a72839.html",
-        "/advisories/a73024.html",
-        "/advisories/a73629.html",
-        "/advisories/aCVE-2021-44228.html",
-        "/advisories/a74385.html",
-        "/advisories/a74736.html",
-        "/advisories/a75758.html",
-        "/advisories/a76522.html"
+        {% for x in site.data.advisories %}
+          "/advisories/{{ x.advisory }}.html",
+        {% endfor %}
+        "/advisories/index.html"
       ]
     }
   ]

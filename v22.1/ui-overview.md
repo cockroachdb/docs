@@ -29,6 +29,7 @@ The Metrics page provides dashboards for all types of CockroachDB metrics.
 - [Storage Dashboard](ui-storage-dashboard.html) has metrics about storage capacity and file descriptors.
 - [Replication Dashboard](ui-replication-dashboard.html) has metrics about how data is replicated across the cluster, e.g., range status, replicas per store, and replica quiescence.
 - [Changefeeds Dashboard](ui-cdc-dashboard.html) has metrics about the [changefeeds](change-data-capture-overview.html) created across your cluster.
+- [Overload Dashboard](ui-overload-dashboard.html) has metrics about the performance of the parts of your cluster relevant to the cluster's [admission control system](admission-control.html).
 
 ### Databases
 
