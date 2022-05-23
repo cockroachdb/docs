@@ -68,7 +68,7 @@ The <code>ccloud</code> CLI tool is currently in beta.
 
 {% include cockroachcloud/ccloud/install-ccloud.md %}
 
-## Run `ccloud quickstart` to create a new cluster, create a SQL user, and retrive the connection string.
+## Run `ccloud quickstart` to create a new cluster, create a SQL user, and retrieve the connection string.
 
 {% include cockroachcloud/ccloud/quickstart.md %}
 
