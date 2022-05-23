@@ -18,7 +18,7 @@ You cannot [restore](restore.html) a multi-region table into a non-multi-region 
 
 ### Multiple CTEs with mutations on the same row can cause inconsistency
 
-You can [`UPSERT`](upsert.html) the same row multiple times in a single statement using [common table expressions](common-table-expressions.html) (CTEs), which could lead to inconsistencies due to the upsert operator not reading its own writes.
+You can [`UPSERT`](upsert.html) the same row multiple times in a single statement using [common table expressions](common-table-expressions.html) (CTEs), which could lead to inconsistencies due to the `UPSERT` operator not reading its own writes.
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/70731)
 
