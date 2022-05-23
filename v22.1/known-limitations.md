@@ -3,12 +3,55 @@ title: Known Limitations in CockroachDB v22.1
 summary: Learn about newly identified limitations in CockroachDB as well as unresolved limitations identified in earlier releases.
 toc: true
 keywords: gin, gin index, gin indexes, inverted index, inverted indexes, accelerated index, accelerated indexes
-docs_area:
+docs_area: releases
 ---
 
 This page describes newly identified limitations in the CockroachDB {{page.release_info.version}} release as well as unresolved limitations identified in earlier releases.
 
 ## New limitations
+
+### A multi-region table cannot be restored into a non-multi-region table
+
+You cannot [restore](restore.html) a multi-region table into a non-multi-region table.
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/71502)
+
+### Statements containing multiple modification subqueries of the same table are disallowed
+
+Statements containing multiple modification subqueries mutating the same row could cause corruption. These statements are disallowed by default, but you can enable multiple modification subqueries with one the following:
+
+- Set the `sql.multiple_modifications_of_table.enabled` [cluster setting](cluster-settings.html) to `true`.
+- Use the `enable_multiple_modifications_of_table` [session variable](set-vars.html).
+
+Note that if multiple mutations inside the same statement affect different tables with [`FOREIGN KEY`](foreign-key.html) relations and `ON CASCADE` clauses between them, the results will be different from what is expected in PostgreSQL.
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/70731)
+
+### `transaction_rows_read_err` and `transaction_rows_written_err` do not halt query execution
+
+Limit on the number of rows read or written by a single transaction
+
+A [transaction](transactions.html#limit-the-number-of-rows-written-or-read-in-a-transaction) reading more than `transaction_rows_read_err` rows (or writing more than `transaction_rows_written_err` rows) fails with an error, but do not halt query execution. The error is returned after query execution has finished and the results have been returned to the client.
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/70473)
+
+### `sql.guardrails.max_row_size_err` misses indexed virtual computed columns
+
+The `sql.guardrails.max_row_size_err` [cluster setting](cluster-settings.html) misses large rows caused by indexed virtual computed columns. This is because the guardrail only checks the size of primary key rows, not secondary index rows.
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/69540)
+
+### Row-Level TTL limitations
+
+{% include {{page.version.version}}/known-limitations/row-level-ttl-limitations.md %}
+
+### Change data capture limitations
+
+Change data capture (CDC) provides efficient, distributed, row-level changefeeds into Apache Kafka for downstream processing such as reporting, caching, or full-text indexing. It has the following known limitations:
+
+{% include {{ page.version.version }}/known-limitations/cdc.md %}
+
+## Unresolved limitations
 
 ### CockroachDB does not properly optimize some left and anti joins with GIN indexes
 
@@ -197,12 +240,6 @@ UNION ALL SELECT * FROM t1 LEFT JOIN t2 ON st_contains(t1.geom, t2.geom) AND t2.
 
 {% include {{page.version.version}}/sql/expressions-as-on-conflict-targets.md %}
 
-### Row-Level TTL limitations
-
-{% include {{page.version.version}}/known-limitations/row-level-ttl-limitations.md %}
-
-## Unresolved limitations
-
 ### Optimizer stale statistics deletion when columns are dropped
 
 - {% include {{page.version.version}}/known-limitations/old-multi-col-stats.md %}
@@ -244,12 +281,6 @@ If you are [performing an `IMPORT` of a `PGDUMP`](migrate-from-postgres.html) wi
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/50225)
 
-### Historical reads on restored objects
-
-{% include {{ page.version.version }}/known-limitations/restore-aost.md %}
-
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/53044)
-
 ### Spatial support limitations
 
 CockroachDB supports efficiently storing and querying [spatial data](spatial-data.html), with the following limitations:
@@ -273,10 +304,6 @@ CockroachDB supports efficiently storing and querying [spatial data](spatial-dat
 - CockroachDB does not yet support [`INSERT`](insert.html)s into the [`spatial_ref_sys` table](spatial-glossary.html#spatial-system-tables). This limitation also blocks the [`ogr2ogr -f PostgreSQL` file conversion command](https://gdal.org/programs/ogr2ogr.html#cmdoption-ogr2ogr-f).
 
     [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/55903)
-
-- CockroachDB does not yet support `DECLARE CURSOR`, which prevents the `ogr2ogr` conversion tool from exporting from CockroachDB to certain formats and prevents [QGIS](https://qgis.org/en/site/) from working with CockroachDB. To work around this limitation, [export data first to CSV](export-spatial-data.html) or GeoJSON format.
-
-    [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/41412)
 
 - CockroachDB does not yet support Triangle or [`TIN`](https://en.wikipedia.org/wiki/Triangulated_irregular_network) spatial shapes.
 
@@ -321,12 +348,6 @@ As a workaround, take a cluster backup instead, as the `system.comments` table i
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/44396)
 
-### Change data capture
-
-Change data capture (CDC) provides efficient, distributed, row-level changefeeds into Apache Kafka for downstream processing such as reporting, caching, or full-text indexing. It has the following known limitations:
-
-{% include {{ page.version.version }}/known-limitations/cdc.md %}
-
 ### DB Console may become inaccessible for secure clusters
 
 Accessing the DB Console for a secure cluster now requires login information (i.e., username and password). This login information is stored in a system table that is replicated like other data in the cluster. If a majority of the nodes with the replicas of the system table data go down, users will be locked out of the DB Console.
@@ -351,12 +372,6 @@ CockroachDB tries to optimize most comparisons operators in `WHERE` and `HAVING`
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/30192)
 
-### `TRUNCATE` does not behave like `DELETE`
-
-`TRUNCATE` is not a DML statement, but instead works as a DDL statement. Its limitations are the same as other DDL statements, which are outlined in [Online Schema Changes: Limitations](online-schema-changes.html#limitations)
-
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/27953)
-
 ### Ordering tables by `JSONB`/`JSON`-typed columns
 
 CockroachDB does not currently key-encode JSON values. As a result, tables cannot be [ordered by](order-by.html) [`JSONB`/`JSON`](jsonb.html)-typed columns.
@@ -376,10 +391,6 @@ When setting the `default_int_size` [session variable](set-vars.html) in a batch
 As a workaround, set `default_int_size` via your database driver, or ensure that `SET default_int_size` is in its own statement.
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/32846)
-
-### `COPY FROM` statements are not supported in the CockroachDB SQL shell
-
-{% include {{ page.version.version }}/known-limitations/copy-from-clients.md %}
 
 ### `COPY` syntax not supported by CockroachDB
 
@@ -536,30 +547,6 @@ See: https://github.com/cockroachdb/cockroach/issues/46414
 ~~~
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/46414)
-
-### Concurrent SQL shells overwrite each other's history
-
-The [built-in SQL shell](cockroach-sql.html) stores its command history in a single file by default (`.cockroachsql_history`). When running multiple instances of the SQL shell on the same machine. Therefore, each shell's command history can get overwritten in unexpected ways.
-
-As a workaround, set the `COCKROACH_SQL_CLI_HISTORY` environment variable to different values for the two different shells, for example:
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ export COCKROACH_SQL_CLI_HISTORY=.cockroachsql_history_shell_1
-~~~
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ export COCKROACH_SQL_CLI_HISTORY=.cockroachsql_history_shell_2
-~~~
-
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/42027)
-
-### Passwords with special characters must be passed as query parameters
-
-When using [`cockroach` commands](cockroach-commands.html), passwords with special characters must be passed as [query string parameters](connection-parameters.html#additional-connection-parameters) (e.g., `postgres://maxroach@localhost:26257/movr?password=<password>`) and not as a component in the connection URL (e.g., `postgres://maxroach:<password>@localhost:26257/movr`).
-
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/35998)
 
 ### CockroachDB does not test for all connection failure scenarios
 
