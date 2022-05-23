@@ -41,7 +41,7 @@ Stability guarantees do **not** apply to non-programmable and reserved APIs:
 The following types of API changes qualify as *backward-incompatible* (or "breaking changes"):
 
 - Removal of an endpoint, SQL statement, [built-in function](functions-and-operators.html#built-in-functions), [cluster setting](cluster-settings.html), or session variable.
-- Addition or removal of a mandatory command-line flag.
+- Addition or removal of a mandatory or optional command-line flag.
 - Change in SQL statement syntax, HTTP request format, HTTP response format, or structured log format.
 - Change in data type, default value, or behavior of a [built-in function](functions-and-operators.html#built-in-functions), [cluster setting](cluster-settings.html), or session variable.
 - Change to [authorization](security-reference/authorization.html) requirements.
@@ -50,7 +50,6 @@ The following types of API changes qualify as *backward-compatible*. This list i
 
 - Removal or change of any functionality documented or named as "experimental", "beta", or otherwise not fully supported.
 - Deprecation of any functionality without removal.
-- Addition or removal of an optional command-line flag.
 - Addition or removal of a metric.
 - Change in SQL response format or unstructured log format.
 
@@ -97,11 +96,11 @@ These interfaces are hosted by the CockroachDB application binary. They are avai
 
 These interfaces are available in {{ site.data.products.serverless-plan }} and {{ site.data.products.dedicated }}.
 
-| Interface                                     | Type             | Versioning                                                                                                                                  | Notes                                                                                                                                                                 |
-|-----------------------------------------------|------------------|---------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [Cloud API](../cockroachcloud/cloud-api.html) | Programmable     | Versioned independently from CockroachDB. Major versions available via URI parameter. Fine-grained versioning available via request header. |                                                                                                                                                                       |
-| `ccloud` API                                  | Mixed            | Versioned independently from CockroachDB.                                                                                                   | Default output is non-programmable. If the `–json` argument is specified in the CLI, output is formatted in a stable JSON structure, following the versioning scheme. |
-| {{ site.data.products.db }} Console           | Non-programmable | N/A                                                                                                                                         |                                                                                                                                                                       |
+| Interface                                                           | Type             | Versioning                                                                                                                                  | Notes                                                                                                                                                                 |
+|---------------------------------------------------------------------|------------------|---------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `ccloud` API                                                        | Mixed            | Versioned independently from CockroachDB.                                                                                                   | Default output is non-programmable. If the `–json` argument is specified in the CLI, output is formatted in a stable JSON structure, following the versioning scheme. |
+| [{{ site.data.products.db }} API](../cockroachcloud/cloud-api.html) | Programmable     | Versioned independently from CockroachDB. |                                                                                                                                                                       |
+| {{ site.data.products.db }} Console                                 | Non-programmable | N/A                                                                                                                                         |                                                                                                                                                                       |
 
 ## See also
 
