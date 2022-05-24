@@ -16,7 +16,7 @@ If you encounter a bug, please [file an issue](file-an-issue.html).
 
 ## Session variables
 
-The table below lists the experimental session settings that are available.  For a complete list of session variables, see [`SHOW` (session settings)](show-vars.html).
+The table below lists the experimental session settings that are available.  For a complete list of session variables, see [`SHOW` {session variable}](show-vars.html).
 
 | Variable                            | Default Value | Description                                                                                                                                                                                                                                                                                             |
 |-------------------------------------+---------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|

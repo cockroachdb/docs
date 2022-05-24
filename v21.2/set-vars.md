@@ -1,5 +1,5 @@
 ---
-title: SET (session variable)
+title: SET &#123;session variable&#125;
 summary: The SET statement modifies the current configuration variables for the client session.
 toc: true
 docs_area: reference.sql
@@ -25,7 +25,7 @@ All other session variables do not require [privileges](security-reference/autho
 
 ## Synopsis
 
-The `SET` statement can set a session variable for the duration of the current session ([`SET (variable)`/`SET SESSION (variable)`](#set-session)), or for the duration of a single transaction ([`SET LOCAL (variable)`](#set-local)).
+The `SET` statement can set a session variable for the duration of the current session ([`SET &#123;variable&#125;`/`SET SESSION &#123;variable&#125;`](#set-session)), or for the duration of a single transaction ([`SET LOCAL &#123;variable&#125;`](#set-local)).
 
 ### SET SESSION
 
@@ -34,7 +34,7 @@ The `SET` statement can set a session variable for the duration of the current s
 </div>
 
 {{site.data.alerts.callout_info}}
-By default, session variables are set for the duration of the current session. As a result, [`SET (variable)` and `SET SESSION (variable)`](#set-session) are equivalent.
+By default, session variables are set for the duration of the current session. As a result, [`SET &#123;variable&#125;` and `SET SESSION &#123;variable&#125;`](#set-session) are equivalent.
 {{site.data.alerts.end}}
 
 ### SET LOCAL
@@ -453,9 +453,9 @@ When setting a time zone, note the following:
 
 ## See also
 
-- [`RESET`](reset-vars.html)
+- [`RESET {session variable}`](reset-vars.html)
 - [`SET TRANSACTION`](set-transaction.html)
 - [`SET CLUSTER SETTING`](set-cluster-setting.html)
-- [`SHOW` (session variables)](show-vars.html)
+- [`SHOW {session variable}`](show-vars.html)
 - [The `TIMESTAMP` and `TIMESTAMPTZ` data types.](timestamp.html)
 - [`SHOW TRACE FOR SESSION`](show-trace.html)
