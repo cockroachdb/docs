@@ -112,7 +112,7 @@ For best practices for optimizing import performance in CockroachDB, see [Import
         skip = '1';
     ~~~
 
-    Notice that we used the [`skip` option](../v22.1/import.html#skip-first-n-lines) in the above command. This is because the first line of the CSV file we created in [Step 1](#step-1-export-data-to-a-local-csv-file) is the header row, not actual data to import. For more information about the options available for `IMPORT ... CSV`, see [Import options](../{{site.versions["stable"]}}/import.html#import-options).
+    Notice that we used the [`skip` option](../v21.2/import.html#skip-first-n-lines) in the above command. This is because the first line of the CSV file we created in [Step 1](#step-1-export-data-to-a-local-csv-file) is the header row, not actual data to import. For more information about the options available for `IMPORT ... CSV`, see [Import options](../{{site.versions["stable"]}}/import.html#import-options).
 
     ~~~
             job_id       |  status   | fraction_completed | rows | index_entries | bytes
