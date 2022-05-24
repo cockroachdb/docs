@@ -21,7 +21,7 @@ This directory will hold the files that make up a backup; including the manifest
 When backing up from a cluster and restoring a database or table that is stored in your `userfile` space to a different cluster, you can run [`cockroach userfile get`](../{{site.versions["stable"]}}/cockroach-userfile-get.html) to download the backup files to a local machine and [`cockroach userfile upload --url {CONNECTION STRING}`](../{{site.versions["stable"]}}/cockroach-userfile-upload.html) to upload to the `userfile` of the alternate cluster.
 {{site.data.alerts.end}}
 
-`BACKUP ... INTO` adds a backup to a collection within the backup destination. The path to the backup is created using a date-based naming scheme by default, unless an [explicit subdirectory](../v22.1/backup.html#specify-a-subdirectory-for-backups) is passed with the `BACKUP` statement. To view the backup paths in a given destination, use [`SHOW BACKUPS`](../{{site.versions["stable"]}}/restore.html#view-the-backup-subdirectories):
+`BACKUP ... INTO` adds a backup to a collection within the backup destination. The path to the backup is created using a date-based naming scheme by default, unless an [explicit subdirectory](../v21.2/backup.html#specify-a-subdirectory-for-backups) is passed with the `BACKUP` statement. To view the backup paths in a given destination, use [`SHOW BACKUPS`](../{{site.versions["stable"]}}/restore.html#view-the-backup-subdirectories):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
