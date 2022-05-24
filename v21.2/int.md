@@ -31,7 +31,7 @@ The different integer types place different constraints on the range of allowabl
 
 ### Considerations for 64-bit signed integers
 
-By default, `INT` is an alias for `INT8`, which creates 64-bit signed integers. This differs from the Postgres default for `INT`, [which is 32 bits](https://www.postgresql.org/docs/9.6/datatype-numeric.html), and may cause issues for your application if it is not written to handle 64-bit integers, whether due to the language your application is written in, or the ORM/framework it uses to generate SQL (if any).
+By default, `INT` is an alias for `INT8`, which creates 64-bit signed integers. This differs from the PostgreSQL default for `INT`, [which is 32 bits](https://www.postgresql.org/docs/9.6/datatype-numeric.html), and may cause issues for your application if it is not written to handle 64-bit integers, whether due to the language your application is written in, or the ORM/framework it uses to generate SQL (if any).
 
 For example, JavaScript language runtimes represent numbers as 64-bit floats, which means that the JS runtime [can only represent 53 bits of numeric accuracy](http://2ality.com/2012/04/number-encoding.html) and thus has a max safe value of 2<sup>53</sup>, or 9007199254740992.  This means that the maximum size of a default `INT` in CockroachDB is much larger than JavaScript can represent as an integer. Visually, the size difference is as follows:
 
