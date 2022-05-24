@@ -456,10 +456,11 @@ Whenever a CockroachDB feature is referenced, provide a link to the relevant doc
 
 Use Markdown reference-style links when several parts of the same page refer to the same target URL (e.g., [Release Notes](https://raw.githubusercontent.com/cockroachdb/docs/master/releases/v2.1.0-alpha.20180507.md)).
 
-Link capitalization can be either title or sentence case:
+Link capitalization should match our [capitalization rules](#capitalization-rules) for page titles and headers:
 
-- **Use title case** when referring to the linked doc by name (e.g., "See __Best Practices__ for more information").
-- **Use sentence case** - when linking in the middle of a sentence (e.g., "[…] follow the __identifier rules__ when creating […]").
+- **Use title case** when referring to the linked doc by its page title (e.g., "See __Best Practices__ for more information").
+- **Use sentence case** when referring to the linked doc by one of its headers (e.g., "See __Clock synchronization__ for further guidance").
+- **Use sentence case** - when referring to a linked doc without explicitly citing a page title or header (e.g., "[…] follow the __identifier rules__ when creating […]").
 
 Links are marked with inline text surrounded by square brackets followed by the link address in parentheses. If you are including a relative (i.e., internal) link:
 
@@ -488,6 +489,14 @@ Links are marked with inline text surrounded by square brackets followed by the 
     # Link:
     [--max-offset](#flags-max-offset)
     ```
+
+#### GitHub issues and pull requests
+
+[Release notes](https://www.cockroachlabs.com/docs/releases/index.html) and [technical advisories](https://www.cockroachlabs.com/docs/advisories/index.html) contain links to individual GitHub issues and pull requests.
+
+Issues and pull requests should be referenced by their corresponding number, prepended with `#`.
+
+**Example:** `[#1](https://github.com/cockroachdb/docs/pull/1)`
 
 ### Tips, notes, and warnings
 
@@ -656,7 +665,7 @@ You can mark up code [inline](#inline-code) or as a [code block](#code-blocks).
 
 Use inline code when referring to code, commands, or other technical syntax within a sentence. Inline `code` has `backticks (``) around` it.
 
-Example: The `CREATE TABLE` statement creates a new table in a database.
+**Example:** The `CREATE TABLE` statement creates a new table in a database.
 
 #### Code block
 
@@ -715,6 +724,8 @@ When you use placeholders, you usually need to define the value within the brack
 - For multiple placeholder values, use a [bulleted list](#lists).
 - For many placeholder values (10+), and for placeholder values with complex definitions, use a [table](#tables).
 - For large code blocks, define the placeholder values inside the code block, with an inline code comment.
+
+Ensure that placeholders are placed within backticks `(``)`: `SET {session variables}`. This signifies that placeholder values are code.
 
 If the code sample you are using is sensitive to curly bracket characters (e.g., JavaScript), you can use `<>` instead.
 
