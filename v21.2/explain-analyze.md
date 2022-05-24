@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `EXPLAIN ANALYZE` [statement](sql-statements.html) **executes a SQL query** and generates a statement plan with execution statistics. The `(DEBUG)` option generates a URL to download a bundle with more details about the statement plan for advanced debugging. Statement plans provide information around SQL execution, which can be used to troubleshoot slow queries by figuring out where time is being spent, how long a processor (i.e., a component that takes streams of input rows and processes them according to a specification) is not doing work, etc. For more information about distributed SQL queries, see the [DistSQL section of our SQL Layer Architecture docs](architecture/sql-layer.html#distsql).
+The `EXPLAIN ANALYZE` [statement](sql-statements.html) **executes a SQL query** and generates a statement plan with execution statistics. The `(DEBUG)` option generates a URL to download a bundle with more details about the statement plan for advanced debugging. Statement plans provide information around SQL execution, which can be used to troubleshoot slow queries by figuring out where time is being spent, how long a processor (i.e., a component that takes streams of input rows and processes them according to a specification) is not doing work, etc. For more information about distributed SQL queries, see the [DistSQL section of our SQL layer architecture docs](architecture/sql-layer.html#distsql).
 
 {{site.data.alerts.callout_info}}
 {% include {{ page.version.version }}/sql/physical-plan-url.md %}
@@ -71,10 +71,10 @@ processor | Each processor in the statement plan hierarchy has a node with detai
 nodes | The names of the CockroachDB cluster nodes affected by this phase of the statement.
 regions | The [regions](show-regions.html) where the affected nodes were located.
 actual row count | The actual number of rows affected by this processor during execution.
-KV time | The total time this phase of the statement was in the [Storage layer](architecture/storage-layer.html).
-KV contention time | The time the [Storage layer](architecture/storage-layer.html) was in contention during this phase of the statement.
-KV rows read | During scans, the number of rows in the [Storage layer](architecture/storage-layer.html) read by this phase of the statement.
-KV bytes read | During scans, the amount of data read from the [Storage layer](architecture/storage-layer.html) during this phase of the statement.
+KV time | The total time this phase of the statement was in the [storage layer](architecture/storage-layer.html).
+KV contention time | The time the [storage layer](architecture/storage-layer.html) was in contention during this phase of the statement.
+KV rows read | During scans, the number of rows in the [storage layer](architecture/storage-layer.html) read by this phase of the statement.
+KV bytes read | During scans, the amount of data read from the [storage layer](architecture/storage-layer.html) during this phase of the statement.
 estimated row count | The estimated number of rows affected by this processor according to the statement planner, the percentage of the table the query spans, and when the statistics for the table were last collected.
 table | The table and index used in a scan operation in a statement, in the form `{table name}@{index name}`.
 spans | The interval of the key space read by the processor. If `spans` is `FULL SCAN` the table is scanned on all key ranges of the index. If `spans` is `[/1 - /1]` only the key with value `1` is read by the processor.
@@ -269,10 +269,10 @@ Use the [`DEBUG`](#debug-option) option to generate a ZIP file containing files 
 ~~~
                                       info
 --------------------------------------------------------------------------------
-  Statement diagnostics bundle generated. Download from the Admin UI (Advanced
+  Statement diagnostics bundle generated. Download from the DB Console (Advanced
   Debug -> Statement Diagnostics History), using the direct link, or using
   the SQL shell or command line.
-  Admin UI: http://127.0.0.1:8080
+  DB Console: http://127.0.0.1:8080
   Direct link: http://127.0.0.1:8080/_admin/v1/stmtbundle/727822547420741633 (Not available for {{ site.data.products.serverless }} clusters.)
   SQL shell: \statement-diag download 727822547420741633
   Command line: cockroach statement-diag download 727822547420741633

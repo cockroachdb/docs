@@ -433,7 +433,7 @@ When [sorting a column](order-by.html) containing `NULL` values, CockroachDB sor
 
 ## NULLs and unique constraints
 
-`NULL` values are not considered unique. Therefore, if a table has a Unique constraint on one or more columns that are optional (nullable), it is possible to insert multiple rows with `NULL` values in those columns, as shown in the example below.
+`NULL` values are not considered unique. Therefore, if a table has a `UNIQUE` constraint on one or more columns that are optional (nullable), it is possible to insert multiple rows with `NULL` values in those columns, as shown in the example below.
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -472,7 +472,7 @@ When [sorting a column](order-by.html) containing `NULL` values, CockroachDB sor
 
 ## NULLs and CHECK Constraints
 
-A [`CHECK` constraint](check.html) expression that evaluates to `NULL` is considered to pass, allowing for concise expressions like `discount < price` without worrying about adding `OR discount IS NULL` clauses. When non-null validation is desired, the usual `NOT NULL` constraint can be used along side a Check constraint.
+A [`CHECK` constraint](check.html) expression that evaluates to `NULL` is considered to pass, allowing for concise expressions like `discount < price` without worrying about adding `OR discount IS NULL` clauses. When non-null validation is desired, the usual `NOT NULL` constraint can be used alongside a `CHECK` constraint.
 
 {% include copy-clipboard.html %}
 ~~~ sql

@@ -20,7 +20,7 @@ Limiting allowed database connections to secure IP addresses reduces the risk th
 
 ## Step 1: Provision and access your cluster
 
-[Create your own free CockroachDB Serverless cluster](../../cockroachcloud/create-a-serverless-cluster.html).
+[Create your own free {{ site.data.products.serverless }} cluster](../../cockroachcloud/create-a-serverless-cluster.html).
 
 From the {{ site.data.products.serverless }} Cloud Console, select your new cluster and click the **Connect** button to obtain your connection credentials from the **Connection Info** pane in the CockroachDB Cloud Console.
 

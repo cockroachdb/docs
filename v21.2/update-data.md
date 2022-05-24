@@ -17,7 +17,7 @@ Before reading this page, do the following:
 
 - [Install CockroachDB](install-cockroachdb.html).
 - [Start a local cluster](secure-a-cluster.html), or [create a {{ site.data.products.dedicated }} cluster](../cockroachcloud/create-your-cluster.html).
-- [Install a Postgres client](install-client-drivers.html).
+- [Install a PostgreSQL client](install-client-drivers.html).
 - [Connect to the database](connect-to-the-database.html).
 - [Create a database schema](schema-design-overview.html).
 - [Insert data](insert-data.html) that you now want to update.

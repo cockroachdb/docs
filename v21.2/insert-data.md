@@ -13,7 +13,7 @@ Before reading this page, do the following:
 
 - [Install CockroachDB](install-cockroachdb.html).
 - [Start a local cluster](secure-a-cluster.html), or [create a {{ site.data.products.dedicated }} cluster](../cockroachcloud/create-your-cluster.html).
-- [Install a Postgres client](install-client-drivers.html).
+- [Install a PostgreSQL client](install-client-drivers.html).
 - [Connect to the database](connect-to-the-database.html).
 
 {% include {{page.version.version}}/app/retry-errors.md %}

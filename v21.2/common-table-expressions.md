@@ -301,7 +301,7 @@ SELECT * FROM cte LIMIT 10;
 While this practice works for testing and debugging, we do not recommend it in production.
 
 {{site.data.alerts.callout_info}}
-CockroachDB does not support the [Postgres recursive CTE variant](https://www.postgresql.org/docs/10/queries-with.html) with the keyword `UNION`.
+CockroachDB does not support the [PostgreSQL recursive CTE variant](https://www.postgresql.org/docs/10/queries-with.html) with the keyword `UNION`.
 {{site.data.alerts.end}}
 
 

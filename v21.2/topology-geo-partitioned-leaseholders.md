@@ -17,7 +17,7 @@ In a multi-region deployment, the geo-partitioned [leaseholders](architecture/re
 - Table data must remain available during a region failure.
 
 {{site.data.alerts.callout_success}}
-**See It In Action** - Read about how a [large telecom provider](https://www.cockroachlabs.com/case-studies/telecom-provider-replaces-amazon-aurora-with-cockroachdb-to-attain-analways-on-customer-experience/) with millions of customers across the United States is using the Geo-Partitioned Leaseholders topology in production for strong resiliency and performance.
+**See It In Action** - Read about how a [large telecom provider](https://www.cockroachlabs.com/case-studies/telecom-provider-replaces-amazon-aurora-with-cockroachdb-to-attain-analways-on-customer-experience/) with millions of customers across the United States is using the geo-partitioned leaseholders topology in production for strong resiliency and performance.
 {{site.data.alerts.end}}
 
 ## Prerequisites

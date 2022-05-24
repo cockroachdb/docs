@@ -52,7 +52,7 @@ How you add constraints depends on the number of columns you want to constrain, 
     > ALTER TABLE baz ADD CONSTRAINT id_unique UNIQUE (id);
     ~~~
 
-  - `DEFAULT` values and `NOT NULL` constraints can be added through [`ALTER TABLE...ALTER COLUMN`](alter-column.html#set-or-change-a-default-value). For example, this statement adds the Default Value constraint to `baz.bool`:
+  - `DEFAULT` values and `NOT NULL` constraints can be added through [`ALTER TABLE...ALTER COLUMN`](alter-column.html#set-or-change-a-default-value). For example, this statement adds the `DEFAULT` value constraint to `baz.bool`:
 
     {% include copy-clipboard.html %}
     ~~~ sql

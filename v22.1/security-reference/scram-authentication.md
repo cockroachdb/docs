@@ -53,7 +53,7 @@ SCRAM offers strong protection against such [replay attacks](https://en.wikipedi
 A server that authenticates users with SCRAM does not need to store or handle plaintext passwords. Therefore, a system that employs SASL-compliant SCRAM authentication can consolidate responsibility for handling plaintext credentials to a dedicated secrets-management service. This helps to minimize exposure of the credentials to possible egress both at rest and in flight. In keeping with the principle of "separation of concerns", wherein each high-level functionality or "concern" should be handled by a dedicated component, enterprise IT infrastructures often enforce such a consolidation.
 
 Isolation of credential-handling offers many advantages to a delegated service (whether self-hosted or used as a cloud-based external service).
-Most importantly, it removes the possibility of any credential spill from your CockroachDB cluster's authentication database (i.e. the cluster's `system.users` table), since it no longer contains credentials.
+Most importantly, it removes the possibility of any credential spill from your CockroachDB cluster's authentication database (i.e., the cluster's `system.users` table), since it no longer contains credentials.
 
 This not only reduces the impact of any compromises to the database, but also makes it a far less attractive target.
 
