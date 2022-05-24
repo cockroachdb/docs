@@ -494,7 +494,7 @@ Links are marked with inline text surrounded by square brackets followed by the 
 
 [Release notes](https://www.cockroachlabs.com/docs/releases/index.html) and [technical advisories](https://www.cockroachlabs.com/docs/advisories/index.html) contain links to individual GitHub issues and pull requests.
 
-Issues and pull requests should be referenced by their corresponding number, prepended with `#`.
+Reference issues and pull requests by their corresponding number, prepended with `#`.
 
 **Example:** `[#1](https://github.com/cockroachdb/docs/pull/1)`
 
