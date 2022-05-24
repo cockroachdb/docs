@@ -37,7 +37,7 @@ In order to use the `ccloud` commands to configure and manage your clusters, you
 
 1. Enter your username and password if you already have a CockroachDB Cloud account, then click **Continue**.
 
-    If you do not have a CockroachDB Cloud account, click one of the single-sign-on (SSO) options or **Sign up** to register.
+    If you do not have a CockroachDB Cloud account, click one of the single sign-on (SSO) options or **Sign up** to register.
 
 1. Close the browser window and return to your terminal.
 

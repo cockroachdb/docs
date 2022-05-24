@@ -61,7 +61,7 @@ Follow these steps to create a {{ site.data.products.serverless }} cluster using
 Follow these steps to create a {{ site.data.products.serverless }} cluster using the <code>ccloud</code> CLI tool.
 
 {{site.data.alerts.callout_info}}
-The <code>ccloud</code> CLI tool is currently in beta.
+The <code>ccloud</code> CLI tool is in beta.
 {{site.data.alerts.end}}
 
 <h2>Install <code>ccloud</code></h2>
