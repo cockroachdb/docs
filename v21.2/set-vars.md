@@ -1,5 +1,5 @@
 ---
-title: SET (session variable)
+title: SET &lt;session variables&gt;
 summary: The SET statement modifies the current configuration variables for the client session.
 toc: true
 docs_area: reference.sql
@@ -456,6 +456,6 @@ When setting a time zone, note the following:
 - [`RESET`](reset-vars.html)
 - [`SET TRANSACTION`](set-transaction.html)
 - [`SET CLUSTER SETTING`](set-cluster-setting.html)
-- [`SHOW` (session variables)](show-vars.html)
+- [`SHOW` &lt;session variables&gt;](show-vars.html)
 - [The `TIMESTAMP` and `TIMESTAMPTZ` data types.](timestamp.html)
 - [`SHOW TRACE FOR SESSION`](show-trace.html)

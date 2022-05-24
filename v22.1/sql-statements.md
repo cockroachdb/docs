@@ -140,11 +140,11 @@ Statement | Usage
 
 Statement | Usage
 ----------|------------
-[`RESET`](reset-vars.html) | Reset a session variable to its default value.
-[`SET`](set-vars.html) | Set a current session variable.
+[`RESET` &lt;session variables&gt;](reset-vars.html) | Reset a session variable to its default value.
+[`SET` &lt;session variables&gt;](set-vars.html) | Set a current session variable.
 [`SET TRANSACTION`](set-transaction.html) | Set the priority for an individual [transaction](transactions.html).
 [`SHOW TRACE FOR SESSION`](show-trace.html) | Return details about how CockroachDB executed a statement or series of statements recorded during a session.
-[`SHOW`](show-vars.html) | List the current session or transaction settings.
+[`SHOW` &lt;session variables&gt;](show-vars.html) | List the current session or transaction settings.
 
 ## Cluster management statements
 

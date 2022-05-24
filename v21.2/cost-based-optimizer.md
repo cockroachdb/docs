@@ -265,10 +265,10 @@ SELECT * FROM abc@{NO_ZIGZAG_JOIN};
 ## See also
 
 - [`JOIN` expressions](joins.html)
-- [`SET (session variable)`](set-vars.html)
+- [`SET &lt;session variables&gt;`](set-vars.html)
 - [`SET CLUSTER SETTING`](set-cluster-setting.html)
 - [`RESET CLUSTER SETTING`](reset-cluster-setting.html)
-- [`SHOW (session variable)`](show-vars.html)
+- [`SHOW &lt;session variables&gt;`](show-vars.html)
 - [`CREATE STATISTICS`](create-statistics.html)
 - [`SHOW STATISTICS`](show-statistics.html)
 - [`EXPLAIN`](explain.html)
