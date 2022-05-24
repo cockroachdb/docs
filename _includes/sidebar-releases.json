@@ -1,7 +1,7 @@
 {% assign today = "today" | date: "%Y-%m-%d" %}
 {% comment %} set today's date {% endcomment %}
 
-{% assign v_prod = site.data.versions | where_exp: "v_prod", "v_prod.asst_supp_exp_date > today" | where_exp: "v_prod", "v_prod.release_date < today" | sort: "release_date" | reverse | map: "major_version" %}
+{% assign v_prod = site.data.versions | where_exp: "v_prod", "v_prod.asst_supp_exp_date > today" | where_exp: "v_prod", "v_prod.release_date <= today" | sort: "release_date" | reverse | map: "major_version" %}
 {% comment %} v_prod iterates through the list of major versions (e.g., v21.2) in _data/versions.csv and returns all releases within the assistance support period, sorted in reverse chronological order. We then pull only the major version name instead of the whole dictionary with map: "major_version" {% endcomment %}
 
 {% assign v_test = site.data.versions | where_exp: "v_test", "v_test.release_date > today or v_test.release_date == 'N/A'" | sort: "release_date" | last | map: "major_version" %}
