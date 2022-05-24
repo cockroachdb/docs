@@ -356,7 +356,7 @@ cockroach-data
 Removing the ballast file will give you a chance to remedy the disk space exhaustion; it will automatically be recreated when there is sufficient disk space.
 
 {{site.data.alerts.callout_info}}
-Different filesystems may treat the ballast file differently. Make sure to test that the file exists, and that space for the file is actually being reserved by the filesystem.
+Different filesystems may treat the ballast file differently. Make sure to test that the file exists, and that space for the file is actually being reserved by the filesystem. For a list of supported filesystems, see the [Production Checklist](recommended-production-settings.html#storage).
 {{site.data.alerts.end}}
 
 ### Disk stalls
