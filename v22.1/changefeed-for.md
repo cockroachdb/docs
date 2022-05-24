@@ -123,8 +123,6 @@ EXPERIMENTAL CHANGEFEED FOR TABLE cdc_test WITH split_column_families;
 
 For step-by-step guidance creating a Core changefeed on a table with multiple column families, see [Changefeed Examples](changefeed-examples.html).
 
-### Create a changefeed with
-
 ## See also
 
 - [Change Data Capture Overview](change-data-capture-overview.html)
