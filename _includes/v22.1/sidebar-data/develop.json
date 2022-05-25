@@ -59,7 +59,7 @@
           ]
         },
         {
-          "title": "Add Secondary Indexes",
+          "title": "Secondary Indexes",
           "urls": [
             "/${VERSION}/schema-design-indexes.html"
           ]
@@ -444,6 +444,12 @@
               "title": "Alembic",
               "urls": [
                 "/${VERSION}/alembic.html"
+              ]
+            },
+            {
+              "title": "AWS DMS",
+              "urls": [
+                "/${VERSION}/aws-dms.html"
               ]
             },
             {

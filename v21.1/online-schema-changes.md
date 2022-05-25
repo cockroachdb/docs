@@ -218,7 +218,7 @@ ERROR:  current transaction is aborted, commands ignored until end of transactio
 ROLLBACK
 ~~~
 
-### `ALTER TYPE` schema changes cannot be cancelled.
+### `ALTER TYPE` schema changes cannot be cancelled
 
 You can only [cancel](cancel-job.html) [`ALTER TYPE`](alter-type.html) schema change jobs that drop values. All other `ALTER TYPE` schema change jobs are non-cancellable.
 

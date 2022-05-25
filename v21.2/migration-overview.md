@@ -9,7 +9,7 @@ CockroachDB supports [importing](import.html) data from the following databases:
 
 - MySQL
 - Oracle (using CSV)
-- Postgres (and  PostGIS)
+- PostgreSQL (and  PostGIS)
 
 and from the following data formats:
 
@@ -25,7 +25,7 @@ This page lists general considerations to be aware of as you plan your migration
 In addition to the information listed below, see the following pages for specific instructions and considerations that apply to the database (or data format) you're migrating from:
 
 - [Migrate from Oracle][oracle]
-- [Migrate from Postgres][postgres]
+- [Migrate from PostgreSQL][postgres]
 - [Migrate from MySQL][mysql]
 - [Migrate from CSV][csv]
 - [Migrate from Avro][avro]
@@ -58,9 +58,9 @@ Above a certain size, many data types such as [`STRING`](string.html)s, [`DECIMA
 - [Migrate from Oracle][oracle]
 - [Migrate from CSV][csv]
 - [Migrate from MySQL][mysql]
-- [Migrate from Postgres][postgres]
+- [Migrate from PostgreSQL][postgres]
 - [Migrate from Avro][avro]
-- [Can a Postgres or MySQL application be migrated to CockroachDB?](frequently-asked-questions.html#can-a-postgresql-or-mysql-application-be-migrated-to-cockroachdb)
+- [Can a PostgreSQL or MySQL application be migrated to CockroachDB?](frequently-asked-questions.html#can-a-postgresql-or-mysql-application-be-migrated-to-cockroachdb)
 - [PostgreSQL Compatibility](postgresql-compatibility.html)
 - [Back Up and Restore](take-full-and-incremental-backups.html)
 - [Use the Built-in SQL Client](cockroach-sql.html)

@@ -27,9 +27,9 @@ URLs for the files you want to import must use the format shown below. For examp
 
 Location                                                    | Scheme      | Host                                             | Parameters                                                                 
 ------------------------------------------------------------+-------------+--------------------------------------------------+----------------------------------------------------------------------------
-Amazon                                                      | `s3`        | Bucket name                                      | `AUTH` — optional `implicit` or `specified` (default: `specified`); `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, [`AWS_SESSION_TOKEN`](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp_use-resources.html) <br><br>For more information, see [Authentication - Amazon S3](#authentication).                               
+Amazon                                                      | `s3`        | Bucket name                                      | `AUTH`: optional `implicit` or `specified` (default: `specified`); `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, [`AWS_SESSION_TOKEN`](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp_use-resources.html). For more information, see [Authentication - Amazon S3](#authentication). <br><br>`S3_STORAGE_CLASS`: Specify the Amazon S3 storage class for created objects. See [Amazon S3 storage classes](#amazon-s3-storage-classes) for the available                              
 Azure                                                       | `azure`     | Storage container                                | `AZURE_ACCOUNT_KEY`, `AZURE_ACCOUNT_NAME` <br><br>For more information, see [Authentication - Azure Storage](#authentication).
-Google Cloud                                                | `gs`        | Bucket name                                      | `AUTH` — `implicit`, or `specified` (default: `specified`); `CREDENTIALS` <br><br>For more information, see [Authentication - Google Cloud Storage](#authentication).     
+Google Cloud                                                | `gs`        | Bucket name                                      | `AUTH`: `implicit`, or `specified` (default: `specified`); `CREDENTIALS` <br><br>For more information, see [Authentication - Google Cloud Storage](#authentication).     
 HTTP                                                        | `http`      | Remote host                                      | N/A <br><br>For more information, see [Authentication - HTTP](#authentication).      
 NFS/Local&nbsp;[<sup>1</sup>](#considerations)              | `nodelocal` | `nodeID` or `self` [<sup>2</sup>](#considerations) (see [Example file URLs](#example-file-urls)) | N/A
 S3-compatible services                                     | `s3`        | Bucket name                                      | **Warning**: Unlike Amazon S3, Google Cloud Storage, and Azure storage options, the usage of S3-compatible services is not actively tested by Cockroach Labs. <br><br>`AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_SESSION_TOKEN`, `AWS_REGION`&nbsp;[<sup>3</sup>](#considerations) (optional), `AWS_ENDPOINT`<br><br>For more information, see [Authentication - S3-compatible services](#authentication).
@@ -124,7 +124,7 @@ BACKUP DATABASE <database> INTO 's3://{bucket name}/{path in bucket}/?AWS_ACCESS
 
 ### Implicit authentication
 
-If the `AUTH` parameter is `implicit`, the access keys can be omitted and [the credentials will be loaded from the environment](https://docs.aws.amazon.com/sdk-for-go/api/aws/session/), i.e. the machines running the backup.
+If the `AUTH` parameter is `implicit`, the access keys can be omitted and [the credentials will be loaded from the environment](https://docs.aws.amazon.com/sdk-for-go/api/aws/session/) (i.e., the machines running the backup).
 
 {% include_cached copy-clipboard.html %}
 ~~~sql
@@ -224,6 +224,49 @@ Unlike Amazon S3, Google Cloud Storage, and Azure storage options, the usage of 
 A custom root CA can be appended to the system's default CAs by setting the `cloudstorage.http.custom_ca` [cluster setting](cluster-settings.html), which will be used when verifying certificates from an S3-compatible service.
 
 </section>
+
+## Additional cloud storage feature support
+
+### Amazon S3 storage classes
+
+<span class="version-tag">New in v21.2.6:</span> When storing objects in Amazon S3 buckets during [backups](take-full-and-incremental-backups.html), [exports](export.html), and [changefeeds](change-data-capture-overview.html), you can specify the `S3_STORAGE_CLASS={class}` parameter in the URI to configure a storage class type. For example, the following S3 connection URI specifies the `INTELLIGENT_TIERING` storage class:
+
+~~~
+'s3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}&S3_STORAGE_CLASS=INTELLIGENT_TIERING'
+~~~
+
+{% include {{ page.version.version }}/misc/storage-classes.md %}
+
+You can view an object's storage class in the [Amazon S3 Console](https://s3.console.aws.amazon.com) from the object's **Properties** tab. Alternatively, use the [AWS CLI](https://docs.aws.amazon.com/cli/latest/reference/s3api/list-objects-v2.html) to list objects in a bucket, which will also display the storage class:
+
+~~~ shell
+aws s3api list-objects-v2 --bucket {bucket-name}
+~~~
+
+~~~
+{
+    "Key": "2022/05/02-180752.65/metadata.sst",
+    "LastModified": "2022-05-02T18:07:54+00:00",
+    "ETag": "\"c0f499f21d7886e4289d55ccface7527\"",
+    "Size": 7865,
+    "StorageClass": "STANDARD"
+},
+    ...
+
+    "Key": "2022-05-06/202205061217256387084640000000000-1b4e610c63535061-1-2-00000000-
+users-7.ndjson",
+    "LastModified": "2022-05-06T12:17:26+00:00",
+    "ETag": "\"c60a013619439bf83c505cb6958b55e2\"",
+    "Size": 94596,
+    "StorageClass": "INTELLIGENT_TIERING"
+},
+~~~
+
+For a specific operation, see the following examples:
+
+- [Backup with an S3 storage class](backup.html#backup-with-an-s3-storage-class)
+- [Create a changefeed with an S3 storage class](create-changefeed.html#create-a-changefeed-with-an-s3-storage-class)
+- [Export tabular data with an S3 storage class](export.html#export-tabular-data-with-an-s3-storage-class)
 
 ## See also
 

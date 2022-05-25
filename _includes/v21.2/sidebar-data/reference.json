@@ -619,7 +619,7 @@
                 ]
               },
               {
-                "title": "<code>RESET</code> &lt;session variable&gt;",
+                "title": "<code>RESET &#123;session variable&#125;</code>",
                 "urls": [
                   "/${VERSION}/reset-vars.html"
                 ]
@@ -679,7 +679,7 @@
                 ]
               },
               {
-                "title": "<code>SET</code> &lt;session variable&gt;",
+                "title": "<code>SET &#123;session variable&#125;</code>",
                 "urls": [
                   "/${VERSION}/set-vars.html"
                 ]
@@ -715,7 +715,7 @@
                 ]
               },
               {
-                "title": "<code>SHOW</code> &lt;session variables&gt;",
+                "title": "<code>SHOW &#123;session variable&#125;</code>",
                 "urls": [
                   "/${VERSION}/show-vars.html"
                 ]

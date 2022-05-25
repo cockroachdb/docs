@@ -93,7 +93,7 @@ New clusters and existing clusters [upgraded](upgrade-cockroach-version.html) to
 
 - The `movr` database contains data about users, vehicles, and rides for the vehicle-sharing app [MovR](movr.html).
 
-- An empty database called `postgres` is provided for compatibility with Postgres client applications that require it.
+- An empty database called `postgres` is provided for compatibility with PostgreSQL client applications that require it.
 
 - The `startrek` database contains quotes from episodes.
 

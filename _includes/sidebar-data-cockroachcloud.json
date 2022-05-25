@@ -109,7 +109,7 @@
       	      ]
       	    },
       	    {
-      	      "title": "Migrate from Postgres",
+      	      "title": "Migrate from PostgreSQL",
       	      "urls": [
       		      "/{{site.versions["stable"]}}/migrate-from-postgres.html"
       	      ]

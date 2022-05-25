@@ -9,6 +9,8 @@ The `DROP SCHEMA` [statement](sql-statements.html) removes a user-defined [schem
 
 {% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
+{% include {{ page.version.version }}/misc/declarative-schema-changer-note.md %}
+
 ## Required privileges
 
 The user must have the `DROP` [privilege](security-reference/authorization.html#managing-privileges) on the schema and on all tables in the schema. If the user is the owner of the schema, `DROP` privileges are not necessary.

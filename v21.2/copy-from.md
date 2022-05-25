@@ -121,6 +121,6 @@ In the demo cluster's shell, query the `users` table for the rows that you just 
 - [`IMPORT`](import.html)
 - [`IMPORT INTO`](import-into.html)
 - [`EXPORT`](export.html)
-- [Migrate from Postgres](migrate-from-postgres.html)
+- [Migrate from PostgreSQL](migrate-from-postgres.html)
 - [Migration Overview](migration-overview.html)
 

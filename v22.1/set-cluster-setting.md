@@ -20,7 +20,7 @@ Only members of the `admin` role can modify cluster settings. By default, the `r
 {% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/set_cluster_setting.html %}
 </div>
 
-{{site.data.alerts.callout_info}}The <code>SET CLUSTER SETTING</code> statement is unrelated to the other <a href="set-transaction.html"><code>SET TRANSACTION</code></a> and <a href="set-vars.html"><code>SET (session variable)</code></a> statements.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}The <code>SET CLUSTER SETTING</code> statement is unrelated to the other <a href="set-transaction.html"><code>SET TRANSACTION</code></a> and <a href="set-vars.html"><code>SET {session variable}</code></a> statements.{{site.data.alerts.end}}
 
 ## Parameters
 
@@ -109,6 +109,6 @@ To opt out of [automatic diagnostic reporting](diagnostics-reporting.html) of us
 
 ## See also
 
-- [`SET` (session variable)](set-vars.html)
+- [`SET {session variable}`](set-vars.html)
 - [`SHOW CLUSTER SETTING`](show-cluster-setting.html)
 - [Cluster settings](cluster-settings.html)

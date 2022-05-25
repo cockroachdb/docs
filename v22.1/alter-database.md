@@ -19,8 +19,11 @@ Subcommand | Description
 [`ADD REGION`](add-region.html) |  Add a region to a [multi-region database](multiregion-overview.html).
 [`DROP REGION`](drop-region.html) |  Drop a region from a [multi-region database](multiregion-overview.html).
 [`SET PRIMARY REGION`](set-primary-region.html) |  Set the primary region of a [multi-region database](multiregion-overview.html).
-[`SET <sessionvar>`](alter-role.html#set-default-session-variable-values-for-a-specific-database) |  Set the default session variable values for the database. This syntax is identical to [`ALTER ROLE ALL IN DATABASE SET <sessionvar>`](alter-role.html).
-`RESET <sessionvar>` |  Reset the default session variable values for the database to the system defaults. This syntax is identical to [`ALTER ROLE ALL IN DATABASE RESET <sessionvar>`](alter-role.html).
+[`ADD SUPER REGION`](add-super-region.html) | <span class="version-tag">New in v22.1:</span> Add a super region made up of a set of [database regions](multiregion-overview.html#super-regions) such that data from [regional tables](regional-tables.html) will be stored in only those regions.
+[`DROP SUPER REGION`](drop-super-region.html) | <span class="version-tag">New in v22.1:</span> Drop a super region made up of a set of [database regions](multiregion-overview.html#super-regions).
+[`ALTER SUPER REGION`](alter-super-region.html) | <span class="version-tag">New in v22.1:</span> Alter an existing [super region](multiregion-overview.html#super-regions) to include a different set of regions. A super region is made up of a set of regions added with [`ADD REGION`](add-region.html) such that data from [regional tables](regional-tables.html) will be stored in only those regions.
+[`SET {session variable}`](alter-role.html#set-default-session-variable-values-for-a-specific-database) |  Set the default session variable values for the database. This syntax is identical to [`ALTER ROLE ALL IN DATABASE SET {session variable}`](alter-role.html).
+`RESET {session variable}` |  Reset the default session variable values for the database to the system defaults. This syntax is identical to [`ALTER ROLE ALL IN DATABASE RESET {session variable}`](alter-role.html).
 [`SURVIVE {ZONE,REGION} FAILURE`](survive-failure.html) |  Add a survival goal to a [multi-region database](multiregion-overview.html).
 
 ## Viewing schema changes

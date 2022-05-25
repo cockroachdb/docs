@@ -55,7 +55,7 @@ A `NOT NULL` constraint cannot be added to existing tables.
 
 ### Composite foreign key matching
 
-By default, composite foreign keys are matched using the `MATCH SIMPLE` algorithm (which is the same default as Postgres). `MATCH FULL` is available if specified. You can specify both `MATCH FULL` and `MATCH SIMPLE`.
+By default, composite foreign keys are matched using the `MATCH SIMPLE` algorithm (which is the same default as PostgreSQL). `MATCH FULL` is available if specified. You can specify both `MATCH FULL` and `MATCH SIMPLE`.
 
 All composite key matches defined prior to version 19.1 use the `MATCH SIMPLE` comparison method. If you had a composite foreign key constraint and have just upgraded to version 19.1, then please check that `MATCH SIMPLE` works for your schema and consider replacing that foreign key constraint with a `MATCH FULL` one.
 
