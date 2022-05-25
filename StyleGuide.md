@@ -181,6 +181,8 @@ Avoid using socially-charged terms for features and technical concepts.
 - Don't use end punctuation (e.g., periods or colons) in headings.
 - Use periods at the end of list items if they are sentences or complete a sentence.
 - Use the [Oxford (a.k.a. serial) comma](https://en.wikipedia.org/wiki/Serial_comma).
+- Don't use slashes `/` as a conjunction in place of **or**. Use slashes for URLs, file names, and in code examples.
+- Don't use ampersands `&` in place of **and**.
 
 For more detail about how to format text, see [Components](#components).
 
