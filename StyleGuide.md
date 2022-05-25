@@ -20,6 +20,7 @@ Included in this guide:
 - [Capitalization and punctuation](#capitalization-and-punctuation)
   - [Capitalization rules](#capitalization-rules)
   - [Punctuation rules](#punctuation-rules)
+- [Vale](#vale)
 - [File conventions](#file-conventions)
 - [Content types](#content-types)
   - [Concept](#concept)
@@ -182,6 +183,12 @@ Avoid using socially-charged terms for features and technical concepts.
 - Use the [Oxford (a.k.a. serial) comma](https://en.wikipedia.org/wiki/Serial_comma).
 
 For more detail about how to format text, see [Components](#components).
+
+## Vale
+
+The CockroachDB documentation utilizes [Vale](https://vale.sh/) in order to identify common spelling mistakes or other patterns that may be in violation of one or more of the criteria set forth in this guide. You will usually see the items Vale flagged in the **Files Changed** tab of the pull request, inline in each file. Sometimes, it may appear in the **Checks** tab, depending on how many files are changed.
+
+Try to address as many of the suggestions as possible. If Vale flags a word as erroneous that is actually valid, that word can be added to `netlify/vale/vocab.txt` file. For other checks that have falsely identified text in your PR, your reviewer will work with you to correct them.
 
 ## File conventions
 
