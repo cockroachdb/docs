@@ -42,7 +42,7 @@ docs-r-awesome@free-tier14.aws-us-east-1.cockroachlabs.cloud:26257/defaultdb>
 
 ## Step 2: Provision a secure jumpbox
 
-By default, anyone who knows the parameters in this command can access your database. Let's fix that by creating a **jumpbox**: a compute instance that will be used as secure, dedicated access point to our cluster. In this example, the jumpbox will be a Google Cloud compute instance (although you could as easily use an AWS EC2 instance) which allows us to protect access to the jumpbox with Google Cloud's native capacities to require two-factor authentication for SSH access to compute instances, and to limit that SSH access to precisely those users that require it. By limiting SQL access to those actors who have SSH access to the jumpbox, we can effectively enforce two-factor authentication for access to the database, as well as take advantage of other security measures availabe on Google Cloud compute instances, such as access logs.
+By default, anyone who knows the parameters in this command can access your database. Let's fix that by creating a **jumpbox**: a compute instance that will be used as secure, dedicated access point to our cluster. In this example, the jumpbox will be a Google Cloud compute instance (although you could as easily use an AWS EC2 instance) which allows us to protect access to the jumpbox with Google Cloud's native capacities to require two-factor authentication for SSH access to compute instances, and to limit that SSH access to precisely those users that require it. By limiting SQL access to those actors who have SSH access to the jumpbox, we can effectively enforce two-factor authentication for access to the database, as well as take advantage of other security measures available on Google Cloud compute instances, such as access logs.
 
 In the [Google Cloud Console Compute Instances](https://console.cloud.google.com/compute/instance) page, create a new instance called `roach-jump-box`. The jumpbox will need very little CPU or disk, so use a cheap instance such as an `e2-micro`.
 
@@ -52,7 +52,7 @@ Keep the IP address handy!
 
 ## Step 3: Tighten the authentication configuration
 
-Next, we'll configure our cluster to only allow SQL connection attempts from our jumpbox. This means that in order to acces the cluster, someone will need not only the username and password (which could be guessed or stolen), but will also need access to the jumpbox. Manage permissions to access the jumpbox using Google Cloud's IAM, and make sure that users in your Google Cloud organization are required to use two-factor authentication.
+Next, we'll configure our cluster to only allow SQL connection attempts from our jumpbox. This means that in order to access the cluster, someone will need not only the username and password (which could be guessed or stolen), but will also need access to the jumpbox. Manage permissions to access the jumpbox using Google Cloud's IAM, and make sure that users in your Google Cloud organization are required to use two-factor authentication.
 
 Returning to the SQL console, let's set our authentication configuration to limit access to the jumpbox. This configuration is accessed as a [cluster setting](../cluster-settings.html).
 
