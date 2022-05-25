@@ -123,7 +123,7 @@ The output also describes a set of properties, some global to the query, some sp
     The scan filters on the `revenue` column.
 - `estimated row count`:`125,000 (100% of the table; stats collected 19 minutes ago)`
 
-    The estimated number of rows scanned by the query, in this case, `125,000` rows of data; the percentage of the table the query spans, in this case 100%; and when the statistics for the table were last collected, in this case 19 minutes ago. If you do not see statistics, you can manually generate table statistics with [`CREATE STATISTICS`](create-statistics.html) or configure more frequent statistics generation following the steps in [Control automatic statistics](cost-based-optimizer.html#control-automatic-statistics).
+    The estimated number of rows scanned by the query, in this case, `125,000` rows of data; the percentage of the table the query spans, in this case 100%; and when the statistics for the table were last collected, in this case 19 minutes ago. If you do not see statistics, you can manually generate table statistics with [`CREATE STATISTICS`](create-statistics.html) or configure more frequent statistics generation following the steps in [Control automatic statistics](cost-based-optimizer.html#table-statistics).
 - `table`:`rides@rides_pkey`
 
     The table is scanned on the `rides_pkey` index.
