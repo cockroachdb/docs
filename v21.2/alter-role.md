@@ -8,7 +8,7 @@ docs_area: reference.sql
 Use the `ALTER ROLE` [statement](sql-statements.html) to add, change, or remove a [role's](create-role.html) password, change the role options for a role, and set default [session variable](set-vars.html) values for a role.
 
 {{site.data.alerts.callout_info}}
-Since the keywords `ROLE` and `USER` can now be used interchangeably in SQL statements for enhanced Postgres compatibility, `ALTER ROLE` is now an alias for [`ALTER USER`](alter-user.html).
+Since the keywords `ROLE` and `USER` can now be used interchangeably in SQL statements for enhanced PostgreSQL compatibility, `ALTER ROLE` is now an alias for [`ALTER USER`](alter-user.html).
 {{site.data.alerts.end}}
 
 ## Considerations

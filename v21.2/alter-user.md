@@ -8,7 +8,7 @@ docs_area: reference.sql
 The `ALTER USER` [statement](sql-statements.html) can be used to add, change, or remove a [user's](create-user.html) password and to change the role options for a user.
 
 {{site.data.alerts.callout_info}}
- Since the keywords `ROLE` and `USER` can now be used interchangeably in SQL statements for enhanced Postgres compatibility, `ALTER USER` is now an alias for [`ALTER ROLE`](alter-role.html).
+ Since the keywords `ROLE` and `USER` can now be used interchangeably in SQL statements for enhanced PostgreSQL compatibility, `ALTER USER` is now an alias for [`ALTER ROLE`](alter-role.html).
 {{site.data.alerts.end}}
 
 ## Considerations

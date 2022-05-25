@@ -144,7 +144,7 @@ This page is provided for reference purposes only. The inclusion of a term in th
 
 <a name="postgis"></a>
 
-- _PostGIS_: An extension to the [Postgres](https://postgresql.org/) database that adds support for geospatial queries. For more information, see [postgis.net](https://postgis.net).
+- _PostGIS_: An extension to the [PostgreSQL](https://postgresql.org/) database that adds support for geospatial queries. For more information, see [postgis.net](https://postgis.net).
 
 <a name="geos"></a>
 
@@ -206,7 +206,7 @@ This section has information about the representation of geometric and geographi
 
 <a name="pg_extension"></a>
 
-- `pg_extension`: A table used by the Postgres database to store information about extensions to that database. Provided for compatibility by CockroachDB. For more information, see [the Postgres documentation](https://www.postgresql.org/docs/current/catalog-pg-extension.html).
+- `pg_extension`: A table used by the PostgreSQL database to store information about extensions to that database. Provided for compatibility by CockroachDB. For more information, see [the PostgreSQL documentation](https://www.postgresql.org/docs/current/catalog-pg-extension.html).
 
 <a name="spatial_ref_sys"></a>
 

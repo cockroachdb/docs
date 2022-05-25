@@ -8,7 +8,7 @@ docs_area: reference.sql
 The `SHOW ROLES` [statement](sql-statements.html) lists the roles for all databases.
 
 {{site.data.alerts.callout_info}}
- Since the keywords `ROLES` and `USERS` can now be used interchangeably in SQL statements for enhanced Postgres compatibility, `SHOW ROLES` is now an alias for [`SHOW USERS`](show-users.html).
+ Since the keywords `ROLES` and `USERS` can now be used interchangeably in SQL statements for enhanced PostgreSQL compatibility, `SHOW ROLES` is now an alias for [`SHOW USERS`](show-users.html).
 {{site.data.alerts.end}}
 
 ## Synopsis

@@ -475,7 +475,7 @@ For more detail on using this option with `BACKUP`, see [Incremental backups wit
 (3 rows)
 ~~~
 
-When you want restore a specific backup, add the backup's subdirectory path (e.g. `/2021/12/21-142943.73`) to the `RESTORE` statement. For details on viewing the most recent backup, see [`SHOW BACKUP FROM {subdirectory} in {collectionURI}`](show-backup.html#show-the-most-recent-backup).
+When you want restore a specific backup, add the backup's subdirectory path (e.g., `/2021/12/21-142943.73`) to the `RESTORE` statement. For details on viewing the most recent backup, see [`SHOW BACKUP FROM {subdirectory} in {collectionURI}`](show-backup.html#show-the-most-recent-backup).
 
 ### Restore from the most recent backup
 
@@ -693,7 +693,7 @@ The examples in this section use the `AUTH=specified` parameter, which will be t
 (3 rows)
 ~~~
 
-When you want restore a specific backup, add the backup's subdirectory path (e.g. `/2021/12/21-142943.73`) to the `RESTORE` statement. For details on viewing the most recent backup, see [`SHOW BACKUP FROM {subdirectory} in {collectionURI}`](show-backup.html#show-the-most-recent-backup).
+When you want restore a specific backup, add the backup's subdirectory path (e.g., `/2021/12/21-142943.73`) to the `RESTORE` statement. For details on viewing the most recent backup, see [`SHOW BACKUP FROM {subdirectory} in {collectionURI}`](show-backup.html#show-the-most-recent-backup).
 
 ### Restore from the most recent backup
 
