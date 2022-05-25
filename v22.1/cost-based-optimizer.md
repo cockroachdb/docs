@@ -34,11 +34,9 @@ By default, CockroachDB also automatically collects [multi-column statistics](cr
 [Schema changes](online-schema-changes.html) trigger automatic statistics collection for the affected table(s).
 {{site.data.alerts.end}}
 
-### Control automatic statistics
+For best query performance, most users should leave automatic statistics enabled with the default settings. Advanced users can follow the steps provided in this section for performance tuning and troubleshooting.
 
-For best query performance, most users should leave automatic statistics enabled with the default settings. The information provided in this section is useful for troubleshooting or performance tuning by advanced users.
-
-#### Control statistics refresh rate
+### Control statistics refresh rate
 
 Statistics are refreshed in the following cases:
 
@@ -58,11 +56,11 @@ Statistics are refreshed in the following cases:
     Because the formula for statistics refreshes is probabilistic, you will not see statistics update immediately after changing these settings, or immediately after exactly 500 rows have been updated.
     {{site.data.alerts.end}}
 
-#### Turn off statistics
+### Enable and disable automatic statistics collection for clusters
 
-To turn off automatic statistics collection, follow these steps:
+Automatic statistics collection is enabled by default. To disable automatic statistics collection, follow these steps:
 
-1. Run the following statement to disable the automatic statistics [cluster setting](cluster-settings.html):
+1. To disable the automatic statistics [cluster setting](cluster-settings.html), run the following statement:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -80,20 +78,74 @@ To turn off automatic statistics collection, follow these steps:
 
 1. Restart the nodes in your cluster to clear the statistics caches.
 
-To see how to manually generate statistics, see the [`CREATE STATISTICS` examples](create-statistics.html#examples).
+To learn how to manually generate statistics, see the [`CREATE STATISTICS` examples](create-statistics.html#examples).
 
-#### Control whether the `avg_size` statistic is used to cost scans
+### Enable and disable automatic statistics collection for tables
 
-<span class="version-tag">New in v22.1:</span> The `avg_size` table statistic represents the average size of a table column.
-If a table does not have an average size statistic available for a column, it uses the default value of 4 bytes.
+Statistics collection can be expensive for large tables and you may prefer to defer collection until after
+data is finished loading or in off hours. Small tables, which are frequently updated, may trigger statistics collection
+leading to unnecessary overhead and unpredictable query plan changes.
 
-The optimizer uses `avg_size` to cost scans and relevant joins. Costing scans per row regardless of the size of the columns comprising the row doesn't account for time
-to read or transport a large number of bytes over the network and can lead to undesirable plans when there are multiple options for scans
-or joins that read directly from tables.
+You can enable and disable automatic statistics collection for individual tables using the `sql_stats_automatic_collection_enabled` setting. For example:
 
-Cockroach Labs recommends that you allow the optimizer to consider column size when costing plans. If you are an advanced user and need to disable using `avg_size` for troubleshooting or performance tuning reasons, you can disable it by setting the `cost_scans_with_default_col_size` [session variable](set-vars.html) to true with `SET cost_scans_with_default_col_size=true`.
+~~~ sql
+CREATE TABLE accounts (
+    id INT PRIMARY KEY,
+    balance DECIMAL)
+WITH (sql_stats_automatic_collection_enabled = false);
+~~~
 
-#### Control histogram collection
+The table setting **takes precedence** over the cluster setting described in
+[Enable and disable automatic statistics collection for clusters](#enable-and-disable-automatic-statistics-collection-for-clusters).
+
+You can set the table settings at table creation time or using `ALTER TABLE ... SET`:
+
+~~~ sql
+CREATE TABLE accounts (
+    id INT PRIMARY KEY,
+    balance DECIMAL);
+
+ALTER TABLE accounts
+SET (sql_stats_automatic_collection_enabled = false);
+~~~
+
+The current table settings are shown in the `WITH` clause output of `SHOW CREATE TABLE`:
+
+~~~ sql
+  table_name |                    create_statement
+-------------+---------------------------------------------------------
+  accounts   | CREATE TABLE public.accounts (
+             |     id INT8 NOT NULL,
+             |     balance DECIMAL NULL,
+             |     CONSTRAINT accounts_pkey PRIMARY KEY (id ASC)
+             | ) WITH (sql_stats_automatic_collection_enabled = false)
+(1 row)
+~~~
+
+`ALTER TABLE accounts RESET (sql_stats_automatic_collection_enabled)` removes the table setting, in which case
+the cluster setting is in effect for the table.
+
+The "stale row" cluster settings discussed in [Control statistics refresh rate](#control-statistics-refresh-rate) have table
+setting counterparts `sql_stats_automatic_collection_fraction_stale_rows` and `sql_stats_automatic_collection_min_stale_rows`. For example:
+
+~~~ sql
+CREATE TABLE accounts (
+    id INT PRIMARY KEY,
+    balance DECIMAL)
+WITH (sql_stats_automatic_collection_enabled = true,
+sql_stats_automatic_collection_min_stale_rows = 1000000,
+sql_stats_automatic_collection_fraction_stale_rows= 0.05
+);
+
+ALTER TABLE accounts
+SET (sql_stats_automatic_collection_fraction_stale_rows = 0.1,
+sql_stats_automatic_collection_min_stale_rows = 2000);
+~~~
+
+Row modifications that have occurred a minute or two before disabling auto statistics collection
+via `ALTER TABLE ... SET` may trigger statistics collection.
+
+### Control histogram collection
 
 By default, the optimizer collects histograms for all index columns (specifically the first column in each index) during automatic statistics collection. If a single column statistic is explicitly requested using manual invocation of [`CREATE STATISTICS`](create-statistics.html), a histogram will be collected, regardless of whether or not the column is part of an index.
 
@@ -112,6 +164,17 @@ SET CLUSTER SETTING sql.stats.histogram_collection.enabled = false;
 ~~~
 
 When `sql.stats.histogram_collection.enabled` is set to `false`, histograms are never collected, either as part of automatic statistics collection or by manually invoking [`CREATE STATISTICS`](create-statistics.html).
+
+### Control whether the `avg_size` statistic is used to cost scans
+
+<span class="version-tag">New in v22.1:</span> The `avg_size` table statistic represents the average size of a table column.
+If a table does not have an average size statistic available for a column, it uses the default value of 4 bytes.
+
+The optimizer uses `avg_size` to cost scans and relevant joins. Costing scans per row regardless of the size of the columns comprising the row doesn't account for time
+to read or transport a large number of bytes over the network and can lead to undesirable plans when there are multiple options for scans
+or joins that read directly from tables.
+
+Cockroach Labs recommends that you allow the optimizer to consider column size when costing plans. If you are an advanced user and need to disable using `avg_size` for troubleshooting or performance tuning reasons, you can disable it by setting the `cost_scans_with_default_col_size` [session variable](set-vars.html) to true with `SET cost_scans_with_default_col_size=true`.
 
 ## Locality optimized search in multi-region clusters
 
