@@ -5,7 +5,7 @@ toc: true
 docs_area: migrate
 ---
 
-This page has instructions for migrating data from CSV files into CockroachDB using [`IMPORT INTO`][import-into.html].
+This page has instructions for migrating data from CSV files into CockroachDB using [`IMPORT INTO`](import-into.html).
 
 The examples on this page use the [employees data set](https://github.com/datacharmer/test_db) that is also used in the [MySQL docs](https://dev.mysql.com/doc/employee/en/).
 
