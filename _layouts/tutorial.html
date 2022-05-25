@@ -7,10 +7,7 @@
   {% for hash in page.allowed_hashes %}
     <a id="{{ hash }}" style="display: none"></a>
   {% endfor %}
-    {% include marketing-menu.html %}
-  <div id="content">
-    {{content}}
-  </div>
+  {{content}}
   {% include google_tag_manager.html %}
   {% include google_remarketing.html %}
   {% if page.twitter == true %}
