@@ -229,7 +229,11 @@ A custom root CA can be appended to the system's default CAs by setting the `clo
 
 ### Object locking
 
-<span class="version-tag">New in v22.1:</span> Delete and overwrite permissions are **not** required. To complete a backup successfully, `BACKUP` requires [read and write permissions](backup.html#required-privileges) to cloud storage buckets. As a result, you can write backups to cloud storage buckets with object locking enabled. This allows you to store backup data using a _write-once-read-many (WORM)_ model, which refers to storage that prevents any kind of deletion or modification to the objects once written.
+<span class="version-tag">New in v22.1:</span> Delete and overwrite permissions are **not** required. To complete successfully, `BACKUP` requires [read and write permissions](backup.html#required-privileges) to cloud storage buckets. As a result, you can write backups to cloud storage buckets with object locking enabled. This allows you to store backup data using a _write-once-read-many (WORM)_ model, which refers to storage that prevents any kind of deletion or modification to the objects once written.
+
+{{site.data.alerts.callout_info}}
+We recommend enabling object locking in cloud storage buckets to protect the validity of a backup for restores.
+{{site.data.alerts.end}}
 
 For specific cloud-storage provider documentation, see the following:
 
