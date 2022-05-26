@@ -21,7 +21,7 @@ The user must have any [privilege](authorization.html#assign-privileges) on the 
 Parameter | Description
 ----------|------------
 `object_name` | The name of the table, view, or sequence for which to show the `CREATE` statement.
-`ALL TABLES` | <span class="version-tag">New in v21.1:</span> Show the `CREATE` statements for all tables, views, and sequences in the current database.<br>This option is intended to provide the statements required to recreate the objects in the current database. As a result, `SHOW CREATE ALL TABLES` also returns the [`ALTER` statements](alter-table.html) that add, modify, and validate an object's [constraints](constraints.html). The `ALTER` statements follow the `CREATE` statements to guarantee that all objects are added before their references.
+`ALL TABLES` | {% include_cached new-in.html version="v21.1" %} Show the `CREATE` statements for all tables, views, and sequences in the current database.<br>This option is intended to provide the statements required to recreate the objects in the current database. As a result, `SHOW CREATE ALL TABLES` also returns the [`ALTER` statements](alter-table.html) that add, modify, and validate an object's [constraints](constraints.html). The `ALTER` statements follow the `CREATE` statements to guarantee that all objects are added before their references.
 
 ## Response
 
@@ -237,7 +237,7 @@ For more information, see [`COMMENT ON`](comment-on.html).
 
 ### Show the `CREATE TABLE` statement for a table with a multi-region locality
 
-<span class="version-tag">New in v21.1:</span> Use the `SHOW CREATE TABLE` command to view [multi-region-defined](multiregion-overview.html) table localities.
+{% include_cached new-in.html version="v21.1" %} Use the `SHOW CREATE TABLE` command to view [multi-region-defined](multiregion-overview.html) table localities.
 
 {% include enterprise-feature.md %}
 
@@ -286,7 +286,7 @@ All tables will be [`REGIONAL BY TABLE`](set-locality.html#regional-by-table) in
 
 ### Show the statements needed to recreate all tables, views, and sequences in the current database
 
-<span class="version-tag">New in v21.1:</span> To return the `CREATE` statements for all of the tables, views, and sequences in the current database, use `SHOW CREATE ALL TABLES`.
+{% include_cached new-in.html version="v21.1" %} To return the `CREATE` statements for all of the tables, views, and sequences in the current database, use `SHOW CREATE ALL TABLES`.
 
 Note that this statement also returns the [`ALTER` statements](alter-table.html) that add, modify, and validate an object's [constraints](constraints.html).
 

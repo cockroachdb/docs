@@ -28,7 +28,7 @@ Parameter | Description
 `view_name` | The name of the view to rename. To find view names, use:<br><br>`SELECT * FROM information_schema.tables WHERE table_type = 'VIEW';`
 `RENAME TO view_name` | Rename the view to `view_name`, which must be unique to its database and follow these [identifier rules](keywords-and-identifiers.html#identifiers). Name changes do not propagate to the  table(s) using the view.<br><br>Note that `RENAME TO` can be used to move a view from one database to another, but it cannot be used to move a view from one schema to another. To change a view's schema, use `ALTER VIEW ...SET SCHEMA` instead. In a future release, `RENAME TO` will be limited to changing the name of a view, and will not have the ability to change a view's database.
 `SET SCHEMA schema_name` | Change the schema of the view to `schema_name`.
-`OWNER TO role_spec` | <span class="version-tag">New in v21.1:</span> Change the owner of the view to `role_spec`.
+`OWNER TO role_spec` | {% include_cached new-in.html version="v21.1" %} Change the owner of the view to `role_spec`.
 
 ## Limitations
 

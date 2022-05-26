@@ -259,7 +259,7 @@ Column | Description
 `table_schema` | Name of the schema containing the table.
 `table_name` | Name of the table.
 `privilege_type` | Name of the [privilege](security-reference/authorization.html#managing-privileges).
-`is_grantable` | <span class="version-tag">New in v22.1:</span> `TRUE` if the grantee has the grant option on the object; `FALSE` if not.
+`is_grantable` | {% include_cached new-in.html version="v22.1" %} `TRUE` if the grantee has the grant option on the object; `FALSE` if not.
 `with_hierarchy` | Always `NULL` (unsupported by CockroachDB).
 
 ### schema_privileges
@@ -358,7 +358,7 @@ Column | Description
 `table_schema` | Name of the schema that the grant applies to.
 `table_name` | Name of the table that the grant applies to.
 `privilege_type` | Type of [privilege](security-reference/authorization.html#managing-privileges): `SELECT`, `INSERT`, `UPDATE`, `DELETE`, `TRUNCATE`, `REFERENCES`, or `TRIGGER`.
-`is_grantable` | <span class="version-tag">New in v22.1:</span> `TRUE` if the grantee has the grant option on the object; `FALSE` if not.
+`is_grantable` | {% include_cached new-in.html version="v22.1" %} `TRUE` if the grantee has the grant option on the object; `FALSE` if not.
 `with_hierarchy` | Always `NULL` (unsupported by CockroachDB).
 
 ### tables
