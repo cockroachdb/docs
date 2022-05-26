@@ -736,7 +736,7 @@ For some examples, see [Connect to a CockroachDB Cluster](https://www.cockroachl
 
 #### Escaping special characters
 
-Sometimes you may need to escape special characters to acheive proper rendering. This is most common in the following two cases:
+Sometimes you may need to escape special characters to achieve proper rendering. This is most common in the following two cases:
 
 - You are using Jekyll-reserved characters (e.g., double `{{ ... }}`) in code blocks. To escape these, wrap the specific line(s) you wish to escape using the Liquid tags `{% raw %} ... {% endraw %}`. For example:
 
