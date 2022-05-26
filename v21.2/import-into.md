@@ -18,7 +18,7 @@ The `IMPORT INTO` [statement](sql-statements.html) imports CSV, Avro, or delimit
 - `IMPORT INTO` does not offer `SELECT` or `WHERE` clauses to specify subsets of rows. To do this, use [`INSERT`](insert.html#insert-from-a-select-statement).
 - `IMPORT INTO` will cause any [changefeeds](use-changefeeds.html) running on the targeted table to fail.
 
-<span class="version-tag">New in v21.2:</span> `IMPORT INTO` now supports importing into [`REGIONAL BY ROW`](set-locality.html#regional-by-row) tables.
+{% include_cached new-in.html version="v21.2" %} `IMPORT INTO` now supports importing into [`REGIONAL BY ROW`](set-locality.html#regional-by-row) tables.
 
 {{site.data.alerts.callout_info}}
 Optimize import operations in your applications by following our [Import Performance Best Practices](import-performance-best-practices.html).

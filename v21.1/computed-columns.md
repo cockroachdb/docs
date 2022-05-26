@@ -41,7 +41,7 @@ To define a stored computed column, use the following syntax:
 column_name <type> AS (<expr>) STORED
 ~~~
 
-<span class="version-tag">New in v21.1:</span> To define a virtual computed column, use the following syntax:
+{% include_cached new-in.html version="v21.1" %} To define a virtual computed column, use the following syntax:
 
 ~~~
 column_name <type> AS (<expr>) VIRTUAL

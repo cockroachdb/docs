@@ -130,7 +130,7 @@ I190312 18:56:53.537686 585 vendor/github.com/Shopify/sarama/client.go:170  [kaf
 
 ### Using `SHOW CHANGEFEED JOBS`
 
-<span class="version-tag">New in v21.2:</span> For {{ site.data.products.enterprise }} changefeeds, use `SHOW CHANGEFEED JOBS` to check the status of your changefeed jobs:
+{% include_cached new-in.html version="v21.2" %} For {{ site.data.products.enterprise }} changefeeds, use `SHOW CHANGEFEED JOBS` to check the status of your changefeed jobs:
 
 {% include copy-clipboard.html %}
 ~~~ sql

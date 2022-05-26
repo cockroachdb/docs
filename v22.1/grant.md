@@ -30,7 +30,7 @@ Parameter                 | Description
 `privilege_list`          | A comma-separated list of [privileges](security-reference/authorization.html#managing-privileges) to grant.
 `role_spec_list`          | A comma-separated list of source roles.
 `WITH ADMIN OPTION`       | Designate the user as a role admin. Role admins can grant or [revoke](revoke.html) membership for the specified role.
-`WITH GRANT OPTION`       | <span class="version-tag">New in v22.2:</span> Allow the user to grant the specified privilege to others.
+`WITH GRANT OPTION`       | {% include_cached new-in.html version="v22.1" %} Allow the user to grant the specified privilege to others.
 
 ## Supported privileges
 

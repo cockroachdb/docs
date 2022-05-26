@@ -154,7 +154,7 @@ The following options are available to [`IMPORT ... CSV`](import.html):
 - [Column delimiter](migrate-from-csv.html#column-delimiter)
 - [Comment syntax](migrate-from-csv.html#comment-syntax)
 - [Skip header rows](migrate-from-csv.html#skip-header-rows)
-- <span class="version-tag">New in v21.1:</span> [Row limit](migrate-from-csv.html#row-limit)
+- {% include_cached new-in.html version="v21.1" %} [Row limit](migrate-from-csv.html#row-limit)
 - [Null strings](migrate-from-csv.html#null-strings)
 - [File compression](migrate-from-csv.html#file-compression)
 

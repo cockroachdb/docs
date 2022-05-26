@@ -33,7 +33,7 @@ Parameter      | Description
 | `row_count` | The number of rows for which the statistics were computed. |
 | `distinct_count` |  The number of distinct values for which the statistics were computed. |
 | `null_count` |  The number of null values for which the statistics were computed.  |
-| `avg_size` |  <span class="version-tag">New in v22.1:</span> The average size in bytes of the values of the columns for which the statistics were computed. |
+| `avg_size` |  {% include_cached new-in.html version="v22.1" %} The average size in bytes of the values of the columns for which the statistics were computed. |
 | `histogram_id` |  The ID of the [histogram](cost-based-optimizer.html#control-histogram-collection) used to compute statistics. |
 
 ## Examples
