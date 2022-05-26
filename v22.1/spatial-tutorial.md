@@ -16,7 +16,7 @@ In this tutorial, you will plan a vacation from New York City to the [Adirondack
 + Visualizing the output of your queries using free tools like <https://geojson.io>
 
 <div class="clearfix">
-  <a class="btn btn-outline-primary" href="../tutorials/spatial-tutorial-interactive.html" target="_blank" rel="noopener">Run this in your browser &rarr;</a>
+  <a class="btn btn-outline-primary" href="../tutorials/demo-spatial-tutorial-interactive.html" target="_blank" rel="noopener">Run this in your browser &rarr;</a>
 </div>
 
 ## Step 1. Review the scenario

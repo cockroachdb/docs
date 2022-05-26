@@ -14,10 +14,6 @@ docs_area: get_started
 
 This tutorial shows you how build a simple Node.js application with CockroachDB and [Prisma](https://www.prisma.io).
 
-{{site.data.alerts.callout_info}}
-Prisma versions 3.11+ have [Preview](https://prisma.io/docs/about/prisma/releases.html#preview) support for CockroachDB.
-{{site.data.alerts.end}}
-
 ## Step 1. Start CockroachDB
 
 {% include {{ page.version.version }}/setup/sample-setup.md %}

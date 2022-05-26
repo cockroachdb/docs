@@ -94,7 +94,7 @@ The current schema is used as target schema when creating a new object if the na
 CockroachDB supports the following ways to specify an index name for statements that require one (e.g., [`DROP INDEX`](drop-index.html), [`ALTER INDEX ... RENAME`](alter-index.html), etc.):
 
 1. Index names are resolved relative to a table name using the `@` character, e.g., `DROP INDEX tbl@idx;`.  This is the default and most common syntax.
-2. Index names are resolved by searching all tables in the current schema to find a table with an index named `idx`, e.g., `DROP INDEX idx;` or (with optional schema prefix) `DROP INDEX public.idx;`.  This syntax is necessary for Postgres compatibility because Postgres index names live in the schema namespace such that e.g., `public.idx` will resolve to the index `idx` of some table in the public schema.  This capability is used by some ORMs.
+2. Index names are resolved by searching all tables in the current schema to find a table with an index named `idx`, e.g., `DROP INDEX idx;` or (with optional schema prefix) `DROP INDEX public.idx;`.  This syntax is necessary for PostgreSQL compatibility because PostgreSQL index names live in the schema namespace such that e.g., `public.idx` will resolve to the index `idx` of some table in the public schema.  This capability is used by some ORMs.
 
 The name resolution algorithm for index names supports both partial and complete qualification, using the same [name resolution rules](#how-name-resolution-works) as other objects.
 

@@ -13,7 +13,7 @@ CockroachDB supports the Generic Security Services API (GSSAPI) with Kerberos au
 
 - A working Active Directory or Kerberos environment
 - A Service Principal
-- A GSSAPI-compatible Postgres Client (psql, etc.)
+- A GSSAPI-compatible PostgreSQL Client (psql, etc.)
 - A client machine with a Kerberos client installed and configured
 
 ## Configuring KDC for CockroachDB
@@ -165,7 +165,7 @@ Copy the resulting keytab to the database nodes. If clients are connecting to mu
 ## Configuring the client
 
 {{site.data.alerts.callout_info}}
-The `cockroach sql` shell does not yet support GSSAPI authentication. You need to use a GSSAPI-compatible Postgres client, such as Postgres's `psql` client.
+The `cockroach sql` shell does not yet support GSSAPI authentication. You need to use a GSSAPI-compatible PostgreSQL client, such as PostgreSQL's `psql` client.
 {{site.data.alerts.end}}
 
 1. Install and configure your Kerberos client:
@@ -229,7 +229,7 @@ The `cockroach sql` shell does not yet support GSSAPI authentication. You need t
     $ klist
     ~~~
 
-4. Install the Postgres client (for example, postgresql-client-10 Debian package from postgresql.org).
+4. Install the PostgreSQL client (for example, postgresql-client-10 Debian package from postgresql.org).
 5. Use the `psql` client, which supports GSSAPI authentication, to connect to CockroachDB:
 
     {% include copy-clipboard.html %}
@@ -237,7 +237,7 @@ The `cockroach sql` shell does not yet support GSSAPI authentication. You need t
     $ psql "postgresql://localhost:26257/defaultdb?sslmode=verify-full&sslrootcert=/certs/ca.crt" -U carl
     ~~~
 
-4. If you specified an Enterprise license earlier, you should now have a Postgres shell in CockroachDB, indicating that the GSSAPI authentication was successful. If you did not specify an Enterprise license, you'll see a message like this: `psql: ERROR:  use of GSS authentication requires an Enterprise license.` If you see this message, GSSAPI authentication is set up correctly.
+4. If you specified an Enterprise license earlier, you should now have a PostgreSQL shell in CockroachDB, indicating that the GSSAPI authentication was successful. If you did not specify an Enterprise license, you'll see a message like this: `psql: ERROR:  use of GSS authentication requires an Enterprise license.` If you see this message, GSSAPI authentication is set up correctly.
 
 ## See also
 

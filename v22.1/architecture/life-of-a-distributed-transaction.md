@@ -17,7 +17,7 @@ This guide is organized by the physical actors in the system, and then broken do
 
 Here's a brief overview of the physical actors, in the sequence with which they're involved in executing a query:
 
-1. [**SQL Client**](#sql-client-postgres-wire-protocol) sends a query to your cluster.
+1. [**SQL Client**](#sql-client-postgresql-wire-protocol) sends a query to your cluster.
 1. [**Load Balancing**](#load-balancing-routing) routes the request to CockroachDB nodes in your cluster, which will act as a gateway.
 1. [**Gateway**](#gateway) is a CockroachDB node that processes the SQL request and responds to the client.
 1. [**Leaseholder**](#leaseholder-node) is a CockroachDB node responsible for serving reads and coordinating writes of a specific range of keys in your query.
@@ -25,7 +25,7 @@ Here's a brief overview of the physical actors, in the sequence with which they'
 
 Once the transaction completes, queries traverse these actors in approximately reverse order. We say "approximately" because there might be many leaseholders and Raft leaders involved in a single query, and there is little-to-no interaction with the load balancer during the response.
 
-## SQL Client/Postgres Wire Protocol
+## SQL Client/PostgreSQL Wire Protocol
 
 To begin, a SQL client (e.g., an app) performs some kind of business logic against your CockroachDB cluster, such as inserting a new customer record.
 

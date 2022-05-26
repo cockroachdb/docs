@@ -402,7 +402,7 @@ WITH
 > IMPORT PGDUMP 's3://{BUCKET NAME}/{customers.sql}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' WITH ignore_unsupported_statements;
 ~~~
 
-For this command to succeed, you need to have created the dump file with specific flags to `pg_dump`, and starting in v21.1 use the `WITH ignore_unsupported_statements` clause. For more information, see [Migrate from Postgres](migrate-from-postgres.html).
+For this command to succeed, you need to have created the dump file with specific flags to `pg_dump`, and starting in v21.1 use the `WITH ignore_unsupported_statements` clause. For more information, see [Migrate from PostgreSQL](migrate-from-postgres.html).
 
 ### Import a table from a PostgreSQL database dump
 
@@ -413,7 +413,7 @@ For this command to succeed, you need to have created the dump file with specifi
 
 If the table schema specifies foreign keys into tables that do not exist yet, the `WITH skip_foreign_keys` shown may be needed. For more information, see the list of [import options](#import-options).
 
-For this command to succeed, you need to have created the dump file with specific flags to `pg_dump`.  For more information, see [Migrate from Postgres](migrate-from-postgres.html).
+For this command to succeed, you need to have created the dump file with specific flags to `pg_dump`.  For more information, see [Migrate from PostgreSQL](migrate-from-postgres.html).
 
 ### Import a MySQL database dump
 
@@ -730,7 +730,7 @@ WITH
 > IMPORT PGDUMP 'azure://{CONTAINER NAME}/{employees.sql}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}' WITH ignore_unsupported_statements;
 ~~~
 
-For the commands above to succeed, you need to have created the dump file with specific flags to `pg_dump`, and starting in v21.1 use the `WITH ignore_unsupported_statements` clause. For more information, see [Migrate from Postgres](migrate-from-postgres.html).
+For the commands above to succeed, you need to have created the dump file with specific flags to `pg_dump`, and starting in v21.1 use the `WITH ignore_unsupported_statements` clause. For more information, see [Migrate from PostgreSQL](migrate-from-postgres.html).
 
 ### Import a table from a PostgreSQL database dump
 
@@ -741,7 +741,7 @@ For the commands above to succeed, you need to have created the dump file with s
 
 If the table schema specifies foreign keys into tables that do not exist yet, the `WITH skip_foreign_keys` shown may be needed. For more information, see the list of [import options](#import-options).
 
-For this command to succeed, you need to have created the dump file with specific flags to `pg_dump`.  For more information, see [Migrate from Postgres](migrate-from-postgres.html).
+For this command to succeed, you need to have created the dump file with specific flags to `pg_dump`.  For more information, see [Migrate from PostgreSQL](migrate-from-postgres.html).
 
 ### Import a MySQL database dump
 
@@ -1061,7 +1061,7 @@ WITH
 > IMPORT PGDUMP 'gs://{BUCKET NAME}/{employees.sql}?AUTH=specified&CREDENTIALS={ENCODED KEY}' WITH ignore_unsupported_statements;
 ~~~
 
-For the commands above to succeed, you need to have created the dump file with specific flags to `pg_dump`, and starting in v21.1 use the `WITH ignore_unsupported_statements` clause. For more information, see [Migrate from Postgres](migrate-from-postgres.html).
+For the commands above to succeed, you need to have created the dump file with specific flags to `pg_dump`, and starting in v21.1 use the `WITH ignore_unsupported_statements` clause. For more information, see [Migrate from PostgreSQL](migrate-from-postgres.html).
 
 ### Import a table from a PostgreSQL database dump
 
@@ -1072,7 +1072,7 @@ For the commands above to succeed, you need to have created the dump file with s
 
 If the table schema specifies foreign keys into tables that do not exist yet, the `WITH skip_foreign_keys` shown may be needed. For more information, see the list of [import options](#import-options).
 
-For this command to succeed, you need to have created the dump file with specific flags to `pg_dump`.  For more information, see [Migrate from Postgres](migrate-from-postgres.html).
+For this command to succeed, you need to have created the dump file with specific flags to `pg_dump`.  For more information, see [Migrate from PostgreSQL](migrate-from-postgres.html).
 
 ### Import a MySQL database dump
 
@@ -1254,7 +1254,7 @@ CSV DATA ('nodelocal://2/customers.csv')
 - [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html)
 - [Migration Overview](migration-overview.html)
 - [Migrate from MySQL][mysql]
-- [Migrate from Postgres][postgres]
+- [Migrate from PostgreSQL][postgres]
 - [Migrate from CSV][csv]
 - [Migrate from Avro][avro]
 - [`IMPORT INTO`](import-into.html)

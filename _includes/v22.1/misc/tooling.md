@@ -55,11 +55,18 @@ For a list of tools supported by the CockroachDB community, see [Third-Party Too
 | [DataGrip](https://www.jetbrains.com/datagrip/) | 2021.1 | Full | N/A
 | [IntelliJ IDEA](https://www.jetbrains.com/idea/) | 2021.1 | Full | [Use IntelliJ IDEA with CockroachDB](intellij-idea.html)
 
+## Enhanced data security tools
+
+| Tool | Support level | Integration |
+|-----+---------------+----------|
+| [Satori](https://satoricyber.com/) | Partner supported | [Satori Integration](satori-integration.html) |
+
 ## Schema migration tools
 
 | Tool | Latest tested version | Support level | Tutorial |
 |-----+------------------------+----------------+----------|
 | [Alembic](https://alembic.sqlalchemy.org/en/latest/) | 1.7 | Full | [Migrate CockroachDB Schemas with Alembic](alembic.html)
+| [AWS DMS](https://aws.amazon.com/dms/) | 3.4.6 | Beta | [Migrate your database to CockroachDB with AWS DMS](aws-dms.html)
 | [Flyway](https://flywaydb.org/documentation/commandline/#download-and-installation) | 7.1.0 | Full | [Migrate CockroachDB Schemas with Flyway](flyway.html)
 | [Liquibase](https://www.liquibase.org/download) | 4.2.0 | Full | [Migrate CockroachDB Schemas with Liquibase](liquibase.html)
 

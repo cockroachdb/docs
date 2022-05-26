@@ -91,6 +91,6 @@ All sessions created by `maxroach` will be cancelled.
 ## See also
 
 - [`SHOW SESSIONS`](show-sessions.html)
-- [`SET` (session variable)](set-vars.html)
-- [`SHOW` (session variable)](show-vars.html)
+- [`SET {session variable}`](set-vars.html)
+- [`SHOW {session variable}`](show-vars.html)
 - [SQL Statements](sql-statements.html)

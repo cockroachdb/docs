@@ -10,7 +10,7 @@ The `CREATE USER` [statement](sql-statements.html) creates SQL users, which let 
 {% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
 {{site.data.alerts.callout_info}}
-The keywords `ROLE` and `USER` can be used interchangeably in SQL statements for enhanced Postgres compatibility.
+The keywords `ROLE` and `USER` can be used interchangeably in SQL statements for enhanced PostgreSQL compatibility.
 
 `CREATE USER` is equivalent to the statement `CREATE ROLE`, with one exception: `CREATE ROLE` sets the [`NOLOGIN`](#parameters) option by default, preventing the new role from being used to log in to the database. You can use `CREATE ROLE` and specify the [`LOGIN`](#parameters) option to achieve the same result as `CREATE USER`.
 {{site.data.alerts.end}}

@@ -135,7 +135,7 @@ $ ./cockroach convert-url --url "postgres://foo/bar"
 # Connection URL for libpq (C/C++), psycopg (Python), lib/pq & pgx (Go),node-postgres (JS)
 and most pq-compatible drivers:
   postgresql://root@foo:26257/bar
-# Connection DSN (Data Source Name) for Postgres drivers that accept DSNs - most drivers
+# Connection DSN (Data Source Name) for PostgreSQL drivers that accept DSNs - most drivers
 and also ODBC:
   database=bar user=root host=foo port=26257
 # Connection URL for JDBC (Java and JVM-based languages):

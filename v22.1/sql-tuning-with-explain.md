@@ -64,11 +64,11 @@ To understand why this query performs poorly, use [`EXPLAIN`](explain.html):
   │
   └── • scan
         estimated row count: 1,259,634 (100% of the table; stats collected 3 minutes ago)
-        table: users@primary
+        table: users@users_pkey
         spans: FULL SCAN
 ~~~
 
-`table: users@primary` indicates the index used (`primary`) to scan the table (`users`). `spans: FULL SCAN` shows you that, without a secondary index on the `name` column, CockroachDB scans every row of the `users` table, ordered by the primary key (`city`/`id`), until it finds the row with the correct `name` value.
+`table: users@users_pkey` indicates the index used (`users_pkey`) to scan the table (`users`). `spans: FULL SCAN` shows you that, without a secondary index on the `name` column, CockroachDB scans every row of the `users` table, ordered by the primary key (`city`/`id`), until it finds the row with the correct `name` value.
 
 ### Solution: Filter by a secondary index
 
@@ -116,7 +116,7 @@ To understand why the performance improved, use [`EXPLAIN`](explain.html) to see
 
   • index join
   │ estimated row count: 3
-  │ table: users@primary
+  │ table: users@users_pkey
   │
   └── • scan
         estimated row count: 3 (<0.01% of the table; stats collected 3 seconds ago)
@@ -169,7 +169,7 @@ With the current secondary index on `name`, CockroachDB still needs to scan the 
 
   • index join
   │ estimated row count: 3
-  │ table: users@primary
+  │ table: users@users_pkey
   │
   └── • scan
         estimated row count: 3 (<0.01% of the table; stats collected 2 minutes ago)
@@ -282,7 +282,7 @@ To understand what's happening, use [`EXPLAIN`](explain.html) to see the query p
           │
           ├── • scan
           │     estimated row count: 1,250,000 (100% of the table; stats collected 7 minutes ago)
-          │     table: users@primary
+          │     table: users@users_pkey
           │     spans: FULL SCAN
           │
           └── • filter
@@ -291,7 +291,7 @@ To understand what's happening, use [`EXPLAIN`](explain.html) to see the query p
               │
               └── • scan
                     estimated row count: 500 (100% of the table; stats collected 7 minutes ago)
-                    table: rides@primary
+                    table: rides@rides_pkey
                     spans: FULL SCAN
 (27 rows)
 
@@ -353,7 +353,7 @@ To understand why performance improved, again use [`EXPLAIN`](explain.html) to s
           │
           ├── • scan
           │     estimated row count: 1,250,000 (100% of the table; stats collected 7 minutes ago)
-          │     table: users@primary
+          │     table: users@users_pkey
           │     spans: FULL SCAN
           │
           └── • scan
@@ -394,12 +394,12 @@ For the following query, the cost-based optimizer can’t perform a lookup join 
       │
       ├── • scan
       │     estimated row count: 500 (100% of the table; stats collected 23 seconds ago)
-      │     table: rides@primary
+      │     table: rides@rides_pkey
       │     spans: FULL SCAN
       │
       └── • scan
             estimated row count: 15 (100% of the table; stats collected 4 minutes ago)
-            table: vehicles@primary
+            table: vehicles@vehicles_pkey
             spans: FULL SCAN
 (20 rows)
 
@@ -427,13 +427,13 @@ To speed up the query, you can provide the primary key to allow the cost-based o
   │
   └── • lookup join
       │ estimated row count: 56
-      │ table: vehicles@primary
+      │ table: vehicles@vehicles_pkey
       │ equality: (city, vehicle_id) = (city,id)
       │ equality cols are key
       │
       └── • scan
             estimated row count: 500 (100% of the table; stats collected 1 minute ago)
-            table: rides@primary
+            table: rides@rides_pkey
             spans: FULL SCAN
 (17 rows)
 

@@ -59,7 +59,7 @@
           ]
         },
         {
-          "title": "Add Secondary Indexes",
+          "title": "Secondary Indexes",
           "urls": [
             "/${VERSION}/schema-design-indexes.html"
           ]
@@ -447,6 +447,12 @@
               ]
             },
             {
+              "title": "AWS DMS",
+              "urls": [
+                "/${VERSION}/aws-dms.html"
+              ]
+            },
+            {
               "title": "Flyway",
               "urls": [
                 "/${VERSION}/flyway.html"
@@ -476,6 +482,17 @@
               ]
             }
           ]
+        },
+        {
+          "title": "Data Security Tools",
+          "items": [
+            {
+              "title": "Satori",
+              "urls": [
+                "/${VERSION}/satori-integration.html"
+              ]
+            }
+          ]
         }
       ]
     },
@@ -483,7 +500,7 @@
       "title": "SQL Playground",
       "is_top_level": true,
       "urls": [
-        "/${VERSION}/sql-playground.html"
+        "/tutorials/sql-playground.html"
       ]
     }
   ]

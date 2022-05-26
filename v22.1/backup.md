@@ -33,6 +33,8 @@ Because CockroachDB is designed with high fault tolerance, these backups are des
 - Backups will export [Enterprise license keys](enterprise-licensing.html) during a [full cluster backup](#backup-a-cluster). When you [restore](restore.html) a full cluster with an Enterprise license, it will restore the Enterprise license of the cluster you are restoring from.
 - [Zone configurations](configure-zone.html) present on the destination cluster prior to a restore will be **overwritten** during a [cluster restore](restore.html#full-cluster) with the zone configurations from the [backed up cluster](#backup-a-cluster). If there were no customized zone configurations on the cluster when the backup was taken, then after the restore the destination cluster will use the zone configuration from the [`RANGE DEFAULT` configuration](configure-replication-zones.html#view-the-default-replication-zone).
 - You cannot restore a backup of a multi-region database into a single-region database.
+- [HTTP storage](use-a-local-file-server-for-bulk-operations.html) is not supported for `BACKUP` and `RESTORE`.
+- Exclude a table's row data from a backup using the [`exclude_data_from_backup`](take-full-and-incremental-backups.html#exclude-a-tables-data-from-backups) parameter.
 
 {{site.data.alerts.callout_success}}
 To view the contents of an Enterprise backup created with the `BACKUP` statement, use [`SHOW BACKUP`](show-backup.html).
@@ -85,13 +87,13 @@ N/A                                | Backup the cluster. For an example of a ful
 
 CockroachDB uses the URL provided to construct a secure API call to the service you specify. The URL structure depends on the type of file storage you are using. For more information, see the following:
 
-- [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html)
+- [URL format](use-cloud-storage-for-bulk-operations.html#url-format)
+- [Example file URLs](use-cloud-storage-for-bulk-operations.html#example-file-urls)
+- [Authentication parameters](use-cloud-storage-for-bulk-operations.html#authentication)
 
-    {{site.data.alerts.callout_info}}
-    HTTP storage is not supported for `BACKUP` and `RESTORE`.
-    {{site.data.alerts.end}}
-
-- [Use a Local File Server for Bulk Operations](use-a-local-file-server-for-bulk-operations.html)
+{{site.data.alerts.callout_success}}
+Backups support cloud object locking and [Amazon S3 storage classes](#backup-with-an-s3-storage-class). For more detail, see [Additional cloud storage feature support](use-cloud-storage-for-bulk-operations.html#additional-cloud-storage-feature-support).
+{{site.data.alerts.end}}
 
 ## Functional details
 
@@ -104,6 +106,12 @@ Object | Depends On
 Table with [foreign key](foreign-key.html) constraints | The table it `REFERENCES`; however, this dependency can be [removed during the restore](restore.html#skip_missing_foreign_keys).
 Table with a [sequence](create-sequence.html) | The sequence it uses; however, this dependency can be [removed during the restore](restore.html#skip_missing_sequences).
 [Views](views.html) | The tables used in the view's `SELECT` statement.
+
+{{site.data.alerts.callout_info}}
+To exclude a table's row data from a backup, use the `exclude_data_from_backup` parameter with [`CREATE TABLE`](create-table.html#create-a-table-with-data-excluded-from-backup) or [`ALTER TABLE`](set-storage-parameter.html#exclude-a-tables-data-from-backups).
+
+For more detail, see the [Exclude a table's data from backups](take-full-and-incremental-backups.html#exclude-a-tables-data-from-backups) example.
+{{site.data.alerts.end}}
 
 ### Users and privileges
 
@@ -292,6 +300,17 @@ job_id             |  status   | fraction_completed | rows | index_entries | byt
 652471804772712449 | succeeded |                  1 |   50 |             0 |  4911
 (1 row)
 ~~~
+
+### Backup with an S3 storage class
+
+<span class="version-tag">New in v22.1:</span> To associate your backup objects with a [specific storage class](use-cloud-storage-for-bulk-operations.html#amazon-s3-storage-classes) in your Amazon S3 bucket, use the `S3_STORAGE_CLASS` parameter with the class. For example, the following S3 connection URI specifies the `INTELLIGENT_TIERING` storage class:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+BACKUP DATABASE movr INTO 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}&S3_STORAGE_CLASS=INTELLIGENT_TIERING' AS OF SYSTEM TIME '-10s';
+~~~
+
+{% include {{ page.version.version }}/misc/storage-classes.md %}
 
 </section>
 

@@ -505,16 +505,15 @@ To see the individual `CREATE TABLE` statements for each table, use a [`SHOW CRE
 ~~~
 
 ~~~
-         table_name        |                             create_statement
----------------------------+---------------------------------------------------------------------------
+         table_name        |                        create_statement
+---------------------------+------------------------------------------------------------------
   movr.max_schema.vehicles | CREATE TABLE max_schema.vehicles (
                            |     id UUID NOT NULL DEFAULT gen_random_uuid(),
                            |     type max_schema.vtype NULL,
                            |     creation_time TIMESTAMPTZ NULL DEFAULT now():::TIMESTAMPTZ,
                            |     available BOOL NULL,
                            |     last_location STRING NULL,
-                           |     CONSTRAINT "primary" PRIMARY KEY (id ASC),
-                           |     FAMILY "primary" (id, type, creation_time, available, last_location)
+                           |     CONSTRAINT vehicles_pkey PRIMARY KEY (id ASC)
                            | )
 (1 row)
 ~~~
@@ -572,15 +571,14 @@ $ cockroach sql \
 ~~~
 
 ~~~
-              table_name             |                                          create_statement
--------------------------------------+------------------------------------------------------------------------------------------------------
+              table_name             |                                              create_statement
+-------------------------------------+--------------------------------------------------------------------------------------------------------------
   movr.abbey_schema.user_promo_codes | CREATE TABLE abbey_schema.user_promo_codes (
                                      |     code STRING NOT NULL,
                                      |     user_email STRING NOT NULL,
                                      |     valid BOOL NULL,
                                      |     CONSTRAINT "primary" PRIMARY KEY (code ASC, user_email ASC),
-                                     |     CONSTRAINT fk_user_email_ref_users FOREIGN KEY (user_email) REFERENCES max_schema.users(email),
-                                     |     FAMILY "primary" (code, user_email, usage_count)
+                                     |     CONSTRAINT user_promo_codes_user_email_fkey FOREIGN KEY (user_email) REFERENCES max_schema.users(email)
                                      | )
 (1 row)
 ~~~

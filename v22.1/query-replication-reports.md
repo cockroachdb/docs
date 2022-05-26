@@ -154,7 +154,7 @@ SHOW COLUMNS FROM crdb_internal.zones;
 |---------------------+-------------------------+---------------------------------------------------------------------------------------------------------------------------------|
 | zone_id             | [`INT8`](int.html)      | The ID of the [replication zone](configure-zone.html).                                                                          |
 | subzone_id          | [`INT8`](int.html)      | The ID of the subzone (i.e., [partition](partition-by.html)).                                                                   |
-| target              | [`STRING`](string.html) | The "object" that the constraint is being applied to, e.g., `PARTITION us_west OF INDEX movr.public.users@primary`.             |
+| target              | [`STRING`](string.html) | The "object" that the constraint is being applied to, e.g., `PARTITION us_west OF INDEX movr.public.users@users_pkey`.             |
 | range_name          | [`STRING`](string.html) | The zone's name.                                                                                                                |
 | database_name       | [`STRING`](string.html) | The [database](show-databases.html) where the `target`'s data is located.                                                       |
 | table_name          | [`STRING`](string.html) | The [table](show-tables.html) where the `target`'s data is located.                                                             |
@@ -192,18 +192,17 @@ SHOW CREATE TABLE users;
              |     name VARCHAR NULL,
              |     address VARCHAR NULL,
              |     credit_card VARCHAR NULL,
-             |     CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
-             |     FAMILY "primary" (id, city, name, address, credit_card)
+             |     CONSTRAINT users_pkey PRIMARY KEY (city ASC, id ASC)
              | ) PARTITION BY LIST (city) (
              |     PARTITION us_west VALUES IN (('seattle'), ('san francisco'), ('los angeles')),
              |     PARTITION us_east VALUES IN (('new york'), ('boston'), ('washington dc')),
              |     PARTITION europe_west VALUES IN (('amsterdam'), ('paris'), ('rome'))
              | );
-             | ALTER PARTITION europe_west OF INDEX movr.public.users@primary CONFIGURE ZONE USING
+             | ALTER PARTITION europe_west OF INDEX movr.public.users@users_pkey CONFIGURE ZONE USING
              |     constraints = '[+region=europe-west1]';
-             | ALTER PARTITION us_east OF INDEX movr.public.users@primary CONFIGURE ZONE USING
+             | ALTER PARTITION us_east OF INDEX movr.public.users@users_pkey CONFIGURE ZONE USING
              |     constraints = '[+region=us-east1]';
-             | ALTER PARTITION us_west OF INDEX movr.public.users@primary CONFIGURE ZONE USING
+             | ALTER PARTITION us_west OF INDEX movr.public.users@users_pkey CONFIGURE ZONE USING
              |     constraints = '[+region=us-west1]'
 (1 row)
 ~~~
@@ -212,7 +211,7 @@ To create a constraint violation, let's tell the ranges in the `europe_west` par
 
 {% include copy-clipboard.html %}
 ~~~ sql
-ALTER PARTITION europe_west of INDEX movr.public.users@primary CONFIGURE ZONE USING constraints = '[-region=europe-west1]';
+ALTER PARTITION europe_west of INDEX movr.public.users@users_pkey CONFIGURE ZONE USING constraints = '[-region=europe-west1]';
 ~~~
 
 Once the statement above executes, the ranges currently stored in that locality will now be in a state where they are explicitly not supposed to be in that locality, and are thus in violation of a constraint.
@@ -282,22 +281,22 @@ SELECT * FROM report;
 ~~~
   zone_id | subzone_id |                                             target                                             | database_name | table_name |                  index_name                   |    type    |        config        |         violation_start         | violating_ranges
 +---------+------------+------------------------------------------------------------------------------------------------+---------------+------------+-----------------------------------------------+------------+----------------------+---------------------------------+------------------+
-       53 |          1 | PARTITION us_west OF INDEX movr.public.users@primary                                           | movr          | users      | primary                                       | constraint | -region=europe-west1 | 2019-10-21 20:28:40.79508+00:00 |                1
-       53 |          2 | PARTITION us_east OF INDEX movr.public.users@primary                                           | movr          | users      | primary                                       | constraint | -region=europe-west1 | 2019-10-21 20:28:40.79508+00:00 |                1
-       53 |          3 | PARTITION europe_west OF INDEX movr.public.users@primary                                       | movr          | users      | primary                                       | constraint | -region=europe-west1 | 2019-10-21 20:28:40.79508+00:00 |                1
-       54 |          1 | PARTITION us_west OF INDEX movr.public.vehicles@primary                                        | movr          | vehicles   | primary                                       | constraint | +region=us-east1     | 2019-10-21 20:28:40.79508+00:00 |                1
+       53 |          1 | PARTITION us_west OF INDEX movr.public.users@users_pkey                                        | movr          | users      | primary                                       | constraint | -region=europe-west1 | 2019-10-21 20:28:40.79508+00:00 |                1
+       53 |          2 | PARTITION us_east OF INDEX movr.public.users@users_pkey                                        | movr          | users      | primary                                       | constraint | -region=europe-west1 | 2019-10-21 20:28:40.79508+00:00 |                1
+       53 |          3 | PARTITION europe_west OF INDEX movr.public.users@users_pkey                                    | movr          | users      | primary                                       | constraint | -region=europe-west1 | 2019-10-21 20:28:40.79508+00:00 |                1
+       54 |          1 | PARTITION us_west OF INDEX movr.public.vehicles@vehicles_pkey                                  | movr          | vehicles   | primary                                       | constraint | +region=us-east1     | 2019-10-21 20:28:40.79508+00:00 |                1
        54 |          2 | PARTITION us_west OF INDEX movr.public.vehicles@vehicles_auto_index_fk_city_ref_users          | movr          | vehicles   | vehicles_auto_index_fk_city_ref_users         | constraint | +region=us-east1     | 2019-10-21 20:28:40.79508+00:00 |                1
-       54 |          3 | PARTITION us_east OF INDEX movr.public.vehicles@primary                                        | movr          | vehicles   | primary                                       | constraint | +region=us-east1     | 2019-10-21 20:28:40.79508+00:00 |                1
+       54 |          3 | PARTITION us_east OF INDEX movr.public.vehicles@vehicles_pkey                                  | movr          | vehicles   | primary                                       | constraint | +region=us-east1     | 2019-10-21 20:28:40.79508+00:00 |                1
        54 |          4 | PARTITION us_east OF INDEX movr.public.vehicles@vehicles_auto_index_fk_city_ref_users          | movr          | vehicles   | vehicles_auto_index_fk_city_ref_users         | constraint | +region=us-east1     | 2019-10-21 20:28:40.79508+00:00 |                1
-       54 |          5 | PARTITION europe_west OF INDEX movr.public.vehicles@primary                                    | movr          | vehicles   | primary                                       | constraint | +region=us-east1     | 2019-10-21 20:28:40.79508+00:00 |                1
+       54 |          5 | PARTITION europe_west OF INDEX movr.public.vehicles@vehicles_pkey                              | movr          | vehicles   | primary                                       | constraint | +region=us-east1     | 2019-10-21 20:28:40.79508+00:00 |                1
        54 |          6 | PARTITION europe_west OF INDEX movr.public.vehicles@vehicles_auto_index_fk_city_ref_users      | movr          | vehicles   | vehicles_auto_index_fk_city_ref_users         | constraint | +region=us-east1     | 2019-10-21 20:28:40.79508+00:00 |                1
-       55 |          1 | PARTITION us_west OF INDEX movr.public.rides@primary                                           | movr          | rides      | primary                                       | constraint | +region=us-east1     | 2019-10-21 20:28:40.79508+00:00 |                1
+       55 |          1 | PARTITION us_west OF INDEX movr.public.rides@rides_pkey                                        | movr          | rides      | primary                                       | constraint | +region=us-east1     | 2019-10-21 20:28:40.79508+00:00 |                1
        55 |          2 | PARTITION us_west OF INDEX movr.public.rides@rides_auto_index_fk_city_ref_users                | movr          | rides      | rides_auto_index_fk_city_ref_users            | constraint | +region=us-east1     | 2019-10-21 20:28:40.79508+00:00 |                1
        55 |          3 | PARTITION us_west OF INDEX movr.public.rides@rides_auto_index_fk_vehicle_city_ref_vehicles     | movr          | rides      | rides_auto_index_fk_vehicle_city_ref_vehicles | constraint | +region=us-east1     | 2019-10-21 20:28:40.79508+00:00 |                1
-       55 |          4 | PARTITION us_east OF INDEX movr.public.rides@primary                                           | movr          | rides      | primary                                       | constraint | +region=us-east1     | 2019-10-21 20:28:40.79508+00:00 |                1
+       55 |          4 | PARTITION us_east OF INDEX movr.public.rides@rides_pkey                                        | movr          | rides      | primary                                       | constraint | +region=us-east1     | 2019-10-21 20:28:40.79508+00:00 |                1
        55 |          5 | PARTITION us_east OF INDEX movr.public.rides@rides_auto_index_fk_city_ref_users                | movr          | rides      | rides_auto_index_fk_city_ref_users            | constraint | +region=us-east1     | 2019-10-21 20:28:40.79508+00:00 |                1
        55 |          6 | PARTITION us_east OF INDEX movr.public.rides@rides_auto_index_fk_vehicle_city_ref_vehicles     | movr          | rides      | rides_auto_index_fk_vehicle_city_ref_vehicles | constraint | +region=us-east1     | 2019-10-21 20:28:40.79508+00:00 |                1
-       55 |          7 | PARTITION europe_west OF INDEX movr.public.rides@primary                                       | movr          | rides      | primary                                       | constraint | +region=us-east1     | 2019-10-21 20:28:40.79508+00:00 |                1
+       55 |          7 | PARTITION europe_west OF INDEX movr.public.rides@rides_pkey                                    | movr          | rides      | primary                                       | constraint | +region=us-east1     | 2019-10-21 20:28:40.79508+00:00 |                1
        55 |          8 | PARTITION europe_west OF INDEX movr.public.rides@rides_auto_index_fk_city_ref_users            | movr          | rides      | rides_auto_index_fk_city_ref_users            | constraint | +region=us-east1     | 2019-10-21 20:28:40.79508+00:00 |                1
        55 |          9 | PARTITION europe_west OF INDEX movr.public.rides@rides_auto_index_fk_vehicle_city_ref_vehicles | movr          | rides      | rides_auto_index_fk_vehicle_city_ref_vehicles | constraint | +region=us-east1     | 2019-10-21 20:28:40.79508+00:00 |                1
 (18 rows)
@@ -382,27 +381,27 @@ SELECT * FROM report;
        55 | TABLE movr.public.rides                                                                        | NULL       | movr          | rides      | NULL                                          |                       9
        55 | TABLE movr.public.rides                                                                        | NULL       | movr          | rides      | NULL                                          |                       9
        55 | TABLE movr.public.rides                                                                        | NULL       | movr          | rides      | NULL                                          |                       9
-       55 | PARTITION us_west OF INDEX movr.public.rides@primary                                           | NULL       | movr          | rides      | primary                                       |                       9
-       55 | PARTITION us_west OF INDEX movr.public.rides@primary                                           | NULL       | movr          | rides      | primary                                       |                       9
-       55 | PARTITION us_west OF INDEX movr.public.rides@primary                                           | NULL       | movr          | rides      | primary                                       |                       9
+       55 | PARTITION us_west OF INDEX movr.public.rides@rides_pkey                                        | NULL       | movr          | rides      | primary                                       |                       9
+       55 | PARTITION us_west OF INDEX movr.public.rides@rides_pkey                                        | NULL       | movr          | rides      | primary                                       |                       9
+       55 | PARTITION us_west OF INDEX movr.public.rides@rides_pkey                                        | NULL       | movr          | rides      | primary                                       |                       9
        55 | PARTITION us_west OF INDEX movr.public.rides@rides_auto_index_fk_city_ref_users                | NULL       | movr          | rides      | rides_auto_index_fk_city_ref_users            |                       9
        55 | PARTITION us_west OF INDEX movr.public.rides@rides_auto_index_fk_city_ref_users                | NULL       | movr          | rides      | rides_auto_index_fk_city_ref_users            |                       9
        55 | PARTITION us_west OF INDEX movr.public.rides@rides_auto_index_fk_city_ref_users                | NULL       | movr          | rides      | rides_auto_index_fk_city_ref_users            |                       9
        55 | PARTITION us_west OF INDEX movr.public.rides@rides_auto_index_fk_vehicle_city_ref_vehicles     | NULL       | movr          | rides      | rides_auto_index_fk_vehicle_city_ref_vehicles |                       9
        55 | PARTITION us_west OF INDEX movr.public.rides@rides_auto_index_fk_vehicle_city_ref_vehicles     | NULL       | movr          | rides      | rides_auto_index_fk_vehicle_city_ref_vehicles |                       9
        55 | PARTITION us_west OF INDEX movr.public.rides@rides_auto_index_fk_vehicle_city_ref_vehicles     | NULL       | movr          | rides      | rides_auto_index_fk_vehicle_city_ref_vehicles |                       9
-       55 | PARTITION us_east OF INDEX movr.public.rides@primary                                           | NULL       | movr          | rides      | primary                                       |                       9
-       55 | PARTITION us_east OF INDEX movr.public.rides@primary                                           | NULL       | movr          | rides      | primary                                       |                       9
-       55 | PARTITION us_east OF INDEX movr.public.rides@primary                                           | NULL       | movr          | rides      | primary                                       |                       9
+       55 | PARTITION us_east OF INDEX movr.public.rides@rides_pkey                                        | NULL       | movr          | rides      | primary                                       |                       9
+       55 | PARTITION us_east OF INDEX movr.public.rides@rides_pkey                                        | NULL       | movr          | rides      | primary                                       |                       9
+       55 | PARTITION us_east OF INDEX movr.public.rides@rides_pkey                                        | NULL       | movr          | rides      | primary                                       |                       9
        55 | PARTITION us_east OF INDEX movr.public.rides@rides_auto_index_fk_city_ref_users                | NULL       | movr          | rides      | rides_auto_index_fk_city_ref_users            |                       9
        55 | PARTITION us_east OF INDEX movr.public.rides@rides_auto_index_fk_city_ref_users                | NULL       | movr          | rides      | rides_auto_index_fk_city_ref_users            |                       9
        55 | PARTITION us_east OF INDEX movr.public.rides@rides_auto_index_fk_city_ref_users                | NULL       | movr          | rides      | rides_auto_index_fk_city_ref_users            |                       9
        55 | PARTITION us_east OF INDEX movr.public.rides@rides_auto_index_fk_vehicle_city_ref_vehicles     | NULL       | movr          | rides      | rides_auto_index_fk_vehicle_city_ref_vehicles |                       9
        55 | PARTITION us_east OF INDEX movr.public.rides@rides_auto_index_fk_vehicle_city_ref_vehicles     | NULL       | movr          | rides      | rides_auto_index_fk_vehicle_city_ref_vehicles |                       9
        55 | PARTITION us_east OF INDEX movr.public.rides@rides_auto_index_fk_vehicle_city_ref_vehicles     | NULL       | movr          | rides      | rides_auto_index_fk_vehicle_city_ref_vehicles |                       9
-       55 | PARTITION europe_west OF INDEX movr.public.rides@primary                                       | NULL       | movr          | rides      | primary                                       |                       9
-       55 | PARTITION europe_west OF INDEX movr.public.rides@primary                                       | NULL       | movr          | rides      | primary                                       |                       9
-       55 | PARTITION europe_west OF INDEX movr.public.rides@primary                                       | NULL       | movr          | rides      | primary                                       |                       9
+       55 | PARTITION europe_west OF INDEX movr.public.rides@rides_pkey                                    | NULL       | movr          | rides      | primary                                       |                       9
+       55 | PARTITION europe_west OF INDEX movr.public.rides@rides_pkey                                    | NULL       | movr          | rides      | primary                                       |                       9
+       55 | PARTITION europe_west OF INDEX movr.public.rides@rides_pkey                                    | NULL       | movr          | rides      | primary                                       |                       9
        55 | PARTITION europe_west OF INDEX movr.public.rides@rides_auto_index_fk_city_ref_users            | NULL       | movr          | rides      | rides_auto_index_fk_city_ref_users            |                       9
        55 | PARTITION europe_west OF INDEX movr.public.rides@rides_auto_index_fk_city_ref_users            | NULL       | movr          | rides      | rides_auto_index_fk_city_ref_users            |                       9
        55 | PARTITION europe_west OF INDEX movr.public.rides@rides_auto_index_fk_city_ref_users            | NULL       | movr          | rides      | rides_auto_index_fk_city_ref_users            |                       9
@@ -481,22 +480,22 @@ SELECT DISTINCT * FROM report;
 ~~~
   zone_id |                                             target                                             | database_name |         table_name         |                  index_name                   | at_risk_ranges
 +---------+------------------------------------------------------------------------------------------------+---------------+----------------------------+-----------------------------------------------+----------------+
-       53 | PARTITION us_west OF INDEX movr.public.users@primary                                           | movr          | users                      | primary                                       |              3
-       53 | PARTITION us_east OF INDEX movr.public.users@primary                                           | movr          | users                      | primary                                       |              3
-       53 | PARTITION europe_west OF INDEX movr.public.users@primary                                       | movr          | users                      | primary                                       |              3
-       54 | PARTITION us_west OF INDEX movr.public.vehicles@primary                                        | movr          | vehicles                   | primary                                       |              6
+       53 | PARTITION us_west OF INDEX movr.public.users@users_pkey                                        | movr          | users                      | primary                                       |              3
+       53 | PARTITION us_east OF INDEX movr.public.users@users_pkey                                        | movr          | users                      | primary                                       |              3
+       53 | PARTITION europe_west OF INDEX movr.public.users@users_pkey                                    | movr          | users                      | primary                                       |              3
+       54 | PARTITION us_west OF INDEX movr.public.vehicles@vehicles_pkey                                  | movr          | vehicles                   | primary                                       |              6
        54 | PARTITION us_west OF INDEX movr.public.vehicles@vehicles_auto_index_fk_city_ref_users          | movr          | vehicles                   | vehicles_auto_index_fk_city_ref_users         |              6
-       54 | PARTITION us_east OF INDEX movr.public.vehicles@primary                                        | movr          | vehicles                   | primary                                       |              6
+       54 | PARTITION us_east OF INDEX movr.public.vehicles@vehicles_pkey                                  | movr          | vehicles                   | primary                                       |              6
        54 | PARTITION us_east OF INDEX movr.public.vehicles@vehicles_auto_index_fk_city_ref_users          | movr          | vehicles                   | vehicles_auto_index_fk_city_ref_users         |              6
-       54 | PARTITION europe_west OF INDEX movr.public.vehicles@primary                                    | movr          | vehicles                   | primary                                       |              6
+       54 | PARTITION europe_west OF INDEX movr.public.vehicles@vehicles_pkey                              | movr          | vehicles                   | primary                                       |              6
        54 | PARTITION europe_west OF INDEX movr.public.vehicles@vehicles_auto_index_fk_city_ref_users      | movr          | vehicles                   | vehicles_auto_index_fk_city_ref_users         |              6
-       55 | PARTITION us_west OF INDEX movr.public.rides@primary                                           | movr          | rides                      | primary                                       |              9
+       55 | PARTITION us_west OF INDEX movr.public.rides@rides_pkey                                        | movr          | rides                      | primary                                       |              9
        55 | PARTITION us_west OF INDEX movr.public.rides@rides_auto_index_fk_city_ref_users                | movr          | rides                      | rides_auto_index_fk_city_ref_users            |              9
        55 | PARTITION us_west OF INDEX movr.public.rides@rides_auto_index_fk_vehicle_city_ref_vehicles     | movr          | rides                      | rides_auto_index_fk_vehicle_city_ref_vehicles |              9
-       55 | PARTITION us_east OF INDEX movr.public.rides@primary                                           | movr          | rides                      | primary                                       |              9
+       55 | PARTITION us_east OF INDEX movr.public.rides@rides_pkey                                        | movr          | rides                      | primary                                       |              9
        55 | PARTITION us_east OF INDEX movr.public.rides@rides_auto_index_fk_city_ref_users                | movr          | rides                      | rides_auto_index_fk_city_ref_users            |              9
        55 | PARTITION us_east OF INDEX movr.public.rides@rides_auto_index_fk_vehicle_city_ref_vehicles     | movr          | rides                      | rides_auto_index_fk_vehicle_city_ref_vehicles |              9
-       55 | PARTITION europe_west OF INDEX movr.public.rides@primary                                       | movr          | rides                      | primary                                       |              9
+       55 | PARTITION europe_west OF INDEX movr.public.rides@rides_pkey                                    | movr          | rides                      | primary                                       |              9
        55 | PARTITION europe_west OF INDEX movr.public.rides@rides_auto_index_fk_city_ref_users            | movr          | rides                      | rides_auto_index_fk_city_ref_users            |              9
        55 | PARTITION europe_west OF INDEX movr.public.rides@rides_auto_index_fk_vehicle_city_ref_vehicles | movr          | rides                      | rides_auto_index_fk_vehicle_city_ref_vehicles |              9
        56 | PARTITION us_west OF INDEX movr.public.vehicle_location_histories@primary                      | movr          | vehicle_location_histories | primary                                       |              3

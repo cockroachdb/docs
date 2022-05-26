@@ -24,6 +24,7 @@ You can restore:
 - `RESTORE` no longer requires an Enterprise license, regardless of the options passed to it or to the backup it is restoring.
 - [Zone configurations](configure-zone.html) present on the destination cluster prior to a restore will be **overwritten** during a [cluster restore](restore.html#full-cluster) with the zone configurations from the [backed up cluster](backup.html#backup-a-cluster). If there were no customized zone configurations on the cluster when the backup was taken, then after the restore the destination cluster will use the zone configuration from the [`RANGE DEFAULT` configuration](configure-replication-zones.html#view-the-default-replication-zone).
 - You cannot restore a backup of a multi-region database into a single-region database.
+- When the [`exclude_data_from_backup`](take-full-and-incremental-backups.html#exclude-a-tables-data-from-backups) parameter is set on a table, the table will not contain row data when restored.
 
 ## Required privileges
 
@@ -91,6 +92,10 @@ You can restore:
 - [Databases](#databases)
 - [Tables](#tables)
 
+{{site.data.alerts.callout_info}}
+You can exclude a table's row data from a backup using the [`exclude_data_from_backup`](take-full-and-incremental-backups.html#exclude-a-tables-data-from-backups) parameter. With this parameter set, a table will be empty when restored.
+{{site.data.alerts.end}}
+
 #### Full cluster
 
  A full cluster restore can only be run on a target cluster with no user-created databases or tables. Restoring a full cluster includes:
@@ -102,7 +107,7 @@ You can restore:
 - All [views](views.html)
 
 {{site.data.alerts.callout_info}}
-When you restore a full cluster with an Enterprise license, it will restore the [Enterprise license](enterprise-licensing.html) of the cluster you are restoring from. If you want to use a different license in the new cluster, make sure to [update the license](licensing-faqs.html#set-a-license) _after_ the restore is complete.
+When you restore a full cluster with an Enterprise license, it will restore the [Enterprise license](enterprise-licensing.html) of the cluster you are restoring from. If you want to use a different license in the new cluster, make sure to [update the license](licensing-faqs.html#set-a-license) **after** the restore is complete.
 {{site.data.alerts.end}}
 
 #### Databases
@@ -470,7 +475,7 @@ For more detail on using this option with `BACKUP`, see [Incremental backups wit
 (3 rows)
 ~~~
 
-When you want restore a specific backup, add the backup's subdirectory path (e.g. `/2021/12/21-142943.73`) to the `RESTORE` statement. For details on viewing the most recent backup, see [`SHOW BACKUP FROM {subdirectory} in {collectionURI}`](show-backup.html#show-the-most-recent-backup).
+When you want restore a specific backup, add the backup's subdirectory path (e.g., `/2021/12/21-142943.73`) to the `RESTORE` statement. For details on viewing the most recent backup, see [`SHOW BACKUP FROM {subdirectory} in {collectionURI}`](show-backup.html#show-the-most-recent-backup).
 
 ### Restore from the most recent backup
 
@@ -688,7 +693,7 @@ The examples in this section use the `AUTH=specified` parameter, which will be t
 (3 rows)
 ~~~
 
-When you want restore a specific backup, add the backup's subdirectory path (e.g. `/2021/12/21-142943.73`) to the `RESTORE` statement. For details on viewing the most recent backup, see [`SHOW BACKUP FROM {subdirectory} in {collectionURI}`](show-backup.html#show-the-most-recent-backup).
+When you want restore a specific backup, add the backup's subdirectory path (e.g., `/2021/12/21-142943.73`) to the `RESTORE` statement. For details on viewing the most recent backup, see [`SHOW BACKUP FROM {subdirectory} in {collectionURI}`](show-backup.html#show-the-most-recent-backup).
 
 ### Restore from the most recent backup
 
