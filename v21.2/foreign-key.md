@@ -32,7 +32,7 @@ To read more about how foreign keys work, see our [What is a Foreign Key? (With 
 
 **Referenced Columns**
 
-- Referenced columns must contain only unique sets of values. This means the `REFERENCES` clause must use exactly the same columns as a [`UNIQUE`](unique.html) or [`PRIMARY KEY`](primary-key.html) constraint on the referenced table. For example, the clause `REFERENCES tbl (C, D)` requires `tbl` to have either the constraint `UNIQUE (C, D)` or `PRIMARY KEY (C, D)`. <span class="version-tag">New in v21.2</span>: The order of the columns in the foreign key definition does not need to match the order of the columns in the corresponding `UNIQUE` or `PRIMARY KEY` constraint.
+- Referenced columns must contain only unique sets of values. This means the `REFERENCES` clause must use exactly the same columns as a [`UNIQUE`](unique.html) or [`PRIMARY KEY`](primary-key.html) constraint on the referenced table. For example, the clause `REFERENCES tbl (C, D)` requires `tbl` to have either the constraint `UNIQUE (C, D)` or `PRIMARY KEY (C, D)`. {% include_cached new-in.html version="v21.2" %} The order of the columns in the foreign key definition does not need to match the order of the columns in the corresponding `UNIQUE` or `PRIMARY KEY` constraint.
 - In the `REFERENCES` clause, if you specify a table but no columns, CockroachDB references the table's primary key. In these cases, the `FOREIGN KEY` constraint and the referenced table's primary key must contain the same number of columns.
 -  By default, referenced columns must be in the same database as the referencing foreign key column. To enable cross-database foreign key references, set the `sql.cross_db_fks.enabled` [cluster setting](cluster-settings.html) to `true`.
 

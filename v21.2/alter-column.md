@@ -9,7 +9,7 @@ docs_area: reference.sql
 
 - Set, change, or drop a column's [`DEFAULT` constraint](default-value.html).
 - Set or drop a column's [`NOT NULL` constraint](not-null.html).
-- <span class="version-tag">New in v21.2</span>: Set, change, or drop an [`ON UPDATE` expression](create-table.html#on-update-expressions).
+- {% include_cached new-in.html version="v21.2" %} Set, change, or drop an [`ON UPDATE` expression](create-table.html#on-update-expressions).
 - Change a column's [data type](data-types.html).
 
 {% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}

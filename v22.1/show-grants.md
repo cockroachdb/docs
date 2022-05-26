@@ -53,7 +53,7 @@ Field            | Description
 `type_name`      | The name of the user-defined type.
 `grantee`        | The name of the user or role that was granted the [privilege](security-reference/authorization.html#managing-privileges).
 `privilege_type` | The name of the privilege.
-`is_grantable`   | <span class="version-tag">New in v22.1:</span> `TRUE` if the grantee has the grant option on the object; `FALSE` if not.
+`is_grantable`   | {% include_cached new-in.html version="v22.1" %} `TRUE` if the grantee has the grant option on the object; `FALSE` if not.
 
 ### Role grants
 

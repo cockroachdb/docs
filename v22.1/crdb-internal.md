@@ -428,7 +428,7 @@ Field | Type | Description
 <code>statistics -> numRows -> [mean&#124;sqDiff]</code> | `NumericStat` | The number of rows returned or observed.
 <code>statistics -> ovhLat -> [mean&#124;sqDiff]</code> | `NumericStat` | The difference between `svcLat` and the sum of `parseLat+planLat+runLat` latencies.
 <code>statistics -> parseLat -> [mean&#124;sqDiff]</code> | `NumericStat` | The time to transform the SQL string into an abstract syntax tree (AST).
-<code>statistics -> planGists | `String` | <span class="version-tag">New in v22.1:</span> A sequence of bytes representing the flattened tree of operators and various operator specific metadata of the statement plan.
+<code>statistics -> planGists | `String` | {% include_cached new-in.html version="v22.1" %} A sequence of bytes representing the flattened tree of operators and various operator specific metadata of the statement plan.
 <code>statistics -> planLat -> [mean&#124;sqDiff]</code> | `NumericStat` | The time to transform the AST into a logical query plan.
 <code>statistics -> rowsRead -> [mean&#124;sqDiff]</code> | `NumericStat` | The number of rows read from disk.
 <code>statistics -> rowsWritten -> [mean&#124;sqDiff]</code> | `NumericStat` | The number of rows written to disk.
@@ -580,7 +580,7 @@ WHERE metadata @> '{"db":"movr"}' AND (metadata @> '{"stmtTyp":"TypeDDL"}' OR me
 
 #### Detect suboptimal and regressed plans
 
-<span class="version-tag">New in v22.1:</span> Historical plans are stored in plan gists in `statistics->'statistics'->'planGists'`. To detect suboptimal and regressed plans over time you can compare plans for the same query by extracting them from the plan gists.
+{% include_cached new-in.html version="v22.1" %} Historical plans are stored in plan gists in `statistics->'statistics'->'planGists'`. To detect suboptimal and regressed plans over time you can compare plans for the same query by extracting them from the plan gists.
 
 Suppose you wanted to compare plans of the following query:
 
@@ -659,7 +659,7 @@ group by metadata ->> 'query', statistics->'statistics'->'planGists'->>0;
 
 ### `transaction_contention_events`
 
-<span class="version-tag">New in v22.1:</span> Contains one row for each transaction contention event.
+{% include_cached new-in.html version="v22.1" %} Contains one row for each transaction contention event.
 
 Requires either the `VIEWACTIVITY` or `VIEWACTIVITYREDACTED` [role option](alter-role.html#role-options) to access. If you have the `VIEWACTIVITYREDACTED` role, `contending_key` will be redacted.
 
