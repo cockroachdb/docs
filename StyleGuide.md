@@ -734,7 +734,7 @@ Using placeholders within code samples or in non-Markdown locations may require 
 
 For some examples, see [Connect to a CockroachDB Cluster](https://www.cockroachlabs.com/docs/stable/connect-to-the-database.html?filters=python).
 
-#### Escaping special characters
+#### Escape special characters
 
 Sometimes you may need to escape special characters to achieve proper rendering. This is most common in the following two cases:
 
