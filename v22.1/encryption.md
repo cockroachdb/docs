@@ -106,3 +106,7 @@ To disable encryption, specify `key=plain`. The data keys will be stored in plai
 
 To rotate keys, specify `key=/path/to/my/new-aes-128.key` and `old-key=/path/to/my/old-aes-128.key`. The data keys
 will be decrypted using the old key and then encrypted using the new key. A new data key will also be generated.
+
+## Configuring Customer Managed Encryption Keys (CMEK)
+
+Customer Managed Encryption Keys (CMEK) give you more control over how your cluster's data is protected on your cluster's filesystem. When CMEK is enabled, your store key is protected by an additional cryptographic key that is entirely within your control, called the CMEK key. To learn more, see [Customer Managed Encryption Keys (CMEK)](security-reference/cmek.html) and [Encryption in CockroachDB](security-reference/encryption.html).
