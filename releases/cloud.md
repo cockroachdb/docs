@@ -20,7 +20,7 @@ As of April 20, 2022, new {{ site.data.products.dedicated }} clusters and all {{
 
 <h3>General changes</h3>
 
-- [Datadog integration](cockroachcloud/monitoring-page.html#monitor-with-datadog) is now available on the **Monitoring** page for all {{ site.data.products.dedicated }} users.
+- [Datadog integration](../cockroachcloud/monitoring-page.html#monitor-with-datadog) is now available on the **Monitoring** page for all {{ site.data.products.dedicated }} users.
 
 <h3>Console changes</h3>
 
