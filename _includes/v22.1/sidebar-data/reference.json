@@ -1412,7 +1412,19 @@
             "urls": [
               "/${VERSION}/security-reference/encryption.html"
             ]
+          },
+          {
+            "title": "Customer Managed Encryption Keys (CMEK)",
+            "urls": [
+              "/${VERSION}/security-reference/cmek.html"
+            ]
           }
+        ]
+      },
+      {
+        "title": "Customer Managed Encryption Keys (CMEK)",
+        "urls": [
+          "/${VERSION}/security-reference/cmek.html"
         ]
       },
       {
