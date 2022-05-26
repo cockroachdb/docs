@@ -738,13 +738,13 @@ For some examples, see [Connect to a CockroachDB Cluster](https://www.cockroachl
 
 Sometimes you may need to escape special characters to acheive proper rendering. This is most common in the following two cases:
 
-- You are using Jekyll-reserved characters (e.g., double `{{ ... }}`) in code blocks. To escape these, wrap the specific line you wish to escape using the following liquid syntax:
+- You are using Jekyll-reserved characters (e.g., double `{{ ... }}`) in code blocks. To escape these, wrap the specific line(s) you wish to escape using the Liquid tags `{% raw %} ... {% endraw %}`. For example:
 
   ```
   {% raw %}summary: Instance {{ $labels.instance }} has {{ $value }} tripped per-Replica circuit breakers{% endraw %}
   ```
 
-  **Note:** Use these tags inline within the code block. Using `{% raw %}` or `{% endraw %}` tags on their own line will render correctly, but will introduce an extra newline of whitespace for each.
+  **Note:** Use these tags inline within the code block. Using `{% raw %}` or `{% endraw %}` tags on their own line will render the contained text correctly, but will introduce an extra newline of whitespace for each.
 
 - You are using special characters (e.g., single `{ ... }`, `< ... >`, etc.) in non-Markdown copy, such as front matter (e.g., `title:` or `summary:`), or in the left-nav `sidebar-data` JSON files. To escape these, convert the special characters to Unicode. For example, to escape `SET {session variable}` in the front matter, use:
 
