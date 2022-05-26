@@ -1410,6 +1410,12 @@
         ]
       },
       {
+        "title": "Customer Managed Encryption Keys (CMEK)",
+        "urls": [
+          "/${VERSION}/cmek.html"
+        ]
+      },
+      {
         "title": "Performance Optimization",
         "items": [
           {
