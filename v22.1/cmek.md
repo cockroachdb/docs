@@ -28,9 +28,9 @@ When Encryption At Rest is enabled on a CockroachDB cluster, data is always encr
 
   - **Infrastructure flexibility**: If all of your CockroachDB clusters and cryptographic keys are stored in the same cloud provider, you can access CMEK keys using that cloud provider's key-management system directly.
 
-    If your clusters or your CMEK keys are stored in multiple cloud provider you can take advantage of CockroachDB's support for Hashicorp Vault Key Management Secrets Engine. Hashicorp Vault Key Mnagement Secrets Engine provides a consistent workflow for distribution and lifecycle management of cryptographic keys in various key management service (KMS) providers, including Google Cloud KMS and AWS KMS, while still taking advantage of cryptographic capabilities native to each KMS provider. For more information about using Hashicorp Vault with CockroachDB, see [Hashicorp Vault Integration](/hashicorp-integration.md).
+    If your clusters or your CMEK keys are stored in multiple cloud provider you can take advantage of CockroachDB's support for Hashicorp Vault Key Management Secrets Engine. Hashicorp Vault Key Management Secrets Engine provides a consistent workflow for distribution and lifecycle management of cryptographic keys in various key management service (KMS) providers, including Google Cloud KMS and AWS KMS, while still taking advantage of the cryptographic capabilities of each KMS provider. For more information about using Hashicorp Vault with CockroachDB, see [Hashicorp Vault Integration](/hashicorp-integration.md).
 
-  - **Enforcement of encryption requirements**: With CMEK, you have control control the CMEK key's encryption strength. The CMEK key can be 128, 256, or 512 bytes long.
+  - **Enforcement of encryption requirements**: With CMEK, you have control the CMEK key's encryption strength. The CMEK key can be 128, 256, or 512 bytes long.
 
 ## How CMEK works
 
