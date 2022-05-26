@@ -491,6 +491,12 @@
               "urls": [
                 "/${VERSION}/satori-integration.html"
               ]
+            },
+            {
+              "title": "HashiCorp Vault",
+              "urls": [
+                "/${VERSION}/hashicorp-integration.html"
+              ]
             }
           ]
         }
