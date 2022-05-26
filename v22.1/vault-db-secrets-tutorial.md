@@ -13,7 +13,7 @@ See also: [Hashicorp Vault database secrets engine tutorial](https://learn.hashi
 
 To follow along with this tutorial you will need the following:
 
-- Access as `root` SQL user to a CockroachDB cluster. You may either [spin up a {{ site.data.products.serverless }} cluster](create-a-serverless-cluster.md) or [Start a Development Cluster locally](../{{site.versions["stable"]}}/start-a-local-cluster.md). In either case you must have the public CA certificate for your cluster, and a username/password combination for the root SQL user (or another SQL user with the admin role).
+- Access as `root` SQL user to a CockroachDB cluster. You may either [spin up a {{ site.data.products.serverless }} cluster](../cockroachcoud/create-a-serverless-cluster.html) or [Start a Development Cluster locally](../{{site.versions["stable"]}}/start-a-local-cluster.html). In either case you must have the public CA certificate for your cluster, and a username/password combination for the root SQL user (or another SQL user with the admin role).
 - Access to a Vault cluster with an admin token. You may either spin up a [free cluster in Hashicorp cloud](https://learn.hashicorp.com/collections/vault/cloud) or [start a development cluster locally](https://learn.hashicorp.com/tutorials/vault/getting-started-dev-server).
 
 ## Introduction
@@ -29,7 +29,7 @@ Sound strategy and proper tooling for managing database credentials are essentia
 	- Database credentials are generated and issued only on demand, from pre-configured templates, for specific clients and short validity durations, further minimizing both probability of credential compromise and possible impact of any compromise that does occur.
 	- Diligent rotation and revocation practices are automated by implication, requiring no additional effort or oversight.
 
-## Administrating Vault and CRDB
+## Preparing your shell for CRDB and Vault admin tasks
 
 In this phase of the tutorial we will act as an administrator for our organization, provisioning access for a class of database clients.
 
@@ -40,50 +40,19 @@ In the first phase of the tutorial, we will act as administrators, provisioning 
 In the second phase, acting as client operator, we will pull credentials from Vault and use them to access the database via the CockroachDB client CLI.
 
 
-### Initize your shell for Vault
-
-Set your Vault target and authenticate with an admin token.
-You can fetch your target URL and generate a token from the [Hashicorp Vault console](https://portal.cloud.hashicorp.com/services/vault).
-
-
-{% include_cached copy-clipboard.html %}
-```shell
-export VAULT_ADDR=https://roach-test-vault.vault.bfb2290a-670b-4a10-bedf-5aab18e84d69.aws.hashicorp.cloud:8200 # your Vault cluster URL
-export VAULT_NAMESPACE=admin
-vault login
-```
-```shell
-Success! You are now authenticated. The token information displayed below
-is already stored in the token helper. You do NOT need to run "vault login"
-again. Future Vault requests will automatically use this token.
-```
-
-### Enable the database secrets engine
-
-This only needs to be done once for an individual Vault cluster.
-
-{% include_cached copy-clipboard.html %}
-```shell
-vault secrets enable database
-```
-
-```txt
-Success! Enabled the database secrets engine at: database/
-```
-
-### Initialize your shell for CRDB
+### Connect to CRDB
 
 Set your CRDB cluster credentials and other configuration information as environment variables
 {% include_cached copy-clipboard.html %}
 ```shell
-USER_NAME=bloop # CRDB admin username
-PASSWORD=UL1IdEv-HzYSeUzJw_o_Gw # CRDB admin password
+USER_NAME= # CRDB admin username
+PASSWORD= # CRDB admin password
 DB_NAME=defaultdb
 CLUSTER_NAME=lilac-grizzly-684
-HOST=free-tier21.aws-us-west-2.crdb.io
+HOST=free-tier123.aws-us-west-2.crdb.io
 
 ```
-#### Obtain your cluster's CA public certificate
+#### Obtain your CRDB cluster's CA public certificate
 
 1. Visit the [CockroachDB Cloud Console's cluster page.](https://cockroachlabs.cloud/cluster/). 
 1. Select your cluster.
@@ -107,9 +76,43 @@ SHOW TABLES 0
 Time: 107ms
 ```
 
-### Binding your Vault cluster to your CRDB cluster
+
+### Connect to Vault
+
+Set your Vault target and authenticate with an admin token.
+You can fetch your target URL and generate a token from the [Hashicorp Vault console](https://portal.cloud.hashicorp.com/services/vault).
+
+
+{% include_cached copy-clipboard.html %}
+```shell
+export VAULT_ADDR=https://roach-test-vault.vault.bfb2290a-670b-4a10-bedf-5aab18e84d69.aws.hashicorp.cloud:8200 # your Vault cluster URL
+export VAULT_NAMESPACE=admin
+vault login
+```
+```shell
+Success! You are now authenticated. The token information displayed below
+is already stored in the token helper. You do NOT need to run "vault login"
+again. Future Vault requests will automatically use this token.
+```
+
+### Enable the Vault database secrets engine
+
+This only needs to be done once for an individual Vault cluster.
+
+{% include_cached copy-clipboard.html %}
+```shell
+vault secrets enable database
+```
+
+```txt
+Success! Enabled the database secrets engine at: database/
+```
+
+## Binding your Vault cluster to your CRDB cluster
 
 The connection lies in a Vault configuration, which will store your CRDB admin credentials, allowing Vault to administrate CRDB credentials.
+
+### Create a Vault database configuration
 
 Create the `crdb-config` database configuration in Vault, specifying admin credentials that will be used by Vault to create credentials for your defined role.
 
@@ -130,15 +133,17 @@ connection_url=${VAULT_DB_CONNECTION_URL}
 Success! Data written to: database/config/crdb-config
 ```
 
-### Provision a Dynamic Secret for SQL client access credentials
+## Using Dynamic Secrets for SQL credentials
 
-A 'dynamic secret' is really a secret template, which will be used to generate particular short lived secrets on demand, according to the template.
+A 'dynamic secret' is really a secret template, which will be used to generate particular short lived secrets on demand, according to the template. The secret type we'll be using is `/database/role`. A Vault database role does not correspond to a single role or user in SQL, but a template for creating short-lived roles or users.
 
-The template is defined by its `creation_statements`, SQL statements that create the role.
+For a SQL role, the template is defined by its `creation_statements`, SQL statements that create the role, define its options and grant its permissions.
+
+### Create a Vault database role
 
 For, example, let's create a role that has all privileges on the `defaultdb` database.
 
-NOTE: `db_name` is actually not the database name but the vault secrets engine thingy (i.e. `crdb-config` in the example)
+NOTE: `db_name` is actually not the database name but the Vault database secrets engine namespace (i.e. `crdb-config` in the example).
 
 
 {% include_cached copy-clipboard.html %}
@@ -166,7 +171,6 @@ vault list database/roles/
 Keys
 ----
 crdb-role
-~/roachspace/d
 ```
 
 {% include_cached copy-clipboard.html %}
@@ -185,8 +189,6 @@ renew_statements         []
 revocation_statements    []
 rollback_statements      []
 ```
-
-
 
 ### Generate credential pairs
 
@@ -210,7 +212,6 @@ If you using a freshly created database, you may see only the `admin` and `root`
   admin                                               |                                       | {}
   root                                                |                                       | {admin}
 ```
-
 
 Now, let's read some credentials from Vault, which will cause Vault to create SQL users on our CockroachDB cluster.
 
@@ -251,7 +252,6 @@ lcAOenZ7s03BpPi8XKS0vsK3.iMXtW
 yyufcaLu4eKWcnGzhes30t6M.iMXtW
 ```
 
-
 Now fetch the list of currently active SQL roles from the CockroachDB client:
 
 {% include_cached copy-clipboard.html %}
@@ -270,7 +270,6 @@ cockroach sql --url $CLI_DB_CONNECTION_URL --execute "show users;"
   v-token-hc-crdb-rol-wltbv25napuroomvzmok-1653515524 | VALID UNTIL=2022-05-25 22:52:09+00:00 | {}
 ```
 
-
 ### Revoke credentials
 
 Revoke a lease or two just for the feeling of raw power. Recall that a "lease" on a "role" in Vault terms corresponds to an actual credential pair on the CockroachDB cluster, i.e., a username/password combination for a SQL user.
@@ -284,11 +283,11 @@ vault lease revoke database/creds/crdb-role/XIpIBRM8FkQxD5B0ndB1lszY.iMXtW
 All revocation operations queued successfully!
 ```
 
+### Provision a CRDB-client Vault policy
 
-### As admin, provision a Vault policy for CRDB client operators to access the client credentials
+As admin, provision a Vault policy for CRDB client operators to access the client credentials.
 
-
-The purpose of the above work is to make a dynamic secret that can be used to access the CRDB database by generating credentials on demand. Performing the above work (establishing the connection between the CockroachDB cluster and the Vault cluster, creating the template for database client credentials, etc.) required admin privileges. But for the work to be meaningful, a Vault user with more limited permisions must be able to access the generated credentials.
+The purpose of the previous work is to make a dynamic secret that can be used to access the CRDB database by generating credentials on demand. Performing the above work (establishing the connection between the CockroachDB cluster and the Vault cluster, creating the template for database client credentials, etc.) required admin privileges. But for the work to be meaningful, a Vault user with more limited permisions must be able to access the generated credentials.
 
 This policy will be used to access CRDB client credentials. In keeping with the [principle of least privilege](https://en.wikipedia.org/wiki/Principle_of_least_privilege), let's give it only the required ability to read the required credential. 
 
@@ -307,8 +306,9 @@ hcl
 Success! Uploaded policy: roach-client
 ```
 
-
 ### Generate an authentication token for the `crdb-role` Vault user
+
+Our final act as Vault admin will be to provision an authentication token to assume the `crdb-role`, which represents the Vault role with the sole purpose of providing credentials ot a CockroachDB client.
 
 {% include_cached copy-clipboard.html %}
 ```shell
@@ -333,11 +333,12 @@ You can either copy the `token` from the output of the previous command, or capt
  VAULT_CLIENT_TOKEN=`vault token create -policy=roach-client -format=json | jq .auth.client_token | tr -d '"'`
 ```
 
-### Assume the CockroachDB role
+## Connecting to CRDB with Vault-provisioned credentials
 
-## Login to vault as the client
+### Authenticate to Vault as the CockroachDB user
 
-Use the 
+Use the client token to authenticate to Vault with limited permissions.
+
 {% include_cached copy-clipboard.html %}
 ```shell
 vault login $VAULT_CLIENT_TOKEN
@@ -345,12 +346,13 @@ vault login $VAULT_CLIENT_TOKEN
 
 ```txt
 Success! You are now authenticated. The token information displayed below
+is already stored in the token helper. You do NOT need to run "vault login"
+again. Future Vault requests will automatically use this token.
 ```
 
+### Confirm the limited permissions of the role
 
-### Confirm the limited credentials
-
-To confirm that you have assumed a role with limited credentials, try listing the current leases on the `crdb-role`, as we did [previously](#). You should see a permissions error.
+To confirm that you have assumed a role with limited permissions, try listing the current leases on the `crdb-role`, as we did [previously](#). You should see a permissions error.
 
 {% include_cached copy-clipboard.html %}
 ```shell
@@ -368,11 +370,9 @@ Code: 403. Errors:
   * permission denied
 ```
 
-
-### Pull the credentials
+### Pull the CockroachDB credentials
 
 The only thing this policy *does* have permission to do is pull credentials for the CockroachDB cluster. Let's do that.
-
 
 {% include_cached copy-clipboard.html %}
 ```shell
@@ -385,7 +385,7 @@ Key                Value
 lease_id           database/creds/crdb-role/V3T4UVxeQ9RYsJAk3jZF1Dhl.iMXtW
 lease_duration     1h
 lease_renewable    true
-password           hMTFjjMTXjBT27hlZZ-H
+password           FlOo0p7jMTXjT27hlZZ-H
 username           v-token-crdb-rol-thfLPlFwex0k9Op0P8qA-1653528652
 ```
   
@@ -396,7 +396,7 @@ List all the tables in database `defaultdb` to confirm you can connect to your C
 {% include_cached copy-clipboard.html %}
 ```shell
 USER_NAME=v-token-crdb-rol-thfLPlFwex0k9Op0P8qA-1653528652 # CRDB admin username
-PASSWORD=hMTFjjMTXjBT27hlZZ-H # CRDB admin password
+PASSWORD=FlOo0p7jMTXjT27hlZZ-H # CRDB admin password
 DB_NAME=defaultdb
 CLUSTER_NAME=lilac-grizzly-684
 HOST=free-tier21.aws-us-west-2.crdb.io
