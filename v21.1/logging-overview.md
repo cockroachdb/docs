@@ -69,7 +69,7 @@ Notable events that were previously collected in the general CockroachDB log are
 - `USER_ADMIN`
 - `PRIVILEGES`
 
-<span class="version-tag">New in v21.1:</span> Logging is now configurable via YAML. The YAML configuration allows you to customize which kinds of events are output to different logging destinations, along with many other parameters. As a result, the logging flags previously used with `cockroach` commands are now deprecated in favor of the YAML configuration. For details, see [Configure Logs](configure-logs.html).
+{% include_cached new-in.html version=v21.1 %} Logging is now configurable via YAML. The YAML configuration allows you to customize which kinds of events are output to different logging destinations, along with many other parameters. As a result, the logging flags previously used with `cockroach` commands are now deprecated in favor of the YAML configuration. For details, see [Configure Logs](configure-logs.html).
 
 ## See also
 

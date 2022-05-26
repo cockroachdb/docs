@@ -307,7 +307,7 @@ CockroachDB does not support the [PostgreSQL recursive CTE variant](https://www.
 
 ## Correlated common table expressions
 
-<span class="version-tag">New in v21.2</span>
+{% include_cached new-in.html version=v21.2 %}
 
 If a common table expression is contained in a subquery, the CTE can reference columns defined outside of the subquery. This is called a _correlated common table expression_. For example, in the following query, the expression `(SELECT 1 + x)` references `x` in the outer scope.
 

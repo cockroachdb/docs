@@ -26,7 +26,7 @@ Parameter                 | Description
 `name_list`               | A comma-separated list of [users](security-reference/authorization.html#create-and-manage-users) and/or [roles](security-reference/authorization.html#users-and-roles).
 `target_types`            | A comma-separated list of [user-defined types](create-type.html).
 `schema_name_list`        | A comma-separated list of [schemas](create-schema.html).
-`ALL TABLES IN SCHEMA`    | <span class="version-tag">New in v21.2</span>: Grant privileges on all tables in a schema or list of schemas.
+`ALL TABLES IN SCHEMA`    | {% include_cached new-in.html version=v21.2 %} Grant privileges on all tables in a schema or list of schemas.
 `privilege_list`          | A comma-separated list of [privileges](security-reference/authorization.html#managing-privileges) to grant.
 `WITH ADMIN OPTION`       | Designate the user as a role admin. Role admins can grant or [revoke](revoke.html) membership for the specified role.
 

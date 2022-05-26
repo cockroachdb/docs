@@ -114,7 +114,7 @@ The path format is `<year>/<month>/<day>-<timestamp>`.
 
 ### Show the most recent backup
 
-<span class="version-tag">New in v21.1:</span> To view the most recent backup, use the `LATEST` syntax:
+{% include_cached new-in.html version=v21.1 %} To view the most recent backup, use the `LATEST` syntax:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

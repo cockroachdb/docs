@@ -64,7 +64,7 @@ Example of a Kafka sink URI:
 The Google Cloud Pub/Sub sink is currently in **beta**.
 {{site.data.alerts.end}}
 
-<span class="version-tag">New in v22.1:</span> Example of a Google Cloud Pub/Sub sink URI:
+{% include_cached new-in.html version=v22.1 %} Example of a Google Cloud Pub/Sub sink URI:
 
 ~~~
 'gcpubsub://{project name}?region={region}&topic_name={topic name}&AUTH=specified&CREDENTIALS={base64-encoded key}'
@@ -245,7 +245,7 @@ For step-by-step guidance on creating a changefeed connected to a cloud storage 
 
 ### Create a changefeed with an S3 storage class
 
-<span class="version-tag">New in v22.1:</span> To associate the changefeed message files with a [specific storage class](use-cloud-storage-for-bulk-operations.html#amazon-s3-storage-classes) in your Amazon S3 bucket, use the `S3_STORAGE_CLASS` parameter with the class. For example, the following S3 connection URI specifies the `INTELLIGENT_TIERING` storage class:
+{% include_cached new-in.html version=v22.1 %} To associate the changefeed message files with a [specific storage class](use-cloud-storage-for-bulk-operations.html#amazon-s3-storage-classes) in your Amazon S3 bucket, use the `S3_STORAGE_CLASS` parameter with the class. For example, the following S3 connection URI specifies the `INTELLIGENT_TIERING` storage class:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

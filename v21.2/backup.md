@@ -233,7 +233,7 @@ AS OF SYSTEM TIME '-10s';
 
 ### Backup all tables in a schema
 
-<span class="version-tag">New in v21.2:</span> To back up all tables in a [specified schema](create-schema.html), use a wildcard with the schema name:
+{% include_cached new-in.html version=v21.2 %} To back up all tables in a [specified schema](create-schema.html), use a wildcard with the schema name:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -293,7 +293,7 @@ job_id             |  status   | fraction_completed | rows | index_entries | byt
 
 ### Backup with an S3 storage class
 
-<span class="version-tag">New in v21.2.6:</span> To associate your backup objects with a [specific storage class](use-cloud-storage-for-bulk-operations.html#amazon-s3-storage-classes) in your Amazon S3 bucket, use the `S3_STORAGE_CLASS` parameter with the class. For example, the following S3 connection URI specifies the `INTELLIGENT_TIERING` storage class:
+{% include_cached new-in.html version=v21.2.6 %} To associate your backup objects with a [specific storage class](use-cloud-storage-for-bulk-operations.html#amazon-s3-storage-classes) in your Amazon S3 bucket, use the `S3_STORAGE_CLASS` parameter with the class. For example, the following S3 connection URI specifies the `INTELLIGENT_TIERING` storage class:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -377,7 +377,7 @@ AS OF SYSTEM TIME '-10s';
 
 ### Backup all tables in a schema
 
-<span class="version-tag">New in v21.2:</span> To back up all tables in a [specified schema](create-schema.html), use a wildcard with the schema name:
+{% include_cached new-in.html version=v21.2 %} To back up all tables in a [specified schema](create-schema.html), use a wildcard with the schema name:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -512,7 +512,7 @@ AS OF SYSTEM TIME '-10s';
 
 ### Backup all tables in a schema
 
-<span class="version-tag">New in v21.2:</span> To back up all tables in a [specified schema](create-schema.html), use a wildcard with the schema name:
+{% include_cached new-in.html version=v21.2 %} To back up all tables in a [specified schema](create-schema.html), use a wildcard with the schema name:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

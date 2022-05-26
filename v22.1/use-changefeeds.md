@@ -193,7 +193,7 @@ See [Files](create-changefeed.html#files) for more detail on the file naming for
 
 ## Changefeeds on tables with column families
 
-<span class="version-tag">New in v22.1:</span> You can create changefeeds on tables with more than one [column family](column-families.html). Changefeeds will emit individual messages per column family on a table.
+{% include_cached new-in.html version=v22.1 %} You can create changefeeds on tables with more than one [column family](column-families.html). Changefeeds will emit individual messages per column family on a table.
 
 To target a table with multiple column families, set the [`split_column_families` option](create-changefeed.html#split-column-families) when creating a changefeed:
 

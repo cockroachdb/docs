@@ -84,7 +84,7 @@ To see how to manually generate statistics, see the [`CREATE STATISTICS` example
 
 #### Control whether the `avg_size` statistic is used to cost scans
 
-<span class="version-tag">New in v22.1:</span> The `avg_size` table statistic represents the average size of a table column.
+{% include_cached new-in.html version=v22.1 %} The `avg_size` table statistic represents the average size of a table column.
 If a table does not have an average size statistic available for a column, it uses the default value of 4 bytes.
 
 The optimizer uses `avg_size` to cost scans and relevant joins. Costing scans per row regardless of the size of the columns comprising the row doesn't account for time

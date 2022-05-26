@@ -39,7 +39,7 @@ table td:first-child {
 `MAXVALUE` | The maximum value of the sequence. Default values apply if not specified or if you enter `NO MAXVALUE`.<br><br>**Default for ascending:** `MAXINT` <br><br>**Default for descending:** `-1`
 `START` | The first value of the sequence. <br><br>**Default for ascending:** `1` <br><br>**Default for descending:** `-1`
 `NO CYCLE` | Currently, all sequences are set to `NO CYCLE` and the sequence will not wrap.
-`CACHE` | <span class="version-tag">New in v21.1:</span> The number of sequence values to cache in memory for reuse in the session. A cache size of `1` means that there is no cache, and cache sizes of less than `1` are not valid.<br><br>**Default:** `1` (sequences are not cached by default)
+`CACHE` | {% include_cached new-in.html version=v21.1 %} The number of sequence values to cache in memory for reuse in the session. A cache size of `1` means that there is no cache, and cache sizes of less than `1` are not valid.<br><br>**Default:** `1` (sequences are not cached by default)
 `OWNED BY column_name` <a name="owned-by"></a> | Associates the sequence to a particular column. If that column or its parent table is dropped, the sequence will also be dropped.<br>Specifying an owner column with `OWNED BY` replaces any existing owner column on the sequence. To remove existing column ownership on the sequence and make the column free-standing, specify `OWNED BY NONE`.<br><br>**Default:** `NONE`
 `opt_temp` |  Defines the sequence as a session-scoped temporary sequence. For more information, see [Temporary sequences](#temporary-sequences).<br><br>**Support for temporary sequences is [experimental](experimental-features.html#temporary-objects)**.
 
@@ -277,7 +277,7 @@ In this example, we create a sequence that starts at -1 and descends in incremen
 
 ### Cache sequence values in memory
 
-<span class="version-tag">New in v21.1:</span> For improved performance, use the `CACHE` keyword to cache sequence values in memory.
+{% include_cached new-in.html version=v21.1 %} For improved performance, use the `CACHE` keyword to cache sequence values in memory.
 
 For example, to cache 10 sequence values in memory:
 

@@ -176,12 +176,12 @@ If you need to specify the table's columns for some reason, you can use an [`IMP
 
 The following options are available to `IMPORT ... MYSQLDUMP`:
 
-+ <span class="version-tag">New in v21.1:</span> [Row limit](#row-limit)
++ {% include_cached new-in.html version=v21.1 %} [Row limit](#row-limit)
 + [Skip foreign keys](#skip-foreign-keys)
 
 ### Row limit
 
-<span class="version-tag">New in v21.1:</span> The `row_limit` option determines the number of rows to import. If you are importing one table, setting `row_limit = 'n'` will import the first *n* rows of the table. If you are importing an entire database, this option will import the first *n* rows from each table in the dump file. It is useful for finding errors quickly before executing a more time- and resource-consuming import.
+{% include_cached new-in.html version=v21.1 %} The `row_limit` option determines the number of rows to import. If you are importing one table, setting `row_limit = 'n'` will import the first *n* rows of the table. If you are importing an entire database, this option will import the first *n* rows from each table in the dump file. It is useful for finding errors quickly before executing a more time- and resource-consuming import.
 
 Example usage:
 

@@ -73,7 +73,7 @@
    <td>
     <code>datestyle</code>
    </td>
-   <td><span class="version-tag">New in v21.2</span>: The input string format for <a href="date.html"><code>DATE</code></a> and <a href="timestamp.html"><code>TIMESTAMP</code></a> values.
+   <td>{% include_cached new-in.html version=v21.2 %} The input string format for <a href="date.html"><code>DATE</code></a> and <a href="timestamp.html"><code>TIMESTAMP</code></a> values.
      <br>Accepted values include <code>ISO,MDY</code>, <code>ISO,DMY</code>, and <code>ISO,YMD</code>.
      <br>To set <code>datestyle</code> to a value other than the default (<code>ISO,MDY</code>), you must first set the <code>datestyle_enabled</code> session variable to <code>true</code>.</td>
    <td>The value set by the <code>sql.defaults.datestyle</code> <a href="cluster-settings.html">cluster setting</a> (<code>ISO,MDY</code>, by default).</td>
@@ -85,7 +85,7 @@
    <td>
     <code>datestyle_enabled</code>
    </td>
-   <td><span class="version-tag">New in v21.2</span>: Enables setting the <code>datestyle</code> session variable to a supported format.</td>
+   <td>{% include_cached new-in.html version=v21.2 %} Enables setting the <code>datestyle</code> session variable to a supported format.</td>
    <td>The value set by the <code>sql.defaults.datestyle.enabled</code> <a href="cluster-settings.html">cluster setting</a> (<code>false</code>, by default).</td>
    <td>Yes</td>
    <td>Yes</td>
@@ -284,7 +284,7 @@
    <td>
     <code>intervalstyle</code>
    </td>
-   <td><span class="version-tag">New in v21.2</span>: The input string format for <a href="interval.html"><code>INTERVAL</code></a> values.
+   <td>{% include_cached new-in.html version=v21.2 %} The input string format for <a href="interval.html"><code>INTERVAL</code></a> values.
      <br>Accepted values include <code>postgres</code>, <code>iso_8601</code>, and <code>sql_standard</code>.
      <br>To set <code>intervalstyle</code> to a value other than the default (<code>postgres</code>), you must first set the <code>intervalstyle_enabled</code> session variable to <code>true</code>.</td>
    <td>The value set by the <code>sql.defaults.intervalstyle</code> <a href="cluster-settings.html">cluster setting</a> (<code>postgres</code>, by default).</td>
@@ -296,7 +296,7 @@
    <td>
     <code>intervalstyle_enabled</code>
    </td>
-   <td><span class="version-tag">New in v21.2</span>: Enables setting the <code>intervalstyle</code> session variable to a supported format.</td>
+   <td>{% include_cached new-in.html version=v21.2 %} Enables setting the <code>intervalstyle</code> session variable to a supported format.</td>
    <td>The value set by the <code>sql.defaults.intervalstyle.enabled</code> <a href="cluster-settings.html">cluster setting</a> (<code>false</code>, by default).</td>
    <td>Yes</td>
    <td>Yes</td>
@@ -306,7 +306,7 @@
    <td>
     <code>is_superuser</code>
    </td>
-   <td><span class="version-tag">New in v21.2</span>: If <code>on</code> or <code>true</code>, the current user is a member of the <a href="security-reference/authorization.html#admin-role">`admin` role</a>.</td>
+   <td>{% include_cached new-in.html version=v21.2 %} If <code>on</code> or <code>true</code>, the current user is a member of the <a href="security-reference/authorization.html#admin-role">`admin` role</a>.</td>
    <td>User-dependent</td>
    <td>No</td>
    <td>Yes</td>
@@ -316,7 +316,7 @@
    <td>
     <code>large_full_scan_rows</code>
    </td>
-   <td><span class="version-tag">New in v21.2</span>: Determines which tables are considered "large" such that <code>disallow_full_table_scans</code> rejects full table or index scans of "large" tables. The default value is <code>1000</code>. To reject all full table or index scans, set to <code>0</code>.</td>
+   <td>{% include_cached new-in.html version=v21.2 %} Determines which tables are considered "large" such that <code>disallow_full_table_scans</code> rejects full table or index scans of "large" tables. The default value is <code>1000</code>. To reject all full table or index scans, set to <code>0</code>.</td>
    <td>User-dependent</td>
    <td>No</td>
    <td>Yes</td>
@@ -336,7 +336,7 @@
    <td>
     <code>lock_timeout</code>
    </td>
-   <td><span class="version-tag">New in v21.2</span>: The amount of time a query can spend acquiring or waiting for a single <a href="architecture/transaction-layer.html#concurrency-control">row-level lock</a>.<br>
+   <td>{% include_cached new-in.html version=v21.2 %} The amount of time a query can spend acquiring or waiting for a single <a href="architecture/transaction-layer.html#concurrency-control">row-level lock</a>.<br>
     In CockroachDB, unlike in PostgreSQL, non-locking reads wait for conflicting locks to be released. As a result, the <code>lock_timeout</code> configuration applies to writes, and to locking and non-locking reads in read-write and read-only transactions.<br>
     If <code>lock_timeout = 0</code>, queries do not timeout due to lock acquisitions.
    </td>
@@ -610,7 +610,7 @@
    <td>
     <code>transaction_rows_read_err</code>
    </td>
-   <td><span class="version-tag">New in v21.2</span>: The limit for the number of rows read by a SQL transaction. If this value is exceeded the transaction will fail (or the event will be logged to <code>SQL_INTERNAL_PERF</code> for internal transactions).</td>
+   <td>{% include_cached new-in.html version=v21.2 %} The limit for the number of rows read by a SQL transaction. If this value is exceeded the transaction will fail (or the event will be logged to <code>SQL_INTERNAL_PERF</code> for internal transactions).</td>
    <td>
     <code>0</code>
    </td>
@@ -622,7 +622,7 @@
    <td>
     <code>transaction_rows_read_log</code>
    </td>
-   <td><span class="version-tag">New in v21.2</span>: The threshold for the number of rows read by a SQL transaction. If this value is exceeded, the event will be logged to <code>SQL_PERF</code> (or <code>SQL_INTERNAL_PERF</code> for internal transactions).</td>
+   <td>{% include_cached new-in.html version=v21.2 %} The threshold for the number of rows read by a SQL transaction. If this value is exceeded, the event will be logged to <code>SQL_PERF</code> (or <code>SQL_INTERNAL_PERF</code> for internal transactions).</td>
    <td>
     <code>0</code>
    </td>
@@ -634,7 +634,7 @@
    <td>
     <code>transaction_rows_written_err</code>
    </td>
-   <td><span class="version-tag">New in v21.2</span>: The limit for the number of rows written by a SQL transaction. If this value is exceeded the transaction will fail (or the event will be logged to <code>SQL_INTERNAL_PERF</code> for internal transactions).</td>
+   <td>{% include_cached new-in.html version=v21.2 %} The limit for the number of rows written by a SQL transaction. If this value is exceeded the transaction will fail (or the event will be logged to <code>SQL_INTERNAL_PERF</code> for internal transactions).</td>
    <td>
     <code>0</code>
    </td>
@@ -646,7 +646,7 @@
    <td>
     <code>transaction_rows_written_log</code>
    </td>
-   <td><span class="version-tag">New in v21.2</span>: The threshold for the number of rows written by a SQL transaction. If this value is exceeded, the event will be logged to <code>SQL_PERF</code> (or <code>SQL_INTERNAL_PERF</code> for internal transactions).</td>
+   <td>{% include_cached new-in.html version=v21.2 %} The threshold for the number of rows written by a SQL transaction. If this value is exceeded, the event will be logged to <code>SQL_PERF</code> (or <code>SQL_INTERNAL_PERF</code> for internal transactions).</td>
    <td>
     <code>0</code>
    </td>

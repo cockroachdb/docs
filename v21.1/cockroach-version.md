@@ -5,7 +5,7 @@ toc: true
 key: view-version-details.html
 ---
 
-To view version details for a specific `cockroach` binary, run the `cockroach version` [command](cockroach-commands.html), or run `cockroach --version` (new in v21.1):
+To view version details for a specific `cockroach` binary, run the `cockroach version` [command](cockroach-commands.html):
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -23,13 +23,15 @@ Build Commit ID:  ac916850f403f083ea62e2b0dfdfecbbeaaa4d05
 Build Type:       release
 ~~~
 
+{% include_cached new-in.html version=v21.1 %} You can also run `cockroach --version`.
+
 ## Response
 
 The `cockroach version` command outputs the following fields:
 
 Field | Description
 ------|------------
-`Build Tag` | The CockroachDB version.<br><br><span class="version-tag">New in v21.1</span>: To return just the build tag, use `cockroach version --build-tag`.
+`Build Tag` | The CockroachDB version.<br><br>{% include_cached new-in.html version=v21.1 %} To return just the build tag, use `cockroach version --build-tag`.
 `Build Time` | The date and time when the binary was built.
 `Distribution` | The scope of the binary. If `CCL`, the binary contains functionality covered by both the CockroachDB Community License (CCL) and the Business Source License (BSL). If `OSS`, the binary contains only functionality covered by the Apache 2.0 license. The v19.2 release converts to Apache 2.0 as of Oct 1, 2022, at which time you can use the `make buildoss` command to build a pure open-source binary. For more details about licensing, see the [Licensing FAQs](licensing-faqs.html).
 `Platform` | The platform that the binary can run on.

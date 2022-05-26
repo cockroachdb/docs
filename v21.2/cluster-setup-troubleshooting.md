@@ -332,7 +332,7 @@ Like any database system, if you run out of disk space the system will no longer
 
 #### Automatic ballast files
 
-<span class="version-tag">New in v21.2</span> CockroachDB automatically creates an emergency ballast file at [node startup](cockroach-start.html). This feature is **on** by default. Note that the [`cockroach debug ballast`](cockroach-debug-ballast.html) command is still available but deprecated.
+{% include_cached new-in.html version=v21.2 %} CockroachDB automatically creates an emergency ballast file at [node startup](cockroach-start.html). This feature is **on** by default. Note that the [`cockroach debug ballast`](cockroach-debug-ballast.html) command is still available but deprecated.
 
 The ballast file defaults to 1% of total disk capacity or 1 GiB, whichever is smaller. The size of the ballast file may be configured using [the `--store` flag to `cockroach start`](cockroach-start.html#flags-store) with a [`ballast-size` field](cockroach-start.html#fields-ballast-size); this field accepts the same value formats as the `size` field.
 

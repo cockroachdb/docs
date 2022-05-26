@@ -13,7 +13,7 @@ toc: true
 
 Once a userfile is uploaded, you can run [`IMPORT`](#import-from-userfile).
 
-<span class="version-tag">New in v21.1:</span> For `PGDUMP` and `MYSQLDUMP` formats, you can use [`cockroach import`](#upload-and-import-from-a-dump-file) to upload a userfile, import its data, and delete the userfile in one command.
+{% include_cached new-in.html version=v21.1 %} For `PGDUMP` and `MYSQLDUMP` formats, you can use [`cockroach import`](#upload-and-import-from-a-dump-file) to upload a userfile, import its data, and delete the userfile in one command.
 
 ## Upload a file
 

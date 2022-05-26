@@ -183,7 +183,7 @@ An untuned SQL query can consume significant resources and impact the performanc
 
     {% include {{ page.version.version }}/prod-deployment/healthy-sql-memory.md %}
 
-- <span class="version-tag">New in v21.2</span>: The "active query dump", enabled by default with the `diagnostics.active_query_dumps.enabled` [cluster setting](cluster-settings.html), is a record of anonymized active queries that is written to disk when a node is detected to be under memory pressure.
+- {% include_cached new-in.html version=v21.2 %} The "active query dump", enabled by default with the `diagnostics.active_query_dumps.enabled` [cluster setting](cluster-settings.html), is a record of anonymized active queries that is written to disk when a node is detected to be under memory pressure.
 
     You can use the active query dump to correlate specific queries to OOM crashes. Active query dumps have the filename `activequeryprof.{date-and-time}.csv` and are found in the `heap_profiler` directory in the configured [logging directory](configure-logs.html#logging-directory). They are also included when running [`cockroach debug zip`](cockroach-debug-zip.html).
 

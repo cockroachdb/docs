@@ -4,7 +4,7 @@ summary: Fetch files stored in the user-scoped file storage.
 toc: true
 ---
 
-<span class="version-tag">New in v21.1:</span> The `cockroach userfile get` [command](cockroach-commands.html) fetches the files stored in the [user-scoped file storage](use-userfile-for-bulk-operations.html) which match the provided pattern, using a SQL connection. If no pattern is provided, all files in the specified (or default, if unspecified) user-scoped file storage will be fetched.
+{% include_cached new-in.html version=v21.1 %} The `cockroach userfile get` [command](cockroach-commands.html) fetches the files stored in the [user-scoped file storage](use-userfile-for-bulk-operations.html) which match the provided pattern, using a SQL connection. If no pattern is provided, all files in the specified (or default, if unspecified) user-scoped file storage will be fetched.
 
 ## Required privileges
 

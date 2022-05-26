@@ -32,7 +32,7 @@ Subcommand | Description | Can combine with other subcommands?
 [`SPLIT AT`](split-at.html) | Force a range split at the specified row in the table. | No
 [`UNSPLIT AT`](unsplit-at.html) | Remove a range split enforcement at a specified row in the table. | No
 [`VALIDATE CONSTRAINT`](validate-constraint.html) | Check whether values in a column match a [constraint](constraints.html) on the column. | Yes
-[`SET LOCALITY {REGIONAL BY TABLE, REGIONAL BY ROW, GLOBAL}`](set-locality.html) | <span class="version-tag">New in v21.1:</span> Set the table locality for a table in a [multi-region database](multiregion-overview.html). | No
+[`SET LOCALITY {REGIONAL BY TABLE, REGIONAL BY ROW, GLOBAL}`](set-locality.html) | {% include_cached new-in.html version=v21.1 %} Set the table locality for a table in a [multi-region database](multiregion-overview.html). | No
 
 ## Viewing schema changes
 

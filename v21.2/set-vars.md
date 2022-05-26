@@ -7,7 +7,7 @@ docs_area: reference.sql
 
 The `SET` [statement](sql-statements.html) can modify one of the session configuration variables. These can also be queried via [`SHOW`](show-vars.html). By default, session variable values are set for the duration of the current session.
 
-<span class="version-tag">New in v21.2</span>: CockroachDB supports setting session variables for the duration of a single transaction, using [the `LOCAL` keyword](#set-local).
+{% include_cached new-in.html version=v21.2 %} CockroachDB supports setting session variables for the duration of a single transaction, using [the `LOCAL` keyword](#set-local).
 
 {{site.data.alerts.callout_info}}
 The `SET` statement for session variables is unrelated to the other [`SET TRANSACTION`](set-transaction.html) and [`SET CLUSTER SETTING`](cluster-settings.html#change-a-cluster-setting) statements.
@@ -66,8 +66,8 @@ CockroachDB supports the following syntax cases, for compatibility with common S
 --------|---------------|-------
  `USE ...` | `SET database = ...` | This is provided as convenience for users with a MySQL/MSSQL background.
  `SET NAMES ...` | `SET client_encoding = ...` | This is provided for compatibility with PostgreSQL clients.
- `SET ROLE <role>` | `SET role = <role>` | <span class="version-tag">New in v21.2</span>: This is provided for compatibility with PostgreSQL clients.
- `RESET ROLE` | `SET role = 'none'`/`SET role = current_user()` | <span class="version-tag">New in v21.2</span>: This is provided for compatibility with PostgreSQL clients.
+ `SET ROLE <role>` | `SET role = <role>` | {% include_cached new-in.html version=v21.2 %} This is provided for compatibility with PostgreSQL clients.
+ `RESET ROLE` | `SET role = 'none'`/`SET role = current_user()` | {% include_cached new-in.html version=v21.2 %} This is provided for compatibility with PostgreSQL clients.
  `SET SCHEMA <name>` | `SET search_path = <name>` | This is provided for better compatibility with PostgreSQL.
  `SET SESSION CHARACTERISTICS AS TRANSACTION ISOLATION LEVEL ...` | `SET default_transaction_isolation = ...` | This is provided for compatibility with standard SQL.
  `SET TIME ZONE ...` | `SET timezone = ...` | This is provided for compatibility with PostgreSQL clients.
@@ -174,7 +174,7 @@ SHOW search_path;
 
 ### Set a variable for the duration of a single transaction
 
-<span class="version-tag">New in v21.2</span>: To set a variable for the duration of a single transaction, use the `SET LOCAL` statement.
+{% include_cached new-in.html version=v21.2 %} To set a variable for the duration of a single transaction, use the `SET LOCAL` statement.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -217,7 +217,7 @@ SHOW application_name;
 
 ### Roll back session variables set for a transaction
 
-<span class="version-tag">New in v21.2</span>: You can roll back session variable settings to [savepoints](savepoint.html).
+{% include_cached new-in.html version=v21.2 %} You can roll back session variable settings to [savepoints](savepoint.html).
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -287,7 +287,7 @@ SHOW timezone;
 
 ### Assume another role
 
-<span class="version-tag">New in v21.2</span>: To assume another [role](security-reference/authorization.html#roles) for the duration of a session, use `SET ROLE <role>`. `SET ROLE <role>` is equivalent to `SET role = <role>`.
+{% include_cached new-in.html version=v21.2 %} To assume another [role](security-reference/authorization.html#roles) for the duration of a session, use `SET ROLE <role>`. `SET ROLE <role>` is equivalent to `SET role = <role>`.
 
 {{site.data.alerts.callout_info}}
 To assume a new role, the current user must be a member of the `admin` role, or a member of the target role.

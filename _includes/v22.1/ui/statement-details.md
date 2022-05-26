@@ -46,7 +46,7 @@ The **Overview** section displays the SQL statement fingerprint and essential st
 
 ### Explain Plans
 
-<span class="version-tag">New in v22.1</span> The **Explain Plans** tab displays statement plans for an [explainable statement]({{ link_prefix }}sql-grammar.html#preparable_stmt) in the time interval selected [date range](#date-range). You can use this information to optimize the query. For more information about plans, see [`EXPLAIN`]({{ link_prefix }}explain.html).
+{% include_cached new-in.html version=v22.1 %} The **Explain Plans** tab displays statement plans for an [explainable statement]({{ link_prefix }}sql-grammar.html#preparable_stmt) in the time interval selected [date range](#date-range). You can use this information to optimize the query. For more information about plans, see [`EXPLAIN`]({{ link_prefix }}explain.html).
 
 {% if page.cloud == true %}
 <img src="{{ 'images/cockroachcloud/statements_logical_plan.png' | relative_url }}" alt="{{ site.data.products.db }} Console Statements Page" style="border:1px solid #eee;max-width:100%" />
@@ -89,7 +89,7 @@ Diagnostics will be collected a maximum of *N* times for a given activated finge
 
 To activate diagnostics collection:
 
-1. Click the **Activate diagnostics** button. <span class="version-tag">New in v22.1</span> The **Activate statement diagnostics** dialog displays.
+1. Click the **Activate diagnostics** button. {% include_cached new-in.html version=v22.1 %} The **Activate statement diagnostics** dialog displays.
 
     <img src="{{ 'images/v22.1/ui_activate_diagnostics_dialog.png' | relative_url }}" alt="Statements diagnostics" style="border:1px solid #eee;max-width:80%" />
 
@@ -104,7 +104,7 @@ A row  with the activation time and collection status is added to the **Statemen
 The collection status values are:
 
 - **READY**: indicates that the diagnostics have been collected. To download the diagnostics bundle, click <img src="{{ 'images/v22.1/ui-download-button.png' | relative_url }}" alt="Download bundle" /> **Bundle (.zip)**.
-- **WAITING**: indicates that a SQL statement matching the fingerprint has not yet been recorded. <span class="version-tag">New in v22.1</span> To cancel diagnostics collection, click the **Cancel request** button.
+- **WAITING**: indicates that a SQL statement matching the fingerprint has not yet been recorded. {% include_cached new-in.html version=v22.1 %} To cancel diagnostics collection, click the **Cancel request** button.
 - **ERROR**: indicates that the attempt at diagnostics collection failed.
 
 #### View and download diagnostic bundles for all statement fingerprints

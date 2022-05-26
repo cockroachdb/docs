@@ -28,10 +28,10 @@ Parameter | Description
 
 Option | Description
 -----------|-------------
-`DELIMITER 'value'` | <span class="version-tag">New in v21.1:</span> The value that delimits the rows of input data, passed as a string.
-`NULL 'value'` | <span class="version-tag">New in v21.1:</span> The string that represents a `NULL` value in the input data.
+`DELIMITER 'value'` | {% include_cached new-in.html version=v21.1 %} The value that delimits the rows of input data, passed as a string.
+`NULL 'value'` | {% include_cached new-in.html version=v21.1 %} The string that represents a `NULL` value in the input data.
 `BINARY` | Copy data from binary format. If `BINARY` is specified, no other format can be specified.<br>If no format is specified, CockroachDB copies in plaintext format.
-`CSV` | <span class="version-tag">New in v21.1:</span> Copy data from CSV format. If `CSV` is specified, no other format can be specified.<br>If no format is specified, CockroachDB copies in plaintext format.
+`CSV` | {% include_cached new-in.html version=v21.1 %} Copy data from CSV format. If `CSV` is specified, no other format can be specified.<br>If no format is specified, CockroachDB copies in plaintext format.
 
 ## Required privileges
 

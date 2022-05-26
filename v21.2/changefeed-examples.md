@@ -330,7 +330,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
 {% include {{ page.version.version }}/cdc/webhook-beta.md %}
 
-<span class="version-tag">New in v21.2:</span> In this example, you'll set up a changefeed for a single-node cluster that is connected to a local HTTP server via a webhook. For this example, you'll use an [example HTTP server](https://github.com/cockroachlabs/cdc-webhook-sink-test-server/tree/master/go-https-server) to test out the webhook sink.
+{% include_cached new-in.html version=v21.2 %} In this example, you'll set up a changefeed for a single-node cluster that is connected to a local HTTP server via a webhook. For this example, you'll use an [example HTTP server](https://github.com/cockroachlabs/cdc-webhook-sink-test-server/tree/master/go-https-server) to test out the webhook sink.
 
 1. If you do not already have one, [request a trial {{ site.data.products.enterprise }} license](enterprise-licensing.html).
 

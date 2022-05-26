@@ -281,7 +281,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 The Google Cloud Pub/Sub sink is currently in **beta**.
 {{site.data.alerts.end}}
 
-<span class="version-tag">New in v22.1:</span> In this example, you'll set up a changefeed for a single-node cluster that is connected to a [Google Cloud Pub/Sub](https://cloud.google.com/pubsub/docs/overview) sink. The changefeed will watch a table and send messages to the sink.
+{% include_cached new-in.html version=v22.1 %} In this example, you'll set up a changefeed for a single-node cluster that is connected to a [Google Cloud Pub/Sub](https://cloud.google.com/pubsub/docs/overview) sink. The changefeed will watch a table and send messages to the sink.
 
 You'll need access to a [Google Cloud Project](https://cloud.google.com/resource-manager/docs/creating-managing-projects) to set up a Pub/Sub sink. In this example, the [Google Cloud CLI](https://cloud.google.com/sdk/docs/install-sdk) (`gcloud`) is used, but you can also complete each of these steps within your [Google Cloud Console](https://cloud.google.com/storage/docs/cloud-console).
 
@@ -551,7 +551,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 [`CREATE CHANGEFEED`](create-changefeed.html) is an [Enterprise-only](enterprise-licensing.html) feature. For the Core version, see [the `CHANGEFEED FOR` example](#create-a-core-changefeed-on-a-table-with-column-families).
 {{site.data.alerts.end}}
 
-<span class="version-tag">New in v22.1:</span> In this example, you'll set up changefeeds on two tables that have [column families](column-families.html). You'll use a single-node cluster sending changes to a webhook sink for this example, but you can use any [changefeed sink](changefeed-sinks.html) to work with tables that include column families.
+{% include_cached new-in.html version=v22.1 %} In this example, you'll set up changefeeds on two tables that have [column families](column-families.html). You'll use a single-node cluster sending changes to a webhook sink for this example, but you can use any [changefeed sink](changefeed-sinks.html) to work with tables that include column families.
 
 For more detail on a changefeed's output when targeting tables with column families, see [Changefeeds on tables with column families](use-changefeeds.html#changefeeds-on-tables-with-column-families).
 
@@ -768,7 +768,7 @@ For further information on Core changefeeds, see [`EXPERIMENTAL CHANGEFEED FOR`]
 
 ## Create a Core changefeed on a table with column families
 
-<span class="version-tag">New in v22.1:</span> In this example, you'll set up Core changefeeds on two tables that have [column families](column-families.html). You'll use a single-node cluster with the Core changefeed sending changes to the client.
+{% include_cached new-in.html version=v22.1 %} In this example, you'll set up Core changefeeds on two tables that have [column families](column-families.html). You'll use a single-node cluster with the Core changefeed sending changes to the client.
 
 For more detail on a changefeed's output when targeting tables with column families, see [Changefeeds on tables with column families](use-changefeeds.html#changefeeds-on-tables-with-column-families).
 

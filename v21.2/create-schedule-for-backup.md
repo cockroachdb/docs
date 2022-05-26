@@ -39,7 +39,7 @@ Targets:
 
  Parameter                              | Description
 ----------------------------------------+-------------------------------------------------------------------------------------------------------------------------
-`IF NOT EXISTS`                         | <span class="version-tag">New in v21.2:</span> Use to specify that a scheduled backup should not be created if the [`label`](#label) already exists. Produces an error if the schedule label already exists, or if the `label` is not specified.
+`IF NOT EXISTS`                         | {% include_cached new-in.html version=v21.2 %} Use to specify that a scheduled backup should not be created if the [`label`](#label) already exists. Produces an error if the schedule label already exists, or if the `label` is not specified.
 <a name="label"></a>`label`             | The name used to identify the backup schedule. This is optional and does not need to be unique. If not provided, the schedule will be assigned the name `BACKUP`.
 `table_pattern`                         | The [table(s)](create-table.html) or [view(s)](views.html) you want to back up.
 `database_name`                         | The name of the [database(s)](create-database.html) you want to back up (i.e., create backups of all tables and views in the database).

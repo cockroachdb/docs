@@ -7,7 +7,7 @@ keywords: gin, gin index, gin indexes, inverted index, inverted indexes, acceler
 
 ## Overview
 
-<span class="version-tag">New in v21.1:</span> CockroachDB has improved multi-region capabilities that make it easier to run global applications.
+{% include_cached new-in.html version=v21.1 %} CockroachDB has improved multi-region capabilities that make it easier to run global applications.
 
 To take advantage of these improved capabilities, you will need to understand the following concepts:
 

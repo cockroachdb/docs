@@ -7,7 +7,7 @@ docs_area: reference.sql
 
 The `SHOW SCHEDULES` [statement](sql-statements.html) lists all of the currently active [backup schedules](create-schedule-for-backup.html).
 
-<span class="version-tag">New in v22.1:</span> It also lists all of the currently active scheduled jobs for [Row-Level TTL](row-level-ttl.html).
+{% include_cached new-in.html version=v22.1 %} It also lists all of the currently active scheduled jobs for [Row-Level TTL](row-level-ttl.html).
 
 ## Required privileges
 
@@ -130,6 +130,6 @@ To view a specific schedule, use the schedule's `id`:
 - [`RESUME JOB`](pause-job.html)
 - [`CANCEL JOB`](cancel-job.html)
 - [Take Full and Incremental Backups](take-full-and-incremental-backups.html)
-- **New in v22.1:** [Row-Level TTL](row-level-ttl.html)
+- {% include_cached new-in.html version=v22.1 %} [Row-Level TTL](row-level-ttl.html)
 - [Use the Built-in SQL Client](cockroach-sql.html)
 - [`cockroach` Commands Overview](cockroach-commands.html)

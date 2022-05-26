@@ -156,7 +156,7 @@ If you have configured [Prometheus](monitor-cockroachdb-with-prometheus.html) to
 
 #### Prometheus alerting rules endpoint
 
-<span class="version-tag">New in v22.1:</span> Every CockroachDB node exports an alerting rules template at `http://<host>:<http-port>/api/v2/rules/`. These rule definitions are formatted for easy integration with Prometheus' Alertmanager.
+{% include_cached new-in.html version=v22.1 %} Every CockroachDB node exports an alerting rules template at `http://<host>:<http-port>/api/v2/rules/`. These rule definitions are formatted for easy integration with Prometheus' Alertmanager.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell

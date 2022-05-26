@@ -111,7 +111,7 @@ We recommend provisioning volumes with {% include {{ page.version.version }}/pro
 
 - [Monitor your storage utilization](common-issues-to-monitor.html#storage-capacity) and rate of growth, and take action to add capacity well before you hit the limit.
 
-- <span class="version-tag">New in v21.2</span>: CockroachDB will [automatically provision an emergency ballast file](cluster-setup-troubleshooting.html#automatic-ballast-files) at [node startup](cockroach-start.html). In the unlikely case that a node runs out of disk space and shuts down, you can delete the ballast file to free up enough space to be able to restart the node.
+- {% include_cached new-in.html version=v21.2 %} CockroachDB will [automatically provision an emergency ballast file](cluster-setup-troubleshooting.html#automatic-ballast-files) at [node startup](cockroach-start.html). In the unlikely case that a node runs out of disk space and shuts down, you can delete the ballast file to free up enough space to be able to restart the node.
 
 - Use [zone configs](configure-replication-zones.html) to increase the replication factor from 3 (the default) to 5 (across at least 5 nodes).
 

@@ -35,7 +35,7 @@ negative [`INTERVAL`](interval.html) | Added to `statement_timestamp()`, and thu
 `follower_read_timestamp()`| A [function](functions-and-operators.html) that returns the [`TIMESTAMP`](timestamp.html) `statement_timestamp() - 4.8s` (known as the [follower read timestamp](follower-reads.html#run-queries-that-use-follower-reads)). Using this function will set the time as close as possible to the present time while remaining safe for [follower reads](follower-reads.html).
 
 {{site.data.alerts.callout_success}}
-<span class="version-tag">New in v21.1</span>: To set `AS OF SYSTEM TIME follower_read_timestamp()` on all implicit and explicit read-only transactions by default, set the `default_transaction_use_follower_reads` [session variable](set-vars.html) to `on`. When `default_transaction_use_follower_reads=on` and follower reads are enabled, all read-only transactions use follower reads.
+{% include_cached new-in.html version=v21.1 %} To set `AS OF SYSTEM TIME follower_read_timestamp()` on all implicit and explicit read-only transactions by default, set the `default_transaction_use_follower_reads` [session variable](set-vars.html) to `on`. When `default_transaction_use_follower_reads=on` and follower reads are enabled, all read-only transactions use follower reads.
 {{site.data.alerts.end}}
 
 ## Examples

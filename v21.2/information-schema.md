@@ -416,7 +416,7 @@ Column | Description
 
 ### Empty tables
 
-<span class="version-tag">New in v21.2</span>: For compatibility with third-party [PostgreSQL](https://www.postgresql.org/docs/13/information-schema.html) and [MySQL](https://dev.mysql.com/doc/refman/8.0/en/information-schema-table-reference.html) tooling, `information_schema` includes the following empty tables:
+{% include_cached new-in.html version=v21.2 %} For compatibility with third-party [PostgreSQL](https://www.postgresql.org/docs/13/information-schema.html) and [MySQL](https://dev.mysql.com/doc/refman/8.0/en/information-schema-table-reference.html) tooling, `information_schema` includes the following empty tables:
 
 - `attributes`
 - `check_constraint_routine_usage`

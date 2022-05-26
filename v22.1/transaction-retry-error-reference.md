@@ -283,7 +283,7 @@ Retry transaction _A_ as described in [client-side retry handling](transactions.
 
 _Description_:
 
-<span class="version-tag">New in v22.1:</span> When the `inject_retry_errors_enabled` [session variable](set-vars.html) is set to `true`, any statement (with the exception of [`SET` statements](set-vars.html)) executed in the session inside of an explicit transaction will return this error.
+{% include_cached new-in.html version=v22.1 %} When the `inject_retry_errors_enabled` [session variable](set-vars.html) is set to `true`, any statement (with the exception of [`SET` statements](set-vars.html)) executed in the session inside of an explicit transaction will return this error.
 
 For more details, see [Testing transaction retry logic](transactions.html#testing-transaction-retry-logic).
 

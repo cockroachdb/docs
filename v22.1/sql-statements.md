@@ -36,7 +36,7 @@ Statement | Usage
 ----------|------------
 [`ADD COLUMN`](add-column.html) | Add columns to a table.
 [`ADD REGION`](add-region.html) |  Add a [region](multiregion-overview.html#database-regions) to a database. Note that [multi-region features](multiregion-overview.html) require an [Enterprise license](enterprise-licensing.html).
-[`ADD SUPER REGION`](add-super-region.html) | <span class="version-tag">New in v22.1:</span> Add a super region made up of a set of regions added with [`ADD REGION`](add-region.html) such that data from [regional tables](regional-tables.html) will be stored in only those regions.
+[`ADD SUPER REGION`](add-super-region.html) | {% include_cached new-in.html version=v22.1 %} Add a super region made up of a set of regions added with [`ADD REGION`](add-region.html) such that data from [regional tables](regional-tables.html) will be stored in only those regions.
 [`ADD CONSTRAINT`](add-constraint.html) | Add a constraint to a column.
 [`ALTER COLUMN`](alter-column.html) | Change a column's [Default constraint](default-value.html), [`NOT NULL` constraint](not-null.html), or [data type](data-types.html).
 [`ALTER DATABASE`](alter-database.html) | Apply a schema change to a database.
@@ -47,7 +47,7 @@ Statement | Usage
 [`ALTER RANGE`](alter-range.html) | Configure the replication zone for a system range.
 [`ALTER SCHEMA`](alter-schema.html) |  Alter a user-defined schema.
 [`ALTER SEQUENCE`](alter-sequence.html) | Apply a schema change to a sequence.
-[`ALTER SUPER REGION`](alter-super-region.html) | <span class="version-tag">New in v22.1:</span> Alter an existing [super region](multiregion-overview.html#super-regions) to include a different set of regions. A super region is made up of a set of regions added with [`ADD REGION`](add-region.html) such that data from [regional tables](regional-tables.html) will be stored in only those regions.
+[`ALTER SUPER REGION`](alter-super-region.html) | {% include_cached new-in.html version=v22.1 %} Alter an existing [super region](multiregion-overview.html#super-regions) to include a different set of regions. A super region is made up of a set of regions added with [`ADD REGION`](add-region.html) such that data from [regional tables](regional-tables.html) will be stored in only those regions.
 [`ALTER TABLE`](alter-table.html) | Apply a schema change to a table.
 [`ALTER TYPE`](alter-type.html) |  Modify a user-defined, [enumerated data type](enum.html).
 [`ALTER USER`](alter-user.html) | add, change, or remove a user's password and to change the login privileges for a role.
@@ -68,7 +68,7 @@ Statement | Usage
 [`DROP DATABASE`](drop-database.html) | Remove a database and all its objects.
 [`DROP INDEX`](drop-index.html) | Remove an index for a table.
 [`DROP REGION`](drop-region.html) |  Drop a [region](multiregion-overview.html#database-regions) from a database. Note that [multi-region features](multiregion-overview.html) require an [Enterprise license](enterprise-licensing.html).
-[`DROP SUPER REGION`](drop-super-region.html) | <span class="version-tag">New in v22.1:</span> Drop a super region made up of a set of [database regions](multiregion-overview.html#super-regions).
+[`DROP SUPER REGION`](drop-super-region.html) | {% include_cached new-in.html version=v22.1 %} Drop a super region made up of a set of [database regions](multiregion-overview.html#super-regions).
 [`DROP SCHEMA`](drop-schema.html) |  Drop a user-defined schema.
 [`DROP SEQUENCE`](drop-sequence.html) | Remove a sequence.
 [`DROP TABLE`](drop-table.html) | Remove a table.
@@ -94,7 +94,7 @@ Statement | Usage
 [`SHOW LOCALITY`](show-locality.html) | View the locality of the current node.
 [`SHOW PARTITIONS`](show-partitions.html) | List partitions in a database. Note that [partitioning](partitioning.html) requires an [Enterprise license](enterprise-licensing.html).
 [`SHOW REGIONS`](show-regions.html) |  List the [cluster regions](multiregion-overview.html#cluster-regions) or [database regions](multiregion-overview.html#database-regions) in a [multi-region cluster](multiregion-overview.html).
-[`SHOW SUPER REGIONS`](show-super-regions.html) | <span class="version-tag">New in v22.1:</span> List the [super regions](multiregion-overview.html#super-regions) associated with a database in a [multi-region cluster](multiregion-overview.html).
+[`SHOW SUPER REGIONS`](show-super-regions.html) | {% include_cached new-in.html version=v22.1 %} List the [super regions](multiregion-overview.html#super-regions) associated with a database in a [multi-region cluster](multiregion-overview.html).
 [`SHOW SCHEMAS`](show-schemas.html) | List the schemas in a database.
 [`SHOW SEQUENCES`](show-sequences.html) | List the sequences in a database.
 [`SHOW TABLES`](show-tables.html) | List tables or views in a database or virtual schema.

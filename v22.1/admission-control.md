@@ -38,7 +38,7 @@ To enable and disable admission control, use the following [cluster settings](cl
 
 When you enable admission control Cockroach Labs recommends that you enable it for **all layers**.
 
-<span class="version-tag">New in v22.1:</span> Admission control is enabled  by default for all layers.
+{% include_cached new-in.html version=v22.1 %} Admission control is enabled  by default for all layers.
 
 ## Work queues and ordering
 
@@ -50,7 +50,7 @@ The transaction start time is used within the priority queue and gives preferenc
 
 ### Set quality of service level for a session
 
-<span class="version-tag">New in v22.1:</span>
+{% include_cached new-in.html version=v22.1 %}
 
 In an overload scenario where CockroachDB cannot service all requests, you can identify which requests should be prioritized. This is often referred to as _quality of service_ (QoS). Admission control queues work throughout the system. To set the quality of service level on the admission control queues on behalf of SQL requests submitted in a session, use the `default_transaction_quality_of_service` [session variable](set-vars.html). The valid values are `critical`, `background`, and `regular`. Admission control must be enabled for this setting to have an effect.
 

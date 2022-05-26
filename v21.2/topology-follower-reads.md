@@ -59,7 +59,7 @@ To set `AS OF SYSTEM TIME follower_read_timestamp()` on all implicit and explici
     > INSERT INTO postal_codes (ID, code) VALUES (1, '10001'), (2, '10002'), (3, '10003'), (4,'60601'), (5,'60602'), (6,'60603'), (7,'90001'), (8,'90002'), (9,'90003');
     ~~~
 
-1. Decide which type of follower read to perform: exact staleness reads or <span class="version-tag">New in v21.2:</span> bounded staleness reads. For more information about when to use each type of read, see [when to use exact staleness reads](follower-reads.html#when-to-use-exact-staleness-reads) and [when to use bounded staleness reads](follower-reads.html#when-to-use-bounded-staleness-reads).
+1. Decide which type of follower read to perform: exact staleness reads or {% include_cached new-in.html version=v21.2 %} bounded staleness reads. For more information about when to use each type of read, see [when to use exact staleness reads](follower-reads.html#when-to-use-exact-staleness-reads) and [when to use bounded staleness reads](follower-reads.html#when-to-use-bounded-staleness-reads).
     - To use [exact staleness follower reads](follower-reads.html#exact-staleness-reads), configure your app to use [`AS OF SYSTEM TIME`](as-of-system-time.html) with the [`follower_read_timestamp()` function](functions-and-operators.html) whenever reading from the table:
 
         {% include copy-clipboard.html %}

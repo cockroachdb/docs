@@ -331,7 +331,7 @@ $ cockroach demo bank
 
 ### Add a column with an `ON UPDATE` expression
 
-<span class="version-tag">New in v21.2</span>: `ON UPDATE` expressions set the value for a column when other values in a row are updated.
+{% include_cached new-in.html version=v21.2 %} `ON UPDATE` expressions set the value for a column when other values in a row are updated.
 
 For example, suppose you add a new column to the `bank` table:
 

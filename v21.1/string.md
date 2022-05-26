@@ -173,7 +173,7 @@ A literal entered through a SQL client will be translated into a different value
 
 ### Concatenate `STRING` values with values of other types
 
-<span class="version-tag">New in v21.1</span> `STRING` values can be concatenated with any non-`ARRAY`, non-`NULL` type, resulting in a `STRING` value.
+{% include_cached new-in.html version=v21.1 %} `STRING` values can be concatenated with any non-`ARRAY`, non-`NULL` type, resulting in a `STRING` value.
 
 For example:
 

@@ -57,7 +57,7 @@ Kafka has the following topic limitations:
 
 ### Kafka sink configuration
 
-<span class="version-tag">New in v21.2:</span> The `kafka_sink_config` option allows configuration of a changefeed's message delivery, Kafka server version, and batching parameters.
+{% include_cached new-in.html version=v21.2 %} The `kafka_sink_config` option allows configuration of a changefeed's message delivery, Kafka server version, and batching parameters.
 
 {{site.data.alerts.callout_danger}}
 Each of the following settings have significant impact on a changefeed's behavior, such as latency. For example, it is possible to configure batching parameters to be very high, which would negatively impact changefeed latency. As a result it would take a long time to see messages coming through to the sink. Also, large batches may be rejected by the Kafka server unless it's separately configured to accept a high [`max.message.bytes`](https://kafka.apache.org/documentation/#brokerconfigs_message.max.bytes).
@@ -122,7 +122,7 @@ Examples of supported cloud storage sink URIs:
 The webhook sink is currently in **beta**. For more information, read about its usage considerations, available [parameters](create-changefeed.html#parameters), and [options](create-changefeed.html#options) below.
 {{site.data.alerts.end}}
 
-<span class="version-tag">New in v21.2:</span> Use a webhook sink to deliver changefeed messages to an arbitrary HTTP endpoint.
+{% include_cached new-in.html version=v21.2 %} Use a webhook sink to deliver changefeed messages to an arbitrary HTTP endpoint.
 
 Example of a webhook sink URL:
 
@@ -138,7 +138,7 @@ The following are considerations when using the webhook sink:
 
 ### Webhook sink configuration
 
-<span class="version-tag">New in v21.2:</span> The `webhook_sink_config` option allows the changefeed flushing and retry behavior of your webhook sink to be configured.
+{% include_cached new-in.html version=v21.2 %} The `webhook_sink_config` option allows the changefeed flushing and retry behavior of your webhook sink to be configured.
 
 The following details the configurable fields:
 
