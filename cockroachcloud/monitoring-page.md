@@ -50,13 +50,13 @@ If an issue is encountered during the integration, one of the following statuses
 Metrics export from CockroachDB can be interrupted in the event of:
 
 - A stale API key. In this case, the integration status will be `Unhealthy`. To resolve the issue, [update your integration](#update-integration) with a new API key.
-- Transient CockroachDB unavailbility. In this case, the integration status will continue to be `Active` but you might experience incomplete metrics exports in Datadog. To resolve the issue, try [deactivating](#deactivate-integration) and reactivating the integration from the **Datadog** panel. If this does not resolve the issue, [contact our support team](https://support.cockroachlabs.com/).
+- Transient CockroachDB unavailability. In this case, the integration status will continue to be `Active` but you might experience incomplete metrics exports in Datadog. To resolve the issue, try [deactivating](#deactivate-integration) and reactivating the integration from the **Datadog** panel. If this does not resolve the issue, [contact our support team](https://support.cockroachlabs.com/).
 
 {{site.data.alerts.callout_info}}
 Gaps in metrics within Datadog do not necessarily point to an availability issue with CockroachDB. If you encounter any gaps in metrics, we recommend [contacting support](https://support.cockroachlabs.com/).
 {{site.data.alerts.end}}
 
-To monitor the health of metrics export, you can [create a custom Monitor](#monitor-health-of-metrics-export) in Datadog. 
+To monitor the health of metrics export, you can [create a custom Monitor](#monitor-health-of-metrics-export) in Datadog.
 
 ### View and configure dashboards
 
@@ -105,7 +105,7 @@ To update the metadata associated with the integration (for example, to rotate A
 
 1. In the **Datadog** panel, click the ellipsis and select **Update**.
 
-1. Update the **API key** and **Datadog Site** fields and click **Create**. The integration will be redeployed. 
+1. Update the **API key** and **Datadog Site** fields and click **Create**. The integration will be redeployed.
 
 ### Deactivate integration
 
@@ -115,7 +115,7 @@ To deactivate the integration:
 
 1. When disabled, the **Integration status** in the panel will show as `Inactive`.
 
-After deactivating an integration, the metrics data will remain in Datadog for a default [retention period](https://docs.datadoghq.com/developers/guide/data-collection-resolution-retention/). 
+After deactivating an integration, the metrics data will remain in Datadog for a default [retention period](https://docs.datadoghq.com/developers/guide/data-collection-resolution-retention/).
 
 ## Access the DB Console
 

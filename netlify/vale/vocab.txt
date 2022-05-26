@@ -28,6 +28,7 @@ badr
 bardea
 batog
 bcrypt
+benchmarked
 bergin
 biles
 bitwise
@@ -105,6 +106,7 @@ decorrelate
 decorrelated
 decorrelation
 denormalization
+deprovision
 dereference
 deserialize
 deserialized
@@ -260,6 +262,7 @@ lightstep
 linearizability
 liquibase
 liveness
+livestream
 lockless
 loiselle
 lookups
@@ -322,6 +325,7 @@ nuget
 nullability
 nullable
 numerics
+offboard
 offlined
 oid
 oli
