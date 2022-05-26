@@ -22,7 +22,7 @@ Parameter | Description
 ----------|------------
 `type_name` | The name of the user-defined type.
 `ADD VALUE value` | Add a constant value to the user-defined type's list of values. You can optionally specify `BEFORE value` or `AFTER value` to add the value in sort order relative to an existing value.
-`DROP VALUE value` | <span class="version-tag">New in v21.1:</span> Drop a specific value from the user-defined type's list of values.<br>{{site.data.alerts.callout_info}}`ALTER TYPE ... DROP VALUE` is disabled by default with the `enable_drop_enum_value` [cluster setting](cluster-settings.html) set to `off`. To enable `ALTER TYPE ... DROP VALUE`, run `SET enable_drop_enum_value = on;`.{{site.data.alerts.end}}
+`DROP VALUE value` | {% include_cached new-in.html version="v21.1" %} Drop a specific value from the user-defined type's list of values.<br>{{site.data.alerts.callout_info}}`ALTER TYPE ... DROP VALUE` is disabled by default with the `enable_drop_enum_value` [cluster setting](cluster-settings.html) set to `off`. To enable `ALTER TYPE ... DROP VALUE`, run `SET enable_drop_enum_value = on;`.{{site.data.alerts.end}}
 `RENAME TO name` | Rename the user-defined type.
 `RENAME VALUE value TO value` |  Rename a constant value in the user-defined type's list of values.
 `SET SCHEMA`  | Set [the schema](sql-name-resolution.html) of the user-defined type.

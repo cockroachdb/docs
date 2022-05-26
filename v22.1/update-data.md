@@ -281,7 +281,7 @@ To insert new rows into a table, and to update rows with `UNIQUE`-constrained va
 
 `INSERT ... ON CONFLICT ... DO UPDATE` is semantically identical to `UPSERT`, when the conflicting values are in the primary key and the action to take on conflict is to update the conflicting rows with the new rows. `INSERT ... ON CONFLICT` is more flexible than `UPSERT`, and can be used to consider uniqueness for columns not in the primary key. With `INSERT ... ON CONFLICT`, you can also control how to update rows in the event of a conflict. This contrasts with the behavior of an `UPSERT` statement, which just overwrites conflicting rows with new rows.
 
-<span class="version-tag">New in v22.1:</span> [Hash-sharded indexes](hash-sharded-indexes.html) can be used for uniqueness checks.
+{% include_cached new-in.html version="v22.1" %} [Hash-sharded indexes](hash-sharded-indexes.html) can be used for uniqueness checks.
 
 {{site.data.alerts.callout_info}}
  Note that if you are inserting to/updating all columns of a table, and the table has no secondary indexes, `UPSERT` will be faster than the equivalent `INSERT ON CONFLICT` statement, as it will write without first reading.

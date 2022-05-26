@@ -135,7 +135,7 @@ Before using `IMPORT INTO`, you should have:
 - `random()`
 - `gen_random_uuid()`
 - `unique_rowid()`
-- <span class="version-tag"> New in v21.1: </span>`nextval()`
+- {% include_cached new-in.html version="v21.1" %} `nextval()`
 
 ### Available storage
 

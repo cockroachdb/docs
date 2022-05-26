@@ -70,7 +70,7 @@ If the default survival goals and table localities meet your needs, there is not
 
 {% include common/experimental-warning.md %}
 
-<span class="version-tag">New in v22.1:</span> Super regions allow you to define a set of [database regions](#database-regions) such that the following [schema objects](schema-design-overview.html#database-schema-objects) will have all of their replicas stored _only_ in regions that are members of the super region:
+{% include_cached new-in.html version="v22.1" %} Super regions allow you to define a set of [database regions](#database-regions) such that the following [schema objects](schema-design-overview.html#database-schema-objects) will have all of their replicas stored _only_ in regions that are members of the super region:
 
 - [Regional tables](#regional-tables) whose home region is a member of the super region.
 - Any row of a [regional by row table](#regional-by-row-tables) whose [home region](set-locality.html#crdb_region) is a member of the super region.
