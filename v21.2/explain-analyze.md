@@ -61,7 +61,7 @@ rows read from KV | The number of rows read from the [storage layer](architectur
 cumulative time spent in KV | The total amount of time spent in the storage layer.
 maximum memory usage | The maximum amount of memory used by this statement anytime during its execution.
 network usage | The amount of data transferred over the network while the statement was executed. If the value is 0 B, the statement was executed on a single node and didn't use the network.
-max sql temp disk usage | {% include_cached new-in.html version="v21.2" %} <br /> (`DISTSQL` only) How much disk spilling occurs when executing a query. This property is displayed only when the disk usage is greater than zero.
+max sql temp disk usage | <span class="version-tag">New in v21.2:</span> <br /> (`DISTSQL` only) How much disk spilling occurs when executing a query. This property is displayed only when the disk usage is greater than zero.
 
 ### Statement plan tree properties
 

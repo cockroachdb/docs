@@ -428,7 +428,7 @@ Field | Type | Description
 <code>statistics -> numRows -> [mean&#124;sqDiff]</code> | `NumericStat` | The number of rows returned or observed.
 <code>statistics -> ovhLat -> [mean&#124;sqDiff]</code> | `NumericStat` | The difference between `svcLat` and the sum of `parseLat+planLat+runLat` latencies.
 <code>statistics -> parseLat -> [mean&#124;sqDiff]</code> | `NumericStat` | The time to transform the SQL string into an abstract syntax tree (AST).
-<code>statistics -> planGists | `String` | {% include_cached new-in.html version="v22.1" %} A sequence of bytes representing the flattened tree of operators and various operator specific metadata of the statement plan.
+<code>statistics -> planGists | `String` | <span class="version-tag">New in v22.1:</span> A sequence of bytes representing the flattened tree of operators and various operator specific metadata of the statement plan.
 <code>statistics -> planLat -> [mean&#124;sqDiff]</code> | `NumericStat` | The time to transform the AST into a logical query plan.
 <code>statistics -> rowsRead -> [mean&#124;sqDiff]</code> | `NumericStat` | The number of rows read from disk.
 <code>statistics -> rowsWritten -> [mean&#124;sqDiff]</code> | `NumericStat` | The number of rows written to disk.

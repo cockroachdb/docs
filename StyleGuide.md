@@ -798,6 +798,8 @@ To add a version tag, use the following Liquid tag:
 {% include_cached new-in.html version="v22.1" %}
 ~~~
 
+Note: If using a version tag inside of a Markdown table, use `<span class="version-tag">New in vXX.Y:</span>` or `<span class="version-tag">New in vXX.Y.Z:</span>` instead.
+
 Put version tags at the beginning of a paragraph, sentence, or description in a table cell.
 
 If a feature is new in a GA release, use the major release number for the release version tag (e.g., `{% include_cached new-in.html version="v21.2" %}`).
