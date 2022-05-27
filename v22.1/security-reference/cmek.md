@@ -9,7 +9,7 @@ Customer Managed Encryption Keys (CMEK) give you more control over how your clus
 
 ## Overview of CMEK
 
-This section briefly describes how Encryption At Rest works without CMEK, and then explains the differences when CMEK is enabled. For more details, see [Encryption At Rest](encryption.md).
+This section briefly describes how Encryption At Rest works without CMEK, and then explains the differences when CMEK is enabled. For more details, see [Encryption At Rest](encryption.html).
 
 When Encryption At Rest is enabled on a CockroachDB cluster, data is always encrypted when writing to a database, and must be decrypted when reading from the database. Data in backups is also encrypted at rest. When you enable Encryption At Rest, CockroachDB creates two keys, distributes them to the cluster's nodes, and begins using them to encrypt and decrypt the cluster's data:
 
@@ -70,4 +70,4 @@ When Encryption At Rest is enabled on a CockroachDB cluster, data is always encr
 ## See also
 
 - [TODO](/)
-- [Encryption At Rest](encryption.md).
+- [Encryption At Rest](encryption.html).
