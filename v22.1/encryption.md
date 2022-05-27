@@ -109,4 +109,4 @@ will be decrypted using the old key and then encrypted using the new key. A new 
 
 ## Configuring Customer Managed Encryption Keys (CMEK)
 
-Customer Managed Encryption Keys (CMEK) give you more control over how your cluster's data is protected on your cluster's filesystem. When CMEK is enabled, your store key is protected by an additional cryptographic key that is entirely within your control, called the CMEK key. To learn more, see [Customer Managed Encryption Keys (CMEK)](cmek.html) and [Encryption in CockroachDB](../encryption.html).
+Customer Managed Encryption Keys (CMEK) give you more control over how your cluster's data is protected on your cluster's filesystem. When CMEK is enabled, your store key is protected by an additional cryptographic key that is entirely within your control, called the CMEK key. To learn more, see [Customer Managed Encryption Keys (CMEK)](security-reference/cmek.html) and [Encryption in CockroachDB](securityreference/encryption.html).
