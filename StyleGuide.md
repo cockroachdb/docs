@@ -186,9 +186,9 @@ For more detail about how to format text, see [Components](#components).
 
 ## Vale
 
-The CockroachDB documentation utilizes [Vale](https://vale.sh/) in order to identify common spelling mistakes or other patterns that may be in violation of one or more of the criteria set forth in this guide. You will usually see the items Vale flagged in the **Files Changed** tab of the pull request, inline in each file. Sometimes, it may appear in the **Checks** tab, depending on how many files are changed.
+The CockroachDB documentation uses [Vale](https://vale.sh/) to identify common spelling mistakes or other patterns that may contradict the guidelines in this style guide. Check for items flagged by Vale in the **Files Changed** and **Checks** tabs of the pull request, grouped by file.
 
-Try to address as many of the suggestions as possible. If Vale flags a word as erroneous that is actually valid, that word can be added to `netlify/vale/vocab.txt` file. For other checks that have falsely identified text in your PR, your reviewer will work with you to correct them.
+Try to address as many of the suggestions as possible. If Vale flags a word that is spelled and used correctly, add the word to `netlify/vale/vocab.txt` in the PR where the word is introduced. For other failed tests, you can work with your reviewer to correct the error in your PR or to improve the Vale test.
 
 ## File conventions
 
