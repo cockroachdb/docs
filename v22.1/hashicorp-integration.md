@@ -24,7 +24,7 @@ Because of CockroachDB's PostgreSQL compatibility, customers can also [use Vault
 
 CockroachDB customers can integrate these services, using Vault's KMS secrets engine to handle the full lifecycle of the encryption keys that {{ site.data.products.db }} uses to protect their data.
 
-## Using Vault's Transit Secrets Engine to manage a {{ site.data.products.core }} cluster's encryption-at-rest store key
+## Use Vault's Transit Secrets Engine to manage a {{ site.data.products.core }} cluster's encryption-at-rest store key
 
 When deploying {{ site.data.products.enterprise }}, customers can provide their own externally managed encryption keys for use as the *store key* for CockroachDB's [enterprise Encryption-at-rest](https://www.cockroachlabs.com/docs/stable/security-reference/encryption.html#encryption-at-rest-enterprise).
 
