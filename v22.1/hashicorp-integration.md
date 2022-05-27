@@ -34,7 +34,7 @@ Vault's [Transit Secrets Engine](https://www.vaultproject.io/docs/secrets/transi
 
 {{ site.data.products.core }} customers can use Vault's public key infrastructure (PKI) secrets engine to manage PKI certificates. Vault's PKI Secrets Engine greatly eases the security-critical work involved in securely maintaining a certificate authority (CA), generating, signing and distributing PKI certificates.
 
-Using Vault to manage certificates makes it possible to use only certificates with brief validity duration, which is an important component of PKI security.
+By using Vault to manage certificates, you can use only certificates with short validity durations, an important component of PKI security.
 
 ## Using Vault's PostgreSQL Database Secrets Engine to manage CockroachDB SQL users and their credentials
 
