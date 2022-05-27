@@ -5,7 +5,7 @@ toc: true
 docs_area: TODO
 ---
 
-Customer Managed Encryption Keys (CMEK) give you more control over how your cluster's data is protected on your cluster's filesystem. When CMEK is enabled, your cluster's data is protected by an additional cryptographic key that is entirely within your control. This article describes how CMEK works in CockroachDB clusters. To enable CMEK on a cluster, see [TODO](/).
+Customer Managed Encryption Keys (CMEK) give you more control over how your cluster's data is protected on your cluster's filesystem. When CMEK is enabled, your cluster's data is protected by an additional cryptographic key that is entirely within your control. This article describes how CMEK works in CockroachDB clusters. To enable CMEK on a cluster, see [TODO](/index.html).
 
 ## Overview of CMEK
 
@@ -36,7 +36,7 @@ When Encryption At Rest is enabled on a CockroachDB cluster, data is always encr
 
 ## How CMEK works
 
-  This section describes how data is read from or written to a CockroachDB cluster work when CMEK is enabled. For detailed instructions, see [TODO](/).
+  This section describes how data is read from or written to a CockroachDB cluster work when CMEK is enabled. For detailed instructions, see [TODO](/index.html).
 
   To enable CMEK on a cluster, you run `cockroach start` and set `--enterprise-encryption` to the location of the CMEK key. You can specify a local filesystem path or a URI.
 
@@ -58,7 +58,7 @@ When Encryption At Rest is enabled on a CockroachDB cluster, data is always encr
 
   CMEK is configured at the level of the cluster. You can configure a separate CMEK key for each cluster or you can use the same CMEK key for multiple clusters.
 
-  To learn more or to configure CMEK for a cluster, see [TODO](/).
+  To learn more or to configure CMEK for a cluster, see [TODO](/index.html).
 
 ## Limitations
 
@@ -69,5 +69,5 @@ When Encryption At Rest is enabled on a CockroachDB cluster, data is always encr
 
 ## See also
 
-- [TODO](/)
+- [TODO](/index.html)
 - [Encryption At Rest](encryption.html).
