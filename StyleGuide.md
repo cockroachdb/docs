@@ -641,7 +641,7 @@ When the time comes to document known limitations, keep in mind that you are doc
 
     1. If the tracking GitHub issue is still open, you should leave the known limitation as unresolved. If it is closed, you need to find the PR that resolved the issue, and see if it was backported to a previous release.
 
-    1. Remove the limitation from the Known Limitations page, and from all other pages in the docs *for each version in which the resolving PR was merged*. If the resolving PR was not backported, then you can remove the limitation from just the latest release's docs.
+    1. Remove the limitation from the Known Limitations page, and from all other pages in the docs **for each version in which the resolving PR was merged**. If the resolving PR was not backported, then you can remove the limitation from just the latest release's docs.
 
 1. [Document all new limitations](#where-to-find-known-limitations) under the "New limitations" header. Note that undocumented known limitations might apply to more than just one release. If the limitation applies to previous releases, then add the limitation under the "Existing limitations" header for each supported versioned docset to which the limitation applies.
 
@@ -684,7 +684,7 @@ $ go get -u github.com/lib/pq
 
 This is more sample text.
 ```
-Using some special characters (e.g., double `{{ ... }}`) within code blocks may require to you [escape them](#escaping-special-characters).
+Using some special characters (e.g., double `{{ ... }}`) within code blocks may require to you [escape them](#how-to-escape-special-characters).
 
 Highlight shell and SQL commands where appropriate using the following info:
 
@@ -733,13 +733,13 @@ Ensure that placeholders are placed within backticks `(``)`: `SET {session varia
 
 If the code sample you are using is sensitive to curly bracket characters (e.g., JavaScript), you can use `<>` instead.
 
-Using placeholders within code samples or in non-Markdown locations may require to you [escape them](#escaping-special-characters).
+Using placeholders within code samples or in non-Markdown locations may require to you [escape them](#how-to-escape-special-characters).
 
 For some examples, see [Connect to a CockroachDB Cluster](https://www.cockroachlabs.com/docs/stable/connect-to-the-database.html?filters=python).
 
-#### Escaping special characters
+#### How to escape special characters
 
-Sometimes you may need to escape special characters to acheive proper rendering. This is most common in the following two cases:
+Sometimes you may need to escape special characters to achieve proper rendering. This is most common in the following two cases:
 
 - You are using Jekyll-reserved characters (e.g., double `{{ ... }}`) in code blocks. To escape these, wrap the specific line(s) you wish to escape using the Liquid tags `{% raw %} ... {% endraw %}`. For example:
 
