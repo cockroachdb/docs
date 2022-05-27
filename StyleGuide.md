@@ -538,7 +538,7 @@ To insert a note, use the following code:
 
 #### Warnings
 
-Use a warning to express that a piece of information is critical to understand to prevent data loss, security vulnerability, or unexpected behavior.
+Use a warning to express that a piece of information is critical to understand to prevent data loss, security vulnerabilities, or unexpected behavior.
 
 For example, you might include a warning that using `CASCADE` in `DROP INDEX` drops dependent objects without warning. This is critical to prevent users from unexpectedly losing constraints or additional indexes.
 
