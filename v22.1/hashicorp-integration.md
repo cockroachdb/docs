@@ -18,7 +18,7 @@ We officially support three integrations between Vault and CockroachDB:
 In addition, because of CockroachDB's PostgreSQL compatibility, customers can also [use Vault's  PostgreSQL Database Secrets Engine to manage CockroachDB SQL user credentials]((#using-vaults-postgresql-database-secrets-engine-to-manage-cockroachdb-sql-users-and-their-credentials).
 	
 ## Using Vault's KMS secrets engine to manage a {{ site.data.products.dedicated }} cluster's customer-managed encryption key
-{{ site.data.products.dedicated }} supports the use of customer managed encrypted keys (CMEK) for the encryption of data at rest.
+{{ site.data.products.dedicated }} supports the use of customer-managed encrypted keys (CMEK) for the encryption of data at rest.
 
 [Vault's Key Management secrets engine](https://www.vaultproject.io/docs/secrets/key-management.) allows customers to manage encryption keys on external key management services (KMS) such as those offered by Google Cloud Platform (GCP) or Amazon Web Services (AWS).
 
