@@ -155,7 +155,7 @@ Incremental backups are smaller and faster to produce than full backups because 
 
 ### Garbage collection and backups
 
-Incremental backups with [revision history](take-backups-with-revision-history-and-restore-from-a-point-in-time.html#create-a-backup-with-revision-history) are created by finding what data has been created, deleted, or modified since the timestamp of the last backup in the chain of backups. For the first incremental backup in a chain, this timestamp corresponds to the timestamp of the base [(full) backup](#full-backup). For subsequent incremental backups, this timestamp is the timestamp of the previous incremental backup in the chain.
+Incremental backups with [revision history](take-backups-with-revision-history-and-restore-from-a-point-in-time.html#create-a-backup-with-revision-history) are created by finding what data has been created, deleted, or modified since the timestamp of the last backup in the chain of backups. For the first incremental backup in a chain, this timestamp corresponds to the timestamp of the base [(full) backup](#full-backups). For subsequent incremental backups, this timestamp is the timestamp of the previous incremental backup in the chain.
 
 [Garbage collection Time to Live (GC TTL)](architecture/storage-layer.html#garbage-collection) determines the period for which CockroachDB retains revisions of a key. If the GC TTL of the backup's target is shorter than the frequency at which you take incremental backups with revision history, then the revision becomes susceptible to garbage collection before you have backed them up. This will cause the incremental backup with revision history to fail.
 
