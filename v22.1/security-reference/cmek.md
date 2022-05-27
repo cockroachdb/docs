@@ -9,7 +9,7 @@ Customer Managed Encryption Keys (CMEK) give you more control over how your clus
 
 ## Overview of CMEK
 
-This section briefly describes how Encryption At Rest works without CMEK, and then explains the differences when CMEK is enabled. For more details, see [Encryption At Rest](/docs/stable/security-reference/encryption.md).
+This section briefly describes how Encryption At Rest works without CMEK, and then explains the differences when CMEK is enabled. For more details, see [Encryption At Rest](encryption.md).
 
 When Encryption At Rest is enabled on a CockroachDB cluster, data is always encrypted when writing to a database, and must be decrypted when reading from the database. Data in backups is also encrypted at rest. When you enable Encryption At Rest, CockroachDB creates two keys, distributes them to the cluster's nodes, and begins using them to encrypt and decrypt the cluster's data:
 
@@ -24,7 +24,9 @@ When Encryption At Rest is enabled on a CockroachDB cluster, data is always encr
 
   - **Data lifecycle management**: To temporarily and reversibly disable access to data in the cluster, such as when investigating suspicious activity, you can revoke the CockroachDB service account's permission to use the CMEK key, using your cloud tenant's management interface or Hashicorp Vault. To re-enable access to the data, you can re-grant permission to use the key. To permanently disable access to the data in the cluster, you can permanently delete the CMEK key.
 
-    .. important:: To protect against inadvertent data loss, your cloud provider may impose a waiting period before a key is permanently deleted. Check the documentation for your cloud provider for details how long a deleted key can still be accessed.
+    {{site.data.alerts.callout_danger}}
+    To protect against inadvertent data loss, your cloud provider may impose a waiting period before a key is permanently deleted. Check the documentation for your cloud provider for details how long a deleted key can still be accessed.
+    {{site.data.alerts.end}}
 
   - **Infrastructure flexibility**: If all of your CockroachDB clusters and cryptographic keys are stored in the same cloud provider, you can access CMEK keys using that cloud provider's key-management system directly.
 
@@ -65,7 +67,7 @@ When Encryption At Rest is enabled on a CockroachDB cluster, data is always encr
 - Only symmetric AES-GCM software keys are supported.
 - Keys stored in an HSM are not supported. The PCKS #11 API is not supported.
 
-## Next steps
+## See also
 
 - [TODO](TODO)
-- [Encryption At Rest](/docs/stable/security-reference/encryption.md).
+- [Encryption At Rest](encryption.md).
