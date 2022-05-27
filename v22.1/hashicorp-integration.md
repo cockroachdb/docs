@@ -30,7 +30,7 @@ When deploying {{ site.data.products.enterprise }}, customers can provide their 
 
 Vault's [Transit Secrets Engine](https://www.vaultproject.io/docs/secrets/transit) can be used to generate suitable encryption keys for use as your cluster's store key.
 
-## Using Vault's PKI Secrets Engine to manage a {{ site.data.products.core }} cluster's server and client certificates
+## Use Vault's PKI Secrets Engine to manage a {{ site.data.products.core }} cluster's server and client certificates
 
 {{ site.data.products.core }} customers can use Vault's public key infrastructure (PKI) secrets engine to manage PKI certificates. Vault's PKI Secrets Engine greatly eases the security-critical work involved in securely maintaining a certificate authority (CA), generating, signing and distributing PKI certificates.
 
