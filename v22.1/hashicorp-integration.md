@@ -22,7 +22,7 @@ In addition, because of CockroachDB's PostgreSQL compatibility, customers can al
 
 [Vault's Key Management secrets engine](https://www.vaultproject.io/docs/secrets/key-management.) allows customers to manage encryption keys on external key management services (KMS) such as those offered by Google Cloud Platform (GCP) or Amazon Web Services (AWS).
 
-CockroachDB customers can integrate the services, using Vault's KMS secrets engine to handle the full lifecycle of the encryption keys that {{ site.data.products.db }} uses to protect their data.
+CockroachDB customers can integrate these services, using Vault's KMS secrets engine to handle the full lifecycle of the encryption keys that {{ site.data.products.db }} uses to protect their data.
 
 ## Using Vault's Transit Secrets Engine to manage a {{ site.data.products.core }} cluster's encryption-at-rest store key
 
