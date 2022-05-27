@@ -45,8 +45,10 @@ If you are a member of more than one [CockroachDB Cloud organization](console-ac
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-ccloud auth login --org <organization ID>
+ccloud auth login --org <organization label>
 ~~~
+
+The organization label is found on the **Settings** page of the CockroachDB Cloud Console.
 
 ## Create a new cluster using `ccloud cluster create`
 
