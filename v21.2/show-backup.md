@@ -36,8 +36,8 @@ Option       | Value | Description
 -------------+-------+-----------------------------------------------------
 `privileges` | N/A   |  List which users and roles had which privileges on each table in the backup. Displays original ownership of the backup.
 `encryption_passphrase`<a name="with-encryption-passphrase"></a> | [`STRING`](string.html) |  The passphrase used to [encrypt the files](take-and-restore-encrypted-backups.html) that the `BACKUP` statement generates (the data files and its manifest, containing the backup's metadata).
-`debug_ids` |  N/A  | {% include_cached new-in.html version="v21.2" %} [Display descriptor IDs](#show-a-backup-with-descriptor-ids) of every object in the backup, including the object's database and parent schema.
-`as_json`   |  N/A  | {% include_cached new-in.html version="v21.2" %} [Display the backup's internal metadata](#show-a-backups-internal-metadata) as JSON in the response.
+`debug_ids` |  N/A  | <span class="version-tag">New in v21.2:</span> [Display descriptor IDs](#show-a-backup-with-descriptor-ids) of every object in the backup, including the object's database and parent schema.
+`as_json`   |  N/A  | <span class="version-tag">New in v21.2:</span> [Display the backup's internal metadata](#show-a-backups-internal-metadata) as JSON in the response.
 
 ## Response
 
@@ -49,7 +49,7 @@ Field | Description
 `parent_schema_name` | The name of the parent schema.
 `object_name` | The name of the [database](create-database.html), [table](create-table.html), [type](create-type.html), or schema.
 `object_type` | The type of object: [database](create-database.html), [table](create-table.html), [type](create-type.html), or schema.
-`backup_type` | {% include_cached new-in.html version="v21.2" %} The type of backup: [full](take-full-and-incremental-backups.html#full-backups) or [incremental](take-full-and-incremental-backups.html#incremental-backups).
+`backup_type` | <span class="version-tag">New in v21.2:</span> The type of backup: [full](take-full-and-incremental-backups.html#full-backups) or [incremental](take-full-and-incremental-backups.html#incremental-backups).
 `start_time` | The time of the earliest data encapsulated in the backup. Note that this only displays for incremental backups. For a full backup, this is `NULL`.
 `end_time` | The time to which data can be restored. This is equivalent to the [`AS OF SYSTEM TIME`](as-of-system-time.html) of the backup. If the backup was _not_ taken with [revision history](take-backups-with-revision-history-and-restore-from-a-point-in-time.html), the `end_time` is the _only_ time the data can be restored to. If the backup was taken with revision history, the `end_time` is the latest time the data can be restored to.
 `size_bytes` | The size of the backup, in bytes.
