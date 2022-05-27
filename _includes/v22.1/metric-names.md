@@ -136,6 +136,8 @@ Name | Help
 `range.snapshots.generated` | Number of generated snapshots
 `range.snapshots.normal-applied` | Number of applied snapshots
 `range.snapshots.preemptive-applied` | Number of applied pre-emptive snapshots
+`range.snapshots.rcvd-bytes` | Number of snapshot bytes received
+`range.snapshots.sent-bytes` | Number of snapshot bytes sent
 `range.splits` | Number of range splits
 `ranges.unavailable` | Number of ranges with fewer live replicas than needed for quorum
 `ranges.underreplicated` | Number of ranges with fewer live replicas than the replication target
