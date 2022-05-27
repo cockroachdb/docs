@@ -9,7 +9,7 @@ This pages reviews the supported integrations between CockroachDB and [HashiCorp
 
 Vault offers tooling to extend CockroachDB's data security capabilities. Vault is an identity-based secrets and encryption management service, which can either be self-hosted or accessed as a software as a service (SaaS) product through HashiCorp Cloud Platform (HCP).
 
-We officially support three integrations between Vault and CockroachDB:
+Cockroach Labs supports three integrations between Vault and CockroachDB:
 
 - [Using Vault's Key Management Secrets (KMS) Engine to manage & distribute encryption keys to AWS or GCP KMS for {{ site.data.products.dedicated }}'s customer-managed encryption key (CMEK) functionality.](#using-vaults-kms-secrets-engine-to-manage-a-cockroachdb-dedicated-clusters-customer-managed-encryption-key)
 - [Using Vault's Transit Secrets Engine to generate the store key for encryption at rest for a {{ site.data.products.core }} cluster.](#using-vaults-transit-secrets-engine-to-manage-a-cockroachdb-self-hosted-clusters-encryption-at-rest-store-key)
