@@ -13,7 +13,7 @@ See also: [Hashicorp Vault database secrets engine tutorial](https://learn.hashi
 
 To follow along with this tutorial you will need the following:
 
-- Access as `root` SQL user to a CockroachDB cluster. You may either [spin up a {{ site.data.products.serverless }} cluster](../cockroachcoud/create-a-serverless-cluster.html) or [Start a Development Cluster locally](../{{site.versions["stable"]}}/start-a-local-cluster.html). In either case you must have the public CA certificate for your cluster, and a username/password combination for the root SQL user (or another SQL user with the admin role).
+- Access as `root` SQL user to a CockroachDB cluster. You may either [spin up a {{ site.data.products.serverless }} cluster](../cockroachcloud/create-a-serverless-cluster.html) or [Start a Development Cluster locally](../{{site.versions["stable"]}}/start-a-local-cluster.html). In either case you must have the public CA certificate for your cluster, and a username/password combination for the root SQL user (or another SQL user with the admin role).
 - Access to a Vault cluster with an admin token. You may either spin up a [free cluster in Hashicorp cloud](https://learn.hashicorp.com/collections/vault/cloud) or [start a development cluster locally](https://learn.hashicorp.com/tutorials/vault/getting-started-dev-server).
 
 ## Introduction
@@ -395,8 +395,8 @@ List all the tables in database `defaultdb` to confirm you can connect to your C
 
 {% include_cached copy-clipboard.html %}
 ```shell
-USER_NAME=v-token-crdb-rol-thfLPlFwex0k9Op0P8qA-1653528652 # CRDB admin username
-PASSWORD=FlOo0p7jMTXjT27hlZZ-H # CRDB admin password
+USER_NAME=v-token-crdb-rol-thfLPlFwex0k9Op0P8qA-1653528652 # generated CRDB client username
+PASSWORD=FlOo0p7jMTXjT27hlZZ-H # generated CRDB client password
 DB_NAME=defaultdb
 CLUSTER_NAME=lilac-grizzly-684
 HOST=free-tier21.aws-us-west-2.crdb.io
