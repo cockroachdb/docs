@@ -7,7 +7,7 @@ docs_area: reference.third_party_support
 
 This pages reviews the supported integrations between CockroachDB and [HashiCorp's Vault](https://www.vaultproject.io/).
 
-Vault offers tooling to extend CockroachDB's data security capabilities. Vault is an identity-based secrets and encryption management service, which can either be self-hosted, or accessed as a software as a service (SaaS) product through HashiCorp Cloud Platform (HCP).
+Vault offers tooling to extend CockroachDB's data security capabilities. Vault is an identity-based secrets and encryption management service, which can either be self-hosted or accessed as a software as a service (SaaS) product through HashiCorp Cloud Platform (HCP).
 
 We officially support three integrations between Vault and CockroachDB:
 
