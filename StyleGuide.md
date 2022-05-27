@@ -552,7 +552,7 @@ To insert a warning, use the following code:
 
 #### CockroachDB version callout
 
-A custom callout at the top of the CockroachDB Cloud Release Notes calls attention to the latest CockroachDB version that Cloud clusters are running.
+A custom callout at the top of the CockroachDB Cloud Release Notes displays the CockroachDB version that Cloud clusters are running.
 It should not be used anywhere else.
 
 ~~~
