@@ -500,13 +500,13 @@ Reference issues and pull requests by their corresponding number, prepended with
 
 ### Tips, notes, and warnings
 
-Our docs use three classes of highlighted text:
+Our docs use three classes of highlighted text (also referred to as callouts):
 
 - [Tips](#tips)
 - [Notes](#notes)
 - [Warnings](#warnings)
 
-The text of notes, warnings, and tips must be formatted in HTML instead of Markdown.
+The highlighting is generated using Liquid tags, each of which must be on its own line. You can use Markdown (preferred) or HTML within the highlighted text.
 
 #### Tips
 
@@ -522,8 +522,6 @@ To insert a tip, use the following code:
 {{site.data.alerts.end}}
 ~~~
 
-Each Liquid tag should be on its own line. You can use Markdown within the highlighted text.
-
 #### Notes
 
 Use a note to call attention to a piece of clarifying information; this information should not be crucial to accomplishing the task in the document.
@@ -538,11 +536,9 @@ To insert a note, use the following code:
 {{site.data.alerts.end}}
 ~~~
 
-Each Liquid tag should be on its own line. You can use Markdown within the highlighted text.
-
 #### Warnings
 
-Use a warning to express that a piece of information is critical to understand to prevent unexpected things from happening.
+Use a warning to express that a piece of information is critical to understand to prevent data loss, security vulnerability, or unexpected behavior.
 
 For example, you might include a warning that using `CASCADE` in `DROP INDEX` drops dependent objects without warning. This is critical to prevent users from unexpectedly losing constraints or additional indexes.
 
@@ -554,9 +550,16 @@ To insert a warning, use the following code:
 {{site.data.alerts.end}}
 ~~~
 
-There is also a custom purple callout that uses the code `{{site.data.alerts.callout_version}}`. It is used at the top of the CockroachDB Cloud Release Notes to call attention to the latest CockroachDB version that Cloud clusters are running. It should not be used anywhere else.
+#### CockroachDB version callout
 
-Each Liquid tag should be on its own line. You can use Markdown within the highlighted text.
+There is also a custom callout at the top of the CockroachDB Cloud Release Notes to call attention to the latest CockroachDB version that Cloud clusters are running.
+It should not be used anywhere else.
+
+~~~
+{{site.data.alerts.callout_version}}
+<CockroachDB version>
+{{site.data.alerts.end}}
+~~~
 
 ### Known limitations
 
@@ -567,7 +570,7 @@ Sometimes CockroachDB does not behave the way that users expect it to behave. Th
 - A difference in syntax between CockroachDB and [SQL Standard](https://blog.ansi.org/2018/10/sql-standard-iso-iec-9075-2016-ansi-x3-135)
 - A difference in the behavior of CockroachDB and PostgreSQL
 - A feature that is functional, but not yet fully implemented
-- A feature that is fully implemented, but has some *long-standing* bugs (i.e., bugs that have existed across minor and/or major releases)
+- A feature that is fully implemented, but has some **long-standing** bugs (i.e., bugs that have existed across minor and/or major releases)
 - A feature that limits performance
 
 We list the general differences between CockroachDB and the SQL Standard on our [SQL Feature Support](https://www.cockroachlabs.com/docs/stable/sql-feature-support.html) page, and we provide more details on the differences between CockroachDB and PostgreSQL on our [PostgreSQL Compatibility](https://www.cockroachlabs.com/docs/stable/postgresql-compatibility.html). All other instances of known, but possibly unexpected, database behavior are known as **known limitations**.
