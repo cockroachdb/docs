@@ -4,7 +4,7 @@ summary: The SET PRIMARY REGION statement sets the primary region of a multi-reg
 toc: true
 ---
 
-<span class="version-tag">New in v21.1:</span> The `ALTER DATABASE .. SET PRIMARY REGION` [statement](sql-statements.html) sets the primary [region](multiregion-overview.html#database-regions) of a [multi-region database](multiregion-overview.html).
+{% include_cached new-in.html version="v21.1" %} The `ALTER DATABASE .. SET PRIMARY REGION` [statement](sql-statements.html) sets the primary [region](multiregion-overview.html#database-regions) of a [multi-region database](multiregion-overview.html).
 
 {% include enterprise-feature.md %}
 

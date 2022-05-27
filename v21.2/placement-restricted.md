@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-<span class="version-tag">New in v21.2</span>: The `ALTER DATABASE ... PLACEMENT RESTRICTED` [statement](sql-statements.html) is used to constrain the replica placement for a [multi-region database](multiregion-overview.html)'s [regional tables](regional-tables.html) to the [home regions](set-locality.html#crdb_region) associated with those tables. [Regional tables](regional-tables.html) are those with [`REGIONAL BY ROW`](multiregion-overview.html#regional-by-row-tables) or [`REGIONAL BY TABLE`](multiregion-overview.html#regional-tables) localities. `ALTER DATABASE ... PLACEMENT RESTRICTED` is a way of opting out of [non-voting replicas](architecture/replication-layer.html#non-voting-replicas) for [regional tables](regional-tables.html) to accomplish one or more of the following goals:
+{% include_cached new-in.html version="v21.2" %} The `ALTER DATABASE ... PLACEMENT RESTRICTED` [statement](sql-statements.html) is used to constrain the replica placement for a [multi-region database](multiregion-overview.html)'s [regional tables](regional-tables.html) to the [home regions](set-locality.html#crdb_region) associated with those tables. [Regional tables](regional-tables.html) are those with [`REGIONAL BY ROW`](multiregion-overview.html#regional-by-row-tables) or [`REGIONAL BY TABLE`](multiregion-overview.html#regional-tables) localities. `ALTER DATABASE ... PLACEMENT RESTRICTED` is a way of opting out of [non-voting replicas](architecture/replication-layer.html#non-voting-replicas) for [regional tables](regional-tables.html) to accomplish one or more of the following goals:
 
 - Implement a [data domiciling](data-domiciling.html) strategy.
 - Reduce the amount of data stored on the cluster.
