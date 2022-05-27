@@ -15,7 +15,7 @@ We officially support three integrations between Vault and CockroachDB:
 - [Using Vault's Transit Secrets Engine to generate the store key for encryption at rest for a {{ site.data.products.core }} cluster.](#using-vaults-transit-secrets-engine-to-manage-a-cockroachdb-self-hosted-clusters-encryption-at-rest-store-key)
 - [Using Vault's PKI Secrets Engine to manage the server and client certificates for a {{ site.data.products.core }} cluster.](#using-vaults-pki-secrets-engine-to-manage-a-cockroachdb-self-hosted-clusters-server-and-client-certificates)
 
-In addition, because of CockroachDB's PostgreSQL compatibility, customers can also [use Vault's  PostgreSQL Database Secrets Engine to manage CockroachDB SQL user credentials]((#using-vaults-postgresql-database-secrets-engine-to-manage-cockroachdb-sql-users-and-their-credentials).
+Because of CockroachDB's PostgreSQL compatibility, customers can also [use Vault's  PostgreSQL Database Secrets Engine to manage CockroachDB SQL user credentials]((#using-vaults-postgresql-database-secrets-engine-to-manage-cockroachdb-sql-users-and-their-credentials).
 	
 ## Using Vault's KMS secrets engine to manage a {{ site.data.products.dedicated }} cluster's customer-managed encryption key
 {{ site.data.products.dedicated }} supports the use of customer-managed encrypted keys (CMEK) for the encryption of data at rest.
