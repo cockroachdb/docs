@@ -36,7 +36,7 @@ Vault's [Transit Secrets Engine](https://www.vaultproject.io/docs/secrets/transi
 
 By using Vault to manage certificates, you can use only certificates with short validity durations, an important component of PKI security.
 
-## Using Vault's PostgreSQL Database Secrets Engine to manage CockroachDB SQL users and their credentials
+## Use Vault's PostgreSQL Database Secrets Engine to manage CockroachDB SQL users and their credentials
 
 CockroachDB users can use Vault's PostgreSQL Database Secrets Engine to handle the full lifecycle of SQL user credentials (creation, password rotation, deletion). Vault is capable of managing SQL user credentials in two ways:
 
