@@ -283,7 +283,7 @@ To prevent the optimizer from planning a zigzag join for the specified table, us
 SELECT * FROM abc@{NO_ZIGZAG_JOIN};
 ~~~
 
-{% include_cached new-in.html version="v22.1.1" %} To force the optimizer to plan a zigzag join for the specified table, use the hint `FORCE_ZIGZAG`. For example:
+{% include_cached new-in.html version="v22.1" %} To force the optimizer to plan a zigzag join for the specified table, use the hint `FORCE_ZIGZAG`. For example:
 
 ~~~ sql
 SELECT * FROM abc@{FORCE_ZIGZAG};
