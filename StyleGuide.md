@@ -681,7 +681,7 @@ $ go get -u github.com/lib/pq
 
 This is more sample text.
 ```
-Using some special characters (e.g., double `{{ ... }}`) within code blocks may require to you [escape them](#escaping-special-characters).
+Using some special characters (e.g., double `{{ ... }}`) within code blocks may require to you [escape them](#how-to-escape-special-characters).
 
 Highlight shell and SQL commands where appropriate using the following info:
 
@@ -730,11 +730,11 @@ Ensure that placeholders are placed within backticks `(``)`: `SET {session varia
 
 If the code sample you are using is sensitive to curly bracket characters (e.g., JavaScript), you can use `<>` instead.
 
-Using placeholders within code samples or in non-Markdown locations may require to you [escape them](#escaping-special-characters).
+Using placeholders within code samples or in non-Markdown locations may require to you [escape them](#how-to-escape-special-characters).
 
 For some examples, see [Connect to a CockroachDB Cluster](https://www.cockroachlabs.com/docs/stable/connect-to-the-database.html?filters=python).
 
-#### Escape special characters
+#### How to escape special characters
 
 Sometimes you may need to escape special characters to achieve proper rendering. This is most common in the following two cases:
 
