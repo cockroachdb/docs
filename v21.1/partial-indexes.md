@@ -79,7 +79,7 @@ When [inserted values](insert.html) conflict with a `UNIQUE` constraint on one o
 
 ## Partial GIN indexes
 
-<span class="version-tag">New in v21.1:</span> You can create partial [GIN indexes](inverted-indexes.html#partial-gin-indexes), which are indexes on a subset of `JSON`, `ARRAY`, or geospatial container column data.
+{% include_cached new-in.html version="v21.1" %} You can create partial [GIN indexes](inverted-indexes.html#partial-gin-indexes), which are indexes on a subset of `JSON`, `ARRAY`, or geospatial container column data.
 
 ## Index hints
 

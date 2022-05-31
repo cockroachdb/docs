@@ -164,7 +164,7 @@ To handle these types of errors, you have the following options:
 
 #### Testing transaction retry logic
 
-<span class="version-tag">New in v22.1:</span> To test your transaction retry logic, use the [`inject_retry_errors_enabled` session variable](set-vars.html#supported-variables). When `inject_retry_errors_enabled` is set to `true`, any statement (with the exception of [`SET` statements](set-vars.html)) executed in the session inside of an explicit transaction will return a [transaction retry error](transaction-retry-error-reference.html) with the message ```restart transaction: TransactionRetryWithProtoRefreshError: injected by `inject_retry_errors_enabled` session variable```.
+{% include_cached new-in.html version="v22.1" %} To test your transaction retry logic, use the [`inject_retry_errors_enabled` session variable](set-vars.html#supported-variables). When `inject_retry_errors_enabled` is set to `true`, any statement (with the exception of [`SET` statements](set-vars.html)) executed in the session inside of an explicit transaction will return a [transaction retry error](transaction-retry-error-reference.html) with the message ```restart transaction: TransactionRetryWithProtoRefreshError: injected by `inject_retry_errors_enabled` session variable```.
 
 If the client retries the transaction using the special [`cockroach_restart` `SAVEPOINT` name](savepoint.html#savepoints-for-client-side-transaction-retries), after the 3rd retry, the transaction will proceed as normal. Otherwise, the errors will continue until the client issues a `SET inject_retry_errors_enabled=false` statement.
 

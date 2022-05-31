@@ -24,6 +24,7 @@ You can restore:
 - `RESTORE` no longer requires an Enterprise license, regardless of the options passed to it or to the backup it is restoring.
 - [Zone configurations](configure-zone.html) present on the destination cluster prior to a restore will be **overwritten** during a [cluster restore](restore.html#full-cluster) with the zone configurations from the [backed up cluster](backup.html#backup-a-cluster). If there were no customized zone configurations on the cluster when the backup was taken, then after the restore the destination cluster will use the zone configuration from the [`RANGE DEFAULT` configuration](configure-replication-zones.html#view-the-default-replication-zone).
 - You cannot restore a backup of a multi-region database into a single-region database.
+- When the [`exclude_data_from_backup`](take-full-and-incremental-backups.html#exclude-a-tables-data-from-backups) parameter is set on a table, the table will not contain row data when restored.
 
 ## Required privileges
 
@@ -91,6 +92,10 @@ You can restore:
 - [Databases](#databases)
 - [Tables](#tables)
 
+{{site.data.alerts.callout_info}}
+You can exclude a table's row data from a backup using the [`exclude_data_from_backup`](take-full-and-incremental-backups.html#exclude-a-tables-data-from-backups) parameter. With this parameter set, a table will be empty when restored.
+{{site.data.alerts.end}}
+
 #### Full cluster
 
  A full cluster restore can only be run on a target cluster with no user-created databases or tables. Restoring a full cluster includes:
@@ -102,7 +107,7 @@ You can restore:
 - All [views](views.html)
 
 {{site.data.alerts.callout_info}}
-When you restore a full cluster with an Enterprise license, it will restore the [Enterprise license](enterprise-licensing.html) of the cluster you are restoring from. If you want to use a different license in the new cluster, make sure to [update the license](licensing-faqs.html#set-a-license) _after_ the restore is complete.
+When you restore a full cluster with an Enterprise license, it will restore the [Enterprise license](enterprise-licensing.html) of the cluster you are restoring from. If you want to use a different license in the new cluster, make sure to [update the license](licensing-faqs.html#set-a-license) **after** the restore is complete.
 {{site.data.alerts.end}}
 
 #### Databases
@@ -113,7 +118,7 @@ Restoring a database will create a new database and restore all of its tables an
 RESTORE DATABASE backup_database_name FROM LATEST in 'your_backup_collection_URI';
 ~~~
 
-<span class="version-tag">New in v22.1:</span> To restore a database that already exists in a cluster, use the `new_db_name` option with `RESTORE` to provide a new name for the database. See the [Rename a database on restore](#rename-a-database-on-restore) example.
+{% include_cached new-in.html version="v22.1" %} To restore a database that already exists in a cluster, use the `new_db_name` option with `RESTORE` to provide a new name for the database. See the [Rename a database on restore](#rename-a-database-on-restore) example.
 
 {{site.data.alerts.callout_success}}
 If [dropping](drop-database.html) or [renaming](rename-database.html) an existing database is not an option, you can use [_table_ restore](#restore-a-table) to restore all tables into the existing database by using the [`WITH into_db` option](#options).
@@ -256,7 +261,7 @@ When you want to [restore a specific backup](#restore-a-specific-backup), add th
 
 ### Restore the most recent backup
 
-<span class="version-tag">New in v22.1:</span> To restore from the most recent backup in the collection's location, use the `LATEST` syntax:
+{% include_cached new-in.html version="v22.1" %} To restore from the most recent backup in the collection's location, use the `LATEST` syntax:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -373,7 +378,7 @@ WITH into_db = 'newdb';
 
 #### Rename a database on restore
 
-<span class="version-tag">New in v22.1:</span> To rename a database on restore, use the [`new_db_name`](#new-db-name) option:
+{% include_cached new-in.html version="v22.1" %} To rename a database on restore, use the [`new_db_name`](#new-db-name) option:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -436,7 +441,7 @@ After the restore completes, add the `users` to the existing `system.users` tabl
 
 #### Restore from incremental backups in a different location
 
-<span class="version-tag">New in v22.1:</span> To restore an incremental backup that was taken using the [`incremental_location` option](backup.html#incr-location), you must run the `RESTORE` statement with both:
+{% include_cached new-in.html version="v22.1" %} To restore an incremental backup that was taken using the [`incremental_location` option](backup.html#incr-location), you must run the `RESTORE` statement with both:
 
 - the collection URI of the full backup
 - the `incremental_location` option referencing the incremental backup's collection URI, as passed in the original `BACKUP` statement
@@ -470,11 +475,11 @@ For more detail on using this option with `BACKUP`, see [Incremental backups wit
 (3 rows)
 ~~~
 
-When you want restore a specific backup, add the backup's subdirectory path (e.g. `/2021/12/21-142943.73`) to the `RESTORE` statement. For details on viewing the most recent backup, see [`SHOW BACKUP FROM {subdirectory} in {collectionURI}`](show-backup.html#show-the-most-recent-backup).
+When you want restore a specific backup, add the backup's subdirectory path (e.g., `/2021/12/21-142943.73`) to the `RESTORE` statement. For details on viewing the most recent backup, see [`SHOW BACKUP FROM {subdirectory} in {collectionURI}`](show-backup.html#show-the-most-recent-backup).
 
 ### Restore from the most recent backup
 
-<span class="version-tag">New in v22.1:</span> To restore from the most recent backup in the collection's location, use the `LATEST` syntax:
+{% include_cached new-in.html version="v22.1" %} To restore from the most recent backup in the collection's location, use the `LATEST` syntax:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -589,7 +594,7 @@ By default, tables and views are restored to the database they originally belong
 
 #### Rename a database on restore
 
-<span class="version-tag">New in v22.1:</span> To rename a database on restore, use the [`new_db_name`](#new-db-name) option:
+{% include_cached new-in.html version="v22.1" %} To rename a database on restore, use the [`new_db_name`](#new-db-name) option:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -650,7 +655,7 @@ After the restore completes, add the `users` to the existing `system.users` tabl
 
 #### Restore from incremental backups in a different location
 
-<span class="version-tag">New in v22.1:</span> To restore an incremental backup that was taken using the [`incremental_location` option](backup.html#incr-location), you must run the `RESTORE` statement with both:
+{% include_cached new-in.html version="v22.1" %} To restore an incremental backup that was taken using the [`incremental_location` option](backup.html#incr-location), you must run the `RESTORE` statement with both:
 
 - the collection URI of the full backup
 - the `incremental_location` option referencing the incremental backup's collection URI, as passed in the original `BACKUP` statement
@@ -688,11 +693,11 @@ The examples in this section use the `AUTH=specified` parameter, which will be t
 (3 rows)
 ~~~
 
-When you want restore a specific backup, add the backup's subdirectory path (e.g. `/2021/12/21-142943.73`) to the `RESTORE` statement. For details on viewing the most recent backup, see [`SHOW BACKUP FROM {subdirectory} in {collectionURI}`](show-backup.html#show-the-most-recent-backup).
+When you want restore a specific backup, add the backup's subdirectory path (e.g., `/2021/12/21-142943.73`) to the `RESTORE` statement. For details on viewing the most recent backup, see [`SHOW BACKUP FROM {subdirectory} in {collectionURI}`](show-backup.html#show-the-most-recent-backup).
 
 ### Restore from the most recent backup
 
-<span class="version-tag">New in v22.1:</span> To restore from the most recent backup in the collection's location, use the `LATEST` syntax:
+{% include_cached new-in.html version="v22.1" %} To restore from the most recent backup in the collection's location, use the `LATEST` syntax:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -807,7 +812,7 @@ By default, tables and views are restored to the database they originally belong
 
 #### Rename a database on restore
 
-<span class="version-tag">New in v22.1:</span> To rename a database on restore, use the [`new_db_name`](#new-db-name) option:
+{% include_cached new-in.html version="v22.1" %} To rename a database on restore, use the [`new_db_name`](#new-db-name) option:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -868,7 +873,7 @@ After the restore completes, add the `users` to the existing `system.users` tabl
 
 #### Restore from incremental backups in a different location
 
-<span class="version-tag">New in v22.1:</span> To restore an incremental backup that was taken using the [`incremental_location` option](backup.html#incr-location), you must run the `RESTORE` statement with both:
+{% include_cached new-in.html version="v22.1" %} To restore an incremental backup that was taken using the [`incremental_location` option](backup.html#incr-location), you must run the `RESTORE` statement with both:
 
 - the collection URI of the full backup
 - the `incremental_location` option referencing the incremental backup's collection URI, as passed in the original `BACKUP` statement

@@ -575,7 +575,7 @@ Although `users_name_city_idx` is likely the most efficient index for the table 
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> EXPLAIN (opt) UPDATE users@primary SET name='Patricia Smith (there are two)' WHERE name='Patricia Smith';
+> EXPLAIN (opt) UPDATE users@users_pkey SET name='Patricia Smith (there are two)' WHERE name='Patricia Smith';
 ~~~
 
 ~~~

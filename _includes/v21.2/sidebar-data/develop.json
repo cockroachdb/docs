@@ -465,13 +465,6 @@
           ]
         }
       ]
-    },
-    {
-      "title": "SQL Playground",
-      "is_top_level": true,
-      "urls": [
-        "/${VERSION}/sql-playground.html"
-      ]
     }
   ]
 }

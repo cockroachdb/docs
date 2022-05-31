@@ -29,7 +29,7 @@ beta-20170105,v1.0,2017-01-05,false,true,Testing,true,go1.8.3,e1ef4ec96659ef27ff
 beta-20170112,v1.0,2017-01-12,false,true,Testing,true,go1.8.3,5651988b49083f42182eaffd4d41328827aba1f6,cockroachdb/cockroach-unstable,false
 beta-20170126,v1.0,2017-01-26,false,true,Testing,true,go1.8.3,beab60af2d54d4166cde84656e7276bea59f28d1,cockroachdb/cockroach-unstable,false
 beta-20170209,v1.0,2017-02-09,false,true,Testing,true,go1.8.3,3271ce4097dcb2d7ad74b877b011dd6ee62f04d5,cockroachdb/cockroach-unstable,false
-v1.0.7,v1.0,2017-02-13,false,true,Production,false,go1.8.3,b277f36d8427c553be9e52dcd0699979a3e8af86,cockroachdb/cockroach,false
+v1.0.7,v1.0,2018-02-13,false,true,Production,false,go1.8.3,b277f36d8427c553be9e52dcd0699979a3e8af86,cockroachdb/cockroach,false
 beta-20170216,v1.0,2017-02-16,false,true,Testing,true,go1.8.3,019eeb7b64386a9d751d2055d2af52f24a93ab3d,cockroachdb/cockroach-unstable,false
 beta-20170223,v1.0,2017-02-23,false,true,Testing,true,go1.8.3,4c8949513d287b92be1c167615398a2a53fe39da,cockroachdb/cockroach-unstable,false
 beta-20170309,v1.0,2017-03-09,false,true,Testing,true,go1.8.3,dd3a574da6734faebf523d7cc2df244ab662527d,cockroachdb/cockroach-unstable,false
@@ -266,9 +266,9 @@ v21.2.7,v21.2,2022-03-14,false,False,Production,False,go1.16,37dee546a7c52870a8d
 v22.1.0-alpha.4,v22.1,2022-03-21,false,False,Testing,False,go1.17,962cd2d26fb6b19d400f60e287ac2499f96c5408,cockroachdb/cockroach-unstable,false
 v22.1.0-alpha.5,v22.1,2022-03-28,false,False,Testing,False,go1.17,26c05e15d3752f47a91592b5b870360c30c57dd5,cockroachdb/cockroach-unstable,false
 v21.1.17,v21.1,2022-04-04,false,False,Production,False,go1.15,c81fcefa69d03ffe7bd9e0d3f1293717bcc98cd4,cockroachdb/cockroach,false
-v22.1.0-beta.1,v22.1,2022-04-04,false,False,Testing,False,go1.17,a88367d7bd168a3614b7946cd7b77bb9c6374a30,cockroachdb/cockroach-unstable,true
+v22.1.0-beta.1,v22.1,2022-04-04,false,False,Testing,False,go1.17,a88367d7bd168a3614b7946cd7b77bb9c6374a30,cockroachdb/cockroach-unstable,false
 v21.2.8,v21.2,2022-04-04,false,False,Production,False,go1.16,cad00009ffee952065c51687da6b1f71e44a7032,cockroachdb/cockroach,false
-v22.1.0-beta.2,v22.1,2022-04-12,false,False,Testing,False,go1.17,5d1063406d48c2713e0a7a8421f1946349b3db65,cockroachdb/cockroach-unstable,true
+v22.1.0-beta.2,v22.1,2022-04-12,false,False,Testing,False,go1.17,5d1063406d48c2713e0a7a8421f1946349b3db65,cockroachdb/cockroach-unstable,false
 v21.1.18,v21.1,2022-04-12,false,False,Production,False,go1.15,53cb1ed8f2f42376ad76d4888d582c88685b2820,cockroachdb/cockroach,false
 v21.2.9,v21.2,2022-04-13,false,False,Production,False,go1.16,eafda969629a6c883d645ffbcbbcb94a91adcb40,cockroachdb/cockroach,false
 v22.1.0-beta.3,v22.1,2022-04-18,false,False,Testing,False,go1.17,0509bc6c07ceed6d77d8cd088cb79d4a0e8f38ed,cockroachdb/cockroach-unstable,true
@@ -277,3 +277,5 @@ v21.2.10,v21.2,2022-05-02,false,False,Production,False,go1.16,39511c6a4d0bbb580b
 v22.1.0-beta.5,v22.1,2022-05-03,false,False,Testing,False,go1.17,24ba4d7211aa9fb9cea18f856c693bc8f592c8f6,cockroachdb/cockroach-unstable,true
 v22.1.0-rc.1,v22.1,2022-05-09,false,False,Testing,False,go1.17,5b78463ed2e7106a8477b63fa837564ad02bb510,cockroachdb/cockroach-unstable,true
 v21.1.19,v21.1,2022-05-09,false,False,Production,False,go1.15,bf2bef135b5be9c73ccc445f2d996781ee59e94f,cockroachdb/cockroach,false
+v21.2.11,v21.2,2022-05-23,false,False,Production,False,go1.16,b05bab30da2ff789dc232da4fac771c01a72a87f,cockroachdb/cockroach,false
+v22.1.0,v22.1,2022-05-24,false,False,Production,False,go1.17,5b78463ed2e7106a8477b63fa837564ad02bb510,cockroachdb/cockroach,true

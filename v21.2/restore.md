@@ -183,7 +183,7 @@ When a `RESTORE` fails or is canceled, partially restored data is properly clean
 
 ## Restoring to multi-region databases
 
-<span class="version-tag">New in v21.2:</span> Restoring to a [multi-region database](multiregion-overview.html) is supported with some limitations. This section outlines details and settings that should be considered when restoring into multi-region databases:
+{% include_cached new-in.html version="v21.2" %} Restoring to a [multi-region database](multiregion-overview.html) is supported with some limitations. This section outlines details and settings that should be considered when restoring into multi-region databases:
 
 - A [cluster's regions](multiregion-overview.html#cluster-regions) will be checked before a restore. Mismatched regions between backup and restore clusters will be flagged before the restore begins, which allows for a decision between updating the [cluster localities](cockroach-start.html#locality) or restoring with the [`skip_localities_check`](#skip-localities-check) option to continue with the restore regardless.
 
@@ -268,7 +268,7 @@ See [Incremental backups with explicitly specified destinations](take-full-and-i
 
 ### Restore the most recent backup
 
-<span class="version-tag">New in v21.2.3:</span> To restore from the most recent backup in the collection's location, use the `LATEST syntax`:
+{% include_cached new-in.html version="v21.2.3" %} To restore from the most recent backup in the collection's location, use the `LATEST syntax`:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -467,7 +467,7 @@ See [Incremental backups with explicitly specified destinations](take-full-and-i
 
 ### Restore the most recent backup
 
-<span class="version-tag">New in v21.2:</span> To restore from the most recent backup in the collection's location, use the `LATEST syntax`:
+{% include_cached new-in.html version="v21.2" %} To restore from the most recent backup in the collection's location, use the `LATEST syntax`:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -666,7 +666,7 @@ See [Incremental backups with explicitly specified destinations](take-full-and-i
 
 ### Restore the most recent backup
 
-<span class="version-tag">New in v21.2:</span> To restore from the most recent backup in the collection's location, use the `LATEST syntax`:
+{% include_cached new-in.html version="v21.2" %} To restore from the most recent backup in the collection's location, use the `LATEST syntax`:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

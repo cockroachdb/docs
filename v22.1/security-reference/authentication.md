@@ -15,7 +15,8 @@ CockroachDB allows fine-grained configuration of which database connect attempts
 Authentication Method | CockroachDB Cloud | Supported in CockroachDB Core | CockroachDB Enterprise Support  
 -------------|------------|-----|----
 password              |      ✓              |           ✓                    |    ✓
-TLS cert              |      &nbsp;         |           ✓                    |    ✓
+<a href="scram-authentication.html">SCRAM-SHA-256</a>         |      ✓              |           ✓                    |    ✓
+certificate              |      &nbsp;         |           ✓                    |    ✓
 GSS                   |      &nbsp;         |           &nbsp;               |    ✓
 
 All options also support the following no-op 'authentication methods' (authentication is not actually performed):
@@ -57,16 +58,18 @@ Each rule definition contains up to 6 values.
 1. **`ADDRESS`** specifies the IP range which the rule will allow or block, either with the keyword "all", or with a valid IP address. The IP address can include an IP mask (the value of the field can be of the format XXX.XXX.XXX.XXX/X), or not, in which case the *next* value must be the mask (the value of this field will be of the form XXX.XXX.XXX.XXX, in which case the next field must be a valid IP mask).
 1. **`IP MASK`** (unless the Address in the prior field included or did not require an IP mask).
 1. Authentication **METHOD** by which specified user(s) may authenticate from specified addresses.
-  - `password`
-  - `cert`
-  - `cert-password`
-  - `gss`
-  - `reject`
-  - `trust`
+  - `password`: user may authenticate with a plaintext password.
+  - `scram-sha-256`: user may authenticate via [Salted Challenge-Response](scram-authentication.html)
+  - `cert`: user may authenticate with a PKI certificate signed by a trusted certificate authority CA.
+  - `cert-password`: user may authenticate with either a certificate or a password. Additionally, the server may use a [SCRAM](scram-authentication.html) exchange, if the cluster setting `server.user_login.cert_password_method.auto_scram_promotion.enabled` is set to `true`.
+  - `cert-scram-sha-25`: user may authenticate with either a certificate or a [SCRAM](scram-authentication.html) exchange.
+  - `gss`: user may authenticate with a GSSAPI token.
+  - `reject`: server rejects connection without performing authentication.
+  - `trust`: server allows connection without performing authentication.
 
 ## Default behavior
 
-### CockroachDB Serverless
+### {{ site.data.products.serverless }}
 
 The default authentication configuration for {{ site.data.products.serverless }} clusters is equivalent to the following configuration:
 
@@ -77,7 +80,7 @@ The default authentication configuration for {{ site.data.products.serverless }}
 
 This is convenient for quick usage and experimentation, but is not suitable for clusters containing valuable data. It is a best practice to [configure SQL authentication for hardened {{ site.data.products.serverless }} cluster security](config-secure-hba.html).
 
-### CockroachDB Dedicated
+### {{ site.data.products.dedicated }}
 
 {{ site.data.products.dedicated }} clusters enforce IP allow-listing, which must be configured through the CockroachDB Cloud Console.
 

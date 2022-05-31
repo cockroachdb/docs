@@ -138,7 +138,7 @@ Take the following points into consideration while granting privileges to roles 
 
 ### Default privileges
 
-<span class="version-tag">New in v21.2</span>: By default, CockroachDB grants the current role/user `ALL` privileges on the objects that they create.
+{% include_cached new-in.html version="v21.2" %} By default, CockroachDB grants the current role/user `ALL` privileges on the objects that they create.
 
 To view the default privileges for a role, or for a set of roles, use the [`SHOW DEFAULT PRIVILEGES`](../show-default-privileges.html) statement.
 
@@ -166,7 +166,7 @@ We recommend the following best practices to set up access control for your clus
 - Use the `root` user only for database administration tasks such as creating and managing other [users](#sql-users), creating and managing [roles](#roles), and creating and managing databases. Do not use the `root` user for applications; instead, create users or roles with specific [privileges](#managing-privileges) based on your application’s access requirements.
 - Use the [Principle of Least Privilege (PoLP)](https://en.wikipedia.org/wiki/Principle_of_least_privilege) as a golden rule when to designing your system of privilege grants.
 
- <span class="version-tag">New in v21.2</span>: For improved performance, CockroachDB securely caches [authentication information for users](../authentication.html#client-authentication). To limit the authentication latency of users logging into a new session, we recommend the following best practices for `ROLE` operations ([`CREATE ROLE`](../create-role.html), [`ALTER ROLE`](../alter-role.html), [`DROP ROLE`](../drop-role.html)):
+ {% include_cached new-in.html version="v21.2" %} For improved performance, CockroachDB securely caches [authentication information for users](../authentication.html#client-authentication). To limit the authentication latency of users logging into a new session, we recommend the following best practices for `ROLE` operations ([`CREATE ROLE`](../create-role.html), [`ALTER ROLE`](../alter-role.html), [`DROP ROLE`](../drop-role.html)):
 
 - Run bulk `ROLE` operations inside a transaction.
 - Run regularly-scheduled `ROLE` operations together, rather than at different times throughout the day.

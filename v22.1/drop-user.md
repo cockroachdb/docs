@@ -10,7 +10,7 @@ The `DROP USER` [statement](sql-statements.html) removes one or more SQL users.
 {% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
 {{site.data.alerts.callout_info}}
- Since the keywords `ROLE` and `USER` can now be used interchangeably in SQL statements for enhanced Postgres compatibility, `DROP USER` is now an alias for [`DROP ROLE`](drop-role.html).
+ Since the keywords `ROLE` and `USER` can now be used interchangeably in SQL statements for enhanced PostgreSQL compatibility, `DROP USER` is now an alias for [`DROP ROLE`](drop-role.html).
 {{site.data.alerts.end}}
 
 ## Consideration
@@ -32,6 +32,8 @@ Non-admin users cannot drop admin users. To drop non-admin users, the user must 
 `user_name` | The username of the user to remove. To remove multiple users, use a comma-separate list of usernames.<br><br>You can use [`SHOW USERS`](show-users.html) to find usernames.
 
 ## Example
+
+### Remove privileges
 
 All of a user's privileges must be revoked before the user can be dropped.
 
@@ -56,6 +58,29 @@ In this example, first check a user's privileges. Then, revoke the user's privil
 {% include copy-clipboard.html %}
 ~~~ sql
 > REVOKE CREATE,INSERT,UPDATE ON test.customers FROM mroach;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> DROP USER mroach;
+~~~
+
+### Remove default privileges
+
+In addition to removing a user's privileges, a user's [default privileges](security-reference/authorization.html#default-privileges) must be removed prior to dropping the user. If you attempt to drop a user with modified default privileges, you will encounter an error like the following:
+
+~~~
+ERROR: role mroach cannot be dropped because some objects depend on it
+privileges for default privileges on new relations belonging to role demo in database movr
+SQLSTATE: 2BP01
+HINT: USE test; ALTER DEFAULT PRIVILEGES REVOKE ALL ON TABLES FROM mroach;
+~~~
+
+Run the `HINT` SQL prior to dropping the user.
+
+{% include copy-clipboard.html %}
+~~~ sql
+USE test; ALTER DEFAULT PRIVILEGES REVOKE ALL ON TABLES FROM mroach;
 ~~~
 
 {% include copy-clipboard.html %}

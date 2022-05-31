@@ -243,4 +243,43 @@ The Operator updates the StatefulSet and triggers a rolling restart of the pods 
 {{site.data.alerts.callout_danger}}
 Currently, only the pods are updated with new ports. To connect to the cluster, you need to ensure that the `public` service is also updated to use the new port. You can do this by deleting the service with `kubectl delete service {cluster-name}-public`. When service is recreated by the Operator, it will use the new port. This is a known limitation that will be fixed in an Operator update.
 {{site.data.alerts.end}}
+
+## Ingress
+
+You can configure an [Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/) object to expose an internal HTTP or SQL [`ClusterIP` service](https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types) through a hostname.
+
+In order to use the Ingress resource, your cluster must be running an [Ingress controller](https://kubernetes.io/docs/concepts/services-networking/ingress-controllers/) for load balancing. This is **not** handled by the Operator and must be deployed separately.
+
+Specify Ingress objects in `ingress.ui` (HTTP) or `ingress.sql` (SQL) in the Operator's custom resource, which is used to [deploy the cluster](deploy-cockroachdb-with-kubernetes.html#initialize-the-cluster):
+
+~~~ yaml
+spec:
+  ingress:
+    ui:
+      ingressClassName: nginx
+      annotations:
+        key: value
+      host: ui.example.com
+    sql:
+      ingressClassName: nginx
+      annotations:
+        key: value
+      host: sql.example.com
+~~~
+
+- `ingressClassName` specifies the [`IngressClass`](https://kubernetes.io/docs/concepts/services-networking/ingress/#ingress-class) of the Ingress controller. This example uses the [nginx](https://kubernetes.github.io/ingress-nginx/) controller.
+
+- The `host` must be made publicly accessible. For example, create a route in [Amazon Route 53](https://aws.amazon.com/route53/), or add an entry to `/etc/hosts` that maps the IP address of the Ingress controller to the hostname.
+
+    {{site.data.alerts.callout_info}}
+    Multiple hosts can be mapped to the same Ingress controller IP.
+    {{site.data.alerts.end}}
+
+- TCP connections for SQL clients must be enabled for the Ingress controller. For an example, see the [nginx documentation](https://kubernetes.github.io/ingress-nginx/user-guide/exposing-tcp-udp-services/).
+
+    {{site.data.alerts.callout_info}}
+    Changing the SQL Ingress `host` on a running deployment will cause a rolling restart of the cluster, due to new node certificates being generated for the SQL host.
+    {{site.data.alerts.end}}
+
+The [custom resource definition](https://github.com/cockroachdb/cockroach-operator/blob/master/config/crd/bases/crdb.cockroachlabs.com_crdbclusters.yaml) details the fields supported by the Operator.
 </section>

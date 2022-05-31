@@ -109,7 +109,7 @@ However, in **large** imports, it may be preferable to remove the secondary inde
 - [`IMPORT`](import.html)
 - [Migration Overview](migration-overview.html)
 - [Migrate from Oracle](migrate-from-oracle.html)
-- [Migrate from Postgres](migrate-from-postgres.html)
+- [Migrate from PostgreSQL](migrate-from-postgres.html)
 - [Migrate from MySQL](migrate-from-mysql.html)
 - [Migrate from CSV](migrate-from-csv.html)
 - [Migrate from Avro](migrate-from-avro.html)

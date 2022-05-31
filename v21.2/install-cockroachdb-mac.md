@@ -21,7 +21,7 @@ docs_area: deploy
 
 Use one of the options below to install CockroachDB.
 
-<div id="use-homebrew" class="install-option">
+<!-- <div id="use-homebrew" class="install-option">
   <h3>Use Homebrew</h3>
   <ol>
     <li>
@@ -44,7 +44,7 @@ Use one of the options below to install CockroachDB.
 {{site.data.alerts.callout_info}}
 If you previously installed CockroachDB via Homebrew, run <code>brew uninstall cockroach</code> before installing the new version. If you installed using a different method, you may need to remove the binary before installing via Homebrew.
 {{site.data.alerts.end}}
-</div>
+</div> -->
 
 <div id="download-the-binary" class="install-option">
   <h3>Download the binary</h3>

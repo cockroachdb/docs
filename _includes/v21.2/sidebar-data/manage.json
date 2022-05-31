@@ -183,6 +183,12 @@
               ]
             },
             {
+              "title": "Single Sign-On (SSO) for CockroachDB Cloud",
+              "urls": [
+                "/cockroachcloud/cloud-sso.html"
+              ]
+            },
+            {
               "title": "Configure SQL Authentication for Hardened Serverless Cluster Security",
               "urls": [
                 "/${VERSION}/security-reference/config-secure-hba.html"

@@ -175,7 +175,7 @@ Note that the above query also follows the [indexing best practice](indexes.html
 
 ### Use `UUID` to generate unique IDs
 
-To auto-generate unique row IDs, use the [`UUID`](uuid.html) column with the `gen_random_uuid()` [function](functions-and-operators.html#id-generation-functions) as the [default value](default-value.html):
+To auto-generate unique row identifiers, use the [`UUID`](uuid.html) column with the `gen_random_uuid()` [function](functions-and-operators.html#id-generation-functions) as the [default value](default-value.html):
 
 {% include copy-clipboard.html %}
 ~~~ sql

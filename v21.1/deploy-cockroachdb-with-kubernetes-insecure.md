@@ -121,7 +121,7 @@ To shut down the CockroachDB cluster, delete the resources you created, includin
     ~~~
     </section>
 
-### Stop Kubernetes:
+### Stop Kubernetes
 
 To delete the Kubernetes cluster:
 

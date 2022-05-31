@@ -64,7 +64,7 @@ Example of a Kafka sink URI:
 The Google Cloud Pub/Sub sink is currently in **beta**.
 {{site.data.alerts.end}}
 
-<span class="version-tag">New in v22.1:</span> Example of a Google Cloud Pub/Sub sink URI:
+{% include_cached new-in.html version="v22.1" %} Example of a Google Cloud Pub/Sub sink URI:
 
 ~~~
 'gcpubsub://{project name}?region={region}&topic_name={topic name}&AUTH=specified&CREDENTIALS={base64-encoded key}'
@@ -114,6 +114,7 @@ Parameter          | <div style="width:100px">Sink Type</div>      | <div style=
 `sasl_password`    | [Kafka](changefeed-sinks.html#kafka)                               | [`STRING`](string.html)             | Your SASL password. **Note:** Passwords should be [URL encoded](https://en.wikipedia.org/wiki/Percent-encoding) since the value can contain characters that would cause authentication to fail.
 <a name="file-size"></a>`file_size`        | [cloud](changefeed-sinks.html#cloud-storage-sink)                  | [`STRING`](string.html)             | The file will be flushed (i.e., written to the sink) when it exceeds the specified file size. This can be used with the [`WITH resolved` option](#options), which flushes on a specified cadence. <br><br>**Default:** `16MB`
 <a name="tls-skip-verify"></a>`insecure_tls_skip_verify` |  [Kafka](changefeed-sinks.html#kafka), [webhook](changefeed-sinks.html#webhook-sink)                    | [`BOOL`](bool.html)                 | If `true`, disable client-side validation of responses. Note that a CA certificate is still required; this parameter means that the client will not verify the certificate. **Warning:** Use this query parameter with caution, as it creates [MITM](https://en.wikipedia.org/wiki/Man-in-the-middle_attack) vulnerabilities unless combined with another method of authentication. <br><br>**Default:** `false`
+`S3_storage_class` | [Amazon S3 cloud storage sink](changefeed-sinks.html#amazon-s3) | [`STRING`](string.html) | Specify the Amazon S3 storage class for files created by the changefeed. See [Create a changefeed with an S3 storage class](#create-a-changefeed-with-an-s3-storage-class) for the available classes and an example. <br><br>**Default:** `STANDARD`  
 
 ### Options
 
@@ -241,6 +242,17 @@ For more information on how to create a changefeed that emits an [Avro](https://
 ~~~
 
 For step-by-step guidance on creating a changefeed connected to a cloud storage sink, see [Changefeed Examples](changefeed-examples.html#create-a-changefeed-connected-to-a-cloud-storage-sink).
+
+### Create a changefeed with an S3 storage class
+
+{% include_cached new-in.html version="v22.1" %} To associate the changefeed message files with a [specific storage class](use-cloud-storage-for-bulk-operations.html#amazon-s3-storage-classes) in your Amazon S3 bucket, use the `S3_STORAGE_CLASS` parameter with the class. For example, the following S3 connection URI specifies the `INTELLIGENT_TIERING` storage class:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE CHANGEFEED FOR TABLE name INTO 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}&S3_STORAGE_CLASS=INTELLIGENT_TIERING' WITH resolved;
+~~~
+
+{% include {{ page.version.version }}/misc/storage-classes.md %}
 
 ### Create a changefeed connected to a webhook sink
 
