@@ -173,6 +173,10 @@ Restore Type | Parameters
 Full backup | Include the path to the full backup destination and the [subdirectory](#view-the-backup-subdirectories) of the backup. See the [Examples](#examples) section for syntax of [cluster](#restore-a-cluster), [database](#restore-a-database), and [table](#restore-a-table) restores.
 Full backup + <br>incremental backups | Include the path that contains the backup collection and the [subdirectory](#view-the-backup-subdirectories) containing the incremental backup. See [Restore from incremental backups](#restore-from-incremental-backups) for an example.
 
+{{site.data.alerts.callout_info}}
+CockroachDB does **not** support incremental-only restores.
+{{site.data.alerts.end}}
+
 ## Performance
 
 The `RESTORE` process minimizes its impact to the cluster's performance by distributing work to all nodes. Subsets of the restored data (known as ranges) are evenly distributed among randomly selected nodes, with each range initially restored to only one node. Once the range is restored, the node begins replicating it others.
@@ -338,6 +342,8 @@ To restore the most recent [incremental backup](take-full-and-incremental-backup
 ~~~ sql
 RESTORE DATABASE bank FROM LATEST IN 's3://{bucket_name}/{path/to/backup-collection}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={access_key}';
 ~~~
+
+{% include {{ page.version.version }}/backups/no-incremental-restore.md %}
 
 {{site.data.alerts.callout_info}}
  `RESTORE` will re-validate [indexes](indexes.html) when [incremental backups](take-full-and-incremental-backups.html) are created from an older version (v20.2.2 and earlier or v20.1.4 and earlier), but restored by a newer version (v21.1.0+). These earlier releases may have included incomplete data for indexes that were in the process of being created.

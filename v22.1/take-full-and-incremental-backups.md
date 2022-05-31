@@ -201,6 +201,8 @@ To restore from a specific backup in the collection:
 > RESTORE FROM '{subdirectory}' IN '{collectionURI}';
 ~~~
 
+{% include {{ page.version.version }}/backups/no-incremental-restore.md %}
+
 {{site.data.alerts.callout_info}}
 `RESTORE` will re-validate [indexes](indexes.html) when [incremental backups](take-full-and-incremental-backups.html) are created from an older version (v20.2.2 and earlier or v20.1.4 and earlier), but restored by a newer version (v21.1.0+). These earlier releases may have included incomplete data for indexes that were in the process of being created.
 {{site.data.alerts.end}}
