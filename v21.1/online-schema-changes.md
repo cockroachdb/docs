@@ -45,6 +45,12 @@ For more technical details, see [How online schema changes are possible in Cockr
 If a schema change fails, the schema change job will be cleaned up automatically. However, there are limitations with rolling back schema changes within a transaction; for more information, [see below](#schema-change-ddl-statements-inside-a-multi-statement-transaction-can-fail-while-other-statements-succeed).
 {{site.data.alerts.end}}
 
+## Best practices for online schema changes
+
+### Schema changes in multi-region clusters
+
+{% include {{ page.version.version }}/performance/lease-preference-system-database.md %}
+
 ## Examples
 
 {{site.data.alerts.callout_success}}
