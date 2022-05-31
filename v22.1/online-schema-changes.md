@@ -67,6 +67,12 @@ The declarative schema changer can be enabled and disabled via the `sql.defaults
 Declarative schema changer statements and legacy schema changer statements operating on the same objects cannot exist within the same transaction. Either split the transaction into multiple transactions, or disable the cluster setting or session variable.
 {{site.data.alerts.end}}
 
+## Best practices for online schema changes
+
+### Schema changes in multi-region clusters
+
+{% include {{ page.version.version }}/performance/lease-preference-system-database.md %}
+
 ## Examples
 
 {{site.data.alerts.callout_success}}

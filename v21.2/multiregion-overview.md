@@ -149,6 +149,10 @@ This behavior also applies to [GIN indexes](inverted-indexes.html).
 
 For an example that uses unique indexes but applies to all indexes on `REGIONAL BY ROW` tables, see [Add a unique index to a `REGIONAL BY ROW` table](add-constraint.html#add-a-unique-index-to-a-regional-by-row-table).
 
+## Schema changes in multi-region clusters
+
+{% include {{ page.version.version }}/performance/lease-preference-system-database.md %}
+
 ## Next steps
 
 - [How to Choose a Multi-Region Configuration](choosing-a-multi-region-configuration.html)
