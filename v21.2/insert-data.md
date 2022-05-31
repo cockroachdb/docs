@@ -11,9 +11,8 @@ This page has instructions for getting data into CockroachDB with various progra
 
 Before reading this page, do the following:
 
-- [Install CockroachDB](install-cockroachdb.html).
-- [Start a local cluster](secure-a-cluster.html), or [create a {{ site.data.products.dedicated }} cluster](../cockroachcloud/create-your-cluster.html).
-- [Install a PostgreSQL client](install-client-drivers.html).
+- [Create a {{ site.data.products.serverless }} cluster](../cockroachcloud/quickstart.html) or [start a local cluster](../cockroachcloud/quickstart.html?filters=local).
+- [Install a Postgres client](install-client-drivers.html).
 - [Connect to the database](connect-to-the-database.html).
 
 {% include {{page.version.version}}/app/retry-errors.md %}
