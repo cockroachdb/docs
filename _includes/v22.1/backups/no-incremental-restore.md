@@ -1,0 +1,1 @@
+When you restore from an incremental backup, you're restoring from the latest full backup and latest (or [specific](restore.html#restore-a-specific-backup)) incremental backup. You cannot restore an incremental backup without a full backup. See [Restore types](restore.html#restore-types) for detail on the types of backups you can restore.
