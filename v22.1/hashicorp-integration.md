@@ -1,5 +1,5 @@
 ---
-title: Hashicorp Vault Integration
+title: CockroachDB - Hashicorp Vault Integration
 summary: Overview of uses cases for integrating CockroachDB with HashiCorp Vault
 toc: true
 docs_area: reference.third_party_support
@@ -43,3 +43,5 @@ CockroachDB users can use Vault's PostgreSQL Database Secrets Engine to handle t
 - As [Static Roles](https://www.vaultproject.io/docs/secrets/databases#static-roles), meaning that a single SQL user/role is mapped to a Vault role.
 
 - As [Dynamic Secrets](https://www.vaultproject.io/use-cases/dynamic-secrets), meaning that credentials are generated and issued on demand from pre-configured templates, rather than created and persisted. Credentials are issued for specific clients and for short validity durations, further minimizing both the likelihood of a credential compromise, and the possible impact of any compromise that might occur.
+
+Try the tutorial: [Using Hashicorp Vault's Dynamic Secrets for Enhanced Database Credential Security in CockroachDB](vault-db-secrets-tutorial.html)
