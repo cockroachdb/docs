@@ -339,8 +339,11 @@ layout: null
 /docs/stable/orchetrate-cockroachdb-with-kubernetes-multi-region.html /docs/stable/orchestrate-cockroachdb-with-kubernetes-multi-cluster.md 301
 
 # Removed pages
-/docs/v20.2/sql-playground /docs/stable/sql-playground.html 301
-/docs/v21.1/sql-playground /docs/stable/sql-playground.html 301
+/docs/tutorials/build-a-python-app-with-cockroachdb-interactive.html /docs/stable/build-a-python-app-with-cockroachdb.html 301
+/docs/v22.1/sql-playground /docs/tutorials/sql-playground.html 301
+/docs/v21.2/sql-playground /docs/tutorials/sql-playground.html 301
+/docs/v20.2/sql-playground /docs/tutorials/sql-playground.html 301
+/docs/v21.1/sql-playground /docs/tutorials/sql-playground.html 301
 /docs/v20.2/hello-world-go-gorm.md /docs/cockroachcloud/quickstart.html 301
 /docs/v20.2/hello-world-go-pgx.md /docs/cockroachcloud/quickstart.html 301
 /docs/v20.2/hello-world-java-jdbc.md /docs/cockroachcloud/quickstart.html 301

@@ -396,7 +396,7 @@ Note that this statement also returns the [`ALTER` statements](alter-table.html)
 
 ### Show the `CREATE DATABASE` statement for a database
 
-<span class="version-tag">New in v21.2</span>: To return the `CREATE DATABASE` statement for a database, use `SHOW CREATE DATABASE`:
+{% include_cached new-in.html version="v21.2" %} To return the `CREATE DATABASE` statement for a database, use `SHOW CREATE DATABASE`:
 
 {% include copy-clipboard.html %}
 ~~~ sql

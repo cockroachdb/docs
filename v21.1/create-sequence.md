@@ -277,7 +277,7 @@ In this example, we create a sequence that starts at -1 and descends in incremen
 
 ### Cache sequence values in memory
 
-<span class="version-tag">New in v21.1:</span> For improved performance, use the `CACHE` keyword to cache sequence values in memory.
+{% include_cached new-in.html version="v21.1" %} For improved performance, use the `CACHE` keyword to cache sequence values in memory.
 
 For example, to cache 10 sequence values in memory:
 

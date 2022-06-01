@@ -16,10 +16,6 @@ docs_area: get_started
 
 This tutorial shows you how build a simple Python application with CockroachDB and the [psycopg2](https://www.psycopg.org/) driver.
 
-<div class="clearfix">
-  <a class="btn btn-outline-primary" href="../tutorials/build-a-python-app-with-cockroachdb-interactive.html" target="_blank" rel="noopener">Run this in your browser &rarr;</a>
-</div>
-
 ## Step 1. Start CockroachDB
 
 {% include {{ page.version.version }}/setup/sample-setup-certs.md %}

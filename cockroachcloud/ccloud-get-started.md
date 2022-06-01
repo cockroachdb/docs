@@ -41,6 +41,15 @@ In order to use the `ccloud` commands to configure and manage your clusters, you
 
 1. Close the browser window and return to your terminal.
 
+If you are a member of more than one [CockroachDB Cloud organization](console-access-management.html#organization), use the `--org` flag to set the organization name when authenticating.
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+ccloud auth login --org <organization label>
+~~~
+
+The organization label is found on the **Settings** page of the CockroachDB Cloud Console.
+
 ## Create a new cluster using `ccloud cluster create`
 
 There are two ways to create clusters using `ccloud`: `ccloud quickstart create` and `ccloud cluster create`.

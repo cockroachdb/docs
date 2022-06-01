@@ -80,14 +80,14 @@ spans | The interval of the key space read by the processor. If `spans` is `FULL
 
 ## Default option
 
-<span class="version-tag">New in v21.1:</span> By default, `EXPLAIN ANALYZE` uses the `PLAN` option. `EXPLAIN ANALYZE` and `EXPLAIN ANALYZE (PLAN)` produce the same output.
+{% include_cached new-in.html version="v21.1" %} By default, `EXPLAIN ANALYZE` uses the `PLAN` option. `EXPLAIN ANALYZE` and `EXPLAIN ANALYZE (PLAN)` produce the same output.
 
 ## `DISTSQL` option
 
 `EXPLAIN ANALYZE (DISTSQL)` generates a physical statement plan diagram in the [DistSQL Plan Viewer](#distsql-plan-viewer). The DistSQL Plan Viewer displays the physical statement plan, as well as execution statistics. The statistics listed depend on the query type and the [execution engine used](vectorized-execution.html). There will be multiple diagrams if the query contains subqueries or post-queries.
 
 {{site.data.alerts.callout_info}}
-<span class="version-tag">New in v21.1:</span> `EXPLAIN ANALYZE (DISTSQL)` can only be used as the top-level statement in a query.
+{% include_cached new-in.html version="v21.1" %} `EXPLAIN ANALYZE (DISTSQL)` can only be used as the top-level statement in a query.
 {{site.data.alerts.end}}
 
 ## `DEBUG` option
