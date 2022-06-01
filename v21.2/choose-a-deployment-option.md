@@ -5,7 +5,7 @@ toc: true
 docs_area: deploy
 ---
 
-Cockroach Labs offers three ways to deploy CockroachDB: two managed services&mdash;CockroachDB Serverless and CockroachDB Dedicated&mdash;and a self managed option&mdash;CockroachDB Self-Hosted. To help you choose which deployment option will best satisfy your requirements, this page describes the application types each deployment is designed for and lists some of the deployment option features that support the application types. For a full feature comparison list, see [CockroachDB: A cloud native, globally-distributed SQL database](https://www.cockroachlabs.com/get-started-cockroachdb).
+Cockroach Labs offers three ways to deploy CockroachDB: two managed services&mdash;{{ site.data.products.serverless }} and {{ site.data.products.dedicated }}&mdash;and a self managed option&mdash;CockroachDB Self-Hosted. To help you choose which deployment option will best satisfy your requirements, this page describes the application types each deployment is designed for and lists some of the deployment option features that support the application types. For a full feature comparison list, see [CockroachDB: A cloud native, globally-distributed SQL database](https://www.cockroachlabs.com/get-started-cockroachdb).
 
 <table>
   <tr>
@@ -21,7 +21,7 @@ Cockroach Labs offers three ways to deploy CockroachDB: two managed services&mda
         <li>Applications with explicit budget constraints.</li>
       </ul></td>
       <td><ul>
-        <li><b><a href="../cockroachcloud/quickstart.html">CockroachDB Serverless (beta)</a></b>: A fully managed, multi-tenant CockroachDB deployment, in a single region and cloud (AWS or GCP). Delivers an instant, autoscaling database and offers a generous free tier and consumption based billing once free limits are exceeded.</li>
+        <li><b><a href="../cockroachcloud/quickstart.html">{{ site.data.products.serverless }}</a></b>: A fully managed, multi-tenant CockroachDB deployment, in a single region and cloud (AWS or GCP). Delivers an instant, autoscaling database and offers a generous free tier and consumption based billing once free limits are exceeded.</li>
       </ul></td>
       <td><ul>
         <li><b>Scale</b>: Automatic transactional capacity scaling (up and down) depending on database activity. Ability to scale down to zero and consume zero resources.</li>
@@ -40,7 +40,7 @@ Cockroach Labs offers three ways to deploy CockroachDB: two managed services&mda
         <li>Applications that require real-time integration with other systems.</li>
       </ul></td>
       <td><ul>
-        <li><b><a href="../cockroachcloud/quickstart-trial-cluster.html">CockroachDB Dedicated</a></b>: A fully managed, single tenant CockroachDB deployment in a single region or multi-region cloud (AWS or GCP).</li>
+        <li><b><a href="../cockroachcloud/quickstart-trial-cluster.html">{{ site.data.products.dedicated }}</a></b>: A fully managed, single tenant CockroachDB deployment in a single region or multi-region cloud (AWS or GCP).</li>
       </ul></td>
       <td><ul>
         <li><b>Scale</b>: Node-based; self-service add and remove nodes.</li>

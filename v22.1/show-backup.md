@@ -89,7 +89,7 @@ The path format is `<year>/<month>/<day>-<timestamp>`.
 
 ### Show the most recent backup
 
-<span class="version-tag">New in v22.1:</span> To view the most recent backup, use the `LATEST` syntax:
+{% include_cached new-in.html version="v22.1" %} To view the most recent backup, use the `LATEST` syntax:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -139,7 +139,7 @@ system        | public             | role_members               | table       | 
 
 ### Show a backup taken with the incremental location option
 
-<span class="version-tag">New in v22.1:</span> To view an incremental backup that was taken with the `incremental_location` option, run `SHOW BACKUP` with the full backup and incremental backup location following the original `BACKUP` statement.
+{% include_cached new-in.html version="v22.1" %} To view an incremental backup that was taken with the `incremental_location` option, run `SHOW BACKUP` with the full backup and incremental backup location following the original `BACKUP` statement.
 
 You can use the option to show the most recent backup where `incremental_location` has stored the backup:
 

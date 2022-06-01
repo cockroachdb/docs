@@ -29,9 +29,7 @@ Note that if multiple mutations inside the same statement affect different table
 
 ### `transaction_rows_read_err` and `transaction_rows_written_err` do not halt query execution
 
-Limit on the number of rows read or written by a single transaction
-
-A [transaction](transactions.html#limit-the-number-of-rows-written-or-read-in-a-transaction) reading more than `transaction_rows_read_err` rows (or writing more than `transaction_rows_written_err` rows) fails with an error, but do not halt query execution. The error is returned after query execution has finished and the results have been returned to the client.
+The `transaction_rows_read_err` and `transaction_rows_written_err` [session settings](set-vars.html) limit the number of row read or written by a single [transaction](transactions.html#limit-the-number-of-rows-written-or-read-in-a-transaction). These session settings will fail the transaction with an error, but not until the current query finishes executing and the results have been returned to the client.
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/70473)
 
@@ -587,7 +585,3 @@ If you think a rollback of a column-dropping schema change has occurred, check t
 If the execution of a [join](joins.html) query exceeds the limit set for memory-buffering operations (i.e., the value set for the `sql.distsql.temp_storage.workmem` [cluster setting](cluster-settings.html)), CockroachDB will spill the intermediate results of computation to disk. If the join operation spills to disk, and at least one of the equality columns is of type [`JSON`](jsonb.html), CockroachDB returns the error `unable to encode table key: *tree.DJSON`. If the memory limit is not reached, then the query will be processed without error.
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/35706)
-
-### Disk-spilling not supported for some unordered distinct operations
-
-{% include {{ page.version.version }}/known-limitations/unordered-distinct-operations.md %}

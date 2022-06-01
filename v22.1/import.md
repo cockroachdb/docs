@@ -170,7 +170,7 @@ IMPORT PGDUMP 's3://{BUCKET NAME}/{customers.sql}?AWS_ACCESS_KEY_ID={ACCESS KEY}
     WITH ignore_unsupported_statements;
 ~~~
 
-For this command to succeed, you need to have created the dump file with specific flags to `pg_dump`, and use the `WITH ignore_unsupported_statements` clause. For more information, see [Migrate from Postgres](migrate-from-postgres.html).
+For this command to succeed, you need to have created the dump file with specific flags to `pg_dump`, and use the `WITH ignore_unsupported_statements` clause. For more information, see [Migrate from PostgreSQL](migrate-from-postgres.html).
 
 ### Import a table from a PostgreSQL database dump
 
@@ -183,7 +183,7 @@ IMPORT TABLE employees
 
 If the table schema specifies foreign keys into tables that do not exist yet, the `WITH skip_foreign_keys` option may be needed. For more information, see the list of [import options](#import-options).
 
-For this command to succeed, you need to have created the dump file with specific flags to `pg_dump`. For more information, see [Migrate from Postgres](migrate-from-postgres.html).
+For this command to succeed, you need to have created the dump file with specific flags to `pg_dump`. For more information, see [Migrate from PostgreSQL](migrate-from-postgres.html).
 
 ### Import a MySQL database dump
 
@@ -286,7 +286,7 @@ IMPORT PGDUMP 'azure://{CONTAINER NAME}/{employees.sql}?AZURE_ACCOUNT_NAME={ACCO
     WITH ignore_unsupported_statements;
 ~~~
 
-For this command to succeed, you need to have created the dump file with specific flags to `pg_dump`, and use the `WITH ignore_unsupported_statements` clause. For more information, see [Migrate from Postgres](migrate-from-postgres.html).
+For this command to succeed, you need to have created the dump file with specific flags to `pg_dump`, and use the `WITH ignore_unsupported_statements` clause. For more information, see [Migrate from PostgreSQL](migrate-from-postgres.html).
 
 ### Import a table from a PostgreSQL database dump
 
@@ -299,7 +299,7 @@ IMPORT TABLE employees
 
 If the table schema specifies foreign keys into tables that do not exist yet, the `WITH skip_foreign_keys` shown may be needed. For more information, see the list of [import options](#import-options).
 
-For this command to succeed, you need to have created the dump file with specific flags to `pg_dump`. For more information, see [Migrate from Postgres](migrate-from-postgres.html).
+For this command to succeed, you need to have created the dump file with specific flags to `pg_dump`. For more information, see [Migrate from PostgreSQL](migrate-from-postgres.html).
 
 ### Import a MySQL database dump
 
@@ -403,7 +403,7 @@ IMPORT PGDUMP 'gs://{BUCKET NAME}/{employees.sql}?AUTH=specified&CREDENTIALS={EN
     WITH ignore_unsupported_statements;
 ~~~
 
-For this command to succeed, you need to have created the dump file with specific flags to `pg_dump`, and use the `WITH ignore_unsupported_statements` clause. For more information, see [Migrate from Postgres](migrate-from-postgres.html).
+For this command to succeed, you need to have created the dump file with specific flags to `pg_dump`, and use the `WITH ignore_unsupported_statements` clause. For more information, see [Migrate from PostgreSQL](migrate-from-postgres.html).
 
 ### Import a table from a PostgreSQL database dump
 
@@ -416,7 +416,7 @@ IMPORT TABLE employees
 
 If the table schema specifies foreign keys into tables that do not exist yet, the `WITH skip_foreign_keys` option may be needed. For more information, see the list of [import options](#import-options).
 
-For this command to succeed, you need to have created the dump file with specific flags to `pg_dump`. For more information, see [Migrate from Postgres](migrate-from-postgres.html).
+For this command to succeed, you need to have created the dump file with specific flags to `pg_dump`. For more information, see [Migrate from PostgreSQL](migrate-from-postgres.html).
 
 ### Import a MySQL database dump
 
@@ -561,7 +561,7 @@ You can also use the [`cockroach nodelocal upload`](cockroach-nodelocal-upload.h
 - [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html)
 - [Migration Overview](migration-overview.html)
 - [Migrate from MySQL][mysql]
-- [Migrate from Postgres][postgres]
+- [Migrate from PostgreSQL][postgres]
 - [`IMPORT INTO`](import-into.html)
 
 <!-- Reference Links -->
