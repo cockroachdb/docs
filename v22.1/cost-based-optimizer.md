@@ -142,8 +142,8 @@ SET (sql_stats_automatic_collection_fraction_stale_rows = 0.1,
 sql_stats_automatic_collection_min_stale_rows = 2000);
 ~~~
 
-Row modifications that have occurred a minute or two before disabling auto statistics collection
-via `ALTER TABLE ... SET` may trigger statistics collection.
+Automatic statistics rules are checked once per minute. While altered automatic statistics table settings take immediate effect for any subsequent DML statements on a table,
+row mutations that have occurred a minute or so before you modified the settings may still trigger statistics collection based on the settings that existed before you ran the `ALTER TABLE ... SET` statement.
 
 ### Control histogram collection
 
