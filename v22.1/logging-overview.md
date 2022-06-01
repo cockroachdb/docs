@@ -48,7 +48,7 @@ Logging channels are analogous to [logging facilities in Syslog](https://en.wiki
 When using the [default logging configuration](configure-logs.html#default-logging-configuration), the events collected on each [logging channel](#logging-channels) are split into log files as follows:
 
 | Filename                   | Description             | Channels                    |
-|----------------------------|-------------------------|-----------------------------|
+|----------------------------+-------------------------+-----------------------------|
 | `cockroach.log`            | General CockroachDB log | `DEV`                       |
 | `cockroach-health.log`     | Health log              | `HEALTH`                    |
 | `cockroach-security.log`   | SQL security log        | `PRIVILEGES` + `USER_ADMIN` |

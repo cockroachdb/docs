@@ -18,6 +18,8 @@ To switch between the organizations:
 1. [Log in](https://cockroachlabs.cloud/).
 2. From the drop-down box in the top-right corner, select the organization you want to access.
 
+The settings and information about the organization are found on the **Settings** page. The organization ID and organization label used by the `ccloud` CLI are listed under **Organization settings**. 
+
 ## SQL users
 
 [Console Admins](#console-admin) can [create and manage SQL users](user-authorization.html#create-a-sql-user). A SQL user can interact with a CockroachDB database using the built-in SQL shell or through an application.

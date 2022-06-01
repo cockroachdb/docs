@@ -109,7 +109,7 @@ If you want all existing time-series data to be deleted, also change both the `t
 
 When a node runs out of disk space, it shuts down and cannot be restarted until space is freed up.
 
-<span class="version-tag">New in v21.2</span> To prepare for this case, CockroachDB [automatically creates an emergency ballast file](cluster-setup-troubleshooting.html#automatic-ballast-files) in each node's storage directory that can be deleted to free up enough space to be able to restart the node.
+{% include_cached new-in.html version="v21.2" %} To prepare for this case, CockroachDB [automatically creates an emergency ballast file](cluster-setup-troubleshooting.html#automatic-ballast-files) in each node's storage directory that can be deleted to free up enough space to be able to restart the node.
 
 For more information about troubleshooting disk usage issues, see [storage issues](cluster-setup-troubleshooting.html#disks-filling-up).
 

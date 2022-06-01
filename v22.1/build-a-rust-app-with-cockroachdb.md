@@ -1,5 +1,5 @@
 ---
-title: Build a Rust App with CockroachDB and the Rust Postgres Driver
+title: Build a Rust App with CockroachDB and the Rust-Postgres Driver
 summary: Learn how to use CockroachDB from a simple Rust application with a low-level client driver.
 toc: true
 twitter: false
@@ -14,11 +14,11 @@ We have tested the Rust-Postgres driver enough to claim **beta-level** support. 
 
 {% include {{page.version.version}}/app/before-you-begin.md %}
 
-## Step 1. Specify the Rust Postgres driver as a dependency
+## Step 1. Specify the Rust-Postgres driver as a dependency
 
-Update your `Cargo.toml` file to specify a dependency on the Rust Postgres driver, as described in the <a href="https://crates.io/crates/postgres/" data-proofer-ignore>official documentation</a>.
+Update your `Cargo.toml` file to specify a dependency on the Rust-Postgres driver, as described in the <a href="https://crates.io/crates/postgres/" data-proofer-ignore>official documentation</a>.
 
-Additionally, include the <a href="https://crates.io/crates/openssl" data-proofer-ignore>OpenSSL bindings</a> and <a href="https://crates.io/crates/postgres-openssl/" data-proofer-ignore>Rust Postgres OpenSSL</a> crates as dependencies.
+Additionally, include the <a href="https://crates.io/crates/openssl" data-proofer-ignore>OpenSSL bindings</a> and <a href="https://crates.io/crates/postgres-openssl/" data-proofer-ignore>Rust-Postgres OpenSSL</a> crates as dependencies.
 
 ## Step 2. Create the `maxroach` users and `bank` database
 
@@ -87,6 +87,6 @@ $ cockroach sql --certs-dir=certs -e 'SELECT id, balance FROM accounts' --databa
 
 ## What's next?
 
-Read more about using the <a href="https://crates.io/crates/postgres/" data-proofer-ignore>Rust Postgres driver</a>.
+Read more about using the <a href="https://crates.io/crates/postgres/" data-proofer-ignore>Rust-Postgres driver</a>.
 
 {% include {{ page.version.version }}/app/see-also-links.md %}

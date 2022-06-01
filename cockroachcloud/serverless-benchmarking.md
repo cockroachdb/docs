@@ -21,11 +21,11 @@ KV 95 is a simple benchmark that tests linear scaling by [running a workload](..
 
 ## Baseline performance
 
-Baseline performance was benchmarked for a free CockroachDB Serverless cluster running in an organization without billing information on file. This is the level of performance guaranteed for all clusters that have run out of burst capacity and are throttled.
+Baseline performance was benchmarked for a free {{ site.data.products.serverless }} cluster running in an organization without billing information on file. This is the level of performance guaranteed for all clusters that have run out of burst capacity and are throttled.
 
 <img src="{{ 'images/cockroachcloud/serverless-performance.png' | relative_url }}" alt="Serverless performance" style="max-width:100%" />
 
-This chart shows the linear consumption of RUs by a CockroachDB Serverless cluster under a constant [KV 95](#what-is-kv-95) workload. The total number of RUs consumed over 20 minutes is 119,536. The cluster is performing about 21 operations per second, and each operation (a point read or write) is consuming 4.86 RUs. We can also calculate that 119,536 RUs used over 1200 seconds gives us the guaranteed baseline performance of 100 RU/s. These results have been adjusted for a constant overhead of 5 RU/s that is unrelated to the workload.
+This chart shows the linear consumption of RUs by a {{ site.data.products.serverless }} cluster under a constant [KV 95](#what-is-kv-95) workload. The total number of RUs consumed over 20 minutes is 119,536. The cluster is performing about 21 operations per second, and each operation (a point read or write) is consuming 4.86 RUs. We can also calculate that 119,536 RUs used over 1200 seconds gives us the guaranteed baseline performance of 100 RU/s. These results have been adjusted for a constant overhead of 5 RU/s that is unrelated to the workload.
 
 ## Burst performance
 

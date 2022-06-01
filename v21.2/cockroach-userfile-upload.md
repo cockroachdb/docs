@@ -124,7 +124,7 @@ Then, you can use the file to [`IMPORT`](import.html) or [`IMPORT INTO`](import-
 
 ### Upload a directory recursively
 
-<span class="version-tag">New in v21.2:</span> To upload the contents of a directory to userfile storage, specify a source directory and destination. For example, to upload a [backup](backup.html) directory to userfile storage:
+{% include_cached new-in.html version="v21.2" %} To upload the contents of a directory to userfile storage, specify a source directory and destination. For example, to upload a [backup](backup.html) directory to userfile storage:
 
 ~~~ shell
 cockroach userfile upload -r /Users/maxroach/movr-backup userfile:///backup-data --certs-dir=certs

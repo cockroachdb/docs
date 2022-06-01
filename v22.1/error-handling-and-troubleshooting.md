@@ -23,7 +23,7 @@ Take a look at [Troubleshoot SQL Behavior](query-behavior-troubleshooting.html).
 
 ## Transaction retry errors
 
-Messages with the Postgres error code `40001` indicate that a transaction failed because it [conflicted with another concurrent or recent transaction accessing the same data](performance-best-practices-overview.html#transaction-contention). The transaction needs to be retried by the client.
+Messages with the PostgreSQL error code `40001` indicate that a transaction failed because it [conflicted with another concurrent or recent transaction accessing the same data](performance-best-practices-overview.html#transaction-contention). The transaction needs to be retried by the client.
 
 If your language's client driver or ORM implements transaction retry logic internally (e.g., if you are using Python and [SQLAlchemy with the CockroachDB dialect](build-a-python-app-with-cockroachdb-sqlalchemy.html)), then you do not need to handle this logic from your application.
 
@@ -45,11 +45,11 @@ CockroachDB has support for [most SQL features](sql-feature-support.html).
 
 Additionally, CockroachDB supports [the PostgreSQL wire protocol and the majority of its syntax](postgresql-compatibility.html). This means that existing applications can often be migrated to CockroachDB without changing application code.
 
-However, you may encounter features of SQL or the Postgres dialect that are not supported by CockroachDB. For example, the following Postgres features are not supported:
+However, you may encounter features of SQL or the PostgreSQL dialect that are not supported by CockroachDB. For example, the following PostgreSQL features are not supported:
 
 {% include {{page.version.version}}/sql/unsupported-postgres-features.md %}
 
-For more information about the differences between CockroachDB and Postgres feature support, see [PostgreSQL Compatibility](postgresql-compatibility.html).
+For more information about the differences between CockroachDB and PostgreSQL feature support, see [PostgreSQL Compatibility](postgresql-compatibility.html).
 
 For more information about the SQL standard features supported by CockroachDB, see [SQL Feature Support](sql-feature-support.html).
 

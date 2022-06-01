@@ -133,13 +133,15 @@ If your cluster grows too large for nightly [full backups](#full-backups), you c
 
 Incremental backups are smaller and faster to produce than full backups because they contain only the data that has changed since a base set of backups you specify (which must include one full backup, and can include many incremental backups). You can take incremental backups either as of a given timestamp or with full [revision history](take-backups-with-revision-history-and-restore-from-a-point-in-time.html).
 
-{{site.data.alerts.callout_danger}}
-Incremental backups can only be created within the [garbage collection](architecture/storage-layer.html#garbage-collection) period of the base backup's most recent timestamp. This is because incremental backups are created by finding which data has been created or modified since the most recent timestamp in the base backup—that timestamp data, though, is deleted by the garbage collection process.
+### Garbage collection and backups
 
-You can configure garbage collection periods using the `ttlseconds` [replication zone setting](configure-replication-zones.html#gc-ttlseconds).
+Incremental backups with [revision history](take-backups-with-revision-history-and-restore-from-a-point-in-time.html#create-a-backup-with-revision-history) are created by finding what data has been created, deleted, or modified since the timestamp of the last backup in the chain of backups. For the first incremental backup in a chain, this timestamp corresponds to the timestamp of the base [(full) backup](#full-backups). For subsequent incremental backups, this timestamp is the timestamp of the previous incremental backup in the chain.
+
+[Garbage collection Time to Live (GC TTL)](architecture/storage-layer.html#garbage-collection) determines the period for which CockroachDB retains revisions of a key. If the GC TTL of the [backup's target](backup.html#targets) is shorter than the frequency at which you take incremental backups with revision history, then the revisions become susceptible to garbage collection before you have backed them up. This will cause the incremental backup with revision history to fail.
+
+We recommend configuring the garbage collection period to be at least the frequency of incremental backups and ideally with a buffer to account for slowdowns. You can configure garbage collection periods using the `ttlseconds` [replication zone setting](configure-replication-zones.html#gc-ttlseconds).
 
 If an incremental backup is created outside of the garbage collection period, you will receive a `protected ts verification error…`. To resolve this issue, see the [Common Errors](common-errors.html#protected-ts-verification-error) page.
-{{site.data.alerts.end}}
 
 ### Take an incremental backup
 
@@ -174,6 +176,8 @@ To restore from a specific backup, run `RESTORE` with the backup's subdirectory:
 ~~~ sql
 > RESTORE FROM '{subdirectory}' IN '{collectionURI}';
 ~~~
+
+{% include {{ page.version.version }}/backups/no-incremental-restore.md %}
 
 {{site.data.alerts.callout_info}}
  `RESTORE` will re-validate [indexes](indexes.html) when [incremental backups](take-full-and-incremental-backups.html) are created from an older version (v20.2.2 and earlier or v20.1.4 and earlier), but restored by a newer version (v21.1.0+). These earlier releases may have included incomplete data for indexes that were in the process of being created.

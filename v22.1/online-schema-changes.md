@@ -52,7 +52,7 @@ If a schema change job is paused, any jobs waiting on that schema change will st
 
 ## Declarative schema changer
 
-<span class="version-tag">New in v22.1: </span>The declarative schema changer is the next iteration of how schema changes will be performed in CockroachDB. By planning schema change operations in a more principled manner, the declarative schema changer will ultimately make transactional schema changes more stable. You can identify jobs that are using the declarative schema changer by running [`SHOW JOBS`](show-jobs.html) and finding jobs with a `job_type` of `NEW SCHEMA CHANGE`.
+{% include_cached new-in.html version="v22.1" %} The declarative schema changer is the next iteration of how schema changes will be performed in CockroachDB. By planning schema change operations in a more principled manner, the declarative schema changer will ultimately make transactional schema changes more stable. You can identify jobs that are using the declarative schema changer by running [`SHOW JOBS`](show-jobs.html) and finding jobs with a `job_type` of `NEW SCHEMA CHANGE`.
 
 The following statements use the declarative schema changer by default:
 

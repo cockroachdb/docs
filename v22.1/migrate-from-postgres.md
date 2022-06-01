@@ -1,30 +1,30 @@
 ---
-title: Migrate from Postgres
-summary: Learn how to migrate data from Postgres into a CockroachDB cluster.
+title: Migrate from PostgreSQL
+summary: Learn how to migrate data from PostgreSQL into a CockroachDB cluster.
 toc: true
 docs_area: migrate
 ---
 
-This page has instructions for migrating data from Postgres to CockroachDB using [`IMPORT`][import]'s support for reading [`pg_dump`][pgdump] files.
+This page has instructions for migrating data from PostgreSQL to CockroachDB using [`IMPORT`][import]'s support for reading [`pg_dump`][pgdump] files.
 
-The examples pull real data from [Amazon S3](https://aws.amazon.com/s3/). They use the [employees data set](https://github.com/datacharmer/test_db) that is also used in the [MySQL docs](https://dev.mysql.com/doc/employee/en/). The data was imported to Postgres using [pgloader][pgloader], and then modified for use here as explained below.
+The examples pull real data from [Amazon S3](https://aws.amazon.com/s3/). They use the [employees data set](https://github.com/datacharmer/test_db) that is also used in the [MySQL docs](https://dev.mysql.com/doc/employee/en/). The data was imported to PostgreSQL using [pgloader][pgloader], and then modified for use here as explained below.
 
 {% include {{ page.version.version }}/misc/import-perf.md %}
 
-## Step 1. Dump the Postgres database
+## Step 1. Dump the PostgreSQL database
 
-There are several ways to dump data from Postgres to be imported into CockroachDB:
+There are several ways to dump data from PostgreSQL to be imported into CockroachDB:
 
 - [Dump the entire database](#dump-the-entire-database)
 - [Dump one table at a time](#dump-one-table-at-a-time)
 
 The import will fail if the dump file contains functions or type definitions. In addition to calling [`pg_dump`][pgdump] as shown below, you may need to edit the dump file to remove functions and data types.
 
-Also, note that CockroachDB's [`IMPORT`][import] does not support automatically importing data from Postgres' non-public [schemas][pgschema]. As a workaround, you can edit the dump file to change the table and schema names in the `CREATE TABLE` statements.
+Also, note that CockroachDB's [`IMPORT`][import] does not support automatically importing data from PostgreSQL's non-public [schemas][pgschema]. As a workaround, you can edit the dump file to change the table and schema names in the `CREATE TABLE` statements.
 
 ### Dump the entire database
 
-Most users will want to import their entire Postgres database all at once, as shown below in [Import a full database dump](#import-a-full-database-dump).
+Most users will want to import their entire PostgreSQL database all at once, as shown below in [Import a full database dump](#import-a-full-database-dump).
 
 To dump the entire database, run the [`pg_dump`][pgdump] command shown below.
 
@@ -33,9 +33,9 @@ To dump the entire database, run the [`pg_dump`][pgdump] command shown below.
 $ pg_dump employees > /tmp/employees-full.sql
 ~~~
 
-For this data set, the Postgres dump file required the following edits, which have already been performed on the files used in the examples below:
+For this data set, the PostgreSQL dump file required the following edits, which have already been performed on the files used in the examples below:
 
-- The type of the `employees.gender` column in the `CREATE TABLE` statement had to be changed from `employees.employees_gender` to [`STRING`](string.html) since Postgres represented the employee's gender using a [`CREATE TYPE`](https://www.postgresql.org/docs/10/static/sql-createtype.html) statement that is not supported by CockroachDB.
+- The type of the `employees.gender` column in the `CREATE TABLE` statement had to be changed from `employees.employees_gender` to [`STRING`](string.html) since PostgreSQL represented the employee's gender using a [`CREATE TYPE`](https://www.postgresql.org/docs/10/static/sql-createtype.html) statement that is not supported by CockroachDB.
 
 - A `CREATE TYPE employee ...` statement needed to be removed.
 
@@ -43,16 +43,16 @@ If you only want to import one table from a database dump, see [Import a table f
 
 ### Dump one table at a time
 
-To dump the `employees` table from a Postgres database also named `employees`, run the [`pg_dump`][pgdump] command shown below. You can import this table using the instructions in [Import a table from a table dump](#import-a-table-from-a-table-dump) below.
+To dump the `employees` table from a PostgreSQL database also named `employees`, run the [`pg_dump`][pgdump] command shown below. You can import this table using the instructions in [Import a table from a table dump](#import-a-table-from-a-table-dump) below.
 
 {% include copy-clipboard.html %}
 ~~~ shell
 $ pg_dump -t employees  employees > /tmp/employees.sql
 ~~~
 
-For this data set, the Postgres dump file required the following edits, which have already been performed on the files used in the examples below.
+For this data set, the PostgreSQL dump file required the following edits, which have already been performed on the files used in the examples below.
 
-- The type of the `employees.gender` column in the `CREATE TABLE` statement had to be changed from `employees.employees_gender` to [`STRING`](string.html) since Postgres represented the employee's gender using a [`CREATE TYPE`](https://www.postgresql.org/docs/10/static/sql-createtype.html) statement that is not supported by CockroachDB.
+- The type of the `employees.gender` column in the `CREATE TABLE` statement had to be changed from `employees.employees_gender` to [`STRING`](string.html) since PostgreSQL represented the employee's gender using a [`CREATE TYPE`](https://www.postgresql.org/docs/10/static/sql-createtype.html) statement that is not supported by CockroachDB.
 
 ## Step 2. Host the files where the cluster can access them
 
@@ -65,7 +65,7 @@ Each node in the CockroachDB cluster needs to have access to the files being imp
 We strongly recommend using cloud storage such as Amazon S3 or Google Cloud to host the data files you want to import.
 {{site.data.alerts.end}}
 
-## Step 3. Import the Postgres dump file
+## Step 3. Import the PostgreSQL dump file
 
 You can choose from several variants of the [`IMPORT`][import] statement, depending on whether you want to import a full database or a single table:
 
@@ -143,7 +143,7 @@ The following options are available to `IMPORT PGDUMP`:
 
 ### Max row size
 
-The `max_row_size` option is used to override limits on line size. **Default:** `0.5MB`. This setting may need to be tweaked if your Postgres dump file has extremely long lines, for example as part of a `COPY` statement.
+The `max_row_size` option is used to override limits on line size. **Default:** `0.5MB`. This setting may need to be tweaked if your PostgreSQL dump file has extremely long lines, for example as part of a `COPY` statement.
 
 Example usage:
 
@@ -212,7 +212,7 @@ Example usage:
 - [Import Performance Best Practices](import-performance-best-practices.html)
 - [Migrate from CSV][csv]
 - [Migrate from MySQL][mysql]
-- [Can a Postgres or MySQL application be migrated to CockroachDB?](frequently-asked-questions.html#can-a-postgresql-or-mysql-application-be-migrated-to-cockroachdb)
+- [Can a PostgreSQL or MySQL application be migrated to CockroachDB?](frequently-asked-questions.html#can-a-postgresql-or-mysql-application-be-migrated-to-cockroachdb)
 - [Back up Data](take-full-and-incremental-backups.html)
 - [Restore Data](take-full-and-incremental-backups.html)
 - [Use the Built-in SQL Client](cockroach-sql.html)
@@ -232,7 +232,7 @@ Example usage:
 
 These instructions were prepared with the following versions:
 
-- Postgres 10.5
+- PostgreSQL 10.5
 
 - CockroachDB CCL v2.2.0-alpha.00000000-757-gb33c49ff73
   (x86_64-apple-darwin16.7.0, built 2018/09/12 19:30:43, go1.10.3)

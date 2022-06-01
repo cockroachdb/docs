@@ -1,5 +1,5 @@
 ---
-title: RESET (session variable)
+title: RESET &#123;session variable&#125;
 summary: The SET statement resets a session variable to its default value.
 toc: true
 docs_area: reference.sql
@@ -86,5 +86,5 @@ No [privileges](security-reference/authorization.html#managing-privileges) are r
 
 ## See also
 
-- [`SET` (session variable)](set-vars.html)
-- [`SHOW` (session variables)](show-vars.html)
+- [`SET {session variable}`](set-vars.html)
+- [`SHOW {session variable}`](show-vars.html)

@@ -87,7 +87,7 @@ Query parameters include:
 
 Parameter          | <div style="width:100px">Sink Type</div>      | <div style="width:75px">Type</div>  | Description
 -------------------+-----------------------------------------------+-------------------------------------+------------------------------------------------------------
-<span class="version-tag"> New in v21.2: </span> <a name="topic-name-param"></a>`topic_name`       | [Kafka](changefeed-sinks.html#kafka)                               | [`STRING`](string.html)             | Allows arbitrary topic naming for Kafka topics. See the [Kafka topic naming limitations](changefeed-sinks.html#topic-naming) for detail on supported characters etc. <br><br>For example, `CREATE CHANGEFEED FOR foo,bar INTO 'kafka://sink?topic_name=all'` will emit all records to a topic named `all`. Note that schemas will still be registered separately. Can be combined with the [`topic_prefix` option](#topic-prefix-param). <br><br>**Default:** table name.
+{% include_cached new-in.html version="v21.2" %} <a name="topic-name-param"></a>`topic_name`       | [Kafka](changefeed-sinks.html#kafka)                               | [`STRING`](string.html)             | Allows arbitrary topic naming for Kafka topics. See the [Kafka topic naming limitations](changefeed-sinks.html#topic-naming) for detail on supported characters etc. <br><br>For example, `CREATE CHANGEFEED FOR foo,bar INTO 'kafka://sink?topic_name=all'` will emit all records to a topic named `all`. Note that schemas will still be registered separately. Can be combined with the [`topic_prefix` option](#topic-prefix-param). <br><br>**Default:** table name.
 <a name="topic-prefix-param"></a>`topic_prefix`     | [Kafka](changefeed-sinks.html#kafka), [cloud](changefeed-sinks.html#cloud-storage-sink) | [`STRING`](string.html)             | Adds a prefix to all topic names.<br><br>For example, `CREATE CHANGEFEED FOR TABLE foo INTO 'kafka://...?topic_prefix=bar_'` would emit rows under the topic `bar_foo` instead of `foo`.
 `tls_enabled`      | [Kafka](changefeed-sinks.html#kafka)                               | [`BOOL`](bool.html)                 | If `true`, enable Transport Layer Security (TLS) on the connection to Kafka. This can be used with a `ca_cert` (see below). <br><br>**Default:** `false`
 `ca_cert`          | [Kafka](changefeed-sinks.html#kafka), [webhook](changefeed-sinks.html#webhook-sink), ([Confluent schema registry](https://docs.confluent.io/platform/current/schema-registry/index.html)) | [`STRING`](string.html)            | The base64-encoded `ca_cert` file. Specify `ca_cert` for a Kafka sink, webhook sink, and/or a Confluent schema registry. <br><br>For usage with a Kafka sink, see [Kafka Sink URI](changefeed-sinks.html#kafka). <br><br> It's necessary to state `https` in the schema registry's address when passing `ca_cert`: <br>`confluent_schema_registry='https://schema_registry:8081?ca_cert=LS0tLS1CRUdJTiBDRVJUSUZ'` <br> See [`confluent_schema_registry`](#confluent-registry) for more detail on using this option. <br><br>Note: To encode your `ca.cert`, run `base64 -w 0 ca.cert`.
@@ -229,7 +229,7 @@ For step-by-step guidance on creating a changefeed connected to a cloud storage 
 
 ### Create a changefeed with an S3 storage class
 
-<span class="version-tag">New in v21.2.6:</span> To associate the changefeed message files with a [specific storage class](use-cloud-storage-for-bulk-operations.html#amazon-s3-storage-classes) in your Amazon S3 bucket, use the `S3_STORAGE_CLASS` parameter with the class. For example, the following S3 connection URI specifies the `INTELLIGENT_TIERING` storage class:
+{% include_cached new-in.html version="v21.2.6" %} To associate the changefeed message files with a [specific storage class](use-cloud-storage-for-bulk-operations.html#amazon-s3-storage-classes) in your Amazon S3 bucket, use the `S3_STORAGE_CLASS` parameter with the class. For example, the following S3 connection URI specifies the `INTELLIGENT_TIERING` storage class:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -260,7 +260,7 @@ CREATE CHANGEFEED FOR TABLE name, name2, name3
 
 ### Manage a changefeed
 
-<span class="version-tag">New in v21.2:</span> For enterprise changefeeds, use [`SHOW CHANGEFEED JOBS`](show-jobs.html) to check the status of your changefeed jobs:
+{% include_cached new-in.html version="v21.2" %} For enterprise changefeeds, use [`SHOW CHANGEFEED JOBS`](show-jobs.html) to check the status of your changefeed jobs:
 
 {% include copy-clipboard.html %}
 ~~~ sql

@@ -45,7 +45,7 @@ To view the contents of an Enterprise backup created with the `BACKUP` statement
 - [Full cluster backups](take-full-and-incremental-backups.html#full-backups) can only be run by members of the [`admin` role](security-reference/authorization.html#admin-role). By default, the `root` user belongs to the `admin` role.
 - For all other backups, the user must have [read access](security-reference/authorization.html#managing-privileges) on all objects being backed up. Database backups require `CONNECT` privileges, and table backups require `SELECT` privileges. Backups of user-defined schemas, or backups containing user-defined types, require `USAGE` privileges.
 - `BACKUP` requires full read and write permissions to its target destination.
-- **New in v22.1:** `BACKUP` does **not** require delete or overwrite permissions to its target destination. This allows `BACKUP` to write to cloud storage buckets that have [object locking](use-cloud-storage-for-bulk-operations.html#object-locking) configured.
+- {% include_cached new-in.html version="v22.1" %} `BACKUP` does **not** require delete or overwrite permissions to its target destination. This allows `BACKUP` to write to cloud storage buckets that have [object locking](use-cloud-storage-for-bulk-operations.html#object-locking) configured.
 
 ### Destination privileges
 
@@ -303,7 +303,7 @@ job_id             |  status   | fraction_completed | rows | index_entries | byt
 
 ### Backup with an S3 storage class
 
-<span class="version-tag">New in v22.1:</span> To associate your backup objects with a [specific storage class](use-cloud-storage-for-bulk-operations.html#amazon-s3-storage-classes) in your Amazon S3 bucket, use the `S3_STORAGE_CLASS` parameter with the class. For example, the following S3 connection URI specifies the `INTELLIGENT_TIERING` storage class:
+{% include_cached new-in.html version="v22.1" %} To associate your backup objects with a [specific storage class](use-cloud-storage-for-bulk-operations.html#amazon-s3-storage-classes) in your Amazon S3 bucket, use the `S3_STORAGE_CLASS` parameter with the class. For example, the following S3 connection URI specifies the `INTELLIGENT_TIERING` storage class:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

@@ -82,7 +82,7 @@ The following options are available to [`IMPORT ... CSV`][import]:
 + [Column delimiter](#column-delimiter)
 + [Comment syntax](#comment-syntax)
 + [Skip header rows](#skip-header-rows)
-+ <span class="version-tag">New in v21.1:</span> [Row limit](#row-limit)
++ {% include_cached new-in.html version="v21.1" %} [Row limit](#row-limit)
 + [Null strings](#null-strings)
 + [File compression](#file-compression)
 
@@ -148,7 +148,7 @@ Example usage:
 
 ### Row limit
 
-<span class="version-tag">New in v21.1:</span> The `row_limit` option determines the number of rows to import from a table. It is useful for finding errors quickly before executing a more time- and resource-consuming import.
+{% include_cached new-in.html version="v21.1" %} The `row_limit` option determines the number of rows to import from a table. It is useful for finding errors quickly before executing a more time- and resource-consuming import.
 
 Example usage:
 

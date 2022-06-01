@@ -9,47 +9,7 @@ The `ccloud` tool is a command-line interface (CLI) tool that allows you to crea
 
 ## Install `ccloud`
 
-Choose your OS:
-
-<div class="filters clearfix">
-    <button class="filter-button page-level" data-scope="mac"><strong>Mac</strong></button>
-    <button class="filter-button page-level" data-scope="linux"><strong>Linux</strong></button>
-    <button class="filter-button page-level" data-scope="windows"><strong>Windows</strong></button>
-</div>
-
-<section class="filter-content" markdown="1" data-scope="mac">
-Download and extract the `ccloud` binary and add it to your `PATH`.
-
-{% include_cached copy-clipboard.html %}
-~~~ shell
-curl https://binaries.cockroachdb.com/ccloud/ccloud_darwin-amd64_0.1.1.tar.gz | tar -xJ && cp -i ccloud /usr/local/bin/
-~~~
-
-Use the ARM 64 binary if you have an M1 Mac:
-
-{% include_cached copy-clipboard.html %}
-~~~ shell
-curl https://binaries.cockroachdb.com/ccloud/ccloud_darwin-arm64_0.1.1.tar.gz | tar -xJ && cp -i ccloud /usr/local/bin/
-~~~
-
-</section>
-<section class="filter-content" markdown="1" data-scope="linux">
-Download and extract the `ccloud` binary and add it to your `PATH`.
-
-{% include_cached copy-clipboard.html %}
-~~~ shell
-curl https://binaries.cockroachdb.com/ccloud/ccloud_linux-amd64_0.1.1.tar.gz | tar -xz && cp -i ccloud /usr/local/bin/
-~~~
-
-</section>
-<section class="filter-content" markdown="1" data-scope="windows">
-Download and extract the `ccloud` binary and add it to your `PATH`.
-
-{% include_cached copy-clipboard.html %}
-~~~ shell
-$ErrorActionPreference = "Stop"; [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; $ProgressPreference = 'SilentlyContinue'; $null = New-Item -Type Directory -Force $env:appdata/ccloud; Invoke-WebRequest -Uri https://binaries.cockroachdb.com/ccloud/ccloud_windows-amd64_0.1.1.zip -OutFile ccloud.zip; Expand-Archive -Force -Path ccloud.zip; Copy-Item -Force ccloud/ccloud.exe -Destination $env:appdata/ccloud; $Env:PATH += ";$env:appdata/ccloud"; # We recommend adding ";$env:appdata/ccloud" to the Path variable for your system environment. See https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_environment_variables#saving-changes-to-environment-variables for more information.
-~~~
-</section>
+{% include cockroachcloud/ccloud/install-ccloud.md %}
 
 ## Use `ccloud quickstart`
 
@@ -60,7 +20,7 @@ The easiest way of getting started with CockroachDB Cloud is to use `ccloud quic
 ccloud quickstart
 ~~~
 
-The `ccloud quickstart` command will open a browser window to log you in to CockroachDB Cloud. If you are new to CockroachDB Cloud, you can log in using your GitHub account, or create a new account using an email address.
+The `ccloud quickstart` command will open a browser window to log you in to CockroachDB Cloud. If you are new to CockroachDB Cloud, you can register using one of the single-sign-on options, or create a new account using an email address.
 
 ## Log in to CockroachDB Cloud using `ccloud auth`
 
@@ -77,9 +37,18 @@ In order to use the `ccloud` commands to configure and manage your clusters, you
 
 1. Enter your username and password if you already have a CockroachDB Cloud account, then click **Continue**.
 
-    If you do not have a CockroachDB Cloud account, click **Sign up with GitHub** or **Sign up** to register.
+    If you do not have a CockroachDB Cloud account, click one of the single sign-on (SSO) options or **Sign up** to register.
 
 1. Close the browser window and return to your terminal.
+
+If you are a member of more than one [CockroachDB Cloud organization](console-access-management.html#organization), use the `--org` flag to set the organization name when authenticating.
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+ccloud auth login --org <organization label>
+~~~
+
+The organization label is found on the **Settings** page of the CockroachDB Cloud Console.
 
 ## Create a new cluster using `ccloud cluster create`
 
