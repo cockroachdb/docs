@@ -7,10 +7,6 @@ docs_area: manage
 
 If you need to monitor your cluster, tune performance, or [troubleshoot](troubleshooting-overview.html) issues, you can check the CockroachDB logs, which include details about notable cluster, node, and range-level events.
 
-{{site.data.alerts.callout_info}}
-The default logging configuration has changed in v21.2. For a summary of what has changed, see [Changes to logging system](#changes-to-logging-system).
-{{site.data.alerts.end}}
-
 ## Details
 
 When a node processes a [`cockroach` command](cockroach-commands.html), it produces a stream of messages about the command's activities. Each message is composed of:
@@ -47,7 +43,7 @@ This allows you to group channels that log related information (e.g., operationa
 
 Logging channels are analogous to [logging facilities in Syslog](https://en.wikipedia.org/wiki/Syslog) or [logging services in Datadog](https://docs.datadoghq.com/logs/log_collection/?tab=http#reserved-attributes). For more details on the contents of each logging channel, see the [Logging reference](logging.html#logging-channels).
 
-## Changes to logging system
+## Logging destinations
 
 When using the [default logging configuration](configure-logs.html#default-logging-configuration), the events collected on each [logging channel](#logging-channels) are split into log files as follows:
 
@@ -64,7 +60,7 @@ When using the [default logging configuration](configure-logs.html#default-loggi
 | `cockroach-pebble.log`     | Pebble log              | `STORAGE`                   |
 | `cockroach-telemetry.log`  | Telemetry log           | `TELEMETRY`                 |
 
- Logging is now configurable via YAML. The YAML configuration allows you to customize which kinds of events are output to different logging destinations, along with many other parameters. As a result, the logging flags previously used with `cockroach` commands are now deprecated in favor of the YAML configuration. For details, see [Configure Logs](configure-logs.html).
+Logging destinations and many other parameters are configurable via YAML. For details, see [Configure Logs](configure-logs.html).
 
 ## See also
 
