@@ -11,7 +11,7 @@ docs_area: reference.sql
 
 The `CREATE CHANGEFEED` [statement](sql-statements.html) creates a new Enterprise changefeed, which targets an allowlist of tables called "watched rows".  Every change to a watched row is emitted as a record in a configurable format (`JSON` or Avro) to a configurable sink ([Kafka](https://kafka.apache.org/), [Google Cloud Pub/Sub](https://cloud.google.com/pubsub), a [cloud storage sink](changefeed-sinks.html#cloud-storage-sink), or a [webhook sink](changefeed-sinks.html#webhook-sink)). You can [create](#create-a-changefeed-connected-to-kafka), [pause](#pause-a-changefeed), [resume](#resume-a-paused-changefeed), [alter](alter-changefeed.html), or [cancel](#cancel-a-changefeed) an Enterprise changefeed.
 
-For more information, see [Use Changefeeds](use-changefeeds.html).
+We recommend reading the [Use Changefeeds](use-changefeeds.html) page for detail on understanding how changefeeds emit [messages](use-changefeeds.html#messages) and important usage [considerations](use-changefeeds.html#considerations).
 
 ## Required privileges
 
@@ -64,7 +64,7 @@ Example of a Kafka sink URI:
 The Google Cloud Pub/Sub sink is currently in **beta**.
 {{site.data.alerts.end}}
 
-<span class="version-tag">New in v22.1:</span> Example of a Google Cloud Pub/Sub sink URI:
+{% include_cached new-in.html version="v22.1" %} Example of a Google Cloud Pub/Sub sink URI:
 
 ~~~
 'gcpubsub://{project name}?region={region}&topic_name={topic name}&AUTH=specified&CREDENTIALS={base64-encoded key}'
@@ -115,6 +115,7 @@ Parameter          | <div style="width:100px">Sink Type</div>      | <div style=
 <a name="file-size"></a>`file_size`        | [cloud](changefeed-sinks.html#cloud-storage-sink)                  | [`STRING`](string.html)             | The file will be flushed (i.e., written to the sink) when it exceeds the specified file size. This can be used with the [`WITH resolved` option](#options), which flushes on a specified cadence. <br><br>**Default:** `16MB`
 <a name="tls-skip-verify"></a>`insecure_tls_skip_verify` |  [Kafka](changefeed-sinks.html#kafka), [webhook](changefeed-sinks.html#webhook-sink)                    | [`BOOL`](bool.html)                 | If `true`, disable client-side validation of responses. Note that a CA certificate is still required; this parameter means that the client will not verify the certificate. **Warning:** Use this query parameter with caution, as it creates [MITM](https://en.wikipedia.org/wiki/Man-in-the-middle_attack) vulnerabilities unless combined with another method of authentication. <br><br>**Default:** `false`
 <a name="partition-format"></a>`partition_format` | [cloud](changefeed-sinks.html#cloud-storage-sink) | [`STRING`](string.html) | <span class="version-tag">New in v22.1:</span> Specify how changefeed [file paths](#general-file-format) are partitioned in cloud storage sinks. Use `partition_format` with the following values: <br><br><ul><li>`daily` is the default behavior that splits directories into dates (`2022-05-18/`, `2022-05-19/`, etc.).</li><li>`hourly` will further partition the files by hour within the date directory (`2022-05-18/06`, `2022-05-18/07`, etc.).</li><li>`flat` will not partition the files at all.</ul><br>For example: `CREATE CHANGEFEED FOR TABLE users INTO 'gs://...?AUTH...&partition_format=hourly'` <br><br> **Default:** `daily`
+`S3_storage_class` | [Amazon S3 cloud storage sink](changefeed-sinks.html#amazon-s3) | [`STRING`](string.html) | Specify the Amazon S3 storage class for files created by the changefeed. See [Create a changefeed with an S3 storage class](#create-a-changefeed-with-an-s3-storage-class) for the available classes and an example. <br><br>**Default:** `STANDARD`  
 
 ### Options
 
@@ -144,6 +145,7 @@ Option | Value | Description
 `webhook_sink_config` | [`STRING`](string.html) |  Set fields to configure sink batching and retries. The schema is as follows:<br><br> `{ "Flush": { "Messages": ..., "Bytes": ..., "Frequency": ..., }, "Retry": {"Max": ..., "Backoff": ..., } }`. <br><br>**Note** that if either `Messages` or `Bytes` are nonzero, then a non-zero value for `Frequency` must be provided. <br><br>See [Webhook sink configuration](changefeed-sinks.html#webhook-sink-configuration) for more details on using this option.
 `metrics_label` | [`STRING`](string.html) | This is an **experimental** feature. Define a metrics label to which the metrics for one or multiple changefeeds increment. All changefeeds also have their metrics aggregated.<br><br>The maximum length of a label is 128 bytes. There is a limit of 1024 unique labels.<br><br>`WITH metrics_label=label_name` <br><br>For more detail on usage and considerations, see [Using changefeed metrics labels](monitor-and-debug-changefeeds.html#using-changefeed-metrics-labels).
 <a name="split-column-families"></a>`split_column_families` | N/A | Use this option to create a changefeed on a table with multiple [column families](column-families.html). The changefeed will emit messages for each of the table's column families. See [Changefeeds on tables with column families](use-changefeeds.html#changefeeds-on-tables-with-column-families) for more usage detail.
+<a name="virtual-columns"></a>`virtual_columns` | `STRING` | <span class="version-tag">New in v22.1:</span> Changefeeds omit [virtual computed columns](computed-columns.html) from emitted [messages](use-changefeeds.html#messages) by default. To maintain the behavior of previous CockroachDB versions where the changefeed would emit [`NULL`](null-handling.html) values for virtual computed columns, set `virtual_columns = "null"` when you start a changefeed. <br><br>You may also define `virtual_columns = "omitted"`, though this is already the default behavior for v22.1+. If you do not set `"omitted"` on a table with virtual computed columns when you create a changefeed, you will receive a warning that changefeeds will filter out virtual computed values. <br><br>**Default:** `"omitted"`
 
 {{site.data.alerts.callout_info}}
  Using the `format=avro`, `envelope=key_only`, and `updated` options together is rejected. `envelope=key_only` prevents any rows with updated fields from being emitted, which makes the `updated` option meaningless.
@@ -253,6 +255,17 @@ For more information on how to create a changefeed that emits an [Avro](https://
 ~~~
 
 For step-by-step guidance on creating a changefeed connected to a cloud storage sink, see [Changefeed Examples](changefeed-examples.html#create-a-changefeed-connected-to-a-cloud-storage-sink).
+
+### Create a changefeed with an S3 storage class
+
+{% include_cached new-in.html version="v22.1" %} To associate the changefeed message files with a [specific storage class](use-cloud-storage-for-bulk-operations.html#amazon-s3-storage-classes) in your Amazon S3 bucket, use the `S3_STORAGE_CLASS` parameter with the class. For example, the following S3 connection URI specifies the `INTELLIGENT_TIERING` storage class:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE CHANGEFEED FOR TABLE name INTO 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}&S3_STORAGE_CLASS=INTELLIGENT_TIERING' WITH resolved;
+~~~
+
+{% include {{ page.version.version }}/misc/storage-classes.md %}
 
 ### Create a changefeed connected to a webhook sink
 

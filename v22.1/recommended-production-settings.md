@@ -46,7 +46,7 @@ Carefully consider the following tradeoffs:
 
 In general, distribute your total vCPUs into the **largest possible nodes and smallest possible cluster** that meets your fault tolerance goals.
 
-- Each node should have at least {% include {{ page.version.version }}/prod-deployment/provision-cpu.md %}. For greater stability, we recommend at least 8 vCPUs per node.
+- Each node should have {% include {{ page.version.version }}/prod-deployment/provision-cpu.md %}. For greater stability, we recommend at least 8 vCPUs per node.
 
 - Avoid "burstable" or "shared-core" virtual machines that limit the load on CPU resources.
 
@@ -286,6 +286,8 @@ Creating the appropriate size pool of connections is critical to gaining maximum
 {% include {{ page.version.version }}/prod-deployment/prod-guidance-connection-pooling.md %}.
 
 For guidance on sizing, validating, and using connection pools with CockroachDB, see [Use Connection Pools](connection-pooling.html).
+
+{% include {{page.version.version}}/sql/server-side-connection-limit.md %} This may be useful in addition to your connection pool settings.
 
 ## Monitoring and alerting
 

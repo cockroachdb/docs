@@ -209,6 +209,19 @@ export16808a04292505c80000000000000001-n1.0.parquet.snappy |   17 |   824
 (1 row)
 ~~~
 
+### Export tabular data with an S3 storage class
+
+{% include_cached new-in.html version="v22.1" %} To associate your export objects with a [specific storage class](use-cloud-storage-for-bulk-operations.html#amazon-s3-storage-classes) in your Amazon S3 bucket, use the `S3_STORAGE_CLASS` parameter with the class. For example, the following S3 connection URI specifies the `INTELLIGENT_TIERING` storage class:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> EXPORT INTO CSV
+  's3://{BUCKET NAME}/{customer-export-data}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}&S3_STORAGE_CLASS=INTELLIGENT_TIERING'
+  WITH delimiter = '|' FROM TABLE bank.customers;
+~~~
+
+{% include {{ page.version.version }}/misc/storage-classes.md %}
+
 </section>
 
 <section class="filter-content" markdown="1" data-scope="azure">

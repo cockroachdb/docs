@@ -40,10 +40,6 @@ Only members of the `admin` role can run `COPY` statements. By default, the `roo
 
 ## Known limitations
 
-### `COPY FROM` statements are not supported in the CockroachDB SQL shell
-
-{% include {{ page.version.version }}/known-limitations/copy-from-clients.md %}
-
 ### `COPY` syntax not supported by CockroachDB
 
 {% include {{ page.version.version }}/known-limitations/copy-syntax.md %}
@@ -121,6 +117,5 @@ In the demo cluster's shell, query the `users` table for the rows that you just 
 - [`IMPORT`](import.html)
 - [`IMPORT INTO`](import-into.html)
 - [`EXPORT`](export.html)
-- [Migrate from Postgres](migrate-from-postgres.html)
+- [Migrate from PostgreSQL](migrate-from-postgres.html)
 - [Migration Overview](migration-overview.html)
-

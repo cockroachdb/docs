@@ -671,7 +671,7 @@ Note that the foreign key constraint `fk_owner_id_ref_users` in the source table
 
 ### Create tables in a multi-region database
 
-<span class="version-tag">New in v21.1:</span> To create a table with a specific [table locality](multiregion-overview.html#table-locality) in a [multi-region database](multiregion-overview.html), add a `LOCALITY` clause to the end of the table's `CREATE TABLE` statement.
+{% include_cached new-in.html version="v21.1" %} To create a table with a specific [table locality](multiregion-overview.html#table-locality) in a [multi-region database](multiregion-overview.html), add a `LOCALITY` clause to the end of the table's `CREATE TABLE` statement.
 
 {{site.data.alerts.callout_info}}
 In order to set table localities, the database that contains the table must have [database regions](multiregion-overview.html#database-regions).

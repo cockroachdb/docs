@@ -7,8 +7,7 @@ docs_area: reference.security
 
 This page provides an overview of the security and implementation considerations for using SCRAM-SHA-256 [authentication](authentication.html) in CockroachDB.
 
-<span class="version-tag">New in v22.1:
-</span> CockroachDB supports SCRAM-SHA-256 authentication for clients in both {{ site.data.products.db }} and {{ site.data.products.core }}.
+{% include_cached new-in.html version="v22.1" %} CockroachDB supports SCRAM-SHA-256 authentication for clients in both {{ site.data.products.db }} and {{ site.data.products.core }}.
 
 CockroachDB's support for SCRAM-SHA-256 is PostgreSQL-compatible. PostgreSQL client drivers that support SCRAM-SHA-256 remain compatible with CockroachDB when SCRAM authentication is enabled.
 
@@ -32,11 +31,11 @@ CockroachDB clusters can achieve a SASL-compliant security architecture using th
 
 #### Offload computation cost for password hashing encryption to client
 
-During password-based authentication, a hash of the password must be computed. This computationally expensive operation is necessary to prevent brute-force attacks on the user's credentials by malicious actors. 
+During password-based authentication, a hash of the password must be computed. This computationally expensive operation is necessary to prevent brute-force attacks on the user's credentials by malicious actors.
 
 In SCRAM authentication, the client does the encryption work in order to produce the proof of identity. In other methods the hash is computed server-side after the password is transmitted across the network. SCRAM authentication therefore offloads the computation cost to its clients, which in most cases are application servers.
 
-Adopting SCRAM, in contrast to plaintext password authentication, therefore offers additional protection against distributed denial-of-service (DDoS) attacks against CockroachDB, by preventing a CPU overload of the server to compute password hashes. 
+Adopting SCRAM, in contrast to plaintext password authentication, therefore offers additional protection against distributed denial-of-service (DDoS) attacks against CockroachDB, by preventing a CPU overload of the server to compute password hashes.
 
 {{site.data.alerts.callout_info}}
 Note that SCRAM authentication does impose an additional computational load on your application servers, which need to compute the client proof for each authentication. Therefore, we recommend migrating your user population in batches when migrating to SCRAM authentication. This process will allow you to evaluate the impact on performance and resource consumption, and make any necessary adjustments.
@@ -53,11 +52,11 @@ SCRAM offers strong protection against such [replay attacks](https://en.wikipedi
 A server that authenticates users with SCRAM does not need to store or handle plaintext passwords. Therefore, a system that employs SASL-compliant SCRAM authentication can consolidate responsibility for handling plaintext credentials to a dedicated secrets-management service. This helps to minimize exposure of the credentials to possible egress both at rest and in flight. In keeping with the principle of "separation of concerns", wherein each high-level functionality or "concern" should be handled by a dedicated component, enterprise IT infrastructures often enforce such a consolidation.
 
 Isolation of credential-handling offers many advantages to a delegated service (whether self-hosted or used as a cloud-based external service).
-Most importantly, it removes the possibility of any credential spill from your CockroachDB cluster's authentication database (i.e. the cluster's `system.users` table), since it no longer contains credentials.
+Most importantly, it removes the possibility of any credential spill from your CockroachDB cluster's authentication database (i.e., the cluster's `system.users` table), since it no longer contains credentials.
 
 This not only reduces the impact of any compromises to the database, but also makes it a far less attractive target.
 
-Full separation of concerns requires more than just enabling SCRAM-SHA-256 authentication. The additional requirements are detailed [here](#implementing-strict-isolation-of-plaintext-credentials). 
+Full separation of concerns requires more than just enabling SCRAM-SHA-256 authentication. The additional requirements are detailed [here](#implementing-strict-isolation-of-plaintext-credentials).
 
 ## Implementing SCRAM authentication in your CockroachDB Cluster
 
@@ -88,7 +87,7 @@ For example:
 {% include_cached copy-clipboard.html %}
 ~~~sql
 CREATE USER hypothetical_user WITH PASSWORD 'hypothetical-plain-text-password-123';
-SELECT username, "hashedPassword" FROM system.users WHERE username='hypothetical_user'; 
+SELECT username, "hashedPassword" FROM system.users WHERE username='hypothetical_user';
 ~~~
 ~~~
   username            |                     hashedPassword
@@ -120,7 +119,7 @@ SET CLUSTER SETTING server.user_login.upgrade_bcrypt_stored_passwords_to_scram.e
 
 It is not possible to automatically convert credentials to SCRAM in bulk, without client participation. To implement SCRAM for all SQL user accounts simultaneously, use [`ALTER USER <USERNAME> WITH PASSWORD`](../alter-user.html) statements instead.
 
-## Implementing strict isolation of plaintext credentials 
+## Implementing strict isolation of plaintext credentials
 
 Plaintext credentials are a valuable asset to malicious agents; known as ["credential stuffing,"](https://en.wikipedia.org/wiki/Credential_stuffing) re-use of stolen passwords is a persistent problem throughout the ecosystem of internet services. Hence, any system that handles plaintext credentials becomes a favorable target for malicious attackers with potentially weak points in the system.
 
@@ -128,7 +127,7 @@ While the measures [described previously](#implementing-scram-authentication-in-
 
 Moreover, the plaintext credentials must be handled in memory by CockroachDB in order to generate the hashes on the server, and this offers a potential opportunity for hypothetical attackers who have compromised your node's runtime environment. It is architecturally stronger to perform all handling of plaintext credentials for your system with a dedicated, hardened, specialized environment and process. This entails removing all handling of plaintext credentials from CockroachDB.
 
-It is possible to operate a CockroachDB cluster in such a way that it never handles plaintext passwords. This prevents the malicious use of stolen credentials, even in case the CockroachDB node is compromised. 
+It is possible to operate a CockroachDB cluster in such a way that it never handles plaintext passwords. This prevents the malicious use of stolen credentials, even in case the CockroachDB node is compromised.
 
 **Requirements for strict isolation**:
 
@@ -257,7 +256,7 @@ In this way, the server stores the information needed for SCRAM authentication, 
 
 {% include_cached copy-clipboard.html %}
 ~~~sql
-SELECT username, "hashedPassword" FROM system.users WHERE username='cool_user'; 
+SELECT username, "hashedPassword" FROM system.users WHERE username='cool_user';
 SELECT *  FROM system.users WHERE username = "cool_user";
 ~~~
 ~~~

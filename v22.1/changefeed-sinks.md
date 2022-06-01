@@ -93,7 +93,7 @@ The configurable fields include:
 The Google Cloud Pub/Sub sink is currently in **beta**. For more information, read about its available [parameters](create-changefeed.html#parameters), [options](create-changefeed.html#options), and the [Create a changefeed connected to a Google Cloud Pub/Sub sink](changefeed-examples.html#create-a-changefeed-connected-to-a-google-cloud-pub-sub-sink) example.
 {{site.data.alerts.end}}
 
-<span class="version-tag">New in v22.1:</span> Changefeeds can deliver messages to a Google Cloud Pub/Sub sink, which is integrated with Google Cloud Platform.
+{% include_cached new-in.html version="v22.1" %} Changefeeds can deliver messages to a Google Cloud Pub/Sub sink, which is integrated with Google Cloud Platform.
 
 A Pub/Sub sink URI follows this example:
 

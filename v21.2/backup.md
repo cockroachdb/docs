@@ -87,13 +87,13 @@ N/A                                | Backup the cluster. For an example of a ful
 
 CockroachDB uses the URL provided to construct a secure API call to the service you specify. The URL structure depends on the type of file storage you are using. For more information, see the following:
 
-- [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html)
+- [URL format](use-cloud-storage-for-bulk-operations.html#url-format)
+- [Example file URLs](use-cloud-storage-for-bulk-operations.html#example-file-urls)
+- [Authentication parameters](use-cloud-storage-for-bulk-operations.html#authentication)
 
-    {{site.data.alerts.callout_info}}
-    HTTP storage is not supported for `BACKUP` and `RESTORE`.
-    {{site.data.alerts.end}}
-
-- [Use a Local File Server for Bulk Operations](use-a-local-file-server-for-bulk-operations.html)
+{{site.data.alerts.callout_success}}
+Backups support [Amazon S3 storage classes](#backup-with-an-s3-storage-class). For more detail, see [Additional cloud storage feature support](use-cloud-storage-for-bulk-operations.html#additional-cloud-storage-feature-support).
+{{site.data.alerts.end}}
 
 ## Functional details
 
@@ -233,7 +233,7 @@ AS OF SYSTEM TIME '-10s';
 
 ### Backup all tables in a schema
 
-<span class="version-tag">New in v21.2:</span> To back up all tables in a [specified schema](create-schema.html), use a wildcard with the schema name:
+{% include_cached new-in.html version="v21.2" %} To back up all tables in a [specified schema](create-schema.html), use a wildcard with the schema name:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -290,6 +290,17 @@ job_id             |  status   | fraction_completed | rows | index_entries | byt
 652471804772712449 | succeeded |                  1 |   50 |             0 |  4911
 (1 row)
 ~~~
+
+### Backup with an S3 storage class
+
+{% include_cached new-in.html version="v21.2.6" %} To associate your backup objects with a [specific storage class](use-cloud-storage-for-bulk-operations.html#amazon-s3-storage-classes) in your Amazon S3 bucket, use the `S3_STORAGE_CLASS` parameter with the class. For example, the following S3 connection URI specifies the `INTELLIGENT_TIERING` storage class:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+BACKUP DATABASE movr INTO 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}&S3_STORAGE_CLASS=INTELLIGENT_TIERING' AS OF SYSTEM TIME '-10s';
+~~~
+
+{% include {{ page.version.version }}/misc/storage-classes.md %}
 
 </section>
 
@@ -366,7 +377,7 @@ AS OF SYSTEM TIME '-10s';
 
 ### Backup all tables in a schema
 
-<span class="version-tag">New in v21.2:</span> To back up all tables in a [specified schema](create-schema.html), use a wildcard with the schema name:
+{% include_cached new-in.html version="v21.2" %} To back up all tables in a [specified schema](create-schema.html), use a wildcard with the schema name:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -501,7 +512,7 @@ AS OF SYSTEM TIME '-10s';
 
 ### Backup all tables in a schema
 
-<span class="version-tag">New in v21.2:</span> To back up all tables in a [specified schema](create-schema.html), use a wildcard with the schema name:
+{% include_cached new-in.html version="v21.2" %} To back up all tables in a [specified schema](create-schema.html), use a wildcard with the schema name:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

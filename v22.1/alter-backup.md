@@ -7,7 +7,7 @@ docs_area: reference.sql
 
 {% include enterprise-feature.md %}
 
-<span class="version-tag">New in v22.1:</span> The `ALTER BACKUP` statement allows for new KMS encryption keys to be applied to an existing chain of encrypted backups ([full](take-full-and-incremental-backups.html#full-backups) and [incremental](take-full-and-incremental-backups.html#incremental-backups)). Each `ALTER BACKUP` statement must include the new KMS encryption key with `NEW_KMS`, and use `WITH OLD_KMS` to refer to at least one of the KMS URIs that were originally used to encrypt the backup.
+{% include_cached new-in.html version="v22.1" %} The `ALTER BACKUP` statement allows for new KMS encryption keys to be applied to an existing chain of encrypted backups ([full](take-full-and-incremental-backups.html#full-backups) and [incremental](take-full-and-incremental-backups.html#incremental-backups)). Each `ALTER BACKUP` statement must include the new KMS encryption key with `NEW_KMS`, and use `WITH OLD_KMS` to refer to at least one of the KMS URIs that were originally used to encrypt the backup.
 
 After an `ALTER BACKUP` statement successfully completes, subsequent [`BACKUP`](backup.html), [`RESTORE`](restore.html), and [`SHOW BACKUP`](show-backup.html) statements can use any of the existing or new KMS URIs to decrypt the backup.
 

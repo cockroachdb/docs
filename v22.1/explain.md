@@ -22,8 +22,6 @@ Using `EXPLAIN` output, you can optimize your queries as follows:
 
      The statement planner uses the [cost-based optimizer](cost-based-optimizer.html) to create statement plans. Even after adding secondary indexes, the optimizer may decide that a full table scan will be faster. For example, if you add a secondary index to a table with a large number of rows and see that a statement plan isn't using the secondary index, it is likely that performing a full table scan using the primary key is faster than doing a secondary index scan plus an [index join](indexes.html#example).
 
-- Enable row-oriented execution if you are querying a table with a small number of rows. Since the [vectorized execution](vectorized-execution.html) engine is enabled for all [supported operations](vectorized-execution.html#disk-spilling-operations) you can use the `vectorize_row_count_threshold` [cluster setting](cluster-settings.html) to specify the minimum number of rows required to use the vectorized engine to execute a statement plan.
-
 You can find out if your queries are performing entire table scans by using `EXPLAIN` to see which:
 
 - Indexes the query uses; shown as the value of the `table` property.
