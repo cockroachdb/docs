@@ -68,6 +68,10 @@ For an example, see [Example](#example).
 
 Here are some best practices for creating and using secondary indexes.
 
+{{site.data.alerts.callout_success}}
+The [`EXPLAIN`](explain.html#success-responses) command provides index recommendations including index actions and SQL statements to perform the actions.
+{{site.data.alerts.end}}
+
 ### Index contents
 
 - Index all columns that you plan to use for [sorting](order-by.html) or [filtering](select-clause.html#filter-rows) data.
@@ -75,10 +79,6 @@ Here are some best practices for creating and using secondary indexes.
     {% include {{page.version.version}}/sql/covering-index.md %}
 
     CockroachDB [pushes filters](indexes.html#how-do-indexes-work) (i.e., values listed in a [`WHERE` clause](select-clause.html#parameters)) into an index, which allows it to perform a finite number of sequential scans. In a `WHERE` clause with `n` constrained columns you can filter the first `n-1` columns either on a single constant value using the operator `=` or a list of constant values using the operator `IN`. You can filter column `n` against a range of values using any of the operators `!=`, `<`, `>`, or `NOT IN`.
-
-    {{site.data.alerts.callout_success}}
-    The [`EXPLAIN`](explain.html#default-statement-plans) command provides index recommendations and index creation statements to assist you with creating indexes that support filtering.
-    {{site.data.alerts.end}}
 
 - If you need to index the result of a function applied to one or more columns of a single table, use the function to create a [computed column](computed-columns.html) and index the column.
 
