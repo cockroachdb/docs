@@ -139,7 +139,7 @@ Yes, {{ site.data.products.dedicated }} clusters run the enterprise version of C
 
 ### Is there a public API for {{ site.data.products.db }}?
 
-Our team is currently working on creating a public API for {{ site.data.products.db }}. The initial work is focused on core automation requirements, such as creation, modification, and deletion of clusters. We’re always looking for design partners and customer input for our features, so please [contact us](https://support.cockroachlabs.com/hc/en-us) if you have specific API requirements.
+Yes, see the [Cloud API](cloud-api.html) page for more information. We’re always looking for design partners and customer input for our features, so please [contact us](https://support.cockroachlabs.com/hc/en-us) if you have specific API requirements.
 
 ### Do you have a UI? How can I see details?
 
