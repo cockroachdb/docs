@@ -60,7 +60,7 @@ For a list of tools supported by the CockroachDB community, see [Third-Party Too
 | Tool | Support level | Integration |
 |-----+---------------+----------|
 | [Satori](https://satoricyber.com/) | Partner supported | [Satori Integration](satori-integration.html) |
-| [HashiCorp Vault](https://www.vaultproject.io/) | Partner supported | [Hashicorp Vault Integration](hashicorp-integration.html) |
+| [HashiCorp Vault](https://www.vaultproject.io/) | Partner supported | [HashiCorp Vault Integration](hashicorp-integration.html) |
 
 ## Schema migration tools
 
