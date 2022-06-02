@@ -130,7 +130,8 @@ Use a cloud storage sink to deliver changefeed data to OLAP or big data systems 
 
 Some considerations when using cloud storage sinks:
 
-- Cloud storage sinks only work with `JSON` and emit newline-delimited `JSON` files. For more detail on the file format and [file partitioning](create-changefeed.html#partition-format), see the [General file format](create-changefeed.html#general-file-format) examples.
+- Cloud storage sinks only work with `JSON` and emit newline-delimited `JSON` files.
+- Cloud storage sinks can be configured to store emitted changefeed messages in one or more subdirectories organized by date. See [file partitioning](create-changefeed.html#partition-format) and the [General file format](create-changefeed.html#general-file-format) examples.
 - The supported cloud schemes are: `s3`, `gs`, `azure`, `http`, and `https`.
 - Both `http://` and `https://` are cloud storage sinks, **not** webhook sinks. It is necessary to prefix the scheme with `webhook-` for [webhook sinks](#webhook-sink).
 
