@@ -17,8 +17,8 @@ See also:
 To follow along with this tutorial you will need the following:
 
 - The CockroachDB CLI installed locally. [Install CockroachDB](install-cockroachdb-mac.html)
-- The Vault CLI installed locally. [Install Vault](https://www.vaultproject.io/docs/install)
-- Access as [`admin` SQL user](security-reference/authorization.html#admin-role) to a CockroachDB cluster. You may either [Create a {{ site.data.products.serverless }} cluster](../cockroachcloud/create-a-serverless-cluster.html) or [Start a Local Cluster (secure)](../{{site.versions["stable"]}}/start-a-local-cluster.html). This tutorial will demonstrate the procedure using {{ site.data.products.db }}. In either case you must have the public CA certificate for your cluster, and a username/password combination for the root SQL user (or another SQL user with the admin role).
+- The Vault CLI installed locally. [Install Vault](https://www.vaultproject.io/downloads)
+- Access as [`admin` SQL user](security-reference/authorization.html#admin-role) to a CockroachDB cluster. You may either [Create a {{ site.data.products.serverless }} cluster](../cockroachcloud/create-a-serverless-cluster.html) or [Start a Local Cluster (secure)](../{{site.versions["stable"]}}/start-a-local-cluster.html), however, for simplicity, this tutorial will demonstrate the procedure using {{ site.data.products.db }} and assume the user is doing the same. In either case you must have the public CA certificate for your cluster, and a username/password combination for the root SQL user (or another SQL user with the admin role).
   You can create a {{ site.data.products.db }} cluster through the [{{ site.data.products.db }} console](https://cockroachlabs.cloud/).
 - Access to a Vault cluster with an admin token. You may either spin up a [free cluster in HashiCorp cloud](https://learn.hashicorp.com/collections/vault/cloud) or [start a development cluster locally](https://learn.hashicorp.com/tutorials/vault/getting-started-dev-server).
   You can create a Vault cluster through the [HashiCorp Vault Cloud console](https://portal.cloud.HashiCorp.com/services/vault).
@@ -50,28 +50,19 @@ In the second phase, acting as client operator, we will pull credentials from Va
 
 ### Connect to CockroachDB
 
-Set your CockroachDB cluster credentials and other configuration information as environment variables
+Set your CockroachDB cluster credentials and other configuration information as environment variables. If you're using a {{ site.data.products.db }} cluster, you can find this information in the [CockroachDB Cloud Console's cluster page.](https://cockroachlabs.cloud/cluster/)
+
+
 {% include_cached copy-clipboard.html %}
 ~~~shell
-export USER_NAME= # CockroachDB admin username
-export PASSWORD= # CockroachDB admin password
-export DB_NAME=defaultdb
-export CLUSTER_NAME=lilac-grizzly-684
-export HOST=free-tier123.aws-us-west-2.crdb.io
-
+export USER_NAME=tutorialadmin # replace with CockroachDB admin username
+export PASSWORD=1234asdf # replace with CockroachDB admin password
+export DB_NAME=defaultdb # replace with CockroachDB database name if different
+export CLUSTER_NAME=lilac-grizzly-684 # replace with CockroachDB cluster name
+export HOST=free-tier123.aws-us-west-2.crdb.io # replace with CockroachDB cluster host
 ~~~
-#### Obtain your CockroachDB cluster's CA public certificate
 
-1. Visit the [CockroachDB Cloud Console's cluster page.](https://cockroachlabs.cloud/cluster/). 
-1. Select your cluster.
-1. Click the **Connect** button.
-1. Select **"Download CA Cert (Required only once)"** and use the generated `curl` command to download the certificate.
-~~~shell
-curl --create-dirs -o root.crt -O https://management-staging.crdb.io/clusters/505a138c-37ff-46b7-9c50-4119cf0881f6/cert
-~~~
-#### Prove you can connect
-
-1. Construct a database connection URL for your CockroachDB CLI to connect to the cluster, using your admin credentials. Note that you must place the CockroachDB cluster's CA public certificate on the path specified by `sslrootcert`, in the following example to a file in the current directory.
+Construct a database connection URL for your CockroachDB CLI to connect to the cluster, using your admin credentials. Note that you must place the CockroachDB cluster's CA public certificate on the path specified by `sslrootcert`, in the following example to a file in the current directory.
 
 {% include_cached copy-clipboard.html %}
 ~~~shell
@@ -79,35 +70,51 @@ export TLS_OPTS="sslrootcert=root.crt&sslmode=verify-full&options=--cluster=${CL
 export CLI_DB_CONNECTION_URL="postgresql://${USER_NAME}:${PASSWORD}@${HOST}:26257/${DB_NAME}?${TLS_OPTS}"
 ~~~
 
-Prove that your connection works by executing a SQL statement.
+#### Obtain your CockroachDB cluster's CA public certificate
 
+1. Visit the [CockroachDB Cloud Console's cluster page.](https://cockroachlabs.cloud/cluster/). 
+1. Select your cluster.
+1. Click the **Connect** button.
+1. Select **"Download CA Cert (Required only once)"** and use the generated `curl` command to download the certificate.
+
+~~~shell
+curl --create-dirs -o root.crt -O https://management-staging.crdb.io/clusters/505a138c-37ff-46b7-9c50-4119cf0881f6/cert
+~~~
+
+#### Prove that your connection works by executing a SQL statement
+
+Recall that this command must be run in the directory where `root.crt` is located, as specified in the connection URL.
+
+{% include_cached copy-clipboard.html %}
 ~~~shell
 cockroach sql --url "${CLI_DB_CONNECTION_URL}" --execute "show tables;"
 ~~~
-
 ~~~txt
 SHOW TABLES 0
 
 Time: 107ms
 ~~~
 
-
 ### Connect to Vault
 
-Set your Vault target and authenticate with an admin token.
-You can fetch your target URL and generate a token from the [HashiCorp Vault console](https://portal.cloud.HashiCorp.com/services/vault).
+Set your Vault target and the `admin` Vault namespace.
 
+You can fetch your target URL and generate a token from the [HashiCorp Vault console](https://portal.cloud.HashiCorp.com/services/vault), under the **Access Vault** tab.
 
 {% include_cached copy-clipboard.html %}
 ~~~shell
 export VAULT_ADDR=https://roach-test-vault.vault.bfb2290a-670b-4a10-bedf-5aab18e84d69.aws.HashiCorp.cloud:8200 # your Vault cluster URL
 export VAULT_NAMESPACE=admin
+~~~
+
+Authenticate to your Vault, providing the admin token when prompted.
+
+{% include_cached copy-clipboard.html %}
+~~~shell
 vault login
 ~~~
 ~~~shell
-Success! You are now authenticated. The token information displayed below
-is already stored in the token helper. You do NOT need to run "vault login"
-again. Future Vault requests will automatically use this token.
+Success! You are now authenticated...
 ~~~
 
 ### Enable the Vault database secrets engine
@@ -129,13 +136,22 @@ The connection lies in a Vault configuration, which will store your CockroachDB 
 
 ### Create a Vault database configuration
 
-Create the `crdb-config` database configuration in Vault, specifying admin credentials that will be used by Vault to create credentials for your defined role.
+First, tweak the connection string to skip TLS server authentication, as there's no way to provision the Vault server with the cluster CA cert.
+
+{% include_cached copy-clipboard.html %}
+<!-- the "raw" block prevents the double curly braces of Vault's interpolation syntax from being interpreted by Jekyll  -->
+~~~shell
+{% raw %}
+export VAULT_TLS_OPTS="sslmode=require&options=--cluster=${CLUSTER_NAME}"
+export VAULT_DB_CONNECTION_URL="postgresql://{{username}}:{{password}}@${HOST}:26257/${DB_NAME}?${VAULT_TLS_OPTS}"
+{% endraw %}
+~~~
+
+
+Write the `crdb-config` database configuration to Vault, specifying admin credentials that will be used by Vault to create credentials for your defined role.
 
 {% include_cached copy-clipboard.html %}
 ~~~shell
-TLS_OPTS="sslmode=require&options=--cluster=${CLUSTER_NAME}"
-export VAULT_DB_CONNECTION_URL="postgresql://{{username}}:{{password}}@${HOST}:26257/${DB_NAME}?${TLS_OPTS}"
-
 vault write database/config/crdb-config \
 plugin_name=postgresql-database-plugin \
 allowed_roles="crdb-role" \
@@ -160,15 +176,15 @@ For, example, let's create a role that has all privileges on the `defaultdb` dat
 
 NOTE: `db_name` is actually not the database name but the Vault database secrets engine namespace (i.e. `crdb-config` in the example).
 
-
 {% include_cached copy-clipboard.html %}
 ~~~shell
- vault write database/roles/crdb-role \
+
+{% raw %}vault write database/roles/crdb-role \
     db_name=crdb-config \
     creation_statements="CREATE ROLE \"{{name}}\" WITH LOGIN PASSWORD '{{password}}' VALID UNTIL '{{expiration}}'; \
         GRANT ALL ON DATABASE defaultdb TO \"{{name}}\";" \
     default_ttl="1h" \
-    max_ttl="24h"
+    max_ttl="24h"{% endraw %}
 ~~~
 
 ~~~txt
@@ -196,7 +212,7 @@ vault read database/roles/crdb-role
 ~~~txt
 Key                      Value
 ---                      -----
-creation_statements      [CREATE ROLE "{{name}}" WITH LOGIN PASSWORD '{{password}}' VALID UNTIL '{{expiration}}';         GRANT ALL ON DATABASE defaultdb TO "{{name}}";]
+creation_statements      [CREATE ROLE "{% raw %}{{name}}{% endraw %}" WITH LOGIN PASSWORD '{% raw %}{{password}}{% endraw %}' VALID UNTIL '{% raw %}{{expiration}}{% endraw %}'; GRANT ALL ON DATABASE defaultdb TO "{% raw %}{{name}}{% endraw %}";]
 db_name                  crdb-config
 default_ttl              1h
 max_ttl                  24h
@@ -413,7 +429,7 @@ List all the tables in database `defaultdb` to confirm you can connect to your C
 USER_NAME=v-token-crdb-rol-thfLPlFwex0k9Op0P8qA-1653528652 # generated CockroachDB client username
 PASSWORD=FlOo0p7jMTXjT27hlZZ-H # generated CockroachDB client password
 DB_NAME=defaultdb
-CLUSTER_NAME=lilac-grizzly-684
+CLUSTER_NAME=lilac-grizzly-684 # generated CockroachDB client password
 HOST=free-tier21.aws-us-west-2.crdb.io
 TLS_OPTS="sslrootcert=root.crt&sslmode=verify-full&options=--cluster=${CLUSTER_NAME}"
 export CLI_DB_CONNECTION_URL="postgresql://$USER_NAME:$PASSWORD@${HOST}:26257/${DB_NAME}?${TLS_OPTS}"
