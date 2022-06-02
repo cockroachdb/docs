@@ -41,8 +41,8 @@ The `sql.guardrails.max_row_size_err` [cluster setting](cluster-settings.html) m
 
 ### SQL-only command-line client executable limitations
 
-- The [SQL-only command-line client executable](../releases/v22.1.html#sql-only-command-line-client-executable) does not support [environment variables](cockroach-commands.html#environment-variables), and therefore cannot be used to override the default connection parameters. [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/82024)
-- The [SQL-only command-line client executable](../releases/v22.1.html#sql-only-command-line-client-executable) does not support the `--certs-dir` flag. To pass a PostgreSQL connection URL to the client, use the [`--url` flag](connection-parameters.html#connect-using-a-url). [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/81882)
+- The [SQL-only command-line client executable](../releases/v22.1.html#v22-1-0-downloads) does not support [environment variables](cockroach-commands.html#environment-variables), and therefore cannot be used to override the default connection parameters. [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/82024)
+- The [SQL-only command-line client executable](../releases/v22.1.html#v22-1-0-downloads) does not support the `--certs-dir` flag. To pass a PostgreSQL connection URL to the client, use the [`--url` flag](connection-parameters.html#connect-using-a-url). [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/81882)
 
 ### Row-Level TTL limitations
 
