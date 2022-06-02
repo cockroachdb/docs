@@ -177,33 +177,9 @@
           "title": "Secure CockroachDB Cloud Clusters",
           "items": [
             {
-              "title": "Customer Managed Encryption Keys (CMEK) for CockroachDB Dedicated",
-              "urls": [],
-              "items": [
-                {
-                  "title": "Managing Customer Managed Encryption Keys (CMEK) for CockroachDB Dedicated",
-                  "urls": [
-                    "/cockroachcloud/managing-cmek.html"
-                  ]
-                },
-                {
-                  "title": "Provisioning Amazon Web Services (AWS) for CMEK",
-                  "urls": [
-                    "/cockroachcloud/cmek-ops-aws.html"
-                  ]
-                },
-                {
-                  "title": "Provisioning Google Cloud Platform (GCP) for CMEK",
-                  "urls": [
-                    "/cockroachcloud/cmek-ops-gcp.html"
-                  ]
-                },
-                {
-                  "title": "Customer Managed Encryption Keys (CMEK) Frequently Asked Questions (FAQ)",
-                  "urls": [
-                    "/cockroachcloud/cmek-faq.html"
-                  ]
-                }
+              "title": "Enabling Customer Managed Encryption Keys (CMEK) for Cockroach Dedicated",
+              "urls": [
+                "/cockroachcloud/enabling-cmek.html"
               ]
             },
             {
