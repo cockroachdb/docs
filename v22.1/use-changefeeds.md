@@ -21,6 +21,7 @@ Read the following [Considerations](#considerations) before working with changef
 - Many DDL queries (including [`TRUNCATE`](truncate.html), [`DROP TABLE`](drop-table.html), and queries that add a column family) will cause errors on a changefeed watching the affected tables. You will need to [start a new changefeed](create-changefeed.html#start-a-new-changefeed-where-another-ended).
 - Partial or intermittent sink unavailability may impact changefeed stability. If a sink is unavailable, messages can't send, which means that a changefeed's high-water mark timestamp is at risk of falling behind the cluster's [garbage collection window](configure-replication-zones.html#replication-zone-variables). Throughput and latency can be affected once the sink is available again. However, [ordering guarantees](#ordering-guarantees) will still hold for as long as a changefeed [remains active](monitor-and-debug-changefeeds.html#monitor-a-changefeed).
 - When an [`IMPORT INTO`](import-into.html) statement is run, any current changefeed jobs targeting that table will fail.
+- {% include {{ page.version.version }}/cdc/virtual-computed-column-cdc.md %}
 
 ## Enable rangefeeds
 
@@ -156,7 +157,7 @@ The changefeed emits duplicate records 1, 2, and 3 before outputting the records
 When using the [`schema_change_policy = nobackfill` option](create-changefeed.html#schema-policy), the changefeed will still emit duplicate records for the table that is being altered. In the preceding output, the records marked as `# Duplicate` will still emit with this option, but not the new schema records.
 
 {{site.data.alerts.callout_info}}
-Changefeeds will emit [`NULL` values](null-handling.html) for [`VIRTUAL` computed columns](computed-columns.html) and not the column's computed value.
+{% include {{ page.version.version }}/cdc/virtual-computed-column-cdc.md %}
 {{site.data.alerts.end}}
 
 ## Responses
@@ -193,7 +194,7 @@ See [Files](create-changefeed.html#files) for more detail on the file naming for
 
 ## Changefeeds on tables with column families
 
-<span class="version-tag">New in v22.1:</span> You can create changefeeds on tables with more than one [column family](column-families.html). Changefeeds will emit individual messages per column family on a table.
+{% include_cached new-in.html version="v22.1" %} You can create changefeeds on tables with more than one [column family](column-families.html). Changefeeds will emit individual messages per column family on a table.
 
 To target a table with multiple column families, set the [`split_column_families` option](create-changefeed.html#split-column-families) when creating a changefeed:
 

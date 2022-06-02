@@ -14,7 +14,7 @@ A userfile uses storage space in the cluster, and is replicated with the rest of
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_success}}
-If you would like to upload and import data from from a dump file, consider using [`cockroach import`](cockroach-import.html) instead.
+If you would like to upload and import data from a dump file, consider using [`cockroach import`](cockroach-import.html) instead.
 {{site.data.alerts.end}}
 
 ## Required privileges
@@ -124,7 +124,7 @@ Then, you can use the file to [`IMPORT`](import.html) or [`IMPORT INTO`](import-
 
 ### Upload a directory recursively
 
-<span class="version-tag">New in v21.2:</span> To upload the contents of a directory to userfile storage, specify a source directory and destination. For example, to upload a [backup](backup.html) directory to userfile storage:
+{% include_cached new-in.html version="v21.2" %} To upload the contents of a directory to userfile storage, specify a source directory and destination. For example, to upload a [backup](backup.html) directory to userfile storage:
 
 ~~~ shell
 cockroach userfile upload -r /Users/maxroach/movr-backup userfile:///backup-data --certs-dir=certs

@@ -580,7 +580,7 @@ WHERE metadata @> '{"db":"movr"}' AND (metadata @> '{"stmtTyp":"TypeDDL"}' OR me
 
 #### Detect suboptimal and regressed plans
 
-<span class="version-tag">New in v22.1</span> Historical plans are stored in plan gists in `statistics->'statistics'->'planGists'`. To detect suboptimal and regressed plans over time you can compare plans for the same query by extracting them from the plan gists.
+{% include_cached new-in.html version="v22.1" %} Historical plans are stored in plan gists in `statistics->'statistics'->'planGists'`. To detect suboptimal and regressed plans over time you can compare plans for the same query by extracting them from the plan gists.
 
 Suppose you wanted to compare plans of the following query:
 
@@ -659,11 +659,13 @@ group by metadata ->> 'query', statistics->'statistics'->'planGists'->>0;
 
 ### `transaction_contention_events`
 
-<span class="version-tag">New in v22.1</span> Contains one row for each transaction contention event.
+{% include_cached new-in.html version="v22.1" %} Contains one row for each transaction contention event.
 
 Requires either the `VIEWACTIVITY` or `VIEWACTIVITYREDACTED` [role option](alter-role.html#role-options) to access. If you have the `VIEWACTIVITYREDACTED` role, `contending_key` will be redacted.
 
 Contention events are stored in memory. You can control the amount of contention events stored per node via the `sql.contention.event_store.capacity` [cluster setting](cluster-settings.html).
+
+The `sql.contention.event_store.duration_threshold` [cluster setting](cluster-settings.html) specifies the minimum contention duration to cause the contention events to be collected into the `crdb_internal.transaction_contention_events` table. The default value is `0`. If contention event collection is overwhelming the CPU or memory you can raise this value to reduce the load.
 
 Column | Type | Description
 ------------|-----|------------

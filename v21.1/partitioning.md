@@ -279,7 +279,7 @@ We want to geo-partition the table to keep the students' data closer to their lo
     ~~~
 
 
-#### Step 3. Request and set a trial Enteprise license
+#### Step 3. Request and set a trial Enterprise license
 
 See [Set the Trial or Enterprise License Key](licensing-faqs.html#set-a-license).
 

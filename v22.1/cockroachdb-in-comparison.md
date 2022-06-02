@@ -78,7 +78,7 @@ This page shows you how the key features of CockroachDB stack up against other d
       <span class="support" data-dbs='["AWS Aurora"]'>None and full copies across regions</span>
       <span class="support" data-dbs='["Cassandra", "MongoDB", "Spanner", "Yugabyte"]'>Even distribution to optimize storage</span>
     </td>
-    <td>Detailed options to optimize storage, compute and latency</td>
+    <td>Detailed options to optimize storage, compute, and latency</td>
   </tr>
 
   <tr>
@@ -244,9 +244,9 @@ This page shows you how the key features of CockroachDB stack up against other d
     <td class="comparison-chart__column-two">
       <span class="support " data-dbs='["MySQL", "PostgreSQL", "Oracle"]'>Yes</span>
       <span class="support " data-dbs='["AWS Aurora","MongoDB", "Cassandra"]'>Offline</span>
-      <span class="support " data-dbs='["Spanner", "Yugabyte"]'>Online, Active and Dynamic</span>
+      <span class="support " data-dbs='["Spanner", "Yugabyte"]'>Online, Active, and Dynamic</span>
     </td>
-    <td>Online, Active and Dynamic</td>
+    <td>Online, Active, and Dynamic</td>
   </tr>
 
   <tr>

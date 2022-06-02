@@ -231,11 +231,11 @@ By merging smaller ranges together, your cluster needs to rebalance fewer total 
 
 ### Distribution and transaction layer
 
-The Distribution layer's `DistSender` receives `BatchRequests` from its own node's `TxnCoordSender`, housed in the Transaction layer.
+The distribution layer's `DistSender` receives `BatchRequests` from its own node's `TxnCoordSender`, housed in the transaction layer.
 
 ### Distribution and replication layer
 
-The Distribution layer routes `BatchRequests` to nodes containing ranges of data, which is ultimately routed to the Raft group leader or leaseholder, which are handled in the replication layer.
+The distribution layer routes `BatchRequests` to nodes containing ranges of data, which is ultimately routed to the Raft group leader or leaseholder, which are handled in the replication layer.
 
 ## What's next?
 

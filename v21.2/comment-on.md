@@ -24,7 +24,7 @@ The user must have the `CREATE` [privilege](security-reference/authorization.htm
  Parameter | Description
 ------------|--------------
 `database_name` | The name of the [database](create-database.html) on which you are commenting.
-`schema_name` | <span class="version-tag">New in v21.2</span>: The name of the [schema](create-schema.html) on which you are commenting.
+`schema_name` | <span class="version-tag">New in v21.2:</span> The name of the [schema](create-schema.html) on which you are commenting.
 `table_name` | The name of the [table](create-table.html) on which you are commenting.
 `column_name` | The name of the [column](add-column.html) on which you are commenting.
 `table_index_name` | The name of the [index](indexes.html) on which you are commenting.

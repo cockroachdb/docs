@@ -1,5 +1,5 @@
 ---
-title: SHOW (session variables)
+title: SHOW &#123;session variable&#125;
 summary: The SHOW statement displays the current settings for the client session.
 toc: true
 docs_area: reference.sql
@@ -29,7 +29,7 @@ The `SHOW` statement for session variables is unrelated to the other `SHOW` stat
 
 ### Supported variables
 
-{% include {{ page.version.version }}/misc/session-vars.html %}
+{% include {{ page.version.version }}/misc/session-vars.md %}
 
 For session variables on experimental features, see [Experimental Features](experimental-features.html).
 
@@ -77,7 +77,7 @@ Special syntax cases supported for compatibility:
 
 ## See also
 
-- [`SET` (session variable)](set-vars.html)
+- [`SET {session variable}`](set-vars.html)
 - [Transactions](transactions.html), including [Priority levels](transactions.html#transaction-priorities)
 - [`SHOW CLUSTER SETTING`](show-cluster-setting.html)
 - [`SHOW COLUMNS`](show-columns.html)

@@ -51,18 +51,18 @@ Logging channels are analogous to [logging facilities in Syslog](https://en.wiki
 
 When using the [default logging configuration](configure-logs.html#default-logging-configuration), the events collected on each [logging channel](#logging-channels) are split into log files as follows:
 
-| Filename                                  | Description             | Channels                    |
-|-------------------------------------------+-------------------------+-----------------------------|
-| `cockroach.log`                           | General CockroachDB log | `DEV`                       |
-| `cockroach-health.log`                    | Health log              | `HEALTH`                    |
-| `cockroach-security.log` (New in v21.2)   | SQL security log        | `PRIVILEGES` + `USER_ADMIN` |
-| `cockroach-sql-audit.log`                 | SQL access audit log    | `SENSITIVE_ACCESS`          |
-| `cockroach-sql-auth.log`                  | SQL authentication log  | `SESSIONS`                  |
-| `cockroach-sql-exec.log`                  | SQL execution log       | `SQL_EXEC`                  |
-| `cockroach-sql-slow.log`                  | SQL slow query log      | `SQL_PERF`                  |
-| `cockroach-sql-schema.log` (New in v21.2) | SQL schema change log   | `SQL_SCHEMA`                |
-| `cockroach-pebble.log`                    | Pebble log              | `STORAGE`                   |
-| `cockroach-telemetry.log` (New in v21.2)  | Telemetry log           | `TELEMETRY`                 |
+| Filename                                                                  | Description             | Channels                    |
+|---------------------------------------------------------------------------+-------------------------+-----------------------------|
+| `cockroach.log`                                                           | General CockroachDB log | `DEV`                       |
+| `cockroach-health.log`                                                    | Health log              | `HEALTH`                    |
+| <span class="version-tag">New in v21.2:</span> `cockroach-security.log`   | SQL security log        | `PRIVILEGES` + `USER_ADMIN` |
+| `cockroach-sql-audit.log`                                                 | SQL access audit log    | `SENSITIVE_ACCESS`          |
+| `cockroach-sql-auth.log`                                                  | SQL authentication log  | `SESSIONS`                  |
+| `cockroach-sql-exec.log`                                                  | SQL execution log       | `SQL_EXEC`                  |
+| `cockroach-sql-slow.log`                                                  | SQL slow query log      | `SQL_PERF`                  |
+| <span class="version-tag">New in v21.2:</span> `cockroach-sql-schema.log` | SQL schema change log   | `SQL_SCHEMA`                |
+| `cockroach-pebble.log`                                                    | Pebble log              | `STORAGE`                   |
+| <span class="version-tag">New in v21.2:</span> `cockroach-telemetry.log`  | Telemetry log           | `TELEMETRY`                 |
 
  Logging is now configurable via YAML. The YAML configuration allows you to customize which kinds of events are output to different logging destinations, along with many other parameters. As a result, the logging flags previously used with `cockroach` commands are now deprecated in favor of the YAML configuration. For details, see [Configure Logs](configure-logs.html).
 

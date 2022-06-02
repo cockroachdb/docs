@@ -4,7 +4,7 @@ summary: The SHOW REGIONS statement shows the cluster regions or database region
 toc: true
 ---
 
-<span class="version-tag">New in v21.1:</span> The `SHOW REGIONS` [statement](sql-statements.html) lists the [cluster regions](multiregion-overview.html#cluster-regions) for a multi-region cluster, or the [database regions](multiregion-overview.html#database-regions) for the databases in a multi-region cluster.
+{% include_cached new-in.html version="v21.1" %} The `SHOW REGIONS` [statement](sql-statements.html) lists the [cluster regions](multiregion-overview.html#cluster-regions) for a multi-region cluster, or the [database regions](multiregion-overview.html#database-regions) for the databases in a multi-region cluster.
 
 ## Synopsis
 

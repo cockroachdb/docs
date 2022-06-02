@@ -123,9 +123,11 @@ If your cluster grows too large for nightly [full backups](#full-backups), you c
 Incremental backups are smaller and faster to produce than full backups because they contain only the data that has changed since a base set of backups you specify (which must include one full backup, and can include many incremental backups). You can take incremental backups either as of a given timestamp or with full [revision history](take-backups-with-revision-history-and-restore-from-a-point-in-time.html).
 
 {{site.data.alerts.callout_danger}}
-Incremental backups can only be created within the garbage collection period of the base backup's most recent timestamp. This is because incremental backups are created by finding which data has been created or modified since the most recent timestamp in the base backup––that timestamp data, though, is deleted by the garbage collection process.
+Incremental backups can only be created within the [garbage collection](architecture/storage-layer.html#garbage-collection) period of the base backup's most recent timestamp. This is because incremental backups are created by finding which data has been created or modified since the most recent timestamp in the base backup—that timestamp data, though, is deleted by the garbage collection process.
 
 You can configure garbage collection periods using the `ttlseconds` [replication zone setting](configure-replication-zones.html#gc-ttlseconds).
+
+If an incremental backup is created outside of the garbage collection period, you will receive a `protected ts verification error…`. To resolve this issue, see the [Common Errors](common-errors.html#protected-ts-verification-error) page.
 {{site.data.alerts.end}}
 
 ### Take an incremental backup
@@ -163,7 +165,7 @@ To restore a specific backup, run `RESTORE` with the backup's subdirectory:
 ~~~
 
 {{site.data.alerts.callout_info}}
-<span class="version-tag">New in v21.1:</span> `RESTORE` will re-validate [indexes](indexes.html) when [incremental backups](take-full-and-incremental-backups.html) are created from an older version (v20.2.2 and earlier or v20.1.4 and earlier), but restored by a newer version (v21.1.0+). These earlier releases may have included incomplete data for indexes that were in the process of being created.
+{% include_cached new-in.html version="v21.1" %} `RESTORE` will re-validate [indexes](indexes.html) when [incremental backups](take-full-and-incremental-backups.html) are created from an older version (v20.2.2 and earlier or v20.1.4 and earlier), but restored by a newer version (v21.1.0+). These earlier releases may have included incomplete data for indexes that were in the process of being created.
 {{site.data.alerts.end}}
 
 ## Incremental backups with explicitly specified destinations

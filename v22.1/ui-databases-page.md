@@ -19,7 +19,7 @@ To view this page, [access the DB Console](ui-overview.html#db-console-access) a
 
 The **Databases** page shows:
 
-- <span class="version-tag">New in v22.1</span> Whether [automatic statistics collection](cost-based-optimizer.html#control-automatic-statistics) is enabled for the cluster.
+- {% include_cached new-in.html version="v22.1" %} Whether [automatic statistics collection](cost-based-optimizer.html#control-automatic-statistics) is enabled for the cluster.
 - A list of the databases on the cluster.
 
 The following information is displayed for each database:
@@ -43,15 +43,15 @@ The **Tables** view shows the tables in your database.
 
 The following information is displayed for each table:
 
-| Column           | Description                                                                                              |
-|------------------|----------------------------------------------------------------------------------------------------------|
-| Tables           | The name of the table.                                                                                   |
-| Replication Size | The approximate disk size of all replicas of this table on the cluster.                                  |
-| Ranges           | The number of ranges in the table.                                                                       |
-| Columns          | The number of columns in the table.                                                                      |
-| Indexes          | The number of indexes in the table.                                                                      |
-| Regions          | The regions and nodes on which the table data is stored. This is not displayed on a single-node cluster. |
-| Table Stats Last Updated (UTC) | <span class="version-tag">New in v22.1</span> The last time table statistics were created or updated.                                    |
+| Column                         | Description                                                                                              |
+|--------------------------------|----------------------------------------------------------------------------------------------------------|
+| Tables                         | The name of the table.                                                                                   |
+| Replication Size               | The approximate disk size of all replicas of this table on the cluster.                                  |
+| Ranges                         | The number of ranges in the table.                                                                       |
+| Columns                        | The number of columns in the table.                                                                      |
+| Indexes                        | The number of indexes in the table.                                                                      |
+| Regions                        | The regions and nodes on which the table data is stored. This is not displayed on a single-node cluster. |
+| Table Stats Last Updated (UTC) | <span class="version-tag">New in v22.1:</span> The last time table statistics were created or updated.   |
 
 Click a **table name** to view table details.
 
@@ -68,15 +68,15 @@ The table details include:
 - **Size**: the approximate disk size of all replicas of this table on the cluster.
 - **Replicas**: the number of [replicas](architecture/replication-layer.html) of this table on the cluster.
 - **Ranges**: the number of [ranges](architecture/glossary.html#architecture-range) in this table.
-- **Table Stats Last Updated**: <span class="version-tag">New in v22.1</span> the last time table statistics were created or updated.
-- **Auto Stats Collection**: <span class="version-tag">New in v22.1</span> whether [automatic statistics collection](cost-based-optimizer.html#control-automatic-statistics) is enabled.
+- {% include_cached new-in.html version="v22.1" %} **Table Stats Last Updated**: the last time table statistics were created or updated.
+- {% include_cached new-in.html version="v22.1" %} **Auto Stats Collection**: whether [automatic statistics collection](cost-based-optimizer.html#control-automatic-statistics) is enabled.
 - **Regions/nodes**: the regions and nodes on which the table data is stored. This is not displayed on a single-node cluster.
 - **Database**: the database in which the table is found.
 - **Indexes**: the names of the indexes defined on the table.
 
 #### Index details
 
-<span class="version-tag">New in v22.1</span> The **Index Stats** table displays index statistics for a table.
+{% include_cached new-in.html version="v22.1" %} The **Index Stats** table displays index statistics for a table.
 
 Index statistics accumulate from the time an index was created or when statistics were reset. To reset index statistics for the cluster, click **Reset all index stats**.
 

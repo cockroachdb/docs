@@ -124,11 +124,11 @@ You can see that a full scan is performed:
       │
       └── • index join
           │ estimated row count: 3
-          │ table: users@primary
+          │ table: users@users_pkey
           │
           └── • scan
                 missing stats
-                table: users@primary
+                table: users@users_pkey
                 spans: FULL SCAN
 ~~~
 
@@ -157,7 +157,7 @@ When you filter on the expression `parse_timestamp(user_profile->'birthdate')`, 
   │
   └── • index join
       │ estimated row count: 1
-      │ table: users@primary
+      │ table: users@users_pkey
       │
       └── • scan
             missing stats

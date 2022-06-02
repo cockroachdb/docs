@@ -131,7 +131,7 @@ Name | Help
 `raftlog.behind` | Number of Raft log entries followers on other stores are behind
 `raftlog.truncated` | Number of Raft log entries truncated
 `range.adds` | Number of range additions
-`range.raftleadertransfers` | Number of raft leader transfers
+`range.raftleadertransfers` | Number of Raft leader transfers
 `range.removes` | Number of range removals
 `range.snapshots.generated` | Number of generated snapshots
 `range.snapshots.normal-applied` | Number of applied snapshots
@@ -140,7 +140,7 @@ Name | Help
 `ranges.unavailable` | Number of ranges with fewer live replicas than needed for quorum
 `ranges.underreplicated` | Number of ranges with fewer live replicas than the replication target
 `ranges` | Number of ranges
-`rebalancing.writespersecond` | Number of keys written (i.e., applied by raft) per second to the store, averaged over a large time period as used in rebalancing decisions
+`rebalancing.writespersecond` | Number of keys written (i.e., applied by Raft) per second to the store, averaged over a large time period as used in rebalancing decisions
 `replicas.commandqueue.combinedqueuesize` | Number of commands in all CommandQueues combined
 `replicas.commandqueue.combinedreadcount` | Number of read-only commands in all CommandQueues combined
 `replicas.commandqueue.combinedwritecount` | Number of read-write commands in all CommandQueues combined
@@ -150,7 +150,7 @@ Name | Help
 `replicas.commandqueue.maxtreesize` | Largest number of intervals in any CommandQueue's interval tree
 `replicas.commandqueue.maxwritecount` | Largest number of read-write commands in any CommandQueue
 `replicas.leaders_not_leaseholders` | Number of replicas that are Raft leaders whose range lease is held by another store
-`replicas.leaders` | Number of raft leaders
+`replicas.leaders` | Number of Raft leaders
 `replicas.leaseholders` | Number of lease holders
 `replicas.quiescent` | Number of quiesced replicas
 `replicas.reserved` | Number of replicas reserved for snapshots
@@ -159,7 +159,7 @@ Name | Help
 `requests.slow.commandqueue` | Number of requests that have been stuck for a long time in the command queue
 `requests.slow.distsender` | Number of requests that have been stuck for a long time in the dist sender
 `requests.slow.lease` | Number of requests that have been stuck for a long time acquiring a lease
-`requests.slow.raft` | Number of requests that have been stuck for a long time in raft
+`requests.slow.raft` | Number of requests that have been stuck for a long time in Raft
 `rocksdb.block.cache.hits` | Count of block cache hits
 `rocksdb.block.cache.misses` | Count of block cache misses
 `rocksdb.block.cache.pinned-usage` | Bytes pinned by the block cache
@@ -200,6 +200,9 @@ Name | Help
 `sql.mem.txn.current` | Current sql transaction memory usage
 `sql.mem.txn.max` | Memory usage per sql transaction
 `sql.misc.count` | Number of other SQL statements
+`sql.pgwire_cancel.total` | Counter of the number of pgwire query cancel requests
+`sql.pgwire_cancel.ignored` | Counter of the number of pgwire query cancel requests that were ignored due to rate limiting
+`sql.pgwire_cancel.successful` | Counter of the number of pgwire query cancel requests that were successful
 `sql.query.count` | Number of SQL queries
 `sql.select.count` | Number of SQL SELECT statements
 `sql.service.latency` | Latency in nanoseconds of SQL request execution, including the time to parse and plan the statement.

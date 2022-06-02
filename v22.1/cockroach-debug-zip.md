@@ -61,6 +61,7 @@ The following information is also contained in the `.zip` file, and cannot be fi
 - Jobs
 - [Cluster Settings](cluster-settings.html)
 - [Metrics](ui-custom-chart-debug-page.html#available-metrics)
+- [Replication Reports](query-replication-reports.html)
 - Problem ranges
 - CPU profiles
 - A script (`hot-ranges.sh`) that summarizes the hottest ranges (ranges receiving a high number of reads or writes)

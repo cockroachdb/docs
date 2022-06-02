@@ -22,8 +22,6 @@ Using `EXPLAIN` output, you can optimize your queries as follows:
 
      The statement planner uses the [cost-based optimizer](cost-based-optimizer.html) to create statement plans. Even after adding secondary indexes, the optimizer may decide that a full table scan will be faster. For example, if you add a secondary index to a table with a large number of rows and see that a statement plan isn't using the secondary index, it is likely that performing a full table scan using the primary key is faster than doing a secondary index scan plus an [index join](indexes.html).
 
-- Enable row-oriented execution if you are querying a table with a small number of rows. Since the [vectorized execution](vectorized-execution.html) engine is enabled for all [supported operations](vectorized-execution.html#disk-spilling-operations) you can use the `vectorize_row_count_threshold` [cluster setting](cluster-settings.html) to specify the minimum number of rows required to use the vectorized engine to execute a statement plan.
-
 You can find out if your queries are performing entire table scans by using `EXPLAIN` to see which:
 
 - Indexes the query uses; shown as the value of the `table` property.
@@ -108,7 +106,7 @@ The output also describes a set of properties, some global to the query, and som
 
 - `distribution`:`full`
 
-    The planner chose a distributed execution plan, where execution of the query is performed by multiple nodes in parallel, then the final results are returned by the gateway node. An execution plan with `full` distribution doesn't process on all nodes in the cluster. It is executed simultaneously on multiple nodes. An execution plan with `local` distribution is performed only on the gateway node. Even if the execution plan is `local`, row data may be fetched from remote nodes, but the processing of the data is performed by the local node.
+    The planner chose a distributed execution plan, where execution of the query is performed by multiple nodes in parallel, then the results are returned by the gateway node. An execution plan with `full` distribution doesn't process on all nodes in the cluster. It is executed simultaneously on multiple nodes. An execution plan with `local` distribution is performed only on the gateway node. Even if the execution plan is `local`, row data may be fetched from remote nodes, but the processing of the data is performed by the local node.
 - `vectorized`:`true`
 
     The plan will be executed with the [vectorized execution engine](vectorized-execution.html).
