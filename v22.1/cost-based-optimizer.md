@@ -60,7 +60,7 @@ Statistics are refreshed in the following cases:
 
 Automatic statistics collection is enabled by default. To disable automatic statistics collection, follow these steps:
 
-1. To disable the automatic statistics [cluster setting](cluster-settings.html), run the following statement:
+1. Set the `sql.stats.automatic_collection.enabled` cluster setting to `false`:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -69,7 +69,7 @@ Automatic statistics collection is enabled by default. To disable automatic stat
 
 1. Use the [`SHOW STATISTICS`](show-statistics.html) statement to view automatically generated statistics.
 
-1. Delete the automatically generated statistics using the following statement:
+1. Delete the automatically generated statistics:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -82,11 +82,9 @@ To learn how to manually generate statistics, see the [`CREATE STATISTICS` examp
 
 ### Enable and disable automatic statistics collection for tables
 
-Statistics collection can be expensive for large tables and you may prefer to defer collection until after
-data is finished loading or in off hours. Small tables, which are frequently updated, may trigger statistics collection
-leading to unnecessary overhead and unpredictable query plan changes.
+Statistics collection can be expensive for large tables, and you may prefer to defer collection until after data is finished loading or during off-peak hours. Tables that are frequently updated, including small tables, may trigger statistics collection more often, which can lead to unnecessary overhead and unpredictable query plan changes.
 
-You can enable and disable automatic statistics collection for individual tables using the `sql_stats_automatic_collection_enabled` setting. For example:
+You can enable and disable automatic statistics collection for individual tables using the `sql_stats_automatic_collection_enabled` storage parameter. For example:
 
 ~~~ sql
 CREATE TABLE accounts (
@@ -98,7 +96,7 @@ WITH (sql_stats_automatic_collection_enabled = false);
 The table setting **takes precedence** over the cluster setting described in
 [Enable and disable automatic statistics collection for clusters](#enable-and-disable-automatic-statistics-collection-for-clusters).
 
-You can set the table settings at table creation time or using `ALTER TABLE ... SET`:
+You can set the table settings at table creation time or using [`ALTER TABLE ... SET`](set-storage-parameter.html):
 
 ~~~ sql
 CREATE TABLE accounts (
@@ -142,8 +140,7 @@ SET (sql_stats_automatic_collection_fraction_stale_rows = 0.1,
 sql_stats_automatic_collection_min_stale_rows = 2000);
 ~~~
 
-Automatic statistics rules are checked once per minute. While altered automatic statistics table settings take immediate effect for any subsequent DML statements on a table,
-row mutations that have occurred a minute or so before you modified the settings may still trigger statistics collection based on the settings that existed before you ran the `ALTER TABLE ... SET` statement.
+Automatic statistics rules are checked once per minute. While altered automatic statistics table settings take immediate effect for any subsequent DML statements on a table, running row mutations that started prior to modifying the table settings may still trigger statistics collection based on the settings that existed before you ran the `ALTER TABLE ... SET` statement.
 
 ### Control histogram collection
 
@@ -170,9 +167,7 @@ When `sql.stats.histogram_collection.enabled` is set to `false`, histograms are 
 {% include_cached new-in.html version="v22.1" %} The `avg_size` table statistic represents the average size of a table column.
 If a table does not have an average size statistic available for a column, it uses the default value of 4 bytes.
 
-The optimizer uses `avg_size` to cost scans and relevant joins. Costing scans per row regardless of the size of the columns comprising the row doesn't account for time
-to read or transport a large number of bytes over the network and can lead to undesirable plans when there are multiple options for scans
-or joins that read directly from tables.
+The optimizer uses `avg_size` to cost scans and relevant joins. Costing scans per row regardless of the size of the columns comprising the row doesn't account for time to read or transport a large number of bytes over the network. This can lead to undesirable plans when there are multiple options for scans or joins that read directly from tables.
 
 Cockroach Labs recommends that you allow the optimizer to consider column size when costing plans. If you are an advanced user and need to disable using `avg_size` for troubleshooting or performance tuning reasons, you can disable it by setting the `cost_scans_with_default_col_size` [session variable](set-vars.html) to true with `SET cost_scans_with_default_col_size=true`.
 
