@@ -180,6 +180,7 @@ gzip
 haines
 hao
 hardcoded
+hashicorp
 heartbeated
 heartbeating
 heredocs

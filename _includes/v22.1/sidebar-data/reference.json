@@ -1412,6 +1412,12 @@
             "urls": [
               "/${VERSION}/security-reference/encryption.html"
             ]
+          },
+          {
+            "title": "Customer Managed Encryption Keys (CMEK)",
+            "urls": [
+              "/cockroachcloud/cmek.html"
+            ]
           }
         ]
       },
