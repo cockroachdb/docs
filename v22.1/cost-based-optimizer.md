@@ -82,6 +82,17 @@ To turn off automatic statistics collection, follow these steps:
 
 To see how to manually generate statistics, see the [`CREATE STATISTICS` examples](create-statistics.html#examples).
 
+#### Control whether the `avg_size` statistic is used to cost scans
+
+{% include_cached new-in.html version="v22.1" %} The `avg_size` table statistic represents the average size of a table column.
+If a table does not have an average size statistic available for a column, it uses the default value of 4 bytes.
+
+The optimizer uses `avg_size` to cost scans and relevant joins. Costing scans per row regardless of the size of the columns comprising the row doesn't account for time
+to read or transport a large number of bytes over the network and can lead to undesirable plans when there are multiple options for scans
+or joins that read directly from tables.
+
+Cockroach Labs recommends that you allow the optimizer to consider column size when costing plans. If you are an advanced user and need to disable using `avg_size` for troubleshooting or performance tuning reasons, you can disable it by setting the `cost_scans_with_default_col_size` [session variable](set-vars.html) to true with `SET cost_scans_with_default_col_size=true`.
+
 #### Control histogram collection
 
 By default, the optimizer collects histograms for all index columns (specifically the first column in each index) during automatic statistics collection. If a single column statistic is explicitly requested using manual invocation of [`CREATE STATISTICS`](create-statistics.html), a histogram will be collected, regardless of whether or not the column is part of an index.
@@ -145,18 +156,38 @@ For a query involving multiple joins, the cost-based optimizer will explore addi
 
 Because this process leads to an exponential increase in the number of possible execution plans for such queries, it's only used to reorder subtrees containing 8 or fewer joins by default.
 
-To change this setting, which is controlled by the `reorder_joins_limit` [session variable](set-vars.html), run the following statement. To disable this feature, set the variable to `0`.
+To change this setting, which is controlled by the `reorder_joins_limit` [session variable](set-vars.html), run the following statement:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET reorder_joins_limit = 0;
 ~~~
 
+To disable this feature, set the variable to `0`. You can configure the default `reorder_joins_limit` session setting with the [cluster setting](cluster-settings.html) `sql.defaults.reorder_joins_limit`, which has a default value of `8`.
+
 {{site.data.alerts.callout_danger}}
-We strongly recommend not setting this value higher than 8 to avoid performance degradation. If set too high, the cost of generating and costing execution plans can end up dominating the total execution time of the query.
+To avoid performance degradation, Cockroach Labs strongly recommends setting this value to a maximum of 8. If set too high, the cost of generating and costing execution plans can end up dominating the total execution time of the query.
 {{site.data.alerts.end}}
 
-For more information about the difficulty of selecting an optimal join ordering, see our blog post [An Introduction to Join Ordering](https://www.cockroachlabs.com/blog/join-ordering-pt1/).
+For more information about selecting an optimal join ordering, see our blog post [An Introduction to Join Ordering](https://www.cockroachlabs.com/blog/join-ordering-pt1/).
+
+### Reduce planning time for queries with many joins
+
+The cost-based optimizer explores multiple join orderings to find the lowest-cost plan. If there are many joins or join subtrees in the query, this can increase the number of execution plans the optimizer explores, and therefore the exploration and planning time. If the planning phase of a query takes a long time (on the order of multiple seconds or minutes) to plan, or the query plan involves many joins, consider the following alternatives to reduce the planning time:
+
+- To limit the size of the subtree that can be reordered, set the `reorder_joins_limit` [session variable](set-vars.html) to a lower value, for example:
+
+    ~~~ sql
+    SET reorder_joins_limit = 2;
+    ~~~
+
+    If the join ordering inherent in the query is acceptable, for the shortest planning time, you can set `reorder_joins_limit` to `0`. This disables exploration of join orderings entirely.
+
+    By reducing `reorder_joins_limit` CockroachDB reduces the number of plans explored, so a less efficient plan may be chosen by the optimizer.
+
+    If one query has a slow planning time, you can avoid interfering with other query plans by setting `reorder_joins_limit` to the desired lower value before executing that query and resetting the session variable to the default after executing the query.
+
+- If setting and resetting the session variable is cumbersome or if there are multiple independent joins in the query where some may benefit from join reordering, you can use a [join hint](#join-hints). If the join has a hint specifying the type of join to something other than the default `INNER` (i.e., `INNER LOOKUP`, `MERGE`, `HASH`, etc.), join reordering will be disabled and the plan will respect the join order inherent in the way the query is written. This works at the expression level and doesn't affect the entire query (for instance, if you have a union of two joins they are independent join expressions).
 
 ## Join hints
 
@@ -264,10 +295,10 @@ SELECT * FROM abc@{NO_ZIGZAG_JOIN};
 ## See also
 
 - [`JOIN` expressions](joins.html)
-- [`SET (session variable)`](set-vars.html)
+- [`SET {session variable}`](set-vars.html)
 - [`SET CLUSTER SETTING`](set-cluster-setting.html)
 - [`RESET CLUSTER SETTING`](reset-cluster-setting.html)
-- [`SHOW (session variable)`](show-vars.html)
+- [`SHOW {session variable}`](show-vars.html)
 - [`CREATE STATISTICS`](create-statistics.html)
 - [`SHOW STATISTICS`](show-statistics.html)
 - [`EXPLAIN`](explain.html)

@@ -93,7 +93,7 @@ postgresql://<username>@<host>:<port>/<database>?sslmode=verify-full&sslrootcert
 
 For more information about connecting with node-postgres, see the [official node-postgres documentation](https://node-postgres.com/features/connecting).
 
-### Connection parameters
+## Connection parameters
 
 <div class="filter-content" markdown="1" data-scope="serverless">
 
@@ -217,7 +217,7 @@ To connect to CockroachDB with Sequelize, you must install the [CockroachDB Sequ
 
 For more information about connecting with Sequelize, see the [official Sequelize documentation](https://sequelize.org/master/index.html).
 
-### Connection parameters
+## Connection parameters
 
 <div class="filter-content" markdown="1" data-scope="serverless">
 
@@ -265,9 +265,9 @@ Parameter | Description
 
 <div>
 
-To connect to CockroachDB with [TypeORM](https://typeorm.io), update your project's `ormconfig` file with the required connection properties.
+To connect to CockroachDB with [TypeORM](https://typeorm.io), update your project's [`DataSource`](https://typeorm.io/data-source) with the required connection properties.
 
-For example, suppose that you have a file named `ormconfig.ts` in the project's root directory.
+For example, suppose that you are defining the `DataSource` for your application in a file named `datasource.ts`.
 
 </div>
 
@@ -277,15 +277,17 @@ CockroachDB {{ site.data.products.serverless }} requires you to specify the `typ
 
 {% include copy-clipboard.html %}
 ~~~ ts
-module.exports = {
-  type: "cockroachdb",
-  url: process.env.DATABASE_URL,
-  ssl: true,
-  extra: {
-      options: "--cluster=<routing-id>"
-  },
-  ...
-};
+import { DataSource } from "typeorm"
+
+export const AppDataSource = new DataSource({
+    type: "cockroachdb",
+    url: process.env.DATABASE_URL,
+    ssl: true,
+    extra: {
+        options: "--cluster=<routing-id>"
+    },
+    ...
+});
 ~~~
 
 Where `DATABASE_URL` is an environment variable set to a valid CockroachDB connection string.
@@ -305,14 +307,16 @@ CockroachDB {{ site.data.products.dedicated }} requires you to specify the `type
 
 {% include copy-clipboard.html %}
 ~~~ ts
-module.exports = {
-  type: "cockroachdb",
-  url: process.env.DATABASE_URL,
-  ssl: {
-    ca: process.env.CA_CERT
-  }
-  ...
-};
+import { DataSource } from "typeorm"
+
+export const AppDataSource = new DataSource({
+    type: "cockroachdb",
+    url: process.env.DATABASE_URL,
+    ssl: {
+      ca: process.env.CA_CERT
+    },
+    ...
+});
 ~~~
 
 Where:
@@ -335,16 +339,18 @@ CockroachDB {{ site.data.products.core }} requires you to specify the `type`, `u
 
 {% include copy-clipboard.html %}
 ~~~ ts
-module.exports = {
-  type: "cockroachdb",
-  url: process.env.DATABASE_URL,
-  ssl: {
-    ca: process.env.CA_CERT,
-    key: process.env.CLIENT_KEY,
-    cert: process.env.CLIENT_CERT
-  }
+import { DataSource } from "typeorm"
+
+export const AppDataSource = new DataSource({
+    type: "cockroachdb",
+    url: process.env.DATABASE_URL,
+    ssl: {
+      ca: process.env.CA_CERT,
+      key: process.env.CLIENT_KEY,
+      cert: process.env.CLIENT_CERT
+    },
   ...
-};
+});
 ~~~
 
 Where:
@@ -363,22 +369,21 @@ postgresql://<username>@<host>:<port>/<database>
 
 </div>
 
-You can then call `createConnection` without any parameters:
+You can then import the `AppDataSource` into any file in your project and call `AppDataSource.initialize()` to connect to CockroachDB:
 
 {% include copy-clipboard.html %}
 ~~~ ts
-import {createConnection} from "typeorm";
+import { AppDataSource } from "./datasource";
 
-// createConnection method will automatically read connection options
-// from your ormconfig file or environment variables
-const connection = await createConnection();
+AppDataSource.initialize()
+  .then(async () => {
+    // Execute operations
+  });
 ~~~
-
-`createConnection` will use the properties in your `ormconfig` file.
 
 For more information about connecting with TypeORM, see the [official TypeORM documentation](https://typeorm.io/#/connection).
 
-### Connection parameters
+## Connection parameters
 
 <div class="filter-content" markdown="1" data-scope="serverless">
 
@@ -643,7 +648,7 @@ For more information about connecting with Django, see the [official Django docu
 
 </div>
 
-### Connection parameters
+## Connection parameters
 
 <div class="filter-content" markdown="1" data-scope="serverless">
 
@@ -706,22 +711,20 @@ For example:
 package main
 
 import (
-  "context"
-  "os"
+	"context"
+	"log"
 
-  "github.com/jackc/pgx/v4"
+	"github.com/jackc/pgx/v4"
 )
 
 func main() {
-  conn, err := pgx.Connect(context.Background(), os.Getenv("DATABASE_URL"))
-  if err != nil {
-    log.Fatal(err)
-  }
-  defer conn.Close(context.Background())
+	conn, err := pgx.Connect(context.Background(), "<connection-string>")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer conn.Close(context.Background())
 }
 ~~~
-
-Where `DATABASE_URL` is an environment variable set to a valid CockroachDB connection string.
 
 pgx accepts the following format for CockroachDB connection strings:
 
@@ -768,21 +771,19 @@ package main
 
 import (
 	"database/sql"
-  "os"
+	"log"
 
 	_ "github.com/lib/pq"
 )
 
 func main() {
-	db, err := sql.Open("postgres", os.Getenv("DATABASE_URL"))
+	db, err := sql.Open("postgres", "<connection-string>")
 	if err != nil {
 		log.Fatal(err)
 	}
-
+	defer db.Close()
 }
 ~~~
-
-Where `DATABASE_URL` is an environment variable set to a valid CockroachDB connection string.
 
 pq accepts the following format for CockroachDB connection strings:
 
@@ -826,17 +827,22 @@ For example:
 
 {% include copy-clipboard.html %}
 ~~~ go
-import (
-  "os"
+package main
 
-  "gorm.io/driver/postgres"
-  "gorm.io/gorm"
+import (
+	"log"
+
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
 )
 
-db, err := gorm.Open(postgres.Open(os.Getenv("DATABASE_URL")), &gorm.Config{})
+func main() {
+	db, err := gorm.Open(postgres.Open("<connection-string>"), &gorm.Config{})
+	if err != nil {
+		log.Fatal(err)
+	}
+}
 ~~~
-
-Where `DATABASE_URL` is an environment variable set to a valid CockroachDB connection string.
 
 GORM accepts the following format for CockroachDB connection strings:
 
@@ -871,7 +877,7 @@ For more information about connecting with GORM, see the [official GORM document
 
 </div>
 
-### Connection parameters
+## Connection parameters
 
 <div class="filter-content" markdown="1" data-scope="serverless">
 
@@ -1029,7 +1035,7 @@ For more information about connecting with Hibernate, see the [official Hibernat
 
 </div>
 
-### Connection parameters
+## Connection parameters
 
 <div class="filter-content" markdown="1" data-scope="serverless">
 
@@ -1158,7 +1164,7 @@ ActiveRecord accepts the following format for CockroachDB connection strings:
 
 {% include copy-clipboard.html %}
 ~~~
-postgresql://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full&options=--cluster%3D{routing-id}
+cockroachdb://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full&options=--cluster%3D{routing-id}
 ~~~
 
 </div>
@@ -1167,7 +1173,7 @@ postgresql://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full&
 
 {% include copy-clipboard.html %}
 ~~~
-postgresql://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full&sslrootcert={root-cert}
+cockroachdb://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full&sslrootcert={root-cert}
 ~~~
 
 </div>
@@ -1176,7 +1182,7 @@ postgresql://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full&
 
 {% include copy-clipboard.html %}
 ~~~
-postgresql://{username}@{host}:{port}/{database}?sslmode=verify-full&sslrootcert={root-cert}&sslcert={client-cert}&sslkey={client-key}
+cockroachdb://{username}@{host}:{port}/{database}?sslmode=verify-full&sslrootcert={root-cert}&sslcert={client-cert}&sslkey={client-key}
 ~~~
 
 </div>
@@ -1189,7 +1195,7 @@ For more information about connecting with ActiveRecord, see the [official Activ
 
 </div>
 
-### Connection parameters
+## Connection parameters
 
 <div class="filter-content" markdown="1" data-scope="serverless">
 

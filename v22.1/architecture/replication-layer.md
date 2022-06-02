@@ -2,7 +2,7 @@
 title: Replication Layer
 summary: The replication layer of CockroachDB's architecture copies data between nodes and ensures consistency between copies.
 toc: true
-docs_area: reference.architecture 
+docs_area: reference.architecture
 ---
 
 The replication layer of CockroachDB's architecture copies data between nodes and ensures consistency between these copies by implementing our consensus algorithm.
@@ -34,7 +34,7 @@ In relationship to other layers in CockroachDB, the replication layer:
 
 Raft is a consensus protocol––an algorithm which makes sure that your data is safely stored on multiple machines, and that those machines agree on the current state even if some of them are temporarily disconnected.
 
-Raft organizes all nodes that contain a replica of a range into a group--unsurprisingly called a Raft group. Each replica in a Raft group is either a "leader" or a "follower". The leader, which is elected by Raft and long-lived, coordinates all writes to the Raft group. It heartbeats followers periodically and keeps their logs replicated. In the absence of heartbeats, followers become candidates after randomized election timeouts and proceed to hold new leader elections.
+Raft organizes all nodes that contain a [replica](overview.html#architecture-replica) of a [range](overview.html#architecture-range) into a group--unsurprisingly called a Raft group. Each replica in a Raft group is either a "leader" or a "follower". The leader, which is elected by Raft and long-lived, coordinates all writes to the Raft group. It heartbeats followers periodically and keeps their logs replicated. In the absence of heartbeats, followers become candidates after randomized election timeouts and proceed to hold new leader elections.
 
  A third replica type is introduced, the "non-voting" replica. These replicas do not participate in Raft elections, but are useful for unlocking use cases that require low-latency multi-region reads. For more information, see [Non-voting replicas](#non-voting-replicas).
 
@@ -50,7 +50,7 @@ Because this log is treated as serializable, it can be replayed to bring a node 
 
 #### Non-voting replicas
 
-In versions prior to v21.1, CockroachDB only supported _voting_ replicas: that is, [replicas](overview.html#glossary) that participate as voters in the [Raft consensus protocol](#raft). However, the need for all replicas to participate in the consensus algorithm meant that increasing the [replication factor](../configure-replication-zones.html#num_replicas) came at a cost of increased write latency, since the additional replicas needed to participate in Raft [quorum](overview.html#architecture-overview-consensus).
+In versions prior to v21.1, CockroachDB only supported _voting_ replicas: that is, [replicas](overview.html#architecture-replica) that participate as voters in the [Raft consensus protocol](#raft). However, the need for all replicas to participate in the consensus algorithm meant that increasing the [replication factor](../configure-replication-zones.html#num_replicas) came at a cost of increased write latency, since the additional replicas needed to participate in Raft [quorum](overview.html#architecture-overview-consensus).
 
  In order to provide [better support for multi-region clusters](../multiregion-overview.html), (including the features that make [fast multi-region reads](../multiregion-overview.html#global-tables) and [surviving region failures](../multiregion-overview.html#surviving-region-failures) possible), a new type of replica is introduced: the _non-voting_ replica.
 
@@ -59,6 +59,46 @@ Non-voting replicas follow the [Raft log](#raft-logs) (and are thus able to serv
 They are also sometimes referred to as [_read-only_ replicas](https://cloud.google.com/spanner/docs/replication#read-only), since they only serve reads, but do not participate in quorum (and thus do not incur the associated latency costs).
 
 Non-voting replicas can be configured via [zone configurations through `num_voters` and `num_replicas`](../configure-replication-zones.html#num_voters). When `num_voters` is configured to be less than `num_replicas`, the difference dictates the number of non-voting replicas. However, most users should control non-voting replica placement with the high-level [multi-region SQL features](../multiregion-overview.html) instead.
+
+#### Per-replica circuit breakers
+
+- [Overview](#per-replica-circuit-breaker-overview)
+- [Configuration](#per-replica-circuit-breaker-configuration)
+- [Limitations](#per-replica-circuit-breaker-limitations)
+
+<a name="per-replica-circuit-breaker-overview"></a>
+
+##### Overview
+
+{% include_cached new-in.html version="v22.1" %} When individual [ranges](overview.html#architecture-range) become temporarily unavailable, requests to those ranges are refused by a per-replica "circuit breaker" mechanism instead of hanging indefinitely. 
+
+From a user's perspective, this means that if a [SQL query](sql-layer.html) is going to ultimately fail due to accessing a temporarily unavailable range, a [replica](overview.html#architecture-replica) in that range will trip its circuit breaker (after 60 seconds [by default](#per-replica-circuit-breaker-timeout)) and bubble a `ReplicaUnavailableError` error back up through the system to inform the user why their query did not succeed. These (hopefully transient) errors are also signalled as events in the DB Console's [Replication Dashboard](../ui-replication-dashboard.html) and as "circuit breaker errors" in its [**Problem Ranges** and **Range Status** pages](../ui-debug-pages.html). Meanwhile, CockroachDB continues asynchronously probing the range's availability. If the replica becomes available again, the breaker is reset so that it can go back to serving requests normally.
+
+This feature is designed to increase the availability of your CockroachDB clusters by making them more robust to transient errors.
+
+For more information about per-replica circuit breaker events happening on your cluster, see the following pages in the [DB Console](../ui-overview.html): 
+
+- The [**Replication** dashboard](../ui-replication-dashboard.html).
+- The [**Advanced Debug** page](../ui-debug-pages.html). From there you can view the **Problem Ranges** page, which lists the range replicas whose circuit breakers were tripped. You can also view the **Range Status** page, which displays the circuit breaker error message for a given range.
+
+<a name="per-replica-circuit-breaker-configuration"></a>
+
+##### Configuration
+
+Per-replica circuit breakers are enabled by default. Most users will not have to configure anything to get the benefits of this feature.
+
+<a name="per-replica-circuit-breaker-timeout"></a>
+
+The circuit breaker timeout value is controlled by the `kv.replica_circuit_breaker.slow_replication_threshold` [cluster setting](../cluster-settings.html), which defaults to an [interval](../interval.html) of `1m0s` (1 minute).
+
+<a name="per-replica-circuit-breaker-limitations"></a>
+
+##### Limitations
+
+Per-replica circuit breakers have the following limitations:
+
+- They cannot prevent requests from hanging when the node's [liveness range](#epoch-based-leases-table-data) is unavailable. For more information about troubleshooting a cluster that's having node liveness issues, see [Node liveness issues](../cluster-setup-troubleshooting.html#node-liveness-issues).
+- They are not tripped if _all_ replicas of a range [become unavailable](../cluster-setup-troubleshooting.html#db-console-shows-under-replicated-unavailable-ranges), because the circuit breaker mechanism operates per-replica. This means at least one replica needs to be available to receive the request in order for the breaker to trip.
 
 ### Snapshots
 

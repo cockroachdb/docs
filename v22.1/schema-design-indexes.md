@@ -6,7 +6,7 @@ keywords: gin, gin index, gin indexes, inverted index, inverted indexes, acceler
 docs_area: develop
 ---
 
-Indexes are [logical objects in a cluster](schema-design-overview.html#database-schema-objects) that help [CockroachDB queries](query-data.html) find data more efficiently. When you create an index, CockroachDB creates a copy of the columns selected for the index, and then sorts the rows of data by indexed column values, without sorting the values in the table itself.
+An [_index_](indexes.html) is a [logical object](schema-design-overview.html#database-schema-objects) that helps [CockroachDB queries](query-data.html) find data more efficiently. When you create an index, CockroachDB creates a copy of the columns selected for the index, and then sorts the rows of data by indexed column values, without sorting the values in the table itself.
 
 CockroachDB automatically creates an index on the table's [primary key](primary-key.html) columns. This index is called the *primary index*. The primary index helps CockroachDB more efficiently scan rows, as sorted by the table's primary key columns, but it does not help find values as identified by any other columns.
 
@@ -18,8 +18,7 @@ This page provides best-practice guidance on creating secondary indexes, with a 
 
 Before reading this page, do the following:
 
-- [Install CockroachDB](install-cockroachdb.html).
-- [Start a local cluster](secure-a-cluster.html), or [create a {{ site.data.products.dedicated }} cluster](../cockroachcloud/create-your-cluster.html).
+- [Create a {{ site.data.products.serverless }} cluster](../cockroachcloud/quickstart.html) or [start a local cluster](../cockroachcloud/quickstart.html?filters=local).
 - [Review the database schema objects](schema-design-overview.html).
 - [Create a database](schema-design-database.html).
 - [Create a user-defined schema](schema-design-schema.html).
@@ -66,75 +65,52 @@ For an example, see [Example](#example).
 
 ## Best practices
 
-Here are some best practices for creating and using indexes:
+Here are some best practices for creating and using secondary indexes.
+
+### Index contents
 
 - Index all columns that you plan to use for [sorting](order-by.html) or [filtering](select-clause.html#filter-rows) data.
 
     {% include {{page.version.version}}/sql/covering-index.md %}
 
-    Columns listed in a filtering [`WHERE` clause](select-clause.html#parameters) with the equality operators (`=` or `IN`) should come first in the index, before those referenced with inequality operators (`<`, `>`).
+    CockroachDB [pushes filters](indexes.html#how-do-indexes-work) (i.e., values listed in a [`WHERE` clause](select-clause.html#parameters)) into an index, which allows it to perform a finite number of sequential scans. In a `WHERE` clause with `n` constrained columns you can filter the first `n-1` columns either on a single constant value using the operator `=` or a list of constant values using the operator `IN`. You can filter column `n` against a range of values using any of the operators `!=`, `<`, `>`, or `NOT IN`.
 
-- A _functional index_ is an index is defined on the result of a function applied to one or more columns of a single table. The best approach is to use a [computed column](computed-columns.html) and index the column. This allows you to compute the function once and use it many times.
+- If you need to index the result of a function applied to one or more columns of a single table, use the function to create a [computed column](computed-columns.html) and index the column.
 
-- Avoid indexing on sequential values. Writes to indexes with sequential keys can result in range hotspots that negatively affect performance. Instead, use [randomly generated unique IDs](performance-best-practices-overview.html#unique-id-best-practices) or [multi-column keys](performance-best-practices-overview.html#use-multi-column-primary-keys).
+- Avoid indexing on sequential keys. Writes to indexes with sequential keys can result in range [hot spots](performance-best-practices-overview.html#hot-spots) that negatively affect performance. Instead, use [randomly generated unique IDs](performance-best-practices-overview.html#unique-id-best-practices) or [multi-column keys](performance-best-practices-overview.html#use-multi-column-primary-keys).
 
-    If you are working with a table that *must* be indexed on sequential keys, use [hash-sharded indexes](hash-sharded-indexes.html). For details about the mechanics and performance improvements of hash-sharded indexes in CockroachDB, see our [Hash Sharded Indexes Unlock Linear Scaling for Sequential Workloads](https://www.cockroachlabs.com/blog/hash-sharded-indexes-unlock-linear-scaling-for-sequential-workloads/) blog post.
+    If you are working with a table that **must** be indexed on sequential keys, use [hash-sharded indexes](hash-sharded-indexes.html). For details about the mechanics and performance improvements of hash-sharded indexes in CockroachDB, see our [Hash Sharded Indexes Unlock Linear Scaling for Sequential Workloads](https://www.cockroachlabs.com/blog/hash-sharded-indexes-unlock-linear-scaling-for-sequential-workloads/) blog post.
 
-- Avoid creating secondary indexes that you do not need. Secondary indexes can slow down write performance and take up node memory.
+<a name="storing-index"></a>
 
-    Queries can benefit from an index even if they only filter a prefix of its columns. For example, if you create an index of columns `(A, B, C)`, queries filtering `(A)` or `(A, B)` can still use the index. However, queries that do not filter `(A)` will not benefit from the index. This feature also lets you avoid using single-column indexes. Instead, use the column as the first column in a multiple-column index, which is useful to more queries.
+- Use a [`STORING` clause](create-index.html#parameters) to store columns of data that you want returned by common queries, but that you do not plan to use in query filters.
 
-    [`ALTER PRIMARY KEY`](alter-primary-key.html) creates a secondary index from the old primary key. If you need to [change a primary key](constraints.html#change-constraints), and you do not plan to filter queries on the old primary key column(s), do not use `ALTER PRIMARY KEY`. Instead, use [`DROP CONSTRAINT ... PRIMARY KEY`/`ADD CONSTRAINT ... PRIMARY KEY`](add-constraint.html#changing-primary-keys-with-add-constraint-primary-key), which does not create a secondary index.
+    The `STORING` clause specifies columns that are not part of the index key but should be stored in the index. If a column is specified in a query, and the column is neither indexed nor stored in an index, CockroachDB may either perform a full scan or perform an [index join](indexes.html#example) if a suitable secondary index exists. However, if the optimizer determines that the index join is too expensive, then CockroachDB will perform a full table scan. For an example, see [Example](#example).
+
+- Review the [specialized indexes](schema-design-overview.html#specialized-indexes), such as partial and inverted indexes, and decide if you need to create a specialized index instead of a standard index.
+
+- Avoid creating secondary indexes that you do not need.
+
+    - Queries can benefit from an index even if they only filter a prefix of its columns. For example, if you create an index of columns `(A, B, C)`, queries filtering `(A)` or `(A, B)` can use the index, so you don't need to also index `(A)`.
+
+    - If you need to [change a primary key](constraints.html#change-constraints), and you do not plan to filter queries on the existing primary key column(s), do not use [`ALTER PRIMARY KEY`](alter-primary-key.html) because it creates a secondary index from an existing primary key. Instead, use [`DROP CONSTRAINT ... PRIMARY KEY`/`ADD CONSTRAINT ... PRIMARY KEY`](add-constraint.html#changing-primary-keys-with-add-constraint-primary-key), which does not create a secondary index.
+
+### Index management
 
 - Limit creation and deletion of secondary indexes to off-peak hours. Performance impacts are likely if done during peak business hours.
 
-- [Drop unused indexes](drop-index.html) whenever possible.
+- Do not create indexes as the `root` user. Instead, create indexes as a [different user](schema-design-overview.html#control-access-to-objects), with fewer privileges, following [authorization best practices](security-reference/authorization.html#authorization-best-practices). This will likely be the same user that created the table to which the index belongs.
 
-    To understand usage statistics for an index, query the <a href="performance-recipes.html#slow-writes"><code>crdb_internal.index_usage_statistics</code> table</a>.
+- Drop unused indexes whenever possible.
 
-    To find which indexes are being used in a database, query the [`crdb_internal.index_usage_statistics`](crdb-internal.html) table, which will show the total reads and time the primary and secondary indexes were last read.
+    To understand usage statistics for an index, query the [`crdb_internal.index_usage_statistics`](crdb-internal.html#index_usage_statistics) table.
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
     SELECT * FROM crdb_internal.index_usage_statistics;
     ~~~
 
-    To get more detailed information about the table and index names, run a join query against `crdb_internal.index_usage_statistics` and `crdb_internal.table_indexes`.
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ sql
-    SELECT ti.descriptor_name as table_name, ti.index_name, total_reads, last_read
-    FROM crdb_internal.index_usage_statistics AS us
-    JOIN crdb_internal.table_indexes ti
-    ON us.index_id = ti.index_id
-    AND us.table_id = ti.descriptor_id
-    ORDER BY total_reads ASC;
-    ~~~
-
-    ~~~
-              table_name         |                  index_name                   | total_reads |           last_read
------------------------------+-----------------------------------------------+-------------+--------------------------------
-  vehicle_location_histories | primary                                       |           1 | 2021-09-28 22:59:03.324398+00
-  rides                      | rides_auto_index_fk_city_ref_users            |           1 | 2021-09-28 22:59:01.500962+00
-  rides                      | rides_auto_index_fk_vehicle_city_ref_vehicles |           1 | 2021-09-28 22:59:02.470526+00
-  user_promo_codes           | primary                                       |         456 | 2021-09-29 00:01:17.063418+00
-  promo_codes                | primary                                       |         910 | 2021-09-29 00:01:17.062319+00
-  vehicles                   | primary                                       |        3591 | 2021-09-29 00:01:18.261658+00
-  users                      | primary                                       |        5401 | 2021-09-29 00:01:18.260198+00
-  rides                      | primary                                       |       45658 | 2021-09-29 00:01:18.258208+00
-  vehicles                   | vehicles_auto_index_fk_city_ref_users         |       87119 | 2021-09-29 00:01:19.071476+00
-(9 rows)
-    ~~~
-
-<a name="storing-index"></a>
-
-- Use a [`STORING` clause](create-index.html#parameters) to store columns of data that you want returned by common queries, but that you do not plan to use in query filters.  Note that the synonym `COVERING` is also supported.
-
-    The `STORING` clause specifies columns that are not part of the index key but should be stored in the index, without being sorted. If a column is specified in a query, and the column is neither indexed nor stored in an index, CockroachDB will perform a full scan of the table, which can result in poor performance. For an example, see [below](#example).
-
-- Review the [specialized indexes that CockroachDB supports](schema-design-overview.html#specialized-indexes), and decide if you need to create a specialized index instead of a standard index.
-
-- Do not create indexes as the `root` user. Instead, create indexes as a [different user](schema-design-overview.html#control-access-to-objects), with fewer privileges, following [authorization best practices](security-reference/authorization.html#authorization-best-practices). This will likely be the same user that created the table to which the index belongs.
+    To get more detailed information about the table and index names, run a join query against `crdb_internal.index_usage_statistics` and `crdb_internal.table_indexes`. For an example, see [Fix slow writes](performance-recipes.html#fix-slow-writes).
 
 - {% include {{page.version.version}}/sql/dev-schema-changes.md %}
 
@@ -150,7 +126,7 @@ Open `max_init.sql`, and, under the `CREATE TABLE` statement for the `vehicles` 
 
 {% include copy-clipboard.html %}
 ~~~ sql
-CREATE INDEX type_available_idx ON movr.vehicles (type, available));
+CREATE INDEX type_available_idx ON movr.vehicles (type, available);
 ~~~
 
 This statement creates a secondary index named `type_available_idx`, on the `vehicles` table.
@@ -249,23 +225,23 @@ To view the indexes in the `vehicles` table, issue a [`SHOW INDEXES`](show-index
 ~~~
 
 ~~~
-  table_name | index_name | non_unique | seq_in_index |  column_name  | direction | storing | implicit
--------------+------------+------------+--------------+---------------+-----------+---------+-----------
-  vehicles   | primary            |   false    |            1 | id            | ASC       |  false  |  false
-  vehicles   | primary            |   false    |            2 | type          | N/A       |  true   |  false
-  vehicles   | primary            |   false    |            3 | creation_time | N/A       |  true   |  false
-  vehicles   | primary            |   false    |            4 | available     | N/A       |  true   |  false
-  vehicles   | primary            |   false    |            5 | last_location | N/A       |  true   |  false
+  table_name |     index_name     | non_unique | seq_in_index |  column_name  | direction | storing | implicit
+-------------+--------------------+------------+--------------+---------------+-----------+---------+-----------
   vehicles   | type_available_idx |    true    |            1 | type          | ASC       |  false  |  false
   vehicles   | type_available_idx |    true    |            2 | available     | ASC       |  false  |  false
   vehicles   | type_available_idx |    true    |            3 | last_location | N/A       |  true   |  false
   vehicles   | type_available_idx |    true    |            4 | id            | ASC       |  false  |   true
+  vehicles   | vehicles_pkey      |   false    |            1 | id            | ASC       |  false  |  false
+  vehicles   | vehicles_pkey      |   false    |            2 | type          | N/A       |  true   |  false
+  vehicles   | vehicles_pkey      |   false    |            3 | creation_time | N/A       |  true   |  false
+  vehicles   | vehicles_pkey      |   false    |            4 | available     | N/A       |  true   |  false
+  vehicles   | vehicles_pkey      |   false    |            5 | last_location | N/A       |  true   |  false
 (9 rows)
 ~~~
 
-The output from this `SHOW` statement displays the names and columns of the two indexes on the table (i.e., `primary` and `type_available_idx`).
+The output from this `SHOW` statement displays the names and columns of the two indexes on the table (i.e., `vehicles_pkey` and `type_available_idx`).
 
-Note that the `last_location` column's `storing` value is `true` in the `type_available_idx` index, and is therefore not sorted. Also note that the primary key column `id` is implicit in the index, meaning the `id` column is implicitly indexed in `type_available_idx`.
+Note that the `last_location` column's `storing` value is `true` in the `type_available_idx` index, and is therefore not sorted. Also note that the vehicles_pkey key column `id` is implicit in the index, meaning the `id` column is implicitly indexed in `type_available_idx`.
 
 To see an index definition, use a [`SHOW CREATE`](show-create.html) statement on the table that contains the index:
 
@@ -276,16 +252,15 @@ To see an index definition, use a [`SHOW CREATE`](show-create.html) statement on
 
 ~~~
          table_name        |                                create_statement
----------------------------+----------------------------------------------------------------------------------
+---------------------------+---------------------------------------------------------------------------------
   movr.max_schema.vehicles | CREATE TABLE max_schema.vehicles (
                            |     id UUID NOT NULL DEFAULT gen_random_uuid(),
                            |     type max_schema.vtype NULL,
                            |     creation_time TIMESTAMPTZ NULL DEFAULT now():::TIMESTAMPTZ,
                            |     available BOOL NULL,
                            |     last_location STRING NULL,
-                           |     CONSTRAINT "primary" PRIMARY KEY (id ASC),
-                           |     INDEX type_available_idx (available ASC, type ASC) STORING (last_location),
-                           |     FAMILY "primary" (id, type, creation_time, available, last_location)
+                           |     CONSTRAINT vehicles_pkey PRIMARY KEY (id ASC),
+                           |     INDEX type_available_idx (type ASC, available ASC) STORING (last_location)
                            | )
 (1 row)
 ~~~

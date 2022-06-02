@@ -17,6 +17,7 @@ The `IMPORT INTO` [statement](sql-statements.html) imports CSV, Avro, or delimit
 - `IMPORT INTO` is an insert-only statement; it cannot be used to update existing rows—see [`UPDATE`](update.html). Imported rows cannot conflict with primary keys in the existing table, or any other [`UNIQUE`](unique.html) constraint on the table.
 - `IMPORT INTO` does not offer `SELECT` or `WHERE` clauses to specify subsets of rows. To do this, use [`INSERT`](insert.html#insert-from-a-select-statement).
 - `IMPORT INTO` will cause any [changefeeds](use-changefeeds.html) running on the targeted table to fail.
+- See the [`IMPORT`](import.html) page for guidance on importing PostgreSQL and MySQL dump files.
 
  `IMPORT INTO` now supports importing into [`REGIONAL BY ROW`](set-locality.html#regional-by-row) tables.
 
@@ -98,9 +99,9 @@ Key                 | <div style="width:130px">Context</div> | Value
 `schema_uri`           | `AVRO DATA`    | The URI of the file containing the schema of the Avro records include in the binary or JSON file. This is not needed for Avro OCF. <br> See `data_as_binary_records` example above.
 <a name="options-detached"></a>`DETACHED`             | N/A            |  When an import runs in `DETACHED` mode, it will execute asynchronously and the job ID will be returned immediately without waiting for the job to finish. Note that with `DETACHED` specified, further job information and the job completion status will not be returned. To check on the job status, use the [`SHOW JOBS`](show-jobs.html) statement. <br><br>To run an import within a [transaction](transactions.html), use the `DETACHED` option.
 
-For examples showing how to use these options, see the [`IMPORT` - Examples section](import.html#examples).
+For examples showing how to use these options, see the [Examples section](import-into.html#examples).
 
-For instructions and working examples showing how to migrate data from other databases and formats, see the [Migration Overview](migration-overview.html). For information on how to import data into new tables, see [`IMPORT`](import.html).
+For instructions and working examples showing how to migrate data from other databases and formats, see the [Migration Overview](migration-overview.html).
 
 ## Requirements
 
@@ -192,7 +193,7 @@ We recommend reading the [Considerations](#considerations) section for important
 To import into a new table, use [`CREATE TABLE`](create-table.html) followed by `IMPORT INTO`.
 
 {{site.data.alerts.callout_info}}
-As of v21.2 [`IMPORT TABLE`](import.html) will be deprecated; therefore, we recommend using the following example to import data into a new table.
+ Certain [`IMPORT TABLE`](import.html) statements that defined the table schema inline are **not** supported in v22.1+. We recommend using the following example to import data into a new table.
 {{site.data.alerts.end}}
 
 First, create the new table with the necessary columns and data types:
@@ -243,6 +244,25 @@ The column order in your `IMPORT` statement must match the column order in the C
       's3://{BUCKET NAME}/{customers3.csv}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}',
       's3://{BUCKET NAME}/{customers4.csv}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}',
     );
+~~~
+
+### Import into an existing table using a wildcard
+
+You can specify [file patterns to match](https://golang.org/pkg/path/filepath/#Match) instead of explicitly listing every file. Paths are matched using the `*` wildcard character to include matching files directly under the specified path. Use a wildcard to include:
+
+- All files in a given directory (e.g.,`s3://bucket-name/path/to/data/*`).
+- All files in a given directory that end with a given string (e.g., `s3://bucket-name/files/*.csv`).
+- All files in a given directory that start with a given string (e.g., `s3://bucket-name/files/data*`).
+- All files in a given directory that start and end with a given string (e.g., `s3://bucket-name/files/data*.csv`).
+
+These only match files directly under the specified path and do not descend into additional directories recursively.
+
+{% include copy-clipboard.html %}
+~~~ sql
+IMPORT INTO users (id, city, name, address, credit_card)
+  CSV DATA (
+    's3://{BUCKET NAME}/*.csv?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
+  );
 ~~~
 
 ### Import into an existing table from an Avro file

@@ -7,11 +7,19 @@ docs_area: reference.sql
 
 The `SHOW BACKUP` [statement](sql-statements.html) lists the contents of a backup created with the [`BACKUP`](backup.html) statement.
 
+{{site.data.alerts.callout_danger}}
+The `SHOW BACKUP` syntax **without** the `IN` keyword is **deprecated** as of v22.1 and will be removed in a future release.
+
+We recommend using `SHOW BACKUP FROM {subdirectory} IN {collectionURI}` to view backups in a subdirectory at a collection's URI.
+
+For guidance on the syntax for `SHOW BACKUP FROM`, see the [examples](#examples).
+{{site.data.alerts.end}}
+
 ## Required privileges
 
 `SHOW BACKUP` requires read permissions to its target destination.
 
-{% include {{ page.version.version }}/misc/source-privileges.md %}
+{% include {{ page.version.version }}/misc/non-http-source-privileges.md %}
 
 ## Synopsis
 
@@ -23,10 +31,9 @@ The `SHOW BACKUP` [statement](sql-statements.html) lists the contents of a backu
 
 Parameter | Description
 ----------|------------
-`SHOW BACKUPS IN location` | List the backup paths in the given [`location`](backup.html#backup-file-urls). [See the example below](#view-a-list-of-the-available-full-backup-subdirectories).
-`SHOW BACKUP location` | Show the details of the backup in the given [`location`](backup.html#backup-file-urls). [See the example below](#show-a-backup).
-`SHOW BACKUP SCHEMAS location` | Show the schema details of the backup in the given [`location`](backup.html#backup-file-urls). [See the example below](#show-a-backup-with-schemas).
-`SHOW BACKUP subdirectory IN location` |  List the full and incremental backups that are stored in the given full backup's `subdirectory` within a [`location`](backup.html#backup-file-urls). [See the example below](#show-details-for-scheduled-backups).
+`SHOW BACKUPS IN collectionURI` | List the backup paths in the given [collection URI](backup.html#backup-file-urls). [See the example](#view-a-list-of-the-available-full-backup-subdirectories).
+`SHOW BACKUP FROM subdirectory IN collectionURI` | Show the details of backups in the subdirectory at the given [collection URI](backup.html#backup-file-urls). Also, use `FROM LATEST in collectionURI` to show the most recent backup. [See the example](#show-the-most-recent-backup).
+`SHOW BACKUP SCHEMAS FROM subdirectory IN collectionURI` | Show the schema details of the backup in the given [collection URI](backup.html#backup-file-urls). [See the example](#show-a-backup-with-schemas).
 `kv_option_list` | Control the behavior of `SHOW BACKUP` with a comma-separated list of [these options](#options).
 
 ### Options
@@ -37,6 +44,7 @@ Option       | Value | Description
 `encryption_passphrase`<a name="with-encryption-passphrase"></a> | [`STRING`](string.html) |  The passphrase used to [encrypt the files](take-and-restore-encrypted-backups.html) that the `BACKUP` statement generates (the data files and its manifest, containing the backup's metadata).
 `debug_ids` |  N/A  |  [Display descriptor IDs](#show-a-backup-with-descriptor-ids) of every object in the backup, including the object's database and parent schema.
 `as_json`   |  N/A  |  [Display the backup's internal metadata](#show-a-backups-internal-metadata) as JSON in the response.
+`incremental_location` | [`STRING`](string.html) | [List the details of an incremental backup](#show-a-backup-taken-with-the-incremental-location-option) taken with the [`incremental_location` option](backup.html#incr-location).
 
 ## Response
 
@@ -54,151 +62,144 @@ Field | Description
 `size_bytes` | The size of the backup, in bytes.
 `create_statement` | The `CREATE` statement used to create [table(s)](create-table.html), [view(s)](create-view.html), or [sequence(s)](create-sequence.html) that are stored within the backup. This displays when `SHOW BACKUP SCHEMAS` is used. Note that tables with references to [foreign keys](foreign-key.html) will only display foreign key constraints if the table to which the constraint relates to is also included in the backup.
 `is_full_cluster` |  Whether the backup is of a full cluster or not.
-`path` |  The list of the [full backup](take-full-and-incremental-backups.html#full-backups)'s subdirectories. This field is returned for `SHOW BACKUPS IN location` only. The path format is `<year>/<month>/<day>-<timestamp>`.
+`path` |  The list of the [full backup](take-full-and-incremental-backups.html#full-backups)'s subdirectories. This field is returned for `SHOW BACKUPS IN collectionURI` only. The path format is `<year>/<month>/<day>-<timestamp>`.
 
 See [Show a backup with descriptor IDs](#show-a-backup-with-descriptor-ids) for the responses displayed when the `WITH debug_ids` option is specified.
 
-## Example
-
-### Show a backup
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SHOW BACKUP 's3://test/backup-test?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]';
-~~~
-
-~~~
-  database_name | parent_schema_name |        object_name         | object_type | backup_type | start_time |          end_time                 | size_bytes | rows | is_full_cluster
-----------------+--------------------+----------------------------+-------------+-------------+------------------------------------------------+------------+------+------------------
-  NULL          | NULL               | system                     | database    | full        |  NULL       | 2020-09-24 19:05:40.542168+00:00 |       NULL | NULL |      true
-  system        | public             | users                      | table       | full        |  NULL       | 2020-09-24 19:05:40.542168+00:00 |        144 |    3 |      true
-  system        | public             | zones                      | table       | full        |  NULL       | 2020-09-24 19:05:40.542168+00:00 |        201 |    7 |      true
-  system        | public             | settings                   | table       | full        |  NULL       | 2020-09-24 19:05:40.542168+00:00 |        431 |    6 |      true
-  system        | public             | ui                         | table       | full        |  NULL       | 2020-09-24 19:05:40.542168+00:00 |          0 |    0 |      true
-  system        | public             | jobs                       | table       | full        |  NULL       | 2020-09-24 19:05:40.542168+00:00 |     434302 |   62 |      true
-  system        | public             | locations                  | table       | full        |  NULL       | 2020-09-24 19:05:40.542168+00:00 |        261 |    5 |      true
-  system        | public             | role_members               | table       | full        |  NULL       | 2020-09-24 19:05:40.542168+00:00 |        184 |    2 |      true
-  system        | public             | comments                   | table       | full        |  NULL       | 2020-09-24 19:05:40.542168+00:00 |          0 |    0 |      true
-  system        | public             | scheduled_jobs             | table       | full        |  NULL       | 2020-09-24 19:05:40.542168+00:00 |        875 |    2 |      true
-  NULL          | NULL               | defaultdb                  | database    | full        |  NULL       | 2020-09-24 19:05:40.542168+00:00 |       NULL | NULL |      true
-  NULL          | NULL               | postgres                   | database    | full        |  NULL       | 2020-09-24 19:05:40.542168+00:00 |       NULL | NULL |      true
-  NULL          | NULL               | movr                       | database    | full        |  NULL       | 2020-09-24 19:05:40.542168+00:00 |       NULL | NULL |      true
-  movr          | public             | users                      | table       | full        |  NULL       | 2020-09-24 19:05:40.542168+00:00 |       4911 |   50 |      true
-  movr          | public             | vehicles                   | table       | full        |  NULL       | 2020-09-24 19:05:40.542168+00:00 |       3182 |   15 |      true
-  movr          | public             | rides                      | table       | full        |  NULL       | 2020-09-24 19:05:40.542168+00:00 |     156387 |  500 |      true
-  movr          | public             | vehicle_location_histories | table       | full        |  NULL       | 2020-09-24 19:05:40.542168+00:00 |      73918 | 1000 |      true
-  movr          | public             | promo_codes                | table       | full        |  NULL       | 2020-09-24 19:05:40.542168+00:00 |     216083 | 1000 |      true
-  movr          | public             | user_promo_codes           | table       | full        |  NULL       | 2020-09-24 19:05:40.542168+00:00 |          0 |    0 |      true
-  defaultdb     | NULL               | org_one                    | schema      | full        |  NULL       | 2020-09-24 19:05:40.542168+00:00 |       NULL | NULL |      true
-(20 rows)
-~~~
+## Examples
 
 ### View a list of the available full backup subdirectories
 
 <a name="show-backups-in"></a>To view a list of the available [full backups](take-full-and-incremental-backups.html#full-backups) subdirectories, use the following command:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
-> SHOW BACKUPS IN 's3://test/backup-test?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]';
+> SHOW BACKUPS IN 's3://{bucket name}/{path}?AWS_ACCESS_KEY_ID={placeholder}&AWS_SECRET_ACCESS_KEY={placeholder}';
 ~~~
 
 ~~~
-          path
-------------------------
-  2020/09/24-204152.88
-  2020/09/24-204623.44
-  2020/09/24-205612.40
-  2020/09/24-207328.36
-(4 rows)
+        path
+-------------------------
+/2022/04/13-202334.48
+/2022/04/13-202413.70
+(2 rows)
 ~~~
 
 The path format is `<year>/<month>/<day>-<timestamp>`.
+
+### Show the most recent backup
+
+{% include_cached new-in.html version="v22.1" %} To view the most recent backup, use the `LATEST` syntax:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> SHOW BACKUP FROM LATEST IN 's3://{bucket name}?AWS_ACCESS_KEY_ID={placeholder}&AWS_SECRET_ACCESS_KEY={placeholder}';
+~~~
+
+~~~
+database_name | parent_schema_name |        object_name         | object_type | backup_type |        start_time         |          end_time          | size_bytes | rows  | is_full_cluster
+----------------+--------------------+----------------------------+-------------+-------------+---------------------------+----------------------------+------------+-------+------------------
+NULL          | NULL               | movr                       | database    | full        | NULL                      | 2022-04-08 14:23:55.33557  |       NULL |  NULL |      false
+movr          | NULL               | public                     | schema      | full        | NULL                      | 2022-04-08 14:23:55.33557  |       NULL |  NULL |      false
+movr          | public             | users                      | table       | full        | NULL                      | 2022-04-08 14:23:55.33557  |      25856 |   281 |      false
+NULL          | NULL               | system                     | database    | incremental | 2022-04-08 14:23:55.33557 | 2022-04-08 14:26:01.699694 |       NULL |  NULL |      true
+system        | public             | users                      | table       | incremental | 2022-04-08 14:23:55.33557 | 2022-04-08 14:26:01.699694 |         99 |     2 |      true
+system        | public             | zones                      | table       | incremental | 2022-04-08 14:23:55.33557 | 2022-04-08 14:26:01.699694 |        236 |     8 |      true
+system        | public             | settings                   | table       | incremental | 2022-04-08 14:23:55.33557 | 2022-04-08 14:26:01.699694 |        372 |     5 |      true
+system        | public             | ui                         | table       | incremental | 2022-04-08 14:23:55.33557 | 2022-04-08 14:26:01.699694 |          0 |     0 |      true
+system        | public             | jobs                       | table       | incremental | 2022-04-08 14:23:55.33557 | 2022-04-08 14:26:01.699694 |      30148 |    23 |      true
+system        | public             | locations                  | table       | incremental | 2022-04-08 14:23:55.33557 | 2022-04-08 14:26:01.699694 |        261 |     5 |      true
+~~~
 
 ### View a list of the full and incremental backups in a specific full backup subdirectory
 
 To view a list of the [full](take-full-and-incremental-backups.html#full-backups) and [incremental](take-full-and-incremental-backups.html#incremental-backups) backups in a specific subdirectory, use the following command:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
-> SHOW BACKUP '2020/09/24-204152.88' IN 's3://test/backup-test?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]';
+> SHOW BACKUP FROM '2022/04/08-142355.33' IN 's3://{bucket name}?AWS_ACCESS_KEY_ID={placeholder}&AWS_SECRET_ACCESS_KEY={placeholder}';
 ~~~
 
 ~~~
-  database_name | parent_schema_name |        object_name         | object_type | backup_type       | start_time                       |          end_time                | size_bytes | rows | is_full_cluster
-----------------+--------------------+----------------------------+-------------+-------------------+----------------------------------+----------------------------------+-------------------------------------
-  NULL          | NULL               | system                     | database    | full              | NULL                             | 2020-09-24 20:41:52.880553+00:00 |       NULL | NULL |      true
-  system        | public             | users                      | table       | full              | NULL                             | 2020-09-24 20:41:52.880553+00:00 |        144 |    3 |      true
-  system        | public             | zones                      | table       | full              | NULL                             | 2020-09-24 20:41:52.880553+00:00 |        201 |    7 |      true
-  system        | public             | settings                   | table       | full              | NULL                             | 2020-09-24 20:41:52.880553+00:00 |        875 |    6 |      true
-  system        | public             | ui                         | table       | full              | NULL                             | 2020-09-24 20:41:52.880553+00:00 |          0 |    0 |      true
-  system        | public             | jobs                       | table       | full              | NULL                             | 2020-09-24 20:41:52.880553+00:00 |     795117 |   80 |      true
-  system        | public             | locations                  | table       | full              | NULL                             | 2020-09-24 20:41:52.880553+00:00 |        261 |    5 |      true
-  system        | public             | role_members               | table       | full              | NULL                             | 2020-09-24 20:41:52.880553+00:00 |        184 |    2 |      true
-  system        | public             | comments                   | table       | full              | NULL                             | 2020-09-24 20:41:52.880553+00:00 |          0 |    0 |      true
-  system        | public             | scheduled_jobs             | table       | full              | NULL                             | 2020-09-24 20:41:52.880553+00:00 |       1013 |    2 |      true
-  NULL          | NULL               | defaultdb                  | database    | full              | NULL                             | 2020-09-24 20:41:52.880553+00:00 |       NULL | NULL |      true
-  NULL          | NULL               | postgres                   | database    | full              | NULL                             | 2020-09-24 20:41:52.880553+00:00 |       NULL | NULL |      true
-  NULL          | NULL               | movr                       | database    | full              | NULL                             | 2020-09-24 20:41:52.880553+00:00 |       NULL | NULL |      true
-  movr          | public             | users                      | table       | full              | NULL                             | 2020-09-24 20:41:52.880553+00:00 |       4911 |   50 |      true
-  movr          | public             | vehicles                   | table       | full              | NULL                             | 2020-09-24 20:41:52.880553+00:00 |       3182 |   15 |      true
-  movr          | public             | rides                      | table       | full              | NULL                             | 2020-09-24 20:41:52.880553+00:00 |     156387 |  500 |      true
-  movr          | public             | vehicle_location_histories | table       | full              | NULL                             | 2020-09-24 20:41:52.880553+00:00 |      73918 | 1000 |      true
-  movr          | public             | promo_codes                | table       | full              | NULL                             | 2020-09-24 20:41:52.880553+00:00 |     216083 | 1000 |      true
-  movr          | public             | user_promo_codes           | table       | full              | NULL                             | 2020-09-24 20:41:52.880553+00:00 |          0 |    0 |      true
-  defaultdb     | NULL               | org_one                    | schema      | full              | NULL                             | 2020-09-24 20:41:52.880553+00:00 |       NULL | NULL |      true
-  NULL          | NULL               | system                     | database    | incremental       | 2020-09-24 20:41:52.880553+00:00 | 2020-09-24 20:50:00+00:00        |       NULL | NULL |      true
-  system        | public             | users                      | table       | incremental       | 2020-09-24 20:41:52.880553+00:00 | 2020-09-24 20:50:00+00:00        |          0 |    0 |      true
-  system        | public             | zones                      | table       | incremental       | 2020-09-24 20:41:52.880553+00:00 | 2020-09-24 20:50:00+00:00        |          0 |    0 |      true
-  system        | public             | settings                   | table       | incremental       | 2020-09-24 20:41:52.880553+00:00 | 2020-09-24 20:50:00+00:00        |          0 |    0 |      true
-  system        | public             | ui                         | table       | incremental       | 2020-09-24 20:41:52.880553+00:00 | 2020-09-24 20:50:00+00:00        |          0 |    0 |      true
-  system        | public             | jobs                       | table       | incremental       | 2020-09-24 20:41:52.880553+00:00 | 2020-09-24 20:50:00+00:00        |     102381 |    1 |      true
-  system        | public             | locations                  | table       | incremental       | 2020-09-24 20:41:52.880553+00:00 | 2020-09-24 20:50:00+00:00        |          0 |    0 |      true
-  system        | public             | role_members               | table       | incremental       | 2020-09-24 20:41:52.880553+00:00 | 2020-09-24 20:50:00+00:00        |          0 |    0 |      true
-  system        | public             | comments                   | table       | incremental       | 2020-09-24 20:41:52.880553+00:00 | 2020-09-24 20:50:00+00:00        |          0 |    0 |      true
-  system        | public             | scheduled_jobs             | table       | incremental       | 2020-09-24 20:41:52.880553+00:00 | 2020-09-24 20:50:00+00:00        |       1347 |    2 |      true
-  NULL          | NULL               | defaultdb                  | database    | incremental       | 2020-09-24 20:41:52.880553+00:00 | 2020-09-24 20:50:00+00:00        |       NULL | NULL |      true
-  NULL          | NULL               | postgres                   | database    | incremental       | 2020-09-24 20:41:52.880553+00:00 | 2020-09-24 20:50:00+00:00        |       NULL | NULL |      true
-  NULL          | NULL               | movr                       | database    | incremental       | 2020-09-24 20:41:52.880553+00:00 | 2020-09-24 20:50:00+00:00        |       NULL | NULL |      true
-  movr          | public             | users                      | table       | incremental       | 2020-09-24 20:41:52.880553+00:00 | 2020-09-24 20:50:00+00:00        |          0 |    0 |      true
-  movr          | public             | vehicles                   | table       | incremental       | 2020-09-24 20:41:52.880553+00:00 | 2020-09-24 20:50:00+00:00        |          0 |    0 |      true
-  movr          | public             | rides                      | table       | incremental       | 2020-09-24 20:41:52.880553+00:00 | 2020-09-24 20:50:00+00:00        |          0 |    0 |      true
-  movr          | public             | vehicle_location_histories | table       | incremental       | 2020-09-24 20:41:52.880553+00:00 | 2020-09-24 20:50:00+00:00        |          0 |    0 |      true
-  movr          | public             | promo_codes                | table       | incremental       | 2020-09-24 20:41:52.880553+00:00 | 2020-09-24 20:50:00+00:00        |          0 |    0 |      true
-  movr          | public             | user_promo_codes           | table       | incremental       | 2020-09-24 20:41:52.880553+00:00 | 2020-09-24 20:50:00+00:00        |          0 |    0 |      true
-  defaultdb     | NULL               | org_one                    | schema      | incremental       | 2020-09-24 20:41:52.880553+00:00 | 2020-09-24 20:50:00+00:00        |       NULL | NULL |      true
-(40 rows)
+database_name | parent_schema_name |        object_name         | object_type | backup_type |        start_time         |          end_time          | size_bytes | rows  | is_full_cluster
+--------------+--------------------+----------------------------+-------------+-------------+---------------------------+----------------------------+------------+-------+------------------
+NULL          | NULL               | movr                       | database    | full        | NULL                      | 2022-04-08 14:23:55.33557  |       NULL |  NULL |      false
+movr          | NULL               | public                     | schema      | full        | NULL                      | 2022-04-08 14:23:55.33557  |       NULL |  NULL |      false
+movr          | public             | users                      | table       | full        | NULL                      | 2022-04-08 14:23:55.33557  |      25856 |   281 |      false
+NULL          | NULL               | system                     | database    | incremental | 2022-04-08 14:23:55.33557 | 2022-04-08 14:26:01.699694 |       NULL |  NULL |      true
+system        | public             | users                      | table       | incremental | 2022-04-08 14:23:55.33557 | 2022-04-08 14:26:01.699694 |         99 |     2 |      true
+system        | public             | zones                      | table       | incremental | 2022-04-08 14:23:55.33557 | 2022-04-08 14:26:01.699694 |        236 |     8 |      true
+system        | public             | settings                   | table       | incremental | 2022-04-08 14:23:55.33557 | 2022-04-08 14:26:01.699694 |        372 |     5 |      true
+system        | public             | ui                         | table       | incremental | 2022-04-08 14:23:55.33557 | 2022-04-08 14:26:01.699694 |          0 |     0 |      true
+system        | public             | jobs                       | table       | incremental | 2022-04-08 14:23:55.33557 | 2022-04-08 14:26:01.699694 |      30148 |    23 |      true
+system        | public             | locations                  | table       | incremental | 2022-04-08 14:23:55.33557 | 2022-04-08 14:26:01.699694 |        261 |     5 |      true
+system        | public             | role_members               | table       | incremental | 2022-04-08 14:23:55.33557 | 2022-04-08 14:26:01.699694 |         94 |     1 |      true
+. . .
+~~~
+
+### Show a backup taken with the incremental location option
+
+{% include_cached new-in.html version="v22.1" %} To view an incremental backup that was taken with the `incremental_location` option, run `SHOW BACKUP` with the full backup and incremental backup location following the original `BACKUP` statement.
+
+You can use the option to show the most recent backup where `incremental_location` has stored the backup:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SHOW BACKUP FROM LATEST IN {'full backup collectionURI'} WITH incremental_location = {'incremental backup collectionURI'};
+~~~
+
+~~~
+database_name | parent_schema_name |        object_name         | object_type | backup_type |         start_time         |          end_time          | size_bytes | rows  | is_full_cluster
+--------------+--------------------+----------------------------+-------------+-------------+----------------------------+----------------------------+------------+-------+------------------
+NULL          | NULL               | movr                       | database    | full        | NULL                       | 2022-04-13 20:01:15.177739 |       NULL |  NULL |      false
+movr          | NULL               | public                     | schema      | full        | NULL                       | 2022-04-13 20:01:15.177739 |       NULL |  NULL |      false
+movr          | public             | rides                      | table       | full        | NULL                       | 2022-04-13 20:01:15.177739 |     395716 |  1415 |      false
+NULL          | NULL               | system                     | database    | incremental | 2022-04-13 20:01:15.177739 | 2022-04-13 20:05:04.2049   |       NULL |  NULL |      true
+system        | public             | users                      | table       | incremental | 2022-04-13 20:01:15.177739 | 2022-04-13 20:05:04.2049   |         99 |     2 |      true
+system        | public             | scheduled_jobs             | table       | incremental | 2022-04-13 20:01:15.177739 | 2022-04-13 20:05:04.2049   |        250 |     1 |      true
+system        | public             | database_role_settings     | table       | incremental | 2022-04-13 20:01:15.177739 | 2022-04-13 20:05:04.2049   |          0 |     0 |      true
+system        | public             | tenant_settings            | table       | incremental | 2022-04-13 20:01:15.177739 | 2022-04-13 20:05:04.2049   |          0 |     0 |      true
+NULL          | NULL               | defaultdb                  | database    | incremental | 2022-04-13 20:01:15.177739 | 2022-04-13 20:05:04.2049   |       NULL |  NULL |      true
+defaultdb     | NULL               | public                     | schema      | incremental | 2022-04-13 20:01:15.177739 | 2022-04-13 20:05:04.2049   |       NULL |  NULL |      true
+NULL          | NULL               | postgres                   | database    | incremental | 2022-04-13 20:01:15.177739 | 2022-04-13 20:05:04.2049   |       NULL |  NULL |      true
+postgres      | NULL               | public                     | schema      | incremental | 2022-04-13 20:01:15.177739 | 2022-04-13 20:05:04.2049   |       NULL |  NULL |      true
+NULL          | NULL               | movr                       | database    | incremental | 2022-04-13 20:01:15.177739 | 2022-04-13 20:05:04.2049   |       NULL |  NULL |      true
+movr          | NULL               | public                     | schema      | incremental | 2022-04-13 20:01:15.177739 | 2022-04-13 20:05:04.2049   |       NULL |  NULL |      true
+movr          | public             | users                      | table       | incremental | 2022-04-13 20:01:15.177739 | 2022-04-13 20:05:04.2049   |      81098 |   892 |      true
+movr          | public             | vehicles                   | table       | incremental | 2022-04-13 20:01:15.177739 | 2022-04-13 20:05:04.2049   |      57755 |   296 |      true
+. . .
 ~~~
 
 ### Show a backup with schemas
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
-> SHOW BACKUP SCHEMAS 's3://test/backup-test?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]';
+> SHOW BACKUP SCHEMAS FROM '2022/04/08-142601.69' IN 's3://{bucket name}?AWS_ACCESS_KEY_ID={placeholder}&AWS_SECRET_ACCESS_KEY={placeholder}';
 ~~~
 
 ~~~  
-database_name | parent_schema_name | object_name | object_type | backup_type |        start_time         |          end_time          | size_bytes | rows | is_full_cluster |                      create_statement
---------------+--------------------+-------------+-------------+-------------+---------------------------+----------------------------+------------+------+-----------------+--------------------------------------------------------------
-NULL          | NULL               | movr        | database    | full        | NULL                      | 2021-10-04 15:19:18.25435  |       NULL | NULL |      false      | NULL
-movr          | public             | users       | table       | full        | NULL                      | 2021-10-04 15:19:18.25435  |      35876 |  392 |      false      | CREATE TABLE users (
-              |                    |             |             |             |                           |                            |            |      |                 |     id UUID NOT NULL,
-              |                    |             |             |             |                           |                            |            |      |                 |     city VARCHAR NOT NULL,
-              |                    |             |             |             |                           |                            |            |      |                 |     name VARCHAR NULL,
-              |                    |             |             |             |                           |                            |            |      |                 |     address VARCHAR NULL,
-              |                    |             |             |             |                           |                            |            |      |                 |     credit_card VARCHAR NULL,
-              |                    |             |             |             |                           |                            |            |      |                 |     CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
-              |                    |             |             |             |                           |                            |            |      |                 |     FAMILY "primary" (id, city, name, address, credit_card)
-              |                    |             |             |             |                           |                            |            |      |                 | )
-NULL          | NULL               | movr        | database    | incremental | 2021-10-04 15:19:18.25435 | 2021-10-04 15:19:38.005984 |       NULL | NULL |      false      | NULL
-movr          | public             | users       | table       | incremental | 2021-10-04 15:19:18.25435 | 2021-10-04 15:19:38.005984 |          0 |    0 |      false      | CREATE TABLE users (
-              |                    |             |             |             |                           |                            |            |      |                 |     id UUID NOT NULL,
-              |                    |             |             |             |                           |                            |            |      |                 |     city VARCHAR NOT NULL,
-              |                    |             |             |             |                           |                            |            |      |                 |     name VARCHAR NULL,
-              |                    |             |             |             |                           |                            |            |      |                 |     address VARCHAR NULL,
-              |                    |             |             |             |                           |                            |            |      |                 |     credit_card VARCHAR NULL,
-              |                    |             |             |             |                           |                            |            |      |                 |     CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
-              |                    |             |             |             |                           |                            |            |      |                 |     FAMILY "primary" (id, city, name, address, credit_card)
-              |                    |             |             |             |                           |                            |            |      |                 | )
+database_name | parent_schema_name |        object_name         | object_type | backup_type |        start_time         |          end_time          | size_bytes | rows  | is_full_cluster |                                                                                                                create_statement
+--------------+--------------------+----------------------------+-------------+-------------+---------------------------+----------------------------+------------+-------+-----------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+NULL          | NULL               | movr                       | database    | full        | NULL                      | 2022-04-08 14:23:55.33557  |       NULL |  NULL |      false      | NULL
+movr          | NULL               | public                     | schema      | full        | NULL                      | 2022-04-08 14:23:55.33557  |       NULL |  NULL |      false      | NULL
+movr          | public             | users                      | table       | full        | NULL                      | 2022-04-08 14:23:55.33557  |      25856 |   281 |      false      | CREATE TABLE users (
+              |                    |                            |             |             |                           |                            |            |       |                 |     id UUID NOT NULL,
+              |                    |                            |             |             |                           |                            |            |       |                 |     city VARCHAR NOT NULL,
+              |                    |                            |             |             |                           |                            |            |       |                 |     name VARCHAR NULL,
+              |                    |                            |             |             |                           |                            |            |       |                 |     address VARCHAR NULL,
+              |                    |                            |             |             |                           |                            |            |       |                 |     credit_card VARCHAR NULL,
+              |                    |                            |             |             |                           |                            |            |       |                 |     CONSTRAINT users_pkey PRIMARY KEY (city ASC, id ASC)
+              |                    |                            |             |             |                           |                            |            |       |                 | )
+NULL          | NULL               | system                     | database    | incremental | 2022-04-08 14:23:55.33557 | 2022-04-08 14:26:01.699694 |       NULL |  NULL |      true       | NULL
+system        | public             | users                      | table       | incremental | 2022-04-08 14:23:55.33557 | 2022-04-08 14:26:01.699694 |         99 |     2 |      true       | CREATE TABLE users (
+              |                    |                            |             |             |                           |                            |            |       |                 |     username STRING NOT NULL,
+              |                    |                            |             |             |                           |                            |            |       |                 |     "hashedPassword" BYTES NULL,
+              |                    |                            |             |             |                           |                            |            |       |                 |     "isRole" BOOL NOT NULL DEFAULT false,
+              |                    |                            |             |             |                           |                            |            |       |                 |     CONSTRAINT "primary" PRIMARY KEY (username ASC),
+              |                    |                            |             |             |                           |                            |            |       |                 |     FAMILY "primary" (username),
+              |                    |                            |             |             |                           |                            |            |       |                 |     FAMILY "fam_2_hashedPassword" ("hashedPassword"),
+              |                    |                            |             |             |                           |                            |            |       |                 |     FAMILY "fam_3_isRole" ("isRole")
+              |                    |                            |             |             |                           |                            |            |       |                 | )
 . . .
 ~~~
 
@@ -206,9 +207,9 @@ movr          | public             | users       | table       | incremental | 2
 
 Use the `WITH privileges` [option](#options) to view a list of which users and roles had which privileges on each database and table in the backup. This parameter also displays the original owner of objects in the backup:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
-> SHOW BACKUP 's3://test/backup-test?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]' WITH privileges;
+> SHOW BACKUP FROM '2020/09/24-190540.54' IN 's3://{bucket name}?AWS_ACCESS_KEY_ID={placeholder}&AWS_SECRET_ACCESS_KEY={placeholder}' WITH privileges;
 ~~~
 
 ~~~
@@ -218,49 +219,33 @@ database_name   | parent_schema_name | object_name                | object_type 
   system        | public             | users                      | table       | full        | NULL       | 2020-09-24 19:05:40.542168+00:00 |        144 |    3 |      true       | GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON users TO admin; GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON users TO root;                                              | root
   system        | public             | zones                      | table       | full        | NULL       | 2020-09-24 19:05:40.542168+00:00 |        201 |    7 |      true       | GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON zones TO admin; GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON zones TO root;                                              | root
   system        | public             | settings                   | table       | full        | NULL       | 2020-09-24 19:05:40.542168+00:00 |        431 |    6 |      true       | GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON settings TO admin; GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON settings TO root;                                        | root
-  system        | public             | ui                         | table       | full        | NULL       | 2020-09-24 19:05:40.542168+00:00 |          0 |    0 |      true       | GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON ui TO admin; GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON ui TO root;                                                    | root
-  system        | public             | jobs                       | table       | full        | NULL       | 2020-09-24 19:05:40.542168+00:00 |     434302 |   62 |      true       | GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON jobs TO admin; GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON jobs TO root;                                                | root
-  system        | public             | locations                  | table       | full        | NULL       | 2020-09-24 19:05:40.542168+00:00 |        261 |    5 |      true       | GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON locations TO admin; GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON locations TO root;                                      | root
-  system        | public             | role_members               | table       | full        | NULL       | 2020-09-24 19:05:40.542168+00:00 |        184 |    2 |      true       | GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON role_members TO admin; GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON role_members TO root;                                | root
-  system        | public             | comments                   | table       | full        | NULL       | 2020-09-24 19:05:40.542168+00:00 |          0 |    0 |      true       | GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON comments TO admin; GRANT SELECT ON comments TO public; GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON comments TO root;    | root
-  system        | public             | scheduled_jobs             | table       | full        | NULL       | 2020-09-24 19:05:40.542168+00:00 |        875 |    2 |      true       | GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON scheduled_jobs TO admin; GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON scheduled_jobs TO root;                            | root
-  NULL          | NULL               | defaultdb                  | database    | full        | NULL       | 2020-09-24 19:05:40.542168+00:00 |       NULL | NULL |      true       | GRANT ALL ON defaultdb TO admin; GRANT CREATE ON defaultdb TO max; GRANT ALL ON defaultdb TO root;                                                                        | root
-  NULL          | NULL               | postgres                   | database    | full        | NULL       | 2020-09-24 19:05:40.542168+00:00 |       NULL | NULL |      true       | GRANT ALL ON postgres TO admin; GRANT ALL ON postgres TO root;                                                                                                            | root
-  NULL          | NULL               | movr                       | database    | full        | NULL       | 2020-09-24 19:05:40.542168+00:00 |       NULL | NULL |      true       | GRANT ALL ON movr TO admin; GRANT ALL ON movr TO root;                                                                                                                    | root
-  movr          | public             | users                      | table       | full        | NULL       | 2020-09-24 19:05:40.542168+00:00 |       4911 |   50 |      true       | GRANT ALL ON users TO admin; GRANT ALL ON users TO root;                                                                                                                  | root
-  movr          | public             | vehicles                   | table       | full        | NULL       | 2020-09-24 19:05:40.542168+00:00 |       3182 |   15 |      true       | GRANT ALL ON vehicles TO admin; GRANT ALL ON vehicles TO root;                                                                                                            | root
-  movr          | public             | rides                      | table       | full        | NULL       | 2020-09-24 19:05:40.542168+00:00 |     156387 |  500 |      true       | GRANT ALL ON rides TO admin; GRANT ALL ON rides TO root;                                                                                                                  | root
-  movr          | public             | vehicle_location_histories | table       | full        | NULL       | 2020-09-24 19:05:40.542168+00:00 |      73918 | 1000 |      true       | GRANT ALL ON vehicle_location_histories TO admin; GRANT ALL ON vehicle_location_histories TO root;                                                                        | root
-  movr          | public             | promo_codes                | table       | full        | NULL       | 2020-09-24 19:05:40.542168+00:00 |     216083 | 1000 |      true       | GRANT ALL ON promo_codes TO admin; GRANT ALL ON promo_codes TO root;                                                                                                      | root
-  movr          | public             | user_promo_codes           | table       | full        | NULL       | 2020-09-24 19:05:40.542168+00:00 |          0 |    0 |      true       | GRANT ALL ON user_promo_codes TO admin; GRANT ALL ON user_promo_codes TO root;                                                                                            | root
-  defaultdb     | NULL               | org_one                    | schema      | full        | NULL       | 2020-09-24 19:05:40.542168+00:00 |       NULL | NULL |      true       |                                                                                                                                                                           | root
-(20 rows)
+...
 ~~~
 
 You will receive an error if there is a collection of backups in the storage location that you pass to `SHOW BACKUP`. It is necessary to run `SHOW BACKUP` with the specific backup directory rather than the backup collection's top-level directory. Use [`SHOW BACKUPS IN`](#show-backups-in) with your storage location to list the backup directories it contains, which can then be run with `SHOW BACKUP` to inspect the metadata.
 
 ### Show details for scheduled backups
 
- When a [backup is created by a schedule](create-schedule-for-backup.html), it is stored within a collection of backups in the given location. To view details for a backup created by a schedule, you can use the following:
+ When a [backup is created by a schedule](create-schedule-for-backup.html), it is stored within a collection of backups in the given collection URI. To view details for a backup created by a schedule, you can use the following:
 
-- `SHOW BACKUPS IN y` statement to [view a list of the available full backup subdirectories](#view-a-list-of-the-available-full-backup-subdirectories).
-- `SHOW BACKUP x IN y` statement to [view a list of the full and incremental backups that are stored in a specific full backup's subdirectory](#view-a-list-of-the-full-and-incremental-backups-in-a-specific-full-backup-subdirectory).
+- `SHOW BACKUPS IN collectionURI` statement to [view a list of the available full backup subdirectories](#view-a-list-of-the-available-full-backup-subdirectories).
+- `SHOW BACKUP FROM subdirectory IN collectionURI` statement to [view a list of the full and incremental backups that are stored in a specific full backup's subdirectory](#view-a-list-of-the-full-and-incremental-backups-in-a-specific-full-backup-subdirectory).
 
 ### Show an encrypted backup
 
 Depending on how the backup was [encrypted](take-and-restore-encrypted-backups.html), use the [`encryption_passphrase` option](backup.html#with-encryption-passphrase) and the same passphrase that was used to create the backup:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
-> SHOW BACKUP 's3://test/backup-test?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]'
+> SHOW BACKUP FROM '2020/09/24-190540.54' IN 's3://{bucket name}?AWS_ACCESS_KEY_ID={placeholder}&AWS_SECRET_ACCESS_KEY={placeholder}'
       WITH encryption_passphrase = 'password123';
 ~~~
 
 Or, use the `kms` option and the same KMS URI that was used to create the backup:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
-> SHOW BACKUP 's3://test/backups/test_explicit_kms?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=123'
+> SHOW BACKUP FROM '2020/09/24-190540.54' IN 's3://test/backups/test_explicit_kms?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=123'
       WITH kms = 'aws:///arn:aws:kms:us-east-1:123456789:key/1234-abcd-5678-efgh-90ij?AWS_ACCESS_KEY_ID=123456&AWS_SECRET_ACCESS_KEY=123456&REGION=us-east-1';
 ~~~
 
@@ -294,9 +279,9 @@ Or, use the `kms` option and the same KMS URI that was used to create the backup
 
  Use `WITH debug_ids` to display the descriptor IDs related to each object in the backup:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
-SHOW BACKUP '/2021/11/15-150703.21' IN 's3://test/backup-test?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]' WITH debug_ids;
+SHOW BACKUP FROM '/2021/11/15-150703.21' IN 's3://{bucket name}?AWS_ACCESS_KEY_ID={placeholder}&AWS_SECRET_ACCESS_KEY={placeholder}' WITH debug_ids;
 ~~~
 
 ~~~
@@ -322,22 +307,22 @@ movr          |          52 | public             |               29 | user_promo
 
 Use the `WITH as_json` option to output a backup's internal metadata, contained in its manifest file, as a JSON value:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
-SHOW BACKUP '/2021/11/15-150703.21' IN 's3://test/backup-test?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]' WITH as_json;
+SHOW BACKUP FROM '/2021/11/15-150703.21' IN 's3://{bucket name}?AWS_ACCESS_KEY_ID={placeholder}&AWS_SECRET_ACCESS_KEY={placeholder}' WITH as_json;
 ~~~
 
 The response will include a `manifest` column with the file's contents as the JSON value. Use [JSONB functions](functions-and-operators.html#jsonb-functions) to query particular data or edit the format of the response.
 
 {{site.data.alerts.callout_info}}
-The response returned from `SHOW BACKUP ... WITH as_json` is a backup's internal metadata. This content is subject to change from version to version of CockroachDB and does not offer the same stability guarantees as the other `SHOW BACKUP` [options](#options) and their [responses](#response). As a result, `as_json` should **only** be used for debugging or general inspection purposes.
+The response returned from `SHOW BACKUP FROM ... WITH as_json` is a backup's internal metadata. This content is subject to change from version to version of CockroachDB and does not offer the same stability guarantees as the other `SHOW BACKUP` [options](#options) and their [responses](#response). As a result, `as_json` should **only** be used for debugging or general inspection purposes.
 {{site.data.alerts.end}}
 
 For example, to return a specific entry from the JSON response as a [`string`](string.html) indented and with newlines use the [`jsonb_pretty()`](functions-and-operators.html#jsonb-functions) function:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
-SELECT jsonb_pretty(manifest->'entryCounts') AS f FROM [SHOW BACKUP '/2021/11/15-150703.21' IN 's3://test/backup-test?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]' with as_json];
+SELECT jsonb_pretty(manifest->'entryCounts') AS f FROM [SHOW BACKUP FROM '/2021/11/15-150703.21' IN 's3://{bucket name}?AWS_ACCESS_KEY_ID={placeholder}&AWS_SECRET_ACCESS_KEY={placeholder}' with as_json];
 ~~~
 
 ~~~ json
@@ -350,9 +335,9 @@ SELECT jsonb_pretty(manifest->'entryCounts') AS f FROM [SHOW BACKUP '/2021/11/15
 
 To query for particular data, use the [`jsonb_array_elements()` function](functions-and-operators.html#jsonb-functions) to expand the desired elements from the JSON response. The following query returns the paths to each of the data files within the backup:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
-SELECT f->>'path' FROM (SELECT jsonb_array_elements(manifest->'files') AS f FROM [SHOW BACKUP '/2021/11/15-150703.21' IN 's3://test/backup-test?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]' WITH as_json]);
+SELECT f->>'path' FROM (SELECT jsonb_array_elements(manifest->'files') AS f FROM [SHOW BACKUP FROM '/2021/11/15-150703.21' IN 's3://{bucket name}?AWS_ACCESS_KEY_ID={placeholder}&AWS_SECRET_ACCESS_KEY={placeholder}' WITH as_json]);
 ~~~
 
 ~~~

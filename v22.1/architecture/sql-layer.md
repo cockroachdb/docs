@@ -23,6 +23,8 @@ If you haven't already, we recommend reading the [Architecture Overview](overvie
 
 Once CockroachDB has been [deployed](../../cockroachcloud/quickstart.html), developers need only a [connection string](../connection-parameters.html) to the cluster, and they can start working with SQL statements.
 
+<a name="gateway-node"></a>
+
 Because each node in a CockroachDB cluster behaves symmetrically, developers can send requests to any node (which means CockroachDB works well with load balancers). Whichever node receives the request acts as the "gateway node," which processes the request and responds to the client.
 
 Requests to the cluster arrive as SQL statements, but data is ultimately written to and read from the [storage layer](storage-layer.html) as key-value (KV) pairs. To handle this, the SQL layer converts SQL statements into a plan of KV operations, which it then passes along to the [transaction layer](transaction-layer.html).

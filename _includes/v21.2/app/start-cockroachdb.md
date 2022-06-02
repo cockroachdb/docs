@@ -5,7 +5,7 @@ Choose whether to run a temporary local cluster or a free CockroachDB cluster on
   <button class="filter-button page-level" data-scope="local">Use a Local Cluster</button>
 </div>
 
-  <section class="filter-content" markdown="1" data-scope="cockroachcloud">
+<section class="filter-content" markdown="1" data-scope="cockroachcloud">
 
 ### Create a free cluster
 
@@ -13,9 +13,21 @@ Choose whether to run a temporary local cluster or a free CockroachDB cluster on
 
 ### Set up your cluster connection
 
-{% include cockroachcloud/quickstart/set-up-your-cluster-connection.md %}
+The **Connection info** dialog shows information about how to connect to your cluster.
 
-  </section>
+1. Click the **Choose your OS** dropdown, and select the operating system of your local machine.
+
+1. Click the **Connection string** tab in the **Connection info** dialog.
+
+1. Open a new terminal on your local machine, and run the command provided in step **1** to download the CA certificate. This certificate is required by some clients connecting to {{ site.data.products.db }}.
+
+1. Copy the connection string provided in step **2** to a secure location.
+
+    {{site.data.alerts.callout_info}}
+    The connection string is pre-populated with your username, password, cluster name, and other details. Your password, in particular, will be provided *only once*. Save it in a secure place (Cockroach Labs recommends a password manager) to connect to your cluster in the future. If you forget your password, you can reset it by going to the [**SQL Users** page](../cockroachcloud/user-authorization.html).
+    {{site.data.alerts.end}}
+
+</section>
 
 <section class="filter-content" markdown="1" data-scope="local">
 
@@ -29,11 +41,11 @@ Choose whether to run a temporary local cluster or a free CockroachDB cluster on
     ~~~
 
     This starts a temporary, in-memory cluster and opens an interactive SQL shell to the cluster. Any changes to the database will not persist after the cluster is stopped.
-    
+
     {{site.data.alerts.callout_info}}
     If `cockroach demo` fails due to SSL authentication, make sure you have cleared any previously downloaded CA certificates from the directory `~/.postgresql`.
     {{site.data.alerts.end}}
-    
+
 1. Take note of the `(sql)` connection string in the SQL shell welcome text:
 
     ~~~

@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `SHOW RANGE ... FOR ROW` [statement](sql-statements.html) shows information about a [range](architecture/overview.html#glossary) for a single row in a table or index. This information is useful for verifying how SQL data maps to underlying ranges, and where the replicas for a range are located.
+The `SHOW RANGE ... FOR ROW` [statement](sql-statements.html) shows information about a [range](architecture/overview.html#architecture-range) for a single row in a table or index. This information is useful for verifying how SQL data maps to underlying ranges, and where the replicas for a range are located.
 
 {% include common/experimental-warning.md %}
 
@@ -41,9 +41,9 @@ Field | Description
 `start_key` | The start key for the range.
 `end_key` | The end key for the range.
 `range_id` | The range ID.
-`lease_holder` | The node that contains the range's [leaseholder](architecture/overview.html#glossary).
+`lease_holder` | The node that contains the range's [leaseholder](architecture/overview.html#architecture-leaseholder).
 `lease_holder_locality` | The [locality](cockroach-start.html#locality) of the leaseholder.
-`replicas` | The nodes that contain the range [replicas](architecture/overview.html#glossary).
+`replicas` | The nodes that contain the range [replicas](architecture/overview.html#architecture-replica).
 `replica_localities` | The [locality](cockroach-start.html#locality) of the range.
 
 ## Examples

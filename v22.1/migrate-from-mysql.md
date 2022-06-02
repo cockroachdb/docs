@@ -7,7 +7,7 @@ docs_area: migrate
 
 This page has instructions for migrating data from MySQL to CockroachDB using [`IMPORT`](import.html)'s support for reading [`mysqldump`][mysqldump] files.
 
-The examples below use the [employees data set](https://github.com/datacharmer/test_db) that is also used in the [MySQL docs](https://dev.mysql.com/doc/employee/en/).
+The examples use the [employees data set](https://github.com/datacharmer/test_db) that is also used in the [MySQL docs](https://dev.mysql.com/doc/employee/en/).
 
 {% include {{ page.version.version }}/misc/import-perf.md %}
 
@@ -94,8 +94,6 @@ You can choose from several variants of the [`IMPORT`][import] statement, depend
 
 All of the [`IMPORT`][import] statements in this section pull real data from [Amazon S3](https://aws.amazon.com/s3/) and will kick off background import jobs that you can monitor with [`SHOW JOBS`](show-jobs.html).
 
-{% include {{ page.version.version }}/sql/use-import-into.md %}
-
 ### Import a full database dump
 
 This example assumes you [dumped the entire database](#dump-the-entire-database).
@@ -120,7 +118,7 @@ The [`IMPORT`][import] statement below reads the data and [DDL](https://en.wikip
 
 This example assumes you [dumped the entire database](#dump-the-entire-database).
 
-[`IMPORT`][import] can import one table's data from a full database dump.  It reads the data and applies any `CREATE TABLE` statements from the dump file.
+[`IMPORT`][import] can import one table's data from a full database dump. It reads the data and applies any `CREATE TABLE` statements from the dump file.
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -138,9 +136,9 @@ This example assumes you [dumped the entire database](#dump-the-entire-database)
 
 ### Import a table from a table dump
 
-The examples below assume you [dumped one table](#dump-one-table-at-a-time).
+The following examples assume you [dumped one table](#dump-one-table-at-a-time).
 
-The simplest way to import a table dump is to run [`IMPORT TABLE`][import] as shown below.  It reads the table data and any `CREATE TABLE` statements from the dump file.
+The simplest way to import a table dump is to run [`IMPORT`][import].  It reads the table data and any `CREATE TABLE` statements from the file:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -156,29 +154,12 @@ The simplest way to import a table dump is to run [`IMPORT TABLE`][import] as sh
 (1 row)
 ~~~
 
-If you need to specify the table's columns for some reason, you can use an [`IMPORT TABLE`][import] statement like the one below, which will import data but ignore any `CREATE TABLE` statements in the dump file, instead relying on the columns you specify.
-
-{% include copy-clipboard.html %}
-~~~ sql
-> CREATE DATABASE IF NOT EXISTS employees;
-> USE employees;
-> IMPORT TABLE employees (
-    emp_no INT PRIMARY KEY,
-    birth_date DATE NOT NULL,
-    first_name STRING NOT NULL,
-    last_name STRING NOT NULL,
-    gender STRING NOT NULL,
-    hire_date DATE NOT NULL
-  )
-  MYSQLDUMP DATA ('https://s3-us-west-1.amazonaws.com/cockroachdb-movr/datasets/employees-db/mysqldump/employees.sql.gz');
-~~~
-
 ## Configuration Options
 
 The following options are available to `IMPORT ... MYSQLDUMP`:
 
-+  [Row limit](#row-limit)
-+ [Skip foreign keys](#skip-foreign-keys)
+- [Row limit](#row-limit)
+- [Skip foreign keys](#skip-foreign-keys)
 
 ### Row limit
 
@@ -215,8 +196,8 @@ Example usage:
 - [`IMPORT`](import.html)
 - [Import Performance Best Practices](import-performance-best-practices.html)
 - [Migrate from CSV][csv]
-- [Migrate from Postgres][postgres]
-- [Can a Postgres or MySQL application be migrated to CockroachDB?](frequently-asked-questions.html#can-a-postgresql-or-mysql-application-be-migrated-to-cockroachdb)
+- [Migrate from PostgreSQL][postgres]
+- [Can a PostgreSQL or MySQL application be migrated to CockroachDB?](frequently-asked-questions.html#can-a-postgresql-or-mysql-application-be-migrated-to-cockroachdb)
 - [Back up Data](take-full-and-incremental-backups.html)
 - [Restore Data](take-full-and-incremental-backups.html)
 - [Use the Built-in SQL Client](cockroach-sql.html)

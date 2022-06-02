@@ -5,9 +5,6 @@ toc: true
 docs_area: manage
 ---
 
-{{ site.data.versions | where_exp: "m", "m.major_version == page.version.version" }}
-
-
 A node **shutdown** terminates the `cockroach` process on the node.
 
 There are two ways to handle node shutdown:
@@ -48,7 +45,9 @@ When a node is permanently removed, the following stages occur in sequence:
 
 An operator [initiates the decommissioning process](#decommission-the-node) on the node.
 
-The node's [`is_decommissioning`](cockroach-node.html#node-status) field is set to `true` and its `membership` status is set to `decommissioning`, which causes its replicas to be rebalanced to other nodes. The node's [`/health?ready=1` endpoint](monitoring-and-alerting.html#health-ready-1) continues to consider the node "ready" so that the node can function as a gateway to route client connections to relevant data.
+The node's [`is_decommissioning`](cockroach-node.html#node-status) field is set to `true` and its `membership` status is set to `decommissioning`, which causes its replicas to be rebalanced to other nodes.
+
+The node's [`/health?ready=1` endpoint](monitoring-and-alerting.html#health-ready-1) continues to consider the node "ready" so that the node can function as a gateway to route SQL client connections to relevant data.
 
 {{site.data.alerts.callout_info}}
 After this stage, the node is automatically drained. However, to avoid possible disruptions in query performance, we recommend manually draining before decommissioning. For more information, see [Perform node shutdown](#perform-node-shutdown).
@@ -62,18 +61,20 @@ An operator [initiates the draining process](#drain-the-node-and-terminate-the-n
 </section>
 
 <section class="filter-content" markdown="1" data-scope="decommission">
-After all replicas are transferred, the node is automatically drained.
+After all replicas on a decommissioning node are rebalanced, the node is automatically drained.
 </section>
 
 Node drain consists of the following consecutive phases:
 
-1. **Wait phase:** The node's [`/health?ready=1` endpoint](monitoring-and-alerting.html#health-ready-1) returns an HTTP `503 Service Unavailable` response code, which causes load balancers and connection managers to reroute traffic to other nodes. This step completes when the [fixed duration set by `server.shutdown.drain_wait`](#server-shutdown-drain_wait) is reached.
+1. **Unready phase:** The node's [`/health?ready=1` endpoint](monitoring-and-alerting.html#health-ready-1) returns an HTTP `503 Service Unavailable` response code, which causes load balancers and connection managers to reroute traffic to other nodes. This phase completes when the [fixed duration set by `server.shutdown.drain_wait`](#server-shutdown-drain_wait) is reached.
 
-1. **Local query phase:** All active transactions and statements for which the node is a [gateway](architecture/life-of-a-distributed-transaction.html#gateway) are allowed to complete. After this step completes, CockroachDB closes all client connections to the node. This step completes either when all transactions have been processed or the [maximum duration set by `server.shutdown.query_wait`](#server-shutdown-query_wait) is reached.
+1. **SQL wait phase:** New SQL client connections are no longer permitted, and any remaining SQL client connections are allowed to close or time out. This phase completes either when all SQL client connections are closed or the [maximum duration set by `server.shutdown.connection_wait`](#server-shutdown-connection_wait) is reached.
 
-1. **Distributed query phase**: All [distributed statements](architecture/sql-layer.html#distsql) initiated on other gateway nodes are allowed to complete, and DistSQL requests from other nodes are no longer accepted. This step completes either when all transactions have been processed or the [maximum duration set by `server.shutdown.query_wait`](#server-shutdown-query_wait) is reached.
+1. **SQL drain phase:** All active transactions and statements for which the node is a [gateway](architecture/life-of-a-distributed-transaction.html#gateway) are allowed to complete, and CockroachDB closes the SQL client connections immediately afterward. After this phase completes, CockroachDB closes all remaining SQL client connections to the node. This phase completes either when all transactions have been processed or the [maximum duration set by `server.shutdown.query_wait`](#server-shutdown-query_wait) is reached.
 
-1. **Lease transfer phase:** The node's [`is_draining`](cockroach-node.html#node-status) field is set to `true`, which removes the node as a candidate for replica rebalancing, lease transfers, and query planning. Any [range leases](architecture/replication-layer.html#leases) or [Raft leaderships](architecture/replication-layer.html#raft) must be transferred to other nodes. This step completes when all range leases and Raft leaderships have been transferred.
+1. **DistSQL drain phase**: All [distributed statements](architecture/sql-layer.html#distsql) initiated on other gateway nodes are allowed to complete, and DistSQL requests from other nodes are no longer accepted. This phase completes either when all transactions have been processed or the [maximum duration set by `server.shutdown.query_wait`](#server-shutdown-query_wait) is reached.
+
+1. **Lease transfer phase:** The node's [`is_draining`](cockroach-node.html#node-status) field is set to `true`, which removes the node as a candidate for replica rebalancing, lease transfers, and query planning. Any [range leases](architecture/replication-layer.html#leases) or [Raft leaderships](architecture/replication-layer.html#raft) must be transferred to other nodes. This phase completes when all range leases and Raft leaderships have been transferred.
 
     <section class="filter-content" markdown="1" data-scope="decommission">
     Since all range replicas were already removed from the node during the [decommissioning](#decommissioning) stage, this step immediately resolves.
@@ -135,28 +136,41 @@ Before you [perform node shutdown](#perform-node-shutdown), review the following
 
 ### Load balancing
 
-Your [load balancer](recommended-production-settings.html#load-balancing) should use the [`/health?ready=1` endpoint](monitoring-and-alerting.html#health-ready-1) to actively monitor node health and direct client connections away from draining nodes.
+Your [load balancer](recommended-production-settings.html#load-balancing) should use the [`/health?ready=1` endpoint](monitoring-and-alerting.html#health-ready-1) to actively monitor node health and direct SQL client connections away from draining nodes.
 
-To handle node shutdown effectively, the load balancer must be given enough time by the `server.shutdown.drain_wait` duration. For details, see [Cluster settings](#cluster-settings).
+To handle node shutdown effectively, the load balancer must be given enough time by the [`server.shutdown.drain_wait` duration](#server-shutdown-drain_wait).
 
 ### Cluster settings
 
 #### `server.shutdown.drain_wait`
 
-`server.shutdown.drain_wait` sets a **fixed** duration for the ["wait phase"](#draining) of node drain. Because a load balancer reroutes connections to non-draining nodes within this duration (`0s` by default), this setting should be coordinated with the load balancer settings.
+`server.shutdown.drain_wait` sets a **fixed** duration for the ["unready phase"](#draining) of node drain. Because a load balancer reroutes connections to non-draining nodes within this duration (`0s` by default), this setting should be coordinated with the load balancer settings.
 
-Increase `server.shutdown.drain_wait` so that your load balancer is able to make adjustments before this step times out. Because the drain process waits unconditionally for the `server.shutdown.drain_wait` duration, do not set this value too high.
+Increase `server.shutdown.drain_wait` so that your load balancer is able to make adjustments before this phase times out. Because the drain process waits unconditionally for the `server.shutdown.drain_wait` duration, do not set this value too high.
 
-For example, [HAProxy](cockroach-gen.html#generate-an-haproxy-config-file) uses the default settings `inter 2000 fall 3` when checking server health. This means that HAProxy considers a node to be down, and temporarily removes the server from the pool, after 3 unsuccessful health checks being run at intervals of 2000 milliseconds. To ensure HAProxy can run 3 consecutive checks before timeout, set `server.shutdown.drain_wait` to `8s` or greater:
+For example, [HAProxy](cockroach-gen.html#generate-an-haproxy-config-file) uses the default settings `inter 2000 fall 3` when checking server health. This means that HAProxy considers a node to be down (and temporarily removes the server from the pool) after 3 unsuccessful health checks being run at intervals of 2000 milliseconds. To ensure HAProxy can run 3 consecutive checks before timeout, set `server.shutdown.drain_wait` to `8s` or greater:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 SET CLUSTER SETTING server.shutdown.drain_wait = '8s';
 ~~~
 
+#### `server.shutdown.connection_wait`
+
+`server.shutdown.connection_wait` sets the **maximum** duration for the ["connection phase"](#draining) of node drain. SQL client connections are allowed to close or time out within this duration (`0s` by default). This setting presents an option to gracefully close the connections before CockroachDB forcibly closes those that remain after the ["SQL drain phase"](#draining).
+
+Change this setting **only** if you cannot tolerate connection errors during node drain and will not implement a [connection retry loop](#connection-retry-loop) for your application. We suggest setting `server.shutdown.connection_wait` in accordance with the maximum lifetime of a SQL client connection, which is usually configurable via a [connection pool](connection-pooling.html#about-connection-pools). Depending on your requirements:
+
+- Lower the maximum lifetime of a SQL client connection in the pool. This will cause more frequent reconnections. Set `server.shutdown.connection_wait` above this value.
+- If you cannot tolerate more frequent reconnections, do not change the SQL client connection lifetime. Instead, use a longer `server.shutdown.connection_wait`. This will cause a longer draining process.
+
+{{site.data.alerts.callout_success}}
+If you do not change `server.shutdown.connection_wait`, you should use a [connection retry loop](#connection-retry-loop) to handle connection errors during node drain.
+{{site.data.alerts.end}}
+
 #### `server.shutdown.query_wait`
 
-`server.shutdown.query_wait` sets the **maximum** duration for the ["local query phase"](#draining) and the **maximum** duration for the ["distributed query phase"](#draining) of node drain. Active local and distributed queries must complete, in turn, within this duration (`10s` by default).
+`server.shutdown.query_wait` sets the **maximum** duration for the ["SQL drain phase"](#draining) and the **maximum** duration for the ["DistSQL drain phase"](#draining) of node drain. Active local and distributed queries must complete, in turn, within this duration (`10s` by default).
 
 Ensure that `server.shutdown.query_wait` is greater than:
 
@@ -164,7 +178,7 @@ Ensure that `server.shutdown.query_wait` is greater than:
 - The `sql.defaults.idle_in_transaction_session_timeout` cluster setting, which controls the duration a session is permitted to idle in a transaction before the session is terminated (`0s` by default).
 - The `sql.defaults.statement_timeout` cluster setting, which controls the duration a query is permitted to run before it is canceled (`0s` by default).
 
-`server.shutdown.query_wait` defines the upper bound of the duration, meaning that node drain proceeds to the next step as soon as the last open transaction completes.
+`server.shutdown.query_wait` defines the upper bound of the duration, meaning that node drain proceeds to the next phase as soon as the last open transaction completes.
 
 {{site.data.alerts.callout_success}}
 If there are still open transactions on the draining node when the server closes its connections, you will encounter errors. Your application should handle these errors with a [connection retry loop](#connection-retry-loop).
@@ -172,7 +186,7 @@ If there are still open transactions on the draining node when the server closes
 
 #### `server.shutdown.lease_transfer_wait`
 
-In the ["lease transfer phase"](#draining) of node drain, the server attempts to transfer all range leases and Raft leaderships from the draining node. `server.shutdown.lease_transfer_wait` sets the maximum duration of each iteration of this attempt (`5s` by default). Because this step does not exit until all transfers are completed, changing this value only affects the frequency at which drain progress messages are printed.
+In the ["lease transfer phase"](#draining) of node drain, the server attempts to transfer all range leases and Raft leaderships from the draining node. `server.shutdown.lease_transfer_wait` sets the maximum duration of each iteration of this attempt (`5s` by default). Because this phase does not exit until all transfers are completed, changing this value only affects the frequency at which drain progress messages are printed.
 
 <section class="filter-content" markdown="1" data-scope="drain">
 In most cases, the default value is suitable. Do **not** set `server.shutdown.lease_transfer_wait` to a value lower than `5s`. In this case, leases can fail to transfer and node drain will not be able to complete.
@@ -183,7 +197,7 @@ Since [decommissioning](#decommissioning) a node rebalances all of its range rep
 </section>
 
 {{site.data.alerts.callout_info}}
-The sum of [`server.shutdown.drain_wait`](#server-shutdown-drain_wait), [`server.shutdown.query_wait`](#server-shutdown-query_wait) times two, and [`server.shutdown.lease_transfer_wait`](#server-shutdown-lease_transfer_wait) should not be greater than the configured [drain timeout](#drain-timeout).
+The sum of [`server.shutdown.drain_wait`](#server-shutdown-drain_wait), [`server.shutdown.connection_wait`](#server-shutdown-connection_wait), [`server.shutdown.query_wait`](#server-shutdown-query_wait) times two, and [`server.shutdown.lease_transfer_wait`](#server-shutdown-lease_transfer_wait) should not be greater than the configured [drain timeout](#drain-timeout).
 {{site.data.alerts.end}}
 
 <section class="filter-content" markdown="1" data-scope="drain">
@@ -218,25 +232,29 @@ When [draining manually](#drain-a-node-manually) with `cockroach node drain`, al
 A very long drain may indicate an anomaly, and you should manually inspect the server to determine what blocks the drain.
 {{site.data.alerts.end}}
 
-`--drain-wait` sets the timeout for [all draining phases](#draining) and is **not** related to the `server.shutdown.drain_wait` cluster setting, which configures the "wait phase" of draining. The value of `--drain-wait` should be greater than the sum of [`server.shutdown.drain_wait`](#server-shutdown-drain_wait), [`server.shutdown.query_wait`](#server-shutdown-query_wait), and [`server.shutdown.lease_transfer_wait`](#server-shutdown-lease_transfer_wait).
+`--drain-wait` sets the timeout for [all draining phases](#draining) and is **not** related to the `server.shutdown.drain_wait` cluster setting, which configures the "unready phase" of draining. The value of `--drain-wait` should be greater than the sum of [`server.shutdown.drain_wait`](#server-shutdown-drain_wait), [`server.shutdown.connection_wait`](#server-shutdown-connection_wait), [`server.shutdown.query_wait`](#server-shutdown-query_wait) times two, and [`server.shutdown.lease_transfer_wait`](#server-shutdown-lease_transfer_wait).
 
 ### Connection retry loop
 
-At the end of the ["local query phase"](#draining) of node drain, the server forcibly closes all client connections to the node. If any open transactions were interrupted or not admitted by the server because of the connection closure, they will fail with either a generic TCP-level client error or one of the following errors:
+At the end of the ["SQL drain phase"](#draining) of node drain, the server forcibly closes all SQL client connections to the node. If any open transactions were interrupted or not admitted by the server because of the connection closure, they will fail with either a generic TCP-level client error or one of the following errors:
 
 - `57P01 server is shutting down` indicates that the server is not accepting new transactions on existing connections.
 - `08006 An I/O error occurred while sending to the backend` indicates that the current connection was broken (closed by the server).
 
 These errors are an expected occurrence during node shutdown. To be resilient to such errors, **your application should use a reconnection and retry loop** to reissue transactions that were open when a connection was closed or the server stopped accepting transactions. This allows procedures such as [rolling upgrades](upgrade-cockroach-version.html) to complete without interrupting your service.
 
+{{site.data.alerts.callout_success}}
+If you cannot tolerate connection errors during node drain, then instead of using a connection retry loop, [configure `server.shutdown.connection_wait`](#server-shutdown-connection_wait) to allow SQL client connections to close gracefully. This will require making additional trade-offs.
+{{site.data.alerts.end}}
+
 Upon receiving a connection error, your application must handle the result of a previously open transaction as unknown.
 
 A connection retry loop should:
 
-- Close the current connection.
-- Open a new connection. This will be routed to a non-draining node.
-- Reissue the transaction on the new connection.
-- Repeat while the connection error persists and the retry count has not exceeded a configured maximum.
+1. Close the current connection.
+1. Open a new connection. This will be routed to a non-draining node.
+1. Reissue the transaction on the new connection.
+1. Repeat while the connection error persists and the retry count has not exceeded a configured maximum.
 
 ### Termination grace period
 
@@ -321,7 +339,7 @@ Also see our documentation for [cluster upgrades](upgrade-cockroachdb-kubernetes
 <section class="filter-content" markdown="1" data-scope="decommission">
 ### Drain the node
 
-Although [draining automatically follows decommissioning](#draining), we recommend first running [`cockroach node drain`](cockroach-node.html) to manually drain the node of active queries, client connections, and leases before decommissioning. This is optional, but prevents possible disruptions in query performance. For specific instructions, see the [example](#drain-a-node-manually).
+Although [draining automatically follows decommissioning](#draining), we recommend first running [`cockroach node drain`](cockroach-node.html) to manually drain the node of active queries, SQL client connections, and leases before decommissioning. This is optional, but prevents possible disruptions in query performance. For specific instructions, see the [example](#drain-a-node-manually).
 
 ### Decommission the node
 
@@ -528,7 +546,7 @@ You can use [`cockroach node drain`](cockroach-node.html) to drain a node separa
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    cockroach node drain 1 --host=localhost:{address of any live node} --drain-wait=15m --certs-dir=certs
+    cockroach node drain 1 --host={address of any live node} --drain-wait=15m --certs-dir=certs
     ~~~
 
     You will see the draining status print to `stderr`:
@@ -582,12 +600,12 @@ Run the [`cockroach node drain`](cockroach-node.html) command for each node to b
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-cockroach node drain 4 --host=localhost:{address of any live node} --certs-dir=certs
+cockroach node drain 4 --host={address of any live node} --certs-dir=certs
 ~~~
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-cockroach node drain 5 --host=localhost:{address of any live node} --certs-dir=certs
+cockroach node drain 5 --host={address of any live node} --certs-dir=certs
 ~~~
 
 You will see the draining status of each node print to `stderr`:
@@ -787,3 +805,4 @@ On the **Cluster Overview** page of the DB Console, the [node status](ui-cluster
 - [`cockroach start`](cockroach-start.html)
 - [Node status](ui-cluster-overview-page.html#node-status)
 - [Replication Layer](architecture/replication-layer.html)
+- [Decommissioning issues](cluster-setup-troubleshooting.html#decommissioning-issues)

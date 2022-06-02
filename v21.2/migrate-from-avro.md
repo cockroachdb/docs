@@ -121,7 +121,7 @@ For example, to import the data from `userdata1.avro` into an `employees` table,
 (5 rows)
 ~~~
 
-Repeat the above for each OCF you want to import.
+Repeat this process for each OCF you want to import.
 
 {% include {{ page.version.version }}/sql/use-import-into.md %}
 
@@ -196,7 +196,7 @@ For example, to import the data from `simple-schema.json` into an `simple` table
 (5 rows)
 ~~~
 
-Repeat the above for each binary or JSON file you want to import.
+Repeat this process for each binary or JSON file you want to import.
 
 {% include {{ page.version.version }}/sql/use-import-into.md %}
 
@@ -210,7 +210,7 @@ You will need to run [`ALTER TABLE ... ADD CONSTRAINT`](add-constraint.html) to 
 - [Import Performance Best Practices](import-performance-best-practices.html)
 - [Migrate from CSV][csv]
 - [Migrate from MySQL][mysql]
-- [Migrate from Postgres][postgres]
+- [Migrate from PostgreSQL][postgres]
 - [Back Up and Restore Data](take-full-and-incremental-backups.html)
 - [Use the Built-in SQL Client](cockroach-sql.html)
 - [Other Cockroach Commands](cockroach-commands.html)

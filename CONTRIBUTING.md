@@ -6,45 +6,53 @@ The CockroachDB docs are open source just like the database itself. We welcome y
 
 This section helps you set up the tools you'll need to write the docs and use CockroachDB.
 
-1. Install [Homebrew](https://brew.sh/), a macOS package manager you'll use for a few different installations. If you use Linux, then default package manager will work fine as well:
+These instructions assume that you use macOS. If you use Linux, use your default package manager to install the packages mentioned in these steps, rather than Homebrew.
+
+1. Install [Homebrew](https://brew.sh/), a macOS package manager you'll use for a few different installations.
 
     ```
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
     ```
 
-2. Install Ruby, the language required by Jekyll, our website generator, and the latest version of Git, the source control tool we use:
+2. Install Ruby, the language required by Jekyll, our website generator, and Gem, which is a package manager for Ruby.
 
     ```
     brew update
     brew install ruby
-    brew install git
+    brew install brew-gem
     ````
 
-You can find instructions to install [Ruby](https://www.ruby-lang.org/en/documentation/installation/#package-management-systems) and [git](https://www.atlassian.com/git/tutorials/install-git) for other distributions.
+    You can find instructions to install [Ruby](https://www.ruby-lang.org/en/documentation/installation/#package-management-systems) for Linux or other operating systems.
 
-3. Update your `$PATH` variable:
-
-    ```
-    echo "export PATH=\"/usr/local/opt/ruby/bin:\$PATH\"" >> .bash_profile
-    echo "export PATH=\"/usr/local/lib/ruby/gems/3.0.0/bin:\$PATH\"" >> .bash_profile
-    ```
-    Replace `3.0.0` with whatever version of Ruby is available in `/usr/local/lib/ruby/gems/`.
-
-4. Fork the [CockroachDB docs repository](https://github.com/cockroachdb/docs).
-
-5. [Create a local clone](https://help.github.com/articles/cloning-a-repository/) of your fork:
-
-6. Install [Jekyll](https://jekyllrb.com/docs/), the tool we use to transform Markdown and layout files into a complete, static HTML site:
+3. Update your `$PATH` variable to use Ruby from Homebrew. The following example configures ZSH. **Homebrew detects your shell and provides the exact command to use as part of installing Ruby.**
 
     ```
-    gem update
-    gem install jekyll bundler
+    echo 'export PATH="/opt/homebrew/opt/ruby/bin:$PATH"' >> ~/.zshrc
     ```
-If you get a permissions error, then try re-running the command with `sudo`.
+    
+4. Install the latest version of Git from Homebrew.
 
-7. Learn the essentials of our [Docs Structure](#docs-structure).
+   ```
+   brew install git
+   ```
+   
+   You can find instructions to install [git](https://www.atlassian.com/git/tutorials/install-git) for Linux or other operating systems.
 
-8. Review our [Style Guide](https://github.com/cockroachdb/docs/blob/master/StyleGuide.md.
+5. Fork the [CockroachDB docs repository](https://github.com/cockroachdb/docs).
+
+6. [Create a local clone](https://help.github.com/articles/cloning-a-repository/) of your fork.
+
+7. Use Gem from Homebrew to install [Jekyll](https://jekyllrb.com/docs/), the tool we use to transform Markdown and layout files into a complete, static HTML site. **Use the `brew-gem` command. If you use `gem`, you'll be using the outdated version of Ruby that installs with macOS.**
+
+    ```
+    sudo brew-gem install jekyll bundler
+    ```
+
+    If you get a permission error, make sure you're using `brew-gem` and Ruby from Homebrew, rather than `/usr/bin/gem` and `/usr/bin/ruby`.
+
+8. Learn the essentials of our [Docs Structure](#docs-structure).
+
+9. Review our [Style Guide](https://github.com/cockroachdb/docs/blob/master/StyleGuide.md.
 
 ## Get started
 
@@ -59,7 +67,7 @@ Once you're ready to contribute:
 
 2. Make your changes in the text editor of your choice (e.g., [Atom](https://atom.io/), [Sublime Text](https://www.sublimetext.com/)).
 
-    Note that there are distinct directories for each documented version of CockroachDB. For example, docs for CockroachDB v19.1 are in the `v19.1` directory, whereas docs for CockroachDB v2.1 are in the `v2.1` directory. This is true of most files in the `_includes` and `images` directories as well.
+    Each documented version of CockroachDB has a docs subdirectory. For example, docs for CockroachDB v19.1 are in the `v19.1` directory, whereas docs for CockroachDB v2.1 are in the `v2.1` directory. This is true of most files in the `_includes` and `images` directories as well.
 
 3. Check the files you've changed:
 

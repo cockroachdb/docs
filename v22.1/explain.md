@@ -20,9 +20,7 @@ Using `EXPLAIN` output, you can optimize your queries as follows:
 
      You can disable statement plans that perform full table scans with the `disallow_full_table_scans` [session variable](set-vars.html). When `disallow_full_table_scans=on`, attempting to execute a query with a plan that includes a full table scan will return an error.
 
-     The statement planner uses the [cost-based optimizer](cost-based-optimizer.html) to create statement plans. Even after adding secondary indexes, the optimizer may decide that a full table scan will be faster. For example, if you add a secondary index to a table with a large number of rows and see that a statement plan isn't using the secondary index, it is likely that performing a full table scan using the primary key is faster than doing a secondary index scan plus an [index join](indexes.html).
-
-- Enable row-oriented execution if you are querying a table with a small number of rows. Since the [vectorized execution](vectorized-execution.html) engine is enabled for all [supported operations](vectorized-execution.html#disk-spilling-operations) you can use the `vectorize_row_count_threshold` [cluster setting](cluster-settings.html) to specify the minimum number of rows required to use the vectorized engine to execute a statement plan.
+     The statement planner uses the [cost-based optimizer](cost-based-optimizer.html) to create statement plans. Even after adding secondary indexes, the optimizer may decide that a full table scan will be faster. For example, if you add a secondary index to a table with a large number of rows and see that a statement plan isn't using the secondary index, it is likely that performing a full table scan using the primary key is faster than doing a secondary index scan plus an [index join](indexes.html#example).
 
 You can find out if your queries are performing entire table scans by using `EXPLAIN` to see which:
 
@@ -80,35 +78,40 @@ By default, `EXPLAIN` includes the least detail about the statement plan but can
 ~~~
 
 ~~~
-                                             info
-----------------------------------------------------------------------------------------------
+                                                                       info
+---------------------------------------------------------------------------------------------------------------------------------------------------
   distribution: full
   vectorized: true
 
   • sort
-  │ estimated row count: 12,317
+  │ estimated row count: 12,385
   │ order: +revenue
   │
   └── • filter
-      │ estimated row count: 12,317
+      │ estimated row count: 12,385
       │ filter: revenue > 90
       │
       └── • scan
             estimated row count: 125,000 (100% of the table; stats collected 19 minutes ago)
-            table: rides@primary
+            table: rides@rides_pkey
             spans: FULL SCAN
-(15 rows)
 
-Time: 1ms total (execution 1ms / network 0ms)
+  index recommendations: 1
+  1. type: index creation
+     SQL command: CREATE INDEX ON rides (revenue) STORING (vehicle_city, rider_id, vehicle_id, start_address, end_address, start_time, end_time);
+(19 rows)
+
+
+Time: 2ms total (execution 2ms / network 0ms)
 ~~~
 
 The output shows the tree structure of the statement plan, in this case a `sort`, a `filter`, and a `scan`.
 
-The output also describes a set of properties, some global to the query, and some specific to an operation listed in the true structure (in this case, `sort`, `filter`, or `scan`):
+The output also describes a set of properties, some global to the query, some specific to an operation listed in the true structure (in this case, `sort`, `filter`, or `scan`), and an index recommendation:
 
 - `distribution`:`full`
 
-    The planner chose a distributed execution plan, where execution of the query is performed by multiple nodes in parallel, then the final results are returned by the gateway node. An execution plan with `full` distribution doesn't process on all nodes in the cluster. It is executed simultaneously on multiple nodes. An execution plan with `local` distribution is performed only on the gateway node. Even if the execution plan is `local`, row data may be fetched from remote nodes, but the processing of the data is performed by the local node.
+    The planner chose a distributed execution plan, where execution of the query is performed by multiple nodes in parallel, then the results are returned by the gateway node. An execution plan with `full` distribution doesn't process on all nodes in the cluster. It is executed simultaneously on multiple nodes. An execution plan with `local` distribution is performed only on the gateway node. Even if the execution plan is `local`, row data may be fetched from remote nodes, but the processing of the data is performed by the local node.
 - `vectorized`:`true`
 
     The plan will be executed with the [vectorized execution engine](vectorized-execution.html).
@@ -121,12 +124,17 @@ The output also describes a set of properties, some global to the query, and som
 - `estimated row count`:`125,000 (100% of the table; stats collected 19 minutes ago)`
 
     The estimated number of rows scanned by the query, in this case, `125,000` rows of data; the percentage of the table the query spans, in this case 100%; and when the statistics for the table were last collected, in this case 19 minutes ago. If you do not see statistics, you can manually generate table statistics with [`CREATE STATISTICS`](create-statistics.html) or configure more frequent statistics generation following the steps in [Control automatic statistics](cost-based-optimizer.html#control-automatic-statistics).
-- `table`:`rides@primary`
+- `table`:`rides@rides_pkey`
 
-    The table is scanned on the `primary` index.
+    The table is scanned on the `rides_pkey` index.
 - `spans`:`FULL SCAN`
 
-    The table is scanned on all key ranges of the `primary` index (i.e., a full table scan). For more information on indexes and key ranges, see the following [example](#find-the-indexes-and-key-ranges-a-query-uses).
+    The table is scanned on all key ranges of the `rides_pkey` index (i.e., a full table scan). For more information on indexes and key ranges, see the following [example](#find-the-indexes-and-key-ranges-a-query-uses).
+
+- `index recommendations: 1`
+
+    A recommendation to create an index to eliminate the full scan of the table. The recommendation is to create an index on the `rides` table and store the columns `vehicle_city`, `rider_id`, `vehicle_id`, `start_address`, `end_address`, `start_time`, `end_time`.
+    Index recommendations are displayed by default. To disable index recommendations, set the `index_recommendations_enabled` [session variable](set-vars.html) to `false`.
 
 ### Join queries
 
@@ -139,8 +147,8 @@ JOIN users AS u ON r.rider_id = u.id;
 ~~~
 
 ~~~
-                                           info
-------------------------------------------------------------------------------------------
+                                                                       info
+---------------------------------------------------------------------------------------------------------------------------------------------------
   distribution: full
   vectorized: true
 
@@ -149,17 +157,24 @@ JOIN users AS u ON r.rider_id = u.id;
   │ equality: (rider_id) = (id)
   │
   ├── • scan
-  │     estimated row count: 125,000 (100% of the table; stats collected 24 minutes ago)
-  │     table: rides@primary
+  │     estimated row count: 125,000 (100% of the table; stats collected 13 minutes ago)
+  │     table: rides@rides_pkey
   │     spans: FULL SCAN
   │
   └── • scan
-        estimated row count: 12,500 (100% of the table; stats collected 35 minutes ago)
-        table: users@primary
+        estimated row count: 12,500 (100% of the table; stats collected 14 minutes ago)
+        table: users@users_pkey
         spans: FULL SCAN
-(16 rows)
 
-Time: 1ms total (execution 1ms / network 0ms
+  index recommendations: 2
+  1. type: index creation
+     SQL command: CREATE INDEX ON rides (rider_id) STORING (vehicle_city, vehicle_id, start_address, end_address, start_time, end_time, revenue);
+  2. type: index creation
+     SQL command: CREATE INDEX ON users (id) STORING (name, address, credit_card);
+(22 rows)
+
+
+Time: 2ms total (execution 2ms / network 0ms)
 ~~~
 
 The following output shows that the query will perform a cross join:
@@ -177,20 +192,21 @@ JOIN users AS u ON r.city = 'new york';
   vectorized: true
 
   • cross join
-  │ estimated row count: 176,093,135
+  │ estimated row count: 178,283,221
   │
   ├── • scan
-  │     estimated row count: 14,087 (11% of the table; stats collected 25 minutes ago)
-  │     table: rides@primary
+  │     estimated row count: 14,263 (11% of the table; stats collected 14 minutes ago)
+  │     table: rides@rides_pkey
   │     spans: [/'new york' - /'new york']
   │
   └── • scan
-        estimated row count: 12,500 (100% of the table; stats collected 36 minutes ago)
-        table: users@primary
+        estimated row count: 12,500 (100% of the table; stats collected 15 minutes ago)
+        table: users@users_pkey
         spans: FULL SCAN
 (15 rows)
 
-Time: 3ms total (execution 1ms / network 2ms)
+
+Time: 2ms total (execution 2ms / network 0ms)
 ~~~
 
 ### Insert queries
@@ -208,29 +224,26 @@ Time: 3ms total (execution 1ms / network 2ms)
   distribution: local
   vectorized: true
 
-  • insert
-  │ into: users(id, city, name, address, credit_card)
-  │ auto commit
-  │
-  └── • values
-        size: 4 columns, 1 row
-(9 rows)
+  • insert fast path
+    into: users(id, city, name, address, credit_card)
+    auto commit
+    size: 5 columns, 1 row
+(7 rows)
+
 
 Time: 1ms total (execution 1ms / network 0ms)
 ~~~
 
-The output for this `INSERT` lists the primary operation (in this case, `insert`), and the table and columns affected by the operation in the `into` field (in this case, the `id`, `city`, `name`, `address`, and `credit_card` columns of the `users` table). The output also includes the size of the `INSERT` in the `size` field (in this case, 4 columns in a single row).
+The output for this `INSERT` lists the primary operation (in this case, `insert`), and the table and columns affected by the operation in the `into` field (in this case, the `id`, `city`, `name`, `address`, and `credit_card` columns of the `users` table). The output also includes the size of the `INSERT` in the `size` field (in this case, 5 columns in a single row).
 
-`EXPLAIN` output can include more information, for more complex types of `INSERT` queries.
-
-For example, suppose that you create a `UNIQUE` index on the `users` table:
+For more complex types of `INSERT` queries, `EXPLAIN` output can include more information. For example, suppose that you create a `UNIQUE` index on the `users` table:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE UNIQUE INDEX ON users(city, id, name);
 ~~~
 
-To display the `EXPLAIN` output for an [`INSERT ... ON CONFLICT` statement](insert.html#on-conflict-clause) that inserts some data that might conflict with the `UNIQUE` constraint imposed on the `name`, `city`, and `id` columns:
+To display the `EXPLAIN` output for an [`INSERT ... ON CONFLICT` statement](insert.html#on-conflict-clause), which inserts some data that might conflict with the `UNIQUE` constraint imposed on the `name`, `city`, and `id` columns, run:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -246,12 +259,12 @@ To display the `EXPLAIN` output for an [`INSERT ... ON CONFLICT` statement](inse
   • insert
   │ into: users(id, city, name, address, credit_card)
   │ auto commit
-  │ arbiter indexes: primary, users_city_id_name_key
+  │ arbiter indexes: users_pkey, users_city_id_name_key
   │
   └── • lookup join (anti)
       │ estimated row count: 0
       │ table: users@users_city_id_name_key
-      │ equality: (column2, column1, column3) = (city,id,name)
+      │ equality: (city_cast, column1, name_cast) = (city,id,name)
       │ equality cols are key
       │
       └── • cross join (anti)
@@ -261,12 +274,13 @@ To display the `EXPLAIN` output for an [`INSERT ... ON CONFLICT` statement](inse
           │     size: 4 columns, 1 row
           │
           └── • scan
-                estimated row count: 1 (<0.01% of the table; stats collected 38 minutes ago)
+                estimated row count: 1 (<0.01% of the table; stats collected 18 minutes ago)
                 table: users@users_city_id_name_key
                 spans: [/'new york'/'c28f5c28-f5c2-4000-8000-000000000026' - /'new york'/'c28f5c28-f5c2-4000-8000-000000000026']
 (24 rows)
 
-Time: 1ms total (execution 1ms / network 0ms)
+
+Time: 3ms total (execution 3ms / network 0ms)
 ~~~
 
 Because the `INSERT` includes an `ON CONFLICT` clause, the query requires more than a simple `insert` operation. CockroachDB must check the provided values against the values in the database, to ensure that the `UNIQUE` constraint on `name`, `city`, and `id` is not violated. The output also lists the indexes available to detect conflicts (the `arbiter indexes`), including the `users_city_id_name_key` index.
@@ -308,13 +322,13 @@ ORDER BY r.revenue ASC;
       ├── • scan
       │     columns: (id, city, vehicle_city, rider_id, vehicle_id, start_address, end_address, start_time, end_time, revenue)
       │     estimated row count: 14,087 (11% of the table; stats collected 29 minutes ago)
-      │     table: rides@primary
+      │     table: rides@rides_pkey
       │     spans: /"new york"-/"new york"/PrefixEnd
       │
       └── • scan
             columns: (id, city, name, address, credit_card)
             estimated row count: 12,500 (100% of the table; stats collected 42 seconds ago)
-            table: users@primary
+            table: users@users_pkey
             spans: FULL SCAN
 (25 rows)
 
@@ -354,7 +368,7 @@ The `TYPES` option includes
       └── • scan
             columns: (id uuid, city varchar, vehicle_city varchar, rider_id uuid, vehicle_id uuid, start_address varchar, end_address varchar, start_time timestamp, end_time timestamp, revenue decimal)
             estimated row count: 125,000 (100% of the table; stats collected 29 minutes ago)
-            table: rides@primary
+            table: rides@rides_pkey
             spans: FULL SCAN
 (19 rows)
 
@@ -714,7 +728,6 @@ Open the URL. You should see the following:
 
 <img src="{{ 'images/v22.1/explain-distsql-types-plan.png' | relative_url }}" alt="EXPLAIN (DISTSQL)" style="border:1px solid #eee;max-width:100%" />
 
-
 ### Find the indexes and key ranges a query uses
 
 You can use `EXPLAIN` to understand which indexes and key ranges queries use, which can help you ensure a query isn't performing a full table scan.
@@ -742,7 +755,7 @@ Because column `v` is not indexed, queries filtering on it alone scan the entire
   │
   └── • scan
         missing stats
-        table: kv@primary
+        table: kv@kv_pkey
         spans: FULL SCAN
 (10 rows)
 
@@ -837,7 +850,7 @@ The following output contains a `locking strength` field, which means that `SELE
       │
       └── • scan
             missing stats
-            table: kv@primary
+            table: kv@kv_pkey
             spans: [/1 - /1]
             locking strength: for update
 (15 rows)
@@ -846,6 +859,8 @@ Time: 1ms total (execution 1ms / network 0ms)
 ~~~
 
 By default, `SELECT FOR UPDATE` locking is enabled for the initial row scan of `UPDATE` and `UPSERT` statements. To disable it, toggle the [`enable_implicit_select_for_update` session setting](show-vars.html#enable-implicit-select-for-update).
+
+
 
 ## See also
 

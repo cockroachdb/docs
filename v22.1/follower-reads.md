@@ -198,7 +198,7 @@ COMMIT;
 
 #### Exact staleness read timestamps must be far enough in the past
 
-If an exact staleness read is not using an [`AS OF SYSTEM TIME`](as-of-system-time.html) value far enough in the past, CockroachDB cannot perform a follower read. Instead, the read must access the [leaseholder replica](architecture/overview.html#architecture-leaseholder). This adds network latency if the leaseholder is not the closest replica to the gateway node. If you [use the `follower_read_timestamp()` function](#run-queries-that-use-exact-staleness-follower-reads) to get a timestamp, there is a high probability of getting a follower read.
+If an exact staleness read is not using an [`AS OF SYSTEM TIME`](as-of-system-time.html) value far enough in the past, CockroachDB cannot perform a follower read. Instead, the read must access the [leaseholder replica](architecture/overview.html#architecture-leaseholder). This adds network latency if the leaseholder is not the closest replica to the gateway node. Most users will [use the `follower_read_timestamp()` function](#run-queries-that-use-exact-staleness-follower-reads) to get a timestamp far enough in the past that there is a high probability of getting a follower read.
 
 #### Bounded staleness read limitations
 

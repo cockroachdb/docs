@@ -6,7 +6,13 @@
       "title": "Manage CockroachDB Cloud Clusters",
       "items": [
         {
-          "title": "Manage Your Serverless Cluster",
+          "title": "Plan Your Cluster",
+          "urls": [
+            "/cockroachcloud/plan-your-cluster.html"
+          ]
+        },
+        {
+          "title": "Manage a CockroachDB Serverless Cluster",
           "urls": [
             "/cockroachcloud/serverless-cluster-management.html"
           ]
@@ -27,6 +33,59 @@
           "title": "Use the Cloud API",
           "urls": [
             "/cockroachcloud/cloud-api.html"
+          ]
+        },
+        {
+          "title": "Use the <code>ccloud</code> command",
+          "urls": [
+            "/cockroachcloud/ccloud-get-started.html"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Operate CockroachDB on Kubernetes",
+      "items": [
+        {
+          "title": "Pod Scheduling",
+          "urls": [
+            "/${VERSION}/schedule-cockroachdb-kubernetes.html"
+          ]
+        },
+        {
+          "title": "Resource Management",
+          "urls": [
+            "/${VERSION}/configure-cockroachdb-kubernetes.html"
+          ]
+        },
+        {
+          "title": "Certificate Management",
+          "urls": [
+            "/${VERSION}/secure-cockroachdb-kubernetes.html"
+          ]
+        },
+        {
+          "title": "Cluster Scaling",
+          "urls": [
+            "/${VERSION}/scale-cockroachdb-kubernetes.html"
+          ]
+        },
+        {
+          "title": "Cluster Monitoring",
+          "urls": [
+            "/${VERSION}/monitor-cockroachdb-kubernetes.html"
+          ]
+        },
+        {
+          "title": "Cluster Upgrades",
+          "urls": [
+            "/${VERSION}/upgrade-cockroachdb-kubernetes.html"
+          ]
+        },
+        {
+          "title": "Optimizing Performance",
+          "urls": [
+            "/${VERSION}/kubernetes-performance.html"
           ]
         }
       ]
@@ -121,6 +180,12 @@
               "title": "Authenticating to CockroachDB Cloud",
               "urls": [
                 "/cockroachcloud/authentication.html"
+              ]
+            },
+            {
+              "title": "Single Sign-On (SSO) for CockroachDB Cloud",
+              "urls": [
+                "/cockroachcloud/cloud-sso.html"
               ]
             },
             {
@@ -350,6 +415,12 @@
                   "title": "Upgrade Policy",
                   "urls": [
                      "/cockroachcloud/upgrade-policy.html"
+                  ]
+                },
+                {
+                  "title": "Upgrade to v22.1",
+                  "urls": [
+                     "/cockroachcloud/upgrade-to-v22.1.html"
                   ]
                 },
                 {

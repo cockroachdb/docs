@@ -8,7 +8,7 @@ docs_area: reference.sql
 The `ALTER USER` [statement](sql-statements.html) can be used to add, change, or remove a [user's](create-user.html) password and to change the role options for a user.
 
 {{site.data.alerts.callout_info}}
- Since the keywords `ROLE` and `USER` can now be used interchangeably in SQL statements for enhanced Postgres compatibility, `ALTER USER` is now an alias for [`ALTER ROLE`](alter-role.html).
+ Since the keywords `ROLE` and `USER` can now be used interchangeably in SQL statements for enhanced PostgreSQL compatibility, `ALTER USER` is now an alias for [`ALTER ROLE`](alter-role.html).
 {{site.data.alerts.end}}
 
 ## Considerations
@@ -34,17 +34,18 @@ table td:first-child {
 Parameter | Description
 ----------|-------------
 `name` | The name of the user whose role options you want to alter.
-`CREATELOGIN`/`NOCREATELOGIN` | Allow or disallow the user to manage authentication using the `WITH PASSWORD`, `VALID UNTIL`, and `LOGIN/NOLOGIN` parameters. <br><br>By default, the parameter is set to `NOCREATELOGIN` for all non-admin users.
+`CANCELQUERY`/`NOCANCELQUERY` | Allow or disallow the user to cancel [queries](cancel-query.html) and [sessions](cancel-session.html) of other users. Without this privilege, users can only cancel their own queries and sessions. Even with the `CANCELQUERY` role option, non-`admin` users cannot cancel `admin` queries or sessions. This option should usually be combined with `VIEWACTIVITY` so that the user can view other users' query and session information. <br><br>By default, the role option is set to `NOCANCELQUERY` for all non-`admin` users.
+`CONTROLCHANGEFEED`/`NOCONTROLCHANGEFEED` | Allow or disallow the user to run [`CREATE CHANGEFEED`](create-changefeed.html) on tables they have `SELECT` privileges on. <br><br>By default, the role option is set to `NOCONTROLCHANGEFEED` for all non-`admin` users.
+`CONTROLJOB`/`NOCONTROLJOB` | Allow or disallow the user to [pause](pause-job.html), [resume](resume-job.html), and [cancel](cancel-job.html) jobs. Non-`admin` users cannot control jobs created by `admin` users. <br><br>By default, the role option is set to `NOCONTROLJOB` for all non-`admin` users.
+`CREATEDB`/`NOCREATEDB` | Allow or disallow the user to [create](create-database.html) or [rename](rename-database.html) a database. The user is assigned as the owner of the database. <br><br>By default, the role option is set to `NOCREATEDB` for all non-`admin` users.
+`CREATELOGIN`/`NOCREATELOGIN` | Allow or disallow the user to manage authentication using the `WITH PASSWORD`, `VALID UNTIL`, and `LOGIN/NOLOGIN` parameters. <br><br>By default, the role option is set to `NOCREATELOGIN` for all non-`admin` users.
+`CREATEROLE`/`NOCREATEROLE` |  Allow or disallow the user to [create](create-user.html), alter, and [drop](drop-user.html) other non-`admin` users. <br><br>By default, the role option is set to `NOCREATEROLE` for all non-`admin` users.
 `LOGIN`/`NOLOGIN` | The `LOGIN` parameter allows a user to login with one of the [client authentication methods](authentication.html#client-authentication). Setting the parameter to `NOLOGIN` prevents the user from logging in using any authentication method.
+`MODIFYCLUSTERSETTING`/`NOMODIFYCLUSTERSETTING` | Allow or disallow the user to modify the [cluster settings](cluster-settings.html) with the `sql.defaults` prefix. <br><br>By default, the role option is set to `NOMODIFYCLUSTERSETTING` for all non-`admin` users.
 `password` | Let the user [authenticate their access to a secure cluster](authentication.html#client-authentication) using this new password. Passwords should be entered as a [string literal](sql-constants.html#string-literals). For compatibility with PostgreSQL, a password can also be entered as an identifier. <br><br>To prevent a user from using [password authentication](authentication.html#client-authentication) and to mandate [certificate-based client authentication](authentication.html#client-authentication), [set the password as `NULL`](#prevent-a-user-from-using-password-authentication).
 `VALID UNTIL` |  The date and time (in the [`timestamp`](timestamp.html) format) after which the password is not valid.
-`CREATEROLE`/`NOCREATEROLE` |  Allow or disallow the user to [create](create-user.html), alter, and [drop](drop-user.html) other non-admin users. <br><br>By default, the parameter is set to `NOCREATEROLE` for all non-admin users.
-`CREATEDB`/`NOCREATEDB` | Allow or disallow the user to [create](create-database.html) or [rename](rename-database.html) a database. The user is assigned as the owner of the database. <br><br>By default, the parameter is set to `NOCREATEDB` for all non-admin users.
-`CONTROLJOB`/`NOCONTROLJOB` | Allow or disallow the user to [pause](pause-job.html), [resume](resume-job.html), and [cancel](cancel-job.html) jobs. Non-admin users cannot control jobs created by admins. <br><br>By default, the parameter is set to `NOCONTROLJOB` for all non-admin users.
-`CANCELQUERY`/`NOCANCELQUERY` | Allow or disallow the user to cancel [queries](cancel-query.html) and [sessions](cancel-session.html) of other users. Without this privilege, users can only cancel their own queries and sessions. Even with this privilege, non-admins cannot cancel admin queries or sessions. This option should usually be combined with `VIEWACTIVITY` so that the user can view other users' query and session information. <br><br>By default, the parameter is set to `NOCANCELQUERY` for all non-admin users.
-`VIEWACTIVITY`/`NOVIEWACTIVITY` | Allow or disallow a role to see other users' [queries](show-statements.html) and [sessions](show-sessions.html) using `SHOW STATEMENTS`, `SHOW SESSIONS`, and the [**Statements**](ui-statements-page.html) and **Transactions** pages in the DB Console. Without this privilege, the `SHOW` commands only show the user's own data and the DB Console pages are unavailable. <br><br>By default, the parameter is set to `NOVIEWACTIVITY` for all non-admin users.
-`CONTROLCHANGEFEED`/`NOCONTROLCHANGEFEED` | Allow or disallow the user to run [`CREATE CHANGEFEED`](create-changefeed.html) on tables they have `SELECT` privileges on. <br><br>By default, the parameter is set to `NOCONTROLCHANGEFEED` for all non-admin users.
-`MODIFYCLUSTERSETTING`/`NOMODIFYCLUSTERSETTING` | Allow or disallow the user to modify the [cluster settings](cluster-settings.html) with the `sql.defaults` prefix. <br><br>By default, the parameter is set to `NOMODIFYCLUSTERSETTING` for all non-admin users.
+`VIEWACTIVITY`/`NOVIEWACTIVITY` | Allow or disallow a user to see other users' [queries](show-statements.html) and [sessions](show-sessions.html) using `SHOW STATEMENTS`, `SHOW SESSIONS`, and the [**Statements**](ui-statements-page.html) and [**Transactions**](ui-transactions-page.html) pages in the DB Console. `VIEWACTIVITY` also permits visibility of node hostnames and IP addresses in the DB Console. With `NOVIEWACTIVITY`, the `SHOW` commands show only the user's own data, and DB Console pages redact node hostnames and IP addresses.<br><br>By default, the role option is set to `NOVIEWACTIVITY` for all non-`admin` users.
+`VIEWCLUSTERSETTING` / `NOVIEWCLUSTERSETTING` | Allow or disallow the user to view the [cluster settings](cluster-settings.html) with `SHOW CLUSTER SETTING`, and to access the [**Cluster Settings**](ui-debug-pages.html) page in the DB Console. <br><br>By default, the role option is set to `NOVIEWCLUSTERSETTING` for all non-`admin` users.
 
 ## Examples
 
@@ -93,7 +94,7 @@ root@:26257/defaultdb> ALTER USER carl WITH CONTROLJOB;
 
 ### Allow a user to see and cancel non-admin queries and sessions
 
-The following example allows the user to cancel [queries](cancel-query.html) and [sessions](cancel-session.html) for other non-admin roles:
+The following example allows the user to cancel [queries](cancel-query.html) and [sessions](cancel-session.html) for other non-`admin` roles:
 
 ~~~ sql
 root@:26257/defaultdb> ALTER USER carl WITH CANCELQUERY VIEWACTIVITY;

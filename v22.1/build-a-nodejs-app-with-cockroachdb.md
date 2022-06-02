@@ -16,7 +16,7 @@ This tutorial shows you how build a simple Node.js application with CockroachDB 
 
 ## Step 1. Start CockroachDB
 
-{% include {{ page.version.version }}/app/sample-setup.md %}
+{% include {{ page.version.version }}/setup/sample-setup.md %}
 
 ## Step 2. Get the code
 
@@ -54,7 +54,14 @@ All of the database operations are wrapped in a helper function named `retryTxn`
 
 ## Step 3. Initialize the database
 
-{% include {{ page.version.version }}/app/init-bank-sample.md %}
+1. Navigate to the `example-node-postgres` directory:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ cd example-node-postgres
+    ~~~
+    
+{% include {{ page.version.version }}/setup/init-bank-sample.md %}
 
 ## Step 4. Run the code
 
@@ -72,54 +79,26 @@ All of the database operations are wrapped in a helper function named `retryTxn`
     $ node app.js
     ~~~
 
-    The program will prompt you for a connection string to the database:
+    The app uses the connection string saved to the `DATABASE_URL` environment variable to connect to your cluster and execute the code.
+
+    The output should look like this:
 
     ~~~
-    prompt: connectionString:
+    Initializing accounts table...
+    New account balances:
+    { id: 'aa0e9b22-0c23-469b-a9e1-b2ace079f44c', balance: '1000' }
+    { id: 'bf8b96da-2c38-4d55-89a0-b2b6ed63ff9e', balance: '0' }
+    { id: 'e43d76d6-388e-4ee6-8b73-a063a63a2138', balance: '250' }
+    Transferring funds...
+    New account balances:
+    { id: 'aa0e9b22-0c23-469b-a9e1-b2ace079f44c', balance: '900' }
+    { id: 'bf8b96da-2c38-4d55-89a0-b2b6ed63ff9e', balance: '0' }
+    { id: 'e43d76d6-388e-4ee6-8b73-a063a63a2138', balance: '350' }
+    Deleting a row...
+    New account balances:
+    { id: 'aa0e9b22-0c23-469b-a9e1-b2ace079f44c', balance: '900' }
+    { id: 'e43d76d6-388e-4ee6-8b73-a063a63a2138', balance: '350' }
     ~~~
-
-1. Enter the connection string to your running cluster.
-
-    <section class="filter-content" markdown="1" data-scope="local">
-
-    {{site.data.alerts.callout_success}}
-    `postgresql://root@localhost:26257?sslmode=disable` should be the `sql` connection URL provided in the `cockroach` welcome text.
-    {{site.data.alerts.end}}
-
-    </section>
-
-    <section class="filter-content" markdown="1" data-scope="cockroachcloud">
-
-    {{site.data.alerts.callout_success}}
-    Use the connection string provided in the **Connection info** window of the {{ site.data.products.db }} Console.
-    {{site.data.alerts.end}}
-
-    {{site.data.alerts.callout_info}}
-    You need to provide a SQL user password in order to securely connect to a {{ site.data.products.db }} cluster. The connection string should have a placeholder for the password (`<ENTER-PASSWORD>`).
-    {{site.data.alerts.end}}
-
-    </section>
-
-After entering the connection string, the program will execute.
-
-The output should look like this:
-
-~~~
-Initializing accounts table...
-New account balances:
-{ id: 'aa0e9b22-0c23-469b-a9e1-b2ace079f44c', balance: '1000' }
-{ id: 'bf8b96da-2c38-4d55-89a0-b2b6ed63ff9e', balance: '0' }
-{ id: 'e43d76d6-388e-4ee6-8b73-a063a63a2138', balance: '250' }
-Transferring funds...
-New account balances:
-{ id: 'aa0e9b22-0c23-469b-a9e1-b2ace079f44c', balance: '900' }
-{ id: 'bf8b96da-2c38-4d55-89a0-b2b6ed63ff9e', balance: '0' }
-{ id: 'e43d76d6-388e-4ee6-8b73-a063a63a2138', balance: '350' }
-Deleting a row...
-New account balances:
-{ id: 'aa0e9b22-0c23-469b-a9e1-b2ace079f44c', balance: '900' }
-{ id: 'e43d76d6-388e-4ee6-8b73-a063a63a2138', balance: '350' }
-~~~
 
 ## What's next?
 

@@ -169,9 +169,9 @@ Time: 4ms
 
 ## Step 4. Run the code
 
-### Update the connection parameters
-
 <section class="filter-content" markdown="1" data-scope="cockroachcloud">
+
+### Update the connection parameters
 
 In a text editor modify `app/src/main/java/com/cockroachlabs/BasicExample.java` with the settings to connect to the cluster:
 
@@ -186,11 +186,11 @@ ds.setSslRootCert(System.getenv("{path to the CA certificate}"));
 
 {% include {{page.version.version}}/app/cc-free-tier-params.md %}
 
-</section>
-
 {{site.data.alerts.callout_success}}
 For guidance on connection pooling, with an example using JDBC and [HikariCP](https://github.com/brettwooldridge/HikariCP), see [Connection Pooling](connection-pooling.html).
 {{site.data.alerts.end}}
+
+</section>
 
 Compile and run the code:
 
@@ -279,9 +279,9 @@ For more information about importing data from Postgres, see [Migrate from Postg
 
 For more information about importing data from MySQL, see [Migrate from MySQL](migrate-from-mysql.html).
 
-### Use `rewriteBatchedInserts` for increased speed
+### Use `reWriteBatchedInserts` for increased speed
 
-We strongly recommend setting `rewriteBatchedInserts=true`; we have seen 2-3x performance improvements with it enabled. From [the JDBC connection parameters documentation](https://jdbc.postgresql.org/documentation/head/connect.html#connection-parameters):
+We strongly recommend setting `reWriteBatchedInserts=true`; we have seen 2-3x performance improvements with it enabled. From [the JDBC connection parameters documentation](https://jdbc.postgresql.org/documentation/head/connect.html#connection-parameters):
 
 > This will change batch inserts from `insert into foo (col1, col2, col3) values (1,2,3)` into `insert into foo (col1, col2, col3) values (1,2,3), (4,5,6)` this provides 2-3x performance improvement
 

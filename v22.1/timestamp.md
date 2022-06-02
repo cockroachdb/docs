@@ -52,7 +52,7 @@ ISO 8601 | `TIMESTAMP '2016-01-25T10:10:10.555555'`
 
 To express a `TIMESTAMPTZ` value with time zone offset from UTC, use the following format: `TIMESTAMPTZ '2016-01-25 10:10:10.555555-05:00'`. The fractional portion is optional and is rounded to microseconds (6 digits after decimal) for compatibility with the PostgreSQL wire protocol.
 
-By default, CockroachDB interprets truncated dates (e.g., `12-16-06`) as `MM-DD-YY`. To change the input string format of truncated dates, set the `datestyle` [session variable](set-vars.html) or the `sql.defaults.datestyle ` [cluster setting](cluster-settings.html). To set the `datestyle` session variable, the `datestyle_enabled` session variable must be set to `true`.
+By default, CockroachDB interprets truncated dates (e.g., `12-16-06`) as `MM-DD-YY`. To change the input string format of truncated dates, set the `datestyle` [session variable](set-vars.html) or the `sql.defaults.datestyle ` [cluster setting](cluster-settings.html).
 
 ## Size
 

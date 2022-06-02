@@ -356,7 +356,7 @@ cockroach-data
 Removing the ballast file will give you a chance to remedy the disk space exhaustion; it will automatically be recreated when there is sufficient disk space.
 
 {{site.data.alerts.callout_info}}
-Different filesystems may treat the ballast file differently. Make sure to test that the file exists, and that space for the file is actually being reserved by the filesystem.
+Different filesystems may treat the ballast file differently. Make sure to test that the file exists, and that space for the file is actually being reserved by the filesystem. For a list of supported filesystems, see the [Production Checklist](recommended-production-settings.html#storage).
 {{site.data.alerts.end}}
 
 ### Disk stalls
@@ -389,9 +389,9 @@ CockroachDB's built-in disk stall detection works as follows:
 
 ### CPU is insufficient for the workload
 
-Issues with CPU most commonly arise when there is insufficient CPU to suppport the scale of the workload. If the concurrency of your workload significantly exceeds your provisioned CPU, you will encounter a [degradation in SQL response time](common-issues-to-monitor.html#service-latency). This is the most common symptom of CPU starvation.
+Issues with CPU most commonly arise when there is insufficient CPU to support the scale of the workload. If the concurrency of your workload significantly exceeds your provisioned CPU, you will encounter a [degradation in SQL response time](common-issues-to-monitor.html#service-latency). This is the most common symptom of CPU starvation.
 
-Because compaction requires significant CPU to run concurrent worker threads, a lack of CPU resources will eventually cause compaction to fall behind. This leads to read amplification and inversion of the log-structured merge (LSM) trees on the [storage layer](architecture/storage-layer.html).
+Because compaction requires significant CPU to run concurrent worker threads, a lack of CPU resources will eventually cause compaction to fall behind. This leads to [read amplification](architecture/storage-layer.html#read-amplification) and inversion of the log-structured merge (LSM) trees on the [storage layer](architecture/storage-layer.html).
 
 If these issues remain unresolved, affected nodes will miss their liveness heartbeats, causing the cluster to lose nodes and eventually become unresponsive.
 
@@ -463,18 +463,20 @@ CockroachDB attempts to restart nodes after they crash. Nodes that frequently re
 
 ### Decommissioning process hangs indefinitely
 
-**Explanation:** Before decommissioning a node, you need to make sure other nodes are available to take over the range replicas from the node. If no other nodes are available, the decommission process will hang indefinitely.
+If the [decommissioning process](node-shutdown.html?filters=decommission#remove-nodes) appears to be hung on a node, a message like the following will print to `stderr`:
+
+~~~
+possible decommission stall detected
+n3 still has replica id 2 for range r1
+n3 still has replica id 3 for range r2
+n3 still has replica id 2 for range r3
+n3 still has replica id 3 for range r4
+n3 still has replica id 2 for range r5
+~~~
+
+**Explanation:** Before decommissioning a node, you need to make sure other nodes are available to take over the range replicas from the node. If no other nodes are available, the decommission process will hang indefinitely. For more information, see [Node Shutdown](node-shutdown.html?filters=decommission#size-and-replication-factor).
 
 **Solution:** Confirm that there are enough nodes with sufficient storage space to take over the replicas from the node you want to remove.
-
-### Decommissioned nodes displayed in UI forever
-
-By design, decommissioned nodes are displayed in the DB Console forever. We retain the list of decommissioned nodes for the following reasons:
-
--   Decommissioning is not entirely free, so showing those decommissioned nodes in the UI reminds you of the baggage your cluster will have to carry around forever.
--   It also explains to future administrations why your node IDs have gaps (e.g., why the nodes are numbered n1, n2, and n8).
-
-You can follow the discussion here: [https://github.com/cockroachdb/cockroach/issues/24636](https://github.com/cockroachdb/cockroach/issues/24636)
 
 ## Replication issues
 
@@ -484,7 +486,7 @@ When a CockroachDB node dies (or is partitioned) the under-replicated range coun
 
 **Explanation:** CockroachDB uses consensus replication and requires a quorum of the replicas to be available in order to allow both writes and reads to the range. The number of failures that can be tolerated is equal to (Replication factor - 1)/2. Thus CockroachDB requires (n-1)/2 nodes to achieve quorum. For example, with 3x replication, one failure can be tolerated; with 5x replication, two failures, and so on.
 
--   Under-replicated Ranges: When a cluster is first initialized, the few default starting ranges will only have a single replica, but as soon as other nodes are available, they will replicate to them until they've reached their desired replication factor. If a range does not have enough replicas, the range is said to be "under-replicated".
+-   Under-replicated Ranges: When a cluster is first initialized, the few default starting ranges have a single replica. As more nodes become available, the cluster replicates these ranges to other nodes until the number of replicas for each range reaches the desired [replication factor](configure-replication-zones.html#num_replicas) (3 by default). If a range has fewer replicas than the replication factor, the range is said to be "under-replicated". [Non-voting replicas](architecture/replication-layer.html#non-voting-replicas), if configured, are not counted when calculating replication status.
 
 -   Unavailable Ranges: If a majority of a range's replicas are on nodes that are unavailable, then the entire range is unavailable and will be unable to process queries.
 
@@ -509,7 +511,7 @@ If you still see under-replicated/unavailable ranges on the Cluster Overview pag
 2.  Click **Problem Ranges**.
 3.  In the **Connections** table, identify the node with the under-replicated/unavailable ranges and click the node ID in the Node column.
 4.  To view the **Range Report** for a range, click on the range number in the **Under-replicated (or slow)** table or **Unavailable** table.
-5. On the Range Report page, scroll down to the **Simulated Allocator Output** section. The table contains an error message which explains the reason for the under-replicated range. Follow the guidance in the message to resolve the issue. If you need help understanding the error or the guidance, [file an issue](file-an-issue.html). Please be sure to include the full range report and error message when you submit the issue.
+5. On the Range Report page, scroll down to the **Simulated Allocator Output** section. The table contains an error message which explains the reason for the under-replicated range. Follow the guidance in the message to resolve the issue. If you need help understanding the error or the guidance, [file an issue](file-an-issue.html). Please be sure to include the full Range Report and error message when you submit the issue.
 
 ## Node liveness issues
 

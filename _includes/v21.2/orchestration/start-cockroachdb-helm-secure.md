@@ -69,6 +69,10 @@ Secure CockroachDB deployments on Amazon EKS via Helm are [not yet supported](ht
     This tutorial uses `my-release` as the release name. If you use a different value, be sure to adjust the release name in subsequent commands.
     {{site.data.alerts.end}}
 
+    {{site.data.alerts.callout_danger}}
+    To allow the CockroachDB pods to deploy successfully, do not set the [`--wait` flag](https://helm.sh/docs/intro/using_helm/#helpful-options-for-installupgraderollback) when using Helm commands.
+    {{site.data.alerts.end}}
+
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ helm install my-release --values {custom-values}.yaml cockroachdb/cockroachdb

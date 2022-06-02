@@ -46,6 +46,27 @@ For more technical details, see [How online schema changes are possible in Cockr
 If a schema change fails, the schema change job will be cleaned up automatically. However, there are limitations with rolling back schema changes within a transaction; for more information, [see below](#schema-change-ddl-statements-inside-a-multi-statement-transaction-can-fail-while-other-statements-succeed).
 {{site.data.alerts.end}}
 
+{{site.data.alerts.callout_info}}
+If a schema change job is paused, any jobs waiting on that schema change will stop waiting and return an error.
+{{site.data.alerts.end}}
+
+## Declarative schema changer
+
+{% include_cached new-in.html version="v22.1" %} The declarative schema changer is the next iteration of how schema changes will be performed in CockroachDB. By planning schema change operations in a more principled manner, the declarative schema changer will ultimately make transactional schema changes more stable. You can identify jobs that are using the declarative schema changer by running [`SHOW JOBS`](show-jobs.html) and finding jobs with a `job_type` of `NEW SCHEMA CHANGE`.
+
+The following statements use the declarative schema changer by default:
+
+- [`DROP DATABASE`](drop-database.html)
+- [`DROP SCHEMA`](drop-schema.html)
+- [`DROP TABLE`](drop-table.html)
+- [`DROP TYPE`](drop-type.html)
+
+The declarative schema changer can be enabled and disabled via the `sql.defaults.use_declarative_schema_changer` [cluster setting](cluster-settings.html) and the `use_declarative_schema_changer` [session variable](set-vars.html) until all schema change statements are moved to use the declarative schema changer.
+
+{{site.data.alerts.callout_danger}}
+Declarative schema changer statements and legacy schema changer statements operating on the same objects cannot exist within the same transaction. Either split the transaction into multiple transactions, or disable the cluster setting or session variable.
+{{site.data.alerts.end}}
+
 ## Examples
 
 {{site.data.alerts.callout_success}}
@@ -219,7 +240,7 @@ ERROR:  current transaction is aborted, commands ignored until end of transactio
 ROLLBACK
 ~~~
 
-### `ALTER TYPE` schema changes cannot be cancelled.
+### `ALTER TYPE` schema changes cannot be cancelled
 
 You can only [cancel](cancel-job.html) [`ALTER TYPE`](alter-type.html) schema change jobs that drop values. All other `ALTER TYPE` schema change jobs are non-cancellable.
 

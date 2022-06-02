@@ -7,7 +7,7 @@ docs_area: reference.sql
 
 The `GRANT` [statement](sql-statements.html) controls each [role or user's](security-reference/authorization.html#users-and-roles) SQL privileges for interacting with specific [databases](create-database.html), [schemas](create-schema.html), [tables](create-table.html), or [user-defined types](enum.html). For privileges required by specific statements, see the documentation for the respective [SQL statement](sql-statements.html).
 
-You can use `GRANT` to directly grant privileges to a role or user, or you can grant membership to an existing role, which grants that role's privileges to the grantee.
+You can use `GRANT` to directly grant privileges to a role or user, or you can grant membership to an existing role, which grants that role's privileges to the grantee. Users granted a privilege with `WITH GRANT OPTION` can in turn grant that privilege to others. The owner of an object implicitly has the `GRANT OPTION` for all privileges, and the `GRANT OPTION` is inherited through role memberships.
 
 {% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
@@ -28,7 +28,9 @@ Parameter                 | Description
 `schema_name_list`        | A comma-separated list of [schemas](create-schema.html).
 `ALL TABLES IN SCHEMA`    |  Grant privileges on all tables in a schema or list of schemas.
 `privilege_list`          | A comma-separated list of [privileges](security-reference/authorization.html#managing-privileges) to grant.
+`role_spec_list`          | A comma-separated list of source roles.
 `WITH ADMIN OPTION`       | Designate the user as a role admin. Role admins can grant or [revoke](revoke.html) membership for the specified role.
+`WITH GRANT OPTION`       | <span class="version-tag">New in v22.1:</span> Allow the user to grant the specified privilege to others.
 
 ## Supported privileges
 
@@ -38,7 +40,7 @@ Roles and users can be granted the following privileges:
 
 ## Required privileges
 
-- To grant privileges, the user granting the privileges must also have the privilege being granted on the target database or tables. For example, a user granting the `SELECT` privilege on a table to another user must have the `GRANT` and `SELECT` privileges on that table.
+- To grant privileges, the user granting the privileges must also have the privilege being granted on the target database or tables. For example, a user granting the `SELECT` privilege on a table to another user must have the `SELECT` privileges on that table and `WITH GRANT OPTION` on `SELECT`.
 
 - To grant roles, the user granting role membership must be a role admin (i.e., members with the `WITH ADMIN OPTION`) or a member of the `admin` role. To grant membership to the `admin` role, the user must have `WITH ADMIN OPTION` on the `admin` role.
 
@@ -76,7 +78,7 @@ Roles and users can be granted the following privileges:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> GRANT ALL ON DATABASE movr TO max;
+> GRANT ALL ON DATABASE movr TO max WITH GRANT OPTION;
 ~~~
 
 {% include copy-clipboard.html %}
@@ -85,11 +87,11 @@ Roles and users can be granted the following privileges:
 ~~~
 
 ~~~
-  database_name | grantee | privilege_type
-----------------+---------+-----------------
-  movr          | admin   | ALL
-  movr          | max     | ALL
-  movr          | root    | ALL
+  database_name | grantee | privilege_type  | is_grantable
+----------------+---------+-----------------+--------------
+  movr          | admin   | ALL             | true
+  movr          | max     | ALL             | true
+  movr          | root    | ALL             | true
 (3 rows)
 ~~~
 
@@ -106,11 +108,11 @@ Roles and users can be granted the following privileges:
 ~~~
 
 ~~~
-  database_name | schema_name | table_name | grantee | privilege_type
-----------------+-------------+------------+---------+-----------------
-  movr          | public      | rides      | admin   | ALL
-  movr          | public      | rides      | max     | DELETE
-  movr          | public      | rides      | root    | ALL
+  database_name | schema_name | table_name | grantee | privilege_type  | is_grantable
+----------------+-------------+------------+---------+-----------------+--------------
+  movr          | public      | rides      | admin   | ALL             | true
+  movr          | public      | rides      | max     | DELETE          | false
+  movr          | public      | rides      | root    | ALL             | true
 (3 rows)
 ~~~
 
@@ -127,27 +129,27 @@ Roles and users can be granted the following privileges:
 ~~~
 
 ~~~
-  database_name | schema_name |         table_name         | grantee | privilege_type
-----------------+-------------+----------------------------+---------+-----------------
-  movr          | public      | promo_codes                | admin   | ALL
-  movr          | public      | promo_codes                | max     | SELECT
-  movr          | public      | promo_codes                | root    | ALL
-  movr          | public      | rides                      | admin   | ALL
-  movr          | public      | rides                      | max     | DELETE
-  movr          | public      | rides                      | max     | SELECT
-  movr          | public      | rides                      | root    | ALL
-  movr          | public      | user_promo_codes           | admin   | ALL
-  movr          | public      | user_promo_codes           | max     | SELECT
-  movr          | public      | user_promo_codes           | root    | ALL
-  movr          | public      | users                      | admin   | ALL
-  movr          | public      | users                      | max     | SELECT
-  movr          | public      | users                      | root    | ALL
-  movr          | public      | vehicle_location_histories | admin   | ALL
-  movr          | public      | vehicle_location_histories | max     | SELECT
-  movr          | public      | vehicle_location_histories | root    | ALL
-  movr          | public      | vehicles                   | admin   | ALL
-  movr          | public      | vehicles                   | max     | SELECT
-  movr          | public      | vehicles                   | root    | ALL
+  database_name | schema_name |         table_name         | grantee | privilege_type  | is_grantable
+----------------+-------------+----------------------------+---------+-----------------+--------------
+  movr          | public      | promo_codes                | admin   | ALL             | true
+  movr          | public      | promo_codes                | max     | SELECT          | false
+  movr          | public      | promo_codes                | root    | ALL             | true
+  movr          | public      | rides                      | admin   | ALL             | true
+  movr          | public      | rides                      | max     | DELETE          | false
+  movr          | public      | rides                      | max     | SELECT          | false
+  movr          | public      | rides                      | root    | ALL             | true
+  movr          | public      | user_promo_codes           | admin   | ALL             | true
+  movr          | public      | user_promo_codes           | max     | SELECT          | false
+  movr          | public      | user_promo_codes           | root    | ALL             | true
+  movr          | public      | users                      | admin   | ALL             | true
+  movr          | public      | users                      | max     | SELECT          | false
+  movr          | public      | users                      | root    | ALL             | true
+  movr          | public      | vehicle_location_histories | admin   | ALL             | true
+  movr          | public      | vehicle_location_histories | max     | SELECT          | false
+  movr          | public      | vehicle_location_histories | root    | ALL             | true
+  movr          | public      | vehicles                   | admin   | ALL             | true
+  movr          | public      | vehicles                   | max     | SELECT          | false
+  movr          | public      | vehicles                   | root    | ALL             | true
 (19 rows)
 ~~~
 
@@ -164,12 +166,12 @@ Roles and users can be granted the following privileges:
 ~~~
 
 ~~~
-  database_name | schema_name | table_name | grantee | privilege_type
-----------------+-------------+------------+---------+-----------------
-  movr          | public      | vehicles   | admin   | ALL
-  movr          | public      | vehicles   | max     | SELECT
-  movr          | public      | vehicles   | public  | SELECT
-  movr          | public      | vehicles   | root    | ALL
+  database_name | schema_name | table_name | grantee | privilege_type  | is_grantable
+----------------+-------------+------------+---------+-----------------+--------------
+  movr          | public      | vehicles   | admin   | ALL             | true
+  movr          | public      | vehicles   | max     | SELECT          | false
+  movr          | public      | vehicles   | public  | SELECT          | false
+  movr          | public      | vehicles   | root    | ALL             | true
 (4 rows)
 ~~~
 
@@ -182,7 +184,7 @@ Roles and users can be granted the following privileges:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> GRANT ALL ON SCHEMA cockroach_labs TO max;
+> GRANT ALL ON SCHEMA cockroach_labs TO max WITH GRANT OPTION;
 ~~~
 
 {% include copy-clipboard.html %}
@@ -191,11 +193,11 @@ Roles and users can be granted the following privileges:
 ~~~
 
 ~~~
-  database_name |  schema_name   | grantee | privilege_type
-----------------+----------------+---------+-----------------
-  movr          | cockroach_labs | admin   | ALL
-  movr          | cockroach_labs | max     | ALL
-  movr          | cockroach_labs | root    | ALL
+  database_name |  schema_name   | grantee | privilege_type  | is_grantable
+----------------+----------------+---------+-----------------+--------------
+  movr          | cockroach_labs | admin   | ALL             | true
+  movr          | cockroach_labs | max     | ALL             | true
+  movr          | cockroach_labs | root    | ALL             | true
 (3 rows)
 ~~~
 
@@ -208,7 +210,7 @@ Roles and users can be granted the following privileges:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> GRANT ALL ON TYPE status TO max;
+> GRANT ALL ON TYPE status TO max WITH GRANT OPTION;
 ~~~
 
 {% include copy-clipboard.html %}
@@ -217,13 +219,13 @@ Roles and users can be granted the following privileges:
 ~~~
 
 ~~~
-  database_name | schema_name | type_name | grantee | privilege_type
-----------------+-------------+-----------+---------+-----------------
-  movr          | public      | status    | admin   | ALL
-  movr          | public      | status    | demo    | ALL
-  movr          | public      | status    | max     | ALL
-  movr          | public      | status    | public  | USAGE
-  movr          | public      | status    | root    | ALL
+  database_name | schema_name | type_name | grantee | privilege_type  | is_grantable
+----------------+-------------+-----------+---------+-----------------+--------------
+  movr          | public      | status    | admin   | ALL             | true
+  movr          | public      | status    | demo    | ALL             | false
+  movr          | public      | status    | max     | ALL             | true
+  movr          | public      | status    | public  | USAGE           | false
+  movr          | public      | status    | root    | ALL             | true
 (5 rows)
 ~~~
 
@@ -259,9 +261,9 @@ The user `max` can then use the [`CONFIGURE ZONE`](configure-zone.html) statemen
 ~~~
 
 ~~~
-  role_name | member | is_admin
-------------+--------+-----------
-  developer | abbey  |  false
+  role_name | member | is_admin  | is_grantable
+------------+--------+-----------+-----------
+  developer | abbey  |  false    | false
 (1 row)
 ~~~
 
@@ -278,10 +280,31 @@ The user `max` can then use the [`CONFIGURE ZONE`](configure-zone.html) statemen
 ~~~
 
 ~~~
-  role_name | member | is_admin
-------------+--------+-----------
-  developer | abbey  |   true
+  role_name | member | is_admin  | is_grantable
+------------+--------+-----------+-----------
+  developer | abbey  |   true    | true
 (1 row)
+~~~
+
+### Grant privileges with the option to grant to others
+
+{% include copy-clipboard.html %}
+~~~ sql
+> GRANT UPDATE ON TABLE rides TO max WITH GRANT OPTION;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW GRANTS ON TABLE rides;
+~~~
+
+~~~
+  database_name | schema_name | table_name | grantee | privilege_type  | is_grantable
+----------------+-------------+------------+---------+-----------------+--------------
+  movr          | public      | rides      | admin   | ALL             | true
+  movr          | public      | rides      | max     | UPDATE          | true
+  movr          | public      | rides      | root    | ALL             | true
+(3 rows)
 ~~~
 
 ## See also

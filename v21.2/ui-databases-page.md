@@ -54,7 +54,7 @@ Click any table name in [**Tables**](#tables-view) view to display details for t
 
 - **Overview** displays the SQL statements used to [create and define the table](create-table.html), as well as [partitioning](partitioning.html) info, [zone configurations](configure-replication-zones.html), constraints, and lease preferences. In addition, the following metrics are displayed:
 	- **Size** displays the approximate disk size of all replicas of this table on the cluster.
-	- **Ranges** displays the number of [ranges](architecture/overview.html#terms) in this table.
+	- **Ranges** displays the number of [ranges](architecture/overview.html#architecture-range) in this table.
 	- **Replicas** displays the number of [replicas](architecture/replication-layer.html) of this table on the cluster.
 	- **Regions/nodes** displays the regions and nodes on which the table data is stored. This is not displayed on a single-node cluster.
 	- **Database** displays the database on which the table is found.

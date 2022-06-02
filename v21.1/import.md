@@ -9,25 +9,27 @@ The `IMPORT` [statement](sql-statements.html) imports the following types of dat
 
 - [Avro][avro]
 - [CSV/TSV][csv]
-- [Postgres dump files][postgres]
+- [PostgreSQL dump files][postgres]
 - [MySQL dump files][mysql]
 - [CockroachDB dump files](cockroach-dump.html)
 - [Delimited data files](#delimited-data-files)
 
-## Considerations
-
-- `IMPORT` only works for creating new tables. For information on how to import into existing tables, see [`IMPORT INTO`](import-into.html). Also, for instructions and working examples on how to migrate data from other databases, see the [Migration Overview](migration-overview.html).
-
 {% include {{ page.version.version }}/import-table-deprecate.md %}
 
-- `IMPORT` cannot be used with [user-defined types](create-type.html). Use [`IMPORT INTO`](import-into.html) instead.
+## Considerations
+
 - `IMPORT` is a blocking statement. To run an import job asynchronously, use the [`DETACHED`](#options-detached) option.
 - `IMPORT` cannot be used within a [rolling upgrade](upgrade-cockroach-version.html).
+- As of v21.2, certain `IMPORT TABLE` statements that defined the table schema inline are **deprecated**. These include running `IMPORT TABLE ... CREATE USING` and `IMPORT TABLE` with any non-bundle format (`CSV`, `DELIMITED`, `PGCOPY`, or `AVRO`) data types. Instead, use `CREATE TABLE` and `IMPORT INTO`; see this [example](import-into.html#import-into-a-new-table-from-a-csv-file) for more detail.
+- `IMPORT` can only import data to a new table. For information on how to import into existing tables, see [`IMPORT INTO`](import-into.html).
+- For instructions and working examples on how to migrate data from other databases, see the [Migration Overview](migration-overview.html).
+- `IMPORT` cannot be used with [user-defined types](create-type.html). Use [`IMPORT INTO`](import-into.html) instead.
 - {% include {{page.version.version}}/sql/import-into-regional-by-row-table.md %}
 
-{{site.data.alerts.callout_info}}
+{{site.data.alerts.callout_success}}
 Optimize import operations in your applications by following our [Import Performance Best Practices](import-performance-best-practices.html).
 {{site.data.alerts.end}}
+
 ## Required privileges
 
 #### Table privileges
@@ -69,7 +71,7 @@ Parameter | Description
 Parameter | Description
 ----------|------------
 `table_name` | The name of the table you want to import/create. Use this when the dump file contains a specific table. Leave out `TABLE table_name FROM` when the dump file contains an entire database.
-`import_format` | [`PGDUMP`](#import-a-postgres-database-dump), [`MYSQLDUMP`](#import-a-mysql-database-dump), or [`DELIMITED DATA`](#delimited-data-files)
+`import_format` | [`PGDUMP`](#import-a-postgresql-database-dump), [`MYSQLDUMP`](#import-a-mysql-database-dump), or [`DELIMITED DATA`](#delimited-data-files)
 `file_location` | The [URL](#import-file-location) of a dump file you want to import.
 `WITH kv_option_list` | Control your import's behavior with [these options](#import-options).
 
@@ -98,9 +100,9 @@ Key                 | <div style="width:130px">Context</div> | Value            
 `nullif`               | `CSV DATA `, [`DELIMITED DATA`](#delimited-data-files) | The string that should be converted to *NULL*.
 `skip`                 | `CSV DATA `, [`DELIMITED DATA`](#delimited-data-files) | The number of rows to be skipped while importing a file. **Default: `'0'`**.
 `decompress`           | General         | The decompression codec to be used: `gzip`, `bzip`, `auto`, or `none`.  **Default: `'auto'`**, which guesses based on file extension (`.gz`, `.bz`, `.bz2`). `none` disables decompression.
-`row_limit`           | General         |<span class="version-tag">New in v21.1:</span> The number of rows to import. Useful for doing a test run of an import and finding errors quickly. For non-bundled formats, setting `row_limit = 'n'` will import the first *n* rows of a table. For bundled formats, this option will import the first *n* rows from each table in the dump file.
+`row_limit`           | General         |{% include_cached new-in.html version="v21.1" %} The number of rows to import. Useful for doing a test run of an import and finding errors quickly. For non-bundled formats, setting `row_limit = 'n'` will import the first *n* rows of a table. For bundled formats, this option will import the first *n* rows from each table in the dump file.
 `skip_foreign_keys`    | `PGDUMP`, `MYSQLDUMP` | Ignore foreign key constraints in the dump file's DDL. **Default:** Off.  May be necessary to import a table with unsatisfied foreign key constraints from a full database dump.
-`max_row_size`         | `PGDUMP`        | Override limit on line size. **Default: 0.5MB**.  This setting may need to be tweaked if your Postgres dump file has extremely long lines, for example as part of a `COPY` statement.
+`max_row_size`         | `PGDUMP`        | Override limit on line size. **Default: 0.5MB**.  This setting may need to be tweaked if your PostgreSQL dump file has extremely long lines, for example as part of a `COPY` statement.
 `ignore_unsupported_statements` | `PGDUMP`  | <span class="version-tag">New in v21.1:</span> Ignore SQL statements in the dump file that are unsupported by CockroachDB.
 `log_ignored_statements` | `PGDUMP` | <span class="version-tag">New in v21.1:</span> Log unsupported statements when using `ignore_unsupported_statements` to a specified destination (i.e., [cloud storage](use-cloud-storage-for-bulk-operations.html) or [userfile storage](use-userfile-for-bulk-operations.html).
 `rows_terminated_by`   | [`DELIMITED DATA`](#delimited-data-files)  | The unicode character to indicate new lines in the input file. **Default:** `\n`
@@ -144,18 +146,18 @@ Your `IMPORT` statement must reference a `CREATE TABLE` statement representing t
 
 - Specify the table's columns explicitly from the [SQL client](cockroach-sql.html). For an example, see [Import a table from a CSV file](#import-a-table-from-a-csv-file) below.
 
-- Load a file that already contains a `CREATE TABLE` statement. For an example, see [Import a Postgres database dump](#import-a-postgres-database-dump) below.
+- Load a file that already contains a `CREATE TABLE` statement. For an example, see [Import a PostgreSQL database dump](#import-a-postgresql-database-dump) below.
 
 - **Recommended**: Since `IMPORT TABLE` will be deprecated from v21.2, use [`CREATE TABLE`](create-table.html) followed by [`IMPORT INTO`](import-into.html). For an example, see [Import into a new table from a CSV file](import-into.html#import-into-a-new-table-from-a-csv-file).
 
 We also recommend [specifying all secondary indexes you want to use in the `CREATE TABLE` statement](create-table.html#create-a-table-with-secondary-and-gin-indexes). It is possible to [add secondary indexes later](create-index.html), but it is significantly faster to specify them during import.
 
 {{site.data.alerts.callout_info}}
- `IMPORT` supports [computed columns](computed-columns.html) for Avro and Postgres dump files only. To import CSV data to a table with a computed column or `DEFAULT` expression, use [`IMPORT INTO`](import-into.html).
+ `IMPORT` supports [computed columns](computed-columns.html) for Avro and PostgreSQL dump files only. To import CSV data to a table with a computed column or `DEFAULT` expression, use [`IMPORT INTO`](import-into.html).
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
-By default, the [Postgres][postgres] and [MySQL][mysql] import formats support foreign keys. However, the most common dependency issues during import are caused by unsatisfied foreign key relationships that cause errors like `pq: there is no unique constraint matching given keys for referenced table tablename`. You can avoid these issues by adding the [`skip_foreign_keys`](#import-options) option to your `IMPORT` statement as needed. Ignoring foreign constraints will also speed up data import.
+By default, the [PostgreSQL][postgres] and [MySQL][mysql] import formats support foreign keys. However, the most common dependency issues during import are caused by unsatisfied foreign key relationships that cause errors like `pq: there is no unique constraint matching given keys for referenced table tablename`. You can avoid these issues by adding the [`skip_foreign_keys`](#import-options) option to your `IMPORT` statement as needed. Ignoring foreign constraints will also speed up data import.
 {{site.data.alerts.end}}
 
 ### Available storage
@@ -330,9 +332,9 @@ WITH
 
 ### Import a limited number of rows
 
-<span class="version-tag">New in v21.1:</span> The `row_limit` option determines the number of rows to import. For non-bundled formats, setting `row_limit = 'n'` will import the first *n* rows of a table. For bundled formats, this option will import the first *n* rows from each table in the dump file. It is useful for finding errors quickly before executing a more time- and resource-consuming import. Imported tables can be inspected for their schema and data, but must be [dropped](drop-table.html) before running the actual import.
+{% include_cached new-in.html version="v21.1" %} The `row_limit` option determines the number of rows to import. For non-bundled formats, setting `row_limit = 'n'` will import the first *n* rows of a table. For bundled formats, this option will import the first *n* rows from each table in the dump file. It is useful for finding errors quickly before executing a more time- and resource-consuming import. Imported tables can be inspected for their schema and data, but must be [dropped](drop-table.html) before running the actual import.
 
-The examples below use CSV data, but `row_limit` is also an option for [Avro files](migrate-from-avro.html#step-3-import-the-avro), [delimited data files](#import-a-delimited-data-file), [Postgres dump files](migrate-from-postgres.html#row-limit), and [MySQL dump files](migrate-from-mysql.html#row-limit).
+The examples below use CSV data, but `row_limit` is also an option for [Avro files](migrate-from-avro.html#step-3-import-the-avro), [delimited data files](#import-a-delimited-data-file), [PostgreSQL dump files](migrate-from-postgres.html#row-limit), and [MySQL dump files](migrate-from-mysql.html#row-limit).
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -394,16 +396,16 @@ WITH
 ;
 ~~~
 
-### Import a Postgres database dump
+### Import a PostgreSQL database dump
 
 {% include copy-clipboard.html %}
 ~~~ sql
 > IMPORT PGDUMP 's3://{BUCKET NAME}/{customers.sql}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' WITH ignore_unsupported_statements;
 ~~~
 
-For the command above to succeed, you need to have created the dump file with specific flags to `pg_dump`, and starting in v21.1 use the `WITH ignore_unsupported_statements` clause. For more information, see [Migrate from Postgres](migrate-from-postgres.html).
+For this command to succeed, you need to have created the dump file with specific flags to `pg_dump`, and starting in v21.1 use the `WITH ignore_unsupported_statements` clause. For more information, see [Migrate from Postgres](migrate-from-postgres.html).
 
-### Import a table from a Postgres database dump
+### Import a table from a PostgreSQL database dump
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -412,7 +414,7 @@ For the command above to succeed, you need to have created the dump file with sp
 
 If the table schema specifies foreign keys into tables that do not exist yet, the `WITH skip_foreign_keys` shown may be needed. For more information, see the list of [import options](#import-options).
 
-For the command above to succeed, you need to have created the dump file with specific flags to `pg_dump`.  For more information, see [Migrate from Postgres](migrate-from-postgres.html).
+For this command to succeed, you need to have created the dump file with specific flags to `pg_dump`.  For more information, see [Migrate from Postgres](migrate-from-postgres.html).
 
 ### Import a CockroachDB dump file
 
@@ -503,7 +505,7 @@ For more information about importing data from Avro, including examples, see [Mi
 
 ### Run an import within a transaction
 
-<span class="version-tag">New in v21.1:</span> The `DETACHED` option allows an import to be run asynchronously, returning the job ID immediately once initiated. You can run imports within transactions by specifying the `DETACHED` option.
+{% include_cached new-in.html version="v21.1" %} The `DETACHED` option allows an import to be run asynchronously, returning the job ID immediately once initiated. You can run imports within transactions by specifying the `DETACHED` option.
 
 The following transactions use CSV data as an example. To use the `DETACHED` option with `IMPORT` in a transaction:
 
@@ -669,9 +671,9 @@ WITH
 
 ### Import a limited number of rows
 
-<span class="version-tag">New in v21.1:</span> The `row_limit` option determines the number of rows to import. For non-bundled formats, setting `row_limit = 'n'` will import the first *n* rows of a table. For bundled formats, this option will import the first *n* rows from each table in the dump file. It is useful for finding errors quickly before executing a more time- and resource-consuming import. Imported tables can be inspected for their schema and data, but must be [dropped](drop-table.html) before running the actual import.
+{% include_cached new-in.html version="v21.1" %} The `row_limit` option determines the number of rows to import. For non-bundled formats, setting `row_limit = 'n'` will import the first *n* rows of a table. For bundled formats, this option will import the first *n* rows from each table in the dump file. It is useful for finding errors quickly before executing a more time- and resource-consuming import. Imported tables can be inspected for their schema and data, but must be [dropped](drop-table.html) before running the actual import.
 
-The examples below use CSV data, but `row_limit` is also an option for [Avro files](migrate-from-avro.html#step-3-import-the-avro), [delimited data files](#import-a-delimited-data-file), [Postgres dump files](migrate-from-postgres.html#row-limit), and [MySQL dump files](migrate-from-mysql.html#row-limit).
+The examples below use CSV data, but `row_limit` is also an option for [Avro files](migrate-from-avro.html#step-3-import-the-avro), [delimited data files](#import-a-delimited-data-file), [PostgreSQL dump files](migrate-from-postgres.html#row-limit), and [MySQL dump files](migrate-from-mysql.html#row-limit).
 
 
 {% include copy-clipboard.html %}
@@ -734,16 +736,16 @@ WITH
 ;
 ~~~
 
-### Import a Postgres database dump
+### Import a PostgreSQL database dump
 
 {% include copy-clipboard.html %}
 ~~~ sql
 > IMPORT PGDUMP 'azure://{CONTAINER NAME}/{employees.sql}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}' WITH ignore_unsupported_statements;
 ~~~
 
-For the commands above to succeed, you need to have created the dump file with specific flags to `pg_dump`, and starting in v21.1 use the `WITH ignore_unsupported_statements` clause. For more information, see [Migrate from Postgres](migrate-from-postgres.html).
+For this command to succeed, you need to have created the dump file with specific flags to `pg_dump`, and starting in v21.1 use the `WITH ignore_unsupported_statements` clause. For more information, see [Migrate from Postgres](migrate-from-postgres.html).
 
-### Import a table from a Postgres database dump
+### Import a table from a PostgreSQL database dump
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -752,7 +754,7 @@ For the commands above to succeed, you need to have created the dump file with s
 
 If the table schema specifies foreign keys into tables that do not exist yet, the `WITH skip_foreign_keys` shown may be needed. For more information, see the list of [import options](#import-options).
 
-For the command above to succeed, you need to have created the dump file with specific flags to `pg_dump`.  For more information, see [Migrate from Postgres](migrate-from-postgres.html).
+For this command to succeed, you need to have created the dump file with specific flags to `pg_dump`.  For more information, see [Migrate from Postgres](migrate-from-postgres.html).
 
 ### Import a CockroachDB dump file
 
@@ -844,7 +846,7 @@ For more information about importing data from Avro, including examples, see [Mi
 
 ### Run an import within a transaction
 
-<span class="version-tag">New in v21.1:</span> The `DETACHED` option allows an import to be run asynchronously, returning the job ID immediately once initiated. You can run imports within transactions by specifying the `DETACHED` option.
+{% include_cached new-in.html version="v21.1" %} The `DETACHED` option allows an import to be run asynchronously, returning the job ID immediately once initiated. You can run imports within transactions by specifying the `DETACHED` option.
 
 The following transactions use CSV data as an example. To use the `DETACHED` option with `IMPORT` in a transaction:
 
@@ -1014,9 +1016,9 @@ WITH
 
 ### Import a limited number of rows
 
-<span class="version-tag">New in v21.1:</span> The `row_limit` option determines the number of rows to import. For non-bundled formats, setting `row_limit = 'n'` will import the first *n* rows of a table. For bundled formats, this option will import the first *n* rows from each table in the dump file. It is useful for finding errors quickly before executing a more time- and resource-consuming import. Imported tables can be inspected for their schema and data, but must be [dropped](drop-table.html) before running the actual import.
+{% include_cached new-in.html version="v21.1" %} The `row_limit` option determines the number of rows to import. For non-bundled formats, setting `row_limit = 'n'` will import the first *n* rows of a table. For bundled formats, this option will import the first *n* rows from each table in the dump file. It is useful for finding errors quickly before executing a more time- and resource-consuming import. Imported tables can be inspected for their schema and data, but must be [dropped](drop-table.html) before running the actual import.
 
-The examples below use CSV data, but `row_limit` is also an option for [Avro files](migrate-from-avro.html#step-3-import-the-avro), [delimited data files](#import-a-delimited-data-file), [Postgres dump files](migrate-from-postgres.html#row-limit), and [MySQL dump files](migrate-from-mysql.html#row-limit).
+The examples below use CSV data, but `row_limit` is also an option for [Avro files](migrate-from-avro.html#step-3-import-the-avro), [delimited data files](#import-a-delimited-data-file), [PostgreSQL dump files](migrate-from-postgres.html#row-limit), and [MySQL dump files](migrate-from-mysql.html#row-limit).
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -1078,16 +1080,16 @@ WITH
 ;
 ~~~
 
-### Import a Postgres database dump
+### Import a PostgreSQL database dump
 
 {% include copy-clipboard.html %}
 ~~~ sql
 > IMPORT PGDUMP 'gs://{BUCKET NAME}/{employees.sql}?AUTH=specified&CREDENTIALS={ENCODED KEY}' WITH ignore_unsupported_statements;
 ~~~
 
-For the commands above to succeed, you need to have created the dump file with specific flags to `pg_dump`, and starting in v21.1 use the `WITH ignore_unsupported_statements` clause. For more information, see [Migrate from Postgres](migrate-from-postgres.html).
+For this command to succeed, you need to have created the dump file with specific flags to `pg_dump`, and starting in v21.1 use the `WITH ignore_unsupported_statements` clause. For more information, see [Migrate from Postgres](migrate-from-postgres.html).
 
-### Import a table from a Postgres database dump
+### Import a table from a PostgreSQL database dump
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -1096,7 +1098,7 @@ For the commands above to succeed, you need to have created the dump file with s
 
 If the table schema specifies foreign keys into tables that do not exist yet, the `WITH skip_foreign_keys` shown may be needed. For more information, see the list of [import options](#import-options).
 
-For the command above to succeed, you need to have created the dump file with specific flags to `pg_dump`.  For more information, see [Migrate from Postgres](migrate-from-postgres.html).
+For this command to succeed, you need to have created the dump file with specific flags to `pg_dump`.  For more information, see [Migrate from Postgres](migrate-from-postgres.html).
 
 ### Import a CockroachDB dump file
 
@@ -1187,7 +1189,7 @@ For more information about importing data from Avro, including examples, see [Mi
 
 ### Run an import within a transaction
 
-<span class="version-tag">New in v21.1:</span> The `DETACHED` option allows an import to be run asynchronously, returning the job ID immediately once initiated. You can run imports within transactions by specifying the `DETACHED` option.
+{% include_cached new-in.html version="v21.1" %} The `DETACHED` option allows an import to be run asynchronously, returning the job ID immediately once initiated. You can run imports within transactions by specifying the `DETACHED` option.
 
 The following transactions use CSV data as an example. To use the `DETACHED` option with `IMPORT` in a transaction:
 

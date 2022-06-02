@@ -10,7 +10,7 @@ The `SHOW CLUSTER SETTING` [statement](sql-statements.html) displays the values 
 To configure cluster settings, use [`SET CLUSTER SETTING`](set-cluster-setting.html).
 
 {{site.data.alerts.callout_info}}
-The `SHOW` statement for cluster settings is unrelated to the other `SHOW` statements: <a href="show-vars.html"><code>SHOW (session variable)</code></a>, <a href="show-create.html"><code>SHOW CREATE</code></a>, <a href="show-users.html"><code>SHOW USERS</code></a>, <a href="show-databases.html"><code>SHOW DATABASES</code></a>, <a href="show-columns.html"><code>SHOW COLUMNS</code></a>, <a href="show-grants.html"><code>SHOW GRANTS</code></a>, and <a href="show-constraints.html"><code>SHOW CONSTRAINTS</code></a>.
+The `SHOW` statement for cluster settings is unrelated to the other `SHOW` statements: <a href="show-vars.html"><code>SHOW {session variable}</code></a>, <a href="show-create.html"><code>SHOW CREATE</code></a>, <a href="show-users.html"><code>SHOW USERS</code></a>, <a href="show-databases.html"><code>SHOW DATABASES</code></a>, <a href="show-columns.html"><code>SHOW COLUMNS</code></a>, <a href="show-grants.html"><code>SHOW GRANTS</code></a>, and <a href="show-constraints.html"><code>SHOW CONSTRAINTS</code></a>.
 {{site.data.alerts.end}}
 
 ## Details
@@ -43,7 +43,7 @@ The `SHOW` statement for cluster settings is unrelated to the other `SHOW` state
 
 ## Required privileges
 
-Only members of the `admin` role can display cluster settings. By default, the `root` user belongs to the `admin` role.
+To use the `SHOW CLUSTER SETTING` statement, a user must either be a member of the `admin` role (the `root` user belongs to the `admin` role by default) or have the `VIEWCLUSTERSETTING` [role option](security-reference/authorization.html#role-options) defined.
 
 ## Synopsis
 
@@ -126,7 +126,7 @@ Field | Description
 - [`SET CLUSTER SETTING`](set-cluster-setting.html)
 - [`RESET CLUSTER SETTING`](reset-cluster-setting.html)
 - [Cluster settings](cluster-settings.html)
-- [`SHOW` (session variable)](show-vars.html)
+- [`SHOW {session variable}`](show-vars.html)
 - [`SHOW COLUMNS`](show-columns.html)
 - [`SHOW CONSTRAINTS`](show-constraints.html)
 - [`SHOW CREATE`](show-create.html)

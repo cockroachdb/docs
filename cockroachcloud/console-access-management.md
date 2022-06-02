@@ -18,6 +18,8 @@ To switch between the organizations:
 1. [Log in](https://cockroachlabs.cloud/).
 2. From the drop-down box in the top-right corner, select the organization you want to access.
 
+The settings and information about the organization are found on the **Settings** page. The organization ID and organization label used by the `ccloud` CLI are listed under **Organization settings**. 
+
 ## SQL users
 
 [Console Admins](#console-admin) can [create and manage SQL users](user-authorization.html#create-a-sql-user). A SQL user can interact with a CockroachDB database using the built-in SQL shell or through an application.
@@ -51,8 +53,6 @@ A Console Admin is an all-access role. A Console Admin can perform the following
 - [Delete an organization](#delete-an-organization)
 
 ## Service accounts
-
-{% include_cached cockroachcloud/experimental-warning.md %}
 
 Service accounts are used by applications accessing the [Cloud API](cloud-api.html) to manage {{ site.data.products.db }} clusters within the organization. Service accounts are not for human users.
 
@@ -89,8 +89,6 @@ To modify the name, description, or permissions of a service account:
 1. Click **Save changes**.
 
 ### API access
-
-{% include_cached cockroachcloud/experimental-warning.md %}
 
 Each service account can have one or more API keys. API keys are used to authenticate and authorize service accounts when using the API. All API keys created by the account are listed under **API Access**.
 

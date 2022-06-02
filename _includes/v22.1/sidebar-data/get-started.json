@@ -4,8 +4,7 @@
   "items": [{
       "title": "Quickstart",
       "urls": [
-        "/cockroachcloud/quickstart.html",
-        "/cockroachcloud/quickstart-trial-cluster.html"
+        "/cockroachcloud/quickstart.html"
       ]
     },
     {
@@ -19,147 +18,124 @@
       "title": "Build a Sample Application",
       "items": [
         {
-          "title": "Hello World",
-          "items": [
-            {
-              "title": "Go",
-              "urls": [
-                "/${VERSION}/hello-world-go-pgx.html",
-                "/${VERSION}/hello-world-go-gorm.html"
-              ]
-            },
-            {
-              "title": "Java",
-              "urls": [
-                "/${VERSION}/hello-world-java-jdbc.html"
-              ]
-            },
-            {
-              "title": "JavaScript (Node.js)",
-              "urls": [
-                "/${VERSION}/hello-world-node-postgres.html"
-              ]
-            },
-            {
-              "title": "Python",
-              "urls": [
-                "/${VERSION}/hello-world-python-sqlalchemy.html"
-              ]
-            }
+          "title": "JavaScript/TypeScript",
+          "urls": [
+            "/${VERSION}/build-a-nodejs-app-with-cockroachdb.html",
+            "/${VERSION}/build-a-nodejs-app-with-cockroachdb-sequelize.html",
+            "/${VERSION}/build-a-nodejs-app-with-cockroachdb-knexjs.html",
+            "/${VERSION}/build-a-nodejs-app-with-cockroachdb-prisma.html",
+            "/${VERSION}/build-a-typescript-app-with-cockroachdb.html"
           ]
         },
         {
-          "title": "Simple CRUD",
-          "items": [
-            {
-              "title": "Go",
-              "urls": [
-                "/${VERSION}/build-a-go-app-with-cockroachdb.html",
-                "/${VERSION}/build-a-go-app-with-cockroachdb-gorm.html",
-                "/${VERSION}/build-a-go-app-with-cockroachdb-pq.html",
-                "/${VERSION}/build-a-go-app-with-cockroachdb-upperdb.html"
-              ]
-            },
-            {
-              "title": "Java",
-              "urls": [
-                "/${VERSION}/build-a-java-app-with-cockroachdb.html",
-                "/${VERSION}/build-a-java-app-with-cockroachdb-hibernate.html",
-                "/${VERSION}/build-a-java-app-with-cockroachdb-jooq.html",
-                "/${VERSION}/build-a-spring-app-with-cockroachdb-mybatis.html"
-              ]
-            },
-            {
-              "title": "JavaScript/TypeScript",
-              "urls": [
-                "/${VERSION}/build-a-nodejs-app-with-cockroachdb.html",
-                "/${VERSION}/build-a-nodejs-app-with-cockroachdb-sequelize.html",
-                "/${VERSION}/build-a-nodejs-app-with-cockroachdb-knexjs.html",
-                "/${VERSION}/build-a-nodejs-app-with-cockroachdb-prisma.html",
-                "/${VERSION}/build-a-typescript-app-with-cockroachdb.html"
-              ]
-            },
-            {
-              "title": "Python",
-              "urls": [
-                "/${VERSION}/build-a-python-app-with-cockroachdb.html",
-                "/${VERSION}/build-a-python-app-with-cockroachdb-sqlalchemy.html",
-                "/${VERSION}/build-a-python-app-with-cockroachdb-django.html",
-                "/${VERSION}/build-a-python-app-with-cockroachdb-pony.html"
-              ]
-            },
-            {
-              "title": "Ruby",
-              "urls": [
-                "/${VERSION}/build-a-ruby-app-with-cockroachdb.html",
-                "/${VERSION}/build-a-ruby-app-with-cockroachdb-activerecord.html"
-              ]
-            },
-            {
-              "title": "C# (.NET)",
-              "urls": [
-                "/${VERSION}/build-a-csharp-app-with-cockroachdb.html"
-              ]
-            },
-            {
-              "title": "Rust",
-              "urls": [
-                "/${VERSION}/build-a-rust-app-with-cockroachdb.html"
-              ]
-            }
+          "title": "Python",
+          "urls": [
+            "/${VERSION}/build-a-python-app-with-cockroachdb.html",
+            "/${VERSION}/build-a-python-app-with-cockroachdb-sqlalchemy.html",
+            "/${VERSION}/build-a-python-app-with-cockroachdb-django.html",
+            "/${VERSION}/build-a-python-app-with-cockroachdb-pony.html"
           ]
         },
         {
-          "title": "Serverless",
-          "items": [
-            {
-              "title": "AWS Lambda",
-              "urls": [
-                "/${VERSION}/deploy-lambda-function.html"
-              ]
-            },
-            {
-              "title": "Google Cloud Run",
-              "urls": [
-                "/${VERSION}/deploy-app-gcr.html"
-              ]
-            },
-            {
-              "title": "Estimate Serverless Usage with MovR",
-              "urls": [
-                "/cockroachcloud/serverless-movr.html"
-              ]
-            },
-            {
-              "title": "Netlify",
-              "urls": [
-                "/${VERSION}/deploy-app-netlify.html"
-              ]
-            },
-            {
-              "title": "Serverless Function Best Practices",
-              "urls": [
-                "/${VERSION}/serverless-function-best-practices.html"
-              ]
-            }
+          "title": "Go",
+          "urls": [
+            "/${VERSION}/build-a-go-app-with-cockroachdb.html",
+            "/${VERSION}/build-a-go-app-with-cockroachdb-gorm.html",
+            "/${VERSION}/build-a-go-app-with-cockroachdb-pq.html",
+            "/${VERSION}/build-a-go-app-with-cockroachdb-upperdb.html"
+          ]
+        },
+        {
+          "title": "Java",
+          "urls": [
+            "/${VERSION}/build-a-java-app-with-cockroachdb.html",
+            "/${VERSION}/build-a-java-app-with-cockroachdb-hibernate.html",
+            "/${VERSION}/build-a-java-app-with-cockroachdb-jooq.html",
+            "/${VERSION}/build-a-spring-app-with-cockroachdb-mybatis.html"
+          ]
+        },
+        {
+          "title": "Ruby",
+          "urls": [
+            "/${VERSION}/build-a-ruby-app-with-cockroachdb.html",
+            "/${VERSION}/build-a-ruby-app-with-cockroachdb-activerecord.html"
+          ]
+        },
+        {
+          "title": "C# (.NET)",
+          "urls": [
+            "/${VERSION}/build-a-csharp-app-with-cockroachdb.html"
+          ]
+        },
+        {
+          "title": "Rust",
+          "urls": [
+            "/${VERSION}/build-a-rust-app-with-cockroachdb.html"
           ]
         }
+      ]
+    },
+    {
+      "title": "Build a Serverless Application",
+      "items": [
+        {
+          "title": "AWS Lambda",
+          "urls": [
+            "/${VERSION}/deploy-lambda-function.html"
+          ]
+        },
+        {
+          "title": "Google Cloud Run",
+          "urls": [
+            "/${VERSION}/deploy-app-gcr.html"
+          ]
+        },
+        {
+          "title": "Estimate Serverless Usage with MovR",
+          "urls": [
+            "/cockroachcloud/serverless-movr.html"
+          ]
+        },
+        {
+          "title": "Netlify",
+          "urls": [
+            "/${VERSION}/deploy-app-netlify.html"
+          ]
+        },
+        {
+          "title": "Vercel",
+          "urls": [
+            "/${VERSION}/deploy-app-vercel.html"
+          ]
+        },
+        {
+          "title": "Serverless Function Best Practices",
+          "urls": [
+            "/${VERSION}/serverless-function-best-practices.html"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Glossary",
+      "urls": [
+        "/${VERSION}/architecture/glossary.html"
       ]
     },
     {
       "title": "FAQs",
       "items": [
         {
+          "title": "CockroachDB FAQs",
+          "urls": [
+            "/${VERSION}/frequently-asked-questions.html"
+          ]
+        },
+        {
           "title": "CockroachDB Cloud FAQs",
           "urls": [
             "/cockroachcloud/serverless-faqs.html",
             "/cockroachcloud/frequently-asked-questions.html"
-          ]
-        },
-        {
-          "title": "CockroachDB FAQs",
-          "urls": [
-            "/${VERSION}/frequently-asked-questions.html"
           ]
         },
         {

@@ -8,6 +8,7 @@ docs_area: stream_data
 {{ site.data.products.enterprise }} changefeeds emit messages to configurable downstream sinks. CockroachDB supports the following sinks:
 
 - [Kafka](#kafka)
+- [Google Cloud Pub/Sub](#google-cloud-pub-sub)
 - [Cloud Storage](#cloud-storage-sink)
 - [Webhook](#webhook-sink)
 
@@ -23,10 +24,12 @@ The sink URI follows the basic format of:
 
 URI Component      | Description
 -------------------+------------------------------------------------------------------
-`scheme`           | The type of sink: [`kafka`](#kafka), any [cloud storage sink](#cloud-storage-sink), or [webhook sink](#webhook-sink).
+`scheme`           | The type of sink: [`kafka`](#kafka), [`gcpubsub`](#google-cloud-pub-sub), any [cloud storage sink](#cloud-storage-sink), or [webhook sink](#webhook-sink).
 `host`             | The sink's hostname or IP address.
 `port`             | The sink's port.
 `query_parameters` | The sink's [query parameters](create-changefeed.html#query-parameters).
+
+To set a different sink URI to an existing changefeed, use the [`sink` option](alter-changefeed.html#sink-example) with `ALTER CHANGEFEED`.
 
 ## Kafka
 
@@ -84,6 +87,43 @@ The configurable fields include:
   * `"NONE"`: no Kafka brokers are required to acknowledge that they have committed the message. This will decrease latency and increase throughput, but comes at the cost of lower consistency.
   * `"ALL"`: a quorum must be reached (that is, most Kafka brokers have committed the message) before the leader can acknowledge. This is the highest consistency level.
 
+## Google Cloud Pub/Sub
+
+{{site.data.alerts.callout_info}}
+The Google Cloud Pub/Sub sink is currently in **beta**. For more information, read about its available [parameters](create-changefeed.html#parameters), [options](create-changefeed.html#options), and the [Create a changefeed connected to a Google Cloud Pub/Sub sink](changefeed-examples.html#create-a-changefeed-connected-to-a-google-cloud-pub-sub-sink) example.
+{{site.data.alerts.end}}
+
+{% include_cached new-in.html version="v22.1" %} Changefeeds can deliver messages to a Google Cloud Pub/Sub sink, which is integrated with Google Cloud Platform.
+
+A Pub/Sub sink URI follows this example:
+
+~~~
+'gcpubsub://{project name}?region={region}&topic_name={topic name}&AUTH=specified&CREDENTIALS={base64-encoded key}'
+~~~
+
+URI Parameter      | Description
+-------------------+------------------------------------------------------------------
+`project name`     | The [Google Cloud Project](https://cloud.google.com/resource-manager/docs/creating-managing-projects) name.
+`region`           | (Required) The single region to which all output will be sent.
+`topic_name`       | (Optional) The topic name to which messages will be sent. See the following section on [Topic Naming](#topic-naming) for detail on how topics are created.
+`AUTH`             | The authentication parameter can define either `specified` (default) or `implicit` authentication. To use `specified` authentication, pass your [Service Account](https://cloud.google.com/iam/docs/understanding-service-accounts) credentials with the URI. To use `implicit` authentication, configure these credentials via an environment variable. See [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html#authentication) for examples of each of these.
+`CREDENTIALS`      | (Required with `AUTH=specified`) The base64-encoded credentials of your Google [Service Account](https://cloud.google.com/iam/docs/understanding-service-accounts) credentials.
+
+When using Pub/Sub as your downstream sink, consider the following:
+
+- It only supports `JSON` message format.
+- Your Google Service Account must have the [Pub/Sub Editor](https://cloud.google.com/iam/docs/understanding-roles#pub-sub-roles) role assigned at the [project level](https://cloud.google.com/resource-manager/docs/access-control-proj#using_predefined_roles).
+- You must specify the `region` parameter in the URI to maintain [ordering guarantees](use-changefeeds.html#ordering-guarantees). Unordered messages are not supported, see [Known Limitations](change-data-capture-overview.html#known-limitations) for more information.
+- Changefeeds connecting to a Pub/Sub sink do not support the `topic_prefix` option.
+
+### Pub/Sub topic naming
+
+When running a `CREATE CHANGEFEED` statement to Pub/Sub, it will try to create a topic automatically. When you do not specify the topic in the URI with the [`topic_name`](create-changefeed.html#topic-name-param) parameter, the changefeed will use the table name to create the topic name. If the topic already exists in your Pub/Sub sink, the changefeed will write to it. You can also use the [`full_table_name`](create-changefeed.html#full-table-option) option to create a topic using the fully qualified table name.
+
+You can manually create a topic in your Pub/Sub sink before starting the changefeed. See the [Creating a changefeed to Google Cloud Pub/Sub](changefeed-examples.html#create-a-changefeed-connected-to-a-google-cloud-pub-sub-sink) example for more detail. To understand restrictions on user-specified topic names, see Google's documentation on [Guidelines to name a topic or subscription](https://cloud.google.com/pubsub/docs/admin#resource_names).
+
+For a list of compatible parameters and options, see [Parameters](create-changefeed.html#parameters) on the `CREATE CHANGEFEED` page.
+
 ## Cloud storage sink
 
 Use a cloud storage sink to deliver changefeed data to OLAP or big data systems without requiring transport via Kafka.
@@ -91,6 +131,7 @@ Use a cloud storage sink to deliver changefeed data to OLAP or big data systems 
 Some considerations when using cloud storage sinks:
 
 - Cloud storage sinks only work with `JSON` and emit newline-delimited `JSON` files.
+- Cloud storage sinks can be configured to store emitted changefeed messages in one or more subdirectories organized by date. See [file partitioning](create-changefeed.html#partition-format) and the [General file format](create-changefeed.html#general-file-format) examples.
 - The supported cloud schemes are: `s3`, `gs`, `azure`, `http`, and `https`.
 - Both `http://` and `https://` are cloud storage sinks, **not** webhook sinks. It is necessary to prefix the scheme with `webhook-` for [webhook sinks](#webhook-sink).
 

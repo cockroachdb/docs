@@ -11,8 +11,7 @@ This page has instructions for deleting rows of data from CockroachDB, using the
 
 Before reading this page, do the following:
 
-- [Install CockroachDB](install-cockroachdb.html).
-- [Start a local cluster](secure-a-cluster.html), or [create a {{ site.data.products.dedicated }} cluster](../cockroachcloud/create-your-cluster.html).
+- [Create a {{ site.data.products.serverless }} cluster](../cockroachcloud/quickstart.html) or [start a local cluster](../cockroachcloud/quickstart.html?filters=local).
 - [Install a Postgres client](install-client-drivers.html).
 - [Connect to the database](connect-to-the-database.html).
 - [Create a database schema](schema-design-overview.html).
@@ -236,6 +235,7 @@ Reference information related to this task:
 
 - [`DELETE`](delete.html)
 - [Bulk-delete data](bulk-delete-data.html)
+- [Batch Delete Expired Data with Row-Level TTL](row-level-ttl.html)
 - [Disk space usage after deletes](delete.html#disk-space-usage-after-deletes)
 - [`TRUNCATE`](truncate.html)
 - [`DROP TABLE`](drop-table.html)

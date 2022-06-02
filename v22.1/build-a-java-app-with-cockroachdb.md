@@ -22,7 +22,7 @@ For a sample app and tutorial that uses Spring Data JDBC and CockroachDB, see [B
 
 ## Step 1. Start CockroachDB
 
-{% include {{ page.version.version }}/app/sample-setup.md %}
+{% include {{ page.version.version }}/setup/sample-setup.md %}
 
 ## Step 2. Get the code
 
@@ -32,17 +32,6 @@ Clone the code's GitHub repo:
 ~~~ shell
 $ git clone https://github.com/cockroachlabs/example-app-java-jdbc/
 ~~~
-
-<div class="filter-content" markdown="1" data-scope="cockroachcloud">
-
-Check out the `cockroachcloud` branch:
-
-{% include_cached copy-clipboard.html %}
-~~~shell
-git checkout cockroachcloud
-~~~
-
-</div>
 
 The project has the following directory structure:
 
@@ -76,23 +65,10 @@ The `dbinit.sql` file initializes the database schema that the application uses:
 
 The `BasicExample.java` file contains the code for `INSERT`, `SELECT`, and `UPDATE` SQL operations. The file also contains the `main` method of the program.
 
-<section class="filter-content" markdown="1" data-scope="cockroachcloud">
-
-{% include_cached copy-clipboard.html %}
-~~~ java
-{% remote_include https://raw.githubusercontent.com/cockroachlabs/example-app-java-jdbc/cockroachcloud/app/src/main/java/com/cockroachlabs/BasicExample.java %}
-~~~
-
-</section>
-
-<section class="filter-content" markdown="1" data-scope="local">
-
 {% include_cached copy-clipboard.html %}
 ~~~ java
 {% remote_include https://raw.githubusercontent.com/cockroachlabs/example-app-java-jdbc/master/app/src/main/java/com/cockroachlabs/BasicExample.java %}
 ~~~
-
-</section>
 
 The sample app uses JDBC and the [Data Access Object (DAO)](https://en.wikipedia.org/wiki/Data_access_object) pattern to map Java methods to SQL operations. It consists of two classes:
 
@@ -112,84 +88,94 @@ It does all of the above using the practices we recommend for using JDBC with Co
 
 ## Step 3. Initialize the database
 
-To initialize the example database, use the [`cockroach sql`](cockroach-sql.html) command to execute the SQL statements in the `dbinit.sql` file:
+1. Navigate to the `example-app-java-jdbc` directory:
 
-<div class="filter-content" markdown="1" data-scope="cockroachcloud">
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ cd example-app-java-jdbc
+    ~~~
 
-{% include_cached copy-clipboard.html %}
-~~~ shell
-cat app/src/main/resources/dbinit.sql | cockroach sql --url "<connection-string>"
-~~~
+1. Set the `DATABASE_URL` environment variable to the connection string to your cluster:
 
-Where `<connection-string>` is the connection string you obtained earlier from the {{ site.data.products.db }} Console.
+    <section class="filter-content" markdown="1" data-scope="local">
 
-</div>
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    export DATABASE_URL="postgresql://root@localhost:26257?sslmode=disable"
+    ~~~
 
-<div class="filter-content" markdown="1" data-scope="local">
+    </section>
 
-{% include_cached copy-clipboard.html %}
-~~~ shell
-cat app/src/main/resources/dbinit.sql | cockroach sql --url "postgresql://root@localhost:26257?sslmode=disable"
-~~~
+    <section class="filter-content" markdown="1" data-scope="cockroachcloud">
 
-{{site.data.alerts.callout_info}}
-`postgresql://root@localhost:26257?sslmode=disable` is the `sql` connection string you obtained earlier from the `cockroach` welcome text.
-{{site.data.alerts.end}}
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    export DATABASE_URL="{connection-string}"
+    ~~~
 
-</div>
+    Where `{connection-string}` is the connection string you obtained from the {{ site.data.products.db }} Console.
 
-The SQL statements in the initialization file should execute:
+    </section>
 
-~~~
-SET
+1. To initialize the example database, use the [`cockroach sql`](cockroach-sql.html) command to execute the SQL statements in the `dbinit.sql` file:
 
-Time: 1ms
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    cat app/src/main/resources/dbinit.sql | cockroach sql --url $DATABASE_URL
+    ~~~
 
-SET
+    The SQL statement in the initialization file should execute:
 
-Time: 2ms
+    ~~~
+    CREATE TABLE
 
-DROP DATABASE
 
-Time: 1ms
-
-CREATE DATABASE
-
-Time: 2ms
-
-SET
-
-Time: 10ms
-
-CREATE TABLE
-
-Time: 4ms
-~~~
+    Time: 102ms
+    ~~~
 
 ## Step 4. Run the code
 
-### Update the connection parameters
+### Update the connection configuration
 
-<section class="filter-content" markdown="1" data-scope="cockroachcloud">
+<section class="filter-content" markdown="1" data-scope="local">
 
-In a text editor modify `app/src/main/java/com/cockroachlabs/BasicExample.java` with the settings to connect to the cluster:
+Set the `JDBC_DATABASE_URL` environment variable to a JDBC-compatible connection string:
 
 {% include_cached copy-clipboard.html %}
-~~~ java
-ds.setServerNames(new String[]{"{globalhost}"});
-ds.setDatabaseName("{cluster_name}.bank");
-ds.setUser("{username}");
-ds.setPassword("{password}");
-ds.setSslRootCert(System.getenv("{path to the CA certificate}"));
+~~~ shell
+export JDBC_DATABASE_URL=jdbc:postgresql://localhost:26257/defaultdb?sslmode=disable&user=root
 ~~~
-
-{% include {{page.version.version}}/app/cc-free-tier-params.md %}
 
 </section>
 
-{{site.data.alerts.callout_success}}
-For guidance on connection pooling, with an example using JDBC and [HikariCP](https://github.com/brettwooldridge/HikariCP), see [Connection Pooling](connection-pooling.html).
-{{site.data.alerts.end}}
+<section class="filter-content" markdown="1" data-scope="cockroachcloud">
+
+1. Use the `cockroach convert-url` command to convert the connection string that you copied from the {{ site.data.products.cloud }} Console to a [valid connection string for JDBC connections](connect-to-the-database.html?filters=java):
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    cockroach convert-url --url $DATABASE_URL
+    ~~~
+
+    ~~~
+    ...
+
+    # Connection URL for JDBC (Java and JVM-based languages):
+    jdbc:postgresql://{host}:{port}/{database}?options=--cluster%3D{routing-id}&password={password}&sslmode=verify-full&user={username}
+    ~~~
+
+1. Set the `JDBC_DATABASE_URL` environment variable to the JDBC-compatible connection string:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    export JDBC_DATABASE_URL="{jdbc-connection-string}"
+    ~~~
+
+</section>
+
+The code sample uses the connection string stored in the environment variable `JDBC_DATABASE_URL` to connect to your cluster.
+
+### Run the code
 
 Compile and run the code:
 
@@ -274,13 +260,13 @@ BUILD SUCCESSFUL in 8s
 
 If you are trying to get a large data set into CockroachDB all at once (a bulk import), avoid writing client-side code altogether and use the [`IMPORT`](import.html) statement instead. It is much faster and more efficient than making a series of [`INSERT`s](insert.html) and [`UPDATE`s](update.html). It bypasses the [SQL layer](architecture/sql-layer.html) altogether and writes directly to the [storage layer](architecture/storage-layer.html) of the database.
 
-For more information about importing data from Postgres, see [Migrate from Postgres](migrate-from-postgres.html).
+For more information about importing data from PostgreSQL, see [Migrate from PostgreSQL](migrate-from-postgres.html).
 
 For more information about importing data from MySQL, see [Migrate from MySQL](migrate-from-mysql.html).
 
-### Use `rewriteBatchedInserts` for increased speed
+### Use `reWriteBatchedInserts` for increased speed
 
-We strongly recommend setting `rewriteBatchedInserts=true`; we have seen 2-3x performance improvements with it enabled. From [the JDBC connection parameters documentation](https://jdbc.postgresql.org/documentation/head/connect.html#connection-parameters):
+We strongly recommend setting `reWriteBatchedInserts=true`; we have seen 2-3x performance improvements with it enabled. From [the JDBC connection parameters documentation](https://jdbc.postgresql.org/documentation/head/connect.html#connection-parameters):
 
 > This will change batch inserts from `insert into foo (col1, col2, col3) values (1,2,3)` into `insert into foo (col1, col2, col3) values (1,2,3), (4,5,6)` this provides 2-3x performance improvement
 
@@ -318,11 +304,15 @@ try (PreparedStatement pstmt = connection.prepareStatement("INSERT INTO accounts
 
 ### Retrieve large data sets in chunks using cursors
 
-CockroachDB now supports the Postgres wire-protocol cursors for implicit transactions and explicit transactions executed to completion. This means the [PGJDBC driver](https://jdbc.postgresql.org) can use this protocol to stream queries with large result sets. This is much faster than [paginating through results in SQL using `LIMIT .. OFFSET`](pagination.html).
+CockroachDB now supports the PostgreSQL wire-protocol cursors for implicit transactions and explicit transactions executed to completion. This means the [PGJDBC driver](https://jdbc.postgresql.org) can use this protocol to stream queries with large result sets. This is much faster than [paginating through results in SQL using `LIMIT .. OFFSET`](pagination.html).
 
 For instructions showing how to use cursors in your Java code, see [Getting results based on a cursor](https://jdbc.postgresql.org/documentation/head/query.html#query-with-cursor) from the PGJDBC documentation.
 
 Note that interleaved execution (partial execution of multiple statements within the same connection and transaction) is not supported when [`Statement.setFetchSize()`](https://docs.oracle.com/javase/8/docs/api/java/sql/Statement.html#setFetchSize-int-) is used.
+
+### Connection pooling
+
+For guidance on connection pooling, with an example using JDBC and [HikariCP](https://github.com/brettwooldridge/HikariCP), see [Connection Pooling](connection-pooling.html).
 
 ## What's next?
 

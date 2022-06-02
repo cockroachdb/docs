@@ -4,13 +4,11 @@ summary: Learn how NULL values are handled in CockroachDB SQL.
 toc: true
 ---
 
-This page summarizes how `NULL` values are handled in CockroachDB
-SQL. Each topic is demonstrated via the [built-in SQL
-client](cockroach-sql.html).
+`NULL` is the term used to represent a missing value. A `NULL` value in a table is a value in a field that appears to be blank. A field with a `NULL` value is a field with no value.
 
-{{site.data.alerts.callout_info}}
-When using the built-in client, `NULL` values are displayed using the word `NULL`. This distinguishes them from a character field that contains an empty string ("").
-{{site.data.alerts.end}}
+This page summarizes how `NULL` values are handled in CockroachDB SQL. Each topic is demonstrated via the [built-in SQL client](cockroach-sql.html).
+
+When using the built-in client, `NULL` values are displayed using the word `NULL`. This distinguishes them from a character field that contains an empty string (`""`).
 
 ## NULLs and simple comparisons
 
@@ -217,35 +215,35 @@ the second operand is `NULL`.
  `FALSE AND TRUE`  | `FALSE`
  `FALSE AND NULL`  | `FALSE`
  `TRUE AND FALSE`  | `FALSE`
- `TRUE AND TRUE`   | `TRUE`  
- `TRUE AND NULL`   | `NULL`  
+ `TRUE AND TRUE`   | `TRUE`
+ `TRUE AND NULL`   | `NULL`
  `NULL AND FALSE`  | `FALSE`
- `NULL AND TRUE`   | `NULL`  
- `NULL AND NULL`   | `NULL`  
+ `NULL AND TRUE`   | `NULL`
+ `NULL AND NULL`   | `NULL`
 
 | Expression      | Result |
 ------------------|---------
  `FALSE OR FALSE` | `FALSE`
- `FALSE OR TRUE`  | `TRUE`  
- `FALSE OR NULL`  | `NULL`  
- `TRUE OR FALSE`  | `TRUE`  
- `TRUE OR TRUE`   | `TRUE`  
- `TRUE OR NULL`   | `TRUE`  
- `NULL OR FALSE`  | `NULL`  
- `NULL OR TRUE`   | `TRUE`  
- `NULL OR NULL`   | `NULL`  
+ `FALSE OR TRUE`  | `TRUE`
+ `FALSE OR NULL`  | `NULL`
+ `TRUE OR FALSE`  | `TRUE`
+ `TRUE OR TRUE`   | `TRUE`
+ `TRUE OR NULL`   | `TRUE`
+ `NULL OR FALSE`  | `NULL`
+ `NULL OR TRUE`   | `TRUE`
+ `NULL OR NULL`   | `NULL`
 
 | Expression      | Result  |
 ------------------|---------
- `FALSE IS FALSE` | `TRUE`  
+ `FALSE IS FALSE` | `TRUE`
  `FALSE IS TRUE`  | `FALSE`
  `FALSE IS NULL`  | `FALSE`
  `TRUE IS FALSE`  | `FALSE`
- `TRUE IS TRUE`   | `TRUE`  
+ `TRUE IS TRUE`   | `TRUE`
  `TRUE IS NULL`   | `FALSE`
  `NULL IS FALSE`  | `FALSE`
  `NULL IS TRUE`   | `FALSE`
- `NULL IS NULL`   | `TRUE`  
+ `NULL IS NULL`   | `TRUE`
 
 ## NULLs and arithmetic
 
@@ -392,7 +390,7 @@ For example, let's say you want to calculate the average value of column `b` as 
 
 When [sorting a column](order-by.html) containing `NULL` values, CockroachDB sorts `NULL` values first with `ASC` and last with `DESC`. This differs from PostgreSQL, which sorts `NULL` values last with `ASC` and first with `DESC`.
 
-Note that the `NULLS FIRST` and `NULLS LAST` options of the `ORDER BY` clause are not implemented in CockroachDB, so you cannot change where `NULL` values appear in the sort order.
+CockroachDB supports `NULLS FIRST` and `NULLS LAST` in [`ORDER BY`](order-by.html) clauses. However, in some cases the support is syntax-only&mdash;an error is returned if `NULLS FIRST` or `NULLS LAST` specification doesn't "match" the internal structure of the used index. If the index is ascending, the error is returned for `NULLS LAST`; if the index is descending, the error is returned for `NULLS FIRST`.
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -524,7 +522,7 @@ failed to satisfy CHECK constraint (discount <= price)
 
 ## NULLs and concatenation with other types
 
-<span class="version-tag">New in v21.1</span> Concatenation between a non-`NULL` value and a `NULL` value results in a `NULL` value.
+{% include_cached new-in.html version="v21.1" %} Concatenation between a non-`NULL` value and a `NULL` value results in a `NULL` value.
 
 {{site.data.alerts.callout_info}}
 In CockroachDB v20.2 and earlier, for all values other than [`STRING`](string.html), concatenation between a non-`NULL` value and a `NULL` value results in an [`ARRAY`](array.html) of the non-`NULL` value's type. To return an `ARRAY` of a specific type from a `NULL` concatenation in CockroachDB v21.1 and later, [cast](data-types.html#data-type-conversions-and-casts) the `NULL` value to an `ARRAY`.

@@ -12,7 +12,7 @@ This page has instructions for running [multi-statement transactions](transactio
 Make sure you have already:
 
 - Set up a [local cluster](secure-a-cluster.html).
-- [Installed a Postgres client](install-client-drivers.html).
+- [Installed a PostgreSQL client](install-client-drivers.html).
 - [Connected to the database](connect-to-the-database.html).
 - [Inserted data](insert-data.html) that you now want to run queries against.
 

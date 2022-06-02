@@ -33,7 +33,6 @@
 @import "components/version-switcher";
 @import "components/navbar";
 @import "components/badge";
-// @import "components/marketing-menu";
 @import "components/main-menu";
 @import "utils/backgrounds";
 @import "utils/type";
@@ -881,3 +880,9 @@ a.accordion-toggle {
 }
 
 @import "theme-blue.css";
+
+a.btn-primary {
+  &:hover {
+    color: #fff;
+  }
+}

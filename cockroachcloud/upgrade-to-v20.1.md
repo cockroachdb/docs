@@ -51,9 +51,9 @@ Because your cluster will be unavailable while its single node is stopped and re
 
 Review the following list of backward-incompatible changes in v20.1, and if any affect your application, make necessary changes:
 
-- The `extract()` [built-in function](../{{site.versions["stable"]}}/functions-and-operators.html) with sub-second arguments (millisecond, microsecond) is now Postgres-compatible and returns the total number of seconds in addition to sub-seconds instead of returning only sub-seconds.
+- The `extract()` [built-in function](../{{site.versions["stable"]}}/functions-and-operators.html) with sub-second arguments (millisecond, microsecond) is now PostgreSQL-compatible and returns the total number of seconds in addition to sub-seconds instead of returning only sub-seconds.
 
-- Casting intervals to integers and floats is now Postgres-compatible and values a year at 365.25 days in seconds instead of 365 days.
+- Casting intervals to integers and floats is now PostgreSQL-compatible and values a year at 365.25 days in seconds instead of 365 days.
 
 - The combination of the [`CHANGEFEED`](../{{site.versions["stable"]}}/change-data-capture-overview.html) options `format=experimental_avro`, `envelope=key_only`, and `updated` is now rejected. This is because the use of `key_only` prevents any rows with updated fields from being emitted, which renders the `updated` option meaningless.
 

@@ -21,7 +21,7 @@
       ]
     },
     {
-      "title": "Migrate from Postgres",
+      "title": "Migrate from PostgreSQL",
       "urls": [
         "/${VERSION}/migrate-from-postgres.html"
       ]

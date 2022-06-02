@@ -20,7 +20,7 @@ While a table or view is being [dropped](drop-table.html), `SHOW TABLES` will li
 
 ## Required privileges
 
-The `SELECT` [privilege](security-reference/authorization.html#managing-privileges) on a table is required to list it with `SHOW TABLES`, as well as the `CONNECT` privilege on the database of the concerned table.
+The `CONNECT` [privilege](security-reference/authorization.html#managing-privileges) on the database of the concerned table is required to list it with SHOW TABLES.
 
 ## Parameters
 
@@ -183,8 +183,7 @@ You can also view comments on a table with [`SHOW CREATE`](show-create.html):
              |     name VARCHAR NULL,
              |     address VARCHAR NULL,
              |     credit_card VARCHAR NULL,
-             |     CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
-             |     FAMILY "primary" (id, city, name, address, credit_card)
+             |     CONSTRAINT users_pkey PRIMARY KEY (city ASC, id ASC)
              | );
              | COMMENT ON TABLE users IS 'This table contains information about users.'
 (1 row)

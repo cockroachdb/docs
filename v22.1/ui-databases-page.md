@@ -10,66 +10,95 @@ docs_area: reference.db_console
 The **Databases** page of the DB Console provides details of the following:
 
 - The databases configured.
-- The tables in each database.
-- The grants assigned to each user.
+- The tables in each database and the indexes on each table.
+- The grants assigned to each role and user.
 
 To view this page, [access the DB Console](ui-overview.html#db-console-access) and click **Databases** in the left-hand navigation.
 
-## Databases list
+## Databases
 
-The **Databases** list shows the databases on the cluster.
+The **Databases** page shows:
+
+- {% include_cached new-in.html version="v22.1" %} Whether [automatic statistics collection](cost-based-optimizer.html#control-automatic-statistics) is enabled for the cluster.
+- A list of the databases on the cluster.
 
 The following information is displayed for each database:
 
-| Parameter     | Description                                                                                                             |
+| Column        | Description                                                                                                             |
 |---------------|-------------------------------------------------------------------------------------------------------------------------|
-| Database Name | The name of the database.                                                                                               |
+| Databases     | The name of the database.                                                                                               |
 | Size          | Approximate disk size across all table replicas in the database.                                                        |
-| Tables        | The number of tables in this database.                                                                                  |
-| Range count   | The number of ranges across all tables in this database.                                                                |
-| Regions/nodes | The regions and nodes on which the tables in this database are located. This is not displayed on a single-node cluster. |
+| Tables        | The number of tables in the database.                                                                                   |
+| Range count   | The number of ranges across all tables in the  database.                                                                |
+| Regions/nodes | The regions and nodes on which the tables in the database are located. This is not displayed on a single-node cluster.  |
 
-Click any database name to open the [Tables page](#tables-view).
+Click a **database name** to open the **Tables** page.
+
+-  Select **View: Tables** in the pulldown menu to display the [Tables view](#tables-view).
+-  Select **View: Grants** in the pulldown menu to display the [Grants view](#grants-view).
 
 ## Tables view
 
-The **Tables** view shows details of the system table as well as the tables in your databases. On the Tables page, make sure that **View: Tables** is selected in the pulldown menu.
+The **Tables** view shows the tables in your database.
 
 The following information is displayed for each table:
 
-| Parameter        | Description                                                                                              |
-|------------------|----------------------------------------------------------------------------------------------------------|
-| Table Name       | The name of the table.                                                                                   |
-| Replication Size | The approximate disk size of all replicas of this table on the cluster.                                  |
-| Ranges           | The number of ranges in the table.                                                                       |
-| Columns          | The number of columns in the table.                                                                      |
-| Indexes          | The number of indexes in the table.                                                                      |
-| Regions          | The regions and nodes on which the table data is stored. This is not displayed on a single-node cluster. |
+| Column                         | Description                                                                                              |
+|--------------------------------|----------------------------------------------------------------------------------------------------------|
+| Tables                         | The name of the table.                                                                                   |
+| Replication Size               | The approximate disk size of all replicas of this table on the cluster.                                  |
+| Ranges                         | The number of ranges in the table.                                                                       |
+| Columns                        | The number of columns in the table.                                                                      |
+| Indexes                        | The number of indexes in the table.                                                                      |
+| Regions                        | The regions and nodes on which the table data is stored. This is not displayed on a single-node cluster. |
+| Table Stats Last Updated (UTC) | <span class="version-tag">New in v22.1:</span> The last time table statistics were created or updated.   |
 
-Click any table name to view [table details](#table-details).
+Click a **table name** to view table details.
 
 ### Table details
 
-Click any table name in [**Tables**](#tables-view) view to display details for that table.
+The table details page contains details of a table. It contains an **Overview** tab and a **Grants** tab displays the users and [grants](grant.html) associated with the table.
 
-- **Overview** displays the SQL statements used to [create and define the table](create-table.html), as well as [partitioning](partitioning.html) info, [zone configurations](configure-replication-zones.html), constraints, and lease preferences. In addition, the following metrics are displayed:
-	- **Size** displays the approximate disk size of all replicas of this table on the cluster.
-	- **Ranges** displays the number of [ranges](architecture/overview.html#terms) in this table.
-	- **Replicas** displays the number of [replicas](architecture/replication-layer.html) of this table on the cluster.
-	- **Regions/nodes** displays the regions and nodes on which the table data is stored. This is not displayed on a single-node cluster.
-	- **Database** displays the database on which the table is found.
-	- **Indexes** displays the names of the indexes in the table.
-- **Grants** displays the [grants](#grants-view) associated with the table.
+#### Overview tab
+
+The **Overview** tab displays the SQL statements used to [create the table](create-table.html), table details, and index statistics.
+
+The table details include:
+
+- **Size**: the approximate disk size of all replicas of this table on the cluster.
+- **Replicas**: the number of [replicas](architecture/replication-layer.html) of this table on the cluster.
+- **Ranges**: the number of [ranges](architecture/glossary.html#architecture-range) in this table.
+- {% include_cached new-in.html version="v22.1" %} **Table Stats Last Updated**: the last time table statistics were created or updated.
+- {% include_cached new-in.html version="v22.1" %} **Auto Stats Collection**: whether [automatic statistics collection](cost-based-optimizer.html#control-automatic-statistics) is enabled.
+- **Regions/nodes**: the regions and nodes on which the table data is stored. This is not displayed on a single-node cluster.
+- **Database**: the database in which the table is found.
+- **Indexes**: the names of the indexes defined on the table.
+
+#### Index details
+
+{% include_cached new-in.html version="v22.1" %} The **Index Stats** table displays index statistics for a table.
+
+Index statistics accumulate from the time an index was created or when statistics were reset. To reset index statistics for the cluster, click **Reset all index stats**.
+
+The following information is displayed for each index:
+
+| Column           | Description                                                                |
+|------------------|----------------------------------------------------------------------------|
+| Indexes          | The name of the index.                                                     |
+| Total Reads      | The number of times the index was read since index statistics were reset.  |
+| Last Used (UTC)  | The time the index was created, last read, or index statistics were reset. |
+
+Click an **index name** to view index details. The index details page displays the query used to create the index, the number of times the index was read since index statistics were reset, and the time the index was last read.
 
 ## Grants view
 
-The **Grants** view shows the [privileges](security-reference/authorization.html#managing-privileges) granted to users for each database. On the [Tables page](#tables-view), make sure that **View: Grants** is selected in the pulldown menu.
+The **Grants** view shows the [privileges](security-reference/authorization.html#managing-privileges) granted to users and roles for each database.
 
 The following information is displayed for each table:
 
-| Parameter  | Description                       |
+| Column     | Description                       |
 |------------|-----------------------------------|
-| Table Name | The name of the table.            |
+| Tables     | The name of the table.            |
 | Users      | The number of users of the table. |
 | Roles      | The list of roles on the table.   |
 | Grants     | The list of grants of the table.  |

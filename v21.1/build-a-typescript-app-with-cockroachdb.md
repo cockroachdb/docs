@@ -9,7 +9,7 @@ referral_id: docs_hello_world_typescript_typeorm
 <div class="filters filters-big clearfix">
     <a href="build-a-nodejs-app-with-cockroachdb.html"><button class="filter-button">Use <strong>node-postgres</strong></button></a>
     <a href="build-a-nodejs-app-with-cockroachdb-sequelize.html"><button class="filter-button">Use <strong>Sequelize</strong></button></a>
-    <a href="build-a-nodejs-app-with-cockroachdb-knexjs.html"><button class="filter-button">Use <strong>KnexJS</strong></button></a>
+    <a href="build-a-nodejs-app-with-cockroachdb-knexjs.html"><button class="filter-button">Use <strong>Knex.js</strong></button></a>
     <a href="build-a-nodejs-app-with-cockroachdb-prisma.html"><button class="filter-button">Use <strong>Prisma</strong></button></a>
     <a href="build-a-typescript-app-with-cockroachdb.html"><button class="filter-button current">Use <strong>TypeORM</strong></button></a>
 </div>
@@ -26,51 +26,76 @@ This tutorial shows you how run a simple application built with [TypeORM](https:
 
 ## Step 3. Get the code
 
-Clone [the code's GitHub repository](https://github.com/cockroachlabs/hello-world-typescript-typeorm).
+1. Clone [the code's GitHub repository](https://github.com/cockroachlabs/example-app-typescript-typeorm):
 
-## Step 4. Update the connection parameters
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ git clone git@github.com:cockroachlabs/example-app-typescript-typeorm.git
+    ~~~
 
-Open the `ormconfig.ts` file, and edit the ORM configuration parameters:
+1. Navigate to the repo directory and install the application dependencies:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cd example-app-typescript-typeorm
+    ~~~
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ npm install
+    ~~~
+
+## Step 4. Configure your CockroachDB connection
 
 <section class="filter-content" markdown="1" data-scope="local">
 
-- Replace the value for `port` with the port to your cluster.
-- Replace the value for `username` with the user you created earlier.
-- Replace the value for `password` with the password you created for your user.
+1. Open the `datasource.ts` file, and comment out the `ssl: true`, `extra` and `options` configuration properties.
+
+1. In the `datasource.ts` file, uncomment `ssl: { rejectUnauthorized: false }`.
+
+    {{site.data.alerts.callout_danger}}
+    Only use `ssl: { rejectUnauthorized: false }` in development, for insecure connections.
+    {{site.data.alerts.end}}
+
+    The `DataSource` configuration should look similar to the following:
+
+    ~~~ ts
+    export const AppDataSource = new DataSource({
+        type: "cockroachdb",
+        url: process.env.DATABASE_URL,
+        ssl: { rejectUnauthorized: false }, // For insecure connections only
+        /* ssl: true,
+        extra: {
+            options: "--cluster=<routing-id>"
+        }, */
+        synchronize: true,
+        logging: false,
+        entities: ["src/entity/**/*.ts"],
+        migrations: ["src/migration/**/*.ts"],
+        subscribers: ["src/subscriber/**/*.ts"],
+    })
+    ~~~
+
+1. Set the `DATABASE_URL` environment variable to the connection string provided in the `cockroach demo` welcome text.
 
 </section>
 
 <section class="filter-content" markdown="1" data-scope="cockroachcloud">
 
-- At the top of the file, uncomment the `import * as fs from "fs";` line.
+1. Open the `datasource.ts` file, and edit the `--cluster=<routing-id>` configuration property to specify the routing ID to your serverless cluster.
 
-    This line imports the `fs` Node module, which enables you to read in the CA cert that you downloaded from the {{ site.data.products.db }} Console.
-- Replace the value for `host` with the name of the {{ site.data.products.serverless-plan }} host (e.g., `host: 'free-tier.gcp-us-central1.cockroachlabs.cloud'`).
-- Replace the value for `port` with the port to your cluster.
-- Replace the value for `username` with the user you created earlier.
-- Replace the value for `password` with the password you created for your user.
-- Replace the value for `database` with the database that you created earlier, suffixed with the name of the cluster (e.g., `database: '{cluster_name}.bank'`).
-- Remove the `ssl: true` key-value pair.
-- Remove the `extra` object and its contents.
-- Uncomment the `ssl` object with the `ca` key-value pair, and edit the `fs.readFileSync('certs/cc-ca.crt').toString()` call to use the path to the `cc-ca.crt` file that you downloaded from the {{ site.data.products.db }} Console.
+1. Set the `DATABASE_URL` environment variable to a CockroachDB connection string compatible with TypeORM.
+
+    TypeORM accepts the following format for {{ site.data.products.serverless }} connection strings:
+
+    {% include copy-clipboard.html %}
+    ~~~
+    postgresql://<username>:<password>@<host>:<port>/<database>
+    ~~~
 
 </section>
 
 ## Step 5. Run the code
-
-Open a terminal window, and install the [Node.js pg driver](https://www.npmjs.com/package/pg):
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ npm install pg --save
-~~~
-
-Navigate to the top directory of the application project (e.g., `hello-world-typescript-typeorm`), and initialize the project:
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ npm i
-~~~
 
 Start the application:
 
@@ -84,18 +109,26 @@ You should see the following output in your terminal:
 ~~~
 Inserting a new account into the database...
 Saved a new account.
-Printing balances from account 1.
-Account { id: 1, balance: 1000 }
+Printing balances from account 1db0f34a-55e8-42e7-adf1-49e76010b763.
+[
+  Account { id: '1db0f34a-55e8-42e7-adf1-49e76010b763', balance: 1000 }
+]
 Inserting a new account into the database...
 Saved a new account.
-Printing balances from account 2.
-Account { id: 2, balance: 250 }
-Transferring 500 from account 1 to account 2.
+Printing balances from account 4e26653a-3821-48c8-a481-47eb73b3e4cc.
+[
+  Account { id: '4e26653a-3821-48c8-a481-47eb73b3e4cc', balance: 250 }
+]
+Transferring 500 from account 1db0f34a-55e8-42e7-adf1-49e76010b763 to account 4e26653a-3821-48c8-a481-47eb73b3e4cc.
 Transfer complete.
-Printing balances from account 1.
-Account { id: 1, balance: 500 }
-Printing balances from account 2.
-Account { id: 2, balance: 750 }
+Printing balances from account 1db0f34a-55e8-42e7-adf1-49e76010b763.
+[
+  Account { id: '1db0f34a-55e8-42e7-adf1-49e76010b763', balance: 1000 }
+]
+Printing balances from account 4e26653a-3821-48c8-a481-47eb73b3e4cc.
+[
+  Account { id: '4e26653a-3821-48c8-a481-47eb73b3e4cc', balance: 250 }
+]
 ~~~
 
 ## What's next?

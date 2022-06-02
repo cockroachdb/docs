@@ -7,7 +7,7 @@ docs_area: migrate
 
 This page provides best practices for optimizing [import](import.html) performance in CockroachDB.
 
-Import speed primarily depends on the amount of data the you want to import. However, there are two main factors that have can have a large impact on the amount of time it will take to run an import:
+Import speed primarily depends on the amount of data that you want to import. However, there are two main factors that have can have a large impact on the amount of time it will take to run an import:
 
 - [Splitting data](#split-your-data-into-multiple-files)
 - [Import format](#choose-a-performant-import-format)
@@ -139,7 +139,7 @@ However, in **large** imports, it may be preferable to remove the secondary inde
 - [`IMPORT`](import.html)
 - [Migration Overview](migration-overview.html)
 - [Migrate from Oracle](migrate-from-oracle.html)
-- [Migrate from Postgres](migrate-from-postgres.html)
+- [Migrate from PostgreSQL](migrate-from-postgres.html)
 - [Migrate from MySQL](migrate-from-mysql.html)
 - [Migrate from CSV](migrate-from-csv.html)
 - [Migrate from Avro](migrate-from-avro.html)

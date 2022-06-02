@@ -1,6 +1,6 @@
     For efficiency, CockroachDB encodes `BIT` and `VARBIT` bitfield types as arrays of 64-bit integers. That is, [base-2 (binary format)](https://en.wikipedia.org/wiki/Binary_number#Conversion_to_and_from_other_numeral_systems) `BIT` and `VARBIT` data types are converted to base 10 and stored in arrays. Encoding in CockroachDB is [big-endian](https://en.wikipedia.org/wiki/Endianness), therefore the last value may have many trailing zeroes. For this reason, the first value of each array is the number of bits that are used in the last value of the array.
 
-    For instance, if the bitfield is 129 bits long, there will be 4 integers in the array. The first integer will be `1`; representing the number of bits in the last value, the second integer will be the first 64 bits, the third integer will be bits 65–128, and the last integer will either be `0` or `9223372036854775808` (i.e. the integer with only the first bit set, or `1000000000000000000000000000000000000000000000000000000000000000` when base 2).
+    For instance, if the bitfield is 129 bits long, there will be 4 integers in the array. The first integer will be `1`; representing the number of bits in the last value, the second integer will be the first 64 bits, the third integer will be bits 65–128, and the last integer will either be `0` or `9223372036854775808` (i.e., the integer with only the first bit set, or `1000000000000000000000000000000000000000000000000000000000000000` when base 2).
 
     This example is base-10 encoded into an array as follows:
 

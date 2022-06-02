@@ -34,7 +34,7 @@ Carefully consider the following tradeoffs:
 
 - A **smaller number of larger nodes** emphasizes cluster stability.
 
-    - Larger nodes tolerate hotspots more effectively than smaller nodes.
+    - Larger nodes tolerate hot spots more effectively than smaller nodes.
     - Queries operating on large data sets may strain network transfers if the data is spread widely over many smaller nodes. Having fewer and larger nodes enables more predictable workload performance.
     - A cluster with fewer nodes may be easier to operate and maintain.
 
@@ -46,7 +46,7 @@ Carefully consider the following tradeoffs:
 
 In general, distribute your total vCPUs into the **largest possible nodes and smallest possible cluster** that meets your fault tolerance goals.
 
-- Each node should have at least {% include {{ page.version.version }}/prod-deployment/provision-cpu.md %}. For greater stability, we recommend at least 8 vCPUs per node.
+- Each node should have {% include {{ page.version.version }}/prod-deployment/provision-cpu.md %}. For greater stability, we recommend at least 8 vCPUs per node.
 
 - Avoid "burstable" or "shared-core" virtual machines that limit the load on CPU resources.
 
@@ -111,7 +111,7 @@ We recommend provisioning volumes with {% include {{ page.version.version }}/pro
 
 - [Monitor your storage utilization](common-issues-to-monitor.html#storage-capacity) and rate of growth, and take action to add capacity well before you hit the limit.
 
-- <span class="version-tag">New in v21.2</span>: CockroachDB will [automatically provision an emergency ballast file](cluster-setup-troubleshooting.html#automatic-ballast-files) at [node startup](cockroach-start.html). In the unlikely case that a node runs out of disk space and shuts down, you can delete the ballast file to free up enough space to be able to restart the node.
+- {% include_cached new-in.html version="v21.2" %} CockroachDB will [automatically provision an emergency ballast file](cluster-setup-troubleshooting.html#automatic-ballast-files) at [node startup](cockroach-start.html). In the unlikely case that a node runs out of disk space and shuts down, you can delete the ballast file to free up enough space to be able to restart the node.
 
 - Use [zone configs](configure-replication-zones.html) to increase the replication factor from 3 (the default) to 5 (across at least 5 nodes).
 

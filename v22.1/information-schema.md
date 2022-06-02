@@ -259,7 +259,7 @@ Column | Description
 `table_schema` | Name of the schema containing the table.
 `table_name` | Name of the table.
 `privilege_type` | Name of the [privilege](security-reference/authorization.html#managing-privileges).
-`is_grantable` | Always `NULL` (unsupported by CockroachDB).
+`is_grantable` | <span class="version-tag">New in v22.1:</span> `TRUE` if the grantee has the grant option on the object; `FALSE` if not.
 `with_hierarchy` | Always `NULL` (unsupported by CockroachDB).
 
 ### schema_privileges
@@ -306,7 +306,7 @@ Column | Description
 
 ### session_variables
 
- `session_variables` contains information about the [session variable settings](set-vars.html) for your session. `session_variables` contains a `variable` column and a `value` column. The `value` column corresponds to the output of the [`SHOW (session settings)`](show-vars.html) statement.
+ `session_variables` contains information about the [session variable settings](set-vars.html) for your session. `session_variables` contains a `variable` column and a `value` column. The `value` column corresponds to the output of the [`SHOW {session variable}`](show-vars.html) statement.
 
 For a list of the session variables, see [supported variables](show-vars.html#supported-variables).
 
@@ -358,7 +358,7 @@ Column | Description
 `table_schema` | Name of the schema that the grant applies to.
 `table_name` | Name of the table that the grant applies to.
 `privilege_type` | Type of [privilege](security-reference/authorization.html#managing-privileges): `SELECT`, `INSERT`, `UPDATE`, `DELETE`, `TRUNCATE`, `REFERENCES`, or `TRIGGER`.
-`is_grantable` | Always `NULL` (unsupported by CockroachDB).
+`is_grantable` | <span class="version-tag">New in v22.1:</span> `TRUE` if the grantee has the grant option on the object; `FALSE` if not.
 `with_hierarchy` | Always `NULL` (unsupported by CockroachDB).
 
 ### tables

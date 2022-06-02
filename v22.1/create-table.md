@@ -102,7 +102,7 @@ Parameter | Description
 `IF NOT EXISTS` | Create a new table only if a table of the same name does not already exist in the database; if one does exist, do not return an error.<br><br>Note that `IF NOT EXISTS` checks the table name only; it does not check if an existing table has the same columns, indexes, constraints, etc., of the new table.
 `table_name` | The name of the table to create, which must be unique within its database and follow these [identifier rules](keywords-and-identifiers.html#identifiers). When the parent database is not set as the default, the name must be formatted as `database.name`.<br><br>The [`UPSERT`](upsert.html) and [`INSERT ON CONFLICT`](insert.html) statements use a temporary table called `excluded` to handle uniqueness conflicts during execution. It's therefore not recommended to use the name `excluded` for any of your tables.
 `column_def` | A comma-separated list of column definitions. Each column requires a [name/identifier](keywords-and-identifiers.html#identifiers) and [data type](data-types.html). Column names must be unique within the table but can have the same name as indexes or constraints.<br><br>You can optionally specify a [column qualification](#column-qualifications) (e.g., a [column-level constraint](constraints.html)). Any `PRIMARY KEY`, `UNIQUE`, and `CHECK` [constraints](constraints.html) defined at the column level are moved to the table-level as part of the table's creation. Use the [`SHOW CREATE`](show-create.html) statement to view them at the table level.
-`index_def` | An optional, comma-separated list of [index definitions](indexes.html). For each index, the column(s) to index must be specified; optionally, a name can be specified. Index names must be unique within the table and follow these [identifier rules](keywords-and-identifiers.html#identifiers). See the [Create a Table with Secondary Indexes and GIN Indexes](#create-a-table-with-secondary-and-gin-indexes) example below.<br><br> To enable [hash-sharded indexes](hash-sharded-indexes.html), set the `experimental_enable_hash_sharded_indexes` [session variable](set-vars.html) to `on`. For examples, see [Create a table with hash-sharded indexes](#create-a-table-with-a-hash-sharded-primary-index) below.<br><br>The [`CREATE INDEX`](create-index.html) statement can be used to create an index separate from table creation.
+`index_def` | An optional, comma-separated list of [index definitions](indexes.html). For each index, the column(s) to index must be specified; optionally, a name can be specified. Index names must be unique within the table and follow these [identifier rules](keywords-and-identifiers.html#identifiers). See the [Create a Table with Secondary Indexes and GIN Indexes](#create-a-table-with-secondary-and-gin-indexes) example below.<br><br> For examples, see [Create a table with hash-sharded indexes](#create-a-table-with-a-hash-sharded-primary-index) below.<br><br>The [`CREATE INDEX`](create-index.html) statement can be used to create an index separate from table creation.
 `family_def` | An optional, comma-separated list of [column family definitions](column-families.html). Column family names must be unique within the table but can have the same name as columns, constraints, or indexes.<br><br>A column family is a group of columns that are stored as a single key-value pair in the underlying key-value store. CockroachDB automatically groups columns into families to ensure efficient storage and performance. However, there are cases when you may want to manually assign columns to families. For more details, see [Column Families](column-families.html).
 `table_constraint` | An optional, comma-separated list of [table-level constraints](constraints.html). Constraint names must be unique within the table but can have the same name as columns, column families, or indexes.
 `LIKE table_name like_table_option_list` |  Create a new table based on the schema of an existing table, using supported specifiers. For details, see [Create a table like an existing table](#create-a-table-like-an-existing-table). For examples, see [Create a new table from an existing one](#create-a-new-table-from-an-existing-one).
@@ -525,108 +525,11 @@ You can use the [`CREATE TABLE AS`](create-table-as.html) statement to create a 
 
 {% include {{page.version.version}}/performance/use-hash-sharded-indexes.md %}
 
-{% include copy-clipboard.html %}
-~~~ sql
-> SET experimental_enable_hash_sharded_indexes=on;
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> CREATE TABLE events (
-    ts DECIMAL PRIMARY KEY USING HASH WITH BUCKET_COUNT=8,
-    product_id INT8
-    );
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SHOW INDEX FROM events;
-~~~
-
-~~~
-        column_name        | data_type | is_nullable | column_default |       generation_expression       |  indices  | is_hidden
----------------------------+-----------+-------------+----------------+-----------------------------------+-----------+------------
-  crdb_internal_ts_shard_8 | INT4      |    false    | NULL           | mod(fnv32(CAST(ts AS STRING)), 8) | {primary} |   true
-  ts                       | DECIMAL   |    false    | NULL           |                                   | {primary} |   false
-  product_id               | INT8      |    true     | NULL           |                                   | {}        |   false
-(3 rows)
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SHOW COLUMNS FROM events;
-~~~
-
-~~~
-  table_name | index_name | non_unique | seq_in_index |       column_name        | direction | storing | implicit
--------------+------------+------------+--------------+--------------------------+-----------+---------+-----------
-  events     | primary    |   false    |            1 | crdb_internal_ts_shard_8 | ASC       |  false  |  false
-  events     | primary    |   false    |            2 | ts                       | ASC       |  false  |  false
-(2 rows)
-~~~
+{% include {{page.version.version}}/performance/create-table-hash-sharded-primary-index.md %}
 
 ### Create a table with a hash-sharded secondary index
 
-{% include copy-clipboard.html %}
-~~~ sql
-> SET experimental_enable_hash_sharded_indexes=on;
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> CREATE TABLE events (
-    product_id INT8,
-    owner UUID,
-    serial_number VARCHAR,
-    event_id UUID,
-    ts TIMESTAMP,
-    data JSONB,
-    PRIMARY KEY (product_id, owner, serial_number, ts, event_id),
-    INDEX (ts) USING HASH WITH BUCKET_COUNT=8
-);
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SHOW INDEX FROM events;
-~~~
-
-~~~
-  table_name |  index_name   | non_unique | seq_in_index |       column_name        | direction | storing | implicit
--------------+---------------+------------+--------------+--------------------------+-----------+---------+-----------
-  events     | events_ts_idx |    true    |            1 | crdb_internal_ts_shard_8 | ASC       |  false  |   true
-  events     | events_ts_idx |    true    |            2 | ts                       | ASC       |  false  |  false
-  events     | events_ts_idx |    true    |            3 | product_id               | ASC       |  false  |   true
-  events     | events_ts_idx |    true    |            4 | owner                    | ASC       |  false  |   true
-  events     | events_ts_idx |    true    |            5 | serial_number            | ASC       |  false  |   true
-  events     | events_ts_idx |    true    |            6 | event_id                 | ASC       |  false  |   true
-  events     | primary       |   false    |            1 | product_id               | ASC       |  false  |  false
-  events     | primary       |   false    |            2 | owner                    | ASC       |  false  |  false
-  events     | primary       |   false    |            3 | serial_number            | ASC       |  false  |  false
-  events     | primary       |   false    |            4 | ts                       | ASC       |  false  |  false
-  events     | primary       |   false    |            5 | event_id                 | ASC       |  false  |  false
-  events     | primary       |   false    |            6 | data                     | N/A       |  true   |  false
-  events     | primary       |   false    |            7 | crdb_internal_ts_shard_8 | N/A       |  true   |  false
-(13 rows)
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SHOW COLUMNS FROM events;
-~~~
-
-~~~
-        column_name        | data_type | is_nullable | column_default |              generation_expression              |         indices         | is_hidden
----------------------------+-----------+-------------+----------------+-------------------------------------------------+-------------------------+------------
-  product_id               | INT8      |    false    | NULL           |                                                 | {events_ts_idx,primary} |   false
-  owner                    | UUID      |    false    | NULL           |                                                 | {events_ts_idx,primary} |   false
-  serial_number            | VARCHAR   |    false    | NULL           |                                                 | {events_ts_idx,primary} |   false
-  event_id                 | UUID      |    false    | NULL           |                                                 | {events_ts_idx,primary} |   false
-  ts                       | TIMESTAMP |    false    | NULL           |                                                 | {events_ts_idx,primary} |   false
-  data                     | JSONB     |    true     | NULL           |                                                 | {}                      |   false
-  crdb_internal_ts_shard_8 | INT4      |    false    | NULL           | mod(fnv32(COALESCE(CAST(ts AS STRING), '')), 8) | {events_ts_idx}         |   true
-(7 rows)
-~~~
+{% include {{page.version.version}}/performance/create-table-hash-sharded-secondary-index.md %}
 
 ### Create a new table from an existing one
 
@@ -1043,6 +946,25 @@ Inserting explicit values does not affect the next value of the sequence:
 {{site.data.alerts.callout_info}}
 If the `numerical` column were to follow the `ALWAYS` rule instead, then the sequence values in the column could not be overwritten.
 {{site.data.alerts.end}}
+
+### Create a table with data excluded from backup
+
+{% include_cached new-in.html version="v22.1" %} In some situations, you may want to exclude a table's row data from a [backup](backup.html). For example, a table could contain high-churn data that you would like to [garbage collect](architecture/storage-layer.html#garbage-collection) more quickly than the [incremental backup](take-full-and-incremental-backups.html#incremental-backups) schedule for the database or cluster that will hold the table. You can use the `exclude_data_from_backup = true` parameter with `CREATE TABLE` to mark a table's row data for exclusion from a backup:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE TABLE promo_codes (
+    code VARCHAR NOT NULL,
+    description VARCHAR NULL,
+    creation_time TIMESTAMP NULL,
+    expiration_time TIMESTAMP NULL,
+    rules JSONB NULL,
+    CONSTRAINT promo_codes_pkey PRIMARY KEY (code ASC)
+  )
+WITH (exclude_data_from_backup = true);
+~~~
+
+To set `exclude_data_from_backup` on an existing table, see the [Exclude a table's data from backups](take-full-and-incremental-backups.html#exclude-a-tables-data-from-backups) example.
 
 ## See also
 

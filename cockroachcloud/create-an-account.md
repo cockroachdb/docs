@@ -5,29 +5,32 @@ toc: true
 docs_area: deploy
 ---
 
-Before you [create a {{ site.data.products.db }} cluster](create-your-cluster.html), you must first create a {{ site.data.products.db }} account. You can register for {{ site.data.products.db }} using a GitHub account or an email address.
+Before you [create a {{ site.data.products.db }} cluster](create-your-cluster.html), you must first create a {{ site.data.products.db }} account. You can register for {{ site.data.products.db }} using a GitHub, Google, or Microsoft account or an email address and password.
+
+## Choose an authentication method
+
+You may authenticate to {{ site.data.products.db }} console using an email and password, or with [Single Sign-on (SSO)](cloud-sso.html). The console supports SSO provided by GitHub, Google, and Microsoft.
+
+SSO provides security benefits. This includes not having to manage an additional credential, and perhaps most importantly, that SSO providers support multi-factor authentication (MFA). For best security, we recommend that all {{ site.data.products.db }} users authenticate with SSO, with MFA enabled.
 
 ## Register a new account
 
 To register a new account, navigate to the [{{ site.data.products.db }} registration page](https://cockroachlabs.cloud/signup?referralId=docs_create_account).
 
 <div class="filters clearfix">
-  <button class="filter-button page-level" data-scope="github">Register with GitHub</button>
+  <button class="filter-button page-level" data-scope="github">Register with Single Sign-On (SSO)</button>
   <button class="filter-button page-level" data-scope="email">Register with email</button>
 </div>
 <p></p>
 
 <section class="filter-content" markdown="1" data-scope="github">
 
-1. Click **Sign up with GitHub**.
+1. Click **Sign up with...** for your chosen SSO Provider.
 1. Select the checkbox to accept the [terms of service](https://www.cockroachlabs.com/cloud-terms-and-conditions) and [privacy policy](https://www.cockroachlabs.com/privacy).
-1. Log in to GitHub if you haven't already.
-1. Click **Authorize {{ site.data.products.db }} by Cockroach Labs**.
-
-    A confirmation email will be sent.
+1. Log in to your account with your SSO provider and respond to the email or other notification inviting you to  **Authorize {{ site.data.products.db }} by Cockroach Labs**
 
 {{site.data.alerts.callout_info}}
-GitHub will verify your identity using [GitHub 2FA](https://docs.github.com/en/github/authenticating-to-github/about-two-factor-authentication), if you have it enabled.
+We highly recommend enabling multi-factor authentication (MFA) with your SSO provider, if you have not done so.
 {{site.data.alerts.end}}
 </section>
 
@@ -48,26 +51,21 @@ GitHub will verify your identity using [GitHub 2FA](https://docs.github.com/en/g
 ## Log in to your account
 
 <div class="filters clearfix">
-  <button class="filter-button page-level" data-scope="github">Log in with GitHub</button>
+  <button class="filter-button page-level" data-scope="github">Log in with Single Sign-On (SSO)</button>
   <button class="filter-button page-level" data-scope="email">Log in with email</button>
 </div>
 <p></p>
 
 <section class="filter-content" markdown="1" data-scope="github">
 
-If you have already [registered a new {{ site.data.products.db }} account](#register-a-new-account) using GitHub, you can log in to {{ site.data.products.db }}:
-
-1. Navigate to the [{{ site.data.products.db }} Log In page](https://cockroachlabs.cloud/clusters).
-1. Click **Log in with GitHub**.
-1. Follow the GitHub prompts to log in.
-
-    The [**Clusters** page](cluster-management.html) displays.
+1. Navigate to the {{ site.data.products.db }} [log in page](https://cockroachlabs.cloud/clusters).
+1. Click **Log in with...** for your chosen SSO provider.
+1. Watch for a pop-up or modal from your SSO Provider and follow the prompts to log in.
 </section>
 
 <section class="filter-content" markdown="1" data-scope="email">
-If you have already [registered a new {{ site.data.products.db }} account](#register-a-new-account) using an email address, you can log in to {{ site.data.products.db }}:
 
-1. Navigate to the [{{ site.data.products.db }} Log In page](https://cockroachlabs.cloud/clusters).
+1. Navigate to the {{ site.data.products.db }} [log in page](https://cockroachlabs.cloud/clusters).
 1. Enter your **Email** and **Password**.
 1. Click **Continue**.
 
@@ -80,6 +78,7 @@ If you have already [registered a new {{ site.data.products.db }} account](#regi
 - [Change your email](#change-your-email)
 - [Change your account password](#change-your-account-password)
 - [Change your organization name](#change-your-organization-name)
+- [Change your login method](#change-your-login-method)
 
 ### Change your account name
 
@@ -129,36 +128,8 @@ If you are a [Console Admin](console-access-management.html#console-admin), you 
 1. In the **Edit organization name** dialog, enter the new **Organization name**.
 1. Click **Save**.
 
-## Change your login method
+### Change your login method
 
-If you want to change your login method, you can do so at any time:
+You can change your method of login authentication (email/password or SSO with a specific provider), in the [**My Account** page in the {{ site.data.products.db }} Console](https://cockroachlabs.cloud/account/profile).
 
-- [Switch from a GitHub login to email](#switch-from-a-github-login-to-email)
-- [Switch from an email login to GitHub](#switch-from-an-email-login-to-github)
-
-### Switch from a GitHub login to email
-
-1. Click the account icon in the top right corner.
-1. From the dropdown, select **My Account**.
-1. Click **Switch to email login**.
-1. In the **Log in with email and password** dialog, click **Continue**.
-1. Enter a **Password**.
-1. Click **Save**.
-
-    A confirmation email will be sent.
-
-{{site.data.alerts.callout_info}}
-As a best security practice, you can also [remove {{ site.data.products.db }}'s access to your GitHub account details](https://docs.github.com/en/developers/apps/deleting-an-oauth-app).
-{{site.data.alerts.end}}
-
-### Switch from an email login to GitHub
-
-1. Click the account icon in the top right corner.
-1. From the dropdown, select **My Account**.
-1. Click **Switch to GitHub login**.
-1. In the **Log in with GitHub** dialog, enter your **Password**.
-1. Click **Continue**.
-1. Log in to GitHub if you haven't already.
-1. Click **Authorize {{ site.data.products.db }} by Cockroach Labs**.
-
-    A confirmation email will be sent.
+Once you have changed your authentication method, you will receive a confirmation email."

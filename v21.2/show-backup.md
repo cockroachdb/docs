@@ -11,7 +11,7 @@ The `SHOW BACKUP` [statement](sql-statements.html) lists the contents of a backu
 
 `SHOW BACKUP` requires read permissions to its target destination.
 
-{% include {{ page.version.version }}/misc/source-privileges.md %}
+{% include {{ page.version.version }}/misc/non-http-source-privileges.md %}
 
 ## Synopsis
 
@@ -23,10 +23,11 @@ The `SHOW BACKUP` [statement](sql-statements.html) lists the contents of a backu
 
 Parameter | Description
 ----------|------------
-`SHOW BACKUPS IN location` | List the backup paths in the given [`location`](backup.html#backup-file-urls). [See the example below](#view-a-list-of-the-available-full-backup-subdirectories).
-`SHOW BACKUP location` | Show the details of the backup in the given [`location`](backup.html#backup-file-urls). [See the example below](#show-a-backup).
-`SHOW BACKUP SCHEMAS location` | Show the schema details of the backup in the given [`location`](backup.html#backup-file-urls). [See the example below](#show-a-backup-with-schemas).
-`SHOW BACKUP subdirectory IN location` |  List the full and incremental backups that are stored in the given full backup's `subdirectory` within a [`location`](backup.html#backup-file-urls). [See the example below](#show-details-for-scheduled-backups).
+`SHOW BACKUPS IN location` | List the backup paths in the given [`location`](backup.html#backup-file-urls). [See the example](#view-a-list-of-the-available-full-backup-subdirectories).
+`SHOW BACKUP location` | Show the details of the backup in the given [`location`](backup.html#backup-file-urls). [See the example](#show-a-backup).
+`SHOW BACKUP LATEST IN location` | Show the most recent backup added in the given [`location`](backup.html#backup-file-urls). [See the example](#show-the-most-recent-backup).
+`SHOW BACKUP SCHEMAS location` | Show the schema details of the backup in the given [`location`](backup.html#backup-file-urls). [See the example](#show-a-backup-with-schemas).
+`SHOW BACKUP subdirectory IN location` |  List the full and incremental backups that are stored in the given full backup's `subdirectory` within a [`location`](backup.html#backup-file-urls). [See the example](#show-details-for-scheduled-backups).
 `kv_option_list` | Control the behavior of `SHOW BACKUP` with a comma-separated list of [these options](#options).
 
 ### Options
@@ -62,7 +63,7 @@ See [Show a backup with descriptor IDs](#show-a-backup-with-descriptor-ids) for 
 
 ### Show a backup
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW BACKUP 's3://test/backup-test?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]';
 ~~~
@@ -97,7 +98,7 @@ See [Show a backup with descriptor IDs](#show-a-backup-with-descriptor-ids) for 
 
 <a name="show-backups-in"></a>To view a list of the available [full backups](take-full-and-incremental-backups.html#full-backups) subdirectories, use the following command:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW BACKUPS IN 's3://test/backup-test?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]';
 ~~~
@@ -114,11 +115,29 @@ See [Show a backup with descriptor IDs](#show-a-backup-with-descriptor-ids) for 
 
 The path format is `<year>/<month>/<day>-<timestamp>`.
 
+### Show the most recent backup
+
+{% include_cached new-in.html version="v21.2" %} To view the most recent backup, use the `LATEST` syntax:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> SHOW BACKUP LATEST IN 's3://{bucket name}?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]';
+~~~
+
+~~~
+database_name | parent_schema_name | object_name | object_type | backup_type | start_time |          end_time          | size_bytes | rows | is_full_cluster
+--------------+--------------------+-------------+-------------+-------------+------------+----------------------------+------------+------+------------------
+NULL          | NULL               | movr        | database    | full        | NULL       | 2022-03-25 16:53:48.001825 |       NULL | NULL |      false
+movr          | NULL               | public      | schema      | full        | NULL       | 2022-03-25 16:53:48.001825 |       NULL | NULL |      false
+movr          | public             | users       | table       | full        | NULL       | 2022-03-25 16:53:48.001825 |     135144 | 1474 |      false
+(3 rows)
+~~~
+
 ### View a list of the full and incremental backups in a specific full backup subdirectory
 
 To view a list of the [full](take-full-and-incremental-backups.html#full-backups) and [incremental](take-full-and-incremental-backups.html#incremental-backups) backups in a specific subdirectory, use the following command:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW BACKUP '2020/09/24-204152.88' IN 's3://test/backup-test?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]';
 ~~~
@@ -171,7 +190,7 @@ To view a list of the [full](take-full-and-incremental-backups.html#full-backups
 
 ### Show a backup with schemas
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW BACKUP SCHEMAS 's3://test/backup-test?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]';
 ~~~
@@ -206,7 +225,7 @@ movr          | public             | users       | table       | incremental | 2
 
 Use the `WITH privileges` [option](#options) to view a list of which users and roles had which privileges on each database and table in the backup. This parameter also displays the original owner of objects in the backup:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW BACKUP 's3://test/backup-test?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]' WITH privileges;
 ~~~
@@ -250,7 +269,7 @@ You will receive an error if there is a collection of backups in the storage loc
 
 Depending on how the backup was [encrypted](take-and-restore-encrypted-backups.html), use the [`encryption_passphrase` option](backup.html#with-encryption-passphrase) and the same passphrase that was used to create the backup:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW BACKUP 's3://test/backup-test?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]'
       WITH encryption_passphrase = 'password123';
@@ -258,7 +277,7 @@ Depending on how the backup was [encrypted](take-and-restore-encrypted-backups.h
 
 Or, use the `kms` option and the same KMS URI that was used to create the backup:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW BACKUP 's3://test/backups/test_explicit_kms?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=123'
       WITH kms = 'aws:///arn:aws:kms:us-east-1:123456789:key/1234-abcd-5678-efgh-90ij?AWS_ACCESS_KEY_ID=123456&AWS_SECRET_ACCESS_KEY=123456&REGION=us-east-1';
@@ -292,9 +311,9 @@ Or, use the `kms` option and the same KMS URI that was used to create the backup
 
 ### Show a backup with descriptor IDs
 
-<span class="version-tag">New in v21.2:</span> Use `WITH debug_ids` to display the descriptor IDs related to each object in the backup:
+{% include_cached new-in.html version="v21.2" %} Use `WITH debug_ids` to display the descriptor IDs related to each object in the backup:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW BACKUP '/2021/11/15-150703.21' IN 's3://test/backup-test?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]' WITH debug_ids;
 ~~~
@@ -322,7 +341,7 @@ movr          |          52 | public             |               29 | user_promo
 
 Use the `WITH as_json` option to output a backup's internal metadata, contained in its manifest file, as a JSON value:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW BACKUP '/2021/11/15-150703.21' IN 's3://test/backup-test?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]' WITH as_json;
 ~~~
@@ -335,7 +354,7 @@ The response returned from `SHOW BACKUP ... WITH as_json` is a backup's internal
 
 For example, to return a specific entry from the JSON response as a [`string`](string.html) indented and with newlines use the [`jsonb_pretty()`](functions-and-operators.html#jsonb-functions) function:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT jsonb_pretty(manifest->'entryCounts') AS f FROM [SHOW BACKUP '/2021/11/15-150703.21' IN 's3://test/backup-test?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]' with as_json];
 ~~~
@@ -350,7 +369,7 @@ SELECT jsonb_pretty(manifest->'entryCounts') AS f FROM [SHOW BACKUP '/2021/11/15
 
 To query for particular data, use the [`jsonb_array_elements()` function](functions-and-operators.html#jsonb-functions) to expand the desired elements from the JSON response. The following query returns the paths to each of the data files within the backup:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT f->>'path' FROM (SELECT jsonb_array_elements(manifest->'files') AS f FROM [SHOW BACKUP '/2021/11/15-150703.21' IN 's3://test/backup-test?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]' WITH as_json]);
 ~~~

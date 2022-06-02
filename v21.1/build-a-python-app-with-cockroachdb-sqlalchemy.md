@@ -98,66 +98,71 @@ The `main.py` uses SQLAlchemy to map Python methods to SQL operations:
 
 ## Step 5. Run the code
 
-To run the app, pass the connection string for your cluster to `main.py`:
+1. Set the `DATABASE_URL` environment variable to the connection string for your cluster:
 
-{% include_cached copy-clipboard.html %}
-~~~ shell
-$ python3 main.py '<connection_string>'
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ export DATABASE_URL=<connection-string>
+    ~~~
 
-<section class="filter-content" markdown="1" data-scope="local">
+    <section class="filter-content" markdown="1" data-scope="local">
 
-Where `<connection_string>` is the `sql` connection URL provided in the cluster's welcome text.
+    Where `<connection_string>` is the `sql` connection URL provided in the cluster's welcome text, but **with the `database` parameter set to `bank` instead of `defaultdb`.**
 
-</section>
+    </section>
 
-<section class="filter-content" markdown="1" data-scope="cockroachcloud">
+    <section class="filter-content" markdown="1" data-scope="cockroachcloud">
 
-Where `<connection_string>` is the connection string provided in the **Connection info** window of the {{ site.data.products.db }} Console.
+    Where `<connection_string>` is the connection string you obtained earlier from the {{ site.data.products.db }} Console, but **with the `database` parameter set to `bank` instead of `defaultdb`.**
 
-Note that you need to provide a SQL user password in order to securely connect to a {{ site.data.products.db }} cluster. The connection string should have a placeholder for the password (`<ENTER-PASSWORD>`).
+    </section>
 
-</section>
+1. Run the app:
 
-The application will format the connection string to fit the CockroachDB SQLAlchemy dialect requirements, and then perform some simple row inserts, updates, and deletes.
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ python main.py
+    ~~~
 
-The output should look something like the following:
+    The application will connect to CockroachDB, and then perform some simple row inserts, updates, and deletes.
 
-~~~
-Creating new accounts...
-Created new account with id 3a8b74c8-6a05-4247-9c60-24b46e3a88fd and balance 248835.
-Created new account with id c3985926-5b77-4c6d-a73d-7c0d4b2a51e7 and balance 781972.
-...
-Created new account with id 7b41386c-11d3-465e-a2a0-56e0dcd2e7db and balance 984387.
-Random account balances:
-Account 7ad14d02-217f-48ca-a53c-2c3a2528a0d9: 800795
-Account 4040aeba-7194-4f29-b8e5-a27ed4c7a297: 149861
-Transferring 400397 from account 7ad14d02-217f-48ca-a53c-2c3a2528a0d9 to account 4040aeba-7194-4f29-b8e5-a27ed4c7a297...
-Transfer complete.
-New balances:
-Account 7ad14d02-217f-48ca-a53c-2c3a2528a0d9: 400398
-Account 4040aeba-7194-4f29-b8e5-a27ed4c7a297: 550258
-Deleting existing accounts...
-Deleted account 41247e24-6210-4032-b622-c10b3c7222de.
-Deleted account 502450e4-6daa-4ced-869c-4dff62dc52de.
-Deleted account 6ff06ef0-423a-4b08-8b87-48af2221bc18.
-Deleted account a1acb134-950c-4882-9ac7-6d6fbdaaaee1.
-Deleted account e4f33c55-7230-4080-b5ac-5dde8a7ae41d.
-~~~
+    The output should look something like the following:
 
-In a SQL shell connected to the cluster, you can verify that the rows were inserted, updated, and deleted successfully:
+    ~~~
+    Creating new accounts...
+    Created new account with id 3a8b74c8-6a05-4247-9c60-24b46e3a88fd and balance 248835.
+    Created new account with id c3985926-5b77-4c6d-a73d-7c0d4b2a51e7 and balance 781972.
+    ...
+    Created new account with id 7b41386c-11d3-465e-a2a0-56e0dcd2e7db and balance 984387.
+    Random account balances:
+    Account 7ad14d02-217f-48ca-a53c-2c3a2528a0d9: 800795
+    Account 4040aeba-7194-4f29-b8e5-a27ed4c7a297: 149861
+    Transferring 400397 from account 7ad14d02-217f-48ca-a53c-2c3a2528a0d9 to account 4040aeba-7194-4f29-b8e5-a27ed4c7a297...
+    Transfer complete.
+    New balances:
+    Account 7ad14d02-217f-48ca-a53c-2c3a2528a0d9: 400398
+    Account 4040aeba-7194-4f29-b8e5-a27ed4c7a297: 550258
+    Deleting existing accounts...
+    Deleted account 41247e24-6210-4032-b622-c10b3c7222de.
+    Deleted account 502450e4-6daa-4ced-869c-4dff62dc52de.
+    Deleted account 6ff06ef0-423a-4b08-8b87-48af2221bc18.
+    Deleted account a1acb134-950c-4882-9ac7-6d6fbdaaaee1.
+    Deleted account e4f33c55-7230-4080-b5ac-5dde8a7ae41d.
+    ~~~
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> SELECT COUNT(*) FROM bank.accounts;
-~~~
+    In a SQL shell connected to the cluster, you can verify that the rows were inserted, updated, and deleted successfully:
 
-~~~
-  count
----------
-     95
-(1 row)
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    > SELECT COUNT(*) FROM bank.accounts;
+    ~~~
+
+    ~~~
+      count
+    ---------
+         95
+    (1 row)
+    ~~~
 
 ## Best practices
 

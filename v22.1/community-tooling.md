@@ -32,13 +32,19 @@ If you have a tested or developed a third-party tool with CockroachDB, and would
 
 - [php-pgsql](https://github.com/cockroachdb/community-tooling-samples/tree/main/php)
 
-### Powershell
+### PowerShell
 
 - [Npgsql](https://blog.ervits.com/2020/03/exploring-cockroachdb-with-jupyter.html)
 
 ### R
 
 - [RPostgres](https://blog.ervits.com/2020/02/exploring-cockroachdb-with-r-and.html)
+
+### Rust
+
+- [tokio_postgres](https://docs.rs/tokio-postgres/latest/tokio_postgres)
+
+### Other
 
 ### Other
 
@@ -71,5 +77,5 @@ If you have a tested or developed a third-party tool with CockroachDB, and would
 ## See also
 
 - [Build an App with CockroachDB](example-apps.html)
-- [Install a Postgres Client](install-client-drivers.html)
+- [Install a PostgreSQL Client](install-client-drivers.html)
 - [Third-Party Tools Supported by Cockroach Labs](third-party-database-tools.html)

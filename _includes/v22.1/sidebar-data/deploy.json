@@ -3,55 +3,61 @@
   "is_top_level": true,
   "items": [
     {
-      "title": "Choose a Deployment Strategy",
+      "title": "Deployment Options",
       "items": [
-        {
+          {
+            "title": "Choose a Deployment Option",
+            "urls": [
+              "/${VERSION}/choose-a-deployment-option.html"
+            ]
+          },
+          {
           "title": "CockroachDB Cloud",
           "items": [
             {
-          	  "title": "Create an Account",
-          	  "urls": [
-          	    "/cockroachcloud/create-an-account.html"
-          	  ]
-          	},
+              "title": "Create an Account",
+              "urls": [
+                "/cockroachcloud/create-an-account.html"
+              ]
+            },
             {
               "title": "CockroachDB Serverless",
               "items": [
                 {
-              	  "title": "Create a CockroachDB Serverless Cluster",
-              	  "urls": [
-              	    "/cockroachcloud/create-a-serverless-cluster.html"
-              	  ]
-              	},
+                  "title": "Create a CockroachDB Serverless Cluster",
+                  "urls": [
+                    "/cockroachcloud/create-a-serverless-cluster.html"
+                  ]
+                },
                 {
-              	  "title": "Connect to Your Cluster",
-              	  "urls": [
-              	    "/cockroachcloud/connect-to-a-serverless-cluster.html"
-              	  ]
-              	}
+                  "title": "Connect to Your Cluster",
+                  "urls": [
+                    "/cockroachcloud/connect-to-a-serverless-cluster.html"
+                  ]
+                }
               ]
             },
             {
               "title": "CockroachDB Dedicated",
               "items": [
                 {
-              	  "title": "Create a CockroachDB Dedicated Cluster",
-              	  "urls": [
-              	    "/cockroachcloud/create-your-cluster.html"
-              	  ]
-              	},
+                  "title": "Create a CockroachDB Dedicated Cluster",
+                  "urls": [
+                    "/cockroachcloud/create-your-cluster.html"
+                  ]
+                },
                 {
-              	  "title": "Connect to Your Cluster",
-              	  "urls": [
+                  "title": "Connect to Your Cluster",
+                  "urls": [
                     "/cockroachcloud/connect-to-your-cluster.html"
-              	  ]
-              	},
+                  ]
+                },
                 {
-              	  "title": "Move into Production",
-              	  "urls": [
-              	    "/cockroachcloud/production-checklist.html"
-              	  ]
-              	}
+                  "title": "Move into Production",
+                  "urls": [
+                    "/cockroachcloud/production-checklist.html"
+                  ]
+                }
               ]
             }
           ]
@@ -126,53 +132,6 @@
                   "urls": [
                     "/${VERSION}/deploy-cockroachdb-with-kubernetes.html",
                     "/${VERSION}/deploy-cockroachdb-with-kubernetes-insecure.html"
-                  ]
-                },
-                {
-                  "title": "Operate CockroachDB on Kubernetes",
-                  "items": [
-                    {
-                      "title": "Pod Scheduling",
-                      "urls": [
-                        "/${VERSION}/schedule-cockroachdb-kubernetes.html"
-                      ]
-                    },
-                    {
-                      "title": "Resource Management",
-                      "urls": [
-                        "/${VERSION}/configure-cockroachdb-kubernetes.html"
-                      ]
-                    },
-                    {
-                      "title": "Certificate Management",
-                      "urls": [
-                        "/${VERSION}/secure-cockroachdb-kubernetes.html"
-                      ]
-                    },
-                    {
-                      "title": "Cluster Scaling",
-                      "urls": [
-                        "/${VERSION}/scale-cockroachdb-kubernetes.html"
-                      ]
-                    },
-                    {
-                      "title": "Cluster Monitoring",
-                      "urls": [
-                        "/${VERSION}/monitor-cockroachdb-kubernetes.html"
-                      ]
-                    },
-                    {
-                      "title": "Cluster Upgrades",
-                      "urls": [
-                        "/${VERSION}/upgrade-cockroachdb-kubernetes.html"
-                      ]
-                    },
-                    {
-                      "title": "Optimizing Performance",
-                      "urls": [
-                        "/${VERSION}/kubernetes-performance.html"
-                      ]
-                    }
                   ]
                 },
                 {

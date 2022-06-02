@@ -2,7 +2,7 @@
 title: Transaction Layer
 summary: The transaction layer of CockroachDB's architecture implements support for ACID transactions by coordinating concurrent operations.
 toc: true
-docs_area: reference.architecture 
+docs_area: reference.architecture
 ---
 
 The transaction layer of CockroachDB's architecture implements support for ACID transactions by coordinating concurrent operations.
@@ -388,7 +388,7 @@ The transaction is now considered atomically committed, even though the state of
 
 Despite their logical equivalence, the transaction coordinator now works as quickly as possible to move the transaction record from the `STAGING` to the `COMMITTED` state so that other transactions do not encounter a possibly conflicting transaction in the `STAGING` state and then have to do the work of verifying that the staging transaction's list of pending writes has succeeded. Doing that verification (also known as the "transaction status recovery process") would be slow.
 
-Additionally, when other transactions encounter a transaction in `STAGING` state, they check whether the staging transaction is still in progress by verifying that the transaction coordinator is still heartbeating that staging transaction’s record. If the coordinator is still heartbeating the record, the other transactions will wait, on the theory that letting the coordinator update the transaction record with the final result of the attempt to commit will be faster than going through the transaction status recovery process. This means that in practice, the transaction status recovery process is only used if the transaction coordinator dies due to an untimely crash.
+Additionally, when other transactions encounter a transaction in `STAGING` state, they check whether the staging transaction is still in progress by verifying that the transaction coordinator is still heartbeating that staging transaction’s record. If the coordinator is still heartbeating the record, the other transactions will wait, on the theory that letting the coordinator update the transaction record with the result of the attempt to commit will be faster than going through the transaction status recovery process. This means that in practice, the transaction status recovery process is only used if the transaction coordinator dies due to an untimely crash.
 
 ## Non-blocking transactions
 
@@ -396,7 +396,7 @@ Additionally, when other transactions encounter a transaction in `STAGING` state
 
 The non-blocking transaction protocol and replication scheme differ from standard read-write transactions as follows:
 
-- Non-blocking transactions use a replication scheme over the [ranges](overview.html#terms) they operate on that allows all followers in these ranges to serve consistent (non-stale) reads.
+- Non-blocking transactions use a replication scheme over the [ranges](overview.html#architecture-range) they operate on that allows all followers in these ranges to serve consistent (non-stale) reads.
 - Non-blocking transactions are minimally disruptive to reads over the data they modify, even in the presence of read/write [contention](../performance-best-practices-overview.html#transaction-contention).
 
 These properties of non-blocking transactions combine to provide predictable read latency for a configurable subset of data in [global deployments](../multiregion-overview.html). This is useful since there exists a sizable class of data which is heavily skewed towards read traffic.

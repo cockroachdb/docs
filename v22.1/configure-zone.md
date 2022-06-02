@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-`CONFIGURE ZONE` is a subcommand of the `ALTER DATABASE`, `ALTER TABLE`, `ALTER INDEX`, `ALTER PARTITION`, and `ALTER RANGE` statements and is used to add, modify, reset, or remove [replication zones](configure-replication-zones.html) for those objects. To view details about existing replication zones, see [`SHOW ZONE CONFIGURATIONS`](show-zone-configurations.html).
+`CONFIGURE ZONE` is a subcommand of the `ALTER DATABASE`, `ALTER TABLE`, `ALTER INDEX`, `ALTER PARTITION`, and [`ALTER RANGE`](alter-range.html) statements and is used to add, modify, reset, or remove [replication zones](configure-replication-zones.html) for those objects. To view details about existing replication zones, see [`SHOW ZONE CONFIGURATIONS`](show-zone-configurations.html).
 
 In CockroachDB, you can use **replication zones** to control the number and location of replicas for specific sets of data, both when replicas are first added and when they are rebalanced to maintain cluster equilibrium.
 
@@ -53,7 +53,7 @@ If the target is a [`system` range](#create-a-replication-zone-for-a-system-rang
 
  Parameter | Description
 -----------+-------------
-`range_name` | The name of the system [range](architecture/overview.html#glossary) whose [replication zone configurations](configure-replication-zones.html) you want to change.
+`range_name` | The name of the system [range](architecture/glossary.html#architecture-range) whose [replication zone configurations](configure-replication-zones.html) you want to change.
 `database_name` | The name of the [database](create-database.html) whose [replication zone configurations](configure-replication-zones.html) you want to change.<br> If you directly change a database's zone configuration with `ALTER DATABASE ... CONFIGURE ZONE`, CockroachDB will block all [`ALTER DATABASE ... SET PRIMARY REGION`](set-primary-region.html) statements on the database.
 `table_name` | The name of the [table](create-table.html) whose [replication zone configurations](configure-replication-zones.html) you want to change.
 `partition_name` | The name of the [partition](partitioning.html) whose [replication zone configurations](configure-replication-zones.html) you want to change.

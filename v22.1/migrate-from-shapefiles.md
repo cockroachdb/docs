@@ -86,7 +86,7 @@ USE tornadoes;
 
 ## Step 5. Import the SQL
 
-Since the file is being served from a local server and is formatted as Postgres-compatible SQL, we can import the data using the following [`IMPORT PGDUMP`](import.html#import-a-postgres-database-dump) statement:
+Since the file is being served from a local server and is formatted as PostgreSQL-compatible SQL, we can import the data using the following [`IMPORT PGDUMP`](import.html#import-a-postgresql-database-dump) statement:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -113,7 +113,7 @@ IMPORT PGDUMP ('http://localhost:3000/tornado-points.sql') WITH ignore_unsupport
 - [Migrate from GeoPackage](migrate-from-geopackage.html)
 - [Migration Overview](migration-overview.html)
 - [Migrate from MySQL][mysql]
-- [Migrate from Postgres][postgres]
+- [Migrate from PostgreSQL][postgres]
 - [Back Up and Restore Data](take-full-and-incremental-backups.html)
 - [Use the Built-in SQL Client](cockroach-sql.html)
 - [`cockroach` Commands Overview](cockroach-commands.html)

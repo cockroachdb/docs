@@ -28,6 +28,7 @@ Command | Usage
 [`cockroach debug list-files`](cockroach-debug-list-files.html) | Show the files that will be collected by using `cockroach debug zip`.
 [`cockroach debug merge-logs`](cockroach-debug-merge-logs.html) | Merge log files from multiple nodes into a single time-ordered stream of messages with an added per-message prefix to indicate the corresponding node.
 [`cockroach debug zip`](cockroach-debug-zip.html) | Generate a `.zip` file that can help Cockroach Labs troubleshoot issues with your cluster.
+[`cockroach convert-url`](connection-parameters.html#convert-a-url-for-different-drivers) | Convert a connection URL to a format recognized by a [supported client driver](third-party-database-tools.html#drivers).
 [`cockroach gen`](cockroach-gen.html) | Generate man pages, a bash completion file, example SQL data, or an HAProxy configuration file for a running cluster.
 [`cockroach statement-diag`](cockroach-statement-diag.html)  | Manage and download statement diagnostics bundles.
 [`cockroach userfile upload`](cockroach-userfile-upload.html) | Upload a file to user-scoped file storage.

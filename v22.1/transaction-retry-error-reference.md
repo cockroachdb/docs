@@ -61,6 +61,7 @@ This "conversational" design means that there is no way for the server to always
 - [ABORT_REASON_ABORT_SPAN](#abort_reason_abort_span)
 - [ABORT_REASON_NEW_LEASE_PREVENTS_TXN](#abort_reason_new_lease_prevents_txn)
 - [ABORT_REASON_TIMESTAMP_CACHE_REJECTED](#abort_reason_timestamp_cache_rejected)
+- [injected by `inject_retry_errors_enabled` session variable](#injected-by-inject_retry_errors_enabled-session-variable)
 
 ### RETRY_WRITE_TOO_OLD
 
@@ -273,6 +274,22 @@ The `ABORT_REASON_TIMESTAMP_CACHE_REJECTED` error occurs when the timestamp cach
 _Action_:
 
 Retry transaction _A_ as described in [client-side retry handling](transactions.html#client-side-intervention).
+
+### injected by `inject_retry_errors_enabled` session variable
+
+```
+ TransactionRetryWithProtoRefreshError: injected by `inject_retry_errors_enabled` session variable
+```
+
+_Description_:
+
+{% include_cached new-in.html version="v22.1" %} When the `inject_retry_errors_enabled` [session variable](set-vars.html) is set to `true`, any statement (with the exception of [`SET` statements](set-vars.html)) executed in the session inside of an explicit transaction will return this error.
+
+For more details, see [Testing transaction retry logic](transactions.html#testing-transaction-retry-logic).
+
+_Action_:
+
+To turn off error injection, set the `inject_retry_errors_enabled` session variable to `false`.
 
 ## See also
 
