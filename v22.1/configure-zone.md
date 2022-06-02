@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-`CONFIGURE ZONE` is a subcommand of the `ALTER DATABASE`, `ALTER TABLE`, `ALTER INDEX`, `ALTER PARTITION`, and `ALTER RANGE` statements and is used to add, modify, reset, or remove [replication zones](configure-replication-zones.html) for those objects. To view details about existing replication zones, see [`SHOW ZONE CONFIGURATIONS`](show-zone-configurations.html).
+`CONFIGURE ZONE` is a subcommand of the `ALTER DATABASE`, `ALTER TABLE`, `ALTER INDEX`, `ALTER PARTITION`, and [`ALTER RANGE`](alter-range.html) statements and is used to add, modify, reset, or remove [replication zones](configure-replication-zones.html) for those objects. To view details about existing replication zones, see [`SHOW ZONE CONFIGURATIONS`](show-zone-configurations.html).
 
 In CockroachDB, you can use **replication zones** to control the number and location of replicas for specific sets of data, both when replicas are first added and when they are rebalanced to maintain cluster equilibrium.
 
