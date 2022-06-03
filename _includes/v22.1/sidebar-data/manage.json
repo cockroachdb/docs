@@ -177,6 +177,12 @@
           "title": "Secure CockroachDB Cloud Clusters",
           "items": [
             {
+              "title": "Enabling Customer Managed Encryption Keys (CMEK) for Cockroach Dedicated",
+              "urls": [
+                "/cockroachcloud/enabling-cmek.html"
+              ]
+            },
+            {
               "title": "Authenticating to CockroachDB Cloud",
               "urls": [
                 "/cockroachcloud/authentication.html"
