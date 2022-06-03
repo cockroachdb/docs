@@ -204,7 +204,7 @@
           ]
         },
         {
-          "title": "Create Temporary Tables",
+          "title": "Temporary Tables",
           "urls": [
             "/${VERSION}/temporary-tables.html"
           ]
