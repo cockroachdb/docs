@@ -7,7 +7,7 @@ docs_area: reference.sql
 
 {% include enterprise-feature.md %}
 
-<span class="version-tag">New in v22.1:</span> The `ALTER CHANGEFEED` statement modifies an existing [changefeed](change-data-capture-overview.html). You can use `ALTER CHANGEFEED` to do the following:
+{% include_cached new-in.html version="v22.1" %} The `ALTER CHANGEFEED` statement modifies an existing [changefeed](change-data-capture-overview.html). You can use `ALTER CHANGEFEED` to do the following:
 
 - Add new target tables to a changefeed.
 - Remove target tables from a changefeed.

@@ -4,7 +4,7 @@ summary: The SURVIVE {ZONE,REGION} FAILURE statement configures a multi-region d
 toc: true
 ---
 
-<span class="version-tag">New in v21.1:</span> The `ALTER DATABASE ... SURVIVE {ZONE,REGION} FAILURE` [statement](sql-statements.html) sets the [survival goal](multiregion-overview.html#survival-goals) for a [multi-region database](multiregion-overview.html).
+{% include_cached new-in.html version="v21.1" %} The `ALTER DATABASE ... SURVIVE {ZONE,REGION} FAILURE` [statement](sql-statements.html) sets the [survival goal](multiregion-overview.html#survival-goals) for a [multi-region database](multiregion-overview.html).
 
 {{site.data.alerts.callout_info}}
 `SURVIVE {ZONE,REGION} FAILURE` is a subcommand of [`ALTER DATABASE`](alter-database.html).

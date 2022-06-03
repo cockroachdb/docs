@@ -151,7 +151,7 @@
                 ]
               },
               {
-                "title": "<code>ADD REGION (Enterprise)</code>",
+                "title": "<code>ADD REGION</code> (Enterprise)",
                 "urls": [
                   "/${VERSION}/add-region.html"
                 ]
@@ -214,6 +214,12 @@
                 "title": "<code>ALTER RANGE</code>",
                 "urls": [
                   "/${VERSION}/alter-range.html"
+                ]
+              },
+              {
+                "title": "<code>ALTER RANGE ... RELOCATE</code>",
+                "urls": [
+                  "/${VERSION}/alter-range-relocate.html"
                 ]
               },
               {

@@ -143,6 +143,7 @@ favicons
 fdw
 filepath
 firewalled
+firewalling
 firouz
 fluentd
 fortran
@@ -594,6 +595,7 @@ unsplit
 unsplitting
 unsychronized
 unsynchronized
+untrusted
 untyped
 updatable
 upreplication

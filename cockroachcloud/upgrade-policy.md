@@ -31,7 +31,9 @@ Major version upgrades are automatic for {{ site.data.products.serverless }} clu
 
 ### Rollback support
 
-When upgrading a {{ site.data.products.dedicated }} cluster to a new major version, once all nodes are running the new version, you have approximately 72 hours before the upgrade is automatically finalized. During this window, if you see unexpected behavior, you can [trigger a rollback to the previous major version](upgrade-to-v21.2.html#roll-back-the-upgrade) from the {{ site.data.products.db }} Console.
+When upgrading a {{ site.data.products.dedicated }} cluster to a new major version, once all nodes are running the new version, you have approximately 72 hours before the upgrade is automatically finalized. During this window, if you see unexpected behavior, you can [trigger a rollback to the previous major version](upgrade-to-v21.2.html#roll-back-the-upgrade) from the {{ site.data.products.db }} Console. 
+
+Note that you will roll back to the latest patch version of the previous major version, not the same patch version you were running before you initiated the upgrade.
 
 If you see problems after the upgrade has been finalized, it will not be possible to roll back via the {{ site.data.products.db }} Console; you will have to [reach out to support](https://support.cockroachlabs.com/hc/en-us/requests/new).
 

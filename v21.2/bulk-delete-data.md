@@ -21,9 +21,8 @@ Exercise caution when batch deleting rows from tables with foreign key constrain
 
 Before reading this page, do the following:
 
-- [Install CockroachDB](install-cockroachdb.html).
-- [Start a local cluster](secure-a-cluster.html), or [create a {{ site.data.products.dedicated }} cluster](../cockroachcloud/create-your-cluster.html).
-- [Install a PostgreSQL client](install-client-drivers.html).
+- [Create a {{ site.data.products.serverless }} cluster](../cockroachcloud/quickstart.html) or [start a local cluster](../cockroachcloud/quickstart.html?filters=local).
+- [Install a Postgres client](install-client-drivers.html).
 
     For the example on this page, we use the `psycopg2` Python driver.
 - [Connect to the database](connect-to-the-database.html).

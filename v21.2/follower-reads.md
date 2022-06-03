@@ -26,7 +26,7 @@ When a gateway node in a cluster receives a request to read a key with a suffici
 CockroachDB provides the following types of follower reads:
 
 - _Exact staleness reads_: These are historical reads as of a static, user-provided timestamp. Most often, this is the timestamp value returned by the `follower_read_timestamp()` convenience [function](functions-and-operators.html). For more information, see [Exact staleness reads](#exact-staleness-reads).
-- <span class="version-tag">New in v21.2:</span> _Bounded staleness reads_: These use a dynamic, system-determined timestamp to minimize staleness while being more tolerant to replication lag than exact staleness reads. This dynamic timestamp is returned by the `with_min_timestamp()` or `with_max_staleness()` [functions](functions-and-operators.html). In addition, bounded staleness reads provide the ability to serve reads from local replicas even in the presence of network partitions or other failures. For more information, see [Bounded staleness reads](#bounded-staleness-reads).
+- {% include_cached new-in.html version="v21.2" %} _Bounded staleness reads_: These use a dynamic, system-determined timestamp to minimize staleness while being more tolerant to replication lag than exact staleness reads. This dynamic timestamp is returned by the `with_min_timestamp()` or `with_max_staleness()` [functions](functions-and-operators.html). In addition, bounded staleness reads provide the ability to serve reads from local replicas even in the presence of network partitions or other failures. For more information, see [Bounded staleness reads](#bounded-staleness-reads).
 
 ## Exact staleness reads
 
@@ -180,7 +180,7 @@ To set `AS OF SYSTEM TIME follower_read_timestamp()` on all implicit and explici
   <li>Execute the <code>SET SESSION CHARACTERISTICS AS TRANSACTION AS OF SYSTEM TIME follower_read_timestamp()</code> <a href="set-vars.html#special-syntax-cases">SQL statement</a>. This has the same effect as setting the session variable as shown above.</li>
 </ul>
 
-<span class="version-tag">New in v21.2:</span> You can set `default_transaction_use_follower_reads` on a per-role basis; for instructions, see [Set default session variable values for a role](alter-role.html#set-default-session-variable-values-for-a-role).
+{% include_cached new-in.html version="v21.2" %} You can set `default_transaction_use_follower_reads` on a per-role basis; for instructions, see [Set default session variable values for a role](alter-role.html#set-default-session-variable-values-for-a-role).
 {{site.data.alerts.end}}
 
 ## Limitations

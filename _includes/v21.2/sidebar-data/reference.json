@@ -157,7 +157,7 @@
                 ]
               },
               {
-                "title": "<code>ADD REGION (Enterprise)</code>",
+                "title": "<code>ADD REGION</code> (Enterprise)",
                 "urls": [
                   "/${VERSION}/add-region.html"
                 ]

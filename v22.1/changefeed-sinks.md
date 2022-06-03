@@ -93,7 +93,7 @@ The configurable fields include:
 The Google Cloud Pub/Sub sink is currently in **beta**. For more information, read about its available [parameters](create-changefeed.html#parameters), [options](create-changefeed.html#options), and the [Create a changefeed connected to a Google Cloud Pub/Sub sink](changefeed-examples.html#create-a-changefeed-connected-to-a-google-cloud-pub-sub-sink) example.
 {{site.data.alerts.end}}
 
-<span class="version-tag">New in v22.1:</span> Changefeeds can deliver messages to a Google Cloud Pub/Sub sink, which is integrated with Google Cloud Platform.
+{% include_cached new-in.html version="v22.1" %} Changefeeds can deliver messages to a Google Cloud Pub/Sub sink, which is integrated with Google Cloud Platform.
 
 A Pub/Sub sink URI follows this example:
 
@@ -131,6 +131,7 @@ Use a cloud storage sink to deliver changefeed data to OLAP or big data systems 
 Some considerations when using cloud storage sinks:
 
 - Cloud storage sinks only work with `JSON` and emit newline-delimited `JSON` files.
+- Cloud storage sinks can be configured to store emitted changefeed messages in one or more subdirectories organized by date. See [file partitioning](create-changefeed.html#partition-format) and the [General file format](create-changefeed.html#general-file-format) examples.
 - The supported cloud schemes are: `s3`, `gs`, `azure`, `http`, and `https`.
 - Both `http://` and `https://` are cloud storage sinks, **not** webhook sinks. It is necessary to prefix the scheme with `webhook-` for [webhook sinks](#webhook-sink).
 

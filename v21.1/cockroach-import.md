@@ -4,7 +4,7 @@ summary: The cockroach import command imports a database or table from a local d
 toc: true
 ---
 
-<span class="version-tag">New in v21.1:</span> The `cockroach import` [command](cockroach-commands.html) imports a database or table from a local dump file into a running cluster. This command [uploads a userfile](cockroach-userfile-upload.html), imports its data, then [deletes the userfile](cockroach-userfile-delete.html). `PGDUMP` and `MYSQLDUMP` file formats are currently supported.
+{% include_cached new-in.html version="v21.1" %} The `cockroach import` [command](cockroach-commands.html) imports a database or table from a local dump file into a running cluster. This command [uploads a userfile](cockroach-userfile-upload.html), imports its data, then [deletes the userfile](cockroach-userfile-delete.html). `PGDUMP` and `MYSQLDUMP` file formats are currently supported.
 
 {{site.data.alerts.callout_info}}
 We recommend using `cockroach import` for quick imports from your client (about 15MB or smaller). For larger imports, use the [IMPORT](import.html) statement.
@@ -80,7 +80,7 @@ successfully imported table test_table from pgdump file /Users/maxroach/Desktop/
 
 ### Import a database with unsupported SQL syntax and log all unsupported statements
 
-<span class="version-tag">New in v21.1:</span> To import a database from a `PGDUMP` file that contains unsupported SQL syntax and log the ignored statements to a [userfile](use-userfile-for-bulk-operations.html):
+{% include_cached new-in.html version="v21.1" %} To import a database from a `PGDUMP` file that contains unsupported SQL syntax and log the ignored statements to a [userfile](use-userfile-for-bulk-operations.html):
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -93,7 +93,7 @@ successfully imported table test_table from pgdump file /Users/maxroach/Desktop/
 
 ### Import a limited number of rows from a dump file
 
-<span class="version-tag">New in v21.1:</span> To limit the number of rows imported from a dump file:
+{% include_cached new-in.html version="v21.1" %} To limit the number of rows imported from a dump file:
 
 {% include copy-clipboard.html %}
 ~~~ shell
