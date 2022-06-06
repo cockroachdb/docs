@@ -11,6 +11,10 @@ The examples use the [employees data set](https://github.com/datacharmer/test_db
 
 {% include {{ page.version.version }}/misc/import-perf.md %}
 
+{{site.data.alerts.callout_info}}
+To migrate from MySQL to CockroachDB using the AWS Database Migration Service, see [Migrate with AWS Database Migration Service (DMS)](aws-dms.html).
+{{site.data.alerts.end}}
+
 ## Considerations
 
 In addition to the general considerations listed in the [Migration Overview](migration-overview.html), there is also the following MySQL-specific information to consider as you prepare your migration.
@@ -148,7 +152,7 @@ The simplest way to import a table dump is to run [`IMPORT`][import].  It reads 
 ~~~
 
 ~~~
-       job_id       |  status   | fraction_completed |  rows  | index_entries | system_records |  bytes   
+       job_id       |  status   | fraction_completed |  rows  | index_entries | system_records |  bytes
 --------------------+-----------+--------------------+--------+---------------+----------------+----------
  383855569817436161 | succeeded |                  1 | 300024 |             0 |              0 | 11534293
 (1 row)
