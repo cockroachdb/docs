@@ -11,6 +11,10 @@ The examples pull real data from [Amazon S3](https://aws.amazon.com/s3/). They u
 
 {% include {{ page.version.version }}/misc/import-perf.md %}
 
+{{site.data.alerts.callout_info}}
+To migrate from PostgreSQL to CockroachDB using the AWS Database Migration Service, see [Migrate CockroachDB Data with AWS Database Migration Service (DMS)](aws-dms.html).
+{{site.data.alerts.end}}
+
 ## Step 1. Dump the PostgreSQL database
 
 There are several ways to dump data from PostgreSQL to be imported into CockroachDB:
@@ -125,7 +129,7 @@ The simplest way to import a table dump is to run [`IMPORT`][import]. It reads t
 ~~~
 
 ~~~
-       job_id       |  status   | fraction_completed |  rows  | index_entries | system_records |  bytes   
+       job_id       |  status   | fraction_completed |  rows  | index_entries | system_records |  bytes
 --------------------+-----------+--------------------+--------+---------------+----------------+----------
  383855569817436161 | succeeded |                  1 | 300024 |             0 |              0 | 11534293
 (1 row)

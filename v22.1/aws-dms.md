@@ -1,11 +1,11 @@
 ---
-title: Migrate CockroachDB Schemas with AWS Database Migration Service (DMS)
+title: Migrate CockroachDB Data with AWS Database Migration Service (DMS)
 summary: Learn how to use AWS Database Migration Service (DMS) to migrate to a CockroachDB target cluster.
 toc: true
 docs_area: develop
 ---
 
-This page has instructions for setting up [AWS DMS](https://aws.amazon.com/dms/) to migrate data from an existing database to CockroachDB.
+This page has instructions for setting up [AWS DMS](https://aws.amazon.com/dms/) to migrate data to CockroachDB from an existing, publicly-hosted database containing application data such as MySQL, Oracle, or PostgreSQL.
 
 For a detailed tutorial about using AWS DMS and information about specific migration tasks, see the [AWS DMS documentation site](https://docs.aws.amazon.com/dms/latest/userguide/Welcome.html).
 
