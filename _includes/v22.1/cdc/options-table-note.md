@@ -1,0 +1,1 @@
+For options that you can pass with `CREATE CHANGEFEED`, see the [Options](create-changefeed.html#options) table. For a list of all sink query parameters you can pass in a `CREATE CHANGEFEED` statement, see [Query parameters](create-changefeed.html#query-parameters).

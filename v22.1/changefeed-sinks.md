@@ -39,6 +39,24 @@ Example of a Kafka sink URI:
 'kafka://broker.address.com:9092?topic_prefix=bar_&tls_enabled=true&ca_cert=LS0tLS1CRUdJTiBDRVJUSUZ&sasl_enabled=true&sasl_user={sasl user}&sasl_password={url-encoded password}&sasl_mechanism=SASL-SCRAM-SHA-256'
 ~~~
 
+<a name ="kafka-parameters"></a>The following table lists the available parameters for Kafka URIs:
+
+URI Parameter      | Description
+-------------------+------------------------------------------------------------------
+`topic_name`       | The topic name to which messages will be sent. See the following section on [Topic Naming](#topic-naming) for detail on how topics are created.
+`topic_prefix`     | Adds a prefix to all topic names.<br><br>For example, `CREATE CHANGEFEED FOR TABLE foo INTO 'kafka://...?topic_prefix=bar_'` would emit rows under the topic `bar_foo` instead of `foo`.
+`tls_enabled`      | If `true`, enable Transport Layer Security (TLS) on the connection to Kafka. This can be used with a `ca_cert` (see below). <br><br>**Default:** `false`
+`ca_cert`          | The base64-encoded `ca_cert` file. Specify `ca_cert` for a Kafka sink. <br><br>Note: To encode your `ca.cert`, run `base64 -w 0 ca.cert`.
+`client_cert`      | The base64-encoded Privacy Enhanced Mail (PEM) certificate. This is used with `client_key`.
+`client_key`       | The base64-encoded private key for the PEM certificate. This is used with `client_cert`.
+`sasl_enabled`     | If `true`, the authentication protocol can be set to SCRAM or PLAIN using the `sasl_mechanism` parameter. You must have `tls_enabled` set to `true` to use SASL. <br><br> **Default:** `false`
+`sasl_mechanism`   | Can be set to [`SASL-SCRAM-SHA-256`](https://docs.confluent.io/platform/current/kafka/authentication_sasl/authentication_sasl_scram.html), [`SASL-SCRAM-SHA-512`](https://docs.confluent.io/platform/current/kafka/authentication_sasl/authentication_sasl_scram.html), or [`SASL-PLAIN`](https://docs.confluent.io/current/kafka/authentication_sasl/authentication_sasl_plain.html). A `sasl_user` and `sasl_password` are required. <br><br> **Default:** `SASL-PLAIN`
+`sasl_user`        | Your SASL username.
+`sasl_password`    | Your SASL password
+`insecure_tls_skip_verify` | If `true`, disable client-side validation of responses. Note that a CA certificate is still required; this parameter means that the client will not verify the certificate. **Warning:** Use this query parameter with caution, as it creates [MITM](https://en.wikipedia.org/wiki/Man-in-the-middle_attack) vulnerabilities unless combined with another method of authentication. <br><br>**Default:** `false`
+
+{% include {{ page.version.version }}/cdc/options-table-note.md %}
+
 ### Topic naming
 
 By default, a Kafka topic has the same name as the table on which a changefeed was created. If a changefeed was created on multiple tables, the changefeed will write to multiple topics corresponding to those table names.
@@ -88,7 +106,7 @@ Field              | Type                | Description      | Default
 ## Google Cloud Pub/Sub
 
 {{site.data.alerts.callout_info}}
-The Google Cloud Pub/Sub sink is currently in **beta**. For more information, read about its available [parameters](create-changefeed.html#parameters), [options](create-changefeed.html#options), and the [Create a changefeed connected to a Google Cloud Pub/Sub sink](changefeed-examples.html#create-a-changefeed-connected-to-a-google-cloud-pub-sub-sink) example.
+The Google Cloud Pub/Sub sink is currently in **beta**. For more information, read about compatible changefeed [options](create-changefeed.html#options) and the [Create a changefeed connected to a Google Cloud Pub/Sub sink](changefeed-examples.html#create-a-changefeed-connected-to-a-google-cloud-pub-sub-sink) example.
 {{site.data.alerts.end}}
 
 {% include_cached new-in.html version="v22.1" %} Changefeeds can deliver messages to a Google Cloud Pub/Sub sink, which is integrated with Google Cloud Platform.
@@ -99,6 +117,8 @@ A Pub/Sub sink URI follows this example:
 'gcpubsub://{project name}?region={region}&topic_name={topic name}&AUTH=specified&CREDENTIALS={base64-encoded key}'
 ~~~
 
+<a name ="pub-sub-parameters"></a>
+
 URI Parameter      | Description
 -------------------+------------------------------------------------------------------
 `project name`     | The [Google Cloud Project](https://cloud.google.com/resource-manager/docs/creating-managing-projects) name.
@@ -106,6 +126,8 @@ URI Parameter      | Description
 `topic_name`       | (Optional) The topic name to which messages will be sent. See the following section on [Topic Naming](#topic-naming) for detail on how topics are created.
 `AUTH`             | The authentication parameter can define either `specified` (default) or `implicit` authentication. To use `specified` authentication, pass your [Service Account](https://cloud.google.com/iam/docs/understanding-service-accounts) credentials with the URI. To use `implicit` authentication, configure these credentials via an environment variable. See [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html#authentication) for examples of each of these.
 `CREDENTIALS`      | (Required with `AUTH=specified`) The base64-encoded credentials of your Google [Service Account](https://cloud.google.com/iam/docs/understanding-service-accounts) credentials.
+
+{% include {{ page.version.version }}/cdc/options-table-note.md %}
 
 When using Pub/Sub as your downstream sink, consider the following:
 
@@ -129,7 +151,7 @@ Use a cloud storage sink to deliver changefeed data to OLAP or big data systems 
 Some considerations when using cloud storage sinks:
 
 - Cloud storage sinks only work with `JSON` and emit newline-delimited `JSON` files.
-- Cloud storage sinks can be configured to store emitted changefeed messages in one or more subdirectories organized by date. See [file partitioning](create-changefeed.html#partition-format) and the [General file format](create-changefeed.html#general-file-format) examples.
+- Cloud storage sinks can be configured to store emitted changefeed messages in one or more subdirectories organized by date. See [file partitioning](#partition-format) and the [General file format](create-changefeed.html#general-file-format) examples.
 - The supported cloud schemes are: `s3`, `gs`, `azure`, `http`, and `https`.
 - Both `http://` and `https://` are cloud storage sinks, **not** webhook sinks. It is necessary to prefix the scheme with `webhook-` for [webhook sinks](#webhook-sink).
 
@@ -153,21 +175,41 @@ Examples of supported cloud storage sink URIs:
 'gs://{BUCKET NAME}/{PATH}?AUTH=specified&CREDENTIALS={ENCODED KEY}'
 ~~~
 
+<a name ="cloud-parameters"></a>The following table lists the available parameters for cloud storage sink URIs:
+
+URI Parameter      | Description
+-------------------+------------------------------------------------------------------
+`file_size`        | The file will be flushed (i.e., written to the sink) when it exceeds the specified file size. This can be used with the [`WITH resolved` option](create-changefeed.html#options), which flushes on a specified cadence. <br><br>**Default:** `16MB`
+<a name ="partition-format"></a>`partition_format` | <span class="version-tag">New in v22.1:</span> Specify how changefeed [file paths](#general-file-format) are partitioned in cloud storage sinks. Use `partition_format` with the following values: <br><br><ul><li>`daily` is the default behavior that organizes directories by dates (`2022-05-18/`, `2022-05-19/`, etc.).</li><li>`hourly` will further organize directories by hour within each date directory (`2022-05-18/06`, `2022-05-18/07`, etc.).</li><li>`flat` will not partition the files at all.</ul><br>For example: `CREATE CHANGEFEED FOR TABLE users INTO 'gs://...?AUTH...&partition_format=hourly'` <br><br> **Default:** `daily`
+`S3_storage_class` | <span class="version-tag">New in v22.1:</span> Specify the **Amazon S3** storage class for files created by the changefeed. See [Create a changefeed with an S3 storage class](#create-a-changefeed-with-an-s3-storage-class) for the available classes and an example. <br><br>**Default:** `STANDARD`  
+`topic_prefix`     | Adds a prefix to all topic names.<br><br>For example, `CREATE CHANGEFEED FOR TABLE foo INTO 's3://...?topic_prefix=bar_'` would emit rows under the topic `bar_foo` instead of `foo`.
+
+{% include {{ page.version.version }}/cdc/options-table-note.md %}
+
 [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html#authentication) provides more detail on authentication to cloud storage sinks.
 
 ## Webhook sink
 
 {{site.data.alerts.callout_info}}
-The webhook sink is currently in **beta**. For more information, read about its usage considerations, available [parameters](create-changefeed.html#parameters), and [options](create-changefeed.html#options) below.
+The webhook sink is currently in **beta**. The following section provides usage considerations.
 {{site.data.alerts.end}}
 
- Use a webhook sink to deliver changefeed messages to an arbitrary HTTP endpoint.
+Use a webhook sink to deliver changefeed messages to an arbitrary HTTP endpoint.
 
 Example of a webhook sink URL:
 
 ~~~
 'webhook-https://{your-webhook-endpoint}?insecure_tls_skip_verify=true'
 ~~~
+
+<a name ="webhook-parameters"></a>The following table lists the parameters you can use in your webhook URI:
+
+URI Parameter      | Description
+-------------------+------------------------------------------------------------------
+`ca_cert`          | The base64-encoded `ca_cert` file. Specify `ca_cert` for a webhook sink. <br><br>Note: To encode your `ca.cert`, run `base64 -w 0 ca.cert`.
+`insecure_tls_skip_verify` | If `true`, disable client-side validation of responses. Note that a CA certificate is still required; this parameter means that the client will not verify the certificate. **Warning:** Use this query parameter with caution, as it creates [MITM](https://en.wikipedia.org/wiki/Man-in-the-middle_attack) vulnerabilities unless combined with another method of authentication. <br><br>**Default:** `false`
+
+{% include {{ page.version.version }}/cdc/options-table-note.md %}
 
 The following are considerations when using the webhook sink:
 
