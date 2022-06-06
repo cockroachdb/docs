@@ -19,7 +19,7 @@ For multi-region clusters, you must provide a key and IAM role combination per r
 
 ## Step 1: Create the key
 
-1. In the AWS console, visit the [KMS page](console.aws.amazon.com/kms/). 
+1. In the AWS console, visit the [KMS page](console.aws.amazon.com/kms/).
 1. Choose **Customer managed keys** and click the **Create Key** button.
 1. For **Key type**, specify **Symmetric Key**.
 1. For **Key usage**, specify **Encrypt and decrypt**.
@@ -30,7 +30,7 @@ For multi-region clusters, you must provide a key and IAM role combination per r
 ## Step 2: Provision the IAM role
 
 1. Find the correct cross-account ID
-	
+
 	Recall that the premise of CMEK is that you, the customer, maintain control over your encryption key, while (temporarily) granting access to Cockroach Labs' to encrypt and data for you. You must find the Account ID of the AWS account that Cockroach Labs will use for this purpose. To find the ID of the AWS account associated with your cluster, query the clusters endpoint of the {{ site.data.products.db }} API. The value is under the `account_id` field:
 
 	{% include_cached copy-clipboard.html %}
@@ -49,7 +49,7 @@ For multi-region clusters, you must provide a key and IAM role combination per r
 - kms:ReEncrypt*
 
 
-Setup the trust relationship / federation with the cluster’s AWS Account id noted in Step 2, and specify the external id as the Organization Id noted in Step 0. This would allow your cluster to access the KMS key(s) in your AWS account. 
+Setup the trust relationship / federation with the cluster’s AWS Account id noted in Step 2, and specify the external id as the Organization Id noted in Step 0. This would allow your cluster to access the KMS key(s) in your AWS account.
 
 
 

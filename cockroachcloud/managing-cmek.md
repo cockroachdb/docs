@@ -49,7 +49,7 @@ The upgrade process will generate a new Organization ID.
 
 1. Create a new {{ site.data.products.dedicated }} cluster. You can do this either of two ways:
 	- From the {{ site.data.products.db }} console [clusters page](https://cockroachlabs.cloud/cluster).
-	- [Using the Cloud API](cloud-api.html#create-a-new-cluster). 
+	- [Using the Cloud API](cloud-api.html#create-a-new-cluster).
 
 ### Step 3. Provision IAM and KMS in your IaaS
 
@@ -61,14 +61,14 @@ Next, you must provision the resources required resources in your IaaS, whether 
 Follow the instructions depending on your IaaS:
 
 - [Provisioning Amazon Web Services (AWS) for CMEK](cmek-ops-aws.html)
-- [Provisioning Google Cloud Platform (GCP) for CMEK](cmek-ops-gcp.html) 
+- [Provisioning Google Cloud Platform (GCP) for CMEK](cmek-ops-gcp.html)
 
 ### Step 4. Enable CMEK for your CockroachDB Cluster
 
 
 ## Check CMEK status
 
-An API call displays information about your cluster's use of CMEK: 
+An API call displays information about your cluster's use of CMEK:
 
 {% include_cached copy-clipboard.html %}
 ```shell
