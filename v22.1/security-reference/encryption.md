@@ -35,7 +35,7 @@ To allow arbitrary rotation schedules and ensure security of the keys, we use mu
 
 - **CMEK keys** give you an additional layer of protection for your cluster's store key. When you enable [Customer Managed Encryption Keys (CMEK)](/docs/cockroachcloud/cmek.html), you provide a symmetric key that is created and managed by your organization, stored in your cloud tenant or Hashicorp Vault Secrets Manager. This key is used to encrypt the store key. Data can be read from or written to the cluster only when the CMEK key is available to the cluster's nodes. To temporarily or permanently prevent access to a cluster's data, you can disable or revoke access to the CMEK key. To reinstate access, you can restore access to the CMEK key. See [Managing Customer Managed Encryption Keys (CMEK) for Cockroach Dedicated](/docs/cockroachcloud/managing-cmek.html).
 
-Store keys are specified at node startup by passing a path to a locally readable file. The file must contain 32 bytes (the key ID) followed by the key (16, 24, or 32 bytes). The size of the key dictates the version of AES to use (AES-128, AES-192, or AES-256). For an example showing how to create a store key, see [Generating key files](#generating-store-key-files) below.
+Store keys are specified at node startup by passing a path to a locally readable file. The file must contain 32 bytes (the key ID) followed by the key (16, 24, or 32 bytes). The size of the key dictates the version of AES to use (AES-128, AES-192, or AES-256). For an example showing how to create a store key, see [Generating Key Files](../encryption.html#generating-store-key-files).
 
 Also during node startup, CockroachDB uses a data key with the same length as the store key. If encryption has just been enabled, the key size has changed, or the data key is too old (default lifetime is one week), CockroachDB generates a new data key.
 
@@ -52,7 +52,7 @@ Key rotation is necessary for Encryption at Rest for multiple reasons:
 - To prevent key reuse with the same encryption parameters (after encrypting many files).
 - To reduce the risk of key exposure.
 
-Store keys are specified by the user and must be rotated by specifying different keys. This is done by restarting each node and setting the `key` parameter of the `--enterprise-encryption` flag to the path to the new key, and `old-key` to the previously used key. For an example, see [Changing encryption algorithm or keys](encryption.html#changing-encryption-algorithm-or-keys).
+Store keys are specified by the user and must be rotated by specifying different keys. This is done by restarting each node and setting the `key` parameter of the `--enterprise-encryption` flag to the path to the new key, and `old-key` to the previously used key. For an example, see [Changing Encryption Type](#changing-encryption-type).
 
 Data keys will automatically be rotated at startup if any of the following conditions are met:
 

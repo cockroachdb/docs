@@ -5,15 +5,15 @@ toc: true
 docs_area: manage.security
 ---
 
-Customer-Managed Encryption Keys (CMEK) give you more control over data is protected in your {{ site.data.products.dedicated }} clusters where [Encryption At Rest](encryption.html) is already enabled. When both Encryption At Rest and CMEK are enabled, your cluster's data is protected by an additional cryptographic key that is entirely within your control. You grant your cluster's service account the ability to encrypt and decrypt using the CMEK key. The service account never has direct access to the CMEK key materials and does not have the ability to manage or export your CMEK keys.
+Customer-Managed Encryption Keys (CMEK) give you more control over data is protected in your {{ site.data.products.dedicated }} clusters where [Encryption At Rest](../{{site.versions["stable"]}}/encryption.html) is already enabled. When both Encryption At Rest and CMEK are enabled, your cluster's data is protected by an additional cryptographic key that is entirely within your control. You grant your cluster's service account the ability to encrypt and decrypt using the CMEK key. The service account never has direct access to the CMEK key materials and does not have the ability to manage or export your CMEK keys.
 
-You create and manage your CMEK keys in your cloud tenant's key-management system (KMS). Support for Hashicorp Vault Secrets Manager means that you can use CMEK keys stored in multiple cloud tenants or providers. You can learn more about {{ site.data.products.dedicated }}'s [Hashicorp Vault Integration](/${VERSION}/hashicorp-integration.html).
+You create and manage your CMEK keys in your cloud tenant's key-management system (KMS). Support for Hashicorp Vault Secrets Manager means that you can use CMEK keys stored in multiple cloud tenants or providers. You can learn more about {{ site.data.products.dedicated }}'s [Hashicorp Vault Integration](../{{site.versions["stable"]}}/hashicorp-integration.html).
 
 In addition, you can use CMEK keys that reside in multiple cloud tenants or providers by using Hashicorp Vault Secrets Manager. Hashicorp Vault Secrets Manager centralizes management of cryptographic keys in multiple cloud tenants, and you grant your {{ site.data.products.dedicated }} service account the ability to encrypt and decrypt using the key. Google Cloud KMS, AWS KMS, and Hashicorp Vault Secrets Manager, or a combination of the three. This article describes how CMEK works in {{ site.data.products.dedicated }} clusters. To enable CMEK on a cluster, see [Managing Customer Managed Encryption Keys (CMEK) for Cockroach Dedicated](managing-cmek.html).
 
 ## Overview of CMEK
 
-This section briefly describes how Encryption At Rest works without CMEK, and then explains the differences when CMEK is enabled. For more details, see [Encryption At Rest](encryption.html). To enable CMEK, see [Managing Customer Managed Encryption Keys (CMEK) for Cockroach Dedicated](managing-cmek.html).
+This section briefly describes how Encryption At Rest works without CMEK, and then explains the differences when CMEK is enabled. For more details, see [Encryption At Rest](..{{site.versions["stable"]}}/encryption.html). To enable CMEK, see [Managing Customer Managed Encryption Keys (CMEK) for Cockroach Dedicated](managing-cmek.html).
 
 When Encryption At Rest is enabled on a {{ site.data.products.dedicated }} cluster, data is always encrypted when writing to a database, and must be decrypted when reading from the database. Data in backups is also encrypted before being written to the target storage location. When you enable Encryption At Rest, CockroachDB creates two keys, distributes them to the cluster's nodes, and begins using them to encrypt and decrypt the cluster's data. This explanation describes single-region clusters. For a multi-region cluster, each region has a CMEK key, so the following steps happen for each node in a given region.
 
@@ -42,7 +42,7 @@ The data key is automatically rotated on a monthly basis, and data is always wri
 
   - **Infrastructure flexibility**: If all of your clusters and cryptographic keys are stored in the same cloud provider, you can access CMEK keys using that cloud provider's key-management system directly.
 
-    If your clusters or your CMEK keys are stored in multiple cloud providers, you can use Hashicorp Vault Key Management Secrets Engine to give your clusters access to your CMEK keys. Hashicorp Vault Key Management Secrets Engine provides a consistent workflow for distribution and lifecycle management of cryptographic keys in various key-management service (KMS) providers, including Google Cloud KMS and AWS KMS, while still taking advantage of the cryptographic capabilities of each KMS provider. For more information about using Hashicorp Vault with {{ site.data.products.dedicated }}, see [Hashicorp Vault Integration](/).
+    If your clusters or your CMEK keys are stored in multiple cloud providers, you can use Hashicorp Vault Key Management Secrets Engine to give your clusters access to your CMEK keys. Hashicorp Vault Key Management Secrets Engine provides a consistent workflow for distribution and lifecycle management of cryptographic keys in various key-management service (KMS) providers, including Google Cloud KMS and AWS KMS, while still taking advantage of the cryptographic capabilities of each KMS provider. For more information about using Hashicorp Vault with {{ site.data.products.dedicated }}, see [Hashicorp Vault Integration](../{{site.versions["stable"]}}/hashicorp-integration.html).
 
   - **Enforcement of encryption requirements**: With CMEK, you have control the CMEK key's encryption strength. The CMEK key can be 128, 256, or 512 bytes long.
 
@@ -142,4 +142,4 @@ It's not possible to enable CMEK from Cockroach Cloud Console. Instead, you must
 ## See also
 
 - [Managing Customer Managed Encryption Keys (CMEK) for Cockroach Dedicated](managing-cmek.html)
-- [Encryption At Rest](encryption.html).
+- [Encryption At Rest](..{{site.versions["stable"]}}/encryption.html).
