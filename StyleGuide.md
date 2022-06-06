@@ -204,6 +204,13 @@ Each version's pages are found in a directory named for the version. For example
 
 Each version's images are stored in a versioned directory under the `images` directory. For example, images for CockroachDB v21.1 are in the `docs > images > v21.1` directory. For more information, see [Images](#images).
 
+### File naming
+
+File names should match the page title. If you need to change a file name, it is necessary to do the following:
+
+- Add the previous page URL with the new URL to `_redirects`.
+- Replace all links to the previous file name with the new file name in the applicable docs versions.
+
 ## Content types
 
 There are four fundamental content types:
