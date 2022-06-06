@@ -79,7 +79,7 @@ $ cockroach node recommission <node IDs> <flags>
 Drain nodes:
 
 ~~~ shell
-$ cockroach node drain <node ID> <flags>
+$ cockroach node drain <flags>
 ~~~
 
 View help:
@@ -129,7 +129,6 @@ The `node drain` subcommand also supports the following general flag:
 Flag | Description
 -----|------------
 `--drain-wait` | Amount of time to wait for the node to drain before returning to the client. If draining fails to complete within this duration, you must re-initiate the command to continue the drain. A very long drain may indicate an anomaly, and you should manually inspect the server to determine what blocks the drain.<br><br>**Default:** `10m`
-`--self` | Applies the operation to the node against which the command was run (e.g., via `--host`).
 
 The `node recommission` subcommand also supports the following general flag:
 
