@@ -9,8 +9,10 @@ jobs:
     steps:
       - name: Check cockroachdb membership
         id: membership-check
+        env:
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          extcont=`gh auth login && gh api -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" /orgs/cockroachdb/members/${{ github.event.pull_request.user.login }}`
+          extcont=`curl -H "Accept: application/vnd.github.v3+json" -H "Authorization: token $TOKEN" https://api.github.com/orgs/cockroachdb/members/${{ github.event.pull_request.user.login }}`
 
           echo ::set-output name=extcont::$extcont
 
