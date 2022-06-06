@@ -463,7 +463,6 @@ layout: null
 /docs/show-database.html /docs/stable/show-vars.html 301
 /docs/v22.1/convert-to-schema.html /docs/v22.1/alter-database.html 301
 /docs/stable/convert-to-schema.html /docs/stable/alter-database.html 301
-/docs/releases/v22.1.15 /docs/releases/v21.1.html#v21-1-15 301
 
 #CockroachDB Cloud release notes
 
@@ -493,12 +492,14 @@ layout: null
 {% assign rn_rdr = "v20.2,v21.1,v21.2" | split: "," -%}
 {%- assign rns = site.data.releases | where_exp: "rns", "rn_rdr contains rns.major_version" -%}
 {%- for r in rns -%}
-{%- capture old_url -%}releases/{{ r.version }}.html{%- endcapture -%}
+{%- capture old_url -%}releases/{{ r.version }}{%- endcapture -%}
 {%- capture new_url %}releases/{{ r.major_version }}.html#{{ r.version | replace: ".", "-" }}{% endcapture -%}
 {{ old_url | relative_url }} {{ new_url | relative_url }} 301
-{% endfor %}
+{{ old_url | append: ".html" | relative_url }} {{ new_url | relative_url }} 301
+{% endfor -%}
 
 /docs/releases/v22.1.0-alpha.1.html /docs/releases/v22.1.html#v22-1-0-alpha-1 301
+/docs/releases/v22.1.0-alpha.1 /docs/releases/v22.1.html#v22-1-0-alpha-1 301
 
 # Redirects for Homebrew
 /docs/secure-a-cluster.html /docs/stable/secure-a-cluster.html 301
