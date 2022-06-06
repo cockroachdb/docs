@@ -67,22 +67,18 @@ Each of the following settings have significant impact on a changefeed's behavio
 kafka_sink_config='{"Flush": {"MaxMessages": 1, "Frequency": "1s"}, "Version": "0.8.2.0", "RequiredAcks": "ONE" }'
 ~~~
 
-The configurable fields include:
+<a name ="kafka-flush"></a>`"Flush"."MaxMessages"` and `"Flush"."Frequency"` are configurable batching parameters depending on latency and throughput needs. For example, if `"MaxMessages"` is set to 1000 and `"Frequency"` to 1 second, it will flush to Kafka either after 1 second or after 1000 messages are batched, whichever comes first. It's important to consider that if there are not many messages, then a `"1s"` frequency will add 1 second latency. However, if there is a larger influx of messages these will be flushed quicker.
 
-<a name ="kafka-flush"></a>
+The configurable fields are as follows:
 
-* `"Flush"."MaxMessages"` and `"Flush"."Frequency"`: These are configurable batching parameters depending on latency and throughput needs. For example, if `"MaxMessages"` is set to 1000 and `"Frequency"` to 1 second, it will flush to Kafka either after 1 second or after 1000 messages are batched, whichever comes first. It's important to consider that if there are not many messages, then a `"1s"` frequency will add 1 second latency. However, if there is a larger influx of messages these will be flushed quicker.
-  * `"MaxMessages"`: sets the maximum number of messages the producer will send in a single broker request. Increasing this value allows all messages to be sent in a batch. Default: `1`. Type: `INT`.
-  * `"Frequency"`: sets the maximum time that messages will be batched. Default: `"0s"`. Type: `INTERVAL`.
-
-* `"Version"`: sets the appropriate Kafka cluster version, which can be used to connect to [Kafka versions < v1.0](https://docs.confluent.io/platform/current/installation/versions-interoperability.html) (`kafka_sink_config='{"Version": "0.8.2.0"}'`). Default: `"1.0.0.0"` Type: `STRING`.
-
-<a name="kafka-required-acks"></a>
-
-* `"RequiredAcks"`: specifies what a successful write to Kafka is. CockroachDB [guarantees at least once delivery of messages](use-changefeeds.html#ordering-guarantees) — this value defines the _delivery_. Type: `STRING`. The possible values are:
-  * `"ONE"`: a write to Kafka is successful once the leader node has committed and acknowledged the write. Note that this has the potential risk of dropped messages; if the leader node acknowledges before replicating to a quorum of other Kafka nodes, but then fails. **This is the default value.**
-  * `"NONE"`: no Kafka brokers are required to acknowledge that they have committed the message. This will decrease latency and increase throughput, but comes at the cost of lower consistency.
-  * `"ALL"`: a quorum must be reached (that is, most Kafka brokers have committed the message) before the leader can acknowledge. This is the highest consistency level.
+Field              | Type                | Description      | Default
+-------------------+---------------------+------------------+-------------------
+`Flush.MaxMessages` | [`INT`](int.html)  | Sets the maximum number of messages the producer can send in a single broker request. Increasing this value allows all messages to be sent in a batch. | `1`
+`Flush.Messages`   | [`INT`](int.html)   | Configures the number of messages in a batch to determine when to send the batch. | `0`
+`Flush.Bytes`      | [`INT`](int.html)   | When the total byte size of all the messages in the batch reaches this amount, it should be flushed. | `0`
+`Flush.Frequency`  | [`INTERVAL`](interval.html) | When this amount of time has passed since the **first** received message in the batch without it flushing, it should be flushed. | `"0s"`
+`"Version"`        | [`STRING`](string.html) | Sets the appropriate Kafka cluster version, which can be used to connect to [Kafka versions < v1.0](https://docs.confluent.io/platform/current/installation/versions-interoperability.html) (`kafka_sink_config='{"Version": "0.8.2.0"}'`). | `"1.0.0.0"`
+<a name="kafka-required-acks"></a>`"RequiredAcks"`  | [`STRING`](string.html) | Specifies what a successful write to Kafka is. CockroachDB [guarantees at least once delivery of messages](use-changefeeds.html#ordering-guarantees) — this value defines the **delivery**. The possible values are: <br><br>`"ONE"`: a write to Kafka is successful once the leader node has committed and acknowledged the write. Note that this has the potential risk of dropped messages; if the leader node acknowledges before replicating to a quorum of other Kafka nodes, but then fails.<br><br>`"NONE"`: no Kafka brokers are required to acknowledge that they have committed the message. This will decrease latency and increase throughput, but comes at the cost of lower consistency.<br><br>`"ALL"`: a quorum must be reached (that is, most Kafka brokers have committed the message) before the leader can acknowledge. This is the highest consistency level. | `"ONE"`
 
 ## Cloud storage sink
 
