@@ -8,7 +8,7 @@ Want a topic added to the docs? Need additional details or clarification? See an
 
 ## Write Docs
 
-Want to contribute to the docs? See [CONTRIBUTING](CONTRIBUTING.md) for details about setting yourself up and getting started.
+Want to contribute to the docs? See [CONTRIBUTING](CONTRIBUTING.md) for details about setting yourself up and getting started. hello
 
 ## Resources
 
