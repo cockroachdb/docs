@@ -3,6 +3,7 @@ title: Plan a CockroachDB Cloud Cluster
 summary: Plan your cluster's configuration.
 toc: true
 docs_area: manage
+redirect_from: planning-your-serverless-cluster.html
 ---
 
 This page describes how to plan your {{ site.data.products.dedicated }} or {{ site.data.products.serverless }} cluster.
@@ -20,7 +21,26 @@ Before making any changes to your cluster's configuration, review the requiremen
 
 ### Request Units
 
-{{ site.data.products.serverless }} cluster resource usage is measured by two metrics: storage and Request Units, or RUs. RUs represent the compute and I/O resources used by a query. All database operations cost a certain amount of RUs depending on the resources used. For example, a "small read" might cost 2 RUs, and a "large read" such as a full table scan with indexes could cost a large number of RUs. You can see how many Request Units your cluster has used on the [**Cluster Overview**](serverless-cluster-management.html#view-cluster-overview) page.
+With {{ site.data.products.serverless }}, you are charged for the storage and activity of your cluster. All cluster activity, including SQL queries, bulk operations, and background jobs, is measured in Request Units, or RUs. RUs are an abstracted metric that represent the size and complexity of requests made to your cluster. All database operations cost a certain amount of RUs depending on the resources used. For example, a "small read" might cost 2 RUs, and a "large read" such as a full table scan with indexes might cost 100 RUs.
+
+The cost to do a prepared point read (fetching a single row by its key) of a 64 byte row is approximately 1 RU:
+
+  ~~~ shell
+  SELECT * FROM table_with_64_byte_rows WHERE key = $1;
+  ~~~
+
+Writing a 64 byte row costs approximately7 RUs, which includes the cost of replicating the write 3 times for high availability and durability:
+
+  ~~~ shell
+  INSERT INTO table_with_64_byte_rows (key, val) VALUES (100, $1);
+  ~~~
+
+RU and storage consumption is prorated at the following prices:
+
+  Activity Measure        | Price
+  ------------------------|------
+  10M Request Units       | $1.00
+  1 GiB storage per month | $0.50
 
 ### Cluster scaling
 
