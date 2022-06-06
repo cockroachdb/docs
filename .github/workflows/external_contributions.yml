@@ -1,7 +1,8 @@
 name: External Contributions
 
 on:
-  pull_request
+  pull_request:
+    types: opened
 
 jobs:
   check-membership:
@@ -9,8 +10,10 @@ jobs:
     steps:
       - name: Check cockroachdb membership
         id: membership-check
+        env:
+          GITHUB_TOKEN: ${{ secrets.TOKEN_FOR_ORG_MEMBERSHIP }}
         run: |
-          extcont=`gh auth login && gh api -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" /orgs/cockroachdb/members/${{ github.event.pull_request.user.login }}`
+          extcont=`curl -o /dev/null -w "%{http_code}\\n" -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${GITHUB_TOKEN}" https://api.github.com/orgs/cockroachdb/members/${{ github.event.pull_request.user.login }}`
 
           echo ::set-output name=extcont::$extcont
 
@@ -29,4 +32,4 @@ jobs:
           issue-number: ${{ github.event.pull_request.number }}
           edit-mode: replace
           body: |
-            <h3>${{ steps.membership-check.outputs.extcont }}</h3>
+            <h3>contents: ${{ steps.membership-check.outputs.extcont }} ${{ github.event.pull_request.user.login }} new</h3>
