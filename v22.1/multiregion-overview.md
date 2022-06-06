@@ -93,6 +93,10 @@ Note that super regions take a different approach to data domiciling than [`ALTE
 For more information about data domiciling using `PLACEMENT RESTRICTED`, see [Data Domiciling with CockroachDB](data-domiciling.html).
 
 {{site.data.alerts.callout_info}}
+{% include {{page.version.version}}/sql/super-regions-for-domiciling-with-region-survivability.md %}
+{{site.data.alerts.end}}
+
+{{site.data.alerts.callout_info}}
 Super regions rely on the underlying [replication zone system](configure-replication-zones.html), which was historically built for performance, not for domiciling. The replication system's top priority is to prevent the loss of data and it may override the zone configurations if necessary to ensure data durability. For more information, see [Configure Replication Zones](https://www.cockroachlabs.com/docs/v21.2/configure-replication-zones#types-of-constraints).
 {{site.data.alerts.end}}
 
