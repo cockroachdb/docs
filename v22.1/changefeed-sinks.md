@@ -76,8 +76,8 @@ The configurable fields are as follows:
 
 Field              | Type                | Description      | Default
 -------------------+---------------------+------------------+-------------------
-`Flush.MaxMessages` | [`INT`](int.html)  | Sets the maximum number of messages the producer can send in a single broker request. Increasing this value allows all messages to be sent in a batch. | `1`
-`Flush.Messages`   | [`INT`](int.html)   | Configures the number of messages in a batch to determine when to send the batch. | `0`
+`Flush.MaxMessages` | [`INT`](int.html)  | Sets the maximum number of messages the producer can send in a single broker request. Any messages beyond the configured limit will be blocked. Increasing this value allows all messages to be sent in a batch. | `1`
+`Flush.Messages`   | [`INT`](int.html)   | Determines when to send a batch of messages based on the configured the number of messages. | `0`
 `Flush.Bytes`      | [`INT`](int.html)   | When the total byte size of all the messages in the batch reaches this amount, it should be flushed. | `0`
 `Flush.Frequency`  | [`INTERVAL`](interval.html) | When this amount of time has passed since the **first** received message in the batch without it flushing, it should be flushed. | `"0s"`
 `"Version"`        | [`STRING`](string.html) | Sets the appropriate Kafka cluster version, which can be used to connect to [Kafka versions < v1.0](https://docs.confluent.io/platform/current/installation/versions-interoperability.html) (`kafka_sink_config='{"Version": "0.8.2.0"}'`). | `"1.0.0.0"`
