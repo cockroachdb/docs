@@ -9,11 +9,11 @@ Customer-Managed Encryption Keys (CMEK) give you more control over data is prote
 
 You create and manage your CMEK keys in your cloud tenant's key-management system (KMS). Support for Hashicorp Vault Secrets Manager means that you can use CMEK keys stored in multiple cloud tenants or providers. You can learn more about {{ site.data.products.dedicated }}'s [Hashicorp Vault Integration](/${VERSION}/hashicorp-integration.html).
 
-In addition, you can use CMEK keys that reside in multiple cloud tenants or providers by using Hashicorp Vault Secrets Manager. Hashicorp Vault Secrets Manager centralizes management of cryptographic keys in multiple cloud tenants, and you grant your {{ site.data.products.dedicated }} service account the ability to encrypt and decrypt using the key. Google Cloud KMS, AWS KMS, and Hashicorp Vault Secrets Manager, or a combination of the three. This article describes how CMEK works in {{ site.data.products.dedicated }} clusters. To enable CMEK on a cluster, see [Managing Customer Managed Encryption Keys (CMEK) for Cockroach Dedicated](enabling-cmek.md).
+In addition, you can use CMEK keys that reside in multiple cloud tenants or providers by using Hashicorp Vault Secrets Manager. Hashicorp Vault Secrets Manager centralizes management of cryptographic keys in multiple cloud tenants, and you grant your {{ site.data.products.dedicated }} service account the ability to encrypt and decrypt using the key. Google Cloud KMS, AWS KMS, and Hashicorp Vault Secrets Manager, or a combination of the three. This article describes how CMEK works in {{ site.data.products.dedicated }} clusters. To enable CMEK on a cluster, see [Managing Customer Managed Encryption Keys (CMEK) for Cockroach Dedicated](managing-cmek.html).
 
 ## Overview of CMEK
 
-This section briefly describes how Encryption At Rest works without CMEK, and then explains the differences when CMEK is enabled. For more details, see [Encryption At Rest](encryption.html). To enable CMEK, see [Managing Customer Managed Encryption Keys (CMEK) for Cockroach Dedicated](enabling-cmek.md).
+This section briefly describes how Encryption At Rest works without CMEK, and then explains the differences when CMEK is enabled. For more details, see [Encryption At Rest](encryption.html). To enable CMEK, see [Managing Customer Managed Encryption Keys (CMEK) for Cockroach Dedicated](managing-cmek.html).
 
 When Encryption At Rest is enabled on a {{ site.data.products.dedicated }} cluster, data is always encrypted when writing to a database, and must be decrypted when reading from the database. Data in backups is also encrypted before being written to the target storage location. When you enable Encryption At Rest, CockroachDB creates two keys, distributes them to the cluster's nodes, and begins using them to encrypt and decrypt the cluster's data. This explanation describes single-region clusters. For a multi-region cluster, each region has a CMEK key, so the following steps happen for each node in a given region.
 
@@ -48,7 +48,7 @@ The data key is automatically rotated on a monthly basis, and data is always wri
 
 ## How CMEK works
 
-  This section describes how data is read from or written to a {{ site.data.products.dedicated }} cluster work when CMEK is enabled. For detailed instructions, see [Managing Customer Managed Encryption Keys (CMEK) for Cockroach Dedicated](enabling-cmek.md).
+  This section describes how data is read from or written to a {{ site.data.products.dedicated }} cluster work when CMEK is enabled. For detailed instructions, see [Managing Customer Managed Encryption Keys (CMEK) for Cockroach Dedicated](managing-cmek.html).
 
   For a given cluster, CMEK is configured per cluster region. You can configure a separate CMEK key for each cluster region or you can use the same key for each of a cluster's regions. Similarly, you can use a separate set of CMEK keys for each cluster or use the same keys for all clusters.
 
@@ -141,5 +141,5 @@ It's not possible to enable CMEK from Cockroach Cloud Console. Instead, you must
 
 ## See also
 
-- [Managing Customer Managed Encryption Keys (CMEK) for Cockroach Dedicated](enabling-cmek.md)
+- [Managing Customer Managed Encryption Keys (CMEK) for Cockroach Dedicated](managing-cmek.html)
 - [Encryption At Rest](encryption.html).
