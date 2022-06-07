@@ -284,6 +284,66 @@ All tables will be [`REGIONAL BY TABLE`](set-locality.html#regional-by-table) in
 (1 row)
 ~~~
 
+### Show the `CREATE` statement for a table created with `PARTITION ALL BY`
+
+{% include enterprise-feature.md %}
+
+In this example, we create the `vehicles3` table and an index on the `status` column. In that same statement, we also configure the partition scheme for both the table and the index. We then run `CREATE TABLE` to display the table and index definition:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SET experimental_enable_implicit_column_partitioning = true;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE TABLE vehicles3 (
+        id UUID NOT NULL,
+        city STRING NOT NULL,
+        type STRING,
+        owner_id UUID,
+        creation_time TIMESTAMP,
+        status STRING,
+        current_location STRING,
+        ext JSONB,
+        CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
+        INDEX index_status (status),
+        FAMILY "primary" (id, city, type, owner_id, creation_time, status, current_location, ext)
+)   PARTITION ALL BY RANGE (creation_time) (
+    PARTITION archived VALUES FROM (MINVALUE) TO ('2021-12-31'),
+    PARTITION current VALUES FROM ('2022-01-01') TO (MAXVALUE)
+);
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW CREATE TABLE vehicles3;
+~~~
+
+~~~
+  table_name |                                       create_statement
+-------------+------------------------------------------------------------------------------------------------
+  vehicles3  | CREATE TABLE public.vehicles3 (
+             |     id UUID NOT NULL,
+             |     city STRING NOT NULL,
+             |     type STRING NULL,
+             |     owner_id UUID NULL,
+             |     creation_time TIMESTAMP NOT NULL,
+             |     status STRING NULL,
+             |     current_location STRING NULL,
+             |     ext JSONB NULL,
+             |     CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
+             |     INDEX index_status (status ASC),
+             |     FAMILY "primary" (id, city, type, owner_id, creation_time, status, current_location, ext)
+             | ) PARTITION ALL BY RANGE (creation_time) (
+             |     PARTITION archived VALUES FROM (MINVALUE) TO ('2021-12-31 00:00:00'),
+             |     PARTITION current VALUES FROM ('2022-01-01 00:00:00') TO (MAXVALUE)
+             | )
+(1 row)
+~~~
+
+Note that any column specified within the `PARTITION ALL BY` statement is marked as `NOT NULL`.
+
 ### Show the statements needed to recreate all tables, views, and sequences in the current database
 
 {% include_cached new-in.html version="v21.1" %} To return the `CREATE` statements for all of the tables, views, and sequences in the current database, use `SHOW CREATE ALL TABLES`.

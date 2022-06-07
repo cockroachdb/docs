@@ -947,6 +947,7 @@ Inserting explicit values does not affect the next value of the sequence:
 If the `numerical` column were to follow the `ALWAYS` rule instead, then the sequence values in the column could not be overwritten.
 {{site.data.alerts.end}}
 
+
 ### Create a table with data excluded from backup
 
 {% include_cached new-in.html version="v22.1" %} In some situations, you may want to exclude a table's row data from a [backup](backup.html). For example, a table could contain high-churn data that you would like to [garbage collect](architecture/storage-layer.html#garbage-collection) more quickly than the [incremental backup](take-full-and-incremental-backups.html#incremental-backups) schedule for the database or cluster that will hold the table. You can use the `exclude_data_from_backup = true` parameter with `CREATE TABLE` to mark a table's row data for exclusion from a backup:
@@ -965,6 +966,73 @@ WITH (exclude_data_from_backup = true);
 ~~~
 
 To set `exclude_data_from_backup` on an existing table, see the [Exclude a table's data from backups](take-full-and-incremental-backups.html#exclude-a-tables-data-from-backups) example.
+
+### Create a table with secondary indexes and use the same partitioning scheme for both
+
+{% include enterprise-feature.md %}
+
+In this example, we create the `vehicles3` table and an index on the `status` column. In that same statement, we also configure the partition scheme for both the table and the index:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SET experimental_enable_implicit_column_partitioning = true;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE TABLE vehicles3 (
+        id UUID NOT NULL,
+        city STRING NOT NULL,
+        type STRING,
+        owner_id UUID,
+        creation_time TIMESTAMP,
+        status STRING,
+        current_location STRING,
+        ext JSONB,
+        CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
+        INDEX index_status (status),
+        FAMILY "primary" (id, city, type, owner_id, creation_time, status, current_location, ext)
+)   PARTITION ALL BY RANGE (creation_time) (
+    PARTITION archived VALUES FROM (MINVALUE) TO ('2021-12-31'),
+    PARTITION current VALUES FROM ('2022-01-01') TO (MAXVALUE)
+);
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW PARTITIONS FROM table_constraint vehicles;
+~~~
+
+~~~
+  database_name | table_name | partition_name | parent_partition | column_names  |       index_name       |            partition_value            | zone_config |       full_zone_config
+----------------+------------+----------------+------------------+---------------+------------------------+---------------------------------------+-------------+-------------------------------
+  movr          | vehicles3  | archived       | NULL             | creation_time | vehicles3@index_status | (MINVALUE) TO ('2021-12-31 00:00:00') | NULL        | range_min_bytes = 134217728,
+                |            |                |                  |               |                        |                                       |             | range_max_bytes = 536870912,
+                |            |                |                  |               |                        |                                       |             | gc.ttlseconds = 90000,
+                |            |                |                  |               |                        |                                       |             | num_replicas = 1,
+                |            |                |                  |               |                        |                                       |             | constraints = '[]',
+                |            |                |                  |               |                        |                                       |             | lease_preferences = '[]'
+  movr          | vehicles3  | archived       | NULL             | creation_time | vehicles3@primary      | (MINVALUE) TO ('2021-12-31 00:00:00') | NULL        | range_min_bytes = 134217728,
+                |            |                |                  |               |                        |                                       |             | range_max_bytes = 536870912,
+                |            |                |                  |               |                        |                                       |             | gc.ttlseconds = 90000,
+                |            |                |                  |               |                        |                                       |             | num_replicas = 1,
+                |            |                |                  |               |                        |                                       |             | constraints = '[]',
+                |            |                |                  |               |                        |                                       |             | lease_preferences = '[]'
+  movr          | vehicles3  | current        | NULL             | creation_time | vehicles3@index_status | ('2022-01-01 00:00:00') TO (MAXVALUE) | NULL        | range_min_bytes = 134217728,
+                |            |                |                  |               |                        |                                       |             | range_max_bytes = 536870912,
+                |            |                |                  |               |                        |                                       |             | gc.ttlseconds = 90000,
+                |            |                |                  |               |                        |                                       |             | num_replicas = 1,
+                |            |                |                  |               |                        |                                       |             | constraints = '[]',
+                |            |                |                  |               |                        |                                       |             | lease_preferences = '[]'
+  movr          | vehicles3  | current        | NULL             | creation_time | vehicles3@primary      | ('2022-01-01 00:00:00') TO (MAXVALUE) | NULL        | range_min_bytes = 134217728,
+                |            |                |                  |               |                        |                                       |             | range_max_bytes = 536870912,
+                |            |                |                  |               |                        |                                       |             | gc.ttlseconds = 90000,
+                |            |                |                  |               |                        |                                       |             | num_replicas = 1,
+                |            |                |                  |               |                        |                                       |             | constraints = '[]',
+                |            |                |                  |               |                        |                                       |             | lease_preferences = '[]'
+(4 rows)
+~~~
+
 
 ## See also
 

@@ -162,6 +162,18 @@ Suppose we have an yet another table named `students`, again with a secondary in
 > ALTER INDEX students@name_idx PARTITION BY NOTHING;
 ~~~
 
+### Repartition a table and all indexes in a single statement
+
+It's possible to partition a table and all secondary indexes in one statement using `PARTITION ALL BY`:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> ALTER TABLE students_by_range PARTITION ALL BY RANGE (expected_graduation_date) (
+    PARTITION graduated VALUES FROM (MINVALUE) TO ('2018-08-15'),
+    PARTITION current VALUES FROM ('2018-08-15') TO (MAXVALUE)
+  );
+~~~
+
 ## See also
 
 - [`CREATE TABLE`](create-table.html)
