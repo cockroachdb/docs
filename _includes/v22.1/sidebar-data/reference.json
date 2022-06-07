@@ -1660,6 +1660,24 @@
                 ]
               },
               {
+                "title": "Distributed Dashboard",
+                "urls": [
+                  "/${VERSION}/ui-distributed-dashboard.html"
+                ]
+              },
+              {
+                "title": "Queues Dashboard",
+                "urls": [
+                  "/${VERSION}/ui-queues-dashboard.html"
+                ]
+              },
+              {
+                "title": "Slow Requests Dashboard",
+                "urls": [
+                  "/${VERSION}/ui-slow-requests-dashboard.html"
+                ]
+              },
+              {
                 "title": "Changefeeds Dashboard",
                 "urls": [
                   "/${VERSION}/ui-cdc-dashboard.html"
