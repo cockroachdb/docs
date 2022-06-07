@@ -70,7 +70,7 @@ Secure CockroachDB deployments on Amazon EKS via Helm are [not yet supported](ht
     {{site.data.alerts.end}}
 
     {{site.data.alerts.callout_danger}}
-    To allow the CockroachDB pods to deploy successfully, do not set the [`--wait` flag](https://helm.sh/docs/intro/using_helm/#helpful-options-for-installupgraderollback) when using Helm comands.
+    To allow the CockroachDB pods to deploy successfully, do not set the [`--wait` flag](https://helm.sh/docs/intro/using_helm/#helpful-options-for-installupgraderollback) when using Helm commands.
     {{site.data.alerts.end}}
 
     {% include_cached copy-clipboard.html %}

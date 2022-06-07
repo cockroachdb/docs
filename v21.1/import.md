@@ -100,7 +100,7 @@ Key                 | <div style="width:130px">Context</div> | Value            
 `nullif`               | `CSV DATA `, [`DELIMITED DATA`](#delimited-data-files) | The string that should be converted to *NULL*.
 `skip`                 | `CSV DATA `, [`DELIMITED DATA`](#delimited-data-files) | The number of rows to be skipped while importing a file. **Default: `'0'`**.
 `decompress`           | General         | The decompression codec to be used: `gzip`, `bzip`, `auto`, or `none`.  **Default: `'auto'`**, which guesses based on file extension (`.gz`, `.bz`, `.bz2`). `none` disables decompression.
-`row_limit`           | General         |<span class="version-tag">New in v21.1:</span> The number of rows to import. Useful for doing a test run of an import and finding errors quickly. For non-bundled formats, setting `row_limit = 'n'` will import the first *n* rows of a table. For bundled formats, this option will import the first *n* rows from each table in the dump file.
+`row_limit`           | General         |{% include_cached new-in.html version="v21.1" %} The number of rows to import. Useful for doing a test run of an import and finding errors quickly. For non-bundled formats, setting `row_limit = 'n'` will import the first *n* rows of a table. For bundled formats, this option will import the first *n* rows from each table in the dump file.
 `skip_foreign_keys`    | `PGDUMP`, `MYSQLDUMP` | Ignore foreign key constraints in the dump file's DDL. **Default:** Off.  May be necessary to import a table with unsatisfied foreign key constraints from a full database dump.
 `max_row_size`         | `PGDUMP`        | Override limit on line size. **Default: 0.5MB**.  This setting may need to be tweaked if your PostgreSQL dump file has extremely long lines, for example as part of a `COPY` statement.
 `ignore_unsupported_statements` | `PGDUMP`  | <span class="version-tag">New in v21.1:</span> Ignore SQL statements in the dump file that are unsupported by CockroachDB.
@@ -332,7 +332,7 @@ WITH
 
 ### Import a limited number of rows
 
-<span class="version-tag">New in v21.1:</span> The `row_limit` option determines the number of rows to import. For non-bundled formats, setting `row_limit = 'n'` will import the first *n* rows of a table. For bundled formats, this option will import the first *n* rows from each table in the dump file. It is useful for finding errors quickly before executing a more time- and resource-consuming import. Imported tables can be inspected for their schema and data, but must be [dropped](drop-table.html) before running the actual import.
+{% include_cached new-in.html version="v21.1" %} The `row_limit` option determines the number of rows to import. For non-bundled formats, setting `row_limit = 'n'` will import the first *n* rows of a table. For bundled formats, this option will import the first *n* rows from each table in the dump file. It is useful for finding errors quickly before executing a more time- and resource-consuming import. Imported tables can be inspected for their schema and data, but must be [dropped](drop-table.html) before running the actual import.
 
 The examples below use CSV data, but `row_limit` is also an option for [Avro files](migrate-from-avro.html#step-3-import-the-avro), [delimited data files](#import-a-delimited-data-file), [PostgreSQL dump files](migrate-from-postgres.html#row-limit), and [MySQL dump files](migrate-from-mysql.html#row-limit).
 
@@ -505,7 +505,7 @@ For more information about importing data from Avro, including examples, see [Mi
 
 ### Run an import within a transaction
 
-<span class="version-tag">New in v21.1:</span> The `DETACHED` option allows an import to be run asynchronously, returning the job ID immediately once initiated. You can run imports within transactions by specifying the `DETACHED` option.
+{% include_cached new-in.html version="v21.1" %} The `DETACHED` option allows an import to be run asynchronously, returning the job ID immediately once initiated. You can run imports within transactions by specifying the `DETACHED` option.
 
 The following transactions use CSV data as an example. To use the `DETACHED` option with `IMPORT` in a transaction:
 
@@ -671,7 +671,7 @@ WITH
 
 ### Import a limited number of rows
 
-<span class="version-tag">New in v21.1:</span> The `row_limit` option determines the number of rows to import. For non-bundled formats, setting `row_limit = 'n'` will import the first *n* rows of a table. For bundled formats, this option will import the first *n* rows from each table in the dump file. It is useful for finding errors quickly before executing a more time- and resource-consuming import. Imported tables can be inspected for their schema and data, but must be [dropped](drop-table.html) before running the actual import.
+{% include_cached new-in.html version="v21.1" %} The `row_limit` option determines the number of rows to import. For non-bundled formats, setting `row_limit = 'n'` will import the first *n* rows of a table. For bundled formats, this option will import the first *n* rows from each table in the dump file. It is useful for finding errors quickly before executing a more time- and resource-consuming import. Imported tables can be inspected for their schema and data, but must be [dropped](drop-table.html) before running the actual import.
 
 The examples below use CSV data, but `row_limit` is also an option for [Avro files](migrate-from-avro.html#step-3-import-the-avro), [delimited data files](#import-a-delimited-data-file), [PostgreSQL dump files](migrate-from-postgres.html#row-limit), and [MySQL dump files](migrate-from-mysql.html#row-limit).
 
@@ -846,7 +846,7 @@ For more information about importing data from Avro, including examples, see [Mi
 
 ### Run an import within a transaction
 
-<span class="version-tag">New in v21.1:</span> The `DETACHED` option allows an import to be run asynchronously, returning the job ID immediately once initiated. You can run imports within transactions by specifying the `DETACHED` option.
+{% include_cached new-in.html version="v21.1" %} The `DETACHED` option allows an import to be run asynchronously, returning the job ID immediately once initiated. You can run imports within transactions by specifying the `DETACHED` option.
 
 The following transactions use CSV data as an example. To use the `DETACHED` option with `IMPORT` in a transaction:
 
@@ -1016,7 +1016,7 @@ WITH
 
 ### Import a limited number of rows
 
-<span class="version-tag">New in v21.1:</span> The `row_limit` option determines the number of rows to import. For non-bundled formats, setting `row_limit = 'n'` will import the first *n* rows of a table. For bundled formats, this option will import the first *n* rows from each table in the dump file. It is useful for finding errors quickly before executing a more time- and resource-consuming import. Imported tables can be inspected for their schema and data, but must be [dropped](drop-table.html) before running the actual import.
+{% include_cached new-in.html version="v21.1" %} The `row_limit` option determines the number of rows to import. For non-bundled formats, setting `row_limit = 'n'` will import the first *n* rows of a table. For bundled formats, this option will import the first *n* rows from each table in the dump file. It is useful for finding errors quickly before executing a more time- and resource-consuming import. Imported tables can be inspected for their schema and data, but must be [dropped](drop-table.html) before running the actual import.
 
 The examples below use CSV data, but `row_limit` is also an option for [Avro files](migrate-from-avro.html#step-3-import-the-avro), [delimited data files](#import-a-delimited-data-file), [PostgreSQL dump files](migrate-from-postgres.html#row-limit), and [MySQL dump files](migrate-from-mysql.html#row-limit).
 
@@ -1189,7 +1189,7 @@ For more information about importing data from Avro, including examples, see [Mi
 
 ### Run an import within a transaction
 
-<span class="version-tag">New in v21.1:</span> The `DETACHED` option allows an import to be run asynchronously, returning the job ID immediately once initiated. You can run imports within transactions by specifying the `DETACHED` option.
+{% include_cached new-in.html version="v21.1" %} The `DETACHED` option allows an import to be run asynchronously, returning the job ID immediately once initiated. You can run imports within transactions by specifying the `DETACHED` option.
 
 The following transactions use CSV data as an example. To use the `DETACHED` option with `IMPORT` in a transaction:
 

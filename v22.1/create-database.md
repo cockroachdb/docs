@@ -26,10 +26,13 @@ Parameter | Description
 `IF NOT EXISTS` | Create a new database only if a database of the same name does not already exist; if one does exist, do not return an error.
 `name` | The name of the database to create, which [must be unique](#create-fails-name-already-in-use) and follow these [identifier rules](keywords-and-identifiers.html#identifiers).
 `encoding` | The `CREATE DATABASE` statement accepts an optional `ENCODING` clause for compatibility with PostgreSQL, but `UTF-8` is the only supported encoding. The aliases `UTF8` and `UNICODE` are also accepted. Values should be enclosed in single quotes and are case-insensitive.<br><br>Example: `CREATE DATABASE bank ENCODING = 'UTF-8'`.
-`CONNECTION LIMIT` |  Supported for compatibility with PostgreSQL. A value of `-1` indicates no connection limit. Values other than `-1` are currently not supported. By default, `CONNECTION LIMIT = -1`.
+`CONNECTION LIMIT` |  Supported for compatibility with PostgreSQL. A value of `-1` indicates no connection limit. Values other than `-1` are currently not supported. By default, `CONNECTION LIMIT = -1`. ([*](#connlimit-note))
 `PRIMARY REGION region_name` |  Create a [multi-region database](multiregion-overview.html) with `region_name` as [the primary region](multiregion-overview.html#database-regions).<br>Allowed values include any region returned by [`SHOW REGIONS FROM CLUSTER`](show-regions.html).
 `REGIONS region_name_list` |  Create a [multi-region database](multiregion-overview.html) with `region_name_list` as [database regions](multiregion-overview.html#database-regions).<br>Allowed values include any region returned by [`SHOW REGIONS FROM CLUSTER`](show-regions.html).<br>To set database regions at database creation, a primary region must be specified in the same `CREATE DATABASE` statement.
 `SURVIVE ZONE FAILURE` (*Default*)<br>`SURVIVE REGION FAILURE` |  Create a [multi-region database](multiregion-overview.html) with regional failure or zone failure [survival goals](multiregion-overview.html#survival-goals).<br>To set the regional failure survival goal, the database must have at least 3 [database regions](multiregion-overview.html#database-regions).<br>Surviving zone failures is the default setting for multi-region databases.
+
+<a name="connlimit-note">*</a>
+{% include {{page.version.version}}/sql/server-side-connection-limit.md %} This setting may be useful until the `CONNECTION LIMIT` syntax is fully supported.
 
 ## Example
 

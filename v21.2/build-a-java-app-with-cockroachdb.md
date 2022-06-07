@@ -260,13 +260,13 @@ BUILD SUCCESSFUL in 8s
 
 If you are trying to get a large data set into CockroachDB all at once (a bulk import), avoid writing client-side code altogether and use the [`IMPORT`](import.html) statement instead. It is much faster and more efficient than making a series of [`INSERT`s](insert.html) and [`UPDATE`s](update.html). It bypasses the [SQL layer](architecture/sql-layer.html) altogether and writes directly to the [storage layer](architecture/storage-layer.html) of the database.
 
-For more information about importing data from Postgres, see [Migrate from Postgres](migrate-from-postgres.html).
+For more information about importing data from PostgreSQL, see [Migrate from PostgreSQL](migrate-from-postgres.html).
 
 For more information about importing data from MySQL, see [Migrate from MySQL](migrate-from-mysql.html).
 
-### Use `rewriteBatchedInserts` for increased speed
+### Use `reWriteBatchedInserts` for increased speed
 
-We strongly recommend setting `rewriteBatchedInserts=true`; we have seen 2-3x performance improvements with it enabled. From [the JDBC connection parameters documentation](https://jdbc.postgresql.org/documentation/head/connect.html#connection-parameters):
+We strongly recommend setting `reWriteBatchedInserts=true`; we have seen 2-3x performance improvements with it enabled. From [the JDBC connection parameters documentation](https://jdbc.postgresql.org/documentation/head/connect.html#connection-parameters):
 
 > This will change batch inserts from `insert into foo (col1, col2, col3) values (1,2,3)` into `insert into foo (col1, col2, col3) values (1,2,3), (4,5,6)` this provides 2-3x performance improvement
 
@@ -304,7 +304,7 @@ try (PreparedStatement pstmt = connection.prepareStatement("INSERT INTO accounts
 
 ### Retrieve large data sets in chunks using cursors
 
-CockroachDB now supports the Postgres wire-protocol cursors for implicit transactions and explicit transactions executed to completion. This means the [PGJDBC driver](https://jdbc.postgresql.org) can use this protocol to stream queries with large result sets. This is much faster than [paginating through results in SQL using `LIMIT .. OFFSET`](pagination.html).
+CockroachDB now supports the PostgreSQL wire-protocol cursors for implicit transactions and explicit transactions executed to completion. This means the [PGJDBC driver](https://jdbc.postgresql.org) can use this protocol to stream queries with large result sets. This is much faster than [paginating through results in SQL using `LIMIT .. OFFSET`](pagination.html).
 
 For instructions showing how to use cursors in your Java code, see [Getting results based on a cursor](https://jdbc.postgresql.org/documentation/head/query.html#query-with-cursor) from the PGJDBC documentation.
 

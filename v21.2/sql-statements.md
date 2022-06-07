@@ -39,7 +39,7 @@ Statement | Usage
 [`ADD CONSTRAINT`](add-constraint.html) | Add a constraint to a column.
 [`ALTER COLUMN`](alter-column.html) | Change a column's [Default constraint](default-value.html), [`NOT NULL` constraint](not-null.html), or [data type](data-types.html).
 [`ALTER DATABASE`](alter-database.html) | Apply a schema change to a database.
-[`ALTER DEFAULT PRIVILEGES`](alter-default-privileges.html) | <span class="version-tag">New in v21.2</span>: Change the default [privileges](security-reference/authorization.html#privileges) for objects created by specific roles/users in the current database.
+[`ALTER DEFAULT PRIVILEGES`](alter-default-privileges.html) | <span class="version-tag">New in v21.2:</span> Change the default [privileges](security-reference/authorization.html#privileges) for objects created by specific roles/users in the current database.
 [`ALTER INDEX`](alter-index.html) | Apply a schema change to an index.
 [`ALTER PARTITION`](alter-partition.html) | Configure the replication zone for a partition. Note that [partitioning](partitioning.html) requires an [Enterprise license](enterprise-licensing.html).
 [`ALTER PRIMARY KEY`](alter-primary-key.html) |  Change the [primary key](primary-key.html) of a table.
@@ -131,17 +131,17 @@ Statement | Usage
 [`SHOW GRANTS`](show-grants.html) | View privileges granted to users.
 [`SHOW ROLES`](show-roles.html) | Lists the roles for all databases.
 [`SHOW USERS`](show-users.html) | Lists the users for all databases.
-[`SHOW DEFAULT PRIVILEGES`](show-default-privileges.html) | <span class="version-tag">New in v21.2</span>: Show the default privileges for objects created by specific roles/users in the current database.
+[`SHOW DEFAULT PRIVILEGES`](show-default-privileges.html) | <span class="version-tag">New in v21.2:</span> Show the default privileges for objects created by specific roles/users in the current database.
 
 ## Session management statements
 
 Statement | Usage
 ----------|------------
-[`RESET`](reset-vars.html) | Reset a session variable to its default value.
-[`SET`](set-vars.html) | Set a current session variable.
+[`RESET {session variable}`](reset-vars.html) | Reset a session variable to its default value.
+[`SET {session variable}`](set-vars.html) | Set a current session variable.
 [`SET TRANSACTION`](set-transaction.html) | Set the priority for an individual [transaction](transactions.html).
 [`SHOW TRACE FOR SESSION`](show-trace.html) | Return details about how CockroachDB executed a statement or series of statements recorded during a session.
-[`SHOW`](show-vars.html) | List the current session or transaction settings.
+[`SHOW {session variable}`](show-vars.html) | List the current session or transaction settings.
 
 ## Cluster management statements
 

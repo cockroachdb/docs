@@ -11,7 +11,7 @@ In contrast to most databases, CockroachDB always uses `SERIALIZABLE` isolation,
 In this tutorial, you'll work through a hypothetical scenario that demonstrates the importance of `SERIALIZABLE` isolation for data correctness.
 
 1. You'll start by reviewing the scenario and its schema.
-2. You'll then execute the scenario at one of the weaker isolation levels, `READ COMMITTED`, observing the write skew anomaly and its implications. Because CockroachDB always uses `SERIALIZABLE` isolation, you'll run this portion of the tutorial on Postgres, which defaults to `READ COMMITTED`.
+2. You'll then execute the scenario at one of the weaker isolation levels, `READ COMMITTED`, observing the write skew anomaly and its implications. Because CockroachDB always uses `SERIALIZABLE` isolation, you'll run this portion of the tutorial on PostgreSQL, which defaults to `READ COMMITTED`.
 3. You'll finish by executing the scenario at `SERIALIZABLE` isolation, observing how it guarantees correctness. You'll use CockroachDB for this portion.
 
 {{site.data.alerts.callout_info}}
@@ -25,7 +25,7 @@ For a deeper discussion of transaction isolation and the write skew anomaly, see
 - A hospital has an application for doctors to manage their on-call shifts.
 - The hospital has a rule that at least one doctor must be on call at any one time.
 - Two doctors are on-call for a particular shift, and both of them try to request leave for the shift at approximately the same time.
-- In Postgres, with the default `READ COMMITTED` isolation level, the [write skew](#write-skew) anomaly results in both doctors successfully booking leave and the hospital having no doctors on call for that particular shift.
+- In PostgreSQL, with the default `READ COMMITTED` isolation level, the [write skew](#write-skew) anomaly results in both doctors successfully booking leave and the hospital having no doctors on call for that particular shift.
 - In CockroachDB, with the `SERIALIZABLE` isolation level, write skew is prevented, one doctor is allowed to book leave and the other is left on-call, and lives are saved.
 
 #### Write skew
@@ -36,23 +36,23 @@ When write skew happens, a transaction reads something, makes a decision based o
 
 <img src="{{ 'images/v21.2/serializable_schema.png' | relative_url }}" alt="Schema for serializable transaction tutorial" style="max-width:100%" />
 
-## Step 1. Set up the scenario on Postgres
+## Step 1. Set up the scenario on PostgreSQL
 
-1. If you haven't already, install Postgres locally. On Mac, you can use [Homebrew](https://brew.sh/):
+1. If you haven't already, install PostgreSQL locally. On Mac, you can use [Homebrew](https://brew.sh/):
 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ brew install postgres
     ~~~
 
-1. [Start Postgres](https://www.postgresql.org/docs/10/static/server-start.html):
+1. [Start PostgreSQL](https://www.postgresql.org/docs/10/static/server-start.html):
 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ postgres -D /usr/local/var/postgres &
     ~~~
 
-1. Open a SQL connection to Postgres:
+1. Open a SQL connection to PostgreSQL:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -134,7 +134,7 @@ When write skew happens, a transaction reads something, makes a decision based o
     (7 rows)
     ~~~
 
-## Step 2. Run the scenario on Postgres
+## Step 2. Run the scenario on PostgreSQL
 
 1. Doctor 1, Abe, starts to request leave for 10/5/18 using the hospital's schedule management application. The application starts a transaction:
 
@@ -223,7 +223,7 @@ When write skew happens, a transaction reads something, makes a decision based o
     > COMMIT;
     ~~~
 
-## Step 3. Check data correctness on Postgres
+## Step 3. Check data correctness on PostgreSQL
 
 So what just happened? Each transaction started by reading a value that, before the end of the transaction, became incorrect. Despite that fact, each transaction was allowed to commit. This is known as write skew, and the result is that 0 doctors are scheduled to be on call on 10/5/18.  
 
@@ -242,7 +242,7 @@ To check this, in either terminal, run:
 (2 rows)
 ~~~
 
-Again, this anomaly is the result of Postgres' default isolation level of `READ COMMITTED`, but note that this would happen with any isolation level except `SERIALIZABLE` and some implementations of `REPEATABLE READ`:
+Again, this anomaly is the result of PostgreSQL's default isolation level of `READ COMMITTED`, but note that this would happen with any isolation level except `SERIALIZABLE` and some implementations of `REPEATABLE READ`:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -256,7 +256,7 @@ Again, this anomaly is the result of Postgres' default isolation level of `READ 
 (1 row)
 ~~~
 
-Exit each SQL shell with `\q` and then stop the Postgres server:
+Exit each SQL shell with `\q` and then stop the PostgreSQL server:
 
 {% include copy-clipboard.html %}
 ~~~ shell

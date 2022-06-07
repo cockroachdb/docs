@@ -31,7 +31,7 @@ plugins:
 - jekyll-include-cache
 release_info:
   v1.0:
-    build_time: 2017/02/13 15:13:51 (go1.8.3)
+    build_time: 2018/02/13 15:13:51 (go1.8.3)
     docker_image: cockroachdb/cockroach
     name: v1.0.7
     start_time: 2017-02-13 13:33:22.046027038 -0400 EDT
@@ -85,16 +85,16 @@ release_info:
     start_time: 2022-05-10 14:15:58.748869 +0000 UTC
     version: v21.1.19
   v21.2:
-    build_time: 2022-05-02 00:00:00 (go1.16)
+    build_time: 2022-05-23 00:00:00 (go1.16)
     docker_image: cockroachdb/cockroach
-    name: v21.2.10
-    start_time: 2022-04-27 08:23:37.399384 +0000 UTC
-    version: v21.2.10
+    name: v21.2.11
+    start_time: 2022-05-18 11:39:58.956639 +0000 UTC
+    version: v21.2.11
   v22.1:
-    build_time: 2022-05-09 00:00:00 (go1.17)
-    docker_image: cockroachdb/cockroach-unstable
-    name: v22.1.0-rc.1
-    start_time: 2022-05-06 11:14:49.970328 +0000 UTC
-    version: v22.1.0-rc.1
+    build_time: 2022-06-06 00:00:00 (go1.17)
+    docker_image: cockroachdb/cockroach
+    name: v22.1.1
+    start_time: 2022-06-02 16:14:45.617564 +0000 UTC
+    version: v22.1.1
 site_title: CockroachDB Docs
 url: https://www.cockroachlabs.com

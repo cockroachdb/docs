@@ -20,7 +20,7 @@ This page answers the frequently asked questions about {{ site.data.products.ser
 {{ site.data.products.serverless }} delivers free and pay-as-you-go CockroachDB clusters for you and your Organization. It is a managed instance of CockroachDB that lets you start using your database immediately and auto-scales based on your application traffic.
 
 {{site.data.alerts.callout_success}}
-For a deeper dive into serverless database concepts and how to get started with CockroachDB Serverless, take the free [Introduction to Serverless Databases and CockroachDB Serverless](https://university.cockroachlabs.com/courses/course-v1:crl+intro-to-serverless+self-paced/about) course on Cockroach University.
+For a deeper dive into serverless database concepts and how to get started with {{ site.data.products.serverless }}, take the free [Introduction to Serverless Databases and {{ site.data.products.serverless }}](https://university.cockroachlabs.com/courses/course-v1:crl+intro-to-serverless+self-paced/about) course on Cockroach University.
 {{site.data.alerts.end}}
 
 ### How do I start using {{ site.data.products.serverless }}?
@@ -69,7 +69,7 @@ Paid Serverless clusters include additional resources to maintain higher perform
 
 ### How do I connect to my cluster?
 
-To connect to a cluster, download the CA certificate, and then generate a connection string or parameters. You can use this information to connect to your cluster through the CockroachDB SQL client or a Postgres-compatible driver or ORM. For more details, see [Connect to Your {{ site.data.products.serverless }} Cluster](connect-to-a-serverless-cluster.html).
+To connect to a cluster, download the CA certificate, and then generate a connection string or parameters. You can use this information to connect to your cluster through the CockroachDB SQL client or a PostgreSQL-compatible driver or ORM. For more details, see [Connect to Your {{ site.data.products.serverless }} Cluster](connect-to-a-serverless-cluster.html).
 
 ### I created a CockroachCloud Free (beta) cluster before {{ site.data.products.serverless }} was available. Can I still use my cluster?
 
@@ -77,9 +77,9 @@ Yes, your free cluster has been automatically migrated to {{ site.data.products.
 
 ### Why does my RU usage briefly spike when I'm running a steady workload?
 
-CockroachDB [automatically collects statistics](../{{site.versions["stable"]}}/cost-based-optimizer.html#control-statistics-refresh-rate) in a background process when certain conditions are met (for example, when more than 20% of rows in a table are modified). The statistics are used by the cost-based optimizer to tune statements for higher performance.
+CockroachDB [automatically collects statistics](../{{site.versions["stable"]}}/cost-based-optimizer.html#table-statistics) in a background process when certain conditions are met (for example, when more than 20% of rows in a table are modified). The statistics are used by the cost-based optimizer to tune statements for higher performance.
 
-When automatic statistics collection starts your cluster may consume RUs above the 100 RUs per second baseline when your workload is otherwise consuming RUs below the baseline. You can [turn off automatic statistics collection](../{{site.versions["stable"]}}/cost-based-optimizer.html#turn-off-statistics) to avoid these RU bursts, but the cost-based optimizer may choose inefficient statement plans as it doesn't have access to the latest statistics.
+When automatic statistics collection starts your cluster may consume RUs above the 100 RUs per second baseline when your workload is otherwise consuming RUs below the baseline. You can [turn off automatic statistics collection](../{{site.versions["stable"]}}/cost-based-optimizer.html#enable-and-disable-automatic-statistics-collection-for-clusters) to avoid these RU bursts, but the cost-based optimizer may choose inefficient statement plans as it doesn't have access to the latest statistics.
 
 ### What is the cold start latency of a Serverless cluster?
 
@@ -120,7 +120,7 @@ Because we are relying on the cloud provider's encryption implementation (as not
 
 ### Is my cluster isolated? Does it share resources with any other clusters?
 
-{{ site.data.products.serverless }} is a multi-tenant offering and resources are shared between clusters. For more information, see [CockroachDB Serverless Architecture](architecture.html).
+{{ site.data.products.serverless }} is a multi-tenant offering and resources are shared between clusters. For more information, see [{{ site.data.products.serverless }} Architecture](architecture.html).
 
 ## Cluster maintenance
 

@@ -34,7 +34,7 @@ Parameter | Description
 `job_id` | The ID of the job you want to pause, which can be found with [`SHOW JOBS`](show-jobs.html).
 `select_stmt` | A [selection query](selection-queries.html) that returns `job_id`(s) to pause.
 `for_schedules_clause` |  The schedule you want to pause jobs for. You can pause jobs for a specific schedule (`FOR SCHEDULE id`) or pause jobs for multiple schedules by nesting a [`SELECT` clause](select-clause.html) in the statement (`FOR SCHEDULES <select_clause>`). See the [examples](#pause-jobs-for-a-schedule) below.
-`WITH REASON = ...` | <span class="version-tag">New in v21.2</span>: The reason to pause the job. CockroachDB stores the reason in the job's metadata, but there is no way to display it.
+`WITH REASON = ...` | <span class="version-tag">New in v21.2:</span> The reason to pause the job. CockroachDB stores the reason in the job's metadata, but there is no way to display it.
 
 ## Examples
 

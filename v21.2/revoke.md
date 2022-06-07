@@ -26,7 +26,7 @@ Parameter                   | Description
 `name_list`                 | A comma-separated list of [users and roles](security-reference/authorization.html#users-and-roles).
 `target_types`              | A comma-separated list of [user-defined types](create-type.html).
 `schema_name_list`          | A comma-separated list of [schemas](create-schema.html).
-`ALL TABLES IN SCHEMA`      | <span class="version-tag">New in v21.2</span>: Revoke privileges on all tables in a schema or list of schemas.
+`ALL TABLES IN SCHEMA`      | <span class="version-tag">New in v21.2:</span> Revoke privileges on all tables in a schema or list of schemas.
 `privilege_list`            | A comma-separated list of [privileges](security-reference/authorization.html#managing-privileges) to revoke.
 `WITH ADMIN OPTION`         | Designate the user as a role admin. Role admins can [grant](grant.html) or revoke membership for the specified role.
 

@@ -70,7 +70,7 @@ On each instance:
        $ docker swarm join \
        --toke    SWMTKN-1-5vwxyi6zl3cc62lqlhi1jrweyspi8wblh2i3qa7kv277fgy74n-e5eg5c7ioxypjxlt3rpqorh15 \
        10.142.0.2:237
-    To add a manager to this swarm, run 'docker swarm join-token manager' and follow th    instructions.
+    To add a manager to this swarm, run 'docker swarm join-token manager' and follow the instructions.
     ~~~
 
 2. On the other two instances, [create a worker node joined to the swarm](https://docs.docker.com/engine/swarm/swarm-tutorial/add-nodes/) by running the `docker swarm join` command in the output from step 1, for example:

@@ -37,7 +37,7 @@ $ cockroach import --help
 
 ## Supported Formats
 
-- [`pgdump`](migrate-from-postgres.html#step-1-dump-the-postgres-database)
+- [`pgdump`](migrate-from-postgres.html#step-1-dump-the-postgresql-database)
 - [`mysqldump`](migrate-from-mysql.html#step-1-dump-the-mysql-database)
 
 ## Flags
@@ -110,5 +110,5 @@ successfully imported table test_table from pgdump file /Users/maxroach/Desktop/
 - [Other Cockroach Commands](cockroach-commands.html)
 - [`IMPORT`](import.html)
 - [`IMPORT INTO`](import-into.html)
-- [Migrate from Postgres](migrate-from-postgres.html)
+- [Migrate from PostgreSQL](migrate-from-postgres.html)
 - [Migrate from MySQL](migrate-from-mysql.html)

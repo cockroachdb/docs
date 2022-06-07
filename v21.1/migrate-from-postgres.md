@@ -154,9 +154,9 @@ If you need to specify the table's columns for some reason, you can use an [`IMP
 The following options are available to `IMPORT ... PGDUMP`:
 
 + [Max row size](#max-row-size)
-+ <span class="version-tag">New in v21.1:</span> [Row limit](#row-limit)
-+ <span class="version-tag">New in v21.1:</span> [Ignore unsupported statements](#ignore-unsupported-statements)
-+ <span class="version-tag">New in v21.1:</span> [Log unsupported statements](#log-unsupported-statements)
++ {% include_cached new-in.html version="v21.1" %} [Row limit](#row-limit)
++ {% include_cached new-in.html version="v21.1" %} [Ignore unsupported statements](#ignore-unsupported-statements)
++ {% include_cached new-in.html version="v21.1" %} [Log unsupported statements](#log-unsupported-statements)
 + [Skip foreign keys](#skip-foreign-keys)
 
 ### Max row size
@@ -180,7 +180,7 @@ Example usage:
 
 ### Row limit
 
-<span class="version-tag">New in v21.1:</span> The `row_limit` option determines the number of rows to import. If you are importing one table, setting `row_limit = 'n'` will import the first *n* rows of the table. If you are importing an entire database, this option will import the first *n* rows from each table in the dump file. It is useful for finding errors quickly before executing a more time- and resource-consuming import.
+{% include_cached new-in.html version="v21.1" %} The `row_limit` option determines the number of rows to import. If you are importing one table, setting `row_limit = 'n'` will import the first *n* rows of the table. If you are importing an entire database, this option will import the first *n* rows from each table in the dump file. It is useful for finding errors quickly before executing a more time- and resource-consuming import.
 
 Example usage:
 
@@ -191,7 +191,7 @@ Example usage:
 
 ### Ignore unsupported statements
 
-<span class="version-tag">New in v21.1:</span> The [`ignore_unsupported_statements` option](import.html#import-options) specifies whether the import will ignore unsupported statements in the `PGDUMP` file. **Default: false**.
+{% include_cached new-in.html version="v21.1" %} The [`ignore_unsupported_statements` option](import.html#import-options) specifies whether the import will ignore unsupported statements in the `PGDUMP` file. **Default: false**.
 
 If `ignore_unsupported_statements` is omitted, the import will fail if it encounters a statement that is unsupported by CockroachDB. Use `ignore_unsupported_statements` with `log_ignored_statements` to log unsupported statements.
 
@@ -204,7 +204,7 @@ Example usage:
 
 ### Log unsupported statements
 
-<span class="version-tag">New in v21.1:</span> The `log_ignored_statements` option is used with the `ignore_unsupported_statements` option to log unsupported statements in the `PGDUMP` file to specified a destination file.
+{% include_cached new-in.html version="v21.1" %} The `log_ignored_statements` option is used with the `ignore_unsupported_statements` option to log unsupported statements in the `PGDUMP` file to specified a destination file.
 
 Example usage:
 

@@ -3,12 +3,26 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="{% if page.summary %}{{ page.summary | strip_html | strip_newlines | truncate: 160 }}{% endif %}">
 <meta name="keywords" content="{% if page.tags %}{{ page.tags | join: ', ' | escape }}{% endif %}">
-{% if page.block_search or page.url contains 'v1.0' or page.url contains 'v1.1' or page.url contains 'v2.0' or page.url contains 'v2.1' or page.url contains 'v19.1' %}
+{% assign x = site.data.versions | where_exp: "m", "m.major_version == page.version.version" | first %}
+{% comment %} This line queries the information in versions.csv and returns the current page's version. {% endcomment %}
+
+{% unless x.maint_supp_exp_date == "N/A" or x.asst_supp_exp_date == "N/A" %}
+{% comment %} If the current page version has a maintenance or assistance support expiration date of N/A (meaning it's not yet released), we skip all code inside of the unless block. {% endcomment %}
+
+{% assign today = "today" | date: "%s" %}
+{% comment %} Fetch today's date and format it in seconds. {% endcomment %}
+
+{% assign a = x.asst_supp_exp_date | date: "%s" %}
+{% comment %} Format the assistance support expiration date for the given page version in seconds. {% endcomment %}
+
+{% if page.version and a < today %}
+{% comment %} If the page version exists and the assistance support expiration date has passed, include the additional meta tags {% endcomment %}
   <meta name="robots" content="noindex">
   <meta name="robots" content="nofollow">
   <meta name="robots" content="noarchive">
   <meta name="robots" content="nocache">
 {% endif %}
+{% endunless %}
 <title>{{ page.title }} | {{ site.site_title }}</title>
 <link rel="canonical" href="{{ page.canonical | absolute_url }}">
 <link rel="shortcut icon" href="{{ 'images/favicon.png' | relative_url }}" type="image/png">

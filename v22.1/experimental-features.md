@@ -16,7 +16,7 @@ If you encounter a bug, please [file an issue](file-an-issue.html).
 
 ## Session variables
 
-The table below lists the experimental session settings that are available.  For a complete list of session variables, see [`SHOW` (session settings)](show-vars.html).
+The table below lists the experimental session settings that are available.  For a complete list of session variables, see [`SHOW {session variable}`](show-vars.html).
 
 | Variable                            | Default Value | Description                                                                                                                                                                                                                                                                                             |
 |-------------------------------------+---------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -54,6 +54,10 @@ To relocate just the lease without moving the replicas, run a statement like the
 ~~~ sql
 > ALTER TABLE t EXPERIMENTAL_RELOCATE LEASE SELECT 1, 'foo';
 ~~~
+
+{{site.data.alerts.callout_info}}
+<span class="version-tag">New in v22.1:</span> If you prefer to use an approach to relocating replicas and leases based on range IDs, see the [`ALTER RANGE ... RELOCATE`](alter-range-relocate.html) statement.
+{{site.data.alerts.end}}
 
 ### Show table fingerprints
 
@@ -175,7 +179,7 @@ For usage details, see the [Monitor and Debug Changefeeds](monitor-and-debug-cha
 
 ## See Also
 
-- [`SHOW` (session)](show-vars.html)
+- [`SHOW {session variable}`](show-vars.html)
 - [Functions and Operators](functions-and-operators.html)
 - [`ALTER TABLE ... EXPERIMENTAL_AUDIT`](experimental-audit.html)
 - [`SHOW TRACE FOR SESSION`](show-trace.html)

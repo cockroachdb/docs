@@ -19,6 +19,8 @@ The **SQL** dashboard displays the following time series graphs:
 
 - In the node view, the graph shows the number of connections currently open between the client and the selected node.
 
+  - {% include {{page.version.version}}/sql/server-side-connection-limit.md %}
+
 - In the cluster view, the graph shows the total number of SQL client connections to all nodes combined, with lines for each node.
 
 ## Open SQL Transactions

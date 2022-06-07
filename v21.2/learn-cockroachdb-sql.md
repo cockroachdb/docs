@@ -9,10 +9,6 @@ This tutorial guides you through some of the most essential CockroachDB SQL stat
 
 For a complete list of supported SQL statements and related details, see [SQL Statements](sql-statements.html).
 
-<div class="clearfix">
-  <a class="btn btn-outline-primary" href="../tutorials/learn-cockroachdb-sql-interactive.html" target="_blank" rel="noopener">Run this in your browser &rarr;</a>
-</div>
-
 ## Start CockroachDB
 
 If you haven't already, [install CockroachDB](install-cockroachdb.html).

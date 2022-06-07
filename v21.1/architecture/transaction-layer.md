@@ -391,7 +391,7 @@ Additionally, when other transactions encounter a transaction in `STAGING` state
 
 ## Non-blocking transactions
 
-<span class="version-tag">New in v21.1:</span> CockroachDB supports low-latency, global reads of read-mostly data in [multi-region clusters](../multiregion-overview.html) using _non-blocking transactions_: an extension of the [standard read-write transaction protocol](#overview) that allows a writing transaction to perform [locking](#concurrency-control) in a manner such that contending reads by other transactions can avoid waiting on its locks.
+{% include_cached new-in.html version="v21.1" %} CockroachDB supports low-latency, global reads of read-mostly data in [multi-region clusters](../multiregion-overview.html) using _non-blocking transactions_: an extension of the [standard read-write transaction protocol](#overview) that allows a writing transaction to perform [locking](#concurrency-control) in a manner such that contending reads by other transactions can avoid waiting on its locks.
 
 The non-blocking transaction protocol and replication scheme differ from standard read-write transactions as follows:
 

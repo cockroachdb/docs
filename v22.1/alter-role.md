@@ -8,7 +8,7 @@ docs_area: reference.sql
 Use the `ALTER ROLE` [statement](sql-statements.html) to add, change, or remove a [role's](create-role.html) password, change the role options for a role, and set default [session variable](set-vars.html) values for a role.
 
 {{site.data.alerts.callout_info}}
-Since the keywords `ROLE` and `USER` can now be used interchangeably in SQL statements for enhanced Postgres compatibility, `ALTER ROLE` is now an alias for [`ALTER USER`](alter-user.html).
+Since the keywords `ROLE` and `USER` can now be used interchangeably in SQL statements for enhanced PostgreSQL compatibility, `ALTER ROLE` is now an alias for [`ALTER USER`](alter-user.html).
 {{site.data.alerts.end}}
 
 ## Considerations
@@ -38,8 +38,8 @@ Parameter | Description
 ----------|-------------
 `role_name` | The name of the role to alter.
 `WITH role_option` | Apply a [role option](#role-options) to the role.
-`SET var_name ... var_value` |  Set default [session variable](set-vars.html) values for a role.
-`RESET session_var`<br>`RESET ALL` <a name="parameters-reset"></a> |  Reset one session variable or all session variables to the default value.
+`SET {session variable}` |  Set default [session variable](set-vars.html) values for a role.
+`RESET {session variable}`<br>`RESET ALL` <a name="parameters-reset"></a> |  Reset one session variable or all session variables to the default value.
 `IN DATABASE database_name` |  Specify a database for which to apply session variable defaults.<br>When `IN DATABASE` is not specified, the default session variable values apply for a role in all databases.<br>Note that, in order for a session to initialize session variable values to database defaults, the database must be specified as a [connection parameter](connection-parameters.html). Database default values will not appear if the database is set after connection with `USE <dbname>`/`SET database=<dbname>`.
 `ROLE ALL ...`/`USER ALL ...` |  Apply session variable settings to all roles.<br>Exception: The `root` user is exempt from session variable settings.
 
@@ -60,7 +60,7 @@ Role option | Description
 `VALID UNTIL` |  The date and time (in the [`timestamp`](timestamp.html) format) after which the [password](#parameters) is not valid.
 `VIEWACTIVITY`/`NOVIEWACTIVITY` | Allow or disallow a role to see other roles' [queries](show-statements.html) and [sessions](show-sessions.html) using `SHOW STATEMENTS`, `SHOW SESSIONS`, and the [**Statements**](ui-statements-page.html) and [**Transactions**](ui-transactions-page.html) pages in the DB Console. `VIEWACTIVITY` also permits visibility of node hostnames and IP addresses in the DB Console. With `NOVIEWACTIVITY`, the `SHOW` commands show only the role's own data, and DB Console pages redact node hostnames and IP addresses.<br><br>By default, the role option is set to `NOVIEWACTIVITY` for all non-`admin` roles.
 `VIEWCLUSTERSETTING` / `NOVIEWCLUSTERSETTING` | Allow or disallow a role to view the [cluster settings](cluster-settings.html) with `SHOW CLUSTER SETTING` or to access the [**Cluster Settings**](ui-debug-pages.html) page in the DB Console. <br><br>By default, the role option is set to `NOVIEWCLUSTERSETTING` for all non-`admin` roles.
-`VIEWACTIVITYREDACTED`/`NOVIEWACTIVITYREDACTED` | Allow or disallow a role to see other roles' queries and sessions using `SHOW STATEMENTS`, `SHOW SESSIONS`, and the Statements and Transactions pages in the DB Console. With `VIEWACTIVITYREDACTED`, a user won't have access to the usage of statements diagnostics bundle, which can contain PII information, in the DB Console. It is possible to have both `VIEWACTIVITY` and `VIEWACTIVITYREDACTED`, and `VIEWACTIVITYREDACTED` takes precedence on restrictions. If the user has `VIEWACTIVITY` but doesn't have `VIEWACTIVITYREDACTED`, they will be able to see DB Console pages and have access to the statements diagnostics bundle. <br><br>By default, the role option is set to `NOVIEWACTIVITYREDACTED` for all non-`admin` roles.
+`VIEWACTIVITYREDACTED`/`NOVIEWACTIVITYREDACTED` | Allow or disallow a role to see other roles' queries and sessions using `SHOW STATEMENTS`, `SHOW SESSIONS`, and the Statements and Transactions pages in the DB Console. With `VIEWACTIVITYREDACTED`, a user will not have access to the usage of statements diagnostics bundle (which can contain PII information) in the DB Console, and will not be able to list queries containing [constants](sql-constants.html) for other users when using the `listSessions` endpoint through the [Cluster API](cluster-api.html). It is possible to have both `VIEWACTIVITY` and `VIEWACTIVITYREDACTED`, and `VIEWACTIVITYREDACTED` takes precedence on restrictions. If the user has `VIEWACTIVITY` but doesn't have `VIEWACTIVITYREDACTED`, they will be able to see DB Console pages and have access to the statements diagnostics bundle. <br><br>By default, the role option is set to `NOVIEWACTIVITYREDACTED` for all non-`admin` roles.
 
 ## Examples
 

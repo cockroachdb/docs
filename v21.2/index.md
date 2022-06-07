@@ -101,7 +101,7 @@ docs_area:
       <ul>
         <li><a href="migration-overview.html">Migration Overview</a></li>
         <li><a href="migrate-from-oracle.html">Migrate from Oracle</a></li>
-        <li><a href="migrate-from-postgres.html">Migrate from Postgres</a></li>
+        <li><a href="migrate-from-postgres.html">Migrate from PostgreSQL</a></li>
         <li><a href="migrate-from-mysql.html">Migrate from MySQL</a></li>
         <li><a href="migrate-from-csv.html">Migrate from CSV</a></li>
       </ul>

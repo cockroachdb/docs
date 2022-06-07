@@ -15,10 +15,6 @@ In this tutorial, you will plan a vacation from New York City to the [Adirondack
 + Performing [joins](joins.html) on spatial data, and using [`EXPLAIN`](explain.html) to make sure indexes are effective.
 + Visualizing the output of your queries using free tools like <https://geojson.io>
 
-<div class="clearfix">
-  <a class="btn btn-outline-primary" href="../tutorials/spatial-tutorial-interactive.html" target="_blank" rel="noopener">Run this in your browser &rarr;</a>
-</div>
-
 ## Step 1. Review the scenario
 
 You live in New York City and are an avid birdwatcher and reader of books. You are going on a vacation up to the [Adirondack Mountains](https://visitadirondacks.com/about) in northern New York State. Although you are interested in many bird species, you are most interested in seeing (and [hearing](https://macaulaylibrary.org/asset/107964)) the <a href="https://ebird.org/species/comloo" data-proofer-ignore>Common Loon</a>, a bird that can be found near the lakes and ponds of the north woods.

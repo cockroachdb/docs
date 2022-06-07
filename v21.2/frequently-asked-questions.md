@@ -60,8 +60,8 @@ When your cluster spans multiple nodes (physical machines, virtual machines, or 
 
 For more information about scaling a CockroachDB cluster, see the following docs:
 
-- [Plan Your CockroachDB Serverless Cluster - Cluster scaling](../cockroachcloud/plan-your-cluster.html#cluster-scaling)
-- [Plan Your CockroachDB Dedicated Cluster - Cluster scaling](../cockroachcloud/plan-your-cluster.html?filter=dedicated#cluster-scaling)
+- [Plan Your {{ site.data.products.serverless }} Cluster - Cluster scaling](../cockroachcloud/plan-your-cluster.html#cluster-scaling)
+- [Plan Your {{ site.data.products.dedicated }} Cluster - Cluster scaling](../cockroachcloud/plan-your-cluster.html?filter=dedicated#cluster-scaling)
 - [`cockroach start` - Add a node to a cluster](cockroach-start.html#add-a-node-to-a-cluster)
 
 ### How does CockroachDB survive failures?
@@ -157,7 +157,7 @@ Note, however, that the protocol used doesn't significantly impact how easy it i
 
 ### Can a PostgreSQL or MySQL application be migrated to CockroachDB?
 
-Yes. Most users should be able to follow the instructions in [Migrate from Postgres](migrate-from-postgres.html) or [Migrate from MySQL](migrate-from-mysql.html). Due to differences in available features and syntax, some features supported by these databases may require manual effort to port to CockroachDB. Check those pages for details.
+Yes. Most users should be able to follow the instructions in [Migrate from PostgreSQL](migrate-from-postgres.html) or [Migrate from MySQL](migrate-from-mysql.html). Due to differences in available features and syntax, some features supported by these databases may require manual effort to port to CockroachDB. Check those pages for details.
 
 We also fully support [importing your data via CSV](migrate-from-csv.html).
 

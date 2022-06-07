@@ -19,7 +19,7 @@ The `TIME` [data type](data-types.html) stores the time of day in UTC.
 
     Ordering for `TIMETZ` is done in terms of [epoch](https://en.wikipedia.org/wiki/Epoch_(computing)). Time zones with lesser values are ranked higher if times are equal. For example, `'2:00-1' > '2:00+0'` and `'12:00-1' > '1:00+0'`.
 
-    [Like Postgres](https://www.postgresql.org/docs/current/static/datatype-datetime.html), we implement the `TIMETZ` variant for [SQL standards compliance](sql-feature-support.html). We also implement the `TIMETZ` variant for compatibility with ORMs, like [Hibernate](build-a-java-app-with-cockroachdb-hibernate.html).
+    [Like PostgreSQL](https://www.postgresql.org/docs/current/static/datatype-datetime.html), we implement the `TIMETZ` variant for [SQL standards compliance](sql-feature-support.html). We also implement the `TIMETZ` variant for compatibility with ORMs, like [Hibernate](build-a-java-app-with-cockroachdb-hibernate.html).
 
 You can use the [`timezone()`](functions-and-operators.html#date-and-time-functions) and [`AT TIME ZONE`](functions-and-operators.html#special-syntax-forms) functions to convert a `TIMETZ` into a `TIME` at a specified timezone, or to convert a `TIME` into a `TIMETZ` at a specified timezone.
 
