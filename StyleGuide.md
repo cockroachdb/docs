@@ -182,6 +182,7 @@ Avoid using socially-charged terms for features and technical concepts.
 - Use periods at the end of list items if they are sentences or complete a sentence.
 - Use the [Oxford (a.k.a. serial) comma](https://en.wikipedia.org/wiki/Serial_comma).
 - Avoid using slashes `/` and ampersands `&` as conjunctions in place of **or** and **and** respectively, unless space is very limited (e.g., in a table).
+- Avoid using _and/or_ unless space is very limited (e.g., in a table). Instead, decide whether **and** or **or** can stand alone or make use of **both** when the inclusivity must be explicit, e.g., **x or y or both**.
 
 For more detail about how to format text, see [Components](#components).
 
@@ -203,6 +204,13 @@ CockroachDB docs are mainly comprised of pages (`.md`) and images (`.png` or `.g
 Each version's pages are found in a directory named for the version. For example, pages for CockroachDB v21.1 are in the `docs > v21.1` directory. For more information about page structure, see the [Pages](https://github.com/cockroachdb/docs/blob/master/CONTRIBUTING.md#pages) section in our [Contributing Guide](https://github.com/cockroachdb/docs/blob/master/CONTRIBUTING.md). For more information about how to style page content, see [Components](#components).
 
 Each version's images are stored in a versioned directory under the `images` directory. For example, images for CockroachDB v21.1 are in the `docs > images > v21.1` directory. For more information, see [Images](#images).
+
+### File naming
+
+File names should match the page title. If you need to change a file name, it is necessary to do the following:
+
+- Add the previous page URL with the new URL to `_redirects`.
+- Replace all links to the previous file name with the new file name in the applicable docs versions.
 
 ## Content types
 
