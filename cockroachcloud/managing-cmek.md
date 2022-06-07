@@ -18,33 +18,20 @@ See also:
 
 This section gives a high level sketch of the operations involved with implementing CMEK with your CockroachDB cluster.
 
-### Enabling CMEK
+- [Enabling CMEK](#enable-cmek) for a {{ site.data.products.dedicated }} requires several steps:
 
-[To enable CMEK](#enable-cmek) for a {{ site.data.products.dedicated }} requires several steps:
+	- Turning on the {{ site.data.products.dedicated }} feature.
+	- Provisioning an encryption key with your infrastructure provider's key management service (KMS).
+	- Granting {{ site.data.products.db }} access to the CMEK i.e. the key you control.
+	- Switching your cluster to use the CMEK.
 
-- Turning on the {{ site.data.products.dedicated }} feature.
-- Provisioning an encryption key with your infrastructure provider's key management service (KMS).
-- Granting {{ site.data.products.db }} access to the CMEK i.e. the key you control.
-- Switching your cluster to use the CMEK.
+- [Checking CMEK status](#check-cmek-status) allows you to inspect the CMEK state of your cluster with a call to the Cluster API.
 
-### Checking CMEK status
+- [Revoking CMEK for a cluster](#revoking-cmek-for-a-cluster) by revoking Cockroach Labs' access to your CMEK at the IAM/KMS level.
 
-An API call displays information about your cluster's use of CMEK: [Check CMEK status](#check-cmek-status)
+- [Restore CMEK following a revokation event](#step-3a-restore-cmek-following-a-revokation-event) by reauthorizing {{ site.data.products.db }} to use your key, and coordinating with our service team to assist in recovering your Organization.
 
-### Revoking CMEK for a cluster
-
-[Revoke CMEK for a cluster](#revoking-cmek-for-a-cluster) by revoking {{ site.data.products.db }}'s access to your key at the IAM level with your infrastructure provider. This will immediately prevent all access to your data, but can be reversed by reauthorizing access to the key.
-
-Deleting the key will permanently prevent decryption of your data, preventing all possible access and rendering the database unusable and data inaccessible.
-
-### Restoring CMEK following a revokation event 
-
-[Restore CMEK following a revokation event](#step-3a-restore-cmek-following-a-revokation-event) by reauthorizing {{ site.data.products.db }} to use your key, and coordinating with our service team to assist in recovering your Organization.
-
-### Disabling CMEK
-
-[Disabling CMEK to return to {{ site.data.products.db }}-managed encryption](#step-3b-disable-cmek): The {{ site.data.products.dedicated }} feature can disabled, allowing your cluster to return to the default state of using encryption keys managed by Cockroach Labs.
-
+- [Disabling CMEK](#step-3b-disable-cmek) to return to {{ site.data.products.db }}-managed encryption: The {{ site.data.products.dedicated }} feature can disabled, allowing your cluster to return to the default state of using encryption keys managed by Cockroach Labs.
 
 ## Enable CMEK
 
@@ -52,7 +39,7 @@ Deleting the key will permanently prevent decryption of your data, preventing al
 
 To start the process, contact Cockroach Labs by reaching out to your account team, or [creating a support ticket](https://support.cockroachlabs.com/). You must provide your **Organization ID**, which you can find in your [Organization settings page](https://cockroachlabs.cloud/settings).
 
-They will enable Cloud API and CMEK for your {{ site.data.products.dedicated }} Organization.
+They will enable [Cloud API](https://www.cockroachlabs.com/docs/cockroachcloud/cloud-api.html) and CMEK for your {{ site.data.products.dedicated }} Organization.
 
 {{site.data.alerts.callout_info}}
 The upgrade process will generate a new Organization ID.
@@ -60,21 +47,28 @@ The upgrade process will generate a new Organization ID.
 
 ### Step 2. Provision your cluster
 
-Create a new {{ site.data.products.dedicated }} cluster from the {{ site.data.products.db }} console [clusters page](https://cockroachlabs.cloud/cluster), or by [using the Cloud API](cloud-api.html#create-a-new-cluster).
+1. Create a new {{ site.data.products.dedicated }} cluster. You can do this either of two ways:
+	- From the {{ site.data.products.db }} console [clusters page](https://cockroachlabs.cloud/cluster).
+	- [Using the Cloud API](cloud-api.html#create-a-new-cluster). 
 
 ### Step 3. Provision IAM and KMS in your IaaS
 
-In IAAS: Create the IAM user/service account for encrypting decrypting with the key. (is this a cross account IAM role with key privileges, or a cross account IAM role for adopting an IAM role with key privileges, there are two stories here...)
+Next, you must provision the resources required resources in your IaaS, whether this is AWS or GCP:
 
-- [Provisioning KMS for CMEK in AWS](cmek-ops-aws.html)
-- [Provisioning KMS for CMEK in GCP](TBD???) 
+1. The IAM user/service account for encrypting decrypting with the key. (is this a cross account IAM role with key privileges, or a cross account IAM role for adopting an IAM role with key privileges, there are two stories here...)
+1. The key itself.
+
+Follow the instructions depending on your IaaS:
+
+- [Provisioning Amazon Web Services (AWS) for CMEK](cmek-ops-aws.html)
+- [Provisioning Google Cloud Platform (GCP) for CMEK](cmek-ops-gcp.html) 
 
 ### Step 4. Enable CMEK for your CockroachDB Cluster
 
 
-
-
 ## Check CMEK status
+
+An API call displays information about your cluster's use of CMEK: 
 
 {% include_cached copy-clipboard.html %}
 ```shell
@@ -93,7 +87,9 @@ This can be done temporarily or permanently. This action is performed at the lev
 
 ### Step 1. Revoke IAM access
 
-Revoke the cross-account IAM policy that gives Cockroach Labs access to your CMEK.
+Revoke CMEK for a cluster by revoking {{ site.data.products.db }}'s access to your key at the IAM level with your infrastructure provider. This will immediately prevent all access to your data, but can be reversed by reauthorizing access to the key.
+
+Deleting the key will permanently prevent decryption of your data, preventing all possible access and rendering the database unusable and data inaccessible.
 
 ### Step 2. Assess and resolve the situation
 
