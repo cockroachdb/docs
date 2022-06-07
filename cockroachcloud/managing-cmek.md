@@ -55,7 +55,9 @@ The upgrade process will generate a new Organization ID.
 
 Next, you must provision the resources required resources in your IaaS, whether this is AWS or GCP:
 
-1. The IAM user/service account for encrypting decrypting with the key. (is this a cross account IAM role with key privileges, or a cross account IAM role for adopting an IAM role with key privileges, there are two stories here...)
+1. The IAM user/service account for encrypting decrypting with the key.
+
+ (is this a cross account IAM role with key privileges, or a cross account IAM role for adopting an IAM role with key privileges, there are two stories here...)
 1. The key itself.
 
 Follow the instructions depending on your IaaS:
@@ -64,7 +66,6 @@ Follow the instructions depending on your IaaS:
 - [Provisioning Google Cloud Platform (GCP) for CMEK](cmek-ops-gcp.html)
 
 ### Step 4. Enable CMEK for your CockroachDB Cluster
-
 
 ## Check CMEK status
 
