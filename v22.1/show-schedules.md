@@ -36,7 +36,7 @@ Field | Description
 `label` | The name used to identify the schedule, given at the time of schedule creation.
 `schedule_status` | The schedule's current status.
 `next_run`  | The [`TIMESTAMP`](timestamp.html) at which the next scheduled job is slated to run.
-`state` | Displays last-known errors or messages about the schedule.
+`state` | Displays last-known errors or messages about the schedule. Cleared on retry of a scheduled job.
 `recurrence` | How often the scheduled job is run, which is set at the time of schedule creation.
 `jobsrunning` | The number of [jobs](show-jobs.html) currently running for the schedule.
 `owner` | The [user](create-user.html) who created the schedule. Users with active schedules cannot be dropped.
