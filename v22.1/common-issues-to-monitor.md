@@ -78,7 +78,7 @@ If workload concurrency exceeds CPU resources, you will observe:
 
 #### LSM health
 
-Issues at the [storage layer](architecture/storage-layer.html), including a misshapen LSM and high [read amplification](architecture/storage-layer.html#read-amplification), can be observed when compaction falls behind due to insufficient CPU.
+Issues at the storage layer, including an [inverted LSM](architecture/storage-layer.html#inverted-lsms) and high [read amplification](architecture/storage-layer.html#read-amplification), can be observed when compaction falls behind due to insufficient CPU or excessively high [recovery and rebalance rates](cluster-setup-troubleshooting.html#excessive-snapshot-rebalance-and-recovery-rates).
 
 - The [**LSM L0 Health**](ui-overload-dashboard.html#lsm-l0-health) graph on the Overload dashboard shows the health of the [persistent stores](architecture/storage-layer.html), which are implemented as log-structured merge (LSM) trees. Level 0 is the highest level of the LSM tree and consists of files containing the latest data written to the [Pebble storage engine](cockroach-start.html#storage-engine). For more information about LSM levels and how LSMs work, see [Log-structured Merge-trees](architecture/storage-layer.html#log-structured-merge-trees).
 
