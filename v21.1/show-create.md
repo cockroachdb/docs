@@ -235,6 +235,61 @@ To return just the `create_statement` value:
 
 For more information, see [`COMMENT ON`](comment-on.html).
 
+### Show the `CREATE TABLE` statement for a table with a hidden column
+
+If one or more columns is [`NOT VISIBLE`](not-visible.html) within a table, `SHOW CREATE` will display the `NOT VISIBLE` flag after those columns.
+
+Let's start by setting the `credit_card` field to `NOT VISIBLE`:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> ALTER TABLE public.users ALTER COLUMN credit_card SET NOT VISIBLE;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW CREATE TABLE users;
+~~~
+
+~~~
+table_name   |                      create_statement
+-------------+--------------------------------------------------------------
+users        | CREATE TABLE public.users (
+             |     id UUID NOT NULL,
+             |     city VARCHAR NOT NULL,
+             |     name VARCHAR NULL,
+             |     address VARCHAR NULL,
+             |     credit_card VARCHAR NOT VISIBLE NULL,
+             |     CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
+             |     FAMILY "primary" (id, city, name, address, credit_card)
+             | )
+(1 row)
+~~~
+
+To return just the `create_statement` value:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT create_statement FROM [SHOW CREATE TABLE users];
+~~~
+
+~~~
+                                 create_statement
+-----------------------------------------------------------------------------------
+  CREATE TABLE public.users (
+      id UUID NOT NULL,
+      city VARCHAR NOT NULL,
+      name VARCHAR NULL,
+      address VARCHAR NULL,
+      credit_card VARCHAR NOT VISIBLE NULL,
+      CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
+      FAMILY "primary" (id, city, name, address, credit_card)
+  )
+(1 row)
+~~~
+
+For more information, see [`NOT VISIBLE`](not-visible.html).
+
 ### Show the `CREATE TABLE` statement for a table with a multi-region locality
 
 {% include_cached new-in.html version="v21.1" %} Use the `SHOW CREATE TABLE` command to view [multi-region-defined](multiregion-overview.html) table localities.

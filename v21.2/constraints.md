@@ -41,7 +41,7 @@ How you add constraints depends on the number of columns you want to constrain, 
     ~~~
 
   {{site.data.alerts.callout_info}}
-  The `DEFAULT` and `NOT NULL` constraints cannot be applied to multiple columns.
+  The `DEFAULT` and `NOT NULL` constraints cannot be applied to multiple columns in a single statement. Separate changes to each column within a single statement per column.
   {{site.data.alerts.end}}
 
 - **Existing tables** can have the following constraints added:
@@ -109,7 +109,7 @@ Constraint Type | Procedure
 [`CHECK`](check.html) | [Issue a transaction](transactions.html#syntax) that adds a new `CHECK` constraint ([`ADD CONSTRAINT`](add-constraint.html)), and then remove the existing one ([`DROP CONSTRAINT`](drop-constraint.html)).
 [`DEFAULT` value](default-value.html) | The `DEFAULT` value can be changed through [`ALTER COLUMN`](alter-column.html).
 [`FOREIGN KEY`](foreign-key.html) | [Issue a transaction](transactions.html#syntax) that adds a new `FOREIGN KEY` constraint ([`ADD CONSTRAINT`](add-constraint.html)), and then remove the existing one ([`DROP CONSTRAINT`](drop-constraint.html)).
-[`NOT NULL`](not-null.html) | The `NOT NULL` constraint cannot be changed, only added and removed with [`ALTER COLUMN`](alter-column.html).
+[`NOT NULL`](not-null.html) | The `NOT NULL` constraint can be added and removed with [`ALTER COLUMN`](alter-column.html).
 [`PRIMARY KEY`](primary-key.html) |   To change a primary key, use an [`ALTER TABLE ... ALTER PRIMARY KEY`](alter-primary-key.html) statement.<br><br>When you change a primary key with [`ALTER PRIMARY KEY`](alter-primary-key.html), the old primary key index becomes a secondary index. If you do not want the old primary key to become a secondary index, use [`DROP CONSTRAINT`](drop-constraint.html)/[`ADD CONSTRAINT`](add-constraint.html) to change the primary key.
 [`UNIQUE`](unique.html) | [Issue a transaction](transactions.html#syntax) that adds a new `UNIQUE` constraint ([`ADD CONSTRAINT`](add-constraint.html)), and then remove the existing one ([`DROP CONSTRAINT`](drop-constraint.html)).
 
