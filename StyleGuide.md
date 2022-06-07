@@ -182,6 +182,7 @@ Avoid using socially-charged terms for features and technical concepts.
 - Use periods at the end of list items if they are sentences or complete a sentence.
 - Use the [Oxford (a.k.a. serial) comma](https://en.wikipedia.org/wiki/Serial_comma).
 - Avoid using slashes `/` and ampersands `&` as conjunctions in place of **or** and **and** respectively, unless space is very limited (e.g., in a table).
+- Avoid using _and/or_ unless space is very limited (e.g., in a table). Instead, decide whether **and** or **or** can stand alone or make use of **both** when the inclusivity must be explicit, e.g., **x or y or both**.
 
 For more detail about how to format text, see [Components](#components).
 

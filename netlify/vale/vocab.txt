@@ -197,6 +197,7 @@ hueypark
 hyperthread
 hyperthreads
 img
+inclusivity
 inconsolata
 incrementals
 indexable
