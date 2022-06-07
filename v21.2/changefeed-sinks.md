@@ -69,6 +69,8 @@ kafka_sink_config='{"Flush": {"MaxMessages": 1, "Frequency": "1s"}, "Version": "
 
 <a name ="kafka-flush"></a>`"Flush"."MaxMessages"` and `"Flush"."Frequency"` are configurable batching parameters depending on latency and throughput needs. For example, if `"MaxMessages"` is set to 1000 and `"Frequency"` to 1 second, it will flush to Kafka either after 1 second or after 1000 messages are batched, whichever comes first. It's important to consider that if there are not many messages, then a `"1s"` frequency will add 1 second latency. However, if there is a larger influx of messages these will be flushed quicker.
 
+Using the default values or not setting fields in `kafka_sink_config` will mean that changefeed messages emit immediately.
+
 The configurable fields are as follows:
 
 Field              | Type                | Description      | Default
