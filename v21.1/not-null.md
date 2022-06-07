@@ -77,5 +77,6 @@ pq: null value in column "cust_email" violates not-null constraint
 - [`REFERENCES` constraint (Foreign Key)](foreign-key.html)
 - [`PRIMARY KEY` constraint](primary-key.html)
 - [`UNIQUE` constraint](unique.html)
+- [`NOT VISIBLE` constraint](not-visible.html)
 - [`SHOW CONSTRAINTS`](show-constraints.html)
 - [`NULL HANDLING`](null-handling.html)
