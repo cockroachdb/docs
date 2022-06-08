@@ -104,9 +104,19 @@ This can be done temporarily or permanently. This action is performed at the lev
 
 ### Step 1: Revoke IAM access
 
-Revoke CMEK for a cluster by revoking {{ site.data.products.db }}'s access to your key at the IAM level with your infrastructure provider. This will immediately prevent all access to your data, but can be reversed by reauthorizing access to the key.
+{{site.data.alerts.callout_danger}}
+Do not delete the CMEK key.
+Deleting the CMEK key will permanently prevent decryption of your data, preventing all possible access and rendering the data inaccessible.
+{{site.data.alerts.end}}
 
-Deleting the key will permanently prevent decryption of your data, preventing all possible access and rendering the database unusable and data inaccessible.
+First, revoke Cockroach Labs' access to your key at the IAM level with your infrastructure provider. 
+
+This will **not** immediately stop your cluster from encrypting and decrypting data, which does not take effect until you update your cluster in the next step.
+
+That is because CockroachDB does not use your CMEK key to encrypt/decrypt data, but only to encrypt/decrypt a key encryption key (KEK). The KEK is used to encrypt a data encryption key (DEK), which is used to encrypt/decrypt your application data.
+
+Your cluster will continue to use the already-provisioned DEK until you make the Cloud API call to revoke CMEK.
+
 
 
 ### Step 2: Update your cluster to stop using the CMEK key for encryption
