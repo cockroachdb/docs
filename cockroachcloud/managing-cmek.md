@@ -31,8 +31,6 @@ This section gives a high level sketch of the operations involved with implement
 
 - [Restore CMEK following a revocation event](#restore-cmek-following-a-revocation-event) by reauthorizing {{ site.data.products.db }} to use your key, and coordinating with our service team to assist in recovering your Organization.
 
-- [Disabling CMEK](#disable-cmek-for-your-cluster) to return to {{ site.data.products.db }}-managed encryption: The {{ site.data.products.dedicated }} feature can disabled, allowing your cluster to return to the default state of using encryption keys managed by Cockroach Labs.
-
 ## Enable CMEK
 
 ### Step 1. Prepare your {{ site.data.products.dedicated }} Organization
@@ -117,8 +115,6 @@ That is because CockroachDB does not use your CMEK key to encrypt/decrypt data, 
 
 Your cluster will continue to use the already-provisioned DEK until you make the Cloud API call to revoke CMEK.
 
-
-
 ### Step 2: Update your cluster to stop using the CMEK key for encryption
 	
 Your cluster will continue to operate with the encryption keys it has provisioned with your CMEK key until you order it to switch off of CMEK, and use a Cockroach Labs managed encryption key instead.
@@ -145,5 +141,3 @@ Eventually, you'll resolve the security incident and re-authorize CMEK for your 
 ## Restore CMEK following a revocation event
 
 To restore CMEK after the incident has been resolved, reach out to your account team, or [creating a support ticket](https://support.cockroachlabs.com/)
-
-
