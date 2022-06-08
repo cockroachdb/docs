@@ -23,6 +23,8 @@ Recall that the premise of CMEK is that you, the customer, maintain control over
 
 {{site.data.alerts.callout_info}}
 To create this link, you will also need your {{ site.data.products.dedicated }} Organization ID, which you can find from the {{ site.data.products.db }} console [clusters page](https://cockroachlabs.cloud/cluster).
+
+Make sure you have the updated Organization ID from after CMEK has been enabled for your organization.
 {{site.data.alerts.end}}
 
 1. Find Cockroach Labs' AWS Account ID
@@ -86,3 +88,5 @@ To create this link, you will also need your {{ site.data.products.dedicated }} 
 	```
 
 1. Finish creating the key.
+
+Now that you have provisioned the IAM role and KMS key for your CockroachDB cluster's CMEK, return to [Enabling CMEK for a {{ site.data.products.dedicated }} cluster](managing-cmek.html#step-4-enable-cmek-for-your-cockroachdb-cluster).
