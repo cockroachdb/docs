@@ -6,7 +6,7 @@ docs_area: manage
 page_version: v22.1
 ---
 
-Now that [CockroachDB v22.1](../releases/v22.1.html) is available, a [Console Admin](console-access-management.html#console-admin) can upgrade your {{ site.data.products.dedicated }} cluster from the {{ site.data.products.db }} Console. This page walks through the process for an Admin.
+Now that [CockroachDB v22.1](../releases/v22.1.html) is available, a [Console Admin](console-access-management.html#console-admin) can upgrade your {{ site.data.products.dedicated }} cluster from the {{ site.data.products.db }} Console. This page guides you through the process for an Admin.
 
 {{site.data.alerts.callout_success}}
 Upgrading a {{ site.data.products.dedicated }} cluster to a new major version is opt-in. Before proceeding, review the {{ site.data.products.db }} [upgrade policy](upgrade-policy.html).

@@ -6,7 +6,7 @@ key: initialize-a-cluster.html
 docs_area: reference.cli
 ---
 
-This page explains the `cockroach init` [command](cockroach-commands.html), which you use to perform a one-time initialization of a new multi-node cluster. For a full walk-through of the cluster startup and initialization process, see one of the [Manual Deployment](manual-deployment.html) tutorials.
+This page explains the `cockroach init` [command](cockroach-commands.html), which you use to perform a one-time initialization of a new multi-node cluster. For a full tutorial of the cluster startup and initialization process, see one of the [Manual Deployment](manual-deployment.html) tutorials.
 
 {{site.data.alerts.callout_info}}
 When starting a single-node cluster with [`cockroach start-single-node`](cockroach-start-single-node.html), you do not need to use the `cockroach init` command.

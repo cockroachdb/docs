@@ -10,7 +10,7 @@ The **Node Map** is useful for:
 - Viewing real-time cluster metrics.
 - Drilling down to individual nodes for monitoring health and performance.
 
-This page walks you through the process of setting up and enabling the Node Map.
+This page guides you through the process of setting up and enabling the Node Map.
 
 {{site.data.alerts.callout_info}}
 On a secure cluster, this area of the DB Console can only be accessed by an `admin` user. See [DB Console access](ui-overview.html#db-console-access).

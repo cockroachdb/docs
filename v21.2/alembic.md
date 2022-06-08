@@ -5,7 +5,7 @@ toc: true
 docs_area: develop
 ---
 
-This page walks you through a series of simple database schema changes using the [Alembic](https://alembic.sqlalchemy.org/en/latest/) schema migration module with a simple Python application built on SQLAlchemy and CockroachDB.
+This page guides you through a series of simple database schema changes using the [Alembic](https://alembic.sqlalchemy.org/en/latest/) schema migration module with a simple Python application built on SQLAlchemy and CockroachDB.
 
 For a detailed tutorial about using Alembic, see [the Alembic documentation site](https://alembic.sqlalchemy.org/en/latest/tutorial.html).
 

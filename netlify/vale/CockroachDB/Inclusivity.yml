@@ -5,11 +5,11 @@ level: warning
 swap:
   dummy: placeholder or sample
   'sanity.check': final check or confirm
-  '(?:he|she)': they
-  his: their or theirs
-  her: their or them
-  hers: theirs
-  him: them
+  '(?:he|she)': proper nouns or they
+  his: proper nouns or their/theirs
+  her: proper nouns or their/them
+  hers: proper nouns or theirs
+  him: proper nouns or them
   blacklist: denylist or blocklist
   whitelist: allowlist
   master: main, principal, primary, or manager
@@ -18,3 +18,6 @@ swap:
   old: existing, previous, first, or original
   hit: select, reach, experience, reduction, or visit
   hits: visits, results
+  'walkthrough|walk-through': tutorial
+  walk: guide or instruct
+  walks: guides or instructs

@@ -5,7 +5,7 @@ toc: true
 docs_area: develop
 ---
 
-This page walks you through a series of simple database schema changes using the [Liquibase](https://www.liquibase.org/get-started/how-liquibase-works) command-line tool and the [CockroachDB SQL shell](cockroach-sql.html).
+This page guides you through a series of simple database schema changes using the [Liquibase](https://www.liquibase.org/get-started/how-liquibase-works) command-line tool and the [CockroachDB SQL shell](cockroach-sql.html).
 
 For detailed information about using Liquibase, see the [Liquibase documentation site](https://docs.liquibase.com/home.html).
 

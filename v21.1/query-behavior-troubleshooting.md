@@ -7,7 +7,7 @@ toc: true
 If a [SQL statement](sql-statements.html) returns an unexpected result or takes longer than expected to process, this page will help you troubleshoot the issue.
 
 {{site.data.alerts.callout_success}}
-For a developer-centric walkthrough of optimizing SQL query performance, see [Optimize Statement Performance](make-queries-fast.html).
+For a developer-centric tutorial of optimizing SQL query performance, see [Optimize Statement Performance](make-queries-fast.html).
 {{site.data.alerts.end}}
 
 ## Identify slow statements

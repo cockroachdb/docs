@@ -1,11 +1,11 @@
 ---
 title: Migrate CockroachDB Schemas with Flyway
-summary: This tutorial walks you through a series of simple database schema changes using Flyway, an open-source schema migration tool.
+summary: This tutorial guides you through a series of simple database schema changes using Flyway, an open-source schema migration tool.
 toc: true
 docs_area: develop
 ---
 
-This page walks you through a series of simple database schema changes using Flyway, an open-source schema migration tool. For detailed information about using Flyway, see the [Flyway documentation site](https://flywaydb.org/documentation/).
+This page guides you through a series of simple database schema changes using Flyway, an open-source schema migration tool. For detailed information about using Flyway, see the [Flyway documentation site](https://flywaydb.org/documentation/).
 
 ## Watch the demo
 

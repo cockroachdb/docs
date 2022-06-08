@@ -1,6 +1,6 @@
 ---
 title: Serializable Transactions
-summary: Walk through a demonstration of the importance of SERIALIZABLE isolation for data correctness
+summary: Follow a demonstration of the importance of SERIALIZABLE isolation for data correctness
 toc: true
 toc_not_nested: true
 docs_area: deploy
