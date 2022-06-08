@@ -5,7 +5,7 @@ toc: true
 redirect_from: multi-region-database.html
 ---
 
-This page walks you through creating a database schema for an example global application. It is the second section of the [Develop and Deploy a Global Application](movr-flask-overview.html) tutorial.
+This page guides you through creating a database schema for an example global application. It is the second section of the [Develop and Deploy a Global Application](movr-flask-overview.html) tutorial.
 
 ## Before you begin
 

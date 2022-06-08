@@ -10,7 +10,7 @@ CockroachDB allows fine-grained configuration of which database connect attempts
 - **Who** is making the attempt (SQL user).
 - **Where** on the internet (IP Address) the attempt is coming from.
 
-This document describes the rationale for restricting database access to specific IP ranges as a security measure, and then walks through the procedure using [authentication configuration](authentication.html) to achieve that aim.
+This document describes the rationale for restricting database access to specific IP ranges as a security measure and then demonstrates the procedure using [authentication configuration](authentication.html) to achieve that aim.
 
 ## Why customize your authentication configuration?
 
