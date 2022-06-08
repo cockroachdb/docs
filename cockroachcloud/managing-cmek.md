@@ -29,7 +29,7 @@ This section gives a high level sketch of the operations involved with implement
 
 - [Revoking CMEK for a cluster](#revoking-cmek-for-a-cluster) by revoking Cockroach Labs' access to your CMEK at the IAM/KMS level.
 
-- [Restore CMEK following a revokation event](#restore-cmek-following-a-revokation-event) by reauthorizing {{ site.data.products.db }} to use your key, and coordinating with our service team to assist in recovering your Organization.
+- [Restore CMEK following a revocation event](#restore-cmek-following-a-revocation-event) by reauthorizing {{ site.data.products.db }} to use your key, and coordinating with our service team to assist in recovering your Organization.
 
 - [Disabling CMEK](#disable-cmek-for-your-cluster) to return to {{ site.data.products.db }}-managed encryption: The {{ site.data.products.dedicated }} feature can disabled, allowing your cluster to return to the default state of using encryption keys managed by Cockroach Labs.
 
@@ -104,7 +104,7 @@ Deleting the key will permanently prevent decryption of your data, preventing al
 
 Eventually, you'll resolve the security incident and re-authorize CMEK for your cluster to return to normal operations.
 
-## Restore CMEK following a revokation event
+## Restore CMEK following a revocation event
 
 To restore CMEK after the incident has been resolved, reach out to your account team, or [creating a support ticket](https://support.cockroachlabs.com/)
 
