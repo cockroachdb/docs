@@ -17,26 +17,15 @@ For multi-region clusters, you must provide a key and IAM role combination per r
 - provide a single multi-region key for the entire cluster.
 {{site.data.alerts.end}}
 
-## Step 1: Create the key
-
-1. In the AWS console, visit the [KMS page](https://console.aws.amazon.com/kms/).
-1. Choose **Customer managed keys** and click the **Create Key** button.
-1. For **Key type**, specify **Symmetric Key**.
-1. For **Key usage**, specify **Encrypt and decrypt**.
-1. Under **Advanced options**, choose **KMS* for **Key material**.
-1. Select whether you will use your key for a single region or a multi-region cluster.
-1. Set permissions
-
-1. Finish creating the key. At this stage, you do not need to add IAM roles to the key, and can use the default policy.
-
-## Step 2: Provision the cross-account IAM role
+## Step 1: Provision the cross-account IAM role
 
 Recall that the premise of CMEK is that you, the customer, maintain control over your encryption key, while (temporarily) granting access to Cockroach Labs' to encrypt and data for you. Here we will create a 'cross-account IAM role', i.e., a role in your AWS account that can be temporarily assumed by users in another account, in this case, Cockroach Labs' account. This role will have permissions to use the key.
 
 {{site.data.alerts.callout_info}}
 To create this link, you will also need your {{ site.data.products.dedicated }} Organization ID, which you can find from the {{ site.data.products.db }} console [clusters page](https://cockroachlabs.cloud/cluster).
-{{site.data.alerts.end}}
 
+Make sure you have the updated Organization ID from after CMEK has been enabled for your organization.
+{{site.data.alerts.end}}
 
 1. Find Cockroach Labs' AWS Account ID
 
@@ -49,7 +38,7 @@ To create this link, you will also need your {{ site.data.products.dedicated }} 
 	  --header 'Authorization: Bearer {YOUR_API_KEY}' | jq .account_id
 	```
 
-1.  Create a cross-account IAM role in your AWS account, configuring a policy with encrypt and decrypt permissions on the KMS key(s) created in Step 3.
+1.  Create a cross-account IAM role in your AWS account, configuring a policy with encrypt and decrypt permissions on the KMS key.
 
 	1. In the AWS console, visit the [IAM page](https://console.aws.amazon.com/iam/).
 	1. Select **Roles** and click **Create role**.
@@ -57,13 +46,47 @@ To create this link, you will also need your {{ site.data.products.dedicated }} 
 	1. Choose **Another AWS account**.
 		1. For **Account ID**, provide the provide the Cockroach Labs AWS Account ID that you found previously by querying your cluster's Cloud API.
 		1. Select the option to **Require external ID**, and for the value of **External ID**, provide your {{ site.data.products.dedicated }} Organization ID.
+	1. Finish creating the IAM role with a suitable name, such as . You do not need to add any permissions.
 
+	{{site.data.alerts.callout_info}}
+	You will need the Amazon Resource Name (ARN) for your cross-account IAM role in the next step.
+	{{site.data.alerts.end}}
 
-<img src="{{ 'images/cockroachcloud/create-kms.png' | relative_url }}" alt="SQL users" style="border:1px solid #eee;max-width:100%" />
+## Step 2: Create the CMEK
 
+1. In the AWS console, visit the [KMS page](https://console.aws.amazon.com/kms/).
+1. Choose **Customer managed keys** and click the **Create Key** button.
+1. For **Key type**, specify **Symmetric Key**.
+1. For **Key usage**, specify **Encrypt and decrypt**.
+1. Under **Advanced options**, choose **KMS** for **Key material**.
+1. Select whether you will use your key for a single region or a multi-region cluster.
+1. Give the key a suitable name, or **alias**.
+1. Set the permissions for your key with the following IAM policy, using the ARN for your cross-account IAM role you created at the end of [Step 1: Provision the cross-account IAM role](#step-1-provision-the-cross-account-iam-role).
+	{% include_cached copy-clipboard.html %}
+	```json
+		{
+		"Version": "2012-10-17",
+		"Id": "key-consolepolicy-3",
+		"Statement": [
+		    {
+		        "Sid": "Allow use of the key",
+		        "Effect": "Allow",
+		        "Principal": {
+		            "AWS": <YOUR_IAM_ROLE_ARN>
+		        },
+		        "Action": [
+		            "kms:Encrypt",
+		            "kms:Decrypt",
+		            "kms:GenerateDataKey*",
+		            "kms:DescribeKey",
+		            "kms:ReEncrypt*",
+		        ],
+		        "Resource": "*"
+		    }
+		]
+	}
+	```
 
-Allows access to the AWS account and enables IAM policies
+1. Finish creating the key.
 
-https://docs.aws.amazon.com/kms/latest/developerguide/key-policy-default.html#key-policy-default-allow-root-enable-iam
-
-https://docs.aws.amazon.com/kms/latest/developerguide/iam-policies.html
+Now that you have provisioned the IAM role and KMS key for your CockroachDB cluster's CMEK, return to [Enabling CMEK for a {{ site.data.products.dedicated }} cluster](managing-cmek.html#step-4-enable-cmek-for-your-cockroachdb-cluster).
