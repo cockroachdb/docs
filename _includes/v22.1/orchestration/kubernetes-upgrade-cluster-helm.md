@@ -64,7 +64,7 @@
 
         {% include_cached copy-clipboard.html %}
         ~~~ sql
-        > SET CLUSTER SETTING cluster.preserve_downgrade_option = '{{ previous_version }}';
+        > SET CLUSTER SETTING cluster.preserve_downgrade_option = '21.2';
         ~~~
 
     1. Exit the SQL shell and delete the temporary pod:
