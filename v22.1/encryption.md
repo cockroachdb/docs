@@ -97,8 +97,6 @@ To check that the new key is active, use the stores report page in the DB Consol
 To disable encryption, specify `key=plain`. The data keys will be stored in plaintext and new data will not be encrypted.
 
 To rotate keys, specify `key=/path/to/my/new-aes-128.key` and `old-key=/path/to/my/old-aes-128.key`. The data keys will be decrypted using the old key and then encrypted using the new key. A new data key will also be generated.
-To rotate keys, specify `key=/path/to/my/new-aes-128.key` and `old-key=/path/to/my/old-aes-128.key`. The data keys
-will be decrypted using the old key and then encrypted using the new key. A new data key will also be generated.
 
 ## Configuring Customer Managed Encryption Keys (CMEK)
 
