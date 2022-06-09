@@ -82,13 +82,19 @@ Run the `movr` workload for 1 minute using the same SQL connection string as bef
 
 1. In the {{ site.data.products.db }} Console, close the **Connection info** dialog to return to your cluster's [**Overview** page](cluster-overview-page.html).
 
-2. In the **Usage this month** section, note the number of RUs your cluster used. You can also see the **Request Units** graph for a breakdown of how many RUs per second you were using over the last minute.
+1. In the **Usage this month** section, note the number of RUs your cluster used. You can also see the **Request Units** graph for a breakdown of how many RUs per second you were using over the last minute.
 
-3. Multiply your usage over one minute by the number of minutes in a month (43800) to estimate how many RUs the workload would use in a month. For example, if you used 1800 RUs: 1800 RUs/min * 43800 min = 78,840,000 RUs.
+1. Multiply your usage over one minute by the number of minutes in a month (43800) to estimate how many RUs the workload would use in a month. For example, if you used 1800 RUs: 1800 RUs/min * 43800 min = 78,840,000 RUs.
 
-3. Calculate how many additional RUs you will need. The workload is estimated to use about 79 million RUs per month, and you are given 26.5 million RUs for free, so you need to budget for about 52.5 million additional RUs.
+1. Calculate your budget. The workload is estimated to use about 79 million RUs per month, and you are given up to 250M free RUs per month, so the free {{ site.data.products.serverless }} offering should be sufficient for your usage.
 
-4. In the {{ site.data.products.db }} Console, [edit your spend limit](serverless-cluster-management.html). RUs cost $1 per 10 million RUs, so you will need to budget $5.25 (52.5 million / 10 million). To leave room for storage costs or unexpected usage, you can round up to $6. No matter what you set your spend limit to, you will only be charged for the resources you use.
+## Step 6. Adjust for growth
+
+Let's say Movr is planning to expand, and you expect to have three times as many users this month, so you need to estimate a new budget.
+
+1. PLACEHOLDER
+
+1. In the {{ site.data.products.db }} Console, [edit your spend limit](serverless-cluster-management.html). RUs cost $1 per 10 million RUs, so you will need to budget $5.25 (52.5 million / 10 million). To leave room for storage costs or unexpected usage, you can round up to $6. No matter what you set your spend limit to, you will only be charged for the resources you use.
 
 ## Next steps
 
