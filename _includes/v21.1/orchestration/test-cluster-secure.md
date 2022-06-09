@@ -79,17 +79,23 @@ pod/cockroachdb-client-secure created
 </section>
 
 <section class="filter-content" markdown="1" data-scope="helm">
-1. From your local workstation, use our [`client-secure.yaml`](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/client-secure.yaml) file to launch a pod and keep it running indefinitely.
+1. From your local workstation, use our [`client-secure.yaml`](https://github.com/cockroachdb/helm-charts/blob/master/examples/client-secure.yaml) file to launch a pod and keep it running indefinitely.
 
     1. Download the file:
 
         {% include_cached copy-clipboard.html %}
         ~~~ shell
         $ curl -OOOOOOOOO \
-        https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/client-secure.yaml
+        https://raw.githubusercontent.com/cockroachdb/helm-charts/master/examples/client-secure.yaml
         ~~~
 
-    1. In the file, change `serviceAccountName: cockroachdb` to `serviceAccountName: my-release-cockroachdb`.
+    1. In the file, set the following values:
+
+        ~~~
+        serviceAccountName: my-release-cockroachdb
+        name: my-release-cockroachdb-client-secret
+        image: cockroachdb/cockroach:{your CockroachDB version}
+        ~~~
 
     1. Use the file to launch a pod and keep it running indefinitely:
 
@@ -108,7 +114,7 @@ pod/cockroachdb-client-secure created
     ~~~ shell
     $ kubectl exec -it cockroachdb-client-secure \
     -- ./cockroach sql \
-    --certs-dir=/cockroach-certs \
+    --certs-dir=./cockroach-certs \
     --host=my-release-cockroachdb-public
     ~~~
 
