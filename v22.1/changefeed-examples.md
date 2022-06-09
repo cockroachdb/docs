@@ -16,7 +16,7 @@ Enterprise changefeeds can connect to the following sinks:
 - [Cloud Storage](#create-a-changefeed-connected-to-a-cloud-storage-sink) (Amazon S3, Google Cloud Storage, Azure Storage)
 - [Webhook](#create-a-changefeed-connected-to-a-webhook-sink)
 
-See the [Changefeed Sinks](changefeed-sinks.html) page for more detail on forming sink URIs and specifics on configuration.
+See the [Changefeed Sinks](changefeed-sinks.html) page for more detail on forming sink URIs, available sink query parameters, and specifics on configuration.
 
 Use the following filters to show usage examples for either **Enterprise** or **Core** changefeeds:
 

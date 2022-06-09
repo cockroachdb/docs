@@ -36,6 +36,24 @@ Example of a Kafka sink URI:
 'kafka://broker.address.com:9092?topic_prefix=bar_&tls_enabled=true&ca_cert=LS0tLS1CRUdJTiBDRVJUSUZ&sasl_enabled=true&sasl_user={sasl user}&sasl_password={url-encoded password}&sasl_mechanism=SASL-SCRAM-SHA-256'
 ~~~
 
+<a name ="kafka-parameters"></a>The following table lists the available parameters for Kafka URIs:
+
+URI Parameter      | Description
+-------------------+------------------------------------------------------------------
+`topic_name`       | The topic name to which messages will be sent. See the following section on [Topic Naming](#topic-naming) for detail on how topics are created.
+`topic_prefix`     | Adds a prefix to all topic names.<br><br>For example, `CREATE CHANGEFEED FOR TABLE foo INTO 'kafka://...?topic_prefix=bar_'` would emit rows under the topic `bar_foo` instead of `foo`.
+`tls_enabled`      | If `true`, enable Transport Layer Security (TLS) on the connection to Kafka. This can be used with a `ca_cert` (see below). <br><br>**Default:** `false`
+`ca_cert`          | The base64-encoded `ca_cert` file. Specify `ca_cert` for a Kafka sink. <br><br>Note: To encode your `ca.cert`, run `base64 -w 0 ca.cert`.
+`client_cert`      | The base64-encoded Privacy Enhanced Mail (PEM) certificate. This is used with `client_key`.
+`client_key`       | The base64-encoded private key for the PEM certificate. This is used with `client_cert`.
+`sasl_enabled`     | If `true`, the authentication protocol can be set to SCRAM or PLAIN using the `sasl_mechanism` parameter. You must have `tls_enabled` set to `true` to use SASL. <br><br> **Default:** `false`
+`sasl_mechanism`   | Can be set to [`SASL-SCRAM-SHA-256`](https://docs.confluent.io/platform/current/kafka/authentication_sasl/authentication_sasl_scram.html), [`SASL-SCRAM-SHA-512`](https://docs.confluent.io/platform/current/kafka/authentication_sasl/authentication_sasl_scram.html), or [`SASL-PLAIN`](https://docs.confluent.io/current/kafka/authentication_sasl/authentication_sasl_plain.html). A `sasl_user` and `sasl_password` are required. <br><br> **Default:** `SASL-PLAIN`
+`sasl_user`        | Your SASL username.
+`sasl_password`    | Your SASL password
+`insecure_tls_skip_verify` | If `true`, disable client-side validation of responses. Note that a CA certificate is still required; this parameter means that the client will not verify the certificate. **Warning:** Use this query parameter with caution, as it creates [MITM](https://en.wikipedia.org/wiki/Man-in-the-middle_attack) vulnerabilities unless combined with another method of authentication. <br><br>**Default:** `false`
+
+{% include {{ page.version.version }}/cdc/options-table-note.md %}
+
 ### Topic naming
 
 By default, a Kafka topic has the same name as the table on which a changefeed was created. If a changefeed was created on multiple tables, the changefeed will write to multiple topics corresponding to those table names.
@@ -112,6 +130,15 @@ Examples of supported cloud storage sink URIs:
 'gs://{BUCKET NAME}/{PATH}?AUTH=specified&CREDENTIALS={ENCODED KEY}'
 ~~~
 
+<a name ="cloud-parameters"></a>The following table lists the available parameters for cloud storage sink URIs:
+
+URI Parameter      | Description
+-------------------+------------------------------------------------------------------
+`file_size`        | The file will be flushed (i.e., written to the sink) when it exceeds the specified file size. This can be used with the [`WITH resolved` option](create-changefeed.html#options), which flushes on a specified cadence. <br><br>**Default:** `16MB`
+`topic_prefix`     | Adds a prefix to all topic names.<br><br>For example, `CREATE CHANGEFEED FOR TABLE foo INTO 's3://...?topic_prefix=bar_'` would emit rows under the topic `bar_foo` instead of `foo`.
+
+{% include {{ page.version.version }}/cdc/options-table-note.md %}
+
 [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html#authentication) provides more detail on authentication to cloud storage sinks.
 
 ## Webhook sink
@@ -127,6 +154,15 @@ Example of a webhook sink URL:
 ~~~
 'webhook-https://{your-webhook-endpoint}?insecure_tls_skip_verify=true'
 ~~~
+
+<a name ="webhook-parameters"></a>The following table lists the parameters you can use in your webhook URI:
+
+URI Parameter      | Description
+-------------------+------------------------------------------------------------------
+`ca_cert`          | The base64-encoded `ca_cert` file. Specify `ca_cert` for a webhook sink. <br><br>Note: To encode your `ca.cert`, run `base64 -w 0 ca.cert`.
+`insecure_tls_skip_verify` | If `true`, disable client-side validation of responses. Note that a CA certificate is still required; this parameter means that the client will not verify the certificate. **Warning:** Use this query parameter with caution, as it creates [MITM](https://en.wikipedia.org/wiki/Man-in-the-middle_attack) vulnerabilities unless combined with another method of authentication. <br><br>**Default:** `false`
+
+{% include {{ page.version.version }}/cdc/options-table-note.md %}
 
 The following are considerations when using the webhook sink:
 

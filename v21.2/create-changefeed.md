@@ -187,7 +187,7 @@ For example:
 (1 row)
 ~~~
 
-For step-by-step guidance on creating a changefeed connected to Kafka, see [Changefeed Examples](changefeed-examples.html#create-a-changefeed-connected-to-kafka).
+For more information on how to create a changefeed that emits an [Avro](https://avro.apache.org/docs/1.8.2/spec.html) record, see [this step-by-step example](changefeed-examples.html#create-a-changefeed-connected-to-kafka-using-avro). The parameters table on the [Changefeed Sinks](changefeed-sinks.html#kafka-parameters) page provides a list of all kafka-specific query parameters.
 
 ### Create a changefeed connected to Kafka using Avro
 
@@ -206,7 +206,7 @@ For step-by-step guidance on creating a changefeed connected to Kafka, see [Chan
 (1 row)
 ~~~
 
-For more information on how to create a changefeed that emits an [Avro](https://avro.apache.org/docs/1.8.2/spec.html) record, see [this step-by-step example](changefeed-examples.html#create-a-changefeed-connected-to-kafka-using-avro).
+For more information on how to create a changefeed that emits an [Avro](https://avro.apache.org/docs/1.8.2/spec.html) record, see [this step-by-step example](changefeed-examples.html#create-a-changefeed-connected-to-kafka-using-avro). The parameters table on the [Changefeed Sinks](changefeed-sinks.html#kafka-parameters) page provides a list of all kafka-specific query parameters.
 
 ### Create a changefeed connected to a cloud storage sink
 
@@ -225,7 +225,7 @@ For more information on how to create a changefeed that emits an [Avro](https://
 (1 row)
 ~~~
 
-For step-by-step guidance on creating a changefeed connected to a cloud storage sink, see [Changefeed Examples](changefeed-examples.html#create-a-changefeed-connected-to-a-cloud-storage-sink).
+For step-by-step guidance on creating a changefeed connected to a cloud storage sink, see [Changefeed Examples](changefeed-examples.html#create-a-changefeed-connected-to-a-cloud-storage-sink). The parameters table on the [Changefeed Sinks](changefeed-sinks.html#cloud-parameters) page provides a list of the available cloud storage parameters.
 
 ### Create a changefeed with an S3 storage class
 
@@ -257,6 +257,8 @@ CREATE CHANGEFEED FOR TABLE name, name2, name3
 +---------------------+
 (1 row)
 ~~~
+
+For step-by-step guidance on creating a changefeed connected to a webhook sink, see [Changefeed Examples](changefeed-examples.html#create-a-changefeed-connected-to-a-webhook-sink). The parameters table on the [Changefeed Sinks](changefeed-sinks.html#webhook-parameters) page provides a list of the available webhook parameters.
 
 ### Manage a changefeed
 

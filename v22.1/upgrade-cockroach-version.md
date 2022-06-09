@@ -67,7 +67,7 @@ By default, after all nodes are running the new version, the upgrade process wil
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > SET CLUSTER SETTING cluster.preserve_downgrade_option = '{{ previous_version }}';
+    > SET CLUSTER SETTING cluster.preserve_downgrade_option = '21.2';
     ~~~
 
     It is only possible to set this setting to the current cluster version.

@@ -199,6 +199,8 @@ For example:
 
 ## Examples
 
+The following examples show the syntax for managing changefeeds and starting changefeeds to specific sinks. The [Options](#options) table on this page provides a list of all the available options. For information on sink-specific query parameters and configurations see the [Changefeed Sinks](changefeed-sinks.html) page.
+
 ### Create a changefeed connected to Kafka
 
 {% include copy-clipboard.html %}
@@ -216,7 +218,7 @@ For example:
 (1 row)
 ~~~
 
-For step-by-step guidance on creating a changefeed connected to Kafka, see [Changefeed Examples](changefeed-examples.html#create-a-changefeed-connected-to-kafka).
+For step-by-step guidance on creating a changefeed connected to Kafka, see [Changefeed Examples](changefeed-examples.html#create-a-changefeed-connected-to-kafka). The parameters table on the [Changefeed Sinks](changefeed-sinks.html#kafka-parameters) page provides a list of all kafka-specific query parameters.
 
 ### Create a changefeed connected to Kafka using Avro
 
@@ -235,7 +237,7 @@ For step-by-step guidance on creating a changefeed connected to Kafka, see [Chan
 (1 row)
 ~~~
 
-For more information on how to create a changefeed that emits an [Avro](https://avro.apache.org/docs/1.8.2/spec.html) record, see [this step-by-step example](changefeed-examples.html#create-a-changefeed-connected-to-kafka-using-avro).
+For more information on how to create a changefeed that emits an [Avro](https://avro.apache.org/docs/1.8.2/spec.html) record, see [this step-by-step example](changefeed-examples.html#create-a-changefeed-connected-to-kafka-using-avro). The parameters table on the [Changefeed Sinks](changefeed-sinks.html#kafka-parameters) page provides a list of all kafka-specific query parameters.
 
 ### Create a changefeed connected to a cloud storage sink
 
@@ -254,7 +256,7 @@ For more information on how to create a changefeed that emits an [Avro](https://
 (1 row)
 ~~~
 
-For step-by-step guidance on creating a changefeed connected to a cloud storage sink, see [Changefeed Examples](changefeed-examples.html#create-a-changefeed-connected-to-a-cloud-storage-sink).
+For step-by-step guidance on creating a changefeed connected to a cloud storage sink, see [Changefeed Examples](changefeed-examples.html#create-a-changefeed-connected-to-a-cloud-storage-sink). The parameters table on the [Changefeed Sinks](changefeed-sinks.html#cloud-parameters) page provides a list of the available cloud storage parameters.
 
 ### Create a changefeed with an S3 storage class
 
@@ -266,6 +268,29 @@ CREATE CHANGEFEED FOR TABLE name INTO 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY
 ~~~
 
 {% include {{ page.version.version }}/misc/storage-classes.md %}
+
+### Create a changefeed connected to a Google Cloud Pub/Sub
+
+{{site.data.alerts.callout_info}}
+The Google Cloud Pub/Sub sink is currently in **beta**.
+{{site.data.alerts.end}}
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE CHANGEFEED FOR TABLE name, name2, name3
+  INTO 'gcpubsub://project name?parameters'
+  WITH resolved;
+~~~
+~~~
++--------------------+
+|       job_id       |
++--------------------+
+| 360645287206223873 |
++--------------------+
+(1 row)
+~~~
+
+For step-by-step guidance on creating a changefeed connected to a Google Cloud Pub/Sub, see [Changefeed Examples](changefeed-examples.html#create-a-changefeed-connected-to-a-google-cloud-pub-sub-sink). The parameters table on the [Changefeed Sinks](changefeed-sinks.html#pub-sub-parameters) page provides a list of the available Google Cloud Pub/Sub parameters.
 
 ### Create a changefeed connected to a webhook sink
 
@@ -286,6 +311,8 @@ CREATE CHANGEFEED FOR TABLE name, name2, name3
 +---------------------+
 (1 row)
 ~~~
+
+For step-by-step guidance on creating a changefeed connected to a webhook sink, see [Changefeed Examples](changefeed-examples.html#create-a-changefeed-connected-to-a-webhook-sink). The parameters table on the [Changefeed Sinks](changefeed-sinks.html#webhook-parameters) page provides a list of the available webhook parameters.
 
 ### Manage a changefeed
 
