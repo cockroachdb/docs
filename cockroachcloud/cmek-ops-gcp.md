@@ -47,6 +47,7 @@ Here we will create a cross-tenant service account that can be temporarily assum
 
 	1. In the GCP console, visit the [IAM service accounts page](https://console.cloud.google.com/iam-admin/serviceaccounts) for your project.
 	1. Click **+ Create service account**. At this stage, you do not need to add permissions.
+	1. Note the **email address** for the service account, as you'll need it in Step 3.
 	
 ## Step 2: Create the CMEK
 
@@ -57,6 +58,11 @@ Here we will create a cross-tenant service account that can be temporarily assum
 	1. **Protection level**: **Software** 
 	1. **Purpose**: **Symmetric encrypt/decrypt**
 
-## Step 3: Authorize the service account on the CMEK
+## Step 3: Authorize the service account to use the CMEK key
 
-
+1. From the [GCP console KMS page](https://console.cloud.google.com/security/kms), select your KMS key.
+1. Select the **PERMISSIONS** tab.
+1. Click **ADD**.
+1. For **New principals**, enter the email address for your cross-tenant service account created earlier.
+1. Click **Select a role** and enter **Cloud KMS CryptoKey Encrypter/Decrypter**.
+1. Click **SAVE**.
