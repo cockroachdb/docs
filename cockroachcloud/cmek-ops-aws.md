@@ -10,11 +10,7 @@ This page covers the procedures required to provision a Customer Managed Encrypt
 This is part of the larger process of [Enabling CMEK for a {{ site.data.products.dedicated }} cluster](managing-cmek.html#enable-cmek).
 
 {{site.data.alerts.callout_info}}
-For multi-region clusters, you must provide a key and IAM role combination per region. You can either:
-
-- provide the same key for all your cluster regions.
-- provide a different key per cluster region.
-- provide a single [multi-region key](https://docs.aws.amazon.com/kms/latest/developerguide/multi-region-keys-overview.html) for the entire cluster.
+For multi-region clusters, you must provide a key and IAM role combination per region. You can provide the same key for all your cluster regions, a different key per cluster region, or any mapping of keys to regions you may choose. It does not matter if the key is a single- or multi-region key.
 {{site.data.alerts.end}}
 
 ## Step 1: Provision the cross-account IAM role
@@ -91,4 +87,4 @@ Here we will create a *cross-account IAM role*. This is a role in your AWS accou
 
 1. Finish creating the key.
 
-Now that you have provisioned the IAM role and KMS key for your CockroachDB cluster's CMEK, return to [Enabling CMEK for a {{ site.data.products.dedicated }} cluster](managing-cmek.html#step-4-enable-cmek-for-your-cockroachdb-cluster).
+Now that you have provisioned the IAM role and KMS key for your CockroachDB cluster's CMEK, return to [Enabling CMEK for a {{ site.data.products.dedicated }} cluster](managing-cmek.html#step-4-enable-cmek-for-your-cockroachdb-dedicated-cluster).

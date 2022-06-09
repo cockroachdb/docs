@@ -1,6 +1,6 @@
 ---
-title: Customer Managed Encryption Keys (CMEK) Frequently Asked Questions (FAQ)
-summary: Frequently Asked Questions (FAQ)concerning Customer Managed Encryption Keys (CMEK) for CockroachDB Cloud Dedicated
+title: Customer-Managed Encryption Keys (CMEK) Frequently Asked Questions (FAQ)
+summary: Frequently Asked Questions (FAQ)concerning Customer-Managed Encryption Keys (CMEK) for CockroachDB Cloud Dedicated
 toc: true
 docs_area: manage.security
 ---

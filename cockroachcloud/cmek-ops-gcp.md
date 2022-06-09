@@ -19,7 +19,7 @@ For multi-region clusters, you must provide a key and authorized service account
 
 ## Step 1: Provision the cross-tenant service account
 
-Here we will create a cross-tenant service account that can be temporarily assumed by users in another account, in this case, Cockroach Labs' account. This service account will have permissions to use the key for encryption and decryption.
+Here we will create a cross-tenant service account that can be temporarily assumed by users in another GCP project, in this case, a project managed by {{ site.data.products.dedicated }}. This service account will have permissions to use the key for encryption and decryption.
 
 1. Find your {{ site.data.products.dedicated }} organization ID in the {{ site.data.products.db }} [organization settings page] [cluster page](https://cockroachlabs.cloud/settings).
 
@@ -31,8 +31,7 @@ Here we will create a cross-tenant service account that can be temporarily assum
 
 1. Find your {{ site.data.products.dedicated }} cluster's associated GCP Project ID
 
-	You must find the Project ID of Cockroach Labs' GCP Project associated with your cluster. To find this information, query the clusters endpoint of the {{ site.data.products.db }} API.
-
+	You must find the Project ID of the {{ site.data.products.dedicated }}-managed GCP Project associated with your cluster. To find this information, query the clusters endpoint of the {{ site.data.products.db }} API.
 
 	{% include_cached copy-clipboard.html %}
 	```shell
