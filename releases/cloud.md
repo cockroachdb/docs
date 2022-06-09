@@ -21,7 +21,7 @@ As of June 6, 2022, CockroachDB [v22.1.1](v22.1.html) is available on {{ site.da
 <h3>General changes</h3>
 
 - [Datadog integration](../cockroachcloud/monitoring-page.html#monitor-with-datadog) is now available on the **Monitoring** page for all {{ site.data.products.dedicated }} users.
-- [Single Sign-On (SSO)](../cockroachcloud/cloud-sso) for {{ site.data.products.db }} is now available with Google and Microsoft in addition to GitHub.
+- [Single Sign-On (SSO)](../cockroachcloud/cloud-sso.html) for {{ site.data.products.db }} is now available with Google and Microsoft in addition to GitHub.
 
 <h3>Console changes</h3>
 
