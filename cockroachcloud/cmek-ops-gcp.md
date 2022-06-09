@@ -21,15 +21,18 @@ For multi-region clusters, you must provide a key and authorized service account
 
 Here we will create a cross-tenant service account that can be temporarily assumed by users in another account, in this case, Cockroach Labs' account. This service account will have permissions to use the key for encryption and decryption.
 
-{{site.data.alerts.callout_info}}
-To create this link, you will also need your {{ site.data.products.dedicated }} Organization ID, which you can find from the {{ site.data.products.db }} console [clusters page](https://cockroachlabs.cloud/cluster).
+1. Find your {{ site.data.products.dedicated }} organization ID in the {{ site.data.products.db }} [organization settings page] [cluster page](https://cockroachlabs.cloud/settings).
 
-Make sure you have the updated Organization ID from after CMEK has been enabled for your organization.
-{{site.data.alerts.end}}
-
-1. Find Cockroach Labs' GCP Project ID
+1. Find your {{ site.data.products.dedicated }} cluster ID:
 	
-	You must find the Project ID of Cockroach Labs' GCP Project associated with your cluster, as well as your cluster id. To find this information, query the clusters endpoint of the {{ site.data.products.db }} API.
+	1. Visit the {{ site.data.products.db }} console [cluster page](https://cockroachlabs.cloud/clusters).
+	1. Click on the name of your cluster.
+	1. Find your cluster ID in the URL of the single cluster overview page: `https://cockroachlabs.cloud/cluster/<YOUR_CLUSTER_ID>/overview`.
+
+1. Find your {{ site.data.products.dedicated }} cluster's associated GCP Project ID
+
+	You must find the Project ID of Cockroach Labs' GCP Project associated with your cluster. To find this information, query the clusters endpoint of the {{ site.data.products.db }} API.
+
 
 	{% include_cached copy-clipboard.html %}
 	```shell
@@ -46,7 +49,6 @@ Make sure you have the updated Organization ID from after CMEK has been enabled 
 	1. In the GCP console, visit the [IAM service accounts page](https://console.cloud.google.com/iam-admin/serviceaccounts) for your project.
 	1. Click **+ Create service account**. At this stage, you do not need to add permissions.
 	
-
 ## Step 2: Create the CMEK
 
 1. In the GCP console, visit the [KMS page](https://console.cloud.google.com/security/kms).

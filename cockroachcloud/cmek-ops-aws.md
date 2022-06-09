@@ -19,14 +19,18 @@ For multi-region clusters, you must provide a key and IAM role combination per r
 
 ## Step 1: Provision the cross-account IAM role
 
-Recall that the premise of CMEK is that you, the customer, maintain control over your encryption key, while granting access to {{ site.data.products.dedicated }} to encrypt and decrypt data for you. Here we will create a *cross-account IAM role*. This is a role in your AWS account that can be temporarily assumed by users in another account, in this case, the {{ site.data.products.dedicated }} account. This role will have permissions to use the key.
+Here we will create a *cross-account IAM role*. This is a role in your AWS account that can be temporarily assumed by users in another account, in this case, the {{ site.data.products.dedicated }} account. This role will have permissions to use the key.
 
-{{site.data.alerts.callout_info}}
-You will also need your {{ site.data.products.dedicated }} [Organization ID](console-access-management.html#organization), which you can find from the {{ site.data.products.db }} console [clusters page](https://cockroachlabs.cloud/cluster).
-{{site.data.alerts.end}}
+1. Find your {{ site.data.products.dedicated }} organization ID in the {{ site.data.products.db }} [organization settings page] [cluster page](https://cockroachlabs.cloud/settings).
 
-1. Find the {{ site.data.products.dedicated }} AWS Account ID.
+1. Find your {{ site.data.products.dedicated }} cluster ID:
 	
+	1. Visit the {{ site.data.products.db }} console [cluster page](https://cockroachlabs.cloud/clusters).
+	1. Click on the name of your cluster.
+	1. Find your cluster ID in the URL of the single cluster overview page: `https://cockroachlabs.cloud/cluster/<YOUR_CLUSTER_ID>/overview`.
+
+1. Find your {{ site.data.products.dedicated }} cluster's associated  AWS Account ID.
+
 	You must find the Account ID of the AWS account that {{ site.data.products.dedicated }} will use for this purpose. To find the ID of the AWS account associated with your cluster, query the clusters endpoint of the {{ site.data.products.db }} API. The value is under the `account_id` field:
 
 	{% include_cached copy-clipboard.html %}
