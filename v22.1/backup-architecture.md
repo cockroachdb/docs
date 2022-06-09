@@ -10,7 +10,7 @@ CockroachDB backups operate as _jobs_, which are potentially long-running operat
 The general workflow of a backup:
 
 1. Validate the `BACKUP` statement
-1. Determine the keys to backup in the [storage layer](../architecture/storage-layer.html)
+1. Determine the keys to backup in the [storage layer](architecture/storage-layer.html)
 1. Write the backup data (SSTs) to the destination storage location
 1. Write the metadata of the backup job
 
@@ -34,9 +34,9 @@ Once one of the nodes has claimed the job, it will take the job record’s infor
 
 The coordinator will test connection to the storage bucket URL, which the original statement wrote to the job record. To map out the directory to which the nodes will write, the coordinator identifies the type of backup. This determines the name resolution of the new (or edited) directory to store the backup files in. For example, if there is a full backup existing in the target storage location, the upcoming backup will be [incremental](take-full-and-incremental-backups.html#incremental-backups) and therefore append to the [full](take-full-and-incremental-backups.html#full-backups) backup.
 
-From the cluster, the coordinator will gather all the [leaseholders](../architecture/reads-and-writes-overview.html) of the keys that will be part of the backup. The leaseholder is responsible for serving the data from the storage layer because all [writes](../architecture/reads-and-writes-overview.html#write-scenario) go through a leaseholder. Since any node in a cluster can become the coordinator and all nodes could be responsible for exporting data during a backup, it is necessary that all nodes can connect to the storage location.
+From the cluster, the coordinator will gather all the [leaseholders](architecture/reads-and-writes-overview.html) of the keys that will be part of the backup. The leaseholder is responsible for serving the data from the storage layer because all [writes](architecture/reads-and-writes-overview.html#write-scenario) go through a leaseholder. Since any node in a cluster can become the coordinator and all nodes could be responsible for exporting data during a backup, it is necessary that all nodes can connect to the storage location.
 
-With this information, the coordinator sets up a [DistSQL](../architecture/sql-layer.html#distsql) flow with specifications, which will define the distributed work in the job’s execution for each node. Next, the coordinator sends the specifications to the determined nodes and the cluster then begins to process the backup. In the following diagram, the **R1** and **R2** ranges are highlighted on the nodes holding the leaseholder and therefore these are the nodes exporting the backup data.
+With this information, the coordinator sets up a [DistSQL](architecture/sql-layer.html#distsql) flow with specifications, which will define the distributed work in the job’s execution for each node. Next, the coordinator sends the specifications to the determined nodes and the cluster then begins to process the backup. In the following diagram, the **R1** and **R2** ranges are highlighted on the nodes holding the leaseholder and therefore these are the nodes exporting the backup data.
 
 <img src="{{ 'images/v22.1/backup-export.png' | relative_url }}" alt="Three-node cluster exporting backup data from the leaseholders" style="border:0px solid #eee;max-width:75%" />
 
@@ -48,8 +48,8 @@ With multiple backups complete, the specified storage location will contain a se
 
 ## See also
 
-- CockroachDB's general [Architecture Overview](../architecture/overview.html)
-- [Storage Layer](../architecture/storage-layer.html)
+- CockroachDB's general [Architecture Overview](architecture/overview.html)
+- [Storage Layer](architecture/storage-layer.html)
 - [Take Full and Incremental Backups](take-full-and-incremental-backups.html)
 - [`BACKUP`](backup.html)
 - [`RESTORE`](restore.html)
