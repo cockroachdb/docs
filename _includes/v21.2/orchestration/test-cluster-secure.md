@@ -89,15 +89,11 @@ pod/cockroachdb-client-secure created
         https://raw.githubusercontent.com/cockroachdb/helm-charts/master/examples/client-secure.yaml
         ~~~
 
-    1. In the file, set the following values in the `spec` object:
+    1. In the file, set the following values:
 
-        ~~~
-        spec:
-          serviceAccountName: my-release-cockroachdb
-          containers:
-          - name: my-release-cockroachdb-client-secret
-            image: cockroachdb/cockroach:{your CockroachDB version}
-        ~~~
+        - `spec.serviceAccountName: my-release-cockroachdb`
+        - `spec.image: cockroachdb/cockroach: {your CockroachDB version}`
+        - `spec.volumes[0].project.sources[0].secret.name: my-release-cockroachdb-client-secret`
 
     1. Use the file to launch a pod and keep it running indefinitely:
 
