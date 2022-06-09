@@ -24,6 +24,12 @@
               "title": "CockroachDB Serverless",
               "items": [
                 {
+                  "title": "Learn about CockroachDB Serverless",
+                  "urls": [
+                    "/cockroachcloud/learn-about-serverless.html"
+                  ]
+                },
+                {
                   "title": "Create a CockroachDB Serverless Cluster",
                   "urls": [
                     "/cockroachcloud/create-a-serverless-cluster.html"
@@ -40,6 +46,12 @@
             {
               "title": "CockroachDB Dedicated",
               "items": [
+                {
+                  "title": "Plan Your CockroachDB Dedicated Cluster",
+                  "urls": [
+                    "/cockroachcloud/plan-your-cluster.html"
+                  ]
+                },
                 {
                   "title": "Create a CockroachDB Dedicated Cluster",
                   "urls": [
