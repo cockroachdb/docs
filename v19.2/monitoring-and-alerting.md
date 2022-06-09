@@ -105,7 +105,7 @@ $ curl http://localhost:8080/health?ready=1
 
 ~~~
 {
- "error": "node is not ready",
+  "error": "node is not ready",
   "code": 14
 }
 ~~~
