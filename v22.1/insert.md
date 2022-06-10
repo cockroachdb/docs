@@ -24,7 +24,7 @@ To use `ON CONFLICT DO UPDATE`, the user must additionally have the `UPDATE` pri
 Parameter | Description
 ----------|------------
 `common_table_expr` | See [Common Table Expressions](common-table-expressions.html).
-`table_name` | The table to write data to.
+`table_name` | The table into which data is written.
 `AS table_alias_name` | An alias for the table name. When you provide an alias, it completely hides the actual table name.
 `column_name` | The name of a column to populate during the insert.
 `select_stmt` | A [selection query](selection-queries.html). Each value must match the [data type](data-types.html) of its column. Also, if column names are listed after `INTO`, values must be in corresponding order; otherwise, they must follow the declared order of the columns in the table.
