@@ -1,6 +1,6 @@
 ---
 title: Customer-Managed Encryption Keys (CMEK)
-summary: Use cryptographic keys that you manage to protect data at rest in a Cockroach Dedicated cluster.
+summary: Use cryptographic keys that you manage to protect data at rest in a CockroachDB Dedicated cluster.
 toc: true
 docs_area: manage.security
 ---
@@ -9,11 +9,11 @@ Customer-Managed Encryption Keys (CMEK) give you more control over how a {{ site
 
 You can create and manage your CMEK keys in AWS KMS, Google Cloud KMS, and Hashicorp Vault Secrets Manager. Hashicorp Vault Secrets Manager enables you to access CMEK keys stored in multiple KMS platforms. You can learn more about {{ site.data.products.dedicated }}'s [Hashicorp Vault Integration](/docs/{{site.versions["stable"]}}/hashicorp-integration.html).
 
-This article describes how CMEK works in {{ site.data.products.dedicated }} clusters. To configure CMEK, see [Managing Customer-Managed Encryption Keys (CMEK) for Cockroach Dedicated](managing-cmek.html).
+This article describes how CMEK works in {{ site.data.products.dedicated }} clusters. To configure CMEK, see [Managing Customer-Managed Encryption Keys (CMEK) for CockroachDB Dedicated](managing-cmek.html).
 
 ## Overview of CMEK
 
-This section describes how CMEK works on a {{ site.data.products.dedicated }} cluster. To learn more about encryption in CockroachDB, see [Encryption At Rest](/docs/{{site.versions["stable"]}}/encryption.html). To enable CMEK, see [Managing Customer-Managed Encryption Keys (CMEK) for Cockroach Dedicated](managing-cmek.html).
+This section describes how CMEK works on a {{ site.data.products.dedicated }} cluster. To learn more about encryption in CockroachDB, see [Encryption At Rest](/docs/{{site.versions["stable"]}}/encryption.html). To enable CMEK, see [Managing Customer-Managed Encryption Keys (CMEK) for CockroachDB Dedicated](managing-cmek.html).
 
 When you create a {{ site.data.products.dedicated }} cluster, two encryption keys are created automatically:
 
@@ -40,7 +40,7 @@ CMEK can help you to meet business or regulatory requirements such as:
 
 - **Data lifecycle management**: To temporarily and reversibly disable access to data in the cluster, such as when investigating suspicious activity, you can revoke the {{ site.data.products.dedicated }} service account's permission to use the CMEK key. To reinstate access to the data, you can re-grant permission to use the key.
 
-  To permanently disable access to the data in the cluster, you can permanently destroy the CMEK key. For example, if you need extra assurance that a cluster's data is permanently deleted when you delete the cluster, you can revoke the cluster's ability to use the CMEK key. This will trigger a cluster restart, which will fail because the CMEK key is unavailable. After verifying that the restart has failed, you can delete the cluster in {{ site.data.products.db }}. For more details, see [Managing Customer-Managed Encryption Keys (CMEK) for Cockroach Dedicated](managing-cmek.html).
+  To permanently disable access to the data in the cluster, you can permanently destroy the CMEK key. For example, if you need extra assurance that a cluster's data is permanently deleted when you delete the cluster, you can revoke the cluster's ability to use the CMEK key. This will trigger a cluster restart, which will fail because the CMEK key is unavailable. After verifying that the restart has failed, you can delete the cluster in {{ site.data.products.db }}. For more details, see [Managing Customer-Managed Encryption Keys (CMEK) for CockroachDB Dedicated](managing-cmek.html).
 
   {{site.data.alerts.callout_danger}}
   Keep these points in mind before destroying a CMEK key:
@@ -58,7 +58,7 @@ CMEK can help you to meet business or regulatory requirements such as:
 
 ## How CMEK works
 
-  This section describes how data is read from or written to a {{ site.data.products.dedicated }} cluster when CMEK is enabled. For detailed instructions, see [Managing Customer-Managed Encryption Keys (CMEK) for Cockroach Dedicated](managing-cmek.html).
+  This section describes how data is read from or written to a {{ site.data.products.dedicated }} cluster when CMEK is enabled. For detailed instructions, see [Managing Customer-Managed Encryption Keys (CMEK) for CockroachDB Dedicated](managing-cmek.html).
 
   CMEK is configured per cluster region. You can configure a separate CMEK key for each cluster region or you can use the same key for each of a cluster's regions. Similarly, you can use a separate CMEK key for each cluster or use the same key for a group of clusters.
 
@@ -156,5 +156,5 @@ It's not possible to disable CMEK from a cluster where it has been enabled.
 
 ## See also
 
-- [Managing Customer-Managed Encryption Keys (CMEK) for Cockroach Dedicated](managing-cmek.html)
+- [Managing Customer-Managed Encryption Keys (CMEK) for CockroachDB Dedicated](managing-cmek.html)
 - [Encryption At Rest](/docs/{{site.versions["stable"]}}/encryption.html).
