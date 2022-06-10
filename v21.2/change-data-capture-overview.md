@@ -25,7 +25,7 @@ The main feature of CDC is the [changefeed](#how-does-a-changefeed-work), which 
 
 See [Ordering Guarantees](use-changefeeds.html#ordering-guarantees) for detail on CockroachDB's at-least-once-delivery-guarantee as well as explanation on how rows are emitted.
 
-## How does a changefeed work?
+## How does an Enterprise changefeed work?
 
 When a changefeed is started on a node, that node becomes the aggregator node for the changefeed job (CRDB Node 2 in the diagram). The aggregator node acts as an administrator: keeping track of all other nodes during job execution and the changefeed work as it completes. In the unlikely event that the changefeed’s aggregator node were to fail during the job, the aggregator role will move to a different node and the changefeed will restart from the last checkpoint.
 
@@ -33,7 +33,7 @@ The changefeed job will run across nodes in the cluster to access changed data i
 
 As each node is working, it sends back checkpoint progress to the aggregator node that gathers this information to update the high-water mark timestamp. The high-water mark acts as a checkpoint for the changefeed’s job progress, and guarantees that all changes before (or at) the timestamp have been emitted. If restarted, the changefeed will send duplicate messages from the high-water mark timestamp. For more detail on when messages are emitted, see [Ordering Guarantees](use-changefeeds.html#ordering-guarantees).
 
-<img src="{{ 'images/v21.2/changefeed-structure.png' | relative_url }}" alt="Changefeed process in a 3-node cluster" style="max-width:100%" />
+<img src="{{ 'images/v21.2/changefeed-structure.png' | relative_url }}" alt="Changefeed process in a 3-node cluster" style="border:0px solid #eee;max-width:100%" />
 
 With the [`resolved` option](create-changefeed.html#resolved-option) specified when a changefeed is started, the aggregator node will send the resolved timestamp (i.e., the high-water mark) to each endpoint in the sink. For example, when using [Kafka](changefeed-sinks.html#kafka) this will be sent as a message to each partition; for [cloud storage](changefeed-sinks.html#cloud-storage-sink), this will be emitted as a resolved timestamp file.
 
