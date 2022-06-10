@@ -21,7 +21,7 @@ In addition to encryption for cluster resources at the infrastructure level, {{ 
 
 For {{ site.data.products.dedicated }} clusters, you can optionally enable  [Customer-Managed Encryption Keys](/docs/cockroachcloud/cmek.html), which help protect cluster data at rest using a cryptographic key that never resides within your cluster. When you configure CMEK, you provide your cluster with the URI of a cryptographic key that you manage in a supported cloud-native key-management system (KMS). Using the KMS's identity access management (IAM) system, you manage CockroachDB's permission to use the key to encrypt and decrypt. If the key is unavailable, or if CockroachDB no longer has permission to decrypt using the key, the cluster cannot start. To temporarily make the cluster and its data unavailable, such as during a security investigation, you can revoke CockroachDB's access to use the CMEK key or temporarily disable the key within the KMS's infrastructure. To permanently make the cluster's data unavailable, you can delete the CMEK key from the KMS. CockroachDB never has access to the CMEK key materials, and the CMEK key never leaves the KMS.
 
-To learn more, see [Customer-Managed Encryption Keys](/docs/cockroachcloud/cmek.html) and [Managing Customer Managed Encryption Keys (CMEK) for Cockroach Dedicated](/docs/cockroachcloud/managing-cmek.html).
+To learn more, see [Customer-Managed Encryption Keys](/docs/cockroachcloud/cmek.html) and [Managing Customer-Managed Encryption Keys (CMEK) for Cockroach Dedicated](/docs/cockroachcloud/managing-cmek.html).
 
 When CMEK is enabled, the **Encryption** option appears to be disabled in the [DB Console](../ui-overview.html), because it refers to [Encryption At Rest (Enterprise)](#encryption-at-rest-enterprise), which is a feature of CockroachDB Self-Hosted clusters.
 
@@ -107,7 +107,7 @@ To allow arbitrary rotation schedules and ensure security of the keys, Cockroach
 
   For CockroachDB Self-Hosted clusters, you provide the store key and give its location to CockroachDB when starting the cluster. The store key file must contain 32 bytes (the key ID) followed by the key (16, 24, or 32 bytes). The size of the key dictates the version of AES to use (AES-128, AES-192, or AES-256). For an example showing how to create a store key, see [Generating Key Files](/docs/{{site.versions["stable"]}}/encryption.html#generating-store-key-files).
 
-  For {{ site.data.products.db }} clusters, the store key is created automatically when the cluster is created. For {{ site.data.products.dedicated }} clusters with [Customer Managed Encryption Keys (CMEK)](/docs/cockroachcloud/cmek.html) enabled, the store key is encrypted with the CMEK key (see below) before being provided to cluster nodes.
+  For {{ site.data.products.db }} clusters, the store key is created automatically when the cluster is created. For {{ site.data.products.dedicated }} clusters with [Customer-Managed Encryption Keys (CMEK)](/docs/cockroachcloud/cmek.html) enabled, the store key is encrypted with the CMEK key (see below) before being provided to cluster nodes.
 
   Since very little data is encrypted using this key, it can have a very long lifetime without risk of reuse.
 

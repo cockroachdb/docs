@@ -1,17 +1,17 @@
 ---
-title: Managing Customer Managed Encryption Keys (CMEK) for Cockroach Dedicated
-summary: Tutorial for getting a dedicated cluster up and running with Customer Managed Encryption Keys (CMEK)
+title: Managing Customer-Managed Encryption Keys (CMEK) for Cockroach Dedicated
+summary: Tutorial for getting a dedicated cluster up and running with Customer-Managed Encryption Keys (CMEK)
 toc: true
 docs_area: manage.security
 ---
 
-Customer Managed Encryption Keys (CMEK) for {{ site.data.products.dedicated }} allows the customer to delegate responsibility for the work of encrypting their application data to Cockroach Labs, while maintaining the ability to completely revoke Cockroach Labs' access with a single operation.
+Customer-Managed Encryption Keys (CMEK) for {{ site.data.products.dedicated }} allows the customer to delegate responsibility for the work of encrypting their application data to Cockroach Labs, while maintaining the ability to completely revoke Cockroach Labs' access with a single operation.
 
-This page walks the user through the process of enabling Customer Managed Encryption Keys (CMEK) for your {{ site.data.products.dedicated }} cluster.
+This page walks the user through the process of enabling Customer-Managed Encryption Keys (CMEK) for your {{ site.data.products.dedicated }} cluster.
 
 See also:
 
-- [Customer Managed Encryption Key (CMEK) frequently asked questions (FAQ)](cmek-faq.html)
+- [Customer-Managed Encryption Key (CMEK) frequently asked questions (FAQ)](cmek-faq.html)
 - [Encryption at Rest (enterprise)](../{{site.versions["stable"]}}/security-reference/encryption.html#encryption-at-rest-enterprise)
 
 ## Overview of CMEK management procedures
