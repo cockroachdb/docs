@@ -21,11 +21,11 @@ Not yet. The ability to rotate CMEK would be available at a later time. Once tha
 
 {{ site.data.products.dedicated }} does not force encryption of the older data but instead relies on normal storage engine churn for desired encryption. That means the new key is used to encrypt new writes, while the old data remains unencrypted unless it’s rewritten.
 
-## Are {{ site.data.products.dedicated }} [managed backups](backups-page.html) also encrypted using the CMEK?
+## Are {{ site.data.products.dedicated }} managed backups also encrypted using the CMEK?
 
-Yes, the managed backups stored in {{ site.data.products.db }} infrastructure are also encrypted using the CMEK, by utilizing CoackroachDB’s backup encryption capability. Internally, a backup data key is wrapped by the CMEK, and then the backup data key is used for encrypting the backup.
+Yes, the [managed backups](backups-page.html) stored in {{ site.data.products.db }} infrastructure are also encrypted using the CMEK, by utilizing CoackroachDB’s backup encryption capability. Internally, a backup data key is wrapped by the CMEK, and then the backup data key is used for encrypting the backup.
 
-See: [Take and Restore Encrypted Backups]((../{{site.versions["stable"]}}/take-and-restore-encrypted-backups.html)
+See: [Take and Restore Encrypted Backups](../{{site.versions["stable"]}}/take-and-restore-encrypted-backups.html)
 
 ## As part of managed backup encryption, is the same backup data key used to encrypt all backups for a cluster?
 

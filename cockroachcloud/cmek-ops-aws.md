@@ -13,11 +13,11 @@ This is part of the larger process of [Enabling CMEK for a {{ site.data.products
 For multi-region clusters, you must provide a key and IAM role combination per region. You can provide the same key for all your cluster regions, a different key per cluster region, or any mapping of keys to regions you may choose. It does not matter if the key is a single- or multi-region key.
 {{site.data.alerts.end}}
 
-## Step 1: Provision the cross-account IAM role
+## Step 1. Provision the cross-account IAM role
 
 Here we will create a *cross-account IAM role*. This is a role in your AWS account that can be temporarily assumed by users in another account, in this case, the {{ site.data.products.dedicated }} account. This role will have permissions to use the key.
 
-1. Find your {{ site.data.products.dedicated }} organization ID in the {{ site.data.products.db }} [organization settings page] [cluster page](https://cockroachlabs.cloud/settings).
+1. Find your {{ site.data.products.dedicated }} organization ID in the {{ site.data.products.db }} [organization settings page](https://cockroachlabs.cloud/settings).
 
 1. Find your {{ site.data.products.dedicated }} cluster ID:
 	
@@ -50,7 +50,7 @@ Here we will create a *cross-account IAM role*. This is a role in your AWS accou
 	You will need the Amazon Resource Name (ARN) for your cross-account IAM role in the next step.
 	{{site.data.alerts.end}}
 
-## Step 2: Create the CMEK
+## Step 2. Create the CMEK
 
 1. In the AWS console, visit the [KMS page](https://console.aws.amazon.com/kms/). 
 1. Choose **Customer managed keys** and click the **Create Key** button.
@@ -59,7 +59,7 @@ Here we will create a *cross-account IAM role*. This is a role in your AWS accou
 1. Under **Advanced options**, choose **KMS** for **Key material**.
 1. Select whether you will use your key for a single region or a multi-region cluster.
 1. Give the key a suitable name, or **alias**.
-1. Set the permissions for your key with the following IAM policy, using the ARN for your cross-account IAM role you created at the end of [Step 1: Provision the cross-account IAM role](#step-1-provision-the-cross-account-iam-role).
+1. Set the permissions for your key with the following IAM policy, using the ARN for your cross-account IAM role you created at the end of [Step 1. Provision the cross-account IAM role](#step-1-provision-the-cross-account-iam-role).
 	{% include_cached copy-clipboard.html %}
 	```json
 		{

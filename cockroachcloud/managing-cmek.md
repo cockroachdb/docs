@@ -14,7 +14,7 @@ To follow this procedure requires admin access to your {{ site.data.products.ded
 See also:
 
 - [Customer Managed Encryption Key (CMEK) frequently asked questions (FAQ)](cmek-faq.html)
-- [Encryption at Rest (enterprise)](../{{site.versions["stable"]}}/security-reference/encryption.html#encryption-at-rest-enterprise)
+- [Encryption at Rest (Enterprise)](../{{site.versions["stable"]}}/security-reference/encryption.html#encryption-at-rest-enterprise)
 
 ## Overview of CMEK management procedures
 
@@ -98,7 +98,7 @@ Revoking access to the CMEK means disabling all encryption/decryption of data in
 
 This can be done temporarily or permanently. This action is performed at the level of your Cloud Provider.
 
-### Step 1: Revoke IAM access
+### Step 1. Revoke IAM access
 
 {{site.data.alerts.callout_danger}}
 Do not delete the CMEK key.
@@ -108,6 +108,7 @@ Deleting the CMEK key will permanently prevent decryption of your data, preventi
 First, revoke {{ site.data.products.dedicated }}'s access to your key at the IAM level with your cloud provider. 
 
 You can do this two ways:
+
 - Remove the authorization granted to CockroachDB Dedicated cluster with your cross-account IAM role.
 - Remove the KMS key permissions from the IAM policy attached to your cross-account IAM role.
 
@@ -115,7 +116,7 @@ This will **not** immediately stop your cluster from encrypting and decrypting d
 
 That is because CockroachDB does not use your CMEK key to encrypt/decrypt your cluster data itself. {{ site.data.products.dedicated }} accesses your CMEK key to encrypt/decrypt a key encryption key (KEK). This KEK is used to encrypt a data encryption key (DEK), which is used to encrypt/decrypt your application data. Your cluster will continue to use the already-provisioned DEK until you make the Cloud API call to revoke CMEK.
 
-### Step 2: Update your cluster to stop using the CMEK key for encryption
+### Step 2. Update your cluster to stop using the CMEK key for encryption
 	
 Your cluster will continue to operate with the encryption keys it has provisioned with your CMEK key until you update it to revoke CMEK.
 
