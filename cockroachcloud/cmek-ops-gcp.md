@@ -43,12 +43,25 @@ Here we will create a cross-tenant service account that can be temporarily assum
 	- `account_id`: (the associated GCP Project ID)
 	- `id`: your cluster ID
 
-1.  Create a cross-tenant service account in your GCP project:
+1.  Create a service account in your GCP project:
 
 	1. In the GCP console, visit the [IAM service accounts page](https://console.cloud.google.com/iam-admin/serviceaccounts) for your project.
-	1. Click **+ Create service account**. At this stage, you do not need to add permissions.
-	1. Note the **email address** for the service account, as you'll need it in Step 3.
+	1. Click **+ Create service account**.
 	
+1. Authorize {{ site.data.products.dedicated }}'s GCP project to use the service account (making it *cross-tenant*).
+	1. Click your newly created service account's email address to visit its details page.
+	1. Select the **PERMISSIONS** tab and click **ADD**.
+	1. For **New principals**, enter the service account ID for the {{ site.data.products.dedicated }}-managed service account to which you will grant access to this service account.
+		The service account ID takes the following format:
+		`crl-kms-user-{CLUSTER_ID}@{PROJECT_ID}.iam.gserviceaccount.com`
+
+		Where `CLUSTER_ID` is the **last 12 digits** of your cluster ID, and `PROJECT_ID` is the GCP project ID, which you obtained previously.
+	1. For **Role**, enter **Service Account Token Creator**.
+	1. Click **SAVE**.
+
+	{{site.data.alerts.callout_info}}
+	Note the **email address** for the service account (or keep the service account tab open), as you'll need it in Step 3.
+	{{site.data.alerts.end}}
 ## Step 2. Create the CMEK
 
 1. In the GCP console, visit the [KMS page](https://console.cloud.google.com/security/kms).
