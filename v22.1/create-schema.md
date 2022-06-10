@@ -146,7 +146,7 @@ You can create tables of the same name in the same database if they are in separ
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM [SHOW TABLES] WHERE table_name='employees';
+> WITH x as (SHOW TABLES) SELECT * x WHERE table_name='employees';
 ~~~
 
 ~~~

@@ -47,7 +47,7 @@ To pause multiple schedules, nest a [`SELECT` clause](select-clause.html) that r
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> PAUSE SCHEDULES SELECT id FROM [SHOW SCHEDULES] WHERE label = 'schedule_database';
+> PAUSE SCHEDULES WITH x AS (SHOW SCHEDULES) SELECT id FROM x WHERE label = 'schedule_database';
 ~~~
 
 ~~~

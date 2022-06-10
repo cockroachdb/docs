@@ -66,7 +66,7 @@ To resume multiple jobs, nest a [`SELECT` clause](select-clause.html) that retri
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> RESUME JOBS (SELECT job_id FROM [SHOW JOBS]
+> RESUME JOBS (WITH x AS (SHOW JOBS) SELECT job_id FROM x
       WHERE user_name = 'maxroach');
 ~~~
 
@@ -88,7 +88,7 @@ You can also resume multiple schedules by nesting a [`SELECT` clause](select-cla
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> RESUME JOBS FOR SCHEDULES SELECT id FROM [SHOW SCHEDULES] WHERE label = 'test_schedule';
+> RESUME JOBS FOR SCHEDULES WITH x AS (SHOW SCHEDULES) SELECT id FROM x WHERE label = 'test_schedule';
 ~~~
 
 ~~~

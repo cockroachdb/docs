@@ -167,7 +167,7 @@ SQLSTATE: 42P01
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM [SHOW INDEXES FROM rides] WHERE index_name='start_end_idx';
+> WITH x AS (SHOW INDEXES FROM rides) SELECT * FROM x WHERE index_name='start_end_idx';
 ~~~
 
 ~~~
@@ -193,7 +193,7 @@ ALTER TABLE
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM [SHOW INDEXES FROM rides] WHERE index_name='start_end_idx';
+> WITH x AS (SHOW INDEXES FROM rides) SELECT * FROM x WHERE index_name='start_end_idx';
 ~~~
 
 ~~~

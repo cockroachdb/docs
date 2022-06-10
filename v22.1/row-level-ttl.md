@@ -202,7 +202,7 @@ You can use [`SHOW JOBS`](show-jobs.html) to see any running TTL jobs by executi
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-SELECT * FROM [SHOW JOBS] WHERE job_type = 'ROW LEVEL TTL';
+WITH x AS (SHOW JOBS) SELECT * from x WHERE job_type = 'ROW LEVEL TTL';
 ~~~
 
 ~~~
@@ -399,7 +399,7 @@ To view the [cluster settings](cluster-settings.html) that control how Row-Level
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-SELECT * FROM [SHOW CLUSTER SETTINGS] WHERE variable LIKE 'sql.ttl.%';
+WITH x AS (SHOW CLUSTER SETTINGS) SELECT * FROM x WHERE variable LIKE 'sql.ttl.%';
 ~~~
 
 ~~~

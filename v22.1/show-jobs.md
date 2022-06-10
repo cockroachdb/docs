@@ -101,7 +101,7 @@ You can filter jobs by using `SHOW JOBS` as the data source for a [`SELECT`](sel
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM [SHOW JOBS] WHERE job_type = 'RESTORE' AND status IN ('running', 'failed') ORDER BY created DESC;
+> WITH x as (SHOW JOBS) SELECT * FROM x WHERE job_type = 'RESTORE' AND status IN ('running', 'failed') ORDER BY created DESC;
 ~~~
 
 ~~~
@@ -131,7 +131,7 @@ You can filter jobs by using `SHOW AUTOMATIC JOBS` as the data source for a [`SE
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM [SHOW AUTOMATIC JOBS] WHERE status = ('succeeded') ORDER BY created DESC;
+> WITH x AS (SHOW AUTOMATIC JOBS) SELECT * FROM x WHERE status = ('succeeded') ORDER BY created DESC;
 ~~~
 
 ~~~
@@ -170,7 +170,7 @@ You can filter jobs by using `SHOW CHANGEFEED JOBS` as the data source for a [`S
 
 {% include copy-clipboard.html %}
 ~~~ sql
-SELECT * FROM [SHOW CHANGEFEED JOBS] WHERE status = ('paused');
+WITH x AS (SHOW CHANGEFEED JOBS) SELECT * FROM x WHERE status = ('paused');
 ~~~
 
 ~~~
@@ -186,7 +186,7 @@ You can show just schema change jobs by using `SHOW JOBS` as the data source for
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM [SHOW JOBS] WHERE job_type = 'SCHEMA CHANGE';
+> WITH x AS (SHOW JOBS) SELECT * FROM x WHERE job_type = 'SCHEMA CHANGE';
 ~~~
 
 ~~~
@@ -230,7 +230,7 @@ You can also view multiple schedules by nesting a [`SELECT` clause](select-claus
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW JOBS FOR SCHEDULES SELECT id FROM [SHOW SCHEDULES] WHERE label = 'test_schedule';
+> SHOW JOBS FOR SCHEDULES WITH x AS (SHOW SCHEDULES) SELECT id FROM x WHERE label = 'test_schedule';
 ~~~
 
 ~~~

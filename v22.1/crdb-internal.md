@@ -740,23 +740,23 @@ SELECT DISTINCT
   hce.blocking_statement,
   substring(ss2.metadata ->> 'query', 1, 60) AS waiting_statement,
   hce.contention_count
-FROM [SELECT
-        hce.blocking_txn_fingerprint_id,
-        hce.waiting_txn_fingerprint_id,
-        hce.contention_count,
+FROM (SELECT
+        blocking_txn_fingerprint_id,
+        waiting_txn_fingerprint_id,
+        contention_count,
         substring(ss.metadata ->> 'query', 1, 60) AS blocking_statement
-      FROM [SELECT
-              encode(hce.blocking_txn_fingerprint_id, 'hex') as blocking_txn_fingerprint_id,
-              encode(hce.waiting_txn_fingerprint_id, 'hex') as waiting_txn_fingerprint_id,
+      FROM (SELECT
+              encode(blocking_txn_fingerprint_id, 'hex') as blocking_txn_fingerprint_id,
+              encode(waiting_txn_fingerprint_id, 'hex') as waiting_txn_fingerprint_id,
               count(*) AS contention_count
             FROM
-              crdb_internal.transaction_contention_events hce
+              crdb_internal.transaction_contention_events
             GROUP BY
-              hce.blocking_txn_fingerprint_id, hce.waiting_txn_fingerprint_id
-            ] hce,
+              blocking_txn_fingerprint_id, waiting_txn_fingerprint_id
+            ),
           crdb_internal.statement_statistics ss
       WHERE
-        hce.blocking_txn_fingerprint_id = encode(ss.transaction_fingerprint_id, 'hex')] hce,
+        blocking_txn_fingerprint_id = encode(ss.transaction_fingerprint_id, 'hex')) hce,
       crdb_internal.statement_statistics ss2
 WHERE
   hce.blocking_txn_fingerprint_id != '0000000000000000' AND

@@ -77,7 +77,7 @@ To return just the `create_statement` value:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT create_statement FROM [SHOW CREATE TABLE drivers];
+> WITH x AS (SHOW CREATE TABLE drivers) SELECT create_statement FROM x;
 ~~~
 
 ~~~
@@ -123,7 +123,7 @@ To return just the `create_statement` value:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT create_statement FROM [SHOW CREATE VIEW user_view];
+> WITH x AS (SHOW CREATE VIEW user_view) SELECT create_statement FROM x;
 ~~~
 
 ~~~
@@ -174,7 +174,7 @@ To return just the `create_statement` value:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT create_statement FROM [SHOW CREATE desc_customer_list];
+> WITH x AS (SHOW CREATE desc_customer_list) SELECT create_statement FROM x;
 ~~~
 
 ~~~
@@ -218,7 +218,7 @@ To return just the `create_statement` value:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT create_statement FROM [SHOW CREATE TABLE users];
+> WITH x AS (SHOW CREATE TABLE users) SELECT create_statement FROM x;
 ~~~
 
 ~~~

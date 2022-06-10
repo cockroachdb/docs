@@ -57,7 +57,7 @@ planner when present in a sub-query in a `FROM` clause as follows:
 ~~~
 
 However, when combining queries together with
-[sub-queries](table-expressions.html#subqueries-as-table-expressions),
+[sub-queries](table-expressions.html#use-a-subquery),
 some combinations will make the `ORDER BY` clause in a sub-query
 significant:
 

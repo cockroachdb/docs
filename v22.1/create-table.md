@@ -662,7 +662,8 @@ For example, the `promo_codes` table of the [`movr` database](movr.html) is rare
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM [SHOW TABLES] WHERE table_name='promo_codes';
+> WITH x AS (SHOW TABLES)
+SELECT * FROM x WHERE table_name='promo_codes';
 ~~~
 
 ~~~
@@ -695,7 +696,7 @@ For example, suppose you want to create a table for your application's end users
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM [SHOW TABLES] WHERE table_name='users_ny';
+> WITH x AS (SHOW TABLES) SELECT * FROM x WHERE table_name='users_ny';
 ~~~
 
 ~~~

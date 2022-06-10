@@ -1,22 +1,19 @@
 ---
-title: WITH Queries (Common Table Expressions)
+title: Common Table Expressions (WITH Queries)
 summary: Common table expressions (CTEs) simplify the definition and use of subqueries
 toc: true
 docs_area: reference.sql
 ---
 
-`WITH` queries, also called *common table expressions* or CTEs, provide a shorthand name to a possibly complex [subquery](subqueries.html) before it is used in a larger query context. This improves the readability of SQL code.
+A _common table expression_ (CTE), also called a `WITH` query, provides a shorthand name to a possibly complex [subquery](subqueries.html) before it is used in a larger query context. This improves the readability of SQL code.
 
-You can use CTEs in combination with [`SELECT` clauses](select-clause.html) and [`INSERT`](insert.html), [`DELETE`](delete.html), [`UPDATE`](update.html) and [`UPSERT`](upsert.html) statements.
-
+You can use CTEs in combination with [`SELECT` clauses](select-clause.html) and [`INSERT`](insert.html), [`DELETE`](delete.html), [`UPDATE`](update.html), and [`UPSERT`](upsert.html) data-modifying statements.
 
 ## Synopsis
 
 <div>
 {% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/with_clause.html %}
 </div>
-
-<div markdown="1"></div>
 
 ## Parameters
 
@@ -35,9 +32,9 @@ The examples on this page use MovR, a fictional vehicle-sharing application, to 
 For more information about the MovR example application and dataset, see [MovR: A Global Vehicle-sharing App](movr.html).
 {{site.data.alerts.end}}
 
-A query or statement of the form `WITH x AS y IN z` creates the
+A query or statement of the form `WITH x AS (y) z` creates the
 temporary table name `x` for the results of the subquery `y`, to be
-reused in the context of the query `z`.
+reused in the context of `z`.
 
 For example:
 
@@ -59,11 +56,11 @@ For example:
 ~~~
 
 In this example, the `WITH` clause defines the temporary name `r` for
-the subquery over `rides`, and that name becomes a valid table name
+the subquery over `rides`, and that name becomes a table name
 for use in any [table expression](table-expressions.html) of the
 subsequent `SELECT` clause.
 
-This query is equivalent to, but arguably simpler to read than:
+This query is equivalent to, but simpler to read than:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -74,7 +71,7 @@ This query is equivalent to, but arguably simpler to read than:
 It is also possible to define multiple common table expressions
 simultaneously with a single `WITH` clause, separated by commas. Later
 subqueries can refer to earlier subqueries by name. For example, the
-following query is equivalent to the two examples above:
+following query is equivalent to the two preceding examples:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -88,7 +85,7 @@ by name. The final query refers to the CTE `results`.
 
 ## Nested `WITH` clauses
 
-It is possible to use a `WITH` clause in a subquery, or even a `WITH` clause within another `WITH` clause. For example:
+You can use a `WITH` clause in a subquery and a `WITH` clause within another `WITH` clause. For example:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -119,7 +116,7 @@ table `vehicles` (closest `WITH` clause), not from table `users`.
 
 ## Data-modifying statements
 
-It is possible to use a [data-modifying statement](sql-statements.html#data-manipulation-statements) (`INSERT`, `DELETE`,
+You can use a [data-modifying statement](sql-statements.html#data-manipulation-statements) (`INSERT`, `DELETE`,
 etc.) as a common table expression, as long as the `WITH` clause containing the data-modifying statement is at the top level of the query.
 
 For example:
@@ -161,15 +158,13 @@ SQLSTATE: 0A000
 If a common table expression contains
 a data-modifying statement (<code>INSERT</code>, <code>DELETE</code>,
 etc.), the modifications are performed fully even if only part
-of the results are used, e.g., with <a
-href="limit-offset.html"><code>LIMIT</code></a>. See <a
-href="subqueries.html#data-writes-in-subqueries">Data
-Writes in Subqueries</a> for details.
+of the results are used, e.g., with <a href="limit-offset.html"><code>LIMIT</code></a>.
+See <a href="subqueries.html#data-writes-in-subqueries">Data writes in subqueries</a> for details.
 {{site.data.alerts.end}}
 
-## Reusing common table expressions
+## Reference multiple common table expressions
 
-You can reference a CTE multiple times in a single query, using a `WITH` operator.
+You can reference multiple CTEs in a single query using a `WITH` operator.
 
 For example:
 
@@ -189,11 +184,11 @@ For example:
 (2 rows)
 ~~~
 
-In this single query, you define two CTEs and then reuse them in a table join.
+In this single query, you define two CTEs and then reference them in a table join.
 
 ## Recursive common table expressions
 
-CockroachDB supports [recursive common table expressions](https://en.wikipedia.org/wiki/Hierarchical_and_recursive_queries_in_SQL#Common_table_expression). Recursive common table expressions are common table expressions that contain subqueries that refer to their own output.
+[Recursive common table expressions](https://en.wikipedia.org/wiki/Hierarchical_and_recursive_queries_in_SQL#Common_table_expression) are common table expressions that contain subqueries that refer to their own output.
 
 Recursive CTE definitions take the following form:
 
@@ -223,7 +218,9 @@ CockroachDB evaluates recursive CTEs as follows:
 Recursive subqueries must eventually return no results, or the query will run indefinitely.
 {{site.data.alerts.end}}
 
-For example, the following recursive CTE calculates the factorial of the numbers 0 through 9:
+### Example
+
+The following recursive CTE calculates the factorial of the numbers 0 through 9:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -308,8 +305,7 @@ If a common table expression is contained in a subquery, the CTE can reference c
 ~~~sql
 SELECT
     *
-FROM
-    (VALUES (1), (2)) AS v(x),
+    FROM (VALUES (1), (2)) AS v(x),
     LATERAL (SELECT * FROM (WITH foo(incrementedx) AS (SELECT 1 + x) SELECT * FROM foo))
 ~~~
 ~~~

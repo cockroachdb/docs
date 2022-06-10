@@ -68,7 +68,7 @@ In this example, we use the [`SHOW STATEMENTS`](show-statements.html) statement 
 In this example, we nest a [`SELECT` clause](select-clause.html) that retrieves the ID of a query inside the `CANCEL QUERY` statement:
 
 ~~~ sql
-> CANCEL QUERY (SELECT query_id FROM [SHOW CLUSTER STATEMENTS]
+> CANCEL QUERY (WITH x AS (SHOW CLUSTER STATEMENTS) SELECT query_id FROM x
       WHERE client_address = '127.0.0.1:55212'
           AND user_name = 'demo'
           AND query = 'SELECT * FROM rides ORDER BY revenue');

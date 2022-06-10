@@ -536,7 +536,7 @@ details. A few examples follow.
 To order the results of a `SELECT` clause or limit the number of rows
 in the result, you can combine it with `ORDER BY` or `LIMIT` /
 `OFFSET` to form a [selection query](selection-queries.html) or
-[subquery](table-expressions.html#subqueries-as-table-expressions).
+[subquery](table-expressions.html#use-a-subquery).
 
 See [Ordering Query Results](order-by.html) and [Limiting Query
 Results](limit-offset.html) for more details.

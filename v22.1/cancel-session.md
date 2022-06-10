@@ -54,7 +54,7 @@ You can also cancel a session using a subquery that returns a single session ID:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CANCEL SESSIONS (SELECT session_id FROM [SHOW SESSIONS]
+> CANCEL SESSIONS (WITH x AS (SHOW SESSIONS) SELECT session_id FROM x
       WHERE user_name = 'root');
 ~~~
 
@@ -82,7 +82,7 @@ To cancel multiple sessions, nest a [`SELECT` clause](select-clause.html) that r
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CANCEL SESSIONS (SELECT session_id FROM [SHOW SESSIONS]
+> CANCEL SESSIONS (WITH x AS (SHOW SESSIONS) SELECT session_id FROM x
       WHERE user_name = 'maxroach');
 ~~~
 

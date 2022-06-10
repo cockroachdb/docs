@@ -57,7 +57,7 @@ To resume multiple schedules, nest a [`SELECT` clause](select-clause.html) that 
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> RESUME SCHEDULES SELECT id FROM [SHOW SCHEDULES] WHERE label = 'schedule_database';
+> RESUME SCHEDULES WITH x AS (SHOW SCHEDULES) SELECT id FROM x WHERE label = 'schedule_database';
 ~~~
 
 ~~~

@@ -82,7 +82,7 @@ You can use a [`SELECT`](select-clause.html) statement to filter the list of cur
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM [SHOW CLUSTER TRANSACTIONS] WHERE application_name = 'movr';
+> WITH x as (SHOW CLUSTER TRANSACTIONS) SELECT * FROM x WHERE application_name = 'movr';
 
 ~~~
 
@@ -99,7 +99,7 @@ To exclude transactions from the [built-in SQL client](cockroach-sql.html), filt
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM [SHOW CLUSTER TRANSACTIONS]
+> WITH x AS (SHOW CLUSTER TRANSACTIONS) SELECT * FROM x
       WHERE application_name != '$ cockroach sql';
 ~~~
 

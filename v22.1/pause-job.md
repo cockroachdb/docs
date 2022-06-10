@@ -66,7 +66,7 @@ To pause multiple jobs, nest a [`SELECT` clause](select-clause.html) that retrie
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> PAUSE JOBS (SELECT job_id FROM [SHOW JOBS]
+> PAUSE JOBS (WITH x AS (SHOW JOBS) SELECT job_id FROM x
       WHERE user_name = 'maxroach');
 ~~~
 
@@ -115,7 +115,7 @@ You can also pause multiple schedules by nesting a [`SELECT` clause](select-clau
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> PAUSE JOBS FOR SCHEDULES SELECT id FROM [SHOW SCHEDULES] WHERE label = 'test_schedule';
+> PAUSE JOBS FOR SCHEDULES WITH x AS (SHOW SCHEDULES) SELECT id FROM x WHERE label = 'test_schedule';
 ~~~
 
 ~~~

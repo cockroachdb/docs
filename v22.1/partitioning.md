@@ -401,7 +401,7 @@ To create replication zone and apply them to corresponding partitions, use the [
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM [SHOW RANGES FROM TABLE roachlearn.students] WHERE "start_key" IS NOT NULL AND "start_key" NOT LIKE '%Prefix%';
+> WITH x AS (SHOW RANGES FROM TABLE roachlearn.students) SELECT * FROM x WHERE "start_key" IS NOT NULL AND "start_key" NOT LIKE '%Prefix%';
 ~~~
 
 You should see the following output:

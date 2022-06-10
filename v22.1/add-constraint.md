@@ -43,7 +43,7 @@ The user must have the `CREATE` [privilege](security-reference/authorization.htm
 
 ## Changing primary keys with `ADD CONSTRAINT ... PRIMARY KEY`
 
-When you change a primary key with [`ALTER TABLE ... ALTER PRIMARY KEY`](alter-primary-key.html), the old primary key index becomes a secondary index. The secondary index created by `ALTER PRIMARY KEY` takes up node memory and can slow down write performance to a cluster. If you do not have queries that filter on the primary key that you are replacing, you can use `ADD CONSTRAINT` to replace the old primary index without creating a secondary index.
+When you change a primary key with [`ALTER TABLE ... ALTER PRIMARY KEY`](alter-primary-key.html), the existing primary key index becomes a secondary index. The secondary index created by `ALTER PRIMARY KEY` takes up node memory and can slow down write performance to a cluster. If you do not have queries that filter on the primary key that you are replacing, you can use `ADD CONSTRAINT` to replace the existing primary index without creating a secondary index.
 
 You can use `ADD CONSTRAINT ... PRIMARY KEY` to add a primary key to an existing table if one of the following is true:
 
@@ -198,7 +198,7 @@ First, add a [`NOT NULL`](not-null.html) constraint to the `name` column with [`
 > ALTER TABLE users ALTER COLUMN name SET NOT NULL;
 ~~~
 
-Then, in the same transaction, [`DROP`](drop-constraint.html) the old `"primary"` constraint and `ADD` the new one:
+Then, in the same transaction, [`DROP`](drop-constraint.html) the existing `"primary"` constraint and `ADD` the new one:
 
 {% include copy-clipboard.html %}
 ~~~ sql

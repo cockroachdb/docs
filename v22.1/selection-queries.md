@@ -14,8 +14,8 @@ ordering](order-by.html) or [row limit](limit-offset.html).
 
 Selection queries can occur:
 
-- At the top level of a query like other [SQL statements](sql-statements.html).
-- Between parentheses as a [subquery](table-expressions.html#subqueries-as-table-expressions).
+- At the top level of a query, like other [SQL statements](sql-statements.html).
+- Between parentheses as a [subquery](table-expressions.html#use-a-subquery).
 - As [operand to other statements](#use-selection-queries-with-other-statements) that take tabular data as input, for example [`INSERT`](insert.html), [`UPSERT`](upsert.html),  [`CREATE TABLE AS`](create-table-as.html), or [`ALTER ... SPLIT AT`](split-at.html).
 
 
@@ -38,12 +38,12 @@ Parameter | Description
 
 The optional `LIMIT` and `OFFSET` clauses can appear in any order, but if also present, must appear **after** `ORDER BY`.
 
-{{site.data.alerts.callout_info}}Because the <code>WITH</code>, <code>ORDER BY</code>, <code>LIMIT</code> and <code>OFFSET</code> sub-clauses are all optional, any simple <a href="#selection-clauses">selection clause</a> is also a valid selection query.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}Because the <code>WITH</code>, <code>ORDER BY</code>, <code>LIMIT</code>, and <code>OFFSET</code> sub-clauses are all optional, any simple <a href="#selection-clauses">selection clause</a> is also a valid selection query.{{site.data.alerts.end}}
 
 ## Selection clauses
 
 A _selection clause_ is the main component of a selection query. A selection clause
-defines tabular data. There are four specific syntax forms collectively referred to as selection clauses:
+defines tabular data. There are four specific syntax forms:
 
 Form | Usage
 -----|--------
@@ -72,10 +72,8 @@ A `VALUES` clause defines tabular data defined by the expressions
 listed within parentheses. Each parenthesis group defines a single row
 in the resulting table.
 
-The columns of the resulting table data have automatically generated
-names. [These names can be modified with
-`AS`](table-expressions.html#aliased-table-expressions) when the
-`VALUES` clause is used as a sub-query.
+The columns of the resulting table data have automatically generated names. When the `VALUES` clause is used as a [subquery](subqueries.html),
+you can modify these names with [`AS`](table-expressions.html#aliased-table-expressions).
 
 #### Example
 
@@ -105,10 +103,9 @@ A `TABLE` clause reads tabular data from a specified table. The
 columns of the resulting table data are named after the schema of the
 table.
 
-In general, `TABLE x` is equivalent to `SELECT * FROM x`, but it is
-shorter to type.
+`TABLE x` is equivalent to `SELECT * FROM x`.
 
-{{site.data.alerts.callout_info}}Any <a href="table-expressions.html">table expression</a> between parentheses is a valid operand for <code>TABLE</code>, not just <a href="table-expressions.html#table-or-view-names">simple table or view names</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}Any <a href="table-expressions.html">table expression</a> between parentheses is a valid operand for <code>TABLE</code>, not just <a href="table-expressions.html#table-and-view-names">simple table or view names</a>.{{site.data.alerts.end}}
 
 #### Example
 
@@ -118,7 +115,7 @@ shorter to type.
 ~~~
 
 This statement copies the content from table `employee` into a new
-table. However, note that the `TABLE` clause does not preserve the indexing,
+table. However, the `TABLE` clause does not preserve the indexing,
 foreign key, or constraint and default information from the schema of the
 table it reads from, so in this example, the new table `employee_copy`
 will likely have a simpler schema than `employee`.
@@ -258,7 +255,7 @@ FROM accounts;
 
 ## Order results
 
-The following sections provide examples. For more details, see [Ordering Query Results](order-by.html).
+The following sections provide examples. For more details, see [`ORDER BY`](order-by.html).
 
 ### Order retrieved rows by one column
 
@@ -342,9 +339,9 @@ For an example showing how to use it, see  [`SELECT FOR UPDATE`](select-for-upda
 
 [Selection clauses](#selection-clauses) are defined in the context of selection queries. [Table expressions](table-expressions.html) are defined in the context of the `FROM` sub-clause of [`SELECT`](select-clause.html). Nevertheless, you can integrate them with one another to form more complex queries or statements.
 
-### Use any selection clause as a selection query
+### Use a selection clause as a selection query
 
-You can use any [selection clause](#selection-clauses) as a
+You can use a [selection clause](#selection-clauses) as a
 selection query with no change.
 
 For example, the construct [`SELECT * FROM accounts`](select-clause.html) is a selection clause. It is also a valid selection query, and thus can be used as a stand-alone statement by appending a semicolon:
@@ -382,11 +379,11 @@ clause and thus can also be used as a selection query on its own:
 (3 rows)
 ~~~
 
-### Use any table expression as selection clause
+### Use a table expression as selection clause
 
-You can use any [table expression](table-expressions.html) as a selection clause (and thus also a selection query) by prefixing it with `TABLE` or by using it as an operand to `SELECT * FROM`.
+You can use a [table expression](table-expressions.html) as a selection clause (and thus also a selection query) by prefixing it with `TABLE` or by using it as an operand to `SELECT * FROM`.
 
-For example, the [simple table name](table-expressions.html#table-or-view-names) `customers` is a table expression, which designates all rows in that table. The expressions [`TABLE accounts`](selection-queries.html#table-clause) and [`SELECT * FROM accounts`](select-clause.html) are valid selection clauses.
+For example, the [simple table name](table-expressions.html#table-and-view-names) `customers` is a table expression, which designates all rows in that table. The expressions [`TABLE accounts`](selection-queries.html#table-clause) and [`SELECT * FROM accounts`](select-clause.html) are valid selection clauses.
 
 Likewise, the [SQL join expression](joins.html) `customers c JOIN orders o ON c.id = o.customer_id` is a table expression. You can turn it into a valid selection clause, and thus a valid selection query as follows:
 
@@ -400,11 +397,11 @@ Likewise, the [SQL join expression](joins.html) `customers c JOIN orders o ON c.
 > SELECT * FROM customers c JOIN orders o ON c.id = o.customer_id;
 ~~~
 
-### Use any selection query as table expression
+### Use a selection query as table expression
 
-You can use any selection query (or [selection clause](#selection-clauses)) as a [table
+You can use a selection query (or [selection clause](#selection-clauses)) as a [table
 expression](table-expressions.html) by enclosing it between parentheses, which forms a
-[subquery](table-expressions.html#subqueries-as-table-expressions).
+[subquery](table-expressions.html#use-a-subquery).
 
 For example, the following construct is a selection query, but is not a valid table expression:
 

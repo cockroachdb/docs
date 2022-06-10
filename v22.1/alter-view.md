@@ -2,7 +2,7 @@
 title: ALTER VIEW
 summary: The ALTER VIEW statement applies a schema change to a view.
 toc: true
-docs_area: reference.sql 
+docs_area: reference.sql
 ---
 
 The `ALTER VIEW` [statement](sql-statements.html) applies a schema change to a [view](views.html).
@@ -51,7 +51,7 @@ Suppose you create a new view that you want to rename:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM [SHOW TABLES] WHERE type = 'view';
+> WITH x AS (SHOW TABLES) SELECT * FROM x WHERE type = 'view';
 ~~~
 
 ~~~
@@ -71,7 +71,7 @@ RENAME VIEW
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM [SHOW TABLES] WHERE type = 'view';
+> WITH x AS (SHOW TABLES) SELECT * FROM x WHERE type = 'view';
 ~~~
 
 ~~~

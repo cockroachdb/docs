@@ -131,7 +131,7 @@ You can check on the status of the schema change jobs on your system at any time
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM [SHOW JOBS] WHERE job_type = 'SCHEMA CHANGE';
+> WITH x AS (SHOW JOBS) SELECT * FROM x WHERE job_type = 'SCHEMA CHANGE';
 ~~~
 
 ~~~

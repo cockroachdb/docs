@@ -224,7 +224,7 @@ To list just views, you can query the `views` table in the [Information Schema](
 
 ### Querying views
 
-To query a view, target it with a [table expression](table-expressions.html#table-or-view-names), for example using a [`SELECT` clause](select-clause.html), just as you would with a stored table:
+To query a view, target it with a [table expression](table-expressions.html#table-and-view-names), for example using a [`SELECT` clause](select-clause.html), just as you would with a stored table:
 
 {% include copy-clipboard.html %}
 ~~~ sql
