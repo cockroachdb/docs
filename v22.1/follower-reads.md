@@ -29,6 +29,10 @@ CockroachDB provides the following types of stale follower reads:
 - _Exact staleness read_: A historical read as of a static, user-provided timestamp. See [Exact staleness reads](#exact-staleness-reads).
 - _Bounded staleness read_: A historical read that uses a dynamic, system-determined timestamp to minimize staleness while being more tolerant to replication lag than an exact staleness read. See [Bounded staleness reads](#bounded-staleness-reads).
 
+{{site.data.alerts.callout_info}}
+Stale follower reads are  always served from a consistent view; CockroachDB does not allow a historical read to view uncommitted data.
+{{site.data.alerts.end}}
+
 ### Exact staleness reads
 
 An _exact staleness read_ is a historical read as of a static, user-provided timestamp.

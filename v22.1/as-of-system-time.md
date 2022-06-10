@@ -38,7 +38,7 @@ negative [`INTERVAL`](interval.html) | Added to `statement_timestamp()`, and thu
 `with_max_staleness(INTERVAL, [nearest_only])` |  The  maximum staleness interval with which to perform the [bounded staleness read](follower-reads.html#bounded-staleness-reads). The timestamp of the read can be at most this stale with respect to the current time. This is useful to request a read from nearby followers, if possible, while placing some limit on how stale results can be. Note that `with_max_staleness(INTERVAL)` is equivalent to `with_min_timestamp(now() - INTERVAL)`. This function accepts an optional `nearest_only` argument that will error if the reads cannot be serviced from a nearby replica.
 
 {{site.data.alerts.callout_success}}
- To set `AS OF SYSTEM TIME follower_read_timestamp()` on all implicit and explicit read-only transactions by default, set the `default_transaction_use_follower_reads` [session variable](set-vars.html) to `on`. When `default_transaction_use_follower_reads=on` and follower reads are enabled, all read-only transactions use follower reads.
+To set `AS OF SYSTEM TIME follower_read_timestamp()` on all implicit and explicit read-only transactions by default, set the `default_transaction_use_follower_reads` [session variable](set-vars.html) to `on`. When `default_transaction_use_follower_reads=on` and follower reads are enabled, all read-only transactions use follower reads.
 {{site.data.alerts.end}}
 
 ## Examples
