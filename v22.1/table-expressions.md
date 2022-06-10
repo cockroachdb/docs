@@ -223,8 +223,8 @@ For example:
 
 ### Ordinality annotation
 
-Designates a data source equivalent to the table expression operand with
-an extra `ordinality` column that enumerates every row in the data source.
+Appends a column named `ordinality`, whose values describe the ordinality of each row, to the data source specified in the
+table expression operand.
 
 #### Syntax
 
