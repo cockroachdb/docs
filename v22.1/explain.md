@@ -132,7 +132,7 @@ The output also describes a set of properties, some global to the query, some sp
 
 - `index recommendations: 1`
 
-    The number of index recommendations, followed by the recommendation and statement. The recommendation to create an index on the `rides` table and store the columns `vehicle_city`, `rider_id`, `vehicle_id`, `start_address`, `end_address`, `start_time`, `end_time`, will eliminate the full scan of the `rides` table.
+    The number of index recommendations, followed by the recommendation and statement. The recommendation to create an index on the `rides` table and [store](indexes.html#storing-columns) the `vehicle_city`, `rider_id`, `vehicle_id`, `start_address`, `end_address`, `start_time`, and `end_time` columns will eliminate the full scan of the `rides` table.
 
     Index recommendations are displayed by default. To disable index recommendations, set the `index_recommendations_enabled` [session variable](set-vars.html) to `false`.
 
