@@ -50,7 +50,7 @@ new rows to be inserted, set `ON CONFLICT` to `DO NOTHING`. See the
 If the values in the `SET` expression cause uniqueness conflicts,
 CockroachDB will return an error.
 
-`ON CONSTRAINT` allows you to explicitly specify an index for `INSERT ON CONFLICT`,
+`ON CONSTRAINT` allows you to explicitly specify an index or unique constraint for `INSERT ON CONFLICT`,
 rather than inferring one using a column list, which is the default behavior.
 
 ### `INSERT ON CONFLICT` vs. `UPSERT`
@@ -550,8 +550,7 @@ IDs:
 
 ### Update values `ON CONFLICT`
 
-When a uniqueness conflict on colums `(city, user_id, code)` is detected, CockroachDB stores the row in a temporary table called `excluded`.
-This example demonstrates how you use the columns in the temporary `excluded` table to apply updates on conflict.
+When a uniqueness conflict on columns `(city, user_id, code)` is detected, CockroachDB stores the rows proposed for insertion in a temporary table called `excluded`. This example demonstrates how you use the columns in the temporary `excluded` table to apply updates on conflict.
 
 {% include copy-clipboard.html %}
 ~~~ sql
