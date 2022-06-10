@@ -7,11 +7,11 @@ docs_area: manage.security
 
 ## If we don’t enable CMEK for our CockroachDB Dedicated clusters, are those encrypted in some manner by default?
 
-Yes, the CockroachDB Dedicated clusters are encrypted by default by the way of encrypting the cloud disks used to store the data, using cloud provider managed keys (unique to each cloud account).
+Yes, the {{ site.data.products.dedicated }} clusters are encrypted by default by the way of encrypting the cloud disks used to store the data, using cloud provider managed keys (unique to each cloud account).
 
 ## Is the data encryption key rotated at some set duration or periodically? If yes, is there a way to customize the duration?
 
-Yes, the data encryption key is rotated automatically once every month. It’s not possible to customize that duration. The new key is used to encrypt new writes, while the old data is still encrypted with the old data keys unless it’s rewritten.
+Yes, the data encryption key is rotated automatically once every month. It’s not possible to customize that duration. The new key is used to encrypt new writes, while the previous data is still encrypted with the previous data keys unless it’s rewritten.
 
 ## Can we rotate the CMEK for a cluster after a certain time or at some periodic interval?
 
@@ -19,7 +19,7 @@ Not yet. Ability to rotate CMEK would be available at a later time. Once that’
 
 ## If we enable CMEK for a cluster that has been in use for some time, is the existing data encrypted at that time?
 
-CockroachDB Dedicated does not force encryption of the older files but instead relies on normal storage engine churn for desired encryption. That means the new key is used to encrypt new writes, while the old data remains unencrypted unless it’s rewritten.
+{{ site.data.products.dedicated }} does not force encryption of the previous files but instead relies on normal storage engine churn for desired encryption. That means the new key is used to encrypt new writes, while the previous data remains unencrypted unless it’s rewritten.
 
 ## Are CockroachDB Cloud managed backups also encrypted using the CMEK?
 
