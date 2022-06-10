@@ -41,7 +41,6 @@ A successful `EXPLAIN ANALYZE` statement returns a table with the following deta
 [Global properties](#global-properties) | The properties and statistics that apply to the entire statement plan.
 [Statement plan tree properties](#statement-plan-tree-properties) | A tree representation of the hierarchy of the statement plan.
 Node details | The properties, columns, and ordering details for the current statement plan node in the tree.
-(N rows) | The number of rows affected by the query.
 Time | The time details for the statement. The total time is the planning and execution time of the statement. The execution time is the time it took for the final statement plan to complete. The network time is the amount of time it took to distribute the statement across the relevant nodes in the cluster. Some statements do not need to be distributed, so the network time is 0ms.
 
 If you use the [`DISTSQL` option](#distsql-option), the statement will also return a URL generated for a physical statement plan that provides high level information about how a statement will be executed. {% include {{ page.version.version }}/sql/physical-plan-url.md %} For details about reading the physical statement plan, see [DistSQL plan diagram](#distsql-plan-diagram).

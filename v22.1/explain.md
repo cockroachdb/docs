@@ -59,7 +59,6 @@ Detail | Description
 Global properties | Properties that apply to the entire query plan. Global properties include `distribution` and `vectorized`.
 Statement plan tree properties | A tree representation of the hierarchy of the statement plan.
 index recommendations: N | Number of index recommendations followed by a list of index actions and SQL statements to perform the actions.
-(N rows) | The number of rows affected by the query.
 Time | The time details for the query. The total time is the planning and execution time of the query. The execution time is the time it took for the final statement plan to complete. The network time is the amount of time it took to distribute the query across the relevant nodes in the cluster. Some queries do not need to be distributed, so the network time is 0ms.
 
 ## Examples
