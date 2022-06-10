@@ -438,7 +438,7 @@ Field | Type | Description
 #### View historical statement statistics and the sampled logical plan per fingerprint
 
 This example command shows how to query the two most important JSON columns: `metadata` and `statistics`. It displays
-the first 60 characters of query text, statement statistics, and sample plan for DDL and DML statements for the [`movr`](movr.html) demo database:
+the first 60 characters of query text, statement statistics, and sampled plan for DDL and DML statements for the [`movr`](movr.html) demo database:
 
 {% include_cached copy-clipboard.html %}
 ~~~sql
