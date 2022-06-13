@@ -8,7 +8,7 @@ docs_area: reference.cli
 
 To view version details for a specific `cockroach` binary, run the `cockroach version` [command](cockroach-commands.html), or run `cockroach --version`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach version
 ~~~

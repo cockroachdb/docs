@@ -22,7 +22,7 @@ Once a userfile is uploaded, you can run [`IMPORT`](#import-from-userfile).
 A userfile uses storage space in the cluster, and is replicated with the rest of the cluster's data. We recommend using [`cockroach userfile upload`](cockroach-userfile-upload.html) for quick uploads from your client (about 15MB or smaller).
 {{site.data.alerts.end}}
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach userfile upload /Users/maxroach/Desktop/test-data.csv /test-data.csv --certs-dir=certs
 ~~~
@@ -35,7 +35,7 @@ For more information, see [`cockroach userfile upload`](cockroach-userfile-uploa
 
 ## List files
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach userfile list '*.csv' --certs-dir=certs
 ~~~
@@ -49,7 +49,7 @@ For more information, see [`cockroach userfile list`](cockroach-userfile-list.ht
 
 ## Get files
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach userfile get test-data.csv --certs-dir=certs
 ~~~
@@ -58,7 +58,7 @@ For more information, see [`cockroach userfile get`](cockroach-userfile-get.html
 
 ## Delete files
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach userfile delete test-data.csv --certs-dir=certs
 ~~~
@@ -75,7 +75,7 @@ For more information, see [`cockroach userfile delete`](cockroach-userfile-delet
 We recommend using [`cockroach import`](cockroach-import.html) for quick imports from your client (about 15MB or smaller). For larger imports, use the [IMPORT](import.html) statement.
 {{site.data.alerts.end}}
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach import db mysqldump /Users/maxroach/Desktop/test-db.sql --certs-dir=certs
 ~~~

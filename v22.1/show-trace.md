@@ -94,7 +94,7 @@ If you specify the `COMPACT` parameter, only the `age`, `message`, `tag`, and `o
 
 ### Trace a session
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET tracing = on;
 ~~~
@@ -103,7 +103,7 @@ If you specify the `COMPACT` parameter, only the `age`, `message`, `tag`, and `o
 SET TRACING
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TRACE FOR SESSION;
 ~~~
@@ -126,19 +126,19 @@ This example uses two terminals concurrently to generate conflicting transaction
 
 1. In terminal 1, create a table:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE TABLE t (k INT);
     ~~~
 
 2. In terminal 1, open a transaction and perform a write without closing the transaction:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > BEGIN;
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > INSERT INTO t VALUES (1);
     ~~~
@@ -147,14 +147,14 @@ This example uses two terminals concurrently to generate conflicting transaction
 
 3. In terminal 2, turn tracing on:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SET tracing = on;
     ~~~
 
 4.  In terminal 2, execute a conflicting read:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT * FROM t;
     ~~~
@@ -163,7 +163,7 @@ This example uses two terminals concurrently to generate conflicting transaction
 
 4. In terminal 1, finish the transaction:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > COMMIT;
     ~~~
@@ -179,12 +179,12 @@ This example uses two terminals concurrently to generate conflicting transaction
 
 6. In terminal 2, stop tracing and then view the completed trace:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SET tracing = off;
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SHOW TRACE FOR SESSION;
     ~~~

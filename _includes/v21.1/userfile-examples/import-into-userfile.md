@@ -13,7 +13,7 @@ CREATE TABLE customers (
 
 Then, use `IMPORT INTO` to import data into the table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~sql
 IMPORT INTO customers (id, dob, first_name, last_name, joined)
    CSV DATA ('userfile:///test-data.csv');

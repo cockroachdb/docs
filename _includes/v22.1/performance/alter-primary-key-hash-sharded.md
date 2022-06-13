@@ -1,6 +1,6 @@
 Let's assume the `events` table already exists:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE events (
     product_id INT8,
@@ -16,12 +16,12 @@ Let's assume the `events` table already exists:
 
 You can change an existing primary key to use hash sharding by adding the `USING HASH` clause at the end of the key definition:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE events ALTER PRIMARY KEY USING COLUMNS (product_id, owner, serial_number, ts, event_id) USING HASH;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW INDEX FROM events;
 ~~~
@@ -46,7 +46,7 @@ You can change an existing primary key to use hash sharding by adding the `USING
 (14 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW COLUMNS FROM events;
 ~~~

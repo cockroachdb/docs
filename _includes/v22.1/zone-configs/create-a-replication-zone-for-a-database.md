@@ -1,6 +1,6 @@
 To control replication for a specific database, use the `ALTER DATABASE ... CONFIGURE ZONE` statement to define the relevant values (other values will be inherited from the parent zone):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER DATABASE movr CONFIGURE ZONE USING num_replicas = 5, gc.ttlseconds = 100000;
 ~~~
@@ -9,7 +9,7 @@ To control replication for a specific database, use the `ALTER DATABASE ... CONF
 CONFIGURE ZONE 1
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW ZONE CONFIGURATION FROM DATABASE movr;
 ~~~

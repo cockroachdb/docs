@@ -45,7 +45,7 @@ To use this pattern, set the [table locality](multiregion-overview.html#table-lo
 
 1. Create a [`GLOBAL` table](multiregion-overview.html#global-tables) by issuing the following statement:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     CREATE TABLE postal_codes (
       id INT PRIMARY KEY,
@@ -55,7 +55,7 @@ To use this pattern, set the [table locality](multiregion-overview.html#table-lo
 
     Alternatively, you can set an existing table's locality to `GLOBAL` using [`ALTER TABLE ... SET LOCALITY`](set-locality.html):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > ALTER TABLE postal_codes SET LOCALITY GLOBAL;
     ~~~

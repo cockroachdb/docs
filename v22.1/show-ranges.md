@@ -55,7 +55,7 @@ If both `start_key` and `end_key` show `NULL`, the range is empty and has no spl
 
 ### Show ranges for a table (primary index)
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > WITH x as (SHOW RANGES FROM TABLE vehicles) SELECT * FROM x WHERE "start_key" NOT LIKE '%Prefix%';
 ~~~
@@ -76,7 +76,7 @@ If both `start_key` and `end_key` show `NULL`, the range is empty and has no spl
 
 ### Show ranges for an index
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > WITH x AS (SHOW RANGES FROM INDEX vehicles_auto_index_fk_city_ref_users) SELECT * FROM x WHERE "start_key" NOT LIKE '%Prefix%';
 ~~~
@@ -97,7 +97,7 @@ If both `start_key` and `end_key` show `NULL`, the range is empty and has no spl
 
 ### Show ranges for a database
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > WITH x as (SHOW RANGES FROM database movr) SELECT * FROM x WHERE "start_key" NOT LIKE '%Prefix%';
 ~~~

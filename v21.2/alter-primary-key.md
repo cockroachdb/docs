@@ -60,7 +60,7 @@ The user must have the `CREATE` [privilege](security-reference/authorization.htm
 
 Suppose that you are storing the data for users of your application in a table called `users`, defined by the following `CREATE TABLE` statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE users (
   name STRING PRIMARY KEY,
@@ -72,17 +72,17 @@ The primary key of this table is on the `name` column. This is a poor choice, as
 
 You can add a column and change the primary key with a couple of `ALTER TABLE` statements:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE users ADD COLUMN id UUID NOT NULL DEFAULT gen_random_uuid();
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE users ALTER PRIMARY KEY USING COLUMNS (id);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE TABLE users;
 ~~~

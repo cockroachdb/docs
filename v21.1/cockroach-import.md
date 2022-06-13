@@ -56,7 +56,7 @@ $ cockroach import --help
 
 To import a database from a local file:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach import db mysqldump /Users/maxroach/Desktop/test-db.sql --certs-dir=certs
 ~~~
@@ -69,7 +69,7 @@ successfully imported mysqldump file /Users/maxroach/Desktop/test-db.sql
 
 To import a table from a local file:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach import table test_table pgdump /Users/maxroach/Desktop/test-db.sql --certs-dir=certs
 ~~~
@@ -82,7 +82,7 @@ successfully imported table test_table from pgdump file /Users/maxroach/Desktop/
 
 {% include_cached new-in.html version="v21.1" %} To import a database from a `PGDUMP` file that contains unsupported SQL syntax and log the ignored statements to a [userfile](use-userfile-for-bulk-operations.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach import db pgdump /Users/maxroach/Desktop/test-db.sql --certs-dir=certs --ignore-unsupported-statements=true --log-ignored-statements='userfile://defaultdb.public.userfiles_root/unsupported-statements.log'
 ~~~
@@ -95,7 +95,7 @@ successfully imported table test_table from pgdump file /Users/maxroach/Desktop/
 
 {% include_cached new-in.html version="v21.1" %} To limit the number of rows imported from a dump file:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach import table test_table pgdump /Users/maxroach/Desktop/test-db.sql --certs-dir=certs --row-limit='50'
 ~~~

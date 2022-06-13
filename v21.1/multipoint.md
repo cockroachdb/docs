@@ -16,7 +16,7 @@ A MultiPoint can be created from SQL by calling an aggregate function such as `S
 
 First, insert the Points:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TABLE tmp_points (id INT8 default unique_rowid(), geom GEOMETRY);
 
@@ -29,7 +29,7 @@ VALUES
 
 Next, build a MultiPoint from the individual [Points](point.html) using `ST_Collect`, and check the output with `ST_GeometryType` to verify that it is indeed a MultiPoint:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT ST_GeometryType(st_collect(geom)) AS output FROM tmp_points;
 ~~~
@@ -43,7 +43,7 @@ SELECT ST_GeometryType(st_collect(geom)) AS output FROM tmp_points;
 
 Finally, drop the temporary table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 DROP TABLE tmp_points;
 ~~~
@@ -54,7 +54,7 @@ A MultiPoint can be created from SQL by calling the `st_geomfromtext` function o
 
 For example, the MultiPoint in the example below includes the locations of [independent bookstores in Chicago, Illinois USA](https://www.bookweb.org/member_directory/search/ABAmember/results/0/Chicago/IL/0):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT ST_GeomFromText('MULTIPOINT (-87.738258999999999 42.010930999999999, -87.716257999999996 41.981231000000001, -87.708889999999997 41.975000000000001, -87.707705000000004 41.929195999999997, -87.707192000000006 41.926580000000001, -87.704300000000003 41.928013999999997, -87.698012000000006 41.939076, -87.682384999999996 41.943232000000002, -87.681599000000006 41.705936999999999, -87.677763999999996 41.916998, -87.674808999999996 41.9086, -87.668653000000006 41.977356999999998, -87.668611999999996 41.904580000000003, -87.664944000000006 41.921931999999998, -87.655131999999995 41.881686000000002, -87.654752999999999 41.881632000000003, -87.654584 41.944774000000002, -87.653409999999994 41.857928000000001, -87.650779999999997 41.926853000000001, -87.644745999999998 41.941915999999999, -87.644356999999999 41.899109000000003, -87.634562000000003 41.897446000000002, -87.630498000000003 41.899751000000002, -87.629164000000003 41.873215999999999, -87.627983999999998 41.883583999999999, -87.627189999999999 41.890832000000003, -87.624488999999997 41.885147000000003, -87.624283000000005 41.876899000000002, -87.624251999999998 41.874115000000003, -87.622851999999995 41.894931999999997, -87.619151000000002 41.864832999999997, -87.597796000000002 41.789636000000002, -87.596547999999999 41.790515999999997, -87.594948000000002 41.791434000000002, -87.591048999999998 41.808132999999998, -87.590436999999994 41.783611000000001, -87.590277 41.800938000000002)');
 ~~~

@@ -78,7 +78,7 @@ When this clause is used, CockroachDB creates a computed shard column and then s
 
 Following the above [example](#create-a-hash-sharded-secondary-index-on-an-existing-table), you can show the hash-sharded index definition along with the table creation statement using `SHOW CREATE TABLE`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE TABLE events;
 ~~~
@@ -104,7 +104,7 @@ Following the above [example](#create-a-hash-sharded-secondary-index-on-an-exist
 
 You can specify a different `bucket_count` via a storage parameter on a hash-sharded index to optimize either write performance or sequential read performance on a table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE events (
     product_id INT8,
@@ -118,7 +118,7 @@ You can specify a different `bucket_count` via a storage parameter on a hash-sha
 );
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW INDEX FROM events;
 ~~~
@@ -141,7 +141,7 @@ You can specify a different `bucket_count` via a storage parameter on a hash-sha
 (12 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW COLUMNS FROM events;
 ~~~

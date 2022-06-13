@@ -228,7 +228,7 @@ If you need to troubleshoot this command's behavior, you can [customize its logg
 
 These examples assume that you have already [started an insecure cluster locally](start-a-local-cluster.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach start \
 --insecure \
@@ -239,7 +239,7 @@ $ cockroach start \
 
 1. Load the initial schema:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach workload init bank \
     'postgresql://root@localhost:26257?sslmode=disable'
@@ -247,7 +247,7 @@ $ cockroach start \
 
 2. Run the workload for 1 minute:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach workload run bank \
     --duration=1m \
@@ -282,7 +282,7 @@ $ cockroach start \
 
 1. Load the initial schema:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach workload init kv \
     'postgresql://root@localhost:26257?sslmode=disable'
@@ -290,7 +290,7 @@ $ cockroach start \
 
 2. Run the workload for 1 minute:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach workload run kv \
     --duration=1m \
@@ -325,7 +325,7 @@ $ cockroach start \
 
 1. Load the dataset:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach workload init intro \
     'postgresql://root@localhost:26257?sslmode=disable'
@@ -333,12 +333,12 @@ $ cockroach start \
 
 2. Launch the built-in SQL client to view it:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql --insecure
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SHOW TABLES FROM intro;
     ~~~
@@ -350,7 +350,7 @@ $ cockroach start \
     (1 row)
     ~~~    
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ SELECT * FROM intro.mytable WHERE (l % 2) = 0;
     ~~~
@@ -386,7 +386,7 @@ $ cockroach start \
 
 1. Load the dataset:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach workload init startrek \
     'postgresql://root@localhost:26257?sslmode=disable'
@@ -394,12 +394,12 @@ $ cockroach start \
 
 2. Launch the built-in SQL client to view it:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql --insecure
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SHOW TABLES FROM startrek;
     ~~~
@@ -412,7 +412,7 @@ $ cockroach start \
     (2 rows)
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT * FROM startrek.episodes WHERE stardate > 5500;
     ~~~
@@ -441,7 +441,7 @@ $ cockroach start \
 
 1. Load the dataset:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach workload init movr \
     'postgresql://root@localhost:26257?sslmode=disable'
@@ -449,12 +449,12 @@ $ cockroach start \
 
 2. Launch the built-in SQL client to view it:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql --insecure
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SHOW TABLES FROM movr;
     ~~~
@@ -471,7 +471,7 @@ $ cockroach start \
 (6 rows)
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT * FROM movr.users WHERE city='new york';
     ~~~
@@ -491,7 +491,7 @@ $ cockroach start \
 
 1. Load the initial schema:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach workload init movr \
     'postgresql://root@localhost:26257?sslmode=disable'
@@ -499,7 +499,7 @@ $ cockroach start \
 
 2. Initialize and run the workload for 1 minute:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach workload run movr \
     --duration=1m \
@@ -540,7 +540,7 @@ $ cockroach start \
 
 1. Load the initial schema and data:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach workload init tpcc \
     'postgresql://root@localhost:26257?sslmode=disable'
@@ -548,7 +548,7 @@ $ cockroach start \
 
 2. Run the workload for 10 minutes:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach workload run tpcc \
     --duration=10m \
@@ -583,7 +583,7 @@ $ cockroach start \
 
 1. Load the initial schema and data:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach workload init ycsb \
     'postgresql://root@localhost:26257?sslmode=disable'
@@ -591,7 +591,7 @@ $ cockroach start \
 
 2. Run the workload for 10 minutes:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach workload run ycsb \
     --duration=10m \
@@ -628,7 +628,7 @@ To customize the frequency of per-operation statistics, use the `--display-every
 
 1. Load the initial schema and data:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach workload init ycsb \
     'postgresql://root@localhost:26257?sslmode=disable'
@@ -636,7 +636,7 @@ To customize the frequency of per-operation statistics, use the `--display-every
 
 2. Run the workload for 1 minute, printing the output every 5 seconds as JSON:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach workload run ycsb \
     --duration=1m \

@@ -44,7 +44,7 @@ The example commands below must be tailored for your environment and run for eac
 
     For example, for the first node:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     cockroach connect \
     --listen-addr=localhost:26257 \
@@ -57,7 +57,7 @@ The example commands below must be tailored for your environment and run for eac
 
     Prepare each additional node, specifying the addresses of those to `join` which are awaiting the handshake. 
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     cockroach connect \
     --listen-addr=localhost:26258 \
@@ -67,7 +67,7 @@ The example commands below must be tailored for your environment and run for eac
     --init-token={secret}
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     cockroach connect \
     --listen-addr=localhost:26259 \
@@ -91,7 +91,7 @@ The example commands below must be tailored for your environment and run for eac
 
 2. Run [`cockroach start`](cockroach-start.html) for each node. This starts the node, but does not yet initialize the cluster. If testing this process on a single machine, run the following in each node's directory, adjusting the port numbers for each.
 
-  {% include copy-clipboard.html %}
+  {% include_cached copy-clipboard.html %}
   ~~~ shell
   cockroach start \
   --listen-addr=localhost:26257 \

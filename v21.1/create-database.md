@@ -34,7 +34,7 @@ Parameter | Description
 
 ### Create a database
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE DATABASE bank;
 ~~~
@@ -43,7 +43,7 @@ Parameter | Description
 CREATE DATABASE
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW DATABASES;
 ~~~
@@ -60,7 +60,7 @@ CREATE DATABASE
 
 ### Create fails (name already in use)
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE DATABASE bank;
 ~~~
@@ -70,7 +70,7 @@ ERROR: database "bank" already exists
 SQLSTATE: 42P04
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE DATABASE IF NOT EXISTS bank;
 ~~~
@@ -81,7 +81,7 @@ CREATE DATABASE
 
 SQL does not generate an error, but instead responds `CREATE DATABASE` even though a new database wasn't created.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW DATABASES;
 ~~~
@@ -104,12 +104,12 @@ Suppose you start a cluster with region and zone [localities specified at startu
 
 For this example, let's use a [demo cluster](cockroach-demo.html), with the [`--demo-locality` flag](cockroach-demo.html#general) to simulate a multi-region cluster:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 cockroach211 demo --nodes=6 --demo-locality=region=us-east1,zone=us-east1-a:region=us-east1,zone=us-east1-b:region=us-central1,zone=us-central1-a:region=us-central1,zone=us-central1-b:region=us-west1,zone=us-west1-a:region=us-west1,zone=us-west1-b --no-example-database
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW REGIONS;
 ~~~
@@ -127,12 +127,12 @@ If regions are set at cluster start-up, you can create multi-region databases in
 
 Use the following command to specify regions and survival goals at database creation:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE DATABASE bank PRIMARY REGION "us-east1" REGIONS "us-east1", "us-central1", "us-west1" SURVIVE REGION FAILURE;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW DATABASES;
 ~~~
@@ -147,7 +147,7 @@ Use the following command to specify regions and survival goals at database crea
 (4 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW REGIONS FROM DATABASE bank;
 ~~~

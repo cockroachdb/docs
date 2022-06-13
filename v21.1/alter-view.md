@@ -43,12 +43,12 @@ CockroachDB does not currently support:
 
 Suppose you create a new view that you want to rename:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE VIEW money_rides (id, revenue) AS SELECT id, revenue FROM rides WHERE revenue > 50;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM [SHOW TABLES] WHERE type = 'view';
 ~~~
@@ -60,7 +60,7 @@ Suppose you create a new view that you want to rename:
 (1 row)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER VIEW money_rides RENAME TO expensive_rides;
 ~~~
@@ -68,7 +68,7 @@ Suppose you create a new view that you want to rename:
 RENAME VIEW
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM [SHOW TABLES] WHERE type = 'view';
 ~~~
@@ -86,7 +86,7 @@ Suppose you want to add the `expensive_rides` view to a schema called `cockroach
 
 By default, [unqualified views](sql-name-resolution.html#lookup-with-unqualified-names) created in the database belong to the `public` schema:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE public.expensive_rides;
 ~~~
@@ -100,19 +100,19 @@ By default, [unqualified views](sql-name-resolution.html#lookup-with-unqualified
 
 If the new schema does not already exist, [create it](create-schema.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE SCHEMA IF NOT EXISTS cockroach_labs;
 ~~~
 
 Then, change the view's schema:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER VIEW expensive_rides SET SCHEMA cockroach_labs;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE public.expensive_rides;
 ~~~
@@ -122,7 +122,7 @@ ERROR: relation "public.expensive_rides" does not exist
 SQLSTATE: 42P01
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE cockroach_labs.expensive_rides;
 ~~~

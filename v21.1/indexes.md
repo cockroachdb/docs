@@ -69,14 +69,14 @@ Note that the synonym `COVERING` is also supported.
 
 For example, say we have a table with three columns, two of which are indexed:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE tbl (col1 INT, col2 INT, col3 INT, INDEX (col1, col2));
 ~~~
 
 If we filter on the indexed columns but retrieve the unindexed column, this requires reading `col3` from the primary index via an "index join."
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN SELECT col3 FROM tbl WHERE col1 = 10 AND col2 > 1;
 ~~~
@@ -97,12 +97,12 @@ If we filter on the indexed columns but retrieve the unindexed column, this requ
 
 However, if we store `col3` in the index, the index join is no longer necessary. This means our query only needs to read from the secondary index, so it will be more efficient.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE tbl (col1 INT, col2 INT, col3 INT, INDEX (col1, col2) STORING (col3));
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN SELECT col3 FROM tbl WHERE col1 = 10 AND col2 > 1;
 ~~~

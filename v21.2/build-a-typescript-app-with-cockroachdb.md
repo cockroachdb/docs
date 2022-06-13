@@ -22,19 +22,19 @@ This tutorial shows you how run a simple application built with [TypeORM](https:
 
 1. Clone [the code's GitHub repository](https://github.com/cockroachlabs/example-app-typescript-typeorm):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ git clone git@github.com:cockroachlabs/example-app-typescript-typeorm.git
     ~~~
 
 1. Navigate to the repo directory and install the application dependencies:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cd example-app-typescript-typeorm
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ npm install
     ~~~
@@ -93,7 +93,7 @@ This tutorial shows you how run a simple application built with [TypeORM](https:
 
     TypeORM accepts the following format for {{ site.data.products.serverless }} connection strings:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~
     postgresql://<username>:<password>@<host>:<port>/<database>
     ~~~
@@ -104,7 +104,7 @@ This tutorial shows you how run a simple application built with [TypeORM](https:
 
 Start the application:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ npm start
 ~~~
