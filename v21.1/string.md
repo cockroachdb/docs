@@ -61,12 +61,12 @@ The size of a `STRING` value is variable, but it's recommended to keep values un
 
 ## Examples
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE strings (a STRING PRIMARY KEY, b STRING(4), c TEXT);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW COLUMNS FROM strings;
 ~~~
@@ -80,12 +80,12 @@ The size of a `STRING` value is variable, but it's recommended to keep values un
 (3 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO strings VALUES ('a1b2c3d4', 'e5f6', 'g7h8i9');
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM strings;
 ~~~
@@ -97,12 +97,12 @@ The size of a `STRING` value is variable, but it's recommended to keep values un
 (1 row)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE aliases (a STRING PRIMARY KEY, b VARCHAR, c CHAR);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW COLUMNS FROM aliases;
 ~~~
@@ -142,7 +142,7 @@ While both `STRING` and `BYTES` can appear to have similar behavior in many situ
 
 `STRING` treats all of its data as characters, or more specifically, Unicode code points. `BYTES` treats all of its data as a byte string. This difference in implementation can lead to dramatically different behavior. For example, let's take a complex Unicode character such as ☃ ([the snowman emoji](https://emojipedia.org/snowman/)):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT length('☃'::string);
 ~~~
@@ -177,7 +177,7 @@ A literal entered through a SQL client will be translated into a different value
 
 For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT 1 || 'item';
 ~~~
@@ -189,7 +189,7 @@ For example:
 (1 row)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT true || 'item';
 ~~~
@@ -205,7 +205,7 @@ Concatenating a `STRING` value with a [`NULL` value](null-handling.html) results
 
 For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT NULL || 'item';
 ~~~

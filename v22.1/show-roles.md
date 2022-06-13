@@ -23,7 +23,7 @@ The role must have the [`SELECT`](select-clause.html) [privilege](security-refer
 
 ## Example
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW ROLES;
 ~~~

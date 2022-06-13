@@ -100,7 +100,7 @@ The [primary key](primary-key.html) of tables created with `CREATE TABLE ... AS`
 
 ### Create a table from a `SELECT` query
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM users WHERE city = 'new york';
 ~~~
@@ -116,12 +116,12 @@ The [primary key](primary-key.html) of tables created with `CREATE TABLE ... AS`
 (6 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE users_ny AS SELECT * FROM users WHERE city = 'new york';
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM users_ny;
 ~~~
@@ -141,12 +141,12 @@ The [primary key](primary-key.html) of tables created with `CREATE TABLE ... AS`
 
 This statement creates a copy of an existing table but with changed column names:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE users_ny_names (user_id, user_name) AS SELECT id, name FROM users WHERE city = 'new york';
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM users_ny_names;
 ~~~
@@ -164,12 +164,12 @@ This statement creates a copy of an existing table but with changed column names
 
 ### Create a table from a `VALUES` clause
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE drivers (id, city, name) AS VALUES (gen_random_uuid(), 'new york', 'Harry Potter'), (gen_random_uuid(), 'seattle', 'Evelyn Martin');
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM drivers;
 ~~~
@@ -183,12 +183,12 @@ This statement creates a copy of an existing table but with changed column names
 
 ### Create a copy of an existing table
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE users_ny_copy AS TABLE users_ny;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM users_ny_copy;
 ~~~
@@ -212,12 +212,12 @@ original table.
 
 You can specify the [primary key](primary-key.html) of a new table created from a selection query:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE users_ny_pk (id, city, name PRIMARY KEY) AS SELECT id, city, name FROM users WHERE city = 'new york';
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM users_ny_pk;
 ~~~
@@ -233,7 +233,7 @@ You can specify the [primary key](primary-key.html) of a new table created from 
 (6 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE TABLE users_ny_pk;
 ~~~
@@ -254,12 +254,12 @@ You can specify the [primary key](primary-key.html) of a new table created from 
 
 You can define the [column families](column-families.html) of a new table created from a selection query:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE users_ny_alt (id PRIMARY KEY FAMILY ids, name, city FAMILY locs, address, credit_card FAMILY payments) AS SELECT id, name, city, address, credit_card FROM users WHERE city = 'new york';
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM users_ny_alt;
 ~~~
@@ -275,7 +275,7 @@ You can define the [column families](column-families.html) of a new table create
 (6 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE TABLE users_ny_alt;
 ~~~

@@ -1,6 +1,6 @@
 In this example, create a table with a `JSONB` column and virtual computed columns:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE student_profiles (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -12,7 +12,7 @@ In this example, create a table with a `JSONB` column and virtual computed colum
 
 Then, insert a few rows of data:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO student_profiles (profile) VALUES
     ('{"id": "d78236", "firstName": "Arthur", "lastName": "Read", "birthdate": "2010-01-25", "school": "PVPHS", "credits": 120, "sports": "none"}'),
@@ -20,7 +20,7 @@ Then, insert a few rows of data:
     ('{"firstName": "Ernie", "lastName": "Narayan", "school" : "Brooklyn Tech", "id": "t63512", "sports": "Track and Field", "clubs": "Chess"}');
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM student_profiles;
 ~~~

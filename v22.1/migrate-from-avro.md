@@ -123,7 +123,7 @@ IMPORT INTO employees (
 (1 row)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM employees LIMIT 5;
 ~~~

@@ -39,7 +39,7 @@ The user must have the `INSERT` [privilege](security-reference/authorization.htm
 
 Suppose that you want MovR to offer ride-sharing services, in addition to vehicle-sharing services. Some users need to sign up to be drivers, so you need a `drivers` table to store driver information.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE drivers (
     id UUID DEFAULT gen_random_uuid(),
@@ -55,7 +55,7 @@ The table's compound primary key is on the `city` and `dl` columns. Note that th
 
 Because this table has several columns in common with the `users` table, you can populate the table with values from the `users` table with an `INSERT` statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO drivers (id, city, name, address)
     SELECT id, city, name, address FROM users;
@@ -63,7 +63,7 @@ Because this table has several columns in common with the `users` table, you can
 
  At this point, just one range contains the data in the `drivers` table.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW RANGES FROM TABLE drivers;
 ~~~
@@ -77,7 +77,7 @@ Because this table has several columns in common with the `users` table, you can
 
 You can [split](split-at.html) the table based on the compound primary key. Note that you do not have to specify the entire value for the primary key, just the prefix.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE drivers SPLIT AT VALUES ('new york', '3'), ('new york', '7'), ('chicago', '3'), ('chicago', '7'), ('seattle', '3'), ('seattle', '7');
 ~~~
@@ -96,7 +96,7 @@ You can [split](split-at.html) the table based on the compound primary key. Note
 
 The [`crdb_internal.ranges`](crdb-internal.html) view contains additional information about ranges in your CockroachDB cluster, including the expiration of the split enforcement.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT range_id, start_pretty, end_pretty, split_enforced_until FROM crdb_internal.ranges WHERE table_name='drivers';
 ~~~
@@ -116,7 +116,7 @@ The [`crdb_internal.ranges`](crdb-internal.html) view contains additional inform
 
 Now unsplit the table to remove the split enforcements:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE drivers UNSPLIT AT VALUES ('new york', '3'), ('new york', '7'), ('chicago', '3'), ('chicago', '7'), ('seattle', '3'), ('seattle', '7');
 ~~~
@@ -133,7 +133,7 @@ Now unsplit the table to remove the split enforcements:
 (6 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT range_id, start_pretty, end_pretty, split_enforced_until FROM crdb_internal.ranges WHERE table_name='drivers';
 ~~~
@@ -158,12 +158,12 @@ The `drivers` table is still split into ranges at specific primary key column va
 
 Add a new secondary [index](indexes.html) to the `rides` table, on the `revenue` column, and then [split](split-at.html) the table ranges by secondary index values:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE INDEX revenue_idx ON rides(revenue);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER INDEX rides@revenue_idx SPLIT AT VALUES (25.00), (50.00), (75.00);
 ~~~
@@ -176,7 +176,7 @@ Add a new secondary [index](indexes.html) to the `rides` table, on the `revenue`
 (3 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT range_id, start_pretty, end_pretty, split_enforced_until FROM crdb_internal.ranges WHERE table_name='rides';
 ~~~
@@ -201,7 +201,7 @@ Add a new secondary [index](indexes.html) to the `rides` table, on the `revenue`
 
 Now unsplit the index to remove the split enforcements:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER INDEX rides@revenue_idx UNSPLIT AT VALUES (25.00), (50.00), (75.00);
 ~~~
@@ -214,7 +214,7 @@ Now unsplit the index to remove the split enforcements:
 (3 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT range_id, start_pretty, end_pretty, split_enforced_until FROM crdb_internal.ranges WHERE table_name='rides';
 ~~~

@@ -33,7 +33,7 @@ To show default privileges, the user/role must have any [privilege](security-ref
 
 ### Show default privileges for objects created by the current user
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW DEFAULT PRIVILEGES;
 ~~~
@@ -51,7 +51,7 @@ To show default privileges, the user/role must have any [privilege](security-ref
 
 ### Show default privileges for objects created by any user/role
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW DEFAULT PRIVILEGES FOR ALL ROLES;
 ~~~
@@ -65,12 +65,12 @@ To show default privileges, the user/role must have any [privilege](security-ref
 
 ### Show default privileges for objects created by a specific user/role
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE USER max;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW DEFAULT PRIVILEGES FOR ROLE max;
 ~~~

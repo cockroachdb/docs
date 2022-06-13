@@ -19,7 +19,7 @@ Changefeed progress is exposed as a high-water timestamp that advances as the ch
 - On the [**Jobs** page](ui-jobs-page.html) of the DB Console. Hover over the high-water timestamp to view the [system time](as-of-system-time.html).
 - Using `SHOW CHANGEFEED JOB <job_id>`:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     SHOW CHANGEFEED JOB 383870400694353921;
     ~~~
@@ -132,7 +132,7 @@ I190312 18:56:53.537686 585 vendor/github.com/Shopify/sarama/client.go:170  [kaf
 
 {% include_cached new-in.html version="v21.2" %} For {{ site.data.products.enterprise }} changefeeds, use `SHOW CHANGEFEED JOBS` to check the status of your changefeed jobs:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CHANGEFEED JOBS;
 ~~~

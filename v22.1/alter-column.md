@@ -78,7 +78,7 @@ Setting the [`DEFAULT` value constraint](default-value.html) inserts the value w
 
 The following example inserts the Boolean value `true` whenever you inserted data to the `subscriptions` table without defining a value for the `newsletter` column.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE subscriptions ALTER COLUMN newsletter SET DEFAULT true;
 ~~~
@@ -87,7 +87,7 @@ The following example inserts the Boolean value `true` whenever you inserted dat
 
 If the column has a defined [`DEFAULT` value](default-value.html), you can remove the constraint, which means the column will no longer insert a value by default if one is not explicitly defined for the column.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE subscriptions ALTER COLUMN newsletter DROP DEFAULT;
 ~~~
@@ -96,7 +96,7 @@ If the column has a defined [`DEFAULT` value](default-value.html), you can remov
 
 Setting the  [`NOT NULL` constraint](not-null.html) specifies that the column cannot contain `NULL` values.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE subscriptions ALTER COLUMN newsletter SET NOT NULL;
 ~~~
@@ -105,7 +105,7 @@ Setting the  [`NOT NULL` constraint](not-null.html) specifies that the column ca
 
 If the column has the [`NOT NULL` constraint](not-null.html) applied to it, you can remove the constraint, which means the column becomes optional and can have *NULL* values written into it.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE subscriptions ALTER COLUMN newsletter DROP NOT NULL;
 ~~~
@@ -122,7 +122,7 @@ If the column has the [`NOT NULL` constraint](not-null.html) applied to it, you 
 
 The [TPC-C](performance-benchmarking-with-tpcc-small.html) database has a `customer` table with a column `c_credit_lim` of type `DECIMAL(10,2)`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > WITH x AS (SHOW COLUMNS FROM customer) SELECT column_name, data_type FROM x WHERE column_name='c_credit_lim';
 ~~~
@@ -138,14 +138,14 @@ To change the data type from `DECIMAL` to `STRING`:
 
 1. Set the `enable_experimental_alter_column_type_general` [session variable](set-vars.html) to `true`:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SET enable_experimental_alter_column_type_general = true;
     ~~~
 
 1. Alter the column type:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > ALTER TABLE customer ALTER c_credit_lim TYPE STRING;
     ~~~
@@ -156,7 +156,7 @@ To change the data type from `DECIMAL` to `STRING`:
 
 1. Verify the type:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > WITH x AS (SHOW COLUMNS FROM customer) SELECT column_name, data_type FROM x WHERE column_name='c_credit_lim';
     ~~~
@@ -173,7 +173,7 @@ To change the data type from `DECIMAL` to `STRING`:
 
 The [TPC-C](performance-benchmarking-with-tpcc-small.html) `customer` table contains a column `c_balance` of type `DECIMAL(12,2)`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > WITH x AS (SHOW COLUMNS FROM customer) SELECT column_name, data_type FROM x WHERE column_name='c_balance';
 ~~~
@@ -187,12 +187,12 @@ The [TPC-C](performance-benchmarking-with-tpcc-small.html) `customer` table cont
 
 To increase the precision of the `c_balance` column from `DECIMAL(12,2)` to `DECIMAL(14,2)`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE customer ALTER c_balance TYPE DECIMAL(14,2);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > WITH x AS (SHOW COLUMNS FROM customer) SELECT column_name, data_type FROM x WHERE column_name='c_balance';
 ~~~
@@ -208,7 +208,7 @@ To increase the precision of the `c_balance` column from `DECIMAL(12,2)` to `DEC
 
 You can change the data type of a column and create a new, computed value from the old column values, with a [`USING` clause](#parameters). For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > WITH x AS (SHOW COLUMNS FROM customer) SELECT column_name, data_type FROM x WHERE column_name='c_discount';
 ~~~
@@ -220,7 +220,7 @@ You can change the data type of a column and create a new, computed value from t
 (1 row)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT c_discount FROM customer LIMIT 10;
 ~~~
@@ -241,7 +241,7 @@ You can change the data type of a column and create a new, computed value from t
 (10 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE customer ALTER c_discount TYPE STRING USING ((c_discount*100)::DECIMAL(4,2)::STRING || ' percent');
 ~~~
@@ -250,7 +250,7 @@ You can change the data type of a column and create a new, computed value from t
 NOTICE: ALTER COLUMN TYPE changes are finalized asynchronously; further schema changes on this table may be restricted until the job completes; some writes to the altered column may be rejected until the schema change is finalized
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > WITH x AS (SHOW COLUMNS FROM customer) SELECT column_name, data_type FROM x WHERE column_name='c_discount';
 ~~~
@@ -262,7 +262,7 @@ NOTICE: ALTER COLUMN TYPE changes are finalized asynchronously; further schema c
 (1 row)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT c_discount FROM customer LIMIT 10;
 ~~~

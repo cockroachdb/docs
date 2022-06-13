@@ -77,7 +77,7 @@ you can modify these names with [`AS`](table-expressions.html#aliased-table-expr
 
 #### Example
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > VALUES (1, 2, 3), (4, 5, 6);
 ~~~
@@ -109,7 +109,7 @@ table.
 
 #### Example
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE employee_copy AS TABLE employee;
 ~~~
@@ -122,12 +122,12 @@ will likely have a simpler schema than `employee`.
 
 Other examples:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > TABLE employee;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO employee_copy TABLE employee;
 ~~~
@@ -163,7 +163,7 @@ By default, each of these comparisons displays only one copy of each value (simi
 
 `UNION` combines the results of two queries into one result.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT name
 FROM accounts
@@ -186,7 +186,7 @@ WHERE state_opened IN ('AZ', 'NY');
 
 To show duplicate rows, you can use `ALL`.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT name
 FROM accounts
@@ -213,7 +213,7 @@ WHERE state_opened IN ('AZ', 'NY');
 
 `INTERSECT` selects only values that are present in both query operands.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT name
 FROM accounts
@@ -235,7 +235,7 @@ FROM mortgages;
 
 `EXCEPT` selects values that are present in the first query operand but not the second.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT name
 FROM mortgages
@@ -259,7 +259,7 @@ The following sections provide examples. For more details, see [`ORDER BY`](orde
 
 ### Order retrieved rows by one column
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT *
 FROM accounts
@@ -285,7 +285,7 @@ ORDER BY balance DESC;
 
 Columns are sorted in the order you list them in `sortby_list`. For example, `ORDER BY a, b` sorts the rows by column `a` and then sorts rows with the same `a` value by their column `b` values.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT *
 FROM accounts
@@ -311,7 +311,7 @@ ORDER BY balance DESC, name ASC;
 
 You can reduce the number of results with `LIMIT`.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT id, name
 FROM accounts
@@ -346,7 +346,7 @@ selection query with no change.
 
 For example, the construct [`SELECT * FROM accounts`](select-clause.html) is a selection clause. It is also a valid selection query, and thus can be used as a stand-alone statement by appending a semicolon:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM accounts;
 ~~~
@@ -364,7 +364,7 @@ For example, the construct [`SELECT * FROM accounts`](select-clause.html) is a s
 Likewise, the construct [`VALUES (1), (2), (3)`](#values-clause) is also a selection
 clause and thus can also be used as a selection query on its own:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > VALUES (1), (2), (3);
 ~~~
@@ -387,12 +387,12 @@ For example, the [simple table name](table-expressions.html#table-and-view-names
 
 Likewise, the [SQL join expression](joins.html) `customers c JOIN orders o ON c.id = o.customer_id` is a table expression. You can turn it into a valid selection clause, and thus a valid selection query as follows:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > TABLE (customers c JOIN orders o ON c.id = o.customer_id);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM customers c JOIN orders o ON c.id = o.customer_id;
 ~~~
@@ -405,19 +405,19 @@ expression](table-expressions.html) by enclosing it between parentheses, which f
 
 For example, the following construct is a selection query, but is not a valid table expression:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM customers ORDER BY name LIMIT 5
 ~~~
 
 To make it valid as operand to `FROM` or another table expression, you can enclose it between parentheses as follows:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT id FROM (SELECT * FROM customers ORDER BY name LIMIT 5);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT o.id
     FROM orders o

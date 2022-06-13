@@ -49,7 +49,7 @@ even if `ORDER BY` is specified. In other words, the `ORDER BY` clause is only
 effective at the top-level statement. For example, it is *ignored* by the query
 planner when present in a sub-query in a `FROM` clause as follows:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 >  SELECT * FROM a, b ORDER BY a.x;                 -- valid, effective
 >  SELECT * FROM (SELECT * FROM a ORDER BY a.x), b; -- ignored, ineffective
@@ -78,7 +78,7 @@ significant:
 
 For example, using `WITH ORDINALITY`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM (SELECT * FROM a ORDER BY a.x) WITH ORDINALITY;
   -- ensures that the rows are numbered in the order of column a.x.
@@ -86,7 +86,7 @@ For example, using `WITH ORDINALITY`:
 
 For example, using a stand-alone `LIMIT` clause in `FROM`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM a, ((SELECT * FROM b ORDER BY b.x) LIMIT 1);
   -- ensures that only the first row of b in the order of column b.x
@@ -95,7 +95,7 @@ For example, using a stand-alone `LIMIT` clause in `FROM`:
 
 For example, using a sub-query in scalar context:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT ARRAY(SELECT a.x FROM a ORDER BY a.x);
   -- ensures that the array is constructed using the values of a.x in sorted order.
@@ -114,7 +114,7 @@ of the CockroachDB cluster, and is generally variable over time.
 
 Considering the following table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE a(a INT);
 > INSERT INTO a VALUES (1), (3), (2);
@@ -122,7 +122,7 @@ Considering the following table:
 
 The following statements are equivalent:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT a AS b FROM a ORDER BY b; -- first form: refers to an AS alias.
 > SELECT a      FROM a ORDER BY 1; -- second form: refers to a column position.
@@ -143,7 +143,7 @@ The following statements are equivalent:
 Note that the order of the rules matter. If there is ambiguity, the `AS` aliases
 take priority over the data source columns, for example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE ab(a INT, b INT);
 > SELECT a AS b, b AS c FROM ab ORDER BY b; -- orders by column a, renamed to b
@@ -152,7 +152,7 @@ take priority over the data source columns, for example:
 
 It is also possible to sort using an arbitrary scalar expression computed for each row, for example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT a, b FROM ab ORDER BY a + b; -- orders by the result of computing a+b.
 ~~~
@@ -162,7 +162,7 @@ It is also possible to sort using an arbitrary scalar expression computed for ea
 When more than one ordering specification is given, the later specifications are used
 to order rows that are equal over the earlier specifications, for example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE ab(a INT, b INT);
 > SELECT a, b FROM ab ORDER BY b, a;
@@ -177,7 +177,7 @@ rows by column `a`.
 The keyword `DESC` ("descending") can be added after an ordering specification to
 invert its order. This can be specified separately for each specification, for example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE ab(a INT, b INT);
 > SELECT a, b FROM ab ORDER BY b DESC, a; -- sorts on b descending, then a ascending.
@@ -192,7 +192,7 @@ The particular advantage is that for queries using the primary index,
 this guarantees the order while also guaranteeing there will not be an
 additional sorting computation to achieve it, for example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE kv(k INT PRIMARY KEY, v INT);
 > SELECT k, v FROM kv ORDER BY PRIMARY KEY kv; -- guarantees ordering by column k.
@@ -202,7 +202,7 @@ If a primary key uses the keyword `DESC` already, then its meaning
 will be flipped (cancelled) if the `ORDER BY` clause also uses
 `DESC`, for example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE ab(a INT, b INT, PRIMARY KEY (b DESC, a ASC));
 > SELECT * FROM ab ORDER BY b DESC; -- orders by b descending, then a ascending.
@@ -221,7 +221,7 @@ The particular advantage is that for queries using that index, this
 guarantees the order while also guaranteeing there will not be an
 additional sorting computation to achieve it, for example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE kv(k INT PRIMARY KEY, v INT, INDEX v_idx(v));
 > SELECT k, v FROM kv ORDER BY INDEX kv@v_idx; -- guarantees ordering by column v.
@@ -231,7 +231,7 @@ If an index uses the keyword `DESC` already, then its meaning
 will be flipped (cancelled) if the `ORDER BY` clause also uses
 `DESC`, for example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE ab(a INT, b INT, INDEX b_idx (b DESC, a ASC));
 > SELECT * FROM ab ORDER BY b DESC; -- orders by b descending, then a ascending.
@@ -256,7 +256,7 @@ place*.
 
 For example, using `LIMIT` in `INSERT`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO a SELECT * FROM b ORDER BY b.x LIMIT 1;
   -- ensures that only the first row of b in the order of column b.x

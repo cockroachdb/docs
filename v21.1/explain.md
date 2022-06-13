@@ -81,7 +81,7 @@ The following examples use the [`movr` example dataset](cockroach-demo.html#data
 
 By default, `EXPLAIN` includes the least detail about the statement plan but can be useful to find out which indexes and index key ranges are used by a query. For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN SELECT * FROM rides WHERE revenue > 90 ORDER BY revenue ASC;
 ~~~
@@ -683,7 +683,7 @@ The `DISTSQL` option generates a URL for a physical statement plan that provides
 
 For example, the following `EXPLAIN(DISTSQL)` statement generates a physical plan for a simple query against the [TPC-H database](http://www.tpc.org/tpch/) loaded to a 3-node CockroachDB cluster:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN (DISTSQL) SELECT l_shipmode, AVG(l_extendedprice) FROM lineitem GROUP BY l_shipmode;
 ~~~
@@ -700,7 +700,7 @@ To view the [DistSQL Plan Viewer](explain-analyze.html#distsql-plan-viewer), poi
 
  To include the data types of the input columns in the physical plan, use `EXPLAIN(DISTSQL, TYPES)`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN (DISTSQL, TYPES) SELECT l_shipmode, AVG(l_extendedprice) FROM lineitem GROUP BY l_shipmode;
 ~~~
@@ -720,14 +720,14 @@ To view the [DistSQL Plan Viewer](explain-analyze.html#distsql-plan-viewer), poi
 
 You can use `EXPLAIN` to understand which indexes and key ranges queries use, which can help you ensure a query isn't performing a full table scan.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE kv (k INT PRIMARY KEY, v INT);
 ~~~
 
 Because column `v` is not indexed, queries filtering on it alone scan the entire table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN SELECT * FROM kv WHERE v BETWEEN 4 AND 5;
 ~~~
@@ -754,12 +754,12 @@ Time: 50ms total (execution 50ms / network 0ms)
 
 When `disallow_full_table_scans=on`, attempting to execute a query with a plan that includes a full table scan will return an error:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET disallow_full_table_scans=on;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM kv WHERE v BETWEEN 4 AND 5;
 ~~~
@@ -772,12 +772,12 @@ HINT: try overriding the `disallow_full_table_scans` cluster/session setting
 
 If there were an index on `v`, CockroachDB would be able to avoid scanning the entire table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE INDEX v ON kv (v);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN SELECT * FROM kv WHERE v BETWEEN 4 AND 5;
 ~~~
@@ -808,13 +808,13 @@ Now, only part of the index `v` is getting scanned, specifically the key range s
 
 To see whether a SQL query using one of these statements is using this feature, check the output of `EXPLAIN` for a `locking strength` field as shown below. If the `locking strength` field does not appear, then the statement is not using this feature.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE IF NOT EXISTS kv (k INT PRIMARY KEY, v INT);
 UPSERT INTO kv (k, v) VALUES (1, 5), (2, 10), (3, 15);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN UPDATE kv SET v = 100 WHERE k = 1;
 ~~~

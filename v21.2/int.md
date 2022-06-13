@@ -53,12 +53,12 @@ If your application requires arbitrary precision numbers, use the [`DECIMAL`](de
 
 ## Examples
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE ints (a INT PRIMARY KEY, b SMALLINT);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW COLUMNS FROM ints;
 ~~~
@@ -71,12 +71,12 @@ If your application requires arbitrary precision numbers, use the [`DECIMAL`](de
 (2 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO ints VALUES (1, 32);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM ints;
 ~~~

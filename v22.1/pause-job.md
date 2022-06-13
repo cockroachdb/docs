@@ -44,7 +44,7 @@ Parameter | Description
 
 ### Pause a single job
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW JOBS;
 ~~~
@@ -55,7 +55,7 @@ Parameter | Description
   27536791415282 |  RESTORE  | RESTORE db.* FROM 'azure://backup/db/tbl' |...
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > PAUSE JOB 27536791415282;
 ~~~
@@ -64,7 +64,7 @@ Parameter | Description
 
 To pause multiple jobs, nest a [`SELECT` clause](select-clause.html) that retrieves `job_id`(s) inside the `PAUSE JOBS` statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > PAUSE JOBS (WITH x AS (SHOW JOBS) SELECT job_id FROM x
       WHERE user_name = 'maxroach');
@@ -74,7 +74,7 @@ All jobs created by `maxroach` will be paused.
 
 ### Pause automatic table statistics jobs
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW AUTOMATIC JOBS;
 ~~~
@@ -86,14 +86,14 @@ All jobs created by `maxroach` will be paused.
 (1 row)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > PAUSE JOB 438235476849557505;
 ~~~
 
 To permanently disable automatic table statistics jobs, disable the `sql.stats.automatic_collection.enabled` [cluster setting](cluster-settings.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET CLUSTER SETTING sql.stats.automatic_collection.enabled = false;
 ~~~
@@ -102,7 +102,7 @@ To permanently disable automatic table statistics jobs, disable the `sql.stats.a
 
  To pause jobs for a specific [backup schedule](create-schedule-for-backup.html), use the schedule's `id`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > PAUSE JOBS FOR SCHEDULE 590204387299262465;
 ~~~
@@ -113,7 +113,7 @@ PAUSE JOBS FOR SCHEDULES 1
 
 You can also pause multiple schedules by nesting a [`SELECT` clause](select-clause.html) that retrieves `id`(s) inside the `PAUSE JOBS` statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > PAUSE JOBS FOR SCHEDULES WITH x AS (SHOW SCHEDULES) SELECT id FROM x WHERE label = 'test_schedule';
 ~~~

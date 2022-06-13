@@ -135,7 +135,7 @@ For an example of a schema change with column backfill, start with the changefee
 
 Add a column to the watched table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE office_dogs ADD COLUMN likes_treats BOOL DEFAULT TRUE;
 ~~~

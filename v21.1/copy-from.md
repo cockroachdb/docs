@@ -53,7 +53,7 @@ The following example copies data from the PostgreSQL [`psql` client](https://ww
 
 Run [`cockroach demo`](cockroach-demo.html) to start a temporary, in-memory cluster with the [`movr` database](movr.html) preloaded:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach demo
 ~~~
@@ -68,14 +68,14 @@ Take note of the `(sql)` connection string listed under `Connection parameters` 
 
 Open a new terminal window, and connect to your demo cluster with `psql`, using the connection string provided for the demo cluster, with the `movr` database specified:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ psql postgres://demo:demo11762@127.0.0.1:26257?sslmode=require
 ~~~
 
 In the `psql` shell, run the following command to start copying data from `psql` to the `users` table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > movr=# COPY users FROM STDIN;
 ~~~
@@ -89,7 +89,7 @@ End with a backslash and a period on a line by itself, or an EOF signal.
 
 Enter some tab-delimited data that you want copied to the `users` table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~
 >> 8a3d70a3-d70a-4000-8000-00000000001d seattle	Hannah	400 Broad St	0987654321
 >> 9eb851eb-851e-4800-8000-00000000001e	new york	Carl	53 W 23rd St	5678901234
@@ -102,7 +102,7 @@ COPY 2
 
 In the demo cluster's shell, query the `users` table for the rows that you just inserted:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM users WHERE id IN ('8a3d70a3-d70a-4000-8000-00000000001d', '9eb851eb-851e-4800-8000-00000000001e');
 ~~~
