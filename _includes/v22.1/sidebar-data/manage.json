@@ -187,13 +187,13 @@
                   ]
                 },
                 {
-                  "title": "Provisioning Amazon Web Services (AWS) for CMEK",
+                  "title": "Provisioning AWS KMS Keys and IAM Roles for CMEK",
                   "urls": [
                     "/cockroachcloud/cmek-ops-aws.html"
                   ]
                 },
                 {
-                  "title": "Provisioning Google Cloud Platform (GCP) for CMEK",
+                  "title": "Provisioning GCP KMS Keys and Service Accounts for CMEK",
                   "urls": [
                     "/cockroachcloud/cmek-ops-gcp.html"
                   ]
