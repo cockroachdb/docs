@@ -192,6 +192,22 @@ For webhook sinks, the response format comes as a batch of changefeed messages w
 
 See [Files](create-changefeed.html#files) for more detail on the file naming format for {{ site.data.products.enterprise }} changefeeds.
 
+## Garbage collection and changefeeds
+
+{% include_cached new-in.html version="v22.1" %} By default, [protected timestamps](architecture/storage-layer.html#protected-timestamps) will protect changefeed data from [garbage collection](architecture/storage-layer.html#garbage-collection) to the time of the [_checkpoint_](change-data-capture-overview.html#how-does-an-enterprise-changefeed-work). You can configure this time interval through the `changefeed.protect_timestamp_interval` [cluster setting](cluster-settings.html).
+
+For example, if the downstream [changefeed sink](changefeed-sinks.html) is unavailable, protected timestamps will protect the changes from garbage collection until you either cancel the changefeed or the sink becomes available once again. However, if the changefeed lags too far behind and causes data storage issues, you can cancel the changefeed to release the protected timestamps and allow garbage collection to resume.
+
+We recommend [monitoring](monitor-and-debug-changefeeds.html) storage and the number of running changefeeds. If a changefeed is not advancing and is retrying, it will (without limit) accumulate garbage while it retries to run.
+
+When [`protect_data_from_gc_on_pause`](create-changefeed.html#protect-pause) is **unset**, pausing the changefeed will release the existing protected timestamp record.
+
+The only ways for changefeeds to **not** protect data are:
+
+- You pause the changefeed without `protect_data_from_gc_on_pause`.
+- You cancel the changefeed.
+- The changefeed fails without [`on_error=pause`](create-changefeed.html#on-error) set.
+
 ## Changefeeds on tables with column families
 
 {% include_cached new-in.html version="v22.1" %} You can create changefeeds on tables with more than one [column family](column-families.html). Changefeeds will emit individual messages per column family on a table.
