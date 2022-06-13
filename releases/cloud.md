@@ -20,6 +20,12 @@ As of May 30, 2022, new {{ site.data.products.dedicated }} clusters and all {{ s
 
 <h3>General changes</h3>
 
+- You can now [add and remove regions](cluster-management.html#add-or-remove-regions-from-a-cluster) from {{ site.data.products.dedicated }} clusters through the {{ site.data.products.db }} Console.
+
+## June 6, 2022
+
+<h3>General changes</h3>
+
 - [Datadog integration](../cockroachcloud/monitoring-page.html#monitor-with-datadog) is now available on the **Monitoring** page for all {{ site.data.products.dedicated }} users.
 
 <h3>Console changes</h3>
