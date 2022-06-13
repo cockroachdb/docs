@@ -17,6 +17,7 @@ docs_area: reference.sql
 {% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/add_column.html %}
 </div>
 
+this is a test
 
 ## Required privileges
 
