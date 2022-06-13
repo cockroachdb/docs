@@ -68,7 +68,7 @@ The examples in this section use the following setup.
 
 `SHOW SUPER REGIONS FROM DATABASE` returns the [super regions](multiregion-overview.html#super-regions) for the specified database.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW SUPER REGIONS FROM DATABASE movr;
 ~~~

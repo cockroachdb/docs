@@ -52,7 +52,7 @@ By default, all tables in a multi-region database are [regional tables](#regiona
 
 1. Create a `users` table:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     CREATE TABLE users (
         id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -65,7 +65,7 @@ By default, all tables in a multi-region database are [regional tables](#regiona
 
     By default, all tables in a multi-region cluster default to the [`REGIONAL BY TABLE`](#regional-tables) locality setting.  To verify this, issue a [`SHOW CREATE`](show-create.html) on the `users` table you just created:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     SHOW CREATE TABLE users;
     ~~~
@@ -86,7 +86,7 @@ By default, all tables in a multi-region database are [regional tables](#regiona
 
 1. Set the table's locality to [`REGIONAL BY ROW`](#regional-by-row-tables) using the [`ALTER TABLE ... SET LOCALITY`](set-locality.html) statement:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     ALTER TABLE users SET LOCALITY REGIONAL BY ROW;
     ~~~
@@ -98,7 +98,7 @@ By default, all tables in a multi-region database are [regional tables](#regiona
 
 1.  Identify which rows need to be optimized for access from which regions. Issue [`UPDATE`](update.html) statements that modify the automatically created [`crdb_region`](set-locality.html#crdb_region) column. Issue the statements below to associate each row with a home region that depends on its `city` column:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     UPDATE users SET crdb_region = 'us-central'   WHERE city IN ('chicago', 'milwaukee', 'dallas');
     UPDATE users SET crdb_region = 'us-east'      WHERE city IN ('washington dc', 'boston', 'new york');

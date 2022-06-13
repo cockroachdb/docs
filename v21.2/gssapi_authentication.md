@@ -27,28 +27,28 @@ To use Kerberos authentication with CockroachDB, configure a Kerberos service pr
 
 For Active Directory, the client syntax for generating a keytab that maps a service principal to the SPN is as follows:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ ktpass -out {keytab_filename} -princ {Client_SPN}/{NODE/LB_FQDN}@{DOMAIN} -mapUser {Service_Principal}@{DOMAIN} -mapOp set -pType KRB5_NT_PRINCIPAL +rndPass -crypto AES256-SHA1
 ~~~
 
 Example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ ktpass -out postgres.keytab -princ postgres/loadbalancer1.cockroach.industries@COCKROACH.INDUSTRIES -mapUser pguser@COCKROACH.INDUSTRIES -mapOp set -pType KRB5_NT_PRINCIPAL +rndPass -crypto AES256-SHA1
 ~~~
 
 Copy the resulting keytab to the database nodes. If clients are connecting to multiple addresses (more than one load balancer, or clients connecting directly to nodes), you will need to generate a keytab for each client endpoint.  You may want to merge your keytabs together for easier management.  You can do this using the `ktpass` command, using the following syntax:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ ktpass -out {new_keytab_filename} -in {old_keytab_filename} -princ {Client_SPN}/{NODE/LB_FQDN}@{DOMAIN} -mapUser {Service_Principal}@{DOMAIN} -mapOp add -pType KRB5_NT_PRINCIPAL +rndPass -crypto AES256-SHA1
 ~~~
 
 Example (adds `loadbalancer2` to the above example):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ ktpass -out postgres_2lb.keytab -in postgres.keytab -princ postgres/loadbalancer2.cockroach.industries@COCKROACH.INDUSTRIES -mapUser pguser@COCKROACH.INDUSTRIES -mapOp add  -pType KRB5_NT_PRINCIPAL +rndPass -crypto AES256-SHA1
 ~~~
@@ -57,19 +57,19 @@ $ ktpass -out postgres_2lb.keytab -in postgres.keytab -princ postgres/loadbalanc
 
 In MIT KDC, you cannot map a service principal to an SPN with a different username, so you will need to create a service principal that includes the SPN for your client.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ create-user: kadmin.local -q "addprinc {SPN}/{CLIENT_FQDN}@{DOMAIN}" -pw "{initial_password}"
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ create-keytab: kadmin.local -q "ktadd -k keytab {SPN}/{CLIENT_FQDN}@{DOMAIN}"
 ~~~
 
 Example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ kadmin.local -q "addprinc postgres/client2.cockroach.industries@COCKROACH.INDUSTRIES" -pw "testing12345!"
 $ kadmin.local -q "ktadd -k keytab postgres/client2.cockroach.industries@COCKROACH.INDUSTRIES"
@@ -83,19 +83,19 @@ Copy the resulting keytab to the database nodes. If clients are connecting to mu
 
 2. [Create certificates](cockroach-cert.html) for inter-node and `root` user authentication:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ mkdir certs my-safe-directory
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach cert create-ca \
     --certs-dir=certs \
     --ca-key=my-safe-directory/ca.key
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach cert create-node \
     localhost \
@@ -104,7 +104,7 @@ Copy the resulting keytab to the database nodes. If clients are connecting to mu
     --ca-key=my-safe-directory/ca.key
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach cert create-client \
     root \
@@ -118,7 +118,7 @@ Copy the resulting keytab to the database nodes. If clients are connecting to mu
 
 4. Start a CockroachDB node:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --certs-dir=certs \
@@ -127,7 +127,7 @@ Copy the resulting keytab to the database nodes. If clients are connecting to mu
 
 5. Connect to CockroachDB as `root` using the `root` client certificate generated above:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql --certs-dir=certs
     ~~~
@@ -137,7 +137,7 @@ Copy the resulting keytab to the database nodes. If clients are connecting to mu
 
 7. Enable GSSAPI authentication:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SET cluster setting server.host_based_authentication.configuration = 'host all all all gss include_realm=0';
     ~~~
@@ -150,14 +150,14 @@ Copy the resulting keytab to the database nodes. If clients are connecting to mu
 
 8. Create CockroachDB users for every Kerberos user. Ensure the username does not have the `DOMAIN.COM` realm information. For example, if one of your Kerberos users has a username `carl@realm.com`, then you need to create a CockroachDB user with the username `carl`:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE USER carl;
     ~~~
 
     Grant privileges to the user:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > GRANT ALL ON DATABASE defaultdb TO carl;
     ~~~
@@ -172,21 +172,21 @@ The `cockroach sql` shell does not yet support GSSAPI authentication. You need t
 
     For CentOS/RHEL systems, run:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ yum install krb5-user
     ~~~
 
     For Ubuntu/Debian systems, run:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ apt-get install krb5-user
     ~~~
 
     Edit the `/etc/krb5.conf` file to include:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~
            [libdefaults]
     		 default_realm = {REALM}
@@ -201,7 +201,7 @@ The `cockroach sql` shell does not yet support GSSAPI authentication. You need t
 
     Example:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~
 
            [libdefaults]
@@ -217,14 +217,14 @@ The `cockroach sql` shell does not yet support GSSAPI authentication. You need t
 
 2. Get a ticket for the db user:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kinit carl
     ~~~
 
 3. Verify if a valid ticket has been generated:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ klist
     ~~~
@@ -232,7 +232,7 @@ The `cockroach sql` shell does not yet support GSSAPI authentication. You need t
 4. Install the PostgreSQL client (for example, postgresql-client-10 Debian package from postgresql.org).
 5. Use the `psql` client, which supports GSSAPI authentication, to connect to CockroachDB:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ psql "postgresql://localhost:26257/defaultdb?sslmode=verify-full&sslrootcert=/certs/ca.crt" -U carl
     ~~~

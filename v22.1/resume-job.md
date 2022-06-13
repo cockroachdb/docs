@@ -37,7 +37,7 @@ Parameter | Description
 
 ### Pause a job
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW JOBS;
 ~~~
@@ -48,14 +48,14 @@ Parameter | Description
   27536791415282 |  RESTORE  | RESTORE db.* FROM 'azure://backup/db/tbl' |...
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > PAUSE JOB 27536791415282;
 ~~~
 
 ### Resume a single job
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > RESUME JOB 27536791415282;
 ~~~
@@ -64,7 +64,7 @@ Parameter | Description
 
 To resume multiple jobs, nest a [`SELECT` clause](select-clause.html) that retrieves `job_id`(s) inside the `RESUME JOBS` statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > RESUME JOBS (WITH x AS (SHOW JOBS) SELECT job_id FROM x
       WHERE user_name = 'maxroach');
@@ -76,7 +76,7 @@ All jobs created by `maxroach` will be resumed.
 
  To resume jobs for a specific [backup schedule](create-schedule-for-backup.html), use the schedule's `id`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > RESUME JOBS FOR SCHEDULE 590204387299262465;
 ~~~
@@ -86,7 +86,7 @@ RESUME JOBS FOR SCHEDULES 1
 
 You can also resume multiple schedules by nesting a [`SELECT` clause](select-clause.html) that retrieves `id`(s) inside the `PAUSE JOBS` statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > RESUME JOBS FOR SCHEDULES WITH x AS (SHOW SCHEDULES) SELECT id FROM x WHERE label = 'test_schedule';
 ~~~

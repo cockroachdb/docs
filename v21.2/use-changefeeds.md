@@ -28,7 +28,7 @@ Changefeeds connect to a long-lived request (i.e., a rangefeed), which pushes ch
 
 **Rangefeeds must be enabled for a changefeed to work.** To [enable the cluster setting](set-cluster-setting.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET CLUSTER SETTING kv.rangefeed.enabled = true;
 ~~~
@@ -134,7 +134,7 @@ For an example of a schema change with column backfill, start with the changefee
 
 Add a column to the watched table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE office_dogs ADD COLUMN likes_treats BOOL DEFAULT TRUE;
 ~~~

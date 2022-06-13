@@ -68,7 +68,7 @@ using the [scalar expressions](scalar-expressions.html) listed with `ON`. When t
 
 Retrieve specific columns by naming them in a comma-separated list:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT id, city, name FROM users LIMIT 10;
 ~~~
@@ -93,7 +93,7 @@ Retrieve specific columns by naming them in a comma-separated list:
 
 Retrieve all columns by using `*`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM users LIMIT 10;
 ~~~
@@ -120,7 +120,7 @@ Retrieve all columns by using `*`:
 
 Filter rows with expressions that use columns and return Boolean values in the `WHERE` clause:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT name, id FROM users WHERE city='seattle';
 ~~~
@@ -139,7 +139,7 @@ Filter rows with expressions that use columns and return Boolean values in the `
 
 To use multiple `WHERE` filters join them with `AND` or `OR`. You can also create negative filters with `NOT`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM vehicles WHERE city = 'seattle' AND status = 'available';
 ~~~
@@ -155,7 +155,7 @@ To use multiple `WHERE` filters join them with `AND` or `OR`. You can also creat
 
 Using `WHERE <column> IN (<comma separated list of values>)` performs an `OR` search for listed values in the specified column:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT name, id FROM users WHERE city IN ('new york', 'chicago', 'seattle');
 ~~~
@@ -184,7 +184,7 @@ Using `WHERE <column> IN (<comma separated list of values>)` performs an `OR` se
 
 Columns without the [Primary Key](primary-key.html) or [Unique](unique.html) constraints can have multiple instances of the same value:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT name FROM users WHERE city in ('los angeles', 'washington dc');
 ~~~
@@ -205,7 +205,7 @@ Columns without the [Primary Key](primary-key.html) or [Unique](unique.html) con
 
 Using `DISTINCT`, you can remove all but one instance of duplicate values from your retrieved data:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT DISTINCT name FROM users WHERE city in ('los angeles', 'washington dc');
 ~~~
@@ -227,7 +227,7 @@ Using `DISTINCT`, you can remove all but one instance of duplicate values from y
 
 Instead of outputting a column's name in the retrieved table, you can change its label using `AS`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT current_location AS ny_address, id, type, status FROM vehicles WHERE city = 'new york';
 ~~~
@@ -251,7 +251,7 @@ Search for partial [string](string.html) matches in columns using `LIKE`, which 
 
 For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT city, status, id FROM vehicles WHERE type LIKE 'scoot%';
 ~~~
@@ -277,7 +277,7 @@ For example:
 
 By using an aggregate function as a `target_elem`, you can perform the calculation on the entire column.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT MIN(revenue) FROM rides;
 ~~~
@@ -291,7 +291,7 @@ By using an aggregate function as a `target_elem`, you can perform the calculati
 
 You can also use the retrieved value as part of an expression. For example, you can use the result in the `WHERE` clause to select additional rows that were not part of the aggregate function itself:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT id, city, vehicle_id, rider_id
 FROM rides
@@ -320,7 +320,7 @@ WHERE revenue = (
 
 By filtering the statement, you can perform the calculation only on retrieved rows:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT SUM(revenue) FROM rides WHERE city IN ('new york', 'chicago');
 ~~~
@@ -336,7 +336,7 @@ By filtering the statement, you can perform the calculation only on retrieved ro
 
 You can use `FILTER (WHERE <Boolean expression>)` in the `target_elem` to filter which rows are processed by an aggregate function; those that return `FALSE` or `NULL` for the `FILTER` clause's Boolean expression are not fed into the aggregate function:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT count(*) AS unfiltered, count(*) FILTER (WHERE revenue > 50) AS filtered FROM rides;
 ~~~
@@ -356,7 +356,7 @@ When creating aggregate groups, each column selected as a `target_elem` must be 
 
 For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT city, SUM(revenue) AS city_revenue FROM rides
 WHERE city IN ('new york', 'chicago', 'seattle') GROUP BY city;
@@ -381,7 +381,7 @@ To filter aggregate groups, use `HAVING`, which is the equivalent of the `WHERE`
 
 For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT city, AVG(revenue) as avg FROM rides GROUP BY city
 HAVING AVG(revenue) BETWEEN 50 AND 60;
@@ -404,7 +404,7 @@ Aggregate functions can also be used in the `HAVING` clause without needing to b
 
 For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT vehicle_id, city FROM rides WHERE city IN ('new york', 'chicago', 'seattle')
 GROUP BY vehicle_id, city HAVING COUNT(vehicle_id) > 20;
@@ -425,7 +425,7 @@ Non-commutative aggregate functions are sensitive to the order in which the rows
 
 For example, suppose you want to create an array of `name` values, ordered alphabetically, and grouped by `city`. You can use the following statement to do so:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT city, array_agg(name ORDER BY name) AS users FROM users WHERE city IN ('new york', 'chicago', 'seattle') GROUP BY city;
 ~~~
@@ -441,7 +441,7 @@ For example, suppose you want to create an array of `name` values, ordered alpha
 
 You can also order input rows using a column different than the input row column. The following statement returns an array of `revenue` values from high-revenue rides, ordered by ride `end_time`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT city, array_agg(revenue ORDER BY end_time) as revenues FROM rides WHERE revenue > 80 GROUP BY city;
 ~~~
@@ -466,7 +466,7 @@ You can also order input rows using a column different than the input row column
 
 If you include multiple aggregate functions in a single `SELECT` clause, you can order the input rows of the multiple functions on different columns. For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT city, array_agg(revenue ORDER BY revenue) as revenues_by_revenue, array_agg(revenue ORDER BY end_time) as revenues_by_end_time FROM rides WHERE revenue > 90 GROUP BY city;
 ~~~
@@ -492,7 +492,7 @@ If you include multiple aggregate functions in a single `SELECT` clause, you can
 
  If a query includes an alias (i.e., a [label assigned to the column with an `AS` clause](#rename-columns-in-output)), you can group the aggregations in the query by the alias rather than by the column name. For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT city AS c, SUM(revenue) AS c_rev FROM rides GROUP BY c;
 ~~~

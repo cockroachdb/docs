@@ -34,7 +34,7 @@ This page shows you how to reproduce [CockroachDB TPC-C performance benchmarking
 
 1. Use the [`cockroach start`](cockroach-start.html) command to start 3 nodes:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -45,7 +45,7 @@ This page shows you how to reproduce [CockroachDB TPC-C performance benchmarking
     --background
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -56,7 +56,7 @@ This page shows you how to reproduce [CockroachDB TPC-C performance benchmarking
     --background
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -69,7 +69,7 @@ This page shows you how to reproduce [CockroachDB TPC-C performance benchmarking
 
 2. Use the [`cockroach init`](cockroach-init.html) command to perform a one-time initialization of the cluster:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach init \
     --insecure \
@@ -82,7 +82,7 @@ CockroachDB comes with a number of [built-in workloads](cockroach-workload.html)
 
 Use [`cockroach workload`](cockroach-workload.html) to load the initial schema and data:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach workload fixtures import tpcc \
 --warehouses=10 \
@@ -95,7 +95,7 @@ This will load 2 GB of data for 10 "warehouses".
 
 Run the workload for ten "warehouses" of data for ten minutes:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach workload run tpcc \
 --warehouses=10 \
@@ -180,7 +180,7 @@ The [TPC-C specification](http://www.tpc.org/tpc_documents_current_versions/pdf/
 
     If you do not plan to restart the cluster, you may want to remove the nodes' data stores:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ rm -rf tpcc-local1 tpcc-local2 tpcc-local3
     ~~~

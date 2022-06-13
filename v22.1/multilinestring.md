@@ -15,7 +15,7 @@ A `MULTILINESTRING` is a collection of [LineStrings](linestring.html).  MultiLin
 
 A MultiLineString can be created from SQL by calling the `st_geomfromtext` function on a MultiLineString definition expressed in the [Well Known Text (WKT)](spatial-glossary.html#wkt) format.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT ST_GeomFromText('MULTILINESTRING((0 0, 1440 900), (800 600, 200 400))');
 ~~~
@@ -33,7 +33,7 @@ A MultiLineString can be created from SQL by calling an aggregate function such 
 
 First, insert the LineStrings:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TABLE tmp_linestrings (id INT8 default unique_rowid(), geom GEOMETRY);
 
@@ -46,7 +46,7 @@ VALUES
 
 Next, build a MultiLineString from the individual [LineStrings](linestring.html) using `ST_Collect`, and check the output with `ST_GeometryType` to verify that it is indeed a MultiLineString:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT ST_GeometryType(st_collect(geom)) AS output FROM tmp_linestrings;
 ~~~
@@ -60,7 +60,7 @@ SELECT ST_GeometryType(st_collect(geom)) AS output FROM tmp_linestrings;
 
 Finally, drop the temporary table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 DROP TABLE tmp_linestrings;
 ~~~

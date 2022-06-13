@@ -120,17 +120,17 @@ We do not recommend deploying insecure web applications on public networks.
     `gcloud` is included with the [Google Cloud SDK](https://cloud.google.com/sdk) installation.
     {{site.data.alerts.end}}
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ gcloud init
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ gcloud auth login
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ gcloud auth application-default login
     ~~~
@@ -169,7 +169,7 @@ We do not recommend deploying insecure web applications on public networks.
 
 1. Build and run the Docker image locally.
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ docker build -t gcr.io/<gcp_project>/movr-app:v1 .
     ~~~
@@ -178,7 +178,7 @@ We do not recommend deploying insecure web applications on public networks.
 
 1. Push the Docker image to the Google Cloud project's container registry.
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ docker push gcr.io/<gcp_project>/movr-app:v1
     ~~~

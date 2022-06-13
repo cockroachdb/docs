@@ -4,14 +4,14 @@ Only a [cluster region](multiregion-overview.html#cluster-regions) specified [at
 
 To follow along with the examples below, start a [demo cluster](cockroach-demo.html) with the [`--global` flag](cockroach-demo.html#general) to simulate a multi-region cluster:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach demo --global --nodes 9
 ~~~
 
 To see the regions available to the databases in the cluster, use a `SHOW REGIONS FROM CLUSTER` statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW REGIONS FROM CLUSTER;
 ~~~

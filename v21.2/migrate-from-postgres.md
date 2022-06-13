@@ -28,7 +28,7 @@ Most users will want to import their entire PostgreSQL database all at once, as 
 
 To dump the entire database, run the [`pg_dump`][pgdump] command shown below.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ pg_dump employees > /tmp/employees-full.sql
 ~~~
@@ -45,7 +45,7 @@ If you only want to import one table from a database dump, see [Import a table f
 
 To dump the `employees` table from a PostgreSQL database also named `employees`, run the [`pg_dump`][pgdump] command shown below.  You can import this table using the instructions in [Import a table from a table dump](#import-a-table-from-a-table-dump) below.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ pg_dump -t employees  employees > /tmp/employees.sql
 ~~~
@@ -83,7 +83,7 @@ This example assumes you [dumped the entire database](#dump-the-entire-database)
 
 The [`IMPORT`][import] statement below reads the data and [DDL](https://en.wikipedia.org/wiki/Data_definition_language) statements (including existing foreign key relationships) from the full database dump file.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT PGDUMP 'https://s3-us-west-1.amazonaws.com/cockroachdb-movr/datasets/employees-db/pg_dump/employees-full.sql.gz' WITH ignore_unsupported_statements;
 ~~~
@@ -101,7 +101,7 @@ This example assumes you [dumped the entire database](#dump-the-entire-database)
 
 [`IMPORT`][import] can import one table's data from a full database dump.  It reads the data and applies any `CREATE TABLE` statements from the file.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE DATABASE IF NOT EXISTS employees;
 > USE employees;
@@ -121,7 +121,7 @@ The examples below assume you [dumped one table](#dump-one-table-at-a-time).
 
 The simplest way to import a table dump is to run [`IMPORT TABLE`][import] as shown below.  It reads the table data and any `CREATE TABLE` statements from the file.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE DATABASE IF NOT EXISTS employees;
 > USE employees;
@@ -137,7 +137,7 @@ The simplest way to import a table dump is to run [`IMPORT TABLE`][import] as sh
 
 If you need to specify the table's columns for some reason, you can use an [`IMPORT TABLE`][import] statement like the one below, which will import data but ignore any `CREATE TABLE` statements in the file, instead relying on the columns you specify.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE employees (
     emp_no INT PRIMARY KEY,
@@ -166,7 +166,7 @@ The `max_row_size` option is used to override limits on line size.  **Default: 0
 
 Example usage:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE employees (
     emp_no INT PRIMARY KEY,
@@ -185,7 +185,7 @@ Example usage:
 
 Example usage:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT PGDUMP 's3://your-external-storage/employees.sql?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456' WITH row_limit = '10';
 ~~~
@@ -198,7 +198,7 @@ If `ignore_unsupported_statements` is omitted, the import will fail if it encoun
 
 Example usage:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT PGDUMP 's3://your-external-storage/employees.sql?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456' WITH ignore_unsupported_statements;
 ~~~
@@ -209,7 +209,7 @@ Example usage:
 
 Example usage:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT PGDUMP 's3://your-external-storage/employees.sql?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456' WITH ignore_unsupported_statements, log_ignored_statements='userfile://defaultdb.public.userfiles_root/unsupported-statements.log';
 ~~~
@@ -226,7 +226,7 @@ For example, if you get the error message `pq: there is no unique constraint mat
 
 Example usage:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE employees (
     emp_no INTEGER PRIMARY KEY,

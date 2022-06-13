@@ -104,14 +104,14 @@ In the absence of an explicit, back-filling computed column for the hidden `crdb
 
 1. Make `crdb_region` visible in the relevant `REGIONAL BY ROW` table(s):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     ALTER TABLE users ALTER COLUMN crdb_region SET VISIBLE;
     ~~~
 
 1. Update the table mappings in the application code (written in Python, with [SQLAlchemy](https://www.sqlalchemy.org/)):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ python
     from models import Base
 
@@ -128,7 +128,7 @@ In the absence of an explicit, back-filling computed column for the hidden `crdb
 
     Here is an example function that updates the region value in a given table, using the values of the `city` column:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ python
     from sqlalchemy_cockroachdb import run_transaction
     ...

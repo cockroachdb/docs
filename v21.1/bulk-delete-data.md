@@ -49,7 +49,7 @@ For example, suppose that you want to delete all rows in the [`tpcc`](cockroach-
 
 In Python, the script would look similar to the following:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ python
 #!/usr/bin/env python3
 
@@ -94,7 +94,7 @@ For example, suppose that you want to delete all rows in the [`tpcc`](cockroach-
 
 In Python, the script would look similar to the following:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ python
 #!/usr/bin/env python3
 
@@ -145,18 +145,18 @@ For example, suppose that every morning you want to delete all rows in the [`tpc
 To run the script with a daily `cron` job:
 
 1. Make the file executable:
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ chmod +x cleanup.py
     ~~~
 
 2. Create a new `cron` job:
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ crontab -e
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ txt
     30 10 * * * DB_URI='cockroachdb://user@host:26257/bank' cleanup.py >> ~/cron.log 2>&1
     ~~~
@@ -169,7 +169,7 @@ To delete all of the rows in a table, use a [`TRUNCATE` statement](truncate.html
 
 For example, to delete all rows in the [`tpcc`](cockroach-workload.html#tpcc-workload) `new_order` table, execute the following SQL statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 TRUNCATE new_order;
 ~~~
@@ -178,7 +178,7 @@ You can execute the statement from a compatible SQL client (e.g., the [Cockroach
 
 For example, in Python, using the `psycopg2` client driver:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ python
 #!/usr/bin/env python3
 

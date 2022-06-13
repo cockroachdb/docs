@@ -66,7 +66,7 @@ The examples in this section use the following setup.
 
 To add a super region to a multi-region database, use the `ALTER DATABASE ... ADD SUPER REGION` statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER DATABASE movr ADD SUPER REGION "usa" VALUES "us-east1", "us-west1";
 ~~~
