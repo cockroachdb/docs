@@ -50,8 +50,14 @@ Here we will create a *cross-account IAM role*. This is a role in your AWS accou
 	You will need the Amazon Resource Name (ARN) for your cross-account IAM role in the next step.
 	{{site.data.alerts.end}}
 
-## Step 2. Create the CMEK
+## Step 2. Create the CMEK key
 
+You can create the CMEK key two ways:
+
+- [Using Vault](#option-a-use-the-vault-aws-kms-secrets-engine-to-create-the-cmek-key)
+- [Directly in the AWS console](#option-b-use-the-aws-console-to-create-the-cmek-key)
+
+### Option A: Use the AWS Console to create the CMEK key
 1. In the AWS console, visit the [KMS page](https://console.aws.amazon.com/kms/). 
 1. Choose **Customer managed keys** and click the **Create Key** button.
 1. For **Key type**, specify **Symmetric Key**.
@@ -59,32 +65,112 @@ Here we will create a *cross-account IAM role*. This is a role in your AWS accou
 1. Under **Advanced options**, choose **KMS** for **Key material**.
 1. Select whether you will use your key for a single region or a multi-region cluster.
 1. Give the key a suitable name, or **alias**.
-1. Set the permissions for your key with the following IAM policy, using the ARN for your cross-account IAM role you created at the end of [Step 1. Provision the cross-account IAM role](#step-1-provision-the-cross-account-iam-role).
-	{% include_cached copy-clipboard.html %}
-	```json
-		{
-		"Version": "2012-10-17",
-		"Id": "key-consolepolicy-3",
-		"Statement": [
-		    {
-		        "Sid": "Allow use of the key",
-		        "Effect": "Allow",
-		        "Principal": {
-		            "AWS": <YOUR_IAM_ROLE_ARN>
-		        },
-		        "Action": [
-		            "kms:Encrypt",
-		            "kms:Decrypt",
-		            "kms:GenerateDataKey*",
-		            "kms:DescribeKey",
-		            "kms:ReEncrypt*",
-		        ],
-		        "Resource": "*"
-		    }
-		]
-	}	
-	```
-
+1. Set the permissions for your key with the `crdb-cmek-kms` IAM policy provided in the [Appendix](#appendix-iam-policy-for-the-cmek-key).
 1. Finish creating the key.
 
-Now that you have provisioned the IAM role and KMS key for your CockroachDB cluster's CMEK, return to [Enabling CMEK for a {{ site.data.products.dedicated }} cluster](managing-cmek.html#step-4-enable-cmek-for-your-cockroachdb-dedicated-cluster).
+### Option B: Use the Vault AWS-KMS secrets engine to create the CMEK key
+
+Pre-requisites: 
+
+- Vault enterprise license
+- Vault enterprise edition installed locally
+
+1. Initialize your shell for Vault:
+	{% include_cached copy-clipboard.html %}
+	```shell
+	 export VAULT_ADDR=<YOUR_VAULT_TARGET>
+	 export VAULT_TOKEN=<YOUR_VAULT_TOKEN>
+	 export VAULT_NAMESPACE="admin"
+	```
+1. Enable the KMS secrets engine:
+	{% include_cached copy-clipboard.html %}
+	```shell
+	vault secrets enable keymgmt
+	```
+	```txt
+	Success! Enabled the keymgmt secrets engine at: keymgmt/
+	```
+1. Connect Vault to your AWS account by creating a KMS provider entry:
+
+	{% include_cached copy-clipboard.html %}
+	```shell
+	vault write keymgmt/kms/awskms \
+    provider="awskms" \
+    key_collection="us-east-1" \
+    credentials=access_key="AKIAX4BORNLVYTAPSZ5L" \
+    credentials=secret_key="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"
+	```
+	
+	```txt
+	Success! Data written to: keymgmt/kms/awskms
+	```
+
+1. Create an encryption key in Vault.
+
+	This will generate the encryption key and store it in Vault. Note that at this point the key has not been imported into your AWS account's KMS service.
+
+	{% include_cached copy-clipboard.html %}
+	```shell
+	vault write keymgmt/key/crdb-cmek-vault type="aes256-gcm96"
+	```
+	
+	```txt
+	Success! Data written to: keymgmt/key/aes256-gcm96
+	```
+
+1. Propogate the key to your KMS service
+
+	{% include_cached copy-clipboard.html %}
+	```shell
+	vault write keymgmt/kms/awskms/key/crdb-cmek-vault \
+	    purpose="encrypt,decrypt" \
+	    protection="hsm"
+	```
+
+	```txt
+	Success! Data written to: keymgmt/kms/awskms/key/crdb-cmek-vault
+	```
+1. In the AWS console, visit the [KMS page](https://console.aws.amazon.com/kms/).
+1. Choose **Customer managed keys**.
+1. Select your key, which will be named `crdb-cmek-vault-<RANDOM_SUFFIX>` where RANDOM_SUFFIX is a string of random numbers.
+1. Set the permissions policy for your key with the `crdb-cmek-kms` IAM policy provided in the [Appendix](#appendix-iam-policy-for-the-cmek-key).
+1. Save.
+
+## Continue with Enabling CMEK
+
+After you have provisioned the IAM role and KMS key for your CockroachDB cluster's CMEK, return to [Enabling CMEK for a {{ site.data.products.dedicated }} cluster](managing-cmek.html#step-4-enable-cmek-for-your-cockroachdb-dedicated-cluster).
+
+## Appendix: IAM policy for the CMEK key
+
+Note that this IAM policy refers to the ARN for the cross-account IAM role you created at the end of [Step 1. Provision the cross-account IAM role](#step-1-provision-the-cross-account-iam-role).
+
+{% include_cached copy-clipboard.html %}
+```json
+{
+	"Version": "2012-10-17",
+	"Id": "crdb-cmek-kms",
+	"Statement": [
+	    {
+	        "Sid": "Allow use of the key for CMEK",
+	        "Effect": "Allow",
+	        "Principal": {
+	            "AWS": "<ARN_OF_CROSS_ACCOUNT_IAM_ROLE>"
+	        },
+	        "Action": [
+	            "kms:Encrypt",
+	            "kms:Decrypt",
+	            "kms:GenerateDataKey*",
+	            "kms:DescribeKey",
+	            "kms:ReEncrypt*"
+	        ],
+	        "Resource": "*"
+	    },
+	    {
+			<OTHER_POLICY_STATEMENT_FOR_ADMINISTRATING_KEY>
+	    }
+	]
+}
+
+```
+
+
