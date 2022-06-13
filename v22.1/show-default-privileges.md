@@ -86,6 +86,30 @@ To show default privileges, the user/role must have any [privilege](security-ref
 (5 rows)
 ~~~
 
+### Show default privileges for objects in a specific schema
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE SCHEMA test;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> ALTER DEFAULT PRIVILEGES IN SCHEMA test GRANT SELECT ON TABLES TO max;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW DEFAULT PRIVILEGES IN SCHEMA test;
+~~~
+
+~~~
+  role | for_all_roles | object_type | grantee | privilege_type
+-------+---------------+-------------+---------+-----------------
+  demo |     false     | tables      | max     | SELECT
+(1 row)
+~~~
+
 ## See also
 
 - [`ALTER DEFAULT PRIVILEGES`](alter-default-privileges.html)
