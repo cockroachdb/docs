@@ -10,7 +10,7 @@ filter_sort: 5
 docs_area: get_started
 ---
 
-{% include filter-tabs.md %}
+{% include_cached filter-tabs.md %}
 
 This tutorial shows you how run a simple application built with [TypeORM](https://typeorm.io/#/).
 

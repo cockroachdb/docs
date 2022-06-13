@@ -9,7 +9,7 @@ filter_sort: 2
 docs_area: deploy
 ---
 
-{% include filter-tabs.md %}
+{% include_cached filter-tabs.md %}
 
 Once you've [installed CockroachDB](install-cockroachdb.html), it's simple to run an insecure multi-node cluster locally.
 

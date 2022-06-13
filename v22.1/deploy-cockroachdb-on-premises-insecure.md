@@ -9,7 +9,7 @@ filter_sort: 2
 docs_area: 
 ---
 
-{% include filter-tabs.md %}
+{% include_cached filter-tabs.md %}
 
 This tutorial shows you how to manually deploy an insecure multi-node CockroachDB cluster on multiple machines, using [HAProxy](http://www.haproxy.org/) load balancers to distribute client traffic.
 

@@ -8,7 +8,7 @@ filter_sort: 2
 docs_area: manage
 ---
 
-{% include filter-tabs.md %}
+{% include_cached filter-tabs.md %}
 
 This page describes the cluster management and cluster deletion workflows for {{ site.data.products.dedicated }}.
 
