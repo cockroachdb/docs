@@ -94,6 +94,12 @@
       "title": "Back Up and Restore Data",
       "items": [
         {
+          "title": "Backup and Restore Overview",
+          "urls": [
+                "/${VERSION}/backup-and-restore-overview.html"
+              ]
+        },
+        {
           "title": "Back Up and Restore CockroachDB Cloud Clusters",
           "items": [
             {
