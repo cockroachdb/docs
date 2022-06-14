@@ -31,7 +31,7 @@ When an {{ site.data.products.enterprise }} changefeed is started on a node, tha
 
 The changefeed job will run across nodes in the cluster to access changed data in the watched table. Typically, the [leaseholder](architecture/replication-layer.html#leases) for a particular range (or the range’s replica) determines which node emits the changefeed data.
 
-Each node uses its aggregator processors to send back checkpoint progress to the coordinator that gathers this information to update the high-water mark timestamp. The high-water mark acts as a checkpoint for the changefeed’s job progress, and guarantees that all changes before (or at) the timestamp have been emitted. If restarted, the changefeed will send duplicate messages from the high-water mark timestamp. For more detail on when messages are emitted, see [Ordering Guarantees](use-changefeeds.html#ordering-guarantees).
+Each node uses its aggregator processors to send back checkpoint progress to the coordinator that gathers this information to update the high-water mark timestamp. The high-water mark acts as a checkpoint for the changefeed’s job progress, and guarantees that all changes before (or at) the timestamp have been emitted. If restarted, the changefeed will send duplicate messages starting at the high-water mark time to the current time. For more detail on when messages are emitted, see [Ordering Guarantees](use-changefeeds.html#ordering-guarantees).
 
 <img src="{{ 'images/v21.2/changefeed-structure.png' | relative_url }}" alt="Changefeed process in a 3-node cluster" style="border:0px solid #eee;max-width:100%" />
 
