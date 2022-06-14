@@ -5,7 +5,7 @@ toc: true
 docs_area: manage.security
 ---
 
-This page covers the procedures requried to provision a Customer-Managed Encryption Key (CMEK) for your {{ site.data.products.dedicated }} cluster with Google Cloud Platform (GCP).
+This page covers the procedures required to provision a Customer-Managed Encryption Key (CMEK) for your {{ site.data.products.dedicated }} cluster with Google Cloud Platform (GCP).
 
 This is part of the larger process of [Enabling CMEK for a {{ site.data.products.dedicated }} cluster](managing-cmek.html#enable-cmek).
 

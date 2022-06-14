@@ -11,7 +11,7 @@ Yes, the {{ site.data.products.dedicated }} clusters are encrypted by default by
 
 ## Which {{ site.data.products.dedicated }} clusters are eligible for CMEK?
 
-CMEK can be enabled for {{ site.data.products.dedicated }} clusters created and deployed on AWS after April 1, 2022 and on GCP after June 9, 2022.
+CMEK can be enabled for {{ site.data.products.dedicated }} clusters created and deployed on AWS after April 1, 2022, and on GCP after June 9, 2022.
 
 ## Is the data encryption key rotated at some set duration or periodically? If yes, is there a way to customize the duration?
 
