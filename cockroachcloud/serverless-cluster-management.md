@@ -8,7 +8,7 @@ filter_sort: 1
 docs_area: manage
 ---
 
-{% include_cached filter-tabs.md %}
+{% include filter-tabs.md %}
 
 This page describes the cluster management and cluster deletion workflows for {{ site.data.products.serverless }}.
 

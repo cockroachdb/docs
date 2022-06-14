@@ -10,7 +10,7 @@ docs_area: get_started
 
 This page answers the frequently asked questions about {{ site.data.products.serverless }} and {{ site.data.products.dedicated }}.
 
-{% include_cached filter-tabs.md %}
+{% include filter-tabs.md %}
 
 ## General
 

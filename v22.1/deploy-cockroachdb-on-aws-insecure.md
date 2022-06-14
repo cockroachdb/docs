@@ -10,7 +10,7 @@ filter_sort: 2
 docs_area: 
 ---
 
-{% include_cached filter-tabs.md %}
+{% include filter-tabs.md %}
 
 This page shows you how to manually deploy an insecure multi-node CockroachDB cluster on Amazon's AWS EC2 platform, using AWS's managed load balancing service to distribute client traffic.
 

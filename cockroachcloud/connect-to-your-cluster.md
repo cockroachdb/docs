@@ -8,7 +8,7 @@ filter_sort: 2
 docs_area: deploy
 ---
 
-{% include_cached filter-tabs.md %}
+{% include filter-tabs.md %}
 
 This page shows you how to connect to your {{ site.data.products.dedicated }} cluster.
 

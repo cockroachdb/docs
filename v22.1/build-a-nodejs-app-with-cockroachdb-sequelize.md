@@ -10,7 +10,7 @@ filter_sort: 2
 docs_area: get_started
 ---
 
-{% include_cached filter-tabs.md %}
+{% include filter-tabs.md %}
 
 This tutorial shows you how build a simple Node.js application with CockroachDB and the [Sequelize](https://sequelize.org/) ORM.
 

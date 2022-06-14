@@ -9,7 +9,7 @@ filter_sort: 1
 docs_area: deploy
 ---
 
-{% include_cached filter-tabs.md %}
+{% include filter-tabs.md %}
 
 On top of CockroachDB's built-in automation, you can use a third-party [orchestration](orchestration.html) system to simplify and automate even more of your operations, from deployment to scaling to overall cluster management.
 
