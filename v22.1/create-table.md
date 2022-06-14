@@ -206,7 +206,7 @@ For performance recommendations on primary keys, see the [Schema Design: Create 
 
 {{site.data.alerts.callout_info}}Strictly speaking, a primary key's unique index is not created; it is derived from the key(s) under which the data is stored, so it takes no additional space. However, it appears as a normal unique index when using commands like <code>SHOW INDEX</code>.{{site.data.alerts.end}}
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE users (
         id UUID PRIMARY KEY,
@@ -218,7 +218,7 @@ For performance recommendations on primary keys, see the [Schema Design: Create 
 );
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW COLUMNS FROM users;
 ~~~
@@ -235,7 +235,7 @@ For performance recommendations on primary keys, see the [Schema Design: Create 
 (6 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW INDEX FROM users;
 ~~~
@@ -256,7 +256,7 @@ For performance recommendations on primary keys, see the [Schema Design: Create 
 
 In this example, we create secondary and GIN indexes during table creation. Secondary indexes allow efficient access to data with keys other than the primary key. [GIN indexes](inverted-indexes.html) allow efficient access to the schemaless data in a [`JSONB`](jsonb.html) column.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE vehicles (
         id UUID NOT NULL,
@@ -274,7 +274,7 @@ In this example, we create secondary and GIN indexes during table creation. Seco
 );
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW INDEX FROM vehicles;
 ~~~
@@ -318,7 +318,7 @@ You can include a [foreign key action](foreign-key.html#foreign-key-actions) to 
 
 In this example, we use `ON DELETE CASCADE` (i.e., when row referenced by a foreign key constraint is deleted, all dependent rows are also deleted).
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE users (
         id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -330,7 +330,7 @@ In this example, we use `ON DELETE CASCADE` (i.e., when row referenced by a fore
 );
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE vehicles (
         id UUID NOT NULL DEFAULT gen_random_uuid(),
@@ -348,7 +348,7 @@ In this example, we use `ON DELETE CASCADE` (i.e., when row referenced by a fore
 );
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE TABLE vehicles;
 ~~~
@@ -375,12 +375,12 @@ In this example, we use `ON DELETE CASCADE` (i.e., when row referenced by a fore
 (1 row)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO users (name, dl) VALUES ('Annika', 'ABC-123');
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM users;
 ~~~
@@ -392,12 +392,12 @@ In this example, we use `ON DELETE CASCADE` (i.e., when row referenced by a fore
 (1 row)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO vehicles (city, owner_id) VALUES ('seattle', '26da1fce-59e1-4290-a786-9068242dd195');
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM vehicles;
 ~~~
@@ -409,12 +409,12 @@ In this example, we use `ON DELETE CASCADE` (i.e., when row referenced by a fore
 (1 row)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DELETE FROM users WHERE id = '26da1fce-59e1-4290-a786-9068242dd195';
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM vehicles;
 ~~~
@@ -429,7 +429,7 @@ In this example, we use `ON DELETE CASCADE` (i.e., when row referenced by a fore
 
 In this example, we create the `users` table, but with some column [constraints](constraints.html). One column is the [primary key](primary-key.html), and another column is given a [unique constraint](unique.html) and a [check constraint](check.html) that limits the length of the string. Primary key columns and columns with unique constraints are automatically indexed.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE users (
         id UUID PRIMARY KEY,
@@ -441,7 +441,7 @@ In this example, we create the `users` table, but with some column [constraints]
 );
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW COLUMNS FROM users;
 ~~~
@@ -458,7 +458,7 @@ In this example, we create the `users` table, but with some column [constraints]
 (6 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW INDEX FROM users;
 ~~~
@@ -480,7 +480,7 @@ In this example, we create the `users` table, but with some column [constraints]
 
 You can use the [`CREATE TABLE AS`](create-table-as.html) statement to create a new table from the results of a `SELECT` statement. For example, suppose you have a number of rows of user data in the `users` table, and you want to create a new table from the subset of users that are located in New York.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM users WHERE city = 'new york';
 ~~~
@@ -496,12 +496,12 @@ You can use the [`CREATE TABLE AS`](create-table-as.html) statement to create a 
 (5 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE users_ny AS SELECT * FROM users WHERE city = 'new york';
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM users_ny;
 ~~~
@@ -535,7 +535,7 @@ You can use the [`CREATE TABLE AS`](create-table-as.html) statement to create a 
 
 #### Create a table including all supported source specifiers
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE TABLE vehicles;
 ~~~
@@ -561,14 +561,14 @@ You can use the [`CREATE TABLE AS`](create-table-as.html) statement to create a 
 (1 row
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE vehicles2 (
         LIKE vehicles INCLUDING ALL
 );
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE TABLE vehicles2;
 ~~~
@@ -597,7 +597,7 @@ Note that the foreign key constraint `fk_owner_id_ref_users` in the source table
 
 #### Create a table with some source specifiers and a foreign key constraint
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE vehicles3 (
         LIKE vehicles INCLUDING DEFAULTS INCLUDING INDEXES,
@@ -605,7 +605,7 @@ Note that the foreign key constraint `fk_owner_id_ref_users` in the source table
 );
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE TABLE vehicles3;
 ~~~
@@ -649,7 +649,7 @@ The `GLOBAL` locality is useful for "read-mostly" tables of reference data that 
 
 For example, the `promo_codes` table of the [`movr` database](movr.html) is rarely updated after being initialized, but it needs to be read by nodes in all regions.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE promo_codes (
     code STRING PRIMARY KEY,
@@ -660,7 +660,7 @@ For example, the `promo_codes` table of the [`movr` database](movr.html) is rare
     LOCALITY GLOBAL;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > WITH x AS (SHOW TABLES)
 SELECT * FROM x WHERE table_name='promo_codes';
@@ -685,7 +685,7 @@ The `REGIONAL BY TABLE` locality is useful for tables that require low-latency r
 
 For example, suppose you want to create a table for your application's end users in a specific state:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE users_ny (
     id UUID PRIMARY KEY,
@@ -694,7 +694,7 @@ For example, suppose you want to create a table for your application's end users
     LOCALITY REGIONAL BY TABLE IN "us-east1";
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > WITH x AS (SHOW TABLES) SELECT * FROM x WHERE table_name='users_ny';
 ~~~
@@ -718,7 +718,7 @@ The `REGIONAL BY ROW` locality is useful for tables that require low-latency rea
 
 For example, the `vehicles` table of the [`movr` database](movr.html) is read to and written from nodes in different regions.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE vehicles (
     id UUID PRIMARY KEY,
@@ -746,7 +746,7 @@ The region value for `crdb_region` must be one of the regions added to the datab
 
 For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE vehicles (
     id UUID PRIMARY KEY,
@@ -786,7 +786,7 @@ For example:
 
 You can then manually set the values of the region with each [`INSERT`](insert.html) statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO vehicles (crdb_region, ...) VALUES ('us-east1', ...);
 ~~~
@@ -805,7 +805,7 @@ Using the `LOCALITY REGIONAL BY ROW AS <region>` clause, you can assign rows to 
 
 For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE vehicles (
     id UUID PRIMARY KEY,
@@ -833,7 +833,7 @@ CockroachDB will then assign a region to each row, based on the value of the `re
 
 For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE bank (
     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
@@ -846,7 +846,7 @@ For example:
 
 CockroachDB creates a sequence to use as the `numerical` column's default value.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW SEQUENCES;
 ~~~
@@ -858,7 +858,7 @@ CockroachDB creates a sequence to use as the `numerical` column's default value.
 (1 row)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW COLUMNS FROM bank;
 ~~~
@@ -876,12 +876,12 @@ CockroachDB creates a sequence to use as the `numerical` column's default value.
 
 When a new row is added to the table, CockroachDB populates the `numerical` column with the result of the `nextval('bank_numerical_seq')` [built-in function](functions-and-operators.html).
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO bank (order_index, balance) VALUES (1, 0), (2, 0), (3, 0);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT id, order_index, balance, numerical FROM bank ORDER BY order_index;
 ~~~
@@ -897,12 +897,12 @@ When a new row is added to the table, CockroachDB populates the `numerical` colu
 
 The `numerical` column in this example follows the `BY DEFAULT` rule. According to this rule, if the value of an identity is explicitly updated, the sequence value is overwritten:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > UPDATE bank SET numerical = 500 WHERE id = '0b533801-052e-4837-8e13-0ef2fa6f8883';
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT id, order_index, balance, numerical FROM bank ORDER BY order_index;
 ~~~
@@ -918,17 +918,17 @@ The `numerical` column in this example follows the `BY DEFAULT` rule. According 
 
 Inserting explicit values does not affect the next value of the sequence:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO bank (order_index, balance, numerical) VALUES (4, 0, 3);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO bank (order_index, balance) VALUES (5, 0);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT id, order_index, balance, numerical FROM bank ORDER BY order_index;
 ~~~

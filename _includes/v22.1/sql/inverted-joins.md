@@ -4,14 +4,14 @@ To run these examples, initialize a demo cluster with the MovR workload.
 
 Create a GIN index on the `vehicles` table's `ext` column.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE INVERTED INDEX idx_vehicle_details ON vehicles(ext);
 ~~~
 
 Check the statement plan for a `SELECT` statement that uses an inner inverted join.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 EXPLAIN SELECT * FROM vehicles@primary AS v2 INNER INVERTED JOIN vehicles@idx_vehicle_details AS v1 ON v1.ext @> v2.ext;
 ~~~
@@ -42,7 +42,7 @@ Time: 1ms total (execution 1ms / network 0ms)
 
 You can omit the `INNER INVERTED JOIN` statement by putting `v1.ext` on the left side of a `@>` join condition in a `WHERE` clause and using an index hint for the GIN index.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 EXPLAIN SELECT * FROM vehicles@idx_vehicle_details AS v1, vehicles AS v2 WHERE v1.ext @> v2.ext;
 ~~~

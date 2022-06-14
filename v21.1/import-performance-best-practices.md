@@ -27,7 +27,7 @@ For these formats, we recommend splitting your data into as many files as there 
 
 For example, if you have a 3-node cluster, split your data into 3 files and [import](import.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers (
         id UUID PRIMARY KEY,
@@ -71,7 +71,7 @@ However, `MYSQLDUMP` and `PGDUMP` run a single thread to parse their data, and t
 
 When importing bundled data formats, it is often faster to provide schema for the imported table in-line. For example, instead of importing both the table schema and data from the same file:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE employees
 FROM PGDUMP
@@ -81,7 +81,7 @@ FROM PGDUMP
 
 You can dump the table data into a CSV file and provide the table schema in the statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE employees (
         id UUID PRIMARY KEY,

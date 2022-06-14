@@ -94,6 +94,12 @@
       "title": "Back Up and Restore Data",
       "items": [
         {
+          "title": "Backup and Restore Overview",
+          "urls": [
+                "/${VERSION}/backup-and-restore-overview.html"
+              ]
+        },
+        {
           "title": "Back Up and Restore CockroachDB Cloud Clusters",
           "items": [
             {
@@ -187,13 +193,13 @@
                   ]
                 },
                 {
-                  "title": "Provisioning Amazon Web Services (AWS) for CMEK",
+                  "title": "Provisioning AWS KMS Keys and IAM Roles for CMEK",
                   "urls": [
                     "/cockroachcloud/cmek-ops-aws.html"
                   ]
                 },
                 {
-                  "title": "Provisioning Google Cloud Platform (GCP) for CMEK",
+                  "title": "Provisioning GCP KMS Keys and Service Accounts for CMEK",
                   "urls": [
                     "/cockroachcloud/cmek-ops-gcp.html"
                   ]

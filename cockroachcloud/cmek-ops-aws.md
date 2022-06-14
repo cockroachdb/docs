@@ -1,5 +1,5 @@
 ---
-title: Provisioning Amazon Web Services (AWS) for CMEK
+title: Provisioning AWS KMS Keys and IAM Roles for CMEK
 summary: Tutorial for provisioning CMEK in AWS, covering initial set-up, revocation, and recovery scenarios.
 toc: true
 docs_area: manage.security

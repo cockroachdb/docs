@@ -38,14 +38,14 @@ You define a cluster region at the node level using the `region` key and the zon
 
 For example, the following command adds `us-east-1` to the list of cluster regions and `us-east-1b` to the list of zones:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 cockroach start --locality=region=us-east-1,zone=us-east-1b # ... other required flags go here
 ~~~
 
 To show all of a cluster's regions, execute the following SQL statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW REGIONS FROM CLUSTER;
 ~~~
@@ -107,7 +107,7 @@ The following survival goals are available:
 
 The zone failure survival goal is the default. You can configure a database to survive region failures at the cost of slower write performance (due to network hops) using the following statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER DATABASE <db> SURVIVE REGION FAILURE;
 ~~~
@@ -133,7 +133,9 @@ If your application has performance or availability needs that are different tha
 
 The region level survival goal has the property that the database will remain fully available for reads and writes, even if an entire region becomes unavailable. This added survival comes at a cost: write latency will be increased by at least as much as the round-trip time to the nearest region. Read performance will be unaffected. In other words, you are adding network hops and making writes slower in exchange for robustness.
 
-You can upgrade a database to survive region failures using the [`ALTER DATABASE ... SURVIVE REGION FAILURE` statement](survive-failure.html). This increases the [replication factor](configure-replication-zones.html#num_replicas) of all data in the database from 3 (the default) to 5; this is how CockroachDB is able to provide the resiliency characteristics while maintaining a local quorum in the leaseholder's region for good performance.
+You can upgrade a database to survive region failures using the [`ALTER DATABASE ... SURVIVE REGION FAILURE` statement](survive-failure.html).
+
+Setting this goal on a database in a cluster with 3 [cluster regions](#cluster-regions) will automatically increase the [replication factor](configure-replication-zones.html#num_replicas) of the [ranges](architecture/glossary.html#architecture-range) underlying the database from 3 (the default) to 5. This ensures that there will be 5 replicas of each range spread across the 3 regions (2+2+1=5). This is how CockroachDB is able to provide region level resiliency while maintaining good read performance in the leaseholder's region. For writes, CockroachDB will need to coordinate across 2 of the 3 regions, so you will pay additional write latency in exchange for the increased resiliency.
 
 {{site.data.alerts.callout_info}}
 To survive region failures, you must add at least 3 [database regions](#database-regions).

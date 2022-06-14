@@ -47,7 +47,7 @@ The user must have the `DROP` [privilege](security-reference/authorization.html#
 
 ### Rename a table
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES;
 ~~~
@@ -64,12 +64,12 @@ The user must have the `DROP` [privilege](security-reference/authorization.html#
 (6 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE users RENAME TO riders;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES;
 ~~~
@@ -88,7 +88,7 @@ The user must have the `DROP` [privilege](security-reference/authorization.html#
 
 To avoid an error in case the table does not exist, you can include `IF EXISTS`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE IF EXISTS customers RENAME TO clients;
 ~~~

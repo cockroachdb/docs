@@ -172,7 +172,7 @@ For example:
 
 ### Create a changefeed connected to Kafka
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE CHANGEFEED FOR TABLE name, name2, name3
   INTO 'kafka://host:port'
@@ -191,7 +191,7 @@ For more information on how to create a changefeed that emits an [Avro](https://
 
 ### Create a changefeed connected to Kafka using Avro
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE CHANGEFEED FOR TABLE name, name2, name3
   INTO 'kafka://host:port'
@@ -210,7 +210,7 @@ For more information on how to create a changefeed that emits an [Avro](https://
 
 ### Create a changefeed connected to a cloud storage sink
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE CHANGEFEED FOR TABLE name, name2, name3
   INTO 'scheme://host?parameters'
@@ -242,7 +242,7 @@ CREATE CHANGEFEED FOR TABLE name INTO 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY
 
 {% include {{ page.version.version }}/cdc/webhook-beta.md %}
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~sql
 CREATE CHANGEFEED FOR TABLE name, name2, name3
   INTO 'webhook-https://{your-webhook-endpoint}?insecure_tls_skip_verify=true'
@@ -264,7 +264,7 @@ For step-by-step guidance on creating a changefeed connected to a webhook sink, 
 
 {% include_cached new-in.html version="v21.2" %} For enterprise changefeeds, use [`SHOW CHANGEFEED JOBS`](show-jobs.html) to check the status of your changefeed jobs:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CHANGEFEED JOBS;
 ~~~
@@ -273,7 +273,7 @@ Use the following SQL statements to pause, resume, or cancel a changefeed.
 
 #### Pause a changefeed
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > PAUSE JOB job_id;
 ~~~
@@ -282,7 +282,7 @@ For more information, see [`PAUSE JOB`](pause-job.html).
 
 #### Resume a paused changefeed
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > RESUME JOB job_id;
 ~~~
@@ -291,7 +291,7 @@ For more information, see [`RESUME JOB`](resume-job.html).
 
 #### Cancel a changefeed
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CANCEL JOB job_id;
 ~~~
@@ -306,7 +306,7 @@ For more information, see [`CANCEL JOB`](cancel-job.html).
 
 Find the [high-water timestamp](monitor-and-debug-changefeeds.html#monitor-a-changefeed) for the ended changefeed:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM crdb_internal.jobs WHERE job_id = <job_id>;
 ~~~
@@ -319,7 +319,7 @@ Find the [high-water timestamp](monitor-and-debug-changefeeds.html#monitor-a-cha
 
 Use the `high_water_timestamp` to start the new changefeed:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE CHANGEFEED FOR TABLE name, name2, name3
   INTO 'kafka//host:port'

@@ -65,7 +65,7 @@ SHOW REGIONS;
 
 Execute the following statements to set the [database regions](multiregion-overview.html#database-regions). This information is necessary so that CockroachDB can later move data around to optimize access to particular data from particular regions.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER DATABASE movr PRIMARY REGION "europe-west1";
 ALTER DATABASE movr ADD REGION "us-east1";

@@ -37,12 +37,12 @@ The user must be the owner of the type.
 
 ### Drop a single type
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TYPE status AS ENUM ('open', 'closed', 'inactive');
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW ENUMS;
 ~~~
@@ -54,7 +54,7 @@ The user must be the owner of the type.
 (1 row)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE accounts (
         id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -63,7 +63,7 @@ The user must be the owner of the type.
 );
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP TYPE status;
 ~~~
@@ -73,17 +73,17 @@ ERROR: cannot drop type "status" because other objects ([bank.public.accounts]) 
 SQLSTATE: 2BP01
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP TABLE accounts;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP TYPE status;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW ENUMS;
 ~~~
@@ -96,17 +96,17 @@ SQLSTATE: 2BP01
 
 ### Drop multiple types
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TYPE weekday AS ENUM ('monday', 'tuesday', 'wednesday', 'thursday', 'friday');
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TYPE weekend AS ENUM ('sunday', 'saturday');
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW ENUMS;
 ~~~
@@ -120,12 +120,12 @@ SQLSTATE: 2BP01
 ~~~
 
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP TYPE weekday, weekend;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW ENUMS;
 ~~~

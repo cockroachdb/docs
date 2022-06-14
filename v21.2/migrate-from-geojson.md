@@ -25,7 +25,7 @@ To follow along with the example below, you will need the following prerequisite
 
 First, download the storage tank GeoJSON data:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 wget -O tanks.geojson https://geodata.vermont.gov/datasets/986155613c5743239e7b1980b45bbf36_162.geojson
 ~~~
@@ -34,7 +34,7 @@ wget -O tanks.geojson https://geodata.vermont.gov/datasets/986155613c5743239e7b1
 
 Next, convert the GeoJSON data to SQL using the following `ogr2ogr` command:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 ogr2ogr -f PGDUMP tanks.sql -lco LAUNDER=NO -lco DROP_TABLE=OFF tanks.geojson
 ~~~
@@ -47,7 +47,7 @@ Each node in the CockroachDB cluster needs to have access to the files being imp
 
 For local testing, you can [start a local file server](use-a-local-file-server-for-bulk-operations.html).  The following command will start a local file server listening on port 3000:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 python3 -m http.server 3000
 ~~~
@@ -56,12 +56,12 @@ python3 -m http.server 3000
 
 Next, create a database to hold the storage tank data:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 cockroach sql --insecure
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE DATABASE IF NOT EXISTS tanks;
 USE tanks;
@@ -71,7 +71,7 @@ USE tanks;
 
 Since the file is being served from a local server and is formatted as PostgreSQL-compatible SQL, we can import the data using the following [`IMPORT PGDUMP`](import.html#import-a-postgresql-database-dump) statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 IMPORT PGDUMP ('http://localhost:3000/tanks.sql');
 ~~~

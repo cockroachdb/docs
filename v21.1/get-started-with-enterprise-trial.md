@@ -17,7 +17,7 @@ If you haven't already, you'll need to [locally install](install-cockroachdb.htm
 
 You can then use the [`SHOW CLUSTER SETTING`](set-cluster-setting.html) command to verify your license:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 >  SHOW CLUSTER SETTING cluster.organization;
 ~~~

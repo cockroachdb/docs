@@ -62,7 +62,7 @@ Google Cloud | `gs://acme-co/employees?AUTH=specified&CREDENTIALS=encoded-123`
 NFS/Local    | `nodelocal://1/path/employees`, `nodelocal://self/nfsmount/backups/employees`&nbsp;[<sup>2</sup>](#considerations)
 
 {{site.data.alerts.callout_info}}
-[Cloud storage sinks (for changefeeds)](change-data-capture-overview.html#known-limitations) only work with `JSON` and emits newline-delimited `JSON` files. 
+[Cloud storage sinks (for changefeeds)](change-data-capture-overview.html#known-limitations) only work with `JSON` and emits newline-delimited `JSON` files.
 {{site.data.alerts.end}}
 
 Example URLs for [`IMPORT`](import.html) given a bucket or container name of `acme-co` and a filename of `employees`:
@@ -133,7 +133,7 @@ BACKUP DATABASE <database> INTO 's3://{bucket name}/{path}?AUTH=implicit';
 
 You [can associate an EC2 instance with an IAM role](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/iam-roles-for-amazon-ec2.html) to provide implicit access to S3 storage within the IAM role's policy. In the following command, the `instance example` EC2 instance is [associated](https://docs.aws.amazon.com/cli/latest/reference/ec2/associate-iam-instance-profile.html) with the `example profile` instance profile, giving the EC2 instance implicit access to any `example profile` S3 buckets.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~shell
 aws ec2 associate-iam-instance-profile --iam-instance-profile Name={example profile} --region={us-east-2} --instance-id {instance example}
 ~~~
@@ -229,7 +229,11 @@ A custom root CA can be appended to the system's default CAs by setting the `clo
 
 ### Object locking
 
-{% include_cached new-in.html version="v22.1" %} Delete and overwrite permissions are **not** required for backups. To complete a backup successfully, `BACKUP` requires [read and write permissions](backup.html#required-privileges) to cloud storage buckets. As a result, you can write backups to cloud storage buckets with object locking enabled. This allows you to store backup data using a _write-once-read-many (WORM)_ model, which refers to storage that prevents any kind of deletion or modification to the objects once written.
+{% include_cached new-in.html version="v22.1" %} Delete and overwrite permissions are **not** required. To complete a backup successfully, `BACKUP` requires [read and write permissions](backup.html#required-privileges) to cloud storage buckets. As a result, you can write backups to cloud storage buckets with object locking enabled. This allows you to store backup data using a _write-once-read-many (WORM)_ model, which refers to storage that prevents any kind of deletion or modification to the objects once written.
+
+{{site.data.alerts.callout_info}}
+We recommend enabling object locking in cloud storage buckets to protect the validity of a backup for restores.
+{{site.data.alerts.end}}
 
 For specific cloud-storage provider documentation, see the following:
 

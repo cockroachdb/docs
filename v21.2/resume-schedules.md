@@ -31,7 +31,7 @@ RESUME SCHEDULE <scheduleID>
 
 ### Pause a schedule
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > PAUSE SCHEDULE 589963390487363585;
 ~~~
@@ -42,7 +42,7 @@ PAUSE SCHEDULES 1
 
 ### Resume a single schedule
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > RESUME SCHEDULE 589963390487363585;
 ~~~
@@ -55,7 +55,7 @@ RESUME SCHEDULES 1
 
 To resume multiple schedules, nest a [`SELECT` clause](select-clause.html) that retrieves `id`(s) inside the `RESUME SCHEDULES` statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > RESUME SCHEDULES SELECT id FROM [SHOW SCHEDULES] WHERE label = 'schedule_database';
 ~~~

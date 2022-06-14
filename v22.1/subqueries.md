@@ -22,7 +22,7 @@ notation and those defined using [`WITH`](table-expressions.html#use-the-output-
 
 For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > WITH t AS (INSERT INTO t(x) VALUES (1), (2), (3) RETURNING x)
 SELECT * FROM t LIMIT 1;
@@ -37,7 +37,7 @@ A subquery is said to be _correlated_ when it uses table or column names defined
 
 For example, to find every customer with at least one order, run:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT
       c.name
@@ -60,7 +60,7 @@ To create a `LATERAL` subquery, use the `LATERAL` keyword directly before the in
 
 For example, the following statement performs an `INNER` join of the `users` table and a subquery of the `rides` table that filters on values in the `users` table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT name, address FROM users, LATERAL (SELECT * FROM rides WHERE rides.start_address = users.address AND city = 'new york');
 ~~~
@@ -81,7 +81,7 @@ For example, the following statement performs an `INNER` join of the `users` tab
 
 For example, the following query joins a subquery of the `rides` table with a computed column (`adjusted_revenue`), and a subquery of the `vehicles` table that references columns in the `rides` subquery:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT
     ride_id, vehicle_id, type, adjusted_revenue

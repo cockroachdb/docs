@@ -49,14 +49,14 @@ Index selection can impact [performance](performance-best-practices-overview.htm
 
 The syntax to force an update for a specific index is:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > UPDATE table@my_idx SET ...
 ~~~
 
 This is equivalent to the longer expression:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > UPDATE table@{FORCE_INDEX=my_idx} SET ...
 ~~~
@@ -85,7 +85,7 @@ For guidance and an example, see [Bulk-update Data](bulk-update-data.html).
 
 ### Update a single column in a single row
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM users LIMIT 10;
 ~~~
@@ -106,12 +106,12 @@ For guidance and an example, see [Bulk-update Data](bulk-update-data.html).
 (10 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > UPDATE users SET address = '201 E Randolph St' WHERE id = '851eb851-eb85-4000-8000-00000000001a';
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM users LIMIT 10;
 ~~~
@@ -134,12 +134,12 @@ For guidance and an example, see [Bulk-update Data](bulk-update-data.html).
 
 ### Update multiple columns in a single row
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > UPDATE rides SET (end_address, revenue) = ('201 E Randolph St', 25.00) WHERE id = '851eb851-eb85-4000-8000-000000000104';
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM rides WHERE rider_id = '851eb851-eb85-4000-8000-00000000001a';
 ~~~
@@ -155,12 +155,12 @@ For guidance and an example, see [Bulk-update Data](bulk-update-data.html).
 (5 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > UPDATE rides SET end_address = '10000 W OHare Ave', revenue = 60.00 WHERE id = '94fdf3b6-45a1-4800-8000-000000000123';
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM rides WHERE rider_id = '851eb851-eb85-4000-8000-00000000001a';
 ~~~
@@ -178,14 +178,14 @@ For guidance and an example, see [Bulk-update Data](bulk-update-data.html).
 
 ### Update using `SELECT` statement
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > UPDATE rides SET (revenue, start_address) =
     (SELECT revenue, end_address FROM rides WHERE id = '94fdf3b6-45a1-4800-8000-000000000123')
      WHERE id = '851eb851-eb85-4000-8000-000000000104';
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM rides WHERE rider_id = '851eb851-eb85-4000-8000-00000000001a';
 ~~~
@@ -203,12 +203,12 @@ For guidance and an example, see [Bulk-update Data](bulk-update-data.html).
 
 ### Update with default values
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > UPDATE users SET address = DEFAULT WHERE id = '19999999-9999-4a00-8000-000000000005';
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM users LIMIT 5;
 ~~~
@@ -226,12 +226,12 @@ For guidance and an example, see [Bulk-update Data](bulk-update-data.html).
 
 ### Update using values from a different table
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > UPDATE rides SET revenue = NULL FROM vehicles WHERE rides.rider_id=vehicles.owner_id AND rides.vehicle_id=vehicles.id;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM rides WHERE revenue IS NULL LIMIT 5;
 ~~~
@@ -256,7 +256,7 @@ If you do not use the `WHERE` clause to specify the rows to be updated, the valu
 If the [`sql_safe_updates`](cockroach-sql.html#allow-potentially-unsafe-sql-statements) session variable is set to `true`, the client will prevent the update. `sql_safe_updates` is set to `true` by default.
 {{site.data.alerts.end}}
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > UPDATE rides SET revenue = 7.00;
 ~~~
@@ -267,17 +267,17 @@ pq: rejected: UPDATE without WHERE clause (sql_safe_updates = true)
 
 You can use a [`SET`](set-vars.html) statement to set session variables.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET sql_safe_updates = false;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > UPDATE rides SET revenue = 7.00;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM rides LIMIT 5;
 ~~~
@@ -312,7 +312,7 @@ In this example, the `RETURNING` clause returns the `id` value of the row update
 <section class="filter-content" markdown="1" data-scope="shell">
 <p></p>
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > UPDATE vehicles SET status = 'available' WHERE city = 'new york' RETURNING id;
 ~~~
@@ -330,7 +330,7 @@ In this example, the `RETURNING` clause returns the `id` value of the row update
 <section class="filter-content" markdown="1" data-scope="python">
 <p></p>
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ python
 # Import the driver.
 import psycopg2
@@ -379,7 +379,7 @@ IDs:
 <section class="filter-content" markdown="1" data-scope="ruby">
 <p></p>
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ ruby
 # Import the driver.
 require 'pg'
@@ -422,7 +422,7 @@ IDs:
 <section class="filter-content" markdown="1" data-scope="go">
 <p></p>
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ go
 package main
 
@@ -479,7 +479,7 @@ IDs:
 <section class="filter-content" markdown="1" data-scope="js">
 <p></p>
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ js
 var async = require('async')
 var pg = require('pg')
@@ -544,14 +544,14 @@ IDs:
 
 Suppose that you create a multi-column index on the `users` table with the `name` and `city` columns.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE INDEX ON users (name, city);
 ~~~
 
 Now suppose you want to update a couple rows in the table, based on their contents. You can use the [`EXPLAIN (OPT)`](explain.html#opt-option) command to see how the [cost-based optimizer](cost-based-optimizer.html) decides to perform the `UPDATE` statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN (opt) UPDATE users SET name='Patricia Smith (there are two)' WHERE name='Patricia Smith';
 ~~~
@@ -573,7 +573,7 @@ The output of the `EXPLAIN` statement shows that the optimizer scans the newly-c
 
 Although `users_name_city_idx` is likely the most efficient index for the table scan, you may want to assess the performance difference between scanning on `users_name_city_idx` and scanning on the primary index. You can provide an index hint (i.e., force the index selection) to use the primary key of the `users` table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN (opt) UPDATE users@primary SET name='Patricia Smith (there are two)' WHERE name='Patricia Smith';
 ~~~

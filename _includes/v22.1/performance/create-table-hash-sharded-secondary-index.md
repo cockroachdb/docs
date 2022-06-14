@@ -1,6 +1,6 @@
 Let's now create the `events` table and add a secondary index on the `ts` column in a single statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE events (
     product_id INT8,
@@ -14,7 +14,7 @@ Let's now create the `events` table and add a secondary index on the `ts` column
 );
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW INDEX FROM events;
 ~~~
@@ -37,7 +37,7 @@ Let's now create the `events` table and add a secondary index on the `ts` column
 (12 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW COLUMNS FROM events;
 ~~~

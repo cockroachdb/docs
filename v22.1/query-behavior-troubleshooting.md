@@ -33,7 +33,7 @@ You can look more closely at the behavior of a statement by visualizing a [state
 
 1. Start Jaeger:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     docker run -d --name jaeger -p 6831:6831/udp -p 16686:16686 jaegertracing/all-in-one:latest
     ~~~
@@ -308,7 +308,7 @@ To log CockroachDB-generated SQL queries as well, use `--vmodule=exec_log=3`.
 
 From the SQL prompt on a running node, execute the `crdb_internal.set_vmodule()` [function](functions-and-operators.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT crdb_internal.set_vmodule('exec_log=2');
 ~~~

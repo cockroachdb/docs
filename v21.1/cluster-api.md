@@ -39,7 +39,7 @@ To connect with the API on a secure cluster, you will need:
 
 1. Request a session token using the `/login` endpoint. For example:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     curl -d "username=user&password=pass" \
     -H 'Content-Type: application/x-www-form-urlencoded' \
@@ -48,14 +48,14 @@ To connect with the API on a secure cluster, you will need:
 
 2. Record the token (`session` value) that is returned.
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     {"session":"CIGAiPis4fj3CBIQ3u0rRQJ3tD8yIqee4hipow=="}
     ~~~
 
 3. Pass the token with each call using the `X-Cockroach-API-Session` header. For example:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     curl -H "X-Cockroach-API-Session: CIGAiPis4fj3CBIQ3u0rRQJ3tD8yIqee4hipow==" \
     https://localhost:8080/api/v2/nodes/

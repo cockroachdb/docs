@@ -35,12 +35,12 @@ Parameter | Description
 
 ### Create a schema
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE SCHEMA org_one;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW SCHEMAS;
 ~~~
@@ -61,7 +61,7 @@ By default, the user executing the `CREATE SCHEMA` statement is the owner of the
 
 ### Create a schema if one does not exist
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE SCHEMA org_one;
 ~~~
@@ -70,14 +70,14 @@ By default, the user executing the `CREATE SCHEMA` statement is the owner of the
 ERROR: schema "org_one" already exists
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE SCHEMA IF NOT EXISTS org_one;
 ~~~
 
 SQL does not generate an error, even though a new schema wasn't created.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW SCHEMAS;
 ~~~
@@ -98,17 +98,17 @@ SQL does not generate an error, even though a new schema wasn't created.
 
 You can create tables of the same name in the same database if they are in separate schemas.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE SCHEMA IF NOT EXISTS org_one;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE SCHEMA IF NOT EXISTS org_two;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW SCHEMAS;
 ~~~
@@ -126,7 +126,7 @@ You can create tables of the same name in the same database if they are in separ
 (7 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE org_one.employees (
         id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -135,7 +135,7 @@ You can create tables of the same name in the same database if they are in separ
 );
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE org_two.employees (
         id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -144,7 +144,7 @@ You can create tables of the same name in the same database if they are in separ
 );
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > WITH x as (SHOW TABLES) SELECT * x WHERE table_name='employees';
 ~~~
@@ -161,17 +161,17 @@ You can create tables of the same name in the same database if they are in separ
 
 To specify the owner of a schema, add an `AUTHORIZATION` clause to the `CREATE SCHEMA` statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE USER max WITH PASSWORD 'roach';
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE SCHEMA org_two AUTHORIZATION max;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW SCHEMAS;
 ~~~
@@ -190,12 +190,12 @@ To specify the owner of a schema, add an `AUTHORIZATION` clause to the `CREATE S
 
 If no schema name is specified in a `CREATE SCHEMA` statement with an `AUTHORIZATION` clause, the schema will be named after the user specified:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE SCHEMA AUTHORIZATION max;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW SCHEMAS;
 ~~~
@@ -217,19 +217,19 @@ When you [use a table without specifying a schema](sql-name-resolution.html#sear
 
 For example, suppose that you [grant the `root` role](grant.html) (i.e., the role of the current user `root`) to the `max` user:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > GRANT root TO max;
 ~~~
 
 Then, `max` [accesses the cluster](cockroach-sql.html) and creates two tables of the same name, in the same database, one in the `max` schema, and one in the `public` schema:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --url 'postgres://max:roach@host:port/db?sslmode=require'
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE max.accounts (
         id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -238,7 +238,7 @@ $ cockroach sql --url 'postgres://max:roach@host:port/db?sslmode=require'
 );
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE public.accounts (
         id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -247,7 +247,7 @@ $ cockroach sql --url 'postgres://max:roach@host:port/db?sslmode=require'
 );
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES;
 ~~~
@@ -262,12 +262,12 @@ $ cockroach sql --url 'postgres://max:roach@host:port/db?sslmode=require'
 
 `max` then inserts some values into the `accounts` table, without specifying a schema:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO accounts (name, balance) VALUES ('checking', 1000), ('savings', 15000);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM accounts;
 ~~~
@@ -282,7 +282,7 @@ $ cockroach sql --url 'postgres://max:roach@host:port/db?sslmode=require'
 
 Because `max` is the current user, all unqualified `accounts` table names resolve as `max.accounts`, and not `public.accounts`.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM public.accounts;
 ~~~

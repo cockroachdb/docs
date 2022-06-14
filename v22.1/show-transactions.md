@@ -45,7 +45,7 @@ The following fields are returned for each transaction:
 
 ### List active transactions across the cluster
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CLUSTER TRANSACTIONS;
 ~~~
@@ -62,7 +62,7 @@ Alternatively, you can use `SHOW TRANSACTIONS` to receive the same response.
 
 ### List active transactions on the gateway node
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW LOCAL TRANSACTIONS;
 ~~~
@@ -80,7 +80,7 @@ You can use a [`SELECT`](select-clause.html) statement to filter the list of cur
 
 #### Show transactions associated with a specific application
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > WITH x as (SHOW CLUSTER TRANSACTIONS) SELECT * FROM x WHERE application_name = 'movr';
 
@@ -97,7 +97,7 @@ You can use a [`SELECT`](select-clause.html) statement to filter the list of cur
 
 To exclude transactions from the [built-in SQL client](cockroach-sql.html), filter for transactions that do not show `$ cockroach sql` as the `application_name`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > WITH x AS (SHOW CLUSTER TRANSACTIONS) SELECT * FROM x
       WHERE application_name != '$ cockroach sql';

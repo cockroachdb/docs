@@ -21,7 +21,7 @@ In CockroachDB {{ page.version.version }}, `pg_extension` contains the following
 
 To see the list of tables in `pg_extension` for the [current database](sql-name-resolution.html#current-database), use the following [`SHOW TABLES`](show-tables.html) statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM pg_extension;
 ~~~
@@ -49,7 +49,7 @@ Unless specified otherwise, queries to `pg_extension` assume the [current databa
 
 For example, to return the `pg_extension` table with additional information about indexes in the `movr` database, you can query the `pg_extension.pg_indexes` table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM movr.pg_extension.pg_indexes;
 ~~~

@@ -494,7 +494,7 @@ Unless specified otherwise, queries to `information_schema` assume the [current 
 
 For example, to retrieve all columns from the `table_constraints` table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM movr.information_schema.table_constraints;
 ~~~
@@ -512,7 +512,7 @@ For example, to retrieve all columns from the `table_constraints` table:
 
 And to retrieve specific columns from the `table_constraints` table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT table_name, constraint_name FROM movr.information_schema.table_constraints;
 ~~~
