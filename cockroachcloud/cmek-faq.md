@@ -9,6 +9,10 @@ docs_area: manage.security
 
 Yes, the {{ site.data.products.dedicated }} clusters are encrypted by default by the way of encrypting the cloud disks used to store the data, using cloud provider managed keys (unique to each cloud account).
 
+## Which {{ site.data.products.dedicated }} clusters are eligible for CMEK?
+
+CMEK can be enabled for {{ site.data.products.dedicated }} clusters created and deployed on AWS after April 1, 2022 and on GCP after June 9, 2022.
+
 ## Is the data encryption key rotated at some set duration or periodically? If yes, is there a way to customize the duration?
 
 Yes, the data encryption key is rotated automatically once every month. It’s not possible to customize that duration. The new key is used to encrypt new writes, while the previous data is still encrypted with the previous data keys unless it’s rewritten.
@@ -39,8 +43,14 @@ Not yet. User Interface experience for CMEK would be available at a later time. 
 
 ## Can we enable CMEK when we add a new region to a cluster?
 
-Not yet. Ability to enable CMEK for the new region addition would be available at a later time.
+Not yet. Currently, if you add a new region to a CMEK-enabled cluster, the new region is not protected by the CMEK key.
 
 ## Is it possible to self-serve restore a CMEK-enabled cluster in case of a cluster failure or disaster scenario?
 
 Not yet. To restore a failed CMEK-enabled cluster, please create a support ticket for Cockroach Labs providing your cluster id and organization id.
+
+## See also
+
+- [Customer-Managed Encryption Keys (CMEK)](cmek.html)
+- [Managing Customer-Managed Encryption Keys (CMEK) for CockroachDB Dedicated](managing-cmek.html)
+- [Encryption At Rest](/docs/{{site.versions["stable"]}}/encryption.html)
