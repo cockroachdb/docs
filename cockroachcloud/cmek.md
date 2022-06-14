@@ -121,7 +121,7 @@ When CMEK is enabled, managed backups in {{ site.data.products.db }} are encrypt
 
 We do not recommend enabling CMEK on an existing cluster, to prevent a situation where some data is protected with the CMEK key and other data isn't. For the same reason, we recommend that you configure CMEK after creating the cluster but before loading any data into it or giving users access to it.
 
-This limitation also applies to adding a new region to an existing cluster. Enabling CMEK for new regions of existing clusters is not supported. Instead, create a new multi-region cluster and enable CMEK on it. For more information about using CMEK with multi-region clusters, see [Multi-region Clusters](#multi-region-clusters).
+This limitation also applies to adding a new region to an existing cluster. Adding a new region to a multi-region cluster that has CMEK enabled is not recommended, because the new region's data at rest will not be encrypted by the CMEK key.
 
 ### Can I enable CMEK from Cockroach Cloud Console?
 
@@ -132,6 +132,7 @@ It's not possible to enable CMEK from {{ site.data.products.db }} Console. Inste
 CMEK can't be disabled on a cluster after it has been enabled.
 
 ## Limitations
+The CMEK feature has the following limitations:
 
 - CMEK can be enabled only on clusters created after April 1, 2022 (AWS) or June 9, 2022 (GCP).
 - To enable CMEK, you must use the [Cloud API](/docs/cockroachcloud/cloud-api.html). It's not possible to enable CMEK using the {{ site.data.products.db }} Console.
