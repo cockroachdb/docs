@@ -1,1 +1,0 @@
-cmek-key-vault-aws.md
