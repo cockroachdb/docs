@@ -441,6 +441,20 @@ SQLSTATE: 22023
 HINT: use `RESET (ttl)` to remove TTL from the table
 ~~~
 
+## Changefeeds
+
+Row-level TTL interacts with [changefeeds](use-changefeeds.html) in the following ways:
+
+- When expired rows are deleted, a [changefeed delete message](use-changefeeds.html#delete-messages) is emitted.
+
+## Backup and restore
+
+Row-level TTL interacts with [backup and restore](backup-and-restore-overview.html) in the following ways:
+
+- When you run a [`BACKUP`](backup.html), all row-level TTL information associated with the tables being backed up (including TTL expiration times) is also backed up.
+
+- When you [`RESTORE`](restore.html) from a backup, all row-level TTL information associated with the tables being restored (including TTL expiration times) is also restored. Any expired rows in the restored tables are eligible to be [deleted](#when-are-rows-deleted) by the [TTL job](#how-it-works).
+
 ## Limitations
 
 {% include {{page.version.version}}/known-limitations/row-level-ttl-limitations.md %}
