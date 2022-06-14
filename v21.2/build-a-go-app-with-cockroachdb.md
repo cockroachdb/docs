@@ -10,7 +10,7 @@ filter_sort: 1
 docs_area: get_started
 ---
 
-{% include_cached filter-tabs.md %}
+{% include filter-tabs.md %}
 
 This tutorial shows you how build a simple CRUD Go application with CockroachDB and the [Go pgx driver](https://pkg.go.dev/github.com/jackc/pgx).
 

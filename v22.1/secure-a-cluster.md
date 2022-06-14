@@ -8,7 +8,7 @@ filter_sort: 1
 docs_area: deploy
 ---
 
-{% include_cached filter-tabs.md %}
+{% include filter-tabs.md %}
 
 Once you've [installed CockroachDB](install-cockroachdb.html), it's simple to run a secure multi-node cluster locally, using [TLS certificates](cockroach-cert.html) to encrypt network communication.
 

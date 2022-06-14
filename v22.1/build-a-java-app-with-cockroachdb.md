@@ -10,7 +10,7 @@ filter_sort: 1
 docs_area: get_started
 ---
 
-{% include_cached filter-tabs.md %}
+{% include filter-tabs.md %}
 
 This tutorial shows you how to build a simple CRUD Java application with CockroachDB and the Java JDBC driver.
 

@@ -10,7 +10,7 @@ filter_sort: 2
 docs_area: 
 ---
 
-{% include_cached filter-tabs.md %}
+{% include filter-tabs.md %}
 
 This page shows you how to manually deploy an insecure multi-node CockroachDB cluster on Google Cloud Platform's Compute Engine (GCE), using Google's TCP Proxy Load Balancing service to distribute client traffic.
 

@@ -16,7 +16,7 @@ To secure your CockroachDB cluster's inter-node and client-node communication, y
 
 To create these certificates and keys, use the `cockroach cert` [commands](cockroach-commands.html) with the appropriate subcommands and flags, use [`openssl` commands](https://wiki.openssl.org/index.php/), or use a [custom CA](create-security-certificates-custom-ca.html) (for example, a public CA or your organizational CA).
 
-{% include_cached filter-tabs.md %}
+{% include filter-tabs.md %}
 
 This document discusses the following advanced use cases for using security certificates with CockroachDB:
 

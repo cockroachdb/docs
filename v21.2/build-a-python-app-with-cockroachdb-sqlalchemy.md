@@ -10,7 +10,7 @@ filter_sort: 2
 docs_area: get_started
 ---
 
-{% include_cached filter-tabs.md %}
+{% include filter-tabs.md %}
 
 {% include cockroach_u_pydev.md %}
 

@@ -9,7 +9,7 @@ filter_sort: 4
 docs_area: get_started
 ---
 
-{% include_cached filter-tabs.md %}
+{% include filter-tabs.md %}
 
 This tutorial shows you how to build a simple [Spring Boot](https://spring.io/projects/spring-boot) application with CockroachDB, using the [MyBatis-Spring-Boot-Starter module](http://mybatis.org/spring-boot-starter) for data access.
 

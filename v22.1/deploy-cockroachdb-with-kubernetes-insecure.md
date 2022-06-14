@@ -10,7 +10,7 @@ filter_sort: 2
 docs_area:
 ---
 
-{% include_cached filter-tabs.md %}
+{% include filter-tabs.md %}
 
 This page shows you how to start and stop a 3-node CockroachDB insecure test cluster in a single [Kubernetes](http://kubernetes.io/) cluster, using one of the following:
 
