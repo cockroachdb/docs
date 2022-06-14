@@ -25,7 +25,7 @@ To filter by [application]({{ link_prefix }}connection-parameters.html#additiona
 - If you haven't set `application_name` in a client connection string, it appears as `unset`.
 {{site.data.alerts.end}}
 
-You can also filter by one or more databases (**Database**), SQL statement types (**Statement Type**), and for [statement fingerprints](#sql-statement-fingerprints) that take longer than a specified time to run. To display only statements with queries that cause full table scans, click **Only show statements that contain queries with full table scans**.
+You can also filter by one or more databases (**Database**), [SQL statement types]({{ link_prefix }}sqltype.html) (**Statement Type**), and for [statement fingerprints](#sql-statement-fingerprints) that take longer than a specified time to run. To display only statements with queries that cause full table scans, click **Only show statements that contain queries with full table scans**.
 
 To filter statements by the node on which the statement ran, select **Node** and chose one or more nodes.
 
