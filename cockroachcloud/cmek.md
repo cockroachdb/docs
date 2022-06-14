@@ -60,7 +60,7 @@ Enabling CMEK changes how the cluster's store keys and data keys are handled goi
 
 {{site.data.alerts.callout_success}}
 CMEK is configured per cluster region. A single-region cluster is actually a multi-region cluster with only a single region. The following steps occur for each of a cluster's regions.
-{{site.data.alerts.end}
+{{site.data.alerts.end}}
 
 At the time that you enable CMEK for a cluster, {{ site.data.products.db }}:
 
@@ -70,7 +70,7 @@ At the time that you enable CMEK for a cluster, {{ site.data.products.db }}:
 
 Going forward:
 
-1. The cluster can start only when the CMEK key is available. If the CMEK key becomes unavailable after the cluster is running, data can't be read from or written to the cluster until access is restored.
+1. The cluster can start only when the CMEK key is available. If the CMEK key becomes unavailable or you revoke the cluster's access to the key, the cluster can't start until access is restored.
 1. Each time the store key is rotated, the new store key is also encrypted using the CMEK key.
 1. Each time the data key is rotated, the new data key is encrypted using the encrypted store key.
 1. Newly-written data is written using the current data key. Data is read using the data key that was used to encrypt it.
