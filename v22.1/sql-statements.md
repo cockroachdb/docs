@@ -22,7 +22,7 @@ Statement | Usage
 [`ALTER DEFAULT PRIVILEGES`](alter-default-privileges.html) | Change the default [privileges](security-reference/authorization.html#privileges) for objects created by specific roles/users in the current database.
 [`ALTER INDEX`](alter-index.html) | Apply a schema change to an index.
 [`ALTER PARTITION`](alter-partition.html) | Configure the replication zone for a partition. [Partitioning](partitioning.html) requires an [Enterprise license](enterprise-licensing.html).
-[`ALTER PRIMARY KEY`](alter-primary-key.html) |  Change the [primary key](primary-key.html) of a table.
+[`ALTER PRIMARY KEY`](alter-primary-key.html) | Change the [primary key](primary-key.html) of a table.
 [`ALTER RANGE`](alter-range.html) | Configure the replication zone for a system range.
 [`ALTER SCHEMA`](alter-schema.html) | Alter a user-defined schema.
 [`ALTER SEQUENCE`](alter-sequence.html) | Apply a schema change to a sequence.
@@ -55,7 +55,7 @@ Statement | Usage
 [`DROP VIEW`](drop-view.html)| Remove a view.
 [`EXPERIMENTAL_AUDIT`](experimental-audit.html) | Turn SQL audit logging on or off for a table.
 [`PARTITION BY`](partition-by.html) | Partition, re-partition, or un-partition a table or secondary index. [Partitioning](partitioning.html) requires an [Enterprise license](enterprise-licensing.html).
-[`REFRESH`](refresh.html) |  Refresh the stored query results of a [materialized view](views.html#materialized-views).
+[`REFRESH`](refresh.html) | Refresh the stored query results of a [materialized view](views.html#materialized-views).
 [`RENAME COLUMN`](rename-column.html) | Rename a column in a table.
 [`RENAME CONSTRAINT`](rename-constraint.html) | Rename a constraint on a column.
 [`RENAME DATABASE`](rename-database.html) | Rename a database.
@@ -68,7 +68,7 @@ Statement | Usage
 [`SHOW CREATE`](show-create.html) | View the `CREATE` statement for a database, table, view, or sequence.
 [`SHOW DATABASES`](show-databases.html) | List databases in the cluster.
 [`SHOW ENUMS`](show-enums.html) | List user-defined, [enumerated data types](enum.html) in a database.
-[`SHOW FULL TABLE SCANS`](show-full-table-scans.html) |  List recent queries that used a full table scan.
+[`SHOW FULL TABLE SCANS`](show-full-table-scans.html) | List recent queries that used a full table scan.
 [`SHOW INDEX`](show-index.html) | View index information for a table or database.
 [`SHOW LOCALITY`](show-locality.html) | View the locality of the current node.
 [`SHOW PARTITIONS`](show-partitions.html) | List partitions in a database. [Partitioning](partitioning.html) requires an [Enterprise license](enterprise-licensing.html).
@@ -120,7 +120,7 @@ Statement | Usage
 [`SHOW GRANTS`](show-grants.html) | View privileges granted to users.
 [`SHOW ROLES`](show-roles.html) | Lists the roles for all databases.
 [`SHOW USERS`](show-users.html) | Lists the users for all databases.
-[`SHOW DEFAULT PRIVILEGES`](show-default-privileges.html) |  Show the default privileges for objects created by specific roles/users in the current database.
+[`SHOW DEFAULT PRIVILEGES`](show-default-privileges.html) | Show the default privileges for objects created by specific roles/users in the current database.
 
 <a id="transaction-management-statements"></a>
 
@@ -192,11 +192,11 @@ Statement | Usage
 [`BACKUP`](backup.html) | Create disaster recovery backups of databases and tables.
 [`RESTORE`](restore.html) | Restore databases and tables using your backups.
 [`SHOW BACKUP`](show-backup.html) | List the contents of a backup.
-[`CREATE SCHEDULE FOR BACKUP`](create-schedule-for-backup.html) |  Create a schedule for periodic backups.
-[`SHOW SCHEDULES`](show-schedules.html) |  View information on backup schedules.
-[`PAUSE SCHEDULES`](pause-schedules.html) |  Pause backup schedules.
+[`CREATE SCHEDULE FOR BACKUP`](create-schedule-for-backup.html) | Create a schedule for periodic backups.
+[`SHOW SCHEDULES`](show-schedules.html) | View information on backup schedules.
+[`PAUSE SCHEDULES`](pause-schedules.html) | Pause backup schedules.
 [`RESUME SCHEDULES`](resume-schedules.html) | Resume paused backup schedules.
-[`DROP SCHEDULES`](drop-schedules.html) |  Drop backup schedules.
+[`DROP SCHEDULES`](drop-schedules.html) | Drop backup schedules.
 
 ## Changefeed statements ({{ site.data.products.enterprise }})
 
