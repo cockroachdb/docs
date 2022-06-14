@@ -118,7 +118,7 @@ AWS disks can only be scaled once every six hours.
 
 ## Add or remove regions from a cluster
 
-You can add or remove up to three regions at a time through the Console. See the [Planning your cluster](plan-your-cluster.html) section of this page for cluster requirements and recommendations before proceeding.
+You can add or remove up to nine regions at a time through the Console. Note that you cannot have a two-region cluster. See [Planning your cluster](plan-your-cluster.html) for cluster requirements and recommendations before proceeding.
 
 ### Add a region to your cluster
 

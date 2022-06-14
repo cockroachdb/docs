@@ -16,11 +16,11 @@ Get future release notes emailed to you:
 As of May 30, 2022, new {{ site.data.products.dedicated }} clusters and all {{ site.data.products.serverless }} clusters are running CockroachDB [v21.2.10](v21.2.html).
 {{site.data.alerts.end}}
 
-## June 6, 2022
+## June 16, 2022
 
 <h3>General changes</h3>
 
-- You can now [add and remove regions](cluster-management.html#add-or-remove-regions-from-a-cluster) from {{ site.data.products.dedicated }} clusters through the {{ site.data.products.db }} Console.
+- You can now [add and remove regions](../cockroachcloud/cluster-management.html#add-or-remove-regions-from-a-cluster) from {{ site.data.products.dedicated }} clusters through the {{ site.data.products.db }} Console.
 
 ## June 6, 2022
 
