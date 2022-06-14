@@ -11,7 +11,7 @@ docs_area: reference.benchmarking
 
 This page shows you how to reproduce [CockroachDB TPC-C performance benchmarking results](performance.html#scale). Across all scales, CockroachDB can process tpmC (new order transactions per minute) at near maximum efficiency. Start by choosing the scale you're interested in:
 
-{% include filter-tabs.md %}
+{% include_cached filter-tabs.md %}
 
 | Workload                 | Cluster size                                                | Warehouses | Data size |
 |--------------------------+-------------------------------------------------------------+------------+-----------|

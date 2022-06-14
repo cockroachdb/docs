@@ -10,7 +10,7 @@ filter_sort: 2
 docs_area: 
 ---
 
-{% include filter-tabs.md %}
+{% include_cached filter-tabs.md %}
 
 This page shows you how to deploy an insecure multi-node CockroachDB cluster on Digital Ocean, using Digital Ocean's managed load balancing service to distribute client traffic.
 

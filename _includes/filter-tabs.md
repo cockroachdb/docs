@@ -4,7 +4,7 @@ The filter-tabs.md file is used to create a filter bar at the top of the page to
 
 To generate the filter bar in a specific location within a document, place the following liquid block in its own line in the locatino of the document you wish to put it:
 
-{% include filter-tabs.md %}
+{% include_cached filter-tabs.md %}
 
 In order to properly utilize this file, the following three items must be added to the YAML front matter of each page to be filtered:
 

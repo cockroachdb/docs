@@ -10,7 +10,7 @@ filter_sort: 4
 docs_area: get_started
 ---
 
-{% include filter-tabs.md %}
+{% include_cached filter-tabs.md %}
 
 This tutorial shows you how build a simple Node.js application with CockroachDB and [Prisma](https://www.prisma.io).
 

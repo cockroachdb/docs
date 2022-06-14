@@ -11,7 +11,7 @@ filter_sort: 1
 docs_area: 
 ---
 
-{% include filter-tabs.md %}
+{% include_cached filter-tabs.md %}
 
 This page shows you how to start and stop a secure 3-node CockroachDB cluster in a single [Kubernetes](http://kubernetes.io/) cluster, using one of the following:
 

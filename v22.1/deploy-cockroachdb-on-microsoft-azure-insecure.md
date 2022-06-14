@@ -10,7 +10,7 @@ filter_sort: 2
 docs_area: 
 ---
 
-{% include filter-tabs.md %}
+{% include_cached filter-tabs.md %}
 
 This page shows you how to manually deploy an insecure multi-node CockroachDB cluster on Microsoft Azure, using Azure's managed load balancing service to distribute client traffic.
 
