@@ -331,16 +331,16 @@ SELECT * FROM commodity;
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-SELECT id, jsonb_array_elements(commodity.data->'prices') FROM commodity;
+SELECT id as commodity, jsonb_array_elements(commodity.data->'prices') AS "price" FROM commodity;
 ~~~
 
 ~~~
-    id   | jsonb_array_elements
----------+------------------------
-  silver | {"05/01/2022": 100.5}
-  silver | {"06/01/2022": 101.5}
-  gold   | {"05/01/2022": 200.5}
-  gold   | {"06/01/2022": 211.5}
+  commodity |         price
+------------+------------------------
+  silver    | {"05/01/2022": 100.5}
+  silver    | {"06/01/2022": 101.5}
+  gold      | {"05/01/2022": 200.5}
+  gold      | {"06/01/2022": 211.5}
 (4 rows)
 ~~~
 
