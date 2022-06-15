@@ -70,7 +70,7 @@ For a list of tools supported by the CockroachDB community, see [Third-Party Too
 | [AWS DMS](https://aws.amazon.com/dms/) | 3.4.6 | Beta | [Migrate your database to CockroachDB with AWS DMS](aws-dms.html)
 | [Flyway](https://flywaydb.org/documentation/commandline/#download-and-installation) | 7.1.0 | Full | [Migrate CockroachDB Schemas with Flyway](flyway.html)
 | [Liquibase](https://www.liquibase.org/download) | 4.2.0 | Full | [Migrate CockroachDB Schemas with Liquibase](liquibase.html)
-| [Prisma(https://prisma.io) | 3.14.0 | Full | N/A
+| [Prisma](https://prisma.io) | 3.14.0 | Full | N/A
 
 ## Other tools
 
