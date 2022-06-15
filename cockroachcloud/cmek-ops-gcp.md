@@ -9,6 +9,18 @@ This page covers the procedures required to provision a Customer Managed Encrypt
 
 This is part of the larger process of [Enabling CMEK for a {{ site.data.products.dedicated }} cluster](managing-cmek.html#enable-cmek).
 
+## Overview
+
+- In [Step 1. Provision the cross-tenant service account](#step-1-provision-the-cross-tenant-service-account), we will create a service account that will be used by {{ site.data.products.dedicated }} to access the CMEK key.
+- In [Step 2. Create the CMEK key](#step-2-create-the-cmek-key), we will explore two ways of creating the required key:
+	- [Directly in the GCP key management service (KMS) console](#option-a-use-the-gcp-console)
+	- By [setting up a Vault GCP-KMS secrets engine](#option-b-use-the-vault-gcp-kms-secrets-engine-to-create-the-cmek-key) with access to GCP KMS, in order to leverage the security advantages of Vault's additional layer of abstraction.
+		{{site.data.alerts.callout_info}}
+		[Learn more about the integrations between CockroachDB and HashiCorp Vault.](../{{site.versions["stable"]}}/hashicorp-integration.html)
+		{{site.data.alerts.end}}
+- In [Step 3. Authorize the service account to use the CMEK key
+](#step-3-authorize-the-service-account-to-use-the-cmek-key), we will authorize the cross-tenant service account created in Step 1 to use the key created in Step 2.
+
 {{site.data.alerts.callout_info}}
 For multi-region clusters, you must provide a key and authorized service account combination per region. You can either:
 
@@ -63,7 +75,7 @@ Here we will create a cross-tenant service account that can be temporarily assum
 	Note the **email address** for the service account (or keep the service account tab open), as you'll need it in Step 3.
 	{{site.data.alerts.end}}
 
-## Step 2. Create the CMEK
+## Step 2. Create the CMEK key
 
 ### Option A: Use the GCP console
 

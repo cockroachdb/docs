@@ -9,6 +9,13 @@ This page covers the procedures required to provision a Customer Managed Encrypt
 
 This is part of the larger process of [Enabling CMEK for a {{ site.data.products.dedicated }} cluster](managing-cmek.html#enable-cmek).
 
+## Overview
+
+- In [Step 1. Provision the cross-account IAM role](#step-1-provision-the-cross-account-iam-role), we will create an IAM role that will be used by {{ site.data.products.dedicated }} to access the CMEK key.
+- In [Step 2. Create the CMEK key](#step-2-create-the-cmek-key), we will explore two ways of creating the required key:
+	- Directly in the AWS key management service (KMS) console
+	- By setting up a Vault KMS secrets engine with to AWS KMS, in order to leverage the security advantages of Vault's additional layer of abstraction.
+
 {{site.data.alerts.callout_info}}
 For multi-region clusters, you must provide a key and IAM role combination per region. You can provide the same key for all your cluster regions, a different key per cluster region, or any mapping of keys to regions you may choose. It does not matter if the key is a single- or multi-region key.
 {{site.data.alerts.end}}
@@ -54,8 +61,11 @@ Here we will create a *cross-account IAM role*. This is a role in your AWS accou
 
 You can create the CMEK key two ways:
 
-- [Using Vault](#option-a-use-the-vault-aws-kms-secrets-engine-to-create-the-cmek-key)
-- [Directly in the AWS console](#option-b-use-the-aws-console-to-create-the-cmek-key)
+- [Directly in the AWS console](#option-a-use-the-aws-console-to-create-the-cmek-key)
+- By setting up a [Vault AWS-KMS secrets engine](#option-b-use-the-vault-aws-kms-secrets-engine-to-create-the-cmek-key) with access to AWS KMS, in order to leverage the security advantages of Vault's additional layer of abstraction.
+		{{site.data.alerts.callout_info}}
+		Learn more about [CockroachDB - HashiCorp Vault integrations](../{{site.versions["stable"]}}/hashicorp-integration.html).
+		{{site.data.alerts.end}}
 
 ### Option A: Use the AWS Console to create the CMEK key
 1. In the AWS console, visit the [KMS page](https://console.aws.amazon.com/kms/). 
