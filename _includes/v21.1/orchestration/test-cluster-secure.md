@@ -79,32 +79,31 @@ pod/cockroachdb-client-secure created
 </section>
 
 <section class="filter-content" markdown="1" data-scope="helm">
-1. From your local workstation, use our [`client-secure.yaml`](https://github.com/cockroachdb/helm-charts/blob/master/examples/client-secure.yaml) file to launch a pod and keep it running indefinitely.
+From your local workstation, use our [`client-secure.yaml`](https://github.com/cockroachdb/helm-charts/blob/master/examples/client-secure.yaml) file to launch a pod and keep it running indefinitely.
 
-    1. Download the file:
+1. Download the file:
 
-        {% include_cached copy-clipboard.html %}
-        ~~~ shell
-        $ curl -OOOOOOOOO \
-        https://raw.githubusercontent.com/cockroachdb/helm-charts/master/examples/client-secure.yaml
-        ~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ curl -OOOOOOOOO \
+    https://raw.githubusercontent.com/cockroachdb/helm-charts/master/examples/client-secure.yaml
+    ~~~
 
-    1. In the file, set the following values:
+1. In the file, set the following values:
+    - `spec.serviceAccountName: my-release-cockroachdb`
+    - `spec.image: cockroachdb/cockroach: {your CockroachDB version}`
+    - `spec.volumes[0].project.sources[0].secret.name: my-release-cockroachdb-client-secret`
 
-        - `spec.serviceAccountName: my-release-cockroachdb`
-        - `spec.image: cockroachdb/cockroach: {your CockroachDB version}`
-        - `spec.volumes[0].project.sources[0].secret.name: my-release-cockroachdb-client-secret`
+1. Use the file to launch a pod and keep it running indefinitely:
 
-    1. Use the file to launch a pod and keep it running indefinitely:
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ kubectl create -f client-secure.yaml
+    ~~~
 
-        {% include_cached copy-clipboard.html %}
-        ~~~ shell
-        $ kubectl create -f client-secure.yaml
-        ~~~
-
-        ~~~
-        pod "cockroachdb-client-secure" created
-        ~~~
+    ~~~
+    pod "cockroachdb-client-secure" created
+    ~~~
 
 1. Get a shell into the pod and start the CockroachDB [built-in SQL client](cockroach-sql.html):
 
