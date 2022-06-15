@@ -5,15 +5,17 @@ toc: true
 docs_area: manage.security
 ---
 
-Customer-Managed Encryption Keys (CMEK) give you more control over how a {{ site.data.products.dedicated }} cluster's data is protected at rest on the cluster's nodes. When CMEK is enabled, your cluster's data is protected by an additional cryptographic key that is entirely within your control, hosted in a supported key-management systems (KMS) platform. This key is called the _CMEK key_.
+Customer-Managed Encryption Keys (CMEK) allow you to protect data at rest in a {{ site.data.products.dedicated }} cluster using a cryptographic key that is entirely within your control, hosted in a supported key-management systems (KMS) platform. This key is called the _CMEK key_.
 
-You manage your CMEK keys using one or more of the following services:
+You can manage your CMEK keys using one or more of the following services:
 
 - Amazon Web Services (AWS) KMS
 - Google Cloud Platform (GCP) KMS
 - [Hashicorp Vault Secrets Manager](https://www.vaultproject.io/docs/secrets/key-management), which can distribute keys stored in multiple KMS platforms
 
+{{site.data.alerts.callout_success}}
 You can learn more about the [supported integrations between CockroachDB and Hashicorp Vault](/docs/{{site.versions["stable"]}}/hashicorp-integration.html).
+{{site.data.alerts.end}
 
 {{ site.data.products.db }} communicates with the KMS platform using the KMS platform's API, and you manage {{ site.data.products.db }}'s access to the CMEK key using the KMS platform's identity and access management (IAM) system. The CMEK key is never persisted in a cluster, and {{ site.data.products.db }} never has direct access to the CMEK key material. When CMEK is enabled, the CMEK key must be available before the cluster can start and the cluster'sr newly-written data at rest can be accessed.
 
@@ -51,14 +53,16 @@ CMEK helps you to enforce such business rules on {{ site.data.products.db }} clu
 
 ## How CMEK works
 
-When you create a {{ site.data.products.dedicated }} cluster, two encryption keys are created automatically:
+When you create a {{ site.data.products.dedicated }} cluster, its data at rest is not encrypted by default. Instead, the data is stored on disks attached to the cluster, which are always encrypted by the Information-As-A-Service (IAAS) provider you select when you create the cluster
 
-1. The _store key_ is a Key Encryption Key (KEK), and is used to protect the data key. The store key is accessed each time a cluster node is started.
-1. The _data key_ is a Data Encryption Key (DEK), and is used to encrypt and decrypt cluster data before it is read from or written to a cluster node's filesystem. Each time the cluster is started or restarted, and each time a node joins the cluster, CockroachDB uses the store key to encrypt and decrypt data keys.
+When you enable CMEK on a {{ site.data.products.dedicated }} cluster, {{ site.data.products.db }} creates two encryption keys and begins to use them to protect newly-written data at rest. {{ site.data.products.db }} manages these encryption keys and propagates them to cluster nodes.
+
+1. The _data key_ is a Data Encryption Key (DEK), and is used to encrypt and decrypt cluster data before it is read from or written to disks attached to cluster nodes. The data key is rotated frequently, and is always encrypted at rest by the store key.
+1. The _store key_ is a Key Encryption Key (KEK) that encrypts the data keys at rest. The store key is rotated less frequently than the data key, and is encrypted at rest by the CMEK key.
 
 For more details about encryption in {{ site.data.products.db }}, see [Encryption At Rest](/docs/{{site.versions["stable"]}}/encryption.html).
 
-Enabling CMEK changes how the cluster's store keys and data keys are handled going forward, but has no effect on the cluster's existing store keys, data keys, or data.
+Enabling CMEK has no impact on a cluster's existing data.
 
 {{site.data.alerts.callout_success}}
 CMEK is configured per cluster region. A single-region cluster is actually a multi-region cluster with only a single region. The following steps occur for each of a cluster's regions.
@@ -66,13 +70,14 @@ CMEK is configured per cluster region. A single-region cluster is actually a mul
 
 At the time that you enable CMEK for a cluster, {{ site.data.products.db }}:
 
-1. Rotates the store key and encrypts it using the CMEK key.
-1. Rotates the data key and encrypts it using the encrypted store key.
-1. Propagates the new store key and data key to cluster nodes.
+1. Creates the store key and encrypts it using the CMEK key.
+1. Creaters the data key and encrypts it using the encrypted store key.
+1. Propagates the store key and data key to cluster nodes.
+1. Starts the cluster.
 
 Going forward:
 
-1. The cluster can start only when the CMEK key is available. If the CMEK key becomes unavailable or you revoke the cluster's access to the key, the cluster can't start until access is restored.
+1. The cluster can start only when the CMEK key is available to decrypt the store key. If the CMEK key becomes unavailable or you revoke the cluster's access to the key, the cluster can't start until access is restored.
 1. Each time the store key is rotated, the new store key is also encrypted using the CMEK key.
 1. Each time the data key is rotated, the new data key is encrypted using the encrypted store key.
 1. Newly-written data is written using the current data key. Data is read using the data key that was used to encrypt it.
@@ -97,42 +102,6 @@ Backups in {{ site.data.products.dedicated }} are triggered in two ways, only on
   - The data keys used to encrypt managed backups in {{ site.data.products.db }} are encrypted using the CMEK key before being written to persistent storage.
   - The CMEK key must be available before you can restore from an automatic backup.
 
-## CMEK FAQs
-<!-- TODO: De-duplicate with the standalone topic -->
-The following FAQs distill important information that is also covered in the preceding sections, as well as in the [Limitations](#limitations) section below.
-
-### How are the store key and data key stored in the cluster?
-
-If CMEK is enabled, the store key is encrypted by the CMEK key, which is never persisted to the cluster and never resides within {{ site.data.products.db }}. Otherwise, the store key is not encrypted at rest, but it is still protected by the storage-level encryption on each of the cluster's nodes.
-
-Data keys are encrypted at rest by the store key, which is protected by the CMEK key.
-
-### If CMEK is not enabled, is data at rest in a {{ site.data.products.dedicated }} cluster encrypted by default?
-
-Yes. Data at rest in a {{ site.data.products.dedicated }} cluster is encrypted in persistent storage by your IAAS provider. For more details, check the documentation for your IAAS provider.
-
-### Can the CMEK key be automatically or manually rotated?
-
-It's not possible to rotate the CMEK key.
-
-### Are managed backups in CockroachDB Cloud encrypted using the CMEK key?
-
-When CMEK is enabled, managed backups in {{ site.data.products.db }} are encrypted using the CMEK key before being written to persistent storage, and the CMEK key must be available when you restore from an automatic backup. In addition, backups taken before CMEK was enabled cannot be restored to the cluster.
-
-### Can I enable CMEK on an existing cluster?
-
-We do not recommend enabling CMEK on an existing cluster, to prevent a situation where some data is protected with the CMEK key and other data isn't. For the same reason, we recommend that you configure CMEK after creating the cluster but before loading any data into it or giving users access to it.
-
-This limitation also applies to adding a new region to an existing cluster. Adding a new region to a multi-region cluster that has CMEK enabled is not recommended, because the new region's data at rest will not be encrypted by the CMEK key.
-
-### Can I enable CMEK from Cockroach Cloud Console?
-
-It's not possible to enable CMEK from {{ site.data.products.db }} Console. Instead, you must use the [Cloud API](/docs/cockroachcloud/cloud-api.html).
-
-### After enabling CMEK, can I disable it?
-
-CMEK can't be disabled on a cluster after it has been enabled.
-
 ## Limitations
 The CMEK feature has the following limitations:
 
@@ -146,4 +115,5 @@ The CMEK feature has the following limitations:
 ## See also
 
 - [Managing Customer-Managed Encryption Keys (CMEK) for {{ site.data.products.dedicated }}](managing-cmek.html)
-- [Encryption At Rest](/docs/{{site.versions["stable"]}}/encryption.html)
+- [Customer-Managed Encryption Keys (CMEK) Frequently Asked Questions (FAQ)](cmek-faq.html)
+- [Encryption At Rest](/docs/encryption.html)
