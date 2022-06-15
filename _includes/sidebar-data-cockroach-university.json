@@ -1,69 +1,7 @@
 {
   "title": "Online Courses",
   "is_top_level": true,
-  "items": [
-    {
-      "title": "Intro Courses",
-      "items": [
-        {
-          "title": "Intro to Distributed SQL and CockroachDB",
-          "urls": [
-            "https://university.cockroachlabs.com/courses/course-v1:crl+intro-to-distributed-sql-and-cockroachdb+self-paced/about"
-          ]
-        },
-        {
-          "title": "Intro to Serverless Databases and CockroachDB Serverless",
-          "urls": [
-            "https://university.cockroachlabs.com/courses/course-v1:crl+intro-to-serverless+self-paced/about"
-          ]
-        }
-      ]
-    },
-    {
-      "title": "SQL Courses",
-      "items": [
-        {
-          "title": "Schema Design in CockroachDB",
-          "urls": [
-            "https://university.cockroachlabs.com/courses/course-v1:crl+foundations-schema-design-cockroachdb+self-paced/about"
-          ]
-        },
-        {
-          "title": "Query Performance in CockroachDB",
-          "urls": [
-            "https://university.cockroachlabs.com/courses/course-v1:crl+cockroachdb-query-performance-for-devs+self-paced/about"
-          ]
-        }
-      ]
-    },
-    {
-      "title": "App Dev Courses",
-      "items": [
-        {
-          "title": "CockroachDB for Node.js Developers",
-          "urls": [
-            "https://university.cockroachlabs.com/courses/course-v1:crl+fundamentals-of-crdb-for-nodejs-devs+self-paced/about"
-          ]
-        },
-        {
-          "title": "CockroachDB for Python Developers",
-          "urls": [
-            "https://university.cockroachlabs.com/courses/course-v1:crl+fundamentals-of-crdb-for-python-devs+self-paced/about"
-          ]
-        },
-        {
-          "title": "CockroachDB for Java Developers",
-          "urls": [
-            "https://university.cockroachlabs.com/courses/course-v1:crl+fundamentals-of-crdb-for-java-devs+self-paced/about"
-          ]
-        },
-        {
-          "title": "Event-Driven Architecture for Java Developers (Preview)",
-          "urls": [
-            "https://university.cockroachlabs.com/courses/course-v1:crl+event-driven-architecture-for-java-devs+self-paced/about"
-          ]
-        }
-      ]
-    }
+  "urls": [
+    "https://www.cockroachlabs.com/cockroach-university/"
   ]
 }
