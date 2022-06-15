@@ -7,21 +7,23 @@ docs_area: manage.security
 
 Customer-Managed Encryption Keys (CMEK) give you more control over how a {{ site.data.products.dedicated }} cluster's data is protected at rest on the cluster's nodes. When CMEK is enabled, your cluster's data is protected by an additional cryptographic key that is entirely within your control, hosted in a supported key-management systems (KMS) platform. This key is called the _CMEK key_.
 
-You create and manage your CMEK keys in one of the following supported KMS platforms:
+You manage your CMEK keys using one or more of the following services:
 
 - Amazon Web Services (AWS) KMS
 - Google Cloud Platform (GCP) KMS
-- Hashicorp Vault Secrets Manager
+- [Hashicorp Vault Secrets Manager](https://www.vaultproject.io/docs/secrets/key-management), which can distribute keys stored in multiple KMS platforms
 
-{{ site.data.products.db }} communicates with a supported KMS using the KMS platform's API, and you manage {{ site.data.products.db }}'s access to the CMEK key using the KMS platform's identity and access management (IAM) system. The CMEK key is never persisted in a cluster, and {{ site.data.products.db }} never has direct access to the CMEK key material. When CMEK is enabled, neither the cluster nor its newly-written data can be accessed without the CMEK key.
+You can learn more about the [supported integrations between CockroachDB and Hashicorp Vault](/docs/{{site.versions["stable"]}}/hashicorp-integration.html).
 
-This article describes how CMEK works in {{ site.data.products.dedicated }} clusters. To configure CMEK, see [Managing Customer-Managed Encryption Keys (CMEK) for [{{ site.data.products.dedicated }}](managing-cmek.html).
+{{ site.data.products.db }} communicates with the KMS platform using the KMS platform's API, and you manage {{ site.data.products.db }}'s access to the CMEK key using the KMS platform's identity and access management (IAM) system. The CMEK key is never persisted in a cluster, and {{ site.data.products.db }} never has direct access to the CMEK key material. When CMEK is enabled, the CMEK key must be available before the cluster can start and the cluster'sr newly-written data at rest can be accessed.
+
+This article describes how CMEK works in {{ site.data.products.dedicated }} clusters. To configure CMEK, see [Managing Customer-Managed Encryption Keys (CMEK) for {{ site.data.products.dedicated }}](managing-cmek.html).
 
 ## Benefits of CMEK
 
 This section describes some of the ways that CMEK can help you protect your data and meet business and regulatory requirements, even when you don't own the underlying infrastructure that hosts your data.
 
-- **Separation of concerns**: You can delegate management of your CMEK keys to a specialized group within your organization, and group members do not need access to your clusters or data.
+- **Separation of concerns**: You can delegate management of your CMEK keys to a specialized group within your organization, such as a security engineering team, without providing them with access to your {{ site.data.products.dedicated }} clusters.
 
 - **Responsiveness to security events**: As part of the investigation of a security incident, you can temporarily and reversibly disable access to data in the cluster by revoking the cluster's access to use the CMEK key. When the investigation has concluded, you can reinstate the cluster's access to the CMEK key.
 
@@ -35,7 +37,7 @@ This section describes some of the ways that CMEK can help you protect your data
   - To protect against inadvertent data loss, your KMS platform may impose a waiting period before a key is permanently deleted. Check the documentation for your KMS platform for details about how long before a key deletion is permanent and irreversible.
   {{site.data.alerts.end}}
 
-- **Enforcement of data domiciling and locality requirements**: In a multi-region cluster, you can confine an individual database to a single region or multiple regions. For more information and limitations, see [Data Domiciling with CockroachDB](/docs/stable/data-domiciling.html). When you enable CMEK on a multi-region cluster, you can optionally assign a separate CMEK key to each region, or use the same CMEK key for multiple related regions.
+- **Enforcement of data domiciling and locality requirements**: In a multi-region cluster, you can confine an individual database to a single region or multiple regions. For more information and limitations, see [Data Domiciling with CockroachDB](/docs/{{site.versions["stable"]}}/data-domiciling.html). When you enable CMEK on a multi-region cluster, you can optionally assign a separate CMEK key to each region, or use the same CMEK key for multiple related regions.
 
 - **Enforcement of encryption requirements**: With CMEK, you have control the CMEK key's encryption strength. The CMEK key can be 128, 256, or 512 bytes long.
 
@@ -43,7 +45,7 @@ This section describes some of the ways that CMEK can help you protect your data
 
 The following example shows some of the ways that CMEK can help you meet business and regulatory requirements.
 
-Imagine that you have a business requirement to verify that a cluster's data is permanently destroyed when you delete the cluster. Cloud computing makes such requirements more difficult to verifiably meet, because you don't have visibility into what happens to the cluster's resources after the cluster disappears from your view. This sort of requirement might make it more challenging for your organization to move some workloads to the cloud.
+Imagine that you have a business requirement to verify that a cluster's data is inaccessible when you delete the cluster. Cloud computing makes such requirements more difficult to verifiably meet, because you don't have visibility into what happens to the cluster's resources after the cluster disappears from your view. This sort of requirement might make it more challenging for your organization to move some workloads to the cloud.
 
 CMEK helps you to enforce such business rules on {{ site.data.products.db }} clusters. With CMEK, you can actively and verifiably enforce this requirement without waiting for {{ site.data.products.db }} to destroy the cluster's resources. Instead, with a single operation you can revoke the cluster's ability to use the CMEK key. This will trigger a cluster restart, and the restart will fail because the CMEK key is unavailable. After verifying that the restart has failed, you can delete the cluster in {{ site.data.products.db }}.
 
