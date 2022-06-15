@@ -172,7 +172,7 @@ W180817 17:01:56.510430 914 vendor/google.golang.org/grpc/clientconn.go:1293 grp
 
 The `kv.snapshot_rebalance.max_rate` and `kv.snapshot_recovery.max_rate` [cluster settings](cluster-settings.html) set the rate limits at which [snapshots](architecture/replication-layer.html#snapshots) are sent to nodes. These settings can be temporarily increased to expedite replication during an outage or when scaling a cluster up or down.
 
-However, if the settings are too high when nodes are added to the cluster, this can cause degraded performance and node crashes.
+However, if the settings are too high when nodes are added to the cluster, this can cause degraded performance and node crashes. We recommend **not** increasing these values by more than 2 times their [default values](cluster-settings.html) without explicit approval from Cockroach Labs.
 
 **Explanation:** If `kv.snapshot_rebalance.max_rate` and `kv.snapshot_recovery.max_rate` are set too high for the cluster during scaling, this can cause nodes to experience ingestions faster than compactions can keep up, and result in an [inverted LSM](architecture/storage-layer.html#inverted-lsms).
 
