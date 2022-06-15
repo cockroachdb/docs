@@ -1,15 +1,26 @@
 ---
 title: Restore Data from a Backup
-summary: Restore a table or database from a backup in CockroachDB Cloud.
+summary: Restore data from a backup in CockroachDB Cloud.
 toc: true
 docs_area: manage
 ---
 
+<div class="filters clearfix">
+    <button class="filter-button page-level" data-scope="serverless"><strong>{{ site.data.products.serverless }}</strong></button>
+    <button class="filter-button page-level" data-scope="dedicated"><strong>{{ site.data.products.dedicated }}</strong></button>
+</div>
+
+
 This page describes the **Backups** page and how to restore your data.
 
-Cockroach Labs runs [full backups](../{{site.versions["stable"]}}/take-full-and-incremental-backups.html#full-backups) daily and [incremental backups](../{{site.versions["stable"]}}/take-full-and-incremental-backups.html#incremental-backups) hourly for every {{ site.data.products.db }} cluster. The full backups are retained for 30 days, while incremental backups are retained for 7 days.
-
 The backups that Cockroach Labs runs for you can be viewed on the [Backups page](#backups-page).
+
+<section class="filter-content" markdown="1" data-scope="serverless">
+Cockroach Labs runs [full cluster backups](../{{site.versions["stable"]}}/take-full-and-incremental-backups.html#full-backups) hourly for every {{ site.data.products.serverless }} cluster. The full backups are retained for 30 days.
+</section>
+
+<section class="filter-content" markdown="1" data-scope="{{ site.data.products.dedicated }}">
+Cockroach Labs runs [full backups](../{{site.versions["stable"]}}/take-full-and-incremental-backups.html#full-backups) daily and [incremental backups](../{{site.versions["stable"]}}/take-full-and-incremental-backups.html#incremental-backups) hourly for every {{ site.data.products.db }} cluster. The full backups are retained for 30 days, while incremental backups are retained for 7 days.
 
 {{site.data.alerts.callout_info}}
 Currently, you can only restore [databases](#restore-a-database) and [tables](#restore-a-table) to the same cluster that the backup was taken from.
@@ -17,12 +28,15 @@ Currently, you can only restore [databases](#restore-a-database) and [tables](#r
 In the meantime, you can [back up and restore data manually](run-bulk-operations.html) or [back up from a self-hosted CockroachDB cluster and restore into a {{ site.data.products.db }} cluster](#back-up-a-self-hosted-cockroachdb-cluster-and-restore-into-a-cockroachdb-cloud-cluster). Note that you cannot restore a backup of a multi-region database into a single-region database.
 {{site.data.alerts.end}}
 
+</section>
+
 ## Backups page
 
 A list of your full cluster backups displays on your cluster's **Backups** page.
 
 For each backup, the following details display:
 
+<div class="filter-content" markdown="1" data-scope="dedicated">
 - The date and time the backup was taken (**Data From**)
 - The **Status** of the backup
 - The **Type** of backup
@@ -31,6 +45,14 @@ For each backup, the following details display:
 - The number of [**Databases**](#databases) included in the backup
 
     To view the databases included in the backup, click the number in the [**Databases**](#databases) column.
+</div>
+<div class="filter-content" markdown="1" data-scope="serverless">
+- The date and time the backup was taken (**Data From**)
+- The **Status** of the backup
+- The remaining number of days the backup will be retained (**Expires In**)
+</div>
+
+<div class="filter-content" markdown="1" data-scope="dedicated">
 
 ### Databases
 
@@ -236,3 +258,17 @@ Or [change the existing table's name](../{{site.versions["stable"]}}/rename-tabl
 ~~~ sql
 > ALTER TABLE target_database.example_table RENAME TO target_database.archived_example_table;
 ~~~
+
+</div>
+
+<section class="filter-content" markdown="1" data-scope="serverless">
+
+## Restore a cluster
+
+Find the cluster backup you want to restore, and click **Restore**.
+
+Performing a restore will cause your cluster to be unavailable for the duration of the restore. All current data is deleted, and the cluster will be restored to the state it was in at the time of the backup. There is no automatic incremental backups, and no automatic database or table level backups.
+
+You can [manage your own backups](run-bulk-operations.html), including incremental, database, and table level backups. To perform manual backups, you must configure either a [`userfile`](../{{site.versions["stable"]}}/use-userfile-for-bulk-operations.html) location or a [cloud storage location](../{{site.versions["stable"]}}/use-cloud-storage-for-bulk-operations.html), which requires [billing information](billing-management.html) for your organization even if you don't set a spend limit.
+
+</section>
