@@ -306,7 +306,7 @@ Group and order the data.
   Lola       | 2
 ~~~
 
-The `->>` operator returns `STRING` and uses string comparison rules to order the data. If you want numeric ordering, [cast the resulting data](supported-casting-and-conversion) to `FLOAT`.
+The `->>` operator returns `STRING` and uses string comparison rules to order the data. If you want numeric ordering, [cast the resulting data](#supported-casting-and-conversion) to `FLOAT`.
 
 ### Map a `JSONB` array field into rows
 
@@ -352,6 +352,7 @@ To display the commodity prices for May, run:
 ~~~ sql
 SELECT id AS commodity, data->'prices'->0->'05/01/2022' AS "May prices" from commodity;
 ~~~
+
 ~~~
   commodity | May prices
 ------------+-------------
