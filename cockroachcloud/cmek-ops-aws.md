@@ -14,18 +14,16 @@ For multi-region clusters, you must provide a key and IAM role combination per r
 
 - provide the same key for all your cluster regions.
 - provide a different key per cluster region.
-- provide a single multi-region key for the entire cluster.
+
+Multi-region keys are also supported. To designate a multi-region key as a CMEK key, you refer to the replicated multi-region key in each region's CMEK configuration.
 {{site.data.alerts.end}}
+
+
+
 
 ## Step 1: Provision the cross-account IAM role
 
-Recall that the premise of CMEK is that you, the customer, maintain control over your encryption key, while (temporarily) granting access to Cockroach Labs' to encrypt and data for you. Here we will create a 'cross-account IAM role', i.e., a role in your AWS account that can be temporarily assumed by users in another account, in this case, Cockroach Labs' account. This role will have permissions to use the key.
-
-{{site.data.alerts.callout_info}}
-To create this link, you will also need your {{ site.data.products.dedicated }} Organization ID, which you can find from the {{ site.data.products.db }} console [clusters page](https://cockroachlabs.cloud/cluster).
-
-Make sure you have the updated Organization ID from after CMEK has been enabled for your organization.
-{{site.data.alerts.end}}
+The premise of CMEK is that you, the customer, maintain control over your encryption key, while (temporarily) granting access to Cockroach Labs' to encrypt and data for you. Here we will create a 'cross-account IAM role', i.e., a role in your AWS account that can be temporarily assumed by users in another account, in this case, Cockroach Labs' account. This role will have permissions to use the key.
 
 1. Find Cockroach Labs' AWS Account ID
 	
@@ -44,7 +42,7 @@ Make sure you have the updated Organization ID from after CMEK has been enabled 
 	1. Select **Roles** and click **Create role**.
 	1. For **Trusted entity type**, select **AWS account**.
 	1. Choose **Another AWS account**.
-		1. For **Account ID**, provide the provide the Cockroach Labs AWS Account ID that you found previously by querying your cluster's Cloud API.
+		1. For **Account ID**, provide the Cockroach Labs AWS Account ID that you found previously by querying your cluster's Cloud API.
 		1. Select the option to **Require external ID**, and for the value of **External ID**, provide your {{ site.data.products.dedicated }} Organization ID.
 	1. Finish creating the IAM role with a suitable name, such as . You do not need to add any permissions.
 
