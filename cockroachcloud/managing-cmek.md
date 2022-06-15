@@ -7,6 +7,10 @@ docs_area: manage.security
 
 Customer-Managed Encryption Keys (CMEK) for {{ site.data.products.dedicated }} allows the customer to delegate responsibility for the work of encrypting their application data to Cockroach Labs, while maintaining the ability to completely revoke Cockroach Labs' access with a single operation.
 
+{{site.data.alerts.callout_info}}
+This feature is a Private Preview release, limited to customers for whom it is enabled, upon their request.
+{{site.data.alerts.end}}
+
 This page guides the user through the process of enabling Customer-Managed Encryption Keys (CMEK) for your {{ site.data.products.dedicated }} cluster.
 
 See also:

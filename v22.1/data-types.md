@@ -7,7 +7,7 @@ docs_area: reference.sql
 
 ## Supported types
 
-CockroachDB supports the following data types. Click a type for more details.
+CockroachDB supports the following data types.
 
 Type | Description | Example
 -----|-------------|---------
@@ -26,6 +26,7 @@ Type | Description | Example
 [`JSONB`](jsonb.html) | JSON (JavaScript Object Notation) data.  | `'{"first_name": "Lola", "last_name": "Dog", "location": "NYC", "online" : true, "friends" : 547}'`
 [`SERIAL`](serial.html) | A pseudo-type that combines an [integer type](int.html) with a [`DEFAULT` expression](default-value.html).  | `148591304110702593`
 [`STRING`](string.html) | A string of Unicode characters. | `'a1b2c3'`
+[`SQLType`](sqltype.html) | The type of a SQL statement. | `TypeDDL`.
 [`TIME`<br>`TIMETZ`](time.html) | `TIME` stores a time of day in UTC.<br> `TIMETZ` converts `TIME` values with a specified time zone offset from UTC. | `TIME '01:23:45.123456'`<br> `TIMETZ '01:23:45.123456-5:00'`
 [`TIMESTAMP`<br>`TIMESTAMPTZ`](timestamp.html) | `TIMESTAMP` stores a date and time pairing in UTC.<br>`TIMESTAMPTZ` converts `TIMESTAMP` values with a specified time zone offset from UTC. | `TIMESTAMP '2016-01-25 10:10:10'`<br>`TIMESTAMPTZ '2016-01-25 10:10:10-05:00'`
 [`UUID`](uuid.html) | A 128-bit hexadecimal value. | `7f9c24e8-3b12-4fef-91e0-56a2d5a246ec`

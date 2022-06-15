@@ -13,7 +13,7 @@ Get future release notes emailed to you:
 {% include marketo.html %}
 
 {{site.data.alerts.callout_version}}
-As of May 30, 2022, new {{ site.data.products.dedicated }} clusters and all {{ site.data.products.serverless }} clusters are running CockroachDB [v21.2.10](v21.2.html).
+As of June 6, 2022, CockroachDB [v22.1.1](v22.1.html) is available on {{ site.data.products.dedicated }} clusters. {{ site.data.products.serverless }} clusters are running CockroachDB [v21.2.10](v21.2.html).
 {{site.data.alerts.end}}
 
 ## June 6, 2022
@@ -21,6 +21,7 @@ As of May 30, 2022, new {{ site.data.products.dedicated }} clusters and all {{ s
 <h3>General changes</h3>
 
 - [Datadog integration](../cockroachcloud/monitoring-page.html#monitor-with-datadog) is now available on the **Monitoring** page for all {{ site.data.products.dedicated }} users.
+- [Single Sign-On (SSO)](../cockroachcloud/cloud-sso.html) for {{ site.data.products.db }} is now available with Google and Microsoft in addition to GitHub.
 
 <h3>Console changes</h3>
 

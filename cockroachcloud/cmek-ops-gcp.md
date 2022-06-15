@@ -1,5 +1,5 @@
 ---
-title: Provisioning Google Cloud Platform (GCP) for CMEK
+title: Provisioning GCP KMS Keys and Service Accounts for CMEK
 summary: Tutorial for provisioning CMEK in GCP, covering initial set-up, revocation, and recovery scenarios.
 toc: true
 docs_area: manage.security
