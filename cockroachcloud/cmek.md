@@ -16,7 +16,7 @@ You can manage your CMEK keys using one or more of the following services:
 
 {{site.data.alerts.callout_success}}
 You can learn more about the [supported integrations between CockroachDB and Hashicorp Vault](/docs/{{site.versions["stable"]}}/hashicorp-integration.html).
-{{site.data.alerts.end}
+{{site.data.alerts.end}}
 
 {{ site.data.products.db }} communicates with the KMS platform using the KMS platform's API, and you manage {{ site.data.products.db }}'s access to the CMEK key using the KMS platform's identity and access management (IAM) system. The CMEK key is never persisted unencrypted at rest in a cluster, and {{ site.data.products.db }} never has direct access to the CMEK key material. When CMEK is enabled, the CMEK key must be available before the cluster can start and the cluster's newly-written data at rest can be accessed.
 
