@@ -467,12 +467,6 @@ The [DB Console][db_console] provides several ways to check for node liveness is
 For more information about how node liveness works, see [the architecture documentation on the replication layer](architecture/replication-layer.html#epoch-based-leases-table-data).
 {{site.data.alerts.end}}
 
-## Partial availability issues
-
-If your cluster is in a partially-available state due to a recent node or network failure, the internal logging table `system.eventlog` might be unavailable. This can cause the logging of notable events (e.g., the execution of SQL statements) to the `system.eventlog` table to fail to complete, contributing to cluster unavailability. If this occurs, you can set the [cluster setting](cluster-settings.html) `server.eventlog.enabled` to `false` to disable writing notable log events to this table, which may help to recover your cluster.
-
-Even with `server.eventlog.enabled` set to `false`, notable log events are still sent to configured [log sinks](configure-logs.html#configure-log-sinks) as normal.
-
 ### Check node heartbeat latency
 
 To check node heartbeat latency:
@@ -510,6 +504,12 @@ To view command commit latency:
 3. Scroll down the metrics page to find the **Command Commit Latency: 90th percentile** and **Command Commit Latency: 99th percentile** graphs.
 
 **Expected values for a healthy cluster**: On SSDs, this should be between 1 and 100 milliseconds.  On HDDs, this should be no more than 1 second.  Note that we [strongly recommend running CockroachDB on SSDs](recommended-production-settings.html#storage).
+
+## Partial availability issues
+
+If your cluster is in a partially-available state due to a recent node or network failure, the internal logging table `system.eventlog` might be unavailable. This can cause the logging of [notable events](eventlog.html) (e.g., the execution of SQL statements) to the `system.eventlog` table to fail to complete, contributing to cluster unavailability. If this occurs, you can set the [cluster setting](cluster-settings.html) `server.eventlog.enabled` to `false` to disable writing notable log events to this table, which may help to recover your cluster.
+
+Even with `server.eventlog.enabled` set to `false`, notable log events are still sent to configured [log sinks](configure-logs.html#configure-log-sinks) as usual.
 
 ## Check for under-replicated or unavailable data
 
