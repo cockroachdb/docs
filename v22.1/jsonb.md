@@ -17,11 +17,7 @@ In CockroachDB, `JSON` is an alias for `JSONB`.
 {{site.data.alerts.callout_info}}In PostgreSQL, <code>JSONB</code> and <code>JSON</code> are two different data types. In CockroachDB, the <code>JSONB</code> / <code>JSON</code> data type is similar in behavior to the <a href="https://www.postgresql.org/docs/current/static/datatype-json.html"><code>JSONB</code> data type in PostgreSQL</a>.
 {{site.data.alerts.end}}
 
-## Index `JSONB` data
-
-To [index](indexes.html) a `JSONB` column you can use a [GIN index](inverted-indexes.html) or [index an expression on the column](expression-indexes.html#use-an-expression-to-index-a-field-in-a-jsonb-column).
-
-## Syntax
+### Syntax
 
 The syntax for the `JSONB` data type follows the format specified in [RFC8259](https://tools.ietf.org/html/rfc8259). You can express a constant value of type `JSONB` using an [interpreted literal](sql-constants.html#interpreted-literals) or a string literal [annotated with](scalar-expressions.html#explicitly-typed-expressions) type `JSONB`.
 
@@ -71,6 +67,10 @@ Function | Description
 `jsonb_set(val: jsonb, path: string[], to: jsonb)` | Returns the JSON value pointed to by the variadic arguments. See [Update an array element](#update-an-array-element).
 
 For the full list of supported `JSONB` functions, see [JSONB functions](functions-and-operators.html#jsonb-functions).
+
+# Index `JSONB` data
+
+To [index](indexes.html) a `JSONB` column you can use a [GIN index](inverted-indexes.html#examples) or [index an expression on the column](expression-indexes.html#use-an-expression-to-index-a-field-in-a-jsonb-column).
 
 ## Known limitations
 
