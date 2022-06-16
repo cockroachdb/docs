@@ -44,7 +44,7 @@ Pinning secondary indexes requires an [Enterprise license](enterprise-licensing.
 
 Using this pattern, you tell CockroachDB to put the leaseholder for the table itself (also called the primary index) in one region, create 2 secondary indexes on the table, and tell CockroachDB to put the leaseholder for each secondary index in one of the other regions. This means that reads will access the local leaseholder (either for the table itself or for one of the secondary indexes). Writes, however, will still leave the region to get consensus for the table and its secondary indexes.
 
-<img src="{{ 'images/v20.2/topology-patterns/topology_duplicate_indexes1.png' | relative_url }}" alt="Duplicate Indexes topology" style="max-width:100%" />
+<img src="{{ 'images/v22.1/topology-patterns/topology_duplicate_indexes1.png' | relative_url }}" alt="Duplicate Indexes topology" style="max-width:100%" />
 
 ### Steps
 
@@ -153,7 +153,7 @@ For example, in the animation below:
 4. The leaseholder retrieves the results and returns to the gateway node.
 5. The gateway node returns the results to the client.
 
-<img src="{{ 'images/v20.2/topology-patterns/topology_duplicate_indexes_reads.png' | relative_url }}" alt="Pinned secondary indexes topology" style="max-width:100%" />
+<img src="{{ 'images/v22.1/topology-patterns/topology_duplicate_indexes_reads.png' | relative_url }}" alt="Pinned secondary indexes topology" style="max-width:100%" />
 
 #### Writes
 
@@ -169,17 +169,17 @@ For example, in the animation below:
 6. The leaseholders then return acknowledgement of the commit to the gateway node.
 7. The gateway node returns the acknowledgement to the client.
 
-<img src="{{ 'images/v20.2/topology-patterns/topology_duplicate_indexes_writes.gif' | relative_url }}" alt="Duplicate Indexes topology" style="max-width:100%" />
+<img src="{{ 'images/v22.1/topology-patterns/topology_duplicate_indexes_writes.gif' | relative_url }}" alt="Duplicate Indexes topology" style="max-width:100%" />
 
 ### Resiliency
 
 Because this pattern balances the replicas for the table and its secondary indexes across regions, one entire region can fail without interrupting access to the table:
 
-<img src="{{ 'images/v20.2/topology-patterns/topology_duplicate_indexes_resiliency.png' | relative_url }}" alt="Pinned Secondary Indexes topology" style="max-width:100%" />
+<img src="{{ 'images/v22.1/topology-patterns/topology_duplicate_indexes_resiliency.png' | relative_url }}" alt="Pinned Secondary Indexes topology" style="max-width:100%" />
 
 <!-- However, if an additional machine holding a replica for the table or any of its secondary indexes fails at the same time as the region failure, the range to which the replica belongs becomes unavailable for reads and writes:
 
-<img src="{{ 'images/v20.2/topology-patterns/topology_pinned_index_leaseholders3.png' | relative_url }}" alt="Pinned Secondary Indexes topology" style="max-width:100%" /> -->
+<img src="{{ 'images/v22.1/topology-patterns/topology_pinned_index_leaseholders3.png' | relative_url }}" alt="Pinned Secondary Indexes topology" style="max-width:100%" /> -->
 
 ## Preferring the nearest index
 
