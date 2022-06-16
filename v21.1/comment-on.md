@@ -22,7 +22,7 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 `table_name` | The name of the [table](create-table.html) on which you are commenting.
 `column_name` | The name of the [column](add-column.html) on which you are commenting.
 `table_index_name` | The name of the [index](indexes.html) on which you are commenting.
-`comment_text` | The comment ([`STRING`](string.html)) you are associating to the object.
+`comment_text` | The comment ([`STRING`](string.html)) you are associating to the object. You can remove a comment by replacing the string with `NULL`.
 
 ## Examples
 
@@ -45,12 +45,12 @@ To view database comments, use [`SHOW DATABASES`](show-databases.html):
 ~~~
 
 ~~~
-  database_name |                              comment
-+---------------+-------------------------------------------------------------------+
-  defaultdb     | NULL
-  movr          | This database contains information about users, vehicles, and rides.
-  postgres      | NULL
-  system        | NULL
+  database_name | owner | primary_region | regions | survival_goal |                               comment
+----------------+-------+----------------+---------+---------------+-----------------------------------------------------------------------
+  defaultdb     | root  | NULL           | {}      | NULL          | NULL
+  movr          | demo  | NULL           | {}      | NULL          | This database contains information about users, vehicles, and rides.
+  postgres      | root  | NULL           | {}      | NULL          | NULL
+  system        | node  | NULL           | {}      | NULL          | NULL
 (4 rows)
 ~~~
 
@@ -172,6 +172,30 @@ To view column comments, use [`SHOW INDEXES ... WITH COMMENT`](show-index.html):
   users      | primary        |   false    |            2 | id          | ASC       |  false  |  false   | NULL
 ...
 (15 rows)
+~~~
+
+### Remove a comment from a database
+
+To remove a comment from a database:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> COMMENT ON DATABASE movr IS NULL;
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> SHOW DATABASES WITH COMMENT;
+~~~
+
+~~~
+  database_name | owner | primary_region | regions | survival_goal | comment
+----------------+-------+----------------+---------+---------------+----------
+  defaultdb     | root  | NULL           | {}      | NULL          | NULL
+  movr          | demo  | NULL           | {}      | NULL          | NULL
+  postgres      | root  | NULL           | {}      | NULL          | NULL
+  system        | node  | NULL           | {}      | NULL          | NULL
+(4 rows)
 ~~~
 
 ## See also
