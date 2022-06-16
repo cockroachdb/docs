@@ -36,7 +36,7 @@ In addition, the [Encryption at Rest (Enterprise) feature](../enterprise-licensi
 
 Encryption is performed in the [storage layer](../architecture/storage-layer.html) and configured per store. All files used by the store, regardless of contents, are encrypted with the desired algorithm.
 
-For more details about the encryption keys used by CockroachDB, as well as how to handle them, see [Encryption keys used by CockroachDB](#encryption-keys-used-by-cockroachdb-clusters). The following sections provide more information and recommendations for the Encryption at Rest (Enterprise) feature.
+For more details about the encryption keys used by CockroachDB, as well as how to handle them, see [Encryption keys used by CockroachDB](#encryption-keys-used-by-cockroachdb-self-hosted-clusters). The following sections provide more information and recommendations for the Encryption at Rest (Enterprise) feature.
 
 #### Rotating keys
 

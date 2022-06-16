@@ -121,4 +121,4 @@ The CMEK feature has the following limitations:
 
 - [Managing Customer-Managed Encryption Keys (CMEK) for {{ site.data.products.dedicated }}](managing-cmek.html)
 - [Customer-Managed Encryption Keys (CMEK) Frequently Asked Questions (FAQ)](cmek-faq.html)
-- [Encryption At Rest](/docs/encryption.html)
+- [Encryption At Rest](/docs/{{site.versions["stable"]}}/encryption.html)
