@@ -73,7 +73,7 @@ CMEK is configured per cluster region. A single-region cluster is actually a mul
 At the time that you enable CMEK for a cluster, {{ site.data.products.db }}:
 
 1. Creates the store key and encrypts it using the CMEK key.
-1. Creaters the data key and encrypts it using the encrypted store key.
+1. Creates the data key and encrypts it using the encrypted store key.
 1. Propagates the store key and data key to cluster nodes.
 1. Starts the cluster.
 

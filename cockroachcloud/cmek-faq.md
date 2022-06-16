@@ -19,7 +19,7 @@ Not yet. The ability to rotate CMEK would be available at a later time. Once tha
 
 ## If we enable CMEK for a cluster that has been in use for some time, is the existing data encrypted at that time?
 
-{{ site.data.products.dedicated }} does not force encryption of the older data but instead relies on normal storage engine churn for desired encryption. That means the new key is used to encrypt new writes, while the old data remains unencrypted unless it’s rewritten.
+{{ site.data.products.dedicated }} does not force encryption of previously-written data but instead relies on normal storage engine churn for desired encryption. That means the new key is used to encrypt newly-written data, while previously-written data remains unencrypted unless it’s rewritten.
 
 ## Are {{ site.data.products.dedicated }} managed backups also encrypted using the CMEK?
 
