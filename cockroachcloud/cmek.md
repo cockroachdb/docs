@@ -59,7 +59,7 @@ When you create a {{ site.data.products.dedicated }} cluster, its data at rest i
 When you enable CMEK on a {{ site.data.products.dedicated }} cluster, {{ site.data.products.db }} creates two encryption keys and begins to use them to protect newly-written data at rest. {{ site.data.products.db }} manages these encryption keys and propagates them to cluster nodes.
 
 1. The _data key_ is a Data Encryption Key (DEK), and is used to encrypt and decrypt cluster data before it is read from or written to disks attached to a cluster's nodes. Each time the cluster is started or restarted, and each time a node and related disks are added to a cluster, {{ site.data.products.dedicated }} uses the store key to encrypt and decrypt data keys. The data key is automatically rotated monthly and is always encrypted at rest by the store key.
- 
+
 1. The _store key_ is a Key Encryption Key (KEK) that encrypts the data keys at rest. It is encrypted at rest by the CMEK key. The store key is not automatically rotated. 
 
 For more details about encryption in {{ site.data.products.db }}, see [Encryption At Rest](/docs/{{site.versions["stable"]}}/encryption.html).
@@ -114,7 +114,7 @@ The CMEK feature has the following limitations:
 - CMEK can be enabled only on clusters created after April 1, 2022 (AWS) or June 9, 2022 (GCP).
 - To enable or revoke CMEK on a cluster, you must use the [Cloud API](/docs/cockroachcloud/cloud-api.html). It's not possible to enable CMEK using the {{ site.data.products.db }} Console.
 - If you add a new region to a cluster with CMEK enabled, the new region will not be protected by the CMEK key.
-- Rotating a CMEK key is not supported.
+- Rotating a CMEK key in {{ site.data.products.db }} is not supported. However, if your KMS supports key rotation without changing the key's URI, it will work as expected for a CMEK key.
 - Automatic backups for clusters on GCP are not encrypted by the CMEK key.
 
 ## See also
