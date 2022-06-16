@@ -25,7 +25,7 @@ To learn more, see [Customer-Managed Encryption Keys](/docs/cockroachcloud/cmek.
 
 {{site.data.alerts.callout_success}}
 When CMEK is enabled, the **Encryption** option appears to be disabled in the [DB Console](../ui-overview.html), because this option refers to [Encryption At Rest (Enterprise)](#encryption-at-rest-enterprise), which is a feature of {{ site.data.products.core }} clusters.
-{{site.data.alerts.end}
+{{site.data.alerts.end}}
 
 <a id="encryption-at-rest-enterprise"></a>
 ### {{ site.data.products.core }} clusters
