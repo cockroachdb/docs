@@ -267,8 +267,8 @@ Or [change the existing table's name](../{{site.versions["stable"]}}/rename-tabl
 
 Find the cluster backup you want to restore, and click **Restore**.
 
-Performing a restore will cause your cluster to be unavailable for the duration of the restore. All current data is deleted, and the cluster will be restored to the state it was in at the time of the backup. There is no automatic incremental backups, and no automatic database or table level backups.
+Performing a restore will cause your cluster to be unavailable for the duration of the restore. All current data is deleted, and the cluster will be restored to the state it was in at the time of the backup. There are no automatic incremental backups, and no automatic database or table level backups.
 
-You can [manage your own backups](run-bulk-operations.html), including incremental, database, and table level backups. To perform manual backups, you must configure either a [`userfile`](../{{site.versions["stable"]}}/use-userfile-for-bulk-operations.html) location or a [cloud storage location](../{{site.versions["stable"]}}/use-cloud-storage-for-bulk-operations.html), which requires [billing information](billing-management.html) for your organization even if you don't set a spend limit.
+You can [manage your own backups](run-bulk-operations.html), including incremental, database, and table level backups. To perform manual backups, you must configure either a [`userfile`](run-bulk-operations.html) location or a [cloud storage location](run-bulk-operations.html?filters=cloud), which requires [billing information](billing-management.html) for your organization even if you don't set a spend limit.
 
 </section>
