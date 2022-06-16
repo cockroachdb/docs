@@ -79,7 +79,7 @@ SHOW CREATE TABLE ttl_test;
 
 ## TTL storage parameters
 
-The settings that control the behavior of Row-Level TTL are provided using [storage parameters](sql-grammar.html#opt_with_storage_parameter_list). These parameters can be set during table creation using [`CREATE TABLE`](#create-a-table-with-row-level-ttl), added to an existing table using the [`ALTER TABLE`](#add-row-level-ttl-to-an-existing-table) statement, or [reset to default values](#reset-a-storage-parameter-to-its-default-value).
+The settings that control the behavior of Row-Level TTL are provided using [storage parameters](sql-grammar.html#opt_with_storage_parameter_list). These parameters can be set during table creation using [`CREATE TABLE`](#create-a-table-with-row-level-ttl), added to an existing table using the [`ALTER TABLE`](#add-or-update-the-row-level-ttl-for-an-existing-table) statement, or [reset to default values](#reset-a-storage-parameter-to-its-default-value).
 
 | Description                                              | Option                                                                                                                                                                       | Associated cluster setting          |
 |----------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------|
@@ -115,6 +115,10 @@ By default, these metrics are aggregated, meaning that all TTL tables will repor
 
 - Set the `server.child_metrics.enabled` [cluster setting](cluster-settings.html) to `true`.
 - Set the `ttl_label_metrics` storage parameter to `true`.
+
+{{site.data.alerts.callout_info}}
+For more information about the issues (including negative performance impacts) that can arise when you add cardinality, see the considerations listed in [Using changefeed metrics labels](monitor-and-debug-changefeeds.html#using-changefeed-metrics-labels).
+{{site.data.alerts.end}}
 
 ## Examples
 
@@ -162,9 +166,9 @@ SELECT *, crdb_internal_expiration FROM events;
 (3 rows)
 ~~~
 
-### Add Row-Level TTL to an existing table
+### Add or update the row-level TTL for an existing table
 
-To add a TTL to an existing table, use the SQL syntax shown below.
+To add or change the row-level TTL expiration for an existing table, use the SQL syntax shown below.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -175,8 +179,8 @@ ALTER TABLE events SET (ttl_expire_after = '1 year');
 ALTER TABLE
 ~~~
 
-{{site.data.alerts.callout_info}}
-Adding Row-Level TTL to an existing table will result in a [schema change](online-schema-changes.html) that sets the [`crdb_internal_expiration` column](#crdb-internal-expiration) for all rows. Depending on table size, this could be an expensive operation.
+{{site.data.alerts.callout_danger}}
+Adding or changing the Row-Level TTL settings for an existing table will result in a [schema change](online-schema-changes.html) that sets the [`crdb_internal_expiration` column](#crdb-internal-expiration) for all rows. Depending on table size, this could be an expensive operation.
 {{site.data.alerts.end}}
 
 ### View scheduled TTL jobs
@@ -377,7 +381,9 @@ SELECT *, crdb_internal_expiration from events WHERE id = ' a9404386-c4da-415f-b
 ~~~
 
 {{site.data.alerts.callout_danger}}
-If a row with a row-level TTL override as described in this section is subsequently [updated](update.html), the overridden value of `crdb_internal_expiration` and will be replaced with `now()` + the table-wide TTL that was [set during table creation](#create-a-table-with-row-level-ttl) or [previously added to the table](#add-row-level-ttl-to-an-existing-table).
+If a row with a row-level TTL override as described in this section is subsequently [updated](update.html), the overridden value of `crdb_internal_expiration` will be replaced with `now()` + the table-wide TTL that was [set during table creation](#create-a-table-with-row-level-ttl) or [previously added to the table](#add-or-update-the-row-level-ttl-for-an-existing-table).
+
+Note that the behavior described above _only_ applies if you override the TTL for individual rows. It does _not_ apply if you [add row-level TTL to an existing table](#add-or-update-the-row-level-ttl-for-an-existing-table); the value of `crdb_internal_expiration` is not affected in the way described above.
 {{site.data.alerts.end}}
 
 ### Disable TTL jobs for the whole cluster
@@ -454,6 +460,14 @@ Row-level TTL interacts with [backup and restore](backup-and-restore-overview.ht
 - When you run a [`BACKUP`](backup.html), all row-level TTL information associated with the tables being backed up (including TTL expiration times) is also backed up.
 
 - When you [`RESTORE`](restore.html) from a backup, all row-level TTL information associated with the tables being restored (including TTL expiration times) is also restored. Any expired rows in the restored tables are eligible to be [deleted](#when-are-rows-deleted) by the [TTL job](#how-it-works).
+
+## Required Privileges
+
+To add or update Row-Level TTL settings on a table, you must have one of the following:
+
+- Membership to the [`admin`](security-reference/authorization.html#roles) role for the cluster.
+- Membership to the [owner](security-reference/authorization.html#object-ownership) role for the database where the table is located.
+- The [`CREATE` privilege](security-reference/authorization.html#supported-privileges) on the database where the table is located.
 
 ## Limitations
 
