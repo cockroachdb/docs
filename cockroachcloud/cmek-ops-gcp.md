@@ -11,7 +11,7 @@ This is part of the larger process of [Enabling CMEK for a {{ site.data.products
 
 ## Overview
 
-- In [Step 1. Provision the cross-tenant service account](#step-1-provision-the-cross-tenant-service-account), we will create a service account that will be used by {{ site.data.products.dedicated }} to access the CMEK key.
+- In [Step 1. Provision the cross-tenant service account](#step-1-provision-the-cross-tenant-service-account), we will create a service account for {{ site.data.products.dedicated }} to use to access the CMEK key for encrypt/decrypt actions.
 - In [Step 2. Create the CMEK key](#step-2-create-the-cmek-key), we will explore two ways of creating the required key:
 	- [Directly in the GCP key management service (KMS) console](#option-a-use-the-gcp-console)
 	- By [setting up a Vault GCP-KMS secrets engine](#option-b-use-the-vault-gcp-kms-secrets-engine-to-create-the-cmek-key) with access to GCP KMS, in order to leverage the security advantages of Vault's additional layer of abstraction.
@@ -90,14 +90,14 @@ After you have provisioned the IAM role and KMS key for your CockroachDB cluster
 
 ### Option B: Use the Vault GCP-KMS secrets engine to create the CMEK key
 
-Pre-requisites: 
+#### Prerequisites
 
-- Vault enterprise license
-- Vault enterprise edition installed locally
+- [Vault enterprise license](https://www.vaultproject.io/docs/enterprise)
+- [Vault enterprise edition installed locally](https://learn.hashicorp.com/tutorials/nomad/hashicorp-enterprise-license?in=vault/enterprise)
 
 1. Provision a GCP service account for Vault to use to create your CMEK key.
 
-	1. Visit the [GCP IAM roles page](https://console.cloud.google.com/iam-admin/roles) and create a new role called `cmek-vault-role`, adding the required permissions specified in the [Vault GCP-KMS documentation](https://learn.hashicorp.com/tutorials/vault/key-management-secrets-engine-gcp-cloud-kms?in=vault/key-management#configure-cloud-kms)
+	1. Visit the [GCP IAM roles page](https://console.cloud.google.com/iam-admin/roles) and create a new role called `cmek-vault-role`, adding the required permissions specified in the [Vault GCP-KMS documentation](https://learn.hashicorp.com/tutorials/vault/key-management-secrets-engine-gcp-cloud-kms?in=vault/key-management#configure-cloud-kms).
 
 	1. Visit the [GCP IAM service accounts page](https://console.cloud.google.com/iam-admin/serviceaccounts) and create a service account, called `cmek-vault-agent`.
 
@@ -180,7 +180,7 @@ Pre-requisites:
 
 ## Step 3. Authorize the service account to use the CMEK key
 
-1. From the [GCP console KMS page](https://console.cloud.google.com/security/kms), select your KMS key, which will be named `crdb-cmek-vault-{RANDOM_SUFFIX}` where RANDOM_SUFFIX is a string of random numbers.
+1. From the [GCP console KMS page](https://console.cloud.google.com/security/kms), select your KMS key, which will be named `crdb-cmek-vault-{RANDOM_SUFFIX}` where `RANDOM_SUFFIX` is a string of random numbers.
 1. Select the **PERMISSIONS** tab.
 1. Click **ADD**.
 1. For **New principals**, enter the email address for your cross-tenant service account created earlier.
