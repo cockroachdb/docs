@@ -68,19 +68,21 @@ Follow the instructions depending on your cloud provider:
 - [Provisioning Amazon Web Services (AWS) for CMEK](cmek-ops-aws.html)
 - [Provisioning Google Cloud Platform (GCP) for CMEK](cmek-ops-gcp.html) 
 
-### Step 4. Enable CMEK for your {{ site.data.products.dedicated }} Cluster
+### Step 4. Activate CMEK for your {{ site.data.products.dedicated }} Cluster
 
-Enable CMEK for your cluster with a call to the clusters CMEK endpoint:
+Activate CMEK with a call to the clusters CMEK endpoint, using the cloud-specific CMEK configuration manifest you built in [Step 3. Provision IAM and KMS in your Cloud](#provision-iam-and-kms-in-your-cloud).
 
 See the [API specification](../api/cloud/v1.html#operation/CockroachCloud_EnableCMEK).
 
 {% include_cached copy-clipboard.html %}
 ```shell
+CLUSTER_ID= #{ your cluster ID }
+API_KEY= #{ your API key }
 curl --request POST \
-  --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/cmek \
-  --header 'Authorization: Bearer REPLACE_BEARER_TOKEN' \
+  --url https://cockroachlabs.cloud/api/v1/clusters/${CLUSTER_ID}/cmek \
+  --header "Authorization: Bearer ${API_KEY}" \
   --header 'content-type: application/json' \
-  --data '{"region_specs":[{"region":"us-central1","key_spec":{"type":"AWS_KMS","uri":"arn:aws:kms:us-west-2:111122223333:key/id-of-kms-key","auth_principal":"arn:aws:iam::account:role/role-name-with-path"}}]}'
+  --data "@cmek_config.json"
 ```
 
 ## Check CMEK status
@@ -93,7 +95,7 @@ See the [API specification](../api/cloud/v1.html#operation/CockroachCloud_GetCME
 ```shell
 curl --request GET \
   --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/cmek \
-  --header 'Authorization: Bearer REPLACE_BEARER_TOKEN'
+  --header "Authorization: Bearer ${API_KEY}"
 ```
 
 ## Revoking CMEK for a cluster
@@ -132,7 +134,7 @@ Your cluster will continue to operate with the encryption keys it has provisione
 	```shell
 	curl --request PATCH \
 	  --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/cmek \
-	  --header 'Authorization: Bearer REPLACE_BEARER_TOKEN' \
+	  --header "Authorization: Bearer ${API_KEY}" \
 	  --header 'content-type: application/json' \
 	  --data '{"action":"REVOKE"}'
 	```

@@ -78,7 +78,7 @@ You can create the CMEK key two ways:
 1. Set the permissions for your key with the `crdb-cmek-kms` IAM policy provided in the [Appendix](#appendix-iam-policy-for-the-cmek-key).
 1. Finish creating the key.
 
-After you have provisioned the IAM role and KMS key for your CockroachDB cluster's CMEK, return to [Enabling CMEK for a {{ site.data.products.dedicated }} cluster](managing-cmek.html#step-4-enable-cmek-for-your-cockroachdb-dedicated-cluster).
+After you have provisioned the IAM role and KMS key for your CockroachDB cluster's CMEK, return to [Enabling CMEK for a {{ site.data.products.dedicated }} cluster](managing-cmek.html#step-4-activate-cmek-for-your-cockroachdb-dedicated-cluster).
 
 ### Option B: Use the Vault AWS-KMS secrets engine to create the CMEK key
 
@@ -148,7 +148,7 @@ After you have provisioned the IAM role and KMS key for your CockroachDB cluster
 1. Set the permissions policy for your key with the `crdb-cmek-kms` IAM policy provided in the [Appendix](#appendix-iam-policy-for-the-cmek-key).
 1. Save.
 
-After you have provisioned the IAM role and KMS key for your CockroachDB cluster's CMEK, return to [Enabling CMEK for a {{ site.data.products.dedicated }} cluster](managing-cmek.html#step-4-enable-cmek-for-your-cockroachdb-dedicated-cluster).
+After you have provisioned the IAM role and KMS key for your CockroachDB cluster's CMEK, return to [Enabling CMEK for a {{ site.data.products.dedicated }} cluster](managing-cmek.html#step-4-activate-cmek-for-your-cockroachdb-dedicated-cluster).
 
 ## Appendix: IAM policy for the CMEK key
 

@@ -29,7 +29,7 @@ For multi-region clusters, you must provide a key and authorized service account
 - provide a single dual- or multi-region key or global key for the entire cluster. See [GCP's Cloud KMS location docs](https://cloud.google.com/kms/docs/locations).
 {{site.data.alerts.end}}
 
-## Step 1. Provision the cross-tenant service account
+## Step 1. Collect the required information
 
 Here we will create a cross-tenant service account that can be temporarily assumed by users in another GCP project, in this case, a project managed by {{ site.data.products.dedicated }}. This service account will have permissions to use the key for encryption and decryption.
 
@@ -47,13 +47,53 @@ Here we will create a cross-tenant service account that can be temporarily assum
 
 	{% include_cached copy-clipboard.html %}
 	```shell
+	CLUSTER_ID= #{ your cluster ID }
+	API_KEY= #{ your API key }
 	curl --request GET \
-	  --url https://cockroachlabs.cloud/api/v1/clusters/{YOUR_CLUSTER_ID} \
-	  --header 'Authorization: Bearer {YOUR_API_KEY}' | jq
+	  --url https://cockroachlabs.cloud/api/v1/clusters/${CLUSTER_ID} \
+	  --header "Authorization: Bearer ${API_KEY}"
 	```
+
+	```json
+	{
+	  "id": "blahblahblah-9ebd-43d9-8f42-589c9e6fc081",
+	  "name": "docs-rule",
+	  "cockroach_version": "v22.1.1",
+	  "plan": "DEDICATED",
+	  "cloud_provider": "GCP",
+	  "account_id": "docs-rule-123",
+	  "state": "CREATED",
+	  "creator_id": "blahblahblah-3457-471c-b0cb-c2ab15834329",
+	  "operation_status": "CLUSTER_STATUS_UNSPECIFIED",
+	  "config": {
+	    "dedicated": {
+	      "machine_type": "n1-standard-2",
+	      "num_virtual_cpus": 2,
+	      "storage_gib": 15,
+	      "memory_gib": 7.5,
+	      "disk_iops": 450
+	    }
+	  },
+	  "regions": [
+	    {
+	      "name": "us-east4",
+	      "sql_dns": "docs-rule.gcp-us-east4.cockroachlabs.cloud",
+	      "ui_dns": "docs-rule.gcp-us-east4.cockroachlabs.cloud",
+	      "node_count": 1
+	    }
+	  ],
+	  "created_at": "2022-06-16T17:24:06.262259Z",
+	  "updated_at": "2022-06-16T17:43:59.189571Z",
+	  "deleted_at": null
+	}
+	```
+
 	Record the following:
 	- `account_id`: (the associated GCP Project ID)
 	- `id`: your cluster ID
+	- `regions`/`name`: the name of the region where the association GCP Project is located
+
+## Step 2. Provision the cross-tenant service account
 
 1.  Create a service account in your GCP project:
 
@@ -75,7 +115,7 @@ Here we will create a cross-tenant service account that can be temporarily assum
 	Note the **email address** for the service account (or keep the service account tab open), as you'll need it in Step 3.
 	{{site.data.alerts.end}}
 
-## Step 2. Create the CMEK key
+## Step 3. Create the CMEK key
 
 ### Option A: Use the GCP console
 
@@ -86,7 +126,9 @@ Here we will create a cross-tenant service account that can be temporarily assum
 	1. **Protection level**: **Software** 
 	1. **Purpose**: **Symmetric encrypt/decrypt**
 
-After you have provisioned the IAM role and KMS key for your CockroachDB cluster's CMEK, return to [Enabling CMEK for a {{ site.data.products.dedicated }} cluster](managing-cmek.html#step-4-enable-cmek-for-your-cockroachdb-dedicated-cluster).
+	{{site.data.alerts.callout_info}}
+	Keep your key ring name available, as you will need it.
+	{{site.data.alerts.end}}
 
 ### Option B: Use the Vault GCP-KMS secrets engine to create the CMEK key
 
@@ -149,7 +191,7 @@ After you have provisioned the IAM role and KMS key for your CockroachDB cluster
 	```
 
 	```txt
-	Success! Data written to: keymgmt/kms/gcp
+	Success! Data written to: keymgmt/kms/gcpckms
 	```
 
 1. Create an encryption key in Vault.
@@ -178,7 +220,7 @@ After you have provisioned the IAM role and KMS key for your CockroachDB cluster
 	Success! Data written to: keymgmt/kms/gcpkms/key/crdb-cmek-vault
 	```
 
-## Step 3. Authorize the service account to use the CMEK key
+## Step 4. Authorize the service account to use the CMEK key
 
 1. From the [GCP console KMS page](https://console.cloud.google.com/security/kms), select your KMS key, which will be named `crdb-cmek-vault-{RANDOM_SUFFIX}` where `RANDOM_SUFFIX` is a string of random numbers.
 1. Select the **PERMISSIONS** tab.
@@ -186,6 +228,59 @@ After you have provisioned the IAM role and KMS key for your CockroachDB cluster
 1. For **New principals**, enter the email address for your cross-tenant service account created earlier.
 1. Click **Select a role** and enter **Cloud KMS CryptoKey Encrypter/Decrypter**.
 1. Click **SAVE**.
+	{{site.data.alerts.callout_info}}
+	Keep your key name available, as you will need it.
+	{{site.data.alerts.end}}
 
-After you have provisioned the IAM role and KMS key for your CockroachDB cluster's CMEK, return to [Enabling CMEK for a {{ site.data.products.dedicated }} cluster](managing-cmek.html#step-4-enable-cmek-for-your-cockroachdb-dedicated-cluster).
+## Step 5. Build your CMEK configuration manifest
+
+Compile the information about the service account and key we've just created into a manifest, which you will use to activate CMEK on your cluster with the {{ site.data.products.db }} API.
+
+1. Set the required information as environment variables:
+
+	{% include_cached copy-clipboard.html %}
+	~~~shell
+	export CLUSTER_REGION= # the region of the {{ site.data.products.dedicated}}-controlled GCP project where your cluster is located
+	export GCP_PROJECT_ID= # your GCP project ID
+	export KEY_LOCATION= # location of your KMS key (region or 'global')
+	export KEY_RING= # your KMS key ring name
+	export KEY_NAME= # your CMEK key name, i.e., crdb-cmek-vault-{RANDOM_SUFFIX}
+	export SERVICE_ACCOUNT_EMAIL= # email for your cross-tenant service account
+	~~~
+
+1. Then copy paste the following heredoc command to generate the YAML file, populating the values from your shell environment. (Alternatively, you can manually create the YAML file).
+
+	{% include_cached copy-clipboard.html %}
+	~~~shell
+	<<YML > cmek_config.yml
+	---
+	region_specs:
+	- region: "${CLUSTER_REGION}"
+	  key_spec:
+	    type: GCP_CLOUD_KMS
+	    uri: "projects/${GCP_PROJECT_ID}/locations/${KEY_LOCATION}/keyRings/${KEY_RING}/cryptoKeys/${KEY_NAME}"
+	    auth_principal: "${SERVICE_ACCOUNT_EMAIL}"
+	YML
+	~~~
+
+1. Use ruby (or another technique), to compile human-editable YAML into API-parsable JSON:
+
+	{% include_cached copy-clipboard.html %}
+	~~~shell
+	ruby -ryaml -rjson -e 'puts(YAML.load(ARGF.read).to_json)' < cmek_config.yml > cmek_config.json
+	~~~
+
+1. Use the shell utility JQ to inspect JSON payload:
+	
+	{{site.data.alerts.callout_info}}
+	On a Mac, install JQ with `brew install jq`
+	{{site.data.alerts.end}}
+
+	{% include_cached copy-clipboard.html %}
+	~~~shell
+	cat cmek_config.json | jq
+	~~~
+
+After you have built your CMEK configuration manifest with the details of your cluster, your newly pr service account and KMS key for your CockroachDB cluster's CMEK, return to [Enabling CMEK for a {{ site.data.products.dedicated }} cluster](managing-cmek.html#step-4-activate-cmek-for-your-cockroachdb-dedicated-cluster).
+
 
