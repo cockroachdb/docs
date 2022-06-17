@@ -39,7 +39,7 @@ Geo-partitioning requires an [Enterprise license](https://www.cockroachlabs.com/
 
 Using this pattern, you design your table schema to allow for [partitioning](partitioning.html#table-creation), with a column identifying geography as the first column in the table's compound primary key (e.g., city/id). You tell CockroachDB to partition the table and all of its secondary indexes by that geography column, each partition becoming its own range of 3 replicas. You then tell CockroachDB to pin each partition (all of its replicas) to the relevant region (e.g., LA partitions in `us-west`, NY partitions in `us-east`). This means that reads and writes in each region will always have access to the relevant replicas and, therefore, will have low, intra-region latencies.
 
-<img src="{{ 'images/v20.2/topology-patterns/topology_geo-partitioning1.png' | relative_url }}" alt="Geo-partitioning topology" style="max-width:100%" />
+<img src="{{ 'images/v22.1/topology-patterns/topology_geo-partitioning1.png' | relative_url }}" alt="Geo-partitioning topology" style="max-width:100%" />
 
 ### Steps
 
@@ -191,7 +191,7 @@ For example, in the animation below:
 4. The leaseholder retrieves the results and returns to the gateway node.
 5. The gateway node returns the results to the client.
 
-<img src="{{ 'images/v20.2/topology-patterns/topology_geo-partitioning_reads.png' | relative_url }}" alt="Geo-partitioning topology" style="max-width:100%" />
+<img src="{{ 'images/v22.1/topology-patterns/topology_geo-partitioning_reads.png' | relative_url }}" alt="Geo-partitioning topology" style="max-width:100%" />
 
 #### Writes
 
@@ -207,17 +207,17 @@ For example, in the animation below:
 6. The leaseholders then return acknowledgement of the commit to the gateway node.
 7. The gateway node returns the acknowledgement to the client.
 
-<img src="{{ 'images/v20.2/topology-patterns/topology_geo-partitioning_writes.gif' | relative_url }}" alt="Geo-partitioning topology" style="max-width:100%" />
+<img src="{{ 'images/v22.1/topology-patterns/topology_geo-partitioning_writes.gif' | relative_url }}" alt="Geo-partitioning topology" style="max-width:100%" />
 
 ### Resiliency
 
 Because each partition is constrained to the relevant region and balanced across the 3 AZs in the region, one AZ can fail per region without interrupting access to the partitions in that region:
 
-<img src="{{ 'images/v20.2/topology-patterns/topology_geo-partitioning_resiliency1.png' | relative_url }}" alt="Geo-partitioning topology" style="max-width:100%" />
+<img src="{{ 'images/v22.1/topology-patterns/topology_geo-partitioning_resiliency1.png' | relative_url }}" alt="Geo-partitioning topology" style="max-width:100%" />
 
 However, if an entire region fails, the partitions in that region become unavailable for reads and writes, even if your load balancer can redirect requests to a different region:
 
-<img src="{{ 'images/v20.2/topology-patterns/topology_geo-partitioning_resiliency2.png' | relative_url }}" alt="Geo-partitioning topology" style="max-width:100%" />
+<img src="{{ 'images/v22.1/topology-patterns/topology_geo-partitioning_resiliency2.png' | relative_url }}" alt="Geo-partitioning topology" style="max-width:100%" />
 
 ## Tutorial
 
