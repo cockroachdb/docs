@@ -263,6 +263,10 @@ fully qualified name, as follows:
 > CREATE TABLE public.public.mypublictable (x INT);
 ~~~
 
+### Preloaded databases
+
+{% include {{ page.version.version }}/sql/preloaded-databases.md %}
+
 ## See also
 
 - [`CREATE SCHEMA`](create-schema.html)
