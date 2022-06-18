@@ -141,6 +141,20 @@ Here we will create a cross-tenant service account that can be temporarily assum
 
 	1. Visit the [GCP IAM roles page](https://console.cloud.google.com/iam-admin/roles) and create a new role called `cmek-vault-role`, adding the required permissions specified in the [Vault GCP-KMS documentation](https://learn.hashicorp.com/tutorials/vault/key-management-secrets-engine-gcp-cloud-kms?in=vault/key-management#configure-cloud-kms).
 
+!!! NO there's a missing permission here! get it from the role 
+```
+🦖  ./vault write keymgmt/kms/gcpckms/key/crdb-cmek-vault \
+            purpose="encrypt,decrypt" \
+            protection="hsm"
+Error writing data to keymgmt/kms/gcpckms/key/crdb-cmek-vault: Error making API request.
+
+URL: PUT http://127.0.0.1:8200/v1/keymgmt/kms/gcpckms/key/crdb-cmek-vault
+Code: 500. Errors:
+
+* 1 error occurred:
+	* rpc error: code = PermissionDenied desc = Permission 'cloudkms.importJobs.useToImport' denied on resource 'projects/noobtest123/locations/global/keyRings/theonetrue/importJobs/cde65937-3026-26af-5efa-214337ed3d0b' (or it may not exist).
+```
+
 	1. Visit the [GCP IAM service accounts page](https://console.cloud.google.com/iam-admin/serviceaccounts) and create a service account, called `cmek-vault-agent`.
 
 	1. From the service account's details page, select the **PERMISSIONS** tab, and attach the `cmek-vault-role`.
