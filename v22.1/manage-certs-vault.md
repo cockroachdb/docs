@@ -1,11 +1,13 @@
 ---
-title: Using Google Cloud Platform Certificate Authority Service to manage PKI certificates
+title: Using HashiCorp Vault to manage PKI certificates
 summary: Using Google Cloud Platform Certificate Authority Service to manage PKI certificates
 toc: true
 docs_area: manage.security
 ---
 
-This tutorial walks the user through implementing [private key infrastructure (PKI)](security-reference/transport-layer-security.html) for a {{ site.data.products.core }} cluster deployed in Google Cloud Platform (GCP). PKI involves careful management of the certificates used for authentication and encryption in network traffic between servers and clients.
+This tutorial walks the user through implementing [private key infrastructure (PKI)](security-reference/transport-layer-security.html) using [Vault PKI Secrets Engine](https://www.vaultproject.io/docs/secrets/pki) for a {{ site.data.products.core }} cluster deployed in Google Cloud Platform (GCP).
+
+PKI involves careful management of the certificates used for authentication and encryption in network traffic between servers and clients.
 
 **Goals**:
 
@@ -18,27 +20,24 @@ This tutorial walks the user through implementing [private key infrastructure (P
 **Prerequisites**:
 
 - Understand [Transport Layer Security (TLS) and Public Key Infrastructure (PKI)](security-reference/transport-layer-security.html).
+- Vault:
+	- A Vault Enterprise cluster, perhaps [deployed locally](https://learn.hashicorp.com/tutorials/nomad/hashicorp-enterprise-license?in=vault/enterprise).
+	- Sufficient permissions on the cluster to enable secrets engines and create policies, either via the root access token for this cluster or through a [custom policy](https://learn.hashicorp.com/tutorials/vault/policies).
 - Google Cloud Platform (GCP):
   - Create a GCP account and project.
   - Install and configure the Google Cloud CLI (gcloud) and enable [Google CA Service](https://console.cloud.google.com/security/cas).
 
-## The approach: Cloud native, short credential life-cycle
+## The strategy
 
-PKI can be implemented in many ways; key pairs can be generated and certificates signed with open-source tools such `openssl` or even with the CockroachDB CLI, or with myriad available tools and services. The distribution of those credentials to servers and clients can be done in even more different possible ways.
+PKI can be implemented in many ways; key pairs can be generated and certificates signe with open-source tools such `openssl` or even with the CockroachDB CLI, or with myriad available tools and services. The distribution of those credentials to servers and clients can be done in even more different possible ways.
 
-### Cloud native
+The key elements of the strategy here are:
+- To leverage the strength of Vault's secrets engines to manage the certificates.
+- To enforce short validity durations for all issued certificates (eschewing certificate revocation lists or OCSP).
 
-The solution demonstrated here consolidates the tasks within services offered by Google Cloud Platform (GCP), and which can be scripted using `gcloud`, the GCP command line interface (CLI).
+### Vault secrets
 
-This implementation has the advantage of making full use of GCP's strong general security, and in particular, their strong IAM model. By managing CA operations, network and compute resource access, and secrets access in Google cloud, we can confidently manage access according to the [principle of least privelege](https://en.wikipedia.org/wiki/Principle_of_least_privilege), ensuring best security.
-
-The work described here can be divided up into three chunks, each of which might well correspond to a seperate IAM role containing the required privileges:
-
-role | tasks | permissions
-----|------|-------
-CA Admin | <ul><li>Manage CA lifycyle</li><li>Issue node certificates</li><li>Issue client certificates</li></ul>| <ul><li>CA owner</li><li>CA jumpbox access</li><li>Node secrets create/write</li><li>Client secrets create/write</li></ul>
-Node Operator | <ul><li>Install, configure and run CockroachDB and dependencies on nodes</li></ul>| <ul><li>Node SSH access</li><li>Node secrets read access</li></ul>
-Client Operator | <ul><li>Install, configure and run CockroachDB and dependencies on clients</li></ul>| <ul><li>Client SSH access</li><li>Client secrets read access</li></ul>
+The solution demonstrated here uses HashiCorp Vault as a secrets management platform. This takes advantage of Vault's generally strong security model, and also eases many tasks.
 
 ### Short-lived credentials
 
@@ -55,15 +54,19 @@ The approach taken here is intended to be automation friendly. Users should cons
 
 For example, a broad baseline recommendation might be to issue new certificates daily, keeping the validity duration under two days.
 
-## Provision IAM, compute, and network resources
+## The plan
+### Task personas
 
-The following service accounts will encapsulate the permissions required for the three modules of work involved in maintaining our PKI:
+The work described here can be divided up into three chunks, each of which might be performed by a different person and therefore which require access to different GCP and Vault resources. Each of the three personas will therefore correspond to a GCP service account and a Vault policy.
 
-- `ca-admin`
-- `node-operator`
-- `client-operator`
+persona | tasks | Vault permissions | GCP Permissions
+----|------|-------|---
+`ca-admin` | <ul><li>Manage CA lifycyle</li><li>Issue node certificates</li><li>Issue client certificates</li></ul>| <ul><li>Admin</li></ul>|<ul><li>CA jumpbox access</li><li>Node secrets create/write</li><li>Client secrets create/write</li></ul>
+`node-operator` | <ul><li>Install, configure and run CockroachDB and dependencies on nodes</li></ul>| <ul><li>Node secrets read access</li></ul>|<ul><li>Node SSH access</li></ul>
+`client-operator` | <ul><li>Install, configure and run CockroachDB and dependencies on clients</li></ul>| <ul><li>Client secrets read access</li></ul>|<ul><li>Client SSH access</li></ul>
 
-Our cluster will contain three classes of compute instance:
+### Resources 
+Our cluster will contain two classes of compute instance:
 
 - The CA administrative jumpbox, where sensitive credentials will be handled and secure operations related to certificate authority performed.
 - Three database nodes.
@@ -71,6 +74,14 @@ Our cluster will contain three classes of compute instance:
 
 Additionally, our project's firewall rules must be configured to allow communication between nodes and from client to nodes.
 
+### Steps
+
+- Step 1. Provision GCP Resources
+- Step 2. Provision PKI certificate hierarchy with Vault
+
+
+
+## Provision GCP resources
 ### Create the service accounts
 
 There are many ways to handle delegation of privileges. In this case, we'll encapsulate the three chunks of required permissions into three service accounts, which we'll associate with three different classes of compute instance: CA jumpbox, our database nodes, and our client.
@@ -110,51 +121,6 @@ gcloud compute instances create ca-admin-jumpbox \
 Created [https://www.googleapis.com/compute/v1/projects/noobtest123/zones/us-central1-a/instances/ca-admin-jumpbox].
 NAME              ZONE           MACHINE_TYPE   PREEMPTIBLE  INTERNAL_IP  EXTERNAL_IP     STATUS
 ca-admin-jumpbox  us-central1-a  n1-standard-1               10.128.0.59  35.184.145.196  RUNNING
-```
-
-Now, add CA admin permissions to the ca-admin service account, so that after SSHing into the CA admin jumpbox, authorized users will be able to perform CA admin functions.
-
-{% include_cached copy-clipboard.html %}
-```shell
-gcloud projects add-iam-policy-binding $PROJECT_ID \
-  --member=ca-admin@noobtest123.iam.gserviceaccount.com \
-  --role=roles/privateca.admin
-```
-
-```txt
-gcloud projects add-iam-policy-binding noobtest123 \
-  --member=serviceAccount:ca-admin@noobtest123.iam.gserviceaccount.com \
-  --role=roles/privateca.admin
-Updated IAM policy for project [noobtest123].
-bindings:
-- members:
-  - user:michael.a.trestman@gmail.com
-  role: projects/noobtest123/roles/CustomRole
-- members:
-  - serviceAccount:service-35961569477@gcp-sa-cloudkms.iam.gserviceaccount.com
-  role: roles/cloudkms.serviceAgent
-- members:
-  - serviceAccount:service-35961569477@compute-system.iam.gserviceaccount.com
-  role: roles/compute.serviceAgent
-- members:
-  - serviceAccount:service-35961569477@container-engine-robot.iam.gserviceaccount.com
-  role: roles/container.serviceAgent
-- members:
-  - serviceAccount:service-35961569477@containerregistry.iam.gserviceaccount.com
-  role: roles/containerregistry.ServiceAgent
-- members:
-  - serviceAccount:35961569477-compute@developer.gserviceaccount.com
-  - serviceAccount:35961569477@cloudservices.gserviceaccount.com
-  role: roles/editor
-- members:
-  - user:trestman@cockroachlabs.com
-  role: roles/owner
-- members:
-  - serviceAccount:ca-admin@noobtest123.iam.gserviceaccount.com
-  role: roles/privateca.admin
-- members:
-  - serviceAccount:service-35961569477@gcp-sa-pubsub.iam.gserviceaccount.com
-  role: roles/pubsub.serviceAgent
 ```
 
 ### Create node instances
@@ -198,20 +164,20 @@ Created [https://www.googleapis.com/compute/v1/projects/noobtest123/zones/us-cen
 Our rules will allow nodes to send requests to eachother, and to recieve requests from clients (as specified with tags).
 
 {% include_cached copy-clipboard.html %}
- ```shell
+```shell
 gcloud compute firewall-rules create roach-talk \
   --direction ingress \
   --action allow  \
   --source-tags roach-node,roach-client \
   --target-tags roach-node \
   --rules TCP:26257,TCP:8080
- ```
+```
  
- ```txt
+```txt
 Creating firewall...done.
 NAME        NETWORK  DIRECTION  PRIORITY  ALLOW               DENY  DISABLED
 roach-talk  default  INGRESS    1000      tcp:26257,tcp:8080        False 
- ``` 
+``` 
 
 ### Create the client instance
 
@@ -234,14 +200,6 @@ Collect the network names and IP addresses of these resources, which you should 
 # replace with your project ID
 export PROJECT_ID=noobtest123
 
-# replace with names for your node CA and CA pool
-export node_CA=cucaracha_node_CA
-export node_CA_pool=cucaracha_node_CA_pool
-
-# replace with names for your client CA and CA pool
-export client_CA=cucaracha_client_CA
-export client_CA_pool=cucaracha_client_CA_pool
-
 # replace with your cluster's static IP
 export ex_ip=34.134.15.116
 
@@ -256,63 +214,24 @@ export node2addr=10.128.0.53
 export node3addr=10.128.0.54
 ```
 
+## Provision PKI certificate hierarchy with Vault
 
-## CA admin operations
+The operations in this section fall under the persona of `ca-admin`, and therefore require admin Vault access and ssh access to the CA admin jumpbox.
 
-The operations in this section fall under the role of CA administrator
-
-SSH on to the CA admin jumpbox to perform the following tasks.
-
-### Create certificate authorities
-
-In GCP, CAs must be organized into certificate authority pools. By default, signing requests are targeted to a CA pool rather than an individual CA.
-
-Create a CA pool and then a single CA each for your nodes and clients.
-
-Respond `y` to enable each CA upon creation.
+### SSH on to the CA admin jumpbox
 
 {% include_cached copy-clipboard.html %}
-```shell
-gcloud privateca pools create $node_CA_pool
-gcloud privateca roots create roach-test-ca \
---pool=$node_CA_pool \
---subject="CN=roach-test-ca, O=RoachTestMegaCorp"
+~~~shell
+gcloud compute ssh ca-admin-jumpbox 
+~~~
 
-gcloud privateca pools create $client_CA_pool
-gcloud privateca roots create roach-test-client-ca \
---pool=$client_CA_pool \
---subject="CN=roach-test-client-ca, O=RoachTestMegaCorp"
-```
+~~~txt
 
-```txt
-Creating CA Pool....done.
-Created CA Pool [projects/noobtest123/locations/us-central1/caPools/cucaracha_node_CA_pool].
-Creating Certificate Authority....done.
-Created Certificate Authority [projects/noobtest123/locations/us-central1/caPools/cucaracha_node_CA_pool/certificateAuthorities/roach-test-ca].
-The CaPool [cucaracha_node_CA_pool] has no enabled CAs and cannot issue any
-certificates until at least one CA is enabled. Would you like to also enable
-this CA?
+~~~
 
-Do you want to continue (y/N)?  ^[y
-Please enter 'y' or 'n':  y
+### Create a local secrets directory
 
-Enabling CA....done.
-Creating CA Pool....done.
-Created CA Pool [projects/noobtest123/locations/us-central1/caPools/cucaracha_client_CA_pool].
-Creating Certificate Authority....done.
-Created Certificate Authority [projects/noobtest123/locations/us-central1/caPools/cucaracha_client_CA_pool/certificateAuthorities/roach-test-client-ca].
-The CaPool [cucaracha_client_CA_pool] has no enabled CAs and cannot issue any
-certificates until at least one CA is enabled. Would you like to also enable
-this CA?
-
-Do you want to continue (y/N)?  y
-
-Enabling CA....done.
-```
-
-#### Create a local secrets directory
-
-We need somewhere to put key and certificate files while we work. By working on the secure jumpbox, which can be carefully gated behind IAM policies controlling SSH access, we minimize the risk of leaking a sensitive credential. Remember that credentials can be leaked other ways&mdash;for example by printing out a private key or plain-text password to your terminal in a public place where a camera is pointed at your laptop's screen.
+We need somewhere to put key and certificate files while we work. By working on the secure CA jumpbox, which can be carefully gated behind IAM policies controlling SSH access, we minimize the risk of leaking a sensitive credential. Remember that credentials can be leaked other ways&mdash;for example by printing out a private key or plain-text password to your terminal in a public place where a camera is pointed at your laptop's screen.
 
 Public certificates are not such an issue if they leak, but private keys for nodes and clients are critical secrets and must be managed with extreme care.
 
@@ -327,20 +246,183 @@ mkdir "${secrets_dir}/$node2name"
 mkdir "${secrets_dir}/$node3name"
 mkdir "${secrets_dir}/clients"
 ```
+
+### Initialize your shell for Vault
+
+{% include_cached copy-clipboard.html %}
+~~~shell
+export VAULT_ADDR=
+export VAULT_NAMESPACE=
+export VAULT_TOKEN=
+~~~
+
+~~~txt
+
+~~~
+
+### Authenticate with the admin token 
+
+{% include_cached copy-clipboard.html %}
+~~~shell
+vault login
+~~~
+
+~~~txt
+
+~~~
+
+### Create two PKI secrets engines to serve as your node and client certificate authorities
+
+{% include_cached copy-clipboard.html %}
+~~~shell
+vault secrets enable -path=cockroach_client_ca pki
+vault secrets enable -path=cockroach_node_ca pki
+~~~
+
+~~~txt
+Success! Enabled the pki secrets engine at: cockroach_client_ca/
+Success! Enabled the pki secrets engine at: cockroach_node_ca/
+~~~
+
+### Set a maximum validity duration for certificates signed by your CAs
+
+{% include_cached copy-clipboard.html %}
+~~~shell
+vault secrets tune -max-lease-ttl=48h cockroach_client_ca
+vault secrets tune -max-lease-ttl=48h cockroach_node_ca
+~~~
+
+~~~txt
+Success! Tuned the secrets engine at: cockroach_client_ca/
+Success! Tuned the secrets engine at: cockroach_node_ca/
+~~~
+
+### Generate a root certificates for each of your CAs
+
+{% include_cached copy-clipboard.html %}
+~~~shell
+vault write cockroach_node_ca/root/generate/internal ttl=87600h --format=json > certs/node_ca.json
+echo `cat certs/node_ca.json | jq .data.private_key | tr -d '"'` > certs/node_ca.key
+echo `cat certs/node_ca.json | jq .data.certificate | tr -d '"'` > certs/node_ca.crt
+
+vault write cockroach_client_ca/root/generate/internal ttl=87600h --format=json > certs/client_ca.json
+echo `cat certs/client_ca.json | jq .data.private_key | tr -d '"'` > certs/client_ca.key
+echo `cat certs/client_ca.json | jq .data.certificate | tr -d '"'` > certs/client_ca.crt
+~~~
+
+~~~txt
+
+~~~
+
+
+
+### Configure a node role for each node
+
+{% include_cached copy-clipboard.html %}
+~~~shell
+vault write "cockroach_node_ca/roles/${node1name}" \
+	allow_bare_domains=true \
+	common_name="node" \
+	allowed_domains="${node1name},localhost,node" \
+	ip_sans="${node1addr},${ex_ip}" \
+	ext_key_usage="server_auth,client_auth" \
+	max_ttl=1h
+
+vault write "cockroach_node_ca/roles/${node2name}" \
+	allow_bare_domains=true \
+	common_name="node" \
+	allowed_domains="${node2name},localhost,node" \
+	ip_sans="${node2addr},${ex_ip}" \
+	ext_key_usage="server_auth,client_auth" \
+	max_ttl=1h
+
+vault write "cockroach_node_ca/roles/${node3name}" \
+	allow_bare_domains=true \
+	common_name="node" \
+	allowed_domains="${node3name},localhost,node" \
+	ip_sans="${node3addr},${ex_ip}" \
+	ext_key_usage="server_auth,client_auth" \
+	max_ttl=1h
+~~~
+
+~~~txt
+Success! Data written to: cockroach_node_ca/roles/cockroach-cluster-alpha-1bth
+Success! Data written to: cockroach_node_ca/roles/cockroach-cluster-alpha-1bth
+Success! Data written to: cockroach_node_ca/roles/cockroach-cluster-alpha-1bth
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~shell
+vault write "cockroach_node_ca/issue/${node1name}" \
+    common_name=node --format=json > "${secrets_dir}/$node1name/certs.json"
+vault write "cockroach_node_ca/issue/${node2name}" \
+    common_name=node --format=json > "${secrets_dir}/${node2name}/certs.json"
+vault write "cockroach_node_ca/issue/${node3name}" \
+    common_name=node --format=json > "${secrets_dir}/${node3name}/certs.json"
+~~~
+
+~~~txt
+ echo `cat ${node1name}-certs.json | jq .data.private_key | tr -d '"'` > ${node1name}.key
+ echo `cat ${node1name}-certs.json | jq .data.certificate | tr -d '"'` > ${node1name}.crt
+~~~
+
+
+
+
+### Create Vault roles for the server and client operator personas
+
+{% include_cached copy-clipboard.html %}
+~~~shell
+vault policy write client-operator - <<hcl
+path "database/creds/client-operator" {
+  capabilities = [ "read" ]
+}
+hcl
+
+vault policy write node-operator - <<hcl
+path "database/creds/node-operator" {
+  capabilities = [ "read" ]
+}
+hcl
+~~~
+
+~~~txt
+Success! Uploaded policy: client-operator
+Success! Uploaded policy: node-operator
+~~~
+
+### Create Certi
+
+
+
+
+
+
+
+### Create PKI secrets engines on your Vault
+
+Each PKI secrets engine corresponds to a single certificate authority (CA). Therefore, you must create two, one each for the client CA and node CA
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ### Acquire CA certificates
 
 #### Pull the public certificate from each CA.
 
-{% include_cached copy-clipboard.html %}
-```shell
-gcloud privateca roots describe roach-test-ca \
---pool $node_CA_pool --format json \
-| jq -r '.pemCaCertificates[]' > "${secrets_dir}/certs/ca.crt"
-
-gcloud privateca roots describe roach-test-client-ca \
---pool $client_CA_pool --format json \
-| jq -r '.pemCaCertificates[]' > "${secrets_dir}/certs/ca-client.crt"
-```
 
 #### Use `openssl` to examine the certificates.
 

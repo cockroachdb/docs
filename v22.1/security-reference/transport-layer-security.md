@@ -9,8 +9,10 @@ This page provides a conceptual overview of Transport Layer Security (TLS) and t
 
 See:
 
-- [Using Google Cloud Platform to manage PKI certificates.](../manage-certs-gcloud.html)
-- [Using the CockroachDB CLI to provision a development cluster.](../manage-certs-cli.html)
+- [Using Google Cloud Platform Certificate Authority Service to manage PKI certificates](../manage-certs-gcloud.html)
+- [Using HashiCorp Vault to manage PKI certificates](../manage-certs-vault.html)
+- [Using the CockroachDB CLI to provision a development cluster](../manage-certs-cli.html)
+
 
 ## What is Transport Layer Security (TLS)?
 
@@ -79,7 +81,7 @@ At its core, PKI is a hierarchy of cryptographically backed trust relationships 
 
 ### Certificates, signing, trust and authority
 
-The core mechanism of PKI is a the PKI certificate, also known simply as a 'security certificate', 'digital certificate' or 'TLS certificate' (because it is used in TLS), or abbreviated "cert".
+The core mechanism of PKI is a the PKI certificate, also known as a 'security certificate', 'digital certificate' or 'TLS certificate' (because it is used in TLS), or abbreviated "cert".
 
 A PKI certificate is a file containing the following:
 
@@ -91,7 +93,7 @@ A PKI certificate is a file containing the following:
 
 On its own, such a digital certificate is of no more value than a paper certificate. Perhaps less value, as it can be neither scribbled upon nor burned. However, digital certificates have the advantage that they can be cryptographically **signed**, again using the mechanism of a public/private key pair.
 
-**Signing** here simply means encrypting the certificate using a private key, so that it can be decrypted with a public key. So how does that help? This is the point where the boundaries between computing systems and social systems become very murky. By signing a certificate (and anyone with a private key can do this) a party is acting as a "certificate authority"; they are in effect asserting the validity of the identity claim being made by the certificate holder.
+**Signing** here means encrypting the certificate using a private key, so that it can be decrypted with a public key. So how does that help? This is the point where the boundaries between computing systems and social systems become very murky. By signing a certificate (and anyone with a private key can do this) a party is acting as a "certificate authority"; they are in effect asserting the validity of the identity claim being made by the certificate holder.
 
 The premise of PKI is that if I present you with a certificate, and you can decrypt it with, for example, Cockroach Labs' public certificate, and the decrypted version says that I work for the Cockroach Labs documentation team, essentially you may interpret that Cockroach Labs offers its guarantee that I work for the documentation team (or at least, I did when the certificate was signed).
 
@@ -104,7 +106,7 @@ A "tree" or hierarchy of delegated trust relationships encoded as cryptographic 
 On the public internet, certificate authority providers such as Identrust, Digicert, and Let's Encrypt provide the role of root CAs (or "trust anchors") to the entire system. What makes them "trust-worthy"? In practice, just the fact that they are **trusted** by the parties that distribute hardware and software (such as operating system distributions and browsers) packages that come pre-loaded with **trust stores**.
 
 #### Trust store
-A **trust store** is simply collection of public certificates for trusted CAs&mdash;CAs whos signed certificates will be accepted for purposes of identity verification. By using a hardware device or software package that comes loaded with a trust store, you are trusting the judgment of the company selected the CAs to add to the package's trust store.
+A **trust store** is a collection of public certificates for trusted CAs&mdash;CAs whos signed certificates will be accepted for purposes of identity verification. By using a hardware device or software package that comes loaded with a trust store, you are trusting the judgment of the company selected the CAs to add to the package's trust store.
 
 It is up to the vendors (e.g. Apple, Google, Microsoft) to decide which root CAs to include in their packages' trust stores, and then ultimately up to the end user to decide which vendors to trust. CAs must comply with formalized industry standard [baseline requirements](https://cabforum.org/baseline-requirements-documents/) to maintain good standing with vendors.
 
@@ -177,7 +179,7 @@ Customers who deploy and manage their own CockroachDB clusters must provision an
 
 Choosing a strategy for maintaining solid private PKI is important and complex, and depends on your total system requirements, total security threat model, and available resources.
 
-- Consider [Using Google Cloud Platform to manage PKI certificates.](../manage-certs-gcloud.html)
+- Consider [Using Google Cloud Platform Certificate Authority Service to manage PKI certificates.](../manage-certs-gcloud.html)
 - Review our [breakdown of security features by offering](security-overview.html).
 - Contact our <a href="mailto:sales@cockroachlabs.com">sales team</a> to discuss your needs and the range of solutions offered by Cockroach Labs.
 {{site.data.alerts.end}}
@@ -205,7 +207,7 @@ Customers who deploy and manage their own CockroachDB clusters must provision an
 
 Choosing a strategy for maintaining solid private PKI is important and complex, and depends on your total system requirements, total security threat model, and available resources.
 
-- Consider [Using Google Cloud Platform to manage PKI certificates.](../manage-certs-gcloud.html)
+- Consider [Using Google Cloud Platform Certificate Authority Service to manage PKI certificates.](../manage-certs-gcloud.html)
 - Review our [breakdown of security features by offering](security-overview.html).
 - Contact our <a href="mailto:sales@cockroachlabs.com">sales team</a> to discuss your needs and the range of solutions offered by Cockroach Labs.
 {{site.data.alerts.end}}
@@ -254,4 +256,4 @@ To maintain connection to a network secured by short-lived credentials, a would-
 
 The trade-off with short-lived certificates (or requiring any low-latency revocation system), is that it can become a single point of failure for service availability. If network connections depend on hourly propagation of fresh credentials, then a leaked credential only offers an attacker a one hour window of exploitation, but taking the credential automation offline for more than an hour can take the entire system offline. Fine tuning the validity duration to meet your threat model and available resources is an important component of designing a minimally secure private PKI without using another revocation mechanism.
 
-See: [Using Google Cloud Platform to manage PKI certificates](../manage-certs-gcloud.html)
+See: [Using Google Cloud Platform Certificate Authority Service to manage PKI certificates](../manage-certs-gcloud.html)

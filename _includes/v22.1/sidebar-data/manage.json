@@ -269,7 +269,7 @@
                   ]
                 },
                 {
-                  "title": "Using Google Cloud Platform to manage PKI certificates",
+                  "title": "Using Google Cloud Platform Certificate Authority Service to manage PKI certificates",
                   "urls": [
                     "/${VERSION}/manage-certs-gcloud.html"
                   ]
