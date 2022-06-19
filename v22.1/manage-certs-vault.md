@@ -79,319 +79,326 @@ Additionally, our project's firewall rules must be configured to allow communica
 - Step 1. Provision GCP Resources
 - Step 2. Provision PKI certificate hierarchy with Vault
 
+## Admin operations
 
+### Provision GCP resources
 
-## Provision GCP resources
-### Create the service accounts
+1. Create the service accounts.
 
-There are many ways to handle delegation of privileges. In this case, we'll encapsulate the three chunks of required permissions into three service accounts, which we'll associate with three different classes of compute instance: CA jumpbox, our database nodes, and our client.
+	{% include_cached copy-clipboard.html %}
+	```shell
+	gcloud iam service-accounts create ca-admin \
+	  --display-name="CA admin"
 
-Create the service accounts:
+	gcloud iam service-accounts create node-operator \
+	  --display-name="Node operator"
 
-{% include_cached copy-clipboard.html %}
-```shell
-gcloud iam service-accounts create ca-admin \
-  --display-name="CA admin"
+	gcloud iam service-accounts create client-operator \
+	  --display-name="Client operator"
+	```
 
-gcloud iam service-accounts create node-operator \
-  --display-name="Node operator"
+	```txt
+	Created service account [ca-admin].
+	Created service account [node-operator].
+	Created service account [client-operator].
+	```
 
-gcloud iam service-accounts create client-operator \
-  --display-name="Client operator"
-```
+1. Create the CA admin jumpbox
 
-```txt
-Created service account [ca-admin].
-Created service account [node-operator].
-Created service account [client-operator].
-```
+	Specify the ca-admin service account, and grant the `cloud-platform` scope, so that the service account can access the secrets API.
 
-### Create the CA admin jumpbox
+	{% include_cached copy-clipboard.html %}
+	```shell
+	gcloud compute instances create ca-admin-jumpbox \
+	--service-account ca-admin@noobtest123.iam.gserviceaccount.com \
+	--scopes "https://www.googleapis.com/auth/cloud-platform"
+	```
 
-Specify the ca-admin service account, and grant the `cloud-platform` scope, so that the service account can access the secrets API.
+	```txt
+	Created [https://www.googleapis.com/compute/v1/projects/noobtest123/zones/us-central1-a/instances/ca-admin-jumpbox].
+	NAME              ZONE           MACHINE_TYPE   PREEMPTIBLE  INTERNAL_IP  EXTERNAL_IP     STATUS
+	ca-admin-jumpbox  us-central1-a  n1-standard-1               10.128.0.59  35.184.145.196  RUNNING
+	```
 
-{% include_cached copy-clipboard.html %}
-```shell
-gcloud compute instances create ca-admin-jumpbox \
---service-account ca-admin@noobtest123.iam.gserviceaccount.com \
---scopes "https://www.googleapis.com/auth/cloud-platform"
-```
+1. Create node instances
 
-```txt
-Created [https://www.googleapis.com/compute/v1/projects/noobtest123/zones/us-central1-a/instances/ca-admin-jumpbox].
-NAME              ZONE           MACHINE_TYPE   PREEMPTIBLE  INTERNAL_IP  EXTERNAL_IP     STATUS
-ca-admin-jumpbox  us-central1-a  n1-standard-1               10.128.0.59  35.184.145.196  RUNNING
-```
+	Create three compute instances to use as CockroachDB nodes. Follow the guidelines described [here](deploy-cockroachdb-on-google-cloud-platform.html#step-2-create-instances), and additionally, specify the `node-operator` service account as the managing service account.
 
-### Create node instances
+	Note that we also add the network tag 'roach-node', which will allow our firewall rule to apply to the nodes instances.
 
-Create three compute instances to use as CockroachDB nodes. Follow the guidelines described [here](deploy-cockroachdb-on-google-cloud-platform.html#step-2-create-instances), and additionally, specify the `node-operator` service account as the managing service account.
+	{% include_cached copy-clipboard.html %}
+	```shell
+	gcloud compute instances create roach-node-1 \
+	--service-account node-operator@noobtest123.iam.gserviceaccount.com \
+	--machine-type=n2-standard-2 --network-interface=network-tier=PREMIUM,subnet=default \
+	--scopes=https://www.googleapis.com/auth/cloud-platform \
+	--tags=roach-node \
+	--scopes "https://www.googleapis.com/auth/cloud-platform"
 
-Note that we also add the network tag 'roach-node', which will allow our firewall rule to apply to the nodes instances.
+	gcloud compute instances create roach-node-2 \
+	--service-account node-operator@noobtest123.iam.gserviceaccount.com \
+	--machine-type=n2-standard-2 --network-interface=network-tier=PREMIUM,subnet=default \
+	--scopes=https://www.googleapis.com/auth/cloud-platform \
+	--tags=roach-node \
+	--scopes "https://www.googleapis.com/auth/cloud-platform"
 
-{% include_cached copy-clipboard.html %}
-```shell
-gcloud compute instances create roach-node-1 \
---service-account node-operator@noobtest123.iam.gserviceaccount.com \
---machine-type=n2-standard-2 --network-interface=network-tier=PREMIUM,subnet=default \
---scopes=https://www.googleapis.com/auth/cloud-platform \
---tags=roach-node \
---scopes "https://www.googleapis.com/auth/cloud-platform"
+	gcloud compute instances create roach-node-3 \
+	--service-account node-operator@noobtest123.iam.gserviceaccount.com \
+	--machine-type=n2-standard-2 --network-interface=network-tier=PREMIUM,subnet=default \
+	--scopes=https://www.googleapis.com/auth/cloud-platform \
+	--tags=roach-node \
+	--scopes "https://www.googleapis.com/auth/cloud-platform"
+	```
 
-gcloud compute instances create roach-node-2 \
---service-account node-operator@noobtest123.iam.gserviceaccount.com \
---machine-type=n2-standard-2 --network-interface=network-tier=PREMIUM,subnet=default \
---scopes=https://www.googleapis.com/auth/cloud-platform \
---tags=roach-node \
---scopes "https://www.googleapis.com/auth/cloud-platform"
+	```txt
+	Created [https://www.googleapis.com/compute/v1/projects/noobtest123/zones/us-central1-a/instances/roach-node-1].
+	Created [https://www.googleapis.com/compute/v1/projects/noobtest123/zones/us-central1-a/instances/roach-node-2].
+	Created [https://www.googleapis.com/compute/v1/projects/noobtest123/zones/us-central1-a/instances/roach-node-3].
+	```
 
-gcloud compute instances create roach-node-3 \
---service-account node-operator@noobtest123.iam.gserviceaccount.com \
---machine-type=n2-standard-2 --network-interface=network-tier=PREMIUM,subnet=default \
---scopes=https://www.googleapis.com/auth/cloud-platform \
---tags=roach-node \
---scopes "https://www.googleapis.com/auth/cloud-platform"
-```
+1. Configure cluster firewall rules
 
-```txt
-Created [https://www.googleapis.com/compute/v1/projects/noobtest123/zones/us-central1-a/instances/roach-node-1].
-Created [https://www.googleapis.com/compute/v1/projects/noobtest123/zones/us-central1-a/instances/roach-node-2].
-Created [https://www.googleapis.com/compute/v1/projects/noobtest123/zones/us-central1-a/instances/roach-node-3].
-```
+	Our rules will allow nodes to send requests to eachother, and to recieve requests from clients (as specified with tags).
 
-### Configure cluster firewall rules
+	{% include_cached copy-clipboard.html %}
+	```shell
+	gcloud compute firewall-rules create roach-talk \
+	  --direction ingress \
+	  --action allow  \
+	  --source-tags roach-node,roach-client \
+	  --target-tags roach-node \
+	  --rules TCP:26257,TCP:8080
+	```
+	 
+	```txt
+	Creating firewall...done.
+	NAME        NETWORK  DIRECTION  PRIORITY  ALLOW               DENY  DISABLED
+	roach-talk  default  INGRESS    1000      tcp:26257,tcp:8080        False 
+	``` 
 
-Our rules will allow nodes to send requests to eachother, and to recieve requests from clients (as specified with tags).
+1. Create the client instance
 
-{% include_cached copy-clipboard.html %}
-```shell
-gcloud compute firewall-rules create roach-talk \
-  --direction ingress \
-  --action allow  \
-  --source-tags roach-node,roach-client \
-  --target-tags roach-node \
-  --rules TCP:26257,TCP:8080
-```
- 
-```txt
-Creating firewall...done.
-NAME        NETWORK  DIRECTION  PRIORITY  ALLOW               DENY  DISABLED
-roach-talk  default  INGRESS    1000      tcp:26257,tcp:8080        False 
-``` 
+	{% include_cached copy-clipboard.html %}
+	```shell
+	gcloud compute instances create roach-client \
+	--service-account client-operator@noobtest123.iam.gserviceaccount.com \
+	--tags=roach-client \
+	--scopes "https://www.googleapis.com/auth/cloud-platform"
+	```
 
-### Create the client instance
+1. Compile an environment manifest
 
-{% include_cached copy-clipboard.html %}
-```shell
-gcloud compute instances create roach-client \
---service-account client-operator@noobtest123.iam.gserviceaccount.com \
---tags=roach-client \
---scopes "https://www.googleapis.com/auth/cloud-platform"
-```
+	Collect the network names and IP addresses of these resources, which you should be able to glean from the output of `gcloud compute instances list`
 
-### Compile an environment manifest
+	{% include_cached copy-clipboard.html %}
+	```shell
+	# cockroach-cluster.env
 
-Collect the network names and IP addresses of these resources, which you should be able to glean from the output of `gcloud compute instances list`
+	# replace with your project ID
+	export PROJECT_ID=noobtest123
 
-{% include_cached copy-clipboard.html %}
-```shell
-# cockroach-cluster.env
+	# replace with your cluster's static IP
+	export ex_ip=34.134.15.116
 
-# replace with your project ID
-export PROJECT_ID=noobtest123
+	# replace with your compute instance names
+	export node1name=cockroach-cluster-alpha-18kj
+	export node2name=cockroach-cluster-alpha-rbg8
+	export node3name=cockroach-cluster-alpha-zdzp
 
-# replace with your cluster's static IP
-export ex_ip=34.134.15.116
+	# replace with your node IP addresses
+	export node1addr=10.128.0.55
+	export node2addr=10.128.0.53
+	export node3addr=10.128.0.54
+	```
 
-# replace with your compute instance names
-export node1name=cockroach-cluster-alpha-18kj
-export node2name=cockroach-cluster-alpha-rbg8
-export node3name=cockroach-cluster-alpha-zdzp
-
-# replace with your node IP addresses
-export node1addr=10.128.0.55
-export node2addr=10.128.0.53
-export node3addr=10.128.0.54
-```
-
-## Provision PKI certificate hierarchy with Vault
+### Provision PKI certificate hierarchy with Vault
 
 The operations in this section fall under the persona of `ca-admin`, and therefore require admin Vault access and ssh access to the CA admin jumpbox.
 
-### SSH on to the CA admin jumpbox
+1. SSH onto the CA admin jumpbox
 
-{% include_cached copy-clipboard.html %}
-~~~shell
-gcloud compute ssh ca-admin-jumpbox 
-~~~
+	{% include_cached copy-clipboard.html %}
+	~~~shell
+	gcloud compute ssh ca-admin-jumpbox 
+	~~~
 
-~~~txt
+	~~~txt
 
-~~~
+	~~~
 
-### Create a local secrets directory
+1. Create a local secrets directory
 
-We need somewhere to put key and certificate files while we work. By working on the secure CA jumpbox, which can be carefully gated behind IAM policies controlling SSH access, we minimize the risk of leaking a sensitive credential. Remember that credentials can be leaked other ways&mdash;for example by printing out a private key or plain-text password to your terminal in a public place where a camera is pointed at your laptop's screen.
+	We need somewhere to put key and certificate files while we work. By working on the secure CA jumpbox, which can be carefully gated behind IAM policies controlling SSH access, we minimize the risk of leaking a sensitive credential. Remember that credentials can be leaked other ways&mdash;for example by printing out a private key or plain-text password to your terminal in a public place where a camera is pointed at your laptop's screen.
 
-Public certificates are not such an issue if they leak, but private keys for nodes and clients are critical secrets and must be managed with extreme care.
+	Public certificates are not such an issue if they leak, but private keys for nodes and clients are critical secrets and must be managed with extreme care.
 
-{% include_cached copy-clipboard.html %}
-```shell
+	{% include_cached copy-clipboard.html %}
+	```shell
 
-secrets_dir= #fill you path to your secrets directory
-mkdir "${secrets_dir}"
-mkdir "${secrets_dir}/certs"
-mkdir "${secrets_dir}/$node1name"
-mkdir "${secrets_dir}/$node2name"
-mkdir "${secrets_dir}/$node3name"
-mkdir "${secrets_dir}/clients"
-```
+	secrets_dir= #fill you path to your secrets directory
+	mkdir "${secrets_dir}"
+	mkdir "${secrets_dir}/certs"
+	mkdir "${secrets_dir}/$node1name"
+	mkdir "${secrets_dir}/$node2name"
+	mkdir "${secrets_dir}/$node3name"
+	mkdir "${secrets_dir}/clients"
+	```
 
-### Initialize your shell for Vault
+1. Initialize your shell for Vault
 
-{% include_cached copy-clipboard.html %}
-~~~shell
-export VAULT_ADDR=
-export VAULT_NAMESPACE=
-export VAULT_TOKEN=
-~~~
+	{% include_cached copy-clipboard.html %}
+	~~~shell
+	export VAULT_ADDR=
+	export VAULT_NAMESPACE=
+	export VAULT_TOKEN=
+	~~~
 
-~~~txt
+	~~~txt
 
-~~~
+	~~~
 
-### Authenticate with the admin token 
+1. Authenticate with the admin token 
 
-{% include_cached copy-clipboard.html %}
-~~~shell
-vault login
-~~~
+	{% include_cached copy-clipboard.html %}
+	~~~shell
+	vault login
+	~~~
 
-~~~txt
+	~~~txt
 
-~~~
+	~~~
 
-### Create two PKI secrets engines to serve as your node and client certificate authorities
+1. Create two PKI secrets engines to serve as your node and client certificate authorities
 
-{% include_cached copy-clipboard.html %}
-~~~shell
-vault secrets enable -path=cockroach_client_ca pki
-vault secrets enable -path=cockroach_node_ca pki
-~~~
+	{% include_cached copy-clipboard.html %}
+	~~~shell
+	vault secrets enable -path=cockroach_client_ca pki
+	vault secrets enable -path=cockroach_node_ca pki
+	~~~
 
-~~~txt
-Success! Enabled the pki secrets engine at: cockroach_client_ca/
-Success! Enabled the pki secrets engine at: cockroach_node_ca/
-~~~
+	~~~txt
+	Success! Enabled the pki secrets engine at: cockroach_client_ca/
+	Success! Enabled the pki secrets engine at: cockroach_node_ca/
+	~~~
 
-### Set a maximum validity duration for certificates signed by your CAs
+1. Set a maximum validity duration for certificates signed by your CAs
 
-{% include_cached copy-clipboard.html %}
-~~~shell
-vault secrets tune -max-lease-ttl=48h cockroach_client_ca
-vault secrets tune -max-lease-ttl=48h cockroach_node_ca
-~~~
+	{% include_cached copy-clipboard.html %}
+	~~~shell
+	vault secrets tune -max-lease-ttl=48h cockroach_client_ca
+	vault secrets tune -max-lease-ttl=48h cockroach_node_ca
+	~~~
 
-~~~txt
-Success! Tuned the secrets engine at: cockroach_client_ca/
-Success! Tuned the secrets engine at: cockroach_node_ca/
-~~~
+	~~~txt
+	Success! Tuned the secrets engine at: cockroach_client_ca/
+	Success! Tuned the secrets engine at: cockroach_node_ca/
+	~~~
 
-### Generate a root certificates for each of your CAs
+1. Generate a root certificates for each of your CAs.
 
-{% include_cached copy-clipboard.html %}
-~~~shell
-vault write cockroach_node_ca/root/generate/internal ttl=87600h --format=json > certs/node_ca.json
-echo `cat certs/node_ca.json | jq .data.private_key | tr -d '"'` > certs/node_ca.key
-echo `cat certs/node_ca.json | jq .data.certificate | tr -d '"'` > certs/node_ca.crt
+	{% include_cached copy-clipboard.html %}
+	~~~shell
+	vault write cockroach_node_ca/root/generate/internal ttl=87600h --format=json > certs/node_ca.json
+	vault write cockroach_client_ca/root/generate/internal ttl=87600h --format=json > certs/client_ca.json
+	~~~
 
-vault write cockroach_client_ca/root/generate/internal ttl=87600h --format=json > certs/client_ca.json
-echo `cat certs/client_ca.json | jq .data.private_key | tr -d '"'` > certs/client_ca.key
-echo `cat certs/client_ca.json | jq .data.certificate | tr -d '"'` > certs/client_ca.crt
-~~~
+1. Parse the private key and public certificate out of each JSON payload.
+	{% include_cached copy-clipboard.html %}
+	~~~shell
+	echo `cat certs/node_ca.json | jq .data.private_key | tr -d '"'` > certs/node_ca.key
+	echo `cat certs/node_ca.json | jq .data.certificate | tr -d '"'` > certs/node_ca.crt
 
-~~~txt
+	
+	echo `cat certs/client_ca.json | jq .data.private_key | tr -d '"'` > certs/client_ca.key
+	echo `cat certs/client_ca.json | jq .data.certificate | tr -d '"'` > certs/client_ca.crt
+	~~~
 
-~~~
+1. In Vault, a PKI role is a template for a certificate. Configure a node role for each node.
 
+	{% include_cached copy-clipboard.html %}
+	~~~shell
+	vault write "cockroach_node_ca/roles/${node1name}" \
+		allow_bare_domains=true \
+		common_name="node" \
+		allowed_domains="${node1name},localhost,node" \
+		ip_sans="${node1addr},${ex_ip}" \
+		ext_key_usage="server_auth,client_auth" \
+		max_ttl=1h
 
+	vault write "cockroach_node_ca/roles/${node2name}" \
+		allow_bare_domains=true \
+		common_name="node" \
+		allowed_domains="${node2name},localhost,node" \
+		ip_sans="${node2addr},${ex_ip}" \
+		ext_key_usage="server_auth,client_auth" \
+		max_ttl=1h
 
-### Configure a node role for each node
+	vault write "cockroach_node_ca/roles/${node3name}" \
+		allow_bare_domains=true \
+		common_name="node" \
+		allowed_domains="${node3name},localhost,node" \
+		ip_sans="${node3addr},${ex_ip}" \
+		ext_key_usage="server_auth,client_auth" \
+		max_ttl=1h
+	~~~
 
-{% include_cached copy-clipboard.html %}
-~~~shell
-vault write "cockroach_node_ca/roles/${node1name}" \
-	allow_bare_domains=true \
-	common_name="node" \
-	allowed_domains="${node1name},localhost,node" \
-	ip_sans="${node1addr},${ex_ip}" \
-	ext_key_usage="server_auth,client_auth" \
-	max_ttl=1h
+	~~~txt
+	Success! Data written to: cockroach_node_ca/roles/cockroach-cluster-alpha-1bth
+	Success! Data written to: cockroach_node_ca/roles/cockroach-cluster-alpha-1bth
+	Success! Data written to: cockroach_node_ca/roles/cockroach-cluster-alpha-1bth
+	~~~
 
-vault write "cockroach_node_ca/roles/${node2name}" \
-	allow_bare_domains=true \
-	common_name="node" \
-	allowed_domains="${node2name},localhost,node" \
-	ip_sans="${node2addr},${ex_ip}" \
-	ext_key_usage="server_auth,client_auth" \
-	max_ttl=1h
+1. Issue a certificate pair fore each node.
 
-vault write "cockroach_node_ca/roles/${node3name}" \
-	allow_bare_domains=true \
-	common_name="node" \
-	allowed_domains="${node3name},localhost,node" \
-	ip_sans="${node3addr},${ex_ip}" \
-	ext_key_usage="server_auth,client_auth" \
-	max_ttl=1h
-~~~
+	{% include_cached copy-clipboard.html %}
+	~~~shell
+	vault write "cockroach_node_ca/issue/${node1name}" \
+	    common_name=node --format=json > "${secrets_dir}/$node1name/certs.json"
 
-~~~txt
-Success! Data written to: cockroach_node_ca/roles/cockroach-cluster-alpha-1bth
-Success! Data written to: cockroach_node_ca/roles/cockroach-cluster-alpha-1bth
-Success! Data written to: cockroach_node_ca/roles/cockroach-cluster-alpha-1bth
-~~~
+	vault write "cockroach_node_ca/issue/${node2name}" \
+	    common_name=node --format=json > "${secrets_dir}/${node2name}/certs.json"
+	
+	vault write "cockroach_node_ca/issue/${node3name}" \
+	    common_name=node --format=json > "${secrets_dir}/${node3name}/certs.json"
+	~~~
+1. Parse the key and certificate pair from each return payload.
 
-{% include_cached copy-clipboard.html %}
-~~~shell
-vault write "cockroach_node_ca/issue/${node1name}" \
-    common_name=node --format=json > "${secrets_dir}/$node1name/certs.json"
-vault write "cockroach_node_ca/issue/${node2name}" \
-    common_name=node --format=json > "${secrets_dir}/${node2name}/certs.json"
-vault write "cockroach_node_ca/issue/${node3name}" \
-    common_name=node --format=json > "${secrets_dir}/${node3name}/certs.json"
-~~~
+	{% include_cached copy-clipboard.html %}
+	~~~shell
+	 echo `cat ${node1name}-certs.json | jq .data.private_key | tr -d '"'` > "${secrets_dir}/${node1name}/node.key"
+	 echo `cat ${node1name}-certs.json | jq .data.certificate | tr -d '"'` > "${secrets_dir}/${node1name}/node.crt"
 
-~~~txt
- echo `cat ${node1name}-certs.json | jq .data.private_key | tr -d '"'` > ${node1name}.key
- echo `cat ${node1name}-certs.json | jq .data.certificate | tr -d '"'` > ${node1name}.crt
-~~~
+	 echo `cat ${node2name}-certs.json | jq .data.private_key | tr -d '"'` > "${secrets_dir}/${node2name}/node.key"
+	 echo `cat ${node2name}-certs.json | jq .data.certificate | tr -d '"'` > "${secrets_dir}/${node2name}/node.crt"
+	 
+	 echo `cat ${node3name}-certs.json | jq .data.private_key | tr -d '"'` > "${secrets_dir}/${node3name}/node.key"
+	 echo `cat ${node3name}-certs.json | jq .data.certificate | tr -d '"'` > "${secrets_dir}/${node3name}/node.crt"
+	~~~
 
+1. Create Vault roles for the server and client operator personas
 
+	{% include_cached copy-clipboard.html %}
+	~~~shell
+	vault policy write client-operator - <<hcl
+	path "database/creds/client-operator" {
+	  capabilities = [ "read" ]
+	}
+	hcl
 
+	vault policy write node-operator - <<hcl
+	path "database/creds/node-operator" {
+	  capabilities = [ "read" ]
+	}
+	hcl
+	~~~
 
-### Create Vault roles for the server and client operator personas
-
-{% include_cached copy-clipboard.html %}
-~~~shell
-vault policy write client-operator - <<hcl
-path "database/creds/client-operator" {
-  capabilities = [ "read" ]
-}
-hcl
-
-vault policy write node-operator - <<hcl
-path "database/creds/node-operator" {
-  capabilities = [ "read" ]
-}
-hcl
-~~~
-
-~~~txt
-Success! Uploaded policy: client-operator
-Success! Uploaded policy: node-operator
-~~~
+	~~~txt
+	Success! Uploaded policy: client-operator
+	Success! Uploaded policy: node-operator
+	~~~
 
 ### Create Certi
+
 
 
 
@@ -402,17 +409,6 @@ Success! Uploaded policy: node-operator
 ### Create PKI secrets engines on your Vault
 
 Each PKI secrets engine corresponds to a single certificate authority (CA). Therefore, you must create two, one each for the client CA and node CA
-
-
-
-
-
-
-
-
-
-
-
 
 
 
