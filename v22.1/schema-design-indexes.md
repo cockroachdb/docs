@@ -67,6 +67,10 @@ For an example, see [Example](#example).
 
 Here are some best practices for creating and using secondary indexes.
 
+{{site.data.alerts.callout_success}}
+The [`EXPLAIN`](explain.html#success-responses) command provides index recommendations, including index actions and SQL statements to perform the actions.
+{{site.data.alerts.end}}
+
 ### Index contents
 
 - Index all columns that you plan to use for [sorting](order-by.html) or [filtering](select-clause.html#filter-rows) data.
