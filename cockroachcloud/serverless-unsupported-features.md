@@ -31,6 +31,10 @@ Both {{ site.data.products.serverless }} and {{ site.data.products.dedicated }} 
 
 {{ site.data.products.serverless }} is only supported in a single region, and does not support [multi-region](../{{site.versions["stable"]}}/multiregion-overview.html) features.
 
+## Follower reads
+
+[Follower reads](../{{site.versions["stable"]}}/follower-reads.html) are not supported in {{ site.data.products.serverless }} clusters.
+
 ## Self service upgrades
 
 {{ site.data.products.serverless }} is a fully managed multi-tenant deployment of CockroachDB. Major and minor upgrades of CockroachDB are handled by Cockroach Labs, and [can't be initiated by users](serverless-faqs.html#can-i-upgrade-the-version-of-cockroachdb-my-cockroachdb-serverless-beta-cluster-is-running-on).
