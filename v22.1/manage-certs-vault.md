@@ -5,7 +5,7 @@ toc: true
 docs_area: manage.security
 ---
 
-This tutorial walks the user through implementing [private key infrastructure (PKI)](security-reference/transport-layer-security.html) using [Vault PKI Secrets Engine](https://www.vaultproject.io/docs/secrets/pki) for a {{ site.data.products.core }} cluster deployed in Google Cloud Platform (GCP).
+This tutorial walks the user through implementing [public key infrastructure (PKI)](security-reference/transport-layer-security.html) using [Vault PKI Secrets Engine](https://www.vaultproject.io/docs/secrets/pki) for a {{ site.data.products.core }} cluster deployed in Google Cloud Platform (GCP).
 
 PKI involves careful management of the certificates used for authentication and encryption in network traffic between servers and clients.
 
@@ -27,11 +27,15 @@ PKI involves careful management of the certificates used for authentication and 
   - Create a GCP account and project.
   - Install and configure the Google Cloud CLI (gcloud) and enable [Google CA Service](https://console.cloud.google.com/security/cas).
 
+See also:
+- [Build your own CA with Vault](https://learn.hashicorp.com/tutorials/vault/pki-engine)
+
 ## The strategy
 
 PKI can be implemented in many ways; key pairs can be generated and certificates signe with open-source tools such `openssl` or even with the CockroachDB CLI, or with myriad available tools and services. The distribution of those credentials to servers and clients can be done in even more different possible ways.
 
 The key elements of the strategy here are:
+
 - To leverage the strength of Vault's secrets engines to manage the certificates.
 - To enforce short validity durations for all issued certificates (eschewing certificate revocation lists or OCSP).
 
@@ -41,7 +45,7 @@ The solution demonstrated here uses HashiCorp Vault as a secrets management plat
 
 ### Short-lived credentials
 
-What happens if a credential, such as a private key for a server or a client, is compromised? A PKI implementation must deal with this in one of two ways:
+Credentials can become compromised, in which case j A PKI implementation must deal with this in one of two ways:
 
 - By implementation a revocation mechanism, either Certificate Revocation Lists (CRLS) or the Online Certificate Status Protocol.
 - By issuing only certificates with short validity durations, so that any compromised certificate quickly becomes unusable. 
@@ -61,12 +65,12 @@ The work described here can be divided up into three chunks, each of which might
 
 persona | tasks | Vault permissions | GCP Permissions
 ----|------|-------|---
-`ca-admin` | <ul><li>Manage CA lifycyle</li><li>Issue node certificates</li><li>Issue client certificates</li></ul>| <ul><li>Admin</li></ul>|<ul><li>CA jumpbox access</li><li>Node secrets create/write</li><li>Client secrets create/write</li></ul>
-`node-operator` | <ul><li>Install, configure and run CockroachDB and dependencies on nodes</li></ul>| <ul><li>Node secrets read access</li></ul>|<ul><li>Node SSH access</li></ul>
-`client-operator` | <ul><li>Install, configure and run CockroachDB and dependencies on clients</li></ul>| <ul><li>Client secrets read access</li></ul>|<ul><li>Client SSH access</li></ul>
+`ca-admin` | <ul><li>Manage CA lifycyle</li><li>Issue node certificates</li><li>Issue client certificates</li></ul>| <ul><li>Admin</li></ul>|<ul><li>CA jumpbox access</li><li>Node SSH access</li><li>Client SSH access</li></ul>
+`node-operator` | <ul><li>Install, configure and run CockroachDB and dependencies on nodes</li></ul>|   |<ul><li>Node SSH access</li></ul>
+`client-operator` | <ul><li>Install, configure and run CockroachDB and dependencies on clients</li></ul>| |<ul><li>Client SSH access</li></ul>
 
 ### Resources 
-Our cluster will contain two classes of compute instance:
+Our cluster will contain three classes of compute instance:
 
 - The CA administrative jumpbox, where sensitive credentials will be handled and secure operations related to certificate authority performed.
 - Three database nodes.
@@ -235,7 +239,7 @@ The operations in this section fall under the persona of `ca-admin`, and therefo
 	{% include_cached copy-clipboard.html %}
 	```shell
 
-	secrets_dir= #fill you path to your secrets directory
+	export secrets_dir="/tmp/secrets" #fill you path to your secrets directory
 	mkdir "${secrets_dir}"
 	mkdir "${secrets_dir}/certs"
 	mkdir "${secrets_dir}/$node1name"
@@ -294,26 +298,76 @@ The operations in this section fall under the persona of `ca-admin`, and therefo
 	Success! Tuned the secrets engine at: cockroach_node_ca/
 	~~~
 
-1. Generate a root certificates for each of your CAs.
+1. Generate a root credential pair for each of your CAs. Certificates created with this CA/secrets engine will be signed with the private key generated here. 
+
+	{{site.data.alerts.callout_info}}
+	Note that the CA private key cannot be exported from Vault, preventing it from being leaked and used to issue fraudulent certificates.
+
+	The public certificate for each CA is downloaded in the resulting JSON payload. We'll need to use these public CA certificates to allow nodes and clients to validate the trust chain of each-other's certificates when performing [TLS authentication](transport-layer-security).
+
+	{{site.data.alerts.end}}
 
 	{% include_cached copy-clipboard.html %}
 	~~~shell
-	vault write cockroach_node_ca/root/generate/internal ttl=87600h --format=json > certs/node_ca.json
-	vault write cockroach_client_ca/root/generate/internal ttl=87600h --format=json > certs/client_ca.json
+	vault write cockroach_node_ca/root/generate/internal ttl=87600h --format=json > "${secrets_dir}/certs/node_ca.json"
+	vault write cockroach_client_ca/root/generate/internal ttl=87600h --format=json > "${secrets_dir}/certs/client_ca.json"
 	~~~
 
-1. Parse the private key and public certificate out of each JSON payload.
-	{% include_cached copy-clipboard.html %}
-	~~~shell
-	echo `cat certs/node_ca.json | jq .data.private_key | tr -d '"'` > certs/node_ca.key
-	echo `cat certs/node_ca.json | jq .data.certificate | tr -d '"'` > certs/node_ca.crt
+1. You'll need to provision each node with both CA certs.
 
+
+	1. Parse the public certificate out of each JSON payload.
+		{% include_cached copy-clipboard.html %}
+		~~~shell
+		echo `cat "${secrets_dir}/certs/node_ca.json" | jq .data.certificate | tr -d '"'` > "${secrets_dir}/certs/node_ca.crt"
+		echo `cat "${secrets_dir}/certs/client_ca.json" | jq .data.certificate | tr -d '"'` > "${secrets_dir}/certs/client_ca.crt"
+		~~~
+
+	1. Copy both certificates to the directory intended for each node:
+	{% include_cached copy-clipboard.html %}
+		~~~shell
+		cp "${secrets_dir}/certs/node_ca.crt" "${secrets_dir}/$node1name/"
+		cp "${secrets_dir}/certs/node_ca.crt" "${secrets_dir}/$node2name"
+		cp "${secrets_dir}/certs/node_ca.crt" "${secrets_dir}/$node3name"
+		
+		cp "${secrets_dir}/certs/client_ca.crt" "${secrets_dir}/$node1name/"
+		cp "${secrets_dir}/certs/client_ca.crt" "${secrets_dir}/$node2name"
+		cp "${secrets_dir}/certs/client_ca.crt" "${secrets_dir}/$node3name"
+		~~~
 	
-	echo `cat certs/client_ca.json | jq .data.private_key | tr -d '"'` > certs/client_ca.key
-	echo `cat certs/client_ca.json | jq .data.certificate | tr -d '"'` > certs/client_ca.crt
-	~~~
+	1. Use `openssl` to examine the certificates, confirming that it has been generated and copied correctly.
+		{% include_cached copy-clipboard.html %}
+		```shell
+		openssl x509 -in "${secrets_dir}/${node1name}/node_ca.crt"  -text | less
+		```
+		~~~txt
+		Certificate:
+		    Data:
+		        Version: 3 (0x2)
+		        Serial Number:
+		            1a:72:ac:49:e9:38:38:65:e3:40:16:a8:48:6e:34:a0:3f:0f:00:96
+		    Signature Algorithm: sha256WithRSAEncryption
+		        Issuer:
+		        Validity
+		            Not Before: Jun 21 17:24:39 2022 GMT
+		            Not After : Jul 23 17:25:09 2022 GMT
+		        Subject:
+		        Subject Public Key Info:
+		            Public Key Algorithm: rsaEncryption
+		                Public-Key: (2048 bit)
+        ...
+		~~~
 
-1. In Vault, a PKI role is a template for a certificate. Configure a node role for each node.
+1. In Vault, a PKI role is a template for a certificate. Configure a node role for each node. Note how each certificate is tailored to the node:
+
+- The extended key usages attribute `ext_key_usage` must include both server and client auth usages; this is because nodes must frequently initiate requests to other nodes in order to maintain cluster synchrony and load-balance work.
+- The Subject Alternative Name (SAN) - IP addresses field contains:
+  - the IP address of the node on the internal network of your GCP project (so the node can serve at that address  locally, to other nodes).
+  - the IP address of your cluster on the external, public internet (so the node can serve at that address publicly, to application servers).
+
+  {{site.data.alerts.callout_info}}
+  Note that certificate attributes must be provided with Vault's specific parameter syntax, which is documented here: 
+  {{site.data.alerts.end}}
 
 	{% include_cached copy-clipboard.html %}
 	~~~shell
@@ -348,7 +402,7 @@ The operations in this section fall under the persona of `ca-admin`, and therefo
 	Success! Data written to: cockroach_node_ca/roles/cockroach-cluster-alpha-1bth
 	~~~
 
-1. Issue a certificate pair fore each node.
+1. Issue a certificate pair for each node.
 
 	{% include_cached copy-clipboard.html %}
 	~~~shell
@@ -365,39 +419,30 @@ The operations in this section fall under the persona of `ca-admin`, and therefo
 
 	{% include_cached copy-clipboard.html %}
 	~~~shell
-	 echo `cat ${node1name}-certs.json | jq .data.private_key | tr -d '"'` > "${secrets_dir}/${node1name}/node.key"
-	 echo `cat ${node1name}-certs.json | jq .data.certificate | tr -d '"'` > "${secrets_dir}/${node1name}/node.crt"
+	 echo `cat "${secrets_dir}/$node1name/certs.json" | jq .data.private_key | tr -d '"'` > "${secrets_dir}/${node1name}/node.key"
+	 echo `cat "${secrets_dir}/$node1name/certs.json" | jq .data.certificate | tr -d '"'` > "${secrets_dir}/${node1name}/node.crt"
 
-	 echo `cat ${node2name}-certs.json | jq .data.private_key | tr -d '"'` > "${secrets_dir}/${node2name}/node.key"
-	 echo `cat ${node2name}-certs.json | jq .data.certificate | tr -d '"'` > "${secrets_dir}/${node2name}/node.crt"
+	 echo `cat "${secrets_dir}/$node2name/certs.json" | jq .data.private_key | tr -d '"'` > "${secrets_dir}/${node2name}/node.key"
+	 echo `cat "${secrets_dir}/$node2name/certs.json" | jq .data.certificate | tr -d '"'` > "${secrets_dir}/${node2name}/node.crt"
 	 
-	 echo `cat ${node3name}-certs.json | jq .data.private_key | tr -d '"'` > "${secrets_dir}/${node3name}/node.key"
-	 echo `cat ${node3name}-certs.json | jq .data.certificate | tr -d '"'` > "${secrets_dir}/${node3name}/node.crt"
+	 echo `cat "${secrets_dir}/$node3name/certs.json" | jq .data.private_key | tr -d '"'` > "${secrets_dir}/${node3name}/node.key"
+	 echo `cat "${secrets_dir}/$node3name/certs.json" | jq .data.certificate | tr -d '"'` > "${secrets_dir}/${node3name}/node.crt"
 	~~~
 
-1. Create Vault roles for the server and client operator personas
+1. Use SCP to propagate the CA crt and corresponding key pair to each node
 
-	{% include_cached copy-clipboard.html %}
-	~~~shell
-	vault policy write client-operator - <<hcl
-	path "database/creds/client-operator" {
-	  capabilities = [ "read" ]
-	}
-	hcl
+{% include_cached copy-clipboard.html %}
+```shell
 
-	vault policy write node-operator - <<hcl
-	path "database/creds/node-operator" {
-	  capabilities = [ "read" ]
-	}
-	hcl
-	~~~
+gcloud compute scp 
+gcloud compute scp 
 
-	~~~txt
-	Success! Uploaded policy: client-operator
-	Success! Uploaded policy: node-operator
-	~~~
+gcloud compute scp 
+gcloud compute scp 
 
-### Create Certi
+gcloud compute scp 
+gcloud compute scp 
+```
 
 
 
@@ -406,9 +451,7 @@ The operations in this section fall under the persona of `ca-admin`, and therefo
 
 
 
-### Create PKI secrets engines on your Vault
 
-Each PKI secrets engine corresponds to a single certificate authority (CA). Therefore, you must create two, one each for the client CA and node CA
 
 
 
@@ -424,7 +467,7 @@ Each PKI secrets engine corresponds to a single certificate authority (CA). Ther
 
 {% include_cached copy-clipboard.html %}
 ```shell
-openssl x509 -in "${secrets_dir}/certs/ca.crt"  -text | less
+openssl x509 -in "${secrets_dir}/${node1name}/node_ca.crt"  -text | less
 ```
 
 #### Push the CA certificates to the nodes' trust stores
@@ -447,15 +490,6 @@ gcloud compute scp ${secrets_dir}/certs/ca-client.crt ${node3name}:~/certs
 
 #### Create a private key and public certifiate for each node in the cluster.
 
-Note how each certificate is tailored to the node:
-
-- The `extended-key-usages` must include both server and client auth usages; this is because nodes must frequently initiate requests to other nodes in order to maintain cluster synchrony and load-balance work.
-- The Subject Alternative Name (SAN) - domain names (DNS) field contains:
-  - the instance name assigned by GCP.
-  - `localhost` for loopback requests.
-- The Subject Alternative Name (SAN) - IP addresses field contains:
-  - the IP address of the node on the internal network of your GCP project (so the node can serve at that address  locally, to other nodes).
-  - the IP address of your cluster on the external, public internet (so the node can serve at that address publicly, to application servers).
 
 {% include_cached copy-clipboard.html %}
 ```shell
