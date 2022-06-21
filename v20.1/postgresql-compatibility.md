@@ -121,7 +121,7 @@ For more information, see [`SELECT FOR UPDATE`](select-for-update.html).
 
 For compatibility with PostgreSQL, CockroachDB supports a [three-level structure for names](sql-name-resolution.html#naming-hierarchy): databases, schemas, and objects.
 
-However, in CockroachDB versions < v20.2, user-defined schemas are not supported, and the only schema available for stored objects is the preloaded `public` schema. As a result, CockroachDB effectively supports a two-level storage structure: databases and objects. To provide a multi-level structure for stored objects, we recommend using database namespaces in the same way as [schema namespaces are used in PostgreSQL](http://www.postgresql.cn/docs/current/ddl-schemas.html).
+However, in CockroachDB versions < v20.2, user-defined schemas are not supported, and the only schema available for stored objects is the preloaded `public` schema. As a result, CockroachDB effectively supports a two-level storage structure: databases and objects. To provide a multi-level structure for stored objects, we recommend using database namespaces in the same way as [schema namespaces are used in PostgreSQL](https://www.postgresql.org/docs/current/ddl-schemas.html).
 
 For more details, see [Name Resolution](sql-name-resolution.html).
 
