@@ -1,4 +1,4 @@
-| users_pkey---
+---
 title: RENAME INDEX
 summary: The RENAME INDEX statement changes the name of an index for a table.
 toc: true
@@ -34,7 +34,7 @@ The user must have the `CREATE` [privilege](security-reference/authorization.htm
 
 ## Example
 
-### Rename an Index
+### Rename an index
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
