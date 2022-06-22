@@ -245,7 +245,7 @@ To view the indexes in the `vehicles` table, issue a [`SHOW INDEXES`](show-index
 
 The output from this `SHOW` statement displays the names and columns of the two indexes on the table (i.e., `vehicles_pkey` and `type_available_idx`).
 
-Note that the `last_location` column's `storing` value is `true` in the `type_available_idx` index, and is therefore not sorted. Also note that the vehicles_pkey key column `id` is implicit in the index, meaning the `id` column is implicitly indexed in `type_available_idx`.
+The `last_location` column's `storing` value is `true` in the `type_available_idx` index, and is therefore not sorted. The primary key column `id` is implicit in the index, meaning the `id` column is implicitly indexed in `type_available_idx`.
 
 To see an index definition, use a [`SHOW CREATE`](show-create.html) statement on the table that contains the index:
 
