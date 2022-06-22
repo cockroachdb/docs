@@ -88,7 +88,6 @@ Additionally, our project's firewall rules must be configured to allow communica
 ### Provision GCP resources
 
 1. Create the service accounts.
-
 	{% include_cached copy-clipboard.html %}
 	```shell
 	gcloud iam service-accounts create ca-admin \
@@ -205,14 +204,14 @@ Additionally, our project's firewall rules must be configured to allow communica
 	export ex_ip=34.134.15.116
 
 	# replace with your compute instance names
-	export node1name=cockroach-cluster-alpha-18kj
-	export node2name=cockroach-cluster-alpha-rbg8
-	export node3name=cockroach-cluster-alpha-zdzp
+	export node1name=cockroach-cluster-alpha-1c1c
+	export node2name=cockroach-cluster-alpha-d1z9
+	export node3name=cockroach-cluster-alpha-dgz6
 
 	# replace with your node IP addresses
-	export node1addr=10.128.0.55
-	export node2addr=10.128.0.53
-	export node3addr=10.128.0.54
+	export node1addr=10.128.15.208
+	export node2addr=10.128.15.210
+	export node3addr=10.128.15.207
 	```
 
 ### Provision PKI certificate hierarchy with Vault
@@ -230,7 +229,7 @@ The operations in this section fall under the persona of `ca-admin`, and therefo
 
 	~~~
 
-1. Create a local secrets directory
+1. Create a secrets directory on the jumpbox
 
 	We need somewhere to put key and certificate files while we work. By working on the secure CA jumpbox, which can be carefully gated behind IAM policies controlling SSH access, we minimize the risk of leaking a sensitive credential. Remember that credentials can be leaked other ways&mdash;for example by printing out a private key or plain-text password to your terminal in a public place where a camera is pointed at your laptop's screen.
 
@@ -248,7 +247,7 @@ The operations in this section fall under the persona of `ca-admin`, and therefo
 	mkdir "${secrets_dir}/clients"
 	```
 
-1. Initialize your shell for Vault
+1. Initialize your shell for Vault on the jumpbox
 
 	{% include_cached copy-clipboard.html %}
 	~~~shell
@@ -266,10 +265,6 @@ The operations in this section fall under the persona of `ca-admin`, and therefo
 	{% include_cached copy-clipboard.html %}
 	~~~shell
 	vault login
-	~~~
-
-	~~~txt
-
 	~~~
 
 1. Create two PKI secrets engines to serve as your node and client certificate authorities
@@ -303,7 +298,7 @@ The operations in this section fall under the persona of `ca-admin`, and therefo
 	{{site.data.alerts.callout_info}}
 	Note that the CA private key cannot be exported from Vault, preventing it from being leaked and used to issue fraudulent certificates.
 
-	The public certificate for each CA is downloaded in the resulting JSON payload. We'll need to use these public CA certificates to allow nodes and clients to validate the trust chain of each-other's certificates when performing [TLS authentication](transport-layer-security).
+	The public certificate for each CA is downloaded in the resulting JSON payload. We'll need to use these public CA certificates to allow nodes and clients to validate the trust chain of each-other's certificates when performing [TLS authentication](security-reference/transport-layer-security.html).
 
 	{{site.data.alerts.end}}
 
@@ -313,15 +308,14 @@ The operations in this section fall under the persona of `ca-admin`, and therefo
 	vault write cockroach_client_ca/root/generate/internal ttl=87600h --format=json > "${secrets_dir}/certs/client_ca.json"
 	~~~
 
-1. You'll need to provision each node with both CA certs.
-
+1. Provision each node with both CA certs.
 
 	1. Parse the public certificate out of each JSON payload.
-		{% include_cached copy-clipboard.html %}
-		~~~shell
-		echo `cat "${secrets_dir}/certs/node_ca.json" | jq .data.certificate | tr -d '"'` > "${secrets_dir}/certs/node_ca.crt"
-		echo `cat "${secrets_dir}/certs/client_ca.json" | jq .data.certificate | tr -d '"'` > "${secrets_dir}/certs/client_ca.crt"
-		~~~
+			{% include_cached copy-clipboard.html %}
+			~~~shell
+			echo `cat "${secrets_dir}/certs/node_ca.json" | jq .data.certificate | tr -d '"'` > "${secrets_dir}/certs/node_ca.crt"
+			echo `cat "${secrets_dir}/certs/client_ca.json" | jq .data.certificate | tr -d '"'` > "${secrets_dir}/certs/client_ca.crt"
+			~~~
 
 	1. Copy both certificates to the directory intended for each node:
 	{% include_cached copy-clipboard.html %}
@@ -403,46 +397,51 @@ The operations in this section fall under the persona of `ca-admin`, and therefo
 	~~~
 
 1. Issue a certificate pair for each node.
+		{% include_cached copy-clipboard.html %}
+		~~~shell
+		vault write "cockroach_node_ca/issue/${node1name}" \
+		    common_name=node --format=json > "${secrets_dir}/$node1name/certs.json"
 
-	{% include_cached copy-clipboard.html %}
-	~~~shell
-	vault write "cockroach_node_ca/issue/${node1name}" \
-	    common_name=node --format=json > "${secrets_dir}/$node1name/certs.json"
+		vault write "cockroach_node_ca/issue/${node2name}" \
+		    common_name=node --format=json > "${secrets_dir}/${node2name}/certs.json"
 
-	vault write "cockroach_node_ca/issue/${node2name}" \
-	    common_name=node --format=json > "${secrets_dir}/${node2name}/certs.json"
-	
-	vault write "cockroach_node_ca/issue/${node3name}" \
-	    common_name=node --format=json > "${secrets_dir}/${node3name}/certs.json"
-	~~~
+		vault write "cockroach_node_ca/issue/${node3name}" \
+		    common_name=node --format=json > "${secrets_dir}/${node3name}/certs.json"
+		~~~
 1. Parse the key and certificate pair from each return payload.
+		{% include_cached copy-clipboard.html %}
+		~~~shell
+		echo `cat "${secrets_dir}/$node1name/certs.json" | jq .data.private_key | tr -d '"'` > "${secrets_dir}/${node1name}/node.key"
+		echo `cat "${secrets_dir}/$node1name/certs.json" | jq .data.certificate | tr -d '"'` > "${secrets_dir}/${node1name}/node.crt"
 
-	{% include_cached copy-clipboard.html %}
-	~~~shell
-	 echo `cat "${secrets_dir}/$node1name/certs.json" | jq .data.private_key | tr -d '"'` > "${secrets_dir}/${node1name}/node.key"
-	 echo `cat "${secrets_dir}/$node1name/certs.json" | jq .data.certificate | tr -d '"'` > "${secrets_dir}/${node1name}/node.crt"
+		echo `cat "${secrets_dir}/$node2name/certs.json" | jq .data.private_key | tr -d '"'` > "${secrets_dir}/${node2name}/node.key"
+		echo `cat "${secrets_dir}/$node2name/certs.json" | jq .data.certificate | tr -d '"'` > "${secrets_dir}/${node2name}/node.crt"
 
-	 echo `cat "${secrets_dir}/$node2name/certs.json" | jq .data.private_key | tr -d '"'` > "${secrets_dir}/${node2name}/node.key"
-	 echo `cat "${secrets_dir}/$node2name/certs.json" | jq .data.certificate | tr -d '"'` > "${secrets_dir}/${node2name}/node.crt"
-	 
-	 echo `cat "${secrets_dir}/$node3name/certs.json" | jq .data.private_key | tr -d '"'` > "${secrets_dir}/${node3name}/node.key"
-	 echo `cat "${secrets_dir}/$node3name/certs.json" | jq .data.certificate | tr -d '"'` > "${secrets_dir}/${node3name}/node.crt"
-	~~~
+		echo `cat "${secrets_dir}/$node3name/certs.json" | jq .data.private_key | tr -d '"'` > "${secrets_dir}/${node3name}/node.key"
+		echo `cat "${secrets_dir}/$node3name/certs.json" | jq .data.certificate | tr -d '"'` > "${secrets_dir}/${node3name}/node.crt"
+		~~~
 
-1. Use SCP to propagate the CA crt and corresponding key pair to each node
+1. Provision each node with the required credentials
+		1. Prepare the certs directory on each node:
+			{% include_cached copy-clipboard.html %}
+			~~~shell
+			gcloud compute ssh $node1name \
+			--command 'rm -rf ~/certs && mkdir ~/certs'
 
-{% include_cached copy-clipboard.html %}
-```shell
+			gcloud compute ssh $node2name \
+			--command 'rm -rf ~/certs && mkdir ~/certs'
 
-gcloud compute scp 
-gcloud compute scp 
+			gcloud compute ssh $node3name \
+			--command 'rm -rf ~/certs && mkdir ~/certs'
+			~~~
+		1. Use SCP to propagate the CA crt and corresponding key pair to each node
+				{% include_cached copy-clipboard.html %}
+				~~~shell
 
-gcloud compute scp 
-gcloud compute scp 
+				gcloud compute scp -r "${secrets_dir}/$node3name/" "$node3name/certs"
+				gcloud compute scp -r "${secrets_dir}/$node3name/" "$node3name/certs"
+				~~~
 
-gcloud compute scp 
-gcloud compute scp 
-```
 
 
 
@@ -724,14 +723,7 @@ First, Prepare each node by making sure each node has a clear trust store.
 
 {% include_cached copy-clipboard.html %}
 ```shell
-gcloud compute ssh $node1name \
---command 'rm -rf ~/certs && mkdir ~/certs'
 
-gcloud compute ssh $node2name \
---command 'rm -rf ~/certs && mkdir ~/certs'
-
-gcloud compute ssh $node3name \
---command 'rm -rf ~/certs && mkdir ~/certs'
 ```
 
 Pull the credentials.
