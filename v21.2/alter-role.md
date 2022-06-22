@@ -38,10 +38,10 @@ Parameter | Description
 ----------|-------------
 `role_name` | The name of the role to alter.
 `WITH role_option` | Apply a [role option](#role-options) to the role.
-`SET {session variable}` | <span class="version-tag">New in v21.2:</span> Set default [session variable](set-vars.html) values for a role.
-`RESET {session variable}`<br>`RESET ALL` <a name="parameters-reset"></a> | <span class="version-tag">New in v21.2:</span> Reset one session variable or all session variables to the default value.
-`IN DATABASE database_name` | <span class="version-tag">New in v21.2:</span> Specify a database for which to apply session variable defaults.<br>When `IN DATABASE` is not specified, the default session variable values apply for a role in all databases.<br>Note that, in order for a session to initialize session variable values to database defaults, the database must be specified as a [connection parameter](connection-parameters.html). Database default values will not appear if the database is set after connection with `USE <dbname>`/`SET database=<dbname>`.
-`ROLE ALL ...`/`USER ALL ...` | <span class="version-tag">New in v21.2:</span> Apply session variable settings to all roles.<br>Exception: The `root` user is exempt from session variable settings.
+`SET {session variable}` | **New in v21.2:** Set default [session variable](set-vars.html) values for a role.
+`RESET {session variable}`<br>`RESET ALL` <a name="parameters-reset"></a> | **New in v21.2:** Reset one session variable or all session variables to the default value.
+`IN DATABASE database_name` | **New in v21.2:** Specify a database for which to apply session variable defaults.<br>When `IN DATABASE` is not specified, the default session variable values apply for a role in all databases.<br>Note that, in order for a session to initialize session variable values to database defaults, the database must be specified as a [connection parameter](connection-parameters.html). Database default values will not appear if the database is set after connection with `USE <dbname>`/`SET database=<dbname>`.
+`ROLE ALL ...`/`USER ALL ...` | **New in v21.2:** Apply session variable settings to all roles.<br>Exception: The `root` user is exempt from session variable settings.
 
 ### Role options
 
@@ -267,4 +267,3 @@ root@:26257/movr> SHOW timezone;
 - [`cockroach cert`](cockroach-cert.html)
 - [SQL Statements](sql-statements.html)
 - [Authorization Best Practices](security-reference/authorization.html#authorization-best-practices)
-

@@ -21,7 +21,7 @@ CockroachDB currently only supports [enumerated user-defined types](enum.html).
 Parameter | Description
 ----------|------------
 `type_name` | The name of the type. You can qualify the name with a [database and schema name](sql-name-resolution.html) (e.g., `db.typename`), but after the type is created, it can only be referenced from the database that contains the type.
-`IF NOT EXISTS` | <span class="version-tag">New in v21.1:</span> Create a new type only if a type of the same name does not already exist in the database; if one does exist, do not return an error.
+`IF NOT EXISTS` | **New in v21.1:** Create a new type only if a type of the same name does not already exist in the database; if one does exist, do not return an error.
 `opt_enum_val_list` | A list of values that make up the type's enumerated set.
 
 ## Required privileges

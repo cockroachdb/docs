@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-<span class="version-tag">New in v22.1:</span> The `ALTER RANGE ... RELOCATE` statement is a subcommand of [`ALTER RANGE`](alter-range.html). It is used to move a lease or [replica](architecture/overview.html#architecture-replica) between [stores](cockroach-start.html#store). This is helpful in an emergency situation to relocate data in the cluster.
+{% include_cached new-in.html version="v22.1" %} The `ALTER RANGE ... RELOCATE` statement is a subcommand of [`ALTER RANGE`](alter-range.html). It is used to move a lease or [replica](architecture/overview.html#architecture-replica) between [stores](cockroach-start.html#store). This is helpful in an emergency situation to relocate data in the cluster.
 
 {{site.data.alerts.callout_danger}}
 Most users should not need to use this statement; it is for use in emergency situations. If you are in an emergency situation where you think using this statement may help, Cockroach Labs recommends contacting [support](support-resources.html).

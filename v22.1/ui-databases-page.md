@@ -51,7 +51,7 @@ The following information is displayed for each table:
 | Columns                        | The number of columns in the table.                                                                      |
 | Indexes                        | The number of indexes in the table.                                                                      |
 | Regions                        | The regions and nodes on which the table data is stored. This is not displayed on a single-node cluster. |
-| Table Stats Last Updated (UTC) | <span class="version-tag">New in v22.1:</span> The last time table statistics were created or updated.   |
+| Table Stats Last Updated (UTC) | **New in v22.1:** The last time table statistics were created or updated.   |
 
 Click a **table name** to view table details.
 

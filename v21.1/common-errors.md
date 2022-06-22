@@ -6,18 +6,18 @@ toc: false
 
 This page helps you understand and resolve error messages written to `stderr` or your [logs](logging-overview.html).
 
-| Topic                                  | Message                                                                                                                                                                                                                                         
+| Topic                                  | Message
 |----------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-| Client connection                      | [`connection refused`](#connection-refused)                                                                                                                                                                                                     
-| Client connection                      | [`node is running secure mode, SSL connection required`](#node-is-running-secure-mode-ssl-connection-required)                                                                                                                                  
-| Transaction retries                    | [`restart transaction`](#restart-transaction)                                                                                                                                                                                                   
+| Client connection                      | [`connection refused`](#connection-refused)
+| Client connection                      | [`node is running secure mode, SSL connection required`](#node-is-running-secure-mode-ssl-connection-required)
+| Transaction retries                    | [`restart transaction`](#restart-transaction)
 | Node startup                           | [`node belongs to cluster <cluster ID> but is attempting to connect to a gossip network for cluster <another cluster ID>`](#node-belongs-to-cluster-cluster-id-but-is-attempting-to-connect-to-a-gossip-network-for-cluster-another-cluster-id)
-| Node configuration                     | [`clock synchronization error: this node is more than 500ms away from at least half of the known nodes`](#clock-synchronization-error-this-node-is-more-than-500ms-away-from-at-least-half-of-the-known-nodes)                                  
-| Node configuration                     | [`open file descriptor limit of <number> is under the minimum required <number>`](#open-file-descriptor-limit-of-number-is-under-the-minimum-required-number)                                                                                   
-| Replication                            | [`replicas failing with "0 of 1 store with an attribute matching []; likely not enough nodes in cluster"`](#replicas-failing-with-0-of-1-store-with-an-attribute-matching-likely-not-enough-nodes-in-cluster)                                   
-| Split failed                           | [`split failed while applying backpressure; are rows updated in a tight loop?`](#split-failed-while-applying-backpressure-are-rows-updated-in-a-tight-loop)                                   
-| Deadline exceeded                      | [`context deadline exceeded`](#context-deadline-exceeded)                                                                                                                                                                                       
-| Incremental backups | <span class="version-tag">New in v21.1:</span> [`protected ts verification error...`](#protected-ts-verification-error)                                                                                        
+| Node configuration                     | [`clock synchronization error: this node is more than 500ms away from at least half of the known nodes`](#clock-synchronization-error-this-node-is-more-than-500ms-away-from-at-least-half-of-the-known-nodes)
+| Node configuration                     | [`open file descriptor limit of <number> is under the minimum required <number>`](#open-file-descriptor-limit-of-number-is-under-the-minimum-required-number)
+| Replication                            | [`replicas failing with "0 of 1 store with an attribute matching []; likely not enough nodes in cluster"`](#replicas-failing-with-0-of-1-store-with-an-attribute-matching-likely-not-enough-nodes-in-cluster)
+| Split failed                           | [`split failed while applying backpressure; are rows updated in a tight loop?`](#split-failed-while-applying-backpressure-are-rows-updated-in-a-tight-loop)
+| Deadline exceeded                      | [`context deadline exceeded`](#context-deadline-exceeded)
+| Incremental backups | **New in v21.1:** [`protected ts verification error...`](#protected-ts-verification-error)                                                                                        
 | Ambiguous results                      | [`result is ambiguous`](#result-is-ambiguous)
 | Import key collision | [`checking for key collisions: ingested key collides with an existing one`](#checking-for-key-collisions-ingested-key-collides-with-an-existing-one)                                                                                                                                                                                                        |
 
