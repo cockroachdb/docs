@@ -83,7 +83,7 @@ Going forward:
 1. Each time the store key is rotated, the new store key is also encrypted using the CMEK key.
 1. Each time the data key is rotated, the new data key is encrypted using the encrypted store key.
 1. Newly-written data is written using the current data key. Data is read using the data key that was used to encrypt it.
-
+{{ site.data.products.db }}
 {{site.data.alerts.callout_danger}}
 If the CMEK key is destroyed, the cluster's data can't be recovered or restored from a managed backup in {{ site.data.products.db }} or from a manual backup to the same cluster. It may be possible to restore a manual backup to a new cluster without CMEK enabled. 
 {{site.data.alerts.end}}
@@ -96,9 +96,9 @@ Backups in {{ site.data.products.dedicated }} are triggered in two ways, only on
 
 - You can perform a manual backup by using the `BACKUP` SQL command to back up database objects in a cluster. To restore from a manual backup, you use the `RESTORE` SQL command. Manual backups are not automatically encrypted, but you can optionally encrypt a manual backup by specifying an encryption key when you run the `BACKUP` command. Enabling CMEK has no impact on manual backups. To learn about encrypting manual backups, see [Take and Restore Encrypted Backups](/docs/stable/take-and-restore-encrypted-backups.html).
 
-- {{ site.data.products.db }} automatically backs up clusters on a set schedule that is not configurable. You can view, manage, or restore from these backups using the {{ site.data.products.db }} Console. Managed backups operate on all databases, tables, views, and scheduled jobs in the cluster. Full backups are taken daily and incremental backups are taken hourly. Full managed backups are retained for 30 days and incremental managed backups are retained for 7 days. Managed backups can be restored only to the cluster where they were taken. Managed backups are automatically encrypted using data keys that are distinct from those used to encrypt the cluster's data.
+- {{ site.data.products.db }} automatically backs up clusters on a set schedule that is not configurable. You can view, manage, or restore from these backups using the {{ site.data.products.db }} Console. Managed backups operate on all databases, tables, views, and scheduled jobs in the cluster. Managed backups can be restored only to the cluster where they were taken. Managed backups are automatically encrypted using data keys that are distinct from those used to encrypt the cluster's data.
 
-  When CMEK is enabled for a cluster on AWS, managed backups change in the following ways:
+  When CMEK is enabled for a cluster, managed backups change in the following ways:
 
   - You can no longer restore from a managed backup that was taken before CMEK was enabled.
   - The data keys used to encrypt managed backups in {{ site.data.products.db }} are encrypted using the CMEK key before being written to persistent storage.
