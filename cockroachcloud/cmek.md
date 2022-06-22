@@ -35,7 +35,7 @@ This section describes some of the ways that CMEK can help you protect your data
   {{site.data.alerts.callout_danger}}
   Keep these points in mind before destroying a CMEK key:
 
-  - If a CMEK key is destroyed, the cluster's data can't be recovered by you or by Cockroach Labs, even by restoring from a backup. Consider disabling the CMEK key initially instead, so you can restore it if disabling it leads to unexpected results.
+  - If a CMEK key is destroyed, the cluster's data can't be recovered by you or by {{ site.data.products.db }}, even by restoring from a {{ site.data.products.db }}-managed backup. Consider disabling the CMEK key initially instead, so you can restore it if disabling it leads to unexpected results. To take or restore from an encrypted backup using database commands, visit [Take and Restore Encrypted Backups](https://www.cockroachlabs.com/docs/stable/take-and-restore-encrypted-backups.html).
 
   - To protect against inadvertent data loss, your KMS platform may impose a waiting period before a key is permanently deleted. Check the documentation for your KMS platform for details about how long before a key deletion is permanent and irreversible.
   {{site.data.alerts.end}}
