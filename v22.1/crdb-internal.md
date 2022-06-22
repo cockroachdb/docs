@@ -49,7 +49,6 @@ Table name | Description| Use in production
 `gossip_nodes` | Contains information about nodes in your cluster's gossip network.| ✗
 `index_columns` | Contains information about [indexed](indexes.html) columns in your cluster.| ✗
 [`index_usage_statistics`](#index_usage_statistics) | Contains statistics about the primary and secondary indexes used in statements.| ✓
-`interleaved` | Contains information about [interleaved objects](interleave-in-parent.html) in your cluster.| ✗
 `invalid_objects` | Contains information about invalid objects in your cluster.| ✗
 `jobs` | Contains information about [jobs](show-jobs.html) running on your cluster.| ✗
 `kv_node_liveness` | Contains information about [node liveness](cluster-setup-troubleshooting.html#node-liveness-issues).| ✗
