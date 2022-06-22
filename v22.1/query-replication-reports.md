@@ -1,4 +1,4 @@
-| vehicles_pkey---
+---
 title: Replication Reports
 summary: Verify that your cluster's data replication, data placement, and zone configurations are working as expected.
 keywords: availability zone, zone config, zone configs, zone configuration, constraint, constraints

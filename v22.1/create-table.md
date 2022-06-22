@@ -1,4 +1,4 @@
-| users_pkey---
+---
 title: CREATE TABLE
 summary: The CREATE TABLE statement creates a new table in a database.
 toc: true
