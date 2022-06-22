@@ -256,8 +256,8 @@ $ cockroach sql \
 ~~~
   table_name |           index_name           | non_unique | seq_in_index | column_name | direction | storing | implicit
 -------------+--------------------------------+------------+--------------+-------------+-----------+---------+-----------
-  users      | primary                        |   false    |            1 | username    | ASC       |  false  |  false
-  users      | primary                        |   false    |            2 | email       | ASC       |  false  |  false
+  users      | users_pkey                     |   false    |            1 | username    | ASC       |  false  |  false
+  users      | users_pkey                     |   false    |            2 | email       | ASC       |  false  |  false
   users      | users_first_name_last_name_key |   false    |            1 | first_name  | ASC       |  false  |  false
   users      | users_first_name_last_name_key |   false    |            2 | last_name   | ASC       |  false  |  false
   users      | users_first_name_last_name_key |   false    |            3 | username    | ASC       |  false  |   true
@@ -322,8 +322,8 @@ $ cockroach sql \
 ~~~
   table_name |   index_name    | non_unique | seq_in_index | column_name | direction | storing | implicit
 -------------+-----------------+------------+--------------+-------------+-----------+---------+-----------
-  users      | primary         |   false    |            1 | username    | ASC       |  false  |  false
-  users      | primary         |   false    |            2 | email       | ASC       |  false  |  false
+  users      | users_pkey      |   false    |            1 | username    | ASC       |  false  |  false
+  users      | users_pkey      |   false    |            2 | email       | ASC       |  false  |  false
   users      | users_email_key |   false    |            1 | email       | ASC       |  false  |  false
   users      | users_email_key |   false    |            2 | username    | ASC       |  false  |   true
 (4 rows)

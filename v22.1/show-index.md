@@ -47,7 +47,7 @@ Field | Description
 `storing` | Whether the `STORING` clause was used to index the column during [index creation](create-index.html). Possible values: `true` or `false`.
 `implicit` | Whether the column is part of the index despite not being explicitly included during [index creation](create-index.html). Possible values: `true` or `false`<br><br>[Primary key](primary-key.html) columns are the only columns implicitly included in secondary indexes. The inclusion of primary key columns improves performance when retrieving columns not in the index.
 
-A column is in the primary key if the value of the `index_name` column is `primary` and value of the `storing` column is `false`.
+A column is in the primary key if the value of the `index_name` column is `{tbl}_pkey` and value of the `storing` column is `false`.
 
 ## Example
 
@@ -68,18 +68,18 @@ A column is in the primary key if the value of the `index_name` column is `pri
 ~~~
   table_name |   index_name   | non_unique | seq_in_index | column_name | direction | storing | implicit
 -------------+----------------+------------+--------------+-------------+-----------+---------+-----------
-  users      | primary        |   false    |            1 | city        | ASC       |  false  |  false
-  users      | primary        |   false    |            2 | id          | ASC       |  false  |  false
-  users      | primary        |   false    |            3 | name        | N/A       |  true   |  false
-  users      | primary        |   false    |            4 | address     | N/A       |  true   |  false
-  users      | primary        |   false    |            5 | credit_card | N/A       |  true   |  false
   users      | users_name_idx |    true    |            1 | name        | ASC       |  false  |  false
   users      | users_name_idx |    true    |            2 | city        | ASC       |  false  |   true
   users      | users_name_idx |    true    |            3 | id          | ASC       |  false  |   true
+  users      | users_pkey     |   false    |            1 | city        | ASC       |  false  |  false
+  users      | users_pkey     |   false    |            2 | id          | ASC       |  false  |  false
+  users      | users_pkey     |   false    |            3 | name        | N/A       |  true   |  false
+  users      | users_pkey     |   false    |            4 | address     | N/A       |  true   |  false
+  users      | users_pkey     |   false    |            5 | credit_card | N/A       |  true   |  false
 (8 rows)
 ~~~
 
-In this example, the columns where the value of the `index_name` column is `primary` and value of the `storing` column is `false`, and thus are in the primary key, are `city` and `id`.
+In this example, the columns where the value of the `index_name` column is `users_pkey` and value of the `storing` column is `false`, and thus are in the primary key, are `city` and `id`.
 
 ### Show indexes for a database
 
@@ -91,35 +91,35 @@ In this example, the columns where the value of the `index_name` column is `pr
 ~~~
           table_name         |                  index_name                   | non_unique | seq_in_index |   column_name    | direction | storing | implicit
 -----------------------------+-----------------------------------------------+------------+--------------+------------------+-----------+---------+-----------
-  users                      | primary                                       |   false    |            1 | city             | ASC       |  false  |  false
-  users                      | primary                                       |   false    |            2 | id               | ASC       |  false  |  false
-  users                      | primary                                       |   false    |            3 | name             | N/A       |  true   |  false
-  users                      | primary                                       |   false    |            4 | address          | N/A       |  true   |  false
-  users                      | primary                                       |   false    |            5 | credit_card      | N/A       |  true   |  false
+  users                      | users_pkey                                    |   false    |            1 | city             | ASC       |  false  |  false
+  users                      | users_pkey                                    |   false    |            2 | id               | ASC       |  false  |  false
+  users                      | users_pkey                                    |   false    |            3 | name             | N/A       |  true   |  false
+  users                      | users_pkey                                    |   false    |            4 | address          | N/A       |  true   |  false
+  users                      | users_pkey                                    |   false    |            5 | credit_card      | N/A       |  true   |  false
   users                      | users_name_idx                                |    true    |            1 | name             | ASC       |  false  |  false
   users                      | users_name_idx                                |    true    |            2 | city             | ASC       |  false  |   true
   users                      | users_name_idx                                |    true    |            3 | id               | ASC       |  false  |   true
-  vehicles                   | primary                                       |   false    |            1 | city             | ASC       |  false  |  false
-  vehicles                   | primary                                       |   false    |            2 | id               | ASC       |  false  |  false
-  vehicles                   | primary                                       |   false    |            3 | type             | N/A       |  true   |  false
-  vehicles                   | primary                                       |   false    |            4 | owner_id         | N/A       |  true   |  false
-  vehicles                   | primary                                       |   false    |            5 | creation_time    | N/A       |  true   |  false
-  vehicles                   | primary                                       |   false    |            6 | status           | N/A       |  true   |  false
-  vehicles                   | primary                                       |   false    |            7 | current_location | N/A       |  true   |  false
-  vehicles                   | primary                                       |   false    |            8 | ext              | N/A       |  true   |  false
+  vehicles                   | vehicles_pkey                                 |   false    |            1 | city             | ASC       |  false  |  false
+  vehicles                   | vehicles_pkey                                 |   false    |            2 | id               | ASC       |  false  |  false
+  vehicles                   | vehicles_pkey                                 |   false    |            3 | type             | N/A       |  true   |  false
+  vehicles                   | vehicles_pkey                                 |   false    |            4 | owner_id         | N/A       |  true   |  false
+  vehicles                   | vehicles_pkey                                 |   false    |            5 | creation_time    | N/A       |  true   |  false
+  vehicles                   | vehicles_pkey                                 |   false    |            6 | status           | N/A       |  true   |  false
+  vehicles                   | vehicles_pkey                                 |   false    |            7 | current_location | N/A       |  true   |  false
+  vehicles                   | vehicles_pkey                                 |   false    |            8 | ext              | N/A       |  true   |  false
   vehicles                   | vehicles_auto_index_fk_city_ref_users         |    true    |            1 | city             | ASC       |  false  |  false
   vehicles                   | vehicles_auto_index_fk_city_ref_users         |    true    |            2 | owner_id         | ASC       |  false  |  false
   vehicles                   | vehicles_auto_index_fk_city_ref_users         |    true    |            3 | id               | ASC       |  false  |   true
-  rides                      | primary                                       |   false    |            1 | city             | ASC       |  false  |  false
-  rides                      | primary                                       |   false    |            2 | id               | ASC       |  false  |  false
-  rides                      | primary                                       |   false    |            3 | vehicle_city     | N/A       |  true   |  false
-  rides                      | primary                                       |   false    |            4 | rider_id         | N/A       |  true   |  false
-  rides                      | primary                                       |   false    |            5 | vehicle_id       | N/A       |  true   |  false
-  rides                      | primary                                       |   false    |            6 | start_address    | N/A       |  true   |  false
-  rides                      | primary                                       |   false    |            7 | end_address      | N/A       |  true   |  false
-  rides                      | primary                                       |   false    |            8 | start_time       | N/A       |  true   |  false
-  rides                      | primary                                       |   false    |            9 | end_time         | N/A       |  true   |  false
-  rides                      | primary                                       |   false    |           10 | revenue          | N/A       |  true   |  false
+  rides                      | rides_pkey                                    |   false    |            1 | city             | ASC       |  false  |  false
+  rides                      | rides_pkey                                    |   false    |            2 | id               | ASC       |  false  |  false
+  rides                      | rides_pkey                                    |   false    |            3 | vehicle_city     | N/A       |  true   |  false
+  rides                      | rides_pkey                                    |   false    |            4 | rider_id         | N/A       |  true   |  false
+  rides                      | rides_pkey                                    |   false    |            5 | vehicle_id       | N/A       |  true   |  false
+  rides                      | rides_pkey                                    |   false    |            6 | start_address    | N/A       |  true   |  false
+  rides                      | rides_pkey                                    |   false    |            7 | end_address      | N/A       |  true   |  false
+  rides                      | rides_pkey                                    |   false    |            8 | start_time       | N/A       |  true   |  false
+  rides                      | rides_pkey                                    |   false    |            9 | end_time         | N/A       |  true   |  false
+  rides                      | rides_pkey                                    |   false    |           10 | revenue          | N/A       |  true   |  false
   rides                      | rides_auto_index_fk_city_ref_users            |    true    |            1 | city             | ASC       |  false  |  false
   rides                      | rides_auto_index_fk_city_ref_users            |    true    |            2 | rider_id         | ASC       |  false  |  false
   rides                      | rides_auto_index_fk_city_ref_users            |    true    |            3 | id               | ASC       |  false  |   true
@@ -127,21 +127,21 @@ In this example, the columns where the value of the `index_name` column is `pr
   rides                      | rides_auto_index_fk_vehicle_city_ref_vehicles |    true    |            2 | vehicle_id       | ASC       |  false  |  false
   rides                      | rides_auto_index_fk_vehicle_city_ref_vehicles |    true    |            3 | city             | ASC       |  false  |   true
   rides                      | rides_auto_index_fk_vehicle_city_ref_vehicles |    true    |            4 | id               | ASC       |  false  |   true
-  vehicle_location_histories | primary                                       |   false    |            1 | city             | ASC       |  false  |  false
-  vehicle_location_histories | primary                                       |   false    |            2 | ride_id          | ASC       |  false  |  false
-  vehicle_location_histories | primary                                       |   false    |            3 | timestamp        | ASC       |  false  |  false
-  vehicle_location_histories | primary                                       |   false    |            4 | lat              | N/A       |  true   |  false
-  vehicle_location_histories | primary                                       |   false    |            5 | long             | N/A       |  true   |  false
-  promo_codes                | primary                                       |   false    |            1 | code             | ASC       |  false  |  false
-  promo_codes                | primary                                       |   false    |            2 | description      | N/A       |  true   |  false
-  promo_codes                | primary                                       |   false    |            3 | creation_time    | N/A       |  true   |  false
-  promo_codes                | primary                                       |   false    |            4 | expiration_time  | N/A       |  true   |  false
-  promo_codes                | primary                                       |   false    |            5 | rules            | N/A       |  true   |  false
-  user_promo_codes           | primary                                       |   false    |            1 | city             | ASC       |  false  |  false
-  user_promo_codes           | primary                                       |   false    |            2 | user_id          | ASC       |  false  |  false
-  user_promo_codes           | primary                                       |   false    |            3 | code             | ASC       |  false  |  false
-  user_promo_codes           | primary                                       |   false    |            4 | timestamp        | N/A       |  true   |  false
-  user_promo_codes           | primary                                       |   false    |            5 | usage_count      | N/A       |  true   |  false
+  vehicle_location_histories | vehicle_location_histories_pkey               |   false    |            1 | city             | ASC       |  false  |  false
+  vehicle_location_histories | vehicle_location_histories_pkey               |   false    |            2 | ride_id          | ASC       |  false  |  false
+  vehicle_location_histories | vehicle_location_histories_pkey               |   false    |            3 | timestamp        | ASC       |  false  |  false
+  vehicle_location_histories | vehicle_location_histories_pkey               |   false    |            4 | lat              | N/A       |  true   |  false
+  vehicle_location_histories | vehicle_location_histories_pkey               |   false    |            5 | long             | N/A       |  true   |  false
+  promo_codes                | promo_codes_pkey                              |   false    |            1 | code             | ASC       |  false  |  false
+  promo_codes                | promo_codes_pkey                              |   false    |            2 | description      | N/A       |  true   |  false
+  promo_codes                | promo_codes_pkey                              |   false    |            3 | creation_time    | N/A       |  true   |  false
+  promo_codes                | promo_codes_pkey                              |   false    |            4 | expiration_time  | N/A       |  true   |  false
+  promo_codes                | promo_codes_pkey                              |   false    |            5 | rules            | N/A       |  true   |  false
+  user_promo_codes           | user_promo_codes_pkey                         |   false    |            1 | city             | ASC       |  false  |  false
+  user_promo_codes           | user_promo_codes_pkey                         |   false    |            2 | user_id          | ASC       |  false  |  false
+  user_promo_codes           | user_promo_codes_pkey                         |   false    |            3 | code             | ASC       |  false  |  false
+  user_promo_codes           | user_promo_codes_pkey                         |   false    |            4 | timestamp        | N/A       |  true   |  false
+  user_promo_codes           | user_promo_codes_pkey                         |   false    |            5 | usage_count      | N/A       |  true   |  false
 (51 rows)
 ~~~
 

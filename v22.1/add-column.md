@@ -187,7 +187,7 @@ $ cockroach demo bank
 -------------+------------------------------+-----------------+----------------------------------------------------+------------
   bank       | bank_address_key             | UNIQUE          | UNIQUE (address ASC)                               |   true
   bank       | fk_cust_number_ref_customers | FOREIGN KEY     | FOREIGN KEY (cust_number) REFERENCES customers(id) |   true
-  bank       | primary                      | PRIMARY KEY     | PRIMARY KEY (id ASC)                               |   true
+  bank       | bank_pkey                    | PRIMARY KEY     | PRIMARY KEY (id ASC)                               |   true
 (3 rows)
 ~~~
 

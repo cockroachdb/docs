@@ -153,14 +153,14 @@ ORDER BY total_reads ASC;
 ~~~
               table_name     |                  index_name                   | total_reads |           last_read
 -----------------------------+-----------------------------------------------+-------------+--------------------------------
-  vehicle_location_histories | primary                                       |           1 | 2021-09-28 22:59:03.324398+00
+  vehicle_location_histories | vehicle_location_histories_pkey               |           1 | 2021-09-28 22:59:03.324398+00
   rides                      | rides_auto_index_fk_city_ref_users            |           1 | 2021-09-28 22:59:01.500962+00
   rides                      | rides_auto_index_fk_vehicle_city_ref_vehicles |           1 | 2021-09-28 22:59:02.470526+00
-  user_promo_codes           | primary                                       |         456 | 2021-09-29 00:01:17.063418+00
-  promo_codes                | primary                                       |         910 | 2021-09-29 00:01:17.062319+00
-  vehicles                   | primary                                       |        3591 | 2021-09-29 00:01:18.261658+00
-  users                      | primary                                       |        5401 | 2021-09-29 00:01:18.260198+00
-  rides                      | primary                                       |       45658 | 2021-09-29 00:01:18.258208+00
+  user_promo_codes           | user_promo_codes_pkey                         |         456 | 2021-09-29 00:01:17.063418+00
+  promo_codes                | promo_codes_pkey                              |         910 | 2021-09-29 00:01:17.062319+00
+  vehicles                   | vehicles_pkey                                 |        3591 | 2021-09-29 00:01:18.261658+00
+  users                      | users_pkey                                    |        5401 | 2021-09-29 00:01:18.260198+00
+  rides                      | rides_pkey                                    |       45658 | 2021-09-29 00:01:18.258208+00
   vehicles                   | vehicles_auto_index_fk_city_ref_users         |       87119 | 2021-09-29 00:01:19.071476+00
 (9 rows)
 ~~~

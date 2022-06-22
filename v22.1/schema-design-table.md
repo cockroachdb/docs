@@ -191,7 +191,7 @@ A primary key is a column, or set of columns, whose values uniquely identify row
 
 Primary keys are defined in `CREATE TABLE` statements with the `PRIMARY KEY` [column constraint](constraints.html). The `PRIMARY KEY` constraint requires that all the constrained column(s) contain only unique and non-`NULL` values.
 
-When a table is created, CockroachDB creates an index (called the `primary` index) on the column(s) constrained by the `PRIMARY KEY` constraint. CockroachDB uses this [index](indexes.html) to find rows in a table more efficiently.
+When a table is created, CockroachDB creates an index (called the _primary index_ and named `{tbl}_pkey`) on the column(s) constrained by the `PRIMARY KEY` constraint. CockroachDB uses this [index](indexes.html) to find rows in a table more efficiently.
 
 To add a single column to a primary key, add the `PRIMARY KEY` keyword to the end of the column definition. To add multiple columns to a primary key (i.e., to create a [composite primary key](https://en.wikipedia.org/wiki/Composite_key)), add a separate `CONSTRAINT "primary" PRIMARY KEY` clause after the column definitions in the `CREATE TABLE` statement.
 

@@ -502,10 +502,10 @@ For example, to retrieve all columns from the `table_constraints` table:
 ~~~
   constraint_catalog | constraint_schema |       constraint_name        | table_catalog | table_schema |         table_name         | constraint_type | is_deferrable | initially_deferred
 ---------------------+-------------------+------------------------------+---------------+--------------+----------------------------+-----------------+---------------+---------------------
-  movr               | public            | primary                      | movr          | public       | users                      | PRIMARY KEY     | NO            | NO
+  movr               | public            | users_pkey                   | movr          | public       | users                      | PRIMARY KEY     | NO            | NO
   movr               | public            | 3426283741_53_1_not_null     | movr          | public       | users                      | CHECK           | NO            | NO
   movr               | public            | 3426283741_53_2_not_null     | movr          | public       | users                      | CHECK           | NO            | NO
-  movr               | public            | primary                      | movr          | public       | vehicles                   | PRIMARY KEY     | NO            | NO
+  movr               | public            | vehicles_pkey                | movr          | public       | vehicles                   | PRIMARY KEY     | NO            | NO
 ...
 (25 rows)
 ~~~
