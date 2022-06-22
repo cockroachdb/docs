@@ -15,7 +15,7 @@ This tutorial shows you how to manually deploy a secure multi-node CockroachDB c
 
 If you are only testing CockroachDB, or you are not concerned with protecting network communication with TLS encryption, you can use an insecure cluster instead. Select **Insecure** above for instructions.
 
-{% include cockroachcloud/use-cockroachcloud-instead.md %}
+{% include_cached cockroachcloud/use-cockroachcloud-instead.md %}
 
 ## Before you begin
 
@@ -60,7 +60,7 @@ Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to
 
 1. On your local machine, run the [`cockroach gen haproxy`](cockroach-gen.html) command with the `--host` flag set to the address of any node and security flags pointing to the CA cert and the client cert and key:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach gen haproxy \
     --certs-dir=certs \
@@ -71,7 +71,7 @@ Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to
 
 2. Upload the `haproxy.cfg` file to the machine where you want to run HAProxy:
 
-  {% include copy-clipboard.html %}
+  {% include_cached copy-clipboard.html %}
   ~~~ shell
   $ scp haproxy.cfg <username>@<haproxy address>:~/
   ~~~
@@ -80,14 +80,14 @@ Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to
 
 4. Install HAProxy:
 
-  {% include copy-clipboard.html %}
+  {% include_cached copy-clipboard.html %}
   ~~~ shell
   $ apt-get install haproxy
   ~~~
 
 5. Start HAProxy, with the `-f` flag pointing to the `haproxy.cfg` file:
 
-  {% include copy-clipboard.html %}
+  {% include_cached copy-clipboard.html %}
   ~~~ shell
   $ haproxy -f haproxy.cfg
   ~~~

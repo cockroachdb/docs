@@ -4,7 +4,7 @@ If you want to use a different certificate authority than the one Kubernetes use
 
 1. From your local workstation, use our [`cockroachdb-statefulset-secure.yaml`](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/cockroachdb-statefulset-secure.yaml) file to create the StatefulSet that automatically creates 3 pods, each with a CockroachDB node running inside it:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl create -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/cockroachdb-statefulset-secure.yaml
     ~~~
@@ -25,7 +25,7 @@ If you want to use a different certificate authority than the one Kubernetes use
 
     1. Download our [performance version of `cockroachdb-statefulset-secure.yaml`](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/performance/cockroachdb-statefulset-secure.yaml):
 
-        {% include copy-clipboard.html %}
+        {% include_cached copy-clipboard.html %}
         ~~~ shell
         $ curl -O https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/performance/cockroachdb-statefulset-secure.yaml
         ~~~
@@ -34,7 +34,7 @@ If you want to use a different certificate authority than the one Kubernetes use
 
     3. Use the file to create the StatefulSet and start the cluster:
 
-        {% include copy-clipboard.html %}
+        {% include_cached copy-clipboard.html %}
         ~~~ shell
         $ kubectl create -f cockroachdb-statefulset-secure.yaml
         ~~~
@@ -43,7 +43,7 @@ If you want to use a different certificate authority than the one Kubernetes use
 
     1. Get the name of the `Pending` CSR for the first pod:
 
-        {% include copy-clipboard.html %}
+        {% include_cached copy-clipboard.html %}
         ~~~ shell
         $ kubectl get csr
         ~~~
@@ -60,7 +60,7 @@ If you want to use a different certificate authority than the one Kubernetes use
 
     2. Examine the CSR for the first pod:
 
-        {% include copy-clipboard.html %}
+        {% include_cached copy-clipboard.html %}
         ~~~ shell
         $ kubectl describe csr default.node.cockroachdb-0
         ~~~
@@ -87,7 +87,7 @@ If you want to use a different certificate authority than the one Kubernetes use
 
     3. If everything looks correct, approve the CSR for the first pod:
 
-        {% include copy-clipboard.html %}
+        {% include_cached copy-clipboard.html %}
         ~~~ shell
         $ kubectl certificate approve default.node.cockroachdb-0
         ~~~
@@ -103,7 +103,7 @@ If you want to use a different certificate authority than the one Kubernetes use
     1. Confirm that three pods are `Running` successfully. Note that they will not
        be considered `Ready` until after the cluster has been initialized:
 
-        {% include copy-clipboard.html %}
+        {% include_cached copy-clipboard.html %}
         ~~~ shell
         $ kubectl get pods
         ~~~
@@ -117,7 +117,7 @@ If you want to use a different certificate authority than the one Kubernetes use
 
     2. Confirm that the persistent volumes and corresponding claims were created successfully for all three pods:
 
-        {% include copy-clipboard.html %}
+        {% include_cached copy-clipboard.html %}
         ~~~ shell
         $ kubectl get persistentvolumes
         ~~~
@@ -131,7 +131,7 @@ If you want to use a different certificate authority than the one Kubernetes use
 
     3. Use our [`cluster-init-secure.yaml`](https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/cluster-init-secure.yaml) file to perform a one-time initialization that joins the nodes into a single cluster:
 
-        {% include copy-clipboard.html %}
+        {% include_cached copy-clipboard.html %}
         ~~~ shell
         $ kubectl create -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/cluster-init-secure.yaml
         ~~~
@@ -142,7 +142,7 @@ If you want to use a different certificate authority than the one Kubernetes use
 
     4. Approve the CSR for the one-off pod from which cluster initialization happens:
 
-        {% include copy-clipboard.html %}
+        {% include_cached copy-clipboard.html %}
         ~~~ shell
         $ kubectl certificate approve default.client.root
         ~~~
@@ -155,7 +155,7 @@ If you want to use a different certificate authority than the one Kubernetes use
        should be considered successful and the CockroachDB pods should soon be
        considered `Ready`:
 
-        {% include copy-clipboard.html %}
+        {% include_cached copy-clipboard.html %}
         ~~~ shell
         $ kubectl get job cluster-init-secure
         ~~~
@@ -165,7 +165,7 @@ If you want to use a different certificate authority than the one Kubernetes use
         cluster-init-secure   1         1            2m
         ~~~
 
-        {% include copy-clipboard.html %}
+        {% include_cached copy-clipboard.html %}
         ~~~ shell
         $ kubectl get pods
         ~~~

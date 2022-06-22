@@ -39,7 +39,7 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 
 ### Create statistics on a specific column
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE STATISTICS students ON id FROM students_by_list;
 ~~~
@@ -55,7 +55,7 @@ The `CREATE STATISTICS` statement shown below automatically figures out which co
 - Columns that are part of the primary key or an index (in other words, all indexed columns).
 - Up to 100 non-indexed columns.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE STATISTICS students FROM students_by_list;
 ~~~
@@ -64,7 +64,7 @@ The `CREATE STATISTICS` statement shown below automatically figures out which co
 
 To create statistics as of a given time (in this example, 1 minute ago to avoid interfering with the production workload), run a statement like the following:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE STATISTICS employee_stats FROM employees AS OF SYSTEM TIME '-1m';
 ~~~
@@ -83,7 +83,7 @@ To view statistics jobs, there are two options:
 
 1. Use  [`SHOW JOBS`](show-jobs.html) to see all statistics jobs that were created by user queries (i.e., someone entering `CREATE STATISTICS` at the SQL prompt or via application code):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT * FROM [SHOW JOBS] WHERE job_type LIKE '%CREATE STATS%';
     ~~~
@@ -98,7 +98,7 @@ To view statistics jobs, there are two options:
 
 2. Use `SHOW AUTOMATIC JOBS` to see statistics jobs that were created by the [automatic statistics feature](cost-based-optimizer.html#table-statistics):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT * FROM [SHOW AUTOMATIC JOBS] WHERE job_type LIKE '%CREATE STATS%';
     ~~~

@@ -7,7 +7,7 @@ docs_area: deploy
 
 A [_survival goal_](multiregion-overview.html#survival-goals) dictates how many simultaneous failure(s) a [multi-region database](multiregion-overview.html) can survive. All tables within the same database operate with the same survival goal. Each database is allowed to have its own survival goal setting.
 
-{% include enterprise-feature.md %}
+{% include_cached enterprise-feature.md %}
 
 Allowed survival goals include:
 

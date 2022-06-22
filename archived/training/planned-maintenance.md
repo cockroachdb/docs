@@ -25,7 +25,7 @@ Start and initialize an insecure cluster like you did in previous modules.
 
 1. In a new terminal, start node 1:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -37,7 +37,7 @@ Start and initialize an insecure cluster like you did in previous modules.
 
 2. In a new terminal, start node 2:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -49,7 +49,7 @@ Start and initialize an insecure cluster like you did in previous modules.
 
 3. In a new terminal, start node 3:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -61,7 +61,7 @@ Start and initialize an insecure cluster like you did in previous modules.
 
 4. In a new terminal, perform a one-time initialization of the cluster:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach init --insecure --host=localhost:26257
     ~~~
@@ -72,7 +72,7 @@ Let's say you need to perform some maintenance on each of your nodes, e.g., upgr
 
 1. In the same terminal, increase the `server.time_until_store_dead` cluster setting:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
     --insecure \
@@ -86,7 +86,7 @@ Let's say you need to perform some maintenance on each of your nodes, e.g., upgr
 
 2. Then verify the new setting:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
     --insecure \
@@ -113,7 +113,7 @@ Stop, maintain, and restart one node at a time. This ensures that, at any point,
 
 3. In the same terminal, rejoin the node to the cluster, using the same command that you used to start it initially:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -131,7 +131,7 @@ Stop, maintain, and restart one node at a time. This ensures that, at any point,
 
 6. In the same terminal, rejoin the node to the cluster, using the same command that you used to start it initially:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -149,7 +149,7 @@ Stop, maintain, and restart one node at a time. This ensures that, at any point,
 
 9. In the same terminal, rejoin the node to the cluster, using the same command that you used to start it initially:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -165,7 +165,7 @@ Stop, maintain, and restart one node at a time. This ensures that, at any point,
 
 1. In a new terminal, change the `server.time_until_store_dead` cluster setting back to the default of `5m0s`:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
     --insecure \
@@ -175,7 +175,7 @@ Stop, maintain, and restart one node at a time. This ensures that, at any point,
 
 2. Then verify the new setting:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
     --insecure \

@@ -78,13 +78,13 @@ CockroachDB requires TCP communication on two ports:
 
 2. Download the [CockroachDB archive](https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz) for Linux, extract the binary, and copy it into the `PATH`:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ curl https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
     | tar -xz
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin/
     ~~~
@@ -93,7 +93,7 @@ CockroachDB requires TCP communication on two ports:
 
 3. Run the [`cockroach start`](cockroach-start.html) command:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -108,7 +108,7 @@ CockroachDB requires TCP communication on two ports:
 
 5. On any of the VMs with the `cockroach` binary, run the one-time [`cockroach init`](cockroach-init.html) command to join the first nodes into a cluster:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach init --insecure --host=<address of any node>
     ~~~
@@ -121,14 +121,14 @@ CockroachDB offers a pre-built `workload` binary for Linux that includes the TPC
 
 2. Download the `workload` binary for Linux and make it executable:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ wget https://edge-binaries.cockroachdb.com/cockroach/workload.LATEST -O workload; chmod 755 workload
     ~~~
 
 3. Import the TPC-C dataset:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ ./workload fixtures import tpcc \
     --warehouses 1000 \
@@ -149,7 +149,7 @@ CockroachDB offers a pre-built `workload` binary for Linux that includes the TPC
 
 2. Run TPC-C for 30 minutes:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ ./workload run tpcc \
     --warehouses 1000 \

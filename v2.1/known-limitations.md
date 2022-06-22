@@ -182,7 +182,7 @@ Most client drivers and frameworks use the text format to pass placeholder value
 
 [`IMPORT`](import.html) can sometimes fail with a "context canceled" error, or can restart itself many times without ever finishing. If this is happening, it is likely due to a high amount of disk contention. This can be mitigated by setting the `kv.bulk_io_write.max_rate` [cluster setting](cluster-settings.html) to a value below your max disk write speed. For example, to set it to 10MB/s, execute:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET CLUSTER SETTING kv.bulk_io_write.max_rate = '10MB';
 ~~~
@@ -205,22 +205,22 @@ Most client drivers and frameworks use the text format to pass placeholder value
 
 It is currently not possible to [add a column](add-column.html) to a table when the column uses a [sequence](create-sequence.html) as the [`DEFAULT`](default-value.html) value, for example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE t (x INT);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO t(x) VALUES (1), (2), (3);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE SEQUENCE s;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE t ADD COLUMN y INT DEFAULT nextval('s');
 ~~~
@@ -291,7 +291,7 @@ For example, let's say that latency is 10ms from nodes in datacenter A to nodes 
 
 Many string operations are not properly overloaded for [collated strings](collate.html), for example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT 'string1' || 'string2';
 ~~~
@@ -305,7 +305,7 @@ Many string operations are not properly overloaded for [collated strings](collat
 (1 row)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT ('string1' collate en) || ('string2' collate en);
 ~~~

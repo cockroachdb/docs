@@ -15,7 +15,7 @@ The **Node Map** is useful for:
 
 This page guides you through the process of setting up and enabling the Node Map.
 
-{% include enterprise-feature.md %}
+{% include_cached enterprise-feature.md %}
 
 <img src="{{ 'images/v21.2/ui-node-map-navigation3.png' | relative_url }}" alt="DB Console" style="border:1px solid #eee;max-width:100%" />
 

@@ -29,7 +29,7 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
     <p></p>
 
     <div class="filter-content" markdown="1" data-scope="mac">
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ curl https://binaries.cockroachdb.com/cockroach-v19.1.1.darwin-10.9-amd64.tgz \
     | tar -xz
@@ -37,7 +37,7 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
     </div>
 
     <div class="filter-content" markdown="1" data-scope="linux">
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ curl https://binaries.cockroachdb.com/cockroach-v19.1.1.linux-amd64.tgz \
     | tar -xz
@@ -47,7 +47,7 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
 2. Move the v19.1 binary into the parent `cockroachdb-training` directory:
 
     <div class="filter-content" markdown="1" data-scope="mac">
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ mv cockroach-v19.1.1.darwin-10.9-amd64/cockroach ./cockroach-v19.1 \
     ; rm -rf cockroach-v19.1.1.darwin-10.9-amd64
@@ -55,7 +55,7 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
     </div>
 
     <div class="filter-content" markdown="1" data-scope="linux">
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ mv cockroach-v19.1.1.linux-amd64/cockroach ./cockroach-v19.1 \
     ; rm -rf cockroach-v19.1.1.linux-amd64
@@ -68,7 +68,7 @@ Start and initialize a cluster like you did in previous modules, but this time u
 
 1. In a new terminal, start node 1:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ ./cockroach-v19.1 start \
     --insecure \
@@ -81,7 +81,7 @@ Start and initialize a cluster like you did in previous modules, but this time u
 
 2. In a new terminal, start node 2:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ ./cockroach-v19.1 start \
     --insecure \
@@ -94,7 +94,7 @@ Start and initialize a cluster like you did in previous modules, but this time u
 
 3. In a new terminal, start node 3:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ ./cockroach-v19.1 start \
     --insecure \
@@ -107,7 +107,7 @@ Start and initialize a cluster like you did in previous modules, but this time u
 
 4. In a new terminal, perform a one-time initialization of the cluster:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ ./cockroach-v19.1 init --insecure
     ~~~
@@ -122,7 +122,7 @@ You can disable a (manual or automatic) cluster version upgrade from the specifi
 
 2. Verify that node 1 has been terminated:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ ps | grep cockroach
     ~~~
@@ -137,7 +137,7 @@ You can disable a (manual or automatic) cluster version upgrade from the specifi
 
 3. In node 1's terminal, restart the node using the v19.2 binary:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -155,7 +155,7 @@ You can disable a (manual or automatic) cluster version upgrade from the specifi
 
 2. Verify that node 2 has been terminated:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ ps | grep cockroach
     ~~~
@@ -170,7 +170,7 @@ You can disable a (manual or automatic) cluster version upgrade from the specifi
 
 3. Restart the node using the v19.2 binary:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -186,7 +186,7 @@ You can disable a (manual or automatic) cluster version upgrade from the specifi
 
 6. Verify that node 3 has been terminated:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ ps | grep cockroach
     ~~~
@@ -201,7 +201,7 @@ You can disable a (manual or automatic) cluster version upgrade from the specifi
 
 7. Restart the node using the v19.2 binary:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -215,7 +215,7 @@ You can disable a (manual or automatic) cluster version upgrade from the specifi
 
 Back in the Admin UI, you'll see that all 3 nodes now have the same, upgraded version. You can also use the `cockroach node status` command to check each node's version:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach node status \
 --insecure
@@ -236,14 +236,14 @@ This is the last module of the training, so feel free to stop you cluster and cl
 
 1. Stop all CockroachDB nodes:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ pkill -9 cockroach
     ~~~
 
 2. Remove the nodes' data directories:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ rm -rf node1 node2 node3
     ~~~

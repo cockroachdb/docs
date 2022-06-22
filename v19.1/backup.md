@@ -137,7 +137,7 @@ Per our guidance in the [Performance](#performance) section, we recommend starti
 
 ### Backup a single table or view
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP bank.customers \
 TO 'gs://acme-co-backup/database-bank-2017-03-27-weekly' \
@@ -146,7 +146,7 @@ AS OF SYSTEM TIME '-10s';
 
 ### Backup multiple tables
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP bank.customers, bank.accounts \
 TO 'gs://acme-co-backup/database-bank-2017-03-27-weekly' \
@@ -155,7 +155,7 @@ AS OF SYSTEM TIME '-10s';
 
 ### Backup an entire database
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP DATABASE bank \
 TO 'gs://acme-co-backup/database-bank-2017-03-27-weekly' \
@@ -164,7 +164,7 @@ AS OF SYSTEM TIME '-10s';
 
 ### Backup with revision history
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP DATABASE bank \
 TO 'gs://acme-co-backup/database-bank-2017-03-27-weekly' \
@@ -175,7 +175,7 @@ AS OF SYSTEM TIME '-10s' WITH revision_history;
 
 Incremental backups must be based off of full backups you've already created.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP DATABASE bank \
 TO 'gs://acme-co-backup/db/bank/2017-03-29-nightly' \
@@ -185,7 +185,7 @@ INCREMENTAL FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly', 'gs://ac
 
 ### Create incremental backups with revision history
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP DATABASE bank \
 TO 'gs://acme-co-backup/database-bank-2017-03-29-nightly' \

@@ -15,7 +15,7 @@ Choose whether you want to orchestrate CockroachDB with Kubernetes using the hos
 
 2. From your local workstation, start the Kubernetes cluster:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ gcloud container clusters create cockroachdb --machine-type n1-standard-4
     ~~~
@@ -30,7 +30,7 @@ Choose whether you want to orchestrate CockroachDB with Kubernetes using the hos
 
 3. Get the email address associated with your Google Cloud account:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ gcloud info | grep Account
     ~~~
@@ -45,7 +45,7 @@ Choose whether you want to orchestrate CockroachDB with Kubernetes using the hos
 
 4. [Create the RBAC roles](https://cloud.google.com/kubernetes-engine/docs/how-to/role-based-access-control#prerequisites_for_using_role-based_access_control) CockroachDB needs for running on GKE, using the address from the previous step:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl create clusterrolebinding $USER-cluster-admin-binding \
     --clusterrole=cluster-admin \
@@ -64,7 +64,7 @@ Choose whether you want to orchestrate CockroachDB with Kubernetes using the hos
 
 2. From your local workstation, start the Kubernetes cluster:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ eksctl create cluster \
     --name cockroachdb \

@@ -114,7 +114,7 @@ Pausing and then resuming an `IMPORT INTO` job will cause it to restart from the
 
 Amazon S3:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT INTO customers (id, name)
     CSV DATA (
@@ -124,7 +124,7 @@ Amazon S3:
 
 Azure:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT INTO customers (id, name)
     CSV DATA (
@@ -134,7 +134,7 @@ Azure:
 
 Google Cloud:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT INTO customers (id, name)
     CSV DATA (
@@ -146,7 +146,7 @@ Google Cloud:
 
 Amazon S3:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT INTO customers (id, name)
     CSV DATA (
@@ -159,7 +159,7 @@ Amazon S3:
 
 Azure:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT INTO customers (id, name)
     CSV DATA (
@@ -173,7 +173,7 @@ Azure:
 
 Google Cloud:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT INTO customers (id, name)
     CSV DATA (
@@ -192,7 +192,7 @@ Google Cloud:
 - `IMPORT INTO` works for only a single existing table, and the table must not be [interleaved](interleave-in-parent.html).
 - `IMPORT INTO` cannot be used within a [transaction](transactions.html).
 - `IMPORT INTO` can sometimes fail with a "context canceled" error, or can restart itself many times without ever finishing. If this is happening, it is likely due to a high amount of disk contention. This can be mitigated by setting the `kv.bulk_io_write.max_rate` [cluster setting](cluster-settings.html) to a value below your max disk write speed. For example, to set it to 10MB/s, execute:
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SET CLUSTER SETTING kv.bulk_io_write.max_rate = '10MB';
     ~~~

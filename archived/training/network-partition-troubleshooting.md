@@ -29,14 +29,14 @@ Note that this lab involves running a cluster in Docker so that you can use it t
     <p></p>
 
     <div class="filter-content" markdown="1" data-scope="mac">
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ curl -O {{site.url}}/docs/{{ page.version.version }}/training/resources/docker-compose.yaml
     ~~~
     </div>
 
     <div class="filter-content" markdown="1" data-scope="linux">
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ wget {{site.url}}/docs/{{ page.version.version }}/training/resources/docker-compose.yaml
     ~~~
@@ -44,14 +44,14 @@ Note that this lab involves running a cluster in Docker so that you can use it t
 
 2. Create the cluster:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ COCKROACH_VERSION={{ page.release_info.version }} docker-compose up
     ~~~~
 
 3. In a new terminal, initialize the cluster:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ docker exec -it roach-0 /cockroach/cockroach init --insecure
     ~~~~
@@ -62,12 +62,12 @@ Note that this lab involves running a cluster in Docker so that you can use it t
 
 1. Disconnect the nodes in `dc-2` from the shared network backbone:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ docker network disconnect cockroachdb-training-shared roach-4
     ~~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ docker network disconnect cockroachdb-training-shared roach-5
     ~~~~
@@ -80,7 +80,7 @@ Note that this lab involves running a cluster in Docker so that you can use it t
 
 2. Check whether the "Suspect" nodes are still running by hitting their `/health` endpoints:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ curl localhost:8085/health
     ~~~~
@@ -110,7 +110,7 @@ Note that this lab involves running a cluster in Docker so that you can use it t
 
 3. Check whether the "Suspect" nodes consider themselves live by hitting their `/_admin/v1/health` endpoints:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ curl localhost:8085/_admin/v1/health
     ~~~~
@@ -124,7 +124,7 @@ Note that this lab involves running a cluster in Docker so that you can use it t
 
 4. Check the logs of the downed nodes to see if they contain any clues, where you should find errors like "Error while dialing", "no such host", and "the connection is unavailable":
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ docker logs roach-5
     ~~~~
@@ -142,7 +142,7 @@ Note that this lab involves running a cluster in Docker so that you can use it t
 
 6. If you really want to confirm that the network isn't working, try manually pinging a node in `dc-2` from a node in `dc-0`:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ docker exec -t roach-0 ping roach-5
     ~~~~
@@ -155,12 +155,12 @@ Note that this lab involves running a cluster in Docker so that you can use it t
 
 1. Reconnect the nodes in `dc-2` to the shared network backbone:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ docker network connect cockroachdb-training-shared roach-4
     ~~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ docker network connect cockroachdb-training-shared roach-5
     ~~~~
@@ -175,7 +175,7 @@ You will not be using this Docker cluster in any other labs, so take a moment to
 
 2. Delete all Docker resources created by the tutorial:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ docker-compose down
     ~~~

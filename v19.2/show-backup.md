@@ -39,7 +39,7 @@ Field | Description
 
 ### Show a backup
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW BACKUP 'azure://acme-co-backup/tpch-2017-03-27-full?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co';
 ~~~
@@ -66,7 +66,7 @@ Time: 32.540353ms
 
 <span class="version-tag">New in v19.2:</span> You can add number of rows and the schema of the backed up table.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW BACKUP SCHEMAS 'nodelocal:///extern/employee.sql';
 ~~~

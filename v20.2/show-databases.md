@@ -21,7 +21,7 @@ The user must be granted the `SELECT` [privilege](authorization.html#assign-priv
 
 ### Show databases
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW DATABASES;
 ~~~
@@ -39,7 +39,7 @@ The user must be granted the `SELECT` [privilege](authorization.html#assign-priv
 
 Alternatively, within the built-in SQL shell, you can use the `\l` [shell command](cockroach-sql.html#commands) to list all databases:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > \l
 ~~~
@@ -59,14 +59,14 @@ Alternatively, within the built-in SQL shell, you can use the `\l` [shell comman
 
 You can use [`COMMENT ON`](comment-on.html) to add comments on a database.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > COMMENT ON DATABASE movr IS 'This database holds information about users, vehicles, and rides.';
 ~~~
 
 To view a database's comments:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW DATABASES WITH COMMENT;
 ~~~

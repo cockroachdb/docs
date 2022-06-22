@@ -75,7 +75,7 @@ If the target is a [`system` range](#create-a-replication-zone-for-a-system-rang
 
 ### Edit a replication zone
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE users CONFIGURE ZONE USING range_min_bytes = 0, range_max_bytes = 90000, gc.ttlseconds = 89999, num_replicas = 4;
 ~~~

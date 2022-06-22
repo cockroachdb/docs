@@ -34,12 +34,12 @@ A `TIME` column supports values up to 8 bytes in width, but the total storage si
 
 ## Example
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE time (time_id INT PRIMARY KEY, time_val TIME);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW COLUMNS FROM time;
 ~~~
@@ -54,12 +54,12 @@ A `TIME` column supports values up to 8 bytes in width, but the total storage si
 (2 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO time VALUES (1, TIME '05:40:00'), (2, TIME '05:41:39');
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM time;
 ~~~
@@ -78,7 +78,7 @@ A `TIME` column supports values up to 8 bytes in width, but the total storage si
 
 Comparing `TIME` values:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT (SELECT time_val FROM time WHERE time_id = 1) < (SELECT time_val FROM time WHERE time_id = 2);
 ~~~

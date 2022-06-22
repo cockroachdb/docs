@@ -293,7 +293,7 @@ Column | Description
 
 ### Retrieve All Columns from an Information Schema Table
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM db_name.information_schema.table_constraints;
 ~~~
@@ -307,7 +307,7 @@ Column | Description
 
 ### Retrieve Specific Columns from an Information Schema Table
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT table_name, constraint_name FROM db_name.information_schema.table_constraints;
 ~~~

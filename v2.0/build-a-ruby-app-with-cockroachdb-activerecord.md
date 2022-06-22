@@ -26,7 +26,7 @@ For a more realistic use of ActiveRecord with CockroachDB, see our [`examples-or
 
 To install ActiveRecord as well as the [pg driver](https://rubygems.org/gems/pg) and a [CockroachDB Ruby package](https://github.com/cockroachdb/activerecord-cockroachdb-adapter) that accounts for some minor differences between CockroachDB and PostgreSQL, run the following command:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ gem install activerecord pg activerecord-cockroachdb-adapter
 ~~~
@@ -45,7 +45,7 @@ The exact command above will vary depending on the desired version of ActiveReco
 
 Create a certificate and key for the `maxroach` user by running the following command.  The code samples will run as this user.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach cert create-client maxroach --certs-dir=certs --ca-key=my-safe-directory/ca.key
 ~~~
@@ -57,14 +57,14 @@ The following code uses the [ActiveRecord](http://guides.rubyonrails.org/active_
 Copy the code or
 <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/v2.0/app/activerecord-basic-sample.rb" download>download it directly</a>.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ ruby
 {% include {{page.version.version}}/app/activerecord-basic-sample.rb %}
 ~~~
 
 Then run the code:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ ruby activerecord-basic-sample.rb
 ~~~
@@ -80,14 +80,14 @@ The output should be:
 
 To verify that the table and rows were created successfully, start the [built-in SQL client](use-the-built-in-sql-client.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --certs-dir=certs --database=bank
 ~~~
 
 Then, issue the following statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT id, balance FROM accounts;
 ~~~
@@ -117,14 +117,14 @@ The following code uses the [ActiveRecord](http://guides.rubyonrails.org/active_
 Copy the code or
 <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/v2.0/app/insecure/activerecord-basic-sample.rb" download>download it directly</a>.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ ruby
 {% include {{page.version.version}}/app/insecure/activerecord-basic-sample.rb %}
 ~~~
 
 Then run the code:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ ruby activerecord-basic-sample.rb
 ~~~
@@ -140,14 +140,14 @@ The output should be:
 
 To verify that the table and rows were created successfully, start the [built-in SQL client](use-the-built-in-sql-client.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure --database=bank
 ~~~
 
 Then, issue the following statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT id, balance FROM accounts;
 ~~~

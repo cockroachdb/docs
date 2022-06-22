@@ -45,7 +45,7 @@ Using this pattern, you tell CockroachDB to put the leaseholder for the table it
 
 Assuming you have a [cluster deployed across three regions](#cluster-setup) and a table like the following:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE postal_codes (
     id INT PRIMARY KEY,
@@ -57,7 +57,7 @@ Assuming you have a [cluster deployed across three regions](#cluster-setup) and 
 
 2. [Create a replication zone](configure-zone.html) for the table and set a leaseholder preference telling CockroachDB to put the leaseholder for the table in one of the regions, for example `us-west`:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > ALTER TABLE postal_codes
         CONFIGURE ZONE USING
@@ -68,13 +68,13 @@ Assuming you have a [cluster deployed across three regions](#cluster-setup) and 
 
 3. [Create secondary indexes](create-index.html) on the table for each of your other regions, including all of the columns you wish to read either in the key or in the key and a [`STORING`](create-index.html#store-columns) clause:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE INDEX idx_central ON postal_codes (id)
         STORING (code);
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE INDEX idx_east ON postal_codes (id)
         STORING (code);
@@ -82,7 +82,7 @@ Assuming you have a [cluster deployed across three regions](#cluster-setup) and 
 
 4. [Create a replication zone](configure-zone.html) for each secondary index, in each case setting a leaseholder preference telling CockroachDB to put the leaseholder for the index in a distinct region:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > ALTER INDEX postal_codes@idx_central
         CONFIGURE ZONE USING
@@ -91,7 +91,7 @@ Assuming you have a [cluster deployed across three regions](#cluster-setup) and 
           lease_preferences = '[[+region=us-central]]';
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > ALTER INDEX postal_codes@idx_east
         CONFIGURE ZONE USING
@@ -102,7 +102,7 @@ Assuming you have a [cluster deployed across three regions](#cluster-setup) and 
 
 5. <span class="version-tag">New in v19.2:</span> To confirm that replication zones are in effect, you can use the [`SHOW CREATE TABLE`](show-create.html):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SHOW CREATE TABLE postal_codes;
     ~~~

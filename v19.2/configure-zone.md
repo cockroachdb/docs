@@ -79,7 +79,7 @@ Required privileges for `CONFIGURE ZONE` statements in CockroachDB v19.2 may be 
 
 ### Edit a replication zone
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE users CONFIGURE ZONE USING range_min_bytes = 0, range_max_bytes = 90000, gc.ttlseconds = 89999, num_replicas = 4;
 ~~~

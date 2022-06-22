@@ -48,7 +48,7 @@ CockroachDB does not provide `ENUM` or `SET` data types.
 
 In Postgres, you can emulate an `ENUM` type using a [`CHECK` constraint](check.html) as shown below.  For MySQL, we perform this conversion automatically during the import.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE orders (
     id UUID PRIMARY KEY,

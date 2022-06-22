@@ -31,12 +31,12 @@ Parameter | Description
 
 ### Create a database
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE DATABASE bank;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~
 > SHOW DATABASES;
 ~~~
@@ -55,7 +55,7 @@ Parameter | Description
 
 ### Create fails (name already in use)
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE DATABASE bank;
 ~~~
@@ -64,14 +64,14 @@ Parameter | Description
 pq: database "bank" already exists
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE DATABASE IF NOT EXISTS bank;
 ~~~
 
 SQL does not generate an error, but instead responds `CREATE DATABASE` even though a new database wasn't created.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW DATABASES;
 ~~~

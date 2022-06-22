@@ -15,14 +15,14 @@ When starting a single-node cluster with [`cockroach start-single-node`](cockroa
 
 Perform a one-time initialization of a cluster:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach init <flags>
 ~~~
 
 View help:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach init --help
 ~~~
@@ -61,7 +61,7 @@ Usage of `cockroach init` assumes that nodes have already been started with [`co
 
 3. Run the `cockroach init` command with the `--certs-dir` flag set to the directory containing the `ca.crt` file and the files for the `root` user, and with the `--host` flag set to the address of the current node:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach init --certs-dir=certs --host=<address of this node>
     ~~~
@@ -74,7 +74,7 @@ Usage of `cockroach init` assumes that nodes have already been started with [`co
 
 2. Run the `cockroach init` command with the `--host` flag set to the address of the current node:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach init --insecure --host=<address of this node>
     ~~~
@@ -96,7 +96,7 @@ Usage of `cockroach init` assumes that nodes have already been started with [`co
 
 3. Run the `cockroach init` command with the `--certs-dir` flag set to the directory containing the `ca.crt` file and the files for the `root` user, and with the `--host` flag set to the address of any node:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach init --certs-dir=certs --host=<address of any node>
     ~~~
@@ -109,7 +109,7 @@ Usage of `cockroach init` assumes that nodes have already been started with [`co
 
 2. Run the `cockroach init` command with the `--host` flag set to the address of any node:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach init --insecure --host=<address of any node>
     ~~~

@@ -12,21 +12,21 @@ Be sure that you have [set up an inbound rule](deploy-cockroachdb-on-aws.html#st
 
 2. Download `workload` and make it executable:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ wget https://edge-binaries.cockroachdb.com/cockroach/workload.LATEST ; chmod 755 workload.LATEST
     ~~~
 
 3. Rename and copy `workload` into the `PATH`:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cp -i workload.LATEST /usr/local/bin/workload
     ~~~
 
 4. Start the TPC-C workload, pointing it at the IP address of the load balancer and the location of the `ca.crt`, `client.root.crt`, and `client.root.key` files:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ workload run tpcc \
     --drop \

@@ -15,7 +15,7 @@ This page shows you how to manually deploy a secure multi-node CockroachDB clust
 
 If you are only testing CockroachDB, or you are not concerned with protecting network communication with TLS encryption, you can use an insecure cluster instead. Select **Insecure** above for instructions.
 
-{% include cockroachcloud/use-cockroachcloud-instead.md %}
+{% include_cached cockroachcloud/use-cockroachcloud-instead.md %}
 
 ## Before you begin
 

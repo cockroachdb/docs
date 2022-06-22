@@ -74,7 +74,7 @@ Field | Description
 
 ### Show the value of a single cluster setting
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CLUSTER SETTING diagnostics.reporting.enabled;
 ~~~
@@ -88,7 +88,7 @@ Field | Description
 
 ### Show the values of all public cluster settings
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CLUSTER SETTINGS;
 ~~~
@@ -104,7 +104,7 @@ Field | Description
 
 ### Show the values of all cluster settings
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW ALL CLUSTER SETTINGS;
 ~~~

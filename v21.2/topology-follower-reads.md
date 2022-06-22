@@ -18,7 +18,7 @@ If reads from a table must be exactly up-to-date, use [global tables](global-tab
 
 ## Prerequisites
 
-{% include enterprise-feature.md %}
+{% include_cached enterprise-feature.md %}
 
 ### Fundamentals
 

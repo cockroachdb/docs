@@ -88,7 +88,7 @@ If you need to troubleshoot this command's behavior, you can change its [logging
 
     If the node is running in the background and you are not using a process manager, send a kill signal to the `cockroach` process, for example:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ pkill cockroach
     ~~~
@@ -97,7 +97,7 @@ If you need to troubleshoot this command's behavior, you can change its [logging
 
 3. Verify that the `cockroach` process has stopped:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ ps aux | grep cockroach
     ~~~
@@ -118,7 +118,7 @@ If you need to troubleshoot this command's behavior, you can change its [logging
 
 3. Run the `cockroach quit` command:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach quit --certs-dir=certs --host=<address of node to stop>
     ~~~
@@ -129,7 +129,7 @@ If you need to troubleshoot this command's behavior, you can change its [logging
 
 2. Run the `cockroach quit` command:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach quit --insecure --host=<address of node to stop>
     ~~~

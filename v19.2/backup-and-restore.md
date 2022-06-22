@@ -16,14 +16,14 @@ If you have an [Enterprise license](enterprise-licensing.html), you can use the 
 
 In most cases, it's recommended to use the [`BACKUP`][backup] command to take full nightly backups of each database in your cluster:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP DATABASE <database_name> TO '<full_backup_location>';
 ~~~
 
 If it's ever necessary, you can then use the [`RESTORE`][restore] command to restore a database:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > RESTORE DATABASE <database_name> FROM '<full_backup_location>';
 ~~~
@@ -34,14 +34,14 @@ If a database increases to a size where it is no longer feasible to take nightly
 
 Periodically run the [`BACKUP`][backup] command to take a full backup of your database:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP DATABASE <database_name> TO '<full_backup_location>';
 ~~~
 
 Then create nightly incremental backups based off of the full backups you've already created.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP DATABASE <database_name> TO 'incremental_backup_location'
 INCREMENTAL FROM '<full_backup_location>', '<list_of_previous_incremental_backup_location>';
@@ -49,7 +49,7 @@ INCREMENTAL FROM '<full_backup_location>', '<list_of_previous_incremental_backup
 
 If it's ever necessary, you can then use the [`RESTORE`][restore] command to restore a database:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > RESTORE <database_name> FROM '<full_backup_location>', '<list_of_previous_incremental_backup_locations>';
 ~~~
@@ -68,14 +68,14 @@ In the sample script, configure the day of the week for which you want to create
 
 1. Download the [sample backup script](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/prod-deployment/backup.sh):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ wget -qO- https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/prod-deployment/backup.sh
     ~~~
 
     Alternatively, you can create the file yourself and copy the script into it:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     #!/bin/bash
 
@@ -129,14 +129,14 @@ In the sample script, configure the day of the week for which you want to create
 
 3. Change the file permissions to make the script executable:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ chmod +x backup.sh
     ~~~
 
 4. Run the backup script:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ ./backup.sh
     ~~~
@@ -168,21 +168,21 @@ The list of URIs passed to [`RESTORE`][restore] may be different from the URIs o
 
 For example, to create a locality-aware backup where nodes with the locality `region=us-west` write backup files to `s3://us-west-bucket`, and all other nodes write to `s3://us-east-bucket` by default, run:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 BACKUP DATABASE foo TO ('s3://us-east-bucket?COCKROACH_LOCALITY=default', 's3://us-west-bucket?COCKROACH_LOCALITY=region%3Dus-west');
 ~~~
 
 To restore the backup created above, run the statement below. Note that the first URI in the list has to be the URI specified as the `default` URI when the backup was created. If you have moved your backups to a different location since the backup was originally taken, the first URI must be the new location of the files originally written to the `default` location.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 RESTORE DATABASE foo FROM ('s3://us-east-bucket', 's3://us-west-bucket');
 ~~~
 
 A list of multiple URIs (surrounded by parentheses) specifying a locality-aware backup can also be used in place of any incremental backup URI in [`RESTORE`][restore]. If the original backup was an incremental backup, it can be restored using:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 RESTORE DATABASE foo FROM 's3://other-full-backup-uri', ('s3://us-east-bucket', 's3://us-west-bucket');
 ~~~
@@ -199,14 +199,14 @@ The locality query string parameters must be [URL-encoded](https://en.wikipedia.
 
 In case you do not have an Enterprise license, you can perform a Core backup. Run the [`cockroach dump`](cockroach-dump.html) command to dump all the tables in the database to a new file (`backup.sql` in the following example):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach dump <database_name> <flags> > backup.sql
 ~~~
 
 To restore a database from a Core backup, [use the `cockroach sql` command to execute the statements in the backup file](cockroach-dump.html#restore-a-table-from-a-backup-file):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --database=[database name] < backup.sql
 ~~~

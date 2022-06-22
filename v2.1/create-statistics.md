@@ -35,7 +35,7 @@ Parameter            | Description
 
 ### Create statistics
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE STATISTICS students ON id FROM students_by_list;
 ~~~
@@ -52,7 +52,7 @@ Multi-column statistics are not supported yet.
 
 To delete statistics for all tables in all databases:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DELETE FROM system.table_statistics WHERE true;
 ~~~

@@ -224,7 +224,7 @@ To view virtual tables with comments and documentation links, use `SHOW TABLES F
 
 For [multi-region](multiregion-overview.html) tables, you can display the locality of each table using the `SHOW TABLES` command.
 
-{% include enterprise-feature.md %}
+{% include_cached enterprise-feature.md %}
 
 First, [set the primary region](set-primary-region.html) on `movr` to `us-east`:
 

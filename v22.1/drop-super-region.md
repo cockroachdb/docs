@@ -7,7 +7,7 @@ docs_area: reference.sql
 
  The `ALTER DATABASE .. DROP SUPER REGION` [statement](sql-statements.html) drops a [super region](multiregion-overview.html#super-regions) from a [multi-region database](multiregion-overview.html).
  
-{% include enterprise-feature.md %}
+{% include_cached enterprise-feature.md %}
 
 {{site.data.alerts.callout_info}}
 `DROP SUPER REGION` is a subcommand of [`ALTER DATABASE`](alter-database.html).

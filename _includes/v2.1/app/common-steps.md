@@ -2,7 +2,7 @@
 
 For the purpose of this tutorial, you need only one CockroachDB node running in insecure mode:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach start \
 --insecure \
@@ -14,7 +14,7 @@ $ cockroach start \
 
 In a new terminal, as the `root` user, use the [`cockroach user`](create-and-manage-users.html) command to create a new user, `maxroach`.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach user set maxroach --insecure
 ~~~
@@ -23,14 +23,14 @@ $ cockroach user set maxroach --insecure
 
 As the `root` user, use the [built-in SQL client](use-the-built-in-sql-client.html) to create a `bank` database.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure -e 'CREATE DATABASE bank'
 ~~~
 
 Then [grant privileges](grant.html) to the `maxroach` user.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure -e 'GRANT ALL ON DATABASE bank TO maxroach'
 ~~~

@@ -22,7 +22,7 @@ Do one of the following:
 
 To see all tables in the active database, use the [`SHOW TABLES`](show-tables.html) statement or the `\dt` [shell command](cockroach-sql.html#commands):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES;
 ~~~
@@ -43,7 +43,7 @@ To see all tables in the active database, use the [`SHOW TABLES`](show-tables.ht
 
 Suppose that you want MovR to offer ride-sharing services, in addition to vehicle-sharing services. You'll need to add a table for drivers to the `movr` database. To create a table, use [`CREATE TABLE`](create-table.html) followed by a table name, the column names, and the [data type](data-types.html) and [constraint](constraints.html), if any, for each column:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE drivers (
     id UUID NOT NULL,
@@ -59,7 +59,7 @@ Table and column names must follow [these rules](keywords-and-identifiers.html#i
 
 To avoid an error in case the table already exists, you can include `IF NOT EXISTS`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE IF NOT EXISTS drivers (
     id UUID NOT NULL,
@@ -73,7 +73,7 @@ To avoid an error in case the table already exists, you can include `IF NOT EXIS
 
 To show all of the columns from a table, use the [`SHOW COLUMNS FROM <table>`](show-columns.html) statement or the `\d <table>` [shell command](cockroach-sql.html#commands):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW COLUMNS FROM drivers;
 ~~~
@@ -94,7 +94,7 @@ To show all of the columns from a table, use the [`SHOW COLUMNS FROM <table>`](s
 
 To insert a row into a table, use [`INSERT INTO`](insert.html) followed by the table name and then the column values listed in the order in which the columns appear in the table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO drivers VALUES
     ('c28f5c28-f5c2-4000-8000-000000000026', 'new york', 'Petee', 'ABC-1234', '101 5th Ave');
@@ -102,7 +102,7 @@ To insert a row into a table, use [`INSERT INTO`](insert.html) followed by the t
 
 If you want to pass column values in a different order, list the column names explicitly and provide the column values in the corresponding order:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO drivers (name, city, dl, address, id) VALUES
     ('Adam Driver', 'chicago', 'DEF-5678', '201 E Randolph St', '1eb851eb-851e-4800-8000-000000000006');
@@ -110,7 +110,7 @@ If you want to pass column values in a different order, list the column names ex
 
 To insert multiple rows into a table, use a comma-separated list of parentheses, each containing column values for one row:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO drivers VALUES
     ('8a3d70a3-d70a-4000-8000-00000000001b', 'seattle', 'Eric', 'GHI-9123', '400 Broad St'),
@@ -119,19 +119,19 @@ To insert multiple rows into a table, use a comma-separated list of parentheses,
 
 [Default values](default-value.html) are used when you leave specific columns out of your statement, or when you explicitly request default values. For example, both of the following statements create a row where the `name`, `dl`, and `address` entries each contain their default value, in this case `NULL`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO drivers (id, city) VALUES
     ('70a3d70a-3d70-4400-8000-000000000016', 'chicago');
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO drivers (id, city, name, dl, address) VALUES
     ('b851eb85-1eb8-4000-8000-000000000024', 'seattle', DEFAULT, DEFAULT, DEFAULT);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM drivers WHERE id in ('70a3d70a-3d70-4400-8000-000000000016', 'b851eb85-1eb8-4000-8000-000000000024');
 ~~~
@@ -150,14 +150,14 @@ To insert multiple rows into a table, use a comma-separated list of parentheses,
 
 To create an index for non-unique columns, use [`CREATE INDEX`](create-index.html) followed by an optional index name and an `ON` clause identifying the table and column(s) to index.  For each column, you can choose whether to sort ascending (`ASC`) or descending (`DESC`).
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE INDEX name_idx ON users (name DESC);
 ~~~
 
 You can create indexes during table creation as well; just include the `INDEX` keyword followed by an optional index name and the column(s) to index:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE IF NOT EXISTS drivers (
     id UUID NOT NULL,
@@ -174,7 +174,7 @@ You can create indexes during table creation as well; just include the `INDEX` k
 
 To show the indexes on a table, use [`SHOW INDEX FROM`](show-index.html) followed by the name of the table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW INDEX FROM users;
 ~~~
@@ -195,7 +195,7 @@ To show the indexes on a table, use [`SHOW INDEX FROM`](show-index.html) followe
 
 To query a table, use [`SELECT`](select-clause.html) followed by a comma-separated list of the columns to be returned and the table from which to retrieve the data. You can also use the [`LIMIT`](https://www.cockroachlabs.com/docs/dev/limit-offset.html) clause to restrict the number of rows retrieved:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT name FROM users LIMIT 10;
 ~~~
@@ -218,7 +218,7 @@ To query a table, use [`SELECT`](select-clause.html) followed by a comma-separat
 
 To retrieve all columns, use the `*` wildcard:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM users LIMIT 10;
 ~~~
@@ -241,7 +241,7 @@ To retrieve all columns, use the `*` wildcard:
 
 To filter the results, add a `WHERE` clause identifying the columns and values to filter on:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT id, name FROM users WHERE city = 'san francisco';
 ~~~
@@ -259,7 +259,7 @@ To filter the results, add a `WHERE` clause identifying the columns and values t
 
 To sort the results, add an `ORDER BY` clause identifying the columns to sort by. For each column, you can choose whether to sort ascending (`ASC`) or descending (`DESC`).
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT city, type, current_location FROM vehicles ORDER BY city, type DESC;
 ~~~
@@ -289,12 +289,12 @@ To sort the results, add an `ORDER BY` clause identifying the columns to sort by
 
 To update rows in a table, use [`UPDATE`](update.html) followed by the table name, a `SET` clause identifying the columns to update and their new values, and a `WHERE` clause identifying the rows to update:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > UPDATE promo_codes SET (description, rules) = ('EXPIRED', '{"type": "percent_discount", "value": "0%"}') WHERE expiration_time < '2019-01-22 03:04:05+00:00';
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT code, description, rules FROM promo_codes LIMIT 10;
 ~~~
@@ -321,7 +321,7 @@ If a table has a primary key, you can use that in the `WHERE` clause to reliably
 
 To delete rows from a table, use [`DELETE FROM`](delete.html) followed by the table name and a `WHERE` clause identifying the rows to delete:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DELETE FROM promo_codes WHERE description = 'EXPIRED';
 ~~~
@@ -337,7 +337,7 @@ To delete a large number of rows, we recommend iteratively deleting batches of r
 
 When you no longer need a table, use [`DROP TABLE`](drop-table.html) followed by the table name to remove the table and all its data:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP TABLE drivers;
 ~~~
@@ -364,21 +364,21 @@ Your CockroachCloud cluster comes with a `defaultdb` for testing and some intern
 
 To create a new database, connect with your initial "admin" user and use [`CREATE DATABASE`](create-database.html) followed by a database name:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE DATABASE bank;
 ~~~
 
 Database names must follow [these identifier rules](keywords-and-identifiers.html#identifiers). To avoid an error in case the database already exists, you can include `IF NOT EXISTS`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE DATABASE IF NOT EXISTS bank;
 ~~~
 
 When you no longer need a database, use [`DROP DATABASE`](drop-database.html) followed by the database name to remove the database and all its objects:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP DATABASE bank;
 ~~~
@@ -387,7 +387,7 @@ When you no longer need a database, use [`DROP DATABASE`](drop-database.html) fo
 
 To see all databases, use the [`SHOW DATABASES`](show-databases.html) statement or the `\l` [shell command](cockroach-sql.html#commands):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW DATABASES;
 ~~~
@@ -406,14 +406,14 @@ To see all databases, use the [`SHOW DATABASES`](show-databases.html) statement 
 
 It's best to set the default database directly in your [connection string](connect-to-your-cluster.html#step-3-select-a-connection-method).
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET DATABASE = bank;
 ~~~
 
 When working in the default database, you do not need to reference it explicitly in statements. To see which database is currently the default, use the `SHOW DATABASE` statement (note the singular form):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW DATABASE;
 ~~~
@@ -429,7 +429,7 @@ When working in the default database, you do not need to reference it explicitly
 
 To create a table, use [`CREATE TABLE`](create-table.html) followed by a table name, the column names, and the [data type](data-types.html) and [constraint](constraints.html), if any, for each column:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE accounts (
     id INT PRIMARY KEY,
@@ -441,7 +441,7 @@ Table and column names must follow [these rules](keywords-and-identifiers.html#i
 
 To avoid an error in case the table already exists, you can include `IF NOT EXISTS`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE IF NOT EXISTS accounts (
     id INT PRIMARY KEY,
@@ -451,7 +451,7 @@ To avoid an error in case the table already exists, you can include `IF NOT EXIS
 
 To show all of the columns from a table, use the [`SHOW COLUMNS FROM <table>`](show-columns.html) statement or the `\d <table>` [shell command](cockroach-sql.html#commands):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW COLUMNS FROM accounts;
 ~~~
@@ -466,7 +466,7 @@ To show all of the columns from a table, use the [`SHOW COLUMNS FROM <table>`](s
 
 When you no longer need a table, use [`DROP TABLE`](drop-table.html) followed by the table name to remove the table and all its data:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP TABLE accounts;
 ~~~
@@ -475,7 +475,7 @@ When you no longer need a table, use [`DROP TABLE`](drop-table.html) followed by
 
 To see all tables in the active database, use the [`SHOW TABLES`](show-tables.html) statement or the `\dt` [shell command](cockroach-sql.html#commands):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES;
 ~~~
@@ -491,14 +491,14 @@ To see all tables in the active database, use the [`SHOW TABLES`](show-tables.ht
 
 To insert a row into a table, use [`INSERT INTO`](insert.html) followed by the table name and then the column values listed in the order in which the columns appear in the table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO accounts VALUES (1, 10000.50);
 ~~~
 
 If you want to pass column values in a different order, list the column names explicitly and provide the column values in the corresponding order:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO accounts (balance, id) VALUES
     (25000.00, 2);
@@ -506,7 +506,7 @@ If you want to pass column values in a different order, list the column names ex
 
 To insert multiple rows into a table, use a comma-separated list of parentheses, each containing column values for one row:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO accounts VALUES
     (3, 8100.73),
@@ -515,19 +515,19 @@ To insert multiple rows into a table, use a comma-separated list of parentheses,
 
 [Default values](default-value.html) are used when you leave specific columns out of your statement, or when you explicitly request default values. For example, both of the following statements would create a row with `balance` filled with its default value, in this case `NULL`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO accounts (id) VALUES
     (5);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO accounts (id, balance) VALUES
     (6, DEFAULT);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM accounts WHERE id in (5, 6);
 ~~~
@@ -546,14 +546,14 @@ To insert multiple rows into a table, use a comma-separated list of parentheses,
 
 To create an index for non-unique columns, use [`CREATE INDEX`](create-index.html) followed by an optional index name and an `ON` clause identifying the table and column(s) to index.  For each column, you can choose whether to sort ascending (`ASC`) or descending (`DESC`).
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE INDEX balance_idx ON accounts (balance DESC);
 ~~~
 
 You can create indexes during table creation as well; just include the `INDEX` keyword followed by an optional index name and the column(s) to index:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE accounts (
     id INT PRIMARY KEY,
@@ -566,7 +566,7 @@ You can create indexes during table creation as well; just include the `INDEX` k
 
 To show the indexes on a table, use [`SHOW INDEX FROM`](show-index.html) followed by the name of the table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW INDEX FROM accounts;
 ~~~
@@ -584,7 +584,7 @@ To show the indexes on a table, use [`SHOW INDEX FROM`](show-index.html) followe
 
 To query a table, use [`SELECT`](select-clause.html) followed by a comma-separated list of the columns to be returned and the table from which to retrieve the data:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT balance FROM accounts;
 ~~~
@@ -603,7 +603,7 @@ To query a table, use [`SELECT`](select-clause.html) followed by a comma-separat
 
 To retrieve all columns, use the `*` wildcard:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM accounts;
 ~~~
@@ -622,7 +622,7 @@ To retrieve all columns, use the `*` wildcard:
 
 To filter the results, add a `WHERE` clause identifying the columns and values to filter on:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT id, balance FROM accounts WHERE balance > 9000;
 ~~~
@@ -638,7 +638,7 @@ To filter the results, add a `WHERE` clause identifying the columns and values t
 
 To sort the results, add an `ORDER BY` clause identifying the columns to sort by. For each column, you can choose whether to sort ascending (`ASC`) or descending (`DESC`).
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT id, balance FROM accounts ORDER BY balance DESC;
 ~~~
@@ -659,12 +659,12 @@ To sort the results, add an `ORDER BY` clause identifying the columns to sort by
 
 To update rows in a table, use [`UPDATE`](update.html) followed by the table name, a `SET` clause identifying the columns to update and their new values, and a `WHERE` clause identifying the rows to update:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > UPDATE accounts SET balance = balance - 5.50 WHERE balance < 10000;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM accounts;
 ~~~
@@ -687,12 +687,12 @@ If a table has a primary key, you can use that in the `WHERE` clause to reliably
 
 To delete rows from a table, use [`DELETE FROM`](delete.html) followed by the table name and a `WHERE` clause identifying the rows to delete:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DELETE FROM accounts WHERE id in (5, 6);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM accounts;
 ~~~

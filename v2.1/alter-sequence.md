@@ -40,19 +40,19 @@ table td:first-child {
 
 In this example, we're going to change the increment value of a sequence from its current state (i.e., `1`) to `2`.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER SEQUENCE customer_seq INCREMENT 2;
 ~~~
 
 Next, we'll add another record to the table and check that the new record adheres to the new sequence.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO customer_list (customer, address) VALUES ('Marie', '333 Ocean Ave');
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM customer_list;
 ~~~
@@ -73,7 +73,7 @@ In this example, we're going to change the next value of the example sequence (`
 
 {{site.data.alerts.callout_info}}You cannot set a value outside the <code>MAXVALUE</code> or <code>MINVALUE</code> of the sequence. {{site.data.alerts.end}}
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT setval('customer_seq', 20, false);
 ~~~
@@ -91,7 +91,7 @@ The `setval('seq_name', value, is_called)` function in CockroachDB SQL mimics th
 
 Let's add another record to the table to check that the new record adheres to the new next value.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO customer_list (customer, address) VALUES ('Lola', '333 Schermerhorn');
 ~~~

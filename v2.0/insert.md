@@ -63,7 +63,7 @@ key. Using `ON CONFLICT` is therefore more flexible.
 
 All of the examples below assume you've already created a table `accounts`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE accounts(
     id INT DEFAULT unique_rowid(),
@@ -73,12 +73,12 @@ All of the examples below assume you've already created a table `accounts`:
 
 ### Insert a Single Row
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO accounts (balance, id) VALUES (10000.50, 1);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM accounts;
 ~~~
@@ -93,7 +93,7 @@ All of the examples below assume you've already created a table `accounts`:
 
 If you do not list column names, the statement will use the columns of the table in their declared order:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW COLUMNS FROM accounts;
 ~~~
@@ -107,12 +107,12 @@ If you do not list column names, the statement will use the columns of the table
 +---------+---------+-------+----------------+
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO accounts VALUES (2, 20000.75);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM accounts;
 ~~~
@@ -130,12 +130,12 @@ If you do not list column names, the statement will use the columns of the table
 
 {{site.data.alerts.callout_success}} Multi-row inserts are faster than multiple single-row <code>INSERT</code> statements. As a performance best practice, we recommend batching multiple rows in one multi-row <code>INSERT</code> statement instead of using multiple single-row <code>INSERT</code> statements. Experimentally determine the optimal batch size for your application by monitoring the performance for different batch sizes (10 rows, 100 rows, 1000 rows). {{site.data.alerts.end}}
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO accounts (id, balance) VALUES (3, 8100.73), (4, 9400.10);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM accounts;
 ~~~
@@ -157,7 +157,7 @@ The [`IMPORT`](import.html) statement performs better than `INSERT` when inserti
 
 ### Insert from a `SELECT` Statement
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW COLUMS FROM other_accounts;
 ~~~
@@ -171,12 +171,12 @@ The [`IMPORT`](import.html) statement performs better than `INSERT` when inserti
 +--------+---------+-------+---------+
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO accounts (id, balance) SELECT number, amount FROM other_accounts WHERE id > 4;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM accounts;
 ~~~
@@ -197,17 +197,17 @@ The [`IMPORT`](import.html) statement performs better than `INSERT` when inserti
 
 ### Insert Default Values
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO accounts (id) VALUES (8);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO accounts (id, balance) VALUES (9, DEFAULT);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM accounts WHERE id in (8, 9);
 ~~~
@@ -221,12 +221,12 @@ The [`IMPORT`](import.html) statement performs better than `INSERT` when inserti
 +----+---------+
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO accounts DEFAULT VALUES;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM accounts;
 ~~~
@@ -266,7 +266,7 @@ In this example, the `RETURNING` clause returns the `id` values of the rows inse
 
 <section class="filter-content" markdown="1" data-scope="shell">
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO accounts (id, balance)
   VALUES (DEFAULT, 1000), (DEFAULT, 250)
@@ -287,7 +287,7 @@ In this example, the `RETURNING` clause returns the `id` values of the rows inse
 
 <section class="filter-content" markdown="1" data-scope="python">
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ python
 # Import the driver.
 import psycopg2
@@ -337,7 +337,7 @@ IDs:
 
 <section class="filter-content" markdown="1" data-scope="ruby">
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ ruby
 # Import the driver.
 require 'pg'
@@ -381,7 +381,7 @@ IDs:
 
 <section class="filter-content" markdown="1" data-scope="go">
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ go
 package main
 
@@ -439,7 +439,7 @@ IDs:
 
 <section class="filter-content" markdown="1" data-scope="js">
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ js
 var async = require('async');
 
@@ -507,7 +507,7 @@ IDs:
 
 When a uniqueness conflict is detected, CockroachDB stores the row in a temporary table called `excluded`. This example demonstrates how you use the columns in the temporary `excluded` table to apply updates on conflict:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO accounts (id, balance)
     VALUES (8, 500.50)
@@ -515,7 +515,7 @@ When a uniqueness conflict is detected, CockroachDB stores the row in a temporar
     DO UPDATE SET balance = excluded.balance;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM accounts WHERE id = 8;
 ~~~
@@ -531,7 +531,7 @@ When a uniqueness conflict is detected, CockroachDB stores the row in a temporar
 
 You can also update the row using an existing value:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO accounts (id, balance)
     VALUES (8, 500.50)
@@ -539,7 +539,7 @@ You can also update the row using an existing value:
     DO UPDATE SET balance = accounts.balance + excluded.balance;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM accounts WHERE id = 8;
 ~~~
@@ -554,7 +554,7 @@ You can also update the row using an existing value:
 
 You can also use a `WHERE` clause to apply the `DO UPDATE SET` expression conditionally:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO accounts (id, balance)
     VALUES (8, 700)
@@ -580,7 +580,7 @@ You can also use a `WHERE` clause to apply the `DO UPDATE SET` expression condit
 
 In this example, we get an error from a uniqueness conflict:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM accounts WHERE id = 8;
 ~~~
@@ -593,7 +593,7 @@ In this example, we get an error from a uniqueness conflict:
 +----+---------+
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO accounts (id, balance) VALUES (8, 125.50);
 ~~~
@@ -604,7 +604,7 @@ pq: duplicate key value (id)=(8) violates unique constraint "primary"
 
 In this example, we use `ON CONFLICT DO NOTHING` to ignore the uniqueness error and prevent the affected row from being updated:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO accounts (id, balance)
     VALUES (8, 125.50)
@@ -612,7 +612,7 @@ In this example, we use `ON CONFLICT DO NOTHING` to ignore the uniqueness error 
     DO NOTHING;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM accounts WHERE id = 8;
 ~~~
@@ -627,7 +627,7 @@ In this example, we use `ON CONFLICT DO NOTHING` to ignore the uniqueness error 
 
 In this example, `ON CONFLICT DO NOTHING` prevents the first row from updating while allowing the second row to be inserted:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO accounts (id, balance)
     VALUES (8, 125.50), (10, 450)
@@ -635,7 +635,7 @@ In this example, `ON CONFLICT DO NOTHING` prevents the first row from updating w
     DO NOTHING;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM accounts WHERE id in (8, 10);
 ~~~

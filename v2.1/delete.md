@@ -80,7 +80,7 @@ For an explanation of why this happens, and for instructions showing how to iter
 
 You can delete all rows from a table by not including a `WHERE` clause in your `DELETE` statement.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DELETE FROM account_details;
 ~~~
@@ -102,7 +102,7 @@ Using columns with the [Primary Key](primary-key.html) or [Unique](unique.html) 
 
 In this example, `account_id` is our primary key and we want to delete the row where it equals 1. Because we're positive no other rows have that value in the `account_id` column, there's no risk of accidentally removing another row.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DELETE FROM account_details WHERE account_id = 1 RETURNING *;
 ~~~
@@ -118,7 +118,7 @@ In this example, `account_id` is our primary key and we want to delete the row w
 
 Deleting rows using non-unique columns removes _every_ row that returns `TRUE` for the `WHERE` clause's `a_expr`. This can easily result in deleting data you didn't intend to.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DELETE FROM account_details WHERE balance = 30000 RETURNING *;
 ~~~
@@ -141,7 +141,7 @@ To see which rows your statement deleted, include the `RETURNING` clause to retr
 
 By specifying `*`, you retrieve all columns of the delete rows.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DELETE FROM account_details WHERE balance < 23000 RETURNING *;
 ~~~
@@ -157,7 +157,7 @@ By specifying `*`, you retrieve all columns of the delete rows.
 
 To retrieve specific columns, name them in the `RETURNING` clause.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DELETE FROM account_details WHERE account_id = 5 RETURNING account_id, account_type;
 ~~~
@@ -173,7 +173,7 @@ To retrieve specific columns, name them in the `RETURNING` clause.
 
 When `RETURNING` specific columns, you can change their labels using `AS`.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DELETE FROM account_details WHERE balance < 22500 RETURNING account_id, balance AS final_balance;
 ~~~

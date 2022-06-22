@@ -32,7 +32,7 @@ Parameter | Description
 
 To list all grants for all users and roles on all databases and tables:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW GRANTS;
 ~~~
@@ -53,7 +53,7 @@ To list all grants for all users and roles on all databases and tables:
 
 ### Show a specific user or role's grants
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW GRANTS FOR maxroach;
 ~~~
@@ -73,7 +73,7 @@ To list all grants for all users and roles on all databases and tables:
 
 **Specific database, all users and roles:**
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW GRANTS ON DATABASE test;
 ~~~
@@ -100,7 +100,7 @@ To list all grants for all users and roles on all databases and tables:
 
 **Specific database, specific user or role:**
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW GRANTS ON DATABASE test FOR maxroach;
 ~~~
@@ -121,7 +121,7 @@ To list all grants for all users and roles on all databases and tables:
 
 **Specific tables, all users and roles:**
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW GRANTS ON TABLE test.t1;
 ~~~
@@ -139,7 +139,7 @@ To list all grants for all users and roles on all databases and tables:
 
 **Specific tables, specific role or user:**
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW GRANTS ON TABLE test.t1 FOR maxroach;
 ~~~
@@ -155,7 +155,7 @@ To list all grants for all users and roles on all databases and tables:
 
 **All tables, all users and roles:**
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW GRANTS ON TABLE test.*;
 ~~~
@@ -173,7 +173,7 @@ To list all grants for all users and roles on all databases and tables:
 
 **All tables, specific users or roles:**
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW GRANTS ON TABLE test.* FOR maxroach;
 ~~~
@@ -191,7 +191,7 @@ To list all grants for all users and roles on all databases and tables:
 
 **All members of all roles:**
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW GRANTS ON ROLE;
 ~~~
@@ -213,7 +213,7 @@ SHOW GRANTS ON ROLE;
 
 **Members of a specific role:**
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW GRANTS ON ROLE design;
 ~~~
@@ -229,7 +229,7 @@ SHOW GRANTS ON ROLE design;
 
 **Roles of a specific user or role:**
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW GRANTS ON ROLE FOR carl;
 ~~~

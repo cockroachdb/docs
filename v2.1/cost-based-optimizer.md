@@ -30,7 +30,7 @@ To see whether a query will be run with the cost-based optimizer, run the query 
 
 For example, the following query (which uses [CockroachDB's TPC-H data set](https://github.com/cockroachdb/cockroach/tree/b1a57102d8e99b301b74c97527c1b8ffd4a4f3f1/pkg/workload/tpch)) returns the query plan tree, which means that it will be run with the cost-based optimizer:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN(OPT) SELECT l_shipmode, avg(l_extendedprice) from lineitem GROUP BY l_shipmode;
 ~~~
@@ -59,7 +59,7 @@ group-by
 
 In contrast, this query returns `pq: unsupported statement: *tree.Insert`, which means that it will use the legacy heuristic planner instead of the cost-based optimizer:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN (OPT) INSERT INTO l_shipmode VALUES ("truck");
 ~~~
@@ -74,14 +74,14 @@ With the optimizer turned on, the performance of some workloads may change. If y
 
 To turn the cost-based optimizer off for the current session:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET optimizer = 'off';
 ~~~
 
 To turn the cost-based optimizer off for all sessions:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET CLUSTER SETTING sql.defaults.optimizer = 'off';
 ~~~

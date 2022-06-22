@@ -30,7 +30,7 @@ This page walks you through a simple demonstration of how CockroachDB can store 
 
 For the purpose of this tutorial, you need only one CockroachDB node running in insecure mode:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach start \
 --insecure \
@@ -43,7 +43,7 @@ $ cockroach start \
 
 In a new terminal, as the `root` user, use the [`cockroach user`](create-and-manage-users.html) command to create a new user, `maxroach`.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach user set maxroach --insecure --host=localhost:26257
 ~~~
@@ -52,28 +52,28 @@ $ cockroach user set maxroach --insecure --host=localhost:26257
 
 As the `root` user, open the [built-in SQL client](use-the-built-in-sql-client.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure --host=localhost:26257
 ~~~
 
 Next, create a database called `jsonb_test`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE DATABASE jsonb_test;
 ~~~
 
 Set the database as the default:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET DATABASE = jsonb_test;
 ~~~
 
 Then [grant privileges](grant.html) to the `maxroach` user:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > GRANT ALL ON DATABASE jsonb_test TO maxroach;
 ~~~
@@ -82,7 +82,7 @@ Then [grant privileges](grant.html) to the `maxroach` user:
 
 Still in the SQL shell, create a table called `programming`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE programming (
     id UUID DEFAULT uuid_v4()::UUID PRIMARY KEY,
@@ -90,7 +90,7 @@ Still in the SQL shell, create a table called `programming`:
   );
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE programming;
 ~~~
@@ -125,14 +125,14 @@ The code queries the [Reddit API](https://www.reddit.com/dev/api/) for posts in 
 
 Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/json/json-sample.go" download><code>json-sample.go</code></a> file, or create the file yourself and copy the code into it:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ go
 {% include {{ page.version.version }}/json/json-sample.go %}
 ~~~
 
 In a new terminal window, navigate to your sample code file and run it:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ go run json-sample.go
 ~~~
@@ -148,14 +148,14 @@ The code queries the [Reddit API](https://www.reddit.com/dev/api/) for posts in 
 
 Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/json/json-sample.py" download><code>json-sample.py</code></a> file, or create the file yourself and copy the code into it:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ python
 {% include {{ page.version.version }}/json/json-sample.py %}
 ~~~
 
 In a new terminal window, navigate to your sample code file and run it:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ python json-sample.py
 ~~~
@@ -167,7 +167,7 @@ The program will take awhile to finish, but you can start querying the data righ
 
 Back in the terminal where the SQL shell is running, verify that rows of data are being inserted into your table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT count(*) FROM programming;
 ~~~
@@ -179,7 +179,7 @@ Back in the terminal where the SQL shell is running, verify that rows of data ar
 +-------+
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT count(*) FROM programming;
 ~~~
@@ -193,7 +193,7 @@ Back in the terminal where the SQL shell is running, verify that rows of data ar
 
 Now, retrieve all the current entries where the link is pointing to somewhere on GitHub:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT id FROM programming \
 WHERE posts @> '{"data": {"domain": "github.com"}}';
@@ -229,7 +229,7 @@ Time: 105.877736ms
 
 The query in the previous step took 105.877736ms. To optimize the performance of queries that filter on the `JSONB` column, let's create an [inverted index](inverted-indexes.html) on the column:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE INVERTED INDEX ON programming(posts);
 ~~~
@@ -238,7 +238,7 @@ The query in the previous step took 105.877736ms. To optimize the performance of
 
 Now that there is an inverted index, the same query will run much faster:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT id FROM programming \
 WHERE posts @> '{"data": {"domain": "github.com"}}';

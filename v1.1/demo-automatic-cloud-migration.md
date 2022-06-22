@@ -28,7 +28,7 @@ If you've already [started a local cluster](start-a-local-cluster.html), the com
 
 In a new terminal, start node 1 on cloud 1:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach start \
 --insecure \
@@ -41,7 +41,7 @@ $ cockroach start \
 
 In a new terminal, start node 2 on cloud 1:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach start \
 --insecure \
@@ -56,7 +56,7 @@ $ cockroach start \
 
 In a new terminal, start node 3 on cloud 1:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach start \
 --insecure \
@@ -73,7 +73,7 @@ $ cockroach start \
 
 In a new terminal, use the [`cockroach init`](initialize-a-cluster.html) command to perform a one-time initialization of the cluster:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach init \
 --insecure \
@@ -87,7 +87,7 @@ You're now running 3 nodes in a simulated cloud. Each of these nodes is an equal
 
 In a new terminal, run the [`cockroach gen haproxy`](generate-cockroachdb-resources.html) command, specifying the port of any node:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach gen haproxy \
 --insecure \
@@ -118,7 +118,7 @@ listen psql
 
 Start HAProxy, with the `-f` flag pointing to the `haproxy.cfg` file:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ haproxy -f haproxy.cfg
 ~~~
@@ -129,7 +129,7 @@ Now that you have a load balancer running in front of your cluster, let's use th
 
 In a new terminal, start `ycsb`, pointing it at HAProxy's port:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ $HOME/go/bin/ycsb -duration 20m -tolerate-errors -concurrency 10 -max-rate 1000 'postgresql://root@localhost:26000?sslmode=disable'
 ~~~
@@ -152,7 +152,7 @@ At this point, you're running three nodes on cloud 1. But what if you'd like to 
 
 In a new terminal, start node 4 on cloud 2:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach start \
 --insecure \
@@ -167,7 +167,7 @@ $ cockroach start \
 
 In a new terminal, start node 5 on cloud 2:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach start \
 --insecure \
@@ -182,7 +182,7 @@ $ cockroach start \
 
 In a new terminal, start node 6 on cloud 2:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach start \
 --insecure \
@@ -209,7 +209,7 @@ So your cluster is replicating across two simulated clouds. But let's say that a
 
 In a new terminal, edit the default replication zone:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ echo 'constraints: [+cloud=2]' | cockroach zone set .default --insecure --host=localhost -f -
 ~~~
@@ -230,7 +230,7 @@ Once you're done with your cluster, stop YCSB by switching into its terminal and
 
 If you do not plan to restart the cluster, you may want to remove the nodes' data stores and the HAProxy config file:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ rm -rf cloud1node1 cloud1node2 cloud1node3 cloud2node4 cloud2node5 cloud2node6 haproxy.cfg
 ~~~

@@ -16,7 +16,7 @@ If reads can use stale data, use [stale follower reads](follower-reads.html#stal
 
 ## Prerequisites
 
-{% include enterprise-feature.md %}
+{% include_cached enterprise-feature.md %}
 
 ### Fundamentals
 

@@ -1,6 +1,6 @@
 In this example, let's create a simple table with a computed column:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE names (
     id INT PRIMARY KEY,
@@ -12,7 +12,7 @@ In this example, let's create a simple table with a computed column:
 
 Then, insert a few rows a data:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO names (id, first_name, last_name) VALUES
     (1, 'Lola', 'McDog'),
@@ -20,7 +20,7 @@ Then, insert a few rows a data:
     (3, 'Ernie', 'Narayan');
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM names;
 ~~~

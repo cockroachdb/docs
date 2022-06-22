@@ -2,14 +2,14 @@
 
 1. In the SQL shell, create the `bank` database that your application will use:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE DATABASE bank;
     ~~~
 
 1. Create a SQL user for your app:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE USER <username> WITH PASSWORD <password>;
     ~~~
@@ -18,7 +18,7 @@
 
 1. Give the user the necessary permissions:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > GRANT ALL ON DATABASE bank TO <username>;
     ~~~
@@ -31,7 +31,7 @@
 1. If you haven't already, [download the CockroachDB binary](install-cockroachdb.html).
 1. Start the [built-in SQL shell](cockroach-sql.html):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
     --url='postgres://<username>:<password>@<global host>:26257?sslmode=verify-full&sslrootcert=<certs_dir>/<ca.crt>'
@@ -43,14 +43,14 @@
 
 1. In the SQL shell, create the `bank` database that your application will use:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE DATABASE bank;
     ~~~
 
 1. Give the user the necessary permissions:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > GRANT ALL ON DATABASE bank TO <username>;
     ~~~

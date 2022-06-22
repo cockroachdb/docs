@@ -219,7 +219,7 @@ For example:
 
 ### Create a changefeed connected to Kafka
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE CHANGEFEED FOR TABLE name, name2, name3
   INTO 'kafka://host:port'
@@ -238,7 +238,7 @@ For more information on how to create a changefeed connected to Kafka, see [Stre
 
 ### Create a changefeed connected to Kafka using Avro
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE CHANGEFEED FOR TABLE name, name2, name3
   INTO 'kafka://host:port'
@@ -261,7 +261,7 @@ For more information on how to create a changefeed that emits an [Avro](https://
 **This is an experimental feature.** The interface and output are subject to change.
 {{site.data.alerts.end}}
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE CHANGEFEED FOR TABLE name, name2, name3
   INTO 'experimental-scheme://host?parameters'
@@ -288,7 +288,7 @@ Changefeed-specific SQL statements (e.g., `CANCEL CHANGEFEED`) will be added in 
 
 #### Pause a changefeed
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > PAUSE JOB job_id;
 ~~~
@@ -297,7 +297,7 @@ For more information, see [`PAUSE JOB`](pause-job.html).
 
 #### Resume a paused changefeed
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > RESUME JOB job_id;
 ~~~
@@ -306,7 +306,7 @@ For more information, see [`RESUME JOB`](resume-job.html).
 
 #### Cancel a changefeed
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CANCEL JOB job_id;
 ~~~
@@ -321,7 +321,7 @@ For more information, see [`CANCEL JOB`](cancel-job.html).
 
 Find the [high-water timestamp](stream-data-out-of-cockroachdb-using-changefeeds.html#monitor-a-changefeed) for the ended changefeed:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM crdb_internal.jobs WHERE job_id = <job_id>;
 ~~~
@@ -334,7 +334,7 @@ Find the [high-water timestamp](stream-data-out-of-cockroachdb-using-changefeeds
 
 Use the `high_water_timestamp` to start the new changefeed:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE CHANGEFEED FOR TABLE name, name2, name3
   INTO 'kafka//host:port'

@@ -48,7 +48,7 @@ Field | Description
 
 ### Show a backup
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW BACKUP 's3://test/backup-test?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]';
 ~~~
@@ -77,7 +77,7 @@ Field | Description
 
 You can add number of rows and the schema of the backed up table.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW BACKUP SCHEMAS 's3://test/backup-test?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]';
 ~~~
@@ -118,7 +118,7 @@ You can add number of rows and the schema of the backed up table.
 
 <span class="version-tag">New in v20.1:</span>  To view a list of which users and roles had which privileges on each database and table in the backup, use the `WITH privileges` [parameter](#parameters):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW BACKUP 's3://test/backup-test?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]' WITH privileges;
 ~~~

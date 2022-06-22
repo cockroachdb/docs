@@ -2,7 +2,7 @@
 
 Since you'll be running multiple Docker containers on a single host, with one CockroachDB node per container, you need to create what Docker refers to as a [bridge network](https://docs.docker.com/engine/userguide/networking/#/a-bridge-network). The bridge network will enable the containers to communicate as a single cluster while keeping them isolated from external networks.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ docker network create -d bridge roachnet
 ~~~
@@ -13,24 +13,24 @@ We've used `roachnet` as the network name here and in subsequent steps, but feel
 
 1. Create a [Docker volume](https://docs.docker.com/storage/volumes/) for each container:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     docker volume create roach1
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     docker volume create roach2
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     docker volume create roach3
     ~~~
 
 1. Start the first node:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ docker run -d \
     --name=roach1 \
@@ -55,7 +55,7 @@ We've used `roachnet` as the network name here and in subsequent steps, but feel
 
 1. Start two more nodes:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ docker run -d \
     --name=roach2 \
@@ -67,7 +67,7 @@ We've used `roachnet` as the network name here and in subsequent steps, but feel
     --join=roach1,roach2,roach3
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ docker run -d \
     --name=roach3 \
@@ -81,7 +81,7 @@ We've used `roachnet` as the network name here and in subsequent steps, but feel
 
 1. Perform a one-time initialization of the cluster:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ docker exec -it roach1 ./cockroach init --insecure
     ~~~
@@ -94,7 +94,7 @@ We've used `roachnet` as the network name here and in subsequent steps, but feel
 
     At this point, each node also prints helpful [startup details](cockroach-start.html#standard-output) to its log. For example, the following command retrieves node 1's startup details:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ docker exec -it roach1 grep 'node starting' cockroach-data/logs/cockroach.log -A 11
     ~~~
@@ -122,29 +122,29 @@ Now that your cluster is live, you can use any node as a SQL gateway. To test th
 
 1. Start the SQL shell in the first container:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ docker exec -it roach1 ./cockroach sql --insecure
     ~~~
 
 2. Run some basic [CockroachDB SQL statements](learn-cockroachdb-sql.html):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE DATABASE bank;
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE TABLE bank.accounts (id INT PRIMARY KEY, balance DECIMAL);
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > INSERT INTO bank.accounts VALUES (1, 1000.50);
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT * FROM bank.accounts;
     ~~~
@@ -158,19 +158,19 @@ Now that your cluster is live, you can use any node as a SQL gateway. To test th
 
 3. Now exit the SQL shell on node 1 and open a new shell on node 2:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > \q
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ docker exec -it roach2 ./cockroach sql --insecure
     ~~~
 
 4. Run the same `SELECT` query as before:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT * FROM bank.accounts;
     ~~~
@@ -186,7 +186,7 @@ Now that your cluster is live, you can use any node as a SQL gateway. To test th
 
 5. Exit the SQL shell on node 2:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > \q
     ~~~
@@ -197,7 +197,7 @@ CockroachDB also comes with a number of [built-in workloads](cockroach-workload.
 
 1. Load the initial dataset:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ docker exec -it roach1 ./cockroach workload init movr \
     'postgresql://root@roach1:26257?sslmode=disable'
@@ -205,7 +205,7 @@ CockroachDB also comes with a number of [built-in workloads](cockroach-workload.
 
 2. Run the workload for 5 minutes:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ docker exec -it roach1 ./cockroach workload run movr \
     --duration=5m \
@@ -238,19 +238,19 @@ The CockroachDB [DB Console](ui-overview.html) gives you insight into the overal
 
 Use the `docker stop` and `docker rm` commands to stop and remove the containers (and therefore the cluster):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ docker stop roach1 roach2 roach3
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ docker rm roach1 roach2 roach3
 ~~~
 
 If you do not plan to restart the cluster, you may want to remove the Docker volumes:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ docker volume rm roach1 roach2 roach3
 ~~~

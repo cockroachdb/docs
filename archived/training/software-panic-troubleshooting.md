@@ -23,7 +23,7 @@ Make sure you have already completed [Data Corruption Troubleshooting](data-corr
 
 1. In a new terminal, issue a "query of death" against node 3. The query will crash the node, the connection will then fail, and you'll see an error message printed to `stderr`:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
     --insecure \
@@ -84,14 +84,14 @@ In the next lab, you'll start a new cluster from scratch, so take a moment to cl
 
 1. Stop the other CockroachDB nodes:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ pkill -9 cockroach
     ~~~
 
 2. Remove the nodes' data directories:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ rm -rf node1 node2 node3
     ~~~

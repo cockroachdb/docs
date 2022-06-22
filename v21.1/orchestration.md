@@ -15,7 +15,7 @@ Use the following guides to run CockroachDB with popular open-source orchestrati
 - [Kubernetes Multi-Cluster Deployment](orchestrate-cockroachdb-with-kubernetes-multi-cluster.html)
 - [Kubernetes Performance Optimization](kubernetes-performance.html)
 
-{% include cockroachcloud/use-cockroachcloud-instead.md %}
+{% include_cached cockroachcloud/use-cockroachcloud-instead.md %}
 
 ## See also
 

@@ -23,14 +23,14 @@ In this scenario, you try to add a node to a secure cluster without providing th
 
 1. Create two directories:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ mkdir certs my-safe-directory
     ~~~
 
 2. Create the CA certificate and key:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach cert create-ca \
     --certs-dir=certs \
@@ -39,7 +39,7 @@ In this scenario, you try to add a node to a secure cluster without providing th
 
 3. Create the certificate and key for the your nodes:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach cert create-node \
     localhost \
@@ -50,7 +50,7 @@ In this scenario, you try to add a node to a secure cluster without providing th
 
 4. Create client certificates and keys for the `root` and `spock` users:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach cert create-client \
     root \
@@ -58,7 +58,7 @@ In this scenario, you try to add a node to a secure cluster without providing th
     --ca-key=my-safe-directory/ca.key
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach cert create-client \
     spock \
@@ -70,7 +70,7 @@ In this scenario, you try to add a node to a secure cluster without providing th
 
 1. Start node 1:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --certs-dir=certs \
@@ -83,7 +83,7 @@ In this scenario, you try to add a node to a secure cluster without providing th
 
 2. Start node 2:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --certs-dir=certs \
@@ -96,7 +96,7 @@ In this scenario, you try to add a node to a secure cluster without providing th
 
 3. Start node 3:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --certs-dir=certs \
@@ -109,7 +109,7 @@ In this scenario, you try to add a node to a secure cluster without providing th
 
 4. Perform a one-time initialization of the cluster:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach init --certs-dir=certs --host=localhost:26257
     ~~~
@@ -122,7 +122,7 @@ In the same terminal, try to add another node, but leave out the `--certs-dir` f
 The `--logtostderr=WARNING` flag will make warnings and errors print to `stderr` so you do not have to manually look in the logs.
 {{site.data.alerts.end}}
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach start \
 --store=node4 \
@@ -164,7 +164,7 @@ The error tells you that the failure has to do with security. Because the cluste
 
 To successfully join the node to the cluster, start the node again, but this time include the `--certs-dir` flag:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach start \
 --certs-dir=certs \
@@ -182,7 +182,7 @@ In this scenario, you try to add another node to the cluster, but the `--join` a
 
 In a new terminal, try to add another node:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach start \
 --certs-dir=certs \
@@ -208,7 +208,7 @@ These warnings tell you that the node cannot establish a connection with the add
 
 2. To successfully join the node to the cluster, start the node again, but this time include a correct `--join` address:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --certs-dir=certs \
@@ -226,7 +226,7 @@ In this scenario, you try to add another node to the cluster, but the `--join` a
 
 1. In a new terminal, try to add another node:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --certs-dir=certs \
@@ -256,7 +256,7 @@ In this scenario, you try to add another node to the cluster, but the `--join` a
 
 3. Start the node again, but this time include a correct `--join` address:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --certs-dir=certs \
@@ -279,12 +279,12 @@ In this scenario, you try to add another node to the cluster, but the `--join` a
 
 To successfully join the node to the cluster, you need to remove the node's data directory, which is where its incorrect cluster ID is stored, and start the node again:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ rm -rf node6
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach start \
 --certs-dir=certs \
@@ -297,7 +297,7 @@ $ cockroach start \
 
 This time, the startup process succeeds, and the `status` (added to the logs because you used `--background`) tells you that the node joined the intended cluster:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ grep -A 11 'CockroachDB node starting at' ./node6/logs/cockroach.log
 ~~~

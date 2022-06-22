@@ -73,7 +73,7 @@ An alternative pattern which requires careful planning at the schema design phas
 
 For example, consider a social media website. Social media posts are written by users, and on login the user's last 10 posts are displayed. A good choice for a Primary Key might be `(username, post_timestamp)`. This would make the following query efficient:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM posts
           WHERE username = 'alyssa'
@@ -93,7 +93,7 @@ If something prevents you from using `UUID` to generate unique IDs, you might re
 
 Suppose the table schema is as follows:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE X (
 	ID1 INT,
@@ -105,7 +105,7 @@ Suppose the table schema is as follows:
 
 The common approach would be to use a transaction with an `INSERT` followed by a `SELECT`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BEGIN;
 
@@ -120,7 +120,7 @@ The common approach would be to use a transaction with an `INSERT` followed by a
 
 However, the performance best practice is to use a `RETURNING` clause with `INSERT` instead of the transaction:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO X VALUES (1,1,1),(2,2,2),(3,3,3)
 	ON CONFLICT (ID1,ID2)
@@ -132,7 +132,7 @@ However, the performance best practice is to use a `RETURNING` clause with `INSE
 
 Suppose the table schema is as follows:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE X (
 	ID1 INT,
@@ -144,7 +144,7 @@ Suppose the table schema is as follows:
 
 The common approach to generate random Unique IDs is a transaction using a `SELECT` statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BEGIN;
 
@@ -157,7 +157,7 @@ The common approach to generate random Unique IDs is a transaction using a `SELE
 
 However, the performance best practice is to use a `RETURNING` clause with `INSERT` instead of the transaction:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO X VALUES (1,1),(2,2),(3,3)
 	RETURNING ID1,ID2,ID3;
@@ -201,7 +201,7 @@ For large tables, avoid table scans (that is, reading the entire table data) whe
 
 Suppose the table schema is as follows:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE accounts (
 	id INT,
@@ -214,14 +214,14 @@ Suppose the table schema is as follows:
 
 Now if we want to find the account balances of all customers, an inefficient table scan would be:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM ACCOUNTS;
 ~~~
 
 This query retrieves all data stored in the table. A more efficient query would be:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
  > SELECT CUSTOMER, BALANCE FROM ACCOUNTS;
 ~~~

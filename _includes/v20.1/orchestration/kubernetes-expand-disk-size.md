@@ -3,7 +3,7 @@ You can expand certain [types of persistent volumes](https://kubernetes.io/docs/
 
 1. Get the persistent volume claims for the volumes:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl get pvc
     ~~~
@@ -28,7 +28,7 @@ You can expand certain [types of persistent volumes](https://kubernetes.io/docs/
 
 2. In order to expand a persistent volume claim, `AllowVolumeExpansion` in its storage class must be `true`. Examine the storage class:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl describe storageclass standard
     ~~~
@@ -48,7 +48,7 @@ You can expand certain [types of persistent volumes](https://kubernetes.io/docs/
 
 	If necessary, edit the storage class:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl patch storageclass standard -p '{"allowVolumeExpansion": true}'
     ~~~
@@ -64,7 +64,7 @@ You can expand certain [types of persistent volumes](https://kubernetes.io/docs/
 	{{site.data.alerts.end}}
 
 	<section class="filter-content" markdown="1" data-scope="helm">
-	{% include copy-clipboard.html %}
+	{% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl patch pvc datadir-my-release-cockroachdb-0 -p '{"spec": {"resources": {"requests": {"storage": "200Gi"}}}}'
     ~~~
@@ -75,7 +75,7 @@ You can expand certain [types of persistent volumes](https://kubernetes.io/docs/
 	</section>
 
 	<section class="filter-content" markdown="1" data-scope="manual">
-	{% include copy-clipboard.html %}
+	{% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl patch pvc datadir-cockroachdb-0 -p '{"spec": {"resources": {"requests": {"storage": "200Gi"}}}}'
     ~~~
@@ -88,7 +88,7 @@ You can expand certain [types of persistent volumes](https://kubernetes.io/docs/
 4. Check the capacity of the persistent volume claim:
 
 	<section class="filter-content" markdown="1" data-scope="helm">
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl get pvc datadir-my-release-cockroachdb-0
     ~~~	
@@ -100,7 +100,7 @@ You can expand certain [types of persistent volumes](https://kubernetes.io/docs/
 	</section>
 
 	<section class="filter-content" markdown="1" data-scope="manual">
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl get pvc datadir-cockroachdb-0
     ~~~	
@@ -120,14 +120,14 @@ You can expand certain [types of persistent volumes](https://kubernetes.io/docs/
 5. Examine the persistent volume claim. If the volume has a file system, you will see a `FileSystemResizePending` condition with an accompanying message:
 
 	<section class="filter-content" markdown="1" data-scope="helm">
-	{% include copy-clipboard.html %}
+	{% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl describe pvc datadir-my-release-cockroachdb-0
     ~~~
 	</section>
 
 	<section class="filter-content" markdown="1" data-scope="manual">
-	{% include copy-clipboard.html %}
+	{% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl describe pvc datadir-cockroachdb-0
     ~~~
@@ -140,14 +140,14 @@ You can expand certain [types of persistent volumes](https://kubernetes.io/docs/
 6.  Delete the corresponding pod to restart it:
 
 	<section class="filter-content" markdown="1" data-scope="helm">
-	{% include copy-clipboard.html %}
+	{% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl delete pod my-release-cockroachdb-0
     ~~~
    	</section>
 
 	<section class="filter-content" markdown="1" data-scope="manual">
-	{% include copy-clipboard.html %}
+	{% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl delete pod cockroachdb-0
     ~~~
@@ -158,7 +158,7 @@ You can expand certain [types of persistent volumes](https://kubernetes.io/docs/
 7. View the updated persistent volume claim:
 
 	<section class="filter-content" markdown="1" data-scope="helm">
-	{% include copy-clipboard.html %}
+	{% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl get pvc datadir-my-release-cockroachdb-0
     ~~~
@@ -170,7 +170,7 @@ datadir-my-release-cockroachdb-0   Bound    pvc-75dadd4c-01a1-11ea-b065-42010a8e
 	</section>
 
 	<section class="filter-content" markdown="1" data-scope="manual">
-	{% include copy-clipboard.html %}
+	{% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl get pvc datadir-cockroachdb-0
     ~~~

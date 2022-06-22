@@ -26,17 +26,17 @@ To upgrade to an enterprise license, <a href="mailto:sales@cockroachlabs.com">co
 
 As the CockroachDB `root` user, open the [built-in SQL shell](use-the-built-in-sql-client.html) in insecure or secure mode, as per your CockroachDB setup. In the following example, we assume that CockroachDB is running in insecure mode. Then use the `SET CLUSTER SETTING` command to set the name of your organization and the license key:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 >  SET CLUSTER SETTING cluster.organization = 'Acme Company'; 
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 >  SET CLUSTER SETTING enterprise.license = 'xxxxxxxxxxxx';
 ~~~
@@ -45,7 +45,7 @@ $ cockroach sql --insecure
 
 To verify the license key, open the [built-in SQL shell](use-the-built-in-sql-client.html) and use the `SHOW CLUSTER SETTING` command to check the organization name and license key:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 >  SHOW CLUSTER SETTING cluster.organization;
 ~~~
@@ -58,7 +58,7 @@ To verify the license key, open the [built-in SQL shell](use-the-built-in-sql-cl
 (1 row)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 >  SHOW CLUSTER SETTING enterprise.license;
 ~~~
@@ -73,7 +73,7 @@ To verify the license key, open the [built-in SQL shell](use-the-built-in-sql-cl
 
 The license setting is also logged in the cockroach.log on the node where the command is run:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 $ cat cockroach.log | grep license
 ~~~

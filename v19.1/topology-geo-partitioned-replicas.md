@@ -40,7 +40,7 @@ Using this pattern, you design your table schema to allow for [partitioning](par
 
 Assuming you have a [cluster deployed across three regions](#cluster-setup) and a table and secondary index like the following:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE users (
     id UUID NOT NULL DEFAULT gen_random_uuid(),
@@ -52,7 +52,7 @@ Assuming you have a [cluster deployed across three regions](#cluster-setup) and 
 );
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE INDEX users_last_name_index ON users (city, last_name);
 ~~~
@@ -65,7 +65,7 @@ A geo-partitioned table does not require a secondary index. However, if the tabl
 
 2. Partition the table by `city`. For example, assuming there are three possible `city` values, `los angeles`, `chicago`, and `new york`:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > ALTER TABLE users PARTITION BY LIST (city) (
         PARTITION la VALUES IN ('los angeles'),
@@ -78,7 +78,7 @@ A geo-partitioned table does not require a secondary index. However, if the tabl
 
 3. Partition the secondary index by `city` as well:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > ALTER INDEX users_last_name_index PARTITION BY LIST (city) (
         PARTITION la_idx VALUES IN ('los angeles'),
@@ -91,7 +91,7 @@ A geo-partitioned table does not require a secondary index. However, if the tabl
 
 4. For each partition of the table, [create a replication zone](configure-zone.html) that constrains the partition's replicas to nodes in the relevant region:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > ALTER PARTITION la OF TABLE users
         CONFIGURE ZONE USING constraints = '[+region=us-west]';
@@ -103,7 +103,7 @@ A geo-partitioned table does not require a secondary index. However, if the tabl
 
 5. For each partition of the secondary index, [create a replication zone](configure-zone.html) that constrains the partition's replicas to nodes in the relevant region:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > ALTER PARTITION la_idx OF TABLE users
         CONFIGURE ZONE USING constraints = '[+region=us-west]';

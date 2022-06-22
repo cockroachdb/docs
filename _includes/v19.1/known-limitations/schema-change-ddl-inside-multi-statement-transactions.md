@@ -14,7 +14,7 @@ This error will occur in various scenarios, including but not limited to:
 
 To see an example of this error, start by creating the following table.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TABLE T(x INT);
 INSERT INTO T(x) VALUES (1), (2), (3);
@@ -22,7 +22,7 @@ INSERT INTO T(x) VALUES (1), (2), (3);
 
 Then, enter the following multi-statement transaction, which will trigger the error.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 BEGIN;
 ALTER TABLE t ADD CONSTRAINT unique_x UNIQUE(x);
@@ -36,7 +36,7 @@ pq: sql/row/errors.go:138 in NewUniquenessConstraintViolationError(): (23505) du
 
 In this example, the [`INSERT`](insert.html) statement committed, but the [`ALTER TABLE`](alter-table.html) statement adding a [`UNIQUE` constraint](unique.html) failed.  We can verify this by looking at the data in table `t` and seeing that the additional non-unique value `3` was successfully inserted.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT * FROM t;
 ~~~

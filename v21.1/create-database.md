@@ -98,7 +98,7 @@ SQL does not generate an error, but instead responds `CREATE DATABASE` even thou
 
 ### Create a multi-region database
 
-{% include enterprise-feature.md %}
+{% include_cached enterprise-feature.md %}
 
 Suppose you start a cluster with region and zone [localities specified at startup](cockroach-start.html#locality).
 

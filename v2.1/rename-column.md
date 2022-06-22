@@ -36,7 +36,7 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 
 ### Rename a column
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM users;
 ~~~
@@ -49,12 +49,12 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 +----+-------+-------+
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE users RENAME COLUMN title TO species;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM users;
 ~~~

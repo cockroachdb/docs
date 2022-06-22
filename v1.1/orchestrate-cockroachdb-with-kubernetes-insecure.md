@@ -58,7 +58,7 @@ instance | A physical or virtual machine. In this tutorial, you'll create GCE or
 
 3. Verify that a fourth pod was added successfully:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl get pods
     ~~~
@@ -77,7 +77,7 @@ instance | A physical or virtual machine. In this tutorial, you'll create GCE or
 
 4. If this was an upgrade between minor or major versions (e.g., between v1.0.x and v1.1.y or between v1.1.y and v2.0.z), then you'll want to [finalize the upgrade](upgrade-cockroach-version.html#finalize-the-upgrade) if you're happy with the new version. Assuming you upgraded to the v1.1 minor version, you'd run:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl exec -it cockroachdb-0 -- ./cockroach sql --insecure -e "SET CLUSTER SETTING version = '1.1';"
     ~~~
@@ -92,7 +92,7 @@ To shut down the CockroachDB cluster:
 
 1. Delete all of the resources you created, including the logs and remote persistent volumes:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl delete pods,statefulsets,services,persistentvolumeclaims,persistentvolumes,poddisruptionbudget,jobs \
     -l app=cockroachdb

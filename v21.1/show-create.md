@@ -239,7 +239,7 @@ For more information, see [`COMMENT ON`](comment-on.html).
 
 {% include_cached new-in.html version="v21.1" %} Use the `SHOW CREATE TABLE` command to view [multi-region-defined](multiregion-overview.html) table localities.
 
-{% include enterprise-feature.md %}
+{% include_cached enterprise-feature.md %}
 
 To add the first region to the database, or to set an already-added region as the primary region, use a [`SET PRIMARY REGION`](set-primary-region.html) statement:
 

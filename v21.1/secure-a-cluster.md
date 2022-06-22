@@ -11,7 +11,7 @@ toc: true
 
 Once you've [installed CockroachDB](install-cockroachdb.html), it's simple to run a secure multi-node cluster locally, using [TLS certificates](cockroach-cert.html) to encrypt network communication.
 
-{% include cockroachcloud/use-cockroachcloud-instead.md %}
+{% include_cached cockroachcloud/use-cockroachcloud-instead.md %}
 
 ## Before you begin
 

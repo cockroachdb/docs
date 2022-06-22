@@ -137,7 +137,7 @@ Per our guidance in the [Performance](#performance) section, we recommend starti
 
 ### Backup a single table or view
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP bank.customers \
 TO 'gs://acme-co-backup/database-bank-2017-03-27-weekly' \
@@ -146,7 +146,7 @@ AS OF SYSTEM TIME '-10s';
 
 ### Backup multiple tables
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP bank.customers, bank.accounts \
 TO 'gs://acme-co-backup/database-bank-2017-03-27-weekly' \
@@ -155,7 +155,7 @@ AS OF SYSTEM TIME '-10s';
 
 ### Backup an entire database
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP DATABASE bank \
 TO 'gs://acme-co-backup/database-bank-2017-03-27-weekly' \
@@ -164,7 +164,7 @@ AS OF SYSTEM TIME '-10s';
 
 ### Backup with revision history
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP DATABASE bank \
 TO 'gs://acme-co-backup/database-bank-2017-03-27-weekly' \
@@ -175,7 +175,7 @@ AS OF SYSTEM TIME '-10s' WITH revision_history;
 
 Incremental backups must be based off of full backups you've already created.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP DATABASE bank \
 TO 'gs://acme-co-backup/db/bank/2017-03-29-nightly' \
@@ -185,7 +185,7 @@ INCREMENTAL FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly', 'gs://ac
 
 ### Create incremental backups with revision history
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP DATABASE bank \
 TO 'gs://acme-co-backup/database-bank-2017-03-29-nightly' \
@@ -209,14 +209,14 @@ Note that the locality query string parameters must be [URL-encoded](https://en.
 
 For example, to create a locality-aware backup where nodes with the locality `region=us-west` write backup files to `s3://us-west-bucket`, and all other nodes write to `s3://us-east-bucket` by default, run:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 BACKUP DATABASE bank TO ('s3://us-east-bucket?COCKROACH_LOCALITY=default', 's3://us-west-bucket?COCKROACH_LOCALITY=region%3Dus-west');
 ~~~
 
 The backup created above can be restored by running:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 RESTORE DATABASE bank FROM ('s3://us-east-bucket', 's3://us-west-bucket');
 ~~~
@@ -225,14 +225,14 @@ RESTORE DATABASE bank FROM ('s3://us-east-bucket', 's3://us-west-bucket');
 
 To make an incremental locality-aware backup from a full locality-aware backup, the syntax is just like for [regular incremental backups](#create-incremental-backups):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 BACKUP DATABASE foo TO (${uri_1}, ${uri_2}, ...) INCREMENTAL FROM ${full_backup_uri} ...;
 ~~~
 
 For example, to create an incremental locality-aware backup from a previous full locality-aware backup where nodes with the locality `region=us-west` write backup files to `s3://us-west-bucket`, and all other nodes write to `s3://us-east-bucket` by default, run:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 BACKUP DATABASE bank TO
 ('s3://us-east-bucket/database-bank-2019-10-08-nightly?COCKROACH_LOCALITY=default', 's3://us-west-bucket/database-bank-2019-10-08-nightly?COCKROACH_LOCALITY=region%3Dus-west')
@@ -247,7 +247,7 @@ Note that only the backup URIs you set as the `default` when you created the pre
 
 To make an incremental locality-aware backup from another locality-aware backup, the syntax is as follows:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 BACKUP DATABASE foo TO ({uri_1}, {uri_2}, ...) INCREMENTAL FROM {full_backup}, {incr_backup_1}, {incr_backup_2}, ...;
 ~~~
@@ -266,7 +266,7 @@ If today is Thursday, October 10th, 2019, your `BACKUP` statement will list the 
 
 Given the above, to take the incremental locality-aware backup scheduled for today (Thursday), you will run:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 BACKUP DATABASE bank TO
 	('s3://us-east-bucket/database-bank-2019-10-10-nightly?COCKROACH_LOCALITY=default', 's3://us-west-bucket/database-bank-2019-10-10-nightly?COCKROACH_LOCALITY=region%3Dus-west')

@@ -1,21 +1,21 @@
 When using [`cockroach dump`](cockroach-dump.html) to dump the data of a table containing [collations](collate.html), the resulting `INSERT`s do not include the relevant collation clauses. For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach start-single-node --insecure
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE de_names (name STRING COLLATE de PRIMARY KEY);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO de_names VALUES
     ('Backhaus' COLLATE de),
@@ -24,17 +24,17 @@ $ cockroach sql --insecure
   ;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > q
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach dump defaultdb de_names --insecure > dump.sql
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cat dump.sql
 ~~~

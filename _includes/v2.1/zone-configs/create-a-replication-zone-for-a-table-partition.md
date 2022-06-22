@@ -4,7 +4,7 @@ This is an [enterprise-only](enterprise-licensing.html) feature.
 
 To [control replication for table partitions](partitioning.html#replication-zones), use the `ALTER PARTITION ... CONFIGURE ZONE` statement to define the values you want to change (other values will not be affected):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER PARTITION north_america OF TABLE customers CONFIGURE ZONE USING num_replicas = 5, constraints = '[-region=EU]';
 ~~~
@@ -13,7 +13,7 @@ To [control replication for table partitions](partitioning.html#replication-zone
 CONFIGURE ZONE 1
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW ZONE CONFIGURATION FOR PARTITION north_america OF TABLE customers;
 ~~~

@@ -75,12 +75,12 @@ You can use an [`ALTER COLUMN ... SET DATA TYPE`](alter-column.html) statement t
 
 ### Create a table with a `TIME`-typed column
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE time (time_id INT PRIMARY KEY, time_val TIME);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW COLUMNS FROM time;
 ~~~
@@ -93,12 +93,12 @@ You can use an [`ALTER COLUMN ... SET DATA TYPE`](alter-column.html) statement t
 (2 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO time VALUES (1, TIME '05:40:00'), (2, TIME '05:41:39');
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM time;
 ~~~
@@ -117,7 +117,7 @@ The SQL shell displays the date and time zone due to the Go SQL driver it uses. 
 
 Comparing `TIME` values:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT (SELECT time_val FROM time WHERE time_id = 1) < (SELECT time_val FROM time WHERE time_id = 2);
 ~~~
@@ -132,12 +132,12 @@ Comparing `TIME` values:
 
 ### Create a table with a `TIME`-typed column, with precision
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE time (time_id INT PRIMARY KEY, time_val TIME(4));
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW COLUMNS FROM time;
 ~~~
@@ -150,12 +150,12 @@ Comparing `TIME` values:
 (2 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO time VALUES (1, TIME '05:40:00.123456'), (2, TIME '05:41:39.12345');
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM time;
 ~~~
@@ -170,7 +170,7 @@ Comparing `TIME` values:
 
 To change the precision level of a column, you can use an [`ALTER COLUMN ... SET DATA TYPE`](alter-column.html) statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE time ALTER COLUMN time_val SET DATA TYPE TIME(5);
 ~~~
@@ -179,7 +179,7 @@ To change the precision level of a column, you can use an [`ALTER COLUMN ... SET
 ALTER TABLE
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW COLUMNS FROM time;
 ~~~
@@ -198,7 +198,7 @@ If a non-default precision level has already been specified, you cannot change t
 
 In this case, the `time_val` column, which is of type `TIME(5)`, cannot be changed to a precision level below `5`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE time ALTER COLUMN time_val SET DATA TYPE TIME(3);
 ~~~

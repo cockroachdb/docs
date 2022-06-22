@@ -10,7 +10,7 @@ CockroachDB Cloud supports the latest major version of CockroachDB and the versi
 
 Get future release notes emailed to you:
 
-{% include marketo.html %}
+{% include_cached marketo.html %}
 
 {{site.data.alerts.callout_version}}
 As of June 6, 2022, CockroachDB [v22.1.1](v22.1.html) is available on {{ site.data.products.dedicated }} clusters. {{ site.data.products.serverless }} clusters are running CockroachDB [v21.2.10](v21.2.html).

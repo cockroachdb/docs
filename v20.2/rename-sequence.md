@@ -46,12 +46,12 @@ table td:first-child {
 
 In this example, we will change the name of sequence.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE SEQUENCE even_numbers INCREMENT 2 START 2;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW SEQUENCES;
 ~~~
@@ -63,12 +63,12 @@ In this example, we will change the name of sequence.
 (1 row)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER SEQUENCE even_numbers RENAME TO even_sequence;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW SEQUENCES;
 ~~~
@@ -84,7 +84,7 @@ In this example, we will change the name of sequence.
 
 In this example, we will move the sequence we renamed in the first example (`even_sequence`) from `defaultdb` (i.e., the default database) to a different database.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW SEQUENCES FROM defaultdb;
 ~~~
@@ -96,17 +96,17 @@ In this example, we will move the sequence we renamed in the first example (`eve
 (1 row)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE DATABASE mydb;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER SEQUENCE even_sequence RENAME TO newdb.even_sequence;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW SEQUENCES FROM defaultdb;
 ~~~
@@ -117,7 +117,7 @@ In this example, we will move the sequence we renamed in the first example (`eve
 (0 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW SEQUENCES FROM mydb;
 ~~~

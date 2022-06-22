@@ -65,7 +65,7 @@ Secure clusters require users to authenticate their access to databases and tabl
 
 Usernames are case-insensitive; must start with a letter, number, or underscore; must contain only letters, numbers, periods, or underscores; and must be between 1 and 63 characters.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE USER carl;
 ~~~
@@ -77,14 +77,14 @@ After creating users, you must:
 
 ### Allow the user to create other users
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE USER carl with CREATEROLE;
 ~~~
 
 ### Create a user with a password 
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE USER carl WITH PASSWORD 'ilov3beefjerky';
 ~~~
@@ -97,7 +97,7 @@ CREATE USER 1
 
 The following statement changes the password to `ilov3beefjerky`, as above:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE USER carl WITH PASSWORD ilov3beefjerky;
 ~~~
@@ -106,14 +106,14 @@ This is equivalent to the example in the previous section because the password c
 
 In contrast, the following statement changes the password to `thereisnotomorrow`, even though the password in the syntax contains capitals, because identifiers are normalized automatically:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE USER carl WITH PASSWORD ThereIsNoTomorrow;
 ~~~
 
 To preserve case in a password specified using identifier syntax, use double quotes:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE USER carl WITH PASSWORD "ThereIsNoTomorrow";
 ~~~
@@ -122,7 +122,7 @@ To preserve case in a password specified using identifier syntax, use double quo
 
 The following statement prevents the user from using password authentication and mandates certificate-based client authentication:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE USER carl WITH PASSWORD NULL;
 ~~~
@@ -131,7 +131,7 @@ The following statement prevents the user from using password authentication and
 
 The following statement sets the date and time after which the password is not valid:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE USER carl VALID UNTIL '2021-01-01';
 ~~~
@@ -154,7 +154,7 @@ After creating a user, you can use the [`ALTER USER`](alter-user.html) statement
 
 All users can authenticate their access to a secure cluster using [a client certificate](cockroach-cert.html#create-the-certificate-and-key-pair-for-a-client) issued to their username.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --user=carl
 ~~~
@@ -165,7 +165,7 @@ $ cockroach sql --user=carl
 
 If we cannot find client certificate and key files matching the user, we fall back on password authentication.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --user=carl
 ~~~
@@ -174,7 +174,7 @@ $ cockroach sql --user=carl
 
 <div class="filter-content" markdown="1" data-scope="insecure">
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure --user=carl
 ~~~
@@ -185,12 +185,12 @@ $ cockroach sql --insecure --user=carl
 
 The following statement prevents the user from logging in using any [user authentication method](#user-authentication):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE USER carl NOLOGIN;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW USERS;
 ~~~
@@ -206,12 +206,12 @@ The following statement prevents the user from logging in using any [user authen
 
 To allow the user to log in using one of the user authentication methods, use the `ALTER USER` statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER USER carl LOGIN;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW USERS;
 ~~~

@@ -28,7 +28,7 @@ The example code on this page uses Python 3.
 
 To install PonyORM run the following command:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ python -m pip install pony
 ~~~
@@ -43,7 +43,7 @@ $ python -m pip install pony
 
 Create a client certificate and key for the `maxroach` user by running the following command. The code samples will run as this user.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach cert create-client maxroach --certs-dir=certs --ca-key=my-safe-directory/ca.key
 ~~~
@@ -73,7 +73,7 @@ The code below uses PonyORM to map Python objects and methods to SQL operations.
 Copy the code below to a file or
 <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{page.version.version}}/app/pony-basic-sample.py">download it directly</a>.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ python
 {% include {{page.version.version}}/app/pony-basic-sample.py %}
 ~~~
@@ -85,7 +85,7 @@ Copy the code below to a file or
 Copy the code below to a file or
 <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{page.version.version}}/app/insecure/pony-basic-sample.py">download it directly</a>.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ python
 {% include {{page.version.version}}/app/insecure/pony-basic-sample.py %}
 ~~~
@@ -94,7 +94,7 @@ Copy the code below to a file or
 
 Run the code:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ python pony-basic-sample.py
 ~~~
@@ -103,7 +103,7 @@ To verify that the table and rows were created successfully, open a new terminal
 
 <section class="filter-content" markdown="1" data-scope="secure">
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --certs-dir=certs --database=bank
 ~~~
@@ -112,7 +112,7 @@ $ cockroach sql --certs-dir=certs --database=bank
 
 <section class="filter-content" markdown="1" data-scope="insecure">
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure --database=bank
 ~~~
@@ -121,7 +121,7 @@ $ cockroach sql --insecure --database=bank
 
 Issue the following statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT COUNT(*) FROM accounts;
 ~~~

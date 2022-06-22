@@ -39,7 +39,7 @@ reused in the context of the query `z`.
 
 For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > WITH o AS (SELECT * FROM orders WHERE id IN (33, 542, 112))
   SELECT *
@@ -54,7 +54,7 @@ subsequent `SELECT` clause.
 
 This query is equivalent to, but arguably simpler to read than:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT *
     FROM customers AS c, (SELECT * FROM orders WHERE id IN (33, 542, 112)) AS o
@@ -66,7 +66,7 @@ simultaneously with a single `WITH` clause, separated by commas. Later
 subqueries can refer to earlier subqueries by name. For example, the
 following query is equivalent to the two examples above:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > WITH o       AS (SELECT * FROM orders WHERE id IN (33, 542, 112)),
        results AS (SELECT * FROM customers AS c, o WHERE o.customer_id = c.id)
@@ -80,7 +80,7 @@ by name. The final query refers to the CTE `results`.
 
 It is possible to use a `WITH` clause in a subquery, or even a `WITH` clause within another `WITH` clause. For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > WITH a AS (SELECT * FROM (WITH b AS (SELECT * FROM c)
                             SELECT * FROM b))
@@ -91,7 +91,7 @@ When analyzing [table expressions](table-expressions.html) that
 mention a CTE name, CockroachDB will choose the CTE definition that is
 closest to the table expression. For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > WITH a AS (TABLE x),
        b AS (WITH a AS (TABLE y)
@@ -109,7 +109,7 @@ etc.) as a common table expression.
 
 For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > WITH v AS (INSERT INTO t(x) VALUES (1), (2), (3) RETURNING x)
   SELECT x+1 FROM v
@@ -119,7 +119,7 @@ However, the following restriction applies: only `WITH` sub-clauses at
 the top level of a SQL statement can contain data-modifying
 statements. The example above is valid, but the following is not:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT x+1 FROM
     (WITH v AS (INSERT INTO t(x) VALUES (1), (2), (3) RETURNING x)

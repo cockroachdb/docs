@@ -162,7 +162,7 @@ To manually specify the table schema:
 
 Amazon S3:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers (
 		id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -175,7 +175,7 @@ CSV DATA ('s3://acme-co/customers.csv?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET
 
 Azure:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers (
 		id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -188,7 +188,7 @@ CSV DATA ('azure://acme-co/customer-import-data.csv?AZURE_ACCOUNT_KEY=hash&AZURE
 
 Google Cloud:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers (
 		id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -203,7 +203,7 @@ To use a file to specify the table schema:
 
 Amazon S3:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers
 CREATE USING 's3://acme-co/customers-create-table.sql?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]'
@@ -213,7 +213,7 @@ CSV DATA ('s3://acme-co/customers.csv?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET
 
 Azure:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers
 CREATE USING 'azure://acme-co/customer-create-table.sql?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co'
@@ -223,7 +223,7 @@ CSV DATA ('azure://acme-co/customer-import-data.csv?AZURE_ACCOUNT_KEY=hash&AZURE
 
 Google Cloud:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers
 CREATE USING 'gs://acme-co/customers-create-table.sql'
@@ -235,7 +235,7 @@ CSV DATA ('gs://acme-co/customers.csv')
 
 Amazon S3:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers (
 		id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -252,7 +252,7 @@ CSV DATA (
 
 Azure:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers (
 		id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -270,7 +270,7 @@ CSV DATA (
 
 Google Cloud:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers (
 		id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -289,7 +289,7 @@ CSV DATA (
 
 Amazon S3:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers (
 		id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -304,7 +304,7 @@ WITH
 
 Azure:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers (
 		id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -319,7 +319,7 @@ WITH
 
 Google Cloud:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers (
 		id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -338,7 +338,7 @@ The `comment` option determines which Unicode character marks the rows in the da
 
 Amazon S3:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers (
 		id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -353,7 +353,7 @@ WITH
 
 Azure:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers (
 		id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -368,7 +368,7 @@ WITH
 
 Google Cloud:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers (
 		id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -387,7 +387,7 @@ The `skip` option determines the number of header rows to skip when importing a 
 
 Amazon S3:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers (
 		id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -402,7 +402,7 @@ WITH
 
 Azure:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers (
 		id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -417,7 +417,7 @@ WITH
 
 Google Cloud:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers (
 		id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -436,7 +436,7 @@ The `nullif` option defines which string should be converted to `NULL`.
 
 Amazon S3:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers (
 		id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -451,7 +451,7 @@ WITH
 
 Azure:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers (
 		id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -466,7 +466,7 @@ WITH
 
 Google Cloud:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers (
 		id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -485,7 +485,7 @@ CockroachDB chooses the decompression codec based on the filename (the common ex
 
 Amazon S3:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers (
 		id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -498,7 +498,7 @@ CSV DATA ('s3://acme-co/employees.csv.gz?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SEC
 
 Azure:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers (
 		id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -511,7 +511,7 @@ CSV DATA ('azure://acme-co/customer-import-data.csv.gz?AZURE_ACCOUNT_KEY=hash&AZ
 
 Google Cloud:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers (
 		id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -526,7 +526,7 @@ Optionally, you can use the `decompress` option to specify the codec to be used 
 
 Amazon S3:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers (
 		id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -541,7 +541,7 @@ WITH
 
 Azure:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers (
 		id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -556,7 +556,7 @@ WITH
 
 Google Cloud:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers (
 		id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -573,21 +573,21 @@ WITH
 
 Amazon S3:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT PGDUMP 's3://your-external-storage/employees.sql?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]';
 ~~~
 
 Azure:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT PGDUMP 'azure://acme-co/employees.sql?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co';
 ~~~
 
 Google Cloud:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT PGDUMP 'gs://acme-co/employees.sql';
 ~~~
@@ -598,21 +598,21 @@ For the commands above to succeed, you need to have created the dump file with s
 
 Amazon S3:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE employees FROM PGDUMP 's3://your-external-storage/employees-full.sql?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]' WITH skip_foreign_keys;
 ~~~
 
 Azure:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE employees FROM PGDUMP 'azure://acme-co/employees.sql?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co' WITH skip_foreign_keys;
 ~~~
 
 Google Cloud:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE employees FROM PGDUMP 'gs://acme-co/employees.sql' WITH skip_foreign_keys;
 ~~~
@@ -627,20 +627,20 @@ Cockroach dump files can be imported using the `IMPORT PGDUMP`.
 
 Amazon S3:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT PGDUMP 's3://your-external-storage/employees-full.sql?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]';
 ~~~
 
 Azure:
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT PGDUMP 'azure://acme-co/employees.sql?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co';
 ~~~
 
 Google Cloud:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT PGDUMP 'gs://acme-co/employees.sql';
 ~~~
@@ -651,21 +651,21 @@ For more information, see [SQL Dump (Export)](sql-dump.html).
 
 Amazon S3:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT MYSQLDUMP 's3://your-external-storage/employees-full.sql?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]';
 ~~~
 
 Azure:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT MYSQLDUMP 'azure://acme-co/employees.sql?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co';
 ~~~
 
 Google Cloud:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT MYSQLDUMP 'gs://acme-co/employees.sql';
 ~~~
@@ -676,21 +676,21 @@ For more detailed information about importing data from MySQL, see [Migrate from
 
 Amazon S3:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE employees FROM MYSQLDUMP 's3://your-external-storage/employees-full.sql?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]' WITH skip_foreign_keys
 ~~~
 
 Azure:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE employees FROM MYSQLDUMP 'azure://acme-co/employees.sql?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co' WITH skip_foreign_keys
 ~~~
 
 Google Cloud:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE employees FROM MYSQLDUMP 'gs://acme-co/employees.sql' WITH skip_foreign_keys
 ~~~
@@ -703,7 +703,7 @@ For more detailed information about importing data from MySQL, see [Migrate from
 
 `IMPORT` can sometimes fail with a "context canceled" error, or can restart itself many times without ever finishing. If this is happening, it is likely due to a high amount of disk contention. This can be mitigated by setting the `kv.bulk_io_write.max_rate` [cluster setting](cluster-settings.html) to a value below your max disk write speed. For example, to set it to 10MB/s, execute:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET CLUSTER SETTING kv.bulk_io_write.max_rate = '10MB';
 ~~~

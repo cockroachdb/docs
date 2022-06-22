@@ -39,7 +39,7 @@ Parameter | Description
 
 The examples in this section operate on a hypothetical "user credit information" table filled with placeholder data, running on a 5-node cluster.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE credit_users (
        id INT PRIMARY KEY,
@@ -53,19 +53,19 @@ The examples in this section operate on a hypothetical "user credit information"
 
 We added a secondary [index](indexes.html) to the table on the `area_code` column:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE INDEX areaCode on credit_users(area_code);
 ~~~
 
 Next, we ran a couple of [`SPLIT AT`s](split-at.html) on the table and the index:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE credit_users SPLIT AT VALUES (5), (10), (15);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER INDEX credit_users@areaCode SPLIT AT VALUES (400), (600), (999);
 ~~~
@@ -77,7 +77,7 @@ A `NULL` in the *End Key* column means "end of table".
 
 ### Show ranges for a table (primary index)
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW EXPERIMENTAL_RANGES FROM TABLE credit_users;
 ~~~
@@ -96,7 +96,7 @@ A `NULL` in the *End Key* column means "end of table".
 
 ### Show ranges for an index
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW EXPERIMENTAL_RANGES FROM INDEX credit_users@areaCode;
 ~~~

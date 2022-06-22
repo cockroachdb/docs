@@ -23,7 +23,7 @@ Start a cluster like you did previously, using the [`--locality`](../configure-r
 
 1. Start node 1:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -37,7 +37,7 @@ Start a cluster like you did previously, using the [`--locality`](../configure-r
 
 2. Start node 2:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -51,7 +51,7 @@ Start a cluster like you did previously, using the [`--locality`](../configure-r
 
 3. Start node 3:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -65,7 +65,7 @@ Start a cluster like you did previously, using the [`--locality`](../configure-r
 
 4. Use the [`cockroach init`](../cockroach-init.html) command to perform a one-time initialization of the cluster:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach init --insecure --host=localhost:26257
     ~~~
@@ -76,7 +76,7 @@ Add 6 more nodes, 3 in the `us-west1` region and 3 in the `us-west2` region, wit
 
 1. Start node 4:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -90,7 +90,7 @@ Add 6 more nodes, 3 in the `us-west1` region and 3 in the `us-west2` region, wit
 
 2. Start node 5:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -104,7 +104,7 @@ Add 6 more nodes, 3 in the `us-west1` region and 3 in the `us-west2` region, wit
 
 3. Start node 6:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -118,7 +118,7 @@ Add 6 more nodes, 3 in the `us-west1` region and 3 in the `us-west2` region, wit
 
 4. Start node 7:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -132,7 +132,7 @@ Add 6 more nodes, 3 in the `us-west1` region and 3 in the `us-west2` region, wit
 
 5. Start node 8:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -146,7 +146,7 @@ Add 6 more nodes, 3 in the `us-west1` region and 3 in the `us-west2` region, wit
 
 6. Start node 9:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -166,7 +166,7 @@ The table partitioning feature requires an [enterprise license](https://www.cock
 
 2. Enable your trial license:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
     --insecure \
@@ -174,7 +174,7 @@ The table partitioning feature requires an [enterprise license](https://www.cock
     --execute="SET CLUSTER SETTING cluster.organization = '<your org>';"
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
     --insecure \
@@ -190,7 +190,7 @@ Now you'll import data representing users, vehicles, and rides for the fictional
 1. Use the [`cockroach workload`](../cockroach-demo.html) command:
 
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach workload init movr --num-users=5000 --num-rides=50000 --num-vehicles=500
     ~~~
@@ -200,14 +200,14 @@ Now you'll import data representing users, vehicles, and rides for the fictional
 
 2. Start the [built-in SQL shell](../cockroach-sql.html):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql --insecure --host=localhost
     ~~~
 
 3. Use [`SHOW TABLES`](../show-tables.html) to verify that `cockroach workload` created the `movr` tables:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SHOW TABLES FROM movr;
     ~~~
@@ -227,7 +227,7 @@ Now you'll import data representing users, vehicles, and rides for the fictional
 
 At this point, the data for the three MovR tables (`users`, `rides`, and `vehicles`) is evenly distributed across all three localities. For example, let's check where the replicas of the `vehicles` and `users` tables are located:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW RANGES FROM TABLE vehicles;
 ~~~
@@ -239,7 +239,7 @@ At this point, the data for the three MovR tables (`users`, `rides`, and `vehicl
 (1 row)
 ~~~    
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW RANGES FROM TABLE users;
 ~~~
@@ -275,7 +275,7 @@ In a real deployment, with nodes truly distributed across 3 regions of the US, h
 
 For example, imagine you are a MovR administrator in San Francisco, and you want to get the IDs and descriptions of all San Francisco-based bikes that are currently in use. You issue the following query to one of the nodes in the `us-west2` region:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT id, ext FROM vehicles
 WHERE city = 'san francisco' AND type = 'bike' AND status = 'in_use';
@@ -295,13 +295,13 @@ In summary, this simple read request have to travel back and forth across the en
 
 The geographic distribution of the MovR data is even more likely to impact write performance. For example, imagine that a user in New York and a user in Seattle want to create new MovR accounts:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO users
 VALUES (gen_random_uuid(), 'new york', 'New Yorker', '111 West Street', '9822222379937347');
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO users
 VALUES (gen_random_uuid(), 'seattle', 'Seattler', '111 East Street', '1736352379937347');
@@ -319,7 +319,7 @@ For this service, the most effective technique for improving read and write late
 
 1. Partition the `users` table by city:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > ALTER TABLE users
     PARTITION BY LIST (city) (
@@ -334,7 +334,7 @@ For this service, the most effective technique for improving read and write late
 
 2. Partition the `vehicles` table by city:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > ALTER TABLE vehicles
     PARTITION BY LIST (city) (
@@ -349,7 +349,7 @@ For this service, the most effective technique for improving read and write late
 
 3. Partition the `rides` table by city:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > ALTER TABLE rides
     PARTITION BY LIST (city) (
@@ -381,7 +381,7 @@ Los Angeles | `region=us-west2`
 
 1. Start with the `users` table partitions:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > ALTER PARTITION new_york OF TABLE movr.users
     CONFIGURE ZONE USING constraints='[+region=us-east1]';
@@ -404,7 +404,7 @@ Los Angeles | `region=us-west2`
 
 2. Move on to the `vehicles` table partitions:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > ALTER PARTITION new_york OF TABLE movr.vehicles
     CONFIGURE ZONE USING constraints='[+region=us-east1]';
@@ -427,7 +427,7 @@ Los Angeles | `region=us-west2`
 
 3. Finish with the `rides` table partitions:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > ALTER PARTITION new_york OF TABLE movr.rides
     CONFIGURE ZONE USING constraints='[+region=us-east1]';
@@ -458,7 +458,7 @@ Over the next few minutes, CockroachDB will rebalance all partitions based on th
 
 To check this, run the `SHOW RANGES` statement on the `vehicles` and `users` tables:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM [SHOW RANGES FROM TABLE vehicles]
 WHERE "start_key" NOT LIKE '%Prefix%';
@@ -492,7 +492,7 @@ We can see that, after partitioning, the replicas for New York, Boston, and Wash
 
 The same data distribution is in place for the partitions of other tables as well. For example, here's the `users` table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM [SHOW RANGES FROM TABLE users]
 WHERE "start_key" IS NOT NULL AND "start_key" NOT LIKE '%Prefix%';
@@ -518,7 +518,7 @@ After partitioning, reads and writes for a specific city will be much faster bec
 
 Once again, imagine you are a MovR administrator in San Francisco, and you want to get the IDs and descriptions of all San Francisco-based bikes that are currently in use. You issue the following query to one of the nodes in the `us-west2` region:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT id, ext FROM vehicles
 WHERE city = 'san francisco' AND type = 'bike' AND status = 'in_use';
@@ -532,13 +532,13 @@ WHERE city = 'san francisco' AND type = 'bike' AND status = 'in_use';
 
 Now once again imagine that a user in Seattle and a user in New York want to create new MovR accounts.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO users
 VALUES (gen_random_uuid(), 'seattle', 'Seattler', '111 East Street', '1736352379937347');
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO users
 VALUES (gen_random_uuid(), 'new york', 'New Yorker', '111 West Street', '9822222379937347');
@@ -554,14 +554,14 @@ In the next module, you'll start with a fresh cluster, so take a moment to clean
 
 1. Exit the SQL shell:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > \q
     ~~~
 
 2. Stop all CockroachDB nodes:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ pkill -9 cockroach
     ~~~
@@ -570,7 +570,7 @@ In the next module, you'll start with a fresh cluster, so take a moment to clean
 
 3. Remove the nodes' data directories:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ rm -rf node1 node2 node3 node4 node5 node6 node7 node8 node9
     ~~~

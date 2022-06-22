@@ -2,7 +2,7 @@ Due to known bugs, transactions do not always clean up their [write intents](arc
 
 To verify that intents may be causing an issue, open the [**Custom Chart** debug page](ui-custom-chart-debug-page.html) in the DB Console, and create a chart for the `intentcount` metric. This will show the number of intents present over time. The following query can also be used to get intent counts by range:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM (SELECT start_pretty, end_pretty, range_id, crdb_internal.range_stats(start_key)->'intent_count' AS intent_count FROM crdb_internal.ranges_no_leases) WHERE intent_count != '0';
 ~~~
@@ -11,7 +11,7 @@ To force cleanup of intents, either of the following methods can be used:
 
 - Do a high-priority scan of the table, which will resolve intents as it runs. Note that this may abort any conflicting transactions that are currently running. If the table has indexes, these can be cleaned by changing `<table>` into `<table>@<index>`. Numeric table and/or index identifiers (e.g., as output by the intent query above) can be used instead of names by placing them in brackets: `[<table-id>]` or `[<table-id>]@[<index-id>]`.
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > BEGIN PRIORITY HIGH; SELECT COUNT(*) FROM <table>; COMMIT;
     ~~~

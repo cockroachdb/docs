@@ -98,7 +98,7 @@ Usernames are case-insensitive; must start with either a letter or underscore; m
 
 <div class="filter-content" markdown="1" data-scope="secure">
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach user set jpointsman --certs-dir=certs
 ~~~
@@ -114,7 +114,7 @@ After creating users, you must:
 
 <div class="filter-content" markdown="1" data-scope="insecure">
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach user set jpointsman --insecure
 ~~~
@@ -137,7 +137,7 @@ After creating users, you must [grant them privileges to databases](grant.html).
 
 All users can authenticate their access to a secure cluster using [a client certificate](create-security-certificates.html#create-the-certificate-and-key-pair-for-a-client) issued to their username.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --certs-dir=certs --user=jpointsman
 ~~~
@@ -148,7 +148,7 @@ Users with passwords can authenticate their access by entering their password at
 
 If we cannot find client certificate and key files matching the user, we fall back on password authentication.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --certs-dir=certs --user=jpointsman
 ~~~
@@ -157,7 +157,7 @@ $ cockroach sql --certs-dir=certs --user=jpointsman
 
 <div class="filter-content" markdown="1" data-scope="insecure">
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure --user=jpointsman
 ~~~
@@ -166,7 +166,7 @@ $ cockroach sql --insecure --user=jpointsman
 
 ### Update a user's password
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach user set jpointsman --certs-dir=certs --password
 ~~~
@@ -177,7 +177,7 @@ Password creation is supported only in secure clusters for non-`root` users. The
 
 ### List all users
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach user ls --insecure
 ~~~
@@ -192,7 +192,7 @@ $ cockroach user ls --insecure
 
 ### Find a specific user
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach user get jpointsman --insecure
 ~~~
@@ -209,7 +209,7 @@ $ cockroach user get jpointsman --insecure
 
 {{site.data.alerts.callout_danger}}{% include {{ page.version.version }}/misc/remove-user-callout.html %}{{site.data.alerts.end}}
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach user rm jpointsman --insecure
 ~~~
@@ -220,7 +220,7 @@ $ cockroach user rm jpointsman --insecure
 
 In this example, we use the `--echo-sql` flag to reveal the SQL statement sent implicitly by the command-line utility:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach user rm jpointsman --insecure --echo-sql
 ~~~

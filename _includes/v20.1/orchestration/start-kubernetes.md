@@ -40,7 +40,7 @@ The CockroachDB Kubernetes Operator is currently supported for GKE. You can also
 
 3. Get the email address associated with your Google Cloud account:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ gcloud info | grep Account
     ~~~
@@ -55,7 +55,7 @@ The CockroachDB Kubernetes Operator is currently supported for GKE. You can also
 
 4. [Create the RBAC roles](https://cloud.google.com/kubernetes-engine/docs/how-to/role-based-access-control#prerequisites_for_using_role-based_access_control) CockroachDB needs for running on GKE, using the address from the previous step:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl create clusterrolebinding $USER-cluster-admin-binding \
     --clusterrole=cluster-admin \
@@ -78,7 +78,7 @@ The CockroachDB Kubernetes Operator is currently supported for GKE. You can also
     To ensure that all 3 nodes can be placed into a different availability zone, you may want to first [confirm that at least 3 zones are available in the region](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html#availability-zones-describe) for your account.
     {{site.data.alerts.end}}
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ eksctl create cluster \
     --name cockroachdb \

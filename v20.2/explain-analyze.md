@@ -110,7 +110,7 @@ Use `EXPLAIN ANALYZE` without an option, or equivalently with the `DISTSQL` opti
 
 For example, the following `EXPLAIN ANALYZE` statement executes a simple query against the [TPC-H database](http://www.tpc.org/tpch/) loaded to a 3-node CockroachDB cluster, and then generates a link to a physical query plan with execution statistics:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN ANALYZE SELECT l_shipmode, AVG(l_extendedprice) FROM lineitem GROUP BY l_shipmode;
 ~~~
@@ -130,7 +130,7 @@ To view the [DistSQL Plan Viewer](#distsql-plan-viewer), point your browser to t
 
 Use the [`DEBUG`](#debug-option) option to generate a ZIP file containing files with information about the query and the database objects referenced in the query. For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN ANALYZE (DEBUG) SELECT l_shipmode, AVG(l_extendedprice) FROM lineitem GROUP BY l_shipmode;
 ~~~

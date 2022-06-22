@@ -16,7 +16,7 @@ This page guides you through the process of setting up and enabling the Node Map
 On a secure cluster, this area of the DB Console can only be accessed by an `admin` user. See [DB Console access](ui-overview.html#db-console-access).
 {{site.data.alerts.end}}
 
-{% include enterprise-feature.md %}
+{% include_cached enterprise-feature.md %}
 
 <img src="{{ 'images/v21.1/ui-node-map-navigation3.png' | relative_url }}" alt="DB Console" style="border:1px solid #eee;max-width:100%" />
 

@@ -8,14 +8,14 @@ CockroachDB requires moderate levels of [clock synchronization](recommended-prod
 
 2. Disable `timesyncd`, which tends to be active by default on some Linux distributions:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ sudo timedatectl set-ntp no
     ~~~
 
     Verify that `timesyncd` is off:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ timedatectl
     ~~~
@@ -24,28 +24,28 @@ CockroachDB requires moderate levels of [clock synchronization](recommended-prod
 
 3. Install the `ntp` package:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ sudo apt-get install ntp
     ~~~
 
 4. Stop the NTP daemon:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ sudo service ntp stop
     ~~~
 
 5. Sync the machine's clock with Google's NTP service:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ sudo ntpd -b time.google.com
     ~~~
 
     To make this change permanent, in the `/etc/ntp.conf` file, remove or comment out any lines starting with `server` or `pool` and add the following lines:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~
     server time1.google.com iburst
     server time2.google.com iburst
@@ -55,7 +55,7 @@ CockroachDB requires moderate levels of [clock synchronization](recommended-prod
 
     Restart the NTP daemon:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ sudo service ntp start
     ~~~
@@ -64,7 +64,7 @@ CockroachDB requires moderate levels of [clock synchronization](recommended-prod
 
 6. Verify that the machine is using a Google NTP server:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ sudo ntpq -p
     ~~~
@@ -95,12 +95,12 @@ Amazon provides the [Amazon Time Sync Service](http://docs.aws.amazon.com/AWSEC2
 
 2. Find the ID of the Hyper-V Time Synchronization device:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ curl -O https://raw.githubusercontent.com/torvalds/linux/master/tools/hv/lsvmbus
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ python lsvmbus -vv | grep -w "Time Synchronization" -A 3
     ~~~
@@ -114,35 +114,35 @@ Amazon provides the [Amazon Time Sync Service](http://docs.aws.amazon.com/AWSEC2
 
 3. Unbind the device, using the `Device_ID` from the previous command's output:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ echo <DEVICE_ID> | sudo tee /sys/bus/vmbus/drivers/hv_util/unbind
     ~~~
 
 4. Install the `ntp` package:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ sudo apt-get install ntp
     ~~~
 
 5. Stop the NTP daemon:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ sudo service ntp stop
     ~~~
 
 6. Sync the machine's clock with Google's NTP service:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ sudo ntpd -b time.google.com
     ~~~
 
     To make this change permanent, in the `/etc/ntp.conf` file, remove or comment out any lines starting with `server` or `pool` and add the following lines:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~
     server time1.google.com iburst
     server time2.google.com iburst
@@ -152,7 +152,7 @@ Amazon provides the [Amazon Time Sync Service](http://docs.aws.amazon.com/AWSEC2
 
     Restart the NTP daemon:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ sudo service ntp start
     ~~~
@@ -161,7 +161,7 @@ Amazon provides the [Amazon Time Sync Service](http://docs.aws.amazon.com/AWSEC2
 
 7. Verify that the machine is using a Google NTP server:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ sudo ntpq -p
     ~~~

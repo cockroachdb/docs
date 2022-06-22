@@ -39,7 +39,7 @@ table td:first-child {
 
 In this example, other objects do not depend on the sequence being dropped.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM information_schema.sequences;
 ~~~
@@ -55,7 +55,7 @@ In this example, other objects do not depend on the sequence being dropped.
 (4 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP SEQUENCE customer_seq;
 ~~~
@@ -63,7 +63,7 @@ In this example, other objects do not depend on the sequence being dropped.
 DROP SEQUENCE
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM information_schema.sequences
 ~~~

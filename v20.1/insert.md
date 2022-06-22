@@ -75,13 +75,13 @@ key. Using `ON CONFLICT` is therefore more flexible.
 
 ### Insert a single row
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO users (id, city, name, address, credit_card) VALUES
     ('c28f5c28-f5c2-4000-8000-000000000026', 'new york', 'Petee', '101 5th Ave', '1234567890');
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM users WHERE city='new york';
 ~~~
@@ -100,7 +100,7 @@ key. Using `ON CONFLICT` is therefore more flexible.
 
 If you do not list column names, the statement will use the columns of the table in their declared order:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW COLUMNS FROM users;
 ~~~
@@ -116,13 +116,13 @@ If you do not list column names, the statement will use the columns of the table
 (5 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO users VALUES
     ('1eb851eb-851e-4800-8000-000000000006', 'chicago', 'Adam Driver', '201 E Randolph St', '2468013579');
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM users WHERE city IN ('chicago', 'new york');
 ~~~
@@ -150,14 +150,14 @@ If you do not list column names, the statement will use the columns of the table
 
 Multi-row inserts are faster than multiple single-row `INSERT` statements. As a performance best practice, we recommend batching multiple rows in one multi-row `INSERT` statement instead of using multiple single-row `INSERT` statements. Experimentally determine the optimal batch size for your application by monitoring the performance for different batch sizes (10 rows, 100 rows, 1000 rows).
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO users (id, city, name, address, credit_card) VALUES
     ('8a3d70a3-d70a-4000-8000-00000000001b', 'seattle', 'Eric', '400 Broad St', '0987654321'),
     ('9eb851eb-851e-4800-8000-00000000001f', 'new york', 'Harry Potter', '214 W 43rd St', '5678901234');
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM users WHERE city IN ('seattle', 'new york');
 ~~~
@@ -192,7 +192,7 @@ The [`IMPORT`](import.html) statement performs better than `INSERT` when inserti
 
 Suppose that you want MovR to offer ride-sharing services, in addition to vehicle-sharing services. You can create a `drivers` table from a subset of the `users` table.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE drivers (
     id UUID DEFAULT gen_random_uuid(),
@@ -204,14 +204,14 @@ Suppose that you want MovR to offer ride-sharing services, in addition to vehicl
 );
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO drivers (id, city, name, address)
     SELECT id, city, name, address FROM users
     WHERE name IN ('Anita Atkinson', 'Devin Jordan');
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM drivers;
 ~~~
@@ -228,7 +228,7 @@ Suppose that you want MovR to offer ride-sharing services, in addition to vehicl
 
 To check the [default values](default-value.html) for columns in a table, use the [`SHOW CREATE TABLE`](show-create.html) statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE TABLE drivers;
 ~~~
@@ -252,17 +252,17 @@ To check the [default values](default-value.html) for columns in a table, use th
 
 If the `DEFAULT` value constraint is not specified and an explicit value is not given, a value of *NULL* is assigned to the column.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO drivers (city, name) VALUES ('seattle', 'Bobby');
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO drivers (city, name, id) VALUES ('chicago', 'Terry', DEFAULT);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM drivers WHERE name in ('Bobby', 'Terry');
 ~~~
@@ -277,7 +277,7 @@ If the `DEFAULT` value constraint is not specified and an explicit value is not 
 
 To create a new row with only default values, use `INSERT INTO <table> DEFAULT VALUES`. Running this command on the `drivers` table results in an error because the `city` column in `drivers` cannot be *NULL*, and has no default value specified.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO drivers DEFAULT VALUES;
 ~~~
@@ -304,7 +304,7 @@ In this example, the `RETURNING` clause returns the `id` values of the rows inse
 
 <section class="filter-content" markdown="1" data-scope="shell">
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO drivers (id, city)
   VALUES (DEFAULT, 'seattle'), (DEFAULT, 'chicago')
@@ -323,7 +323,7 @@ In this example, the `RETURNING` clause returns the `id` values of the rows inse
 
 <section class="filter-content" markdown="1" data-scope="python">
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ python
 # Import the driver.
 import psycopg2
@@ -373,7 +373,7 @@ IDs:
 
 <section class="filter-content" markdown="1" data-scope="ruby">
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ ruby
 # Import the driver.
 require 'pg'
@@ -417,7 +417,7 @@ IDs:
 
 <section class="filter-content" markdown="1" data-scope="go">
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ go
 package main
 
@@ -475,7 +475,7 @@ cdd379e3-2d0b-4622-8ba8-4f0a1edfbc8e
 
 <section class="filter-content" markdown="1" data-scope="js">
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ js
 var async = require('async')
 var pg = require('pg')
@@ -545,7 +545,7 @@ IDs:
 
 When a uniqueness conflict is detected, CockroachDB stores the row in a temporary table called `excluded`. This example demonstrates how you use the columns in the temporary `excluded` table to apply updates on conflict.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO user_promo_codes (city, user_id, code, "timestamp", usage_count)
     VALUES ('new york', '147ae147-ae14-4b00-8000-000000000004', 'promo_code', now(), 1)
@@ -553,7 +553,7 @@ When a uniqueness conflict is detected, CockroachDB stores the row in a temporar
     DO UPDATE SET usage_count = excluded.usage_count;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM user_promo_codes WHERE code = 'promo_code';
 ~~~
@@ -567,7 +567,7 @@ When a uniqueness conflict is detected, CockroachDB stores the row in a temporar
 
 You can also update the row using an existing value:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO user_promo_codes (city, user_id, code, "timestamp", usage_count)
     VALUES ('new york', '147ae147-ae14-4b00-8000-000000000004', 'promo_code', now(), 1)
@@ -575,7 +575,7 @@ You can also update the row using an existing value:
     DO UPDATE SET ("timestamp", usage_count) = (now(), user_promo_codes.usage_count + excluded.usage_count);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM user_promo_codes WHERE code = 'promo_code';
 ~~~
@@ -589,7 +589,7 @@ You can also update the row using an existing value:
 
 You can also use a `WHERE` clause to apply the `DO UPDATE SET` expression conditionally:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO user_promo_codes (city, user_id, code, "timestamp", usage_count)
     VALUES ('new york', '147ae147-ae14-4b00-8000-000000000004', 'promo_code', now(), 3)
@@ -598,7 +598,7 @@ You can also use a `WHERE` clause to apply the `DO UPDATE SET` expression condit
     WHERE excluded.usage_count = 1;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM user_promo_codes WHERE code = 'promo_code';
 ~~~
@@ -614,7 +614,7 @@ You can also use a `WHERE` clause to apply the `DO UPDATE SET` expression condit
 
 In this example, we get an error from a uniqueness conflict.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO user_promo_codes (city, user_id, code, "timestamp", usage_count)
     VALUES ('new york', '147ae147-ae14-4b00-8000-000000000004', 'promo_code', now(), 1);
@@ -626,7 +626,7 @@ pq: duplicate key value (city,user_id,code)=('new york','147ae147-ae14-4b00-8000
 
 In this example, we use `ON CONFLICT DO NOTHING` to ignore the uniqueness error and prevent the affected row from being updated:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO user_promo_codes (city, user_id, code, "timestamp", usage_count)
     VALUES ('new york', '147ae147-ae14-4b00-8000-000000000004', 'promo_code', now(), 1)
@@ -634,7 +634,7 @@ In this example, we use `ON CONFLICT DO NOTHING` to ignore the uniqueness error 
     DO NOTHING;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM user_promo_codes WHERE code = 'promo_code';
 ~~~
@@ -648,7 +648,7 @@ In this example, we use `ON CONFLICT DO NOTHING` to ignore the uniqueness error 
 
 In this example, `ON CONFLICT DO NOTHING` prevents the first row from updating while allowing the second row to be inserted:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO user_promo_codes (city, user_id, code, "timestamp", usage_count)
     VALUES ('new york', '147ae147-ae14-4b00-8000-000000000004', 'promo_code', now(), 1), ('new york', '147ae147-ae14-4b00-8000-000000000004', 'new_promo', now(), 1)
@@ -656,7 +656,7 @@ In this example, `ON CONFLICT DO NOTHING` prevents the first row from updating w
     DO NOTHING;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM user_promo_codes WHERE code in ('promo_code', 'new_promo');
 ~~~
@@ -678,7 +678,7 @@ duplicates.
 
 For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > WITH inputrows (city, user_id, code, "timestamp", usage_count)
     AS (VALUES ('new york', '147ae147-ae14-4b00-8000-000000000004'::uuid, 'promo_code', now()::timestamp, 0), ('new york', '147ae147-ae14-4b00-8000-000000000004'::uuid, 'new_promo', now()::timestamp, 2))
@@ -692,7 +692,7 @@ The `DISTINCT ON` clause does not guarantee which of the duplicates is
 considered. To force the selection of a particular duplicate, use an
 `ORDER BY` clause:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > WITH inputrows (city, user_id, code, "timestamp", usage_count)
     AS (VALUES ('new york', '147ae147-ae14-4b00-8000-000000000004'::uuid, 'promo_code', now()::timestamp, 0), ('new york', '147ae147-ae14-4b00-8000-000000000004'::uuid, 'new_promo', now()::timestamp, 2))

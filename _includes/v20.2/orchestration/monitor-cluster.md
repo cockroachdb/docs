@@ -7,7 +7,7 @@ To access the cluster's [DB Console](ui-overview.html):
     Get a shell into the pod and start the CockroachDB [built-in SQL client](cockroach-sql.html):
 
     <section class="filter-content" markdown="1" data-scope="operator">
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl exec -it cockroachdb-2 \
     -- ./cockroach sql \
@@ -16,7 +16,7 @@ To access the cluster's [DB Console](ui-overview.html):
     </section>
 
     <section class="filter-content" markdown="1" data-scope="manual">
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl exec -it cockroachdb-client-secure \
     -- ./cockroach sql \
@@ -34,14 +34,14 @@ To access the cluster's [DB Console](ui-overview.html):
 
 1.  Assign `roach` to the `admin` role (you only need to do this once):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > GRANT admin TO roach;
     ~~~
 
 1. Exit the SQL shell and pod:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > \q
     ~~~
@@ -51,21 +51,21 @@ To access the cluster's [DB Console](ui-overview.html):
 1. In a new terminal window, port-forward from your local machine to the `cockroachdb-public` service:
 
     <section class="filter-content" markdown="1" data-scope="operator">
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl port-forward service/cockroachdb-public 8080
     ~~~
     </section>
 
     <section class="filter-content" markdown="1" data-scope="manual">
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl port-forward service/cockroachdb-public 8080
     ~~~
     </section>
 
     <section class="filter-content" markdown="1" data-scope="helm">
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl port-forward service/my-release-cockroachdb-public 8080
     ~~~

@@ -27,7 +27,7 @@ To simplify the process of running multiple nodes on your local computer, you'll
 
 1. In a new terminal, start node 1:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -41,7 +41,7 @@ To simplify the process of running multiple nodes on your local computer, you'll
 
 2. Start node 2:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -55,7 +55,7 @@ To simplify the process of running multiple nodes on your local computer, you'll
 
 3. Start node 3:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -69,7 +69,7 @@ To simplify the process of running multiple nodes on your local computer, you'll
 
 4. Use the [`cockroach init`](../cockroach-init.html) command to perform a one-time initialization of the cluster:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach init --insecure --host=localhost:26257
     ~~~
@@ -86,7 +86,7 @@ Add 6 more nodes, this time using the [`--locality`](../configure-replication-zo
 
 1. In a new terminal, start node 4:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -100,7 +100,7 @@ Add 6 more nodes, this time using the [`--locality`](../configure-replication-zo
 
 2. Start node 5:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -114,7 +114,7 @@ Add 6 more nodes, this time using the [`--locality`](../configure-replication-zo
 
 3. Start node 6:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -130,7 +130,7 @@ Add 6 more nodes, this time using the [`--locality`](../configure-replication-zo
 
 4. Start node 7:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -144,7 +144,7 @@ Add 6 more nodes, this time using the [`--locality`](../configure-replication-zo
 
 5. Start node 8:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -158,7 +158,7 @@ Add 6 more nodes, this time using the [`--locality`](../configure-replication-zo
 
 6. Start node 9:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -180,7 +180,7 @@ To check this, let's create a table, which initially maps to a single underlying
 
 1. Use the `cockroach gen` command to generate an example `intro` database:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach gen example-data intro | cockroach sql \
     --insecure \
@@ -189,7 +189,7 @@ To check this, let's create a table, which initially maps to a single underlying
 
 2. Use the `cockroach sql` command to verify that the table was added:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
     --insecure \
@@ -226,7 +226,7 @@ To check this, let's create a table, which initially maps to a single underlying
 
 3. Use the `SHOW RANGES` SQL command to find the IDs of the nodes where the new table's replicas ended up:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
     --insecure \
@@ -247,7 +247,7 @@ Let's say your user-base has expanded into Europe and you want to store data the
 
 1. Start node 10:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -261,7 +261,7 @@ Let's say your user-base has expanded into Europe and you want to store data the
 
 2. Start node 11:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -275,7 +275,7 @@ Let's say your user-base has expanded into Europe and you want to store data the
 
 3. Start node 12:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -293,7 +293,7 @@ Now imagine that `intro` database you created earlier is storing data for a US-b
 
 1. Use the `cockroach gen` command to generate an example `startrek` database with 2 tables, `episodes` and `quotes`:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach gen example-data startrek | cockroach sql \
     --insecure \
@@ -302,7 +302,7 @@ Now imagine that `intro` database you created earlier is storing data for a US-b
 
 2. Use the `cockroach sql` command to verify that the tables were added:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
     --insecure \
@@ -332,14 +332,14 @@ Because you used the `--locality` flag to indicate the region for each of your n
 
 1. Use the [`ALTER DATABASE ... CONFIGURE ZONE`](../configure-zone.html) statement to create a replication zone for the `startrek` database, forcing all the data in the database to be located on EU-based nodes:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql --execute="ALTER DATABASE startrek CONFIGURE ZONE USING constraints='[+region=eu]';" --insecure --host=localhost:26257
     ~~~
 
 2. Use the [`ALTER DATABASE ... CONFIGURE ZONE`](../configure-zone.html) statement to create a distinct replication zone for the `intro` database, forcing all the data in the database to be located on US-based nodes:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql --execute="ALTER DATABASE intro CONFIGURE ZONE USING constraints='[+region=us]';" --insecure --host=localhost:26257
     ~~~
@@ -350,7 +350,7 @@ Now verify that the data for the table in the `intro` database is located on US-
 
 1. Find the IDs of the nodes where replicas are stored for the `intro.mytable`, `startrek.episodes`, and `startrek.quotes` tables:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
     --insecure \
@@ -387,7 +387,7 @@ Take a moment to clean things up.
 
 1. Stop all CockroachDB nodes:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ pkill -9 cockroach
     ~~~
@@ -396,7 +396,7 @@ Take a moment to clean things up.
 
 2. Remove the nodes' data directories:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ rm -rf node{1,2,3,4,5,6,7,8,9,10,11,12}
     ~~~

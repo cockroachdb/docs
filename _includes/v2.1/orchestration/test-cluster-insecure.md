@@ -1,7 +1,7 @@
 1. Launch a temporary interactive pod and start the [built-in SQL client](use-the-built-in-sql-client.html) inside it:
 
     <section class="filter-content" markdown="1" data-scope="manual">
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl run cockroachdb -it --image=cockroachdb/cockroach --rm --restart=Never \
     -- sql --insecure --host=cockroachdb-public
@@ -9,7 +9,7 @@
     </section>
 
     <section class="filter-content" markdown="1" data-scope="helm">
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl run cockroachdb -it --image=cockroachdb/cockroach --rm --restart=Never \
     -- sql --insecure --host=my-release-cockroachdb-public
@@ -18,12 +18,12 @@
 
 2. Run some basic [CockroachDB SQL statements](learn-cockroachdb-sql.html):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE DATABASE bank;
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE TABLE bank.accounts (
         id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -31,14 +31,14 @@
       );
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > INSERT INTO bank.accounts (balance)
       VALUES
     	  (1000.50), (20000), (380), (500), (55000);
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT * FROM bank.accounts;
     ~~~
@@ -56,7 +56,7 @@
 
 3. Exit the SQL shell and delete the temporary pod:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > \q
     ~~~

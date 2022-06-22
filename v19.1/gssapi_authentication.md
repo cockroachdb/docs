@@ -22,19 +22,19 @@ To use Kerberos authentication with CockroachDB, configure a Kerberos service pr
 
 2. [Create certificates](create-security-certificates.html) for internode and `root` user authentication:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ mkdir certs my-safe-directory
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach cert create-ca \
     --certs-dir=certs \
     --ca-key=my-safe-directory/ca.key
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach cert create-node \
     localhost \
@@ -43,7 +43,7 @@ To use Kerberos authentication with CockroachDB, configure a Kerberos service pr
     --ca-key=my-safe-directory/ca.key
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach cert create-client \
     root \
@@ -55,7 +55,7 @@ To use Kerberos authentication with CockroachDB, configure a Kerberos service pr
 
 4. Start a CockroachDB node:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --certs-dir=certs \
@@ -63,7 +63,7 @@ To use Kerberos authentication with CockroachDB, configure a Kerberos service pr
     ~~~
 
 5. Connect to CockroachDB as `root` using the `root` client certificate generated above:
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql --certs-dir=certs
     ~~~
@@ -73,7 +73,7 @@ To use Kerberos authentication with CockroachDB, configure a Kerberos service pr
 
 7. Enable GSSAPI authentication:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SET cluster setting server.host_based_authentication.configuration = 'host all all all gss include_realm=0';
     ~~~
@@ -84,14 +84,14 @@ To use Kerberos authentication with CockroachDB, configure a Kerberos service pr
 
 8. Create CockroachDB users for every Kerberos user. Ensure the username does not have the `DOMAIN.COM` realm information. For example, if one of your Kerberos user has a username `carl@realm.com`, then you need to create a CockroachDB user with the username `carl`:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE USER carl;
     ~~~
 
     Grant privileges to the user:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > GRANT ALL ON DATABASE defaultdb TO carl;
     ~~~
@@ -107,7 +107,7 @@ The `cockroach sql` shell does not yet support GSSAPI authentication. You need t
 3. Get a Kerberos TGT for the Kerberos user from the KDC using `kinit`.
 4. Use the `psql` client, which supports GSSAPI authentication, to connect to CockroachDB:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     > psql "postgresql://localhost:26257/defaultdb?sslmode=require" -U carl
     ~~~

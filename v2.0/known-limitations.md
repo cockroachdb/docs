@@ -127,22 +127,22 @@ However, the same statement with `INSERT ... ON CONFLICT` incorrectly succeeds a
 
 It is currently not possible to [add a column](add-column.html) to a table when the column uses a [sequence](create-sequence.html) as the [`DEFAULT`](default-value.html) value, for example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE t (x INT);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO t(x) VALUES (1), (2), (3);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE SEQUENCE s;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE t ADD COLUMN y INT DEFAULT nextval('s');
 ~~~
@@ -178,27 +178,27 @@ Within a single [transaction](transactions.html):
 
 When the schema of a table targeted by a prepared statement changes before the prepared statement is executed, CockroachDB allows the prepared statement to return results based on the changed table schema, for example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE users (id INT PRIMARY KEY);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > PREPARE prep1 AS SELECT * FROM users;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE users ADD COLUMN name STRING;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO users VALUES (1, 'Max Roach');
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXECUTE prep1;
 ~~~
@@ -258,7 +258,7 @@ For example, let's say that latency is 10ms from nodes in datacenter A to nodes 
 
 Many string operations are not properly overloaded for [collated strings](collate.html), for example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT 'string1' || 'string2';
 ~~~
@@ -272,7 +272,7 @@ Many string operations are not properly overloaded for [collated strings](collat
 (1 row)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT ('string1' collate en) || ('string2' collate en);
 ~~~

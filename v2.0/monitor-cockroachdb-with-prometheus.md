@@ -23,7 +23,7 @@ CockroachDB generates detailed time series metrics for each node in a cluster. T
 
 3. Make sure Prometheus installed successfully:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ prometheus --version
     ~~~
@@ -39,7 +39,7 @@ CockroachDB generates detailed time series metrics for each node in a cluster. T
 
 1. Download the starter [Prometheus configuration file](https://github.com/cockroachdb/cockroach/blob/master/monitoring/prometheus.yml) for CockroachDB:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ wget https://raw.githubusercontent.com/cockroachdb/cockroach/master/monitoring/prometheus.yml \
     -O prometheus.yml
@@ -61,22 +61,22 @@ CockroachDB generates detailed time series metrics for each node in a cluster. T
 
 4. Create a `rules` directory and download the [aggregation rules](https://github.com/cockroachdb/cockroach/blob/master/monitoring/rules/aggregation.rules.yml) and [alerting rules](https://github.com/cockroachdb/cockroach/blob/master/monitoring/rules/alerts.rules.yml) for CockroachDB into it:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ mkdir rules
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cd rules
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ wget -P rules https://raw.githubusercontent.com/cockroachdb/cockroach/master/monitoring/rules/aggregation.rules.yml
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ wget -P rules https://raw.githubusercontent.com/cockroachdb/cockroach/master/monitoring/rules/alerts.rules.yml
     ~~~
@@ -85,7 +85,7 @@ CockroachDB generates detailed time series metrics for each node in a cluster. T
 
 1. Start the Prometheus server, with the `--config.file` flag pointing to the configuration file:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ prometheus --config.file=prometheus.yml
     ~~~
@@ -114,7 +114,7 @@ Active monitoring helps you spot problems early, but it is also essential to sen
 
 3. Make sure Alertmanager installed successfully:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ alertmanager --version
     ~~~
@@ -130,7 +130,7 @@ Active monitoring helps you spot problems early, but it is also essential to sen
 
 5. Start the Alertmanager server, with the `--config.file` flag pointing to the configuration file:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ alertmanager --config.file=simple.yml
     ~~~
@@ -157,25 +157,25 @@ Although Prometheus lets you graph metrics, [Grafana](https://grafana.com/) is a
 
 4. Download the starter [Grafana dashboards](https://github.com/cockroachdb/cockroach/tree/master/monitoring/grafana-dashboards) for CockroachDB:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     # runtime dashboard: node status, including uptime, memory, and cpu.
     $ wget https://raw.githubusercontent.com/cockroachdb/cockroach/master/monitoring/grafana-dashboards/runtime.json
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     # storage dashboard: storage availability.
     $ wget https://raw.githubusercontent.com/cockroachdb/cockroach/master/monitoring/grafana-dashboards/storage.json
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     # sql dashboard: sql queries/transactions.
     $ wget https://raw.githubusercontent.com/cockroachdb/cockroach/master/monitoring/grafana-dashboards/sql.json
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     # replicas dashboard: replica information and operations.
     $ wget https://raw.githubusercontent.com/cockroachdb/cockroach/master/monitoring/grafana-dashboards/replicas.json

@@ -14,7 +14,7 @@ This tutorial shows you how to manually deploy an insecure multi-node CockroachD
 
 {% include {{ page.version.version }}/prod-deployment/insecure-flag.md %}
 
-{% include cockroachcloud/use-cockroachcloud-instead.md %}
+{% include_cached cockroachcloud/use-cockroachcloud-instead.md %}
 
 ## Before you begin
 

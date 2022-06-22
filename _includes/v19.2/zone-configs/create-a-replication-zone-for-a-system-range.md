@@ -13,7 +13,7 @@ Use caution when editing replication zones for system ranges, as they could caus
 
 To control replication for one of the above sets of system ranges, use the [`ALTER RANGE ... CONFIGURE ZONE`](configure-zone.html) statement to define the relevant values (other values will be inherited from the parent zone):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER RANGE meta CONFIGURE ZONE USING num_replicas = 7;
 ~~~
@@ -22,7 +22,7 @@ To control replication for one of the above sets of system ranges, use the [`ALT
 CONFIGURE ZONE 1
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW ZONE CONFIGURATION FOR RANGE meta;
 ~~~

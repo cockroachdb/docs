@@ -45,7 +45,7 @@ You can only apply the `NOT NULL` constraint to individual columns.
 
 ## Usage example
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE IF NOT EXISTS customers (
     customer_id INT         PRIMARY KEY,
@@ -54,7 +54,7 @@ You can only apply the `NOT NULL` constraint to individual columns.
   );
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO customers (customer_id, cust_name, cust_email) VALUES (1, 'Smith', NULL);
 ~~~
@@ -63,7 +63,7 @@ You can only apply the `NOT NULL` constraint to individual columns.
 pq: null value in column "cust_email" violates not-null constraint
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO customers (customer_id, cust_name) VALUES (1, 'Smith');
 ~~~

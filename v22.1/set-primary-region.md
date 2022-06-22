@@ -7,7 +7,7 @@ docs_area: reference.sql
 
  The `ALTER DATABASE .. SET PRIMARY REGION` [statement](sql-statements.html) sets the primary [region](multiregion-overview.html#database-regions) of a [multi-region database](multiregion-overview.html).
 
-{% include enterprise-feature.md %}
+{% include_cached enterprise-feature.md %}
 
 {{site.data.alerts.callout_info}}
 `SET PRIMARY REGION` is a subcommand of [`ALTER DATABASE`](alter-database.html).

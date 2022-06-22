@@ -52,12 +52,12 @@ Field | Description
 
 ### Show indexes for a table
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE INDEX ON users (name);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW INDEX FROM users;
 ~~~
@@ -75,7 +75,7 @@ Field | Description
 
 ### Show indexes for a database
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW INDEXES FROM DATABASE movr;
 ~~~

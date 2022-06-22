@@ -22,7 +22,7 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
 
 1. In a new terminal, start node 1:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -35,7 +35,7 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
 
 2. In a new terminal, start node 2:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -48,7 +48,7 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
 
 3. In a new terminal, start node 3:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -61,7 +61,7 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
 
 4. In a new terminal, perform a one-time initialization of the cluster:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach init --insecure --host=localhost:26257
     ~~~
@@ -72,7 +72,7 @@ Before you can manually corrupt data, you need to import enough data so that the
 
 1. Create a database into which you'll import a new table:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
     --insecure \
@@ -82,7 +82,7 @@ Before you can manually corrupt data, you need to import enough data so that the
 
 2. Run the [`IMPORT`](../import.html) command, using schema and data files we've made publicly available on Google Cloud Storage:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
     --insecure \
@@ -104,7 +104,7 @@ Before you can manually corrupt data, you need to import enough data so that the
 
 1. In the same terminal, look in the data directory of `node3`:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ ls node3
     ~~~
@@ -122,7 +122,7 @@ Before you can manually corrupt data, you need to import enough data so that the
 
 4. Try to restart node 3:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -156,14 +156,14 @@ Because only 1 node's data is corrupt, the solution is to completely remove the 
 
 1. Remove the `node3` data directory:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ rm -rf node3
     ~~~
 
 2. In the terminal where node 3 was running, restart the node:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \

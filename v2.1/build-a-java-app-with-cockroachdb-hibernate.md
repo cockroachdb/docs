@@ -32,21 +32,21 @@ This tutorial uses the [Gradle build tool](https://gradle.org/) to get all depen
 
 To install Gradle on Mac, run the following command:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ brew install gradle
 ~~~
 
 To install Gradle on a Debian-based Linux distribution like Ubuntu:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ apt-get install gradle
 ~~~
 
 To install Gradle on a Red Hat-based Linux distribution like Fedora:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ dnf install gradle
 ~~~
@@ -63,7 +63,7 @@ For other ways to install Gradle, see [its official documentation](https://gradl
 
 Create a certificate and key for the `maxroach` user by running the following command.  The code samples will run as this user.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach cert create-client maxroach --certs-dir=certs --ca-key=my-safe-directory/ca.key
 ~~~
@@ -74,7 +74,7 @@ The private key generated for user `maxroach` by CockroachDB is [PEM encoded](ht
 
 To convert the key to PKCS#8 format, run the following OpenSSL command on the `maxroach` user's key file in the directory where you stored your certificates (`/tmp/certs` in this example):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ openssl pkcs8 -topk8 -inform PEM -outform DER -in client.maxroach.key -out client.maxroach.pk8 -nocrypt
 ~~~
@@ -91,7 +91,7 @@ File | Description
 
 In the `hibernate-basic-sample` directory, build and run the application:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ gradle run
 ~~~
@@ -105,14 +105,14 @@ Toward the end of the output, you should see:
 
 To verify that the table and rows were created successfully, start the [built-in SQL client](use-the-built-in-sql-client.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --certs-dir=certs --database=bank
 ~~~
 
 To check the account balances, issue the following statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT id, balance FROM accounts;
 ~~~
@@ -137,7 +137,7 @@ The Java code shown below uses the [Hibernate ORM](http://hibernate.org/orm/) to
 
 - Defines the SQL query for selecting from the table so that balances can be printed using the `CriteriaQuery<Account> query` object.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ java
 {% include {{page.version.version}}/app/hibernate-basic-sample/Sample.java %}
 ~~~
@@ -146,7 +146,7 @@ The Java code shown below uses the [Hibernate ORM](http://hibernate.org/orm/) to
 
 The Hibernate config (in `hibernate.cfg.xml`, shown below) specifies how to connect to the database.  Note the [connection URL](connection-parameters.html#connect-using-a-url) that turns on SSL and specifies the location of the security certificates.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ xml
 {% include {{page.version.version}}/app/hibernate-basic-sample/hibernate.cfg.xml %}
 ~~~
@@ -155,7 +155,7 @@ The Hibernate config (in `hibernate.cfg.xml`, shown below) specifies how to conn
 
 The Gradle build file specifies the dependencies (in this case the Postgres JDBC driver and Hibernate):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ groovy
 {% include {{page.version.version}}/app/hibernate-basic-sample/build.gradle %}
 ~~~
@@ -180,7 +180,7 @@ File | Description
 
 In the `hibernate-basic-sample` directory, build and run the application:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ gradle run
 ~~~
@@ -194,14 +194,14 @@ Toward the end of the output, you should see:
 
 To verify that the table and rows were created successfully, start the [built-in SQL client](use-the-built-in-sql-client.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure --database=bank
 ~~~
 
 To check the account balances, issue the following statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT id, balance FROM accounts;
 ~~~
@@ -226,7 +226,7 @@ The Java code shown below uses the [Hibernate ORM](http://hibernate.org/orm/) to
 
 - Defines the SQL query for selecting from the table so that balances can be printed using the `CriteriaQuery<Account> query` object.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ java
 {% include {{page.version.version}}/app/insecure/hibernate-basic-sample/Sample.java %}
 ~~~
@@ -235,7 +235,7 @@ The Java code shown below uses the [Hibernate ORM](http://hibernate.org/orm/) to
 
 The Hibernate config (in `hibernate.cfg.xml`, shown below) specifies how to connect to the database.  Note the [connection URL](connection-parameters.html#connect-using-a-url) that turns on SSL and specifies the location of the security certificates.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ xml
 {% include {{page.version.version}}/app/insecure/hibernate-basic-sample/hibernate.cfg.xml %}
 ~~~
@@ -244,7 +244,7 @@ The Hibernate config (in `hibernate.cfg.xml`, shown below) specifies how to conn
 
 The Gradle build file specifies the dependencies (in this case the Postgres JDBC driver and Hibernate):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ groovy
 {% include {{page.version.version}}/app/insecure/hibernate-basic-sample/build.gradle %}
 ~~~

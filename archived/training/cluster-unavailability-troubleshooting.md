@@ -34,7 +34,7 @@ Make sure you have already completed [Under-Replication Troubleshooting](under-r
 
 2. In a new terminal, try to query the one node that was not terminated:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
     --insecure \
@@ -49,7 +49,7 @@ Make sure you have already completed [Under-Replication Troubleshooting](under-r
 
 1. In the terminal where node 2 was running, restart the node:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -61,7 +61,7 @@ Make sure you have already completed [Under-Replication Troubleshooting](under-r
 
 2. In the terminal where node 3 was running, restart the node:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -90,14 +90,14 @@ In the next module, you'll start a new cluster from scratch, so take a moment to
 
 1. Terminate all CockroachDB nodes:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ pkill -9 cockroach
     ~~~
 
 2. Remove the nodes' data directories:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ rm -rf node1 node2 node3
     ~~~

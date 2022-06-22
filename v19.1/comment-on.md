@@ -33,7 +33,7 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 
 To add a comment to a database:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > COMMENT ON DATABASE customers IS 'This is a sample comment';
 ~~~
@@ -48,7 +48,7 @@ To view database comments, use a database GUI navigation tool (e.g., [dBeaver](d
 
 To add a comment to a table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > COMMENT ON TABLE dogs IS 'This is a sample comment';
 ~~~
@@ -59,7 +59,7 @@ COMMENT ON TABLE
 
 To view table comments, use [`SHOW TABLES`](show-tables.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM customers WITH COMMENT;
 ~~~
@@ -75,7 +75,7 @@ To view table comments, use [`SHOW TABLES`](show-tables.html):
 
 To add a comment to a column:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > COMMENT ON COLUMN dogs.name IS 'This is a sample comment';
 ~~~

@@ -26,7 +26,7 @@ To manually assign a column family on [table creation](create-table.html), use t
 
 For example, let's say we want to create a table to store an immutable blob of data (`data BYTES`) with a last accessed timestamp (`last_accessed TIMESTAMP`). Because we know that the blob of data will never get updated, we use the `FAMILY` keyword to break it into a separate column family:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE test (
     id INT PRIMARY KEY,
@@ -37,7 +37,7 @@ For example, let's say we want to create a table to store an immutable blob of d
 );
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE users;
 ~~~
@@ -68,28 +68,28 @@ When using the [`ALTER TABLE .. ADD COLUMN`](add-column.html) statement to add a
 
 - Use the `CREATE FAMILY` keyword to assign a new column to a **new family**. For example, the following would add a `data2 BYTES` column to the `test` table above and assign it to a new column family:
 
-  {% include copy-clipboard.html %}
+  {% include_cached copy-clipboard.html %}
   ~~~ sql
   > ALTER TABLE test ADD COLUMN data2 BYTES CREATE FAMILY f3;
   ~~~
 
 - Use the `FAMILY` keyword to assign a new column to an **existing family**. For example, the following would add a `name STRING` column to the `test` table above and assign it to family `f1`:
 
-  {% include copy-clipboard.html %}
+  {% include_cached copy-clipboard.html %}
   ~~~ sql
   > ALTER TABLE test ADD COLUMN name STRING FAMILY f1;
   ~~~
 
 - Use the `CREATE IF NOT EXISTS FAMILY` keyword to assign a new column to an **existing family or, if the family doesn't exist, to a new family**. For example, the following would assign the new column to the existing `f1` family; if that family didn't exist, it would create a new family and assign the column to it:
 
-  {% include copy-clipboard.html %}
+  {% include_cached copy-clipboard.html %}
   ~~~ sql
   > ALTER TABLE test ADD COLUMN name STRING CREATE IF NOT EXISTS FAMILY f1;
   ~~~
 
 - If a column is added to a table and the family is not specified, it will be added to the first column family. For example, the following would add the new column to the `f1` family, since that is the first column family:
 
-  {% include copy-clipboard.html %}
+  {% include_cached copy-clipboard.html %}
   ~~~ sql
   > ALTER TABLE test ADD COLUMN last_name STRING;
   ~~~

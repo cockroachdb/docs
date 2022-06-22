@@ -29,7 +29,7 @@ When inserting multiple rows, a single [multi-row insert statement](insert.html#
 
 <section class="filter-content" markdown="1" data-scope="sql">
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TABLE IF NOT EXISTS accounts (id INT PRIMARY KEY, balance INT);
 INSERT INTO accounts (id, balance) VALUES (1, 1000), (2, 250);
@@ -41,7 +41,7 @@ For more information about how to use the built-in SQL client, see the [`cockroa
 
 <section class="filter-content" markdown="1" data-scope="go">
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ go
 // 'db' is an open database connection
 
@@ -58,7 +58,7 @@ if _, err := db.Exec(
 
 <section class="filter-content" markdown="1" data-scope="java">
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ java
 // ds is an org.postgresql.ds.PGSimpleDataSource
 
@@ -84,7 +84,7 @@ try (Connection connection = ds.getConnection()) {
 
 <section class="filter-content" markdown="1" data-scope="python">
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ python
 # conn is a psycopg2 connection
 

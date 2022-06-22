@@ -33,7 +33,7 @@ Additionally, it is not possible to rename a database if:
 
     For example, suppose you create a database `db`, and in that database, a sequence `seq`:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE DATABASE db;
       USE db;
@@ -42,7 +42,7 @@ Additionally, it is not possible to rename a database if:
 
     Then you reference the sequence in a table `tab`:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE TABLE tab (
       id UUID DEFAULT gen_random_uuid(),
@@ -52,7 +52,7 @@ Additionally, it is not possible to rename a database if:
 
     Attempting to rename the database will result in an error:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SET sql_safe_updates=false;
       ALTER DATABASE db RENAME TO mydb;
@@ -66,12 +66,12 @@ Additionally, it is not possible to rename a database if:
 
     In order to rename the database `db`, you need to drop or change the reference in the default value for the `seq` column to not explicitly name the database `db`:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > ALTER TABLE tab ALTER COLUMN count SET DEFAULT nextval('seq');
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > USE defaultdb;
       ALTER DATABASE db RENAME TO mydb;
@@ -81,12 +81,12 @@ Additionally, it is not possible to rename a database if:
 
 ### Rename a database
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE DATABASE db1;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW DATABASES;
 ~~~
@@ -102,12 +102,12 @@ Additionally, it is not possible to rename a database if:
 (5 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER DATABASE db1 RENAME TO db2;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW DATABASES;
 ~~~
@@ -125,7 +125,7 @@ Additionally, it is not possible to rename a database if:
 
 ### Rename fails (new name already in use)
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER DATABASE db2 RENAME TO movr;
 ~~~

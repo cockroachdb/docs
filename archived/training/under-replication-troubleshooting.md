@@ -23,7 +23,7 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
 
 1. In a new terminal, start node 1:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -35,7 +35,7 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
 
 2. In another terminal, start node 2:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -47,7 +47,7 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
 
 3. In another terminal, start node 3:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -59,7 +59,7 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
 
 4. In another terminal, perform a one-time initialization of the cluster:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach init --insecure --host=localhost:26257
     ~~~
@@ -68,7 +68,7 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
 
 1. In the same terminal, reduce the amount of time the cluster waits before considering a node dead to just 1 minute and 15 seconds:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
     --insecure \
@@ -94,7 +94,7 @@ To bring the cluster back to a safe state, you need to either restart the down n
 
 1. In the terminal where node 3 was running, restart the node:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \

@@ -41,7 +41,7 @@ Setting the [`DEFAULT` value constraint](default-value.html) inserts the value w
 
 The below example inserts the Boolean value `true` whenever you inserted data to the `subscriptions` table without defining a value for the `newsletter` column.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE subscriptions ALTER COLUMN newsletter SET DEFAULT true;
 ~~~
@@ -50,7 +50,7 @@ The below example inserts the Boolean value `true` whenever you inserted data to
 
 If the column has a defined [`DEFAULT` value](default-value.html), you can remove the constraint, which means the column will no longer insert a value by default if one is not explicitly defined for the column.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE subscriptions ALTER COLUMN newsletter DROP DEFAULT;
 ~~~
@@ -59,7 +59,7 @@ If the column has a defined [`DEFAULT` value](default-value.html), you can remov
 
 If the column has the [`NOT NULL` constraint](not-null.html) applied to it, you can remove the constraint, which means the column becomes optional and can have *NULL* values written into it.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE subscriptions ALTER COLUMN newsletter DROP NOT NULL;
 ~~~

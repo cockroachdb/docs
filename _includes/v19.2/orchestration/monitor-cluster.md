@@ -6,7 +6,7 @@ To access the cluster's [Admin UI](admin-ui-overview.html):
 
     Get a shell into the pod and start the CockroachDB [built-in SQL client](cockroach-sql.html):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl exec -it cockroachdb-client-secure \
     -- ./cockroach sql \
@@ -16,14 +16,14 @@ To access the cluster's [Admin UI](admin-ui-overview.html):
 
 1.  Assign `roach` to the `admin` role (you only need to do this once):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > GRANT admin TO roach;
     ~~~
 
 1. Exit the SQL shell and pod:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > \q
     ~~~
@@ -33,14 +33,14 @@ To access the cluster's [Admin UI](admin-ui-overview.html):
 1. In a new terminal window, port-forward from your local machine to one of the pods:
 
     <section class="filter-content" markdown="1" data-scope="manual">
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl port-forward cockroachdb-0 8080
     ~~~
     </section>
 
     <section class="filter-content" markdown="1" data-scope="helm">
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl port-forward my-release-cockroachdb-0 8080
     ~~~

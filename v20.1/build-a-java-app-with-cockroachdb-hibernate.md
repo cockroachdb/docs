@@ -32,21 +32,21 @@ This tutorial uses the [Gradle build tool](https://gradle.org/) to get all depen
 
 To install Gradle on Mac, run the following command:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ brew install gradle
 ~~~
 
 To install Gradle on a Debian-based Linux distribution like Ubuntu:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ apt-get install gradle
 ~~~
 
 To install Gradle on a Red Hat-based Linux distribution like Fedora:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ dnf install gradle
 ~~~
@@ -65,7 +65,7 @@ Create a certificate and key for the `maxroach` user by running the following co
 
 You can pass the [`--also-generate-pkcs8-key` flag](cockroach-cert.html#flag-pkcs8) to generate a key in [PKCS#8 format](https://tools.ietf.org/html/rfc5208), which is the standard key encoding format in Java. In this case, the generated PKCS8 key will be named `client.maxroach.key.pk8`.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach cert create-client maxroach --certs-dir=certs --ca-key=my-safe-directory/ca.key --also-generate-pkcs8-key
 ~~~
@@ -93,7 +93,7 @@ To run it:
 
 2. Compile and run the code using [`build.gradle`](https://github.com/cockroachdb/docs/raw/master/_includes/{{ page.version.version }}/app/hibernate-basic-sample/build.gradle), which will also download the dependencies.
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ gradle run
     ~~~
@@ -106,7 +106,7 @@ To clone a version of the code below that connects to insecure clusters, run the
 
 The contents of [`Sample.java`](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{page.version.version}}/app/hibernate-basic-sample/Sample.java):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ java
 {% include {{page.version.version}}/app/hibernate-basic-sample/Sample.java %}
 ~~~
@@ -141,14 +141,14 @@ APP: getAccountBalance(2) --> 350
 
 To verify that the account balances were updated successfully, start the [built-in SQL client](cockroach-sql.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --certs-dir=certs
 ~~~
 
 To check the account balances, issue the following statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT id, balance FROM accounts;
 ~~~
@@ -187,21 +187,21 @@ To run it:
 
 1. Clone the `example-app-java-hibernate` repo to your machine:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     git clone https://github.com/cockroachlabs/example-app-java-hibernate/
     ~~~
 
 2. Compile and run the code using [`build.gradle`](https://github.com/cockroachdb/docs/raw/master/_includes/{{ page.version.version }}/app/insecure/hibernate-basic-sample/build.gradle), which will also download the dependencies.
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ gradle run
     ~~~
 
 The contents of [`Sample.java`](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{page.version.version}}/app/insecure/hibernate-basic-sample/Sample.java):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ java
 {% include {{page.version.version}}/app/insecure/hibernate-basic-sample/Sample.java %}
 ~~~
@@ -236,14 +236,14 @@ APP: getAccountBalance(2) --> 350
 
 To verify that the account balances were updated successfully, start the [built-in SQL client](cockroach-sql.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure --database=bank
 ~~~
 
 To check the account balances, issue the following statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT id, balance FROM accounts;
 ~~~

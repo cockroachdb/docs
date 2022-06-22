@@ -23,7 +23,7 @@ Make sure you have already completed [Planned Maintenance](planned-maintenance.h
 
 Run the `cockroach quit` command with the `--decommission` flag against node 3:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach quit \
 --insecure \
@@ -49,7 +49,7 @@ Because the cluster has 3 nodes, with every range on every node, it is not possi
 
 In a new terminal, to make it possible for node 3 to decommission, add a fourth node:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach start \
 --insecure \
@@ -102,14 +102,14 @@ In the next module, you'll start a new cluster from scratch, so take a moment to
 
 1. Stop all CockroachDB nodes:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ pkill -9 cockroach
     ~~~
 
 2. Remove the nodes' data directories:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ rm -rf node1 node2 node3 node4
     ~~~

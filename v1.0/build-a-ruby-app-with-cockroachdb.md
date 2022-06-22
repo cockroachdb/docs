@@ -21,7 +21,7 @@ Make sure you have already [installed CockroachDB](install-cockroachdb.html).
 
 To install the [Ruby pg driver](https://rubygems.org/gems/pg), run the following command:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ gem install pg
 ~~~
@@ -38,14 +38,14 @@ First, use the following code to connect as the `maxroach` user and execute some
 
 Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/app/basic-sample.rb" download><code>basic-sample.rb</code></a> file, or create the file yourself and copy the code into it.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ ruby
 {% include {{ page.version.version }}/app/basic-sample.rb %}
 ~~~
 
 Then run the code:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ ruby basic-sample.rb
 ~~~
@@ -66,21 +66,21 @@ Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/
 
 {{site.data.alerts.callout_info}}With the default <code>SERIALIZABLE</code> isolation level, CockroachDB may require the <a href="transactions.html#transaction-retries">client to retry a transaction</a> in case of read/write contention. CockroachDB provides a generic <strong>retry function</strong> that runs inside a transaction and retries it as needed. You can copy and paste the retry function from here into your code.{{site.data.alerts.end}}
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ ruby
 {% include {{ page.version.version }}/app/txn-sample.rb %}
 ~~~
 
 Then run the code:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ ruby txn-sample.rb
 ~~~
 
 To verify that funds were transferred from one account to another, use the [built-in SQL client](use-the-built-in-sql-client.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure -e 'SELECT id, balance FROM accounts' --database=bank
 ~~~

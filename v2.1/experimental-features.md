@@ -30,7 +30,7 @@ The table below lists the experimental session settings available in CockroachDB
 
 Log queries against a table to a file. For more information, see [`ALTER TABLE ... EXPERIMENTAL_AUDIT`](experimental-audit.html).
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE t EXPERIMENTAL_AUDIT SET READ WRITE;
 ~~~
@@ -44,14 +44,14 @@ You have the following options for controlling lease and replica location:
 
 For example, to distribute leases and ranges for N primary keys across N stores in the cluster, run a statement with the following structure:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE t EXPERIMENTAL_RELOCATE SELECT ARRAY[<storeid1>, <storeid2>, ..., <storeidN>], <primarykeycol1>, <primarykeycol2>, ..., <primarykeycolN>;
 ~~~
 
 <span class="version-tag">New in v2.1:</span> To relocate just the lease without moving the replicas, run a statement like the one shown below, which moves the lease for the range containing primary key 'foo' to store 1.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE t EXPERIMENTAL_RELOCATE LEASE SELECT 1, 'foo';
 ~~~
@@ -62,7 +62,7 @@ If two expressions share the same fingerprint, then they are the identical expre
 
 Example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW EXPERIMENTAL_FINGERPRINTS FROM TABLE t;
 ~~~
@@ -78,7 +78,7 @@ Example:
 
 Show the ranges that make up a table or index.  For more information, see [`SHOW EXPERIMENTAL_RANGES`](show-experimental-ranges.html).
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW EXPERIMENTAL_RANGES FROM TABLE t;
 ~~~
@@ -89,7 +89,7 @@ Use session tracing (via [`SHOW TRACE FOR SESSION`](show-trace.html)) to report 
 
 Example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET tracing = on;
 > SELECT * from t;
@@ -112,7 +112,7 @@ Checks the consistency of [`UNIQUE`](unique.html) indexes, [`CHECK`](check.html)
 This example uses the "users" table from our open-source, fictional peer-to-peer ride-sharing application,[MovR](https://github.com/cockroachdb/movr).
 {{site.data.alerts.end}}
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 >  EXPERIMENTAL SCRUB table movr.users;
 ~~~

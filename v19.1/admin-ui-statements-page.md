@@ -74,7 +74,7 @@ The **Statement Details** page displays the logical plan as well as the details 
 
 By default, the logical plan for each fingerprint is sampled every 5 minutes. You can use the `sql.metrics.statement_details.plan_collection.period` [cluster setting](cluster-settings.html) to change this time interval. For example, to change the interval to 2 minutes, run the following [`SET CLUSTER SETTING`](set-cluster-setting.html) command:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET CLUSTER SETTING sql.metrics.statement_details.plan_collection.period  = '2m0s';
 ~~~

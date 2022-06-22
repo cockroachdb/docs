@@ -89,7 +89,7 @@ If you need to turn off automatic statistics collection, follow the steps below:
 
 1. Run the following statement to disable the automatic statistics [cluster setting](cluster-settings.html):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SET CLUSTER SETTING sql.stats.automatic_collection.enabled = false;
     ~~~
@@ -98,7 +98,7 @@ If you need to turn off automatic statistics collection, follow the steps below:
 
 3. Delete the automatically generated statistics using the following statement:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > DELETE FROM system.table_statistics WHERE true;
     ~~~
@@ -113,7 +113,7 @@ For instructions showing how to manually generate statistics, see the examples i
 
 The query plan cache is enabled by default. To disable it, execute the following statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET CLUSTER SETTING sql.query_cache.enabled = false;
 ~~~
@@ -134,7 +134,7 @@ Because this process leads to an exponential increase in the number of possible 
 
 To change this setting, which is controlled by the `reorder_joins_limit` [session variable](set-vars.html), run the statement shown below. To disable this feature, set the variable to `0`.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET reorder_joins_limit = 6;
 ~~~
@@ -224,59 +224,59 @@ We can demonstrate the necessary configuration steps using a local cluster. The 
 
 First, start 3 local nodes as shown below. Use the [`--locality`](start-a-node.html#locality) flag to put them each in a different region as denoted by `region=usa`, `region=eu`, etc.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach start --locality=region=usa  --insecure --store=/tmp/node0 --listen-addr=localhost:26257 \
   --http-port=8888  --join=localhost:26257,localhost:26258,localhost:26259 --background
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach start --locality=region=eu   --insecure --store=/tmp/node1 --listen-addr=localhost:26258 \
   --http-port=8889  --join=localhost:26257,localhost:26258,localhost:26259 --background
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach start --locality=region=apac --insecure --store=/tmp/node2 --listen-addr=localhost:26259 \
   --http-port=8890  --join=localhost:26257,localhost:26258,localhost:26259 --background
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach init --insecure --host=localhost --port=26257
 ~~~
 
 Next, from the SQL client, add your organization name and enterprise license:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sh
 $ cockroach sql --insecure --host=localhost --port=26257
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET CLUSTER SETTING cluster.organization = 'FooCorp - Local Testing';
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET CLUSTER SETTING enterprise.license = 'xxxxx';
 ~~~
 
 Create a test database and table. The table will have 3 indexes into the same data. Later, we'll configure the cluster to associate each of these indexes with a different datacenter using replication zones.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE DATABASE IF NOT EXISTS test;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > USE test;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TABLE postal_codes (
     id INT PRIMARY KEY,
@@ -292,17 +292,17 @@ Next, we modify the replication zone configuration via SQL so that:
 - Nodes in the EU will use the `postal_codes@idx_eu` index (which is identical to the primary key index).
 - Nodes in APAC will use the `postal_codes@idx_apac` index (which is also identical to the primary key index).
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER TABLE postal_codes CONFIGURE ZONE USING constraints='["+region=usa"]';
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER INDEX postal_codes@idx_eu CONFIGURE ZONE USING constraints='["+region=eu"]';
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER INDEX postal_codes@idx_apac CONFIGURE ZONE USING constraints='["+region=apac"]';
 ~~~
@@ -319,7 +319,7 @@ This behavior may also cause the [Statements page of the Web UI](admin-ui-statem
 
 As expected, the node in the USA region uses the primary key index.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure --host=localhost --port=26257 --database=test -e 'EXPLAIN SELECT * FROM postal_codes WHERE id=1;'
 ~~~
@@ -335,7 +335,7 @@ $ cockroach sql --insecure --host=localhost --port=26257 --database=test -e 'EXP
 
 As expected, the node in the EU uses the `idx_eu` index.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure --host=localhost --port=26258 --database=test -e 'EXPLAIN SELECT * FROM postal_codes WHERE id=1;'
 ~~~
@@ -351,7 +351,7 @@ $ cockroach sql --insecure --host=localhost --port=26258 --database=test -e 'EXP
 
 As expected, the node in APAC uses the `idx_apac` index.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure --host=localhost --port=26259 --database=test -e 'EXPLAIN SELECT * FROM postal_codes WHERE id=1;'
 ~~~
@@ -387,59 +387,59 @@ The instructions below assume that you are already familiar with:
 
 First, start 3 local nodes as shown below. Use the [`--locality`](start-a-node.html#locality) flag to put them each in a different region.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach start --locality=region=us-east  --insecure --store=/tmp/node0 --listen-addr=localhost:26257 \
   --http-port=8888  --join=localhost:26257,localhost:26258,localhost:26259 --background
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach start --locality=region=us-central   --insecure --store=/tmp/node1 --listen-addr=localhost:26258 \
   --http-port=8889  --join=localhost:26257,localhost:26258,localhost:26259 --background
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach start --locality=region=us-west --insecure --store=/tmp/node2 --listen-addr=localhost:26259 \
   --http-port=8890  --join=localhost:26257,localhost:26258,localhost:26259 --background
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach init --insecure --host=localhost --port=26257
 ~~~
 
 From the SQL client, add your organization name and enterprise license:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sh
 $ cockroach sql --insecure --host=localhost --port=26257
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET CLUSTER SETTING cluster.organization = 'FooCorp - Local Testing';
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET CLUSTER SETTING enterprise.license = 'xxxxx';
 ~~~
 
 Create an authentication database and table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE DATABASE if NOT EXISTS auth;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > USE auth;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE token (
 	token_id VARCHAR(100) NULL,
@@ -450,17 +450,17 @@ Create an authentication database and table:
 
 Create the indexes for each region:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE INDEX token_id_west_idx ON token (token_id) STORING (access_token, refresh_token);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE INDEX token_id_central_idx ON token (token_id) STORING (access_token, refresh_token);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE INDEX token_id_east_idx ON token (token_id) STORING (access_token, refresh_token);
 ~~~
@@ -476,25 +476,25 @@ The idea is that, for example, `token_id_east_idx` will have sufficient replicas
 The `ALTER TABLE` statement below is not required since it's later made redundant by the `token_id_west_idx` index. In production, you might go with the `ALTER TABLE` to put your table's lease preferences in the West, and then create only 2 indexes (for East and Central); however, the use of 3 indexes makes the example easier to understand.
 {{site.data.alerts.end}}
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE token CONFIGURE ZONE USING
         num_replicas = 5, constraints = '{+region=us-east: 1, +region=us-central: 2, +region=us-west: 2}', lease_preferences = '[[+region=us-west], [+region=us-central]]';
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER INDEX token_id_east_idx CONFIGURE ZONE USING num_replicas = 5,
         constraints = '{+region=us-east: 2, +region=us-central: 2, +region=us-west: 1}', lease_preferences = '[[+region=us-east], [+region=us-central]]';
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER INDEX token_id_central_idx CONFIGURE ZONE USING num_replicas = 5,
         constraints = '{+region=us-east: 2, +region=us-central: 2, +region=us-west: 1}', lease_preferences = '[[+region=us-central], [+region=us-east]]';
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER INDEX token_id_west_idx CONFIGURE ZONE USING num_replicas = 5,
         constraints = '{+region=us-west: 2, +region=us-central: 2, +region=us-east: 1}', lease_preferences = '[[+region=us-west], [+region=us-central]]';
@@ -502,7 +502,7 @@ The `ALTER TABLE` statement below is not required since it's later made redundan
 
 Next let's [check our zone configurations](show-zone-configurations.html) to make sure they match our expectation:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW ZONE CONFIGURATIONS;
 ~~~
@@ -534,7 +534,7 @@ Now that we've set up our indexes the way we want them, we need to insert some d
 On a freshly created cluster like this one, you may need to wait a moment after adding the data to give [automatic statistics](#table-statistics) time to update. Then, the optimizer can generate a query plan that uses the expected index.
 {{site.data.alerts.end}}
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT
   INTO
@@ -547,7 +547,7 @@ On a freshly created cluster like this one, you may need to wait a moment after 
       generate_series(1, 10000);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT
   INTO
@@ -562,12 +562,12 @@ On a freshly created cluster like this one, you may need to wait a moment after 
 
 Finally, we [`EXPLAIN`](explain.html) a [selection query](selection-queries.html) from each node to verify which index is being queried against. For example, when running the query shown below against the `us-west` node, we expect it to use the `token_id_west_idx` index.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sh
 $ cockroach sql --insecure --host=localhost --port=26259 --database=auth # "West" node
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN
       SELECT
@@ -592,12 +592,12 @@ Time: 787µs
 
 Similarly, queries from the `us-east` node should use the `token_id_east_idx` index (and the same should be true for `us-central`).
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sh
 $ cockroach sql --insecure --host=localhost --port=26257 --database=auth # "East" node
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN
       SELECT
@@ -628,14 +628,14 @@ With the optimizer turned on, the performance of some workloads may change. If y
 
 To turn the cost-based optimizer off for the current session:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET optimizer = 'off';
 ~~~
 
 To turn the cost-based optimizer off for all sessions:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET CLUSTER SETTING sql.defaults.optimizer = 'off';
 ~~~

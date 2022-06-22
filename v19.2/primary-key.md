@@ -35,7 +35,7 @@ A table's primary key can only be specified in the [`CREATE TABLE`](create-table
 
 **Example**
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE orders (
     order_id        UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -62,7 +62,7 @@ A table's primary key can only be specified in the [`CREATE TABLE`](create-table
 
 **Example**
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE IF NOT EXISTS inventories (
     product_id        INT,
@@ -110,7 +110,7 @@ For optimal performance, we recommend that you do the following:
 
 ## Example
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE IF NOT EXISTS inventories (
     product_id        INT,
@@ -120,12 +120,12 @@ For optimal performance, we recommend that you do the following:
   );
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO inventories VALUES (1, 1, 100);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO inventories VALUES (1, 1, 200);
 ~~~
@@ -134,7 +134,7 @@ For optimal performance, we recommend that you do the following:
 pq: duplicate key value (product_id,warehouse_id)=(1,1) violates unique constraint "primary"
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO inventories VALUES (1, NULL, 100);
 ~~~

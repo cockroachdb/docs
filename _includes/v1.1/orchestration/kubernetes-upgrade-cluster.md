@@ -4,7 +4,7 @@ Kubernetes knows how to carry out a safe rolling upgrade process of the Cockroac
 
 1. All that it takes to kick off this process is changing the desired Docker image. To do so, pick the version that you want to upgrade to, then run the following command, replacing "VERSION" with your desired new version:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl patch statefulset cockroachdb --type='json' -p='[{"op": "replace", "path": "/spec/template/spec/containers/0/image", "value":"cockroachdb/cockroach:VERSION"}]'
     ~~~
@@ -15,7 +15,7 @@ Kubernetes knows how to carry out a safe rolling upgrade process of the Cockroac
 
 2. If you then check the status of your cluster's pods, you should see one of them being restarted:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl get pods
     ~~~
@@ -30,7 +30,7 @@ Kubernetes knows how to carry out a safe rolling upgrade process of the Cockroac
 
 3. This will continue until all of the pods have restarted and are running the new image. To check the image of each pod to determine whether they've all be upgraded, run:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl get pods -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.spec.containers[0].image}{"\n"}'
     ~~~

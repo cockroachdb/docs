@@ -39,7 +39,7 @@ reused in the context of the query `z`.
 
 For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > WITH r AS (SELECT * FROM rides WHERE revenue > 98)
   SELECT * FROM users AS u, r WHERE r.rider_id = u.id;
@@ -63,7 +63,7 @@ subsequent `SELECT` clause.
 
 This query is equivalent to, but arguably simpler to read than:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM users AS u, (SELECT * FROM rides WHERE revenue > 98) AS r
   WHERE r.rider_id = u.id;
@@ -74,7 +74,7 @@ simultaneously with a single `WITH` clause, separated by commas. Later
 subqueries can refer to earlier subqueries by name. For example, the
 following query is equivalent to the two examples above:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > WITH r AS (SELECT * FROM rides WHERE revenue > 98),
 	results AS (SELECT * FROM users AS u, r WHERE r.rider_id = u.id)
@@ -88,7 +88,7 @@ by name. The final query refers to the CTE `results`.
 
 It is possible to use a `WITH` clause in a subquery, or even a `WITH` clause within another `WITH` clause. For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > WITH u AS
 	(SELECT * FROM
@@ -100,7 +100,7 @@ When analyzing [table expressions](table-expressions.html) that
 mention a CTE name, CockroachDB will choose the CTE definition that is
 closest to the table expression. For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > WITH
   u AS (SELECT * FROM users),
@@ -122,7 +122,7 @@ etc.) as a common table expression, as long as the `WITH` clause containing the 
 
 For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > WITH final_code AS
   (INSERT INTO promo_codes(code, description, rules)
@@ -141,7 +141,7 @@ For example:
 
 If the `WITH` clause containing the data-modifying statement is at a lower level, the statement results in an error:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT (WITH final_code AS
   (INSERT INTO promo_codes(code, description, rules)
@@ -171,7 +171,7 @@ You can reference a CTE multiple times in a single query, using a `WITH` operato
 
 For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > WITH
     users_ny AS (SELECT name, id FROM users WHERE city='new york'),
@@ -223,7 +223,7 @@ Recursive subqueries must eventually return no results, or the query will run in
 
 For example, the following recursive CTE calculates the factorial of the numbers 0 through 9:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 WITH RECURSIVE cte (n, factorial) AS (
     VALUES (0, 1) -- initial subquery
@@ -253,7 +253,7 @@ The initial subquery (`VALUES (0, 1)`) initializes the working table with the va
 
 If no `WHERE` clause were defined in the example, the recursive subquery would always return results and loop indefinitely, resulting in an error:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 WITH RECURSIVE cte (n, factorial) AS (
     VALUES (0, 1) -- initial subquery
@@ -272,7 +272,7 @@ If you are unsure if your recursive subquery will loop indefinitely, you can lim
 
 For example, if we remove the `WHERE` clause from the factorial example, we can use `LIMIT` to limit the results and avoid the `integer out of range` error:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 WITH RECURSIVE cte (n, factorial) AS (
     VALUES (0, 1) -- initial subquery

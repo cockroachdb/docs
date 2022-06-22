@@ -7,7 +7,7 @@ docs_area: reference.sql
 
  The `ALTER DATABASE .. ADD SUPER REGION` [statement](sql-statements.html) adds a [super region](multiregion-overview.html#super-regions) to a [multi-region database](multiregion-overview.html).
 
-{% include enterprise-feature.md %}
+{% include_cached enterprise-feature.md %}
 
 {{site.data.alerts.callout_info}}
 `ADD SUPER REGION` is a subcommand of [`ALTER DATABASE`](alter-database.html).

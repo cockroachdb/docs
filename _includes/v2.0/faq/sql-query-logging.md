@@ -40,7 +40,7 @@ $ cockroach start --insecure --host=localhost --vmodule=exec_log=2
 
 From the SQL prompt on a running node, execute the `crdb_internal.set_vmodule()` [function](functions-and-operators.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT crdb_internal.set_vmodule('exec_log=2');
 ~~~

@@ -6,21 +6,21 @@ Use the [built-in SQL client](use-the-built-in-sql-client.html) locally as follo
 
 1. On your local machine, launch the built-in SQL client, with the `--host` flag set to the address of the load balancer:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql --certs-dir=certs --host=<address of load balancer>
     ~~~
 
 2.  Create a `securenodetest` database:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE DATABASE securenodetest;
     ~~~
 
 3. View the cluster's databases, which will include `securenodetest`:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SHOW DATABASES;
     ~~~

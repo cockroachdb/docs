@@ -69,7 +69,7 @@ instance | A physical or virtual machine. In this tutorial, you'll create GCE or
 
 3. Verify that a fourth pod was added successfully:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl get pods
     ~~~
@@ -97,7 +97,7 @@ To shut down the CockroachDB cluster:
 
 1. Delete all of the resources you created, including the logs and remote persistent volumes:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl delete pods,statefulsets,services,persistentvolumeclaims,persistentvolumes,poddisruptionbudget,jobs,rolebinding,clusterrolebinding,role,clusterrole,serviceaccount,alertmanager,prometheus,prometheusrule,serviceMonitor -l app=cockroachdb
     ~~~

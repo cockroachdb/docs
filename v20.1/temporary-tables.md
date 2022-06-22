@@ -41,14 +41,14 @@ Because the [`SHOW TABLES`](show-tables.html) statement defaults to the `public`
 
 To use temp tables, you need to set `experimental_enable_temp_tables` to `on`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET experimental_enable_temp_tables=on;
 ~~~
 
 ### Create a temp table
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TEMP TABLE users (
         id UUID,
@@ -61,7 +61,7 @@ To use temp tables, you need to set `experimental_enable_temp_tables` to `on`:
 
 You can use [`SHOW CREATE`](show-create.html) to view temp tables:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE TABLE users;
 ~~~
@@ -82,7 +82,7 @@ You can use [`SHOW CREATE`](show-create.html) to view temp tables:
 
 To show the newly created `pg_temp` schema, use [`SHOW SCHEMAS`](show-schemas.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW SCHEMAS;
 ~~~
@@ -101,7 +101,7 @@ To show the newly created `pg_temp` schema, use [`SHOW SCHEMAS`](show-schemas.ht
 
 To create another temp table that references `users`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TEMP TABLE vehicles (
         id UUID NOT NULL,
@@ -114,7 +114,7 @@ To create another temp table that references `users`:
 );
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE TABLE vehicles;
 ~~~
@@ -140,7 +140,7 @@ To create another temp table that references `users`:
 
 To show all temp tables in a session's temporary schema, use `SHOW TABLES FROM pg_temp`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM pg_temp;
 ~~~
@@ -161,7 +161,7 @@ Although temp tables are not included in the `public` schema, metadata for temp 
 
 For example, the [`information_schema.tables`](information-schema.html#tables) table includes information about all tables in all schemas in all databases, including temp tables:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM information_schema.tables WHERE table_schema='pg_temp_1584540651942455000_1';
 ~~~
@@ -178,7 +178,7 @@ For example, the [`information_schema.tables`](information-schema.html#tables) t
 
 If you end the session, all temp tables are lost.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW session_id;
 ~~~
@@ -190,7 +190,7 @@ If you end the session, all temp tables are lost.
 (1 row)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CANCEL SESSION '15fd69f9831c1ed00000000000000001';
 ~~~
@@ -201,7 +201,7 @@ warning: connection lost!
 opening new connection: all session settings will be lost
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE TABLE users;
 ~~~

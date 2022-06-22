@@ -41,7 +41,7 @@ Using this pattern, you design your table schema to allow for [partitioning](par
 
 Assuming you have a [cluster deployed across three regions](#cluster-setup) and a table and secondary index like the following:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE users (
     id UUID NOT NULL DEFAULT gen_random_uuid(),
@@ -53,7 +53,7 @@ Assuming you have a [cluster deployed across three regions](#cluster-setup) and 
 );
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE INDEX users_last_name_index ON users (city, last_name);
 ~~~
@@ -62,7 +62,7 @@ Assuming you have a [cluster deployed across three regions](#cluster-setup) and 
 
 2. Partition the table by `city`. For example, assuming there are three possible `city` values, `los angeles`, `chicago`, and `new york`:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > ALTER TABLE users PARTITION BY LIST (city) (
         PARTITION la VALUES IN ('los angeles'),
@@ -75,7 +75,7 @@ Assuming you have a [cluster deployed across three regions](#cluster-setup) and 
 
 3. Partition the secondary index by `city` as well:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > ALTER INDEX users_last_name_index PARTITION BY LIST (city) (
         PARTITION la VALUES IN ('los angeles'),
@@ -88,7 +88,7 @@ Assuming you have a [cluster deployed across three regions](#cluster-setup) and 
 
 4. For each partition of the table and its secondary index, [create a replication zone](configure-zone.html) that tells CockroachDB to put the partition's leaseholder in the relevant region:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > ALTER PARTITION la OF INDEX users@*
         CONFIGURE ZONE USING
@@ -109,7 +109,7 @@ Assuming you have a [cluster deployed across three regions](#cluster-setup) and 
 
 5. <span class="version-tag">New in v19.2:</span> To confirm that partitions are in effect, you can use the [`SHOW CREATE TABLE`](show-create.html) or [`SHOW PARTITIONS`](show-partitions.html) statement:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SHOW CREATE TABLE users;
     ~~~
@@ -162,7 +162,7 @@ Assuming you have a [cluster deployed across three regions](#cluster-setup) and 
     (1 row)
     ~~~    
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SHOW PARTITIONS FROM TABLE users;
     ~~~

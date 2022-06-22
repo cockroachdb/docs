@@ -24,7 +24,7 @@ Install the Clojure `lein` utility as described in its [official documentation](
 
 As the `maxroach` user, use the [built-in SQL client](use-the-built-in-sql-client.html) to create an `accounts` table in the new database.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure \
 --database=bank \
@@ -41,7 +41,7 @@ Now that you have a database and a user, you'll run code to create a table and i
 1. Create a new directory `myapp`.
 2. Create a file `myapp/project.clj` and populate it with the following code, or <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/app/project.clj" download>download it directly</a>. Be sure to place the file in the subdirectory `src/test` in your project.
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ clojure
     {% include {{ page.version.version }}/app/project.clj %}
     ~~~
@@ -54,14 +54,14 @@ First, use the following code to connect as the `maxroach` user and execute some
 
 Create a file `myapp/src/test/test.clj` and copy the code below to it, or <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/app/basic-sample.clj" download>download it directly</a>. Be sure to rename this file to `test.clj` in the subdirectory `src/test` in your project.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ clojure
 {% include {{ page.version.version }}/app/basic-sample.clj %}
 ~~~
 
 Run with:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 lein run
 ~~~
@@ -77,21 +77,21 @@ CockroachDB may require the
 [client to retry a transaction](transactions.html#transaction-retries) in case of read/write contention. CockroachDB provides a generic **retry function** that runs inside a transaction and retries it as needed. You can copy and paste the retry function from here into your code.
 {{site.data.alerts.end}}
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ clojure
 {% include {{ page.version.version }}/app/txn-sample.clj %}
 ~~~
 
 Run with:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 lein run
 ~~~
 
 After running the code, use the [built-in SQL client](use-the-built-in-sql-client.html) to verify that funds were transferred from one account to another:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure -e 'SELECT id, balance FROM accounts' --database=bank
 ~~~

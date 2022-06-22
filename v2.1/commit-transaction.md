@@ -33,32 +33,32 @@ How you commit transactions depends on how your application handles [transaction
 
 When using [client-side transaction retries](transactions.html#client-side-transaction-retries), statements are committed by [`RELEASE SAVEPOINT cockroach_restart`](release-savepoint.html). `COMMIT` itself only clears the connection for the next transaction.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BEGIN;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SAVEPOINT cockroach_restart;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > UPDATE products SET inventory = 0 WHERE sku = '8675309';
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO orders (customer, sku, status) VALUES (1001, '8675309', 'new');
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > RELEASE SAVEPOINT cockroach_restart;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > COMMIT;
 ~~~
@@ -69,7 +69,7 @@ When using [client-side transaction retries](transactions.html#client-side-trans
 
 If you are using transactions that CockroachDB will [automatically retry](transactions.html#automatic-retries) (i.e., all statements sent in a single batch), commit the transaction with `COMMIT`.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BEGIN; UPDATE products SET inventory = 100 WHERE = '8675309'; UPDATE products SET inventory = 100 WHERE = '8675310'; COMMIT;
 ~~~

@@ -46,32 +46,32 @@ In CockroachDB, the following are aliases for the `BEGIN` statement:
 
 Without modifying the `BEGIN` statement, the transaction uses `SERIALIZABLE` isolation and `NORMAL` priority.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BEGIN;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SAVEPOINT cockroach_restart;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > UPDATE products SET inventory = 0 WHERE sku = '8675309';
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO orders (customer, sku, status) VALUES (1001, '8675309', 'new');
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > RELEASE SAVEPOINT cockroach_restart;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > COMMIT;
 ~~~
@@ -82,32 +82,32 @@ Without modifying the `BEGIN` statement, the transaction uses `SERIALIZABLE` iso
 
 You can set a transaction's priority to `LOW` or `HIGH`.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BEGIN PRIORITY HIGH;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SAVEPOINT cockroach_restart;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > UPDATE products SET inventory = 0 WHERE sku = '8675309';
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO orders (customer, sku, status) VALUES (1001, '8675309', 'new');
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > RELEASE SAVEPOINT cockroach_restart;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > COMMIT;
 ~~~
@@ -134,7 +134,7 @@ CockroachDB will [automatically retry](transactions.html#transaction-retries) al
 
 From the perspective of CockroachDB, a transaction sent as a batch looks like this:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BEGIN;
 

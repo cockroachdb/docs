@@ -24,7 +24,7 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
 
 1. Create two directories:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ mkdir certs my-safe-directory
     ~~~
@@ -36,7 +36,7 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
 
 2. Create the CA certificate and key:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach cert create-ca \
     --certs-dir=certs \
@@ -45,7 +45,7 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
 
 3. Create the certificate and key for the your nodes:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach cert create-node \
     localhost \
@@ -58,7 +58,7 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
 
 4. Create client certificates and keys for the `root` and `spock` users:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach cert create-client \
     root \
@@ -66,7 +66,7 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
     --ca-key=my-safe-directory/ca.key
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach cert create-client \
     spock \
@@ -80,7 +80,7 @@ Restart the nodes using the same commands you used to start them initially, but 
 
 1. Start node 1:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --certs-dir=certs \
@@ -93,7 +93,7 @@ Restart the nodes using the same commands you used to start them initially, but 
 
 2. Start node 2:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --certs-dir=certs \
@@ -106,7 +106,7 @@ Restart the nodes using the same commands you used to start them initially, but 
 
 3. Start node 3:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --certs-dir=certs \
@@ -119,7 +119,7 @@ Restart the nodes using the same commands you used to start them initially, but 
 
 4. Perform a one-time initialization of the cluster:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach init --certs-dir=certs --host=localhost:26257
     ~~~
@@ -128,7 +128,7 @@ Restart the nodes using the same commands you used to start them initially, but 
 
 1. Use the `cockroach gen` command to generate an example `startrek` database with 2 tables, `episodes` and `quotes`:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach gen example-data startrek | cockroach sql \
     --certs-dir=certs \
@@ -137,7 +137,7 @@ Restart the nodes using the same commands you used to start them initially, but 
 
 2. Create a new user called `spock` and grant `spock` the `SELECT` privilege on the `startrek.quotes` table:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
     --certs-dir=certs \
@@ -149,7 +149,7 @@ Restart the nodes using the same commands you used to start them initially, but 
 
 1. As the `spock` user, read from the `startrek.quotes` table, using the `--certs-dir` to point to the user's client cert:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
     --certs-dir=certs \
@@ -176,7 +176,7 @@ For multiple users to access the Admin UI, the `root` user must [create users wi
 
 1. As the `root` user, open the built-in SQL shell:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
     --certs-dir=certs \
@@ -185,21 +185,21 @@ For multiple users to access the Admin UI, the `root` user must [create users wi
 
 2. Create a new `kirk` user with the password `enterprise`. You'll have to type in the password twice at the prompt:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE USER kirk WITH PASSWORD 'enterprise';
     ~~~
 
 3. Exit the SQL shell:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > \q
     ~~~
 
 4. As the `root` user, grant `kirk` the `SELECT` privilege on the tables in the `startrek` database:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
     --certs-dir=certs \
@@ -214,7 +214,7 @@ For multiple users to access the Admin UI, the `root` user must [create users wi
     It's necessary to include the `--certs-dir` flag even though you haven't created a cert for this user. When the cluster does not find a suitable client cert, it falls back on password authentication.
     {{site.data.alerts.end}}
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
     --certs-dir=certs \
@@ -246,14 +246,14 @@ In the next module, you'll start a new cluster from scratch, so take a moment to
 
 1. Stop all CockroachDB nodes:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ pkill -9 cockroach
     ~~~
 
 2. Remove the nodes' data directories:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ rm -rf node1 node2 node3 my-safe-directory certs
     ~~~

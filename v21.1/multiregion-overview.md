@@ -33,7 +33,7 @@ For more information about CockroachDB's multi-region capabilities and the custo
 {% include {{page.version.version}}/misc/multiregion-max-offset.md %}
 {{site.data.alerts.end}}
 
-{% include enterprise-feature.md %}
+{% include_cached enterprise-feature.md %}
 
 ## Cluster Regions
 

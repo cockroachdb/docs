@@ -35,7 +35,7 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 
 ### Remove an index (no dependencies)
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW INDEX FROM tl;
 ~~~
@@ -51,12 +51,12 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 (3 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP INDEX t1@t1_name_idx;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW INDEX FROM tbl;
 ~~~
@@ -74,7 +74,7 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 
 {{site.data.alerts.callout_danger}}<code>CASCADE</code> drops <em>all</em> dependent objects without listing them, which can lead to inadvertent and difficult-to-recover losses. To avoid potential harm, we recommend dropping objects individually in most cases.{{site.data.alerts.end}}
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW INDEX FROM orders;
 ~~~
@@ -90,7 +90,7 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 (3 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP INDEX orders_auto_index_fk_customer_ref_customers;
 ~~~
@@ -99,7 +99,7 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 pq: index "orders_auto_index_fk_customer_ref_customers" is in use as a foreign key constraint
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CONSTRAINTS FROM orders;
 ~~~
@@ -114,12 +114,12 @@ pq: index "orders_auto_index_fk_customer_ref_customers" is in use as a foreign k
 (2 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP INDEX orders_auto_index_fk_customer_ref_customers CASCADE;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CONSTRAINTS FROM orders;
 ~~~

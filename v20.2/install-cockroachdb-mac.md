@@ -14,7 +14,7 @@ key: install-cockroachdb.html
 
 <p>See <a href="../releases/{{page.version.version}}.html" class="mac-releasenotes-download" id="mac-releasenotes-download-{{page.version.version}}" data-eventcategory="mac-releasenotes-download">Release Notes</a> for what's new in the latest release, {{ page.release_info.version }}. To upgrade to this release from an older version, see <a href="upgrade-cockroach-version.html">Cluster Upgrade</a>.</p>
 
-{% include cockroachcloud/use-cockroachcloud-instead.md %}
+{% include_cached cockroachcloud/use-cockroachcloud-instead.md %}
 
 <h2>Install options</h2>
 
@@ -35,7 +35,7 @@ Use one of the options below to install CockroachDB.
     <li>
       <p>Copy the binary into your <code>PATH</code> so you can execute <a href="cockroach-commands.html">cockroach commands</a> from any shell:</p>
 
-      {% include copy-clipboard.html %}<div class="highlight"><pre class="highlight"><code><span class="nv language-shell"></span>cp -i cockroach-{{ page.release_info.version }}.darwin-10.9-amd64/cockroach /usr/local/bin/</code></pre></div>
+      {% include_cached copy-clipboard.html %}<div class="highlight"><pre class="highlight"><code><span class="nv language-shell"></span>cp -i cockroach-{{ page.release_info.version }}.darwin-10.9-amd64/cockroach /usr/local/bin/</code></pre></div>
       <p>If you get a permissions error, prefix the command with <code>sudo</code>.</p>
     </li>
     <div class="bs-callout bs-callout--info"><div class="bs-callout__label">Note:</div>
@@ -194,16 +194,16 @@ Use one of the options below to install CockroachDB.
     </li>
     <li><p>In the extracted directory, run <code>make build</code>:</p>
 
-      {% include copy-clipboard.html %}<div class="highlight"><pre class="highlight"><code><span class="nv language-shell"></span><span class="nb">cd </span>cockroach-{{ page.release_info.version }}</code></pre></div>
+      {% include_cached copy-clipboard.html %}<div class="highlight"><pre class="highlight"><code><span class="nv language-shell"></span><span class="nb">cd </span>cockroach-{{ page.release_info.version }}</code></pre></div>
 
-      {% include copy-clipboard.html %}<div class="highlight"><pre class="highlight"><code><span class="nv language-shell"></span>make build</code></pre></div>
+      {% include_cached copy-clipboard.html %}<div class="highlight"><pre class="highlight"><code><span class="nv language-shell"></span>make build</code></pre></div>
 
       <p>The build process can take 10+ minutes, so please be patient.</p>
     </li>
     <li>
     <p>Install the <code>cockroach</code> binary into <code>/usr/local/bin/</code> so it's easy to execute <a href="cockroach-commands.html"><code>cockroach</code> commands</a> from any directory:</p>
 
-    {% include copy-clipboard.html %}<div class="highlight"><pre class="highlight"><code><span class="nv language-shell"></span>make install</code></pre></div>
+    {% include_cached copy-clipboard.html %}<div class="highlight"><pre class="highlight"><code><span class="nv language-shell"></span>make install</code></pre></div>
     <p>If you get a permissions error, prefix the command with <code>sudo</code>.</p>
 
     <p>You can also execute the <code>cockroach</code> binary directly from its built location, <code>./src/github.com/cockroachdb/cockroach/cockroach</code>, but the rest of the documentation assumes you have the binary on your <code>PATH</code>.</p>

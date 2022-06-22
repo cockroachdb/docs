@@ -7,7 +7,7 @@ docs_area: develop
 
 CockroachDB can provide faster reads in situations where you can afford to read data that is slightly stale. These stale reads (known as _follower reads_)  are available in read-only transactions that use the [`AS OF SYSTEM TIME`](as-of-system-time.html) clause.
 
-{% include enterprise-feature.md %}
+{% include_cached enterprise-feature.md %}
 
 Normally, reads must be serviced by a replica's [leaseholder](architecture/overview.html#architecture-leaseholder). This can be slow, since the leaseholder may be geographically distant from the gateway node that is issuing the query.
 

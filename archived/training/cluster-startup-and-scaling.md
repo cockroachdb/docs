@@ -24,7 +24,7 @@ sidebar_data: sidebar-data-training.json
     <p></p>
 
     <div class="filter-content" markdown="1" data-scope="mac">
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ curl https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.darwin-10.9-amd64.tgz \
     | tar -xz
@@ -32,7 +32,7 @@ sidebar_data: sidebar-data-training.json
     </div>
 
     <div class="filter-content" markdown="1" data-scope="linux">
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ curl https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
     | tar -xz
@@ -42,7 +42,7 @@ sidebar_data: sidebar-data-training.json
 2. Move the binary into your `$PATH` so you can execute from any shell:
 
     <div class="filter-content" markdown="1" data-scope="mac">
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ mv cockroach-{{ page.release_info.version }}.darwin-10.9-amd64/cockroach \
     /usr/local/bin/
@@ -50,7 +50,7 @@ sidebar_data: sidebar-data-training.json
     </div>
 
     <div class="filter-content" markdown="1" data-scope="linux">
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ mv cockroach-{{ page.release_info.version }}.linux-amd64/cockroach \
     /usr/local/bin/
@@ -64,14 +64,14 @@ sidebar_data: sidebar-data-training.json
 3. Clean up the directory where you unpacked the binary:
 
     <div class="filter-content" markdown="1" data-scope="mac">
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ rm -rf cockroach-{{ page.release_info.version }}.darwin-10.9-amd64
     ~~~
     </div>
 
     <div class="filter-content" markdown="1" data-scope="linux">
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ rm -rf cockroach-{{ page.release_info.version }}.linux-amd64
     ~~~
@@ -85,7 +85,7 @@ sidebar_data: sidebar-data-training.json
 
 Use the [`cockroach start`](../cockroach-start.html) command to start a node:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach start \
 --insecure \
@@ -138,7 +138,7 @@ Start two more nodes, using the same `cockroach start` command as earlier but wi
 
 1. Start the second node:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     cockroach start \
     --insecure \
@@ -151,7 +151,7 @@ Start two more nodes, using the same `cockroach start` command as earlier but wi
 
 2. Start the third node:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     cockroach start \
     --insecure \
@@ -166,7 +166,7 @@ Start two more nodes, using the same `cockroach start` command as earlier but wi
 
 1. Use the [`cockroach init`](../cockroach-init.html) command to perform a one-time initialization of the cluster, sending the request to any node:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach init --insecure --host=localhost:26257
     ~~~
@@ -179,7 +179,7 @@ Start two more nodes, using the same `cockroach start` command as earlier but wi
 
 2. Look at the startup details in the server log:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ grep 'node starting' node1/logs/cockroach.log -A 11
     ~~~
@@ -219,7 +219,7 @@ Start two more nodes, using the same `cockroach start` command as earlier but wi
 
 1. Use the [`cockroach node status`](../cockroach-node.html) command to check that all 3 nodes are part of the cluster:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach node status --insecure --host=localhost:26257
     ~~~
@@ -235,7 +235,7 @@ Start two more nodes, using the same `cockroach start` command as earlier but wi
 
 2. Use the [`cockroach sql`](../cockroach-sql.html) command to query the cluster:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
     --insecure \
@@ -278,7 +278,7 @@ Adding more nodes to your cluster is even easier than starting the cluster. Just
 
 1. Start the fourth node:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     cockroach start \
     --insecure \
@@ -291,7 +291,7 @@ Adding more nodes to your cluster is even easier than starting the cluster. Just
 
 2. Start the fifth node:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     cockroach start \
     --insecure \

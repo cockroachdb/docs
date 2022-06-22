@@ -50,7 +50,7 @@ This is a [known limitation](known-limitations.html#database-and-table-renames-a
 
 ### Rename a table
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM db1;
 ~~~
@@ -65,12 +65,12 @@ This is a [known limitation](known-limitations.html#database-and-table-renames-a
 (2 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE db1.t1 RENAME TO db1.t3
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM db1;
 ~~~
@@ -87,7 +87,7 @@ This is a [known limitation](known-limitations.html#database-and-table-renames-a
 
 To avoid an error in case the table does not exist, you can include `IF EXISTS`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE IF EXISTS db1.table1 RENAME TO db1.table2;
 ~~~
@@ -96,7 +96,7 @@ To avoid an error in case the table does not exist, you can include `IF EXISTS`:
 
 To move a table from one database to another, use the above syntax but specify the source database after `ALTER TABLE` and the target database after `RENAME TO`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM db1;
 ~~~
@@ -111,7 +111,7 @@ To move a table from one database to another, use the above syntax but specify t
 (2 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM db2;
 ~~~
@@ -124,12 +124,12 @@ To move a table from one database to another, use the above syntax but specify t
 (0 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE db1.t3 RENAME TO db2.t3;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM db1;
 ~~~
@@ -142,7 +142,7 @@ To move a table from one database to another, use the above syntax but specify t
 +--------+
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM db2;
 ~~~

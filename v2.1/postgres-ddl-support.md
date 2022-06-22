@@ -569,7 +569,7 @@ Some options are supported, with the restrictions described below. For more info
 
 - Index definitions: CockroachDB supports creating indexes as part of the [`CREATE TABLE`](create-table.html) statement, for example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE t (
     X INT, 

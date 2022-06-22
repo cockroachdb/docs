@@ -111,12 +111,12 @@ In these examples, we demonstrate how to start a shell with `cockroach demo`. Fo
 
 ### Start an interactive SQL shell
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach demo
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE drivers (
     id UUID DEFAULT gen_random_uuid(),
@@ -128,12 +128,12 @@ $ cockroach demo
 );
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO drivers (city, name) VALUES ('new york', 'Catherine Nelson');
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM drivers;
 ~~~
@@ -145,19 +145,19 @@ $ cockroach demo
 (1 row)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > \q
 ~~~
 
 ### Load a sample dataset and start an interactive SQL shell
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach demo movr --nodes=3 --demo-locality=region=us-east1:region=us-central1:region=us-west1
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES;
 ~~~
@@ -174,7 +174,7 @@ $ cockroach demo movr --nodes=3 --demo-locality=region=us-east1:region=us-centra
 (6 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM users WHERE city = 'new york';
 ~~~
@@ -190,14 +190,14 @@ $ cockroach demo movr --nodes=3 --demo-locality=region=us-east1:region=us-centra
 (5 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > \q
 ~~~
 
 ### Execute SQL from the command-line
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach demo \
 --execute="CREATE TABLE drivers (
@@ -223,7 +223,7 @@ INSERT 1
 
 ### Run `cockroach demo` with a workload
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach demo --with-load
 ~~~
@@ -232,7 +232,7 @@ This command starts a demo cluster with the `movr` database preloaded and then i
 
 ### Start a multi-region demo cluster with automatic geo-partitioning
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach demo --geo-partitioned-replicas
 ~~~

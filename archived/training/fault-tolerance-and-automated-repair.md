@@ -31,7 +31,7 @@ In this module, you'll run a sample workload to simulate multiple client connect
 
     <div class="filter-content" markdown="1" data-scope="mac">
     If you're on a Mac and use Homebrew, run:
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ brew install haproxy
     ~~~
@@ -39,7 +39,7 @@ In this module, you'll run a sample workload to simulate multiple client connect
 
     <div class="filter-content" markdown="1" data-scope="linux">
     If you're using Linux and use apt-get, run:
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ sudo apt-get install haproxy
     ~~~
@@ -47,7 +47,7 @@ In this module, you'll run a sample workload to simulate multiple client connect
 
 2. Run the [`cockroach gen haproxy`](../cockroach-gen.html) command, specifying the port of any node:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach gen haproxy \
     --insecure \
@@ -59,14 +59,14 @@ In this module, you'll run a sample workload to simulate multiple client connect
 
 3. In `haproxy.cfg`, change `bind :26257` to `bind :26000`. This changes the port on which HAProxy accepts requests to a port that is not already in use by a node.
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     sed -i.saved 's/^    bind :26257/    bind :26000/' haproxy.cfg
     ~~~
 
 4. Start HAProxy, with the `-f` flag pointing to the `haproxy.cfg` file:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ haproxy -f haproxy.cfg &
     ~~~
@@ -77,7 +77,7 @@ Now that you have a load balancer running in front of your cluster, use the YCSB
 
 1. In a new terminal, load the initial `ycsb` schema and data, pointing it at HAProxy's port:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach workload init ycsb \
     'postgresql://root@localhost:26000?sslmode=disable'
@@ -85,7 +85,7 @@ Now that you have a load balancer running in front of your cluster, use the YCSB
 
 2. Run the `ycsb` workload, pointing it at HAProxy's port:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach workload run ycsb \
     --duration=20m \
@@ -127,7 +127,7 @@ When a node fails, the cluster waits for the node to remain offline for 5 minute
 
 1. In a new terminal, reduce the amount of time the cluster waits before considering a node dead to the minimum allowed of 1 minute and 15 seconds:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
     --insecure \
@@ -137,7 +137,7 @@ When a node fails, the cluster waits for the node to remain offline for 5 minute
 
 2. Then use the [`cockroach quit`](../cockroach-quit.html) command to stop node 5:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach quit \
     --insecure \
@@ -168,7 +168,7 @@ To be able to tolerate 2 of 5 nodes failing simultaneously without any service i
 
 1. Restart node 5, using the same command you used to start the node initially:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -181,7 +181,7 @@ To be able to tolerate 2 of 5 nodes failing simultaneously without any service i
 
 2. In a new terminal, use the [`ALTER RANGE ... CONFIGURE ZONE`](../configure-zone.html) command to change the cluster's `default` replication factor to 5:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql --execute="ALTER RANGE default CONFIGURE ZONE USING num_replicas=5;" --insecure --host=localhost:26000
     ~~~
@@ -196,12 +196,12 @@ To be able to tolerate 2 of 5 nodes failing simultaneously without any service i
 
 1. Use the [`cockroach quit`](../cockroach-quit.html) command to stop nodes 4 and 5:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach quit --insecure --host=localhost:26260
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach quit --insecure --host=localhost:26261
     ~~~
@@ -216,7 +216,7 @@ To be able to tolerate 2 of 5 nodes failing simultaneously without any service i
 
 2. To verify this further, use the `cockroach sql` command to count the number of rows in the `ycsb.usertable` table and verify that it is still serving reads:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
     --insecure \
@@ -233,7 +233,7 @@ To be able to tolerate 2 of 5 nodes failing simultaneously without any service i
 
     And writes:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
     --insecure \
@@ -241,7 +241,7 @@ To be able to tolerate 2 of 5 nodes failing simultaneously without any service i
     --execute="INSERT INTO ycsb.usertable VALUES ('asdf', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);"
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
     --insecure \
@@ -262,7 +262,7 @@ In the next module, you'll start a new cluster from scratch, so take a moment to
 
 1. Stop all CockroachDB nodes, HAProxy, and the YCSB load generator:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ pkill -9 cockroach haproxy ycsb
     ~~~
@@ -271,7 +271,7 @@ In the next module, you'll start a new cluster from scratch, so take a moment to
 
 2. Remove the nodes' data directories and the HAProxy config:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ rm -rf node1 node2 node3 node4 node5 haproxy.cfg
     ~~~

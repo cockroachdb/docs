@@ -83,7 +83,7 @@ For details, see [tracking issue](https://github.com/cockroachdb/cockroach/issue
 
 ### Create a Table with a `JSONB` Column
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE users (
     profile_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -92,7 +92,7 @@ For details, see [tracking issue](https://github.com/cockroachdb/cockroach/issue
   );
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW COLUMNS FROM users;
 ~~~
@@ -108,14 +108,14 @@ For details, see [tracking issue](https://github.com/cockroachdb/cockroach/issue
 (3 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO users (user_profile) VALUES
     ('{"first_name": "Lola", "last_name": "Dog", "location": "NYC", "online" : true, "friends" : 547}'),
     ('{"first_name": "Ernie", "status": "Looking for treats", "location" : "Brooklyn"}');
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM users;
 ~~~
@@ -134,7 +134,7 @@ For details, see [tracking issue](https://github.com/cockroachdb/cockroach/issue
 
 To retrieve `JSONB` data with easier-to-read formatting, use the `jsonb_pretty()` function. For example, retrieve data from the table you created in the [first example](#create-a-table-with-a-jsonb-column):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT profile_id, last_updated, jsonb_pretty(user_profile) FROM users;
 ~~~
@@ -161,7 +161,7 @@ To retrieve `JSONB` data with easier-to-read formatting, use the `jsonb_pretty()
 
 To retrieve a specific field from a `JSONB` value, use the `->` operator. For example, retrieve a field from the table you created in the [first example](#create-a-table-with-a-jsonb-column):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT user_profile->'first_name',user_profile->'location' FROM users;
 ~~~
@@ -176,7 +176,7 @@ To retrieve a specific field from a `JSONB` value, use the `->` operator. For ex
 
 You can also use the `->>` operator to return `JSONB` field values as `STRING` values:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT user_profile->>'first_name', user_profile->>'location' FROM users;
 ~~~
@@ -191,7 +191,7 @@ You can also use the `->>` operator to return `JSONB` field values as `STRING` v
 
 You can use the `@>` operator to filter the values in key-value pairs to return `JSONB` field values:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT user_profile->'first_name', user_profile->'location' FROM users WHERE user_profile @> '{"location":"NYC"}';
 ~~~
@@ -211,14 +211,14 @@ To organize your `JSONB` field values, use the `GROUP BY` and `ORDER BY` clauses
 
 For this example, we will add a few more records to the existing table. This will help us see clearly how the data is grouped.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO users (user_profile) VALUES
     ('{"first_name": "Lola", "last_name": "Kim", "location": "Seoul", "online": false, "friends": 600}'),
     ('{"first_name": "Parvati", "last_name": "Patil", "location": "London", "online": false, "friends": 500}');
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~sql
 > SELECT user_profile->>'first_name' AS first_name, user_profile->>'location' AS location FROM users;
 ~~~
@@ -234,7 +234,7 @@ For this example, we will add a few more records to the existing table. This wil
 
 Now let’s group and order the data.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT user_profile->>'first_name' first_name, count(*) total FROM users group by user_profile->>'first_name' order by total;
 ~~~

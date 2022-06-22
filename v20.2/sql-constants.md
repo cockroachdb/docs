@@ -59,7 +59,7 @@ enclosed between single quotes (`'`), for example, `'hello world'`.
 To include a single quote in the string, use a double single quote.
 For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT 'hello' as a, 'it''s a beautiful day' as b;
 ~~~
@@ -77,7 +77,7 @@ the following special syntax: two simple string literals separated by
 a newline character are automatically concatenated together to form a
 single constant. For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT 'hello'
 ' world!' as a;
@@ -132,7 +132,7 @@ Dollar-quoted strings have the form: `$` + (optional) tag + `$` + arbitrary text
 
 For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT char_length($MyCoolString$
 You can put anything you want in this string -- for example, here's a Windows filesystem pathname: 'C:\Users\foo\Downloads\file.zip'

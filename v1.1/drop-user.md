@@ -29,7 +29,7 @@ The user must have the `DELETE` [privilege](privileges.html) on the `system.user
 
 In this example, we first check a user's privileges. We then revoke the user's privileges before removing the user.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW GRANTS ON test.customers FOR mroach;
 ~~~
@@ -45,12 +45,12 @@ In this example, we first check a user's privileges. We then revoke the user's p
 (3 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > REVOKE CREATE,INSERT,UPDATE ON test.customers FROM mroach;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP USER mroach;
 ~~~

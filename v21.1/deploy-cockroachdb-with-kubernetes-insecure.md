@@ -21,7 +21,7 @@ This page shows you how to start and stop a 3-node CockroachDB insecure test clu
 
 The steps below demonstrate how to quickly deploy and interact with an insecure test cluster. To learn about authenticating, configuring, scaling, and upgrading a CockroachDB cluster on Kubernetes, [deploy a secure cluster](operate-cockroachdb-kubernetes.html) and then see [Operate CockroachDB on Kubernetes](operate-cockroachdb-kubernetes.html).
 
-{% include cockroachcloud/use-cockroachcloud-instead.md %}
+{% include_cached cockroachcloud/use-cockroachcloud-instead.md %}
 
 ## Before you begin
 

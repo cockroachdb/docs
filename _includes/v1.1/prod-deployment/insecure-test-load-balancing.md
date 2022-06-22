@@ -8,21 +8,21 @@ CockroachDB offers a pre-built `workload` binary for Linux that includes several
 
 2. Download `workload` and make it executable:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ wget https://edge-binaries.cockroachdb.com/cockroach/workload.LATEST ; chmod 755 workload.LATEST
     ~~~
 
 3. Rename and copy `workload` into the `PATH`:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cp -i workload.LATEST /usr/local/bin/workload
     ~~~
 
 4. Start the TPC-C workload, pointing it at the IP address of the load balancer:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ workload run tpcc \
     --drop \

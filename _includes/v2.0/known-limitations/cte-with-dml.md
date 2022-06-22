@@ -8,7 +8,7 @@ data-modifying statement will not be executed at all.
 
 For example, the following query does not insert any row, because the CTE `a` is not used:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > WITH a AS (INSERT INTO t(x) VALUES (1), (2), (3))
   SELECT * FROM b;
@@ -17,7 +17,7 @@ For example, the following query does not insert any row, because the CTE `a` is
 Also, the following query does not insert any row, even though the CTE `a` is used, because
 the other CTE that uses `a` are themselves not used:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > WITH a AS (INSERT INTO t(x) VALUES (1), (2), (3)),
        b AS (SELECT * FROM a)

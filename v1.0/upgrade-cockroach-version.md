@@ -41,14 +41,14 @@ For each node in your cluster, complete the following steps.
 
     Without a process manager, use this command:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ pkill cockroach
     ~~~
 
     Then verify that the process has stopped:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ ps aux | grep cockroach
     ~~~
@@ -64,24 +64,24 @@ For each node in your cluster, complete the following steps.
     <p></p>
 
     <div class="filter-content" markdown="1" data-scope="mac">
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ curl https://binaries.cockroachdb.com/cockroach-{{page.release_info.version}}.darwin-10.9-amd64.tgz
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ tar -xzf cockroach-{{page.release_info.version}}.darwin-10.9-amd64.tgz
     ~~~
     </div>
 
     <div class="filter-content" markdown="1" data-scope="linux">
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ curl https://binaries.cockroachdb.com/cockroach-{{page.release_info.version}}.linux-amd64.tgz
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ tar -xzf cockroach-{{page.release_info.version}}.linux-amd64.tgz
     ~~~
@@ -96,24 +96,24 @@ For each node in your cluster, complete the following steps.
     <p></p>
 
     <div class="filter-content" markdown="1" data-scope="mac">
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     i="$(which cockroach)"; mv "$i" "$i"_old
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cp -i cockroach-{{page.release_info.version}}.darwin-10.9-amd64/cockroach /usr/local/bin/cockroach
     ~~~
     </div>
 
     <div class="filter-content" markdown="1" data-scope="linux">
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     i="$(which cockroach)"; mv "$i" "$i"_old
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cp -i cockroach-{{page.release_info.version}}.linux-amd64/cockroach /usr/local/bin/cockroach
     ~~~
@@ -123,7 +123,7 @@ For each node in your cluster, complete the following steps.
 
     Without a process manager, use this command:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start --join=[IP address of any other node] [other flags]
     ~~~
@@ -133,7 +133,7 @@ For each node in your cluster, complete the following steps.
 
 7. If you use `cockroach` in your `$PATH`, you can remove the old binary:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ rm /usr/local/bin/cockroach_old
     ~~~

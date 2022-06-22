@@ -7,7 +7,7 @@ docs_area: reference.sql
 
 The `ALTER DATABASE .. DROP REGION` [statement](sql-statements.html) drops a [region](multiregion-overview.html#database-regions) from a [multi-region database](multiregion-overview.html). While CockroachDB processes an index modification or changing a table to or from a [`REGIONAL BY ROW` table](multiregion-overview.html#regional-by-row-tables), attempting to drop a region from the database containing that `REGIONAL BY ROW` table will produce an error. Similarly, while this statement is running, all index modifications and locality changes on [`REGIONAL BY ROW`](multiregion-overview.html#regional-by-row-tables) tables will be blocked.
 
-{% include enterprise-feature.md %}
+{% include_cached enterprise-feature.md %}
 
 {{site.data.alerts.callout_info}}
 `DROP REGION` is a subcommand of [`ALTER DATABASE`](alter-database.html).

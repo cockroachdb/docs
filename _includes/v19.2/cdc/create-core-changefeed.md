@@ -2,7 +2,7 @@ In this example, you'll set up a core changefeed for a single-node cluster.
 
 1. In a terminal window, start `cockroach`:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -12,7 +12,7 @@ In this example, you'll set up a core changefeed for a single-node cluster.
 
 2. As the `root` user, open the [built-in SQL client](cockroach-sql.html):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
     --url="postgresql://root@127.0.0.1:26257?sslmode=disable" \
@@ -23,28 +23,28 @@ In this example, you'll set up a core changefeed for a single-node cluster.
 
 3. Enable the `kv.rangefeed.enabled` [cluster setting](cluster-settings.html):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SET CLUSTER SETTING kv.rangefeed.enabled = true;
     ~~~
 
 4. Create table `foo`:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE TABLE foo (a INT PRIMARY KEY);
     ~~~
 
 5. Insert a row into the table:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > INSERT INTO foo VALUES (0);
     ~~~
 
 6. Start the core changefeed:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > EXPERIMENTAL CHANGEFEED FOR foo;
     ~~~
@@ -55,7 +55,7 @@ In this example, you'll set up a core changefeed for a single-node cluster.
 
 7. In a new terminal, add another row:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql --insecure -e "INSERT INTO foo VALUES (1)"
     ~~~
@@ -72,7 +72,7 @@ In this example, you'll set up a core changefeed for a single-node cluster.
 
 10. To stop `cockroach`, run:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach quit --insecure
     ~~~

@@ -27,7 +27,7 @@ notations, and those defined using
 
 For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT *
    FROM [INSERT INTO t(x) VALUES (1), (2), (3) RETURNING x]
@@ -45,7 +45,7 @@ A subquery is said to be "correlated" when it uses table or column names defined
 
 For example, to find every customer with at least one order, run:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT
       c.name
@@ -67,7 +67,7 @@ The [cost-based optimizer](cost-based-optimizer.html) supports most correlated s
 
 - Correlated subqueries that result in implicit `LATERAL` joins. Given a cross-join expression `a,b`, if `b` is an application of a [set-returning function](functions-and-operators.html#set-returning-functions) that references a variable defined in the surrounding query, the `LATERAL` keyword is assumed as shown below.
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT
           e.last_name, s.salary, noise

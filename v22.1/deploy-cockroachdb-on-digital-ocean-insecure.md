@@ -16,7 +16,7 @@ This page shows you how to deploy an insecure multi-node CockroachDB cluster on 
 
 {% include {{ page.version.version }}/prod-deployment/insecure-flag.md %}
 
-{% include cockroachcloud/use-cockroachcloud-instead.md %}
+{% include_cached cockroachcloud/use-cockroachcloud-instead.md %}
 
 ## Before you begin
 

@@ -13,7 +13,7 @@ docs_area: deploy
 
 Once you've [installed CockroachDB](install-cockroachdb.html), it's simple to run an insecure multi-node cluster locally.
 
-{% include cockroachcloud/use-cockroachcloud-instead.md %}
+{% include_cached cockroachcloud/use-cockroachcloud-instead.md %}
 
 ## Before you begin
 

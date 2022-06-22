@@ -38,7 +38,7 @@ name      | The name of the savepoint.  Defaults to `cockroach_restart`, but may
 
 After declaring a [`SAVEPOINT`](savepoint.html), commit the transaction with `RELEASE SAVEPOINT` and then prepare the connection for the next transaction with [`COMMIT`](commit-transaction.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BEGIN;
 

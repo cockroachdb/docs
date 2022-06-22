@@ -107,7 +107,7 @@ Convert SQL *NULL* values so they match the specified string.
 
 ### Export a table
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPORT INTO CSV
   'azure://acme-co/customer-export-data?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co'
@@ -116,7 +116,7 @@ Convert SQL *NULL* values so they match the specified string.
 
 ### Export using a `SELECT` statement
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPORT INTO CSV
   'azure://acme-co/customer-export-data?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co'
@@ -125,7 +125,7 @@ Convert SQL *NULL* values so they match the specified string.
 
 ### Non-distributed export using the SQL shell
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql -e "SELECT * from bank.customers WHERE id>=100;" --format=csv > my.csv
 ~~~
@@ -134,7 +134,7 @@ $ cockroach sql -e "SELECT * from bank.customers WHERE id>=100;" --format=csv > 
 
 View running exports by using [`SHOW QUERIES`](show-queries.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW QUERIES;
 ~~~
@@ -143,7 +143,7 @@ View running exports by using [`SHOW QUERIES`](show-queries.html):
 
 Use [`SHOW QUERIES`](show-queries.html) to get a running export's `query_id`, which can be used to [cancel the export](cancel-query.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CANCEL QUERY '14dacc1f9a781e3d0000000000000001';
 ~~~

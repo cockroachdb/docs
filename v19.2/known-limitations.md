@@ -14,17 +14,17 @@ Using a [collation](collate.html) name with upper-case letters or hyphens may re
 
 For example, the following SQL will result in an error:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE nocase_strings (s STRING COLLATE "en-US-u-ks-level2");
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO nocase_strings VALUES ('Aaa' COLLATE "en-US-u-ks-level2"), ('Bbb' COLLATE "en-US-u-ks-level2");
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT s FROM nocase_strings WHERE s = ('bbb' COLLATE "en-US-u-ks-level2");
 ~~~
@@ -43,7 +43,7 @@ CockroachDB validates [`CHECK`](check.html) constraints on the results of [`INSE
 
 If this difference matters to your client, you can `INSERT ON CONFLICT` from a `SELECT` statement and check the inserted value as part of the `SELECT`. For example, instead of defining `CHECK (x > 0)` on `t.x` and using `INSERT INTO t(x) VALUES (3) ON CONFLICT (x) DO UPDATE SET x = excluded.x`, you could do the following:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO t (x)
     SELECT if (x <= 0, crdb_internal.force_error('23514', 'check constraint violated'), x)
@@ -64,7 +64,7 @@ pq: check constraint violated
 
 It is not currently possible to use a subquery in a [`SET`](set-vars.html) or [`SET CLUSTER SETTING`](set-cluster-setting.html) statement. For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET application_name = (SELECT 'a' || 'b');
 ~~~
@@ -87,12 +87,12 @@ pq: internal error: invalid index 1 for "(SELECT 'ab')"
 
 When filtering a query by `now()`, the [cost-based optimizer](cost-based-optimizer.html) currently cannot constrain an index on the filtered timestamp column. This results in a full table scan. For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE bydate (a TIMESTAMP NOT NULL, INDEX (a));
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN SELECT * FROM bydate WHERE a > (now() - '1h'::interval);
 ~~~
@@ -111,12 +111,12 @@ When filtering a query by `now()`, the [cost-based optimizer](cost-based-optimiz
 
 As a workaround, pass the correct date into the query as a parameter to a prepared query with a placeholder, which will allow the optimizer to constrain the index correctly:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > PREPARE q AS SELECT * FROM bydate WHERE a > ($1::timestamp - '1h'::interval);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXECUTE q ('2020-05-12 00:00:00');
 ~~~
@@ -157,7 +157,7 @@ When a node is offline, the [Raft logs](architecture/replication-layer.html#raft
 
 To work around this limitation, you can adjust the `kv.snapshot_recovery.max_rate` [cluster setting](cluster-settings.html) to temporarily relax the throughput rate limiting applied to snapshots. For example, changing the rate limiting from the default 8 MB/s, at which 1 GB of snapshots takes at least 2 minutes, to 64 MB/s can result in an 8x speedup in snapshot transfers and, therefore, a much shorter interruption of requests to an impacted node:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET CLUSTER SETTING kv.snapshot_recovery.max_rate = '64mb';
 ~~~
@@ -302,22 +302,22 @@ Currently, the built-in SQL shell provided with CockroachDB (`cockroach sql` / `
 
 It is currently not possible to [add a column](add-column.html) to a table when the column uses a [sequence](create-sequence.html) as the [`DEFAULT`](default-value.html) value, for example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE t (x INT);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO t(x) VALUES (1), (2), (3);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE SEQUENCE s;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE t ADD COLUMN y INT DEFAULT nextval('s');
 ~~~
@@ -384,7 +384,7 @@ For example, let's say that latency is 10ms from nodes in datacenter A to nodes 
 
 Many string operations are not properly overloaded for [collated strings](collate.html), for example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT 'string1' || 'string2';
 ~~~
@@ -398,7 +398,7 @@ Many string operations are not properly overloaded for [collated strings](collat
 (1 row)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT ('string1' collate en) || ('string2' collate en);
 ~~~

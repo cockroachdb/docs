@@ -2,7 +2,7 @@
 The [Cost-based Optimizer](cost-based-optimizer.html) can take advantage of replication zones for secondary indexes when optimizing queries. For more information, see [Cost-based optimizer - preferring the nearest index](cost-based-optimizer.html#preferring-the-nearest-index).
 {{site.data.alerts.end}}
 
-{% include enterprise-feature.md %}
+{% include_cached enterprise-feature.md %}
 
 The [secondary indexes](indexes.html) on a table will automatically use the replication zone for the table. However, with an enterprise license, you can add distinct replication zones for secondary indexes.
 
@@ -12,7 +12,7 @@ To control replication for a specific secondary index, use the `ALTER INDEX ... 
 To get the name of a secondary index, which you need for the `CONFIGURE ZONE` statement, use the [`SHOW INDEX`](show-index.html) or [`SHOW CREATE TABLE`](show-create.html) statements.
 {{site.data.alerts.end}}
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER INDEX vehicles@vehicles_auto_index_fk_city_ref_users CONFIGURE ZONE USING num_replicas = 5, gc.ttlseconds = 100000;
 ~~~
@@ -21,7 +21,7 @@ To get the name of a secondary index, which you need for the `CONFIGURE ZONE` st
 CONFIGURE ZONE 1
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW ZONE CONFIGURATION FOR INDEX vehicles@vehicles_auto_index_fk_city_ref_users;
 ~~~

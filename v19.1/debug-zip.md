@@ -89,19 +89,19 @@ If you need to troubleshoot this command's behavior, you can also change its [lo
 
 ### Generate a debug zip file
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 # Generate the debug zip file for an insecure cluster:
 $ cockroach debug zip ./cockroach-data/logs/debug.zip --insecure
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 # Generate the debug zip file for a secure cluster:
 $ cockroach debug zip ./cockroach-data/logs/debug.zip
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 # Generate the debug zip file from a remote machine:
 $ cockroach debug zip ./crdb-debug.zip --host=200.100.50.25

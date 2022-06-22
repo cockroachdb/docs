@@ -60,7 +60,7 @@ Use the [`cockroach start`](cockroach-start.html) command to start 3 nodes on yo
 
 1. Start a node in the "US West":
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -74,7 +74,7 @@ Use the [`cockroach start`](cockroach-start.html) command to start 3 nodes on yo
 
 2. Start a node in the "US Midwest":
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -88,7 +88,7 @@ Use the [`cockroach start`](cockroach-start.html) command to start 3 nodes on yo
 
 3. Start a node in the "US East":
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -102,7 +102,7 @@ Use the [`cockroach start`](cockroach-start.html) command to start 3 nodes on yo
 
 4. Use the [`cockroach init`](cockroach-init.html) command to perform a one-time initialization of the cluster:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach init \
     --insecure \
@@ -115,7 +115,7 @@ Use the [`cockroach start`](cockroach-start.html) command to start 3 nodes on yo
 
 1. Start `comcast` as follows:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ comcast --device lo0 --latency 100
     ~~~
@@ -134,7 +134,7 @@ Now that the cluster is live, use CockroachDB's [built-in version the `tpcc` ben
 
 1. Load the initial schema and data, pointing it at port `26259`, which is the port of the node with the `us-east` locality:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach workload init tpcc \
     'postgresql://root@localhost:26259?sslmode=disable'
@@ -148,7 +148,7 @@ The load generator created a `tpcc` database with several tables that map to und
 
 1. Run the [`cockroach node status`](cockroach-node.html) command against any node:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach node status --insecure --host=localhost:26259
     ~~~
@@ -166,14 +166,14 @@ The load generator created a `tpcc` database with several tables that map to und
 
 3. Connect the [built-in SQL shell](cockroach-sql.html) to any node:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql --insecure --host=localhost:26259
     ~~~
 
 4. Check where the range lease is for the `tpcc.customer` table:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SHOW RANGES FROM TABLE tpcc.customer;
     ~~~
@@ -189,7 +189,7 @@ The load generator created a `tpcc` database with several tables that map to und
 
 5. Exit the SQL shell:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > \q
     ~~~
@@ -198,7 +198,7 @@ The load generator created a `tpcc` database with several tables that map to und
 
 1. Run the [`cockroach workload run tpcc`](cockroach-workload.html) command to generate more load, this time pointing it at port `26257`, which is the port of the node with the `us-west` locality:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach workload run tpcc \
     --duration=5m \
@@ -219,14 +219,14 @@ Verify that the range lease for the `customer` table moved to the node in the "U
 
 1. Connect the [built-in SQL shell](cockroach-sql.html) to any node:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql --insecure --host=localhost:26257
     ~~~
 
 2. Check where the range lease is for the `tpcc.customer` table:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SHOW RANGES FROM TABLE tpcc.customer;
     ~~~
@@ -244,19 +244,19 @@ Verify that the range lease for the `customer` table moved to the node in the "U
 
 1. Once you're done with this tutorial, you will not want a 100 millisecond delay for all requests on your local workstation, so stop the `comcast` tool:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ comcast --device lo0 --stop
     ~~~
 
 2. Use the [`cockroach quit`](cockroach-quit.html) command to gracefully shut down each node:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach quit --insecure --host=localhost:26257
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach quit --insecure --host=localhost:26258
     ~~~
@@ -265,7 +265,7 @@ Verify that the range lease for the `customer` table moved to the node in the "U
     For the last node, the shutdown process will take longer (about a minute each) and will eventually force the node to stop. This is because, with only 1 of 3 nodes left, a majority of replicas are not available, and so the cluster is no longer operational.
     {{site.data.alerts.end}}
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach quit --insecure --host=localhost:26259
     ~~~
@@ -274,7 +274,7 @@ Verify that the range lease for the `customer` table moved to the node in the "U
 
     If you do not plan to restart the cluster, you may want to remove the nodes' data stores:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ rm -rf follow1 follow2 follow3
     ~~~

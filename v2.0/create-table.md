@@ -180,7 +180,7 @@ In this example, we create two secondary indexes during table creation. Secondar
 
 This example also demonstrates a number of column-level and table-level [constraints](constraints.html).
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE product_information (
     product_id           INT PRIMARY KEY NOT NULL,
@@ -248,7 +248,7 @@ There are a [number of rules](foreign-key.html#rules-for-creating-foreign-keys) 
 
 In this example, we use `ON DELETE CASCADE` (i.e., when row referenced by a foreign key constraint is deleted, all dependent rows are also deleted).
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ``` sql
 > CREATE TABLE customers (
     id INT PRIMARY KEY,
@@ -256,7 +256,7 @@ In this example, we use `ON DELETE CASCADE` (i.e., when row referenced by a fore
   );
 ```
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ``` sql
 > CREATE TABLE orders (
     id INT PRIMARY KEY,
@@ -264,7 +264,7 @@ In this example, we use `ON DELETE CASCADE` (i.e., when row referenced by a fore
   );
 ```
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ``` sql
 > SHOW CREATE TABLE orders;
 ```
@@ -283,22 +283,22 @@ In this example, we use `ON DELETE CASCADE` (i.e., when row referenced by a fore
 +--------+---------------------------------------------------------------------------------------------------------------------+
 ```
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ``` sql
 > INSERT INTO customers VALUES (1, 'Lauren');
 ```
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ``` sql
 > INSERT INTO orders VALUES (1,1);
 ```
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ``` sql
 > DELETE FROM customers WHERE id = 1;
 ```
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ``` sql
 > SELECT * FROM orders;
 ```
@@ -317,7 +317,7 @@ In this example, we use `ON DELETE CASCADE` (i.e., when row referenced by a fore
 
 You can use the [`CREATE TABLE AS`](create-table-as.html) statement to create a new table from the results of a `SELECT` statement, for example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM customers WHERE state = 'NY';
 ~~~
@@ -330,7 +330,7 @@ You can use the [`CREATE TABLE AS`](create-table-as.html) statement to create a 
 +----+---------+-------+
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE customers_ny AS SELECT * FROM customers WHERE state = 'NY';
 
@@ -357,7 +357,7 @@ You can use the [`CREATE TABLE AS`](create-table-as.html) statement to create a 
 
 In this example, we create a table and [define partitions by list](partitioning.html#partition-by-list).
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE students_by_list (
     id INT DEFAULT unique_rowid(),
@@ -376,7 +376,7 @@ In this example, we create a table and [define partitions by list](partitioning.
 
 In this example, we create a table and [define partitions by range](partitioning.html#partition-by-range).
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE students_by_range (
    id INT DEFAULT unique_rowid(),
@@ -394,7 +394,7 @@ In this example, we create a table and [define partitions by range](partitioning
 
 To show the definition of a table, use the [`SHOW CREATE TABLE`](show-create-table.html) statement. The contents of the `CreateTable` column in the response is a string with embedded line breaks that, when echoed, produces formatted output.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE TABLE logoff;
 ~~~

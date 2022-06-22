@@ -21,7 +21,7 @@ block_search: false
 
 2. Use the `cockroach gen` command to generate an example `startrek` database with 2 tables, `episodes` and `quotes`:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach gen example-data startrek | cockroach sql \
     --insecure \
@@ -34,7 +34,7 @@ Initially, no users other than `root` have privileges, and root has `ALL` privil
 
 1. Check the privileges on the `startrek` database:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
     --insecure \
@@ -60,7 +60,7 @@ Initially, no users other than `root` have privileges, and root has `ALL` privil
 
 2. Check the privileges on the tables inside in the `startrek` database:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
     --insecure \
@@ -84,7 +84,7 @@ Initially, no users other than `root` have privileges, and root has `ALL` privil
 
 1. Create a new user, `spock`:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
     --certs-dir=certs \
@@ -94,7 +94,7 @@ Initially, no users other than `root` have privileges, and root has `ALL` privil
 
 2. Try to read from a table in the `startrek` database as `spock`:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
     --insecure \
@@ -115,7 +115,7 @@ Initially, no users other than `root` have privileges, and root has `ALL` privil
 
 1. As the `root` user, grant `spock` the `SELECT` privilege on all tables in the `startrek` database:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
     --insecure \
@@ -125,7 +125,7 @@ Initially, no users other than `root` have privileges, and root has `ALL` privil
 
 2. As the `root` user, grant `spock` the `INSERT` privilege on just the `startrek.quotes` table:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
     --insecure \
@@ -135,7 +135,7 @@ Initially, no users other than `root` have privileges, and root has `ALL` privil
 
 3. As the `root` user, show the privileges granted on tables in the `startrek` database:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
     --insecure \
@@ -160,7 +160,7 @@ Initially, no users other than `root` have privileges, and root has `ALL` privil
 
 1. As the `spock` user, read from the tables in the `startrek` database:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
     --insecure \
@@ -185,7 +185,7 @@ Initially, no users other than `root` have privileges, and root has `ALL` privil
 
 2. As the `spock` user, insert a row into the `startrek.quotes` table:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
     --insecure \
@@ -202,7 +202,7 @@ Initially, no users other than `root` have privileges, and root has `ALL` privil
 
 3. As the `spock` user, try to insert a row into the `startrek.episodes` table:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
     --insecure \
@@ -222,7 +222,7 @@ Initially, no users other than `root` have privileges, and root has `ALL` privil
 
 1. As the `root` user, show the privileges granted on tables in the `startrek` database:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
     --insecure \
@@ -245,7 +245,7 @@ Initially, no users other than `root` have privileges, and root has `ALL` privil
 
 2. As the `root` user, revoke the `SELECT` privilege on the `startrek.episodes` table from `spock`:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
     --insecure \
@@ -255,7 +255,7 @@ Initially, no users other than `root` have privileges, and root has `ALL` privil
 
 3. As the `root` user, again show the privileges granted on tables in the `startrek` database:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
     --insecure \
@@ -279,7 +279,7 @@ Initially, no users other than `root` have privileges, and root has `ALL` privil
 
 4. Now as the `spock` user, try to read from the `startrek.episodes` table:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
     --insecure \
@@ -301,7 +301,7 @@ In the next module, you'll start with a fresh cluster, so take a moment to clean
 
 1. Stop all CockroachDB nodes:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ pkill -9 cockroach
     ~~~
@@ -310,7 +310,7 @@ In the next module, you'll start with a fresh cluster, so take a moment to clean
 
 2. Remove the nodes' data directories:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ rm -rf node1 node2 node3
     ~~~

@@ -7,7 +7,7 @@ docs_area: manage
 
 CockroachDB supports the Generic Security Services API (GSSAPI) with Kerberos authentication.
 
-{% include enterprise-feature.md %}
+{% include_cached enterprise-feature.md %}
 
 ## Requirements
 

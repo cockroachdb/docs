@@ -26,7 +26,7 @@ Every node of a CockroachDB cluster exports granular timeseries metrics at `http
 
 For a tutorial on using Prometheus, see [Monitor CockroachDB with Prometheus](monitor-cockroachdb-with-prometheus.html).
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ curl http://localhost:8080/_status/vars
 ~~~
@@ -57,7 +57,7 @@ CockroachDB provides two HTTP endpoints for checking the health of individual no
 
 If a node is down, the `http://<host>:<http-port>/health` endpoint returns a `Connection refused` error:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ curl http://localhost:8080/health
 ~~~
@@ -90,7 +90,7 @@ The `http://<node-host>:<http-port>/health?ready=1` endpoint returns an HTTP `50
 
 - The node is unable to communicate with a majority of the other nodes in the cluster, likely because the cluster is unavailable due to too many nodes being down.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ curl http://localhost:8080/health?ready=1
 ~~~

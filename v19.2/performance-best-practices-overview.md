@@ -104,7 +104,7 @@ For example, consider a social media website. Social media posts are written by 
 
 This would make the following query efficient.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM posts
           WHERE username = 'alyssa'
@@ -129,7 +129,7 @@ Time: 924µs
 
 To see why, let's look at the [`EXPLAIN`](explain.html) output. It shows that the query is fast because it does a point lookup on the indexed column `username` (as shown by the line `spans | /"alyssa"-...`). Furthermore, the column `post_timestamp` is already in an index, and sorted (since it's a monotonically increasing part of the primary key).
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN (VERBOSE)
     SELECT * FROM posts
@@ -156,17 +156,17 @@ Note that the above query also follows the [indexing best practice](indexes.html
 
 To auto-generate unique row IDs, use the [`UUID`](uuid.html) column with the `gen_random_uuid()` [function](functions-and-operators.html#id-generation-functions) as the [default value](default-value.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE t1 (id UUID PRIMARY KEY DEFAULT gen_random_uuid(), name STRING);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO t1 (name) VALUES ('a'), ('b'), ('c');
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM t1;
 ~~~
@@ -190,7 +190,7 @@ If something prevents you from using [multi-column primary keys](#use-multi-colu
 
 Suppose the table schema is as follows:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE X (
 	ID1 INT,
@@ -202,7 +202,7 @@ Suppose the table schema is as follows:
 
 The common approach would be to use a transaction with an `INSERT` followed by a `SELECT`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BEGIN;
 
@@ -217,7 +217,7 @@ The common approach would be to use a transaction with an `INSERT` followed by a
 
 However, the performance best practice is to use a `RETURNING` clause with `INSERT` instead of the transaction:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO X VALUES (1,1,1),(2,2,2),(3,3,3)
 	ON CONFLICT (ID1,ID2)
@@ -229,7 +229,7 @@ However, the performance best practice is to use a `RETURNING` clause with `INSE
 
 Suppose the table schema is as follows:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE X (
 	ID1 INT,
@@ -241,7 +241,7 @@ Suppose the table schema is as follows:
 
 The common approach to generate random Unique IDs is a transaction using a `SELECT` statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BEGIN;
 
@@ -254,7 +254,7 @@ The common approach to generate random Unique IDs is a transaction using a `SELE
 
 However, the performance best practice is to use a `RETURNING` clause with `INSERT` instead of the transaction:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO X VALUES (1,1),(2,2),(3,3)
 	RETURNING ID1,ID2,ID3;
@@ -298,7 +298,7 @@ For large tables, avoid table scans (that is, reading the entire table data) whe
 
 Suppose the table schema is as follows:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE accounts (
 	id INT,
@@ -311,14 +311,14 @@ Suppose the table schema is as follows:
 
 Now if we want to find the account balances of all customers, an inefficient table scan would be:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM ACCOUNTS;
 ~~~
 
 This query retrieves all data stored in the table. A more efficient query would be:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
  > SELECT CUSTOMER, BALANCE FROM ACCOUNTS;
 ~~~

@@ -57,7 +57,7 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 
 Suppose that you are storing the data for users of your application in a table called `users`, defined by the following `CREATE TABLE` statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE users (
   name STRING PRIMARY KEY,
@@ -69,17 +69,17 @@ The primary key of this table is on the `name` column. This is a poor choice, as
 
 You can add a column and change the primary key with a couple of `ALTER TABLE` statements:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE users ADD COLUMN id UUID NOT NULL DEFAULT gen_random_uuid();
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE users ALTER PRIMARY KEY USING COLUMNS (id);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE TABLE users;
 ~~~
@@ -104,7 +104,7 @@ Note that the old primary key index becomes a secondary index, in this case, `us
 
 Suppose that you are storing the data for users of your application in a table called `users`, defined by the following `CREATE TABLE` statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE users (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -116,14 +116,14 @@ Suppose that you are storing the data for users of your application in a table c
 
 Now suppose that you want to expand your business from a single region into multiple regions. After you [deploy your application in multiple regions](topology-patterns.html), you consider [geo-partitioning your data](topology-geo-partitioned-replicas.html) to minimize latency and optimize performance. In order to geo-partition the `user` database, you need to add a column specifying the location of the data (e.g., `region`):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE users ADD COLUMN region STRING NOT NULL;
 ~~~
 
 When you geo-partition a database, you [partition the database on a primary key column](partitioning.html#partition-using-primary-key). The primary key of this table is still on `id`. Change the primary key to be composite, on `region` and `id`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE users ALTER PRIMARY KEY USING COLUMNS (region, id);
 ~~~
@@ -131,7 +131,7 @@ When you geo-partition a database, you [partition the database on a primary key 
 The order of the primary key columns is important when geo-partitioning. For performance, always place the partition column first.
 {{site.data.alerts.end}}
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE TABLE users;
 ~~~
@@ -156,7 +156,7 @@ Note that the old primary key index on `id` is now the secondary index `users_id
 
 With the new primary key on `region` and `id`, the table is ready to be [geo-partitioned](topology-geo-partitioned-replicas.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE users PARTITION BY LIST (region) (
     PARTITION us_west VALUES IN ('us_west'),
@@ -164,7 +164,7 @@ With the new primary key on `region` and `id`, the table is ready to be [geo-par
   );
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER PARTITION us_west OF INDEX users@primary
     CONFIGURE ZONE USING constraints = '[+region=us-west1]';
@@ -172,7 +172,7 @@ With the new primary key on `region` and `id`, the table is ready to be [geo-par
     CONFIGURE ZONE USING constraints = '[+region=us-east1]';
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW PARTITIONS FROM TABLE users;
 ~~~
@@ -201,7 +201,7 @@ You now need to geo-partition any secondary indexes in the table. In order to ge
 
 Start by dropping both indexes:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP INDEX users_id_key CASCADE;
   DROP INDEX users_name_idx CASCADE;
@@ -211,14 +211,14 @@ You do not need to recreate the index on `id` with `region`. Both columns are al
 
 Add `region` to the index on `name`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE INDEX ON users(region, name);
 ~~~
 
 Then geo-partition the index:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER INDEX users_region_name_idx PARTITION BY LIST (region) (
     PARTITION us_west VALUES IN ('us_west'),
@@ -226,7 +226,7 @@ Then geo-partition the index:
   );
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER PARTITION us_west OF INDEX users@users_region_name_idx
     CONFIGURE ZONE USING constraints = '[+region=us-west1]';

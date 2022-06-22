@@ -185,14 +185,14 @@ If initiated correctly, the statement returns when the restore is finished or if
 
  To restore a full cluster:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > RESTORE FROM 'gs://acme-co-backup/test-cluster';
 ~~~
 
 ### Restore a database
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > RESTORE DATABASE bank FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly';
 ~~~
@@ -205,14 +205,14 @@ If initiated correctly, the statement returns when the restore is finished or if
 
 To restore a single table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > RESTORE bank.customers FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly';
 ~~~
 
 To restore multiple tables:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > RESTORE bank.customers, bank.accounts FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly';
 ~~~
@@ -221,14 +221,14 @@ To restore multiple tables:
 
 Restoring from incremental backups requires previous full and incremental backups. To restore from a destination containing the full backup, as well as the incremental backups (stored as subdirectories):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > RESTORE FROM 'gs://acme-co-backup/test-cluster';
 ~~~
 
 To explicitly point to where your incremental backups are, provide the previous full and incremental backup locations in a comma-separated list. In this example, `-weekly` is the full backup and the two `-nightly` are incremental backups.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > RESTORE bank.customers \
 FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly', 'gs://acme-co-backup/database-bank-2017-03-28-nightly', 'gs://acme-co-backup/database-bank-2017-03-29-nightly';
@@ -248,7 +248,7 @@ Incremental backups created by v20.2.2 and prior v20.2.x releases or v20.1.4 and
 
 <span class="version-tag">New in v20.2:</span> Use the `DETACHED` [option](#options) to execute the restore job asynchronously:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > RESTORE FROM \
 'gs://acme-co-backup/test-cluster' \
@@ -279,7 +279,7 @@ job_id             |  status   | fraction_completed | rows | index_entries | byt
 
 By default, tables and views are restored to the database they originally belonged to. However, using the [`into_db` option](#into_db), you can control the target database.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > RESTORE bank.customers \
 FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly' \
@@ -290,7 +290,7 @@ WITH into_db = 'newdb';
 
 By default, tables with [Foreign Key](foreign-key.html) constraints must be restored at the same time as the tables they reference. However, using the [`skip_missing_foreign_keys`](restore.html#skip_missing_foreign_keys) option you can remove the Foreign Key constraint from the table and then restore it.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > RESTORE bank.accounts \
 FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly' \
@@ -303,24 +303,24 @@ The `system.users` table stores your cluster's usernames and their hashed passwo
 
 After it's restored into a new database, you can write the restored `users` table data to the cluster's existing `system.users` table.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE DATABASE newdb;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > RESTORE system.users \
 FROM 'azure://acme-co-backup/table-users-2017-03-27-full?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co' \
 WITH into_db = 'newdb';
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO system.users SELECT * FROM newdb.users;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP TABLE newdb.users;
 ~~~

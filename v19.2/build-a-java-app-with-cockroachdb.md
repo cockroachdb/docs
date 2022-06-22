@@ -35,7 +35,7 @@ Create a certificate and key for the `maxroach` user by running the following co
 
 You can pass the [`--also-generate-pkcs8-key` flag](cockroach-cert.html#flag-pkcs8) to generate a key in [PKCS#8 format](https://tools.ietf.org/html/rfc5208), which is the standard key encoding format in Java. In this case, the generated PKCS8 key will be named `client.maxroach.key.pk8`.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach cert create-client maxroach --certs-dir=certs --ca-key=my-safe-directory/ca.key --also-generate-pkcs8-key
 ~~~
@@ -65,19 +65,19 @@ To run it:
 1. Download [`BasicExample.java`](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{page.version.version}}/app/BasicExample.java), or create the file yourself and copy the code below.
 2. Compile and run the code (adding the PostgreSQL JDBC driver to your classpath):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ javac -classpath .:/path/to/postgresql.jar BasicExample.java
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ java -classpath .:/path/to/postgresql.jar BasicExample
     ~~~
 
 The contents of [`BasicExample.java`](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{page.version.version}}/app/BasicExample.java):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ java
 {% include {{page.version.version}}/app/BasicExample.java %}
 ~~~
@@ -113,19 +113,19 @@ To run it:
 1. Download [the PostgreSQL JDBC driver](https://jdbc.postgresql.org/download.html).
 1. Compile and run the code (adding the PostgreSQL JDBC driver to your classpath):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ javac -classpath .:/path/to/postgresql.jar BasicExample.java
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ java -classpath .:/path/to/postgresql.jar BasicExample
     ~~~
 
 The contents of [`BasicExample.java`](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{page.version.version}}/app/insecure/BasicExample.java):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ java
 {% include {{page.version.version}}/app/insecure/BasicExample.java %}
 ~~~

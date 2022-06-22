@@ -2,26 +2,26 @@ Now you'll import Movr data representing users, vehicles, and rides in 3 eastern
 
 1. Still on the fourth instance, start the [built-in SQL shell](use-the-built-in-sql-client.html), pointing it at one of the CockroachDB nodes:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql {{page.certs}} --host=<address of any node>
     ~~~
 
 2. Create the `movr` database and set it as the default:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE DATABASE movr;
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SET DATABASE = movr;
     ~~~
 
 3. Use the [`IMPORT`](import.html) statement to create and populate the `users`, `vehicles,` and `rides` tables:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > IMPORT TABLE users (
       	id UUID NOT NULL,
@@ -45,7 +45,7 @@ Now you'll import Movr data representing users, vehicles, and rides in 3 eastern
     Time: 2.882582355s
     ~~~    
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > IMPORT TABLE vehicles (
         id UUID NOT NULL,
@@ -73,7 +73,7 @@ Now you'll import Movr data representing users, vehicles, and rides in 3 eastern
     Time: 5.803841493s
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > IMPORT TABLE rides (
       	id UUID NOT NULL,
@@ -128,7 +128,7 @@ Now you'll import Movr data representing users, vehicles, and rides in 3 eastern
 
     As mentioned earlier, it wasn't possible to put these relationships in place during `IMPORT`, but it was possible to create the required secondary indexes. Now, let's add the foreign key constraints:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > ALTER TABLE vehicles
     ADD CONSTRAINT fk_city_ref_users
@@ -136,7 +136,7 @@ Now you'll import Movr data representing users, vehicles, and rides in 3 eastern
     REFERENCES users (city, id);
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > ALTER TABLE rides
     ADD CONSTRAINT fk_city_ref_users
@@ -144,7 +144,7 @@ Now you'll import Movr data representing users, vehicles, and rides in 3 eastern
     REFERENCES users (city, id);
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > ALTER TABLE rides
     ADD CONSTRAINT fk_vehicle_city_ref_vehicles
@@ -154,7 +154,7 @@ Now you'll import Movr data representing users, vehicles, and rides in 3 eastern
 
 4. Exit the built-in SQL shell:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > \q
     ~~~

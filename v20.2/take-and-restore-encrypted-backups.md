@@ -60,7 +60,7 @@ See below for [examples](#examples).
 
 To take an encrypted backup with AWS KMS, use the `kms` [option](backup.html#options):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP TO 's3://test/backups/test_kms?AWS_ACCESS_KEY_ID=123456&AWS_SECRET_ACCESS_KEY=123456'
     WITH kms = 'aws:///<cmk>?AWS_ACCESS_KEY_ID=123456&AWS_SECRET_ACCESS_KEY=123456&REGION=us-east-1';
@@ -77,7 +77,7 @@ To take an encrypted backup with AWS KMS, use the `kms` [option](backup.html#opt
 
 To take a backup with [multi-region encryption](#multi-region), use the `kms` option to specify a comma-separated list of KMS URIs:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP TO 's3://test/backups/test_explicit_kms_2?AWS_ACCESS_KEY_ID=123456&AWS_SECRET_ACCESS_KEY=123456'
     WITH KMS=(
@@ -99,7 +99,7 @@ To decrypt an [encrypted backup](#take-an-encrypted-backup-with-aws-kms), use th
 
 For example, the encrypted backup created in the [first example](#take-an-encrypted-backup-with-aws-kms) can be restored with:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > RESTORE FROM 's3://test/backups/test_kms?AWS_ACCESS_KEY_ID=123456&AWS_SECRET_ACCESS_KEY=123456'
     WITH kms = 'aws:///<cmk>?AWS_ACCESS_KEY_ID=123456&AWS_SECRET_ACCESS_KEY=123456&REGION=us-east-1';
@@ -125,7 +125,7 @@ For example, the encrypted backup created in the [first example](#take-an-encryp
 
 To take an encrypted backup, use the [`encryption_passphrase` option](backup.html#with-encryption-passphrase):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP TO \
 'gs://acme-co-backup/test-cluster' \
@@ -146,7 +146,7 @@ To decrypt an [encrypted backup](#take-an-encrypted-backup-using-a-passphrase), 
 
 For example, the encrypted backup created in the [previous example](#take-an-encrypted-backup-using-a-passphrase) can be restored with:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > RESTORE FROM \
 'gs://acme-co-backup/test-cluster' \

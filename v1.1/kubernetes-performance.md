@@ -90,7 +90,7 @@ If you make this change then run `kubectl create -f` on your YAML file, Kubernet
 
 If you want your new `StorageClass` to be the default for all volumes in your cluster, you have to run a couple of commands to inform Kubernetes of what you want. First, get the names of your `StorageClass`es. Then remove the current default and add yours as the new default.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ kubectl get storageclasses
 ~~~
@@ -101,7 +101,7 @@ ssd                  kubernetes.io/gce-pd
 standard (default)   kubernetes.io/gce-pd
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ kubectl patch storageclass standard -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"false"}}}'
 ~~~
@@ -110,7 +110,7 @@ $ kubectl patch storageclass standard -p '{"metadata": {"annotations":{"storagec
 storageclass "standard" patched
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ kubectl patch storageclass ssd -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
 ~~~
@@ -171,7 +171,7 @@ Resource requests allow you to reserve a certain amount of CPU or memory for you
 
 To determine how many resources are usable on your Kubernetes nodes, you can run:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ kubectl describe nodes
 ~~~
@@ -273,7 +273,7 @@ The pods would then be restricted to only use the resource they have reserved an
 
 Note that even if you do not manually set resource requests yourself, you're likely unknowingly using them anyways. In many installations of Kubernetes, a [`LimitRange`](https://kubernetes.io/docs/tasks/administer-cluster/cpu-default-namespace/) is preconfigured for the `default` namespace that applies a default CPU request of `100m`, or one-tenth of a CPU. You can see this configuration by running
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ kubectl describe limitranges
 ~~~
@@ -292,7 +292,7 @@ Experimentally, this does not appear to have a noticeable effect on CockroachDB'
 
 As discovered in the above section on [Resource Requests and Limits](#resource-requests-and-limits), there will always be pods other than just CockroachDB running in your Kubernetes cluster, even if you do not create any other pods of your own. You can see them at any time by running:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ kubectl get pods --all-namespaces
 ~~~
@@ -318,7 +318,7 @@ kube-system   l7-default-backend-6497bcdb4d-2kbh4              1/1       Running
 
 These ["cluster add-ons"](https://github.com/kubernetes/kubernetes/tree/master/cluster/addons) provide a variety of basic services like managing DNS entries for services within the cluster, powering the Kubernetes dashboard UI, or collecting logs or metrics from all the pods running in the cluster. If you do not like having them take up space in your cluster, you can prevent some of them from running by configuring your Kubernetes cluster appropriately. For example, on GKE, you can create a cluster with the minimal set of addons by running:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ gcloud container clusters create <your-cluster-name> --no-enable-cloud-logging --no-enable-cloud-monitoring --addons=""
 ~~~
@@ -416,7 +416,7 @@ Then, pick out the directory from the host that you would like to store Cockroac
 
 After taking those steps and making any other desired modifications, you should be all set to create the `DaemonSet`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ kubectl create -f cockroachdb-daemonset.yaml
 ~~~
@@ -427,7 +427,7 @@ daemonset "cockroachdb" created
 
 To initialize the cluster pick one of the pod names and run:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ kubectl exec -it <pod-name> -- ./cockroach init --insecure
 ~~~
@@ -444,7 +444,7 @@ If your Kubernetes cluster is made up of heterogeneous hardware, it's very possi
 
 Node labels and node selectors are a way to tell Kubernetes which nodes you want a pod to be allowed on. To label a node, you can just use the `kubectl label node` command as such, substituting in your node's name and your preferred key-value pair for the label:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ kubectl label node <node-name> <key>=<value>
 ~~~
@@ -473,7 +473,7 @@ To be:
 
 Alternatively, if you want to make sure that CockroachDB is the only thing running on a set of machines, you're better off using a pair of complementary features called [`Taints` and `Tolerations`](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/) to instruct Kubernetes not to schedule anything else on them. You can set them up in a very similar fashion to how you can set up node labels and node selectors:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ kubectl taint node <node-name> <key>=<value>:NoSchedule
 ~~~
@@ -523,27 +523,27 @@ Kubernetes makes it easy to modify some, but not all, of an existing resource's 
 
 * If you have configuration files with the desired modifications in them, you can just run:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl apply -f <your-file>.yaml
     ~~~
 * If you want to open up a text editor and manually make the desired changes to your `StatefulSet`'s YAML configuration file, run:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl edit statefulset cockroachdb
     ~~~
 
     For a `DaemonSet`, run:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl edit daemonset cockroachdb
     ~~~
 
 * If you want a one-liner, construct the appropriate JSON and run something like:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl patch statefulset cockroachdb --type='json' -p='[{"op": "replace", "path": "/spec/template/spec/containers/0/image", "value":"{{page.release_info.docker_image}}:VERSION"}]
     ~~~

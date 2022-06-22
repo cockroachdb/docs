@@ -16,12 +16,12 @@ Make sure you have already [installed CockroachDB](install-cockroachdb.html) and
 
 ## Step 1. Create a .NET project
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ dotnet new console -o cockroachdb-test-app
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cd cockroachdb-test-app
 ~~~
@@ -32,7 +32,7 @@ The `dotnet` command creates a new app of type `console`. The `-o` parameter cre
 
 Install the latest version of the [Npgsql driver](https://www.nuget.org/packages/Npgsql/) into the .NET project using the built-in nuget package manager:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ dotnet add package Npgsql
 ~~~
@@ -41,7 +41,7 @@ $ dotnet add package Npgsql
 
 For the purpose of this tutorial, you need only one CockroachDB node running in insecure mode:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach start \
 --insecure \
@@ -53,7 +53,7 @@ $ cockroach start \
 
 In a new terminal, as the `root` user, use the [`cockroach user`](create-and-manage-users.html) command to create a new user, `maxroach`.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach user set maxroach --insecure
 ~~~
@@ -62,14 +62,14 @@ $ cockroach user set maxroach --insecure
 
 As the `root` user, use the [built-in SQL client](use-the-built-in-sql-client.html) to create a `bank` database.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure -e 'CREATE DATABASE bank'
 ~~~
 
 Then [grant privileges](grant.html) to the `maxroach` user.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure -e 'GRANT ALL ON DATABASE bank TO maxroach'
 ~~~
@@ -82,14 +82,14 @@ Now that you have a database and a user, you'll run code to create a table and i
 
 Replace the contents of `cockraochdb-test-app/Program.cs` with the following code:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ csharp
 {% include {{ page.version.version }}/app/basic-sample.cs %}
 ~~~
 
 Then run the code to connect as the `maxroach` user and execute some basic SQL statements, creating a table, inserting rows, and reading and printing the rows:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ dotnet run
 ~~~
@@ -106,14 +106,14 @@ Initial balances:
 
 Open `cockraochdb-test-app/Program.cs` again and replace the contents with the following code:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ csharp
 {% include {{ page.version.version }}/app/txn-sample.cs %}
 ~~~
 
 Then run the code to again connect as the `maxroach` user but this time execute a batch of statements as an atomic transaction to transfer funds from one account to another, where all included statements are either committed or aborted:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ dotnet run
 ~~~
@@ -133,7 +133,7 @@ Final balances:
 
 However, if you want to verify that funds were transferred from one account to another, use the [built-in SQL client](use-the-built-in-sql-client.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure -e 'SELECT id, balance FROM accounts' --database=bank
 ~~~

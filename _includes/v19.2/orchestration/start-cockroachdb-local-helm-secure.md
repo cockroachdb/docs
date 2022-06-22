@@ -1,6 +1,6 @@
 1. [Install the Helm client](https://helm.sh/docs/intro/install) (version 3.0 or higher) and add the `cockroachdb` chart repository:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ helm repo add cockroachdb https://charts.cockroachdb.com/
     ~~~
@@ -11,7 +11,7 @@
 
 2. Update your Helm chart repositories to ensure that you're using the [latest CockroachDB chart](https://github.com/cockroachdb/helm-charts/blob/master/cockroachdb/Chart.yaml):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ helm repo update
     ~~~
@@ -20,7 +20,7 @@
 
     Create a `my-values.yaml` file to override the defaults. For a secure deployment, set `tls.enabled` to true:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~
     tls:
       enabled: true
@@ -34,7 +34,7 @@
     This tutorial uses `my-release` as the release name. If you use a different value, be sure to adjust the release name in subsequent commands. Also be sure to start and end the name with an alphanumeric character and otherwise use lowercase alphanumeric characters, `-`, or `.` so as to comply with [CSR naming requirements](orchestrate-cockroachdb-with-kubernetes.html#csr-names).
     {{site.data.alerts.end}}
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ helm install my-release --values my-values.yaml cockroachdb/cockroachdb
     ~~~
@@ -45,7 +45,7 @@
 
     1. Get the names of the `Pending` CSRs:
 
-        {% include copy-clipboard.html %}
+        {% include_cached copy-clipboard.html %}
         ~~~ shell
         $ kubectl get csr
         ~~~
@@ -63,7 +63,7 @@
 
     2. Examine the CSR for the first pod:
 
-        {% include copy-clipboard.html %}
+        {% include_cached copy-clipboard.html %}
         ~~~ shell
         $ kubectl describe csr default.node.my-release-cockroachdb-0
         ~~~
@@ -91,7 +91,7 @@
 
     3. If everything looks correct, approve the CSR for the first pod:
 
-        {% include copy-clipboard.html %}
+        {% include_cached copy-clipboard.html %}
         ~~~ shell
         $ kubectl certificate approve default.node.my-release-cockroachdb-0
         ~~~
@@ -104,7 +104,7 @@
 
 7. Confirm that three pods are `Running` successfully:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl get pods
     ~~~
@@ -119,7 +119,7 @@
 
 8. Approve the CSR for the one-off pod from which cluster initialization happens:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl certificate approve default.client.root
     ~~~
@@ -130,7 +130,7 @@
 
 9. Confirm that CockroachDB cluster initialization has completed successfully, with the pods for CockroachDB showing `1/1` under `READY` and the pod for initialization showing `COMPLETED` under `STATUS`:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl get pods
     ~~~
@@ -145,7 +145,7 @@
 
 10. Confirm that the persistent volumes and corresponding claims were created successfully for all three pods:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl get pv
     ~~~

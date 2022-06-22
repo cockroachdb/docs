@@ -28,7 +28,7 @@ Make sure you have already:
 
 <section class="filter-content" markdown="1" data-scope="sql">
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT id, balance from accounts;
 ~~~
@@ -39,7 +39,7 @@ For more information about how to use the built-in SQL client, see the [`cockroa
 
 <section class="filter-content" markdown="1" data-scope="go">
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ go
 // 'db' is an open database connection
 
@@ -64,7 +64,7 @@ for rows.Next() {
 
 <section class="filter-content" markdown="1" data-scope="java">
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ java
 // ds is an org.postgresql.ds.PGSimpleDataSource
 
@@ -91,7 +91,7 @@ try (Connection connection = ds.getConnection()) {
 
 <section class="filter-content" markdown="1" data-scope="python">
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ python
 # conn is a psycopg2 connection
 
@@ -110,7 +110,7 @@ with conn.cursor() as cur:
 
 The syntax for a [selection query][selection] with a two-way [join][joins] is shown below.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT
 	a.col1, b.col1
@@ -134,7 +134,7 @@ Join performance can be a big factor in your application's performance.  For mor
 
 For pagination queries, we strongly recommend keyset pagination (also known as "the seek method").  The syntax for a keyset pagination query is shown below.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT * FROM t AS OF SYSTEM TIME ${time}
   WHERE key > ${value}

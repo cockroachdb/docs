@@ -35,7 +35,7 @@ Field | Description
 
 ### Show the `CREATE TABLE` statement for a table
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE drivers (
     id UUID NOT NULL,
@@ -47,7 +47,7 @@ Field | Description
 );
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE TABLE drivers;
 ~~~
@@ -70,7 +70,7 @@ Field | Description
 
 To return just the `create_statement` value:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT create_statement FROM [SHOW CREATE TABLE drivers];
 ~~~
@@ -97,12 +97,12 @@ To return just the `create_statement` value:
 
 ### Show the `CREATE VIEW` statement for a view
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE VIEW user_view (city, name) AS SELECT city, name FROM users;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE user_view;
 ~~~
@@ -116,7 +116,7 @@ To return just the `create_statement` value:
 
 To return just the `create_statement` value:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT create_statement FROM [SHOW CREATE VIEW user_view];
 ~~~
@@ -132,7 +132,7 @@ To return just the `create_statement` value:
 
 To get just a view's `SELECT` statement, you can query the `views` table in the built-in `information_schema` database and filter on the view name:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT view_definition
   FROM information_schema.views
@@ -148,12 +148,12 @@ To get just a view's `SELECT` statement, you can query the `views` table in the 
 
 ### Show the `CREATE SEQUENCE` statement for a sequence
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE SEQUENCE desc_customer_list START -1 INCREMENT -2;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE desc_customer_list;
 ~~~
@@ -167,7 +167,7 @@ To get just a view's `SELECT` statement, you can query the `views` table in the 
 
 To return just the `create_statement` value:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT create_statement FROM [SHOW CREATE desc_customer_list];
 ~~~
@@ -183,12 +183,12 @@ To return just the `create_statement` value:
 
  If you [add a comment](comment-on.html) on a table, `SHOW CREATE TABLE` will display the comment.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > COMMENT ON TABLE users IS 'This table contains information about users.';
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE TABLE users;
 ~~~
@@ -211,7 +211,7 @@ To return just the `create_statement` value:
 
 To return just the `create_statement` value:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT create_statement FROM [SHOW CREATE TABLE users];
 ~~~

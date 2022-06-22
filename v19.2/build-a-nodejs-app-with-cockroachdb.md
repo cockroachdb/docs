@@ -22,14 +22,14 @@ We have tested the [Node.js pg driver](https://www.npmjs.com/package/pg) enough 
 
 To let your application communicate with CockroachDB, install the [Node.js pg driver](https://www.npmjs.com/package/pg):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ npm install pg
 ~~~
 
 The example app on this page also requires [`async`](https://www.npmjs.com/package/async):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ npm install async
 ~~~
@@ -44,7 +44,7 @@ $ npm install async
 
 Create a certificate and key for the `maxroach` user by running the following command.  The code samples will run as this user.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach cert create-client maxroach --certs-dir=certs --ca-key=my-safe-directory/ca.key
 ~~~
@@ -59,14 +59,14 @@ First, use the following code to connect as the `maxroach` user and execute some
 
 Download the [`basic-sample.js`](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/app/basic-sample.js) file, or create the file yourself and copy the code into it.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ js
 {% include {{page.version.version}}/app/basic-sample.js %}
 ~~~
 
 Then run the code:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ node basic-sample.js
 ~~~
@@ -87,14 +87,14 @@ Download the [`txn-sample.js`](https://raw.githubusercontent.com/cockroachdb/doc
 
 {% include {{ page.version.version }}/client-transaction-retry.md %}
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ js
 {% include {{page.version.version}}/app/txn-sample.js %}
 ~~~
 
 Then run the code:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ node txn-sample.js
 ~~~
@@ -109,14 +109,14 @@ Balances after transfer:
 
 To verify that funds were transferred from one account to another, start the [built-in SQL client](cockroach-sql.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --certs-dir=certs --database=bank
 ~~~
 
 To check the account balances, issue the following statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT id, balance FROM accounts;
 ~~~
@@ -149,14 +149,14 @@ First, use the following code to connect as the `maxroach` user and execute some
 
 Download the [`basic-sample.js`](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/app/insecure/basic-sample.js) file, or create the file yourself and copy the code into it.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ js
 {% include {{page.version.version}}/app/insecure/basic-sample.js %}
 ~~~
 
 Then run the code:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ node basic-sample.js
 ~~~
@@ -177,14 +177,14 @@ Download the [`txn-sample.js`](https://raw.githubusercontent.com/cockroachdb/doc
 
 {% include {{ page.version.version }}/client-transaction-retry.md %}
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ js
 {% include {{page.version.version}}/app/insecure/txn-sample.js %}
 ~~~
 
 Then run the code:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ node txn-sample.js
 ~~~
@@ -199,14 +199,14 @@ Balances after transfer:
 
 To verify that funds were transferred from one account to another, start the [built-in SQL client](cockroach-sql.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure --database=bank
 ~~~
 
 To check the account balances, issue the following statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT id, balance FROM accounts;
 ~~~

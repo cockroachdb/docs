@@ -14,7 +14,7 @@ Node IDs | Zone
 
 To verify even balancing at range level, SSH to one of the instances not running CockroachDB and run the `SHOW EXPERIMENTAL_RANGES` statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
 {{page.certs}} \

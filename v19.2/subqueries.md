@@ -27,7 +27,7 @@ notations, and those defined using
 
 For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT *
    FROM [INSERT INTO t(x) VALUES (1), (2), (3) RETURNING x]
@@ -45,7 +45,7 @@ A subquery is said to be "correlated" when it uses table or column names defined
 
 For example, to find every customer with at least one order, run:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT
       c.name

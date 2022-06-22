@@ -72,12 +72,12 @@ A `TIMESTAMP`/`TIMESTAMPTZ` column supports values up to 12 bytes in width, but 
 
 ## Examples
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE timestamps (a INT PRIMARY KEY, b TIMESTAMPTZ);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW COLUMNS FROM timestamps;
 ~~~
@@ -90,12 +90,12 @@ A `TIMESTAMP`/`TIMESTAMPTZ` column supports values up to 12 bytes in width, but 
 (2 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO timestamps VALUES (1, TIMESTAMPTZ '2016-03-26 10:10:10-05:00'), (2, TIMESTAMPTZ '2016-03-26');
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM timestamps;
 ~~~

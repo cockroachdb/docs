@@ -25,7 +25,7 @@ Set a [`REGION` survival goal](multiregion-overview.html#surviving-region-failur
 For more information about how to choose a multi-region configuration, see [Choosing a multi-region configuration](choosing-a-multi-region-configuration.html).
 {{site.data.alerts.end}}
 
-{% include enterprise-feature.md %}
+{% include_cached enterprise-feature.md %}
 
 ## See also
 

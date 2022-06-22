@@ -141,14 +141,14 @@ In this example, we'll create a table with a foreign key constraint with the def
 
 First, create the referenced table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE customers (id INT PRIMARY KEY, email STRING UNIQUE);
 ~~~
 
 Next, create the referencing table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE IF NOT EXISTS orders (
     id INT PRIMARY KEY,
@@ -160,12 +160,12 @@ Next, create the referencing table:
 
 Let's insert a record into each table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO customers VALUES (1001, 'a@co.tld'), (1234, 'info@cockroachlabs.com');
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO orders VALUES (1, 1002, 29.99);
 ~~~
@@ -177,12 +177,12 @@ The second record insertion returns an error because the customer `1002` doesn't
 
 Let's insert a record into the referencing table and try to update the referenced table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO orders VALUES (1, 1001, 29.99);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > UPDATE customers SET id = 1002 WHERE id = 1001;
 ~~~
@@ -192,12 +192,12 @@ pq: foreign key violation: value(s) [1001] in columns [id] referenced in table "
 
 The update to the referenced table returns an error because `id = 1001` is referenced and the default [foreign key action](#foreign-key-actions-new-in-v2-0) is enabled (`ON UPDATE NO ACTION`). However, `id = 1234` is not referenced and can be updated:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > UPDATE customers SET id = 1111 WHERE id = 1234;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM customers;
 ~~~
@@ -212,7 +212,7 @@ The update to the referenced table returns an error because `id = 1001` is refer
 
 Now let's try to delete a referenced row:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DELETE FROM customers WHERE id = 1001;
 ~~~
@@ -222,12 +222,12 @@ pq: foreign key violation: value(s) [1001] in columns [id] referenced in table "
 
 Similarly, the deletion returns an error because `id = 1001` is referenced and the default [foreign key action](#foreign-key-actions-new-in-v2-0) is enabled (`ON DELETE NO ACTION`). However, `id = 1111` is not referenced and can be deleted:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DELETE FROM customers WHERE id = 1111;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM customers;
 ~~~
@@ -245,7 +245,7 @@ In this example, we'll create a table with a foreign key constraint with the [fo
 
 First, create the referenced table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE customers_2 (
     id INT PRIMARY KEY
@@ -254,7 +254,7 @@ First, create the referenced table:
 
 Then, create the referencing table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE orders_2 (
     id INT PRIMARY KEY,
@@ -264,26 +264,26 @@ Then, create the referencing table:
 
 Insert a few records into the referenced table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO customers_2 VALUES (1), (2), (3);
 ~~~
 
 Insert some records into the referencing table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO orders_2 VALUES (100,1), (101,2), (102,3), (103,1);
 ~~~
 
 Now, let's update an `id` in the referenced table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > UPDATE customers_2 SET id = 23 WHERE id = 1;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM customers_2;
 ~~~
@@ -297,7 +297,7 @@ Now, let's update an `id` in the referenced table:
 +----+
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM orders_2;
 ~~~
@@ -316,12 +316,12 @@ When `id = 1` was updated to `id = 23` in `customers_2`, the update propagated t
 
 Similarly, a deletion will cascade. Let's delete `id = 23` from `customers_2`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DELETE FROM customers_2 WHERE id = 23;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM customers_2;
 ~~~
@@ -336,7 +336,7 @@ Similarly, a deletion will cascade. Let's delete `id = 23` from `customers_2`:
 
 Let's check to make sure the rows in `orders_2` where `customers_id = 23` were also deleted:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM orders_2;
 ~~~
@@ -355,7 +355,7 @@ In this example, we'll create a table with a foreign key constraint with the [fo
 
 First, create the referenced table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE customers_3 (
     id INT PRIMARY KEY
@@ -364,7 +364,7 @@ First, create the referenced table:
 
 Then, create the referencing table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE orders_3 (
     id INT PRIMARY KEY,
@@ -374,19 +374,19 @@ Then, create the referencing table:
 
 Insert a few records into the referenced table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO customers_3 VALUES (1), (2), (3);
 ~~~
 
 Insert some records into the referencing table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO orders_3 VALUES (100,1), (101,2), (102,3), (103,1);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM customers_3;
 ~~~
@@ -403,12 +403,12 @@ Insert some records into the referencing table:
 
 Now, let's update an `id` in the referenced table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > UPDATE customers_3 SET id = 23 WHERE id = 1;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM customers_3;
 ~~~
@@ -422,7 +422,7 @@ Now, let's update an `id` in the referenced table:
 +----+
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM orders_3;
 ~~~
@@ -441,12 +441,12 @@ When `id = 1` was updated to `id = 23` in `customers_3`, the referencing `custom
 
 Similarly, a deletion will set the referencing `customer_id` to `NULL`. Let's delete `id = 2` from `customers_3`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DELETE FROM customers_3 WHERE id = 2;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM customers_3;
 ~~~
@@ -461,7 +461,7 @@ Similarly, a deletion will set the referencing `customer_id` to `NULL`. Let's de
 
 Let's check to make sure the row in `orders_3` where `customers_id = 2` was updated to `NULL`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM orders_3;
 ~~~
@@ -482,7 +482,7 @@ In this example, we'll create a table with a foreign key constraint with the [fo
 
 First, create the referenced table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE customers_4 (
     id INT PRIMARY KEY
@@ -491,7 +491,7 @@ First, create the referenced table:
 
 Then, create the referencing table with the `DEFAULT` value for `customer_id` set to `9999`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE orders_4 (
     id INT PRIMARY KEY,
@@ -501,14 +501,14 @@ Then, create the referencing table with the `DEFAULT` value for `customer_id` se
 
 Insert a few records into the referenced table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO customers_4 VALUES (1), (2), (3), (9999);
 ~~~
 
 Insert some records into the referencing table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO orders_4 VALUES (100,1), (101,2), (102,3), (103,1);
 ~~~
@@ -525,12 +525,12 @@ Insert some records into the referencing table:
 
 Now, let's update an `id` in the referenced table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > UPDATE customers_4 SET id = 23 WHERE id = 1;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM customers_4;
 ~~~
@@ -545,7 +545,7 @@ Now, let's update an `id` in the referenced table:
 +------+
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM orders_4;
 ~~~
@@ -564,12 +564,12 @@ When `id = 1` was updated to `id = 23` in `customers_4`, the referencing `custom
 
 Similarly, a deletion will set the referencing `customer_id` to the `DEFAULT` value. Let's delete `id = 2` from `customers_4`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DELETE FROM customers_4 WHERE id = 2;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM customers_4;
 ~~~
@@ -585,7 +585,7 @@ Similarly, a deletion will set the referencing `customer_id` to the `DEFAULT` va
 
 Let's check to make sure the corresponding `customer_id` value to `id = 101`, was updated to the `DEFAULT` value (i.e., `9999`) in `orders_4`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM orders_4;
 ~~~

@@ -18,7 +18,7 @@ Tables with regional table locality can survive zone or region failures, dependi
 
 ## Prerequisites
 
-{% include enterprise-feature.md %}
+{% include_cached enterprise-feature.md %}
 
 ### Fundamentals
 

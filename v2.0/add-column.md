@@ -34,12 +34,12 @@ The user must have the `CREATE` [privilege](privileges.html) on the table.
 
 ### Add a Single Column
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE accounts ADD COLUMN names STRING;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW COLUMNS FROM accounts;
 ~~~
@@ -56,12 +56,12 @@ The user must have the `CREATE` [privilege](privileges.html) on the table.
 
 ### Add Multiple Columns
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE accounts ADD COLUMN location STRING, ADD COLUMN amount DECIMAL;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW COLUMNS FROM accounts;
 ~~~
@@ -81,12 +81,12 @@ The user must have the `CREATE` [privilege](privileges.html) on the table.
 
 ### Add a Non-Null Column with a Default Value
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE accounts ADD COLUMN interest DECIMAL NOT NULL DEFAULT (DECIMAL '1.3');
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW COLUMNS FROM accounts;
 ~~~
@@ -105,14 +105,14 @@ The user must have the `CREATE` [privilege](privileges.html) on the table.
 
 ### Add a Non-Null Column with Unique Values
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE accounts ADD COLUMN cust_number DECIMAL UNIQUE NOT NULL;
 ~~~
 
 ### Add a Column with Collation
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE accounts ADD COLUMN more_names STRING COLLATE en;
 ~~~
@@ -121,21 +121,21 @@ The user must have the `CREATE` [privilege](privileges.html) on the table.
 
 #### Add a Column and Assign it to a New Column Family
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE accounts ADD COLUMN location1 STRING CREATE FAMILY new_family;
 ~~~
 
 #### Add a Column and Assign it to an Existing Column Family
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE accounts ADD COLUMN location2 STRING FAMILY existing_family;
 ~~~
 
 #### Add a Column and Create a New Column Family if Column Family Does Not Exist
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE accounts ADD COLUMN new_name STRING CREATE IF NOT EXISTS FAMILY f1;
 ~~~

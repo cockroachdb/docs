@@ -6,7 +6,7 @@
 
     1. Create a `rbac-config.yaml` file to define a role and service account:
 
-        {% include copy-clipboard.html %}
+        {% include_cached copy-clipboard.html %}
         ~~~
         apiVersion: v1
         kind: ServiceAccount
@@ -30,7 +30,7 @@
 
     2. Create the service account:
 
-        {% include copy-clipboard.html %}
+        {% include_cached copy-clipboard.html %}
         ~~~ shell
         $ kubectl create -f rbac-config.yaml
         ~~~
@@ -47,7 +47,7 @@
         {{site.data.alerts.end}}
 
 
-        {% include copy-clipboard.html %}
+        {% include_cached copy-clipboard.html %}
         ~~~ shell
         $ helm init --service-account tiller --override spec.selector.matchLabels.'name'='tiller',spec.selector.matchLabels.'app'='helm' --output yaml | sed 's@apiVersion: extensions/v1beta1@apiVersion: apps/v1@' | kubectl apply -f -
         ~~~
@@ -63,7 +63,7 @@
     This tutorial uses `my-release` as the release name. If you use a different value, be sure to adjust the release name in subsequent commands. Also be sure to start and end the name with an alphanumeric character and otherwise use lowercase alphanumeric characters, `-`, or `.` so as to comply with [CSR naming requirements](orchestrate-cockroachdb-with-kubernetes.html#csr-names).
     {{site.data.alerts.end}}
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ helm install --name my-release --set Secure.Enabled=true,Resources.requests.memory="<your memory allocation>",CacheSize="<your cache size>",MaxSQLMemory="<your SQL memory size>" cockroachdb/cockroachdb
     ~~~
@@ -76,7 +76,7 @@
     We recommend setting `CacheSize` and `MaxSQLMemory` each to 1/4 of the memory allocation specified in your `Resources.requests.memory` parameter. For example, if you are allocating 8GiB of memory to each CockroachDB node, use the following values with the `--set` flag in the `helm install` command:
     {{site.data.alerts.end}}
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     Requests.resources.memory="8GiB",CacheSize="2GiB",MaxSQLMemory="2GiB"
     ~~~
@@ -89,7 +89,7 @@
 
     1. Get the names of the `Pending` CSRs:
 
-        {% include copy-clipboard.html %}
+        {% include_cached copy-clipboard.html %}
         ~~~ shell
         $ kubectl get csr
         ~~~
@@ -107,7 +107,7 @@
 
     2. Examine the CSR for the first pod:
 
-        {% include copy-clipboard.html %}
+        {% include_cached copy-clipboard.html %}
         ~~~ shell
         $ kubectl describe csr default.node.my-release-cockroachdb-0
         ~~~
@@ -135,7 +135,7 @@
 
     3. If everything looks correct, approve the CSR for the first pod:
 
-        {% include copy-clipboard.html %}
+        {% include_cached copy-clipboard.html %}
         ~~~ shell
         $ kubectl certificate approve default.node.my-release-cockroachdb-0
         ~~~
@@ -148,7 +148,7 @@
 
 5. Confirm that three pods are `Running` successfully:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl get pods
     ~~~
@@ -163,7 +163,7 @@
 
 6. Approve the CSR for the one-off pod from which cluster initialization happens:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl certificate approve default.client.root
     ~~~
@@ -174,7 +174,7 @@
 
 7. Confirm that CockroachDB cluster initialization has completed successfully, with the pods for CockroachDB showing `1/1` under `READY` and the pod for initialization showing `COMPLETED` under `STATUS`:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl get pods
     ~~~
@@ -189,7 +189,7 @@
 
 8. Confirm that the persistent volumes and corresponding claims were created successfully for all three pods:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl get persistentvolumes
     ~~~

@@ -25,7 +25,7 @@ This page shows you how to start and stop a secure 3-node CockroachDB cluster in
 
 - [Helm](https://helm.sh/) package manager for Kubernetes
 
-{% include cockroachcloud/use-cockroachcloud-instead.md %}
+{% include_cached cockroachcloud/use-cockroachcloud-instead.md %}
 
 ## Limitations
 

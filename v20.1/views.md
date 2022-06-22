@@ -22,7 +22,7 @@ When you have a complex query that, for example, joins several tables, or perfor
 
 Let's say you're using our [sample `startrek` database](cockroach-gen.html#generate-example-data), which contains two tables, `episodes` and `quotes`. There's a foreign key constraint between the `episodes.id` column and the `quotes.episode` column. To count the number of famous quotes per season, you could run the following join:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT startrek.episodes.season, count(*)
   FROM startrek.quotes
@@ -42,7 +42,7 @@ Let's say you're using our [sample `startrek` database](cockroach-gen.html#gener
 
 Alternatively, to make it much easier to run this complex query, you could create a view:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE VIEW startrek.quotes_per_season (season, quotes)
   AS SELECT startrek.episodes.season, count(*)
@@ -58,7 +58,7 @@ CREATE VIEW
 
 Then, executing the query is as easy as `SELECT`ing from the view:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM startrek.quotes_per_season;
 ~~~
@@ -80,7 +80,7 @@ When you do not want to grant a user access to all the data in one or more stand
 
 Let's say you have a `bank` database containing an `accounts` table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM bank.accounts;
 ~~~
@@ -98,7 +98,7 @@ Let's say you have a `bank` database containing an `accounts` table:
 
 You want a particular user, `bob`, to be able to see the types of accounts each user has without seeing the balance in each account, so you create a view to expose just the `type` and `email` columns:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE VIEW bank.user_accounts
   AS SELECT type, email
@@ -111,7 +111,7 @@ CREATE VIEW
 
 You then make sure `bob` does not have privileges on the underlying `bank.accounts` table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW GRANTS ON bank.accounts;
 ~~~
@@ -126,14 +126,14 @@ You then make sure `bob` does not have privileges on the underlying `bank.accoun
 
 Finally, you grant `bob` privileges on the `bank.user_accounts` view:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > GRANT SELECT ON bank.user_accounts TO bob;
 ~~~
 
 Now, `bob` will get a permissions error when trying to access the underlying `bank.accounts` table but will be allowed to query the `bank.user_accounts` view:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM bank.accounts;
 ~~~
@@ -142,7 +142,7 @@ Now, `bob` will get a permissions error when trying to access the underlying `ba
 pq: user bob does not have SELECT privilege on table accounts
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM bank.user_accounts;
 ~~~
@@ -164,7 +164,7 @@ pq: user bob does not have SELECT privilege on table accounts
 
 To create a view, use the [`CREATE VIEW`](create-view.html) statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE VIEW bank.user_accounts
   AS SELECT type, email
@@ -183,7 +183,7 @@ Any [selection query](selection-queries.html) is valid as operand to `CREATE VIE
 
 Once created, views are listed alongside regular tables in the database:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM bank;
 ~~~
@@ -198,12 +198,12 @@ Once created, views are listed alongside regular tables in the database:
 
 To list just views, you can query the `views` table in the [Information Schema](information-schema.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM bank.information_schema.views;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM startrek.information_schema.views;
 ~~~
@@ -219,7 +219,7 @@ To list just views, you can query the `views` table in the [Information Schema](
 
 To query a view, target it with a [table expression](table-expressions.html#table-or-view-names), for example using a [`SELECT` clause](select-clause.html), just as you would with a stored table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM bank.user_accounts;
 ~~~
@@ -237,7 +237,7 @@ To query a view, target it with a [table expression](table-expressions.html#tabl
 
 `SELECT`ing a view executes the view's stored `SELECT` statement, which returns the relevant data from the underlying table(s). To inspect the `SELECT` statement executed by the view, use the [`SHOW CREATE`](show-create.html) statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE bank.user_accounts;
 ~~~
@@ -251,7 +251,7 @@ To query a view, target it with a [table expression](table-expressions.html#tabl
 
 You can also inspect the `SELECT` statement executed by a view by querying the `views` table in the [Information Schema](information-schema.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT view_definition FROM bank.information_schema.views WHERE table_name = 'user_accounts';
 ~~~
@@ -267,7 +267,7 @@ You can also inspect the `SELECT` statement executed by a view by querying the `
 
 A view depends on the objects targeted by its underlying query. Attempting to rename an object referenced in a view's stored query therefore results in an error:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE bank.accounts RENAME TO bank.accts;
 ~~~
@@ -278,7 +278,7 @@ pq: cannot rename table "bank.accounts" because view "user_accounts" depends on 
 
 Likewise, attempting to drop an object referenced in a view's stored query results in an error:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP TABLE bank.accounts;
 ~~~
@@ -287,7 +287,7 @@ Likewise, attempting to drop an object referenced in a view's stored query resul
 pq: cannot drop table "accounts" because view "user_accounts" depends on it
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE bank.accounts DROP COLUMN email;
 ~~~
@@ -298,7 +298,7 @@ pq: cannot drop column email because view "bank.user_accounts" depends on it
 
 There is an exception to the rule above, however: When [dropping a table](drop-table.html) or [dropping a view](drop-view.html), you can use the `CASCADE` keyword to drop all dependent objects as well:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP TABLE bank.accounts CASCADE;
 ~~~
@@ -315,7 +315,7 @@ DROP TABLE
 
 To rename a view, use the [`ALTER VIEW`](alter-view.html) statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER VIEW bank.user_accounts RENAME TO bank.user_accts;
 ~~~
@@ -330,7 +330,7 @@ It is not possible to change the stored query executed by the view. Instead, you
 
 To remove a view, use the [`DROP VIEW`](drop-view.html) statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP VIEW bank.user_accounts
 ~~~
@@ -370,7 +370,7 @@ To create a temporary view, add [`TEMP`/`TEMPORARY`](sql-grammar.html#opt_temp) 
 
 For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TEMP VIEW temp_view (season, quotes)
   AS SELECT startrek.episodes.season, count(*)
@@ -380,7 +380,7 @@ For example:
   GROUP BY startrek.episodes.season;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM temp_view;
 ~~~

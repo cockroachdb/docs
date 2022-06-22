@@ -3,14 +3,14 @@ To access the cluster's [Admin UI](admin-ui-overview.html):
 1. Port-forward from your local machine to one of the pods:
 
     <section class="filter-content" markdown="1" data-scope="manual">
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl port-forward cockroachdb-0 8080
     ~~~
     </section>
 
     <section class="filter-content" markdown="1" data-scope="helm">
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl port-forward my-release-cockroachdb-0 8080
     ~~~

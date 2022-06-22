@@ -73,7 +73,7 @@ in the current database, as configured by [`SET DATABASE`](set-vars.html).
 
 For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM users; -- uses table `users` in the current database
 > SELECT * FROM mydb.users; -- uses table `users` in database `mydb`
@@ -85,7 +85,7 @@ By using the explicit index annotation, you can override [CockroachDB's index se
 
 {{site.data.alerts.callout_info}}Index selection can impact performance, but does not change the result of a query.{{site.data.alerts.end}}
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW INDEXES FROM accounts;
 ~~~
@@ -100,7 +100,7 @@ By using the explicit index annotation, you can override [CockroachDB's index se
 (3 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT name, balance
 FROM accounts@accounts_name_idx
@@ -123,7 +123,7 @@ earlier.
 
 For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > WITH a AS (SELECT * FROM users)
   SELECT * FROM a; -- "a" refers to "WITH a AS .."
@@ -159,7 +159,7 @@ single column and single row containing the function results.
 
 For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM sin(3.2)
 ~~~
@@ -182,7 +182,7 @@ function".
 
 For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM generate_series(1, 3)
 ~~~
@@ -223,7 +223,7 @@ In the second form, the columns are also renamed.
 
 For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT c.x FROM (SELECT COUNT(*) AS x FROM users) AS c;
 > SELECT c.x FROM (SELECT COUNT(*) FROM users) AS c(x);
@@ -242,7 +242,7 @@ an extra "Ordinality" column that enumerates every row in the data source.
 
 For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM (VALUES('a'),('b'),('c'));
 ~~~
@@ -256,7 +256,7 @@ For example:
 +---------+
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM (VALUES ('a'), ('b'), ('c')) WITH ORDINALITY;
 ~~~
@@ -300,7 +300,7 @@ Syntax:
 
 For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT c+2                          FROM (SELECT COUNT(*) AS c FROM users);
 > SELECT *                            FROM (VALUES(1), (2), (3));
@@ -335,7 +335,7 @@ parentheses</a>, which is restricted to <a href="selection-queries.html">selecti
 
 For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT "Field" FROM [SHOW COLUMNS FROM customer];
 ~~~
@@ -354,7 +354,7 @@ immediately creates a matching entry in the `management` table with the
 auto-generated employee ID, without requiring a round trip with the SQL
 client:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO management(manager, reportee)
     VALUES ((SELECT id FROM employee WHERE name = 'Diana'),
@@ -368,7 +368,7 @@ Table expressions are used in the [`SELECT`](select-clause.html) and
 clauses](selection-queries.html#selection-clauses), and thus can appear everywhere where
 a selection clause is possible. For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT ... FROM <table expr>, <table expr>, ...
 > TABLE <table expr>

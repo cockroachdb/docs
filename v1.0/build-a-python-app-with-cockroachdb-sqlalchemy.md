@@ -23,7 +23,7 @@ Make sure you have already [installed CockroachDB](install-cockroachdb.html).
 
 To install SQLAlchemy, as well as a [CockroachDB Python package](https://github.com/cockroachdb/sqlalchemy-cockroachdb) that accounts for some minor differences between CockroachDB and PostgreSQL, run the following command:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ pip install sqlalchemy sqlalchemy-cockroachdb psycopg2
 ~~~
@@ -48,14 +48,14 @@ The <a href="https://github.com/cockroachdb/sqlalchemy-cockroachdb">sqlalchemy-c
 Copy the code or
 <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/app/sqlalchemy-basic-sample.py" download>download it directly</a>.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ python
 {% include {{ page.version.version }}/app/sqlalchemy-basic-sample.py %}
 ~~~
 
 Then run the code:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ python sqlalchemy-basic-sample.py
 ~~~
@@ -69,7 +69,7 @@ The output should be:
 
 To verify that the table and rows were created successfully, you can again use the [built-in SQL client](use-the-built-in-sql-client.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure -e 'SHOW TABLES' --database=bank
 ~~~
@@ -83,7 +83,7 @@ $ cockroach sql --insecure -e 'SHOW TABLES' --database=bank
 (1 row)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure -e 'SELECT id, balance FROM accounts' --database=bank
 ~~~

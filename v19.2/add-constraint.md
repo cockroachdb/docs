@@ -44,7 +44,7 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 
 Adding the [`UNIQUE` constraint](unique.html) requires that all of a column's values be distinct from one another (except for *NULL* values).
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE orders ADD CONSTRAINT id_customer_unique UNIQUE (id, customer);
 ~~~
@@ -53,14 +53,14 @@ Adding the [`UNIQUE` constraint](unique.html) requires that all of a column's va
 
 Adding the [`CHECK` constraint](check.html) requires that all of a column's values evaluate to `TRUE` for a Boolean expression.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE orders ADD CONSTRAINT check_id_non_zero CHECK (id > 0);
 ~~~
 
 Check constraints can be added to columns that were created earlier in the transaction. For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BEGIN;
 > ALTER TABLE customers ADD COLUMN gdpr_status STRING;
@@ -88,7 +88,7 @@ To add a foreign key constraint, use the steps shown below.
 
 Given two tables, `customers` and `orders`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE customers;
 ~~~
@@ -106,7 +106,7 @@ Given two tables, `customers` and `orders`:
 (1 row)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE orders;
 ~~~
@@ -133,14 +133,14 @@ Using `ON DELETE CASCADE` will ensure that when the referenced row is deleted, a
 `CASCADE` does not list the objects it drops or updates, so it should be used with caution.
 {{site.data.alerts.end}}
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE orders ADD CONSTRAINT customer_fk FOREIGN KEY (customer_id) REFERENCES customers (id) ON DELETE CASCADE;
 ~~~
 
 An index on the referencing columns is automatically created for you when you add a foreign key constraint to an empty table, if an appropriate index does not already exist. You can see it using [`SHOW INDEXES`](show-index.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW INDEXES FROM orders;
 ~~~

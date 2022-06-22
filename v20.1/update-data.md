@@ -28,7 +28,7 @@ Make sure you have already:
 
 <section class="filter-content" markdown="1" data-scope="sql">
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 UPDATE accounts SET balance = 900 WHERE id = 1;
 ~~~
@@ -39,7 +39,7 @@ For more information about how to use the built-in SQL client, see the [`cockroa
 
 <section class="filter-content" markdown="1" data-scope="go">
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ go
 // tx is a *sql.Tx from "database/sql"
 
@@ -57,7 +57,7 @@ if _, err := tx.Exec("UPDATE accounts SET balance = balance - $1 WHERE id = $2",
 
 <section class="filter-content" markdown="1" data-scope="java">
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ java
 // ds is an org.postgresql.ds.PGSimpleDataSource
 
@@ -80,7 +80,7 @@ try (Connection connection = ds.getConnection()) {
 
 <section class="filter-content" markdown="1" data-scope="python">
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ python
 # conn is a psycopg2 connection
 

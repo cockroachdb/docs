@@ -28,7 +28,7 @@ This page shows you how to start and stop a secure 3-node CockroachDB cluster in
 If you have already deployed a CockroachDB cluster on Kubernetes, see [Operate CockroachDB on Kubernetes](operate-cockroachdb-kubernetes.html) for details on configuring, scaling, and upgrading the cluster.
 {{site.data.alerts.end}}
 
-{% include cockroachcloud/use-cockroachcloud-instead.md %}
+{% include_cached cockroachcloud/use-cockroachcloud-instead.md %}
 
 ## Before you begin
 

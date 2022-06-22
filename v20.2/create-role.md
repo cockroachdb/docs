@@ -128,7 +128,7 @@ root       |                                       | {admin}
 
 The following statement prevents the role from using password authentication and mandates certificate-based client authentication:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE ROLE no_password WITH PASSWORD NULL;
 ~~~

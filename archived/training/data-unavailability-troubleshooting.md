@@ -24,7 +24,7 @@ Create a 9-node cluster, with 3 nodes in each of 3 different localities.
 
 1. In a new terminal, start node 1 in locality `us-east-1`:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -38,14 +38,14 @@ Create a 9-node cluster, with 3 nodes in each of 3 different localities.
 
 2. In the same terminal, perform a one-time initialization of the cluster:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach init --insecure --host=localhost:26257
     ~~~
 
 3. In a new terminal, start node 2 in locality `us-east-1`:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -59,7 +59,7 @@ Create a 9-node cluster, with 3 nodes in each of 3 different localities.
 
 4. In the same terminal, start node 3 in locality `us-east-1`:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -73,7 +73,7 @@ Create a 9-node cluster, with 3 nodes in each of 3 different localities.
 
 5. In the same terminal, start node 4 in locality `us-east-2`:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -87,7 +87,7 @@ Create a 9-node cluster, with 3 nodes in each of 3 different localities.
 
 6. In the same terminal, start node 5 in locality `us-east-2`:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -101,7 +101,7 @@ Create a 9-node cluster, with 3 nodes in each of 3 different localities.
 
 7. In the same terminal, start node 6 in locality `us-east-2`:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -115,7 +115,7 @@ Create a 9-node cluster, with 3 nodes in each of 3 different localities.
 
 8. In the same terminal, start node 7 in locality `us-east-3`:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -129,7 +129,7 @@ Create a 9-node cluster, with 3 nodes in each of 3 different localities.
 
 9. In the same terminal, start node 8 in locality `us-east-3`:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -143,7 +143,7 @@ Create a 9-node cluster, with 3 nodes in each of 3 different localities.
 
 10. In the same terminal, start node 9 in locality `us-east-3`:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -161,7 +161,7 @@ In preparation, add a table and use a replication zone to force the table's data
 
 1. In a new terminal, generate an `intro` database with a `mytable` table:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach gen example-data intro | cockroach sql \
     --insecure \
@@ -170,14 +170,14 @@ In preparation, add a table and use a replication zone to force the table's data
 
 2. Create a [replication zone](../configure-replication-zones.html) forcing the replicas of the `mytable` range to be located on nodes with the `datacenter=us-east-3` locality:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql --execute="ALTER TABLE intro.mytable CONFIGURE ZONE USING constraints='[+datacenter=us-east-3]';" --insecure --host=localhost:26257
     ~~~
 
 3. Use the `SHOW RANGES` SQL command to determine the nodes on which the replicas for the `mytable` table are now located:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
     --insecure \
@@ -202,14 +202,14 @@ Stop 2 of the nodes containing `mytable` replicas. This will cause the range to 
 
 1. Kill nodes 8 and 9:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach quit \
     --insecure \
     --host=localhost:26264
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach quit \
     --insecure \
@@ -220,7 +220,7 @@ Stop 2 of the nodes containing `mytable` replicas. This will cause the range to 
 
 1. In a new terminal, try to insert into the `mytable` table, pointing at a node that is still online:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
     --insecure \
@@ -253,7 +253,7 @@ Stop 2 of the nodes containing `mytable` replicas. This will cause the range to 
 
 1. In a new terminal, restart the stopped nodes:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -265,7 +265,7 @@ Stop 2 of the nodes containing `mytable` replicas. This will cause the range to 
     --background
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -287,14 +287,14 @@ In the next lab, you'll start a new cluster from scratch, so take a moment to cl
 
 1. Stop all CockroachDB nodes:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ pkill -9 cockroach
     ~~~
 
 2. Remove the nodes' data directories:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ rm -rf node1 node2 node3 node4 node5 node6 node7 node8 node9
     ~~~

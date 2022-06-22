@@ -6,7 +6,7 @@ toc: true
 
 CockroachDB allows you to define table partitions, thus giving you row-level control of how and where your data is stored. Partitioning enables you to reduce latencies and costs and can assist in meeting regulatory requirements for your data.
 
-{% include enterprise-feature.md %}
+{% include_cached enterprise-feature.md %}
 
 ## Why use table partitioning
 

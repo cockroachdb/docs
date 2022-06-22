@@ -82,7 +82,7 @@ names. [These names can be modified with
 
 #### Example
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~sql
 > VALUES (1, 2, 3), (4, 5, 6);
 ~~~
@@ -118,7 +118,7 @@ shorter to type.
 
 #### Example
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~sql
 > CREATE TABLE employee_copy AS TABLE employee;
 ~~~
@@ -131,12 +131,12 @@ will likely have a simpler schema than `employee`.
 
 Other examples:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~sql
 > TABLE employee;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~sql
 > INSERT INTO employee_copy TABLE employee;
 ~~~
@@ -172,7 +172,7 @@ By default, each of these comparisons displays only one copy of each value (simi
 
 `UNION` combines the results of two queries into one result.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT name
 FROM accounts
@@ -195,7 +195,7 @@ WHERE state_opened IN ('AZ', 'NY');
 
 To show duplicate rows, you can use `ALL`.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT name
 FROM accounts
@@ -222,7 +222,7 @@ WHERE state_opened IN ('AZ', 'NY');
 
 `INTERSECT` finds only values that are present in both query operands.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT name
 FROM accounts
@@ -244,7 +244,7 @@ FROM mortgages;
 
 `EXCEPT` finds values that are present in the first query operand but not the second.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT name
 FROM mortgages

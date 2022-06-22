@@ -4,14 +4,14 @@ To test this, use the [built-in SQL client](use-the-built-in-sql-client.html) lo
 
 1. On your local machine, launch the built-in SQL client, with the `--host` flag set to the address of any node:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
 	~~~ shell
 	$ cockroach sql --insecure --host=<address of any node>
 	~~~
 
 2. Create an `insecurenodetest` database:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
 	~~~ sql
 	> CREATE DATABASE insecurenodetest;
 	~~~
@@ -20,14 +20,14 @@ To test this, use the [built-in SQL client](use-the-built-in-sql-client.html) lo
 
 4. Launch the built-in SQL client, with the `--host` flag set to the address of a different node:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
 	~~~ shell
 	$ cockroach sql --insecure --host=<address of different node>
 	~~~
 
 5. View the cluster's databases, which will include `insecurenodetest`:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
 	~~~ sql
 	> SHOW DATABASES;
 	~~~

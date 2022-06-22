@@ -2,7 +2,7 @@
 The [Cost-based Optimizer](cost-based-optimizer.html) can take advantage of replication zones for secondary indexes when optimizing queries.
 {{site.data.alerts.end}}
 
-{% include enterprise-feature.md %}
+{% include_cached enterprise-feature.md %}
 
 The [secondary indexes](indexes.html) on a table will automatically use the replication zone for the table. However, with an enterprise license, you can add distinct replication zones for secondary indexes.
 

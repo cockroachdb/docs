@@ -6,7 +6,7 @@
 
     1. Create a `rbac-config.yaml` file to define a role and service account:
 
-        {% include copy-clipboard.html %}
+        {% include_cached copy-clipboard.html %}
         ~~~
         apiVersion: v1
         kind: ServiceAccount
@@ -30,7 +30,7 @@
 
     2. Create the service account:
 
-        {% include copy-clipboard.html %}
+        {% include_cached copy-clipboard.html %}
         ~~~ shell
         $ kubectl create -f rbac-config.yaml
         ~~~
@@ -47,14 +47,14 @@
         {{site.data.alerts.end}}
 
 
-        {% include copy-clipboard.html %}
+        {% include_cached copy-clipboard.html %}
         ~~~ shell
         $ helm init --service-account tiller --override spec.selector.matchLabels.'name'='tiller',spec.selector.matchLabels.'app'='helm' --output yaml | sed 's@apiVersion: extensions/v1beta1@apiVersion: apps/v1@' | kubectl apply -f -
         ~~~
 
 3. Update your Helm chart repositories to ensure that you're using the latest CockroachDB chart:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ helm repo update
     ~~~
@@ -65,7 +65,7 @@
     This tutorial uses `my-release` as the release name. If you use a different value, be sure to adjust the release name in subsequent commands.
     {{site.data.alerts.end}}
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ helm install --name my-release --set Resources.requests.memory="<your memory allocation>",CacheSize="<your cache size>",MaxSQLMemory="<your SQL memory size>" cockroachdb/cockroachdb
     ~~~
@@ -78,7 +78,7 @@
     We recommend setting `CacheSize` and `MaxSQLMemory` each to 1/4 of the memory allocation specified in your `Resources.requests.memory` parameter. For example, if you are allocating 8GiB of memory to each CockroachDB node, use the following values with the `--set` flag in the `helm install` command:
     {{site.data.alerts.end}}
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     Requests.resources.memory="8GiB",CacheSize="2GiB",MaxSQLMemory="2GiB"
     ~~~
@@ -89,7 +89,7 @@
 
 5. Confirm that three pods are `Running` successfully and that the one-time cluster initialization has `Completed`:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl get pods
     ~~~
@@ -104,7 +104,7 @@
 
 6. Confirm that the persistent volumes and corresponding claims were created successfully for all three pods:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl get persistentvolumes
     ~~~

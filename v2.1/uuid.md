@@ -30,17 +30,17 @@ A `UUID` value is 128 bits in width, but the total storage size is likely to be 
 
 #### Create a table with `UUID` in standard [RFC4122](http://www.ietf.org/rfc/rfc4122.txt)-specified format
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE v (token uuid);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO v VALUES ('63616665-6630-3064-6465-616462656562');
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM v;
 ~~~
@@ -56,12 +56,12 @@ A `UUID` value is 128 bits in width, but the total storage size is likely to be 
 
 #### Create a table with `UUID` in standard [RFC4122](http://www.ietf.org/rfc/rfc4122.txt)-specified format with braces
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO v VALUES ('{63616665-6630-3064-6465-616462656563}');
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM v;
 ~~~
@@ -78,12 +78,12 @@ A `UUID` value is 128 bits in width, but the total storage size is likely to be 
 
 #### Create a table with `UUID` in byte format
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO v VALUES (b'kafef00ddeadbeed');
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM v;
 ~~~
@@ -101,12 +101,12 @@ A `UUID` value is 128 bits in width, but the total storage size is likely to be 
 
 #### Create a table with `UUID` used as URN
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO v VALUES ('urn:uuid:63616665-6630-3064-6465-616462656564');
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM v;
 ~~~

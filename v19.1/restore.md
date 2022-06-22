@@ -144,21 +144,21 @@ You can include the following options as key-value pairs in the `kv_option_list`
 
 ### Restore a single table
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > RESTORE bank.customers FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly';
 ~~~
 
 ### Restore multiple tables
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > RESTORE bank.customers, bank.accounts FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly';
 ~~~
 
 ### Restore an entire database
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > RESTORE DATABASE bank FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly';
 ~~~
@@ -167,7 +167,7 @@ You can include the following options as key-value pairs in the `kv_option_list`
 
 ### Point-in-time restore
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > RESTORE bank.customers FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly' \
 AS OF SYSTEM TIME '2017-02-26 10:00:00';
@@ -175,7 +175,7 @@ AS OF SYSTEM TIME '2017-02-26 10:00:00';
 
 ### Restore from incremental backups
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > RESTORE bank.customers \
 FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly', 'gs://acme-co-backup/database-bank-2017-03-28-nightly', 'gs://acme-co-backup/database-bank-2017-03-29-nightly';
@@ -187,7 +187,7 @@ Restoring from incremental backups requires previous full and incremental backup
 
 ### Point-in-time restore from incremental backups
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > RESTORE bank.customers \
 FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly', 'gs://acme-co-backup/database-bank-2017-03-28-nightly', 'gs://acme-co-backup/database-bank-2017-03-29-nightly' \
@@ -202,7 +202,7 @@ Restoring from incremental backups requires previous full and incremental backup
 
 By default, tables and views are restored to the database they originally belonged to. However, using the [`into_db`](#into_db) option, you can control the target database.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > RESTORE bank.customers \
 FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly' \
@@ -213,7 +213,7 @@ WITH into_db = 'newdb';
 
 By default, tables with [Foreign Key](foreign-key.html) constraints must be restored at the same time as the tables they reference. However, using the [`skip_missing_foreign_keys`](#skip_missing_foreign_keys) option you can remove the Foreign Key constraint from the table and then restore it.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > RESTORE bank.accounts \
 FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly' \
@@ -226,19 +226,19 @@ The `system.users` table stores your cluster's usernames and their hashed passwo
 
 After it's restored into a new database, you can write the restored `users` table data to the cluster's existing `system.users` table.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > RESTORE system.users \
 FROM 'azure://acme-co-backup/table-users-2017-03-27-full?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co' \
 WITH into_db = 'newdb';
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO system.users SELECT * FROM newdb.users;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP TABLE newdb.users;
 ~~~

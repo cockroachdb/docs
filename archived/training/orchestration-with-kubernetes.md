@@ -31,7 +31,7 @@ Feature | Description
 
 2. Start a local Kubernetes cluster:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ minikube start
     ~~~
@@ -42,7 +42,7 @@ To start your CockroachDB cluster, you can use our StatefulSet configuration and
 
 1. From your local workstation, use our [`cockroachdb-statefulset-secure.yaml`](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/cockroachdb-statefulset-secure.yaml) file to create the StatefulSet that automatically creates 3 pods, each with a CockroachDB node running inside it:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl create -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/cockroachdb-statefulset-secure.yaml
     ~~~
@@ -63,7 +63,7 @@ To start your CockroachDB cluster, you can use our StatefulSet configuration and
 
     1. Get the name of the `Pending` CSR for the first pod:
 
-        {% include copy-clipboard.html %}
+        {% include_cached copy-clipboard.html %}
         ~~~ shell
         $ kubectl get csr
         ~~~
@@ -79,7 +79,7 @@ To start your CockroachDB cluster, you can use our StatefulSet configuration and
 
     2. Examine the CSR for the first pod:
 
-        {% include copy-clipboard.html %}
+        {% include_cached copy-clipboard.html %}
         ~~~ shell
         $ kubectl describe csr default.node.cockroachdb-0
         ~~~
@@ -107,7 +107,7 @@ To start your CockroachDB cluster, you can use our StatefulSet configuration and
 
     3. If everything looks correct, approve the CSR for the first pod:
 
-        {% include copy-clipboard.html %}
+        {% include_cached copy-clipboard.html %}
         ~~~ shell
         $ kubectl certificate approve default.node.cockroachdb-0
         ~~~
@@ -123,7 +123,7 @@ To start your CockroachDB cluster, you can use our StatefulSet configuration and
     1. Confirm that three pods are `Running` successfully. Note that they will not
        be considered `Ready` until after the cluster has been initialized:
 
-        {% include copy-clipboard.html %}
+        {% include_cached copy-clipboard.html %}
         ~~~ shell
         $ kubectl get pods
         ~~~
@@ -137,7 +137,7 @@ To start your CockroachDB cluster, you can use our StatefulSet configuration and
 
     2. Confirm that the persistent volumes and corresponding claims were created successfully for all three pods:
 
-        {% include copy-clipboard.html %}
+        {% include_cached copy-clipboard.html %}
         ~~~ shell
         $ kubectl get persistentvolumes
         ~~~
@@ -151,7 +151,7 @@ To start your CockroachDB cluster, you can use our StatefulSet configuration and
 
     3. Use our [`cluster-init-secure.yaml`](https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/cluster-init-secure.yaml) file to perform a one-time initialization that joins the nodes into a single cluster:
 
-        {% include copy-clipboard.html %}
+        {% include_cached copy-clipboard.html %}
         ~~~ shell
         $ kubectl create \
         -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/cluster-init-secure.yaml
@@ -163,7 +163,7 @@ To start your CockroachDB cluster, you can use our StatefulSet configuration and
 
     4. Approve the CSR for the one-off pod from which cluster initialization happens:
 
-        {% include copy-clipboard.html %}
+        {% include_cached copy-clipboard.html %}
         ~~~ shell
         $ kubectl certificate approve default.client.root
         ~~~
@@ -176,7 +176,7 @@ To start your CockroachDB cluster, you can use our StatefulSet configuration and
        should be considered successful and the CockroachDB pods should soon be
        considered `Ready`:
 
-        {% include copy-clipboard.html %}
+        {% include_cached copy-clipboard.html %}
         ~~~ shell
         $ kubectl get job cluster-init-secure
         ~~~
@@ -186,7 +186,7 @@ To start your CockroachDB cluster, you can use our StatefulSet configuration and
         cluster-init-secure   1/1             10s           16s
         ~~~
 
-        {% include copy-clipboard.html %}
+        {% include_cached copy-clipboard.html %}
         ~~~ shell
         $ kubectl get pods
         ~~~
@@ -209,7 +209,7 @@ To use the built-in SQL client, you need to launch a pod that runs indefinitely 
 
 1. From your local workstation, use our [`client-secure.yaml`](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/client-secure.yaml) file to launch a pod and keep it running indefinitely:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl create \
     -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/client-secure.yaml
@@ -223,7 +223,7 @@ To use the built-in SQL client, you need to launch a pod that runs indefinitely 
 
 2. Get a shell into the pod and start the CockroachDB [built-in SQL client](../cockroach-sql.html):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl exec -it cockroachdb-client-secure \
     -- ./cockroach sql \
@@ -246,22 +246,22 @@ To use the built-in SQL client, you need to launch a pod that runs indefinitely 
 
 3. Run some basic [CockroachDB SQL statements](../learn-cockroachdb-sql.html):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE DATABASE bank;
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE TABLE bank.accounts (id INT PRIMARY KEY, balance DECIMAL);
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > INSERT INTO bank.accounts VALUES (1, 1000.50);
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT * FROM bank.accounts;
     ~~~
@@ -277,7 +277,7 @@ To use the built-in SQL client, you need to launch a pod that runs indefinitely 
 
 4. [Create a user with a password](../create-user.html#create-a-user-with-a-password):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE USER roach WITH PASSWORD 'Q7gc8rEdS';
     ~~~
@@ -286,7 +286,7 @@ To use the built-in SQL client, you need to launch a pod that runs indefinitely 
 
 5. Exit the SQL shell and pod:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > \q
     ~~~
@@ -303,7 +303,7 @@ To access the cluster's [Admin UI](../admin-ui-overview.html):
 
 1. Port-forward from your local machine to one of the pods:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl port-forward cockroachdb-0 8080
     ~~~
@@ -328,7 +328,7 @@ To see this in action:
 
 1. Stop one of CockroachDB nodes:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl delete pod cockroachdb-2
     ~~~
@@ -341,7 +341,7 @@ To see this in action:
 
 3. Back in the terminal, verify that the pod was automatically restarted:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl get pod cockroachdb-2
     ~~~
@@ -355,7 +355,7 @@ To see this in action:
 
 1. Use the `kubectl scale` command to add a pod for another CockroachDB node:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl scale statefulset cockroachdb --replicas=4
     ~~~
@@ -366,7 +366,7 @@ To see this in action:
 
 2. Get the name of the `Pending` CSR for the new pod:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl get csr
     ~~~
@@ -382,7 +382,7 @@ To see this in action:
 
 3. Approve the CSR for the new pod:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl certificate approve default.node.cockroachdb-3
     ~~~
@@ -393,7 +393,7 @@ To see this in action:
 
 4. Confirm that pod for the fourth node, `cockroachdb-3`, is `Running` successfully:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl get pods
     ~~~
@@ -418,7 +418,7 @@ If you remove nodes without first telling CockroachDB to decommission them, you 
 
 1. Get a shell into the `cockroachdb-client-secure` pod you created earlier and use the `cockroach node status` command to get the internal IDs of nodes:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl exec -it cockroachdb-client-secure \
     -- ./cockroach node status \
@@ -444,7 +444,7 @@ If you remove nodes without first telling CockroachDB to decommission them, you 
     It's important to decommission the node with the highest number in its address because, when you reduce the `--replica` count, Kubernetes will remove the pod for that node.
     {{site.data.alerts.end}}
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl exec -it cockroachdb-client-secure \
     -- ./cockroach node decommission <node ID> \
@@ -474,7 +474,7 @@ If you remove nodes without first telling CockroachDB to decommission them, you 
 
 3. Once the node has been decommissioned, use the `kubectl scale` command to remove a pod from your StatefulSet:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl scale statefulset cockroachdb --replicas=3
     ~~~
@@ -487,22 +487,22 @@ If you remove nodes without first telling CockroachDB to decommission them, you 
 
 In the next module, you'll start with a fresh, non-orchestrated cluster. Delete the StatefulSet configuration file and use the `minikube delete` command to shut down and delete the minikube virtual machine and all the resources you created, including persistent volumes:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ kubectl delete \
 -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/cockroachdb-statefulset.yaml
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ kubectl delete job.batch/cluster-init-secure
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ kubectl delete pod cockroachdb-client-secure
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ minikube delete
 ~~~

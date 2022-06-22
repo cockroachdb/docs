@@ -26,14 +26,14 @@ You can qualify the `<name>` of an enumerated type with a [database and schema n
 
 To show all `ENUM` types in the database, including all `ENUMS` created implicitly for [multi-region databases](multi-region-overview.html), use [`SHOW ENUMS`](show-enums.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW ENUMS;
 ~~~
 
 To modify an `ENUM` type, use [`ALTER TYPE`](alter-type.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TYPE <name> ADD VALUE '<value>';
 ~~~
@@ -42,7 +42,7 @@ where `<value>` is a string literal to add to the existing list of type values. 
 
 To drop the type, use [`DROP TYPE`](drop-type.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP TYPE <name>;
 ~~~
@@ -61,12 +61,12 @@ To drop the type, use [`DROP TYPE`](drop-type.html):
 
 ## Example
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TYPE status AS ENUM ('open', 'closed', 'inactive');
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW ENUMS;
 ~~~
@@ -78,7 +78,7 @@ To drop the type, use [`DROP TYPE`](drop-type.html):
 (1 row)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE accounts (
         id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -87,12 +87,12 @@ To drop the type, use [`DROP TYPE`](drop-type.html):
 );
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO accounts(balance,status) VALUES (500.50,'open'), (0.00,'closed'), (1.25,'inactive');
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM accounts;
 ~~~
@@ -106,7 +106,7 @@ To drop the type, use [`DROP TYPE`](drop-type.html):
 (3 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE TABLE accounts;
 ~~~
@@ -131,7 +131,7 @@ To drop the type, use [`DROP TYPE`](drop-type.html):
 
 Values can be cast explicitly or implicitly. For example, the following [`SELECT`](select-clause.html) statements are equivalent:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM accounts WHERE status::STRING='open';
 ~~~
@@ -143,7 +143,7 @@ Values can be cast explicitly or implicitly. For example, the following [`SELECT
 (1 row)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM accounts WHERE status='open';
 ~~~
@@ -159,12 +159,12 @@ Values can be cast explicitly or implicitly. For example, the following [`SELECT
 
 To compare two enumerated types, you must explicitly cast both types as `STRING`s. For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TYPE inaccessible AS ENUM ('closed', 'inactive');
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE notifications (
         id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -173,12 +173,12 @@ To compare two enumerated types, you must explicitly cast both types as `STRING`
 );
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO notifications(status, message) VALUES ('closed', 'This account has been closed.'),('inactive', 'This account is on hold.');
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT
     accounts.id, notifications.message
@@ -190,7 +190,7 @@ ERROR: unsupported comparison operator: <status> = <inaccessible>
 SQLSTATE: 22023
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT
     accounts.id, notifications.message
@@ -202,7 +202,7 @@ ERROR: unsupported comparison operator: <string> = <inaccessible>
 SQLSTATE: 22023
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT
     accounts.id, notifications.message

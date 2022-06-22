@@ -12,7 +12,7 @@ The coordinates of each Point that makes up the LineString are translated accord
 
 A LineString can be created from SQL by calling the `st_geomfromtext` function on a LineString definition expressed in the [Well Known Text (WKT)](spatial-glossary.html#wkt) format as shown below.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT ST_GeomFromText('LINESTRING(0 0, 1440 900)');
 ~~~

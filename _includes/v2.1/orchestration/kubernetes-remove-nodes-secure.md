@@ -7,7 +7,7 @@ If you remove nodes without first telling CockroachDB to decommission them, you 
 1. Get a shell into the `cockroachdb-client-secure` pod you created earlier and use the `cockroach node status` command to get the internal IDs of nodes:
 
     <section class="filter-content" markdown="1" data-scope="manual">
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl exec -it cockroachdb-client-secure -- ./cockroach node status --certs-dir=/cockroach-certs --host=cockroachdb-public
     ~~~
@@ -24,7 +24,7 @@ If you remove nodes without first telling CockroachDB to decommission them, you 
     </section>
 
     <section class="filter-content" markdown="1" data-scope="helm">
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl exec -it cockroachdb-client-secure -- ./cockroach node status --certs-dir=/cockroach-certs --host=my-release-cockroachdb-public
     ~~~    
@@ -49,14 +49,14 @@ If you remove nodes without first telling CockroachDB to decommission them, you 
     {{site.data.alerts.end}}
 
     <section class="filter-content" markdown="1" data-scope="manual">
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl exec -it cockroachdb-client-secure -- ./cockroach node decommission <node ID> --insecure --host=cockroachdb-public
     ~~~
     </section>
 
     <section class="filter-content" markdown="1" data-scope="helm">
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl exec -it cockroachdb-client-secure -- ./cockroach node decommission <node ID> --insecure --host=my-release-cockroachdb-public
     ~~~    
@@ -85,7 +85,7 @@ If you remove nodes without first telling CockroachDB to decommission them, you 
 3. Once the node has been decommissioned, use the `kubectl scale` command to remove a pod from your StatefulSet:
 
     <section class="filter-content" markdown="1" data-scope="manual">
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl scale statefulset cockroachdb --replicas=3
     ~~~
@@ -96,7 +96,7 @@ If you remove nodes without first telling CockroachDB to decommission them, you 
     </section>
 
     <section class="filter-content" markdown="1" data-scope="helm">
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl scale statefulset my-release-cockroachdb --replicas=3
     ~~~

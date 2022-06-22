@@ -6,7 +6,7 @@ The Operator is currently supported for GKE only.
 
 1. Apply the [CustomResourceDefinition (CRD)](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/#customresourcedefinitions) for the Operator:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl apply -f https://raw.githubusercontent.com/cockroachdb/cockroach-operator/{{site.operator_version}}/install/crds.yaml
     ~~~
@@ -17,7 +17,7 @@ The Operator is currently supported for GKE only.
 
 1. Apply the Operator manifest:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl apply -f https://raw.githubusercontent.com/cockroachdb/cockroach-operator/{{site.operator_version}}/install/operator.yaml
     ~~~
@@ -31,7 +31,7 @@ The Operator is currently supported for GKE only.
 
 1. Validate that the Operator is running:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
 	~~~ shell
 	$ kubectl get pods
     ~~~
@@ -47,12 +47,12 @@ On a production cluster, you will need to modify the StatefulSet configuration w
 
 1. Download and edit `example.yaml`, which tells the Operator how to configure the Kubernetes cluster.
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ curl -O https://raw.githubusercontent.com/cockroachdb/cockroach-operator/{{site.operator_version}}/examples/example.yaml
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
 	$ vi example.yaml
 	~~~
@@ -93,7 +93,7 @@ By default, the Operator will generate and sign 1 client and 1 node certificate 
 
 1. Apply `example.yaml`:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
 	~~~ shell
 	$ kubectl apply -f example.yaml
 	~~~
@@ -106,7 +106,7 @@ By default, the Operator will generate and sign 1 client and 1 node certificate 
 
 1. Check that the pods were created:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
 	~~~ shell
 	$ kubectl get pods
 	~~~

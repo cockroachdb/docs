@@ -107,14 +107,14 @@ Open the Admin UI, click **Metrics** on the left, select the **Replication** das
 Run the [`cockroach node decommission`](view-node-details.html) command with the ID of the node to decommission:
 
 <div class="filter-content" markdown="1" data-scope="secure">
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach node decommission 4 --certs-dir=certs --host=<address of any live node>
 ~~~
 </div>
 
 <div class="filter-content" markdown="1" data-scope="insecure">
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach node decommission 4 --insecure --host=<address of any live node>
 ~~~
@@ -165,14 +165,14 @@ The node is counted as a "Suspect" node in the Admin UI [Cluster Overview panel]
 Execute the `cockroach quit` command:
 
 <div class="filter-content" markdown="1" data-scope="secure">
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach quit --certs-dir=certs --host=<address of decommissioned node>
 ~~~
 </div>
 
 <div class="filter-content" markdown="1" data-scope="insecure">
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach quit --insecure --host=<address of decommissioned node>
 ~~~
@@ -206,14 +206,14 @@ Open the Admin UI and select the **Node List** view. Note the ID of the node lis
 Run the [`cockroach node decommission`](view-node-details.html) command with the ID of the node to decommission:
 
 <div class="filter-content" markdown="1" data-scope="secure">
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach node decommission 4 --certs-dir=certs --host=<address of any live node>
 ~~~
 </div>
 
 <div class="filter-content" markdown="1" data-scope="insecure">
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach node decommission 4 --insecure --host=<address of any live node>
 ~~~
@@ -272,14 +272,14 @@ Select the **Replication** dashboard, and hover over the **Replicas per Store** 
 Run the [`cockroach node decommission`](view-node-details.html) command with the IDs of the nodes to decommission:
 
 <div class="filter-content" markdown="1" data-scope="secure">
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach node decommission 4 5 --certs-dir=certs --host=<address of any live node>
 ~~~
 </div>
 
 <div class="filter-content" markdown="1" data-scope="insecure">
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach node decommission 4 5 --insecure --host=<address of any live node>
 ~~~
@@ -330,14 +330,14 @@ The nodes are counted as a "Suspect" node in the Admin UI [Cluster Overview pane
 For each node, execute the `cockroach quit` command:
 
 <div class="filter-content" markdown="1" data-scope="secure">
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach quit --certs-dir=certs --host=<address of decommissioned node>
 ~~~
 </div>
 
 <div class="filter-content" markdown="1" data-scope="insecure">
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach quit --insecure --host=<address of decommissioned node>
 ~~~
@@ -375,14 +375,14 @@ Press `ctrl-c` in each terminal with an ongoing decommissioning process that you
 Execute the [`cockroach node recommission`](view-node-details.html) command with the IDs of the nodes to recommission:
 
 <div class="filter-content" markdown="1" data-scope="secure">
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach node recommission 4 --certs-dir=certs --host=<address of any live node>
 ~~~
 </div>
 
 <div class="filter-content" markdown="1" data-scope="insecure">
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach node recommission 4 --insecure --host=<address of any live node>
 ~~~
@@ -409,14 +409,14 @@ To check the progress of decommissioning nodes, run the [`cockroach node status`
 </div><br>
 
 <div class="filter-content" markdown="1" data-scope="secure">
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach node status --decommission --certs-dir=certs --host=<address of any live node>
 ~~~
 </div>
 
 <div class="filter-content" markdown="1" data-scope="insecure">
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach node status --decommission --insecure --host=<address of any live node>
 ~~~

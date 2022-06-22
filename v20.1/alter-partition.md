@@ -6,4 +6,4 @@ toc: true
 
 The `ALTER PARTITION` [statement](sql-statements.html) is used to configure replication zones for [Partitioning](partitioning.html). See the [`CONFIGURE ZONE`](configure-zone.html) subcommand for more details.
 
-{% include enterprise-feature.md %}
+{% include_cached enterprise-feature.md %}

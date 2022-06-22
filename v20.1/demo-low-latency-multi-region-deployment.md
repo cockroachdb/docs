@@ -121,20 +121,20 @@ Now that you have VMs in place, start your CockroachDB cluster across the three 
 
 2. Download the [CockroachDB archive](https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz) for Linux, extract the binary, and copy it into the `PATH`:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ curl https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
     | tar -xz
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ sudo cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin/
     ~~~
 
 3. Run the [`cockroach start`](cockroach-start.html) command:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -156,20 +156,20 @@ Now that you have VMs in place, start your CockroachDB cluster across the three 
 
 2. Download the [CockroachDB archive](https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz) for Linux, extract the binary, and copy it into the `PATH`:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ curl https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
     | tar -xz
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ sudo cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin/
     ~~~
 
 3. Run the [`cockroach start`](cockroach-start.html) command:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -191,20 +191,20 @@ Now that you have VMs in place, start your CockroachDB cluster across the three 
 
 2. Download the [CockroachDB archive](https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz) for Linux, extract the binary, and copy it into the `PATH`:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ curl https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
     | tar -xz
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ sudo cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin/
     ~~~
 
 3. Run the [`cockroach start`](cockroach-start.html) command:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -224,7 +224,7 @@ Now that you have VMs in place, start your CockroachDB cluster across the three 
 
 On any of the VMs, run the one-time [`cockroach init`](cockroach-init.html) command to join the first nodes into a cluster:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach init --insecure --host=<address of any node>
 ~~~
@@ -245,7 +245,7 @@ Next, install Docker and HAProxy on each client VM. Docker is required so you ca
 
 2. Install Docker:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ sudo apt-get update && \
     sudo apt-get install -y apt-transport-https ca-certificates curl gnupg-agent software-properties-common && \
@@ -260,25 +260,25 @@ Next, install Docker and HAProxy on each client VM. Docker is required so you ca
 
 3. Install HAProxy:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ sudo apt-get update
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ sudo apt-get install haproxy
     ~~~
 
 4. Download the [CockroachDB archive](https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz) for Linux, extract the binary, and copy it into the `PATH`:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ curl https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
     | tar -xz
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ sudo cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin/
     ~~~
@@ -287,7 +287,7 @@ Next, install Docker and HAProxy on each client VM. Docker is required so you ca
 
 5. Run the [`cockroach gen haproxy`](cockroach-gen.html) command to generate an HAProxy config file, specifying the address of any CockroachDB node and the `--locality` of nodes in the US East region:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach gen haproxy \
     --insecure \
@@ -323,7 +323,7 @@ Next, install Docker and HAProxy on each client VM. Docker is required so you ca
 
 6. Start HAProxy, with the `-f` flag pointing to the `haproxy.cfg` file:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ haproxy -f haproxy.cfg &
     ~~~
@@ -338,33 +338,33 @@ Before you can run MovR against the cluster, you must create a `movr` database a
 
 2. Use the [`cockroach sql`](cockroach-sql.html) command to start the built-in SQL shell, specifying the address of the HAProxy load balancer in the region:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql --insecure --host=<address of HAProxy in US East>
     ~~~
 
 3. In the SQL shell, create the `movr` database:    
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE DATABASE movr;
     ~~~
 
 4. Enable the trial license you requested earlier:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SET CLUSTER SETTING cluster.organization = '<your organization>';
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SET CLUSTER SETTING enterprise.license = '<your license key>';
     ~~~
 
 5. Set the longitude and latitude of the regions where you are running CockroachDB nodes:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > INSERT into system.locations VALUES
         ('region', 'us-east1', 33.836082, -81.163727),
@@ -376,7 +376,7 @@ Before you can run MovR against the cluster, you must create a `movr` database a
 
 6. Exit the SQL shell:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     \q
     ~~~
@@ -389,7 +389,7 @@ Be sure to use the exact version of MovR specified in the commands: `movr:19.09.
 
 1. Still on the client VM in the US East region, load the MovR schema and initial data for the cities of New York, Chicago, and Seattle, pointing at the address of the US East load balancer:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
 
     ~~~ shell
     $ sudo docker run --rm cockroachdb/movr:19.09.2 \
@@ -432,7 +432,7 @@ Be sure to use the exact version of MovR specified in the commands: `movr:19.09.
 
 2. Start MovR in the US East region, representing users in New York. Be sure to point at the address of the US East load balancer:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ sudo docker run -it --rm cockroachdb/movr:19.09.2 \
     --app-name "movr-east" \
@@ -448,7 +448,7 @@ Be sure to use the exact version of MovR specified in the commands: `movr:19.09.
 
 2. Start MovR in the US Central region, representing users in Chicago. Be sure to point at the address of the US Central load balancer:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ sudo docker run -it --rm cockroachdb/movr:19.09.2 \
     --app-name "movr-central" \
@@ -464,7 +464,7 @@ Be sure to use the exact version of MovR specified in the commands: `movr:19.09.
 
 2. Start MovR in the US West region, representing users in Seattle. Be sure to point at the address of the US West load balancer:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ sudo docker run -it --rm cockroachdb/movr:19.09.2 \
     --app-name "movr-west" \
@@ -524,14 +524,14 @@ With network latency in mind, now use the built-in SQL shell to check the distri
 
 2. Use the [`cockroach sql`](cockroach-sql.html) command to start the built-in SQL shell, specifying the address of the HAProxy load balancer in the region:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql --insecure --database=movr --host=<address of HAProxy in region>
     ~~~
 
 3. In the SQL shell, use the [`SHOW RANGES`](show-ranges.html) statement to view the location of replicas for the tables and their secondary indexes:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SHOW RANGES FROM TABLE users;
     SHOW RANGES FROM TABLE vehicles;
@@ -632,7 +632,7 @@ As mentioned earlier, all of the tables except `promo_codes` are geographically 
 
 1. Back in the SQL shell on one of your client VMs, use [`ALTER TABLE/INDEX ... PARTITION BY`](partition-by.html) statements to define partitions by `city` for the geo-specific tables and their secondary indexes:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > ALTER TABLE users PARTITION BY LIST (city) (
         PARTITION new_york VALUES IN ('new york'),
@@ -641,7 +641,7 @@ As mentioned earlier, all of the tables except `promo_codes` are geographically 
       );
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > ALTER TABLE vehicles PARTITION BY LIST (city) (
         PARTITION new_york VALUES IN ('new york'),
@@ -650,7 +650,7 @@ As mentioned earlier, all of the tables except `promo_codes` are geographically 
       );
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > ALTER INDEX vehicles_auto_index_fk_city_ref_users PARTITION BY LIST (city) (
         PARTITION new_york VALUES IN ('new york'),
@@ -659,7 +659,7 @@ As mentioned earlier, all of the tables except `promo_codes` are geographically 
       );
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > ALTER TABLE rides PARTITION BY LIST (city) (
         PARTITION new_york VALUES IN ('new york'),
@@ -668,7 +668,7 @@ As mentioned earlier, all of the tables except `promo_codes` are geographically 
       );
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > ALTER INDEX rides_auto_index_fk_city_ref_users PARTITION BY LIST (city) (
         PARTITION new_york VALUES IN ('new york'),
@@ -677,7 +677,7 @@ As mentioned earlier, all of the tables except `promo_codes` are geographically 
       );
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > ALTER INDEX rides_auto_index_fk_vehicle_city_ref_vehicles PARTITION BY LIST (vehicle_city) (
         PARTITION new_york VALUES IN ('new york'),
@@ -686,7 +686,7 @@ As mentioned earlier, all of the tables except `promo_codes` are geographically 
       );
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > ALTER TABLE user_promo_codes PARTITION BY LIST (city) (
         PARTITION new_york VALUES IN ('new york'),
@@ -695,7 +695,7 @@ As mentioned earlier, all of the tables except `promo_codes` are geographically 
       );
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > ALTER TABLE vehicle_location_histories PARTITION BY LIST (city) (
         PARTITION new_york VALUES IN ('new york'),
@@ -710,7 +710,7 @@ As mentioned earlier, all of the tables except `promo_codes` are geographically 
     The warning at the bottom tells you that partitions are not yet applied because corresponding replication zones still need to be created.
     {{site.data.alerts.end}}
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SHOW CREATE TABLE vehicles;
     ~~~
@@ -750,7 +750,7 @@ As mentioned earlier, all of the tables except `promo_codes` are geographically 
     The `<table>@*` syntax lets you create zone configurations for all identically named partitions of a table, saving you multiple steps.
     {{site.data.alerts.end}}
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > ALTER PARTITION new_york OF INDEX movr.users@*
         CONFIGURE ZONE USING constraints='[+region=us-east1]';
@@ -760,7 +760,7 @@ As mentioned earlier, all of the tables except `promo_codes` are geographically 
         CONFIGURE ZONE USING constraints='[+region=us-west1]';
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > ALTER PARTITION new_york OF INDEX movr.vehicles@*
         CONFIGURE ZONE USING constraints='[+region=us-east1]';
@@ -770,7 +770,7 @@ As mentioned earlier, all of the tables except `promo_codes` are geographically 
         CONFIGURE ZONE USING constraints='[+region=us-west1]';
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > ALTER PARTITION new_york OF INDEX movr.rides@*
         CONFIGURE ZONE USING constraints='[+region=us-east1]';
@@ -780,7 +780,7 @@ As mentioned earlier, all of the tables except `promo_codes` are geographically 
         CONFIGURE ZONE USING constraints='[+region=us-west1]';
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > ALTER PARTITION new_york OF INDEX movr.user_promo_codes@*
         CONFIGURE ZONE USING constraints='[+region=us-east1]';
@@ -790,7 +790,7 @@ As mentioned earlier, all of the tables except `promo_codes` are geographically 
         CONFIGURE ZONE USING constraints='[+region=us-west1]';
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > ALTER PARTITION new_york OF INDEX movr.vehicle_location_histories@*
         CONFIGURE ZONE USING constraints='[+region=us-east1]';
@@ -802,7 +802,7 @@ As mentioned earlier, all of the tables except `promo_codes` are geographically 
 
 3. At this point, you can use the [`SHOW CREATE TABLE`](show-create.html) statement to confirm that partitions are in effect:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SHOW CREATE TABLE vehicles;
     ~~~
@@ -851,7 +851,7 @@ As mentioned earlier, all of the tables except `promo_codes` are geographically 
 
     The [`SHOW PARTITIONS`](show-partitions.html) statement is another way to confirm that partitions are in effect:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SHOW PARTITIONS FROM TABLE vehicles;
     ~~~
@@ -906,13 +906,13 @@ In contrast to the other tables, the `promo_codes` table is not tied to geograph
 
 1. Create two indexes on the `promo_codes` table, and make them complete copies of the primary index:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE INDEX promo_codes_idx_east ON promo_codes (code)
         STORING (description, creation_time, expiration_time, rules);
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE INDEX promo_codes_idx_west ON promo_codes (code)
         STORING (description, creation_time, expiration_time, rules);
@@ -920,7 +920,7 @@ In contrast to the other tables, the `promo_codes` table is not tied to geograph
 
 2. Use [`ALTER TABLE/INDEX ... CONFIGURE ZONE`](configure-zone.html) statements to create replication zones for the primary index and each secondary index, in each case setting a leaseholder preference telling CockroachDB to put the leaseholder for the index in a distinct region:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > ALTER TABLE promo_codes
         CONFIGURE ZONE USING
@@ -929,7 +929,7 @@ In contrast to the other tables, the `promo_codes` table is not tied to geograph
           lease_preferences = '[[+region=us-central1]]';
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > ALTER INDEX promo_codes@promo_codes_idx_east
         CONFIGURE ZONE USING
@@ -938,7 +938,7 @@ In contrast to the other tables, the `promo_codes` table is not tied to geograph
           lease_preferences = '[[+region=us-east1]]';
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql   
     > ALTER INDEX promo_codes@promo_codes_idx_west
         CONFIGURE ZONE USING
@@ -951,7 +951,7 @@ In contrast to the other tables, the `promo_codes` table is not tied to geograph
 
 1. Still in the SQL shell on one of your client VMs, use the [`SHOW RANGES`](show-ranges.html) statement to check replica placement of the geo-specific tables after partitioning:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT * FROM [SHOW RANGES FROM TABLE users]
         WHERE "start_key" NOT LIKE '%Prefix%';
@@ -1054,7 +1054,7 @@ In contrast to the other tables, the `promo_codes` table is not tied to geograph
 
 2. Now use the [`SHOW RANGES`](show-ranges.html) statement to check replica placement of the `promo_codes` reference table and indexes:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SHOW RANGES FROM TABLE promo_codes;
       SHOW RANGES FROM INDEX promo_codes_idx_east;
@@ -1130,7 +1130,7 @@ Given that most of the data in your cluster is geo-partitioned, let's focus on A
 
 2. Use the [`cockroach quit`](cockroach-quit.html) command to stop one node, effectively simulating one of the 3 AZ's failing:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach quit --insecure --host=<address of one node in US East>
     ~~~

@@ -24,7 +24,7 @@ Start and initialize an insecure cluster like you did in previous modules.
 
 1. Start node 1:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -37,7 +37,7 @@ Start and initialize an insecure cluster like you did in previous modules.
 
 2. Start node 2:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -50,7 +50,7 @@ Start and initialize an insecure cluster like you did in previous modules.
 
 3. Start node 3:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -63,7 +63,7 @@ Start and initialize an insecure cluster like you did in previous modules.
 
 4. Perform a one-time initialization of the cluster:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach init --insecure --host=localhost:26257
     ~~~
@@ -72,14 +72,14 @@ Start and initialize an insecure cluster like you did in previous modules.
 
 1. Use the [`cockroach gen`](../cockroach-gen.html) command to generate an example `startrek` database:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach gen example-data startrek | cockroach sql --insecure
     ~~~
 
 2. Check the contents of the `startrek` database:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
     --insecure \
@@ -101,7 +101,7 @@ Start and initialize an insecure cluster like you did in previous modules.
 
 3. Use the [`cockroach dump`](../cockroach-dump.html) command to create a SQL dump file for the `startrek` database:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach dump startrek \
     --insecure \
@@ -148,7 +148,7 @@ Now imagine the tables in the `startrek` database have changed and you want to r
 
 1. Drop the tables in the `startrek` database:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
     --insecure \
@@ -158,7 +158,7 @@ Now imagine the tables in the `startrek` database have changed and you want to r
 
 2. Confirm that the tables in the `startrek` database are gone:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
     --insecure \
@@ -174,7 +174,7 @@ Now imagine the tables in the `startrek` database have changed and you want to r
 
 3. Restore the tables in the `startrek` database from the dump file:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
     --insecure \
@@ -184,7 +184,7 @@ Now imagine the tables in the `startrek` database have changed and you want to r
 
 3. Check the contents of the `startrek` database again:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
     --insecure \
@@ -210,7 +210,7 @@ Next, you'll use the enterprise `BACKUP` feature to create a backup of the `star
 
 1. If you requested and enabled a trial enterprise license in the [Geo-Partitioning](geo-partitioning.html) module, skip to step 2. Otherwise, [request a trial enterprise license](https://www.cockroachlabs.com/get-cockroachdb/) and then enable your license:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
     --insecure \
@@ -218,7 +218,7 @@ Next, you'll use the enterprise `BACKUP` feature to create a backup of the `star
     --execute="SET CLUSTER SETTING cluster.organization = '<your organization>';"
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
     --insecure \
@@ -228,7 +228,7 @@ Next, you'll use the enterprise `BACKUP` feature to create a backup of the `star
 
 2. Use the `BACKUP` SQL statement to generate a backup of the `startrek` database and store it on S3. To ensure your backup doesn't conflict with anyone else's, prefix the filename with your name:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
     --insecure \
@@ -249,7 +249,7 @@ Again, imagine the tables in the `startrek` database have changed and you want t
 
 1. Drop the tables in the `startrek` database:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
     --insecure \
@@ -259,7 +259,7 @@ Again, imagine the tables in the `startrek` database have changed and you want t
 
 2. Confirm that the tables in the `startrek` database are gone:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
     --insecure \
@@ -275,7 +275,7 @@ Again, imagine the tables in the `startrek` database have changed and you want t
 
 3. Restore the `startrek` database from the enterprise backup, again making sure to prefix the filename with your name:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
     --insecure \
@@ -292,7 +292,7 @@ Again, imagine the tables in the `startrek` database have changed and you want t
 
 4. Check the contents of the `startrek` database again:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
     --insecure \
@@ -318,14 +318,14 @@ In the next module, you'll start a new cluster from scratch, so take a moment to
 
 1. Terminate all CockroachDB nodes:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ pkill -9 cockroach
     ~~~
 
 2. Remove the nodes' data directories:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ rm -rf node1 node2 node3
     ~~~

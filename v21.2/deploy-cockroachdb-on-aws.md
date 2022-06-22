@@ -19,7 +19,7 @@ After setting up the AWS network, clock synchronization, and load balancing, it 
 
 If you are only testing CockroachDB, or you are not concerned with protecting network communication with TLS encryption, you can use an insecure cluster instead. Select **Insecure** above for instructions.
 
-{% include cockroachcloud/use-cockroachcloud-instead.md %}
+{% include_cached cockroachcloud/use-cockroachcloud-instead.md %}
 
 {{site.data.alerts.callout_info}}
 If you need a license to use [{{ site.data.products.enterprise }} features](enterprise-licensing.html), obtain a private offer link on the [AWS Marketplace](https://aws.amazon.com/marketplace/pp/prodview-ph5bx6fhm4nlq) or see [CockroachDB Pricing](https://www.cockroachlabs.com/pricing/) to learn about custom pricing.

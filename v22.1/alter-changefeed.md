@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-{% include enterprise-feature.md %}
+{% include_cached enterprise-feature.md %}
 
 {% include_cached new-in.html version="v22.1" %} The `ALTER CHANGEFEED` statement modifies an existing [changefeed](change-data-capture-overview.html). You can use `ALTER CHANGEFEED` to do the following:
 

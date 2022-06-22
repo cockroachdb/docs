@@ -21,7 +21,7 @@ This tutorial shows you how build a simple Python application with CockroachDB a
 
 To install the Python psycopg2 driver, run the following command:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ pip install psycopg2-binary
 ~~~
@@ -52,12 +52,12 @@ Download the <a href="https://raw.githubusercontent.com/cockroachlabs/hello-worl
 
 If you prefer, you can also clone a version of the code:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ git clone https://github.com/cockroachlabs/hello-world-python-psycopg2/
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ python
 {% remote_include https://raw.githubusercontent.com/cockroachlabs/hello-world-python-psycopg2/master/example.py %}
 ~~~
@@ -71,7 +71,7 @@ The Python code is a command-line utility that accepts the connection string to 
 - Replace `<username>` and `<password>` with the SQL username and password that you created earlier.
 - Replace `<hostname>` and `<port>` with the hostname and port in the `(sql/tcp)` connection string from SQL shell welcome text.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ python3 example.py \
 'postgresql://<username>:<password>@<hostname>:<port>/bank?sslmode=require'
@@ -86,7 +86,7 @@ $ python3 example.py \
 - Replace `<hostname>` and `<port>` with the hostname and port in the connection string you got from the {{ site.data.products.db }} Console.
 - Replace `<certs_dir>/<ca.crt>` with the path to the CA certificate that you downloaded from the {{ site.data.products.db }} Console.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ python3 example.py \
 'postgresql://<username>:<password>@<hostname>:<port>/bank?sslmode=verify-full&sslrootcert=<certs_dir>/<ca.crt'

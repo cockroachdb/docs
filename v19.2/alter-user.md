@@ -35,7 +35,7 @@ Parameter | Description
 
 ### Change password using a string literal
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER USER carl WITH PASSWORD 'ilov3beefjerky';
 ~~~
@@ -47,7 +47,7 @@ ALTER USER 1
 
 The following statement changes the password to `ilov3beefjerky`, as above:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER USER carl WITH PASSWORD ilov3beefjerky;
 ~~~
@@ -56,14 +56,14 @@ This is equivalent to the example in the previous section because the password c
 
 In contrast, the following statement changes the password to `thereisnotomorrow`, even though the password in the syntax contains capitals, because identifiers are normalized automatically:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER USER carl WITH PASSWORD ThereIsNoTomorrow;
 ~~~
 
 To preserve case in a password specified using identifier syntax, use double quotes:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER USER carl WITH PASSWORD "ThereIsNoTomorrow";
 ~~~

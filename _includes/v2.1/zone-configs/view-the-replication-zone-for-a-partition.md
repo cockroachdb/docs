@@ -1,5 +1,5 @@
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW ZONE CONFIGURATION FOR PARTITION north_america OF TABLE roachlearn.students;
 ~~~

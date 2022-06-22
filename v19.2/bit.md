@@ -45,12 +45,12 @@ other considerations may cause significant performance degradation.
 
 ## Example
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE b (x BIT, y BIT(3), z VARBIT, w VARBIT(3));
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW COLUMNS FROM b;
 ~~~
@@ -65,12 +65,12 @@ other considerations may cause significant performance degradation.
   rowid       | INT       |    false    | unique_rowid() |                       | {primary} |   true
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO b(x, y, z, w) VALUES (B'1', B'101', B'1', B'1');
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM b;
 ~~~
@@ -83,7 +83,7 @@ other considerations may cause significant performance degradation.
 
 For type `BIT`, the value must match exactly the specified size:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO b(x) VALUES (B'101');
 ~~~
@@ -92,7 +92,7 @@ For type `BIT`, the value must match exactly the specified size:
 pq: bit string length 3 does not match type BIT
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO b(y) VALUES (B'10');
 ~~~
@@ -103,7 +103,7 @@ pq: bit string length 2 does not match type BIT(3)
 
 For type `VARBIT`, the value must not be larger than the specified maximum size:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO b(w) VALUES (B'1010');
 ~~~

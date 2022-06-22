@@ -26,7 +26,7 @@ We have tested the [Node.js pg driver](https://www.npmjs.com/package/pg) enough 
 
 To let your application communicate with CockroachDB, install the [Node.js pg driver](https://www.npmjs.com/package/pg):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ npm install pg
 ~~~
@@ -68,7 +68,7 @@ The sample code creates a table, inserts some rows, and then reads and updates v
 
 Here are the contents of `app.js`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ js
 {% remote_include https://raw.githubusercontent.com/cockroachlabs/example-app-node-postgres/main/app.js %}
 ~~~
@@ -77,7 +77,7 @@ Note that all of the database operations are wrapped in the `retryTxn` function.
 
 To run the code:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ node app.js
 ~~~

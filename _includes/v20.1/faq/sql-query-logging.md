@@ -8,14 +8,14 @@ There are several ways to log SQL queries. The type of logging to use depends on
 
 For production clusters, the best way to log all queries is to turn on the [cluster-wide setting](cluster-settings.html) `sql.trace.log_statement_execute`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET CLUSTER SETTING sql.trace.log_statement_execute = true;
 ~~~
 
 With this setting on, each node of the cluster writes all SQL queries it executes to a secondary `cockroach-sql-exec` log file. Use the symlink `cockroach-sql-exec.log` to open the most recent log. When you no longer need to log queries, you can turn the setting back off:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET CLUSTER SETTING sql.trace.log_statement_execute = false;
 ~~~
@@ -26,7 +26,7 @@ Log files are written to CockroachDB's standard [log directory](debug-and-error-
 
 <span class="version-tag">New in v20.1:</span> The `sql.log.slow_query.latency_threshold` [cluster setting](cluster-settings.html) is used to log only queries whose service latency exceeds a specified threshold value (e.g., 100 milliseconds):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET CLUSTER SETTING sql.log.slow_query.latency_threshold = '100ms';
 ~~~
@@ -45,7 +45,7 @@ Log files are written to CockroachDB's standard [log directory](debug-and-error-
 
 SQL client connections can be logged by turning on the `server.auth_log.sql_connections.enabled` [cluster setting](cluster-settings.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET CLUSTER SETTING server.auth_log.sql_connections.enabled = true;
 ~~~
@@ -65,7 +65,7 @@ I200219 05:08:44.171384 5235 sql/pgwire/server.go:453  [n1,client=[::1]:34588,ho
 
 Along with the above, SQL client authenticated sessions can be logged by turning on the `server.auth_log.sql_sessions.enabled` [cluster setting](cluster-settings.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET CLUSTER SETTING server.auth_log.sql_sessions.enabled = true;
 ~~~
@@ -119,7 +119,7 @@ To log CockroachDB-generated SQL queries as well, use `--vmodule=exec_log=3`.
 
 From the SQL prompt on a running node, execute the `crdb_internal.set_vmodule()` [function](functions-and-operators.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT crdb_internal.set_vmodule('exec_log=2');
 ~~~

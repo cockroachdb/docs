@@ -26,7 +26,7 @@ To simplify the process of running multiple nodes on your local computer, you'll
 
 1. In a new terminal, start node 1:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -39,14 +39,14 @@ To simplify the process of running multiple nodes on your local computer, you'll
 
 2. Perform a one-time initialization of the cluster:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach init --insecure --host=localhost:26257
     ~~~
 
 3. Start node 2:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -59,7 +59,7 @@ To simplify the process of running multiple nodes on your local computer, you'll
 
 4. Start node 3:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -72,7 +72,7 @@ To simplify the process of running multiple nodes on your local computer, you'll
 
 5. Start node 4, which will be used to run the TPC-C benchmark:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -93,7 +93,7 @@ CockroachDB comes with built-in load generators for simulating different types o
 
 On the fourth node, use `cockroach workload` to load the initial schema and data:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach workload init tpcc \
 --warehouses=10 \
@@ -110,7 +110,7 @@ For more `tpcc` options, use `workload run tpcc --help`. For details about other
 
 Run the workload for ten "warehouses" of data for five minutes (300 seconds):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach workload run tpcc \
 --warehouses=10 \
@@ -140,14 +140,14 @@ In the next module, you'll start with a fresh cluster, so take a moment to clean
 
 1. Exit the SQL shell:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > \q
     ~~~
 
 2. Stop all CockroachDB nodes:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ pkill -9 cockroach
     ~~~
@@ -156,7 +156,7 @@ In the next module, you'll start with a fresh cluster, so take a moment to clean
 
 3. Remove the nodes' data directories:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ rm -rf node1 node2 node3 node4
     ~~~

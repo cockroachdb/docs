@@ -19,7 +19,7 @@ Make sure you have already completed [Data Import](data-import.html).
 
 Use the [`cockroach sql`](../cockroach-start.html) command to open the built-in SQL client:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure --host=localhost:26257
 ~~~
@@ -30,7 +30,7 @@ In this training, you'll create a bank with customers and accounts. First, you'l
 
 1. In the built-in SQL client, create a database:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE DATABASE bank;
     ~~~
@@ -40,7 +40,7 @@ In this training, you'll create a bank with customers and accounts. First, you'l
 
 2. Create a table:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE TABLE bank.customers (
        customer_id INTEGER PRIMARY KEY,
@@ -59,7 +59,7 @@ Now that you have a table, [insert](../insert.html) some data into it.
 
 1. Insert a row into the table:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > INSERT INTO bank.customers
       VALUES (1, 'Petee', '101 5th Ave, New York, NY 10003');
@@ -69,7 +69,7 @@ Now that you have a table, [insert](../insert.html) some data into it.
 
 2. Verify that the data was inserted successfully by using a [`SELECT` statement](../select.html) to retrieve data from the table:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT customer_id, name, address FROM bank.customers;
     ~~~
@@ -83,7 +83,7 @@ Now that you have a table, [insert](../insert.html) some data into it.
 
 3. Insert another row:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > INSERT INTO bank.customers VALUES (2, 'Carl', NULL);
     ~~~
@@ -92,7 +92,7 @@ Now that you have a table, [insert](../insert.html) some data into it.
 
 4. Insert two rows in the same statement:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > INSERT INTO bank.customers VALUES
       (3, 'Lola', NULL),
@@ -101,7 +101,7 @@ Now that you have a table, [insert](../insert.html) some data into it.
 
 5. Verify that the data was inserted successfully:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT * FROM bank.customers;
     ~~~
@@ -128,7 +128,7 @@ Now that you have a place to store personal information about customers, create 
 
 1. Create an `accounts` table:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE TABLE bank.accounts (
         type STRING,
@@ -145,7 +145,7 @@ Now that you have a place to store personal information about customers, create 
 
 2. Try to open an account for a customer that doesn't exist:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > INSERT INTO bank.accounts VALUES ('checking', 0.00, 5);
     ~~~
@@ -158,14 +158,14 @@ Now that you have a place to store personal information about customers, create 
 
 3. Now open an account for a valid customer:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > INSERT INTO bank.accounts VALUES ('checking', 0.00, 1);
     ~~~
 
 4. Try to [delete](../delete.html) a customer record:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > DELETE FROM bank.customers WHERE customer_id = 1;
     ~~~
@@ -180,21 +180,21 @@ Now that you have a place to store personal information about customers, create 
 
 5. Delete a customer's account:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > DELETE FROM bank.accounts WHERE customer_id = 1;
     ~~~
 
 6. Now that the customer's account is deleted, you can delete the customer record:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > DELETE FROM bank.customers WHERE customer_id = 1;
     ~~~
 
 7. Create accounts for Carl (`customer_id=2`) and Ernie (`customer_id=4`):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > INSERT INTO bank.accounts VALUES
       ('checking', 250.00, 2),
@@ -206,7 +206,7 @@ Now that you have a place to store personal information about customers, create 
 
 1. View account balances using a `SELECT` statement:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT * FROM bank.accounts;
     ~~~
@@ -222,7 +222,7 @@ Now that you have a place to store personal information about customers, create 
 
 2. Use a [join](../joins.html) to match customer IDs with the name and address in the `customers` table:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT * FROM bank.customers NATURAL JOIN bank.accounts;
     ~~~
@@ -242,7 +242,7 @@ Now that you have a place to store personal information about customers, create 
 
 3. [Update](../update.html) Carl's address:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > UPDATE bank.customers
       SET address = '4 Privet Drive, Little Whinging, England'
@@ -251,7 +251,7 @@ Now that you have a place to store personal information about customers, create 
 
 4. With the join, the address is updated on both accounts:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT * FROM bank.customers NATURAL JOIN bank.accounts;
     ~~~
@@ -325,12 +325,12 @@ Now try running two copies of the above transaction in parallel:
 
 1. In the SQL shell, run:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > BEGIN;
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT balance >= 250 FROM bank.accounts WHERE type = 'checking' AND customer_id = 2;
     ~~~
@@ -339,17 +339,17 @@ Now try running two copies of the above transaction in parallel:
 
 3. Open a new terminal, start a second SQL shell, and run the same:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql --insecure
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > BEGIN;
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT balance >= 250 FROM bank.accounts WHERE type = 'checking' AND customer_id = 2;
     ~~~
@@ -358,7 +358,7 @@ Now try running two copies of the above transaction in parallel:
 
 5. Run:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > UPDATE bank.accounts SET balance = balance - 250 WHERE type = 'checking' AND customer_id = 2;
     ~~~
@@ -366,14 +366,14 @@ Now try running two copies of the above transaction in parallel:
 
 7. Commit the transaction:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > COMMIT;
     ~~~
 
 8. Back in the first SQL shell, run:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > UPDATE bank.accounts SET balance = balance - 250 WHERE type = 'checking' AND customer_id = 2;
     ~~~
@@ -382,7 +382,7 @@ Now try running two copies of the above transaction in parallel:
 
 10. Commit the transaction:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > COMMIT;
     ~~~
@@ -405,7 +405,7 @@ Any number of `SELECT`, `INSERT`, `UPDATE`, and `DELETE` queries can be placed i
 
 1. Add all of the balances in the `accounts` table:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT SUM(balance) FROM bank.accounts;
     ~~~
@@ -419,7 +419,7 @@ Any number of `SELECT`, `INSERT`, `UPDATE`, and `DELETE` queries can be placed i
 
 2. View the balance grouped by account type:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT type, SUM(balance) FROM bank.accounts GROUP BY type;
     ~~~

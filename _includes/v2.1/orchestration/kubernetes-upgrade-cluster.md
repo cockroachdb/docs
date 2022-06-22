@@ -17,14 +17,14 @@ Kubernetes knows how to carry out a safe rolling upgrade process of the Cockroac
     1. Get a shell into the pod with the `cockroach` binary created earlier and start the CockroachDB [built-in SQL client](use-the-built-in-sql-client.html):
 
         <section class="filter-content" markdown="1" data-scope="manual">
-        {% include copy-clipboard.html %}
+        {% include_cached copy-clipboard.html %}
         ~~~ shell
         $ kubectl exec -it cockroachdb-client-secure -- ./cockroach sql --certs-dir=/cockroach-certs --host=cockroachdb-public
         ~~~
         </section>
 
         <section class="filter-content" markdown="1" data-scope="helm">
-        {% include copy-clipboard.html %}
+        {% include_cached copy-clipboard.html %}
         ~~~ shell
         $ kubectl exec -it cockroachdb-client-secure -- ./cockroach sql --certs-dir=/cockroach-certs --host=my-release-cockroachdb-public
         ~~~
@@ -36,7 +36,7 @@ Kubernetes knows how to carry out a safe rolling upgrade process of the Cockroac
     1. Launch a temporary interactive pod and start the [built-in SQL client](use-the-built-in-sql-client.html) inside it:
 
         <section class="filter-content" markdown="1" data-scope="manual">
-        {% include copy-clipboard.html %}
+        {% include_cached copy-clipboard.html %}
         ~~~ shell
         $ kubectl run cockroachdb -it --image=cockroachdb/cockroach --rm --restart=Never \
         -- sql --insecure --host=cockroachdb-public
@@ -44,7 +44,7 @@ Kubernetes knows how to carry out a safe rolling upgrade process of the Cockroac
         </section>
 
         <section class="filter-content" markdown="1" data-scope="helm">
-        {% include copy-clipboard.html %}
+        {% include_cached copy-clipboard.html %}
         ~~~ shell
         $ kubectl run cockroachdb -it --image=cockroachdb/cockroach --rm --restart=Never \
         -- sql --insecure --host=my-release-cockroachdb-public
@@ -55,7 +55,7 @@ Kubernetes knows how to carry out a safe rolling upgrade process of the Cockroac
 
     2. Set the `cluster.preserve_downgrade_option` [cluster setting](cluster-settings.html):
 
-        {% include copy-clipboard.html %}
+        {% include_cached copy-clipboard.html %}
         ~~~ sql
         > SET CLUSTER SETTING cluster.preserve_downgrade_option = '2.0';
         ~~~
@@ -63,7 +63,7 @@ Kubernetes knows how to carry out a safe rolling upgrade process of the Cockroac
 2. Kick off the upgrade process by changing the desired Docker image. To do so, pick the version that you want to upgrade to, then run the following command, replacing "VERSION" with your desired new version:
 
     <section class="filter-content" markdown="1" data-scope="manual">
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl patch statefulset cockroachdb --type='json' -p='[{"op": "replace", "path": "/spec/template/spec/containers/0/image", "value":"cockroachdb/cockroach:VERSION"}]'
     ~~~
@@ -74,7 +74,7 @@ Kubernetes knows how to carry out a safe rolling upgrade process of the Cockroac
     </section>
 
     <section class="filter-content" markdown="1" data-scope="helm">
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl patch statefulset my-release-cockroachdb --type='json' -p='[{"op": "replace", "path": "/spec/template/spec/containers/0/image", "value":"cockroachdb/cockroach:VERSION"}]'
     ~~~
@@ -86,7 +86,7 @@ Kubernetes knows how to carry out a safe rolling upgrade process of the Cockroac
 
 3. If you then check the status of your cluster's pods, you should see one of them being restarted:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl get pods
     ~~~
@@ -113,7 +113,7 @@ Kubernetes knows how to carry out a safe rolling upgrade process of the Cockroac
 
 4. This will continue until all of the pods have restarted and are running the new image. To check the image of each pod to determine whether they've all be upgraded, run:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl get pods -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.spec.containers[0].image}{"\n"}'
     ~~~
@@ -149,14 +149,14 @@ Kubernetes knows how to carry out a safe rolling upgrade process of the Cockroac
     1. Get a shell into the pod with the `cockroach` binary created earlier and start the CockroachDB [built-in SQL client](use-the-built-in-sql-client.html):
 
         <section class="filter-content" markdown="1" data-scope="manual">
-        {% include copy-clipboard.html %}
+        {% include_cached copy-clipboard.html %}
         ~~~ shell
         $ kubectl exec -it cockroachdb-client-secure -- ./cockroach sql --certs-dir=/cockroach-certs --host=cockroachdb-public
         ~~~
         </section>
 
         <section class="filter-content" markdown="1" data-scope="helm">
-        {% include copy-clipboard.html %}
+        {% include_cached copy-clipboard.html %}
         ~~~ shell
         $ kubectl exec -it cockroachdb-client-secure -- ./cockroach sql --certs-dir=/cockroach-certs --host=my-release-cockroachdb-public
         ~~~
@@ -167,7 +167,7 @@ Kubernetes knows how to carry out a safe rolling upgrade process of the Cockroac
     1. Launch a temporary interactive pod and start the [built-in SQL client](use-the-built-in-sql-client.html) inside it:
 
         <section class="filter-content" markdown="1" data-scope="manual">
-        {% include copy-clipboard.html %}
+        {% include_cached copy-clipboard.html %}
         ~~~ shell
         $ kubectl run cockroachdb -it --image=cockroachdb/cockroach --rm --restart=Never \
         -- sql --insecure --host=cockroachdb-public
@@ -175,7 +175,7 @@ Kubernetes knows how to carry out a safe rolling upgrade process of the Cockroac
         </section>
 
         <section class="filter-content" markdown="1" data-scope="helm">
-        {% include copy-clipboard.html %}
+        {% include_cached copy-clipboard.html %}
         ~~~ shell
         $ kubectl run cockroachdb -it --image=cockroachdb/cockroach --rm --restart=Never \
         -- sql --insecure --host=my-release-cockroachdb-public
@@ -186,7 +186,7 @@ Kubernetes knows how to carry out a safe rolling upgrade process of the Cockroac
 
     2. Re-enable auto-finalization:
 
-        {% include copy-clipboard.html %}
+        {% include_cached copy-clipboard.html %}
         ~~~ sql
         > RESET CLUSTER SETTING cluster.preserve_downgrade_option;
         ~~~

@@ -25,7 +25,7 @@ These instructions assume you already have the following:
 
 In {{ site.data.products.serverless }} clusters, all external service integrations are disabled. This means that if you want to export data, you need to use [`cockroach sql --execute`](../{{site.versions["stable"]}}/cockroach-sql.html#general) to query the data you want to export, and then pipe the data to a local file. For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
 --url 'postgres://<username>:<password>@free-tier.<region>.cockroachlabs.cloud:26257?sslmode=verify-full&sslrootcert=<path/to/certs_dir>/cc-ca.crt&options=--cluster=<cluster_name>' \
@@ -41,7 +41,7 @@ w_id,w_name,w_street_1,w_street_2,w_city,w_state,w_zip,w_tax,w_ytd
 
 Repeat this step for each table you want to migrate. For example, let's export one more table (`district`) from the [`tpcc` database](../{{site.versions["stable"]}}/cockroach-workload.html#workloads):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
 --url 'postgres://<username>:<password>@free-tier.<region>.cockroachlabs.cloud:26257?sslmode=verify-full&sslrootcert=<path/to/certs_dir>/cc-ca.crt&options=--cluster=<cluster_name>' \
@@ -78,7 +78,7 @@ For best practices for optimizing import performance in CockroachDB, see [Import
 
 1. [Create the database](../{{site.versions["stable"]}}/create-database.html) you want to import the tables into. For example:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE DATABASE tpcc;
     ~~~
@@ -93,7 +93,7 @@ For best practices for optimizing import performance in CockroachDB, see [Import
 
     For example, to import the data from `warehouse.csv` into a `warehouse` table, use the following statement:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > IMPORT TABLE tpcc.warehouse (
         w_id INT8 NOT NULL,
@@ -127,7 +127,7 @@ For best practices for optimizing import performance in CockroachDB, see [Import
 
 1. Repeat the above for each CSV file you want to import. For example, let's import the second file (`district.csv`) we created earlier:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > IMPORT TABLE tpcc.district (
         d_id INT8 NOT NULL,
@@ -157,7 +157,7 @@ For best practices for optimizing import performance in CockroachDB, see [Import
 
 1. _(Optional)_ To verify that the two tables were imported, use [`SHOW TABLES`](../{{site.versions["stable"]}}/show-tables.html):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SHOW TABLES FROM tpcc;
     ~~~
@@ -174,7 +174,7 @@ For best practices for optimizing import performance in CockroachDB, see [Import
 
 Once all of the tables you want to migrate have been imported into the {{ site.data.products.dedicated }} cluster, add the [foreign key](../{{site.versions["stable"]}}/foreign-key.html) relationships. To do this, use [`ALTER TABLE ... ADD CONSTRAINT`](../{{site.versions["stable"]}}/add-constraint.html). For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE tpcc.district ADD CONSTRAINT fk_d_w_id_ref_warehouse FOREIGN KEY (d_w_id) REFERENCES tpcc.warehouse(w_id);
 ~~~

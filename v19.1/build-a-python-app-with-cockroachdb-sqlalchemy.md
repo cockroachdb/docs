@@ -30,7 +30,7 @@ SQLAlchemy relies on the existence of [foreign keys](foreign-key.html) to genera
 
 To install SQLAlchemy, as well as a [CockroachDB Python package](https://github.com/cockroachdb/sqlalchemy-cockroachdb) that accounts for some differences between CockroachDB and PostgreSQL, run the following command:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ pip install sqlalchemy sqlalchemy-cockroachdb psycopg2
 ~~~
@@ -51,7 +51,7 @@ For other ways to install SQLAlchemy, see the [official documentation](http://do
 
 Create a certificate and key for the `maxroach` user by running the following command. The code samples will run as this user.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach cert create-client maxroach --certs-dir=certs --ca-key=my-safe-directory/ca.key
 ~~~
@@ -77,14 +77,14 @@ You must use the `cockroachdb://` prefix in the URL passed to [`sqlalchemy.creat
 Copy the code below or
 <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{page.version.version}}/app/sqlalchemy-basic-sample.py">download it directly</a>.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ python
 {% include {{page.version.version}}/app/sqlalchemy-basic-sample.py %}
 ~~~
 
 Then run the code:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ python3 sqlalchemy-basic-sample.py
 ~~~
@@ -130,14 +130,14 @@ WHERE accounts.id = %(id_1)s
 
 To verify that the table and rows were created successfully, start the [built-in SQL client](use-the-built-in-sql-client.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --certs-dir=certs --database=bank
 ~~~
 
 Then, issue the following statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT COUNT(*) FROM accounts;
 ~~~
@@ -175,14 +175,14 @@ It does all of the above using the practices we recommend for using SQLAlchemy w
 You must use the `cockroachdb://` prefix in the URL passed to [`sqlalchemy.create_engine`](https://docs.sqlalchemy.org/en/latest/core/engines.html?highlight=create_engine#sqlalchemy.create_engine) to make sure the [`cockroachdb`](https://github.com/cockroachdb/sqlalchemy-cockroachdb) dialect is used. Using the `postgres://` URL prefix to connect to your CockroachDB cluster will not work.
 {{site.data.alerts.end}}
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ python
 {% include {{page.version.version}}/app/sqlalchemy-basic-sample.py %}
 ~~~
 
 Run the code:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ python3 example.py
 ~~~
@@ -228,14 +228,14 @@ WHERE accounts.id = %(id_1)s
 
 To verify that the table and rows were created successfully, start the [built-in SQL client](use-the-built-in-sql-client.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure --database=bank
 ~~~
 
 Then, issue the following statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT COUNT(*) FROM accounts;
 ~~~

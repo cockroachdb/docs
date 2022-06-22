@@ -47,7 +47,7 @@ Field | Description
 
 ## Example
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE t1 (
     a INT PRIMARY KEY,
@@ -57,12 +57,12 @@ Field | Description
   );
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE INDEX b_c_idx ON t1 (b, c) STORING (d);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW INDEX FROM t1;
 ~~~

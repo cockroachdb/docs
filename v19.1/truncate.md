@@ -42,7 +42,7 @@ Parameter | Description
 
 ### Truncate a table (no foreign key dependencies)
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM t1;
 ~~~
@@ -57,12 +57,12 @@ Parameter | Description
 (2 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > TRUNCATE t1;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM t1;
 ~~~
@@ -83,7 +83,7 @@ In these examples, the `orders` table has a [Foreign Key](foreign-key.html) rela
 
 {{site.data.alerts.callout_danger}}<code>CASCADE</code> truncates <em>all</em> dependent tables without listing them, which can lead to inadvertent and difficult-to-recover losses. To avoid potential harm, we recommend truncating tables explicitly in most cases. See <a href="#truncate-dependent-tables-explicitly">Truncate Dependent Tables Explicitly</a> for more details.{{site.data.alerts.end}}
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > TRUNCATE customers;
 ~~~
@@ -92,12 +92,12 @@ In these examples, the `orders` table has a [Foreign Key](foreign-key.html) rela
 pq: "customers" is referenced by foreign key from table "orders"
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > TRUNCATE customers CASCADE;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM customers;
 ~~~
@@ -110,7 +110,7 @@ pq: "customers" is referenced by foreign key from table "orders"
 (0 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM orders;
 ~~~
@@ -125,12 +125,12 @@ pq: "customers" is referenced by foreign key from table "orders"
 
 #### Truncate dependent tables explicitly
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > TRUNCATE customers, orders;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM customers;
 ~~~
@@ -143,7 +143,7 @@ pq: "customers" is referenced by foreign key from table "orders"
 (0 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM orders;
 ~~~

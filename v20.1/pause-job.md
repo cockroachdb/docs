@@ -29,7 +29,7 @@ Parameter | Description
 
 ### Pause a single job
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW JOBS;
 ~~~
@@ -42,7 +42,7 @@ Parameter | Description
 +----------------+---------+-------------------------------------------+...
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > PAUSE JOB 27536791415282;
 ~~~
@@ -51,7 +51,7 @@ Parameter | Description
 
 To pause multiple jobs, nest a [`SELECT` clause](select-clause.html) that retrieves `job_id`(s) inside the `PAUSE JOBS` statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > PAUSE JOBS (SELECT job_id FROM [SHOW JOBS]
       WHERE user_name = 'maxroach');
@@ -61,7 +61,7 @@ All jobs created by `maxroach` will be paused.
 
 ### Pause automatic table statistics jobs
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW AUTOMATIC JOBS;
 ~~~
@@ -73,14 +73,14 @@ All jobs created by `maxroach` will be paused.
 (1 row)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > PAUSE JOB 438235476849557505;
 ~~~
 
 To permanently disable automatic table statistics jobs, disable the `sql.stats.automatic_collection.enabled` [cluster setting](cluster-settings.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET CLUSTER SETTING sql.stats.automatic_collection.enabled = false;
 ~~~

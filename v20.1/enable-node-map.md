@@ -16,7 +16,7 @@ This page walks you through the process of setting up and enabling the Node Map.
 On a secure cluster, this area of the Admin UI can only be accessed by an `admin` user. See [Admin UI access](admin-ui-overview.html#admin-ui-access).
 {{site.data.alerts.end}}
 
-{% include enterprise-feature.md %}
+{% include_cached enterprise-feature.md %}
 
 <img src="{{ 'images/v20.1/admin-ui-node-map-navigation3.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
@@ -43,7 +43,7 @@ To start a new cluster with the correct `--locality` flags:
 
 Start Node 1:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~
 $ cockroach start \
 --insecure \
@@ -56,7 +56,7 @@ $ cockroach start \
 
 Start Node 2:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~
 $ cockroach start \
 --insecure \
@@ -69,7 +69,7 @@ $ cockroach start \
 
 Start Node 3:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~
 $ cockroach start \
 --insecure \
@@ -82,7 +82,7 @@ $ cockroach start \
 
 Start Node 4:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~
 $ cockroach start \
 --insecure \
@@ -95,7 +95,7 @@ $ cockroach start \
 
 Use the [`cockroach init`](cockroach-init.html) command to perform a one-time initialization of the cluster:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach init --insecure --host=<address of any node>
 ~~~
@@ -118,14 +118,14 @@ To be displayed on the world map, localities must be assigned a corresponding la
 
 Launch the built-in SQL client:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure --host=<address of any node>
 ~~~
 
 Insert the approximate latitude and longitude of each region into the `system.locations` table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO system.locations VALUES
   ('region', 'us-east-1', 37.478397, -76.453077),

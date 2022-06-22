@@ -39,7 +39,7 @@ table td:first-child {
 
 In this example, we will change the name of sequence `customer_seq` to `customer_number`.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM information_schema.sequences;
 ~~~
@@ -55,7 +55,7 @@ In this example, we will change the name of sequence `customer_seq` to `customer
 (4 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER SEQUENCE test_db.customer_seq RENAME TO test_db.customer_number;
 ~~~
@@ -63,7 +63,7 @@ In this example, we will change the name of sequence `customer_seq` to `customer
 RENAME SEQUENCE
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM information_schema.sequences;
 ~~~
@@ -83,7 +83,7 @@ RENAME SEQUENCE
 
 In this example, we will move the sequence we renamed in the first example (`customer_number`) to a different database.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM information_schema.sequences;
 ~~~
@@ -99,7 +99,7 @@ In this example, we will move the sequence we renamed in the first example (`cus
 (4 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER SEQUENCE test_db.customer_number RENAME TO db_2.customer_number;
 ~~~

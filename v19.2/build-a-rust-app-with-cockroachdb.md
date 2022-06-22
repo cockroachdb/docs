@@ -29,7 +29,7 @@ Additionally, include the <a href="https://crates.io/crates/openssl" data-proofe
 
 Create a certificate and key for the `maxroach` user by running the following command.  The code samples will run as this user.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach cert create-client maxroach --certs-dir=certs --ca-key=my-safe-directory/ca.key
 ~~~
@@ -44,7 +44,7 @@ First, use the following code to connect as the `maxroach` user and execute some
 
 Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/app/basic-sample.rs" download><code>basic-sample.rs</code></a> file, or create the file yourself and copy the code into it.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ rust
 {% include {{ page.version.version }}/app/basic-sample.rs %}
 ~~~
@@ -59,14 +59,14 @@ Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/
 CockroachDB may require the [client to retry a transaction](transactions.html#transaction-retries) in case of read/write contention. CockroachDB provides a generic <strong>retry function</strong> that runs inside a transaction and retries it as needed. You can copy and paste the retry function from here into your code.
 {{site.data.alerts.end}}
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ rust
 {% include {{ page.version.version }}/app/txn-sample.rs %}
 ~~~
 
 After running the code, use the [built-in SQL client](cockroach-sql.html) to verify that funds were transferred from one account to another:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --certs-dir=certs -e 'SELECT id, balance FROM accounts' --database=bank
 ~~~
@@ -97,7 +97,7 @@ Update your `Cargo.toml` file to specify a dependency on the Rust Postgres drive
 
 As the `maxroach` user, use the [built-in SQL client](cockroach-sql.html) to create an `accounts` table in the new database.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure \
 --database=bank \
@@ -115,7 +115,7 @@ First, use the following code to connect as the `maxroach` user and execute some
 
 Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/app/insecure/basic-sample.rs" download><code>basic-sample.rs</code></a> file, or create the file yourself and copy the code into it.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ rust
 {% include {{ page.version.version }}/app/insecure/basic-sample.rs %}
 ~~~
@@ -130,14 +130,14 @@ Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/
 CockroachDB may require the [client to retry a transaction](transactions.html#transaction-retries) in case of read/write contention. CockroachDB provides a generic <strong>retry function</strong> that runs inside a transaction and retries it as needed. You can copy and paste the retry function from here into your code.
 {{site.data.alerts.end}}
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ rust
 {% include {{ page.version.version }}/app/insecure/txn-sample.rs %}
 ~~~
 
 After running the code, use the [built-in SQL client](cockroach-sql.html) to verify that funds were transferred from one account to another:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure -e 'SELECT id, balance FROM accounts' --database=bank
 ~~~

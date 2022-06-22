@@ -26,7 +26,7 @@ In this scenario, you try to connect a user without providing a client certifica
 
 1. In a new terminal, as the `root` users, create a new user called `kirk`:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
     --certs-dir=certs \
@@ -36,7 +36,7 @@ In this scenario, you try to connect a user without providing a client certifica
 
 2. As the `kirk` user, try to connect to the cluster:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
     --certs-dir=certs \
@@ -66,7 +66,7 @@ To successfully connect the user, you must first either generate a client certif
 
 1. Generate a client certificate for the `kirk` user:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach cert create-client \
     kirk \
@@ -76,7 +76,7 @@ To successfully connect the user, you must first either generate a client certif
 
 2. As the `kirk` user, try to connect to the cluster again:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
     --certs-dir=certs \
@@ -101,7 +101,7 @@ In this scenario, you try to connect the `kirk` user again but specify a `--port
 
 Try to connect the `kirk` user:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
 --certs-dir=certs \
@@ -127,7 +127,7 @@ Failed running "sql"
 
 To successfully connect the user, try again using a correct `--port`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
 --certs-dir=certs \
@@ -151,14 +151,14 @@ In the next module, you'll start a new cluster from scratch, so take a moment to
 
 1. Terminate all CockroachDB nodes:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ pkill -9 cockroach
     ~~~
 
 2. Remove the nodes' data directories:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ rm -rf node1 node2 node3 node4 node5 node6
     ~~~

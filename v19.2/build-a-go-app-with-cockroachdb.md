@@ -22,7 +22,7 @@ This tutorial shows you how build a simple Go application with CockroachDB and t
 
 To install the pgx driver, run the following command:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ go get -u github.com/jackc/pgx
 ~~~
@@ -31,7 +31,7 @@ $ go get -u github.com/jackc/pgx
 
 To install the [CockroachDB Go library](https://pkg.go.dev/github.com/cockroachdb/cockroach-go/crdb), run the following command:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ go get -u github.com/cockroachdb/cockroach-go/crdb
 ~~~
@@ -46,7 +46,7 @@ $ go get -u github.com/cockroachdb/cockroach-go/crdb
 
 Create a certificate and key for the `maxroach` user by running the following command:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach cert create-client maxroach --certs-dir=certs --ca-key=my-safe-directory/ca.key
 ~~~
@@ -63,21 +63,21 @@ First, use the following code to connect to the cluster as the `maxroach` user, 
 
 Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/app/basic-sample-pgx.go" download><code>basic-sample-pgx.go</code></a> file, or create the file yourself and copy the code into it.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ go
 {% include {{ page.version.version }}/app/basic-sample-pgx.go %}
 ~~~
 
 Initialize the module:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ go mod init basic-sample-pgx
 ~~~
 
 Then run the code:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ go run basic-sample-pgx.go
 ~~~
@@ -96,7 +96,7 @@ Next, use the following code to connect as `maxroach` user, and then execute a b
 
 Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/app/txn-sample-pgx.go" download><code>txn-sample-pgx.go</code></a> file, or create the file yourself and copy the code into it.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ go
 {% include {{ page.version.version }}/app/txn-sample-pgx.go %}
 ~~~
@@ -105,7 +105,7 @@ CockroachDB may require the [client to retry a transaction](transactions.html#tr
 
 To run the code:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ go run txn-sample-pgx.go
 ~~~
@@ -118,7 +118,7 @@ Success
 
 To verify that funds were transferred from one account to another, use the [built-in SQL client](cockroach-sql.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --certs-dir=certs -e 'SELECT id, balance FROM accounts' --database=bank
 ~~~
@@ -151,21 +151,21 @@ First, use the following code to connect to the cluster as the `maxroach` user, 
 
 Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/app/insecure/basic-sample-pgx.go" download><code>basic-sample-pgx.go</code></a> file, or create the file yourself and copy the code into it.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ go
 {% include {{ page.version.version }}/app/insecure/basic-sample-pgx.go %}
 ~~~
 
 Initialize the module:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ go mod init basic-sample-pgx
 ~~~
 
 Then run the code:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ go run basic-sample-pgx.go
 ~~~
@@ -184,7 +184,7 @@ Next, use the following code to connect as `maxroach` user, and then execute a b
 
 Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/app/insecure/txn-sample-pgx.go" download><code>txn-sample-pgx.go</code></a> file, or create the file yourself and copy the code into it.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ go
 {% include {{ page.version.version }}/app/insecure/txn-sample-pgx.go %}
 ~~~
@@ -193,7 +193,7 @@ CockroachDB may require the [client to retry a transaction](transactions.html#tr
 
 To run the code:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ go run txn-sample-pgx.go
 ~~~
@@ -206,7 +206,7 @@ Success
 
 To verify that funds were transferred from one account to another, use the [built-in SQL client](cockroach-sql.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure -e 'SELECT id, balance FROM accounts' --database=bank
 ~~~

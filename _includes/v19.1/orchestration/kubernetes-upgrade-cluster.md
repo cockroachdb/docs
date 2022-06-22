@@ -17,7 +17,7 @@ Kubernetes knows how to carry out a safe rolling upgrade process of the Cockroac
     1. Get a shell into the pod with the `cockroach` binary created earlier and start the CockroachDB [built-in SQL client](use-the-built-in-sql-client.html):
 
         <section class="filter-content" markdown="1" data-scope="manual">
-        {% include copy-clipboard.html %}
+        {% include_cached copy-clipboard.html %}
         ~~~ shell
         $ kubectl exec -it cockroachdb-client-secure \-- ./cockroach sql \
         --certs-dir=/cockroach-certs \
@@ -26,7 +26,7 @@ Kubernetes knows how to carry out a safe rolling upgrade process of the Cockroac
         </section>
 
         <section class="filter-content" markdown="1" data-scope="helm">
-        {% include copy-clipboard.html %}
+        {% include_cached copy-clipboard.html %}
         ~~~ shell
         $ kubectl exec -it cockroachdb-client-secure \
         -- ./cockroach sql \
@@ -41,7 +41,7 @@ Kubernetes knows how to carry out a safe rolling upgrade process of the Cockroac
     1. Launch a temporary interactive pod and start the [built-in SQL client](use-the-built-in-sql-client.html) inside it:
 
         <section class="filter-content" markdown="1" data-scope="manual">
-        {% include copy-clipboard.html %}
+        {% include_cached copy-clipboard.html %}
         ~~~ shell
         $ kubectl run cockroachdb -it \
         --image=cockroachdb/cockroach \
@@ -54,7 +54,7 @@ Kubernetes knows how to carry out a safe rolling upgrade process of the Cockroac
         </section>
 
         <section class="filter-content" markdown="1" data-scope="helm">
-        {% include copy-clipboard.html %}
+        {% include_cached copy-clipboard.html %}
         ~~~ shell
         $ kubectl run cockroachdb -it \
         --image=cockroachdb/cockroach \
@@ -70,14 +70,14 @@ Kubernetes knows how to carry out a safe rolling upgrade process of the Cockroac
 
     2. Set the `cluster.preserve_downgrade_option` [cluster setting](cluster-settings.html):
 
-        {% include copy-clipboard.html %}
+        {% include_cached copy-clipboard.html %}
         ~~~ sql
         > SET CLUSTER SETTING cluster.preserve_downgrade_option = '2.1';
         ~~~
 
     3. Exit the SQL shell and delete the temporary pod:
 
-        {% include copy-clipboard.html %}
+        {% include_cached copy-clipboard.html %}
         ~~~ sql
         > \q
         ~~~
@@ -85,7 +85,7 @@ Kubernetes knows how to carry out a safe rolling upgrade process of the Cockroac
 2. Kick off the upgrade process by changing the desired Docker image:
 
     <section class="filter-content" markdown="1" data-scope="manual">
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl patch statefulset cockroachdb \
     --type='json' \
@@ -103,12 +103,12 @@ Kubernetes knows how to carry out a safe rolling upgrade process of the Cockroac
     For Helm, you must remove the cluster initialization job from when the cluster was created before the cluster version can be changed.
     {{site.data.alerts.end}}
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl delete job my-release-cockroachdb-init
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ helm upgrade \
     my-release \
@@ -120,7 +120,7 @@ Kubernetes knows how to carry out a safe rolling upgrade process of the Cockroac
 
 3. If you then check the status of your cluster's pods, you should see them being restarted:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl get pods
     ~~~
@@ -154,7 +154,7 @@ Kubernetes knows how to carry out a safe rolling upgrade process of the Cockroac
 
 4. This will continue until all of the pods have restarted and are running the new image. To check the image of each pod to determine whether they've all be upgraded, run:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl get pods \
     -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.spec.containers[0].image}{"\n"}'
@@ -199,7 +199,7 @@ Kubernetes knows how to carry out a safe rolling upgrade process of the Cockroac
     1. Get a shell into the pod with the `cockroach` binary created earlier and start the CockroachDB [built-in SQL client](use-the-built-in-sql-client.html):
 
         <section class="filter-content" markdown="1" data-scope="manual">
-        {% include copy-clipboard.html %}
+        {% include_cached copy-clipboard.html %}
         ~~~ shell
         $ kubectl exec -it cockroachdb-client-secure \
         -- ./cockroach sql \
@@ -209,7 +209,7 @@ Kubernetes knows how to carry out a safe rolling upgrade process of the Cockroac
         </section>
 
         <section class="filter-content" markdown="1" data-scope="helm">
-        {% include copy-clipboard.html %}
+        {% include_cached copy-clipboard.html %}
         ~~~ shell
         $ kubectl exec -it cockroachdb-client-secure \
         -- ./cockroach sql \
@@ -223,7 +223,7 @@ Kubernetes knows how to carry out a safe rolling upgrade process of the Cockroac
     1. Launch a temporary interactive pod and start the [built-in SQL client](use-the-built-in-sql-client.html) inside it:
 
         <section class="filter-content" markdown="1" data-scope="manual">
-        {% include copy-clipboard.html %}
+        {% include_cached copy-clipboard.html %}
         ~~~ shell
         $ kubectl run cockroachdb -it \
         --image=cockroachdb/cockroach \
@@ -236,7 +236,7 @@ Kubernetes knows how to carry out a safe rolling upgrade process of the Cockroac
         </section>
 
         <section class="filter-content" markdown="1" data-scope="helm">
-        {% include copy-clipboard.html %}
+        {% include_cached copy-clipboard.html %}
         ~~~ shell
         $ kubectl run cockroachdb -it \
         --image=cockroachdb/cockroach \
@@ -252,14 +252,14 @@ Kubernetes knows how to carry out a safe rolling upgrade process of the Cockroac
 
     2. Re-enable auto-finalization:
 
-        {% include copy-clipboard.html %}
+        {% include_cached copy-clipboard.html %}
         ~~~ sql
         > RESET CLUSTER SETTING cluster.preserve_downgrade_option;
         ~~~
 
     3. Exit the SQL shell and delete the temporary pod:
 
-        {% include copy-clipboard.html %}
+        {% include_cached copy-clipboard.html %}
         ~~~ sql
         > \q
         ~~~

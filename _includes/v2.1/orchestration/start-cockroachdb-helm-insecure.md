@@ -6,7 +6,7 @@
 
     1. Create a `rbac-config.yaml` file to define a role and service account:
 
-        {% include copy-clipboard.html %}
+        {% include_cached copy-clipboard.html %}
         ~~~
         apiVersion: v1
         kind: ServiceAccount
@@ -30,7 +30,7 @@
 
     2. Create the service account:
 
-        {% include copy-clipboard.html %}
+        {% include_cached copy-clipboard.html %}
         ~~~ shell
         $ kubectl create -f rbac-config.yaml
         ~~~
@@ -42,7 +42,7 @@
 
     3. Start the Helm server:
 
-        {% include copy-clipboard.html %}
+        {% include_cached copy-clipboard.html %}
         ~~~ shell
         $ helm init --service-account tiller
         ~~~
@@ -53,7 +53,7 @@
     This tutorial uses `my-release` as the release name. If you use a different value, be sure to adjust the release name in subsequent commands.
     {{site.data.alerts.end}}
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ helm install --name my-release cockroachdb/cockroachdb
     ~~~
@@ -66,7 +66,7 @@
 
 4. Confirm that three pods are `Running` successfully:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl get pods
     ~~~
@@ -80,7 +80,7 @@
 
 5. Confirm that the persistent volumes and corresponding claims were created successfully for all three pods:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl get persistentvolumes
     ~~~

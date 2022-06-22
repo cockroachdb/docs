@@ -23,7 +23,7 @@ You can use the `cockroach demo` and `cockroach workload` commands to load the `
 
 [`cockroach demo`](cockroach-demo.html) opens a SQL shell to a temporary, in-memory cluster. To open a SQL shell to a demo cluster with the `movr` database preloaded and set as the [current database](sql-name-resolution.html#current-database), use the following command:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach demo movr
 ~~~
@@ -40,7 +40,7 @@ $ cockroach demo movr
 
     <section class="filter-content" markdown="1" data-scope="secure">
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach workload init movr 'postgresql://root@localhost:26257?sslcert=certs%2Fclient.root.crt&sslkey=certs%2Fclient.root.key&sslmode=verify-full&sslrootcert=certs%2Fca.crt'
     ~~~
@@ -49,7 +49,7 @@ $ cockroach demo movr
 
     <section class="filter-content" markdown="1" data-scope="insecure">
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach workload init movr 'postgresql://root@localhost:26257?sslmode=disable'
     ~~~
@@ -60,12 +60,12 @@ $ cockroach demo movr
 
     <section class="filter-content" markdown="1" data-scope="secure">
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql --certs-dir=certs --host=localhost:26257
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > USE movr;
     ~~~
@@ -74,12 +74,12 @@ $ cockroach demo movr
 
     <section class="filter-content" markdown="1" data-scope="insecure">
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql --insecure --host=localhost:26257
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > USE movr;
     ~~~        

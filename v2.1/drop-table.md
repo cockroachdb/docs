@@ -31,7 +31,7 @@ Parameter | Description
 
 In this example, other objects do not depend on the table being dropped.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM bank;
 ~~~
@@ -47,7 +47,7 @@ In this example, other objects do not depend on the table being dropped.
 (3 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP TABLE bank.branches;
 ~~~
@@ -56,7 +56,7 @@ In this example, other objects do not depend on the table being dropped.
 DROP TABLE
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM bank;
 ~~~
@@ -77,7 +77,7 @@ In this example, a view depends on the table being dropped. Therefore, it's only
 
 {{site.data.alerts.callout_danger}}<code>CASCADE</code> drops <em>all</em> dependent objects without listing them, which can lead to inadvertent and difficult-to-recover losses. To avoid potential harm, we recommend dropping objects individually in most cases.{{site.data.alerts.end}}
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM bank;
 ~~~
@@ -92,7 +92,7 @@ In this example, a view depends on the table being dropped. Therefore, it's only
 (2 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP TABLE bank.accounts;
 ~~~
@@ -101,7 +101,7 @@ In this example, a view depends on the table being dropped. Therefore, it's only
 pq: cannot drop table "accounts" because view "user_accounts_view" depends on it
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~sql
 > DROP TABLE bank.accounts CASCADE;
 ~~~
@@ -110,7 +110,7 @@ pq: cannot drop table "accounts" because view "user_accounts_view" depends on it
 DROP TABLE
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM bank;
 ~~~

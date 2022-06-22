@@ -48,7 +48,7 @@ As each pod is created, it issues a Certificate Signing Request, or CSR, to have
 
 1. Get the name of the `Pending` CSR for pod 1:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl get csr
     ~~~
@@ -65,7 +65,7 @@ As each pod is created, it issues a Certificate Signing Request, or CSR, to have
 
 2. Examine the CSR for pod 1:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl describe csr default.node.cockroachdb-0
     ~~~
@@ -92,7 +92,7 @@ As each pod is created, it issues a Certificate Signing Request, or CSR, to have
 
 3. If everything looks correct, approve the CSR for pod 1:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl certificate approve default.node.cockroachdb-0
     ~~~
@@ -108,7 +108,7 @@ As each pod is created, it issues a Certificate Signing Request, or CSR, to have
 1. Confirm that three pods are `Running` successfully. Note that they will not
    be considered `Ready` until after the cluster has been initialized:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl get pods
     ~~~
@@ -122,7 +122,7 @@ As each pod is created, it issues a Certificate Signing Request, or CSR, to have
 
 2. Confirm that the persistent volumes and corresponding claims were created successfully for all three pods:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl get persistentvolumes
     ~~~
@@ -136,7 +136,7 @@ As each pod is created, it issues a Certificate Signing Request, or CSR, to have
 
 3. Use our [`cluster-init-secure.yaml`](https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/cluster-init-secure.yaml) file to perform a one-time initialization that joins the nodes into a single cluster:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl create -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/cluster-init-secure.yaml
     ~~~
@@ -147,7 +147,7 @@ As each pod is created, it issues a Certificate Signing Request, or CSR, to have
 
 4. Approve the CSR for the one-off pod from which cluster initialization happens:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl certificate approve default.client.root
     ~~~
@@ -160,7 +160,7 @@ As each pod is created, it issues a Certificate Signing Request, or CSR, to have
    should be considered successful and the CockroachDB pods should soon be
    considered `Ready`:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl get job cluster-init-secure
     ~~~
@@ -170,7 +170,7 @@ As each pod is created, it issues a Certificate Signing Request, or CSR, to have
     cluster-init-secure   1         1            2m
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl get pods
     ~~~
@@ -192,7 +192,7 @@ To use the built-in SQL client, you need to launch a pod that runs indefinitely 
 
 1. From your local workstation, use our [`client-secure.yaml`](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/client-secure.yaml) file to launch a pod and keep it running indefinitely:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl create -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/client-secure.yaml
     ~~~
@@ -205,7 +205,7 @@ To use the built-in SQL client, you need to launch a pod that runs indefinitely 
 
 2. Get a shell into the pod and start the CockroachDB [built-in SQL client](use-the-built-in-sql-client.html):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl exec -it cockroachdb-client-secure -- ./cockroach sql --certs-dir=/cockroach-certs --host=cockroachdb-public
     ~~~
@@ -225,22 +225,22 @@ To use the built-in SQL client, you need to launch a pod that runs indefinitely 
 
 3. Run some basic [CockroachDB SQL statements](learn-cockroachdb-sql.html):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE DATABASE bank;
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE TABLE bank.accounts (id INT PRIMARY KEY, balance DECIMAL);
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > INSERT INTO bank.accounts VALUES (1, 1000.50);
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT * FROM bank.accounts;
     ~~~
@@ -256,7 +256,7 @@ To use the built-in SQL client, you need to launch a pod that runs indefinitely 
 
 3. Exit the SQL shell and pod:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > \q
     ~~~
@@ -283,7 +283,7 @@ To use the built-in SQL client, you need to launch a pod that runs indefinitely 
 
 3. Get the name of the `Pending` CSR for the new pod:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl get csr
     ~~~
@@ -304,7 +304,7 @@ To use the built-in SQL client, you need to launch a pod that runs indefinitely 
 
 4. Examine the CSR for the new pod:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl describe csr default.node.cockroachdb-3
     ~~~
@@ -331,7 +331,7 @@ To use the built-in SQL client, you need to launch a pod that runs indefinitely 
 
 5. If everything looks correct, approve the CSR for the new pod:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl certificate approve default.node.cockroachdb-3
     ~~~
@@ -342,7 +342,7 @@ To use the built-in SQL client, you need to launch a pod that runs indefinitely 
 
 6. Verify that the new pod started successfully:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl get pods
     ~~~
@@ -368,7 +368,7 @@ To shut down the CockroachDB cluster:
 
 1. Delete all of the resources associated with the `cockroachdb` label, including the logs, remote persistent volumes, and Prometheus and Alertmanager resources:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl delete pods,statefulsets,services,persistentvolumeclaims,persistentvolumes,poddisruptionbudget,jobs,rolebinding,clusterrolebinding,role,clusterrole,serviceaccount,alertmanager,prometheus,prometheusrule,serviceMonitor -l app=cockroachdb
     ~~~
@@ -401,7 +401,7 @@ To shut down the CockroachDB cluster:
 
 2. Delete the pod created for `cockroach` client commands, if you didn't do so earlier:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl delete pod cockroachdb-client-secure
     ~~~
@@ -412,7 +412,7 @@ To shut down the CockroachDB cluster:
 
 3. Get the names of the CSRs for the cluster:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl get csr
     ~~~
@@ -431,7 +431,7 @@ To shut down the CockroachDB cluster:
 
 4. Delete the CSRs that you created:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl delete csr default.client.root default.node.cockroachdb-0 default.node.cockroachdb-1 default.node.cockroachdb-2 default.node.cockroachdb-3
     ~~~
@@ -446,7 +446,7 @@ To shut down the CockroachDB cluster:
 
 5. Get the names of the secrets for the cluster:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl get secrets
     ~~~
@@ -465,7 +465,7 @@ To shut down the CockroachDB cluster:
 
 6. Delete the secrets that you created:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl delete secrets alertmanager-cockroachdb default.client.root default.node.cockroachdb-0 default.node.cockroachdb-1 default.node.cockroachdb-2 default.node.cockroachdb-3
     ~~~

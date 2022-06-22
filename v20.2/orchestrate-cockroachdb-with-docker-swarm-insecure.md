@@ -46,7 +46,7 @@ On each instance:
 
 2. Confirm that the Docker daemon is running in the background:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ sudo docker version
     ~~~
@@ -57,7 +57,7 @@ On each instance:
 
     Take note of the output for `docker swarm init` as it includes the command you'll use in the next step. It should look like this:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ sudo docker swarm init --advertise-addr 10.142.0.2
     ~~~
@@ -76,7 +76,7 @@ On each instance:
 
 2. On the other two instances, [create a worker node joined to the swarm](https://docs.docker.com/engine/swarm/swarm-tutorial/add-nodes/) by running the `docker swarm join` command in the output from step 1, for example:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ sudo docker swarm join \
          --token SWMTKN-1-5vwxyi6zl3cc62lqlhi1jrweyspi8wblh2i3qa7kv277fgy74n-e5eg5c7ioxypjxlt3rpqorh15 \
@@ -89,7 +89,7 @@ On each instance:
 
 3. On the instance running your manager node, verify that your swarm is running:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ sudo docker node ls
     ~~~
@@ -105,7 +105,7 @@ On each instance:
 
 On the instance running your manager node, create an overlay network so that the containers in your swarm can talk to each other:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ sudo docker network create --driver overlay --attachable cockroachdb
 ~~~
@@ -116,7 +116,7 @@ The `--attachable` option enables non-swarm containers running on Docker to acce
 
 1. On the instance running your manager node, create one swarm service for each CockroachDB node:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~
     # Start the first service:
     $ sudo docker service create \
@@ -135,7 +135,7 @@ The `--attachable` option enables non-swarm containers running on Docker to acce
     --insecure
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~
     # Start the second service:
     $ sudo docker service create \
@@ -153,7 +153,7 @@ The `--attachable` option enables non-swarm containers running on Docker to acce
     --insecure
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~
     # Start the third service:
     $ sudo docker service create \
@@ -185,7 +185,7 @@ The `--attachable` option enables non-swarm containers running on Docker to acce
 
 2. Verify that all three services were created successfully:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ sudo docker service ls
     ~~~
@@ -201,7 +201,7 @@ The `--attachable` option enables non-swarm containers running on Docker to acce
 
 3. Now all the CockroachDB nodes are running, but we still have to explicitly tell them to initialize a new cluster together. To do so, use the `sudo docker run` command to run the `cockroach init` command against one of the nodes. The `cockroach init` command will initialize the cluster, bringing it into a usable state.
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ sudo docker run -it --rm --network=cockroachdb cockroachdb/cockroach:{{page.release_info.version}} init --host=cockroachdb-1 --insecure
     ~~~
@@ -211,14 +211,14 @@ The `--attachable` option enables non-swarm containers running on Docker to acce
 
 1. Use the `sudo docker run` command to start a new container attached to the CockroachDB network, run the built-in SQL shell, and connect it to the cluster:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ sudo docker run -it --rm --network=cockroachdb cockroachdb/cockroach:{{page.release_info.version}} sql --host=cockroachdb-1 --insecure
     ~~~
 
 2. Create an `insecurenodetest` database:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE DATABASE insecurenodetest;
     ~~~
@@ -245,7 +245,7 @@ To see this in action:
 
 1. On any instance, use the `sudo docker ps` command to get the ID of the container running the CockroachDB node:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ sudo docker ps | grep cockroachdb
     ~~~
@@ -256,14 +256,14 @@ To see this in action:
 
 2. Use `sudo docker kill` to remove the container, which implicitly terminates the node:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ sudo docker kill 9539871cc769
     ~~~
 
 3. Verify that the node was restarted in a new container:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ sudo docker ps | grep cockroachdb
     ~~~
@@ -287,7 +287,7 @@ To increase the number of nodes in your CockroachDB cluster:
 
 To stop the CockroachDB cluster, on the instance running your manager node, remove the services:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ sudo docker service rm cockroachdb-1 cockroachdb-2 cockroachdb-3
 ~~~
@@ -300,7 +300,7 @@ cockroachdb-3
 
 You may want to remove the persistent volumes used by the services as well. To do this, on each instance:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 # Identify the name of the local volume:
 $ sudo docker volume ls
@@ -310,7 +310,7 @@ $ sudo docker volume ls
 cockroachdb-1
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 # Remove the local volume:
 $ sudo docker volume rm cockroachdb-1

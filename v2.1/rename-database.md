@@ -44,7 +44,7 @@ This is a [known limitation](known-limitations.html#database-and-table-renames-a
 
 ### Rename a Database
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW DATABASES;
 ~~~
@@ -62,12 +62,12 @@ This is a [known limitation](known-limitations.html#database-and-table-renames-a
 (5 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER DATABASE db1 RENAME TO db3;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW DATABASES;
 ~~~
@@ -87,7 +87,7 @@ This is a [known limitation](known-limitations.html#database-and-table-renames-a
 
 ### Rename fails (new name already in use)
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER DATABASE db2 RENAME TO db3;
 ~~~

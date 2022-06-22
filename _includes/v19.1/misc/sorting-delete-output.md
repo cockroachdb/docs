@@ -1,6 +1,6 @@
 To sort the output of a `DELETE` statement, use:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT ... FROM [DELETE ...] ORDER BY ...
 ~~~

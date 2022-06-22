@@ -105,12 +105,12 @@ Locally, you'll need to [create the following certificates and keys](create-secu
 
 2. Create two directories:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ mkdir certs
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ mkdir my-safe-directory
     ~~~
@@ -119,7 +119,7 @@ Locally, you'll need to [create the following certificates and keys](create-secu
 
 3. Create the CA certificate and key:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach cert create-ca \
     --certs-dir=certs \
@@ -128,7 +128,7 @@ Locally, you'll need to [create the following certificates and keys](create-secu
 
 4. Create the certificate and key for the first node, issued to all common names you might use to refer to the node as well as to addresses provisioned for the AWS load balancer:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach cert create-node \
     <node1 internal IP address> \
@@ -152,13 +152,13 @@ Locally, you'll need to [create the following certificates and keys](create-secu
 
 5. Upload certificates to the first node:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     # Create the certs directory:
     $ ssh -i <path to AWS .pem> <username>@<node1 external IP address> "mkdir certs"
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     # Upload the CA certificate and node certificate and key:
     $ scp -i <path to AWS .pem>\
@@ -170,7 +170,7 @@ Locally, you'll need to [create the following certificates and keys](create-secu
 
 6. Delete the local copy of the node certificate and key:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ rm certs/node.crt certs/node.key
     ~~~
@@ -179,7 +179,7 @@ Locally, you'll need to [create the following certificates and keys](create-secu
 
 7. Create the certificate and key for the second node, issued to all common names you might use to refer to the node as well as to addresses provisioned for the AWS load balancer:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach cert create-node \
     <node2 internal IP address> \
@@ -196,13 +196,13 @@ Locally, you'll need to [create the following certificates and keys](create-secu
 
 8. Upload certificates to the second node:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     # Create the certs directory:
     $ ssh -i <path to AWS .pem> <username>@<node2 external IP address> "mkdir certs"
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     # Upload the CA certificate and node certificate and key:
     $ scp -i <path to AWS .pem>\
@@ -216,7 +216,7 @@ Locally, you'll need to [create the following certificates and keys](create-secu
 
 10. Create a client certificate and key for the `root` user:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach cert create-client \
     root \
@@ -230,27 +230,27 @@ Locally, you'll need to [create the following certificates and keys](create-secu
 
 1. SSH to your instance:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ ssh -i <path to AWS .pem> <username>@<node1 external IP address>
     ~~~
 
 2. Install the latest CockroachDB binary:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     # Get the latest CockroachDB tarball.
     $ curl https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     # Extract the binary.
     $ tar -xzf cockroach-{{ page.release_info.version }}.linux-amd64.tgz  \
     --strip=1 cockroach-{{ page.release_info.version }}.linux-amd64/cockroach
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     # Move the binary.
     $ sudo mv cockroach /usr/local/bin/
@@ -258,7 +258,7 @@ Locally, you'll need to [create the following certificates and keys](create-secu
 
 3. Start a new CockroachDB cluster with a single node, specifying the location of certificates and the address at which other nodes can reach it:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start --background \
     --certs-dir=certs \
@@ -271,27 +271,27 @@ At this point, your cluster is live and operational but contains only a single n
 
 1. SSH to your instance:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~
     $ ssh -i <path to AWS .pem> <username>@<additional node external IP address>
     ~~~
 
 2. Install CockroachDB from our latest binary:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     # Get the latest CockroachDB tarball.
     $ curl https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     # Extract the binary.
     $ tar -xzf cockroach-{{ page.release_info.version }}.linux-amd64.tgz  \
     --strip=1 cockroach-{{ page.release_info.version }}.linux-amd64/cockroach
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     # Move the binary.
     $ sudo mv cockroach /usr/local/bin/
@@ -299,7 +299,7 @@ At this point, your cluster is live and operational but contains only a single n
 
 3. Start a new node that joins the cluster using the first node's internal IP address:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start --background  \
     --certs-dir=certs \
@@ -317,7 +317,7 @@ To test this, use the [built-in SQL client](use-the-built-in-sql-client.html) lo
 
 1. On your local machine, connect the built-in SQL client to node 1, with the `--host` flag set to the external IP address of node 1 and security flags pointing to the CA cert and the client cert and key:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
     --certs-dir=certs \
@@ -326,7 +326,7 @@ To test this, use the [built-in SQL client](use-the-built-in-sql-client.html) lo
 
 2. Create a `securenodetest` database:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE DATABASE securenodetest;
     ~~~
@@ -335,7 +335,7 @@ To test this, use the [built-in SQL client](use-the-built-in-sql-client.html) lo
 
 4. Connect the built-in SQL client to node 2, with the `--host` flag set to the external IP address of node 2 and security flags pointing to the CA cert and the client cert and key:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
     --certs-dir=certs \
@@ -344,7 +344,7 @@ To test this, use the [built-in SQL client](use-the-built-in-sql-client.html) lo
 
 5. View the cluster's databases, which will include `securenodetest`:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SHOW DATABASES;
     ~~~
@@ -372,7 +372,7 @@ To test this, use the [built-in SQL client](use-the-built-in-sql-client.html) lo
 
 1. Launch the built-in SQL client, with the `--host` flag set to the load balancer's IP address:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
     --certs-dir=certs \
@@ -381,7 +381,7 @@ To test this, use the [built-in SQL client](use-the-built-in-sql-client.html) lo
 
 2. View the cluster's databases:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SHOW DATABASES;
     ~~~
@@ -403,7 +403,7 @@ To test this, use the [built-in SQL client](use-the-built-in-sql-client.html) lo
 
 3. Check which node you were redirected to:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT node_id FROM crdb_internal.node_build_info LIMIT 1;
     ~~~

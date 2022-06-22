@@ -63,7 +63,7 @@ An `admin` user is a member of the `admin` role. Only `admin` users can use [`CR
 
 To assign a user to the `admin` role:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > GRANT admin TO <username>;
 ~~~
@@ -153,35 +153,35 @@ Let's say we want to create the following access control setup for the `movr` da
 
 1. Use the [`cockroach demo`](cockroach-demo.html) command to load the `movr` database and dataset into a CockroachDB cluster:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach demo
     ~~~
 
 2. Create the database admin (named `db_admin`) who can perform all database operations for existing tables as well as for  tables added in the future:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE USER db_admin;
     ~~~
 
 3. Grant all privileges on database `movr` to user `db_admin`:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > GRANT ALL ON DATABASE movr TO db_admin;
     ~~~
 
 4. Grant all privileges on all tables in database `movr` to user `db_admin`:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > GRANT ALL ON TABLE * TO db_admin;
     ~~~
 
 5. Verify that `db_admin` has all privileges:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SHOW GRANTS FOR db_admin;
     ~~~
@@ -204,17 +204,17 @@ Let's say we want to create the following access control setup for the `movr` da
 
 6. As the `root` user, create a SQL user named `app_user` with permissions to add, read, update, and delete vehicles in the `vehicles` table:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE USER app_user;
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > GRANT INSERT, DELETE, UPDATE, SELECT ON vehicles TO app_user;
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SHOW GRANTS FOR app_user;
     ~~~
@@ -231,17 +231,17 @@ Let's say we want to create the following access control setup for the `movr` da
 
 7. As the `root` user, create a SQL user named `report_user` with permissions to only read from the `vehicles` table:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE USER report_user;
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > GRANT SELECT ON vehicles TO report_user;
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SHOW GRANTS FOR report_user;
     ~~~
@@ -273,7 +273,7 @@ Let's say we want to create the following access control setup for the `movr` da
 
 1. Use the [`cockroach demo`](cockroach-demo.html) command to load the `movr` database and dataset into a CockroachDB cluster:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach demo
     ~~~
@@ -284,12 +284,12 @@ Each `cockroach demo` instance runs with a temporary enterprise license that ena
 
 2. Create the database admin role (named `db_admin_role`) whose members can perform all database operations for existing tables as well as for tables added in the future:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE ROLE db_admin_role;
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SHOW ROLES;
     ~~~
@@ -302,17 +302,17 @@ Each `cockroach demo` instance runs with a temporary enterprise license that ena
     (2 rows)
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > GRANT ALL ON DATABASE movr TO db_admin_role;
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > GRANT ALL ON TABLE * TO db_admin_role;
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SHOW GRANTS ON DATABASE movr;
     ~~~
@@ -337,29 +337,29 @@ Each `cockroach demo` instance runs with a temporary enterprise license that ena
 
 3. Create two database admin users (named `db_admin_1` and `db_admin_2`) and grant them membership to the `db_admin_role` role:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE USER db_admin_1;
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE USER db_admin_2;
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > GRANT db_admin_role TO db_admin_1, db_admin_2;
     ~~~
 
 4. Create a role named `app_user_role` whose members can add, read update, and delete vehicles to the `vehicles` table.
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE ROLE app_user_role;
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SHOW ROLES;
     ~~~
@@ -373,12 +373,12 @@ Each `cockroach demo` instance runs with a temporary enterprise license that ena
     (3 rows)
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > GRANT INSERT, UPDATE, DELETE, SELECT ON TABLE vehicles TO app_user_role;
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SHOW GRANTS ON vehicles;
     ~~~
@@ -398,34 +398,34 @@ Each `cockroach demo` instance runs with a temporary enterprise license that ena
 
 5. Create three app users (named `app_user_1`, `app_user_2`, and `app_user_3`) and grant them membership to the `app_user_role` role:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE USER app_user_1;
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE USER app_user_2;
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE USER app_user_3;
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > GRANT app_user_role TO app_user_1, app_user_2, app_user_3;
     ~~~
 
 6. Create a role named `report_user_role` whose members can only read the `vehicles` table.
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE ROLE report_user_role;
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SHOW ROLES;
     ~~~
@@ -440,12 +440,12 @@ Each `cockroach demo` instance runs with a temporary enterprise license that ena
     (4 rows)
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > GRANT SELECT ON vehicles TO report_user_role;
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SHOW GRANTS ON vehicles;
     ~~~
@@ -466,32 +466,32 @@ Each `cockroach demo` instance runs with a temporary enterprise license that ena
 
 7. Create five report users (named `report_user_1`, `report_user_2`, `report_user_3`, `report_user_4`, and `report_user_5`) and grant them membership to the `report_user_role` role:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE USER report_user_1;
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE USER report_user_2;
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE USER report_user_3;
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE USER report_user_4;
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE USER report_user_5;
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > GRANT report_user_role TO report_user_1, report_user_2, report_user_3, report_user_4, report_user_5;
     ~~~

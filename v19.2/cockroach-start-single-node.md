@@ -146,7 +146,7 @@ Field | Description
 <section class="filter-content" markdown="1" data-scope="secure">
 1. Create two directories for certificates:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ mkdir certs my-safe-directory
     ~~~
@@ -158,7 +158,7 @@ Field | Description
 
 2. Create the CA (Certificate Authority) certificate and key pair:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach cert create-ca \
     --certs-dir=certs \
@@ -167,7 +167,7 @@ Field | Description
 
 3. Create the certificate and key pair for the node:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach cert create-node \
     localhost \
@@ -178,7 +178,7 @@ Field | Description
 
 4. Create a client certificate and key pair for the `root` user:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach cert create-client \
     root \
@@ -188,7 +188,7 @@ Field | Description
 
 5. Start the single-node cluster:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start-single-node \
     --certs-dir=certs \
@@ -200,7 +200,7 @@ Field | Description
 
 <section class="filter-content" markdown="1" data-scope="insecure">
 <p></p>
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach start-single-node \
 --insecure \
@@ -222,7 +222,7 @@ Scaling a cluster started with `cockroach start-single-node` involves restarting
 <section class="filter-content" markdown="1" data-scope="secure">
 1. Stop the single-node cluster:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach quit \
     --certs-dir=certs \
@@ -231,7 +231,7 @@ Scaling a cluster started with `cockroach start-single-node` involves restarting
 
 2. Restart the node with the [`cockroach start`](cockroach-start.html) command:  
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --certs-dir=certs \
@@ -247,7 +247,7 @@ Scaling a cluster started with `cockroach start-single-node` involves restarting
 
 3. Add two more nodes:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --certs-dir=certs \
@@ -258,7 +258,7 @@ Scaling a cluster started with `cockroach start-single-node` involves restarting
     --background
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --certs-dir=certs \
@@ -273,49 +273,49 @@ Scaling a cluster started with `cockroach start-single-node` involves restarting
 
 4. Open the [built-in SQL shell](cockroach-sql.html):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql --certs-dir=certs --host=localhost:26257
     ~~~
 
 5. Update preconfigured [replication zones](configure-replication-zones.html) to replicate user data 3 times and import internal data 5 times:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > ALTER RANGE default CONFIGURE ZONE USING num_replicas = 3;
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > ALTER RANGE system CONFIGURE ZONE USING num_replicas = 5;
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > ALTER database system CONFIGURE ZONE USING num_replicas = 5;
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > ALTER RANGE liveness CONFIGURE ZONE USING num_replicas = 5;
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > ALTER RANGE meta CONFIGURE ZONE USING num_replicas = 5;
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > ALTER TABLE system.public.jobs CONFIGURE ZONE USING num_replicas = 5;
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > ALTER TABLE system.public.replication_constraint_stats CONFIGURE ZONE USING num_replicas = 5;
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > ALTER TABLE system.public.replication_stats CONFIGURE ZONE USING num_replicas = 5;
     ~~~
@@ -324,7 +324,7 @@ Scaling a cluster started with `cockroach start-single-node` involves restarting
 <section class="filter-content" markdown="1" data-scope="insecure">
 1. Stop the single-node cluster:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach quit \
     --insecure \
@@ -333,7 +333,7 @@ Scaling a cluster started with `cockroach start-single-node` involves restarting
 
 2. Restart the node with the [`cockroach start`](cockroach-start.html) command:  
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -347,7 +347,7 @@ Scaling a cluster started with `cockroach start-single-node` involves restarting
 
 3. Add two more nodes:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -358,7 +358,7 @@ Scaling a cluster started with `cockroach start-single-node` involves restarting
     --background
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -373,49 +373,49 @@ Scaling a cluster started with `cockroach start-single-node` involves restarting
 
 4. Open the [built-in SQL shell](cockroach-sql.html):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql --insecure --host=localhost:26257
     ~~~
 
 5. Update preconfigured [replication zones](configure-replication-zones.html) to replicate user data 3 times and import internal data 5 times:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > ALTER RANGE default CONFIGURE ZONE USING num_replicas = 3;
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > ALTER RANGE system CONFIGURE ZONE USING num_replicas = 5;
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > ALTER database system CONFIGURE ZONE USING num_replicas = 5;
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > ALTER RANGE liveness CONFIGURE ZONE USING num_replicas = 5;
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > ALTER RANGE meta CONFIGURE ZONE USING num_replicas = 5;
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > ALTER TABLE system.public.jobs CONFIGURE ZONE USING num_replicas = 5;
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > ALTER TABLE system.public.replication_constraint_stats CONFIGURE ZONE USING num_replicas = 5;
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > ALTER TABLE system.public.replication_stats CONFIGURE ZONE USING num_replicas = 5;
     ~~~

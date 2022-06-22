@@ -68,7 +68,7 @@ Field | Description
 
 ### Show jobs
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW JOBS;
 ~~~
@@ -83,7 +83,7 @@ Field | Description
 
 You can filter jobs by using `SHOW JOBS` as the data source for a [`SELECT`](select-clause.html) statement, and then filtering the values with the `WHERE` clause.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM [SHOW JOBS] WHERE job_type = 'RESTORE' AND status IN ('running', 'failed') ORDER BY created DESC;
 ~~~
@@ -97,7 +97,7 @@ You can filter jobs by using `SHOW JOBS` as the data source for a [`SELECT`](sel
 
 ### Show automatic jobs
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW AUTOMATIC JOBS;
 ~~~
@@ -113,7 +113,7 @@ You can filter jobs by using `SHOW JOBS` as the data source for a [`SELECT`](sel
 
 You can filter jobs by using `SHOW AUTOMATIC JOBS` as the data source for a [`SELECT`](select-clause.html) statement, and then filtering the values with the `WHERE` clause.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM [SHOW AUTOMATIC JOBS] WHERE status = ('succeeded') ORDER BY created DESC;
 ~~~
@@ -129,7 +129,7 @@ You can filter jobs by using `SHOW AUTOMATIC JOBS` as the data source for a [`SE
 
 You can show just schema change jobs by using `SHOW JOBS` as the data source for a [`SELECT`](select-clause.html) statement, and then filtering the `job_type` value with the `WHERE` clause:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM [SHOW JOBS] WHERE job_type = 'SCHEMA CHANGE';
 ~~~
@@ -144,7 +144,7 @@ You can show just schema change jobs by using `SHOW JOBS` as the data source for
 
 <span class="version-tag">New in v19.2:</span> To block `SHOW JOB` until the provided job ID reaches a terminal state, use `SHOW JOB WHEN COMPLETE`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW JOB WHEN COMPLETE 27536791415282;
 ~~~

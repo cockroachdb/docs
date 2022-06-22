@@ -100,7 +100,7 @@ Note that when running on Amazon EKS, certificates signed by Kubernetes' built-i
 
 3. Get the name of the `Pending` CSR for the new pod:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl get csr
     ~~~
@@ -140,7 +140,7 @@ Note that when running on Amazon EKS, certificates signed by Kubernetes' built-i
 4. Examine the CSR for the new pod:
 
     <section class="filter-content" markdown="1" data-scope="manual">
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl describe csr default.node.cockroachdb-3
     ~~~
@@ -168,7 +168,7 @@ Note that when running on Amazon EKS, certificates signed by Kubernetes' built-i
     </section>
 
     <section class="filter-content" markdown="1" data-scope="helm">
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl describe csr default.node.my-release-cockroachdb-3
     ~~~
@@ -199,7 +199,7 @@ Note that when running on Amazon EKS, certificates signed by Kubernetes' built-i
 5. If everything looks correct, approve the CSR for the new pod:
 
     <section class="filter-content" markdown="1" data-scope="manual">
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl certificate approve default.node.cockroachdb-3
     ~~~
@@ -210,7 +210,7 @@ Note that when running on Amazon EKS, certificates signed by Kubernetes' built-i
     </section>
 
     <section class="filter-content" markdown="1" data-scope="helm">
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl certificate approve default.node.my-release-cockroachdb-3
     ~~~
@@ -222,7 +222,7 @@ Note that when running on Amazon EKS, certificates signed by Kubernetes' built-i
 
 6. Verify that the new pod started successfully:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl get pods
     ~~~
@@ -271,7 +271,7 @@ To shut down the CockroachDB cluster:
 
 1. Delete all of the resources associated with the `cockroachdb` label, including the logs, remote persistent volumes, and Prometheus and Alertmanager resources:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl delete pods,statefulsets,services,persistentvolumeclaims,persistentvolumes,poddisruptionbudget,jobs,rolebinding,clusterrolebinding,role,clusterrole,serviceaccount,alertmanager,prometheus,prometheusrule,serviceMonitor -l app=cockroachdb
     ~~~
@@ -307,7 +307,7 @@ To shut down the CockroachDB cluster:
 
 2. Delete the pod created for `cockroach` client commands, if you didn't do so earlier:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl delete pod cockroachdb-client-secure
     ~~~
@@ -318,7 +318,7 @@ To shut down the CockroachDB cluster:
 
 3. Get the names of the CSRs for the cluster:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl get csr
     ~~~
@@ -355,7 +355,7 @@ To shut down the CockroachDB cluster:
 4. Delete the CSRs that you created:
 
     <section class="filter-content" markdown="1" data-scope="manual">
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl delete csr default.client.root default.node.cockroachdb-0 default.node.cockroachdb-1 default.node.cockroachdb-2 default.node.cockroachdb-3
     ~~~
@@ -370,7 +370,7 @@ To shut down the CockroachDB cluster:
     </section>
 
     <section class="filter-content" markdown="1" data-scope="helm">
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl delete csr default.client.root default.node.my-release-cockroachdb-0 default.node.my-release-cockroachdb-1 default.node.my-release-cockroachdb-2 default.node.my-release-cockroachdb-3
     ~~~
@@ -386,7 +386,7 @@ To shut down the CockroachDB cluster:
 
 5. Get the names of the secrets for the cluster:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl get secrets
     ~~~
@@ -422,7 +422,7 @@ To shut down the CockroachDB cluster:
 6. Delete the secrets that you created:
 
     <section class="filter-content" markdown="1" data-scope="manual">
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl delete secrets alertmanager-cockroachdb default.client.root default.node.cockroachdb-0 default.node.cockroachdb-1 default.node.cockroachdb-2 default.node.cockroachdb-3
     ~~~
@@ -438,7 +438,7 @@ To shut down the CockroachDB cluster:
     </section>
 
     <section class="filter-content" markdown="1" data-scope="helm">
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl delete secrets alertmanager-cockroachdb default.client.root default.node.my-release-cockroachdb-0 default.node.my-release-cockroachdb-1 default.node.my-release-cockroachdb-2 default.node.my-release-cockroachdb-3
     ~~~
@@ -456,25 +456,25 @@ To shut down the CockroachDB cluster:
 7. Stop Kubernetes:
     - Hosted GKE:
 
-        {% include copy-clipboard.html %}
+        {% include_cached copy-clipboard.html %}
         ~~~ shell
         $ gcloud container clusters delete cockroachdb
         ~~~
     - Hosted EKS:
 
-        {% include copy-clipboard.html %}
+        {% include_cached copy-clipboard.html %}
         ~~~ shell
         $ eksctl delete cluster --name cockroachdb
         ~~~   
     - Manual GCE:
 
-        {% include copy-clipboard.html %}
+        {% include_cached copy-clipboard.html %}
         ~~~ shell
         $ cluster/kube-down.sh
         ~~~
     - Manual AWS:
 
-        {% include copy-clipboard.html %}
+        {% include_cached copy-clipboard.html %}
         ~~~ shell
         $ cluster/kube-down.sh
         ~~~

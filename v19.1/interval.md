@@ -47,12 +47,12 @@ When upgrading to 19.1, existing intervals with nanoseconds will no longer be ab
 
 ## Example
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE intervals (a INT PRIMARY KEY, b INTERVAL);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW COLUMNS FROM intervals;
 ~~~
@@ -65,7 +65,7 @@ When upgrading to 19.1, existing intervals with nanoseconds will no longer be ab
 (2 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO
     intervals
@@ -74,7 +74,7 @@ When upgrading to 19.1, existing intervals with nanoseconds will no longer be ab
            (3, '1-2 3 4:5:6');
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM intervals;
 ~~~

@@ -45,7 +45,7 @@ You will need to write an [`IMPORT TABLE`][import] statement that matches the sc
 
 For example, to import the data from `employees.csv` into an `employees` table, issue the following statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE employees (
     emp_no INT PRIMARY KEY,
@@ -90,7 +90,7 @@ The `delimiter` option is used to set the Unicode character that marks where eac
 
 Example usage:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE employees (
     emp_no INT PRIMARY KEY,
@@ -110,7 +110,7 @@ The `comment` option determines which Unicode character marks the rows in the da
 
 Example usage:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE employees (
     emp_no INT PRIMARY KEY,
@@ -130,7 +130,7 @@ The `skip` option determines the number of header rows to skip when importing a 
 
 Example usage:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE employees (
     emp_no INT PRIMARY KEY,
@@ -150,7 +150,7 @@ The `nullif` option defines which string should be converted to `NULL`.
 
 Example usage:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE employees (
     emp_no INT PRIMARY KEY,
@@ -175,7 +175,7 @@ The `compress` option defines which decompression codec should be used on the CS
 
 Example usage:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE employees (
     emp_no INT PRIMARY KEY,

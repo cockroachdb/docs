@@ -29,7 +29,7 @@ SQLAlchemy relies on the existence of [foreign keys](foreign-key.html) to genera
 
 To install SQLAlchemy, as well as a [CockroachDB Python package](https://github.com/cockroachdb/sqlalchemy-cockroachdb) that accounts for some differences between CockroachDB and PostgreSQL, run the following command:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ pip install sqlalchemy sqlalchemy-cockroachdb psycopg2
 ~~~
@@ -71,7 +71,7 @@ You must use the `cockroachdb://` prefix in the URL passed to [`sqlalchemy.creat
 Copy the code below or
 <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{page.version.version}}/app/python/sqlalchemy/example.py">download it directly</a>.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ python
 {% include {{page.version.version}}/app/python/sqlalchemy/example.py %}
 ~~~
@@ -100,7 +100,7 @@ In the `create_engine()` function, update the connection string as follows:
 
 ### Run the code
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ python3 example.py
 ~~~
@@ -154,7 +154,7 @@ WHERE accounts.id = %(id_1)s
 
 Back in the terminal where the SQL shell is running, verify that the table and rows were created successfully:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT COUNT(*) FROM bank.accounts;
 ~~~

@@ -3,7 +3,7 @@ Your Kubernetes cluster includes 3 worker nodes, or instances, that can run pods
 <section class="filter-content" markdown="1" data-scope="operator">
 1. Open and edit `example.yaml`.
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ vi example.yaml
     ~~~
@@ -20,14 +20,14 @@ Your Kubernetes cluster includes 3 worker nodes, or instances, that can run pods
 
 1. Apply `example.yaml` with the new configuration:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl apply -f example.yaml
     ~~~
 
 1. Verify that the new pod started successfully:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl get pods
     ~~~
@@ -53,7 +53,7 @@ Your Kubernetes cluster includes 3 worker nodes, or instances, that can run pods
 
 1. Edit your StatefulSet configuration to add another pod for the new CockroachDB node:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl scale statefulset cockroachdb --replicas=4
     ~~~
@@ -64,7 +64,7 @@ Your Kubernetes cluster includes 3 worker nodes, or instances, that can run pods
 
 1. Verify that the new pod started successfully:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl get pods
     ~~~
@@ -85,7 +85,7 @@ Your Kubernetes cluster includes 3 worker nodes, or instances, that can run pods
 <section class="filter-content" markdown="1" data-scope="helm">
 1. Edit your StatefulSet configuration to add another pod for the new CockroachDB node:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ helm upgrade \
     my-release \
@@ -119,7 +119,7 @@ Your Kubernetes cluster includes 3 worker nodes, or instances, that can run pods
 
 1. Get the name of the `Pending` CSR for the new pod:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl get csr
     ~~~
@@ -141,7 +141,7 @@ Your Kubernetes cluster includes 3 worker nodes, or instances, that can run pods
 
 1. Examine the CSR for the new pod:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl describe csr default.node.my-release-cockroachdb-3
     ~~~
@@ -170,7 +170,7 @@ Your Kubernetes cluster includes 3 worker nodes, or instances, that can run pods
 
 1. If everything looks correct, approve the CSR for the new pod:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl certificate approve default.node.my-release-cockroachdb-3
     ~~~
@@ -181,7 +181,7 @@ Your Kubernetes cluster includes 3 worker nodes, or instances, that can run pods
 
 1. Verify that the new pod started successfully:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl get pods
     ~~~

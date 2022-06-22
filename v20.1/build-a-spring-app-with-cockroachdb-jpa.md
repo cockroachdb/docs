@@ -26,21 +26,21 @@ This example application uses [Maven](http://maven.apache.org/) to manage all ap
 
 To install Maven on macOS, run the following command:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ brew install maven
 ~~~
 
 To install Maven on a Debian-based Linux distribution like Ubuntu:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ apt-get install maven
 ~~~
 
 To install Maven on a Red Hat-based Linux distribution like Fedora:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ dnf install maven
 ~~~
@@ -98,33 +98,33 @@ The [Hibernate CockroachDB dialect](https://in.relation.to/2020/07/27/hibernate-
 
 Start the [built-in SQL shell](cockroach-sql.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --certs-dir=certs
 ~~~
 
 In the SQL shell, issue the following statements to create the `maxroach` user and `roach_data` database:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE USER IF NOT EXISTS maxroach;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE DATABASE roach_data;
 ~~~
 
 Give the `maxroach` user the necessary permissions:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > GRANT ALL ON DATABASE roach_data TO maxroach;
 ~~~
 
 Exit the SQL shell:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > \q
 ~~~
@@ -133,7 +133,7 @@ Exit the SQL shell:
 
 Create a certificate and key for the `maxroach` user by running the following command. The code samples will run as this user.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach cert create-client maxroach --certs-dir=certs --ca-key=my-safe-directory/ca.key --also-generate-pkcs8-key
 ~~~
@@ -165,21 +165,21 @@ Open the `roach-data/roach-data-jpa` project folder in a text editor or IDE, and
 
 Open a terminal, and navigate to the `roach-data-jpa` project subfolder:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cd <path>/roach-data/roach-data-jpa
 ~~~
 
 Use Maven to download the application dependencies and compile the code:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ mvn clean install
 ~~~
 
 From the `roach-data-jpa` directory, run the application JAR file:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ java -jar target/roach-data-jpa.jar
 ~~~
@@ -190,33 +190,33 @@ $ java -jar target/roach-data-jpa.jar
 
 Start the [built-in SQL shell](cockroach-sql.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure
 ~~~
 
 In the SQL shell, issue the following statements to create the `maxroach` user and `roach_data` database:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE USER IF NOT EXISTS maxroach;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE DATABASE roach_data;
 ~~~
 
 Give the `maxroach` user the necessary permissions:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > GRANT ALL ON DATABASE roach_data TO maxroach;
 ~~~
 
 Exit the SQL shell:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > \q
 ~~~
@@ -246,21 +246,21 @@ Open the `roach-data/roach-data-jpa` project folder in a text editor or IDE, and
 
 Open a terminal, and navigate to the `roach-data-jpa` project subfolder:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cd <path>/roach-data/roach-data-jpa
 ~~~
 
 Use Maven to download the application dependencies and compile the code:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ mvn clean install
 ~~~
 
 From the `roach-data-jpa` directory, run the application JAR file:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ java -jar target/roach-data-jpa.jar
 ~~~
@@ -371,7 +371,7 @@ The `http://localhost:9090/account` endpoint returns information about all accou
 
 The following `curl` command sends a `GET` request to the endpoint. The `json_pp` command formats the JSON response.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ curl -X GET http://localhost:9090/account | json_pp
 ~~~
@@ -438,7 +438,7 @@ $ curl -X GET http://localhost:9090/account | json_pp
 
 For a single account, specify the account number in the endpoint. For example, to see information about the accounts `1` and `2`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ curl -X GET http://localhost:9090/account/1 | json_pp
 ~~~
@@ -456,7 +456,7 @@ $ curl -X GET http://localhost:9090/account/1 | json_pp
 }
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ curl -X GET http://localhost:9090/account/2 | json_pp
 ~~~
@@ -480,14 +480,14 @@ The `http://localhost:9090/transfer` endpoint performs transfers between account
 
 To make a transfer, send a `POST` request to the `transfer` endpoint, using the arguments specified in the `"href`" URL (i.e., `http://localhost:9090/transfer%7B?fromId,toId,amount`).
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ curl -X POST -d fromId=2 -d toId=1 -d amount=150 http://localhost:9090/transfer
 ~~~
 
 You can use the `accounts` endpoint to verify that the transfer was successfully completed:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ curl -X GET http://localhost:9090/account/1 | json_pp
 ~~~
@@ -505,7 +505,7 @@ $ curl -X GET http://localhost:9090/account/1 | json_pp
 }
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ curl -X GET http://localhost:9090/account/2 | json_pp
 ~~~
@@ -533,7 +533,7 @@ This section walks you through the different components of the application proje
 
 Here are the contents of [`JpaApplication.java`](https://github.com/cockroachlabs/roach-data/blob/master/roach-data-jpa/src/main/java/io/roach/data/jpa/JpaApplication.java):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ java
 {% include {{page.version.version}}/app/spring-data-jpa/JpaApplication.java %}
 ~~~
@@ -556,14 +556,14 @@ Liquibase uses files called [changelogs](https://docs.liquibase.com/concepts/bas
 
 `resources/db/changelog-master.xml` defines the changelog for this application:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ xml
 {% include {{page.version.version}}/app/spring-data-jpa/changelog-master.xml %}
 ~~~
 
 The first changeset uses [the `sqlFile` tag](https://docs.liquibase.com/change-types/community/sql-file.html), which tells Liquibase that an external `.sql` file contains some SQL statements to execute. The file specified by the changeset, `resources/db/create.sql`, creates the `account` table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 {% include {{page.version.version}}/app/spring-data-jpa/create.sql %}
 ~~~
@@ -576,7 +576,7 @@ To see the completed changesets, open a new terminal, start the [built-in SQL sh
 
 <section class="filter-content" markdown="1" data-scope="secure">
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --certs-dir=certs
 ~~~
@@ -585,14 +585,14 @@ $ cockroach sql --certs-dir=certs
 
 <section class="filter-content" markdown="1" data-scope="insecure">
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure
 ~~~
 
 </section>
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM roach_data.databasechangelog;
 ~~~
@@ -624,7 +624,7 @@ Typically, Liquibase properties are defined in a separate [`liquibase.properties
 
 Here are the contents of [`Account.java`](https://github.com/cockroachlabs/roach-data/tree/master/roach-data-jpa/src/main/java/io/roach/data/jpa/Account.java):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ java
 {% include {{page.version.version}}/app/spring-data-jpa/Account.java %}
 ~~~
@@ -644,7 +644,7 @@ To represent database objects as [HAL+JSON](https://en.wikipedia.org/wiki/Hypert
 
 The contents of [`AccountModel.java`](https://github.com/cockroachlabs/roach-data/tree/master/roach-data-jpa/src/main/java/io/roach/data/jpa/AccountModel.java):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ java
 {% include {{page.version.version}}/app/spring-data-jpa/AccountModel.java %}
 ~~~
@@ -657,7 +657,7 @@ To abstract the database layer, Spring applications use the [`Repository` interf
 
 [`AccountRepository.java`](https://github.com/cockroachlabs/roach-data/tree/master/roach-data-jpa/src/main/java/io/roach/data/jpa/AccountRepository.java) defines the main repository for the `accounts` table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ java
 {% include {{page.version.version}}/app/spring-data-jpa/AccountRepository.java %}
 ~~~
@@ -674,7 +674,7 @@ For details about control flow and transaction management in this application, s
 
 There are several endpoints exposed by the application's web layer, some of which monitor the health of the application, and some that map to queries executed against the connected database. All of the endpoints served by the application are handled by the `AccountController` class, which is defined in [`AccountController.java`](https://github.com/cockroachlabs/roach-data/tree/master/roach-data-jpa/src/main/java/io/roach/data/jpa/AccountController.java):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ java
 {% include {{page.version.version}}/app/spring-data-jpa/AccountController.java %}
 ~~~
@@ -705,7 +705,7 @@ Transactions may require retries if they experience deadlock or [transaction con
 
 In this application, transaction retry logic is written into the methods of the `RetryableTransactionAspect` class, declared an aspect with the `@Aspect` annotation. Here are the contents of [`RetryableTransactionAspect.java`](https://github.com/cockroachlabs/roach-data/blob/master/roach-data-jpa/src/main/java/io/roach/data/jpa/RetryableTransactionAspect.java):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ java
 {% include {{page.version.version}}/app/spring-data-jpa/RetryableTransactionAspect.java %}
 ~~~

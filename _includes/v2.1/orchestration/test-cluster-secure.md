@@ -3,7 +3,7 @@ To use the built-in SQL client, you need to launch a pod that runs indefinitely 
 <section class="filter-content" markdown="1" data-scope="manual">
 1. From your local workstation, use our [`client-secure.yaml`](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/client-secure.yaml) file to launch a pod and keep it running indefinitely:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl create -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/client-secure.yaml
     ~~~
@@ -16,7 +16,7 @@ To use the built-in SQL client, you need to launch a pod that runs indefinitely 
 
 2. Get a shell into the pod and start the CockroachDB [built-in SQL client](use-the-built-in-sql-client.html):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl exec -it cockroachdb-client-secure -- ./cockroach sql --certs-dir=/cockroach-certs --host=cockroachdb-public
     ~~~
@@ -36,22 +36,22 @@ To use the built-in SQL client, you need to launch a pod that runs indefinitely 
 
 3. Run some basic [CockroachDB SQL statements](learn-cockroachdb-sql.html):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE DATABASE bank;
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE TABLE bank.accounts (id INT PRIMARY KEY, balance DECIMAL);
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > INSERT INTO bank.accounts VALUES (1, 1000.50);
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT * FROM bank.accounts;
     ~~~
@@ -67,7 +67,7 @@ To use the built-in SQL client, you need to launch a pod that runs indefinitely 
 
 4. [Create a user with a password](create-user.html#create-a-user-with-a-password):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE USER roach WITH PASSWORD 'Q7gc8rEdS';
     ~~~
@@ -76,7 +76,7 @@ To use the built-in SQL client, you need to launch a pod that runs indefinitely 
 
 5. Exit the SQL shell and pod:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > \q
     ~~~
@@ -87,7 +87,7 @@ To use the built-in SQL client, you need to launch a pod that runs indefinitely 
 
     1. Download the file:
 
-        {% include copy-clipboard.html %}
+        {% include_cached copy-clipboard.html %}
         ~~~ shell
         $ curl -OOOOOOOOO \
         https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/client-secure.yaml
@@ -97,7 +97,7 @@ To use the built-in SQL client, you need to launch a pod that runs indefinitely 
 
     1. Use the file to launch a pod and keep it running indefinitely:
 
-        {% include copy-clipboard.html %}
+        {% include_cached copy-clipboard.html %}
         ~~~ shell
         $ kubectl create -f client-secure.yaml
         ~~~
@@ -110,7 +110,7 @@ To use the built-in SQL client, you need to launch a pod that runs indefinitely 
 
 2. Get a shell into the pod and start the CockroachDB [built-in SQL client](use-the-built-in-sql-client.html):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl exec -it cockroachdb-client-secure -- ./cockroach sql --certs-dir=/cockroach-certs --host=my-release-cockroachdb-public
     ~~~
@@ -130,22 +130,22 @@ To use the built-in SQL client, you need to launch a pod that runs indefinitely 
 
 3. Run some basic [CockroachDB SQL statements](learn-cockroachdb-sql.html):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE DATABASE bank;
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE TABLE bank.accounts (id INT PRIMARY KEY, balance DECIMAL);
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > INSERT INTO bank.accounts VALUES (1, 1000.50);
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT * FROM bank.accounts;
     ~~~
@@ -161,7 +161,7 @@ To use the built-in SQL client, you need to launch a pod that runs indefinitely 
 
 4. [Create a user with a password](create-user.html#create-a-user-with-a-password):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE USER roach WITH PASSWORD 'Q7gc8rEdS';
     ~~~
@@ -170,7 +170,7 @@ To use the built-in SQL client, you need to launch a pod that runs indefinitely 
 
 5. Exit the SQL shell and pod:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > \q
     ~~~

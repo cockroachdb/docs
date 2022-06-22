@@ -14,7 +14,7 @@ To control replication for a specific secondary index, use the `ALTER INDEX ... 
 To get the name of a secondary index, which you need for the `CONFIGURE ZONE` statement, use the [`SHOW INDEX`](show-index.html) or [`SHOW CREATE TABLE`](show-create.html) statements.
 {{site.data.alerts.end}}
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER INDEX vehicles@vehicles_auto_index_fk_city_ref_users CONFIGURE ZONE USING num_replicas = 5, gc.ttlseconds = 100000;
 ~~~
@@ -23,7 +23,7 @@ To get the name of a secondary index, which you need for the `CONFIGURE ZONE` st
 CONFIGURE ZONE 1
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW ZONE CONFIGURATION FOR INDEX vehicles@vehicles_auto_index_fk_city_ref_users;
 ~~~

@@ -19,7 +19,7 @@ No [privileges](authorization.html#assign-privileges) are required to list the d
 
 ## Example
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW DATABASES;
 ~~~

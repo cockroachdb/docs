@@ -6,7 +6,7 @@ To check this at a high level, access the Web UI on any node at `<node address>:
 
 To check at a more granular level, SSH to one of the instances not running CockroachDB and run the `SHOW EXPERIMENTAL_RANGES` statement on the `vehicles` table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
 {{page.certs}} \

@@ -29,7 +29,7 @@ Parameter | Description
 
 ## Example
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM information_schema.tables WHERE table_type = 'VIEW';
 ~~~
@@ -44,7 +44,7 @@ Parameter | Description
 (2 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER VIEW bank.user_emails RENAME TO bank.user_email_addresses;
 ~~~
@@ -53,7 +53,7 @@ Parameter | Description
 RENAME VIEW
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM information_schema.tables WHERE table_type = 'VIEW';
 ~~~

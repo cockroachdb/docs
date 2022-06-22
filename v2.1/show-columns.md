@@ -38,7 +38,7 @@ Field | Description
 
 ## Examples
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE orders (
     id INT PRIMARY KEY DEFAULT unique_rowid(),
@@ -52,7 +52,7 @@ Field | Description
 );
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW COLUMNS FROM orders;
 ~~~
@@ -68,12 +68,12 @@ Field | Description
 (5 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE foo (x INT);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW COLUMNS FROM foo;
 ~~~
