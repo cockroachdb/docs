@@ -794,7 +794,7 @@ CockroachDB allows you to add multiple foreign key constraints on the same colum
   shipments  | fk_customers    | FOREIGN KEY     | FOREIGN KEY (customer_id) REFERENCES customers(id)                   |   true
   shipments  | fk_customers_2  | FOREIGN KEY     | FOREIGN KEY (customer_id) REFERENCES customers(id) ON DELETE CASCADE |   true
   shipments  | fk_orders       | FOREIGN KEY     | FOREIGN KEY (customer_id) REFERENCES orders(customer_id)             |   true
-  shipments  | primary         | PRIMARY KEY     | PRIMARY KEY (tracking_number ASC)                                    |   true
+  shipments  | shipments_pkey  | PRIMARY KEY     | PRIMARY KEY (tracking_number ASC)                                    |   true
 (4 rows)
 ~~~
 

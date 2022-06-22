@@ -57,15 +57,15 @@ For example, to return the `pg_extension` table with additional information abou
 ~~~
    crdb_oid  | schemaname |         tablename          |                   indexname                   | tablespace |                                                            indexdef
 -------------+------------+----------------------------+-----------------------------------------------+------------+---------------------------------------------------------------------------------------------------------------------------------
-  2055313241 | public     | users                      | primary                                       | NULL       | CREATE UNIQUE INDEX "primary" ON movr.public.users USING btree (city ASC, id ASC)
-  1795576970 | public     | vehicles                   | primary                                       | NULL       | CREATE UNIQUE INDEX "primary" ON movr.public.vehicles USING btree (city ASC, id ASC)
+  2055313241 | public     | users                      | users_pkey                                    | NULL       | CREATE UNIQUE INDEX users_pkey ON movr.public.users USING btree (city ASC, id ASC)
+  1795576970 | public     | vehicles                   | vehicles_pkey                                 | NULL       | CREATE UNIQUE INDEX vehicles_pkey ON movr.public.vehicles USING btree (city ASC, id ASC)
   1795576969 | public     | vehicles                   | vehicles_auto_index_fk_city_ref_users         | NULL       | CREATE INDEX vehicles_auto_index_fk_city_ref_users ON movr.public.vehicles USING btree (city ASC, owner_id ASC)
-   450499963 | public     | rides                      | primary                                       | NULL       | CREATE UNIQUE INDEX "primary" ON movr.public.rides USING btree (city ASC, id ASC)
+   450499963 | public     | rides                      | rides_pkey                                    | NULL       | CREATE UNIQUE INDEX rides_pkey ON movr.public.rides USING btree (city ASC, id ASC)
    450499960 | public     | rides                      | rides_auto_index_fk_city_ref_users            | NULL       | CREATE INDEX rides_auto_index_fk_city_ref_users ON movr.public.rides USING btree (city ASC, rider_id ASC)
    450499961 | public     | rides                      | rides_auto_index_fk_vehicle_city_ref_vehicles | NULL       | CREATE INDEX rides_auto_index_fk_vehicle_city_ref_vehicles ON movr.public.rides USING btree (vehicle_city ASC, vehicle_id ASC)
-  2315049508 | public     | vehicle_location_histories | primary                                       | NULL       | CREATE UNIQUE INDEX "primary" ON movr.public.vehicle_location_histories USING btree (city ASC, ride_id ASC, "timestamp" ASC)
-   969972501 | public     | promo_codes                | primary                                       | NULL       | CREATE UNIQUE INDEX "primary" ON movr.public.promo_codes USING btree (code ASC)
-   710236230 | public     | user_promo_codes           | primary                                       | NULL       | CREATE UNIQUE INDEX "primary" ON movr.public.user_promo_codes USING btree (city ASC, user_id ASC, code ASC)
+  2315049508 | public     | vehicle_location_histories | vehicle_location_histories_pkey               | NULL       | CREATE UNIQUE vehicle_location_histories_pkey ON movr.public.vehicle_location_histories USING btree (city ASC, ride_id ASC, "timestamp" ASC)
+   969972501 | public     | promo_codes                | promo_codes_pkey                              | NULL       | CREATE UNIQUE INDEX promo_codes_pkey ON movr.public.promo_codes USING btree (code ASC)
+   710236230 | public     | user_promo_codes           | user_promo_codes_pkey                         | NULL       | CREATE UNIQUE INDEX user_promo_codes_pkey ON movr.public.user_promo_codes USING btree (city ASC, user_id ASC, code ASC)
 (9 rows)
 ~~~
 

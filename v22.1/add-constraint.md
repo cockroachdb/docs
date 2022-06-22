@@ -267,13 +267,13 @@ SHOW INDEXES FROM users;
 ~~~
   table_name |    index_name     | non_unique | seq_in_index | column_name | direction | storing | implicit
 -------------+-------------------+------------+--------------+-------------+-----------+---------+-----------
-  users      | primary           |   false    |            1 | region      | ASC       |  false  |   true
-  users      | primary           |   false    |            2 | id          | ASC       |  false  |  false
-  users      | primary           |   false    |            3 | city        | N/A       |  true   |  false
-  users      | primary           |   false    |            4 | name        | N/A       |  true   |  false
-  users      | primary           |   false    |            5 | address     | N/A       |  true   |  false
-  users      | primary           |   false    |            6 | credit_card | N/A       |  true   |  false
-  users      | primary           |   false    |            7 | email       | N/A       |  true   |  false
+  users      | users_pkey        |   false    |            1 | region      | ASC       |  false  |   true
+  users      | users_pkey        |   false    |            2 | id          | ASC       |  false  |  false
+  users      | users_pkey        |   false    |            3 | city        | N/A       |  true   |  false
+  users      | users_pkey        |   false    |            4 | name        | N/A       |  true   |  false
+  users      | users_pkey        |   false    |            5 | address     | N/A       |  true   |  false
+  users      | users_pkey        |   false    |            6 | credit_card | N/A       |  true   |  false
+  users      | users_pkey        |   false    |            7 | email       | N/A       |  true   |  false
   users      | user_email_unique |   false    |            1 | region      | ASC       |  false  |   true
   users      | user_email_unique |   false    |            2 | email       | ASC       |  false  |  false
   users      | user_email_unique |   false    |            3 | id          | ASC       |  false  |   true

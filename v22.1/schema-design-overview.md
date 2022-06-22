@@ -48,9 +48,9 @@ For guidance on defining tables, see [Tables](schema-design-table.html).
 
 An index is a copy of the rows in a single table, sorted by a column or set of columns. CockroachDB queries use indexes to more efficiently find data in a table, given the values of a particular column. Each index belongs to a single table.
 
-The two main types of indexes are the `primary` index, an index on the row-identifying [primary key columns](primary-key.html), and the secondary index, an index created on non-primary-key columns of your choice.
+The two main types of indexes are the primary index, an index on the row-identifying [primary key columns](primary-key.html), and the secondary index, an index created on non-primary-key columns of your choice.
 
-For guidance on defining primary keys, see [Select Primary Key Columns](schema-design-table.html#select-primary-key-columns). For guidance on defining secondary indexes, see [Add a Secondary Index](schema-design-indexes.html).
+For guidance on defining primary keys, see [Select primary key columns](schema-design-table.html#select-primary-key-columns). For guidance on defining secondary indexes, see [Add a Secondary Index](schema-design-indexes.html).
 
 #### Specialized indexes
 

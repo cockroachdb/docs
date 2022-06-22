@@ -193,11 +193,11 @@ To show the indexes on a table, use [`SHOW INDEX FROM`](show-index.html) followe
   users      | name_idx   |    true    |            1 | name        | DESC      |  false  |  false
   users      | name_idx   |    true    |            2 | city        | ASC       |  false  |   true
   users      | name_idx   |    true    |            3 | id          | ASC       |  false  |   true
-  users      | primary    |   false    |            1 | city        | ASC       |  false  |  false
-  users      | primary    |   false    |            2 | id          | ASC       |  false  |  false
-  users      | primary    |   false    |            3 | name        | N/A       |  true   |  false
-  users      | primary    |   false    |            4 | address     | N/A       |  true   |  false
-  users      | primary    |   false    |            5 | credit_card | N/A       |  true   |  false
+  users      | users_pkey |   false    |            1 | city        | ASC       |  false  |  false
+  users      | users_pkey |   false    |            2 | id          | ASC       |  false  |  false
+  users      | users_pkey |   false    |            3 | name        | N/A       |  true   |  false
+  users      | users_pkey |   false    |            4 | address     | N/A       |  true   |  false
+  users      | users_pkey |   false    |            5 | credit_card | N/A       |  true   |  false
 (8 rows)
 ~~~
 
