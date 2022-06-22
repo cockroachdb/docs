@@ -61,7 +61,7 @@ The user must have the `CREATE` [privileges](authorization.html#assign-privilege
 Parameter | Description
 ----------|------------
 `table_name` | The name of the table you want to import/create.
-`table_elem_list` | The table schema you want to use.  
+`table_elem_list` | The table schema you want to use.
 `CREATE USING file_location` | If not specifying the table schema inline via `table_elem_list`, this is the [URL](#import-file-location) of a SQL file containing the table schema.
 `file_location` | The [URL](#import-file-location) of a CSV file containing the table data. This can be [a comma-separated list of URLs to CSV files](#using-a-comma-separated-list) or [specified by a `*` wildcard character](#using-a-wildcard) to include matching files under the specified path.
 `WITH kv_option_list` | Control your import's behavior with [these options](#import-options).
@@ -100,7 +100,7 @@ Key                 | <div style="width:130px">Context</div> | Value            
 `nullif`               | `CSV DATA `, [`DELIMITED DATA`](#delimited-data-files) | The string that should be converted to *NULL*.
 `skip`                 | `CSV DATA `, [`DELIMITED DATA`](#delimited-data-files) | The number of rows to be skipped while importing a file. **Default: `'0'`**.
 `decompress`           | General         | The decompression codec to be used: `gzip`, `bzip`, `auto`, or `none`.  **Default: `'auto'`**, which guesses based on file extension (`.gz`, `.bz`, `.bz2`). `none` disables decompression.
-`row_limit`           | General         |{% include_cached new-in.html version="v21.1" %} The number of rows to import. Useful for doing a test run of an import and finding errors quickly. For non-bundled formats, setting `row_limit = 'n'` will import the first *n* rows of a table. For bundled formats, this option will import the first *n* rows from each table in the dump file.
+`row_limit`           | General         |**New in v21.1:** The number of rows to import. Useful for doing a test run of an import and finding errors quickly. For non-bundled formats, setting `row_limit = 'n'` will import the first *n* rows of a table. For bundled formats, this option will import the first *n* rows from each table in the dump file.
 `skip_foreign_keys`    | `PGDUMP`, `MYSQLDUMP` | Ignore foreign key constraints in the dump file's DDL. **Default:** Off.  May be necessary to import a table with unsatisfied foreign key constraints from a full database dump.
 `max_row_size`         | `PGDUMP`        | Override limit on line size. **Default: 0.5MB**.  This setting may need to be tweaked if your PostgreSQL dump file has extremely long lines, for example as part of a `COPY` statement.
 `ignore_unsupported_statements` | `PGDUMP`  | <span class="version-tag">New in v21.1:</span> Ignore SQL statements in the dump file that are unsupported by CockroachDB.
@@ -593,7 +593,7 @@ CSV DATA (
     'azure://{CONTAINER NAME}/{customer-import-data2.csv}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}',
     'azure://{CONTAINER NAME}/{customer-import-data3.csv}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}',
     'azure://{CONTAINER NAME}/{customer-import-data4.csv}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}',
-    'azure://{CONTAINER NAME}/{customer-import-data5.csv}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}',    
+    'azure://{CONTAINER NAME}/{customer-import-data5.csv}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}',
 );
 ~~~
 
@@ -616,7 +616,7 @@ These only match files directly under the specified path and do not descend into
 		INDEX name_idx (name)
 )
 CSV DATA (
-    'azure://{CONTAINER NAME}/{customer-import-data*}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}'  
+    'azure://{CONTAINER NAME}/{customer-import-data*}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}'
 );
 ~~~
 
