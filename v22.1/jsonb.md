@@ -50,6 +50,7 @@ Operator | Description | Example |
 `->` | Access a `JSONB` field, returning a `JSONB` value. | `SELECT '[{"foo":"bar"}]'::JSONB->0->'foo'; = "bar"::JSONB`
 `->>` | Access a `JSONB` field, returning a string. | `SELECT '{"foo":"bar"}'::JSONB->>'foo'; = bar::STRING;`
 `@>` | Tests whether the left `JSONB` field contains the right `JSONB` field. | `SELECT ('{"foo": {"baz": 3}, "bar": 2}'::JSONB@>'{"foo": {"baz":3}}'::JSONB ); = true;`
+`>@` | Tests whether the left `JSONB` field is contained by the right `JSONB` field. | `SELECT('{"bar":2}'::JSONB<@'{"foo":1, "bar":2}'::JSONB); = true;`
 `#> ` | Access a `JSONB` field at the specified path, returning a `JSONB` value.  | `SELECT '[{"foo":"bar"}]'::JSONB#>'{0,foo}'; = "bar"::JSONB`
 `#>>` | Access a `JSONB` field at the specified path, returning a string. | `SELECT '[{"foo":"bar"}]'::JSONB#>>'{0,foo}'; = bar::STRING`
 
