@@ -243,7 +243,7 @@ The `DECIMAL` type is a union between Avro `STRING` and Avro `DECIMAL` types.
 
 ## Export data with changefeeds
 
-<span class="version-tag">New in v22.1:</span> When you create an {{ site.data.products.enterprise }} changefeed, you can include the [`initial_scan = 'only'`](create-changefeed.html#initial-scan) option to specify that the changefeed should only complete a table scan. The changefeed emits messages for the table scan and then the job completes with a `succeeded` status. As a result, you can create a changefeed with `initial_scan = 'only'` to [export](export.html) data out of your database. Including the [`format=csv`]() option with `initial_scan = 'only'`, you can emit CSV files from your changefeed.  
+<span class="version-tag">New in v22.1:</span> When you create an {{ site.data.products.enterprise }} changefeed, you can include the [`initial_scan = 'only'`](create-changefeed.html#initial-scan) option to specify that the changefeed should only complete a table scan. The changefeed emits messages for the table scan and then the job completes with a `succeeded` status. As a result, you can create a changefeed with `initial_scan = 'only'` to [export](export.html) data out of your database. Including the [`format=csv`](create-changefeed.html#format) option with `initial_scan = 'only'`, you can emit CSV files from your changefeed.  
 
 The benefits of using changefeeds for this function compared to an export, include:
 
