@@ -53,7 +53,9 @@ Operator | Description | Example |
 `>@` | Tests whether the left `JSONB` field is contained by the right `JSONB` field. | `SELECT('{"bar":2}'::JSONB<@'{"foo":1, "bar":2}'::JSONB); = true;`
 `#> ` | Access a `JSONB` field at the specified path, returning a `JSONB` value.  | `SELECT '[{"foo":"bar"}]'::JSONB#>'{0,foo}'; = "bar"::JSONB`
 `#>>` | Access a `JSONB` field at the specified path, returning a string. | `SELECT '[{"foo":"bar"}]'::JSONB#>>'{0,foo}'; = bar::STRING`
-
+`?` | Does the key or element string exist within the JSONB value? | `SELECT('{"foo":1, "bar":2}'::JSONB?'bar'); = true;`
+`?&` | Do any of the key or element strings exist within the JSONB value? | `SELECT('{"foo":1, "bar":2}'::JSONB?|array['bar']); = true;`
+`?|` | Do all the key or element strings exist within the JSONB value?  | `SELECT('{"foo":1, "bar":2}'::JSONB?&array['foo','bar']); = true;`
 For the full list of supported `JSONB` operators, see [Operators](functions-and-operators.html#operators).
 
 ## Functions
