@@ -169,11 +169,11 @@ To view column comments, use [`SHOW INDEXES ... WITH COMMENT`](show-index.html):
 ~~~
   table_name |   index_name   | non_unique | seq_in_index | column_name | direction | storing | implicit |                             comment
 -------------+----------------+------------+--------------+-------------+-----------+---------+----------+------------------------------------------------------------------
-  users      | primary        |   false    |            1 | city        | ASC       |  false  |  false   | NULL
-  users      | primary        |   false    |            2 | id          | ASC       |  false  |  false   | NULL
-  users      | primary        |   false    |            3 | name        | N/A       |  true   |  false   | NULL
-  users      | primary        |   false    |            4 | address     | N/A       |  true   |  false   | NULL
-  users      | primary        |   false    |            5 | credit_card | N/A       |  true   |  false   | NULL
+  users      | users_pkey     |   false    |            1 | city        | ASC       |  false  |  false   | NULL
+  users      | users_pkey     |   false    |            2 | id          | ASC       |  false  |  false   | NULL
+  users      | users_pkey     |   false    |            3 | name        | N/A       |  true   |  false   | NULL
+  users      | users_pkey     |   false    |            4 | address     | N/A       |  true   |  false   | NULL
+  users      | users_pkey     |   false    |            5 | credit_card | N/A       |  true   |  false   | NULL
   users      | users_name_idx |    true    |            1 | name        | ASC       |  false  |  false   | This index improves performance on queries that filter by name.
   users      | users_name_idx |    true    |            2 | city        | ASC       |  false  |   true   | This index improves performance on queries that filter by name.
   users      | users_name_idx |    true    |            3 | id          | ASC       |  false  |   true   | This index improves performance on queries that filter by name.

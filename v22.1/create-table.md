@@ -243,12 +243,12 @@ For performance recommendations on primary keys, see the [Schema Design: Create 
 ~~~
   table_name | index_name | non_unique | seq_in_index | column_name | direction | storing | implicit
 +------------+------------+------------+--------------+-------------+-----------+---------+----------+
-  users      | primary    |   false    |            1 | city        | ASC       |  false  |  false
-  users      | primary    |   false    |            2 | id          | ASC       |  false  |  false
-  users      | primary    |   false    |            3 | name        | N/A       |  true   |  false
-  users      | primary    |   false    |            4 | address     | N/A       |  true   |  false
-  users      | primary    |   false    |            5 | credit_card | N/A       |  true   |  false
-  users      | primary    |   false    |            6 | dl          | N/A       |  true   |  false
+  users      | users_pkey |   false    |            1 | city        | ASC       |  false  |  false
+  users      | users_pkey |   false    |            2 | id          | ASC       |  false  |  false
+  users      | users_pkey |   false    |            3 | name        | N/A       |  true   |  false
+  users      | users_pkey |   false    |            4 | address     | N/A       |  true   |  false
+  users      | users_pkey |   false    |            5 | credit_card | N/A       |  true   |  false
+  users      | users_pkey |   false    |            6 | dl          | N/A       |  true   |  false
 (6 rows)
 ~~~
 
@@ -288,14 +288,14 @@ In this example, we create secondary and GIN indexes during table creation. Seco
   vehicles   | ix_vehicle_ext |    true    |            1 | ext              | ASC       |  false  |  false
   vehicles   | ix_vehicle_ext |    true    |            2 | city             | ASC       |  false  |   true
   vehicles   | ix_vehicle_ext |    true    |            3 | id               | ASC       |  false  |   true
-  vehicles   | primary        |   false    |            1 | city             | ASC       |  false  |  false
-  vehicles   | primary        |   false    |            2 | id               | ASC       |  false  |  false
-  vehicles   | primary        |   false    |            3 | type             | N/A       |  true   |  false
-  vehicles   | primary        |   false    |            4 | owner_id         | N/A       |  true   |  false
-  vehicles   | primary        |   false    |            5 | creation_time    | N/A       |  true   |  false
-  vehicles   | primary        |   false    |            6 | status           | N/A       |  true   |  false
-  vehicles   | primary        |   false    |            7 | current_location | N/A       |  true   |  false
-  vehicles   | primary        |   false    |            8 | ext              | N/A       |  true   |  false
+  vehicles   | vehicles_pkey  |   false    |            1 | city             | ASC       |  false  |  false
+  vehicles   | vehicles_pkey  |   false    |            2 | id               | ASC       |  false  |  false
+  vehicles   | vehicles_pkey  |   false    |            3 | type             | N/A       |  true   |  false
+  vehicles   | vehicles_pkey  |   false    |            4 | owner_id         | N/A       |  true   |  false
+  vehicles   | vehicles_pkey  |   false    |            5 | creation_time    | N/A       |  true   |  false
+  vehicles   | vehicles_pkey  |   false    |            6 | status           | N/A       |  true   |  false
+  vehicles   | vehicles_pkey  |   false    |            7 | current_location | N/A       |  true   |  false
+  vehicles   | vehicles_pkey  |   false    |            8 | ext              | N/A       |  true   |  false
 (14 rows)
 ~~~
 
@@ -447,14 +447,14 @@ In this example, we create the `users` table, but with some column [constraints]
 ~~~
 
 ~~~
-  column_name | data_type | is_nullable | column_default | generation_expression |        indices         | is_hidden
-+-------------+-----------+-------------+----------------+-----------------------+------------------------+-----------+
-  id          | UUID      |    false    | NULL           |                       | {primary,users_dl_key} |   false
-  city        | STRING    |    true     | NULL           |                       | {}                     |   false
-  name        | STRING    |    true     | NULL           |                       | {}                     |   false
-  address     | STRING    |    true     | NULL           |                       | {}                     |   false
-  credit_card | STRING    |    true     | NULL           |                       | {}                     |   false
-  dl          | STRING    |    true     | NULL           |                       | {users_dl_key}         |   false
+  column_name | data_type | is_nullable | column_default | generation_expression |           indices           | is_hidden
+--------------+-----------+-------------+----------------+-----------------------+-----------------------------+------------
+  id          | UUID      |    false    | NULL           |                       | {users_name_idx,users_pkey} |   false
+  city        | VARCHAR   |    false    | NULL           |                       | {users_name_idx,users_pkey} |   false
+  name        | VARCHAR   |    true     | NULL           |                       | {users_name_idx,users_pkey} |   false
+  address     | VARCHAR   |    true     | NULL           |                       | {users_pkey}                |   false
+  credit_card | VARCHAR   |    true     | NULL           |                       | {users_pkey}                |   false
+  dl          | STRING    |    true     | NULL           |                       | {users_dl_key}              |   false
 (6 rows)
 ~~~
 
@@ -466,7 +466,7 @@ In this example, we create the `users` table, but with some column [constraints]
 ~~~
   table_name |  index_name  | non_unique | seq_in_index | column_name | direction | storing | implicit
 +------------+--------------+------------+--------------+-------------+-----------+---------+----------+
-  users      | primary      |   false    |            1 | id          | ASC       |  false  |  false
+  users      | users_pkey   |   false    |            1 | id          | ASC       |  false  |  false
   users      | users_dl_key |   false    |            1 | dl          | ASC       |  false  |  false
   users      | users_dl_key |   false    |            2 | id          | ASC       |  false  |   true
 (3 rows)

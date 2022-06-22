@@ -40,7 +40,7 @@ Geo-partitioning requires an [Enterprise license](https://www.cockroachlabs.com/
 
 Using this pattern, you design your table schema to allow for [partitioning](partitioning.html#table-creation), with a column identifying geography as the first column in the table's compound primary key (e.g., city/id). You tell CockroachDB to partition the table and all of its secondary indexes by that geography column, each partition becoming its own range of 3 replicas. You then tell CockroachDB to put the leaseholder for each partition in the relevant region (e.g., LA partitions in `us-west`, NY partitions in `us-east`). The other replicas of a partition remain balanced across the other regions. This means that reads in each region will access local leaseholders and, therefore, will have low, intra-region latencies. Writes, however, will leave the region to get consensus and, therefore, will have higher, cross-region latencies.
 
-<img src="{{ 'images/v20.2/topology-patterns/topology_geo-partitioned_leaseholders1.png' | relative_url }}" alt="Geo-partitioned leaseholders topology" style="max-width:100%" />
+<img src="{{ 'images/v22.1/topology-patterns/topology_geo-partitioned_leaseholders1.png' | relative_url }}" alt="Geo-partitioned leaseholders topology" style="max-width:100%" />
 
 ### Steps
 
@@ -217,7 +217,7 @@ For example, in the animation below:
 4. The leaseholder retrieves the results and returns to the gateway node.
 5. The gateway node returns the results to the client.
 
-<img src="{{ 'images/v20.2/topology-patterns/topology_geo-partitioned_leaseholders_reads.png' | relative_url }}" alt="Geo-partitioned leaseholders topology" style="max-width:100%" />
+<img src="{{ 'images/v22.1/topology-patterns/topology_geo-partitioned_leaseholders_reads.png' | relative_url }}" alt="Geo-partitioned leaseholders topology" style="max-width:100%" />
 
 #### Writes
 
@@ -233,17 +233,17 @@ For example, in the animation below:
 6. The leaseholders then return acknowledgement of the commit to the gateway node.
 7. The gateway node returns the acknowledgement to the client.
 
-<img src="{{ 'images/v20.2/topology-patterns/topology_geo-partitioned_leaseholders_writes.gif' | relative_url }}" alt="Geo-partitioned leaseholders topology" style="max-width:100%" />
+<img src="{{ 'images/v22.1/topology-patterns/topology_geo-partitioned_leaseholders_writes.gif' | relative_url }}" alt="Geo-partitioned leaseholders topology" style="max-width:100%" />
 
 ### Resiliency
 
 Because this pattern balances the replicas for each partition across regions, one entire region can fail without interrupting access to any partitions. In this case, if any range loses its leaseholder in the region-wide outage, CockroachDB makes one of the range's other replicas the leaseholder:
 
-<img src="{{ 'images/v20.2/topology-patterns/topology_geo-partitioned_leaseholders_resiliency1.png' | relative_url }}" alt="Geo-partitioning topology" style="max-width:100%" />
+<img src="{{ 'images/v22.1/topology-patterns/topology_geo-partitioned_leaseholders_resiliency1.png' | relative_url }}" alt="Geo-partitioning topology" style="max-width:100%" />
 
 <!-- However, if an additional machine fails at the same time as the region failure, the partitions that lose consensus become unavailable for reads and writes:
 
-<img src="{{ 'images/v20.2/topology-patterns/topology_geo-partitioned_leaseholders_resiliency2.png' | relative_url }}" alt="Geo-partitioning topology" style="max-width:100%" /> -->
+<img src="{{ 'images/v22.1/topology-patterns/topology_geo-partitioned_leaseholders_resiliency2.png' | relative_url }}" alt="Geo-partitioning topology" style="max-width:100%" /> -->
 
 ## Alternatives
 

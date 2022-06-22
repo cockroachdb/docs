@@ -61,7 +61,7 @@ The user must have the `CREATE` [privilege](security-reference/authorization.htm
   table_name |        constraint_name         | constraint_type |                details                 | validated
 +------------+--------------------------------+-----------------+----------------------------------------+-----------+
   logon      | logon_customer_id_sales_id_key | UNIQUE          | UNIQUE (customer_id ASC, sales_id ASC) |   true
-  logon      | primary                        | PRIMARY KEY     | PRIMARY KEY (login_id ASC)             |   true
+  logon      | logon_pkey                     | PRIMARY KEY     | PRIMARY KEY (login_id ASC)             |   true
 (2 rows)
 ~~~
 
@@ -78,7 +78,7 @@ The user must have the `CREATE` [privilege](security-reference/authorization.htm
 ~~~
   table_name |       constraint_name       | constraint_type |                details                 | validated
 +------------+-----------------------------+-----------------+----------------------------------------+-----------+
-  logon      | primary                     | PRIMARY KEY     | PRIMARY KEY (login_id ASC)             |   true
+  logon      | logon_pkey                  | PRIMARY KEY     | PRIMARY KEY (login_id ASC)             |   true
   logon      | unique_customer_id_sales_id | UNIQUE          | UNIQUE (customer_id ASC, sales_id ASC) |   true
 (2 rows)
 ~~~

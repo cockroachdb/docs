@@ -215,7 +215,7 @@ postgresql://<username>@<host>:<port>/<database>?ssl=true&sslrootcert=<root-cert
 To connect to CockroachDB with Sequelize, you must install the [CockroachDB Sequelize adapter](https://github.com/cockroachdb/sequelize-cockroachdb).
 {{site.data.alerts.end}}
 
-For more information about connecting with Sequelize, see the [official Sequelize documentation](https://sequelize.org/master/index.html).
+For more information about connecting with Sequelize, see the [official Sequelize documentation](https://sequelize.org/docs/v6/).
 
 ## Connection parameters
 
