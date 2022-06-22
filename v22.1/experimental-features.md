@@ -56,7 +56,7 @@ To relocate just the lease without moving the replicas, run a statement like the
 ~~~
 
 {{site.data.alerts.callout_info}}
-<span class="version-tag">New in v22.1:</span> If you prefer to use an approach to relocating replicas and leases based on range IDs, see the [`ALTER RANGE ... RELOCATE`](alter-range-relocate.html) statement.
+{% include_cached new-in.html version="v22.1" %} If you prefer to use an approach to relocating replicas and leases based on range IDs, see the [`ALTER RANGE ... RELOCATE`](alter-range-relocate.html) statement.
 {{site.data.alerts.end}}
 
 ### Show table fingerprints
