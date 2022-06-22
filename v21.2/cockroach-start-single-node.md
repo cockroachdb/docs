@@ -223,12 +223,28 @@ Scaling a cluster started with `cockroach start-single-node` involves restarting
 <section class="filter-content" markdown="1" data-scope="secure">
 1. Stop the single-node cluster:
 
+    Get the process ID of the node:
+
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ cockroach quit \
-    --certs-dir=certs \
-    --host=localhost:26257
+    ps -ef | grep cockroach | grep -v grep
     ~~~
+
+    ~~~
+      501 19584     1   0  6:13PM ttys001    0:01.27 cockroach start-single-node --certs-dir=certs --listen-addr=localhost:26257 --http-addr=localhost:8080
+    ~~~
+
+    Gracefully shut down the node, specifying its process ID:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    kill -TERM 19584
+    ~~~
+
+    ~~~
+    initiating graceful shutdown of server
+	server drained and shutdown completed
+	~~~
 
 2. Restart the node with the [`cockroach start`](cockroach-start.html) command:
 
@@ -325,12 +341,28 @@ Scaling a cluster started with `cockroach start-single-node` involves restarting
 <section class="filter-content" markdown="1" data-scope="insecure">
 1. Stop the single-node cluster:
 
+    Get the process ID of the node:
+
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ cockroach quit \
-    --insecure \
-    --host=localhost:26257
+    ps -ef | grep cockroach | grep -v grep
     ~~~
+
+    ~~~
+      501 19584     1   0  6:13PM ttys001    0:01.27 cockroach start-single-node --insecure --listen-addr=localhost:26257 --http-addr=localhost:8080
+    ~~~
+
+    Gracefully shut down the node, specifying its process ID:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    kill -TERM 19584
+    ~~~
+
+    ~~~
+    initiating graceful shutdown of server
+	server drained and shutdown completed
+	~~~
 
 2. Restart the node with the [`cockroach start`](cockroach-start.html) command:
 

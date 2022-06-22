@@ -72,9 +72,27 @@ In this example, you'll set up a core changefeed for a single-node cluster.
 
 9. To stop streaming the changefeed, enter **CTRL+C** into the terminal where the changefeed is running.
 
-10. To stop `cockroach`, run:
+10. To stop `cockroach`:
+
+    Get the process ID of the node:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ cockroach quit --insecure
+    ps -ef | grep cockroach | grep -v grep
+    ~~~
+
+    ~~~
+      501 21766     1   0  6:21PM ttys001    0:00.89 cockroach start-single-node --insecure --listen-addr=localhost
+    ~~~
+
+    Gracefully shut down the node, specifying its process ID:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    kill -TERM 21766
+    ~~~
+
+    ~~~
+    initiating graceful shutdown of server
+    server drained and shutdown completed
     ~~~
