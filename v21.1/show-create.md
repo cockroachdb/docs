@@ -21,7 +21,7 @@ The user must have any [privilege](authorization.html#assign-privileges) on the 
 Parameter | Description
 ----------|------------
 `object_name` | The name of the table, view, or sequence for which to show the `CREATE` statement.
-`ALL TABLES` | <span class="version-tag">New in v21.1:</span> Show the `CREATE` statements for all tables, views, and sequences in the current database.<br>This option is intended to provide the statements required to recreate the objects in the current database. As a result, `SHOW CREATE ALL TABLES` also returns the [`ALTER` statements](alter-table.html) that add, modify, and validate an object's [constraints](constraints.html). The `ALTER` statements follow the `CREATE` statements to guarantee that all objects are added before their references.
+`ALL TABLES` | **New in v21.1:** Show the `CREATE` statements for all tables, views, and sequences in the current database.<br>This option is intended to provide the statements required to recreate the objects in the current database. As a result, `SHOW CREATE ALL TABLES` also returns the [`ALTER` statements](alter-table.html) that add, modify, and validate an object's [constraints](constraints.html). The `ALTER` statements follow the `CREATE` statements to guarantee that all objects are added before their references.
 
 ## Response
 

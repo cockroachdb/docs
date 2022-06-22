@@ -9,7 +9,7 @@ Command | Usage
 `\set <option>`<br><br>`\unset <option>` | Enable or disable a client-side option. For more details, see [Client-side options](#client-side-options).<br>You can also use the [`--set` flag](#general) to enable or disable client-side options before starting the SQL shell.
 `\show`<br><br>`\p` | During a multi-line statement or transaction, show the SQL that has been entered but not yet executed.<br>**New in v21.1:**`\show` is deprecated in v21.1. Use `\p` instead.
 `\h <statement>`<br><br>`\hf <function>` | View help for specific SQL statements or functions. See [SQL shell help](#help) for more details.
-`\c`<br><br>`\connect` | <span class="version-tag">New in v21.1:</span> Change the current database. This is equivalent to `SET <database>` and `USE <database>`.
+`\c`<br><br>`\connect` | **New in v21.1:** Change the current database. This is equivalent to `SET <database>` and `USE <database>`.
 `\l` | List all databases in the CockroachDB cluster. This command is equivalent to [`SHOW DATABASES`](show-databases.html).
 `\dt`<br><br>`d` | Show the tables of the current schema in the current database. These commands are equivalent to [`SHOW TABLES`](show-tables.html).
 `\dT` |  Show the [user-defined types](enum.html) in the current database. This command is equivalent to [`SHOW TYPES`](show-types.html).

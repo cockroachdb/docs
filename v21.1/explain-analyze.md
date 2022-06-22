@@ -24,7 +24,7 @@ In CockroachDB, the following are aliases for `EXPLAIN ANALYZE`:
 
 Parameter          | Description
 -------------------|-----------
-`PLAN`             | <span class="version-tag">New in v21.1:</span> <br /> _(Default)_ Executes the statement and returns CockroachDB's statement plan with planning and execution time for an [explainable statement](sql-grammar.html#preparable_stmt). For more information, see [Default option](#default-option).
+`PLAN`             | **New in v21.1:** <br /> _(Default)_ Executes the statement and returns CockroachDB's statement plan with planning and execution time for an [explainable statement](sql-grammar.html#preparable_stmt). For more information, see [Default option](#default-option).
 `DISTSQL`          | Return the statement plan and performance statistics as well as a generated link to a graphical distributed SQL physical statement plan tree. For more information, see [`DISTSQL` option](#distsql-option).
 `DEBUG`            |  Generate a ZIP file containing files with detailed information about the query and the database objects referenced in the query. For more information, see [`DEBUG` option](#debug-option).
 `preparable_stmt`  | The [statement](sql-grammar.html#preparable_stmt) you want to execute and analyze. All preparable statements are explainable.
