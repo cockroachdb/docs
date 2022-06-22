@@ -435,7 +435,7 @@ Evaluates `<cond>`, then evaluates `<expr1>` if the condition is true,
 or `<expr2>` otherwise.
 
 In most cases, the expression corresponding to the case when the condition is
-false is not evaluated. The exception is when the expression is a subquery which
+false is not evaluated. The exception is when the expression is a subquery, which
 is eagerly evaluated when execution of the query begins.
 
 
@@ -463,7 +463,7 @@ expression. If no `WHEN` branch matches, the `ELSE` expression is
 evaluated and returned, if any. Otherwise, `NULL` is returned.
 
 In most cases, conditions and result expressions after the first match are not
-evaluated. The exception is subqueries which are eagerly evaluated when
+evaluated. The exception is subqueries, which are eagerly evaluated when
 execution of the query begins.
 
 #### Typing rule
@@ -490,7 +490,7 @@ evaluates to true, then evaluates and returns the value of the `ELSE`
 expression, if any, or `NULL` otherwise.
 
 In most cases, conditions and result expressions after the first match are not
-evaluated. The exception is subqueries which are eagerly evaluated when
+evaluated. The exception is subqueries, which are eagerly evaluated when
 execution of the query begins.
 
 #### Typing rule
@@ -528,7 +528,7 @@ result of applying `COALESCE` on the remaining expressions. If all the
 expressions are `NULL`, `NULL` is returned.
 
 In most cases, arguments to the right of the first non-null argument are not
-evaluated. The exception is subqueries which are eagerly evaluated when
+evaluated. The exception is subqueries, which are eagerly evaluated when
 execution of the query begins.
 
 `IFNULL(a, b)` is equivalent to `COALESCE(a, b)`.
