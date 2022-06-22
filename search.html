@@ -11,7 +11,20 @@ docs_area: search
 <div id="search-pages"></div>
 <script src="{{ 'js/algoliasearchLite.min.js' | relative_url }}"></script>
 <script src="{{ 'js/instantsearch.production.min.js' | relative_url }}"></script>
+
 <script>
+  var ALGOLIA_INSIGHTS_SRC = "https://cdn.jsdelivr.net/npm/search-insights@2.2.1";
+
+  !function(e,a,t,n,s,i,c){e.AlgoliaAnalyticsObject=s,e[s]=e[s]||function(){
+  (e[s].queue=e[s].queue||[]).push(arguments)},i=a.createElement(t),c=a.getElementsByTagName(t)[0],
+  i.async=1,i.src=n,c.parentNode.insertBefore(i,c)
+  }(window,document,"script",ALGOLIA_INSIGHTS_SRC,"aa");
+
+  aa('init', {
+    appId: '{{ site.algolia.application_id }}',
+    apiKey: '{{ site.algolia.search_api_key }}',
+  });
+
   const htmlEncode = (text) => {
     let div = document.createElement("div");
     div.appendChild(document.createTextNode(text));
@@ -109,8 +122,15 @@ docs_area: search
       router,
       stateMapping
     },
-    searchClient
+    searchClient,
+    searchParameters: {
+      clickAnalytics: true,
+    },
   });
+
+  function getQueryID() {
+    return search.helper.lastResults.queryID;
+  }
 
   const addToResultsIfPresent = (match) => {
     if(match && match.matchLevel && match.matchLevel !== 'none' && match.value) {
@@ -191,4 +211,12 @@ docs_area: search
 
   // Starting the search
   search.start();
+
+  aa('clickedObjectIDsAfterSearch', {
+    index: '{{site.algolia.index_name}}',
+    eventName: 'Click item',
+    queryID: getQueryID(),
+    objectIDs: ['object1'],
+    positions: [42],
+  });
 </script>
