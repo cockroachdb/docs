@@ -225,6 +225,87 @@ A custom root CA can be appended to the system's default CAs by setting the `clo
 
 </section>
 
+## Storage permissions
+
+This section describes the minimum permissions required to run CockroachDB bulk operations. While we outline information on the necessary permissions to access Amazon S3 and Google Cloud Storage when running these operations, the provider's documentation provides detail on the setup process and different options regarding access management.
+
+Depending on the actions a bulk operation performs, it will require different access permissions to a cloud storage bucket. 
+
+This table outlines the actions that each operation performs against the storage bucket:
+
+Operation                   | Permission                   | Description                                                                     
+----------------------------+------------------------------+---------------------------------------------------
+[Backup](backup.html)       | Write<br>Get<br>List<br>Delete | Write/Get: Backups write the backup data to the storage bucket. During a backup job, a `BACKUP CHECKPOINT` file will be written that tracks the progress of the backup. Should the backup resume after a [pause](pause-job.html), it will read the checkpoint file to find a suitable resume point. This can include overwriting backup work that had happened before the pause.<br> List: Backups need list access to the files already in the bucket. If the backup is paused, or there is a retryable error, the backup will read the `BACKUP CHECKPOINT` file.<br> Delete: Backups may delete files and progress during the job after a pause in order to resume the job from a certain point.
+[Restore](restore.html)     | List<br><br>Get                    | List: During a restore job, it is necessary to pass the backup's directory. This contains a manifest file that describes the backup's metadata and data. Restores require access to read these files from the storage bucket to process the backup correctly. <br> Get: Restores need access to retrieve files from the backup.
+[Import](import.html)       | Get                          | Imports pull the requested file(s) from the storage bucket.                   
+[Export](export.html)       | Write                        | Exports need write access to the storage bucket to create individual export file(s) from the exported data.
+[Enterprise changefeeds](create-changefeed.html)  | Write  | Changefeeds will write messages files to the storage bucket as it emits row changes.
+
+<div class="filters clearfix">
+  <button class="filter-button" data-scope="s3">Amazon S3</button>
+  <button class="filter-button" data-scope="gcs">Google Cloud Storage</button>
+</div>
+
+<section class="filter-content" markdown="1" data-scope="s3">
+
+These [actions](https://docs.aws.amazon.com/AmazonS3/latest/API/API_Operations_Amazon_Simple_Storage_Service.html) are the minimum access permissions to be set in an Amazon S3 bucket policy:
+
+Operation    | S3 permission                                                                          
+-------------+----------------------------------------------------------------------------------
+Backup       | `s3:PutObject`, `s3:ListBucket`, `s3:DeleteObject`, `s3:GetObject`
+Restore      | `s3:GetObject`, `s3:ListBucket`     
+Import       | `s3:GetObject`                                             
+Export       | `s3:PutObject`
+Enterprise Changefeeds  | `s3:PutObject`
+
+See [Policies and Permissions in Amazon S3](https://docs.aws.amazon.com/AmazonS3/latest/userguide/access-policy-language-overview.html) for detail on setting policies and permissions in Amazon S3.
+
+An example S3 bucket policy for a **backup**:
+
+~~~json
+{
+    "Version": "2012-10-17",
+    "Id": "Example_Policy",
+    "Statement": [
+        {
+            "Sid": "ExampleStatement01",
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": "arn:aws:iam::{ACCOUNT_ID}:user/{USER}"
+            },
+            "Action": [
+                "s3:DeleteObject",
+                "s3:PutObject",
+                "s3:ListBucket",
+                "s3:GetObject"
+            ],
+            "Resource": [
+                "arn:aws:s3:::{BUCKET_NAME}",
+                "arn:aws:s3:::{BUCKET_NAME}/*"
+            ]
+        }
+    ]
+}
+~~~
+
+</section>
+
+<section class="filter-content" markdown="1" data-scope="gcs">
+
+In Google Cloud Storage, you can grant users roles that define the access level to the storage bucket. For the purposes of running CockroachDB operations to your bucket, the following table lists the permissions that represent the minimum level required for each operation. GCS provides different levels of granularity for defining the roles in which these permissions reside. For more detail about Predefined, Basic, and Custom roles, see [IAM roles for Cloud Storage](https://cloud.google.com/storage/docs/access-control/iam-roles).
+
+Operation    | GCS Permission                                                                          
+-------------+----------------------------------------------------------------------------------
+Backup       | `storage.objects.create`, `storage.objects.list`, `storage.objects.get`, `storage.objects.delete`
+Restore      | `storage.objects.get`, `storage.objects.list`       
+Import       | `storage.objects.get`                                             
+Export       | `storage.objects.create`
+Changefeeds  | `storage.objects.create`
+
+For guidance on adding a user to a bucket's policy, see [Add a principal to a bucket-level policy](https://cloud.google.com/storage/docs/access-control/using-iam-permissions#bucket-add).
+
+</section>
+
 ## Additional cloud storage feature support
 
 ### Amazon S3 storage classes
