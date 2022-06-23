@@ -91,6 +91,12 @@
           ]
         },
         {
+          "title": "Estimate Serverless Usage with MovR",
+          "urls": [
+            "/cockroachcloud/serverless-movr.html"
+          ]
+        },
+        {
           "title": "Netlify",
           "urls": [
             "/${VERSION}/deploy-app-netlify.html"
