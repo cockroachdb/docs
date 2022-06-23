@@ -60,7 +60,7 @@ Parameter | Description
 ----------|------------
 `column_name` | The [name/identifier](keywords-and-identifiers.html#identifiers) of the computed column.
 `<type>` | The [data type](data-types.html) of the computed column.
-`<expr>` | The pure [scalar expression](scalar-expressions.html) used to compute column values. Any functions marked as `impure`, such as `now()` or `nextval()` cannot be used.
+`<expr>` | The immutable [scalar expression](scalar-expressions.html) used to compute column values. You cannot use any functions, such as `now()` or `nextval()`, that are not immutable.
 `STORED` | _(Required for stored computed columns)_ The computed column is stored alongside other columns.
 `VIRTUAL`| _(Required for virtual columns)_ The computed column is virtual, meaning the column data is not stored in the table's primary index.
 
