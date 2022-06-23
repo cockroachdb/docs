@@ -9,6 +9,13 @@ Because of CockroachDB's [multi-active availability](multi-active-availability.h
 
 ## Step 1. Verify that you can upgrade
 
+Run [`cockroach sql`](cockroach-sql.html) against any node in the cluster to open the SQL shell. Then check your current cluster version:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> SHOW CLUSTER SETTING version;
+~~~
+
 To upgrade to a new version, you must first be on a production [release](../releases/) of the previous version. The release does not need to be the latest production release of the previous version, but it **must be a production release** and not a testing release (alpha/beta).
 
 Therefore, to upgrade to v21.2:
@@ -62,9 +69,9 @@ By default, after all nodes are running the new version, the upgrade process wil
 
 1. [Upgrade to v21.1](../v21.1/upgrade-cockroach-version.html), if you haven't already.
 
-2. Start the [`cockroach sql`](cockroach-sql.html) shell against any node in the cluster.
+1. Start the [`cockroach sql`](cockroach-sql.html) shell against any node in the cluster.
 
-3. Set the `cluster.preserve_downgrade_option` [cluster setting](cluster-settings.html):
+1. Set the `cluster.preserve_downgrade_option` [cluster setting](cluster-settings.html):
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -202,9 +209,9 @@ If you disabled auto-finalization in [step 3](#step-3-decide-how-the-upgrade-wil
 
 Once you are satisfied with the new version:
 
-1. Start the [`cockroach sql`](cockroach-sql.html) shell against any node in the cluster.
+1. Run [`cockroach sql`](cockroach-sql.html) against any node in the cluster to open the SQL shell.
 
-2. Re-enable auto-finalization:
+1. Re-enable auto-finalization:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -214,6 +221,13 @@ Once you are satisfied with the new version:
     {{site.data.alerts.callout_info}}
     This statement can take up to a minute to complete, depending on the amount of data in the cluster, as it kicks off various internal maintenance and migration tasks. During this time, the cluster will experience a small amount of additional load.
     {{site.data.alerts.end}}
+
+1. Check the cluster version to confirm that the finalize step has completed:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    > SHOW CLUSTER SETTING version;
+    ~~~
 
 ## Troubleshooting
 
