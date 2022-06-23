@@ -44,6 +44,8 @@ This section describes some of the ways that CMEK can help you protect your data
 
 - **Enforcement of encryption requirements**: With CMEK, you have control the CMEK key's encryption strength. The CMEK key's size is determined by what your KMS provider supports.
 
+  You can use your KMS platform's controls to configure an automatic rotation schedule for a CMEK key, and {{ site.data.products.db }} does not need to be aware of the rotation schedule or the key's version history.
+
 - **Infrastructure flexibility**: If your clusters are deployed on a different IAAS platform provider from where you manage your keys, or if your CMEK keys are stored in multiple KMS systems or tenants, you can use Hashicorp Vault Key Management Secrets Engine to give your clusters access to your CMEK keys, as long as the keys are stored in AWS KMS or GCP KMS.
 
 The following example shows some of the ways that CMEK can help you meet business and regulatory requirements.
@@ -103,10 +105,6 @@ Backups in {{ site.data.products.dedicated }} are triggered in two ways, only on
   - You can no longer restore from a managed backup that was taken before CMEK was enabled.
   - The data keys used to encrypt managed backups in {{ site.data.products.db }} are encrypted using the CMEK key before being written to persistent storage.
   - The CMEK key must be available before you can restore from an automatic backup.
-
-  {{site.data.alerts.callout_info}}
-  Automatic backups for clusters on GCP are not encrypted by the CMEK key.
-  {{site.data.alerts.end}}
 
 ## Limitations
 The CMEK feature has the following limitations:
