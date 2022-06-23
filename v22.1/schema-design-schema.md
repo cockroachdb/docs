@@ -157,12 +157,12 @@ For guidance on creating tables, see at [Create a Table](schema-design-table.htm
 ## What's next?
 
 - [Create a Table](schema-design-table.html)
-- [Add Secondary Indexes](schema-design-indexes.html)
+- [Secondary Indexes](schema-design-indexes.html)
 
 You might also be interested in the following pages:
 
 - [`CREATE SCHEMA`](create-schema.html)
-- [Cockroach Commands](cockroach-commands.html)
+- [`cockroach` Commands Overview](cockroach-commands.html)
 - [Create a Database](schema-design-database.html)
 - [Schema Design Overview](schema-design-overview.html)
 - [CockroachDB naming hierarchy](sql-name-resolution.html#naming-hierarchy)

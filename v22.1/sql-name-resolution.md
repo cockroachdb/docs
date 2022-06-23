@@ -7,7 +7,7 @@ docs_area: reference.sql
 
 This page documents **name resolution** in CockroachDB.
 
-To reference an object (e.g., a table) in a query, you can specify a database, a schema, both, or neither. To resolve which object a query references, CockroachDB scans the [appropriate namespaces](#naming-hierarchy), following [a set of rules outlined below](#how-name-resolution-works).
+To reference an object (e.g., a table) in a query, you can specify a database, a schema, both, or neither. To resolve which object a query references, CockroachDB scans the [appropriate namespaces](#naming-hierarchy), following the rules in [How name resolution works](#how-name-resolution-works).
 
 ## Naming hierarchy
 
@@ -15,9 +15,9 @@ For compatibility with PostgreSQL, CockroachDB supports a **three-level structur
 
 In the naming hierarchy, the path to a stored object has three components:
 
-- database name
-- schema name
-- object name
+- Database name
+- Schema name
+- Object name
 
 A CockroachDB cluster can store multiple databases. Each database can store multiple schemas, and each schema can store multiple [tables](create-table.html), [views](views.html), [sequences](create-sequence.html), and [user-defined types](enum.html).
 

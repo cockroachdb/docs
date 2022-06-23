@@ -331,10 +331,10 @@ $ cockroach sql \
 
 ## What's next?
 
-- Read about [Online Schema Changes in CockroachDB](online-schema-changes.html).
-- [Write data](insert-data.html)
-- [Read data](query-data.html)
+- [Online Schema Changes](online-schema-changes.html)
+- [Write Data](insert-data.html)
+- [Read Data](query-data.html)
 
 You might also be interested in the following pages:
 
-- [Cockroach Commands](cockroach-commands.html)
+- [`cockroach` Commands Overview](cockroach-commands.html)

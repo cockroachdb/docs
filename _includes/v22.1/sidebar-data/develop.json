@@ -85,7 +85,7 @@
           "title": "Advanced Schema Design",
           "items": [
             {
-              "title": "Use Computed Columns",
+              "title": "Computed Columns",
               "urls": [
                 "/${VERSION}/computed-columns.html"
               ]
