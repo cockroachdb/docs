@@ -40,7 +40,7 @@ Virtual computed columns:
 - Cannot be stored in indexes.
 - Can be index columns.
 
-Once a computed column is created, you cannot directly alter the formula. To make modifications to a computed column's formula, see the [Alter the formula for a computed column](#alter-the-formula-for-a-computed-column).
+Once a computed column is created, you cannot directly alter the formula. To make modifications to a computed column's formula, see [Alter the formula for a computed column](#alter-the-formula-for-a-computed-column).
 
 ## Define a computed column
 
