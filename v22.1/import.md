@@ -135,6 +135,7 @@ Imported tables are treated as new tables, so you must [`GRANT`](grant.html) pri
 - All nodes are used during the import job, which means all nodes' CPU and RAM will be partially consumed by the `IMPORT` task in addition to serving normal traffic.
 - To improve performance, import at least as many files as you have nodes (i.e., there is at least one file for each node to import) to increase parallelism.
 - To further improve performance, order the data in the imported files by [primary key](primary-key.html) and ensure the primary keys do not overlap between files.
+- An import job will pause if a node in the cluster runs out of disk space. See [Viewing and controlling import jobs](#viewing-and-controlling-import-jobs) for information on resuming and showing progress of import jobs.
 
 For more detail on optimizing import performance, see [Import Performance Best Practices](import-performance-best-practices.html).
 
