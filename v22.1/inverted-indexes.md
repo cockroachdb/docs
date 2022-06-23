@@ -156,7 +156,7 @@ GIN indexes on [`ARRAY`](array.html) columns support the following comparison op
 
 ## Partial GIN indexes
 
-You can create a [partial](partial-indexes.html) GIN index, a GIN index on a subset of `JSON`, `ARRAY`, or geospatial container column data. Just like partial indexes that use non-container data types, you create a partial GIN index by including a clause, like a `WHERE` clause, that evaluates to true on a boolean predicate.
+You can create a [partial](partial-indexes.html) GIN index, a GIN index on a subset of `JSON`, `ARRAY`, or geospatial container column data. Just like partial indexes that use non-container data types, you create a partial GIN index by including a clause, like a `WHERE` clause, that evaluates to `true` on a boolean predicate.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

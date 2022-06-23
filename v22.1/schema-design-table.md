@@ -582,7 +582,7 @@ $ cockroach sql \
 (1 row)
 ~~~
 
-Note that none of the tables that you have created thus far have secondary indexes. For guidance on adding secondary indexes, see at [Secondary Indexes](schema-design-indexes.html).
+Note that none of the tables that you have created thus far have secondary indexes. For guidance on adding secondary indexes, see [Secondary Indexes](schema-design-indexes.html).
 
 ## What's next?
 
