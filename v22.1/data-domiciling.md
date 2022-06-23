@@ -35,6 +35,10 @@ In the following example, you will go through the process of configuring the [Mo
 
 For the purposes of this example, the data domiciling requirement is to configure a multi-region deployment of the [MovR database](movr.html) such that data for EU-based users, vehicles, etc. is being stored on CockroachDB nodes running in EU localities.
 
+{{site.data.alerts.callout_info}}
+{% include {{page.version.version}}/sql/super-regions-for-domiciling-with-region-survivability.md %}
+{{site.data.alerts.end}}
+
 ### Step 1. Start a simulated multi-region cluster
 
 {% include {{page.version.version}}/sql/start-a-multi-region-demo-cluster.md %}
