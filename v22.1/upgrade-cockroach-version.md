@@ -11,6 +11,13 @@ Because of CockroachDB's [multi-active availability](multi-active-availability.h
 
 ## Step 1. Verify that you can upgrade
 
+Run [`cockroach sql`](cockroach-sql.html) against any node in the cluster to open the SQL shell. Then check your current cluster version:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> SHOW CLUSTER SETTING version;
+~~~
+
 To upgrade to a new version, you must first be on a production [release](../releases/) of the previous version. The release does not need to be the latest production release of the previous version, but it **must be a production release** and not a testing release (alpha/beta).
 
 Therefore, to upgrade to {{ page.version.version }}:
@@ -61,9 +68,9 @@ By default, after all nodes are running the new version, the upgrade process wil
 
 1. [Upgrade to {{ previous_version }}](../{{ previous_version }}/upgrade-cockroach-version.html), if you haven't already.
 
-2. Start the [`cockroach sql`](cockroach-sql.html) shell against any node in the cluster.
+1. Start the [`cockroach sql`](cockroach-sql.html) shell against any node in the cluster.
 
-3. Set the `cluster.preserve_downgrade_option` [cluster setting](cluster-settings.html):
+1. Set the `cluster.preserve_downgrade_option` [cluster setting](cluster-settings.html):
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -198,9 +205,9 @@ If you disabled auto-finalization in [step 3](#step-3-decide-how-the-upgrade-wil
 
 Once you are satisfied with the new version:
 
-1. Start the [`cockroach sql`](cockroach-sql.html) shell against any node in the cluster.
+1. Run [`cockroach sql`](cockroach-sql.html) against any node in the cluster to open the SQL shell.
 
-2. Re-enable auto-finalization:
+1. Re-enable auto-finalization:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -211,18 +218,26 @@ Once you are satisfied with the new version:
     This statement can take up to a minute to complete, depending on the amount of data in the cluster, as it kicks off various internal maintenance and migration tasks. During this time, the cluster will experience a small amount of additional load.
     {{site.data.alerts.end}}
 
+1. Check the cluster version to confirm that the finalize step has completed:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    > SHOW CLUSTER SETTING version;
+    ~~~
+
 ## Troubleshooting
 
 After the upgrade has finalized (whether manually or automatically), it is no longer possible to downgrade to the previous release. If you are experiencing problems, we therefore recommend that you:
 
 1. Run the [`cockroach debug zip`](cockroach-debug-zip.html) command against any node in the cluster to capture your cluster's state.
 
-2. [Reach out for support](support-resources.html) from Cockroach Labs, sharing your debug zip.
+1. [Reach out for support](support-resources.html) from Cockroach Labs, sharing your debug zip.
 
 In the event of catastrophic failure or corruption, the only option will be to start a new cluster using the old binary and then restore from one of the backups created prior to performing the upgrade.
 
 ## See also
 
+- [Release Support Policy](../releases/release-support-policy.html)
 - [View Node Details](cockroach-node.html)
 - [Collect Debug Information](cockroach-debug-zip.html)
 - [View Version Details](cockroach-version.html)
