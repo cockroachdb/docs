@@ -582,11 +582,11 @@ $ cockroach sql \
 (1 row)
 ~~~
 
-Note that none of the tables that you have created thus far have secondary indexes. For guidance on adding secondary indexes, see at [Add Secondary Indexes](schema-design-indexes.html).
+Note that none of the tables that you have created thus far have secondary indexes. For guidance on adding secondary indexes, see at [Secondary Indexes](schema-design-indexes.html).
 
 ## What's next?
 
-- [Add Secondary Indexes](schema-design-indexes.html)
+- [Secondary Indexes](schema-design-indexes.html)
 - [Online Schema Changes](online-schema-changes.html)
 
 You might also be interested in the following pages:
@@ -597,7 +597,7 @@ You might also be interested in the following pages:
 - [Data Types](data-types.html)
 - [`PRIMARY KEY`](primary-key.html)
 - [Constraints](constraints.html)
-- [Cockroach Commands](cockroach-commands.html)
+- [`cockroach` Commands Overview](cockroach-commands.html)
 - [Create a User-defined Schema](schema-design-schema.html)
 - [Create a Database](schema-design-database.html)
 - [Schema Design Overview](schema-design-overview.html)

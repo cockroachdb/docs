@@ -276,7 +276,7 @@ It's likely that you will need to update your database schema at some point. For
 ## What's next?
 
 - [Change and Remove Objects in a Database Schema](schema-design-update.html)
-- Read about [how schema changes work](online-schema-changes.html)
+- [Online Schema Changes](online-schema-changes.html)
 - [Insert Data](schema-design-indexes.html)
 - [Query Data](online-schema-changes.html)
 
@@ -290,6 +290,14 @@ You might also be interested in the following pages:
 - [Index Spatial Data](spatial-indexes.html)
 - [Cockroach Commands](cockroach-commands.html)
 - [Create a User-defined Schema](schema-design-schema.html)
+- [Partial Indexes](partial-indexes.html)
+- [Hash-sharded Indexes](hash-sharded-indexes.html)
+- [Generalized Inverted Indexes](inverted-indexes.html)
+- [Expression Indexes](expression-indexes.html)
+- [Spatial Indexes](spatial-indexes.html)
+- [`cockroach` Commands Overview](cockroach-commands.html)
+- [Database Schemas](schema-design-schema.html)
 - [Create a Database](schema-design-database.html)
 - [Schema Design Overview](schema-design-overview.html)
+- [Create a Table](schema-design-table.html)
 - [CockroachDB naming hierarchy](sql-name-resolution.html#naming-hierarchy)

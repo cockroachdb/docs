@@ -614,7 +614,7 @@ specified type. An error is reported if the conversion is invalid.
 
 For example: `CAST(now() AS DATE)`
 
-Note that in many cases a type annotation is preferrable to a type
+Note that in many cases a type annotation is preferable to a type
 coercion. See [type annotations](#explicitly-typed-expressions) for more
 details.
 
