@@ -183,11 +183,11 @@
           "title": "Secure CockroachDB Cloud Clusters",
           "items": [
             {
-              "title": "Customer Managed Encryption Keys (CMEK) for CockroachDB Dedicated",
+              "title": "Customer-Managed Encryption Keys (CMEK) for CockroachDB Dedicated",
               "urls": [],
               "items": [
                 {
-                  "title": "Managing Customer Managed Encryption Keys (CMEK) for CockroachDB Dedicated",
+                  "title": "Managing Customer-Managed Encryption Keys (CMEK) for CockroachDB Dedicated",
                   "urls": [
                     "/cockroachcloud/managing-cmek.html"
                   ]
@@ -205,7 +205,7 @@
                   ]
                 },
                 {
-                  "title": "Customer Managed Encryption Keys (CMEK) Frequently Asked Questions (FAQ)",
+                  "title": "Customer-Managed Encryption Keys (CMEK) Frequently Asked Questions (FAQ)",
                   "urls": [
                     "/cockroachcloud/cmek-faq.html"
                   ]
