@@ -1,4 +1,4 @@
-get-the-cluster-connection-string---
+---
 title: Estimate Serverless Usage with MovR
 summary: Run the MovR sample application to estimate RU usage in CockroachDB Serverless.
 toc: true
@@ -6,11 +6,11 @@ referral_id: docs_serverless_movr
 docs_area: get_started
 ---
 
-This tutorial shows you how to initialize and run the MovR workload on a {{ site.data.products.serverless }} cluster, then use the Request Unit consumption data to estimate a sufficient budget for the MovR workload.
+This tutorial shows you how to initialize and run the [MovR](../{{site.versions["stable"]}}/movr.html) workload on a {{ site.data.products.serverless }} cluster, then use the [Request Unit](serverless-faqs.html#what-is-a-request-unit) consumption data to estimate a sufficient budget for the MovR workload.
 
 ## Overview
 
-MovR is a fictional company that offers users a platform for sharing vehicles, like scooters, bicycles, and skateboards, in select cities across the United States and Europe. The MovR team wants to use {{ site.data.products.serverless }} to run their high-growth, variable workload. They decide to test out a sample workload to see how it will perform and how much it will cost to run.
+[MovR](../{{site.versions["stable"]}}/movr.html) is a fictional company that offers users a platform for sharing vehicles, like scooters, bicycles, and skateboards, in select cities across the United States and Europe. The MovR team wants to use {{ site.data.products.serverless }} to run their high-growth, variable workload. They decide to test out a sample workload to see how it will perform and how much it will cost to run.
 
 ## Before you begin
 
@@ -19,7 +19,7 @@ MovR is a fictional company that offers users a platform for sharing vehicles, l
 
 ## Step 1. Get the cluster connection string
 
-1. On the cluster's **Overview** page, click **Connect**.
+1. On the cluster's [**Overview** page](cluster-overview-page.html), click **Connect**.
 1. Select **General connection string** from the **Select option** dropdown.
 1. Open the **General connection string** section, then copy the connection string provided and save it in a secure location.
 
@@ -37,12 +37,12 @@ MovR is a fictional company that offers users a platform for sharing vehicles, l
       - `<username>` is the SQL user. By default, this is your {{ site.data.products.db }} account username.
       - `<password>` is the password for the SQL user. The password will be shown only once in the **Connect to cluster** dialog after creating the cluster.
       - `<serverless-host>` is the hostname of the {{ site.data.products.serverless }} cluster.
-      - `<routing-id>` identifies your tenant cluster on a [multi-tenant host](https://www.cockroachlabs.com/docs/cockroachcloud/architecture.html#architecture). For example, `funny-skunk-123`.
+      - `<routing-id>` identifies your tenant cluster on a [multi-tenant host](architecture.html#architecture). For example, `funny-skunk-123`.
 
 1. In the SQL shell, create the `movr` database:
 
     {% include copy-clipboard.html %}
-    ~~~ shell
+    ~~~ sql
     CREATE DATABASE movr;
     ~~~
   
@@ -52,7 +52,7 @@ MovR is a fictional company that offers users a platform for sharing vehicles, l
 
 ## Step 3. Load the `movr` workload
 
-Exit the SQL shell and load the `movr` dataset using the new connection string:
+Exit the SQL shell and [load the `movr` dataset](../{{site.versions["stable"]}}/cockroach-workload.html#movr-workload) using the new connection string:
 
   {% include copy-clipboard.html %}
   ~~~ shell
@@ -107,13 +107,13 @@ Run the `movr` workload for 1 minute using the same SQL connection string as bef
 
 1. In the **Usage this month** section, note the number of RUs your cluster used. You can also see the **Request Units** graph for a breakdown of how many RUs per second you were using over the last minute.
 
-1. Multiply your usage over one minute by the number of minutes in a month (43800) to estimate how many RUs the workload would use in a month. For example, if you used 1800 RUs: 1800 RUs/min * 43800 min = 78,840,000 RUs.
+1. Multiply your usage over one minute by the number of minutes in a month (60 mins/hr * 24 hrs/day * 31 days/month = 44640 mins/month) to estimate how many RUs the workload would use in a month. For example, if you used 1800 RUs: 1800 RUs/min * 44640 mins/month = 80,352,000 RUs/month. The actual usage will vary based on the variability of the workload and the number of days in the month.
 
-1. Calculate your budget. The workload is estimated to use about 79 million RUs per month, and you are given up to 250M free RUs per month, so the free {{ site.data.products.serverless }} offering should be sufficient for your usage.
+1. Calculate your budget. The workload is estimated to use about 80 million RUs per month, and you are given up to 250M free RUs per month, so the free {{ site.data.products.serverless }} offering should be sufficient for your usage.
 
 ## Next steps
 
-The MovR team can monitor their usage in the {{ site.data.products.db }} Console, and they will receive email alerts when the cluster approaches 50%, 75%, and 100% of its spend limit. If their workload grows and they reach the limits of the {{ site.data.products.serverless }} free offering, they can then set a spend limit.
+The MovR team can monitor their usage in the {{ site.data.products.db }} Console, and they will receive [email alerts](alerts-page.html#configure-alerts) when the cluster approaches 50%, 75%, and 100% of its spend limit. If their workload grows and they reach the limits of the {{ site.data.products.serverless }} free offering, they can then [set a spend limit](serverless-cluster-management.html#edit-your-spend-limit).
 
 To estimate an actual budget for your cluster, you should run your real workload and gather usage data. You can always [edit your spend limit](serverless-cluster-management.html) if your initial estimate turns out to be inaccurate.
 
