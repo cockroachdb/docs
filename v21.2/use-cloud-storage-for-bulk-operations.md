@@ -237,9 +237,9 @@ Operation                   | Permission                   | Description
 ----------------------------+------------------------------+---------------------------------------------------
 [Backup](backup.html)       | Write<br>Get<br>List<br>Delete | Write/Get: Backups write the backup data to the storage bucket. During a backup job, a `BACKUP CHECKPOINT` file will be written that tracks the progress of the backup. Should the backup resume after a [pause](pause-job.html), it will read the checkpoint file to find a suitable resume point. This can include overwriting backup work that had happened before the pause.<br> List: Backups need list access to the files already in the bucket. If the backup is paused, or there is a retryable error, the backup will read the `BACKUP CHECKPOINT` file.<br> Delete: Backups may delete files and progress during the job after a pause in order to resume the job from a certain point.
 [Restore](restore.html)     | List<br><br>Get                    | List: During a restore job, it is necessary to pass the backup's directory. This contains a manifest file that describes the backup's metadata and data. Restores require access to read these files from the storage bucket to process the backup correctly. <br> Get: Restores need access to retrieve files from the backup.
-[Import](import.html)       | Get                          | Imports pull the requested file(s) from the storage bucket.                   
+[Import](import.html)       | Get                          | Imports read the requested file(s) from the storage bucket.                   
 [Export](export.html)       | Write                        | Exports need write access to the storage bucket to create individual export file(s) from the exported data.
-[Enterprise changefeeds](create-changefeed.html)  | Write  | Changefeeds will write messages files to the storage bucket as it emits row changes.
+[Enterprise changefeeds](create-changefeed.html)  | Write  | Changefeeds will write files to the storage bucket that contain row changes and resolved timestamps.
 
 <div class="filters clearfix">
   <button class="filter-button" data-scope="s3">Amazon S3</button>
@@ -252,7 +252,7 @@ These [actions](https://docs.aws.amazon.com/AmazonS3/latest/API/API_Operations_A
 
 Operation    | S3 permission                                                                          
 -------------+----------------------------------------------------------------------------------
-Backup       | `s3:PutObject`, `s3:ListBucket`, `s3:DeleteObject`, `s3:GetObject`
+Backup       | `s3:GetObject`, `s3:PutObject`, `s3:ListBucket`, `s3:DeleteObject`
 Restore      | `s3:GetObject`, `s3:ListBucket`     
 Import       | `s3:GetObject`                                             
 Export       | `s3:PutObject`

@@ -235,11 +235,11 @@ This table outlines the actions that each operation performs against the storage
 
 Operation                   | Permission                   | Description                                                                     
 ----------------------------+------------------------------+---------------------------------------------------
-[Backup](backup.html)       | Write<br>List                  | Write: Backups write the backup data to the bucket/container. During a backup job, a `BACKUP CHECKPOINT` file will be written that tracks the progress of the backup.<br> Read: Backups need list access to the files already in the bucket. If the backup is [paused](pause-job.html), or there is a retryable error, the backup will read the `BACKUP CHECKPOINT` file.
+[Backup](backup.html)       | Write<br>List                  | Write: Backups write the backup data to the bucket/container. During a backup job, a `BACKUP CHECKPOINT` file will be written that tracks the progress of the backup.<br> List: Backups need list access to the files already in the bucket. If the backup is [paused](pause-job.html), or there is a retryable error, the backup will read the `BACKUP CHECKPOINT` file.
 [Restore](restore.html)     | List<br><br>Get                    | List: During a restore job, it is necessary to pass the backup's directory. This contains a manifest file that describes the backup's metadata and data. Restores require access to read these files from the storage bucket to process the backup correctly. <br> Get: Restores need access to retrieve files from the backup.
-[Import](import.html)       | Get                          | Imports pull the requested file(s) from the storage bucket.                      
+[Import](import.html)       | Get                          | Imports read the requested file(s) from the storage bucket.                      
 [Export](export.html)       | Write                        | Exports need write access to the storage bucket to create individual export file(s) from the exported data.
-[Enterprise changefeeds](create-changefeed.html)  | Write  | Changefeeds will write messages files to the storage bucket as it emits row changes.
+[Enterprise changefeeds](create-changefeed.html)  | Write  | Changefeeds will write files to the storage bucket that contain row changes and resolved timestamps.
 
 <div class="filters clearfix">
   <button class="filter-button" data-scope="s3">Amazon S3</button>
