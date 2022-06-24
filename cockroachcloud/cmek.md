@@ -94,7 +94,7 @@ Going forward:
 If the CMEK key is destroyed, the cluster's data can't be recovered or restored from a managed backup in {{ site.data.products.db }} or from a manual backup to the same cluster. It may be possible to restore a manual backup to a new cluster. 
 {{site.data.alerts.end}}
 
-## Backing up and restoring to a cluster with CMEK
+## Backup and restore operations on a cluster with CMEK
 
 This section describes how enabling CMEK changes backup and restore operations on a cluster.
 
