@@ -12,14 +12,16 @@ jobs:
   add-external-label:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions-ecosystem/action-add-labels@v1
+      - name: Add label
+        uses: actions-ecosystem/action-add-labels@v1
         with:
           labels: O-external
 
   assign-reviewer:
     runs-on: ubuntu-latest
     steps:
-      - uses: hkusu/review-assign-action@v1
+      - name: Post comment
+        uses: hkusu/review-assign-action@v1
         with:
           assignees: ${{ github.actor }} # assign pull request author
           reviewers: docs-ext-pr-reviewers # assign docs-ext-pr-reviewers as reviewer
