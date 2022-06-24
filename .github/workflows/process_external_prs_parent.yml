@@ -1,0 +1,33 @@
+name: Process External PRs - Parent
+
+on:
+  schedule:
+    - cron: '0 22 * * *'
+
+jobs:
+  check-membership:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check cockroachdb membership
+        id: membership-check
+        env:
+          GITHUB_TOKEN: ${{ secrets.TOKEN_FOR_ORG_MEMBERSHIP }}
+        run: |
+          openprs=`curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${GITHUB_TOKEN}" https://api.github.com/search/issues?q=repo:cockroachdb/docs+is:pr+is:open+-label:O-external`
+          echo ::set-output name=extcont::$extcont
+      - name: Find Comment
+        uses: peter-evans/find-comment@v1
+        id: find-comment
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          comment-author: 'Cockroach Labs'
+          body-includes: Files changed
+
+      - name: Create comment
+        uses: peter-evans/create-or-update-comment@v1
+        with:
+          comment-id: ${{ steps.find-comment.outputs.comment-id }}
+          issue-number: ${{ github.event.pull_request.number }}
+          edit-mode: replace
+          body: |
+            <h3>contents: ${{ steps.membership-check.outputs.extcont }} ${{ github.event.pull_request.user.login }} new</h3>
