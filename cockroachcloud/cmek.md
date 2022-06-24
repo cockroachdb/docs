@@ -28,26 +28,16 @@ This article describes how CMEK works in {{ site.data.products.dedicated }} clus
 
 This section describes some of the ways that CMEK can help you protect your data and meet business and regulatory requirements, even when you don't own the underlying infrastructure that hosts your data.
 
-- **Separation of concerns**: You can delegate management of your CMEK keys to a specialized group within your organization, such as a security engineering team, without providing them with access to your {{ site.data.products.dedicated }} clusters.
-
-- **Responsiveness to security events**: As part of the investigation of a security incident, you can temporarily and reversibly disable access to data in the cluster by revoking the cluster's access to use the CMEK key. When the investigation has concluded, you can reinstate the cluster's access to the CMEK key.
-
 - **Enforcement of data retention policies**: To ensure that a cluster's data is permanently inaccessible, you can destroy the CMEK key or keys that protect its data.
+    {{site.data.alerts.callout_danger}}
+    Keep these points in mind before destroying a CMEK key:
 
-  {{site.data.alerts.callout_danger}}
-  Keep these points in mind before destroying a CMEK key:
-
-  - If a CMEK key is destroyed, the cluster's data can't be recovered by you or by {{ site.data.products.db }}, even by restoring from a {{ site.data.products.db }}-managed backup. Consider disabling the CMEK key initially instead, so you can restore it if disabling it leads to unexpected results. To take or restore from an encrypted backup using database commands, visit [Take and Restore Encrypted Backups](https://www.cockroachlabs.com/docs/stable/take-and-restore-encrypted-backups.html).
-
-  - To protect against inadvertent data loss, your KMS platform may impose a waiting period before a key is permanently deleted. Check the documentation for your KMS platform for details about how long before a key deletion is permanent and irreversible.
-  {{site.data.alerts.end}}
-
+    <ul><li><p>If a CMEK key is destroyed, the cluster's data can't be recovered by you or by {{ site.data.products.db }}, even by restoring from a {{ site.data.products.db }}-managed backup. Consider disabling the CMEK key initially instead, so you can restore it if disabling it leads to unexpected results. To take or restore from an encrypted backup using database commands, visit [Take and Restore Encrypted Backups](https://www.cockroachlabs.com/docs/stable/take-and-restore-encrypted-backups.html).</p></li><li><p>To protect against inadvertent data loss, your KMS platform may impose a waiting period before a key is permanently deleted. Check the documentation for your KMS platform for details about how long before a key deletion is permanent and irreversible.</p></li></ul>
+    {{site.data.alerts.end}}
 - **Enforcement of data domiciling and locality requirements**: In a multi-region cluster, you can confine an individual database to a single region or multiple regions. For more information and limitations, see [Data Domiciling with CockroachDB](/docs/{{site.versions["stable"]}}/data-domiciling.html). When you enable CMEK on a multi-region cluster, you can optionally assign a separate CMEK key to each region, or use the same CMEK key for multiple related regions.
-
 - **Enforcement of encryption requirements**: With CMEK, you have control the CMEK key's encryption strength. The CMEK key's size is determined by what your KMS provider supports.
 
     You can use your KMS platform's controls to configure the regions where the CMEK key is available, enable automatic rotation schedules for CMEK keys, and view audit logs that show each time the CMEK key is used by {{ site.data.products.db }}. {{ site.data.products.db }} does not need any visibility into these details.
-
 - **Infrastructure flexibility**: If your clusters are deployed on a different IAAS platform provider from where you manage your keys, or if your CMEK keys are stored in multiple KMS systems or tenants, you can use Hashicorp Vault Key Management Secrets Engine to give your clusters access to your CMEK keys, as long as the keys are stored in AWS KMS or GCP KMS.
 
 The following example shows some of the ways that CMEK can help you meet business and regulatory requirements.
