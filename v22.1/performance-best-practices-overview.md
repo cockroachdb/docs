@@ -377,7 +377,7 @@ Transactions that operate on the _same index key values_ (specifically, that ope
 Transaction contention occurs when the following three conditions are met:
 
 - There are multiple concurrent transactions or statements (sent by multiple clients connected simultaneously to a single CockroachDB cluster).
-- They operate on table rows with the _same index key values_ (either on [primary keys](primary-key.html) or secondary [indexes](indexes.html).
+- They operate on table rows with the _same index key values_ (either on [primary keys](primary-key.html) or secondary [indexes](indexes.html)).
 - At least one of the transactions modify the data.
 
 Transactions that experience contention typically show delays in completion or restarts. The possibility of transaction restarts requires clients to implement [transaction retries](transactions.html#client-side-intervention).
