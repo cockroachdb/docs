@@ -45,13 +45,6 @@ MovR is a fictional company that offers users a platform for sharing vehicles, l
     ~~~ shell
     CREATE DATABASE movr;
     ~~~
-
-1. Exit the SQL shell:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    quit
-    ~~~
   
 1. Return to the **Connect to cluster** dialog from [Step 1](#step-1-set-up-your-cluster-connection) and select `movr` from the **Database** dropdown.
 
@@ -59,7 +52,7 @@ MovR is a fictional company that offers users a platform for sharing vehicles, l
 
 ## Step 3. Load the `movr` workload
 
-Load the `movr` dataset using the new connection string:
+Exit the SQL shell and load the `movr` dataset using the new connection string:
 
   {% include copy-clipboard.html %}
   ~~~ shell
