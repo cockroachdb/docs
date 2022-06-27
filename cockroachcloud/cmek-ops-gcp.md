@@ -101,8 +101,8 @@ Here we will create a cross-tenant service account that can be temporarily assum
 	1. Click **+ Create service account**.
 	
 1. Authorize {{ site.data.products.dedicated }}'s GCP project to use the service account (making it *cross-tenant*).
-	1. Click your newly created service account's email address to visit its details page.
-	1. Select the **PERMISSIONS** tab and click **ADD**.
+	1. Click your newly-created service account's email address to visit its details page.
+	1. Select the **PERMISSIONS** tab and click **GRANT ACCESS**.
 	1. For **New principals**, enter the service account ID for the {{ site.data.products.dedicated }}-managed service account to which you will grant access to this service account.
 		The service account ID takes the following format:
 		`crl-kms-user-{CLUSTER_ID}@{PROJECT_ID}.iam.gserviceaccount.com`
@@ -139,21 +139,12 @@ Here we will create a cross-tenant service account that can be temporarily assum
 
 1. Provision a GCP service account for Vault to use to create your CMEK key.
 
-	1. Visit the [GCP IAM roles page](https://console.cloud.google.com/iam-admin/roles) and create a new role called `cmek-vault-role`, adding the required permissions specified in the [Vault GCP-KMS documentation](https://learn.hashicorp.com/tutorials/vault/key-management-secrets-engine-gcp-cloud-kms?in=vault/key-management#configure-cloud-kms).
+	1. Visit the [GCP IAM roles page](https://console.cloud.google.com/iam-admin/roles) and create a new role called `cmek-vault-role`.
 
-!!! NO there's a missing permission here! get it from the role 
-```
-🦖  ./vault write keymgmt/kms/gcpckms/key/crdb-cmek-vault \
-            purpose="encrypt,decrypt" \
-            protection="hsm"
-Error writing data to keymgmt/kms/gcpckms/key/crdb-cmek-vault: Error making API request.
-
-URL: PUT http://127.0.0.1:8200/v1/keymgmt/kms/gcpckms/key/crdb-cmek-vault
-Code: 500. Errors:
-
-* 1 error occurred:
-	* rpc error: code = PermissionDenied desc = Permission 'cloudkms.importJobs.useToImport' denied on resource 'projects/noobtest123/locations/global/keyRings/theonetrue/importJobs/cde65937-3026-26af-5efa-214337ed3d0b' (or it may not exist).
-```
+	1. Add the required permissions specified in the [Vault GCP-KMS documentation](https://learn.hashicorp.com/tutorials/vault/key-management-secrets-engine-gcp-cloud-kms?in=vault/key-management#configure-cloud-kms).
+		{{site.data.alerts.callout_success}}
+		You may need to add an additional permission `cloudkms.importJobs.useToImport` not mentioned in the Vault documentation.
+		{{site.data.alerts.end}}
 
 	1. Visit the [GCP IAM service accounts page](https://console.cloud.google.com/iam-admin/serviceaccounts) and create a service account, called `cmek-vault-agent`.
 
@@ -221,7 +212,7 @@ Code: 500. Errors:
 	Success! Data written to: keymgmt/key/aes256-gcm96
 	```
 
-1. Propagate the key to your KMS service
+1. Propagate the key to your KMS service.
 
 	{% include_cached copy-clipboard.html %}
 	```shell

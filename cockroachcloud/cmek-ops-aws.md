@@ -17,7 +17,7 @@ This is part of the larger process of [Enabling CMEK for a {{ site.data.products
 	- By setting up a Vault KMS secrets engine with access to AWS KMS, in order to leverage the security advantages of Vault's additional layer of abstraction.
 
 {{site.data.alerts.callout_info}}
-For multi-region clusters, you must provide a key and IAM role combination per region. You can provide the same key for all your cluster regions, a different key per cluster region, or any mapping of keys to regions you may choose. It does not matter if the key is a single- or multi-region key.
+For multi-region clusters, you must provide a key and IAM role combination per region. You can provide the same key for all your cluster regions, a different key per region, or any mapping of keys to regions you may choose. It does not matter if the key is a single- or multi-region key.
 {{site.data.alerts.end}}
 
 ## Step 1. Provision the cross-account IAM role
@@ -73,12 +73,12 @@ You can create the CMEK key two ways:
 1. For **Key type**, specify **Symmetric Key**.
 1. For **Key usage**, specify **Encrypt and decrypt**.
 1. Under **Advanced options**, choose **KMS** for **Key material**.
-1. Select whether you will use your key for a single region or a multi-region cluster.
-1. Give the key a suitable name, or **alias**.
+1. Select single region or a multi-region key.
+1. Give the key a suitable name, or **alias**. Note that this cannot be changed.
 1. Set the permissions for your key with the `crdb-cmek-kms` IAM policy provided in the [Appendix](#appendix-iam-policy-for-the-cmek-key).
 1. Finish creating the key.
 
-After you have provisioned the IAM role and KMS key for your CockroachDB cluster's CMEK, return to [Enabling CMEK for a {{ site.data.products.dedicated }} cluster](managing-cmek.html#step-4-activate-cmek-for-your-cockroachdb-dedicated-cluster).
+After you have provisioned the cross-account IAM role and CMEK key for your CockroachDB cluster's CMEK, return to [Enabling CMEK for a {{ site.data.products.dedicated }} cluster](managing-cmek.html#step-4-activate-cmek-for-your-cockroachdb-dedicated-cluster).
 
 ### Option B: Use the Vault AWS-KMS secrets engine to create the CMEK key
 
