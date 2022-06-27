@@ -130,7 +130,7 @@ After you have provisioned the cross-account IAM role and CMEK key for your Cock
 	Success! Data written to: keymgmt/key/aes256-gcm96
 	~~~
 
-1. Propogate the key to your KMS service
+1. Propagate the key to your KMS service
 
 	{% include_cached copy-clipboard.html %}
 	~~~shell

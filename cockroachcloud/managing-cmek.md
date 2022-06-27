@@ -70,7 +70,7 @@ Follow the instructions depending on your cloud provider:
 
 ### Step 4. Activate CMEK for your {{ site.data.products.dedicated }} Cluster
 
-Activate CMEK with a call to the clusters CMEK endpoint, using the cloud-specific CMEK configuration manifest you built in [Step 3. Provision IAM and KMS in your Cloud](#provision-iam-and-kms-in-your-cloud).
+Activate CMEK with a call to the clusters CMEK endpoint, using the cloud-specific CMEK configuration manifest you built in [Step 3. Provision IAM and KMS in your Cloud](#step-3-provision-iam-and-kms-in-your-cloud).
 
 See the [API specification](../api/cloud/v1.html#operation/CockroachCloud_EnableCMEK).
 
