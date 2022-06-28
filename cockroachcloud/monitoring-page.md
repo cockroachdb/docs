@@ -19,8 +19,10 @@ The [{{ site.data.products.dedicated }} integration for Datadog](https://docs.da
 To set up Datadog monitoring with {{ site.data.products.dedicated }}, your Datadog account must be associated with a [Datadog organization](https://docs.datadoghq.com/account_management/#organizations).
 
 {{site.data.alerts.callout_success}}
-For more information about using Datadog, see the [Datadog documentation](https://docs.datadoghq.com/).
+Enabling the Datadog integration on your {{ site.data.products.dedicated }} cluster will apply additional charges to your _Datadog_ bill. Your {{ site.data.products.dedicated }} bill is unchanged.
 {{site.data.alerts.end}}
+
+For more information about using Datadog, see the [Datadog documentation](https://docs.datadoghq.com/).
 
 ### Enable integration
 
