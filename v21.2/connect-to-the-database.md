@@ -381,7 +381,7 @@ AppDataSource.initialize()
   });
 ~~~
 
-For more information about connecting with TypeORM, see the [official TypeORM documentation](https://typeorm.io/#/connection).
+For more information about connecting with TypeORM, see the [official TypeORM documentation](https://typeorm.io/#/).
 
 ## Connection parameters
 
@@ -493,7 +493,7 @@ For more information about connecting with Psycopg, see the [official Psycopg do
 
 <div class="filter-content" markdown="1" data-scope="sqlalchemy">
 
-To connect to CockroachDB with [SQLAlchemy](http://docs.sqlalchemy.org/en/latest), [create an `Engine` object](https://docs.sqlalchemy.org/en/14/core/engines.html) by passing the connection string to the `create_engine` function.
+To connect to CockroachDB with [SQLAlchemy](http://docs.sqlalchemy.org/en/latest/), [create an `Engine` object](https://docs.sqlalchemy.org/en/14/core/engines.html) by passing the connection string to the `create_engine` function.
 
 For example:
 
@@ -644,7 +644,7 @@ DATABASES = {
 To connect to CockroachDB with Django, you must install the [CockroachDB Django adapter](https://github.com/cockroachdb/django-cockroachdb).
 {{site.data.alerts.end}}
 
-For more information about connecting with Django, see the [official Django documentation](https://docs.djangoproject.com/en/3.0).
+For more information about connecting with Django, see the [official Django documentation](https://docs.djangoproject.com/en/4.0/).
 
 </div>
 

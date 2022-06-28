@@ -62,16 +62,16 @@ The following table lists all CockroachDB operators from highest to lowest prece
 | 1 | `.` | Member field access operator | binary |
 | 2 | `::` | [Type cast](scalar-expressions.html#explicit-type-coercions) | binary |
 | 3 | `-` | Unary minus | unary (prefix) |
-|  | `~` | Bitwise not | unary (prefix) |
+|   | `~` | Bitwise not | unary (prefix) |
 | 4 | `^` | Exponentiation | binary |
 | 5 | `*` | Multiplication | binary |
-|  | `/` | Division | binary |
-|  | `//` | Floor division | binary |
-|  | `%` | Modulo | binary |
+|   | `/` | Division | binary |
+|   | `//` | Floor division | binary |
+|   | `%` | Modulo | binary |
 | 6 | `+` | Addition | binary |
-|  | `-` | Subtraction | binary |
+|   | `-` | Subtraction | binary |
 | 7 | `<<` | Bitwise left-shift | binary |
-|  | `>>` | Bitwise right-shift | binary |
+|   | `>>` | Bitwise right-shift | binary |
 | 8 | `&` | Bitwise AND | binary |
 | 9 | `#` | Bitwise XOR | binary |
 | 10 | <code>&#124;</code> | Bitwise OR | binary |
@@ -84,27 +84,36 @@ The following table lists all CockroachDB operators from highest to lowest prece
 |    | `<> ANY` / `!= ANY`, `<> SOME` / `!= SOME`, `<> ALL` / `!= ALL` | [Multi-valued] "not equal" comparison | binary |
 |    | `[NOT] LIKE ANY`, `[NOT] LIKE SOME`, `[NOT] LIKE ALL` | [Multi-valued] `LIKE` comparison | binary |
 |    | `[NOT] ILIKE ANY`, `[NOT] ILIKE SOME`, `[NOT] ILIKE ALL` | [Multi-valued] `ILIKE` comparison | binary |
+|    |  `->` | Access a JSONB field, returning a JSONB value. | binary |
+|    |  `->>` | Access a JSONB field, returning a string. | binary |
+|    |  `@>` | Tests whether the left JSONB field contains the right JSONB field. | binary |
+|    |  `>@` | Tests whether the left JSONB field is contained by the right JSONB field. | binary |
+|    |  `#>` | Access a JSONB field at the specified path, returning a JSONB value. | binary |
+|    |  `#>>` | Access a JSONB field at the specified path, returning a string. | binary |
+|    |  `?` | Does the key or element string exist within the JSONB value? | binary |
+|    |  `?&` | Do any of the key or element strings exist within the JSONB value? | binary |
+|    |  `?|` | Do all the key or element strings exist within the JSONB value?  | binary |
 | 12 | `[NOT] BETWEEN` | Value is [not] within the range specified | binary |
-|  | `[NOT] BETWEEN SYMMETRIC` | Like `[NOT] BETWEEN`, but in non-sorted order. For example, whereas `a BETWEEN b AND c` means `b <= a <= c`, `a BETWEEN SYMMETRIC b AND c` means `(b <= a <= c) OR (c <= a <= b)`. | binary |
-|  | `[NOT] IN` | Value is [not] in the set of values specified | binary |
-|  | `[NOT] LIKE` | Matches [or not] LIKE expression, case sensitive  | binary |
-|  | `[NOT] ILIKE` | Matches [or not] LIKE expression, case insensitive | binary |
-|  | `[NOT] SIMILAR` | Matches [or not] SIMILAR TO regular expression | binary |
-|  | `~` | Matches regular expression, case sensitive | binary |
-|  | `!~` | Does not match regular expression, case sensitive | binary |
-|  | `~*` | Matches regular expression, case insensitive | binary |
-|  | `!~*` | Does not match regular expression, case insensitive | binary |
+|    | `[NOT] BETWEEN SYMMETRIC` | Like `[NOT] BETWEEN`, but in non-sorted order. For example, whereas `a BETWEEN b AND c` means `b <= a <= c`, `a BETWEEN SYMMETRIC b AND c` means `(b <= a <= c) OR (c <= a <= b)`. | binary |
+|    | `[NOT] IN` | Value is [not] in the set of values specified | binary |
+|    | `[NOT] LIKE` | Matches [or not] LIKE expression, case sensitive  | binary |
+|    | `[NOT] ILIKE` | Matches [or not] LIKE expression, case insensitive | binary |
+|    | `[NOT] SIMILAR` | Matches [or not] SIMILAR TO regular expression | binary |
+|    | `~` | Matches regular expression, case sensitive | binary |
+|    | `!~` | Does not match regular expression, case sensitive | binary |
+|    | `~*` | Matches regular expression, case insensitive | binary |
+|    | `!~*` | Does not match regular expression, case insensitive | binary |
 | 13 | `=` | Equal | binary |
-|  | `<` | Less than | binary |
-|  | `>` | Greater than | binary |
-|  | `<=` | Less than or equal to | binary |
-|  | `>=` | Greater than or equal to | binary |
-|  | `!=`, `<>` | Not equal | binary |
+|    | `<` | Less than | binary |
+|    | `>` | Greater than | binary |
+|    | `<=` | Less than or equal to | binary |
+|    | `>=` | Greater than or equal to | binary |
+|    | `!=`, `<>` | Not equal | binary |
 | 14 | `IS [DISTINCT FROM]` | Equal, considering `NULL` as value | binary |
-|  | `IS NOT [DISTINCT FROM]` | `a IS NOT b` equivalent to `NOT (a IS b)` | binary |
-|  | `ISNULL`, `IS UNKNOWN` , `NOTNULL`, `IS NOT UNKNOWN` | Equivalent to `IS NULL` / `IS NOT NULL` | unary (postfix) |
-|  | `IS NAN`, `IS NOT NAN` | [Comparison with the floating-point NaN value](scalar-expressions.html#comparison-with-nan) | unary (postfix) |
-|  | `IS OF(...)` | Type predicate | unary (postfix)
+|    | `IS NOT [DISTINCT FROM]` | `a IS NOT b` equivalent to `NOT (a IS b)` | binary |
+|    | `ISNULL`, `IS UNKNOWN` , `NOTNULL`, `IS NOT UNKNOWN` | Equivalent to `IS NULL` / `IS NOT NULL` | unary (postfix) |
+|    | `IS NAN`, `IS NOT NAN` | [Comparison with the floating-point NaN value](scalar-expressions.html#comparison-with-nan) | unary (postfix) |
+|    | `IS OF(...)` | Type predicate | unary (postfix)
 | 15 | `NOT` | [Logical NOT](scalar-expressions.html#logical-operators) | unary |
 | 16 | `AND` | [Logical AND](scalar-expressions.html#logical-operators) | binary |
 | 17 | `OR` | [Logical OR](scalar-expressions.html#logical-operators) | binary |
