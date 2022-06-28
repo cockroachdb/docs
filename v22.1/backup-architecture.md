@@ -5,16 +5,22 @@ toc: true
 docs_area: manage
 ---
 
-CockroachDB backups operate as _jobs_, which are potentially long-running operations that could span multiple SQL sessions. Unlike regular SQL statements, which CockroachDB routes to the [optimizer](cost-based-optimizer.html) for processing, a [`BACKUP`](backup.html) statement will move into a job workflow. A backup job has two phases: [planning](#backup-job-planning) and [execution](#backup-job-execution).
+CockroachDB backups operate as _jobs_, which are potentially long-running operations that could span multiple SQL sessions. Unlike regular SQL statements, which CockroachDB routes to the [optimizer](cost-based-optimizer.html) for processing, a [`BACKUP`](backup.html) statement will move into a job workflow. A backup job has two phases: [planning](#planning) and [execution](#execution).
+
+The [overview](#overview) section on this page provides an outline of a backup job's process and a glossary listing some common terminology around backup jobs.
+
+For a more detailed explanation of the phases, see [Planning](#planning) and [Execution](#execution).
 
 ## Overview
 
-The general workflow of a backup:
+A high-level workflow of a backup:
 
-1. Validate the `BACKUP` statement
-1. Determine the keys in the [storage layer](architecture/storage-layer.html) to back up
-1. Write the backup data (SSTs) to the destination storage location
-1. Write the metadata of the backup job
+1. Validate the `BACKUP` statement.
+1. Determine the keys in the [storage layer](architecture/storage-layer.html) to back up.
+1. Write the backup data to the destination storage location.
+1. Write the metadata of the backup job.
+
+The following diagram illustrates the flow from `BACKUP` statement through to a complete backup in cloud storage:
 
 <img src="{{ 'images/v22.1/backup-overview.png' | relative_url }}" alt="A flow diagram representing the process of a backup job from statement through to backup data stored." style="border:0px solid #eee;max-width:100%" />
 
@@ -22,14 +28,12 @@ The general workflow of a backup:
 
 Term         | Description
 -------------+-----------------------------
-coordinator  | The node that adopts the job and coordinates the distributed work for the backup job.
-job record   | Details of the backup job that are defined in the planning phase of the backup.
-job registry | On each node, this polls the cluster's system jobs table to find adoptable jobs.
-manifest     | A metadata representation of the backup, which is stored with the backup data in the storage location.
+Coordinator  | The node that claims the job and coordinates the distributed work for the backup job.
+Job record   | Details of the backup job that are defined in the planning phase of the backup.
+Job registry | On each node, this polls the cluster's system jobs table to find jobs to claim.
+Manifest     | A metadata representation of the backup, which is stored with the backup data in the storage location.
 
-As we run through how a backup works, we'll use a backup job example that will run on a three-node cluster.
-
-## Backup job planning
+## Planning
 
 A backup job begins with a planning phase that validates the general sense of the proposed backup.
 
@@ -54,39 +58,35 @@ Once the statement has been passed through the planning phase a `job ID` output 
 (1 row)
  ~~~
 
-## Backup job execution
+As soon as the detail of the backup is written to the job record, the planning phase’s transaction will commit and the nodes can claim the backup job.
 
-As soon as the detail of the backup is written to the job record, the planning phase’s transaction will commit and the backup job will then be adoptable by nodes in the cluster.
+Clusters have system tables that are visible to each of their nodes. One of these tables, the `system.jobs` table, is a list of all adoptable jobs. Each row in this table represents a job, which is described by the job record created in the backup's planning phase.
 
-Clusters have system tables that are visible to each of their nodes. One of these tables, the `system.jobs` table, is a list of all adoptable jobs. Each row in this table represents a job, which is described by the job record created in the planning phase.
+Each node contains a _job registry_ that tracks the jobs a node can do and is currently completing. The job registry polls the `system.jobs` table to check if it can claim any of the available job records. The node that claims the job is not necessarily the node that wrote the backup's job record in the first place. 
 
-Each node at startup contains a _job registry_ that tracks the jobs a node can do and what jobs the node is currently completing. The job registry polls the `system.jobs` table to check if it can adopt any of the available job records. The node that claims the job is not necessarily the node that wrote the backup's job record in the first place. 
+In the following diagram, each node has a job registry polling the cluster's `system.jobs` table, which holds job records. The backup job record that was written from the example statement waits for a node to claim it.
 
-In the following diagram, each node has a job registry polling the cluster's `system.jobs` table, which holds job records. The backup job record that was written from the example statement waits for a node to adopt it.
+<img src="{{ 'images/v22.1/backup-job-registry.png' | relative_url }}" alt="Three-node cluster with job registries on each node and the system.jobs table across the cluster" style="border:0px solid #eee;max-width:100%" />
 
-<!--TODO Adapt this diagram to focus on better reflect the text and example. -->
-<img src="{{ 'images/v22.1/backup-job-registry.png' | relative_url }}" alt="Three-node cluster with job registries on each node and the system.jobs table across the cluster" style="border:0px solid #eee;max-width:75%" />
+## Execution
 
-Once one of the nodes has claimed the job, it will take the job record’s information and outline a plan. This node becomes the _coordinator_. In our scenario, **Node 2** becomes the coordinator and start to complete several tasks to start the distributed backup work: 
+Once one of the nodes has claimed the job, it will take the job record’s information and outline a plan. This node becomes the _coordinator_. In our scenario, **Node 2** becomes the coordinator and starts to complete several tasks to initiate the distributed backup work: 
 
 - Test the connection to the storage bucket URL (`'s3://bucket'`).
 - Map out the directory to which the nodes will write.
 - Gather all the leaseholders of the keys to be backed up.
 
-To map out the directory to which the nodes will write, the coordinator identifies the [type](backup-and-restore-overview.html#backup-and-restore-types) of backup. This determines the name resolution of the new (or edited) directory to store the backup files in. For example, if there is a full backup existing in the target storage location, the upcoming backup will be [incremental](take-full-and-incremental-backups.html#incremental-backups) and therefore append to the [full](take-full-and-incremental-backups.html#full-backups) backup.
+To map out the directory to which the nodes will write, the coordinator identifies the [type](backup-and-restore-overview.html#backup-and-restore-types) of backup. This determines the name of the new (or edited) directory to store the backup files in. For example, if there is a full backup existing in the target storage location, the upcoming backup will be [incremental](take-full-and-incremental-backups.html#incremental-backups) and therefore append to the [full](take-full-and-incremental-backups.html#full-backups) backup.
 
 From the cluster, the coordinator will gather all the [leaseholders](architecture/reads-and-writes-overview.html) of the keys that will be part of the backup. The leaseholder is responsible for serving the data from the storage layer because all [writes](architecture/reads-and-writes-overview.html#write-scenario) go through a leaseholder. Since any node in a cluster can become the coordinator and all nodes could be responsible for exporting data during a backup, it is necessary that all nodes can connect to the storage location.
 
-With this information, the coordinator sets up a [DistSQL](architecture/sql-layer.html#distsql) flow with specifications, which will define the distributed work in the job’s execution for each node. Next, the coordinator sends the specifications to the determined nodes and the cluster then begins to process the backup. 
+In the following diagram, **Node 2** and **Node 3** contain the leaseholders for the **R1** and **R2** ranges. Therefore, for the example backup job, these nodes will export the backup data to the specified storage location.
 
-In the following diagram, **node 2** and **node 3** contains the leaseholders for the **R1** and **R2** ranges. Therefore, for the example backup job, these nodes will export the backup data to the specified storage location.
+<img src="{{ 'images/v22.1/backup-processing.png' | relative_url }}" alt="Three-node cluster exporting backup data from the leaseholders" style="border:0px solid #eee;max-width:100%" />
 
-<!--TODO Edit the diagram to match the scenario -->
-<img src="{{ 'images/v22.1/backup-export.png' | relative_url }}" alt="Three-node cluster exporting backup data from the leaseholders" style="border:0px solid #eee;max-width:75%" />
+While processing, the nodes write checkpoint progress to track their backup work. The coordinating node will aggregate the progress data into checkpoint files in the storage bucket. The checkpoint files provide a marker for the backup to resume after a retryable state, such as when it has been paused.
 
-While processing, the nodes write checkpoint progress to track its backup work. The coordinating node will aggregate the progress data into checkpoint files in the storage bucket. The checkpoint files provide a marker for the backup to resume after a retryable state, such as when it has been paused.
-
-The coordinator will begin to write the backup manifest file only after each of the nodes have completed their work. In the previous diagram, **node 2** is exporting the backup data for **R1** as its leaseholder, but this node also exports the backup's metadata as the coordinator.
+The coordinator will begin to write the backup manifest file only after each of the nodes have completed their work. In the diagram, **Node 2** is exporting the backup data for **R1** as its leaseholder as well as exporting the backup's metadata as the coordinator.
 
 The backup manifest file is a metadata representation of everything a backup contains. That is, all the information a [restore](restore.html) job will need to complete successfully. A backup without a manifest file would indicate that the backup did not complete properly and would not be restorable.
 
