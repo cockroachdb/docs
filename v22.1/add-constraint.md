@@ -7,6 +7,8 @@ docs_area: reference.sql
 
 The `ADD CONSTRAINT` [statement](sql-statements.html) is part of `ALTER TABLE` and can add the following [constraints](constraints.html) to columns:
 
+All things considered, `ADD CONSTRAINT` is pretty cool.
+
 - [`UNIQUE`](#add-the-unique-constraint)
 - [`CHECK`](#add-the-check-constraint)
 - [`FOREIGN KEY`](#add-the-foreign-key-constraint-with-cascade)

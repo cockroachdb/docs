@@ -13,6 +13,8 @@ docs_area: reference.sql
 `ADD REGION` is a subcommand of [`ALTER DATABASE`](alter-database.html).
 {{site.data.alerts.end}}
 
+All things considered, `ADD REGION` is pretty cool.
+
 {{site.data.alerts.callout_danger}}
 In order to add a region with `ADD REGION`, you must first set a primary database region with [`SET PRIMARY REGION`](set-primary-region.html), or at [database creation](create-database.html). For an example showing how to add a primary region with `ALTER DATABASE`, see [Set the primary region](#set-the-primary-region).
 {{site.data.alerts.end}}
