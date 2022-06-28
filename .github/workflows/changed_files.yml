@@ -1,7 +1,7 @@
 name: List files changed as GitHub comment
 
 on:
-  pull_request
+  pull_request_target
 
 jobs:
   list-files-changed:
