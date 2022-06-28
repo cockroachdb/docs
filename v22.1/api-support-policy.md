@@ -40,16 +40,18 @@ Stability guarantees do **not** apply to non-programmable and reserved APIs:
 
 The following types of API changes qualify as *backward-incompatible* (or "breaking changes"):
 
-- Removal of an endpoint, SQL statement, [built-in function](functions-and-operators.html#built-in-functions), [cluster setting](cluster-settings.html), or session variable.
-- Addition or removal of a mandatory command-line flag, SQL syntax, or HTTP field.
-- Removal of an optional command-line flag, SQL syntax, or HTTP field.
-- Change in SQL response format.
-- Change in data type, default value, or behavior of a [built-in function](functions-and-operators.html#built-in-functions), [cluster setting](cluster-settings.html), or session variable.
+- Removal of an endpoint, [built-in function](functions-and-operators.html#built-in-functions), [cluster setting](cluster-settings.html), or session variable.
+- Removal of a SQL statement or syntax.
+- Addition or removal of a mandatory command-line flag or HTTP field.
+- Removal of an optional command-line flag or HTTP field.
+- Change in behavior of a [built-in function](functions-and-operators.html#built-in-functions) without fixing a bug or PostgreSQL incompatibility.
+- Removal of possible values in an `ENUM` session variable or [cluster setting](cluster-settings.html).
 - Change to [authorization](security-reference/authorization.html) requirements.
 
 The following types of API changes qualify as *backward-compatible*. This list is not exhaustive.
 
-- Addition of an optional command-line flag, SQL syntax, or HTTP field.
+- Addition of an optional command-line flag or HTTP field.
+- Change in [`cockroach sql`](cockroach-sql.html) shell response format.
 - Removal or change of any functionality documented as Preview or otherwise not fully supported.
 - Deprecation without removal of any functionality.
 - Addition or removal of a metric.
