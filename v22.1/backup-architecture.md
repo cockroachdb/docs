@@ -5,37 +5,26 @@ toc: true
 docs_area: manage
 ---
 
-CockroachDB backups operate as _jobs_, which are potentially long-running operations that could span multiple SQL sessions. Unlike regular SQL statements, which CockroachDB routes to the [optimizer](cost-based-optimizer.html) for processing, a [`BACKUP`](backup.html) statement will move into a job workflow. A backup job has two phases: [planning](#planning) and [execution](#execution).
+CockroachDB backups operate as _jobs_, which are potentially long-running operations that could span multiple SQL sessions. Unlike regular SQL statements, which CockroachDB routes to the [optimizer](cost-based-optimizer.html) for processing, a [`BACKUP`](backup.html) statement will move into a job workflow. A backup job has three phases: [job creation](#job-creation-phase), [resolution](#resolution-phase), and [export data](#export-data).
 
-The [overview](#overview) section on this page provides an outline of a backup job's process and a glossary listing some common terminology around backup jobs.
-
-For a more detailed explanation of the phases, see [Planning](#planning) and [Execution](#execution).
+The [overview](#overview) section on this page provides an outline of a backup job's process. For a more detailed explanation of the process, read the sections following this overview.
 
 ## Overview
 
 A high-level workflow of a backup:
 
-1. Validate the `BACKUP` statement.
-1. Determine the keys in the [storage layer](architecture/storage-layer.html) to back up.
-1. Write the backup data to the destination storage location.
-1. Write the metadata of the backup job.
+1. Validate the parameters of the `BACKUP` statement then write them to a job in the jobs system describing the backup.
+1. Based on the parameters recorded in the job, and any previous backups found in the storage location, determine which keys and time ranges of data in the [storage layer](architecture/storage-layer.html) need to be backed up.
+1. Instruct various nodes in the cluster to each read those keys and write the row data to the backup storage location.
+1. Record any additional metadata about what was backed up to the backup storage location.
 
 The following diagram illustrates the flow from `BACKUP` statement through to a complete backup in cloud storage:
 
-<img src="{{ 'images/v22.1/backup-overview.png' | relative_url }}" alt="A flow diagram representing the process of a backup job from statement through to backup data stored." style="border:0px solid #eee;max-width:100%" />
+<img src="{{ 'images/v22.1/tbackup-overview.png' | relative_url }}" alt="A flow diagram representing the process of a backup job from statement through to backup data stored." style="border:0px solid #eee;max-width:100%" />
 
-### Glossary 
+## Job creation phase 
 
-Term         | Description
--------------+-----------------------------
-Coordinator  | The node that claims the job and coordinates the distributed work for the backup job.
-Job record   | Details of the backup job that are defined in the planning phase of the backup.
-Job registry | On each node, this polls the cluster's system jobs table to find jobs to claim.
-Manifest     | A metadata representation of the backup, which is stored with the backup data in the storage location.
-
-## Planning
-
-A backup job begins with a planning phase that validates the general sense of the proposed backup.
+A backup job begins by validating the general sense of the proposed backup.
 
 Let's take the following statement to start the backup process:
 
@@ -43,54 +32,60 @@ Let's take the following statement to start the backup process:
 BACKUP DATABASE movr INTO 's3://bucket' WITH revision_history;
 ~~~
 
-During planning, CockroachDB will verify the [options](backup.html#options) (e.g., `revision_history`) passed in the `BACKUP` statement and check that the user has the [required privileges](backup.html#required-privileges) to take the backup. The tables are identified along with the set of keys to back up. In this example, the backup will identify all the tables within the `movr` database and note that the `revision_history` option is required.
+This statement is a request for a [full backup](take-full-and-incremental-backups.html#full-backups) of the `movr` database with the `revision_history` [option](backup.html#options).
 
-The ultimate aim of the planning phase is to complete all of these checks and write the detail of what the backup job should complete to a _job record_.
+CockroachDB will verify the options passed in the `BACKUP` statement and check that the user has the [required privileges](backup.html#required-privileges) to take the backup. The tables are identified along with the set of keys to back up. In this example, the backup will identify all the tables within the `movr` database and note that the `revision_history` option is required.
 
-Planning happens within a single transaction in which the job record is written and committed as part of the transaction. As a result, [pausing](pause-job.html) and [canceling](cancel-job.html) a backup is not possible during the planning component since it is not yet a job. 
+The ultimate aim of the job creation phase is to complete all of these checks and write the detail of what the backup job should complete to a _job record_.
 
-Once the statement has been passed through the planning phase a `job ID` output will return, which represents that the job has started executing.
+If a `detached` backup was requested, the `BACKUP` statement is complete as it has created an uncommitted, but otherwise ready-to-run backup job. Without `detached`, the job is committed and the statement wait for the backup job to start, run, and terminate to then return the results.
+ 
+Once the job record is committed, the cluster will try to run the backup job even if a client disconnects or the node handling the `BACKUP` statement terminates. From this point, the backup is a persisted job that any node in the cluster can take over executing to ensure it runs.
 
- ~~~
-        job_id
-----------------------
-  592786066399264769
-(1 row)
- ~~~
+## Resolution phase 
 
-As soon as the detail of the backup is written to the job record, the planning phase’s transaction will commit and the nodes can claim the backup job.
-
-Clusters have system tables that are visible to each of their nodes. One of these tables, the `system.jobs` table, is a list of all adoptable jobs. Each row in this table represents a job, which is described by the job record created in the backup's planning phase.
-
-Each node contains a _job registry_ that tracks the jobs a node can do and is currently completing. The job registry polls the `system.jobs` table to check if it can claim any of the available job records. The node that claims the job is not necessarily the node that wrote the backup's job record in the first place. 
-
-In the following diagram, each node has a job registry polling the cluster's `system.jobs` table, which holds job records. The backup job record that was written from the example statement waits for a node to claim it.
-
-<img src="{{ 'images/v22.1/backup-job-registry.png' | relative_url }}" alt="Three-node cluster with job registries on each node and the system.jobs table across the cluster" style="border:0px solid #eee;max-width:100%" />
-
-## Execution
-
-Once one of the nodes has claimed the job, it will take the job record’s information and outline a plan. This node becomes the _coordinator_. In our scenario, **Node 2** becomes the coordinator and starts to complete several tasks to initiate the distributed backup work: 
+Once one of the nodes has claimed the job from the system job table, it will take the job record’s information and outline a plan. This node becomes the _coordinator_. In our example, **Node 2** becomes the coordinator and starts to complete the following to prepare and resolve the targets for distributed backup work: 
 
 - Test the connection to the storage bucket URL (`'s3://bucket'`).
 - Map out the directory to which the nodes will write.
-- Gather all the leaseholders of the keys to be backed up.
+- Calculate the keys and time range of the backup data.
+- Determine the leaseholder nodes for the keys to backup. 
+- Provide a plan to the leaseholder nodes.
 
-To map out the directory to which the nodes will write, the coordinator identifies the [type](backup-and-restore-overview.html#backup-and-restore-types) of backup. This determines the name of the new (or edited) directory to store the backup files in. For example, if there is a full backup existing in the target storage location, the upcoming backup will be [incremental](take-full-and-incremental-backups.html#incremental-backups) and therefore append to the [full](take-full-and-incremental-backups.html#full-backups) backup.
+To map out the directory to which the nodes will write, the coordinator identifies the [type](backup-and-restore-overview.html#backup-and-restore-types) of backup. This determines the name of the new (or edited) directory to store the backup files in. For example, if there is a full backup existing in the target storage location, the upcoming backup will be [incremental](take-full-and-incremental-backups.html#incremental-backups) and therefore append to the full backup. For more information on how CockroachDB structures backups in storage, see [Backup collections](take-full-and-incremental-backups.html#backup-collections).
 
-From the cluster, the coordinator will gather all the [leaseholders](architecture/reads-and-writes-overview.html) of the keys that will be part of the backup. The leaseholder is responsible for serving the data from the storage layer because all [writes](architecture/reads-and-writes-overview.html#write-scenario) go through a leaseholder. Since any node in a cluster can become the coordinator and all nodes could be responsible for exporting data during a backup, it is necessary that all nodes can connect to the storage location.
+### Key and time range resolution
 
-In the following diagram, **Node 2** and **Node 3** contain the leaseholders for the **R1** and **R2** ranges. Therefore, for the example backup job, these nodes will export the backup data to the specified storage location.
+In this part of the resolution phase, the coordinator will calculate all the necessary spans of keys and their time range that the cluster needs to export for the backup. It divides the key spans based on which node is the range [leaseholder](architecture/reads-and-writes-overview.html) for that key. Each leaseholder node is responsible for:
+
+1. Asking the storage layer for the content of each key.
+1. Receiving the content from the storage layer. 
+1. Writing it to the backup storage location or locality-specific storage location (whichever locality best matches the node). 
+
+Since any node in a cluster can become the coordinator and all nodes could be responsible for exporting data during a backup, it is necessary that all nodes can connect to the backup storage location.
+
+## Export phase 
+
+The backup export phase has two distinct parts:
+
+- [Distributed data exporting](#distributed-data-exporting)
+- [Metadata writing](#metadata-writing)
+
+Once the coordinator has provided a plan to each of the leaseholders that determines the backup data to process, the distributed backup export begins processing.
+
+### Distributed data exporting
+
+In the following diagram, **Node 2** and **Node 3** contain the leaseholders for the **R1** and **R2** ranges. Therefore, for the example backup job, these nodes will export the backup data to the specified storage location. While processing, the nodes write checkpoint progress to track their backup work. The coordinating node will aggregate the progress data into checkpoint files in the storage bucket. The checkpoint files provide a marker for the backup to resume after a retryable state, such as when it has been paused.
 
 <img src="{{ 'images/v22.1/backup-processing.png' | relative_url }}" alt="Three-node cluster exporting backup data from the leaseholders" style="border:0px solid #eee;max-width:100%" />
 
-While processing, the nodes write checkpoint progress to track their backup work. The coordinating node will aggregate the progress data into checkpoint files in the storage bucket. The checkpoint files provide a marker for the backup to resume after a retryable state, such as when it has been paused.
+### Metadata writing
 
-The coordinator will begin to write the backup manifest file only after each of the nodes have completed their work. In the diagram, **Node 2** is exporting the backup data for **R1** as its leaseholder as well as exporting the backup's metadata as the coordinator.
+To conclude the backup job, the coordinator will begin to write the backup metadata files only after each of the nodes have completed their data export work. In the diagram, **Node 2** is exporting the backup data for **R1** as that range's leaseholder; this node also exports the backup's metadata as the coordinator.
 
-The backup manifest file is a metadata representation of everything a backup contains. That is, all the information a [restore](restore.html) job will need to complete successfully. A backup without a manifest file would indicate that the backup did not complete properly and would not be restorable.
+The backup metadata files represent everything a backup contains. That is, all the information a [restore](restore.html) job will need to complete successfully. A backup without metadata files would indicate that the backup did not complete properly and would not be restorable.
 
-With multiple backups complete, the specified storage location will contain a set of backups, which CockroachDB defines as a [_backup collection_](take-full-and-incremental-backups.html#backup-collections).
+With the full backup complete, the specified storage location will contain the backup data and its metadata ready for a potential [restore](restore.html). After subsequent backups of the `movr` database to this storage location, CockroachDB will create a _backup collection_. See [Backup collections](take-full-and-incremental-backups.html#backup-collections) for information on how CockroachDB structure a collection of multiple backups.
 
 ## See also
 
