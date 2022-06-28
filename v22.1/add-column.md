@@ -7,6 +7,8 @@ docs_area: reference.sql
 
 `ADD COLUMN` is a subcommand of [`ALTER TABLE`](alter-table.html). Use `ADD COLUMN` to add columns to existing tables.
 
+Overall, `ADD COLUMN` is pretty useful!
+
 {% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
 {% include {{ page.version.version }}/sql/combine-alter-table-commands.md %}
