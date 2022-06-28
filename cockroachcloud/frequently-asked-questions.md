@@ -180,4 +180,8 @@ The [**{{ site.data.products.db }} Status** page](https://status.cockroachlabs.c
 
 To optimize schema design to achieve your performance goals, we recommend working with our Sales Engineering team before you set up your cluster. You can also read our [SQL Performance Best Practices](../{{site.versions["stable"]}}/performance-best-practices-overview.html) and [Query Performance Optimization](../{{site.versions["stable"]}}/make-queries-fast.html) docs for more information.
 
+### Can I monitor my cluster with third party tools?
+
+Yes, {{ site.data.products.dedicated }} clusters support an integration with Datadog that enables data collection and alerting on a subset of CockroachDB metrics. Enabling Datadog integration on your {{ site.data.products.dedicated }} cluster will apply additional charges to your _Datadog_ bill. See [Monitor with Datadog](monitoring-page.html#monitor-with-datadog) for more information.
+
 If you need additional help, contact [Support](https://support.cockroachlabs.com/hc/en-us).
