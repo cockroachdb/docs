@@ -35,6 +35,10 @@ Both {{ site.data.products.serverless }} and {{ site.data.products.dedicated }} 
 
 [Follower reads](../{{site.versions["stable"]}}/follower-reads.html) are not supported in {{ site.data.products.serverless }} clusters.
 
+## Range management
+
+The [`ALTER TABLE ... SPLIT AT`](../{{site.versions["stable"]}}/split-at.html) and [`ALTER RANGE ... RELOCATE`](../{{site.versions["stable"]}}/alter-range-relocate.html) statements are not supported in {{ site.data.products.serverless }}.
+
 ## Self service upgrades
 
 {{ site.data.products.serverless }} is a fully managed multi-tenant deployment of CockroachDB. Major and minor upgrades of CockroachDB are handled by Cockroach Labs, and [can't be initiated by users](serverless-faqs.html#can-i-upgrade-the-version-of-cockroachdb-my-cockroachdb-serverless-beta-cluster-is-running-on).
