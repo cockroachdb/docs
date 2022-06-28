@@ -147,10 +147,6 @@ The table below lists the experimental SQL functions and operators available in 
 
  Support for [temporary tables](temporary-tables.html), [temporary views](views.html#temporary-views), and [temporary sequences](create-sequence.html#temporary-sequences) is currently experimental in CockroachDB. If you create too many temporary objects in a session, the performance of DDL operations will degrade. Performance limitations could persist long after creating the temporary objects. For more details, see [cockroachdb/cockroach#46260](https://github.com/cockroachdb/cockroach/issues/46260).
 
-## Hash-sharded indexes
-
- CockroachDB supports hash-sharded indexes with the [`USING HASH`](create-index.html#parameters) keywords. Hash-sharded indexes distribute sequential traffic uniformly across ranges, eliminating single-range hot spots and improving write performance on sequentially-keyed indexes at a small cost to read performance. For more information, see [Hash-sharded indexes](hash-sharded-indexes.html).
-
 ## Password authentication without TLS
 
    For deployments where transport security is already handled at the infrastructure level (e.g., IPSec with DMZ), and TLS-based transport security is not possible or not desirable, CockroachDB now supports delegating transport security to the infrastructure with the new experimental flag `--accept-sql-without-tls` for [`cockroach start`](cockroach-start.html#security).
