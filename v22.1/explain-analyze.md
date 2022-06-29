@@ -76,7 +76,7 @@ KV rows read | During scans, the number of rows in the [storage layer](architect
 KV bytes read | During scans, the amount of data read from the [storage layer](architecture/storage-layer.html) during this phase of the statement.
 estimated max memory allocated  | The estimated maximum allocated memory for a statement.
 estimated max sql temp disk usage | The estimated maximum temporary disk usage for a statement.
-MVCC step count (ext/int) | The number of times that the underlying storage iterator stepped forward during the work to serve the operator's reads, including stepping over MVCC keys that were too old for user in a scan.
+MVCC step count (ext/int) | The number of times that the underlying storage iterator stepped forward during the work to serve the operator's reads, including stepping over MVCC keys that could not be used in the scan.
 MVCC seek count (ext/int) | The number of times that the underlying storage iterator jumped (seeked) to a different data location.
 estimated row count | The estimated number of rows affected by this processor according to the statement planner, the percentage of the table the query spans, and when the statistics for the table were last collected.
 table | The table and index used in a scan operation in a statement, in the form `{table name}@{index name}`.
