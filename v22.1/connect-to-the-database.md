@@ -330,7 +330,7 @@ Prisma accepts the following format for CockroachDB connection strings:
 
 {% include_cached copy-clipboard.html %}
 ~~~
-postgresql://<username>:<password>@<host>:<port>/<database>?sslmode=verify-full&options=--cluster%3D<routing-id>&sslrootcert=$HOME/.postgresql/root.crt
+postgresql://<username>:<password>@<host>:<port>/<database>?sslmode=verify-full&options=--cluster%3D<routing-id>
 ~~~
 
 </div>
@@ -353,7 +353,7 @@ postgresql://<username>@<host>:<port>/<database>?sslmode=verify-full&sslrootcert
 
 </div>
 
-For more information about connecting with Prisma, see the [official Prisma documentation](https://www.prisma.io/docs/getting-started/setup-prisma/start-from-scratch/relational-databases-typescript-cockroachdb).
+For more information about connecting with Prisma, see the [official Prisma documentation](https://www.prisma.io/cockroachdb).
 
 </div>
 

@@ -81,7 +81,7 @@ To install the [Prisma ORM](https://prisma.io/):
 $ npm install prisma
 ~~~
 
-For a simple but complete example app, see [Build a Simple CRUD Node.js App with CockroachDB and Prisma](build-a-typescript-app-with-cockroachdb.html).
+For a simple but complete example app, see [Build a Simple CRUD Node.js App with CockroachDB and Prisma](build-a-nodejs-app-with-cockroachdb-prisma.html).
 
 </section>
 
