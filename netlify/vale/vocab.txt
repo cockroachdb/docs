@@ -17,6 +17,8 @@ australiasoutheast
 autocommit
 autogenerates
 autoscaling
+autosummarize
+autovacuum
 avro
 backfilled
 backfilling
@@ -142,9 +144,11 @@ esri
 evgeniy
 expirations
 failover
+fastupdate
 favicons
 fdw
 filepath
+fillfactor
 firewalled
 firewalling
 firouz
@@ -304,6 +308,7 @@ multiregion
 multiset
 multisets
 multiversion
+multixact
 mutex
 mutexes
 mydcos
