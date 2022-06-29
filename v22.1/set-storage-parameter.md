@@ -1,28 +1,43 @@
 ---
 title: SET (storage parameter)
-summary: SET (storage parameter) applies a storage parameter to a table.
+summary: SET (storage parameter) applies a storage parameter to a table or an index after table/index creation.
 toc: true
 docs_area: reference.sql
 ---
 
-The `SET (storage parameter)` [statement](sql-statements.html) sets a storage parameter on a table.
+The `SET (storage parameter)` [statement](sql-statements.html) sets a storage parameter on an existing table or index.
 
 {{site.data.alerts.callout_info}}
-The `SET (storage parameter)` is a subcommand of [`ALTER TABLE`](alter-table.html).
+The `SET (storage parameter)` is a subcommand of [`ALTER TABLE`](alter-table.html) and [`ALTER INDEX`](alter-index.html).
 {{site.data.alerts.end}}
 
 ## Syntax
 
-~~~
-ALTER TABLE {table} SET (storage_parameter);
-~~~
+**alter_table_set_storage_param ::=**
 
-## Parameters
+<div>
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/alter_table_set_storage_param.html %}
+</div>
 
-| Parameter    | Description                                                                                                                                                                                  |
-|--------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `table` | The table to which you are setting the parameter.                                                                                                    |
-| `storage_parameter`   | The `storage_parameter` to apply to the table. See [Examples](#examples) for the available parameters. |
+{% comment %} need alter index diagram here {% endcomment %}
+
+## Command parameters
+
+| Parameter           | Description                                                                                                                |
+|---------------------+----------------------|
+| `table`             | The table to which you are setting the parameter.                                                                                         |
+| `index`             | The index to which you are setting the parameter.                                                                                         |
+| `parameter_name`    | The name of the storage parameter you are changing. See [Storage parameters](#list-of-storage-parameters) for a list of available parameters. |
+
+## List of storage parameters
+
+### Index parameters
+
+{% include {{ page.version.version }}/misc/index-storage-parameters.md %}
+
+### Table parameters
+
+{% include {{ page.version.version }}/misc/table-storage-parameters.md %}
 
 ## Required privileges
 
@@ -82,3 +97,5 @@ This will ensure that the table's data is stored in subsequent backups that you 
 - [Take Full and Incremental Backups](take-full-and-incremental-backups.html)
 - [`BACKUP`](backup.html)
 - [`RESTORE`](restore.html)
+- [`RESET` (storage parameter)](reset-storage-parameter.html)
+- [`WITH` (storage parameter)](with-storage-parameter.html)
