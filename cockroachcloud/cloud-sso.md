@@ -5,16 +5,62 @@ toc: true
 docs_area: manage
 ---
 
-Users may authenticate to the [{{ site.data.products.db }} Console](https://cockroachlabs.cloud) using Single Sign-On (SSO) with GitHub, Google, or Microsoft as identity providers.
+Users may authenticate to the [{{ site.data.products.db }} Console](https://cockroachlabs.cloud) using Single Sign-On (SSO). GitHub, Google, and Microsoft are currently supported as identity providers (IdPs).
 
-Authentication with a centralized identity managed by a dedicated provider offers several security advantages:
+Additionally, [enhanced SSO features are currently available in Private Preview](#private-preview-enhanced-sso-features).
+
+Authentication with a centralized identity managed by a dedicated IdP offers several security advantages:
 
 - All supported SSO providers (Google, Microsoft, and GitHub) support multi-factor authentication (MFA).
 - Administrators avoid having to manage an additional set of credentials and tie those to other identities and credentials. Every additional credential or identity management operation introduces risk as well as costing effort, so minimizing these is doubly advantageous.
 - Administrators can onboard and offboard users quickly and efficiently.
 
-## Frequently Asked Questions (FAQ)
+## Private Preview: Enhanced SSO features
 
+### Autoprovisioning
+
+Org admins would be able to request auto-provisioning setup for their orgs. If enabled, an org admin could share the org-unique sign-in URL with their team members internally, after which new users could sign-up without needing an invite, by using one of the allowed login methods for that org.
+
+### Support for SAML and OIDC identity protocols
+
+[Security Access Markup Language (SAML)](https://en.wikipedia.org/wiki/Security_Assertion_Markup_Language) and [OpenID Connect (OIDC)](https://openid.net/connect/) are identity protocols that allow applications to rely on IdPs for authentication.
+
+With support for SAML and OIDC, {{ site.data.products.db }} allows enterprise organizations to use a wide variety of self-hosted or SAAS enterprise IdP solutions, such as Okta, Active Directory, Onelogin.
+
+### Extended configuration options
+
+Enhanced SSO allows Org admins to configure a list of allowed and disallowed authentication methods for their orgs. 
+
+### How to enable Enhanced SSO for {{ site.data.products.dedicated }}
+
+File a [support ticket](https://support.cockroachlabs.com/) to enquire about the Enhanced SSO Private Preview.
+
+The following information will be required:
+
+- Customer name
+- CC Organization Id
+- Do you need auto-provisioning? [Yes / No]
+- Specific login methods to enable (any not mentioned here will be disabled)
+- Identity provider to setup [Okta / Active Directory / Azure Active Directory / Onelogin / Other]
+
+- If using SAML, provide one of the following options:
+	1. The customer IDP metadata XML file
+	1. All of the following:
+		- Sign in URL
+		- Signing certificate
+- If using OIDC, provide all of the the following:
+	- Issuer URL (ends with .well-known/openid-configuration)
+	- Client ID
+	- Client Secret (If the customer prefers using a frontend channel, then this value won’t be needed)
+		{{site.data.alerts.callout_danger}}
+		This value should be treated as moderately sensitive and so should be passed to the Identity team via OnePassword
+		{{site.data.alerts.end}}
+
+{{site.data.alerts.callout_success}}
+Initial response to the ticket will have a 2 business days SLA. After Enhanced SSO  is enabled, the support team will reach out to again to finalize and confirm the setup.
+{{site.data.alerts.end}}
+
+## {{ site.data.products.db }} SSO Frequently Asked Questions (FAQ)
 
 ### Will it work if I try to sign in with SSO without explicitly setting it up for my account, if I already use an email from an SSO Provider (e.g., my-example-account@gmail.com)?
 
