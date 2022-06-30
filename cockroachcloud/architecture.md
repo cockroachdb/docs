@@ -60,19 +60,7 @@ Finally, the SQL pods communicate with the KV layer to access data managed by th
 
 ### Request Units
 
-With {{ site.data.products.serverless }}, you are charged for the storage and activity of your cluster. All cluster activity, including SQL queries, bulk operations, and background jobs, is measured in Request Units, or RUs. RUs are an abstracted metric that represent the size and complexity of requests made to your cluster. All database operations cost a certain amount of RUs depending on the resources used. For example, a "small read" might cost 2 RUs, and a "large read" such as a full table scan with indexes might cost 100 RUs.
-
-The cost to do a prepared point read (fetching a single row by its key) of a 64 byte row is approximately 1 RU:
-
-  ~~~ shell
-  SELECT * FROM table_with_64_byte_rows WHERE key = $1;
-  ~~~
-
-Writing a 64 byte row costs approximately7 RUs, which includes the cost of replicating the write 3 times for high availability and durability:
-
-  ~~~ shell
-  INSERT INTO table_with_64_byte_rows (key, val) VALUES (100, $1);
-  ~~~
+With {{ site.data.products.serverless }}, you are charged for the storage and activity of your cluster. All cluster activity, including SQL queries, bulk operations, and background jobs, is measured in Request Units, or RUs. RUs are an abstracted metric that represent the size and complexity of requests made to your cluster. For example, the cost to do a prepared point read (fetching a single row by its key) of a 64 byte row is approximately 1 RU, plus 1 RU for each additional KiB. Writing a 64 byte row costs approximately 7 RUs, which includes the cost of replicating the write 3 times for high availability and durability, plus 3 RUs for each additional KiB.
 
 One RU is equivalent to:
 
@@ -82,37 +70,13 @@ One RU is equivalent to:
 
 The more resource-intensive the operation, the more RUs it consumes. For example, reading a larger 1 KiB row consumes slightly more than 2 RUs since it requires additional CPU, I/O, and network egress. Writing that same 1 KiB row consumes almost 10 RUs, which includes the cost of replicating the write three times for high availability and durability. Adding secondary indexes and performing scans, joins, sorts, grouping, and other sophisticated processing consume RUs in proportion to resource usage.
 
-RU and storage consumption is prorated at the following prices:
-
-  Activity Measure        | Price
-  ------------------------|------
-  10M Request Units       | $1.00
-  1 GiB storage per month | $0.50
-
-
-Query           | RUs per 1 query    | Price per 1M queries
-------------------------|----------|----------
-Establish SQL Connection      | 26.2   | $2.62
-SELECT 1 |  0.16   | $0.02
-Read 1 row of 10 bytes | 1.02   | $0.10
-Read 1 row of 1024 bytes | 2.05   | $0.20
-Read 1 row of 2048 bytes | 3.08    | $0.31
-Write 1 row of 10 bytes  | 6.42    | $0.64
-Write 1 row of 1024 bytes  | 9.44    | $0.94
-Write 1 row of 2048 bytes | 12.48  | $1.125
-Write 1 row of 1024 bytes, with 0 indexes | 9.44    | $0.94
-Write 1 row of 1024 bytes, with 1 index  | 18.75   | $1.88
-Write 1 row of 1024 bytes, with 2 indexes  | 27.88    | $2.80
-Scan 1K rows of 10 bytes, return 1 | 2.26    | $0.23
-Scan 1K rows of 1024 bytes, return 1 | 27.88   | $2.79
-Scan 10K rows of 1024 bytes, return 1 | 238.72    | $23.87
-
 ### SQL and Storage Layers
 
 CockroachDB Serverless clusters consume three kinds of resources:
-SQL CPU
-Network Egress
-Storage Layer I/O
+
+  - SQL CPU
+  - Network Egress
+  - Storage Layer I/O
 
 To understand these resources, you need to understand a bit about the CockroachDB Serverless architecture. A Serverless cluster is divided into two layers that run in separate processes: the SQL Layer and the Storage Layer. The SQL Layer receives and runs your SQL queries and background jobs. When the SQL Layer needs to read or write data rows, it calls the Storage Layer, which manages a replicated, transactional row store that is distributed across many machines.
 

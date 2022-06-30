@@ -24,7 +24,7 @@
               "title": "CockroachDB Serverless",
               "items": [
                 {
-                  "title": "Learn about CockroachDB Serverless",
+                  "title": "Learn about Request Units",
                   "urls": [
                     "/cockroachcloud/learn-about-serverless.html"
                   ]
