@@ -13,6 +13,16 @@ docs_area: search
 <script src="{{ 'js/instantsearch.production.min.js' | relative_url }}"></script>
 
 <script>
+  const aa = require('search-insights');
+
+  const insightsMiddleware = instantsearch.middlewares.createInsightsMiddleware({
+    insightsClient: window.aa,
+  });
+
+  aa('init', {
+    appId: '{{ site.algolia.application_id }}',
+    apiKey: '{{ site.algolia.search_api_key }}',
+  });
 
   const htmlEncode = (text) => {
     let div = document.createElement("div");
@@ -117,13 +127,11 @@ docs_area: search
     },
   });
 
-  search.use(
-    instantsearch.middlewares.createInsightsMiddleware({
-      insightsClient: aa
-    })
-  );
+  search.use(insightsMiddleware);
 
-  aa('setUserToken', 'user-1');
+  function getQueryID() {
+    return search.helper.lastResults.queryID;
+  };
 
   const addToResultsIfPresent = (match) => {
     if(match && match.matchLevel && match.matchLevel !== 'none' && match.value) {
@@ -150,11 +158,7 @@ docs_area: search
           hit =>
             `<div class="search-item">
           <div class="search-title">
-            <a href="${hit.url}" ${bindEvent(
-              'click',
-              ${hit.title},
-              'Search Result Clicked'
-            )}>${hit.title}</a>
+            <a href="${hit.url}">${hit.title}</a>
           </div>
           <div class="search-snippet">${showResult(hit._highlightResult)}</div>
           <div class="search-link">${hit.doc_type}</div>
