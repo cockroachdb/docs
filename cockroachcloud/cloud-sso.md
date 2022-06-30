@@ -17,10 +17,6 @@ Authentication with a centralized identity managed by a dedicated IdP offers sev
 
 ## Private Preview: Enhanced SSO features
 
-### Autoprovisioning
-
-Org admins would be able to request auto-provisioning setup for their orgs. If enabled, an org admin could share the org-unique sign-in URL with their team members internally, after which new users could sign-up without needing an invite, by using one of the allowed login methods for that org.
-
 ### Support for SAML and OIDC identity protocols
 
 [Security Access Markup Language (SAML)](https://en.wikipedia.org/wiki/Security_Assertion_Markup_Language) and [OpenID Connect (OIDC)](https://openid.net/connect/) are identity protocols that allow applications to rely on IdPs for authentication.
@@ -29,7 +25,11 @@ With support for SAML and OIDC, {{ site.data.products.db }} allows enterprise or
 
 ### Extended configuration options
 
-Enhanced SSO allows Org admins to configure a list of allowed and disallowed authentication methods for their orgs. 
+Enhanced SSO allows {{ site.data.products.db }} organization admins to configure a list of allowed and disallowed authentication methods.
+
+### Autoprovisioning
+
+This feature allows organization admins to share an organization-specific sign-up/sign-in URL. This removes the need to invite users to your organization.
 
 ### How to enable Enhanced SSO for {{ site.data.products.dedicated }}
 
@@ -43,12 +43,12 @@ The following information will be required:
 - Specific login methods to enable (any not mentioned here will be disabled)
 - Identity provider to setup [Okta / Active Directory / Azure Active Directory / Onelogin / Other]
 
-- If using SAML, provide one of the following options:
-	1. The customer IDP metadata XML file
-	1. All of the following:
+- If using SAML, provide **one of** the following options:
+	- (Option 1): The customer IDP metadata XML file
+	- (Option 2): All of the following:
 		- Sign in URL
 		- Signing certificate
-- If using OIDC, provide all of the the following:
+- If using OIDC, provide all of the following:
 	- Issuer URL (ends with .well-known/openid-configuration)
 	- Client ID
 	- Client Secret (If the customer prefers using a frontend channel, then this value won’t be needed)

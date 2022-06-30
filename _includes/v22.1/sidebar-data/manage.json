@@ -224,12 +224,6 @@
                 "/cockroachcloud/cloud-sso.html"
               ]
             },
-                        {
-              "title": "Managing Single Sign-On (SSO) for CockroachDB Cloud",
-              "urls": [
-                "/cockroachcloud/managing-cloud-sso.html"
-              ]
-            },
             {
               "title": "User Authorization",
               "urls": [
