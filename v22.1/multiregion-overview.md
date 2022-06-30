@@ -14,7 +14,7 @@ CockroachDB multi-region capabilities make it easier to run global applications.
 
 - [_Cluster region_](#cluster-regions) is a geographic region that you specify at node start time.
 - [_Database region_](#database-regions) is a geographic region that a database operates within. You must choose a database region from the list of available cluster regions.
-- [_Super region_](#super-regions) is a set of database regions such that regional tables and any row of a regional by row table whose home regions are a member of the super region will have all of their replicas stored _only_ in regions that are members of the super region.
+- [_Super region_](#super-regions) is a set of database regions in which contained schema objects have all of their replicas stored _only_ in regions that are members of the super region.
 - [_Survival goal_](#survival-goals) dictates how many simultaneous failure(s) a database can survive.
 - [_Table locality_](#table-locality) determines how CockroachDB optimizes access to a table's data.
 
