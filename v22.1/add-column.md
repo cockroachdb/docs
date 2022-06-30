@@ -57,6 +57,13 @@ $ cockroach demo bank
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
+> ALTER TABLE bank ADD COLUMN active BOOL;
+~~~
+
+[Multi-region overview](multiregion-overview.html)
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
 > SHOW COLUMNS FROM bank;
 ~~~
 

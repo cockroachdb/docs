@@ -9,7 +9,7 @@ jobs:
       uses: actions/checkout@master
 
     - name: Vale
-      uses: errata-ai/vale-action@v2.0.1
+      uses: errata-ai/vale-action@v1.5.0
       with:
         config: https://raw.githubusercontent.com/cockroachdb/docs/${{github.sha}}/.vale.ini
         files: __onlyModified
