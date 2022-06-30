@@ -46,7 +46,7 @@ This tutorial shows you how to initialize and run the [MovR](../{{site.versions[
     CREATE DATABASE movr;
     ~~~
   
-1. Return to the **Connect to cluster** dialog from [Step 1](#step-1-get-the-cluster-connection-string) and select `movr` from the **Database** dropdown.
+1. Return to the **Connect to cluster** dialog from [Step 1](#step-1-get-the-cluster-connection-string) and select `movr` from the **Database** dropdown. You may have to refresh the page for `movr` to appear in the dropdown.
 
 1. Copy the new **General connection string**.
 
