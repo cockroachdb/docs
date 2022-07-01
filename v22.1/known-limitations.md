@@ -231,7 +231,9 @@ UNION ALL SELECT * FROM t1 LEFT JOIN t2 ON st_contains(t1.geom, t2.geom) AND t2.
 
 {% include {{page.version.version}}/sql/expression-indexes-cannot-reference-computed-columns.md %}
 
-### Cannot refresh materialized views inside explicit transactions
+### Materialized view limitations
+
+{% include {{page.version.version}}/sql/materialized-views-no-stats.md %}
 
 {% include {{page.version.version}}/sql/cannot-refresh-materialized-views-inside-transactions.md %}
 
