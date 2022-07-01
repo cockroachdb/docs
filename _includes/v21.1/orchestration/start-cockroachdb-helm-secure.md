@@ -49,13 +49,7 @@ Secure CockroachDB deployments on Amazon EKS via Helm are [not yet supported](ht
           max-sql-memory: "2Gi"
         ~~~
 
-    1. For a secure deployment, set `tls.enabled` to `true`.
-
-        {% include_cached copy-clipboard.html %}
-        ~~~
-        tls:
-          enabled: true
-        ~~~
+        The Helm chart defaults to a secure deployment by automatically setting `tls.enabled` to `true`.
 
         {{site.data.alerts.callout_info}}
         By default, the Helm chart will generate and sign 1 client and 1 node certificate to secure the cluster. To authenticate using your own CA, see [Operate CockroachDB on Kubernetes](operate-cockroachdb-kubernetes.html?filters=helm#use-a-custom-ca).
@@ -119,5 +113,5 @@ Secure CockroachDB deployments on Amazon EKS via Helm are [not yet supported](ht
     ~~~
 
 {{site.data.alerts.callout_success}}
-The StatefulSet configuration sets all CockroachDB nodes to log to `stderr`, so if you ever need access to a pod/node's logs to troubleshoot, use `kubectl logs <podname>` rather than checking the log on the persistent volume.
+The StatefulSet configuration sets all CockroachDB nodes to log to `stderr`, so if you ever need access to logs for a pod or node, use `kubectl logs <podname>` rather than checking the log on the persistent volume.
 {{site.data.alerts.end}}
