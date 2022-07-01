@@ -65,10 +65,3 @@ Kubernetes Operator v2.1.0 is available.
 
 - [Changelog](https://github.com/cockroachdb/cockroach-operator/compare/v2.0.0...v2.1.0)
 - [Download](https://github.com/cockroachdb/cockroach-operator/releases/tag/v2.1.0)
-
-## July 12, 2021
-
-Kubernetes Operator v2.0.0 is available.
-
-- [Changelog](https://github.com/cockroachdb/cockroach-operator/compare/v1.7.14...v2.0.0)
-- [Download](https://github.com/cockroachdb/cockroach-operator/releases/tag/v2.0.0)

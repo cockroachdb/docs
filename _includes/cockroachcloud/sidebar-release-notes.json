@@ -3,10 +3,4 @@
   "urls": [
     "/releases/cloud.html"
   ]
-},
-{
-  "title": "CockroachDB Kubernetes Operator Release Notes",
-  "urls": [
-    "/releases/kubernetes-operator.html"
-  ]
 }
