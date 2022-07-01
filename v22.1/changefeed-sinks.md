@@ -207,6 +207,8 @@ Example of a webhook sink URL:
 URI Parameter      | Description
 -------------------+------------------------------------------------------------------
 `ca_cert`          | The base64-encoded `ca_cert` file. Specify `ca_cert` for a webhook sink. <br><br>Note: To encode your `ca.cert`, run `base64 -w 0 ca.cert`.
+`client_cert`      | The base64-encoded Privacy Enhanced Mail (PEM) certificate. This is used with `client_key`.
+`client_key`       | The base64-encoded private key for the PEM certificate. This is used with `client_cert`.
 `insecure_tls_skip_verify` | If `true`, disable client-side validation of responses. Note that a CA certificate is still required; this parameter means that the client will not verify the certificate. **Warning:** Use this query parameter with caution, as it creates [MITM](https://en.wikipedia.org/wiki/Man-in-the-middle_attack) vulnerabilities unless combined with another method of authentication. <br><br>**Default:** `false`
 
 {% include {{ page.version.version }}/cdc/options-table-note.md %}

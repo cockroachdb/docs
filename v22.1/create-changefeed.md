@@ -94,6 +94,8 @@ Example of a webhook URI:
 'webhook-https://{your-webhook-endpoint}?insecure_tls_skip_verify=true'
 ~~~
 
+See [Changefeed Sinks](changefeed-sinks.html#webhook-sink) for specifics on webhook sink configuration.
+
 ### Query parameters
 
 {% include {{ page.version.version }}/cdc/url-encoding.md %}
@@ -106,8 +108,8 @@ Parameter          | <div style="width:100px">Sink Type</div>      | <div style=
 <a name="topic-prefix-param"></a>`topic_prefix`     | [Kafka](changefeed-sinks.html#kafka), [cloud](changefeed-sinks.html#cloud-storage-sink) | [`STRING`](string.html)             | Adds a prefix to all topic names.<br><br>For example, `CREATE CHANGEFEED FOR TABLE foo INTO 'kafka://...?topic_prefix=bar_'` would emit rows under the topic `bar_foo` instead of `foo`.
 `tls_enabled`      | [Kafka](changefeed-sinks.html#kafka)                               | [`BOOL`](bool.html)                 | If `true`, enable Transport Layer Security (TLS) on the connection to Kafka. This can be used with a `ca_cert` (see below). <br><br>**Default:** `false`
 `ca_cert`          | [Kafka](changefeed-sinks.html#kafka), [webhook](changefeed-sinks.html#webhook-sink), ([Confluent schema registry](https://docs.confluent.io/platform/current/schema-registry/index.html)) | [`STRING`](string.html)            | The base64-encoded `ca_cert` file. Specify `ca_cert` for a Kafka sink, webhook sink, and/or a Confluent schema registry. <br><br>For usage with a Kafka sink, see [Kafka Sink URI](changefeed-sinks.html#kafka). <br><br> It's necessary to state `https` in the schema registry's address when passing `ca_cert`: <br>`confluent_schema_registry='https://schema_registry:8081?ca_cert=LS0tLS1CRUdJTiBDRVJUSUZ'` <br> See [`confluent_schema_registry`](#confluent-registry) for more detail on using this option. <br><br>Note: To encode your `ca.cert`, run `base64 -w 0 ca.cert`.
-`client_cert`      | [Kafka](changefeed-sinks.html#kafka)                               | [`STRING`](string.html)             | The base64-encoded Privacy Enhanced Mail (PEM) certificate. This is used with `client_key`.
-`client_key`       | [Kafka](changefeed-sinks.html#kafka)                               | [`STRING`](string.html)             | The base64-encoded private key for the PEM certificate. This is used with `client_cert`.
+`client_cert`      | [Kafka](changefeed-sinks.html#kafka), [webhook](changefeed-sinks.html#webhook-sink)                               | [`STRING`](string.html)             | The base64-encoded Privacy Enhanced Mail (PEM) certificate. This is used with `client_key`.
+`client_key`       | [Kafka](changefeed-sinks.html#kafka), [webhook](changefeed-sinks.html#webhook-sink)                               | [`STRING`](string.html)             | The base64-encoded private key for the PEM certificate. This is used with `client_cert`.
 `sasl_enabled`     | [Kafka](changefeed-sinks.html#kafka)                               | [`BOOL`](bool.html)                 | If `true`, the authentication protocol can be set to SCRAM or PLAIN using the `sasl_mechanism` parameter. You must have `tls_enabled` set to `true` to use SASL. <br><br> **Default:** `false`
 `sasl_mechanism`   | [Kafka](changefeed-sinks.html#kafka)                               | [`STRING`](string.html)             | Can be set to [`SASL-SCRAM-SHA-256`](https://docs.confluent.io/platform/current/kafka/authentication_sasl/authentication_sasl_scram.html), [`SASL-SCRAM-SHA-512`](https://docs.confluent.io/platform/current/kafka/authentication_sasl/authentication_sasl_scram.html), or [`SASL-PLAIN`](https://docs.confluent.io/current/kafka/authentication_sasl/authentication_sasl_plain.html). A `sasl_user` and `sasl_password` are required. <br><br> **Default:** `SASL-PLAIN`
 `sasl_user`        | [Kafka](changefeed-sinks.html#kafka)                               | [`STRING`](string.html)             | Your SASL username.
