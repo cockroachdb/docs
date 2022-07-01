@@ -1,1 +1,0 @@
-{{site.data.alerts.callout_danger}}Interleaving data was deprecated in v20.2, disabled by default in v21.1, and permanently removed in v21.2. For details, see the [v21.1 interleaving deprecation notice](../v21.1/interleave-in-parent.html#deprecation).{{site.data.alerts.end}}

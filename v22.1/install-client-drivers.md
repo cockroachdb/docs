@@ -60,7 +60,7 @@ For a simple but complete example app, see [Build a Node.js App with CockroachDB
 
 Install Knex.js as described in the [official documentation](https://knexjs.org/#Installation).
 
-For a simple but complete example app, see [Build a Node.js App with CockroachDB and Knex.js](build-a-nodejs-app-with-cockroachdb-knexjs.html).
+For a simple but complete example app, see [Build a Simple CRUD Node.js App with CockroachDB and Knex.js](build-a-nodejs-app-with-cockroachdb-knexjs.html).
 
 ### TypeORM
 
@@ -69,6 +69,19 @@ For a simple but complete example app, see [Build a Node.js App with CockroachDB
 Install TypeORM as described in the [official documentation](https://typeorm.io/#/).
 
 For a simple but complete example app, see [Build a TypeScript App with CockroachDB and TypeORM](build-a-typescript-app-with-cockroachdb.html).
+
+### Prisma
+
+**Support level:** Full
+
+To install the [Prisma ORM](https://prisma.io/):
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+$ npm install prisma
+~~~
+
+For a simple but complete example app, see [Build a Simple CRUD Node.js App with CockroachDB and Prisma](build-a-nodejs-app-with-cockroachdb-prisma.html).
 
 </section>
 
