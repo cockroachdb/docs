@@ -689,7 +689,7 @@ Use inline code when referring to code, commands, or other technical syntax with
 
 #### Code block
 
-Use a code block to provide executable code samples. A code block has an opening and closing set of 3 tildes (`~~~`). A code block supports syntax highlighting if you add the language name immediately after the first line of backticks. There should be one returned line before and after a code block, for better Markdown readability. For example:
+Use a code block to provide executable code samples. A code block has an opening and closing set of 3 tildes (`~~~`). A code block supports syntax highlighting if you add the language name immediately after the first line of tildes. There should be one returned line before and after a code block, for better Markdown readability. For example:
 
 ```
 This is a sample line of text.
