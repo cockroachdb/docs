@@ -235,8 +235,8 @@ This table outlines the actions that each operation performs against the storage
 
 Operation                   | Permission                   | Description                                                                     
 ----------------------------+------------------------------+---------------------------------------------------
-[Backup](backup.html)       | Write<br><br>List                | Write: Backups write the backup data to the bucket/container. During a backup job, a `BACKUP CHECKPOINT` file will be written that tracks the progress of the backup.<br> List: Backups need list access to the files already in the bucket. If the backup is [paused](pause-job.html), or there is a retryable error, the backup will read the `BACKUP CHECKPOINT` file. <br>**Note:** To clean up `BACKUP CHECKPOINT` files that the backup job has written, you would need to also include a delete permission in your bucket policy (e.g., `s3:DeleteObject`). However, delete is **not** necessary for backups  to complete successfully in v22.1 and later.
-[Restore](restore.html)     | List<br><br><br>Get          | List: During a restore job, it is necessary to pass the backup's directory. This contains a manifest file that describes the backup as well as other versioned subdirectories and files. Restores require access to read these files from the storage bucket to process the backup correctly. <br> Get: Restores need access to retrieve files from the backup.
+[Backup](backup.html)       | Write<br><br>Get<br>List     | Write: Backups write the backup data to the bucket/container. During a backup job, a `BACKUP CHECKPOINT` file will be written that tracks the progress of the backup.<br>Get: Backups need get access after a [pause](pause-job.html) to read the checkpoint files on [resume](resume-job.html). <br>List: Backups need list access to the files already in the bucket. For example, `BACKUP` uses list to find previously taken backups when executing an incremental backup and to find the latest checkpoint file. <br>**Note:** To clean up `BACKUP CHECKPOINT` files that the backup job has written, you need to also include a delete permission in your bucket policy (e.g., `s3:DeleteObject`). However, delete is **not** necessary for backups to complete successfully in v22.1 and later.
+[Restore](restore.html)     | Get<br><br>List          | Get: Restores need access to retrieve files from the backup. Restore also requires access to the `LATEST` file in order to read the latest available backup. <br>List: Restores need list access to the files already in the bucket to find other backups in the [backup collection](take-full-and-incremental-backups.html#backup-collections). This contains metadata files that describe the backup, the `LATEST` file, and other versioned subdirectories and files. 
 [Import](import.html)       | Get                          | Imports read the requested file(s) from the storage bucket.                      
 [Export](export.html)       | Write                        | Exports need write access to the storage bucket to create individual export file(s) from the exported data.
 [Enterprise changefeeds](create-changefeed.html)  | Write  | Changefeeds will write files to the storage bucket that contain row changes and resolved timestamps.
@@ -252,7 +252,7 @@ These [actions](https://docs.aws.amazon.com/AmazonS3/latest/API/API_Operations_A
 
 Operation    | S3 permission                                                                          
 -------------+----------------------------------------------------------------------------------
-Backup       | `s3:PutObject`, `s3:ListBucket`  
+Backup       | `s3:PutObject`, `s3:GetObject`, `s3:ListBucket`  
 Restore      | `s3:GetObject`, `s3:ListBucket`     
 Import       | `s3:GetObject`                                             
 Export       | `s3:PutObject`
@@ -274,8 +274,9 @@ An example S3 bucket policy for a **backup**:
                 "AWS": "arn:aws:iam::{ACCOUNT_ID}:user/{USER}"
             },
             "Action": [
-                "s3:ListBucket",
-                "s3:PutObject"
+                "s3:PutObject",
+                "s3:GetObject",
+                "s3:ListBucket"
             ],
             "Resource": [
                 "arn:aws:s3:::{BUCKET_NAME}",
@@ -294,7 +295,7 @@ In Google Cloud Storage, you can grant users roles that define the access level 
 
 Operation    | GCS Permission                                                                          
 -------------+----------------------------------------------------------------------------------
-Backup       | `storage.objects.create`, `storage.objects.list`   
+Backup       | `storage.objects.create`, `storage.objects.get`, `storage.objects.list`   
 Restore      | `storage.objects.get`, `storage.objects.list`       
 Import       | `storage.objects.get`                                             
 Export       | `storage.objects.create`
