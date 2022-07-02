@@ -62,10 +62,12 @@ layout: default
 
    {{content}}
 
-   <!-- {% if page.feedback != false %}
-      {% include feedback-widget.html %}
+   {% if page.toc != true %}
+     {% if page.feedback != false %}
+        {% include feedback-widget.html %}
+     {% endif %}
    {% endif %}
-   {% comment %} Show feedback widget at bottom of page. {% endcomment %} -->
+   {% comment %} Show feedback widget at bottom of page when there is no page toc.{% endcomment %}
 
    {% if page.docs_area %}
      <script>
