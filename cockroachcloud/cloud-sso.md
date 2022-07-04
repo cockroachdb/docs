@@ -1,11 +1,11 @@
 ---
 title: Single Sign-On (SSO) for CockroachDB Cloud
-summary: Learn about SSO Authentication for the {{ site.data.products.db }} Console
+summary: Overview of requirements and management procedures for single sign-on (SSO) for the {{ site.data.products.db }} Console
 toc: true
 docs_area: manage
 ---
 
-Users may authenticate to the [{{ site.data.products.db }} Console](https://cockroachlabs.cloud) using Single Sign-On (SSO). GitHub, Google, and Microsoft are currently supported as identity providers (IdPs).
+Users may authenticate to the [{{ site.data.products.db }} Console](https://cockroachlabs.cloud) using Single Sign-On (SSO). GitHub, Google, and Microsoft are supported as identity providers (IdPs).
 
 [Enterprise authentication features](#private-preview-enterprise-authentication) are currently available in Private Preview. File a [support ticket](https://support.cockroachlabs.com/) to enquire about the Enterprise Authentication for Cloud SSO Private Preview.
 
