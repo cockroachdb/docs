@@ -1,6 +1,6 @@
 ---
-title: Single Sign-on for DB Console access
-summary: Implement single sign-on (SSO) for DB Console access.
+title: Single Sign-on for DB Console
+summary: Implement single sign-on (SSO) for DB Console.
 toc: true
 docs_area: manage
 ---

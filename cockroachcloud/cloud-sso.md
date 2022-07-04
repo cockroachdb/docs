@@ -1,6 +1,6 @@
 ---
 title: Single Sign-On (SSO) for CockroachDB Cloud
-summary: Learn about SSO Authentication for the Cockroach Cloud Console
+summary: Learn about SSO Authentication for the {{ site.data.products.db }} Console
 toc: true
 docs_area: manage
 ---
@@ -19,45 +19,32 @@ Authentication with a centralized identity managed by a dedicated IdP offers sev
 
 ### Support for SAML and OIDC identity protocols
 
-[Security Access Markup Language (SAML)](https://en.wikipedia.org/wiki/Security_Assertion_Markup_Language) and [OpenID Connect (OIDC)](https://openid.net/connect/) are identity protocols that allow applications to rely on IdPs for authentication.
+[Security Access Markup Language (SAML)](https://en.wikipedia.org/wiki/Security_Assertion_Markup_Language) and [OpenID Connect (OIDC)](https://openid.net/connect/) are identity protocols that allow applications and services to rely on identity providers (IdPs) for centralized authentication.
 
-With support for SAML and OIDC, {{ site.data.products.db }} allows enterprise organizations to use a wide variety of self-hosted or SaaS enterprise IdP solutions, such as Okta, Active Directory, Onelogin.
+With support for SAML and OIDC, {{ site.data.products.db }} allows enterprise organizations to use a wide variety of self-hosted or SaaS enterprise IdP solutions, such as Okta, Active Directory, Onelogin, etc., to authenticate to the {{ site.data.products.db }} Console.
+
+### Custom sign-in page
+
+With this feature, customers get a unique and private sign-in URL for their {{ site.data.products.db }} organization, and will no longer use the [public sign-in URL](https://cockroachlabs.cloud).
 
 ### Extended configuration options
 
 Enterprise authentication allows {{ site.data.products.db }} organization admins to configure a list of allowed and disallowed authentication methods.
 
-### Autoprovisioning
+Only enabled authentication methods are shown on the [custom sign-in page](#custom-sign-in-page).
 
-This feature allows organization admins to share an organization-specific sign-up/sign-in URL. This removes the need to invite users to your organization.
+### Auto-provisioning
 
-### How to enable Enhanced SSO for {{ site.data.products.dedicated }}
+This optional enterprise feature removes the need to invite users to your organization. When auto-provisioning is enabled, a {{ site.data.products.db }} account will be created automatically for your users when they sign in to the [custom sign-in page](#custom-sign-in-page) for the first time.
 
-File a [support ticket](https://support.cockroachlabs.com/) to enquire about the Enhanced SSO Private Preview.
+### How to enable enterprise authentication for {{ site.data.products.db }}
 
-The following information will be required:
-
-- Customer name
-- CC Organization Id
-- Do you need auto-provisioning? [Yes / No]
-- Specific login methods to enable (any not mentioned here will be disabled)
-- Identity provider to setup [Okta / Active Directory / Azure Active Directory / Onelogin / Other]
-
-- If using SAML, provide **one of** the following options:
-	- (Option 1): The customer IDP metadata XML file
-	- (Option 2): All of the following:
-		- Sign in URL
-		- Signing certificate
-- If using OIDC, provide all of the following:
-	- Issuer URL (ends with .well-known/openid-configuration)
-	- Client ID
-	- Client Secret (If the customer prefers using a frontend channel, then this value won’t be needed)
-		{{site.data.alerts.callout_danger}}
-		This value should be treated as moderately sensitive and so should be passed to the Identity team via OnePassword
-		{{site.data.alerts.end}}
+File a [support ticket](https://support.cockroachlabs.com/) to enquire about the enterprise authentication Private Preview.
 
 {{site.data.alerts.callout_success}}
-Initial response to the ticket will have a 2 business days SLA. After Enhanced SSO  is enabled, the support team will reach out to again to finalize and confirm the setup.
+You should hear back from support within 2 business days.
+
+After Enhanced SSO is enabled, the support team will reach out to again to finalize and confirm the setup.
 {{site.data.alerts.end}}
 
 ## {{ site.data.products.db }} SSO Frequently Asked Questions (FAQ)
