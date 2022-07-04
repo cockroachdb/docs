@@ -12,7 +12,7 @@ Users may authenticate to the [{{ site.data.products.db }} Console](https://cock
 Authentication with a centralized identity managed by a dedicated IdP offers several security advantages:
 
 - All supported SSO providers (Google, Microsoft, and GitHub) support multi-factor authentication (MFA).
-- Administrators avoid having to manage an additional set of credentials and tie those to other identities and credentials. Every additional credential or identity management operation introduces risk as well as costing effort, so minimizing these is doubly advantageous.
+- Administrators avoid responsibility for managing an additional set of credentials and tying those to other identities and credentials. Every additional credential or identity management operation introduces risk as well as costing effort, so minimizing these is doubly advantageous.
 - Administrators can onboard and offboard users quickly and efficiently.
 
 ## Private Preview: Enterprise authentication
@@ -21,7 +21,7 @@ Authentication with a centralized identity managed by a dedicated IdP offers sev
 
 [Security Access Markup Language (SAML)](https://en.wikipedia.org/wiki/Security_Assertion_Markup_Language) and [OpenID Connect (OIDC)](https://openid.net/connect/) are identity protocols that allow applications to rely on IdPs for authentication.
 
-With support for SAML and OIDC, {{ site.data.products.db }} allows enterprise organizations to use a wide variety of self-hosted or SAAS enterprise IdP solutions, such as Okta, Active Directory, Onelogin.
+With support for SAML and OIDC, {{ site.data.products.db }} allows enterprise organizations to use a wide variety of self-hosted or SaaS enterprise IdP solutions, such as Okta, Active Directory, Onelogin.
 
 ### Extended configuration options
 
