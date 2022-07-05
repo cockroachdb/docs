@@ -914,10 +914,10 @@ For example:
 {% include_cached copy-clipboard.html %}
 ~~~ java
 PGSimpleDataSource ds = new PGSimpleDataSource();
-ds.setUrl(System.getenv("DATABASE_URL"));
+ds.setUrl(System.getenv("JDBC_DATABASE_URL"));
 ~~~
 
-Where `DATABASE_URL` is an environment variable set to a valid CockroachDB connection string.
+Where `JDBC_DATABASE_URL` is an environment variable set to a valid JDBC-compatible CockroachDB connection string.
 
 JDBC accepts the following format for CockroachDB connection strings:
 
