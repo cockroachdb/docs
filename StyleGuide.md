@@ -51,6 +51,7 @@ Included in this guide:
   - [Tables](#tables)
   - [Lists](#lists)
   - [Images](#images)
+  - [Include files](#include-files)
 - [Terminology and word usage](#terminology-and-word-usage)
 
 ## Style and tone
@@ -622,7 +623,7 @@ In the past, the person assigned to known limitations is usually someone with ex
 
 Document all known limitations on the [Known Limitations](https://www.cockroachlabs.com/docs/stable/known-limitations.html) page.
 
-If the limitation is related to a feature documented elsewhere on our docs site, you should also add the limitation to the page that documents that feature, under a dedicated "Known limitations" header. To avoid duplication, create a file in `_includes/vX.X/known-limitations` and include the file in both places.
+If the limitation is related to a feature documented elsewhere on our docs site, you should also add the limitation to the page that documents that feature, under a dedicated "Known limitations" header. To avoid duplication, create an [include file](#include-files) in `_includes/vX.X/known-limitations` and include the file in both places.
 
 #### How to document known limitations
 
@@ -815,6 +816,8 @@ To add a version tag, use the following Liquid tag:
 {% include_cached new-in.html version="v22.1" %}
 ~~~
 
+<a name="version-tags-tables"></a>
+
 Note: If using a version tag inside of a Markdown table, use `<span class="version-tag">New in vXX.Y:</span>` or `<span class="version-tag">New in vXX.Y.Z:</span>` instead.
 
 Put version tags at the beginning of a paragraph, sentence, or description in a table cell.
@@ -969,6 +972,73 @@ Use the following HTML and Liquid to include an image in a Markdown page:
 ~~~
 
 Example: [Decommission Nodes](https://www.cockroachlabs.com/docs/stable/remove-nodes.html#step-1-check-the-node-before-decommissioning)
+
+<a name="include-files"></a>
+
+### Include files
+
+Sometimes content needs to be duplicated across two or more pages in the documentation. For example, there may be several pages that need the same cluster setup, but describe how to use different features. Or a very specific [note](#notes) or [warning](#warnings) needs to be added to several different pages.
+
+In these situations, you will need to use something we call an _include file_. An include file is a separate Markdown file (stored in `_includes/{version}/some/shared-file.md`) where you will write content to be shared across multiple pages.
+
+For more information about include files, see [the Jekyll `include` documentation](https://jekyllrb.com/docs/includes/).
+
+_Note_: Using include files adds complexity to the docs site architecture and build process. It also makes writing the documentation more tricky. If you can link to existing content rather than using an include file, strongly consider doing that instead.
+
+There are [basic](#basic-include-file-usage) and [advanced](#advanced-include-file-usage) methods for using include files. Use the basic method unless you are sure you need the advanced.
+
+<a name="basic-include-file-usage"></a>
+
+#### Basic include file usage
+
+The basic method for using an include file is:
+
+1. Find (or create) a block of content that you want to make appear on two or more different pages.
+2. Create a new file in the subdirectory of the `_includes` directory associated with the product you are working on. For example, if you are working on CockroachDB Self-Hosted v22.1, the directory will be `_includes/v22.1/`. If you are working on CockroachDB Dedicated, it will be `_includes/cockroachcloud`.
+3. From the pages where you want the included content to appear, add an `include` tag that looks like one of the following: for CockroachDB Self-Hosted, it will look like `{% include {{page.version.version}}/some/shared-file.md %}`; for CockroachDB Dedicated, it will look like `{% include cockroachcloud/some/shared-file.md %}`.
+
+The contents of `shared-file.md` will now appear on all of the pages where you added the `include` tag.
+
+<a name="advanced-include-file-usage"></a>
+
+#### Advanced include file usage
+
+##### Different content depending on page name
+
+There may be cases where the content of the include file will need to vary slightly depending on what pages that content is being shared into. For example, while working on [cockroachdb/docs#12216](https://github.com/cockroachdb/docs/pull/12216),  I needed a way to:
+
+- Have text be a link on the [Known Limitations](https://www.cockroachlabs.com/docs/stable/known-limitations) page.
+- Have that same text _not_ be a link on the [Cost-Based Optimizer](https://www.cockroachlabs.com/docs/stable/cost-based-optimizer) page (since it would be a self-referring link).
+
+The way to do this in Jekyll (with its templating language Liquid) is to add the following content to an include file that is shared into both pages:
+
+    {% if page.name == "cost-based-optimizer.md" %} Locality-optimized search {% else %} [Locality-optimized search](cost-based-optimizer.html#locality-optimized-search-in-multi-region-clusters) {% endif %} only works for queries selecting a limited number of records (up to 10,000 unique keys). Also, It does not yet work with [`LIMIT`](limit-offset.html) clauses.
+
+The syntax is a little hard to read inline, but based on some experimenting it appears that it _must_ be written as one line so as not to introduce line breaks in the resulting text.
+
+Formatted for easier reading, the template code looks like:
+
+```
+{% if page.name == "cost-based-optimizer.md" %}  
+Locality-optimized search  
+{% else %}  
+[Locality-optimized search](cost-based-optimizer.html#locality-optimized-search-in-multi-region-clusters)  
+{% endif %}  
+```
+
+##### Different content depending on Dedicated or Self-Hosted
+
+Sometimes, an include file must be used on both a Self-Hosted and a Dedicated page. This requires that the links are resolved differently depending on the page the include file is being shared into.
+
+For instructions showing how to use relative links that differ depending on the page type, see [Use relative links to Cloud and Core topics in _include files](https://cockroachlabs.atlassian.net/wiki/x/woBZl).
+
+_Note_: In the previous link, Cloud = Dedicated and Core = Self-Hosted.
+
+#### Technical limitations of include files
+
+Include files have the following technical limitations:
+
+- They cannot be used in [Markdown tables](#tables). For example, this is why [the guidance about how to use version tags in tables](#version-tags-tables) is provided.
 
 ## Terminology and word usage
 
