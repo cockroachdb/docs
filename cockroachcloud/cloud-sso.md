@@ -7,7 +7,7 @@ docs_area: manage
 
 Users may authenticate to the [{{ site.data.products.db }} Console](https://cockroachlabs.cloud) using Single Sign-On (SSO). GitHub, Google, and Microsoft are supported as identity providers (IdPs).
 
-[Enterprise authentication features](#private-preview-enterprise-authentication) are currently available in Private Preview. File a [support ticket](https://support.cockroachlabs.com/) to enquire about the Enterprise Authentication for Cloud SSO Private Preview.
+[Enterprise authentication features](#private-preview-enterprise-authentication) are currently available in Private Preview. Reach out to your Cockroach Labs team or file a [support ticket](https://support.cockroachlabs.com/) to enquire about the private preview of Enterprise Authentication for Cloud SSO.
 
 Authentication with a centralized identity managed by a dedicated IdP offers several security advantages:
 
@@ -35,16 +35,14 @@ Only enabled authentication methods are shown on the [custom sign-in page](#cust
 
 ### Auto-provisioning
 
-This optional enterprise feature removes the need to invite users to your organization. When auto-provisioning is enabled, a {{ site.data.products.db }} account will be created automatically for your users when they sign in to the [custom sign-in page](#custom-sign-in-page) for the first time.
+This optional enterprise feature removes the need to [invite users to your organization](https://www.cockroachlabs.com/docs/cockroachcloud/console-access-management.html#invite-team-members-to-cockroachdb-cloud). When auto-provisioning is enabled, a {{ site.data.products.db }} account will be created automatically for your users when they sign in to the [custom sign-in page](#custom-sign-in-page) for the first time.
 
 ### How to enable enterprise authentication for {{ site.data.products.db }}
 
-File a [support ticket](https://support.cockroachlabs.com/) to enquire about the enterprise authentication Private Preview.
+Reach out to your Cockroach Labs team or file a [support ticket](https://support.cockroachlabs.com/) to enquire about the private preview of Enterprise Authentication for Cloud SSO.
 
 {{site.data.alerts.callout_success}}
-You should hear back from support within 2 business days.
-
-After Enhanced SSO is enabled, the support team will reach out to again to finalize and confirm the setup.
+After Enterprise Authentication is enabled, your Cockroach Labs team or the support team will reach out again to finalize and confirm the setup.
 {{site.data.alerts.end}}
 
 ## {{ site.data.products.db }} SSO Frequently Asked Questions (FAQ)
