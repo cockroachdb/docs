@@ -194,13 +194,18 @@ See [Files](create-changefeed.html#files) for more detail on the file naming for
 
 ## Garbage collection and changefeeds
 
-{% include_cached new-in.html version="v22.1" %} By default, [protected timestamps](architecture/storage-layer.html#protected-timestamps) will protect changefeed data from [garbage collection](architecture/storage-layer.html#garbage-collection) to the time of the [_checkpoint_](change-data-capture-overview.html#how-does-an-enterprise-changefeed-work). You can configure this time interval through the `changefeed.protect_timestamp_interval` [cluster setting](cluster-settings.html).
+{% include_cached new-in.html version="v22.1" %} By default, [protected timestamps](architecture/storage-layer.html#protected-timestamps) will protect changefeed data from [garbage collection](architecture/storage-layer.html#garbage-collection) to the time of the [_checkpoint_](change-data-capture-overview.html#how-does-an-enterprise-changefeed-work).
 
-For example, if the downstream [changefeed sink](changefeed-sinks.html) is unavailable, protected timestamps will protect the changes from garbage collection until you either cancel the changefeed or the sink becomes available once again. However, if the changefeed lags too far behind and causes data storage issues, you can cancel the changefeed to release the protected timestamps and allow garbage collection to resume.
+Protected timestamps will protect changes from garbage collection in the following scenarios:
+
+- The downstream [changefeed sink](changefeed-sinks.html) is unavailable. Protected timestamps will protect changes until you either cancel the changefeed or the sink becomes available once again. 
+- You [pause](pause-job.html) a changefeed without the [`protect_data_from_gc_on_pause`](create-changefeed.html#protect-pause) option enabled. Protected timestamps will protect changes until you [resume](resume-job.html) the changefeed.
+
+However, if the changefeed lags too far behind, the protected changes could cause data storage issues. To release the protected timestamps and allow garbage collection to resume, you can cancel the changefeed or [resume](resume-job.html) in the case of a paused changefeed. 
 
 We recommend [monitoring](monitor-and-debug-changefeeds.html) storage and the number of running changefeeds. If a changefeed is not advancing and is retrying, it will (without limit) accumulate garbage while it retries to run.
 
-When [`protect_data_from_gc_on_pause`](create-changefeed.html#protect-pause) is **unset**, pausing the changefeed will release the existing protected timestamp record.
+When `protect_data_from_gc_on_pause` is **unset**, pausing the changefeed will release the existing protected timestamp record.
 
 The only ways for changefeeds to **not** protect data are:
 
