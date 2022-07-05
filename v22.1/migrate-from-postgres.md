@@ -15,6 +15,16 @@ The examples pull real data from [Amazon S3](https://aws.amazon.com/s3/). They u
 To migrate from PostgreSQL to CockroachDB using the AWS Database Migration Service, see [Migrate with AWS Database Migration Service (DMS)](aws-dms.html).
 {{site.data.alerts.end}}
 
+## Pre-migration considerations
+
+### Primary keys
+
+PostgreSQL and CockroachDB have differences in best practices surrounding [primary keys](primary-key.html) on tables. While it's common to see sequences and auto-incrementing primary keys in PostgreSQL, these features can cause hotspots within your cluster when reading or writing large amounts of data. The preferred approaches for  are using [multi-column primary keys](performance-best-practices-overview.html#use-multi-column-primary-keys) or using the [`UUID`](uuid.html) datatype for primary key columns.
+
+If you are working with a table that must be indexed on sequential keys, use [hash-sharded indexes](hash-sharded-indexes.html).
+
+For further information, see [Unique ID best practices](performance-best-practices-overview.html#unique-id-best-practices) and [3 Basic Rules for Choosing Indexes](https://www.cockroachlabs.com/blog/how-to-choose-db-index-keys/)/
+
 ## Step 1. Dump the PostgreSQL database
 
 There are several ways to dump data from PostgreSQL to be imported into CockroachDB:
