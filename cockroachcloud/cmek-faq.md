@@ -19,7 +19,13 @@ Yes, the data encryption key is rotated automatically once every month. It’s n
 
 ## Can we rotate the CMEK for a cluster after a certain time or at some periodic interval?
 
-Not yet. The ability to rotate CMEK would be available at a later time. Once that’s ready, you could do it ad-hoc, or at a periodic interval using your own managed scheduling mechanism.
+Yes. Two different types of rotation are possible:
+
+- When you rotate a CMEK key within your KMS platform, a new version of the key is created with new key material. In both GCP KMS and AWS KMS, encryption operations automatically uses the active key version, while decryption operations automatically use the key version that was used to encrypt the data. For this reason, {{ site.data.products.dedicated }} does not need any awareness of rotation operations within your KMS platform.
+
+- When you rotate a CMEK key using the {{ site.data.products.db }} API, you supply a new CMEK KEY URI for each region you want to update, and {{ site.data.products.dedicated }} begins using the new key to protect the store key. In a similar way, after adding a new region to a cluster, you can begin using CMEK to protect data at rest in that region by "rotating" that region from using no CMEK key to using a CMEK key.
+
+To learn more about rotating a CMEK key using the {{ site.data.products.db }} API, visit [Rotate a CMEK key](managing-cmek.html#rotate-a-cmek-key).
 
 ## If we enable CMEK for a cluster that has been in use for some time, is the existing data encrypted at that time?
 
