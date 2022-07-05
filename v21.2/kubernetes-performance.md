@@ -20,7 +20,7 @@ Before you focus on optimizing a Kubernetes-orchestrated CockroachDB cluster:
 
 A number of independent factors affect performance when running CockroachDB on Kubernetes. Most are easiest to change before you create your CockroachDB cluster. If you need to modify a CockroachDB cluster that is already running on Kubernetes, extra care and testing is strongly recommended.
 
-In a number of the sections below, we have shown how to modify excerpts from our provided Kubernetes configuration YAML files. You can find the most up-to-date versions of these files on Github, [one for running CockroachDB in secure mode](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/cockroachdb-statefulset-secure.yaml) and one for [running CockroachDB in insecure mode](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/cockroachdb-statefulset.yaml).
+The following sections show how to modify excerpts from our provided Kubernetes configuration YAML files. You can find the most up-to-date versions of these files on GitHub: [one for running CockroachDB in secure mode](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/cockroachdb-statefulset-secure.yaml) and one for [running CockroachDB in insecure mode](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/cockroachdb-statefulset.yaml).
 
 You can also use a [performance-optimized configuration file for secure mode](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/performance/cockroachdb-statefulset-secure.yaml) or [insecure mode](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/performance/cockroachdb-statefulset-insecure.yaml). Be sure to modify the file wherever there is a `TODO` comment.
 
@@ -158,7 +158,7 @@ Since [GCE disk IOPS scale linearly with disk size](https://cloud.google.com/com
 
 ### Local disks
 
-Up to this point, we have been assuming that you will be using auto-provisioned remotely attached disks. However, using local disks typically provides better performance than remotely attached disks, such as SSD Instance Store Volumes instead of EBS Volumes on AWS or Local SSDs instead of Persistent Disks on GCE. As of Kubernetes v1.14, [`local` volumes](https://kubernetes.io/docs/concepts/storage/volumes/#local) can be used.
+Up to this point, we have assumed the use of auto-provisioned, remotely attached disks. However, local disks typically provide better performance than remotely attached disks. For example, SSD Instance Store Volumes outperform EBS Volumes on AWS, and Local SSDs outperform Persistent Disks on GCE. As of v1.14, Kubernetes supports [`local` volumes](https://kubernetes.io/docs/concepts/storage/volumes/#local).
 
 Note that when running with local disks, there is a greater chance of experiencing a disk failure than when using the cloud providers' network-attached disks that are often replicated underneath the covers. Consequently, you may want to [configure replication zones](configure-replication-zones.html) to increase the replication factor of your data to 5 from its default of 3 when using local disks.
 
@@ -406,7 +406,7 @@ This will not work miracles, so use it with caution. In our testing, it pretty r
 A [DaemonSet](https://kubernetes.io/docs/concepts/workloads/controllers/daemonset/) is a Kubernetes resource that runs a pod on all nodes that match some selection criteria. This can be a more natural abstraction for using [dedicated nodes](#dedicated-nodes), and naturally pairs with [using the host's network](#using-the-hosts-network) since it couples CockroachDB processes one-to-one with nodes.
 
 {{site.data.alerts.callout_danger}}
-We strongly recommend **against** using DaemonSets due to their weaker fault tolerance and data survivability capabilities. In most Kubernetes environments, nodes are considered ephemeral. However, a DaemonSet pod ties a CockroachDB node to a specific Kubernetes node, and cannot be rescheduled to another Kubernetes node in the event of an automatic upgrade or hardware failure. Unless you have manually set up persistent volumes, DaemonSet deployments will lose all their data when Kubernetes nodes are replaced in a cluster.
+We strongly recommend **against** using DaemonSets due to their weaker fault tolerance and data survivability capabilities, in comparison to StatefulSets. In most Kubernetes environments, nodes are considered ephemeral. However, a DaemonSet pod ties a CockroachDB node to a specific Kubernetes node, and cannot be rescheduled to another Kubernetes node in the event of an automatic upgrade or hardware failure. Unless you have manually set up persistent volumes, DaemonSet deployments will lose all their data when Kubernetes nodes are replaced in a cluster.
 
 This limits Kubernetes' ability to help your cluster recover from failures, and matches the behavior of running CockroachDB directly on a set of physical machines that are only manually replaced by human operators.
 {{site.data.alerts.end}}
