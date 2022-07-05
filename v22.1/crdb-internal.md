@@ -361,6 +361,8 @@ Column | Type | Description
 `total_reads` | `INT8` | Number of times an index was selected for a read.
 `last_read` | `TIMESTAMPTZ` | Time of last read.
 
+You can reset the index usages statistics by invoking the function `crdb_internal.reset_index_usage_stats()`.
+
 #### View index statistics by table and index name
 
 To view index usage statistics by table and index name, join with `table_indexes`:
