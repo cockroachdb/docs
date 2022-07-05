@@ -171,6 +171,6 @@ To enable certificate revocation:
 
 ## See also
 
-- [Manual `Deploy`ment](manual-deployment.html): Learn about starting a multi-node secure cluster and accessing it from a client.
+- [Manual Deployment](manual-deployment.html): Learn about starting a multi-node secure cluster and accessing it from a client.
 - [Start a Node](cockroach-start.html): Learn more about the flags you pass when adding a node to a secure cluster
 - [Client Connection Parameters](connection-parameters.html)
