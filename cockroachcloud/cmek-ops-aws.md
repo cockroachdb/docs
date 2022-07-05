@@ -5,7 +5,7 @@ toc: true
 docs_area: manage.security
 ---
 
-This page covers the procedures required to provision a [Customer Managed Encryption Key (CMEK)](cmek.html) for your {{ site.data.products.dedicated }} cluster with Amazon Web Services (AWS).
+This page covers the procedures required to provision a [Customer-Managed Encryption Key (CMEK)](cmek.html) for your {{ site.data.products.dedicated }} cluster with Amazon Web Services (AWS).
 
 This is part of the larger process of [Enabling CMEK for a {{ site.data.products.dedicated }} cluster](managing-cmek.html#enable-cmek).
 
