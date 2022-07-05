@@ -63,7 +63,7 @@ The CockroachDB Helm chart is undergoing maintenance for compatibility with Kube
     1. You may want to modify `storage.persistentVolume.size` and `storage.persistentVolume.storageClass` for your use case. This chart defaults to 100Gi of disk space per pod. For more details on customizing disks for performance, see [these instructions](kubernetes-performance.html#disk-type).
 
         {{site.data.alerts.callout_info}}
-        If necessary, you can [expand disk size](configure-cockroachdb-kubernetes.html#expand-disk-size) after the cluster is live.
+        If necessary, you can [expand disk size](/docs/{{site.versions["stable"]}}/configure-cockroachdb-kubernetes.html?filters=helm#expand-disk-size) after the cluster is live.
         {{site.data.alerts.end}}
 
 1. Install the CockroachDB Helm chart. 
@@ -111,5 +111,5 @@ The CockroachDB Helm chart is undergoing maintenance for compatibility with Kube
     ~~~
 
 {{site.data.alerts.callout_success}}
-The StatefulSet configuration sets all CockroachDB nodes to log to `stderr`, so if you ever need access to logs for a pod or node, use `kubectl logs <podname>` rather than checking the log on the persistent volume.
+The StatefulSet configuration sets all CockroachDB nodes to log to `stderr`, so if you ever need access to logs for a pod, use `kubectl logs <podname>` rather than checking the log on the persistent volume.
 {{site.data.alerts.end}}
