@@ -14,7 +14,7 @@ You can manage your CMEK keys using one or more of the following services:
 - Amazon Web Services (AWS) KMS
 - Google Cloud Platform (GCP) KMS
 
-See: [Managing Customer-Managed Encryption Keys (CMEK) for CockroachDB Dedicated](managing-cmek.html)
+See: [Managing Customer-Managed Encryption Keys (CMEK) for {{ site.data.products.dedicated }}](managing-cmek.html)
 
 {{ site.data.products.dedicated }} includes support for referring to CMEK keys in [Hashicorp Vault Secrets Manager](https://www.vaultproject.io/docs/secrets/key-management), which can distribute keys stored in multiple KMS systems, as long as the actual keys are stored in AWS KMS or GCP KMS.
 
