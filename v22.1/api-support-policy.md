@@ -33,7 +33,6 @@ The following changes are also known as "breaking changes":
 - Removal of an optional command-line flag or HTTP field.
 - Change in behavior of a [built-in function](functions-and-operators.html#built-in-functions) without fixing a bug or PostgreSQL incompatibility.
 - Removal of possible values in an `ENUM` session variable or [cluster setting](cluster-settings.html).
-- Change to [authorization](security-reference/authorization.html) requirements.
 
 ### Backward-compatible changes
 
