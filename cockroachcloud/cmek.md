@@ -82,6 +82,15 @@ Going forward:
 If the CMEK key is destroyed, the cluster's data can't be recovered or restored from a managed backup in {{ site.data.products.db }} or from a manual backup to the same cluster. It may be possible to restore a manual backup to a new cluster. 
 {{site.data.alerts.end}}
 
+## Rotation of a CMEK key
+
+A CMEK key can be rotated within your KMS platform or within {{ site.data.products.dedicated }}.
+
+- When you rotate a CMEK key within your KMS platform, a new version of the key is created with new key material. In both GCP KMS and AWS KMS, encryption operations automatically uses the active key version, while decryption operations automatically use the key version that was used to encrypt the data. For this reason, {{ site.data.products.dedicated }} does not need any awareness of rotation operations within your KMS platform.
+- When you rotate a CMEK key using the {{ site.data.products.db }} API, you supply a new CMEK KEY URI, and {{ site.data.products.dedicated }} begins using the new key to protect the store key. In a similar way, after adding a new region to a cluster, you "rotate" that region from using no CMEK key to using a CMEK key.
+
+To learn more about rotating a CMEK key using the {{ site.data.products.db }} API, visit [Rotating a CMEK key](managing-cmek.html#rotating-a-cmek-key).
+
 ## Backup and restore operations on a cluster with CMEK
 
 This section describes how enabling CMEK changes backup and restore operations on a cluster.
@@ -103,8 +112,7 @@ The CMEK feature has the following limitations:
 
 - CMEK can be enabled only on clusters created after April 1, 2022 (AWS) or June 9, 2022 (GCP).
 - To enable or revoke CMEK on a cluster, you must use the [Cloud API](/docs/cockroachcloud/cloud-api.html). It's not possible to enable CMEK using the {{ site.data.products.db }} Console.
-- If you add a new region to a cluster with CMEK enabled, the new region will not be protected by the CMEK key.
-- Rotating a CMEK key in {{ site.data.products.db }} is not supported. However, if your KMS supports key rotation without changing the key's URI, it will work as expected for a CMEK key.
+- If you add a new region to a cluster with CMEK enabled, the new region will not be automatically protected by the CMEK key.
 
 ## See also
 

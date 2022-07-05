@@ -31,6 +31,8 @@ This section gives a high level overview of the operations involved with impleme
 
 - [Checking CMEK status](#check-cmek-status) allows you to inspect the CMEK state of your cluster with a call to the Cluster API.
 
+- [Rotating a CMEK key](#rotating-a-cmek-key) allows you to begin using a new CMEK key for one or more cluster regions.
+
 - [Revoking CMEK for a cluster](#revoking-cmek-for-a-cluster) by revoking {{ site.data.products.dedicated }}'s access to your CMEK at the IAM/KMS level.
 
 - [Restore CMEK following a revocation event](#restore-cmek-following-a-revocation-event) by reauthorizing {{ site.data.products.db }} to use your key, and coordinating with our support team to assist in recovering your Organization.
@@ -95,6 +97,31 @@ curl --request GET \
   --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/cmek \
   --header "Authorization: Bearer ${API_KEY}"
 ```
+
+## Rotating a CMEK key
+
+A CMEK key can be rotated within your KMS platform or within {{ site.data.products.dedicated }}.
+
+When you rotate a CMEK key within your KMS platform, a new version of the key is created with new key material. In both GCP KMS and AWS KMS, encryption operations automatically uses the active key version, while decryption operations automatically use the key version that was used to encrypt the data. For this reason, {{ site.data.products.dedicated }} does not need any awareness of rotation operations within your KMS platform.
+
+When you rotate a CMEK key using the {{ site.data.products.db }} API, you supply a new CMEK KEY URI for each region you want to update, and {{ site.data.products.dedicated }} begins using the new key to protect the store key. In a similar way, after adding a new region to a cluster, you can begin using CMEK to protect data at rest in that region by "rotating" that region from using no CMEK key to using a CMEK key.
+
+{{site.data.alerts.callout_success}}
+The API to rotate a CMEK key is nearly identical to the API for [activating CMEK on a cluster](#step-4-activate-cmek-for-your-cockroachdb-dedicated-cluster), with one notable exception. When you activate CMEK, you use a `POST` request that includes a CMEK key for each of the cluster's regions. When you rotate a CMEK key, you use a `PUT` request and include a CMEK key for each region whose CMEK key to rotate.
+{{site.data.alerts.end}}
+
+{% include_cached copy-clipboard.html %}
+```shell
+CLUSTER_ID= #{ your cluster ID }
+API_KEY= #{ your API key }
+curl --request PUT \
+  --url https://cockroachlabs.cloud/api/v1/clusters/${CLUSTER_ID}/cmek \
+  --header "Authorization: Bearer ${API_KEY}" \
+  --header 'content-type: application/json' \
+  --data "@cmek_config.json"
+```
+
+<!-- TODO: Provide an AWS and GCP example for cmek_config.json for enabling CMEK and for rotating CMEK for a single region or all regions -->
 
 ## Revoking CMEK for a cluster
 
