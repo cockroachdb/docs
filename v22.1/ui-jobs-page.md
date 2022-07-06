@@ -52,7 +52,7 @@ Job ID | Unique job ID. This value is used to [pause](pause-job.html), [resume](
 User | User that created the job.
 Creation Time (UTC) | Date and time the job was created.
 Last Execution Time (UTC) | Date and time the job was last executed.
-High-water Timestamp  | A checkpoint for a [changefeed's job progress](monitor-and-debug-changefeeds.html#monitor-a-changefeed) that guarantees that all changes before (or at) the timestamp have been emitted. Hover over the high-water timestamp to view the [system time](as-of-system-time.html).
+High-water Timestamp  | A checkpoint for a [changefeed job's progress](monitor-and-debug-changefeeds.html#monitor-a-changefeed) that guarantees that all changes before (or at) the timestamp have been emitted. Hover over the high-water timestamp to view the [system time](as-of-system-time.html).
 Execution Count | Number of times the job was executed.
 
 ### Job status
@@ -65,7 +65,7 @@ Status | Description
 `SUCCEEDED` | Job successfully completed.
 `CANCELED` | Job was [cancelled](cancel-job.html).
 `RUNNING`  | Job is running. A job that is running will be displayed with its percent completion and time remaining, rather than the `RUNNING` status.
-`REVERTING`| Job failed or was canceled and its changes are being being reverted.
+`REVERTING`| Job failed or was canceled and its changes are being reverted.
 `RETRYING` | Job is retrying another job that failed.
 
 ## Job details
