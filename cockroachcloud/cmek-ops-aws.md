@@ -150,6 +150,55 @@ After you have provisioned the cross-account IAM role and CMEK key for your Cock
 
 After you have provisioned the IAM role and KMS key for your CockroachDB cluster's CMEK, return to [Enabling CMEK for a {{ site.data.products.dedicated }} cluster](managing-cmek.html#step-4-activate-cmek-for-your-cockroachdb-dedicated-cluster).
 
+
+## Step 3. Build your CMEK configuration manifest
+
+Compile the information about the service account and key we've just created into a manifest, which you will use to activate CMEK on your cluster with the {{ site.data.products.db }} API.
+
+1. Set the required information as environment variables:
+
+	{% include_cached copy-clipboard.html %}
+	~~~shell
+	export CLUSTER_REGION= # the region of the {{ site.data.products.dedicated}}-controlled AWS account where your cluster is located
+	export KEY_ARN= # the Amazon Resource Name (ARN) of your key
+	export CROSS_ACCOUNT_ROLE= # the Amazon Resource Name (ARN) of your cross-tenant service account
+	~~~
+
+1. Then copy paste the following heredoc command to generate the YAML file, populating the values from your shell environment. (Alternatively, you can manually create the YAML file).
+
+	{% include_cached copy-clipboard.html %}
+	~~~shell
+	<<YML > cmek_config.yml
+	---
+	region_specs:
+	- region: "${CLUSTER_REGION}"
+	  key_spec:
+	    type: AWS_KMS
+	    uri: "${KEY_ARN}"
+	    auth_principal: "${CROSS_ACCOUNT_IAM}"
+	YML
+	~~~
+
+1. Use ruby (or another technique), to compile human-editable YAML into API-parsable JSON:
+
+	{% include_cached copy-clipboard.html %}
+	~~~shell
+	ruby -ryaml -rjson -e 'puts(YAML.load(ARGF.read).to_json)' < cmek_config.yml > cmek_config.json
+	~~~
+
+1. Use the shell utility JQ to inspect JSON payload:
+
+	{{site.data.alerts.callout_info}}
+	On a Mac, install JQ with `brew install jq`
+	{{site.data.alerts.end}}
+
+	{% include_cached copy-clipboard.html %}
+	~~~shell
+	cat cmek_config.json | jq
+	~~~
+
+After you have built your CMEK configuration manifest with the details of your cluster, your newly pr service account and KMS key for your CockroachDB cluster's CMEK, return to [Enabling CMEK for a {{ site.data.products.dedicated }} cluster](managing-cmek.html#step-4-activate-cmek-for-your-cockroachdb-dedicated-cluster).
+
 ## Appendix: IAM policy for the CMEK key
 
 This IAM policy is to be attached to the CMEK key. It grants the required KMS permissions to the cross-account IAM role to be used by {{ site.data.products.dedicated }}.
