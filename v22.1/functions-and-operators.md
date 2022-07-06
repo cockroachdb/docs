@@ -23,7 +23,7 @@ A function's _volatility_ is a promise to the [optimizer](cost-based-optimizer.h
 
 Type   | Description | Examples
 -------|-------------|----------
-Volatile | The function is not guaranteed to return the same results given the same arguments in any context. | `random`, `crdb_internal.force_error`, `nextval`, `now`
+Volatile | The function can modify the state of the database and is not guaranteed to return the same results given the same arguments in any context. | `random`, `crdb_internal.force_error`, `nextval`, `now`
 Stable | The function is guaranteed to return the same results given the same arguments whenever it is evaluated within the same statement. The optimizer can optimize multiple calls of the function to a single call. | `current_timestamp`, `current_date`
 Immutable | The function does not depend on configuration settings and is guaranteed to return the same results given the same arguments in any context.  The optimizer can pre-evaluate the function when a query calls it with constant arguments. | `log`, `from_json`
 Leakproof | The function does not depend on configuration settings and is guaranteed to return the same results given the same arguments in any context. In addition, no information about the arguments is conveyed except via the return value. Any function that might throw an error depending on the values of its arguments is not leakproof. Leakproof is strictly stronger than Immutable. | Integer [comparison](#comparison-functions)
