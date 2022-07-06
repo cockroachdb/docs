@@ -19,6 +19,11 @@ If you have a tested or developed a third-party tool with CockroachDB, and would
 
 - [libpqxx](https://github.com/cockroachdb/community-tooling-samples/tree/main/cxx)
 
+### Elixir
+
+- [Postgrex](https://hexdocs.pm/postgrex/Postgrex.html)
+    - [Example of connecting to {{ site.data.products.serverless }} using Postgrex](https://github.com/devalexandre/elixir-cockroach)
+
 ### Go
 
 - [sqlx](http://jmoiron.github.io/sqlx/)
