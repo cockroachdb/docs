@@ -42,6 +42,17 @@ Once backfilling is complete, all nodes will switch over to the new schema, and 
 
 For more technical details, see [How online schema changes are possible in CockroachDB][blog].
 
+{% include_cached new-in.html version="v22.1" %} Online schema changes that trigger an index backfill (adding data to an index) will now pause if the node executing the schema change is running out of disk space. The following statements will now pause if the node executing the schema change is running out of disk space:
+
+- [`ADD COLUMN`](add-column.html)
+- [`ALTER PRIMARY KEY`](alter-primary-key.html)
+- [`CREATE INDEX`](create-index.html)
+- [`CREATE TABLE AS`](create-table-as.html)
+- [`REFRESH`](refresh.html)
+- [`SET LOCALITY`](set-locality.html) under one of the following conditions:
+  - The locality changes from [`REGIONAL BY ROW`](set-locality.html#regional-by-row) to something that is not `REGIONAL BY ROW`.
+  - The locality changes from something that is not `REGIONAL BY ROW` to `REGIONAL BY ROW`.
+
 {{site.data.alerts.callout_info}}
 If a schema change fails, the schema change job will be cleaned up automatically. However, there are limitations with rolling back schema changes within a transaction; for more information, [see below](#schema-change-ddl-statements-inside-a-multi-statement-transaction-can-fail-while-other-statements-succeed).
 {{site.data.alerts.end}}
