@@ -71,7 +71,7 @@ Therefore, applications should consider using `unique_rowid()` or `gen_random_uu
 Note that `sql_sequence_cached` will perform fewer distributed calls to increment sequences, resulting in better performance than `sql_sequence`. However, cached sequences may result in large gaps between serial sequence numbers if a session terminates before using all the values in its cache.
 {{site.data.alerts.end}}
 
-### Generated vaues for mode `unordered_rowid`
+### Generated values for mode `unordered_rowid`
 
 In this mode, a value is generated using the `unordered_unique_rowid()` [function](functions-and-operators.html#id-generation-functions). This function is similar to the [`rowid` mode](#generated-values-for-modes-rowid-and-virtual_sequence) but does not guarantee ordering.
 
