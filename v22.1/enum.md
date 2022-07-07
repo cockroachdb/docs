@@ -5,11 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
- User-defined `ENUM` [data types](data-types.html) consist of a set of enumerated, static values.
-
-{{site.data.alerts.callout_danger}}
-Clusters with `ENUM` types that are running alpha testing [releases](../releases/) of v20.2 will not be able to upgrade to beta testing releases or production releases of v20.2 due to internal representation changes.
-{{site.data.alerts.end}}
+A user-defined `ENUM` [data type](data-types.html) consists of a set of enumerated, static values.
 
 ## Syntax
 

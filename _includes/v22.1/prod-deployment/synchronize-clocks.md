@@ -79,7 +79,7 @@ CockroachDB requires moderate levels of [clock synchronization](recommended-prod
 
 Compute Engine instances are preconfigured to use [NTP](http://www.ntp.org/), which should keep offsets in the single-digit milliseconds. However, Google can’t predict how external NTP services, such as `pool.ntp.org`, will handle the leap second. Therefore, you should:
 
-- [Configure each GCE instance to use Google's internal NTP service](https://cloud.google.com/compute/docs/instances/managing-instances#configure_ntp_for_your_instances).
+- [Configure each GCE instance to use Google's internal NTP service](https://cloud.google.com/compute/docs/instances/configure-ntp#configure_ntp_for_your_instances).
 - If you plan to run a hybrid cluster across GCE and other cloud providers or environments, note that all of the nodes must be synced to the same time source, or to different sources that implement leap second smearing in the same way. See the [Production Checklist](recommended-production-settings.html#considerations) for details.
 
 {% elsif page.title contains "AWS" %}

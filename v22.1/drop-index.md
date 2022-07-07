@@ -23,7 +23,7 @@ The user must have the `CREATE` [privilege](security-reference/authorization.htm
 -----------|-------------
  `IF EXISTS`	| Drop the named indexes if they exist; if they do not exist, do not return an error.
  `table_name`	| The name of the table with the index you want to drop. Find table names with [`SHOW TABLES`](show-tables.html).
- `index_name`	| The name of the index you want to drop. Find index names with [`SHOW INDEX`](show-index.html).<br/><br/>You cannot drop a table's `primary` index.
+ `index_name`	| The name of the index you want to drop. Find index names with [`SHOW INDEX`](show-index.html).<br/><br/>You cannot drop a table's primary index.
  `CASCADE`	| Drop all objects (such as [constraints](constraints.html)) that depend on the indexes. `CASCADE` does not list objects it drops, so should be used cautiously.<br><br> To drop an index created with [`CREATE UNIQUE INDEX`](create-index.html#unique-indexes), you do not need to use `CASCADE`.
  `RESTRICT`	| _(Default)_ Do not drop the indexes if any objects (such as [constraints](constraints.html)) depend on them.
  `CONCURRENTLY` |  Optional, no-op syntax for PostgreSQL compatibility. All indexes are dropped concurrently in CockroachDB.
@@ -53,11 +53,11 @@ Suppose you create an index on the `name` and `city` columns of the `users` tabl
 ~~~
   table_name |     index_name      | non_unique | seq_in_index | column_name | direction | storing | implicit
 -------------+---------------------+------------+--------------+-------------+-----------+---------+-----------
-  users      | primary             |   false    |            1 | city        | ASC       |  false  |  false
-  users      | primary             |   false    |            2 | id          | ASC       |  false  |  false
-  users      | primary             |   false    |            3 | name        | N/A       |  true   |  false
-  users      | primary             |   false    |            4 | address     | N/A       |  true   |  false
-  users      | primary             |   false    |            5 | credit_card | N/A       |  true   |  false
+  users      | users_pkey          |   false    |            1 | city        | ASC       |  false  |  false
+  users      | users_pkey          |   false    |            2 | id          | ASC       |  false  |  false
+  users      | users_pkey          |   false    |            3 | name        | N/A       |  true   |  false
+  users      | users_pkey          |   false    |            4 | address     | N/A       |  true   |  false
+  users      | users_pkey          |   false    |            5 | credit_card | N/A       |  true   |  false
   users      | users_name_city_idx |    true    |            1 | name        | ASC       |  false  |  false
   users      | users_name_city_idx |    true    |            2 | city        | ASC       |  false  |  false
   users      | users_name_city_idx |    true    |            3 | id          | ASC       |  false  |   true
@@ -79,11 +79,11 @@ You can drop this index with the `DROP INDEX` statement:
 ~~~
   table_name | index_name | non_unique | seq_in_index | column_name | direction | storing | implicit
 -------------+------------+------------+--------------+-------------+-----------+---------+-----------
-  users      | primary    |   false    |            1 | city        | ASC       |  false  |  false
-  users      | primary    |   false    |            2 | id          | ASC       |  false  |  false
-  users      | primary    |   false    |            3 | name        | N/A       |  true   |  false
-  users      | primary    |   false    |            4 | address     | N/A       |  true   |  false
-  users      | primary    |   false    |            5 | credit_card | N/A       |  true   |  false
+  users      | users_pkey |   false    |            1 | city        | ASC       |  false  |  false
+  users      | users_pkey |   false    |            2 | id          | ASC       |  false  |  false
+  users      | users_pkey |   false    |            3 | name        | N/A       |  true   |  false
+  users      | users_pkey |   false    |            4 | address     | N/A       |  true   |  false
+  users      | users_pkey |   false    |            5 | credit_card | N/A       |  true   |  false
 (5 rows)
 ~~~
 
@@ -111,11 +111,11 @@ Suppose you create a [`UNIQUE`](unique.html) constraint on the `id` and `name` c
   users      | id_name_unique |   false    |            1 | id          | ASC       |  false  |  false
   users      | id_name_unique |   false    |            2 | name        | ASC       |  false  |  false
   users      | id_name_unique |   false    |            3 | city        | ASC       |  false  |   true
-  users      | primary        |   false    |            1 | city        | ASC       |  false  |  false
-  users      | primary        |   false    |            2 | id          | ASC       |  false  |  false
-  users      | primary        |   false    |            3 | name        | N/A       |  true   |  false
-  users      | primary        |   false    |            4 | address     | N/A       |  true   |  false
-  users      | primary        |   false    |            5 | credit_card | N/A       |  true   |  false
+  users      | users_pkey     |   false    |            1 | city        | ASC       |  false  |  false
+  users      | users_pkey     |   false    |            2 | id          | ASC       |  false  |  false
+  users      | users_pkey     |   false    |            3 | name        | N/A       |  true   |  false
+  users      | users_pkey     |   false    |            4 | address     | N/A       |  true   |  false
+  users      | users_pkey     |   false    |            5 | credit_card | N/A       |  true   |  false
 (8 rows)
 ~~~
 
@@ -129,8 +129,8 @@ If no index exists on `id` and `name`, CockroachDB automatically creates an inde
 ~~~
   table_name |   index_name   | non_unique | seq_in_index | column_name | direction | storing | implicit
 -------------+----------------+------------+--------------+-------------+-----------+---------+-----------
-  users      | primary        |   false    |            1 | city        | ASC       |  false  |  false
-  users      | primary        |   false    |            2 | id          | ASC       |  false  |  false
+  users      | users_pkey     |   false    |            1 | city        | ASC       |  false  |  false
+  users      | users_pkey     |   false    |            2 | id          | ASC       |  false  |  false
   users      | id_name_unique |   false    |            1 | id          | ASC       |  false  |  false
   users      | id_name_unique |   false    |            2 | name        | ASC       |  false  |  false
   users      | id_name_unique |   false    |            3 | city        | ASC       |  false  |   true
@@ -165,11 +165,11 @@ To drop an index and its dependent objects, you can use `CASCADE`:
 ~~~
   table_name | index_name | non_unique | seq_in_index | column_name | direction | storing | implicit
 -------------+------------+------------+--------------+-------------+-----------+---------+-----------
-  users      | primary    |   false    |            1 | city        | ASC       |  false  |  false
-  users      | primary    |   false    |            2 | id          | ASC       |  false  |  false
-  users      | primary    |   false    |            3 | name        | N/A       |  true   |  false
-  users      | primary    |   false    |            4 | address     | N/A       |  true   |  false
-  users      | primary    |   false    |            5 | credit_card | N/A       |  true   |  false
+  users      | users_pkey |   false    |            1 | city        | ASC       |  false  |  false
+  users      | users_pkey |   false    |            2 | id          | ASC       |  false  |  false
+  users      | users_pkey |   false    |            3 | name        | N/A       |  true   |  false
+  users      | users_pkey |   false    |            4 | address     | N/A       |  true   |  false
+  users      | users_pkey |   false    |            5 | credit_card | N/A       |  true   |  false
 (5 rows)
 ~~~
 
@@ -181,7 +181,7 @@ To drop an index and its dependent objects, you can use `CASCADE`:
 ~~~
   table_name | constraint_name | constraint_type |            details             | validated
 -------------+-----------------+-----------------+--------------------------------+------------
-  users      | primary         | PRIMARY KEY     | PRIMARY KEY (city ASC, id ASC) |   true
+  users      | users_pkey      | PRIMARY KEY     | PRIMARY KEY (city ASC, id ASC) |   true
 (1 row)
 ~~~
 

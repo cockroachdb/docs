@@ -77,7 +77,7 @@ Files are uploaded with a `.tmp` suffix and are renamed once the userfile upload
 `--echo-sql`     | Reveal the SQL statements sent implicitly by the command-line utility.
 `--url`          | A [connection URL](connection-parameters.html#connect-using-a-url) to use instead of the other arguments.<br><br>**Env Variable:** `COCKROACH_URL`<br>**Default:** no URL
 `--user`<br>`-u` | The [SQL user](create-user.html) that will own the client session.<br><br>**Env Variable:** `COCKROACH_USER`<br>**Default:** `root`
-`--recursive`<br>`-r` | <span class="version-tag">New in v21.2:</span> Upload a directory and its contents rooted at a specified directory recursively to user-scoped file storage. For example: `cockroach userfile upload -r <location/of/file> <userfile destination/of/file>` <br><br> See [File Destination](#file-destination) for detail on forming the destination URI and this [usage example](#upload-a-directory-recursively) for working with the `--recursive` flag.
+`--recursive`<br>`-r` | **New in v21.2:** Upload a directory and its contents rooted at a specified directory recursively to user-scoped file storage. For example: `cockroach userfile upload -r <location/of/file> <userfile destination/of/file>` <br><br> See [File Destination](#file-destination) for detail on forming the destination URI and this [usage example](#upload-a-directory-recursively) for working with the `--recursive` flag.
 
 ## Examples
 

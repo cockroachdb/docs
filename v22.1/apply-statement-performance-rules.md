@@ -216,8 +216,8 @@ SHOW INDEXES FROM rides;
 ~~~
   table_name |                  index_name                   | non_unique | seq_in_index | column_name  | direction | storing | implicit
 -------------+-----------------------------------------------+------------+--------------+--------------+-----------+---------+-----------
-  rides      | primary                                       |   false    |            1 | city         | ASC       |  false  |  false
-  rides      | primary                                       |   false    |            2 | id           | ASC       |  false  |  false
+  rides      | rides_pkey                                    |   false    |            1 | city         | ASC       |  false  |  false
+  rides      | rides_pkey                                    |   false    |            2 | id           | ASC       |  false  |  false
   rides      | rides_auto_index_fk_city_ref_users            |    true    |            1 | city         | ASC       |  false  |  false
   rides      | rides_auto_index_fk_city_ref_users            |    true    |            2 | rider_id     | ASC       |  false  |  false
   rides      | rides_auto_index_fk_city_ref_users            |    true    |            3 | id           | ASC       |  false  |   true

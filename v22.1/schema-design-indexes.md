@@ -67,6 +67,10 @@ For an example, see [Example](#example).
 
 Here are some best practices for creating and using secondary indexes.
 
+{{site.data.alerts.callout_success}}
+The [`EXPLAIN`](explain.html#success-responses) command provides index recommendations, including index actions and SQL statements to perform the actions.
+{{site.data.alerts.end}}
+
 ### Index contents
 
 - Index all columns that you plan to use for [sorting](order-by.html) or [filtering](select-clause.html#filter-rows) data.
@@ -241,7 +245,7 @@ To view the indexes in the `vehicles` table, issue a [`SHOW INDEXES`](show-index
 
 The output from this `SHOW` statement displays the names and columns of the two indexes on the table (i.e., `vehicles_pkey` and `type_available_idx`).
 
-Note that the `last_location` column's `storing` value is `true` in the `type_available_idx` index, and is therefore not sorted. Also note that the vehicles_pkey key column `id` is implicit in the index, meaning the `id` column is implicitly indexed in `type_available_idx`.
+The `last_location` column's `storing` value is `true` in the `type_available_idx` index, and is therefore not sorted. The primary key column `id` is implicit in the index, meaning the `id` column is implicitly indexed in `type_available_idx`.
 
 To see an index definition, use a [`SHOW CREATE`](show-create.html) statement on the table that contains the index:
 
@@ -272,7 +276,7 @@ It's likely that you will need to update your database schema at some point. For
 ## What's next?
 
 - [Change and Remove Objects in a Database Schema](schema-design-update.html)
-- Read about [how schema changes work](online-schema-changes.html)
+- [Online Schema Changes](online-schema-changes.html)
 - [Insert Data](schema-design-indexes.html)
 - [Query Data](online-schema-changes.html)
 
@@ -286,6 +290,14 @@ You might also be interested in the following pages:
 - [Index Spatial Data](spatial-indexes.html)
 - [Cockroach Commands](cockroach-commands.html)
 - [Create a User-defined Schema](schema-design-schema.html)
+- [Partial Indexes](partial-indexes.html)
+- [Hash-sharded Indexes](hash-sharded-indexes.html)
+- [Generalized Inverted Indexes](inverted-indexes.html)
+- [Expression Indexes](expression-indexes.html)
+- [Spatial Indexes](spatial-indexes.html)
+- [`cockroach` Commands Overview](cockroach-commands.html)
+- [Database Schemas](schema-design-schema.html)
 - [Create a Database](schema-design-database.html)
 - [Schema Design Overview](schema-design-overview.html)
+- [Create a Table](schema-design-table.html)
 - [CockroachDB naming hierarchy](sql-name-resolution.html#naming-hierarchy)

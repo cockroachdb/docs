@@ -8,11 +8,11 @@ docs_area: develop
 
 This page provides an overview of database schemas in CockroachDB.
 
-In later **Design a Database Schema** sections, we provide best practices for designing a database schema that optimizes performance and storage resources.
+The follow-up pages listed in [What's next](#whats-next) provide best practices for designing a database schema that optimizes performance and storage resources.
 
 ## Database schema objects
 
-The sections below provide a brief overview of the logical objects that make up a database schema in CockroachDB, for the purpose of orienting application developers.
+The following sections provide a brief overview of the logical objects that make up a database schema in CockroachDB.
 
 For detailed documentation on object name resolution, see [Name Resolution](sql-name-resolution.html).
 
@@ -38,7 +38,7 @@ For guidance on creating user-defined schemas, see [Create a User-defined Schema
 
 ### Tables
 
-Tables, belong to the third and lowest level of the naming hierarchy. Each table can belong to a single [user-defined schema](#schemas).
+Tables, belong to the third and lowest level of the naming hierarchy. Each table can belong to a single [schema](#schemas).
 
 Tables contain *rows* of data. Each value in a row of data belongs to a particular *column*. Each column allows values of data of a single data type. Columns can be further qualified with [column-level constraints](constraints.html), or computed with [scalar expressions](computed-columns.html).
 
@@ -46,11 +46,11 @@ For guidance on defining tables, see [Tables](schema-design-table.html).
 
 ### Indexes
 
-An index is a copy of the rows in a single table, sorted by a column or set of columns. CockroachDB queries use indexes to more efficiently find data in a table, given the values of a particular column. Each index belongs to a single table.
+An _index_ is a copy of the rows in a single table, sorted by a column or set of columns. CockroachDB queries use indexes to more efficiently find data in a table, given the values of a particular column. Each index belongs to a single table.
 
-The two main types of indexes are the `primary` index, an index on the row-identifying [primary key columns](primary-key.html), and the secondary index, an index created on non-primary-key columns of your choice.
+The two main types of indexes are the primary index, an index on the row-identifying [primary key columns](primary-key.html), and the secondary index, an index created on non-primary-key columns of your choice.
 
-For guidance on defining primary keys, see [Select Primary Key Columns](schema-design-table.html#select-primary-key-columns). For guidance on defining secondary indexes, see [Add a Secondary Index](schema-design-indexes.html).
+For guidance on defining primary keys, see [Select primary key columns](schema-design-table.html#select-primary-key-columns). For guidance on defining secondary indexes, see [Secondary Indexes](schema-design-indexes.html).
 
 #### Specialized indexes
 
@@ -68,19 +68,19 @@ CockroachDB supports several other objects at the third level of the naming hier
 
 #### Views
 
-A view is a stored and named selection query.
+A _view_ is a stored and named selection query.
 
 For guidance on using views, see [Views](views.html).
 
 #### Sequences
 
-Sequences create and store sequential data.
+A _sequence_ creates and stores sequential data.
 
 For guidance on using sequences, see [the `CREATE SEQUENCE` syntax page](create-sequence.html).
 
 #### Temporary objects
 
-A temporary object is an object, such as a table, view, or sequence, that is not stored to persistent memory.
+A _temporary object_ is an object, such as a table, view, or sequence, that is not stored to persistent memory.
 
 For guidance on using temporary objects, see [Temporary Tables](temporary-tables.html).
 

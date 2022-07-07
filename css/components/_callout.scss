@@ -55,11 +55,11 @@
   }
   
   &--version {
-    background-color: $cl_warning;
-    border-left-color: $cl_warning;
+    background-color: rgba(105, 51, 255, 0.2);
+    border-left-color: #6933FF;
 
     h4, .bs-callout__label {
-      color: $cl_warning;
+      color: #190F33;
     }      
   }
 }

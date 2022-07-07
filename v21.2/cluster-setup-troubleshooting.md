@@ -522,6 +522,12 @@ The [DB Console][db_console] provides several ways to check for node liveness is
 For more information about how node liveness works, see [Replication Layer](architecture/replication-layer.html#epoch-based-leases-table-data).
 {{site.data.alerts.end}}
 
+## Partial availability issues
+
+If your cluster is in a partially-available state due to a recent node or network failure, the internal logging table `system.eventlog` might be unavailable. This can cause the logging of [notable events](eventlog.html) (e.g., the execution of SQL statements) to the `system.eventlog` table to fail to complete, contributing to cluster unavailability. If this occurs, you can set the [cluster setting](cluster-settings.html) `server.eventlog.enabled` to `false` to disable writing notable log events to this table, which may help to recover your cluster.
+
+Even with `server.eventlog.enabled` set to `false`, notable log events are still sent to configured [log sinks](configure-logs.html#configure-log-sinks) as usual.
+
 ## Check for under-replicated or unavailable data
 
 To see if any data is under-replicated or unavailable in your cluster, use the `system.replication_stats` report as described in [Replication Reports](query-replication-reports.html).

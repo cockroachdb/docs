@@ -88,7 +88,7 @@ $ cockroach sql \
 
 You're now ready to start adding user-defined schemas to the `movr` database.
 
-For guidance on creating user-defined schemas, see at [Create a User-defined Schema](schema-design-schema.html).
+For guidance on creating user-defined schemas, see [Create a User-defined Schema](schema-design-schema.html).
 
 ## What's next?
 
@@ -98,6 +98,6 @@ For guidance on creating user-defined schemas, see at [Create a User-defined Sch
 You might also be interested in the following pages:
 
 - [`CREATE DATABASE`](create-database.html)
-- [Cockroach Commands](cockroach-commands.html)
 - [Schema Design Overview](schema-design-overview.html)
+- [`cockroach` Commands Overview](cockroach-commands.html)
 - [CockroachDB naming hierarchy](sql-name-resolution.html#naming-hierarchy)

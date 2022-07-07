@@ -28,7 +28,7 @@ The user must have the `CREATE` [privilege](security-reference/authorization.htm
 `table_name` | The name of the [table](create-table.html) on which you are commenting.
 `column_name` | The name of the [column](add-column.html) on which you are commenting.
 `table_index_name` | The name of the [index](indexes.html) on which you are commenting.
-`comment_text` | The comment ([`STRING`](string.html)) you are associating to the object.
+`comment_text` | The comment ([`STRING`](string.html)) you are associating to the object.  You can remove a comment by replacing the string with `NULL`.
 
 ## Examples
 
@@ -51,12 +51,12 @@ To view database comments, use [`SHOW DATABASES`](show-databases.html):
 ~~~
 
 ~~~
-  database_name |                              comment
-+---------------+-------------------------------------------------------------------+
-  defaultdb     | NULL
-  movr          | This database contains information about users, vehicles, and rides.
-  postgres      | NULL
-  system        | NULL
+  database_name | owner | primary_region | regions | survival_goal |                               comment
+----------------+-------+----------------+---------+---------------+-----------------------------------------------------------------------
+  defaultdb     | root  | NULL           | {}      | NULL          | NULL
+  movr          | demo  | NULL           | {}      | NULL          | This database contains information about users, vehicles, and rides.
+  postgres      | root  | NULL           | {}      | NULL          | NULL
+  system        | node  | NULL           | {}      | NULL          | NULL
 (4 rows)
 ~~~
 
@@ -169,14 +169,38 @@ To view column comments, use [`SHOW INDEXES ... WITH COMMENT`](show-index.html):
 ~~~
   table_name |   index_name   | non_unique | seq_in_index | column_name | direction | storing | implicit |                             comment
 -------------+----------------+------------+--------------+-------------+-----------+---------+----------+------------------------------------------------------------------
-  users      | primary        |   false    |            1 | city        | ASC       |  false  |  false   | NULL
-  users      | primary        |   false    |            2 | id          | ASC       |  false  |  false   | NULL
-  users      | primary        |   false    |            3 | name        | N/A       |  true   |  false   | NULL
-  users      | primary        |   false    |            4 | address     | N/A       |  true   |  false   | NULL
-  users      | primary        |   false    |            5 | credit_card | N/A       |  true   |  false   | NULL
+  users      | users_pkey     |   false    |            1 | city        | ASC       |  false  |  false   | NULL
+  users      | users_pkey     |   false    |            2 | id          | ASC       |  false  |  false   | NULL
+  users      | users_pkey     |   false    |            3 | name        | N/A       |  true   |  false   | NULL
+  users      | users_pkey     |   false    |            4 | address     | N/A       |  true   |  false   | NULL
+  users      | users_pkey     |   false    |            5 | credit_card | N/A       |  true   |  false   | NULL
   users      | users_name_idx |    true    |            1 | name        | ASC       |  false  |  false   | This index improves performance on queries that filter by name.
   users      | users_name_idx |    true    |            2 | city        | ASC       |  false  |   true   | This index improves performance on queries that filter by name.
   users      | users_name_idx |    true    |            3 | id          | ASC       |  false  |   true   | This index improves performance on queries that filter by name.
+~~~
+
+### Remove a comment from a database
+
+To remove a comment from a database:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> COMMENT ON DATABASE movr IS NULL;
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> SHOW DATABASES WITH COMMENT;
+~~~
+
+~~~
+  database_name | owner | primary_region | regions | survival_goal | comment
+----------------+-------+----------------+---------+---------------+----------
+  defaultdb     | root  | NULL           | {}      | NULL          | NULL
+  movr          | demo  | NULL           | {}      | NULL          | NULL
+  postgres      | root  | NULL           | {}      | NULL          | NULL
+  system        | node  | NULL           | {}      | NULL          | NULL
+(4 rows)
 ~~~
 
 ## See also

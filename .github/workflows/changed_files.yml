@@ -44,8 +44,8 @@ jobs:
               major_version=${path[0]}
             fi
             file_name=${path[-1]}
-            mainRefs=($(grep -irl ${file_name} ${major_version} | sed -e 's/^\.\///g'))
-            includeRefs=($(grep -irl ${file_name} _includes/${major_version} | sed -e 's/^\.\///g'))
+            mainRefs=($(grep -irl /${file_name} ${major_version} | sed -e 's/^\.\///g'))
+            includeRefs=($(grep -irl /${file_name} _includes/${major_version} | sed -e 's/^\.\///g'))
             if [[ ${#mainRefs[@]} > 0 ]]
             then
               for ref in ${mainRefs[@]}; do

@@ -56,7 +56,7 @@ To relocate just the lease without moving the replicas, run a statement like the
 ~~~
 
 {{site.data.alerts.callout_info}}
-<span class="version-tag">New in v22.1:</span> If you prefer to use an approach to relocating replicas and leases based on range IDs, see the [`ALTER RANGE ... RELOCATE`](alter-range-relocate.html) statement.
+{% include_cached new-in.html version="v22.1" %} If you prefer to use an approach to relocating replicas and leases based on range IDs, see the [`ALTER RANGE ... RELOCATE`](alter-range-relocate.html) statement.
 {{site.data.alerts.end}}
 
 ### Show table fingerprints
@@ -146,10 +146,6 @@ The table below lists the experimental SQL functions and operators available in 
 ## Temporary objects
 
  Support for [temporary tables](temporary-tables.html), [temporary views](views.html#temporary-views), and [temporary sequences](create-sequence.html#temporary-sequences) is currently experimental in CockroachDB. If you create too many temporary objects in a session, the performance of DDL operations will degrade. Performance limitations could persist long after creating the temporary objects. For more details, see [cockroachdb/cockroach#46260](https://github.com/cockroachdb/cockroach/issues/46260).
-
-## Hash-sharded indexes
-
- CockroachDB supports hash-sharded indexes with the [`USING HASH`](create-index.html#parameters) keywords. Hash-sharded indexes distribute sequential traffic uniformly across ranges, eliminating single-range hot spots and improving write performance on sequentially-keyed indexes at a small cost to read performance. For more information, see [Hash-sharded indexes](hash-sharded-indexes.html).
 
 ## Password authentication without TLS
 

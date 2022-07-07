@@ -55,7 +55,7 @@ The user must have the `CREATE` [privilege](security-reference/authorization.htm
   table_name |  constraint_name  | constraint_type |                         details                         | validated
 -------------+-------------------+-----------------+---------------------------------------------------------+------------
   vehicles   | fk_city_ref_users | FOREIGN KEY     | FOREIGN KEY (city, owner_id) REFERENCES users(city, id) |   true
-  vehicles   | primary           | PRIMARY KEY     | PRIMARY KEY (city ASC, id ASC)                          |   true
+  vehicles   | vehicles_pkey     | PRIMARY KEY     | PRIMARY KEY (city ASC, id ASC)                          |   true
 (2 rows)
 ~~~
 
@@ -72,7 +72,7 @@ The user must have the `CREATE` [privilege](security-reference/authorization.htm
 ~~~
   table_name | constraint_name | constraint_type |            details             | validated
 -------------+-----------------+-----------------+--------------------------------+------------
-  vehicles   | primary         | PRIMARY KEY     | PRIMARY KEY (city ASC, id ASC) |   true
+  vehicles   | vehicles_pkey   | PRIMARY KEY     | PRIMARY KEY (city ASC, id ASC) |   true
 (1 row)
 ~~~
 

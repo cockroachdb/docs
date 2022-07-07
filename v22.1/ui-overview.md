@@ -87,6 +87,10 @@ DB Console area | Privileged information
 [Transactions](ui-transactions-page.html) | Transactions
 [Advanced Debug](ui-debug-pages.html) (some reports) | Stored table data, operational details, internal IP addresses, names, credentials, application data (depending on report)
 
+## DB Console troubleshooting
+
+The DB Console stores temporary data in a time-series database in order to generate the various [metrics](#metrics) graphs. If your cluster is comprised of a large number of nodes where individual nodes have very limited memory available (e.g., under `8 GiB`), this underlying time-series database may not have enough memory available per-node to serve these requests quickly. If the DB Console experiences issues rendering these metrics graphs, consider increasing the value of the [`--max-tsdb-memory`](cockroach-start.html#flags-max-tsdb-memory) flag.
+
 ## Diagnostics reporting
 
 By default, the DB Console shares anonymous usage details with Cockroach Labs. For information about the details shared and how to opt-out of reporting, see [Diagnostics Reporting](diagnostics-reporting.html).

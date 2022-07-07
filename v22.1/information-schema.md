@@ -259,7 +259,7 @@ Column | Description
 `table_schema` | Name of the schema containing the table.
 `table_name` | Name of the table.
 `privilege_type` | Name of the [privilege](security-reference/authorization.html#managing-privileges).
-`is_grantable` | <span class="version-tag">New in v22.1:</span> `TRUE` if the grantee has the grant option on the object; `FALSE` if not.
+`is_grantable` | **New in v22.1:** `TRUE` if the grantee has the grant option on the object; `FALSE` if not.
 `with_hierarchy` | Always `NULL` (unsupported by CockroachDB).
 
 ### schema_privileges
@@ -358,7 +358,7 @@ Column | Description
 `table_schema` | Name of the schema that the grant applies to.
 `table_name` | Name of the table that the grant applies to.
 `privilege_type` | Type of [privilege](security-reference/authorization.html#managing-privileges): `SELECT`, `INSERT`, `UPDATE`, `DELETE`, `TRUNCATE`, `REFERENCES`, or `TRIGGER`.
-`is_grantable` | <span class="version-tag">New in v22.1:</span> `TRUE` if the grantee has the grant option on the object; `FALSE` if not.
+`is_grantable` | **New in v22.1:** `TRUE` if the grantee has the grant option on the object; `FALSE` if not.
 `with_hierarchy` | Always `NULL` (unsupported by CockroachDB).
 
 ### tables
@@ -502,10 +502,10 @@ For example, to retrieve all columns from the `table_constraints` table:
 ~~~
   constraint_catalog | constraint_schema |       constraint_name        | table_catalog | table_schema |         table_name         | constraint_type | is_deferrable | initially_deferred
 ---------------------+-------------------+------------------------------+---------------+--------------+----------------------------+-----------------+---------------+---------------------
-  movr               | public            | primary                      | movr          | public       | users                      | PRIMARY KEY     | NO            | NO
+  movr               | public            | users_pkey                   | movr          | public       | users                      | PRIMARY KEY     | NO            | NO
   movr               | public            | 3426283741_53_1_not_null     | movr          | public       | users                      | CHECK           | NO            | NO
   movr               | public            | 3426283741_53_2_not_null     | movr          | public       | users                      | CHECK           | NO            | NO
-  movr               | public            | primary                      | movr          | public       | vehicles                   | PRIMARY KEY     | NO            | NO
+  movr               | public            | vehicles_pkey                | movr          | public       | vehicles                   | PRIMARY KEY     | NO            | NO
 ...
 (25 rows)
 ~~~

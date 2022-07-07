@@ -66,7 +66,7 @@ For a simple but complete example app, see [Build a Python App with CockroachDB 
 
 CockroachDB supports Django versions 3.1+.
 
-To install [Django](https://docs.djangoproject.com/en/3.0/topics/install/):
+To install [Django](https://docs.djangoproject.com/en/4.0/topics/install/):
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell

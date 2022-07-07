@@ -1,15 +1,15 @@
 ---
-title: Migrate CockroachDB Schemas with AWS Database Migration Service (DMS)
-summary: Learn how to use AWS Database Migration Service (DMS) to migrate to a CockroachDB target cluster.
+title: Migrate with AWS Database Migration Service (DMS)
+summary: Learn how to use AWS Database Migration Service (DMS) to migrate data to a CockroachDB target cluster.
 toc: true
 docs_area: develop
 ---
 
-This page has instructions for setting up [AWS DMS](https://aws.amazon.com/dms/) to migrate data from an existing database to CockroachDB.
+This page has instructions for setting up [AWS DMS](https://aws.amazon.com/dms/) to migrate data to CockroachDB from an existing, publicly-hosted database containing application data such as MySQL, Oracle, or PostgreSQL.
 
 For a detailed tutorial about using AWS DMS and information about specific migration tasks, see the [AWS DMS documentation site](https://docs.aws.amazon.com/dms/latest/userguide/Welcome.html).
 
-We have tested AWS DMS with CockroachDB as a target enough to claim **beta-level** support. If you encounter problems in CockroachDB, please [open an issue](https://github.com/cockroachdb/cockroach/issues/new) with details to help us make progress toward full support.
+We have tested AWS DMS with CockroachDB as a target enough to claim **preview-level** support. If you encounter problems in CockroachDB, please [open an issue](https://github.com/cockroachdb/cockroach/issues/new) with details to help us make progress toward full support.
 
 For any issues related to AWS DMS, aside from its interaction with CockroachDB as a migration target, please reach out to [AWS Support](https://aws.amazon.com/contact-us/).
 
@@ -121,6 +121,10 @@ Creating a `dms` user is necessary when using **Drop tables on target** as a tar
     Do not use this user for normal SQL activity. The `expect_and_ignore_not_visible_columns_in_copy` session variable may make it behave unpredictably for normal usage.
     {{site.data.alerts.end}}
 {% endcomment %}
+
+### AWS PrivateLink
+
+If using {{ site.data.products.dedicated }}, you can enable [AWS PrivateLink](https://aws.amazon.com/privatelink/) to securely connect your AWS application with your {{ site.data.products.dedicated }} cluster using a private endpoint. To configure AWS PrivateLink with {{ site.data.products.dedicated }}, see [Network Authorization](../cockroachcloud/network-authorization.html#aws-privatelink).
 
 ### CloudWatch logs
 

@@ -1086,6 +1086,12 @@
                 ]
               },
               {
+                "title": "<code>SQLType</code>",
+                "urls": [
+                  "/${VERSION}/sqltype.html"
+                ]
+              },
+              {
                 "title": "<code>STRING</code>",
                 "urls": [
                   "/${VERSION}/string.html"
@@ -1411,6 +1417,12 @@
             "title": "Encryption",
             "urls": [
               "/${VERSION}/security-reference/encryption.html"
+            ]
+          },
+          {
+            "title": "Customer-Managed Encryption Keys (CMEK)",
+            "urls": [
+              "/cockroachcloud/cmek.html"
             ]
           }
         ]
@@ -1806,6 +1818,12 @@
               "/cockroachcloud/serverless-benchmarking.html"
             ]
           }
+        ]
+      },
+      {
+        "title": "Unsupported Features in CockroachDB Serverless",
+        "urls": [
+          "/cockroachcloud/serverless-unsupported-features.html"
         ]
       },
       {

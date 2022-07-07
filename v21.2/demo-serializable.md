@@ -508,9 +508,27 @@ When you repeat the scenario on CockroachDB, you'll see that the anomaly is prev
 
 1. Exit each SQL shell with `\q` and then stop the node:
 
+    Get the process ID of the node:
+
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ cockroach quit --insecure --host=localhost
+    ps -ef | grep cockroach | grep -v grep
+    ~~~
+
+    ~~~
+      501 21691     1   0  6:19PM ttys001    0:01.15 cockroach start-single-node --insecure --store=serializable-demo --listen-addr=localhost
+    ~~~
+
+    Gracefully shut down the node, specifying its process ID:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    kill -TERM 21691
+    ~~~
+
+    ~~~
+    initiating graceful shutdown of server
+    server drained and shutdown completed
     ~~~
 
     If you do not plan to restart the cluster, you may want to remove the node's data store:

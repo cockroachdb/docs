@@ -191,7 +191,7 @@ A primary key is a column, or set of columns, whose values uniquely identify row
 
 Primary keys are defined in `CREATE TABLE` statements with the `PRIMARY KEY` [column constraint](constraints.html). The `PRIMARY KEY` constraint requires that all the constrained column(s) contain only unique and non-`NULL` values.
 
-When a table is created, CockroachDB creates an index (called the `primary` index) on the column(s) constrained by the `PRIMARY KEY` constraint. CockroachDB uses this [index](indexes.html) to find rows in a table more efficiently.
+When a table is created, CockroachDB creates an index (called the _primary index_ and named `{tbl}_pkey`) on the column(s) constrained by the `PRIMARY KEY` constraint. CockroachDB uses this [index](indexes.html) to find rows in a table more efficiently.
 
 To add a single column to a primary key, add the `PRIMARY KEY` keyword to the end of the column definition. To add multiple columns to a primary key (i.e., to create a [composite primary key](https://en.wikipedia.org/wiki/Composite_key)), add a separate `CONSTRAINT "primary" PRIMARY KEY` clause after the column definitions in the `CREATE TABLE` statement.
 
@@ -582,11 +582,11 @@ $ cockroach sql \
 (1 row)
 ~~~
 
-Note that none of the tables that you have created thus far have secondary indexes. For guidance on adding secondary indexes, see at [Add Secondary Indexes](schema-design-indexes.html).
+Note that none of the tables that you have created thus far have secondary indexes. For guidance on adding secondary indexes, see [Secondary Indexes](schema-design-indexes.html).
 
 ## What's next?
 
-- [Add Secondary Indexes](schema-design-indexes.html)
+- [Secondary Indexes](schema-design-indexes.html)
 - [Online Schema Changes](online-schema-changes.html)
 
 You might also be interested in the following pages:
@@ -597,7 +597,7 @@ You might also be interested in the following pages:
 - [Data Types](data-types.html)
 - [`PRIMARY KEY`](primary-key.html)
 - [Constraints](constraints.html)
-- [Cockroach Commands](cockroach-commands.html)
+- [`cockroach` Commands Overview](cockroach-commands.html)
 - [Create a User-defined Schema](schema-design-schema.html)
 - [Create a Database](schema-design-database.html)
 - [Schema Design Overview](schema-design-overview.html)

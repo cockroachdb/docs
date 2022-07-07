@@ -434,8 +434,9 @@ IF ( <cond>, <expr1>, <expr2> )
 Evaluates `<cond>`, then evaluates `<expr1>` if the condition is true,
 or `<expr2>` otherwise.
 
-The expression corresponding to the case when the condition is false
-is not evaluated.
+In most cases, the expression corresponding to the case when the condition is
+false is not evaluated. The exception is when the expression is a subquery, which
+is eagerly evaluated when execution of the query begins.
 
 #### Typing rule
 
@@ -460,7 +461,9 @@ equal to `<cond>`, then evaluates and returns the corresponding `THEN`
 expression. If no `WHEN` branch matches, the `ELSE` expression is
 evaluated and returned, if any. Otherwise, `NULL` is returned.
 
-Conditions and result expressions after the first match are not evaluated.
+In most cases, conditions and result expressions after the first match are not
+evaluated. The exception is subqueries, which are eagerly evaluated when
+execution of the query begins.
 
 #### Typing rule
 
@@ -485,7 +488,9 @@ corresponding `THEN` expression.  If none of the `<cond>` expressions
 evaluates to true, then evaluates and returns the value of the `ELSE`
 expression, if any, or `NULL` otherwise.
 
-Conditions and result expressions after the first match are not evaluated.
+In most cases, conditions and result expressions after the first match are not
+evaluated. The exception is subqueries, which are eagerly evaluated when
+execution of the query begins.
 
 #### Typing rule
 
@@ -521,7 +526,9 @@ COALESCE ( <expr1> [, <expr2> [, <expr3> ] ...] )
 result of applying `COALESCE` on the remaining expressions. If all the
 expressions are `NULL`, `NULL` is returned.
 
-Arguments to the right of the first non-null argument are not evaluated.
+In most cases, arguments to the right of the first non-null argument are not
+evaluated. The exception is subqueries, which are eagerly evaluated when
+execution of the query begins.
 
 `IFNULL(a, b)` is equivalent to `COALESCE(a, b)`.
 
@@ -607,7 +614,7 @@ specified type. An error is reported if the conversion is invalid.
 
 For example: `CAST(now() AS DATE)`
 
-Note that in many cases a type annotation is preferrable to a type
+Note that in many cases a type annotation is preferable to a type
 coercion. See [type annotations](#explicitly-typed-expressions) for more
 details.
 
@@ -765,35 +772,36 @@ numeric values. For example:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> SELECT (1 / 0):::FLOAT;
+> SELECT (1 / 5):::INT;
 ~~~
 
 ~~~
-ERROR: division by zero
-SQLSTATE: 22012
-~~~
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> SELECT (1 / 0);
-~~~
-
-~~~
-ERROR: division by zero
-SQLSTATE: 22012
+ERROR: unsupported binary operator: <int> / <int> (desired <int>)
+SQLSTATE: 22023
 ~~~
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> SELECT (1 / 0)::FLOAT;
+> SELECT (1 / 5);
 ~~~
 
 ~~~
-ERROR: division by zero
-SQLSTATE: 22012
+         ?column?
+--------------------------
+  0.20000000000000000000
+(1 row)
 ~~~
 
-Type annotations are also different from cast expressions (see above) in
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> SELECT (1 / 5)::INT;
+  int8
+--------
+     0
+(1 row)
+~~~
+
+Type annotations are also different from [cast expressions](#explicit-type-coercions) in
 that they do not cause the value to be converted. For example,
 `now()::DATE` converts the current timestamp to a date value (and
 discards the current time), whereas `now():::DATE` triggers an error

@@ -69,6 +69,12 @@
       ]
     },
     {
+      "title": "Migrate to CockroachDB using AWS DMS",
+      "urls": [
+        "/${VERSION}/aws-dms.html"
+      ]
+    },
+    {
       "title": "Export Spatial Data",
       "urls": [
         "/${VERSION}/export-spatial-data.html"

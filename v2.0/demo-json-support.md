@@ -23,7 +23,7 @@ toc: true
 <div class="filter-content" markdown="1" data-scope="python">
 - Install the latest version of [CockroachDB](install-cockroachdb.html).
 - Install the [Python psycopg2 driver](http://initd.org/psycopg/docs/install.html): `pip install psycopg2`
-- Install the [Python Requests library](http://docs.python-requests.org/en/master/): `pip install requests`
+- Install the [Python Requests library](https://requests.readthedocs.io/en/latest/): `pip install requests`
 </div>
 
 ## Step 2. Start a single-node cluster

@@ -47,7 +47,7 @@ Name | Help
 `leases.success` | Number of successful lease requests
 `leases.transfers.error` | Number of failed lease transfers
 `leases.transfers.success` | Number of successful lease transfers
-`livebytes` | Number of bytes of live data (keys plus values)
+`livebytes` | Number of bytes of live data (keys plus values), including unreplicated data
 `livecount` | Count of live keys
 `liveness.epochincrements` | Number of times this node has incremented its liveness epoch
 `liveness.heartbeatfailures` | Number of failed node liveness heartbeats from this node

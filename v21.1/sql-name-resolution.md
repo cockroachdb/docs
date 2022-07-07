@@ -30,7 +30,7 @@ To create a new database, use a [`CREATE DATABASE`](create-database.html) statem
 
 In CockroachDB versions < v20.2, [user-defined schemas](create-schema.html) are not supported, and all objects created in a given database use the `public` schema. To provide a multi-level structure for stored objects in earlier versions of CockroachDB, we have recommended using [database](create-database.html) namespaces instead of schema namespaces.
 
-In CockroachDB versions >= v20.2, we recommend using schema namespaces, not database namespaces, to create a naming structure that is more similar to [PostgreSQL](http://www.postgresql.cn/docs/current/ddl-schemas.html).
+In CockroachDB versions >= v20.2, we recommend using schema namespaces, not database namespaces, to create a naming structure that is more similar to [PostgreSQL](https://www.postgresql.org/docs/current/ddl-schemas.html).
 
 If you are upgrading to v20.2, take any combination of the following actions after the upgrade is complete:
 
@@ -263,6 +263,10 @@ fully qualified name, as follows:
 ~~~ sql
 > CREATE TABLE public.public.mypublictable (x INT);
 ~~~
+
+### Preloaded databases
+
+{% include {{ page.version.version }}/sql/preloaded-databases.md %}
 
 ## See also
 

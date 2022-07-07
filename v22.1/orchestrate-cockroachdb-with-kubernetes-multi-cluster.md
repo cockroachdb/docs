@@ -798,18 +798,18 @@ In each Kubernetes cluster, the StatefulSet configuration sets all CockroachDB n
 <section class="filter-content" markdown="1" data-scope="gke">
 ## Step 3. Use the built-in SQL client
 
-1. Use the `client-secure.yaml` file to launch a pod and keep it running indefinitely, specifying the context of the Kubernetes cluster to run it in:
+Use the `client-secure.yaml` file to launch a pod and keep it running indefinitely, specifying the context of the Kubernetes cluster to run it in:
 
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ kubectl create -f client-secure.yaml --context <cluster-context>
-    ~~~
+{% include_cached copy-clipboard.html %}
+~~~ shell
+$ kubectl create -f client-secure.yaml --context <cluster-context>
+~~~
 
-    ~~~
-    pod "cockroachdb-client-secure" created
-    ~~~
+~~~
+pod "cockroachdb-client-secure" created
+~~~
 
-    The pod uses the `root` client certificate created earlier by the `setup.py` script. Note that this will work from any of the three Kubernetes clusters as long as you use the correct namespace and context combination.
+The pod uses the `root` client certificate created earlier by the `setup.py` script. Note that this will work from any of the three Kubernetes clusters as long as you use the correct namespace and context combination.
 </section>
 
 <section class="filter-content" markdown="1" data-scope="eks">
@@ -827,7 +827,6 @@ In each Kubernetes cluster, the StatefulSet configuration sets all CockroachDB n
     ~~~
 
     The pod uses the `root` client certificate you [generated earlier](#generate-certificates). Note that this will work from any of the three Kubernetes clusters as long as you use the correct namespace and context combination.
-</section>
 
 1. Get a shell into the pod and start the CockroachDB [built-in SQL client](cockroach-sql.html), again specifying the namespace and context of the Kubernetes cluster where the pod is running:
 
@@ -905,6 +904,7 @@ In each Kubernetes cluster, the StatefulSet configuration sets all CockroachDB n
     ~~~ shell
     $ kubectl delete pod cockroachdb-client-secure --context <cluster-context>
     ~~~
+</section>
 
 <section class="filter-content" markdown="1" data-scope="gke">
 ## Step 4. Access the DB Console
