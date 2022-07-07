@@ -24,11 +24,28 @@
               "title": "CockroachDB Serverless",
               "items": [
                 {
-                  "title": "Learn about Request Units",
-                  "urls": [
-                    "/cockroachcloud/learn-about-serverless.html"
+                  "title": "CockroachDB Serverless Pricing",
+                  "items": [
+                    {
+                      "title": "Pricing Overview",
+                      "urls": [
+                        "/cockroachcloud/learn-about-pricing.html"
+                      ]
+                    },
+                    {
+                      "title": "Learn about Request Units",
+                      "urls": [
+                        "/cockroachcloud/learn-about-request-units.html"
+                      ]
+                    },                                    
+                    {
+                      "title": "Optimize Your CockroachDB Serverless Workload",
+                      "urls": [
+                        "/cockroachcloud/optimize-serverless-workload.html"
+                      ]
+                    }
                   ]
-                },
+                },                                    
                 {
                   "title": "Create a CockroachDB Serverless Cluster",
                   "urls": [
