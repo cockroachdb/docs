@@ -8,7 +8,13 @@ The CockroachDB Kubernetes Operator currently deploys clusters in a single regio
 
 #### Helm version
 
-Helm 3.0 or higher is required when using our instructions to deploy via Helm.
+Helm 3.0 or higher is required when using our instructions to deploy via Helm. If you attempt to use Helm 2.x, an error like the following occurs:
+
+~~~ shell
+Error: UPGRADE FAILED: template: cockroachdb/templates/tests/client.yaml:6:14: executing "cockroachdb/templates/tests/client.yaml" at <.Values.networkPolicy.enabled>: nil pointer evaluating interface {}.enabled
+~~~
+
+This error occurs because in Helm 2, each version of CockroachDB is represented by a separate chart. To use Helm 2 to deploy and manage recent versions of CockroachDB, you must download the version-specific chart and make additional modifications. We do not recommend using Helm 2 to deploy and manage CockroachDB.
 
 The CockroachDB Helm chart is compatible with Kubernetes versions 1.22 and earlier (the latest version as of this writing). However, no new feature development is currently planned. 
 
