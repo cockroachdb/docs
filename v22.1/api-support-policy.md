@@ -27,23 +27,28 @@ This page includes the following information:
 
 The following changes are also known as "breaking changes":
 
-- Removal of an endpoint, [built-in function](functions-and-operators.html#built-in-functions), [cluster setting](cluster-settings.html), or session variable.
-- Removal of a SQL statement or syntax.
-- Addition or removal of a mandatory command-line flag or HTTP field.
-- Removal of an optional command-line flag or HTTP field.
+- Removal or renaming of an endpoint, [built-in function](functions-and-operators.html#built-in-functions), [cluster setting](cluster-settings.html), or session variable.
+- Removal or renaming of a SQL statement or syntax.
+- Change in interactive [`cockroach sql`](cockroach-sql.html) shell input or output.
+- Addition, removal, or renaming of a mandatory command-line flag or HTTP field.
+- Removal or renaming of an optional command-line flag or HTTP field.
 - Change in behavior of a [built-in function](functions-and-operators.html#built-in-functions) without fixing a bug or PostgreSQL incompatibility.
-- Removal of possible values in an `ENUM` session variable or [cluster setting](cluster-settings.html).
+- Removal or renaming of possible values in an `ENUM` session variable or [cluster setting](cluster-settings.html).
+- Change in behavior of a [structured log event](eventlog.html) type, including the [logging channel](logging-overview.html#logging-channels) it is emitted on.
+- Renaming of a [structured log event](eventlog.html) type or payload field.
 
 ### Backward-compatible changes
 
 The following list is not exhaustive:
 
 - Addition of an optional command-line flag or HTTP field.
-- Change in [`cockroach sql`](cockroach-sql.html) shell response format.
+- Change in non-interactive [`cockroach sql`](cockroach-sql.html) shell input or output.
 - Removal or change of any functionality documented as Preview or otherwise not fully supported.
-- Deprecation without removal of any functionality.
+- Marking functionality as deprecated via in-line documentation, hints, or warnings without removing it altogether.
 - Addition or removal of a metric.
-- Change in structured or unstructured log format.
+- Addition of a structured log event type or payload field.
+- Addition of a new [logging channel](logging-overview.html#logging-channels).
+- Change in behavior or format of an unstructured log event.
 
 {{site.data.alerts.callout_success}}
 Backward-incompatible changes to CockroachDB, including those affecting stable APIs, are identified in the [release notes](../releases/index.html#production-releases) for major CockroachDB versions. Users are asked to [consider backward-incompatible changes before upgrading](upgrade-cockroach-version.html#review-breaking-changes) to a new CockroachDB version.
