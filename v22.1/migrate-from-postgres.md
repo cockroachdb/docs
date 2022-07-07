@@ -23,7 +23,7 @@ PostgreSQL and CockroachDB have differences in best practices surrounding [prima
 
 If you are working with a table that must be indexed on sequential keys, consider using [hash-sharded indexes](hash-sharded-indexes.html). As part of this, we recommend doing thorough performance testing with and without hash-sharded indexes to see which works best for your application.
 
-For further information, see [Unique ID best practices](performance-best-practices-overview.html#unique-id-best-practices) and [3 Basic Rules for Choosing Indexes](https://www.cockroachlabs.com/blog/how-to-choose-db-index-keys/)/
+For further information, see [Unique ID best practices](performance-best-practices-overview.html#unique-id-best-practices) and [3 Basic Rules for Choosing Indexes](https://www.cockroachlabs.com/blog/how-to-choose-db-index-keys/).
 
 ## Step 1. Dump the PostgreSQL database
 
