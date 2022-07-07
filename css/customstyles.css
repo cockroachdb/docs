@@ -7555,7 +7555,7 @@ section.footer {
       color: #190F33; }
   .bs-callout--version {
     background-color: rgba(105, 51, 255, 0.2);
-    border-left-color: #6933FF }
+    border-left-color: #6933FF; }
     .bs-callout--version h4, .bs-callout--version .bs-callout__label {
       color: #190F33; }
 
@@ -8272,31 +8272,31 @@ polygon.regexp {
 /* Feedback question and buttons */
 #feedback-prompt {
   display: inline-block;
-  padding: 25px;
   font-size: 17px;
-  line-height: 1; }
+  line-height: 1;
+  margin-left: 24px; }
   #feedback-prompt form {
     display: inline-block;
     vertical-align: bottom; }
   #feedback-prompt .yes-button img,
   #feedback-prompt .no-button img {
     vertical-align: middle;
-    margin: 0 8px 4px 0; }
-  #feedback-prompt .yes-button:hover,
-  #feedback-prompt .no-button:hover {
-    box-shadow: -4px 4px 7px -3px rgba(25, 15, 51, 0.5); }
+    margin: 0 4px 4px 0; }
+
+.post-content #feedback-prompt {
+  margin-bottom: 50px;
+  margin-top: 50px;
+  padding: 25px; }
 
 .feedback-question {
   display: block;
   line-height: 0;
-  margin-right: 15px;
   vertical-align: bottom;
-  font-family: 'AvenirLTStd-Roman', serif;
-  font-size: 17px;
+  font-family: 'SourceSansPro-Regular', sans-serif;
+  font-size: 16px;
   font-weight: normal;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  line-height: 22px; }
+  -moz-osx-font-smoothing: grayscale; }
   @media screen and (min-width: 544px) {
     .feedback-question {
       display: inline-block; } }
@@ -8311,11 +8311,6 @@ polygon.regexp {
 #yes-button,
 #no-button,
 #feedback-prompt input[type="submit"] {
-  width: 88px;
-  height: 50px;
-  margin: 0 5px;
-  padding: 0;
-  display: inline-block;
   vertical-align: bottom;
   color: #6933FF !important;
   font-family: 'Poppins-SemiBold', sans-serif;
@@ -8329,9 +8324,6 @@ polygon.regexp {
   line-height: 45px;
   text-align: center;
   text-decoration: none !important;
-  border: 2px solid #6933FF;
-  border-radius: 5px;
-  outline: none;
   -webkit-transition: background-color 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
   -moz-transition: background-color 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
   -o-transition: background-color 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);

@@ -41,7 +41,13 @@
         {% if page.toc == true %}
         <div class="toc-col col-md-2">
             <div class="toc-col-contents">  <!-- lets all elements scroll -->
-              <div id="toc-right"></div>
+              <div id="toc-right">
+              </div>
+              {% if page.feedback != false %}
+                 {% include feedback-widget.html %}
+              {% endif %}
+
+              {% comment %} Show feedback widget under toc. {% endcomment %}
               <div class="cf-5329-area-16738"></div>
             </div>
           </div>
@@ -57,7 +63,7 @@
     <script src="{{ 'js/jquery.navgoco.min.js' | relative_url }}"></script>
     <!-- bs 4.X -->
     <script src="{{'js/bootstrap453.bundle.min.js' | relative_url }}" crossorigin="anonymous"></script>
-    
+
     <script src="{{ 'js/toc.js' | relative_url }}"></script>
     <script src="{{ 'js/cookieUtils.js' | relative_url }}" defer></script>
     <script src="{{ 'js/clipboard.min.js' | relative_url }}" defer></script>
