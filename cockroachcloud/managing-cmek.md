@@ -128,9 +128,7 @@ See the [API specification](../api/cloud/v1.html#operation/CockroachCloud_Enable
         ~~~
 
     {{site.data.alerts.callout_info}}
-    Keep the following points in mind for multi-region clusters:
-    - When enabling CMEK on a multi-region cluster, your `region_spec` must include an entry for each of the cluster's regions. Otherwise, an error occurs and CMEK is not enabled.
-    - If you add a new region to a cluster, data at rest in the new region is not automatically protested by CMEK. To enable CMEK for the new region, refer to [Rotate a CMEK key](#rotate-a-cmek-key).
+    When enabling CMEK on a multi-region cluster, your `region_spec` must include an entry for each of the cluster's regions. Otherwise, an error occurs and CMEK is not enabled.
     {{site.data.alerts.end}}
 
 1. Using the {{ site.data.products.db }} API, send a `POST` request with the contents of `cmek_config.json` to the cluster's `cmek` endpoint.
@@ -161,17 +159,13 @@ curl --request GET \
 
 ## Rotate a CMEK key
 
-A CMEK key can be rotated within your KMS platform or within {{ site.data.products.dedicated }}.
+{% include cockroachcloud/cmek-rotation-types.md %}
 
-- When you rotate a CMEK key within your KMS platform, a new version of the key is created with new key material. In both GCP KMS and AWS KMS, encryption operations automatically uses the active key version, while decryption operations automatically use the key version that was used to encrypt the data. For this reason, {{ site.data.products.dedicated }} does not need any awareness of rotation operations within your KMS platform.
-
-- When you rotate a CMEK key using the {{ site.data.products.db }} API, you update your cluster's configuration to begin using a different CMEK key for one or more regions. {{ site.data.products.dedicated }} begins using the new key to protect the store key on nodes in that cluster region. In a similar way, after adding a new region to a cluster, you can begin using CMEK to protect data at rest in that region by "rotating" that region from using no CMEK key to using a CMEK key.
-
-The API to rotate a CMEK key is nearly identical to the API for [activating CMEK on a cluster](#step-4-activate-cmek-for-your-cockroachdb-dedicated-cluster), with one notable exception. When you activate CMEK, you use a `POST` request that includes a CMEK key for each of the cluster's regions. When you rotate a CMEK key, you use a `PUT` request and include a CMEK key for each region whose CMEK key to rotate.
+The API to rotate a CMEK key is nearly identical to the API to [activate CMEK on a cluster](#step-4-activate-cmek-for-your-cockroachdb-dedicated-cluster), with one notable exception. When you activate CMEK, you use a `POST` request that includes a CMEK key for each of the cluster's regions. When you rotate a CMEK key, you use a `PUT` request that includes a CMEK key for each region you intend to rotate.
 
 See the [API specification](../api/cloud/v1.html#operation/CockroachCloud_EnableCMEK). <!-- TODO update when available -->
 
-1. Create a new file named `cmek_config.json`. This file will contain JSON array of `region_spec` objects, each of which includes the name of a {{ site.data.products.db }} region and a `key_spec` that is specific to the target KMS platform and specifies the URI of the CMEK key and the credential that authorizes {{ site.data.products.db }} to encrypt and decrypt using the key.
+1. Create a new file named `cmek_config.json`. This file will contain a JSON array of `region_spec` objects, each of which includes the name of a {{ site.data.products.db }} region and a `key_spec` that is specific to the target KMS platform and specifies the URI of the CMEK key and the credential that authorizes {{ site.data.products.db }} to encrypt and decrypt using the key.
 
     Start from the example for your KMS platform and replace the placeholder values. Each of these examples includes `region_spec` objects for two {{ site.data.products.db }} regions; you need only include regions you want to update.
     - **AWS**:
@@ -226,7 +220,7 @@ See the [API specification](../api/cloud/v1.html#operation/CockroachCloud_Enable
       ```
 
     {{site.data.alerts.callout_info}}
-    If you add a new region to a cluster, data at rest in the new region is not automatically protested by CMEK. To enable CMEK for the new region, "rotate" that region to begin using a CMEK key.
+    If you add a new region to a cluster, data at rest in the new region is not automatically protected by CMEK. To enable CMEK for the new region, "rotate" that region to begin using a CMEK key.
     {{site.data.alerts.end}}
 
 1. Using the {{ site.data.products.db }} API, send a `PUT` request with the contents of `cmek_config.json` to the cluster's `cmek` endpoint.
