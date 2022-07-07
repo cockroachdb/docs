@@ -29,7 +29,6 @@ The following changes are also known as "breaking changes":
 
 - Removal or renaming of an endpoint, [built-in function](functions-and-operators.html#built-in-functions), [cluster setting](cluster-settings.html), or session variable.
 - Removal or renaming of a SQL statement or syntax.
-- Change in interactive [`cockroach sql`](cockroach-sql.html) shell input or output.
 - Addition, removal, or renaming of a mandatory command-line flag or HTTP field.
 - Removal or renaming of an optional command-line flag or HTTP field.
 - Change in behavior of a [built-in function](functions-and-operators.html#built-in-functions) without fixing a bug or PostgreSQL incompatibility.
@@ -48,7 +47,6 @@ The following list is not exhaustive:
 - Addition or removal of a metric.
 - Addition of a structured log event type or payload field.
 - Addition of a new [logging channel](logging-overview.html#logging-channels).
-- Change in behavior or format of an unstructured log event.
 
 {{site.data.alerts.callout_success}}
 Backward-incompatible changes to CockroachDB, including those affecting stable APIs, are identified in the [release notes](../releases/index.html#production-releases) for major CockroachDB versions. Users are asked to [consider backward-incompatible changes before upgrading](upgrade-cockroach-version.html#review-breaking-changes) to a new CockroachDB version.
