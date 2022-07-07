@@ -1059,7 +1059,7 @@ Parameter | Description
 
 <div class="filters clearfix">
   <button class="filter-button page-level" data-scope="ruby-pg">pg</button>
-  <button class="filter-button page-level" data-scope="activerecord">ActiveRecord</button>
+  <button class="filter-button page-level" data-scope="activerecord">Active Record</button>
 </div>
 
 {{site.data.alerts.callout_info}}
@@ -1120,7 +1120,7 @@ For more information about connecting with pg, see the [official pg documentatio
 
 <div>
 
-To connect to CockroachDB with [ActiveRecord](https://github.com/rails/rails/tree/main/activerecord) from a Rails app, update the database configuration in `config/database.yml`:
+To connect to CockroachDB with [Active Record](https://github.com/rails/rails/tree/main/activerecord) from a Rails app, update the database configuration in `config/database.yml`:
 
 ~~~ yaml
 default: &default
@@ -1132,7 +1132,7 @@ default: &default
 
 Where `DATABASE_URL` is an environment variable set to a valid CockroachDB connection string.
 
-ActiveRecord accepts the following format for CockroachDB connection strings:
+Active Record accepts the following format for CockroachDB connection strings:
 
 </div>
 
@@ -1164,10 +1164,10 @@ cockroachdb://{username}@{host}:{port}/{database}?sslmode=verify-full&sslrootcer
 </div>
 
 {{site.data.alerts.callout_info}}
-To connect to CockroachDB with ActiveRecord, you must install the [ActiveRecord CockroachDB adapter](https://rubygems.org/gems/activerecord-cockroachdb-adapter).
+To connect to CockroachDB with Active Record, you must install the [Active Record CockroachDB adapter](https://rubygems.org/gems/activerecord-cockroachdb-adapter).
 {{site.data.alerts.end}}
 
-For more information about connecting with ActiveRecord, see the [official ActiveRecord documentation](https://guides.rubyonrails.org/active_record_querying.html).
+For more information about connecting with Active Record, see the [official Active Record documentation](https://guides.rubyonrails.org/active_record_querying.html).
 
 </div>
 

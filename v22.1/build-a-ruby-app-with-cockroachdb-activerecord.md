@@ -1,6 +1,6 @@
 ---
-title: Build a Ruby App with CockroachDB and ActiveRecord
-summary: Learn how to use CockroachDB from a simple Ruby script with the ActiveRecord gem.
+title: Build a Ruby App with CockroachDB and Active Record
+summary: Learn how to use CockroachDB from a simple Ruby script with the Active Record gem.
 toc: true
 twitter: false
 referral_id: docs_ruby_activerecord
@@ -12,10 +12,10 @@ docs_area: get_started
 
 {% include filter-tabs.md %}
 
-This tutorial shows you how build a simple Ruby application with CockroachDB and [ActiveRecord](http://guides.rubyonrails.org/active_record_basics.html). CockroachDB provides an ActiveRecord adapter for CockroachDB as a [RubyGem](https://rubygems.org/gems/activerecord-cockroachdb-adapter).
+This tutorial shows you how build a simple Ruby application with CockroachDB and [Active Record](http://guides.rubyonrails.org/active_record_basics.html). CockroachDB provides an Active Record adapter for CockroachDB as a [RubyGem](https://rubygems.org/gems/activerecord-cockroachdb-adapter).
 
 {{site.data.alerts.callout_success}}
-For a more realistic use of ActiveRecord with CockroachDB in a Rails app, see our [`examples-orms`](https://github.com/cockroachdb/examples-orms) repository.
+For a more realistic use of Active Record with CockroachDB in a Rails app, see our [`examples-orms`](https://github.com/cockroachdb/examples-orms) repository.
 {{site.data.alerts.end}}
 
 ## Step 1. Start CockroachDB
@@ -104,6 +104,6 @@ git clone https://github.com/cockroachlabs/example-app-ruby-activerecord
 
 ## What's next?
 
-Read more about using [ActiveRecord](http://guides.rubyonrails.org/active_record_basics.html), or check out a more realistic implementation of ActiveRecord with CockroachDB in a Rails app in our [`examples-orms`](https://github.com/cockroachdb/examples-orms) repository.
+Read more about using [Active Record](http://guides.rubyonrails.org/active_record_basics.html), or check out a more realistic implementation of Active Record with CockroachDB in a Rails app in our [`examples-orms`](https://github.com/cockroachdb/examples-orms) repository.
 
 {% include {{page.version.version}}/app/see-also-links.md %}
