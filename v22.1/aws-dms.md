@@ -23,8 +23,8 @@ Ensure the following items are completed prior to starting this tutorial:
 
 - Configure a [source endpoint](https://docs.aws.amazon.com/dms/latest/userguide/CHAP_Source.html) in AWS pointing to your source database.
 - Configure a [replication instance](https://docs.aws.amazon.com/dms/latest/userguide/CHAP_ReplicationInstance.html) in AWS.
-- Ensure you have a secure, publicly available [CockroachDB cluster](../cockroachcloud/create-a-serverless-cluster.html) running v22.1 or higher.
-
+- Ensure you have a secure, publicly available [{{ site.data.products.dedicated }} cluster](../cockroachcloud/quickstart-trial-cluster.html) or [{{ site.data.products.core }} cluster] running v22.1 or higher.
+-
 ## Step 1. Create a target endpoint pointing to CockroachDB
 
 1. In the AWS Console, open **AWS DMS**.
@@ -59,8 +59,9 @@ A database migration task, also known as a replication task, controls what data 
 ### Step 2.2. Task settings
 
 1. For the **Editing mode** radio button, keep **Wizard** selected.
-1. For the **Target table preparation mode**, select either **Truncate** or **Do nothing**. All other settings can remain as-is.
+1. For the **Target table preparation mode**, select either **Truncate** or **Do nothing**.
     <img src="{{ 'images/v22.1/aws-dms-task-settings.png' | relative_url }}" alt="AWS-DMS-Task-Settings" style="max-width:100%" />
+1. Manually create all schema objects in the target CockroachDB database. This step is required in order for the migration to populate data successfully.
 
 {{site.data.alerts.callout_info}}
 **Drop tables on target** is unsupported at this time.
