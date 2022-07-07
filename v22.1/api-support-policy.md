@@ -22,6 +22,7 @@ This page includes the following information:
 | Stable   | Supported for interfacing with third-party automated tools.               | [Backward-incompatible changes](#backward-incompatible-changes) may be introduced in new major versions.<br />[Backward-compatible changes](#backward-compatible-changes) may be introduced in new minor versions. |
 | Unstable | Supported for consumption by humans. Not supported for automation.        | [Backward-incompatible changes](#backward-incompatible-changes) may be introduced in new minor and major versions.                                                                                                 |
 | Reserved | Intended for use by CockroachDB developers. Not supported for public use. | N/A                                                                                                                                                                                                                |
+Backward-incompatible changes to **stable APIs** are highlighted in the [release notes](../releases/index.html#production-releases) for major CockroachDB versions. Users are asked to [consider backward-incompatible changes before upgrading](upgrade-cockroach-version.html#review-breaking-changes) to a new CockroachDB version.
 
 ### Backward-incompatible changes
 
@@ -47,10 +48,6 @@ The following list is not exhaustive:
 - Addition or removal of a metric.
 - Addition of a structured log event type or payload field.
 - Addition of a new [logging channel](logging-overview.html#logging-channels).
-
-{{site.data.alerts.callout_success}}
-Backward-incompatible changes to CockroachDB, including those affecting stable APIs, are identified in the [release notes](../releases/index.html#production-releases) for major CockroachDB versions. Users are asked to [consider backward-incompatible changes before upgrading](upgrade-cockroach-version.html#review-breaking-changes) to a new CockroachDB version.
-{{site.data.alerts.end}}
 
 ### Versioning
 
