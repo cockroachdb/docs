@@ -138,6 +138,10 @@ No, {{ site.data.products.serverless }} clusters are upgraded automatically for 
 
 Yes, you can view and your clusters in the [{{ site.data.products.db }} Console](https://cockroachlabs.cloud/). However, some [DB Console](../{{site.versions["stable"]}}/ui-overview.html) pages are not currently available for {{ site.data.products.serverless }} clusters.
 
+### Are all CockroachDB features available in {{ site.data.products.serverless }} clusters?
+
+There are some features of CockroachDB that are unsupported or partially supported in {{ site.data.products.serverless }} clusters. Cockroach Labs intends to eliminate these feature gaps in future releases of {{ site.data.products.serverless }}. See [Unsupported Features in CockroachDB Serverless](serverless-unsupported-features.html) for more details.
+
 ### Can I run bulk operations such as `IMPORT` and `EXPORT` from my cluster?
 
 Yes, you can [run bulk operations on Serverless clusters](run-bulk-operations.html). If you [add billing information to your organization](billing-management.html), even if you don't set a spend limit, you can run bulk operations using cloud storage providers. If you don't have billing set up for your organization, you can set up a [`userfile`](../{{site.versions["stable"]}}/use-userfile-for-bulk-operations.html) location for bulk operations.

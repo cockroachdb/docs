@@ -8,13 +8,29 @@ docs_area: releases
 
 CockroachDB Cloud supports the latest major version of CockroachDB and the version immediately preceding it. All clusters are subject to automatic upgrades to the latest supported minor version. [{{ site.data.products.serverless }}](../cockroachcloud/quickstart.html) clusters are subject to automatic upgrades for both minor and major releases while Serverless is in beta. For more information, see the [{{ site.data.products.db }} Upgrade Policy](../cockroachcloud/upgrade-policy.html).
 
+For details on features that are not supported in {{ site.data.products.serverless }}, see [Unsupported Features in CockroachDB Serverless](../cockroachcloud/serverless-unsupported-features.html).
+
 Get future release notes emailed to you:
 
 {% include marketo.html %}
 
 {{site.data.alerts.callout_version}}
-As of June 6, 2022, CockroachDB [v22.1.1](v22.1.html) is available on {{ site.data.products.dedicated }} clusters. {{ site.data.products.serverless }} clusters are running CockroachDB [v21.2.10](v21.2.html).
+As of July 6, 2022, {{ site.data.products.serverless }} clusters are running CockroachDB [v21.2.12](v21.2.html) and new {{ site.data.products.dedicated }} clusters are running CockroachDB [v22.1.2](v22.1.html).
 {{site.data.alerts.end}}
+
+## July 6, 2022
+
+<h3>Console changes</h3>
+
+- The [**Connect to your cluster**](../{{site.versions["stable"]}}/connect-to-the-database.html) dialog now includes code snippets for [supported languages and tools](../{{site.versions["stable"]}}/third-party-database-tools.html).
+- The [**Connect to your cluster**](../cockroachcloud/connect-to-a-serverless-cluster.html) dialog for clusters running CockroachDB [v22.1](v22.1.html) now loads more quickly.
+- If users log in using an [SSO](../cockroachcloud/cloud-sso.html) method other than the one they have used previously, they will now be asked if they want to switch to the new login method.
+- Previously, {{ site.data.products.dedicated }} users could only choose storage amounts within the [recommendations](../cockroachcloud/plan-your-cluster.html?filters=dedicated) for the selected machine size. Now, a warning message will appear if the storage is outside the recommended range, but any storage option can be selected.
+- The date and time selection on the [**Statements**](../cockroachcloud/statements-page.html) and [**Transactions**](../cockroachcloud/transactions-page.html) pages now defaults to UTC and has an improved design.
+
+<h3>Bug fixes</h3>
+
+- The [**Statements** page](../cockroachcloud/statements-page.html) no longer crashes when a search term contains `*`.
 
 ## June 6, 2022
 
