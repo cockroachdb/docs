@@ -24,7 +24,7 @@ This section gives a high level overview of the operations involved with impleme
 
 - [Enabling CMEK](#enable-cmek) for a {{ site.data.products.dedicated }} requires several steps:
 
-  - Turn on the {{ site.data.products.dedicated }} CMEK feature.
+  - Request enrollment of your {{ site.data.products.db }} organization in the CMEK preview.
   - Provision an encryption key with your cloud provider's key management service (KMS).
   - Grant {{ site.data.products.db }} access to use the new encryption key.
   - Switch your cluster to use the new encryption key for CMEK.
@@ -73,7 +73,7 @@ Activate CMEK with a call to the clusters CMEK endpoint, using the cloud-specifi
 
 See the [API specification](../api/cloud/v1.html#operation/CockroachCloud_EnableCMEK).
 
-1. Create a new file named `cmek_config.json`. This file will contain JSON array of `region_spec` objects, each of which includes the name of a {{ site.data.products.db }} region and a `key_spec` that is specific to the target KMS platform and specifies the URI of the CMEK key and the credential that authorizes {{ site.data.products.db }} to encrypt and decrypt using the key.
+1. Create a new file named `cmek_config.json`. This file will contain a JSON array of `region_spec` objects, each of which includes the name of a {{ site.data.products.db }} region and a `key_spec` that is specific to the target KMS platform and specifies the URI of the CMEK key and the credential that authorizes {{ site.data.products.db }} to encrypt and decrypt using the key.
 
     Start from the example for your KMS platform and replace the placeholder values. Each of these examples includes `region_spec` objects for two {{ site.data.products.db }} regions; when enabling CMEK, you must include a `region_spec` for each region in the cluster.
     - **AWS**:
