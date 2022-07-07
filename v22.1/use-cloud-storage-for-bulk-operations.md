@@ -233,13 +233,58 @@ Depending on the actions a bulk operation performs, it will require different ac
 
 This table outlines the actions that each operation performs against the storage bucket:
 
-Operation                   | Permission                   | Description                                                                     
-----------------------------+------------------------------+---------------------------------------------------
-[Backup](backup.html)       | Write<br><br>Get<br>List     | Write: Backups write the backup data to the bucket/container. During a backup job, a `BACKUP CHECKPOINT` file will be written that tracks the progress of the backup.<br>Get: Backups need get access after a [pause](pause-job.html) to read the checkpoint files on [resume](resume-job.html). <br>List: Backups need list access to the files already in the bucket. For example, `BACKUP` uses list to find previously taken backups when executing an incremental backup and to find the latest checkpoint file. <br>**Note:** To clean up `BACKUP CHECKPOINT` files that the backup job has written, you need to also include a delete permission in your bucket policy (e.g., `s3:DeleteObject`). However, delete is **not** necessary for backups to complete successfully in v22.1 and later.
-[Restore](restore.html)     | Get<br><br>List          | Get: Restores need access to retrieve files from the backup. Restore also requires access to the `LATEST` file in order to read the latest available backup. <br>List: Restores need list access to the files already in the bucket to find other backups in the [backup collection](take-full-and-incremental-backups.html#backup-collections). This contains metadata files that describe the backup, the `LATEST` file, and other versioned subdirectories and files. 
-[Import](import.html)       | Get                          | Imports read the requested file(s) from the storage bucket.                      
-[Export](export.html)       | Write                        | Exports need write access to the storage bucket to create individual export file(s) from the exported data.
-[Enterprise changefeeds](create-changefeed.html)  | Write  | Changefeeds will write files to the storage bucket that contain row changes and resolved timestamps.
+<table>
+    <thead>
+        <tr>
+            <th>Operation</th>
+            <th>Permission</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td rowspan="4"><a href="backup.html">Backup</a></td>
+            <td>Write</td>
+            <td>Backups write the backup data to the bucket/container. During a backup job, a <code>BACKUP CHECKPOINT</code> file will be written that tracks the progress of the backup.</td>
+        </tr>
+        <tr>
+            <td>Get</td>
+            <td>Backups need get access after a <a href="pause-job.html">pause</a> to read the checkpoint files on <a href="resume-job.html">resume</a>.</td>
+        </tr>
+        <tr>
+            <td>List</td>
+            <td>Backups need list access to the files already in the bucket. For example, <code>BACKUP</code> uses list to find previously taken backups when executing an incremental backup and to find the latest checkpoint file.</td>
+        </tr>
+        <tr>
+            <td>Delete (optional)</td>
+            <td>To clean up <code>BACKUP CHECKPOINT</code> files that the backup job has written, you need to also include a delete permission in your bucket policy (e.g., <code>s3:DeleteObject</code>). However, delete is <b>not</b> necessary for backups to complete successfully in v22.1 and later.</td>
+        </tr>
+        <tr>
+            <td rowspan="2"><a href="restore.html">Restore</a></td>
+            <td>Get</td>
+            <td>Restores need access to retrieve files from the backup. Restore also requires access to the <code>LATEST</code> file in order to read the latest available backup.</td>
+        </tr>
+        <tr>
+            <td>List</td>
+            <td>Restores need list access to the files already in the bucket to find other backups in the <a href="take-full-and-incremental-backups.html#backup-collections">backup collection</a>. This contains metadata files that describe the backup, the <code>LATEST</code> file, and other versioned subdirectories and files.</td>
+        </tr>
+        <tr>
+            <td><a href="import.html">Import</a></td>
+            <td>Get</td>
+            <td>Imports read the requested file(s) from the storage bucket.</td>
+        </tr>
+        <tr>
+            <td><a href="export.html">Export</a></td>
+            <td>Write</td>
+            <td>Exports need write access to the storage bucket to create individual export file(s) from the exported data.</td>
+        </tr>
+        <tr>
+            <td><a href="create-changefeed.html">Enterprise changefeeds</a></td>
+            <td>Write</td>
+            <td>Changefeeds will write files to the storage bucket that contain row changes and resolved timestamps.</td>
+        </tr>
+    </tbody>
+</table>
 
 <div class="filters clearfix">
   <button class="filter-button" data-scope="s3">Amazon S3</button>
@@ -291,7 +336,9 @@ An example S3 bucket policy for a **backup**:
 
 <section class="filter-content" markdown="1" data-scope="gcs">
 
-In Google Cloud Storage, you can grant users roles that define the access level to the storage bucket. For the purposes of running CockroachDB operations to your bucket, the following table lists the permissions that represent the minimum level required for each of the operations. GCS provides different levels of granularity for defining the roles in which these permissions reside. For more detail about Predefined, Basic, and Custom roles, see [IAM roles for Cloud Storage](https://cloud.google.com/storage/docs/access-control/iam-roles).
+In Google Cloud Storage, you can grant users roles that define their access level to the storage bucket. For the purposes of running CockroachDB operations to your bucket, the following table lists the permissions that represent the minimum level required for each operation. GCS provides different levels of granularity for defining the roles in which these permissions reside. You can assign roles that already have these [permissions](https://cloud.google.com/storage/docs/access-control/iam-permissions) configured, or make your own custom roles that include these permissions. 
+
+For more detail about Predefined, Basic, and Custom roles, see [IAM roles for Cloud Storage](https://cloud.google.com/storage/docs/access-control/iam-roles). 
 
 Operation    | GCS Permission                                                                          
 -------------+----------------------------------------------------------------------------------
