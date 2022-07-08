@@ -49,7 +49,36 @@ The `main.go` file defines an `Account` struct that maps to a new `accounts` tab
 CockroachDB may require the [client to retry a transaction](transactions.html#transaction-retries) in the case of read/write contention. The [CockroachDB Go client](https://github.com/cockroachdb/cockroach-go) includes a generic **retry function** (`ExecuteTx()`) that runs inside a transaction and retries it as needed. The code sample shows how you can use this function to wrap SQL statements.
 {{site.data.alerts.end}}
 
-## Step 3. Run the code
+## Step 3. Initialize the database
+
+1. Navigate to the `example-app-go-gorm` directory:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ cd example-app-go-pgx
+    ~~~
+
+1. Set the `DATABASE_URL` environment variable to the connection string for your cluster:
+
+    <section class="filter-content" markdown="1" data-scope="local">
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    export DATABASE_URL="postgresql://root@localhost:26257?sslmode=disable"
+    ~~~
+
+    </section>
+
+    <section class="filter-content" markdown="1" data-scope="cockroachcloud">
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    export DATABASE_URL="{connection-string}"
+    ~~~
+
+    Where `{connection-string}` is the connection string you copied earlier.
+
+## Step 4. Run the code
 
 1. Initialize the module:
 

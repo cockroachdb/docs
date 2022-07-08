@@ -80,7 +80,7 @@ git clone https://github.com/cockroachlabs/example-app-ruby-activerecord
     $ export DATABASE_URL="{connection-string}"
     ~~~
 
-    Where `{connection-string}` is the connection string you obtained from the {{ site.data.products.db }} Console.
+    Where `{connection-string}` is the connection string you copied earlier.
 
     </section>
 
