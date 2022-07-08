@@ -58,7 +58,7 @@ Statistics are refreshed in the following cases:
 
 #### Small versus large table examples
 
-Suppose the clusters settings `sql.stats.automatic_collection.fraction_stale_rows` and `sql.stats.automatic_collection.min_stale_rows` have the default values .2 and 500 as shown in the preceding table.
+Suppose the [clusters settings](cluster-settings.html) `sql.stats.automatic_collection.fraction_stale_rows` and `sql.stats.automatic_collection.min_stale_rows` have the default values .2 and 500 as shown in the preceding table.
 
 If a table has 100 rows and 20 became stale, a re-collection would not be triggered because, even though 20% of the rows are stale, they do not meet the 500 row minimum.
 
