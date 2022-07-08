@@ -37,9 +37,9 @@ The following ORM spatial libraries are fully compatible with CockroachDB's spat
 
     [Hibernate 5.4.30.Final](https://in.relation.to/2021/03/19/hibernate-orm-5430-final-release/) added the `CockroachDB202SpatialDialect` dialect to the `hibernate-spatial` module. The `CockroachDB202SpatialDialect` dialect supports spatial features available in CockroachDB v20.2 and later.
 
-- [RGeo/RGeo-ActiveRecord](https://github.com/rgeo/rgeo-activerecord)
+- [RGeo/RGeo-Active Record](https://github.com/rgeo/rgeo-activerecord)
 
-    CockroachDB's ActiveRecord adapter ([`activerecord-cockroachdb-adapter`](https://github.com/cockroachdb/activerecord-cockroachdb-adapter)) uses [RGeo](https://github.com/rgeo/rgeo) and [RGeo-ActiveRecord](https://github.com/rgeo/rgeo-activerecord) for spatial support with ActiveRecord v5.2.2+ and v6.0.0+. For information about using CockroachDB spatial features with ActiveRecord, see the [`activerecord-cockroachdb-adapter` README](https://github.com/cockroachdb/activerecord-cockroachdb-adapter#working-with-spatial-data).
+    CockroachDB's Active Record adapter ([`activerecord-cockroachdb-adapter`](https://github.com/cockroachdb/activerecord-cockroachdb-adapter)) uses [RGeo](https://github.com/rgeo/rgeo) and [RGeo-Active Record](https://github.com/rgeo/rgeo-activerecord) for spatial support with Active Record v5.2.2+, v6.0.0+, and v7.0.0+. For information about using CockroachDB spatial features with Active Record, see the [`activerecord-cockroachdb-adapter` README](https://github.com/cockroachdb/activerecord-cockroachdb-adapter#working-with-spatial-data).
 
 - [GeoDjango](https://github.com/cockroachdb/django-cockroachdb#gis-support)
 
