@@ -133,7 +133,7 @@ require('long').fromString(idString).add(1).toString(); // GOOD: returns '235191
 
 ## Does CockroachDB support full text search?
 
-No. For full text search Cockroach Labs recommends that you use search engines like [Elasticsearch](https://www.elastic.co/elasticsearch) or [Solr](https://solr.apache.org/). You can use CockroachDB [change data capture (CDC)](change-data-capture-overview.html) to set up a change feed to keep Elasticsearch and Solr indexes synchronized to your CockroachDB tables.
+No. For full text search, Cockroach Labs recommends that you use a search engine like [Elasticsearch](https://www.elastic.co/elasticsearch) or [Solr](https://solr.apache.org/). You can use CockroachDB [change data capture (CDC)](change-data-capture-overview.html) to set up a change feed to keep Elasticsearch and Solr indexes synchronized to your CockroachDB tables.
 
 For details, see [Full Text Indexing and Search in CockroachDB](https://www.cockroachlabs.com/blog/full-text-indexing-search/).
 
