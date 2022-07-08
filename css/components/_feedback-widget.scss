@@ -1,6 +1,6 @@
 /* Feedback question and buttons */
 
-#feedback-prompt {
+#feedback-prompt-toc, #feedback-prompt-bottom {
   display: inline-block;
   font-size: 17px;
   line-height: 1;
@@ -23,7 +23,7 @@
   }
 }
 
-.post-content #feedback-prompt {
+.post-content #feedback-prompt-bottom {
     margin-bottom: 50px;
     margin-top: 50px;
     padding: 25px
@@ -48,7 +48,8 @@
   .feedback-question {
     font-size: 14px;
   }
-  #feedback-prompt p.feedback-response {
+  #feedback-prompt p.feedback-response-toc,
+  #feedback-prompt p.feedback-response-bottom {
     line-height: 20px;
     font-size: 14px;
   }
