@@ -10459,7 +10459,6 @@ polygon.regexp {
 #feedback-prompt-toc, #feedback-prompt-bottom {
   display: inline-block;
   font-size: 17px;
-  line-height: 1;
   margin-left: 24px;
 }
 #feedback-prompt-toc form, #feedback-prompt-bottom form {
@@ -10469,8 +10468,12 @@ polygon.regexp {
 #feedback-prompt-toc .yes-button img,
 #feedback-prompt-toc .no-button img, #feedback-prompt-bottom .yes-button img,
 #feedback-prompt-bottom .no-button img {
+  width: 25px;
   vertical-align: middle;
-  margin: 0 4px 4px 0;
+  margin: 0 10px 0 0;
+}
+#feedback-prompt-toc .no-button img, #feedback-prompt-bottom .no-button img {
+  padding-top: 12px;
 }
 
 .post-content #feedback-prompt-bottom {
@@ -10481,7 +10484,6 @@ polygon.regexp {
 
 .feedback-question {
   display: block;
-  line-height: 0;
   vertical-align: bottom;
   font-family: "SourceSansPro-Regular", sans-serif;
   font-size: 16px;

@@ -3,8 +3,6 @@
 #feedback-prompt-toc, #feedback-prompt-bottom {
   display: inline-block;
   font-size: 17px;
-  line-height: 1;
-  // float: right;
   margin-left: 24px;
 
   form {
@@ -14,13 +12,17 @@
   .yes-button,
   .no-button {
     img {
+      width: 25px;
       vertical-align: middle;
-      margin: 0 4px 4px 0;
+      margin: 0 10px 0 0;
     }
+  }
+  .no-button img {
+    padding-top: 12px;
+  }
     // &:hover {
     //   box-shadow: -4px 4px 7px -3px rgba(25, 15, 51, 0.5);
     // }
-  }
 }
 
 .post-content #feedback-prompt-bottom {
@@ -36,7 +38,6 @@
 
 .feedback-question {
   display: block;
-  line-height: 0;
   // margin-right: 5px;
   vertical-align: bottom;
   @include sourcesanspro_r(16px);
