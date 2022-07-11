@@ -23,8 +23,8 @@ Ensure the following items are completed prior to starting this tutorial:
 
 - Configure a [source endpoint](https://docs.aws.amazon.com/dms/latest/userguide/CHAP_Source.html) in AWS pointing to your source database.
 - Configure a [replication instance](https://docs.aws.amazon.com/dms/latest/userguide/CHAP_ReplicationInstance.html) in AWS.
-- Ensure you have a secure, publicly available [{{ site.data.products.dedicated }} cluster](../cockroachcloud/quickstart-trial-cluster.html) or [{{ site.data.products.core }} cluster] running v22.1 or higher.
--
+- Ensure you have a secure, publicly available CockroachDB cluster running v22.1 or higher.
+
 ## Step 1. Create a target endpoint pointing to CockroachDB
 
 1. In the AWS Console, open **AWS DMS**.
@@ -36,6 +36,9 @@ Ensure the following items are completed prior to starting this tutorial:
 1. For the **Target engine** dropdown, select **PostgreSQL**.
 1. For the **Access to endpoint database** radio button, select the **Provide access information manually**.
 1. Enter the **Server name**, **Port**, **User name**, **Password**, and **Database name** of your CockroachDB cluster.
+    {{site.data.alerts.callout_info}}
+    To connect to a {{ site.data.products.serverless }} cluster, use `{routing-id}.{database}` for the **Database name**. For more information, see [Connect to a {{ site.data.products.serverless }} Cluster](../cockroachcloud/connect-to-a-serverless-cluster.html?filters=connection-parameters#step-2-connect-to-your-cluster).
+    {{site.data.alerts.end}}
     <img src="{{ 'images/v22.1/aws-dms-endpoint-configuration.png' | relative_url }}" alt="AWS-DMS-Endpoint-Configuration" style="max-width:100%" />
 1. You can test the connection if needed under **Test endpoint connection (optional)**.
 1. Create the endpoint by selecting **Create endpoint**.
