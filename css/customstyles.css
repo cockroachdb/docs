@@ -10472,6 +10472,9 @@ polygon.regexp {
   vertical-align: middle;
   margin: 0 10px 0 0;
 }
+#feedback-prompt-toc .yes-button, #feedback-prompt-bottom .yes-button {
+  padding-left: 5px;
+}
 #feedback-prompt-toc .no-button img, #feedback-prompt-bottom .no-button img {
   padding-top: 12px;
 }
@@ -10485,6 +10488,7 @@ polygon.regexp {
 .feedback-question {
   display: block;
   vertical-align: bottom;
+  line-height: 4px;
   font-family: "SourceSansPro-Regular", sans-serif;
   font-size: 16px;
   font-weight: normal;

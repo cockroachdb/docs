@@ -17,6 +17,9 @@
       margin: 0 10px 0 0;
     }
   }
+  .yes-button {
+    padding-left: 5px;
+  }
   .no-button img {
     padding-top: 12px;
   }
@@ -40,6 +43,7 @@
   display: block;
   // margin-right: 5px;
   vertical-align: bottom;
+  line-height: 4px;
   @include sourcesanspro_r(16px);
 
   @include at-query($min, $screen-xsm) { display: inline-block; }
