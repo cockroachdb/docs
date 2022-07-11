@@ -34,7 +34,7 @@ The keywords `ROLE` and `USER` can be used interchangeably in SQL statements for
 
 ## Synopsis
 
-<section>{% include {{ page.version.version }}/sql/generated/diagrams/create_user.html %}</section>
+<section>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/create_user.html %}</section>
 
 ## Parameters
 
