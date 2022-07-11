@@ -60,9 +60,9 @@ Create a new {{ site.data.products.dedicated }} cluster. There are two ways to d
 Next, you must provision the resources required resources in your Cloud, whether this is AWS or GCP:
 
 1. The key itself.
-1. The authorization object that grants the {{ site.data.products.db }} service account permission to encrypt and decrypt using the key. The authorization object is either an IAM role in AWS or a service account in GCP.
+1. The principal that is authorized to encrypt and decrypt using the key, which is an IAM role in AWS or a cross-tenant service account in GCP.
 
-Follow the instructions for the cloud provider that corresponds to your cluster's deployment environment:
+Follow the instructions that correspond to your cluster's deployment environment:
 
 - [Provisioning Amazon Web Services (AWS) for CMEK](cmek-ops-aws.html)
 - [Provisioning Google Cloud Platform (GCP) for CMEK](cmek-ops-gcp.html) 
@@ -73,7 +73,7 @@ Activate CMEK with a call to the clusters CMEK endpoint, using the cloud-specifi
 
 See the [API specification](../api/cloud/v1.html#operation/CockroachCloud_EnableCMEK).
 
-1. Create a new file named `cmek_config.json`. This file will contain a JSON array of `region_spec` objects, each of which includes the name of a {{ site.data.products.db }} region and a `key_spec` that is specific to the target KMS platform and specifies the URI of the CMEK key and the credential that authorizes {{ site.data.products.db }} to encrypt and decrypt using the key.
+1. Create a new file named `cmek_config.json`. This file will contain a JSON array of `region_spec` objects, each of which includes the name of a {{ site.data.products.db }} region and a `key_spec` that is specific to the target KMS platform and specifies the URI of the CMEK key and the principal that is authorized to encrypt and decrypt using the key.
 
     Start from the example for your KMS platform and replace the placeholder values. Each of these examples includes `region_spec` objects for two {{ site.data.products.db }} regions; when enabling CMEK, you must include a `region_spec` for each region in the cluster.
     - **AWS**:
@@ -165,7 +165,7 @@ The API to rotate a CMEK key is nearly identical to the API to [activate CMEK on
 
 See the [API specification](../api/cloud/v1.html#operation/CockroachCloud_EnableCMEK). <!-- TODO update when available -->
 
-1. Create a new file named `cmek_config.json`. This file will contain a JSON array of `region_spec` objects, each of which includes the name of a {{ site.data.products.db }} region and a `key_spec` that is specific to the target KMS platform and specifies the URI of the CMEK key and the credential that authorizes {{ site.data.products.db }} to encrypt and decrypt using the key.
+1. Create a new file named `cmek_config.json`. This file will contain a JSON array of `region_spec` objects, each of which includes the name of a {{ site.data.products.db }} region and a `key_spec` that is specific to the target KMS platform and specifies the URI of the CMEK key and the principal that is authorized to encrypt and decrypt using the key.
 
     Start from the example for your KMS platform and replace the placeholder values. Each of these examples includes `region_spec` objects for two {{ site.data.products.db }} regions; you need only include regions you want to update.
     - **AWS**:
