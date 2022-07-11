@@ -1374,35 +1374,6 @@
         ]
       },
       {
-        "title": "Performance Optimization",
-        "items": [
-          {
-            "title": "Indexes",
-            "urls": [
-              "/${VERSION}/indexes.html"
-            ]
-          },
-          {
-            "title": "Cost-Based Optimizer",
-            "urls": [
-              "/${VERSION}/cost-based-optimizer.html"
-            ]
-          },
-          {
-            "title": "Vectorized Execution Engine",
-            "urls": [
-              "/${VERSION}/vectorized-execution.html"
-            ]
-          },
-          {
-            "title": "Load-Based Splitting",
-            "urls": [
-              "/${VERSION}/load-based-splitting.html"
-            ]
-          }
-        ]
-      },
-      {
         "title": "CLI",
         "items": [
           {

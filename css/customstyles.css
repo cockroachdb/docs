@@ -9581,11 +9581,11 @@ section.footer .blue-arrow {
   color: #190F33;
 }
 .bs-callout--version {
-  background-color: #FF7595;
-  border-left-color: #FF7595;
+  background-color: rgba(105, 51, 255, 0.2);
+  border-left-color: #6933FF;
 }
 .bs-callout--version h4, .bs-callout--version .bs-callout__label {
-  color: #FF7595;
+  color: #190F33;
 }
 
 .toc-col {
@@ -10456,23 +10456,30 @@ polygon.regexp {
 }
 
 /* Feedback question and buttons */
-#feedback-prompt {
+#feedback-prompt-toc, #feedback-prompt-bottom {
   display: inline-block;
   font-size: 17px;
-  line-height: 1;
   margin-left: 24px;
 }
-#feedback-prompt form {
+#feedback-prompt-toc form, #feedback-prompt-bottom form {
   display: inline-block;
   vertical-align: bottom;
 }
-#feedback-prompt .yes-button img,
-#feedback-prompt .no-button img {
+#feedback-prompt-toc .yes-button img,
+#feedback-prompt-toc .no-button img, #feedback-prompt-bottom .yes-button img,
+#feedback-prompt-bottom .no-button img {
+  width: 25px;
   vertical-align: middle;
-  margin: 0 4px 4px 0;
+  margin: 0 10px 0 0;
+}
+#feedback-prompt-toc .yes-button, #feedback-prompt-bottom .yes-button {
+  padding-left: 5px;
+}
+#feedback-prompt-toc .no-button img, #feedback-prompt-bottom .no-button img {
+  padding-top: 12px;
 }
 
-.post-content #feedback-prompt {
+.post-content #feedback-prompt-bottom {
   margin-bottom: 50px;
   margin-top: 50px;
   padding: 25px;
@@ -10480,8 +10487,8 @@ polygon.regexp {
 
 .feedback-question {
   display: block;
-  line-height: 0;
   vertical-align: bottom;
+  line-height: 4px;
   font-family: "SourceSansPro-Regular", sans-serif;
   font-size: 16px;
   font-weight: normal;
@@ -10499,7 +10506,8 @@ polygon.regexp {
     font-size: 14px;
   }
 
-  #feedback-prompt p.feedback-response {
+  #feedback-prompt p.feedback-response-toc,
+#feedback-prompt p.feedback-response-bottom {
     line-height: 20px;
     font-size: 14px;
   }

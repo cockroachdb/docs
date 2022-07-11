@@ -77,15 +77,20 @@ For Windows systems, you can ignore the File Descriptors graph because the conce
 
 The **Storage** dashboard shows other time series graphs that are important for CockroachDB developers:
 
-- Log Commit Latency: 99th Percentile
-- Log Commit Latency: 50th Percentile
-- Command Commit Latency: 99th Percentile
-- Command Commit Latency: 50th Percentile
-- [read amplification](architecture/storage-layer.html#read-amplification)
-- SSTables
-- Compactions/Flushes
-- Time Series Writes
-- Time Series Bytes Written
+Graph | Description
+--------|--------
+Log Commit Latency: 99th Percentile | The 99th percentile latency for commits to the Raft log.
+Log Commit Latency: 50th Percentile | The 50th percentile latency for commits to the Raft log.
+Command Commit Latency: 99th Percentile | The 99th percentile latency for commits of Raft commands.
+Command Commit Latency: 50th Percentile | The 50th percentile latency for commits of Raft commands.
+Read Amplification | The average number of real read operations executed per logical read operation across all nodes. See [Read Amplification](architecture/storage-layer.html#read-amplification).
+SSTables | The number of SSTables in use across all nodes.
+Flushes | Bytes written by [memtable flushes](architecture/storage-layer.html#memtable-and-write-ahead-log) across all nodes.
+Compactions | Bytes written by [compactions](architecture/storage-layer.html#compaction) across all nodes.
+Ingestions | Bytes written by SSTable injections across all nodes.
+Write Stalls | The number of intentional write stalls per second across all nodes, used to backpressure incoming writes during periods of heavy write traffic.
+Time Series Writes | The number of successfully written time-series samples, and number of errors attempting to write time series samples, per second across all nodes.
+Time Series Bytes Written | The number of bytes written by the time-series system per second across all nodes.
 
 For monitoring CockroachDB, it is sufficient to use the [**Capacity**](#capacity) and [**File Descriptors**](#file-descriptors) graphs.
 
