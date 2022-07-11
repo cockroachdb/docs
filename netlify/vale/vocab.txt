@@ -258,6 +258,8 @@ kubectl
 kubemci
 kuwahara
 kv
+Leakproof
+leakproof
 leiningen
 libedit
 libpq
