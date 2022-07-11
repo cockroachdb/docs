@@ -113,7 +113,7 @@ To restore a database:
 
     The **Restore database** module displays with backup details.
 
-1. In the **Restore to** field, enter the name of the destination database.
+1. In the **Restore to** field, enter the name of the destination database. For multi-region databases, see [Restore a multi-region database](#restore-a-multi-region-database).
 
     {{site.data.alerts.callout_info}}
     [Resolve any naming conflicts](#resolve-a-database-naming-conflict) by using [`DROP`](../{{site.versions["stable"]}}/drop-database.html) or [`RENAME`](../{{site.versions["stable"]}}/rename-database.html) on the existing database. If you enter a unique name in the **Restore to** field, a new database will be created.
@@ -130,6 +130,46 @@ To restore a database:
    When the restore job has been created successfully, you will be taken to the **Restore Jobs** tab, which will show you the status of your restore.
 
 When the restore is complete, be sure to set any database-specific [zone configurations](../{{site.versions["stable"]}}/configure-replication-zones.html) and, if applicable, [grant privileges](../{{site.versions["stable"]}}/grant.html).
+
+#### Restore a multi-region database
+
+You can only restore to the same database name as the backed-up database. Therefore, you need to [`DROP`](../{{site.versions["stable"]}}/drop-database.html) or [`RENAME`](../{{site.versions["stable"]}}/rename-database.html) your existing database before restoring.
+
+Additionally, if you need to restore a [multi-region database](../{{site.versions["stable"]}}/multiregion-overview.html) you have backed up to a different database name, you can use the following workaround. In this example, the original, backed-up database is `movr` and the new database is `new_movr`:
+
+1. In the SQL shell, create a new database named `new_movr`: 
+
+    ~~~ sql 
+    CREATE DATABASE new_movr;
+    ~~~
+
+1. Add the regions that are in the backup of `movr` to your new database. The [database regions](../{{site.versions["stable"]}}/multiregion-overview.html#database-regions) in your new database **must** match the regions of the backed-up database (`movr` in this example). You must:
+    - Ensure the databases have the same primary region.
+    - Add the regions to the new database in the same region order as the backed-up database.
+
+    To verify the regions in your backed-up database, use [`SHOW REGIONS`](../{{site.versions["stable"]}}/show-regions.html):
+
+    ~~~sql
+    SHOW REGIONS FROM DATABASE movr;
+    ~~~
+
+    If the backed-up database has a primary region of `us-east1`, and then you had added `us-west1` followed by `us-west2` to the database, you must add regions to the new database in the same order:  
+
+    ~~~sql 
+    ALTER DATABASE new_movr SET PRIMARY REGION "us-east1";
+    ~~~
+    ~~~sql
+    ALTER DATABASE new_movr ADD region "us-west1";
+    ~~~
+    ~~~sql
+    ALTER DATABASE new_movr ADD region "us-west2";
+    ~~~
+
+1. From the Console, go to the **Backups** page and choose the backup you want to restore. Click on the number of tables in the database. You will find a list of all the tables contained in the database's backup. Click **Restore** for each table you want to restore into the new database. Provide the new database's name (e.g., `new_movr`) in **Restore to** for the **Destination database** name.
+
+1. Continue through the [Restore a database](#restore-a-database) workflow.
+
+For more detail on "matching" regions, see [Restoring to multi-region databases](../{{site.versions["stable"]}}/restore.html#restoring-to-multi-region-databases).
 
 ### Restore a table
 
