@@ -62,7 +62,7 @@ Next, you must provision the resources required resources in your Cloud, whether
 1. The key itself.
 1. The authorization object that grants the {{ site.data.products.db }} service account permission to encrypt and decrypt using the key. The authorization object is either an IAM role in AWS or a service account in GCP.
 
-Follow the instructions for your {{ site.data.products.db }} Information-As-A-Service (IAAS) platform:
+Follow the instructions for the cloud provider that corresponds to your cluster's deployment environment:
 
 - [Provisioning Amazon Web Services (AWS) for CMEK](cmek-ops-aws.html)
 - [Provisioning Google Cloud Platform (GCP) for CMEK](cmek-ops-gcp.html) 

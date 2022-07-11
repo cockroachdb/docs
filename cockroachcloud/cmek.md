@@ -38,7 +38,7 @@ This section describes some of the ways that CMEK can help you protect your data
 - **Enforcement of encryption requirements**: With CMEK, you have control the CMEK key's encryption strength. The CMEK key's size is determined by what your KMS provider supports.
 
     You can use your KMS platform's controls to configure the regions where the CMEK key is available, enable automatic rotation schedules for CMEK keys, and view audit logs that show each time the CMEK key is used by {{ site.data.products.db }}. {{ site.data.products.db }} does not need any visibility into these details.
-- **Infrastructure flexibility**: If your clusters are deployed on a different IAAS platform provider from where you manage your keys, or if your CMEK keys are stored in multiple KMS systems or tenants, you can use Hashicorp Vault Key Management Secrets Engine to give your clusters access to your CMEK keys, as long as the keys are stored in AWS KMS or GCP KMS.
+- **Infrastructure flexibility**: If your CMEK keys are stored in multiple KMS systems or tenants, you can use Hashicorp Vault Key Management Secrets Engine to give your cluster access to your CMEK keys, as long as the cluster and keys are stored in the same deployment environment (GCP or AWS).
 
 The following example shows some of the ways that CMEK can help you meet business and regulatory requirements.
 
@@ -48,7 +48,7 @@ CMEK helps you to enforce such business rules on {{ site.data.products.db }} clu
 
 ## How CMEK works
 
-When you create a {{ site.data.products.dedicated }} cluster, its data at rest is not encrypted by default. Instead, the data is stored on disks attached to the cluster, which are always encrypted by the Information-As-A-Service (IAAS) provider you select when you create the cluster.
+When you create a {{ site.data.products.dedicated }} cluster, its data at rest on cluster disks is not encrypted by default. However, the disks themselves are automatically encrypted by cryptographic keys owned and managed by the cloud providers themselves.
 
 When you enable CMEK on a {{ site.data.products.dedicated }} cluster, {{ site.data.products.db }} creates two encryption keys and begins to use them to protect newly-written data at rest. {{ site.data.products.db }} manages these encryption keys and propagates them to cluster nodes.
 
