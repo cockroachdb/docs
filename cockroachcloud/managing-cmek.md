@@ -86,16 +86,16 @@ See the [API specification](../api/cloud/v1.html#operation/CockroachCloud_Enable
               "region": "{COCKROACHDB_CLOUD_REGION}",
               "key_spec": {
                 "type": "AWS_KMS",
-                "uri": "arn:aws:kms:{KEY_URI}",
-                "auth_principal": "arn:aws:iam::{IAM_ROLE_NAME}"
+                "uri": "{YOUR_AWS_KMS_KEY_ARN}",
+                "auth_principal": "{YOUR_AWS_IAM_ROLE_ARN}"
               }
             },
             {
               "region": "{COCKROACHDB_CLOUD_REGION}",
               "key_spec": {
                 "type": "AWS_KMS",
-                "uri": "arn:aws:kms:{KEY_URI}",
-                "auth_principal": "arn:aws:iam::{IAM_ROLE_NAME}"
+                "uri": "{YOUR_AWS_KMS_KEY_ARN}",
+                "auth_principal": "{YOUR_AWS_IAM_ROLE_ARN}"
               }
             }
           ]
@@ -111,7 +111,7 @@ See the [API specification](../api/cloud/v1.html#operation/CockroachCloud_Enable
               "region": "{COCKROACHDB_CLOUD_REGION}",
               "key_spec": {
                 "type": "GCP_CLOUD_KMS",
-                "uri": "arn:aws:kms:{KEY_RESOURCE_LOCATION}",
+                "uri": "{KEY_RESOURCE_LOCATION}",
                 "auth_principal": "{YOUR_GCP_SERVICE_ACCOUNT_ID}"
               }
             },
@@ -178,16 +178,16 @@ See the [API specification](../api/cloud/v1.html#operation/CockroachCloud_Enable
             "region": "{COCKROACHDB_CLOUD_REGION}",
             "key_spec": {
               "type": "AWS_KMS",
-              "uri": "arn:aws:kms:{KEY_URI}",
-              "auth_principal": "arn:aws:iam::{IAM_ROLE_NAME}"
+              "uri": "{YOUR_AWS_KMS_KEY_ARN}",
+              "auth_principal": "{YOUR_AWS_IAM_ROLE_ARN}"
             }
           },
           {
             "region": "{COCKROACHDB_CLOUD_REGION}",
             "key_spec": {
               "type": "AWS_KMS",
-              "uri": "arn:aws:kms:{KEY_URI}",
-              "auth_principal": "arn:aws:iam::{IAM_ROLE_NAME}"
+              "uri": "{YOUR_AWS_KMS_KEY_ARN}",
+              "auth_principal": "{YOUR_AWS_IAM_ROLE_ARN}"
             }
           }
         ]
@@ -203,7 +203,7 @@ See the [API specification](../api/cloud/v1.html#operation/CockroachCloud_Enable
             "region": "{COCKROACHDB_CLOUD_REGION}",
             "key_spec": {
               "type": "GCP_CLOUD_KMS",
-              "uri": "arn:aws:kms:{KEY_RESOURCE_LOCATION}",
+              "uri": "{YOUR_GCP_KMS_KEY_RESOURCE_ID_EXCLUDING_VERSION}",
               "auth_principal": "{YOUR_GCP_SERVICE_ACCOUNT_ID}"
             }
           },
@@ -211,7 +211,7 @@ See the [API specification](../api/cloud/v1.html#operation/CockroachCloud_Enable
             "region": "{COCKROACHDB_CLOUD_REGION}",
             "key_spec": {
               "type": "GCP_CLOUD_KMS",
-              "uri": "{KEY_RESOURCE_LOCATION}",
+              "uri": "{YOUR_GCP_KMS_KEY_RESOURCE_ID_EXCLUDING_VERSION}",
               "auth_principal": "{YOUR_GCP_SERVICE_ACCOUNT_ID}"
             }
           }
