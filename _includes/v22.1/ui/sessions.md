@@ -65,7 +65,7 @@ The **Cancel session** button ends the session. The client that holds this sessi
   - The SQL statement.
   - **Execution Start Time** is the timestamp at which the statement was run.
   - **Distributed Execution?** shows whether the statement uses [Distributed SQL (DistSQL)]({{ link_prefix }}architecture/sql-layer.html#distsql) optimization.
-  - [**View Statement Details**]({{ page_prefix }}statements-page.html#statement-details-page) to view the Statement Details page for the statement.
+  - [**View Statement Details**]({{ page_prefix }}statements-page.html#statement-fingerprint-page) to view the Statement Fingerprint page for the statement.
 
 ## See also
 

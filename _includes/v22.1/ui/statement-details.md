@@ -1,68 +1,52 @@
-## Statement Details page
+<a id="statement-details-page"></a>
 
-Click a SQL statement fingerprint to open **Statement Details**. For each statement fingerprint, the details include:
-
-- [Overview](#overview)
-- [Explain Plans](#explain-plans)
-- [Diagnostics](#diagnostics)
-- [Execution Stats](#execution-stats)
+## Statement Fingerprint page
 
 ### Overview
 
-The **Overview** section displays the SQL statement fingerprint and essential statistics:
+The **Overview** section displays the SQL statement fingerprint and execution attributes:
 
-**Mean statement time** is the cumulative time taken to execute statements with this fingerprint within the [date range](#date-range).
+- **Nodes**: the nodes on which the statements executed. Click a node ID to view node statistics. **Nodes** are not displayed for {{ site.data.products.serverless }} clusters.
+- **Regions**: the regions on which the statements executed. **Regions** are not displayed for {{ site.data.products.serverless }} clusters.
+- **Database**: the database on which the statements executed.
+- **App**: the name specified by the [`application_name`]({{ link_prefix }}show-vars.html#supported-variables) session setting. Click the name to view all statements run by that application.
+- **Failed?**: whether the statement failed to execute.
+- **Full scan?**: whether the execution performed a full scan of the table.
+- **Vectorized execution?**: whether the execution used the [vectorized execution engine]({{ link_prefix }}vectorized-execution.html).
+- **Transaction type**: the type of transaction ([implicit]({{ link_prefix }}transactions.html#individual-statements) or [explicit]({{ link_prefix }}transactions.html#sql-statements)).
+- **Last execution time**: when the statement was last executed.
 
-  - **Planning time** is the cumulative time taken by the [planner]({{ link_prefix }}architecture/sql-layer.html#sql-parser-planner-executor) to create an execution plan for statements with this fingerprint within the specified time interval.
-  - **Execution time** is the cumulative time taken to execute statements with this fingerprint in the specified time interval.
+The following screenshot shows the statement fingerprint of the query described in [Use the right index]({{ link_prefix }}apply-statement-performance-rules.html#rule-2-use-the-right-index):
 
-**Resource usage** displays statistics about storage, memory, and network usage for the SQL statement fingerprint.
+<img src="{{ 'images/v22.1/ui_statement_fingerprint_overview.png' | relative_url }}" alt="Statement fingerprint overview" style="border:1px solid #eee;max-width:100%" />
 
-  - **Mean rows/bytes read** displays the mean number of rows and bytes [read from the storage layer]({{ link_prefix }}architecture/life-of-a-distributed-transaction.html#reads-from-the-storage-layer) for statements with this fingerprint within the date range.
-  - **Mean rows written** displays the mean number of rows written by statements with this fingerprint within the date range.
-  - **Max memory usage** displays the maximum memory used by a statement with this fingerprint at any time during its execution within the date range or specified time interval.
-  - **Network usage** displays the amount of [data transferred over the network]({{ link_prefix }}architecture/reads-and-writes-overview.html) for statements with this fingerprint within the date range. If this value is 0, the statement was executed on a single node.
-  - **Max scratch disk usage** displays the maximum amount of data [spilled to temporary storage on disk]({{ link_prefix }}vectorized-execution.html#disk-spilling-operations) while executing statements with this fingerprint within the date range.
+#### Charts
 
-**Statement details** displays information about the execution of the statement.
+Charts following the execution attributes display the following statistics for statements with the fingerprint during the selected [time interval](#time-interval):
 
-  - **Nodes**: the nodes on which the statements executed. Click the node ID to view node statistics. <br><br>**Nodes** are not visible for {{ site.data.products.serverless }} clusters.
-  - **Regions**: the regions on which the statements executed. <br><br>**Regions** are not visible for {{ site.data.products.serverless }} clusters.
-  - **Database**: the database on which the statements executed.
-  - **App**: the name specified by the [`application_name`]({{ link_prefix }}show-vars.html#supported-variables) session setting.
-  - **Failed?**: whether the statement failed to execute.
-  - **Used cost-based optimizer?**: whether the execution used the [cost-based optimizer]({{ link_prefix }}cost-based-optimizer.html).
-  - **Distributed execution?**: whether the execution was distributed.
-  - **Vectorized execution?**: whether the execution used the [vectorized execution engine]({{ link_prefix }}vectorized-execution.html).
-  - **Transaction type**: the type of transaction (implicit or explicit).
-  - **Last execution time**: when the statement was last executed.
+- **Statement Execution and Planning Time**: the time taken by the [planner]({{ link_prefix }}architecture/sql-layer.html#sql-parser-planner-executor) to create an execution plan and for CockroachDB to execute statements.
+- **Rows Processed**: the total number of rows read and written.
+- **Execution Retries**: the number of [retries]({{ link_prefix }}transactions.html#transaction-retries).
+- **Execution Count**: the total number of executions. It is calculated as the sum of first attempts and retries.
+- **Contention**: the amount of time spent waiting for resources.
 
-**Execution counts** displays execution statistics for the SQL statement fingerprint.
+The following charts summarize the executions of the statement fingerprint illustrated in the preceding section:
 
-  - **First attempts**: the cumulative number of first attempts at executing statements with this fingerprint within the date range.
-  - **Total executions**: the total number of executions of statements with this fingerprint. It is calculated as the sum of first attempts and retries.
-  - **Retries**: the cumulative number of [retries]({{ link_prefix }}transactions.html#transaction-retries) of statements with this fingerprint within the date range.
-  - **Max retries**: the highest number of retries of a single statement with this fingerprint within the date range. For example, if three statements with the same fingerprint had to be retried 0, 1, and 5 times, then the Max Retries value for the fingerprint is 5.
+<img src="{{ 'images/v22.1/ui_statement_fingerprint_charts.png' | relative_url }}" alt="Statement fingerprint charts" style="border:1px solid #eee;max-width:100%" />
 
 ### Explain Plans
 
-{% include_cached new-in.html version="v22.1" %} The **Explain Plans** tab displays statement plans for an [explainable statement]({{ link_prefix }}sql-grammar.html#preparable_stmt) in the time interval selected [date range](#date-range). You can use this information to optimize the query. For more information about plans, see [`EXPLAIN`]({{ link_prefix }}explain.html).
+{% include_cached new-in.html version="v22.1" %} The **Explain Plans** tab displays statement plans for an [explainable statement]({{ link_prefix }}sql-grammar.html#preparable_stmt) in the selected time interval [time interval](#time-interval). You can use this information to optimize the query. For more information about plans, see [`EXPLAIN`]({{ link_prefix }}explain.html).
 
-{% if page.cloud == true %}
-<img src="{{ 'images/cockroachcloud/statements_logical_plan.png' | relative_url }}" alt="{{ site.data.products.db }} Console Statements Page" style="border:1px solid #eee;max-width:100%" />
-{% endif %}
+The following screenshot shows two executions of the query discussed in the preceding sections:
 
-{% if page.cloud != true %}
-The following screenshot shows two executions of the query described in [Use the right index](apply-statement-performance-rules.html#rule-2-use-the-right-index).
+<img src="{{ 'images/v22.1/ui_plan_table.png' | relative_url }}" alt="Plan table" style="border:1px solid #eee;max-width:100%" />
 
-<img src="{{ 'images/v22.1/ui_plan_table.png' | relative_url }}" alt="Plan table" style="border:1px solid #eee;max-width:80%" />
+The plan table shows statistics for the execution and whether the execution was distributed or used the [vectorized execution engine]({{ link_prefix }}vectorized-execution.html). In the screenshot, the **Average Execution Time** column show that the second execution at `20:37`, which uses the index, takes less time than the first execution.
 
-The plan table shows statistics for the execution and whether the execution was distributed or used the [vectorized execution engine]({{ link_prefix }}vectorized-execution.html). In the screenshot, the **Average Execution Time** column show that the second execution, which uses the index, takes less time than the first execution.
+To display the plan that was executed, click a plan ID. When you click the plan ID `13182663282122740000`, the following plan displays:
 
-To display the plan that was executed, click a plan ID. When you click the plan ID `13929609339379026000`, the following plan displays:
-
-<img src="{{ 'images/v22.1/ui_statement_plan.png' | relative_url }}" alt="Plan table" style="border:1px solid #eee;max-width:80%" />
-{% endif %}
+<img src="{{ 'images/v22.1/ui_statement_plan.png' | relative_url }}" alt="Plan table" style="border:1px solid #eee;max-width:100%" />
 
 ### Diagnostics
 
@@ -85,13 +69,13 @@ Diagnostics will be collected a maximum of *N* times for a given activated finge
 
 #### Activate diagnostics collection and download bundles
 
-<img src="{{ 'images/v22.1/ui_activate_diagnostics.png' | relative_url }}" alt="Statements diagnostics" style="border:1px solid #eee;max-width:80%" />
+<img src="{{ 'images/v22.1/ui_activate_diagnostics.png' | relative_url }}" alt="Statements diagnostics" style="border:1px solid #eee;max-width:100%" />
 
 To activate diagnostics collection:
 
 1. Click the **Activate diagnostics** button. {% include_cached new-in.html version="v22.1" %} The **Activate statement diagnostics** dialog displays.
 
-    <img src="{{ 'images/v22.1/ui_activate_diagnostics_dialog.png' | relative_url }}" alt="Statements diagnostics" style="border:1px solid #eee;max-width:80%" />
+    <img src="{{ 'images/v22.1/ui_activate_diagnostics_dialog.png' | relative_url }}" alt="Statements diagnostics" style="border:1px solid #eee;max-width:100%" />
 
 1. Choose whether to activate collection on the next statement execution (default) or if execution latency exceeds a certain time. If you choose the latter, accept the default latency of 100 milliseconds, or specify a different time. All executions of the statement fingerprint will run slower until diagnostics are collected.
 1. Choose whether the request should expire after 15 minutes, or after a different the time, or disable automatic expiration by deselecting the checkbox.
@@ -99,7 +83,7 @@ To activate diagnostics collection:
 
 A row  with the activation time and collection status is added to the **Statement diagnostics** table.
 
-<img src="{{ 'images/v22.1/ui_statements_diagnostics.png' | relative_url }}" alt="Statements diagnostics" style="border:1px solid #eee;max-width:80%" />
+<img src="{{ 'images/v22.1/ui_statement_diagnostics.png' | relative_url }}" alt="Statement diagnostics" style="border:1px solid #eee;max-width:100%" />
 
 The collection status values are:
 
@@ -117,28 +101,6 @@ Although fingerprints are periodically cleared from the Statements page, all dia
 {% endif %}
 
 Click <img src="{{ 'images/v22.1/ui-download-button.png' | relative_url }}" alt="Download bundle" /> **Bundle (.zip)** to download any diagnostics bundle.
-
-### Execution Stats
-
-The Execution Stats tab has three subsections:
-
-- **Execution Latency by Phase** displays the service latency of statements matching this fingerprint, broken down by [phase]({{ link_prefix }}architecture/sql-layer.html#sql-parser-planner-executor) (parse, plan, run, overhead), as well as the overall service latency. Overhead comprises the statements that remain after subtracting parse, plan, and run latencies from the overall latency. These might include fetching table descriptors that were not cached, or other background tasks required to execute the query.
-
-    {% if page.cloud != true %}
-    {{site.data.alerts.callout_info}}
-    Service latency can be affected by network latency, which is displayed for your cluster on the [Network Latency](ui-network-latency-page.html) page.
-    {{site.data.alerts.end}}
-    {% endif %}
-
-- **Other Execution Statistics** displays the following statistics.
-
-    Statistic | Description
-    ----------|------------
-    Rows Read | The number of rows read by the statement.
-    Disk Bytes Read | The size of the data read by the statement.
-    Rows Written | The number of rows written by the statement.
-
-- **Stats by Node** provides a breakdown of the number of statements of the selected fingerprint per gateway node. You can use this table to determine whether, for example, you are executing queries on a node that is far from the data you are requesting (see [Optimize Statement Performance]({{ link_prefix }}make-queries-fast.html#cluster-topology)). <br><br>**Stats by Node** are not visible for {{ site.data.products.serverless }} clusters.
 
 ## See also
 
