@@ -167,7 +167,7 @@ See the [API specification](../api/cloud/v1.html#operation/CockroachCloud_Enable
 
 1. Create a new file named `cmek_config.json`. This file will contain a JSON array of `region_spec` objects, each of which includes the name of a {{ site.data.products.db }} region and a `key_spec` that is specific to the target KMS platform and specifies the URI of the CMEK key and the principal that is authorized to encrypt and decrypt using the key.
 
-    Start from the example for your KMS platform and replace the placeholder values. Each of these examples includes `region_spec` objects for two {{ site.data.products.db }} regions; you need only include regions you want to update.
+    Start from the example for your KMS platform and replace the placeholder values. Each of these examples includes `region_spec` objects for two {{ site.data.products.db }} regions; you need only include regions for which you want to rotate the CMEK key.
     - **AWS**:
 
         {% include_cached copy-clipboard.html %}
