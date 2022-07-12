@@ -6,3 +6,4 @@
   - They do not take into account [node localities](cockroach-start.html#locality).
   - All deletes are run on a single node, instead of being distributed.
   - For details, see [cockroachdb/cockroach#76914](https://github.com/cockroachdb/cockroach/issues/76914)
+- If you [override the TTL for a row by setting `crdb_internal_expiration` directly](row-level-ttl.html#set-the-row-level-ttl-for-an-individual-row), and the row is later updated (e.g., using an [`ON UPDATE` expression](create-table.html#on-update-expressions)), the TTL override is lost; it is reset to `now() + ttl_expire_after`.
