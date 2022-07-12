@@ -59,7 +59,7 @@ No. Only one authentication method can be active for each {{ site.data.products.
 
 ### Does this change how administrators invite users?
 
-The [workflow for inviting team members](console-access-management.html#invite-team-members-to-cockroachdb-cloud) to {{ site.data.products.db }} remains the same. Enterprise Authentication is enabled for your {{ site.data.products.db }} organization, then you don't need to invite SSO users.
+The [workflow for inviting team members](console-access-management.html#invite-team-members-to-cockroachdb-cloud) to {{ site.data.products.db }} remains the same. If Enterprise Authentication is enabled for your {{ site.data.products.db }} organization, then you don't need to invite SSO users.
 
 ### As an admin, how do I deprovision a user's access to {{ site.data.products.db }} Console if they leave the relevant project?
 

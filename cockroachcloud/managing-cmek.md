@@ -43,7 +43,7 @@ This section gives a high level overview of the operations involved with impleme
 
 1. To start the process, contact {{ site.data.products.dedicated }} by reaching out to your account team, or [creating a support ticket](https://support.cockroachlabs.com/). You must provide your **Organization ID**, which you can find in your [Organization settings page](https://cockroachlabs.cloud/settings).
 
-    They will enable the CMEK feature for your {{ site.data.products.dedicated }} Organization.
+    They will enable the CMEK feature for your {{ site.data.products.db }} Organization.
 
 1. [Create a {{ site.data.products.db }} service account](console-access-management.html#service-accounts).
 1. [Create an API key](console-access-management.html#create-api-keys) for the service account to use.
@@ -83,7 +83,7 @@ See the [API specification](../api/cloud/v1.html#operation/CockroachCloud_Enable
         {
           "region_specs": [
             {
-              "region": "{COCKROACH_CLOUD_REGION}",
+              "region": "{COCKROACHDB_CLOUD_REGION}",
               "key_spec": {
                 "type": "AWS_KMS",
                 "uri": "arn:aws:kms:{KEY_URI}",
@@ -91,7 +91,7 @@ See the [API specification](../api/cloud/v1.html#operation/CockroachCloud_Enable
               }
             },
             {
-              "region": "{COCKROACH_CLOUD_REGION}",
+              "region": "{COCKROACHDB_CLOUD_REGION}",
               "key_spec": {
                 "type": "AWS_KMS",
                 "uri": "arn:aws:kms:{KEY_URI}",
@@ -108,19 +108,19 @@ See the [API specification](../api/cloud/v1.html#operation/CockroachCloud_Enable
         {
           "region_specs": [
             {
-              "region": "{COCKROACH_CLOUD_REGION}",
+              "region": "{COCKROACHDB_CLOUD_REGION}",
               "key_spec": {
                 "type": "GCP_CLOUD_KMS",
                 "uri": "arn:aws:kms:{KEY_RESOURCE_LOCATION}",
-                "auth_principal": "{COCKROACH_CLOUD_SERVICE_ACCOUNT}"
+                "auth_principal": "{YOUR_GCP_SERVICE_ACCOUNT_ID}"
               }
             },
             {
-              "region": "{COCKROACH_CLOUD_REGION}",
+              "region": "{COCKROACHDB_CLOUD_REGION}",
               "key_spec": {
                 "type": "GCP_CLOUD_KMS",
                 "uri": "{KEY_RESOURCE_LOCATION}",
-                "auth_principal": "{COCKROACH_CLOUD_SERVICE_ACCOUNT}"
+                "auth_principal": "{YOUR_GCP_SERVICE_ACCOUNT_ID}"
               }
             }
           ]
@@ -175,7 +175,7 @@ See the [API specification](../api/cloud/v1.html#operation/CockroachCloud_Enable
         {
         "region_specs": [
           {
-            "region": "{COCKROACH_CLOUD_REGION}",
+            "region": "{COCKROACHDB_CLOUD_REGION}",
             "key_spec": {
               "type": "AWS_KMS",
               "uri": "arn:aws:kms:{KEY_URI}",
@@ -183,7 +183,7 @@ See the [API specification](../api/cloud/v1.html#operation/CockroachCloud_Enable
             }
           },
           {
-            "region": "{COCKROACH_CLOUD_REGION}",
+            "region": "{COCKROACHDB_CLOUD_REGION}",
             "key_spec": {
               "type": "AWS_KMS",
               "uri": "arn:aws:kms:{KEY_URI}",
@@ -200,28 +200,24 @@ See the [API specification](../api/cloud/v1.html#operation/CockroachCloud_Enable
         {
         "region_specs": [
           {
-            "region": "{COCKROACH_CLOUD_REGION}",
+            "region": "{COCKROACHDB_CLOUD_REGION}",
             "key_spec": {
               "type": "GCP_CLOUD_KMS",
               "uri": "arn:aws:kms:{KEY_RESOURCE_LOCATION}",
-              "auth_principal": "{COCKROACH_CLOUD_SERVICE_ACCOUNT}"
+              "auth_principal": "{YOUR_GCP_SERVICE_ACCOUNT_ID}"
             }
           },
           {
-            "region": "{COCKROACH_CLOUD_REGION}",
+            "region": "{COCKROACHDB_CLOUD_REGION}",
             "key_spec": {
               "type": "GCP_CLOUD_KMS",
               "uri": "{KEY_RESOURCE_LOCATION}",
-              "auth_principal": "{COCKROACH_CLOUD_SERVICE_ACCOUNT}"
+              "auth_principal": "{YOUR_GCP_SERVICE_ACCOUNT_ID}"
             }
           }
         ]
       }
       ```
-
-    {{site.data.alerts.callout_info}}
-    If you add a new region to a cluster, data at rest in the new region is not automatically protected by CMEK. To enable CMEK for the new region, "rotate" that region to begin using a CMEK key.
-    {{site.data.alerts.end}}
 
 1. Using the {{ site.data.products.db }} API, send a `PUT` request with the contents of `cmek_config.json` to the cluster's `cmek` endpoint.
 

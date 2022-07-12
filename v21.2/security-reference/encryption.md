@@ -13,7 +13,7 @@ CockroachDB uses either TLS 1.2 or TLS 1.3 for inter-node and client-node [authe
 
 ## Encryption at rest
 
-When selecting a deployment environment for a CockroachDB cluster, we recommend that you select a cloud provider such as Google Cloud Platform (GCP) or Amazon Web Services (AWS), which automatically provide industry-standard encryption for cloud storage resources. You can learn more about [GCP persistent disk encryption](https://cloud.google.com/compute/docs/disks#pd_encryption) or [AWS Elastic Block Storage](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html). {{ site.data.products.db }} clusters, which can be deployed in either GCP or AWS, automatically receive this protection.
+When selecting a deployment environment for a CockroachDB cluster, we recommend that you select a cloud provider such as Google Cloud Platform (GCP), Amazon Web Services (AWS) or Microsoft Azure, which automatically provide industry-standard encryption for cloud storage resources. You can learn more about [GCP persistent disk encryption](https://cloud.google.com/compute/docs/disks#pd_encryption), [AWS EBS volume encryption](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html) or [Azure managed disk encryption](https://docs.microsoft.com/en-us/azure/virtual-machines/disk-encryption-overview). {{ site.data.products.db }} clusters, which can be deployed in either GCP or AWS, automatically receive this protection using cloud provider-managed keys
 
 In addition to this infrastructure-level encryption, {{ site.data.products.db }} and {{ site.data.products.core }} clusters each have additional optional safeguards for data at rest on cluster disks.
 

@@ -1,5 +1,8 @@
-You can rotate a CMEK key within your KMS platform or within {{ site.data.products.dedicated }}.
+You can rotate a CMEK key for a site.data.products.dedicated }} cluster either by creating a new version of the existing CMEK key or by creating a new CMEK key.
 
-- When you rotate a CMEK key within your KMS platform, a new version of the key is created with new key material, and this becomes the active key version. In both GCP KMS and AWS KMS, encryption operations automatically use the active key version, while decryption operations automatically use the key version that was used to encrypt the data. For this reason, {{ site.data.products.dedicated }} does not need any awareness of rotation operations within your KMS platform. However, {{ site.data.products.db }} will not re-encrypt the store key using the rotated CMEK key until you also perform a rotation using the {{ site.data.products.db }} API.
-
-- When you rotate a CMEK key using the {{ site.data.products.db }} API, you supply a CMEK key URI for each region you want to update, and {{ site.data.products.dedicated }} begins using the new key to protect the store key.
+- To begin using a new version of an existing CMEK key:
+  1. Within your KMS platform, you can configure automatic rotation for the CMEK key in your KMS platform, or you can perform a manual rotation.
+  1. {{ site.data.products.db }} does not not automatically re-encrypt the store key using the new CMEK key version. For each region you want to update, you must also perform a rotation using the {{ site.data.products.db }} API, but do not modify the CMEK key URI. {{ site.data.products.db }} re-encrypts the store key using the new CMEK key version.
+- To begin using an entirely new CMEK key:
+  1. Within your KMS platform, create a new CMEK key.
+  1. Next, you perform a rotation using the {{ site.data.products.db }} API and provide the new CMEK key URI.
