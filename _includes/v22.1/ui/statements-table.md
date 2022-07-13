@@ -20,4 +20,10 @@ Retries | Cumulative number of automatic (internal) [retries]({{ link_prefix }}t
 Regions/Nodes | The regions and nodes on which statements with this fingerprint executed. <br><br>Regions/Nodes is not visible for {{ site.data.products.serverless }} clusters.
 Diagnostics | Activate and download [diagnostics](#diagnostics) for this fingerprint. To activate, click the **Activate** button. **New in v22.1:** The [Activate statement diagnostics](#activate-diagnostics-collection-and-download-bundles) dialog displays. After you complete the dialog, the column displays the status of diagnostics collection (**WAITING**, **READY**, or **ERROR**). Click <img src="{{ 'images/common/ui-ellipsis-button.png' | relative_url }}" alt="Bundle selector" /> and select a bundle to download or select **Cancel request** to cancel diagnostics bundle collection. <br><br>Statements are periodically cleared from the Statements page based on the start time. To access the full history of diagnostics for the fingerprint, see the [Diagnostics](#diagnostics) tab of the Statement Details page. <br><br>Diagnostics is not visible for {{ site.data.products.serverless }} clusters.
 
+{{site.data.alerts.callout_info}}
+To obtain the execution statistics, CockroachDB samples a percentage of the executions. If you see `no samples` displayed in the **Contention**, **Max Memory**, or **Network** columns, there are two possibilities:
+- Your statement was executed successfully, but wasn't sampled because there were few executions of the same statement.
+- Your statement has failed (the most likely case). You can confirm by clicking the statement and viewing the value for **Failed?**.
+{{site.data.alerts.end}}
+
 To view statement details, click a SQL statement fingerprint in the **Statements** column to open the **Statement Fingerprint** page.
