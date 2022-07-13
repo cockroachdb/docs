@@ -163,7 +163,9 @@ curl --request GET \
 
 The API to rotate a CMEK key is nearly identical to the API to [activate CMEK on a cluster](#step-4-activate-cmek-for-your-cockroachdb-dedicated-cluster), with one notable exception. When you activate CMEK, you use a `POST` request that includes a CMEK key for each of the cluster's regions. When you rotate a CMEK key, you use a `PUT` request that includes a CMEK key for each region you intend to rotate.
 
-See the [API specification](../api/cloud/v1.html#operation/CockroachCloud_EnableCMEK). <!-- TODO update when available -->
+<!-- TODO update when available
+See the [API specification](../api/cloud/v1.html#operation/CockroachCloud_EnableCMEK).
+-->
 
 To rotate the CMEK keys for one or more cluster regions:
 
