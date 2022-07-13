@@ -31,7 +31,7 @@ The time-series data used in the [DB Console](ui-overview-dashboard.html) is sto
 
 ## Can I reduce or disable the storage of time-series data?
 
-Yes, you can either [reduce the interval for time-series storage](#reduce-the-interval-for-time-series-storage) or [disable time-series storage entirely](#disable-time-series-storage-entirely).
+Yes, you can either [reduce the interval for time-series storage](#reduce-the-interval-for-time-series-storage) or [disable time-series storage entirely](#disable-time-series-storage).
 
 After reducing or disabling time-series storage, it can take up to 24 hours for time-series data to be deleted and for the change to be reflected in DB Console metrics.
 
