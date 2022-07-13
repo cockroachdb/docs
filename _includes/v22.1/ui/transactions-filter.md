@@ -8,7 +8,7 @@
 
 ### Time interval
 
-To view [statement fingerprints](#sql-statement-fingerprints) within a specific time interval, click the selector and pick an interval. Use the arrow keys to cycle through previous and next time intervals.
+To view [statement fingerprints]({{ page_prefix }}statements-page.html##sql-statement-fingerprints) within a specific time interval, click the selector and pick an interval. Use the arrow keys to cycle through previous and next time intervals.
 
 It's possible to select an interval for which no transaction statistics exist. CockroachDB persists transaction statistics up to 1 million rows before the oldest row is deleted. The retention period of statistics is reduced the more active a workload is and the more distinct statement fingerprints there are.
 
