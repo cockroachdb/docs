@@ -12,7 +12,7 @@
       "title": "Connect to CockroachDB",
       "items": [
         {
-          "title": "Install a driver or ORM",
+          "title": "Install a Driver or ORM Framework",
           "urls": [
             "/${VERSION}/install-client-drivers.html"
           ]
