@@ -58,7 +58,7 @@ Other cluster activity such as establishing a SQL connection or executing a `SEL
   
 In addition to queries that you run, Request Units can be consumed by background activity, such as automatic statistics gathering used to optimize your queries or changefeeds that you’ve set up to send changes to an external sink like Kafka.
 
-## Example
+## Example Request Unit calculation
 
 Say you have a simple key-value pair table with a secondary index:
 
@@ -68,7 +68,7 @@ Now you insert a row into the table:
 
 `INSERT INTO kv VALUES (1, “...imagine this is a 1 KiB string…”)`
 
-The amount of SQL CPU needed to execute this query is small, perhaps 1.5 milliseconds. The network egress is also minimal, perhaps 50 bytes. Most of the cost comes from 6 write requests to the storage layer with about 6K in request payload (plus a bit of extra overhead). The `INSERT` needs to be made first for the primary index on the `k` column and again for the secondary index on the `v` column. Each of those writes is replicated 3 times to different storage locations, for a total of 2 x 3 = 6 requests. Converting all these costs into a single RU number:
+The amount of SQL CPU needed to execute this query is small, about 1.5 milliseconds. The network egress is also minimal, around 50 bytes. Most of the cost comes from 6 write requests to the storage layer with about 6K in request payload (plus a bit of extra overhead). The `INSERT` needs to be made first for the primary index on the `k` column and again for the secondary index on the `v` column. Each of those writes is replicated 3 times to different storage locations, for a total of 2 x 3 = 6 requests. Converting all these costs into a single RU number:
 
   1.5 SQL CPU milliseconds = 0.5 RU
 
@@ -80,12 +80,12 @@ The amount of SQL CPU needed to execute this query is small, perhaps 1.5 millise
 
   6 KiB write payloads = 6 RU
 
-  Total = 18.55 RU
+  Total cost = 18.55 RU
 
 Note that this is not exact, as there is a bit of payload overhead, variation in the SQL CPU measurement, etc.
 
 ## Learn more
 
 - [Learn About {{ site.data.products.serverless }} Pricing](learn-about-pricing.html)
-- [Optimize Your {{ site.data.products.serverless }} Workload](optimizie-serverless-workload.html)
+- [Optimize Your {{ site.data.products.serverless }} Workload](optimize-serverless-workload.html)
 - [Manage Your {{ site.data.products.serverless }} Cluster](serverless-cluster-management.html)

@@ -7,7 +7,7 @@ docs_area: deploy
 
 This page describes how to tune your {{ site.data.products.serverless }} workload to reduce costs.
 
-## Types of resource usage
+## Understanding your resource usage
 
 {{ site.data.products.serverless }} clusters consume three kinds of resources:
 
@@ -17,15 +17,11 @@ This page describes how to tune your {{ site.data.products.serverless }} workloa
 
 To understand these resources, you need to understand a bit about the {{ site.data.products.serverless }} [architecture](architecture.html). A Serverless cluster is divided into two layers that run in separate processes: the SQL Layer and the Storage Layer. The SQL Layer receives and runs your SQL queries and background jobs. When the SQL Layer needs to read or write data rows, it calls the Storage Layer, which manages a replicated, transactional row store that is distributed across many machines.
 
-SQL CPU is simply the CPU consumed by SQL processes (not Storage processes) and is converted to Request Units using this equivalency:
+SQL CPU is simply the CPU consumed by SQL processes (not Storage processes) and is converted to Request Units using this equivalency: 1 RU = 3 milliseconds SQL CPU.
 
-1 RU = 3 milliseconds SQL CPU
+Network Egress measures the number of bytes that are returned from a SQL process to the calling client. It also includes any bytes sent by bulk operations like EXPORT or changefeeds. It is converted to Request Units using this equivalency: 1 RU = 1 KiB Network Egress.
 
-Network Egress measures the number of bytes that are returned from a SQL process to the calling client. It also includes any bytes sent by bulk operations like EXPORT or changefeeds. It is converted to Request Units using this equivalency:
-
-1 RU = 1 KiB Network Egress
-
-Storage Layer I/O includes the read and write requests sent by the SQL Layer to the Storage Layer. These operations are sent in batches containing any number of requests. Requests can have a payload containing any number of bytes. Write operations are replicated to multiple storage processes (3 by default), with each replica counted as a separate write operation. Storage Layer I/O is converted to Request Units using these equivalencies:
+Storage Layer I/O includes the read and write requests sent by the SQL Layer to the Storage Layer. These operations are sent in batches containing any number of requests. Requests can have a payload containing any number of bytes. Write operations are replicated to multiple storage processes (3 by default), with each replica counted as a separate write operation. Storage Layer I/O is converted to [Request Units](learn-about-request-units.html) using these equivalencies:
 
   - 1 RU = 8 Storage Read requests (per request in batch)
   - 1 RU = 64 KiB request payload (prorated)
@@ -35,6 +31,8 @@ Storage Layer I/O includes the read and write requests sent by the SQL Layer to 
   - 1 RU = 1 KiB request payload (prorated)
 
 ## Understanding which queries to optimize
+
+Placeholder
 
 ## Tips for reducing RU usage
 
@@ -49,6 +47,8 @@ You can reduce the RU cost of a query by reducing the work your cluster must do 
 - DO NOT disable automatic statistics, as they are needed to power the optimizer
 
 ## Example
+
+Placeholder
 
 ## Learn more
 

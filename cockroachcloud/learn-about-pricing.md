@@ -50,5 +50,5 @@ If your cluster gets throttled after using all of its burst capacity during the 
 ## Learn more
 
 - [Learn About Request Units](learn-about-request-units.html)
-- [Optimize Your {{ site.data.products.serverless }} Workload](optimizie-serverless-workload.html)
+- [Optimize Your {{ site.data.products.serverless }} Workload](optimize-serverless-workload.html)
 - [Manage Your {{ site.data.products.serverless }} Cluster](serverless-cluster-management.html)

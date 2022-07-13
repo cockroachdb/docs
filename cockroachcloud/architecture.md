@@ -58,82 +58,11 @@ After the cloud load balancer routes a new connection to one of the proxy pods, 
 
 Finally, the SQL pods communicate with the KV layer to access data managed by the shared storage pods, each of which stores that data in an [AWS](https://aws.amazon.com/ebs/features/) or [GCP](https://cloud.google.com/compute/docs/disks#pdspecs) block storage system.
 
-### Request Units
-
-With {{ site.data.products.serverless }}, you are charged for the storage and activity of your cluster. All cluster activity, including SQL queries, bulk operations, and background jobs, is measured in Request Units, or RUs. RUs are an abstracted metric that represent the size and complexity of requests made to your cluster. For example, the cost to do a prepared point read (fetching a single row by its key) of a 64 byte row is approximately 1 RU, plus 1 RU for each additional KiB. Writing a 64 byte row costs approximately 7 RUs, which includes the cost of replicating the write 3 times for high availability and durability, plus 3 RUs for each additional KiB.
-
-One RU is equivalent to:
-
-  - 3 milliseconds of CPU running a SQL query
-  - 1 KiB of network egress
-  - 1 read of 10 byte row (approximately)
-
-The more resource-intensive the operation, the more RUs it consumes. For example, reading a larger 1 KiB row consumes slightly more than 2 RUs since it requires additional CPU, I/O, and network egress. Writing that same 1 KiB row consumes almost 10 RUs, which includes the cost of replicating the write three times for high availability and durability. Adding secondary indexes and performing scans, joins, sorts, grouping, and other sophisticated processing consume RUs in proportion to resource usage.
-
-### SQL and Storage Layers
-
-CockroachDB Serverless clusters consume three kinds of resources:
-
-  - SQL CPU
-  - Network Egress
-  - Storage Layer I/O
-
-To understand these resources, you need to understand a bit about the CockroachDB Serverless architecture. A Serverless cluster is divided into two layers that run in separate processes: the SQL Layer and the Storage Layer. The SQL Layer receives and runs your SQL queries and background jobs. When the SQL Layer needs to read or write data rows, it calls the Storage Layer, which manages a replicated, transactional row store that is distributed across many machines.
-
-SQL CPU is simply the CPU consumed by SQL processes (not Storage processes) and is converted to Request Units using this equivalency: 1 RU = 3 milliseconds SQL CPU.
-
-Network Egress measures the number of bytes that are returned from a SQL process to the calling client. It also includes any bytes sent by bulk operations like `EXPORT` or changefeeds. It is converted to Request Units using this equivalency: 1 RU = 1 KiB Network Egress.
-
-Storage Layer I/O includes the read and write requests sent by the SQL Layer to the Storage Layer. These operations are sent in batches containing any number of requests. Requests can have a payload containing any number of bytes. Write operations are replicated to multiple storage processes (3 by default), with each replica counted as a separate write operation. Storage Layer I/O is converted to Request Units using these equivalencies:
-
-    1 RU = 3 Storage Read batches
-    
-    1 RU = 3 Storage Read requests (per request in batch)
-    
-    1 RU = 50 KiB request payload (prorated)
-
-
-    1 RU = 1 Storage Write batch
-    
-    1 RU = 1 Storage Write request (per request in batch)
-    
-    1 RU = 1 KiB request payload (prorated)
-
-#### Example
-
-Say you have a simple key-value pair table with a secondary index:
-
-~~~ shell
-CREATE TABLE kv (k INT PRIMARY KEY, v STRING, INDEX (v))
-~~~
-
-Now you insert a row into the table:
-
-~~~ shell
-INSERT INTO kv VALUES (1, “...imagine this is a 1 KiB string…”)
-~~~
-
-The amount of SQL CPU needed to execute this query is small, perhaps 1.5 milliseconds. The network egress is also minimal, perhaps 50 bytes. Most of the cost comes from 6 write requests to the Storage Layer with ~6K in request payload (plus a bit of extra overhead). The INSERT needs to be made first for the primary index on the k column and again for the secondary index on the v column. Each of those writes is replicated 3 times to different storage locations. Converting all these costs into a single RU number:
-
-    1.5 SQL CPU milliseconds = 0.5 RU
-    
-    50 bytes Network Egress = 50/1024 = 0.05 RU
-    
-    6 Storage write batches = 6 RU
-    
-    6 Storage write requests = 6 RU
-    
-    6 KiB write payloads = 6 RU
-
-    Total = 18.55 RU
-
-Note that this is not exact, as there are other minor factors such as payload overhead and variation in the SQL CPU measurement that will affect RU usage.
-
 ### Performance
 
 #### Baseline
 
-Baseline performance for a Serverless cluster is 100 RUs per second, and any usage above that is called [burst performance](#cockroachdb-cloud-terms). Clusters start with 10M RUs of free burst capacity each month and earn 100 RUs per second up to a maximum of 250M free RUs per month. Earned RUs can be used immediately or accumulated as burst capacity. If you use all of your burst capacity, your cluster will revert to baseline performance.
+Baseline performance for a Serverless cluster is 100 [Request Units](learn-about-request-units.html), or RUs, per second, and any usage above that is called [burst performance](#cockroachdb-cloud-terms). Clusters start with 10M RUs of free burst capacity each month and earn 100 RUs per second up to a maximum of 250M free RUs per month. Earned RUs can be used immediately or accumulated as burst capacity. If you use all of your burst capacity, your cluster will revert to baseline performance.
 
 The following diagram shows how RUs are accumulated and consumed:
 
