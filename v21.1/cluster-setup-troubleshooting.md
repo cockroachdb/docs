@@ -516,7 +516,7 @@ In production, depending on the version of CockroachDB you are running, lease tr
 
 - **The leaseholder node for `system.users` fails.** The cluster accesses the `system.users` table when authenticating a user. Prior to v21.2.0, a customer attempting to log in to the cluster would encounter a delay while waiting for the `system.users` table to find a new leaseholder. In v21.2.0 and later, there is no login delay because the authentication data is cached.
 
-- **A node comes in and out of liveness, due to network failures or overload.** Prior to version TK, a "flapping" node could repeatedly lose and acquire leases in between its intermittent heartbeats, causing wide-ranging unavailability. In versions TK and later, a node must successfully heartbeat for 30 seconds after failing a heartbeart before it is eligible to acquire leases.
+- **A node comes in and out of liveness, due to network failures or overload.** Prior to version TK, a "flapping" node could repeatedly lose and acquire leases in between its intermittent heartbeats, causing wide-ranging unavailability. In versions TK and later, a node must successfully heartbeat for 30 seconds after failing a heartbeat before it is eligible to acquire leases.
 
 - **Network issues cause connection issues between nodes or DNS.** Prior to v20.2.18 and v21.1.12, this could cause 10 to 60 seconds of unavailability as the system stalled on network throughput, preventing a speedy movement of leases and recovery. In subsequent versions, CockroachDB avoids contacting unresponsive nodes or DNS during certain performance-critical operations.
 
