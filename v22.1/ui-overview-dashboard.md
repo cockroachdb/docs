@@ -9,13 +9,11 @@ The **Overview** dashboard lets you monitor important SQL performance, replicati
 
 To view this dashboard, [access the DB Console](ui-overview.html#db-console-access) and click **Metrics** on the left-hand navigation bar. The **Overview** dashboard is displayed by default.
 
+The time-series data displayed in DB Console graphs is stored within the CockroachDB cluster and accumulates for 30 days before being truncated. For details about managing this process, see this [FAQ](operational-faqs.html#can-i-reduce-or-disable-the-storage-of-time-series-data). As a result, for the first 30 days or so of a cluster's life, you will see a steady increase in disk usage and the number of ranges even if you aren't writing data to the cluster.
+
 {% include {{ page.version.version }}/ui/ui-metrics-navigation.md %}
 
-{{site.data.alerts.callout_info}}
-All timestamps in the DB Console are shown in Coordinated Universal Time (UTC).
-{{site.data.alerts.end}}
-
-The **Overview** dashboard displays the following time series graphs:
+The **Overview** dashboard displays the following time series graphs. All timestamps in the DB Console are shown in Coordinated Universal Time (UTC).
 
 ## SQL Statements
 
@@ -37,7 +35,7 @@ The statement contention metric is a counter that represents the number of state
 
 - In the cluster view, the graph shows the total number of SQL statements that experienced [contention](transactions.html#transaction-contention) across all nodes in the cluster.
 
-    See the [Statements page](ui-statements-page.html) for more details on the cluster's SQL statements.
+See the [Statements page](ui-statements-page.html) for more details on the cluster's SQL statements.
 
 ## Replicas per Node
 
@@ -50,10 +48,6 @@ Ranges are subsets of your data, which are replicated to ensure survivability. R
 - In the cluster view, the graph shows the number of range replicas on each node in the cluster.
 
 For details about how to control the number and location of replicas, see [Configure Replication Zones](configure-replication-zones.html).
-
-{{site.data.alerts.callout_info}}
-The timeseries data used to power the graphs in the DB Console is stored within the cluster and accumulates for 30 days before it starts getting truncated. As a result, for the first 30 days or so of a cluster's life, you will see a steady increase in disk usage and the number of ranges even if you aren't writing data to the cluster yourself. For more details, see this [FAQ](operational-faqs.html#why-is-disk-usage-increasing-despite-lack-of-writes).
-{{site.data.alerts.end}}
 
 ## Capacity
 
