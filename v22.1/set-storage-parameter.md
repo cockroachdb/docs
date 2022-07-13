@@ -1,6 +1,6 @@
 ---
 title: SET (storage parameter)
-summary: SET (storage parameter) applies a storage parameter to a table or an index after table/index creation.
+summary: SET (storage parameter) applies a storage parameter to a table or an index after table or index creation.
 toc: true
 docs_area: reference.sql
 ---
@@ -27,7 +27,7 @@ The `SET (storage parameter)` is a subcommand of [`ALTER TABLE`](alter-table.htm
 |---------------------+----------------------|
 | `table`             | The table to which you are setting the parameter.                                                                                         |
 | `index`             | The index to which you are setting the parameter.                                                                                         |
-| `parameter_name`    | The name of the storage parameter you are changing. See [Storage parameters](#list-of-storage-parameters) for a list of available parameters. |
+| `parameter_name`    | The name of the storage parameter. See [Storage parameters](#list-of-storage-parameters) for a list of available parameters. |
 
 ## List of storage parameters
 
