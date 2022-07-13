@@ -1,5 +1,5 @@
 ---
-title: CockroachDB Cloud Release Notes
+title: CockroachDB Cloud Releases
 summary: Changelog for CockroachDB Cloud.
 toc: true
 redirect-from: index-cockroachcloud.html
