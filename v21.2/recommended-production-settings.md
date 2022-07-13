@@ -299,6 +299,10 @@ For guidance on sizing, validating, and using connection pools with CockroachDB,
 
 CockroachDB manages its own memory caches, independently of the operating system. These are configured via the [`--cache`](cockroach-start.html#flags) and [`--max-sql-memory`](cockroach-start.html#flags) flags.
 
+{{site.data.alerts.callout_danger}}
+{% include {{ page.version.version }}/prod-deployment/multi-region-cache-max-sql-memory.md %}
+{{site.data.alerts.end}}
+
 Each node has a default cache size of `128MiB` that is passively consumed. The default was chosen to facilitate development and testing, where users are likely to run multiple CockroachDB nodes on a single machine. Increasing the cache size will generally improve the node's read performance.
 
 Each node has a default SQL memory size of `25%`. This memory is used as-needed by active operations to store temporary data for SQL queries.

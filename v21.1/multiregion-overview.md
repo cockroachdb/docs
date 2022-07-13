@@ -49,6 +49,10 @@ For example, the command below adds `us-east-1` to the list of cluster regions, 
 cockroach start --locality=region=us-east-1,zone=us-east-1b # ... other required flags go here
 ~~~
 
+{{site.data.alerts.callout_danger}}
+{% include {{ page.version.version }}/prod-deployment/multi-region-cache-max-sql-memory.md %}
+{{site.data.alerts.end}}
+
 To show all of a cluster's regions, execute the following SQL statement:
 
 {% include_cached copy-clipboard.html %}
