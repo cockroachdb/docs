@@ -85,7 +85,7 @@ bootstrap: Gemfile | vendor
 clean:
 	rm -rf vendor
 	rm -rf _site
-	rm -rf .jekyll-cache/Jekyll/Cache/RemoteInclude
+	rm -rf .jekyll-cache
 
 clean-site:
 	rm -rf _site
