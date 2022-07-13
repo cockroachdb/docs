@@ -111,7 +111,7 @@ See the [API specification](../api/cloud/v1.html#operation/CockroachCloud_Enable
               "region": "{COCKROACHDB_CLOUD_REGION}",
               "key_spec": {
                 "type": "GCP_CLOUD_KMS",
-                "uri": "{KEY_RESOURCE_LOCATION}",
+                "uri": "{YOUR_GCP_KMS_KEY_RESOURCE_ID_EXCLUDING_VERSION}",
                 "auth_principal": "{YOUR_GCP_SERVICE_ACCOUNT_ID}"
               }
             },
@@ -119,7 +119,7 @@ See the [API specification](../api/cloud/v1.html#operation/CockroachCloud_Enable
               "region": "{COCKROACHDB_CLOUD_REGION}",
               "key_spec": {
                 "type": "GCP_CLOUD_KMS",
-                "uri": "{KEY_RESOURCE_LOCATION}",
+                "uri": "{YOUR_GCP_KMS_KEY_RESOURCE_ID_EXCLUDING_VERSION}",
                 "auth_principal": "{YOUR_GCP_SERVICE_ACCOUNT_ID}"
               }
             }
@@ -164,6 +164,8 @@ curl --request GET \
 The API to rotate a CMEK key is nearly identical to the API to [activate CMEK on a cluster](#step-4-activate-cmek-for-your-cockroachdb-dedicated-cluster), with one notable exception. When you activate CMEK, you use a `POST` request that includes a CMEK key for each of the cluster's regions. When you rotate a CMEK key, you use a `PUT` request that includes a CMEK key for each region you intend to rotate.
 
 See the [API specification](../api/cloud/v1.html#operation/CockroachCloud_EnableCMEK). <!-- TODO update when available -->
+
+To rotate the CMEK keys for one or more cluster regions:
 
 1. Create a new file named `cmek_config.json`. This file will contain a JSON array of `region_spec` objects, each of which includes the name of a {{ site.data.products.db }} region and a `key_spec` that is specific to the target KMS platform and specifies the URI of the CMEK key and the principal that is authorized to encrypt and decrypt using the key.
 
