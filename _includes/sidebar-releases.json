@@ -57,7 +57,7 @@
   ]
 },
 {
-  "title": "CockroachDB Kubernetes Operator Release Notes",
+  "title": "CockroachDB Kubernetes Operator",
   "urls": [
     "/releases/kubernetes-operator.html"
   ]
