@@ -64,7 +64,7 @@ Parameter | Description
 `STORED` | _(Required for stored computed columns)_ The computed column is stored alongside other columns.
 `VIRTUAL`| _(Required for virtual columns)_ The computed column is virtual, meaning the column data is not stored in the table's primary index.
 
-For compatibility with PostgresSQL, CockroachDB also supports creating store computed columns with the syntax `column_name <type> GENERATED ALWAYS AS (<expr>) STORED`.
+For compatibility with PostgreSQL, CockroachDB also supports creating store computed columns with the syntax `column_name <type> GENERATED ALWAYS AS (<expr>) STORED`.
 
 ## Examples
 
