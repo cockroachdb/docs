@@ -17,51 +17,60 @@ If you already use the [Helm](https://helm.sh/) package manager to manage your K
 To be notified about updates to the Helm chart, visit the [CockroachDB Helm chart source code repository](https://github.com/cockroachdb/helm-charts/tree/master/cockroachdb)y and click **Watch**.
 {{site.data.alerts.end}}
 
+<!-- Copy the top section below and bump the variable -->
+
 ## May 26, 2022
 
-CockroachDB Kubernetes Operator v2.7.0 is available.
+{% assign operator_version = "2.7.0" %}
+CockroachDB Kubernetes Operator {{ operator_version }} is available.
 
-- [Changelog](https://github.com/cockroachdb/cockroach-operator/compare/v2.6.0...v2.7.0)
-- [Download](https://github.com/cockroachdb/cockroach-operator/releases/tag/v2.7.0)
+- [Changelog](https://github.com/cockroachdb/cockroach-operator/blob/master/CHANGELOG.md#v{{ operator_version }})
+- [Download](https://github.com/cockroachdb/cockroach-operator/releases/tag/v{{ operator_version remove: "." }})
 
 ## April 14, 2022
 
-Kubernetes Operator v2.6.0 is available.
+{% assign operator_version = "2.6.0" %}
+CockroachDB Kubernetes Operator {{ operator_version }} is available.
 
-- [Changelog](https://github.com/cockroachdb/cockroach-operator/compare/v2.5.0...v2.6.0)
-- [Download](https://github.com/cockroachdb/cockroach-operator/releases/tag/v2.6.0)
+- [Changelog](https://github.com/cockroachdb/cockroach-operator/blob/master/CHANGELOG.md#v{{ operator_version }})
+- [Download](https://github.com/cockroachdb/cockroach-operator/releases/tag/v{{ operator_version remove: "." }})
 
 ## January 7, 2022
 
-Kubernetes Operator v2.5.0 is available.
+{% assign operator_version = "2.5.0" %}
+CockroachDB Kubernetes Operator {{ operator_version }} is available.
 
-- [Changelog](https://github.com/cockroachdb/cockroach-operator/compare/v2.4.0...v2.5.0)
-- [Download](https://github.com/cockroachdb/cockroach-operator/releases/tag/v2.5.0)
+- [Changelog](https://github.com/cockroachdb/cockroach-operator/blob/master/CHANGELOG.md#v{{ operator_version }})
+- [Download](https://github.com/cockroachdb/cockroach-operator/releases/tag/v{{ operator_version remove: "." }})
 
 ## November 8, 2021
 
-Kubernetes Operator v2.4.0 is available.
+{% assign operator_version = "2.4.0" %}
+CockroachDB Kubernetes Operator {{ operator_version }} is available.
 
-- [Changelog](https://github.com/cockroachdb/cockroach-operator/compare/v2.3.0...v2.4.0)
-- [Download](https://github.com/cockroachdb/cockroach-operator/releases/tag/v2.4.0)
+- [Changelog](https://github.com/cockroachdb/cockroach-operator/blob/master/CHANGELOG.md#v{{ operator_version }})
+- [Download](https://github.com/cockroachdb/cockroach-operator/releases/tag/v{{ operator_version remove: "." }})
 
 ## October 19, 2021
 
-Kubernetes Operator v2.3.0 is available.
+{% assign operator_version = "2.3.0" %}
+CockroachDB Kubernetes Operator {{ operator_version }} is available.
 
-- [Changelog](https://github.com/cockroachdb/cockroach-operator/compare/v2.2.0...v2.3.0)
-- [Download](https://github.com/cockroachdb/cockroach-operator/releases/tag/v2.3.0)
+- [Changelog](https://github.com/cockroachdb/cockroach-operator/blob/master/CHANGELOG.md#v{{ operator_version }})
+- [Download](https://github.com/cockroachdb/cockroach-operator/releases/tag/v{{ operator_version remove: "." }})
 
 ## October 5, 2021
 
-Kubernetes Operator v2.2.0 is available.
+{% assign operator_version = "2.2.0" %}
+CockroachDB Kubernetes Operator {{ operator_version }} is available.
 
-- [Changelog](https://github.com/cockroachdb/cockroach-operator/compare/v2.1.0...v2.2.0)
-- [Download](https://github.com/cockroachdb/cockroach-operator/releases/tag/v2.2.0)
+- [Changelog](https://github.com/cockroachdb/cockroach-operator/blob/master/CHANGELOG.md#v{{ operator_version }})
+- [Download](https://github.com/cockroachdb/cockroach-operator/releases/tag/v{{ operator_version remove: "." }})
 
 ## August 27, 2021
 
-Kubernetes Operator v2.1.0 is available.
+{% assign operator_version = "2.7.0" %}
+CockroachDB Kubernetes Operator {{ operator_version }} is available.
 
-- [Changelog](https://github.com/cockroachdb/cockroach-operator/compare/v2.0.0...v2.1.0)
-- [Download](https://github.com/cockroachdb/cockroach-operator/releases/tag/v2.1.0)
+- [Changelog](https://github.com/cockroachdb/cockroach-operator/blob/master/CHANGELOG.md#v{{ operator_version }})
+- [Download](https://github.com/cockroachdb/cockroach-operator/releases/tag/v{{ operator_version remove: "." }})
