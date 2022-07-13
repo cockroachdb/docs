@@ -2,6 +2,8 @@
 
 ## Statement Fingerprint page
 
+The details displayed on the **Statement Fingerprint** page reflect the [time interval](#time-interval) selected on the **Statements** page.
+
 ### Overview
 
 The **Overview** section displays the SQL statement fingerprint and execution attributes:
@@ -22,7 +24,7 @@ The following screenshot shows the statement fingerprint of the query described 
 
 #### Charts
 
-Charts following the execution attributes display the following statistics for statements with the fingerprint during the selected [time interval](#time-interval):
+Charts following the execution attributes display statement fingerprint statistics:
 
 - **Statement Execution and Planning Time**: the time taken by the [planner]({{ link_prefix }}architecture/sql-layer.html#sql-parser-planner-executor) to create an execution plan and for CockroachDB to execute statements.
 - **Rows Processed**: the total number of rows read and written.

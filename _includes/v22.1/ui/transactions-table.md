@@ -21,3 +21,5 @@ Statements | Number of SQL statements in the transaction.
 {{site.data.alerts.callout_info}}
 Significant transactions on your database are likely to have a high execution count or number of rows read.
 {{site.data.alerts.end}}
+
+To view transaction details, click a transaction fingerprint in the **Transactions** column to open the **Transaction Details** page.
