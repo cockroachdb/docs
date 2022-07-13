@@ -7,7 +7,7 @@
 {% assign v_test = site.data.versions | where_exp: "v_test", "v_test.release_date > today or v_test.release_date == 'N/A'" | sort: "release_date" | last | map: "major_version" %}
 {% comment %} v_test iterates through the list of major versions in _data/versions.csv and returns the single latest testing version (if the release date is in the future or not otherwise specified). It's possible there is no testing release (in between GA of a version and the first alpha of the following version). {% endcomment %}
 {
-  "title": "CockroachDB Releases",
+  "title": "CockroachDB",
   "items": [
     {
       "title": "All Releases",
@@ -57,7 +57,7 @@
   ]
 },
 {
-  "title": "CockroachDB Cloud Release Notes",
+  "title": "CockroachDB Cloud",
   "urls": [
     "/releases/cloud.html"
   ]

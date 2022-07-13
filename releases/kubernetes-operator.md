@@ -1,5 +1,5 @@
 ---
-title: CockroachDB Kubernetes Operator
+title: CockroachDB Kubernetes Operator releases
 summary: Changelog for the Kubernetes Operator for CockroachDB
 toc: true
 docs_area: releases
