@@ -25,6 +25,18 @@ Ensure the following items are completed prior to starting this tutorial:
 - Configure a [replication instance](https://docs.aws.amazon.com/dms/latest/userguide/CHAP_ReplicationInstance.html) in AWS.
 - Ensure you have a secure, publicly available CockroachDB cluster running v21.2.13 or later.
 
+The following databases are supported for use as source databases in AWS DMS:
+
+- Oracle 
+- Microsoft SQL Server
+- Microsoft Azure SQL
+- MySQL-compatible databases (including MariaDB)
+- Postgres-compatible databases (including Amazon Aurora)
+- SAP ASE 
+- MongoDB/Amazon DocumentDB (with MongoDB compatibility) 
+- Amazon S3
+- IBM Db2
+
 ## Step 1. Create a target endpoint pointing to CockroachDB
 
 1. In the AWS Console, open **AWS DMS**.
