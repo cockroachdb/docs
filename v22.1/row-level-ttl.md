@@ -179,8 +179,17 @@ ALTER TABLE events SET (ttl_expire_after = '1 year');
 ALTER TABLE
 ~~~
 
+<a name="ttl-existing-table-performance-note"></a>
+
 {{site.data.alerts.callout_danger}}
-Adding or changing the Row-Level TTL settings for an existing table will result in a [schema change](online-schema-changes.html) that sets the [`crdb_internal_expiration` column](#crdb-internal-expiration) for all rows. Depending on table size, this could be an expensive operation.
+Adding or changing the Row-Level TTL settings for an existing table will result in a [schema change](online-schema-changes.html) that performs the following changes:
+
+- Creates a new [`crdb_internal_expiration`](#crdb-internal-expiration) column for all rows.
+- Backfills the value of the new [`crdb_internal_expiration`](#crdb-internal-expiration) column to `now()` + [`ttl_expire_after`](#param-ttl-expire-after).
+
+Depending on the table size, this can negatively affect performance.
+
+Creating a new table with a TTL is not affected by [this limitation](#ttl-cannot-be-customized).
 {{site.data.alerts.end}}
 
 ### View scheduled TTL jobs
@@ -465,9 +474,8 @@ Row-level TTL interacts with [backup and restore](backup-and-restore-overview.ht
 
 To add or update Row-Level TTL settings on a table, you must have one of the following:
 
-- Membership to the [`admin`](security-reference/authorization.html#roles) role for the cluster.
 - Membership to the [owner](security-reference/authorization.html#object-ownership) role for the database where the table is located.
-- The [`CREATE` privilege](security-reference/authorization.html#supported-privileges) on the database where the table is located.
+- The [`CREATE` or `ALTER` privilege](security-reference/authorization.html#supported-privileges) on the database where the table is located.
 
 ## Limitations
 
