@@ -3,7 +3,7 @@ You can rotate a CMEK key for a {{ site.data.products.dedicated }} cluster eithe
 **To begin using a new version of an existing CMEK key**:
 
 1. Within your KMS platform, you can configure automatic rotation for the CMEK key in your KMS platform, or you can perform a manual rotation.
-1. {{ site.data.products.db }} does not not automatically re-encrypt the store key using the new CMEK key version. For each region you want to update, you must also perform a rotation using the {{ site.data.products.db }} API, but do not modify the CMEK key URI. {{ site.data.products.db }} re-encrypts the store key using the new CMEK key version.
+1. {{ site.data.products.db }} does not automatically re-encrypt the store key using the new CMEK key version. For each region you want to update, you must also perform a rotation using the {{ site.data.products.db }} API, but do not modify the CMEK key URI. {{ site.data.products.db }} re-encrypts the store key using the new CMEK key version.
 
 **To begin using an entirely new CMEK key**:
 
