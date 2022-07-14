@@ -563,18 +563,11 @@ For more information about how node liveness works, see [Replication Layer](arch
 
 #### Impact of node failure is greater than 10 seconds
 
-When a node fails its liveness check, [each of its leases is transferred to a healthy node](architecture/replication-layer.html#how-leases-are-transferred-from-a-dead-node
-). In theory, this process should take no more than 9 seconds for liveness expiration plus the cost of 2 network roundtrips: 1 for Raft leader election, and 1 for lease acquisition.
+When the cluster needs to access a range on a leaseholder node that is dead, that range's [lease must be transferred to a healthy node](architecture/replication-layer.html#how-leases-are-transferred-from-a-dead-node). In theory, this process should take no more than 9 seconds for liveness expiration plus the cost of 2 network roundtrips: 1 for Raft leader election, and 1 for lease acquisition.
 
-In production, depending on the version of CockroachDB you are running, lease transfer upon node failure can be "non-cooperative" and can take longer than expected. This is observed in the following scenarios:
+In production, lease transfer upon node failure can take longer than expected. In {{ page.version.version }}, this is observed in the following scenarios:
 
 - **The leaseholder node for the liveness range fails.** The liveness range is a system range that [stores the liveness record](architecture/replication-layer.html#epoch-based-leases-table-data) for each node on the cluster. If a node fails and is also the leaseholder for the liveness range, operations cannot proceed until the liveness range is transferred to a new leaseholder and the liveness record is made available to other nodes. This can cause momentary cluster unavailability.
-
-- **The leaseholder node for `system.users` fails.** The cluster accesses the `system.users` table when authenticating a user. Prior to v21.2.0, a customer attempting to log in to the cluster would encounter a delay while waiting for the `system.users` table to find a new leaseholder. In v21.2.0 and later, there is no login delay because the authentication data is cached.
-
-- **A node comes in and out of liveness, due to network failures or overload.** Prior to version TK, a "flapping" node could repeatedly lose and acquire leases in between its intermittent heartbeats, causing wide-ranging unavailability. In versions TK and later, a node must successfully heartbeat for 30 seconds after failing a heartbeat before it is eligible to acquire leases.
-
-- **Network issues cause connection issues between nodes or DNS.** Prior to v20.2.18 and v21.1.12, this could cause 10 to 60 seconds of unavailability as the system stalled on network throughput, preventing a speedy movement of leases and recovery. In subsequent versions, CockroachDB avoids contacting unresponsive nodes or DNS during certain performance-critical operations.
 
 **Solution:** If you are experiencing intermittent network or connectivity issues, first [shut down the affected nodes](node-shutdown.html) temporarily so that nodes phasing in and out do not cause disruption.
 
