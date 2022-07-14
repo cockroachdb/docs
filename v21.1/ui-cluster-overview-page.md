@@ -25,13 +25,17 @@ Use the **Cluster Overview** panel to quickly assess the capacity and health of 
 
 Metric | Description
 --------|----
-Capacity Usage | <ul><li>Used: The total disk space in use by CockroachDB data across all nodes. This excludes the disk space used by the Cockroach binary, operating system, and other system files.</li><li>Usable: The total disk space usable by CockroachDB data across all nodes. This cannot exceed the store size, if one has been set using [`--store`](cockroach-start.html#store).</li></ul>See [Capacity metrics](#capacity-metrics) for details on how these values are calculated.
+Capacity Usage | <ul><li>Used: The total disk space in use by CockroachDB data across all nodes. This excludes the disk space used by the Cockroach binary, operating system, and other system files.</li><li>Usable: The total disk space usable by CockroachDB data across all nodes. This cannot exceed the store size, if one has been set using [`--store`](cockroach-start.html#store).</li>**Note:** Due to a [known issue](known-limitations.html#available-capacity-metric-in-the-db-console) in CockroachDB v21.1, the **Usable Capacity** shown may not be accurate if running multiple CockroachDB nodes locally on a single node. This is fixed in CockroachDB v21.2 and later.</ul>See [Capacity metrics](#capacity-metrics) for details on how these values are calculated.
 Node Status | <ul><li>The number of `LIVE` nodes in the cluster.</li><li>The number of `SUSPECT` nodes in the cluster. A node is considered suspect if its [liveness status is unavailable](cluster-setup-troubleshooting.html#node-liveness-issues) or the node is in the process of [decommissioning](#decommissioned-nodes).</li><li>The number of `DEAD` nodes in the cluster.</li>
 Replication Status | <ul><li>The total number of [ranges](architecture/overview.html#glossary) in the cluster.</li><li>The number of [under-replicated ranges](ui-replication-dashboard.html#review-of-cockroachdb-terminology) in the cluster. A non-zero number indicates an unstable cluster.</li><li>The number of [unavailable ranges](ui-replication-dashboard.html#review-of-cockroachdb-terminology) in the cluster. A non-zero number indicates an unstable cluster.</li>
 
 ### Capacity metrics
 
 The [Cluster Overview](#cluster-overview-panel), [Node List](#node-list), and [Node Map](#node-map-enterprise) display **Capacity Usage** by the CockroachDB [store](architecture/storage-layer.html) (the directory on each node where CockroachDB reads and writes its data) as a percentage of the disk space that is **usable** on the cluster, locality, or node.
+
+{{site.data.alerts.callout_info}}
+Due to a [known issue](known-limitations.html#available-capacity-metric-in-the-db-console) in CockroachDB v21.1, the **Capacity Usage** shown may not be accurate if running multiple CockroachDB nodes locally on a single node. This is fixed in CockroachDB v21.2 and later.
+{{site.data.alerts.end}}
 
 Usable disk space is constrained by the following:
 
