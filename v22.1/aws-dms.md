@@ -27,16 +27,16 @@ Ensure the following items are completed prior to starting this tutorial:
 
 AWS DMS supports migrations from these relational databases:
 
-- Oracle
-- Microsoft SQL Server
-- Microsoft Azure SQL
-- MySQL-compatible databases (including MariaDB)
-- PostgreSQL-compatible databases (including Amazon Aurora)
-- SAP ASE
-- MongoDB
 - Amazon DocumentDB (with MongoDB compatibility)
 - Amazon S3
 - IBM Db2
+- Microsoft Azure SQL
+- Microsoft SQL Server
+- MongoDB
+- MySQL-compatible databases (including MariaDB)
+- Oracle
+- PostgreSQL-compatible databases (including Amazon Aurora)
+- SAP ASE
 
 ## Step 1. Create a target endpoint pointing to CockroachDB
 
