@@ -530,7 +530,11 @@ In production, lease transfer upon node failure can take longer than expected. I
 
 - **The leaseholder node for the liveness range fails.** The liveness range is a system range that [stores the liveness record](architecture/replication-layer.html#epoch-based-leases-table-data) for each node on the cluster. If a node fails and is also the leaseholder for the liveness range, operations cannot proceed until the liveness range is transferred to a new leaseholder and the liveness record is made available to other nodes. This can cause momentary cluster unavailability.
 
+- **A leaseholder node becomes unresponsive without returning an error.** This can be caused by an internal deadlock, [disk stall](#disk-stalls), network outage, or other factors. Prior to v21.2.13, lease acquisition from this node can stall indefinitely, and effectively stall activity on the corresponding ranges, until the node is shut down or recovered. In **v21.2.13, v22.1.2, and later**, each lease acquisition attempt on an unresponsive node times out after 6 seconds. However, CockroachDB can still appear to stall as these timeouts are occurring.
+
 **Solution:** If you are experiencing intermittent network or connectivity issues, first [shut down the affected nodes](node-shutdown.html) temporarily so that nodes phasing in and out do not cause disruption.
+
+If a node has become unresponsive without returning an error, [shut down the node](node-shutdown.html) so that network requests immediately become hard errors rather than stalling.
 
 If you are running a version of CockroachDB that is affected by an issue described here, [upgrade to a version](upgrade-cockroach-version.html) that contains the fix for the issue.
 

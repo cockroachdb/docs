@@ -517,9 +517,13 @@ In production, lease transfer upon node failure can take longer than expected. I
 
 - **A node comes in and out of liveness, due to network failures or overload.** Prior to v21.1.6, a "flapping" node can repeatedly lose and acquire leases in between its intermittent heartbeats, causing wide-ranging unavailability. In **v21.1.6 and later**, a node must successfully heartbeat for 30 seconds after failing a heartbeat before it is eligible to acquire leases.
 
-- **Network issues cause connection issues between nodes or DNS.** Prior to v21.1.12, this can cause 10 to 60 seconds of unavailability as the system stalled on network throughput, preventing a speedy movement of leases and recovery. In **v21.1.12 and later**, CockroachDB avoids contacting unresponsive nodes or DNS during certain performance-critical operations.
+- **Network issues cause connection issues between nodes or DNS.** Prior to v21.1.12, this can cause 10 to 60 seconds of unavailability as the system stalls on network throughput, preventing a speedy movement of leases and recovery. In **v21.1.12 and later**, CockroachDB avoids contacting unresponsive nodes or DNS during certain performance-critical operations. 
+
+- **A leaseholder node becomes unresponsive without returning an error.** This can be caused by an internal deadlock, [disk stall](#disk-stalls), network outage, or other factors. Lease acquisition from this node can stall indefinitely, and effectively stall activity on the corresponding ranges, until the node is shut down or recovered. In **v21.2.13, v22.1.2, and later**, each lease acquisition attempt on an unresponsive node times out after 6 seconds. However, CockroachDB can still appear to stall as these timeouts are occurring.
 
 **Solution:** If you are experiencing intermittent network or connectivity issues, first [shut down the affected nodes](../{{site.versions["stable"]}}/node-shutdown.html) temporarily so that nodes phasing in and out do not cause disruption.
+
+If a node has become unresponsive without returning an error, [shut down the node](node-shutdown.html) so that network requests immediately become hard errors rather than stalling.
 
 If you are running a version of CockroachDB that is affected by an issue described here, [upgrade to a version](upgrade-cockroach-version.html) that contains the fix for the issue.
 
