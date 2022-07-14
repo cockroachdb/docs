@@ -25,7 +25,7 @@ Ensure the following items are completed prior to starting this tutorial:
 - Configure a [replication instance](https://docs.aws.amazon.com/dms/latest/userguide/CHAP_ReplicationInstance.html) in AWS.
 - Ensure you have a secure, publicly available CockroachDB cluster running v22.1 GA or later.
 
-The following databases are supported for use as source databases in AWS DMS:
+AWS DMS supports migrations from these relational databases:
 
 - Oracle
 - Microsoft SQL Server
