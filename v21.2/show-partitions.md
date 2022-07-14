@@ -50,7 +50,7 @@ Field | Description
 
 {% include {{page.version.version}}/sql/movr-statements-geo-partitioned-replicas.md %}
 
-The `movr` database in this example is pre-partitioned. For information about partitioning tables, see [Define Table Partitions](partitioning.html) or [`PARTION BY`](partition-by.html).
+The `movr` database in this example is pre-partitioned. For information about partitioning tables, see [Define Table Partitions](partitioning.html) or [`PARTITION BY`](partition-by.html).
 
 ### Show table partitions
 

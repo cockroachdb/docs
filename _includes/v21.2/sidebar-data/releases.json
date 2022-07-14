@@ -2,7 +2,6 @@
     "title": "Releases",
     "is_top_level": true,
     "items": [
-      {% include_cached cockroachcloud/sidebar-release-notes.json %},
       {% include_cached sidebar-releases.json %}
     ]
   }
