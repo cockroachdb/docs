@@ -1,0 +1,1 @@
+On a multi-region cluster that was deployed without setting `--cache` and `--max-sql-memory`, failure of any node will cause cluster-wide unavailability. These two flags therefore **must** be included when deploying multi-region clusters.
