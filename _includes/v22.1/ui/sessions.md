@@ -25,9 +25,9 @@ Status  | The status of the session: Active or Idle. A session is Active if it h
 Most Recent Statement | **New in v22.1:** If more than one statement is executing, the most recent statement. If the session is Idle, the last statement.
 Statement Start Time (UTC) | **New in v22.1:** The timestamp at which the statement started.
 Memory Usage | Amount of memory currently allocated to the session followed by the maximum amount of memory the session has ever been allocated.
-Client IP Address | **New in v22.1:**The IP address and port of the client that opened the session.
-User Name | **New in v22.1:**The user that opened the session.
-Application Name | **New in v22.1:**The application that ran the session.
+Client IP Address | **New in v22.1:** The IP address and port of the client that opened the session.
+User Name | **New in v22.1:** The user that opened the session.
+Application Name | **New in v22.1:** The application that ran the session.
 Actions | Options to cancel the active statement and cancel the session. These require the `CANCELQUERY` [role option]({{ link_prefix }}alter-role.html#role-options).<ul><li>**Cancel Statement:** Ends the SQL statement. The session running this statement will receive an error. </li> <li>**Cancel Session:** Ends the session. The client that holds this session will receive a "connection terminated" event.</li></ul>
 
 To view details of a session, click a **Session Start Time (UTC)** to display session details.
