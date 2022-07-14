@@ -106,6 +106,11 @@ You can exclude a table's row data from a backup using the [`exclude_data_from_b
 - All [tables](create-table.html) (which automatically includes their [indexes](indexes.html))
 - All [views](views.html)
 
+{% include_cached new-in.html version="v22.1" %} Also, a full cluster restore will:
+
+- Restore [temporary tables](temporary-tables.html) to their original database during a full cluster restore.
+- Drop `defaultdb` and `postgres` [pre-loaded databases](show-databases.html#preloaded-databases) before the restore begins. You can only restore `defaultdb` and `postgres` if they are present in the original [backup](take-full-and-incremental-backups.html).
+
 {{site.data.alerts.callout_info}}
 When you restore a full cluster with an Enterprise license, it will restore the [Enterprise license](enterprise-licensing.html) of the cluster you are restoring from. If you want to use a different license in the new cluster, make sure to [update the license](licensing-faqs.html#set-a-license) **after** the restore is complete.
 {{site.data.alerts.end}}
