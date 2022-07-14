@@ -102,8 +102,8 @@ The following table lists all CockroachDB operators from highest to lowest prece
 |    |  `#>` | Access a JSONB field at the specified path, returning a JSONB value. | binary |
 |    |  `#>>` | Access a JSONB field at the specified path, returning a string. | binary |
 |    |  `?` | Does the key or element string exist within the JSONB value? | binary |
-|    |  `?&` | Do all of the key or element strings exist within the JSONB value? | binary |
-|    |  <code>?&#124;</code> | Do any the key or element strings exist within the JSONB value?  | binary |
+|    |  `?&` | Do all the key or element strings exist within the JSONB value? | binary |
+|    |  <code>?&#124;</code> | Do any of the key or element strings exist within the JSONB value?  | binary |
 | 12 | `[NOT] BETWEEN` | Value is [not] within the range specified | binary |
 |    | `[NOT] BETWEEN SYMMETRIC` | Like `[NOT] BETWEEN`, but in non-sorted order. For example, whereas `a BETWEEN b AND c` means `b <= a <= c`, `a BETWEEN SYMMETRIC b AND c` means `(b <= a <= c) OR (c <= a <= b)`. | binary |
 |    | `[NOT] IN` | Value is [not] in the set of values specified | binary |
