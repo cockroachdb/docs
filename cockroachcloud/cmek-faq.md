@@ -19,7 +19,9 @@ Yes, the data encryption key is rotated automatically once every month. It’s n
 
 ## Can we rotate the CMEK for a cluster after a certain time or at some periodic interval?
 
-Not yet. The ability to rotate CMEK would be available at a later time. Once that’s ready, you could do it ad-hoc, or at a periodic interval using your own managed scheduling mechanism.
+{% include cockroachcloud/cmek-rotation-types.md %}
+
+To learn more about rotating a CMEK key using the {{ site.data.products.db }} API, visit [Rotate a CMEK key](managing-cmek.html#rotate-a-cmek-key).
 
 ## If we enable CMEK for a cluster that has been in use for some time, is the existing data encrypted at that time?
 
