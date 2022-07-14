@@ -45,7 +45,7 @@ When a node is permanently removed, the following stages occur in sequence:
 
 An operator [initiates the decommissioning process](#decommission-the-node) on the node.
 
-The node's [`is_decommissioning`](cockroach-node.html#node-status) field is set to `true` and its `membership` status is set to `decommissioning`, which causes its replicas to be rebalanced to other nodes.
+The node's [`is_decommissioning`](cockroach-node.html#node-status) field is set to `true` and its `membership` status is set to `decommissioning`, which causes its replicas to be rebalanced to other nodes. If the rebalancing stalls during decommissioning, replicas that have yet to move are printed to the [SQL shell](cockroach-sql.html) and written to the [`OPS` logging channel](logging-overview.html#logging-channels). [By default](configure-logs.html#default-logging-configuration), the `OPS` channel logs output to a `cockroach.log` file.
 
 The node's [`/health?ready=1` endpoint](monitoring-and-alerting.html#health-ready-1) continues to consider the node "ready" so that the node can function as a gateway to route SQL client connections to relevant data.
 
@@ -344,6 +344,8 @@ Although [draining automatically follows decommissioning](#draining), we recomme
 ### Decommission the node
 
 Run [`cockroach node decommission`](cockroach-node.html) to decommission the node and rebalance its range replicas. For specific instructions and additional guidelines, see the [example](#remove-nodes).
+
+If the rebalancing stalls during decommissioning, replicas that have yet to move are printed to the [SQL shell](cockroach-sql.html) and written to the [`OPS` logging channel](logging-overview.html#logging-channels) with the message `possible decommission stall detected`. [By default](configure-logs.html#default-logging-configuration), the `OPS` channel logs output to a `cockroach.log` file.
 
 {{site.data.alerts.callout_danger}}
 Do **not** terminate the node process, delete the storage volume, or remove the VM before a `decommissioning` node has [changed its membership status](#status-change) to `decommissioned`. Prematurely terminating the process will prevent the node from rebalancing all of its range replicas onto other nodes gracefully, cause transient query errors in client applications, and leave the remaining ranges under-replicated and vulnerable to loss of [quorum](architecture/replication-layer.html#overview) if another node goes down.
