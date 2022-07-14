@@ -33,7 +33,8 @@ The following databases are supported for use as source databases in AWS DMS:
 - MySQL-compatible databases (including MariaDB)
 - PostgreSQL-compatible databases (including Amazon Aurora)
 - SAP ASE
-- MongoDB/Amazon DocumentDB (with MongoDB compatibility)
+- MongoDB
+- Amazon DocumentDB (with MongoDB compatibility)
 - Amazon S3
 - IBM Db2
 
