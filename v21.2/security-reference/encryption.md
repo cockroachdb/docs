@@ -57,7 +57,7 @@ Data keys will automatically be rotated at runtime if the current data key is `r
 
 Once rotated, an old store key cannot be made the active key again.
 
-Upon store key rotation the data keys registry is decrypted using the old key and encrypted with the new
+Upon store key rotation the data keys registry is decrypted using the previous key and encrypted with the new
 key. The newly-generated data key is used to encrypt all new data from this point on.
 
 #### Changing encryption type
@@ -106,7 +106,7 @@ Note that backups taken with the [`BACKUP`](../backup.html) statement **are not 
 
 To allow arbitrary rotation schedules and ensure security of the keys, CockroachDB uses multiple layers of keys:
 
-- **Store key**: A cluster's _store key_ is a _key encryption key (KEK) that CockroachDB uses to encrypt the cluster's data keys (see below).
+- **Store key**: A cluster's _store key_ is a key encryption key (KEK) that CockroachDB uses to encrypt the cluster's data keys (see below).
 
   For CockroachDB Self-Hosted clusters, you provide the store key and give its location to CockroachDB when starting the cluster. The store key file must contain 32 bytes (the key ID) followed by the key (16, 24, or 32 bytes). The size of the key dictates the version of AES to use (AES-128, AES-192, or AES-256). For an example showing how to create a store key, see [Generating Key Files](/docs/{{site.versions["stable"]}}/encryption.html#generating-store-key-files).
 
