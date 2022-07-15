@@ -40,5 +40,5 @@ TODO: clean up the SQL diagrams not to link to these missing nonterminals.
 <a id="timestamp"></a>
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/stmt_block.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/stmt_block.html %}
 </div>

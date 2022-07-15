@@ -18,7 +18,7 @@ The `ALTER DATABASE .. ALTER SUPER REGION` [statement](sql-statements.html) alte
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/alter_database_alter_super_region.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/alter_database_alter_super_region.html %}
 </div>
 
 ## Parameters
