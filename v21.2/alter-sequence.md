@@ -17,7 +17,7 @@ The `ALTER SEQUENCE` [statement](sql-statements.html) applies a [schema change](
 ## Syntax
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/alter_sequence.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/alter_sequence.html %}
 </div>
 
 ## Parameters

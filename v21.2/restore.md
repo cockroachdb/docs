@@ -43,7 +43,7 @@ For guidance on the syntax for backups and restores, see the [`BACKUP`](backup.h
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/restore.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/restore.html %}
 </div>
 
 ## Parameters

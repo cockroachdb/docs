@@ -16,5 +16,5 @@ gem "webrick"
 group :jekyll_plugins do
     gem "jekyll-include-cache"
     gem 'jekyll-algolia', "~> 1.0", path: "./jekyll-algolia-dev"
-    gem 'jekyll-remote-include', "~> 1.1.4", github: 'ianjevans/jekyll-remote-include'
+    gem 'jekyll-remote-include', "~> 1.1.4", github: 'nickvigilante/jekyll-remote-include'
   end
