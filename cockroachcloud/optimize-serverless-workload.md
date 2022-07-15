@@ -46,6 +46,32 @@ You can reduce the RU cost of a query by reducing the work your cluster must do 
 - Avoid returning columns that your application does not need.
 - Don't disable automatic statistics, as they are needed to power the [optimizer](../stable/cost-based-optimizer.html).
 
+## Example Request Unit calculation
+
+Say you have a simple key-value pair table with a secondary index:
+
+`CREATE TABLE kv (k INT PRIMARY KEY, v STRING, INDEX (v))`
+
+Now you insert a row into the table:
+
+`INSERT INTO kv VALUES (1, “...imagine this is a 1 KiB string…”)`
+
+The amount of SQL CPU needed to execute this query is about 1.5 milliseconds. The network egress is also minimal, around 50 bytes. Most of the cost comes from 6 write requests to the storage layer with about 6K in request payload (plus a bit of extra overhead). The `INSERT` needs to be made first for the primary index on the `k` column and again for the secondary index on the `v` column. Each of those writes is replicated 3 times to different storage locations, which is a total of 6 requests. All of these costs add up to a total number of RUs:
+
+1.5 SQL CPU milliseconds = 0.5 RU
+
+50 bytes Network Egress = 50/1024 = 0.05 RU
+
+6 Storage write batches = 6 RU
+
+6 Storage write requests = 6 RU
+
+6 KiB write payloads = 6 RU
+
+**Total cost** = 18.55 RU
+
+Note that this is not exact, as there can be slight variations in multiple parts of the calculation.
+
 ## Learn more
 
 - [Learn About {{ site.data.products.serverless }} Pricing](learn-about-pricing.html)

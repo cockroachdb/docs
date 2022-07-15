@@ -56,33 +56,7 @@ Other cluster activity such as establishing a SQL connection or executing a `SEL
   Establish SQL Connection | 4.36             | $0.22
   `SELECT 1`               | 0.14             | $0.01
   
-In addition to queries that you run, Request Units can be consumed by background activity, such as automatic statistics gathering used to optimize your queries or changefeeds that you’ve set up to send changes to an external sink like Kafka.
-
-## Example Request Unit calculation
-
-Say you have a simple key-value pair table with a secondary index:
-
-`CREATE TABLE kv (k INT PRIMARY KEY, v STRING, INDEX (v))`
-
-Now you insert a row into the table:
-
-`INSERT INTO kv VALUES (1, “...imagine this is a 1 KiB string…”)`
-
-The amount of SQL CPU needed to execute this query is small, about 1.5 milliseconds. The network egress is also minimal, around 50 bytes. Most of the cost comes from 6 write requests to the storage layer with about 6K in request payload (plus a bit of extra overhead). The `INSERT` needs to be made first for the primary index on the `k` column and again for the secondary index on the `v` column. Each of those writes is replicated 3 times to different storage locations, for a total of 2 x 3 = 6 requests. Converting all these costs into a single RU number:
-
-  1.5 SQL CPU milliseconds = 0.5 RU
-
-  50 bytes Network Egress = 50/1024 = 0.05 RU
-
-  6 Storage write batches = 6 RU
-
-  6 Storage write requests = 6 RU
-
-  6 KiB write payloads = 6 RU
-
-  Total cost = 18.55 RU
-
-Note that this is not exact, as there is a bit of payload overhead, variation in the SQL CPU measurement, etc.
+In addition to queries that you run, Request Units can be consumed by background activity, such as automatic statistics gathering used to optimize your queries or changefeeds connected to an external sink.
 
 ## Learn more
 
