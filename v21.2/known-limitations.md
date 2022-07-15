@@ -171,7 +171,7 @@ UNION ALL SELECT * FROM t1 LEFT JOIN t2 ON st_contains(t1.geom, t2.geom) AND t2.
 
 ### Restoring a multi-region database to a new database in {{ site.data.products.dedicated }}
 
-To restore a multi-region database to a new database in a {{ site.data.products.dedicated }} cluster, use the following procedure:
+To restore a multi-region database to a new database in a {{ site.data.products.dedicated }} cluster, the following additional steps are required to ensure the regions match exactly between backup and restore:
 
 {% include cockroachcloud/restore-multiregion-dedicated.md %}
 
