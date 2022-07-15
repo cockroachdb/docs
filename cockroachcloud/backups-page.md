@@ -134,7 +134,7 @@ When the restore is complete, be sure to set any database-specific [zone configu
 #### Restore a multi-region database to a new database in v21.2
 
 {{site.data.alerts.callout_info}}
-The following procedure for restoring a multi-region database to a different database name **is only applicable to clusters running version v21.2**. Clusters running v22.1+ can restore a database following [Restore a database](#restore-a-database) in the previous section.
+The following procedure for restoring a multi-region database to a different database name **is only applicable to clusters running version v21.2**. Clusters running v22.1+ can restore a multi-region database following [Restore a database](#restore-a-database) in the previous section.
 {{site.data.alerts.end}}  
 
 {% include cockroachcloud/restore-multiregion-dedicated.md %}
