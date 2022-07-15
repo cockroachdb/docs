@@ -13,7 +13,7 @@ The time-series data displayed in DB Console graphs is stored within the Cockroa
 
 {% include {{ page.version.version }}/ui/ui-metrics-navigation.md %}
 
-The **Overview** dashboard displays the following time series graphs. All timestamps in the DB Console are shown in Coordinated Universal Time (UTC).
+The **Overview** dashboard displays the following time series graphs. All timestamps in the DB Console are shown in 24-hour Coordinated Universal Time (UTC).
 
 ## SQL Statements
 
