@@ -10,7 +10,7 @@ This page describes how charges accumulate in {{ site.data.products.serverless }
 
 ## Pricing overview
 
-With {{ site.data.products.serverless }}, you are charged for the storage and activity of your cluster. All cluster activity, including SQL queries, bulk operations, and background jobs, is measured in [Request Units](learn-about-request-units.html), or RUs. RUs are an abstracted metric that represent the size and complexity of requests made to your cluster.
+With {{ site.data.products.serverless }}, you are charged for the storage and activity of your cluster. [Request Units](learn-about-request-units.html), or RUs, are an abstracted metric that represent the size and complexity of requests made to your cluster. All cluster activity, including SQL queries, bulk operations, and background jobs, is measured in RUs.
 
 RU and storage consumption is prorated at the following prices:
 
