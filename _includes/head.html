@@ -38,6 +38,10 @@ var pageConfig = {
 
 <script src="{{ 'js/jquery.min.js' | relative_url }}"></script>
 
+{% if page.layout == "api" %}
+  <script src="{{ 'js/rapidoc-min.js' | relative_url }}"></script>
+{% endif %}
+
 {% if page.comparison == true %}
   <script src="{{ 'js/comparison-chart.js' | relative_url }}"></script>
   <script src="{{ 'js/select2.min.js' | relative_url }}"></script>
