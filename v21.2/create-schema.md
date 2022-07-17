@@ -22,7 +22,7 @@ You can also create a user-defined schema by converting an existing database to 
 ## Syntax
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/create_schema.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/create_schema.html %}
 </div>
 
 ### Parameters
