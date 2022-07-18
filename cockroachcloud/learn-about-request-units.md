@@ -9,7 +9,7 @@ This page describes how Request Units and pricing work in {{ site.data.products.
 
 ## Request Units
 
-With {{ site.data.products.serverless }}, you are charged for the storage and activity of your cluster. Request Units, or RUs, are an abstracted metric that represent the size and complexity of requests made to your cluster. All cluster activity, including SQL queries, bulk operations, and background jobs, is measured in RUs.
+With {{ site.data.products.serverless }}, you are charged for the storage and activity of your cluster. All cluster activity, including SQL queries, bulk operations, and background jobs, is measured in [Request Units](learn-about-request-units.html), or RUs. RUs are an abstracted metric that represent the size and complexity of requests made to your cluster.
 
 You can see your cluster's RU and storage usage on the [**Cluster Overview** page](cluster-overview-page.html).
 
