@@ -54,11 +54,11 @@ All of the database operations are wrapped in a helper function named `retryTxn`
 
 ## Step 3. Initialize the database
 
-1. Navigate to the `example-node-postgres` directory:
+1. Navigate to the `example-app-node-postgres` directory:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ cd example-node-postgres
+    $ cd example-app-node-postgres
     ~~~
     
 {% include {{ page.version.version }}/setup/init-bank-sample.md %}
