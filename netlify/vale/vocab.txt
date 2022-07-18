@@ -277,6 +277,8 @@ link_prefix
 liquibase
 liveness
 livestream
+lockholder
+lockholders
 lockless
 loiselle
 lookups
