@@ -383,6 +383,7 @@ pocockn
 pointcut
 postgres
 postgresql
+Postgrex
 Postico
 pq
 pre
