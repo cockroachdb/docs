@@ -126,6 +126,25 @@ Each strategy has pros and cons in terms of security and operational overhead. C
 
 See [Revoking Certificates in CockroachDB](#revoking-certificates-in-cockroachdb).
 
+## PKI in CockroachDB
+
+In a CockroachDB cluster, each node must be able to initiate http requests to any of the others. In a normal operating mode, these requests are be TLS encrypted with mutual authentication, requiring that each node present its own certificate, signed by the same CA.
+
+In addition, SQL clients and DB Console clients must be able to reach the nodes. The client must authenticate the server with a certificate signed by a trusted CA, and the server mustu authenticate the client, either with its own certificate, or with another method, such as username/password.
+
+Therefore, the nodes must each have a private key/public certificate pair where the public certificate is shared by a common CA (called the **node CA** here).
+
+If the client is to use mutual authentication, as illustrated here, the client must have a private key/public certificate pair, where they public certificate is signed by a CA trusted by the nodes, i.e. the CA's public certificate must be in the nodes' trust stores.
+
+
+<img src="{{ 'images/v22.1/certs_signing.png' | relative_url }}" alt="certificate signing relationships diagram" style="max-width:50%" />
+
+Figure 1. Relationships between private keys and public certificates in a typical PKI architecture for a CockroachDB Cluster.
+
+<img src="{{ 'images/v22.1/certs_requests.png' | relative_url }}" alt="certificate signing relationships diagram" style="max-width:50%" />
+
+Figure 2. Certificate authentication Relationships between private keys and public certificates in a typical PKI architecture for a CockroachDB Cluster.
+
 ## CockroachDB's TLS support and operating modes
 
 TLS encryption and server authentication are supported in all communication between CockroachDB nodes, and from clients to nodes.
