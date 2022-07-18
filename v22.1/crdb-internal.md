@@ -29,6 +29,7 @@ Table name | Description| Use in production
 [`cluster_contended_keys`](#cluster_contended_keys)  | Contains information about [contended](performance-best-practices-overview.html#transaction-contention) keys in your cluster.| ✓
 [`cluster_contended_tables`](#cluster_contended_tables)  | Contains information about [contended](performance-best-practices-overview.html#transaction-contention) tables in your cluster.| ✓
 [`cluster_contention_events`](#cluster_contention_events)  | Contains information about [contention](performance-best-practices-overview.html#transaction-contention) in your cluster.| ✓
+`cluster_locks`](#cluster_locks)  | Contains information about [locks](architecture/transaction-layer.html#concurrency-control) held by [transactions](transactions.html) on schema objects in your cluster. | ✓
 `cluster_database_privileges` | Contains information about the [database privileges](security-reference/authorization.html#privileges) on your cluster.| ✗
 `cluster_distsql_flows` | Contains information about the flows of the [DistSQL execution](architecture/sql-layer.html#distsql) scheduled in your cluster.| ✗
 `cluster_inflight_traces` | Contains information about in-flight [tracing](show-trace.html) in your cluster.| ✗
@@ -263,6 +264,234 @@ SELECT * FROM crdb_internal.cluster_contention_events;
        107 |        2 |                     9 | 00:00:00.039563            | \xf3\x8a\x12seattle\x00\x01\x12v\xd4J%\x90\x1bF\x0b\x97\x02v\xc7\xee\xa9\xc7R\x00\x01\x12s\xa1\xad\x8c\xca\xe4G\t\xadG\x91\xa3\xa4\xae\xb7\xc7\x00\x01\x88      | e83df970-a01a-470f-914d-f5615eeec620 |     1
 (9 rows)
 ~~~
+
+### `cluster_locks`
+
+The `crdb_internal.cluster_locks` schema contains information about [locks](architecture/transaction-layer.html#concurrency-control) held on schema objects in your cluster by [transactions](transactions.html). For more information, see the following sections.
+
+- [Cluster locks columns](#cluster-locks-columns)
+- [View cluster locks - basic example](#view-cluster-locks-basic-example)
+- [View cluster locks - intermediate example](#view-cluster-locks-intermediate-example)
+
+#### Cluster locks columns
+
+The `crdb_internal.cluster_locks` table has the following columns:
+
+| Column            | Type                          | Description   |
+|-------------------+-------------------------------+---------------|
+| `range_id`        | [`INT`](int.html)             | XXX: WRITE ME |
+| `table_id`        | [`INT`](int.html)             |               |
+| `database_name`   | [`STRING`](string.html)       |               |
+| `schema_name`     | [`STRING`](string.html)       |               |
+| `table_name`      | [`STRING`](string.html)       |               |
+| `index_name`      | [`STRING`](string.html)       |               |
+| `lock_key`        | [`BYTES`](bytes.html)         |               |
+| `lock_key_pretty` | [`STRING`](string.html)       |               |
+| `txn_id`          | [`UUID`](uuid.html)           |               |
+| `ts`              | [`TIMESTAMP`](timestamp.html) |               |
+| `lock_strength`   | [`STRING`](string.html)       |               |
+| `durability`      | [`STRING`](string.html)       |               |
+| `granted`         | [`BOOLEAN`](bool.html)        |               |
+| `contended`       | [`BOOLEAN`](bool.html)        |               |
+| `duration`        | [`INTERVAL`](interval.html)   |               |
+
+{{site.data.alerts.callout_success}}
+You can see the types and default values of columns in this and other tables using [`SHOW COLUMNS FROM {table}`](show-columns.html).
+{{site.data.alerts.end}}
+
+#### View cluster locks - basic example
+
+In this example, we'll use the [`SELECT FOR UPDATE`](select-for-update.html) statement to order two transactions by controlling concurrent access to a table. Then, we will look at the data in `cluster_locks` to see the locks being held by these transactions on the objects they are accessing.
+
+{% include {{page.version.version}}/sql/select-for-update-example-partial.md %}
+
+Now that we have two transactions both trying to update the `kv` table, let's query the data in `crdb_internal.cluster_locks`. We should see two locks:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT database_name, table_name, txn_id, ts, lock_strength, granted, contended FROM crdb_internal.cluster_locks;
+~~~
+
+~~~
+  database_name | table_name |                txn_id                |             ts             | lock_strength | granted | contended
+----------------+------------+--------------------------------------+----------------------------+---------------+---------+------------
+  defaultdb     | kv         | e454b2cf-8c29-49a1-9070-049edf491e62 | 2022-07-19 19:34:18.345174 | Exclusive     |  true   |   true
+  defaultdb     | kv         | f43236a8-c7f5-4fd4-ba16-7e559ec53587 | 2022-07-19 19:34:32.48481  | Exclusive     |  false  |   true
+(2 rows)
+~~~
+
+As expected, there are two locks. This is the case because:
+
+- The transaction with the [`SELECT FOR UPDATE`](select-for-update.html) query in Terminal 1 asked for an `Exclusive` lock on a row in the `defaultdb.kv` table, as shown in the `lock_strength` column. We can see that it was able to get that lock, since the `granted` column is `true`.
+- The transaction in Terminal 2 is also trying to lock the same row in the `kv` table with a `lock_strength` of `Exclusive`. However, the value of the `granted` column is `false`, which means it could not get the exclusive lock yet, and is waiting on the lock from the query in Terminal 1 to be released before it can proceed.
+
+Further, both transactions show the `contended` column as `true`, since these transactions are both trying to update rows in the `defaultdb.kv` table at the same time.
+
+The following more advanced query shows the text of the actual SQL statements that are trying to grab locks, ordered by their query timestamps. This query may be useful on a busy cluster for figuring out which queries are trying to grab locks in what order. It does the following:
+
+- [Joins](joins.html) the output of [`SHOW STATEMENTS`](show-statements.html), [`crdb_internal.cluster_sessions`](#cluster_sessions), and `crdb_internal.cluster_locks` on matching SQL query text.
+- [Filters itself out from the output](select-clause.html#where-clause) by removing queries that use [common table expressions (CTEs)](common-table-expressions.html) (SQL queries that use `WITH foo AS (...)` to define names for [subqueries](subqueries.html)) from the results.
+- [Orders the results](order-by.html) by [timestamp](timestamp.html) to show the order in which locks were requested.
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+WITH
+    statements AS (SHOW CLUSTER STATEMENTS),
+    sessions
+        AS (SELECT * FROM crdb_internal.cluster_sessions),
+    locks AS (SELECT * FROM crdb_internal.cluster_locks)
+SELECT
+    DISTINCT
+    (locks.txn_id),
+    statements.query_id,
+    statements.query,
+    locks.ts,
+    locks.database_name,
+    locks.schema_name,
+    locks.table_name,
+    locks.lock_strength,
+    locks.granted,
+    locks.contended
+FROM
+    statements, sessions, locks
+WHERE
+    sessions.active_queries = statements.query
+    AND statements.query NOT LIKE '%WITH%'
+ORDER BY
+    ts ASC
+~~~
+
+~~~
+                 txn_id                |             query_id             |                  query                  |             ts             | database_name | schema_name | table_name | lock_strength | granted | contended
+---------------------------------------+----------------------------------+-----------------------------------------+----------------------------+---------------+-------------+------------+---------------+---------+------------
+  12872a0d-9d69-4cee-9ee5-9685eb697971 | 1703a081d263dda00000000000000001 | SELECT * FROM kv WHERE k = 1 FOR UPDATE | 2022-07-20 19:32:41.008659 | defaultdb     | public      | kv         | Exclusive     |  true   |   true
+  db154ad2-77a2-428f-a23d-6715f0625d3b | 1703a081d263dda00000000000000001 | SELECT * FROM kv WHERE k = 1 FOR UPDATE | 2022-07-20 19:32:47.231315 | defaultdb     | public      | kv         | Exclusive     |  false  |   true
+(2 rows)
+~~~
+
+The output is similar to querying `cluster_locks` alone, except you can see the text of the SQL queries, and their query IDs. These two query IDs are the same because the [SQL statement fingerprints](ui-statements-page.html#sql-statement-fingerprints) are the same.
+
+#### View cluster locks - intermediate example
+
+This example assumes you have a cluster in the state it was left in by [the previous example](#view-cluster-locks-basic-example).
+
+In this example you will put a workload on the cluster with multiple concurrent transactions using the [bank workload](cockroach-workload.html#run-the-bank-workload). With a sufficiently high concurrency setting, the bank workload will frequently attempt to update multiple accounts at the same time. This will create plenty of locks to view in the `crdb_internal.cluster_locks` table.
+
+First, initialize the workload:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+cockroach workload init bank 'postgresql://root@localhost:26257/bank?sslmode=disable'
+~~~
+
+Next, run it at a high concurrency setting:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+cockroach workload run bank --concurrency=128 --duration=3m 'postgresql://root@localhost:26257/bank?sslmode=disable'
+~~~
+
+While the workload is running, issue the following query to view a subset of the locks being requested.
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT
+    database_name,
+    table_name,
+    txn_id,
+    ts,
+    lock_strength,
+    granted,
+    contended
+FROM
+    crdb_internal.cluster_locks
+LIMIT
+    10
+~~~
+
+~~~ 
+  database_name | table_name |                txn_id                |             ts             | lock_strength | granted | contended
+----------------+------------+--------------------------------------+----------------------------+---------------+---------+------------
+  bank          | bank       | 3db3402d-4c45-47a6-9b27-49e7ef4b5101 | 2022-07-20 20:18:44.921602 | Exclusive     |  true   |   false
+  bank          | bank       | 742559de-c547-4188-b809-16ca859655cf | 2022-07-20 20:18:44.835976 | Exclusive     |  true   |   false
+  bank          | bank       | 9abb159d-f474-44d4-a4c0-918f7b54fe97 | 2022-07-20 20:18:45.000239 | Exclusive     |  true   |   false
+  bank          | bank       | fd4e211c-9808-4efb-85c8-fdb68953b61f | 2022-07-20 20:18:43.300571 | Exclusive     |  true   |   false
+  bank          | bank       | e1e56553-39f1-460b-9905-1553818d60ff | 2022-07-20 20:18:44.836023 | Exclusive     |  true   |   false
+  bank          | bank       | 2519df35-6f1d-41ff-9a61-8597de09d05c | 2022-07-20 20:18:42.315015 | Exclusive     |  true   |   true
+  bank          | bank       | 3e0d85ef-fec5-4808-bb04-ee855a6b90ac | 2022-07-20 20:18:42.93128  | Exclusive     |  false  |   true
+  bank          | bank       | 2131df50-bd8a-4763-87c4-213a160e61d9 | 2022-07-20 20:18:43.61207  | Exclusive     |  false  |   true
+  bank          | bank       | 96e0e112-8811-44c2-b73f-6acd18735a9b | 2022-07-20 20:18:40.732174 | Exclusive     |  false  |   true
+  bank          | bank       | d846eec6-e823-4306-9a93-50b78ce32091 | 2022-07-20 20:18:44.921607 | Exclusive     |  false  |   true
+(10 rows)
+~~~
+
+As in the [basic example](#view-cluster-locks-basic-example), you can see that some transactions that wanted locks on the `bank` table are having to wait (`granted` is `false`), usually because they are trying to operate on the same rows as one or more other transactions (`contended` is `true`).
+
+The following more advanced query shows the text of the SQL statements that are trying to grab locks, ordered by their query timestamps. This query may be useful on this busy cluster for figuring out which queries are trying to grab locks in what order.
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+WITH
+    statements AS (SHOW CLUSTER STATEMENTS),
+    sessions
+        AS (SELECT * FROM crdb_internal.cluster_sessions),
+    locks AS (SELECT * FROM crdb_internal.cluster_locks)
+SELECT
+    DISTINCT
+    (locks.txn_id),
+    statements.query_id,
+    statements.query,
+    locks.ts,
+    locks.database_name,
+    locks.schema_name,
+    locks.table_name,
+    locks.lock_strength,
+    locks.granted,
+    locks.contended
+FROM
+    statements, sessions, locks
+WHERE
+    sessions.active_queries = statements.query
+    AND locks.txn_id::STRING = sessions.kv_txn
+    AND statements.query NOT LIKE '%WITH%'
+ORDER BY
+    ts DESC
+LIMIT
+    25
+~~~
+
+~~~
+                 txn_id                |             query_id             |                                                        query                                                         |             ts             | database_name | schema_name | table_name | lock_strength | granted | contended
+---------------------------------------+----------------------------------+----------------------------------------------------------------------------------------------------------------------+----------------------------+---------------+-------------+------------+---------------+---------+------------
+  bd71f24a-2c08-4f13-9b8c-88624f37d9d3 | 1703a30be30a1cc80000000000000001 | UPDATE bank SET balance = CASE id WHEN 443 THEN balance - 568 WHEN 276 THEN balance + 568 END WHERE id IN (443, 276) | 2022-07-20 20:19:19.251504 | bank          | public      | bank       | Exclusive     |  true   |   false
+  b175ff6f-bf19-4a82-b44b-cc3f0a477fdd | 1703a30be30903880000000000000001 | UPDATE bank SET balance = CASE id WHEN 213 THEN balance - 481 WHEN 243 THEN balance + 481 END WHERE id IN (213, 243) | 2022-07-20 20:19:19.251424 | bank          | public      | bank       | Exclusive     |  true   |   false
+  b99f828f-cd64-4900-b07a-36fd48fc46be | 1703a30be0bf8ca00000000000000001 | UPDATE bank SET balance = CASE id WHEN 110 THEN balance - 508 WHEN 895 THEN balance + 508 END WHERE id IN (110, 895) | 2022-07-20 20:19:19.212478 | bank          | public      | bank       | Exclusive     |  false  |   true
+  207dded0-7f79-4a9a-bacf-86a968050635 | 1703a30bde7ce7d00000000000000001 | UPDATE bank SET balance = CASE id WHEN 92 THEN balance - 107 WHEN 293 THEN balance + 107 END WHERE id IN (92, 293)   | 2022-07-20 20:19:19.175114 | bank          | public      | bank       | Exclusive     |  true   |   false
+  e47e6dc9-7ef3-41ae-a3a0-152797f08e09 | 1703a30bd9966b600000000000000001 | UPDATE bank SET balance = CASE id WHEN 241 THEN balance - 540 WHEN 351 THEN balance + 540 END WHERE id IN (241, 351) | 2022-07-20 20:19:19.092884 | bank          | public      | bank       | Exclusive     |  false  |   true
+  e47e6dc9-7ef3-41ae-a3a0-152797f08e09 | 1703a30bd9966b600000000000000001 | UPDATE bank SET balance = CASE id WHEN 241 THEN balance - 540 WHEN 351 THEN balance + 540 END WHERE id IN (241, 351) | 2022-07-20 20:19:19.092884 | bank          | public      | bank       | Exclusive     |  true   |   false
+  105f313f-ed40-491c-bf2d-d85df57fe972 | 1703a30bc835f6b00000000000000001 | UPDATE bank SET balance = CASE id WHEN 110 THEN balance - 425 WHEN 895 THEN balance + 425 END WHERE id IN (110, 895) | 2022-07-20 20:19:18.800837 | bank          | public      | bank       | Exclusive     |  false  |   true
+  b6b37334-d1ce-4903-9c2d-9d165027d419 | 1703a30bc143c0080000000000000001 | UPDATE bank SET balance = CASE id WHEN 110 THEN balance - 666 WHEN 895 THEN balance + 666 END WHERE id IN (110, 895) | 2022-07-20 20:19:18.68477  | bank          | public      | bank       | Exclusive     |  false  |   true
+  8b17c2f5-d82b-441b-a4a1-2f75cfb0cb4a | 1703a30bb59ae6f00000000000000001 | UPDATE bank SET balance = CASE id WHEN 137 THEN balance - 435 WHEN 895 THEN balance + 435 END WHERE id IN (137, 895) | 2022-07-20 20:19:18.488486 | bank          | public      | bank       | Exclusive     |  false  |   true
+  55b74bfa-862e-4877-a1fa-8d48db1bb1cb | 1703a30ba7a403100000000000000001 | UPDATE bank SET balance = CASE id WHEN 110 THEN balance - 142 WHEN 895 THEN balance + 142 END WHERE id IN (110, 895) | 2022-07-20 20:19:18.254898 | bank          | public      | bank       | Exclusive     |  false  |   true
+  075885dd-4d86-4c69-9ae4-014781515aac | 1703a30ba2e4e8a80000000000000001 | UPDATE bank SET balance = CASE id WHEN 110 THEN balance - 679 WHEN 895 THEN balance + 679 END WHERE id IN (110, 895) | 2022-07-20 20:19:18.174313 | bank          | public      | bank       | Exclusive     |  false  |   true
+  e4821641-adb4-47de-9d05-ec9c1007d08f | 1703a30b897ff6780000000000000001 | UPDATE bank SET balance = CASE id WHEN 137 THEN balance - 406 WHEN 895 THEN balance + 406 END WHERE id IN (137, 895) | 2022-07-20 20:19:17.749239 | bank          | public      | bank       | Exclusive     |  false  |   true
+  9e9d8a61-7b19-48a6-9e39-0e675257ad5b | 1703a30b84e469a00000000000000001 | UPDATE bank SET balance = CASE id WHEN 110 THEN balance - 334 WHEN 895 THEN balance + 334 END WHERE id IN (110, 895) | 2022-07-20 20:19:17.671028 | bank          | public      | bank       | Exclusive     |  false  |   true
+  dcacb36c-32dc-47d9-b7f6-d8f74d3468e4 | 1703a30b7712ccb80000000000000001 | UPDATE bank SET balance = CASE id WHEN 110 THEN balance - 164 WHEN 895 THEN balance + 164 END WHERE id IN (110, 895) | 2022-07-20 20:19:17.440092 | bank          | public      | bank       | Exclusive     |  false  |   true
+  29661735-6f35-4cd6-b8ae-a9e5e69f068f | 1703a30b3f7288e80000000000000001 | UPDATE bank SET balance = CASE id WHEN 110 THEN balance - 748 WHEN 895 THEN balance + 748 END WHERE id IN (110, 895) | 2022-07-20 20:19:16.506177 | bank          | public      | bank       | Exclusive     |  false  |   true
+  29661735-6f35-4cd6-b8ae-a9e5e69f068f | 1703a307b6d1b6100000000000000001 | UPDATE bank SET balance = CASE id WHEN 110 THEN balance - 748 WHEN 895 THEN balance + 748 END WHERE id IN (110, 895) | 2022-07-20 20:19:16.506177 | bank          | public      | bank       | Exclusive     |  false  |   true
+  7566db0e-653d-4d30-81f2-399484f02997 | 1703a30b350df7700000000000000001 | UPDATE bank SET balance = CASE id WHEN 110 THEN balance - 536 WHEN 895 THEN balance + 536 END WHERE id IN (110, 895) | 2022-07-20 20:19:16.332438 | bank          | public      | bank       | Exclusive     |  false  |   true
+  8870f3ac-39da-4375-8977-1eedd6762bb2 | 1703a30b1b0553000000000000000001 | UPDATE bank SET balance = CASE id WHEN 110 THEN balance - 965 WHEN 895 THEN balance + 965 END WHERE id IN (110, 895) | 2022-07-20 20:19:15.895135 | bank          | public      | bank       | Exclusive     |  false  |   true
+  2ab3fa2c-3807-4623-ac88-406e7e560af3 | 1703a30b11dcfaa80000000000000001 | UPDATE bank SET balance = CASE id WHEN 137 THEN balance - 493 WHEN 895 THEN balance + 493 END WHERE id IN (137, 895) | 2022-07-20 20:19:15.742061 | bank          | public      | bank       | Exclusive     |  false  |   true
+  373411a3-e90a-4fb6-8fd8-3160953adbc3 | 1703a30b4f0e5a980000000000000001 | UPDATE bank SET balance = CASE id WHEN 351 THEN balance - 596 WHEN 412 THEN balance + 596 END WHERE id IN (351, 412) | 2022-07-20 20:19:15.689222 | bank          | public      | bank       | Exclusive     |  true   |   true
+  373411a3-e90a-4fb6-8fd8-3160953adbc3 | 1703a30b4f0e5a980000000000000001 | UPDATE bank SET balance = CASE id WHEN 351 THEN balance - 596 WHEN 412 THEN balance + 596 END WHERE id IN (351, 412) | 2022-07-20 20:19:15.662055 | bank          | public      | bank       | Exclusive     |  true   |   true
+  60310c29-641d-4449-ba00-4321fe2defcc | 1703a30afdc42c580000000000000001 | UPDATE bank SET balance = CASE id WHEN 110 THEN balance - 165 WHEN 895 THEN balance + 165 END WHERE id IN (110, 895) | 2022-07-20 20:19:15.403901 | bank          | public      | bank       | Exclusive     |  false  |   true
+  60310c29-641d-4449-ba00-4321fe2defcc | 1703a30afdc42c580000000000000001 | UPDATE bank SET balance = CASE id WHEN 110 THEN balance - 165 WHEN 895 THEN balance + 165 END WHERE id IN (110, 895) | 2022-07-20 20:19:15.403901 | bank          | public      | bank       | Exclusive     |  true   |   true
+  afa5be54-7b07-486c-bc53-f2fdb1bac74a | 1703a30b4f2b7f880000000000000001 | UPDATE bank SET balance = CASE id WHEN 351 THEN balance - 610 WHEN 412 THEN balance + 610 END WHERE id IN (351, 412) | 2022-07-20 20:19:15.294549 | bank          | public      | bank       | Exclusive     |  false  |   true
+  57701496-a322-4eb9-90d7-c9a1f111c48c | 1703a30b4f3bbfb00000000000000001 | UPDATE bank SET balance = CASE id WHEN 351 THEN balance - 309 WHEN 412 THEN balance + 309 END WHERE id IN (351, 412) | 2022-07-20 20:19:15.294549 | bank          | public      | bank       | Exclusive     |  false  |   true
+(25 rows)
+~~~
+
+The output is similar to querying `cluster_locks` alone, except that you can see the text of the SQL queries, and their query IDs. The text of some of these query IDs are the same because the [SQL statement fingerprints](ui-statements-page.html#sql-statement-fingerprints) are the same.
 
 ### `cluster_queries`
 
