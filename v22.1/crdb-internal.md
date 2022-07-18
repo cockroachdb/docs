@@ -29,6 +29,7 @@ Table name | Description| Use in production
 [`cluster_contended_keys`](#cluster_contended_keys)  | Contains information about [contended](performance-best-practices-overview.html#transaction-contention) keys in your cluster.| ✓
 [`cluster_contended_tables`](#cluster_contended_tables)  | Contains information about [contended](performance-best-practices-overview.html#transaction-contention) tables in your cluster.| ✓
 [`cluster_contention_events`](#cluster_contention_events)  | Contains information about [contention](performance-best-practices-overview.html#transaction-contention) in your cluster.| ✓
+`cluster_locks`](#cluster_locks)  | Contains information about [locks](architecture/transaction-layer.html#concurrency-control) held by [transactions](transactions.html) on specific [keys](architecture/overview.html#architecture-range). | ✓
 `cluster_database_privileges` | Contains information about the [database privileges](security-reference/authorization.html#privileges) on your cluster.| ✗
 `cluster_distsql_flows` | Contains information about the flows of the [DistSQL execution](architecture/sql-layer.html#distsql) scheduled in your cluster.| ✗
 `cluster_inflight_traces` | Contains information about in-flight [tracing](show-trace.html) in your cluster.| ✗
@@ -262,6 +263,381 @@ SELECT * FROM crdb_internal.cluster_contention_events;
        107 |        2 |                     9 | 00:00:00.039563            | \xf3\x8a\x12seattle\x00\x01\x127\xfe\x953~\x94F\x95\xac\xc3\xa0P\x8e_A\x18\x00\x01\x12\xcc\xce\xad\xa0\xcaoA\xda\x98\x81\xab\xe9\xb6\'\xc9\x90\x00\x01\x88      | 5d382859-e88d-497a-830b-613fd20ef304 |     1
        107 |        2 |                     9 | 00:00:00.039563            | \xf3\x8a\x12seattle\x00\x01\x12v\xd4J%\x90\x1bF\x0b\x97\x02v\xc7\xee\xa9\xc7R\x00\x01\x12s\xa1\xad\x8c\xca\xe4G\t\xadG\x91\xa3\xa4\xae\xb7\xc7\x00\x01\x88      | e83df970-a01a-470f-914d-f5615eeec620 |     1
 (9 rows)
+~~~
+
+### `cluster_locks`
+
+The `crdb_internal.cluster_locks` schema contains information about [locks](architecture/transaction-layer.html#concurrency-control) held by [transactions](transactions.html) on specific [keys](architecture/overview.html#architecture-range). For more information, see the following sections.
+
+- [Cluster locks columns](#cluster-locks-columns)
+- [Cluster locks - basic example](#cluster-locks-basic-example)
+- [Cluster locks - intermediate example](#cluster-locks-intermediate-example)
+- [Blocked vs. blocking transactions](#blocked-vs-blocking-transactions)
+- [Client sessions holding locks](#client-sessions-holding-locks)
+- [Count locks held by sessions](#count-locks-held-by-sessions)
+- [Count queries waiting on locks](#count-queries-waiting-on-locks)
+
+#### Cluster locks columns
+
+The `crdb_internal.cluster_locks` table has the following columns that describe each lock:
+
+| Column            | Type                          | Description                                                                                                                                                                   |
+|-------------------+-------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `range_id`        | [`INT`](int.html)             | The ID of the [range](architecture/overview.html#architecture-range) that stores the key the lock is being acquired on.                                                       |
+| `table_id`        | [`INT`](int.html)             | The ID of the [table](create-table.html) that includes the key the lock is being acquired on.                                                                                 |
+| `database_name`   | [`STRING`](string.html)       | The name of the [database](create-database.html) that includes the key the lock is being acquired on.                                                                         |
+| `schema_name`     | [`STRING`](string.html)       | The name of the [schema](create-schema.html) that includes the key this lock is being acquired on.                                                                            |
+| `table_name`      | [`STRING`](string.html)       | The name of the [table](create-table.html) that includes the key this lock is being acquired on.                                                                              |
+| `index_name`      | [`STRING`](string.html)       | The name of the [index](indexes.html) that includes the key this lock is being acquired on.                                                                                   |
+| `lock_key`        | [`BYTES`](bytes.html)         | The actual key that this lock is being acquired on.                                                                                                                           |
+| `lock_key_pretty` | [`STRING`](string.html)       | A string representation of the key this lock is being acquired on.                                                                                                            |
+| `txn_id`          | [`UUID`](uuid.html)           | The ID of the [transaction](transactions.html) that is acquiring this lock.                                                                                                   |
+| `ts`              | [`TIMESTAMP`](timestamp.html) | The [timestamp](timestamp.html) at which this lock was acquired.                                                                                                              |
+| `lock_strength`   | [`STRING`](string.html)       | The strength of this lock. Allowed values: `"Exclusive"`.                                                                                                                     |
+| `durability`      | [`STRING`](string.html)       | Whether the lock is one of: `Replicated` or `Unreplicated`. For more information about lock replication, see [types of locking](architecture/transaction-layer.html#writing). |
+| `granted`         | [`BOOLEAN`](bool.html)        | Whether this lock has been granted to the [transaction](transactions.html) requesting it.                                                                                     |
+| `contended`       | [`BOOLEAN`](bool.html)        | Whether multiple [transactions](transactions.html) are trying to acquire a lock on this key.                                                                                  |
+| `duration`        | [`INTERVAL`](interval.html)   | The length of time this lock has been held for.                                                                                                                               |
+
+{{site.data.alerts.callout_success}}
+You can see the types and default values of columns in this and other tables using [`SHOW COLUMNS FROM {table}`](show-columns.html).
+{{site.data.alerts.end}}
+
+#### Cluster locks - basic example
+
+In this example, we'll use the [`SELECT FOR UPDATE`](select-for-update.html) statement to order two transactions by controlling concurrent access to a table. Then, we will look at the data in `cluster_locks` to see the locks being held by these transactions on the objects they are accessing.
+
+{% include {{page.version.version}}/sql/select-for-update-example-partial.md %}
+
+Now that we have two transactions both trying to update the `kv` table, let's query the data in `crdb_internal.cluster_locks`. We should see two locks:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT database_name, table_name, txn_id, ts, lock_strength, granted, contended FROM crdb_internal.cluster_locks WHERE table_name = 'kv';
+~~~
+
+~~~
+  database_name | table_name |                txn_id                |             ts             | lock_strength | granted | contended
+----------------+------------+--------------------------------------+----------------------------+---------------+---------+------------
+  defaultdb     | kv         | e454b2cf-8c29-49a1-9070-049edf491e62 | 2022-07-19 19:34:18.345174 | Exclusive     |  true   |   true
+  defaultdb     | kv         | f43236a8-c7f5-4fd4-ba16-7e559ec53587 | 2022-07-19 19:34:32.48481  | Exclusive     |  false  |   true
+(2 rows)
+~~~
+
+As expected, there are two locks. This is the case because:
+
+- The transaction with the [`SELECT FOR UPDATE`](select-for-update.html) query in Terminal 1 asked for an `Exclusive` lock on a row in the `defaultdb.kv` table, as shown in the `lock_strength` column. We can see that it was able to get that lock, since the `granted` column is `true`.
+- The transaction in Terminal 2 is also trying to lock the same row in the `kv` table with a `lock_strength` of `Exclusive`. However, the value of the `granted` column is `false`, which means it could not get the exclusive lock yet, and is waiting on the lock from the query in Terminal 1 to be released before it can proceed.
+
+Further, both transactions show the `contended` column as `true`, since these transactions are both trying to update rows in the `defaultdb.kv` table at the same time.
+
+The following more advanced query shows more information about lockholders, sessions, and waiting queries. This may be useful on a busy cluster for figuring out which transactions from which clients are trying to grab locks, and in what order.
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT
+    sessions.session_id,
+    sessions.client_address,
+    sessions.application_name,
+    locks.txn_id,
+    queries.query_id AS waiting_query_id,
+    queries.query AS waiting_query,
+    locks.lock_key_pretty,
+    locks.ts,
+    locks.database_name,
+    locks.schema_name,
+    locks.table_name,
+    locks.lock_strength,
+    locks.granted,
+    locks.contended
+FROM
+    crdb_internal.cluster_locks AS locks
+    JOIN crdb_internal.cluster_sessions AS sessions ON
+            locks.txn_id::STRING = sessions.kv_txn
+    LEFT JOIN crdb_internal.cluster_queries AS queries ON
+            locks.txn_id = queries.txn_id
+~~~
+
+~~~
+              session_id            | client_address  | application_name |                txn_id                |         waiting_query_id         |              waiting_query              | lock_key_pretty  |             ts             | database_name | schema_name | table_name | lock_strength | granted | contended
+-----------------------------------+-----------------+------------------+--------------------------------------+----------------------------------+-----------------------------------------+------------------+----------------------------+---------------+-------------+------------+---------------+---------+------------
+  17056bb535ead9a00000000000000001 | 127.0.0.1:51093 | $ cockroach sql  | ca692f0a-deca-4d4a-9a15-86f25c3b837f | NULL                             | NULL                                    | /Table/107/1/1/0 | 2022-07-26 15:48:08.294631 | defaultdb     | public      | kv         | Exclusive     |  true   |   true
+  17056bb7e47a6ec00000000000000003 | 127.0.0.1:51094 | $ cockroach sql  | 771fe98f-9e39-4ce4-90da-8ecb06d2a856 | 17056bbd362852780000000000000003 | SELECT * FROM kv WHERE k = 1 FOR UPDATE | /Table/107/1/1/0 | 2022-07-26 15:48:18.145594 | defaultdb     | public      | kv         | Exclusive     |  false  |   true
+(2 rows)
+~~~
+
+The output is similar to querying `cluster_locks` alone, except you can see the text of the SQL queries whose transactions are waiting on other transactions to finish, with additional information about the clients that initiated those transactions.
+
+{{site.data.alerts.callout_info}}
+Locks are held by transactions, not queries. A lock can be acquired by a transaction as a result of a query within that transaction, but CockroachDB does not track which query in a transaction caused that transaction to acquire a lock.
+{{site.data.alerts.end}}
+
+#### Cluster locks - intermediate example
+
+This example assumes you have a cluster in the state it was left in by [the previous example](#cluster-locks-basic-example).
+
+In this example you will put a workload on the cluster with multiple concurrent transactions using the [bank workload](cockroach-workload.html#run-the-bank-workload). With a sufficiently high concurrency setting, the bank workload will frequently attempt to update multiple accounts at the same time. This will create plenty of locks to view in the `crdb_internal.cluster_locks` table.
+
+First, initialize the workload:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+cockroach workload init bank 'postgresql://root@localhost:26257/bank?sslmode=disable'
+~~~
+
+Next, run it at a high concurrency setting:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+cockroach workload run bank --concurrency=128 --duration=3m 'postgresql://root@localhost:26257/bank?sslmode=disable'
+~~~
+
+While the workload is running, issue the following query to view a subset of the locks being requested.
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT
+    database_name,
+    table_name,
+    txn_id,
+    ts,
+    lock_strength,
+    granted,
+    contended
+FROM
+    crdb_internal.cluster_locks
+WHERE table_name = 'bank'
+LIMIT
+    10
+~~~
+
+~~~ 
+  database_name | table_name |                txn_id                |             ts             | lock_strength | granted | contended
+----------------+------------+--------------------------------------+----------------------------+---------------+---------+------------
+  bank          | bank       | d89f8431-364f-425e-b351-9f20cac8d599 | 2022-07-26 16:06:49.264283 | Exclusive     |  true   |   true
+  bank          | bank       | 5186ab86-8c8f-40c5-aab8-e1003870ba02 | 2022-07-26 16:06:49.264453 | Exclusive     |  false  |   true
+  bank          | bank       | 74cc9762-227e-4467-bded-835d81a47829 | 2022-07-26 16:06:49.245693 | Exclusive     |  true   |   false
+  bank          | bank       | adaf6135-8ef5-4cd1-ac9e-c978c294bb9a | 2022-07-26 16:06:49.264456 | Exclusive     |  true   |   false
+  bank          | bank       | e412e5be-3d4a-46b6-a266-c84a2d12e14f | 2022-07-26 16:06:49.323954 | Exclusive     |  true   |   false
+  bank          | bank       | f5bb406c-0b9b-46a2-8881-235801cb6fab | 2022-07-26 16:06:49.168554 | Exclusive     |  true   |   false
+  bank          | bank       | 2bb1b8b5-9702-4e03-adb5-94e7d4238582 | 2022-07-26 16:06:45.397511 | Exclusive     |  true   |   false
+  bank          | bank       | adaf6135-8ef5-4cd1-ac9e-c978c294bb9a | 2022-07-26 16:06:49.264456 | Exclusive     |  true   |   false
+  bank          | bank       | 5186ab86-8c8f-40c5-aab8-e1003870ba02 | 2022-07-26 16:06:49.264453 | Exclusive     |  true   |   false
+  bank          | bank       | 70096cb0-2b0d-4ef3-988f-136858eebcd2 | 2022-07-26 16:06:49.035213 | Exclusive     |  true   |   false
+(10 rows)
+~~~
+
+As in the [basic example](#cluster-locks-basic-example), you can see that some transactions that wanted locks on the `bank` table are having to wait (`granted` is `false`), usually because they are trying to operate on the same rows as one or more other transactions (`contended` is `true`).
+
+The following more advanced query shows more information about lockholders, sessions, and waiting queries. This may be useful on a busy cluster for figuring out which transactions from which clients are trying to grab locks, and in what order.
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT
+    sessions.session_id,
+    sessions.client_address,
+    sessions.application_name,
+    locks.txn_id,
+    queries.query_id AS waiting_query_id,
+    queries.query AS waiting_query,
+    locks.lock_key_pretty,
+    locks.ts,
+    locks.database_name,
+    locks.schema_name,
+    locks.table_name,
+    locks.lock_strength,
+    locks.granted,
+    locks.contended
+FROM
+    crdb_internal.cluster_locks AS locks
+    JOIN crdb_internal.cluster_sessions AS sessions ON
+            locks.txn_id::STRING = sessions.kv_txn
+    LEFT JOIN crdb_internal.cluster_queries AS queries ON
+            locks.txn_id = queries.txn_id
+WHERE
+    locks.table_name = 'bank'
+LIMIT
+    10
+~~~
+
+~~~
+             session_id            | client_address  | application_name |                txn_id                |         waiting_query_id         |                                                    waiting_query                                                     |  lock_key_pretty   |             ts             | database_name | schema_name | table_name | lock_strength | granted | contended
+-----------------------------------+-----------------+------------------+--------------------------------------+----------------------------------+----------------------------------------------------------------------------------------------------------------------+--------------------+----------------------------+---------------+-------------+------------+---------------+---------+------------
+  17056cb7396db5900000000000000001 | 127.0.0.1:51220 | bank             | 3bee08fd-636e-4d41-b28d-104bd0a4235b | 17056cded0850d800000000000000001 | UPDATE bank SET balance = CASE id WHEN 351 THEN balance - 725 WHEN 412 THEN balance + 725 END WHERE id IN (351, 412) | /Table/110/1/351/0 | 2022-07-26 16:09:31.215922 | bank          | public      | bank       | Exclusive     |  false  |   true
+  17056cb7396db5900000000000000001 | 127.0.0.1:51220 | bank             | 3bee08fd-636e-4d41-b28d-104bd0a4235b | 17056cded0850d800000000000000001 | UPDATE bank SET balance = CASE id WHEN 351 THEN balance - 725 WHEN 412 THEN balance + 725 END WHERE id IN (351, 412) | /Table/110/1/412/0 | 2022-07-26 16:09:31.215922 | bank          | public      | bank       | Exclusive     |  false  |   true
+  17056cb73972ab180000000000000001 | 127.0.0.1:51221 | bank             | 5c27678d-3acb-4d9d-8b98-774c5a10f933 | 17056ce6f3db1d080000000000000001 | UPDATE bank SET balance = CASE id WHEN 627 THEN balance - 794 WHEN 867 THEN balance + 794 END WHERE id IN (627, 867) | /Table/110/1/627/0 | 2022-07-26 16:09:36.945352 | bank          | public      | bank       | Exclusive     |  true   |   false
+  17056cb73972ab180000000000000001 | 127.0.0.1:51221 | bank             | 5c27678d-3acb-4d9d-8b98-774c5a10f933 | 17056ce6f3db1d080000000000000001 | UPDATE bank SET balance = CASE id WHEN 627 THEN balance - 794 WHEN 867 THEN balance + 794 END WHERE id IN (627, 867) | /Table/110/1/867/0 | 2022-07-26 16:09:36.945352 | bank          | public      | bank       | Exclusive     |  true   |   false
+  17056cb739738da80000000000000001 | 127.0.0.1:51222 | bank             | 1768cc1d-0929-490b-86bd-f39b9f78cc84 | 17056cdc278d47580000000000000001 | UPDATE bank SET balance = CASE id WHEN 351 THEN balance - 412 WHEN 412 THEN balance + 412 END WHERE id IN (351, 412) | /Table/110/1/351/0 | 2022-07-26 16:09:31.215922 | bank          | public      | bank       | Exclusive     |  false  |   true
+  17056cb739738da80000000000000001 | 127.0.0.1:51222 | bank             | 1768cc1d-0929-490b-86bd-f39b9f78cc84 | 17056cdc278d47580000000000000001 | UPDATE bank SET balance = CASE id WHEN 351 THEN balance - 412 WHEN 412 THEN balance + 412 END WHERE id IN (351, 412) | /Table/110/1/412/0 | 2022-07-26 16:09:31.215922 | bank          | public      | bank       | Exclusive     |  false  |   true
+  17056cb739737e080000000000000001 | 127.0.0.1:51223 | bank             | bf6ab816-67b7-4125-bf88-3d5c36986885 | 17056ce55b0065580000000000000001 | UPDATE bank SET balance = CASE id WHEN 137 THEN balance - 500 WHEN 895 THEN balance + 500 END WHERE id IN (137, 895) | /Table/110/1/137/0 | 2022-07-26 16:09:25.957139 | bank          | public      | bank       | Exclusive     |  false  |   true
+  17056cb739772b700000000000000001 | 127.0.0.1:51226 | bank             | a9cff324-00bd-4e33-afc6-ff3341988c7e | 17056cd1cb394ab00000000000000001 | UPDATE bank SET balance = CASE id WHEN 498 THEN balance - 584 WHEN 690 THEN balance + 584 END WHERE id IN (498, 690) | /Table/110/1/690/0 | 2022-07-26 16:09:30.318277 | bank          | public      | bank       | Exclusive     |  false  |   true
+  17056cb7397b03d00000000000000001 | 127.0.0.1:51225 | bank             | 5a591e0d-ba25-424f-aa13-502a7044355b | 17056cdb5243ea200000000000000001 | UPDATE bank SET balance = CASE id WHEN 110 THEN balance - 641 WHEN 895 THEN balance + 641 END WHERE id IN (110, 895) | /Table/110/1/110/0 | 2022-07-26 16:09:02.283466 | bank          | public      | bank       | Exclusive     |  false  |   true
+  17056cb7397bdaa80000000000000001 | 127.0.0.1:51227 | bank             | 40a7f865-c6a6-40e2-8956-01f3f52b19f2 | 17056ccea1c21de00000000000000001 | UPDATE bank SET balance = CASE id WHEN 895 THEN balance - 506 WHEN 786 THEN balance + 506 END WHERE id IN (895, 786) | /Table/110/1/786/0 | 2022-07-26 16:08:19.842191 | bank          | public      | bank       | Exclusive     |  false  |   true
+(10 rows)
+~~~
+
+The output is similar to querying `cluster_locks` alone, except you can see the text of the SQL queries whose transactions are waiting on other transactions to finish, with additional information about the clients that initiated those transactions.
+
+{{site.data.alerts.callout_info}}
+Locks are held by transactions, not queries. A lock can be acquired by a transaction as a result of a query within that transaction, but CockroachDB does not track which query in a transaction caused that transaction to acquire a lock.
+{{site.data.alerts.end}}
+
+#### Blocked vs. blocking transactions
+
+Run the query below to display a list of pairs of [transactions](transactions.html) that are holding and waiting on locks for the same [keys](architecture/overview.html#architecture-range).
+
+This example assumes you are running the `bank` workload as described in the [intermediate example](#cluster-locks-intermediate-example).
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT lh.database_name, lh.table_name, lh.range_id, lh.lock_key_pretty, lh.txn_id AS lock_holder, lw.txn_id AS lock_waiter, q.query AS waiting_query, lw.duration AS wait_duration FROM crdb_internal.cluster_locks AS lh JOIN crdb_internal.cluster_locks AS lw ON lh.lock_key = lw.lock_key JOIN crdb_internal.cluster_queries AS q ON lw.txn_id = q.txn_id WHERE lh.granted = true AND lh.txn_id IS DISTINCT FROM lw.txn_id AND lh.table_name = 'bank' LIMIT 10;
+~~~
+
+~~~
+  database_name | table_name | range_id |  lock_key_pretty   |             lock_holder              |             lock_waiter              |                                                    waiting_query                                                     |  wait_duration
+----------------+------------+----------+--------------------+--------------------------------------+--------------------------------------+----------------------------------------------------------------------------------------------------------------------+------------------
+  bank          | bank       |       50 | /Table/110/1/412/0 | 89d8f3a6-463b-4119-89e9-c797680f35bb | ea5a95cc-923c-4262-b0f7-81014fd19ee1 | UPDATE bank SET balance = CASE id WHEN 351 THEN balance - 39 WHEN 412 THEN balance + 39 END WHERE id IN (351, 412)   | 00:00:01.236359
+  bank          | bank       |       50 | /Table/110/1/412/0 | 89d8f3a6-463b-4119-89e9-c797680f35bb | d4a80a8b-ede9-48ea-a7e1-375255f5aabe | UPDATE bank SET balance = CASE id WHEN 351 THEN balance - 551 WHEN 412 THEN balance + 551 END WHERE id IN (351, 412) | 00:00:01.268718
+  bank          | bank       |       50 | /Table/110/1/412/0 | 89d8f3a6-463b-4119-89e9-c797680f35bb | 5406a762-1975-4346-ab7d-f32a4ff06469 | UPDATE bank SET balance = CASE id WHEN 351 THEN balance - 395 WHEN 412 THEN balance + 395 END WHERE id IN (351, 412) | 00:00:01.265879
+  bank          | bank       |       50 | /Table/110/1/412/0 | 89d8f3a6-463b-4119-89e9-c797680f35bb | be93bcc1-921e-4b8a-9253-98f0848eef2c | UPDATE bank SET balance = CASE id WHEN 351 THEN balance - 725 WHEN 412 THEN balance + 725 END WHERE id IN (351, 412) | 00:00:01.273119
+  bank          | bank       |       50 | /Table/110/1/412/0 | 89d8f3a6-463b-4119-89e9-c797680f35bb | a513d77f-9773-48c4-b888-1abbecba12ad | UPDATE bank SET balance = CASE id WHEN 351 THEN balance - 317 WHEN 412 THEN balance + 317 END WHERE id IN (351, 412) | 00:00:01.269164
+  bank          | bank       |       50 | /Table/110/1/412/0 | 89d8f3a6-463b-4119-89e9-c797680f35bb | 56d14710-d40f-4bd3-a3f6-f8cc34996bad | UPDATE bank SET balance = CASE id WHEN 351 THEN balance - 758 WHEN 412 THEN balance + 758 END WHERE id IN (351, 412) | 00:00:01.271509
+  bank          | bank       |       48 | /Table/110/1/839/0 | 1dd5d45e-98dd-4645-a1c2-9d1656a7c1e2 | 19ecea86-219d-4979-a7ed-04c6fa81e6db | UPDATE bank SET balance = CASE id WHEN 839 THEN balance - 830 WHEN 758 THEN balance + 830 END WHERE id IN (839, 758) | 00:00:00.775891
+  bank          | bank       |       50 | /Table/110/1/412/0 | 89d8f3a6-463b-4119-89e9-c797680f35bb | 1a7ce7a8-6145-4d71-a05a-6a22e641a3d5 | UPDATE bank SET balance = CASE id WHEN 351 THEN balance - 711 WHEN 412 THEN balance + 711 END WHERE id IN (351, 412) | 00:00:01.268693
+  bank          | bank       |       50 | /Table/110/1/412/0 | 89d8f3a6-463b-4119-89e9-c797680f35bb | 9c9da2b9-a468-45b6-af7f-88f0ade5c9f9 | UPDATE bank SET balance = CASE id WHEN 351 THEN balance - 642 WHEN 412 THEN balance + 642 END WHERE id IN (351, 412) | 00:00:01.267889
+  bank          | bank       |       50 | /Table/110/1/412/0 | 89d8f3a6-463b-4119-89e9-c797680f35bb | 997183e4-f1c7-46eb-882b-5b4cf76ff1ab | UPDATE bank SET balance = CASE id WHEN 351 THEN balance - 296 WHEN 412 THEN balance + 296 END WHERE id IN (351, 412) | 00:00:01.269917
+(10 rows)
+~~~
+
+#### Client sessions holding locks
+
+Run the query below to display a list of [sessions](show-sessions.html) that are holding and waiting on locks for the same [keys](architecture/overview.html#architecture-range).
+
+This example assumes you are running the `bank` workload as described in the [intermediate example](#cluster-locks-intermediate-example).
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT
+    l.database_name,
+    l.table_name,
+    l.range_id,
+    l.lock_key_pretty,
+    l.txn_id,
+    l.granted,
+    s.node_id,
+    s.user_name,
+    s.client_address
+FROM
+    crdb_internal.cluster_locks AS l
+    JOIN crdb_internal.cluster_transactions AS t ON
+            l.txn_id = t.id
+    JOIN crdb_internal.cluster_sessions AS s ON
+            t.session_id = s.session_id
+WHERE
+    l.granted = true AND l.table_name = 'bank';
+~~~
+
+~~~
+  database_name | table_name | range_id |  lock_key_pretty   |                txn_id                | granted | node_id | user_name | client_address
+----------------+------------+----------+--------------------+--------------------------------------+---------+---------+-----------+------------------
+  bank          | bank       |       54 | /Table/110/1/140/0 | 7aa534d6-c6df-4a98-9ef5-33ddb7c20618 |  true   |       1 | root      | 127.0.0.1:51398
+  bank          | bank       |       53 | /Table/110/1/786/0 | 92490011-e63b-4157-b7e5-6bd17ac6e94c |  true   |       1 | root      | 127.0.0.1:51400
+  bank          | bank       |       50 | /Table/110/1/457/0 | 2e815ed3-4178-4eff-a5c5-b04fd6e76d50 |  true   |       1 | root      | 127.0.0.1:51412
+  bank          | bank       |       54 | /Table/110/1/137/0 | fd735721-d8a0-4157-b370-00f132bb6263 |  true   |       1 | root      | 127.0.0.1:51425
+  bank          | bank       |       54 | /Table/110/1/110/0 | e7acec14-dbf9-4cd9-9ae6-43adac826810 |  true   |       1 | root      | 127.0.0.1:51443
+  bank          | bank       |       49 | /Table/110/1/351/0 | 2ff62140-62d8-46e7-9c4a-c3f778519549 |  true   |       1 | root      | 127.0.0.1:51427
+  bank          | bank       |       50 | /Table/110/1/412/0 | 2ff62140-62d8-46e7-9c4a-c3f778519549 |  true   |       1 | root      | 127.0.0.1:51427
+  bank          | bank       |       48 | /Table/110/1/895/0 | bd676999-37f5-42b4-9278-7b3de5451abe |  true   |       1 | root      | 127.0.0.1:51439
+  bank          | bank       |       65 | /Table/110/1/60/0  | 51aacef3-370e-4760-8e8f-60e6e9db4a19 |  true   |       1 | root      | 127.0.0.1:51461
+  bank          | bank       |       54 | /Table/110/1/134/0 | 51aacef3-370e-4760-8e8f-60e6e9db4a19 |  true   |       1 | root      | 127.0.0.1:51461
+  bank          | bank       |       49 | /Table/110/1/316/0 | 5bffc2fa-43f1-4b76-acfa-2d1d4e09c793 |  true   |       1 | root      | 127.0.0.1:51472
+  bank          | bank       |       47 | /Table/110/1/504/0 | 5bffc2fa-43f1-4b76-acfa-2d1d4e09c793 |  true   |       1 | root      | 127.0.0.1:51472
+(12 rows)
+~~~
+
+#### Count locks held by sessions
+
+Run the query below to show a list of lock counts being held by different [sessions](show-sessions.html).
+
+This example assumes you are running the `bank` workload as described in the [intermediate example](#cluster-locks-intermediate-example).
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT
+    l.database_name,
+    l.table_name,
+    s.user_name,
+    s.client_address,
+    s.session_id,
+    count(lock_key_pretty) AS lock_count
+FROM
+    crdb_internal.cluster_locks AS l
+    JOIN crdb_internal.cluster_transactions AS t ON
+            l.txn_id = t.id
+    JOIN crdb_internal.cluster_sessions AS s ON
+            t.session_id = s.session_id
+WHERE
+    l.granted = true AND l.table_name = 'bank'
+GROUP BY
+    l.database_name,
+    l.table_name,
+    s.user_name,
+    s.client_address,
+    s.session_id
+~~~
+
+~~~
+  database_name | table_name | user_name | client_address  |            session_id            | lock_count
+----------------+------------+-----------+-----------------+----------------------------------+-------------
+  bank          | bank       | root      | 127.0.0.1:51403 | 17056d4b2f62aeb80000000000000001 |          1
+  bank          | bank       | root      | 127.0.0.1:51405 | 17056d4b2f6cc8a80000000000000001 |          1
+  bank          | bank       | root      | 127.0.0.1:51421 | 17056d4b2f8acc400000000000000001 |          1
+  bank          | bank       | root      | 127.0.0.1:51425 | 17056d4b2f96ab500000000000000001 |          1
+  bank          | bank       | root      | 127.0.0.1:51492 | 17056d4b3019be000000000000000001 |          1
+  bank          | bank       | root      | 127.0.0.1:51485 | 17056d4b3026f8b80000000000000001 |          2
+(6 rows)
+~~~
+
+#### Count queries waiting on locks
+
+Run the query below to show a list of [keys](architecture/overview.html#architecture-range) ordered by how many transactions are waiting on the locks on those keys.
+
+This example assumes you are running the `bank` workload as described in the [intermediate example](#cluster-locks-intermediate-example).
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT
+    l.database_name,
+    l.table_name,
+    l.range_id,
+    l.lock_key_pretty,
+    count(*) AS waiter_count,
+    max(duration) AS longest_wait_duration
+FROM
+    crdb_internal.cluster_locks AS l
+WHERE
+    l.granted = false AND l.table_name = 'bank'
+GROUP BY
+    l.database_name,
+    l.table_name,
+    l.range_id,
+    l.lock_key_pretty
+ORDER BY
+    waiter_count DESC, longest_wait_duration DESC
+LIMIT
+    30
+~~~
+
+~~~
+  database_name | table_name | range_id |  lock_key_pretty   | waiter_count | longest_wait_duration
+----------------+------------+----------+--------------------+--------------+------------------------
+  bank          | bank       |       48 | /Table/110/1/895/0 |           81 | 00:00:02.91943
+  bank          | bank       |       54 | /Table/110/1/110/0 |           69 | 00:00:02.074832
+  bank          | bank       |       53 | /Table/110/1/786/0 |           41 | 00:01:16.871542
+  bank          | bank       |       54 | /Table/110/1/137/0 |           10 | 00:01:49.082237
+  bank          | bank       |       55 | /Table/110/1/690/0 |            2 | 00:00:44.526906
+  bank          | bank       |       50 | /Table/110/1/498/0 |            2 | 00:00:43.473285
+(6 rows)
 ~~~
 
 ### `cluster_queries`
