@@ -10,7 +10,7 @@ By default, CockroachDB [automatically generates statistics](cost-based-optimize
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/show_stats.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/show_stats.html %}
 </div>
 
 ## Required Privileges
@@ -33,7 +33,7 @@ Parameter      | Description
 | `row_count` | The number of rows for which the statistics were computed. |
 | `distinct_count` |  The number of distinct values for which the statistics were computed. |
 | `null_count` |  The number of null values for which the statistics were computed.  |
-| `avg_size` |  {% include_cached new-in.html version="v22.1" %} The average size in bytes of the values of the columns for which the statistics were computed. |
+| `avg_size` |  **New in v22.1:** The average size in bytes of the values of the columns for which the statistics were computed. |
 | `histogram_id` |  The ID of the [histogram](cost-based-optimizer.html#control-histogram-collection) used to compute statistics. |
 
 ## Examples
@@ -42,7 +42,7 @@ Parameter      | Description
 
 ### List table statistics
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW STATISTICS FOR TABLE rides;
 ~~~

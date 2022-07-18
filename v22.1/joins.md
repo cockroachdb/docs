@@ -6,9 +6,9 @@ keywords: gin, gin index, gin indexes, inverted index, inverted indexes, acceler
 docs_area: reference.sql
 ---
 
-`JOIN` expressions, also called "joins", combine the results of two or more table expressions based on conditions on the values of particular columns (i.e., equality columns).
+A `JOIN` expression, also called a _join_, combines the results of two or more [table expressions](table-expressions.html) based on conditions on the values of particular columns (i.e., equality columns). A join is a particular kind of table expression.
 
-`JOIN` expressions define a data source in the `FROM` sub-clause of [simple `SELECT` clauses](select-clause.html), or as parameter to [`TABLE`](selection-queries.html#table-clause). Joins are a particular kind of [table expression](table-expressions.html).
+A `JOIN` expression defines a data source in the `FROM` sub-clause of a [`SELECT` clause](select-clause.html) or as parameter to a [`TABLE` clause](selection-queries.html#table-clause).
 
 {{site.data.alerts.callout_success}}
 The [cost-based optimizer](cost-based-optimizer.html) supports hint syntax to force the use of a specific join algorithm.  For more information, see [Join hints](cost-based-optimizer.html#join-hints).
@@ -16,19 +16,17 @@ The [cost-based optimizer](cost-based-optimizer.html) supports hint syntax to fo
 
 ## Synopsis
 
-<div>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/joined_table.html %}</div>
-
-<div markdown="1"></div>
+<div>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/joined_table.html %}</div>
 
 ## Parameters
 
 Parameter | Description
 ----------|------------
-`joined_table` | Another join expression.
+`joined_table` | A join expression.
 `table_ref` | A [table expression](table-expressions.html).
 `opt_join_hint` | A [join hint](cost-based-optimizer.html#join-hints).
-`a_expr` | A [scalar expression](scalar-expressions.html) to use as [`ON` join condition](#supported-join-conditions).
-`name` | A column name to use as [`USING` join condition](#supported-join-conditions)
+`a_expr` | A [scalar expression](scalar-expressions.html) to use as an [`ON` join condition](#supported-join-conditions).
+`name` | A column name to use as a [`USING` join condition](#supported-join-conditions).
 
 ## Supported join types
 
@@ -95,7 +93,7 @@ CockroachDB supports the following conditions to match rows in a join:
   column names that are present in both the left and right table
   expressions.
 
-<div>{{site.data.alerts.callout_danger}}<code>NATURAL</code> is supported for compatibility with PostgreSQL; its use in new applications is discouraged because its results can silently change in unpredictable ways when new columns are added to one of the join operands.{{site.data.alerts.end}}</div>
+    <div>{{site.data.alerts.callout_info}}<code>NATURAL</code> is supported for compatibility with PostgreSQL; Cockroach Labs discourages use in new applications because its results can silently change in unpredictable ways when new columns are added to one of the join operands.{{site.data.alerts.end}}</div>
 
 ## Join algorithms
 
@@ -177,8 +175,6 @@ If you see an `apply-join`, it means the optimizer was not able to perform de-co
 
 ## Performance best practices
 
-{{site.data.alerts.callout_info}}CockroachDB is currently undergoing major changes to evolve and improve the performance of queries using joins. The restrictions and workarounds listed in this section will be lifted or made unnecessary over time.{{site.data.alerts.end}}
-
 - When no indexes can be used to satisfy a join, CockroachDB may load all the rows in memory that satisfy the condition one of the join operands before starting to return result rows. This may cause joins to fail if the join condition or other `WHERE` clauses are insufficiently selective.
 - Outer joins (i.e., [left outer joins](#left-outer-joins), [right outer joins](#right-outer-joins), and [full outer joins](#full-outer-joins)) are generally processed less efficiently than [inner joins](#inner-joins). Use inner joins whenever possible. Full outer joins are the least optimized.
 - Use [`EXPLAIN`](explain.html) over queries containing joins to verify that indexes are used.
@@ -186,13 +182,13 @@ If you see an `apply-join`, it means the optimizer was not able to perform de-co
 
 ## See also
 
-- [Cost-based Optimizer: Join Hints](cost-based-optimizer.html#join-hints)
+- [Join hints](cost-based-optimizer.html#join-hints)
 - [Scalar Expressions](scalar-expressions.html)
 - [Table Expressions](table-expressions.html)
 - [Simple `SELECT` Clause](select-clause.html)
 - [Selection Queries](selection-queries.html)
 - [`EXPLAIN`](explain.html)
-- [Performance Best Practices - Overview](performance-best-practices-overview.html)
+- [SQL Performance Best Practices](performance-best-practices-overview.html)
 - [SQL join operation (Wikipedia)](https://en.wikipedia.org/wiki/Join_(SQL))
 - [Modesty in Simplicity: CockroachDB's JOIN (CockroachDB Blog)](https://www.cockroachlabs.com/blog/cockroachdbs-first-join/)
 - [On the Way to Better SQL Joins in CockroachDB (CockroachDB Blog)](https://www.cockroachlabs.com/blog/better-sql-joins-in-cockroachdb/)

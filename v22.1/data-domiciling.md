@@ -20,8 +20,6 @@ This page has instructions for data domiciling in [multi-region clusters](multir
 1. Controlling the placement of specific row or table data using regional tables with the [`REGIONAL BY ROW`](multiregion-overview.html#regional-by-row-tables) and [`REGIONAL BY TABLE`](multiregion-overview.html#regional-tables) clauses.
 1. Further restricting where the data in those regional tables is stored using the [`ALTER DATABASE ... PLACEMENT RESTRICTED`](placement-restricted.html) statement, which constrains the replicas for a partition or table to be stored in only the [home regions](set-locality.html#crdb_region) associated with those rows or tables.
 
-For more information, see the sections below.
-
 ## Prerequisites
 
 This page assumes you are already familiar with:
@@ -34,6 +32,10 @@ This page assumes you are already familiar with:
 In the following example, you will go through the process of configuring the [MovR](movr.html) data set using [multi-region SQL statements](multiregion-overview.html). Then, as part of implementing a data domiciling strategy, you will apply restricted replica settings using the [`ALTER DATABASE ... PLACEMENT RESTRICTED`](placement-restricted.html) statement. Finally, you will verify that the resulting replica placements are as expected using [replication reports](query-replication-reports.html).
 
 For the purposes of this example, the data domiciling requirement is to configure a multi-region deployment of the [MovR database](movr.html) such that data for EU-based users, vehicles, etc. is being stored on CockroachDB nodes running in EU localities.
+
+{{site.data.alerts.callout_info}}
+{% include {{page.version.version}}/sql/super-regions-for-domiciling-with-region-survivability.md %}
+{{site.data.alerts.end}}
 
 ### Step 1. Start a simulated multi-region cluster
 
@@ -65,7 +67,7 @@ SHOW REGIONS;
 
 Execute the following statements to set the [database regions](multiregion-overview.html#database-regions). This information is necessary so that CockroachDB can later move data around to optimize access to particular data from particular regions.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER DATABASE movr PRIMARY REGION "europe-west1";
 ALTER DATABASE movr ADD REGION "us-east1";
@@ -78,7 +80,7 @@ ALTER DATABASE movr ADD REGION "us-west1";
 
 ### Step 3. View noncompliant replicas
 
-Next, run a [replication report](query-replication-reports.html) to see which ranges are still not in compliance with your desired domiciling: that data on EU-based entities (users, etc.) does not leave EU-based nodes. 
+Next, run a [replication report](query-replication-reports.html) to see which ranges are still not in compliance with your desired domiciling: that data on EU-based entities (users, etc.) does not leave EU-based nodes.
 
 On a small demo cluster like this one, the data movement from the previous step should have finished almost instantly; on larger clusters, the rebalancing process may take longer. For more information about the performance considerations of rebalancing data in multi-region clusters, see [Performance considerations](migrate-to-multiregion-sql.html#performance-considerations).
 
@@ -261,15 +263,12 @@ Using CockroachDB as part of your approach to data domiciling has several limita
 
 ## See also
 
-- [Choosing a multi-region configuration](choosing-a-multi-region-configuration.html)
-- [Install CockroachDB](install-cockroachdb.html)
-- [Migrate to Multi-region SQL](migrate-to-multiregion-sql.html)
-- [Multi-region Overview](multiregion-overview.html)
-- [Multi-region SQL Performance](demo-low-latency-multi-region-deployment.html)
-- [Multi-region overview](multiregion-overview.html)
+- [How to Choose a Multi-region Configuration](choosing-a-multi-region-configuration.html)
+- [Migrate to Multi-Region SQL](migrate-to-multiregion-sql.html)
+- [Multi-Region Overview](multiregion-overview.html)
+- [Low Latency Reads and Writes in a Multi-Region Cluster](demo-low-latency-multi-region-deployment.html)
+- [Multi-Region Capabilities Overview](multiregion-overview.html)
 - [Reads and Writes in CockroachDB](architecture/reads-and-writes-overview.html)
-- [When to use REGIONAL vs GLOBAL tables](when-to-use-regional-vs-global-tables.html)
-- [When to use ZONE vs REGION survival goals](when-to-use-zone-vs-region-survival-goals.html)
-- [When to use `REGIONAL` vs. `GLOBAL` tables](when-to-use-regional-vs-global-tables.html)
-- [When to use `ZONE` vs. `REGION` survival goals](when-to-use-zone-vs-region-survival-goals.html)
+- [When to Use `REGIONAL` vs. `GLOBAL` Tables](when-to-use-regional-vs-global-tables.html)
+- [When to Use `ZONE` vs. `REGION` Survival Goals](when-to-use-zone-vs-region-survival-goals.html)
 - [`ADD REGION`](add-region.html)

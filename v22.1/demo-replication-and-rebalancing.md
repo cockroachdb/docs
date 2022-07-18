@@ -5,7 +5,7 @@ toc: true
 docs_area: deploy
 ---
 
-This page walks you through a simple demonstration of how CockroachDB replicates, distributes, and rebalances data. Starting with a 3-node local cluster, you'll write some data and verify that it replicates in triplicate by default. You'll then add 2 more nodes and watch how CockroachDB automatically rebalances replicas to efficiently use all available capacity.
+This page guides you through a simple demonstration of how CockroachDB replicates, distributes, and rebalances data. Starting with a 3-node local cluster, you'll write some data and verify that it replicates in triplicate by default. You'll then add 2 more nodes and watch how CockroachDB automatically rebalances replicas to efficiently use all available capacity.
 
 ## Before you begin
 
@@ -15,14 +15,14 @@ Make sure you have already [installed CockroachDB](install-cockroachdb.html).
 
 1. Create two directories:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ mkdir certs my-safe-directory
     ~~~
 
 2. Create the CA (Certificate Authority) certificate and key pair:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach cert create-ca \
     --certs-dir=certs \
@@ -31,7 +31,7 @@ Make sure you have already [installed CockroachDB](install-cockroachdb.html).
 
 3. Create the certificate and key pair for your nodes:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach cert create-node \
     localhost \
@@ -44,7 +44,7 @@ Make sure you have already [installed CockroachDB](install-cockroachdb.html).
 
 4. Create a client certificate and key pair for the `root` user:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach cert create-client \
     root \
@@ -56,7 +56,7 @@ Make sure you have already [installed CockroachDB](install-cockroachdb.html).
 
 1. Use the [`cockroach start`](cockroach-start.html) command to start node 1:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --certs-dir=certs \
@@ -68,7 +68,7 @@ Make sure you have already [installed CockroachDB](install-cockroachdb.html).
 
 2. In a new terminal, start node 2:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --certs-dir=certs \
@@ -80,7 +80,7 @@ Make sure you have already [installed CockroachDB](install-cockroachdb.html).
 
 3. In a new terminal, start node 3:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --certs-dir=certs \
@@ -92,7 +92,7 @@ Make sure you have already [installed CockroachDB](install-cockroachdb.html).
 
 4. In a new terminal, use the [`cockroach init`](cockroach-init.html) command to perform a one-time initialization of the cluster, sending the request to any node on the `--join` list:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach init --certs-dir=certs --host=localhost:26257
     ~~~
@@ -111,7 +111,7 @@ You'll use a non-`root` user for running a client workload and accessing the DB 
 
 1. In the same terminal, as the `root` user, open the [built-in SQL shell](cockroach-sql.html) against any node:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
     --certs-dir=certs \
@@ -120,14 +120,14 @@ You'll use a non-`root` user for running a client workload and accessing the DB 
 
 2. Create the `maxroach` user with a password:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE USER maxroach WITH PASSWORD '<your password>';
     ~~~
 
 3. Assign the `maxroach` user to the `admin` role:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > GRANT admin TO maxroach;
     ~~~
@@ -136,7 +136,7 @@ You'll use a non-`root` user for running a client workload and accessing the DB 
 
 4. Exit the SQL shell:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > \q
     ~~~
@@ -145,7 +145,7 @@ You'll use a non-`root` user for running a client workload and accessing the DB 
 
 1. In the same terminal, run the [`cockroach workload`](cockroach-workload.html) command to generate an example `intro` database. In the connection string, replace `<password>` with the password you created earlier for `maxroach`:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach workload init intro \
     'postgres://maxroach:<password>@localhost:26257?sslmode=verify-full&sslrootcert=certs/ca.crt'
@@ -157,7 +157,7 @@ You'll use a non-`root` user for running a client workload and accessing the DB 
 
 2. Re-open the SQL shell, this time as the `maxroach` user:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
     --user=maxroach \
@@ -169,7 +169,7 @@ You'll use a non-`root` user for running a client workload and accessing the DB 
 
 3. Verify that the new `intro` database was added with one table, `mytable`:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SHOW DATABASES;
     ~~~
@@ -184,7 +184,7 @@ You'll use a non-`root` user for running a client workload and accessing the DB 
     (4 rows)
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SHOW TABLES FROM intro;
     ~~~
@@ -196,7 +196,7 @@ You'll use a non-`root` user for running a client workload and accessing the DB 
     (1 row)    
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT * FROM intro.mytable WHERE (l % 2) = 0;
     ~~~
@@ -230,7 +230,7 @@ You'll use a non-`root` user for running a client workload and accessing the DB 
 
 3. Exit the SQL shell:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > \q
     ~~~
@@ -256,7 +256,7 @@ You'll use a non-`root` user for running a client workload and accessing the DB 
 
 1. Back in the terminal, add a fourth node:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --certs-dir=certs \
@@ -268,7 +268,7 @@ You'll use a non-`root` user for running a client workload and accessing the DB 
 
 3. In a new terminal, add a fifth node:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --certs-dir=certs \
@@ -296,7 +296,7 @@ At first, the replica count will be lower for nodes 4 and 5. Very soon, however,
 
     If you do not plan to restart the cluster, you may want to remove the cluster's certificates and data stores:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ rm -rf certs my-safe-directory rep-node1 rep-node2 rep-node3 rep-node4 rep-node5
     ~~~

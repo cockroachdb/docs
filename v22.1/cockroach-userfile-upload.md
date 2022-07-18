@@ -85,7 +85,7 @@ Files are uploaded with a `.tmp` suffix and are renamed once the userfile upload
 
 To upload a file to the default storage (`userfile://defaultdb.public.userfiles_$user/`):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach userfile upload /Users/maxroach/Desktop/test-data.csv /test-data.csv --certs-dir=certs
 ~~~
@@ -96,7 +96,7 @@ successfully uploaded to userfile://defaultdb.public.userfiles_root/test-data.cs
 
 Also, a file can be uploaded to the default storage if the destination is not specified:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach userfile upload /Users/maxroach/Desktop/test-data2.csv --certs-dir=certs
 ~~~
@@ -111,7 +111,7 @@ Then, you can use the file to [`IMPORT`](import.html) or [`IMPORT INTO`](import-
 
 To upload a file to a specific destination, include the destination in the command:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach userfile upload /Users/maxroach/Desktop/test-data.csv /test-upload/test-data.csv --cert-dir=certs
 ~~~
@@ -156,7 +156,7 @@ See the [file destination](#file-destination) section for more detail on forming
 
 ### Upload a file to a non-default userfile URI
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 cockroach userfile upload /Users/maxroach/Desktop/test-data.csv userfile://testdb.public.uploads/test-data.csv
 ~~~

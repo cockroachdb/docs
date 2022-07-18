@@ -28,7 +28,7 @@ Additionally, include the <a href="https://crates.io/crates/openssl" data-proofe
 
 Create a certificate and key for the `maxroach` user by running the following command.  The code samples will run as this user.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach cert create-client maxroach --certs-dir=certs --ca-key=my-safe-directory/ca.key
 ~~~
@@ -70,7 +70,7 @@ CockroachDB may require the [client to retry a transaction](transactions.html#tr
 
 After running the code, use the [built-in SQL client](cockroach-sql.html) to verify that funds were transferred from one account to another:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --certs-dir=certs -e 'SELECT id, balance FROM accounts' --database=bank
 ~~~

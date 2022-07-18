@@ -18,7 +18,7 @@ docs_area: reference.sql
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/alter_database_drop_super_region.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/alter_database_drop_super_region.html %}
 </div>
 
 ## Parameters
@@ -65,7 +65,7 @@ The examples in this section use the following setup.
 
 To drop a super region from a multi-region database, use a [`DROP SUPER REGION`](drop-super-region.html) statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER DATABASE movr DROP SUPER REGION "usa";
 ~~~

@@ -9,16 +9,16 @@ If you're having trouble starting or scaling your cluster, this page will help y
 
 To use this guide, it's important to understand some of CockroachDB's terminology:
 
-  - A **Cluster** acts as a single logical database, but is actually made up of many cooperating nodes.
+  - A **cluster** acts as a single logical database, but is actually made up of many cooperating nodes.
   - **Nodes** are single instances of the `cockroach` binary running on a machine. It's possible (though atypical) to have multiple nodes running on a single machine.
 
 ## Cannot run a single-node CockroachDB cluster
 
 Try running:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
-$ cockroach start-single-node --insecure --logtostderr
+$ cockroach start-single-node --insecure
 ~~~
 
 If the process exits prematurely, check for the following:
@@ -30,18 +30,18 @@ When starting a node, the directory you choose to store the data in also contain
 **Solution:** Disassociate the node from the existing directory where you've stored CockroachDB data. For example, you can do either of the following:
 
 -   Choose a different directory to store the CockroachDB data:  
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start-single-node --store=<new directory> --insecure
     ~~~
 -   Remove the existing directory and start the node again:
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ rm -r cockroach-data/
     ~~~
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start-single-node --insecure --logtostderr
+    $ cockroach start-single-node --insecure
     ~~~
 
 ### Toolchain incompatibility
@@ -72,7 +72,7 @@ See [Why is my process hanging when I try to start it in the background?](operat
 
 If the CockroachDB node appeared to [start successfully](start-a-local-cluster.html), in a separate terminal run:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure -e "show databases"
 ~~~
@@ -90,13 +90,13 @@ You should see a list of the built-in databases:
 
 If you’re not seeing the output above, check for the following:
 
--   `connection refused` error, which indicates you have not included some flag that you used to start the node. We have additional troubleshooting steps for this error [here](common-errors.html#connection-refused).
--   The node crashed. To ascertain if the node crashed, run `ps | grep cockroach` to look for the `cockroach` process. If you cannot locate the `cockroach` process (i.e., it crashed), [file an issue](file-an-issue.html), including the logs from your node and any errors you received.
+- `connection refused` error, which indicates you have not included some flag that you used to start the node. We have additional troubleshooting steps for this error [here](common-errors.html#connection-refused).
+- The node crashed. To ascertain if the node crashed, run `ps | grep cockroach` to look for the `cockroach` process. If you cannot locate the `cockroach` process (i.e., it crashed), [file an issue](file-an-issue.html), including the [logs from your node](configure-logs.html#logging-directory) and any errors you received.
 
 ## Cannot run a multi-node CockroachDB cluster on the same machine
 
 {{site.data.alerts.callout_info}}
-Running multiple nodes on a single host is useful for testing out CockroachDB, but it's not recommended for production deployments. To run a physically distributed cluster in production, see [Manual Deployment](manual-deployment.html) or [Orchestrated Deployment](orchestration.html). Also be sure to review the [Production Checklist](recommended-production-settings.html).
+Running multiple nodes on a single host is useful for testing CockroachDB, but it's not recommended for production deployments. To run a physically distributed cluster in production, see [Manual Deployment](manual-deployment.html) or [Kubernetes Overview](kubernetes-overview.html). Also be sure to review the [Production Checklist](recommended-production-settings.html).
 {{site.data.alerts.end}}
 
 If you are trying to run all nodes on the same machine, you might get the following errors:
@@ -119,9 +119,11 @@ ERROR: cockroach server exited with error: consider changing the port via --list
 
 **Solution:** Change the `--port`, `--http-port` flags for each new node that you want to run on the same machine.
 
-## Cannot join a node to an existing CockroachDB cluster
+## Scaling issues
 
-### Store directory already exists
+### Cannot join a node to an existing CockroachDB cluster
+
+#### Store directory already exists
 
 When joining a node to a cluster, you might receive one of the following errors:
 
@@ -136,22 +138,22 @@ node belongs to cluster {"cluster hash"} but is attempting to connect to a gossi
 **Solution:** Disassociate the node from the existing directory where you've stored CockroachDB data. For example, you can do either of the following:
 
 -   Choose a different directory to store the CockroachDB data:  
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start --store=<new directory> --join=<cluster host> <other flags>
     ~~~
 -   Remove the existing directory and start a node joining the cluster again:
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ rm -r cockroach-data/
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start --join=<cluster host>:26257 <other flags>  
     ~~~
 
-### Incorrect `--join` address
+#### Incorrect `--join` address
 
 If you try to add another node to the cluster, but the `--join` address is not pointing at any of the existing nodes, then the process will never complete, and you'll see a continuous stream of warnings like this:
 
@@ -163,6 +165,32 @@ W180817 17:01:56.510430 914 vendor/google.golang.org/grpc/clientconn.go:1293 grp
 **Explanation:** These warnings tell you that the node cannot establish a connection with the address specified in the `--join` flag. Without a connection to the cluster, the node cannot join.
 
 **Solution:** To successfully join the node to the cluster, start the node again, but this time include a correct `--join` address.
+
+### Performance is degraded when adding nodes
+
+#### Excessive snapshot rebalance and recovery rates
+
+The `kv.snapshot_rebalance.max_rate` and `kv.snapshot_recovery.max_rate` [cluster settings](cluster-settings.html) set the rate limits at which [snapshots](architecture/replication-layer.html#snapshots) are sent to nodes. These settings can be temporarily increased to expedite replication during an outage or when scaling a cluster up or down.
+
+However, if the settings are too high when nodes are added to the cluster, this can cause degraded performance and node crashes. We recommend **not** increasing these values by more than 2 times their [default values](cluster-settings.html) without explicit approval from Cockroach Labs.
+
+**Explanation:** If `kv.snapshot_rebalance.max_rate` and `kv.snapshot_recovery.max_rate` are set too high for the cluster during scaling, this can cause nodes to experience ingestions faster than compactions can keep up, and result in an [inverted LSM](architecture/storage-layer.html#inverted-lsms).
+
+**Solution:** [Check LSM health](common-issues-to-monitor.html#lsm-health). {% include {{ page.version.version }}/prod-deployment/resolution-inverted-lsm.md %}
+
+After compaction has completed, lower `kv.snapshot_rebalance.max_rate` and `kv.snapshot_recovery.max_rate` to their [default values](cluster-settings.html). As you add nodes to the cluster, slowly increase both cluster settings, if desired. This will control the rate of new ingestions for newly added nodes. Meanwhile, monitor the cluster for unhealthy increases in [IOPS](common-issues-to-monitor.html#disk-iops) and [CPU](common-issues-to-monitor.html#cpu). 
+
+Outside of performing cluster maintenance, return `kv.snapshot_rebalance.max_rate` and `kv.snapshot_recovery.max_rate` to their [default values](cluster-settings.html).
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+RESET CLUSTER SETTING kv.snapshot_rebalance.max_rate;
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+RESET CLUSTER SETTING kv.snapshot_recovery.max_rate;
+~~~
 
 ## Client connection issues
 
@@ -532,6 +560,12 @@ The [DB Console][db_console] provides several ways to check for node liveness is
 {{site.data.alerts.callout_info}}
 For more information about how node liveness works, see [Replication Layer](architecture/replication-layer.html#epoch-based-leases-table-data).
 {{site.data.alerts.end}}
+
+## Partial availability issues
+
+If your cluster is in a partially-available state due to a recent node or network failure, the internal logging table `system.eventlog` might be unavailable. This can cause the logging of [notable events](eventlog.html) (e.g., the execution of SQL statements) to the `system.eventlog` table to fail to complete, contributing to cluster unavailability. If this occurs, you can set the [cluster setting](cluster-settings.html) `server.eventlog.enabled` to `false` to disable writing notable log events to this table, which may help to recover your cluster.
+
+Even with `server.eventlog.enabled` set to `false`, notable log events are still sent to configured [log sinks](configure-logs.html#configure-log-sinks) as usual.
 
 ## Check for under-replicated or unavailable data
 

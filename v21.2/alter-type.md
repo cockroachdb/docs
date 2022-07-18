@@ -16,7 +16,7 @@ You can only [cancel](cancel-job.html) `ALTER TYPE` [schema change jobs](online-
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/alter_type.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/alter_type.html %}
 </div>
 
 ## Parameters
@@ -47,12 +47,12 @@ on the type.
 
 ## Example
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TYPE status AS ENUM ('open', 'closed', 'inactive');
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW ENUMS;
 ~~~
@@ -68,12 +68,12 @@ on the type.
 
 To add a value to the `status` type, use an `ADD VALUE` clause:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TYPE status ADD VALUE 'pending';
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW ENUMS;
 ~~~
@@ -89,12 +89,12 @@ To add a value to the `status` type, use an `ADD VALUE` clause:
 
 To rename a value in the `status` type, use a `RENAME VALUE` clause:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TYPE status RENAME VALUE 'open' TO 'active';
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW ENUMS;
 ~~~
@@ -110,12 +110,12 @@ To rename a value in the `status` type, use a `RENAME VALUE` clause:
 
 To rename the `status` type, use a `RENAME TO` clause:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TYPE status RENAME TO account_status;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW ENUMS;
 ~~~
@@ -135,19 +135,19 @@ Note that expressions in [views](views.html), [default values](default-value.htm
 
 To enable `ALTER TYPE ... DROP VALUE`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET enable_drop_enum_value = on;
 ~~~
 
 Then, to drop a value from the type:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TYPE account_status DROP VALUE 'inactive';
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW ENUMS;
 ~~~

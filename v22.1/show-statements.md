@@ -33,7 +33,7 @@ All users can see their own currently active queries. All users belonging to the
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/show_statements.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/show_statements.html %}
 </div>
 
 - To list the active queries across all nodes of the cluster, use `SHOW STATEMENTS` or `SHOW CLUSTER STATEMENTS`.
@@ -60,7 +60,7 @@ Field | Description
 
 ### List queries across the cluster
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CLUSTER STATEMENTS;
 ~~~
@@ -78,7 +78,7 @@ Alternatively, you can use `SHOW STATEMENTS` to receive the same response.
 
 ### List queries on the local node
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW LOCAL STATEMENTS;
 ~~~
@@ -97,9 +97,9 @@ You can use a [`SELECT`](select-clause.html) statement to filter the list of act
 
 #### Show all queries on node 2
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM [SHOW CLUSTER STATEMENTS]
+> WITH x as (SHOW CLUSTER STATEMENTS) SELECT * FROM x
       WHERE node_id = 2;
 ~~~
 
@@ -112,9 +112,9 @@ You can use a [`SELECT`](select-clause.html) statement to filter the list of act
 
 #### Show all queries from a specific address and user
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM [SHOW CLUSTER STATEMENTS]
+> WITH x as (SHOW CLUSTER STATEMENTS) SELECT * FROM x
       WHERE client_address = '127.0.0.1:65196' AND user_name = 'maxroach';
 ~~~
 
@@ -129,9 +129,9 @@ You can use a [`SELECT`](select-clause.html) statement to filter the list of act
 
 To exclude queries from the [built-in SQL client](cockroach-sql.html), filter for queries that do not show `$ cockroach sql` as the `application_name`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM [SHOW CLUSTER STATEMENTS]
+> WITH x as (SHOW CLUSTER STATEMENTS) SELECT * FROM x
       WHERE application_name != '$ cockroach sql';
 ~~~
 
@@ -150,9 +150,9 @@ When you see a query that is taking too long to complete, you can use the [`CANC
 
 For example, let's say you use `SHOW CLUSTER STATEMENTS` to find queries that have been running for more than 3 hours:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM [SHOW CLUSTER STATEMENTS]
+> WITH x as (SHOW CLUSTER STATEMENTS) SELECT * FROM x
       WHERE start < (now() - INTERVAL '3 hours');
 ~~~
 
@@ -165,7 +165,7 @@ For example, let's say you use `SHOW CLUSTER STATEMENTS` to find queries that ha
 
 To cancel this long-running query, and stop it from consuming resources, you note the `query_id` and use it with the `CANCEL QUERY` statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CANCEL QUERY '15f92c745fe203600000000000000001';
 ~~~

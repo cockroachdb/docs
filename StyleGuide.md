@@ -181,7 +181,9 @@ Avoid using socially-charged terms for features and technical concepts.
 - Don't use end punctuation (e.g., periods or colons) in headings.
 - Use periods at the end of list items if they are sentences or complete a sentence.
 - Use the [Oxford (a.k.a. serial) comma](https://en.wikipedia.org/wiki/Serial_comma).
+- Ensure commas and periods are inside quotation marks, e.g., _CockroachDB's availability model is described as "Multi-Active Availability."_ Place other punctuation outside quotation marks, e.g., _What is "Multi-Active Availability"?_ . When any type of punctuation is part of a quote, place it inside the quotation marks, e.g., _To phrase it in the form of a question: "Who are the top 10 users by number of rides on a given date?"_.
 - Avoid using slashes `/` and ampersands `&` as conjunctions in place of **or** and **and** respectively, unless space is very limited (e.g., in a table).
+- Avoid using _and/or_ unless space is very limited (e.g., in a table). Instead, decide whether **and** or **or** can stand alone or make use of **both** when the inclusivity must be explicit, e.g., **x or y or both**.
 
 For more detail about how to format text, see [Components](#components).
 
@@ -203,6 +205,13 @@ CockroachDB docs are mainly comprised of pages (`.md`) and images (`.png` or `.g
 Each version's pages are found in a directory named for the version. For example, pages for CockroachDB v21.1 are in the `docs > v21.1` directory. For more information about page structure, see the [Pages](https://github.com/cockroachdb/docs/blob/master/CONTRIBUTING.md#pages) section in our [Contributing Guide](https://github.com/cockroachdb/docs/blob/master/CONTRIBUTING.md). For more information about how to style page content, see [Components](#components).
 
 Each version's images are stored in a versioned directory under the `images` directory. For example, images for CockroachDB v21.1 are in the `docs > images > v21.1` directory. For more information, see [Images](#images).
+
+### File naming
+
+File names should match the page title. If you need to change a file name, it is necessary to do the following:
+
+- Add the previous page URL with the new URL to `_redirects`.
+- Replace all links to the previous file name with the new file name in the applicable docs versions.
 
 ## Content types
 
@@ -680,7 +689,7 @@ Use inline code when referring to code, commands, or other technical syntax with
 
 #### Code block
 
-Use a code block to provide executable code samples. A code block has an opening and closing set of 3 tildes (`~~~`). A code block supports syntax highlighting if you add the language name immediately after the first line of backticks. There should be one returned line before and after a code block, for better Markdown readability. For example:
+Use a code block to provide executable code samples. A code block has an opening and closing set of 3 tildes (`~~~`) or 3 backticks (<code>```</code>). A code block supports syntax highlighting if you add the language name immediately after the first line of tildes or backticks. There should be one returned line before and after a code block, for better Markdown readability. For example:
 
 ```
 This is a sample line of text.

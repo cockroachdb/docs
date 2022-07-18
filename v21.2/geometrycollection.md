@@ -13,7 +13,7 @@ A `GEOMETRYCOLLECTION` is a collection of heterogeneous [spatial objects](spatia
 
 A GeometryCollection can be created from SQL by calling the `st_geomfromtext` function on a GeometryCollection definition expressed in the [Well Known Text (WKT)](spatial-glossary.html#wkt) format as shown below.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT ST_GeomFromText('GEOMETRYCOLLECTION(POINT(0 0), LINESTRING(0 0, 1440 900), POLYGON((0 0, 0 1024, 1024 1024, 1024 0, 0 0)))');
 ~~~

@@ -12,7 +12,7 @@ docs_area: deploy
 
 On top of CockroachDB's built-in automation, you can use a third-party [orchestration](orchestration.html) system to simplify and automate even more of your operations, from deployment to scaling to overall cluster management.
 
-This page walks you through a simple demonstration, using the open-source [Kubernetes](http://kubernetes.io/) orchestration system. Using either the CockroachDB [Helm](https://helm.sh/) chart or a few configuration files, you'll quickly create a 3-node local cluster. You'll run some SQL commands against the cluster and then simulate node failure, watching how Kubernetes auto-restarts without the need for any manual intervention. You'll then scale the cluster with a single command before shutting the cluster down, again with a single command.
+This page demonstrates a basic integration with the open-source [Kubernetes](http://kubernetes.io/) orchestration system. Using either the CockroachDB [Helm](https://helm.sh/) chart or a few configuration files, you'll quickly create a 3-node local cluster. You'll run some SQL commands against the cluster and then simulate node failure, watching how Kubernetes auto-restarts without the need for any manual intervention. You'll then scale the cluster with a single command before shutting the cluster down, again with a single command.
 
 {{site.data.alerts.callout_info}}
 To orchestrate a physically distributed cluster in production, see [Orchestrated Deployments](orchestration.html). To deploy a 30-day free {{ site.data.products.dedicated }} cluster instead of running CockroachDB yourself, see the [Quickstart](../cockroachcloud/quickstart.html).
@@ -54,7 +54,7 @@ To start your CockroachDB cluster, you can either use our StatefulSet configurat
 1. Use the `kubectl scale` command to add a pod for another CockroachDB node:
 
     <section class="filter-content" markdown="1" data-scope="manual">
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl scale statefulset cockroachdb --replicas=4
     ~~~
@@ -65,7 +65,7 @@ To start your CockroachDB cluster, you can either use our StatefulSet configurat
     </section>
 
     <section class="filter-content" markdown="1" data-scope="helm">
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl scale statefulset my-release-cockroachdb --replicas=4
     ~~~
@@ -77,7 +77,7 @@ To start your CockroachDB cluster, you can either use our StatefulSet configurat
 
 2. Verify that the pod for a fourth node, `cockroachdb-3`, was added successfully:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl get pods
     ~~~
@@ -112,7 +112,7 @@ To start your CockroachDB cluster, you can either use our StatefulSet configurat
 
 - **If you plan to restart the cluster**, use the `minikube stop` command. This shuts down the minikube virtual machine but preserves all the resources you created:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ minikube stop
     ~~~
@@ -126,7 +126,7 @@ To start your CockroachDB cluster, you can either use our StatefulSet configurat
 
 - **If you do not plan to restart the cluster**, use the `minikube delete` command. This shuts down and deletes the minikube virtual machine and all the resources you created, including persistent volumes:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ minikube delete
     ~~~

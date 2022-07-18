@@ -62,17 +62,22 @@ no-remote-cache: bootstrap
 .PHONY: profile
 profile: bootstrap
 	bundle exec jekyll $(jekyll-action) --incremental --profile --trace --config _config_base.yml,_config_cockroachdb.yml$(extra-config) $(JEKYLLFLAGS)
+	
 
 .PHONY: test
 test:
-	go get -u github.com/cockroachdb/htmltest
 	# Docker must be running locally for this to work.
 	./netlify/local
 	htmltest
 
+.PHONY: linkcheck
+linkcheck: cockroachdb-build
+	htmltest -s
+
 vendor:
 	gem install bundler
 	bundle install
+	go install github.com/wjdp/htmltest@master
 
 bootstrap: Gemfile | vendor
 	touch $@
@@ -80,7 +85,7 @@ bootstrap: Gemfile | vendor
 clean:
 	rm -rf vendor
 	rm -rf _site
-	rm -rf .jekyll-cache/Jekyll/Cache/RemoteInclude
+	rm -rf .jekyll-cache
 
 clean-site:
 	rm -rf _site

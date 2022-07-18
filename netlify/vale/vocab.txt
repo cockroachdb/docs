@@ -1,3 +1,4 @@
+abovementioned
 absentia
 accipitridae
 addons
@@ -16,6 +17,8 @@ australiasoutheast
 autocommit
 autogenerates
 autoscaling
+autosummarize
+autovacuum
 avro
 backfilled
 backfilling
@@ -28,6 +31,7 @@ badr
 bardea
 batog
 bcrypt
+benchmarked
 bergin
 biles
 bitwise
@@ -104,7 +108,9 @@ deallocated
 decorrelate
 decorrelated
 decorrelation
+decrypter
 denormalization
+deprovision
 dereference
 deserialize
 deserialized
@@ -123,6 +129,7 @@ elqdusy
 elsif
 emptive
 enablement
+encrypter
 endcapture
 endcomment
 endfor
@@ -137,9 +144,11 @@ esri
 evgeniy
 expirations
 failover
+fastupdate
 favicons
 fdw
 filepath
+fillfactor
 firewalled
 firewalling
 firouz
@@ -177,6 +186,7 @@ gzip
 haines
 hao
 hardcoded
+hashicorp
 heartbeated
 heartbeating
 heredocs
@@ -197,6 +207,8 @@ hueypark
 hyperthread
 hyperthreads
 img
+include_cached
+inclusivity
 inconsolata
 incrementals
 indexable
@@ -251,6 +263,8 @@ kubectl
 kubemci
 kuwahara
 kv
+Leakproof
+leakproof
 leiningen
 libedit
 libpq
@@ -261,6 +275,7 @@ lightstep
 linearizability
 liquibase
 liveness
+livestream
 lockless
 loiselle
 lookups
@@ -296,6 +311,7 @@ multiregion
 multiset
 multisets
 multiversion
+multixact
 mutex
 mutexes
 mydcos
@@ -323,6 +339,7 @@ nuget
 nullability
 nullable
 numerics
+offboard
 offlined
 oid
 oli
@@ -330,6 +347,7 @@ ons
 onwards
 openid
 openssl
+operator_version
 orchstrations
 ordinality
 overallocating
@@ -365,6 +383,7 @@ pocockn
 pointcut
 postgres
 postgresql
+Postgrex
 Postico
 pq
 pre
@@ -410,6 +429,7 @@ rehomed
 rehoming
 reformats
 relicense
+remote_include
 replacewith
 repo
 repudiability

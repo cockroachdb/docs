@@ -7,5 +7,6 @@
 - XML Functions
 - Column-level privileges
 - XA syntax
+- Creating a database from a template
 
 <a name="drop-primary-key"></a> * Each table must have a primary key associated with it. You can, however, [drop and add a primary key constraint within a single transaction](drop-constraint.html#drop-and-add-a-primary-key-constraint).

@@ -26,15 +26,15 @@ Parameter | Description
 `name` | The name of the database to create, which [must be unique](#create-fails-name-already-in-use) and follow these [identifier rules](keywords-and-identifiers.html#identifiers).
 `encoding` | The `CREATE DATABASE` statement accepts an optional `ENCODING` clause for compatibility with PostgreSQL, but `UTF-8` is the only supported encoding. The aliases `UTF8` and `UNICODE` are also accepted. Values should be enclosed in single quotes and are case-insensitive.<br><br>Example: `CREATE DATABASE bank ENCODING = 'UTF-8'`.
 `CONNECTION LIMIT` |  Supported for compatibility with PostgreSQL. A value of `-1` indicates no connection limit. Values other than `-1` are currently not supported. By default, `CONNECTION LIMIT = -1`.
-`PRIMARY REGION region_name` | <span class="version-tag">New in v21.1:</span> Create a [multi-region database](multiregion-overview.html) with `region_name` as [the primary region](multiregion-overview.html#database-regions).<br>Allowed values include any region returned by [`SHOW REGIONS FROM CLUSTER`](show-regions.html).
-`REGIONS region_name_list` | <span class="version-tag">New in v21.1:</span> Create a [multi-region database](multiregion-overview.html) with `region_name_list` as [database regions](multiregion-overview.html#database-regions).<br>Allowed values include any region returned by [`SHOW REGIONS FROM CLUSTER`](show-regions.html).<br>To set database regions at database creation, a primary region must be specified in the same `CREATE DATABASE` statement.
-`SURVIVE ZONE FAILURE` (*Default*)<br>`SURVIVE REGION FAILURE` | <span class="version-tag">New in v21.1:</span> Create a [multi-region database](multiregion-overview.html) with regional failure or zone failure [survival goals](multiregion-overview.html#survival-goals).<br>To set the regional failure survival goal, the database must have at least 3 [database regions](multiregion-overview.html#database-regions).<br>Surviving zone failures is the default setting for multi-region databases.
+`PRIMARY REGION region_name` | **New in v21.1:** Create a [multi-region database](multiregion-overview.html) with `region_name` as [the primary region](multiregion-overview.html#database-regions).<br>Allowed values include any region returned by [`SHOW REGIONS FROM CLUSTER`](show-regions.html).
+`REGIONS region_name_list` | **New in v21.1:** Create a [multi-region database](multiregion-overview.html) with `region_name_list` as [database regions](multiregion-overview.html#database-regions).<br>Allowed values include any region returned by [`SHOW REGIONS FROM CLUSTER`](show-regions.html).<br>To set database regions at database creation, a primary region must be specified in the same `CREATE DATABASE` statement.
+`SURVIVE ZONE FAILURE` (*Default*)<br>`SURVIVE REGION FAILURE` | **New in v21.1:** Create a [multi-region database](multiregion-overview.html) with regional failure or zone failure [survival goals](multiregion-overview.html#survival-goals).<br>To set the regional failure survival goal, the database must have at least 3 [database regions](multiregion-overview.html#database-regions).<br>Surviving zone failures is the default setting for multi-region databases.
 
 ## Example
 
 ### Create a database
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE DATABASE bank;
 ~~~
@@ -43,7 +43,7 @@ Parameter | Description
 CREATE DATABASE
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW DATABASES;
 ~~~
@@ -60,7 +60,7 @@ CREATE DATABASE
 
 ### Create fails (name already in use)
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE DATABASE bank;
 ~~~
@@ -70,7 +70,7 @@ ERROR: database "bank" already exists
 SQLSTATE: 42P04
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE DATABASE IF NOT EXISTS bank;
 ~~~
@@ -81,7 +81,7 @@ CREATE DATABASE
 
 SQL does not generate an error, but instead responds `CREATE DATABASE` even though a new database wasn't created.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW DATABASES;
 ~~~
@@ -104,12 +104,12 @@ Suppose you start a cluster with region and zone [localities specified at startu
 
 For this example, let's use a [demo cluster](cockroach-demo.html), with the [`--demo-locality` flag](cockroach-demo.html#general) to simulate a multi-region cluster:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 cockroach211 demo --nodes=6 --demo-locality=region=us-east1,zone=us-east1-a:region=us-east1,zone=us-east1-b:region=us-central1,zone=us-central1-a:region=us-central1,zone=us-central1-b:region=us-west1,zone=us-west1-a:region=us-west1,zone=us-west1-b --no-example-database
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW REGIONS;
 ~~~
@@ -127,12 +127,12 @@ If regions are set at cluster start-up, you can create multi-region databases in
 
 Use the following command to specify regions and survival goals at database creation:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE DATABASE bank PRIMARY REGION "us-east1" REGIONS "us-east1", "us-central1", "us-west1" SURVIVE REGION FAILURE;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW DATABASES;
 ~~~
@@ -147,7 +147,7 @@ Use the following command to specify regions and survival goals at database crea
 (4 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW REGIONS FROM DATABASE bank;
 ~~~

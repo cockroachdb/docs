@@ -12,5 +12,5 @@ CockroachDB's support of the PostgreSQL wire protocol makes most PostgreSQL driv
 ## See also
 
 - [Example Apps](example-apps.html)
-- [Install a PostgreSQL Client](install-client-drivers.html)
+- [Install a Driver or ORM Framework](install-client-drivers.html)
 - [Third-Party Tools Supported by the Community](community-tooling.html)

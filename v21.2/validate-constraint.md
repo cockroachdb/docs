@@ -18,7 +18,7 @@ The user must have the `CREATE` [privilege](security-reference/authorization.htm
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/validate_constraint.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/validate_constraint.html %}
 </div>
 
 ## Parameters
@@ -36,14 +36,14 @@ The user must have the `CREATE` [privilege](security-reference/authorization.htm
 
 In [`ADD CONSTRAINT`](add-constraint.html), we [added a foreign key constraint](add-constraint.html#add-the-foreign-key-constraint-with-cascade) like so:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE orders ADD CONSTRAINT customer_fk FOREIGN KEY (customer_id) REFERENCES customers (id) ON DELETE CASCADE;
 ~~~
 
 In order to ensure that the data added to the `orders` table prior to the creation of the `customer_fk` constraint conforms to that constraint, run the following:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE orders VALIDATE CONSTRAINT customer_fk;
 ~~~

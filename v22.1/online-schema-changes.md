@@ -42,6 +42,18 @@ Once backfilling is complete, all nodes will switch over to the new schema, and 
 
 For more technical details, see [How online schema changes are possible in CockroachDB][blog].
 
+{% include_cached new-in.html version="v22.1" %} Online schema changes that trigger an index backfill (adding data to an index) will now pause if the node executing the schema change is running out of disk space. The following statements will now pause if the node executing the schema change is running out of disk space:
+
+- [`ADD COLUMN`](add-column.html) when the statement also features `INDEX` or `UNIQUE`.
+- [`ALTER PRIMARY KEY`](alter-primary-key.html)
+- [`CREATE INDEX`](create-index.html)
+- [`CREATE MATERIALIZED VIEW`](views.html#materialized-views)
+- [`CREATE TABLE AS`](create-table-as.html)
+- [`REFRESH`](refresh.html)
+- [`SET LOCALITY`](set-locality.html) under one of the following conditions:
+  - The locality changes from [`REGIONAL BY ROW`](set-locality.html#regional-by-row) to something that is not `REGIONAL BY ROW`.
+  - The locality changes from something that is not `REGIONAL BY ROW` to `REGIONAL BY ROW`.
+
 {{site.data.alerts.callout_info}}
 If a schema change fails, the schema change job will be cleaned up automatically. However, there are limitations with rolling back schema changes within a transaction; for more information, [see below](#schema-change-ddl-statements-inside-a-multi-statement-transaction-can-fail-while-other-statements-succeed).
 {{site.data.alerts.end}}
@@ -67,6 +79,12 @@ The declarative schema changer can be enabled and disabled via the `sql.defaults
 Declarative schema changer statements and legacy schema changer statements operating on the same objects cannot exist within the same transaction. Either split the transaction into multiple transactions, or disable the cluster setting or session variable.
 {{site.data.alerts.end}}
 
+## Best practices for online schema changes
+
+### Schema changes in multi-region clusters
+
+{% include {{ page.version.version }}/performance/lease-preference-system-database.md %}
+
 ## Examples
 
 {{site.data.alerts.callout_success}}
@@ -79,7 +97,7 @@ As noted in [Limitations](#limitations), you cannot run schema changes inside tr
 
 However, as of version v2.1, you can run schema changes inside the same transaction as a [`CREATE TABLE`][create-table] statement. For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BEGIN;
   SAVEPOINT cockroach_restart;
@@ -123,9 +141,9 @@ As of v19.1, some schema changes can be used in combination in a single `ALTER T
 
 You can check on the status of the schema change jobs on your system at any time using the [`SHOW JOBS`][show-jobs] statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM [SHOW JOBS] WHERE job_type = 'SCHEMA CHANGE';
+> WITH x AS (SHOW JOBS) SELECT * FROM x WHERE job_type = 'SCHEMA CHANGE';
 ~~~
 
 ~~~
@@ -173,7 +191,7 @@ The following statements fail due to [limited support for schema changes within 
 
 #### Create an index and then run a select against that index inside a transaction
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE foo (id INT PRIMARY KEY, name VARCHAR);
   BEGIN;
@@ -196,7 +214,7 @@ ROLLBACK
 
 #### Add a column and then add a constraint against that column inside a transaction
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE foo ();
   BEGIN;
@@ -219,7 +237,7 @@ ROLLBACK
 
 #### Add a column and then select against that column inside a transaction
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE foo ();
   BEGIN;

@@ -47,12 +47,12 @@ To reduce the interval for storage of time-series data:
 
   For example, to change the storage interval for time-series data at 10s resolution to 5 days, run the following [`SET CLUSTER SETTING`](set-cluster-setting.html) command:
 
-  {% include copy-clipboard.html %}
+  {% include_cached copy-clipboard.html %}
   ~~~ sql
   > SET CLUSTER SETTING timeseries.storage.resolution_10s.ttl = '120h0m0s';
   ~~~
 
-  {% include copy-clipboard.html %}
+  {% include_cached copy-clipboard.html %}
   ~~~ sql
   > SHOW CLUSTER SETTING timeseries.storage.resolution_10s.ttl;
   ~~~
@@ -76,12 +76,12 @@ Disabling time-series storage is recommended only if you exclusively use a third
 
 To disable the storage of time-series data entirely, run the following command:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET CLUSTER SETTING timeseries.storage.enabled = false;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CLUSTER SETTING timeseries.storage.enabled;
 ~~~
@@ -95,12 +95,12 @@ To disable the storage of time-series data entirely, run the following command:
 
 If you want all existing time-series data to be deleted, also change both the `timeseries.storage.resolution_10s.ttl` and `timeseries.storage.resolution_30m.ttl` cluster settings:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET CLUSTER SETTING timeseries.storage.resolution_10s.ttl = '0s';
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET CLUSTER SETTING timeseries.storage.resolution_30m.ttl = '0s';
 ~~~

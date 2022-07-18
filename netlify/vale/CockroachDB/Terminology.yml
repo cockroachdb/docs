@@ -37,3 +37,4 @@ swap:
   Unique constraint: "`UNIQUE` constraint"
   Postgres: PostgreSQL
   Geo-Partition: geo-partition
+  multiregion: multi-region

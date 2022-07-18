@@ -45,7 +45,7 @@ These endpoints are also available through the [Cluster API](cluster-api.html) u
 
 If a node is down, the `http://<host>:<http-port>/health` endpoint returns a `Connection refused` error:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ curl http://localhost:8080/health
 ~~~
@@ -76,15 +76,18 @@ The `http://<node-host>:<http-port>/health?ready=1` endpoint returns an HTTP `50
 
 - The node is unable to communicate with a majority of the other nodes in the cluster, likely because the cluster is unavailable due to too many nodes being down.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ curl http://localhost:8080/health?ready=1
 ~~~
 
 ~~~
 {
-  "error": "node is not ready",
-  "code": 14
+  "error": "node is not healthy",
+  "code": 14,
+  "message": "node is not healthy",
+  "details": [
+  ]
 }
 ~~~
 
@@ -119,7 +122,7 @@ The [`cockroach node status`](cockroach-node.html) command gives you metrics abo
 
 Every node of a CockroachDB cluster exports granular time series metrics at `http://<host>:<http-port>/_status/vars`. The metrics are formatted for easy integration with [Prometheus](monitor-cockroachdb-with-prometheus.html), an open source tool for storing, aggregating, and querying time series data, but the format is **easy-to-parse** and can be processed to work with other third-party monitoring systems (e.g., [Sysdig](https://sysdig.atlassian.net/wiki/plugins/servlet/mobile?contentId=64946336#content/view/64946336) and [Stackdriver](https://github.com/GoogleCloudPlatform/k8s-stackdriver/tree/master/prometheus-to-sd)).
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ curl http://localhost:8080/_status/vars
 ~~~

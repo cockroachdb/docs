@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `EXPLAIN ANALYZE` [statement](sql-statements.html) **executes a SQL query** and generates a statement plan with execution statistics. The `(DEBUG)` option generates a URL to download a bundle with more details about the statement plan for advanced debugging. Statement plans provide information around SQL execution, which can be used to troubleshoot slow queries by figuring out where time is being spent, how long a processor (i.e., a component that takes streams of input rows and processes them according to a specification) is not doing work, etc. For more information about distributed SQL queries, see the [DistSQL section of our SQL layer architecture docs](architecture/sql-layer.html#distsql).
+The `EXPLAIN ANALYZE` [statement](sql-statements.html) **executes a SQL query** and generates a statement plan with execution statistics. Statement plans provide information around SQL execution, which can be used to troubleshoot slow queries by figuring out where time is being spent, how long a processor (i.e., a component that takes streams of input rows and processes them according to a specification) is not doing work, etc. The `(DISTSQL)` option returns the statement plan and performance statistics as well as a generated link to a graphical distributed SQL physical statement plan tree. For more information about distributed SQL queries, see the [DistSQL section of our SQL layer architecture docs](architecture/sql-layer.html#distsql). The `(DEBUG)` option generates a URL to download a bundle with more details about the statement plan for advanced debugging.
 
 {{site.data.alerts.callout_info}}
 {% include {{ page.version.version }}/sql/physical-plan-url.md %}
@@ -13,21 +13,19 @@ The `EXPLAIN ANALYZE` [statement](sql-statements.html) **executes a SQL query** 
 
 ## Aliases
 
-In CockroachDB, the following are aliases for `EXPLAIN ANALYZE`:
-
-- `EXPLAIN ANALYSE`
+`EXPLAIN ANALYSE` is an alias for `EXPLAIN ANALYZE`.
 
 ## Synopsis
 
-<div>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/explain_analyze.html %}</div>
+<div>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/explain_analyze.html %}</div>
 
 ## Parameters
 
 Parameter          | Description
 -------------------|-----------
-`PLAN`             |  _(Default)_ Executes the statement and returns CockroachDB's statement plan with planning and execution time for an [explainable statement](sql-grammar.html#preparable_stmt). See [Plan option](#plan-option).
-`DISTSQL`          | Return the statement plan and performance statistics as well as a generated link to a graphical distributed SQL physical statement plan tree. See [`DISTSQL` option](#distsql-option).
-`DEBUG`            |  Generate a ZIP file containing files with detailed information about the query and the database objects referenced in the query. See [`DEBUG` option](#debug-option).
+`PLAN`             |  _(Default)_ Execute the statement and return a statement plan with planning and execution time for an [explainable statement](sql-grammar.html#preparable_stmt). See [`PLAN` option](#plan-option).
+`DISTSQL`          | Execute the statement and return a statement plan and performance statistics as well as a generated link to a graphical distributed SQL physical statement plan tree. See [`DISTSQL` option](#distsql-option).
+`DEBUG`            | Execute the statement and generate a ZIP file containing files with detailed information about the query and the database objects referenced in the query. See [`DEBUG` option](#debug-option).
 `preparable_stmt`  | The [statement](sql-grammar.html#preparable_stmt) you want to execute and analyze. All preparable statements are explainable.
 
 ## Required privileges
@@ -36,18 +34,18 @@ The user requires the appropriate [privileges](security-reference/authorization.
 
 ## Success responses
 
-Successful `EXPLAIN ANALYZE` statements return tables with the following details in the `info` column:
+A successful `EXPLAIN ANALYZE` statement returns a table with the following details in the `info` column:
 
  Detail | Description
 --------|------------
 [Global properties](#global-properties) | The properties and statistics that apply to the entire statement plan.
-[Statement plan tree](#statement-plan-tree-properties) | A tree representation of the hierarchy of the statement plan.
+[Statement plan tree properties](#statement-plan-tree-properties) | A tree representation of the hierarchy of the statement plan.
 Node details | The properties, columns, and ordering details for the current statement plan node in the tree.
 Time | The time details for the statement. The total time is the planning and execution time of the statement. The execution time is the time it took for the final statement plan to complete. The network time is the amount of time it took to distribute the statement across the relevant nodes in the cluster. Some statements do not need to be distributed, so the network time is 0ms.
 
 If you use the [`DISTSQL` option](#distsql-option), the statement will also return a URL generated for a physical statement plan that provides high level information about how a statement will be executed. {% include {{ page.version.version }}/sql/physical-plan-url.md %} For details about reading the physical statement plan, see [DistSQL plan diagram](#distsql-plan-diagram).
 
-If you use the [`DEBUG` option](#debug-option), the statement will return a single `text` column with a URL and instructions to download the `DEBUG` bundle, which includes the physical statement plan.
+If you use the [`DEBUG` option](#debug-option), the statement will return only a URL and instructions to download the `DEBUG` bundle, which includes the physical statement plan.
 
 ### Global properties
 
@@ -61,7 +59,8 @@ rows read from KV | The number of rows read from the [storage layer](architectur
 cumulative time spent in KV | The total amount of time spent in the storage layer.
 maximum memory usage | The maximum amount of memory used by this statement anytime during its execution.
 network usage | The amount of data transferred over the network while the statement was executed. If the value is 0 B, the statement was executed on a single node and didn't use the network.
-max sql temp disk usage |  <br /> (`DISTSQL` only) How much disk spilling occurs when executing a query. This property is displayed only when the disk usage is greater than zero.
+regions | The [regions](show-regions.html) where the affected nodes were located.
+max sql temp disk usage | ([`DISTSQL`](#distsql-option) option only) How much disk spilling occurs when executing a query. This property is displayed only when the disk usage is greater than zero.
 
 ### Statement plan tree properties
 
@@ -75,9 +74,11 @@ KV time | The total time this phase of the statement was in the [storage layer](
 KV contention time | The time the [storage layer](architecture/storage-layer.html) was in contention during this phase of the statement.
 KV rows read | During scans, the number of rows in the [storage layer](architecture/storage-layer.html) read by this phase of the statement.
 KV bytes read | During scans, the amount of data read from the [storage layer](architecture/storage-layer.html) during this phase of the statement.
+estimated max memory allocated  | The estimated maximum allocated memory for a statement.
+estimated max sql temp disk usage | The estimated maximum temporary disk usage for a statement.
 estimated row count | The estimated number of rows affected by this processor according to the statement planner, the percentage of the table the query spans, and when the statistics for the table were last collected.
 table | The table and index used in a scan operation in a statement, in the form `{table name}@{index name}`.
-spans | The interval of the key space read by the processor. If `spans` is `FULL SCAN` the table is scanned on all key ranges of the index. If `spans` is `[/1 - /1]` only the key with value `1` is read by the processor.
+spans | The interval of the key space read by the processor. If `spans` is `FULL SCAN`, the table is scanned on all key ranges of the index. If `spans` is `[/1 - /1]`, only the key with value `1` is read by the processor.
 
 ## `PLAN` option
 
@@ -129,14 +130,13 @@ unordered / ordered | _(Blue box)_ A synchronizer that takes one or more output 
 &lt;data type&gt; |  If you specify [`EXPLAIN (DISTSQL, TYPES)`](explain.html#distsql-option), lists the data types of the input columns. | Both
 Response | The response back to the client. | Both
 
-
 ## `DEBUG` option
 
 `EXPLAIN ANALYZE (DEBUG)` executes a query and generates a link to a ZIP file that contains the [physical statement plan](#distsql-plan-diagram), execution statistics, statement tracing, and other information about the query.
 
 File                | Description
 --------------------+-------------------
-`stats-<table>.sql` | Contains [statistics](create-statistics.html) for a table in the query.
+`stats-{table}.sql` | Contains [statistics](create-statistics.html) for a table in the query.
 `schema.sql`        | Contains [`CREATE`](create-table.html) statements for objects in the query.
 `env.sql`           | Contains information about the CockroachDB environment.
 `trace.txt`         | Contains [statement traces](show-trace.html) in plaintext format.
@@ -157,6 +157,8 @@ You can obtain this ZIP file by following the link provided in the `EXPLAIN ANAL
 
 ## Examples
 
+The following examples use the [`movr` example dataset](cockroach-demo.html#datasets).
+
 {% include {{ page.version.version }}/demo_movr.md %}
 
 ### `EXPLAIN ANALYZE`
@@ -171,19 +173,19 @@ For example, the following `EXPLAIN ANALYZE` statement executes a simple query a
 ~~~
 
 ~~~
-                  info
-----------------------------------------
-  planning time: 706µs
-  execution time: 693ms
+                      info
+------------------------------------------------
+  planning time: 532µs
+  execution time: 66ms
   distribution: full
   vectorized: true
   rows read from KV: 125,000 (21 MiB)
-  cumulative time spent in KV: 1.2s
-  maximum memory usage: 11 MiB
-  network usage: 2.6 KiB (24 messages)
+  cumulative time spent in KV: 107ms
+  maximum memory usage: 7.6 MiB
+  network usage: 2.5 KiB (24 messages)
   regions: us-east1
 
-  • group
+  • group (streaming)
   │ nodes: n1, n2, n3
   │ regions: us-east1
   │ actual row count: 9
@@ -194,16 +196,15 @@ For example, the following `EXPLAIN ANALYZE` statement executes a simple query a
         nodes: n1, n2, n3
         regions: us-east1
         actual row count: 125,000
-        KV time: 2ms
+        KV time: 107ms
         KV contention time: 0µs
         KV rows read: 125,000
         KV bytes read: 21 MiB
+        estimated max memory allocated: 20 MiB
         missing stats
         table: rides@rides_pkey
         spans: FULL SCAN
-(28 rows)
-
-Time: 694ms total (execution 694ms / network 0ms)
+(29 rows)
 ~~~
 
 ### `EXPLAIN ANALYZE (DISTSQL)`
@@ -216,19 +217,19 @@ EXPLAIN ANALYZE (DISTSQL) SELECT city, AVG(revenue) FROM rides GROUP BY city;
 ~~~
 
 ~~~
-                                             info
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  planning time: 2ms
-  execution time: 782ms
+                                          info
+----------------------------------------------------------------------------------------------------
+  planning time: 638µs
+  execution time: 132ms
   distribution: full
   vectorized: true
   rows read from KV: 125,000 (21 MiB)
-  cumulative time spent in KV: 1.4s
-  maximum memory usage: 953 KiB
-  network usage: 2.6 KiB (24 messages)
+  cumulative time spent in KV: 228ms
+  maximum memory usage: 7.5 MiB
+  network usage: 2.5 KiB (24 messages)
   regions: us-east1
 
-  • group
+  • group (streaming)
   │ nodes: n1, n2, n3
   │ regions: us-east1
   │ actual row count: 9
@@ -240,19 +241,17 @@ EXPLAIN ANALYZE (DISTSQL) SELECT city, AVG(revenue) FROM rides GROUP BY city;
         nodes: n1, n2, n3
         regions: us-east1
         actual row count: 125,000
-        KV time: 1.4s
+        KV time: 228ms
         KV contention time: 0µs
         KV rows read: 125,000
         KV bytes read: 21 MiB
-        estimated row count: 125,000 (100% of the table; stats collected 45 seconds ago)
+        estimated max memory allocated: 20 MiB
+        estimated row count: 125,000 (100% of the table; stats collected 1 second ago)
         table: rides@rides_pkey
         spans: FULL SCAN
 
-  Diagram: https://cockroachdb.github.io/distsqlplan/decode.html#eJzMV-9u2zYQ_76nIPgpxdRZJGVL1ic3RbsFTewifwYUUxDQ0sURaosuSSfOguxJBuwp9gJ7lD3JQMlebFmmZcdp-8UQeeLx7nf3-_n0gNWXIQ7x2bvjd2_PUZzqewfx28GBhFvIJvAKvT_tnSCZJqDQz6e9i4_o8FP-GnZwJhLo8hEoHP6GCXYwxQ5m-NLBYyliUEpIY3rIXzxKpjh0HZxm44k225cOjoUEHD5gneoh4BCf8_4QToEnIBsudnACmqfD3H0eQWcs0xGX5u6zMc9UiF43ItwXSosswo0IB__-9WcUTSGIomnSPoyiqetG0TRw508rP8PCjLGDexMdog51OsTc_eFXpNMRhIgxMlLFRiwyDZlORTazuf_8PTNJcaeQBJ6EiPqO77eK7f69hvm-91MLnaSH2MEjPkUjGAl5j_hwKGKuwdibLvqQ2_tcxzegkJjosQmKBtjB-Q3_7xR3XD46uNiaIao0HwAOyaNTH_U3g4GEAddCNtgy6B1T1J5MQJr48tWb7qerbu_8qntxfHzQIa9MKS5ODjrUPL3tXXTPZ88whXiyABXNQSxnRlYSK-X0FGb_Ht1wdbMS4eXjU950bd5PfkSRT9nPj4UjCzit54FzdnFydWTgYWZ1ClkC0pxzUIc2OqwCMi8o2msjaGxtI7AagEyyKkgq0eiK12LcaC8DsVLp6qi9ctTttVF7S1GT-qJBaonGvjTDiM-Yy1TlfowPZiz8DxVFU87gl82-SBRN-7RYYsSzBBEk9A3I9Xrk-952etRqO57nreoRoTvKUWtFjmZX1JOjDfVcYJz3cnLk1ZMjf49yRPYrR_7XlqO2W01sWgatWVOOaH1i07rE3icfDb8Vz9C15FmcqljM_QbQMr_XUdR_H0VTct2p59m97tgnjfb2k0bgVk0a_l4njcCtSe0NFV3o3uY3nzTKf5rPoTbdL7WDr01tWnfSIDtMGhW5noIai0xBaeKo9uwatCAZQIGuEhMZw0cp4vyaYtnLz-UbCShdWEmxOMoKkwlw8TApHyaLh-nSYZJHoyvnHcZY3nHVXCNzqhmz-jJEGkZjlKTqM5ooPjDURlVMdMvQ5xzcJoPW2gwy0HdCfkZDriGL70NUfOHMt-94qku5JaBApnyY_s4X24YVbTM_OJOmGNJbkzpdMM3laW5jTZqnPbePQBk0ll6p_b2wDSrtF0elaQXFtYDiboKE7tgo1MoTtgxJ-TCzk8y1s8yznm7aDzd3pGj9UnqetcFday2ZrcEDby8NzlaraUdlPe1XZmCPWoSL7Shcz89gHxS115UE1roSW13pRpbWqitZRaW1DUt3QsX3fQsqvl3OmxZUWl6wCRWv9qfDMiq-FZXALiDBiwsI8wrQ1kD6PfaZHZQtxga6DpRW0wYKJbuPDaz1UmODHZX1mlRW1Vly1aJKX3AabH9j-aDezs1O_f1Mg_k32uMP_wUAAP__K-8jbQ==
-(31 rows)
-
-
-Time: 841ms total (execution 840ms / network 0ms)
+  Diagram: https://cockroachdb.github.io/distsqlplan/decode.html#eJzUmF9u47YTx99_pyD4lMVPuxIpWZb8...
+(32 rows)
 ~~~
 
 To view the [DistSQL plan diagram](#distsql-plan-diagram), open the URL following **Diagram**. For an example, see [`DISTSQL` option](explain.html#distsql-option).
@@ -270,15 +269,13 @@ Use the [`DEBUG`](#debug-option) option to generate a ZIP file containing files 
                                       info
 --------------------------------------------------------------------------------
   Statement diagnostics bundle generated. Download from the DB Console (Advanced
-  Debug -> Statement Diagnostics History), using the direct link, or using
+  Debug -> Statement Diagnostics History), via the direct link below, or using
   the SQL shell or command line.
-  DB Console: http://127.0.0.1:8080
-  Direct link: http://127.0.0.1:8080/_admin/v1/stmtbundle/727822547420741633 (Not available for {{ site.data.products.serverless }} clusters.)
-  SQL shell: \statement-diag download 727822547420741633
-  Command line: cockroach statement-diag download 727822547420741633
-(6 rows)
-
-Time: 873ms total (execution 873ms / network 0ms)
+  Admin UI: http://127.0.0.1:8080
+  Direct link: http://127.0.0.1:8080/_admin/v1/stmtbundle/765493679630483457 (Not available for {{ site.data.products.serverless }} clusters.)
+  SQL shell: \statement-diag download 765493679630483457
+  Command line: cockroach statement-diag download 765493679630483457
+(7 rows)
 ~~~
 
 To download the ZIP file containing the statement diagnostics, open the URL after **Direct link**, run the `\statement-diag download` command, or run `cockroach statement-diag download`. You can also obtain the bundle by activating [statement diagnostics](ui-statements-page.html#diagnostics) in the DB Console.

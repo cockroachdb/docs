@@ -1,0 +1,20 @@
+<div id="feedback-prompt">
+  <div id="feedback-prompt-toc">
+    <p class="feedback-question">Was this helpful?</p><br>
+    <a href="#yes-feedback" id="yes-button-toc" class="yes-button" data-proofer-ignore><img class="mt-0 mb-0" src="{{ 'images/icon-thumbs-up.svg' | relative_url }}" alt="Yes"/></a>
+    <a href="#no-feedback" id="no-button-toc" class="no-button" data-proofer-ignore><img class="mt-0 mb-0" src="{{ 'images/icon-thumbs-down.svg' | relative_url }}" alt="No"/></a>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function(){
+    $("#yes-button-toc").bind("click", function () {
+      $('#feedback-prompt-toc').html('<p class="feedback-response-toc">Thanks for the feedback!</p>')
+      $('#feedback-prompt-bottom').hide()
+    });
+    $("#no-button-toc").bind("click", function () {
+      $('#feedback-prompt-toc').html('<p class="feedback-response-toc">Thank you.</p><p><a href="https://github.com/cockroachdb/docs/issues/new?title=Feedback:%20{{page.title}}&amp;body=Page%3A%20https%3A%2F%2Fcockroachlabs.com/docs{{page.url}}%0A%0A%23%23%20What is the reason for your feedback?%0A%0A&#91;%20&#93;%20Missing the information I need%0A%0A&#91;%20&#93;%20Too complicated%0A%0A&#91;%20&#93;%20Out of date%0A%0A&#91;%20&#93;%20Something is broken%0A%0A&#91;%20&#93;%20Other%0A%0A%23%23%20Additional details&amp;" target="blank" data-proofer-ignore>Please tell us more.</a></p></p>')
+      $('#feedback-prompt-bottom').hide()
+    });
+  });
+</script>

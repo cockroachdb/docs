@@ -16,7 +16,7 @@ Enterprise changefeeds can connect to the following sinks:
 - [Cloud Storage](#create-a-changefeed-connected-to-a-cloud-storage-sink) (Amazon S3, Google Cloud Storage, Azure Storage)
 - [Webhook](#create-a-changefeed-connected-to-a-webhook-sink)
 
-See the [Changefeed Sinks](changefeed-sinks.html) page for more detail on forming sink URIs and specifics on configuration.
+See the [Changefeed Sinks](changefeed-sinks.html) page for more detail on forming sink URIs, available sink query parameters, and specifics on configuration.
 
 Use the following filters to show usage examples for either **Enterprise** or **Core** changefeeds:
 
@@ -137,11 +137,29 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
 1. When you are done, exit the SQL shell (`\q`).
 
-1. To stop `cockroach`, run:
+1. To stop `cockroach`:
+
+    Get the process ID of the node:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ cockroach quit --insecure
+    ps -ef | grep cockroach | grep -v grep
+    ~~~
+
+    ~~~
+      501 21766     1   0  6:21PM ttys001    0:00.89 cockroach start-single-node --insecure --listen-addr=localhost
+    ~~~
+
+    Gracefully shut down the node, specifying its process ID:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    kill -TERM 21766
+    ~~~
+
+    ~~~
+    initiating graceful shutdown of server
+    server drained and shutdown completed
     ~~~
 
 1. To stop Kafka, move into the extracted `confluent-<version>` directory and stop Confluent:
@@ -261,11 +279,29 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
 1. When you are done, exit the SQL shell (`\q`).
 
-1. To stop `cockroach`, run:
+1. To stop `cockroach`:
+
+    Get the process ID of the node:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ cockroach quit --insecure
+    ps -ef | grep cockroach | grep -v grep
+    ~~~
+
+    ~~~
+      501 21766     1   0  6:21PM ttys001    0:00.89 cockroach start-single-node --insecure --listen-addr=localhost
+    ~~~
+
+    Gracefully shut down the node, specifying its process ID:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    kill -TERM 21766
+    ~~~
+
+    ~~~
+    initiating graceful shutdown of server
+    server drained and shutdown completed
     ~~~
 
 1. To stop Kafka, move into the extracted `confluent-<version>` directory and stop Confluent:
@@ -449,11 +485,29 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
 1. When you are done, exit the SQL shell (`\q`).
 
-1. To stop `cockroach`, run:
+1. To stop `cockroach`:
+
+    Get the process ID of the node:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ cockroach quit --insecure
+    ps -ef | grep cockroach | grep -v grep
+    ~~~
+
+    ~~~
+      501 21766     1   0  6:21PM ttys001    0:00.89 cockroach start-single-node --insecure --listen-addr=localhost
+    ~~~
+
+    Gracefully shut down the node, specifying its process ID:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    kill -TERM 21766
+    ~~~
+
+    ~~~
+    initiating graceful shutdown of server
+    server drained and shutdown completed
     ~~~
 
 ## Create a changefeed connected to a webhook sink

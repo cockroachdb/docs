@@ -23,14 +23,14 @@ cp _site/docs/404.html _site/404.html
 
 # Set up htmltest
 
-go get -u github.com/cockroachdb/htmltest > /dev/null
-pushd $GOPATH/src/github.com/cockroachdb/htmltest && ./build.sh>/dev/null 2>&1 && popd
+go get -u github.com/wjdp/htmltest > /dev/null
+pushd $GOPATH/src/github.com/wjdp/htmltest && ./build.sh>/dev/null 2>&1 && popd
 
 # Run htmltest to check external links on scheduled nightly runs
 # (see .github/workflows/nightly.yml)
 
 if [[ "$INCOMING_HOOK_TITLE" = "nightly" ]]; then
-	$GOPATH/src/github.com/cockroachdb/htmltest/bin/htmltest
+	$GOPATH/src/github.com/wjdp/htmltest/bin/htmltest
 	if [[ $? != 0 ]]; then
           exit 1
         fi;
@@ -43,7 +43,7 @@ if [[ "$CONTEXT" = "production" ]]; then
 fi;
 
 # Run htmltest, but skip checking external links to speed things up
-$GOPATH/src/github.com/cockroachdb/htmltest/bin/htmltest --skip-external
+$GOPATH/src/github.com/wjdp/htmltest/bin/htmltest --skip-external
 
 if [[ $? != 0 ]]; then
   exit 1

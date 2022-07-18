@@ -12,7 +12,7 @@ This page has instructions for making SQL [selection queries][selection] against
 Before reading this page, do the following:
 
 - [Create a {{ site.data.products.serverless }} cluster](../cockroachcloud/quickstart.html) or [start a local cluster](../cockroachcloud/quickstart.html?filters=local).
-- [Install a Postgres client](install-client-drivers.html).
+- [Install a Driver or ORM Framework](install-client-drivers.html).
 - [Connect to the database](connect-to-the-database.html).
 - [Insert data](insert-data.html) that you now want to run queries against.
 
@@ -29,7 +29,7 @@ Before reading this page, do the following:
 
 <section class="filter-content" markdown="1" data-scope="sql">
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT id, balance from accounts;
 ~~~
@@ -40,7 +40,7 @@ For more information about how to use the built-in SQL client, see the [`cockroa
 
 <section class="filter-content" markdown="1" data-scope="go">
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ go
 // 'db' is an open database connection
 
@@ -65,7 +65,7 @@ for rows.Next() {
 
 <section class="filter-content" markdown="1" data-scope="java">
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ java
 // ds is an org.postgresql.ds.PGSimpleDataSource
 
@@ -92,7 +92,7 @@ try (Connection connection = ds.getConnection()) {
 
 <section class="filter-content" markdown="1" data-scope="python">
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ python
 # conn is a psycopg2 connection
 
@@ -113,7 +113,7 @@ To order the results of a query, use an `ORDER BY` clause.
 
 For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT * FROM bank ORDER BY balance;
 ~~~
@@ -137,7 +137,7 @@ To limit the results of a query, use a `LIMIT` clause.
 
 For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT * FROM bank LIMIT 5;
 ~~~
@@ -159,7 +159,7 @@ For reference documentation and more examples, see the [`LIMIT`/`OFFSET`](limit-
 
 The syntax for a [selection query][selection] with a two-way [join][joins] is shown below.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT
 	a.col1, b.col1

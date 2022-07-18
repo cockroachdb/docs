@@ -62,20 +62,27 @@ This lets you search based on subcomponents.
 You can use GIN indexes to improve the performance of queries using `JSONB` or `ARRAY` columns. You can create them:
 
 - At the same time as the table with the `INVERTED INDEX` clause of [`CREATE TABLE`](create-table.html#create-a-table-with-secondary-and-gin-indexes).
-- For existing tables with [`CREATE INVERTED INDEX`](create-index.html).
-- Using the following PostgreSQL-compatible syntax:
+- For existing tables with [`CREATE INDEX`](create-index.html):
 
-    ~~~ sql
-    > CREATE INDEX <optional name> ON <table> USING GIN (<column>);
-    ~~~
+  - `CREATE INVERTED INDEX`
+
+        ~~~ sql
+        CREATE INVERTED INDEX <optional name> ON <table> (<column>);
+        ~~~
+
+  - PostgreSQL-compatible [`CREATE INDEX ... USING GIN`]:
+
+        ~~~ sql
+        CREATE INDEX <optional name> ON <table> USING GIN (<column>);
+        ~~~
 
 ### Selection
 
-If a query contains a filter against an indexed `JSONB` or `ARRAY` column that uses any of the supported operators, the GIN index is added to the set of index candidates.
+If a query contains a filter against an indexed `JSONB` or `ARRAY` column that uses any of the [supported operators](#comparisons), the GIN index is added to the set of index candidates.
 
-In most cases CockroachDB selects the index it calculates will scan the fewest rows (i.e., the fastest). Cases where CockroachDB will use multiple indexes include certain queries that use disjunctions (i.e., predicates with `OR`), as well as [zigzag joins](cost-based-optimizer.html#zigzag-joins) for some other queries. To learn how to use  the [`EXPLAIN`](explain.html) statement for your query to see which index is being used, see [Index Selection in CockroachDB](https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2/).
+In most cases CockroachDB selects the index it calculates will scan the fewest rows (i.e., the fastest). Cases where CockroachDB will use multiple indexes include certain queries that use disjunctions (i.e., predicates with `OR`), as well as [zigzag joins](cost-based-optimizer.html#zigzag-joins) for some other queries. To learn how to use the [`EXPLAIN`](explain.html) statement for your query to see which index is being used, see [Index Selection in CockroachDB](https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2/).
 
-To override CockroachDB's index selection, you can also force [queries to use a specific index](table-expressions.html#force-index-selection) (also known as "index hinting") or use an [inverted join hint](cost-based-optimizer.html#supported-join-algorithms).
+To override CockroachDB's index selection, you can also force a query to use [a specific index](table-expressions.html#force-index-selection) (also known as "index hinting") or use [an inverted join hint](cost-based-optimizer.html#supported-join-algorithms).
 
 ### Storage
 
@@ -83,11 +90,11 @@ CockroachDB stores indexes directly in your key-value store. You can find more i
 
 ### Locking
 
-Tables are not locked during index creation thanks to CockroachDB's [schema change procedure](https://www.cockroachlabs.com/blog/how-online-schema-changes-are-possible-in-cockroachdb/).
+Tables are not locked during index creation due to CockroachDB's [schema change procedure](https://www.cockroachlabs.com/blog/how-online-schema-changes-are-possible-in-cockroachdb/).
 
 ### Performance
 
-Indexes create a trade-off: they greatly improve the speed of queries, but slightly slow down writes (because new values have to be copied and sorted). The first index you create has the largest impact, but additional indexes only introduce marginal overhead.
+Indexes create a trade-off: they greatly improve the speed of queries, but slightly slow down writes (because new values have to be copied and sorted). The first index you create has the largest impact, but additional indexes introduce only marginal overhead.
 
 ### Comparisons
 
@@ -97,27 +104,27 @@ This section describes how to perform comparisons on `JSONB` and `ARRAY` columns
 
 GIN indexes on `JSONB` columns support the following comparison operators:
 
-- **is contained by**: [`<@`](functions-and-operators.html#supported-operations)
-- **contains**: [`@>`](functions-and-operators.html#supported-operations)
-- **equals**: [`=`](functions-and-operators.html#supported-operations). You must reached into the JSON document with the [`->`](functions-and-operators.html#supported-operations) operator. For example:
+- **is contained by**: [`<@`](functions-and-operators.html#operators)
+- **contains**: [`@>`](functions-and-operators.html#operators)
+- **equals**: [`=`](functions-and-operators.html#operators). You must reached into the JSON document with the [`->`](functions-and-operators.html#supported-operations) operator. For example:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT * FROM a WHERE j ->'foo' = '"1"';
     ~~~
 
     This is equivalent to using `@>`:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT * FROM a WHERE j @> '{"foo": "1"}';
     ~~~
 
-If you require comparisons using [`<`](functions-and-operators.html#supported-operations), [`<=`](functions-and-operators.html#supported-operations), etc., you can create an index on a computed column using your JSON payload, and then create a standard index on that. To write a query where the value of `foo` is greater than three:
+If you require comparisons using [`<`](functions-and-operators.html#operators), [`<=`](functions-and-operators.html#operators), etc., you can create an index on a [computed column](computed-columns.html) using your JSON payload, and then create a standard index on that. To write a query where the value of `foo` is greater than three:
 
 1. Create a table with a computed column:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE TABLE test (
         id INT,
@@ -128,30 +135,30 @@ If you require comparisons using [`<`](functions-and-operators.html#supported-op
 
 2. Create an index on the computed column:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE INDEX test_idx ON test (foo);
     ~~~
 
 3. Execute the query with the comparison:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT * FROM test where foo > 3;
     ~~~
 
 #### Arrays
 
- GIN indexes on [`ARRAY`](array.html) columns support the following comparison operators:
+GIN indexes on [`ARRAY`](array.html) columns support the following comparison operators:
 
-- **is contained by**: [`<@`](functions-and-operators.html#supported-operations)
-- **contains**: [`@>`](functions-and-operators.html#supported-operations)
+- **is contained by**: [`<@`](functions-and-operators.html#operators)
+- **contains**: [`@>`](functions-and-operators.html#operators)
 
 ## Partial GIN indexes
 
- You can create a [partial](partial-indexes.html) GIN index, a GIN index on a subset of `JSON`, `ARRAY`, or geospatial container column data. Just like partial indexes that use non-container data types, create a partial GIN index by including a clause that evaluates to true on a boolean predicate, like a `WHERE` clause.
+You can create a [partial](partial-indexes.html) GIN index, a GIN index on a subset of `JSON`, `ARRAY`, or geospatial container column data. Just like partial indexes that use non-container data types, you create a partial GIN index by including a clause, like a `WHERE` clause, that evaluates to `true` on a boolean predicate.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TABLE test (
   id INT,
@@ -186,7 +193,7 @@ CREATE TABLE users (
 
 In this example, let's create a table with a `JSONB` column and a GIN index:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE users (
     profile_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -198,7 +205,7 @@ In this example, let's create a table with a `JSONB` column and a GIN index:
 
 Then, insert a few rows of data:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO users (user_profile) VALUES
     ('{"first_name": "Lola", "last_name": "Dog", "location": "NYC", "online" : true, "friends" : 547}'),
@@ -207,7 +214,7 @@ Then, insert a few rows of data:
   );
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT *, jsonb_pretty(user_profile) FROM users;
 ~~~
@@ -242,7 +249,7 @@ Then, insert a few rows of data:
 
 Now, run a query that filters on the `JSONB` column:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM users where user_profile @> '{"location":"NYC"}';
 ~~~
@@ -262,7 +269,7 @@ Now, run a query that filters on the `JSONB` column:
 
 In this example, let's create a table with an `ARRAY` column first, and add the GIN index later:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE students (
     student_id  UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -272,7 +279,7 @@ In this example, let's create a table with an `ARRAY` column first, and add the 
 
 Insert a few rows of data:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO students (marks) VALUES
     (ARRAY[10,20,50]),
@@ -281,7 +288,7 @@ Insert a few rows of data:
   );
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM students;
 ~~~
@@ -302,12 +309,12 @@ Insert a few rows of data:
 
 Now, let’s add a GIN index to the table and run a query that filters on the `ARRAY`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE INVERTED INDEX student_marks ON students (marks);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM students where marks @> ARRAY[100];
 ~~~
@@ -326,14 +333,14 @@ Now, let’s add a GIN index to the table and run a query that filters on the `A
 
 ### Create a table with a partial GIN index on a JSONB column
 
-In the same [`users` table in the previous example](#create-a-table-with-gin-index-on-a-jsonb-column) create a partial GIN index for online users.
+In the same `users` table from [Create a table with GIN index on a JSONB column](#create-a-table-with-gin-index-on-a-jsonb-column), create a partial GIN index for online users.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE INVERTED INDEX idx_online_users ON users(user_profile) WHERE user_profile -> 'online' = 'true';
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT * FROM users WHERE user_profile -> 'online' = 'true';
 ~~~
@@ -343,8 +350,6 @@ SELECT * FROM users WHERE user_profile -> 'online' = 'true';
 ---------------------------------------+-------------------------------------+------------------------------------------------------------------------------------------------
   b6df0cae-d619-4a08-ab4f-2815da7b981f | 2021-04-13 20:54:35.660734+00:00:00 | {"first_name": "Lola", "friends": 547, "last_name": "Dog", "location": "NYC", "online": true}
 (1 row)
-
-Time: 2ms total (execution 2ms / network 0ms)
 ~~~
 
 Now, use index hinting with the partial GIN index.
@@ -358,8 +363,6 @@ SELECT * FROM users@idx_online_users WHERE user_profile->'online' = 'true' AND u
 ---------------------------------------+-------------------------------------+------------------------------------------------------------------------------------------------
   ea1db57e-51c3-449d-b928-adab11191085 | 2021-04-14 20:45:39.960443+00:00:00 | {"first_name": "Lola", "friends": 547, "last_name": "Dog", "location": "NYC", "online": true}
 (1 row)
-
-Time: 2ms total (execution 2ms / network 0ms)
 ~~~
 
 ### Inverted join examples

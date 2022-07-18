@@ -37,12 +37,12 @@ There’s no function in CockroachDB for returning last inserted values, but you
 
 For example, this is how you’d use `RETURNING` to return a value auto-generated via `unique_rowid()` or [`SERIAL`](serial.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE users (id INT DEFAULT unique_rowid(), name STRING);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO users (name) VALUES ('mike') RETURNING id;
 ~~~
@@ -67,14 +67,14 @@ Yes, the [`JSONB`](jsonb.html) data type is supported.
 
 To see which indexes CockroachDB is using for a given query, you can use the [`EXPLAIN`](explain.html) statement, which will print out the query plan, including any indexes that are being used:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN SELECT col1 FROM tbl1;
 ~~~
 
 If you'd like to tell the query planner which index to use, you can do so via some [special syntax for index hints](table-expressions.html#force-index-selection):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT col1 FROM tbl1@idx1;
 ~~~
@@ -100,7 +100,7 @@ In CockroachDB, all `INT`s are represented with 64 bits of precision, but JavaSc
 
 To avoid this loss of precision, Node's [`pg` driver](https://github.com/brianc/node-postgres) will, by default, return all CockroachDB `INT`s as strings.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ javascript
 // Schema: CREATE TABLE users (id INT DEFAULT unique_rowid(), name STRING);
 pgClient.query("SELECT id FROM users WHERE name = 'Roach' LIMIT 1", function(err, res) {
@@ -112,7 +112,7 @@ pgClient.query("SELECT id FROM users WHERE name = 'Roach' LIMIT 1", function(err
 
 To perform another query using the value of `idString`, you can simply use `idString` directly, even where an `INT` type is expected. The string will automatically be coerced into a CockroachDB `INT`.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ javascript
 pgClient.query("UPDATE users SET name = 'Ms. Roach' WHERE id = $1", [idString], function(err, res) {
   // All should be well!
@@ -121,7 +121,7 @@ pgClient.query("UPDATE users SET name = 'Ms. Roach' WHERE id = $1", [idString], 
 
 If you instead need to perform arithmetic on `INT`s in JavaScript, you will need to use a big integer library like [Long.js](https://www.npmjs.com/package/long). Do _not_ use the built-in `parseInt` function.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ javascript
 parseInt(idString, 10) + 1; // WRONG: returns 235191684988928000
 require('long').fromString(idString).add(1).toString(); // GOOD: returns '235191684988928002'
@@ -131,6 +131,11 @@ require('long').fromString(idString).add(1).toString(); // GOOD: returns '235191
 
 {% include {{ page.version.version }}/faq/simulate-key-value-store.html %}
 
+## Does CockroachDB support full text search?
+
+No. For full text search, Cockroach Labs recommends that you use a search engine like [Elasticsearch](https://www.elastic.co/elasticsearch) or [Solr](https://solr.apache.org/). You can use CockroachDB [change data capture (CDC)](change-data-capture-overview.html) to set up a change feed to keep Elasticsearch and Solr indexes synchronized to your CockroachDB tables.
+
+For details, see [Full Text Indexing and Search in CockroachDB](https://www.cockroachlabs.com/blog/full-text-indexing-search/).
 
 ## See also
 

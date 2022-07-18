@@ -79,9 +79,9 @@ Yes, your free cluster has been automatically migrated to {{ site.data.products.
 
 ### Why does my RU usage briefly spike when I'm running a steady workload?
 
-CockroachDB [automatically collects statistics](../{{site.versions["stable"]}}/cost-based-optimizer.html#control-statistics-refresh-rate) in a background process when certain conditions are met (for example, when more than 20% of rows in a table are modified). The statistics are used by the cost-based optimizer to tune statements for higher performance.
+CockroachDB [automatically collects statistics](../{{site.versions["stable"]}}/cost-based-optimizer.html#table-statistics) in a background process when certain conditions are met (for example, when more than 20% of rows in a table are modified). The statistics are used by the cost-based optimizer to tune statements for higher performance.
 
-When automatic statistics collection starts your cluster may consume RUs above the 100 RUs per second baseline when your workload is otherwise consuming RUs below the baseline. You can [turn off automatic statistics collection](../{{site.versions["stable"]}}/cost-based-optimizer.html#turn-off-statistics) to avoid these RU bursts, but the cost-based optimizer may choose inefficient statement plans as it doesn't have access to the latest statistics.
+When automatic statistics collection starts your cluster may consume RUs above the 100 RUs per second baseline when your workload is otherwise consuming RUs below the baseline. You can [turn off automatic statistics collection](../{{site.versions["stable"]}}/cost-based-optimizer.html#enable-and-disable-automatic-statistics-collection-for-clusters) to avoid these RU bursts, but the cost-based optimizer may choose inefficient statement plans as it doesn't have access to the latest statistics.
 
 ### What is the cold start latency of a Serverless cluster?
 
@@ -140,6 +140,10 @@ No, {{ site.data.products.serverless }} clusters are upgraded automatically for 
 
 Yes, you can view and your clusters in the [{{ site.data.products.db }} Console](https://cockroachlabs.cloud/). However, some [DB Console](../{{site.versions["stable"]}}/ui-overview.html) pages are not currently available for {{ site.data.products.serverless }} clusters.
 
+### Are all CockroachDB features available in {{ site.data.products.serverless }} clusters?
+
+There are some features of CockroachDB that are unsupported or partially supported in {{ site.data.products.serverless }} clusters. Cockroach Labs intends to eliminate these feature gaps in future releases of {{ site.data.products.serverless }}. See [Unsupported Features in CockroachDB Serverless](serverless-unsupported-features.html) for more details.
+
 ### Can I run bulk operations such as `IMPORT` and `EXPORT` from my cluster?
 
 Yes, you can [run bulk operations on Serverless clusters](run-bulk-operations.html). If you [add billing information to your organization](billing-management.html), even if you don't set a spend limit, you can run bulk operations using cloud storage providers. If you don't have billing set up for your organization, you can set up a [`userfile`](../{{site.versions["stable"]}}/use-userfile-for-bulk-operations.html) location for bulk operations.
@@ -154,7 +158,7 @@ Yes, {{ site.data.products.serverless-plan }} clusters have access to both [Core
 
 ### Can I backup my {{ site.data.products.serverless }} cluster? Does Cockroach Labs take backups of my cluster?
 
-{{ site.data.products.db }} does not take incremental backups of Serverless clusters, and you cannot restore backups from the Console. However, you can backup and restore your {{ site.data.products.serverless }} cluster manually. If you don't have [billing information on file](billing-management.html) for your organization, you can [take backups locally](run-bulk-operations.html#backup-and-restore-data) to `userfile`. Once you enter billing information, even if you don't set a spend limit, you can also [backup to cloud storage](run-bulk-operations.html#backup-and-restore-data).
+The [**Backups** page](backups-page.html) allows you to restore your cluster from automatic full cluster backups, which are performed hourly and stored for 30 days. {{ site.data.products.db }} does not take incremental backups of Serverless clusters, or allow database or table level restores from automatic full cluster backups. However, you can also backup and restore your {{ site.data.products.serverless }} cluster manually. If you don't have [billing information on file](billing-management.html) for your organization, you can [take backups locally](run-bulk-operations.html#backup-and-restore-data) to `userfile`. Once you enter billing information, even if you don't set a spend limit, you can also [backup to cloud storage](run-bulk-operations.html#backup-and-restore-data).
 
 {{site.data.alerts.callout_info}}
 Running a [bulk operation](run-bulk-operations.html) to cloud storage from a {{ site.data.products.serverless }} cluster without first entering billing information will cause the following error: `external network access is disabled`.

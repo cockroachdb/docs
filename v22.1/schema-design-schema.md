@@ -49,7 +49,7 @@ Suppose you want to separate the tables and indexes in your cluster such that on
 
 Open the `dbinit.sql` file that you created in the [Create a Database](schema-design-database.html) example, and add the following statements under the `CREATE DATABASE` statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 USE movr;
 
@@ -64,7 +64,7 @@ The first statement sets the `movr` database as the [current database](sql-name-
 
 Now, under the `CREATE USER` statements, add `DROP SCHEMA` and `CREATE SCHEMA` statements for each user's user-defined schema:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 DROP SCHEMA IF EXISTS max_schema CASCADE;
 CREATE SCHEMA max_schema AUTHORIZATION max;
@@ -81,7 +81,7 @@ Under the `CREATE SCHEMA` statements for each user-defined schema, add a `GRANT`
 
 The `dbinit.sql` file should now look something link this:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE DATABASE IF NOT EXISTS movr;
 
@@ -104,7 +104,7 @@ GRANT USAGE ON SCHEMA abbey_schema TO max;
 
 To execute the statements in the `dbinit.sql` file as the `root` user, run the following command:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
 --certs-dir={certs-directory} \
@@ -114,21 +114,21 @@ $ cockroach sql \
 
 Before the new users can connect to the cluster and start creating objects, they each need a [user certificate](authentication.html#client-authentication). To create a user certificate for `max`, open a new terminal, and run the following [`cockroach cert`](cockroach-cert.html) command:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach cert create-client max --certs-dir={certs-directory} --ca-key={my-safe-directory}/ca.key
 ~~~
 
 Create a user certificate for `abbey` as well:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach cert create-client abbey --certs-dir={certs-directory} --ca-key={my-safe-directory}/ca.key
 ~~~
 
 As one of the new users, use a [`SHOW SCHEMAS` statement](show-schemas.html) to show the preloaded and user-defined schemas in the `movr` database:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
 --certs-dir={certs-directory} \
@@ -157,12 +157,12 @@ For guidance on creating tables, see at [Create a Table](schema-design-table.htm
 ## What's next?
 
 - [Create a Table](schema-design-table.html)
-- [Add Secondary Indexes](schema-design-indexes.html)
+- [Secondary Indexes](schema-design-indexes.html)
 
 You might also be interested in the following pages:
 
 - [`CREATE SCHEMA`](create-schema.html)
-- [Cockroach Commands](cockroach-commands.html)
+- [`cockroach` Commands Overview](cockroach-commands.html)
 - [Create a Database](schema-design-database.html)
 - [Schema Design Overview](schema-design-overview.html)
 - [CockroachDB naming hierarchy](sql-name-resolution.html#naming-hierarchy)

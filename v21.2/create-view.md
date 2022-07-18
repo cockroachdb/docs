@@ -20,7 +20,7 @@ The user must have the `CREATE` [privilege](security-reference/authorization.htm
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/create_view.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/create_view.html %}
 </div>
 
 ## Parameters
@@ -47,7 +47,7 @@ The following examples use the [`startrek` demo database schema](cockroach-demo.
 
 To follow along, run [`cockroach demo startrek`](cockroach-demo.html) to start a temporary, in-memory cluster with the `startrek` schema and dataset preloaded:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach demo startrek
 ~~~
@@ -56,7 +56,7 @@ $ cockroach demo startrek
 
 The sample `startrek` database contains two tables, `episodes` and `quotes`. The table also contains a foreign key constraint, between the `episodes.id` column and the `quotes.episode` column. To count the number of famous quotes per season, you could run the following join:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT startrek.episodes.season, count(*)
   FROM startrek.quotes
@@ -76,7 +76,7 @@ The sample `startrek` database contains two tables, `episodes` and `quotes`. The
 
 Alternatively, to make it much easier to run this complex query, you could create a view:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE VIEW startrek.quotes_per_season (season, quotes)
   AS SELECT startrek.episodes.season, count(*)
@@ -88,7 +88,7 @@ Alternatively, to make it much easier to run this complex query, you could creat
 
 The view is then represented as a virtual table alongside other tables in the database:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM startrek;
 ~~~
@@ -104,7 +104,7 @@ The view is then represented as a virtual table alongside other tables in the da
 
 Executing the query is as easy as `SELECT`ing from the view, as you would from a standard table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM startrek.quotes_per_season;
 ~~~
@@ -122,7 +122,7 @@ Executing the query is as easy as `SELECT`ing from the view, as you would from a
 
  You can create a new view, or replace an existing view, with `CREATE OR REPLACE VIEW`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE OR REPLACE VIEW startrek.quotes_per_season (season, quotes)
   AS SELECT startrek.episodes.season, count(*)
@@ -133,7 +133,7 @@ Executing the query is as easy as `SELECT`ing from the view, as you would from a
   ORDER BY startrek.episodes.season;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM startrek.quotes_per_season;
 ~~~

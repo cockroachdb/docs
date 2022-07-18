@@ -212,16 +212,16 @@ true
     </li>
     <li><p>In the extracted directory, run <code>make build</code>:</p>
 
-      {% include copy-clipboard.html %}<div class="highlight"><pre class="highlight"><code><span class="nv language-shell"></span><span class="nb">cd </span>cockroach-{{ page.release_info.version }}</code></pre></div>
+      {% include_cached copy-clipboard.html %}<div class="highlight"><pre class="highlight"><code><span class="nv language-shell"></span><span class="nb">cd </span>cockroach-{{ page.release_info.version }}</code></pre></div>
 
-      {% include copy-clipboard.html %}<div class="highlight"><pre class="highlight"><code><span class="nv language-shell"></span>make build</code></pre></div>
+      {% include_cached copy-clipboard.html %}<div class="highlight"><pre class="highlight"><code><span class="nv language-shell"></span>make build</code></pre></div>
 
       <p>The build process can take 10+ minutes, so please be patient.</p>
     </li>
     <li>
     <p>Install the <code>cockroach</code> binary into <code>/usr/local/bin/</code> so it's easy to execute <a href="cockroach-commands.html"><code>cockroach</code> commands</a> from any directory:</p>
 
-    {% include copy-clipboard.html %}<div class="highlight"><pre class="highlight"><code><span class="nv language-shell"></span>make install</code></pre></div>
+    {% include_cached copy-clipboard.html %}<div class="highlight"><pre class="highlight"><code><span class="nv language-shell"></span>make install</code></pre></div>
     <p>If you get a permissions error, prefix the command with <code>sudo</code>.</p>
 
     <p>You can also execute the <code>cockroach</code> binary directly from its built location, <code>./src/github.com/cockroachdb/cockroach/cockroach</code>, but the rest of the documentation assumes you have the binary on your <code>PATH</code>.</p>

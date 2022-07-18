@@ -158,7 +158,7 @@ with_password | VALID UNTIL=2021-10-10 00:00:00+00:00 | {}
 
 The following statement prevents the user from using password authentication and mandates certificate-based client authentication:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 root@:26257/defaultdb> CREATE USER no_password WITH PASSWORD NULL;
 ~~~

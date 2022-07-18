@@ -5,4 +5,4 @@ toc: true
 docs_area: reference.logging
 ---
 
-{% remote_include https://raw.githubusercontent.com/cockroachdb/cockroach/release-22.1/docs/generated/eventlog.md %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/cockroach/release-{{ page.version.version | replace: "v", "" }}/docs/generated/eventlog.md %}

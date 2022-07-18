@@ -18,7 +18,7 @@ The `ALTER DATABASE .. ALTER SUPER REGION` [statement](sql-statements.html) alte
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/alter_database_alter_super_region.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/alter_database_alter_super_region.html %}
 </div>
 
 ## Parameters
@@ -68,7 +68,7 @@ This example assumes you have already added a `"usa"` super region as shown in t
 
 To remove a region from a super region, use the `ALTER DATABASE ... ALTER SUPER REGION` statement and list only the regions that should remain in the super region:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER DATABASE movr ALTER SUPER REGION "usa" VALUES "us-east1";
 ~~~

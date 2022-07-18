@@ -15,7 +15,7 @@ To use this guide, it's important to understand some of CockroachDB's terminolog
 
 Try running:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach start-single-node --insecure --logtostderr
 ~~~
@@ -29,16 +29,16 @@ When starting a node, the directory you choose to store the data in also contain
 **Solution:** Disassociate the node from the existing directory where you've stored CockroachDB data. For example, you can do either of the following:
 
 -   Choose a different directory to store the CockroachDB data:  
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start-single-node --store=<new directory> --insecure
     ~~~
 -   Remove the existing directory and start the node again:
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ rm -r cockroach-data/
     ~~~
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start-single-node --insecure --logtostderr
     ~~~
@@ -71,7 +71,7 @@ See [Why is my process hanging when I try to start it in the background?](operat
 
 If the CockroachDB node appeared to [start successfully](start-a-local-cluster.html), in a separate terminal run:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure -e "show databases"
 ~~~
@@ -135,17 +135,17 @@ node belongs to cluster {"cluster hash"} but is attempting to connect to a gossi
 **Solution:** Disassociate the node from the existing directory where you've stored CockroachDB data. For example, you can do either of the following:
 
 -   Choose a different directory to store the CockroachDB data:  
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start --store=<new directory> --join=<cluster host> <other flags>
     ~~~
 -   Remove the existing directory and start a node joining the cluster again:
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ rm -r cockroach-data/
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start --join=<cluster host>:26257 <other flags>  
     ~~~
@@ -504,6 +504,12 @@ To view command commit latency:
 3. Scroll down the metrics page to find the **Command Commit Latency: 90th percentile** and **Command Commit Latency: 99th percentile** graphs.
 
 **Expected values for a healthy cluster**: On SSDs, this should be between 1 and 100 milliseconds.  On HDDs, this should be no more than 1 second.  Note that we [strongly recommend running CockroachDB on SSDs](recommended-production-settings.html#storage).
+
+## Partial availability issues
+
+If your cluster is in a partially-available state due to a recent node or network failure, the internal logging table `system.eventlog` might be unavailable. This can cause the logging of [notable events](eventlog.html) (e.g., the execution of SQL statements) to the `system.eventlog` table to fail to complete, contributing to cluster unavailability. If this occurs, you can set the [cluster setting](cluster-settings.html) `server.eventlog.enabled` to `false` to disable writing notable log events to this table, which may help to recover your cluster.
+
+Even with `server.eventlog.enabled` set to `false`, notable log events are still sent to configured [log sinks](configure-logs.html#configure-log-sinks) as usual.
 
 ## Check for under-replicated or unavailable data
 

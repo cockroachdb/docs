@@ -22,7 +22,7 @@ Endpoint | Name | Description
 [`/databases/{database}/grants`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/databaseGrants) | List database grants | List all [privileges](security-reference/authorization.html#managing-privileges) granted to users for a specified database.
 [`/databases/{database}/tables`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/databaseTables) | List database tables | List all tables in a specified database.
 [`/databases/{database}/tables/{table}`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/tableDetails) | Get table details | Get details on a specified table, including schema, grants, indexes, range count, and zone configuration.
-[`/events`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/listEvents) | List events | List the latest [events](eventlog.html) on the cluster, in descending order.
+[`/events`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/listEvents) | List events | List the latest [events](eventlog.html) on the cluster, in descending order.<br><br>**Deprecated:** Use an external [log sink](configure-logs.html#configure-log-sinks) or configure [alerting on specific log events](monitoring-and-alerting.html#alerting-tools) instead.
 [`/health`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/health) | Check node health | Determine if the node is running and ready to accept SQL connections.
 [`/nodes`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/listNodes) | List nodes | Get details on all nodes in the cluster, including node IDs, software versions, and hardware.
 [`/nodes/{node_id}/ranges`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/listNodeRanges) | List node ranges | Get details on the ranges on a specified node.
@@ -47,7 +47,7 @@ To connect with the API on a secure cluster, you will need:
 
 1. Request a session token using the `/login` endpoint. For example:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     curl -d "username=user&password=pass" \
     -H 'Content-Type: application/x-www-form-urlencoded' \
@@ -56,14 +56,14 @@ To connect with the API on a secure cluster, you will need:
 
 2. Record the token (`session` value) that is returned.
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     {"session":"CIGAiPis4fj3CBIQ3u0rRQJ3tD8yIqee4hipow=="}
     ~~~
 
 3. Pass the token with each call using the `X-Cockroach-API-Session` header. For example:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     curl -H "X-Cockroach-API-Session: CIGAiPis4fj3CBIQ3u0rRQJ3tD8yIqee4hipow==" \
     https://localhost:8080/api/v2/nodes/

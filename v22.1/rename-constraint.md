@@ -18,7 +18,7 @@ It is not possible to rename a constraint for a column referenced by a view. For
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/rename_constraint.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/rename_constraint.html %}
 </div>
 
 ## Required privileges
@@ -42,7 +42,7 @@ The user must have the `CREATE` [privilege](security-reference/authorization.htm
 
 ### Rename a constraint
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE logon (
     login_id INT PRIMARY KEY,
@@ -52,7 +52,7 @@ The user must have the `CREATE` [privilege](security-reference/authorization.htm
   );
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CONSTRAINTS FROM logon;
 ~~~
@@ -61,16 +61,16 @@ The user must have the `CREATE` [privilege](security-reference/authorization.htm
   table_name |        constraint_name         | constraint_type |                details                 | validated
 +------------+--------------------------------+-----------------+----------------------------------------+-----------+
   logon      | logon_customer_id_sales_id_key | UNIQUE          | UNIQUE (customer_id ASC, sales_id ASC) |   true
-  logon      | primary                        | PRIMARY KEY     | PRIMARY KEY (login_id ASC)             |   true
+  logon      | logon_pkey                     | PRIMARY KEY     | PRIMARY KEY (login_id ASC)             |   true
 (2 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE logon RENAME CONSTRAINT logon_customer_id_sales_id_key TO unique_customer_id_sales_id;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CONSTRAINTS FROM logon;
 ~~~
@@ -78,7 +78,7 @@ The user must have the `CREATE` [privilege](security-reference/authorization.htm
 ~~~
   table_name |       constraint_name       | constraint_type |                details                 | validated
 +------------+-----------------------------+-----------------+----------------------------------------+-----------+
-  logon      | primary                     | PRIMARY KEY     | PRIMARY KEY (login_id ASC)             |   true
+  logon      | logon_pkey                  | PRIMARY KEY     | PRIMARY KEY (login_id ASC)             |   true
   logon      | unique_customer_id_sales_id | UNIQUE          | UNIQUE (customer_id ASC, sales_id ASC) |   true
 (2 rows)
 ~~~

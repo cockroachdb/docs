@@ -12,7 +12,7 @@
       "title": "Connect to CockroachDB",
       "items": [
         {
-          "title": "Install a driver or ORM",
+          "title": "Install a Driver or ORM Framework",
           "urls": [
             "/${VERSION}/install-client-drivers.html"
           ]
@@ -85,7 +85,7 @@
           "title": "Advanced Schema Design",
           "items": [
             {
-              "title": "Use Computed Columns",
+              "title": "Computed Columns",
               "urls": [
                 "/${VERSION}/computed-columns.html"
               ]
@@ -204,7 +204,7 @@
           ]
         },
         {
-          "title": "Create Temporary Tables",
+          "title": "Temporary Tables",
           "urls": [
             "/${VERSION}/temporary-tables.html"
           ]
@@ -444,12 +444,6 @@
               "title": "Alembic",
               "urls": [
                 "/${VERSION}/alembic.html"
-              ]
-            },
-            {
-              "title": "AWS DMS",
-              "urls": [
-                "/${VERSION}/aws-dms.html"
               ]
             },
             {

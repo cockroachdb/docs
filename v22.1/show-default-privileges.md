@@ -11,7 +11,7 @@ docs_area: reference.sql
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/show_default_privileges.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/show_default_privileges.html %}
 </div>
 
 ## Parameters
@@ -33,7 +33,7 @@ To show default privileges, the user/role must have any [privilege](security-ref
 
 ### Show default privileges for objects created by the current user
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW DEFAULT PRIVILEGES;
 ~~~
@@ -51,7 +51,7 @@ To show default privileges, the user/role must have any [privilege](security-ref
 
 ### Show default privileges for objects created by any user/role
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW DEFAULT PRIVILEGES FOR ALL ROLES;
 ~~~
@@ -65,12 +65,12 @@ To show default privileges, the user/role must have any [privilege](security-ref
 
 ### Show default privileges for objects created by a specific user/role
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE USER max;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW DEFAULT PRIVILEGES FOR ROLE max;
 ~~~
@@ -84,6 +84,30 @@ To show default privileges, the user/role must have any [privilege](security-ref
   max  |     false     | types       | max     | ALL
   max  |     false     | types       | public  | USAGE
 (5 rows)
+~~~
+
+### Show default privileges for objects in a specific schema
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> CREATE SCHEMA test;
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> ALTER DEFAULT PRIVILEGES IN SCHEMA test GRANT SELECT ON TABLES TO max;
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> SHOW DEFAULT PRIVILEGES IN SCHEMA test;
+~~~
+
+~~~
+  role | for_all_roles | object_type | grantee | privilege_type
+-------+---------------+-------------+---------+-----------------
+  demo |     false     | tables      | max     | SELECT
+(1 row)
 ~~~
 
 ## See also

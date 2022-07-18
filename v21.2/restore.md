@@ -43,7 +43,7 @@ For guidance on the syntax for backups and restores, see the [`BACKUP`](backup.h
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/restore.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/restore.html %}
 </div>
 
 ## Parameters
@@ -70,10 +70,10 @@ You can control `RESTORE` behavior using any of the following in the `restore_op
 <a name="skip_missing_sequences"></a>`skip_missing_sequences`       | N/A                                         | Use to ignore [sequence](show-sequences.html) dependencies (i.e., the `DEFAULT` expression that uses the sequence).<br><br>Example: `WITH skip_missing_sequences`
 `skip_missing_sequence_owners`                                      | N/A                                         | Must be used when restoring either a table that was previously a [sequence owner](create-sequence.html#owned-by) or a sequence that was previously owned by a table.<br><br>Example: `WITH skip_missing_sequence_owners`
 `skip_missing_views`                                                | N/A                                         | Use to skip restoring [views](views.html) that cannot be restored because their dependencies are not being restored at the same time.<br><br>Example: `WITH skip_missing_views`
-<a name="skip-localities-check"></a>`skip_localities_check`         | N/A                                         | <span class="version-tag">New in v21.2:</span> Use to skip checking localities of a cluster before a restore when there are mismatched [cluster regions](multiregion-overview.html#cluster-regions) between the backup's cluster and the target cluster. <br><br>Example: `WITH skip_localities_check`
+<a name="skip-localities-check"></a>`skip_localities_check`         | N/A                                         | **New in v21.2:** Use to skip checking localities of a cluster before a restore when there are mismatched [cluster regions](multiregion-overview.html#cluster-regions) between the backup's cluster and the target cluster. <br><br>Example: `WITH skip_localities_check`
 `encryption_passphrase`                                             | Passphrase used to create the [encrypted backup](take-and-restore-encrypted-backups.html) |  The passphrase used to decrypt the file(s) that were encrypted by the [`BACKUP`](take-and-restore-encrypted-backups.html) statement.
 `DETACHED`                                                          | N/A                                         |  When `RESTORE` runs with `DETACHED`, the job will execute asynchronously and the job ID will be returned immediately without waiting for the job to finish. Note that with `DETACHED` specified, further job information and the job completion status will not be returned. For more on the differences between the returned job data, see the [example](restore.html#restore-a-backup-asynchronously) below. To check on the job status, use the [`SHOW JOBS`](show-jobs.html) statement. <br><br>To run a restore within a [transaction](transactions.html), use the `DETACHED` option.
-`debug_pause_on`                                                    | `"error" `                                    | <span class="version-tag">New in v21.2:</span> Use to have a `RESTORE` [job](show-jobs.html) self pause when it encounters an error. The `RESTORE` job can then be [resumed](resume-job.html) after the error has been fixed or [canceled](cancel-job.html) to rollback the job. <br><br>Example: `WITH debug_pause_on='error'`
+`debug_pause_on`                                                    | `"error" `                                    | **New in v21.2:** Use to have a `RESTORE` [job](show-jobs.html) self pause when it encounters an error. The `RESTORE` job can then be [resumed](resume-job.html) after the error has been fixed or [canceled](cancel-job.html) to rollback the job. <br><br>Example: `WITH debug_pause_on='error'`
 
 ### Backup file URLs
 
@@ -179,7 +179,7 @@ CockroachDB does **not** support incremental-only restores.
 
 ## Performance
 
-The `RESTORE` process minimizes its impact to the cluster's performance by distributing work to all nodes. Subsets of the restored data (known as ranges) are evenly distributed among randomly selected nodes, with each range initially restored to only one node. Once the range is restored, the node begins replicating it others.
+The `RESTORE` process minimizes its impact to the cluster's performance by distributing work to all nodes. Subsets of the restored data (known as ranges) are evenly distributed among randomly selected nodes, with each range initially restored to only one node. Once the range is restored, the node begins replicating it to others.
 
 {{site.data.alerts.callout_info}}
 When a `RESTORE` fails or is canceled, partially restored data is properly cleaned up. This can have a minor, temporary impact on cluster performance.

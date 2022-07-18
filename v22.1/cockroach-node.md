@@ -124,7 +124,7 @@ Flag | Description
 `--wait` | When to return to the client. Possible values: `all`, `none`.<br><br>If `all`, the command returns to the client only after all replicas on all specified nodes have been transferred to other nodes. If any specified nodes are offline, the command will not return to the client until those nodes are back online.<br><br>If `none`, the command does not wait for the decommissioning process to complete; it returns to the client after starting the decommissioning process on all specified nodes that are online. Any specified nodes that are offline will automatically be marked as decommissioning; if they come back online, the cluster will recognize this status and will not rebalance data to the nodes.<br><br>**Default:** `all`
 `--self` | **Deprecated.** Instead, specify a node ID explicitly in addition to the `--host` flag.
 
-The `node drain` subcommand also supports the following general flag:
+The `node drain` subcommand also supports the following general flags:
 
 Flag | Description
 -----|------------
@@ -218,7 +218,7 @@ To follow along with the examples, start [an insecure cluster](start-a-local-clu
 
 ### List node IDs
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach node ls --insecure
 ~~~
@@ -234,7 +234,7 @@ $ cockroach node ls --insecure
 
 ### Show the status of a single node
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach node status 1 --host=localhost:26257 --insecure
 ~~~
@@ -248,7 +248,7 @@ $ cockroach node status 1 --host=localhost:26257 --insecure
 
 ### Show the status of all nodes
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach node status --host=localhost:26257 --insecure
 ~~~
@@ -266,7 +266,7 @@ $ cockroach node status --host=localhost:26257 --insecure
 
 The `is_live` and `is_available` fields are marked as `true` as long as a majority of the nodes are up, and a quorum can be reached:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach node status --host=localhost:26257 --insecure
 ~~~
@@ -282,7 +282,7 @@ $ cockroach node status --host=localhost:26257 --insecure
 
 If a majority of nodes are down and a quorum cannot be reached, the `is_live` field is marked as `true` for the nodes that are up, but the `is_available` field is marked as `false` for all nodes:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach node status --host=localhost:26257 --insecure
 ~~~

@@ -1,6 +1,6 @@
 Let's create the `products` table and add a hash-sharded primary key on the `ts` column:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE products (
     ts DECIMAL PRIMARY KEY USING HASH,
@@ -8,7 +8,7 @@ Let's create the `products` table and add a hash-sharded primary key on the `ts`
     );
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW INDEX FROM products;
 ~~~
@@ -22,7 +22,7 @@ Let's create the `products` table and add a hash-sharded primary key on the `ts`
 (3 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW COLUMNS FROM products;
 ~~~

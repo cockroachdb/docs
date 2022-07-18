@@ -29,7 +29,7 @@ The table below lists the experimental session settings that are available.  For
 
 Log all queries against a table to a file, for security purposes. For more information, see [`ALTER TABLE ... EXPERIMENTAL_AUDIT`](experimental-audit.html).
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE t EXPERIMENTAL_AUDIT SET READ WRITE;
 ~~~
@@ -43,20 +43,20 @@ You have the following options for controlling lease and replica location:
 
 For example, to distribute leases and ranges for N primary keys across N stores in the cluster, run a statement with the following structure:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE t EXPERIMENTAL_RELOCATE SELECT ARRAY[<storeid1>, <storeid2>, ..., <storeidN>], <primarykeycol1>, <primarykeycol2>, ..., <primarykeycolN>;
 ~~~
 
 To relocate just the lease without moving the replicas, run a statement like the one shown below, which moves the lease for the range containing primary key 'foo' to store 1.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE t EXPERIMENTAL_RELOCATE LEASE SELECT 1, 'foo';
 ~~~
 
 {{site.data.alerts.callout_info}}
-<span class="version-tag">New in v22.1:</span> If you prefer to use an approach to relocating replicas and leases based on range IDs, see the [`ALTER RANGE ... RELOCATE`](alter-range-relocate.html) statement.
+{% include_cached new-in.html version="v22.1" %} If you prefer to use an approach to relocating replicas and leases based on range IDs, see the [`ALTER RANGE ... RELOCATE`](alter-range-relocate.html) statement.
 {{site.data.alerts.end}}
 
 ### Show table fingerprints
@@ -65,7 +65,7 @@ Table fingerprints are used to compute an identification string of an entire tab
 
 Example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW EXPERIMENTAL_FINGERPRINTS FROM TABLE t;
 ~~~
@@ -83,7 +83,7 @@ Use session tracing (via [`SHOW TRACE FOR SESSION`](show-trace.html)) to report 
 
 Example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET tracing = on;
 > SELECT * from t;
@@ -106,7 +106,7 @@ Checks the consistency of [`UNIQUE`](unique.html) indexes, [`CHECK`](check.html)
 This example uses the `users` table from our open-source, fictional peer-to-peer vehicle-sharing application, [MovR](movr.html).
 {{site.data.alerts.end}}
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 >  EXPERIMENTAL SCRUB table movr.users;
 ~~~
@@ -147,10 +147,6 @@ The table below lists the experimental SQL functions and operators available in 
 
  Support for [temporary tables](temporary-tables.html), [temporary views](views.html#temporary-views), and [temporary sequences](create-sequence.html#temporary-sequences) is currently experimental in CockroachDB. If you create too many temporary objects in a session, the performance of DDL operations will degrade. Performance limitations could persist long after creating the temporary objects. For more details, see [cockroachdb/cockroach#46260](https://github.com/cockroachdb/cockroach/issues/46260).
 
-## Hash-sharded indexes
-
- CockroachDB supports hash-sharded indexes with the [`USING HASH`](create-index.html#parameters) keywords. Hash-sharded indexes distribute sequential traffic uniformly across ranges, eliminating single-range hot spots and improving write performance on sequentially-keyed indexes at a small cost to read performance. For more information, see [Hash-sharded indexes](hash-sharded-indexes.html).
-
 ## Password authentication without TLS
 
    For deployments where transport security is already handled at the infrastructure level (e.g., IPSec with DMZ), and TLS-based transport security is not possible or not desirable, CockroachDB now supports delegating transport security to the infrastructure with the new experimental flag `--accept-sql-without-tls` for [`cockroach start`](cockroach-start.html#security).
@@ -158,7 +154,7 @@ The table below lists the experimental SQL functions and operators available in 
   With this flag, SQL clients can establish a session over TCP without a TLS handshake. They still need to present valid authentication credentials, for example a password in the default configuration. Different authentication schemes can be further configured as per `server.host_based_authentication.configuration`.
 
   Example:
-  {% include copy-clipboard.html %}
+  {% include_cached copy-clipboard.html %}
   ~~~ shell
   $ cockroach sql --user=jpointsman --insecure
   ~~~

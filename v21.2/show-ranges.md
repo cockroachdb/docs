@@ -14,7 +14,7 @@ To show range information for a specific row in a table or index, use the [`SHOW
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/show_ranges.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/show_ranges.html %}
 </div>
 
 ## Required privileges
@@ -55,7 +55,7 @@ If both `start_key` and `end_key` show `NULL`, the range is empty and has no spl
 
 ### Show ranges for a table (primary index)
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM [SHOW RANGES FROM TABLE vehicles] WHERE "start_key" NOT LIKE '%Prefix%';
 ~~~
@@ -76,7 +76,7 @@ If both `start_key` and `end_key` show `NULL`, the range is empty and has no spl
 
 ### Show ranges for an index
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM [SHOW RANGES FROM INDEX vehicles_auto_index_fk_city_ref_users] WHERE "start_key" NOT LIKE '%Prefix%';
 ~~~
@@ -97,7 +97,7 @@ If both `start_key` and `end_key` show `NULL`, the range is empty and has no spl
 
 ### Show ranges for a database
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM [SHOW RANGES FROM database movr] WHERE "start_key" NOT LIKE '%Prefix%';
 ~~~

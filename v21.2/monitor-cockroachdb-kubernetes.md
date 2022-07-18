@@ -362,7 +362,7 @@ In this example, CockroachDB has already been deployed on a Kubernetes cluster. 
 
 1. Apply the ConfigMap to the cluster:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~
     kubectl apply -f log.yaml
     ~~~

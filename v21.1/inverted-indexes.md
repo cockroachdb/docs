@@ -98,14 +98,14 @@ GIN indexes on `JSONB` columns support the following comparison operators:
 - "contains": [`@>`](functions-and-operators.html#supported-operations)
 - "equals": [`=`](functions-and-operators.html#supported-operations), but only when you've reached into the JSON document with the [`->`](functions-and-operators.html#supported-operations) operator.  For example:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT * FROM a WHERE j ->'foo' = '"1"';
     ~~~
 
     This is equivalent to using `@>`:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT * FROM a WHERE j @> '{"foo": "1"}';
     ~~~
@@ -114,7 +114,7 @@ If you require comparisons using [`<`](functions-and-operators.html#supported-op
 
 1. Create your table with a computed column:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE TABLE test (
         id INT,
@@ -125,14 +125,14 @@ If you require comparisons using [`<`](functions-and-operators.html#supported-op
 
 2. Create an index on your computed column:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE INDEX test_idx ON test (foo);
     ~~~
 
 3. Execute your query with your comparison:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT * FROM test where foo > 3;
     ~~~
@@ -148,7 +148,7 @@ GIN indexes on [`ARRAY`](array.html) columns support the following comparison op
 
 {% include_cached new-in.html version="v21.1" %} You can create a [partial](partial-indexes.html) GIN index, a GIN index on a subset of `JSON`, `ARRAY`, or geospatial container column data. Just like partial indexes that use non-container data types, create a partial GIN index by including a clause that evaluates to true on a boolean predicate, like a `WHERE` clause.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TABLE test (
   id INT,
@@ -183,7 +183,7 @@ CREATE TABLE users (
 
 In this example, let's create a table with a `JSONB` column and a GIN index:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE users (
     profile_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -195,7 +195,7 @@ In this example, let's create a table with a `JSONB` column and a GIN index:
 
 Then, insert a few rows of data:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO users (user_profile) VALUES
     ('{"first_name": "Lola", "last_name": "Dog", "location": "NYC", "online" : true, "friends" : 547}'),
@@ -204,7 +204,7 @@ Then, insert a few rows of data:
   );
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT *, jsonb_pretty(user_profile) FROM users;
 ~~~
@@ -239,7 +239,7 @@ Then, insert a few rows of data:
 
 Now, run a query that filters on the `JSONB` column:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM users where user_profile @> '{"location":"NYC"}';
 ~~~
@@ -259,7 +259,7 @@ Now, run a query that filters on the `JSONB` column:
 
 In this example, let's create a table with an `ARRAY` column first, and add the GIN index later:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE students (
     student_id  UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -269,7 +269,7 @@ In this example, let's create a table with an `ARRAY` column first, and add the 
 
 Insert a few rows of data:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO students (marks) VALUES
     (ARRAY[10,20,50]),
@@ -278,7 +278,7 @@ Insert a few rows of data:
   );
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM students;
 ~~~
@@ -299,12 +299,12 @@ Insert a few rows of data:
 
 Now, let’s add a GIN index to the table and run a query that filters on the `ARRAY`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE INVERTED INDEX student_marks ON students (marks);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM students where marks @> ARRAY[100];
 ~~~
@@ -325,12 +325,12 @@ Now, let’s add a GIN index to the table and run a query that filters on the `A
 
 In the same [`users` table in the previous example](#create-a-table-with-gin-index-on-a-jsonb-column) create a partial GIN index for online users.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE INVERTED INDEX idx_online_users ON users(user_profile) WHERE user_profile -> 'online' = 'true';
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT * FROM users WHERE user_profile -> 'online' = 'true';
 ~~~

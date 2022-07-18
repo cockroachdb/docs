@@ -1086,6 +1086,12 @@
                 ]
               },
               {
+                "title": "<code>SQLType</code>",
+                "urls": [
+                  "/${VERSION}/sqltype.html"
+                ]
+              },
+              {
                 "title": "<code>STRING</code>",
                 "urls": [
                   "/${VERSION}/string.html"
@@ -1412,34 +1418,11 @@
             "urls": [
               "/${VERSION}/security-reference/encryption.html"
             ]
-          }
-        ]
-      },
-      {
-        "title": "Performance Optimization",
-        "items": [
-          {
-            "title": "Indexes",
-            "urls": [
-              "/${VERSION}/indexes.html"
-            ]
           },
           {
-            "title": "Cost-Based Optimizer",
+            "title": "Customer-Managed Encryption Keys (CMEK)",
             "urls": [
-              "/${VERSION}/cost-based-optimizer.html"
-            ]
-          },
-          {
-            "title": "Vectorized Execution Engine",
-            "urls": [
-              "/${VERSION}/vectorized-execution.html"
-            ]
-          },
-          {
-            "title": "Load-Based Splitting",
-            "urls": [
-              "/${VERSION}/load-based-splitting.html"
+              "/cockroachcloud/cmek.html"
             ]
           }
         ]
@@ -1806,6 +1789,12 @@
               "/cockroachcloud/serverless-benchmarking.html"
             ]
           }
+        ]
+      },
+      {
+        "title": "Unsupported Features in CockroachDB Serverless",
+        "urls": [
+          "/cockroachcloud/serverless-unsupported-features.html"
         ]
       },
       {

@@ -29,13 +29,13 @@ The user must have the `CREATE` [privilege](security-reference/authorization.htm
 ### Standard index
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/create_index.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/create_index.html %}
 </div>
 
 ### GIN index
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/create_inverted_index.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/create_inverted_index.html %}
 </div>
 
 ## Parameters
@@ -56,7 +56,6 @@ Parameter | Description
 `USING HASH` |  Creates a [hash-sharded index](hash-sharded-indexes.html).
 `WITH storage_parameter` |  A comma-separated list of [spatial index tuning parameters](spatial-indexes.html#index-tuning-parameters). Supported parameters include `fillfactor`, `s2_max_level`, `s2_level_mod`, `s2_max_cells`, `geometry_min_x`, `geometry_max_x`, `geometry_min_y`, and `geometry_max_y`. The `fillfactor` parameter is a no-op, allowed for PostgreSQL-compatibility.<br><br>For details, see [Spatial index tuning parameters](spatial-indexes.html#index-tuning-parameters). For an example, see [Create a spatial index that uses all of the tuning parameters](spatial-indexes.html#create-a-spatial-index-that-uses-all-of-the-tuning-parameters).
 `CONCURRENTLY` |  Optional, no-op syntax for PostgreSQL compatibility. All indexes are created concurrently in CockroachDB.
-`opt_interleave` | {% include {{ page.version.version }}/misc/interleave-deprecation-note.md %}
 
 ## Viewing schema changes
 
@@ -77,7 +76,7 @@ To create the most efficient indexes, we recommend reviewing:
 
 Single-column indexes sort the values of a single column.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE INDEX ON users (name);
 ~~~
@@ -88,7 +87,7 @@ Because each query can only use one index, single-column indexes are not typical
 
 Multiple-column indexes sort columns in the order you list them.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE INDEX ON users (name, city);
 ~~~
@@ -99,14 +98,14 @@ To create the most useful multiple-column indexes, we recommend reviewing our [b
 
 Unique indexes do not allow duplicate values among their columns.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE UNIQUE INDEX ON users (name, id);
 ~~~
 
 This also applies the [`UNIQUE` constraint](unique.html) at the table level, similar to [`ALTER TABLE`](alter-table.html). The preceding example is equivalent to:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE users ADD CONSTRAINT users_name_id_key UNIQUE (name, id);
 ~~~
@@ -117,14 +116,14 @@ Primary key columns that are not specified within a unique index are automatical
 
 You can create [GIN indexes](inverted-indexes.html) on schemaless data in a [`JSONB`](jsonb.html) column.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE INVERTED INDEX ON promo_codes (rules);
 ~~~
 
 The preceding example is equivalent to the following PostgreSQL-compatible syntax:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE INDEX ON promo_codes USING GIN (rules);
 ~~~
@@ -135,7 +134,7 @@ You can create [spatial indexes](spatial-indexes.html) on `GEOMETRY` and `GEOGRA
 
 To create a spatial index on a `GEOMETRY` column:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE INDEX geom_idx_1 ON some_spatial_table USING GIST(geom);
 ~~~
@@ -144,7 +143,7 @@ Unlike GIN indexes, spatial indexes do not support an alternate `CREATE INVERTED
 
 For advanced users, there are a number of [spatial index tuning parameters](spatial-indexes.html#create-a-spatial-index-that-uses-all-of-the-tuning-parameters) that can be passed in using the syntax `WITH (var1=val1, var2=val2)` as follows:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE INDEX geom_idx_2
   ON some_spatial_table USING GIST(geom)
@@ -159,7 +158,7 @@ Most users should not change the default spatial index settings. There is a risk
 
 Storing a column improves the performance of queries that retrieve (but do not filter) its values.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE INDEX ON users (city) STORING (name);
 ~~~
@@ -174,7 +173,7 @@ However, to use stored columns, queries must filter another column in the same i
 
 To sort columns in descending order, you must explicitly set the option when creating the index. (Ascending order is the default.)
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE INDEX ON users (city DESC, name);
 ~~~
@@ -185,7 +184,7 @@ How a column is ordered in the index will affect the ordering of the index keys,
 
 Normally, CockroachDB selects the index that it calculates will scan the fewest rows. However, you can override that selection and specify the name of the index you want to use. To find the name, use [`SHOW INDEX`](show-index.html).
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW INDEX FROM users;
 ~~~
@@ -205,7 +204,7 @@ Normally, CockroachDB selects the index that it calculates will scan the fewest 
 
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT name FROM users@users_name_idx WHERE city='new york';
 ~~~

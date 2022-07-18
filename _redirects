@@ -11,6 +11,8 @@ layout: null
 /docs/advisories/advisories.html /docs/advisories/index.html 301
 
 # Renamed pages
+/docs/install-client-drivers.html /docs/stable/install-client-drivers.html 301
+/docs/stable/operate-cockroachdb-kubernetes /docs/stable/kubernetes-overview.html 301
 /docs/stable/operate-cockroachdb-kubernetes.html /docs/stable/kubernetes-overview.html 301
 /docs/v21.2/operate-cockroachdb-kubernetes.html /docs/stable/kubernetes-overview.html 301
 /docs/stable/build-an-app-with-cockroachdb.html /docs/stable/example-apps.html 301
@@ -219,7 +221,8 @@ layout: null
 /docs/stable/range-merges.html /docs/stable/architecture/distribution-layer.html#range-merges 301
 /docs/v20.2/change-data-capture.html /docs/v20.2/stream-data-out-of-cockroachdb-using-changefeeds.html 301
 /docs/v21.1/change-data-capture.html /docs/v21.1/stream-data-out-of-cockroachdb-using-changefeeds.html 301
-/docs/stable/change-data-capture.html /docs/stable/stream-data-out-of-cockroachdb-using-changefeeds.html 301
+/docs/v21.2/change-data-capture.html /docs/v21.2/change-data-capture-overview.html 301
+/docs/stable/change-data-capture.html /docs/stable/change-data-capture-overview.html 301
 /docs/v20.2/admin-ui-cdc-dashboard.html /docs/v20.2/ui-cdc-dashboard.html 301
 /docs/v21.1/admin-ui-cdc-dashboard.html /docs/v21.1/ui-cdc-dashboard.html 301
 /docs/stable/admin-ui-cdc-dashboard.html /docs/stable/ui-cdc-dashboard.html 301
@@ -329,41 +332,48 @@ layout: null
 /docs/*/set-application-name.html /docs/*/set-vars.html 301
 /docs/*/set-database.html /docs/*/set-vars.html 301
 /docs/*/set-time-zone.html /docs/*/set-vars.html 301
-/docs/v2.0/orchetrate-cockroachdb-with-kubernetes-multi-region.html /docs/v2.0/orchestrate-cockroachdb-with-kubernetes-multi-cluster.md 301
-/docs/v2.1/orchetrate-cockroachdb-with-kubernetes-multi-region.html /docs/v2.1/orchestrate-cockroachdb-with-kubernetes-multi-cluster.md 301
-/docs/v19.1/orchetrate-cockroachdb-with-kubernetes-multi-region.html /docs/v19.1/orchestrate-cockroachdb-with-kubernetes-multi-cluster.md 301
-/docs/v19.2/orchetrate-cockroachdb-with-kubernetes-multi-region.html /docs/v19.2/orchestrate-cockroachdb-with-kubernetes-multi-cluster.md 301
-/docs/v20.1/orchetrate-cockroachdb-with-kubernetes-multi-region.html /docs/v20.1/orchestrate-cockroachdb-with-kubernetes-multi-cluster.md 301
-/docs/v20.2/orchetrate-cockroachdb-with-kubernetes-multi-region.html /docs/v20.2/orchestrate-cockroachdb-with-kubernetes-multi-cluster.md 301
-/docs/v21.1/orchetrate-cockroachdb-with-kubernetes-multi-region.html /docs/v21.1/orchestrate-cockroachdb-with-kubernetes-multi-cluster.md 301
-/docs/stable/orchetrate-cockroachdb-with-kubernetes-multi-region.html /docs/stable/orchestrate-cockroachdb-with-kubernetes-multi-cluster.md 301
+/docs/v2.0/orchetrate-cockroachdb-with-kubernetes-multi-region.html /docs/v2.0/orchestrate-cockroachdb-with-kubernetes-multi-cluster.html 301
+/docs/v2.1/orchetrate-cockroachdb-with-kubernetes-multi-region.html /docs/v2.1/orchestrate-cockroachdb-with-kubernetes-multi-cluster.html 301
+/docs/v19.1/orchetrate-cockroachdb-with-kubernetes-multi-region.html /docs/v19.1/orchestrate-cockroachdb-with-kubernetes-multi-cluster.html 301
+/docs/v19.2/orchetrate-cockroachdb-with-kubernetes-multi-region.html /docs/v19.2/orchestrate-cockroachdb-with-kubernetes-multi-cluster.html 301
+/docs/v20.1/orchetrate-cockroachdb-with-kubernetes-multi-region.html /docs/v20.1/orchestrate-cockroachdb-with-kubernetes-multi-cluster.html 301
+/docs/v20.2/orchetrate-cockroachdb-with-kubernetes-multi-region.html /docs/v20.2/orchestrate-cockroachdb-with-kubernetes-multi-cluster.html 301
+/docs/v21.1/orchetrate-cockroachdb-with-kubernetes-multi-region.html /docs/v21.1/orchestrate-cockroachdb-with-kubernetes-multi-cluster.html 301
+/docs/stable/orchetrate-cockroachdb-with-kubernetes-multi-region.html /docs/stable/orchestrate-cockroachdb-with-kubernetes-multi-cluster.html 301
 
 # Removed pages
+/docs/stable/orchestrate-cockroachdb-with-docker-swarm.html /docs/stable/orchestration.html 301
+/docs/v22.1/orchestrate-cockroachdb-with-docker-swarm.html /docs/stable/orchestration.html 301
+/docs/v21.2/orchestrate-cockroachdb-with-docker-swarm.html /docs/stable/orchestration.html 301
+/docs/v21.1/orchestrate-cockroachdb-with-docker-swarm.html /docs/stable/orchestration.html 301
 /docs/tutorials/build-a-python-app-with-cockroachdb-interactive.html /docs/stable/build-a-python-app-with-cockroachdb.html 301
-/docs/v22.1/sql-playground /docs/tutorials/sql-playground.html 301
-/docs/v21.2/sql-playground /docs/tutorials/sql-playground.html 301
-/docs/v20.2/sql-playground /docs/tutorials/sql-playground.html 301
-/docs/v21.1/sql-playground /docs/tutorials/sql-playground.html 301
-/docs/v20.2/hello-world-go-gorm.md /docs/cockroachcloud/quickstart.html 301
-/docs/v20.2/hello-world-go-pgx.md /docs/cockroachcloud/quickstart.html 301
-/docs/v20.2/hello-world-java-jdbc.md /docs/cockroachcloud/quickstart.html 301
-/docs/v20.2/hello-world-node-postgres.md /docs/cockroachcloud/quickstart.html 301
-/docs/v20.2/hello-world-python-sqlalchemy.md /docs/cockroachcloud/quickstart.html 301
-/docs/v21.1/hello-world-go-gorm.md /docs/cockroachcloud/quickstart.html 301
-/docs/v21.1/hello-world-go-pgx.md /docs/cockroachcloud/quickstart.html 301
-/docs/v21.1/hello-world-java-jdbc.md /docs/cockroachcloud/quickstart.html 301
-/docs/v21.1/hello-world-node-postgres.md /docs/cockroachcloud/quickstart.html 301
-/docs/v21.1/hello-world-python-sqlalchemy.md /docs/cockroachcloud/quickstart.html 301
-/docs/v21.2/hello-world-go-gorm.md /docs/cockroachcloud/quickstart.html 301
-/docs/v21.2/hello-world-go-pgx.md /docs/cockroachcloud/quickstart.html 301
-/docs/v21.2/hello-world-java-jdbc.md /docs/cockroachcloud/quickstart.html 301
-/docs/v21.2/hello-world-node-postgres.md /docs/cockroachcloud/quickstart.html 301
-/docs/v21.2/hello-world-python-sqlalchemy.md /docs/cockroachcloud/quickstart.html 301
-/docs/v22.1/hello-world-go-gorm.md /docs/cockroachcloud/quickstart.html 301
-/docs/v22.1/hello-world-go-pgx.md /docs/cockroachcloud/quickstart.html 301
-/docs/v22.1/hello-world-java-jdbc.md /docs/cockroachcloud/quickstart.html 301
-/docs/v22.1/hello-world-node-postgres.md /docs/cockroachcloud/quickstart.html 301
-/docs/v22.1/hello-world-python-sqlalchemy.md /docs/cockroachcloud/quickstart.html 301
+/docs/stable/sql-playground.html /docs/tutorials/sql-playground.html 301
+/docs/v22.1/sql-playground.html /docs/tutorials/sql-playground.html 301
+/docs/v21.2/sql-playground.html /docs/tutorials/sql-playground.html 301
+/docs/v20.2/sql-playground.html /docs/tutorials/sql-playground.html 301
+/docs/v21.1/sql-playground.html /docs/tutorials/sql-playground.html 301
+/docs/sql-playground.html /docs/tutorials/sql-playground.html 301
+/docs/v20.2/hello-world-go-gorm.html /docs/cockroachcloud/quickstart.html 301
+/docs/v20.2/hello-world-go-pgx.html /docs/cockroachcloud/quickstart.html 301
+/docs/v20.2/hello-world-java-jdbc.html /docs/cockroachcloud/quickstart.html 301
+/docs/v20.2/hello-world-node-postgres.html /docs/cockroachcloud/quickstart.html 301
+/docs/v20.2/hello-world-python-sqlalchemy.html /docs/cockroachcloud/quickstart.html 301
+/docs/v21.1/hello-world-go-gorm.html /docs/cockroachcloud/quickstart.html 301
+/docs/v21.1/hello-world-go-pgx.html /docs/cockroachcloud/quickstart.html 301
+/docs/v21.1/hello-world-java-jdbc.html /docs/cockroachcloud/quickstart.html 301
+/docs/v21.1/hello-world-node-postgres.html /docs/cockroachcloud/quickstart.html 301
+/docs/v21.1/hello-world-python-sqlalchemy.html /docs/cockroachcloud/quickstart.html 301
+/docs/v21.2/hello-world-go-gorm /docs/cockroachcloud/quickstart.html 301
+/docs/v21.2/hello-world-go-gorm.html /docs/cockroachcloud/quickstart.html 301
+/docs/v21.2/hello-world-go-pgx.html /docs/cockroachcloud/quickstart.html 301
+/docs/v21.2/hello-world-java-jdbc.html /docs/cockroachcloud/quickstart.html 301
+/docs/v21.2/hello-world-node-postgres.html /docs/cockroachcloud/quickstart.html 301
+/docs/v21.2/hello-world-python-sqlalchemy.html /docs/cockroachcloud/quickstart.html 301
+/docs/v22.1/hello-world-go-gorm.html /docs/cockroachcloud/quickstart.html 301
+/docs/v22.1/hello-world-go-pgx.html /docs/cockroachcloud/quickstart.html 301
+/docs/v22.1/hello-world-java-jdbc.html /docs/cockroachcloud/quickstart.html 301
+/docs/v22.1/hello-world-node-postgres.html /docs/cockroachcloud/quickstart.html 301
+/docs/v22.1/hello-world-python-sqlalchemy.html /docs/cockroachcloud/quickstart.html 301
 /docs/stable/build-a-c++-app-with-cockroachdb.html /docs/stable/community-tooling.html 301
 /docs/stable/build-a-clojure-app-with-cockroachdb.html /docs/stable/community-tooling.html 301
 /docs/stable/build-a-php-app-with-cockroachdb.html /docs/stable/community-tooling.html 301
@@ -388,6 +398,7 @@ layout: null
 /docs/v20.2/automated-scaling-and-repair.html /docs/v20.2/frequently-asked-questions.html 301
 /docs/v21.1/automated-scaling-and-repair.html /docs/v21.1/frequently-asked-questions.html 301
 /docs/stable/automated-scaling-and-repair.html /docs/stable/frequently-asked-questions.html 301
+/docs/automated-scaling-and-repair.html /docs/stable/frequently-asked-questions.html 301
 /docs/v19.1/simplified-deployment.html /docs/v19.1/frequently-asked-questions.html 301
 /docs/v19.2/simplified-deployment.html /docs/v19.2/frequently-asked-questions.html 301
 /docs/v20.1/simplified-deployment.html /docs/v20.1/frequently-asked-questions.html 301
@@ -406,6 +417,7 @@ layout: null
 /docs/v20.2/sql.html /docs/v20.2/frequently-asked-questions.html 301
 /docs/v21.1/sql.html /docs/v21.1/frequently-asked-questions.html 301
 /docs/stable/sql.html /docs/stable/frequently-asked-questions.html 301
+/docs/sql.html /docs/stable/frequently-asked-questions.html 301
 /docs/v19.1/distributed-transactions.html /docs/v19.1/frequently-asked-questions.html 301
 /docs/v19.2/distributed-transactions.html /docs/v19.2/frequently-asked-questions.html 301
 /docs/v20.1/distributed-transactions.html /docs/v20.1/frequently-asked-questions.html 301
@@ -449,11 +461,15 @@ layout: null
 /docs/column-families.html /docs/stable/column-families.html 301
 /docs/performance-recipes-solutions.html /docs/stable/performance-recipes.html 301
 /docs/stable/stream-data-out-of-cockroachdb-using-changefeeds.html /docs/stable/change-data-capture-overview.html 301
+/docs/dev/stream-data-out-of-cockroachdb-using-changefeeds.html /docs/dev/change-data-capture-overview.html 301
 /docs/stable/cockroach-dump.html /docs/v21.1/cockroach-dump.html 301
 /docs/v21.2/cockroach-dump.html /docs/v21.1/cockroach-dump.html 301
 /docs/v22.1/cockroach-dump.html /docs/v21.1/cockroach-dump.html 301
 /docs/v22.1/convert-to-schema.html /docs/v22.1/create-schema.html 301
 /docs/stable/architecture/admission-control.html /docs/stable/admission-control.html 301
+/docs/show-database.html /docs/stable/show-vars.html 301
+/docs/v22.1/convert-to-schema.html /docs/v22.1/alter-database.html 301
+/docs/stable/convert-to-schema.html /docs/stable/alter-database.html 301
 
 #CockroachDB Cloud release notes
 
@@ -483,12 +499,14 @@ layout: null
 {% assign rn_rdr = "v20.2,v21.1,v21.2" | split: "," -%}
 {%- assign rns = site.data.releases | where_exp: "rns", "rn_rdr contains rns.major_version" -%}
 {%- for r in rns -%}
-{%- capture old_url -%}releases/{{ r.version }}.html{%- endcapture -%}
+{%- capture old_url -%}releases/{{ r.version }}{%- endcapture -%}
 {%- capture new_url %}releases/{{ r.major_version }}.html#{{ r.version | replace: ".", "-" }}{% endcapture -%}
 {{ old_url | relative_url }} {{ new_url | relative_url }} 301
-{% endfor %}
+{{ old_url | append: ".html" | relative_url }} {{ new_url | relative_url }} 301
+{% endfor -%}
 
 /docs/releases/v22.1.0-alpha.1.html /docs/releases/v22.1.html#v22-1-0-alpha-1 301
+/docs/releases/v22.1.0-alpha.1 /docs/releases/v22.1.html#v22-1-0-alpha-1 301
 
 # Redirects for Homebrew
 /docs/secure-a-cluster.html /docs/stable/secure-a-cluster.html 301

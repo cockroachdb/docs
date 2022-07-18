@@ -31,7 +31,7 @@ CockroachDB stores audit log information in a way that ensures durability, but n
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/experimental_audit.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/experimental_audit.html %}
 </div>
 
 ## Required privileges
@@ -84,7 +84,7 @@ For debugging and troubleshooting on production clusters, the most performant wa
 
 Let's say you have a  `customers` table that contains personally identifiable information (PII). To turn on audit logs for that table, run the following command:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER TABLE customers EXPERIMENTAL_AUDIT SET READ WRITE;
 ~~~
@@ -113,7 +113,7 @@ For a more detailed example, see [SQL Audit Logging](sql-audit-logging.html).
 
 To turn off logging, issue the following command:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER TABLE customers EXPERIMENTAL_AUDIT SET OFF;
 ~~~
