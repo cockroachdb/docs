@@ -16,7 +16,7 @@ You can only [cancel](cancel-job.html) `ALTER TYPE` [schema change jobs](online-
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/alter_type.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/alter_type.html %}
 </div>
 
 ## Parameters

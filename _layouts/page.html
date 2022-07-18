@@ -22,7 +22,9 @@ layout: default
 {% endunless %}
 ">
   <h1 class="post-title-main">{{ page.title }}</h1>
-
+  {% unless page.contribute == false %}
+        {% include contribute-options.html %}
+  {% endunless %}
 </div>
 {% endif %}
 

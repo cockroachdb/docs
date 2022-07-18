@@ -16,7 +16,7 @@ The `SET (storage parameter)` is a subcommand of [`ALTER TABLE`](alter-table.htm
 **alter_table_set_storage_param ::=**
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/alter_table_set_storage_param.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/alter_table_set_storage_param.html %}
 </div>
 
 {% comment %} need alter index diagram here {% endcomment %}
