@@ -79,7 +79,6 @@ The approach taken here is intended to be automation friendly. Users should cons
 
 For example, a broad baseline recommendation might be to issue new certificates daily, keeping the validity duration under two days.
 
-### The plan
 #### Task personas
 
 The work described here can be divided up into three chunks, each of which might be performed by a different person and therefore which require access to different GCP and Vault resources. Each of the three personas will therefore correspond to a GCP service account and a Vault policy.
@@ -253,9 +252,10 @@ Additionally, our project's firewall rules must be configured to allow communica
 
 ### Provision the certificate authority (CA) with Vault
 
+The operations in this section fall under the persona of `ca-admin`, and therefore require admin Vault access and ssh access to the CA admin jumpbox.
+
 #### Step 1: Access and prepare the CA admin jumpbox.
 
-The operations in this section fall under the persona of `ca-admin`, and therefore require admin Vault access and ssh access to the CA admin jumpbox.
 
 1. SSH onto the CA admin jumpbox.
 
