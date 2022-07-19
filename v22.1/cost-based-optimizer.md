@@ -181,6 +181,14 @@ The optimizer uses `avg_size` to cost scans and relevant joins. Costing scans pe
 
 Cockroach Labs recommends that you allow the optimizer to consider column size when costing plans. If you are an advanced user and need to disable using `avg_size` for troubleshooting or performance tuning reasons, you can disable it by setting the `cost_scans_with_default_col_size` [session variable](set-vars.html) to true with `SET cost_scans_with_default_col_size=true`.
 
+## Control whether the optimizer creates a plan with a full scan
+
+Even if you have [secondary indexes](schema-design-indexes.html), the optimizer may decide that a full table scan will be faster. For example, if you add a secondary index to a table with a large number of rows and determine that a statement plan isn't using the secondary index, it is likely that performing a full table scan using the primary key is faster than doing a secondary index scan plus an [index join](indexes.html#example).
+
+You can disable statement plans that perform full table scans with the `disallow_full_table_scans` [session variable](set-vars.html). If `disallow_full_table_scans` is `true` and you set the `large_full_scan_rows` [session variable](set-vars.html). If no alternative plan is possible, an error will be returned.
+
+If you set `disallow_full_table_scans` is `true` and you provide an [index hint](table-expressions.html#force-index-selection), the optimizer will try to avoid a full scan while also respecting the index hint. If this is not possible, the optimizer will return an error. If you don't provide an index hint, the full scan will be logged and and the `sql.guardrails.full_scan_rejected.count` [metric](ui-overview-dashboard.html) will be updated.
+
 ## Locality optimized search in multi-region clusters
 
 In [multi-region deployments](multiregion-overview.html), the optimizer, in concert with the [SQL engine](architecture/sql-layer.html), will avoid sending requests to nodes in other regions when it can instead read a value from a unique column that is stored locally. This capability is known as _locality optimized search_.
