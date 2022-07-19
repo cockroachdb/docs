@@ -17,6 +17,17 @@ functions:
 
 {% include {{ page.version.version }}/sql/function-special-forms.md %}
 
+## Function volatility
+
+A function's _volatility_ is a promise to the [optimizer](cost-based-optimizer.html) about the behavior of the function.
+
+Type   | Description | Examples
+-------|-------------|----------
+Volatile | The function can modify the state of the database and is not guaranteed to return the same results given the same arguments in any context. | `random`, `crdb_internal.force_error`, `nextval`, `now`
+Stable | The function is guaranteed to return the same results given the same arguments whenever it is evaluated within the same statement. The optimizer can optimize multiple calls of the function to a single call. | `current_timestamp`, `current_date`
+Immutable | The function does not depend on configuration settings and is guaranteed to return the same results given the same arguments in any context.  The optimizer can pre-evaluate the function when a query calls it with constant arguments. | `log`, `from_json`
+Leakproof | The function does not depend on configuration settings and is guaranteed to return the same results given the same arguments in any context. In addition, no information about the arguments is conveyed except via the return value. Any function that might throw an error depending on the values of its arguments is not leakproof. Leakproof is strictly stronger than Immutable. | Integer [comparison](#comparison-functions)
+
 ## Conditional and function-like operators
 
 The following table lists the operators that look like built-in
@@ -37,7 +48,7 @@ functions but have special evaluation rules:
 
 ## Built-in functions
 
-{% remote_include https://raw.githubusercontent.com/cockroachdb/cockroach/release-22.1/docs/generated/sql/functions.md %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/cockroach/release-{{ page.version.version | replace: "v", "" }}/docs/generated/sql/functions.md %}
 
 ## Aggregate functions
 
@@ -47,11 +58,11 @@ For examples showing how to use aggregate functions, see [the `SELECT` clause do
 Non-commutative aggregate functions are sensitive to the order in which the rows are processed in the surrounding [`SELECT` clause](select-clause.html#aggregate-functions). To specify the order in which input rows are processed, you can add an [`ORDER BY`](order-by.html) clause within the function argument list. For examples, see the [`SELECT` clause](select-clause.html#order-aggregate-function-input-rows-by-column) documentation.
 {{site.data.alerts.end}}
 
-{% remote_include https://raw.githubusercontent.com/cockroachdb/cockroach/release-22.1/docs/generated/sql/aggregates.md %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/cockroach/release-{{ page.version.version | replace: "v", "" }}/docs/generated/sql/aggregates.md %}
 
 ## Window functions
 
-{% remote_include https://raw.githubusercontent.com/cockroachdb/cockroach/release-22.1/docs/generated/sql/window_functions.md %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/cockroach/release-{{ page.version.version | replace: "v", "" }}/docs/generated/sql/window_functions.md %}
 
 ## Operators
 
@@ -91,8 +102,8 @@ The following table lists all CockroachDB operators from highest to lowest prece
 |    |  `#>` | Access a JSONB field at the specified path, returning a JSONB value. | binary |
 |    |  `#>>` | Access a JSONB field at the specified path, returning a string. | binary |
 |    |  `?` | Does the key or element string exist within the JSONB value? | binary |
-|    |  `?&` | Do any of the key or element strings exist within the JSONB value? | binary |
-|    |  `?|` | Do all the key or element strings exist within the JSONB value?  | binary |
+|    |  `?&` | Do all the key or element strings exist within the JSONB value? | binary |
+|    |  <code>?&#124;</code> | Do any of the key or element strings exist within the JSONB value?  | binary |
 | 12 | `[NOT] BETWEEN` | Value is [not] within the range specified | binary |
 |    | `[NOT] BETWEEN SYMMETRIC` | Like `[NOT] BETWEEN`, but in non-sorted order. For example, whereas `a BETWEEN b AND c` means `b <= a <= c`, `a BETWEEN SYMMETRIC b AND c` means `(b <= a <= c) OR (c <= a <= b)`. | binary |
 |    | `[NOT] IN` | Value is [not] in the set of values specified | binary |
@@ -122,7 +133,7 @@ The following table lists all CockroachDB operators from highest to lowest prece
 
 ### Supported operations
 
-{% remote_include https://raw.githubusercontent.com/cockroachdb/cockroach/release-22.1/docs/generated/sql/operators.md %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/cockroach/release-{{ page.version.version | replace: "v", "" }}/docs/generated/sql/operators.md %}
 
 <!--
 ## `CAST()`

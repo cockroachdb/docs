@@ -50,7 +50,7 @@ The user must have the `INSERT`, `SELECT` and `UPDATE` [privileges](security-ref
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/upsert.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/upsert.html %}
 </div>
 
 ## Parameters

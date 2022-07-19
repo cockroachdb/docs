@@ -12,7 +12,7 @@ docs_area: reference.sql
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/show_regions.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagramsrelease-release/grammar_svg/show_regions.html %}
 </div>
 
 ## Required privileges

@@ -23,7 +23,7 @@ layout: default
 ">
   <h1 class="post-title-main">{{ page.title }}</h1>
   {% unless page.contribute == false %}
-      {% include contribute-options.html %}
+        {% include contribute-options.html %}
   {% endunless %}
 </div>
 {% endif %}
@@ -65,9 +65,9 @@ layout: default
    {{content}}
 
    {% if page.feedback != false %}
-      {% include_cached feedback-widget.html %}
+      {% include feedback-widget-bottom.html %}
    {% endif %}
-   {% comment %} Show page feedback. {% endcomment %}
+   {% comment %} Show feedback widget at bottom of page.{% endcomment %}
 
    {% if page.docs_area %}
      <script>

@@ -36,7 +36,7 @@ By default, only the `root` user can execute `SHOW JOBS`.
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/show_jobs.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/show_jobs.html %}
 </div>
 
 ## Parameters
@@ -63,7 +63,7 @@ Field | Description
 `description` | The statement that started the job, or a textual description of the job.
 `statement` | When `description` is a textual description of the job, the statement that started the job is returned in this column. Currently, this field is populated only for the automatic table statistics jobs.
 `user_name` | The name of the [user](security-reference/authorization.html#create-and-manage-users) who started the job.
-`status` | The job's current state. Possible values: `pending`, `running`, `paused`, `failed`, `succeeded`, or `canceled`.
+`status` | The job's current state. Possible values: `pending`, `running`, `paused`, `failed`, `retrying`, `reverting`, `succeeded`, or `canceled`.
 `running_status` | The job's detailed running status, which provides visibility into the progress of the dropping or truncating of tables (i.e., [`DROP TABLE`](drop-table.html), [`DROP DATABASE`](drop-database.html), or [`TRUNCATE`](truncate.html)). For dropping or truncating jobs, the detailed running status is determined by the status of the table at the earliest stage of the schema change. The job is completed when the GC TTL expires and both the table data and ID is deleted for each of the tables involved. Possible values: `draining names`, `waiting for GC TTL`, `RocksDB compaction`, or `NULL` (when the status cannot be determined). <br><br>For the `SHOW AUTOMATIC JOBS` statement, the value of this field is `NULL`.
 `created` | The `TIMESTAMP` when the job was created.
 `started` | The `TIMESTAMP` when the job began running first.

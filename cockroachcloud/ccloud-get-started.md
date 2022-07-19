@@ -379,7 +379,7 @@ Connection parameters
 
 ## Create a SQL user using `ccloud cluster user create`
 
-Use the `ccloud cluster user create` command to create a new SQL user by passing in the cluster name and the username.
+Use the `ccloud cluster user create` command to create a new SQL user by passing in the cluster name and the username. By default, newly created users are assigned to the `admin` role. An `admin` SQL user has full privileges for all databases and tables in your cluster. This user can also create additional users and grant them appropriate privileges.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
