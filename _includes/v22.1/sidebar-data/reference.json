@@ -643,15 +643,15 @@
                 ]
               },
               {
-                "title": "<code>RESET &#123;session variable&#125;</code>",
-                "urls": [
-                  "/${VERSION}/reset-vars.html"
-                ]
-              },
-              {
                 "title": "<code>RESET CLUSTER SETTING</code>",
                 "urls": [
                   "/${VERSION}/reset-cluster-setting.html"
+                ]
+              },
+              {
+                "title": "<code>RESET &#123;session variable&#125;</code>",
+                "urls": [
+                  "/${VERSION}/reset-vars.html"
                 ]
               },
               {
