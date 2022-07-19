@@ -560,41 +560,68 @@ DROP VIEW
 
 To speed up queries on materialized views, you can add an [index](schema-design-indexes.html) to the view.
 
-The following statement creates a materialized view of the [Movr](movr.html) rides table where the revenue is less than $20.00:
+1. Create a materialized view of the [Movr](movr.html) rides table where the revenue is less than $20.00:
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-CREATE MATERIALIZED VIEW low_rev_rides AS SELECT city, vehicle_id, revenue from rides WHERE revenue < 20.00;
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    CREATE MATERIALIZED VIEW low_rev_rides AS SELECT city, vehicle_id, revenue from rides WHERE revenue < 20.00;
+    ~~~
 
-The following statement creates an index on the city column:
+1. To see the plan for a select on this view, run:
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-CREATE INDEX ON low_rev_rides (city) STORING (vehicle_id, revenue);
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    EXPLAIN SELECT vehicle_id, revenue FROM low_rev_rides WHERE city = 'seattle';
+    ~~~
 
-To see which vehicles earn revenue lower than $20.00 in Seattle, run the follow query:
+    ~~~
+                                             info
+    ---------------------------------------------------------------------------------------
+      distribution: full
+      vectorized: true
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-SELECT vehicle_id, revenue FROM low_rev_rides@low_rev_rides_city_idx WHERE city = 'seattle';
-~~~
+      • filter
+      │ filter: city = 'seattle'
+      │
+      └── • scan
+            missing stats
+            table: low_rev_rides@low_rev_rides_pkey
+            spans: FULL SCAN
 
-~~~
-               vehicle_id              | revenue
----------------------------------------+----------
-  55555555-5555-4400-8000-000000000005 |    3.00
-  55555555-5555-4400-8000-000000000005 |    7.00
-  55555555-5555-4400-8000-000000000005 |   18.00
-  55555555-5555-4400-8000-000000000005 |    7.00
-  55555555-5555-4400-8000-000000000005 |   15.00
-  66666666-6666-4800-8000-000000000006 |   11.00
-  66666666-6666-4800-8000-000000000006 |   11.00
-  66666666-6666-4800-8000-000000000006 |   16.00
-  55555555-5555-4400-8000-000000000005 |   13.00
-(9 rows)
-~~~
+      index recommendations: 1
+      1. type: index creation
+         SQL command: CREATE INDEX ON low_rev_rides (city) STORING (vehicle_id, revenue);
+    (14 rows)
+    ~~~
+
+    Notice how there are [no statistics](#known-limitations) collected on the view.
+
+1. Create an index on the `city` column:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    CREATE INDEX ON low_rev_rides (city) STORING (vehicle_id, revenue);
+    ~~~
+
+1. To see the change in the plan after adding the index, run:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    EXPLAIN SELECT vehicle_id, revenue FROM low_rev_rides@low_rev_rides_city_idx WHERE city = 'seattle';
+    ~~~
+
+    ~~~
+                          info
+    -------------------------------------------------
+      distribution: local
+      vectorized: true
+
+      • scan
+        missing stats
+        table: low_rev_rides@low_rev_rides_city_idx
+        spans: [/'seattle' - /'seattle']
+    (7 rows)
+    ~~~
 
 ### Known limitations
 
