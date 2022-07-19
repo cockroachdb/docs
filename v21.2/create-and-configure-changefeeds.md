@@ -7,20 +7,23 @@ docs_area: stream_data
 
 Core and {{ site.data.products.enterprise }} changefeeds offer different levels of configurability. {{ site.data.products.enterprise }} changefeeds allow for active changefeed jobs to be [paused](#pause), [resumed](#resume), and [canceled](#cancel).
 
-## Create a changefeed (Core)
+When creating a changefeed, it's important to consider the number of changefeeds versus the number of tables to include in a single changefeed:
 
-A core changefeed streams row-level changes to the client indefinitely until the underlying connection is closed or the changefeed is canceled.
+  - Changefeeds do not share internal buffers, so each running changefeed will increase total memory usage. To watch multiple tables, we recommend creating a changefeed with a comma-separated list of tables.
+  - Creating a single changefeed that will watch hundreds of tables can affect the performance of a changefeed by introducing coupling. For example, any [schema change](use-changefeeds.html#schema-changes) on any of the tables will affect the entire changefeed's performance. 
 
-To create a core changefeed:
+We recommend monitoring your changefeeds. See [Monitor and Debug Changefeeds](monitor-and-debug-changefeeds.html) for more detail.
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> EXPERIMENTAL CHANGEFEED FOR name;
-~~~
+The following Enterprise and Core sections outline how to create and configure each type of changefeed:
 
-For more information, see [`EXPERIMENTAL CHANGEFEED FOR`](changefeed-for.html).
+<div class="filters clearfix">
+  <button class="filter-button" data-scope="enterprise">Enterprise Changefeeds</button>
+  <button class="filter-button" data-scope="core">Core Changefeeds</button>
+</div>
 
-## Configure a changefeed ({{ site.data.products.enterprise }})
+<section class="filter-content" markdown="1" data-scope="enterprise">
+
+## Configure a changefeed
 
 An {{ site.data.products.enterprise }} changefeed streams row-level changes in a configurable format to a configurable sink (i.e., Kafka or a cloud storage sink). You can [create](#create), [pause](#pause), [resume](#resume), and [cancel](#cancel) an {{ site.data.products.enterprise }} changefeed.
 
@@ -73,6 +76,25 @@ For more information, see [`CANCEL JOB`](cancel-job.html).
 ### Configuring all changefeeds
 
 {% include {{ page.version.version }}/cdc/configure-all-changefeed.md %}
+
+</section>
+
+<section class="filter-content" markdown="1" data-scope="core">
+
+## Create a changefeed 
+
+A core changefeed streams row-level changes to the client indefinitely until the underlying connection is closed or the changefeed is canceled.
+
+To create a core changefeed:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> EXPERIMENTAL CHANGEFEED FOR name;
+~~~
+
+For more information, see [`EXPERIMENTAL CHANGEFEED FOR`](changefeed-for.html).
+
+</section>
 
 ## See also
 
