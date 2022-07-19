@@ -187,7 +187,7 @@ Even if you have [secondary indexes](schema-design-indexes.html), the optimizer 
 
 You can disable statement plans that perform full table scans with the `disallow_full_table_scans` [session variable](set-vars.html). If `disallow_full_table_scans` is `true` and you set the `large_full_scan_rows` [session variable](set-vars.html). If no alternative plan is possible, an error will be returned.
 
-If `disallow_full_table_scans` is `true` and you provide an [index hint](table-expressions.html#force-index-selection), the optimizer will try to avoid a full scan while also respecting the index hint. If this is not possible, the optimizer will return an error. If you don't provide an index hint, the full scan will be logged and and the `sql.guardrails.full_scan_rejected.count` [metric](ui-overview-dashboard.html) will be updated.
+If `disallow_full_table_scans` is `true` and you provide an [index hint](table-expressions.html#force-index-selection), the optimizer will try to avoid a full scan while also respecting the index hint. If this is not possible, the optimizer will return an error. If you don't provide an index hint, the full scan will be logged and the `sql.guardrails.full_scan_rejected.count` [metric](ui-overview-dashboard.html) will be updated.
 
 ## Locality optimized search in multi-region clusters
 
