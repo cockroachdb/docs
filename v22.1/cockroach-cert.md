@@ -12,7 +12,7 @@ To learn more, explore:
 
 - [Transport Layer Security (TLS) and Public Key Infrastructure (PKI)](security-reference/transport-layer-security.html)
 - [Using the CockroachDB CLI to provision a development cluster](manage-certs-cli.html).
-- [Using Google Cloud Platform Certificate Authority Service to manage PKI certificates](manage-certs-gcloud.html).
+- [Managing CockroachDB security certificates with HashiCorp Vault](manage-certs-vault.html).
 
 {{site.data.alerts.callout_info}}
 The ability to rapidly and locally generate private key/public certificate pairs is handy for development, but careful management of security certificates is an essential component of cluster security, and performing these tasks with a cloud-native tool such as Google Cloud Platform's Certificate Authority Service (CAS) offers many security advantages.

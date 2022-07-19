@@ -12,7 +12,8 @@ The CockroachDB CLI's [`cockroach cert`](cockroach-cert.html) command allows you
 
 The ability to rapidly and locally generate private key/public certificate pairs is handy for development, but careful management of security certificates is an essential component of cluster security, and performing these tasks with a cloud-native tool such as Google Cloud Platform's Certificate Authority Service (CAS) offers many security advantages.
 
-See [Using Google Cloud Platform Certificate Authority Service to manage PKI certificates](manage-certs-gcloud.html).
+Learn more: [Managing CockroachDB security certificates with HashiCorp Vault](manage-certs-vault.html).
+
 
 {{site.data.alerts.end}}
 

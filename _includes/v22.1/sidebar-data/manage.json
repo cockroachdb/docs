@@ -263,9 +263,9 @@
                   ]
                 },
                 {
-                  "title": "Using Google Cloud Platform Certificate Authority Service to manage PKI certificates",
+                  "title": "Managing CockroachDB security certificates with HashiCorp Vault",
                   "urls": [
-                    "/${VERSION}/manage-certs-gcloud.html"
+                    "/${VERSION}/manage-certs-vault.html"
                   ]
                 },
                 {
