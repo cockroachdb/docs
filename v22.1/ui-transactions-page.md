@@ -31,7 +31,12 @@ You can search for transactions using the search field or the date range selecto
 
 ### Search field
 
-To search using the search field, type a string over `Search Transactions` and press `Enter`. The list of transactions is filtered by the string.
+To search using the search field:
+
+1. Type a string over `Search Transactions`. {% include_cached new-in.html version="v22.1.4" %} To search for exact terms in order, wrap the search string in quotes.
+1. Press `Enter`.
+
+    The list of transactions is filtered by the string.
 
 {% include {{ page.version.version }}/ui/transactions-filter.md %}
 
