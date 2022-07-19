@@ -643,15 +643,21 @@
                 ]
               },
               {
+                "title": "<code>RESET CLUSTER SETTING</code>",
+                "urls": [
+                  "/${VERSION}/reset-cluster-setting.html"
+                ]
+              },
+              {
                 "title": "<code>RESET &#123;session variable&#125;</code>",
                 "urls": [
                   "/${VERSION}/reset-vars.html"
                 ]
               },
               {
-                "title": "<code>RESET CLUSTER SETTING</code>",
+                "title": "<code>RESET &#123;storage parameter&#125;</code>",
                 "urls": [
-                  "/${VERSION}/reset-cluster-setting.html"
+                  "/${VERSION}/reset-storage-parameter.html"
                 ]
               },
               {
@@ -709,7 +715,7 @@
                 ]
               },
               {
-                "title": "<code>SET &lt;storage parameter&gt;</code>",
+                "title": "<code>SET &#123;storage parameter&#125;</code>",
                 "urls": [
                   "/${VERSION}/set-storage-parameter.html"
                 ]
@@ -988,6 +994,12 @@
                 "title": "<code>VALIDATE CONSTRAINT</code>",
                 "urls": [
                   "/${VERSION}/validate-constraint.html"
+                ]
+              },
+              {
+                "title": "<code>WITH &#123;storage parameter&#125;</code>",
+                "urls": [
+                  "/${VERSION}/with-storage-parameter.html"
                 ]
               }
             ]

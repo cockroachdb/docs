@@ -48,7 +48,7 @@ functions but have special evaluation rules:
 
 ## Built-in functions
 
-{% remote_include https://raw.githubusercontent.com/cockroachdb/cockroach/release-22.1/docs/generated/sql/functions.md %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/cockroach/release-{{ page.version.version | replace: "v", "" }}/docs/generated/sql/functions.md %}
 
 ## Aggregate functions
 
@@ -58,11 +58,11 @@ For examples showing how to use aggregate functions, see [the `SELECT` clause do
 Non-commutative aggregate functions are sensitive to the order in which the rows are processed in the surrounding [`SELECT` clause](select-clause.html#aggregate-functions). To specify the order in which input rows are processed, you can add an [`ORDER BY`](order-by.html) clause within the function argument list. For examples, see the [`SELECT` clause](select-clause.html#order-aggregate-function-input-rows-by-column) documentation.
 {{site.data.alerts.end}}
 
-{% remote_include https://raw.githubusercontent.com/cockroachdb/cockroach/release-22.1/docs/generated/sql/aggregates.md %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/cockroach/release-{{ page.version.version | replace: "v", "" }}/docs/generated/sql/aggregates.md %}
 
 ## Window functions
 
-{% remote_include https://raw.githubusercontent.com/cockroachdb/cockroach/release-22.1/docs/generated/sql/window_functions.md %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/cockroach/release-{{ page.version.version | replace: "v", "" }}/docs/generated/sql/window_functions.md %}
 
 ## Operators
 
@@ -102,8 +102,8 @@ The following table lists all CockroachDB operators from highest to lowest prece
 |    |  `#>` | Access a JSONB field at the specified path, returning a JSONB value. | binary |
 |    |  `#>>` | Access a JSONB field at the specified path, returning a string. | binary |
 |    |  `?` | Does the key or element string exist within the JSONB value? | binary |
-|    |  `?&` | Do any of the key or element strings exist within the JSONB value? | binary |
-|    |  `?|` | Do all the key or element strings exist within the JSONB value?  | binary |
+|    |  `?&` | Do all the key or element strings exist within the JSONB value? | binary |
+|    |  <code>?&#124;</code> | Do any of the key or element strings exist within the JSONB value?  | binary |
 | 12 | `[NOT] BETWEEN` | Value is [not] within the range specified | binary |
 |    | `[NOT] BETWEEN SYMMETRIC` | Like `[NOT] BETWEEN`, but in non-sorted order. For example, whereas `a BETWEEN b AND c` means `b <= a <= c`, `a BETWEEN SYMMETRIC b AND c` means `(b <= a <= c) OR (c <= a <= b)`. | binary |
 |    | `[NOT] IN` | Value is [not] in the set of values specified | binary |
@@ -133,7 +133,7 @@ The following table lists all CockroachDB operators from highest to lowest prece
 
 ### Supported operations
 
-{% remote_include https://raw.githubusercontent.com/cockroachdb/cockroach/release-22.1/docs/generated/sql/operators.md %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/cockroach/release-{{ page.version.version | replace: "v", "" }}/docs/generated/sql/operators.md %}
 
 <!--
 ## `CAST()`

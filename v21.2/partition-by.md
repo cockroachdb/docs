@@ -32,7 +32,7 @@ If the primary key in your existing table does not meet the requirements, you ca
 **alter_index_partition_by_stmt ::=**
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/alter_index_partition_by.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/alter_index_partition_by.html %}
 </div>
 
 ## Parameters

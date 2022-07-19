@@ -59,7 +59,7 @@ Alternatively, filter the merged logs for a specified time range:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-$ cockroach debug merge-logs debug/nodes/*/logs/* --from= "18:36:28.208553" --to= "18:36:29.232864"
+$ cockroach debug merge-logs debug/nodes/*/logs/* --from="220713 18:36:28.208553" --to="220713 18:36:29.232864"
 ~~~
 
 You can also filter the merged logs for a regular expression:

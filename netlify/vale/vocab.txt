@@ -17,6 +17,8 @@ australiasoutheast
 autocommit
 autogenerates
 autoscaling
+autosummarize
+autovacuum
 avro
 backfilled
 backfilling
@@ -142,9 +144,11 @@ esri
 evgeniy
 expirations
 failover
+fastupdate
 favicons
 fdw
 filepath
+fillfactor
 firewalled
 firewalling
 firouz
@@ -203,6 +207,7 @@ hueypark
 hyperthread
 hyperthreads
 img
+include_cached
 inclusivity
 inconsolata
 incrementals
@@ -307,6 +312,7 @@ multiregion
 multiset
 multisets
 multiversion
+multixact
 mutex
 mutexes
 mydcos
@@ -342,6 +348,7 @@ ons
 onwards
 openid
 openssl
+operator_version
 orchstrations
 ordinality
 overallocating
@@ -378,6 +385,7 @@ pocockn
 pointcut
 postgres
 postgresql
+Postgrex
 Postico
 pq
 pre
@@ -423,6 +431,7 @@ rehomed
 rehoming
 reformats
 relicense
+remote_include
 replacewith
 repo
 repudiability

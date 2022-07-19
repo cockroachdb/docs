@@ -23,7 +23,22 @@ Ensure the following items are completed prior to starting this tutorial:
 
 - Configure a [source endpoint](https://docs.aws.amazon.com/dms/latest/userguide/CHAP_Source.html) in AWS pointing to your source database.
 - Configure a [replication instance](https://docs.aws.amazon.com/dms/latest/userguide/CHAP_ReplicationInstance.html) in AWS.
-- Ensure you have a secure, publicly available [CockroachDB cluster](../cockroachcloud/create-a-serverless-cluster.html) running v22.1 or higher.
+- Ensure you have a secure, publicly available CockroachDB cluster running v22.1 GA or later.
+
+As of publishing, AWS DMS supports migrations from these relational databases (for a more accurate view of what's currently supported, see [Sources for AWS DMS](https://docs.aws.amazon.com/dms/latest/userguide/CHAP_Introduction.Sources.html)):
+
+- Amazon Aurora
+- Amazon DocumentDB (with MongoDB compatibility)
+- Amazon S3
+- IBM Db2 (LUW edition only)
+- MariaDB
+- Microsoft Azure SQL
+- Microsoft SQL Server
+- MongoDB
+- MySQL
+- Oracle
+- PostgreSQL
+- SAP ASE
 
 ## Step 1. Create a target endpoint pointing to CockroachDB
 
@@ -36,6 +51,9 @@ Ensure the following items are completed prior to starting this tutorial:
 1. For the **Target engine** dropdown, select **PostgreSQL**.
 1. For the **Access to endpoint database** radio button, select the **Provide access information manually**.
 1. Enter the **Server name**, **Port**, **User name**, **Password**, and **Database name** of your CockroachDB cluster.
+    {{site.data.alerts.callout_info}}
+    To connect to a {{ site.data.products.serverless }} cluster, use `{routing-id}.{database}` for the **Database name**. For more information, see [Connect to a {{ site.data.products.serverless }} Cluster](../cockroachcloud/connect-to-a-serverless-cluster.html?filters=connection-parameters#step-2-connect-to-your-cluster).
+    {{site.data.alerts.end}}
     <img src="{{ 'images/v22.1/aws-dms-endpoint-configuration.png' | relative_url }}" alt="AWS-DMS-Endpoint-Configuration" style="max-width:100%" />
 1. You can test the connection if needed under **Test endpoint connection (optional)**.
 1. Create the endpoint by selecting **Create endpoint**.
@@ -59,8 +77,12 @@ A database migration task, also known as a replication task, controls what data 
 ### Step 2.2. Task settings
 
 1. For the **Editing mode** radio button, keep **Wizard** selected.
-1. For the **Target table preparation mode**, select either **Truncate** or **Do nothing**. All other settings can remain as-is.
+1. For the **Target table preparation mode**, select either **Truncate** or **Do nothing**.
     <img src="{{ 'images/v22.1/aws-dms-task-settings.png' | relative_url }}" alt="AWS-DMS-Task-Settings" style="max-width:100%" />
+1. Manually create all schema objects in the target CockroachDB cluster. This step is required in order for the migration to populate data successfully.
+    {{site.data.alerts.callout_info}}
+    All tables must have a primary key associated with them. For more information, see [Primary Key Constraint](primary-key.html).
+    {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
 **Drop tables on target** is unsupported at this time.
@@ -165,6 +187,115 @@ The `BatchApplyEnabled` setting can improve replication performance and is recom
 {% comment %}
 - Not all schema objects are migrated when using **Drop tables on target** as a target table preparation mode. Thus, it is not supported at this time. A list of supported DDL statements within AWS DMS are mentioned [here](https://docs.aws.amazon.com/dms/latest/userguide/CHAP_Introduction.SupportedDDL.html). Any statements outside of that (creating or modifying foreign keys, secondary indexes, constraints, etc.) will have to be run manually in the target database.
 {% endcomment %}
+
+## Troubleshooting common issues
+
+Run the following query from within the target CockroachDB cluster to identify common problems with any tables that may be migrated:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> WITH
+    invalid_columns
+        AS (
+            SELECT
+                'Table '
+                || table_schema
+                || '.'
+                || table_name
+                || ' has column '
+                || column_name
+                || ' which is hidden. Either drop the column or mark it as not hidden for DMS to work.'
+                    AS fix_me
+            FROM
+                information_schema.columns
+            WHERE
+                is_hidden = 'YES'
+                AND table_name NOT LIKE 'awsdms_%'
+        ),
+    invalid_version
+        AS (
+            SELECT
+                'This cluster is on a version of CockroachDB which does not support AWS DMS. CockroachDB v21.2.13+ or v22.1+ is required.'
+                    AS fix_me
+            WHERE
+                split_part(
+                    substr(
+                        substring(
+                            version(),
+                            e'v\\d+\\.\\d+.\\d+'
+                        ),
+                        2
+                    ),
+                    '.',
+                    1
+                )::INT8
+                < 22
+                AND NOT
+                        (
+                            split_part(
+                                substr(
+                                    substring(
+                                        version(),
+                                        e'v\\d+\\.\\d+.\\d+'
+                                    ),
+                                    2
+                                ),
+                                '.',
+                                1
+                            )::INT8
+                            = 21
+                            AND split_part(
+                                    substr(
+                                        substring(
+                                            version(),
+                                            e'v\\d+\\.\\d+.\\d+'
+                                        ),
+                                        2
+                                    ),
+                                    '.',
+                                    2
+                                )::INT8
+                                = 2
+                            AND split_part(
+                                    substr(
+                                        substring(
+                                            version(),
+                                            e'v\\d+\\.\\d+.\\d+'
+                                        ),
+                                        2
+                                    ),
+                                    '.',
+                                    3
+                                )::INT8
+                                >= 13
+                        )
+        ),
+    has_no_pk
+        AS (
+            SELECT
+                'Table '
+                || a.table_schema
+                || '.'
+                || a.table_name
+                || ' has column '
+                || a.column_name
+                || ' has no explicit PRIMARY KEY. Ensure you are not using target mode "Drop tables on target" and that this table has a PRIMARY KEY.'
+                    AS fix_me
+            FROM
+                information_schema.key_column_usage AS a
+                JOIN information_schema.columns AS b ON
+                        a.table_schema = b.table_schema
+                        AND a.table_name = b.table_name
+                        AND a.column_name = b.column_name
+            WHERE
+                b.is_hidden = 'YES'
+                AND a.column_name = 'rowid'
+                AND a.table_name NOT LIKE 'awsdms_%'
+        )
+SELECT fix_me FROM has_no_pk
+UNION ALL SELECT fix_me FROM invalid_columns
+UNION ALL SELECT fix_me FROM invalid_version;
+~~~
 
 ## See Also
 
