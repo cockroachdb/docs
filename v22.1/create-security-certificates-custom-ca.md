@@ -14,7 +14,7 @@ See also:
 
 - [Public Key Infrastructure (PKI) and Transport Layer Security (TLS)](security-reference/transport-layer-security.html)
 - [Using the CockroachDB CLI to provision a development cluster](manage-certs-cli.html).
-- See [Using Google Cloud Platform Certificate Authority Service to manage PKI certificates](manage-certs-gcloud.html).
+- [Managing CockroachDB security certificates with HashiCorp Vault](manage-certs-vault.html).
 
 Approach | Use case description
 -------------|------------

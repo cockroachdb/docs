@@ -1,5 +1,5 @@
 ---
-title: Using HashiCorp Vault to manage PKI certificates
+title: Managing CockroachDB security certificates with HashiCorp Vault
 summary: Using Google Cloud Platform Certificate Authority Service to manage PKI certificates
 toc: true
 docs_area: manage.security
@@ -71,7 +71,7 @@ If credentials are obtained by malicious actors, they can be used to impersonate
 - By using a revocation mechanism, so that existing certificates can be invalidated. Two standard solutions are Certificate Revocation Lists (CRLS) and the Online Certificate Status Protocol (OCSP).
 - By issuing only certificates with short validity durations, so that any compromised certificate quickly becomes unusable. 
 
-CockroachDB does support OCSP, but not CRls. See: [Using Online Certificate Status Protocol (OCSP) with CockroachDB](manage-certs-revoke-ocsp.html).
+CockroachDB does support OCSP, but not CRls. To learn more, read [Using Online Certificate Status Protocol (OCSP) with CockroachDB](manage-certs-revoke-ocsp.html).
 
 Without OCSP, there is a premium on enforcing short validity durations for certificates; otherwise, stolen credentials may be used to work persistent mischief over a long window.
 
@@ -256,7 +256,6 @@ The operations in this section fall under the persona of `ca-admin`, and therefo
 
 #### Step 1: Access and prepare the CA admin jumpbox.
 
-
 1. SSH onto the CA admin jumpbox.
 
     {% include_cached copy-clipboard.html %}
@@ -407,7 +406,7 @@ In Vault, a PKI role is a template for a certificate.
     allowed_domains="${node1name},localhost,node" \
     ip_sans="${node1addr},${ex_ip}" \
     ext_key_usage="server_auth,client_auth" \
-    max_ttl=1h
+    max_ttl=1000h # just over a month
 
     vault write "cockroach_cluster_ca/roles/${node2name}" \
     allow_bare_domains=true \
@@ -415,7 +414,7 @@ In Vault, a PKI role is a template for a certificate.
     allowed_domains="${node2name},localhost,node" \
     ip_sans="${node2addr},${ex_ip}" \
     ext_key_usage="server_auth,client_auth" \
-    max_ttl=1h
+    max_ttl=1000h # just over a month 
 
     vault write "cockroach_cluster_ca/roles/${node3name}" \
     allow_bare_domains=true \
@@ -423,7 +422,7 @@ In Vault, a PKI role is a template for a certificate.
     allowed_domains="${node3name},localhost,node" \
     ip_sans="${node3addr},${ex_ip}" \
     ext_key_usage="server_auth,client_auth" \
-    max_ttl=1h
+    max_ttl=1000h # just over a month 
     ~~~
 
     ~~~txt
@@ -495,7 +494,7 @@ vault write "cockroach_cluster_ca/roles/root_client" \
     allow_bare_domains=true \
     common_name="root" \
     ext_key_usage="client_auth" \
-    max_ttl=1h
+    max_ttl=10000h # just over a year
 ```
 
 ```txt
@@ -563,7 +562,7 @@ Note that each start script is node specific, configuring each node to advertise
 {% include_cached copy-clipboard.html %}
 ```shell
 # for node 1
-cat <<ooo > start_roach.sh
+cat <<~script~ > start_roach.sh
 cockroach start \
 --certs-dir=certs \
 --advertise-addr="${node1addr}" \
@@ -571,12 +570,13 @@ cockroach start \
 --cache=.25 \
 --max-sql-memory=.25 \
 --background
-ooo
+~script~
+
 chmod +x start_roach.sh
 gcloud compute scp ./start_roach.sh $node1name:~
 
 # for node 2
-cat <<ooo > start_roach.sh
+cat <<~script~ > start_roach.sh
 cockroach start \
 --certs-dir=certs \
 --advertise-addr="${node2addr}" \
@@ -584,12 +584,13 @@ cockroach start \
 --cache=.25 \
 --max-sql-memory=.25 \
 --background
-ooo
+~script~
+
 chmod +x start_roach.sh
 gcloud compute scp ./start_roach.sh $node2name:~
 
 # for node 3
-cat <<ooo > start_roach.sh
+cat <<~script~ > start_roach.sh
 cockroach start \
 --certs-dir=certs \
 --advertise-addr="${node3addr}" \
@@ -597,7 +598,8 @@ cockroach start \
 --cache=.25 \
 --max-sql-memory=.25 \
 --background
-ooo
+~script~
+
 chmod +x start_roach.sh
 gcloud compute scp ./start_roach.sh $node3name:~
 ```

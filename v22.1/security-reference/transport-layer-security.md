@@ -9,8 +9,7 @@ This page provides a conceptual overview of Transport Layer Security (TLS) and t
 
 See:
 
-- [Using Google Cloud Platform Certificate Authority Service to manage PKI certificates](../manage-certs-gcloud.html)
-- [Using HashiCorp Vault to manage PKI certificates](../manage-certs-vault.html)
+- [Managing CockroachDB security certificates with HashiCorp Vault](../manage-certs-vault.html)
 - [Using the CockroachDB CLI to provision a development cluster](../manage-certs-cli.html)
 
 
@@ -203,7 +202,7 @@ Customers who deploy and manage their own CockroachDB clusters must provision an
 
 Choosing a strategy for maintaining solid private PKI is important and complex, and depends on your total system requirements, total security threat model, and available resources.
 
-- Consider [Using Google Cloud Platform Certificate Authority Service to manage PKI certificates.](../manage-certs-gcloud.html)
+- Learn about [Managing CockroachDB security certificates with HashiCorp Vault](manage-certs-vault.html).
 - Review our [breakdown of security features by offering](security-overview.html).
 - Contact our <a href="mailto:sales@cockroachlabs.com">sales team</a> to discuss your needs and the range of solutions offered by Cockroach Labs.
 {{site.data.alerts.end}}
@@ -231,7 +230,7 @@ Customers who deploy and manage their own CockroachDB clusters must provision an
 
 Choosing a strategy for maintaining solid private PKI is important and complex, and depends on your total system requirements, total security threat model, and available resources.
 
-- Consider [Using Google Cloud Platform Certificate Authority Service to manage PKI certificates.](../manage-certs-gcloud.html)
+- Learn more: [Managing CockroachDB security certificates with HashiCorp Vault](manage-certs-vault.html).
 - Review our [breakdown of security features by offering](security-overview.html).
 - Contact our <a href="mailto:sales@cockroachlabs.com">sales team</a> to discuss your needs and the range of solutions offered by Cockroach Labs.
 {{site.data.alerts.end}}
@@ -280,4 +279,4 @@ To maintain connection to a network secured by short-lived credentials, a would-
 
 The trade-off with short-lived certificates (or requiring any low-latency revocation system), is that it can become a single point of failure for service availability. If network connections depend on hourly propagation of fresh credentials, then a leaked credential only offers an attacker a one hour window of exploitation, but taking the credential automation offline for more than an hour can take the entire system offline. Fine tuning the validity duration to meet your threat model and available resources is an important component of designing a minimally secure private PKI without using another revocation mechanism.
 
-See: [Using Google Cloud Platform Certificate Authority Service to manage PKI certificates](../manage-certs-gcloud.html)
+See: [Managing security certificates with HashiCorp Vault](../manage-certs-vault.html)
