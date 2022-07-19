@@ -11,11 +11,12 @@ PKI involves careful management of the certificates used for authentication and 
 
 **Goals**:
 
-- Get a CockroachDB cluster running in Google Cloud Platform.
-- Provision two root certificate authorities (CAs), one for issuing certificates for internode communication, and one for issuing certificates for SQL client connections.
-- Issue private key/public certificate pairs for use by the CockroachDB nodes comprising our cluster.
-- Use the client CA to issue client credentials.
-- Access the cluster.
+- Deploy a secure three-node CockroachDB cluster in Google Cloud Platform.
+- Create a root certificate authority (CA)
+- Define PKI roles CockroachDB nodes and clients
+- Issue private key/public certificate pairs for use by the CockroachDB nodes comprising our cluster
+- Issue a private key/public certificate pair for use by the CockroachDB client
+- Access the cluster using the client credentials
 
 **Prerequisites**:
 
@@ -30,8 +31,26 @@ PKI involves careful management of the certificates used for authentication and 
 See also:
 - [Build your own CA with Vault](https://learn.hashicorp.com/tutorials/vault/pki-engine)
 
-
 ## Intro
+
+### Outline
+
+- Admin operations
+  - Provision GCP Resources
+  - Create the certificate authority (CA) with Vault
+  - Create PKI roles and issue certificates for the nodes
+  - Provision each node's trust store
+  - Create a role and issue a certificate for the client
+  - Provision the Client's trust store
+  - Clean up the CA admin jumpbox
+- Node operations
+  - Prepare CockroachDB on each node
+  - Start or reset the cluster
+- Client operations
+  - Provision the client
+  - Intialize the cluster
+  - Client Operator role: Connect the client to the cluster
+
 ### The strategy
 
 PKI can be implemented in many ways; key pairs can be generated and certificates signe with open-source tools such `openssl` or even with the CockroachDB CLI, or with myriad available tools and services. The distribution of those credentials to servers and clients can be done in even more different possible ways.
@@ -72,6 +91,7 @@ persona | tasks | Vault permissions | GCP Permissions
 `client-operator` | <ul><li>Install, configure and run CockroachDB and dependencies on clients</li></ul>| |<ul><li>Client SSH access</li></ul>
 
 #### Resources 
+
 Our cluster will contain three classes of compute instance:
 
 - The CA administrative jumpbox, where sensitive credentials will be handled and secure operations related to certificate authority performed.
@@ -80,11 +100,6 @@ Our cluster will contain three classes of compute instance:
 
 Additionally, our project's firewall rules must be configured to allow communication between nodes and from client to nodes.
 
-#### Steps
-
-- Step 1. Provision GCP Resources
-- Step 2. Provision PKI certificate hierarchy with Vault
-
 ## Admin operations
 
 ### Provision your GCP resources
@@ -92,7 +107,6 @@ Additionally, our project's firewall rules must be configured to allow communica
 1. Create the CA admin jumpbox.
 
     Specify the ca-admin service account, and grant the `cloud-platform` scope, so that the service account can access the secrets API.
-
 
     {% include_cached copy-clipboard.html %}
     ```shell
@@ -346,27 +360,27 @@ The operations in this section fall under the persona of `ca-admin`, and therefo
     ~~~
 
 1. Use `openssl` to examine a certificate, confirming that it has been generated and copied correctly.
-        {% include_cached copy-clipboard.html %}
-        ```shell
-        openssl x509 -in "${secrets_dir}/${node1name}/cockroach_cluster_ca.crt" -text | less
-        ```
-        ~~~txt
-        Certificate:
-            Data:
-                Version: 3 (0x2)
-                Serial Number:
-                    1a:72:ac:49:e9:38:38:65:e3:40:16:a8:48:6e:34:a0:3f:0f:00:96
-            Signature Algorithm: sha256WithRSAEncryption
-                Issuer:
-                Validity
-                    Not Before: Jun 21 17:24:39 2022 GMT
-                    Not After : Jul 23 17:25:09 2022 GMT
-                Subject:
-                Subject Public Key Info:
-                    Public Key Algorithm: rsaEncryption
-                        Public-Key: (2048 bit)
-              ...
-        ~~~
+    {% include_cached copy-clipboard.html %}
+    ```shell
+    openssl x509 -in "${secrets_dir}/${node1name}/cockroach_cluster_ca.crt" -text | less
+    ```
+    ~~~txt
+    Certificate:
+        Data:
+            Version: 3 (0x2)
+            Serial Number:
+                1a:72:ac:49:e9:38:38:65:e3:40:16:a8:48:6e:34:a0:3f:0f:00:96
+        Signature Algorithm: sha256WithRSAEncryption
+            Issuer:
+            Validity
+                Not Before: Jun 21 17:24:39 2022 GMT
+                Not After : Jul 23 17:25:09 2022 GMT
+            Subject:
+            Subject Public Key Info:
+                Public Key Algorithm: rsaEncryption
+                    Public-Key: (2048 bit)
+          ...
+    ~~~
 
     
 ### Create PKI roles and issue certificates for the nodes
@@ -419,30 +433,30 @@ In Vault, a PKI role is a template for a certificate.
     ~~~
 
 1. Issue a certificate pair for each node.
-  {% include_cached copy-clipboard.html %}
-  ~~~shell
-  vault write "cockroach_cluster_ca/issue/${node1name}" \
-      common_name=node --format=json > "${secrets_dir}/$node1name/certs.json"
+    {% include_cached copy-clipboard.html %}
+    ~~~shell
+    vault write "cockroach_cluster_ca/issue/${node1name}" \
+        common_name=node --format=json > "${secrets_dir}/$node1name/certs.json"
 
-  vault write "cockroach_cluster_ca/issue/${node2name}" \
-      common_name=node --format=json > "${secrets_dir}/${node2name}/certs.json"
+    vault write "cockroach_cluster_ca/issue/${node2name}" \
+        common_name=node --format=json > "${secrets_dir}/${node2name}/certs.json"
 
-  vault write "cockroach_cluster_ca/issue/${node3name}" \
-      common_name=node --format=json > "${secrets_dir}/${node3name}/certs.json"
-  ~~~
+    vault write "cockroach_cluster_ca/issue/${node3name}" \
+        common_name=node --format=json > "${secrets_dir}/${node3name}/certs.json"
+    ~~~
 
 1. Parse the key and certificate pair from each return payload.
-  {% include_cached copy-clipboard.html %}
-  ~~~shell
-  echo -e $(cat "${secrets_dir}/$node1name/certs.json" | jq .data.private_key | tr -d '"') > "${secrets_dir}/${node1name}/node.key"
-  echo -e $(cat "${secrets_dir}/$node1name/certs.json" | jq .data.certificate | tr -d '"') > "${secrets_dir}/${node1name}/node.crt"
+    {% include_cached copy-clipboard.html %}
+    ~~~shell
+    echo -e $(cat "${secrets_dir}/$node1name/certs.json" | jq .data.private_key | tr -d '"') > "${secrets_dir}/${node1name}/node.key"
+    echo -e $(cat "${secrets_dir}/$node1name/certs.json" | jq .data.certificate | tr -d '"') > "${secrets_dir}/${node1name}/node.crt"
 
-  echo -e $(cat "${secrets_dir}/$node2name/certs.json" | jq .data.private_key | tr -d '"') > "${secrets_dir}/${node2name}/node.key"
-  echo -e $(cat "${secrets_dir}/$node2name/certs.json" | jq .data.certificate | tr -d '"') > "${secrets_dir}/${node2name}/node.crt"
+    echo -e $(cat "${secrets_dir}/$node2name/certs.json" | jq .data.private_key | tr -d '"') > "${secrets_dir}/${node2name}/node.key"
+    echo -e $(cat "${secrets_dir}/$node2name/certs.json" | jq .data.certificate | tr -d '"') > "${secrets_dir}/${node2name}/node.crt"
 
-  echo -e $(cat "${secrets_dir}/$node3name/certs.json" | jq .data.private_key | tr -d '"') > "${secrets_dir}/${node3name}/node.key"
-  echo -e $(cat "${secrets_dir}/$node3name/certs.json" | jq .data.certificate | tr -d '"') > "${secrets_dir}/${node3name}/node.crt"
-  ~~~
+    echo -e $(cat "${secrets_dir}/$node3name/certs.json" | jq .data.private_key | tr -d '"') > "${secrets_dir}/${node3name}/node.key"
+    echo -e $(cat "${secrets_dir}/$node3name/certs.json" | jq .data.certificate | tr -d '"') > "${secrets_dir}/${node3name}/node.crt"
+    ~~~
 
 ### Provision each node's [trust store](security-reference/transport-layer-security.html#trust-store)
 
@@ -470,19 +484,29 @@ In Vault, a PKI role is a template for a certificate.
 
 ### Create a role and issue a certificate for the client
 
-#### Issue a root client certificate
-
+#### Create a PKI role for the root  Issue a root client certificate
 Generate a private key/public certificate pair for the root SQL user.
 This is a very powerful private key, as anyone 
 
 {% include_cached copy-clipboard.html %}
 ```shell
-
+vault write "cockroach_cluster_ca/roles/root_client" \
+    allowed_domains="root" \
+    allow_bare_domains=true \
+    common_name="root" \
+    ext_key_usage="client_auth" \
+    max_ttl=1h
 ```
 
 ```txt
-
+Success! Data written to: cockroach_cluster_ca/roles/root_client
 ```
+
+{% include_cached copy-clipboard.html %}
+~~~shell
+vault write "cockroach_cluster_ca/issue/root_client" \
+    common_name=root --format=json > "${secrets_dir}/root_client/certs.json"
+~~~
 
 ### Provision the Client's trust store
 
