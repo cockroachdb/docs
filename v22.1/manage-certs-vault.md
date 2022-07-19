@@ -468,8 +468,6 @@ In Vault, a PKI role is a template for a certificate.
     gcloud compute scp -r "${secrets_dir}/$node3name/" !!!"$node3name/certs"
     ~~~
 
-
-
 ### Create a role and issue a certificate for the client
 
 #### Issue a root client certificate
@@ -487,7 +485,6 @@ This is a very powerful private key, as anyone
 ```
 
 ### Provision the Client's trust store
-
 
 ### Clean up the CA admin jumpbox
 

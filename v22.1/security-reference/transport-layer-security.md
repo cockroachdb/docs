@@ -97,15 +97,21 @@ On its own, such a digital certificate is of no more value than a paper certific
 
 The premise of PKI is that if I present you with a certificate, and you can decrypt it with, for example, Cockroach Labs' public certificate, and the decrypted version says that I work for the Cockroach Labs documentation team, essentially you may interpret that Cockroach Labs offers its guarantee that I work for the documentation team (or at least, I did when the certificate was signed).
 
-Generally, given that you can put your trust in the organization that backs the Certificate Authority who has signed a server's public certificate, you can extend your trust that the holder of the private key corresponding to that certificate is who the certificate says they are. For example, this is how your web browser or mobile app knows that it's actually talking to your bank, rather than an imposter. Furthermore, one Certificate Authority may grant certify that another party is authorized to issue certificates on its behalf, acting as a **subordinate CA**.
+<img src="{{ 'images/v22.1/pki_signing.png' | relative_url }}" alt="signing, trust and authentication in PKI" style="max-width:60%" />
 
-A "tree" or hierarchy of delegated trust relationships encoded as cryptographic signatures is the core idea of **Public Key Infrastructure (PKI)**.
+Figure 1. Cryptographic signing of PKI public certificates.
+
+<img src="{{ 'images/v22.1/pki_auth.png' | relative_url }}" alt="signing, trust and authentication in PKI" style="max-width:60%" />
+
+Figure 1. Checking the issuer's public certificate to validate the PKI trust chain of a public certificate
+
+Generally, given that you can put your trust in the organization that backs the Certificate Authority who has signed a server's public certificate, you can extend your trust that the holder of the private key corresponding to that certificate is who the certificate says they are. For example, this is how your web browser or mobile app knows that it's actually talking to your bank, rather than an imposter. Furthermore, one Certificate Authority may grant certify that another party is authorized to issue certificates on its behalf, acting as a **subordinate CA**.
 
 ### Public and private PKIs
 
 On the public internet, certificate authority providers such as Identrust, Digicert, and Let's Encrypt provide the role of root CAs (or "trust anchors") to the entire system. What makes them "trust-worthy"? In practice, just the fact that they are **trusted** by the parties that distribute hardware and software (such as operating system distributions and browsers) packages that come pre-loaded with **trust stores**.
 
-#### Trust store
+### Trust store
 A **trust store** is a collection of public certificates for trusted CAs&mdash;CAs whos signed certificates will be accepted for purposes of identity verification. By using a hardware device or software package that comes loaded with a trust store, you are trusting the judgment of the company selected the CAs to add to the package's trust store.
 
 It is up to the vendors (e.g. Apple, Google, Microsoft) to decide which root CAs to include in their packages' trust stores, and then ultimately up to the end user to decide which vendors to trust. CAs must comply with formalized industry standard [baseline requirements](https://cabforum.org/baseline-requirements-documents/) to maintain good standing with vendors.
@@ -136,14 +142,13 @@ Therefore, the nodes must each have a private key/public certificate pair where 
 
 If the client is to use mutual authentication, as illustrated here, the client must have a private key/public certificate pair, where they public certificate is signed by a CA trusted by the nodes, i.e. the CA's public certificate must be in the nodes' trust stores.
 
+<img src="{{ 'images/v22.1/certs_signing.png' | relative_url }}" alt="certificate signing relationships diagram" style="max-width:60%" />
 
-<img src="{{ 'images/v22.1/certs_signing.png' | relative_url }}" alt="certificate signing relationships diagram" style="max-width:50%" />
+Figure 2. Relationships between private keys and public certificates in a typical PKI architecture for a CockroachDB Cluster.
 
-Figure 1. Relationships between private keys and public certificates in a typical PKI architecture for a CockroachDB Cluster.
+<img src="{{ 'images/v22.1/certs_requests.png' | relative_url }}" alt="certificate signing relationships diagram" style="max-width:60%" />
 
-<img src="{{ 'images/v22.1/certs_requests.png' | relative_url }}" alt="certificate signing relationships diagram" style="max-width:50%" />
-
-Figure 2. Certificate authentication Relationships between private keys and public certificates in a typical PKI architecture for a CockroachDB Cluster.
+Figure 3. Certificate authentication Relationships between private keys and public certificates in an example PKI architecture for a CockroachDB Cluster.
 
 ## CockroachDB's TLS support and operating modes
 
