@@ -209,7 +209,7 @@ When `protect_data_from_gc_on_pause` is **unset**, pausing the changefeed will r
 
 The only ways for changefeeds to **not** protect data are:
 
-- You pause the changefeed without `protect_data_from_gc_on_pause`.
+- You pause the changefeed without `protect_data_from_gc_on_pause` set.
 - You cancel the changefeed.
 - The changefeed fails without [`on_error=pause`](create-changefeed.html#on-error) set.
 
