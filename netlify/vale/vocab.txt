@@ -17,6 +17,8 @@ australiasoutheast
 autocommit
 autogenerates
 autoscaling
+autosummarize
+autovacuum
 avro
 backfilled
 backfilling
@@ -142,9 +144,11 @@ esri
 evgeniy
 expirations
 failover
+fastupdate
 favicons
 fdw
 filepath
+fillfactor
 firewalled
 firewalling
 firouz
@@ -203,6 +207,7 @@ hueypark
 hyperthread
 hyperthreads
 img
+include_cached
 inclusivity
 inconsolata
 incrementals
@@ -258,6 +263,8 @@ kubectl
 kubemci
 kuwahara
 kv
+Leakproof
+leakproof
 leiningen
 libedit
 libpq
@@ -266,6 +273,7 @@ linestring
 linestrings
 lightstep
 linearizability
+link_prefix
 liquibase
 liveness
 livestream
@@ -304,6 +312,7 @@ multiregion
 multiset
 multisets
 multiversion
+multixact
 mutex
 mutexes
 mydcos
@@ -339,10 +348,12 @@ ons
 onwards
 openid
 openssl
+operator_version
 orchstrations
 ordinality
 overallocating
 owsiany
+page_prefix
 Pak
 panos
 parallelization
@@ -374,6 +385,7 @@ pocockn
 pointcut
 postgres
 postgresql
+Postgrex
 Postico
 pq
 pre
@@ -419,6 +431,7 @@ rehomed
 rehoming
 reformats
 relicense
+remote_include
 replacewith
 repo
 repudiability

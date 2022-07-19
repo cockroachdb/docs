@@ -75,7 +75,7 @@ Here is the `CREATE TABLE` statement for the `users` table:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> {% remote_include https://raw.githubusercontent.com/cockroachlabs/movr-flask/v1-doc-includes/dbinit.sql |-- START users |-- END users %}
+> {% remote_include https://raw.githubusercontent.com/cockroachlabs/movr-flask/v1-doc-includes/dbinit.sql ||-- START users ||-- END users %}
 ~~~
 
 Note the following:
@@ -89,7 +89,7 @@ Note the following:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> {% remote_include https://raw.githubusercontent.com/cockroachlabs/movr-flask/v1-doc-includes/dbinit.sql |-- START vehicles |-- END vehicles %}
+> {% remote_include https://raw.githubusercontent.com/cockroachlabs/movr-flask/v1-doc-includes/dbinit.sql ||-- START vehicles ||-- END vehicles %}
 ~~~
 
 Note the following:
@@ -114,7 +114,7 @@ Note the following:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> {% remote_include https://raw.githubusercontent.com/cockroachlabs/movr-flask/v1-doc-includes/dbinit.sql |-- START rides |-- END rides %}
+> {% remote_include https://raw.githubusercontent.com/cockroachlabs/movr-flask/v1-doc-includes/dbinit.sql ||-- START rides ||-- END rides %}
 ~~~
 
 Note the following:

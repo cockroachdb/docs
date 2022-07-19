@@ -11,7 +11,7 @@ docs_area: manage
 The **Statements** page helps you:
 
 - Identify frequently executed or high latency [SQL statements](../{{site.versions["stable"]}}/sql-statements.html).
-- View SQL statement [details](#statement-details-page).
+- View SQL statement fingerprint [details](#statement-details-page).
 - Download SQL statement [diagnostics](#diagnostics) for troubleshooting.
 
 {% if page.cloud != true %}
@@ -19,6 +19,10 @@ To view this page, click **SQL Activity** in the left-hand navigation of the DB 
 {% else %}
 To view this page, click **SQL Activity** in the left-hand navigation of the {{ site.data.products.db }} Console. The **Statements** tab is selected.
 {% endif %}
+
+{{site.data.alerts.callout_success}}
+If you haven't yet executed any queries in the cluster as a user, this page will be blank.
+{{site.data.alerts.end}}
 
 ## Search and filter
 

@@ -113,7 +113,7 @@ To restore a database:
 
     The **Restore database** module displays with backup details.
 
-1. In the **Restore to** field, enter the name of the destination database.
+1. In the **Restore to** field, enter the name of the destination database. For multi-region databases on v21.2, see [Restore a multi-region database](#restore-a-multi-region-database-to-a-new-database-in-v21-2).
 
     {{site.data.alerts.callout_info}}
     [Resolve any naming conflicts](#resolve-a-database-naming-conflict) by using [`DROP`](../{{site.versions["stable"]}}/drop-database.html) or [`RENAME`](../{{site.versions["stable"]}}/rename-database.html) on the existing database. If you enter a unique name in the **Restore to** field, a new database will be created.
@@ -130,6 +130,14 @@ To restore a database:
    When the restore job has been created successfully, you will be taken to the **Restore Jobs** tab, which will show you the status of your restore.
 
 When the restore is complete, be sure to set any database-specific [zone configurations](../{{site.versions["stable"]}}/configure-replication-zones.html) and, if applicable, [grant privileges](../{{site.versions["stable"]}}/grant.html).
+
+#### Restore a multi-region database to a new database in v21.2
+
+{{site.data.alerts.callout_info}}
+The following procedure for restoring a multi-region database to a different database name **is only applicable to clusters running version v21.2**. Clusters running v22.1+ can restore a multi-region database following [Restore a database](#restore-a-database) in the previous section.
+{{site.data.alerts.end}}  
+
+{% include cockroachcloud/restore-multiregion-dedicated.md %}
 
 ### Restore a table
 

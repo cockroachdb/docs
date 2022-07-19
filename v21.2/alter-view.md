@@ -17,7 +17,7 @@ The `ALTER VIEW` [statement](sql-statements.html) applies a schema change to a [
 ## Syntax
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/alter_view.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/alter_view.html %}
 </div>
 
 ## Parameters
