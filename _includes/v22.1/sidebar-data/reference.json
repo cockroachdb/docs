@@ -653,7 +653,7 @@
                 "urls": [
                   "/${VERSION}/reset-vars.html"
                 ]
-              },                
+              },
               {
                 "title": "<code>RESET &#123;storage parameter&#125;</code>",
                 "urls": [
