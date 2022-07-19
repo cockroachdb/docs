@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `SET (storage parameter)` [statement](sql-statements.html) sets a storage parameter on a table.
+The `WITH (storage parameter)` [statement](sql-statements.html) sets a storage parameter on a table.
 
 {{site.data.alerts.callout_info}}
 The `SET (storage parameter)` is a subcommand of [`ALTER TABLE`](alter-table.html).

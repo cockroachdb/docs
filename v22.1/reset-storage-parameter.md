@@ -1,6 +1,6 @@
 ---
-title: SET (storage parameter)
-summary: SET (storage parameter) applies a storage parameter to a table or an index.
+title: RESET (storage parameter)
+summary: RESET (storage parameter) applies a storage parameter to a table or an index.
 toc: true
 docs_area: reference.sql
 ---
