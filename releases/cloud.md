@@ -18,6 +18,18 @@ Get future release notes emailed to you:
 As of July 12, 2022, {{ site.data.products.serverless }} clusters are running CockroachDB [v22.1.1](v22.1.html#v22-1-1) and new {{ site.data.products.dedicated }} clusters are running CockroachDB [v22.1.2](v22.1.html#v22-1-2).
 {{site.data.alerts.end}}
 
+## July 19, 2022
+
+<h3> Console changes </h3>
+
+- {{ site.data.products.dedicated }} users can now choose any of the available hardware options when configuring a cluster. Previously, there were restrictions based on which storage and compute combinations were recommended for best performance.
+- In the [Connect to your cluster](connect-to-your-cluster.html) dialog, your previous SQL user, database, and connection method selections are now cached to make it easier to re-connect to your cluster.
+
+<h3> Bug fixes </h3>
+
+- Fixed a bug where the **SQL Activity** tab for clusters running different CockroachDB versions did not always load version-appropriate UI components.
+- Fixed a bug where the **Statements** table on a transaction's [**Transaction Details** page](../cockroachcloud/transactions.html) sometimes showed an incorrect number of statements.
+
 ## July 6, 2022
 
 <h3>Console changes</h3>
