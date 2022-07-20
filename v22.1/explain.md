@@ -170,7 +170,7 @@ If you then limit the number of returned rows:
 EXPLAIN SELECT * FROM rides WHERE revenue > 90 ORDER BY revenue ASC limit 10;
 ~~~
 
-The limit is reflected both in the estimated row count and a `limit:` property:
+The limit is reflected both in the estimated row count and a `limit` property:
 
 ~~~
                                        info
