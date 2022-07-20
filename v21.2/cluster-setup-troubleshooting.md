@@ -532,15 +532,15 @@ In production, lease transfer upon node failure can take longer than expected. I
 
 - **Network or DNS issues cause connection issues between nodes.** If there is no live server for the IP address or DNS lookup, connection attempts to a node will not return an immediate error, but will hang until timing out. This can cause unavailability and prevent a speedy movement of leases and recovery. CockroachDB avoids contacting unresponsive nodes or DNS during certain performance-critical operations, and the connection issue should generally resolve in 10-30 seconds. However, an attempt to contact an unresponsive node could still occur in other scenarios that are not yet addressed.
 
-- **A node's disk stalls.** A [disk stall](#disk-stalls) on a node can cause write operations to stall indefinitely, causes the node's heartbeats to fail since the storage engine cannot write to disk as part of the heartbeat, and may cause read requests to fail if they are waiting for a conflicting write to complete. Lease acquisition from this node can stall indefinitely until the node is shut down or recovered. Pebble detects most stalls and will terminate the `cockroach` process after 60 seconds, but there are gaps in its detection. In **v21.2.13, v22.1.2, and later**, each lease acquisition attempt on an unresponsive node times out after 6 seconds. However, CockroachDB can still appear to stall as these timeouts are occurring.
+- **A node's disk stalls.** A [disk stall](#disk-stalls) on a node can cause write operations to stall indefinitely, also causes the node's heartbeats to fail since the storage engine cannot write to disk as part of the heartbeat, and may cause read requests to fail if they are waiting for a conflicting write to complete. Lease acquisition from this node can stall indefinitely until the node is shut down or recovered. Pebble detects most stalls and will terminate the `cockroach` process after 60 seconds, but there are gaps in its detection. In **v21.2.13, v22.1.2, and later**, each lease acquisition attempt on an unresponsive node times out after 6 seconds. However, CockroachDB can still appear to stall as these timeouts are occurring.
 
-**Otherwise unresponsive nodes.** A node can be made unresponsive by internal deadlock due to faulty code, resource exhaustion, OS/hardware issues, and other arbitrary failures. This can cause leases to become stuck in certain cases, such as when a response from the previous leaseholder is needed in order to move the lease.
+**Otherwise unresponsive nodes.** Internal deadlock due to faulty code, resource exhaustion, OS/hardware issues, and other arbitrary failures can make a node unresponsive. This can cause leases to become stuck in certain cases, such as when a response from the previous leaseholder is needed in order to move the lease.
 
 **Solution:** If you are experiencing intermittent network or connectivity issues, first [shut down the affected nodes](node-shutdown.html) temporarily so that nodes phasing in and out do not cause disruption.
 
 If a node has become unresponsive without returning an error, [shut down the node](node-shutdown.html) so that network requests immediately become hard errors rather than stalling.
 
-If you are running a version of CockroachDB that is affected by an issue described here, [upgrade to a version](upgrade-cockroach-version.html) that contains the fix for the issue.
+If you are running a version of CockroachDB that is affected by an issue described here, [upgrade to a version](upgrade-cockroach-version.html) that contains the fix for the issue, as described in the preceding list.
 
 ## Partial availability issues
 
