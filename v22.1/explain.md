@@ -144,7 +144,7 @@ Suppose you create the recommended index:
 CREATE INDEX ON rides (revenue) STORING (vehicle_city, rider_id, vehicle_id, start_address, end_address, start_time, end_time);
 ~~~
 
-Successive `EXPLAIN` calls demonstrate that the estimated row count is 10% of the table:
+The next `EXPLAIN` call demonstrates that the estimated row count is 10% of the table:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
