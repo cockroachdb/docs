@@ -36,7 +36,7 @@ The Metrics page provides dashboards for all types of CockroachDB metrics.
 
 ### Databases
 
-The [Databases](ui-databases-page.html) page shows details about the system and user databases in the cluster. 
+The [Databases](ui-databases-page.html) page shows details about the system and user databases in the cluster.
 
 ### SQL Activity
 
