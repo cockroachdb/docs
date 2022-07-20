@@ -495,7 +495,7 @@ In production, lease transfer upon node failure can take longer than expected. I
 
 - **A node's disk stalls.** A disk stall on a node can cause write operations to stall indefinitely, also causes the node's heartbeats to fail since the storage engine cannot write to disk as part of the heartbeat, and may cause read requests to fail if they are waiting for a conflicting write to complete. Lease acquisition from this node can stall indefinitely until the node is shut down or recovered. Pebble detects most stalls and will terminate the `cockroach` process after 60 seconds, but there are gaps in its detection. In **v21.2.13, v22.1.2, and later**, each lease acquisition attempt on an unresponsive node times out after 6 seconds. However, CockroachDB can still appear to stall as these timeouts are occurring.
 
-**Otherwise unresponsive nodes.** Internal deadlock due to faulty code, resource exhaustion, OS/hardware issues, and other arbitrary failures can make a node unresponsive. This can cause leases to become stuck in certain cases, such as when a response from the previous leaseholder is needed in order to move the lease.
+- **Otherwise unresponsive nodes.** Internal deadlock due to faulty code, resource exhaustion, OS/hardware issues, and other arbitrary failures can make a node unresponsive. This can cause leases to become stuck in certain cases, such as when a response from the previous leaseholder is needed in order to move the lease.
 
 **Solution:** If you are experiencing intermittent network or connectivity issues, first [shut down the affected nodes](../{{site.versions["stable"]}}/node-shutdown.html) temporarily so that nodes phasing in and out do not cause disruption.
 
