@@ -9,7 +9,7 @@
 
 <h3>Choose your installation method</h3>
 
-You can install a {{ site.data.products.serverless }} cluster using either the CockroachDB Cloud Console, a web-based graphical user interface (GUI) tool, or <code>ccloud</code>, a command-line interface (CLI) tool.
+You can create a {{ site.data.products.serverless }} cluster using either the CockroachDB Cloud Console, a web-based graphical user interface (GUI) tool, or <code>ccloud</code>, a command-line interface (CLI) tool.
 
 <div class="filters clearfix">
     <button class="filter-button page-level" data-scope="console">Use the Cloud Console (GUI)<strong></strong></button>

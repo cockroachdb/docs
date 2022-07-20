@@ -29,7 +29,7 @@ $ git clone https://github.com/cockroachlabs/hello-world-go-pq
 
 ## Step 3. Initialize the database
 
-1. Navigate to the `example-app-go-gorm` directory:
+1. Navigate to the `hello-world-go-pq` directory:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
