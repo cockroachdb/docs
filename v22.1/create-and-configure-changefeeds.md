@@ -7,12 +7,14 @@ docs_area: stream_data
 
 Core and {{ site.data.products.enterprise }} changefeeds offer different levels of configurability. {{ site.data.products.enterprise }} changefeeds allow for active changefeed jobs to be [paused](#pause), [resumed](#resume), and [canceled](#cancel).
 
-When creating a changefeed, it's important to consider the number of changefeeds versus the number of tables to include in a single changefeed:
+When creating a changefeed, it's important to consider the number of changefeeds versus the number of tables to include in a single changefeed: 
 
-  - Changefeeds do not share internal buffers, so each running changefeed will increase total memory usage. To watch multiple tables, we recommend creating a changefeed with a comma-separated list of tables.
-  - Creating a single changefeed that will watch hundreds of tables can affect the performance of a changefeed by introducing coupling. For example, any [schema change](use-changefeeds.html#schema-changes) on any of the tables will affect the entire changefeed's performance. 
+- Changefeeds each have their own memory overhead, so every running changefeed will increase total memory usage.
+- Creating a single changefeed that will watch hundreds of tables can affect the performance of a changefeed by introducing coupling. For example, any [schema change](use-changefeeds.html#schema-changes) on any of the tables will affect the entire changefeed's performance.
 
-We recommend monitoring your changefeeds. See [Monitor and Debug Changefeeds](monitor-and-debug-changefeeds.html) for more detail.
+To watch multiple tables, we recommend creating a changefeed with a comma-separated list of tables. However, we do **not** recommend creating a single changefeed for watching hundreds of tables. 
+
+We suggest monitoring your changefeeds. See [Monitor and Debug Changefeeds](monitor-and-debug-changefeeds.html) for more detail.
 
 The following Enterprise and Core sections outline how to create and configure each type of changefeed:
 
