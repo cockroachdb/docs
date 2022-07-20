@@ -560,7 +560,7 @@ DROP VIEW
 
 To speed up queries on materialized views, you can add an [index](schema-design-indexes.html) to the view.
 
-1. Create a materialized view of the [Movr](movr.html) rides table where the revenue is less than $20.00:
+1. Create a materialized view of the [MovR](movr.html) rides table where the revenue is less than $20.00:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -594,7 +594,7 @@ To speed up queries on materialized views, you can add an [index](schema-design-
     (14 rows)
     ~~~
 
-    Notice how there are [no statistics](#known-limitations) collected on the view.
+    Notice that there are [no statistics](#known-limitations) collected on the view.
 
 1. Create an index on the `city` column:
 
