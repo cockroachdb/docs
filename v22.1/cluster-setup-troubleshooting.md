@@ -23,7 +23,7 @@ $ cockroach start-single-node --insecure
 
 If the process exits prematurely, check for the following:
 
-### An existing storage directory
+#### An existing storage directory
 
 When starting a node, the directory you choose to store the data in also contains metadata identifying the cluster the data came from. This causes conflicts when you've already started a node on the server, have quit `cockroach`, and then tried to start another cluster using the same directory. Because the existing directory's cluster ID doesn't match the new cluster ID, the node cannot start.
 
@@ -44,27 +44,27 @@ When starting a node, the directory you choose to store the data in also contain
     $ cockroach start-single-node --insecure
     ~~~
 
-### Toolchain incompatibility
+#### Toolchain incompatibility
 
 The components of the toolchain might have some incompatibilities that need to be resolved. For example, a few months ago, there was an incompatibility between Xcode 8.3 and Go 1.8 that caused any Go binaries created with that toolchain combination to crash immediately.
 
-### Incompatible CPU
+#### Incompatible CPU
 
 If the `cockroach` process had exit status `132 (SIGILL)`, it attempted to use an instruction that is not supported by your CPU. Non-release builds of CockroachDB may not be able to run on older hardware platforms than the one used to build them. Release builds should run on any x86-64 CPU.
 
-### Default ports already in use
+#### Default ports already in use
 
 Other services may be running on port 26257 or 8080 (CockroachDB's default `--listen-addr` port and `--http-addr` port respectively). You can either stop those services or start your node with different ports, specified in the [`--listen-addr` and `--http-addr` flags](cockroach-start.html#networking).
 
   If you change the port, you will need to include the `--port=<specified port>` flag in each subsequent cockroach command or change the `COCKROACH_PORT` environment variable.
 
-### Single-node networking issues
+#### Single-node networking issues
 
 Networking issues might prevent the node from communicating with itself on its hostname. You can control the hostname CockroachDB uses with the [`--listen-addr` flag](cockroach-start.html#networking).
 
   If you change the host, you will need to include `--host=<specified host>` in each subsequent cockroach command.
 
-### CockroachDB process hangs when trying to start a node in the background
+#### CockroachDB process hangs when trying to start a node in the background
 
 See [Why is my process hanging when I try to start it in the background?](operational-faqs.html#why-is-my-process-hanging-when-i-try-to-start-nodes-with-the-background-flag)
 
@@ -101,7 +101,7 @@ Running multiple nodes on a single host is useful for testing CockroachDB, but i
 
 If you are trying to run all nodes on the same machine, you might get the following errors:
 
-### Store directory already exists
+#### Store directory already exists
 
 ~~~
 ERROR: could not cleanup temporary directories from record file: could not lock temporary directory /Users/amruta/go/src/github.com/cockroachdb/cockroach/cockroach-data/cockroach-temp301343769, may still be in use: IO error: While lock file: /Users/amruta/go/src/github.com/cockroachdb/cockroach/cockroach-data/cockroach-temp301343769/TEMP_DIR.LOCK: Resource temporarily unavailable
@@ -111,7 +111,7 @@ ERROR: could not cleanup temporary directories from record file: could not lock 
 
 **Solution:** Choose a different directory to store the CockroachDB data.
 
-### Port already in use
+#### Port already in use
 
 ~~~
 ERROR: cockroach server exited with error: consider changing the port via --listen-addr: listen tcp 127.0.0.1:26257: bind: address already in use
@@ -121,9 +121,9 @@ ERROR: cockroach server exited with error: consider changing the port via --list
 
 ## Scaling issues
 
-### Cannot join a node to an existing CockroachDB cluster
+#### Cannot join a node to an existing CockroachDB cluster
 
-#### Store directory already exists
+###### Store directory already exists
 
 When joining a node to a cluster, you might receive one of the following errors:
 
@@ -153,7 +153,7 @@ node belongs to cluster {"cluster hash"} but is attempting to connect to a gossi
     $ cockroach start --join=<cluster host>:26257 <other flags>  
     ~~~
 
-#### Incorrect `--join` address
+###### Incorrect `--join` address
 
 If you try to add another node to the cluster, but the `--join` address is not pointing at any of the existing nodes, then the process will never complete, and you'll see a continuous stream of warnings like this:
 
@@ -166,9 +166,9 @@ W180817 17:01:56.510430 914 vendor/google.golang.org/grpc/clientconn.go:1293 grp
 
 **Solution:** To successfully join the node to the cluster, start the node again, but this time include a correct `--join` address.
 
-### Performance is degraded when adding nodes
+#### Performance is degraded when adding nodes
 
-#### Excessive snapshot rebalance and recovery rates
+###### Excessive snapshot rebalance and recovery rates
 
 The `kv.snapshot_rebalance.max_rate` and `kv.snapshot_recovery.max_rate` [cluster settings](cluster-settings.html) set the rate limits at which [snapshots](architecture/replication-layer.html#snapshots) are sent to nodes. These settings can be temporarily increased to expedite replication during an outage or when scaling a cluster up or down.
 
@@ -196,7 +196,7 @@ RESET CLUSTER SETTING kv.snapshot_recovery.max_rate;
 
 If a client cannot connect to the cluster, check basic network connectivity (`ping`), port connectivity (`telnet`), and certificate validity.
 
-### Networking issues
+#### Networking issues
 
 Most networking-related issues are caused by one of two issues:
 
@@ -228,7 +228,7 @@ To efficiently troubleshoot the issue, it's important to understand where and wh
 
 Again, firewalls or hostname issues can cause any of these steps to fail.
 
-### Network partition
+#### Network partition
 
 If the DB Console lists any dead nodes on the [**Cluster Overview** page](ui-cluster-overview-page.html), then you might have a network partition.
 
@@ -245,7 +245,7 @@ To identify a network partition:
 
 ## Authentication issues
 
-### Missing certificate
+#### Missing certificate
 
 If  you try to add a node to a secure cluster without providing the node's security certificate, you will get the following error:
 
@@ -264,7 +264,7 @@ Failed running "start"
 
 **Solution:** To successfully join the node to the cluster, start the node again, but this time include the `--certs-dir` flag
 
-### Certification expiration
+#### Certification expiration
 
 If you’re running a secure cluster, be sure to monitor your certificate expiration. If one of the inter-node certificates expires, nodes will no longer be able to communicate which can look like a network partition.
 
@@ -274,7 +274,7 @@ To check the certificate expiration date:
 2. Click the gear icon on the left-hand navigation bar to access the **Advanced Debugging** page.
 3. Scroll down to the **Even More Advanced Debugging** section. Click **All Nodes**. The **Node Diagnostics** page appears. Click the certificates for each node and check the expiration date for each certificate in the Valid Until field.
 
-### Client password not set
+#### Client password not set
 
 While connecting to a secure cluster as a user, CockroachDB first checks if the client certificate exists in the `cert` directory. If the client certificate doesn’t exist, it prompts for a password. If password is not set and you press Enter, the connection attempt fails, and the following error is printed to `stderr`:
 
@@ -285,7 +285,7 @@ Failed running "sql"
 
 **Solution:** To successfully connect to the cluster, you must first either generate a client certificate or create a password for the user.
 
-### Cannot create new connections to cluster for up to 40 seconds after a node dies
+#### Cannot create new connections to cluster for up to 40 seconds after a node dies
 
 When a node [dies abruptly and/or loses its network connection to the cluster](#node-liveness-issues), the following behavior can occur:
 
@@ -304,7 +304,7 @@ The solution is to add connection retry logic to your application.
 
 ## Clock sync issues
 
-### Node clocks are not properly synchronized
+#### Node clocks are not properly synchronized
 
 See the following FAQs:
 
@@ -349,7 +349,7 @@ Network capacity | Network Bytes Received<br/>Network Bytes Sent | Consistently 
 
 ## Storage issues
 
-### Disks filling up
+#### Disks filling up
 
 Like any database system, if you run out of disk space the system will no longer be able to accept writes. Additionally, a CockroachDB node needs a small amount of disk space (a few GiBs to be safe) to perform basic maintenance functionality. For more information about this issue, see:
 
@@ -358,7 +358,7 @@ Like any database system, if you run out of disk space the system will no longer
 - [Why is disk usage increasing despite lack of writes?](operational-faqs.html#why-is-disk-usage-increasing-despite-lack-of-writes)
 - [Can I reduce or disable the storage of timeseries data?](operational-faqs.html#can-i-reduce-or-disable-the-storage-of-time-series-data)
 
-#### Automatic ballast files
+###### Automatic ballast files
 
  CockroachDB automatically creates an emergency ballast file at [node startup](cockroach-start.html). This feature is **on** by default. Note that the [`cockroach debug ballast`](cockroach-debug-ballast.html) command is still available but deprecated.
 
@@ -387,7 +387,7 @@ Removing the ballast file will give you a chance to remedy the disk space exhaus
 Different filesystems may treat the ballast file differently. Make sure to test that the file exists, and that space for the file is actually being reserved by the filesystem. For a list of supported filesystems, see the [Production Checklist](recommended-production-settings.html#storage).
 {{site.data.alerts.end}}
 
-### Disk stalls
+#### Disk stalls
 
 A _disk stall_ is any disk operation that does not terminate in a reasonable amount of time. This usually manifests as write-related system calls such as [`fsync(2)`](https://man7.org/linux/man-pages/man2/fdatasync.2.html) (aka `fdatasync`) taking a lot longer than expected (e.g., more than 60 seconds). The mitigation in almost all cases is to [restart the node](cockroach-start.html) with the stalled disk. CockroachDB's internal disk stall monitoring will attempt to shut down a node when it sees a disk stall that lasts longer than 60 seconds. At that point the node should be restarted by your [orchestration system](recommended-production-settings.html#orchestration-kubernetes).
 
@@ -405,9 +405,9 @@ Causes of disk stalls include:
 
 CockroachDB's built-in disk stall detection works as follows:
 
-- Every 10 seconds, the CockroachDB storage engine checks the [_write-ahead log_](https://en.wikipedia.org/wiki/Write-ahead_logging), or _WAL_. If data has not been synced to disk (via `fsync`) within that interval, the log message `disk stall detected: unable to write to %s within %s %s warning log entry` is written to the [`STORAGE` logging channel](logging.html#storage). If this state continues for 60 seconds or more (configurable with the `COCKROACH_ENGINE_MAX_SYNC_DURATION` environment variable), the `cockroach` process is killed.
+- Every 10 seconds, the CockroachDB storage engine checks the [_write-ahead log_](https://en.wikipedia.org/wiki/Write-ahead_logging), or _WAL_. If data has not been synced to disk (via `fsync`) within that interval, the log message `disk stall detected: unable to write to %s within %s %s warning log entry` is written to the [`STORAGE` logging channel](logging.html#storage). If this state continues for 20 seconds or more (configurable with the `COCKROACH_ENGINE_MAX_SYNC_DURATION` environment variable), the `cockroach` process is terminated.
 
-- Every time the storage engine writes to the main [`cockroach.log` file](logging.html#dev), the engine waits 30 seconds for the write to succeed (configurable with the `COCKROACH_LOG_MAX_SYNC_DURATION` environment variable). If the write to the log fails, the `cockroach` process is killed and the following message is written to stderr / `cockroach.log`:
+- Every time the storage engine writes to the main [`cockroach.log` file](logging.html#dev), the engine waits 30 seconds for the write to succeed (configurable with the `COCKROACH_LOG_MAX_SYNC_DURATION` environment variable). If the write to the log fails, the `cockroach` process is terminated and the following message is written to stderr / `cockroach.log`:
 
     - `disk stall detected: unable to sync log files within %s`
 
@@ -415,7 +415,7 @@ CockroachDB's built-in disk stall detection works as follows:
 
 ## CPU issues
 
-### CPU is insufficient for the workload
+#### CPU is insufficient for the workload
 
 Issues with CPU most commonly arise when there is insufficient CPU to support the scale of the workload. If the concurrency of your workload significantly exceeds your provisioned CPU, you will encounter a [degradation in SQL response time](common-issues-to-monitor.html#service-latency). This is the most common symptom of CPU starvation.
 
@@ -437,7 +437,7 @@ If these issues remain unresolved, affected nodes will miss their liveness heart
 
 ## Memory issues
 
-### Suspected memory leak
+#### Suspected memory leak
 
 A CockroachDB node will grow to consume all of the memory allocated for its `--cache`, [even if your cluster is idle](operational-faqs.html#why-is-memory-usage-increasing-despite-lack-of-traffic). The default cache size is 25% of physical memory, which can be substantial, depending on your machine configuration. For more information, see [Cache and SQL memory size](recommended-production-settings.html#cache-and-sql-memory-size).
 
@@ -472,7 +472,7 @@ If Go allocated memory is larger than a few hundred megabytes, you might have en
       - RSS minus Go Total and CGo Total is larger than 100 MiB.
       - Go Total or CGo Total fluctuates or grows steadily over time.
 
-### Out-of-memory (OOM) crash
+#### Out-of-memory (OOM) crash
 
 When a node exits without logging an error message, the operating system has likely stopped the node due to insufficient memory.
 
@@ -489,7 +489,7 @@ CockroachDB attempts to restart nodes after they crash. Nodes that frequently re
 
 ## Decommissioning issues
 
-### Decommissioning process hangs indefinitely
+#### Decommissioning process hangs indefinitely
 
 If the [decommissioning process](node-shutdown.html?filters=decommission#remove-nodes) appears to be hung on a node, a message like the following will print to `stderr`:
 
@@ -508,7 +508,7 @@ n3 still has replica id 2 for range r5
 
 ## Replication issues
 
-### DB Console shows under-replicated/unavailable ranges
+#### DB Console shows under-replicated/unavailable ranges
 
 When a CockroachDB node dies (or is partitioned) the under-replicated range count will briefly spike while the system recovers.
 
@@ -560,6 +560,26 @@ The [DB Console][db_console] provides several ways to check for node liveness is
 {{site.data.alerts.callout_info}}
 For more information about how node liveness works, see [Replication Layer](architecture/replication-layer.html#epoch-based-leases-table-data).
 {{site.data.alerts.end}}
+
+#### Impact of node failure is greater than 10 seconds
+
+When the cluster needs to access a range on a leaseholder node that is dead, that range's [lease must be transferred to a healthy node](architecture/replication-layer.html#how-leases-are-transferred-from-a-dead-node). In theory, this process should take no more than 9 seconds for liveness expiration plus the cost of several network roundtrips.
+
+In production, lease transfer upon node failure can take longer than expected. In {{ page.version.version }}, this is observed in the following scenarios:
+
+- **The leaseholder node for the liveness range fails.** The liveness range is a system range that [stores the liveness record](architecture/replication-layer.html#epoch-based-leases-table-data) for each node on the cluster. If a node fails and is also the leaseholder for the liveness range, operations cannot proceed until the liveness range is transferred to a new leaseholder and the liveness record is made available to other nodes. This can cause momentary cluster unavailability.
+
+- **Network or DNS issues cause connection issues between nodes.** If there is no live server for the IP address or DNS lookup, connection attempts to a node will not return an immediate error, but will hang until timing out. This can cause unavailability and prevent a speedy movement of leases and recovery. CockroachDB avoids contacting unresponsive nodes or DNS during certain performance-critical operations, and the connection issue should generally resolve in 10-30 seconds. However, an attempt to contact an unresponsive node could still occur in other scenarios that are not yet addressed.
+
+- **A node's disk stalls.** A [disk stall](#disk-stalls) on a node can cause write operations to stall indefinitely, also causes the node's heartbeats to fail since the storage engine cannot write to disk as part of the heartbeat, and may cause read requests to fail if they are waiting for a conflicting write to complete. Lease acquisition from this node can stall indefinitely until the node is shut down or recovered. Pebble detects most stalls and will terminate the `cockroach` process after 20 seconds, but there are gaps in its detection. In **v22.1.2 and later**, each lease acquisition attempt on an unresponsive node times out after 6 seconds. However, CockroachDB can still appear to stall as these timeouts are occurring.
+
+**Otherwise unresponsive nodes.** Internal deadlock due to faulty code, resource exhaustion, OS/hardware issues, and other arbitrary failures can make a node unresponsive. This can cause leases to become stuck in certain cases, such as when a response from the previous leaseholder is needed in order to move the lease.
+
+**Solution:** If you are experiencing intermittent network or connectivity issues, first [shut down the affected nodes](node-shutdown.html) temporarily so that nodes phasing in and out do not cause disruption.
+
+If a node has become unresponsive without returning an error, [shut down the node](node-shutdown.html) so that network requests immediately become hard errors rather than stalling.
+
+If you are running a version of CockroachDB that is affected by an issue described here, upgrade to a version that contains the fix for the issue, as described in the preceding list.
 
 ## Partial availability issues
 
