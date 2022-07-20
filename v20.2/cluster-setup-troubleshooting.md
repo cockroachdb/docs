@@ -499,7 +499,7 @@ In production, lease transfer upon node failure can take longer than expected. I
 
 **Solution:** If you are experiencing intermittent network or connectivity issues, first [shut down the affected nodes](../{{site.versions["stable"]}}/node-shutdown.html) temporarily so that nodes phasing in and out do not cause disruption.
 
-If a node has become unresponsive without returning an error, [shut down the node](node-shutdown.html) so that network requests immediately become hard errors rather than stalling.
+If a node has become unresponsive without returning an error, [shut down the node](../{{site.versions["stable"]}}/node-shutdown.html) so that network requests immediately become hard errors rather than stalling.
 
 If you are running a version of CockroachDB that is affected by an issue described here, [upgrade to a version](upgrade-cockroach-version.html) that contains the fix for the issue, as described in the preceding list.
 
