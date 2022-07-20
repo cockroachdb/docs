@@ -507,7 +507,7 @@ To view command commit latency:
 
 #### Impact of node failure is greater than 10 seconds
 
-When the cluster needs to access a range on a leaseholder node that is dead, that range's [lease must be transferred to a healthy node](architecture/replication-layer.html#how-leases-are-transferred-from-a-dead-node). In theory, this process should take no more than 9 seconds for liveness expiration plus the cost of 2 network roundtrips: 1 for Raft leader election, and 1 for lease acquisition.
+When the cluster needs to access a range on a leaseholder node that is dead, that range's [lease must be transferred to a healthy node](architecture/replication-layer.html#how-leases-are-transferred-from-a-dead-node). In theory, this process should take no more than 9 seconds for liveness expiration plus the cost of several network roundtrips.
 
 In production, lease transfer upon node failure can take longer than expected. In {{ page.version.version }}, this is observed in the following scenarios:
 
