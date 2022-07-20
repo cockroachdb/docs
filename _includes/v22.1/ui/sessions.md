@@ -46,10 +46,10 @@ The **Cancel session** button ends the session. The client that holds this sessi
 - **Session Details**
   - **Session Start Time** shows the timestamp at which the session started.
   - **Gateway Node** <a name="session-details-gateway-node"></a> shows the node ID and IP address/port of the [gateway]({{ link_prefix }}architecture/life-of-a-distributed-transaction.html#gateway) node handling the client connection.
-  - **Application name** {% include_cached new-in.html version="v22.1" %} shows the name of the application connected to the session.
+  - **Application Name** {% include_cached new-in.html version="v22.1" %} shows the name of the application connected to the session.
   - **Client IP Address** shows the IP address/port of the client that opened the session.
   - **Memory Usage** shows the amount of memory currently allocated to this session, followed by the maximum amount of memory this session has ever allocated.
-  - **User name** {% include_cached new-in.html version="v22.1" %} displays the name of the user that started the session.
+  - **User Name** {% include_cached new-in.html version="v22.1" %} displays the name of the user that started the session.
 
 - **Transaction** displays the following information for an open transaction.
   - **Transaction Start Time** shows the timestamp at which the transaction started.
@@ -65,7 +65,6 @@ The **Cancel session** button ends the session. The client that holds this sessi
   - The SQL statement.
   - **Execution Start Time** is the timestamp at which the statement was run.
   - **Distributed Execution?** shows whether the statement uses [Distributed SQL (DistSQL)]({{ link_prefix }}architecture/sql-layer.html#distsql) optimization.
-  - [**View Statement Details**]({{ page_prefix }}statements-page.html#statement-fingerprint-page) to view the Statement Fingerprint page for the statement.
 
 ## See also
 
