@@ -160,9 +160,9 @@ Results:
 Based on our internal testing, we recommend the following cloud-specific configurations. Before using configurations not recommended here, be sure to test them exhaustively. Also consider the following workload-specific observations:
 
 - For OLTP applications, small instance types may outperform larger instance types.
-- Larger, more complicated workloads will likely see more consistent performance from instance types with more available memory.
+- Larger, more complex workloads will likely see more consistent performance from instance types with more available memory.
 - Unless your workload requires extremely high IOPS or very low storage latency, the most cost-effective volumes are general-purpose rather than high-performance volumes.
-    - Because the cost of running a workload is much more influenced by storage cost than by instance cost, larger nodes offer a better price-for-performance ratio at the same workload complexity.
+    - Because storage cost influences the cost of running a workload much more than instance cost, larger nodes offer a better price-for-performance ratio at the same workload complexity.
 
 #### AWS
 
