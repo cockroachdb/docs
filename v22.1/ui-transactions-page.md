@@ -25,7 +25,7 @@ To view this page, click **SQL Activity** in the left-hand navigation of the {{ 
 
 ## Search and filter
 
-By default, the Transactions page shows transactions from all applications and databases running on the cluster.
+By default, the **Transactions** page shows transactions from all applications and databases running on the cluster.
 
 ### Search field
 

@@ -8,7 +8,7 @@
 
 ### Time interval
 
-To view [statement fingerprints]({{ page_prefix }}statements-page.html#sql-statement-fingerprints)  within a specific time interval, click the time interval selector and pick an interval. The time interval field supports present time intervals (1 Hour, 6 Hours, 1 Day, etc.) and custom time intervals. To select a custom time interval, click the time interval field and select **Custom time interval**. In the **Start (UTC)** and **End (UTC)** fields select or type a date and time.
+To view [statement fingerprints]({{ page_prefix }}statements-page.html#sql-statement-fingerprints) within a specific time interval, click the time interval selector and pick an interval. The time interval field supports present time intervals (1 Hour, 6 Hours, 1 Day, etc.) and custom time intervals. To select a custom time interval, click the time interval field and select **Custom time interval**. In the **Start (UTC)** and **End (UTC)** fields select or type a date and time.
 
 Use the arrow keys to cycle through previous and next time intervals. When you select a time interval, the same interval is selected in the [Metrics]({{ link_prefix }}ui-overview.html#metrics) page.
 
