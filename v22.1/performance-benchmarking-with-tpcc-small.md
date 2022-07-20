@@ -185,7 +185,7 @@ _elapsed_______tpmC____efc__avg(ms)__p50(ms)__p90(ms)__p95(ms)__p99(ms)_pMax(ms)
 
     CockroachDB works well on commodity hardware in public cloud, private cloud, on-prem, and hybrid environments. For hardware recommendations, see our [Production Checklist](recommended-production-settings.html#hardware).
 
-    Cockroach Labs creates a yearly cloud report focused on evaluating hardware performance. For more information, see the [2021 Cloud Report](https://www.cockroachlabs.com/blog/2021-cloud-report/).
+    {% include {{ page.version.version }}/prod-deployment/cloud-report.md %}
 
 - Performance Tuning
 
