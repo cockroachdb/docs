@@ -27,8 +27,6 @@ To view this page, click **SQL Activity** in the left-hand navigation of the {{ 
 
 By default, this page shows transactions from all applications and databases running on the cluster.
 
-You can search for transactions using the search field or the date range selector.
-
 ### Search field
 
 To search using the search field:
