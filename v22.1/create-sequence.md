@@ -23,7 +23,7 @@ The user must have the `CREATE` [privilege](security-reference/authorization.htm
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/create_sequence.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/create_sequence.html %}
 </div>
 
 ## Parameters

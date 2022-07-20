@@ -8,15 +8,15 @@ docs_area: get_started
 
 ## Why is my process hanging when I try to start nodes with the `--background` flag?
 
-Check whether you have previously run a multi-node cluster using the same data directory. If you have not, refer to [Troubleshoot Cluster Setup](cluster-setup-troubleshooting.html). 
+Check whether you have previously run a multi-node cluster using the same data directory. If you have not, refer to [Troubleshoot Cluster Setup](cluster-setup-troubleshooting.html).
 
 If you have previously started and stopped a multi-node cluster, and are now trying to bring it back up, note the following:
 
-The [`--background`](cockroach-start.html#general) flag of [`cockroach start`](cockroach-start.html) causes the `start` command to wait until the node has fully initialized and is able to start serving queries. In addition, to keep your data consistent, CockroachDB waits until a majority of nodes are running. This means that if only one node of a three-node cluster is running, that one node will not be operational. 
+The [`--background`](cockroach-start.html#general) flag of [`cockroach start`](cockroach-start.html) causes the `start` command to wait until the node has fully initialized and is able to start serving queries. In addition, to keep your data consistent, CockroachDB waits until a majority of nodes are running. This means that if only one node of a three-node cluster is running, that one node will not be operational.
 
-As a result, starting nodes with the `--background` flag will cause `cockroach start` to hang until a majority of nodes are fully initialized. 
+As a result, starting nodes with the `--background` flag will cause `cockroach start` to hang until a majority of nodes are fully initialized.
 
-To restart your cluster, you should either: 
+To restart your cluster, you should either:
 
 - Use multiple terminals to start multiple nodes at once.
 - Start each node in the background using your shell's functionality (e.g., `cockroach start &`) instead of using the `--background` flag.
@@ -31,11 +31,9 @@ The time-series data used in the [DB Console](ui-overview-dashboard.html) is sto
 
 ## Can I reduce or disable the storage of time-series data?
 
-Yes, you can either [reduce the interval for time-series storage](#reduce-the-interval-for-time-series-storage) or [disable time-series storage entirely](#disable-time-series-storage-entirely).
+Yes, you can either [reduce the interval for time-series storage](#reduce-the-interval-for-time-series-storage) or [disable time-series storage entirely](#disable-time-series-storage).
 
-{{site.data.alerts.callout_info}}
 After reducing or disabling time-series storage, it can take up to 24 hours for time-series data to be deleted and for the change to be reflected in DB Console metrics.
-{{site.data.alerts.end}}
 
 ### Reduce the interval for time-series storage
 
@@ -43,7 +41,7 @@ By default, CockroachDB stores time-series data at 10s resolution for 10 days. T
 
 To reduce the interval for storage of time-series data:
 
-- For data stored at 10s resolution, change the `timeseries.storage.resolution_10s.ttl` cluster setting to an [`INTERVAL`](interval.html) value less than `240h0m0s` (10 days). 
+- For data stored at 10s resolution, change the `timeseries.storage.resolution_10s.ttl` cluster setting to an [`INTERVAL`](interval.html) value less than `240h0m0s` (10 days).
 
   For example, to change the storage interval for time-series data at 10s resolution to 5 days, run the following [`SET CLUSTER SETTING`](set-cluster-setting.html) command:
 
@@ -68,13 +66,11 @@ To reduce the interval for storage of time-series data:
 
 - For data stored at 30m resolution, change the `timeseries.storage.resolution_30m.ttl` cluster setting to an [`INTERVAL`](interval.html) value less than `2160h0m0s` (90 days).
 
-### Disable time-series storage entirely
+### Disable time-series storage
 
-{{site.data.alerts.callout_info}}
 Disabling time-series storage is recommended only if you exclusively use a third-party tool such as [Prometheus](monitor-cockroachdb-with-prometheus.html) for time-series monitoring. Prometheus and other such tools do not rely on CockroachDB-stored time-series data; instead, they ingest metrics exported by CockroachDB from memory and then store the data themselves.
-{{site.data.alerts.end}}
 
-To disable the storage of time-series data entirely, run the following command:
+To disable the storage of time-series data, run the following command:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -109,7 +105,7 @@ If you want all existing time-series data to be deleted, also change both the `t
 
 When a node runs out of disk space, it shuts down and cannot be restarted until space is freed up.
 
- To prepare for this case, CockroachDB [automatically creates an emergency ballast file](cluster-setup-troubleshooting.html#automatic-ballast-files) in each node's storage directory that can be deleted to free up enough space to be able to restart the node.
+To prepare for this case, CockroachDB [automatically creates an emergency ballast file](cluster-setup-troubleshooting.html#automatic-ballast-files) in each node's storage directory that can be deleted to free up enough space to be able to restart the node.
 
 For more information about troubleshooting disk usage issues, see [storage issues](cluster-setup-troubleshooting.html#disks-filling-up).
 

@@ -49,7 +49,7 @@ Column | Description
 Description | SQL statement that created the job.
 Status | Current [job status](#job-status) or completion progress.
 Job ID | Unique job ID. This value is used to [pause](pause-job.html), [resume](resume-job.html), or [cancel](cancel-job.html) jobs.
-User | User that created the job.
+User Name | User that created the job.
 Creation Time (UTC) | Date and time the job was created.
 Last Execution Time (UTC) | Date and time the job was last executed.
 High-water Timestamp  | A checkpoint for a [changefeed job's progress](monitor-and-debug-changefeeds.html#monitor-a-changefeed) that guarantees that all changes before (or at) the timestamp have been emitted. Hover over the high-water timestamp to view the [system time](as-of-system-time.html).

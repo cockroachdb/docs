@@ -24,7 +24,7 @@ After the export has been initiated, you can cancel it with [`CANCEL QUERY`](can
 
 ## Synopsis
 
-<div>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/export.html %}</div>
+<div>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/export.html %}</div>
 
 {{site.data.alerts.callout_info}}
 The `EXPORT` statement cannot be used within a [transaction](transactions.html).

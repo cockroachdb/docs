@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `SET (storage parameter)` [statement](sql-statements.html) sets a storage parameter on a table.
+The `WITH (storage parameter)` [statement](sql-statements.html) sets a storage parameter on a table.
 
 {{site.data.alerts.callout_info}}
 The `SET (storage parameter)` is a subcommand of [`ALTER TABLE`](alter-table.html).
@@ -16,13 +16,13 @@ The `SET (storage parameter)` is a subcommand of [`ALTER TABLE`](alter-table.htm
 **create_index_with_storage_param ::=**
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/create_index_with_storage_param.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/create_index_with_storage_param.html %}
 </div>
 
 **create_table_with_storage_param ::=**
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/create_table_with_storage_param.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/create_table_with_storage_param.html %}
 </div>
 
 ## Command parameters

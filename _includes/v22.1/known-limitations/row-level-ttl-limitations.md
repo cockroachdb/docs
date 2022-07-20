@@ -1,6 +1,7 @@
 - You cannot use [foreign keys](foreign-key.html) to create references to or from a table that uses Row-Level TTL. [cockroachdb/cockroach#76407](https://github.com/cockroachdb/cockroach/issues/76407)
 - Any queries you run against tables with Row-Level TTL enabled do not filter out expired rows from the result set (this includes [`UPDATE`s](update.html) and [`DELETE`s](delete.html)). This feature may be added in a future release. For now, follow the instructions in [Filter out expired rows from a selection query](row-level-ttl.html#filter-out-expired-rows-from-a-selection-query).
-- The TTL cannot be customized based on the values of other columns in the row. [cockroachdb/cockroach#76916](https://github.com/cockroachdb/cockroach/issues/76916)
+- <a name="ttl-cannot-be-customized"></a> The TTL cannot be customized based on the values of other columns in the row. [cockroachdb/cockroach#76916](https://github.com/cockroachdb/cockroach/issues/76916)
+  - Because of the above limitation, adding TTL to large existing tables [can negatively affect performance](row-level-ttl.html#ttl-existing-table-performance-note), since a new column must be created and backfilled for every row. Creating a new table with a TTL is not affected by this limitation.
 - The queries executed by Row-Level TTL are not yet optimized for performance:
   - They do not use any indexes that may be available on the [`crdb_internal_expiration` column](row-level-ttl.html#crdb-internal-expiration).
   - They do not take into account [node localities](cockroach-start.html#locality).
