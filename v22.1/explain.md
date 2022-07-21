@@ -136,6 +136,56 @@ The output also describes a set of properties, some global to the query, some sp
 
     Index recommendations are displayed by default. To disable index recommendations, set the `index_recommendations_enabled` [session variable](set-vars.html) to `false`.
 
+
+Suppose you create the recommended index:
+
+{% include_cached copy-clipboard.html %}
+~~~
+CREATE INDEX ON rides (revenue) STORING (vehicle_city, rider_id, vehicle_id, start_address, end_address, start_time, end_time);
+~~~
+
+The next `EXPLAIN` call demonstrates that the estimated row count is 10% of the table:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+EXPLAIN SELECT * FROM rides WHERE revenue > 90 ORDER BY revenue ASC;
+~~~
+~~~
+                                        info
+------------------------------------------------------------------------------------
+  distribution: local
+  vectorized: true
+
+  • scan
+    estimated row count: 12,647 (10% of the table; stats collected 22 seconds ago)
+    table: rides@rides_revenue_idx
+    spans: (/90 - ]
+(7 rows)
+~~~
+
+If you then limit the number of returned rows:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+EXPLAIN SELECT * FROM rides WHERE revenue > 90 ORDER BY revenue ASC limit 10;
+~~~
+
+The limit is reflected both in the estimated row count and a `limit` property:
+
+~~~
+                                       info
+-----------------------------------------------------------------------------------
+  distribution: local
+  vectorized: true
+
+  • scan
+    estimated row count: 10 (<0.01% of the table; stats collected 32 seconds ago)
+    table: rides@rides_revenue_idx
+    spans: (/90 - ]
+    limit: 10
+(8 rows)
+~~~
+
 ### Join queries
 
 If you run `EXPLAIN` on a [join](joins.html) query, the output will display which type of join will be executed. For example, the following `EXPLAIN` output shows that the query will perform a [hash join](joins.html#hash-joins):
