@@ -202,7 +202,7 @@ Customers who deploy and manage their own CockroachDB clusters must provision an
 
 Choosing a strategy for maintaining solid private PKI is important and complex, and depends on your total system requirements, total security threat model, and available resources.
 
-- Learn about [Managing CockroachDB security certificates with HashiCorp Vault](manage-certs-vault.html).
+- Learn about [Managing CockroachDB security certificates with HashiCorp Vault](../manage-certs-vault.html).
 - Review our [breakdown of security features by offering](security-overview.html).
 - Contact our <a href="mailto:sales@cockroachlabs.com">sales team</a> to discuss your needs and the range of solutions offered by Cockroach Labs.
 {{site.data.alerts.end}}
@@ -230,7 +230,7 @@ Customers who deploy and manage their own CockroachDB clusters must provision an
 
 Choosing a strategy for maintaining solid private PKI is important and complex, and depends on your total system requirements, total security threat model, and available resources.
 
-- Learn more: [Managing CockroachDB security certificates with HashiCorp Vault](manage-certs-vault.html).
+- Learn more: [Managing CockroachDB security certificates with HashiCorp Vault](../manage-certs-vault.html).
 - Review our [breakdown of security features by offering](security-overview.html).
 - Contact our <a href="mailto:sales@cockroachlabs.com">sales team</a> to discuss your needs and the range of solutions offered by Cockroach Labs.
 {{site.data.alerts.end}}
