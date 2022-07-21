@@ -74,7 +74,7 @@ KV time | The total time this phase of the statement was in the [storage layer](
 KV contention time | The time the [storage layer](architecture/storage-layer.html) was in contention during this phase of the statement.
 KV rows read | During scans, the number of rows in the [storage layer](architecture/storage-layer.html) read by this phase of the statement.
 KV bytes read | During scans, the amount of data read from the [storage layer](architecture/storage-layer.html) during this phase of the statement.
-estimated max memory allocated  | The estimated maximum allocated memory for a statement.
+estimated max memory allocated | The estimated maximum allocated memory for a statement.
 estimated max sql temp disk usage | The estimated maximum temporary disk usage for a statement.
 MVCC step count (ext/int) | The number of times that the underlying storage iterator stepped forward during the work to serve the operator's reads, including stepping over [MVCC keys](architecture/storage-layer.html#mvcc) that could not be used in the scan.
 MVCC seek count (ext/int) | The number of times that the underlying storage iterator jumped (seeked) to a different data location.
@@ -210,6 +210,51 @@ For example, the following `EXPLAIN ANALYZE` statement executes a simple query a
         table: rides@rides_pkey
         spans: FULL SCAN
 (30 rows)
+~~~
+
+If you perform a join, the estimated max memory allocation is also reported for the join. For example:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+EXPLAIN ANALYZE SELECT * FROM vehicles JOIN rides ON rides.vehicle_id = vehicles.id and rides.city = vehicles.city limit 100;
+~~~
+~~~
+                        info
+-----------------------------------------------------
+  planning time: 1ms
+  execution time: 18ms
+  distribution: full
+  vectorized: true
+  rows read from KV: 3,173 (543 KiB)
+  cumulative time spent in KV: 37ms
+  maximum memory usage: 820 KiB
+  network usage: 3.3 KiB (2 messages)
+  regions: us-east1
+
+  • limit
+  │ nodes: n1
+  │ regions: us-east1
+  │ actual row count: 100
+  │ estimated row count: 100
+  │ count: 100
+  │
+  └── • lookup join
+      │ nodes: n1, n2, n3
+      │ regions: us-east1
+      │ actual row count: 194
+      │ KV time: 31ms
+      │ KV contention time: 0µs
+      │ KV rows read: 173
+      │ KV bytes read: 25 KiB
+      │ estimated max memory allocated: 300 KiB
+      │ estimated row count: 13,837
+      │ table: vehicles@vehicles_pkey
+      │ equality: (city, vehicle_id) = (city,id)
+      │ equality cols are key
+      │
+      └── • scan
+  ...
+(41 rows)
 ~~~
 
 ### `EXPLAIN ANALYZE (VERBOSE)`
