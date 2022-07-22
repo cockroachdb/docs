@@ -27,7 +27,7 @@ Changefeeds can only be created by superusers, i.e., [members of the `admin` rol
 
     This cancellation behavior (i.e., close the underlying connection to cancel the changefeed) also extends to client driver usage; in particular, when a client driver calls `Rows.Close()` after encountering errors for a stream of rows. The pgwire protocol requires that the rows be consumed before the connection is again usable, but in the case of a core changefeed, the rows are never consumed. It is therefore critical that you close the connection, otherwise the application will be blocked forever on `Rows.Close()`.
 
-- In most cases, each version of a row will be emitted once. However, some infrequent conditions (e.g., node failures, network partitions) will cause them to be repeated. This gives our changefeeds an at-least-once delivery guarantee. For more information, see [Change Data Capture - Ordering Guarantees](use-changefeeds.html#ordering-guarantees).
+- In most cases, each version of a row will be emitted once. However, some infrequent conditions (e.g., node failures, network partitions) will cause them to be repeated. This gives our changefeeds an at-least-once delivery guarantee. For more information, see [Ordering Guarantees](changefeed-messages.html#ordering-guarantees).
 - As of v22.1, changefeeds filter out [`VIRTUAL` computed columns](computed-columns.html) from events by default. This is a [backward-incompatible change](../releases/v22.1.html#v22-1-0-backward-incompatible-changes). To maintain the changefeed behavior in previous versions where [`NULL`](null-handling.html) values are emitted for virtual computed columns, see the [`virtual_columns`](changefeed-for.html#virtual-columns) option for more detail.
 
 ## Synopsis
@@ -51,16 +51,16 @@ Parameter | Description
 Option | Value | Description
 -------|-------|------------
 `updated` | N/A | Include updated timestamps with each row.
-`resolved` | [`INTERVAL`](interval.html) | Emits [resolved timestamp](use-changefeeds.html#resolved-def) events for the changefeed. Resolved timestamp events do not emit until all ranges in the changefeed have progressed to a specific point in time. <br><br>Set an optional minimal duration between emitting resolved timestamps. Example: `resolved='10s'`. This option will **only** emit a resolved timestamp event if the timestamp has advanced and at least the optional duration has elapsed. If unspecified, all resolved timestamps are emitted as the high-water mark advances.
+`resolved` | [`INTERVAL`](interval.html) | Emits [resolved timestamp](changefeed-messages.html#resolved-def) events for the changefeed. Resolved timestamp events do not emit until all ranges in the changefeed have progressed to a specific point in time. <br><br>Set an optional minimal duration between emitting resolved timestamps. Example: `resolved='10s'`. This option will **only** emit a resolved timestamp event if the timestamp has advanced and at least the optional duration has elapsed. If unspecified, all resolved timestamps are emitted as the high-water mark advances.
 `envelope` | `key_only` / `row` | Use `key_only` to emit only the key and no value, which is faster if you only want to know when the key changes.<br><br>Default: `envelope=row`
 <a name="cursor-option"></a>`cursor` | [Timestamp](as-of-system-time.html#parameters)  | Emits any changes after the given timestamp, but does not output the current state of the table first. If `cursor` is not specified, the changefeed starts by doing a consistent scan of all the watched rows and emits the current value, then moves to emitting any changes that happen after the scan.<br><br>`cursor` can be used to start a new changefeed where a previous changefeed ended.<br><br>Example: `CURSOR=1536242855577149065.0000000000`
 <a name="end-time"></a>`end_time` | [Timestamp](as-of-system-time.html#parameters) | **New in v22.1:** Indicate the timestamp up to which the changefeed will emit all events and then complete with a `successful` status. Provide a future timestamp to `end_time` in number of nanoseconds since the [Unix epoch](https://en.wikipedia.org/wiki/Unix_time). For example, `end_time="1655402400000000000"`.
 <a name="initial-scan"></a>`initial_scan` / `no_initial_scan` / `initial_scan_only` | N/A | Control whether or not an initial scan will occur at the start time of a changefeed. `initial_scan_only` will perform an initial scan and then the changefeed job will complete with a `successful` status. You cannot use [`end_time`](#end-time) and `initial_scan_only` simultaneously.<br><br>If none of these options are specified, an initial scan will occur if there is no [`cursor`](#cursor-option), and will not occur if there is one. This preserves the behavior from previous releases. <br><br>You cannot specify `initial_scan` and `no_initial_scan` or `no_initial_scan and` `initial_scan_only` simultaneously.<br><br>Default: `initial_scan` <br>If used in conjunction with `cursor`, an initial scan will be performed at the cursor timestamp. If no `cursor` is specified, the initial scan is performed at `now()`.
 `mvcc_timestamp` | N/A |  Include the [MVCC](architecture/storage-layer.html#mvcc) timestamp for each emitted row in a changefeed. With the `mvcc_timestamp` option, each emitted row will always contain its MVCC timestamp, even during the changefeed's initial backfill.
-`format` | `json` / `avro` | Format of the emitted record. Currently, support for [Avro is limited](use-changefeeds.html#avro-limitations). <br><br>Default: `format=json`.
+`format` | `json` / `avro` | Format of the emitted record. Currently, support for [Avro is limited](changefeed-messages.html#avro-limitations). <br><br>Default: `format=json`.
 `confluent_schema_registry` | Schema Registry address | The [Schema Registry](https://docs.confluent.io/current/schema-registry/docs/index.html#sr) address is required to use `avro`.
-`split_column_families` | N/A | **New in v22.1:** Target a table with multiple columns families. Emit messages for each column family in the target table. Each message will include the label: `table.family`.
-<a name="virtual-columns"></a>`virtual_columns` | `STRING` | **New in v22.1:** Changefeeds omit [virtual computed columns](computed-columns.html) from emitted [messages](use-changefeeds.html#messages) by default. To maintain the behavior of previous CockroachDB versions where the changefeed would emit [`NULL`](null-handling.html) values for virtual computed columns, set `virtual_columns = "null"` when you start a changefeed. <br><br>You may also define `virtual_columns = "omitted"`, though this is already the default behavior for v22.1+. If you do not set `"omitted"` on a table with virtual computed columns when you create a changefeed, you will receive a warning that changefeeds will filter out virtual computed values. <br><br>**Default:** `"omitted"`
+<a name="split-column-families"></a>`split_column_families` | N/A | **New in v22.1:** Target a table with multiple columns families. Emit messages for each column family in the target table. Each message will include the label: `table.family`.
+<a name="virtual-columns"></a>`virtual_columns` | `STRING` | **New in v22.1:** Changefeeds omit [virtual computed columns](computed-columns.html) from emitted [messages](changefeed-messages.html#responses) by default. To maintain the behavior of previous CockroachDB versions where the changefeed would emit [`NULL`](null-handling.html) values for virtual computed columns, set `virtual_columns = "null"` when you start a changefeed. <br><br>You may also define `virtual_columns = "omitted"`, though this is already the default behavior for v22.1+. If you do not set `"omitted"` on a table with virtual computed columns when you create a changefeed, you will receive a warning that changefeeds will filter out virtual computed values. <br><br>**Default:** `"omitted"`
 
 #### Avro limitations
 
@@ -86,7 +86,7 @@ table,key,value
 cdc_test,[0],"{""after"": {""a"": 0}}"
 ~~~
 
-For step-by-step guidance on creating a Core changefeed, see [Changefeed Examples](changefeed-examples.html).
+For step-by-step guidance on creating a Core changefeed, see the [Changefeed Examples](changefeed-examples.html) page.
 
 ### Create a changefeed with Avro
 
@@ -104,7 +104,7 @@ table,key,value
 cdc_test,\000\000\000\000\001\002\000,\000\000\000\000\002\002\002\000
 ~~~
 
-For step-by-step guidance on creating a Core changefeed with Avro, see [Changefeed Examples](changefeed-examples.html).
+For step-by-step guidance on creating a Core changefeed with Avro, see the [Changefeed Examples](changefeed-examples.html) page.
 
 ### Create a changefeed on a table with column families
 
@@ -122,7 +122,7 @@ To create a changefeed on a table and output changes for each column family, use
 EXPERIMENTAL CHANGEFEED FOR TABLE cdc_test WITH split_column_families;
 ~~~
 
-For step-by-step guidance creating a Core changefeed on a table with multiple column families, see [Changefeed Examples](changefeed-examples.html).
+For step-by-step guidance creating a Core changefeed on a table with multiple column families, see the [Changefeed Examples](changefeed-examples.html) page.
 
 ## See also
 

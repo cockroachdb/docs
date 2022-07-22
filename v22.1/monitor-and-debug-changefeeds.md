@@ -107,7 +107,7 @@ changefeed_emitted_bytes{scope="vehicles"} 183557
 `emit_latency`     | Difference between the event's [MVCC](architecture/storage-layer.html#mvcc) timestamp and the time the event was emitted by CockroachDB. | Nanoseconds
 `admit_latency`    | Difference between the event's MVCC timestamp and the time the event is put into the memory buffer. | Nanoseconds
 `commit_latency`   | Difference between the event's MVCC timestamp and the time it is acknowledged by the [downstream sink](changefeed-sinks.html). If the sink is batching events, then the difference is between the oldest event and when the acknowledgment is recorded. | Nanoseconds
-`backfill_count`   | Number of changefeeds currently executing a backfill ([schema change](use-changefeeds.html#schema-changes) or initial scan). | Changefeeds
+`backfill_count`   | Number of changefeeds currently executing a backfill ([schema change](changefeed-messages.html#schema-changes) or initial scan). | Changefeeds
 `sink_batch_hist_nanos` | Time messages spend batched in the sink buffer before being flushed and acknowledged. | Nanoseconds
 `flush_hist_nanos` | Time spent flushing messages across all changefeeds. | Nanoseconds
 `checkpoint_hist_nanos` | Time spent checkpointing changefeed progress. | Nanoseconds
