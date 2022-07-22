@@ -263,6 +263,7 @@ kubectl
 kubemci
 kuwahara
 kv
+latest_operator_version
 Leakproof
 leakproof
 leiningen
