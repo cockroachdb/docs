@@ -102,6 +102,8 @@ You can restore:
 - All [tables](create-table.html) (which automatically includes their [indexes](indexes.html))
 - All [views](views.html)
 
+An object's historical data is not preserved upon `RESTORE`. This means that if you issue an `AS OF SYSTEM TIME` query on a restored object, the query will fail or the response will be incorrect because there is no historical data to query. For example, if you restore a table at `2022-07-13 10:38:00`, it is not then possible to read or [back up](backup.html) that table at `2022-07-13 10:37:00` or earlier. This is also the case for backups with [`revision_history`](backup.html#with-revision-history) that might try to initiate a revision start time earlier than `2022-07-13 10:38:00`.
+
 {{site.data.alerts.callout_info}}
 When you restore a full cluster with an Enterprise license, it will restore the [Enterprise license](enterprise-licensing.html) of the cluster you are restoring from. If you want to use a different license in the new cluster, make sure to [update the license](licensing-faqs.html#set-a-license) _after_ the restore is complete.
 {{site.data.alerts.end}}
@@ -188,10 +190,6 @@ After the restore has been initiated, you can control it with [`PAUSE JOB`](paus
 {{site.data.alerts.callout_info}}
 If initiated correctly, the statement returns when the restore is finished or if it encounters an error. In some cases, the restore can continue after an error has been returned (the error message will tell you that the restore has resumed in background).
 {{site.data.alerts.end}}
-
-## Known limitations
-
-{% include {{ page.version.version }}/known-limitations/restore-aost.md %}
 
 ## Examples
 

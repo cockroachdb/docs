@@ -92,6 +92,8 @@ You can restore:
 - [Databases](#databases)
 - [Tables](#tables)
 
+An object's historical data is not preserved upon `RESTORE`. This means that if you issue an `AS OF SYSTEM TIME` query on a restored object, the query will fail or the response will be incorrect because there is no historical data to query. For example, if you restore a table at `2022-07-13 10:38:00`, it is not then possible to read or [back up](backup.html) that table at `2022-07-13 10:37:00` or earlier. This is also the case for backups with [`revision_history`](backup.html#with-revision-history) that might try to initiate a revision start time earlier than `2022-07-13 10:38:00`.
+
 {{site.data.alerts.callout_info}}
 You can exclude a table's row data from a backup using the [`exclude_data_from_backup`](take-full-and-incremental-backups.html#exclude-a-tables-data-from-backups) parameter. With this parameter set, a table will be empty when restored.
 {{site.data.alerts.end}}
@@ -893,7 +895,6 @@ For more detail on using this option with `BACKUP`, see [Incremental backups wit
 
 ## Known limitations
 
-- {% include {{ page.version.version }}/known-limitations/restore-aost.md %} [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/53044)
 - To successfully [restore a table into a multi-region database](#restoring-to-multi-region-databases), it is necessary for the order and regions to match between the source and destination database. See the [Known Limitations](known-limitations.html#using-restore-with-multi-region-table-localities) page for detail on ordering and matching regions. [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/71071)
 - {% include {{ page.version.version }}/known-limitations/restore-tables-non-multi-reg.md %}
 
