@@ -89,7 +89,7 @@ This article assumes you have already installed the OpenShift Container Platform
 
 	<img src="{{ 'images/v21.2/cockroachdb-operator-instance-openshift.png' | relative_url }}" alt="OpenShift OperatorHub" style="border:1px solid #eee;max-width:100%" />
 
-1. Make sure **CockroachDB Version** is set to a valid CockroachDB version. For a list of compatible image names, see `spec.containers.env` in the [Operator manifest](https://github.com/cockroachdb/cockroach-operator/blob/{{site.operator_version}}/install/operator.yaml) on GitHub.
+1. Make sure **CockroachDB Version** is set to a valid CockroachDB version. For a list of compatible image names, see `spec.containers.env` in the [Operator manifest](https://github.com/cockroachdb/cockroach-operator/blob/{{ latest_operator_version }}/install/operator.yaml) on GitHub.
 
 1. This will open the **Create CrdbCluster** page. By default, this deploys a 3-node secure cluster. Leave the other fields unchanged and click **Create**.
 

@@ -26,7 +26,6 @@ include:
 keep_files:
 - _internal
 markdown: Redcarpet
-operator_version: v2.6.0
 plugins:
 - jekyll-include-cache
 release_info:

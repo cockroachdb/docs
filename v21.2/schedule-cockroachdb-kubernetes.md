@@ -22,7 +22,7 @@ These settings control how CockroachDB pods can be identified or scheduled onto 
 
 ## Enable feature gates
 
-To enable the [affinity](#affinities-and-anti-affinities), [toleration](#taints-and-tolerations), and [topology spread constraint](#topology-spread-constraints) rules, [download the Operator manifest](https://raw.githubusercontent.com/cockroachdb/cockroach-operator/{{site.operator_version}}/install/operator.yaml) and add the following line to the `spec.containers.args` field:
+To enable the [affinity](#affinities-and-anti-affinities), [toleration](#taints-and-tolerations), and [topology spread constraint](#topology-spread-constraints) rules, [download the Operator manifest](https://raw.githubusercontent.com/cockroachdb/cockroach-operator/{{ latest_operator_version }}/install/operator.yaml) and add the following line to the `spec.containers.args` field:
 
 {% include_cached copy-clipboard.html %}
 ~~~ yaml
