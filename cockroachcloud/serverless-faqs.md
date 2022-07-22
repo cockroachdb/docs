@@ -152,7 +152,7 @@ We don't recommend `userfile` for `EXPORT` operations. You can either add billin
 
 ### Is change data capture available to me?
 
-Yes, {{ site.data.products.serverless-plan }} clusters have access to both [Core Changefeeds](../{{site.versions["stable"]}}/changefeed-examples.html#create-a-core-changefeed) and [Enterprise Changefeeds](../{{site.versions["stable"]}}/changefeed-examples.html).
+Yes, {{ site.data.products.serverless-plan }} clusters have access to both [Core Changefeeds](../{{site.versions["stable"]}}/changefeed-for.html) and [Enterprise Changefeeds](../{{site.versions["stable"]}}/create-changefeed.html).
 
 ### Can I backup my {{ site.data.products.serverless }} cluster? Does Cockroach Labs take backups of my cluster?
 

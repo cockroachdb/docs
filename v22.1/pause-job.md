@@ -11,7 +11,7 @@ The `PAUSE JOB` [statement](sql-statements.html) lets you pause the following ty
 - [`BACKUP`](backup.html) and [`RESTORE`](restore.html) jobs
 - [User-created table statistics](create-statistics.html) jobs
 - [Automatic table statistics](cost-based-optimizer.html#table-statistics) jobs
-- [Changefeeds](use-changefeeds.html)
+- [Changefeeds](create-changefeed.html)
 - [Schema change](online-schema-changes.html) jobs
 - [Scheduled backup](manage-a-backup-schedule.html) jobs
 

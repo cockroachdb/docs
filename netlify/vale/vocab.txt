@@ -60,6 +60,7 @@ cgo
 changangela
 changefeed
 changefeeds
+changefeed's
 changeset
 changesets
 checkpointing
