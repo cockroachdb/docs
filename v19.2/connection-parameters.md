@@ -8,7 +8,7 @@ Client applications, including [`cockroach` client
 commands](cockroach-commands.html), work by establishing a network
 connection to a CockroachDB cluster. The client connection parameters
 determine which CockroachDB cluster they connect to, and how to
-establish this network connection.
+establish this network connection. To override for each application, use connect_timeout in the connection string. Here's a psycopg2 example conn = psycopg2.connect(host="localhost", port=port, database = "mydb", user="xxx", connect_timeout=10)
 
 ## Supported connection parameters
 
