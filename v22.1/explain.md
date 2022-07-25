@@ -18,10 +18,6 @@ Using `EXPLAIN` output, you can optimize your queries as follows:
 - Restructure queries to require fewer levels of processing. Queries with fewer levels execute more quickly.
 - Avoid scanning an entire table, which is the slowest way to access data. [Create indexes](indexes.html) that contain at least one of the columns that the query is filtering in its `WHERE` clause.
 
-     You can disable statement plans that perform full table scans with the `disallow_full_table_scans` [session variable](set-vars.html). When `disallow_full_table_scans=on`, attempting to execute a query with a plan that includes a full table scan will return an error.
-
-     The statement planner uses the [cost-based optimizer](cost-based-optimizer.html) to create statement plans. Even after adding secondary indexes, the optimizer may decide that a full table scan will be faster. For example, if you add a secondary index to a table with a large number of rows and see that a statement plan isn't using the secondary index, it is likely that performing a full table scan using the primary key is faster than doing a secondary index scan plus an [index join](indexes.html#example).
-
 You can find out if your queries are performing entire table scans by using `EXPLAIN` to see which:
 
 - Indexes the query uses; shown as the value of the `table` property.
