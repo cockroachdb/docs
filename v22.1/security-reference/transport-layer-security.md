@@ -7,7 +7,19 @@ docs_area: reference.security
 
 This page provides a conceptual overview of Transport Layer Security (TLS) and the related notion of Public Key Infrastructre (PKI), and sketches the security-architecture considerations in play when using CockroachDB.
 
-See:
+
+**Page contents:**
+
+- [What is Transport Layer Security (TLS)?](#what-is-transport-layer-security-tls)
+- [What is Public Key Infrastructure (PKI)?](#what-is-public-key-infrastructure-pki)
+- [PKI in CockroachDB](#pki-in-cockroachdb)
+- [CockroachDB's TLS support and operating modes](#cockroachdbs-tls-support-and-operating-modes)
+- [The CockroachDB certificate Trust Store](#the-cockroachdb-certificate-trust-store)
+- [TLS between CockroachDB nodes](#tls-between-cockroachdb-nodes)
+- [TLS in CockroachDB SQL client connections](#tls-in-cockroachdb-sql-client-connections)
+- [Revoking Certificates in CockroachDB](#revoking-certificates-in-cockroachdb)
+
+**Learn more:**
 
 - [Managing CockroachDB security certificates with HashiCorp Vault](../manage-certs-vault.html)
 - [Using the CockroachDB CLI to provision a development cluster](../manage-certs-cli.html)
@@ -17,7 +29,7 @@ See:
 
 Modern communication systems pose a general problem: How is it possible send data over a network connection to a specific receiving party, and guarantee that nobody else can eavesdrop on the message or tamper with the contents? For much of the internet and the systems that support it, the Transport Layer Security (TLS) protocol is part of the solution. TLS can be used to establish securely authenticated and encrypted traffic between a client (the party who initiates the session) and a server (the party receiving the connection request).
 
-### Keys and key pairs
+### Key pairs
 
 How is it possible to send a message that only a specific intended party can receive? 
 
@@ -29,7 +41,7 @@ The fundamental mechanism of TLS is a pair of cryptographic keys (usually referr
 	- Text encrypted with either can be decrypted with the other.
 	- It is prohibitively computationally expensive to compute the private from the public key.
 
-The useful implication is that if you hold such a key pair, you can distribute the public key to anyone with whom you want to communicate securely, and as long as you retain sole posession of the private key, two things are guaranteed:
+The useful implication is that if you hold such a key pair, you can distribute the public key (or, more usually, a public certificate containing the key) to anyone with whom you want to communicate securely. As long as you retain sole posession of the private key, two things are guaranteed:
 
 - Anyone who has the public key can use it to encrypt a message and send it to you, knowing that you alone can decrypt it with the private key.
 - Anyone who receives a message that can be decrypted correctly using the public key knows it *must* have been encrypted with the private key, meaning it must have come from you.
@@ -64,7 +76,7 @@ In the TLS protocol, asymmetric encryption using the public/private key pairs is
 The generation and management of session keys is fully automated within the TLS protocol. You do not ever need to provision or manage TLS session keys.
 {{site.data.alerts.end}}
 
-## Public Key Infrastructure (PKI)
+## What is Public Key Infrastructure (PKI)?
 
 Encryption is powerful and important, but without identity authentication, it's not very useful: if you don't know who is sending you messages in first place, it's small comfort that nobody *else* is tampering with the contents or eavesdropping on the conversation.
 
@@ -129,7 +141,7 @@ In a CockroachDB cluster, each node must be able to initiate http requests to an
 
 In addition, SQL clients and DB Console clients must be able to reach the nodes. The client must authenticate the server with a certificate signed by a trusted CA, and the server mustu authenticate the client, either with its own certificate, or with another method, such as username/password.
 
-Therefore, the nodes must each have a private key/public certificate pair where the public certificates have been signed by a common CA (called the **node CA** here).
+Therefore, the nodes must each have a [private key/public certificate pair](#key-pairs) where the public certificates have been signed by a common CA (called the **node CA** here).
 
 If the client is to use mutual authentication the client must have a private key/public certificate pair, where the public certificate is signed by a CA trusted by the nodes, i.e. the CA's public certificate must be in the nodes' trust stores.
 
@@ -169,11 +181,13 @@ Note that client connections must also be made insecurely, or the connection req
 
 ## The CockroachDB certificate Trust Store
 
-A node's [**trust store**](#public-and-private-pkis) is the set of public CA certificates contained in its `certs` directory. The node will accept all valid certificates signed by the CA or any CA subordinate to it, for any CA whose public certificate is in the trust store. CockroachDB ignores operating system certificate trust stores.
+A node's [**trust store**](#public-and-private-pkis) is the set of CA public certificates contained in the directory specified by the `--certs-dir` argument when the node is started using [`cockroach start`](../cockroach-start.html). For each CA public certificate in the trust store, the node will accept **all valid certificates signed by the CA or any CA subordinate to it**.
+
+CockroachDB ignores operating system certificate trust stores.
 
 ## TLS between CockroachDB nodes
 
-Connections between CockroachDB nodes are always mutually TLS authenticated. Each node must have at least one TLS key pair, which it can use both as server and as client when initiating internode traffic.
+Connections between CockroachDB nodes are always mutually TLS authenticated. Each node must have at least one private-key/public certificate pair, which it can use both as server and as client when initiating internode traffic.
 
 ### CockroachDB Cloud
 
