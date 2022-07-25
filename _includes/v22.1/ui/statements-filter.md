@@ -25,7 +25,7 @@ To filter the statements:
           - If you haven't set `application_name` in a client connection string, it appears as `unset`.
       - To filter by one or more databases (**Database**), SQL statement types (**Statement Type**), or nodes on which the statement ran (**Node**), click the field and select one or more checkboxes.
 
-          The **Statement Type** values map to the CockroachDB statement types [data definition language (DDL)](sql-statements.html#data-definition-statements), [data manipulation language (DML)](sql-statements.html#data-manipulation-statements), [data control language (DCL)](sql-statements.html#data-control-statements), and [transaction control language (TCL)](sql-statements.html#transaction-control-statements).
+          The **Statement Type** values map to the CockroachDB statement types [data definition language (DDL)]({{ link_prefix }}sql-statements.html#data-definition-statements), [data manipulation language (DML)]({{ link_prefix }}sql-statements.html#data-manipulation-statements), [data control language (DCL)]({{ link_prefix }}sql-statements.html#data-control-statements), and [transaction control language (TCL)]({{ link_prefix }}sql-statements.html#transaction-control-statements).
       - To display only statement fingerprints that take longer than a specified time to run, specify the time and units.
       - To display only statement fingerprints with queries that cause full table scans, click **Only show statements that contain queries with full table scans**.
 
