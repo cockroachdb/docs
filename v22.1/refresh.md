@@ -27,7 +27,7 @@ The user must be the [owner](owner-to.html) of the materialized view or have [ad
 -----------|-------------
 `opt_concurrently` | `CONCURRENTLY` (Default behavior) This keyword has no effect. It is present for PostgreSQL compatibility. All materialized views are refreshed concurrently with other jobs.
 `view_name` | The name of the materialized view to refresh.
-`opt_clear_data` | `WITH DATA` (*Default behavior*) Refresh the stored query results. <br>`WITH NO DATA` Drop the query results of the materialized view from storage.
+`opt_clear_data` | `WITH DATA` (Default behavior) Refresh the stored query results. <br>`WITH NO DATA` Drop the query results of the materialized view from storage.
 
 ## Example
 
