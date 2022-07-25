@@ -246,6 +246,10 @@ Throughput is affected by the disk I/O, CPU usage, and network latency. Use the 
 
 - Network latency: [Network Latency](ui-network-latency-page.html)
 
+### Query runs out of memory
+
+If your query returns the error code `SQLSTATE: 53200` with the message `ERROR: root: memory budget exceeded`, follow the guidelines in [memory budget exceeded](common-errors.html#memory-budget-exceeded).
+
 ## Node issues
 
 ### Single hot node
