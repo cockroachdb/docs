@@ -455,7 +455,7 @@ Field | Type | Description
 `implicitTxn` | `BOOLEAN` | Whether the statement executed in an implicit transaction.
 `query` | `STRING` | The statement string.
 `querySummary` | `STRING` | The statement string summary.
-`stmtTyp` | `SQLType` | The [type of SQL statement](sqltype.html): `TypeDDL`, `TypeDML`, `TypeDCL`, or `TypeTCL`.
+`stmtTyp` | `STRING` | The type of SQL statement: `"TypeDDL"`, `"TypeDML"`, `"TypeDCL"`, or `"TypeTCL"`. These types map to the CockroachDB statement types [data definition language (DDL)](sql-statements.html#data-definition-statements), [data manipulation language (DML)](sql-statements.html#data-manipulation-statements), [data control language (DCL)](sql-statements.html#data-control-statements), and [transaction control language (TCL)](sql-statements.html#transaction-control-statements).
 `vec` | `BOOLEAN` | Whether the statement executed in the vectorized query engine.
 
 #### `statistics` column
