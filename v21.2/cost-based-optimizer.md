@@ -152,6 +152,8 @@ To change this setting, which is controlled by the `reorder_joins_limit` [sessio
 > SET reorder_joins_limit = 0;
 ~~~
 
+To disable this feature, set the variable to `0`. You can configure the default `reorder_joins_limit` session setting with the [cluster setting](cluster-settings.html) `sql.defaults.reorder_joins_limit`, which has a default value of `8`.
+
 {{site.data.alerts.callout_danger}}
 We strongly recommend not setting this value higher than 8 to avoid performance degradation. If set too high, the cost of generating and costing execution plans can end up dominating the total execution time of the query.
 {{site.data.alerts.end}}
