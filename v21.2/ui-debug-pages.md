@@ -18,7 +18,7 @@ These pages are experimental and undocumented. If you find an issue, let us know
 On the right-side of the page, the following information is displayed:
 
 - [**License type**](licensing-faqs.html): Determines if you have access to Enterprise features.
-- **Web server**: Indicates the current node to which DB Console access is being routed, and allows you to select a different node to route DB Console access to. To cancel routing to a different node, click **Reset**. You may also specify this directly in the URL with the `remote_node_id` parameter, e.g., `http://<host>:<http-port>/?remote_node_id=2` to select node `2`. The node selected here is also set as the target node for the **Profiling UI** section.
+- **Web server**: Indicates the node currently serving your DB Console web session, and allows you to select a different node if desired. To cancel your selection of a different node, click **Reset**. You may also specify this directly in the URL with the `remote_node_id` parameter. For example, use `http://<host>:<http-port>/?remote_node_id=2` to select node `2`. The node selected here is also set as the target node for the **Profiling UI** section.
 
 ## Reports
 
