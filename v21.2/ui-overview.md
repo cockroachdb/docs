@@ -74,8 +74,6 @@ You can accomplish this using one of these methods:
 - Once connected to DB Console, use the **Web server** dropdown menu from the [**Advanced Debug**](ui-debug-pages.html#license-and-node-information) page to select a different node to proxy to.
 - Use the `remote_node_id` parameter in your DB Console URL to proxy directly to a specific node. For example, use `http://<host>:<http-port>/?remote_node_id=2` to proxy directly to node `2`. 
 
-This is useful in deployments where a third-party load balancer otherwise determines which CockroachDB node you connect to in DB Console, or where web management access is limited to a subset of CockroachDB instances in a cluster.
-
 ## DB Console security considerations
 
 Access to DB Console is a function of cluster security and the role of the accessing user.
