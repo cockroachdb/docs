@@ -248,12 +248,6 @@ If you are [performing an `IMPORT` of a `PGDUMP`](migrate-from-postgres.html) wi
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/50225)
 
-### Historical reads on restored objects
-
-{% include {{ page.version.version }}/known-limitations/restore-aost.md %}
-
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/53044)
-
 ### Spatial support limitations
 
 CockroachDB supports efficiently storing and querying [spatial data](spatial-data.html), with the following limitations:
