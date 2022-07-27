@@ -91,10 +91,10 @@ release_info:
     start_time: 2022-06-29 11:07:02.191084 +0000 UTC
     version: v21.2.13
   v22.1:
-    build_time: 2022-07-19 00:00:00 (go1.17)
+    build_time: 2022-07-28 00:00:00 (go1.17)
     docker_image: cockroachdb/cockroach
-    name: v22.1.4
-    start_time: 2022-07-18 12:08:36.898533 +0000 UTC
-    version: v22.1.4
+    name: v22.1.5
+    start_time: 2022-07-27 13:34:27.897839 +0000 UTC
+    version: v22.1.5
 site_title: CockroachDB Docs
 url: https://www.cockroachlabs.com
