@@ -6,7 +6,6 @@ docs_area: manage
 ---
 
 {% assign previous_version = site.data.versions | where_exp: "previous_version", "previous_version.major_version == page.version.version" | map: "previous_version" | first %}
-{% assign latest_production = site.data.releases | where_exp: "latest_production", "latest_production.major_version == page.version.version" | where: "release_type", "Production" | sort: "release_date" | last %}
 {% assign previous_latest_production = site.data.releases | where_exp: "previous_latest_production", "previous_latest_production.major_version == previous_version" | where: "release_type", "Production" | sort: "release_date" | last %}
 {% assign prior_production = site.data.releases | where_exp: "prior_production", "prior_production.major_version == page.version.version" | where: "release_type", "Production" | sort: "release_date" | pop | last %}
 {% assign first_testing = site.data.releases | where_exp: "first_testing", "first_testing.major_version == page.version.version" | where: "release_type", "Testing" | sort: "release_date" | first %}
@@ -14,7 +13,7 @@ docs_area: manage
 
 Because of CockroachDB's [multi-active availability](multi-active-availability.html) design, you can perform a "rolling upgrade" of your CockroachDB cluster. This means that you can upgrade nodes one at a time without interrupting the cluster's overall health and operations.
 
-This article describes how to upgrade to the latest {{ page.version.version}} production release, **{{ latest_production.version}}**.
+This page describes how to upgrade to the latest **{{ page.version.version }}** production release, **{{ page.release_info.version }}**.
 
 ## Terminology
 
@@ -38,7 +37,7 @@ Run [`cockroach sql`](cockroach-sql.html) against any node in the cluster to ope
 > SHOW CLUSTER SETTING version;
 ~~~
 
-To upgrade to {{ latest_production.version }}, you must be running either:
+To upgrade to {{ page.release_info.version }}, you must be running either:
 
 - **A {{ previous_version }} production release:** {{ previous_version }}.0 to {{ previous_latest_production.version }}
 - **Any earlier {{ page.version.version }} release:** {{ first_testing.version }} to {{ prior_production.version }}
@@ -51,7 +50,7 @@ If you are running any other version, take the following steps **before** contin
 | Pre-{{ previous_version }} production release  | Upgrade through each subsequent major release, [ending with a {{ previous_version }} production release](../{{ previous_version }}/upgrade-cockroach-version.html)                                                     |
 | Pre-{{ page.version.version }} testing release | Upgrade to a corresponding production release; then upgrade through each subsequent major release, [ending with a {{ previous_version }} production release](../{{ previous_version }}/upgrade-cockroach-version.html) |
 
-When you are ready to upgrade to {{ latest_production.version }}, continue to [step 2](#step-2-prepare-to-upgrade).
+When you are ready to upgrade to {{ page.release_info.version }}, continue to [step 2](#step-2-prepare-to-upgrade).
 
 ## Step 2. Prepare to upgrade
 
@@ -122,7 +121,7 @@ We recommend creating scripts to perform these steps instead of performing them 
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
-These steps perform an upgrade to the latest {{ page.version.version }} production release, **{{ latest_production.version}}**. Upgrading to the latest production release is not required, but is strongly recommended.
+These steps perform an upgrade to the latest {{ page.version.version }} production release, **{{ page.release_info.version}}**. Upgrading to the latest production release is not required, but is strongly recommended.
 {{site.data.alerts.end}}
 
 1. [Drain and shut down the node.](node-shutdown.html#perform-node-shutdown)
