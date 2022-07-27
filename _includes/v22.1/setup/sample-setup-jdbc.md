@@ -8,7 +8,7 @@
 
 <h3>Choose your installation method</h3>
 
-You can install a {{ site.data.products.serverless }} cluster using either the CockroachDB Cloud Console, a web-based graphical user interface (GUI) tool, or <code>ccloud</code>, a command-line interface (CLI) tool.
+You can create a {{ site.data.products.serverless }} cluster using either the CockroachDB Cloud Console, a web-based graphical user interface (GUI) tool, or <code>ccloud</code>, a command-line interface (CLI) tool.
 
 <div class="filters clearfix">
     <button class="filter-button page-level" data-scope="console">Use the Cloud Console (GUI)<strong></strong></button>
@@ -29,13 +29,12 @@ You can install a {{ site.data.products.serverless }} cluster using either the C
 
 The **Connect to cluster** dialog shows information about how to connect to your cluster.
 
-1. Select **General connection string** from the **Select option** dropdown.
-1. Open the **General connection string** section, then copy the connection string provided and save it in a secure location.
-
-    The sample application used in this tutorial uses system CA certificates for server certificate verification, so you can skip the **Download CA Cert** instructions.
+1. Select **Java** from the **Select option/language** dropdown.
+1. Select **JDBC** from the **Select tool** dropdown.
+1. Copy the command provided to set the `JDBC_DATABASE_URL` environment variable.
 
     {{site.data.alerts.callout_info}}
-    The connection string is pre-populated with your username, password, cluster name, and other details. Your password, in particular, will be provided *only once*. Save it in a secure place (Cockroach Labs recommends a password manager) to connect to your cluster in the future. If you forget your password, you can reset it by going to the [**SQL Users** page](../cockroachcloud/user-authorization.html).
+    The JDBC connection URL is pre-populated with your username, password, cluster name, and other details. Your password, in particular, will be provided *only once*. Save it in a secure place (Cockroach Labs recommends a password manager) to connect to your cluster in the future. If you forget your password, you can reset it by going to the [**SQL Users** page](../cockroachcloud/user-authorization.html).
     {{site.data.alerts.end}}
 
 </div>
