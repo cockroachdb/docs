@@ -28,14 +28,14 @@ When you have a complex query that, for example, joins several tables, or perfor
 
 Let's say you're using our [sample `startrek` database](cockroach-gen.html#generate-example-data), which contains two tables, `episodes` and `quotes`.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > USE startrek;
 ~~~
 
 There's a foreign key constraint between the `episodes.id` column and the `quotes.episode` column. To count the number of famous quotes per season, you could run the following join:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT episodes.season, count(*)
   FROM quotes
@@ -55,7 +55,7 @@ There's a foreign key constraint between the `episodes.id` column and the `quote
 
 Alternatively, to make it much easier to run this complex query, you could create a view:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE VIEW quotes_per_season (season, quotes)
   AS SELECT episodes.season, count(*)
@@ -68,7 +68,7 @@ Alternatively, to make it much easier to run this complex query, you could creat
 
 Then, executing the query is as easy as `SELECT`ing from the view:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM quotes_per_season;
 ~~~
@@ -90,12 +90,12 @@ When you do not want to grant a user access to all the data in one or more stand
 
 Let's say you have a `bank` database containing an `accounts` table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > USE bank;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM accounts;
 ~~~
@@ -113,7 +113,7 @@ Let's say you have a `bank` database containing an `accounts` table:
 
 You want a particular user, `bob`, to be able to see the types of accounts each user has without seeing the balance in each account, so you create a view to expose just the `type` and `email` columns:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE VIEW user_accounts
   AS SELECT type, email
@@ -122,7 +122,7 @@ You want a particular user, `bob`, to be able to see the types of accounts each 
 
 You then make sure `bob` does not have privileges on the underlying `accounts` table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW GRANTS ON accounts;
 ~~~
@@ -137,14 +137,14 @@ You then make sure `bob` does not have privileges on the underlying `accounts` t
 
 Finally, you grant `bob` privileges on the `user_accounts` view:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > GRANT SELECT ON user_accounts TO bob;
 ~~~
 
 Now, `bob` will get a permissions error when trying to access the underlying `accounts` table but will be allowed to query the `user_accounts` view:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM accounts;
 ~~~
@@ -153,7 +153,7 @@ Now, `bob` will get a permissions error when trying to access the underlying `ac
 pq: user bob does not have SELECT privilege on table accounts
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM user_accounts;
 ~~~
@@ -175,7 +175,7 @@ pq: user bob does not have SELECT privilege on table accounts
 
 To create a view, use the [`CREATE VIEW`](create-view.html) statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE VIEW quotes_per_season (season, quotes)
   AS SELECT episodes.season, count(*)
@@ -194,7 +194,7 @@ Any [selection query](selection-queries.html) is valid as operand to `CREATE VIE
 
 Once created, views are listed alongside regular tables in the database:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM startrek;
 ~~~
@@ -210,7 +210,7 @@ Once created, views are listed alongside regular tables in the database:
 
 To list just views, you can query the `views` table in the [Information Schema](information-schema.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM information_schema.views;
 ~~~
@@ -222,11 +222,11 @@ To list just views, you can query the `views` table in the [Information Schema](
 (1 row)
 ~~~
 
-### Querying views
+### Query a view
 
-To query a view, target it with a [table expression](table-expressions.html#table-or-view-names), for example using a [`SELECT` clause](select-clause.html), just as you would with a stored table:
+To query a view, target it with a [table expression](table-expressions.html#table-and-view-names), for example using a [`SELECT` clause](select-clause.html), just as you would with a stored table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM quotes_per_season;
 ~~~
@@ -242,7 +242,7 @@ To query a view, target it with a [table expression](table-expressions.html#tabl
 
 `SELECT`ing a view executes the view's stored `SELECT` statement, which returns the relevant data from the underlying table(s). To inspect the `SELECT` statement executed by the view, use the [`SHOW CREATE`](show-create.html) statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE quotes_per_season;
 ~~~
@@ -256,7 +256,7 @@ To query a view, target it with a [table expression](table-expressions.html#tabl
 
 You can also inspect the `SELECT` statement executed by a view by querying the `views` table in the [Information Schema](information-schema.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT view_definition FROM information_schema.views WHERE table_name = 'quotes_per_season';
 ~~~
@@ -272,7 +272,7 @@ You can also inspect the `SELECT` statement executed by a view by querying the `
 
 A view depends on the objects targeted by its underlying query. Attempting to [rename an object](rename-table.html) referenced in a view's stored query therefore results in an error:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE quotes RENAME TO sayings;
 ~~~
@@ -285,7 +285,7 @@ HINT: you can drop quotes_per_season instead.
 
 Likewise, attempting to [drop an object](drop-table.html) referenced in a view's stored query results in an error:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP TABLE quotes;
 ~~~
@@ -296,7 +296,7 @@ SQLSTATE: 2BP01
 HINT: you can drop quotes_per_season instead.
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE episodes DROP COLUMN season;
 ~~~
@@ -309,24 +309,24 @@ HINT: you can drop quotes_per_season instead.
 
  You can [drop](drop-column.html) or [rename columns](rename-column.html) from a table on which a view is dependent, as long as the view does not depend on that column of the table. For example, because there is no view that depends on the `num` column of the `episodes` table, you can rename it to `number`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE startrek.episodes RENAME COLUMN num TO number;
 ~~~
 
 Similarly, because no view depends on the `title` column of the `episodes` table, you can drop it. Note that to drop a column with data in it, you must first set `sql_safe_updates = false`.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET sql_safe_updates = false;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE startrek.episodes DROP COLUMN title;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW COLUMNS FROM startrek.episodes;
 ~~~
@@ -343,7 +343,7 @@ Similarly, because no view depends on the `title` column of the `episodes` table
 
 When [dropping a table](drop-table.html) or [dropping a view](drop-view.html), you can use the `CASCADE` keyword to drop all dependent objects as well:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP TABLE quotes CASCADE;
 ~~~
@@ -360,7 +360,7 @@ DROP TABLE
 
 To rename a view, use the [`ALTER VIEW`](alter-view.html) statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER VIEW quotes_per_season RENAME TO quotes_count;
 ~~~
@@ -371,11 +371,11 @@ RENAME VIEW
 
 It is not possible to change the stored query executed by the view. Instead, you must drop the existing view and create a new view.
 
-### Replacing views
+### Replace a view
 
  To replace a view, use [`CREATE OR REPLACE VIEW`](create-view.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE OR REPLACE VIEW quotes_count (season, quotes, stardate)
   AS SELECT episodes.season, count(*), episodes.stardate
@@ -385,7 +385,7 @@ It is not possible to change the stored query executed by the view. Instead, you
   GROUP BY episodes.season, episodes.stardate;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM quotes_count LIMIT 10;
 ~~~
@@ -406,11 +406,11 @@ It is not possible to change the stored query executed by the view. Instead, you
 (10 rows)
 ~~~
 
-### Removing views
+### Remove a view
 
 To remove a view, use the [`DROP VIEW`](drop-view.html) statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP VIEW quotes_count;
 ~~~
@@ -421,7 +421,7 @@ DROP VIEW
 
 ## Materialized views
 
- CockroachDB supports [materialized views](https://en.wikipedia.org/wiki/Materialized_view). Materialized views are views that store the results of their underlying queries.
+CockroachDB supports [materialized views](https://en.wikipedia.org/wiki/Materialized_view). A _materialized view_ is a view that stores the results of its underlying query.
 
 When you [select](selection-queries.html) from a materialized view, the stored query data that is returned might be out-of-date. This contrasts with a standard (i.e., "dematerialized") view, which runs its underlying query every time it is used, returning the latest results. In order to get the latest results from a materialized view, you must [refresh the view](refresh.html), and then select from it.
 
@@ -435,7 +435,7 @@ To create a materialized view, use a [`CREATE MATERIALIZED VIEW`](create-view.ht
 
 For example, suppose that you have the [sample `bank` database](cockroach-workload.html#bank-workload) loaded to a CockroachDB cluster, and populated with some workload values:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE MATERIALIZED VIEW overdrawn_accounts
   AS SELECT id, balance
@@ -443,7 +443,7 @@ For example, suppose that you have the [sample `bank` database](cockroach-worklo
   WHERE balance < 0;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM overdrawn_accounts;
 ~~~
@@ -460,7 +460,7 @@ For example, suppose that you have the [sample `bank` database](cockroach-worklo
 
 To show existing materialized views, use a [`SHOW TABLES`](show-tables.html) statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES;
 ~~~
@@ -475,7 +475,7 @@ To show existing materialized views, use a [`SHOW TABLES`](show-tables.html) sta
 
 Now suppose you update the `balance` values of the `bank` table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > UPDATE bank SET balance = 0 WHERE balance < 0;
 ~~~
@@ -486,7 +486,7 @@ UPDATE 402
 
 The changes can be seen in the table with a simple `SELECT` statement against the table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT id, balance
 FROM bank
@@ -501,7 +501,7 @@ WHERE balance < 0;
 
 Recall that materialized views do not automatically update their stored results. Selecting from `overdrawn_accounts` returns stored results, which are outdated:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM overdrawn_accounts;
 ~~~
@@ -518,12 +518,12 @@ Recall that materialized views do not automatically update their stored results.
 
 To update the materialized view's results, use a [`REFRESH`](refresh.html) statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > REFRESH MATERIALIZED VIEW overdrawn_accounts;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM overdrawn_accounts;
 ~~~
@@ -536,7 +536,7 @@ To update the materialized view's results, use a [`REFRESH`](refresh.html) state
 
 To rename the materialized view, use [`ALTER MATERIALIZED VIEW`](alter-view.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER MATERIALIZED VIEW overdrawn_accounts RENAME TO forgiven_accounts;
 ~~~
@@ -547,7 +547,7 @@ RENAME VIEW
 
 To remove the materialized view, use [`DROP MATERIALIZED VIEW`](drop-view.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP MATERIALIZED VIEW forgiven_accounts;
 ~~~
@@ -556,7 +556,76 @@ To remove the materialized view, use [`DROP MATERIALIZED VIEW`](drop-view.html):
 DROP VIEW
 ~~~
 
+### Add an index to a materialized view
+
+To speed up queries on materialized views, you can add an [index](schema-design-indexes.html) to the view.
+
+1. Create a materialized view of the [MovR](movr.html) rides table where the revenue is less than $20.00:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    CREATE MATERIALIZED VIEW low_rev_rides AS SELECT city, vehicle_id, revenue from rides WHERE revenue < 20.00;
+    ~~~
+
+1. To see the plan for a select on this view, run:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    EXPLAIN SELECT vehicle_id, revenue FROM low_rev_rides WHERE city = 'seattle';
+    ~~~
+
+    ~~~
+                                             info
+    ---------------------------------------------------------------------------------------
+      distribution: full
+      vectorized: true
+
+      • filter
+      │ filter: city = 'seattle'
+      │
+      └── • scan
+            missing stats
+            table: low_rev_rides@low_rev_rides_pkey
+            spans: FULL SCAN
+
+      index recommendations: 1
+      1. type: index creation
+         SQL command: CREATE INDEX ON low_rev_rides (city) STORING (vehicle_id, revenue);
+    (14 rows)
+    ~~~
+
+    Notice that there are [no statistics](#known-limitations) collected on the view.
+
+1. Create an index on the `city` column:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    CREATE INDEX ON low_rev_rides (city) STORING (vehicle_id, revenue);
+    ~~~
+
+1. To see the change in the plan after adding the index, run:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    EXPLAIN SELECT vehicle_id, revenue FROM low_rev_rides@low_rev_rides_city_idx WHERE city = 'seattle';
+    ~~~
+
+    ~~~
+                          info
+    -------------------------------------------------
+      distribution: local
+      vectorized: true
+
+      • scan
+        missing stats
+        table: low_rev_rides@low_rev_rides_city_idx
+        spans: [/'seattle' - /'seattle']
+    (7 rows)
+    ~~~
+
 ### Known limitations
+
+{% include {{page.version.version}}/sql/materialized-views-no-stats.md %}
 
 {% include {{page.version.version}}/sql/cannot-refresh-materialized-views-inside-transactions.md %}
 
@@ -591,7 +660,7 @@ To create a temporary view, add [`TEMP`/`TEMPORARY`](sql-grammar.html#opt_temp) 
 
 For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TEMP VIEW temp_view (season, quotes)
   AS SELECT episodes.season, count(*)
@@ -601,7 +670,7 @@ For example:
   GROUP BY episodes.season;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM temp_view;
 ~~~

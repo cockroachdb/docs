@@ -34,7 +34,7 @@ DROP SCHEDULE <scheduleID>
 
 ### Drop a schedule
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP SCHEDULE 589963390487363585;
 ~~~
@@ -47,9 +47,9 @@ DROP SCHEDULES 1
 
 To drop multiple schedules, nest a [`SELECT` clause](select-clause.html) that retrieves `id`(s) inside the `DROP SCHEDULES` statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
-> DROP SCHEDULES SELECT id FROM [SHOW SCHEDULES] WHERE label = 'schedule_database';
+> DROP SCHEDULES WITH x AS (SHOW SCHEDULES) SELECT id FROM x WHERE label = 'schedule_database';
 ~~~
 
 ~~~

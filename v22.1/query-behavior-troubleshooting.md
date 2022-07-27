@@ -17,7 +17,7 @@ For a developer-centric overview of optimizing SQL statement performance, see [O
 
 Use the [slow query log](logging-use-cases.html#sql_perf) or DB Console to detect slow queries in your cluster.
 
-High latency SQL statements are displayed on the [Statements](ui-statements-page.html) page of the DB Console.
+You can identify high-latency SQL statements on the [Statements](ui-statements-page.html) page of the DB Console. You can collect richer diagnostics of a high-latency statement by creating a [diagnostics bundle](ui-statements-page.html#diagnostics) when a statement fingerprint exceeds a certain latency.
 
 You can also check the [service latency graph](ui-sql-dashboard.html#service-latency-sql-99th-percentile) and the [CPU graph](ui-hardware-dashboard.html#cpu-percent) on the SQL and Hardware Dashboards, respectively. If the graphs show latency spikes or CPU usage spikes, these might indicate slow queries in your cluster.
 
@@ -33,7 +33,7 @@ You can look more closely at the behavior of a statement by visualizing a [state
 
 1. Start Jaeger:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     docker run -d --name jaeger -p 6831:6831/udp -p 16686:16686 jaegertracing/all-in-one:latest
     ~~~
@@ -103,7 +103,7 @@ docker run -d --name jaeger \
 
 ### Queries are always slow
 
-If you have consistently slow queries in your cluster, use the [Statement Details](ui-statements-page.html#statement-details-page) page to drill down to an individual statement and [collect diagnostics](ui-statements-page.html#diagnostics) for the statement. A diagnostics bundle contains a record of transaction events across nodes for the SQL statement.
+If you have consistently slow queries in your cluster, use the [Statement Fingerprint](ui-statements-page.html#statement-fingerprint-page) page to drill down to an individual statement and [collect diagnostics](ui-statements-page.html#diagnostics) for the statement. A diagnostics bundle contains a record of transaction events across nodes for the SQL statement.
 
 You can also use an [`EXPLAIN ANALYZE`](explain-analyze.html) statement, which executes a SQL query and returns a physical query plan with execution statistics. You can use query plans to troubleshoot slow queries by indicating where time is being spent, how long a processor (i.e., a component that takes streams of input rows and processes them according to a specification) is not doing work, etc.
 
@@ -246,6 +246,10 @@ Throughput is affected by the disk I/O, CPU usage, and network latency. Use the 
 
 - Network latency: [Network Latency](ui-network-latency-page.html)
 
+### Query runs out of memory
+
+If your query returns the error code `SQLSTATE: 53200` with the message `ERROR: root: memory budget exceeded`, follow the guidelines in [memory budget exceeded](common-errors.html#memory-budget-exceeded).
+
 ## Node issues
 
 ### Single hot node
@@ -308,7 +312,7 @@ To log CockroachDB-generated SQL queries as well, use `--vmodule=exec_log=3`.
 
 From the SQL prompt on a running node, execute the `crdb_internal.set_vmodule()` [function](functions-and-operators.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT crdb_internal.set_vmodule('exec_log=2');
 ~~~

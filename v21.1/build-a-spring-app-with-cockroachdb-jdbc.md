@@ -596,7 +596,7 @@ For more information about actuator endpoints, see the [Spring Boot Actuator End
 
 ## Implementation details
 
-This section walks you through the different components of the application project in detail.
+This section guides you through the different components of the application project in detail.
 
 ### Main application process
 

@@ -82,12 +82,12 @@ You can use an [`ALTER COLUMN ... SET DATA TYPE`](alter-column.html) statement t
 
 ### Create a table with a `TIMESTAMPTZ`-typed column
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE timestamps (a INT PRIMARY KEY, b TIMESTAMPTZ);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW COLUMNS FROM timestamps;
 ~~~
@@ -100,12 +100,12 @@ You can use an [`ALTER COLUMN ... SET DATA TYPE`](alter-column.html) statement t
 (2 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO timestamps VALUES (1, TIMESTAMPTZ '2016-03-26 10:10:10-05:00'), (2, TIMESTAMPTZ '2016-03-26');
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM timestamps;
 ~~~
@@ -120,12 +120,12 @@ You can use an [`ALTER COLUMN ... SET DATA TYPE`](alter-column.html) statement t
 
 ### Create a table with a `TIMESTAMP`-typed column, with precision
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE timestamps (a INT PRIMARY KEY, b TIMESTAMP(3));
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW COLUMNS FROM timestamps;
 ~~~
@@ -138,12 +138,12 @@ You can use an [`ALTER COLUMN ... SET DATA TYPE`](alter-column.html) statement t
 (2 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO timestamps VALUES (1, TIMESTAMP '2020-03-25 12:00:00.123456'), (2, TIMESTAMP '2020-03-26 4:00:00.123456');
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM timestamps;
 ~~~
@@ -158,7 +158,7 @@ You can use an [`ALTER COLUMN ... SET DATA TYPE`](alter-column.html) statement t
 
 To change the precision level of a column, you can use an [`ALTER COLUMN ... SET DATA TYPE`](alter-column.html) statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE timestamps ALTER COLUMN b SET DATA TYPE TIMESTAMP(4);
 ~~~
@@ -167,7 +167,7 @@ To change the precision level of a column, you can use an [`ALTER COLUMN ... SET
 ALTER TABLE
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW COLUMNS FROM timestamps;
 ~~~
@@ -182,7 +182,7 @@ ALTER TABLE
 
 When changing precision level, `TIMESTAMP` can be changed to `TIMESTAMPTZ`, and `TIMESTAMPTZ` can be changed to `TIMESTAMP`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE timestamps ALTER COLUMN b SET DATA TYPE TIMESTAMPTZ(5);
 ~~~
@@ -191,7 +191,7 @@ When changing precision level, `TIMESTAMP` can be changed to `TIMESTAMPTZ`, and 
 ALTER TABLE
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW COLUMNS FROM timestamps;
 ~~~
@@ -210,7 +210,7 @@ If a non-default precision level has already been specified, you cannot change t
 
 In this case, the `b` column, which is of type `TIMESTAMPTZ(5)`, cannot be changed to a precision level below `5`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE timestamps ALTER COLUMN b SET DATA TYPE TIMESTAMPTZ(3);
 ~~~

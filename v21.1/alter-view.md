@@ -28,7 +28,7 @@ Parameter | Description
 `view_name` | The name of the view to rename. To find view names, use:<br><br>`SELECT * FROM information_schema.tables WHERE table_type = 'VIEW';`
 `RENAME TO view_name` | Rename the view to `view_name`, which must be unique to its database and follow these [identifier rules](keywords-and-identifiers.html#identifiers). Name changes do not propagate to the  table(s) using the view.<br><br>Note that `RENAME TO` can be used to move a view from one database to another, but it cannot be used to move a view from one schema to another. To change a view's schema, use `ALTER VIEW ...SET SCHEMA` instead. In a future release, `RENAME TO` will be limited to changing the name of a view, and will not have the ability to change a view's database.
 `SET SCHEMA schema_name` | Change the schema of the view to `schema_name`.
-`OWNER TO role_spec` | <span class="version-tag">New in v21.1:</span> Change the owner of the view to `role_spec`.
+`OWNER TO role_spec` | **New in v21.1:** Change the owner of the view to `role_spec`.
 
 ## Limitations
 
@@ -43,12 +43,12 @@ CockroachDB does not currently support:
 
 Suppose you create a new view that you want to rename:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE VIEW money_rides (id, revenue) AS SELECT id, revenue FROM rides WHERE revenue > 50;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM [SHOW TABLES] WHERE type = 'view';
 ~~~
@@ -60,7 +60,7 @@ Suppose you create a new view that you want to rename:
 (1 row)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER VIEW money_rides RENAME TO expensive_rides;
 ~~~
@@ -68,7 +68,7 @@ Suppose you create a new view that you want to rename:
 RENAME VIEW
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM [SHOW TABLES] WHERE type = 'view';
 ~~~
@@ -86,7 +86,7 @@ Suppose you want to add the `expensive_rides` view to a schema called `cockroach
 
 By default, [unqualified views](sql-name-resolution.html#lookup-with-unqualified-names) created in the database belong to the `public` schema:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE public.expensive_rides;
 ~~~
@@ -100,19 +100,19 @@ By default, [unqualified views](sql-name-resolution.html#lookup-with-unqualified
 
 If the new schema does not already exist, [create it](create-schema.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE SCHEMA IF NOT EXISTS cockroach_labs;
 ~~~
 
 Then, change the view's schema:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER VIEW expensive_rides SET SCHEMA cockroach_labs;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE public.expensive_rides;
 ~~~
@@ -122,7 +122,7 @@ ERROR: relation "public.expensive_rides" does not exist
 SQLSTATE: 42P01
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE cockroach_labs.expensive_rides;
 ~~~

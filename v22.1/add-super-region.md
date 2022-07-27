@@ -18,7 +18,7 @@ docs_area: reference.sql
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/alter_database_add_super_region.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/alter_database_add_super_region.html %}
 </div>
 
 ## Parameters
@@ -66,7 +66,7 @@ The examples in this section use the following setup.
 
 To add a super region to a multi-region database, use the `ALTER DATABASE ... ADD SUPER REGION` statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER DATABASE movr ADD SUPER REGION "usa" VALUES "us-east1", "us-west1";
 ~~~

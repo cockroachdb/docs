@@ -36,7 +36,7 @@ If you're not sure what the IP address/hostname and port values might have been,
 
 If necessary, you can also [shut down](node-shutdown.html) and then restart the node:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach start [flags]
 ~~~
@@ -45,7 +45,7 @@ $ cockroach start [flags]
 
 This message indicates that the cluster is using TLS encryption to protect network communication, and the client is trying to open a connection without using the required TLS certificates.
 
-To resolve this issue, use the [`cockroach cert create-client`](cockroach-cert.html) command to generate a client certificate and key for the user trying to connect. For a secure deployment walkthrough, including generating security certificates and connecting clients, see [Manual Deployment](manual-deployment.html).
+To resolve this issue, use the [`cockroach cert create-client`](cockroach-cert.html) command to generate a client certificate and key for the user trying to connect. For a secure deployment tutorial, including generating security certificates and connecting clients, see [Manual Deployment](manual-deployment.html).
 
 ## restart transaction
 
@@ -59,19 +59,19 @@ This message usually indicates that a node tried to connect to a cluster, but th
 
 - Choose a different directory to store the CockroachDB data:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start [flags] --store=[new directory] --join=[cluster host]:26257
     ~~~
 
 - Remove the existing directory and start a node joining the cluster again:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ rm -r cockroach-data/
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start [flags] --join=[cluster host]:26257
     ~~~
@@ -108,13 +108,13 @@ E160407 09:53:50.337328 storage/queue.go:511  [replicate] 7 replicas failing wit
 
 This happens because CockroachDB expects three nodes by default. If you do not intend to add additional nodes, you can stop this error by using [`ALTER RANGE ... CONFIGURE ZONE`](configure-zone.html) to update your default zone configuration to expect only one node:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 # Insecure cluster:
 $ cockroach sql --execute="ALTER RANGE default CONFIGURE ZONE USING num_replicas=1;" --insecure
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 # Secure cluster:
 $ cockroach sql --execute="ALTER RANGE default CONFIGURE ZONE USING num_replicas=1;" --certs-dir=[path to certs directory]

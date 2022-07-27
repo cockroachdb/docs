@@ -15,11 +15,15 @@ To illustrate this process, we use the following sample data and tools:
 
 {% include {{ page.version.version }}/misc/import-perf.md %}
 
+{{site.data.alerts.callout_info}}
+To migrate from Oracle to CockroachDB using the AWS Database Migration Service, see [Migrate with AWS Database Migration Service (DMS)](aws-dms.html).
+{{site.data.alerts.end}}
+
 ## Step 1. Export the Oracle schema
 
 Using [Oracle's Data Pump Export utility](https://docs.oracle.com/en/database/oracle/oracle-database/12.2/sutil/oracle-data-pump-export-utility.html), export the schema:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ expdp user/password directory=datapump dumpfile=oracle_example.dmp content=metadata_only logfile=example.log
 ~~~
@@ -30,7 +34,7 @@ The schema is stored in an Oracle-specific format (e.g., `oracle_example.dmp`).
 
 Using [Oracle's Data Pump Import utility](https://docs.oracle.com/en/database/oracle/oracle-database/12.2/sutil/datapump-import-utility.html), load the exported DMP file to convert it to a SQL file:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ impdp user/password directory=datapump dumpfile=oracle_example.dmp sqlfile=example_sql.sql TRANSFORM=SEGMENT_ATTRIBUTES:N:table PARTITION_OPTIONS=MERGE
 ~~~
@@ -76,12 +80,12 @@ In the example SQL script, `|` is used as a delimiter. Choose a delimiter that w
 
 To extract the data, we ran the script for each table in SQL*Plus:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 $ sqlplus user/password
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > @spool CUSTOMERS
   @spool ADDRESSES
@@ -100,7 +104,7 @@ A data list file (`.lst`) with leading and trailing spaces is created for each t
 
 Exit SQL*Plus:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXIT
 ~~~
@@ -127,7 +131,7 @@ for lstfile in sys.argv[1:]:
         writer.writerow(map(string.strip, rec))
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ python3 fix-example.py CUSTOMERS.lst ADDRESSES.lst CARD_DETAILS.lst WAREHOUSES.lst ORDER_ITEMS.lst ORDERS.lst INVENTORIES.lst PRODUCT_INFORMATION.lst LOGON.lst PRODUCT_DESCRIPTIONS.lst ORDERENTRY_METADATA.lst
 ~~~
@@ -164,7 +168,7 @@ For usage examples, see [Migrate from CSV - Configuration Options](migrate-from-
 
 Compress the CSV files for a faster import:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ gzip CUSTOMERS.csv ADDRESSES.csv CARD_DETAILS.csv WAREHOUSES.csv ORDER_ITEMS.csv ORDERS.csv INVENTORIES.csv PRODUCT_INFORMATION.csv LOGON.csv PRODUCT_DESCRIPTIONS.csv ORDERENTRY_METADATA.csv
 ~~~
@@ -251,14 +255,14 @@ For more information and examples, refer to the following:
 
 ### Privileges for users and roles
 
-The Oracle privileges for [users](create-user.html) and [roles](create-role.html) must be rewritten for CockroachDB. Once the CockroachDB cluster is [secured](security-reference/security-overview.html), CockroachDB follows the same [role-based access control](authorization.html) methodology as Oracle.   
+The Oracle privileges for [users](create-user.html) and [roles](create-role.html) must be rewritten for CockroachDB. Once the CockroachDB cluster is [secured](security-reference/security-overview.html), CockroachDB follows the same [role-based access control](authorization.html) methodology as Oracle.
 
 
 ## Step 8. Import the CSV
 
 For example, to import the data from `CUSTOMERS.csv.gz` into a new `CUSTOMERS` table, issue the following statement in the CockroachDB SQL shell:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers (
         customer_id       DECIMAL
@@ -294,7 +298,7 @@ For example, to import the data from `CUSTOMERS.csv.gz` into a new `CUSTOMERS` t
 ~~~
 
 ~~~
-       job_id       |  status   | fraction_completed |  rows  | index_entries | system_records |  bytes   
+       job_id       |  status   | fraction_completed |  rows  | index_entries | system_records |  bytes
 --------------------+-----------+--------------------+--------+---------------+----------------+----------
  381866942129111041 | succeeded |                  1 | 300024 |             0 |              0 | 13258389
 (1 row)
@@ -304,7 +308,7 @@ For example, to import the data from `CUSTOMERS.csv.gz` into a new `CUSTOMERS` t
 
 Then add the [computed columns](computed-columns.html), [constraints](add-constraint.html), and [function-based indexes](create-index.html). For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > UPDATE CUSTOMERS SET credit_limit = 50000 WHERE credit_limit > 50000;
   ALTER TABLE CUSTOMERS ADD CONSTRAINT CUSTOMER_CREDIT_LIMIT_MAX CHECK (credit_limit <= 50000);
@@ -323,9 +327,9 @@ The last phase of the migration process is to change the [transactional behavior
 
 Both Oracle and CockroachDB support [multi-statement transactions](transactions.html), which are atomic and guarantee ACID semantics. However, CockroachDB operates in a serializable isolation mode while Oracle defaults to read committed, which can create both non-repeatable reads and phantom reads when a transaction reads data twice. It is typical that Oracle developers will use `SELECT FOR UPDATE` to work around read committed issues. The [`SELECT FOR UPDATE`](select-for-update.html) statement is also supported in CockroachDB.
 
-Regarding locks, Cockroach utilizes a [lightweight latch](architecture/transaction-layer.html#latch-manager) to serialize access to common keys across concurrent transactions. Oracle and CockroachDB transaction control flows only have a few minor differences; for more details, refer to [Transactions - SQL statements](transactions.html#sql-statements).  
+Regarding locks, Cockroach utilizes a [lightweight latch](architecture/transaction-layer.html#latch-manager) to serialize access to common keys across concurrent transactions. Oracle and CockroachDB transaction control flows only have a few minor differences; for more details, refer to [Transactions - SQL statements](transactions.html#sql-statements).
 
-As CockroachDB does not allow serializable anomalies, [transactions](begin-transaction.html) may experience deadlocks or [read/write contention](performance-best-practices-overview.html#transaction-contention). This is expected during concurrency on the same keys. These can be addressed with either [automatic retries](transactions.html#automatic-retries) or [client-side intervention techniques](transactions.html#client-side-intervention).  
+As CockroachDB does not allow serializable anomalies, [transactions](begin-transaction.html) may experience deadlocks or [read/write contention](performance-best-practices-overview.html#transaction-contention). This is expected during concurrency on the same keys. These can be addressed with either [automatic retries](transactions.html#automatic-retries) or [client-side intervention techniques](transactions.html#client-side-intervention).
 
 ### SQL dialect
 
@@ -358,7 +362,7 @@ You will have to refactor Oracle SQL and functions that do not comply with [ANSI
         customer string,
         address string
       );
-    ~~~  
+    ~~~
 
 - [Subqueries](subqueries.html)
 - `SYSDATE`

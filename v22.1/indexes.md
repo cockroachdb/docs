@@ -24,11 +24,11 @@ To index [spatial data](spatial-data.html), CockroachDB uses _spatial indexes_. 
 
 ### Creation
 
-Each table automatically has an index created called `<tbl>_pkey`, which indexes either its [primary key](primary-key.html) or&mdash;if there is no primary key&mdash;a unique value for each row known as `rowid`. We recommend always defining a primary key because the index it creates provides much better performance than letting CockroachDB use `rowid`.
+Each table automatically has a _primary index_ called `{tbl}_pkey`, which indexes either its [primary key](primary-key.html) or&mdash;if there is no primary key&mdash;a unique value for each row known as `rowid`. We recommend always defining a primary key because the index it creates provides much better performance than letting CockroachDB use `rowid`.
 
  To require an explicitly defined primary key for all tables created in your cluster, set the `sql.defaults.require_explicit_primary_keys.enabled` [cluster setting](cluster-settings.html) to `true`.
 
-The `primary` index helps filter a table's primary key but doesn't help SQL find values in any other columns. However, you can use [secondary indexes](schema-design-indexes.html) to improve the performance of queries using columns not in a table's primary key. You can create them:
+The primary index helps filter a table's primary key but doesn't help SQL find values in any other columns. However, you can use [secondary indexes](schema-design-indexes.html) to improve the performance of queries using columns not in a table's primary key. You can create them:
 
 <a name="unique-secondary-indexes"></a>
 
@@ -74,14 +74,14 @@ The synonym `COVERING` is also supported.
 
 Suppose you have a table with three columns, two of which are indexed:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE tbl (col1 INT, col2 INT, col3 INT, INDEX (col1, col2));
 ~~~
 
 If you filter on the indexed columns but retrieve the unindexed column, this requires reading `col3` from the primary index via an "index join."
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN SELECT col3 FROM tbl WHERE col1 = 10 AND col2 > 1;
 ~~~
@@ -106,12 +106,12 @@ If you filter on the indexed columns but retrieve the unindexed column, this req
 
 However, if you store `col3` in the index as shown in the [index recommendation](explain.html#default-statement-plans), the index join is no longer necessary. This means your query only needs to read from the secondary index, so it will be more efficient.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE tbl (col1 INT, col2 INT, col3 INT, INDEX (col1, col2) STORING (col3));
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN SELECT col3 FROM tbl WHERE col1 = 10 AND col2 > 1;
 ~~~

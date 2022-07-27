@@ -56,7 +56,7 @@ In the common case, it sets the transaction record's state to `STAGING`, and che
 
 If the transaction passes these checks, CockroachDB responds with the transaction's success to the client, and moves on to the cleanup phase. At this point, the transaction is committed, and the client is free to begin sending more requests to the cluster.
 
-For a more detailed walkthrough of the commit protocol, see [Parallel Commits](#parallel-commits).
+For a more detailed tutorial of the commit protocol, see [Parallel Commits](#parallel-commits).
 
 ### Cleanup (asynchronous phase 3)
 
@@ -298,7 +298,7 @@ If the refreshing is unsuccessful, then the transaction must be retried at the p
 
 Transactional writes are pipelined when being replicated and when being written to disk, dramatically reducing the latency of transactions that perform multiple writes. For example, consider the following transaction:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 -- CREATE TABLE kv (id UUID PRIMARY KEY DEFAULT gen_random_uuid(), key VARCHAR, value VARCHAR);
 > BEGIN;

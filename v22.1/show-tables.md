@@ -15,7 +15,7 @@ While a table or view is being [dropped](drop-table.html), `SHOW TABLES` will li
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/show_tables.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/show_tables.html %}
 </div>
 
 ## Required privileges
@@ -48,7 +48,7 @@ To optimize the performance of the `SHOW TABLES` statement, you can do the follo
 
 `SHOW TABLES` uses the [current schema](sql-name-resolution.html#current-schema) `public` set by default in `search_path`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES;
 ~~~
@@ -67,7 +67,7 @@ To optimize the performance of the `SHOW TABLES` statement, you can do the follo
 
 Alternatively, within the built-in SQL shell, you can use the `\dt` [shell command](cockroach-sql.html#commands):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > \dt
 ~~~
@@ -88,12 +88,12 @@ Alternatively, within the built-in SQL shell, you can use the `\dt` [shell comma
 
 You can show the tables in schemas other than the current schema. You can also show the schema by table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM movr.information_schema;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM information_schema;
 ~~~
@@ -116,12 +116,12 @@ Because `movr` is the current database, these statements return the same output:
 
 You can also show tables from a different database.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM system.public;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM system;
 ~~~
@@ -143,14 +143,14 @@ Because `public` is the current schema, these statements return the same output:
 
 You can use [`COMMENT ON`](comment-on.html) to add comments on a table.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > COMMENT ON TABLE users IS 'This table contains information about users.';
 ~~~
 
 To view a table's comments:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM movr WITH COMMENT;
 ~~~
@@ -169,7 +169,7 @@ To view a table's comments:
 
 You can also view comments on a table with [`SHOW CREATE`](show-create.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE TABLE users;
 ~~~
@@ -197,7 +197,7 @@ The virtual tables in the `pg_catalog`, `information_schema`, and `crdb_internal
 
 To view virtual tables with comments and documentation links, use `SHOW TABLES FROM <virtual schema> WITH COMMENT`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM information_schema WITH COMMENT;
 ~~~
@@ -231,7 +231,7 @@ For [multi-region](multiregion-overview.html) tables, you can display the locali
 
 First, [set the primary region](set-primary-region.html) on `movr` to `us-east`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER DATABASE movr SET PRIMARY REGION "us-east";
 ~~~
@@ -240,12 +240,12 @@ All tables will be [`REGIONAL BY TABLE`](set-locality.html#set-the-table-localit
 
 Next, configure the `users` table to be [`REGIONAL BY ROW`](set-locality.html#set-the-table-locality-to-regional-by-row):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE users SET LOCALITY REGIONAL BY ROW;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES;
 ~~~

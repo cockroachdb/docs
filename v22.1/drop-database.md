@@ -17,7 +17,7 @@ The user must have the `DROP` [privilege](security-reference/authorization.html#
 
 ## Synopsis
 
-<div>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/drop_database.html %}</div>
+<div>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/drop_database.html %}</div>
 
 ## Parameters
 
@@ -42,7 +42,7 @@ For non-interactive sessions (e.g., client applications), `DROP DATABASE` applie
 
 For interactive sessions from the [built-in SQL client](cockroach-sql.html), either the `CASCADE` option must be set explicitly or the `--unsafe-updates` flag must be set when starting the shell.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM movr;
 ~~~
@@ -59,7 +59,7 @@ For interactive sessions from the [built-in SQL client](cockroach-sql.html), eit
 (6 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP DATABASE movr;
 ~~~
@@ -69,12 +69,12 @@ ERROR: rejected (sql_safe_updates = true): DROP DATABASE on current database
 SQLSTATE: 01000
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > USE defaultdb;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP DATABASE movr;
 ~~~
@@ -84,12 +84,12 @@ ERROR: rejected (sql_safe_updates = true): DROP DATABASE on non-empty database w
 SQLSTATE: 01000
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP DATABASE movr CASCADE;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM movr;
 ~~~
@@ -103,7 +103,7 @@ SQLSTATE: 3F000
 
 When a database is not empty, the `RESTRICT` option prevents the database from being dropped:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM movr;
 ~~~
@@ -120,12 +120,12 @@ When a database is not empty, the `RESTRICT` option prevents the database from b
 (6 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > USE defaultdb;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP DATABASE movr RESTRICT;
 ~~~

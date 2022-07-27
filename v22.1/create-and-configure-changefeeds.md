@@ -7,20 +7,25 @@ docs_area: stream_data
 
 Core and {{ site.data.products.enterprise }} changefeeds offer different levels of configurability. {{ site.data.products.enterprise }} changefeeds allow for active changefeed jobs to be [paused](#pause), [resumed](#resume), and [canceled](#cancel).
 
-## Create a changefeed (Core)
+When creating a changefeed, it's important to consider the number of changefeeds versus the number of tables to include in a single changefeed: 
 
-A core changefeed streams row-level changes to the client indefinitely until the underlying connection is closed or the changefeed is canceled.
+- Changefeeds each have their own memory overhead, so every running changefeed will increase total memory usage.
+- Creating a single changefeed that will watch hundreds of tables can affect the performance of a changefeed by introducing coupling, where the performance of a watched table affects the performance of the changefeed watching it. For example, any [schema change](use-changefeeds.html#schema-changes) on any of the tables will affect the entire changefeed's performance.
 
-To create a core changefeed:
+To watch multiple tables, we recommend creating a changefeed with a comma-separated list of tables. However, we do **not** recommend creating a single changefeed for watching hundreds of tables. 
 
-{% include copy-clipboard.html %}
-~~~ sql
-> EXPERIMENTAL CHANGEFEED FOR table_name;
-~~~
+We suggest monitoring the performance of your changefeeds. See [Monitor and Debug Changefeeds](monitor-and-debug-changefeeds.html) for more detail.
 
-For more information, see [`EXPERIMENTAL CHANGEFEED FOR`](changefeed-for.html).
+The following Enterprise and Core sections outline how to create and configure each type of changefeed:
 
-## Configure a changefeed ({{ site.data.products.enterprise }})
+<div class="filters clearfix">
+  <button class="filter-button" data-scope="enterprise">Enterprise Changefeeds</button>
+  <button class="filter-button" data-scope="core">Core Changefeeds</button>
+</div>
+
+<section class="filter-content" markdown="1" data-scope="enterprise">
+
+## Configure a changefeed
 
 An {{ site.data.products.enterprise }} changefeed streams row-level changes in a configurable format to a configurable sink (i.e., Kafka or a cloud storage sink). You can [create](#create), [pause](#pause), [resume](#resume), and [cancel](#cancel) an {{ site.data.products.enterprise }} changefeed.
 
@@ -28,7 +33,7 @@ An {{ site.data.products.enterprise }} changefeed streams row-level changes in a
 
 To create an {{ site.data.products.enterprise }} changefeed:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE CHANGEFEED FOR TABLE table_name, table_name2 INTO '{scheme}://{host}:{port}?{query_parameters}';
 ~~~
@@ -41,7 +46,7 @@ For more information, see [`CREATE CHANGEFEED`](create-changefeed.html).
 
 To pause an {{ site.data.products.enterprise }} changefeed:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > PAUSE JOB job_id;
 ~~~
@@ -52,7 +57,7 @@ For more information, see [`PAUSE JOB`](pause-job.html).
 
 To resume a paused {{ site.data.products.enterprise }} changefeed:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > RESUME JOB job_id;
 ~~~
@@ -63,7 +68,7 @@ For more information, see [`RESUME JOB`](resume-job.html).
 
 To cancel an {{ site.data.products.enterprise }} changefeed:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CANCEL JOB job_id;
 ~~~
@@ -77,6 +82,25 @@ For more information, see [`CANCEL JOB`](cancel-job.html).
 ### Configuring all changefeeds
 
 {% include {{ page.version.version }}/cdc/configure-all-changefeed.md %}
+
+</section>
+
+<section class="filter-content" markdown="1" data-scope="core">
+
+## Create a changefeed
+
+A core changefeed streams row-level changes to the client indefinitely until the underlying connection is closed or the changefeed is canceled.
+
+To create a core changefeed:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> EXPERIMENTAL CHANGEFEED FOR table_name;
+~~~
+
+For more information, see [`EXPERIMENTAL CHANGEFEED FOR`](changefeed-for.html).
+
+</section>
 
 ## See also
 

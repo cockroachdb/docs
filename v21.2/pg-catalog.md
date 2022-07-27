@@ -145,7 +145,7 @@ PostgreSQL 13 system catalog | `pg_catalog` table
 
 To list the tables in `pg_catalog` for the [current database](sql-name-resolution.html#current-database), use the following [`SHOW TABLES`](show-tables.html) statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM pg_catalog;
 ~~~
@@ -176,7 +176,7 @@ Unless specified otherwise, queries to `pg_catalog` assume the [current database
 
 For example, to return the `pg_catalog` table with additional information about indexes in [`movr` database](movr.html), you can query the `pg_catalog.pg_indexes` table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM movr.pg_catalog.pg_indexes;
 ~~~

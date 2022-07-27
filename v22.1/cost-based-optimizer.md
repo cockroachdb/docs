@@ -44,17 +44,27 @@ Statistics are refreshed in the following cases:
 - When it's been a long time since the last refresh, where "long time" is defined according to a moving average of the time across the last several refreshes.
 - After a successful [`IMPORT`](import.html) or [`RESTORE`](restore.html) into the table.
 - After any schema change affecting the table.
-- After each mutation operation ([`INSERT`](insert.html), [`UPDATE`](update.html), or [`DELETE`](delete.html)), the probability of a refresh is calculated using a formula that takes the [cluster settings](cluster-settings.html) shown in the following table as inputs. These settings define the target number of rows in a table that should be stale before statistics on that table are refreshed.  Increasing either setting will reduce the frequency of refreshes. In particular, `min_stale_rows` impacts the frequency of refreshes for small tables, while `fraction_stale_rows` has more of an impact on larger tables.
+- After each mutation operation ([`INSERT`](insert.html), [`UPDATE`](update.html), or [`DELETE`](delete.html)), the probability of a refresh is calculated using a formula that takes the [cluster settings](cluster-settings.html) shown in the following table as inputs. These settings define the target number of rows in a table that must be stale before statistics on that table are refreshed. Increasing either setting will reduce the frequency of refreshes. In particular, `min_stale_rows` impacts the frequency of refreshes for small tables, while `fraction_stale_rows` has more of an impact on larger tables.
 
 
-    | Setting                                              | Default Value | Details                                                                              |
-    |------------------------------------------------------+---------------+--------------------------------------------------------------------------------------|
-    | `sql.stats.automatic_collection.fraction_stale_rows` |           0.2 | Target fraction of stale rows per table that will trigger a statistics refresh       |
-    | `sql.stats.automatic_collection.min_stale_rows`      |           500 | Target minimum number of stale rows per table that will trigger a statistics refresh |
+    | Setting                                              | Default Value | Details                                                                               |
+    |------------------------------------------------------+---------------+---------------------------------------------------------------------------------------|
+    | `sql.stats.automatic_collection.fraction_stale_rows` |           0.2 | Target fraction of stale rows per table that will trigger a statistics refresh.       |
+    | `sql.stats.automatic_collection.min_stale_rows`      |           500 | Target minimum number of stale rows per table that will trigger a statistics refresh. |
 
     {{site.data.alerts.callout_info}}
     Because the formula for statistics refreshes is probabilistic, you will not see statistics update immediately after changing these settings, or immediately after exactly 500 rows have been updated.
     {{site.data.alerts.end}}
+
+#### Small versus large table examples
+
+Suppose the [clusters settings](cluster-settings.html) `sql.stats.automatic_collection.fraction_stale_rows` and `sql.stats.automatic_collection.min_stale_rows` have the default values .2 and 500 as shown in the preceding table.
+
+If a table has 100 rows and 20 became stale, a re-collection would not be triggered because, even though 20% of the rows are stale, they do not meet the 500 row minimum.
+
+On the other hand, if a table has 1,500,000,000 rows, 20% of that, or 300,000,000 rows, would have to become stale before auto statistics collection was triggered. With a table this large, you would have to lower `sql.stats.automatic_collection.fraction_stale_rows` significantly to allow for regular stats collections. This can cause smaller tables to have stats collected much more frequently, because it is a global setting that affects automatic stats collection for all tables.
+
+In such cases we recommend that you use the [`sql_stats_automatic_collection_enabled` storage parameter](#enable-and-disable-automatic-statistics-collection-for-tables), which lets you configure auto statistics on a per-table basis.
 
 ### Enable and disable automatic statistics collection for clusters
 
@@ -170,6 +180,16 @@ If a table does not have an average size statistic available for a column, it us
 The optimizer uses `avg_size` to cost scans and relevant joins. Costing scans per row regardless of the size of the columns comprising the row doesn't account for time to read or transport a large number of bytes over the network. This can lead to undesirable plans when there are multiple options for scans or joins that read directly from tables.
 
 Cockroach Labs recommends that you allow the optimizer to consider column size when costing plans. If you are an advanced user and need to disable using `avg_size` for troubleshooting or performance tuning reasons, you can disable it by setting the `cost_scans_with_default_col_size` [session variable](set-vars.html) to true with `SET cost_scans_with_default_col_size=true`.
+
+## Control whether the optimizer creates a plan with a full scan
+
+Even if you have [secondary indexes](schema-design-indexes.html), the optimizer may determine that a full table scan will be faster. For example, if you add a secondary index to a table with a large number of rows and find that a statement plan is not using the secondary index, then it is likely that performing a full table scan using the primary key is faster than doing a secondary index scan plus an [index join](indexes.html#example).
+
+You can disable statement plans that perform full table scans with the `disallow_full_table_scans` [session variable](set-vars.html).
+
+If you disable full scans, you can set the `large_full_scan_rows` session variable to specify the maximum table size allowed for a full scan. If no alternative plan is possible, the optimizer will return an error.
+
+If you disable full scans, and you provide an [index hint](table-expressions.html#force-index-selection), the optimizer will try to avoid a full scan while also respecting the index hint. If this is not possible, the optimizer will return an error. If you do not provide an index hint, the optimizer will return an error, the full scan will be logged, and the `sql.guardrails.full_scan_rejected.count` [metric](ui-overview-dashboard.html) will be updated.
 
 ## Locality optimized search in multi-region clusters
 
@@ -331,18 +351,29 @@ EXPLAIN SELECT * FROM abc WHERE a = 10 AND b = 20;
 (11 rows)
 ~~~
 
-### Prevent zigzag joins
+### Prevent or force a zigzag join
 
-The join hint `NO_ZIGZAG_JOIN` prevents the optimizer from planning a zigzag join for the specified table. Apply the hint in the same way as other existing [index hints](table-expressions.html#force-index-selection). For example:
+The optimizer supports index hints to prevent or force a zigzag join. Apply the hints in the same way as other existing [index hints](table-expressions.html#force-index-selection).
 
-~~~sql
+To prevent the optimizer from planning a zigzag join for the specified table, use the hint `NO_ZIGZAG_JOIN`. For example:
+
+~~~ sql
 SELECT * FROM abc@{NO_ZIGZAG_JOIN};
 ~~~
+
+{% include_cached new-in.html version="v22.1" %} To force the optimizer to plan a zigzag join for the specified table, use the hint `FORCE_ZIGZAG`. For example:
+
+~~~ sql
+SELECT * FROM abc@{FORCE_ZIGZAG};
+~~~
+
+{{site.data.alerts.callout_danger}}
+If you have an index named `FORCE_ZIGZAG` and use the hint `table@{FORCE_ZIGZAG}` it will no longer have the same behavior.
+{{site.data.alerts.end}}
 
 ## Inverted join examples
 
 {% include {{ page.version.version }}/sql/inverted-joins.md %}
-
 
 ## Known limitations
 

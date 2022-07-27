@@ -10,7 +10,7 @@ The **Node Map** is useful for:
 - Viewing real-time cluster metrics.
 - Drilling down to individual nodes for monitoring health and performance.
 
-This page walks you through the process of setting up and enabling the Node Map.
+This page guides you through the process of setting up and enabling the Node Map.
 
 {{site.data.alerts.callout_info}}
 On a secure cluster, this area of the DB Console can only be accessed by an `admin` user. See [DB Console access](ui-overview.html#db-console-access).
@@ -43,7 +43,7 @@ To start a new cluster with the correct `--locality` flags:
 
 Start Node 1:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~
 $ cockroach start \
 --insecure \
@@ -56,7 +56,7 @@ $ cockroach start \
 
 Start Node 2:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~
 $ cockroach start \
 --insecure \
@@ -69,7 +69,7 @@ $ cockroach start \
 
 Start Node 3:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~
 $ cockroach start \
 --insecure \
@@ -82,7 +82,7 @@ $ cockroach start \
 
 Start Node 4:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~
 $ cockroach start \
 --insecure \
@@ -95,7 +95,7 @@ $ cockroach start \
 
 Use the [`cockroach init`](cockroach-init.html) command to perform a one-time initialization of the cluster:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach init --insecure --host=<address of any node>
 ~~~
@@ -118,14 +118,14 @@ To be displayed on the world map, localities must be assigned a corresponding la
 
 Launch the built-in SQL client:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure --host=<address of any node>
 ~~~
 
 Insert the approximate latitude and longitude of each region into the `system.locations` table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO system.locations VALUES
   ('region', 'us-east-1', 37.478397, -76.453077),

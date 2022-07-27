@@ -27,7 +27,7 @@ To cancel a job, the user must be a member of the `admin` role or must have the 
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/cancel_job.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/cancel_job.html %}
 </div>
 
 ## Parameters
@@ -60,9 +60,9 @@ Parameter | Description
 
 To cancel multiple jobs, nest a [`SELECT` clause](select-clause.html) that retrieves `job_id`(s) inside the `CANCEL JOBS` statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
-> CANCEL JOBS (SELECT job_id FROM [SHOW JOBS]
+> CANCEL JOBS (WITH x AS (SHOW JOBS) SELECT job_id FROM x
       WHERE user_name = 'maxroach');
 ~~~
 
@@ -72,7 +72,7 @@ All jobs created by `maxroach` will be cancelled.
 
 Canceling an automatic table statistics job is not useful since the system will automatically restart the job immediately. To permanently disable automatic table statistics jobs, disable the `sql.stats.automatic_collection.enabled` [cluster setting](cluster-settings.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET CLUSTER SETTING sql.stats.automatic_collection.enabled = false;
 ~~~
@@ -81,7 +81,7 @@ Canceling an automatic table statistics job is not useful since the system will 
 
  To cancel jobs for a specific [backup schedule](create-schedule-for-backup.html), use the schedule's `id`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CANCEL JOBS FOR SCHEDULE 590204387299262465;
 ~~~
@@ -91,9 +91,9 @@ CANCEL JOBS FOR SCHEDULES 1
 
 You can also CANCEL multiple schedules by nesting a [`SELECT` clause](select-clause.html) that retrieves `id`(s) inside the `CANCEL JOBS` statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
-> CANCEL JOBS FOR SCHEDULES SELECT id FROM [SHOW SCHEDULES] WHERE label = 'test_schedule';
+> CANCEL JOBS FOR SCHEDULES WITH x AS (SHOW SCHEDULES) SELECT id FROM x WHERE label = 'test_schedule';
 ~~~
 
 ~~~

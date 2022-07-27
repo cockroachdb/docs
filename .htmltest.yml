@@ -3,9 +3,14 @@ ExternalTimeout: 30
 IgnoreDirs:
   - ^docs/stable
   - ^docs/dev
+  - ^docs/v1.0
+  - ^docs/v1.1
   - ^docs/v1.2
+  - ^docs/v2.0
+  - ^docs/v2.1
+  - ^docs/advisories
 IgnoreURLs:
-  - "http://localhost*"
+  - "http://localhost:*"
   - "https://github.com.*"
   - "https://movr.cloud"
   - "https://support.cockroachlabs.com/*"
@@ -13,6 +18,9 @@ IgnoreURLs:
   - "https://crates.io/*"
   - "https://docs.pipenv.org/*"
   - "https://arxiv.org/*"
+  - "https://fonts.googleapis.com/*"
+  - "https://fonts.gstatic.com/*"
+  - "https://typeorm.io/*"
 IgnoreInternalEmptyHash: true
 TestFilesConcurrently: true
 DocumentConcurrencyLimit: 16

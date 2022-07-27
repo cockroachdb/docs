@@ -23,7 +23,7 @@ You may need to rotate the node, client, or CA certificates in the following sce
 
 1. Create a new client certificate and key:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach cert create-client <username> \
     --certs-dir=certs \
@@ -42,7 +42,7 @@ To rotate a node certificate, you create a new node certificate and key and relo
 
 1. Create a new node certificate and key:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach cert create-node \
     <node hostname> \
@@ -57,7 +57,7 @@ To rotate a node certificate, you create a new node certificate and key and relo
 
 2. Upload the node certificate and key to the node:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ scp certs/node.crt \
     certs/node.key \
@@ -66,7 +66,7 @@ To rotate a node certificate, you create a new node certificate and key and relo
 
 3. Reload the node certificate without restarting the node by issuing a `SIGHUP` signal to the `cockroach` process:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     pkill -SIGHUP -x cockroach
     ~~~
@@ -85,14 +85,14 @@ For more background, see [Why CockroachDB creates a combined CA certificate](rot
 
 1. Rename the existing CA key:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ mv  my-safe-directory/ca.key my-safe-directory/ca.old.key
     ~~~
 
 2. Create a new CA certificate and key, using the `--overwrite` flag to overwrite the old CA certificate:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach cert create-ca \
     --certs-dir=certs \
@@ -106,7 +106,7 @@ For more background, see [Why CockroachDB creates a combined CA certificate](rot
 
 2. Upload the new CA certificate to each node:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ scp certs/ca.crt
     <username>@<node1 address>:~/certs
@@ -116,7 +116,7 @@ For more background, see [Why CockroachDB creates a combined CA certificate](rot
 
 4. On each node, reload the CA certificate without restarting the node by issuing a `SIGHUP` signal to the `cockroach` process:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     pkill -SIGHUP -x cockroach
     ~~~

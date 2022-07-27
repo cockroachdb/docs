@@ -54,7 +54,7 @@ To follow along with the examples below:
 
 1. Start a [demo cluster](cockroach-demo.html) with the [`--global` flag](cockroach-demo.html#general) to simulate a multi-region cluster:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     cockroach demo --global --nodes 9
     ~~~

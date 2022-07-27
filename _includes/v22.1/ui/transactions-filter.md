@@ -6,27 +6,26 @@
   {% assign page_prefix = "ui-" %}
 {% endif %}
 
-<a id="time-interval"></a>
+### Time interval
 
-### Date range
+To view [statement fingerprints]({{ page_prefix }}statements-page.html#sql-statement-fingerprints) within a specific time interval, click the time interval selector and pick an interval. The time interval field supports present time intervals (1 Hour, 6 Hours, 1 Day, etc.) and custom time intervals. To select a custom time interval, click the time interval field and select **Custom time interval**. In the **Start (UTC)** and **End (UTC)** fields select or type a date and time.
 
-To search by date, click the date range selector and pick a date range that is within the time period. Click **reset time** to reset the date to the last hour.
+Use the arrow keys to cycle through previous and next time intervals. When you select a time interval, the same interval is selected in the [Metrics]({{ link_prefix }}ui-overview.html#metrics) page.
 
-It's possible to select a date range for which no transaction statistics exist. CockroachDB persists transaction statistics up to 1 million rows before the oldest row is deleted. The retention period of statistics is reduced the more active a workload is and the more distinct transaction fingerprints there are.
+It's possible to select an interval for which no transaction statistics exist. CockroachDB persists transaction statistics up to 1 million rows before the oldest row is deleted. The retention period of statistics is reduced the more active a workload is and the more distinct statement fingerprints there are.
 
 ### Filter
 
-To filter the transactions by [`application_name`]({{ link_prefix }}connection-parameters.html#additional-connection-parameters), select **App** and choose one or more applications. When no application is selected internal transactions **are not** displayed.
+To filter the transactions:
 
-{{site.data.alerts.callout_info}}
-- Transactions from the SQL shell are displayed under the `$ cockroach` app.
-- If you haven't set `application_name` in a client connection string, it appears as `unset`.
-{{site.data.alerts.end}}
+1. Click the **Filters** field.
+      - To filter by [application]({{ link_prefix }}connection-parameters.html#additional-connection-parameters), select **App** and select one or more applications.
 
-To filter transactions by the node on which the transaction ran, select **Node** and chose one or more nodes.
+          - Queries from the SQL shell are displayed under the `$ cockroach` app.
+          - If you haven't set `application_name` in a client connection string, it appears as `unset`.
+      - To filter by the nodes on which the transaction ran, click the **Node** field and select one or more checkboxes.
+      - To display only statement fingerprints that take longer than a specified time to run, specify the time and units.
 
-To filter transactions in which a SQL statement fingerprint exceeds a specified latency value, fill in the fields in **Statement fingerprint runs longer than**.
+1. Click **Apply**.
 
-The following screenshot shows the transactions that contain the string `rides` for the `movr` application:
-
-<img src="{{ 'images/v22.1/movr-transactions-rides.png' | relative_url }}" alt="Movr rides transactions" style="border:1px solid #eee;max-width:80%" />
+<img src="{{ 'images/v22.1/movr-transactions-rides.png' | relative_url }}" alt="Movr rides transactions" style="border:1px solid #eee;max-width:100%" />

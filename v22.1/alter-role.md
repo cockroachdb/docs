@@ -23,7 +23,7 @@ Since the keywords `ROLE` and `USER` can now be used interchangeably in SQL stat
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/alter_role.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/alter_role.html %}
 </div>
 
 ## Parameters
@@ -80,7 +80,7 @@ root@:26257/defaultdb> ALTER ROLE carl WITH LOGIN PASSWORD 'An0ther$tr0nGpassW0r
 
 The following statement prevents the user from using password authentication and mandates certificate-based [client authentication](authentication.html#client-authentication):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 root@:26257/defaultdb> ALTER ROLE carl WITH PASSWORD NULL;
 ~~~

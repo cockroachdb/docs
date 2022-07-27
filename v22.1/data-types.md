@@ -7,7 +7,7 @@ docs_area: reference.sql
 
 ## Supported types
 
-CockroachDB supports the following data types. Click a type for more details.
+CockroachDB supports the following data types.
 
 Type | Description | Example
 -----|-------------|---------

@@ -49,7 +49,6 @@ Table name | Description| Use in production
 `gossip_nodes` | Contains information about nodes in your cluster's gossip network.| ✗
 `index_columns` | Contains information about [indexed](indexes.html) columns in your cluster.| ✗
 [`index_usage_statistics`](#index_usage_statistics) | Contains statistics about the primary and secondary indexes used in statements.| ✓
-`interleaved` | Contains information about [interleaved objects](interleave-in-parent.html) in your cluster.| ✗
 `invalid_objects` | Contains information about invalid objects in your cluster.| ✗
 `jobs` | Contains information about [jobs](show-jobs.html) running on your cluster.| ✗
 `kv_node_liveness` | Contains information about [node liveness](cluster-setup-troubleshooting.html#node-liveness-issues).| ✗
@@ -98,16 +97,16 @@ To list the `crdb_internal` tables for the [current database](sql-name-resolutio
 ~~~
    schema_name  |         table_name          | type  | owner | estimated_row_count | locality
 ----------------+-----------------------------+-------+-------+---------------------+-----------
-  crdb_internal | active_range_feeds          | table | NULL  |                NULL | NULL
-  crdb_internal | backward_dependencies       | table | NULL  |                NULL | NULL
-  crdb_internal | builtin_functions           | table | NULL  |                NULL | NULL
-  crdb_internal | cluster_contended_indexes   | view  | NULL  |                NULL | NULL
-  crdb_internal | cluster_contended_keys      | view  | NULL  |                NULL | NULL
-  crdb_internal | cluster_contended_tables    | view  | NULL  |                NULL | NULL
-  crdb_internal | cluster_contention_events   | table | NULL  |                NULL | NULL
-  crdb_internal | cluster_database_privileges | table | NULL  |                NULL | NULL
-  crdb_internal | cluster_distsql_flows       | table | NULL  |                NULL | NULL
-  crdb_internal | cluster_inflight_traces     | table | NULL  |                NULL | NULL
+  crdb_internal | active_range_feeds              | table | NULL  |                NULL | NULL
+  crdb_internal | backward_dependencies           | table | NULL  |                NULL | NULL
+  crdb_internal | builtin_functions               | table | NULL  |                NULL | NULL
+  crdb_internal | cluster_contended_indexes       | view  | NULL  |                NULL | NULL
+  crdb_internal | cluster_contended_keys          | view  | NULL  |                NULL | NULL
+  crdb_internal | cluster_contended_tables        | view  | NULL  |                NULL | NULL
+  crdb_internal | cluster_contention_events       | table | NULL  |                NULL | NULL
+  crdb_internal | cluster_database_privileges     | table | NULL  |                NULL | NULL
+  crdb_internal | cluster_distsql_flows           | table | NULL  |                NULL | NULL
+  crdb_internal | cluster_inflight_traces         | table | NULL  |                NULL | NULL
   ...
 ~~~
 
@@ -155,10 +154,9 @@ Column | Type | Description
 `index_name` | `STRING` | The name of the index experiencing contention.
 `num_contention_events` | `INT8` | The number of contention events.
 
-#### Example
+#### View all indexes that have experienced contention
 
-##### View all indexes that have experienced contention
-
+{% include_cached copy-clipboard.html %}
 ~~~sql
 SELECT * FROM movr.crdb_internal.cluster_contended_indexes;
 ~~~
@@ -180,23 +178,35 @@ Column | Type | Description
 `key` | `BYTES` | The key experiencing contention.
 `num_contention_events` | `INT8` | The number of contention events.
 
-#### Example
+#### View all keys that have experienced contention
 
-##### View all keys that have experienced contention
-
+{% include_cached copy-clipboard.html %}
 ~~~sql
-SELECT * FROM movr.crdb_internal.cluster_contended_keys;
+SELECT table_name, index_name, key, num_contention_events FROM movr.crdb_internal.cluster_contended_keys where database_name = 'movr';
 ~~~
 
 ~~~
-  database_name | schema_name | table_name |              index_name               |                                                          key                                                           | num_contention_events
-----------------+-------------+------------+---------------------------------------+------------------------------------------------------------------------------------------------------------------------+------------------------
-  movr          | public      | vehicles   | vehicles_auto_index_fk_city_ref_users | /54/2/"amsterdam"/"\xb5~g\x0e,\x12@\x00\x80\x00\x00\x00\x00\x00\"\x9e"/"n\xe7\xc4\xc8P|J\xfc\x80\xc8\xe5\xf7X\xe2,="/0 |                     1
-  movr          | public      | vehicles   | rides_auto_index_fk_city_ref_users    | /54/2/"amsterdam"/"\xb5~g\x0e,\x12@\x00\x80\x00\x00\x00\x00\x00\"\x9e"/"n\xe7\xc4\xc8P|J\xfc\x80\xc8\xe5\xf7X\xe2,="/0 |                     1
-  movr          | public      | vehicles   | vehicles_auto_index_fk_city_ref_users | /54/2/"seattle"/"Cm\t\xec\xcf\xf0E\u008f\xab\x97\xfa+\x02\x03p"/"\xef/ӎ\xe9RGǄa\xee萖\x94\x16"/0                      |                     1
-  movr          | public      | vehicles   | rides_auto_index_fk_city_ref_users    | /54/2/"seattle"/"Cm\t\xec\xcf\xf0E\u008f\xab\x97\xfa+\x02\x03p"/"\xef/ӎ\xe9RGǄa\xee萖\x94\x16"/0                      |                     1
-  system        | public      | jobs       | primary                               | /15/1/717080975699410945/0                                                                                             |                     6
-  system        | public      | jobs       | primary                               | /15/1/717080975812100097/0                                                                                             |                     6
+  table_name |              index_name               |                                                             key                                                             | num_contention_events
+-------------+---------------------------------------+-----------------------------------------------------------------------------------------------------------------------------+------------------------
+  vehicles   | vehicles_auto_index_fk_city_ref_users | /107/2/"amsterdam"/"\xe2\xc2\xdcJ$\xf3A\xa2\x98\xad.\xe6<Y\x05\xef"/"\x98\x05\xe1B\x82sE\x13\xba\xfe+,k\xd3\xc6\xd3"/0      |                     1
+  vehicles   | vehicles_auto_index_fk_city_ref_users | /107/2/"seattle"/"v\xd4J%\x90\x1bF\v\x97\x02v\xc7\xee\xa9\xc7R"/"s\xa1\xad\x8c\xca\xe4G\t\xadG\x91\xa3\xa4\xae\xb7\xc7"/0   |                     1
+  vehicles   | vehicles_auto_index_fk_city_ref_users | /107/2/"seattle"/"7\xfe\x953~\x94F\x95\xacàP\x8e_A\x18"/"\xccέ\xa0\xcaoAژ\x81\xab\xe9\xb6'ɐ"/0                              |                     1
+  vehicles   | vehicles_auto_index_fk_city_ref_users | /107/2/"rome"/"oAņ\xd8\xcdE\xfb\xb6\xb7\x8e9\xb4\xae\xc1,"/"ڲ@\x1f\x1d\x05LɌ\xba\xb9\x97\x84\x9e\x98\x1d"/0                 |                     1
+  vehicles   | vehicles_auto_index_fk_city_ref_users | /107/2/"paris"/"^\xefĦ\xed\vFI\x89\xe7\xfe\xbd\x8em\xe0\xb8"/"F%\xffZ\xe8\x93N\xfc\xa6\x17\xc0S\xb6\x86\xdd\xec"/0          |                     1
+  vehicles   | vehicles_auto_index_fk_city_ref_users | /107/2/"new york"/"\xfd\x81\xc0UK\x9cEE\xa7\x14b\xdb\x02\xad\x80\xe8"/"a\xc0q\x82\x8e)@\x89\xa2\x9c\xcc\xdb\x01\x1d\x8e_"/0 |                     1
+  vehicles   | vehicles_auto_index_fk_city_ref_users | /107/2/"new york"/"\xe9\xf9<\x99\\\x18K\xa2\x8d\xd2a\xa1d\x937\n"/"ͮ\x18\xd4\xe9\xb3A\xf3\xb5\x9c\x177\x8c\xf6\x0e\xc5"/0    |                     1
+  vehicles   | vehicles_auto_index_fk_city_ref_users | /107/2/"new york"/"\x0f\x05\x9b\x1a[\xda@\x13\x83v\xfb\x8b\xdf4\"\xbd"/"N\xe0>\x1e\xf4gLݷ95\xfc0\x95\xea["/0                |                     1
+  vehicles   | vehicles_auto_index_fk_city_ref_users | /107/2/"los angeles"/"h\xc8\xfa\xc5J\xf8A7\xbe\x98\xa3\x94\x8e\xf4\x991"/",\u007fh)\"\x92G̞\xde\xeb\x973\xdfK\xb4"/0         |                     1
+  vehicles   | rides_auto_index_fk_city_ref_users    | /107/2/"amsterdam"/"\xe2\xc2\xdcJ$\xf3A\xa2\x98\xad.\xe6<Y\x05\xef"/"\x98\x05\xe1B\x82sE\x13\xba\xfe+,k\xd3\xc6\xd3"/0      |                     1
+  vehicles   | rides_auto_index_fk_city_ref_users    | /107/2/"seattle"/"v\xd4J%\x90\x1bF\v\x97\x02v\xc7\xee\xa9\xc7R"/"s\xa1\xad\x8c\xca\xe4G\t\xadG\x91\xa3\xa4\xae\xb7\xc7"/0   |                     1
+  vehicles   | rides_auto_index_fk_city_ref_users    | /107/2/"seattle"/"7\xfe\x953~\x94F\x95\xacàP\x8e_A\x18"/"\xccέ\xa0\xcaoAژ\x81\xab\xe9\xb6'ɐ"/0                              |                     1
+  vehicles   | rides_auto_index_fk_city_ref_users    | /107/2/"rome"/"oAņ\xd8\xcdE\xfb\xb6\xb7\x8e9\xb4\xae\xc1,"/"ڲ@\x1f\x1d\x05LɌ\xba\xb9\x97\x84\x9e\x98\x1d"/0                 |                     1
+  vehicles   | rides_auto_index_fk_city_ref_users    | /107/2/"paris"/"^\xefĦ\xed\vFI\x89\xe7\xfe\xbd\x8em\xe0\xb8"/"F%\xffZ\xe8\x93N\xfc\xa6\x17\xc0S\xb6\x86\xdd\xec"/0          |                     1
+  vehicles   | rides_auto_index_fk_city_ref_users    | /107/2/"new york"/"\xfd\x81\xc0UK\x9cEE\xa7\x14b\xdb\x02\xad\x80\xe8"/"a\xc0q\x82\x8e)@\x89\xa2\x9c\xcc\xdb\x01\x1d\x8e_"/0 |                     1
+  vehicles   | rides_auto_index_fk_city_ref_users    | /107/2/"new york"/"\xe9\xf9<\x99\\\x18K\xa2\x8d\xd2a\xa1d\x937\n"/"ͮ\x18\xd4\xe9\xb3A\xf3\xb5\x9c\x177\x8c\xf6\x0e\xc5"/0    |                     1
+  vehicles   | rides_auto_index_fk_city_ref_users    | /107/2/"new york"/"\x0f\x05\x9b\x1a[\xda@\x13\x83v\xfb\x8b\xdf4\"\xbd"/"N\xe0>\x1e\xf4gLݷ95\xfc0\x95\xea["/0                |                     1
+  vehicles   | rides_auto_index_fk_city_ref_users    | /107/2/"los angeles"/"h\xc8\xfa\xc5J\xf8A7\xbe\x98\xa3\x94\x8e\xf4\x991"/",\u007fh)\"\x92G̞\xde\xeb\x973\xdfK\xb4"/0         |                     1
+(18 rows)             6
 ~~~
 
 ### `cluster_contended_tables`
@@ -208,9 +218,7 @@ Column | Type | Description
 `table_name` | `STRING` | The name of the table experiencing contention.
 `num_contention_events` | `INT8` | The number of contention events.
 
-#### Example
-
-##### View all tables that have experienced contention
+#### View all tables that have experienced contention
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -219,7 +227,8 @@ Column | Type | Description
 ~~~
   database_name | schema_name | table_name | num_contention_events
 ----------------+-------------+------------+------------------------
-  system        | public      | jobs       |                     4
+  movr          | public      | vehicles   |                     9
+(1 row)
 ~~~
 
 ### `cluster_contention_events`
@@ -234,20 +243,25 @@ Column | Type | Description
 `txn_id` | `UUID` | Unique transaction identifier.
 `count` | `INT8` | The number of contention events.
 
-#### Example
+#### View all contention events
 
-##### View all contention events
-
+{% include_cached copy-clipboard.html %}
 ~~~sql
 SELECT * FROM crdb_internal.cluster_contention_events;
 ~~~
 ~~~
-  table_id | index_id | num_contention_events | cumulative_contention_time |                                                                          key                                                                           |                txn_id                | count
------------+----------+-----------------------+----------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------+--------------------------------------+--------
-        15 |        1 |                     3 | 00:00:00.013012            | \x97\x89\xfd\t\xf4}\xe3\xf5\xc0\x80\x01\x88                                                                                                            | 621bf72d-a5e6-439e-9eee-1646271cef1e |     1
-        15 |        1 |                     3 | 00:00:00.013012            | \x97\x89\xfd\t\xf4}\xe3\xfb\x8c\x00\x01\x88                                                                                                            | e2e5cdd7-3112-4b78-ba15-7ce856ed55b2 |     1
-        15 |        1 |                     3 | 00:00:00.013012            | \x97\x89\xfd\t\xf4\x7f`=\x80\x80\x01\x88                                                                                                               | 58a722f6-b7d8-4d1d-aefc-98394f85d283 |     1
-        15 |        4 |                     1 | 00:00:00.003049            | \x97\x8c\x12&@\xdbFF\xedE\x19\x9f\x89\xb3@JS&\xe3\x00\x01\x12running\x00\x01\x14\xf9a\xb0\xe9\xef\xf9\t\x87\xcd\xd8\xfd\t\xf4}\xe3\xf5\xc0\x80\x01\x88 | 621bf72d-a5e6-439e-9eee-1646271cef1e |     1
+  table_id | index_id | num_contention_events | cumulative_contention_time |                                                                               key                                                                               |                txn_id                | count
+-----------+----------+-----------------------+----------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------+--------------------------------------+--------
+       107 |        2 |                     9 | 00:00:00.039563            | \xf3\x8a\x12amsterdam\x00\x01\x12\xe2\xc2\xdcJ$\xf3A\xa2\x98\xad.\xe6<Y\x05\xef\x00\x01\x12\x98\x05\xe1B\x82sE\x13\xba\xfe+,k\xd3\xc6\xd3\x00\x01\x88           | 2701fe08-44bf-44ca-a2f7-6d2c9b652f9f |     1
+       107 |        2 |                     9 | 00:00:00.039563            | \xf3\x8a\x12los angeles\x00\x01\x12h\xc8\xfa\xc5J\xf8A7\xbe\x98\xa3\x94\x8e\xf4\x991\x00\x01\x12,\x7fh)"\x92G\xcc\x9e\xde\xeb\x973\xdfK\xb4\x00\x01\x88         | 2595e2d5-84b1-47a6-acc3-e6fdab47da41 |     1
+       107 |        2 |                     9 | 00:00:00.039563            | \xf3\x8a\x12new york\x00\x01\x12\x0f\x05\x9b\x1a[\xda@\x13\x83v\xfb\x8b\xdf4"\xbd\x00\x01\x12N\xe0>\x1e\xf4gL\xdd\xb795\xfc0\x95\xea[\x00\x01\x88               | 58b59e88-87b8-45eb-bc9b-34e6a6b53a2c |     1
+       107 |        2 |                     9 | 00:00:00.039563            | \xf3\x8a\x12new york\x00\x01\x12\xe9\xf9<\x99\\\x18K\xa2\x8d\xd2a\xa1d\x937\n\x00\x01\x12\xcd\xae\x18\xd4\xe9\xb3A\xf3\xb5\x9c\x177\x8c\xf6\x0e\xc5\x00\x01\x88 | 9af8a934-7ffa-4715-b802-f532f15bea9c |     1
+       107 |        2 |                     9 | 00:00:00.039563            | \xf3\x8a\x12new york\x00\x01\x12\xfd\x81\xc0UK\x9cEE\xa7\x14b\xdb\x02\xad\x80\xe8\x00\x01\x12a\xc0q\x82\x8e)@\x89\xa2\x9c\xcc\xdb\x01\x1d\x8e_\x00\x01\x88      | af7ee3f2-23b8-46ef-bef7-a11b1be73443 |     1
+       107 |        2 |                     9 | 00:00:00.039563            | \xf3\x8a\x12paris\x00\x01\x12^\xef\xc4\xa6\xed\x0bFI\x89\xe7\xfe\xbd\x8em\xe0\xb8\x00\x01\x12F%\xffZ\xe8\x93N\xfc\xa6\x17\xc0S\xb6\x86\xdd\xec\x00\x01\x88      | 594bec92-af85-4a8d-bb4d-cc17d5bbd905 |     1
+       107 |        2 |                     9 | 00:00:00.039563            | \xf3\x8a\x12rome\x00\x01\x12oA\xc5\x86\xd8\xcdE\xfb\xb6\xb7\x8e9\xb4\xae\xc1,\x00\x01\x12\xda\xb2@\x1f\x1d\x05L\xc9\x8c\xba\xb9\x97\x84\x9e\x98\x1d\x00\x01\x88 | 815dcf03-7a0a-4c3a-98df-be7d84c1fd13 |     1
+       107 |        2 |                     9 | 00:00:00.039563            | \xf3\x8a\x12seattle\x00\x01\x127\xfe\x953~\x94F\x95\xac\xc3\xa0P\x8e_A\x18\x00\x01\x12\xcc\xce\xad\xa0\xcaoA\xda\x98\x81\xab\xe9\xb6\'\xc9\x90\x00\x01\x88      | 5d382859-e88d-497a-830b-613fd20ef304 |     1
+       107 |        2 |                     9 | 00:00:00.039563            | \xf3\x8a\x12seattle\x00\x01\x12v\xd4J%\x90\x1bF\x0b\x97\x02v\xc7\xee\xa9\xc7R\x00\x01\x12s\xa1\xad\x8c\xca\xe4G\t\xadG\x91\xa3\xa4\xae\xb7\xc7\x00\x01\x88      | e83df970-a01a-470f-914d-f5615eeec620 |     1
+(9 rows)
 ~~~
 
 ### `cluster_queries`
@@ -266,18 +280,17 @@ Column | Type | Description
 `distributed` | `BOOLEAN` | Whether the query is executing in a distributed cluster.
 `phase` | `STRING` | The phase that the query is in.
 
-#### Example
-
-##### View all active queries
+#### View all active queries for the `movr` application
 
 {% include_cached copy-clipboard.html %}
 ~~~sql
-SELECT * FROM crdb_internal.cluster_queries;
+SELECT * FROM crdb_internal.cluster_queries where application_name = 'movr';
 ~~~
 ~~~
-              query_id             |                txn_id                | node_id |            session_id            | user_name |           start            |                    query                    | client_address  | application_name | distributed |   phase
------------------------------------+--------------------------------------+---------+----------------------------------+-----------+----------------------------+---------------------------------------------+-----------------+------------------+-------------+------------
-  16bed963d5b663a80000000000000001 | 7e36e3ed-128c-4b20-930e-695aa8266630 |       1 | 16bed77359b325f80000000000000001 | demo      | 2021-12-08 17:58:57.219848 | SELECT * FROM crdb_internal.cluster_queries | 127.0.0.1:56206 | $ cockroach demo |    false    | executing
+              query_id             |                txn_id                | node_id |            session_id            | user_name |           start            |                                                          query                                                           | client_address  | application_name | distributed |   phase
+-----------------------------------+--------------------------------------+---------+----------------------------------+-----------+----------------------------+--------------------------------------------------------------------------------------------------------------------------+-----------------+------------------+-------------+------------
+  16f762fea4cb17180000000000000001 | 7d55d442-6ae6-4062-ba3b-90656e9a6544 |       1 | 16f762c2af917e800000000000000001 | root      | 2022-06-10 22:30:33.907888 | UPSERT INTO vehicle_location_histories VALUES ('amsterdam', '69db0184-4192-4355-99b0-2e2abe7212c2', now(), 109.0, -45.0) | 127.0.0.1:49198 | movr             |    false    | executing
+(1 row)
 ~~~
 
 ### `cluster_sessions`
@@ -297,18 +310,17 @@ Column | Type | Description
 `alloc_bytes` | `INT8` | The number of bytes allocated by the session.
 `max_alloc_bytes` | `INT8` | The maximum number of bytes allocated by the session.
 
-#### Example
-
-##### View all open SQL sessions
+#### View all open SQL sessions for the `movr` application
 
 {% include_cached copy-clipboard.html %}
 ~~~sql
-SELECT * FROM crdb_internal.cluster_sessions;
+SELECT * FROM crdb_internal.cluster_sessions where application_name = 'movr';
 ~~~
 ~~~
-  node_id |            session_id            | user_name | client_address  | application_name |                active_queries                | last_active_query |       session_start        |    oldest_query_start     |                kv_txn                | alloc_bytes | max_alloc_bytes
-----------+----------------------------------+-----------+-----------------+------------------+----------------------------------------------+-------------------+----------------------------+---------------------------+--------------------------------------+-------------+------------------
-        1 | 16bed77359b325f80000000000000001 | demo      | 127.0.0.1:56206 | $ cockroach demo | SELECT * FROM crdb_internal.cluster_sessions | SHOW database     | 2021-12-08 17:23:24.835429 | 2021-12-08 18:01:54.23473 | 37da8b13-c476-4014-863b-527baa3120f9 |       10240 |        11519280
+  node_id |            session_id            | user_name | client_address  | application_name |                       active_queries                       |               last_active_query               |       session_start       |     oldest_query_start     |                kv_txn                | alloc_bytes | max_alloc_bytes
+----------+----------------------------------+-----------+-----------------+------------------+------------------------------------------------------------+-----------------------------------------------+---------------------------+----------------------------+--------------------------------------+-------------+------------------
+        1 | 16f762c2af917e800000000000000001 | root      | 127.0.0.1:49198 | movr             | SELECT city, id FROM vehicles WHERE city = 'washington dc' | SELECT city, id FROM vehicles WHERE city = $1 | 2022-06-10 22:26:16.39059 | 2022-06-10 22:28:00.646594 | 7883cbe3-7cf3-4155-a1a8-82d1211c9ffa |      133120 |          163840
+(1 row)
 ~~~
 
 ### `cluster_transactions`
@@ -325,18 +337,17 @@ Column | Type | Description
 `num_retries` | `INT8` | The number of times the transaction was retried.
 `num_auto_retries` | `INT8` | The number of times the transaction was automatically retried.
 
-#### Examples
-
-##### View all active transactions
+#### View all active transactions for the `movr` application
 
 {% include_cached copy-clipboard.html %}
 ~~~sql
-SELECT * FROM crdb_internal.cluster_transactions;
+SELECT * FROM crdb_internal.cluster_transactions where application_name = 'movr';
 ~~~
 ~~~
-                   id                  | node_id |            session_id            |           start            |                                                                                                  txn_string                                                                                                   | application_name | num_stmts | num_retries | num_auto_retries
----------------------------------------+---------+----------------------------------+----------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------------+-----------+-------------+-------------------
-  d00d38d9-d1dd-4e15-a4d7-16d5b241d13a |       1 | 16bed77359b325f80000000000000001 | 2021-12-08 18:03:21.154766 | "sql txn" meta={id=d00d38d9 key=/Min pri=0.01545423 epo=0 ts=1638986601.154752000,0 min=1638986601.154752000,0 seq=0} lock=false stat=PENDING rts=1638986601.154752000,0 wto=false gul=1638986601.654752000,0 | $ cockroach demo |         1 |           0 |                0
+                   id                  | node_id |            session_id            |           start            |                                                                                                                                            txn_string                                                                                                                                            | application_name | num_stmts | num_retries | num_auto_retries
+---------------------------------------+---------+----------------------------------+----------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------------+-----------+-------------+-------------------
+  9cfb2bbe-e1d8-4650-95d5-7a3fd052c6a7 |       1 | 16f762c2af917e800000000000000001 | 2022-06-10 22:26:20.370946 | "sql txn" meta={id=9cfb2bbe key=/Table/109/1/"rome"/"\xbf\x92\xe2<̯D\v\x94M\x83b0\x1b-\x82"/2022-06-10T22:26:20.370935Z/0 pri=0.00109794 epo=0 ts=1654899980.370940000,0 min=1654899980.370940000,0 seq=1} lock=true stat=PENDING rts=1654899980.370940000,0 wto=false gul=1654899980.870940000,0 | movr             |         1 |           0 |                0
+(1 row)
 ~~~
 
 ### `index_usage_statistics`
@@ -350,9 +361,51 @@ Column | Type | Description
 `total_reads` | `INT8` | Number of times an index was selected for a read.
 `last_read` | `TIMESTAMPTZ` | Time of last read.
 
-#### Examples
+You can reset the index usages statistics by invoking the function `crdb_internal.reset_index_usage_stats()`. For example:
 
-##### Are there any indexes that have become stale and are no longer needed? Which indexes haven't been used during the past week?
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT crdb_internal.reset_index_usage_stats();
+~~~
+
+~~~
+  crdb_internal.reset_index_usage_stats
+-----------------------------------------
+                  true
+(1 row)
+~~~
+
+#### View index statistics by table and index name
+
+To view index usage statistics by table and index name, join with `table_indexes`:
+
+{% include_cached copy-clipboard.html %}
+~~~sql
+SELECT  ti.descriptor_name as table_name, ti.index_name, total_reads
+FROM  crdb_internal.index_usage_statistics AS us
+JOIN crdb_internal.table_indexes ti
+ON us.index_id = ti.index_id AND us.table_id = ti.descriptor_id
+ORDER BY total_reads desc;
+~~~
+
+~~~
+          table_name         |                  index_name                   | total_reads
+-----------------------------+-----------------------------------------------+--------------
+  vehicles                   | vehicles_auto_index_fk_city_ref_users         |      412266
+  rides                      | rides_pkey                                    |      216137
+  users                      | users_pkey                                    |       25709
+  vehicles                   | vehicles_pkey                                 |       17185
+  promo_codes                | promo_codes_pkey                              |        4274
+  user_promo_codes           | user_promo_codes_pkey                         |        2138
+  rides                      | rides_auto_index_fk_city_ref_users            |           1
+  rides                      | rides_auto_index_fk_vehicle_city_ref_vehicles |           1
+  vehicle_location_histories | vehicle_location_histories_pkey               |           1
+(9 rows)
+~~~
+
+#### Determine which indexes haven't been used in the past week
+
+To determine if there are indexes that have become stale and are no longer needed, show which indexes haven't been used during the past week with the following query:
 
 {% include_cached copy-clipboard.html %}
 ~~~sql
@@ -361,10 +414,12 @@ FROM  crdb_internal.index_usage_statistics AS us
 JOIN crdb_internal.table_indexes ti
 ON us.index_id = ti.index_id AND us.table_id = ti.descriptor_id
 WHERE last_read < NOW() - INTERVAL '1 WEEK'
-ORDER BY total_access desc;
+ORDER BY total_reads desc;
 ~~~
 
-##### Which indexes are infrequently used? Are there any unused indexes?
+#### Determine which indexes are no longer used
+
+View which indexes are no longer used with the following query:
 
 {% include_cached copy-clipboard.html %}
 ~~~sql
@@ -400,14 +455,14 @@ Field | Type | Description
 `implicitTxn` | `BOOLEAN` | Whether the statement executed in an implicit transaction.
 `query` | `STRING` | The statement string.
 `querySummary` | `STRING` | The statement string summary.
-`stmtTyp` | `SQLType` | The type of statement: `TypeDDL`, `TypeDML`, `TypeDCL`, or `TypeTCL`.
+`stmtTyp` | `STRING` | The type of SQL statement: `"TypeDDL"`, `"TypeDML"`, `"TypeDCL"`, or `"TypeTCL"`. These types map to the CockroachDB statement types [data definition language (DDL)](sql-statements.html#data-definition-statements), [data manipulation language (DML)](sql-statements.html#data-manipulation-statements), [data control language (DCL)](sql-statements.html#data-control-statements), and [transaction control language (TCL)](sql-statements.html#transaction-control-statements).
 `vec` | `BOOLEAN` | Whether the statement executed in the vectorized query engine.
 
 #### `statistics` column
 
-The [DB Console](ui-overview.html) [Statements](ui-statements-page.html) and [Statement Details](ui-statements-page.html#statement-details-page) pages display information from `statistics`.
+The [DB Console](ui-overview.html) [Statements](ui-statements-page.html) and [Statement Fingerprint](ui-statements-page.html#statement-fingerprint-page) pages display information from `statistics`.
 
-The `statistics` column contains a JSONB object with `statistics` and `execution_statistics` subobjects. [`statistics`](ui-statements-page.html#statement-statistics) are always populated and are updated each time a new statement of that statement fingerprint is executed. [`execution_statistics`](ui-statements-page.html#execution-stats) are collected using sampling. CockroachDB probabilistically runs a query with tracing enabled to collect fine-grained statistics of the query execution.
+The `statistics` column contains a JSONB object with `statistics` and `execution_statistics` subobjects. [`statistics`](ui-statements-page.html#statement-statistics) are always populated and are updated each time a new statement of that statement fingerprint is executed. [`execution_statistics`](ui-statements-page.html#charts) are collected using sampling. CockroachDB probabilistically runs a query with tracing enabled to collect fine-grained statistics of the query execution.
 
 The `NumericStat` type tracks two running values: the running mean `mean` and the running sum of squared differences `sqDiff` from the mean. You can use these statistics along with the total number of values to compute the variance using Welford's method. CockroachDB computes the variance and displays it along with `mean` in the [Statements table](ui-statements-page.html#statements-table).
 
@@ -428,7 +483,7 @@ Field | Type | Description
 <code>statistics -> numRows -> [mean&#124;sqDiff]</code> | `NumericStat` | The number of rows returned or observed.
 <code>statistics -> ovhLat -> [mean&#124;sqDiff]</code> | `NumericStat` | The difference between `svcLat` and the sum of `parseLat+planLat+runLat` latencies.
 <code>statistics -> parseLat -> [mean&#124;sqDiff]</code> | `NumericStat` | The time to transform the SQL string into an abstract syntax tree (AST).
-<code>statistics -> planGists | `String` | <span class="version-tag">New in v22.1:</span> A sequence of bytes representing the flattened tree of operators and various operator specific metadata of the statement plan.
+<code>statistics -> planGists | `String` | **New in v22.1:** A sequence of bytes representing the flattened tree of operators and various operator specific metadata of the statement plan.
 <code>statistics -> planLat -> [mean&#124;sqDiff]</code> | `NumericStat` | The time to transform the AST into a logical query plan.
 <code>statistics -> rowsRead -> [mean&#124;sqDiff]</code> | `NumericStat` | The number of rows read from disk.
 <code>statistics -> rowsWritten -> [mean&#124;sqDiff]</code> | `NumericStat` | The number of rows written to disk.
@@ -438,7 +493,7 @@ Field | Type | Description
 #### View historical statement statistics and the sampled logical plan per fingerprint
 
 This example command shows how to query the two most important JSON columns: `metadata` and `statistics`. It displays
-the first 60 characters of query text, statement statistics, and sample plan for DDL and DML statements for the [`movr`](movr.html) demo database:
+the first 60 characters of query text, statement statistics, and sampled plan for DDL and DML statements for the [`movr`](movr.html) demo database:
 
 {% include_cached copy-clipboard.html %}
 ~~~sql
@@ -681,99 +736,99 @@ Column | Type | Description
 
 The following example shows how to join the `transaction_contention_events` table with `transaction_statistics` and `statement_statistics` tables to extract blocking and waiting transaction information.
 
-##### Display contention table removing in-progress transactions
+1. Display contention table removing in-progress transactions
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-SELECT
-  collection_ts,
-  blocking_txn_id,
-  encode(blocking_txn_fingerprint_id, 'hex') as blocking_txn_fingerprint_id,
-  waiting_txn_id,
-  encode(waiting_txn_fingerprint_id, 'hex') as waiting_txn_fingerprint_id
-FROM
-  crdb_internal.transaction_contention_events
-WHERE
-  encode(blocking_txn_fingerprint_id, 'hex') != '0000000000000000' AND encode(waiting_txn_fingerprint_id, 'hex') != '0000000000000000';
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SELECT
+      collection_ts,
+      blocking_txn_id,
+      encode(blocking_txn_fingerprint_id, 'hex') as blocking_txn_fingerprint_id,
+      waiting_txn_id,
+      encode(waiting_txn_fingerprint_id, 'hex') as waiting_txn_fingerprint_id
+    FROM
+      crdb_internal.transaction_contention_events
+    WHERE
+      encode(blocking_txn_fingerprint_id, 'hex') != '0000000000000000' AND encode(waiting_txn_fingerprint_id, 'hex') != '0000000000000000';
+    ~~~
 
-~~~
-          collection_ts         |           blocking_txn_id            | blocking_txn_fingerprint_id |            waiting_txn_id            | waiting_txn_fingerprint_id
---------------------------------+--------------------------------------+-----------------------------+--------------------------------------+-----------------------------
-  2022-04-11 23:41:56.951687+00 | 921e3d5b-22ab-4a94-a7a4-407e143cfa73 | 79ac4a19cff03b60            | 74ac5efa-a1e4-4c24-a648-58b82a192f9d | b7a98a63d6932458
-  2022-04-12 22:55:55.968825+00 | 25c75267-c091-44d4-8c33-8f5247409da5 | f07b4a806f8b7a2e            | 5397acb0-69f3-4c5c-b7a3-75d51180df44 | b7a98a63d6932458
-(2 rows)
-~~~
+    ~~~
+              collection_ts         |           blocking_txn_id            | blocking_txn_fingerprint_id |            waiting_txn_id            | waiting_txn_fingerprint_id
+    --------------------------------+--------------------------------------+-----------------------------+--------------------------------------+-----------------------------
+      2022-04-11 23:41:56.951687+00 | 921e3d5b-22ab-4a94-a7a4-407e143cfa73 | 79ac4a19cff03b60            | 74ac5efa-a1e4-4c24-a648-58b82a192f9d | b7a98a63d6932458
+      2022-04-12 22:55:55.968825+00 | 25c75267-c091-44d4-8c33-8f5247409da5 | f07b4a806f8b7a2e            | 5397acb0-69f3-4c5c-b7a3-75d51180df44 | b7a98a63d6932458
+    (2 rows)
+    ~~~
 
-##### Display counts for each blocking and waiting transaction fingerprint pair
+1. Display counts for each blocking and waiting transaction fingerprint pair
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-SELECT
-  encode(hce.blocking_txn_fingerprint_id, 'hex') as blocking_txn_fingerprint_id,
-  encode(hce.waiting_txn_fingerprint_id, 'hex') as waiting_txn_fingerprint_id,
-  count(*) AS contention_count
-FROM
-  crdb_internal.transaction_contention_events hce
-WHERE
-  encode(blocking_txn_fingerprint_id, 'hex') != '0000000000000000' AND encode(waiting_txn_fingerprint_id, 'hex') != '0000000000000000'
-GROUP BY
-  hce.blocking_txn_fingerprint_id, hce.waiting_txn_fingerprint_id
-ORDER BY
-  contention_count
-DESC;
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SELECT
+      encode(hce.blocking_txn_fingerprint_id, 'hex') as blocking_txn_fingerprint_id,
+      encode(hce.waiting_txn_fingerprint_id, 'hex') as waiting_txn_fingerprint_id,
+      count(*) AS contention_count
+    FROM
+      crdb_internal.transaction_contention_events hce
+    WHERE
+      encode(blocking_txn_fingerprint_id, 'hex') != '0000000000000000' AND encode(waiting_txn_fingerprint_id, 'hex') != '0000000000000000'
+    GROUP BY
+      hce.blocking_txn_fingerprint_id, hce.waiting_txn_fingerprint_id
+    ORDER BY
+      contention_count
+    DESC;
+    ~~~
 
-~~~
-  blocking_txn_fingerprint_id | waiting_txn_fingerprint_id | contention_count
-------------------------------+----------------------------+-------------------
-  79ac4a19cff03b60            | b7a98a63d6932458           |                1
-  f07b4a806f8b7a2e            | b7a98a63d6932458           |                1
-(3 rows)
-~~~
+    ~~~
+      blocking_txn_fingerprint_id | waiting_txn_fingerprint_id | contention_count
+    ------------------------------+----------------------------+-------------------
+      79ac4a19cff03b60            | b7a98a63d6932458           |                1
+      f07b4a806f8b7a2e            | b7a98a63d6932458           |                1
+    (3 rows)
+    ~~~
 
-##### Join to show blocking statements text
+1. Join to show blocking statements text
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-SELECT DISTINCT
-  hce.blocking_statement,
-  substring(ss2.metadata ->> 'query', 1, 60) AS waiting_statement,
-  hce.contention_count
-FROM [SELECT
-        hce.blocking_txn_fingerprint_id,
-        hce.waiting_txn_fingerprint_id,
-        hce.contention_count,
-        substring(ss.metadata ->> 'query', 1, 60) AS blocking_statement
-      FROM [SELECT
-              encode(hce.blocking_txn_fingerprint_id, 'hex') as blocking_txn_fingerprint_id,
-              encode(hce.waiting_txn_fingerprint_id, 'hex') as waiting_txn_fingerprint_id,
-              count(*) AS contention_count
-            FROM
-              crdb_internal.transaction_contention_events hce
-            GROUP BY
-              hce.blocking_txn_fingerprint_id, hce.waiting_txn_fingerprint_id
-            ] hce,
-          crdb_internal.statement_statistics ss
-      WHERE
-        hce.blocking_txn_fingerprint_id = encode(ss.transaction_fingerprint_id, 'hex')] hce,
-      crdb_internal.statement_statistics ss2
-WHERE
-  hce.blocking_txn_fingerprint_id != '0000000000000000' AND
-  hce.waiting_txn_fingerprint_id != '0000000000000000' AND
-  hce.waiting_txn_fingerprint_id = encode(ss2.transaction_fingerprint_id, 'hex')
-ORDER BY
-  contention_count
-DESC;
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SELECT DISTINCT
+      hce.blocking_statement,
+      substring(ss2.metadata ->> 'query', 1, 60) AS waiting_statement,
+      hce.contention_count
+    FROM (SELECT
+            blocking_txn_fingerprint_id,
+            waiting_txn_fingerprint_id,
+            contention_count,
+            substring(ss.metadata ->> 'query', 1, 60) AS blocking_statement
+          FROM (SELECT
+                  encode(blocking_txn_fingerprint_id, 'hex') as blocking_txn_fingerprint_id,
+                  encode(waiting_txn_fingerprint_id, 'hex') as waiting_txn_fingerprint_id,
+                  count(*) AS contention_count
+                FROM
+                  crdb_internal.transaction_contention_events
+                GROUP BY
+                  blocking_txn_fingerprint_id, waiting_txn_fingerprint_id
+                ),
+              crdb_internal.statement_statistics ss
+          WHERE
+            blocking_txn_fingerprint_id = encode(ss.transaction_fingerprint_id, 'hex')) hce,
+          crdb_internal.statement_statistics ss2
+    WHERE
+      hce.blocking_txn_fingerprint_id != '0000000000000000' AND
+      hce.waiting_txn_fingerprint_id != '0000000000000000' AND
+      hce.waiting_txn_fingerprint_id = encode(ss2.transaction_fingerprint_id, 'hex')
+    ORDER BY
+      contention_count
+    DESC;
+    ~~~
 
-~~~
-                   blocking_statement                   |                      waiting_statement                       | contention_count
---------------------------------------------------------+--------------------------------------------------------------+-------------------
-  CREATE UNIQUE INDEX ON users (city, id, name)         | SELECT status, payload, progress, crdb_internal.sql_liveness |                1
-  CREATE INDEX ON rides (start_time) STORING (rider_id) | SELECT status, payload, progress, crdb_internal.sql_liveness |                1
-(2 rows)
-~~~
+    ~~~
+                       blocking_statement                   |                      waiting_statement                       | contention_count
+    --------------------------------------------------------+--------------------------------------------------------------+-------------------
+      CREATE UNIQUE INDEX ON users (city, id, name)         | SELECT status, payload, progress, crdb_internal.sql_liveness |                1
+      CREATE INDEX ON rides (start_time) STORING (rider_id) | SELECT status, payload, progress, crdb_internal.sql_liveness |                1
+    (2 rows)
+    ~~~
 
 ### `transaction_statistics`
 

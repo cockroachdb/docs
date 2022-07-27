@@ -73,13 +73,13 @@ The `sql` command supports the following types of flags:
 Flag | Description
 -----|------------
 `--database`<br><br>`-d` | A database name to use as [current database](sql-name-resolution.html#current-database) in the newly created session.
-`--embedded` | <span class="version-tag">New in v21.1:</span> Minimizes the SQL shell [welcome text](#welcome-message) to be appropriate for embedding in playground-type environments. Specifically, this flag removes details that users in an embedded environment have no control over (e.g., networking information).
+`--embedded` | **New in v21.1:** Minimizes the SQL shell [welcome text](#welcome-message) to be appropriate for embedding in playground-type environments. Specifically, this flag removes details that users in an embedded environment have no control over (e.g., networking information).
 `--echo-sql` | Reveal the SQL statements sent implicitly by the command-line utility. For a demonstration, see the [example](#reveal-the-sql-statements-sent-implicitly-by-the-command-line-utility) below.<br><br>This can also be enabled within the interactive SQL shell via the `\set echo` [shell command](#commands).
 <a name="sql-flag-execute"></a> `--execute`<br><br>`-e` | Execute SQL statements directly from the command line, without opening a shell. This flag can be set multiple times, and each instance can contain one or more statements separated by semi-colons. If an error occurs in any statement, the command exits with a non-zero status code and further statements are not executed. The results of each statement are printed to the standard output (see `--format` for formatting options).<br><br>For a demonstration of this and other ways to execute SQL from the command line, see the [example](#execute-sql-statements-from-the-command-line) below.
-`--file <filename>`<br><br>`-f <filename>`<br><br>`< <filename>` | <span class="version-tag">New in v21.1:</span> Read SQL statements from `<filename>`.
+`--file <filename>`<br><br>`-f <filename>`<br><br>`< <filename>` | **New in v21.1:** Read SQL statements from `<filename>`.
 <a name="sql-flag-format"></a> `--format` | How to display table rows printed to the standard output. Possible values: `tsv`, `csv`, `table`, `raw`, `records`, `sql`, `html`.<br><br>**Default:** `table` for sessions that [output on a terminal](#session-and-output-types); `tsv` otherwise<br /><br />This flag corresponds to the `display_format` [client-side option](#client-side-options).
 `--safe-updates` | Disallow potentially unsafe SQL statements, including `DELETE` without a `WHERE` clause, `UPDATE` without a `WHERE` clause, and `ALTER TABLE ... DROP COLUMN`.<br><br>**Default:** `true` for [interactive sessions](#session-and-output-types); `false` otherwise<br /><br />Potentially unsafe SQL statements can also be allowed/disallowed for an entire session via the `sql_safe_updates` [session variable](set-vars.html).
-`--set` | Set a [client-side option](#client-side-options) before starting the SQL shell or executing SQL statements from the command line via `--execute`. This flag may be specified multiple times, once per option.<br><br>After starting the SQL shell, the `\set` and `unset` commands can be use to enable and disable client-side options as well.  
+`--set` | Set a [client-side option](#client-side-options) before starting the SQL shell or executing SQL statements from the command line via `--execute`. This flag may be specified multiple times, once per option.<br><br>After starting the SQL shell, the `\set` and `unset` commands can be use to enable and disable client-side options as well.
 `--watch` | Repeat the SQL statements specified with `--execute` or `-e` until a SQL error occurs or the process is terminated. `--watch` applies to all `--execute` or `-e` flags in use.<br />You must also specify an interval at which to repeat the statement, followed by a time unit. For example, to specify an interval of 5 seconds, use `5s`.<br /><br /> Note that this flag is intended for simple monitoring scenarios during development and testing. See the [example](#repeat-a-sql-statement) below.
 
 
@@ -159,7 +159,7 @@ When CockroachDB encounters a SQL error, it returns the following information to
 
 For example, the following query (taken from [this example of adding multiple foreign key constraints](foreign-key.html#add-multiple-foreign-key-constraints-to-a-single-column)) results in a SQL error, and returns both an error message and a `SQLSTATE` code as described above.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO shipments (carrier, status, customer_id) VALUES ('DHL', 'At facility', 2000);
 ~~~
@@ -181,7 +181,7 @@ The [`SQLSTATE` code](https://en.wikipedia.org/wiki/SQLSTATE) in particular can 
 
 In these examples, we connect a SQL shell to a **secure cluster**.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 # Using standard connection flags:
 $ cockroach sql \
@@ -191,7 +191,7 @@ $ cockroach sql \
 --database=critterdb
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 # Using the --url flag:
 $ cockroach sql \
@@ -200,7 +200,7 @@ $ cockroach sql \
 
 In these examples, we connect a SQL shell to an **insecure cluster**.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 # Using standard connection flags:
 $ cockroach sql --insecure \
@@ -209,7 +209,7 @@ $ cockroach sql --insecure \
 --database=critterdb
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 # Using the --url flag:
 $ cockroach sql \
@@ -220,17 +220,17 @@ $ cockroach sql \
 
 This example assume that we have already started the SQL shell (see examples above).
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE animals (id INT PRIMARY KEY DEFAULT unique_rowid(), name STRING);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO animals (name) VALUES ('bobcat'), ('🐢 '), ('barn owl');
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM animals;
 ~~~
@@ -249,7 +249,7 @@ This example assume that we have already started the SQL shell (see examples abo
 
 In these examples, we use the `--execute` flag to execute statements from the command line:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 # Statements with a single --execute flag:
 $ cockroach sql --insecure \
@@ -264,7 +264,7 @@ CREATE TABLE
 INSERT 2
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 # Statements with multiple --execute flags:
 $ cockroach sql --insecure \
@@ -282,7 +282,7 @@ INSERT 2
 
 In this example, we use the `echo` command to execute statements from the command line:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 # Statements with the echo command:
 $ echo "SHOW TABLES; SELECT * FROM roaches;" | cockroach sql --insecure --user=maxroach --host=12.345.67.89 --database=critterdb
@@ -308,7 +308,7 @@ In these examples, we show tables and special characters printed in various form
 
 When the standard output is a terminal, `--format` defaults to `table` and tables are printed with ASCII art and special characters are not escaped for easy human consumption:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure \
 --execute="SELECT '🐥' AS chick, '🐢' AS turtle" \
@@ -327,7 +327,7 @@ $ cockroach sql --insecure \
 
 However, you can explicitly set `--format` to another format, for example, `tsv` or `html`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure \
 --format=tsv \
@@ -343,7 +343,7 @@ chick	turtle
 🐥	🐢
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure \
 --format=html \
@@ -364,7 +364,7 @@ $ cockroach sql --insecure \
 
 When piping output to another command or a file, `--format` defaults to `tsv`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure \
 --execute="SELECT '🐥' AS chick, '🐢' AS turtle" > out.txt \
@@ -373,7 +373,7 @@ $ cockroach sql --insecure \
 --database=critterdb
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cat out.txt
 ~~~
@@ -386,7 +386,7 @@ chick	turtle
 
 However, you can explicitly set `--format` to another format, for example, `table`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure \
 --format=table \
@@ -396,7 +396,7 @@ $ cockroach sql --insecure \
 --database=critterdb
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cat out.txt
 ~~~
@@ -414,7 +414,7 @@ $ cat out.txt
 
 To make it possible to select from the output of `SHOW` statements, set `--format` to `raw`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure \
 --format=raw \
@@ -423,7 +423,7 @@ $ cockroach sql --insecure \
 --database=critterdb
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE customers;
 ~~~
@@ -446,7 +446,7 @@ CREATE TABLE customers (
 
 When `--format` is not set to `raw`, you can use the `display_format` [SQL shell option](#client-side-options) to change the output format within the interactive session:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > \set display_format raw
 ~~~
@@ -471,7 +471,7 @@ CREATE TABLE customers (
 
 In this example, we show and then execute the contents of a file containing SQL statements.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cat statements.sql
 ~~~
@@ -481,7 +481,7 @@ CREATE TABLE roaches (name STRING, country STRING);
 INSERT INTO roaches VALUES ('American Cockroach', 'United States'), ('Brownbanded Cockroach', 'United States');
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure \
 --user=maxroach \
@@ -501,7 +501,7 @@ In this example, we use `\!` to look at the rows in a CSV file before creating a
 
 {{site.data.alerts.callout_info}}This example works only if the values in the CSV file are numbers. For values in other formats, use an online CSV-to-SQL converter or make your own import program.{{site.data.alerts.end}}
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > \! cat test.csv
 ~~~
@@ -511,17 +511,17 @@ In this example, we use `\!` to look at the rows in a CSV file before creating a
 10, 20, 30
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE csv (x INT, y INT, z INT);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > \| IFS=","; while read a b c; do echo "insert into csv values ($a, $b, $c);"; done < test.csv;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM csv;
 ~~~
@@ -537,17 +537,17 @@ In this example, we use `\!` to look at the rows in a CSV file before creating a
 
 In this example, we create a table and then use `\|` to programmatically insert values.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE for_loop (x INT);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > \| for ((i=0;i<10;++i)); do echo "INSERT INTO for_loop VALUES ($i);"; done
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM for_loop;
 ~~~
@@ -578,7 +578,7 @@ If you would like to be able to edit the current line in an external editor by t
 1. Install the `vipe` program (from the [moreutils](https://joeyh.name/code/moreutils/) suite of tools).
 2. Edit your `~/.editrc` to add the following line, which takes advantage of the SQL client's ability to [run external commands](#run-external-commands-from-the-sql-shell):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~
     cockroach:bind -s ^X^E '^A^K\\\| echo \"^Y\" | vipe\r'
     ~~~
@@ -598,7 +598,7 @@ Future versions of the SQL client may opt to use a different back-end for readin
 
 The `--safe-updates` flag defaults to `true`. This prevents SQL statements that may have broad, undesired side-effects. For example, by default, we cannot use `DELETE` without a `WHERE` clause to delete all rows from a table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure --execute="SELECT * FROM db1.t1"
 ~~~
@@ -621,7 +621,7 @@ $ cockroach sql --insecure --execute="SELECT * FROM db1.t1"
 (10 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure --execute="DELETE FROM db1.t1"
 ~~~
@@ -633,7 +633,7 @@ Failed running "sql"
 
 However, to allow an "unsafe" statement, you can set `--safe-updates=false`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure --safe-updates=false --execute="DELETE FROM db1.t1"
 ~~~
@@ -648,7 +648,7 @@ DELETE 10
 
 In this example, we use the `--execute` flag to execute statements from the command line and the `--echo-sql` flag to reveal SQL statements sent implicitly:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure \
 --execute="CREATE TABLE t1 (id INT PRIMARY KEY, name STRING)" \
@@ -671,7 +671,7 @@ INSERT 3
 
 In this example, we start the interactive SQL shell and enable the `echo` shell option to reveal SQL statements sent implicitly:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure \
 --user=maxroach \
@@ -679,12 +679,12 @@ $ cockroach sql --insecure \
 --database=db1
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > \set echo
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO db1.t1 VALUES (4, 'd'), (5, 'e'), (6, 'f');
 ~~~
@@ -705,7 +705,7 @@ Repeating SQL queries on a table can be useful for monitoring purposes. With the
 
 For example, if you want to monitor the number of queries running on the current node, you can use `cockroach sql` with the `--watch` flag to query the node's `crdb_internal.node_statement_statistics` table for the query count:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure \
 --execute="SELECT SUM(count) FROM crdb_internal.node_statement_statistics" \
@@ -732,7 +732,7 @@ To connect to a cluster that is running on the same machine as your client and i
 
 For example, suppose you start a single-node cluster with the following [`cockroach start-single-node`](cockroach-start-single-node.html) command:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach start-single-node --insecure --socket-dir=/tmp
 ~~~
@@ -756,7 +756,7 @@ nodeID:              1
 
 To connect to this cluster with a socket:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --url='postgres://root@?host=/tmp&port=26257'
 ~~~

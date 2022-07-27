@@ -39,7 +39,7 @@ All of a user's privileges must be revoked before the user can be dropped.
 
 In this example, first check a user's privileges. Then, revoke the user's privileges before removing the user.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW GRANTS ON test.customers FOR mroach;
 ~~~
@@ -55,12 +55,12 @@ In this example, first check a user's privileges. Then, revoke the user's privil
 (3 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > REVOKE CREATE,INSERT,UPDATE ON test.customers FROM mroach;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP USER mroach;
 ~~~
@@ -78,12 +78,12 @@ HINT: USE test; ALTER DEFAULT PRIVILEGES REVOKE ALL ON TABLES FROM mroach;
 
 Run the `HINT` SQL prior to dropping the user.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 USE test; ALTER DEFAULT PRIVILEGES REVOKE ALL ON TABLES FROM mroach;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP USER mroach;
 ~~~

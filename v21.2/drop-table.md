@@ -15,7 +15,7 @@ The user must have the `DROP` [privilege](security-reference/authorization.html#
 
 ## Synopsis
 
-<div>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/drop_table.html %}</div>
+<div>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/drop_table.html %}</div>
 
 ## Parameters
 
@@ -38,7 +38,7 @@ Parameter | Description
 
 In this example, other objects do not depend on the table being dropped.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM movr;
 ~~~
@@ -55,7 +55,7 @@ In this example, other objects do not depend on the table being dropped.
 (6 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP TABLE promo_codes;
 ~~~
@@ -64,7 +64,7 @@ In this example, other objects do not depend on the table being dropped.
 DROP TABLE
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM movr;
 ~~~
@@ -86,7 +86,7 @@ In this example, a [foreign key](foreign-key.html) from a different table refere
 
 {{site.data.alerts.callout_danger}}<code>CASCADE</code> drops <em>all</em> dependent objects without listing them, which can lead to inadvertent and difficult-to-recover losses. To avoid potential harm, we recommend dropping objects individually in most cases.{{site.data.alerts.end}}
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM movr;
 ~~~
@@ -102,7 +102,7 @@ In this example, a [foreign key](foreign-key.html) from a different table refere
 (5 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP TABLE users;
 ~~~
@@ -113,7 +113,7 @@ pq: "users" is referenced by foreign key from table "vehicles"
 
 To see how `users` is referenced from `vehicles`, you can use the [`SHOW CREATE`](show-create.html) statement. `SHOW CREATE` shows how the columns in a table are created, including data types, default values, indexes, and constraints.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE TABLE vehicles;
 ~~~
@@ -139,7 +139,7 @@ To see how `users` is referenced from `vehicles`, you can use the [`SHOW CREATE`
 ~~~
 
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~sql
 > DROP TABLE users CASCADE;
 ~~~
@@ -148,7 +148,7 @@ To see how `users` is referenced from `vehicles`, you can use the [`SHOW CREATE`
 DROP TABLE
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM movr;
 ~~~
@@ -165,7 +165,7 @@ DROP TABLE
 
 Use a `SHOW CREATE TABLE` statement to verify that the foreign key constraint has been removed from `vehicles`.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE TABLE vehicles;
 ~~~

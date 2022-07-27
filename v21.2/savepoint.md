@@ -14,7 +14,7 @@ A savepoint is a marker that defines the beginning of a [nested transaction](tra
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/savepoint.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/savepoint.html %}
 </div>
 
 ## Required privileges
@@ -39,7 +39,7 @@ name      | The name of the savepoint.  [Nested transactions](savepoint.html#sav
 
 The examples below use the following table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE kv (k INT PRIMARY KEY, v INT);
 ~~~
@@ -48,7 +48,7 @@ The examples below use the following table:
 
 To establish a savepoint inside a transaction:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SAVEPOINT foo;
 ~~~
@@ -59,21 +59,21 @@ Due to the [rules for identifiers in our SQL grammar](keywords-and-identifiers.h
 
 To roll back a transaction partially to a previously established savepoint:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ROLLBACK TO SAVEPOINT foo;
 ~~~
 
 To forget a savepoint, and keep the effects of statements executed after the savepoint was established, use [`RELEASE SAVEPOINT`](release-savepoint.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > RELEASE SAVEPOINT foo;
 ~~~
 
 For example, the transaction below will insert the values `(1,1)` and `(3,3)` into the table, but not `(2,2)`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BEGIN;
 INSERT INTO kv VALUES (1,1);
@@ -100,7 +100,7 @@ Savepoints can be arbitrarily nested, and rolled back to the outermost level so 
 
 For example, this transaction does not insert anything into the table.  Both `INSERT`s are rolled back:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BEGIN;
 SAVEPOINT foo;
@@ -117,7 +117,7 @@ Changes committed by releasing a savepoint commit all of the statements entered 
 
 For example, the following transaction inserts both `(2,2)` and `(4,4)` into the table when it releases the outermost savepoint:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BEGIN;
 SAVEPOINT foo;
@@ -134,7 +134,7 @@ Changes partially committed by a savepoint release can be rolled back by an oute
 
 For example, the following transaction inserts only value `(5, 5)`. The values `(6,6)` and `(7,7)` are rolled back.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BEGIN;
 INSERT INTO kv VALUES (5,5);
@@ -161,7 +161,7 @@ In addition, you can check the status of a nested transaction using the `SHOW TR
 
 For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BEGIN;
 SAVEPOINT error1;
@@ -173,7 +173,7 @@ ERROR: duplicate key value (k)=(5) violates unique constraint "primary"
 SQLSTATE: 23505
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW TRANSACTION STATUS;
 ~~~
@@ -185,7 +185,7 @@ SHOW TRANSACTION STATUS;
 (1 row)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 ROLLBACK TO SAVEPOINT error1;
 INSERT INTO kv VALUES (6,6);
@@ -198,7 +198,7 @@ The name of a savepoint that was rolled back over is no longer visible afterward
 
 For example, in the transaction below, the name "bar" is not visible after it was rolled back over:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BEGIN;
 SAVEPOINT foo;
@@ -215,7 +215,7 @@ SQLSTATE: 3B001
 
 The [SQL client](cockroach-sql.html) prompt will now display an error state, which you can clear by entering [`ROLLBACK`](rollback-transaction.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 ? ERROR> ROLLBACK;
 ~~~
@@ -228,7 +228,7 @@ ROLLBACK
 
 Prepared statements (`PREPARE` / `EXECUTE`) are not transactional.  Therefore, prepared statements are not invalidated upon savepoint rollback.  As a result, the prepared statement was saved and executed inside the transaction, despite the rollback to the prior savepoint:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BEGIN;
 SAVEPOINT foo;
@@ -251,7 +251,7 @@ COMMIT;
 
 The example below shows basic usage of a retry savepoint.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BEGIN;
 SAVEPOINT cockroach_restart;
@@ -273,7 +273,7 @@ Note that you can [customize the retry savepoint name](#customizing-the-retry-sa
 
 Use the [`SHOW SAVEPOINT STATUS`](show-savepoint-status.html) statement to see how many savepoints are active in the current transaction:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW SAVEPOINT STATUS;
 ~~~

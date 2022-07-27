@@ -135,10 +135,10 @@ table tr td:nth-child(2) {
 
  Component | Supported | Type | Details
 -----------|-----------|------|---------
- Table and View references | ✓ | Standard | [Table expressions documentation](table-expressions.html#table-or-view-names)
+ Table and View references | ✓ | Standard | [Table expressions documentation](table-expressions.html#table-and-view-names)
  `AS` in table expressions | ✓ | Standard | [Aliased table expressions documentation](table-expressions.html#aliased-table-expressions)
  `JOIN` (`INNER`, `LEFT`, `RIGHT`, `FULL`, `CROSS`) | ✓ | Standard | [`JOIN` expressions documentation](table-expressions.html#join-expressions)
- Sub-queries as table expressions | Partial | Standard | Non-correlated subqueries are [supported](table-expressions.html#subqueries-as-table-expressions), as are most [correlated subqueries](subqueries.html#correlated-subqueries).
+ Sub-queries as table expressions | Partial | Standard | Non-correlated subqueries are [supported](table-expressions.html#use-a-subquery), as are most [correlated subqueries](subqueries.html#correlated-subqueries).
  Table generator functions | Partial | PostgreSQL Extension | [Table generator functions documentation](table-expressions.html#table-generator-functions)
  `WITH ORDINALITY` | ✓ | CockroachDB Extension | [Ordinality annotation documentation](table-expressions.html#ordinality-annotation)
 

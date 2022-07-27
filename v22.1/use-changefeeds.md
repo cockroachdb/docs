@@ -135,7 +135,7 @@ For an example of a schema change with column backfill, start with the changefee
 
 Add a column to the watched table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE office_dogs ADD COLUMN likes_treats BOOL DEFAULT TRUE;
 ~~~
@@ -191,6 +191,27 @@ For webhook sinks, the response format comes as a batch of changefeed messages w
 ~~~
 
 See [Files](create-changefeed.html#files) for more detail on the file naming format for {{ site.data.products.enterprise }} changefeeds.
+
+## Garbage collection and changefeeds
+
+{% include_cached new-in.html version="v22.1" %} By default, [protected timestamps](architecture/storage-layer.html#protected-timestamps) will protect changefeed data from [garbage collection](architecture/storage-layer.html#garbage-collection) up to the time of the [_checkpoint_](change-data-capture-overview.html#how-does-an-enterprise-changefeed-work).
+
+Protected timestamps will protect changefeed data from garbage collection in the following scenarios:
+
+- The downstream [changefeed sink](changefeed-sinks.html) is unavailable. Protected timestamps will protect changes until you either [cancel](cancel-job.html) the changefeed or the sink becomes available once again. 
+- You [pause](pause-job.html) a changefeed with the [`protect_data_from_gc_on_pause`](create-changefeed.html#protect-pause) option enabled. Protected timestamps will protect changes until you [resume](resume-job.html) the changefeed.
+
+However, if the changefeed lags too far behind, the protected changes could cause data storage issues. To release the protected timestamps and allow garbage collection to resume, you can cancel the changefeed or [resume](resume-job.html) in the case of a paused changefeed. 
+
+We recommend [monitoring](monitor-and-debug-changefeeds.html) storage and the number of running changefeeds. If a changefeed is not advancing and is retrying, it will (without limit) accumulate garbage while it retries to run.
+
+When `protect_data_from_gc_on_pause` is **unset**, pausing the changefeed will release the existing protected timestamp record. As a result, you could lose the changes if the changefeed remains paused longer than the [garbage collection](configure-replication-zones.html#gc-ttlseconds) window.
+
+The only ways for changefeeds to **not** protect data are:
+
+- You pause the changefeed without `protect_data_from_gc_on_pause` set.
+- You cancel the changefeed.
+- The changefeed fails without [`on_error=pause`](create-changefeed.html#on-error) set.
 
 ## Changefeeds on tables with column families
 

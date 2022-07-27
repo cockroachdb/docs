@@ -89,7 +89,7 @@ These examples assume you are running [an insecure cluster](start-a-local-cluste
 
 List statement diagnostics bundles and/or activation requests:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach statement-diag list --insecure
 ~~~
@@ -122,7 +122,7 @@ $ cockroach statement-diag delete --all --insecure
 
 List statement diagnostics bundles and/or activation requests:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach statement-diag list --insecure
 ~~~
@@ -141,6 +141,6 @@ $ cockroach statement-diag cancel 603811900498804737 --insecure
 
 ## See also
 
-- [DB Console Statement Details page](ui-statements-page.html#statement-details-page)
+- [DB Console statement diagnostics](ui-statements-page.html#diagnostics)
 - [`EXPLAIN ANALYZE (DEBUG)`](explain-analyze.html#explain-analyze-debug)
 - [`cockroach` Commands Overview](cockroach-commands.html)

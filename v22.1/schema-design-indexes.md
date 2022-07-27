@@ -67,6 +67,10 @@ For an example, see [Example](#example).
 
 Here are some best practices for creating and using secondary indexes.
 
+{{site.data.alerts.callout_success}}
+The [`EXPLAIN`](explain.html#success-responses) command provides index recommendations, including index actions and SQL statements to perform the actions.
+{{site.data.alerts.end}}
+
 ### Index contents
 
 - Index all columns that you plan to use for [sorting](order-by.html) or [filtering](select-clause.html#filter-rows) data.
@@ -124,7 +128,7 @@ Recall that the `vehicles` table that you created in [Create a Table](schema-des
 
 Open `max_init.sql`, and, under the `CREATE TABLE` statement for the `vehicles` table, add a `CREATE INDEX` statement for an index on the `type` and `available` columns of the `vehicles` table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE INDEX type_available_idx ON movr.vehicles (type, available);
 ~~~
@@ -135,7 +139,7 @@ The MovR app might also need to display the vehicle's location and ID, but the a
 
 To help avoid unnecessary full table scans, add a `STORING` clause to the index:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE INDEX type_available_idx ON movr.vehicles (type, available) STORING (last_location);
 ~~~
@@ -144,7 +148,7 @@ The index will now store the values in `last_location`, which will improve the p
 
 The `max_init.sql` file should now look similar to the following:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TABLE movr.max_schema.users (
     first_name STRING,
@@ -177,7 +181,7 @@ CREATE TABLE movr.max_schema.rides (
 
 If you executed this file when following the [Create a Table](schema-design-table.html) example, then all of these objects already exist. To clear the database and re-initialize the schemas, first execute the statements in the `dbinit.sql` file as the `root` user:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
 --certs-dir={certs-directory} \
@@ -187,7 +191,7 @@ $ cockroach sql \
 
 Then, execute the statements in the `max_init.sql` and `abbey_init.sql` files:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
 --certs-dir={certs-directory} \
@@ -196,7 +200,7 @@ $ cockroach sql \
 -f max_init.sql
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
 --certs-dir={certs-directory} \
@@ -209,7 +213,7 @@ After the statements have been executed, you can see the new index in the [Cockr
 
 Open the SQL shell to your cluster:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
 --certs-dir={certs-directory} \
@@ -219,7 +223,7 @@ $ cockroach sql \
 
 To view the indexes in the `vehicles` table, issue a [`SHOW INDEXES`](show-index.html) statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW INDEXES FROM movr.max_schema.vehicles;
 ~~~
@@ -241,11 +245,11 @@ To view the indexes in the `vehicles` table, issue a [`SHOW INDEXES`](show-index
 
 The output from this `SHOW` statement displays the names and columns of the two indexes on the table (i.e., `vehicles_pkey` and `type_available_idx`).
 
-Note that the `last_location` column's `storing` value is `true` in the `type_available_idx` index, and is therefore not sorted. Also note that the vehicles_pkey key column `id` is implicit in the index, meaning the `id` column is implicitly indexed in `type_available_idx`.
+The `last_location` column's `storing` value is `true` in the `type_available_idx` index, and is therefore not sorted. The primary key column `id` is implicit in the index, meaning the `id` column is implicitly indexed in `type_available_idx`.
 
 To see an index definition, use a [`SHOW CREATE`](show-create.html) statement on the table that contains the index:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE TABLE movr.max_schema.vehicles;
 ~~~
@@ -272,7 +276,7 @@ It's likely that you will need to update your database schema at some point. For
 ## What's next?
 
 - [Change and Remove Objects in a Database Schema](schema-design-update.html)
-- Read about [how schema changes work](online-schema-changes.html)
+- [Online Schema Changes](online-schema-changes.html)
 - [Insert Data](schema-design-indexes.html)
 - [Query Data](online-schema-changes.html)
 
@@ -286,6 +290,14 @@ You might also be interested in the following pages:
 - [Index Spatial Data](spatial-indexes.html)
 - [Cockroach Commands](cockroach-commands.html)
 - [Create a User-defined Schema](schema-design-schema.html)
+- [Partial Indexes](partial-indexes.html)
+- [Hash-sharded Indexes](hash-sharded-indexes.html)
+- [Generalized Inverted Indexes](inverted-indexes.html)
+- [Expression Indexes](expression-indexes.html)
+- [Spatial Indexes](spatial-indexes.html)
+- [`cockroach` Commands Overview](cockroach-commands.html)
+- [Database Schemas](schema-design-schema.html)
 - [Create a Database](schema-design-database.html)
 - [Schema Design Overview](schema-design-overview.html)
+- [Create a Table](schema-design-table.html)
 - [CockroachDB naming hierarchy](sql-name-resolution.html#naming-hierarchy)

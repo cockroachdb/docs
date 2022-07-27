@@ -2,7 +2,7 @@ In this example, you'll set up a core changefeed for a single-node cluster.
 
 1. In a terminal window, start `cockroach`:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start-single-node \
     --insecure \
@@ -12,7 +12,7 @@ In this example, you'll set up a core changefeed for a single-node cluster.
 
 2. As the `root` user, open the [built-in SQL client](cockroach-sql.html):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
     --url="postgresql://root@127.0.0.1:26257?sslmode=disable" \
@@ -25,28 +25,28 @@ In this example, you'll set up a core changefeed for a single-node cluster.
 
 3. Enable the `kv.rangefeed.enabled` [cluster setting](cluster-settings.html):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SET CLUSTER SETTING kv.rangefeed.enabled = true;
     ~~~
 
 4. Create table `foo`:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE TABLE foo (a INT PRIMARY KEY);
     ~~~
 
 5. Insert a row into the table:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > INSERT INTO foo VALUES (0);
     ~~~
 
 6. Start the core changefeed:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > EXPERIMENTAL CHANGEFEED FOR foo;
     ~~~
@@ -57,7 +57,7 @@ In this example, you'll set up a core changefeed for a single-node cluster.
 
 7. In a new terminal, add another row:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql --insecure -e "INSERT INTO foo VALUES (1)"
     ~~~
@@ -72,9 +72,27 @@ In this example, you'll set up a core changefeed for a single-node cluster.
 
 9. To stop streaming the changefeed, enter **CTRL+C** into the terminal where the changefeed is running.
 
-10. To stop `cockroach`, run:
+10. To stop `cockroach`:
 
-    {% include copy-clipboard.html %}
+    Get the process ID of the node:
+
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ cockroach quit --insecure
+    ps -ef | grep cockroach | grep -v grep
+    ~~~
+
+    ~~~
+      501 21766     1   0  6:21PM ttys001    0:00.89 cockroach start-single-node --insecure --listen-addr=localhost
+    ~~~
+
+    Gracefully shut down the node, specifying its process ID:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    kill -TERM 21766
+    ~~~
+
+    ~~~
+    initiating graceful shutdown of server
+    server drained and shutdown completed
     ~~~

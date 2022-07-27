@@ -30,18 +30,20 @@ Approach | Use case description
 
 On [accessing the DB Console](ui-overview.html#db-console-access) for a secure cluster, your web browser will consider the CockroachDB-issued certificate invalid, because the browser hasn't been configured to trust the CA that issued the certificate.
 
-For secure clusters, you can avoid getting the warning message by using a certificate issued by a public CA whose certificates are trusted by browsers, in addition to the CockroachDB-created certificates:
+For secure clusters, you can avoid getting the warning message by using a certificate issued by a public CA whose certificates are trusted by browsers, in addition to the CockroachDB-created certificates.
 
 1. Request a certificate from a public CA (for example, [Let's Encrypt](https://letsencrypt.org/)). The certificate must have the IP addresses and DNS names used to reach the DB Console listed in the `Subject Alternative Name` field.
 2. Rename the certificate and key as `ui.crt` and `ui.key`.
-3. Add the `ui.crt` and `ui.key` to the [certificate directory](cockroach-cert.html#certificate-directory). `ui.key` must meet the [permission requirements check](cockroach-cert.html#key-file-permissions) on macOS, Linux, and other UNIX-like systems.
- .
-4. For nodes that are already running, load the `ui.crt` certificate without restarting the node by issuing a `SIGHUP` signal to the cockroach process:
-   {% include copy-clipboard.html %}
-   ~~~ shell
-   pkill -SIGHUP -x cockroach
-   ~~~
-   The `SIGHUP` signal must be sent by the same user running the process (e.g., run with sudo if the cockroach process is running under user root).
+3. Add the `ui.crt` and `ui.key` to the [certificate directory](cockroach-cert.html#certificate-directory). `ui.key` must meet the [permission requirements check](cockroach-cert.html#key-file-permissions) on macOS, Linux, and other UNIX-like systems. If your cluster is deployed using containers, update the containers to include the new certificate and key.
+4. The cockroach process reads certificates only when the process starts.
+
+   - In a manually-deployed cluster, load the `ui.crt` certificate without restarting the node by issuing a `SIGHUP` signal to the cockroach process:
+      {% include_cached copy-clipboard.html %}
+      ~~~ shell
+      pkill -SIGHUP -x cockroach
+      ~~~
+      The `SIGHUP` signal must be sent by the same user running the process (e.g., run with `sudo` if the `cockroach` process is running under user `root`).
+   - In a cluster deployed using the [Kubernetes Operator](deploy-cockroachdb-with-kubernetes.html), there is no way to send a `SIGHUP` signal to the individual `cockroach` process on each cluster node. Instead, perform a rolling restart of the cluster's pods.
 
 ### Node key and certificates
 
@@ -140,7 +142,7 @@ To enable certificate revocation:
 1. Ensure that your Certificate Authority sets the OCSP server address in the `authorityInfoAccess` field in the certificate.
 2. [Set the cluster setting](set-cluster-setting.html) `security.ocsp.mode` to `lax` (by default, the cluster setting is set to `off`).
 
-      {% include copy-clipboard.html %}
+      {% include_cached copy-clipboard.html %}
       ~~~ sql
       > SHOW CLUSTER SETTING security.ocsp.mode;
       ~~~
@@ -155,7 +157,7 @@ To enable certificate revocation:
       Network Latency: 181µs
       ~~~
 
-      {% include copy-clipboard.html %}
+      {% include_cached copy-clipboard.html %}
       ~~~ sql
       > SET CLUSTER SETTING security.ocsp.mode = lax;
       ~~~

@@ -61,7 +61,7 @@ The user must have the `CREATE` [privileges](authorization.html#assign-privilege
 Parameter | Description
 ----------|------------
 `table_name` | The name of the table you want to import/create.
-`table_elem_list` | The table schema you want to use.  
+`table_elem_list` | The table schema you want to use.
 `CREATE USING file_location` | If not specifying the table schema inline via `table_elem_list`, this is the [URL](#import-file-location) of a SQL file containing the table schema.
 `file_location` | The [URL](#import-file-location) of a CSV file containing the table data. This can be [a comma-separated list of URLs to CSV files](#using-a-comma-separated-list) or [specified by a `*` wildcard character](#using-a-wildcard) to include matching files under the specified path.
 `WITH kv_option_list` | Control your import's behavior with [these options](#import-options).
@@ -100,11 +100,11 @@ Key                 | <div style="width:130px">Context</div> | Value            
 `nullif`               | `CSV DATA `, [`DELIMITED DATA`](#delimited-data-files) | The string that should be converted to *NULL*.
 `skip`                 | `CSV DATA `, [`DELIMITED DATA`](#delimited-data-files) | The number of rows to be skipped while importing a file. **Default: `'0'`**.
 `decompress`           | General         | The decompression codec to be used: `gzip`, `bzip`, `auto`, or `none`.  **Default: `'auto'`**, which guesses based on file extension (`.gz`, `.bz`, `.bz2`). `none` disables decompression.
-`row_limit`           | General         |{% include_cached new-in.html version="v21.1" %} The number of rows to import. Useful for doing a test run of an import and finding errors quickly. For non-bundled formats, setting `row_limit = 'n'` will import the first *n* rows of a table. For bundled formats, this option will import the first *n* rows from each table in the dump file.
+`row_limit`           | General         |**New in v21.1:** The number of rows to import. Useful for doing a test run of an import and finding errors quickly. For non-bundled formats, setting `row_limit = 'n'` will import the first *n* rows of a table. For bundled formats, this option will import the first *n* rows from each table in the dump file.
 `skip_foreign_keys`    | `PGDUMP`, `MYSQLDUMP` | Ignore foreign key constraints in the dump file's DDL. **Default:** Off.  May be necessary to import a table with unsatisfied foreign key constraints from a full database dump.
 `max_row_size`         | `PGDUMP`        | Override limit on line size. **Default: 0.5MB**.  This setting may need to be tweaked if your PostgreSQL dump file has extremely long lines, for example as part of a `COPY` statement.
-`ignore_unsupported_statements` | `PGDUMP`  | <span class="version-tag">New in v21.1:</span> Ignore SQL statements in the dump file that are unsupported by CockroachDB.
-`log_ignored_statements` | `PGDUMP` | <span class="version-tag">New in v21.1:</span> Log unsupported statements when using `ignore_unsupported_statements` to a specified destination (i.e., [cloud storage](use-cloud-storage-for-bulk-operations.html) or [userfile storage](use-userfile-for-bulk-operations.html).
+`ignore_unsupported_statements` | `PGDUMP`  | **New in v21.1:** Ignore SQL statements in the dump file that are unsupported by CockroachDB.
+`log_ignored_statements` | `PGDUMP` | **New in v21.1:** Log unsupported statements when using `ignore_unsupported_statements` to a specified destination (i.e., [cloud storage](use-cloud-storage-for-bulk-operations.html) or [userfile storage](use-userfile-for-bulk-operations.html).
 `rows_terminated_by`   | [`DELIMITED DATA`](#delimited-data-files)  | The unicode character to indicate new lines in the input file. **Default:** `\n`
 `fields_terminated_by` | [`DELIMITED DATA`](#delimited-data-files)  | The unicode character used to separate fields in each input line. **Default:** `\t`
 `fields_enclosed_by`   | [`DELIMITED DATA`](#delimited-data-files)  | The unicode character that encloses fields. **Default:** `"`
@@ -115,7 +115,7 @@ Key                 | <div style="width:130px">Context</div> | Value            
 `data_as_json_records` | `AVRO DATA`    | Use when [importing a JSON file containing Avro records](migrate-from-avro.html#import-binary-or-json-records). The schema is not included in the file, so you need to specify the schema with either the `schema` or `schema_uri` option.
 `schema`               | `AVRO DATA`    | The schema of the Avro records included in the binary or JSON file. This is not needed for Avro OCF.
 `schema_uri`           | `AVRO DATA`    | The URI of the file containing the schema of the Avro records include in the binary or JSON file. This is not needed for Avro OCF.
-<a name="options-detached"></a>`DETACHED`             | N/A            | <span class="version-tag">New in v21.1:</span> When an import runs in `DETACHED` mode, it will execute asynchronously and the job ID will be returned immediately without waiting for the job to finish. Note that with `DETACHED` specified, further job information and the job completion status will not be returned. For more on the differences between the returned job data, see the [example](import.html#run-an-import-within-a-transaction) below. To check on the job status, use the [`SHOW JOBS`](show-jobs.html) statement. <br><br>To run an import within a [transaction](transactions.html), use the `DETACHED` option.
+<a name="options-detached"></a>`DETACHED`             | N/A            | **New in v21.1:** When an import runs in `DETACHED` mode, it will execute asynchronously and the job ID will be returned immediately without waiting for the job to finish. Note that with `DETACHED` specified, further job information and the job completion status will not be returned. For more on the differences between the returned job data, see the [example](import.html#run-an-import-within-a-transaction) below. To check on the job status, use the [`SHOW JOBS`](show-jobs.html) statement. <br><br>To run an import within a [transaction](transactions.html), use the `DETACHED` option.
 
 For examples showing how to use these options, see the [Examples](#examples) section below.
 
@@ -216,7 +216,7 @@ The following provide connection examples to cloud storage providers. For more i
 
 To specify the table schema in-line:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers (
 		id UUID PRIMARY KEY,
@@ -229,7 +229,7 @@ CSV DATA ('s3://{BUCKET NAME}/{customers.csv}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS
 
 To use a file to specify the table schema:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers
 CREATE USING 's3://{BUCKET NAME}/{customers-create-table.sql}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
@@ -243,7 +243,7 @@ CSV DATA ('s3://{BUCKET NAME}/{customers.csv}?AWS_ACCESS_KEY_ID={ACCESS_KEY}&AWS
 
 #### Using a comma-separated list
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers (
 		id UUID PRIMARY KEY,
@@ -269,7 +269,7 @@ You can specify [file patterns to match](https://golang.org/pkg/path/filepath/#M
 
 These only match files directly under the specified path and do not descend into additional directories recursively.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers (
 		id UUID PRIMARY KEY,
@@ -283,7 +283,7 @@ CSV DATA (
 
 ### Import a table from a TSV file
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers (
 		id UUID PRIMARY KEY,
@@ -300,7 +300,7 @@ WITH
 
 The `comment` option determines which Unicode character marks the rows in the data to be skipped.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers (
 		id UUID PRIMARY KEY,
@@ -317,7 +317,7 @@ WITH
 
 The `skip` option determines the number of header rows to skip when importing a file.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers (
 		id UUID PRIMARY KEY,
@@ -336,7 +336,7 @@ WITH
 
 The examples below use CSV data, but `row_limit` is also an option for [Avro files](migrate-from-avro.html#step-3-import-the-avro), [delimited data files](#import-a-delimited-data-file), [PostgreSQL dump files](migrate-from-postgres.html#row-limit), and [MySQL dump files](migrate-from-mysql.html#row-limit).
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers (
 		id UUID PRIMARY KEY,
@@ -353,7 +353,7 @@ WITH
 
 The `nullif` option defines which string should be converted to `NULL`.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers (
 		id UUID PRIMARY KEY,
@@ -370,7 +370,7 @@ WITH
 
 CockroachDB chooses the decompression codec based on the filename (the common extensions `.gz` or `.bz2` and `.bz`) and uses the codec to decompress the file during import.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers (
 		id UUID PRIMARY KEY,
@@ -383,7 +383,7 @@ CSV DATA ('s3://{BUCKET NAME}/{customers.csv.gz}?AWS_ACCESS_KEY_ID={ACCESS KEY}&
 
 Optionally, you can use the `decompress` option to specify the codec to be used for decompressing the file during import:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers (
 		id UUID PRIMARY KEY,
@@ -398,7 +398,7 @@ WITH
 
 ### Import a PostgreSQL database dump
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT PGDUMP 's3://{BUCKET NAME}/{customers.sql}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' WITH ignore_unsupported_statements;
 ~~~
@@ -407,7 +407,7 @@ For this command to succeed, you need to have created the dump file with specifi
 
 ### Import a table from a PostgreSQL database dump
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE employees FROM PGDUMP 's3://{BUCKET NAME}/{employees-full.sql}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' WITH skip_foreign_keys WITH ignore_unsupported_statements;
 ~~~
@@ -420,7 +420,7 @@ For this command to succeed, you need to have created the dump file with specifi
 
 Cockroach dump files can be imported using the `IMPORT PGDUMP` statement.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT PGDUMP 's3://{BUCKET NAME}/{employees-full.sql}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}';
 ~~~
@@ -429,7 +429,7 @@ For more information, see [SQL Dump (Export)](cockroach-dump.html).
 
 ### Import a MySQL database dump
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT MYSQLDUMP 's3://{BUCKET NAME}/{employees-full.sql}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}';
 ~~~
@@ -438,7 +438,7 @@ For more detailed information about importing data from MySQL, see [Migrate from
 
 ### Import a table from a MySQL database dump
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE employees FROM MYSQLDUMP 's3://{BUCKET NAME}/{employees-full.sql}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' WITH skip_foreign_keys;
 ~~~
@@ -449,7 +449,7 @@ For more detailed information about importing data from MySQL, see [Migrate from
 
 ### Import a delimited data file
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT DELIMITED DATA 's3://{BUCKET NAME}/{employees-full.csv}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
   WITH
@@ -464,7 +464,7 @@ If you want to escape special symbols, use `fields_escaped_by`.
 
 ### Import a table from a delimited data file
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE employees
     FROM DELIMITED DATA 's3://{BUCKET NAME}/{employees.csv}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
@@ -480,7 +480,7 @@ If the table schema specifies foreign keys into tables that do not exist yet, th
 
 To specify the table schema in-line:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers (
 		id UUID PRIMARY KEY,
@@ -493,7 +493,7 @@ AVRO DATA ('s3://{BUCKET NAME}/{customers.avro}?AWS_ACCESS_KEY_ID={ACCESS KEY}&A
 
 To use a file to specify the table schema:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers
 CREATE USING 's3://{BUCKET NAME}/{customers-create-table.sql}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
@@ -509,7 +509,7 @@ For more information about importing data from Avro, including examples, see [Mi
 
 The following transactions use CSV data as an example. To use the `DETACHED` option with `IMPORT` in a transaction:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BEGIN;
 
@@ -554,7 +554,7 @@ job_id             |  status   | fraction_completed | rows | index_entries | byt
 
 To specify the table schema in-line:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers (
 		id UUID PRIMARY KEY,
@@ -567,7 +567,7 @@ CSV DATA ('azure://{CONTAINER NAME}/{customer-import-data.csv}?AZURE_ACCOUNT_NAM
 
 To use a file to specify the table schema:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers
 CREATE USING 'azure://{CONTAINER NAME}/{customer-create-table.sql}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}'
@@ -581,7 +581,7 @@ CSV DATA ('azure://{CONTAINER NAME}/{customer-import-data.csv}?AZURE_ACCOUNT_NAM
 
 #### Using a comma-separated list
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers (
 		id UUID PRIMARY KEY,
@@ -593,7 +593,7 @@ CSV DATA (
     'azure://{CONTAINER NAME}/{customer-import-data2.csv}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}',
     'azure://{CONTAINER NAME}/{customer-import-data3.csv}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}',
     'azure://{CONTAINER NAME}/{customer-import-data4.csv}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}',
-    'azure://{CONTAINER NAME}/{customer-import-data5.csv}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}',    
+    'azure://{CONTAINER NAME}/{customer-import-data5.csv}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}',
 );
 ~~~
 
@@ -608,7 +608,7 @@ You can specify [file patterns to match](https://golang.org/pkg/path/filepath/#M
 
 These only match files directly under the specified path and do not descend into additional directories recursively.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers (
 		id UUID PRIMARY KEY,
@@ -616,13 +616,13 @@ These only match files directly under the specified path and do not descend into
 		INDEX name_idx (name)
 )
 CSV DATA (
-    'azure://{CONTAINER NAME}/{customer-import-data*}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}'  
+    'azure://{CONTAINER NAME}/{customer-import-data*}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}'
 );
 ~~~
 
 ### Import a table from a TSV file
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers (
 		id UUID PRIMARY KEY,
@@ -639,7 +639,7 @@ WITH
 
 The `comment` option determines which Unicode character marks the rows in the data to be skipped.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers (
 		id UUID PRIMARY KEY,
@@ -656,7 +656,7 @@ WITH
 
 The `skip` option determines the number of header rows to skip when importing a file.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers (
 		id UUID PRIMARY KEY,
@@ -676,7 +676,7 @@ WITH
 The examples below use CSV data, but `row_limit` is also an option for [Avro files](migrate-from-avro.html#step-3-import-the-avro), [delimited data files](#import-a-delimited-data-file), [PostgreSQL dump files](migrate-from-postgres.html#row-limit), and [MySQL dump files](migrate-from-mysql.html#row-limit).
 
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers (
 		id UUID PRIMARY KEY,
@@ -693,7 +693,7 @@ WITH
 
 The `nullif` option defines which string should be converted to `NULL`.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers (
 		id UUID PRIMARY KEY,
@@ -710,7 +710,7 @@ WITH
 
 CockroachDB chooses the decompression codec based on the filename (the common extensions `.gz` or `.bz2` and `.bz`) and uses the codec to decompress the file during import.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers (
 		id UUID PRIMARY KEY,
@@ -723,7 +723,7 @@ CSV DATA ('azure://{CONTAINER NAME}/{customer-import-data.csv.gz}?AZURE_ACCOUNT_
 
 Optionally, you can use the `decompress` option to specify the codec to be used for decompressing the file during import:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers (
 		id UUID PRIMARY KEY,
@@ -738,7 +738,7 @@ WITH
 
 ### Import a PostgreSQL database dump
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT PGDUMP 'azure://{CONTAINER NAME}/{employees.sql}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}' WITH ignore_unsupported_statements;
 ~~~
@@ -747,7 +747,7 @@ For this command to succeed, you need to have created the dump file with specifi
 
 ### Import a table from a PostgreSQL database dump
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE employees FROM PGDUMP 'azure://{CONTAINER NAME}/{employees.sql}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}' WITH skip_foreign_keys WITH ignore_unsupported_statements;
 ~~~
@@ -760,7 +760,7 @@ For this command to succeed, you need to have created the dump file with specifi
 
 Cockroach dump files can be imported using the `IMPORT PGDUMP` statement.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT PGDUMP 'azure://{CONTAINER NAME}/{employees.sql}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}';
 ~~~
@@ -769,7 +769,7 @@ For more information, see [SQL Dump (Export)](cockroach-dump.html).
 
 ### Import a MySQL database dump
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT MYSQLDUMP 'azure://{CONTAINER NAME}/{employees.sql}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}';
 ~~~
@@ -778,7 +778,7 @@ For more detailed information about importing data from MySQL, see [Migrate from
 
 ### Import a table from a MySQL database dump
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE employees FROM MYSQLDUMP 'azure://{CONTAINER NAME}/{employees.sql}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}' WITH skip_foreign_keys;
 ~~~
@@ -789,7 +789,7 @@ For more detailed information about importing data from MySQL, see [Migrate from
 
 ### Import a delimited data file
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT DELIMITED DATA 'azure://{CONTAINER NAME}/{employees.csv}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}'
   WITH
@@ -805,7 +805,7 @@ If you want to escape special symbols, use `fields_escaped_by`.
 ### Import a table from a delimited data file
 
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE employees
     FROM DELIMITED DATA 'azure://{CONTAINER NAME}/{employees.csv}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}'
@@ -821,7 +821,7 @@ If the table schema specifies foreign keys into tables that do not exist yet, th
 
 To specify the table schema in-line:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers (
 		id UUID PRIMARY KEY,
@@ -834,7 +834,7 @@ AVRO DATA ('azure://{CONTAINER NAME}/{customer-import-date.avro}?AZURE_ACCOUNT_N
 
 To use a file to specify the table schema:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers
 CREATE USING 'azure://{CONTAINER NAME}/{customer-create-table.sql}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}'
@@ -851,7 +851,7 @@ For more information about importing data from Avro, including examples, see [Mi
 The following transactions use CSV data as an example. To use the `DETACHED` option with `IMPORT` in a transaction:
 
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BEGIN;
 
@@ -898,7 +898,7 @@ job_id             |  status   | fraction_completed | rows | index_entries | byt
 
 To specify the table schema in-line:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers (
 		id UUID PRIMARY KEY,
@@ -911,7 +911,7 @@ CSV DATA ('gs://{BUCKET NAME}/{customers.csv}?AUTH=specified&CREDENTIALS={ENCODE
 
 To use a file to specify the table schema:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers
 CREATE USING 'gs://{BUCKET NAME}/{customers-create-table.sql}?AUTH=specified&CREDENTIALS={ENCODED KEY}'
@@ -925,7 +925,7 @@ CSV DATA ('gs://{BUCKET NAME}/{customers.csv}?AUTH=specified&CREDENTIALS={ENCODE
 
 #### Using a comma-separated list
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers (
 		id UUID PRIMARY KEY,
@@ -951,7 +951,7 @@ You can specify [file patterns to match](https://golang.org/pkg/path/filepath/#M
 
 These only match files directly under the specified path and do not descend into additional directories recursively.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers (
 		id UUID PRIMARY KEY,
@@ -965,7 +965,7 @@ CSV DATA (
 
 ### Import a table from a TSV file
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers (
 		id UUID PRIMARY KEY,
@@ -984,7 +984,7 @@ The `comment` option determines which Unicode character marks the rows in the da
 
 Google Cloud:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers (
 		id UUID PRIMARY KEY,
@@ -1001,7 +1001,7 @@ WITH
 
 The `skip` option determines the number of header rows to skip when importing a file.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers (
 		id UUID PRIMARY KEY,
@@ -1020,7 +1020,7 @@ WITH
 
 The examples below use CSV data, but `row_limit` is also an option for [Avro files](migrate-from-avro.html#step-3-import-the-avro), [delimited data files](#import-a-delimited-data-file), [PostgreSQL dump files](migrate-from-postgres.html#row-limit), and [MySQL dump files](migrate-from-mysql.html#row-limit).
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers (
 		id UUID PRIMARY KEY,
@@ -1037,7 +1037,7 @@ WITH
 
 The `nullif` option defines which string should be converted to `NULL`.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers (
 		id UUID PRIMARY KEY,
@@ -1054,7 +1054,7 @@ WITH
 
 CockroachDB chooses the decompression codec based on the filename (the common extensions `.gz` or `.bz2` and `.bz`) and uses the codec to decompress the file during import.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers (
 		id UUID PRIMARY KEY,
@@ -1067,7 +1067,7 @@ CSV DATA ('gs://{BUCKET NAME}/{customers.csv.gz}?AUTH=specified&CREDENTIALS={ENC
 
 Optionally, you can use the `decompress` option to specify the codec to be used for decompressing the file during import:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers (
 		id UUID PRIMARY KEY,
@@ -1082,7 +1082,7 @@ WITH
 
 ### Import a PostgreSQL database dump
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT PGDUMP 'gs://{BUCKET NAME}/{employees.sql}?AUTH=specified&CREDENTIALS={ENCODED KEY}' WITH ignore_unsupported_statements;
 ~~~
@@ -1091,7 +1091,7 @@ For this command to succeed, you need to have created the dump file with specifi
 
 ### Import a table from a PostgreSQL database dump
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE employees FROM PGDUMP 'gs://{BUCKET NAME}/{employees.sql}?AUTH=specified&CREDENTIALS={ENCODED KEY}' WITH skip_foreign_keys WITH ignore_unsupported_statements;
 ~~~
@@ -1104,7 +1104,7 @@ For this command to succeed, you need to have created the dump file with specifi
 
 Cockroach dump files can be imported using the `IMPORT PGDUMP` statement.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT PGDUMP 'gs://{BUCKET NAME}/{employees.sql}?AUTH=specified&CREDENTIALS={ENCODED KEY}';
 ~~~
@@ -1113,7 +1113,7 @@ For more information, see [SQL Dump (Export)](cockroach-dump.html).
 
 ### Import a MySQL database dump
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT MYSQLDUMP 'gs://{BUCKET NAME}/{employees.sql}?AUTH=specified&CREDENTIALS={ENCODED KEY}';
 ~~~
@@ -1122,7 +1122,7 @@ For more detailed information about importing data from MySQL, see [Migrate from
 
 ### Import a table from a MySQL database dump
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE employees FROM MYSQLDUMP 'gs://{BUCKET NAME}/{employees.sql}?AUTH=specified&CREDENTIALS={ENCODED KEY}' WITH skip_foreign_keys;
 ~~~
@@ -1133,7 +1133,7 @@ For more detailed information about importing data from MySQL, see [Migrate from
 
 ### Import a delimited data file
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT DELIMITED DATA 'gs://{BUCKET NAME}/{employees.csv}?AUTH=specified&CREDENTIALS={ENCODED KEY}'
   WITH
@@ -1148,7 +1148,7 @@ If you want to escape special symbols, use `fields_escaped_by`.
 
 ### Import a table from a delimited data file
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE employees
     FROM DELIMITED DATA 'gs://{BUCKET NAME}/{employees.csv}?AUTH=specified&CREDENTIALS={ENCODED KEY}'
@@ -1164,7 +1164,7 @@ If the table schema specifies foreign keys into tables that do not exist yet, th
 
 To specify the table schema in-line:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers (
 		id UUID PRIMARY KEY,
@@ -1177,7 +1177,7 @@ AVRO DATA ('gs://{BUCKET NAME}/{customers.avro}?AUTH=specified&CREDENTIALS={ENCO
 
 To use a file to specify the table schema:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers
 CREATE USING 'gs://{BUCKET NAME}/{customers-create-table.sql}?AUTH=specified&CREDENTIALS={ENCODED KEY}'
@@ -1193,7 +1193,7 @@ For more information about importing data from Avro, including examples, see [Mi
 
 The following transactions use CSV data as an example. To use the `DETACHED` option with `IMPORT` in a transaction:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BEGIN;
 
@@ -1269,7 +1269,7 @@ customers.csv
 
 Then, specify which node to access by including the `nodeID` in the `IMPORT` statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers (
 		id UUID PRIMARY KEY,

@@ -362,7 +362,7 @@ FROM  crdb_internal.index_usage_statistics AS us
 JOIN crdb_internal.table_indexes ti
 ON us.index_id = ti.index_id AND us.table_id = ti.descriptor_id
 WHERE last_read < NOW() - INTERVAL '1 WEEK'
-ORDER BY total_access desc;
+ORDER BY total_reads desc;
 ~~~
 
 ##### Which indexes are infrequently used? Are there any unused indexes?
@@ -438,7 +438,7 @@ Field | Type | Description
 #### View historical statement statistics and the sampled logical plan per fingerprint
 
 This example command shows how to query the two most important JSON columns: `metadata` and `statistics`. It displays
-the first 60 characters of query text, statement statistics, and sample plan for DDL and DML statements for the [`movr`](movr.html) demo database:
+the first 60 characters of query text, statement statistics, and sampled plan for DDL and DML statements for the [`movr`](movr.html) demo database:
 
 {% include_cached copy-clipboard.html %}
 ~~~sql

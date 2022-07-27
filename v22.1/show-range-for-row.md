@@ -54,7 +54,7 @@ Field | Description
 
 To show information about a row in a table, you must know the values of the columns in the row's primary key:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW INDEX FROM vehicles;
 ~~~
@@ -62,21 +62,21 @@ To show information about a row in a table, you must know the values of the colu
 ~~~
   table_name |              index_name               | non_unique | seq_in_index | column_name | direction | storing | implicit
 -------------+---------------------------------------+------------+--------------+-------------+-----------+---------+-----------
-  vehicles   | primary                               |   false    |            1 | city             | ASC       |  false  |  false
-  vehicles   | primary                               |   false    |            2 | id               | ASC       |  false  |  false
-  vehicles   | primary                               |   false    |            3 | type             | N/A       |  true   |  false
-  vehicles   | primary                               |   false    |            4 | owner_id         | N/A       |  true   |  false
-  vehicles   | primary                               |   false    |            5 | creation_time    | N/A       |  true   |  false
-  vehicles   | primary                               |   false    |            6 | status           | N/A       |  true   |  false
-  vehicles   | primary                               |   false    |            7 | current_location | N/A       |  true   |  false
-  vehicles   | primary                               |   false    |            8 | ext              | N/A       |  true   |  false
+  vehicles   | vehicles_pkey                         |   false    |            1 | city             | ASC       |  false  |  false
+  vehicles   | vehicles_pkey                         |   false    |            2 | id               | ASC       |  false  |  false
+  vehicles   | vehicles_pkey                         |   false    |            3 | type             | N/A       |  true   |  false
+  vehicles   | vehicles_pkey                         |   false    |            4 | owner_id         | N/A       |  true   |  false
+  vehicles   | vehicles_pkey                         |   false    |            5 | creation_time    | N/A       |  true   |  false
+  vehicles   | vehicles_pkey                         |   false    |            6 | status           | N/A       |  true   |  false
+  vehicles   | vehicles_pkey                         |   false    |            7 | current_location | N/A       |  true   |  false
+  vehicles   | vehicles_pkey                         |   false    |            8 | ext              | N/A       |  true   |  false
   vehicles   | vehicles_auto_index_fk_city_ref_users |    true    |            1 | city             | ASC       |  false  |  false
   vehicles   | vehicles_auto_index_fk_city_ref_users |    true    |            2 | owner_id         | ASC       |  false  |  false
   vehicles   | vehicles_auto_index_fk_city_ref_users |    true    |            3 | id               | ASC       |  false  |   true
 (11 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT city, id FROM vehicles LIMIT 5;
 ~~~
@@ -92,7 +92,7 @@ To show information about a row in a table, you must know the values of the colu
 (5 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW RANGE FROM TABLE vehicles FOR ROW (
     'boston',
@@ -111,7 +111,7 @@ To show information about a row in a table, you must know the values of the colu
 
 To show information about a row in a secondary index, you must know the values of the indexed columns:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW INDEX FROM vehicles;
 ~~~
@@ -119,21 +119,21 @@ To show information about a row in a secondary index, you must know the values o
 ~~~
   table_name |              index_name               | non_unique | seq_in_index | column_name | direction | storing | implicit
 -------------+---------------------------------------+------------+--------------+-------------+-----------+---------+-----------
-  vehicles   | primary                               |   false    |            1 | city             | ASC       |  false  |  false
-  vehicles   | primary                               |   false    |            2 | id               | ASC       |  false  |  false
-  vehicles   | primary                               |   false    |            3 | type             | N/A       |  true   |  false
-  vehicles   | primary                               |   false    |            4 | owner_id         | N/A       |  true   |  false
-  vehicles   | primary                               |   false    |            5 | creation_time    | N/A       |  true   |  false
-  vehicles   | primary                               |   false    |            6 | status           | N/A       |  true   |  false
-  vehicles   | primary                               |   false    |            7 | current_location | N/A       |  true   |  false
-  vehicles   | primary                               |   false    |            8 | ext              | N/A       |  true   |  false
+  vehicles   | vehicles_pkey                         |   false    |            1 | city             | ASC       |  false  |  false
+  vehicles   | vehicles_pkey                         |   false    |            2 | id               | ASC       |  false  |  false
+  vehicles   | vehicles_pkey                         |   false    |            3 | type             | N/A       |  true   |  false
+  vehicles   | vehicles_pkey                         |   false    |            4 | owner_id         | N/A       |  true   |  false
+  vehicles   | vehicles_pkey                         |   false    |            5 | creation_time    | N/A       |  true   |  false
+  vehicles   | vehicles_pkey                         |   false    |            6 | status           | N/A       |  true   |  false
+  vehicles   | vehicles_pkey                         |   false    |            7 | current_location | N/A       |  true   |  false
+  vehicles   | vehicles_pkey                         |   false    |            8 | ext              | N/A       |  true   |  false
   vehicles   | vehicles_auto_index_fk_city_ref_users |    true    |            1 | city             | ASC       |  false  |  false
   vehicles   | vehicles_auto_index_fk_city_ref_users |    true    |            2 | owner_id         | ASC       |  false  |  false
   vehicles   | vehicles_auto_index_fk_city_ref_users |    true    |            3 | id               | ASC       |  false  |   true
 (11 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT city, owner_id, id FROM vehicles@vehicles_auto_index_fk_city_ref_users LIMIT 5;
 ~~~
@@ -149,7 +149,7 @@ To show information about a row in a secondary index, you must know the values o
 (5 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW RANGE FROM INDEX vehicles@vehicles_auto_index_fk_city_ref_users FOR ROW (
     'boston',

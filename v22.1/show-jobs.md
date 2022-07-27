@@ -36,7 +36,7 @@ By default, only the `root` user can execute `SHOW JOBS`.
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/show_jobs.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/show_jobs.html %}
 </div>
 
 ## Parameters
@@ -63,7 +63,7 @@ Field | Description
 `description` | The statement that started the job, or a textual description of the job.
 `statement` | When `description` is a textual description of the job, the statement that started the job is returned in this column. Currently, this field is populated only for the automatic table statistics jobs.
 `user_name` | The name of the [user](security-reference/authorization.html#create-and-manage-users) who started the job.
-`status` | The job's current state. Possible values: `pending`, `running`, `paused`, `failed`, `succeeded`, or `canceled`.
+`status` | The job's current state. Possible values: `pending`, `running`, `paused`, `failed`, `retrying`, `reverting`, `succeeded`, or `canceled`.
 `running_status` | The job's detailed running status, which provides visibility into the progress of the dropping or truncating of tables (i.e., [`DROP TABLE`](drop-table.html), [`DROP DATABASE`](drop-database.html), or [`TRUNCATE`](truncate.html)). For dropping or truncating jobs, the detailed running status is determined by the status of the table at the earliest stage of the schema change. The job is completed when the GC TTL expires and both the table data and ID is deleted for each of the tables involved. Possible values: `draining names`, `waiting for GC TTL`, `RocksDB compaction`, or `NULL` (when the status cannot be determined). <br><br>For the `SHOW AUTOMATIC JOBS` statement, the value of this field is `NULL`.
 `created` | The `TIMESTAMP` when the job was created.
 `started` | The `TIMESTAMP` when the job began running first.
@@ -84,7 +84,7 @@ For details of changefeed-specific responses, see [`SHOW CHANGEFEED JOBS`](#show
 
 ### Show jobs
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW JOBS;
 ~~~
@@ -99,9 +99,9 @@ For details of changefeed-specific responses, see [`SHOW CHANGEFEED JOBS`](#show
 
 You can filter jobs by using `SHOW JOBS` as the data source for a [`SELECT`](select-clause.html) statement, and then filtering the values with the `WHERE` clause.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM [SHOW JOBS] WHERE job_type = 'RESTORE' AND status IN ('running', 'failed') ORDER BY created DESC;
+> WITH x as (SHOW JOBS) SELECT * FROM x WHERE job_type = 'RESTORE' AND status IN ('running', 'failed') ORDER BY created DESC;
 ~~~
 
 ~~~
@@ -113,7 +113,7 @@ You can filter jobs by using `SHOW JOBS` as the data source for a [`SELECT`](sel
 
 ### Show automatic jobs
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW AUTOMATIC JOBS;
 ~~~
@@ -129,9 +129,9 @@ You can filter jobs by using `SHOW JOBS` as the data source for a [`SELECT`](sel
 
 You can filter jobs by using `SHOW AUTOMATIC JOBS` as the data source for a [`SELECT`](select-clause.html) statement, and then filtering the values with the `WHERE` clause.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM [SHOW AUTOMATIC JOBS] WHERE status = ('succeeded') ORDER BY created DESC;
+> WITH x AS (SHOW AUTOMATIC JOBS) SELECT * FROM x WHERE status = ('succeeded') ORDER BY created DESC;
 ~~~
 
 ~~~
@@ -149,7 +149,7 @@ You can filter jobs by using `SHOW AUTOMATIC JOBS` as the data source for a [`SE
 * [`sink_uri`](create-changefeed.html#sink-uri): The destination URI of the configured sink for a changefeed.
 * `full_table_names`: The full [name resolution](sql-name-resolution.html) for a table. For example, `defaultdb.public.mytable` refers to the `defaultdb` database, the `public` schema, and the table `mytable` table.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CHANGEFEED JOBS;
 ~~~
@@ -168,9 +168,9 @@ Changefeed jobs can be [paused](create-and-configure-changefeeds.html#pause), [r
 
 You can filter jobs by using `SHOW CHANGEFEED JOBS` as the data source for a [`SELECT`](select-clause.html) statement, and then filtering the values with a `WHERE` clause. For example, you can filter by the `status` of changefeed jobs:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
-SELECT * FROM [SHOW CHANGEFEED JOBS] WHERE status = ('paused');
+WITH x AS (SHOW CHANGEFEED JOBS) SELECT * FROM x WHERE status = ('paused');
 ~~~
 
 ~~~
@@ -184,9 +184,9 @@ SELECT * FROM [SHOW CHANGEFEED JOBS] WHERE status = ('paused');
 
 You can show just schema change jobs by using `SHOW JOBS` as the data source for a [`SELECT`](select-clause.html) statement, and then filtering the `job_type` value with the `WHERE` clause:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM [SHOW JOBS] WHERE job_type = 'SCHEMA CHANGE';
+> WITH x AS (SHOW JOBS) SELECT * FROM x WHERE job_type = 'SCHEMA CHANGE';
 ~~~
 
 ~~~
@@ -201,7 +201,7 @@ You can show just schema change jobs by using `SHOW JOBS` as the data source for
 
 To block `SHOW JOB` until the provided job ID reaches a terminal state, use `SHOW JOB WHEN COMPLETE`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW JOB WHEN COMPLETE 27536791415282;
 ~~~
@@ -215,7 +215,7 @@ To block `SHOW JOB` until the provided job ID reaches a terminal state, use `SHO
 
  To view jobs for a specific [backup schedule](create-schedule-for-backup.html), use the schedule's `id`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW JOBS FOR SCHEDULE 590204387299262465;
 ~~~
@@ -228,9 +228,9 @@ To block `SHOW JOB` until the provided job ID reaches a terminal state, use `SHO
 
 You can also view multiple schedules by nesting a [`SELECT` clause](select-clause.html) that retrieves `id`(s) inside the `SHOW JOBS` statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
-> SHOW JOBS FOR SCHEDULES SELECT id FROM [SHOW SCHEDULES] WHERE label = 'test_schedule';
+> SHOW JOBS FOR SCHEDULES WITH x AS (SHOW SCHEDULES) SELECT id FROM x WHERE label = 'test_schedule';
 ~~~
 
 ~~~

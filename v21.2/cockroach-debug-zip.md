@@ -121,14 +121,14 @@ Flag | Description
 
 Generate the debug zip file for an insecure cluster:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach debug zip ./cockroach-data/logs/debug.zip --insecure --host=200.100.50.25
 ~~~
 
 Generate the debug zip file for a secure cluster:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach debug zip ./cockroach-data/logs/debug.zip --host=200.100.50.25
 ~~~
@@ -141,7 +141,7 @@ Secure examples assume you have the appropriate certificates in the default cert
 
 Generate a debug zip file containing only log files:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach debug zip ./cockroach-data/logs/debug.zip --include-files=*.log
 ~~~
@@ -156,7 +156,7 @@ server/server.go:1423 ⋮ password of user ‹admin› was set to ‹"s3cr34?!@x
 
 Enable log redaction:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach debug zip ./cockroach-data/logs/debug.zip --redact-logs --insecure --host=200.100.50.25
 ~~~

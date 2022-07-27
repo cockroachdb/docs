@@ -15,20 +15,19 @@ CockroachDB does not support materialized views that are refreshed on [transacti
 
 The user must be the [owner](owner-to.html) of the materialized view or have [admin](security-reference/authorization.html#admin-role) privileges.
 
-## Syntax
+## Synopsis
 
-~~~
-REFRESH MATERIALIZED VIEW [CONCURRENTLY] view_name [WITH [NO] DATA]
-~~~
+<div>
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/refresh_materialized_views.html %}
+</div>
 
 ## Parameters
 
  Parameter | Description
 -----------|-------------
-`CONCURRENTLY` | (*Default behavior*) This keyword is a no-op, added for PostgreSQL compatibility. All materialized views are refreshed concurrently with other jobs.
+`opt_concurrently` | `CONCURRENTLY` (Default behavior) This keyword has no effect. It is present for PostgreSQL compatibility. All materialized views are refreshed concurrently with other jobs.
 `view_name` | The name of the materialized view to refresh.
-`WITH NO DATA` | Drop the query results of the materialized view from storage.
-`WITH DATA` | (*Default behavior*) Refresh the stored query results.
+`opt_clear_data` | `WITH DATA` (Default behavior) Refresh the stored query results. <br>`WITH NO DATA` Drop the query results of the materialized view from storage.
 
 ## Example
 
@@ -36,7 +35,7 @@ The following example uses the [sample `bank` database](cockroach-workload.html#
 
 Suppose that you create a materialized view on the `bank` table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE MATERIALIZED VIEW overdrawn_accounts
   AS SELECT id, balance
@@ -44,7 +43,7 @@ Suppose that you create a materialized view on the `bank` table:
   WHERE balance < 0;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM overdrawn_accounts;
 ~~~
@@ -61,7 +60,7 @@ Suppose that you create a materialized view on the `bank` table:
 
 Now suppose that you update the `balance` values of the `bank` table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > UPDATE bank SET balance = 0 WHERE balance < 0;
 ~~~
@@ -72,7 +71,7 @@ UPDATE 402
 
 The changes can be seen in the table with a simple `SELECT` statement against the table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT id, balance
 FROM bank
@@ -88,7 +87,7 @@ WHERE balance < 0;
 
 Recall that materialized views do not automatically update their stored results. Selecting from `overdrawn_accounts` returns stored results, which are outdated:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM overdrawn_accounts;
 ~~~
@@ -105,12 +104,12 @@ Recall that materialized views do not automatically update their stored results.
 
 To update the materialized view's results, use a [`REFRESH`](refresh.html) statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > REFRESH MATERIALIZED VIEW overdrawn_accounts;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM overdrawn_accounts;
 ~~~

@@ -30,7 +30,7 @@ The `SET` statement can set a session variable for the duration of the current s
 ### SET SESSION
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/set_session.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/set_session.html %}
 </div>
 
 {{site.data.alerts.callout_info}}
@@ -66,8 +66,8 @@ CockroachDB supports the following syntax cases, for compatibility with common S
 --------|---------------|-------
  `USE ...` | `SET database = ...` | This is provided as convenience for users with a MySQL/MSSQL background.
  `SET NAMES ...` | `SET client_encoding = ...` | This is provided for compatibility with PostgreSQL clients.
- `SET ROLE <role>` | `SET role = <role>` | <span class="version-tag">New in v21.2:</span> This is provided for compatibility with PostgreSQL clients.
- `RESET ROLE` | `SET role = 'none'`/`SET role = current_user()` | <span class="version-tag">New in v21.2:</span> This is provided for compatibility with PostgreSQL clients.
+ `SET ROLE <role>` | `SET role = <role>` | **New in v21.2:** This is provided for compatibility with PostgreSQL clients.
+ `RESET ROLE` | `SET role = 'none'`/`SET role = current_user()` | **New in v21.2:** This is provided for compatibility with PostgreSQL clients.
  `SET SCHEMA <name>` | `SET search_path = <name>` | This is provided for better compatibility with PostgreSQL.
  `SET SESSION CHARACTERISTICS AS TRANSACTION ISOLATION LEVEL ...` | `SET default_transaction_isolation = ...` | This is provided for compatibility with standard SQL.
  `SET TIME ZONE ...` | `SET timezone = ...` | This is provided for compatibility with PostgreSQL clients.

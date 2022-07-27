@@ -34,7 +34,7 @@ Field | Description
 `label` | The name used to identify the backup schedule, given at the time of schedule creation.
 `schedule_status` | The schedule's current status.
 `next_run`  | The [`TIMESTAMP`](timestamp.html) at which the next backup in the schedule is slated to run.
-`state` | Displays last-known errors or messages about the backup schedule.
+`state` | Displays last-known errors or messages about the backup schedule. Cleared on retry of a scheduled job.
 `recurrence` | How often the backup is taken, which is set at the time of schedule creation.
 `jobsrunning` | The number of [jobs](show-jobs.html) currently running for the schedule.
 `owner` | The [user](create-user.html) who created the backup schedule. Users with active schedules cannot be dropped.
@@ -45,7 +45,7 @@ Field | Description
 
 ### Show schedules
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW SCHEDULES;
 ~~~
@@ -68,7 +68,7 @@ To view the `CREATE SCHEDULE` statements for scheduled jobs, use [`SHOW CREATE S
 
 ### Show running schedules
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW RUNNING SCHEDULES;
 ~~~
@@ -88,7 +88,7 @@ To view the `CREATE SCHEDULE` statements for scheduled jobs, use [`SHOW CREATE S
 
 ### Show paused schedules
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW PAUSED SCHEDULES;
 ~~~
@@ -103,7 +103,7 @@ To view the `CREATE SCHEDULE` statements for scheduled jobs, use [`SHOW CREATE S
 
 To view a specific schedule, use the schedule's `id`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW SCHEDULE 588796190012702721;
 ~~~

@@ -37,9 +37,9 @@ The following ORM spatial libraries are fully compatible with CockroachDB's spat
 
     [Hibernate 5.4.30.Final](https://in.relation.to/2021/03/19/hibernate-orm-5430-final-release/) added the `CockroachDB202SpatialDialect` dialect to the `hibernate-spatial` module. The `CockroachDB202SpatialDialect` dialect supports spatial features available in CockroachDB v20.2 and later.
 
-- [RGeo/RGeo-ActiveRecord](https://github.com/rgeo/rgeo-activerecord)
+- [RGeo/RGeo::ActiveRecord](https://github.com/rgeo/rgeo-activerecord)
 
-    CockroachDB's ActiveRecord adapter ([`activerecord-cockroachdb-adapter`](https://github.com/cockroachdb/activerecord-cockroachdb-adapter)) uses [RGeo](https://github.com/rgeo/rgeo) and [RGeo-ActiveRecord](https://github.com/rgeo/rgeo-activerecord) for spatial support with ActiveRecord v5.2.2+ and v6.0.0+. For information about using CockroachDB spatial features with ActiveRecord, see the [`activerecord-cockroachdb-adapter` README](https://github.com/cockroachdb/activerecord-cockroachdb-adapter#working-with-spatial-data).
+    CockroachDB's Active Record adapter ([`activerecord-cockroachdb-adapter`](https://github.com/cockroachdb/activerecord-cockroachdb-adapter)) uses [RGeo](https://github.com/rgeo/rgeo) and [RGeo::ActiveRecord](https://github.com/rgeo/rgeo-activerecord) for spatial support with Active Record v6.0.0+ and v7.0.0+. For information about using CockroachDB spatial features with Active Record, see the [`activerecord-cockroachdb-adapter` README](https://github.com/cockroachdb/activerecord-cockroachdb-adapter#working-with-spatial-data).
 
 - [GeoDjango](https://github.com/cockroachdb/django-cockroachdb#gis-support)
 
@@ -80,7 +80,7 @@ The syntax for adding an [index](spatial-indexes.html) to a geometry column is `
 
 For example, to add an index to the `geom` column of the [sample `tornadoes` table](migrate-from-shapefiles.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE INDEX tornado_geom_idx ON tornadoes USING GIST (geom);
 ~~~
@@ -111,7 +111,7 @@ CockroachDB can work with the tutorial up to Chapter 22, with the following exce
 
 - [Start a local insecure cluster](start-a-local-cluster.html) and connect to that cluster from a [SQL client](cockroach-sql.html):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     cockroach sql --insecure --host=localhost --port=26257
     ~~~
@@ -122,14 +122,14 @@ CockroachDB can work with the tutorial up to Chapter 22, with the following exce
 
 Clone the data set:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 git clone https://github.com/otan-cockroach/otan-scripts
 ~~~
 
 Load the SQL files into your CockroachDB cluster:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 cat otan-scripts/geospatial_sql/*.sql | cockroach sql --insecure --host=localhost --port=26257
 ~~~
@@ -140,7 +140,7 @@ The command above will take a few minutes to run.
 
 When the cluster is finished loading the data, open a SQL shell and start working through the [Introduction to PostGIS](https://postgis.net/workshops/postgis-intro/) tutorial:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 cockroach sql --insecure --host=localhost --port=26257
 ~~~

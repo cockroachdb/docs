@@ -106,7 +106,7 @@ A well-designed multi-column primary key can yield even better performance than 
 
 For example, consider a social media website. Social media posts are written by users, and on login the user's last 10 posts are displayed. A good choice for a primary key might be `(username, post_timestamp)`. For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE posts (
     username STRING,
@@ -119,7 +119,7 @@ For example, consider a social media website. Social media posts are written by 
 
 This would make the following query efficient.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM posts
           WHERE username = 'alyssa'
@@ -144,7 +144,7 @@ Time: 924µs
 
 To see why, let's look at the [`EXPLAIN`](explain.html) output. It shows that the query is fast because it does a point lookup on the indexed column `username` (as shown by the line `spans | /"alyssa"-...`). Furthermore, the column `post_timestamp` is already in an index, and sorted (since it's a monotonically increasing part of the primary key).
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN (VERBOSE)
     SELECT * FROM posts
@@ -185,7 +185,7 @@ If something prevents you from using [multi-column primary keys](#use-multi-colu
 
 Suppose the table schema is as follows:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE X (
 	ID1 INT,
@@ -197,7 +197,7 @@ Suppose the table schema is as follows:
 
 The common approach would be to use a transaction with an `INSERT` followed by a `SELECT`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BEGIN;
 
@@ -212,7 +212,7 @@ The common approach would be to use a transaction with an `INSERT` followed by a
 
 However, the performance best practice is to use a `RETURNING` clause with `INSERT` instead of the transaction:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO X VALUES (1,1,1),(2,2,2),(3,3,3)
 	ON CONFLICT (ID1,ID2)
@@ -224,7 +224,7 @@ However, the performance best practice is to use a `RETURNING` clause with `INSE
 
 Suppose the table schema is as follows:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE X (
 	ID1 INT,
@@ -236,7 +236,7 @@ Suppose the table schema is as follows:
 
 The common approach to generate random Unique IDs is a transaction using a `SELECT` statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BEGIN;
 
@@ -249,7 +249,7 @@ The common approach to generate random Unique IDs is a transaction using a `SELE
 
 However, the performance best practice is to use a `RETURNING` clause with `INSERT` instead of the transaction:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO X VALUES (1,1),(2,2),(3,3)
 	RETURNING ID1,ID2,ID3;
@@ -281,7 +281,7 @@ For large tables, avoid table scans (that is, reading the entire table data) whe
 
 Suppose the table schema is as follows:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE accounts (
 	id INT,
@@ -294,14 +294,14 @@ Suppose the table schema is as follows:
 
 Now if we want to find the account balances of all customers, an inefficient table scan would be:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM ACCOUNTS;
 ~~~
 
 This query retrieves all data stored in the table. A more efficient query would be:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
  > SELECT CUSTOMER, BALANCE FROM ACCOUNTS;
 ~~~
@@ -354,7 +354,7 @@ To reduce hot spots:
 
 - If the application strictly requires operating on very few different index keys, consider using [`ALTER ... SPLIT AT`](split-at.html) so that each index key can be served by a separate group of nodes in the cluster.
 
-- If you are working with a table that **must** be indexed on sequential keys, use [hash-sharded indexes](hash-sharded-indexes.html). For details about the mechanics and performance improvements of hash-sharded indexes in CockroachDB, see the blog post [Hash Sharded Indexes Unlock Linear Scaling for Sequential Workloads](https://www.cockroachlabs.com/blog/hash-sharded-indexes-unlock-linear-scaling-for-sequential-workloads/).
+- If you are working with a table that **must** be indexed on sequential keys, consider using [hash-sharded indexes](hash-sharded-indexes.html). For details about the mechanics and performance improvements of hash-sharded indexes in CockroachDB, see the blog post [Hash Sharded Indexes Unlock Linear Scaling for Sequential Workloads](https://www.cockroachlabs.com/blog/hash-sharded-indexes-unlock-linear-scaling-for-sequential-workloads/). As part of this, we recommend doing thorough performance testing with and without hash-sharded indexes to see which works best for your application.
 
 - To avoid read hot spots:
 
@@ -377,7 +377,7 @@ Transactions that operate on the _same index key values_ (specifically, that ope
 Transaction contention occurs when the following three conditions are met:
 
 - There are multiple concurrent transactions or statements (sent by multiple clients connected simultaneously to a single CockroachDB cluster).
-- They operate on table rows with the _same index key values_ (either on [primary keys](primary-key.html) or secondary [indexes](indexes.html).
+- They operate on table rows with the _same index key values_ (either on [primary keys](primary-key.html) or secondary [indexes](indexes.html)).
 - At least one of the transactions modify the data.
 
 Transactions that experience contention typically show delays in completion or restarts. The possibility of transaction restarts requires clients to implement [transaction retries](transactions.html#client-side-intervention).

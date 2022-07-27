@@ -71,6 +71,10 @@ Therefore, applications should consider using `unique_rowid()` or `gen_random_uu
 Note that `sql_sequence_cached` will perform fewer distributed calls to increment sequences, resulting in better performance than `sql_sequence`. However, cached sequences may result in large gaps between serial sequence numbers if a session terminates before using all the values in its cache.
 {{site.data.alerts.end}}
 
+### Generated values for mode `unordered_rowid`
+
+In this mode, a value is generated using the `unordered_unique_rowid()` [function](functions-and-operators.html#id-generation-functions). This function is similar to the [`rowid` mode](#generated-values-for-modes-rowid-and-virtual_sequence) but does not guarantee ordering.
+
 ## Auto-incrementing is not always sequential
 
 It's a common misconception that the auto-incrementing types in PostgreSQL and MySQL generate strictly sequential values. However, there can be gaps and the order is not completely guaranteed:
@@ -84,35 +88,35 @@ To experience this for yourself, run through the following example in PostgreSQL
 
 1. Create a table with a `SERIAL` column:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE TABLE increment (a SERIAL PRIMARY KEY);
     ~~~
 
 2. Run four transactions for inserting rows:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > BEGIN;
     > INSERT INTO increment DEFAULT VALUES;
     > ROLLBACK;
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > BEGIN;
     > INSERT INTO increment DEFAULT VALUES;
     > COMMIT;
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > BEGIN;
     > INSERT INTO increment DEFAULT VALUES;
     > ROLLBACK;
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > BEGIN;
     > INSERT INTO increment DEFAULT VALUES;
@@ -121,7 +125,7 @@ To experience this for yourself, run through the following example in PostgreSQL
 
 3. View the rows created:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT * from increment;
     ~~~
@@ -183,14 +187,14 @@ If this happens, CockroachDB cannot guarantee whether `x < y` or `x > y`. Even t
 
 In this example, we create a table with the `SERIAL` column as the primary key so we can auto-generate unique IDs on insert.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE serial (a SERIAL PRIMARY KEY, b STRING, c BOOL);
 ~~~
 
 The [`SHOW COLUMNS`](show-columns.html) statement shows that the `SERIAL` type is just an alias for `INT` with `unique_rowid()` as the default.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW COLUMNS FROM serial;
 ~~~
@@ -206,17 +210,17 @@ The [`SHOW COLUMNS`](show-columns.html) statement shows that the `SERIAL` type i
 
 When we insert rows without values in column `a` and display the new rows, we see that each row has defaulted to a unique value in column `a`.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO serial (b,c) VALUES ('red', true), ('yellow', false), ('pink', true);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO serial (a,b,c) VALUES (123, 'white', false);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM serial;
 ~~~

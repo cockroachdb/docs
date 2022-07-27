@@ -523,11 +523,11 @@ To drain and shut down a node that was started in the foreground with [`cockroac
 
 You can use [`cockroach node drain`](cockroach-node.html) to drain a node separately from decommissioning the node or terminating the node process.
 
-1. Run the `cockroach node drain` command, specifying the ID of the node to drain (and optionally a custom [drain timeout](#drain-timeout) to allow draining more time to complete):
+1. Run the `cockroach node drain` command, specifying the address of the node to drain (and optionally a custom [drain timeout](#drain-timeout) to allow draining more time to complete):
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    cockroach node drain 1 --host={address of any live node} --drain-wait=15m --certs-dir=certs
+    cockroach node drain --host={address of node to drain} --drain-wait=15m --certs-dir=certs
     ~~~
 
     You will see the draining status print to `stderr`:
@@ -577,16 +577,16 @@ This example assumes you will decommission node IDs `4` and `5` of a 5-node clus
 
 #### Step 2. Drain the nodes manually
 
-Run the [`cockroach node drain`](cockroach-node.html) command for each node to be removed, specifying the ID of the node to drain:
+Run the [`cockroach node drain`](cockroach-node.html) command for each node to be removed, specifying the address of the node to drain:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-cockroach node drain 4 --host={address of any live node} --certs-dir=certs
+cockroach node drain --host={address of node 4} --certs-dir=certs
 ~~~
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-cockroach node drain 5 --host={address of any live node} --certs-dir=certs
+cockroach node drain --host={address of node 5} --certs-dir=certs
 ~~~
 
 You will see the draining status of each node print to `stderr`:

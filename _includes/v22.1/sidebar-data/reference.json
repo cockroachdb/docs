@@ -643,15 +643,21 @@
                 ]
               },
               {
+                "title": "<code>RESET CLUSTER SETTING</code>",
+                "urls": [
+                  "/${VERSION}/reset-cluster-setting.html"
+                ]
+              },
+              {
                 "title": "<code>RESET &#123;session variable&#125;</code>",
                 "urls": [
                   "/${VERSION}/reset-vars.html"
                 ]
               },
               {
-                "title": "<code>RESET CLUSTER SETTING</code>",
+                "title": "<code>RESET &#123;storage parameter&#125;</code>",
                 "urls": [
-                  "/${VERSION}/reset-cluster-setting.html"
+                  "/${VERSION}/reset-storage-parameter.html"
                 ]
               },
               {
@@ -703,21 +709,21 @@
                 ]
               },
               {
+                "title": "<code>SET CLUSTER SETTING</code>",
+                "urls": [
+                  "/${VERSION}/set-cluster-setting.html"
+                ]
+              },
+              {
                 "title": "<code>SET &#123;session variable&#125;</code>",
                 "urls": [
                   "/${VERSION}/set-vars.html"
                 ]
               },
               {
-                "title": "<code>SET &lt;storage parameter&gt;</code>",
+                "title": "<code>SET &#123;storage parameter&#125;</code>",
                 "urls": [
                   "/${VERSION}/set-storage-parameter.html"
-                ]
-              },
-              {
-                "title": "<code>SET CLUSTER SETTING</code>",
-                "urls": [
-                  "/${VERSION}/set-cluster-setting.html"
                 ]
               },
               {
@@ -742,12 +748,6 @@
                 "title": "<code>SET TRANSACTION</code>",
                 "urls": [
                   "/${VERSION}/set-transaction.html"
-                ]
-              },
-              {
-                "title": "<code>SHOW &#123;session variable&#125;</code>",
-                "urls": [
-                  "/${VERSION}/show-vars.html"
                 ]
               },
               {
@@ -856,6 +856,12 @@
                 "title": "<code>SHOW REGIONS</code>",
                 "urls": [
                   "/${VERSION}/show-regions.html"
+                ]
+              },
+              {
+                "title": "<code>SHOW &#123;session variable&#125;</code>",
+                "urls": [
+                  "/${VERSION}/show-vars.html"
                 ]
               },
               {
@@ -988,6 +994,12 @@
                 "title": "<code>VALIDATE CONSTRAINT</code>",
                 "urls": [
                   "/${VERSION}/validate-constraint.html"
+                ]
+              },
+              {
+                "title": "<code>WITH &#123;storage parameter&#125;</code>",
+                "urls": [
+                  "/${VERSION}/with-storage-parameter.html"
                 ]
               }
             ]
@@ -1412,34 +1424,11 @@
             "urls": [
               "/${VERSION}/security-reference/encryption.html"
             ]
-          }
-        ]
-      },
-      {
-        "title": "Performance Optimization",
-        "items": [
-          {
-            "title": "Indexes",
-            "urls": [
-              "/${VERSION}/indexes.html"
-            ]
           },
           {
-            "title": "Cost-Based Optimizer",
+            "title": "Customer-Managed Encryption Keys (CMEK)",
             "urls": [
-              "/${VERSION}/cost-based-optimizer.html"
-            ]
-          },
-          {
-            "title": "Vectorized Execution Engine",
-            "urls": [
-              "/${VERSION}/vectorized-execution.html"
-            ]
-          },
-          {
-            "title": "Load-Based Splitting",
-            "urls": [
-              "/${VERSION}/load-based-splitting.html"
+              "/cockroachcloud/cmek.html"
             ]
           }
         ]
@@ -1806,6 +1795,12 @@
               "/cockroachcloud/serverless-benchmarking.html"
             ]
           }
+        ]
+      },
+      {
+        "title": "Unsupported Features in CockroachDB Serverless",
+        "urls": [
+          "/cockroachcloud/serverless-unsupported-features.html"
         ]
       },
       {

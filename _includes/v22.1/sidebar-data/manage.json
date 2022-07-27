@@ -94,6 +94,12 @@
       "title": "Back Up and Restore Data",
       "items": [
         {
+          "title": "Backup and Restore Overview",
+          "urls": [
+                "/${VERSION}/backup-and-restore-overview.html"
+              ]
+        },
+        {
           "title": "Back Up and Restore CockroachDB Cloud Clusters",
           "items": [
             {
@@ -177,6 +183,36 @@
           "title": "Secure CockroachDB Cloud Clusters",
           "items": [
             {
+              "title": "Customer-Managed Encryption Keys (CMEK) for CockroachDB Dedicated",
+              "urls": [],
+              "items": [
+                {
+                  "title": "Managing Customer-Managed Encryption Keys (CMEK) for CockroachDB Dedicated",
+                  "urls": [
+                    "/cockroachcloud/managing-cmek.html"
+                  ]
+                },
+                {
+                  "title": "Provisioning AWS KMS Keys and IAM Roles for CMEK",
+                  "urls": [
+                    "/cockroachcloud/cmek-ops-aws.html"
+                  ]
+                },
+                {
+                  "title": "Provisioning GCP KMS Keys and Service Accounts for CMEK",
+                  "urls": [
+                    "/cockroachcloud/cmek-ops-gcp.html"
+                  ]
+                },
+                {
+                  "title": "Customer-Managed Encryption Keys (CMEK) Frequently Asked Questions (FAQ)",
+                  "urls": [
+                    "/cockroachcloud/cmek-faq.html"
+                  ]
+                }
+              ]
+            },
+            {
               "title": "Authenticating to CockroachDB Cloud",
               "urls": [
                 "/cockroachcloud/authentication.html"
@@ -186,12 +222,6 @@
               "title": "Single Sign-On (SSO) for CockroachDB Cloud",
               "urls": [
                 "/cockroachcloud/cloud-sso.html"
-              ]
-            },
-            {
-              "title": "Configure SQL Authentication for Hardened Serverless Cluster Security",
-              "urls": [
-                "/${VERSION}/security-reference/config-secure-hba.html"
               ]
             },
             {
@@ -263,6 +293,23 @@
               "title": "Rotate Security Certificates",
               "urls": [
                 "/${VERSION}/rotate-certificates.html"
+              ]
+            }
+          ]
+        },
+        {
+          "title": "CockroachDB General Security Tutorials",
+          "items": [
+            {
+              "title": "Configure SQL Authentication for Hardened Serverless Cluster Security",
+              "urls": [
+                "/${VERSION}/security-reference/config-secure-hba.html"
+              ]
+            },
+            {
+              "title": "Using Hashicorp Vault's Dynamic Secrets for Enhanced Database Credential Security",
+              "urls": [
+                "/${VERSION}/vault-db-secrets-tutorial.html"
               ]
             }
           ]

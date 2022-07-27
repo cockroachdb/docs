@@ -19,7 +19,7 @@ Changefeed progress is exposed as a high-water timestamp that advances as the ch
 - On the [**Jobs** page](ui-jobs-page.html) of the DB Console. Hover over the high-water timestamp to view the [system time](as-of-system-time.html).
 - Using `SHOW CHANGEFEED JOB <job_id>`:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     SHOW CHANGEFEED JOB 383870400694353921;
     ~~~
@@ -113,6 +113,7 @@ changefeed_emitted_bytes{scope="vehicles"} 183557
 `checkpoint_hist_nanos` | Time spent checkpointing changefeed progress. | Nanoseconds
 `error_retries` | Total retryable errors encountered by changefeeds. | Errors
 `backfill_pending_ranges` | Number of [ranges](architecture/overview.html#architecture-range) in an ongoing backfill that are yet to be fully emitted. | Ranges
+`message_size_hist` | Distribution in the size of emitted messages. | Bytes
 
 ## Debug a changefeed
 
@@ -132,7 +133,7 @@ I190312 18:56:53.537686 585 vendor/github.com/Shopify/sarama/client.go:170  [kaf
 
 {% include_cached new-in.html version="v21.2" %} For {{ site.data.products.enterprise }} changefeeds, use `SHOW CHANGEFEED JOBS` to check the status of your changefeed jobs:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CHANGEFEED JOBS;
 ~~~

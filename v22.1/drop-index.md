@@ -11,7 +11,7 @@ The `DROP INDEX` [statement](sql-statements.html) removes indexes from tables.
 
 ## Synopsis
 
-<div>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/drop_index.html %}</div>
+<div>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/drop_index.html %}</div>
 
 ## Required privileges
 
@@ -23,7 +23,7 @@ The user must have the `CREATE` [privilege](security-reference/authorization.htm
 -----------|-------------
  `IF EXISTS`	| Drop the named indexes if they exist; if they do not exist, do not return an error.
  `table_name`	| The name of the table with the index you want to drop. Find table names with [`SHOW TABLES`](show-tables.html).
- `index_name`	| The name of the index you want to drop. Find index names with [`SHOW INDEX`](show-index.html).<br/><br/>You cannot drop a table's `primary` index.
+ `index_name`	| The name of the index you want to drop. Find index names with [`SHOW INDEX`](show-index.html).<br/><br/>You cannot drop a table's primary index.
  `CASCADE`	| Drop all objects (such as [constraints](constraints.html)) that depend on the indexes. `CASCADE` does not list objects it drops, so should be used cautiously.<br><br> To drop an index created with [`CREATE UNIQUE INDEX`](create-index.html#unique-indexes), you do not need to use `CASCADE`.
  `RESTRICT`	| _(Default)_ Do not drop the indexes if any objects (such as [constraints](constraints.html)) depend on them.
  `CONCURRENTLY` |  Optional, no-op syntax for PostgreSQL compatibility. All indexes are dropped concurrently in CockroachDB.
@@ -38,14 +38,18 @@ The user must have the `CREATE` [privilege](security-reference/authorization.htm
 
 ### Remove an index with no dependencies
 
+{{site.data.alerts.callout_danger}}
+{% include {{ page.version.version }}/known-limitations/drop-unique-index-from-create-table.md %}
+{{site.data.alerts.end}}
+
 Suppose you create an index on the `name` and `city` columns of the `users` table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE INDEX ON users (name, city);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW INDEXES FROM users;
 ~~~
@@ -53,11 +57,11 @@ Suppose you create an index on the `name` and `city` columns of the `users` tabl
 ~~~
   table_name |     index_name      | non_unique | seq_in_index | column_name | direction | storing | implicit
 -------------+---------------------+------------+--------------+-------------+-----------+---------+-----------
-  users      | primary             |   false    |            1 | city        | ASC       |  false  |  false
-  users      | primary             |   false    |            2 | id          | ASC       |  false  |  false
-  users      | primary             |   false    |            3 | name        | N/A       |  true   |  false
-  users      | primary             |   false    |            4 | address     | N/A       |  true   |  false
-  users      | primary             |   false    |            5 | credit_card | N/A       |  true   |  false
+  users      | users_pkey          |   false    |            1 | city        | ASC       |  false  |  false
+  users      | users_pkey          |   false    |            2 | id          | ASC       |  false  |  false
+  users      | users_pkey          |   false    |            3 | name        | N/A       |  true   |  false
+  users      | users_pkey          |   false    |            4 | address     | N/A       |  true   |  false
+  users      | users_pkey          |   false    |            5 | credit_card | N/A       |  true   |  false
   users      | users_name_city_idx |    true    |            1 | name        | ASC       |  false  |  false
   users      | users_name_city_idx |    true    |            2 | city        | ASC       |  false  |  false
   users      | users_name_city_idx |    true    |            3 | id          | ASC       |  false  |   true
@@ -66,12 +70,12 @@ Suppose you create an index on the `name` and `city` columns of the `users` tabl
 
 You can drop this index with the `DROP INDEX` statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP INDEX users@users_name_city_idx;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW INDEXES FROM users;
 ~~~
@@ -79,11 +83,11 @@ You can drop this index with the `DROP INDEX` statement:
 ~~~
   table_name | index_name | non_unique | seq_in_index | column_name | direction | storing | implicit
 -------------+------------+------------+--------------+-------------+-----------+---------+-----------
-  users      | primary    |   false    |            1 | city        | ASC       |  false  |  false
-  users      | primary    |   false    |            2 | id          | ASC       |  false  |  false
-  users      | primary    |   false    |            3 | name        | N/A       |  true   |  false
-  users      | primary    |   false    |            4 | address     | N/A       |  true   |  false
-  users      | primary    |   false    |            5 | credit_card | N/A       |  true   |  false
+  users      | users_pkey |   false    |            1 | city        | ASC       |  false  |  false
+  users      | users_pkey |   false    |            2 | id          | ASC       |  false  |  false
+  users      | users_pkey |   false    |            3 | name        | N/A       |  true   |  false
+  users      | users_pkey |   false    |            4 | address     | N/A       |  true   |  false
+  users      | users_pkey |   false    |            5 | credit_card | N/A       |  true   |  false
 (5 rows)
 ~~~
 
@@ -95,12 +99,12 @@ You can drop this index with the `DROP INDEX` statement:
 
 Suppose you create a [`UNIQUE`](unique.html) constraint on the `id` and `name` columns of the `users` table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE users ADD CONSTRAINT id_name_unique UNIQUE (id, name);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CONSTRAINTS from users;
 ~~~
@@ -111,17 +115,17 @@ Suppose you create a [`UNIQUE`](unique.html) constraint on the `id` and `name` c
   users      | id_name_unique |   false    |            1 | id          | ASC       |  false  |  false
   users      | id_name_unique |   false    |            2 | name        | ASC       |  false  |  false
   users      | id_name_unique |   false    |            3 | city        | ASC       |  false  |   true
-  users      | primary        |   false    |            1 | city        | ASC       |  false  |  false
-  users      | primary        |   false    |            2 | id          | ASC       |  false  |  false
-  users      | primary        |   false    |            3 | name        | N/A       |  true   |  false
-  users      | primary        |   false    |            4 | address     | N/A       |  true   |  false
-  users      | primary        |   false    |            5 | credit_card | N/A       |  true   |  false
+  users      | users_pkey     |   false    |            1 | city        | ASC       |  false  |  false
+  users      | users_pkey     |   false    |            2 | id          | ASC       |  false  |  false
+  users      | users_pkey     |   false    |            3 | name        | N/A       |  true   |  false
+  users      | users_pkey     |   false    |            4 | address     | N/A       |  true   |  false
+  users      | users_pkey     |   false    |            5 | credit_card | N/A       |  true   |  false
 (8 rows)
 ~~~
 
 If no index exists on `id` and `name`, CockroachDB automatically creates an index:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW INDEXES from users;
 ~~~
@@ -129,8 +133,8 @@ If no index exists on `id` and `name`, CockroachDB automatically creates an inde
 ~~~
   table_name |   index_name   | non_unique | seq_in_index | column_name | direction | storing | implicit
 -------------+----------------+------------+--------------+-------------+-----------+---------+-----------
-  users      | primary        |   false    |            1 | city        | ASC       |  false  |  false
-  users      | primary        |   false    |            2 | id          | ASC       |  false  |  false
+  users      | users_pkey     |   false    |            1 | city        | ASC       |  false  |  false
+  users      | users_pkey     |   false    |            2 | id          | ASC       |  false  |  false
   users      | id_name_unique |   false    |            1 | id          | ASC       |  false  |  false
   users      | id_name_unique |   false    |            2 | name        | ASC       |  false  |  false
   users      | id_name_unique |   false    |            3 | city        | ASC       |  false  |   true
@@ -139,7 +143,7 @@ If no index exists on `id` and `name`, CockroachDB automatically creates an inde
 
 The `UNIQUE` constraint is dependent on the `id_name_unique` index, so you cannot drop the index with a simple `DROP INDEX` statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP INDEX id_name_unique;
 ~~~
@@ -152,12 +156,12 @@ HINT: use CASCADE if you really want to drop it.
 
 To drop an index and its dependent objects, you can use `CASCADE`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP INDEX id_name_unique CASCADE;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW INDEXES from users;
 ~~~
@@ -165,15 +169,15 @@ To drop an index and its dependent objects, you can use `CASCADE`:
 ~~~
   table_name | index_name | non_unique | seq_in_index | column_name | direction | storing | implicit
 -------------+------------+------------+--------------+-------------+-----------+---------+-----------
-  users      | primary    |   false    |            1 | city        | ASC       |  false  |  false
-  users      | primary    |   false    |            2 | id          | ASC       |  false  |  false
-  users      | primary    |   false    |            3 | name        | N/A       |  true   |  false
-  users      | primary    |   false    |            4 | address     | N/A       |  true   |  false
-  users      | primary    |   false    |            5 | credit_card | N/A       |  true   |  false
+  users      | users_pkey |   false    |            1 | city        | ASC       |  false  |  false
+  users      | users_pkey |   false    |            2 | id          | ASC       |  false  |  false
+  users      | users_pkey |   false    |            3 | name        | N/A       |  true   |  false
+  users      | users_pkey |   false    |            4 | address     | N/A       |  true   |  false
+  users      | users_pkey |   false    |            5 | credit_card | N/A       |  true   |  false
 (5 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CONSTRAINTS from users;
 ~~~
@@ -181,7 +185,7 @@ To drop an index and its dependent objects, you can use `CASCADE`:
 ~~~
   table_name | constraint_name | constraint_type |            details             | validated
 -------------+-----------------+-----------------+--------------------------------+------------
-  users      | primary         | PRIMARY KEY     | PRIMARY KEY (city ASC, id ASC) |   true
+  users      | users_pkey      | PRIMARY KEY     | PRIMARY KEY (city ASC, id ASC) |   true
 (1 row)
 ~~~
 
