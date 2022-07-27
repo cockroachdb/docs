@@ -207,6 +207,8 @@ hueypark
 hyperthread
 hyperthreads
 img
+include_cached
+_include
 inclusivity
 inconsolata
 incrementals
@@ -432,6 +434,7 @@ reformats
 relicense
 replacewith
 repo
+repos
 repudiability
 rescanned
 retryable
