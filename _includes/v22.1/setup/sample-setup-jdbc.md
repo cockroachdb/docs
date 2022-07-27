@@ -44,7 +44,7 @@ The **Connect to cluster** dialog shows information about how to connect to your
 Follow these steps to create a {{ site.data.products.serverless }} cluster using the <code>ccloud</code> CLI tool.
 
 {{site.data.alerts.callout_info}}
-The <code>ccloud</code> CLI tool is in beta.
+The <code>ccloud</code> CLI tool is in Preview.
 {{site.data.alerts.end}}
 
 <h3>Install <code>ccloud</code></h3>
