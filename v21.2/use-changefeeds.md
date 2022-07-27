@@ -197,10 +197,7 @@ The following sections provide information on Avro usage with CockroachDB change
 
 Below are clarifications for particular SQL types and values for Avro changefeeds:
 
-- [Decimals](decimal.html) must have precision specified.
-- [`BIT`](bit.html) and [`VARBIT`](bit.html) types are encoded as arrays of 64-bit integers.
-
-  {% include {{ page.version.version }}/cdc/avro-bit-varbit.md %}
+{% include {{ page.version.version }}/cdc/avro-limitations.md %}
 
 ### Avro types
 
