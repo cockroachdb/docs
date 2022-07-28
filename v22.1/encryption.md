@@ -17,6 +17,8 @@ Cockroach determines which encryption algorithm to use based on the size of the 
 | AES-192 | 192 bits (24 bytes) | 56 bytes |
 | AES-256 | 256 bits (32 bytes) | 64 bytes |
 
+### Option 1: with `cockroach gen encryption-key`
+
 Generating a key file can be done using the `cockroach` CLI:
 
 {% include_cached copy-clipboard.html %}
@@ -29,6 +31,74 @@ Or the equivalent [openssl](https://www.openssl.org/docs/man1.1.1/man1/openssl.h
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 $ openssl rand -out /path/to/my/aes-128.key 48
+~~~
+
+### Option 2: with HashiCorp Vault's transit secrets engine
+
+HashiCorp vault's transit secrets engine can be used to generate the encryption key material for the CockroachDB store key file.
+
+**Prerequisite:**
+
+- The Vault CLI [installed locally](https://www.vaultproject.io/downloads).
+- Access to a Vault cluster with an admin token. This tutorial will use HashiCorp Cloud Platform, but you may either [spin up a free cluster in HashiCorp Cloud Platform](https://learn.hashicorp.com/collections/vault/cloud) or [start a development cluster locally](https://learn.hashicorp.com/tutorials/vault/getting-started-dev-server).
+
+1. Initialize your shell for Vault:
+
+{% include_cached copy-clipboard.html %}
+~~~shell
+export VAULT_ADDR= # your Vault cluster's Public URL
+export VAULT_TOKEN= # your Vault token
+export VAULT_NAMESPACE="admin"
+vault login $VAULT_TOKEN
+~~~
+
+1. Enable the transit secrets engine
+
+{% include_cached copy-clipboard.html %}
+~~~shell
+vault secrets enable transit
+~~~
+
+~~~txt
+Success! Enabled the transit secrets engine at: transit/
+~~~
+
+
+1. Create the key
+
+	1. Compile the key creation config:
+	{% include_cached copy-clipboard.html %}
+	~~~YAML
+	---
+	name:
+	exportable: true
+	~~~
+
+
+{% include_cached copy-clipboard.html %}
+~~~shell
+curl \
+--request POST --header "X-Vault-Token: ${VAULT_TOKEN}" \
+--data '{"name":"crdb-key","exportable":true}'
+http://${VAULT_ADDR}/v1/transit/keys/crdb-key
+~~~
+
+~~~txt
+
+~~~
+
+1. Export the key
+
+{% include_cached copy-clipboard.html %}
+~~~shell
+curl \
+--request GET --header "X-Vault-Token: ${VAULT_TOKEN}" \
+"${VAULT_ADDR}/v1/transit/export/encryption-key/crdb-key/1"
+
+~~~
+
+~~~txt
+
 ~~~
 
 ## Starting a node with encryption
