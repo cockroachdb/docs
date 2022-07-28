@@ -72,4 +72,4 @@ Subcommand | Description
 
 ### Split and unsplit an index
 
-For examples, see [Split an index](split-at.html#split-an-index) and [Unsplit an index](unsplit-at.html#split-and-unsplit-an-index).
+For examples, see [Split an index](split-at.html#split-an-index) and [Unsplit an index](unsplit-at.html#unsplit-an-index).
