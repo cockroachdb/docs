@@ -11,27 +11,27 @@ The Cluster API is hosted by all nodes of your cluster and provides information 
 
 ## Resources
 
-The following endpoints are available as URLs under the `/api/v2` base path (for example, `https://localhost:8080/api/v2/health/`). Additional endpoints are planned for future versions of CockroachDB.
+The following endpoints are available as URLs under the `/api/v2` base path (for example, `https://localhost:8080/api/v2/health/`). For more information about the support policies for endpoints, see [API Support Policy](api-support-policy.html).
 
 Each listed endpoint links to its full [API reference documentation](https://cockroachlabs.com/docs/api/cluster/v2.html).
 
-Endpoint | Name | Description
---- | --- | ---
-[`/databases`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/listDatabases) | List databases | Get all databases in the cluster.
-[`/databases/{database}`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/databaseDetails) | Get database details | Get the descriptor ID of a specified database.
-[`/databases/{database}/grants`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/databaseGrants) | List database grants | List all [privileges](security-reference/authorization.html#managing-privileges) granted to users for a specified database.
-[`/databases/{database}/tables`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/databaseTables) | List database tables | List all tables in a specified database.
-[`/databases/{database}/tables/{table}`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/tableDetails) | Get table details | Get details on a specified table, including schema, grants, indexes, range count, and zone configuration.
-[`/events`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/listEvents) | List events | List the latest [events](eventlog.html) on the cluster, in descending order.<br><br>**Deprecated:** Use an external [log sink](configure-logs.html#configure-log-sinks) or configure [alerting on specific log events](monitoring-and-alerting.html#alerting-tools) instead.
-[`/health`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/health) | Check node health | Determine if the node is running and ready to accept SQL connections.
-[`/nodes`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/listNodes) | List nodes | Get details on all nodes in the cluster, including node IDs, software versions, and hardware.
-[`/nodes/{node_id}/ranges`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/listNodeRanges) | List node ranges | Get details on the ranges on a specified node.
-[`/ranges/hot`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/listHotRanges) | List hot ranges | Get information on ranges receiving a high number of reads or writes.
-[`/ranges/{range_id}`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/listRange) | Get range details | Get detailed technical information on a range. Typically used by Cockroach Labs engineers.
-[`/sessions`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/listSessions) | List sessions | Get SQL session details of all current users or a specified user.
-[`/users`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/listUsers) | List users | List all SQL users on the cluster.
-[`/login`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/login) | Log in | Authenticate as a [SQL role](create-role.html#create-a-role-that-can-log-in-to-the-database) that is a member of the [`admin` role](security-reference/authorization.html#admin-role) to retrieve a session token to use with further API calls.
-[`/logout`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/logout) | Log out | Invalidate the session token.
+Endpoint | Name | Description | Support
+--- | --- | --- | ---
+[`/databases`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/listDatabases) | List databases | Get all databases in the cluster. | Stable
+[`/databases/{database}`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/databaseDetails) | Get database details | Get the descriptor ID of a specified database. | Stable
+[`/databases/{database}/grants`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/databaseGrants) | List database grants | List all [privileges](security-reference/authorization.html#managing-privileges) granted to users for a specified database. | Stable
+[`/databases/{database}/tables`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/databaseTables) | List database tables | List all tables in a specified database. | Stable
+[`/databases/{database}/tables/{table}`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/tableDetails) | Get table details | Get details on a specified table, including schema, grants, indexes, range count, and zone configuration. | Stable
+[`/events`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/listEvents) | List events | List the latest [events](eventlog.html) on the cluster, in descending order. | Unstable
+[`/health`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/health) | Check node health | Determine if the node is running and ready to accept SQL connections. | Stable
+[`/nodes`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/listNodes) | List nodes | Get details on all nodes in the cluster, including node IDs, software versions, and hardware. | Stable
+[`/nodes/{node_id}/ranges`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/listNodeRanges) | List node ranges | Get details on the ranges on a specified node. | Unstable
+[`/ranges/hot`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/listHotRanges) | List hot ranges | Get information on ranges receiving a high number of reads or writes. | Stable
+[`/ranges/{range_id}`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/listRange) | Get range details | Get detailed technical information on a range. Typically used by Cockroach Labs engineers. | Unstable
+[`/sessions`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/listSessions) | List sessions | Get SQL session details of all current users or a specified user. | Unstable
+[`/users`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/listUsers) | List users | List all SQL users on the cluster. | Stable
+[`/login`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/login) | Log in | Authenticate as a [SQL role](create-role.html#create-a-role-that-can-log-in-to-the-database) that is a member of the [`admin` role](security-reference/authorization.html#admin-role) to retrieve a session token to use with further API calls. | Stable
+[`/logout`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/logout) | Log out | Invalidate the session token. | Stable
 
 ## Requirements
 
@@ -69,8 +69,10 @@ To connect with the API on a secure cluster, you will need:
     https://localhost:8080/api/v2/nodes/
     ~~~
 
-## Versioning and Stability
+## Versioning and stability
+
+The Cluster API version is defined in the request path. For example: `<cluster>/api/v2/health`.
 
 Future versions of CockroachDB may provide multiple API versions and will continue to provide access to this v2.0 API until it is deprecated.
 
-All endpoint paths and payloads will remain available within a major API version number (v2.x). Minor versions could add new endpoints but will not remove existing endpoints.
+All endpoint paths and payloads will remain available within a major API version number (`v2.x`). Minor versions could add new endpoints but will not remove existing endpoints. For more information, see [API Support Policy](api-support-policy.html).
