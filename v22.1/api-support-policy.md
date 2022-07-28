@@ -1,6 +1,6 @@
 ---
 title: API Support Policy
-summary: Learn about Cockroach Labs' policy for supporting CockroachDB APIs.
+summary: Learn about Cockroach Labs's policy for supporting CockroachDB APIs.
 toc: true
 docs_area: reference
 ---
