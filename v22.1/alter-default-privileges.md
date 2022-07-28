@@ -32,8 +32,7 @@ Parameter | Description
 `FOR ALL ROLES` | Alter the default privileges on objects created by all users/roles.
 `GRANT ...` | Grant a default privilege or list of privileges on all objects of the specified type to a role/user, or a list of roles/users.
 `REVOKE ...` | Revoke a default privilege or list of privileges on all objects of the specified type from a role/user, or a list of roles/users.
-`IN SCHEMA qualifiable_schema_name` | **New in v22.1:** If specified, the default privileges are altered for objects created in that schema. If an object has default privileges specified at
-the database and at the schema level, the union of the default privileges is taken.
+`IN SCHEMA qualifiable_schema_name` | **New in v22.1:** If specified, the default privileges are altered for objects created in that schema. If an object has default privileges specified at the database and at the schema level, the union of the default privileges is taken.
 
 {{site.data.alerts.callout_info}}
 If you do not specify a `FOR ...` clause, CockroachDB alters the default privileges on objects created by the current user.
