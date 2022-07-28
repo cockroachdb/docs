@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `ALTER TABLE` [statement](sql-statements.html) applies a schema change to a table. For information on using `ALTER TABLE`, see the pages for its relevant [subcommands](#subcommands).
+The `ALTER TABLE` [statement](sql-statements.html) changes the definition of a table. For information on using `ALTER TABLE`, see the pages for its [subcommands](#subcommands).
 
 {% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
@@ -30,12 +30,12 @@ Subcommand | Description | Can combine with other subcommands?
 [`RENAME CONSTRAINT`](rename-constraint.html) | Change constraints columns. | Yes
 [`RENAME TO`](rename-table.html) | Change the names of tables. | No
 [`SET SCHEMA`](set-schema.html) |  Change the [schema](sql-name-resolution.html) of a table. | No
-[`SPLIT AT`](split-at.html) | Force a range split at the specified row in the table. | No
-[`UNSPLIT AT`](unsplit-at.html) | Remove a range split enforcement at a specified row in the table. | No
+[`SPLIT AT`](split-at.html) | Force a [range split](architecture/distribution-layer.html#range-splits) at the specified row in the table. | No
+[`UNSPLIT AT`](unsplit-at.html) | Remove a range split enforcement in the table. | No
 [`VALIDATE CONSTRAINT`](validate-constraint.html) | Check whether values in a column match a [constraint](constraints.html) on the column. | Yes
 [`SET LOCALITY {REGIONAL BY TABLE, REGIONAL BY ROW, GLOBAL}`](set-locality.html) |  Set the table locality for a table in a [multi-region database](multiregion-overview.html). | No
 [`SET (storage parameter)`](set-storage-parameter.html) | Set a storage parameter on a table. | Yes
 
-## Viewing schema changes
+## View schema changes
 
 {% include {{ page.version.version }}/misc/schema-change-view-job.md %}
