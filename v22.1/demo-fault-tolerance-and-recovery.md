@@ -291,7 +291,7 @@ To be able to tolerate 2 of 5 nodes failing simultaneously without any service i
     --execute="ALTER RANGE default CONFIGURE ZONE USING num_replicas=5;"
     ~~~
 
-3. In the DB Console **Overview** dashboard, watch the replica count increases and even out across all 6 nodes:
+3. In the DB Console **Overview** dashboard, watch the replica count increase and even out across all 6 nodes:
 
     <img src="{{ 'images/v22.1/fault-tolerance-8.png' | relative_url }}" alt="DB Console Cluster Restore" style="border:1px solid #eee;max-width:100%" />
 
