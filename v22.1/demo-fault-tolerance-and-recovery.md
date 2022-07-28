@@ -241,7 +241,7 @@ When a node fails, the cluster waits for the node to remain offline for 5 minute
     503 53730     1   0 10:18AM ttys013    0:33.37 cockroach start --insecure --store=fault-node6 --listen-addr=localhost:26262 --http-addr=localhost:8085 --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
-1. Gracefully shut down one node, specifying its process ID:
+1. Gracefully shut down the node stored in `fault-node5`, specifying its process ID:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -270,7 +270,7 @@ At this point, the cluster has recovered and is ready to handle another failure.
 
 To be able to tolerate 2 of 5 nodes failing simultaneously without any service interruption, ranges must be replicated 5 times.
 
-1. Restart the dead node, using the same command you used to start the node initially:
+1. Restart the node stored in `fault-node5`, using the same command you used to [start the node initially](#step-1-start-a-6-node-cluster):
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -283,7 +283,7 @@ To be able to tolerate 2 of 5 nodes failing simultaneously without any service i
     --background
     ~~~
 
-2. Use the [`ALTER RANGE ... CONFIGURE ZONE`](configure-zone.html) command to change the cluster's `default` replication factor to 5:
+1. Use the [`ALTER RANGE ... CONFIGURE ZONE`](configure-zone.html) command to change the cluster's `default` replication factor to 5:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -291,7 +291,7 @@ To be able to tolerate 2 of 5 nodes failing simultaneously without any service i
     --execute="ALTER RANGE default CONFIGURE ZONE USING num_replicas=5;"
     ~~~
 
-3. In the DB Console **Overview** dashboard, watch the replica count increase and even out across all 6 nodes:
+1. In the DB Console **Overview** dashboard, watch the replica count increase and even out across all 6 nodes:
 
     <img src="{{ 'images/v22.1/fault-tolerance-8.png' | relative_url }}" alt="DB Console Cluster Restore" style="border:1px solid #eee;max-width:100%" />
 
@@ -361,7 +361,7 @@ kill -TERM {process-id}
     $ pkill haproxy
     ~~~
 
-3. Gracefully shut down the remaining **4 nodes**, specifying the [process IDs you retrieved earlier](#step-5-simulate-a-single-node-failure):
+3. Gracefully shut down the remaining **4 nodes**, specifying the [process IDs you retrieved earlier](#step-5-simulate-a-single-node-failure) and the new process ID for the node stored in `fault-node5`:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
