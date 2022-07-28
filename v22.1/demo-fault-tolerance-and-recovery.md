@@ -306,13 +306,13 @@ Gracefully shut down **2 nodes**, specifying the [process IDs you retrieved earl
 kill -TERM {process-id}
 ~~~
 
-## Step 10. Check load continuity and cluster health
+## Step 10. Check cluster status and service continuity
 
 1. Click **Overview** on the left, and verify the state of the cluster:
 
     <img src="{{ 'images/v22.1/fault-tolerance-9.png' | relative_url }}" alt="DB Console Cluster Health" style="border:1px solid #eee;max-width:100%" />
 
-2. To verify that the cluster still serves data, use the `cockroach sql` command to interact with the cluster.
+1. To verify that the cluster still serves data, use the `cockroach sql` command to interact with the cluster.
 
     Count the number of rows in the `ycsb.usertable` table to see that it serves reads:
     {% include_cached copy-clipboard.html %}
