@@ -1092,6 +1092,12 @@
                 ]
               },
               {
+                "title": "<code>OID</code>",
+                "urls": [
+                  "/${VERSION}/oid.html"
+                ]
+              },
+              {
                 "title": "<code>SERIAL</code>",
                 "urls": [
                   "/${VERSION}/serial.html"
