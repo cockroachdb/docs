@@ -327,7 +327,7 @@ This important rule enables node communication between Kubernetes clusters in di
 
 The Kubernetes cluster in each region needs to have a [Network Load Balancer](https://docs.aws.amazon.com/elasticloadbalancing/latest/network/introduction.html) pointed at its CoreDNS service, which you will configure in the next step.
 
-1. Upload our load balancer manifest [`dns-lb-eks.yaml`](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/multiregion/eks/dns-lb-eks.yaml) to the Kubernetes clusters in all 3 regions:
+1. Upload our load balancer manifest [`dns-lb-eks.yaml`](https://github.com/cockroachdb/cockroach/master/cloud/kubernetes/multiregion/eks/dns-lb-eks.yaml) to the Kubernetes clusters in all 3 regions:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
