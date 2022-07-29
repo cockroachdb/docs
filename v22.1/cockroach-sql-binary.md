@@ -44,7 +44,7 @@ $ErrorActionPreference = "Stop"; [Net.ServicePointManager]::SecurityProtocol = [
 ~~~
 </div>
 
-Or you can download the [binary from the releases page](../releases/{{ page.version.version }}.html#sql-only-command-line-client-executable) and install it manually.
+Or you can download the [binary from the releases page](../releases/{{ page.version.version }}.html) and install it manually.
 
 ## Prerequisites
 
