@@ -18,12 +18,8 @@ Benefits of online schema changes include:
 Schema changes consume additional resources, and if they are run when the cluster is near peak capacity, latency spikes can occur. This is especially true for any schema change that adds columns, drops columns, or adds an index. We do not recommend doing more than one schema change at a time while in production.
 {{site.data.alerts.end}}
 
-{{site.data.alerts.callout_success}}
-Support for schema changes within [transactions][txns] is [limited](#limitations). We recommend doing schema changes outside transactions where possible. When a schema management tool uses transactions on your behalf, we recommend only doing one schema change operation per transaction.
-{{site.data.alerts.end}}
-
 {{site.data.alerts.callout_info}}
-You cannot start an online schema change on a table if a [primary key change](alter-primary-key.html) is currently in progress on the same table.
+Support for schema changes within [transactions][txns] is [limited](#limitations). We recommend doing schema changes outside transactions where possible. When a schema management tool uses transactions on your behalf, we recommend only doing one schema change operation per transaction.
 {{site.data.alerts.end}}
 
 ## How online schema changes work
@@ -97,7 +93,7 @@ For more examples of schema change statements, see the [`ALTER TABLE`][alter-tab
 
 As noted in [Limitations](#limitations), you cannot run schema changes inside transactions in general.
 
-However, as of version v2.1, you can run schema changes inside the same transaction as a [`CREATE TABLE`][create-table] statement. For example:
+However, you can run schema changes inside the same transaction as a [`CREATE TABLE`][create-table] statement. For example:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -137,7 +133,7 @@ COMMIT
 
 ### Run multiple schema changes in a single `ALTER TABLE` statement
 
-As of v19.1, some schema changes can be used in combination in a single `ALTER TABLE` statement. For a list of commands that can be combined, see [`ALTER TABLE`](alter-table.html). For a demonstration, see [Add and rename columns atomically](rename-column.html#add-and-rename-columns-atomically).
+Some schema changes can be used in combination in a single `ALTER TABLE` statement. For a list of commands that can be combined, see [`ALTER TABLE`](alter-table.html). For a demonstration, see [Add and rename columns atomically](rename-column.html#add-and-rename-columns-atomically).
 
 ### Show all schema change jobs
 
@@ -169,13 +165,9 @@ For more long-term recovery solutions, consider taking either a [full or increme
 
 ## Limitations
 
-### Overview
-
-Schema changes keep your data consistent at all times, but they do not run inside [transactions][txns] in the general case. This is necessary so the cluster can remain online and continue to service application reads and writes.
-
-Specifically, this behavior is necessary because making schema changes transactional would mean requiring a given schema change to propagate across all the nodes of a cluster. This would block all user-initiated transactions being run by your application, since the schema change would have to commit before any other transactions could make progress. This would prevent the cluster from servicing reads and writes during the schema change, requiring application downtime.
-
 ### Limited support for schema changes within transactions
+
+Schema changes keep your data consistent at all times, but they do not run inside [transactions][txns] in the general case. Making schema changes transactional would mean requiring a given schema change to propagate across all the nodes of a cluster. This would block all user-initiated transactions being run by your application, since the schema change would have to commit before any other transactions could make progress. This would prevent the cluster from servicing reads and writes during the schema change, requiring application downtime.
 
 {% include {{ page.version.version }}/known-limitations/schema-changes-within-transactions.md %}
 
@@ -183,7 +175,11 @@ Specifically, this behavior is necessary because making schema changes transacti
 
 {% include {{ page.version.version }}/known-limitations/schema-change-ddl-inside-multi-statement-transactions.md %}
 
-### No schema changes between executions of prepared statements
+### No online schema changes if primary key change in progress
+
+You cannot start an online schema change on a table if a [primary key change](alter-primary-key.html) is currently in progress on the same table.
+
+### No online schema changes between executions of prepared statements
 
 {% include {{ page.version.version }}/known-limitations/schema-changes-between-prepared-statements.md %}
 
