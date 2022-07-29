@@ -19,8 +19,11 @@ To manage other constraints, see [`ADD CONSTRAINT`](add-constraint.html) and [`D
 ## Synopsis
 
 <div>
-{% include {{ page.version.version }}/sql/diagrams/alter_column.html %}
+{% include {{ page.version.version },}/sql/diagrams/alter_column.html %}
 </div>
+added comma between double arrows
+
+
 
 ## Required privileges
 
