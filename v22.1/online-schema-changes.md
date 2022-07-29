@@ -42,9 +42,9 @@ Once backfilling is complete, all nodes will switch over to the new schema, and 
 
 For more technical details, see [How online schema changes are possible in CockroachDB][blog].
 
-{% include_cached new-in.html version="v22.1" %} The following online schema changes pause if the node executing the schema change is running out of disk space: 
+{% include_cached new-in.html version="v22.1" %} The following online schema changes pause if the node executing the schema change is running out of disk space:
 
-- Changes that trigger an index backfill (adding data to an index). 
+- Changes that trigger an index backfill (adding data to an index).
 - The following statements:
   - [`ADD COLUMN`](add-column.html) when the statement also features `INDEX` or `UNIQUE`.
   - [`ALTER PRIMARY KEY`](alter-primary-key.html)
@@ -57,11 +57,11 @@ For more technical details, see [How online schema changes are possible in Cockr
     - The locality changes from something that is not `REGIONAL BY ROW` to `REGIONAL BY ROW`.
 
 {{site.data.alerts.callout_info}}
-If a schema change fails, the schema change job will be cleaned up automatically. However, there are limitations with rolling back schema changes within a transaction; for more information, [see below](#schema-change-ddl-statements-inside-a-multi-statement-transaction-can-fail-while-other-statements-succeed).
+If a schema change job is paused, any jobs waiting on that schema change will stop waiting and return an error.
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
-If a schema change job is paused, any jobs waiting on that schema change will stop waiting and return an error.
+If a schema change fails, the schema change job will be cleaned up automatically. However, there are limitations with rolling back schema changes within a transaction; for more information, see [Schema change DDL statements inside a multi-statement transaction can fail while other statements succeed](#schema-change-ddl-statements-inside-a-multi-statement-transaction-can-fail-while-other-statements-succeed).
 {{site.data.alerts.end}}
 
 ## Declarative schema changer
