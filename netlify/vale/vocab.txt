@@ -185,6 +185,7 @@ guanqun
 gzip
 haines
 hao
+HAProxy
 hardcoded
 hashicorp
 heartbeated
@@ -626,6 +627,7 @@ uris
 url
 userfile
 userspace
+usertable
 utils
 uuid
 vaidya
