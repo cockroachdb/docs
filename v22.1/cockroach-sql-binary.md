@@ -40,7 +40,7 @@ curl https://binaries.cockroachdb.com/cockroach-sql-{{ release.version }}.darwin
 <div class="filter-content" markdown="1" data-scope="windows">
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-$ErrorActionPreference = "Stop"; [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12;$ProgressPreference = 'SilentlyContinue'; $null = New-Item -Type Directory -Force $env:appdata/cockroach; Invoke-WebRequest -Uri https://binaries.cockroachdb.com/cockroach-sql-{{ release.version }}.windows-6.2-amd64.exe -OutFile cockroach-sql.exe; Copy-Item -Force cockroach-sql.exe -Destination $env:appdata/cockroach; $Env:PATH += ";$env:appdata/cockroach"; if (!(Test-Path "$env:appdata/cockroach/cockroach.exe")) { New-Item -ItemType SymbolicLink -Path $env:appdata/cockroach/cockroach.exe -Target $env:appdata/cockroach/cockroach-sql.exe }
+$ErrorActionPreference = "Stop"; [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12;$ProgressPreference = 'SilentlyContinue'; $null = New-Item -Type Directory -Force $env:appdata/cockroach; Invoke-WebRequest -Uri https://binaries.cockroachdb.com/cockroach-sql-{{ release.version }}.windows-6.2-amd64.exe -OutFile $env:appdata/cockroach/cockroach-sql.exe; $Env:PATH += ";$env:appdata/cockroach/cockroach-sql"; if (!(Test-Path "$env:appdata/cockroach/cockroach.exe")) { New-Item -ItemType SymbolicLink -Path $env:appdata/cockroach/cockroach.exe -Target $env:appdata/cockroach/cockroach-sql.exe }
 ~~~
 </div>
 
