@@ -320,7 +320,7 @@ Column | Description
 `table_schema` | Name of the schema that contains the constrained table.
 `table_name` | Name of the table.
 `non_unique` | `NO` if the index was created with the `UNIQUE` constraint; `YES` if the index was not created with `UNIQUE`.
-`index_schema` | Name of the database that contains the index.
+`index_schema` | Name of the schema that contains the index.
 `index_name` | Name of the index.
 `seq_in_index` | Ordinal position of the column within the index (begins at 1).
 `column_name` | Name of the column being indexed.
