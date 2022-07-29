@@ -53,8 +53,8 @@ For more technical details, see [How online schema changes are possible in Cockr
   - [`CREATE TABLE AS`](create-table-as.html)
   - [`REFRESH`](refresh.html)
   - [`SET LOCALITY`](set-locality.html) under one of the following conditions:
-    - The locality changes from [`REGIONAL BY ROW`](set-locality.html#regional-by-row) to something that is not `REGIONAL BY ROW`.
-    - The locality changes from something that is not `REGIONAL BY ROW` to `REGIONAL BY ROW`.
+      - The locality changes from [`REGIONAL BY ROW`](set-locality.html#regional-by-row) to something that is not `REGIONAL BY ROW`.
+      - The locality changes from something that is not `REGIONAL BY ROW` to `REGIONAL BY ROW`.
 
 {{site.data.alerts.callout_info}}
 If a schema change job is paused, any jobs waiting on that schema change will stop waiting and return an error.
