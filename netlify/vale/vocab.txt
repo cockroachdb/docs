@@ -582,6 +582,8 @@ txns
 typechecking
 tz
 udt
+UDF
+UDFs
 ui
 uid
 uksouth
