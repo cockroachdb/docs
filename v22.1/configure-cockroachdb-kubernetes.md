@@ -281,7 +281,6 @@ spec:
     Changing the SQL Ingress `host` on a running deployment will cause a rolling restart of the cluster, due to new node certificates being generated for the SQL host.
     {{site.data.alerts.end}}
 
-{% capture latest_operator_version %}{% include_cached latest_operator_version.md %}{% endcapture %}
 
 The [custom resource definition](https://github.com/cockroachdb/cockroach-operator/blob/v{{ latest_operator_version }}/config/crd/bases/crdb.cockroachlabs.com_crdbclusters.yaml) details the fields supported by the Operator.
 </section>
