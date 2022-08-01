@@ -55,7 +55,7 @@ As of August 1, 2022, {{ site.data.products.serverless }} clusters are running C
 
 - When creating a [SQL user](../cockroachcloud/console-access-management.html#sql-users) or regenerating a SQL user's password, the generated password is now hidden until the user clicks **Reveal password**.
 
-<h3>API</h3>
+<h3>API changes</h3>
 
 - Paginated [API](../cockroachcloud/cloud-api.html) endpoints now accept a single `page` parameter for next or previous pages. Pagination response messages now contain only two fields: `next_page` and `previous_page`, whose values can be used for the `page` field in a followup call.
 
