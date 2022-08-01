@@ -33,9 +33,7 @@ For each cluster, the following details display:
     - [**Increase storage**](?filters=dedicated#increase-storage-for-a-cluster)
     - [**Change compute**](?filters=dedicated#change-compute-for-a-cluster)
     - [**Upgrade major version**](upgrade-to-v21.2.html)
-    {% comment %}
     - [**Add/remove regions**](?filters=dedicated#add-or-remove-regions-from-a-cluster)
-    {% endcomment %}
     - [**Delete cluster**](#delete-cluster)
 
 To view and manage a specific cluster, click the name of the cluster. The [**Overview**](#view-cluster-overview) page will display.
@@ -118,10 +116,9 @@ AWS disks can only be scaled once every six hours.
 1. On the **Summary** page, verify your new cluster configuration.
 1. Click **Update**.
 
-{% comment %}
-### Add or remove regions from a cluster
+## Add or remove regions from a cluster
 
-You can add or remove up to three regions at a time through the Console. See the [Planning your cluster](plan-your-cluster.html) section of this page for cluster requirements and recommendations before proceeding.
+You can add or remove up to nine regions at a time through the Console. Note that you cannot have a two-region cluster, and it will take about 30 minutes to add or remove each region. See [Planning your cluster](plan-your-cluster.html) for cluster requirements and recommendations before proceeding.
 
 ### Add a region to your cluster
 
@@ -153,7 +150,6 @@ You can add or remove up to three regions at a time through the Console. See the
 1. Click **Continue to payment**.
 1. In the **Confirmation** dialog, verify your new cluster configuration.
 1. Click **OK**.
-{% endcomment %}
 
 ## Restore data from a backup
 
