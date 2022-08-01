@@ -24,6 +24,12 @@ As of July 12, 2022, {{ site.data.products.serverless }} clusters are running Co
 
 - All of your organization's [invoices](../cockroachcloud/billing-management.html#view-invoices) are now available on the **Billing** page.
 
+## July 27, 2022
+
+<h3>General changes</h3>
+
+- You can now [add and remove regions](../cockroachcloud/cluster-management.html#add-or-remove-regions-from-a-cluster) from {{ site.data.products.dedicated }} clusters through the {{ site.data.products.db }} Console. This change makes it easier to support users in new locations or scale down your cluster.
+
 ## July 6, 2022
 
 <h3>Console changes</h3>

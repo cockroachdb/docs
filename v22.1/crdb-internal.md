@@ -82,7 +82,7 @@ Table name | Description| Use in production
 `table_row_statistics` | Contains row count statistics for tables in the current database.| ✗
 `tables` | Contains information about tables in your cluster.| ✗
 [`transaction_contention_events`](#transaction_contention_events)| Contains information about historical transaction contention events. | ✓
-[`transaction_statistics`](#transaction_statistics) | Aggregates in-memory and persisted [statistics](ui-transactions-page.html#transaction-statistics) from `system.transaction_statistics` within hourly time intervals based on UTC time, rounded down to the nearest hour. To reset the statistics call `SELECT crdb_internal.reset_sql_stats()`.| ✓
+[`transaction_statistics`](#transaction_statistics) | Aggregates in-memory and persisted [statistics](ui-transactions-page.html#transaction-statistics) from `system.transaction_statistics` within hourly time intervals based on UTC time, rounded down to the nearest hour. To reset the statistics, call `SELECT crdb_internal.reset_sql_stats()`.| ✓
 `zones` | Contains information about [zone configurations](configure-replication-zones.html) in your cluster.| ✗
 
 ## List `crdb_internal` tables
