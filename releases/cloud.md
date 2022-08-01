@@ -18,7 +18,7 @@ Get future release notes emailed to you:
 As of July 6, 2022, {{ site.data.products.serverless }} clusters are running CockroachDB [v21.2.12](v21.2.html) and new {{ site.data.products.dedicated }} clusters are running CockroachDB [v22.1.2](v22.1.html).
 {{site.data.alerts.end}}
 
-## July 13, 2022
+## July 27, 2022
 
 <h3>General changes</h3>
 
