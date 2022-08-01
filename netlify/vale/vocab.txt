@@ -10,6 +10,7 @@ allowlisted
 andrey
 angelese
 anonymized
+APIs
 arity
 artoul
 australiaeast
@@ -185,6 +186,7 @@ guanqun
 gzip
 haines
 hao
+HAProxy
 hardcoded
 hashicorp
 heartbeated
@@ -581,6 +583,8 @@ txns
 typechecking
 tz
 udt
+UDF
+UDFs
 ui
 uid
 uksouth
@@ -626,6 +630,7 @@ uris
 url
 userfile
 userspace
+usertable
 utils
 uuid
 vaidya
