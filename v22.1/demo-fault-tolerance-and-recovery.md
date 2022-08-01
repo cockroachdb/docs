@@ -187,7 +187,7 @@ Use the [`cockroach workload`](cockroach-workload.html) command to run Cockroach
 
 ## Step 4. Check the workload
 
-Initially, the workload creates a new database called `ycsb`, creates a `usertable` table in that database, and inserts a bunch of rows into the table. Soon, the load generator starts executing approximately 95% reads and 5% writes.
+Initially, the workload creates a new database called `ycsb`, creates the table `public.usertable` in that database, and inserts rows into the table. Soon, the load generator starts executing approximately 95% reads and 5% writes.
 
 1. Go to the DB Console at <a href="http://localhost:8080" data-proofer-ignore>http://localhost:8080</a>.
 
@@ -201,11 +201,11 @@ Initially, the workload creates a new database called `ycsb`, creates a `usertab
 
     You'll notice 3 client connections from the load generator. If you want to check that HAProxy balanced each connection to a different node, you can change the **Graph** dropdown from **Cluster** to specific nodes.
 
-4. To see more details about the `ycsb` database and `usertable` table, click **Databases** in the upper left and click **ycsb**:
+4. To see more details about the `ycsb` database and the `public.usertable` table, click **Databases** in the upper left and click **ycsb**:
 
     <img src="{{ 'images/v22.1/fault-tolerance-3.png' | relative_url }}" alt="DB Console Databases" style="border:1px solid #eee;max-width:100%" />
 
-    You can also view the schema and other table details of `usertable` by clicking the table name:
+    You can also view the schema and other table details of `public.usertable` by clicking the table name:
 
     <img src="{{ 'images/v22.1/fault-tolerance-4.png' | relative_url }}" alt="DB Console usertable" style="border:1px solid #eee;max-width:100%" />
 
@@ -314,11 +314,11 @@ kill -TERM {process-id}
 
 1. To verify that the cluster still serves data, use the `cockroach sql` command to interact with the cluster.
 
-    Count the number of rows in the `ycsb.usertable` table to see that it serves reads:
+    Count the number of rows in the `ycsb.public.usertable` table to see that it serves reads:
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql --insecure --host=localhost:26257 \
-    --execute="SELECT count(*) FROM ycsb.usertable;"
+    --execute="SELECT count(*) FROM ycsb.public.usertable;"
     ~~~
 
     ~~~
@@ -332,13 +332,13 @@ kill -TERM {process-id}
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql --insecure --host=localhost:26257 \
-    --execute="INSERT INTO ycsb.usertable VALUES ('asdf', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);"
+    --execute="INSERT INTO ycsb.public.usertable VALUES ('asdf', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);"
     ~~~
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql --insecure --host=localhost:26257 \
-    --execute="SELECT count(*) FROM ycsb.usertable;"
+    --execute="SELECT count(*) FROM ycsb.public.usertable;"
     ~~~
 
     ~~~
