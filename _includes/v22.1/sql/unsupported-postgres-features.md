@@ -1,12 +1,14 @@
-- Stored procedures and functions
-- Triggers
-- Events
-- User-defined functions (UDF)
-- FULLTEXT functions and indexes
-- Drop primary key[*](#drop-primary-key)
-- XML Functions
-- Column-level privileges
-- XA syntax
-- Creating a database from a template
+- Stored procedures and functions.
+- Triggers.
+- Events.
+- User-defined functions (UDFs).
+- `FULLTEXT` functions and indexes.
+- Drop primary key.
 
-<a name="drop-primary-key"></a> * Each table must have a primary key associated with it. You can, however, [drop and add a primary key constraint within a single transaction](drop-constraint.html#drop-and-add-a-primary-key-constraint).
+    {{site.data.alerts.callout_info}}
+    Each table must have a primary key associated with it. You can [drop and add a primary key constraint within a single transaction](drop-constraint.html#drop-and-add-a-primary-key-constraint).
+    {{site.data.alerts.end}}
+- XML functions.
+- Column-level privileges.
+- XA syntax.
+- Creating a database from a template.
