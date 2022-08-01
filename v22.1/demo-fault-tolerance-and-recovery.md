@@ -90,7 +90,7 @@ Make sure you have already [installed CockroachDB](install-cockroachdb.html).
 
 ## Step 2. Set up load balancing
 
-In this module, you run a sample workload to simulate multiple client connections. Each node is an equally suitable SQL gateway for the load, but it's always recommended to [spread requests evenly across nodes](recommended-production-settings.html#load-balancing). This section shows how to set up the open-source [HAProxy](http://www.haproxy.org/) load balancer.
+In this tutorial, you run a sample workload to simulate multiple client connections. Each node is an equally suitable SQL gateway for the load, but it's always recommended to [spread requests evenly across nodes](recommended-production-settings.html#load-balancing). This section shows how to set up the open-source [HAProxy](http://www.haproxy.org/) load balancer.
 
 1. Install HAProxy.
 
