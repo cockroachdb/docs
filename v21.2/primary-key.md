@@ -2,16 +2,14 @@
 title: Primary Key Constraint
 summary: A primary key constraint specifies columns that can be used to uniquely identify rows in a table.
 toc: true
-docs_area: 
+docs_area: reference.sql
 ---
 
-The `PRIMARY KEY` [constraint](constraints.html) specifies that the constrained columns' values must uniquely identify each row.
+The `PRIMARY KEY` [constraint](constraints.html) specifies that the constrained columns' values must uniquely identify each row. A table can only have one primary key, but it can have multiple [unique constraints](unique.html).
 
-Unlike other constraints which have very specific uses, the `PRIMARY KEY` constraint *must be used for every table* because it provides an intrinsic structure to the table's data.
+You should explicitly define a table's primary key in the [`CREATE TABLE`](create-table.html) statement. If you don't define a primary key at table creation time, CockroachDB will create a `rowid` column that is `NOT VISIBLE`, use the [`unique_rowid()` function](functions-and-operators.html#id-generation-functions) as its default value, and use that as the table's primary key.
 
-A table's primary key should be explicitly defined in the [`CREATE TABLE`](create-table.html) statement. Tables can only have one primary key.
-
-You can [change the primary key](#changing-primary-key-columns) of an existing table with an [`ALTER TABLE ... ALTER PRIMARY KEY`](alter-primary-key.html) statement, or by using [`DROP CONSTRAINT`](drop-constraint.html) and then [`ADD CONSTRAINT`](add-constraint.html) in the same transaction.
+You can [change the primary key](#changing-primary-key-columns) of an existing table with an [`ALTER TABLE ... ALTER PRIMARY KEY`](alter-primary-key.html) statement, or by using [`DROP CONSTRAINT`](drop-constraint.html) and then [`ADD CONSTRAINT`](add-constraint.html) in the same transaction. You cannot fully drop the `PRIMARY KEY` constraint on a table without replacing it as it provides an intrinsic structure to the table's data.
 
 ## Syntax
 
@@ -20,13 +18,13 @@ You can [change the primary key](#changing-primary-key-columns) of an existing t
 ### Column level
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/primary_key_column_level.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/primary_key_column_level.html %}
 </div>
 
  Parameter | Description
 -----------|-------------
  `table_name` | The name of the table you're creating.
- `column_name` | The name of the Primary Key column.
+ `column_name` | The name of the Primary Key column. For [multi-region tables](multiregion-overview.html#table-localities), you can use the `crdb_region` column within a composite primary key in the event the original primary key may contain non-unique entries across multiple, unique regions.
  `column_type` | The Primary Key column's [data type](data-types.html).
  `column_constraints` | Any other column-level [constraints](constraints.html) you want to apply to this column.
  `column_def` | Definitions for any other columns in the table.
@@ -34,7 +32,7 @@ You can [change the primary key](#changing-primary-key-columns) of an existing t
 
 **Example**
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE orders (
     order_id        UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -48,7 +46,7 @@ You can [change the primary key](#changing-primary-key-columns) of an existing t
 ### Table level
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/primary_key_table_level.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/primary_key_table_level.html %}
 </div>
 
  Parameter | Description
@@ -61,7 +59,7 @@ You can [change the primary key](#changing-primary-key-columns) of an existing t
 
 **Example**
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE IF NOT EXISTS inventories (
     product_id        INT,
@@ -81,7 +79,7 @@ For best practices, see [Schema Design: Select primary key columns](schema-desig
 
 ## Example
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE IF NOT EXISTS inventories (
     product_id        INT,
@@ -91,12 +89,12 @@ For best practices, see [Schema Design: Select primary key columns](schema-desig
   );
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO inventories VALUES (1, 1, 100);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO inventories VALUES (1, 1, 200);
 ~~~
@@ -105,7 +103,7 @@ For best practices, see [Schema Design: Select primary key columns](schema-desig
 pq: duplicate key value (product_id,warehouse_id)=(1,1) violates unique constraint "primary"
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO inventories VALUES (1, NULL, 100);
 ~~~

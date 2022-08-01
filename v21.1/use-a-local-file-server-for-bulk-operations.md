@@ -4,16 +4,20 @@ summary: Learn how to create a simple file server for use with bulk operations w
 toc: true
 ---
 
-If you need a location to store files for the [`IMPORT`](import.html) process or [CockroachDB backups](backup.html), but do not have access to (or cannot use) [cloud storage providers](use-cloud-storage-for-bulk-operations.html), you can run a local file server. You can then use this file server by leveraging support for our [HTTP Export Storage API](#http-export-storage-api).
+If you need a location to store files for the [`IMPORT`](import.html) process, but do not have access to (or cannot use) [cloud storage providers](use-cloud-storage-for-bulk-operations.html), you can run a local file server. You can then use this file server by leveraging support for our [HTTP Export Storage API](#http-export-storage-api).
 
 This is especially useful for:
 
 - Implementing a compatibility layer in front of custom or proprietary storage providers for which CockroachDB does not yet have built-in support
 - Using on-premises storage
 
+{{site.data.alerts.callout_info}}
+HTTP file servers are not supported as storage for [backups](take-full-and-incremental-backups.html).
+{{site.data.alerts.end}}
+
 ## HTTP export storage API
 
-CockroachDB tasks that require reading or writing external files (such as [`IMPORT`](import.html) and [`BACKUP`](backup.html)) can use the HTTP Export Storage API by prefacing the address with `http`, e.g., `http://fileserver/mnt/cockroach-exports`.
+A CockroachDB [`IMPORT`](import.html) process that requires reading or writing external files can use the HTTP Export Storage API by prefacing the address with `http`, e.g., `http://fileserver/mnt/cockroach-exports`.
 
 This API uses the `GET`, `PUT` and `DELETE` methods. This behaves like you would expect typical HTTP requests to work. After a `PUT` request to some path, a subsequent `GET` request should return the content sent in the `PUT` request body, at least until a `DELETE` request is received for that path.
 
@@ -32,7 +36,7 @@ You can use any file server software that supports `GET`, `PUT` and `DELETE` met
 
 The PHP language has an HTTP server built in.  You can serve local files using the commands below.  For more information about how to import these locally served files, see the documentation for the [`IMPORT`][import] statement.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cd /path/to/data
 $ php -S 127.0.0.1:3000 # files available at e.g., 'http://localhost:3000/data.sql'
@@ -42,7 +46,7 @@ $ php -S 127.0.0.1:3000 # files available at e.g., 'http://localhost:3000/data.s
 
 The Python language has an HTTP server included in the standard library.  You can serve local files using the commands below.  For more information about how to import these locally served files, see the documentation for the [`IMPORT`][import] statement.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cd /path/to/data
 $ python -m SimpleHTTPServer 3000 # files available at e.g., 'http://localhost:3000/data.sql'
@@ -50,7 +54,7 @@ $ python -m SimpleHTTPServer 3000 # files available at e.g., 'http://localhost:3
 
 If you use Python 3, try:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cd /path/to/data
 $ python -m http.server 3000
@@ -60,7 +64,7 @@ $ python -m http.server 3000
 
 The Ruby language has an HTTP server included in the standard library.  You can serve local files using the commands below.  For more information about how to import these locally served files, see the documentation for the [`IMPORT`][import] statement.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cd /path/to/data
 $ ruby -run -ehttpd . -p3000 # files available at e.g., 'http://localhost:3000/data.sql'
@@ -72,7 +76,7 @@ $ ruby -run -ehttpd . -p3000 # files available at e.g., 'http://localhost:3000/d
 
 2. In the `nginx.conf` file, add a `dav_methods PUT DELETE` directive. For example:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ nginx
     events {
         worker_connections  1024;
@@ -93,8 +97,7 @@ $ ruby -run -ehttpd . -p3000 # files available at e.g., 'http://localhost:3000/d
 ## See also
 
 - [`IMPORT`][import]
-- [`BACKUP`](backup.html) (*Enterprise only*)
-- [`RESTORE`](restore.html) (*Enterprise only*)
+- [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html)
 
 <!-- Reference Links -->
 

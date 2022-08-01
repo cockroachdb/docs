@@ -1,22 +1,20 @@
 ---
-title: Cluster Management
+title: Manage a CockroachDB Dedicated Cluster
 summary: Manage your cluster's schema, data, and more.
 toc: true
 filter_category: cluster_mgmt
 filter_html: CockroachDB Dedicated
 filter_sort: 2
-docs_area: 
+docs_area: manage
 ---
 
 {% include filter-tabs.md %}
 
-This page describes the cluster management and cluster deletion workflows.
+This page describes the cluster management and cluster deletion workflows for {{ site.data.products.dedicated }}.
 
 ## Planning your cluster
 
-Before making any changes to your cluster's nodes or regions, review our requirements and recommendations for {{ site.data.products.db }} cluster configuration.
-
-{% include cockroachcloud/planning-your-cluster.md %}
+Before making any changes to your cluster's nodes or regions, review the [requirements and recommendations](plan-your-cluster.html) for {{ site.data.products.db }} cluster configuration.
 
 ## View Clusters page
 
@@ -28,13 +26,15 @@ For each cluster, the following details display:
 - The cluster's **Plan Type**, either Serverless or Dedicated
 - The date and time the cluster was **Created**
 - The cluster's current **State**
-- The cluster's cloud provider, either GCP or AWS
+- The cluster's **Cloud** provider, either GCP or AWS
 - The **Version** of CockroachDB the cluster is running
 - The **Action** button, which is used to:
-    - [**Add/remove nodes**](?filters=dedicated#add-or-remove-nodes-from-a-cluster) (Paid clusters only)
-    - [**Upgrade major version**](upgrade-to-v21.1.html)
+    - [**Add or remove nodes**](?filters=dedicated#add-or-remove-nodes-from-a-cluster)
+    - [**Increase storage**](?filters=dedicated#increase-storage-for-a-cluster)
+    - [**Change compute**](?filters=dedicated#change-compute-for-a-cluster)
+    - [**Upgrade major version**](upgrade-to-v21.2.html)
     {% comment %}
-    - [**Add/remove regions**](?filters=dedicated#add-or-remove-regions-from-a-cluster) (Paid clusters only)
+    - [**Add/remove regions**](?filters=dedicated#add-or-remove-regions-from-a-cluster)
     {% endcomment %}
     - [**Delete cluster**](#delete-cluster)
 
@@ -53,13 +53,11 @@ The **Overview** page displays details about the selected {{ site.data.products.
 
 From the **Overview** page, you can connect to your cluster. For more information, see [Connect to Your {{ site.data.products.dedicated }} Cluster](connect-to-your-cluster.html).
 
-## Add or remove nodes from a cluster
+## Scale your cluster
 
-You can add or remove nodes from your cluster through the Console. See [Planning your cluster](#planning-your-cluster) for cluster requirements and recommendations before proceeding.
+### Add or remove nodes from a cluster
 
-{{site.data.alerts.callout_info}}
-CockroachDB Cloud contract customers cannot scale clusters through the Console. If you need to add or remove nodes, contact [Support](https://support.cockroachlabs.com).
-{{site.data.alerts.end}}
+You can add or remove nodes from your cluster through the Console. See [Planning your cluster](plan-your-cluster.html) for cluster requirements and recommendations before proceeding.
 
 {{site.data.alerts.callout_info}}
 You cannot scale a multi-node cluster down to a single-node cluster. If you need to scale down to a single-node cluster, [backup](run-bulk-operations.html?filters=cloud#backup-and-restore-data) your cluster and [restore](run-bulk-operations.html?filters=cloud#restore-a-cluster) it into a new single-node cluster.
@@ -68,30 +66,69 @@ You cannot scale a multi-node cluster down to a single-node cluster. If you need
 To add or remove nodes from your cluster:
 
 1. Navigate to the cluster's **Overview** page.
-1. Click the **Actions** button in the top right corner.
-1. Select **Add/remove nodes**.
-{% comment %} This button will change {% endcomment %}
+1. Select **Actions > Edit cluster**.
 
-    The **Edit <cluster name>** page displays.
+    The **Edit cluster** page displays.
 
-1. From the **Nodes** dropdown, select the number of nodes you want in your cluster.
+1. From the **Nodes** dropdown, select the number of nodes you want in each region.
 1. In the **Summary** sidebar, verify the hourly estimated cost for the cluster.
-1. Click **Continue to payment**.
-1. In the **Confirmation** dialog, verify your new cluster configuration.
-1. Click **OK**.
+1. Click **Next: Payment**.
+1. On the **Summary** page, verify your new cluster configuration.
+1. Click **Update**.
+
+### Increase storage for a cluster
+
+{{site.data.alerts.callout_danger}}
+AWS disks can only be scaled once every six hours.
+{{site.data.alerts.end}}
+
+1. Navigate to the cluster's **Overview** page.
+1. Select **Actions > Edit cluster**.
+
+    The **Edit cluster** page displays.
+  
+1. Navigate to the **Storage** dropdown in the **Hardware per node** section.
+1. Select the new amount of storage per node.
+    
+    {{site.data.alerts.callout_danger}}
+    Storage space cannot be removed from a node once added.
+    {{site.data.alerts.end}}
+
+1. In the **Summary** sidebar, verify the hourly estimated cost for the cluster.
+1. Click **Next: Payment**.
+1. On the **Summary** page, verify your new cluster configuration.
+1. Click **Update**.
+
+### Change compute for a cluster
+
+1. Navigate to the cluster's **Overview** page.
+1. Select **Actions > Edit cluster**.
+
+    The **Edit cluster** page displays.
+  
+1. Navigate to the **Compute** dropdown in the **Hardware per node** section.
+1. Select the new amount of vCPUs per node.
+
+    {{site.data.alerts.callout_info}}
+    When scaling up your cluster, it is generally more effective to increase node size up to 16 vCPUs before adding more nodes. For most production applications, we recommend **at least 4 to 8 vCPUs** per node.
+    {{site.data.alerts.end}}
+
+1. In the **Summary** sidebar, verify the hourly estimated cost for the cluster.
+1. Click **Next: Payment**.
+1. On the **Summary** page, verify your new cluster configuration.
+1. Click **Update**.
 
 {% comment %}
-## Add or remove regions from a cluster
+### Add or remove regions from a cluster
 
-You can add or remove up to three regions at a time through the Console. See the [Planning your cluster](#planning-your-cluster) section of this page for cluster requirements and recommendations before proceeding.
+You can add or remove up to three regions at a time through the Console. See the [Planning your cluster](plan-your-cluster.html) section of this page for cluster requirements and recommendations before proceeding.
 
 ### Add a region to your cluster
 
 1. Navigate to the cluster's **Overview** page.
-1. Click the **Actions** button in the top right corner.
-1. Select **Edit regions and nodes**.
+1. Select **Actions > Edit cluster**.
 
-    The **Edit <cluster name>** page displays.
+    The **Edit cluster** page displays.
 
 1. Click **Add a region**.
 
@@ -107,10 +144,9 @@ You can add or remove up to three regions at a time through the Console. See the
 ### Remove a region from your cluster
 
 1. Navigate to the cluster's **Overview** page.
-1. Click the **Actions** button in the top right corner.
-1. Select **Edit regions and nodes**.
+1. Select **Actions > Edit cluster**.
 
-    The **Edit <cluster name>** page displays.
+    The **Edit cluster** page displays.
 
 1. Click the **X** button next to each region you want to remove.
 1. In the **Summary** sidebar, verify the hourly estimated cost for the cluster.

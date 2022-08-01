@@ -1,11 +1,11 @@
 ---
 title: Licensing FAQs
-summary: Frequently asked questions about CockroachDB licensing.
+summary: Frequently asked questions about CockroachDB Enterprise and core licensing.
 toc: true
-docs_area: 
+docs_area: get_started
 ---
 
-Current CockroachDB code is primarily licensed in two ways:
+CockroachDB code is primarily licensed in two ways:
 
 -  [Business Source License (BSL)](#bsl)
 -  [Cockroach Community License (CCL)](#ccl)
@@ -34,14 +34,14 @@ For each BSL release all associated alpha, beta, major, and minor (point) releas
 
 ### License conversion timeline
 
-CockroachDB version | License | Converts to Apache 2.0   
+CockroachDB version | License | Converts to Apache 2.0
 --------------------|---------|----------------------------
 21.2 | Business Source License | Nov 16, 2024
 21.1 | Business Source License | May 18, 2024
 20.2 | Business Source License | Nov 10, 2023
-20.1 | Business Source License | May 12, 2023  
+20.1 | Business Source License | May 12, 2023
 19.2 | Business Source License | Oct 01, 2022
-19.1 | Apache 2.0 | -                          
+19.1 | Apache 2.0 | -
 2.1 | Apache 2.0 | -
 2.0 | Apache 2.0 | -
 
@@ -57,15 +57,15 @@ Feature          | BSL | CCL (free)      | CCL (paid)
 **[Full backups](take-full-and-incremental-backups.html#full-backups)** | | ✓ |
 **[Incremental backups](take-full-and-incremental-backups.html#incremental-backups)** | | | ✓
 **[Other advanced backup features](backup.html)** | | | ✓
-**[Core changefeed](create-and-configure-changefeeds.html#create-a-changefeed-core)** | | ✓ |
-**[{{ site.data.products.enterprise }} changefeed](create-and-configure-changefeeds.html#configure-a-changefeed-enterprise)** | | | ✓
+**[Core changefeed](create-and-configure-changefeeds.html?filters=core)** | | ✓ |
+**[{{ site.data.products.enterprise }} changefeed](create-and-configure-changefeeds.html#configure-a-changefeed)** | | | ✓
 **[Table-level zone configuration](configure-replication-zones.html#replication-zone-levels)** | ✓ | |
-**[Multi-Region Capabilities](multiregion-overview.html)** | | | ✓
+**[Multi-region capabilities](multiregion-overview.html)** | | | ✓
 **[Follower reads](follower-reads.html)** | | | ✓
 **[Bounded staleness reads](follower-reads.html#bounded-staleness-reads)** | | | ✓
 **[Node map](enable-node-map.html)** | | | ✓
-**[Encryption at rest](encryption.html#encryption-at-rest-enterprise)** | | | ✓
-**[Role-based access management](authorization.html#roles)** | ✓ | |
+**[Encryption at rest](security-reference/encryption.html#encryption-at-rest-enterprise)** | | | ✓
+**[Role-based access management](security-reference/authorization.html#roles)** | ✓ | |
 **[Password and certificate authentication](authentication.html)** | ✓ | |
 **[GSSAPI with Kerberos authentication](gssapi_authentication.html)** | | | ✓
 **[All other core features](https://www.cockroachlabs.com/compare)** | ✓ | |
@@ -75,15 +75,15 @@ Individual feature licensing may change with each release of CockroachDB. You ca
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
-More information about all Enterprise features can be found [here](enterprise-licensing.html).
+See [Enterprise Features](enterprise-licensing.html) for more information.
 {{site.data.alerts.end}}
 
 ## Obtain a license
 
 All CockroachDB code is included in the same binary. No license key is required to access BSL and CCL (Free) features. To access CCL (Paid) features, users have two options:
 
-- An **Enterprise License** enables you to use CockroachDB Enterprise features for longer periods (one year or more). To upgrade to an Enterprise license, <a href="mailto:sales@cockroachlabs.com">contact Sales</a>.
-- A **Trial License** enables you to try out CockroachDB Enterprise features for 30 days for free. To obtain a trial license, fill out [the registration form](https://www.cockroachlabs.com/get-cockroachdb/) and receive your trial license via email within a few minutes.
+- An **Enterprise license** enables you to use CockroachDB Enterprise features for longer periods (one year or more). To upgrade to an Enterprise license, <a href="mailto:sales@cockroachlabs.com">contact Sales</a>.
+- A **Trial license** enables you to try out CockroachDB Enterprise features for 30 days for free. To obtain a Trial license, fill out [the registration form](https://www.cockroachlabs.com/get-cockroachdb/enterprise/) and receive your trial license via email within a few minutes.
 
 {{site.data.alerts.callout_success}}
 For quick local testing of Enterprise features, you can use the [`cockroach demo`](cockroach-demo.html) command, which starts a temporary, in-memory cluster with a SQL shell open and a trial license applied automatically.
@@ -101,7 +101,7 @@ Cockroach Labs is willing to offer self-hosted CockroachDB Enterprise features f
 
 To verify a license, open the [built-in SQL shell](cockroach-sql.html) and use the [`SHOW CLUSTER SETTING`](show-cluster-setting.html) command to check the organization name and license key:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 >  SHOW CLUSTER SETTING cluster.organization;
 ~~~
@@ -112,7 +112,7 @@ To verify a license, open the [built-in SQL shell](cockroach-sql.html) and use t
 (1 row)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 >  SHOW CLUSTER SETTING enterprise.license;
 ~~~
@@ -125,7 +125,7 @@ To verify a license, open the [built-in SQL shell](cockroach-sql.html) and use t
 
 The license setting is also logged in the cockroach.log on the node where the command is run:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 $ cat cockroach.log | grep license
 ~~~
@@ -133,7 +133,7 @@ $ cat cockroach.log | grep license
 I171116 18:11:48.279604 1514 sql/event_log.go:102  [client=[::1]:56357,user=root,n1] Event: "set_cluster_setting", target: 0, info: {SettingName:enterprise.license Value:xxxxxxxxxxxx User:root}
 ~~~
 
-## Monitoring for license expiry
+## Monitor for license expiry
 
 You can monitor the time until your license expires with [Prometheus](monitor-cockroachdb-with-prometheus.html). The `seconds_until_enterprise_license_expiry` metric reports the number of seconds until the Enterprise license on a cluster expires. It will report 0 if there is no license or a negative number if the license has already expired. For more information, see [Monitoring and Alerting](monitoring-and-alerting.html).
 

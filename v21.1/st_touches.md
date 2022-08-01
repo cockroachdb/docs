@@ -33,7 +33,7 @@ In this example, `{{page.title}}` returns `true` because both of the following a
 - At least one point in the set of Points that comprise Polygon _A_ is a member of the set of points that make up the LineString _B_.
 - No points from the interior of _A_ are also part of the interior of _B_.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT st_touches(st_geomfromtext('SRID=4326;POLYGON((-87.906471 43.038902, -95.992775 36.153980, -75.704722 36.076944, -87.906471 43.038902), (-87.623177 41.881832, -90.199402 38.627003, -82.446732 38.413651, -87.623177 41.881832))'), st_geomfromtext('SRID=4326;LINESTRING(-87.623177 41.881832, -90.199402 38.627003, -82.446732 38.413651, -87.623177 41.881832)'));
 ~~~
@@ -54,7 +54,7 @@ In this example, `{{page.title}}` returns `false` because:
 
 - Some points from the interior of the LineString _B_ are also part of the interior of the Polygon _A_.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT st_touches(st_geomfromtext('SRID=4326;POLYGON((-87.906471 43.038902, -95.992775 36.153980, -75.704722 36.076944, -87.906471 43.038902))'), st_geomfromtext('SRID=4326;LINESTRING(-88.243385 40.116421, -87.906471 43.038902, -95.992775 36.153980, -95.235278 38.971667)'));
 ~~~

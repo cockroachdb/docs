@@ -2,6 +2,9 @@
 
 function build {
 	bundle exec jekyll build --trace --config _config_base.yml,$1
+	if [[ $? != 0 ]]; then
+	  exit 1
+	fi;
 }
 
 # Transform API spec for API docs generation
@@ -11,22 +14,26 @@ npx snippet-enricher-cli --targets="shell_curl" --input=spec_30.json > spec_30_e
 rm spec_30.json
 popd
 
-gem install bundler
-bundle install
+gem install bundler --silent
+bundle install --quiet
 build _config_cockroachdb.yml
 
 cp _site/docs/_redirects _site/_redirects
 cp _site/docs/404.html _site/404.html
 
 # Set up htmltest
-go get -u github.com/cockroachdb/htmltest
-pushd $GOPATH/src/github.com/cockroachdb/htmltest && ./build.sh && popd
+
+go get -u github.com/wjdp/htmltest > /dev/null
+pushd $GOPATH/src/github.com/wjdp/htmltest && ./build.sh>/dev/null 2>&1 && popd
 
 # Run htmltest to check external links on scheduled nightly runs
 # (see .github/workflows/nightly.yml)
+
 if [[ "$INCOMING_HOOK_TITLE" = "nightly" ]]; then
-	$GOPATH/src/github.com/cockroachdb/htmltest/bin/htmltest
-	exit $?	
+	$GOPATH/src/github.com/wjdp/htmltest/bin/htmltest
+	if [[ $? != 0 ]]; then
+          exit 1
+        fi;
 fi;
 
 # Run Algolia if building master
@@ -35,14 +42,8 @@ if [[ "$CONTEXT" = "production" ]]; then
 	ALGOLIA_API_KEY=$PROD_ALGOLIA_API_KEY bundle exec jekyll algolia --config _config_base.yml --builds-config _config_cockroachdb.yml
 fi;
 
-# Set up Vale, a text linter
-wget -O- https://github.com/errata-ai/vale/releases/download/v1.2.7/vale_1.2.7_Linux_64-bit.tar.gz | tar -xz vale
-
-# Run Vale, but do not fail the build if it reports errors
-./vale --no-wrap v20.2 || true
-
 # Run htmltest, but skip checking external links to speed things up
-$GOPATH/src/github.com/cockroachdb/htmltest/bin/htmltest --skip-external
+$GOPATH/src/github.com/wjdp/htmltest/bin/htmltest --skip-external
 
 if [[ $? != 0 ]]; then
   exit 1

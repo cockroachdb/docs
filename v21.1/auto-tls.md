@@ -13,7 +13,7 @@ To secure your CockroachDB cluster's inter-node and client-node communication, t
 With Auto TLS, your cluster creates the CA (certificate authority) certificate and key pair required for secure communication with other nodes and clients and then securely distributes these among the nodes. The cluster also creates the additional certificates that each node requires to connect to other nodes and enable connections from clients.
 
 {{site.data.alerts.callout_info}}
-<span class="version-tag">New in v21.1:</span> This feature is an alpha release with core functionality that may not yet meet your requirements. Planned enhancements in future versions include:
+{% include_cached new-in.html version="v21.1" %} This feature is an alpha release with core functionality that may not yet meet your requirements. Planned enhancements in future versions include:
 
 - Auto TLS cert generation when adding more nodes to an existing cluster, though cert generation for such nodes is already possible using [`cockroach cert`](cockroach-cert.html) on clusters that initially used Auto TLS. Note that relevant example steps in [Start a Local Cluster](secure-a-cluster.html) show a folder name for storing the CA key that may differ from what you have used with Auto TLS, so these may need to be adapted.
 - Support for cross-region deployments (cases where not all nodes are on the same subnet, and the listening and advertised addresses are different).
@@ -44,7 +44,7 @@ The example commands below must be tailored for your environment and run for eac
 
     For example, for the first node:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     cockroach connect \
     --listen-addr=localhost:26257 \
@@ -57,7 +57,7 @@ The example commands below must be tailored for your environment and run for eac
 
     Prepare each additional node, specifying the addresses of those to `join` which are awaiting the handshake. 
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     cockroach connect \
     --listen-addr=localhost:26258 \
@@ -67,7 +67,7 @@ The example commands below must be tailored for your environment and run for eac
     --init-token={secret}
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     cockroach connect \
     --listen-addr=localhost:26259 \
@@ -91,7 +91,7 @@ The example commands below must be tailored for your environment and run for eac
 
 2. Run [`cockroach start`](cockroach-start.html) for each node. This starts the node, but does not yet initialize the cluster. If testing this process on a single machine, run the following in each node's directory, adjusting the port numbers for each.
 
-  {% include copy-clipboard.html %}
+  {% include_cached copy-clipboard.html %}
   ~~~ shell
   cockroach start \
   --listen-addr=localhost:26257 \

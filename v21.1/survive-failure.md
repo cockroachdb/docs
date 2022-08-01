@@ -4,7 +4,7 @@ summary: The SURVIVE {ZONE,REGION} FAILURE statement configures a multi-region d
 toc: true
 ---
 
-<span class="version-tag">New in v21.1:</span> The `ALTER DATABASE ... SURVIVE {ZONE,REGION} FAILURE` [statement](sql-statements.html) sets the [survival goal](multiregion-overview.html#survival-goals) for a [multi-region database](multiregion-overview.html).
+{% include_cached new-in.html version="v21.1" %} The `ALTER DATABASE ... SURVIVE {ZONE,REGION} FAILURE` [statement](sql-statements.html) sets the [survival goal](multiregion-overview.html#survival-goals) for a [multi-region database](multiregion-overview.html).
 
 {{site.data.alerts.callout_info}}
 `SURVIVE {ZONE,REGION} FAILURE` is a subcommand of [`ALTER DATABASE`](alter-database.html).
@@ -32,7 +32,7 @@ The user must be a member of the [`admin`](authorization.html#roles) or [owner](
 
 To change the survival goal of a multi-region database to survive zone failures, use the following statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER DATABASE {db} SURVIVE ZONE FAILURE;
 ~~~
@@ -51,7 +51,7 @@ For more information about the zone survival goal, see [Surviving zone failures]
 
 To change the survival goal of a multi-region database to survive region failures, use the following statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER DATABASE {db} SURVIVE REGION FAILURE;
 ~~~

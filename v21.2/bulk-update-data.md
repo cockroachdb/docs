@@ -2,7 +2,7 @@
 title: Bulk-update Data
 summary: How to to update a large amount of data using batch-update loops.
 toc: true
-docs_area: 
+docs_area: develop
 ---
 
 To update multiple rows in a table, you can use a single [`UPDATE` statement](update.html), with a `WHERE` clause that filters the rows you want to update.
@@ -19,8 +19,7 @@ Exercise caution when batch-updating rows from tables with foreign key constrain
 
 Before reading this page, do the following:
 
-- [Install CockroachDB](install-cockroachdb.html).
-- [Start a local cluster](secure-a-cluster.html), or [create a {{ site.data.products.dedicated }} cluster](../cockroachcloud/create-your-cluster.html).
+- [Create a {{ site.data.products.serverless }} cluster](../cockroachcloud/quickstart.html) or [start a local cluster](../cockroachcloud/quickstart.html?filters=local).
 - [Install a Postgres client](install-client-drivers.html).
 
     For the example on this page, we use the `psycopg2` Python driver.
@@ -55,7 +54,7 @@ In this case, you will also need to add a new column to the `rides` table that s
 
 For example, you could create a column named `discounted`, of data type [`BOOL`](bool.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER TABLE rides ADD COLUMN discounted BOOL DEFAULT false;
 ~~~
@@ -64,7 +63,7 @@ ALTER TABLE rides ADD COLUMN discounted BOOL DEFAULT false;
 
 In Python, a batch-update script might look similar to the following:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ python
 #!/usr/bin/env python3
 

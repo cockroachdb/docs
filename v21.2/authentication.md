@@ -1,8 +1,8 @@
 ---
-title: Authentication
+title: Authenticating to CockroachDB Self-Hosted Clusters
 summary: Learn about the authentication features for secure CockroachDB clusters.
 toc: true
-docs_area: 
+docs_area: manage
 ---
 
 Authentication refers to the act of verifying the identity of the other party in communication. CockroachDB requires TLS 1.3 digital certificates for inter-node authentication and accepts TLS 1.2 and TLS 1.3 certificates for client-node authentication. This document discusses how CockroachDB uses digital certificates and what your options are for configuring user authentication for SQL clients and the DB Console UI. It also offers a [conceptual overview](#background-on-public-key-cryptography-and-digital-certificates) of public key cryptography and digital certificates.
@@ -28,7 +28,7 @@ Based on your security setup, you can use the [`cockroach cert` commands](cockro
 
 A CockroachDB cluster consists of multiple nodes and clients. The nodes can communicate with each other, with the SQL clients, and the DB Console. In client-node SQL communication and client-UI communication, the node acts as a server, but in inter-node communication, a node may act as a server or a client. Hence authentication in CockroachDB involves:
 
-- Node authentication using [TLS 1.2](https://en.wikipedia.org/wiki/Transport_Layer_Security) digital certificates.
+- Node authentication using [TLS 1.3](https://en.wikipedia.org/wiki/Transport_Layer_Security) digital certificates.
 - Client authentication using TLS digital certificates, passwords, or [GSSAPI authentication](gssapi_authentication.html) (for Enterprise users).
 
 ### Node authentication
@@ -46,7 +46,7 @@ CockroachDB offers the following methods for client authentication:
 - **Client certificate and key authentication**, which is available to all users. To ensure the highest level of security, we recommend only using client certificate and key authentication.
 
    Example:
-   {% include copy-clipboard.html %}
+   {% include_cached copy-clipboard.html %}
    ~~~ shell
    $ cockroach sql --certs-dir=certs --user=jpointsman
    ~~~
@@ -54,7 +54,7 @@ CockroachDB offers the following methods for client authentication:
 - **Password authentication**, which is available to users and roles who you've created passwords for. Password creation is supported only in secure clusters.
 
    Example:
-   {% include copy-clipboard.html %}
+   {% include_cached copy-clipboard.html %}
    ~~~ shell
    $ cockroach sql --certs-dir=certs --user=jpointsman
    ~~~
@@ -70,7 +70,7 @@ CockroachDB offers the following methods for client authentication:
    Note that the client still needs the CA certificate to validate the nodes' certificates.
 
    {{site.data.alerts.callout_success}}
-   <span class="version-tag">New in v21.2</span>: For improved performance, CockroachDB securely caches password authentication information for users. To limit the authentication latency of users logging into a new session, we recommend that you run bulk `ROLE` operations ([`CREATE ROLE`](create-role.html), [`ALTER ROLE`](alter-role.html), [`DROP ROLE`](drop-role.html)) inside a transaction, and run any regularly-scheduled `ROLE` operations together, rather than at different times throughout the day.
+   {% include_cached new-in.html version="v21.2" %} For improved performance, CockroachDB securely caches password authentication information for users. To limit the authentication latency of users logging into a new session, we recommend that you run bulk `ROLE` operations ([`CREATE ROLE`](create-role.html), [`ALTER ROLE`](alter-role.html), [`DROP ROLE`](drop-role.html)) inside a transaction, and run any regularly-scheduled `ROLE` operations together, rather than at different times throughout the day.
    {{site.data.alerts.end}}
 
 - **Password authentication without TLS**
@@ -80,7 +80,7 @@ CockroachDB offers the following methods for client authentication:
    With this flag, SQL clients can establish a session over TCP without a TLS handshake. They still need to present valid authentication credentials, for example a password in the default configuration. Different authentication schemes can be further configured as per `server.host_based_authentication.configuration`.
 
    Example:
-   {% include copy-clipboard.html %}
+   {% include_cached copy-clipboard.html %}
    ~~~ shell
    $ cockroach sql --user=jpointsman --insecure
    ~~~

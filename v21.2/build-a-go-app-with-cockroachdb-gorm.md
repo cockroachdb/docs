@@ -6,7 +6,7 @@ twitter: false
 referral_id: docs_go_gorm
 filter_category: crud_go
 filter_html: Use <strong>GORM</strong></button>
-filter_sort: 3
+filter_sort: 2
 docs_area: get_started
 ---
 
@@ -20,7 +20,7 @@ For another use of GORM with CockroachDB, see our [`examples-orms`](https://gith
 
 ## Step 1. Start CockroachDB
 
-{% include {{ page.version.version }}/app/sample-setup.md %}
+{% include {{ page.version.version }}/setup/sample-setup.md %}
 
 ## Step 2. Get the code
 
@@ -38,7 +38,7 @@ The project has the following directory structure:
 └── main.go
 ~~~
 
-The `main.go` file defines an `Account` struct that maps to a new `accounts` table in the `bank` database. The file also contains some read and write database operations that are executed in the `main` method of the program.
+The `main.go` file defines an `Account` struct that maps to a new `accounts` table. The file also contains some read and write database operations that are executed in the `main` method of the program.
 
 {% include_cached copy-clipboard.html %}
 ~~~ go
@@ -55,6 +55,11 @@ CockroachDB may require the [client to retry a transaction](transactions.html#tr
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
+    $ cd example-app-go-gorm
+    ~~~
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
     $ go mod init basic-sample && go mod tidy
     ~~~
 
@@ -64,34 +69,6 @@ CockroachDB may require the [client to retry a transaction](transactions.html#tr
     ~~~ shell
     $ go run main.go
     ~~~
-
-    The program will prompt you for a connection string to the database:
-
-    ~~~
-    Enter a connection string:
-    ~~~
-
-1. Enter the connection string to your running cluster.
-
-    <section class="filter-content" markdown="1" data-scope="local">
-
-    {{site.data.alerts.callout_success}}
-    `postgresql://root@localhost:26257?sslmode=disable` should be the `sql` connection URL provided in the `cockroach` welcome text.
-    {{site.data.alerts.end}}
-
-    </section>
-
-    <section class="filter-content" markdown="1" data-scope="cockroachcloud">
-
-    {{site.data.alerts.callout_success}}
-    Use the connection string provided in the **Connection info** window of the {{ site.data.products.db }} Console.
-    {{site.data.alerts.end}}
-
-    {{site.data.alerts.callout_info}}
-    You need to provide a SQL user password in order to securely connect to a {{ site.data.products.db }} cluster. The connection string should have a placeholder for the password (`<ENTER-PASSWORD>`).
-    {{site.data.alerts.end}}
-
-    </section>
 
     The output should look similar to the following:
 

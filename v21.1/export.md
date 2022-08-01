@@ -24,7 +24,7 @@ After the export has been initiated, you can cancel it with [`CANCEL QUERY`](can
 
 ## Required privileges
 
-<span class="version-tag">New in v21.1:</span> The user must have the `SELECT` [privilege](authorization.html#assign-privileges) on the table being exported, unless the [destination URI requires `admin` privileges](import.html#source-privileges).
+{% include_cached new-in.html version="v21.1" %} The user must have the `SELECT` [privilege](authorization.html#assign-privileges) on the table being exported, unless the [destination URI requires `admin` privileges](import.html#source-privileges).
 
 ## Parameters
 
@@ -90,7 +90,7 @@ Each of these examples use the `bank` database and the `customers` table; `custo
 
 ### Export a table
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPORT INTO CSV
   's3://{BUCKET NAME}/{customer-export-data}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
@@ -99,7 +99,7 @@ Each of these examples use the `bank` database and the `customers` table; `custo
 
 ### Export using a `SELECT` statement
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPORT INTO CSV
   's3://{BUCKET NAME}/{customer-export-data}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
@@ -110,7 +110,7 @@ For more information, see [selection queries](selection-queries.html).
 
 ### Non-distributed export using the SQL client
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql -e "SELECT * from bank.customers WHERE id>=100;" --format=csv > my.csv
 ~~~
@@ -119,7 +119,7 @@ For more information, about the SQL client, see [`cockroach sql`](cockroach-sql.
 
 ### Export gzip compressed CSV files
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPORT INTO CSV
   's3://{BUCKET NAME}/{customer-export-data}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
@@ -141,7 +141,7 @@ Each of these examples use the `bank` database and the `customers` table; `custo
 
 ### Export a table
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPORT INTO CSV
   'azure://{CONTAINER NAME}/{customer-export-data}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}'
@@ -150,7 +150,7 @@ Each of these examples use the `bank` database and the `customers` table; `custo
 
 ### Export using a `SELECT` statement
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPORT INTO CSV
   'azure://{CONTAINER NAME}/{customer-export-data}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}'
@@ -161,7 +161,7 @@ For more information, see [selection queries](selection-queries.html).
 
 ### Non-distributed export using the SQL client
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql -e "SELECT * from bank.customers WHERE id>=100;" --format=csv > my.csv
 ~~~
@@ -170,7 +170,7 @@ For more information, about the SQL client, see [`cockroach sql`](cockroach-sql.
 
 ### Export gzip compressed CSV files
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPORT INTO CSV
   'azure://{CONTAINER NAME}/{customer-export-data}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}'
@@ -194,7 +194,7 @@ Each of these examples use the `bank` database and the `customers` table; `custo
 
 ### Export a table
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPORT INTO CSV
   'gs://{BUCKET NAME}/{customer-export-data}?AUTH=specified&CREDENTIALS={ENCODED KEY}'
@@ -203,7 +203,7 @@ Each of these examples use the `bank` database and the `customers` table; `custo
 
 ### Export using a `SELECT` statement
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPORT INTO CSV
   'gs://{BUCKET NAME}/{customer-export-data}?AUTH=specified&CREDENTIALS={ENCODED KEY}'
@@ -214,7 +214,7 @@ For more information, see [selection queries](selection-queries.html).
 
 ### Non-distributed export using the SQL client
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql -e "SELECT * from bank.customers WHERE id>=100;" --format=csv > my.csv
 ~~~
@@ -223,7 +223,7 @@ For more information, about the SQL client, see [`cockroach sql`](cockroach-sql.
 
 ### Export gzip compressed CSV files
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPORT INTO CSV
   'gs://{BUCKET NAME}/{customer-export-data}?AUTH=specified&CREDENTIALS={ENCODED KEY}'
@@ -243,7 +243,7 @@ export16808a04292505c80000000000000001-n1.0.csv.gz |   17 |   824
 
 View running exports by using [`SHOW STATEMENTS`](show-statements.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW STATEMENTS;
 ~~~
@@ -252,7 +252,7 @@ View running exports by using [`SHOW STATEMENTS`](show-statements.html):
 
 Use [`SHOW STATEMENTS`](show-statements.html) to get a running export's `query_id`, which can be used to [cancel the export](cancel-query.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CANCEL QUERY '14dacc1f9a781e3d0000000000000001';
 ~~~

@@ -2,7 +2,7 @@
 title: SHOW SESSIONS
 summary: The SHOW SESSIONS statement lists all currently active sessions across the cluster or on the local node.
 toc: true
-docs_area: 
+docs_area: reference.sql
 ---
 
 The `SHOW SESSIONS` [statement](sql-statements.html) lists details about currently active sessions, including:
@@ -23,7 +23,7 @@ All users can see their own currently active sessions. All users belonging to th
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/show_sessions.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/show_sessions.html %}
 </div>
 
 - To list the active sessions across all nodes of the cluster, use `SHOW SESSIONS` or `SHOW CLUSTER SESSIONS`.
@@ -50,7 +50,7 @@ Field | Description
 
 ### List active sessions across the cluster
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CLUSTER SESSIONS;
 ~~~
@@ -76,7 +76,7 @@ Alternatively, you can use `SHOW SESSIONS` to receive the same response.
 
 ### List active sessions on the local node
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW LOCAL SESSIONS;
 ~~~
@@ -99,7 +99,7 @@ You can use a [`SELECT`](select-clause.html) statement to filter the list of cur
 
 #### Show sessions associated with a specific user
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM [SHOW CLUSTER SESSIONS] WHERE user_name = 'mroach';
 ~~~
@@ -119,7 +119,7 @@ You can use a [`SELECT`](select-clause.html) statement to filter the list of cur
 
 To exclude sessions from the [built-in SQL client](cockroach-sql.html), filter for sessions that do not show `cockroach` as the `application_name`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM [SHOW CLUSTER SESSIONS]
       WHERE application_name != 'cockroach';
@@ -157,7 +157,7 @@ For example, let's say you run `SHOW SESSIONS` and notice that the following ses
 
 Since the `oldest_query_start` timestamp is the same as the `session_start` timestamp, you are concerned that the `SELECT` query shown in `active_queries` has been running for too long and may be consuming too many resources. So you use the [`SHOW STATEMENTS`](show-statements.html) statement to get more information about the query, filtering based on details you already have:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM [SHOW CLUSTER STATEMENTS]
       WHERE client_address = '192.168.0.72:56194'
@@ -175,14 +175,14 @@ Since the `oldest_query_start` timestamp is the same as the `session_start` time
 
 Using the `start` field, you confirm that the query has been running since the start of the session and decide that is too long. So to cancel the query, and stop it from consuming resources, you note the `query_id` and use it with the [`CANCEL QUERY`](cancel-query.html) statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CANCEL QUERY '14dacc1f9a781e3d0000000000000001';
 ~~~
 
 Alternatively, if you know that you want to cancel the query based on the details in `SHOW SESSIONS`, you could execute a single [`CANCEL QUERY`](cancel-query.html) statement with a nested `SELECT` statement that returns the `query_id`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CANCEL QUERY (SELECT query_id FROM [SHOW CLUSTER STATEMENTS]
       WHERE client_address = '192.168.0.72:56194'
@@ -194,4 +194,4 @@ Alternatively, if you know that you want to cancel the query based on the detail
 
 - [`SHOW STATEMENTS`](show-statements.html)
 - [`CANCEL QUERY`](cancel-query.html)
-- [Other SQL Statements](sql-statements.html)
+- [SQL Statements](sql-statements.html)

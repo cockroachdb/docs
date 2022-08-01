@@ -2,7 +2,7 @@
 title: Client Connection Parameters
 summary: This page describes the parameters used to establish a client connection.
 toc: true
-docs_area: 
+docs_area: reference.cli
 ---
 
 Client applications, including [`cockroach` client
@@ -125,7 +125,7 @@ SQL driver to determine whether these options are supported.
 
 ### Convert a URL for different drivers
 
-<span class="version-tag">New in v21.2:</span> The subcommand `cockroach convert-url` converts a connection URL, such as those printed out by [`cockroach start`](cockroach-start.html) or included in the online documentation, to the syntax recognized by various [client drivers](third-party-database-tools.html#drivers). For example:
+{% include_cached new-in.html version="v21.2" %} The subcommand `cockroach convert-url` converts a connection URL, such as those printed out by [`cockroach start`](cockroach-start.html) or included in the online documentation, to the syntax recognized by various [client drivers](third-party-database-tools.html#drivers). For example:
 
 ~~~
 $ ./cockroach convert-url --url "postgres://foo/bar"
@@ -135,7 +135,7 @@ $ ./cockroach convert-url --url "postgres://foo/bar"
 # Connection URL for libpq (C/C++), psycopg (Python), lib/pq & pgx (Go),node-postgres (JS)
 and most pq-compatible drivers:
   postgresql://root@foo:26257/bar
-# Connection DSN (Data Source Name) for Postgres drivers that accept DSNs - most drivers
+# Connection DSN (Data Source Name) for PostgreSQL drivers that accept DSNs - most drivers
 and also ODBC:
   database=bar user=root host=foo port=26257
 # Connection URL for JDBC (Java and JVM-based languages):
@@ -274,4 +274,4 @@ cockroach sql --url "postgres://root@servername:26257/mydb?sslmode=disable"
 - [`cockroach` commands](cockroach-commands.html)
 - [Create Security Certificates](cockroach-cert.html)
 - [Secure a Cluster](secure-a-cluster.html)
-- [Create and Manage Users](authorization.html#create-and-manage-users)
+- [Create and Manage Users](security-reference/authorization.html#create-and-manage-users)

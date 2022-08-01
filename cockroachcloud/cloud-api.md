@@ -2,12 +2,10 @@
 title: Use the Cloud API
 summary: The Cloud API is used to manage clusters within an organization
 toc: true
-docs_area: 
+docs_area: manage
 ---
 
-The Cloud API is a [REST interface](https://en.wikipedia.org/wiki/Representational_state_transfer) that allows users programmatic access to manage the lifecycle of clusters within their organization.
-
-{% include_cached cockroachcloud/experimental-warning.md %}
+The Cloud API is a [REST interface](https://en.wikipedia.org/wiki/Representational_state_transfer) that allows you programmatic access to manage the lifecycle of clusters within your organization.
 
 ## API reference
 
@@ -44,7 +42,7 @@ Where `{secret_key}` is the [secret key string you stored when you created the A
 
 ## Create a new cluster
 
-To create a cluster, send a `POST` request to the `/v1/clusters` endpoint. The service account associated with the secret key must have `ADMIN` or `CREATE` permission to create new clusters.
+To create a cluster, send a `POST` request to the `/v1/clusters` endpoint. The service account associated with the secret key must have `ADMIN` or `CREATE` [permission](console-access-management.html#service-accounts) to create new clusters.
 
 <div class="filters clearfix">
     <button class="filter-button page-level" data-scope="curl"><strong>curl</strong></button>
@@ -57,7 +55,7 @@ To create a cluster, send a `POST` request to the `/v1/clusters` endpoint. The s
 curl --request POST \
   --url https://cockroachlabs.cloud/api/v1/clusters \
   --header 'Authorization: Bearer {secret_key}' \
-  --data '{"name":"{cluster_name}","provider":"{cloud_provider}","serverless":{"regions":["{region_name}"],"spendLimit":{spend_limit}}}'
+  --data '{"name":"{cluster_name}","provider":"{cloud_provider}","spec":{"serverless":{"regions":["{region_name}"],"spendLimit":{spend_limit}}}}'
 ~~~
 </section>
 
@@ -67,11 +65,13 @@ curl --request POST \
 {
   "name": "{cluster_name}",
   "provider": "{cloud_provider}",
-  "serverless": {
-    "regions": [
-      "{region_name}"
-    ],
-    "spendLimit": {spend_limit}
+  "spec": {
+    "serverless": {
+      "regions": [
+        "{region_name}"
+      ],
+      "spendLimit": {spend_limit}
+    }
   }
 }
 ~~~
@@ -82,7 +82,7 @@ Where:
   - `{cluster_name}` is the name of the cluster. This should be a short string with no whitespace.
   - `{cloud_provider}` is the name of the cloud infrastructure provider on which you want your cluster to run. Possible values are: `GCP` and `AWS`.
   - `{region_name}` is the zone code of the cloud infrastructure provider. For example, on GCP you can set the "us-west2" zone code.
-  - `{spend_limit}` is the [maximum amount of money, in US cents, you want to spend per month](serverless-cluster-management.html#planning-your-cluster) on this cluster.
+  - `{spend_limit}` is the [maximum amount of money, in US cents, you want to spend per month](plan-your-cluster.html) on this cluster.
 
 For example, to create a new free Serverless cluster named "notorious-moose" using the default values for the cloud infrastructure provider and region:
 
@@ -97,7 +97,7 @@ For example, to create a new free Serverless cluster named "notorious-moose" usi
 curl --request POST \
   --url https://cockroachlabs.cloud/api/v1/clusters \
   --header 'Authorization: Bearer {secret_key}' \
-  --data '{"name":"notorious-moose","serverless":{"regions":["us-central1"],"spendLimit":0}}'
+  --data '{"name":"notorious-moose","provider":"GCP","spec":{"serverless":{"regions":["us-central1"],"spendLimit":0}}}'
 ~~~
 </section>
 
@@ -106,8 +106,14 @@ curl --request POST \
 ~~~ JSON
 {
   "name": "notorious-moose",
-  "serverless": {
-    "spendLimit": 0
+  "provider": "GCP",
+  "spec": {
+    "serverless": {
+      "regions": [
+        "us-central1"
+      ],
+      "spendLimit": 0
+    }
   }
 }
 ~~~
@@ -119,11 +125,11 @@ If the request was successful, the API will return information about the newly c
 ~~~ json
 {
   "cloud_provider": "{cloud_provider}",
-  "created_at": "2022-01-24T14:15:22Z",
+  "created_at": "2022-03-14T14:15:22Z",
   "creator_id": "{account_id}",
-  "deleted_at": "2022-01-24T14:15:22Z",
+  "deleted_at": "2022-03-14T14:15:22Z",
   "id": "{cluster_id}",
-  "operation_status": "NOT_SET",
+  "operation_status": "CLUSTER_STATUS_UNSPECIFIED",
   "name": "{cluster_name}",
   "plan": "SERVERLESS",
   "regions": [
@@ -143,13 +149,13 @@ If the request was successful, the API will return information about the newly c
     }
   },
   "state": "CREATING",
-  "updated_at": "2022-01-24T14:15:22Z"
+  "updated_at": "2022-03-14T14:15:22Z"
 }
 ~~~
 
 Where:
 
-  - `{cloud_provider}` is the name of the cloud infrastructure provider on which you want your cluster to run. Possible values are: `GCP` and `AWS`. The default value is `GCP`.
+  - `{cloud_provider}` is the name of the cloud infrastructure provider on which you want your cluster to run. Possible values are: `GCP` and `AWS`.
   - `{cluster_id}` is the unique ID of this cluster. Use this ID when making API requests for this particular cluster.
     {{site.data.alerts.callout_info}}
     The cluster ID used in the Cloud API is different than the routing ID used when [connecting to clusters](connect-to-a-serverless-cluster.html).
@@ -162,7 +168,7 @@ Where:
 
 ## Get information about a specific cluster
 
-To retrieve detailed information about a specific cluster, make a `GET` request to the `/v1/clusters/{cluster_id}` endpoint. The service account associated with the secret key must have `ADMIN` or `READ` permission to retrieve information about an organization's clusters.
+To retrieve detailed information about a specific cluster, make a `GET` request to the `/v1/clusters/{cluster_id}` endpoint. The service account associated with the secret key must have `ADMIN` or `READ` [permission](console-access-management.html#service-accounts) to retrieve information about an organization's clusters.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -185,11 +191,11 @@ If the request was successful, the API will return detailed information about th
 ~~~ json
 {
   "cloud_provider": "{cloud_provider}",
-  "created_at": "2022-01-24T14:15:22Z",
+  "created_at": "2022-03-14T14:15:22Z",
   "creator_id": "{account_id}",
-  "deleted_at": "2022-01-24T14:15:22Z",
+  "deleted_at": "2022-03-14T14:15:22Z",
   "id": "{cluster_id}",
-  "operation_status": "NOT_SET",
+  "operation_status": "CLUSTER_STATUS_UNSPECIFIED",
   "name": "{cluster_name}",
   "plan": "SERVERLESS",
   "regions": [
@@ -209,7 +215,7 @@ If the request was successful, the API will return detailed information about th
     }
   },
   "state": "CREATING",
-  "updated_at": "2022-01-24T14:15:22Z"
+  "updated_at": "2022-03-14T14:15:22Z"
 }
 ~~~
 
@@ -220,16 +226,16 @@ Where:
   The cluster ID used in the Cloud API is different than the routing ID used when [connecting to clusters](connect-to-a-serverless-cluster.html).
   {{site.data.alerts.end}}
   - `{cluster_name}` is the name of the cluster you specified when creating the cluster.
-  - `{cloud_provider}` is the name of the cloud infrastructure provider on which you want your cluster to run. Possible values are: `GCP` and `AWS`. The default value is `GCP`.
+  - `{cloud_provider}` is the name of the cloud infrastructure provider on which you want your cluster to run. Possible values are: `GCP` and `AWS`.
   - `{account_id}` is the ID of the account that created the cluster. If the cluster was created using the API, this will be the service account ID associated with the secret key used when creating the cluster.
   - `{region_name}` is the cloud infrastructure provider region where the cluster is located.
-  - `{spend_limit}` is the [maximum amount of money, in US cents, you want to spend per month](serverless-cluster-management.html#planning-your-cluster) on this cluster.
+  - `{spend_limit}` is the [maximum amount of money, in US cents, you want to spend per month](plan-your-cluster.html) on this cluster.
   - `{routing_id}` is the cluster name and tenant ID of the cluster used when [connecting to clusters](connect-to-a-serverless-cluster.html). For example, `funky-skunk-123`.
   - `{server_host}` is the DNS name of the host on which the cluster is located.
 
 ## Get information about a cluster's nodes
 
-To retrieve information about a cluster's nodes, including the node status, make a `GET` request to the `/v1/clusters/{cluster_id}/nodes` endpoint. The service account associated with the secret key must have `ADMIN` or `READ` permission to retrieve information about an organization's clusters.
+To retrieve information about a cluster's nodes, including the node status, make a `GET` request to the `/v1/clusters/{cluster_id}/nodes` endpoint. The service account associated with the secret key must have `ADMIN` or `READ` [permission](console-access-management.html#service-accounts) to retrieve information about an organization's clusters.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -263,7 +269,7 @@ If the request was successful, the API will return detailed information about th
     "last": 0,
     "limit": 0,
     "total_results": 0,
-    "time": "2022-01-24T14:15:22Z",
+    "time": "2022-03-14T14:15:22Z",
     "order": "ASC"
   }
 }
@@ -277,7 +283,7 @@ Where:
 
 ## Set the maximum spend limit of a Serverless cluster
 
-To set the maximum spend limit for a Serverless cluster, send a `PUT` request to the `/v1/clusters/{cluster_id}/spend-limit` endpoint. The service account associated with the secret key must have `ADMIN` or `EDIT` permission to retrieve information about an organization's clusters.
+To set the maximum spend limit for a Serverless cluster, send a `PUT` request to the `/v1/clusters/{cluster_id}/spend-limit` endpoint. The service account associated with the secret key must have `ADMIN` or `EDIT` [permission](console-access-management.html#service-accounts) to retrieve information about an organization's clusters.
 
 <div class="filters clearfix">
     <button class="filter-button page-level" data-scope="curl"><strong>curl</strong></button>
@@ -310,13 +316,13 @@ Where:
   The cluster ID used in the Cloud API is different than the routing ID used when [connecting to clusters](connect-to-a-serverless-cluster.html).
   {{site.data.alerts.end}}
   - `{secret_key}` is the secret key for the service account.
-  - `{spend_limit}` is the [maximum amount of money, in US cents, you want to spend per month](serverless-cluster-management.html#planning-your-cluster) on this cluster.
+  - `{spend_limit}` is the [maximum amount of money, in US cents, you want to spend per month](plan-your-cluster.html) on this cluster.
 
 If the request was successful, the client will not receive a response payload.
 
 ## Delete a cluster
 
-To delete a cluster, send a `DELETE` request to the `/v1/clusters/{cluster_id}` endpoint. The service account associated with the secret key must have `ADMIN` or `DELETE` permission to delete an organization's clusters.
+To delete a cluster, send a `DELETE` request to the `/v1/clusters/{cluster_id}` endpoint. The service account associated with the secret key must have `ADMIN` or `DELETE` [permission](console-access-management.html#service-accounts) to delete an organization's clusters.
 
 Deleting a cluster will permanently delete the cluster and all the data within the cluster.
 
@@ -339,12 +345,21 @@ If the `DELETE` request was successful the client will not receive a response pa
 
 ## List all clusters in an organization
 
-To list all clusters within an organization, send a `GET` request to the `/v1/clusters` endpoint. The service account associated with the secret key must have `ADMIN` or `READ` permission to list an organization's clusters.
+To list all active clusters within an organization, send a `GET` request to the `/v1/clusters` endpoint. The service account associated with the secret key must have `ADMIN` or `READ` [permission](console-access-management.html#service-accounts) to list an organization's clusters.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 curl --request GET \
   --url 'https://cockroachlabs.cloud/api/v1/clusters' \
+  --header 'Authorization: Bearer {secret_key}'
+~~~
+
+To return both active clusters and clusters that have been deleted or failed to initialize, send the `show_inactive=true` query parameter.
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+curl --request GET \
+  --url 'https://cockroachlabs.cloud/api/v1/clusters?show_inactive=true' \
   --header 'Authorization: Bearer {secret_key}'
 ~~~
 
@@ -360,11 +375,11 @@ If the request was successful, the client will receive a list of all clusters wi
   "clusters": [
     {
       "cloud_provider": "{cloud_provider}",
-      "created_at": "2022-01-24T14:15:22Z",
+      "created_at": "2022-03-14T14:15:22Z",
       "creator_id": "{account_id}",
-      "deleted_at": "2022-01-24T14:15:22Z",
+      "deleted_at": "2022-03-14T14:15:22Z",
       "id": "{cluster_id}",
-      "operation_status": "NOT_SET",
+      "operation_status": "CLUSTER_STATUS_UNSPECIFIED",
       "name": "{cluster_name}",
       "plan": "SERVERLESS",
       "regions": [
@@ -384,7 +399,7 @@ If the request was successful, the client will receive a list of all clusters wi
         }
       },
       "state": "CREATING",
-      "updated_at": "2022-01-24T14:15:22Z"
+      "updated_at": "2022-03-14T14:15:22Z"
     }
   ],
   ...
@@ -402,11 +417,11 @@ Where:
   - `{cloud_provider}` is the name of the cloud infrastructure provider. Possible values are: `GCP` and `AWS`.
   - `{account_id}` is the ID of the account that created the cluster. If the cluster was created using the API, this will be the service account ID associated with the secret key used when creating the cluster.
   - `{region_name}` is the zone code of the cloud infrastructure provider where the cluster is located.
-  - `{spend_limit}` is the [maximum amount of money, in US cents, you want to spend per month](serverless-cluster-management.html#planning-your-cluster) on this cluster.
+  - `{spend_limit}` is the [maximum amount of money, in US cents, you want to spend per month](plan-your-cluster.html) on this cluster.
 
 ## List the available regions for a cloud infrastructure provider
 
-To list the available regions for creating new clusters, send a `GET` request to the `/v1/clusters/available-regions?provider={cloud_provider}` endpoint. The service account associated with the secret key must have `ADMIN` or `READ` permission to list the available regions.
+To list the available regions for creating new clusters, send a `GET` request to the `/v1/clusters/available-regions?provider={cloud_provider}` endpoint. The service account associated with the secret key must have `ADMIN` or `READ` [permission](console-access-management.html#service-accounts) to list the available regions.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -434,3 +449,126 @@ If the request was successful, the client will receive a list of available regio
 Where:
 
   - `{region_array}` is a string array of regions available from the cloud infrastructure provider.
+
+## List all the SQL users in a cluster
+
+To list the SQL users in a cluster send a `GET` request to the `/v1/clusters/{cluster_id}/sql-users` endpoint. The service account associated with the secret key must have `ADMIN` or `READ` [permission](console-access-management.html#service-accounts) to list the SQL users.
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+curl --request GET \
+  --url 'https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/sql-users' \
+  --header 'Authorization: Bearer {secret_key}'
+~~~
+
+Where:
+
+  - `{cluster_id}` is the unique ID of this cluster.
+  {{site.data.alerts.callout_info}}
+  The cluster ID used in the Cloud API is different than the routing ID used when [connecting to clusters](connect-to-a-serverless-cluster.html).
+  {{site.data.alerts.end}}
+  
+If the request was successful, the client will receive a list of SQL users.
+
+~~~ json
+{
+  "users": [
+    {
+      "name": "{user name}"
+    }
+  ],
+  ...
+}
+~~~
+
+Where `{user name}` is the SQL username of the user.
+
+## Create a new SQL user
+
+To create a new SQL user send a `POST` request to the `/v1/clusters/{cluster_id}/sql-users` endpoint. The service account associated with the secret key must have `ADMIN` [permission](console-access-management.html#service-accounts) to create new SQL users. By default the newly created SQL user is a member of the `admin` role. An `admin` SQL user has full privileges for all databases and tables in your cluster. This user can also create additional users and grant them appropriate privileges.
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+curl --request POST \
+  --url 'https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/sql-users' \
+  --header 'Authorization: Bearer {secret_key}' \
+  --data '{"name":"{sql_username}","password":"{password}"}'
+~~~
+
+Where:
+
+- `{cluster_id}` is the unique ID of this cluster.
+{{site.data.alerts.callout_info}}
+The cluster ID used in the Cloud API is different than the routing ID used when [connecting to clusters](connect-to-a-serverless-cluster.html).
+{{site.data.alerts.end}}
+- `{sql_username}` is the username of the new SQL user you want to create.
+- `{password}` is the new user's password.
+
+If the request was successful, the client will receive a response with the name of the new user.
+
+~~~ json
+{
+  "name": "{sql_username}"
+}
+~~~
+
+Where `{sql_username}` is the username of the newly created SQL user.
+
+## Delete a SQL user
+
+To delete a SQL user send a `DELETE` request to the `/v1/clusters/{cluster_id}/sql-users/{sql_username}` endpoint. The service account associated with the secret key must have `ADMIN` [permission](console-access-management.html#service-accounts) to delete SQL users.
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+curl --request DELETE \
+  --url 'https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/sql-users/{sql_username}'' \
+  --header 'Authorization: Bearer {secret_key}'
+~~~
+
+Where:
+- `{cluster_id}` is the unique ID of this cluster.
+{{site.data.alerts.callout_info}}
+The cluster ID used in the Cloud API is different than the routing ID used when [connecting to clusters](connect-to-a-serverless-cluster.html).
+{{site.data.alerts.end}}
+- `{sql_username}` is the username of the SQL user you want to delete.
+
+If the request was successful, the client will receive a response with the name of the deleted user.
+
+~~~ json
+{
+  "name": "{sql_username}"
+}
+~~~
+
+Where `{sql_username}` is the username of the deleted SQL user.
+
+## Change a SQL user's password
+
+To change a SQL user's password send a `PUT` request to the `/v1/clusters/{cluster_id}/sql-users/{sql_username}/password` endpoint. The service account associated with the secret key must have `ADMIN` [permission](console-access-management.html#service-accounts) to change a SQL user's password.
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+curl --request PUT \
+  --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/sql-users/{sql_username}/password \
+  --header 'Authorization: Bearer {secret_key}' \
+  --data '{"password":"{new_password}"}'
+~~~
+
+Where:
+- `{cluster_id}` is the unique ID of this cluster.
+{{site.data.alerts.callout_info}}
+The cluster ID used in the Cloud API is different than the routing ID used when [connecting to clusters](connect-to-a-serverless-cluster.html).
+{{site.data.alerts.end}}
+- `{sql_username}` is the username of the SQL user whose password you want to change.
+- `{new_password}` is the new password for the SQL user.
+
+
+If the request was successful, the client will receive a response with the name of the SQL user whose password was changed.
+
+~~~ json
+{
+  "name": "{sql_username}"
+}
+~~~
+
+Where `{sql_username}` is the name of the SQL user whose password was changed.

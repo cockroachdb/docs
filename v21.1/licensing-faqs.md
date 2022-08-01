@@ -80,7 +80,7 @@ More information about all Enterprise features can be found [here](enterprise-li
 All CockroachDB code is included in the same binary. No license key is required to access BSL and CCL (Free) features. To access CCL (Paid) features, users have two options:
 
 - An **Enterprise License** enables you to use CockroachDB Enterprise features for longer periods (one year or more). To upgrade to an Enterprise license, <a href="mailto:sales@cockroachlabs.com">contact Sales</a>.
-- A **Trial License** enables you to try out CockroachDB Enterprise features for 30 days for free. To obtain a trial license, fill out [the registration form](https://www.cockroachlabs.com/get-cockroachdb/) and receive your trial license via email within a few minutes.
+- A **Trial License** enables you to try out CockroachDB Enterprise features for 30 days for free. To obtain a trial license, fill out [the registration form](https://www.cockroachlabs.com/get-cockroachdb/enterprise/) and receive your trial license via email within a few minutes.
 
 {{site.data.alerts.callout_success}}
 For quick local testing of Enterprise features, you can use the [`cockroach demo`](cockroach-demo.html) command, which starts a temporary, in-memory cluster with a SQL shell open and a trial license applied automatically.
@@ -98,7 +98,7 @@ Cockroach Labs is willing to offer self-hosted CockroachDB Enterprise features f
 
 To verify a license, open the [built-in SQL shell](cockroach-sql.html) and use the [`SHOW CLUSTER SETTING`](show-cluster-setting.html) command to check the organization name and license key:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 >  SHOW CLUSTER SETTING cluster.organization;
 ~~~
@@ -109,7 +109,7 @@ To verify a license, open the [built-in SQL shell](cockroach-sql.html) and use t
 (1 row)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 >  SHOW CLUSTER SETTING enterprise.license;
 ~~~
@@ -122,7 +122,7 @@ To verify a license, open the [built-in SQL shell](cockroach-sql.html) and use t
 
 The license setting is also logged in the cockroach.log on the node where the command is run:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 $ cat cockroach.log | grep license
 ~~~

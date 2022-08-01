@@ -2,7 +2,7 @@
 title: GeoJSON
 summary: The GeoJSON data format for representing spatial information is based on JavaScript Object Notation (JSON).
 toc: true
-docs_area: 
+docs_area: reference.sql
 ---
 
 GeoJSON is a textual data format for representing spatial information.  It is based on [JavaScript Object Notation (JSON)](https://www.json.org).
@@ -42,14 +42,14 @@ SRID=4326;POLYGON((-87.906471 43.038902, -95.992775 36.153980, -75.704722 36.076
 
 Convert it to GeoJSON using the `ST_AsGeoJSON` function:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT ST_AsGeoJSON('SRID=4326;POLYGON((-87.906471 43.038902, -95.992775 36.153980, -75.704722 36.076944, -87.906471 43.038902), (-87.623177 41.881832, -90.199402 38.627003, -82.446732 38.413651, -87.623177 41.881832))');
 ~~~
 
 This is the JSON output of the above, but formatted:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ json
 {
     "type": "Polygon",
@@ -98,7 +98,7 @@ This is the JSON output of the above, but formatted:
 
 The JSON below is modified from the output above: it is grouped into a GeoJSON `FeatureCollection` in which each `Feature` has additional styling information (in the `properties` field) that can be used in visualization tools such as [geojson.io](http://geojson.io):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ json
 {
     "type": "FeatureCollection",

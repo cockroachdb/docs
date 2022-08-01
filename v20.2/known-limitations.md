@@ -175,7 +175,7 @@ As a workaround, take a cluster backup instead, as the `system.comments` table i
 ### Cold starts of large clusters may require manual intervention
 
 {{site.data.alerts.callout_info}}
-Resolved as of [v20.2.9](../releases/v20.2.9.html). See [#64567](https://github.com/cockroachdb/cockroach/pull/64567).
+Resolved as of [v20.2.9](../releases/v20.2.html#v20-2-9). See [#64567](https://github.com/cockroachdb/cockroach/pull/64567).
 {{site.data.alerts.end}}
 
 If a cluster contains a large amount of data (>500GiB / node), and all nodes are stopped and then started at the same time, clusters can enter a state where they're unable to startup without manual intervention. In this state, logs fill up rapidly with messages like `refusing gossip from node x; forwarding to node y`, and data and metrics may become inaccessible.
@@ -193,7 +193,7 @@ Once restarted, monitor the Replica Quiescence graph on the [**Replication Dashb
 ### Requests to restarted node in need of snapshots may hang
 
 {{site.data.alerts.callout_info}}
-Resolved as of [v20.2.4](../releases/v20.2.4.html). See [#57789](https://github.com/cockroachdb/cockroach/pull/57789).
+Resolved as of [v20.2.4](../releases/v20.2.html#v20-2-4). See [#57789](https://github.com/cockroachdb/cockroach/pull/57789).
 {{site.data.alerts.end}}
 
 When a node is offline, the [Raft logs](architecture/replication-layer.html#raft-logs) for the ranges on the node get truncated. When the node comes back online, it therefore often needs [Raft snapshots](architecture/replication-layer.html#snapshots) to get many of its ranges back up-to-date. While in this state, requests to a range will hang until its snapshot has been applied, which can take a long time.

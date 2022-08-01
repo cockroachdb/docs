@@ -4,7 +4,7 @@ summary: Install CockroachDB on Mac, Linux, or Windows. Sign up for product rele
 tags: download, binary, homebrew
 toc: true
 key: install-cockroachdb.html
-docs_area: 
+docs_area: deploy
 ---
 
 <div id="os-tabs" class="clearfix">
@@ -13,7 +13,7 @@ docs_area:
   <a href="install-cockroachdb-windows.html"><button id="windows" data-eventcategory="buttonClick-doc-os" data-eventaction="windows">Windows</button></a>
 </div>
 
-<p>See <a href="../releases/{{page.release_info.version}}.html" class="mac-releasenotes-download" id="mac-releasenotes-download-{{page.version.version}}" data-eventcategory="mac-releasenotes-download">Release Notes</a> for what's new in the latest release, {{ page.release_info.version }}. To upgrade to this release from an older version, see <a href="upgrade-cockroach-version.html">Cluster Upgrade</a>.</p>
+<p>See <a href="../releases/{{page.version.version}}.html" class="mac-releasenotes-download" id="mac-releasenotes-download-{{page.version.version}}" data-eventcategory="mac-releasenotes-download">Release Notes</a> for what's new in the latest release, {{ page.release_info.version }}. To upgrade to this release from an older version, see <a href="upgrade-cockroach-version.html">Cluster Upgrade</a>.</p>
 
 {% include cockroachcloud/use-cockroachcloud-instead.md %}
 
@@ -21,7 +21,7 @@ docs_area:
 
 Use one of the options below to install CockroachDB.
 
-<div id="use-homebrew" class="install-option">
+<!-- <div id="use-homebrew" class="install-option">
   <h3>Use Homebrew</h3>
   <ol>
     <li>
@@ -44,7 +44,7 @@ Use one of the options below to install CockroachDB.
 {{site.data.alerts.callout_info}}
 If you previously installed CockroachDB via Homebrew, run <code>brew uninstall cockroach</code> before installing the new version. If you installed using a different method, you may need to remove the binary before installing via Homebrew.
 {{site.data.alerts.end}}
-</div>
+</div> -->
 
 <div id="download-the-binary" class="install-option">
   <h3>Download the binary</h3>
@@ -174,64 +174,7 @@ true
 
 <div id="build-from-source" class="install-option">
   <h3>Build from source</h3>
-  <ol>
-    <li>
-      <p>Install the following prerequisites, as necessary:</p>
-
-      <table>
-        <tr>
-          <td>C++ compiler</td>
-          <td>Must support C++ 11. GCC prior to 6.0 does not work due to <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=48891">this issue</a>. On macOS, Xcode should suffice.</td>
-        </tr>
-        <tr>
-          <td>Go</td>
-          <td>Version 1.15.11+ is required. Older versions might work via <code>make build IGNORE_GOVERS=1</code>.</td>
-        </tr>
-        <tr>
-          <td>Bash</td>
-          <td>Versions 4+ are preferred, but later releases from the 3.x series are also known to work.</td>
-        </tr>
-        <tr>
-          <td>CMake</td>
-          <td>Versions 3.17.0+ are known to work.</td>
-        </tr>
-        <tr>
-          <td>Autoconf</td>
-          <td>Version 2.68+ is required.</td>
-        </tr>
-      </table>
-      <p>A 64-bit system is strongly recommended. Building or running CockroachDB on 32-bit systems has not been tested. You'll also need at least 2GB of RAM. If you plan to run our test suite, you'll need closer to 4GB of RAM.</p>
-    </li>
-    <li>
-      <p>Download the <a href="https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.src.tgz" class="mac-source-download" id="mac-source-download-{{page.version.version}}" data-eventcategory="mac-source-download">CockroachDB {{ page.release_info.version }} source archive</a>, and extract the sources:</p>
-
-      <div class="copy-clipboard">
-        <svg data-eventcategory="mac-source-button" id="copy-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 12"><style>.st0{fill:#A2A2A2;}</style><title>icon/buttons/copy</title><g id="Mask"><path id="path-1_1_" class="st0" d="M4.9 4.9v6h6v-6h-6zM3.8 3.8H12V12H3.8V3.8zM2.7 7.1v1.1H.1S0 5.5 0 0h8.2v2.7H7.1V1.1h-6v6h1.6z"/></g></svg>
-        <svg id="copy-check" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 10"><style>.st1{fill:#54B30E;}</style><path id="path-1_2_" class="st1" d="M3.8 9.1c-.3 0-.5-.1-.6-.2L.3 6C0 5.7-.1 5.2.2 4.8c.3-.4.9-.4 1.3-.1L3.8 7 10.6.2c.3-.3.9-.4 1.2 0 .3.3.3.9 0 1.2L4.4 8.9c-.2.1-.4.2-.6.2z"/></svg>
-      </div>
-      <div class="highlight"><pre class="highlight"><code data-eventcategory="mac-source-download"><span class="nv language-shell mac-source-download" id="mac-source-download-{{ page.version.version }}" data-eventcategory="mac-source-download">$ </span>curl https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.src.tgz | tar -xz</code></pre></div>
-    </li>
-    <li><p>In the extracted directory, run <code>make build</code>:</p>
-
-      {% include copy-clipboard.html %}<div class="highlight"><pre class="highlight"><code><span class="nv language-shell"></span><span class="nb">cd </span>cockroach-{{ page.release_info.version }}</code></pre></div>
-
-      {% include copy-clipboard.html %}<div class="highlight"><pre class="highlight"><code><span class="nv language-shell"></span>make build</code></pre></div>
-
-      <p>The build process can take 10+ minutes, so please be patient.</p>
-    </li>
-    <li>
-    <p>Install the <code>cockroach</code> binary into <code>/usr/local/bin/</code> so it's easy to execute <a href="cockroach-commands.html"><code>cockroach</code> commands</a> from any directory:</p>
-
-    {% include copy-clipboard.html %}<div class="highlight"><pre class="highlight"><code><span class="nv language-shell"></span>make install</code></pre></div>
-    <p>If you get a permissions error, prefix the command with <code>sudo</code>.</p>
-
-    <p>You can also execute the <code>cockroach</code> binary directly from its built location, <code>./src/github.com/cockroachdb/cockroach/cockroach</code>, but the rest of the documentation assumes you have the binary on your <code>PATH</code>.</p>
-    </li>
-    <li>
-      <p>Keep up-to-date with CockroachDB releases and best practices:</p>
-{% include marketo-install.html uid="4" %}
-    </li>
-  </ol>
+  <p>See the <a href="https://wiki.crdb.io/wiki/spaces/CRDB/pages/181338446/Getting+and+building+CockroachDB+from+source">public wiki</a> for guidance.</p>
 </div>
 
 <h2 id="whats-next">What&#39;s next?</h2>

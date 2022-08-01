@@ -88,7 +88,7 @@ These examples assume you are running [an insecure cluster](start-a-local-cluste
 
 List statement diagnostics bundles and/or activation requests:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach statement-diag list --insecure
 ~~~
@@ -121,7 +121,7 @@ $ cockroach statement-diag delete --all --insecure
 
 List statement diagnostics bundles and/or activation requests:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach statement-diag list --insecure
 ~~~

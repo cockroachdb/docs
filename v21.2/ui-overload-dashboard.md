@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.db_console
 ---
 
-<span class="version-tag">New in v21.2:</span> The **Overload dashboard** lets you monitor the performance of the parts of your cluster relevant to the cluster's [admission control system](architecture/admission-control.html). This includes CPU usage, the runnable goroutines waiting per CPU, the health of the persistent stores, and the performance of admission control system when it is enabled.
+{% include_cached new-in.html version="v21.2" %} The **Overload dashboard** lets you monitor the performance of the parts of your cluster relevant to the cluster's [admission control system](architecture/admission-control.html). This includes CPU usage, the runnable goroutines waiting per CPU, the health of the persistent stores, and the performance of admission control system when it is enabled.
 
 To view this dashboard, [access the DB Console](ui-overview.html#db-console-access), click **Metrics** in the left-hand navigation, and select **Dashboard** > **Overload**.
 
@@ -23,7 +23,7 @@ The **Overload** dashboard displays the following time series graphs:
 
 ## LSM L0 Health
 
-This graph shows the health of the [persistent stores](architecture/storage-layer.html), which are implemented as log-structured merge (LSM) trees. Level 0 is the highest level of the LSM tree and consists of files containing the latest data written to the [Pebble storage engine](cockroach-start.html#storage-engine).
+This graph shows the health of the [persistent stores](architecture/storage-layer.html), which are implemented as log-structured merge (LSM) trees. Level 0 is the highest level of the LSM tree and consists of files containing the latest data written to the [Pebble storage engine](cockroach-start.html#storage-engine). For more information about LSM levels and how LSMs work, see [Log-structured Merge-trees](architecture/storage-layer.html#log-structured-merge-trees).
 
 - In the node view, the graph shows the health of the persistent store on the selected node.
 - In the cluster view, the graph shows the health of the persistent stores across all nodes in the cluster.

@@ -2,7 +2,7 @@
 title: System Catalogs
 summary: CockroachDB includes several virtual schemas that enable you to interface with CockroachDB.
 toc: true
-docs_area: 
+docs_area: reference.sql
 ---
 
 CockroachDB includes a set of system catalogs that provide non-stored data to client applications.
@@ -20,7 +20,7 @@ Tables in the system catalogs have varying levels of stability. Not all system c
 
 To see all of the system catalogs for the [current database](sql-name-resolution.html#current-database), you can use a [`SHOW SCHEMAS`](show-schemas.html) statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW SCHEMAS;
 ~~~

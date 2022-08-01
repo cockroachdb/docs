@@ -186,7 +186,7 @@ To work around this limitation, you will need to take the following steps:
 
 1. In the source database, export the [`crdb_region` column](set-locality.html#crdb_region) separately when exporting your data.
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     EXPORT INTO CSV 'nodelocal://0/src_rbr' FROM SELECT crdb_region, i from src_rbr;
     ~~~
@@ -195,26 +195,26 @@ To work around this limitation, you will need to take the following steps:
 
 1. In the destination database, create a table that has a `crdb_region` column of the right type as shown below.
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     CREATE TABLE dest_rbr (crdb_region public.crdb_internal_region NOT NULL, i INT);
     ~~~
 
 1. Import the data (including the `crdb_region` column explicitly) using [`IMPORT INTO`](import-into.html):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     IMPORT INTO dest_rbr (crdb_region, i) CSV DATA ('nodelocal://0/src_rbr/export*.csv')
     ~~~
 
 1. Convert the destination table to `REGIONAL BY ROW` using [`ALTER TABLE ... ALTER COLUMN`](alter-column.html) and [`ALTER TABLE ... SET LOCALITY`](set-locality.html):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     ALTER TABLE dest_rbr ALTER COLUMN crdb_region SET DEFAULT default_to_database_primary_region(gateway_region())::public.crdb_internal_region;
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     ALTER TABLE dest_rbr SET LOCALITY REGIONAL BY ROW AS crdb_region;
     ~~~
@@ -253,12 +253,6 @@ If you are [performing an `IMPORT` of a `PGDUMP`](migrate-from-postgres.html) wi
 4. Add partial indexes on the CockroachDB server.
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/50225)
-
-### Historical reads on restored objects
-
-{% include {{ page.version.version }}/known-limitations/restore-aost.md %}
-
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/53044)
 
 ### Spatial support limitations
 
@@ -310,7 +304,7 @@ CockroachDB supports efficiently storing and querying [spatial data](spatial-dat
 
 It is not currently possible to use a subquery in a [`SET`](set-vars.html) or [`SET CLUSTER SETTING`](set-cluster-setting.html) statement. For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET application_name = (SELECT 'a' || 'b');
 ~~~
@@ -409,22 +403,22 @@ As a workaround, set `default_int_size` via your database driver, or ensure that
 
 It is currently not possible to [add a column](add-column.html) to a table when the column uses a [sequence](create-sequence.html) as the [`DEFAULT`](default-value.html) value, for example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE t (x INT);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO t(x) VALUES (1), (2), (3);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE SEQUENCE s;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE t ADD COLUMN y INT DEFAULT nextval('s');
 ~~~
@@ -489,7 +483,7 @@ For example, let's say that latency is 10ms from nodes in datacenter A to nodes 
 
 Many string operations are not properly overloaded for [collated strings](collate.html), for example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT 'string1' || 'string2';
 ~~~
@@ -501,7 +495,7 @@ Many string operations are not properly overloaded for [collated strings](collat
 (1 row)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT ('string1' collate en) || ('string2' collate en);
 ~~~
@@ -557,12 +551,12 @@ The [built-in SQL shell](cockroach-sql.html) stores its command history in a sin
 
 As a workaround, set the `COCKROACH_SQL_CLI_HISTORY` environment variable to different values for the two different shells, for example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ export COCKROACH_SQL_CLI_HISTORY=.cockroachsql_history_shell_1
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ export COCKROACH_SQL_CLI_HISTORY=.cockroachsql_history_shell_2
 ~~~
@@ -656,3 +650,7 @@ CockroachDB performs a full-table scan on all inserts when using [partitioned un
 A workaround is to use [stored computed columns](computed-columns.html).
 
 [Tracking GitHub Issues](https://github.com/cockroachdb/cockroach/issues/68132)
+
+### Remove a `UNIQUE` index created as part of `CREATE TABLE`
+
+{% include {{ page.version.version }}/known-limitations/drop-unique-index-from-create-table.md %}

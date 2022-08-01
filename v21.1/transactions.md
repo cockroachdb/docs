@@ -33,7 +33,7 @@ In CockroachDB, a transaction is set up by surrounding SQL statements with the [
 
 To use [advanced client-side transaction retries](advanced-client-side-transaction-retries.html), you should also include the [`SAVEPOINT`](savepoint.html), [`ROLLBACK TO SAVEPOINT`](rollback-transaction.html) and [`RELEASE SAVEPOINT`](release-savepoint.html) statements.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BEGIN;
 
@@ -129,7 +129,7 @@ transaction and so you should write your transactions to use
 
 Your application should include client-side retry handling when the statements are sent individually, such as:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BEGIN;
 
@@ -201,7 +201,7 @@ You can also set the priority immediately after a transaction is started:
 To set the default transaction priority for all transactions in a session, use the `default_transaction_priority` [session variable](set-vars.html). For example:
 
 ~~~ sql
-> SET default_transaction_priority 'high';
+> SET default_transaction_priority = 'high';
 ~~~
 
 {{site.data.alerts.callout_info}}

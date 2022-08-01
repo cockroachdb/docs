@@ -4,7 +4,7 @@ summary: How to upgrade a secure 3-node CockroachDB cluster with Kubernetes.
 toc: true
 toc_not_nested: true
 secure: true
-docs_area: 
+docs_area: deploy
 ---
 
 {{site.data.alerts.callout_info}}
@@ -30,7 +30,7 @@ If you [deployed CockroachDB on Red Hat OpenShift](deploy-cockroachdb-with-kuber
 
 1. Verify that you can upgrade.
 
-    To upgrade to a new major version, you must first be on a production release of the previous version. The release does not need to be the latest production release of the previous version, but it must be a [production release](../releases/index.html#production-releases) and not a [testing release](../releases/index.html#testing-releases) (alpha/beta).
+    To upgrade to a new major version, you must first be on a production release of the previous version. The release does not need to be the latest production release of the previous version, but it must be a production [release](../releases/index.html) and not a testing release (alpha/beta).
 
     Therefore, in order to upgrade to v21.2, you must be on a production release of v21.1.
 
@@ -47,11 +47,7 @@ If you [deployed CockroachDB on Red Hat OpenShift](deploy-cockroachdb-with-kuber
         - Make sure all nodes are on the same version. If not all nodes are on the same version, upgrade them to the cluster's highest current version first, and then start this process over.
         - Make sure capacity and memory usage are reasonable for each node. Nodes must be able to tolerate some increase in case the new version uses more resources for your workload. Also go to **Metrics > Dashboard: Hardware** and make sure CPU percent is reasonable across the cluster. If there's not enough headroom on any of these metrics, consider [adding nodes](scale-cockroachdb-kubernetes.html#add-nodes) to your cluster before beginning your upgrade.
 
-{% comment %}
-1. Review the [backward-incompatible changes in v21.2](../releases/v21.2.0.html#backward-incompatible-changes) and [deprecated features](../releases/v21.2.0.html#deprecations). If any affect your deployment, make the necessary changes before starting the rolling upgrade to v21.2.
-{% endcomment %}
-
-1. Review the backward-incompatible changes in v21.2 and deprecated features. If any affect your deployment, make the necessary changes before starting the rolling upgrade to v21.2.
+1. Review the [backward-incompatible changes in v21.2](../releases/v21.2.html#v21-2-0-backward-incompatible-changes) and [deprecated features](../releases/v21.2.html#v21-2-0-deprecations). If any affect your deployment, make the necessary changes before starting the rolling upgrade to v21.2.
 
 1. Change the desired Docker image in the custom resource:
 
@@ -89,7 +85,7 @@ If you [deployed CockroachDB on Red Hat OpenShift](deploy-cockroachdb-with-kuber
 
     You can also check the CockroachDB version of each node in the [DB Console](ui-cluster-overview-page.html#node-details).
 
-1. Monitor the stability and performance of your cluster until you are comfortable with the upgrade (generally at least a day). 
+1. Monitor the stability and performance of your cluster until you are comfortable with the upgrade (generally at least a day).
 
     If you decide to roll back the upgrade, revert the image name in the custom resource and apply the new value.
 

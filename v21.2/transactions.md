@@ -2,7 +2,7 @@
 title: Transactions
 summary: CockroachDB supports bundling multiple SQL statements into a single all-or-nothing transaction.
 toc: true
-docs_area: 
+docs_area: develop
 ---
 
 CockroachDB supports bundling multiple SQL statements into a single all-or-nothing transaction. Each transaction guarantees [ACID semantics](https://en.wikipedia.org/wiki/ACID) spanning arbitrary tables and rows, even when data is distributed. If a transaction succeeds, all mutations are applied together with virtual simultaneity. If any part of a transaction fails, the entire transaction is aborted, and the database is left unchanged. CockroachDB guarantees that while a transaction is pending, it is isolated from other concurrent transactions with serializable [isolation](#isolation-levels).
@@ -34,7 +34,7 @@ In CockroachDB, a transaction is set up by surrounding SQL statements with the [
 
 To use [advanced client-side transaction retries](advanced-client-side-transaction-retries.html), you should also include the [`SAVEPOINT`](savepoint.html), [`ROLLBACK TO SAVEPOINT`](rollback-transaction.html) and [`RELEASE SAVEPOINT`](release-savepoint.html) statements.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BEGIN;
 
@@ -134,7 +134,7 @@ In the event [bounded staleness reads](follower-reads.html#bounded-staleness-rea
 
 Your application should include client-side retry handling when the statements are sent individually, such as:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BEGIN;
 
@@ -206,7 +206,7 @@ You can also set the priority immediately after a transaction is started:
 To set the default transaction priority for all transactions in a session, use the `default_transaction_priority` [session variable](set-vars.html). For example:
 
 ~~~ sql
-> SET default_transaction_priority 'high';
+> SET default_transaction_priority = 'high';
 ~~~
 
 {{site.data.alerts.callout_info}}

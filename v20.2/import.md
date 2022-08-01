@@ -21,6 +21,10 @@ The `IMPORT` [statement](sql-statements.html) imports the following types of dat
 - `IMPORT` cannot be used during a [rolling upgrade](upgrade-cockroach-version.html).
 - <span class="version-tag">New in v20.2:</span> `IMPORT` cannot be used with [user-defined types](create-type.html). Use [`IMPORT INTO`](import-into.html) instead.
 
+{{site.data.alerts.callout_info}}
+Optimize import operations in your applications by following our [Import Performance Best Practices](import-performance-best-practices.html).
+{{site.data.alerts.end}}
+
 ## Required privileges
 
 #### Table privileges

@@ -2,10 +2,8 @@
 title: Take Backups with Revision History and Restore from a Point-in-time
 summary: Learn about the advanced options you can use when you backup and restore a CockroachDB cluster.
 toc: true
-docs_area: 
+docs_area: manage
 ---
-
-The ability to [backup a full cluster](backup.html#backup-a-cluster) has been added and the syntax for [incremental backups](backup.html#create-incremental-backups) is simplified. Because of these two changes, [basic backup usage](take-full-and-incremental-backups.html) is now sufficient for most CockroachDB clusters. However, you may want to control your backup and restore options more explicitly.
 
 This doc provides information about how to take backups with revision history and restore from a point-in-time.
 
@@ -51,7 +49,6 @@ To view the available backup subdirectories you can restore from, use [`SHOW BAC
 - [Take Full and Incremental Backups](take-full-and-incremental-backups.html)
 - [Take and Restore Encrypted Backups](take-and-restore-encrypted-backups.html)
 - [Take and Restore Locality-aware Backups](take-and-restore-locality-aware-backups.html)
-- [`SQL DUMP`](cockroach-dump.html)
 - [`IMPORT`](migration-overview.html)
 - [Use the Built-in SQL Client](cockroach-sql.html)
 - [Other Cockroach Commands](cockroach-commands.html)

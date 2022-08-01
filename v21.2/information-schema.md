@@ -2,7 +2,7 @@
 title: information_schema
 summary: The information_schema schema contains read-only views that you can use for introspection into your database's tables, columns, indexes, and views.
 toc: true
-docs_area: 
+docs_area: reference.sql
 ---
 
 The `information_schema` [system catalog](system-catalogs.html) contains information about your database's tables, columns, indexes, and views. This information can be used for introspection and reflection.
@@ -173,7 +173,7 @@ Column | Description
 `table_schema` | Name of the schema containing the table that contains the column.
 `table_name` | Name of the table.
 `column_name` | Name of the column.
-`privilege_type` | Name of the [privilege](authorization.html#assign-privileges).
+`privilege_type` | Name of the [privilege](security-reference/authorization.html#managing-privileges).
 `is_grantable` | Always `NULL` (unsupported by CockroachDB).
 
 ### column_udt_usage
@@ -248,7 +248,7 @@ Column | Description
 
 ### role_table_grants
 
-`role_table_grants` identifies which [privileges](authorization.html#assign-privileges) have been granted on tables or views where the grantor
+`role_table_grants` identifies which [privileges](security-reference/authorization.html#managing-privileges) have been granted on tables or views where the grantor
 or grantee is a currently enabled role. This table is identical to [`table_privileges`](#table_privileges).
 
 Column | Description
@@ -258,20 +258,20 @@ Column | Description
 `table_catalog` | Name of the database containing the table.
 `table_schema` | Name of the schema containing the table.
 `table_name` | Name of the table.
-`privilege_type` | Name of the [privilege](authorization.html#assign-privileges).
+`privilege_type` | Name of the [privilege](security-reference/authorization.html#managing-privileges).
 `is_grantable` | Always `NULL` (unsupported by CockroachDB).
 `with_hierarchy` | Always `NULL` (unsupported by CockroachDB).
 
 ### schema_privileges
 
-`schema_privileges` identifies which [privileges](authorization.html#assign-privileges) have been granted to each user at the database level.
+`schema_privileges` identifies which [privileges](security-reference/authorization.html#managing-privileges) have been granted to each user at the database level.
 
 Column | Description
 -------|-----------
 `grantee` | Username of user with grant.
 `table_catalog` | Name of the database containing the constrained table.
 `table_schema` | Name of the schema containing the constrained table.
-`privilege_type` | Name of the [privilege](authorization.html#assign-privileges).
+`privilege_type` | Name of the [privilege](security-reference/authorization.html#managing-privileges).
 `is_grantable` | Always `NULL` (unsupported by CockroachDB).
 
 ### schemata
@@ -306,7 +306,7 @@ Column | Description
 
 ### session_variables
 
- `session_variables` contains information about the [session variable settings](set-vars.html) for your session. `session_variables` contains a `variable` column and a `value` column. The `value` column corresponds to the output of the [`SHOW (session settings)`](show-vars.html) statement.
+ `session_variables` contains information about the [session variable settings](set-vars.html) for your session. `session_variables` contains a `variable` column and a `value` column. The `value` column corresponds to the output of the [`SHOW {session variable}`](show-vars.html) statement.
 
 For a list of the session variables, see [supported variables](show-vars.html#supported-variables).
 
@@ -348,7 +348,7 @@ Column | Description
 
 ### table_privileges
 
-`table_privileges` identifies which [privileges](authorization.html#assign-privileges) have been granted to each user at the table level.
+`table_privileges` identifies which [privileges](security-reference/authorization.html#managing-privileges) have been granted to each user at the table level.
 
 Column | Description
 -------|-----------
@@ -357,7 +357,7 @@ Column | Description
 `table_catalog` | Name of the database that the grant applies to.
 `table_schema` | Name of the schema that the grant applies to.
 `table_name` | Name of the table that the grant applies to.
-`privilege_type` | Type of [privilege](authorization.html#assign-privileges): `SELECT`, `INSERT`, `UPDATE`, `DELETE`, `TRUNCATE`, `REFERENCES`, or `TRIGGER`.
+`privilege_type` | Type of [privilege](security-reference/authorization.html#managing-privileges): `SELECT`, `INSERT`, `UPDATE`, `DELETE`, `TRUNCATE`, `REFERENCES`, or `TRIGGER`.
 `is_grantable` | Always `NULL` (unsupported by CockroachDB).
 `with_hierarchy` | Always `NULL` (unsupported by CockroachDB).
 
@@ -383,17 +383,17 @@ Column | Description
 `type_catalog` | Name of the database that contains the type (always the current database).
 `type_schema` | Name of the schema that contains the type.
 `type_name` | Name of the type.
-`privilege_type` | Type of [privilege](authorization.html#assign-privileges).
+`privilege_type` | Type of [privilege](security-reference/authorization.html#managing-privileges).
 
 ### user_privileges
 
-`user_privileges` identifies global [privileges](authorization.html#assign-privileges).
+`user_privileges` identifies global [privileges](security-reference/authorization.html#managing-privileges).
 
 Column | Description
 -------|-----------
 `grantee` | Username of user with grant.
 `table_catalog` | Name of the database that the privilege applies to.
-`privilege_type` | Type of [privilege](authorization.html#assign-privileges).
+`privilege_type` | Type of [privilege](security-reference/authorization.html#managing-privileges).
 `is_grantable` | Always `NULL` (unsupported by CockroachDB).
 
 ### views
@@ -416,7 +416,7 @@ Column | Description
 
 ### Empty tables
 
-<span class="version-tag">New in v21.2</span>: For compatibility with third-party [PostgreSQL](https://www.postgresql.org/docs/13/information-schema.html) and [MySQL](https://dev.mysql.com/doc/refman/8.0/en/information-schema-table-reference.html) tooling, `information_schema` includes the following empty tables:
+{% include_cached new-in.html version="v21.2" %} For compatibility with third-party [PostgreSQL](https://www.postgresql.org/docs/13/information-schema.html) and [MySQL](https://dev.mysql.com/doc/refman/8.0/en/information-schema-table-reference.html) tooling, `information_schema` includes the following empty tables:
 
 - `attributes`
 - `check_constraint_routine_usage`
@@ -485,7 +485,7 @@ Column | Description
 You can run [`SELECT` queries](selection-queries.html) on the tables in `information_schema`.
 
 {{site.data.alerts.callout_success}}
-The `information_schema` views typically represent objects that the current user has privilege to access. To ensure you can view all the objects in a database, access it as a user with [`admin` privileges](authorization.html#admin-role).
+The `information_schema` views typically represent objects that the current user has privilege to access. To ensure you can view all the objects in a database, access it as a user with [`admin` privileges](security-reference/authorization.html#admin-role).
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
@@ -494,7 +494,7 @@ Unless specified otherwise, queries to `information_schema` assume the [current 
 
 For example, to retrieve all columns from the `table_constraints` table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM movr.information_schema.table_constraints;
 ~~~
@@ -512,7 +512,7 @@ For example, to retrieve all columns from the `table_constraints` table:
 
 And to retrieve specific columns from the `table_constraints` table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT table_name, constraint_name FROM movr.information_schema.table_constraints;
 ~~~

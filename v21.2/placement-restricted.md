@@ -2,10 +2,10 @@
 title: ALTER DATABASE ... PLACEMENT (RESTRICTED | DEFAULT)
 summary: The ALTER DATABASE ... PLACEMENT (RESTRICTED | DEFAULT) statement constrains replica placement to a REGIONAL table's home region.
 toc: true
-docs_area: 
+docs_area: reference.sql
 ---
 
-<span class="version-tag">New in v21.2</span>: The `ALTER DATABASE ... PLACEMENT RESTRICTED` [statement](sql-statements.html) is used to constrain the replica placement for a [multi-region database](multiregion-overview.html)'s [regional tables](regional-tables.html) to the [home regions](set-locality.html#crdb_region) associated with those tables. [Regional tables](regional-tables.html) are those with [`REGIONAL BY ROW`](multiregion-overview.html#regional-by-row-tables) or [`REGIONAL BY TABLE`](multiregion-overview.html#regional-tables) localities. `ALTER DATABASE ... PLACEMENT RESTRICTED` is a way of opting out of [non-voting replicas](architecture/replication-layer.html#non-voting-replicas) for [regional tables](regional-tables.html) to accomplish one or more of the following goals:
+{% include_cached new-in.html version="v21.2" %} The `ALTER DATABASE ... PLACEMENT RESTRICTED` [statement](sql-statements.html) is used to constrain the replica placement for a [multi-region database](multiregion-overview.html)'s [regional tables](regional-tables.html) to the [home regions](set-locality.html#crdb_region) associated with those tables. [Regional tables](regional-tables.html) are those with [`REGIONAL BY ROW`](multiregion-overview.html#regional-by-row-tables) or [`REGIONAL BY TABLE`](multiregion-overview.html#regional-tables) localities. `ALTER DATABASE ... PLACEMENT RESTRICTED` is a way of opting out of [non-voting replicas](architecture/replication-layer.html#non-voting-replicas) for [regional tables](regional-tables.html) to accomplish one or more of the following goals:
 
 - Implement a [data domiciling](data-domiciling.html) strategy.
 - Reduce the amount of data stored on the cluster.
@@ -45,8 +45,8 @@ The replica placement policies available via this statement are:
 
 To use this statement, the user must have one of the following:
 
-- Membership to the [`admin`](authorization.html#roles) role for the cluster.
-- [Ownership](authorization.html#object-ownership) or the [`CREATE` privilege](authorization.html#supported-privileges) for the database and all tables in the database.
+- Membership to the [`admin`](security-reference/authorization.html#roles) role for the cluster.
+- [Ownership](security-reference/authorization.html#object-ownership) or the [`CREATE` privilege](security-reference/authorization.html#supported-privileges) for the database and all tables in the database.
 
 ## Examples
 
@@ -54,7 +54,7 @@ To follow along with the examples below:
 
 1. Start a [demo cluster](cockroach-demo.html) with the [`--global` flag](cockroach-demo.html#general) to simulate a multi-region cluster:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     cockroach demo --global --nodes 9
     ~~~
@@ -79,7 +79,7 @@ To follow along with the examples below:
 
 ### Create a database with the replica placement policy set to restricted
 
-If you know at table creation time that you'd like to set the table's replica placement policy to ["restricted"](#parameters-restricted), you can do so in a [`CREATE TABLE`](create-table.html) statement as shown below:
+If you know at database creation time that you'd like to set the database's replica placement policy to ["restricted"](#parameters-restricted), you can do so in a [`CREATE DATABASE`](create-database.html) statement as shown below:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -118,10 +118,10 @@ ALTER DATABASE PLACEMENT
 
 ## See also
 
-- [Multi-region overview](multiregion-overview.html)
+- [Multi-Region Capabilities Overview](multiregion-overview.html)
 - [`ALTER DATABASE`](alter-database.html)
 - [`ADD REGION`](add-region.html)
 - [Ranges](architecture/overview.html#architecture-range)
 - [Non-voting replicas](architecture/replication-layer.html#non-voting-replicas)
-- [Other SQL Statements](sql-statements.html)
+- [SQL Statements](sql-statements.html)
 - [Data Domiciling with CockroachDB](data-domiciling.html)

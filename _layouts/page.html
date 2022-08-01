@@ -9,6 +9,8 @@ layout: default
 {% endif %}
 {% endunless %}
 
+{% comment %} Show the version switcher only if 1) the current page has a version and 2) the current page isn't the home page of the docs. {% endcomment %}
+
 {% if page.homepage != true %}
 
 <div class="post-header mb-3
@@ -21,10 +23,12 @@ layout: default
 ">
   <h1 class="post-title-main">{{ page.title }}</h1>
   {% unless page.contribute == false %}
-      {% include contribute-options.html %}
+        {% include contribute-options.html %}
   {% endunless %}
 </div>
 {% endif %}
+
+{% comment %} If the page supports it, show the contribution options. {% endcomment %}
 
 <div class="post-content">
   <!--
@@ -36,19 +40,34 @@ layout: default
       <div id="toc"></div>
    {% endif %}
 
-   {% if page.url contains "v1.0" or page.url contains 'v1.1' or page.url contains 'v2.0' or page.url contains 'v2.1' or page.url contains 'v19.1'  or page.url contains 'v19.2' or page.url contains 'v20.1'%}
+   {% comment %} If toc=true within the YAML front matter of a doc page, show the table of contents. {% endcomment %}
+
+    {% assign x = site.data.versions | where_exp: "m", "m.major_version == page.version.version" | first %}
+
+    {% unless x.maint_supp_exp_date == "N/A" or x.asst_supp_exp_date == "N/A" %}
+
+    {% assign today = "today" | date: "%s" %} {% comment %} Fetch today's date and format it in seconds. {% endcomment %}
+
+    {% assign m = x.maint_supp_exp_date | date: "%s" %} {% comment %} Format m_raw in seconds. {% endcomment %}
+    {% assign a = x.asst_supp_exp_date | date: "%s" %} {% comment %} Format a_raw in seconds. {% endcomment %}
+
+   {% if page.version and a < today %} {% comment %} If the assistance support expiration date has passed, show the unsupported message. {% endcomment %}
       {% include_cached unsupported-version.md %}
    {% endif %}
 
-   {% if page.url contains 'v20.2' %}
-      {% include_cached unsupported-version-soon.md %}
+   {% if page.version and a >= today and m < today %} {% comment %} If the maintenance support expiration has passed but the version is still within the assistance support period, show this message nad pass the assistance support expiration date. {% endcomment %}
+      {%assign ed = x.asst_supp_exp_date | date: "%B %e, %Y" %}
+      {% include_cached unsupported-version-soon.md exp_date=ed %}
    {% endif %}
+
+   {% endunless %}
 
    {{content}}
 
    {% if page.feedback != false %}
-      {% include_cached feedback-widget.html %}
+      {% include feedback-widget-bottom.html %}
    {% endif %}
+   {% comment %} Show feedback widget at bottom of page.{% endcomment %}
 
    {% if page.docs_area %}
      <script>
@@ -57,7 +76,7 @@ layout: default
          'docsArea' : '{{ page.docs_area }}'
      });
      </script>
-   {% endif %}
+   {% endif %} {% comment %} Add JS to track docs area for reporting. {% endcomment %}
    {% if page.product_area %}
      <script>
          window.dataLayer = window.dataLayer || [];
@@ -65,6 +84,6 @@ layout: default
          'productArea': '{{ page.product_area }}'
      });
      </script>
-   {% endif %}
+   {% endif %} {% comment %} Add JS to track product area for reporting. {% endcomment %}
 
 </div>

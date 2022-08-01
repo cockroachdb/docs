@@ -40,7 +40,7 @@ Subcommand | Usage
 
 ## Certificate directory
 
-When using `cockroach cert` to create node and client certificates, you will need access to a local copy of the CA certificate and key. It is therefore recommended to create all certificates and keys in one place and then distribute node and client certificates and keys appropriately. For the CA key, be sure to store it somewhere safe and keep a backup; if you lose it, you will not be able to add new nodes or clients to your cluster. For a walkthrough of this process, see [Manual Deployment](manual-deployment.html).
+When using `cockroach cert` to create node and client certificates, you will need access to a local copy of the CA certificate and key. It is therefore recommended to create all certificates and keys in one place and then distribute node and client certificates and keys appropriately. For the CA key, be sure to store it somewhere safe and keep a backup; if you lose it, you will not be able to add new nodes or clients to your cluster. For a tutorial of this process, see [Manual Deployment](manual-deployment.html).
 
 ## Required keys and certificates
 
@@ -145,12 +145,12 @@ Flag | Description
 
 1. Create two directories:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ mkdir certs
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ mkdir my-safe-directory
     ~~~
@@ -159,14 +159,14 @@ Flag | Description
 
 2. Generate the CA certificate and key:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach cert create-ca \
     --certs-dir=certs \
     --ca-key=my-safe-directory/ca.key
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ ls -l certs
     ~~~
@@ -180,7 +180,7 @@ Flag | Description
 
 1. Generate the certificate and key for the first node:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach cert create-node \
     node1.example.com \
@@ -190,7 +190,7 @@ Flag | Description
     --ca-key=my-safe-directory/ca.key
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ ls -l certs
     ~~~
@@ -204,13 +204,13 @@ Flag | Description
 
 2. Upload certificates to the first node:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     # Create the certs directory:
     $ ssh <username>@<node1 address> "mkdir certs"
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     # Upload the CA certificate and node certificate and key:
     $ scp certs/ca.crt \
@@ -221,7 +221,7 @@ Flag | Description
 
 3. Delete the local copy of the first node's certificate and key:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ rm certs/node.crt certs/node.key
     ~~~
@@ -230,7 +230,7 @@ Flag | Description
 
 4. Create the certificate and key for the second node:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach cert create-node \
     node2.example.com \
@@ -239,7 +239,7 @@ Flag | Description
     --ca-key=my-safe-directory/ca.key
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ ls -l certs
     ~~~
@@ -253,13 +253,13 @@ Flag | Description
 
 5. Upload certificates to the second node:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     # Create the certs directory:
     $ ssh <username>@<node2 address> "mkdir certs"
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     # Upload the CA certificate and node certificate and key:
     $ scp certs/ca.crt \
@@ -272,7 +272,7 @@ Flag | Description
 
 ### Create the certificate and key pair for a client
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach cert create-client \
 maxroach \
@@ -280,7 +280,7 @@ maxroach \
 --ca-key=my-safe-directory/ca.key
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ ls -l certs
 ~~~
@@ -296,7 +296,7 @@ total 40
 
 ### List certificates and keys
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach cert list \
 --certs-dir=certs

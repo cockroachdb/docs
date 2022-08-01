@@ -2,7 +2,7 @@
 title: Update Data
 summary: How to update the data in CockroachDB from various programming languages
 toc: true
-docs_area: 
+docs_area: develop
 ---
 
 This page has instructions for updating existing rows of data in CockroachDB, using the following [SQL statements](sql-statements.html):
@@ -15,8 +15,7 @@ This page has instructions for updating existing rows of data in CockroachDB, us
 
 Before reading this page, do the following:
 
-- [Install CockroachDB](install-cockroachdb.html).
-- [Start a local cluster](secure-a-cluster.html), or [create a {{ site.data.products.dedicated }} cluster](../cockroachcloud/create-your-cluster.html).
+- [Create a {{ site.data.products.serverless }} cluster](../cockroachcloud/quickstart.html) or [start a local cluster](../cockroachcloud/quickstart.html?filters=local).
 - [Install a Postgres client](install-client-drivers.html).
 - [Connect to the database](connect-to-the-database.html).
 - [Create a database schema](schema-design-overview.html).
@@ -75,7 +74,7 @@ Suppose you want to change the status of all of the vehicles owned by a particul
 
 <section class="filter-content" markdown="1" data-scope="sql">
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 UPDATE vehicle SET status = 'unavailable' WHERE owner_id = 'bd70a3d7-0a3d-4000-8000-000000000025';
 ~~~
@@ -84,23 +83,24 @@ UPDATE vehicle SET status = 'unavailable' WHERE owner_id = 'bd70a3d7-0a3d-4000-8
 
 <section class="filter-content" markdown="1" data-scope="go">
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ go
-// 'db' is an open database connection
+// 'conn' is an open database connection
 
 ownerID := "bd70a3d7-0a3d-4000-8000-000000000025"
 
-if _, err := db.Exec("UPDATE vehicle SET status = 'unavailable' WHERE owner_id = $1", ownerID); err != nil {
-  return err
-}
-return nil
+err = conn.QueryRow(context.Background(), "UPDATE vehicle SET status = 'unavailable' WHERE owner_id = $1", ownerID)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "QueryRow failed: %v\n", err)
+		os.Exit(1)
+	}
 ~~~
 
 </section>
 
 <section class="filter-content" markdown="1" data-scope="java">
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ java
 // ds is an org.postgresql.ds.PGSimpleDataSource
 
@@ -121,7 +121,7 @@ try (Connection connection = ds.getConnection()) {
 
 <section class="filter-content" markdown="1" data-scope="python">
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ python
 # conn is a psycopg2 connection
 
@@ -176,7 +176,7 @@ Suppose you want to add some promo codes to the MovR platform, and overwrite any
 
 <section class="filter-content" markdown="1" data-scope="sql">
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 UPSERT INTO promo_codes (code, description, rules)
   VALUES ('0_explain_theory_something','Fifteen percent off.', '{"type": "percent_discount", "value": "15%"}'),
@@ -188,7 +188,7 @@ UPSERT INTO promo_codes (code, description, rules)
 
 <section class="filter-content" markdown="1" data-scope="go">
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ go
 // 'db' is an open database connection
 
@@ -215,7 +215,7 @@ return nil
 
 <section class="filter-content" markdown="1" data-scope="java">
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ java
 // ds is an org.postgresql.ds.PGSimpleDataSource
 
@@ -253,7 +253,7 @@ try (Connection connection = ds.getConnection()) {
 
 <section class="filter-content" markdown="1" data-scope="python">
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ python
 # conn is a psycopg2 connection
 
@@ -325,7 +325,7 @@ Suppose you want to record a particular user's promo code usage count. The `user
 
 <section class="filter-content" markdown="1" data-scope="sql">
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 INSERT INTO user_promo_codes (city, user_id, code, "timestamp", usage_count)
     VALUES ('new york', '147ae147-ae14-4b00-8000-000000000004', 'promo_code', now(), 1)
@@ -337,7 +337,7 @@ INSERT INTO user_promo_codes (city, user_id, code, "timestamp", usage_count)
 
 <section class="filter-content" markdown="1" data-scope="go">
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ go
 // 'db' is an open database connection
 
@@ -360,7 +360,7 @@ return nil
 
 <section class="filter-content" markdown="1" data-scope="java">
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ java
 // ds is an org.postgresql.ds.PGSimpleDataSource
 
@@ -389,7 +389,7 @@ try (Connection connection = ds.getConnection()) {
 
 <section class="filter-content" markdown="1" data-scope="python">
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ python
 # conn is a psycopg2 connection
 

@@ -27,7 +27,7 @@ The `root` user is created by default for each cluster. The `root` user is assig
 ## Roles
 
 {{site.data.alerts.callout_info}}
-[`CREATE ROLE`](create-role.html) is an enterprise feature. To request a 30-day trial license, see [Get CockroachDB](https://www.cockroachlabs.com/get-cockroachdb/).
+[`CREATE ROLE`](create-role.html) is an enterprise feature. To request a 30-day trial license, see [Get CockroachDB](https://www.cockroachlabs.com/get-cockroachdb/enterprise).
 {{site.data.alerts.end}}
 
 A role is a group of users and/or other roles for which you can grant or revoke privileges as a whole. To simplify access management, create a role and grant privileges to the role, then create SQL users and grant them membership to the role.
@@ -258,7 +258,7 @@ Let's say we want to create the following access control setup for the `movr` da
 <section class="filter-content" markdown="1" data-scope="rbac">
 
 {{site.data.alerts.callout_info}}
-The [`CREATE ROLE`](create-role.html) command used in this example is an enterprise-only feature. To request a 30-day trial license, see [Get CockroachDB](https://www.cockroachlabs.com/get-cockroachdb/).
+The [`CREATE ROLE`](create-role.html) command used in this example is an enterprise-only feature. To request a 30-day trial license, see [Get CockroachDB](https://www.cockroachlabs.com/get-cockroachdb/enterprise).
 
 Note that [`GRANT <roles>`](grant-roles.html) does not require an enterprise license. All users can grant the [default roles](#default-roles).
 {{site.data.alerts.end}}

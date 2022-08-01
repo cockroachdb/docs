@@ -3,8 +3,14 @@
   "is_top_level": true,
   "items": [
     {
-      "title": "Choose a Deployment Strategy",
+      "title": "Deployment Options",
       "items": [
+        {
+          "title": "Choose a Deployment Option",
+          "urls": [
+            "/${VERSION}/choose-a-deployment-option.html"
+          ]
+        },
         {
           "title": "CockroachDB Cloud",
           "items": [
@@ -35,6 +41,12 @@
               "title": "CockroachDB Dedicated",
               "items": [
                 {
+                  "title": "Quickstart with CockroachDB Dedicated",
+                  "urls": [
+                    "/cockroachcloud/quickstart-trial-cluster.html"
+                  ]
+                },
+                {
               	  "title": "Create a CockroachDB Dedicated Cluster",
               	  "urls": [
               	    "/cockroachcloud/create-your-cluster.html"
@@ -52,13 +64,6 @@
               	    "/cockroachcloud/production-checklist.html"
               	  ]
               	}
-              ]
-            },
-            {
-              "title": "CockroachDB Cloud FAQs",
-              "urls": [
-                "/cockroachcloud/serverless-faqs.html",
-                "/cockroachcloud/frequently-asked-questions.html"
               ]
             }
           ]
@@ -136,53 +141,6 @@
                   ]
                 },
                 {
-                  "title": "Operate CockroachDB on Kubernetes",
-                  "items": [
-                    {
-                      "title": "Pod Scheduling",
-                      "urls": [
-                        "/${VERSION}/schedule-cockroachdb-kubernetes.html"
-                      ]
-                    },
-                    {
-                      "title": "Resource Management",
-                      "urls": [
-                        "/${VERSION}/configure-cockroachdb-kubernetes.html"
-                      ]
-                    },
-                    {
-                      "title": "Certificate Management",
-                      "urls": [
-                        "/${VERSION}/secure-cockroachdb-kubernetes.html"
-                      ]
-                    },
-                    {
-                      "title": "Cluster Scaling",
-                      "urls": [
-                        "/${VERSION}/scale-cockroachdb-kubernetes.html"
-                      ]
-                    },
-                    {
-                      "title": "Cluster Monitoring",
-                      "urls": [
-                        "/${VERSION}/monitor-cockroachdb-kubernetes.html"
-                      ]
-                    },
-                    {
-                      "title": "Cluster Upgrades",
-                      "urls": [
-                        "/${VERSION}/upgrade-cockroachdb-kubernetes.html"
-                      ]
-                    },
-                    {
-                      "title": "Optimizing Performance",
-                      "urls": [
-                        "/${VERSION}/kubernetes-performance.html"
-                      ]
-                    }
-                  ]
-                },
-                {
                   "title": "OpenShift Deployment",
                   "urls": [
                     "/${VERSION}/deploy-cockroachdb-with-kubernetes-openshift.html"
@@ -256,25 +214,25 @@
           ]
         },
         {
-          "title": "Choosing a Multi-Region Configuration",
+          "title": "How to Choose a Multi-Region Configuration",
           "urls": [
             "/${VERSION}/choosing-a-multi-region-configuration.html"
           ]
         },
         {
-          "title": "When to use ZONE vs. REGION Survival Goals",
+          "title": "When to Use ZONE vs. REGION Survival Goals",
           "urls": [
             "/${VERSION}/when-to-use-zone-vs-region-survival-goals.html"
           ]
         },
         {
-          "title": "When to use REGIONAL vs. GLOBAL Tables",
+          "title": "When to Use REGIONAL vs. GLOBAL Tables",
           "urls": [
             "/${VERSION}/when-to-use-regional-vs-global-tables.html"
           ]
         },
         {
-          "title": "Data Domiciling",
+          "title": "Data Domiciling with CockroachDB",
           "urls": [
             "/${VERSION}/data-domiciling.html"
           ]
@@ -379,21 +337,9 @@
           ]
         },
         {
-          "title": "Orchestration with Kubernetes",
-          "urls": [
-            "/${VERSION}/orchestrate-a-local-cluster-with-kubernetes.html"
-          ]
-        },
-        {
           "title": "JSON Support",
           "urls": [
             "/${VERSION}/demo-json-support.html"
-          ]
-        },
-        {
-          "title": "SQL Tuning with <code>EXPLAIN</code>",
-          "urls": [
-            "/${VERSION}/sql-tuning-with-explain.html"
           ]
         }
       ]

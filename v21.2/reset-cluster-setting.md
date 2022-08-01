@@ -2,7 +2,7 @@
 title: RESET CLUSTER SETTING
 summary: The RESET CLUSTER SETTING statement resets a cluster setting to its default value for the client session.
 toc: true
-docs_area: 
+docs_area: reference.sql
 ---
 
 The `RESET` [statement](sql-statements.html) resets a [cluster setting](set-cluster-setting.html) to its default value for the client session..
@@ -15,7 +15,7 @@ Only members of the `admin` role can modify cluster settings. By default, the `r
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/reset_csetting.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/reset_csetting.html %}
 </div>
 
 ## Parameters
@@ -28,12 +28,12 @@ Only members of the `admin` role can modify cluster settings. By default, the `r
 
 {{site.data.alerts.callout_success}}You can use <a href="set-cluster-setting.html"><code>SET CLUSTER SETTING .. TO DEFAULT</code></a> to reset a cluster setting as well.{{site.data.alerts.end}}
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET CLUSTER SETTING sql.metrics.statement_details.enabled = false;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CLUSTER SETTING sql.metrics.statement_details.enabled;
 ~~~
@@ -45,12 +45,12 @@ Only members of the `admin` role can modify cluster settings. By default, the `r
 (1 row)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > RESET CLUSTER SETTING sql.metrics.statement_details.enabled;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CLUSTER SETTING sql.metrics.statement_details.enabled;
 ~~~

@@ -3,7 +3,7 @@
   "is_top_level": true,
   "items": [
     {
-      "title": "Overview",
+      "title": "Developer Guide Overview",
       "urls": [
         "/${VERSION}/developer-guide-overview.html"
       ]
@@ -127,7 +127,7 @@
               ]
             },
             {
-              "title": "Scale to Multi-region",
+              "title": "Scale to Multiple Regions",
               "urls": [
                 "/${VERSION}/multiregion-scale-application.html"
               ]
@@ -238,7 +238,7 @@
       "title": "Transactions",
       "items": [
         {
-          "title": "Overview of Transactions",
+          "title": "Transactions Overview",
           "urls": [
             "/${VERSION}/transactions.html"
           ]
@@ -258,31 +258,13 @@
       ]
     },
     {
-      "title": "Debug Your Application",
-      "items":
-      [
-        {
-          "title": "Log Events",
-          "urls": [
-            "/${VERSION}/logging-overview.html"
-          ]
-        },
-        {
-          "title": "Monitor CockroachDB Apps in the DB Console",
-          "urls": [
-            "/${VERSION}/ui-overview.html"
-          ]
-        },
-        {
-          "title": "Troubleshoot Common Problems",
-          "urls": [
-            "/${VERSION}/error-handling-and-troubleshooting.html"
-          ]
-        }
+      "title": "Troubleshoot Common Problems",
+      "urls": [
+        "/${VERSION}/error-handling-and-troubleshooting.html"
       ]
     },
     {
-      "title": "Optimize Performance",
+      "title": "Optimize Statement Performance",
       "items":
       [
         {
@@ -292,21 +274,63 @@
           ]
         },
         {
-          "title": "Performance Best Practices",
+          "title": "Statement Tuning with <code>EXPLAIN</code>",
           "urls": [
-            "/${VERSION}/performance-best-practices-overview.html"
+            "/${VERSION}/sql-tuning-with-explain.html"
           ]
         },
         {
-          "title": "Use the EXPLAIN Statement",
+          "title": "Apply SQL Statement Performance Rules",
           "urls": [
-            "/${VERSION}/sql-tuning-with-explain.html"
+            "/${VERSION}/apply-statement-performance-rules.html"
+          ]
+        },
+        {
+          "title": "SQL Performance Best Practices",
+          "urls": [
+            "/${VERSION}/performance-best-practices-overview.html"
           ]
         },
         {
           "title": "Performance Tuning Recipes",
           "urls": [
             "/${VERSION}/performance-recipes.html"
+          ]
+        },
+        {
+          "title": "Performance Features",
+          "items":
+          [
+            {
+              "title": "Overview",
+              "urls": [
+                "/${VERSION}/performance-features-overview.html"
+              ]
+            },
+            {
+              "title": "Indexes",
+              "urls": [
+                "/${VERSION}/indexes.html"
+              ]
+            },
+            {
+              "title": "Cost-Based Optimizer",
+              "urls": [
+                "/${VERSION}/cost-based-optimizer.html"
+              ]
+            },
+            {
+              "title": "Vectorized Execution Engine",
+              "urls": [
+                "/${VERSION}/vectorized-execution.html"
+              ]
+            },
+            {
+              "title": "Load-Based Splitting",
+              "urls": [
+                "/${VERSION}/load-based-splitting.html"
+              ]
+            }
           ]
         }
       ]
@@ -439,31 +463,7 @@
               ]
             }
           ]
-        },
-        {
-          "title": "Application Deployment Tools",
-          "items": [
-            {
-              "title": "Google Cloud Run",
-              "urls": [
-                "/${VERSION}/deploy-app-gcr.html"
-              ]
-            },
-            {
-              "title": "AWS Lambda",
-              "urls": [
-                "/${VERSION}/deploy-lambda-function.html"
-              ]
-            }
-          ]
         }
-      ]
-    },
-    {
-      "title": "SQL Playground",
-      "is_top_level": true,
-      "urls": [
-        "/${VERSION}/sql-playground.html"
       ]
     }
   ]

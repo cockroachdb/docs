@@ -166,11 +166,11 @@ table tr td:nth-child(2) {
 
  Component | Supported | Type | Details
 -----------|-----------|------|---------
- Users | ✓ | Standard | [Users documentation](authorization.html#sql-users)
- Roles | ✓ | Standard | [Roles documentation](authorization.html#roles)
- Object ownership | ✓ | Common Extension | [Ownership documentation](authorization.html#object-ownership)
- Privileges | ✓ | Standard | [Privileges documentation](authorization.html#assign-privileges)
- Default privileges | Partial | PostgreSQL Extension | [Default privileges documentation](authorization.html#default-privileges)
+ Users | ✓ | Standard | [Users documentation](security-reference/authorization.html#sql-users)
+ Roles | ✓ | Standard | [Roles documentation](security-reference/authorization.html#roles)
+ Object ownership | ✓ | Common Extension | [Ownership documentation](security-reference/authorization.html#object-ownership)
+ Privileges | ✓ | Standard | [Privileges documentation](security-reference/authorization.html#managing-privileges)
+ Default privileges | Partial | PostgreSQL Extension | [Default privileges documentation](security-reference/authorization.html#default-privileges)
 
 ### Miscellaneous
 
@@ -187,6 +187,6 @@ table tr td:nth-child(2) {
  Materialized views | ✓ | Common Extension |  [Materialized views documentation](views.html#materialized-views)
  Window functions | ✓ | Standard | [Window Functions documentation](window-functions.html)
  Common table expressions | Partial | Common Extension | [Common Table Expressions documentation](common-table-expressions.html)
- Stored procedures | ✗ | Common Extension | Execute a procedure explicitly.
+ Stored procedures | ✗ | Common Extension | Execute a procedure explicitly. [GitHub issue tracking stored procedures support](https://github.com/cockroachdb/cockroach/issues/17511).
  Cursors | ✗ | Standard | Traverse a table's rows.
- Triggers | ✗ | Standard | Execute a set of commands whenever a specified event occurs.
+ Triggers | ✗ | Standard | Execute a set of commands whenever a specified event occurs. [GitHub issue tracking trigger support](https://github.com/cockroachdb/cockroach/issues/28296).

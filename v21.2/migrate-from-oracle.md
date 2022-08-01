@@ -2,7 +2,7 @@
 title: Migrate from Oracle
 summary: Learn how to migrate data from Oracle into a CockroachDB cluster.
 toc: true
-docs_area: 
+docs_area: migrate
 ---
 
 This page has instructions for migrating data from Oracle into CockroachDB by [importing](import.html) CSV files. Note that `IMPORT` only works for creating new tables. For information on how to add CSV data to existing tables, see [`IMPORT INTO`](import-into.html).
@@ -19,7 +19,7 @@ To illustrate this process, we use the following sample data and tools:
 
 Using [Oracle's Data Pump Export utility](https://docs.oracle.com/en/database/oracle/oracle-database/12.2/sutil/oracle-data-pump-export-utility.html), export the schema:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ expdp user/password directory=datapump dumpfile=oracle_example.dmp content=metadata_only logfile=example.log
 ~~~
@@ -30,7 +30,7 @@ The schema is stored in an Oracle-specific format (e.g., `oracle_example.dmp`).
 
 Using [Oracle's Data Pump Import utility](https://docs.oracle.com/en/database/oracle/oracle-database/12.2/sutil/datapump-import-utility.html), load the exported DMP file to convert it to a SQL file:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ impdp user/password directory=datapump dumpfile=oracle_example.dmp sqlfile=example_sql.sql TRANSFORM=SEGMENT_ATTRIBUTES:N:table PARTITION_OPTIONS=MERGE
 ~~~
@@ -76,12 +76,12 @@ In the example SQL script, `|` is used as a delimiter. Choose a delimiter that w
 
 To extract the data, we ran the script for each table in SQL*Plus:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 $ sqlplus user/password
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > @spool CUSTOMERS
   @spool ADDRESSES
@@ -100,7 +100,7 @@ A data list file (`.lst`) with leading and trailing spaces is created for each t
 
 Exit SQL*Plus:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXIT
 ~~~
@@ -127,7 +127,7 @@ for lstfile in sys.argv[1:]:
         writer.writerow(map(string.strip, rec))
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ python3 fix-example.py CUSTOMERS.lst ADDRESSES.lst CARD_DETAILS.lst WAREHOUSES.lst ORDER_ITEMS.lst ORDERS.lst INVENTORIES.lst PRODUCT_INFORMATION.lst LOGON.lst PRODUCT_DESCRIPTIONS.lst ORDERENTRY_METADATA.lst
 ~~~
@@ -165,7 +165,7 @@ For usage examples, see [Migrate from CSV - Configuration Options](migrate-from-
 
 Compress the CSV files for a faster import:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ gzip CUSTOMERS.csv ADDRESSES.csv CARD_DETAILS.csv WAREHOUSES.csv ORDER_ITEMS.csv ORDERS.csv INVENTORIES.csv PRODUCT_INFORMATION.csv LOGON.csv PRODUCT_DESCRIPTIONS.csv ORDERENTRY_METADATA.csv
 ~~~
@@ -252,14 +252,14 @@ For more information and examples, refer to the following:
 
 ### Privileges for users and roles
 
-The Oracle privileges for [users](create-user.html) and [roles](create-role.html) must be rewritten for CockroachDB. Once the CockroachDB cluster is [secured](security-overview.html), CockroachDB follows the same [role-based access control](authorization.html) methodology as Oracle.   
+The Oracle privileges for [users](create-user.html) and [roles](create-role.html) must be rewritten for CockroachDB. Once the CockroachDB cluster is [secured](security-reference/security-overview.html), CockroachDB follows the same [role-based access control](authorization.html) methodology as Oracle.   
 
 
 ## Step 8. Import the CSV
 
 For example, to import the data from `CUSTOMERS.csv.gz` into a new `CUSTOMERS` table, issue the following statement in the CockroachDB SQL shell:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers (
         customer_id       DECIMAL
@@ -305,7 +305,7 @@ For example, to import the data from `CUSTOMERS.csv.gz` into a new `CUSTOMERS` t
 
 Then add the [computed columns](computed-columns.html), [constraints](add-constraint.html), and [function-based indexes](create-index.html). For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > UPDATE CUSTOMERS SET credit_limit = 50000 WHERE credit_limit > 50000;
   ALTER TABLE CUSTOMERS ADD CONSTRAINT CUSTOMER_CREDIT_LIMIT_MAX CHECK (credit_limit <= 50000);
@@ -330,7 +330,7 @@ As CockroachDB does not allow serializable anomalies, [transactions](begin-trans
 
 ### SQL dialect
 
-Cockroach is ANSI SQL compliant with a Postgres dialect, which allows you to use [native drivers](install-client-drivers.html) to connect applications and ORMs to CockroachDB. CockroachDB’s [SQL Layer](architecture/sql-layer.html#sql-api) supports full relational schema and SQL (similar to Oracle).
+Cockroach is ANSI SQL compliant with a PostgreSQL dialect, which allows you to use [native drivers](install-client-drivers.html) to connect applications and ORMs to CockroachDB. CockroachDB’s [SQL layer](architecture/sql-layer.html#sql-api) supports full relational schema and SQL (similar to Oracle).
 
 You will have to refactor Oracle SQL and functions that do not comply with [ANSI SQL-92](https://en.wikipedia.org/wiki/SQL-92) in order to work with CockroachDB. For more information about the [Cockroach SQL Grammar](sql-grammar.html) and a [SQL comparison](sql-feature-support.html), see below:
 
@@ -386,8 +386,7 @@ You will have to refactor Oracle SQL and functions that do not comply with [ANSI
 - [Import Performance Best Practices](import-performance-best-practices.html)
 - [Migrate from CSV](migrate-from-csv.html)
 - [Migrate from MySQL](migrate-from-mysql.html)
-- [Migrate from Postgres](migrate-from-postgres.html)
-- [SQL Dump (Export)](cockroach-dump.html)
+- [Migrate from PostgreSQL](migrate-from-postgres.html)
 - [Back Up and Restore Data](take-full-and-incremental-backups.html)
 - [Use the Built-in SQL Client](cockroach-sql.html)
 - [Other Cockroach Commands](cockroach-commands.html)

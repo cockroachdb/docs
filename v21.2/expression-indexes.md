@@ -3,10 +3,10 @@ title: Expression Indexes
 summary: Expression indexes apply a scalar or functional expression to one or more columns.
 toc: true
 keywords: gin, gin index, gin indexes, inverted index, inverted indexes, accelerated index, accelerated indexes
-docs_area: 
+docs_area: develop
 ---
 
-<span class="version-tag">New in v21.2</span>
+{% include_cached new-in.html version="v21.2" %}
 
 An _expression index_ is an index created by applying an [expression](scalar-expressions.html) to a column. For example, to facilitate fast, case insensitive lookups of user names you could create an index by applying the function `lower` to the `name` column: `CREATE INDEX users_name_idx ON users (lower(name))`. The value of the expression is stored only in the expression index, not in the primary family index.
 

@@ -13,12 +13,12 @@ The options for configuring your multi-region cluster include:
 - _Change nothing_: Using the [default settings](multiregion-overview.html#default-settings), you get:
   - Zone survival (the default).
   - Low-latency reads and writes from a single region.
-  - Low-latency stale reads from all other regions.
+  - A choice of low-latency stale reads or high-latency fresh reads from other regions (and high-latency fresh reads is the default).
 
 - _Change only [survival goals](multiregion-overview.html#survival-goals)_: This configuration is useful for single-region apps that need higher levels of survival. In this configuration, you move from availability zone (AZ) survival to get:
   - Region survival.
   - Low-latency reads from a single region.
-  - Low-latency stale reads from all other regions.
+  - A choice of low-latency stale reads or high-latency fresh reads from other regions (and high-latency fresh reads is the default).
   - Higher-latency writes from all regions (due to region survival).
 
 - _Change only [table locality](multiregion-overview.html#table-locality)_: This is useful for multi-region apps that require different read/write latency guarantees for different tables in the database, and are not concerned with surviving a region failure. In this configuration, you get:

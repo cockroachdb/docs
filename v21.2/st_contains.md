@@ -3,7 +3,7 @@ title: ST_Contains
 summary: ST_Contains(A, B) returns true if no point in shape B lies outside of shape A, and at least one point in the interior of B lies in the interior of A.
 toc: true
 has_prefixed_variant: true
-docs_area: 
+docs_area: reference.sql
 ---
 
 Given two shapes _A_ and _B_, the predicate function `ST_Contains(A, B)` returns `true` if:
@@ -40,7 +40,7 @@ In this example, `{{page.title}}` returns `true` because:
 - No point in the LineString _B_ lies outside of the Polygon _A_, and
 - At least one point in the interior of _B_ lies in the interior of _A_.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT ST_Contains(st_geomfromtext('SRID=4326;POLYGON((-87.906471 43.038902, -95.992775 36.153980, -75.704722 36.076944, -87.906471 43.038902))'), st_geomfromtext('SRID=4326;LINESTRING(-88.243385 40.116421, -87.906471 43.038902, -95.992775 36.153980)'));
 ~~~
@@ -63,7 +63,7 @@ In this example, `{{page.title}}` returns `false` because:
 
 Note that A query against these shapes with [`ST_Covers`](st_covers.html) will return `true`.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT st_contains(st_geomfromtext('SRID=4326;POLYGON((-87.906471 43.038902, -95.992775 36.153980, -75.704722 36.076944, -87.906471 43.038902))'), st_geomfromtext('SRID=4326;LINESTRING( -87.906471 43.038902, -95.992775 36.153980)'));
 ~~~

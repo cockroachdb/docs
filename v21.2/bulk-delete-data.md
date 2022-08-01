@@ -2,7 +2,7 @@
 title: Bulk-delete Data
 summary: How to delete a large amount of data from a cluster
 toc: true
-docs_area: 
+docs_area: develop
 ---
 
 To delete a large number of rows (i.e., tens of thousands of rows or more), we recommend iteratively deleting subsets of the rows that you want to delete, until all of the unwanted rows have been deleted. You can write a script to do this, or you can write a loop into your application.
@@ -21,8 +21,7 @@ Exercise caution when batch deleting rows from tables with foreign key constrain
 
 Before reading this page, do the following:
 
-- [Install CockroachDB](install-cockroachdb.html).
-- [Start a local cluster](secure-a-cluster.html), or [create a {{ site.data.products.dedicated }} cluster](../cockroachcloud/create-your-cluster.html).
+- [Create a {{ site.data.products.serverless }} cluster](../cockroachcloud/quickstart.html) or [start a local cluster](../cockroachcloud/quickstart.html?filters=local).
 - [Install a Postgres client](install-client-drivers.html).
 
     For the example on this page, we use the `psycopg2` Python driver.
@@ -50,7 +49,7 @@ For example, suppose that you want to delete all rows in the [`tpcc`](cockroach-
 
 In Python, the script would look similar to the following:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ python
 #!/usr/bin/env python3
 
@@ -95,7 +94,7 @@ For example, suppose that you want to delete all rows in the [`tpcc`](cockroach-
 
 In Python, the script would look similar to the following:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ python
 #!/usr/bin/env python3
 
@@ -145,7 +144,7 @@ For example, suppose that every morning you want to delete all rows in the [`rid
 
 1. To record the last day and time a row was updated, create a `TIMESTAMPTZ` column with an [`ON UPDATE` expression](create-table.html#on-update-expressions):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     USE movr;
     ALTER TABLE rides ADD COLUMN last_updated TIMESTAMPTZ DEFAULT now() ON UPDATE now();
@@ -153,7 +152,7 @@ For example, suppose that every morning you want to delete all rows in the [`rid
 
 1. To improve `DELETE` performance, index the `TIMESTAMPTZ` column. We recommend using a [hash-sharded index](hash-sharded-indexes.html) to reduce bottlenecks, as `TIMESTAMPTZ` values are [sequentially stored in ranges](architecture/distribution-layer.html#range-splits):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     SET experimental_enable_hash_sharded_indexes=on;
     CREATE INDEX ON rides(last_updated) USING HASH WITH BUCKET_COUNT=8;
@@ -161,7 +160,7 @@ For example, suppose that every morning you want to delete all rows in the [`rid
 
 1. Write a script with a batch-delete loop, following the [batch delete on an indexed column pattern](#batch-delete-on-an-indexed-column):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ python
     #!/usr/bin/env python3
 
@@ -190,19 +189,19 @@ For example, suppose that every morning you want to delete all rows in the [`rid
 
 1. Make the file executable:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ chmod +x cleanup.py
     ~~~
 
 1. Create a new `cron` job:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ crontab -e
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ txt
     30 10 * * * DB_URI='cockroachdb://user@host:26257/movr' cleanup.py >> ~/cron.log 2>&1
     ~~~
@@ -215,7 +214,7 @@ To delete all of the rows in a table, use a [`TRUNCATE` statement](truncate.html
 
 For example, to delete all rows in the [`tpcc`](cockroach-workload.html#tpcc-workload) `new_order` table, execute the following SQL statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 TRUNCATE new_order;
 ~~~
@@ -224,7 +223,7 @@ You can execute the statement from a compatible SQL client (e.g., the [Cockroach
 
 For example, in Python, using the `psycopg2` client driver:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ python
 #!/usr/bin/env python3
 

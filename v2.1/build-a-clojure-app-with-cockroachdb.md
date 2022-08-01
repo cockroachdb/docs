@@ -7,7 +7,7 @@ twitter: false
 
 This tutorial shows you how build a simple Clojure application with CockroachDB using [leiningen](https://leiningen.org/) and a PostgreSQL-compatible driver.
 
-We have tested the [Clojure java.jdbc driver](http://clojure-doc.org/articles/ecosystem/java_jdbc/home.html) in conjunction with the [PostgreSQL JDBC driver](https://jdbc.postgresql.org/) enough to claim **beta-level** support, so that combination is featured here. If you encounter problems, please [open an issue](https://github.com/cockroachdb/cockroach/issues/new) with details to help us make progress toward full support.
+We have tested the [Clojure java.jdbc driver](https://clojure-doc.org/articles/ecosystem/java_jdbc/home/) in conjunction with the [PostgreSQL JDBC driver](https://jdbc.postgresql.org/) enough to claim **beta-level** support, so that combination is featured here. If you encounter problems, please [open an issue](https://github.com/cockroachdb/cockroach/issues/new) with details to help us make progress toward full support.
 
 
 ## Before you begin
@@ -108,6 +108,6 @@ $ cockroach sql --insecure -e 'SELECT id, balance FROM accounts' --database=bank
 
 ## What's next?
 
-Read more about using the [Clojure java.jdbc driver](http://clojure-doc.org/articles/ecosystem/java_jdbc/home.html).
+Read more about using the [Clojure java.jdbc driver](https://clojure-doc.org/articles/ecosystem/java_jdbc/home/).
 
 {% include {{ page.version.version }}/app/see-also-links.md %}

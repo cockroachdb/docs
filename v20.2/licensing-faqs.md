@@ -4,16 +4,16 @@ summary: Frequently asked questions about CockroachDB licensing.
 toc: true
 ---
 
-Current CockroachDB code is primarily licensed in two ways: 
+Current CockroachDB code is primarily licensed in two ways:
 
 -  [Business Source License (BSL)](#bsl)
 -  [Cockroach Community License (CCL)](#ccl)
 
-CockroachDB core is free to use.  Most [core features](#feature-licensing) are licensed under the BSL, but some core features are subject to the CCL or third-party licenses. 
+CockroachDB core is free to use.  Most [core features](#feature-licensing) are licensed under the BSL, but some core features are subject to the CCL or third-party licenses.
 
 Non-CCL core features from version 19.1 and earlier are licensed under [Apache 2.0](#apache); however, some features remain under third-party licenses. Beginning in version 19.2, these non-CCL features are licensed under the BSL for three years before [converting](#license-conversion-timeline) to the Apache 2.0 license.
 
-CockroachDB [Enterprise features](enterprise-licensing.html) require a [paid license](#obtain-a-license) from Cockroach and are licensed under the Cockroach Community License. 
+CockroachDB [Enterprise features](enterprise-licensing.html) require a [paid license](#obtain-a-license) from Cockroach and are licensed under the Cockroach Community License.
 
 {{site.data.alerts.callout_info}}
 You can find any feature's license by checking the code's file header in the [CockroachDB repository](https://github.com/cockroachdb/cockroach).
@@ -36,7 +36,7 @@ For each BSL release all associated alpha, beta, major, and minor (point) releas
 CockroachDB version | License | Converts to Apache 2.0   
 --------------------|---------|----------------------------
 21.1 | Business Source License | May 18, 2024
-20.2 | Business Source License | Nov 10, 2023 
+20.2 | Business Source License | Nov 10, 2023
 20.1 | Business Source License | May 12, 2023  
 19.2 | Business Source License | Oct 01, 2022
 19.1 | Apache 2.0 | -                          
@@ -47,7 +47,7 @@ CockroachDB version | License | Converts to Apache 2.0
 
 The table below shows how certain core and Enterprise features are licensed:
 
-Feature          | BSL | CCL (free)      | CCL (paid) 
+Feature          | BSL | CCL (free)      | CCL (paid)
 -----------------|:-----:|:-----------------:|:---------------:
 **[Import](import.html)** | | ✓ |
 **[Export](export.html)** | ✓ | |
@@ -83,7 +83,7 @@ More information about all Enterprise features can be found [here](enterprise-li
 All CockroachDB code is included in the same binary. No license key is required to access BSL and CCL (Free) features. To access CCL (Paid) features, users have two options:
 
 - An **Enterprise License** enables you to use CockroachDB Enterprise features for longer periods (one year or more). To upgrade to an Enterprise license, <a href="mailto:sales@cockroachlabs.com">contact Sales</a>.
-- A **Trial License** enables you to try out CockroachDB Enterprise features for 30 days for free. To obtain a trial license, fill out [the registration form](https://www.cockroachlabs.com/get-cockroachdb/) and receive your trial license via email within a few minutes.
+- A **Trial License** enables you to try out CockroachDB Enterprise features for 30 days for free. To obtain a trial license, fill out [the registration form](https://www.cockroachlabs.com/get-cockroachdb/enterprise/) and receive your trial license via email within a few minutes.
 
 {{site.data.alerts.callout_success}}
 For quick local testing of Enterprise features, you can use the [`cockroach demo`](cockroach-demo.html) command, which starts a temporary, in-memory cluster with a SQL shell open and a trial license applied automatically.

@@ -3,7 +3,7 @@ title: Known Limitations in CockroachDB v21.2
 summary: Learn about newly identified limitations in CockroachDB as well as unresolved limitations identified in earlier releases.
 toc: true
 keywords: gin, gin index, gin indexes, inverted index, inverted indexes, accelerated index, accelerated indexes
-docs_area: 
+docs_area:
 ---
 
 This page describes newly identified limitations in the CockroachDB {{page.release_info.version}} release as well as unresolved limitations identified in earlier releases.
@@ -169,6 +169,14 @@ UNION ALL SELECT * FROM t1 LEFT JOIN t2 ON st_contains(t1.geom, t2.geom) AND t2.
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/71071)
 
+### Restoring a multi-region database to a new database in {{ site.data.products.dedicated }}
+
+To restore a multi-region database to a new database in a {{ site.data.products.dedicated }} cluster, the following additional steps are required to ensure the regions match exactly between backup and restore:
+
+{% include cockroachcloud/restore-multiregion-dedicated.md %}
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/67927)
+
 ### `SET` does not `ROLLBACK` in a transaction
 
 {% include {{page.version.version}}/known-limitations/set-transaction-no-rollback.md %}
@@ -240,12 +248,6 @@ If you are [performing an `IMPORT` of a `PGDUMP`](migrate-from-postgres.html) wi
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/50225)
 
-### Historical reads on restored objects
-
-{% include {{ page.version.version }}/known-limitations/restore-aost.md %}
-
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/53044)
-
 ### Spatial support limitations
 
 CockroachDB supports efficiently storing and querying [spatial data](spatial-data.html), with the following limitations:
@@ -296,7 +298,7 @@ CockroachDB supports efficiently storing and querying [spatial data](spatial-dat
 
 It is not currently possible to use a subquery in a [`SET`](set-vars.html) or [`SET CLUSTER SETTING`](set-cluster-setting.html) statement. For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET application_name = (SELECT 'a' || 'b');
 ~~~
@@ -395,22 +397,22 @@ As a workaround, set `default_int_size` via your database driver, or ensure that
 
 It is currently not possible to [add a column](add-column.html) to a table when the column uses a [sequence](create-sequence.html) as the [`DEFAULT`](default-value.html) value, for example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE t (x INT);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO t(x) VALUES (1), (2), (3);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE SEQUENCE s;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE t ADD COLUMN y INT DEFAULT nextval('s');
 ~~~
@@ -475,7 +477,7 @@ For example, let's say that latency is 10ms from nodes in datacenter A to nodes 
 
 Many string operations are not properly overloaded for [collated strings](collate.html), for example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT 'string1' || 'string2';
 ~~~
@@ -487,7 +489,7 @@ Many string operations are not properly overloaded for [collated strings](collat
 (1 row)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT ('string1' collate en) || ('string2' collate en);
 ~~~
@@ -512,7 +514,7 @@ To prevent memory exhaustion, monitor each node's memory usage and ensure there 
 
 ### Privileges for `DELETE` and `UPDATE`
 
-Every [`DELETE`](delete.html) or [`UPDATE`](update.html) statement constructs a `SELECT` statement, even when no `WHERE` clause is involved. As a result, the user executing `DELETE` or `UPDATE` requires both the `DELETE` and `SELECT` or `UPDATE` and `SELECT` [privileges](authorization.html#assign-privileges) on the table.
+Every [`DELETE`](delete.html) or [`UPDATE`](update.html) statement constructs a `SELECT` statement, even when no `WHERE` clause is involved. As a result, the user executing `DELETE` or `UPDATE` requires both the `DELETE` and `SELECT` or `UPDATE` and `SELECT` [privileges](security-reference/authorization.html#managing-privileges) on the table.
 
 ### `ROLLBACK TO SAVEPOINT` in high-priority transactions containing DDL
 
@@ -537,12 +539,12 @@ The [built-in SQL shell](cockroach-sql.html) stores its command history in a sin
 
 As a workaround, set the `COCKROACH_SQL_CLI_HISTORY` environment variable to different values for the two different shells, for example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ export COCKROACH_SQL_CLI_HISTORY=.cockroachsql_history_shell_1
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ export COCKROACH_SQL_CLI_HISTORY=.cockroachsql_history_shell_2
 ~~~
@@ -595,6 +597,6 @@ If the execution of a [join](joins.html) query exceeds the limit set for memory-
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/35706)
 
-### Disk-spilling not supported for some unordered distinct operations
+### Remove a `UNIQUE` index created as part of `CREATE TABLE`
 
-{% include {{ page.version.version }}/known-limitations/unordered-distinct-operations.md %}
+{% include {{ page.version.version }}/known-limitations/drop-unique-index-from-create-table.md %}

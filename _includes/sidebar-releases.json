@@ -1,68 +1,37 @@
+{% assign today = "today" | date: "%Y-%m-%d" %}
+{% comment %} set today's date {% endcomment %}
+
+{% assign v_prod = site.data.versions | where_exp: "v_prod", "v_prod.asst_supp_exp_date > today" | where_exp: "v_prod", "v_prod.release_date <= today" | sort: "release_date" | reverse | map: "major_version" %}
+{% comment %} v_prod iterates through the list of major versions (e.g., v21.2) in _data/versions.csv and returns all releases within the assistance support period, sorted in reverse chronological order. We then pull only the major version name instead of the whole dictionary with map: "major_version" {% endcomment %}
+
+{% assign v_test = site.data.versions | where_exp: "v_test", "v_test.release_date > today or v_test.release_date == 'N/A'" | sort: "release_date" | last | map: "major_version" %}
+{% comment %} v_test iterates through the list of major versions in _data/versions.csv and returns the single latest testing version (if the release date is in the future or not otherwise specified). It's possible there is no testing release (in between GA of a version and the first alpha of the following version). {% endcomment %}
 {
-  "title": "CockroachDB Releases",
+  "title": "CockroachDB",
   "items": [
     {
-      "title": "Production Releases",
-      "items": [
-        {
-          "title": "Latest v21.2",
-          "urls": [
-            "/releases/v21.2.4.html"
-          ]
-        },
-        {
-          "title": "Latest v21.1",
-          "urls": [
-            "/releases/v21.1.13.html"
-          ]
-        },
-        {
-          "title": "Latest v20.2",
-          "urls": [
-            "/releases/v20.2.18.html"
-          ]
-        },
-        {
-          "title": "All Production Releases",
-          "urls": [
-            "/releases/index.html#production-releases",
-            "/releases/v21.2.4.html",
-            "/releases/v21.2.3.html",
-            "/releases/v21.2.2.html",
-            "/releases/v21.2.1.html",
-            "/releases/v21.1.13.html",
-            "/releases/v21.1.12.html",
-            "/releases/v21.1.11.html",
-            "/releases/v21.1.10.html",
-            "/releases/v21.1.9.html",
-            "/releases/v21.1.8.html",
-            "/releases/v21.1.7.html",
-            "/releases/v21.1.6.html",
-            "/releases/v21.1.5.html",
-            "/releases/v21.1.4.html",
-            "/releases/v21.1.3.html",
-            "/releases/v21.1.2.html",
-            "/releases/v21.1.1.html",
-            "/releases/v21.1.0.html",
-            "/releases/v20.2.18.html"
-          ]
-        }
-      ]
-    },
-    {
-      "title": "Testing Releases",
+      "title": "All Releases",
       "urls": [
-        "/releases/index.html#testing-releases",
-        "/releases/v21.2.0-beta.1.html",
-        "/releases/v21.2.0-beta.2.html",
-        "/releases/v21.2.0-beta.3.html",
-        "/releases/v21.2.0-beta.4.html",
-        "/releases/v21.2.0-rc.1.html",
-        "/releases/v21.2.0-rc.2.html",
-        "/releases/v21.2.0-rc.3.html",
-        "/releases/v22.1.0-alpha.1.html"
+        "/releases/index.html"
       ]
     },
+    {% for x in v_prod %} {% comment %} iterate through all supported versions {% endcomment %}
+      {
+        "title": "{{ x }}",
+        "urls": [
+          "/releases/{{ x }}.html"
+        ]
+      },
+    {% endfor %}
+    {% if v_test[0] %} {% comment %} check if a testing version is available {% endcomment %}
+    {
+      "title": "Latest Testing Release",
+      "urls": [
+          {% comment %} check if a testing version is available and pull the latest testing version {% endcomment %}
+          "/releases/{{ v_test[0] }}.html"
+      ]
+    },
+    {% endif %}
     {
       "title": "Release Support Policy",
       "urls": [
@@ -79,31 +48,23 @@
       "title": "Technical Advisories",
       "urls": [
         "/advisories/index.html",
-        "/advisories/a30821.html",
-        "/advisories/a42567.html",
-        "/advisories/a43870.html",
-        "/advisories/a44166.html",
-        "/advisories/a44299.html",
-        "/advisories/a44348.html",
-        "/advisories/a48860.html",
-        "/advisories/a50587.html",
-        "/advisories/a54418.html",
-        "/advisories/a56116.html",
-        "/advisories/a58932.html",
-        "/advisories/a62842.html",
-        "/advisories/a63162.html",
-        "/advisories/a64325.html",
-        "/advisories/a68005.html",
-        "/advisories/a69874.html",
-        "/advisories/a71002.html",
-        "/advisories/a71655.html",
-        "/advisories/a71553.html",
-        "/advisories/a72839.html",
-        "/advisories/a73024.html",
-        "/advisories/a73629.html",
-        "/advisories/aCVE-2021-44228.html",
-        "/advisories/a74385.html"
+        {% for x in site.data.advisories %}
+          "/advisories/{{ x.advisory }}.html",
+        {% endfor %}
+        "/advisories/index.html"
       ]
     }
+  ]
+},
+{
+  "title": "CockroachDB Cloud",
+  "urls": [
+    "/releases/cloud.html"
+  ]
+},
+{
+  "title": "CockroachDB Kubernetes Operator",
+  "urls": [
+    "/releases/kubernetes-operator.html"
   ]
 }

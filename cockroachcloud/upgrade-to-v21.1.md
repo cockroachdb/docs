@@ -3,10 +3,10 @@ title: Upgrade to CockroachDB v21.1
 summary: Learn how to upgrade your CockroachDB cluster to v21.1.
 keywords: gin, gin index, gin indexes, inverted index, inverted indexes, accelerated index, accelerated indexes
 toc: true
-docs_area: 
+docs_area: manage
 ---
 
-Now that [CockroachDB v21.1](../releases/v21.1.0.html) is available, your [Console Admin](console-access-management.html#console-admin) can upgrade your cluster directly from the {{ site.data.products.db }} Console. This page walks through the process.
+Now that [CockroachDB v21.1](../releases/v21.1.html) is available, your [Console Admin](console-access-management.html#console-admin) can upgrade your cluster directly from the {{ site.data.products.db }} Console. This page guides you through the process.
 
 ## Step 1. Verify that you can upgrade
 
@@ -52,7 +52,7 @@ Because your cluster will be unavailable while its single node is stopped and re
 
 ### Review breaking changes
 
-Review the [backward-incompatible changes in v21.1](../releases/v21.1.0.html#backward-incompatible-changes), and if any affect your application, make necessary changes.
+Review the [backward-incompatible changes in v21.1](../releases/v21.1.html#v21-1-0-backward-incompatible-changes), and if any affect your application, make necessary changes.
 
 ## Step 5. Start the upgrade
 
@@ -123,4 +123,4 @@ Because your cluster contains a single node, the cluster will be briefly unavail
 ## See also
 
 - [Upgrade Policy](upgrade-policy.html)
-- [CockroachDB v21.1 Release Notes](../releases/v21.1.0.html)
+- [CockroachDB v21.1 Release Notes](../releases/v21.1.html)

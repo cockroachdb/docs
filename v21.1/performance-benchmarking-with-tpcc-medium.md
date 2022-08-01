@@ -35,7 +35,7 @@ TPC-C provides the most realistic and objective measure for OLTP performance at 
 
 Reproducing these TPC-C results involves using CockroachDB's [partitioning](partitioning.html) feature to ensure replicas for any given section of data are located on the same nodes that will be queried by the load generator for that section of data. Partitioning helps distribute the workload evenly across the cluster.
 
-The partitioning feature requires an Enterprise license, so [request a 30-day trial license](https://www.cockroachlabs.com/get-cockroachdb/) before you get started.
+The partitioning feature requires an Enterprise license, so [request a 30-day trial license](https://www.cockroachlabs.com/get-cockroachdb/enterprise/) before you get started.
 
 You should receive your trial license via email within a few minutes. You'll enable your license once your cluster is up-and-running.
 
@@ -92,13 +92,13 @@ CockroachDB requires TCP communication on two ports:
 
 2. Download the [CockroachDB archive](https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz) for Linux, extract the binary, and copy it into the `PATH`:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ curl https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
     | tar -xz
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin/
     ~~~
@@ -107,7 +107,7 @@ CockroachDB requires TCP communication on two ports:
 
 3. Run the [`cockroach start`](cockroach-start.html) command:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -126,7 +126,7 @@ CockroachDB requires TCP communication on two ports:
 
 5. On any of the VMs with the `cockroach` binary, run the one-time [`cockroach init`](cockroach-init.html) command to join the first nodes into a cluster:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach init --insecure --host=<address of any node on --join list>
     ~~~
@@ -139,14 +139,14 @@ You'll be importing a large TPC-C data set. To speed that up, you can tweak some
 
 2. Launch the [built-in SQL shell](cockroach-sql.html):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql --insecure --host=<address of any node>
     ~~~
 
 3. Adjust some [cluster settings](cluster-settings.html):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SET CLUSTER SETTING rocksdb.ingest_backpressure.l0_file_count_threshold = 100;
     SET CLUSTER SETTING rocksdb.ingest_backpressure.pending_compaction_threshold = '5 GiB';
@@ -158,19 +158,19 @@ You'll be importing a large TPC-C data set. To speed that up, you can tweak some
 
 4. Enable the trial license you requested earlier:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SET CLUSTER SETTING cluster.organization = '<your organization>';
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SET CLUSTER SETTING enterprise.license = '<your license key>';
     ~~~
 
 5. Exit the SQL shell:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > \q
     ~~~
@@ -183,13 +183,13 @@ CockroachDB comes with a number of [built-in workloads](cockroach-workload.html)
 
 1. Download the [CockroachDB archive](https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz) for Linux, extract the binary, and copy it into the `PATH`:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ curl https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
     | tar -xz
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin/
     ~~~
@@ -198,7 +198,7 @@ CockroachDB comes with a number of [built-in workloads](cockroach-workload.html)
 
 1. Import the TPC-C dataset:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach workload fixtures import tpcc \
     --partitions=5 \
@@ -216,7 +216,7 @@ Next, [partition your database](partitioning.html) to divide all of the TPC-C ta
 
 1. Still on the same VM, briefly run TPC-C to let the cluster balance and the leases settle. Bump the file descriptor limits with `ulimit` to the high value shown below, since the workload generators create a lot of database connections.
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ ulimit -n 100000 && cockroach workload run tpcc \
     --partitions=5 \
@@ -240,7 +240,7 @@ Next, [partition your database](partitioning.html) to divide all of the TPC-C ta
 
 2. Run TPC-C for 30 minutes:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ ulimit -n 100000 && cockroach workload run tpcc \
     --partitions=5 \
@@ -252,7 +252,7 @@ Next, [partition your database](partitioning.html) to divide all of the TPC-C ta
 
 ## Step 7. Interpret the results
 
-Once the workload has finished running, you will see a final result similar to the following. The efficiency and latency can be combined to determine whether this was a passing run. You should expect to see an efficiency number above 95%, well above the required minimum of 85%, and p95 latencies well below the required maximum of 10 seconds.
+Once the workload has finished running, you will see a result similar to the following. The efficiency and latency can be combined to determine whether this was a passing run. You should expect to see an efficiency number above 95%, well above the required minimum of 85%, and p95 latencies well below the required maximum of 10 seconds.
 
 ~~~
 _elapsed_______tpmC____efc__avg(ms)__p50(ms)__p90(ms)__p95(ms)__p99(ms)_pMax(ms)

@@ -6,7 +6,7 @@ toc: true
 
 CockroachDB supports the [PostgreSQL wire protocol](https://www.postgresql.org/docs/current/protocol.html) and the majority of PostgreSQL syntax. This means that existing applications built on PostgreSQL can often be migrated to CockroachDB without changing application code.
 
-CockroachDB is wire-compatible with PostgreSQL 13 and works with majority of PostgreSQL database tools such as [Dbeaver](dbeaver.html), [Intellij](intellij-idea.html), pgdump and so on. Consult this link for a full list of supported [third-party database tools](third-party-database-tools.html). CockroachDB also works with most [PostgreSQL drivers and ORMs](hello-world-example-apps.html).
+CockroachDB is compatible with version 3.0 of the Postgres wire protocol (pgwire) and works with the majority of PostgreSQL database tools such as [DBeaver](dbeaver.html), [Intellij](intellij-idea.html), and so on. Consult this link for a full list of supported [third-party database tools](third-party-database-tools.html). CockroachDB also works with most [PostgreSQL drivers and ORMs](example-apps.html).
 
 However, CockroachDB does not support some of the PostgreSQL features or behaves differently from PostgreSQL because not all features can be easily implemented in a distributed system. This page documents the known list of differences between PostgreSQL and CockroachDB for identical input. That is, a SQL statement of the type listed here will behave differently than in PostgreSQL. Porting an existing application to CockroachDB will require changing these expressions.
 
@@ -46,7 +46,7 @@ ERROR:  zero raised to a negative power is undefined
 
 In CockroachDB, these expressions instead return Infinity:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT 1e300::float * 1e10::float;
 ~~~
@@ -58,7 +58,7 @@ SELECT 1e300::float * 1e10::float;
 (1 row)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT pow(0::float, -1::float);
 ~~~
@@ -74,7 +74,7 @@ SELECT pow(0::float, -1::float);
 
 In PostgreSQL, the unary `~` (bitwise not) operator has a low precedence. For example, the following query is parsed as `~ (1 + 2)` because `~` has a lower precedence than `+`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT ~1 + 2;
 ~~~
@@ -102,7 +102,7 @@ In CockroachDB, the precedence from highest to lowest is: `&`, `#`, `|`.
 
 In PostgreSQL, division of integers results in an integer. For example, the following query returns `1`, since the `1 / 2` is truncated to `0`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT 1 + 1 / 2;
 ~~~
@@ -122,7 +122,7 @@ In CockroachDB, integer division results in a `decimal`. CockroachDB instead pro
 
 In PostgreSQL, the shift operators (`<<`, `>>`) sometimes modulo their second argument to the bit size of the underlying type. For example, the following query results in a `1` because the int type is 32 bits, and `32 % 32` is `0`, so this is the equivalent of `1 << 0`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT 1::int << 32;
 ~~~
@@ -138,7 +138,7 @@ In CockroachDB, no such modulo is performed.
 
 **Porting instructions:** Manually add a modulo to the second argument. Also note that CockroachDB's [`INT`](int.html) type is always 64 bits. For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT 1::int << (x % 64);
 ~~~
@@ -155,7 +155,7 @@ CockroachDB validates [`CHECK`](check.html) constraints on the results of [`INSE
 
 If this difference matters to your client, you can `INSERT ON CONFLICT` from a `SELECT` statement and check the inserted value as part of the `SELECT`. For example, instead of defining `CHECK (x > 0)` on `t.x` and using `INSERT INTO t(x) VALUES (3) ON CONFLICT (x) DO UPDATE SET x = excluded.x`, you could do the following:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO t (x)
     SELECT if (x <= 0, crdb_internal.force_error('23514', 'check constraint violated'), x)

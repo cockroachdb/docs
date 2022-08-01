@@ -1,20 +1,20 @@
 ---
-title: SHOW (session variables)
+title: SHOW &#123;session variable&#125;
 summary: The SHOW statement displays the current settings for the client session.
 toc: true
-docs_area: 
+docs_area: reference.sql
 ---
 
 Use the `SHOW` [statement](sql-statements.html) to display the value of one or all of the session variables. You configure session variables using [`SET`](set-vars.html).
 
 ## Required privileges
 
-No [privileges](authorization.html#assign-privileges) are required to display the session variables.
+No [privileges](security-reference/authorization.html#managing-privileges) are required to display the session variables.
 
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/show_session.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/show_session.html %}
 </div>
 
 {{site.data.alerts.callout_info}}
@@ -77,7 +77,7 @@ Special syntax cases supported for compatibility:
 
 ## See also
 
-- [`SET` (session variable)](set-vars.html)
+- [`SET {session variable}`](set-vars.html)
 - [Transactions](transactions.html), including [Priority levels](transactions.html#transaction-priorities)
 - [`SHOW CLUSTER SETTING`](show-cluster-setting.html)
 - [`SHOW COLUMNS`](show-columns.html)

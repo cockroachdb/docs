@@ -18,7 +18,7 @@ The `DROP ROLE` [statement](sql-statements.html) removes one or more SQL roles.
 
 ## Required privileges
 
-Non-admin roles cannot drop admin roles. To drop non-admin roles, the role must be a member of the `admin role` or have the [`CREATEROLE`](create-role.html#create-a-role-that-can-create-other-roles-and-manage-authentication-methods-for-the-new-roles) parameter set.
+Non-admin roles cannot drop admin roles. To drop non-admin roles, the role must be a member of the `admin` role or have the [`CREATEROLE`](create-role.html#create-a-role-that-can-create-other-roles-and-manage-authentication-methods-for-the-new-roles) parameter set.
 
 ## Synopsis
 
@@ -34,7 +34,7 @@ Non-admin roles cannot drop admin roles. To drop non-admin roles, the role must 
 
 In this example, first check a role's privileges. Then, revoke the role's privileges and remove the role.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW GRANTS ON documents FOR dev_ops;
 ~~~
@@ -46,14 +46,14 @@ In this example, first check a role's privileges. Then, revoke the role's privil
 +------------+--------+-----------+---------+------------+
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > REVOKE INSERT ON documents FROM dev_ops;
 ~~~
 
 {{site.data.alerts.callout_info}}All of a role's privileges must be revoked before the role can be dropped.{{site.data.alerts.end}}
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP ROLE dev_ops;
 ~~~

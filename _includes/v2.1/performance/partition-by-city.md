@@ -1,6 +1,6 @@
 For this service, the most effective technique for improving read and write latency is to [geo-partition](partitioning.html) the data by city. In essence, this means changing the way data is mapped to ranges. Instead of an entire table and its indexes mapping to a specific range or set of ranges, all rows in the table and its indexes with a given city will map to a range or set of ranges. Once ranges are defined in this way, we can then use the [replication zone](configure-replication-zones.html) feature to pin partitions to specific locations, ensuring that read and write requests from users in a specific city do not have to leave that region.
 
-1. Partitioning is an enterprise feature, so start off by [registering for a 30-day trial license](https://www.cockroachlabs.com/get-cockroachdb/).
+1. Partitioning is an enterprise feature, so start off by [registering for a 30-day trial license](https://www.cockroachlabs.com/get-cockroachdb/enterprise/).
 
 2. Once you've received the trial license, SSH to any node in your cluster and [apply the license](enterprise-licensing.html#set-the-trial-or-enterprise-license-key):
 

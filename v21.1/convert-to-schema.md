@@ -6,7 +6,7 @@ toc: true
 
  The `CONVERT TO SCHEMA` [statement](sql-statements.html) converts a database to a new, user-defined [schema](sql-name-resolution.html). When you convert a database to a schema, all [tables](create-table.html), [sequences](create-sequence.html), and [user-defined types](enum.html) in the database become child objects of the new schema, and the database is deleted.
 
-In CockroachDB versions < v20.2, [user-defined schemas](create-schema.html) are not supported, and all stored objects in a given database use the `public` schema. To provide a [multi-level structure for stored objects](sql-name-resolution.html) in earlier versions of CockroachDB, we've recommended using [database](create-database.html) namespaces instead of schema namespaces. The `CONVERT TO SCHEMA` statement is meant to help users who are upgrading to v20.2 and want to use schema namespaces in a way that is more similar to [PostgreSQL](http://www.postgresql.cn/docs/current/ddl-schemas.html).
+In CockroachDB versions < v20.2, [user-defined schemas](create-schema.html) are not supported, and all stored objects in a given database use the `public` schema. To provide a [multi-level structure for stored objects](sql-name-resolution.html) in earlier versions of CockroachDB, we've recommended using [database](create-database.html) namespaces instead of schema namespaces. The `CONVERT TO SCHEMA` statement is meant to help users who are upgrading to v20.2 and want to use schema namespaces in a way that is more similar to [PostgreSQL](https://www.postgresql.org/docs/current/ddl-schemas.html).
 
 {{site.data.alerts.callout_info}}
 `CONVERT TO SCHEMA` is a subcommand of [`ALTER DATABASE`](alter-database.html).
@@ -45,7 +45,7 @@ A database cannot be converted to a schema if:
 
 By default, tables are stored in the `public` schema:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM public;
 ~~~
@@ -66,26 +66,26 @@ Suppose that you want to convert `movr` to a schema, with a new database named `
 
 First, create the new database:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE DATABASE cockroach_labs;
 ~~~
 
 Then, set the new database as the current database (recall that you cannot convert the current database to a schema):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > USE cockroach_labs;
 ~~~
 
 Convert the `movr` database to a schema, with `cockroach_labs` as its parent database:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER DATABASE movr CONVERT TO SCHEMA WITH PARENT cockroach_labs;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW SCHEMAS;
 ~~~
@@ -102,7 +102,7 @@ Convert the `movr` database to a schema, with `cockroach_labs` as its parent dat
 (6 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES;
 ~~~
@@ -119,7 +119,7 @@ Convert the `movr` database to a schema, with `cockroach_labs` as its parent dat
 (6 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM public;
 ~~~

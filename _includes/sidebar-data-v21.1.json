@@ -440,44 +440,14 @@
                 ]
               },
               {
-                "title": "Hello World",
-                "items": [
-                  {
-                    "title": "Go",
-                    "urls": [
-                      "/${VERSION}/hello-world-go-pgx.html",
-                      "/${VERSION}/hello-world-go-gorm.html"
-                    ]
-                  },
-                  {
-                    "title": "Java",
-                    "urls": [
-                      "/${VERSION}/hello-world-java-jdbc.html"
-                    ]
-                  },
-                  {
-                    "title": "JavaScript (Node.js)",
-                    "urls": [
-                      "/${VERSION}/hello-world-node-postgres.html"
-                    ]
-                  },
-                  {
-                    "title": "Python",
-                    "urls": [
-                      "/${VERSION}/hello-world-python-sqlalchemy.html"
-                    ]
-                  }
-                ]
-              },
-              {
                 "title": "Simple CRUD",
                 "items": [
                   {
                     "title": "Go",
                     "urls": [
                       "/${VERSION}/build-a-go-app-with-cockroachdb.html",
-                      "/${VERSION}/build-a-go-app-with-cockroachdb-pq.html",
                       "/${VERSION}/build-a-go-app-with-cockroachdb-gorm.html",
+                      "/${VERSION}/build-a-go-app-with-cockroachdb-pq.html",
                       "/${VERSION}/build-a-go-app-with-cockroachdb-upperdb.html"
                     ]
                   },
@@ -496,6 +466,7 @@
                       "/${VERSION}/build-a-nodejs-app-with-cockroachdb.html",
                       "/${VERSION}/build-a-nodejs-app-with-cockroachdb-sequelize.html",
                       "/${VERSION}/build-a-nodejs-app-with-cockroachdb-knexjs.html",
+                      "/${VERSION}/build-a-nodejs-app-with-cockroachdb-prisma.html",
                       "/${VERSION}/build-a-typescript-app-with-cockroachdb.html"
                     ]
                   },
@@ -516,27 +487,9 @@
                     ]
                   },
                   {
-                    "title": "C++",
-                    "urls": [
-                      "/${VERSION}/build-a-c++-app-with-cockroachdb.html"
-                    ]
-                  },
-                  {
                     "title": "C# (.NET)",
                     "urls": [
                       "/${VERSION}/build-a-csharp-app-with-cockroachdb.html"
-                    ]
-                  },
-                  {
-                    "title": "Clojure",
-                    "urls": [
-                      "/${VERSION}/build-a-clojure-app-with-cockroachdb.html"
-                    ]
-                  },
-                  {
-                    "title": "PHP",
-                    "urls": [
-                      "/${VERSION}/build-a-php-app-with-cockroachdb.html"
                     ]
                   },
                   {
@@ -886,13 +839,6 @@
                 "title": "Kubernetes Performance Optimization",
                 "urls": [
                   "/${VERSION}/kubernetes-performance.html"
-                ]
-              },
-              {
-                "title": "Docker Swarm Deployment",
-                "urls": [
-                  "/${VERSION}/orchestrate-cockroachdb-with-docker-swarm.html",
-                  "/${VERSION}/orchestrate-cockroachdb-with-docker-swarm-insecure.html"
                 ]
               }
             ]
@@ -1367,12 +1313,5 @@
       {% include_cached sidebar-releases.json %}
     ]
   },
-  {% include_cached v21.1/sidebar-data-reference.json %},
-  {
-    "title": "SQL Playground",
-    "is_top_level": true,
-    "urls": [
-      "/${VERSION}/sql-playground.html"
-    ]
-  }
+  {% include_cached v21.1/sidebar-data-reference.json %}
 ]

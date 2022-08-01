@@ -309,3 +309,14 @@
 		}
 	}
 }
+
+// mkt nav
+.btn-outline-purple {
+	border: 2px solid $electric-purple;
+	background-color: white;
+	color: $electric-purple;
+	&:hover {
+	  @extend .shadow;
+	  color: $electric-purple;
+	}
+  }

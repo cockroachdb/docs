@@ -2,7 +2,7 @@
 title: ST_Union
 summary: ST_Union is an aggregate function that combines a set of shapes into a single shape.
 toc: true
-docs_area: 
+docs_area: reference.sql
 ---
 
 Given a set of shapes (e.g., from a [selection query](selection-queries.html)), `ST_Union` combines that set of shapes into a single shape. The resulting shape can then be passed to functions that operate on a single shape, such as [`ST_ConvexHull`](st_convexhull.html).
@@ -25,14 +25,14 @@ In this example, we will generate a single geometry from many individual points 
 
 1. Create a temporary table to hold all the points, which will be in [Well Known Text (WKT)](spatial-glossary.html#wkt) format:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     CREATE TABLE tmp (ID UUID DEFAULT gen_random_uuid(), geom_text STRING);
     ~~~
 
 2. Insert the points with the following statement:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     INSERT INTO tmp (geom_text) VALUES
     ('POINT (-73.962090000000003 40.609226)'),
@@ -214,7 +214,7 @@ In this example, we will generate a single geometry from many individual points 
 
 3. Run the query below, which gathers the points into a single geometry using `ST_Union`, and converts the geometry to [GeoJSON](spatial-glossary.html#geojson) so that we can view it with [geojson.io](http://geojson.io):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     WITH
         the_geoms_table
@@ -240,7 +240,7 @@ In this example, we will generate a single geometry from many individual points 
 
 5. Finally, drop the temporary table if you no longer need it:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     DROP TABLE tmp;
     ~~~

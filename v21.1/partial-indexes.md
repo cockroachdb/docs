@@ -79,7 +79,7 @@ When [inserted values](insert.html) conflict with a `UNIQUE` constraint on one o
 
 ## Partial GIN indexes
 
-<span class="version-tag">New in v21.1:</span> You can create partial [GIN indexes](inverted-indexes.html#partial-gin-indexes), which are indexes on a subset of `JSON`, `ARRAY`, or geospatial container column data.
+{% include_cached new-in.html version="v21.1" %} You can create partial [GIN indexes](inverted-indexes.html#partial-gin-indexes), which are indexes on a subset of `JSON`, `ARRAY`, or geospatial container column data.
 
 ## Index hints
 
@@ -104,7 +104,7 @@ To follow along, run [`cockroach demo`](cockroach-demo.html) to start a temporar
 
 Suppose that you want to query the subset of `rides` with a `revenue` greater than 90.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM [SHOW TABLES] WHERE table_name='rides';
 ~~~
@@ -120,7 +120,7 @@ Time: 21ms total (execution 21ms / network 0ms)
 
 Without a partial index, querying the `rides` table with a `WHERE revenue > 90` clause will scan the entire table. To see the plan for such a query, you can use an [`EXPLAIN` statement](explain.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN SELECT * FROM rides WHERE revenue > 90;
 ~~~
@@ -148,12 +148,12 @@ The `estimated row count` in the scan node lists the number of rows that the que
 
 To limit the number of rows scanned to just the rows that you are querying, you can create a partial index:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE INDEX ON rides (city, revenue) WHERE revenue > 90;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW INDEXES FROM rides;
 ~~~
@@ -174,7 +174,7 @@ Time: 8ms total (execution 8ms / network 0ms)
 
 Another `EXPLAIN` statement shows that the number of rows scanned by the original query decreases significantly with a partial index on the `rides` table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN SELECT * FROM rides WHERE revenue > 90;
 ~~~
@@ -202,7 +202,7 @@ Note that the query's `SELECT` statement queries all columns in the `rides` tabl
 
 Querying only the columns in the index will make the query more efficient by removing the index join from the query plan:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN SELECT city, revenue FROM rides WHERE revenue > 90;
 ~~~
@@ -224,7 +224,7 @@ Time: 1ms total (execution 1ms / network 0ms)
 
 Querying a subset of the rows implied by the partial index predicate expression (in this case, `revenue > 90`) will also use the partial index:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN SELECT city, revenue FROM rides WHERE revenue > 95;
 ~~~
@@ -252,7 +252,7 @@ The number of rows scanned is the same, and an additional filter is applied to t
 
 So far, all the query scans in this example have spanned the entire partial index (i.e., performed a `FULL SCAN` of the index). This is because the `WHERE` clause does not filter on the first column in the index prefix (`city`). Filtering the query on both columns in the partial index will limit the scan to just the rows that match the filter:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN SELECT city, revenue FROM rides WHERE city = 'new york' AND revenue > 90;
 ~~~
@@ -274,7 +274,7 @@ Time: 1ms total (execution 1ms / network 0ms)
 
 Refining the `revenue` filter expression to match just a subset of the partial index will lower the scanned row count even more:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN SELECT city, revenue FROM rides WHERE city = 'new york' AND revenue >= 90 AND revenue < 95;
 ~~~
@@ -304,7 +304,7 @@ Suppose that you have a number of rows in a table with values that you regularly
 
 A selection query on these values will require a full table scan, using the primary index, as shown by the [`EXPLAIN` statement](explain.html) below:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN SELECT * FROM rides WHERE end_time IS NOT NULL;
 ~~~
@@ -330,12 +330,12 @@ Time: 1ms total (execution 1ms / network 0ms)
 
 You can create a partial index that excludes these rows, making queries that filter out the non-`NULL` values more efficient.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE INDEX ON rides (city, revenue) WHERE end_time IS NOT NULL;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW INDEXES FROM rides;
 ~~~
@@ -352,7 +352,7 @@ You can create a partial index that excludes these rows, making queries that fil
 (12 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN SELECT (city, revenue) FROM rides WHERE end_time IS NOT NULL;
 ~~~
@@ -382,14 +382,14 @@ Suppose that you want to constrain a subset of the rows in a table, such that al
 
 You can do this efficiently with a [unique partial index](#unique-partial-indexes):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE UNIQUE INDEX ON users (name) WHERE city='new york';
 ~~~
 
 This creates a partial index and a [`UNIQUE` constraint](unique.html) on just the subset of rows where `city='new york'`.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT id, name FROM users WHERE city='new york' LIMIT 3;
 ~~~
@@ -403,7 +403,7 @@ This creates a partial index and a [`UNIQUE` constraint](unique.html) on just th
 (3 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO users(id, city, name) VALUES (gen_random_uuid(), 'new york', 'Andre Sanchez');
 ~~~
@@ -415,7 +415,7 @@ SQLSTATE: 23505
 
 Because the unique partial index predicate only implies the rows where `city='new york'`, the `UNIQUE` constraint does not apply to all rows in the table.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO users(id, city, name) VALUES (gen_random_uuid(), 'seattle', 'Andre Sanchez');
 ~~~

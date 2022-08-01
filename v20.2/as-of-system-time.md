@@ -173,6 +173,90 @@ Alternatively, you can use the [`SET`](set-transaction.html) statement to execut
 
 {% include {{ page.version.version }}/sql/set-transaction-as-of-system-time-example.md %}
 
+### Using `AS OF SYSTEM TIME` to recover recently lost data
+
+It is possible to recover lost data as a result of an online schema change prior to when [garbage collection](architecture/storage-layer.html#garbage-collection) begins:
+
+{% include copy-clipboard.html %}
+~~~sql
+> CREATE DATABASE foo;
+~~~
+~~~
+CREATE DATABASE
+
+
+Time: 3ms total (execution 3ms / network 0ms)
+~~~
+{% include copy-clipboard.html %}
+~~~sql
+> CREATE TABLE foo.bar (id INT PRIMARY KEY);
+~~~
+~~~
+CREATE TABLE
+
+
+Time: 4ms total (execution 3ms / network 0ms)
+~~~
+{% include copy-clipboard.html %}
+~~~sql
+> INSERT INTO foo.bar VALUES (1), (2);
+~~~
+~~~
+INSERT 2
+
+
+Time: 5ms total (execution 5ms / network 0ms)
+~~~
+{% include copy-clipboard.html %}
+~~~sql
+> SELECT now();
+~~~
+~~~
+              now
+--------------------------------
+  2022-02-01 21:11:53.63771+00
+(1 row)
+
+
+Time: 1ms total (execution 0ms / network 0ms)
+~~~
+{% include copy-clipboard.html %}
+~~~sql
+> DROP TABLE foo.bar;
+~~~
+~~~
+DROP TABLE
+
+
+Time: 45ms total (execution 45ms / network 0ms)
+~~~
+{% include copy-clipboard.html %}
+~~~sql
+> SELECT * FROM foo.bar AS OF SYSTEM TIME '2022-02-01 21:11:53.63771+00';
+~~~
+~~~
+  id
+------
+   1
+   2
+(2 rows)
+
+
+Time: 2ms total (execution 2ms / network 0ms)
+~~~
+{% include copy-clipboard.html %}
+~~~sql
+> SELECT * FROM foo.bar;
+~~~
+~~~
+ERROR: relation "foo.bar" does not exist
+SQLSTATE: 42P01
+~~~
+
+{{site.data.alerts.callout_danger}}
+Once garbage collection has occurred, `AS OF SYSTEM TIME` will no longer be able to recover lost data. For more long-term recovery solutions, consider taking either a [full or incremental backup](take-full-and-incremental-backups.html) of your cluster.
+{{site.data.alerts.end}}
+
 ## See also
 
 - [Select Historical Data](select-clause.html#select-historical-data-time-travel)

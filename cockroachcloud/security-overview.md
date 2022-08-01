@@ -2,7 +2,7 @@
 title: CockroachDB Cloud Security
 summary: Learn about the authentication, encryption, authorization, and audit log features for CockroachDB Cloud clusters.
 toc: true
-docs_area: 
+docs_area: manage
 ---
 
 A {{ site.data.products.dedicated }} cluster is single-tenant (no shared machines) running in a Virtual Private Cloud (no shared network) and has data encryption-in-flight enabled by default. Additionally, {{ site.data.products.dedicated }} provides authentication, authorization, and SQL audit logging features to secure your clusters.
@@ -59,7 +59,7 @@ The following table summarizes the {{ site.data.products.db }} security features
  <tr>
   <td>✓</td>
   <td>✓</td>
-  <td>All data on {{ site.data.products.db }} is encrypted-at-rest using the tools provided by the cloud provider that your cluster is running in (i.e., <a href="https://cloud.google.com/compute/docs/disks#pd_encryption">persistent disk encryption</a> for GCP and <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html">EBS encryption-at-rest</a> for AWS). Because we are relying on the cloud provider's encryption implementation, we do not enable CockroachDB's <a href="../{{site.versions["stable"]}}/encryption.html#encryption-at-rest-enterprise">internal implementation of encryption-at-rest</a>. This means that encryption will appear to be disabled in the <a href="../{{site.versions["stable"]}}/ui-overview.html">DB Console</a>, since it is unaware of cloud provider encryption.</td>
+  <td>All data on {{ site.data.products.db }} is encrypted-at-rest using the tools provided by the cloud provider that your cluster is running in (i.e., <a href="https://cloud.google.com/compute/docs/disks#pd_encryption">persistent disk encryption</a> for GCP and <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html">EBS encryption-at-rest</a> for AWS). Because we are relying on the cloud provider's encryption implementation, we do not enable CockroachDB's <a href="../{{site.versions["stable"]}}/security-reference/encryption.html#encryption-at-rest-enterprise">internal implementation of encryption-at-rest</a>. This means that encryption will appear to be disabled in the <a href="../{{site.versions["stable"]}}/ui-overview.html">DB Console</a>, since the console is unaware of cloud provider encryption.</td>
  </tr>
  <tr>
    <td rowspan="2" ><a href="user-authorization.html">User Authorization</a></td>

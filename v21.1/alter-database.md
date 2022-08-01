@@ -16,10 +16,10 @@ Subcommand | Description
 [`CONVERT TO SCHEMA`](convert-to-schema.html) |  Convert a [database](create-database.html) to a [schema](sql-name-resolution.html).
 [`OWNER TO`](owner-to.html) |  Change the owner of a database.
 [`RENAME`](rename-database.html) | Change the name of a database.
-[`ADD REGION`](add-region.html) | <span class="version-tag">New in v21.1:</span> Add a region to a [multi-region database](multiregion-overview.html).
-[`DROP REGION`](drop-region.html) | <span class="version-tag">New in v21.1:</span> Drop a region from a [multi-region database](multiregion-overview.html).
-[`SET PRIMARY REGION`](set-primary-region.html) | <span class="version-tag">New in v21.1:</span> Set the primary region of a [multi-region database](multiregion-overview.html).
-[`SURVIVE {ZONE,REGION} FAILURE`](survive-failure.html) | <span class="version-tag">New in v21.1:</span> Add a survival goal to a [multi-region database](multiregion-overview.html).
+[`ADD REGION`](add-region.html) | **New in v21.1:** Add a region to a [multi-region database](multiregion-overview.html).
+[`DROP REGION`](drop-region.html) | **New in v21.1:** Drop a region from a [multi-region database](multiregion-overview.html).
+[`SET PRIMARY REGION`](set-primary-region.html) | **New in v21.1:** Set the primary region of a [multi-region database](multiregion-overview.html).
+[`SURVIVE {ZONE,REGION} FAILURE`](survive-failure.html) | **New in v21.1:** Add a survival goal to a [multi-region database](multiregion-overview.html).
 
 ## Viewing schema changes
 

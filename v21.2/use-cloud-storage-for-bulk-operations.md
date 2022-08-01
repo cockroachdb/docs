@@ -2,7 +2,7 @@
 title: Use Cloud Storage for Bulk Operations
 summary: CockroachDB constructs a secure API call to the cloud storage specified in a URL passed to bulk operation statements.
 toc: true
-docs_area: 
+docs_area: manage
 ---
 
 CockroachDB constructs a secure API call to the cloud storage specified in a URL passed to one of the following statements:
@@ -27,12 +27,12 @@ URLs for the files you want to import must use the format shown below. For examp
 
 Location                                                    | Scheme      | Host                                             | Parameters                                                                 
 ------------------------------------------------------------+-------------+--------------------------------------------------+----------------------------------------------------------------------------
-Amazon                                                      | `s3`        | Bucket name                                      | `AUTH` — optional `implicit` or `specified` (default: `specified`); `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, [`AWS_SESSION_TOKEN`](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp_use-resources.html) <br><br>For more information, see [Authentication - Amazon S3](#amazon-s3).                               
-Azure                                                       | `azure`     | Storage container                                | `AZURE_ACCOUNT_KEY`, `AZURE_ACCOUNT_NAME` <br><br>For more information, see [Authentication - Azure Storage](#azure-storage).
-Google Cloud                                                | `gs`        | Bucket name                                      | `AUTH` — `implicit`, or `specified`; `CREDENTIALS` <br><br>For more information, see [Authentication - Google Cloud Storage](#google-cloud-storage).     
-HTTP                                                        | `http`      | Remote host                                      | N/A <br><br>For more information, see [Authentication - HTTP](#http).      
+Amazon                                                      | `s3`        | Bucket name                                      | `AUTH`: optional `implicit` or `specified` (default: `specified`); `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, [`AWS_SESSION_TOKEN`](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp_use-resources.html). For more information, see [Authentication - Amazon S3](#authentication). <br><br>`S3_STORAGE_CLASS`: Specify the Amazon S3 storage class for created objects. See [Amazon S3 storage classes](#amazon-s3-storage-classes) for the available                              
+Azure                                                       | `azure`     | Storage container                                | `AZURE_ACCOUNT_KEY`, `AZURE_ACCOUNT_NAME` <br><br>For more information, see [Authentication - Azure Storage](#authentication).
+Google Cloud                                                | `gs`        | Bucket name                                      | `AUTH`: `implicit`, or `specified` (default: `specified`); `CREDENTIALS` <br><br>For more information, see [Authentication - Google Cloud Storage](#authentication).     
+HTTP                                                        | `http`      | Remote host                                      | N/A <br><br>For more information, see [Authentication - HTTP](#authentication).      
 NFS/Local&nbsp;[<sup>1</sup>](#considerations)              | `nodelocal` | `nodeID` or `self` [<sup>2</sup>](#considerations) (see [Example file URLs](#example-file-urls)) | N/A
-S3-compatible services                                     | `s3`        | Bucket name                                      | **Warning**: Unlike [Amazon S3](#amazon-s3), [Google Cloud Storage](#google-cloud-storage), and [Azure storage](#azure-storage) options, the usage of S3-compatible services is not actively tested by Cockroach Labs. <br><br>`AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_SESSION_TOKEN`, `AWS_REGION`&nbsp;[<sup>3</sup>](#considerations) (optional), `AWS_ENDPOINT`<br><br>For more information, see [Authentication - S3-compatible services](#s3-compatible-services).
+S3-compatible services                                     | `s3`        | Bucket name                                      | **Warning**: Unlike Amazon S3, Google Cloud Storage, and Azure storage options, the usage of S3-compatible services is not actively tested by Cockroach Labs. <br><br>`AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_SESSION_TOKEN`, `AWS_REGION`&nbsp;[<sup>3</sup>](#considerations) (optional), `AWS_ENDPOINT`<br><br>For more information, see [Authentication - S3-compatible services](#authentication).
 
 {{site.data.alerts.callout_success}}
 The location parameters often contain special characters that need to be URI-encoded. Use Javascript's [encodeURIComponent](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent) function or Go language's [url.QueryEscape](https://golang.org/pkg/net/url/#QueryEscape) function to URI-encode the parameters. Other languages provide similar functions to URI-encode special characters.
@@ -52,7 +52,7 @@ You can disable the use of implicit credentials when accessing external cloud st
 
 ### Example file URLs
 
-Example URLs for [`BACKUP`](backup.html), [`RESTORE`](restore.html), or [`EXPORT`](export.html) given a bucket or container name of `acme-co` and an `employees` subdirectory:
+Example URLs for [`BACKUP`](backup.html), [`RESTORE`](restore.html), [changefeeds](change-data-capture-overview.html),  or [`EXPORT`](export.html) given a bucket or container name of `acme-co` and an `employees` subdirectory:
 
 Location     | Example                                                                          
 -------------+----------------------------------------------------------------------------------
@@ -62,10 +62,10 @@ Google Cloud | `gs://acme-co/employees?AUTH=specified&CREDENTIALS=encoded-123`
 NFS/Local    | `nodelocal://1/path/employees`, `nodelocal://self/nfsmount/backups/employees`&nbsp;[<sup>2</sup>](#considerations)
 
 {{site.data.alerts.callout_info}}
-Currently, cloud storage sinks (for changefeeds) only work with `JSON` and emits newline-delimited `JSON` files.
+[Cloud storage sinks (for changefeeds)](change-data-capture-overview.html#known-limitations) only work with `JSON` and emits newline-delimited `JSON` files.
 {{site.data.alerts.end}}
 
-Example URLs for [`IMPORT`](import.html) or [changefeeds](changefeed-sinks.html) given a bucket or container name of `acme-co` and a filename of `employees`:
+Example URLs for [`IMPORT`](import.html) given a bucket or container name of `acme-co` and a filename of `employees`:
 
 Location     | Example                                                                          
 -------------+----------------------------------------------------------------------------------
@@ -93,69 +93,309 @@ CockroachDB also provides client-side encryption of backup data, for more inform
 
 ## Authentication
 
-Authentication behavior differs by cloud provider:
+When running bulk operations to and from a storage bucket, authentication setup can vary depending on the cloud provider. This section details the necessary steps to authenticate to each cloud provider.
 
-### Amazon S3
+{{site.data.alerts.callout_info}}
+`implicit` authentication **cannot** be used to run bulk operations from {{ site.data.products.db }} clusters—instead, use `AUTH=specified`.
+{{site.data.alerts.end}}
 
-  - If the `AUTH` parameter is not provided, AWS connections default to `specified` and the access keys must be provided in the URI parameters.
+<div class="filters clearfix">
+  <button class="filter-button" data-scope="s3">Amazon S3</button>
+  <button class="filter-button" data-scope="gcs">Google Cloud Storage</button>
+  <button class="filter-button" data-scope="azure">Azure Storage</button>
+  <button class="filter-button" data-scope="http">HTTP</button>
+  <button class="filter-button" data-scope="s3compatible">S3-compatible Services</button>
+</div>
 
-    As an example:
+<section class="filter-content" markdown="1" data-scope="s3">
 
-    ~~~sql
-    BACKUP DATABASE <database> INTO 's3://{bucket name}/{path in bucket}/?AWS_ACCESS_KEY_ID={access key ID}&AWS_SECRET_ACCESS_KEY={secret access key}';
-    ~~~
+The `AUTH` parameter passed to the file URL must be set to either `specified` or `implicit`. The following sections describe how to set up each authentication method.
 
-  -  If the `AUTH` parameter is `implicit`, the access keys can be omitted and [the credentials will be loaded from the environment](https://docs.aws.amazon.com/sdk-for-go/api/aws/session/), i.e. the machines running the backup.
+### Specified authentication
 
-    ~~~sql
-    BACKUP DATABASE <database> INTO 's3://{bucket name}/{path}?AUTH=implicit';
-    ~~~
+If the `AUTH` parameter is not provided, AWS connections default to `specified` and the access keys must be provided in the URI parameters.
 
-    You [can associate an EC2 instance with an IAM role](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/iam-roles-for-amazon-ec2.html) to provide implicit access to S3 storage within the IAM role's policy. In the following command, the `instance example` EC2 instance is [associated](https://docs.aws.amazon.com/cli/latest/reference/ec2/associate-iam-instance-profile.html) with the `example profile` instance profile, giving the EC2 instance implicit access to any `example profile` S3 buckets.
+As an example:
 
+{% include_cached copy-clipboard.html %}
+~~~sql
+BACKUP DATABASE <database> INTO 's3://{bucket name}/{path in bucket}/?AWS_ACCESS_KEY_ID={access key ID}&AWS_SECRET_ACCESS_KEY={secret access key}';
+~~~
+
+### Implicit authentication
+
+If the `AUTH` parameter is `implicit`, the access keys can be omitted and [the credentials will be loaded from the environment](https://docs.aws.amazon.com/sdk-for-go/api/aws/session/) (i.e., the machines running the backup).
+
+{% include_cached copy-clipboard.html %}
+~~~sql
+BACKUP DATABASE <database> INTO 's3://{bucket name}/{path}?AUTH=implicit';
+~~~
+
+You [can associate an EC2 instance with an IAM role](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/iam-roles-for-amazon-ec2.html) to provide implicit access to S3 storage within the IAM role's policy. In the following command, the `instance example` EC2 instance is [associated](https://docs.aws.amazon.com/cli/latest/reference/ec2/associate-iam-instance-profile.html) with the `example profile` instance profile, giving the EC2 instance implicit access to any `example profile` S3 buckets.
+
+{% include_cached copy-clipboard.html %}
+~~~shell
+aws ec2 associate-iam-instance-profile --iam-instance-profile Name={example profile} --region={us-east-2} --instance-id {instance example}
+~~~
+
+</section>
+
+<section class="filter-content" markdown="1" data-scope="gcs">
+
+The `AUTH` parameter passed to the file URL must be set to either `specified` or `implicit`. The default behavior is `specified` in v21.2+. The following sections describe how to set up each authentication method.
+
+### Specified authentication
+
+To access the storage bucket with `specified` credentials, it's necessary to [create a service account](https://cloud.google.com/iam/docs/creating-managing-service-accounts) and add the service account address to the permissions on the specific storage bucket.
+
+[The JSON credentials file for authentication](https://cloud.google.com/iam/docs/creating-managing-service-account-keys#iam-service-account-keys-create-console) can be downloaded from the **Service Accounts** page in the Google Cloud Console and then [base64-encoded](https://tools.ietf.org/html/rfc4648):
+
+{% include_cached copy-clipboard.html %}
+~~~shell
+cat gcs_key.json | base64
+~~~
+
+Pass the encoded JSON object to the `CREDENTIALS` parameter:
+
+{% include_cached copy-clipboard.html %}
+~~~sql
+BACKUP DATABASE <database> INTO 'gs://{bucket name}/{path}?AUTH=specified&CREDENTIALS={encoded key}';
+~~~
+
+### Implicit authentication
+
+For CockroachDB instances that are running within a Google Cloud Environment, [environment data](https://cloud.google.com/docs/authentication/production#providing_credentials_to_your_application) can be used from the [service account](https://cloud.google.com/iam/docs/creating-managing-service-accounts) to implicitly access resources within the storage bucket.
+
+For CockroachDB clusters running in other environments, `implicit` authentication access can still be set up manually with the following steps:
+
+  1. [Create a service account](https://cloud.google.com/iam/docs/creating-managing-service-accounts) and add the service account address to the permissions on the specific storage bucket.
+
+  1. Download the [JSON credentials file](https://cloud.google.com/iam/docs/creating-managing-service-account-keys#iam-service-account-keys-create-console) from the **Service Accounts** page in the Google Cloud Console to the machines that CockroachDB is running on. (Since this file will be passed as an environment variable, it does **not** need to be base64-encoded.) Ensure that the file is located in a path that CockroachDB can access.
+
+  1. Create an environment variable instructing CockroachDB where the credentials file is located. The environment variable must be exported on each CockroachDB node:
+
+    {% include_cached copy-clipboard.html %}
     ~~~shell
-    aws ec2 associate-iam-instance-profile --iam-instance-profile Name={example profile} --region={us-east-2} --instance-id {instance example}
+    export GOOGLE_APPLICATION_CREDENTIALS="/{cockroach}/gcs_key.json"
     ~~~
 
-### Google Cloud Storage
+    Alternatively, to pass the credentials using [`systemd`](https://www.freedesktop.org/wiki/Software/systemd/), use `systemctl edit cockroach.service` to add the environment variable `Environment="GOOGLE_APPLICATION_CREDENTIALS=gcs-key.json"` under `[Service]` in the `cockroach.service` unit file. Then, run `systemctl daemon-reload` to reload the `systemd` process. Restart the `cockroach` process on each of the cluster's nodes with `systemctl restart cockroach`, which will reload the configuration files.
 
-The `AUTH` parameter must be set to one of the following:
+    To pass the credentials using code, see [Google's Authentication documentation](https://cloud.google.com/docs/authentication/production#passing_code).
 
-  - `specified`: Pass the JSON object for authentication to the `CREDENTIALS` parameter. The JSON key object needs to be base64-encoded (using the standard encoding in [RFC 4648](https://tools.ietf.org/html/rfc4648)).
+  1. Run a backup (or other bulk operation) to the storage bucket with the `AUTH` parameter set to `implicit`:
 
-    To access the storage bucket with specified credentials, it's necessary to [create a service account](https://cloud.google.com/iam/docs/creating-managing-service-accounts) and add the service account address to the permissions on the specific storage bucket. [The JSON object for authentication](https://cloud.google.com/iam/docs/creating-managing-service-account-keys#iam-service-account-keys-create-console) can be downloaded, encoded, and then passed to the `CREDENTIALS` parameter.
-
-    ~~~sql
-    BACKUP DATABASE <database> INTO 'gs://{bucket name}/{path}?AUTH=specified&CREDENTIALS={encoded key}';
-    ~~~
-
-  - `implicit`: The instance can use [environment data](https://cloud.google.com/docs/authentication/production#providing_credentials_to_your_application) from the service account to access resources. This will provide implicit access to the storage bucket.
-
+    {% include_cached copy-clipboard.html %}
     ~~~sql
     BACKUP DATABASE <database> INTO 'gs://{bucket name}/{path}?AUTH=implicit';
     ~~~
 
-### Azure Storage
+{{site.data.alerts.callout_info}}
+If the use of implicit credentials is disabled with [`--external-io-disable-implicit-credentials` flag](cockroach-start.html#security), an error will be returned when accessing external cloud storage services for various bulk operations when using `AUTH=implicit`.
+{{site.data.alerts.end}}
+
+</section>
+
+<section class="filter-content" markdown="1" data-scope="azure">
 
 To access Azure storage containers, it is sometimes necessary to [url encode](https://en.wikipedia.org/wiki/Percent-encoding) the account key since it is base64-encoded and may contain `+`, `/`, `=` characters. For example:
 
+{% include_cached copy-clipboard.html %}
 ~~~sql
 BACKUP DATABASE <database> INTO 'azure://{container name}/{path}?AZURE_ACCOUNT_NAME={account name}&AZURE_ACCOUNT_KEY={url-encoded key}';
 ~~~
 
-### HTTP
+</section>
+
+<section class="filter-content" markdown="1" data-scope="http">
 
 If your environment requires an HTTP or HTTPS proxy server for outgoing connections, you can set the standard `HTTP_PROXY` and `HTTPS_PROXY` [environment variables](https://www.cockroachlabs.com/docs/stable/cockroach-commands.html#environment-variables) when starting CockroachDB. You can create your own HTTP server with [NGINX](use-a-local-file-server-for-bulk-operations.html). A custom root CA can be appended to the system's default CAs by setting the `cloudstorage.http.custom_ca` [cluster setting](cluster-settings.html), which will be used when verifying certificates from HTTPS URLs.
 
 If you cannot run a full proxy, you can disable external HTTP(S) access (as well as custom HTTP(S) endpoints) when importing by using the [`--external-io-disable-http` flag](cockroach-start.html#flags-external-io-disable-http).
 
-### S3-compatible services
+</section>
+
+<section class="filter-content" markdown="1" data-scope="s3compatible">
 
 {{site.data.alerts.callout_danger}}
-Unlike [Amazon S3](#amazon-s3), [Google Cloud Storage](#google-cloud-storage), and [Azure storage](#azure-storage) options, the usage of S3-compatible services is not actively tested by Cockroach Labs.
+Unlike Amazon S3, Google Cloud Storage, and Azure storage options, the usage of S3-compatible services is not actively tested by Cockroach Labs.
 {{site.data.alerts.end}}
 
 A custom root CA can be appended to the system's default CAs by setting the `cloudstorage.http.custom_ca` [cluster setting](cluster-settings.html), which will be used when verifying certificates from an S3-compatible service.
+
+</section>
+
+## Storage permissions
+
+This section describes the minimum permissions required to run CockroachDB bulk operations. While we outline information on the necessary permissions to access Amazon S3 and Google Cloud Storage when running these operations, the provider's documentation provides detail on the setup process and different options regarding access management.
+
+Depending on the actions a bulk operation performs, it will require different access permissions to a cloud storage bucket. 
+
+This table outlines the actions that each operation performs against the storage bucket:
+
+<table>
+    <thead>
+        <tr>
+            <th>Operation</th>
+            <th>Permission</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td rowspan="4"><a href="backup.html">Backup</a></td>
+            <td>Write</td>
+            <td>Backups write the backup data to the bucket/container. During a backup job, a <code>BACKUP CHECKPOINT</code> file will be written that tracks the progress of the backup.</td>
+        </tr>
+        <tr>
+            <td>Get</td>
+            <td>Backups need get access after a <a href="pause-job.html">pause</a> to read the checkpoint files on <a href="resume-job.html">resume</a>.</td>
+        </tr>
+        <tr>
+            <td>List</td>
+            <td>Backups need list access to the files already in the bucket. For example, <code>BACKUP</code> uses list to find previously taken backups when executing an incremental backup.</td>
+        </tr>
+        <tr>
+            <td>Delete</td>
+            <td>Backups may delete files and progress during the job after a pause in order to resume the job from a certain point. This can include overwriting backup work that had happened before the pause.</td>
+        </tr>
+        <tr>
+            <td rowspan="2"><a href="restore.html">Restore</a></td>
+            <td>Get</td>
+            <td>Restores need access to retrieve files from the backup. Restore also requires access to the <code>LATEST</code> file in order to read the latest available backup.</td>
+        </tr>
+        <tr>
+            <td>List</td>
+            <td>Restores need list access to the files already in the bucket to find other backups in the <a href="take-full-and-incremental-backups.html#backup-collections">backup collection</a>. This contains metadata files that describe the backup, the <code>LATEST</code> file, and other versioned subdirectories and files.</td>
+        </tr>
+        <tr>
+            <td><a href="import.html">Import</a></td>
+            <td>Get</td>
+            <td>Imports read the requested file(s) from the storage bucket.</td>
+        </tr>
+        <tr>
+            <td><a href="export.html">Export</a></td>
+            <td>Write</td>
+            <td>Exports need write access to the storage bucket to create individual export file(s) from the exported data.</td>
+        </tr>
+        <tr>
+            <td><a href="create-changefeed.html">Enterprise changefeeds</a></td>
+            <td>Write</td>
+            <td>Changefeeds will write files to the storage bucket that contain row changes and resolved timestamps.</td>
+        </tr>
+    </tbody>
+</table>
+
+
+<div class="filters clearfix">
+  <button class="filter-button" data-scope="s3">Amazon S3</button>
+  <button class="filter-button" data-scope="gcs">Google Cloud Storage</button>
+</div>
+
+<section class="filter-content" markdown="1" data-scope="s3">
+
+These [actions](https://docs.aws.amazon.com/AmazonS3/latest/API/API_Operations_Amazon_Simple_Storage_Service.html) are the minimum access permissions to be set in an Amazon S3 bucket policy:
+
+Operation    | S3 permission                                                                          
+-------------+----------------------------------------------------------------------------------
+Backup       | `s3:PutObject`, `s3:GetObject`, `s3:ListBucket`, `s3:DeleteObject`
+Restore      | `s3:GetObject`, `s3:ListBucket`     
+Import       | `s3:GetObject`                                             
+Export       | `s3:PutObject`
+Enterprise Changefeeds  | `s3:PutObject`
+
+See [Policies and Permissions in Amazon S3](https://docs.aws.amazon.com/AmazonS3/latest/userguide/access-policy-language-overview.html) for detail on setting policies and permissions in Amazon S3.
+
+An example S3 bucket policy for a **backup**:
+
+~~~json
+{
+    "Version": "2012-10-17",
+    "Id": "Example_Policy",
+    "Statement": [
+        {
+            "Sid": "ExampleStatement01",
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": "arn:aws:iam::{ACCOUNT_ID}:user/{USER}"
+            },
+            "Action": [
+                "s3:PutObject",
+                "s3:GetObject",
+                "s3:ListBucket",
+                "s3:DeleteObject"
+            ],
+            "Resource": [
+                "arn:aws:s3:::{BUCKET_NAME}",
+                "arn:aws:s3:::{BUCKET_NAME}/*"
+            ]
+        }
+    ]
+}
+~~~
+
+</section>
+
+<section class="filter-content" markdown="1" data-scope="gcs">
+
+In Google Cloud Storage, you can grant users roles that define their access level to the storage bucket. For the purposes of running CockroachDB operations to your bucket, the following table lists the permissions that represent the minimum level required for each operation. GCS provides different levels of granularity for defining the roles in which these permissions reside. You can assign roles that already have these [permissions](https://cloud.google.com/storage/docs/access-control/iam-permissions) configured, or make your own custom roles that include these permissions. 
+
+For more detail about Predefined, Basic, and Custom roles, see [IAM roles for Cloud Storage](https://cloud.google.com/storage/docs/access-control/iam-roles).
+
+Operation    | GCS Permission                                                                          
+-------------+----------------------------------------------------------------------------------
+Backup       | `storage.objects.create`, `storage.objects.get`, `storage.objects.list`, `storage.objects.delete`
+Restore      | `storage.objects.get`, `storage.objects.list`       
+Import       | `storage.objects.get`                                             
+Export       | `storage.objects.create`
+Changefeeds  | `storage.objects.create`
+
+For guidance on adding a user to a bucket's policy, see [Add a principal to a bucket-level policy](https://cloud.google.com/storage/docs/access-control/using-iam-permissions#bucket-add).
+
+</section>
+
+## Additional cloud storage feature support
+
+### Amazon S3 storage classes
+
+{% include_cached new-in.html version="v21.2.6" %} When storing objects in Amazon S3 buckets during [backups](take-full-and-incremental-backups.html), [exports](export.html), and [changefeeds](change-data-capture-overview.html), you can specify the `S3_STORAGE_CLASS={class}` parameter in the URI to configure a storage class type. For example, the following S3 connection URI specifies the `INTELLIGENT_TIERING` storage class:
+
+~~~
+'s3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}&S3_STORAGE_CLASS=INTELLIGENT_TIERING'
+~~~
+
+{% include {{ page.version.version }}/misc/storage-classes.md %}
+
+You can view an object's storage class in the [Amazon S3 Console](https://s3.console.aws.amazon.com) from the object's **Properties** tab. Alternatively, use the [AWS CLI](https://docs.aws.amazon.com/cli/latest/reference/s3api/list-objects-v2.html) to list objects in a bucket, which will also display the storage class:
+
+~~~ shell
+aws s3api list-objects-v2 --bucket {bucket-name}
+~~~
+
+~~~
+{
+    "Key": "2022/05/02-180752.65/metadata.sst",
+    "LastModified": "2022-05-02T18:07:54+00:00",
+    "ETag": "\"c0f499f21d7886e4289d55ccface7527\"",
+    "Size": 7865,
+    "StorageClass": "STANDARD"
+},
+    ...
+
+    "Key": "2022-05-06/202205061217256387084640000000000-1b4e610c63535061-1-2-00000000-
+users-7.ndjson",
+    "LastModified": "2022-05-06T12:17:26+00:00",
+    "ETag": "\"c60a013619439bf83c505cb6958b55e2\"",
+    "Size": 94596,
+    "StorageClass": "INTELLIGENT_TIERING"
+},
+~~~
+
+For a specific operation, see the following examples:
+
+- [Backup with an S3 storage class](backup.html#backup-with-an-s3-storage-class)
+- [Create a changefeed with an S3 storage class](create-changefeed.html#create-a-changefeed-with-an-s3-storage-class)
+- [Export tabular data with an S3 storage class](export.html#export-tabular-data-with-an-s3-storage-class)
 
 ## See also
 

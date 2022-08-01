@@ -3,13 +3,11 @@ title: Create and Deploy an AWS Lambda Function Built on CockroachDB
 summary: Learn how to use AWS Lambda and CockroachDB Serverless.
 toc: true
 twitter: false
-referral_id: docs_lambda_python
-docs_area: 
+referral_id: docs_lambda
+docs_area: get_started
 ---
 
 This tutorial shows you how to create an [AWS Lambda](https://aws.amazon.com/lambda) function that communicates with a {{ site.data.products.serverless }} cluster.
-
-The example function used for this tutorial is written in Python. The function uses the [Psycopg](https://www.psycopg.org/) PostgreSQL adapter to connect to CockroachDB.
 
 ## Prerequisites
 
@@ -37,14 +35,40 @@ The connection string is pre-populated with your username, cluster name, and oth
 
 ## Step 2. Get the sample code
 
-Open a terminal window and copy the sample code's GitHub repo:
+Open a terminal window and clone the [sample code's GitHub repo](https://github.com/cockroachlabs/examples-aws-lambda):
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 $ git clone https://github.com/cockroachlabs/examples-aws-lambda
 ~~~
 
-The function's code is available under the `examples-aws-lambda/python` directory:
+This repo includes samples for Node.js and Python [Lambda runtimes](https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtimes.html).
+
+<div class="filters filters-big clearfix">
+    <button class="filter-button" data-scope="node">Node.js</button>
+    <button class="filter-button" data-scope="python">Python</button>
+</div>
+
+<section class="filter-content" markdown="1" data-scope="node">
+
+The Node.js function code is available under the `examples-aws-lambda/node` directory:
+
+~~~ shell
+.
+├── README.md
+├── deployment-package.zip  ## Lambda deployment package
+├── index.js                ## Lambda function source code
+├── package-lock.json       ## Dependencies
+└── package.json            ## Dependencies
+~~~
+
+This function uses the [node-postgres](https://node-postgres.com/) modules to connect to CockroachDB.
+
+</section>
+
+<section class="filter-content" markdown="1" data-scope="python">
+
+The Python function's code is available under the `examples-aws-lambda/python` directory:
 
 ~~~ shell
 .
@@ -56,11 +80,49 @@ The function's code is available under the `examples-aws-lambda/python` director
 └── root.crt                ## CA cert
 ~~~
 
+This function uses the [Psycopg2](https://www.psycopg.org/) PostgreSQL adapter to connect to CockroachDB.
+
+</section>
+
 ## Step 3. (Optional) Create the deployment package
 
 {{site.data.alerts.callout_info}}    
-This step is optional, as you do not need to create a new deployment package to deploy the sample function. The `examples-aws-lambda` repo includes a deployment package that is ready to deploy.
+This step is optional, as you do not need to create a new deployment package to deploy the sample function. The `examples-aws-lambda` repo includes deployment packages that are ready to deploy.
 {{site.data.alerts.end}}
+
+<section class="filter-content" markdown="1" data-scope="node">
+
+1. Navigate to the Node.js function directory:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    cd node
+    ~~~
+
+1. Install the code dependencies:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    npm install
+    ~~~
+
+1. Compress the project files to a ZIP file for deployment:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    zip -r deployment-package.zip .
+    ~~~
+
+</section>
+
+<section class="filter-content" markdown="1" data-scope="python">
+
+1. Navigate to the Python function directory:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    cd python
+    ~~~
 
 1. Download and install the `psycopg2-binary` Python library to a new directory:
 
@@ -87,13 +149,15 @@ This step is optional, as you do not need to create a new deployment package to 
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    cd ..
+    $ cd ..
     ~~~
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    zip -g my-deployment-package.zip init_db.py root.crt
+    $ zip -g my-deployment-package.zip init_db.py root.crt
     ~~~
+
+</section>
 
 ## Step 4. Configure AWS
 
@@ -124,39 +188,71 @@ This step is optional, as you do not need to create a new deployment package to 
 
 1. In the deployment package directory, use the AWS CLI to create a Lambda function:
 
+    <section class="filter-content" markdown="1" data-scope="node">
+
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ aws lambda create-function \
         --function-name init-crdb \
-        --region us-east-1  \
+        --region <region>  \
+        --zip-file fileb://deployment-package.zip \
+        --handler index.handler \
+        --runtime nodejs14.x \
+        --role arn:aws:iam::<account-id>:role/lambda-ex \
+        --environment "Variables={DATABASE_URL=<connection-string>}"
+    ~~~
+
+    </section>
+
+    <section class="filter-content" markdown="1" data-scope="python">
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ aws lambda create-function \
+        --function-name init-crdb \
+        --region <region>  \
         --zip-file fileb://deployment-package.zip \
         --handler init_db.lambda_handler \
         --runtime python3.9 \
         --role arn:aws:iam::<account-id>:role/lambda-ex \
-        --environment Variables={DATABASE_URL='<connection-string>'}
+        --environment "Variables={DATABASE_URL=<connection-string>,PGSSLROOTCERT=./root.crt}"
     ~~~
 
-    Where `<account-id>` is your AWS account ID, and `<connection-string>` is the [connection string to the CockroachDB cluster](#connection-string).
+    </section>
+
+    Where:
+    - `<region>` is the region closest to your CockroachDB deployment.
+    - `<account-id>` is your AWS account ID.
+    - `<connection-string>` is the [connection string to the CockroachDB cluster](#connection-string).
+
+    <section class="filter-content" markdown="1" data-scope="python">
+
+    {{site.data.alerts.callout_info}}
+    To connect to a {{ site.data.products.serverless }} cluster with Psycopg2, you must provide the client with a valid CA certificate. By default, Pscyopg2 searches for the certificate at <code>~/.postgresql/root.crt</code>, or in the environment variable `PGSSLROOTCERT`.
+    {{site.data.alerts.end}}
+
+    </section>
 
 1. Invoke the function:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ aws lambda invoke --function-name init-crdb out --region us-east-1 --log-type Tail \
+    $ aws lambda invoke --function-name init-crdb out --log-type Tail \
         --query 'LogResult' --output text |  base64 -d
     ~~~
 
     ~~~
-    START RequestId: 93866b3e-d3f0-477d-a28a-37d602effcda Version: $LATEST
-    [INFO]	2021-11-17T17:42:54.563Z	93866b3e-d3f0-477d-a28a-37d602effcda	Hey! You successfully connected to your CockroachDB cluster.
-    [INFO]	2021-11-17T17:42:54.659Z	93866b3e-d3f0-477d-a28a-37d602effcda	Created new account with id 0dd39de7-abea-4241-b7fa-09133b3bcaff and balance 866851.
-    [INFO]	2021-11-17T17:42:54.691Z	93866b3e-d3f0-477d-a28a-37d602effcda	Created new account with id 3698ffe6-a72a-427c-b9ef-fba1d723dc5e and balance 513474.
-    [INFO]	2021-11-17T17:42:54.722Z	93866b3e-d3f0-477d-a28a-37d602effcda	Created new account with id 63d7e9c0-e155-4be9-b770-487e486b0c1c and balance 916934.
-    [INFO]	2021-11-17T17:42:54.754Z	93866b3e-d3f0-477d-a28a-37d602effcda	Created new account with id dd5ee7e2-c86d-4b9e-801f-7abbe8abb99a and balance 108706.
-    [INFO]	2021-11-17T17:42:54.786Z	93866b3e-d3f0-477d-a28a-37d602effcda	Created new account with id 16056406-9b5f-4754-8cb7-b1f37fc64dad and balance 549873.
-    [INFO]	2021-11-17T17:42:54.820Z	93866b3e-d3f0-477d-a28a-37d602effcda	Database initialized.
-    END RequestId: 93866b3e-d3f0-477d-a28a-37d602effcda
-    REPORT RequestId: 93866b3e-d3f0-477d-a28a-37d602effcda	Duration: 722.63 ms	Billed Duration: 1117 ms	Memory Size: 128 MB	Max Memory Used: 47 MB	Init Duration: 393.51 ms
+    START RequestId: 12232b98-daac-4a1e-80e9-f2ecaa6497aa Version: $LATEST
+    2022-02-16T19:24:49.569Z        12232b98-daac-4a1e-80e9-f2ecaa6497aa    INFO    Initializing table...
+    2022-02-16T19:24:49.596Z        12232b98-daac-4a1e-80e9-f2ecaa6497aa    INFO    Hey! You successfully connected to your CockroachDB cluster.
+    2022-02-16T19:24:49.635Z        12232b98-daac-4a1e-80e9-f2ecaa6497aa    INFO    Created new account with balance 320.
+    2022-02-16T19:24:49.655Z        12232b98-daac-4a1e-80e9-f2ecaa6497aa    INFO    Created new account with balance 593.
+    2022-02-16T19:24:49.660Z        12232b98-daac-4a1e-80e9-f2ecaa6497aa    INFO    Created new account with balance 277.
+    2022-02-16T19:24:49.675Z        12232b98-daac-4a1e-80e9-f2ecaa6497aa    INFO    Created new account with balance 844.
+    2022-02-16T19:24:49.680Z        12232b98-daac-4a1e-80e9-f2ecaa6497aa    INFO    Created new account with balance 257.
+    2022-02-16T19:24:49.680Z        12232b98-daac-4a1e-80e9-f2ecaa6497aa    INFO    Database initialized.
+    END RequestId: 12232b98-daac-4a1e-80e9-f2ecaa6497aa
+    REPORT RequestId: 12232b98-daac-4a1e-80e9-f2ecaa6497aa  Duration: 644.49 ms     Billed Duration: 645 ms Memory Size: 128 MB     Max Memory Used: 63 MB  Init Duration: 198.77 ms
     ~~~
 
 ## See also

@@ -9,7 +9,7 @@ Because of CockroachDB's [multi-active availability](multi-active-availability.h
 
 ## Step 1. Verify that you can upgrade
 
-To upgrade to a new version, you must first be on a [production release](../releases/#production-releases) of the previous version. The release does not need to be the latest production release of the previous version, but it **must be a production release** and not a [testing release (alpha/beta)](../releases/#testing-releases).
+To upgrade to a new version, you must first be on a production [release](../releases/) of the previous version. The release does not need to be the latest production release of the previous version, but it **must be a production release** and not a testing release (alpha/beta).
 
 Therefore, to upgrade to v21.2:
 
@@ -29,19 +29,23 @@ Make sure your cluster is behind a [load balancer](recommended-production-settin
 
 ### Check cluster health
 
-Verify the overall health of your cluster using the [DB Console](ui-overview.html). On the **Overview**:
+Verify the overall health of your cluster using the [DB Console](ui-cluster-overview-page.html):
 
-- Under **Node Status**, make sure all nodes that should be live are listed as such. If any nodes are unexpectedly listed as suspect or dead, identify why the nodes are offline and either restart them or [decommission](remove-nodes.html) them before beginning your upgrade. If there are dead and non-decommissioned nodes in your cluster, it will not be possible to finalize the upgrade (either automatically or manually).
+- Under **Node Status**, make sure all nodes that should be live are listed as such. If any nodes are unexpectedly listed as `SUSPECT` or `DEAD`, identify why the nodes are offline and either restart them or [decommission](node-shutdown.html?filters=decommission#remove-nodes) them before beginning your upgrade. If there are `DEAD` and non-decommissioned nodes in your cluster, it will not be possible to finalize the upgrade (either automatically or manually).
 
-- Under **Replication Status**, make sure there are 0 under-replicated and unavailable ranges. Otherwise, performing a rolling upgrade increases the risk that ranges will lose a majority of their replicas and cause cluster unavailability. Therefore, it's important to identify and resolve the cause of range under-replication and/or unavailability before beginning your upgrade.
+    - Make sure any decommissioning nodes have been fully decommissioned. Check the `membership` field in the [output of `cockroach node status --decommission`](node-shutdown.html?filters=decommission#cockroach-node-status). Nodes with `decommissioned` membership are fully decommissioned, while nodes with `decommissioning` membership have not completed the process. In case the decommissioning process is hung, [recommission](node-shutdown.html?filters=decommission#recommission-nodes) and then [decommission those nodes](node-shutdown.html?filters=decommission#remove-nodes) again, and confirm that their membership changes to `decommissioned`.
+
+- Under **Replication Status**, make sure there are `0` under-replicated and unavailable ranges. Otherwise, performing a rolling upgrade increases the risk that ranges will lose a majority of their replicas and cause cluster unavailability. Therefore, it's important to identify and resolve the cause of range under-replication and/or unavailability before beginning your upgrade.
 
 - In the **Node List**:
     - Make sure all nodes are on the same version. If any nodes are behind, upgrade them to the cluster's current version first, and then start this process over.
-    - Make sure capacity and memory usage are reasonable for each node. Nodes must be able to tolerate some increase in case the new version uses more resources for your workload. Also go to **Metrics > Dashboard: Hardware** and make sure CPU percent is reasonable across the cluster. If there's not enough headroom on any of these metrics, consider [adding nodes](cockroach-start.html) to your cluster before beginning your upgrade.
+
+- In the **Metrics** dashboards:
+    - Make sure [CPU](common-issues-to-monitor.html#cpu-usage), [memory](common-issues-to-monitor.html#database-memory-usage), and [storage](common-issues-to-monitor.html#storage-capacity) capacity are within acceptable values for each node. Nodes must be able to tolerate some increase in case the new version uses more resources for your workload. If any of these metrics is above healthy limits, consider [adding nodes](cockroach-start.html) to your cluster before beginning your upgrade.
 
 ### Review breaking changes
 
-Review the [changes in v21.2](../releases/v21.2.0.html). If any affect your deployment, make the necessary changes before starting the rolling upgrade to v21.2.
+Review the [changes in v21.2](../releases/v21.2.html#v21-2-0). If any affect your deployment, make the necessary changes before starting the rolling upgrade to v21.2.
 
 - Interleaved tables and interleaved indexes have been removed. Before upgrading to v21.2, [convert interleaved tables](../v21.1/interleave-in-parent.html#convert-interleaved-tables) and [replace interleaved indexes](../v21.1/interleave-in-parent.html#replace-interleaved-indexes). Clusters with interleaved tables and indexes cannot finalize the v21.2 upgrade.
 - Previously, CockroachDB only supported the YMD format for parsing timestamps from strings. It now also supports the MDY format to better align with PostgreSQL. A timestamp such as `1-1-18`, which was previously interpreted as `2001-01-18`, will now be interpreted as `2018-01-01`. To continue interpreting the timestamp in the YMD format, the first number can be represented with 4 digits, `2001-1-18`.
@@ -62,7 +66,7 @@ By default, after all nodes are running the new version, the upgrade process wil
 
 3. Set the `cluster.preserve_downgrade_option` [cluster setting](cluster-settings.html):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SET CLUSTER SETTING cluster.preserve_downgrade_option = '21.1';
     ~~~
@@ -77,9 +81,9 @@ When upgrading from v21.1 to v21.2, certain features and performance improvement
 - **Privilege inheritance:** CockroachDB's model for inheritance of privileges that cascade from schema objects now matches PostgreSQL. Added support for [`ALTER DEFAULT PRIVILEGES`](alter-default-privileges.html) and [`SHOW DEFAULT PRIVILEGES`](show-default-privileges.html).
 - **Bounded staleness reads:** [Bounded staleness reads](follower-reads.html#bounded-staleness-reads) are now available in CockroachDB. These use a dynamic, system-determined timestamp to minimize staleness while being more tolerant to replication lag than exact staleness reads. This dynamic timestamp is returned by the `with_min_timestamp()` or `with_max_staleness()` [functions](functions-and-operators.html). In addition, bounded staleness reads provide the ability to serve reads from local replicas even in the presence of network partitions or other failures.
 - **Restricted and default placement:** You can now use the [`ALTER DATABASE ... PLACEMENT RESTRICTED`](placement-restricted.html) statement to constrain the replica placement for a [multi-region database](multiregion-overview.html)'s [regional tables](regional-tables.html) to the [home regions](set-locality.html#crdb_region) associated with those tables.
-- **`ON UPDATE` expressions:** An [`ON UPDATE` expression](add-column.html#add-a-column-with-an-on-update-expression) can now be added to a column to update column values when an [`UPDATE`](update.html) or [`UPSERT`](../v21.2/upsert.html) statement modifies a different column value in the same row, or when an `ON UPDATE CASCADE` expression on a different column modifies an existing value in the same row.
+- **`ON UPDATE` expressions:** An [`ON UPDATE` expression](add-column.html#add-a-column-with-an-on-update-expression) can now be added to a column to update column values when an [`UPDATE`](update.html) or [`UPSERT`](upsert.html) statement modifies a different column value in the same row, or when an `ON UPDATE CASCADE` expression on a different column modifies an existing value in the same row.
 
-For an expanded list of features included in the v21.2 release, see the [v21.2 release notes](../releases/v21.2.0.html).
+For an expanded list of features included in the v21.2 release, see the [v21.2 release notes](../releases/v21.2.html#v21-2-0).
 
 ## Step 4. Perform the rolling upgrade
 
@@ -89,18 +93,7 @@ For each node in your cluster, complete the following steps. Be sure to upgrade 
 We recommend creating scripts to perform these steps instead of performing them manually. Also, if you are running CockroachDB on Kubernetes, see our documentation on [single-cluster](upgrade-cockroachdb-kubernetes.html) and/or [multi-cluster](orchestrate-cockroachdb-with-kubernetes-multi-cluster.html#upgrade-the-cluster) orchestrated deployments for upgrade guidance instead.
 {{site.data.alerts.end}}
 
-1. Drain and stop the node using one of the following methods:
-
-    {% include {{ page.version.version }}/prod-deployment/node-shutdown.md %}
-
-    Verify that the process has stopped:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ ps aux | grep cockroach
-    ~~~
-
-    Alternately, you can check the node's logs for the message `server drained and shutdown completed`.
+1. [Drain and shut down the node.](node-shutdown.html#perform-node-shutdown)
 
 1. Download and install the CockroachDB binary you want to use:
 
@@ -111,14 +104,14 @@ We recommend creating scripts to perform these steps instead of performing them 
     <p></p>
 
     <div class="filter-content" markdown="1" data-scope="mac">
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ curl https://binaries.cockroachdb.com/cockroach-{{page.release_info.version}}.darwin-10.9-amd64.tgz|tar -xzf -
     ~~~
     </div>
 
     <div class="filter-content" markdown="1" data-scope="linux">
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ curl https://binaries.cockroachdb.com/cockroach-{{page.release_info.version}}.linux-amd64.tgz|tar -xzf -
     ~~~
@@ -133,24 +126,24 @@ We recommend creating scripts to perform these steps instead of performing them 
     <p></p>
 
     <div class="filter-content" markdown="1" data-scope="mac">
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     i="$(which cockroach)"; mv "$i" "$i"_old
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cp -i cockroach-{{page.release_info.version}}.darwin-10.9-amd64/cockroach /usr/local/bin/cockroach
     ~~~
     </div>
 
     <div class="filter-content" markdown="1" data-scope="linux">
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     i="$(which cockroach)"; mv "$i" "$i"_old
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cp -i cockroach-{{page.release_info.version}}.linux-amd64/cockroach /usr/local/bin/cockroach
     ~~~
@@ -158,13 +151,9 @@ We recommend creating scripts to perform these steps instead of performing them 
 
 1. Start the node to have it rejoin the cluster.
 
-    {{site.data.alerts.callout_danger}}
-    For maximum availability, do not wait more than a few minutes before restarting the node with the new binary. See [this open issue](https://github.com/cockroachdb/cockroach/issues/37906) for context.
-    {{site.data.alerts.end}}
-
     Without a process manager like `systemd`, re-run the [`cockroach start`](cockroach-start.html) command that you used to start the node initially, for example:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --certs-dir=certs \
@@ -174,7 +163,7 @@ We recommend creating scripts to perform these steps instead of performing them 
 
     If you are using `systemd` as the process manager, run this command to start the node:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ systemctl start <systemd config filename>
     ~~~
@@ -183,7 +172,7 @@ We recommend creating scripts to perform these steps instead of performing them 
 
 1. If you use `cockroach` in your `$PATH`, you can remove the old binary:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ rm /usr/local/bin/cockroach_old
     ~~~
@@ -194,7 +183,7 @@ We recommend creating scripts to perform these steps instead of performing them 
 
     Unless there are tens of thousands of ranges on the node, it's usually sufficient to wait one minute. To be certain that the node is ready, run the following command:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     cockroach sql -e 'select 1'
     ~~~
@@ -217,14 +206,14 @@ Once you are satisfied with the new version:
 
 2. Re-enable auto-finalization:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > RESET CLUSTER SETTING cluster.preserve_downgrade_option;
     ~~~
 
     {{site.data.alerts.callout_info}}
     This statement can take up to a minute to complete, depending on the amount of data in the cluster, as it kicks off various internal maintenance and migration tasks. During this time, the cluster will experience a small amount of additional load.
-    {{site.data.alerts.end}}    
+    {{site.data.alerts.end}}
 
 ## Troubleshooting
 
@@ -241,4 +230,4 @@ In the event of catastrophic failure or corruption, the only option will be to s
 - [View Node Details](cockroach-node.html)
 - [Collect Debug Information](cockroach-debug-zip.html)
 - [View Version Details](cockroach-version.html)
-- [Release notes for our latest version](../releases/{{page.release_info.version}}.html)
+- [Release notes for our latest version](../releases/{{page.version.version}}.html)

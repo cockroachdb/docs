@@ -3,13 +3,13 @@ title: SHOW GRANTS
 summary: The SHOW GRANTS statement lists the privileges granted to users.
 keywords: reflection
 toc: true
-docs_area: 
+docs_area: reference.sql
 ---
 
 The `SHOW GRANTS` [statement](sql-statements.html) lists one of the following:
 
-- The [roles](authorization.html#sql-users) granted to [users](authorization.html#sql-users) in a cluster.
-- The [privileges](authorization.html#assign-privileges) [granted](grant.html) to [users](authorization.html#sql-users) on [databases](create-database.html), [schemas](create-schema.html), [tables](create-table.html), or [user-defined types](enum.html).
+- The [roles](security-reference/authorization.html#sql-users) granted to [users](security-reference/authorization.html#sql-users) in a cluster.
+- The [privileges](security-reference/authorization.html#managing-privileges) [granted](grant.html) to [users](security-reference/authorization.html#sql-users) on [databases](create-database.html), [schemas](create-schema.html), [tables](create-table.html), or [user-defined types](enum.html).
 
 ## Syntax
 
@@ -36,7 +36,7 @@ SHOW GRANTS ON ROLE [<roles...>] [FOR <users...>]
 Parameter    | Description
 -------------|-----------------------------------------------------------------------------------------------------
 `targets`    | A comma-separated list of database, schema, table, or user-defined type names.<br><br>{{site.data.alerts.callout_info}}To list the privilege grants for all tables in the current database, you can use `SHOW GRANTS ON TABLE *`.{{site.data.alerts.end}}
-`users`      | A comma-separated list of the [users](authorization.html#sql-users) whose privileges or roles you want to show.
+`users`      | A comma-separated list of the [users](security-reference/authorization.html#sql-users) whose privileges or roles you want to show.
 `roles`      | A comma-separated list of the roles whose grants you want to show.
 
 ## Response
@@ -51,7 +51,7 @@ Field            | Description
 `schema_name`    | The name of the schema.
 `table_name`     | The name of the table.
 `type_name`      | The name of the user-defined type.
-`grantee`        | The name of the user or role that was granted the [privilege](authorization.html#assign-privileges).
+`grantee`        | The name of the user or role that was granted the [privilege](security-reference/authorization.html#managing-privileges).
 `privilege_type` | The name of the privilege.
 
 ### Role grants
@@ -62,13 +62,13 @@ Field        |  Description
 -------------|-----------------------------------------------------------------------------------------------------
 `role_name`  | The name of the role.
 `member`     | The users in the role.
-`is_admin`   | If `true`, the role is an [admin](authorization.html#role-admin) role.
+`is_admin`   | If `true`, the role is an [admin](security-reference/authorization.html#role-admin) role.
 
 ## Required privileges
 
-- No [privileges](authorization.html#assign-privileges) are required to view privileges granted to users.
+- No [privileges](security-reference/authorization.html#managing-privileges) are required to view privileges granted to users.
 
-- For `SHOW GRANTS ON ROLES`, the user must have the [`SELECT`](select-clause.html) [privilege](authorization.html#assign-privileges) on the system table.
+- For `SHOW GRANTS ON ROLES`, the user must have the [`SELECT`](select-clause.html) [privilege](security-reference/authorization.html#managing-privileges) on the system table.
 
 ## Examples
 
@@ -76,7 +76,7 @@ Field        |  Description
 
 To list all grants for all users and roles on the current database and its tables:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW GRANTS;
 ~~~
@@ -94,17 +94,17 @@ To list all grants for all users and roles on the current database and its table
 
 ### Show a specific user or role's grants
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE USER max WITH PASSWORD roach;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > GRANT ALL ON DATABASE movr TO max;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW GRANTS FOR max;
 ~~~
@@ -124,7 +124,7 @@ To list all grants for all users and roles on the current database and its table
 
 **Specific database, all users and roles:**
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW GRANTS ON DATABASE movr;
 ~~~
@@ -152,7 +152,7 @@ To list all grants for all users and roles on the current database and its table
 
 **Specific database, specific user or role:**
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW GRANTS ON DATABASE movr FOR max;
 ~~~
@@ -170,14 +170,14 @@ To list all grants for all users and roles on the current database and its table
 
 ### Show grants on tables
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > GRANT ALL ON TABLE users TO max;
 ~~~
 
 **Specific table, all users and roles:**
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW GRANTS ON TABLE users;
 ~~~
@@ -193,7 +193,7 @@ To list all grants for all users and roles on the current database and its table
 
 **Specific table, specific role or user:**
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW GRANTS ON TABLE users FOR max;
 ~~~
@@ -207,7 +207,7 @@ To list all grants for all users and roles on the current database and its table
 
 **All tables, all users and roles:**
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW GRANTS ON TABLE *;
 ~~~
@@ -233,7 +233,7 @@ To list all grants for all users and roles on the current database and its table
 
 **All tables, specific users or roles:**
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW GRANTS ON TABLE * FOR max;
 ~~~
@@ -247,19 +247,19 @@ To list all grants for all users and roles on the current database and its table
 
 ### Show grants on schemas
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE SCHEMA cockroach_labs;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > GRANT ALL ON SCHEMA cockroach_labs TO max;
 ~~~
 
 **Specific schema, all users or roles:**
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW GRANTS ON SCHEMA cockroach_labs;
 ~~~
@@ -275,7 +275,7 @@ To list all grants for all users and roles on the current database and its table
 
 **Specific schema, specific users or roles:**
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW GRANTS ON SCHEMA cockroach_labs FOR max;
 ~~~
@@ -289,19 +289,19 @@ To list all grants for all users and roles on the current database and its table
 
 ### Show grants on user-defined types
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TYPE status AS ENUM ('available', 'unavailable');
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > GRANT ALL ON TYPE status TO max;
 ~~~
 
 **Specific type, all users or roles:**
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW GRANTS ON TYPE status;
 ~~~
@@ -318,7 +318,7 @@ To list all grants for all users and roles on the current database and its table
 
 **Specific type, specific users or roles:**
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW GRANTS ON TYPE status FOR max;
 ~~~
@@ -332,19 +332,19 @@ To list all grants for all users and roles on the current database and its table
 
 ### Show role memberships
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE ROLE moderator;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > GRANT moderator TO max;
 ~~~
 
 **All members of all roles:**
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW GRANTS ON ROLE;
 ~~~
@@ -359,7 +359,7 @@ To list all grants for all users and roles on the current database and its table
 
 **Members of a specific role:**
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW GRANTS ON ROLE moderator;
 ~~~
@@ -373,7 +373,7 @@ To list all grants for all users and roles on the current database and its table
 
 **Roles of a specific user or role:**
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW GRANTS ON ROLE FOR max;
 ~~~
@@ -394,6 +394,6 @@ To list all grants for all users and roles on the current database and its table
 - [`GRANT`](grant.html)
 - [`REVOKE`](revoke.html)
 - [`SHOW GRANTS`](show-grants.html)
-- [Manage Users](authorization.html#create-and-manage-users)
+- [Manage Users](security-reference/authorization.html#create-and-manage-users)
 - [Other Cockroach Commands](cockroach-commands.html)
 - [Information Schema](information-schema.html)

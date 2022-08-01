@@ -3,13 +3,13 @@ title: Build a Go App with CockroachDB the Go pq Driver
 summary: Learn how to use CockroachDB from a simple Go application with the Go pq driver.
 toc: true
 twitter: false
-referral_id: docs_hello_world_go_pq
+referral_id: docs_go_pq
 ---
 
 <div class="filters filters-big clearfix">
     <a href="build-a-go-app-with-cockroachdb.html"><button class="filter-button">Use <strong>pgx</strong></button></a>
-    <a href="build-a-go-app-with-cockroachdb-pq.html"><button class="filter-button current">Use <strong>pq</strong></button></a>
     <a href="build-a-go-app-with-cockroachdb-gorm.html"><button class="filter-button">Use <strong>GORM</strong></button></a>
+    <a href="build-a-go-app-with-cockroachdb-pq.html"><button class="filter-button current">Use <strong>pq</strong></button></a>
     <a href="build-a-go-app-with-cockroachdb-upperdb.html"><button class="filter-button">Use <strong>upper/db</strong></button></a>
 </div>
 
@@ -36,7 +36,7 @@ You can now run the code sample (`main.go`) provided in this tutorial to do the 
 
 ### Get the code
 
-You can copy the code below, <a href="https://raw.githubusercontent.com/cockroachlabs/hello-world-go-pq/master/main.go">download the code directly</a>, or clone [the code's GitHub repository](https://github.com/cockroachlabs/hello-world-go-pq).
+You can copy the code below, [download the code directly](https://raw.githubusercontent.com/cockroachlabs/hello-world-go-pq/master/main.go), or clone [the code's GitHub repository](https://github.com/cockroachlabs/hello-world-go-pq).
 
 Here are the contents of `main.go`:
 

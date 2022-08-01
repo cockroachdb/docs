@@ -2,7 +2,7 @@
 title: CANCEL SESSION
 summary: The CANCEL SESSION statement stops long-running sessions.
 toc: true
-docs_area: 
+docs_area: reference.sql
 ---
 
 The `CANCEL SESSION` [statement](sql-statements.html) lets you stop long-running sessions. `CANCEL SESSION` will attempt to cancel the currently active query and end the session.
@@ -15,7 +15,7 @@ To view and cancel a session, the user must be a member of the `admin` role or m
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/cancel_session.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/cancel_session.html %}
 </div>
 
 ## Parameters
@@ -31,7 +31,7 @@ Parameter | Description
 
 In this example, we use the [`SHOW SESSIONS`](show-sessions.html) statement to get the ID of a session and then pass the ID into the `CANCEL SESSION` statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW SESSIONS;
 ~~~
@@ -45,14 +45,14 @@ In this example, we use the [`SHOW SESSIONS`](show-sessions.html) statement to g
 +---------+----------------------------------+-----------+...
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CANCEL SESSION '1530fe0e46d2692e0000000000000001';
 ~~~
 
 You can also cancel a session using a subquery that returns a single session ID:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CANCEL SESSIONS (SELECT session_id FROM [SHOW SESSIONS]
       WHERE user_name = 'root');
@@ -62,7 +62,7 @@ You can also cancel a session using a subquery that returns a single session ID:
 
 Use the [`SHOW SESSIONS`](show-sessions.html) statement to view all active sessions:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW SESSIONS;
 ~~~
@@ -80,7 +80,7 @@ Use the [`SHOW SESSIONS`](show-sessions.html) statement to view all active sessi
 
 To cancel multiple sessions, nest a [`SELECT` clause](select-clause.html) that retrieves `session_id`(s) inside the `CANCEL SESSIONS` statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CANCEL SESSIONS (SELECT session_id FROM [SHOW SESSIONS]
       WHERE user_name = 'maxroach');
@@ -91,6 +91,6 @@ All sessions created by `maxroach` will be cancelled.
 ## See also
 
 - [`SHOW SESSIONS`](show-sessions.html)
-- [`SET` (session variable)](set-vars.html)
-- [`SHOW` (session variable)](show-vars.html)
+- [`SET {session variable}`](set-vars.html)
+- [`SHOW {session variable}`](show-vars.html)
 - [SQL Statements](sql-statements.html)

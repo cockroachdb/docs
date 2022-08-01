@@ -45,7 +45,7 @@ Parameter | Description
 `opt_index_name`<br>`index_name` | The name of the index to create, which must be unique to its table and follow these [identifier rules](keywords-and-identifiers.html#identifiers).<br><br>If you do not specify a name, CockroachDB uses the format `<table>_<columns>_key/idx`. `key` indicates the index applies the `UNIQUE` constraint; `idx` indicates it does not. Example: `accounts_balance_idx`
 `table_name` | The name of the table you want to create the index on.
 `USING name` | An optional clause for compatibility with third-party tools. Accepted values for `name` are `btree`, `gin`, and `gist`, with `btree` for a standard secondary index, `gin` as the PostgreSQL-compatible syntax for a [GIN index](#create-gin-indexes), and `gist` for a [spatial index](spatial-indexes.html).
-`name` | The name of the column you want to index.
+`name` | The name of the column you want to index. For [multi-region tables](multiregion-overview.html#table-locality), you can use the `crdb_region` column within the index in the event the original index may contain non-unique entries across multiple, unique regions.
 `ASC` or `DESC`| Sort the column in ascending (`ASC`) or descending (`DESC`) order in the index. How columns are sorted affects query results, particularly when using `LIMIT`.<br><br>__Default:__ `ASC`
 `STORING ...`| Store (but do not sort) each column whose name you include.<br><br>For information on when to use `STORING`, see  [Store Columns](#store-columns).  Note that columns that are part of a table's [`PRIMARY KEY`](primary-key.html) cannot be specified as `STORING` columns in secondary indexes on the table.<br><br>`COVERING` and `INCLUDE` are aliases for `STORING` and work identically.
 `opt_partition_by` | An [Enterprise-only](enterprise-licensing.html) option that lets you [define index partitions at the row level](partitioning.html). As of CockroachDB v21.1 and later, most users should use [`REGIONAL BY ROW` tables](multiregion-overview.html#regional-by-row-tables). Indexes against regional by row tables are automatically partitioned, so explicit index partitioning is not required.
@@ -74,7 +74,7 @@ To create the most efficient indexes, we recommend reviewing:
 
 Single-column indexes sort the values of a single column.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE INDEX ON users (name);
 ~~~
@@ -85,7 +85,7 @@ Because each query can only use one index, single-column indexes are not typical
 
 Multiple-column indexes sort columns in the order you list them.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE INDEX ON users (name, city);
 ~~~
@@ -96,14 +96,14 @@ To create the most useful multiple-column indexes, we recommend reviewing our [b
 
 Unique indexes do not allow duplicate values among their columns.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE UNIQUE INDEX ON users (name, id);
 ~~~
 
 This also applies the [`UNIQUE` constraint](unique.html) at the table level, similarly to [`ALTER TABLE`](alter-table.html). The above example is equivalent to:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE users ADD CONSTRAINT users_name_id_key UNIQUE (name, id);
 ~~~
@@ -112,14 +112,14 @@ This also applies the [`UNIQUE` constraint](unique.html) at the table level, sim
 
 [GIN indexes](inverted-indexes.html) can be created on schemaless data in a [`JSONB`](jsonb.html) column.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE INVERTED INDEX ON promo_codes (rules);
 ~~~
 
 The above example is equivalent to the following PostgreSQL-compatible syntax:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE INDEX ON promo_codes USING GIN (rules);
 ~~~
@@ -130,7 +130,7 @@ The above example is equivalent to the following PostgreSQL-compatible syntax:
 
 To create a spatial index on a `GEOMETRY` column:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE INDEX geom_idx_1 ON some_spatial_table USING GIST(geom);
 ~~~
@@ -139,7 +139,7 @@ Unlike GIN indexes, spatial indexes do not support an alternate `CREATE INVERTED
 
 For advanced users, there are a number of [spatial index tuning parameters](spatial-indexes.html#create-a-spatial-index-that-uses-all-of-the-tuning-parameters) that can be passed in using the syntax `WITH (var1=val1, var2=val2)` as follows:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE INDEX geom_idx_2
   ON some_spatial_table USING GIST(geom)
@@ -154,7 +154,7 @@ Most users should not change the default spatial index settings. There is a risk
 
 Storing a column improves the performance of queries that retrieve (but do not filter) its values.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE INDEX ON users (city) STORING (name);
 ~~~
@@ -169,7 +169,7 @@ However, to use stored columns, queries must filter another column in the same i
 
 To sort columns in descending order, you must explicitly set the option when creating the index. (Ascending order is the default.)
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE INDEX ON users (city DESC, name);
 ~~~
@@ -180,7 +180,7 @@ Note that how a column is ordered in the index will affect the ordering of the i
 
 Normally, CockroachDB selects the index that it calculates will scan the fewest rows. However, you can override that selection and specify the name of the index you want to use. To find the name, use [`SHOW INDEX`](show-index.html).
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW INDEX FROM users;
 ~~~
@@ -196,7 +196,7 @@ Normally, CockroachDB selects the index that it calculates will scan the fewest 
 (5 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT name FROM users@users_name_idx WHERE city='new york';
 ~~~
@@ -216,7 +216,7 @@ Normally, CockroachDB selects the index that it calculates will scan the fewest 
 
 {% include {{page.version.version}}/performance/use-hash-sharded-indexes.md %}
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE events (
     product_id INT8,
@@ -229,17 +229,17 @@ Normally, CockroachDB selects the index that it calculates will scan the fewest 
 );
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET experimental_enable_hash_sharded_indexes=on;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE INDEX ON events(ts) USING HASH WITH BUCKET_COUNT=8;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW INDEX FROM events;
 ~~~
@@ -261,7 +261,7 @@ Normally, CockroachDB selects the index that it calculates will scan the fewest 
 (11 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW COLUMNS FROM events;
 ~~~

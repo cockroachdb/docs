@@ -2,7 +2,7 @@
 title: SHOW TRANSACTIONS
 summary: The SHOW TRANSACTIONS statement lists all currently active transactions across the cluster or on the gateway node.
 toc: true
-docs_area: 
+docs_area: reference.sql
 ---
 
  The `SHOW TRANSACTIONS` [statement](sql-statements.html) lists details about currently active transactions, including:
@@ -16,7 +16,7 @@ These details let you monitor the overall state of transactions and identify tho
 
 ## Required privileges
 
-No [privileges](authorization.html#assign-privileges) are required to execute this statement. However, note that non-`admin` users see only their own currently active transactions, whereas the `admin` users see all users' currently active transactions.
+No [privileges](security-reference/authorization.html#managing-privileges) are required to execute this statement. However, note that non-`admin` users see only their own currently active transactions, whereas the `admin` users see all users' currently active transactions.
 
 ## Syntax
 
@@ -45,7 +45,7 @@ The following fields are returned for each transaction:
 
 ### List active transactions across the cluster
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CLUSTER TRANSACTIONS;
 ~~~
@@ -62,7 +62,7 @@ Alternatively, you can use `SHOW TRANSACTIONS` to receive the same response.
 
 ### List active transactions on the gateway node
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW LOCAL TRANSACTIONS;
 ~~~
@@ -80,7 +80,7 @@ You can use a [`SELECT`](select-clause.html) statement to filter the list of cur
 
 #### Show transactions associated with a specific application
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM [SHOW CLUSTER TRANSACTIONS] WHERE application_name = 'movr';
 
@@ -97,7 +97,7 @@ You can use a [`SELECT`](select-clause.html) statement to filter the list of cur
 
 To exclude transactions from the [built-in SQL client](cockroach-sql.html), filter for transactions that do not show `$ cockroach sql` as the `application_name`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM [SHOW CLUSTER TRANSACTIONS]
       WHERE application_name != '$ cockroach sql';
@@ -113,4 +113,4 @@ To exclude transactions from the [built-in SQL client](cockroach-sql.html), filt
 ## See also
 
 - [Transactions](transactions.html)
-- [Other SQL Statements](sql-statements.html)
+- [SQL Statements](sql-statements.html)

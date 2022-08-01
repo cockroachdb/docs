@@ -2,10 +2,10 @@
 title: GRANT
 summary: The GRANT statement grants user privileges for interacting with specific database objects and adds roles or users as a member of a role.
 toc: true
-docs_area: 
+docs_area: reference.sql
 ---
 
-The `GRANT` [statement](sql-statements.html) controls each [role](authorization.html#create-and-manage-roles) or [user's](authorization.html#create-and-manage-users) SQL [privileges](authorization.html#assign-privileges) for interacting with specific [databases](create-database.html), [schemas](create-schema.html), [tables](create-table.html), or [user-defined types](enum.html). For privileges required by specific statements, see the documentation for the respective [SQL statement](sql-statements.html).
+The `GRANT` [statement](sql-statements.html) controls each [role or user's](security-reference/authorization.html#users-and-roles) SQL privileges for interacting with specific [databases](create-database.html), [schemas](create-schema.html), [tables](create-table.html), or [user-defined types](enum.html). For privileges required by specific statements, see the documentation for the respective [SQL statement](sql-statements.html).
 
 You can use `GRANT` to directly grant privileges to a role or user, or you can grant membership to an existing role, which grants that role's privileges to the grantee.
 
@@ -14,7 +14,7 @@ You can use `GRANT` to directly grant privileges to a role or user, or you can g
 ## Syntax
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/grant.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/grant.html %}
 </div>
 
 ### Parameters
@@ -23,11 +23,11 @@ Parameter                 | Description
 --------------------------|------------
 `ALL`<br>`ALL PRIVILEGES` | Grant all [privileges](#supported-privileges).
 `targets`                 | A comma-separated list of database or table names, preceded by the object type (e.g., `DATABASE mydatabase`).<br>{{site.data.alerts.callout_info}}To grant privileges on all tables in a database or schema, you can use `GRANT ... ON TABLE *`. For an example, see [Grant privileges on all tables in a database or schema](#grant-privileges-on-all-tables-in-a-database-or-schema).{{site.data.alerts.end}}
-`name_list`               | A comma-separated list of [users](authorization.html#create-and-manage-users) and/or [roles](authorization.html#create-and-manage-roles).
+`name_list`               | A comma-separated list of [users](security-reference/authorization.html#create-and-manage-users) and/or [roles](security-reference/authorization.html#users-and-roles).
 `target_types`            | A comma-separated list of [user-defined types](create-type.html).
 `schema_name_list`        | A comma-separated list of [schemas](create-schema.html).
-`ALL TABLES IN SCHEMA`    | <span class="version-tag">New in v21.2</span>: Grant privileges on all tables in a schema or list of schemas.
-`privilege_list`          | A comma-separated list of [privileges](authorization.html#assign-privileges) to grant.
+`ALL TABLES IN SCHEMA`    | **New in v21.2:** Grant privileges on all tables in a schema or list of schemas.
+`privilege_list`          | A comma-separated list of [privileges](security-reference/authorization.html#managing-privileges) to grant.
 `WITH ADMIN OPTION`       | Designate the user as a role admin. Role admins can grant or [revoke](revoke.html) membership for the specified role.
 
 ## Supported privileges
@@ -69,17 +69,17 @@ Roles and users can be granted the following privileges:
 
 ### Grant privileges on databases
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE USER max WITH PASSWORD roach;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > GRANT ALL ON DATABASE movr TO max;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW GRANTS ON DATABASE movr;
 ~~~
@@ -95,12 +95,12 @@ Roles and users can be granted the following privileges:
 
 ### Grant privileges on specific tables in a database
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > GRANT DELETE ON TABLE rides TO max;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW GRANTS ON TABLE rides;
 ~~~
@@ -116,12 +116,12 @@ Roles and users can be granted the following privileges:
 
 ### Grant privileges on all tables in a database or schema
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > GRANT SELECT ON TABLE movr.public.* TO max;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW GRANTS ON TABLE movr.public.*;
 ~~~
@@ -153,12 +153,12 @@ Roles and users can be granted the following privileges:
 
 ### Make a table readable to every user in the system
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > GRANT SELECT ON TABLE vehicles TO public;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW GRANTS ON TABLE vehicles;
 ~~~
@@ -175,17 +175,17 @@ Roles and users can be granted the following privileges:
 
 ### Grant privileges on schemas
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE SCHEMA cockroach_labs;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > GRANT ALL ON SCHEMA cockroach_labs TO max;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW GRANTS ON SCHEMA cockroach_labs;
 ~~~
@@ -201,17 +201,17 @@ Roles and users can be granted the following privileges:
 
 ### Grant privileges on user-defined types
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TYPE status AS ENUM ('available', 'unavailable');
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > GRANT ALL ON TYPE status TO max;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW GRANTS ON TYPE status;
 ~~~
@@ -229,7 +229,7 @@ Roles and users can be granted the following privileges:
 
 ### Grant the privilege to manage the replication zones for a database or table
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > GRANT ZONECONFIG ON TABLE rides TO max;
 ~~~
@@ -238,22 +238,22 @@ The user `max` can then use the [`CONFIGURE ZONE`](configure-zone.html) statemen
 
 ### Grant role membership
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE ROLE developer WITH CREATEDB;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE USER abbey WITH PASSWORD lincoln;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > GRANT developer TO abbey;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW GRANTS ON ROLE developer;
 ~~~
@@ -267,12 +267,12 @@ The user `max` can then use the [`CONFIGURE ZONE`](configure-zone.html) statemen
 
 ### Grant the admin option
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > GRANT developer TO abbey WITH ADMIN OPTION;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW GRANTS ON ROLE developer;
 ~~~
@@ -291,4 +291,4 @@ The user `max` can then use the [`CONFIGURE ZONE`](configure-zone.html) statemen
 - [`SHOW GRANTS`](show-grants.html)
 - [`SHOW ROLES`](show-roles.html)
 - [`CONFIGURE ZONE`](configure-zone.html)
-- [Manage Users](authorization.html#create-and-manage-users)
+- [Manage Users](security-reference/authorization.html#create-and-manage-users)

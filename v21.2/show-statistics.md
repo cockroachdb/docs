@@ -14,12 +14,12 @@ The `SHOW STATISTICS` [statement](sql-statements.html) lists [table statistics](
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/show_stats.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/show_stats.html %}
 </div>
 
 ## Required Privileges
 
-No [privileges](authorization.html#assign-privileges) are required to list table statistics.
+No [privileges](security-reference/authorization.html#managing-privileges) are required to list table statistics.
 
 ## Parameters
 
@@ -33,7 +33,7 @@ Parameter      | Description
 
 ### List table statistics
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW STATISTICS FOR TABLE rides;
 ~~~

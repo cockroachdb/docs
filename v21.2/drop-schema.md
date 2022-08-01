@@ -2,7 +2,7 @@
 title: DROP SCHEMA
 summary: The DROP SCHEMA statement removes a schema and all its objects from a CockroachDB cluster.
 toc: true
-docs_area: 
+docs_area: reference.sql
 ---
 
 The `DROP SCHEMA` [statement](sql-statements.html) removes a user-defined [schema](sql-name-resolution.html#naming-hierarchy).
@@ -11,12 +11,12 @@ The `DROP SCHEMA` [statement](sql-statements.html) removes a user-defined [schem
 
 ## Required privileges
 
-The user must have the `DROP` [privilege](authorization.html#assign-privileges) on the schema and on all tables in the schema. If the user is the owner of the schema, `DROP` privileges are not necessary.
+The user must have the `DROP` [privilege](security-reference/authorization.html#managing-privileges) on the schema and on all tables in the schema. If the user is the owner of the schema, `DROP` privileges are not necessary.
 
 ## Syntax
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/drop_schema.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/drop_schema.html %}
 </div>
 
 ### Parameters
@@ -34,12 +34,12 @@ Parameter | Description
 
 ### Drop a schema
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE SCHEMA org_one;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW SCHEMAS;
 ~~~
@@ -56,12 +56,12 @@ Parameter | Description
 (6 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP SCHEMA org_one;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW SCHEMAS;
 ~~~
@@ -81,12 +81,12 @@ Parameter | Description
 
 To drop a schema that contains tables, you need to use the `CASCADE` keyword.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE SCHEMA org_two;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW SCHEMAS;
 ~~~
@@ -103,7 +103,7 @@ To drop a schema that contains tables, you need to use the `CASCADE` keyword.
 (6 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE org_two.users (
         id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -113,7 +113,7 @@ To drop a schema that contains tables, you need to use the `CASCADE` keyword.
 );
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM org_two;
 ~~~
@@ -125,7 +125,7 @@ To drop a schema that contains tables, you need to use the `CASCADE` keyword.
 (1 row)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP SCHEMA org_two;
 ~~~
@@ -135,12 +135,12 @@ ERROR: schema "org_two" is not empty and CASCADE was not specified
 SQLSTATE: 2BP01
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP SCHEMA org_two CASCADE;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW SCHEMAS;
 ~~~
@@ -161,5 +161,5 @@ SQLSTATE: 2BP01
 - [`CREATE SCHEMA`](create-schema.html)
 - [`SHOW SCHEMAS`](show-schemas.html)
 - [`SHOW JOBS`](show-jobs.html)
-- [Other SQL Statements](sql-statements.html)
+- [SQL Statements](sql-statements.html)
 - [Online Schema Changes](online-schema-changes.html)

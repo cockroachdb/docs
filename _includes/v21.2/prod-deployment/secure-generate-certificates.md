@@ -12,12 +12,12 @@ Locally, you'll need to [create the following certificates and keys](cockroach-c
 
 2. Create two directories:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ mkdir certs
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ mkdir my-safe-directory
     ~~~
@@ -26,7 +26,7 @@ Locally, you'll need to [create the following certificates and keys](cockroach-c
 
 3. Create the CA certificate and key:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach cert create-ca \
     --certs-dir=certs \
@@ -35,7 +35,7 @@ Locally, you'll need to [create the following certificates and keys](cockroach-c
 
 4. Create the certificate and key for the first node, issued to all common names you might use to refer to the node as well as to the load balancer instances:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach cert create-node \
     <node1 internal IP address> \
@@ -54,7 +54,7 @@ Locally, you'll need to [create the following certificates and keys](cockroach-c
 5. Upload the CA certificate and node certificate and key to the first node:
    
     {% if page.title contains "Google" %}
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ gcloud compute ssh \
     --project <project name> <instance name> \
@@ -65,7 +65,7 @@ Locally, you'll need to [create the following certificates and keys](cockroach-c
     `gcloud compute ssh` associates your public SSH key with the GCP project and is only needed when connecting to the first node. See the [GCP docs](https://cloud.google.com/sdk/gcloud/reference/compute/ssh) for more details.
     {{site.data.alerts.end}}
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ scp certs/ca.crt \
     certs/node.crt \
@@ -74,17 +74,17 @@ Locally, you'll need to [create the following certificates and keys](cockroach-c
     ~~~
 
     {% elsif page.title contains "AWS" %}
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ ssh-add /path/<key file>.pem
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ ssh <username>@<node1 DNS name> "mkdir certs"
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ scp certs/ca.crt \
     certs/node.crt \
@@ -93,12 +93,12 @@ Locally, you'll need to [create the following certificates and keys](cockroach-c
     ~~~
 
     {% else %}
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ ssh <username>@<node1 address> "mkdir certs"
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ scp certs/ca.crt \
     certs/node.crt \
@@ -109,7 +109,7 @@ Locally, you'll need to [create the following certificates and keys](cockroach-c
 
 6. Delete the local copy of the node certificate and key:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ rm certs/node.crt certs/node.key
     ~~~
@@ -120,7 +120,7 @@ Locally, you'll need to [create the following certificates and keys](cockroach-c
 
 7. Create the certificate and key for the second node, issued to all common names you might use to refer to the node as well as to the load balancer instances:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach cert create-node \
     <node2 internal IP address> \
@@ -139,12 +139,12 @@ Locally, you'll need to [create the following certificates and keys](cockroach-c
 8. Upload the CA certificate and node certificate and key to the second node:
 
     {% if page.title contains "AWS" %}
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ ssh <username>@<node2 DNS name> "mkdir certs"
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ scp certs/ca.crt \
     certs/node.crt \
@@ -153,12 +153,12 @@ Locally, you'll need to [create the following certificates and keys](cockroach-c
     ~~~
 
     {% else %}
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ ssh <username>@<node2 address> "mkdir certs"
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ scp certs/ca.crt \
     certs/node.crt \
@@ -171,7 +171,7 @@ Locally, you'll need to [create the following certificates and keys](cockroach-c
 
 10. Create a client certificate and key for the `root` user:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach cert create-client \
     root \
@@ -181,12 +181,12 @@ Locally, you'll need to [create the following certificates and keys](cockroach-c
 
 11. Upload the CA certificate and client certificate and key to the machine where you will run a sample workload:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ ssh <username>@<workload address> "mkdir certs"
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ scp certs/ca.crt \
     certs/client.root.crt \

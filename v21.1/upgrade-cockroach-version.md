@@ -9,7 +9,7 @@ Because of CockroachDB's [multi-active availability](multi-active-availability.h
 
 ## Step 1. Verify that you can upgrade
 
-To upgrade to a new version, you must first be on a [production release](../releases/#production-releases) of the previous version. The release does not need to be the **latest** production release of the previous version, but it must be a production release rather than a testing release (alpha/beta).
+To upgrade to a new version, you must first be on a production [release](../releases/) of the previous version. The release does not need to be the **latest** production release of the previous version, but it must be a production release rather than a testing release (alpha/beta).
 
 Therefore, if you are upgrading from v20.1 to v21.1, or from a testing release (alpha/beta) of v20.2 to v21.1:
 
@@ -41,7 +41,7 @@ Verify the overall health of your cluster using the [DB Console](ui-overview.htm
 
 ### Review breaking changes
 
-Review the [backward-incompatible changes in v21.1](../releases/v21.1.0.html#backward-incompatible-changes) and [deprecated features](../releases/v21.1.0.html#deprecations). If any affect your deployment, make the necessary changes before starting the rolling upgrade to v21.1.
+Review the [backward-incompatible changes in v21.1](../releases/v21.1.html#v21-1-0-backward-incompatible-changes) and [deprecated features](../releases/v21.1.html#v21-1-0-deprecations). If any affect your deployment, make the necessary changes before starting the rolling upgrade to v21.1.
 
 Two changes that are particularly important to note:
 
@@ -65,7 +65,7 @@ By default, after all nodes are running the new version, the upgrade process wil
 
 3. Set the `cluster.preserve_downgrade_option` [cluster setting](cluster-settings.html):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SET CLUSTER SETTING cluster.preserve_downgrade_option = '20.2';
     ~~~
@@ -98,7 +98,7 @@ We recommend creating scripts to perform these steps instead of performing them 
 
     Verify that the process has stopped:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ ps aux | grep cockroach
     ~~~
@@ -114,14 +114,14 @@ We recommend creating scripts to perform these steps instead of performing them 
     <p></p>
 
     <div class="filter-content" markdown="1" data-scope="mac">
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ curl https://binaries.cockroachdb.com/cockroach-{{page.release_info.version}}.darwin-10.9-amd64.tgz|tar -xzf -
     ~~~
     </div>
 
     <div class="filter-content" markdown="1" data-scope="linux">
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ curl https://binaries.cockroachdb.com/cockroach-{{page.release_info.version}}.linux-amd64.tgz|tar -xzf -
     ~~~
@@ -136,24 +136,24 @@ We recommend creating scripts to perform these steps instead of performing them 
     <p></p>
 
     <div class="filter-content" markdown="1" data-scope="mac">
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     i="$(which cockroach)"; mv "$i" "$i"_old
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cp -i cockroach-{{page.release_info.version}}.darwin-10.9-amd64/cockroach /usr/local/bin/cockroach
     ~~~
     </div>
 
     <div class="filter-content" markdown="1" data-scope="linux">
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     i="$(which cockroach)"; mv "$i" "$i"_old
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cp -i cockroach-{{page.release_info.version}}.linux-amd64/cockroach /usr/local/bin/cockroach
     ~~~
@@ -167,7 +167,7 @@ We recommend creating scripts to perform these steps instead of performing them 
 
     Without a process manager like `systemd`, re-run the [`cockroach start`](cockroach-start.html) command that you used to start the node initially, for example:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --certs-dir=certs \
@@ -177,7 +177,7 @@ We recommend creating scripts to perform these steps instead of performing them 
 
     If you are using `systemd` as the process manager, run this command to start the node:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ systemctl start <systemd config filename>
     ~~~
@@ -186,7 +186,7 @@ We recommend creating scripts to perform these steps instead of performing them 
 
 1. If you use `cockroach` in your `$PATH`, you can remove the old binary:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ rm /usr/local/bin/cockroach_old
     ~~~
@@ -197,7 +197,7 @@ We recommend creating scripts to perform these steps instead of performing them 
 
     Unless there are tens of thousands of ranges on the node, it's usually sufficient to wait one minute. To be certain that the node is ready, run the following command:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     cockroach sql -e 'select 1'
     ~~~
@@ -220,7 +220,7 @@ Once you are satisfied with the new version:
 
 2. Re-enable auto-finalization:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > RESET CLUSTER SETTING cluster.preserve_downgrade_option;
     ~~~
@@ -244,4 +244,4 @@ In the event of catastrophic failure or corruption, the only option will be to s
 - [View Node Details](cockroach-node.html)
 - [Collect Debug Information](cockroach-debug-zip.html)
 - [View Version Details](cockroach-version.html)
-- [Release notes for our latest version](../releases/{{page.release_info.version}}.html)
+- [Release notes for our latest version](../releases/{{page.version.version}}.html)

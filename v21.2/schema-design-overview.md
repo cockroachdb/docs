@@ -3,7 +3,7 @@ title: Database Schemas
 summary: An overview of the objects that make up a logical schema
 toc: true
 keywords: gin, gin index, gin indexes, inverted index, inverted indexes, accelerated index, accelerated indexes
-docs_area: 
+docs_area: develop
 ---
 
 This page provides an overview of database schemas in CockroachDB.
@@ -86,9 +86,9 @@ For guidance on using temporary objects, see [Temporary Tables](temporary-tables
 
 ## Control access to objects
 
-CockroachDB supports both user-based and role-based access control. With roles, or with direct assignment, you can grant a [SQL user](authorization.html#sql-users) the [privileges](authorization.html#privileges) required to view, modify, and delete database schema objects.
+CockroachDB supports both user-based and role-based access control. With roles, or with direct assignment, you can grant a [SQL user](security-reference/authorization.html#sql-users) the [privileges](security-reference/authorization.html#privileges) required to view, modify, and delete database schema objects.
 
-By default, the user that creates an object is that object's *owner*. [Object owners](authorization.html#object-ownership) have all privileges required to view, modify, or delete that object and the data stored within it.
+By default, the user that creates an object is that object's *owner*. [Object owners](security-reference/authorization.html#object-ownership) have all privileges required to view, modify, or delete that object and the data stored within it.
 
 For more information about ownership, privileges, and authorization, see [Authorization](authorization.html).
 

@@ -2,7 +2,7 @@
 title: Migrate from OpenStreetMap
 summary: Learn how to migrate data from the OpenStreetMap pbf format into a CockroachDB cluster.
 toc: true
-docs_area: 
+docs_area: migrate
 ---
 
  CockroachDB supports efficiently storing and querying [spatial data](spatial-data.html).
@@ -22,21 +22,21 @@ To follow along with the example below, you will need the following prerequisite
 
 First, download the OSM data:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 wget https://download.geofabrik.de/australia-oceania/australia-latest.osm.pbf
 ~~~
 
 ## Step 2. Prepare the database
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 cockroach sql --insecure
 ~~~
 
 Next, create a database to hold the Australia map data:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE DATABASE IF NOT EXISTS australia;
 USE australia;
@@ -46,7 +46,7 @@ USE australia;
 
 Run the `osm2pgsql` command shown below to convert the OSM data and import it into the `australia` database. The arguments to `osm2pgsql` shown below assume a [locally running insecure cluster](start-a-local-cluster.html) and may need to be changed depending on your system. You may also need to tweak the cache setting (`-C`) depending on your system's hardware.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 osm2pgsql -C 2048 -d australia -U root -H localhost -P 26257 australia-latest.osm.pbf
 ~~~
@@ -132,8 +132,7 @@ Osm2pgsql took 2879s overall
 - [Migrate from Shapefiles](migrate-from-shapefiles.html)
 - [Migration Overview](migration-overview.html)
 - [Migrate from MySQL][mysql]
-- [Migrate from Postgres][postgres]
-- [SQL Dump (Export)](cockroach-dump.html)
+- [Migrate from PostgreSQL][postgres]
 - [Back Up and Restore Data](take-full-and-incremental-backups.html)
 - [Use the Built-in SQL Client](cockroach-sql.html)
 - [Other Cockroach Commands](cockroach-commands.html)
@@ -144,4 +143,3 @@ Osm2pgsql took 2879s overall
 [postgres]: migrate-from-postgres.html
 [mysql]: migrate-from-mysql.html
 [import]: import.html
-

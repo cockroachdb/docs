@@ -2,7 +2,7 @@
 title: DROP DATABASE
 summary: The DROP DATABASE statement removes a database and all its objects from a CockroachDB cluster.
 toc: true
-docs_area: 
+docs_area: reference.sql
 ---
 
 The `DROP DATABASE` [statement](sql-statements.html) removes a database and all its objects from a CockroachDB cluster.
@@ -11,11 +11,11 @@ The `DROP DATABASE` [statement](sql-statements.html) removes a database and all 
 
 ## Required privileges
 
-The user must have the `DROP` [privilege](authorization.html#assign-privileges) on the database and on all tables in the database.
+The user must have the `DROP` [privilege](security-reference/authorization.html#managing-privileges) on the database and on all tables in the database.
 
 ## Synopsis
 
-<div>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/drop_database.html %}</div>
+<div>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/drop_database.html %}</div>
 
 ## Parameters
 
@@ -40,7 +40,7 @@ For non-interactive sessions (e.g., client applications), `DROP DATABASE` applie
 
 For interactive sessions from the [built-in SQL client](cockroach-sql.html), either the `CASCADE` option must be set explicitly or the `--unsafe-updates` flag must be set when starting the shell.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM movr;
 ~~~
@@ -57,7 +57,7 @@ For interactive sessions from the [built-in SQL client](cockroach-sql.html), eit
 (6 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP DATABASE movr;
 ~~~
@@ -67,12 +67,12 @@ ERROR: rejected (sql_safe_updates = true): DROP DATABASE on current database
 SQLSTATE: 01000
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > USE defaultdb;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP DATABASE movr;
 ~~~
@@ -82,12 +82,12 @@ ERROR: rejected (sql_safe_updates = true): DROP DATABASE on non-empty database w
 SQLSTATE: 01000
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP DATABASE movr CASCADE;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM movr;
 ~~~
@@ -101,7 +101,7 @@ SQLSTATE: 3F000
 
 When a database is not empty, the `RESTRICT` option prevents the database from being dropped:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM movr;
 ~~~
@@ -118,12 +118,12 @@ When a database is not empty, the `RESTRICT` option prevents the database from b
 (6 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > USE defaultdb;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP DATABASE movr RESTRICT;
 ~~~
@@ -140,5 +140,5 @@ SQLSTATE: 2BP01
 - [`RENAME DATABASE`](rename-database.html)
 - [`SET DATABASE`](set-vars.html)
 - [`SHOW JOBS`](show-jobs.html)
-- [Other SQL Statements](sql-statements.html)
+- [SQL Statements](sql-statements.html)
 - [Online Schema Changes](online-schema-changes.html)

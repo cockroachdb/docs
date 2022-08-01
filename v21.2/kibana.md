@@ -2,7 +2,7 @@
 title: Monitor CockroachDB with Kibana
 summary: The CockroachDB module for Metricbeat enables data visualization of CockroachDB metrics with Kibana.
 toc: true
-docs_area: 
+docs_area: manage
 ---
 
 [Kibana](https://www.elastic.co/kibana/) is a platform that visualizes data on the [Elastic Stack](https://www.elastic.co/elastic-stack/). Using the [CockroachDB module for Metricbeat](https://www.elastic.co/guide/en/beats/metricbeat/current/metricbeat-module-cockroachdb.html), metrics exposed by the CockroachDB [Prometheus endpoint](monitoring-and-alerting.html#prometheus-endpoint) can be collected by Elasticsearch and visualized with Kibana.

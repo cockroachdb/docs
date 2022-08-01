@@ -2,7 +2,7 @@
 title: Create a Database
 summary: Best practices for creating databases in CockroachDB.
 toc: true
-docs_area: 
+docs_area: develop
 ---
 
 This page provides best-practice guidance on creating databases, with a couple examples based on Cockroach Labs' fictional vehicle-sharing company, [MovR](movr.html).
@@ -15,8 +15,7 @@ For reference documentation on the `CREATE DATABASE` statement, including additi
 
 Before reading this page, do the following:
 
-- [Install CockroachDB](install-cockroachdb.html).
-- [Start a local cluster](secure-a-cluster.html), or [create a {{ site.data.products.dedicated }} cluster](../cockroachcloud/create-your-cluster.html).
+- [Create a {{ site.data.products.serverless }} cluster](../cockroachcloud/quickstart.html) or [start a local cluster](../cockroachcloud/quickstart.html?filters=local).
 - [Review the database schema objects](schema-design-overview.html).
 
 ## Create a database
@@ -31,7 +30,7 @@ Here are some best practices to follow when creating and using databases:
 
 - Do not use the preloaded `defaultdb` database. Instead, create your own database with a `CREATE DATABASE` statement, and change it to the SQL session's [current database](sql-name-resolution.html#current-database) by executing a `USE {databasename};` statement, by passing the `--database={databasename}` flag to the [`cockroach sql` command](cockroach-sql.html#general), or by specifying the `database` parameter in the [connection string](connection-parameters.html#connect-using-a-url) passed to your database schema migration tool.
 
-- Create databases and [user-defined schemas](schema-design-schema.html) as a member of [the `admin` role](authorization.html#admin-role) (e.g., as the [`root` user](authorization.html#root-user)), and create all other lower-level objects as a [different user](schema-design-overview.html#control-access-to-objects), with fewer privileges, following [authorization best practices](authorization.html#authorization-best-practices).
+- Create databases and [user-defined schemas](schema-design-schema.html) as a member of [the `admin` role](security-reference/authorization.html#admin-role) (e.g., as the [`root` user](security-reference/authorization.html#root-user)), and create all other lower-level objects as a [different user](schema-design-overview.html#control-access-to-objects), with fewer privileges, following [authorization best practices](security-reference/authorization.html#authorization-best-practices).
 
 - Limit the number of databases you create. If you need to create multiple tables with the same name in your cluster, do so in different [user-defined schemas](schema-design-schema.html), in the same database.
 
@@ -43,14 +42,14 @@ Create an empty file with the `.sql` file extension at the end of the filename. 
 
 For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ touch dbinit.sql
 ~~~
 
 Open `dbinit.sql` in a text editor, and, at the top of the file, add a `CREATE DATABASE` statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE DATABASE IF NOT EXISTS movr;
 ~~~
@@ -59,7 +58,7 @@ This statement will create a database named `movr`, if one does not already exis
 
 To execute the statement in the `dbinit.sql` file as the `root` user, run the following command:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
 --certs-dir={certs-directory} \
@@ -69,7 +68,7 @@ $ cockroach sql \
 
 To view the database in the cluster, execute a [`SHOW DATABASES`](show-databases.html) statement from the command line:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
 --certs-dir={certs-directory} \

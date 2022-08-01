@@ -2,14 +2,14 @@
 title: cockroach userfile get
 summary: Fetch files stored in the user-scoped file storage.
 toc: true
-docs_area: 
+docs_area: reference.cli
 ---
 
  The `cockroach userfile get` [command](cockroach-commands.html) fetches the files stored in the [user-scoped file storage](use-userfile-for-bulk-operations.html) which match the provided pattern, using a SQL connection. If no pattern is provided, all files in the specified (or default, if unspecified) user-scoped file storage will be fetched.
 
 ## Required privileges
 
-The user must have `CONNECT` [privileges](authorization.html#assign-privileges) on the target database.
+The user must have `CONNECT` [privileges](security-reference/authorization.html#managing-privileges) on the target database.
 
 A user can only fetch files from their own user-scoped storage, which is accessed through the [userfile URI](cockroach-userfile-upload.html#file-destination) used during the upload. CockroachDB will revoke all access from every other user in the cluster except users in the `admin` role and users explicitly granted access.
 
@@ -47,7 +47,7 @@ $ cockroach userfile get --help
 
 To get the file named test-data.csv from the default user-scoped storage location for the current user:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach userfile get test-data.csv --certs-dir=certs
 ~~~
@@ -56,7 +56,7 @@ $ cockroach userfile get test-data.csv --certs-dir=certs
 
 To get a file named test-data.csv from a local directory:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach userfile get test-data.csv /Users/maxroach/Desktop/test-data.csv --certs-dir=certs
 ~~~
@@ -65,7 +65,7 @@ $ cockroach userfile get test-data.csv /Users/maxroach/Desktop/test-data.csv --c
 
 If you [uploaded a file to a non-default userfile URI](cockroach-userfile-upload.html#upload-a-file-to-a-non-default-userfile-uri) (e.g., `userfile://testdb.public.uploads`), use the same URI to fetch it:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 cockroach userfile get userfile://testdb.public.uploads/test-data.csv --certs-dir=certs
 ~~~
@@ -74,7 +74,7 @@ cockroach userfile get userfile://testdb.public.uploads/test-data.csv --certs-di
 
 To get all files that match a pattern, use *:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach userfile get '*.csv' --certs-dir=certs
 ~~~

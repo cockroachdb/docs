@@ -3,7 +3,7 @@ title: JSONB
 summary: The JSONB data type stores JSON (JavaScript Object Notation) data.
 toc: true
 keywords: gin, gin index, gin indexes, inverted index, inverted indexes, accelerated index, accelerated indexes
-docs_area: 
+docs_area: reference.sql
 ---
 
 The `JSONB` [data type](data-types.html) stores JSON (JavaScript Object Notation) data as a binary representation of the `JSONB` value, which eliminates whitespace, duplicate keys, and key ordering. `JSONB` supports [GIN indexes](inverted-indexes.html).
@@ -45,7 +45,7 @@ Examples:
 
 ## Size
 
-The size of a `JSONB` value is variable, but we recommend that you keep values under 1 MB to ensure satisfactory performance. Above that threshold, [write amplification](https://en.wikipedia.org/wiki/Write_amplification) and other considerations may cause significant performance degradation.
+The size of a `JSONB` value is variable, but we recommend that you keep values under 1 MB to ensure satisfactory performance. Above that threshold, [write amplification](architecture/storage-layer.html#write-amplification) and other considerations may cause significant performance degradation.
 
 ## Functions
 
@@ -96,13 +96,11 @@ For details, see [tracking issue](https://github.com/cockroachdb/cockroach/issue
 ~~~
 
 ~~~
-+--------------+-----------+-------------+-------------------+-----------------------+-------------+
-| column_name  | data_type | is_nullable |  column_default   | generation_expression |   indices   |
-+--------------+-----------+-------------+-------------------+-----------------------+-------------+
-| profile_id   | UUID      |    false    | gen_random_uuid() |                       | {"primary"} |
-| last_updated | TIMESTAMP |    true     | now()             |                       | {}          |
-| user_profile | JSON      |    true     | NULL              |                       | {}          |
-+--------------+-----------+-------------+-------------------+-----------------------+-------------+
+  column_name  | data_type | is_nullable |  column_default   | generation_expression |  indices  | is_hidden
+---------------+-----------+-------------+-------------------+-----------------------+-----------+------------
+  profile_id   | UUID      |    false    | gen_random_uuid() |                       | {primary} |   false
+  last_updated | TIMESTAMP |    true     | now():::TIMESTAMP |                       | {primary} |   false
+  user_profile | JSONB     |    true     | NULL              |                       | {primary} |   false
 (3 rows)
 ~~~
 

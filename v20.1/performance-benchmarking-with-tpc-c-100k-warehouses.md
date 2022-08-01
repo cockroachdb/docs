@@ -34,7 +34,7 @@ TPC-C provides the most realistic and objective measure for OLTP performance at 
 
 Reproducing CockroachDB's 100,000 warehouse TPC-C results involves using CockroachDB's [partitioning](partitioning.html) feature to ensure replicas for any given section of data are located on the same nodes that will be queried by the load generator for that section of data. Partitioning helps distribute the workload evenly across the cluster.
 
-The partitioning feature requires an enterprise license, so [request a 30-day trial license](https://www.cockroachlabs.com/get-cockroachdb/) before you get started.
+The partitioning feature requires an Enterprise license, so [request a 30-day trial license](https://www.cockroachlabs.com/get-cockroachdb/enterprise/) before you get started.
 
 You should receive your trial license via email within a few minutes. You'll enable your license once your cluster is up-and-running.
 

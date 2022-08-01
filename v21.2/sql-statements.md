@@ -39,7 +39,7 @@ Statement | Usage
 [`ADD CONSTRAINT`](add-constraint.html) | Add a constraint to a column.
 [`ALTER COLUMN`](alter-column.html) | Change a column's [Default constraint](default-value.html), [`NOT NULL` constraint](not-null.html), or [data type](data-types.html).
 [`ALTER DATABASE`](alter-database.html) | Apply a schema change to a database.
-[`ALTER DEFAULT PRIVILEGES`](alter-default-privileges.html) | <span class="version-tag">New in v21.2</span>: Change the default [privileges](authorization.html#privileges) for objects created by specific roles/users in the current database.
+[`ALTER DEFAULT PRIVILEGES`](alter-default-privileges.html) | **New in v21.2:** Change the default [privileges](security-reference/authorization.html#privileges) for objects created by specific roles/users in the current database.
 [`ALTER INDEX`](alter-index.html) | Apply a schema change to an index.
 [`ALTER PARTITION`](alter-partition.html) | Configure the replication zone for a partition. Note that [partitioning](partitioning.html) requires an [Enterprise license](enterprise-licensing.html).
 [`ALTER PRIMARY KEY`](alter-primary-key.html) |  Change the [primary key](primary-key.html) of a table.
@@ -121,27 +121,27 @@ Statement | Usage
 
 Statement | Usage
 ----------|------------
-[`CREATE ROLE`](create-role.html) | Create SQL [roles](authorization.html#create-and-manage-roles), which are groups containing any number of roles and users as members.
-[`CREATE USER`](create-user.html) | Create SQL users, which lets you control [privileges](authorization.html#assign-privileges) on your databases and tables.
-[`DROP ROLE`](drop-role.html) | Remove one or more SQL [roles](authorization.html#create-and-manage-roles).
+[`CREATE ROLE`](create-role.html) | Create SQL [roles](security-reference/authorization.html#users-and-roles), which are groups containing any number of roles and users as members.
+[`CREATE USER`](create-user.html) | Create SQL users, which lets you control [privileges](security-reference/authorization.html#managing-privileges) on your databases and tables.
+[`DROP ROLE`](drop-role.html) | Remove one or more SQL [roles](security-reference/authorization.html#users-and-roles).
 [`DROP USER`](drop-user.html) | Remove one or more SQL users.
-[`GRANT`](grant.html) | Grant privileges to [users](authorization.html#create-and-manage-users) or [roles](authorization.html#create-and-manage-roles), or add a [role](authorization.html#create-and-manage-roles) or [user](authorization.html#create-and-manage-users) as a member to a role.
-[`REASSIGN OWNED`](reassign-owned.html) | Change the [ownership](authorization.html#object-ownership) of all database objects in the current database that are currently owned by a specific [role](authorization.html#roles) or [user](authorization.html#sql-users).
-[`REVOKE`](revoke.html) | Revoke privileges from [users](authorization.html#create-and-manage-users) or [roles](authorization.html#create-and-manage-roles), or revoke a [role](authorization.html#create-and-manage-roles) or [user's](authorization.html#create-and-manage-users) membership to a role.
+[`GRANT`](grant.html) | Grant privileges to [users and roles](security-reference/authorization.html#users-and-roles), or add a [role](security-reference/authorization.html#users-and-roles) or [user](security-reference/authorization.html#create-and-manage-users) as a member to a role.
+[`REASSIGN OWNED`](reassign-owned.html) | Change the [ownership](security-reference/authorization.html#object-ownership) of all database objects in the current database that are currently owned by a specific [role](security-reference/authorization.html#roles) or [user](security-reference/authorization.html#sql-users).
+[`REVOKE`](revoke.html) | Revoke privileges from [users](security-reference/authorization.html#create-and-manage-users) or [roles](security-reference/authorization.html#users-and-roles), or revoke a [role](security-reference/authorization.html#users-and-roles) or [user's](security-reference/authorization.html#create-and-manage-users) membership to a role.
 [`SHOW GRANTS`](show-grants.html) | View privileges granted to users.
 [`SHOW ROLES`](show-roles.html) | Lists the roles for all databases.
 [`SHOW USERS`](show-users.html) | Lists the users for all databases.
-[`SHOW DEFAULT PRIVILEGES`](show-default-privileges.html) | <span class="version-tag">New in v21.2</span>: Show the default privileges for objects created by specific roles/users in the current database.
+[`SHOW DEFAULT PRIVILEGES`](show-default-privileges.html) | **New in v21.2:** Show the default privileges for objects created by specific roles/users in the current database.
 
 ## Session management statements
 
 Statement | Usage
 ----------|------------
-[`RESET`](reset-vars.html) | Reset a session variable to its default value.
-[`SET`](set-vars.html) | Set a current session variable.
+[`RESET {session variable}`](reset-vars.html) | Reset a session variable to its default value.
+[`SET {session variable}`](set-vars.html) | Set a current session variable.
 [`SET TRANSACTION`](set-transaction.html) | Set the priority for an individual [transaction](transactions.html).
 [`SHOW TRACE FOR SESSION`](show-trace.html) | Return details about how CockroachDB executed a statement or series of statements recorded during a session.
-[`SHOW`](show-vars.html) | List the current session or transaction settings.
+[`SHOW {session variable}`](show-vars.html) | List the current session or transaction settings.
 
 ## Cluster management statements
 

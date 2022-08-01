@@ -7,7 +7,7 @@ toc: true
 <span class="version-tag">New in v20.2:</span> User-defined `ENUM` [data types](data-types.html) consist of a set of enumerated, static values.
 
 {{site.data.alerts.callout_danger}}
-Clusters with `ENUM` types that are running [alpha testing releases](../releases/#testing-releases) of v20.2 will not be able to upgrade to beta testing releases or [production releases](../releases/#production-releases) of v20.2 due to internal representation changes.
+Clusters with `ENUM` types that are running alpha testing [releases](../releases/) of v20.2 will not be able to upgrade to beta testing releases or production releases of v20.2 due to internal representation changes.
 {{site.data.alerts.end}}
 
 ## Syntax
@@ -24,7 +24,7 @@ where `<name>` is the name of the new type, and `<value1>, <value2>, ...` are st
 You can qualify the `<name>` of an enumerated type with a [database and schema name](sql-name-resolution.html) (e.g., `db.typename`). After the type is created, it can only be referenced from the database that contains the type.
 {{site.data.alerts.end}}
 
-To show all `ENUM` types in the database, use [`SHOW ENUMS`](show-enums.html):
+To show all `ENUM` types in the database, including all `ENUMS` created implicitly for [multi-region databases](multi-region-overview.html), use [`SHOW ENUMS`](show-enums.html):
 
 {% include copy-clipboard.html %}
 ~~~ sql

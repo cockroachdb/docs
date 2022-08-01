@@ -49,12 +49,12 @@ Special syntax cases:
 The following demonstrates how `SET` can be used to configure the
 default database for the current session:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET database = movr;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW database;
 ~~~
@@ -70,12 +70,12 @@ default database for the current session:
 
 The following demonstrates how to use quoting to use values containing spaces:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET database = "database name with spaces";
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW database;
 ~~~
@@ -91,12 +91,12 @@ The following demonstrates how to use quoting to use values containing spaces:
 
 The following demonstrates how to assign a list of values:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET search_path = pg_catalog,public;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW search_path;
 ~~~
@@ -112,7 +112,7 @@ The following demonstrates how to assign a list of values:
 
 {{site.data.alerts.callout_success}}You can use <a href="reset-vars.html"><code>RESET</code></a> to reset a session variable as well.{{site.data.alerts.end}}
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW search_path;
 ~~~
@@ -124,12 +124,12 @@ The following demonstrates how to assign a list of values:
 (1 row)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET search_path = 'app';
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW search_path;
 ~~~
@@ -141,12 +141,12 @@ The following demonstrates how to assign a list of values:
 (1 row)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET search_path = DEFAULT;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW search_path;
 ~~~
@@ -182,12 +182,12 @@ When setting a time zone, note the following:
 
 ### Example: Set the default time zone via `SET TIME ZONE`
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET TIME ZONE 'EST'; -- same as SET "timezone" = 'EST'
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TIME ZONE;
 ~~~
@@ -199,12 +199,12 @@ When setting a time zone, note the following:
 (1 row)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET TIME ZONE DEFAULT; -- same as SET "timezone" = DEFAULT
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TIME ZONE;
 ~~~

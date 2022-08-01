@@ -1,5 +1,5 @@
-| Replication zone Pattern                         | Multi-region SQL                                                                                                                                            |
+| Replication Zone Pattern                         | Multi-Region SQL                                                                                                                            |
 |--------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [Duplicate Indexes][dupe_index]                  | [`GLOBAL` tables](global-tables.html)                                                                                                                       |
-| [Geo-partitioned replicas][geo_replicas]         | [`REGIONAL BY ROW` tables](regional-tables.html#regional-by-row-tables) with [`ZONE` survival goals](multiregion-overview.html#surviving-zone-failures)     |
-| [Geo-partitioned leaseholders][geo_leaseholders] | [`REGIONAL BY ROW` tables](regional-tables.html#regional-by-row-tables) with [`REGION` survival goals](multiregion-overview.html#surviving-region-failures) |
+| [Duplicate indexes](topology-duplicate-indexes.html)                  | [`GLOBAL` tables](global-tables.html)                                                                                                                       |
+| [Geo-partitioned replicas](topology-geo-partitioned-replicas.html)        | [`REGIONAL BY ROW` tables](regional-tables.html#regional-by-row-tables) with [`ZONE` survival goals](multiregion-overview.html#surviving-zone-failures)     |
+| [Geo-partitioned leaseholders](topology-geo-partitioned-leaseholders.html) | [`REGIONAL BY ROW` tables](regional-tables.html#regional-by-row-tables) with [`REGION` survival goals](multiregion-overview.html#surviving-region-failures) |

@@ -7,17 +7,17 @@ key: performance-benchmarking-with-tpc-c-100k-warehouses.html
 filter_category: perf_bench_tpc-c
 filter_html: Large
 filter_sort: 5
-docs_area: 
+docs_area: reference.benchmarking
 ---
 
-This page shows you how to reproduce [CockroachDB's TPC-C performance benchmarking results](performance.html#scale). Across all scales, CockroachDB can process tpmC (new order transactions per minute) at near maximum efficiency. Start by choosing the scale you're interested in:
+This page shows you how to reproduce [CockroachDB TPC-C performance benchmarking results](performance.html#scale). Across all scales, CockroachDB can process tpmC (new order transactions per minute) at near maximum efficiency. Start by choosing the scale you're interested in:
 
 {% include filter-tabs.md %}
 
 | Workload             | Cluster size                                            | Warehouses | Data size |
 |----------------------+---------------------------------------------------------+------------+-----------|
 | Local                | 3 nodes on your laptop                                  |         10 | 2 GB      |
-| Local (Multi-region) | 9 in-memory nodes on your laptop using `cockroach demo` |         10 | 2 GB      |
+| Local (multi-region) | 9 in-memory nodes on your laptop using `cockroach demo` |         10 | 2 GB      |
 | Small                | 3 nodes on `c5d.4xlarge` machines                       |       2500 | 200 GB    |
 | Medium               | 15 nodes on `c5d.4xlarge` machines                      |     13,000 | 1.04 TB   |
 | Large                | 81 nodes on `c5d.9xlarge` machines                      |    140,000 | 11.2 TB   |
@@ -35,7 +35,7 @@ TPC-C provides the most realistic and objective measure for OLTP performance at 
 
 Reproducing these TPC-C results involves using CockroachDB's [partitioning](partitioning.html) feature to ensure replicas for any given section of data are located on the same nodes that will be queried by the load generator for that section of data. Partitioning helps distribute the workload evenly across the cluster.
 
-The partitioning feature requires an Enterprise license, so [request a 30-day trial license](https://www.cockroachlabs.com/get-cockroachdb/) before you get started.
+The partitioning feature requires an Enterprise license, so [request a 30-day trial license](https://www.cockroachlabs.com/get-cockroachdb/enterprise/) before you get started.
 
 You should receive your trial license via email within a few minutes. You'll enable your license once your cluster is up-and-running.
 
@@ -92,13 +92,13 @@ CockroachDB requires TCP communication on two ports:
 
 2. Download the [CockroachDB archive](https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz) for Linux, extract the binary, and copy it into the `PATH`:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ curl https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
     | tar -xz
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin/
     ~~~
@@ -107,7 +107,7 @@ CockroachDB requires TCP communication on two ports:
 
 3. Run the [`cockroach start`](cockroach-start.html) command:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -122,11 +122,11 @@ CockroachDB requires TCP communication on two ports:
 
 4. Repeat steps 1 - 3 for the other 80 VMs for CockroachDB nodes. Each time, be sure to:
     - Adjust the `--advertise-addr` flag.
-    - Set the [`--locality`](cockroach-start.html#locality) flag to the appropriate "rack number", as described above.
+    - Set the [`--locality`](cockroach-start.html#locality) flag to the appropriate "rack number".
 
 5. On any of the VMs with the `cockroach` binary, run the one-time [`cockroach init`](cockroach-init.html) command to join the first nodes into a cluster:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach init --insecure --host=<address of any node on --join list>
     ~~~
@@ -139,14 +139,14 @@ You'll be importing a large TPC-C data set. To speed that up, you can temporaril
 
 2. Launch the [built-in SQL shell](cockroach-sql.html):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql --insecure --host=<address of any node>
     ~~~
 
 3. Adjust some [cluster settings](cluster-settings.html):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     SET CLUSTER SETTING kv.dist_sender.concurrency_limit = 2016;
     SET CLUSTER SETTING kv.snapshot_rebalance.max_rate = '256 MiB';
@@ -159,26 +159,26 @@ You'll be importing a large TPC-C data set. To speed that up, you can temporaril
 
 4. Change the default [GC TTL](configure-replication-zones.html#gc-ttlseconds) to the following value:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     ALTER RANGE default CONFIGURE ZONE USING gc.ttlseconds = 600;
     ~~~
 
 5. Enable the trial license you requested earlier:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SET CLUSTER SETTING cluster.organization = '<your organization>';
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SET CLUSTER SETTING enterprise.license = '<your license key>';
     ~~~
 
 6. Exit the SQL shell:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > \q
     ~~~
@@ -191,13 +191,13 @@ CockroachDB comes with a number of [built-in workloads](cockroach-workload.html)
 
 1. Download the [CockroachDB archive](https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz) for Linux, extract the binary, and copy it into the `PATH`:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ curl https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
     | tar -xz
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin/
     ~~~
@@ -206,7 +206,7 @@ CockroachDB comes with a number of [built-in workloads](cockroach-workload.html)
 
 1. Import the TPC-C dataset:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach workload fixtures import tpcc \
     --partitions=81 \
@@ -222,15 +222,13 @@ CockroachDB comes with a number of [built-in workloads](cockroach-workload.html)
 
 ## Step 5. Partition the database
 
-Next, [partition your database](partitioning.html) to divide all of the TPC-C tables and indexes into 81 partitions, one per rack, and then use [zone configurations](configure-replication-zones.html) to pin those partitions to a particular rack.
+1. [Partition your database](partitioning.html) to divide all of the TPC-C tables and indexes into 81 partitions, one per rack, and then use [zone configurations](configure-replication-zones.html) to pin those partitions to a particular rack.
 
-Wait for up-replication and partitioning to finish.  You will know when they have finished because both the number of *lease transfers* and *snapshots* will go down to `0` and stay there.  Note that this will likely take 10s of minutes.
+1. Wait for up-replication and partitioning to finish.  You will know when they have finished because both the number of *lease transfers* and *snapshots* will go down to `0` and stay there.  This will likely take 10s of minutes.
+    - To monitor the number of lease transfers, open the [DB Console](ui-overview.html), select the **Replication** dashboard, hover over the **Range Operations** graph, and check the **Lease Transfers** data point.
+    - To check the number of snapshots, open the [DB Console](ui-overview.html), select the **Replication** dashboard, and hover over the **Snapshots** graph.
 
-- To monitor the number of Lease transfers, open the [DB Console](ui-overview.html), select the **Replication** dashboard, hover over the **Range Operations** graph, and check the **Lease Transfers** data point.
-
-- To check the number of snapshots, open the [DB Console](ui-overview.html), select the **Replication** dashboard, and hover over the **Snapshots** graph.
-
-<img src="{{ 'images/v21.2/tpcc-large-replication-dashboard.png' | relative_url }}" alt="TPC-C 140k replication and partitioning dashboards" style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/v21.2/tpcc-large-replication-dashboard.png' | relative_url }}" alt="TPC-C 140k replication and partitioning dashboards" style="border:1px solid #eee;max-width:100%" />
 
 ## Step 7. Allocate partitions
 
@@ -244,34 +242,34 @@ Before running the benchmark, it's important to allocate partitions to workload 
 
 2. Upload the `addrs` file to the 5 VMs with the `workload` binary:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ scp addrs <username>@<workload instance 1 address>:.
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ scp addrs <username>@<workload instance 2 address>:.
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ scp addrs <username>@<workload instance 3 address>:.
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ scp addrs <username>@<workload instance 4 address>:.
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ scp addrs <username>@<workload instance 5 address>:.
     ~~~
 
 3. SSH to each VM with `workload` and allocate partitions:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     ulimit -n 500000 && cockroach workload run tpcc --partitions=81 \
     --warehouses=140000 \
@@ -282,7 +280,7 @@ Before running the benchmark, it's important to allocate partitions to workload 
     $(cat addrs)
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     ulimit -n 500000 && cockroach workload run tpcc \
     --partitions 81 \
@@ -294,7 +292,7 @@ Before running the benchmark, it's important to allocate partitions to workload 
     $(cat addrs)
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     ulimit -n 500000 && cockroach workload run tpcc \
     --partitions=81 \
@@ -306,7 +304,7 @@ Before running the benchmark, it's important to allocate partitions to workload 
     $(cat addrs)
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     ulimit -n 500000 && cockroach workload run tpcc \
     --partitions=81 \
@@ -318,7 +316,7 @@ Before running the benchmark, it's important to allocate partitions to workload 
     $(cat addrs)
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     ulimit -n 500000 && cockroach workload run tpcc \
     --partitions=81 \
@@ -338,7 +336,7 @@ Once the allocations finish, run TPC-C for 30 minutes on each VM with `workload`
 It is critical to run the benchmark from the workload nodes in parallel, so start them as simultaneously as possible.
 {{site.data.alerts.end}}
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 ulimit -n 500000 && cockroach workload run tpcc \
 --partitions=81 \
@@ -350,7 +348,7 @@ ulimit -n 500000 && cockroach workload run tpcc \
 $(cat addrs)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 ulimit -n 500000 && cockroach workload run tpcc \
 --partitions=81 \
@@ -362,7 +360,7 @@ ulimit -n 500000 && cockroach workload run tpcc \
 $(cat addrs)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 ulimit -n 500000 && cockroach workload run tpcc \
 --partitions=81 \
@@ -374,7 +372,7 @@ ulimit -n 500000 && cockroach workload run tpcc \
 $(cat addrs)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 ulimit -n 500000 && cockroach workload run tpcc \
 --partitions=81 \
@@ -386,7 +384,7 @@ ulimit -n 500000 && cockroach workload run tpcc \
 $(cat addrs)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 ulimit -n 500000 && cockroach workload run tpcc \
 --partition=81 \
@@ -402,27 +400,27 @@ $(cat addrs)
 
 1. Collect the result files from each VM with `workload`:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ scp <username>@<workload instance 1 address>:workload1.histogram.ndjson .
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ scp <username>@<workload instance 2 address>:workload2.histogram.ndjson .
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ scp <username>@<workload instance 3 address>:workload3.histogram.ndjson .
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ scp <username>@<workload instance 4 address>:workload4.histogram.ndjson .
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ scp <username>@<workload instance 5 address>:workload5.histogram.ndjson .
     ~~~
@@ -430,25 +428,25 @@ $(cat addrs)
 2. Upload the result files to one of the VMs with the `workload` binary:
 
     {{site.data.alerts.callout_info}}
-    The commands below assume you're uploading to the VM with the `workload1.histogram.ndjson` file.
+    The following commands assume you're uploading to the VM with the `workload1.histogram.ndjson` file.
     {{site.data.alerts.end}}
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ scp workload2.histogram.ndjson <username>@<workload instance 2 address>:.
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ scp workload3.histogram.ndjson <username>@<workload instance 3 address>:.
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ scp workload4.histogram.ndjson <username>@<workload instance 4 address>:.
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ scp workload5.histogram.ndjson <username>@<workload instance 5 address>:.
     ~~~
@@ -457,7 +455,7 @@ $(cat addrs)
 
 4. Run the `workload debug tpcc-merge-results` command to synthesize the results:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     cockroach workload debug tpcc-merge-results \
     --warehouses=140000 \
@@ -484,8 +482,8 @@ $(cat addrs)
 
     CockroachDB works well on commodity hardware in public cloud, private cloud, on-prem, and hybrid environments. For hardware recommendations, see our [Production Checklist](recommended-production-settings.html#hardware).
 
-    Also note that CockroachDB creates a yearly cloud report focused on evaluating hardware performance. For more information, see the [2020 Cloud Report](https://www.cockroachlabs.com/blog/2020-cloud-report/).
+    {% include {{ page.version.version }}/prod-deployment/cloud-report.md %}
 
 - Performance Tuning
 
-    For guidance on tuning a real workload's performance, see [SQL Best Practices](performance-best-practices-overview.html), and for guidance on techniques to minimize network latency in multi-region or global clusters, see [Multi-Region Overview](multiregion-overview.html).
+    For guidance on tuning a real workload's performance, see [SQL Best Practices](performance-best-practices-overview.html), and for guidance on techniques to minimize network latency in multi-region or global clusters, see [Multi-Region Capabilities Overview](multiregion-overview.html).

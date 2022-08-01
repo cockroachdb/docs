@@ -36,7 +36,7 @@ You can now run the code sample (`main.go`) provided in this tutorial to do the 
 
 ### Get the code
 
-You can copy the code below, <a href="https://raw.githubusercontent.com/cockroachlabs/hello-world-go-pq/master/main.go">download the code directly</a>, or clone [the code's GitHub repository](https://github.com/cockroachlabs/hello-world-go-pq).
+You can copy the code below, [download the code directly](https://raw.githubusercontent.com/cockroachlabs/hello-world-go-pq/master/main.go), or clone [the code's GitHub repository](https://github.com/cockroachlabs/hello-world-go-pq).
 
 Here are the contents of `main.go`:
 

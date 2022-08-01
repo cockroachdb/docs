@@ -2,7 +2,7 @@
 title: pg_catalog
 summary: The pg_catalog schema contains read-only views that you can use for introspection into your database.
 toc: true
-docs_area: 
+docs_area: reference.sql
 ---
 
 For PostgreSQL compatibility, CockroachDB includes a [system catalog](system-catalogs.html) called `pg_catalog`. The tables in the `pg_catalog` schema roughly correspond to the [system catalogs in PostgreSQL](https://www.postgresql.org/docs/13/catalogs.html). `pg_catalog` tables are read-only.
@@ -145,7 +145,7 @@ PostgreSQL 13 system catalog | `pg_catalog` table
 
 To list the tables in `pg_catalog` for the [current database](sql-name-resolution.html#current-database), use the following [`SHOW TABLES`](show-tables.html) statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM pg_catalog;
 ~~~
@@ -167,7 +167,7 @@ To prohibit queries against empty tables, set the `stub_catalog_tables` [session
 You can run [`SELECT` queries](selection-queries.html) on the tables in `pg_catalog`.
 
 {{site.data.alerts.callout_success}}
-To ensure that you can view all of the tables in `pg_catalog`, query the tables as a user with [`admin` privileges](authorization.html#admin-role).
+To ensure that you can view all of the tables in `pg_catalog`, query the tables as a user with [`admin` privileges](security-reference/authorization.html#admin-role).
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
@@ -176,7 +176,7 @@ Unless specified otherwise, queries to `pg_catalog` assume the [current database
 
 For example, to return the `pg_catalog` table with additional information about indexes in [`movr` database](movr.html), you can query the `pg_catalog.pg_indexes` table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM movr.pg_catalog.pg_indexes;
 ~~~

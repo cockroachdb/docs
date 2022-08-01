@@ -92,7 +92,7 @@ The workflow for MovR is as follows:
 
 ## Step 1. Request a trial license
 
-[Geo-partitioning](partitioning.html) is an enterprise feature. For the purpose of this tutorial, [request a 30-day trial license](https://www.cockroachlabs.com/get-cockroachdb/) for use with your cluster.
+[Geo-partitioning](partitioning.html) is an enterprise feature. For the purpose of this tutorial, [request a 30-day trial license](https://www.cockroachlabs.com/get-cockroachdb/enterprise) for use with your cluster.
 
 You should receive your trial license via email within a few minutes. You'll enable your license once your cluster is up-and-running.
 

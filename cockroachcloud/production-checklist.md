@@ -3,7 +3,7 @@ title: Production Checklist
 summary: Learn how to move from testing to production on your CockroachDB Cloud cluster.
 toc: true
 cloud: true
-docs_area: 
+docs_area: deploy
 ---
 
 This page provides important recommendations for {{ site.data.products.db }} production deployments.
@@ -22,7 +22,7 @@ For guidance on sizing, validating, and using connection pools with CockroachDB,
 
 After an application establishes a connection to {{ site.data.products.db }}, those connections can occasionally become invalid. This could be due to changes in the cluster topography, rolling [upgrades](upgrade-policy.html) and restarts, network disruptions, or cloud infrastructure unavailability.
 
-Make sure connection validation and retry logic is used by your application. Validating and retrying connections is typically handled by the driver, framework, or the connection pool used by an application. For guidance on connection pool sizing and connection validation, see [Use Connection Pools](../{{site.versions["stable"]}}/connection-pooling.html).
+Make sure connection validation and retry logic is used by your application. Validating and retrying connections is typically handled by the driver, framework, or the connection pool used by an application. For guidance on connection pool sizing, connection validation, and connection retry logic, see [Use Connection Pools](../{{site.versions["stable"]}}/connection-pooling.html).
 
 {% include common/transaction-retries.md %}
 

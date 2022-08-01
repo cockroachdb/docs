@@ -10,11 +10,11 @@ Each [multi-region pattern](topology-patterns.html#multi-region) assumes the fol
     - Each load balancer redirects to CockroachDB nodes in its region.
     - When CockroachDB nodes are unavailable in a region, the load balancer redirects to nodes in other regions.
 
-#### Cluster
+#### Cluster startup
 
-Each node is started with the [`--locality`](cockroach-start.html#locality) flag specifying its region and AZ combination. For example, the following command starts a node in the `west1` AZ of the `us-west` region:
+Start each node with the [`--locality`](cockroach-start.html#locality) flag specifying its region and AZ combination. For example, the following command starts a node in the `west1` AZ of the `us-west` region:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach start \
 --locality=region=us-west,zone=west1 \

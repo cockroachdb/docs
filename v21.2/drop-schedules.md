@@ -2,7 +2,7 @@
 title: DROP SCHEDULES
 summary: The DROP SCHEDULES statement lets you remove specified backup schedules.
 toc: true
-docs_area: 
+docs_area: reference.sql
 ---
 
  The `DROP SCHEDULES` [statement](sql-statements.html) can be used to remove [backup schedules](create-schedule-for-backup.html).
@@ -13,7 +13,7 @@ docs_area:
 
 ## Required privileges
 
-Only members of the [`admin` role](authorization.html#default-roles) can drop a schedule. By default, the `root` user belongs to the `admin` role.
+Only members of the [`admin` role](security-reference/authorization.html#default-roles) can drop a schedule. By default, the `root` user belongs to the `admin` role.
 
 ## Synopsis
 
@@ -34,7 +34,7 @@ DROP SCHEDULE <scheduleID>
 
 ### Drop a schedule
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP SCHEDULE 589963390487363585;
 ~~~
@@ -47,7 +47,7 @@ DROP SCHEDULES 1
 
 To drop multiple schedules, nest a [`SELECT` clause](select-clause.html) that retrieves `id`(s) inside the `DROP SCHEDULES` statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP SCHEDULES SELECT id FROM [SHOW SCHEDULES] WHERE label = 'schedule_database';
 ~~~

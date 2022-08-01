@@ -30,7 +30,7 @@ To create a new database, use a [`CREATE DATABASE`](create-database.html) statem
 
 In CockroachDB versions < v20.2, [user-defined schemas](create-schema.html) are not supported, and all objects created in a given database use the `public` schema. To provide a multi-level structure for stored objects in earlier versions of CockroachDB, we have recommended using [database](create-database.html) namespaces instead of schema namespaces.
 
-In CockroachDB versions >= v20.2, we recommend using schema namespaces, not database namespaces, to create a naming structure that is more similar to [PostgreSQL](http://www.postgresql.cn/docs/current/ddl-schemas.html).
+In CockroachDB versions >= v20.2, we recommend using schema namespaces, not database namespaces, to create a naming structure that is more similar to [PostgreSQL](https://www.postgresql.org/docs/current/ddl-schemas.html).
 
 If you are upgrading to v20.2, take any combination of the following actions after the upgrade is complete:
 
@@ -76,10 +76,9 @@ The search path is used when a name is unqualified (i.e., has no prefix). It lis
 
 - You can set the current search path with [`SET search_path`](set-vars.html) and inspected it with [`SHOW
 search_path`](show-vars.html).
-
 - You can inspect the list of valid schemas that can be listed in `search_path` with [`SHOW SCHEMAS`](show-schemas.html).
-
-- By default, the search path contains `$user`, `public`, and `pg_catalog`. For compatibility with PostgreSQL, `pg_catalog` is forced to be present in `search_path` at all times, even when not specified with `SET search_path`.
+- By default, the search path contains `$user`, `public`, `pg_catalog`, and `pg_extension`. For compatibility with PostgreSQL, `pg_catalog` is forced to be present in `search_path` at all times, even when not specified with `SET search_path`.
+- To mimic the behavior in PostgreSQL, CockroachDB will attempt a resolution to `pg_extension` prior to attempting `public`.
 
 ### Current schema
 

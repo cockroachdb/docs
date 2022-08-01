@@ -3,7 +3,7 @@ title: ST_Intersects
 summary: ST_Intersects(A, B) returns true if any point in shape A lies within shape B.
 toc: true
 has_prefixed_variant: true
-docs_area: 
+docs_area: reference.sql
 ---
 
 Given two shapes _A_ and _B_, `ST_Intersects(A, B)` returns `true` if the shapes share any of the same space -- that is, if any point in the set that comprises _A_ is also a member of the set of points that make up _B_.
@@ -33,7 +33,7 @@ In this example, `{{page.title}}` returns `true` because:
 
 - The shapes share some of the same space -- that is, there are Points in the set that comprises Polygon _A_ that are also members of Polygon _B_.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT st_intersects(st_geomfromtext('SRID=4326;POLYGON((-87.906471 43.038902, -95.992775 36.153980, -75.704722 36.076944, -87.906471 43.038902))'), st_geomfromtext('SRID=4326;POLYGON((-84.191605 39.758949, -75.165222 39.952583, -78.878738 42.880230, -84.191605 39.758949))'));
 ~~~
@@ -54,7 +54,7 @@ In this example, `{{page.title}}` returns `false` because:
 
 - The shapes do not share any of the same space -- that is, there are no Points in the set that comprises Polygon _A_ that are also members of Polygon _B_.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT st_intersects(st_geomfromtext('SRID=4326;POLYGON((-87.906471 43.038902, -95.992775 36.153980, -75.704722 36.076944, -87.906471 43.038902))'), st_geomfromtext('SRID=4326;POLYGON((-79.995888 40.440624,-74.666728 40.358244, -76.5 42.443333, -79.995888 40.440624))'));
 ~~~

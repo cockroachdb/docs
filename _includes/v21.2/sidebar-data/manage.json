@@ -6,7 +6,13 @@
       "title": "Manage CockroachDB Cloud Clusters",
       "items": [
         {
-          "title": "Manage Your Serverless Cluster",
+          "title": "Plan Your Cluster",
+          "urls": [
+            "/cockroachcloud/plan-your-cluster.html"
+          ]
+        },
+        {
+          "title": "Manage a CockroachDB Serverless Cluster",
           "urls": [
             "/cockroachcloud/serverless-cluster-management.html"
           ]
@@ -18,9 +24,68 @@
           ]
         },
         {
+          "title": "Manage Billing",
+          "urls": [
+             "/cockroachcloud/billing-management.html"
+          ]
+        },
+        {
           "title": "Use the Cloud API",
           "urls": [
             "/cockroachcloud/cloud-api.html"
+          ]
+        },
+        {
+          "title": "Use the <code>ccloud</code> command",
+          "urls": [
+            "/cockroachcloud/ccloud-get-started.html"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Operate CockroachDB on Kubernetes",
+      "items": [
+        {
+          "title": "Pod Scheduling",
+          "urls": [
+            "/${VERSION}/schedule-cockroachdb-kubernetes.html"
+          ]
+        },
+        {
+          "title": "Resource Management",
+          "urls": [
+            "/${VERSION}/configure-cockroachdb-kubernetes.html"
+          ]
+        },
+        {
+          "title": "Certificate Management",
+          "urls": [
+            "/${VERSION}/secure-cockroachdb-kubernetes.html"
+          ]
+        },
+        {
+          "title": "Cluster Scaling",
+          "urls": [
+            "/${VERSION}/scale-cockroachdb-kubernetes.html"
+          ]
+        },
+        {
+          "title": "Cluster Monitoring",
+          "urls": [
+            "/${VERSION}/monitor-cockroachdb-kubernetes.html"
+          ]
+        },
+        {
+          "title": "Cluster Upgrades",
+          "urls": [
+            "/${VERSION}/upgrade-cockroachdb-kubernetes.html"
+          ]
+        },
+        {
+          "title": "Optimizing Performance",
+          "urls": [
+            "/${VERSION}/kubernetes-performance.html"
           ]
         }
       ]
@@ -37,12 +102,12 @@
                 "/cockroachcloud/run-bulk-operations.html"
               ]
             },
-          	{
-          	  "title": "Restore Data from a Backup",
-          	  "urls": [
-          	    "/cockroachcloud/backups-page.html"
-          	  ]
-          	}
+            {
+              "title": "Restore Data from a Backup",
+              "urls": [
+                "/cockroachcloud/backups-page.html"
+              ]
+            }
           ]
         },
         {
@@ -106,65 +171,27 @@
       ]
     },
     {
-      "title": "Performance",
-      "items": [
-        {
-          "title": "Overview",
-          "urls": [
-            "/${VERSION}/performance.html"
-          ]
-        },
-        {
-          "title": "Benchmarking Instructions",
-          "urls": [
-            "/${VERSION}/performance-benchmarking-with-tpcc-local.html",
-            "/${VERSION}/performance-benchmarking-with-tpcc-small.html",
-            "/${VERSION}/performance-benchmarking-with-tpcc-medium.html",
-            "/${VERSION}/performance-benchmarking-with-tpcc-large.html"
-          ]
-        },
-        {
-          "title": "Serverless Performance Benchmarking",
-          "urls": [
-            "/cockroachcloud/serverless-benchmarking.html"
-          ]
-        },
-        {
-          "title": "Tuning Best Practices",
-          "urls": [
-            "/${VERSION}/performance-best-practices-overview.html"
-          ]
-        },
-        {
-          "title": "Improve Statement Performance",
-          "urls": [
-            "/${VERSION}/make-queries-fast.html"
-          ]
-        },
-        {
-          "title": "Tune with <code>EXPLAIN</code>",
-          "urls": [
-            "/${VERSION}/sql-tuning-with-explain.html"
-          ]
-        }
-      ]
-    },
-    {
       "title": "Security",
       "items": [
         {
           "title": "Secure CockroachDB Cloud Clusters",
           "items": [
             {
-              "title": "Security Overview",
+              "title": "Authenticating to CockroachDB Cloud",
               "urls": [
-                "/cockroachcloud/security-overview.html"
+                "/cockroachcloud/authentication.html"
               ]
             },
             {
-              "title": "Authentication",
+              "title": "Single Sign-On (SSO) for CockroachDB Cloud",
               "urls": [
-                "/cockroachcloud/authentication.html"
+                "/cockroachcloud/cloud-sso.html"
+              ]
+            },
+            {
+              "title": "Configure SQL Authentication for Hardened Serverless Cluster Security",
+              "urls": [
+                "/${VERSION}/security-reference/config-secure-hba.html"
               ]
             },
             {
@@ -188,7 +215,7 @@
             {
               "title": "Manage Console Access",
               "urls": [
-        	       "/cockroachcloud/console-access-management.html"
+                 "/cockroachcloud/console-access-management.html"
               ]
             }
           ]
@@ -196,12 +223,6 @@
         {
           "title": "Secure CockroachDB Self-Hosted Clusters",
           "items": [
-            {
-              "title": "Overview",
-              "urls": [
-                "/${VERSION}/security-overview.html"
-              ]
-            },
             {
               "title": "Authentication",
               "urls": [
@@ -436,21 +457,15 @@
           ]
         },
         {
-          "title": "Online Schema Changes",
-          "urls": [
-            "/${VERSION}/online-schema-changes.html"
-          ]
-        },
-        {
           "title": "Manage Long-Running Queries",
           "urls": [
             "/${VERSION}/manage-long-running-queries.html"
           ]
         },
         {
-          "title": "Decommission Nodes",
+          "title": "Node Shutdown",
           "urls": [
-            "/${VERSION}/remove-nodes.html"
+            "/${VERSION}/node-shutdown.html"
           ]
         },
         {
@@ -468,7 +483,7 @@
       ]
     },
     {
-      "title": "Troubleshoot a Cluster",
+      "title": "Troubleshooting",
       "items": [
         {
           "title": "Troubleshooting Overview",
@@ -477,13 +492,7 @@
           ]
         },
         {
-      	  "title": "Troubleshoot Your CockroachDB Cloud Cluster",
-      	  "urls": [
-      	    "/cockroachcloud/troubleshooting-page.html"
-      	  ]
-      	},
-        {
-          "title": "Common Errors",
+          "title": "Common Errors and Solutions",
           "urls": [
             "/${VERSION}/common-errors.html"
           ]
@@ -495,15 +504,15 @@
           ]
         },
         {
-          "title": "Troubleshoot Query Behavior",
+          "title": "Troubleshoot Statement Behavior",
           "urls": [
             "/${VERSION}/query-behavior-troubleshooting.html"
           ]
         },
         {
-          "title": "Understand Debug Logs",
+          "title": "Troubleshoot CockroachDB Cloud",
           "urls": [
-            "/${VERSION}/logging-overview.html"
+            "/cockroachcloud/troubleshooting-page.html"
           ]
         },
         {

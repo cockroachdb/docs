@@ -3,7 +3,7 @@ title: Cost-Based Optimizer
 summary: The cost-based optimizer seeks the lowest cost for a query, usually related to time.
 toc: true
 keywords: gin, gin index, gin indexes, inverted index, inverted indexes, accelerated index, accelerated indexes
-docs_area: reference.performance_optimization
+docs_area: develop
 ---
 
 The cost-based optimizer seeks the lowest cost for a query, usually related to time.
@@ -87,8 +87,10 @@ To see how to manually generate statistics, see the [`CREATE STATISTICS` example
 By default, the optimizer collects histograms for all index columns (specifically the first column in each index) during automatic statistics collection. If a single column statistic is explicitly requested using manual invocation of [`CREATE STATISTICS`](create-statistics.html), a histogram will be collected, regardless of whether or not the column is part of an index.
 
 {{site.data.alerts.callout_info}}
-- CockroachDB does not support histograms on [`ARRAY`-typed](array.html) columns. As a result, statistics created on `ARRAY`-typed columns do not include histograms.
-- CockroachDB does not support multi-column histograms.
+CockroachDB does not support:
+
+- Histograms on [`ARRAY`-typed](array.html) columns. As a result, statistics created on `ARRAY`-typed columns do not include histograms.
+- Multi-column histograms.
 {{site.data.alerts.end}}
 
 If you are an advanced user and need to disable histogram collection for troubleshooting or performance tuning reasons, change the [`sql.stats.histogram_collection.enabled` cluster setting](cluster-settings.html) by running [`SET CLUSTER SETTING`](set-cluster-setting.html) as follows:
@@ -100,6 +102,16 @@ SET CLUSTER SETTING sql.stats.histogram_collection.enabled = false;
 
 When `sql.stats.histogram_collection.enabled` is set to `false`, histograms are never collected, either as part of automatic statistics collection or by manually invoking [`CREATE STATISTICS`](create-statistics.html).
 
+## Control whether the optimizer creates a plan with a full scan
+
+Even if you have [secondary indexes](schema-design-indexes.html), the optimizer may determine that a full table scan will be faster. For example, if you add a secondary index to a table with a large number of rows and find that a statement plan is not using the secondary index, then it is likely that performing a full table scan using the primary key is faster than doing a secondary index scan plus an [index join](indexes.html#example).
+
+You can disable statement plans that perform full table scans with the `disallow_full_table_scans` [session variable](set-vars.html).
+
+If you disable full scans, you can set the `large_full_scan_rows` session variable to specify the maximum table size allowed for a full scan. If no alternative plan is possible, the optimizer will return an error.
+
+If you disable full scans, and you provide an [index hint](table-expressions.html#force-index-selection), the optimizer will try to avoid a full scan while also respecting the index hint. If this is not possible, the optimizer will return an error. If you do not provide an index hint, the optimizer will return an error, the full scan will be logged, and the `sql.guardrails.full_scan_rejected.count` [metric](ui-overview-dashboard.html) will be updated.
+
 ## Locality optimized search in multi-region clusters
 
 In [multi-region deployments](multiregion-overview.html), the optimizer, in concert with the [SQL engine](architecture/sql-layer.html), will avoid sending requests to nodes in other regions when it can instead read a value from a unique column that is stored locally. This capability is known as _locality optimized search_.
@@ -107,14 +119,14 @@ In [multi-region deployments](multiregion-overview.html), the optimizer, in conc
 Even if a value cannot be read locally, CockroachDB takes advantage of the fact that some of the other regions are much closer than others and thus can be queried with lower latency. In this case, it performs all lookups against the remote regions in parallel and returns the result once it is retrieved, without having to wait for each lookup to come back. This can lead to increased performance in multi-region deployments, since it means that results can be returned from wherever they are first found without waiting for all of the other lookups to return.
 
 {{site.data.alerts.callout_info}}
-The asynchronous parallel lookup behavior does not occur if you [disable vectorized execution](vectorized-execution.html#configuring-vectorized-execution).
+The asynchronous parallel lookup behavior does not occur if you [disable vectorized execution](vectorized-execution.html#configure-vectorized-execution).
 {{site.data.alerts.end}}
 
 Locality optimized search is supported for scans that are guaranteed to return 100,000 keys or fewer. This optimization allows the execution engine to avoid visiting remote regions if all requested keys are found in the local region, thus reducing the latency of the query.
 
 ### Limitations
 
-{% include {{ page.version.version }}/sql/locality-optimized-search-limited-records.md %}
+{% include {{page.version.version}}/sql/locality-optimized-search-limited-records.md %}
 
 {% include {{page.version.version}}/sql/locality-optimized-search-virtual-computed-columns.md %}
 
@@ -150,6 +162,8 @@ To change this setting, which is controlled by the `reorder_joins_limit` [sessio
 > SET reorder_joins_limit = 0;
 ~~~
 
+To disable this feature, set the variable to `0`. You can configure the default `reorder_joins_limit` session setting with the [cluster setting](cluster-settings.html) `sql.defaults.reorder_joins_limit`, which has a default value of `8`.
+
 {{site.data.alerts.callout_danger}}
 We strongly recommend not setting this value higher than 8 to avoid performance degradation. If set too high, the cost of generating and costing execution plans can end up dominating the total execution time of the query.
 {{site.data.alerts.end}}
@@ -171,7 +185,7 @@ To force the use of a specific join algorithm even if the optimizer determines t
 Due to SQL's implicit `AS` syntax, you cannot specify a join hint with only the join algorithm keyword (e.g., `MERGE`). For example, `a MERGE JOIN b` will be interpreted as having an implicit `AS` and be executed as `a AS MERGE JOIN b`, which is equivalent to `a JOIN b`. Because the resulting query might execute without returning any hint-related error (because it is valid SQL), it will seem like the join hint "worked", but actually it didn't affect which join algorithm was used. The correct syntax is `a INNER MERGE JOIN b`.
 {{site.data.alerts.end}}
 
-For a join hint example, see [Use the right join type](make-queries-fast.html#rule-3-use-the-right-join-type).
+For a join hint example, see [Use the right join type](apply-statement-performance-rules.html#rule-3-use-the-right-join-type).
 
 ### Supported join algorithms
 
@@ -242,7 +256,7 @@ EXPLAIN SELECT * FROM abc WHERE a = 10 AND b = 20;
 
 ### Prevent zigzag joins
 
-<span class="version-tag">New in v21.2</span>
+{% include_cached new-in.html version="v21.2" %}
 
 The join hint `NO_ZIGZAG_JOIN` prevents the optimizer from planning a zigzag join for the specified table. Apply the hint in the same way as other existing [index hints](table-expressions.html#force-index-selection). For example:
 
@@ -250,13 +264,11 @@ The join hint `NO_ZIGZAG_JOIN` prevents the optimizer from planning a zigzag joi
 SELECT * FROM abc@{NO_ZIGZAG_JOIN};
 ~~~
 
-## Examples
-
-### Inverted join examples
+## Inverted join examples
 
 {% include {{ page.version.version }}/sql/inverted-joins.md %}
 
-## Known Limitations
+## Known limitations
 
 * {% include {{page.version.version}}/known-limitations/old-multi-col-stats.md %}
 * {% include {{page.version.version}}/known-limitations/single-col-stats-deletion.md %}
@@ -265,10 +277,10 @@ SELECT * FROM abc@{NO_ZIGZAG_JOIN};
 ## See also
 
 - [`JOIN` expressions](joins.html)
-- [`SET (session variable)`](set-vars.html)
+- [`SET {session variable}`](set-vars.html)
 - [`SET CLUSTER SETTING`](set-cluster-setting.html)
 - [`RESET CLUSTER SETTING`](reset-cluster-setting.html)
-- [`SHOW (session variable)`](show-vars.html)
+- [`SHOW {session variable}`](show-vars.html)
 - [`CREATE STATISTICS`](create-statistics.html)
 - [`SHOW STATISTICS`](show-statistics.html)
 - [`EXPLAIN`](explain.html)

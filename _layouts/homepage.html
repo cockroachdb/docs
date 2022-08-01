@@ -11,7 +11,7 @@ layout: default
           <a href="{{ '/cockroachcloud/quickstart.html' | relative_url }}" class="h-100">
             <div class="card-body p-4 d-flex flex-column justify-content-center align-items-center h-100 card-header-overlap">
               <img class="m-0 mb-4 mt-3" src="{{ 'images/icon-in-browser.svg' | relative_url }}" alt="icon browser" />
-              <h6 class="mt-2 mt-0 text-black">Start a Serverless<br> cluster</h6>
+              <h6 class="mt-2 mt-0 text-black">Start a cloud <br>cluster</h6>
 
               <h4 class="mt-auto mb-0 text-electric-purple font-poppins-sb">Learn more <img class="m-0 ml-2" src="{{ 'images/icon-arrow-right-purple.svg' | relative_url }}" alt="arrow right"/></h4>
             </div>
@@ -20,7 +20,7 @@ layout: default
         </div>
         <div class="col-lg-4 mb-3 mb-lg-0 pb-5">
           <div class="card card-link h-100 d-flex text-center">
-          <a href="{{ '/stable/secure-a-cluster.html' | relative_url }}" class="h-100">
+          <a href="{{ '/cockroachcloud/quickstart.html?filters=local' | relative_url }}" class="h-100">
             <div class="card-body p-4 d-flex flex-column justify-content-center align-items-center h-100 card-header-overlap">
               <img class="m-0 mb-4 mt-3" src="{{ 'images/icon-sample-apps.svg' | relative_url }}" alt="sample app" />
               <h6 class="mt-2 mt-0 text-black">Start a local <br>cluster</h6>
@@ -29,13 +29,13 @@ layout: default
             </div>
             </a>
           </div>
-          </div>
+        </div>
         <div class="col-lg-4 mb-3 mb-lg-0 pb-5">
           <div class="card card-link h-100 d-flex text-center">
           <a href="{{ '/stable/example-apps.html' | relative_url }}" class="h-100">
             <div class="card-body p-4 d-flex flex-column justify-content-center align-items-center h-100 card-header-overlap">
               <img class="m-0 mb-4 mt-3" src="{{ 'images/icon-deploy-cloud.svg' | relative_url }}" alt="icon cloud" />
-              <h6 class="m-0 text-black">Sample <br>apps</h6>
+              <h6 class="m-0 text-black">Build a sample <br>app</h6>
 
               <h4 class="mt-auto mb-0  text-electric-purple font-poppins-sb">Learn more <img class="m-0 ml-2" src="{{ 'images/icon-arrow-right-purple.svg' | relative_url }}" alt="arrow right"/></h4>
             </div>
@@ -50,10 +50,10 @@ layout: default
 
     <div class="row pt-5 mt-5 pb-5 mb-5">
       <div class="col-lg-8">
-        <p class="overline">CockroachDB Cloud</p>
-        <h2 class="mt-0">Build fast. Scale fast.</h2>
-        <p class="sub-heading">CockroachDB Cloud is a fully hosted and fully managed service created and owned by Cockroach Labs that makes deploying, scaling, and managing CockroachDB effortless.</p>
-        <a class="btn btn-redirect mt-3" href="https://cockroachlabs.cloud/signup?referralId=docs_homepage">Start a Free Cluster <img class="m-0" src="{{ 'images/arrow-left.svg' | relative_url }}" alt="arro left" /></a>
+        <p class="overline">CockroachDB Core</p>
+        <h2 class="mt-0">Free and Open Source</h2>
+        <p class="sub-heading">Our always-free, open source version of CockroachDB. Contains all the foundational capabilities of a distributed SQL database at no-cost to you.</p>
+        <a class="btn btn-redirect mt-3" href="{{ '/releases/index.html#production-releases' | relative_url }} ">Download the CockroachDB binary <img class="m-0" src="{{ 'images/arrow-left.svg' | relative_url }}" alt="arrow left" /></a>
       </div>
     </div>
 
@@ -70,9 +70,8 @@ layout: default
         <div class="landing-column-content">
           <ul>
             <li><a href="{{ '/cockroachcloud/quickstart.html' | relative_url }}">Start a Free Cloud Cluster</a></li>
-            <li><a href="{{ '/stable/secure-a-cluster.html' | relative_url }}">Start a Local Cluster</a></li>
+            <li><a href="{{ '/cockroachcloud/quickstart.html?filters=local' | relative_url }}">Start a Local Cluster</a></li>
             <li><a href="{{ '/stable/learn-cockroachdb-sql.html' | relative_url }}">Learn CockroachDB SQL</a></li>
-            <li><a href="{{ '/stable/hello-world-go-pgx.html' | relative_url }}">Hello, World!</a></li>
             <li><a href="{{ '/stable/demo-fault-tolerance-and-recovery.html' | relative_url }}">Explore Capabilities</a></li>
           </ul>
         </div>
@@ -95,9 +94,9 @@ layout: default
           <ul>
             <li><a href="{{ '/cockroachcloud/create-your-cluster.html' | relative_url }}">CockroachDB Cloud Deployment</a></li>
             <li><a href="{{ '/stable/orchestration.html' | relative_url }}">Self-Managed Deployment</a></li>
+            <li><a href="{{ '/stable/choose-a-deployment-option.html' | relative_url }}">Choose a Deployment Option</a></li>
             <li><a href="{{ '/stable/recommended-production-settings.html' | relative_url }}">Production Checklist</a></li>
-            <li><a href="{{ '/stable/performance.html' | relative_url }}">Performance Profiles</a></li>
-            <li><a href="{{ '/stable/upgrade-cockroach-version.html' | relative_url }}">Cluster Maintenance</a></li>
+            <li><a href="{{ '/stable/upgrade-cockroach-version.html' | relative_url }}">Upgrade CockroachDB</a></li>
           </ul>
         </div>
       </div>
@@ -167,7 +166,7 @@ layout: default
           </a>
           <div class="row no-gutters p-3">
             <div class="col-md-4 m-0"
-            style="background-image: url('https://crl2020.imgix.net/img/cloudreport2021-blog-1158x404-1-.png?auto=format');background-size:cover;min-height: 150px;">
+            style="background-image: url('https://crl2020.imgix.net/img/2022-cloud-report-launch.jpg?auto=format');background-size:cover;min-height: 150px;">
             </div>
             <div class="col-md-8">
               <div class="card-body p-0 pl-4"
@@ -182,13 +181,13 @@ layout: default
                   Blog
                 </p>
                 <h6 class="card-title font-weight-bold mt-3">
-                  <a style="text-decoration: none; color: #000;" href="https://www.cockroachlabs.com/blog/2021-cloud-report/">GCP Outpaces Azure, AWS in the 2021 Cloud Report</a>
+                  <a style="text-decoration: none; color: #000;" href="https://www.cockroachlabs.com/blog/2022-cloud-report/">AMD vs. Intel and More – What’s New in the 2022 Cloud Report</a>
                 </h6>
                 <div class="d-flex align-items-center mt-auto mb-2">
                   <div class="ml-3 d-flex flex-column justify-content-center ">
-                    <div class="card-text m-0 lh-n"> Arul Ajmani, John Kendall, Yevgeniy Miretskiy, and Jessica Edwards</div>
+                    <div class="card-text m-0 lh-n">Charlie Custer</div>
                     <p class="card-text m-0 lh-n">
-                      <small class="text-muted">Jan 15, 2021</small>
+                      <small class="text-muted">June 13, 2022</small>
                     </p>
                   </div>
                 </div>
@@ -199,7 +198,7 @@ layout: default
       </div>
     </div>
     <div class="text-center mb-5">
-    <a class="btn btn-redirect mt-3 text-inherit" target="_blank" href="https://www.cockroachlabs.com/blog/">Check out the blog</a>
+    <a class="btn btn-redirect mt-3 text-inherit" target="_blank" rel="noopener" href="https://www.cockroachlabs.com/blog/">Check out the blog</a>
     </div>
 
   </div>

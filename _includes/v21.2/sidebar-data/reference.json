@@ -54,7 +54,7 @@
             ]
           },
           {
-            "title": "Admission control",
+            "title": "Admission Control",
             "urls": [
               "/${VERSION}/architecture/admission-control.html"
             ]
@@ -157,7 +157,7 @@
                 ]
               },
               {
-                "title": "<code>ADD REGION (Enterprise)</code>",
+                "title": "<code>ADD REGION</code> (Enterprise)",
                 "urls": [
                   "/${VERSION}/add-region.html"
                 ]
@@ -244,12 +244,6 @@
                 "title": "<code>ALTER VIEW</code>",
                 "urls": [
                   "/${VERSION}/alter-view.html"
-                ]
-              },
-              {
-                "title": "<code>AS OF SYSTEM TIME</code>",
-                "urls": [
-                  "/${VERSION}/as-of-system-time.html"
                 ]
               },
               {
@@ -625,7 +619,7 @@
                 ]
               },
               {
-                "title": "<code>RESET</code> &lt;session variable&gt;",
+                "title": "<code>RESET &#123;session variable&#125;</code>",
                 "urls": [
                   "/${VERSION}/reset-vars.html"
                 ]
@@ -685,7 +679,7 @@
                 ]
               },
               {
-                "title": "<code>SET</code> &lt;session variable&gt;",
+                "title": "<code>SET &#123;session variable&#125;</code>",
                 "urls": [
                   "/${VERSION}/set-vars.html"
                 ]
@@ -721,7 +715,7 @@
                 ]
               },
               {
-                "title": "<code>SHOW</code> &lt;session variables&gt;",
+                "title": "<code>SHOW &#123;session variable&#125;</code>",
                 "urls": [
                   "/${VERSION}/show-vars.html"
                 ]
@@ -958,12 +952,6 @@
                 "title": "<code>VALIDATE CONSTRAINT</code>",
                 "urls": [
                   "/${VERSION}/validate-constraint.html"
-                ]
-              },
-              {
-                "title": "<code>WITH</code>",
-                "urls": [
-                  "/${VERSION}/common-table-expressions.html"
                 ]
               }
             ]
@@ -1209,12 +1197,6 @@
                 ]
               },
               {
-                "title": "Spatial Indexes",
-                "urls": [
-                  "/${VERSION}/spatial-indexes.html"
-                ]
-              },
-              {
                 "title": "POINT",
                 "urls": [
                   "/${VERSION}/point.html"
@@ -1363,30 +1345,30 @@
         ]
       },
       {
-        "title": "Performance Optimization",
+        "title": "Security",
         "items": [
           {
-            "title": "Indexes",
+            "title": "Security Overview",
             "urls": [
-              "/${VERSION}/indexes.html"
+              "/${VERSION}/security-reference/security-overview.html"
             ]
           },
           {
-            "title": "Cost-Based Optimizer",
+            "title": "Authentication",
             "urls": [
-              "/${VERSION}/cost-based-optimizer.html"
+              "/${VERSION}/security-reference/authentication.html"
             ]
           },
           {
-            "title": "Vectorized Execution Engine",
+            "title": "Authorization",
             "urls": [
-              "/${VERSION}/vectorized-execution.html"
+              "/${VERSION}/security-reference/authorization.html"
             ]
           },
           {
-            "title": "Load-Based Splitting",
+            "title": "Encryption",
             "urls": [
-              "/${VERSION}/load-based-splitting.html"
+              "/${VERSION}/security-reference/encryption.html"
             ]
           }
         ]
@@ -1434,12 +1416,6 @@
                 ]
               },
               {
-                "title": "<code>cockroach quit</code>",
-                "urls": [
-                  "/${VERSION}/cockroach-quit.html"
-                ]
-              },
-              {
                 "title": "<code>cockroach sql</code>",
                 "urls": [
                   "/${VERSION}/cockroach-sql.html"
@@ -1461,12 +1437,6 @@
                 "title": "<code>cockroach nodelocal upload</code>",
                 "urls": [
                   "/${VERSION}/cockroach-nodelocal-upload.html"
-                ]
-              },
-              {
-                "title": "<code>cockroach dump</code>",
-                "urls": [
-                  "/${VERSION}/cockroach-dump.html"
                 ]
               },
               {
@@ -1674,6 +1644,12 @@
             ]
           },
           {
+            "title": "Hot Ranges Page",
+            "urls": [
+              "/${VERSION}/ui-hot-ranges-page.html"
+            ]
+          },
+          {
             "title": "Jobs Page",
             "urls": [
               "/${VERSION}/ui-jobs-page.html"
@@ -1735,6 +1711,33 @@
         ]
       },
       {
+        "title": "Benchmarking",
+        "items": [
+          {
+            "title": "Overview",
+            "urls": [
+              "/${VERSION}/performance.html"
+            ]
+          },
+          {
+            "title": "Benchmarking Instructions",
+            "urls": [
+              "/${VERSION}/performance-benchmarking-with-tpcc-local.html",
+              "/${VERSION}/performance-benchmarking-with-tpcc-local-multiregion.html",
+              "/${VERSION}/performance-benchmarking-with-tpcc-small.html",
+              "/${VERSION}/performance-benchmarking-with-tpcc-medium.html",
+              "/${VERSION}/performance-benchmarking-with-tpcc-large.html"
+            ]
+          },
+          {
+            "title": "Serverless Performance Benchmarking",
+            "urls": [
+              "/cockroachcloud/serverless-benchmarking.html"
+            ]
+          }
+        ]
+      },
+      {
         "title": "Third-Party Support",
         "items": [
           {
@@ -1750,8 +1753,6 @@
             ]
           }
         ]
-      },
-      {% include_cached cockroachcloud/sidebar-release-notes.json %},
-      {% include_cached sidebar-releases.json %}
+      }
     ]
   }

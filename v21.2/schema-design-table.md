@@ -2,7 +2,7 @@
 title: Create a Table
 summary: Best practices for working with tables in CockroachDB.
 toc: true
-docs_area: 
+docs_area: develop
 ---
 
 This page provides best-practice guidance on creating tables, with some simple examples based on Cockroach Labs' fictional vehicle-sharing company, [MovR](movr.html).
@@ -15,8 +15,7 @@ For detailed reference documentation on the `CREATE TABLE` statement, including 
 
 Before reading this page, do the following:
 
-- [Install CockroachDB](install-cockroachdb.html).
-- [Start a local cluster](secure-a-cluster.html), or [create a {{ site.data.products.dedicated }} cluster](../cockroachcloud/create-your-cluster.html).
+- [Create a {{ site.data.products.serverless }} cluster](../cockroachcloud/quickstart.html) or [start a local cluster](../cockroachcloud/quickstart.html?filters=local).
 - [Review the database schema objects](schema-design-overview.html).
 - [Create a database](schema-design-database.html).
 - [Create a user-defined schema](schema-design-schema.html).
@@ -69,7 +68,7 @@ Suppose you want to create a table to store information about users of the [MovR
 
 Create an empty `.sql` file for `max`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ touch max_init.sql
 ~~~
@@ -78,7 +77,7 @@ This file will initialize the objects in the `max_schema` user-defined schema th
 
 In a text editor, open `max_init.sql`, and add an empty `CREATE TABLE` statement for the `users` table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TABLE movr.max_schema.users (
 );
@@ -110,7 +109,7 @@ Here are some best practices to follow when defining table columns:
 
 - Review the supported column [data types](data-types.html), and select the appropriate type for the data you plan to store in a column, following the best practices listed on the data type's reference page.
 
-- Use column data types with a fixed size limit, or set a maximum size limit on column data types of variable size (e.g., [`VARBIT(n)`](bit.html#size)). Values exceeding 1MB can lead to [write amplification](https://en.wikipedia.org/wiki/Write_amplification) and cause significant performance degradation.
+- Use column data types with a fixed size limit, or set a maximum size limit on column data types of variable size (e.g., [`VARBIT(n)`](bit.html#size)). Values exceeding 1MB can lead to [write amplification](architecture/storage-layer.html#write-amplification) and cause significant performance degradation.
 
 - Review the [primary key best practices](#select-primary-key-columns) and [examples](#primary-key-examples), decide if you need to define any dedicated primary key columns.
 
@@ -120,7 +119,7 @@ Here are some best practices to follow when defining table columns:
 
 In the `max_init.sql` file, add a few column definitions to the `users` table's `CREATE TABLE` statement, for user names and email addresses:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TABLE movr.max_schema.users (
     first_name STRING,
@@ -137,7 +136,7 @@ Let's add another example table to our `max_schema` schema, with more column dat
 
 As a vehicle-sharing platform, MovR needs to store data about its vehicles. In `max_init.sql`, add a `CREATE TABLE` statement for a `vehicles` table, under the `CREATE TABLE` statement for `users`. This table should probably include information about the type of vehicle, when it was created, what its availability is, and where it is located:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TABLE movr.max_schema.vehicles (
       id UUID,
@@ -160,7 +159,7 @@ Note that values in the `type` column will likely only be `STRING` values from a
 
 To create a user-defined type, use a `CREATE TYPE` statement. For example, above the `CREATE TABLE` statement for the `vehicles` table, add the following statements:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TYPE movr.max_schema.vtype AS ENUM ('bike', 'scooter', 'skateboard');
 ~~~
@@ -169,20 +168,20 @@ CREATE TYPE movr.max_schema.vtype AS ENUM ('bike', 'scooter', 'skateboard');
 For detailed reference documentation on the `CREATE TYPE` statement, including additional examples, see the [`CREATE TYPE` syntax page](create-type.html).<br>For detailed reference documentation on enumerated data types, including additional examples, see [`ENUM`](enum.html).
 {{site.data.alerts.end}}
 
-You can then use `vtype` as the `type` column's data type:
+You can then use `movr.max_schema.vtype` as the `type` column's data type:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TABLE movr.max_schema.vehicles (
       id UUID,
-      type vtype,
+      type movr.max_schema.vtype,
       creation_time TIMESTAMPTZ,
       available BOOL,
       last_location STRING
   );
 ~~~
 
-Only values in the set of `vtype` values will be allowed in the `type` column.
+Only values in the set of `movr.max_schema.vtype` values will be allowed in the `type` column.
 
 The `users` and `vehicles` tables now have syntactically valid column definitions. As a best practice, you should explicitly [select primary key columns](#select-primary-key-columns) and add any [additional constraints](#add-additional-constraints) before executing the `CREATE TABLE` statements.
 
@@ -208,7 +207,7 @@ Here are some best practices to follow when selecting primary key columns:
 
 - Avoid defining primary keys over a single column of sequential data.
 
-    Querying a table with a primary key on a single sequential column (e.g., an auto-incrementing [`INT`](int.html) column, or a [`TIMESTAMP`](timestamp.html) value) can result in single-range hotspots that negatively affect performance, or cause [transaction contention](transactions.html#transaction-contention).
+    Querying a table with a primary key on a single sequential column (e.g., an auto-incrementing [`INT`](int.html) column, or a [`TIMESTAMP`](timestamp.html) value) can result in single-range hot spots that negatively affect performance, or cause [transaction contention](transactions.html#transaction-contention).
 
     If you are working with a table that *must* be indexed on sequential keys, use [hash-sharded indexes](hash-sharded-indexes.html). For details about the mechanics and performance improvements of hash-sharded indexes in CockroachDB, see our [Hash Sharded Indexes Unlock Linear Scaling for Sequential Workloads](https://www.cockroachlabs.com/blog/hash-sharded-indexes-unlock-linear-scaling-for-sequential-workloads/) blog post.
 
@@ -216,7 +215,7 @@ Here are some best practices to follow when selecting primary key columns:
 
     If you create a table without defining a primary key, CockroachDB will automatically create a primary key over a hidden, [`INT`](int.html)-typed column named `rowid`. By default, sequential, unique identifiers are generated for each row in the `rowid` column with the [`unique_rowid()` function](functions-and-operators.html#built-in-functions). The sequential nature of the `rowid` values can lead to a poor distribution of the data across a cluster, which can negatively affect performance. Furthermore, because you cannot meaningfully use the `rowid` column to filter table data, the primary key index on `rowid` does not offer any performance optimization. This means you will always have improved performance by defining a primary key for a table.
 
-    <span class="version-tag">New in v21.2</span>: To require an explicitly defined primary key for all tables created in your cluster, set the `sql.defaults.require_explicit_primary_keys.enabled` [cluster setting](cluster-settings.html) to `true`.
+    {% include_cached new-in.html version="v21.2" %} To require an explicitly defined primary key for all tables created in your cluster, set the `sql.defaults.require_explicit_primary_keys.enabled` [cluster setting](cluster-settings.html) to `true`.
 
 - When possible, define primary key constraints over multiple columns (i.e., use [composite primary keys](https://en.wikipedia.org/wiki/Composite_key)).
 
@@ -232,7 +231,7 @@ To follow a [primary key best practice](#primary-key-best-practices), the `CREAT
 
 In the `max_init.sql` file, add a composite primary key on the `first_name` and `last_name` columns of the `users` table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TABLE movr.max_schema.users (
     first_name STRING,
@@ -250,11 +249,11 @@ Primary key columns can also be single columns, if those columns are guaranteed 
 
 In the `vehicles` table definition, add a `PRIMARY KEY` constraint on the `id` column:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TABLE movr.max_schema.vehicles (
       id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-      type vtype,
+      type movr.max_schema.vtype,
       creation_time TIMESTAMPTZ,
       available BOOL,
       last_location STRING
@@ -283,11 +282,11 @@ When combined with [supported SQL functions](functions-and-operators.html), defa
 
 For example, in the `vehicles` table definition in `max_init.sql`, you added a `DEFAULT gen_random_uuid()` clause to the `id` column definition. This set the default value to a generated `UUID` value. Now, add a default value to the `creation_time` column:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TABLE movr.max_schema.vehicles (
       id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-      type vtype,
+      type movr.max_schema.vtype,
       creation_time TIMESTAMPTZ DEFAULT now(),
       available BOOL,
       last_location STRING
@@ -308,7 +307,7 @@ For example, suppose you want to add a new table that contains data about the ri
 
 In `max_init.sql`, under the `CREATE TABLE` statement for `vehicles`, add a definition for a `rides` table, with a foreign key dependency on the `vehicles` table. To define a foreign key constraint, use the `REFERENCES` keyword:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TABLE movr.max_schema.rides (
       id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
@@ -328,7 +327,7 @@ Suppose that you want to introduce promotional codes for users on the MovR platf
 
 Create an empty `.sql` initialization file for `abbey`.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ touch abbey_init.sql
 ~~~
@@ -337,7 +336,7 @@ This file will initialize the objects in the `abbey_schema` user-defined schema 
 
 In a text editor, open `abbey_init.sql`, and add a `CREATE TABLE` statement for a table called `user_promo_codes`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TABLE movr.abbey_schema.user_promo_codes (
     code STRING,
@@ -363,7 +362,7 @@ To prevent duplicate values in a column, use the `UNIQUE` constraint.
 
 For example, suppose that you want to ensure that the email addresses of all users are different, to prevent users from registering for two accounts with the same email address. Add a `UNIQUE` constraint to the `email` column of the `users` table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TABLE movr.max_schema.users (
     first_name STRING,
@@ -391,7 +390,7 @@ To prevent `NULL` values in a column, use the `NOT NULL` constraint. If you spec
 
 For example, if you require all users of the MovR platform to have an email on file, you can add a `NOT NULL` constraint to the `email` column of the `users` table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TABLE movr.max_schema.users (
     first_name STRING,
@@ -417,7 +416,7 @@ After you have defined `CREATE TABLE` statements for your tables, you can execut
 
 Here are some general best practices to follow when executing `CREATE TABLE` statements:
 
-- Do not create tables as the `root` user. Instead, create tables as a [different user](schema-design-overview.html#control-access-to-objects), with fewer privileges, following [authorization best practices](authorization.html#authorization-best-practices). The user that creates an object becomes that [object's owner](authorization.html#object-ownership).
+- Do not create tables as the `root` user. Instead, create tables as a [different user](schema-design-overview.html#control-access-to-objects), with fewer privileges, following [authorization best practices](security-reference/authorization.html#authorization-best-practices). The user that creates an object becomes that [object's owner](security-reference/authorization.html#object-ownership).
 
 - {% include {{page.version.version}}/sql/dev-schema-changes.md %}
 
@@ -427,7 +426,7 @@ Here are some general best practices to follow when executing `CREATE TABLE` sta
 
 After following the examples provided in the sections above, the `max_init.sql` file should look similar to the following:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TABLE movr.max_schema.users (
     first_name STRING,
@@ -458,7 +457,7 @@ CREATE TABLE movr.max_schema.rides (
 
 To execute the statements in the `max_init.sql` file, run the following command:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
 --certs-dir={certs-directory} \
@@ -473,7 +472,7 @@ After the statements have been executed, you can see the tables in the [Cockroac
 
 Open the SQL shell to your cluster, with `movr` as the database and `max` as the user:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
 --certs-dir={certs-directory} \
@@ -483,7 +482,7 @@ $ cockroach sql \
 
 To view the tables in the `max_schema` user-defined schema, issue a [`SHOW TABLES`](show-tables.html) statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM max_schema;
 ~~~
@@ -499,7 +498,7 @@ To view the tables in the `max_schema` user-defined schema, issue a [`SHOW TABLE
 
 To see the individual `CREATE TABLE` statements for each table, use a [`SHOW CREATE`](show-create.html) statement. For example, to see the `vehicles` `CREATE TABLE` statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE TABLE movr.max_schema.vehicles;
 ~~~
@@ -521,7 +520,7 @@ To see the individual `CREATE TABLE` statements for each table, use a [`SHOW CRE
 
 After following the examples provided in the sections above, the `abbey_init.sql` file should look similar to the following:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TABLE movr.abbey_schema.user_promo_codes (
     code STRING,
@@ -533,7 +532,7 @@ CREATE TABLE movr.abbey_schema.user_promo_codes (
 
 To execute the statement in the `abbey_init.sql` file, run the following command:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
 --certs-dir={certs-directory} \
@@ -546,7 +545,7 @@ After the statements have been executed, you can see the table in the [Cockroach
 
 Open the SQL shell to your cluster, with `movr` as the database and `abbey` as the user, and view the table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
 --certs-dir={certs-directory} \
@@ -554,7 +553,7 @@ $ cockroach sql \
 --database=movr
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM abbey_schema;
 ~~~
@@ -566,7 +565,7 @@ $ cockroach sql \
 (1 row
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE TABLE movr.abbey_schema.user_promo_codes;
 ~~~

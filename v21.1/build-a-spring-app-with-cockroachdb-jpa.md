@@ -509,7 +509,7 @@ $ curl -X GET http://localhost:9090/account/2 | json_pp
 
 ## Implementation details
 
-This section walks you through the different components of the application project in detail.
+This section guides you through the different components of the application project in detail.
 
 ### Main application process
 

@@ -2,14 +2,14 @@
 title: RESUME SCHEDULES
 summary: The RESUME SCHEDULES statement lets you resume jobs that were previously paused with PAUSE SCHEDULE.
 toc: true
-docs_area: 
+docs_area: reference.sql
 ---
 
  The `RESUME SCHEDULES` [statement](sql-statements.html) can be used to resume [paused backup schedules](pause-schedules.html). When a schedule is resumed, the `next_run` will be set to the next `TIMESTAMP` that conforms to the schedule.
 
 ## Required privileges
 
-Only members of the [`admin` role](authorization.html#default-roles) can resume a schedule. By default, the `root` user belongs to the `admin` role.
+Only members of the [`admin` role](security-reference/authorization.html#default-roles) can resume a schedule. By default, the `root` user belongs to the `admin` role.
 
 ## Synopsis
 
@@ -31,7 +31,7 @@ RESUME SCHEDULE <scheduleID>
 
 ### Pause a schedule
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > PAUSE SCHEDULE 589963390487363585;
 ~~~
@@ -42,7 +42,7 @@ PAUSE SCHEDULES 1
 
 ### Resume a single schedule
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > RESUME SCHEDULE 589963390487363585;
 ~~~
@@ -55,7 +55,7 @@ RESUME SCHEDULES 1
 
 To resume multiple schedules, nest a [`SELECT` clause](select-clause.html) that retrieves `id`(s) inside the `RESUME SCHEDULES` statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > RESUME SCHEDULES SELECT id FROM [SHOW SCHEDULES] WHERE label = 'schedule_database';
 ~~~

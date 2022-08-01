@@ -25,7 +25,7 @@ Type | Description
 
 ## Obtain a license
 
-To obtain a trial license, fill out [the registration form](https://www.cockroachlabs.com/get-cockroachdb/) and receive your trial license via email within a few minutes.
+To obtain a trial license, fill out [the registration form](https://www.cockroachlabs.com/get-cockroachdb/enterprise/) and receive your trial license via email within a few minutes.
 
 To upgrade to an enterprise license, <a href="mailto:sales@cockroachlabs.com">contact Sales</a>.
 

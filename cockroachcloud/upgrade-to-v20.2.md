@@ -2,10 +2,10 @@
 title: Upgrade to CockroachDB v20.2
 summary: Learn how to upgrade your CockroachDB cluster to v20.2.
 toc: true
-docs_area: 
+docs_area: manage
 ---
 
-Now that [CockroachDB v20.2](https://www.cockroachlabs.com/docs/releases/v20.2.0.html) is available, your [Console Admin](console-access-management.html#console-admin) can upgrade your cluster directly from the {{ site.data.products.db }} Console. This page walks through the process.
+Now that [CockroachDB v20.2](../releases/v20.2.html#v20-2-0) is available, your [Console Admin](console-access-management.html#console-admin) can upgrade your cluster directly from the {{ site.data.products.db }} Console. This page walks through the process.
 
 ## Step 1. Verify that you can upgrade
 
@@ -51,7 +51,7 @@ Because your cluster will be unavailable while its single node is stopped and re
 
 ### Review breaking changes
 
-Review the [backward-incompatible changes in v20.2](../releases/v20.2.0.html#backward-incompatible-changes), and if any affect your application, make necessary changes.
+Review the [backward-incompatible changes in v20.2](../releases/v20.2.html#v20-2-0-backward-incompatible-changes), and if any affect your application, make necessary changes.
 
 ## Step 5. Start the upgrade
 
@@ -130,4 +130,4 @@ Because your cluster contains a single node, the cluster will be briefly unavail
 ## See also
 
 - [Upgrade Policy](upgrade-policy.html)
-- [CockroachDB v20.2 Release Notes](https://www.cockroachlabs.com/docs/releases/v20.2.0.html)
+- [CockroachDB v20.2 Release Notes](../releases/v20.2.html#v20-2-0)

@@ -2,7 +2,7 @@
 title: Limiting Query Results
 summary: LIMIT and OFFSET restrict an operation to a few row.
 toc: true
-docs_area: 
+docs_area: reference.sql
 ---
 
 The `LIMIT` and `OFFSET` clauses restrict the operation of:

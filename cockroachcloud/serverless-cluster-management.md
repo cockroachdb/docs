@@ -1,20 +1,20 @@
 ---
-title: Cluster Management
+title: Manage a CockroachDB Serverless Cluster
 summary: Manage your cluster's schema, data, and more.
 toc: true
 filter_category: cluster_mgmt
 filter_html: CockroachDB Serverless (beta)
 filter_sort: 1
-docs_area: 
+docs_area: manage
 ---
 
 {% include filter-tabs.md %}
 
-This page describes the cluster management and cluster deletion workflows.
+This page describes the cluster management and cluster deletion workflows for {{ site.data.products.serverless }}.
 
 ## Planning your cluster
 
-{% include cockroachcloud/planning-your-serverless-cluster.md %}
+Before making any changes to your cluster's configuration, review the [requirements and recommendations](plan-your-cluster.html) for {{ site.data.products.db }} cluster configuration.
 
 ## View Clusters page
 
@@ -47,7 +47,7 @@ For more information, see [Cluster Overview Page](cluster-overview-page.html).
 
 ## Edit your spend limit  
 
-You can edit your spend limit from the **Overview** page. The change in your spend limit will affect current and upcoming billing cycles. See [Planning your cluster](#planning-your-cluster) for more information on resource usage.
+You can edit your spend limit from the **Overview** page. The change in your spend limit will affect current and upcoming billing cycles. See [Planning your cluster](plan-your-cluster.html) for more information on resource usage.
 
 1. Navigate to the **Overview** page for the cluster you want to edit.
 1. Click the pencil icon (or **Add a spend limit** if you haven't set one before) next to your **Spend limit** in the **Usage this month** section.
@@ -60,7 +60,9 @@ You can edit your spend limit from the **Overview** page. The change in your spe
 
 ## Restore data from a backup
 
-You can [backup and restore](run-bulk-operations.html#backup-and-restore-data) your {{ site.data.products.serverless }} cluster manually. If you don't have [billing information on file](billing-management.html) for your Organization, you can take [backups locally](run-bulk-operations.html#backup-and-restore-data) to `userfile`. Once you enter billing information, even if you don't set a spend limit, you can also [backup to cloud storage](run-bulk-operations.html?filters=cloud#backup-and-restore-data).
+Use the [**Backups** page](backups-page.html) to restore your cluster from automatic full cluster backups.
+
+You can also [backup and restore](run-bulk-operations.html#backup-and-restore-data) your {{ site.data.products.serverless }} cluster manually. If you don't have [billing information on file](billing-management.html) for your organization, you can take [backups locally](run-bulk-operations.html#backup-and-restore-data) to `userfile`. Once you enter billing information, even if you don't set a spend limit, you can also [backup to cloud storage](run-bulk-operations.html?filters=cloud#backup-and-restore-data).
 
 ## Delete cluster
 

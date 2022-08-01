@@ -54,7 +54,7 @@ Click any table name in [**Tables**](#tables-view) view to display details for t
 
 - **Overview** displays the SQL statements used to [create and define the table](create-table.html), as well as [partitioning](partitioning.html) info, [zone configurations](configure-replication-zones.html), constraints, and lease preferences. In addition, the following metrics are displayed:
 	- **Size** displays the approximate disk size of all replicas of this table on the cluster.
-	- **Ranges** displays the number of [ranges](architecture/overview.html#terms) in this table.
+	- **Ranges** displays the number of [ranges](architecture/overview.html#architecture-range) in this table.
 	- **Replicas** displays the number of [replicas](architecture/replication-layer.html) of this table on the cluster.
 	- **Regions/nodes** displays the regions and nodes on which the table data is stored. This is not displayed on a single-node cluster.
 	- **Database** displays the database on which the table is found.
@@ -63,7 +63,7 @@ Click any table name in [**Tables**](#tables-view) view to display details for t
 
 ## Grants view
 
-The **Grants** view shows the [privileges](authorization.html#assign-privileges) granted to users for each database. On the [Tables page](#tables-view), make sure that **View: Grants** is selected in the pulldown menu.
+The **Grants** view shows the [privileges](security-reference/authorization.html#managing-privileges) granted to users for each database. On the [Tables page](#tables-view), make sure that **View: Grants** is selected in the pulldown menu.
 
 The following information is displayed for each table:
 
@@ -79,6 +79,6 @@ For more details about grants and privileges, see [`GRANT`](grant.html).
 ## See also
 
 - [Statements page](ui-statements-page.html)
-- [Assign privileges](authorization.html#assign-privileges)
+- [Assign privileges](security-reference/authorization.html#managing-privileges)
 - [`GRANT`](grant.html)
 - [Raw status endpoints](monitoring-and-alerting.html#raw-status-endpoints)

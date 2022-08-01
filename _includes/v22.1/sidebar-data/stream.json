@@ -1,0 +1,60 @@
+{
+  "title": "Stream Data",
+  "is_top_level": true,
+  "items": [
+    {
+      "title": "Change Data Capture Overview",
+      "urls": [
+        "/${VERSION}/change-data-capture-overview.html"
+      ]
+    },
+    {
+      "title": "Use Changefeeds",
+      "urls": [
+        "/${VERSION}/use-changefeeds.html"
+      ]
+    },
+    {
+      "title": "Create and Configure Changefeeds",
+      "urls": [
+        "/${VERSION}/create-and-configure-changefeeds.html"
+      ]
+    },
+    {
+      "title": "Changefeed Sinks",
+      "urls": [
+        "/${VERSION}/changefeed-sinks.html"
+      ]
+    },
+    {
+      "title": "Changefeeds in Multi-Region Deployments",
+      "urls": [
+        "/${VERSION}/changefeeds-in-multi-region-deployments.html"
+      ]
+    },
+    {
+      "title": "Monitor and Debug Changefeeds",
+      "urls": [
+        "/${VERSION}/monitor-and-debug-changefeeds.html"
+      ]
+    },
+    {
+      "title": "Changefeed Examples",
+      "urls": [
+        "/${VERSION}/changefeed-examples.html"
+      ]
+    },
+    {
+      "title": "Stream a Changefeed from CockroachDB Cloud to Snowflake",
+      "urls": [
+        "/cockroachcloud/stream-changefeed-to-snowflake-aws.html"
+      ]
+    },
+    {
+      "title": "Advanced Changefeed Configuration",
+      "urls": [
+        "/${VERSION}/advanced-changefeed-configuration.html"
+      ]
+    }
+  ]
+}

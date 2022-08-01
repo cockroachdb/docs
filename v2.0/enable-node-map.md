@@ -8,7 +8,7 @@ toc: true
 
 This page walks you through the process of setting up and enabling the **Node Map**.
 
-{{site.data.alerts.callout_info}}The <b>Node Map</b> is an <a href="enterprise-licensing.html">enterprise-only</a> feature. However, you can <a href="https://www.cockroachlabs.com/get-cockroachdb/">request a trial license</a>  to try it out. {{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}The <b>Node Map</b> is an <a href="enterprise-licensing.html">enterprise-only</a> feature. However, you can <a href="https://www.cockroachlabs.com/get-cockroachdb/enterprise">request a trial license</a>  to try it out. {{site.data.alerts.end}}
 
 <img src="{{ 'images/v2.0/admin-ui-node-map.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 

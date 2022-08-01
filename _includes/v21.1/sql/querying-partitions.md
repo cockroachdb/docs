@@ -10,7 +10,7 @@ For example, suppose that the tables in the [`movr`](movr.html) database are geo
 
 Here is the `CREATE TABLE` statement for the `users` table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE TABLE users;
 ~~~
@@ -42,7 +42,7 @@ Here is the `CREATE TABLE` statement for the `users` table:
 
 If you know the user's id, you can filter on the `id` column:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM users WHERE id='00000000-0000-4000-8000-000000000000';
 ~~~
@@ -56,7 +56,7 @@ If you know the user's id, you can filter on the `id` column:
 
 An [`EXPLAIN`](explain.html) statement shows more detail about the cost-based optimizer's plan:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN SELECT * FROM users WHERE id='00000000-0000-4000-8000-000000000000';
 ~~~
@@ -77,12 +77,12 @@ Because the `id` column is in the primary index, directly after the partition pr
 
 If you know the set of all possible partitioned values, adding a check constraint to the table's create statement can also improve performance. For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE users ADD CONSTRAINT check_city CHECK (city IN ('amsterdam','boston','los angeles','new york','paris','rome','san francisco','seattle','washington dc'));
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN SELECT * FROM users WHERE id='00000000-0000-4000-8000-000000000000';
 ~~~
@@ -106,7 +106,7 @@ To see the performance improvement over a query that performs a full table scan,
 
 Suppose that you want to query the `users` table for information about a specific user, but you only know the user's name.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM users WHERE name='Robert Murphy';
 ~~~
@@ -118,7 +118,7 @@ Suppose that you want to query the `users` table for information about a specifi
 (1 row)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN SELECT * FROM users WHERE name='Robert Murphy';
 ~~~
@@ -143,7 +143,7 @@ If you know which partition contains the data that you are querying, using a fil
 
 Now suppose that you know the user's name and location. You can query the table with a filter on the user's name and city:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN SELECT * FROM users WHERE name='Robert Murphy' AND city='new york';
 ~~~

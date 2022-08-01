@@ -2,7 +2,7 @@
 title: STRING
 summary: The STRING data type stores a string of Unicode characters.
 toc: true
-docs_area: 
+docs_area: reference.sql
 ---
 
 The `STRING` [data type](data-types.html) stores a string of Unicode characters.
@@ -39,10 +39,10 @@ When inserting a `STRING` value or a `STRING`-related-type value:
 - For `STRING(n)` and `VARCHAR(n)`/`CHARACTER VARYING(n)` types, if the value is under the column's length limit, CockroachDB does **not** add space padding to the end of the value.
 - For `CHAR(n)`/`CHARACTER(n)` types, if the value is under the column's length limit, CockroachDB adds space padding from the end of the value to the length limit.
 
-                        Type                      |          Length                  
+                        Type                      |          Length
 --------------------------------------------------|------------------------------
-`CHARACTER`, `CHARACTER(n)`, `CHAR`, `CHAR(n)`    | Fixed-length                
-`CHARACTER VARYING(n)`, `VARCHAR(n)`, `STRING(n)` | Variable-length, with a limit  
+`CHARACTER`, `CHARACTER(n)`, `CHAR`, `CHAR(n)`    | Fixed-length
+`CHARACTER VARYING(n)`, `VARCHAR(n)`, `STRING(n)` | Variable-length, with a limit
 `TEXT`, `VARCHAR`, `CHARACTER VARYING`, `STRING`  | Variable-length, with no limit
 `"char"` (special type)                           | 1 byte
 
@@ -61,7 +61,7 @@ or the escaped format otherwise.
 
 ## Size
 
-The size of a `STRING` value is variable, but it's recommended to keep values under 64 kilobytes to ensure performance. Above that threshold, [write amplification](https://en.wikipedia.org/wiki/Write_amplification) and other considerations may cause significant performance degradation.   
+The size of a `STRING` value is variable, but it's recommended to keep values under 64 kilobytes to ensure performance. Above that threshold, [write amplification](architecture/storage-layer.html#write-amplification) and other considerations may cause significant performance degradation.
 
 ## Examples
 
@@ -76,11 +76,11 @@ The size of a `STRING` value is variable, but it's recommended to keep values un
 ~~~
 
 ~~~
-  column_name | data_type | is_nullable | column_default | generation_expression |   indices   | is_hidden
-+-------------+-----------+-------------+----------------+-----------------------+-------------+-----------+
-  a           | STRING    |    false    | NULL           |                       | {"primary"} |   false
-  b           | STRING(4) |    true     | NULL           |                       | {}          |   false
-  c           | STRING    |    true     | NULL           |                       | {}          |   false
+  column_name | data_type | is_nullable | column_default | generation_expression |  indices  | is_hidden
+--------------+-----------+-------------+----------------+-----------------------+-----------+------------
+  a           | STRING    |    false    | NULL           |                       | {primary} |   false
+  b           | STRING(4) |    true     | NULL           |                       | {primary} |   false
+  c           | STRING    |    true     | NULL           |                       | {primary} |   false
 (3 rows)
 ~~~
 
@@ -114,9 +114,9 @@ The size of a `STRING` value is variable, but it's recommended to keep values un
 ~~~
   column_name | data_type | is_nullable | column_default | generation_expression |   indices   | is_hidden
 +-------------+-----------+-------------+----------------+-----------------------+-------------+-----------+
-  a           | STRING    |    false    | NULL           |                       | {"primary"} |   false
-  b           | VARCHAR   |    true     | NULL           |                       | {}          |   false
-  c           | CHAR      |    true     | NULL           |                       | {}          |   false
+  a           | STRING    |    false    | NULL           |                       | {primary}   |   false
+  b           | VARCHAR   |    true     | NULL           |                       | {primary}   |   false
+  c           | CHAR      |    true     | NULL           |                       | {primary}   |   false
 (3 rows)
 ~~~
 
@@ -177,7 +177,7 @@ A literal entered through a SQL client will be translated into a different value
 
 ### Cast hexadecimal digits to `BIT`
 
-<span class="version-tag">New in v21.2</span>: You can cast a `STRING` value of hexadecimal digits prefixed by `x` or `X` to a `BIT` value.
+{% include_cached new-in.html version="v21.2" %} You can cast a `STRING` value of hexadecimal digits prefixed by `x` or `X` to a `BIT` value.
 
 For example:
 

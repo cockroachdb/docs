@@ -86,13 +86,15 @@ This article assumes you have already installed the OpenShift Container Platform
 
 ## Step 3. Start CockroachDB
 
+{% capture latest_operator_version %}{% include_cached latest_operator_version.md %}{% endcapture %}
+
 1. When the Operator is ready, click **View Operator** to navigate to the **Installed Operators** page.
 
 1. In the **CockroachDB Operator** tile, click **Create instance**.
 
 	<img src="{{ 'images/v21.1/cockroachdb-operator-instance-openshift.png' | relative_url }}" alt="OpenShift OperatorHub" style="border:1px solid #eee;max-width:100%" />
 
-1. Make sure **CockroachDB Version** is set to an valid CockroachDB version. For a list of compatible image names, see `spec.containers.env` in the [Operator manifest](https://github.com/cockroachdb/cockroach-operator/blob/f096daf45086136387a75092c0763689cb2a5b59/manifests/operator.yaml) on GitHub.
+1. Make sure **CockroachDB Version** is set to a valid CockroachDB version. For a list of compatible image names, see `spec.containers.env` in the [Operator manifest](https://raw.github.com/cockroachdb/cockroach-operator/v{{ latest_operator_version }}/install/operator.yaml) on GitHub.
 
 1. This will open the **Create CrdbCluster** page. By default, this deploys a 3-node secure cluster. Leave the other fields unchanged and click **Create**.
 
@@ -114,10 +116,6 @@ This article assumes you have already installed the OpenShift Container Platform
 	crdb-tls-example-1                    1/1     Running   0          103s
 	crdb-tls-example-2                    1/1     Running   0          89s
 	~~~
-
-{{site.data.alerts.callout_info}}
-Due to a [known issue](https://github.com/cockroachdb/cockroach-operator/issues/575), in rare cases the Operator can crash while installing CockroachDB. This causes the CockroachDB pods to fail to start, while the version checker [job](https://kubernetes.io/docs/concepts/workloads/controllers/job/) continues to run. If this happens, run `oc get jobs` to find the names of any running `cockroachdb-vcheck` jobs, and delete these jobs with `oc delete job {cockroachdb-vcheck-job}`. Then wait for the version checker job to restart and succeed.
-{{site.data.alerts.end}}
 
 ## Step 4. Create a secure client pod
 

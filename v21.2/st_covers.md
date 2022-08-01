@@ -3,7 +3,7 @@ title: ST_Covers
 summary: ST_Covers(A, B) returns true if no point in shape B lies outside of shape A
 toc: true
 has_prefixed_variant: true
-docs_area: 
+docs_area: reference.sql
 ---
 
 Given two shapes _A_ and _B_, predicate function `ST_Covers(A, B)` returns `true` if no point in _B_ lies outside of shape _A_.  Otherwise, it returns `false`.
@@ -37,7 +37,7 @@ In this example, `{{page.title}}` returns `true` because:
 
 - No Point in the smaller Polygon _B_ lies outside of the larger Polygon _A_.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT ST_Covers(st_geomfromtext('SRID=4326;POLYGON((-87.906471 43.038902, -95.992775 36.153980, -75.704722 36.076944, -87.906471 43.038902))'), st_geomfromtext('SRID=4326;POLYGON((-87.623177 41.881832, -90.199402 38.627003, -82.446732 38.413651, -87.623177 41.881832))'));
 ~~~
@@ -58,7 +58,7 @@ In this example, `{{page.title}}` returns `false` because:
 
 - Many Points in the smaller Polygon _B_ lie outside of the larger Polygon _A_.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT ST_Covers(st_geomfromtext('SRID=4326;POLYGON((-87.906471 43.038902, -95.992775 36.153980, -75.704722 36.076944, -87.906471 43.038902))'), st_geomfromtext('SRID=4326;POLYGON((-84.191605 39.758949, -75.165222 39.952583, -78.878738 42.880230, -84.191605 39.758949))'));
 ~~~

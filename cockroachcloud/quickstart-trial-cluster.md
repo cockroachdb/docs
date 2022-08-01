@@ -1,29 +1,29 @@
 ---
-title: Quickstart with CockroachDB Cloud
-summary: Learn how to create and use your CockroachDB Cloud cluster.
+title: Quickstart with CockroachDB Dedicated
+summary: Learn how to create and use a CockroachDB Dedicated cluster.
 toc: true
-filter_category: qs_crdb_cloud
-filter_html: CockroachDB Dedicated
-filter_sort: 2
 docs_area: get_started
 ---
 
-{% include filter-tabs.md %}
-
 This page shows you how to deploy a CockroachDB cluster on {{ site.data.products.dedicated }} (free for a 30-day trial for your first cluster), connect to it using a sample workload, and run your first query.
 
-To run CockroachDB on your local machine instead, see [Start a Local Cluster](../stable/secure-a-cluster.html).
+To run CockroachDB on your local machine instead, see [Start a Local Cluster](quickstart.html?filters=local).
 
 ## Step 1. Create a free trial cluster
 
-For this tutorial, we will create a 3-node GCP cluster in the `us-west2` region.
+For this tutorial, you will create a 3-node GCP cluster in the `us-west2` region.
 
 1. If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=docs_quickstart_trial" rel="noopener" target="_blank">sign up for a {{ site.data.products.db }} account</a>.
 1. [Log in](https://cockroachlabs.cloud/) to your {{ site.data.products.db }} account.
 1. On the **Overview** page, click **Create Cluster**.
 1. On the **Create new cluster** page, for **Cloud provider**, select **Google Cloud**.
 1. For **Regions & nodes**, use the default selection of `California (us-west)` region and 3 nodes.
-1. For **Hardware per node**, select `Option 1` (2vCPU, 60 GB disk).
+1. Under **Hardware per node**, select 2vCPU for **Compute** and a 35 GiB disk for **Storage**.
+
+    {{site.data.alerts.callout_info}}
+    You can select up to 9 nodes, 4 vCPUs of compute, and 150 GiB of storage. The trial code will not apply to larger clusters.
+    {{site.data.alerts.end}}
+
 1. Name the cluster. The cluster name must be 6-20 characters in length, and can include lowercase letters, numbers, and dashes (but no leading or trailing dashes).
 1. Click **Next**.
 1. On the **Summary** page, enter your credit card details.

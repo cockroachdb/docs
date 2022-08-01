@@ -2,7 +2,7 @@
 title: CANCEL QUERY
 summary: The CANCEL QUERY statement cancels a running SQL query.
 toc: true
-docs_area: 
+docs_area: reference.sql
 ---
 
 The `CANCEL QUERY` [statement](sql-statements.html) cancels a running SQL query.
@@ -20,7 +20,7 @@ Members of the `admin` role (include `root`, which belongs to `admin` by default
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/cancel_query.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/cancel_query.html %}
 </div>
 
 ## Parameters

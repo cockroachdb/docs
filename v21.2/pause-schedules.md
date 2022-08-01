@@ -2,7 +2,7 @@
 title: PAUSE SCHEDULES
 summary: The PAUSE SCHEDULES statement lets you temporarily halt the process of a backup schedule.
 toc: true
-docs_area: 
+docs_area: reference.sql
 ---
 
  The `PAUSE SCHEDULES` [statement](sql-statements.html) can be used to pause [backup schedules](create-schedule-for-backup.html).
@@ -11,7 +11,7 @@ After pausing a schedule, you can resume it with [`RESUME SCHEDULES`](resume-sch
 
 ## Required privileges
 
-Only members of the [`admin` role](authorization.html#default-roles) can pause a schedule. By default, the `root` user belongs to the `admin` role.
+Only members of the [`admin` role](security-reference/authorization.html#default-roles) can pause a schedule. By default, the `root` user belongs to the `admin` role.
 
 ## Synopsis
 
@@ -32,7 +32,7 @@ PAUSE SCHEDULE <scheduleID>
 
 ### Pause a single schedule
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > PAUSE SCHEDULE 589963390487363585;
 ~~~
@@ -45,7 +45,7 @@ PAUSE SCHEDULES 1
 
 To pause multiple schedules, nest a [`SELECT` clause](select-clause.html) that retrieves `id`(s) inside the `PAUSE SCHEDULES` statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > PAUSE SCHEDULES SELECT id FROM [SHOW SCHEDULES] WHERE label = 'schedule_database';
 ~~~

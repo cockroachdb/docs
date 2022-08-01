@@ -46,7 +46,7 @@ You will need to write an [`IMPORT TABLE`][import] statement that matches the sc
 
 For example, to import the data from `employees.csv` into an `employees` table, issue the following statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE employees (
     emp_no INT PRIMARY KEY,
@@ -82,7 +82,7 @@ The following options are available to [`IMPORT ... CSV`][import]:
 + [Column delimiter](#column-delimiter)
 + [Comment syntax](#comment-syntax)
 + [Skip header rows](#skip-header-rows)
-+ <span class="version-tag">New in v21.1:</span> [Row limit](#row-limit)
++ {% include_cached new-in.html version="v21.1" %} [Row limit](#row-limit)
 + [Null strings](#null-strings)
 + [File compression](#file-compression)
 
@@ -92,7 +92,7 @@ The `delimiter` option is used to set the Unicode character that marks where eac
 
 Example usage:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE employees (
     emp_no INT PRIMARY KEY,
@@ -112,7 +112,7 @@ The `comment` option determines which Unicode character marks the rows in the da
 
 Example usage:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE employees (
     emp_no INT PRIMARY KEY,
@@ -132,7 +132,7 @@ The `skip` option determines the number of header rows to skip when importing a 
 
 Example usage:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE employees (
     emp_no INT PRIMARY KEY,
@@ -148,11 +148,11 @@ Example usage:
 
 ### Row limit
 
-<span class="version-tag">New in v21.1:</span> The `row_limit` option determines the number of rows to import from a table. It is useful for finding errors quickly before executing a more time- and resource-consuming import.
+{% include_cached new-in.html version="v21.1" %} The `row_limit` option determines the number of rows to import from a table. It is useful for finding errors quickly before executing a more time- and resource-consuming import.
 
 Example usage:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE employees (
     emp_no INT PRIMARY KEY,
@@ -172,7 +172,7 @@ The `nullif` option defines which string should be converted to `NULL`.
 
 Example usage:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE employees (
     emp_no INT PRIMARY KEY,
@@ -197,7 +197,7 @@ The `compress` option defines which decompression codec should be used on the CS
 
 Example usage:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE employees (
     emp_no INT PRIMARY KEY,

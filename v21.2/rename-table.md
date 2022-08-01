@@ -2,7 +2,7 @@
 title: ALTER TABLE ... RENAME TO
 summary: The ALTER TABLE ... RENAME TO statement changes the name of a table.
 toc: true
-docs_area: 
+docs_area: reference.sql
 ---
 
 The `RENAME TO` [statement](sql-statements.html) is part of [`ALTER TABLE`](alter-table.html), and changes the name of a table.
@@ -21,12 +21,12 @@ It is not possible to rename a table referenced by a view. For more details, see
 
 ## Required privileges
 
-The user must have the `DROP` [privilege](authorization.html#assign-privileges) on the table and the `CREATE` on the parent database. When moving a table from one database to another, the user must have the `CREATE` privilege on both the source and target databases.
+The user must have the `DROP` [privilege](security-reference/authorization.html#managing-privileges) on the table and the `CREATE` on the parent database. When moving a table from one database to another, the user must have the `CREATE` privilege on both the source and target databases.
 
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/rename_table.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/rename_table.html %}
 </div>
 
 ## Parameters
@@ -47,7 +47,7 @@ The user must have the `DROP` [privilege](authorization.html#assign-privileges) 
 
 ### Rename a table
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES;
 ~~~
@@ -64,12 +64,12 @@ The user must have the `DROP` [privilege](authorization.html#assign-privileges) 
 (6 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE users RENAME TO riders;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES;
 ~~~
@@ -88,7 +88,7 @@ The user must have the `DROP` [privilege](authorization.html#assign-privileges) 
 
 To avoid an error in case the table does not exist, you can include `IF EXISTS`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE IF EXISTS customers RENAME TO clients;
 ~~~
@@ -97,7 +97,7 @@ To avoid an error in case the table does not exist, you can include `IF EXISTS`:
 
 To move a table from one database to another, use the above syntax but specify the source database after `ALTER TABLE` and the target database after `RENAME TO`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM movr;
 ~~~
@@ -114,7 +114,7 @@ To move a table from one database to another, use the above syntax but specify t
 (6 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM defaultdb;
 ~~~
@@ -125,12 +125,12 @@ To move a table from one database to another, use the above syntax but specify t
 (0 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE movr.promo_codes RENAME TO defaultdb.promos;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM movr;
 ~~~
@@ -146,7 +146,7 @@ To move a table from one database to another, use the above syntax but specify t
 (5 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM defaultdb;
 ~~~
@@ -165,5 +165,5 @@ To move a table from one database to another, use the above syntax but specify t
 - [`SHOW TABLES`](show-tables.html)
 - [`DROP TABLE`](drop-table.html)
 - [`SHOW JOBS`](show-jobs.html)
-- [Other SQL Statements](sql-statements.html)
+- [SQL Statements](sql-statements.html)
 - [Online Schema Changes](online-schema-changes.html)

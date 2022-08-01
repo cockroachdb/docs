@@ -6,7 +6,7 @@ redirect_from: create-a-free-cluster.html
 filter_category: create_cluster_cloud
 filter_html: CockroachDB Serverless (beta)
 filter_sort: 1
-docs_area: 
+docs_area: deploy
 ---
 
 {% include filter-tabs.md %}
@@ -22,6 +22,7 @@ If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=d
 ## Step 1. Start the cluster creation process
 
 1. [Log in](https://cockroachlabs.cloud/) to your {{ site.data.products.db }} account.
+{% include cockroachcloud/prefer-sso.md %}
 1. If there are multiple [organizations](console-access-management.html#organization) in your account, select the correct organization in the top right corner.
 1. On the **Overview** page, click **Create Cluster**.
 
@@ -33,11 +34,11 @@ If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=d
 
 ## Step 3. Enter a spend limit
 
-Every cluster starts with 10M RUs of free [burst capacity](architecture.html#concepts) each month and earns 100 RUs per second up to a maximum of 250M free RUs per month. Earned RUs can be used immediately or accumulated as burst capacity. If you use all of your burst capacity, your cluster will revert to baseline performance.
+Every cluster starts with 10M RUs of free [burst capacity](architecture.html#cockroachdb-cloud-terms) each month and earns 100 RUs per second up to a maximum of 250M free RUs per month. Earned RUs can be used immediately or accumulated as burst capacity. If you use all of your burst capacity, your cluster will revert to baseline performance.
 
 If you set a spend limit, your cluster will not be throttled to baseline performance once you use all of your free earned RUs. Instead, it will continue to use burst performance as needed until you reach your spend limit. You will only be charged for the resources you use up to your spend limit. If you reach your spend limit, your cluster will revert to the baseline performance of 100 RUs per second.
 
-{% include cockroachcloud/serverless-usage.md %} For more information, see [Planning your cluster](serverless-cluster-management.html#planning-your-cluster).
+{% include cockroachcloud/serverless-usage.md %} For more information, see [Planning your cluster](plan-your-cluster.html).
 
 {{site.data.alerts.callout_info}}
 Regardless of whether you set a spend limit, [adding billing information](billing-management.html) for your organization allows you to use [cloud storage for bulk operations](run-bulk-operations.html). Organizations without billing information are limited to [using `userfile` storage for bulk operations](run-bulk-operations.html).

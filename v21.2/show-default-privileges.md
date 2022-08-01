@@ -3,15 +3,15 @@ title: SHOW DEFAULT PRIVILEGES
 summary: The SHOW DEFAULT PRIVILEGES statement lists the default privileges for users/roles in the current database.
 keywords: reflection
 toc: true
-docs_area: 
+docs_area: reference.sql
 ---
 
-<span class="version-tag">New in v21.2</span>: The `SHOW DEFAULT PRIVILEGES` [statement](sql-statements.html) lists the [default privileges](authorization.html#default-privileges) for the objects created by [users/roles](authorization.html#roles) in the current database.
+{% include_cached new-in.html version="v21.2" %} The `SHOW DEFAULT PRIVILEGES` [statement](sql-statements.html) lists the [default privileges](security-reference/authorization.html#default-privileges) for the objects created by [users/roles](security-reference/authorization.html#roles) in the current database.
 
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/show_default_privileges.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/show_default_privileges.html %}
 </div>
 
 ## Parameters
@@ -27,13 +27,13 @@ If you do not specify a `FOR ...` clause, CockroachDB returns the default privil
 
 ## Required privileges
 
-To show default privileges, the user/role must have any [privilege](authorization.html#assign-privileges) on the current database.
+To show default privileges, the user/role must have any [privilege](security-reference/authorization.html#managing-privileges) on the current database.
 
 ## Examples
 
 ### Show default privileges for objects created by the current user
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW DEFAULT PRIVILEGES;
 ~~~
@@ -51,7 +51,7 @@ To show default privileges, the user/role must have any [privilege](authorizatio
 
 ### Show default privileges for objects created by any user/role
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW DEFAULT PRIVILEGES FOR ALL ROLES;
 ~~~
@@ -65,12 +65,12 @@ To show default privileges, the user/role must have any [privilege](authorizatio
 
 ### Show default privileges for objects created by a specific user/role
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE USER max;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW DEFAULT PRIVILEGES FOR ROLE max;
 ~~~
@@ -89,5 +89,5 @@ To show default privileges, the user/role must have any [privilege](authorizatio
 ## See also
 
 - [`ALTER DEFAULT PRIVILEGES`](alter-default-privileges.html)
-- [Default Privileges](authorization.html#default-privileges)
-- [Other SQL Statements](sql-statements.html)
+- [SQL Statements](sql-statements.html)
+- [Default Privileges](security-reference/authorization.html#default-privileges)

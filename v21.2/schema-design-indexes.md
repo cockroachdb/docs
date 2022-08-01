@@ -3,7 +3,7 @@ title: Secondary Indexes
 summary: How and when to create secondary indexes in CockroachDB.
 toc: true
 keywords: gin, gin index, gin indexes, inverted index, inverted indexes, accelerated index, accelerated indexes
-docs_area: 
+docs_area: develop
 ---
 
 Indexes are [logical objects in a cluster](schema-design-overview.html#database-schema-objects) that help [CockroachDB queries](query-data.html) find data more efficiently. When you create an index, CockroachDB creates a copy of the columns selected for the index, and then sorts the rows of data by indexed column values, without sorting the values in the table itself.
@@ -18,8 +18,7 @@ This page provides best-practice guidance on creating secondary indexes, with a 
 
 Before reading this page, do the following:
 
-- [Install CockroachDB](install-cockroachdb.html).
-- [Start a local cluster](secure-a-cluster.html), or [create a {{ site.data.products.dedicated }} cluster](../cockroachcloud/create-your-cluster.html).
+- [Create a {{ site.data.products.serverless }} cluster](../cockroachcloud/quickstart.html) or [start a local cluster](../cockroachcloud/quickstart.html?filters=local).
 - [Review the database schema objects](schema-design-overview.html).
 - [Create a database](schema-design-database.html).
 - [Create a user-defined schema](schema-design-schema.html).
@@ -74,7 +73,9 @@ Here are some best practices for creating and using indexes:
 
     Columns listed in a filtering [`WHERE` clause](select-clause.html#parameters) with the equality operators (`=` or `IN`) should come first in the index, before those referenced with inequality operators (`<`, `>`).
 
-- Avoid indexing on sequential values. Writes to indexes with sequential keys can result in range hotspots that negatively affect performance. Instead, use [randomly generated unique IDs](performance-best-practices-overview.html#unique-id-best-practices) or [multi-column keys](performance-best-practices-overview.html#use-multi-column-primary-keys).
+    Columns with a higher cardinality (higher number of distinct values) should be placed in the index before columns with a lower cardinality. If the cardinality of the columns you wish to add to the index are similar, test multiple column arrangements in a non-production environment to determine the most performant arrangement.
+
+- Avoid indexing on sequential values. Writes to indexes with sequential keys can result in range hot spots that negatively affect performance. Instead, use [randomly generated unique IDs](performance-best-practices-overview.html#unique-id-best-practices) or [multi-column keys](performance-best-practices-overview.html#use-multi-column-primary-keys).
 
     If you are working with a table that *must* be indexed on sequential keys, use [hash-sharded indexes](hash-sharded-indexes.html). For details about the mechanics and performance improvements of hash-sharded indexes in CockroachDB, see our [Hash Sharded Indexes Unlock Linear Scaling for Sequential Workloads](https://www.cockroachlabs.com/blog/hash-sharded-indexes-unlock-linear-scaling-for-sequential-workloads/) blog post.
 
@@ -132,7 +133,7 @@ Here are some best practices for creating and using indexes:
 
 - Review the [specialized indexes that CockroachDB supports](schema-design-overview.html#specialized-indexes), and decide if you need to create a specialized index instead of a standard index.
 
-- Do not create indexes as the `root` user. Instead, create indexes as a [different user](schema-design-overview.html#control-access-to-objects), with fewer privileges, following [authorization best practices](authorization.html#authorization-best-practices). This will likely be the same user that created the table to which the index belongs.
+- Do not create indexes as the `root` user. Instead, create indexes as a [different user](schema-design-overview.html#control-access-to-objects), with fewer privileges, following [authorization best practices](security-reference/authorization.html#authorization-best-practices). This will likely be the same user that created the table to which the index belongs.
 
 - {% include {{page.version.version}}/sql/dev-schema-changes.md %}
 
@@ -146,7 +147,7 @@ Recall that the `vehicles` table that you created in [Create a Table](schema-des
 
 Open `max_init.sql`, and, under the `CREATE TABLE` statement for the `vehicles` table, add a `CREATE INDEX` statement for an index on the `type` and `available` columns of the `vehicles` table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE INDEX type_available_idx ON movr.vehicles (type, available));
 ~~~
@@ -157,7 +158,7 @@ The MovR app might also need to display the vehicle's location and ID, but the a
 
 To help avoid unnecessary full table scans, add a `STORING` clause to the index:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE INDEX type_available_idx ON movr.vehicles (type, available) STORING (last_location);
 ~~~
@@ -166,7 +167,7 @@ The index will now store the values in `last_location`, which will improve the p
 
 The `max_init.sql` file should now look similar to the following:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TABLE movr.max_schema.users (
     first_name STRING,
@@ -199,7 +200,7 @@ CREATE TABLE movr.max_schema.rides (
 
 If you executed this file when following the [Create a Table](schema-design-table.html) example, then all of these objects already exist. To clear the database and re-initialize the schemas, first execute the statements in the `dbinit.sql` file as the `root` user:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
 --certs-dir={certs-directory} \
@@ -209,7 +210,7 @@ $ cockroach sql \
 
 Then, execute the statements in the `max_init.sql` and `abbey_init.sql` files:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
 --certs-dir={certs-directory} \
@@ -218,7 +219,7 @@ $ cockroach sql \
 -f max_init.sql
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
 --certs-dir={certs-directory} \
@@ -231,7 +232,7 @@ After the statements have been executed, you can see the new index in the [Cockr
 
 Open the SQL shell to your cluster:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
 --certs-dir={certs-directory} \
@@ -241,20 +242,24 @@ $ cockroach sql \
 
 To view the indexes in the `vehicles` table, issue a [`SHOW INDEXES`](show-index.html) statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW INDEXES FROM movr.max_schema.vehicles;
 ~~~
 
 ~~~
-  table_name |     index_name     | non_unique | seq_in_index |  column_name  | direction | storing | implicit
--------------+--------------------+------------+--------------+---------------+-----------+---------+-----------
+  table_name | index_name | non_unique | seq_in_index |  column_name  | direction | storing | implicit
+-------------+------------+------------+--------------+---------------+-----------+---------+-----------
   vehicles   | primary            |   false    |            1 | id            | ASC       |  false  |  false
+  vehicles   | primary            |   false    |            2 | type          | N/A       |  true   |  false
+  vehicles   | primary            |   false    |            3 | creation_time | N/A       |  true   |  false
+  vehicles   | primary            |   false    |            4 | available     | N/A       |  true   |  false
+  vehicles   | primary            |   false    |            5 | last_location | N/A       |  true   |  false
   vehicles   | type_available_idx |    true    |            1 | type          | ASC       |  false  |  false
   vehicles   | type_available_idx |    true    |            2 | available     | ASC       |  false  |  false
   vehicles   | type_available_idx |    true    |            3 | last_location | N/A       |  true   |  false
   vehicles   | type_available_idx |    true    |            4 | id            | ASC       |  false  |   true
-(5 rows)
+(9 rows)
 ~~~
 
 The output from this `SHOW` statement displays the names and columns of the two indexes on the table (i.e., `primary` and `type_available_idx`).
@@ -263,7 +268,7 @@ Note that the `last_location` column's `storing` value is `true` in the `type_av
 
 To see an index definition, use a [`SHOW CREATE`](show-create.html) statement on the table that contains the index:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE TABLE movr.max_schema.vehicles;
 ~~~

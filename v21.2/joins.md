@@ -3,7 +3,7 @@ title: JOIN expressions
 summary: JOIN expressions combine data from two or more table expressions.
 toc: true
 keywords: gin, gin index, gin indexes, inverted index, inverted indexes, accelerated index, accelerated indexes
-docs_area: 
+docs_area: reference.sql
 ---
 
 `JOIN` expressions, also called "joins", combine the results of two or more table expressions based on conditions on the values of particular columns (i.e., equality columns).
@@ -16,7 +16,7 @@ The [cost-based optimizer](cost-based-optimizer.html) supports hint syntax to fo
 
 ## Synopsis
 
-<div>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/joined_table.html %}</div>
+<div>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/joined_table.html %}</div>
 
 <div markdown="1"></div>
 

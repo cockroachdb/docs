@@ -2,7 +2,7 @@
 title: SET TRANSACTION
 summary: The SET TRANSACTION statement sets the transaction priority for the current session or an individual transaction.
 toc: true
-docs_area: 
+docs_area: reference.sql
 ---
 
 The `SET TRANSACTION` [statement](sql-statements.html) sets the transaction priority, access mode, and "as of" timestamp after you [`BEGIN`](begin-transaction.html) it but before executing the first statement that manipulates a database.
@@ -10,12 +10,12 @@ The `SET TRANSACTION` [statement](sql-statements.html) sets the transaction prio
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/set_transaction.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/set_transaction.html %}
 </div>
 
 ## Required privileges
 
-No [privileges](authorization.html#assign-privileges) are required to set the transaction priority. However, privileges are required for each statement within a transaction.
+No [privileges](security-reference/authorization.html#managing-privileges) are required to set the transaction priority. However, privileges are required for each statement within a transaction.
 
 ## Parameters
 
@@ -34,37 +34,37 @@ CockroachDB now only supports `SERIALIZABLE` isolation, so transactions can no l
 
 {{site.data.alerts.callout_danger}}This example assumes you're using <a href="transactions.html#client-side-intervention">client-side intervention to handle transaction retries</a>.{{site.data.alerts.end}}
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BEGIN;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET TRANSACTION PRIORITY HIGH;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SAVEPOINT cockroach_restart;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > UPDATE products SET inventory = 0 WHERE sku = '8675309';
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO orders (customer, sku, status) VALUES (1001, '8675309', 'new');
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > RELEASE SAVEPOINT cockroach_restart;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > COMMIT;
 ~~~

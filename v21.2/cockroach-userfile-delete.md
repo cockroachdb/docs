@@ -2,14 +2,14 @@
 title: cockroach userfile delete
 summary: The cockroach userfile delete command deletes files stored in user-scoped file storage.
 toc: true
-docs_area: 
+docs_area: reference.cli
 ---
 
  The `cockroach userfile delete` [command](cockroach-commands.html) deletes the files stored in the [user-scoped file storage](use-userfile-for-bulk-operations.html) which match the [provided pattern](cockroach-userfile-upload.html#file-destination), using a SQL connection. If the pattern `'*'` is passed, all files in the specified (or default, if unspecified) user-scoped file storage will be deleted. Deletions are not atomic, and all deletions prior to the first failure will occur.
 
 ## Required privileges
 
-The user must have the `CREATE` [privilege](authorization.html#assign-privileges) on the target database. CockroachDB will proactively grant the user `GRANT`, `SELECT`, `INSERT`, `DROP`, `DELETE` on the metadata and file tables.
+The user must have the `CREATE` [privilege](security-reference/authorization.html#managing-privileges) on the target database. CockroachDB will proactively grant the user `GRANT`, `SELECT`, `INSERT`, `DROP`, `DELETE` on the metadata and file tables.
 
 A user can only delete files from their own user-scoped storage, which is accessed through the [userfile URI](cockroach-userfile-upload.html#file-destination) used during the upload. CockroachDB will revoke all access from every other user in the cluster except users in the `admin` role. Users in the `admin` role can delete from any user's storage.
 
@@ -43,7 +43,7 @@ $ cockroach userfile delete --help
 
 To delete all files in the directory, pass the `'*'` pattern:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach userfile delete '*' --certs-dir=certs
 ~~~
@@ -60,7 +60,7 @@ Note that because a fully qualified userfile URI was not specified, files in the
 
 To delete a specific file, include the file destination in the command:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach userfile delete test-data.csv --certs-dir=certs
 ~~~
@@ -73,7 +73,7 @@ deleted userfile://defaultdb.public.userfiles_root/test-data.csv
 
 To delete all files that match a pattern, use `*`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach userfile delete '*.csv' --certs-dir=certs
 ~~~
@@ -87,14 +87,14 @@ deleted userfile://defaultdb.public.userfiles_root/test-data.csv
 
 If you [uploaded a file to a non-default userfile URI](cockroach-userfile-upload.html#upload-a-file-to-a-non-default-userfile-uri) (e.g., `userfile://testdb.public.uploads`):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 cockroach userfile upload /Users/maxroach/Desktop/test-data.csv userfile://testdb.public.uploads/test-data.csv
 ~~~
 
 Use the same URI to delete it:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 cockroach userfile delete userfile://testdb.public.uploads
 ~~~

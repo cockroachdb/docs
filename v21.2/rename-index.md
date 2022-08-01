@@ -2,7 +2,7 @@
 title: RENAME INDEX
 summary: The RENAME INDEX statement changes the name of an index for a table.
 toc: true
-docs_area: 
+docs_area: reference.sql
 ---
 
 The `RENAME INDEX` [statement](sql-statements.html) changes the name of an index for a table.
@@ -16,12 +16,12 @@ The `RENAME INDEX` [statement](sql-statements.html) changes the name of an index
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/rename_index.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/rename_index.html %}
 </div>
 
 ## Required privileges
 
-The user must have the `CREATE` [privilege](authorization.html#assign-privileges) on the table.
+The user must have the `CREATE` [privilege](security-reference/authorization.html#managing-privileges) on the table.
 
 ## Parameters
 
@@ -36,41 +36,47 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 
 ### Rename an Index
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW INDEXES FROM users;
 ~~~
 
 ~~~
-+------------+------------+------------+--------------+-------------+-----------+---------+----------+
-| table_name | index_name | non_unique | seq_in_index | column_name | direction | storing | implicit |
-+------------+------------+------------+--------------+-------------+-----------+---------+----------+
-| users      | primary    |   false    |            1 | id          | ASC       |  false  |  false   |
-| users      | name_idx   |    true    |            1 | name        | ASC       |  false  |  false   |
-| users      | name_idx   |    true    |            2 | id          | ASC       |  false  |   true   |
-+------------+------------+------------+--------------+-------------+-----------+---------+----------+
-(3 rows)
+  table_name | index_name | non_unique | seq_in_index | column_name | direction | storing | implicit
+ ------------+------------+------------+--------------+-------------+-----------+---------+----------
+  users      | name_idx   |    true    |            1 | name        | DESC      |  false  |  false
+  users      | name_idx   |    true    |            2 | city        | ASC       |  false  |   true
+  users      | name_idx   |    true    |            3 | id          | ASC       |  false  |   true
+  users      | primary    |   false    |            1 | city        | ASC       |  false  |  false
+  users      | primary    |   false    |            2 | id          | ASC       |  false  |  false
+  users      | primary    |   false    |            3 | name        | N/A       |  true   |  false
+  users      | primary    |   false    |            4 | address     | N/A       |  true   |  false
+  users      | primary    |   false    |            5 | credit_card | N/A       |  true   |  false
+(8 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER INDEX users@name_idx RENAME TO users_name_idx;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW INDEXES FROM users;
 ~~~
 
 ~~~
-+------------+----------------+------------+--------------+-------------+-----------+---------+----------+
-| table_name |   index_name   | non_unique | seq_in_index | column_name | direction | storing | implicit |
-+------------+----------------+------------+--------------+-------------+-----------+---------+----------+
-| users      | primary        |   false    |            1 | id          | ASC       |  false  |  false   |
-| users      | users_name_idx |    true    |            1 | name        | ASC       |  false  |  false   |
-| users      | users_name_idx |    true    |            2 | id          | ASC       |  false  |   true   |
-+------------+----------------+------------+--------------+-------------+-----------+---------+----------+
-(3 rows)
+  table_name | index_name     | non_unique | seq_in_index | column_name | direction | storing | implicit
+ ------------+----------------+------------+--------------+-------------+-----------+---------+----------
+  users      | primary        |   false    |            1 | city        | ASC       |  false  |  false
+  users      | primary        |   false    |            2 | id          | ASC       |  false  |  false
+  users      | primary        |   false    |            3 | name        | N/A       |  true   |  false
+  users      | primary        |   false    |            4 | address     | N/A       |  true   |  false
+  users      | primary        |   false    |            5 | credit_card | N/A       |  true   |  false
+  users      | users_name_idx |    true    |            1 | name        | DESC      |  false  |  false
+  users      | users_name_idx |    true    |            2 | city        | ASC       |  false  |   true
+  users      | users_name_idx |    true    |            3 | id          | ASC       |  false  |   true
+(8 rows)
 ~~~
 
 ## See also

@@ -3,7 +3,7 @@ title: Indexes
 summary: Indexes improve your database's performance by helping SQL locate data without having to look through every row of a table.
 toc: true
 keywords: gin, gin index, gin indexes, inverted index, inverted indexes, accelerated index, accelerated indexes
-docs_area: reference.performance_optimization
+docs_area: develop
 ---
 
 Indexes improve your database's performance by helping SQL locate data without having to look through every row of a table.
@@ -26,7 +26,7 @@ For example, if you index an `INT` column and then filter it <code>WHERE &lt;ind
 
 Each table automatically has an index created called `primary`, which indexes either its [primary key](primary-key.html) or&mdash;if there is no primary key&mdash;a unique value for each row known as `rowid`. We recommend always defining a primary key because the index it creates provides much better performance than letting CockroachDB use `rowid`.
 
-<span class="version-tag">New in v21.2</span>: To require an explicitly defined primary key for all tables created in your cluster, set the `sql.defaults.require_explicit_primary_keys.enabled` [cluster setting](cluster-settings.html) to `true`.
+{% include_cached new-in.html version="v21.2" %} To require an explicitly defined primary key for all tables created in your cluster, set the `sql.defaults.require_explicit_primary_keys.enabled` [cluster setting](cluster-settings.html) to `true`.
 
 The `primary` index helps filter a table's primary key but doesn't help SQL find values in any other columns. However, you can use secondary indexes to improve the performance of queries using columns not in a table's primary key. You can create them:
 
@@ -68,18 +68,20 @@ The `STORING` clause specifies columns which are not part of the index key but s
 
 {% include {{page.version.version}}/sql/covering-index.md %}
 
-Note that the synonym `COVERING` is also supported.
+The synonym `COVERING` is also supported.
+
+#### Example
 
 For example, say we have a table with three columns, two of which are indexed:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE tbl (col1 INT, col2 INT, col3 INT, INDEX (col1, col2));
 ~~~
 
 If we filter on the indexed columns but retrieve the unindexed column, this requires reading `col3` from the primary index via an "index join."
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN SELECT col3 FROM tbl WHERE col1 = 10 AND col2 > 1;
 ~~~
@@ -100,12 +102,12 @@ If we filter on the indexed columns but retrieve the unindexed column, this requ
 
 However, if we store `col3` in the index, the index join is no longer necessary. This means our query only needs to read from the secondary index, so it will be more efficient.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE tbl (col1 INT, col2 INT, col3 INT, INDEX (col1, col2) STORING (col3));
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN SELECT col3 FROM tbl WHERE col1 = 10 AND col2 > 1;
 ~~~

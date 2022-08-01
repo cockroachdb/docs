@@ -2,7 +2,7 @@
 title: Run Bulk Operations from Your Cluster
 summary: Run backups, restores, and imports from your CockroachDB Cloud cluster.
 toc: true
-docs_area: 
+docs_area: manage
 ---
 
 {{ site.data.products.serverless }} and {{ site.data.products.dedicated }} offer different levels of support for the following bulk operations. This page provides information on the availability of these operations in both types of {{ site.data.products.db }} cluster and examples.
@@ -25,6 +25,10 @@ For information on `userfile` commands, visit the following pages:
 - [`cockroach userfile delete`](../{{site.versions["stable"]}}/cockroach-userfile-delete.html)
 
 The cloud storage examples on this page use Amazon S3 for demonstration purposes. For guidance on connecting to other storage options or using other authentication parameters, read [Use Cloud Storage for Bulk Operations](../{{site.versions["stable"]}}/use-cloud-storage-for-bulk-operations.html).
+
+{{site.data.alerts.callout_danger}}
+You cannot restore a backup of a multi-region database into a single-region database.
+{{site.data.alerts.end}}
 
 ## Examples
 

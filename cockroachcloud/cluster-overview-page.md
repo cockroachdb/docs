@@ -2,7 +2,7 @@
 title: Cluster Overview Page
 summary: How to use the Cluster Overview page to view cluster details on {{ site.data.products.serverless }}.
 toc: true
-docs_area: 
+docs_area: manage
 ---
 
 The **Cluster Overview** page displays key metrics about your {{ site.data.products.serverless }} cluster.
@@ -25,7 +25,7 @@ The **Usage this month** panel displays your cluster usage statistics for the cu
 |---------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Spend limit   | The spend limit you entered when [creating the cluster](create-a-serverless-cluster.html#step-3-enter-a-spend-limit). Click the **edit** icon to change the spend limit.                                                                                                         |
 | Storage       | The amount of data currently stored in the cluster. This value does not account for compression or replication. The total available storage is determined by your spend limit and Burst RU usage. For details, see [CockroachCloud Architecture](architecture.html#performance). |
-| Request Units | The CPU and I/O resources being used by queries on the cluster, and whether throttling is in effect. The total available RUs are determined by your spend limit and storage usage. For more context, see [CockroachCloud Architecture](architecture.html#concepts).              |
+| Request Units | The CPU and I/O resources being used by queries on the cluster, and whether throttling is in effect. The total available RUs are determined by your spend limit and storage usage. For more context, see [CockroachCloud Architecture](architecture.html#cockroachdb-cloud-terms).              |
 
 ## Cluster statistics panel
 

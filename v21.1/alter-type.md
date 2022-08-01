@@ -22,7 +22,7 @@ Parameter | Description
 ----------|------------
 `type_name` | The name of the user-defined type.
 `ADD VALUE value` | Add a constant value to the user-defined type's list of values. You can optionally specify `BEFORE value` or `AFTER value` to add the value in sort order relative to an existing value.
-`DROP VALUE value` | <span class="version-tag">New in v21.1:</span> Drop a specific value from the user-defined type's list of values.<br>{{site.data.alerts.callout_info}}`ALTER TYPE ... DROP VALUE` is disabled by default with the `enable_drop_enum_value` [cluster setting](cluster-settings.html) set to `off`. To enable `ALTER TYPE ... DROP VALUE`, run `SET enable_drop_enum_value = on;`.{{site.data.alerts.end}}
+`DROP VALUE value` | **New in v21.1:** Drop a specific value from the user-defined type's list of values.<br>{{site.data.alerts.callout_info}}`ALTER TYPE ... DROP VALUE` is disabled by default with the `enable_drop_enum_value` [cluster setting](cluster-settings.html) set to `off`. To enable `ALTER TYPE ... DROP VALUE`, run `SET enable_drop_enum_value = on;`.{{site.data.alerts.end}}
 `RENAME TO name` | Rename the user-defined type.
 `RENAME VALUE value TO value` |  Rename a constant value in the user-defined type's list of values.
 `SET SCHEMA`  | Set [the schema](sql-name-resolution.html) of the user-defined type.
@@ -44,12 +44,12 @@ on the type.
 
 ## Example
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TYPE status AS ENUM ('open', 'closed', 'inactive');
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW ENUMS;
 ~~~
@@ -65,12 +65,12 @@ on the type.
 
 To add a value to the `status` type, use an `ADD VALUE` clause:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TYPE status ADD VALUE 'pending';
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW ENUMS;
 ~~~
@@ -86,12 +86,12 @@ To add a value to the `status` type, use an `ADD VALUE` clause:
 
 To rename a value in the `status` type, use a `RENAME VALUE` clause:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TYPE status RENAME VALUE 'open' TO 'active';
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW ENUMS;
 ~~~
@@ -107,12 +107,12 @@ To rename a value in the `status` type, use a `RENAME VALUE` clause:
 
 To rename the `status` type, use a `RENAME TO` clause:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TYPE status RENAME TO account_status;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW ENUMS;
 ~~~
@@ -132,19 +132,19 @@ Note that expressions in [views](views.html), [default values](default-value.htm
 
 To enable `ALTER TYPE ... DROP VALUE`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET enable_drop_enum_value = on;
 ~~~
 
 Then, to drop a value from the type:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TYPE account_status DROP VALUE 'inactive';
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW ENUMS;
 ~~~

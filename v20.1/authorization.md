@@ -16,8 +16,7 @@ There is no technical distinction between a role or user in CockroachDB. A role/
 
 - be permitted to log in to the [SQL shell](cockroach-sql.html).
 - be granted [privileges](#privileges) to specific actions and database objects.
-- be a member of other users/roles, inheriting their privileges.
-- have other users/roles as members that inherit its privileges.
+- belong to other users or roles, inheriting their privileges.
 
 We refer to these as "roles" when they are created for managing the privileges of their member "users" and not for logging in directly, which is typically reserved for "users".
 

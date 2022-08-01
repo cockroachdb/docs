@@ -3,7 +3,7 @@ title: Cluster monitoring
 summary: How to monitor a secure 3-node CockroachDB cluster with Kubernetes.
 toc: true
 toc_not_nested: true
-docs_area: 
+docs_area: deploy
 ---
 
 {{site.data.alerts.callout_info}}
@@ -274,3 +274,146 @@ Active monitoring helps you spot problems early, but it is also essential to sen
           - alert: TestAlertManager
             expr: vector(1)
         ~~~
+
+<section class="filter-content" markdown="1" data-scope="operator">
+## Configure logging
+
+When running CockroachDB v21.1 and later, you can use the Operator to configure the CockroachDB logging system. This allows you to output logs to specified [file or network log sinks](configure-logs.html#configure-log-sinks). For more information about the logging system, see [Configure log sinks](configure-logs.html#configure-log-sinks).
+
+{{site.data.alerts.callout_info}}
+By default, Kubernetes deployments running CockroachDB v20.2 or earlier output all logs to `stderr`.
+{{site.data.alerts.end}}
+
+The logging configuration is defined in a [ConfigMap](https://kubernetes.io/docs/concepts/configuration/configmap/) object, using the key `logging.yaml`. For example:
+
+~~~ yaml
+apiVersion: v1
+data:
+  logging.yaml: |
+    sinks:
+      file-groups:
+        dev:
+          channels: DEV
+          filter: WARNING
+      fluent-servers:
+        ops:
+          channels: [OPS, HEALTH, SQL_SCHEMA]
+          address: 127.0.0.1:5170
+          net: tcp
+          redact: true
+        security:
+          channels: [SESSIONS, USER_ADMIN, PRIVILEGES, SENSITIVE_ACCESS]
+          address: 127.0.0.1:5170
+          net: tcp
+          auditable: true
+kind: ConfigMap
+metadata:
+  name: logconfig
+  namespace: cockroach-operator-system
+~~~
+
+The above configuration overrides the [default logging configuration](configure-logs.html#default-logging-configuration) and reflects our recommended Kubernetes logging configuration:
+
+- Save [`DEV`](logging.html#dev) channel logs to disk for troubleshooting.
+- Send operational- and security-related logs to a [network collector](logging-use-cases.html#network-logging).
+
+The ConfigMap `name` is specified in the `logConfigMap` object of the Operator's custom resource, which is used to [deploy the cluster](deploy-cockroachdb-with-kubernetes.html#initialize-the-cluster):
+
+~~~ yaml
+spec:
+  logConfigMap: logconfig
+~~~
+
+By default, the Operator also modifies the [default logging configuration](configure-logs.html#default-logging-configuration) with the following:
+
+~~~ yaml
+sinks:
+  stderr:
+    channels: OPS
+      redact: true
+~~~
+
+This outputs logging events in the [`OPS`](logging.html#ops) channel to a `cockroach-stderr.log` file.
+
+### Example: Creating a troubleshooting log file on pods
+
+In this example, CockroachDB has already been deployed on a Kubernetes cluster. We override the [default logging configuration](configure-logs.html#default-logging-configuration) to output [`DEV`](logging.html#dev) logs to a `cockroach-dev.log` file.
+
+1. Create a ConfigMap named `logconfig`. Note that `namespace` is set to the Operator's default namespace (`cockroach-operator-system`):
+
+    ~~~ yaml
+    apiVersion: v1
+    data:
+      logging.yaml: |
+        sinks:
+          file-groups:
+            dev:
+              channels: DEV
+              filter: WARNING
+    kind: ConfigMap
+    metadata:
+      name: logconfig
+      namespace: cockroach-operator-system
+    ~~~
+
+    For simplicity, also name the YAML file `logconfig.yaml`.
+
+    This configuration outputs `DEV` logs with severity [`WARNING`](logging.html#logging-levels-severities) to a `cockroach-dev.log` file on each pod.
+
+1. Apply the ConfigMap to the cluster:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~
+    kubectl apply -f log.yaml
+    ~~~
+
+    ~~~
+    configmap/logconfig created
+    ~~~
+
+1. Add the `name` of the ConfigMap in `logConfigMap` to the [Operator's custom resource](deploy-cockroachdb-with-kubernetes.html#initialize-the-cluster):
+
+    ~~~ yaml
+    spec:
+      logConfigMap: logconfig
+    ~~~
+
+1. Apply the new settings to the cluster:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ kubectl apply -f example.yaml
+    ~~~
+
+    The changes will be rolled out to each pod.
+
+1. See the log files on a pod:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ kubectl exec cockroachdb-2 -- ls cockroach-data/logs
+    ~~~
+
+    ~~~
+    cockroach-dev.cockroachdb-2.unknownuser.2022-05-02T19_03_03Z.000001.log
+    cockroach-dev.log
+    cockroach-health.cockroachdb-2.unknownuser.2022-05-02T18_53_01Z.000001.log
+    cockroach-health.log
+    cockroach-pebble.cockroachdb-2.unknownuser.2022-05-02T18_52_48Z.000001.log
+    cockroach-pebble.log
+    cockroach-stderr.cockroachdb-2.unknownuser.2022-05-02T18_52_48Z.000001.log
+    cockroach-stderr.cockroachdb-2.unknownuser.2022-05-02T19_03_03Z.000001.log
+    cockroach-stderr.cockroachdb-2.unknownuser.2022-05-02T20_04_03Z.000001.log
+    cockroach-stderr.log
+    cockroach.cockroachdb-2.unknownuser.2022-05-02T18_52_48Z.000001.log
+    cockroach.log
+    ...
+    ~~~
+
+1. View a log file:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ kubectl exec cockroachdb-2 -- cat cockroach-data/logs/cockroach-dev.log
+    ~~~  
+</section>

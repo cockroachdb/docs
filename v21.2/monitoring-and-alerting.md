@@ -2,7 +2,7 @@
 title: Monitoring and Alerting
 summary: Monitor the health and performance of a cluster and alert on critical events and metrics.
 toc: true
-docs_area: 
+docs_area: manage
 ---
 
 In addition to CockroachDB's [built-in safeguards against failure](frequently-asked-questions.html#how-does-cockroachdb-survive-failures), it is critical to actively monitor the overall health and performance of a cluster running in production and to create alerting rules that promptly send notifications when there are events that require investigation or intervention.
@@ -45,7 +45,7 @@ These endpoints are also available through the [Cluster API](cluster-api.html) u
 
 If a node is down, the `http://<host>:<http-port>/health` endpoint returns a `Connection refused` error:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ curl http://localhost:8080/health
 ~~~
@@ -68,7 +68,7 @@ The `/health` endpoint does not returns details about the node such as its priva
 
 The `http://<node-host>:<http-port>/health?ready=1` endpoint returns an HTTP `503 Service Unavailable` status response code with an error in the following scenarios:
 
-- The node is draining open SQL connections and rejecting new SQL connections because it is in the process of shutting down (e.g., after being [decommissioned](remove-nodes.html#how-it-works)). This is especially useful for making sure load balancers do not direct traffic to nodes that are live but not "ready", which is a necessary check during [rolling upgrades](upgrade-cockroach-version.html).
+- The node is in the [wait phase of the node shutdown sequence](node-shutdown.html#draining). This causes load balancers and connection managers to reroute traffic to other nodes before the node is drained of SQL client connections and leases, and is a necessary check during [rolling upgrades](upgrade-cockroach-version.html).
 
     {{site.data.alerts.callout_success}}
     If you find that your load balancer's health check is not always recognizing a node as unready before the node shuts down, you can increase the `server.shutdown.drain_wait` [cluster setting](cluster-settings.html) to cause a node to return `503 Service Unavailable` even before it has started shutting down.
@@ -76,15 +76,18 @@ The `http://<node-host>:<http-port>/health?ready=1` endpoint returns an HTTP `50
 
 - The node is unable to communicate with a majority of the other nodes in the cluster, likely because the cluster is unavailable due to too many nodes being down.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ curl http://localhost:8080/health?ready=1
 ~~~
 
 ~~~
 {
-  "error": "node is not ready",
-  "code": 14
+  "error": "node is not healthy",
+  "code": 14,
+  "message": "node is not healthy",
+  "details": [
+  ]
 }
 ~~~
 
@@ -112,14 +115,14 @@ The [`cockroach node status`](cockroach-node.html) command gives you metrics abo
 
 - With the `--ranges` flag, you get granular range and replica details, including unavailability and under-replication.
 - With the `--stats` flag, you get granular disk usage details.
-- With the `--decommission` flag, you get details about the [node decommissioning](remove-nodes.html) process.
+- With the `--decommission` flag, you get details about the [node decommissioning](node-shutdown.html?filters=decommission#cockroach-node-status) process.
 - With the `--all` flag, you get all of the above.
 
 ### Prometheus endpoint
 
 Every node of a CockroachDB cluster exports granular time series metrics at `http://<host>:<http-port>/_status/vars`. The metrics are formatted for easy integration with [Prometheus](monitor-cockroachdb-with-prometheus.html), an open source tool for storing, aggregating, and querying time series data, but the format is **easy-to-parse** and can be processed to work with other third-party monitoring systems (e.g., [Sysdig](https://sysdig.atlassian.net/wiki/plugins/servlet/mobile?contentId=64946336#content/view/64946336) and [Stackdriver](https://github.com/GoogleCloudPlatform/k8s-stackdriver/tree/master/prometheus-to-sd)).
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ curl http://localhost:8080/_status/vars
 ~~~
@@ -140,7 +143,9 @@ replicas_quiescent{store="1"} 20
 ...
 ~~~
 
-{{site.data.alerts.callout_info}}In addition to using the exported time series data to monitor a cluster via an external system, you can write alerting rules against them to make sure you are promptly notified of critical events or issues that may require intervention or investigation. See [Events to Alert On](#events-to-alert-on) for more details.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}
+In addition to using the exported time-series data to monitor a cluster via an external system, you can write alerting rules against them to make sure you are promptly notified of critical events or issues that may require intervention or investigation. See [Events to Alert On](#events-to-alert-on) for more details.
+{{site.data.alerts.end}}
 
 ## Events to alert on
 
@@ -161,7 +166,7 @@ Active monitoring helps you spot problems early, but it is also essential to cre
 - **How to detect:** Calculate this using the number of times the `sys_uptime` metric in the node's `_status/vars` output was reset back to zero. The `sys_uptime` metric gives you the length of time, in seconds, that the `cockroach` process has been running.
 
 ### Node is running low on disk space
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
+
 - **Rule:** Send an alert when a node has less than 15% of free space remaining.
 
 - **How to detect:** Divide the `capacity` metric by the `capacity_available` metric in the node's `_status/vars` output.

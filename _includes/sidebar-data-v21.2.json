@@ -13,5 +13,6 @@
   {% include_cached v21.2/sidebar-data/migrate.json %},
   {% include_cached v21.2/sidebar-data/stream.json %},
   {% include_cached v21.2/sidebar-data/reference.json %},
+  {% include_cached v21.2/sidebar-data/releases.json %},
   {% include_cached sidebar-data-cockroach-university.json %}
 ]

@@ -45,7 +45,7 @@ Use [`SET CLUSTER SETTING`](set-cluster-setting.html) to set `kv.closed_timestam
 - `true` to enable follower reads _(default)_
 - `false` to disable follower reads
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET CLUSTER SETTING kv.closed_timestamp.follower_reads_enabled = false;
 ~~~
@@ -92,7 +92,7 @@ Note that follower reads are "read-only" operations; they cannot be used in any 
 {{site.data.alerts.callout_success}}
 Using the [`SET TRANSACTION`](set-transaction.html#use-the-as-of-system-time-option) statement as shown in the example above will make it easier to use the follower reads feature from [drivers and ORMs](install-client-drivers.html).
 
-<span class="version-tag">New in v21.1</span>: To set `AS OF SYSTEM TIME follower_read_timestamp()` on all implicit and explicit read-only transactions by default, set the `default_transaction_use_follower_reads` [session variable](set-vars.html) to `on`. When `default_transaction_use_follower_reads=on` and follower reads are enabled, all read-only transactions use follower reads.
+{% include_cached new-in.html version="v21.1" %} To set `AS OF SYSTEM TIME follower_read_timestamp()` on all implicit and explicit read-only transactions by default, set the `default_transaction_use_follower_reads` [session variable](set-vars.html) to `on`. When `default_transaction_use_follower_reads=on` and follower reads are enabled, all read-only transactions use follower reads.
 {{site.data.alerts.end}}
 
 ## Follower reads and long-running writes

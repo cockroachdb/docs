@@ -3,7 +3,7 @@ title: CREATE TABLE
 summary: The CREATE TABLE statement creates a new table in a database.
 toc: true
 keywords: gin, gin index, gin indexes, inverted index, inverted indexes, accelerated index, accelerated indexes
-docs_area: 
+docs_area: reference.sql
 ---
 
 The `CREATE TABLE` [statement](sql-statements.html) creates a new table in a database.
@@ -14,9 +14,9 @@ The `CREATE TABLE` [statement](sql-statements.html) creates a new table in a dat
 
 To create a table, the user must have one of the following:
 
-- Membership to the [`admin`](authorization.html#roles) role for the cluster.
-- Membership to the [owner](authorization.html#object-ownership) role for the database.
-- The [`CREATE` privilege](authorization.html#supported-privileges) on the database.
+- Membership to the [`admin`](security-reference/authorization.html#roles) role for the cluster.
+- Membership to the [owner](security-reference/authorization.html#object-ownership) role for the database.
+- The [`CREATE` privilege](security-reference/authorization.html#supported-privileges) on the database.
 
 ## Synopsis
 
@@ -26,67 +26,67 @@ To create a table, the user must have one of the following:
 </div><p></p>
 
 <div class="filter-content" markdown="1" data-scope="basic">
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/create_table.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/create_table.html %}
 </div>
 
 <div class="filter-content" markdown="1" data-scope="expanded">
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/create_table.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/create_table.html %}
 </div>
 
 **opt_persistence_temp_table ::=**
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/opt_persistence_temp_table.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/opt_persistence_temp_table.html %}
 </div>
 
 **column_def ::=**
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/column_def.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/column_def.html %}
 </div>
 
 **col_qualification ::=**
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/col_qualification.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/col_qualification.html %}
 </div>
 
 **index_def ::=**
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/index_def.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/index_def.html %}
 </div>
 
 **family_def ::=**
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/family_def.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/family_def.html %}
 </div>
 
 **table_constraint ::=**
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/table_constraint.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/table_constraint.html %}
 </div>
 
 **like_table_option_list::=**
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/like_table_option_list.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/like_table_option_list.html %}
 </div>
 
 **opt_with_storage_parameter_list ::=**
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/opt_with_storage_parameter_list.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/opt_with_storage_parameter_list.html %}
 </div>
 
 **opt_locality ::=**
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/opt_locality.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/opt_locality.html %}
 </div>
 
 </div>
@@ -121,12 +121,12 @@ CockroachDB supports the following column qualifications:
 - [Collations](collate.html)
 - [Column family assignments](column-families.html)
 - [`DEFAULT` expressions](default-value.html)
-- <span class="version-tag">New in v21.2</span>: [`ON UPDATE` expressions](#on-update-expressions)
-- <span class="version-tag">New in v21.2</span>: [Identity columns](#identity-columns) (sequence-populated columns)
+- {% include_cached new-in.html version="v21.2" %} [`ON UPDATE` expressions](#on-update-expressions)
+- {% include_cached new-in.html version="v21.2" %} [Identity columns](#identity-columns) (sequence-populated columns)
 
 ### `ON UPDATE` expressions
 
-<span class="version-tag">New in v21.2</span>: `ON UPDATE` expressions update column values in the following cases:
+{% include_cached new-in.html version="v21.2" %} `ON UPDATE` expressions update column values in the following cases:
 
 - An [`UPDATE`](update.html) or [`UPSERT`](upsert.html) statement modifies a different column value in the same row.
 - An `ON UPDATE CASCADE` [foreign key action](foreign-key.html#foreign-key-actions) modifies a different column value in the same row.
@@ -146,7 +146,7 @@ For an example of `ON UPDATE`, see [Add a column with an `ON UPDATE` expression]
 
 ### Identity columns
 
-<span class="version-tag">New in v21.2</span>: *Identity columns* are columns that are populated with values in a [sequence](create-sequence.html). When you create an identity column, CockroachDB creates a sequence and sets the default value for the identity column to the result of the `nextval()` [built-in function](functions-and-operators.html) on the sequence.
+{% include_cached new-in.html version="v21.2" %} *Identity columns* are columns that are populated with values in a [sequence](create-sequence.html). When you create an identity column, CockroachDB creates a sequence and sets the default value for the identity column to the result of the `nextval()` [built-in function](functions-and-operators.html) on the sequence.
 
 To create an identity column, add a `GENERATED BY DEFAULT AS IDENTITY`/`GENERATED ALWAYS AS IDENTITY` clause to the column definition, followed by [sequence options](create-sequence.html#parameters). If you do not specify any sequence options in the column definition, the column assumes the default options of [`CREATE SEQUENCE`](create-sequence.html).
 
@@ -206,7 +206,7 @@ For performance recommendations on primary keys, see the [Schema Design: Create 
 
 {{site.data.alerts.callout_info}}Strictly speaking, a primary key's unique index is not created; it is derived from the key(s) under which the data is stored, so it takes no additional space. However, it appears as a normal unique index when using commands like <code>SHOW INDEX</code>.{{site.data.alerts.end}}
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE users (
         id UUID PRIMARY KEY,
@@ -218,7 +218,7 @@ For performance recommendations on primary keys, see the [Schema Design: Create 
 );
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW COLUMNS FROM users;
 ~~~
@@ -227,15 +227,15 @@ For performance recommendations on primary keys, see the [Schema Design: Create 
   column_name | data_type | is_nullable | column_default | generation_expression |  indices  | is_hidden
 +-------------+-----------+-------------+----------------+-----------------------+-----------+-----------+
   id          | UUID      |    false    | NULL           |                       | {primary} |   false
-  city        | STRING    |    true     | NULL           |                       | {}        |   false
-  name        | STRING    |    true     | NULL           |                       | {}        |   false
-  address     | STRING    |    true     | NULL           |                       | {}        |   false
-  credit_card | STRING    |    true     | NULL           |                       | {}        |   false
-  dl          | STRING    |    true     | NULL           |                       | {}        |   false
+  city        | VARCHAR   |    false    | NULL           |                       | {primary} |   false
+  name        | VARCHAR   |    true     | NULL           |                       | {primary} |   false
+  address     | VARCHAR   |    true     | NULL           |                       | {primary} |   false
+  credit_card | VARCHAR   |    true     | NULL           |                       | {primary} |   false
+  dl          | STRING    |    true     | NULL           |                       | {primary} |   false
 (6 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW INDEX FROM users;
 ~~~
@@ -243,15 +243,20 @@ For performance recommendations on primary keys, see the [Schema Design: Create 
 ~~~
   table_name | index_name | non_unique | seq_in_index | column_name | direction | storing | implicit
 +------------+------------+------------+--------------+-------------+-----------+---------+----------+
-  users      | primary    |   false    |            1 | id          | ASC       |  false  |  false
-(1 row)
+  users      | primary    |   false    |            1 | city        | ASC       |  false  |  false
+  users      | primary    |   false    |            2 | id          | ASC       |  false  |  false
+  users      | primary    |   false    |            3 | name        | N/A       |  true   |  false
+  users      | primary    |   false    |            4 | address     | N/A       |  true   |  false
+  users      | primary    |   false    |            5 | credit_card | N/A       |  true   |  false
+  users      | primary    |   false    |            6 | dl          | N/A       |  true   |  false
+(6 rows)
 ~~~
 
 ### Create a table with secondary and GIN indexes
 
 In this example, we create secondary and GIN indexes during table creation. Secondary indexes allow efficient access to data with keys other than the primary key. [GIN indexes](inverted-indexes.html) allow efficient access to the schemaless data in a [`JSONB`](jsonb.html) column.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE vehicles (
         id UUID NOT NULL,
@@ -269,7 +274,7 @@ In this example, we create secondary and GIN indexes during table creation. Seco
 );
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW INDEX FROM vehicles;
 ~~~
@@ -277,15 +282,21 @@ In this example, we create secondary and GIN indexes during table creation. Seco
 ~~~
   table_name |   index_name   | non_unique | seq_in_index | column_name | direction | storing | implicit
 -------------+----------------+------------+--------------+-------------+-----------+---------+-----------
-  vehicles   | primary        |   false    |            1 | city        | ASC       |  false  |  false
-  vehicles   | primary        |   false    |            2 | id          | ASC       |  false  |  false
-  vehicles   | index_status   |    true    |            1 | status      | ASC       |  false  |  false
-  vehicles   | index_status   |    true    |            2 | city        | ASC       |  false  |   true
-  vehicles   | index_status   |    true    |            3 | id          | ASC       |  false  |   true
-  vehicles   | ix_vehicle_ext |    true    |            1 | ext         | ASC       |  false  |  false
-  vehicles   | ix_vehicle_ext |    true    |            2 | city        | ASC       |  false  |   true
-  vehicles   | ix_vehicle_ext |    true    |            3 | id          | ASC       |  false  |   true
-(8 rows)
+  vehicles   | index_status   |    true    |            1 | status           | ASC       |  false  |  false
+  vehicles   | index_status   |    true    |            2 | city             | ASC       |  false  |   true
+  vehicles   | index_status   |    true    |            3 | id               | ASC       |  false  |   true
+  vehicles   | ix_vehicle_ext |    true    |            1 | ext              | ASC       |  false  |  false
+  vehicles   | ix_vehicle_ext |    true    |            2 | city             | ASC       |  false  |   true
+  vehicles   | ix_vehicle_ext |    true    |            3 | id               | ASC       |  false  |   true
+  vehicles   | primary        |   false    |            1 | city             | ASC       |  false  |  false
+  vehicles   | primary        |   false    |            2 | id               | ASC       |  false  |  false
+  vehicles   | primary        |   false    |            3 | type             | N/A       |  true   |  false
+  vehicles   | primary        |   false    |            4 | owner_id         | N/A       |  true   |  false
+  vehicles   | primary        |   false    |            5 | creation_time    | N/A       |  true   |  false
+  vehicles   | primary        |   false    |            6 | status           | N/A       |  true   |  false
+  vehicles   | primary        |   false    |            7 | current_location | N/A       |  true   |  false
+  vehicles   | primary        |   false    |            8 | ext              | N/A       |  true   |  false
+(14 rows)
 ~~~
 
 We also have other resources on indexes:
@@ -307,7 +318,7 @@ You can include a [foreign key action](foreign-key.html#foreign-key-actions) to 
 
 In this example, we use `ON DELETE CASCADE` (i.e., when row referenced by a foreign key constraint is deleted, all dependent rows are also deleted).
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE users (
         id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -319,7 +330,7 @@ In this example, we use `ON DELETE CASCADE` (i.e., when row referenced by a fore
 );
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE vehicles (
         id UUID NOT NULL DEFAULT gen_random_uuid(),
@@ -337,7 +348,7 @@ In this example, we use `ON DELETE CASCADE` (i.e., when row referenced by a fore
 );
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE TABLE vehicles;
 ~~~
@@ -364,12 +375,12 @@ In this example, we use `ON DELETE CASCADE` (i.e., when row referenced by a fore
 (1 row)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO users (name, dl) VALUES ('Annika', 'ABC-123');
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM users;
 ~~~
@@ -381,12 +392,12 @@ In this example, we use `ON DELETE CASCADE` (i.e., when row referenced by a fore
 (1 row)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO vehicles (city, owner_id) VALUES ('seattle', '26da1fce-59e1-4290-a786-9068242dd195');
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM vehicles;
 ~~~
@@ -398,12 +409,12 @@ In this example, we use `ON DELETE CASCADE` (i.e., when row referenced by a fore
 (1 row)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DELETE FROM users WHERE id = '26da1fce-59e1-4290-a786-9068242dd195';
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM vehicles;
 ~~~
@@ -418,7 +429,7 @@ In this example, we use `ON DELETE CASCADE` (i.e., when row referenced by a fore
 
 In this example, we create the `users` table, but with some column [constraints](constraints.html). One column is the [primary key](primary-key.html), and another column is given a [unique constraint](unique.html) and a [check constraint](check.html) that limits the length of the string. Primary key columns and columns with unique constraints are automatically indexed.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE users (
         id UUID PRIMARY KEY,
@@ -430,7 +441,7 @@ In this example, we create the `users` table, but with some column [constraints]
 );
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW COLUMNS FROM users;
 ~~~
@@ -447,7 +458,7 @@ In this example, we create the `users` table, but with some column [constraints]
 (6 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW INDEX FROM users;
 ~~~
@@ -469,7 +480,7 @@ In this example, we create the `users` table, but with some column [constraints]
 
 You can use the [`CREATE TABLE AS`](create-table-as.html) statement to create a new table from the results of a `SELECT` statement. For example, suppose you have a number of rows of user data in the `users` table, and you want to create a new table from the subset of users that are located in New York.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM users WHERE city = 'new york';
 ~~~
@@ -485,12 +496,12 @@ You can use the [`CREATE TABLE AS`](create-table-as.html) statement to create a 
 (5 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE users_ny AS SELECT * FROM users WHERE city = 'new york';
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM users_ny;
 ~~~
@@ -514,12 +525,12 @@ You can use the [`CREATE TABLE AS`](create-table-as.html) statement to create a 
 
 {% include {{page.version.version}}/performance/use-hash-sharded-indexes.md %}
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET experimental_enable_hash_sharded_indexes=on;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE events (
     ts DECIMAL PRIMARY KEY USING HASH WITH BUCKET_COUNT=8,
@@ -527,7 +538,7 @@ You can use the [`CREATE TABLE AS`](create-table-as.html) statement to create a 
     );
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW INDEX FROM events;
 ~~~
@@ -541,7 +552,7 @@ You can use the [`CREATE TABLE AS`](create-table-as.html) statement to create a 
 (3 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW COLUMNS FROM events;
 ~~~
@@ -556,12 +567,12 @@ You can use the [`CREATE TABLE AS`](create-table-as.html) statement to create a 
 
 ### Create a table with a hash-sharded secondary index
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET experimental_enable_hash_sharded_indexes=on;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE events (
     product_id INT8,
@@ -575,7 +586,7 @@ You can use the [`CREATE TABLE AS`](create-table-as.html) statement to create a 
 );
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW INDEX FROM events;
 ~~~
@@ -583,7 +594,7 @@ You can use the [`CREATE TABLE AS`](create-table-as.html) statement to create a 
 ~~~
   table_name |  index_name   | non_unique | seq_in_index |       column_name        | direction | storing | implicit
 -------------+---------------+------------+--------------+--------------------------+-----------+---------+-----------
-  events     | events_ts_idx |    true    |            1 | crdb_internal_ts_shard_8 | ASC       |  false  |  false
+  events     | events_ts_idx |    true    |            1 | crdb_internal_ts_shard_8 | ASC       |  false  |   true
   events     | events_ts_idx |    true    |            2 | ts                       | ASC       |  false  |  false
   events     | events_ts_idx |    true    |            3 | product_id               | ASC       |  false  |   true
   events     | events_ts_idx |    true    |            4 | owner                    | ASC       |  false  |   true
@@ -594,10 +605,12 @@ You can use the [`CREATE TABLE AS`](create-table-as.html) statement to create a 
   events     | primary       |   false    |            3 | serial_number            | ASC       |  false  |  false
   events     | primary       |   false    |            4 | ts                       | ASC       |  false  |  false
   events     | primary       |   false    |            5 | event_id                 | ASC       |  false  |  false
-(11 rows)
+  events     | primary       |   false    |            6 | data                     | N/A       |  true   |  false
+  events     | primary       |   false    |            7 | crdb_internal_ts_shard_8 | N/A       |  true   |  false
+(13 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW COLUMNS FROM events;
 ~~~
@@ -619,7 +632,7 @@ You can use the [`CREATE TABLE AS`](create-table-as.html) statement to create a 
 
 #### Create a table including all supported source specifiers
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE TABLE vehicles;
 ~~~
@@ -645,14 +658,14 @@ You can use the [`CREATE TABLE AS`](create-table-as.html) statement to create a 
 (1 row
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE vehicles2 (
         LIKE vehicles INCLUDING ALL
 );
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE TABLE vehicles2;
 ~~~
@@ -681,7 +694,7 @@ Note that the foreign key constraint `fk_owner_id_ref_users` in the source table
 
 #### Create a table with some source specifiers and a foreign key constraint
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE vehicles3 (
         LIKE vehicles INCLUDING DEFAULTS INCLUDING INDEXES,
@@ -689,7 +702,7 @@ Note that the foreign key constraint `fk_owner_id_ref_users` in the source table
 );
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE TABLE vehicles3;
 ~~~
@@ -715,9 +728,9 @@ Note that the foreign key constraint `fk_owner_id_ref_users` in the source table
 (1 row)
 ~~~
 
-### Create tables in a multi-region database
+### Create a table in a multi-region database
 
- To create a table with a specific [table locality](multiregion-overview.html#table-locality) in a [multi-region database](multiregion-overview.html), add a `LOCALITY` clause to the end of the table's `CREATE TABLE` statement.
+To create a table with a specific [table locality](multiregion-overview.html#table-locality) in a [multi-region database](multiregion-overview.html), add a `LOCALITY` clause to the end of the table's `CREATE TABLE` statement.
 
 {{site.data.alerts.callout_info}}
 In order to set table localities, the database that contains the table must have [database regions](multiregion-overview.html#database-regions).
@@ -733,7 +746,7 @@ The `GLOBAL` locality is useful for "read-mostly" tables of reference data that 
 
 For example, the `promo_codes` table of the [`movr` database](movr.html) is rarely updated after being initialized, but it needs to be read by nodes in all regions.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE promo_codes (
     code STRING PRIMARY KEY,
@@ -744,7 +757,7 @@ For example, the `promo_codes` table of the [`movr` database](movr.html) is rare
     LOCALITY GLOBAL;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM [SHOW TABLES] WHERE table_name='promo_codes';
 ~~~
@@ -768,7 +781,7 @@ The `REGIONAL BY TABLE` locality is useful for tables that require low-latency r
 
 For example, suppose you want to create a table for your application's end users in a specific state:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE users_ny (
     id UUID PRIMARY KEY,
@@ -777,7 +790,7 @@ For example, suppose you want to create a table for your application's end users
     LOCALITY REGIONAL BY TABLE IN "us-east1";
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM [SHOW TABLES] WHERE table_name='users_ny';
 ~~~
@@ -801,7 +814,7 @@ The `REGIONAL BY ROW` locality is useful for tables that require low-latency rea
 
 For example, the `vehicles` table of the [`movr` database](movr.html) is read to and written from nodes in different regions.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE vehicles (
     id UUID PRIMARY KEY,
@@ -829,7 +842,7 @@ The region value for `crdb_region` must be one of the regions added to the datab
 
 For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE vehicles (
     id UUID PRIMARY KEY,
@@ -869,7 +882,7 @@ For example:
 
 You can then manually set the values of the region with each [`INSERT`](insert.html) statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO vehicles (crdb_region, ...) VALUES ('us-east1', ...);
 ~~~
@@ -888,7 +901,7 @@ Using the `LOCALITY REGIONAL BY ROW AS <region>` clause, you can assign rows to 
 
 For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE vehicles (
     id UUID PRIMARY KEY,
@@ -898,7 +911,7 @@ For example:
       CASE
         WHEN city IN ('new york', 'boston', 'washington dc', 'chicago', 'detroit', 'minneapolis') THEN 'us-east1'
         WHEN city IN ('san francisco', 'seattle', 'los angeles') THEN 'us-west1'
-        WHEN city IN ('amsterdam', 'paris', 'rome') THEN 'europe-west1'  
+        WHEN city IN ('amsterdam', 'paris', 'rome') THEN 'europe-west1'
       END) STORED,
     owner_id UUID,
     creation_time TIMESTAMP,
@@ -912,11 +925,11 @@ CockroachDB will then assign a region to each row, based on the value of the `re
 
 ### Create a table with an identity column
 
-<span class="version-tag">New in v21.2</span>: [Identity columns](#identity-columns) define a sequence from which to populate a column when a new row is inserted.
+{% include_cached new-in.html version="v21.2" %} [Identity columns](#identity-columns) define a sequence from which to populate a column when a new row is inserted.
 
 For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE bank (
     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
@@ -929,7 +942,7 @@ For example:
 
 CockroachDB creates a sequence to use as the `numerical` column's default value.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW SEQUENCES;
 ~~~
@@ -941,7 +954,7 @@ CockroachDB creates a sequence to use as the `numerical` column's default value.
 (1 row)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW COLUMNS FROM bank;
 ~~~
@@ -959,12 +972,12 @@ CockroachDB creates a sequence to use as the `numerical` column's default value.
 
 When a new row is added to the table, CockroachDB populates the `numerical` column with the result of the `nextval('bank_numerical_seq')` [built-in function](functions-and-operators.html).
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO bank (order_index, balance) VALUES (1, 0), (2, 0), (3, 0);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT id, order_index, balance, numerical FROM bank ORDER BY order_index;
 ~~~
@@ -980,12 +993,12 @@ When a new row is added to the table, CockroachDB populates the `numerical` colu
 
 The `numerical` column in this example follows the `BY DEFAULT` rule. According to this rule, if the value of an identity is explicitly updated, the sequence value is overwritten:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > UPDATE bank SET numerical = 500 WHERE id = '0b533801-052e-4837-8e13-0ef2fa6f8883';
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT id, order_index, balance, numerical FROM bank ORDER BY order_index;
 ~~~
@@ -1001,17 +1014,17 @@ The `numerical` column in this example follows the `BY DEFAULT` rule. According 
 
 Inserting explicit values does not affect the next value of the sequence:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO bank (order_index, balance, numerical) VALUES (4, 0, 3);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO bank (order_index, balance) VALUES (5, 0);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT id, order_index, balance, numerical FROM bank ORDER BY order_index;
 ~~~

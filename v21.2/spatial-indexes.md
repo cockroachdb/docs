@@ -3,7 +3,7 @@ title: Spatial Indexes
 summary: How CockroachDB uses spatial indexes for efficiently storing and querying spatial data.
 toc: true
 keywords: gin, gin index, gin indexes, inverted index, inverted indexes, accelerated index, accelerated indexes
-docs_area: 
+docs_area: reference.sql
 ---
 
 This page describes CockroachDB's support for indexing [spatial data](spatial-data.html), including:
@@ -130,7 +130,7 @@ If a shape falls outside the bounding coordinates determined by the `geometry_*`
 
 Here is an example showing how to pass the [spatial index tuning parameters](#index-tuning-parameters) to `st_s2covering`. It generates [GeoJSON](https://geojson.org) output showing both a shape and the S2 covering that would be generated for that shape in your index, if you passed the same parameters to `CREATE INDEX`. You can paste this output into [geojson.io](http://geojson.io) to see what it looks like.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TABLE tmp_viz (id INT8, geom GEOMETRY);
 
@@ -142,7 +142,7 @@ INSERT INTO tmp_viz (id, geom) VALUES (2, st_s2covering(st_geomfromtext('LINESTR
 SELECT ST_AsGeoJSON(st_collect(geom)) FROM tmp_viz;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ json
 {"type":"GeometryCollection","geometries":[{"type":"LineString","coordinates":[[-76.8261,42.1727],[-75.6608,41.4102],[-73.5422,41.052],[-73.929,41.707],[-76.8261,42.1727]]},{"type":"MultiPolygon","coordinates":[[[[-76.904296875,42.099609375],[-76.81640625,42.099609375],[-76.81640625,42.1875],[-76.904296875,42.1875],[-76.904296875,42.099609375]]],[[[-76.81640625,42.099609375],[-76.728515625,42.099609375],[-76.728515625,42.1875],[-76.81640625,42.1875],[-76.81640625,42.099609375]]],[[[-76.728515625,42.099609375],[-76.640625,42.099609375],[-76.640625,42.1875],[-76.728515625,42.1875],[-76.728515625,42.099609375]]],[[[-76.728515625,42.01171875],[-76.640625,42.01171875],[-76.640625,42.099609375],[-76.728515625,42.099609375],[-76.728515625,42.01171875]]],[[[-76.640625,41.484375],[-75.9375,41.484375],[-75.9375,42.1875],[-76.640625,42.1875],[-76.640625,41.484375]]],[[[-74.53125,40.78125],[-73.828125,40.78125],[-73.828125,41.484375],[-74.53125,41.484375],[-74.53125,40.78125]]],[[[-73.828125,40.78125],[-73.125,40.78125],[-73.125,41.484375],[-73.828125,41.484375],[-73.828125,40.78125]]],[[[-73.828125,41.484375],[-73.740234375,41.484375],[-73.740234375,41.572265625],[-73.828125,41.572265625],[-73.828125,41.484375]]],[[[-74.53125,41.484375],[-73.828125,41.484375],[-73.828125,42.1875],[-74.53125,42.1875],[-74.53125,41.484375]]],[[[-75.234375,41.484375],[-74.53125,41.484375],[-74.53125,42.1875],[-75.234375,42.1875],[-75.234375,41.484375]]],[[[-75.234375,40.78125],[-74.53125,40.78125],[-74.53125,41.484375],[-75.234375,41.484375],[-75.234375,40.78125]]],[[[-75.322265625,41.30859375],[-75.234375,41.30859375],[-75.234375,41.396484375],[-75.322265625,41.396484375],[-75.322265625,41.30859375]]],[[[-75.41015625,41.30859375],[-75.322265625,41.30859375],[-75.322265625,41.396484375],[-75.41015625,41.396484375],[-75.41015625,41.30859375]]],[[[-75.5859375,41.396484375],[-75.498046875,41.396484375],[-75.498046875,41.484375],[-75.5859375,41.484375],[-75.5859375,41.396484375]]],[[[-75.5859375,41.30859375],[-75.498046875,41.30859375],[-75.498046875,41.396484375],[-75.5859375,41.396484375],[-75.5859375,41.30859375]]],[[[-75.498046875,41.30859375],[-75.41015625,41.30859375],[-75.41015625,41.396484375],[-75.498046875,41.396484375],[-75.498046875,41.30859375]]],[[[-75.673828125,41.396484375],[-75.5859375,41.396484375],[-75.5859375,41.484375],[-75.673828125,41.484375],[-75.673828125,41.396484375]]],[[[-75.76171875,41.396484375],[-75.673828125,41.396484375],[-75.673828125,41.484375],[-75.76171875,41.484375],[-75.76171875,41.396484375]]],[[[-75.849609375,41.396484375],[-75.76171875,41.396484375],[-75.76171875,41.484375],[-75.849609375,41.484375],[-75.849609375,41.396484375]]],[[[-75.9375,41.484375],[-75.234375,41.484375],[-75.234375,42.1875],[-75.9375,42.1875],[-75.9375,41.484375]]]]}]}
 ~~~
@@ -155,7 +155,7 @@ When you paste the JSON output above into [geojson.io](http://geojson.io), it ge
 
 The example below shows how to create a spatial index on a `GEOMETRY` object using the default settings:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE INDEX geom_idx_1 ON some_spatial_table USING GIST(geom);
 ~~~
@@ -168,7 +168,7 @@ CREATE INDEX
 
 The examples below show how to create spatial indexes with non-default settings for some of the [spatial index tuning parameters](#index-tuning-parameters):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE INDEX geom_idx_1 ON geo_table1 USING GIST(geom) WITH (s2_level_mod=3);
 CREATE INDEX geom_idx_2 ON geo_table2 USING GIST(geom) WITH (geometry_min_x=0, s2_max_level=15)
@@ -184,7 +184,7 @@ CREATE INDEX
 
 This example shows how to [create a table](create-table.html) with spatial indexes on `GEOMETRY` and `GEOGRAPHY` types that use non-default settings for some of the [spatial index tuning parameters](#index-tuning-parameters):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TABLE public.geo_table (
    id INT8 NOT NULL,
@@ -211,7 +211,7 @@ CREATE TABLE
 
 This example shows how to set all of the [spatial index tuning parameters](#index-tuning-parameters) at the same time. It is extremely unlikely you will ever need to set all of the options at once; this example is being provided to show the syntax.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE INDEX geom_idx
   ON some_spatial_table USING GIST(geom)
@@ -232,7 +232,7 @@ As noted above, most users should not change the default settings. There is a ri
 
 The example below shows how to create a spatial index on a `GEOGRAPHY` object using the default settings:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE INDEX geog_idx_3 ON geo_table USING GIST(geog);
 ~~~

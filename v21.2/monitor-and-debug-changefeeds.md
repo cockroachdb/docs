@@ -2,7 +2,7 @@
 title: Monitor and Debug Changefeeds
 summary: Monitor a changefeed from the DB console and use logs for debugging.
 toc: true
-docs_area: 
+docs_area: stream_data
 ---
 
 Changefeeds work as jobs in CockroachDB, which allows for [monitoring](#monitor-a-changefeed) and [debugging](#debug-a-changefeed) through the [DB console's](ui-overview.html) [**Jobs**](ui-jobs-page.html) page and [`SHOW JOBS`](show-jobs.html) SQL statements using the job ID.
@@ -19,7 +19,7 @@ Changefeed progress is exposed as a high-water timestamp that advances as the ch
 - On the [**Jobs** page](ui-jobs-page.html) of the DB Console. Hover over the high-water timestamp to view the [system time](as-of-system-time.html).
 - Using `SHOW CHANGEFEED JOB <job_id>`:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     SHOW CHANGEFEED JOB 383870400694353921;
     ~~~
@@ -35,6 +35,85 @@ Changefeed progress is exposed as a high-water timestamp that advances as the ch
 {{site.data.alerts.callout_info}}
 You can use the high-water timestamp to [start a new changefeed where another ended](create-changefeed.html#start-a-new-changefeed-where-another-ended).
 {{site.data.alerts.end}}
+
+### Using changefeed metrics labels
+
+{% include common/experimental-warning.md %}
+
+{{site.data.alerts.callout_info}}
+An {{ site.data.products.enterprise }} license is required to use metrics labels in changefeeds.
+{{site.data.alerts.end}}
+
+{% include {{ page.version.version }}/cdc/metrics-labels.md %}
+
+To start a changefeed with a metrics label, set the following cluster setting to `true`:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SET CLUSTER SETTING server.child_metrics.enabled=true;
+~~~
+
+Create the changefeed, passing the `metrics_label` option with the label name as its value:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE CHANGEFEED FOR TABLE movr.rides INTO 'kafka://host:port' WITH metrics_label=rides;
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE CHANGEFEED FOR TABLE movr.vehicles INTO 'kafka://host:port' WITH metrics_label=vehicles;
+~~~
+
+Multiple changefeeds can be added to a label:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE CHANGEFEED FOR TABLE movr.vehicle_location_histories INTO 'kafka://host:port' WITH metrics_label=vehicles;
+~~~
+
+`http://{host}:{http-port}/_status/vars` shows the defined changefeed(s) by label and the aggregated metric for all changefeeds. This output also shows the `default` scope, which will include changefeeds started without a metrics label:
+
+~~~
+changefeed_running 4
+changefeed_running{scope="default"} 1
+changefeed_running{scope="rides"} 1
+changefeed_running{scope="vehicles"} 2
+~~~
+
+~~~
+changefeed_emitted_messages 4144
+changefeed_emitted_messages{scope="default"} 0
+changefeed_emitted_messages{scope="rides"} 2772
+changefeed_emitted_messages{scope="vehicles"} 1372
+~~~
+
+~~~
+changefeed_emitted_bytes 781591
+changefeed_emitted_bytes{scope="default"} 0
+changefeed_emitted_bytes{scope="rides"} 598034
+changefeed_emitted_bytes{scope="vehicles"} 183557
+~~~
+
+#### Metrics
+
+| Metric           |  Description | Unit
+-------------------+--------------+---------------------------------------------------
+`changefeed_running` | Number of currently running changefeeds, including sinkless changefeeds. | Changefeeds
+`emitted_messages` | Number of messages emitted, which increments when messages are flushed. | Messages
+`emitted_bytes`    | Number of bytes emitted, which increments as messages are flushed. | Bytes
+`flushed_bytes`    | Bytes emitted by all changefeeds. This may differ from `emitted_bytes` when [`compression`](create-changefeed.html#compression-opt) is enabled. | Bytes
+`changefeed_flushes` | Total number of flushes for a changefeed. | Flushes
+`emit_latency`     | Difference between the event's [MVCC](architecture/storage-layer.html#mvcc) timestamp and the time the event was emitted by CockroachDB. | Nanoseconds
+`admit_latency`    | Difference between the event's MVCC timestamp and the time the event is put into the memory buffer. | Nanoseconds
+`commit_latency`   | Difference between the event's MVCC timestamp and the time it is acknowledged by the [downstream sink](changefeed-sinks.html). If the sink is batching events, then the difference is between the oldest event and when the acknowledgment is recorded. | Nanoseconds
+`backfill_count`   | Number of changefeeds currently executing a backfill ([schema change](use-changefeeds.html#schema-changes) or initial scan). | Changefeeds
+`sink_batch_hist_nanos` | Time messages spend batched in the sink buffer before being flushed and acknowledged. | Nanoseconds
+`flush_hist_nanos` | Time spent flushing messages across all changefeeds. | Nanoseconds
+`checkpoint_hist_nanos` | Time spent checkpointing changefeed progress. | Nanoseconds
+`error_retries` | Total retryable errors encountered by changefeeds. | Errors
+`backfill_pending_ranges` | Number of [ranges](architecture/overview.html#architecture-range) in an ongoing backfill that are yet to be fully emitted. | Ranges
+`message_size_hist` | Distribution in the size of emitted messages. | Bytes
 
 ## Debug a changefeed
 
@@ -52,9 +131,9 @@ I190312 18:56:53.537686 585 vendor/github.com/Shopify/sarama/client.go:170  [kaf
 
 ### Using `SHOW CHANGEFEED JOBS`
 
-<span class="version-tag">New in v21.2:</span> For {{ site.data.products.enterprise }} changefeeds, use `SHOW CHANGEFEED JOBS` to check the status of your changefeed jobs:
+{% include_cached new-in.html version="v21.2" %} For {{ site.data.products.enterprise }} changefeeds, use `SHOW CHANGEFEED JOBS` to check the status of your changefeed jobs:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CHANGEFEED JOBS;
 ~~~

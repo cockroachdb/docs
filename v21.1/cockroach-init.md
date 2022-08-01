@@ -5,7 +5,7 @@ toc: true
 key: initialize-a-cluster.html
 ---
 
-This page explains the `cockroach init` [command](cockroach-commands.html), which you use to perform a one-time initialization of a new multi-node cluster. For a full walk-through of the cluster startup and initialization process, see one of the [Manual Deployment](manual-deployment.html) tutorials.
+This page explains the `cockroach init` [command](cockroach-commands.html), which you use to perform a one-time initialization of a new multi-node cluster. For a full tutorial of the cluster startup and initialization process, see one of the [Manual Deployment](manual-deployment.html) tutorials.
 
 {{site.data.alerts.callout_info}}
 When starting a single-node cluster with [`cockroach start-single-node`](cockroach-start-single-node.html), you do not need to use the `cockroach init` command.
@@ -15,14 +15,14 @@ When starting a single-node cluster with [`cockroach start-single-node`](cockroa
 
 Perform a one-time initialization of a cluster:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach init <flags>
 ~~~
 
 View help:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach init --help
 ~~~
@@ -49,7 +49,7 @@ See [Client Connection Parameters](connection-parameters.html) for details.
 
 ## Examples
 
-Usage of `cockroach init` assumes that nodes have already been started with [`cockroach start`](cockroach-start.html) and are waiting to be initialized as a new cluster. For a more detailed walk-through, see one of the [Manual Deployment](manual-deployment.html) tutorials.
+Usage of `cockroach init` assumes that nodes have already been started with [`cockroach start`](cockroach-start.html) and are waiting to be initialized as a new cluster. For a more detailed tutorial, see one of the [Manual Deployment](manual-deployment.html) tutorials.
 
 ### Initialize a Cluster on a Node's Machine
 
@@ -65,7 +65,7 @@ Usage of `cockroach init` assumes that nodes have already been started with [`co
 
 3. Run the `cockroach init` command with the `--certs-dir` flag set to the directory containing the `ca.crt` file and the files for the `root` user, and with the `--host` flag set to the address of the current node:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach init --certs-dir=certs --host=<address of this node>
     ~~~
@@ -78,7 +78,7 @@ Usage of `cockroach init` assumes that nodes have already been started with [`co
 
 2. Run the `cockroach init` command with the `--host` flag set to the address of the current node:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach init --insecure --host=<address of this node>
     ~~~
@@ -100,7 +100,7 @@ Usage of `cockroach init` assumes that nodes have already been started with [`co
 
 3. Run the `cockroach init` command with the `--certs-dir` flag set to the directory containing the `ca.crt` file and the files for the `root` user, and with the `--host` flag set to the address of the node. This must be a node that was listed with [`--join`](cockroach-start.html#networking) when starting the cluster:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach init --certs-dir=certs --host=<address of any node on --join list>
     ~~~
@@ -113,7 +113,7 @@ Usage of `cockroach init` assumes that nodes have already been started with [`co
 
 2. Run the `cockroach init` command with the `--host` flag set to the address of the node. This must be a node that was listed with [`--join`](cockroach-start.html#networking) when starting the cluster:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach init --insecure --host=<address of any node on --join list>
     ~~~

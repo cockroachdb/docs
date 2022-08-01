@@ -3,10 +3,10 @@ title: Create a Multi-region Database Schema
 summary: This page documents the database schema for the multi-region Flask application built on CockroachDB.
 toc: true
 redirect_from: multi-region-database.html
-docs_area: 
+docs_area: develop
 ---
 
-This page walks you through creating a database schema for an example global application. It is the second section of the [Develop and Deploy a Global Application](movr-flask-overview.html) tutorial.
+This page guides you through creating a database schema for an example global application. It is the second section of the [Develop and Deploy a Global Application](movr-flask-overview.html) tutorial.
 
 ## Before you begin
 
@@ -32,7 +32,7 @@ The database schema used in this application is a slightly simplified version of
 
 ## Multi-region in CockroachDB
 
-A distributed CockroachDB deployment consists of multiple, regional instances of CockroachDB that communicate as a single, logical entity. In [CockroachDB terminology](architecture/overview.html#terms), each instance is called a *node*. Together, the nodes form a *cluster*.
+A distributed CockroachDB deployment consists of multiple, regional instances of CockroachDB that communicate as a single, logical entity. In [CockroachDB terminology](architecture/overview.html#cockroachdb-architecture-terms), each instance is called a *node*. Together, the nodes form a *cluster*.
 
 To keep track of geographic information about nodes in a cluster, CockroachDB uses [*cluster regions*](multiregion-overview.html#cluster-regions), [*database regions*](multiregion-overview.html#database-regions), and [*table localities*](multiregion-overview.html#table-locality).
 
@@ -50,7 +50,7 @@ Here is the [`CREATE DATABASE`](create-database.html) statement for the `movr` d
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> {% remote_include https://raw.githubusercontent.com/cockroachlabs/movr-flask/v2-doc-includes/dbinit.sql |-- START database |-- END database %}
+> {% remote_include https://raw.githubusercontent.com/cockroachlabs/movr-flask/v2-doc-includes/dbinit.sql ||-- START database ||-- END database %}
 ~~~
 
 Note that `movr` has the following [database regions](multiregion-overview.html#database-regions), which correspond to regions in Google Cloud:
@@ -58,6 +58,8 @@ Note that `movr` has the following [database regions](multiregion-overview.html#
 - `gcp-us-east1` (primary)
 - `gcp-europe-west1`
 - `gcp-us-west1`
+
+<a id="table-locality"></a>
 
 ### Table localities
 
@@ -77,14 +79,14 @@ Here is the `CREATE TABLE` statement for the `users` table:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> {% remote_include https://raw.githubusercontent.com/cockroachlabs/movr-flask/v2-doc-includes/dbinit.sql |-- START users |-- END users %}
+> {% remote_include https://raw.githubusercontent.com/cockroachlabs/movr-flask/v2-doc-includes/dbinit.sql ||-- START users ||-- END users %}
 ~~~
 
 ## The `vehicles` table
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> {% remote_include https://raw.githubusercontent.com/cockroachlabs/movr-flask/v2-doc-includes/dbinit.sql |-- START vehicles |-- END vehicles %}
+> {% remote_include https://raw.githubusercontent.com/cockroachlabs/movr-flask/v2-doc-includes/dbinit.sql ||-- START vehicles ||-- END vehicles %}
 ~~~
 
 Note that the `vehicles` table has a [foreign key constraint](foreign-key.html) on the `users` table, for the `city` and `owner_id` columns. This guarantees that a vehicle is registered to a particular user (i.e., an "owner") in the city where that user is registered.
@@ -93,7 +95,7 @@ Note that the `vehicles` table has a [foreign key constraint](foreign-key.html) 
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> {% remote_include https://raw.githubusercontent.com/cockroachlabs/movr-flask/v2-doc-includes/dbinit.sql |-- START rides |-- END rides %}
+> {% remote_include https://raw.githubusercontent.com/cockroachlabs/movr-flask/v2-doc-includes/dbinit.sql ||-- START rides ||-- END rides %}
 ~~~
 
 Note that, like the `vehicles` table, the `rides` table has foreign key constraints. These constraints are on the `users` and the `vehicles` tables.
@@ -105,7 +107,7 @@ Now that you are familiar with the `movr` schema, you can [set up a development 
 ## See also
 
 - [`movr-flask` on GitHub](https://github.com/cockroachlabs/movr-flask)
-- [CockroachDB terminology](architecture/overview.html#terms)
+- [CockroachDB terminology](architecture/overview.html#cockroachdb-architecture-terms)
 - [Configure Replication Zones](configure-replication-zones.html)
 - [`CONFIGURE ZONE`](configure-zone.html)
 - [Define Table Partitions](partitioning.html)

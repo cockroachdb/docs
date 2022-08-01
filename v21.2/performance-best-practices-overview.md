@@ -2,7 +2,7 @@
 title: SQL Performance Best Practices
 summary: Best practices for optimizing SQL performance in CockroachDB.
 toc: true
-docs_area: 
+docs_area: develop
 ---
 
 This page provides best practices for optimizing query performance in CockroachDB.
@@ -23,7 +23,7 @@ For more information, see:
 ### Use `UPSERT` instead of `INSERT ON CONFLICT` on tables with no secondary indexes
 
 When inserting/updating all columns of a table, and the table has no secondary
-indexes, we recommend using an [`UPSERT`](upsert.html) statement instead of the
+indexes, Cockroach Labs recommends using an [`UPSERT`](upsert.html) statement instead of the
 equivalent [`INSERT ON CONFLICT`](insert.html) statement. Whereas `INSERT ON
 CONFLICT` always performs a read to determine the necessary writes, the `UPSERT`
 statement writes without reading, making it faster. For tables with secondary
@@ -104,7 +104,7 @@ A well-designed multi-column primary key can yield even better performance than 
 
 For example, consider a social media website. Social media posts are written by users, and on login the user's last 10 posts are displayed. A good choice for a primary key might be `(username, post_timestamp)`. For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE posts (
     username STRING,
@@ -117,7 +117,7 @@ For example, consider a social media website. Social media posts are written by 
 
 This would make the following query efficient.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM posts
           WHERE username = 'alyssa'
@@ -142,7 +142,7 @@ Time: 924µs
 
 To see why, let's look at the [`EXPLAIN`](explain.html) output. It shows that the query is fast because it does a point lookup on the indexed column `username` (as shown by the line `spans | /"alyssa"-...`). Furthermore, the column `post_timestamp` is already in an index, and sorted (since it's a monotonically increasing part of the primary key).
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN (VERBOSE)
     SELECT * FROM posts
@@ -183,7 +183,7 @@ If something prevents you from using [multi-column primary keys](#use-multi-colu
 
 Suppose the table schema is as follows:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE X (
 	ID1 INT,
@@ -195,7 +195,7 @@ Suppose the table schema is as follows:
 
 The common approach would be to use a transaction with an `INSERT` followed by a `SELECT`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BEGIN;
 
@@ -210,7 +210,7 @@ The common approach would be to use a transaction with an `INSERT` followed by a
 
 However, the performance best practice is to use a `RETURNING` clause with `INSERT` instead of the transaction:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO X VALUES (1,1,1),(2,2,2),(3,3,3)
 	ON CONFLICT (ID1,ID2)
@@ -222,7 +222,7 @@ However, the performance best practice is to use a `RETURNING` clause with `INSE
 
 Suppose the table schema is as follows:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE X (
 	ID1 INT,
@@ -234,7 +234,7 @@ Suppose the table schema is as follows:
 
 The common approach to generate random Unique IDs is a transaction using a `SELECT` statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BEGIN;
 
@@ -247,7 +247,7 @@ The common approach to generate random Unique IDs is a transaction using a `SELE
 
 However, the performance best practice is to use a `RETURNING` clause with `INSERT` instead of the transaction:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO X VALUES (1,1),(2,2),(3,3)
 	RETURNING ID1,ID2,ID3;
@@ -267,7 +267,7 @@ See [Subquery Performance Best Practices](subqueries.html#performance-best-pract
 
 ## Authorization best practices
 
-See [Authorization Best Practices](authorization.html#authorization-best-practices).
+See [Authorization Best Practices](security-reference/authorization.html#authorization-best-practices).
 
 ## Table scan best practices
 
@@ -279,7 +279,7 @@ For large tables, avoid table scans (that is, reading the entire table data) whe
 
 Suppose the table schema is as follows:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE accounts (
 	id INT,
@@ -292,14 +292,14 @@ Suppose the table schema is as follows:
 
 Now if we want to find the account balances of all customers, an inefficient table scan would be:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM ACCOUNTS;
 ~~~
 
 This query retrieves all data stored in the table. A more efficient query would be:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
  > SELECT CUSTOMER, BALANCE FROM ACCOUNTS;
 ~~~
@@ -318,15 +318,17 @@ However, because `AS OF SYSTEM TIME` returns historical data, your reads might b
 
 ## Hot spots
 
-Transactions that operate on the same range but _different index keys_ are limited by the overall hardware capacity of [the range lease holder](architecture/overview.html#terms) node. These are referred to as _hot spots_.
+A *hot spot* is any location on the cluster receiving significantly more requests than another. Hot spots can cause problems as requests increase.
 
-Hot spots can occur when a range is indexed on a column of data that is sequential in nature such that all incoming writes to the range will be the last (or first) item in the index and appended to the end of the range. As a result, the system cannot find a point in the range that evenly divides the traffic, and the range cannot benefit from [load-based splitting](load-based-splitting.html), creating a hot spot on the single range.
+They commonly occur with transactions that operate on the **same range but different index keys**, which are limited by the overall hardware capacity of [the range leaseholder](architecture/overview.html#architecture-leaseholder) node.
+
+A hot spot can occur on a range that is indexed on a column of data that is sequential in nature (e.g., [an ordered sequence](sql-faqs.html#what-are-the-differences-between-uuid-sequences-and-unique_rowid), or a series of increasing, non-repeating [`TIMESTAMP`s](timestamp.html)), such that all incoming writes to the range will be the last (or first) item in the index and appended to the end of the range. Because the system is unable to find a split point in the range that evenly divides the traffic, the range cannot benefit from [load-based splitting](load-based-splitting.html). This creates a hot spot at the single range.
 
 Read hot spots can occur if you perform lots of scans of an portion of a table index or a single key.
 
 ### Find hot spots
 
-To track down the nodes experiencing hot spots, use the [hot ranges API endpoint](cluster-api.html#resources).
+To track down the nodes experiencing hot spots, use the [Hot Ranges page](ui-hot-ranges-page.html) and [Range Report](ui-hot-ranges-page.html#range-report).
 
 ### Reduce hot spots
 
@@ -337,6 +339,7 @@ To reduce hot spots:
 - Place parts of the records that are modified by different transactions in different tables. That is, increase [normalization](https://en.wikipedia.org/wiki/Database_normalization). However, there are benefits and drawbacks to increasing normalization.
 
     - Benefits:
+
         - Allows separate transactions to modify related underlying data without causing contention.
         - Can improve performance for read-heavy workloads.
 
@@ -349,7 +352,7 @@ To reduce hot spots:
 
 - If the application strictly requires operating on very few different index keys, consider using [`ALTER ... SPLIT AT`](split-at.html) so that each index key can be served by a separate group of nodes in the cluster.
 
-- If you are working with a table that *must* be indexed on sequential keys, use [hash-sharded indexes](hash-sharded-indexes.html). For details about the mechanics and performance improvements of hash-sharded indexes in CockroachDB, see the blog post [Hash Sharded Indexes Unlock Linear Scaling for Sequential Workloads](https://www.cockroachlabs.com/blog/hash-sharded-indexes-unlock-linear-scaling-for-sequential-workloads/).
+- If you are working with a table that **must** be indexed on sequential keys, use [hash-sharded indexes](hash-sharded-indexes.html). For details about the mechanics and performance improvements of hash-sharded indexes in CockroachDB, see the blog post [Hash Sharded Indexes Unlock Linear Scaling for Sequential Workloads](https://www.cockroachlabs.com/blog/hash-sharded-indexes-unlock-linear-scaling-for-sequential-workloads/).
 
 - To avoid read hot spots:
 

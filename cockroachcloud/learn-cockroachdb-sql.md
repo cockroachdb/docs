@@ -11,8 +11,8 @@ This tutorial walks you through some of the most essential CockroachDB SQL state
 
 Make sure you have already [connected the CockroachDB SQL client](connect-to-your-cluster.html#step-3-connect-to-your-cluster) to your cluster. Alternatively, you can [use a local demo cluster](../{{site.versions["stable"]}}/learn-cockroachdb-sql.html) or click below to run through the tutorial entirely in your browser.
 
-<div class=" clearfix">
-  <a class="btn btn-outline-primary" href="../tutorials/learn-cockroachdb-sql-interactive.html" target="_blank">Run this in your browser &rarr;</a>
+<div class="clearfix">
+  <a class="btn btn-outline-primary" href="../tutorials/learn-cockroachdb-sql-interactive.html" target="_blank" rel="noopener">Run this in your browser &rarr;</a>
 </div>
 
 ## Create a database
@@ -231,10 +231,11 @@ To show the indexes on a table, use [`SHOW INDEX FROM`](../{{site.versions["stab
 ~~~
   table_name | index_name  | non_unique | seq_in_index | column_name | direction | storing | implicit
 +------------+-------------+------------+--------------+-------------+-----------+---------+----------+
-  accounts   | primary     |   false    |            1 | id          | ASC       |  false  |  false
   accounts   | balance_idx |    true    |            1 | balance     | DESC      |  false  |  false
   accounts   | balance_idx |    true    |            2 | id          | ASC       |  false  |   true
-(3 rows)
+  accounts   | primary     |   false    |            1 | id          | ASC       |  false  |  false
+  accounts   | primary     |   false    |            2 | balance     | N/A       |  true   |  false
+(4 rows)
 ~~~
 
 ## Query a table

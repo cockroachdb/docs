@@ -9,7 +9,8 @@ referral_id: docs_hello_world_nodejs_sequelize
 <div class="filters filters-big clearfix">
     <a href="build-a-nodejs-app-with-cockroachdb.html"><button class="filter-button">Use <strong>node-postgres</strong></button></a>
     <a href="build-a-nodejs-app-with-cockroachdb-sequelize.html"><button class="filter-button current">Use <strong>Sequelize</strong></button></a>
-    <a href="build-a-nodejs-app-with-cockroachdb-knexjs.html"><button class="filter-button">Use <strong>KnexJS</strong></button></a>
+    <a href="build-a-nodejs-app-with-cockroachdb-knexjs.html"><button class="filter-button">Use <strong>Knex.js</strong></button></a>
+    <a href="build-a-nodejs-app-with-cockroachdb-prisma.html"><button class="filter-button">Use <strong>Prisma</strong></button></a>
     <a href="build-a-typescript-app-with-cockroachdb.html"><button class="filter-button">Use <strong>TypeORM</strong></button></a>
 </div>
 
@@ -59,8 +60,11 @@ Open `app.js`, and edit the connection configuration parameters:
 - At the top of the file, uncomment the `const fs = require('fs');` line.
 
     This line imports the `fs` Node module, which enables you to read in the CA cert that you downloaded from the {{ site.data.products.db }} Console.
-- Replace the values for `username`, `host`, `port`, and `database` with values from the **Connection parameters** tab of **Connection info**.
+- Replace the value for `username` with the user you created earlier.
 - Replace the value for `password` with the password you created for your user.
+- Replace the value for `host` with the name of the {{ site.data.products.db }} Free host (e.g., `host: 'free-tier.gcp-us-central1.cockroachlabs.cloud'`).
+- Replace the value for `port` with the port to your cluster.
+- Replace the value for `database` with the database that you created earlier, suffixed with the name of the cluster (e.g., `database: '{cluster_name}.bank'`).
 - Remove the `rejectUnauthorized` key-value pair.
 - Uncomment the `ca` key-value pair, and edit the `fs.readFileSync('certs/ca.crt').toString()` call to use the path to the `cc-ca.crt` file that you downloaded from the {{ site.data.products.db }} Console.
 

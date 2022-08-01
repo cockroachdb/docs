@@ -2,7 +2,7 @@
 title: Connection Pooling
 summary: How to plan, configure, and use connection pools when using drivers or frameworks with CockroachDB.
 toc: true
-docs_area: 
+docs_area: develop
 ---
 
 This page has information on planning, configuring, and using connection pools when using drivers or frameworks with CockroachDB.
@@ -117,3 +117,9 @@ This example uses the `pool_max_conns` parameter to set the maximum number of co
 For a full list of connection pool configuration parameters for pgxpool, see [the pgxpool documentation](https://pkg.go.dev/github.com/jackc/pgx/v4/pgxpool#Config).
 
 </section>
+
+## Implementing connection retry logic
+
+Some operational processes involve [node shutdown](node-shutdown.html). During the shutdown sequence, the server forcibly closes all SQL client connections to the node. If any open transactions were interrupted or not admitted by the server because of the connection closure, they will fail with a connection error.
+
+To be resilient to connection closures, your application should use a retry loop to reissue transactions that were open when a connection was closed. This allows procedures such as [rolling upgrades](upgrade-cockroach-version.html) to complete without interrupting your service. For details, see [Connection retry loop](node-shutdown.html#connection-retry-loop).

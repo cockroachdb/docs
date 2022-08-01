@@ -6,18 +6,18 @@ toc: false
 
 This page helps you understand and resolve error messages written to `stderr` or your [logs](logging-overview.html).
 
-| Topic                                  | Message                                                                                                                                                                                                                                         
+| Topic                                  | Message
 |----------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-| Client connection                      | [`connection refused`](#connection-refused)                                                                                                                                                                                                     
-| Client connection                      | [`node is running secure mode, SSL connection required`](#node-is-running-secure-mode-ssl-connection-required)                                                                                                                                  
-| Transaction retries                    | [`restart transaction`](#restart-transaction)                                                                                                                                                                                                   
+| Client connection                      | [`connection refused`](#connection-refused)
+| Client connection                      | [`node is running secure mode, SSL connection required`](#node-is-running-secure-mode-ssl-connection-required)
+| Transaction retries                    | [`restart transaction`](#restart-transaction)
 | Node startup                           | [`node belongs to cluster <cluster ID> but is attempting to connect to a gossip network for cluster <another cluster ID>`](#node-belongs-to-cluster-cluster-id-but-is-attempting-to-connect-to-a-gossip-network-for-cluster-another-cluster-id)
-| Node configuration                     | [`clock synchronization error: this node is more than 500ms away from at least half of the known nodes`](#clock-synchronization-error-this-node-is-more-than-500ms-away-from-at-least-half-of-the-known-nodes)                                  
-| Node configuration                     | [`open file descriptor limit of <number> is under the minimum required <number>`](#open-file-descriptor-limit-of-number-is-under-the-minimum-required-number)                                                                                   
-| Replication                            | [`replicas failing with "0 of 1 store with an attribute matching []; likely not enough nodes in cluster"`](#replicas-failing-with-0-of-1-store-with-an-attribute-matching-likely-not-enough-nodes-in-cluster)                                   
-| Split failed                           | [`split failed while applying backpressure; are rows updated in a tight loop?`](#split-failed-while-applying-backpressure-are-rows-updated-in-a-tight-loop)                                   
-| Deadline exceeded                      | [`context deadline exceeded`](#context-deadline-exceeded)                                                                                                                                                                                       
-| Incremental backups | <span class="version-tag"> New in v21.1: </span> [`protected ts verification error...`](#protected-ts-verification-error)                                                                                        
+| Node configuration                     | [`clock synchronization error: this node is more than 500ms away from at least half of the known nodes`](#clock-synchronization-error-this-node-is-more-than-500ms-away-from-at-least-half-of-the-known-nodes)
+| Node configuration                     | [`open file descriptor limit of <number> is under the minimum required <number>`](#open-file-descriptor-limit-of-number-is-under-the-minimum-required-number)
+| Replication                            | [`replicas failing with "0 of 1 store with an attribute matching []; likely not enough nodes in cluster"`](#replicas-failing-with-0-of-1-store-with-an-attribute-matching-likely-not-enough-nodes-in-cluster)
+| Split failed                           | [`split failed while applying backpressure; are rows updated in a tight loop?`](#split-failed-while-applying-backpressure-are-rows-updated-in-a-tight-loop)
+| Deadline exceeded                      | [`context deadline exceeded`](#context-deadline-exceeded)
+| Incremental backups | **New in v21.1:** [`protected ts verification error...`](#protected-ts-verification-error)                                                                                        
 | Ambiguous results                      | [`result is ambiguous`](#result-is-ambiguous)
 | Import key collision | [`checking for key collisions: ingested key collides with an existing one`](#checking-for-key-collisions-ingested-key-collides-with-an-existing-one)                                                                                                                                                                                                        |
 
@@ -36,7 +36,7 @@ If you're not sure what the IP address/hostname and port values might have been,
 
 Then restart the node:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach start [flags]
 ~~~
@@ -45,7 +45,7 @@ $ cockroach start [flags]
 
 This message indicates that the cluster is using TLS encryption to protect network communication, and the client is trying to open a connection without using the required TLS certificates.
 
-To resolve this issue, use the [`cockroach cert create-client`](cockroach-cert.html) command to generate a client certificate and key for the user trying to connect. For a secure deployment walkthrough, including generating security certificates and connecting clients, see [Manual Deployment](manual-deployment.html).
+To resolve this issue, use the [`cockroach cert create-client`](cockroach-cert.html) command to generate a client certificate and key for the user trying to connect. For a secure deployment tutorial, including generating security certificates and connecting clients, see [Manual Deployment](manual-deployment.html).
 
 ## restart transaction
 
@@ -59,19 +59,19 @@ This message usually indicates that a node tried to connect to a cluster, but th
 
 - Choose a different directory to store the CockroachDB data:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start [flags] --store=[new directory] --join=[cluster host]:26257
     ~~~
 
 - Remove the existing directory and start a node joining the cluster again:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ rm -r cockroach-data/
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start [flags] --join=[cluster host]:26257
     ~~~
@@ -108,13 +108,13 @@ E160407 09:53:50.337328 storage/queue.go:511  [replicate] 7 replicas failing wit
 
 This happens because CockroachDB expects three nodes by default. If you do not intend to add additional nodes, you can stop this error by using [`ALTER RANGE ... CONFIGURE ZONE`](configure-zone.html) to update your default zone configuration to expect only one node:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 # Insecure cluster:
 $ cockroach sql --execute="ALTER RANGE default CONFIGURE ZONE USING num_replicas=1;" --insecure
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 # Secure cluster:
 $ cockroach sql --execute="ALTER RANGE default CONFIGURE ZONE USING num_replicas=1;" --certs-dir=[path to certs directory]
@@ -143,7 +143,7 @@ This message occurs when a component of CockroachDB gives up because it was rely
 
 ## protected ts verification error...
 
-<span class="version-tag"> New in v21.1: </span> Messages that begin with `protected ts verification error…` indicate that your [incremental backup](take-full-and-incremental-backups.html#incremental-backups) failed because the data you are trying to backup was garbage collected. This happens when incremental backups are taken less frequently than the garbage collection periods for any of the objects in the base backup. For example, if your incremental backups recur daily, but the garbage collection period of one table in your backup is less than one day, all of your incremental backups will fail.
+{% include_cached new-in.html version="v21.1" %} Messages that begin with `protected ts verification error…` indicate that your [incremental backup](take-full-and-incremental-backups.html#incremental-backups) failed because the data you are trying to backup was garbage collected. This happens when incremental backups are taken less frequently than the garbage collection periods for any of the objects in the base backup. For example, if your incremental backups recur daily, but the garbage collection period of one table in your backup is less than one day, all of your incremental backups will fail.
 
 The error message will specify which part of your backup is causing the failure. For example, `range span: /Table/771` indicates that table `771` is part of the problem. You can then inspect this table by running [`SELECT * FROM crdb_internal.tables WHERE id=771`](select-clause.html). You can also run [`SHOW ZONE CONFIGURATIONS`](show-zone-configurations.html) and look for any `gc.ttlseconds` values that are set lower than your incremental backup frequency.
 

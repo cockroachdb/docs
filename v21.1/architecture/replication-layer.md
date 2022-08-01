@@ -35,7 +35,7 @@ Raft is a consensus protocol––an algorithm which makes sure that your data i
 
 Raft organizes all nodes that contain a replica of a range into a group--unsurprisingly called a Raft group. Each replica in a Raft group is either a "leader" or a "follower". The leader, which is elected by Raft and long-lived, coordinates all writes to the Raft group. It heartbeats followers periodically and keeps their logs replicated. In the absence of heartbeats, followers become candidates after randomized election timeouts and proceed to hold new leader elections.
 
-<span class="version-tag">New in v21.1:</span> A third replica type is introduced, the "non-voting" replica. These replicas do not participate in Raft elections, but are useful for unlocking use cases that require low-latency multi-region reads. For more information, see [Non-voting replicas](#non-voting-replicas).
+{% include_cached new-in.html version="v21.1" %} A third replica type is introduced, the "non-voting" replica. These replicas do not participate in Raft elections, but are useful for unlocking use cases that require low-latency multi-region reads. For more information, see [Non-voting replicas](#non-voting-replicas).
 
 Once a node receives a `BatchRequest` for a range it contains, it converts those KV operations into Raft commands. Those commands are proposed to the Raft group leader––which is what makes it ideal for the [leaseholder](#leases) and the Raft leader to be one in the same––and written to the Raft log.
 
@@ -51,7 +51,7 @@ Because this log is treated as serializable, it can be replayed to bring a node 
 
 In versions prior to v21.1, CockroachDB only supported _voting_ replicas: that is, [replicas](overview.html#glossary) that participate as voters in the [Raft consensus protocol](#raft). However, the need for all replicas to participate in the consensus algorithm meant that increasing the [replication factor](../configure-replication-zones.html#num_replicas) came at a cost of increased write latency, since the additional replicas needed to participate in Raft [quorum](overview.html#architecture-overview-consensus).
 
-<span class="version-tag">New in v21.1:</span> In order to provide [better support for multi-region clusters](../multiregion-overview.html), (including the features that make [fast multi-region reads](../multiregion-overview.html#global-tables) and [surviving region failures](../multiregion-overview.html#surviving-region-failures) possible), a new type of replica is introduced: the _non-voting_ replica.
+{% include_cached new-in.html version="v21.1" %} In order to provide [better support for multi-region clusters](../multiregion-overview.html), (including the features that make [fast multi-region reads](../multiregion-overview.html#global-tables) and [surviving region failures](../multiregion-overview.html#surviving-region-failures) possible), a new type of replica is introduced: the _non-voting_ replica.
 
 Non-voting replicas follow the [Raft log](#raft-logs) (and are thus able to serve [follower reads](../follower-reads.html)), but do not participate in quorum. They have almost no impact on write latencies.
 
@@ -95,7 +95,7 @@ However, unlike table data, system ranges cannot use epoch-based leases because 
 
 #### How leases are transferred from a dead node
 
-When a node disconnects, the process by which each of its leases is transferred to a healthy node is as follows:
+When the cluster needs to access a range on a leaseholder node that is dead, that range's lease must be transferred to a healthy node. This process is as follows:
 
 1. The dead node's liveness record, which is stored in a system range, has an expiration time of 9 seconds, and is heartbeated every 4.5 seconds. When the node dies, the amount of time the cluster has to wait for the record to expire varies, but on average is 6.75 seconds.
 1. A healthy node attempts to acquire the lease. This is rejected because lease acquisition can only happen on the Raft leader, which the healthy node is not (yet). Therefore, a Raft election must be held.

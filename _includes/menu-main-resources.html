@@ -29,8 +29,8 @@
         {{ range .Site.Menus.resources_started }}
           <li class="nav-item mb-3 pb-1">
               <div class="font-weight-bold item-title d-none">{{.Pre}}</div>
-              <a href="{{.URL}}" class="nav-link text-small pb-0 {{ if $currentPage.HasMenuCurrent "main" . }} active {{ end }}"
-                >{{.Name}}</a
+              <a href="{{ item.url }}" class="nav-link text-small pb-0 {{ if $currentPage.HasMenuCurrent "main" . }} active {{ end }}"
+                >{{ item.name }}</a
               >
             </li>
         {{ end }}
@@ -46,8 +46,8 @@
         {{ range .Site.Menus.resources_technical }}
           <li class="nav-item mb-3 pb-1">
               <div class="font-weight-bold item-title d-none">{{.Pre}}</div>
-              <a href="{{.URL}}" class="nav-link text-small pb-0 {{ if $currentPage.HasMenuCurrent "main" . }} active {{ end }}"
-                >{{.Name}}</a
+              <a href="{{ item.url }}" class="nav-link text-small pb-0 {{ if $currentPage.HasMenuCurrent "main" . }} active {{ end }}"
+                >{{ item.name }}</a
               >
             </li>
         {{ end }}
@@ -63,8 +63,8 @@
         {{ range .Site.Menus.resources_learn }}
           <li class="nav-item mb-3 pb-1">
               <div class="font-weight-bold item-title d-none">{{.Pre}}</div>
-              <a href="{{.URL}}" class="nav-link text-small pb-0 {{ if $currentPage.HasMenuCurrent "main" . }} active {{ end }}"
-                >{{.Name}}</a
+              <a href="{{ item.url }}" class="nav-link text-small pb-0 {{ if $currentPage.HasMenuCurrent "main" . }} active {{ end }}"
+                >{{ item.name }}</a
               >
             </li>
         {{ end }}

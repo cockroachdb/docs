@@ -2,7 +2,7 @@
 title: Create a User-defined Schema
 summary: Create a user-defined schema for your CockroachDB cluster
 toc: true
-docs_area: 
+docs_area: develop
 ---
 
 This page provides best-practice guidance on creating user-defined schemas, with some simple examples based on Cockroach Labs' fictional vehicle-sharing company, [MovR](movr.html).
@@ -15,8 +15,7 @@ For detailed reference documentation on the `CREATE SCHEMA` statement, including
 
 Before reading this page, do the following:
 
-- [Install CockroachDB](install-cockroachdb.html).
-- [Start a local cluster](secure-a-cluster.html), or [create a {{ site.data.products.dedicated }} cluster](../cockroachcloud/create-your-cluster.html).
+- [Create a {{ site.data.products.serverless }} cluster](../cockroachcloud/quickstart.html) or [start a local cluster](../cockroachcloud/quickstart.html?filters=local).
 - [Review the database schema objects](schema-design-overview.html).
 - [Create a database](schema-design-database.html).
 
@@ -34,9 +33,9 @@ Here are some best practices to follow when creating and using user-defined sche
 
 - If you want to separate lower-level objects (e.g., a set of [tables](schema-design-table.html) or [views](views.html)) for access or organizational purposes, do not create those objects in the preloaded [`public` schema](sql-name-resolution.html#naming-hierarchy). Instead, create user-defined schemas, and then create the objects in the user-defined schemas.
 
-- Create user-defined schemas as a member of [the `admin` role](authorization.html#admin-role) (e.g., as the [`root` user](authorization.html#root-user)), and then give ownership of them to a [different user](schema-design-overview.html#control-access-to-objects), with fewer privileges across the database, following [authorization best practices](authorization.html#authorization-best-practices).
+- Create user-defined schemas as a member of [the `admin` role](security-reference/authorization.html#admin-role) (e.g., as the [`root` user](security-reference/authorization.html#root-user)), and then give ownership of them to a [different user](schema-design-overview.html#control-access-to-objects), with fewer privileges across the database, following [authorization best practices](security-reference/authorization.html#authorization-best-practices).
 
-- When you create a user-defined schema, take note of the [object's owner](authorization.html#object-ownership). You can specify the owner in a `CREATE SCHEMA` statement with the [`AUTHORIZATION` keyword](create-schema.html#parameters). If `AUTHORIZATION` is not specified, the owner will be the user creating the user-defined schema.
+- When you create a user-defined schema, take note of the [object's owner](security-reference/authorization.html#object-ownership). You can specify the owner in a `CREATE SCHEMA` statement with the [`AUTHORIZATION` keyword](create-schema.html#parameters). If `AUTHORIZATION` is not specified, the owner will be the user creating the user-defined schema.
 
 - Do not create user-defined schemas in the preloaded `defaultdb` database. Instead, use a database [you have created](schema-design-database.html). If you do not specify a database in the `CREATE SCHEMA` statement, the user-defined schema will be created in your SQL session's [current database](sql-name-resolution.html#current-database).
 
@@ -50,7 +49,7 @@ Suppose you want to separate the tables and indexes in your cluster such that on
 
 Open the `dbinit.sql` file that you created in the [Create a Database](schema-design-database.html) example, and add the following statements under the `CREATE DATABASE` statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 USE movr;
 
@@ -61,11 +60,11 @@ CREATE USER IF NOT EXISTS abbey;
 GRANT CREATE ON DATABASE movr TO abbey;
 ~~~
 
-The first statement sets the `movr` database as the [current database](sql-name-resolution.html#current-database). The next two sets of statements create SQL users named `max` and `abbey` in the `movr` database, with [`CREATE` privileges on the database](authorization.html#supported-privileges). `CREATE` privileges will allow each user to create tables in the database.
+The first statement sets the `movr` database as the [current database](sql-name-resolution.html#current-database). The next two sets of statements create SQL users named `max` and `abbey` in the `movr` database, with [`CREATE` privileges on the database](security-reference/authorization.html#supported-privileges). `CREATE` privileges will allow each user to create tables in the database.
 
 Now, under the `CREATE USER` statements, add `DROP SCHEMA` and `CREATE SCHEMA` statements for each user's user-defined schema:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 DROP SCHEMA IF EXISTS max_schema CASCADE;
 CREATE SCHEMA max_schema AUTHORIZATION max;
@@ -82,7 +81,7 @@ Under the `CREATE SCHEMA` statements for each user-defined schema, add a `GRANT`
 
 The `dbinit.sql` file should now look something link this:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE DATABASE IF NOT EXISTS movr;
 
@@ -105,7 +104,7 @@ GRANT USAGE ON SCHEMA abbey_schema TO max;
 
 To execute the statements in the `dbinit.sql` file as the `root` user, run the following command:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
 --certs-dir={certs-directory} \
@@ -115,21 +114,21 @@ $ cockroach sql \
 
 Before the new users can connect to the cluster and start creating objects, they each need a [user certificate](authentication.html#client-authentication). To create a user certificate for `max`, open a new terminal, and run the following [`cockroach cert`](cockroach-cert.html) command:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach cert create-client max --certs-dir={certs-directory} --ca-key={my-safe-directory}/ca.key
 ~~~
 
 Create a user certificate for `abbey` as well:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach cert create-client abbey --certs-dir={certs-directory} --ca-key={my-safe-directory}/ca.key
 ~~~
 
 As one of the new users, use a [`SHOW SCHEMAS` statement](show-schemas.html) to show the preloaded and user-defined schemas in the `movr` database:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
 --certs-dir={certs-directory} \

@@ -101,6 +101,10 @@ If the column has the [`NOT NULL` constraint](not-null.html) applied to it, you 
 
 {% include {{ page.version.version }}/computed-columns/convert-computed-column.md %}
 
+### Alter the formula for a computed column
+
+{% include {{ page.version.version }}/computed-columns/alter-computed-column.md %}
+
 ### Increase a column type's precision
 
 The [TPC-C](performance-benchmarking-with-tpcc-small.html) database contains a `customer` table with a column `c_credit_lim` of type [`DECIMAL(10,2)`](decimal.html). Suppose you want to increase the precision of the column's data type to `DECIMAL (12,2)`:

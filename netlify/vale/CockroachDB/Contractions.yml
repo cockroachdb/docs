@@ -4,7 +4,3 @@ link: https://github.com/cockroachdb/docs/blob/master/STYLE.md#language-and-tone
 ignorecase: false
 level: warning
 swap:
-  "(?:can\'t)": cannot
-  "(?:don\'t)": do not
-  "(?:shouldn\'t)": should not
-  "(?:won\'t)": will not

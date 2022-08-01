@@ -2,14 +2,14 @@
 title: DROP CONSTRAINT
 summary: Use the ALTER CONSTRAINT statement to remove constraints from columns.
 toc: true
-docs_area: 
+docs_area: reference.sql
 ---
 
 The `DROP CONSTRAINT` [statement](sql-statements.html) is part of [`ALTER TABLE`](alter-table.html) and removes [`CHECK`](check.html) and [`FOREIGN KEY`](foreign-key.html) constraints from columns.
 
 {% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
- `PRIMARY KEY`](primary-key.html) constraints can be dropped with `DROP CONSTRAINT` if an [`ADD CONSTRAINT`](add-constraint.html) statement follows the `DROP CONSTRAINT` statement in the same transaction.
+[`PRIMARY KEY`](primary-key.html) constraints can be dropped with `DROP CONSTRAINT` if an [`ADD CONSTRAINT`](add-constraint.html) statement follows the `DROP CONSTRAINT` statement in the same transaction.
 
 {{site.data.alerts.callout_success}}
 When you change a primary key with [`ALTER TABLE ... ALTER PRIMARY KEY`](alter-primary-key.html), the old primary key index becomes a secondary index. If you do not want the old primary key to become a secondary index, use `DROP CONSTRAINT`/[`ADD CONSTRAINT`](add-constraint.html) to change the primary key.
@@ -23,11 +23,11 @@ For information about removing other constraints, see [Constraints: Remove Const
 
 ## Synopsis
 
-<div>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/drop_constraint.html %}</div>
+<div>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/drop_constraint.html %}</div>
 
 ## Required privileges
 
-The user must have the `CREATE` [privilege](authorization.html#assign-privileges) on the table.
+The user must have the `CREATE` [privilege](security-reference/authorization.html#managing-privileges) on the table.
 
 ## Parameters
 
@@ -46,7 +46,7 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 
 ### Drop a foreign key constraint
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CONSTRAINTS FROM vehicles;
 ~~~
@@ -59,12 +59,12 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 (2 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE vehicles DROP CONSTRAINT fk_city_ref_users;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CONSTRAINTS FROM vehicles;
 ~~~
@@ -82,7 +82,7 @@ When you change a primary key with [`ALTER TABLE ... ALTER PRIMARY KEY`](alter-p
 
 Suppose that you want to add `name` to the composite primary key of the `users` table.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE TABLE users;
 ~~~
@@ -104,14 +104,14 @@ Suppose that you want to add `name` to the composite primary key of the `users` 
 
 First, add a [`NOT NULL`](not-null.html) constraint to the `name` column with [`ALTER COLUMN`](alter-column.html).
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE users ALTER COLUMN name SET NOT NULL;
 ~~~
 
 Then, in the same transaction, `DROP` the old `"primary"` constraint and [`ADD`](add-constraint.html) the new one:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BEGIN;
 > ALTER TABLE users DROP CONSTRAINT "primary";
@@ -123,7 +123,7 @@ Then, in the same transaction, `DROP` the old `"primary"` constraint and [`ADD`]
 NOTICE: primary key changes are finalized asynchronously; further schema changes on this table may be restricted until the job completes
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE TABLE users;
 ~~~

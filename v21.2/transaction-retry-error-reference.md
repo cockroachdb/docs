@@ -276,7 +276,7 @@ Retry transaction _A_ as described in [client-side retry handling](transactions.
 
 ## See also
 
-- [Common Errors](common-errors.html)
+- [Common Errors and Solutions](common-errors.html)
 - [Transactions](transactions.html)
 - [Client-side retry handling](transactions.html#client-side-intervention)
 - [Transaction Contention](performance-best-practices-overview.html#transaction-contention)

@@ -3,7 +3,7 @@ title: ST_ConvexHull
 summary: ST_ConvexHull(A) returns another shape B that is the convex hull of A.
 toc: true
 has_prefixed_variant: false
-docs_area: 
+docs_area: reference.sql
 ---
 
 Given a shape _A_, `ST_ConvexHull(A)` returns another shape _B_ that is the [convex hull](https://en.wikipedia.org/wiki/Convex_hull) of _A_.  The convex hull of a shape is the smallest [convex set](https://en.wikipedia.org/wiki/Convex_set) of points that [contains](st_contains.html) every point in the set that comprises that shape.
@@ -24,14 +24,14 @@ In this example, we will generate the convex hull of a single geometry.  The geo
 
 1. Create a temporary table to hold all the points, which will be in [Well Known Text (WKT)](spatial-glossary.html#wkt) format:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     CREATE TABLE tmp (ID UUID DEFAULT gen_random_uuid(), geom_text STRING);
     ~~~
 
 2. Insert the points with the following statement:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     INSERT INTO tmp (geom_text) VALUES
     ('POINT (-73.962090000000003 40.609226)'),
@@ -213,7 +213,7 @@ In this example, we will generate the convex hull of a single geometry.  The geo
 
 3. Run the query below, which gathers the points into a single geometry using [`ST_Union`](st_union.html) that can be operated on by `ST_ConvexHull`, and converts the output to [GeoJSON](spatial-glossary.html#geojson) so that we can view it with [geojson.io](http://geojson.io):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql 
     WITH
         the_geoms_table
@@ -239,7 +239,7 @@ In this example, we will generate the convex hull of a single geometry.  The geo
 
 5. Finally, drop the temporary table if you no longer need it:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     DROP TABLE tmp;
     ~~~

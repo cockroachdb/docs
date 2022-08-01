@@ -2,7 +2,7 @@
 title: DROP USER
 summary: The DROP USER statement removes one or more SQL users.
 toc: true
-docs_area: 
+docs_area: reference.sql
 ---
 
 The `DROP USER` [statement](sql-statements.html) removes one or more SQL users.
@@ -10,16 +10,16 @@ The `DROP USER` [statement](sql-statements.html) removes one or more SQL users.
 {% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
 {{site.data.alerts.callout_info}}
- Since the keywords `ROLE` and `USER` can now be used interchangeably in SQL statements for enhanced Postgres compatibility, `DROP USER` is now an alias for [`DROP ROLE`](drop-role.html).
+ Since the keywords `ROLE` and `USER` can now be used interchangeably in SQL statements for enhanced PostgreSQL compatibility, `DROP USER` is now an alias for [`DROP ROLE`](drop-role.html).
 {{site.data.alerts.end}}
 
 ## Consideration
 
-Users that [own objects](authorization.html#object-ownership) (such as databases, tables, schemas, and types) cannot be dropped until the [ownership is transferred to another user](owner-to.html#change-a-databases-owner).
+Users that [own objects](security-reference/authorization.html#object-ownership) (such as databases, tables, schemas, and types) cannot be dropped until the [ownership is transferred to another user](owner-to.html#change-a-databases-owner).
 
 ## Required privileges
 
-Non-admin users cannot drop admin users. To drop non-admin users, the user must be a member of the `admin role` or have the [`CREATEROLE`](create-user.html#create-a-user-that-can-create-other-users-and-manage-authentication-methods-for-the-new-users) parameter set.
+Non-admin users cannot drop admin users. To drop non-admin users, the user must be a member of the `admin` role or have the [`CREATEROLE`](create-user.html#create-a-user-that-can-create-other-users-and-manage-authentication-methods-for-the-new-users) parameter set.
 
 ## Synopsis
 
@@ -37,7 +37,7 @@ All of a user's privileges must be revoked before the user can be dropped.
 
 In this example, first check a user's privileges. Then, revoke the user's privileges before removing the user.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW GRANTS ON test.customers FOR mroach;
 ~~~
@@ -53,12 +53,12 @@ In this example, first check a user's privileges. Then, revoke the user's privil
 (3 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > REVOKE CREATE,INSERT,UPDATE ON test.customers FROM mroach;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP USER mroach;
 ~~~
@@ -71,4 +71,4 @@ In this example, first check a user's privileges. Then, revoke the user's privil
 - [`GRANT`](grant.html)
 - [`SHOW GRANTS`](show-grants.html)
 - [Create Security Certificates](cockroach-cert.html)
-- [Other SQL Statements](sql-statements.html)
+- [SQL Statements](sql-statements.html)

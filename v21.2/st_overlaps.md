@@ -3,7 +3,7 @@ title: ST_Overlaps
 summary: ST_Overlaps(A, B) returns true if the shapes intersect, but neither is contained within the other.
 toc: true
 has_prefixed_variant: true
-docs_area: 
+docs_area: reference.sql
 ---
 
 Given two shapes _A_ and _B_, `ST_Overlaps(A, B)` returns `true` if the following criteria are met:
@@ -34,7 +34,7 @@ In this example, `{{page.title}}` returns `true` because:
 - There is a Point in the set that comprises Polygon _A_ that is also a member of the set of Points that make up Polygon _B_.
 - Neither of the shapes is contained by the other, in the [`ST_Contains`](st_contains.html) sense.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT st_overlaps(st_geomfromtext('SRID=4326;POLYGON((-87.906471 43.038902, -95.992775 36.153980, -75.704722 36.076944, -87.906471 43.038902))'), st_geomfromtext('SRID=4326;POLYGON((-84.191605 39.758949, -75.165222 39.952583, -78.878738 42.880230, -84.191605 39.758949))'));
 ~~~
@@ -55,7 +55,7 @@ In this example, `{{page.title}}` returns `false` because:
 
 - - There is not any Point in the set that comprises Polygon _A_ that is also a member of the set of Points that make up Polygon _B_.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT st_overlaps(st_geomfromtext('SRID=4326;POLYGON((-79.995888 40.440624,-74.666728 40.358244, -76.5 42.443333, -79.995888 40.440624))'), st_geomfromtext('SRID=4326;POLYGON((-79.976111 40.374444, -74.621157 40.323294, -76.609383 39.299236, -79.976111 40.374444))'));
 ~~~

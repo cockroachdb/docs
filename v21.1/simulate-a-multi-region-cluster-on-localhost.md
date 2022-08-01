@@ -4,7 +4,7 @@ summary: Run a simulated multi-region CockroachDB cluster locally using cockroac
 toc: true
 ---
 
-<span class="version-tag">New in v21.1:</span> Once you've [installed CockroachDB](install-cockroachdb.html), it's simple to simulate multi-region cluster on your local machine using [`cockroach demo`](cockroach-demo.html). This is a useful way to start playing with the [improved multi-region abstractions](multiregion-overview.html) provided by CockroachDB.
+{% include_cached new-in.html version="v21.1" %} Once you've [installed CockroachDB](install-cockroachdb.html), it's simple to simulate multi-region cluster on your local machine using [`cockroach demo`](cockroach-demo.html). This is a useful way to start playing with the [improved multi-region abstractions](multiregion-overview.html) provided by CockroachDB.
 
 {{site.data.alerts.callout_info}}
 [`cockroach demo`](cockroach-demo.html) is not suitable for production deployments.  Additionally, simulating multiple geographically distributed nodes on a single host is not representative of the [performance you should expect](frequently-asked-questions.html#single-row-perf) of a production deployment. For instructions showing how to do production multi-region deployments, see [Orchestrate CockroachDB Across Multiple Kubernetes Clusters](orchestrate-cockroachdb-with-kubernetes-multi-cluster.html) and [Deploy a Global, Serverless Application](movr-flask-deployment.html). Also be sure to review the [Production Checklist](recommended-production-settings.html).
@@ -28,27 +28,27 @@ root@127.0.0.1:26257/defaultdb>
 
 You can run some basic [CockroachDB SQL statements](learn-cockroachdb-sql.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE DATABASE bank;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > USE bank;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE bank.accounts (id INT PRIMARY KEY, balance DECIMAL);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO bank.accounts VALUES (1, 1000.50);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM bank.accounts;
 ~~~
@@ -84,7 +84,7 @@ You may also find the following pages useful:
 
 When you're done with your demo cluster, you can wipe the cluster by typing the command shown below at the SQL prompt. Note that because this is a temporary, in-memory cluster, this will wipe any data you have added to the cluster. For more information, see the [`cockroach demo`](cockroach-demo.html) documentation.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 \quit
 ~~~

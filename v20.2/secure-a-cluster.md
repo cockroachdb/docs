@@ -151,7 +151,7 @@ You can use either [`cockroach cert`](cockroach-cert.html) commands or [`openssl
     The output will look something like this:
 
     ~~~
-    CockroachDB node starting at {{page.release_info.start_time}}
+    CockroachDB node starting at {{ now | date: "%Y-%m-%d %H:%M:%S.%6 +0000 UTC" }}
     build:               CCL {{page.release_info.version}} @ {{page.release_info.build_time}} (go1.12.6)
     webui:               https://localhost:8080
     sql:                 postgresql://root@localhost:26257?sslcert=certs%2Fclient.root.crt&sslkey=certs%2Fclient.root.key&sslmode=verify-full&sslrootcert=certs%2Fca.crt

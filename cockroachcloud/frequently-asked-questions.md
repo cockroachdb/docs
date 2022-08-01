@@ -5,7 +5,7 @@ toc: true
 filter_category: cloud_faqs
 filter_html: CockroachDB Dedicated
 filter_sort: 2
-docs_area: 
+docs_area: get_started
 ---
 
 This page answers the frequently asked questions about {{ site.data.products.serverless }} and {{ site.data.products.dedicated }}.
@@ -18,9 +18,11 @@ This page answers the frequently asked questions about {{ site.data.products.ser
 
 {{ site.data.products.dedicated }} provides fully-managed, single-tenant CockroachDB clusters with no shared resources. {{ site.data.products.dedicated }} supports single and multi-region clusters in AWS and GCP.
 
-### Why are certain regions in AWS and GCP not available?
+### In what clouds and regions is {{ site.data.products.db }} available?
 
-We run {{ site.data.products.db }} in EKS and GKE - the managed Kubernetes offerings for AWS and GCP respectively - and support all regions that the offerings are available in. If a particular region is not available on the {{ site.data.products.db }} Console, that is due to the cloud provider not supporting the managed Kubernetes offering in that region. See
+The  {{ site.data.products.db }} Console will always show the latest available cloud infrastructure providers and regions. Open the [**Create Cluster**](https://cockroachlabs.cloud/cluster/create) page and select a Plan to see which providers and regions are currently available.
+
+We run {{ site.data.products.dedicated }} in EKS and GKE - the managed Kubernetes offerings for AWS and GCP respectively - and support all regions that the offerings are available in. If a particular region is not available on the {{ site.data.products.db }} Console, it is usually due to the cloud provider not supporting the managed Kubernetes offering in that region. See
 [list of EKS regions](https://aws.amazon.com/about-aws/global-infrastructure/regional-product-services/) and [list of GKE regions](https://cloud.google.com/about/locations/) for details.
 
 **Known issue:** In addition to the non-GKE regions, we had to temporarily disable the following GCP regions due to GCP's quota restrictions:
@@ -38,14 +40,15 @@ If you want to create a cluster in a disabled region, please [contact Support](h
 {{ site.data.products.dedicated }} offers a 30-day free trial. Free trials require a credit card so we can validate that you are not a bot and provide a seamless transition into production. Free trials apply when you:
 
 - Create the first cluster in your organization
-- Select 4 or fewer nodes (we recommend starting with 3 so you can try scaling)
+- Select 9 or fewer nodes (we recommend starting with 3 so you can try scaling)
+- Select up to 4 vCPUs of compute and 150 GiB of storage (the trial code will not apply to larger clusters)
 - Don't remove the pre-applied trial code at check out
 
-Once the 30-day period is over, your trial cluster can be scaled beyond 4 nodes. You can create other paid clusters at any time. If Cockroach Labs has provided you with additional codes, you can use those on applicable clusters. For extended trial options, [contact us](https://www.cockroachlabs.com/contact-sales/).
+Once the 30-day period is over, your cluster can be scaled beyond the trial period hardware limitations. You can create other paid clusters at any time. If Cockroach Labs has provided you with additional codes, you can use those on applicable clusters. For extended trial options, [contact us](https://www.cockroachlabs.com/contact-sales/).
 
 ### How do I connect to my cluster?
 
-To connect to a cluster, you need to authorize your network, create a SQL user, download the CA certificate, and then generate a connection string or parameters. You can use this information to connect to your cluster through the CockroachDB SQL client or a Postgres-compatible driver or ORM. For more details, see [Connect to Your {{ site.data.products.dedicated }} Cluster](connect-to-your-cluster.html).
+To connect to a cluster, you need to authorize your network, create a SQL user, download the CA certificate, and then generate a connection string or parameters. You can use this information to connect to your cluster through the CockroachDB SQL client or a PostgreSQL-compatible driver or ORM. For more details, see [Connect to Your {{ site.data.products.dedicated }} Cluster](connect-to-your-cluster.html).
 
 ## Security
 
@@ -55,13 +58,24 @@ Yes. We create individual sub-accounts and VPCs for each cluster within the clou
 
 The allowlist is comprised of IP addresses that you provide to us, and is an additional layer of protection for your cluster. Connections will only be accepted if they come from an allowlisted IP address, which protects against both compromised passwords and any potential bugs in the server.
 
-We use separate certificate authorities for each cluster, and all connections to the cluster over the internet use TLS 1.2.
+We use separate certificate authorities for each cluster, and all connections to the cluster over the internet use TLS 1.2 or 1.3.
+
+See the [Security Overview page](../{{site.versions["stable"]}}/security-reference/security-overview.html) for more information, and for comparison of security options by CockroachDB product.
 
 ### Is encryption-at-rest enabled on {{ site.data.products.dedicated }}?
 
-Yes. All data on {{ site.data.products.dedicated }} is encrypted-at-rest using the tools provided by the cloud provider that your cluster is running in.
+All data in {{ site.data.products.serverless }} and {{ site.data.products.dedicated }} is encrypted-at-rest by your chosen infrastructre-as-a-service provider, Google Cloud Platform (GCP) or Amazon Web Services (AWS), at the infrastructure level.
 
-Because we are relying on the cloud provider's encryption implementation, we do not enable CockroachDB's [internal implementation of encryption-at-rest](../{{site.versions["stable"]}}/encryption.html#encryption-at-rest-enterprise). This means that encryption will appear to be disabled in the [DB Console](../{{site.versions["stable"]}}/ui-overview.html), since it is unaware of cloud provider encryption. For more information, see the [Security Overview](security-overview.html).
+{{site.data.alerts.callout_info}}
+{{ site.data.products.serverless }} and {{ site.data.products.dedicated }} users delegate responsibility for encryption-at-rest to the cloud provider. Hence, CockroachDB's proprietary storage-layer encryption-at-rest functionality is currently only available for {{ site.data.products.enterprise }} customers, and is not currently available to users of {{ site.data.products.serverless }} or {{ site.data.products.dedicated }}.
+
+As a result, encryption will appear to be disabled in the [DB Console](../{{site.versions["stable"]}}/ui-overview.html), since the console is unaware of cloud provider encryption.
+{{site.data.alerts.end}}
+
+
+See the [Security Overview page](../{{site.versions["stable"]}}/security-reference/security-overview.html) for more information, and for comparison of security options by CockroachDB product.
+
+
 
 ### Is my cluster isolated? Does it share resources with any other clusters?
 
@@ -125,7 +139,7 @@ Yes, {{ site.data.products.dedicated }} clusters run the enterprise version of C
 
 ### Is there a public API for {{ site.data.products.db }}?
 
-Our team is currently working on creating a public API for {{ site.data.products.db }}. The initial work is focused on core automation requirements, such as creation, modification, and deletion of clusters. We’re always looking for design partners and customer input for our features, so please [contact us](https://support.cockroachlabs.com/hc/en-us) if you have specific API requirements.
+Yes, see the [Cloud API](cloud-api.html) page for more information. We’re always looking for design partners and customer input for our features, so please [contact us](https://support.cockroachlabs.com/hc/en-us) if you have specific API requirements.
 
 ### Do you have a UI? How can I see details?
 
@@ -165,5 +179,9 @@ The [**{{ site.data.products.db }} Status** page](https://status.cockroachlabs.c
 ### What do I do if my queries are too slow?
 
 To optimize schema design to achieve your performance goals, we recommend working with our Sales Engineering team before you set up your cluster. You can also read our [SQL Performance Best Practices](../{{site.versions["stable"]}}/performance-best-practices-overview.html) and [Query Performance Optimization](../{{site.versions["stable"]}}/make-queries-fast.html) docs for more information.
+
+### Can I monitor my cluster with third-party tools?
+
+Yes, {{ site.data.products.dedicated }} clusters support an integration with Datadog that enables data collection and alerting on a subset of CockroachDB metrics. Enabling the Datadog integration on your {{ site.data.products.dedicated }} cluster will apply additional charges to your **Datadog** bill. See [Monitor with Datadog](monitoring-page.html#monitor-with-datadog) for more information.
 
 If you need additional help, contact [Support](https://support.cockroachlabs.com/hc/en-us).
