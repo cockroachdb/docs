@@ -241,7 +241,7 @@ When a node fails, the cluster waits for the node to remain offline for 5 minute
     503 53730     1   0 10:18AM ttys013    0:33.37 cockroach start --insecure --store=fault-node6 --listen-addr=localhost:26262 --http-addr=localhost:8085 --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
-1. Gracefully shut down the node stored in `fault-node5`, specifying its process ID:
+1. Gracefully shut down the node stored in `fault-node5`, specifying its process ID (in this example, `53708`):
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -303,7 +303,7 @@ Gracefully shut down **2 nodes**, specifying the [process IDs you retrieved earl
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-kill -TERM {process-id}
+kill -TERM {process IDs}
 ~~~
 
 ## Step 10. Check cluster status and service continuity
@@ -365,7 +365,7 @@ kill -TERM {process-id}
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    kill -TERM {process-id}
+    kill -TERM {process IDs}
     ~~~
 
     {{site.data.alerts.callout_info}}
