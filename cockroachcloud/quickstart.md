@@ -19,8 +19,6 @@ This page shows you how to get started with CockroachDB quickly. You'll create a
 
 To get started with {{ site.data.products.db }} using {{ site.data.products.dedicated }} clusters, see [Quickstart with {{ site.data.products.dedicated }}](quickstart-trial-cluster.html).
 
-{% include cockroachcloud/free-limitations.md %}
-
 </section>
 
 <section class="filter-content" markdown="1" data-scope="local">
