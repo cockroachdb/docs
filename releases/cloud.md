@@ -20,12 +20,12 @@ As of August 1, 2022, {{ site.data.products.serverless }} clusters are running C
 
 ## August 2, 2022
 
-<h3> Console changes </h3>
+<h3>Console changes</h3>
 
 - {{ site.data.products.dedicated }} users can now choose any of the available hardware options when configuring a cluster. Previously, there were restrictions based on which storage and compute combinations were recommended for best performance.
 - In the [Connect to your cluster](../cockroachcloud/connect-to-your-cluster.html) dialog, your previous SQL user, database, and connection method selections are now cached to make it easier to re-connect to your cluster.
 
-<h3> Bug fixes </h3>
+<h3>Bug fixes</h3>
 
 - Fixed a bug where the **SQL Activity** tab for clusters running different CockroachDB versions did not always load version-appropriate UI components.
 - Fixed a bug where the **Statements** table on a transaction's [**Transaction Details** page](../cockroachcloud/transactions-page.html) sometimes showed an incorrect number of statements.
