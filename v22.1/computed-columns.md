@@ -60,11 +60,11 @@ Parameter | Description
 ----------|------------
 `column_name` | The [name](keywords-and-identifiers.html#identifiers) of the computed column.
 `<type>` | The [data type](data-types.html) of the computed column.
-`<expr>` | The immutable [scalar expression](scalar-expressions.html) used to compute column values. You cannot use any functions, such as `now()` or `nextval()`, that are not immutable.
+`<expr>` | The [immutable](functions-and-operators.html#function-volatility) [scalar expression](scalar-expressions.html) used to compute column values. You cannot use functions such as `now()` or `nextval()` that are not immutable.
 `STORED` | _(Required for stored computed columns)_ The computed column is stored alongside other columns.
 `VIRTUAL`| _(Required for virtual columns)_ The computed column is virtual, meaning the column data is not stored in the table's primary index.
 
-For compatibility with PostgresSQL, CockroachDB also supports creating store computed columns with the syntax `column_name <type> GENERATED ALWAYS AS (<expr>) STORED`.
+For compatibility with PostgreSQL, CockroachDB also supports creating store computed columns with the syntax `column_name <type> GENERATED ALWAYS AS (<expr>) STORED`.
 
 ## Examples
 

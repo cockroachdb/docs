@@ -3,7 +3,7 @@ title: ALTER DEFAULT PRIVILEGES
 summary: The ALTER DEFAULT PRIVILEGES statement alters the default privileges for roles in the current database.
 keywords: reflection
 toc: true
-docs_area: reference.sql 
+docs_area: reference.sql
 ---
 
  The `ALTER DEFAULT PRIVILEGES` [statement](sql-statements.html) changes the [default privileges](security-reference/authorization.html#default-privileges) on objects created by [users/roles](security-reference/authorization.html#roles) in the current database.
@@ -21,7 +21,7 @@ For an example, see [Grant default privileges to a specific role](#grant-default
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/alter_default_privileges.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/alter_default_privileges.html %}
 </div>
 
 ### Parameters
@@ -32,7 +32,7 @@ Parameter | Description
 `FOR ALL ROLES` | Alter the default privileges on objects created by all users/roles.
 `GRANT ...` | Grant a default privilege or list of privileges on all objects of the specified type to a role/user, or a list of roles/users.
 `REVOKE ...` | Revoke a default privilege or list of privileges on all objects of the specified type from a role/user, or a list of roles/users.
-`IN SCHEMA qualifiable_schema_name` | This clause is a no-op. The syntax is supported for compatibility with PostgreSQL.
+`IN SCHEMA qualifiable_schema_name` | **New in v22.1:** If specified, the default privileges are altered for objects created in that schema. If an object has default privileges specified at the database and at the schema level, the union of the default privileges is taken.
 
 {{site.data.alerts.callout_info}}
 If you do not specify a `FOR ...` clause, CockroachDB alters the default privileges on objects created by the current user.

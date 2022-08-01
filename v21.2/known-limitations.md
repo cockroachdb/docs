@@ -3,7 +3,7 @@ title: Known Limitations in CockroachDB v21.2
 summary: Learn about newly identified limitations in CockroachDB as well as unresolved limitations identified in earlier releases.
 toc: true
 keywords: gin, gin index, gin indexes, inverted index, inverted indexes, accelerated index, accelerated indexes
-docs_area: 
+docs_area:
 ---
 
 This page describes newly identified limitations in the CockroachDB {{page.release_info.version}} release as well as unresolved limitations identified in earlier releases.
@@ -169,6 +169,14 @@ UNION ALL SELECT * FROM t1 LEFT JOIN t2 ON st_contains(t1.geom, t2.geom) AND t2.
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/71071)
 
+### Restoring a multi-region database to a new database in {{ site.data.products.dedicated }}
+
+To restore a multi-region database to a new database in a {{ site.data.products.dedicated }} cluster, the following additional steps are required to ensure the regions match exactly between backup and restore:
+
+{% include cockroachcloud/restore-multiregion-dedicated.md %}
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/67927)
+
 ### `SET` does not `ROLLBACK` in a transaction
 
 {% include {{page.version.version}}/known-limitations/set-transaction-no-rollback.md %}
@@ -239,12 +247,6 @@ If you are [performing an `IMPORT` of a `PGDUMP`](migrate-from-postgres.html) wi
 4. Add partial indexes on the CockroachDB server.
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/50225)
-
-### Historical reads on restored objects
-
-{% include {{ page.version.version }}/known-limitations/restore-aost.md %}
-
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/53044)
 
 ### Spatial support limitations
 
@@ -594,3 +596,7 @@ If you think a rollback of a column-dropping schema change has occurred, check t
 If the execution of a [join](joins.html) query exceeds the limit set for memory-buffering operations (i.e., the value set for the `sql.distsql.temp_storage.workmem` [cluster setting](cluster-settings.html)), CockroachDB will spill the intermediate results of computation to disk. If the join operation spills to disk, and at least one of the equality columns is of type [`JSON`](jsonb.html), CockroachDB returns the error `unable to encode table key: *tree.DJSON`. If the memory limit is not reached, then the query will be processed without error.
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/35706)
+
+### Remove a `UNIQUE` index created as part of `CREATE TABLE`
+
+{% include {{ page.version.version }}/known-limitations/drop-unique-index-from-create-table.md %}

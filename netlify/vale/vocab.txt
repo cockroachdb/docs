@@ -10,6 +10,7 @@ allowlisted
 andrey
 angelese
 anonymized
+APIs
 arity
 artoul
 australiaeast
@@ -17,6 +18,8 @@ australiasoutheast
 autocommit
 autogenerates
 autoscaling
+autosummarize
+autovacuum
 avro
 backfilled
 backfilling
@@ -142,9 +145,11 @@ esri
 evgeniy
 expirations
 failover
+fastupdate
 favicons
 fdw
 filepath
+fillfactor
 firewalled
 firewalling
 firouz
@@ -203,6 +208,8 @@ hueypark
 hyperthread
 hyperthreads
 img
+include_cached
+_include
 inclusivity
 inconsolata
 incrementals
@@ -258,6 +265,9 @@ kubectl
 kubemci
 kuwahara
 kv
+latest_operator_version
+Leakproof
+leakproof
 leiningen
 libedit
 libpq
@@ -266,6 +276,7 @@ linestring
 linestrings
 lightstep
 linearizability
+link_prefix
 liquibase
 liveness
 livestream
@@ -304,6 +315,7 @@ multiregion
 multiset
 multisets
 multiversion
+multixact
 mutex
 mutexes
 mydcos
@@ -339,10 +351,12 @@ ons
 onwards
 openid
 openssl
+operator_version
 orchstrations
 ordinality
 overallocating
 owsiany
+page_prefix
 Pak
 panos
 parallelization
@@ -374,6 +388,7 @@ pocockn
 pointcut
 postgres
 postgresql
+Postgrex
 Postico
 pq
 pre
@@ -421,6 +436,7 @@ reformats
 relicense
 replacewith
 repo
+repos
 repudiability
 rescanned
 retryable
@@ -446,6 +462,7 @@ schimmel
 scrollable
 scrollbars
 seif
+seeked
 sequelize
 serializability
 serializable

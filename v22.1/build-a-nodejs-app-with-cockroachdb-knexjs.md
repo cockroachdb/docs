@@ -47,7 +47,7 @@ $ git clone https://github.com/cockroachlabs/example-app-node-knex
     $ export DATABASE_URL="<connection-string>"
     ~~~
 
-    Where `<connection-string>` is the connection string you obtained from the {{ site.data.products.db }} Console.
+    Where `<connection-string>` is the connection string you copied earlier.
 
     </section>
 
@@ -64,7 +64,7 @@ $ git clone https://github.com/cockroachlabs/example-app-node-knex
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ npm run run
+    $ npm run
     ~~~
 
     The output should look like this:

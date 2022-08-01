@@ -12,7 +12,7 @@ This page has instructions for getting data into CockroachDB with various progra
 Before reading this page, do the following:
 
 - [Create a {{ site.data.products.serverless }} cluster](../cockroachcloud/quickstart.html) or [start a local cluster](../cockroachcloud/quickstart.html?filters=local).
-- [Install a Postgres client](install-client-drivers.html).
+- [Install a Driver or ORM Framework](install-client-drivers.html).
 - [Connect to the database](connect-to-the-database.html).
 
 {% include {{page.version.version}}/app/retry-errors.md %}

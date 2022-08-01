@@ -1,6 +1,8 @@
 To shut down the CockroachDB cluster:
 
 <section class="filter-content" markdown="1" data-scope="operator">
+{% capture latest_operator_version %}{% include_cached latest_operator_version.md %}{% endcapture %}
+
 1. Delete the previously created custom resource:
 
     {% include_cached copy-clipboard.html %}
@@ -12,7 +14,7 @@ To shut down the CockroachDB cluster:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ kubectl delete -f https://raw.githubusercontent.com/cockroachdb/cockroach-operator/{{site.operator_version}}/install/operator.yaml
+    $ kubectl delete -f https://raw.githubusercontent.com/cockroachdb/cockroach-operator/v{{ latest_operator_version }}/install/operator.yaml
     ~~~
 
     This will delete the CockroachDB cluster being run by the Operator. It will *not* delete the persistent volumes that were attached to the pods. 

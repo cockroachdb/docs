@@ -102,7 +102,7 @@ Update the connection parameters to connect to your cluster.
 
 {% include_cached copy-clipboard.html %}
 ~~~ ruby
-{% remote_include https://raw.githubusercontent.com/cockroachlabs/example-app-ruby-activerecord/main/main.rb|# BEGIN connect|# END connect %}
+{% remote_include https://raw.githubusercontent.com/cockroachlabs/example-app-ruby-activerecord/main/main.rb||# BEGIN connect||# END connect %}
 ~~~
 
 Where `{port}` is the port number from the connection string you noted earlier, `{username}` is the database username you created, and `{password}` is the database user's password.
@@ -112,7 +112,7 @@ Where `{port}` is the port number from the connection string you noted earlier, 
 
 {% include_cached copy-clipboard.html %}
 ~~~ ruby
-{% remote_include https://raw.githubusercontent.com/cockroachlabs/example-app-ruby-activerecord/cockroachcloud/main.rb|# BEGIN connect|# END connect %}
+{% remote_include https://raw.githubusercontent.com/cockroachlabs/example-app-ruby-activerecord/cockroachcloud/main.rb||# BEGIN connect||# END connect %}
 ~~~
 
 {% include {{page.version.version}}/app/cc-free-tier-params.md %}

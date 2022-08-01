@@ -455,14 +455,14 @@ Field | Type | Description
 `implicitTxn` | `BOOLEAN` | Whether the statement executed in an implicit transaction.
 `query` | `STRING` | The statement string.
 `querySummary` | `STRING` | The statement string summary.
-`stmtTyp` | `SQLType` | The [type of SQL statement](sqltype.html): `TypeDDL`, `TypeDML`, `TypeDCL`, or `TypeTCL`.
+`stmtTyp` | `STRING` | The type of SQL statement: `"TypeDDL"`, `"TypeDML"`, `"TypeDCL"`, or `"TypeTCL"`. These types map to the CockroachDB statement types [data definition language (DDL)](sql-statements.html#data-definition-statements), [data manipulation language (DML)](sql-statements.html#data-manipulation-statements), [data control language (DCL)](sql-statements.html#data-control-statements), and [transaction control language (TCL)](sql-statements.html#transaction-control-statements).
 `vec` | `BOOLEAN` | Whether the statement executed in the vectorized query engine.
 
 #### `statistics` column
 
-The [DB Console](ui-overview.html) [Statements](ui-statements-page.html) and [Statement Details](ui-statements-page.html#statement-details-page) pages display information from `statistics`.
+The [DB Console](ui-overview.html) [Statements](ui-statements-page.html) and [Statement Fingerprint](ui-statements-page.html#statement-fingerprint-page) pages display information from `statistics`.
 
-The `statistics` column contains a JSONB object with `statistics` and `execution_statistics` subobjects. [`statistics`](ui-statements-page.html#statement-statistics) are always populated and are updated each time a new statement of that statement fingerprint is executed. [`execution_statistics`](ui-statements-page.html#execution-stats) are collected using sampling. CockroachDB probabilistically runs a query with tracing enabled to collect fine-grained statistics of the query execution.
+The `statistics` column contains a JSONB object with `statistics` and `execution_statistics` subobjects. [`statistics`](ui-statements-page.html#statement-statistics) are always populated and are updated each time a new statement of that statement fingerprint is executed. [`execution_statistics`](ui-statements-page.html#charts) are collected using sampling. CockroachDB probabilistically runs a query with tracing enabled to collect fine-grained statistics of the query execution.
 
 The `NumericStat` type tracks two running values: the running mean `mean` and the running sum of squared differences `sqDiff` from the mean. You can use these statistics along with the total number of values to compute the variance using Welford's method. CockroachDB computes the variance and displays it along with `mean` in the [Statements table](ui-statements-page.html#statements-table).
 

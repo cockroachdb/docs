@@ -1,11 +1,11 @@
 ---
 title: Monitor and Debug Changefeeds
-summary: Monitor a changefeed from the DB console and use logs for debugging.
+summary: Monitor a changefeed from the DB Console and use logs for debugging.
 toc: true
 docs_area: stream_data
 ---
 
-Changefeeds work as jobs in CockroachDB, which allows for [monitoring](#monitor-a-changefeed) and [debugging](#debug-a-changefeed) through the [DB console's](ui-overview.html) [**Jobs**](ui-jobs-page.html) page and [`SHOW JOBS`](show-jobs.html) SQL statements using the job ID.
+Changefeeds work as jobs in CockroachDB, which allows for [monitoring](#monitor-a-changefeed) and [debugging](#debug-a-changefeed) through the [DB Console](ui-overview.html) [**Jobs**](ui-jobs-page.html) page and [`SHOW JOBS`](show-jobs.html) SQL statements using the job ID.
 
 ## Monitor a changefeed
 
@@ -15,7 +15,7 @@ Monitoring is only available for {{ site.data.products.enterprise }} changefeeds
 
 Changefeed progress is exposed as a high-water timestamp that advances as the changefeed progresses. This is a guarantee that all changes before or at the timestamp have been emitted. You can monitor a changefeed:
 
-- On the [Changefeed Dashboard](ui-cdc-dashboard.html) of the DB Console.
+- On the [**Changefeeds** dashboard](ui-cdc-dashboard.html) of the DB Console.
 - On the [**Jobs** page](ui-jobs-page.html) of the DB Console. Hover over the high-water timestamp to view the [system time](as-of-system-time.html).
 - Using `SHOW CHANGEFEED JOB <job_id>`:
 

@@ -18,7 +18,7 @@ It is not possible to rename a constraint for a column referenced by a view. For
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/rename_constraint.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/rename_constraint.html %}
 </div>
 
 ## Required privileges

@@ -50,7 +50,7 @@ This tutorial shows you how build a simple Node.js application with CockroachDB 
     $ echo "DATABASE_URL=<connection-string>" >> .env
     ~~~
 
-    Where `<connection-string>` is the connection string you obtained earlier from the {{ site.data.products.db }} Console.
+    Where `<connection-string>` is the connection string you copied earlier.
 
     </div>
 
@@ -73,7 +73,7 @@ This tutorial shows you how build a simple Node.js application with CockroachDB 
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ prisma migrate dev --name init
+    $ node_modules/.bin/prisma migrate dev --name init
     ~~~
 
     You should see the following output:

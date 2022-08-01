@@ -28,7 +28,7 @@ To pause a job, the user must be a member of the `admin` role or must have the [
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/pause_job.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/pause_job.html %}
 </div>
 
 ## Parameters

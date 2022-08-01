@@ -46,9 +46,12 @@ module Jekyll
       # but a custom hook like this one can allow more fine-grained
       # customisation.
       def self.should_be_excluded?(filepath)
-        # We want to include release files and CockroachDB Cloud docs
+        # We want to include release files, CockroachDB Cloud docs,
+        # API docs, and advisories
         return false if filepath.start_with?('release')
         return false if filepath.start_with?('cockroachcloud')
+        return false if filepath.start_with?('api')
+        return false if filepath.start_with?('advisories')
 
         # Exclude from index if files are not part of stable version.
         # If valid stable version does not exist, index dev version.
