@@ -709,6 +709,12 @@
                 ]
               },
               {
+                "title": "<code>SET CLUSTER SETTING</code>",
+                "urls": [
+                  "/${VERSION}/set-cluster-setting.html"
+                ]
+              },
+              {
                 "title": "<code>SET &#123;session variable&#125;</code>",
                 "urls": [
                   "/${VERSION}/set-vars.html"
@@ -718,12 +724,6 @@
                 "title": "<code>SET &#123;storage parameter&#125;</code>",
                 "urls": [
                   "/${VERSION}/set-storage-parameter.html"
-                ]
-              },
-              {
-                "title": "<code>SET CLUSTER SETTING</code>",
-                "urls": [
-                  "/${VERSION}/set-cluster-setting.html"
                 ]
               },
               {
@@ -748,12 +748,6 @@
                 "title": "<code>SET TRANSACTION</code>",
                 "urls": [
                   "/${VERSION}/set-transaction.html"
-                ]
-              },
-              {
-                "title": "<code>SHOW &#123;session variable&#125;</code>",
-                "urls": [
-                  "/${VERSION}/show-vars.html"
                 ]
               },
               {
@@ -862,6 +856,12 @@
                 "title": "<code>SHOW REGIONS</code>",
                 "urls": [
                   "/${VERSION}/show-regions.html"
+                ]
+              },
+              {
+                "title": "<code>SHOW &#123;session variable&#125;</code>",
+                "urls": [
+                  "/${VERSION}/show-vars.html"
                 ]
               },
               {
@@ -1095,12 +1095,6 @@
                 "title": "<code>SERIAL</code>",
                 "urls": [
                   "/${VERSION}/serial.html"
-                ]
-              },
-              {
-                "title": "<code>SQLType</code>",
-                "urls": [
-                  "/${VERSION}/sqltype.html"
                 ]
               },
               {
@@ -1768,6 +1762,12 @@
               "/${VERSION}/eventlog.html"
             ]
           }
+        ]
+      },
+      {
+        "title": "API Support Policy",
+        "urls": [
+          "/${VERSION}/api-support-policy.html"
         ]
       },
       {

@@ -8,6 +8,8 @@ redirect_from: orchestration.html
 docs_area: deploy
 ---
 
+Kubernetes is a portable, extensible, open source platform for managing containerized workloads and services. For a given workload, you provide Kubernetes with a configuration, and Kubernetes applies that configuration to all Kubernetes nodes that are running the application. , that facilitates both declarative configuration and automation.
+
 CockroachDB can be deployed and managed on Kubernetes using the following methods:
 
 - [CockroachDB Kubernetes Operator](https://github.com/cockroachdb/cockroach-operator)

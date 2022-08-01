@@ -56,10 +56,10 @@ If you [deployed CockroachDB on Red Hat OpenShift](deploy-cockroachdb-with-kuber
 <section class="filter-content" markdown="1" data-scope="operator">
 ## Apply settings
 
-Cluster parameters are configured in a `CrdbCluster` custom resource object. This tells the Operator how to configure the Kubernetes cluster. We provide a custom resource template called [`example.yaml`](https://github.com/cockroachdb/cockroach-operator/blob/master/examples/example.yaml):
+Cluster parameters are configured in a `CrdbCluster` custom resource object. This tells the Operator how to configure the Kubernetes cluster. We provide a custom resource template called [`example.yaml`](https://raw.github.com/cockroachdb/cockroach-operator/v{{ latest_operator_version }}/examples/example.yaml):
 
 ~~~ yaml
-{% remote_include https://raw.githubusercontent.com/cockroachdb/cockroach-operator/master/examples/example.yaml||# Generated, do not edit. Please edit this file instead: config/templates/example.yaml.in\n#\n|| %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/cockroach-operator/v{{ latest_operator_version }}/examples/example.yaml %}
 ~~~
 
 It's simplest to download and customize a local copy of the custom resource manifest. After you modify its parameters, run this command to apply the new values to the cluster:
@@ -1105,11 +1105,13 @@ To enable the Operator to automatically remove persistent volumes when [scaling 
 This workflow is unsupported and should be enabled at your own risk.
 {{site.data.alerts.end}}
 
+{% capture latest_operator_version %}{% include_cached latest_operator_version.md %}{% endcapture %}
+
 1. Download the Operator manifest:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ curl -0 https://raw.githubusercontent.com/cockroachdb/cockroach-operator/{{site.operator_version}}/install/operator.yaml
+    $ curl -0 https://raw.githubusercontent.com/cockroachdb/cockroach-operator/v{{ latest_operator_version }}/install/operator.yaml
     ~~~
 
 1. Uncomment the following lines in the Operator manifest:

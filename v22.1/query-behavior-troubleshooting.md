@@ -17,7 +17,7 @@ For a developer-centric overview of optimizing SQL statement performance, see [O
 
 Use the [slow query log](logging-use-cases.html#sql_perf) or DB Console to detect slow queries in your cluster.
 
-High latency SQL statements are displayed on the [Statements](ui-statements-page.html) page of the DB Console.
+You can identify high-latency SQL statements on the [Statements](ui-statements-page.html) page of the DB Console. You can collect richer diagnostics of a high-latency statement by creating a [diagnostics bundle](ui-statements-page.html#diagnostics) when a statement fingerprint exceeds a certain latency.
 
 You can also check the [service latency graph](ui-sql-dashboard.html#service-latency-sql-99th-percentile) and the [CPU graph](ui-hardware-dashboard.html#cpu-percent) on the SQL and Hardware Dashboards, respectively. If the graphs show latency spikes or CPU usage spikes, these might indicate slow queries in your cluster.
 
@@ -245,6 +245,10 @@ Throughput is affected by the disk I/O, CPU usage, and network latency. Use the 
 - CPU usage: [CPU percent](ui-hardware-dashboard.html#cpu-percent)
 
 - Network latency: [Network Latency](ui-network-latency-page.html)
+
+### Query runs out of memory
+
+If your query returns the error code `SQLSTATE: 53200` with the message `ERROR: root: memory budget exceeded`, follow the guidelines in [memory budget exceeded](common-errors.html#memory-budget-exceeded).
 
 ## Node issues
 

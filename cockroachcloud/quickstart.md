@@ -61,7 +61,7 @@ Follow these steps to create a {{ site.data.products.serverless }} cluster using
 Follow these steps to create a {{ site.data.products.serverless }} cluster using the <code>ccloud</code> CLI tool.
 
 {{site.data.alerts.callout_info}}
-The <code>ccloud</code> CLI tool is in beta.
+The <code>ccloud</code> CLI tool is in Preview.
 {{site.data.alerts.end}}
 
 <h2>Install <code>ccloud</code></h2>
@@ -121,7 +121,7 @@ The **Connect to cluster** dialog shows information about how to connect to your
 
 1. Select **Java** from the **Select option** dropdown.
 1. Copy the `JDBC_DATABASE_URL` environment variable command provided and save it in a secure location.
-    
+
     This Quickstart uses default certificates, so you can skip the **Download CA Cert** instructions.
 
     {{site.data.alerts.callout_info}}
@@ -396,7 +396,7 @@ For reference information about connecting to CockroachDB with supported client 
     ~~~ shell
     $ go mod init basic-sample
     ~~~
-    
+
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     go mod tidy
@@ -463,6 +463,7 @@ For reference information about connecting to CockroachDB with supported client 
 - [Learn CockroachDB SQL](learn-cockroachdb-sql.html).
 - [Create and manage SQL users](user-authorization.html).
 - Explore our [example apps](../{{site.versions["stable"]}}/example-apps.html) for examples on how to build applications using your preferred driver or ORM and run it on CockroachDB.
+- [Migrate your existing data](../{{site.versions["stable"]}}/migration-overview.html).
 
 ## Learn more
 

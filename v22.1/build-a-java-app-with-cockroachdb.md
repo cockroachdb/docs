@@ -22,7 +22,7 @@ For a sample app and tutorial that uses Spring Data JDBC and CockroachDB, see [B
 
 ## Step 1. Start CockroachDB
 
-{% include {{ page.version.version }}/setup/sample-setup.md %}
+{% include {{ page.version.version }}/setup/sample-setup-jdbc.md %}
 
 ## Step 2. Get the code
 
@@ -86,7 +86,7 @@ The `main` method of the app performs the following steps which roughly correspo
 
 It does all of the above using the practices we recommend for using JDBC with CockroachDB, which are listed in the [Recommended Practices](#recommended-practices) section below.
 
-## Step 3. Initialize the database
+## Step 3. Update the connection configuration
 
 1. Navigate to the `example-app-java-jdbc` directory:
 
@@ -95,87 +95,55 @@ It does all of the above using the practices we recommend for using JDBC with Co
     $ cd example-app-java-jdbc
     ~~~
 
-1. Set the `DATABASE_URL` environment variable to the connection string to your cluster:
+1. Set the `JDBC_DATABASE_URL` environment variable to a JDBC-compatible connection string:
 
     <section class="filter-content" markdown="1" data-scope="local">
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    export DATABASE_URL="postgresql://root@localhost:26257?sslmode=disable"
+    export JDBC_DATABASE_URL=jdbc:postgresql://localhost:26257/defaultdb?sslmode=disable&user=root
     ~~~
 
     </section>
 
-    <section class="filter-content" markdown="1" data-scope="cockroachcloud">
+    <section class="filter-content" markdown="1" data-scope="console">
 
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    export DATABASE_URL="{connection-string}"
-    ~~~
+    1. Paste in the command you copied earlier:
+    
+        {% include_cached copy-clipboard.html %}
+        ~~~ shell
+        export JDBC_DATABASE_URL="{connection-string}"
+        ~~~
 
-    Where `{connection-string}` is the connection string you obtained from the {{ site.data.products.db }} Console.
+        Where `{connection-string}` is the JDBC connection string from the command you copied earlier.
 
     </section>
+    
+    <section class="filter-content" markdown="1" data-scope="ccloud">
+    
+    1. Use the `cockroach convert-url` command to convert the connection string that you copied from the {{ site.data.products.cloud }} Console to a [valid connection string for JDBC connections](connect-to-the-database.html?filters=java):
 
-1. To initialize the example database, use the [`cockroach sql`](cockroach-sql.html) command to execute the SQL statements in the `dbinit.sql` file:
+        {% include_cached copy-clipboard.html %}
+        ~~~ shell
+        cockroach convert-url --url $DATABASE_URL
+        ~~~
 
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    cat app/src/main/resources/dbinit.sql | cockroach sql --url $DATABASE_URL
-    ~~~
+        ~~~
+        ...
 
-    The SQL statement in the initialization file should execute:
+        # Connection URL for JDBC (Java and JVM-based languages):
+        jdbc:postgresql://{host}:{port}/{database}?options=--cluster%3D{routing-id}&password={password}&sslmode=verify-full&user={username}
+        ~~~
 
-    ~~~
-    CREATE TABLE
+    1. Set the `JDBC_DATABASE_URL` environment variable to the JDBC-compatible connection string:
 
-
-    Time: 102ms
-    ~~~
+        {% include_cached copy-clipboard.html %}
+        ~~~ shell
+        export JDBC_DATABASE_URL="{jdbc-connection-string}"
+        ~~~
+    </section>
 
 ## Step 4. Run the code
-
-### Update the connection configuration
-
-<section class="filter-content" markdown="1" data-scope="local">
-
-Set the `JDBC_DATABASE_URL` environment variable to a JDBC-compatible connection string:
-
-{% include_cached copy-clipboard.html %}
-~~~ shell
-export JDBC_DATABASE_URL=jdbc:postgresql://localhost:26257/defaultdb?sslmode=disable&user=root
-~~~
-
-</section>
-
-<section class="filter-content" markdown="1" data-scope="cockroachcloud">
-
-1. Use the `cockroach convert-url` command to convert the connection string that you copied from the {{ site.data.products.cloud }} Console to a [valid connection string for JDBC connections](connect-to-the-database.html?filters=java):
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    cockroach convert-url --url $DATABASE_URL
-    ~~~
-
-    ~~~
-    ...
-
-    # Connection URL for JDBC (Java and JVM-based languages):
-    jdbc:postgresql://{host}:{port}/{database}?options=--cluster%3D{routing-id}&password={password}&sslmode=verify-full&user={username}
-    ~~~
-
-1. Set the `JDBC_DATABASE_URL` environment variable to the JDBC-compatible connection string:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    export JDBC_DATABASE_URL="{jdbc-connection-string}"
-    ~~~
-
-</section>
-
-The code sample uses the connection string stored in the environment variable `JDBC_DATABASE_URL` to connect to your cluster.
-
-### Run the code
 
 Compile and run the code:
 
@@ -187,6 +155,9 @@ Compile and run the code:
 The output will look like the following:
 
 ~~~
+com.cockroachlabs.BasicExampleDAO.createAccountsTable:
+    'CREATE TABLE IF NOT EXISTS accounts (id UUID PRIMARY KEY, balance int8)'
+
 com.cockroachlabs.BasicExampleDAO.updateAccounts:
     'INSERT INTO accounts (id, balance) VALUES ('b5679853-b968-4206-91ec-68945fa3e716', 250)'
 
