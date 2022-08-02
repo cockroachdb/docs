@@ -20,7 +20,7 @@ A `OID` value is 32 bits in width.
 You **should not**:
 
 - Use OIDs in user-created tables. Values of this type are not guaranteed to be stable across major releases.
-- Rely on OIDs to be globally unique. Each OID subtype is only unique within certain namespace.
+- Rely on OIDs to be globally unique. Each OID subtype is unique only within a certain namespace.
 
 ## See also
 
