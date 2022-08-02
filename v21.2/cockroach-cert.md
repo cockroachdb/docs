@@ -90,7 +90,7 @@ uid=1000(cockroach) gid=1000(cockroach) groups=1000(cockroach),1000(cockroach)
 
 In the output, we can see that the system user `cockroach` is in the `cockroach` group (with the group ID or gid `1000`).
 
-If the key file is owned by the system `root` user (who has a user ID of 0), CockroachDB won't be able to read it unless it has permission to read because of its group membership. Because we know that CockroachDB user is a member of the `cockroach` group, we can allow CockroachDB to read the key by changing the group owner of the key file to the `cockroach` group. We then give the group read permissions by running `chmod`. Notice that the `others` group has no permissions (the `0` of `740`). Only the `cockroach` user, a member of the `cockroach` group, or the system `root` user has permission to read the key.
+If the key file is owned by the system `root` user (who has user ID `0`), CockroachDB won't be able to read it unless it has permission to read because of its group membership. Because we know that CockroachDB user is a member of the `cockroach` group, we can allow CockroachDB to read the key by changing the group owner of the key file to the `cockroach` group. We then give the group read permissions by running `chmod`. Notice that the `others` group has no permissions (the `0` of `740`). Only the `cockroach` user, a member of the `cockroach` group, or the system `root` user has permission to read the key.
 
 ```shell
 sudo chgrp cockroach ui.key
