@@ -1,0 +1,1 @@
+**Note:** Client keys are often encrypted. You will receive an error if you pass an encrypted client key in your changefeed statement. To decrypt the client key, run: `openssl rsa -in key.pem -out key.decrypt.pem -passin pass:{PASSWORD}`.
