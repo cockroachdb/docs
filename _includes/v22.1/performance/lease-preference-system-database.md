@@ -6,3 +6,5 @@ ALTER DATABASE system CONFIGURE ZONE USING constraints = '{"+region=us-east1": 1
 ~~~
 
 Run all subsequent schema changes from a node in the specified region.
+
+After the schema changes have completed, disable the zone configuration.
