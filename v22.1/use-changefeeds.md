@@ -301,7 +301,9 @@ CockroachDB Type | Avro Type | Avro Logical Type
 -----------------+-----------+---------------------
 [`ARRAY`](array.html) | [`ARRAY`](https://avro.apache.org/docs/1.8.1/spec.html#schema_complex) |
 [`BIT`](bit.html) | Array of [`LONG`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive) |
+[`BLOB`](bytes.html) | [`BYTES`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive) |
 [`BOOL`](bool.html) | [`BOOLEAN`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive) |
+[`BYTEA`](bytes.html) | [`BYTES`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive) |
 [`BYTES`](bytes.html) | [`BYTES`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive) |
 [`COLLATE`](collate.html) | [`STRING`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive) |
 [`DATE`](date.html) | [`INT`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive) | [`DATE`](https://avro.apache.org/docs/1.8.1/spec.html#Date)
