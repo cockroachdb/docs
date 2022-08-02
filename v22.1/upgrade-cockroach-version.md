@@ -6,22 +6,23 @@ docs_area: manage
 ---
 
 {% assign previous_version = site.data.versions | where_exp: "previous_version", "previous_version.major_version == page.version.version" | map: "previous_version" | first %}
-{% assign previous_latest_production = site.data.releases | where_exp: "previous_latest_production", "previous_latest_production.major_version == previous_version" | where: "release_type", "Production" | sort: "release_date" | last %}
-{% assign prior_production = site.data.releases | where_exp: "prior_production", "prior_production.major_version == page.version.version" | where: "release_type", "Production" | sort: "release_date" | pop | last %}
-{% assign first_testing = site.data.releases | where_exp: "first_testing", "first_testing.major_version == page.version.version" | where: "release_type", "Testing" | sort: "release_date" | first %}
-{% assign actual_latest = site.data.releases | where: "release_type", "Production" | sort: "release_date" | last %}
+{% assign earliest = site.data.releases | where_exp: "earliest", "earliest.major_version == page.version.version" | sort: "release_date" | first %}
+{% assign latest = site.data.releases | where_exp: "latest", "latest.major_version == page.version.version" | sort: "release_date" | last %}
+{% assign prior = site.data.releases | where_exp: "prior", "prior.major_version == page.version.version" | sort: "release_date" | pop | last %}
+{% assign previous_latest_prod = site.data.releases | where_exp: "previous_latest_prod", "previous_latest_prod.major_version == previous_version" | where: "release_type", "Production" | sort: "release_date" | last %}
+{% assign actual_latest_prod = site.data.releases | where: "release_type", "Production" | sort: "release_date" | last %}
 
 Because of CockroachDB's [multi-active availability](multi-active-availability.html) design, you can perform a "rolling upgrade" of your CockroachDB cluster. This means that you can upgrade nodes one at a time without interrupting the cluster's overall health and operations.
 
-This page describes how to upgrade to the latest **{{ page.version.version }}** production release, **{{ page.release_info.version }}**.
+This page describes how to upgrade to the latest **{{ page.version.version }}** release, **{{ latest.version }}**.
 
 ## Terminology
 
 Before upgrading, review the CockroachDB [release](../releases/) terminology:
 
-- A new *major release* is performed every 6 months. The major version number indicates the year of release followed by the release number, which will be either 1 or 2. For example, the latest major release is {{ actual_latest.major_version }} (also written as {{ actual_latest.major_version }}.0).
-- Each [supported](../releases/release-support-policy.html) major release is maintained across *patch releases* that fix crashes, security issues, and data correctness issues. Each patch release increments the major version number with its corresponding patch number. For example, patch releases of {{ actual_latest.major_version }} use the format {{ actual_latest.major_version }}.x.
-- All major and patch releases are suitable for production usage, and are therefore considered "production releases". For example, the latest production release is {{ actual_latest.version }}.
+- A new *major release* is performed every 6 months. The major version number indicates the year of release followed by the release number, which will be either 1 or 2. For example, the latest major release is {{ actual_latest_prod.major_version }} (also written as {{ actual_latest_prod.major_version }}.0).
+- Each [supported](../releases/release-support-policy.html) major release is maintained across *patch releases* that fix crashes, security issues, and data correctness issues. Each patch release increments the major version number with its corresponding patch number. For example, patch releases of {{ actual_latest_prod.major_version }} use the format {{ actual_latest_prod.major_version }}.x.
+- All major and patch releases are suitable for production usage, and are therefore considered "production releases". For example, the latest production release is {{ actual_latest_prod.version }}.
 - Prior to an upcoming major release, alpha and beta releases and release candidates are made available. These "testing releases" are not suitable for production usage. They are intended for users who need early access to a feature before it is available in a production release. These releases append the terms `alpha`, `beta`, or `rc` to the version number.
 
 {{site.data.alerts.callout_info}}
@@ -37,10 +38,12 @@ Run [`cockroach sql`](cockroach-sql.html) against any node in the cluster to ope
 > SHOW CLUSTER SETTING version;
 ~~~
 
-To upgrade to {{ page.release_info.version }}, you must be running either:
+To upgrade to {{ latest.version }}, you must be running{% if prior.version %} either{% endif %}:
 
-- **A {{ previous_version }} production release:** {{ previous_version }}.0 to {{ previous_latest_production.version }}
-- **Any earlier {{ page.version.version }} release:** {{ first_testing.version }} to {{ prior_production.version }}
+- **A {{ previous_version }} production release:** {{ previous_version }}.0 to {{ previous_latest_prod.version }}
+{% if prior.version %}
+- **Any earlier {{ page.version.version }} release:** {{ earliest.version }} to {{ prior.version }}
+{% endif %}
 
 If you are running any other version, take the following steps **before** continuing on this page:
 
@@ -50,7 +53,7 @@ If you are running any other version, take the following steps **before** contin
 | Pre-{{ previous_version }} production release  | Upgrade through each subsequent major release, [ending with a {{ previous_version }} production release](../{{ previous_version }}/upgrade-cockroach-version.html)                                                     |
 | Pre-{{ page.version.version }} testing release | Upgrade to a corresponding production release; then upgrade through each subsequent major release, [ending with a {{ previous_version }} production release](../{{ previous_version }}/upgrade-cockroach-version.html) |
 
-When you are ready to upgrade to {{ page.release_info.version }}, continue to [step 2](#step-2-prepare-to-upgrade).
+When you are ready to upgrade to {{ latest.version }}, continue to [step 2](#step-2-prepare-to-upgrade).
 
 ## Step 2. Prepare to upgrade
 
@@ -121,7 +124,7 @@ We recommend creating scripts to perform these steps instead of performing them 
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
-These steps perform an upgrade to the latest {{ page.version.version }} production release, **{{ page.release_info.version}}**. Upgrading to the latest production release is not required, but is strongly recommended.
+These steps perform an upgrade to the latest {{ page.version.version }} release, **{{ latest.version}}**.
 {{site.data.alerts.end}}
 
 1. [Drain and shut down the node.](node-shutdown.html#perform-node-shutdown)
@@ -136,14 +139,14 @@ These steps perform an upgrade to the latest {{ page.version.version }} producti
     <div class="filter-content" markdown="1" data-scope="mac">
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ curl https://binaries.cockroachdb.com/cockroach-{{page.release_info.version}}.darwin-10.9-amd64.tgz|tar -xzf -
+    $ curl https://binaries.cockroachdb.com/cockroach-{{latest.version}}.darwin-10.9-amd64.tgz|tar -xzf -
     ~~~
     </div>
 
     <div class="filter-content" markdown="1" data-scope="linux">
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ curl https://binaries.cockroachdb.com/cockroach-{{page.release_info.version}}.linux-amd64.tgz|tar -xzf -
+    $ curl https://binaries.cockroachdb.com/cockroach-{{latest.version}}.linux-amd64.tgz|tar -xzf -
     ~~~
     </div>
 
@@ -163,7 +166,7 @@ These steps perform an upgrade to the latest {{ page.version.version }} producti
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ cp -i cockroach-{{page.release_info.version}}.darwin-10.9-amd64/cockroach /usr/local/bin/cockroach
+    $ cp -i cockroach-{{latest.version}}.darwin-10.9-amd64/cockroach /usr/local/bin/cockroach
     ~~~
     </div>
 
@@ -175,7 +178,7 @@ These steps perform an upgrade to the latest {{ page.version.version }} producti
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ cp -i cockroach-{{page.release_info.version}}.linux-amd64/cockroach /usr/local/bin/cockroach
+    $ cp -i cockroach-{{latest.version}}.linux-amd64/cockroach /usr/local/bin/cockroach
     ~~~
     </div>
 
