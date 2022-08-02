@@ -672,8 +672,8 @@ When the time comes to document known limitations, keep in mind that you are doc
 
 All product names except CockroachDB should be written as Liquid variables unless part of front-matter, file names, or non-Markdown files. Use the following code in place of product names:
 
-- **CockroachDB Serverless (beta)** : `{{ site.data.products.serverless }}`
-- **CockroachDB Serverless** : `{{ site.data.products.serverless-plan }}`
+- **CockroachDB Serverless** : `{{ site.data.products.serverless }}`
+- **CockroachDB Serverless** : `{{ site.data.products.serverless }}`
 - **CockroachDB Dedicated** : `{{ site.data.products.dedicated }}`
 - **CockroachDB Self-Hosted** : `{{ site.data.products.core }}`
 - **Enterprise** : `{{ site.data.products.enterprise }}`
