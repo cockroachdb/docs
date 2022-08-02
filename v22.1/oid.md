@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-The object identifier (OID) [data type](data-types.html) stores an unsigned 32-bit integer value.
+The object identifier (`OID`) [data type](data-types.html) stores an unsigned 32-bit integer value.
 
 OIDs are used internally as primary keys for tables in [system catalogs](system-catalogs.html), notably `information_schema` and `pg_catalog`.
 
