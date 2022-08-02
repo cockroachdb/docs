@@ -108,6 +108,14 @@ On its own, such a digital certificate is of no more value than a paper certific
 
 The premise of PKI is that if I present you with a certificate, and you can decrypt it with, for example, Cockroach Labs' public certificate, and the decrypted version says that I work for the Cockroach Labs documentation team, essentially you may interpret that Cockroach Labs offers its guarantee that I work for the documentation team (or at least, I did when the certificate was signed).
 
+<img src="{{ 'images/v22.1/pki_signing.png' | relative_url }}" alt="signing, trust and authentication in PKI" style="max-width:60%" />
+
+Figure 1. Cryptographic signing of PKI public certificates.
+
+<img src="{{ 'images/v22.1/pki_auth.png' | relative_url }}" alt="signing, trust and authentication in PKI" style="max-width:60%" />
+
+Figure 2. Checking the issuer's public certificate to validate the PKI trust chain of a public certificate
+
 Generally, given that you can put your trust in the organization that backs the Certificate Authority who has signed a server's public certificate, you can extend your trust that the holder of the private key corresponding to that certificate is who the certificate says they are. For example, this is how your web browser or mobile app knows that it's actually talking to your bank, rather than an imposter. Furthermore, one Certificate Authority may grant certify that another party is authorized to issue certificates on its behalf, acting as a **subordinate CA**.
 
 ### Public and private PKIs
@@ -143,7 +151,15 @@ In addition, SQL clients and DB Console clients must be able to reach the nodes.
 
 Therefore, the nodes must each have a [private key/public certificate pair](#key-pairs) where the public certificates have been signed by a common CA (called the **node CA** here).
 
-If the client is to use mutual authentication the client must have a private key/public certificate pair, where the public certificate is signed by a CA trusted by the nodes, i.e. the CA's public certificate must be in the nodes' trust stores.
+If the client is to use mutual authentication, as illustrated here, the client must have a private key/public certificate pair, where the public certificate is signed by a CA trusted by the nodes, i.e. the CA's public certificate must be in the nodes' trust stores.
+
+<img src="{{ 'images/v22.1/certs_signing.png' | relative_url }}" alt="certificate signing relationships diagram" style="max-width:60%" />
+
+Figure 3. Relationships between private keys and public certificates in a typical PKI architecture for a CockroachDB Cluster.
+
+<img src="{{ 'images/v22.1/certs_requests.png' | relative_url }}" alt="certificate signing relationships diagram" style="max-width:60%" />
+
+Figure 4. Certificate authentication Relationships between private keys and public certificates in an example PKI architecture for a CockroachDB Cluster.
 
 ## CockroachDB's TLS support and operating modes
 
