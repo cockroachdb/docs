@@ -155,7 +155,7 @@ If the client is to use mutual authentication, as illustrated here, the client m
 
 <img src="{{ 'images/v22.1/certs_signing.png' | relative_url }}" alt="certificate signing relationships diagram" style="max-width:60%" />
 
-Figure 3. Relationships between private keys and public certificates in a typical PKI architecture for a CockroachDB Cluster.
+Figure 3. Relationships between private keys and public certificates in an example PKI architecture for a three node CockroachDB Cluster similar to that deployed in the tutorial on [Managing CockroachDB security certificates with HashiCorp Vault](../manage-certs-vault.html).
 
 <img src="{{ 'images/v22.1/certs_requests.png' | relative_url }}" alt="certificate signing relationships diagram" style="max-width:60%" />
 
