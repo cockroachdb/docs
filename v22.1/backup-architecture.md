@@ -50,7 +50,7 @@ Once one of the nodes has claimed the job from the system job table, it will tak
 - Determine the specific subdirectory for this backup, including if it should be incremental from any discovered existing directories.
 - Calculate the keys and time range (if incremental) of the backup data.
 - Determine the [leaseholder](architecture/overview.html#architecture-leaseholder) nodes for the keys to back up. 
-- Provide a plan to the notes that will execute the data export (typically the leaseholder node).
+- Provide a plan to the nodes that will execute the data export (typically the leaseholder node).
 
 To map out the storage location's directory to which the nodes will write the data, the coordinator identifies the [type](backup-and-restore-overview.html#backup-and-restore-types) of backup. This determines the name of the new (or edited) directory to store the backup files in. For example, if there is an existing full backup in the target storage location, the upcoming backup will be [incremental](take-full-and-incremental-backups.html#incremental-backups) and therefore append to the full backup after any existing incremental layers discovered in it. 
 
@@ -72,7 +72,9 @@ Since any node in a cluster can become the coordinator and all nodes could be re
 
 Once the coordinator has provided a plan to each of the backup SQL processors that specifies the backup data, the distributed export of the backup data begins.
 
-In the following diagram, **Node 2** and **Node 3** contain the leaseholders for the **R1** and **R2** [ranges](architecture/overview.html#architecture-range). Therefore, in this example backup job, the backup data will be exported from these nodes to the specified storage location. While processing, the nodes emit progress data to track their backup work. The coordinator node will aggregate the progress data into checkpoint files in the storage bucket. The checkpoint files provide a marker for the backup to resume after a retryable state, such as when it has been paused.
+In the following diagram, **Node 2** and **Node 3** contain the leaseholders for the **R1** and **R2** [ranges](architecture/overview.html#architecture-range). Therefore, in this example backup job, the backup data will be exported from these nodes to the specified storage location. 
+
+While processing, the nodes emit progress data that tracks their backup work to the coordinator. In the diagram, **Node 3** will send progress data to **Node 2**. The coordinator node will then aggregate the progress data into checkpoint files in the storage bucket. The checkpoint files provide a marker for the backup to resume after a retryable state, such as when it has been paused.
 
 <img src="{{ 'images/v22.1/backup-processing.png' | relative_url }}" alt="Three-node cluster exporting backup data from the leaseholders" style="border:0px solid #eee;max-width:100%" />
 
