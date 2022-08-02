@@ -1,15 +1,15 @@
 ---
 title: OID
-summary: The OID data type stores an unsigned 32 bit integer value.
+summary: The OID data type stores an unsigned 32-bit integer value.
 toc: true
 docs_area: reference.sql
 ---
 
-The `OID` (Object Identifier) [data type](data-types.html) stores an unsigned 32 bit integer value.
+The object identifier (OID) [data type](data-types.html) stores an unsigned 32-bit integer value.
 
 OIDs are used internally as primary keys for tables in [system catalogs](system-catalogs.html), notably `information_schema` and `pg_catalog`.
 
-CockroachDB supports many [functions](functions-and-operators.html#built-in-functions) that accept OIDs as argument types and return OIDs, and [operators](functions-and-operators.html#operators) that operate on OIDs and other data types. These functions are used by are used by drivers and ORMs and you can use these functions to introspect schema.
+CockroachDB supports many [functions](functions-and-operators.html#built-in-functions) that accept OIDs as argument types and return OIDs, and [operators](functions-and-operators.html#operators) that operate on OIDs and other data types. These functions are used by drivers and ORMs and you can use these functions to introspect your schema.
 
 ## Size
 
