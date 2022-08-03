@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.security
 ---
 
-This page give an overview of CockroachDB's security features concerning authenticating the identity of SQL users attempting to connect with the cluster.
+This page give an overview of CockroachDB's security features for authenticating the identity of SQL users attempting to connect to the cluster.
 
 Instead, you might be looking for:
 
@@ -14,7 +14,7 @@ Instead, you might be looking for:
 
 ## Authentication configuration
 
-CockroachDB allows fine-grained configuration of which database connect attempts it allows to proceed to the authentication stage, and which authentication methods it will accept, based on:
+CockroachDB allows fine-grained configuration of which database connection attempts it allows to proceed to the authentication stage, and which authentication methods it accepts, based on:
 
 - **Who** is making the attempt (SQL user).
 - **Where** on the internet (IP Address) the attempt is coming from.

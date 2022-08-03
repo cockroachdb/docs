@@ -24,7 +24,7 @@ Limiting allowed database connections to secure IP addresses reduces the risk th
 
 From the {{ site.data.products.serverless }} Cloud Console, select your new cluster and click the **Connect** button to obtain your connection credentials from the **Connection Info** pane in the CockroachDB Cloud Console.
 
-You'll also need to download the cluster's root CA certificate, so that your [client can authenticate](../../cockroachcloud/authentication.html#connecting-sql-clients) the database server as it connects.
+You must also download the cluster's root CA certificate, so that your [client can authenticate](../../cockroachcloud/authentication.html#connecting-sql-clients) the database server as it connects.
 
 Open a SQL shell against your cluster.
 

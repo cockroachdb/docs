@@ -9,7 +9,7 @@ This page offers an overview of CockroachDB's encryption features.
 
 ## Encryption in flight
 
-Network traffic in CockroachDB, between nodes as well as from clients to nodes, is encryption with [Transport Layer Security (TLS)](./transport-layer-security.html).
+Network traffic in CockroachDB, between nodes as well as from clients to nodes, is encrypted with [Transport Layer Security (TLS)](./transport-layer-security.html).
 
 ## Encryption at rest
 

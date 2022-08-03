@@ -15,11 +15,11 @@ To learn more, explore:
 - [Managing CockroachDB security certificates with HashiCorp Vault](manage-certs-vault.html).
 
 {{site.data.alerts.callout_info}}
-The ability to rapidly and locally generate private key/public certificate pairs is handy for development, but careful management of security certificates is an essential component of cluster security, and performing these tasks with a cloud-native tool such as Google Cloud Platform's Certificate Authority Service (CAS) offers many security advantages.
+The ability to rapidly and locally generate private key/public certificate pairs is important for development, but careful management of security certificates is an essential component of cluster security, and performing these tasks with a cloud-native tool such as Google Cloud Platform's Certificate Authority Service (CAS) offers many security advantages.
 
 {{site.data.alerts.end}}
 
-The CLI offers the following functionality:
+You can use the CLI to:
 
 - Generate a root certificate authority (CA) certificate for your cluster, and use it to sign public certificates.
 - Generate key pair for use by a CockroachDB node.
@@ -29,7 +29,7 @@ The CLI offers the following functionality:
 
 ### `create-ca`
 
-Create a certificate authorit a self-signed certificate authority (CA) key pair (private key and public certificate), which you'll use to create and authenticate certificates for your entire cluster.
+Create a certificate authority a self-signed certificate authority (CA) key pair (private key and public certificate), which you'll use to create and authenticate certificates for your entire cluster.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -40,7 +40,7 @@ cockroach cert create-ca \
 
 ### `create-node`
 
-Create a certificate and key for a specific node in the cluster. You specify all addresses at which the node can be reached and pass appropriate flags.
+Create a certificate and key for a specific node in the cluster. You specify all addresses on which the node can be reached and pass appropriate flags.
 
 Create a node certificate and key:
 
@@ -117,7 +117,7 @@ Flag | Description
 
 ## Certificate directory
 
-When using `cockroach cert` to create node and client certificates, you will need access to a local copy of the CA certificate and key. It is therefore recommended to create all certificates and keys in one place and then distribute node and client certificates and keys appropriately. For the CA key, be sure to store it somewhere safe and keep a backup; if you lose it, you will not be able to add new nodes or clients to your cluster. For a walkthrough of this process, see [Manual Deployment](manual-deployment.html).
+When using `cockroach cert` to create node and client certificates, you will need access to a local copy of the CA certificate and key. It is therefore recommended to create all certificates and keys in one place and then distribute node and client certificates and keys appropriately. For the CA key, be sure to store it somewhere safe and keep a backup; if you lose it, you will not be able to add new nodes or clients to your cluster. To generate node and client certificates, see [Manual Deployment](manual-deployment.html).
 
 ## Required keys and certificates
 
