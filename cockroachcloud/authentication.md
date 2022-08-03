@@ -23,7 +23,7 @@ If you have not done so,[create your own free {{ site.data.products.serverless }
 
 To execute SQL statements or perform database administration functions on a cluster, you must connect to the cluster with a SQL client. CockroachDB clients include the CockroachDB CLI, and numerous [drivers and object-relational mapping (ORM) tools](../{{site.versions["dev"]}}/install-client-drivers.html).
 
-To connect any SQL client to a {{ site.data.products.db }} cluster, you must have a username/password combination, and the [TLS public root certificate authority (CA) certificate of the cluster](../{{site.versions["dev"]}}/security-reference/transport-layer-security.html#certificates-signing-trust-and-authority).
+To connect any SQL client to a {{ site.data.products.db }} cluster, you must have a username/password combination and the [TLS public root certificate authority (CA) certificate of the cluster](../{{site.versions["dev"]}}/security-reference/transport-layer-security.html#certificates-signing-trust-and-authority).
 
 To connect any SQL client to a {{ site.data.products.db }} cluster, you must have a username/password combination, and the [TLS public root certificate authority (CA) certificate of the cluster](../{{site.versions["dev"]}}/security-reference/transport-layer-security.html#certificates-signing-trust-and-authority).
 

@@ -10,7 +10,7 @@ The CockroachDB CLI's [`cockroach cert`](cockroach-cert.html) command allows you
 
 {{site.data.alerts.callout_info}}
 
-The ability to rapidly and locally generate private key/public certificate pairs is handy for development, but careful management of security certificates is an essential component of cluster security, and performing these tasks with a cloud-native tool such as Google Cloud Platform's Certificate Authority Service (CAS) offers many security advantages.
+The ability to rapidly and locally generate private key/public certificate pairs is important for development, but careful management of security certificates is an essential component of cluster security, and performing these tasks with a cloud-native tool such as Google Cloud Platform's Certificate Authority Service (CAS) offers many security advantages.
 
 Learn more: [Managing CockroachDB security certificates with HashiCorp Vault](manage-certs-vault.html).
 
@@ -32,9 +32,9 @@ Learn more: [Managing CockroachDB security certificates with HashiCorp Vault](ma
     $ mkdir my-safe-directory
     ~~~
     - `certs`: You'll generate your CA certificate and all node and client certificates and keys in this directory and then upload some of the files to your nodes.
-    - `my-safe-directory`: You'll generate your CA key in this directory and then reference the key when generating node and client certificates. After that, you'll keep the key safe and secret; you will not upload it to your nodes.
+    - `my-safe-directory`: You'll generate your CA key in this directory and then reference the key when generating node and client certificates. Keep the key safe and secret; do not upload it to your nodes.
 
-2. Generate the CA certificate and key:
+1. Generate the CA certificate and key:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -148,6 +148,7 @@ Learn more: [Managing CockroachDB security certificates with HashiCorp Vault](ma
 6. Repeat steps 3 - 5 for each additional node.
 
 ## Create the certificate and key pair for a client
+To create a certificate and a key pair for a client, use the `create-client` subcommand.
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -172,6 +173,8 @@ total 40
 ~~~
 
 ## List certificates and keys
+
+To list the certificates and keys in a directory, use the `create-client` subcommand.
 
 {% include copy-clipboard.html %}
 ~~~ shell
