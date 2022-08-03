@@ -7,4 +7,4 @@ ALTER DATABASE system CONFIGURE ZONE USING constraints = '{"+region=us-east1": 1
 
 Run all subsequent schema changes from a node in the specified region.
 
-After the schema changes have completed, disable the zone configuration.
+If you do not intend to run more schema changes from that region, you can safely remove the lease preference from the zone configuration for the system database.
