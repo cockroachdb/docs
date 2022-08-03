@@ -72,6 +72,20 @@ The [available metrics](#available-metrics) are drawn directly from the Cockroac
 Metric values and time-series graphs in Datadog are not guaranteed to match those in the [DB Console](#access-the-db-console), due to differences in how CockroachDB and Datadog calculate and display metrics.
 {{site.data.alerts.end}}
 
+#### Enable percentiles for selected metrics
+
+A subset of CockroachDB metrics require that you explicitly enable percentiles for them in the Datadog interface, or graphs that display data for them will fail to render properly.
+
+To enable percentiles for these metrics, perform the following steps:
+
+1. Click on your cluster's entry in the [Infrastructure List](https://docs.datadoghq.com/infrastructure/list/) and select the [Metrics Explorer](https://docs.datadoghq.com/metrics/explorer/).
+1. Check the **Distributions** checkbox in the **Metric Type** section to limit returned metrics to the subset of CockroachDB metrics that require percentiles support.
+1. Select the metric you wish to enable percentiles for, expand its **Advanced** section, and click the **Edit** button. Note the text explaining the benefit of enabling percentiles.
+1. Click the slider labeled **Enable percentiles and threshold queries**, then click the **Save** button.
+1. Repeat for the other metrics you wish to use.
+
+You only need to perform this once per metric per Datadog integration. Datadog graphs reliant on these metrics will begin rendering immediately once configured in this manner.
+
 #### Available metrics
 
 To preview the metrics being collected, you can:
