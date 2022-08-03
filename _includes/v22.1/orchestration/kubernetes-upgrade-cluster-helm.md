@@ -180,7 +180,7 @@
     $ helm upgrade \
     my-release \
     cockroachdb/cockroachdb \
-    --set statefulset.updateStrategy.rollingUpdate.partition=1 \
+    --set statefulset.updateStrategy.rollingUpdate.partition=1
     ~~~
 
 1. Repeat steps 4-8 until all pods have been restarted and are running the new image (the final partition value should be `0`).
