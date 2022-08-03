@@ -16,6 +16,8 @@ docs_area: reference.security
 
 {% include /v22.1/dedicated-pci-compliance.md %}
 
+Learn more: ["Integrate CockroachDB Dedicated with Satori](../satori-integration.html)
+
 ### Self-Hosted
 
 Cockroach Labs maintains <a href="https://github.com/cockroachdb/cockroach">CockroachDB as an open-source core</a>, which is available to operate under a number of different licensing options, including several free options.

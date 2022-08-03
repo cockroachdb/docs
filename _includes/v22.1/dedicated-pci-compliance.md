@@ -5,5 +5,3 @@ To achieve compliance with PCI DSS on a {{ site.data.products.dedicated }} clust
 
 To learn more about achieving PCI DSS compliance with {{ site.data.products.dedicated }}, contact your Cockroach Labs account team.
 {{site.data.alerts.end}}
-
-Learn more: [CockroachDB-Satori integration](../satori-integration.html)
