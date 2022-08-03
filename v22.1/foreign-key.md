@@ -12,7 +12,7 @@ For example, given an `orders` table and a `customers` table, if you create a co
 - Each value inserted or updated in `orders.customer_id` must exactly match a value in `customers.id`, or be `NULL`.
 - Values in `customers.id` that are referenced by `orders.customer_id` cannot be deleted or updated, unless you have [cascading actions](#use-a-foreign-key-constraint-with-cascade). However, values of `customers.id` that are _not_ present in `orders.customer_id` can be deleted or updated.
 
-To learn more about the basics of foreign keys, watch the video below:
+To learn more about the basics of foreign keys, watch the following video:
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/5kiMg7GXAsY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
@@ -29,6 +29,7 @@ To read more about how foreign keys work, see our [What is a Foreign Key? (With 
 - Foreign key columns must use their referenced column's [type](data-types.html).
 - A foreign key column cannot be a virtual [computed column](computed-columns.html), but it can be a stored computed column.
 - A single column can have multiple foreign key constraints. For an example, see [Add multiple foreign key constraints to a single column](#add-multiple-foreign-key-constraints-to-a-single-column).
+- Can reference the [`crdb_region` column](set-locality#crdb_region) in [`REGIONAL BY ROW`](multiregion-overview.html#regional-by-row-tables) tables even if the `crdb_region` column is not explicitly part of a `UNIQUE` constraint. This is possible because `crdb_region` is implicitly included in every index on `REGIONAL BY ROW` tables as the partitioning key. This applies to whichever column is used as the partitioning column, in case a different name is used via `REGIONAL BY ROW AS`.
 
 **Referenced Columns**
 
