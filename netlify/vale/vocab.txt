@@ -443,6 +443,7 @@ roundtrips
 routable
 rss
 runtimes
+rus
 rushi
 rwx
 sangnetra
