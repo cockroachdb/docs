@@ -1,6 +1,6 @@
 ## Transaction Details page
 
-Click a transaction fingerprint to open **Transaction Details**.
+The details displayed on the **Transaction Details** page reflect the [time interval](#time-interval) selected on the **Transactions** page.
 
 - The _transaction fingerprint_ is displayed as a list of the individual [SQL statement fingerprints]({{ page_prefix }}statements-page.html#sql-statement-fingerprints) in the transaction.
 - The **Mean transaction time**: the mean average time it took to execute the transaction within the aggregation interval.
@@ -12,7 +12,7 @@ Click a transaction fingerprint to open **Transaction Details**.
     - **Max scratch disk usage**: the maximum amount of data [spilled to temporary storage on disk]({{ link_prefix }}vectorized-execution.html#disk-spilling-operations) while executing this transaction within the aggregation interval.
 
 
-The [Statements page]({{ page_prefix }}statements-page.html) displays the statement fingerprints of all the statements in the transaction. To display the [details of a statement]({{ page_prefix }}statements-page.html#statement-details-page), click a statement fingerprint.
+The [Statements page]({{ page_prefix }}statements-page.html) displays the statement fingerprints of all the statements in the transaction. To display the [details of a statement fingerprint]({{ page_prefix }}statements-page.html#statement-fingerprint-page), click a statement fingerprint.
 
 ## See also
 

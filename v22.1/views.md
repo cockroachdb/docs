@@ -222,7 +222,7 @@ To list just views, you can query the `views` table in the [Information Schema](
 (1 row)
 ~~~
 
-### Querying views
+### Query a view
 
 To query a view, target it with a [table expression](table-expressions.html#table-and-view-names), for example using a [`SELECT` clause](select-clause.html), just as you would with a stored table:
 
@@ -371,7 +371,7 @@ RENAME VIEW
 
 It is not possible to change the stored query executed by the view. Instead, you must drop the existing view and create a new view.
 
-### Replacing views
+### Replace a view
 
  To replace a view, use [`CREATE OR REPLACE VIEW`](create-view.html):
 
@@ -406,7 +406,7 @@ It is not possible to change the stored query executed by the view. Instead, you
 (10 rows)
 ~~~
 
-### Removing views
+### Remove a view
 
 To remove a view, use the [`DROP VIEW`](drop-view.html) statement:
 
@@ -421,7 +421,7 @@ DROP VIEW
 
 ## Materialized views
 
- CockroachDB supports [materialized views](https://en.wikipedia.org/wiki/Materialized_view). Materialized views are views that store the results of their underlying queries.
+CockroachDB supports [materialized views](https://en.wikipedia.org/wiki/Materialized_view). A _materialized view_ is a view that stores the results of its underlying query.
 
 When you [select](selection-queries.html) from a materialized view, the stored query data that is returned might be out-of-date. This contrasts with a standard (i.e., "dematerialized") view, which runs its underlying query every time it is used, returning the latest results. In order to get the latest results from a materialized view, you must [refresh the view](refresh.html), and then select from it.
 
@@ -556,7 +556,76 @@ To remove the materialized view, use [`DROP MATERIALIZED VIEW`](drop-view.html):
 DROP VIEW
 ~~~
 
+### Add an index to a materialized view
+
+To speed up queries on materialized views, you can add an [index](schema-design-indexes.html) to the view.
+
+1. Create a materialized view of the [MovR](movr.html) rides table where the revenue is less than $20.00:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    CREATE MATERIALIZED VIEW low_rev_rides AS SELECT city, vehicle_id, revenue from rides WHERE revenue < 20.00;
+    ~~~
+
+1. To see the plan for a select on this view, run:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    EXPLAIN SELECT vehicle_id, revenue FROM low_rev_rides WHERE city = 'seattle';
+    ~~~
+
+    ~~~
+                                             info
+    ---------------------------------------------------------------------------------------
+      distribution: full
+      vectorized: true
+
+      • filter
+      │ filter: city = 'seattle'
+      │
+      └── • scan
+            missing stats
+            table: low_rev_rides@low_rev_rides_pkey
+            spans: FULL SCAN
+
+      index recommendations: 1
+      1. type: index creation
+         SQL command: CREATE INDEX ON low_rev_rides (city) STORING (vehicle_id, revenue);
+    (14 rows)
+    ~~~
+
+    Notice that there are [no statistics](#known-limitations) collected on the view.
+
+1. Create an index on the `city` column:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    CREATE INDEX ON low_rev_rides (city) STORING (vehicle_id, revenue);
+    ~~~
+
+1. To see the change in the plan after adding the index, run:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    EXPLAIN SELECT vehicle_id, revenue FROM low_rev_rides@low_rev_rides_city_idx WHERE city = 'seattle';
+    ~~~
+
+    ~~~
+                          info
+    -------------------------------------------------
+      distribution: local
+      vectorized: true
+
+      • scan
+        missing stats
+        table: low_rev_rides@low_rev_rides_city_idx
+        spans: [/'seattle' - /'seattle']
+    (7 rows)
+    ~~~
+
 ### Known limitations
+
+{% include {{page.version.version}}/sql/materialized-views-no-stats.md %}
 
 {% include {{page.version.version}}/sql/cannot-refresh-materialized-views-inside-transactions.md %}
 

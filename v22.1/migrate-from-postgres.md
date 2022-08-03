@@ -2,6 +2,7 @@
 title: Migrate from PostgreSQL
 summary: Learn how to migrate data from PostgreSQL into a CockroachDB cluster.
 toc: true
+keywords: copy
 docs_area: migrate
 ---
 

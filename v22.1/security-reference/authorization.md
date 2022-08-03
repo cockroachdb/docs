@@ -125,12 +125,7 @@ Use the [`GRANT`](../grant.html) and [`REVOKE`](../revoke.html) statements to ma
 
 Take the following points into consideration while granting privileges to roles and users:
 
-- When a role or user is granted privileges for a database, new tables created in the database will inherit the privileges, but the privileges can then be changed. To grant privileges to a user on all existing tables in a database, see [Grant privileges on all tables in a database](../grant.html#grant-privileges-on-all-tables-in-a-database-or-schema)
-
-    {{site.data.alerts.callout_info}}
-    The user does not get privileges to existing tables in the database.
-    {{site.data.alerts.end}}
-
+- When a role or user is granted privileges for a database, that role or user is not automatically granted access to any new or existing objects within that database. To change access to those objects, see [Default privileges](#default-privileges).
 - When a role or user is granted privileges for a table, the privileges are limited to the table.
 - In CockroachDB, privileges are granted to users and roles at the database and table levels. They are not yet supported for other granularities such as columns or rows.
 - The `root` user automatically belongs to the `admin` role and has the `ALL` privilege for new databases.
@@ -138,7 +133,7 @@ Take the following points into consideration while granting privileges to roles 
 
 ### Default privileges
 
- By default, CockroachDB grants the current role/user `ALL` privileges on the objects that they create.
+By default, CockroachDB grants the current role/user `ALL` privileges on the objects that they create.
 
 To view the default privileges for a role, or for a set of roles, use the [`SHOW DEFAULT PRIVILEGES`](../show-default-privileges.html) statement.
 

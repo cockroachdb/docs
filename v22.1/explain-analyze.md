@@ -74,8 +74,10 @@ KV time | The total time this phase of the statement was in the [storage layer](
 KV contention time | The time the [storage layer](architecture/storage-layer.html) was in contention during this phase of the statement.
 KV rows read | During scans, the number of rows in the [storage layer](architecture/storage-layer.html) read by this phase of the statement.
 KV bytes read | During scans, the amount of data read from the [storage layer](architecture/storage-layer.html) during this phase of the statement.
-estimated max memory allocated  | The estimated maximum allocated memory for a statement.
+estimated max memory allocated | The estimated maximum allocated memory for a statement.
 estimated max sql temp disk usage | The estimated maximum temporary disk usage for a statement.
+MVCC step count (ext/int) | The number of times that the underlying storage iterator stepped forward during the work to serve the operator's reads, including stepping over [MVCC keys](architecture/storage-layer.html#mvcc) that could not be used in the scan.
+MVCC seek count (ext/int) | The number of times that the underlying storage iterator jumped (seeked) to a different data location.
 estimated row count | The estimated number of rows affected by this processor according to the statement planner, the percentage of the table the query spans, and when the statistics for the table were last collected.
 table | The table and index used in a scan operation in a statement, in the form `{table name}@{index name}`.
 spans | The interval of the key space read by the processor. If `spans` is `FULL SCAN`, the table is scanned on all key ranges of the index. If `spans` is `[/1 - /1]`, only the key with value `1` is read by the processor.
@@ -83,6 +85,10 @@ spans | The interval of the key space read by the processor. If `spans` is `FULL
 ## `PLAN` option
 
 By default, `EXPLAIN ANALYZE` uses the `PLAN` option. `EXPLAIN ANALYZE` and `EXPLAIN ANALYZE (PLAN)` produce the same output.
+
+### `PLAN` options
+
+The `PLAN` options `VERBOSE` and `TYPES` described in [`EXPLAIN` options](explain.html#options) are also supported. For an example, see [`EXPLAIN ANALYZE (VERBOSE)`](#explain-analyze-verbose).
 
 ## `DISTSQL` option
 
@@ -173,22 +179,21 @@ For example, the following `EXPLAIN ANALYZE` statement executes a simple query a
 ~~~
 
 ~~~
-                      info
-------------------------------------------------
-  planning time: 532µs
-  execution time: 66ms
+  planning time: 604µs
+  execution time: 51ms
   distribution: full
   vectorized: true
   rows read from KV: 125,000 (21 MiB)
-  cumulative time spent in KV: 107ms
-  maximum memory usage: 7.6 MiB
-  network usage: 2.5 KiB (24 messages)
+  cumulative time spent in KV: 106ms
+  maximum memory usage: 5.0 MiB
+  network usage: 2.6 KiB (24 messages)
   regions: us-east1
 
   • group (streaming)
   │ nodes: n1, n2, n3
   │ regions: us-east1
   │ actual row count: 9
+  │ estimated row count: 9
   │ group by: city
   │ ordered: +city
   │
@@ -196,15 +201,113 @@ For example, the following `EXPLAIN ANALYZE` statement executes a simple query a
         nodes: n1, n2, n3
         regions: us-east1
         actual row count: 125,000
-        KV time: 107ms
+        KV time: 106ms
         KV contention time: 0µs
         KV rows read: 125,000
         KV bytes read: 21 MiB
-        estimated max memory allocated: 20 MiB
-        missing stats
+        estimated max memory allocated: 21 MiB
+        estimated row count: 125,000 (100% of the table; stats collected 1 hour ago)
         table: rides@rides_pkey
         spans: FULL SCAN
-(29 rows)
+(30 rows)
+~~~
+
+If you perform a join, the estimated max memory allocation is also reported for the join. For example:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+EXPLAIN ANALYZE SELECT * FROM vehicles JOIN rides ON rides.vehicle_id = vehicles.id and rides.city = vehicles.city limit 100;
+~~~
+~~~
+                        info
+-----------------------------------------------------
+  planning time: 1ms
+  execution time: 18ms
+  distribution: full
+  vectorized: true
+  rows read from KV: 3,173 (543 KiB)
+  cumulative time spent in KV: 37ms
+  maximum memory usage: 820 KiB
+  network usage: 3.3 KiB (2 messages)
+  regions: us-east1
+
+  • limit
+  │ nodes: n1
+  │ regions: us-east1
+  │ actual row count: 100
+  │ estimated row count: 100
+  │ count: 100
+  │
+  └── • lookup join
+      │ nodes: n1, n2, n3
+      │ regions: us-east1
+      │ actual row count: 194
+      │ KV time: 31ms
+      │ KV contention time: 0µs
+      │ KV rows read: 173
+      │ KV bytes read: 25 KiB
+      │ estimated max memory allocated: 300 KiB
+      │ estimated row count: 13,837
+      │ table: vehicles@vehicles_pkey
+      │ equality: (city, vehicle_id) = (city,id)
+      │ equality cols are key
+      │
+      └── • scan
+  ...
+(41 rows)
+~~~
+
+### `EXPLAIN ANALYZE (VERBOSE)`
+
+The `VERBOSE` option displays the physical statement plan with additional execution statistics.
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+EXPLAIN ANALYZE (VERBOSE) SELECT city, AVG(revenue) FROM rides GROUP BY city;
+~~~
+
+~~~
+                                         info
+--------------------------------------------------------------------------------------
+  planning time: 5ms
+  execution time: 65ms
+  distribution: full
+  vectorized: true
+  rows read from KV: 125,000 (21 MiB)
+  cumulative time spent in KV: 114ms
+  maximum memory usage: 5.0 MiB
+  network usage: 2.6 KiB (24 messages)
+  regions: us-east1
+
+  • group (streaming)
+  │ columns: (city, avg)
+  │ nodes: n1, n2, n3
+  │ regions: us-east1
+  │ actual row count: 9
+  │ vectorized batch count: 4
+  │ estimated row count: 9
+  │ aggregate 0: avg(revenue)
+  │ group by: city
+  │ ordered: +city
+  │
+  └── • scan
+        columns: (city, revenue)
+        ordering: +city
+        nodes: n1, n2, n3
+        regions: us-east1
+        actual row count: 125,000
+        vectorized batch count: 124
+        KV time: 114ms
+        KV contention time: 0µs
+        KV rows read: 125,000
+        KV bytes read: 21 MiB
+        estimated max memory allocated: 21 MiB
+        MVCC step count (ext/int): 125,000/125,000
+        MVCC seek count (ext/int): 18/18
+        estimated row count: 125,000 (100% of the table; stats collected 1 hour ago)
+        table: rides@rides_pkey
+        spans: FULL SCAN
+(38 rows)
 ~~~
 
 ### `EXPLAIN ANALYZE (DISTSQL)`

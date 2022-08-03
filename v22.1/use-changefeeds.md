@@ -192,6 +192,27 @@ For webhook sinks, the response format comes as a batch of changefeed messages w
 
 See [Files](create-changefeed.html#files) for more detail on the file naming format for {{ site.data.products.enterprise }} changefeeds.
 
+## Garbage collection and changefeeds
+
+{% include_cached new-in.html version="v22.1" %} By default, [protected timestamps](architecture/storage-layer.html#protected-timestamps) will protect changefeed data from [garbage collection](architecture/storage-layer.html#garbage-collection) up to the time of the [_checkpoint_](change-data-capture-overview.html#how-does-an-enterprise-changefeed-work).
+
+Protected timestamps will protect changefeed data from garbage collection in the following scenarios:
+
+- The downstream [changefeed sink](changefeed-sinks.html) is unavailable. Protected timestamps will protect changes until you either [cancel](cancel-job.html) the changefeed or the sink becomes available once again. 
+- You [pause](pause-job.html) a changefeed with the [`protect_data_from_gc_on_pause`](create-changefeed.html#protect-pause) option enabled. Protected timestamps will protect changes until you [resume](resume-job.html) the changefeed.
+
+However, if the changefeed lags too far behind, the protected changes could cause data storage issues. To release the protected timestamps and allow garbage collection to resume, you can cancel the changefeed or [resume](resume-job.html) in the case of a paused changefeed. 
+
+We recommend [monitoring](monitor-and-debug-changefeeds.html) storage and the number of running changefeeds. If a changefeed is not advancing and is retrying, it will (without limit) accumulate garbage while it retries to run.
+
+When `protect_data_from_gc_on_pause` is **unset**, pausing the changefeed will release the existing protected timestamp record. As a result, you could lose the changes if the changefeed remains paused longer than the [garbage collection](configure-replication-zones.html#gc-ttlseconds) window.
+
+The only ways for changefeeds to **not** protect data are:
+
+- You pause the changefeed without `protect_data_from_gc_on_pause` set.
+- You cancel the changefeed.
+- The changefeed fails without [`on_error=pause`](create-changefeed.html#on-error) set.
+
 ## Changefeeds on tables with column families
 
 {% include_cached new-in.html version="v22.1" %} You can create changefeeds on tables with more than one [column family](column-families.html). Changefeeds will emit individual messages per column family on a table.
@@ -270,10 +291,7 @@ The following sections provide information on Avro usage with CockroachDB change
 
 Below are clarifications for particular SQL types and values for Avro changefeeds:
 
-- [Decimals](decimal.html) must have precision specified.
-- [`BIT`](bit.html) and [`VARBIT`](bit.html) types are encoded as arrays of 64-bit integers.
-
-  {% include {{ page.version.version }}/cdc/avro-bit-varbit.md %}
+{% include {{ page.version.version }}/cdc/avro-limitations.md %}
 
 ### Avro types
 
@@ -281,24 +299,27 @@ Below is a mapping of CockroachDB types to Avro types:
 
 CockroachDB Type | Avro Type | Avro Logical Type
 -----------------+-----------+---------------------
-[`INT`](int.html) | [`LONG`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive) |
+[`ARRAY`](array.html) | [`ARRAY`](https://avro.apache.org/docs/1.8.1/spec.html#schema_complex) |
+[`BIT`](bit.html) | Array of [`LONG`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive) |
+[`BLOB`](bytes.html) | [`BYTES`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive) |
 [`BOOL`](bool.html) | [`BOOLEAN`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive) |
-[`FLOAT`](float.html) | [`DOUBLE`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive) |
-[`STRING`](string.html) | [`STRING`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive) |
+[`BYTEA`](bytes.html) | [`BYTES`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive) |
+[`BYTES`](bytes.html) | [`BYTES`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive) |
+[`COLLATE`](collate.html) | [`STRING`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive) |
 [`DATE`](date.html) | [`INT`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive) | [`DATE`](https://avro.apache.org/docs/1.8.1/spec.html#Date)
+[`DECIMAL`](decimal.html) | [`STRING`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive), [`BYTES`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive) | [`DECIMAL`](https://avro.apache.org/docs/1.8.1/spec.html#Decimal)
+[`ENUMS`](enum.html) | [`STRING`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive) |
+[`FLOAT`](float.html) | [`DOUBLE`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive) |
+[`INET`](inet.html) | [`STRING`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive) |
+[`INT`](int.html) | [`LONG`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive) |
+[`INTERVAL`](interval.html) | [`STRING`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive) |
+[`JSONB`](jsonb.html) | [`STRING`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive) |
+[`STRING`](string.html) | [`STRING`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive) |
 [`TIME`](time.html) | [`LONG`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive) | [`TIME-MICROS`](https://avro.apache.org/docs/1.8.1/spec.html#Time+%28microsecond+precision%29)
 [`TIMESTAMP`](timestamp.html) | [`LONG`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive) | [`TIME-MICROS`](https://avro.apache.org/docs/1.8.1/spec.html#Time+%28microsecond+precision%29)
 [`TIMESTAMPTZ`](timestamp.html) | [`LONG`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive) | [`TIME-MICROS`](https://avro.apache.org/docs/1.8.1/spec.html#Time+%28microsecond+precision%29)
-[`DECIMAL`](decimal.html) | [`STRING`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive), [`BYTES`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive) | [`DECIMAL`](https://avro.apache.org/docs/1.8.1/spec.html#Decimal)
 [`UUID`](uuid.html) | [`STRING`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive) |
-[`INET`](inet.html) | [`STRING`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive) |
-[`JSONB`](jsonb.html) | [`STRING`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive) |
-[`ENUMS`](enum.html) | [`STRING`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive) |
-[`INTERVAL`](interval.html) | [`STRING`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive) |
-[`ARRAY`](array.html) | [`ARRAY`](https://avro.apache.org/docs/1.8.1/spec.html#schema_complex) |
-[`BIT`](bit.html) | Array of [`LONG`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive) |
 [`VARBIT`](bit.html)| Array of [`LONG`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive) |
-[`COLLATE`](collate.html) | [`STRING`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive) |
 
 {{site.data.alerts.callout_info}}
 The `DECIMAL` type is a union between Avro `STRING` and Avro `DECIMAL` types.

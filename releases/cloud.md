@@ -8,7 +8,7 @@ docs_area: releases
 
 CockroachDB Cloud supports the latest major version of CockroachDB and the version immediately preceding it. All clusters are subject to automatic upgrades to the latest supported minor version. [{{ site.data.products.serverless }}](../cockroachcloud/quickstart.html) clusters are subject to automatic upgrades for both minor and major releases while Serverless is in beta. For more information, see the [{{ site.data.products.db }} Upgrade Policy](../cockroachcloud/upgrade-policy.html).
 
-For details on features that are not supported in {{ site.data.products.serverless }}, see [Unsupported Features in CockroachDB Serverless](../cockroachcloud/serverless-unsupported-features.html).
+For details on features that are not supported in {{ site.data.products.serverless }}, see [Unsupported Features in {{ site.data.products.serverless }}](../cockroachcloud/serverless-unsupported-features.html).
 
 Get future release notes emailed to you:
 
@@ -17,6 +17,18 @@ Get future release notes emailed to you:
 {{site.data.alerts.callout_version}}
 As of July 12, 2022, {{ site.data.products.serverless }} clusters are running CockroachDB [v22.1.1](v22.1.html#v22-1-1) and new {{ site.data.products.dedicated }} clusters are running CockroachDB [v22.1.2](v22.1.html#v22-1-2).
 {{site.data.alerts.end}}
+
+## July 28, 2022
+
+<h3>General changes</h3>
+
+- All of your organization's [invoices](../cockroachcloud/billing-management.html#view-invoices) are now available on the **Billing** page.
+
+## July 27, 2022
+
+<h3>General changes</h3>
+
+- You can now [add and remove regions](../cockroachcloud/cluster-management.html#add-or-remove-regions-from-a-cluster) from {{ site.data.products.dedicated }} clusters through the {{ site.data.products.db }} Console. This change makes it easier to support users in new locations or scale down your cluster.
 
 ## July 6, 2022
 
@@ -200,7 +212,7 @@ As of July 12, 2022, {{ site.data.products.serverless }} clusters are running Co
 
 <h3>Bug fixes</h3>
 
-- Fixed a bug where, if a user had reached the maximum number of {{ site.data.products.serverless }} clusters and refreshed the **Create your cluster** page, the {{ site.data.products.serverless-plan }} plan was auto-selected even though it is disabled.
+- Fixed a bug where, if a user had reached the maximum number of {{ site.data.products.serverless }} clusters and refreshed the **Create your cluster** page, the {{ site.data.products.serverless }} plan was auto-selected even though it is disabled.
 - Fixed a bug where clicking **Cancel** while logging in with GitHub would report and internal error.
 - Fixed a bug where organization deletion was temporarily broken.
 - Fixed a bug that was preventing the **Request Units** and **SQL Statements** graphs on the {{ site.data.products.serverless }} [Cluster Overview](../cockroachcloud/cluster-overview-page.html#cluster-overview-metrics) page from updating after a certain amount of time.
