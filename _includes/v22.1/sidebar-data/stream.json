@@ -67,6 +67,12 @@
       ]
     },
     {
+      "title": "Stream a Changefeed to a Confluent Cloud Kafka Cluster",
+      "urls": [
+        "/${VERSION}/stream-a-changefeed-to-a-confluent-cloud-kafka-cluster.html"
+      ]
+    },
+    {
       "title": "Advanced Changefeed Configuration",
       "urls": [
         "/${VERSION}/advanced-changefeed-configuration.html"
