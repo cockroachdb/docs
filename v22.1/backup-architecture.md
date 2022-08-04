@@ -43,7 +43,7 @@ CockroachDB will verify the options passed in the `BACKUP` statement and check t
 
 The ultimate aim of the job creation phase is to complete all of these checks and write the detail of what the backup job should complete to a _job record_.
 
-If a [`detached`](backup.html#detached) backup was requested, the `BACKUP` statement is complete as it has created an uncommitted, but otherwise ready-to-run backup job. You'll find the job ID returned as output. Without the `detached` option, the job is committed and the statement waits to return the results until the backup job starts, runs (as described), and terminates.
+If a [`detached`](backup.html#detached) backup was requested, the `BACKUP` statement is complete as it has created an uncommitted, but otherwise ready-to-run backup job. You'll find the job ID returned as output. Without the `detached` option, the job is committed and the statement waits to return the results until the backup job starts, runs (as described in the following sections), and terminates.
  
 Once the job record is committed, the cluster will try to run the backup job even if a client disconnects or the node handling the `BACKUP` statement terminates. From this point, the backup is a persisted job that any node in the cluster can take over executing to ensure it runs. The job record will move to the system jobs table, ready for a node to claim it.
 
