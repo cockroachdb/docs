@@ -472,7 +472,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 Core changefeeds stream row-level changes to a client until the underlying SQL connection is closed.
 
 {{site.data.alerts.callout_info}}
-Only Core changefeeds are available on {{ site.data.products.serverless-plan }}. To create a changefeed into a [configurable sink](changefeed-sinks.html), like cloud storage or Kafka, use {{ site.data.products.dedicated }}, which has this feature enabled by default.
+Only Core changefeeds are available on {{ site.data.products.serverless }}. To create a changefeed into a [configurable sink](changefeed-sinks.html), like cloud storage or Kafka, use {{ site.data.products.dedicated }}, which has this feature enabled by default.
 {{site.data.alerts.end}}
 
 ## Create a Core changefeed

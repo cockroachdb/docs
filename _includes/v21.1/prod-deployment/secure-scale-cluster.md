@@ -90,7 +90,7 @@ For each additional node you want to add to the cluster, complete the following 
     $ mv certs /var/lib/cockroach/
     ~~~
 
-7.  Change the ownership of `Cockroach` directory to the user `cockroach`:
+7.  Change the ownership of the `cockroach` directory to the user `cockroach`:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
