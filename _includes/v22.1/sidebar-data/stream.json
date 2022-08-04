@@ -38,7 +38,7 @@
       ]
     },
     {
-      "title": "Using Changefeeds",
+      "title": "Work with Changefeeds",
       "items": [
         {
           "title": "Changefeeds on Tables with Column Families",
