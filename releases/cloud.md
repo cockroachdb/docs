@@ -22,8 +22,8 @@ As of August 1, 2022, {{ site.data.products.serverless }} clusters are running C
 
 <h3>Console changes</h3>
 
-- {{ site.data.products.dedicated }} users can now choose any of the available hardware options when configuring a cluster. Previously, there were restrictions based on which storage and compute combinations were recommended for best performance.
-- In the [Connect to your cluster](../cockroachcloud/connect-to-your-cluster.html) dialog, your previous SQL user, database, and connection method selections are now cached to make it easier to re-connect to your cluster.
+- {{ site.data.products.dedicated }} users can now choose any of the available hardware options when [configuring a cluster](../cockroachcloud/create-your-cluster.html). Previously, there were restrictions based on which storage and compute combinations were recommended for best performance.
+- In the [**Connect to your cluster**](../cockroachcloud/connect-to-your-cluster.html) dialog, your previous SQL user, database, and connection method selections are now cached to make it easier to re-connect to your cluster.
 
 <h3>Bug fixes</h3>
 
@@ -67,7 +67,7 @@ As of August 1, 2022, {{ site.data.products.serverless }} clusters are running C
 
 - When creating a [SQL user](../cockroachcloud/console-access-management.html#sql-users) or regenerating a SQL user's password, the generated password is now hidden until the user clicks **Reveal password**.
 
-<h3>API changes</h3>
+<h3>Cloud API changes</h3>
 
 - Paginated [API](../cockroachcloud/cloud-api.html) endpoints now accept a single `page` parameter for next or previous pages. Pagination response messages now contain only two fields: `next_page` and `previous_page`, whose values can be used for the `page` field in a followup call.
 
