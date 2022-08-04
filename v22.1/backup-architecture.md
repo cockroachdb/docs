@@ -94,7 +94,7 @@ With the full backup complete, the specified storage location will contain the b
 ## See also
 
 - CockroachDB's general [Architecture Overview](architecture/overview.html)
-- [Storage Layer](architecture/storage-layer.html)
+- [Storage layer](architecture/storage-layer.html)
 - [Take Full and Incremental Backups](take-full-and-incremental-backups.html)
 - [`BACKUP`](backup.html)
 - [`RESTORE`](restore.html)
