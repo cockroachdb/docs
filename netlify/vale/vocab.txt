@@ -186,6 +186,7 @@ guanqun
 gzip
 haines
 hao
+HAProxy
 hardcoded
 hashicorp
 heartbeated
@@ -346,6 +347,7 @@ numerics
 offboard
 offlined
 oid
+OIDs
 oli
 ons
 onwards
@@ -355,6 +357,7 @@ operator_version
 orchstrations
 ordinality
 overallocating
+ORMs
 owsiany
 page_prefix
 Pak
@@ -582,6 +585,8 @@ txns
 typechecking
 tz
 udt
+UDF
+UDFs
 ui
 uid
 uksouth
@@ -627,6 +632,7 @@ uris
 url
 userfile
 userspace
+usertable
 utils
 uuid
 vaidya
