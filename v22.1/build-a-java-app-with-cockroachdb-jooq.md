@@ -3,13 +3,10 @@ title: Build a Java App with CockroachDB and jOOQ
 summary: Learn how to use CockroachDB from a simple Java application with jOOQ.
 toc: true
 twitter: false
-filter_category: crud_java
-filter_html: Use <strong>jOOQ</strong>
-filter_sort: 3
 docs_area: get_started
 ---
 
-{% include filter-tabs.md %}
+{% include {{ page.version.version }}/filter-tabs/crud-java.md %}
 
 This tutorial shows you how build a simple Java application with CockroachDB and [jOOQ](https://www.jooq.org/).
 

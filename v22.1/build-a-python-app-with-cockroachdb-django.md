@@ -4,13 +4,10 @@ summary: Learn how to use CockroachDB from a simple Django application.
 toc: true
 twitter: false
 referral_id: docs_python_django
-filter_category: crud_python
-filter_html: <strong>Django</strong>
-filter_sort: 3
 docs_area: get_started
 ---
 
-{% include filter-tabs.md %}
+{% include {{ page.version.version }}/filter-tabs/crud-python.md %}
 
 This tutorial shows you how build a simple Python application with CockroachDB and the [Django](https://www.djangoproject.com/) framework.
 

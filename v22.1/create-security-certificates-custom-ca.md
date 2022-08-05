@@ -2,10 +2,7 @@
 title: Create Security Certificates using a Custom CA
 summary: A secure CockroachDB cluster uses TLS for encrypted inter-node and client-node communication.
 toc: true
-filter_category: security_cert
-filter_html: Use custom CA
-filter_sort: 3
-docs_area: 
+docs_area:
 ---
 
 To secure your CockroachDB cluster's inter-node and client-node communication, you need to provide a Certificate Authority (CA) certificate that has been used to sign keys and certificates (SSLs) for:
@@ -16,7 +13,7 @@ To secure your CockroachDB cluster's inter-node and client-node communication, y
 
 To create these certificates and keys, use the `cockroach cert` [commands](cockroach-commands.html) with the appropriate subcommands and flags, use [`openssl` commands](https://wiki.openssl.org/index.php/), or use a [custom CA](create-security-certificates-custom-ca.html) (for example, a public CA or your organizational CA).
 
-{% include filter-tabs.md %}
+{% include {{ page.version.version }}/filter-tabs/security-cert.md %}
 
 This document discusses the following advanced use cases for using security certificates with CockroachDB:
 

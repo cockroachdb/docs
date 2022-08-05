@@ -3,13 +3,10 @@ title: Deploy CockroachDB On-Premises
 summary: Learn how to manually deploy a secure, multi-node CockroachDB cluster on multiple machines.
 toc: true
 ssh-link: https://www.digitalocean.com/community/tutorials/how-to-set-up-ssh-keys--2
-filter_category: deploy_crdb_op
-filter_html: Secure
-filter_sort: 1
-docs_area: 
+docs_area:
 ---
 
-{% include filter-tabs.md %}
+{% include {{ page.version.version }}/filter-tabs/deploy-crdb-op.md %}
 
 This tutorial shows you how to manually deploy a secure multi-node CockroachDB cluster on multiple machines, using [HAProxy](http://www.haproxy.org/) load balancers to distribute client traffic.
 

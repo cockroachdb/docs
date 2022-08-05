@@ -4,13 +4,10 @@ summary: Learn how to use CockroachDB from a simple Go application with the Go p
 toc: true
 twitter: false
 referral_id: docs_go_pq
-filter_category: crud_go
-filter_html: Use <strong>lib/pq</strong></button>
-filter_sort: 3
 docs_area: get_started
 ---
 
-{% include filter-tabs.md %}
+{% include {{ page.version.version }}/filter-tabs/crud-go.md %}
 
 This tutorial shows you how build a simple Go application with CockroachDB and the Go [pq driver](https://github.com/lib/pq).
 

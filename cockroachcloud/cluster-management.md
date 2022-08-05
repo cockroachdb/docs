@@ -2,13 +2,10 @@
 title: Manage a CockroachDB Dedicated Cluster
 summary: Manage your cluster's schema, data, and more.
 toc: true
-filter_category: cluster_mgmt
-filter_html: CockroachDB Dedicated
-filter_sort: 2
 docs_area: manage
 ---
 
-{% include filter-tabs.md %}
+{% include cockroachcloud/filter-tabs/cluster-management.md %}
 
 This page describes the cluster management and cluster deletion workflows for {{ site.data.products.dedicated }}.
 
@@ -84,10 +81,10 @@ AWS disks can only be scaled once every six hours.
 1. Select **Actions > Edit cluster**.
 
     The **Edit cluster** page displays.
-  
+
 1. Navigate to the **Storage** dropdown in the **Hardware per node** section.
 1. Select the new amount of storage per node.
-    
+
     {{site.data.alerts.callout_danger}}
     Storage space cannot be removed from a node once added.
     {{site.data.alerts.end}}
@@ -103,7 +100,7 @@ AWS disks can only be scaled once every six hours.
 1. Select **Actions > Edit cluster**.
 
     The **Edit cluster** page displays.
-  
+
 1. Navigate to the **Compute** dropdown in the **Hardware per node** section.
 1. Select the new amount of vCPUs per node.
 

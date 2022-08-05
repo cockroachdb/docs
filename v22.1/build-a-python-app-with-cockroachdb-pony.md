@@ -3,13 +3,10 @@ title: Build a Python App with CockroachDB and PonyORM
 summary: Learn how to use CockroachDB from a simple Python application with PonyORM.
 toc: true
 twitter: false
-filter_category: crud_python
-filter_html: <strong>PonyORM</strong>
-filter_sort: 4
 docs_area: get_started
 ---
 
-{% include filter-tabs.md %}
+{% include {{ page.version.version }}/filter-tabs/crud-python.md %}
 
 This tutorial shows you how build a simple Python application with CockroachDB and [PonyORM](https://ponyorm.org/).
 
