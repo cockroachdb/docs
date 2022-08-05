@@ -331,6 +331,30 @@ Time: 3ms total (execution 3ms / network 0ms)
 
 Because the `INSERT` includes an `ON CONFLICT` clause, the query requires more than a simple `insert` operation. CockroachDB must check the provided values against the values in the database, to ensure that the `UNIQUE` constraint on `name`, `city`, and `id` is not violated. The output also lists the indexes available to detect conflicts (the `arbiter indexes`), including the `users_city_id_name_key` index.
 
+### Alter queries
+
+If you alter a table to split a range as described in [Set the expiration on a split enforcement](split-at.html#set-the-expiration-on-a-split-enforcement), the `EXPLAIN` command returns the target table and index names and the expiry timestamp:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+EXPLAIN ALTER TABLE vehicles SPLIT AT VALUES ('chicago'), ('new york'), ('seattle') WITH EXPIRATION '2022-08-10 23:30:00+00:00';
+~~~
+
+~~~
+                  info
+-----------------------------------------
+  distribution: local
+  vectorized: true
+
+  • split
+  │ index: vehicles@vehicles_pkey
+  │ expiry: '2022-08-10 23:30:00+00:00'
+  │
+  └── • values
+        size: 1 column, 3 rows
+(9 rows)
+~~~
+
 ### Options
 
 #### `VERBOSE` option
