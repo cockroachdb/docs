@@ -16,7 +16,7 @@ docs_area: reference.security
 
 {% include /v22.1/dedicated-pci-compliance.md %}
 
-Learn more: ["Integrate CockroachDB Dedicated with Satori](../satori-integration.html)
+Learn more: ["Integrate {{ site.data.products.dedicated }} with Satori](../satori-integration.html)
 
 ### Self-Hosted
 
