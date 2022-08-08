@@ -103,6 +103,7 @@ datatypes
 datetime
 dayofweek
 dayofyear
+DBeaver
 dchenk
 ddl
 deallocated
