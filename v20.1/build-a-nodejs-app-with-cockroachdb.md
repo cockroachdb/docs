@@ -54,7 +54,7 @@ Open the `app.js` file, and edit the connection configuration parameters:
     This line imports the `fs` Node module, which enables you to read in the CA cert that you downloaded from the {{ site.data.products.db }} Console.
 - Replace the value for `user` with the user you created earlier.
 - Replace the value for `password` with the password you created for your user.
-- Replace the value for `host` with the name of the {{ site.data.products.serverless-plan }} host (e.g., `host: 'free-tier.gcp-us-central1.cockroachlabs.cloud'`).
+- Replace the value for `host` with the name of the {{ site.data.products.serverless }} host (e.g., `host: 'free-tier.gcp-us-central1.cockroachlabs.cloud'`).
 - Replace the value for `port` with the port to your cluster.
 - Replace the value for `database` with the database that you created earlier, suffixed with the name of the cluster (e.g., `database: '{cluster_name}.bank'`).
 - Remove the existing `ssl` object and its contents.

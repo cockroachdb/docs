@@ -157,15 +157,15 @@
                 ]
               },
               {
-                "title": "<code>ALTER BACKUP</code> (Enterprise)",
-                "urls": [
-                  "/${VERSION}/alter-backup.html"
-                ]
-              },
-              {
                 "title": "<code>ADD SUPER REGION</code> (Enterprise)",
                 "urls": [
                   "/${VERSION}/add-super-region.html"
+                ]
+              },
+              {
+                "title": "<code>ALTER BACKUP</code> (Enterprise)",
+                "urls": [
+                  "/${VERSION}/alter-backup.html"
                 ]
               },
               {
@@ -1089,6 +1089,12 @@
                 "title": "<code>JSONB</code>",
                 "urls": [
                   "/${VERSION}/jsonb.html"
+                ]
+              },
+              {
+                "title": "<code>OID</code>",
+                "urls": [
+                  "/${VERSION}/oid.html"
                 ]
               },
               {

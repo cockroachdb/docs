@@ -1,6 +1,4 @@
-serverless: CockroachDB Serverless (beta)
-
-serverless-plan: CockroachDB Serverless #i.e., "1. Choose the **CockroachDB Serverless** plan."
+serverless: CockroachDB Serverless
 
 dedicated: CockroachDB Dedicated
 
