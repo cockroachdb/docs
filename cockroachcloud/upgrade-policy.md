@@ -5,7 +5,7 @@ toc: true
 docs_area: manage
 ---
 
-This page describes the upgrade policy for {{ site.data.products.db }}.
+This page describes the upgrade policy for {{ site.data.products.db }}. For self-hosted clusters, see the CockroachDB [Release Support Policy](../releases/release-support-policy.html).
 
 {{ site.data.products.db }} supports the latest major version of CockroachDB and the version immediately preceding it. Support for these versions includes patch version updates and security patches.
 
