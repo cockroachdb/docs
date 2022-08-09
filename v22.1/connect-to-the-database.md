@@ -404,7 +404,8 @@ Parameter | Description
 <div class="filter-content" markdown="1" data-scope="python">
 
 <div class="filters clearfix">
-  <button class="filter-button page-level" data-scope="psycopg">Psycopg2</button>
+  <button class="filter-button page-level" data-scope="psycopg2">Psycopg2</button>
+  <button class="filter-button page-level" data-scope="psycopg3">Psycopg3</button>
   <button class="filter-button page-level" data-scope="sqlalchemy">SQLAlchemy</button>
   <button class="filter-button page-level" data-scope="django">Django</button>
 </div>
@@ -418,7 +419,7 @@ To connect to a {{ site.data.products.serverless }} cluster from a Python applic
 
 </div>
 
-<div class="filter-content" markdown="1" data-scope="psycopg">
+<div class="filter-content" markdown="1" data-scope="psycopg2">
 
 To connect to CockroachDB with [Psycopg2](https://www.psycopg.org), pass a connection string to the [`psycopg2.connect` function](https://www.psycopg.org/docs/connection.html).
 
@@ -464,6 +465,56 @@ postgresql://{username}@{host}:{port}/{database}?sslmode=verify-full&sslrootcert
 </div>
 
 For more information about connecting with Psycopg, see the [official Psycopg documentation](https://www.psycopg.org/docs).
+
+</div>
+
+<div class="filter-content" markdown="1" data-scope="psycopg3">
+
+To connect to CockroachDB with [Psycopg3](https://www.psycopg.org), pass a connection string to the [`psycopg.connect` function](https://www.psycopg.org/psycopg3/docs/basic/usage.html).
+
+For example:
+
+{% include_cached copy-clipboard.html %}
+~~~ python
+import psycopg
+import os
+
+with psycopg.connect(os.environ['DATABASE_URL']) as conn:
+  # application logic here
+~~~
+
+Where `DATABASE_URL` is an environment variable set to a valid CockroachDB connection string.
+
+Psycopg accepts the following format for CockroachDB connection strings:
+
+<div class="filter-content" markdown="1" data-scope="serverless">
+
+{% include_cached copy-clipboard.html %}
+~~~
+postgresql://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full&options=--cluster%3D{routing-id}
+~~~
+
+</div>
+
+<div class="filter-content" markdown="1" data-scope="dedicated">
+
+{% include_cached copy-clipboard.html %}
+~~~
+postgresql://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full&sslrootcert={root-cert}
+~~~
+
+</div>
+
+<div class="filter-content" markdown="1" data-scope="core">
+
+{% include_cached copy-clipboard.html %}
+~~~
+postgresql://{username}@{host}:{port}/{database}?sslmode=verify-full&sslrootcert={root-cert}&sslcert={client-cert}&sslkey={client-key}
+~~~
+
+</div>
+
+For more information about connecting with Psycopg, see the [official Psycopg documentation](https://www.psycopg.org/psycopg3/docs/basic/index.html).
 
 </div>
 

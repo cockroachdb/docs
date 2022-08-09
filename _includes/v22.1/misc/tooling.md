@@ -23,6 +23,7 @@ For a list of tools supported by the CockroachDB community, see [Third-Party Too
 | Java | [JDBC](https://jdbc.postgresql.org/download.html#others) | {% remote_include https://raw.githubusercontent.com/cockroachdb/cockroach/master/pkg/cmd/roachtest/tests/pgjdbc.go ||var supportedPGJDBCTag = "||"\n\n %} | Full | N/A | [Build a Java App with CockroachDB (JDBC)](build-a-java-app-with-cockroachdb.html) |
 | JavaScript | [pg](https://www.npmjs.com/package/pg) | 8.2.1 | Full | N/A | [Build a Node.js App with CockroachDB (pg)](build-a-nodejs-app-with-cockroachdb.html) |
 | Python | [psycopg2](https://www.psycopg.org/docs/install.html) | 2.8.6 | Full | N/A | [Build a Python App with CockroachDB (psycopg2)](build-a-python-app-with-cockroachdb.html) |
+| Python | [psycopg3](https://www.psycopg.org/psycopg3/docs/) | 3.0.16 | Full | N/A | [Build a Python App with CockroachDB (psycopg3)](build-a-python-app-with-cockroachdb-psycopg3.html) |
 | Ruby | [pg](https://rubygems.org/gems/pg) | {% remote_include https://raw.githubusercontent.com/cockroachdb/cockroach/master/pkg/cmd/roachtest/tests/ruby_pg.go ||var rubyPGVersion = "||"\n\n %} | Full | N/A | [Build a Ruby App with CockroachDB (pg)](build-a-ruby-app-with-cockroachdb.html) |
 | Rust | [rust-postgres](https://github.com/sfackler/rust-postgres) | 0.19.2 | Beta | N/A | [Build a Rust App with CockroachDB](build-a-rust-app-with-cockroachdb.html) |
 
