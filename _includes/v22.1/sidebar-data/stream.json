@@ -9,39 +9,55 @@
       ]
     },
     {
-      "title": "Use Changefeeds",
-      "urls": [
-        "/${VERSION}/use-changefeeds.html"
+      "title": "Get Started with Changefeeds",
+      "items": [
+        {
+          "title": "Create and Configure Changefeeds",
+          "urls": [
+            "/${VERSION}/create-and-configure-changefeeds.html"
+          ]
+        },
+        {
+          "title": "Changefeed Messages",
+          "urls": [
+            "/${VERSION}/changefeed-messages.html"
+          ]
+        },
+        {
+          "title": "Changefeed Sinks",
+          "urls": [
+            "/${VERSION}/changefeed-sinks.html"
+          ]
+        },
+        {
+          "title": "Changefeed Examples",
+          "urls": [
+            "/${VERSION}/changefeed-examples.html"
+          ]
+        }
       ]
     },
     {
-      "title": "Create and Configure Changefeeds",
-      "urls": [
-        "/${VERSION}/create-and-configure-changefeeds.html"
-      ]
-    },
-    {
-      "title": "Changefeed Sinks",
-      "urls": [
-        "/${VERSION}/changefeed-sinks.html"
-      ]
-    },
-    {
-      "title": "Changefeeds in Multi-Region Deployments",
-      "urls": [
-        "/${VERSION}/changefeeds-in-multi-region-deployments.html"
+      "title": "Work with Changefeeds",
+      "items": [
+        {
+          "title": "Changefeeds on Tables with Column Families",
+          "urls": [
+            "/${VERSION}/changefeeds-on-tables-with-column-families.html"
+          ]
+        },
+        {
+          "title": "Changefeeds in Multi-Region Deployments",
+          "urls": [
+            "/${VERSION}/changefeeds-in-multi-region-deployments.html"
+          ]
+        }
       ]
     },
     {
       "title": "Monitor and Debug Changefeeds",
       "urls": [
         "/${VERSION}/monitor-and-debug-changefeeds.html"
-      ]
-    },
-    {
-      "title": "Changefeed Examples",
-      "urls": [
-        "/${VERSION}/changefeed-examples.html"
       ]
     },
     {
