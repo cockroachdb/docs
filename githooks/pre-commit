@@ -24,7 +24,7 @@ done
 
 if [ ! -z "$OUTPUT" ]
 then
-	echo "Error: Commit failed. There are illegal character sequences in one or more files:" >&2
+	echo "Error: Commit failed. Secret key found in one or more files:" >&2
   echo ${OUTPUT} >&2
 	exit 1
 fi
