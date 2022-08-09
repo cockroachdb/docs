@@ -1,6 +1,6 @@
 ---
-title: Build a Python App with CockroachDB and psycopg3
-summary: Learn how to use CockroachDB from a simple Python application with the psycopg3 driver.
+title: Build a Python App with CockroachDB and Psycopg 3
+summary: Learn how to use CockroachDB from a simple Python application with the Psycopg 3 driver.
 toc: true
 twitter: false
 referral_id: docs_python_psycopg3
@@ -14,7 +14,7 @@ docs_area: get_started
 
 {% include cockroach_u_pydev.md %}
 
-This tutorial shows you how build a simple Python application with CockroachDB and the [psycopg3](https://www.psycopg.org/) driver.
+This tutorial shows you how build a simple Python application with CockroachDB and the [Psycopg 3](https://www.psycopg.org/) driver.
 
 ## Step 1. Start CockroachDB
 
@@ -38,7 +38,7 @@ The sample code in `example.py` does the following:
 To [handle transaction retry errors](error-handling-and-troubleshooting.html#transaction-retry-errors), the code uses an application-level retry loop that, in case of error, sleeps before trying the funds transfer again. If it encounters another retry error, it sleeps for a longer interval, implementing [exponential backoff](https://en.wikipedia.org/wiki/Exponential_backoff).
 
 
-## Step 3. Install the psycopg3 driver
+## Step 3. Install the Psycopg 3 driver
 
 `psycopg[binary]` is the sample app's only third-party module dependency.
 
@@ -49,7 +49,7 @@ To install `psycopg[binary]`, run the following command:
 $ pip install "psycopg[binary]"
 ~~~
 
-For other ways to install psycopg, see the [official documentation](https://www.psycopg.org/psycopg3/docs/basic/install.html).
+For other ways to install Psycopg, see the [official documentation](https://www.psycopg.org/psycopg3/docs/basic/install.html).
 
 ## Step 4. Run the code
 
