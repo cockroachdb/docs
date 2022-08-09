@@ -93,7 +93,7 @@ For examples of starting changefeeds on tables with column families, see the fol
 ## Create a changefeed on a table with column families
 
 {{site.data.alerts.callout_info}}
-[`CREATE CHANGEFEED`](create-changefeed.html) is an [Enterprise-only](enterprise-licensing.html) feature. For the Core version, see [the `CHANGEFEED FOR` example](#create-a-core-changefeed-on-a-table-with-column-families).
+[`CREATE CHANGEFEED`](create-changefeed.html) is an [Enterprise-only](enterprise-licensing.html) feature. For the Core version, see [the `CHANGEFEED FOR` example](changefeeds-on-tables-with-column-families.html?filters=core#create-a-core-changefeed-on-a-table-with-column-families).
 {{site.data.alerts.end}}
 
 {% include_cached new-in.html version="v22.1" %} In this example, you'll set up changefeeds on two tables that have [column families](column-families.html). You'll use a single-node cluster sending changes to a webhook sink for this example, but you can use any [changefeed sink](changefeed-sinks.html) to work with tables that include column families.
