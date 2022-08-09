@@ -1,0 +1,30 @@
+#!/bin/bash
+
+# Find all changed files for this commit
+# Compute the diff only once to save a small amount of time.
+CHANGED_FILES=$(git diff --name-only --cached --diff-filter=ACMR)
+# Get only changed files that match our file suffix pattern
+
+illegal_patterns=("AKIA\w{16}" "ASIA\w{16}" "ghp_\w{36}")
+# an array of regular expressions containing illegal character sequences
+
+for x in "${CHANGED_FILES[@]}";
+do
+	for y in "${illegal_patterns[@]}";
+	do
+		tmp=$(egrep -in $y $x)
+		if [ ! -z "$tmp" ]
+		then
+			OUTPUT+=$(echo "${x} - Line #")
+			OUTPUT+=$(echo $tmp)
+			OUTPUT+=$(echo -e '\n')
+		fi
+	done
+done
+
+if [ ! -z "$OUTPUT" ]
+then
+	echo "Error: Commit failed. There are illegal character sequences in one or more files:" >&2
+  echo ${OUTPUT} >&2
+	exit 1
+fi
