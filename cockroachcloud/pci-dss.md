@@ -27,7 +27,7 @@ When a system complies with PCI DSS, the system meets the goals of the standard 
 </thead>
 <tbody>
 <tr>
-  <td><i>Build and Maintain a Secure Network and Systems</i></td>
+  <td>Build and Maintain a Secure Network and Systems</td>
   <td><ol>
           <li>Install and maintain a firewall configuration to protect cardholder data</li>
           <li>Do not use vendor-supplied defaults for system passwords and other security parameters</li>
@@ -35,7 +35,7 @@ When a system complies with PCI DSS, the system meets the goals of the standard 
   </td>
 </tr>
 <tr>
-  <td><i>Protect Cardholder Data</i></td>
+  <td>Protect Cardholder Data</td>
   <td><ol start="3">
         <li>Protect stored cardholder data</li>
         <li>Encrypt transmission of cardholder data across open, public networks</li>
@@ -43,7 +43,7 @@ When a system complies with PCI DSS, the system meets the goals of the standard 
   </td>
 </tr>
 <tr>
-  <td><i>Maintain a Vulnerability Management Program</i></td>
+  <td>Maintain a Vulnerability Management Program</td>
   <td><ol start="5">
         <li>Protect all systems against malware and regularly update antivirus software or programs</li>
         <li>Develop and maintain secure systems and applications</li>
@@ -51,7 +51,7 @@ When a system complies with PCI DSS, the system meets the goals of the standard 
   </td>
 </tr>
 <tr>
-  <td><i>Implement Strong Access Control Measures</i></td>
+  <td>Implement Strong Access Control Measures</td>
   <td><ol start="7">
         <li>Restrict access to cardholder data by business need to know</li>
         <li>Identify and authenticate access to system components</li>
@@ -60,7 +60,7 @@ When a system complies with PCI DSS, the system meets the goals of the standard 
   </td>
 </tr>
 <tr>
-  <td><i>Regularly Monitor and Test Networks</i></td>
+  <td>Regularly Monitor and Test Networks</td>
   <td><ol start="10">
         <li>Track and monitor all access to network resources and cardholder data.</li>
         <li>Regularly test security systems and processes</li>
@@ -68,9 +68,9 @@ When a system complies with PCI DSS, the system meets the goals of the standard 
   </td>
 </tr>
 <tr>
-  <td><i>Maintain an Information Security Policy</i></td>
+  <td>Maintain an Information Security Policy</td>
   <td><ol start="12">
-        <li>Maintain a policy that addresses information security for all personne.</li>
+        <li>Maintain a policy that addresses information security for all personne..</li>
   </td>
 </tr>
 </tbody>
