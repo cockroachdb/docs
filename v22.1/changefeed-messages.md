@@ -19,14 +19,14 @@ This page describes the format and behavior of changefeed messages. You will fin
 
 ## Responses
 
-The messages (i.e., keys and values) emitted to a sink are specific to the [`envelope`](create-changefeed.html#options). That is, how you configure your messages when creating a changefeed. The default format is `wrapped`, and the output messages are composed of the following:
+By default, changefeed messages emitted to a [sink](changefeed-sinks.html) contain keys and values of the watched table entries that have changed, with messages composed of the following fields:
 
 - **Key**: An array always composed of the row's `PRIMARY KEY` field(s) (e.g., `[1]` for `JSON` or `{"id":{"long":1}}` for Avro).
 - **Value**:
     - One of three possible top-level fields:
-        - `after`, which contains the state of the row after the update (or `null`' for `DELETE`s).
+        - `after`, which contains the state of the row after the update (or `null` for `DELETE`s).
         - `updated`, which contains the updated timestamp.
-        - `resolved`, which is emitted for records representing resolved timestamps. These records do not include an "after" value since they only function as checkpoints.
+        - `resolved`, which is emitted for records representing resolved timestamps. These records do not include an `after` value since they only function as checkpoints.
     - For [`INSERT`](insert.html) and [`UPDATE`](update.html), the current state of the row inserted or updated.
     - For [`DELETE`](delete.html), `null`.
 
@@ -37,15 +37,17 @@ Statement                                      | Response
 `INSERT INTO office_dogs VALUES (1, 'Petee');` | JSON: `[1]	{"after": {"id": 1, "name": "Petee"}}` </br>Avro: `{"id":{"long":1}}	{"after":{"office_dogs":{"id":{"long":1},"name":{"string":"Petee"}}}}`
 `DELETE FROM office_dogs WHERE name = 'Petee'` | JSON: `[1]	{"after": null}` </br>Avro: `{"id":{"long":1}}	{"after":null}`
 
+To limit messages to just the changed key value, use the [`envelope`](create-changefeed.html#options) option set to `key_only`.
+
 When a changefeed targets a table with multiple column families, the family name is appended to the table name as part of the topic. See [Tables with columns families in changefeeds](changefeeds-on-tables-with-column-families.html#message-format) for guidance.
 
-For webhook sinks, the response format comes as a batch of changefeed messages with a `payload` and `length`. Batching is done with a per-key guarantee, which means that the messages with the same key are considered for the same batch. Note that batches are only collected for row updates and not [resolved timestamps](create-changefeed.html#resolved-option):
+For webhook sinks, the response format arrives as a batch of changefeed messages with a `payload` and `length`. Batching is done with a per-key guarantee, which means that messages with the same key are considered for the same batch. Note that batches are only collected for row updates and not [resolved timestamps](create-changefeed.html#resolved-option):
 
 ~~~
 {"payload": [{"after" : {"a" : 1, "b" : "a"}, "key": [1], "topic": "foo"}, {"after": {"a": 1, "b": "b"}, "key": [1], "topic": "foo" }], "length":2}
 ~~~
 
-See [Files](create-changefeed.html#files) for more detail on the file naming format for {{ site.data.products.enterprise }} changefeeds.
+See [changefeed files](create-changefeed.html#files) for more detail on the file naming format for {{ site.data.products.enterprise }} changefeeds.
 
 ## Ordering guarantees
 
