@@ -27,7 +27,7 @@ When a system complies with PCI DSS, the system meets the goals of the standard 
 </thead>
 <tbody>
 <tr>
-  <td><i>Build and Maintain a Secure Network and Systems</i></td>
+  <td>Build and Maintain a Secure Network and Systems</td>
   <td><ol>
           <li>Install and maintain a firewall configuration to protect cardholder data</li>
           <li>Do not use vendor-supplied defaults for system passwords and other security parameters</li>
@@ -35,7 +35,7 @@ When a system complies with PCI DSS, the system meets the goals of the standard 
   </td>
 </tr>
 <tr>
-  <td><i>Protect Cardholder Data</i></td>
+  <td>Protect Cardholder Data</td>
   <td><ol start="3">
         <li>Protect stored cardholder data</li>
         <li>Encrypt transmission of cardholder data across open, public networks</li>
@@ -43,7 +43,7 @@ When a system complies with PCI DSS, the system meets the goals of the standard 
   </td>
 </tr>
 <tr>
-  <td><i>Maintain a Vulnerability Management Program</i></td>
+  <td>Maintain a Vulnerability Management Program</td>
   <td><ol start="5">
         <li>Protect all systems against malware and regularly update antivirus software or programs</li>
         <li>Develop and maintain secure systems and applications</li>
@@ -51,7 +51,7 @@ When a system complies with PCI DSS, the system meets the goals of the standard 
   </td>
 </tr>
 <tr>
-  <td><i>Implement Strong Access Control Measures</i></td>
+  <td>Implement Strong Access Control Measures</td>
   <td><ol start="7">
         <li>Restrict access to cardholder data by business need to know</li>
         <li>Identify and authenticate access to system components</li>
@@ -60,7 +60,7 @@ When a system complies with PCI DSS, the system meets the goals of the standard 
   </td>
 </tr>
 <tr>
-  <td><i>Regularly Monitor and Test Networks</i></td>
+  <td>Regularly Monitor and Test Networks</td>
   <td><ol start="10">
         <li>Track and monitor all access to network resources and cardholder data.</li>
         <li>Regularly test security systems and processes</li>
@@ -68,9 +68,9 @@ When a system complies with PCI DSS, the system meets the goals of the standard 
   </td>
 </tr>
 <tr>
-  <td><i>Maintain an Information Security Policy</i></td>
+  <td>Maintain an Information Security Policy</td>
   <td><ol start="12">
-        <li>Maintain a policy that addresses information security for all personne.</li>
+        <li>Maintain a policy that addresses information security for all personne..</li>
   </td>
 </tr>
 </tbody>
@@ -83,7 +83,7 @@ When a system complies with PCI DSS, the system meets the goals of the standard 
 
 Compliance is a shared responsibility. Although {{ site.data.products.dedicated }} clusters automatically comply with PCI DSS, you must take additional steps to ensure that your entire solution is compliant with PCI DSS, such as implementing security recommendations and carefully choosing business partners and vendors. For example, you must ensure that cardholder data is protected throughout its journey into and out of your {{ site.data.products.dedicated }} clusters.
 
-Cockroach Labs cannot provide specific advice about what is required for compliance with PCI DSS or how to implement a specific requirement. The following points help to illustrate some steps that organizations might take to help to ensure compliance..
+Cockroach Labs cannot provide specific advice about what is required for compliance with PCI DSS or how to implement a specific requirement. The following points help to illustrate some steps that organizations might take to help to ensure compliance.
 
 {{site.data.alerts.callout_danger}}
 The following list is provided only to illustrate a small subset of the measures you might need to take to ensure compliance.
@@ -91,7 +91,7 @@ The following list is provided only to illustrate a small subset of the measures
 
 - Before you insert cardholder data into the cluster, you must first protect it by a combination of encryption, hashing, masking, and truncation. For an example implementation, refer to [Integrate CockroachDB Dedicated with Satori](/docs/{{site.versions["stable"]}}/satori-integration.html).
 - The cryptographic materials used to protect cardholder data must themselves be protected at rest and in transit, and access to the unencrypted key materials must be strictly limited only to approved individuals.
-- Within the cluster, you must restrict access to cardholder data on a "need to know basis" authorized individuals have access to tables and views in the cluster that contain cardholder data, and you must regularly test for compliance. Refer to [Authorization](/docs/{{site.versions["stable"]}}/authorization.html).
+- Within the cluster, you must restrict access to cardholder data on a "need to know basis" basis. Access to tables and views in the cluster that contain cardholder data must be restricted, and you must regularly test for compliance. Refer to [Authorization](/docs/{{site.versions["stable"]}}/authorization.html).
 - You must track, monitor, and log all access to cardholder data and network resources. Within a cluster with PCI DSS enabled, {{ site.data.products.db }} enforces this requirement automatically. Refer to [Security and audit monitoring](/docs/{{site.versions["stable"]}}/logging-use-cases.html#security-and-audit-monitoring).
 - You must protect networks that transmit cardholder data from malicious access over the public internet, and you must regularly test for compliance. For more information about protecting the cluster's networks, refer to [Network Authorization](network-authorization.html).
 - You must regularly test all systems, applications, and dependencies (including, but not limited to, application libraries, runtimes, container images, and testing frameworks) that are involved in storing or processing cardholder data for known vulnerabilities, you must regularly apply updates, and you must regularly test for compliance. Important security and stability updates are applied regularly and automatically to {{ site.data.products.dedicated }} clusters. These updates include, but are not limited to, the cluster's CockroachDB runtime, the operating systems of cluster nodes, APIs, and management utilities. You are notified about upcoming cluster maintenance before it happens, when it starts, and when it completes. To configure notifications in the {{ site.data.products.db }} Console, refer to [Monitoring and Alerting](/docs/stable/monitoring-and-alerting.html). You can also read the release notes for [CockroachDB](/docs/releases/index.html) and for [{{ site.data.products.db }}](/docs/releases/cloud.html).
