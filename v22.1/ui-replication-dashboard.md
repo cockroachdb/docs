@@ -105,7 +105,7 @@ On hovering over the graph, the value for the following metric is displayed:
 
 Metric | Description
 -------|------------
-`<node>` | The rate of snapshot data received in bytes per node.
+`{node}` | The rate of snapshot data received in bytes per node.
 
 ## Circuit Breaker Tripped Replicas
 
@@ -121,7 +121,7 @@ On hovering over the graph, the value for the following metric is displayed:
 
 Metric | Description
 -------|------------
-`<node>` | The number of replicas on that node for which the per-replica circuit breaker is currently tripped.
+`{node}` | The number of replicas on that node for which the per-replica circuit breaker is currently tripped.
 
 ## Circuit Breaker Tripped Events
 
@@ -135,7 +135,7 @@ When individual ranges become temporarily unavailable, requests to those ranges 
 
 Metric | Description
 -------|------------
-`<node>` | The number of `ReplicaUnavailableError` events on that node since the `cockroach` process started.
+`{node}` | The number of `ReplicaUnavailableError` events on that node since the `cockroach` process started.
 
 ## Other graphs
 
