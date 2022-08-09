@@ -95,8 +95,8 @@ To list the `crdb_internal` tables for the [current database](sql-name-resolutio
 ~~~
 
 ~~~
-   schema_name  |         table_name          | type  | owner | estimated_row_count | locality
-----------------+-----------------------------+-------+-------+---------------------+-----------
+   schema_name  |         table_name              | type  | owner | estimated_row_count | locality
+----------------+---------------------------------+-------+-------+---------------------+-----------
   crdb_internal | active_range_feeds              | table | NULL  |                NULL | NULL
   crdb_internal | backward_dependencies           | table | NULL  |                NULL | NULL
   crdb_internal | builtin_functions               | table | NULL  |                NULL | NULL
