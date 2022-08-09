@@ -15,7 +15,7 @@ do
 		tmp=$(egrep -in $y $x)
 		if [ ! -z "$tmp" ]
 		then
-			OUTPUT+=$(echo "${x} - Line #")
+			OUTPUT+=$(echo "${x} - Violates ${y} - Line #")
 			OUTPUT+=$(echo $tmp)
 			OUTPUT+=$(echo -e '\n')
 		fi
