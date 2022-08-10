@@ -202,7 +202,7 @@ Run the following command to create a consumer:
 confluent kafka topic consume users \
  --value-format avro \
  --from-beginning \
- --sr-endpoint {SCHEMA RESISTRY ENDPOINT URL} \
+ --sr-endpoint {SCHEMA REGISTRY ENDPOINT URL} \
  --sr-api-key {SCHEMA REGISTRY API KEY} \
  --sr-api-secret {SCHEMA REGISTRY SECRET}
 ~~~
@@ -214,7 +214,7 @@ In this command, you need to pass the following Schema Registry details:
 
 For this command to run successfully, ensure that `confluent kafka cluster describe {CLUSTER ID}` returns a `Status` of `UP`.
 
-Your terminal will wait for messages after this command has successfully run.
+Your terminal will wait for messages after this command has run successfully.
 
 {{site.data.alerts.callout_success}}
 Run `confluent schema-registry cluster describe` to access details for the Schema Registry, if needed.
