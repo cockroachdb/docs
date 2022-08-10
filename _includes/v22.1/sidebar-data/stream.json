@@ -61,17 +61,22 @@
       ]
     },
     {
-      "title": "Stream a Changefeed from CockroachDB Cloud to Snowflake",
-      "urls": [
-        "/cockroachcloud/stream-changefeed-to-snowflake-aws.html"
-      ]
-    },
-    {
-      "title": "Stream a Changefeed to a Confluent Cloud Kafka Cluster",
-      "urls": [
-        "/${VERSION}/stream-a-changefeed-to-a-confluent-cloud-kafka-cluster.html"
-      ]
-    },
+    "title": "Tutorials",
+    "items": [
+      {
+        "title": "Stream a Changefeed from CockroachDB Cloud to Snowflake",
+        "urls": [
+          "/cockroachcloud/stream-changefeed-to-snowflake-aws.html"
+        ]
+      },
+      {
+        "title": "Stream a Changefeed to a Confluent Cloud Kafka Cluster",
+        "urls": [
+          "/${VERSION}/stream-a-changefeed-to-a-confluent-cloud-kafka-cluster.html"
+        ]
+      }
+    ]
+  },
     {
       "title": "Advanced Changefeed Configuration",
       "urls": [
