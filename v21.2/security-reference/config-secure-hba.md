@@ -14,7 +14,7 @@ This document describes the rationale for restricting database access to specifi
 
 ## Why customize your authentication configuration?
 
-{{ site.data.products.serverless-plan }} and {{ site.data.products.dedicated }} both include industry-standard security controls at the network and infrastructure levels, and {{ site.data.products.core }} may be deployed with any measure of network security one cares to put in place. Nevertheless, a hardened authentication configuration offers a powerful measure of [security in depth](https://en.wikipedia.org/wiki/Defense_in_depth_(computing)).
+{{ site.data.products.serverless }} and {{ site.data.products.dedicated }} both include industry-standard security controls at the network and infrastructure levels, and {{ site.data.products.core }} may be deployed with any measure of network security one cares to put in place. Nevertheless, a hardened authentication configuration offers a powerful measure of [security in depth](https://en.wikipedia.org/wiki/Defense_in_depth_(computing)).
 
 Limiting allowed database connections to secure IP addresses reduces the risk that your cluster is compromised, because a potential attacker who acquires database credentials (e.g., username/password combinations or client TLS certificates) cannot use those credentials without also gaining infrastructure access. Infrastructure access can and should be protected with multifactor authentication and restricted to appropriate parties using infrastructure-level IAM.
 

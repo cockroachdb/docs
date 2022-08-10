@@ -17,7 +17,7 @@ The **SQL** dashboard displays the following time series graphs:
 
 ## Open SQL Sessions
 
-- In the node view, the graph shows the number of connections currently open between the client and the selected node.
+- In the node view, the graph shows the number of connections open between the client and the selected node.
 
 - In the cluster view, the graph shows the total number of SQL client connections to all nodes combined, with lines for each node.
 
@@ -31,9 +31,9 @@ See the [Transactions page](ui-transactions-page.html) for more details on the t
 
 ## Active SQL Statements
 
-- In the node view, the graph shows the total number of SQL statements currently running on that node.
+- In the node view, the graph shows the total number of SQL statements running on that node.
 
-- In the cluster view, the graph shows the total number of SQL statements currently running across all nodes in the cluster.
+- In the cluster view, the graph shows the total number of SQL statements running across all nodes in the cluster.
 
 See the [Statements page](ui-statements-page.html) for more details on the cluster's SQL statements.
 
@@ -41,7 +41,7 @@ See the [Statements page](ui-statements-page.html) for more details on the clust
 
 The **SQL Byte Traffic** graph helps you correlate SQL query count to byte traffic, especially in bulk data inserts or analytic queries that return data in bulk.
 
-- In the node view, the graph shows the current byte throughput (bytes/second) between all the currently connected SQL clients and the node. There are lines for bytes in and bytes out.
+- In the node view, the graph shows the current byte throughput (bytes/second) between all the connected SQL clients and the node. There are lines for bytes in and bytes out.
 
 - In the cluster view, the graph shows the aggregate client throughput across all nodes. There are lines for bytes in and bytes out.
 
@@ -79,9 +79,9 @@ The statement contention metric is a counter that represents the number of state
 
 ## Active Flows for Distributed SQL Statements
 
-- In the node view, the graph shows the number of flows on that node contributing to the currently running [distributed SQL](architecture/sql-layer.html#distsql) statements.
+- In the node view, the graph shows the number of flows on that node contributing to the running [distributed SQL](architecture/sql-layer.html#distsql) statements.
 
-- In the cluster view, the graph shows the number of flows across all nodes in the cluster contributing to the currently running [distributed SQL](architecture/sql-layer.html#distsql) statements.
+- In the cluster view, the graph shows the number of flows across all nodes in the cluster contributing to the running [distributed SQL](architecture/sql-layer.html#distsql) statements.
 
 ## Connection Latency: 99th Percentile
 

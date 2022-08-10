@@ -45,7 +45,7 @@ The [`ALTER TABLE ... SPLIT AT`](../{{site.versions["stable"]}}/split-at.html) a
 
 ## Self service upgrades
 
-{{ site.data.products.serverless }} is a fully managed multi-tenant deployment of CockroachDB. Major and minor upgrades of CockroachDB are handled by Cockroach Labs, and [can't be initiated by users](serverless-faqs.html#can-i-upgrade-the-version-of-cockroachdb-my-cockroachdb-serverless-beta-cluster-is-running-on).
+{{ site.data.products.serverless }} is a fully managed multi-tenant deployment of CockroachDB. Major and minor upgrades of CockroachDB are handled by Cockroach Labs, and [can't be initiated by users](serverless-faqs.html#can-i-upgrade-the-version-of-cockroachdb-my-cockroachdb-serverless-cluster-is-running-on).
 
 ## Monitoring workloads and cluster health
 

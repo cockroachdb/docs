@@ -108,11 +108,11 @@ For each initial node of your cluster, complete the following steps:
     $ mv certs /var/lib/cockroach/
     ~~~
 
-7.  Change the ownership of `Cockroach` directory to the user `cockroach`:
+7.  Change the ownership of the `cockroach` directory to the user `cockroach`:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ chown -R cockroach.cockroach /var/lib/cockroach
+    $ chown -R cockroach /var/lib/cockroach
     ~~~
 
 8.  Download the [sample configuration template](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/prod-deployment/securecockroachdb.service) and save the file in the `/etc/systemd/system/` directory:

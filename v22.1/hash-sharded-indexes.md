@@ -24,7 +24,7 @@ Hash-sharded indexes contain a [virtual computed column](computed-columns.html#v
 For details about the mechanics and performance improvements of hash-sharded indexes in CockroachDB, see our [Hash Sharded Indexes Unlock Linear Scaling for Sequential Workloads](https://www.cockroachlabs.com/blog/hash-sharded-indexes-unlock-linear-scaling-for-sequential-workloads/) blog post.
 
 {{site.data.alerts.callout_info}}
-Hash-sharded indexes created in v22.1 will not [backfill](use-changefeeds.html#schema-changes-with-column-backfill), as the shard column isn't stored. Hash-sharded indexes created prior to v22.1 will backfill if `schema_change_policy` is set to `backfill`, as they use a stored column. If you wish for CockroachDB not to backfill your hash-sharded indexes created prior to v22.1, drop them and recreate them.
+Hash-sharded indexes created in v22.1 and later will not [backfill](changefeed-messages.html#schema-changes-with-column-backfill), as the shard column isn't stored. Hash-sharded indexes created prior to v22.1 will backfill if `schema_change_policy` is set to `backfill`, as they use a stored column. If you don't want CockroachDB to backfill hash-sharded indexes you created prior to v22.1, drop them and recreate them.
 {{site.data.alerts.end}}
 
 ### Shard count
@@ -42,7 +42,7 @@ We recommend doing thorough performance testing of your workload with different 
 You can create hash-sharded indexes with implicit partitioning under the following scenarios:
 
 - The table is partitioned implicitly with [`REGIONAL BY ROW`](multiregion-overview.html#regional-by-row-tables), and the `crdb_region` column is not part of the columns in the hash-sharded index.
-- The table is partitioned implicitly with `PARTITION ALL BY`, and the partition columns are not part of the columns in the hash-sharded index.
+- The table is partitioned implicitly with `PARTITION ALL BY`, and the partition columns are not part of the columns in the hash-sharded index. Note that `PARTITION ALL BY` is in preview.
 
 However, if an index of a table, whether it be a primary key or secondary index, is explicitly partitioned with `PARTITION BY`, then that index cannot be hash-sharded. Partitioning columns cannot be placed explicitly as key columns of a hash-sharded index as well, including `REGIONAL BY ROW` table's `crdb_region` column.
 

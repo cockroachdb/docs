@@ -18,21 +18,17 @@ Benefits of online schema changes include:
 Schema changes consume additional resources, and if they are run when the cluster is near peak capacity, latency spikes can occur. This is especially true for any schema change that adds columns, drops columns, or adds an index. We do not recommend doing more than one schema change at a time while in production.
 {{site.data.alerts.end}}
 
-{{site.data.alerts.callout_success}}
-Support for schema changes within [transactions][txns] is [limited](#limitations). We recommend doing schema changes outside transactions where possible. When a schema management tool uses transactions on your behalf, we recommend only doing one schema change operation per transaction.
-{{site.data.alerts.end}}
-
 {{site.data.alerts.callout_info}}
-You cannot start an online schema change on a table if a [primary key change](alter-primary-key.html) is currently in progress on the same table.
+Support for schema changes within [transactions][txns] is [limited](#limitations). We recommend doing schema changes outside transactions where possible. When a schema management tool uses transactions on your behalf, we recommend only doing one schema change operation per transaction.
 {{site.data.alerts.end}}
 
 ## How online schema changes work
 
 At a high level, online schema changes are accomplished by using a bridging strategy involving concurrent uses of multiple versions of the schema. The process is as follows:
 
-1. A user initiates a schema change by executing [`ALTER TABLE`][alter-table], [`CREATE INDEX`][create-index], [`TRUNCATE`][truncate], etc.
+1. You initiate a schema change by executing [`ALTER TABLE`][alter-table], [`CREATE INDEX`][create-index], [`TRUNCATE`][truncate], etc.
 
-2. The schema change engine converts the original schema to the new schema in discrete steps while ensuring that the underlying table data is always in a consistent state. These changes are executed as a [background job][show-jobs], and can be [paused](pause-job.html), [resumed](resume-job.html), and [canceled](cancel-job.html).
+1. The schema change engine converts the original schema to the new schema in discrete steps while ensuring that the underlying table data is always in a consistent state. These changes are executed as a [background job][show-jobs], and can be [paused](pause-job.html), [resumed](resume-job.html), and [canceled](cancel-job.html).
 
 This approach allows the schema change engine to roll out a new schema while the previous version is still in use. It then backfills or deletes the underlying table data as needed in the background, while the cluster is still running and servicing reads and writes from your application.
 
@@ -42,24 +38,26 @@ Once backfilling is complete, all nodes will switch over to the new schema, and 
 
 For more technical details, see [How online schema changes are possible in CockroachDB][blog].
 
-{% include_cached new-in.html version="v22.1" %} Online schema changes that trigger an index backfill (adding data to an index) will now pause if the node executing the schema change is running out of disk space. The following statements will now pause if the node executing the schema change is running out of disk space:
+{% include_cached new-in.html version="v22.1" %} The following online schema changes pause if the node executing the schema change is running out of disk space:
 
-- [`ADD COLUMN`](add-column.html) when the statement also features `INDEX` or `UNIQUE`.
-- [`ALTER PRIMARY KEY`](alter-primary-key.html)
-- [`CREATE INDEX`](create-index.html)
-- [`CREATE MATERIALIZED VIEW`](views.html#materialized-views)
-- [`CREATE TABLE AS`](create-table-as.html)
-- [`REFRESH`](refresh.html)
-- [`SET LOCALITY`](set-locality.html) under one of the following conditions:
-  - The locality changes from [`REGIONAL BY ROW`](set-locality.html#regional-by-row) to something that is not `REGIONAL BY ROW`.
-  - The locality changes from something that is not `REGIONAL BY ROW` to `REGIONAL BY ROW`.
-
-{{site.data.alerts.callout_info}}
-If a schema change fails, the schema change job will be cleaned up automatically. However, there are limitations with rolling back schema changes within a transaction; for more information, [see below](#schema-change-ddl-statements-inside-a-multi-statement-transaction-can-fail-while-other-statements-succeed).
-{{site.data.alerts.end}}
+- Changes that trigger an index backfill (adding data to an index).
+- The following statements:
+  - [`ADD COLUMN`](add-column.html) when the statement also features `INDEX` or `UNIQUE`.
+  - [`ALTER PRIMARY KEY`](alter-primary-key.html)
+  - [`CREATE INDEX`](create-index.html)
+  - [`CREATE MATERIALIZED VIEW`](views.html#materialized-views)
+  - [`CREATE TABLE AS`](create-table-as.html)
+  - [`REFRESH`](refresh.html)
+  - [`SET LOCALITY`](set-locality.html) under one of the following conditions:
+      - The locality changes from [`REGIONAL BY ROW`](set-locality.html#regional-by-row) to something that is not `REGIONAL BY ROW`.
+      - The locality changes from something that is not `REGIONAL BY ROW` to `REGIONAL BY ROW`.
 
 {{site.data.alerts.callout_info}}
 If a schema change job is paused, any jobs waiting on that schema change will stop waiting and return an error.
+{{site.data.alerts.end}}
+
+{{site.data.alerts.callout_info}}
+If a schema change fails, the schema change job will be cleaned up automatically. However, there are limitations with rolling back schema changes within a transaction; for more information, see [Schema change DDL statements inside a multi-statement transaction can fail while other statements succeed](#schema-change-ddl-statements-inside-a-multi-statement-transaction-can-fail-while-other-statements-succeed).
 {{site.data.alerts.end}}
 
 ## Declarative schema changer
@@ -73,7 +71,7 @@ The following statements use the declarative schema changer by default:
 - [`DROP TABLE`](drop-table.html)
 - [`DROP TYPE`](drop-type.html)
 
-The declarative schema changer can be enabled and disabled via the `sql.defaults.use_declarative_schema_changer` [cluster setting](cluster-settings.html) and the `use_declarative_schema_changer` [session variable](set-vars.html) until all schema change statements are moved to use the declarative schema changer.
+Until all schema change statements are moved to use the declarative schema changer you can enable and disable the declarative schema changer for supported statements using the `sql.defaults.use_declarative_schema_changer` [cluster setting](cluster-settings.html) and the `use_declarative_schema_changer` [session variable](set-vars.html).
 
 {{site.data.alerts.callout_danger}}
 Declarative schema changer statements and legacy schema changer statements operating on the same objects cannot exist within the same transaction. Either split the transaction into multiple transactions, or disable the cluster setting or session variable.
@@ -95,7 +93,7 @@ For more examples of schema change statements, see the [`ALTER TABLE`][alter-tab
 
 As noted in [Limitations](#limitations), you cannot run schema changes inside transactions in general.
 
-However, as of version v2.1, you can run schema changes inside the same transaction as a [`CREATE TABLE`][create-table] statement. For example:
+However, you can run schema changes inside the same transaction as a [`CREATE TABLE`][create-table] statement. For example:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -135,7 +133,7 @@ COMMIT
 
 ### Run multiple schema changes in a single `ALTER TABLE` statement
 
-As of v19.1, some schema changes can be used in combination in a single `ALTER TABLE` statement. For a list of commands that can be combined, see [`ALTER TABLE`](alter-table.html). For a demonstration, see [Add and rename columns atomically](rename-column.html#add-and-rename-columns-atomically).
+Some schema changes can be used in combination in a single `ALTER TABLE` statement. For a list of commands that can be combined, see [`ALTER TABLE`](alter-table.html). For a demonstration, see [Add and rename columns atomically](rename-column.html#add-and-rename-columns-atomically).
 
 ### Show all schema change jobs
 
@@ -167,13 +165,9 @@ For more long-term recovery solutions, consider taking either a [full or increme
 
 ## Limitations
 
-### Overview
-
-Schema changes keep your data consistent at all times, but they do not run inside [transactions][txns] in the general case. This is necessary so the cluster can remain online and continue to service application reads and writes.
-
-Specifically, this behavior is necessary because making schema changes transactional would mean requiring a given schema change to propagate across all the nodes of a cluster. This would block all user-initiated transactions being run by your application, since the schema change would have to commit before any other transactions could make progress. This would prevent the cluster from servicing reads and writes during the schema change, requiring application downtime.
-
 ### Limited support for schema changes within transactions
+
+Schema changes keep your data consistent at all times, but they do not run inside [transactions][txns] in the general case. Making schema changes transactional would mean requiring a given schema change to propagate across all the nodes of a cluster. This would block all user-initiated transactions being run by your application, since the schema change would have to commit before any other transactions could make progress. This would prevent the cluster from servicing reads and writes during the schema change, requiring application downtime.
 
 {% include {{ page.version.version }}/known-limitations/schema-changes-within-transactions.md %}
 
@@ -181,7 +175,11 @@ Specifically, this behavior is necessary because making schema changes transacti
 
 {% include {{ page.version.version }}/known-limitations/schema-change-ddl-inside-multi-statement-transactions.md %}
 
-### No schema changes between executions of prepared statements
+### No online schema changes if primary key change in progress
+
+You cannot start an online schema change on a table if a [primary key change](alter-primary-key.html) is currently in progress on the same table.
+
+### No online schema changes between executions of prepared statements
 
 {% include {{ page.version.version }}/known-limitations/schema-changes-between-prepared-statements.md %}
 

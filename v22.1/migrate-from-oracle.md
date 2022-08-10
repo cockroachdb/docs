@@ -233,7 +233,7 @@ Use the table below for data type mappings:
 When moving from Oracle to CockroachDB data types, consider the following:
 
 - [Schema changes within transactions](known-limitations.html#schema-changes-within-transactions)
-- [Schema changes between executions of prepared statements](online-schema-changes.html#no-schema-changes-between-executions-of-prepared-statements)
+- [Schema changes between executions of prepared statements](online-schema-changes.html#no-online-schema-changes-between-executions-of-prepared-statements)
 - If [`JSON`](jsonb.html) columns are used only for payload, consider switching to [`BYTES`](bytes.html).
 - Max size of a single column family (512 MiB by default).
 

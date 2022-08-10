@@ -157,15 +157,15 @@
                 ]
               },
               {
-                "title": "<code>ALTER BACKUP</code> (Enterprise)",
-                "urls": [
-                  "/${VERSION}/alter-backup.html"
-                ]
-              },
-              {
                 "title": "<code>ADD SUPER REGION</code> (Enterprise)",
                 "urls": [
                   "/${VERSION}/add-super-region.html"
+                ]
+              },
+              {
+                "title": "<code>ALTER BACKUP</code> (Enterprise)",
+                "urls": [
+                  "/${VERSION}/alter-backup.html"
                 ]
               },
               {
@@ -1092,6 +1092,12 @@
                 ]
               },
               {
+                "title": "<code>OID</code>",
+                "urls": [
+                  "/${VERSION}/oid.html"
+                ]
+              },
+              {
                 "title": "<code>SERIAL</code>",
                 "urls": [
                   "/${VERSION}/serial.html"
@@ -1791,6 +1797,12 @@
               "/${VERSION}/eventlog.html"
             ]
           }
+        ]
+      },
+      {
+        "title": "API Support Policy",
+        "urls": [
+          "/${VERSION}/api-support-policy.html"
         ]
       },
       {

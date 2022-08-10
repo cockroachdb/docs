@@ -93,9 +93,8 @@ You can add a column and change the primary key with a couple of `ALTER TABLE` s
              |     name STRING NOT NULL,
              |     email STRING NULL,
              |     id UUID NOT NULL DEFAULT gen_random_uuid(),
-             |     CONSTRAINT "primary" PRIMARY KEY (id ASC),
-             |     UNIQUE INDEX users_name_key (name ASC),
-             |     FAMILY "primary" (name, email, id)
+             |     CONSTRAINT users_pkey PRIMARY KEY (id ASC),
+             |     UNIQUE INDEX users_name_key (name ASC)
              | )
 (1 row)
 ~~~

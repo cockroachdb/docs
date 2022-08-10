@@ -107,7 +107,7 @@ This tutorial uses [`virtualenv`](https://virtualenv.pypa.io) for dependency man
 
 ### Configure the database connection
 
-Open `cockroach_example/cockroach_example/settings.py`, and configure [the `DATABASES` dictionary](https://docs.djangoproject.com/en/3.2/ref/settings/#databases) to connect to your cluster using the connection information that you retrieved from the {{ site.data.products.db }} Console.
+Open `cockroach_example/cockroach_example/settings.py`, and configure [the `DATABASES` dictionary](https://docs.djangoproject.com/en/3.2/ref/settings/#databases) to connect to your cluster using the connection parameters that you copied earlier.
 
 {% include_cached copy-clipboard.html %}
 ~~~ python

@@ -16,7 +16,7 @@ The `IMPORT INTO` [statement](sql-statements.html) imports CSV, Avro, or delimit
 - `IMPORT INTO` invalidates all [foreign keys](foreign-key.html) on the target table. To validate the foreign key(s), use the [`VALIDATE CONSTRAINT`](validate-constraint.html) statement.
 - `IMPORT INTO` is an insert-only statement; it cannot be used to update existing rows—see [`UPDATE`](update.html). Imported rows cannot conflict with primary keys in the existing table, or any other [`UNIQUE`](unique.html) constraint on the table.
 - `IMPORT INTO` does not offer `SELECT` or `WHERE` clauses to specify subsets of rows. To do this, use [`INSERT`](insert.html#insert-from-a-select-statement).
-- `IMPORT INTO` will cause any [changefeeds](use-changefeeds.html) running on the targeted table to fail.
+- `IMPORT INTO` will cause any [changefeeds](change-data-capture-overview.html) running on the targeted table to fail.
 - See the [`IMPORT`](import.html) page for guidance on importing PostgreSQL and MySQL dump files.
 
  `IMPORT INTO` now supports importing into [`REGIONAL BY ROW`](set-locality.html#regional-by-row) tables.
@@ -156,7 +156,11 @@ CockroachDB uses the URL provided to construct a secure API call to the service 
 
 ## Performance
 
-All nodes are used during the import job, which means all nodes' CPU and RAM will be partially consumed by the `IMPORT` task in addition to serving normal traffic.
+- All nodes are used during the import job, which means all nodes' CPU and RAM will be partially consumed by the `IMPORT` task in addition to serving normal traffic.
+- To improve performance, import at least as many files as you have nodes (i.e., there is at least one file for each node to import) to increase parallelism.
+- To further improve performance, order the data in the imported files by [primary key](primary-key.html) and ensure the primary keys do not overlap between files.
+- {% include_cached new-in.html version="v22.1" %} An import job will pause if a node in the cluster runs out of disk space. See [Viewing and controlling import jobs](#viewing-and-controlling-import-jobs) for information on resuming and showing the progress of import jobs.
+- {% include_cached new-in.html version="v22.1" %} An import job will [pause](pause-job.html) instead of entering a `failed` state if it continues to encounter transient errors once it has retried a maximum number of times. Once the import has paused, you can either [resume](resume-job.html) or [cancel](cancel-job.html) it.
 
 For more detail on optimizing import performance, see [Import Performance Best Practices](import-performance-best-practices.html).
 

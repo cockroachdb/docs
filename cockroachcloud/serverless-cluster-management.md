@@ -3,7 +3,7 @@ title: Manage a CockroachDB Serverless Cluster
 summary: Manage your cluster's schema, data, and more.
 toc: true
 filter_category: cluster_mgmt
-filter_html: CockroachDB Serverless (beta)
+filter_html: CockroachDB Serverless
 filter_sort: 1
 docs_area: manage
 ---
@@ -71,7 +71,7 @@ Deleting a cluster will delete all cluster data.
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
-Free {{ site.data.products.serverless-plan }} clusters are subject to deletion after 6 months of no activity.
+Free {{ site.data.products.serverless }} clusters are subject to deletion after 6 months of no activity.
 {{site.data.alerts.end}}
 
 Proceed with the following steps only if you are sure you want to delete a cluster:

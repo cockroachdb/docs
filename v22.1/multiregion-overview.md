@@ -185,6 +185,8 @@ This behavior also applies to [GIN indexes](inverted-indexes.html).
 
 For an example that uses unique indexes but applies to all indexes on `REGIONAL BY ROW` tables, see [Add a unique index to a `REGIONAL BY ROW` table](add-constraint.html#add-a-unique-index-to-a-regional-by-row-table).
 
+Regional by row tables can take advantage of [hash-sharded indexes](hash-sharded-indexes.html) provided the `crdb_region` column is not part of the columns in the hash-sharded index.
+
 ## Schema changes in multi-region clusters
 
 {% include {{ page.version.version }}/performance/lease-preference-system-database.md %}

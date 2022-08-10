@@ -14,6 +14,10 @@ docs_area: reference.security
 
 [Sign up for a CockroachDB Cloud account!](https://www.cockroachlabs.com/get-started-cockroachdb/)
 
+{% include /v22.1/dedicated-pci-compliance.md %}
+
+Learn more: [Integrate {{ site.data.products.dedicated }} with Satori](../satori-integration.html)
+
 ### Self-Hosted
 
 Cockroach Labs maintains <a href="https://github.com/cockroachdb/cockroach">CockroachDB as an open-source core</a>, which is available to operate under a number of different licensing options, including several free options.
