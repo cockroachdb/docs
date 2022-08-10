@@ -320,4 +320,4 @@ You can use the **Schema** tab to view the schema for a specific topic.
 ## See also
 
 - [Changefeed Sinks](changefeed-sinks.html)
-- [Responses](use-changefeeds.html#responses)
+- [Responses](changefeed-messages.html#responses)
