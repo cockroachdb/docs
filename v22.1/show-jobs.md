@@ -130,8 +130,8 @@ You can filter jobs by using `SHOW JOBS` as the data source for a [`SELECT`](sel
 
 The job types of automatic jobs are:
 
-- `AUTO SPAN CONFIG RECONCILIATION`: ensures that all declared [zone configurations](configure-zone.html) (`ALTER … CONFIGURE ZONE …`) are applied. For example, when `num_replicas = 7` is set on a table, the reconciliation job listens in on those changes and then informs the underlying [storage layer](architecture/storage-layer.html) to maintain 7 replicas for the table.
-- `AUTO SQL STATS COMPACTION`: truncates the internal `system.statement_statistics` and `system.transaction_statistics` table row count to the value in the `sql.stats.persisted_rows.max` [cluster setting](cluster-settings.html). Both tables contribute to the [`crdb_internal.statement_statistics`](crdb-internal.html#statement-statistics) and [`crdb_internal.transaction_statistics`](crdb-internal.html#transaction-statistics) tables respectively.
+- `AUTO SPAN CONFIG RECONCILIATION`: a continuously running job that ensures that all declared [zone configurations](configure-zone.html) (`ALTER … CONFIGURE ZONE …`) are applied. For example, when `num_replicas = 7` is set on a table, the reconciliation job listens in on those changes and then informs the underlying [storage layer](architecture/storage-layer.html) to maintain 7 replicas for the table.
+- `AUTO SQL STATS COMPACTION`: an hourly job that truncates the internal `system.statement_statistics` and `system.transaction_statistics` table row count to the value in the `sql.stats.persisted_rows.max` [cluster setting](cluster-settings.html). Both tables contribute to the [`crdb_internal.statement_statistics`](crdb-internal.html#statement-statistics) and [`crdb_internal.transaction_statistics`](crdb-internal.html#transaction-statistics) tables respectively.
 - `AUTO CREATE STATS`: creates and updates [table statistics](cost-based-optimizer.html#table-statistics).
 
 ### Filter automatic jobs
