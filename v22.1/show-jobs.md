@@ -145,9 +145,11 @@ You can filter jobs by using `SHOW AUTOMATIC JOBS` as the data source for a [`SE
 
  You can display specific fields relating to changefeed jobs by running `SHOW CHANGEFEED JOBS`. These fields include:
 
-* [`high_water_timestamp`](monitor-and-debug-changefeeds.html#monitor-a-changefeed): Guarantees all changes before or at this time have been emitted.
-* [`sink_uri`](create-changefeed.html#sink-uri): The destination URI of the configured sink for a changefeed.
-* `full_table_names`: The full [name resolution](sql-name-resolution.html) for a table. For example, `defaultdb.public.mytable` refers to the `defaultdb` database, the `public` schema, and the table `mytable` table.
+- [`high_water_timestamp`](monitor-and-debug-changefeeds.html#monitor-a-changefeed): Guarantees all changes before or at this time have been emitted.
+- [`sink_uri`](create-changefeed.html#sink-uri): The destination URI of the configured sink for a changefeed.
+- `full_table_names`: The full [name resolution](sql-name-resolution.html) for a table. For example, `defaultdb.public.mytable` refers to the `defaultdb` database, the `public` schema, and the table `mytable` table.
+- `topics`: The topic name to which [Kafka](changefeed-sinks.html#kafka) and [Google Cloud Pub/Sub](changefeed-sinks.html#google-cloud-pub-sub) changefeed messages will emit. 
+- [`format`](create-changefeed.html#format): The format of the changefeed messages, e.g., `json`, `avro`.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
