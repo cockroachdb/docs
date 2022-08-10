@@ -470,6 +470,7 @@ layout: null
 /docs/show-database.html /docs/stable/show-vars.html 301
 /docs/v22.1/convert-to-schema.html /docs/v22.1/alter-database.html 301
 /docs/stable/convert-to-schema.html /docs/stable/alter-database.html 301
+/docs/v22.1/use-changefeeds.html /docs/v22.1/changefeed-messages.html 301
 
 #CockroachDB Cloud release notes
 

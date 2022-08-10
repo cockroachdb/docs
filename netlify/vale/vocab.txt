@@ -10,6 +10,7 @@ allowlisted
 andrey
 angelese
 anonymized
+APIs
 arity
 artoul
 australiaeast
@@ -60,6 +61,7 @@ cgo
 changangela
 changefeed
 changefeeds
+changefeed's
 changeset
 changesets
 checkpointing
@@ -102,6 +104,7 @@ datatypes
 datetime
 dayofweek
 dayofyear
+DBeaver
 dchenk
 ddl
 deallocated
@@ -185,6 +188,7 @@ guanqun
 gzip
 haines
 hao
+HAProxy
 hardcoded
 hashicorp
 heartbeated
@@ -208,6 +212,7 @@ hyperthread
 hyperthreads
 img
 include_cached
+_include
 inclusivity
 inconsolata
 incrementals
@@ -263,6 +268,7 @@ kubectl
 kubemci
 kuwahara
 kv
+latest_operator_version
 Leakproof
 leakproof
 leiningen
@@ -343,6 +349,7 @@ numerics
 offboard
 offlined
 oid
+OIDs
 oli
 ons
 onwards
@@ -352,6 +359,7 @@ operator_version
 orchstrations
 ordinality
 overallocating
+ORMs
 owsiany
 page_prefix
 Pak
@@ -431,9 +439,9 @@ rehomed
 rehoming
 reformats
 relicense
-remote_include
 replacewith
 repo
+repos
 repudiability
 rescanned
 retryable
@@ -579,6 +587,8 @@ txns
 typechecking
 tz
 udt
+UDF
+UDFs
 ui
 uid
 uksouth
@@ -624,6 +634,7 @@ uris
 url
 userfile
 userspace
+usertable
 utils
 uuid
 vaidya

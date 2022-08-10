@@ -1,10 +1,12 @@
 ### Install the Operator
 
+{% capture latest_operator_version %}{% include_cached latest_operator_version.md %}{% endcapture %}
+
 1. Apply the [custom resource definition (CRD)](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/#customresourcedefinitions) for the Operator:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ kubectl apply -f https://raw.githubusercontent.com/cockroachdb/cockroach-operator/{{site.operator_version}}/install/crds.yaml
+    $ kubectl apply -f https://raw.githubusercontent.com/cockroachdb/cockroach-operator/v{{ latest_operator_version }}/install/crds.yaml
     ~~~
 
     ~~~
@@ -19,7 +21,7 @@
 
         {% include_cached copy-clipboard.html %}
         ~~~ shell
-        $ curl -O https://raw.githubusercontent.com/cockroachdb/cockroach-operator/{{site.operator_version}}/install/operator.yaml
+        $ curl -O https://raw.githubusercontent.com/cockroachdb/cockroach-operator/v{{ latest_operator_version }}/install/operator.yaml
         ~~~
 
     1. To use a custom namespace, edit all instances of `namespace: cockroach-operator-system` with your desired namespace.
@@ -37,7 +39,7 @@
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ kubectl apply -f https://raw.githubusercontent.com/cockroachdb/cockroach-operator/{{site.operator_version}}/install/operator.yaml
+    $ kubectl apply -f https://raw.githubusercontent.com/cockroachdb/cockroach-operator/v{{ latest_operator_version }}/install/operator.yaml
     ~~~
 
     ~~~
@@ -77,7 +79,7 @@
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ curl -O https://raw.githubusercontent.com/cockroachdb/cockroach-operator/{{site.operator_version}}/examples/example.yaml
+    $ curl -O https://raw.githubusercontent.com/cockroachdb/cockroach-operator/v{{ latest_operator_version }}/examples/example.yaml
     ~~~
 
     {{site.data.alerts.callout_info}}

@@ -71,7 +71,7 @@ For other ways to install psycopg2, see the [official documentation](http://init
     $ export DATABASE_URL="{connection-string}"
     ~~~
 
-    Where `{connection-string}` is the connection string you obtained from the {{ site.data.products.db }} Console.
+    Where `{connection-string}` is the connection string you copied earlier.
 
     </section>
 
@@ -92,16 +92,16 @@ For other ways to install psycopg2, see the [official documentation](http://init
     The output should show the account balances before and after the funds transfer:
 
     ~~~
-    Balances at Fri Oct 30 18:27:00 2020:
-    (1, 1000)
-    (2, 250)
-    Balances at Fri Oct 30 18:27:00 2020:
-    (1, 900)
-    (2, 350)
+    Balances at Thu Aug  4 15:51:03 2022:
+    account id: 2e964b45-2034-49a7-8ab8-c5d0082b71f1  balance: $1000
+    account id: 889cb1eb-b747-46f4-afd0-15d70844147f  balance: $250
+    Balances at Thu Aug  4 15:51:03 2022:
+    account id: 2e964b45-2034-49a7-8ab8-c5d0082b71f1  balance: $900
+    account id: 889cb1eb-b747-46f4-afd0-15d70844147f  balance: $350
     ~~~
 
 ## What's next?
 
-Read more about using the [Python psycopg2 driver](http://initd.org/psycopg/docs/).
+Read more about using the [Python psycopg2 driver](https://www.psycopg.org/docs/).
 
 {% include {{page.version.version}}/app/see-also-links.md %}

@@ -1,5 +1,5 @@
 ---
-title: Satori Integration
+title: Integrate CockroachDB Dedicated with Satori
 summary: Row or column-level access control and dynamic masking of data with Satori
 toc: true
 docs_area: reference.third_party_support
