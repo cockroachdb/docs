@@ -151,7 +151,7 @@ Suppose that you want MovR to offer ride-sharing services, in addition to vehicl
 );
 ~~~
 
-The table's compound primary key is on the `city` and `dl` columns. Note that the table automatically generates an `id` and a `dl` value [using supported SQL functions](functions-and-operators.html), if they are not provided.
+The table's compound primary key is on the `city` and `dl` columns. Note that the table automatically generates an `id` and a `dl` value [using supported SQL functions](functions-and-operators.html) if they are not provided.
 
 Because this table has several columns in common with the `users` table, you can populate the table with values from the `users` table with an `INSERT` statement:
 
