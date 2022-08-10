@@ -15,9 +15,9 @@ do
 		tmp=$(egrep -in $y $x)
 		if [ ! -z "$tmp" ]
 		then
+			OUTPUT+=$(echo '\n')
 			OUTPUT+=$(echo "${x} - Violates ${y} - Line #")
 			OUTPUT+=$(echo $tmp)
-			OUTPUT+=$(echo -e '\n')
 		fi
 	done
 done
@@ -25,6 +25,6 @@ done
 if [ ! -z "$OUTPUT" ]
 then
 	echo "Error: Commit failed. Secret key found in one or more files:" >&2
-  echo ${OUTPUT} >&2
+  echo -e ${OUTPUT} >&2
 	exit 1
 fi
