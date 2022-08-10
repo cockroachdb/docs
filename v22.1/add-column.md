@@ -17,11 +17,6 @@ docs_area: reference.sql
 {% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/add_column.html %}
 </div>
 
-waka  AKIAIOSFODNN7EXAMPLE
-
-Here's my old GitHub key: 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
-
-
 
 ## Required privileges
 
