@@ -3,121 +3,44 @@ title: cockroach cert
 summary: A secure CockroachDB cluster uses TLS for encrypted inter-node and client-node communication.
 toc: true
 key: create-security-certificates.html
+filter_category: security_cert
+filter_html: Use cockroach cert
+filter_sort: 1
 docs_area: reference.cli
 ---
 
-The CockroachDB CLI's `cockroach cert` command allows you to generate [private key/public certificate pairs for TLS authentication and encryption in communication between CockroachDB nodes, and from SQL clients to the cluster.
+To secure your CockroachDB cluster's inter-node and client-node communication, you need to provide a Certificate Authority (CA) certificate that has been used to sign keys and certificates (SSLs) for:
 
-To learn more, explore:
+- Nodes
+- Clients
+- DB Console (optional)
 
-- [Transport Layer Security (TLS) and Public Key Infrastructure (PKI)](security-reference/transport-layer-security.html)
-- [Using the CockroachDB CLI to provision a development cluster](manage-certs-cli.html).
-- [Managing CockroachDB security certificates with HashiCorp Vault](manage-certs-vault.html).
+To create these certificates and keys, use the `cockroach cert` [commands](cockroach-commands.html) with the appropriate subcommands and flags, use [`openssl` commands](https://wiki.openssl.org/index.php/), or use a [custom CA](create-security-certificates-custom-ca.html) (for example, a public CA or your organizational CA).
 
-{{site.data.alerts.callout_info}}
-The ability to rapidly and locally generate private key/public certificate pairs is important for development, but careful management of security certificates is an essential component of cluster security, and performing these tasks with a cloud-native tool such as Google Cloud Platform's Certificate Authority Service (CAS) offers many security advantages.
+{% include filter-tabs.md %}
 
-{{site.data.alerts.end}}
+{{site.data.alerts.callout_success}}For details about when and how to change security certificates without restarting nodes, see <a href="rotate-certificates.html">Rotate Security Certificates</a>.{{site.data.alerts.end}}
 
-You can use the CLI to:
+## How security certificates work
 
-- Generate a root certificate authority (CA) certificate for your cluster, and use it to sign public certificates.
-- Generate key pair for use by a CockroachDB node.
-- Generate a key pair for use by a TLS-authenticated CockroachDB client.
+1. Using the `cockroach cert` command, you create a CA certificate and key and then node and client certificates that are signed by the CA certificate. Since you need access to a copy of the CA certificate and key to create node and client certs, it's best to create everything in one place.
+
+2. You then upload the appropriate node certificate and key and the CA certificate to each node, and you upload the appropriate client certificate and key and the CA certificate to each client.
+
+3. When nodes establish contact to each other, and when clients establish contact to nodes, they use the CA certificate to verify each other's identity.
 
 ## Subcommands
 
-### `create-ca`
-
-Create a certificate authority a self-signed certificate authority (CA) key pair (private key and public certificate), which you'll use to create and authenticate certificates for your entire cluster.
-
-{% include_cached copy-clipboard.html %}
-~~~ shell
-cockroach cert create-ca \
- --certs-dir=[path-to-certs-directory] \
- --ca-key=[path-to-ca-key]
-~~~
-
-### `create-node`
-
-Create a certificate and key for a specific node in the cluster. You specify all addresses on which the node can be reached and pass appropriate flags.
-
-Create a node certificate and key:
-
-{% include_cached copy-clipboard.html %}
-~~~ shell
-cockroach cert create-node \
-  [node-hostname] \
-  [node-other-hostname] \
-  [node-yet-another-hostname] \
-  [hostname-in-wildcard-notation] \
-  --certs-dir=[path-to-certs-directory] \
-  --ca-key=[path-to-ca-key]
-~~~
-
-### `create-client`
-
-Create a certificate and key for a [specific user](create-user.html) accessing the cluster from a client. You specify the username of the user who will use the certificate and pass appropriate flags.
-
-Create a client certificate and key:
-
-{% include_cached copy-clipboard.html %}
-~~~ shell
-cockroach cert create-client \
- [username] \
- --certs-dir=[path-to-certs-directory] \
- --ca-key=[path-to-ca-key]
-~~~
-
-### `list`
-
-List certificates and keys found in the certificate directory.
-
-~~~ shell
-cockroach cert list \
- --certs-dir=[path-to-certs-directory]
-~~~
-
-### View help
-
-For the `cert` command overall:
-
-{% include_cached copy-clipboard.html %}
-~~~ shell
-cockroach cert --help
-~~~
-
-For a subcommand:
-
-{% include_cached copy-clipboard.html %}
-~~~ shell
-cockroach cert <subcommand> --help
-~~~
-
-## Flags
-
-The `cert` command and subcommands support the following [general-use](#general) and [logging](#logging) flags.
-
-### General
-
-Flag | Description
------|-----------
-`--certs-dir` | The path to the combined [trust store/secrets store](security-reference/transport-layer-security.html#trust-store) containing all certificates and keys needed by `cockroach` commands.<br><br>This flag is used by all subcommands.<br><br>**Default:** `${HOME}/.cockroach-certs/`
-`--ca-key` | The path to the private key protecting the CA certificate. <br><br>This flag is required for all `create-*` subcommands. When used with `create-ca` in particular, it defines where to create the CA key; the specified directory must exist.<br><br>**Env Variable:** `COCKROACH_CA_KEY`
-`--allow-ca-key-reuse` | When running the `create-ca` subcommand, pass this flag to re-use an existing CA key identified by `--ca-key`. Otherwise, a new CA key will be generated.<br><br>This flag is used only by the `create-ca` subcommand. It helps avoid accidentally re-using an existing CA key.
-`--overwrite` | When running `create-*` subcommands, pass this flag to allow existing files in the certificate directory (`--certs-dir`) to be overwritten.<br><br>This flag helps avoid accidentally overwriting sensitive certificates and keys.
-`--lifetime` | The lifetime of the certificate, in hours, minutes, and seconds. <br><br>Certificates are valid from the time they are created through the duration specified in `--lifetime`.<br><br>**Default:** `87840h0m0s` (10 years)
-`--key-size` | The size of the CA, node, or client key, in bits.<br><br>**Default:** `2048`
-<a name="flag-pkcs8"></a> `--also-generate-pkcs8-key` | Also create a key in [PKCS#8 format](https://tools.ietf.org/html/rfc5208), which is the standard key encoding format used by Java.  For example usage, see [Build a Java App with CockroachDB](build-a-java-app-with-cockroachdb.html).
-
-### Logging
-
-[The `--log` and `--log-config-file` flags can be used to configure logging behavior for all CockroachDB CLI commands](configure-logs.html), including `cockroach cert`.
-{% include {{ page.version.version }}/misc/logging-defaults.md %}
+Subcommand | Usage
+-----------|------
+`create-ca` | Create the self-signed certificate authority (CA), which you'll use to create and authenticate certificates for your entire cluster.
+`create-node` | Create a certificate and key for a specific node in the cluster. You specify all addresses at which the node can be reached and pass appropriate flags.
+`create-client` | Create a certificate and key for a [specific user](create-user.html) accessing the cluster from a client. You specify the username of the user who will use the certificate and pass appropriate flags.
+`list` | List certificates and keys found in the certificate directory.
 
 ## Certificate directory
 
-When using `cockroach cert` to create node and client certificates, you will need access to a local copy of the CA certificate and key. It is therefore recommended to create all certificates and keys in one place and then distribute node and client certificates and keys appropriately. For the CA key, be sure to store it somewhere safe and keep a backup; if you lose it, you will not be able to add new nodes or clients to your cluster. To generate node and client certificates, see [Manual Deployment](manual-deployment.html).
+When using `cockroach cert` to create node and client certificates, you will need access to a local copy of the CA certificate and key. It is therefore recommended to create all certificates and keys in one place and then distribute node and client certificates and keys appropriately. For the CA key, be sure to store it somewhere safe and keep a backup; if you lose it, you will not be able to add new nodes or clients to your cluster. For a tutorial of this process, see [Manual Deployment](manual-deployment.html).
 
 ## Required keys and certificates
 
@@ -158,16 +81,16 @@ To reduce the likelihood of a malicious user or process accessing a certificate 
 - The user that the CockroachDB process runs as.
 - The system `root` user (not to be confused with the [CockroachDB `root` user](security-reference/authorization.html#root-user)) and the group that the CockroachDB process runs in.
 
-For example, if running the CockroachDB process as a system user named `cockroach`, we can determine the group that the process will run in by running `id cockroach`:
+For example, if running the CockroachDB process as a system user named `cockroach`, we can use the `id cockroach` command to list each group the `cockroach` user is a member of:
 
 ```shell
 id cockroach
 uid=1000(cockroach) gid=1000(cockroach) groups=1000(cockroach),1000(cockroach)
 ```
 
-In the output, we can see that the system user `cockroach` is also in the `cockroach` group (with the group id or gid of 1000).
+In the output, we can see that the system user `cockroach` is in the `cockroach` group (with the group ID or gid `1000`).
 
-If the key file is owned by the system `root` user (who has a user ID of 0), CockroachDB won't be able to read it unless it has permission to read because of its group membership. Because we know that CockroachDB is running in the `cockroach` group, we can allow CockroachDB to read the key by changing the group owner of the key file to the `cockroach` group. We then give the group read permissions by running `chmod`.
+If the key file is owned by the system `root` user (who has user ID `0`), CockroachDB won't be able to read it unless it has permission to read because of its group membership. Because we know that CockroachDB user is a member of the `cockroach` group, we can allow CockroachDB to read the key by changing the group owner of the key file to the `cockroach` group. We then give the group read permissions by running `chmod`. Notice that the `others` group has no permissions (the `0` of `740`). Only the `cockroach` user, a member of the `cockroach` group, or the system `root` user has permission to read the key.
 
 ```shell
 sudo chgrp cockroach ui.key
@@ -181,6 +104,73 @@ Note the following:
 - When running in Kubernetes, you will not be able to change the user that owns a certificate file mounted from a Secret or another Volume, but you will be able to override the group by setting the `fsGroup` flag in a Pod or Container's Security Context. In our example above, you would set `fsGroup` to "1000". You will also need to set the key's "mode" using the `mode` flag on individual items or the `defaultMode` flag if applying to the entire secret.
 
 - This check can be disabled by setting the environment variable `COCKROACH_SKIP_KEY_PERMISSION_CHECK` to `true`.
+
+## Synopsis
+
+Create the CA certificate and key:
+
+~~~ shell
+$ cockroach cert create-ca \
+ --certs-dir=[path-to-certs-directory] \
+ --ca-key=[path-to-ca-key]
+~~~
+
+Create a node certificate and key:
+
+~~~ shell
+$ cockroach cert create-node \
+ [node-hostname] \
+ [node-other-hostname] \
+ [node-yet-another-hostname] \
+ [hostname-in-wildcard-notation] \
+ --certs-dir=[path-to-certs-directory] \
+ --ca-key=[path-to-ca-key]
+~~~
+
+Create a client certificate and key:
+
+~~~ shell
+$ cockroach cert create-client \
+ [username] \
+ --certs-dir=[path-to-certs-directory] \
+ --ca-key=[path-to-ca-key]
+~~~
+
+List certificates and keys:
+
+~~~ shell
+$ cockroach cert list \
+ --certs-dir=[path-to-certs-directory]
+~~~
+
+View help:
+
+~~~ shell
+$ cockroach cert --help
+~~~
+~~~ shell
+$ cockroach cert <subcommand> --help
+~~~
+
+## Flags
+
+The `cert` command and subcommands support the following [general-use](#general) and [logging](#logging) flags.
+
+### General
+
+Flag | Description
+-----|-----------
+`--certs-dir` | The path to the [certificate directory](#certificate-directory) containing all certificates and keys needed by `cockroach` commands.<br><br>This flag is used by all subcommands.<br><br>**Default:** `${HOME}/.cockroach-certs/`
+`--ca-key` | The path to the private key protecting the CA certificate. <br><br>This flag is required for all `create-*` subcommands. When used with `create-ca` in particular, it defines where to create the CA key; the specified directory must exist.<br><br>**Env Variable:** `COCKROACH_CA_KEY`
+`--allow-ca-key-reuse` | When running the `create-ca` subcommand, pass this flag to re-use an existing CA key identified by `--ca-key`. Otherwise, a new CA key will be generated.<br><br>This flag is used only by the `create-ca` subcommand. It helps avoid accidentally re-using an existing CA key.
+`--overwrite` | When running `create-*` subcommands, pass this flag to allow existing files in the certificate directory (`--certs-dir`) to be overwritten.<br><br>This flag helps avoid accidentally overwriting sensitive certificates and keys.
+`--lifetime` | The lifetime of the certificate, in hours, minutes, and seconds. <br><br>Certificates are valid from the time they are created through the duration specified in `--lifetime`.<br><br>**Default:** `87840h0m0s` (10 years)
+`--key-size` | The size of the CA, node, or client key, in bits.<br><br>**Default:** `2048`
+<a name="flag-pkcs8"></a> `--also-generate-pkcs8-key` | Also create a key in [PKCS#8 format](https://tools.ietf.org/html/rfc5208), which is the standard key encoding format used by Java.  For example usage, see [Build a Java App with CockroachDB](build-a-java-app-with-cockroachdb.html).
+
+### Logging
+
+{% include {{ page.version.version }}/misc/logging-defaults.md %}
 
 ## Examples
 
