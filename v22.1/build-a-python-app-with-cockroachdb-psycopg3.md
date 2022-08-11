@@ -46,7 +46,7 @@ To install `psycopg[binary]`, run the following command:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-$ pip install "psycopg[binary]"
+$ pip3 install "psycopg[binary]"
 ~~~
 
 For other ways to install Psycopg, see the [official documentation](https://www.psycopg.org/psycopg3/docs/basic/install.html).
@@ -86,7 +86,7 @@ For other ways to install Psycopg, see the [official documentation](https://www.
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ python example.py
+    $ python3 example.py
     ~~~
 
     The output should show the account balances before and after the funds transfer:
