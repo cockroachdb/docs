@@ -11,7 +11,7 @@ See also:
 
 - [Public Key Infrastructure (PKI) and Transport Layer Security (TLS)](security-reference/transport-layer-security.html)
 - [Using the CockroachDB CLI to provision a development cluster](manage-certs-cli.html).
-- [Managing CockroachDB security certificates with HashiCorp Vault](manage-certs-vault.html).
+- [Manage PKI certificates for a CockroachDB deployment with HashiCorp Vault](manage-certs-vault.html).
 
 
 To create these certificates and keys, use the `cockroach cert` [commands](cockroach-commands.html) with the appropriate subcommands and flags, use [`openssl` commands](https://wiki.openssl.org/index.php/), or use a [custom CA](create-security-certificates-custom-ca.html) (for example, a public CA or your organizational CA).

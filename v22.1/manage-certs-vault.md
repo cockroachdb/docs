@@ -1,5 +1,5 @@
 ---
-title: Managing CockroachDB security certificates with HashiCorp Vault
+title: Manage PKI certificates for a CockroachDB deployment with HashiCorp Vault
 summary: Using Google Cloud Platform Certificate Authority Service to manage PKI certificates
 toc: true
 docs_area: manage.security
@@ -12,7 +12,7 @@ PKI involves careful management of the certificates used for authentication and 
 **Goals**:
 
 - Deploy a secure three-node CockroachDB cluster in Google Cloud Platform.
-- Create a root certificate authority (CA)
+- Create two certificate authority (CA), one each
 - Define PKI roles CockroachDB nodes and clients
 - Issue private key/public certificate pairs for use by the CockroachDB nodes comprising our cluster
 - Issue a private key/public certificate pair for use by the CockroachDB client
@@ -105,17 +105,16 @@ Additionally, our project's firewall rules must be configured to allow communica
 
 1. Create the CA admin jumpbox.
 
-    Specify the ca-admin service account, and grant the `cloud-platform` scope, so that the service account can access the secrets API.
+    Specify the ca-admin service account, and grant the `cloud-platform` scope, so that files can be sent with SCP from here to the nodes to be provisioned.
 
     {% include_cached copy-clipboard.html %}
     ```shell
     gcloud compute instances create ca-admin-jumpbox \
-    --service-account ca-admin@noobtest123.iam.gserviceaccount.com \
     --scopes "https://www.googleapis.com/auth/cloud-platform"
     ```
 
     ```txt
-    Created [https://www.googleapis.com/compute/v1/projects/noobtest123/zones/us-central1-a/instances/ca-admin-jumpbox].
+    Created [https://www.googleapis.com/compute/v1/projects/pki-docs-test1/zones/us-central1-a/instances/ca-admin-jumpbox].
     NAME              ZONE           MACHINE_TYPE   PREEMPTIBLE  INTERNAL_IP  EXTERNAL_IP     STATUS
     ca-admin-jumpbox  us-central1-a  n1-standard-1               10.128.0.59  35.184.145.196  RUNNING
     ```
@@ -168,15 +167,15 @@ Additionally, our project's firewall rules must be configured to allow communica
     ```
 
     ```txt
-    Created [https://www.googleapis.com/compute/v1/projects/noobtest123/zones/us-central1-a/instances/roach-node-1].
-    Created [https://www.googleapis.com/compute/v1/projects/noobtest123/zones/us-central1-a/instances/roach-node-2].
-    Created [https://www.googleapis.com/compute/v1/projects/noobtest123/zones/us-central1-a/instances/roach-node-3].
+    Created [https://www.googleapis.com/compute/v1/projects/pki-docs-test1/zones/us-central1-a/instances/roach-node-1].
+    Created [https://www.googleapis.com/compute/v1/projects/pki-docs-test1/zones/us-central1-a/instances/roach-node-2].
+    Created [https://www.googleapis.com/compute/v1/projects/pki-docs-test1/zones/us-central1-a/instances/roach-node-3].
     ```
 
 1. Create the client instance.
 
     {{site.data.alerts.callout_info}}
-    Here we add the network tag 'roach-client', which will allow our firewall rule to apply to the nodes instances.
+    Here we add the network tag 'roach-client', which will allow our the client to reach the nodes, according to our firewall rule.
     {{site.data.alerts.end}}
 
     {% include_cached copy-clipboard.html %}
@@ -185,16 +184,27 @@ Additionally, our project's firewall rules must be configured to allow communica
     --scopes "https://www.googleapis.com/auth/cloud-platform" \
     --tags=roach-client
     ```
+    ~~~txt
+    Created [https://www.googleapis.com/compute/v1/projects/pki-docs-test1/zones/us-central1-a/instances/roach-node-1].
+    NAME          ZONE           MACHINE_TYPE   PREEMPTIBLE  INTERNAL_IP  EXTERNAL_IP    STATUS
+    roach-node-1  us-central1-a  n2-standard-2               10.128.0.3   34.134.11.238  RUNNING
+    Created [https://www.googleapis.com/compute/v1/projects/pki-docs-test1/zones/us-central1-a/instances/roach-node-2].
+    NAME          ZONE           MACHINE_TYPE   PREEMPTIBLE  INTERNAL_IP  EXTERNAL_IP     STATUS
+    roach-node-2  us-central1-a  n2-standard-2               10.128.0.4   34.136.190.120  RUNNING
+    Created [https://www.googleapis.com/compute/v1/projects/pki-docs-test1/zones/us-central1-a/instances/roach-node-3].
+    NAME          ZONE           MACHINE_TYPE   PREEMPTIBLE  INTERNAL_IP  EXTERNAL_IP     STATUS
+    roach-node-3  us-central1-a  n2-standard-2               10.128.0.5   34.170.109.109  RUNNING
+    ~~~
 
 1. Reserve a static IP address for the cluster.
 
     {% include_cached copy-clipboard.html %}
     ~~~shell
-    gcloud compute addresses create roach-point --global --ip-version IPV4
+    gcloud compute addresses create roach-point
     ~~~
     
     ~~~txt
-    Created [https://www.googleapis.com/compute/v1/projects/trestdocs2/global/addresses/roach-point].
+    Created [https://www.googleapis.com/compute/v1/projects/pki-docs-test1/global/addresses/roach-point].
     ~~~
 
 1. Fetch the static IP address.
@@ -206,7 +216,7 @@ Additionally, our project's firewall rules must be configured to allow communica
     
     ~~~txt
     NAME         ADDRESS/RANGE  TYPE      PURPOSE  NETWORK  REGION  SUBNET  STATUS
-    roach-point  35.241.9.82    EXTERNAL                                    RESERVED
+    roach-point  34.120.212.70  EXTERNAL                                    RESERVED
     ~~~
 
 1. List the names and network addresses of your compute instances.
@@ -217,11 +227,11 @@ Additionally, our project's firewall rules must be configured to allow communica
     
     ~~~txt
     NAME              ZONE           MACHINE_TYPE   PREEMPTIBLE  INTERNAL_IP  EXTERNAL_IP     STATUS
-    ca-admin-jumpbox  us-central1-a  n1-standard-1               10.128.0.2   35.223.61.117   RUNNING
-    roach-client      us-central1-a  n1-standard-1               10.128.0.8   34.72.75.145    RUNNING
-    roach-node-1      us-central1-a  n2-standard-2               10.128.0.4   34.171.124.137  RUNNING
-    roach-node-2      us-central1-a  n2-standard-2               10.128.0.5   35.202.106.229  RUNNING
-    roach-node-3      us-central1-a  n2-standard-2               10.128.0.6   35.192.202.186  RUNNING
+    ca-admin-jumpbox  us-central1-a  n1-standard-1               10.128.0.2   34.70.101.145   RUNNING
+    roach-client      us-central1-a  n1-standard-1               10.128.0.6   34.134.58.108   RUNNING
+    roach-node-1      us-central1-a  n2-standard-2               10.128.0.3   34.134.11.238   RUNNING
+    roach-node-2      us-central1-a  n2-standard-2               10.128.0.4   34.136.190.120  RUNNING
+    roach-node-3      us-central1-a  n2-standard-2               10.128.0.5   34.170.109.109  RUNNING
     ~~~
 
 1. Compile an environment manifest
@@ -234,23 +244,25 @@ Additionally, our project's firewall rules must be configured to allow communica
     ```shell
 
     # replace with your project ID
-    export PROJECT_ID=docsrule123
+    export PROJECT_ID=pki-docs-test1
 
     # replace with your cluster's static IP
-    export ex_ip=35.241.9.82
+    export ex_ip=35.238.8.215
 
     # replace with your compute instance names and *internal* IP addresses
     export node1name=roach-node-1
-    export node1addr=10.128.0.4
+    export node1addr=10.128.0.3
 
     export node2name=roach-node-2
-    export node2addr=10.128.0.5
+    export node2addr=10.128.0.4
 
     export node3name=roach-node-3
-    export node3addr=10.128.0.6    
+    export node3addr=10.128.0.5
+
+    export client_addr=10.128.0.6
     ```
 
-### Provision the certificate authority (CA) with Vault
+### Provision the certificate authorities (CAs) with Vault
 
 The operations in this section fall under the persona of `ca-admin`, and therefore require admin Vault access and ssh access to the CA admin jumpbox.
 
@@ -273,24 +285,34 @@ The operations in this section fall under the persona of `ca-admin`, and therefo
 
     {% include_cached copy-clipboard.html %}
     ```shell
-
-    export secrets_dir="/tmp/secrets" # replace with desired path to secrets directory
+    cd ~
+    export secrets_dir="secrets" # replace with desired path to secrets directory
     mkdir "${secrets_dir}"
     mkdir "${secrets_dir}/certs"
-    mkdir "${secrets_dir}/$node1name"
-    mkdir "${secrets_dir}/$node2name"
-    mkdir "${secrets_dir}/$node3name"
-    mkdir "${secrets_dir}/clients"
+    mkdir -p "${secrets_dir}/node1/certs"
+    mkdir -p "${secrets_dir}/node2/certs"
+    mkdir -p "${secrets_dir}/node3/certs"
+    mkdir -p "${secrets_dir}/clients/certs"
     ```
-1. [Install vault](https://learn.hashicorp.com/tutorials/vault/getting-started-install) on the jumpbox, following the instructions for **Ubuntu/Debian** Linux.
+1. [Install Vault](https://learn.hashicorp.com/tutorials/vault/getting-started-install) on the jumpbox, following the [instructions for **Ubuntu/Debian** Linux](https://www.vaultproject.io/downloads).
+
+
+1. Obtain the required parameters to target and authenticate to Vault.
+
+    - If using HashiCorp Cloud Platform (HCP):
+        
+        Go to the [HCP console](https://portal.cloud.hashicorp.com), choose Vault from the **Services** menu and then select your cluster.
+
+        Find the **Public Cluster URL** for your Vault cluster, and set it as the `VAULT_ADDR` environment variable in your shell.
+
+        Generate an admin token by clicking **Generate token**, and set it as the `VAULT_TOKEN` environment variable.
+
+    - If using a Vault deployment internal to your organization, contact your Vault administrator for a token and the appropriate endpoint.
+
+    - If using a development Vault server (*suitable only for tutorial/testing purposes*):
+        Start the Vault development server and obtain credentials locally on your CA admin jumpbox by running `vault server --dev`.
 
 1. Initialize your shell for Vault on the jumpbox
-
-    Go to the [HCP console](https://portal.cloud.hashicorp.com), choose Vault from the **Services** menu and then select your cluster.
-
-    Find the **Public Cluster URL** for your Vault cluster, and set it as the `VAULT_ADDR` environment variable in your shell.
-
-    Generate an admin token by clicking **Generate token**, and set it as the `VAULT_TOKEN` environment variable.
 
     {% include_cached copy-clipboard.html %}
     ~~~shell
@@ -308,60 +330,88 @@ The operations in this section fall under the persona of `ca-admin`, and therefo
 
 #### Step 2. Create the certificate authority
 
-1. Create a PKI secrets engine to serve as your CA
+1. Create one PKI secrets engine to serve as your cluster CA, and another to serve as your client CA.
 
     {% include_cached copy-clipboard.html %}
     ~~~shell
     vault secrets enable -path=cockroach_cluster_ca pki
+    vault secrets enable -path=cockroach_client_ca pki
     ~~~
 
     ~~~txt
     Success! Enabled the pki secrets engine at: cockroach_cluster_ca/
+    Success! Enabled the pki secrets engine at: cockroach_client_ca/
     ~~~
+    
 
-1. Set a maximum validity duration for certificates signed by your CAs
+1. Set a maximum validity duration for certificates signed by your CAs. In this example this maximum duration is 48 hours, appropriate for a scenario where the certificates are provisioned each day, with another 24 hours grace period.
 
     {% include_cached copy-clipboard.html %}
     ~~~shell
-    vault secrets tune -max-lease-ttl=48h cockroach_cluster_ca
+    vault secrets tune -max-lease-ttl=1000h cockroach_cluster_ca
+    vault secrets tune -max-lease-ttl=1000h cockroach_client_ca
     ~~~
 
     ~~~txt
     Success! Tuned the secrets engine at: cockroach_cluster_ca/
+    Success! Tuned the secrets engine at: cockroach_client_ca/
     ~~~
 
-1. Generate a root credential pair for the CA. Certificates created with this CA/secrets engine will be signed with the private key generated here. 
+1. Generate a root credential pair for each CA. Certificates created with this CA/secrets engine will be signed with the private key generated here. 
 
     {{site.data.alerts.callout_info}}
     Note that the CA private key cannot be exported from Vault, preventing it from being leaked and used to issue fraudulent certificates.
 
-    The CA public certificate is downloaded in the resulting JSON payload. We'll need provision the CA public certificate to each nodes and client, so they can use it to validate the trust chain of each-other's certificates when performing [TLS authentication](security-reference/transport-layer-security.html).
+    The CA public certificate is downloaded in the resulting JSON payload. 
 
+    In a following step, we'll add both CA public certificate to each node's trust store (`cert` directory) so it can be used by the nodes to authenticate the client. The client will also need the cluster CA public certificate in order to authenticate the cluster.
     {{site.data.alerts.end}}
 
     {% include_cached copy-clipboard.html %}
     ~~~shell
-    vault write cockroach_cluster_ca/root/generate/internal ttl=87600h --format=json > "${secrets_dir}/certs/cockroach_cluster_ca.json"
+    vault write \
+    cockroach_cluster_ca/root/generate/internal \
+    ttl=1000h \
+    --format=json > "${secrets_dir}/certs/cockroach_cluster_ca.json"
+
+    vault write \
+    cockroach_client_ca/root/generate/internal \
+    ttl=1000h \
+    --format=json > "${secrets_dir}/certs/cockroach_client_ca.json"
     ~~~
 
 1. Parse the CA's public certificate from the corresponding JSON payload.
     {% include_cached copy-clipboard.html %}
     ~~~shell
-    echo -e $(cat "${secrets_dir}/certs/cockroach_cluster_ca.json" | jq .data.certificate | tr -d '"') > "${secrets_dir}/certs/cockroach_cluster_ca.crt"
+    echo -e $(cat "${secrets_dir}/certs/cockroach_cluster_ca.json" | jq .data.certificate | tr -d '"') > "${secrets_dir}/certs/ca.crt"
+
+    echo -e $(cat "${secrets_dir}/certs/cockroach_client_ca.json" | jq .data.certificate | tr -d '"') > "${secrets_dir}/certs/ca-client.crt"
     ~~~
 
-1. Copy the public certificate to the directory intended for each node:
+1. Copy the public certificate for the cluster CA to the directory intended to populate the trust store for each node, and for the client. This is necessary because the nodes, as well as external clients, act as clients and must authenticate the server.
+
     {% include_cached copy-clipboard.html %}
     ~~~shell
-    cp "${secrets_dir}/certs/cockroach_cluster_ca.crt" "${secrets_dir}/$node1name/"
-    cp "${secrets_dir}/certs/cockroach_cluster_ca.crt" "${secrets_dir}/$node2name"
-    cp "${secrets_dir}/certs/cockroach_cluster_ca.crt" "${secrets_dir}/$node3name"
+    cp "${secrets_dir}/certs/ca.crt" "${secrets_dir}/node1/certs"
+    cp "${secrets_dir}/certs/ca.crt" "${secrets_dir}/node2/certs"
+    cp "${secrets_dir}/certs/ca.crt" "${secrets_dir}/node3/certs"
+    cp "${secrets_dir}/certs/ca.crt" "${secrets_dir}/clients/certs"
     ~~~
 
-1. Use `openssl` to examine a certificate, confirming that it has been generated and copied correctly.
+1. Copy the public certificate for the client CA to the directory intended to populate the trust store for each node, so that each node can authenticate the client. The client does not need the client CA public certificate in its trust store.
+
+    {% include_cached copy-clipboard.html %}
+    ~~~shell
+    cp "${secrets_dir}/certs/ca-client.crt" "${secrets_dir}/node1/certs"
+    cp "${secrets_dir}/certs/ca-client.crt" "${secrets_dir}/node2/certs"
+    cp "${secrets_dir}/certs/ca-client.crt" "${secrets_dir}/node3/certs"
+    ~~~
+
+1. (Optional) Use `openssl` to examine each certificate, confirming that it has been generated and copied correctly.
     {% include_cached copy-clipboard.html %}
     ```shell
-    openssl x509 -in "${secrets_dir}/${node1name}/cockroach_cluster_ca.crt" -text | less
+    # for example...
+    openssl x509 -in "${secrets_dir}/node1/ca.crt" -text | less
     ```
     ~~~txt
     Certificate:
@@ -380,151 +430,189 @@ The operations in this section fall under the persona of `ca-admin`, and therefo
                     Public-Key: (2048 bit)
           ...
     ~~~
-
     
 ### Create PKI roles and issue certificates for the nodes
 
 In Vault, a PKI role is a template for a certificate.
 
-1.  Create a node role for each node. The role will be used to generate certifates for the corresponding node.
-
-    Each certificate is tailored to the node:
-    - The extended key usages attribute `ext_key_usage` must include both server and client auth usages; this is because nodes must frequently initiate requests to other nodes in order to maintain cluster synchrony and load-balance work.
-    - The Subject Alternative Name (SAN) - IP addresses field contains:
-      - the IP address of the node on the internal network of your GCP project (so the node can serve at that address  locally, to other nodes).
-      - the IP address of your cluster on the external, public internet (so the node can serve at that address publicly, to application servers).
+1.  Create a node role. The role will be used to generate certifates for the all cluster nodes.
 
     {{site.data.alerts.callout_info}}
     Note that certificate attributes must be provided with Vault's specific parameter syntax, which is documented here: 
     {{site.data.alerts.end}}
 
+
     {% include_cached copy-clipboard.html %}
     ~~~shell
-    vault write "cockroach_cluster_ca/roles/${node1name}" \
-    allow_bare_domains=true \
-    common_name="node" \
-    allowed_domains="${node1name},localhost,node" \
-    ip_sans="${node1addr},${ex_ip}" \
-    ext_key_usage="server_auth,client_auth" \
-    max_ttl=1000h # just over a month
 
-    vault write "cockroach_cluster_ca/roles/${node2name}" \
-    allow_bare_domains=true \
-    common_name="node" \
-    allowed_domains="${node2name},localhost,node" \
-    ip_sans="${node2addr},${ex_ip}" \
-    ext_key_usage="server_auth,client_auth" \
-    max_ttl=1000h # just over a month 
+    vault write "cockroach_cluster_ca/roles/node" \
+    allow_any_name=true \
+    client_flag=true \
+    server_flag=true \
+    allow_ip_sans=true \
+    allow_localhost=true \
+    max_ttl=48h
 
-    vault write "cockroach_cluster_ca/roles/${node3name}" \
-    allow_bare_domains=true \
-    common_name="node" \
-    allowed_domains="${node3name},localhost,node" \
-    ip_sans="${node3addr},${ex_ip}" \
-    ext_key_usage="server_auth,client_auth" \
-    max_ttl=1000h # just over a month 
     ~~~
 
     ~~~txt
-    Success! Data written to: cockroach_node_ca/roles/cockroach-cluster-alpha-1bth
-    Success! Data written to: cockroach_node_ca/roles/cockroach-cluster-alpha-1bth
-    Success! Data written to: cockroach_node_ca/roles/cockroach-cluster-alpha-1bth
+    Success! Data written to: cockroach_cluster_ca/roles/node
     ~~~
 
 1. Issue a certificate pair for each node.
+
+    Each certificate is tailored to the node:
+    - The extended key usages attribute `ext_key_usage` must include both server and client auth usages; this is because nodes must frequently initiate requests to other nodes in order to maintain cluster synchrony and load-balance work. (Not true???!!!)
+    - The Subject Alternative Name (SAN) - IP addresses field contains:
+      - the IP address of the node on the internal network of your GCP project (so the node can serve at that address  locally, to other nodes).
+      - the IP address of your cluster on the external, public internet (so the node can serve at that address publicly, to application servers).
+
     {% include_cached copy-clipboard.html %}
     ~~~shell
-    vault write "cockroach_cluster_ca/issue/${node1name}" \
-        common_name=node --format=json > "${secrets_dir}/$node1name/certs.json"
 
-    vault write "cockroach_cluster_ca/issue/${node2name}" \
-        common_name=node --format=json > "${secrets_dir}/${node2name}/certs.json"
+    vault write cockroach_cluster_ca/issue/node \
+    common_name="node" \
+    alt_names="roachnode1,localhost,node" \
+    ip_sans="${node1addr},${ex_ip}" \
+    max_ttl=48h \
+    --format=json > "${secrets_dir}/node1/certs.json"
 
-    vault write "cockroach_cluster_ca/issue/${node3name}" \
-        common_name=node --format=json > "${secrets_dir}/${node3name}/certs.json"
+    vault write cockroach_cluster_ca/issue/node \
+    common_name="node" \
+    alt_names="${node2name},localhost,node" \
+    ip_sans="${node2addr},${ex_ip}" \
+    max_ttl=48h \
+    --format=json > "${secrets_dir}/node2/certs.json"
+
+    vault write cockroach_cluster_ca/issue/node \
+    common_name="node" \
+    alt_names="${node3name},localhost,node" \
+    ip_sans="${node3addr},${ex_ip}" \
+    max_ttl=48h \
+    --format=json > "${secrets_dir}/node3/certs.json"
     ~~~
 
 1. Parse the key and certificate pair from each return payload.
     {% include_cached copy-clipboard.html %}
     ~~~shell
-    echo -e $(cat "${secrets_dir}/$node1name/certs.json" | jq .data.private_key | tr -d '"') > "${secrets_dir}/${node1name}/node.key"
-    echo -e $(cat "${secrets_dir}/$node1name/certs.json" | jq .data.certificate | tr -d '"') > "${secrets_dir}/${node1name}/node.crt"
+    echo -e $(cat "${secrets_dir}/node1/certs.json" | jq .data.private_key | tr -d '"') > "${secrets_dir}/node1/node.key"
+    echo -e $(cat "${secrets_dir}/node1/certs.json" | jq .data.certificate | tr -d '"') > "${secrets_dir}/node1/node.crt"
 
-    echo -e $(cat "${secrets_dir}/$node2name/certs.json" | jq .data.private_key | tr -d '"') > "${secrets_dir}/${node2name}/node.key"
-    echo -e $(cat "${secrets_dir}/$node2name/certs.json" | jq .data.certificate | tr -d '"') > "${secrets_dir}/${node2name}/node.crt"
+    echo -e $(cat "${secrets_dir}/node2/certs.json" | jq .data.private_key | tr -d '"') > "${secrets_dir}/node2/node.key"
+    echo -e $(cat "${secrets_dir}/node2/certs.json" | jq .data.certificate | tr -d '"') > "${secrets_dir}/node2/node.crt"
 
-    echo -e $(cat "${secrets_dir}/$node3name/certs.json" | jq .data.private_key | tr -d '"') > "${secrets_dir}/${node3name}/node.key"
-    echo -e $(cat "${secrets_dir}/$node3name/certs.json" | jq .data.certificate | tr -d '"') > "${secrets_dir}/${node3name}/node.crt"
+    echo -e $(cat "${secrets_dir}/node3/certs.json" | jq .data.private_key | tr -d '"') > "${secrets_dir}/node3/node.key"
+    echo -e $(cat "${secrets_dir}/node3/certs.json" | jq .data.certificate | tr -d '"') > "${secrets_dir}/node3/node.crt"
     ~~~
 
-### Provision each node's [trust store](security-reference/transport-layer-security.html#trust-store)
+1. Set key file permissions.
 
-1. Prepare the certs directory on each node:
+{% include_cached copy-clipboard.html %}
+~~~shell
+chmod 0600  ${secrets_dir}/*/node.key
+chown $USER ${secrets_dir}/*/node.key
+~~~
+
+~~~txt
+
+~~~
+
+### Provision each node's credentials and [trust store](security-reference/transport-layer-security.html#trust-store)
+
+1. Clear any existing certs from each node:
     {% include_cached copy-clipboard.html %}
     ~~~shell
-    gcloud compute ssh $node1name \
-    --command 'rm -rf ~/certs && mkdir ~/certs'
+    gcloud compute ssh $node1name --command 'rm -rf ~/certs'
 
-    gcloud compute ssh $node2name \
-    --command 'rm -rf ~/certs && mkdir ~/certs'
+    gcloud compute ssh $node2name --command 'rm -rf ~/certs'
 
-    gcloud compute ssh $node3name \
-    --command 'rm -rf ~/certs && mkdir ~/certs'
+    gcloud compute ssh $node3name --command 'rm -rf ~/certs'
     ~~~
 
 1. Use SCP to propagate the CA crt and corresponding key pair to each node
     {% include_cached copy-clipboard.html %}
     ~~~shell
-
-    gcloud compute scp -r "${secrets_dir}/$node1name/" !!!"$node1name/certs"
-    gcloud compute scp -r "${secrets_dir}/$node2name/" !!!"$node2name/certs"
-    gcloud compute scp -r "${secrets_dir}/$node3name/" !!!"$node3name/certs"
+    gcloud compute scp --recurse "${secrets_dir}/node1/certs" $node1name:~
+    gcloud compute scp --recurse "${secrets_dir}/node2/certs" $node2name:~
+    gcloud compute scp --recurse "${secrets_dir}/node3/certs" $node3name:~
     ~~~
 
-### Create a role and issue a certificate for the client
+### Create a role and issue credentials for the client
 
 #### Create a PKI role for the root  Issue a root client certificate
 Generate a private key/public certificate pair for the root SQL user.
 This is a very powerful private key, as anyone 
 
-{% include_cached copy-clipboard.html %}
-```shell
-vault write "cockroach_cluster_ca/roles/root_client" \
-    allowed_domains="root" \
-    allow_bare_domains=true \
-    common_name="root" \
-    ext_key_usage="client_auth" \
-    max_ttl=10000h # just over a year
-```
+1.  Generate the client role:
+    
+    ~~~txt
+    vault write cockroach_client_ca/roles/client \
+    allow_any_name=true \
+    client_flag=true \
+    enforce_hostnames=false \
+    allow_ip_sans=false \
+    allow_localhost=false \
+    max_ttl=48h
+    ~~~
 
-```txt
-Success! Data written to: cockroach_cluster_ca/roles/root_client
-```
+1. Use the client role to create credentials (a private key and public certificate) for a root client. 
+
+    {{site.data.alerts.callout_info}}
+    CockroachDB takes the name of the SQL user to be authenticated from the `common_name` field.
+    {{site.data.alerts.end}}
+
+
+    {% include_cached copy-clipboard.html %}
+    ~~~shell
+    vault write "cockroach_client_ca/issue/client" \
+    common_name=root \
+    --format=json > "${secrets_dir}/clients/certs.json"
+    ~~~
+
+1. Parse the client key and certificate pair from the payload.
+    {% include_cached copy-clipboard.html %}
+    ~~~shell
+    echo -e $(cat "${secrets_dir}/clients/certs.json" | jq .data.private_key | tr -d '"') > "${secrets_dir}/clients/client.root.key"
+    echo -e $(cat "${secrets_dir}/clients/certs.json" | jq .data.certificate | tr -d '"') > "${secrets_dir}/clients/client.root.crt"
+    ~~~
+
+1. Set key file permissions.
 
 {% include_cached copy-clipboard.html %}
 ~~~shell
-vault write "cockroach_cluster_ca/issue/root_client" \
-    common_name=root --format=json > "${secrets_dir}/root_client/certs.json"
+chmod 0600  ${secrets_dir}/*/node.key
+chown $USER ${secrets_dir}/*/node.key
 ~~~
 
-### Provision the Client's trust store
+### Provision the Client's credentials and trust store
+
+1. Clear any existing credentials and certs:
+    {% include_cached copy-clipboard.html %}
+    ~~~shell
+    gcloud compute ssh roach-client --command 'rm -rf ~/certs'
+    ~~~
+
+1. Use SCP to propagate the CA crt and corresponding key pair to each node
+    {% include_cached copy-clipboard.html %}
+    ~~~shell
+    gcloud compute scp --recurse "${secrets_dir}/clients/certs" roach-client:"~"
+    ~~~
 
 ### Clean up the CA admin jumpbox
 
-Be sure to delete the private keys (after they've been copied to the nodes). You may have to respond `y` to over-ride permissions in order to delete the keys.
+Be sure to delete the credential pairs for the nodes and client.
+You do not need to delete the public certificates for the CAs, as this is not sensitive data.
 
 {% include_cached copy-clipboard.html %}
 ```shell
-rm ${secrets_dir}/${node1name}/node.*
-rm ${secrets_dir}/${node2name}/node.*
-rm ${secrets_dir}/${node3name}/node.*
-rm ${secrets_dir}/clients/*
+rm -r ${secrets_dir}/node1
+rm -r ${secrets_dir}/node2
+rm -r ${secrets_dir}/node3
+rm -r ${secrets_dir}/clients
 ```
-## Node operations
+## Cluster operations
 
-### Prepare CockroachDB on each node
-
-#### Install CockroachDB on each node
+### Install CockroachDB on each node and client
 
 Download the CockroachDB executable from `binaries.cockroachdb.com`.
 
@@ -547,13 +635,17 @@ function install_roach_on_node {
 install_roach_on_node $node1name
 install_roach_on_node $node2name
 install_roach_on_node $node3name
+install_roach_on_node roach-client
 ```
 
 ```txt
 roach not installed; installing roach
 roach not installed; installing roach
 roach not installed; installing roach
+roach not installed; installing roach
 ```
+
+### Start or reset the cluster
 
 #### Generate and provision a start script for each node
 
@@ -609,9 +701,6 @@ start_roach.sh                                                                  
 start_roach.sh                                                                              100%  156     3.0KB/s   00:00
 start_roach.sh                                                                              100%  156     3.1KB/s   00:00
 ```
-
-### Start or reset the cluster
-
 #### Start the nodes
 
 To start the cluster, execute the pre-provisioned start script.
@@ -636,25 +725,35 @@ gcloud beta compute ssh "$node3name" --command 'pkill -SIGHUP -x cockroach'
 
 ## Client operations
 
-### Provision the client
-
-#### Install CockroachDB
-
-Install Cockroach locally [another way](install-cockroachdb-mac.html) or with docker as follows:
+SSH onto the client.
 
 {% include_cached copy-clipboard.html %}
-```shell
-docker pull cockroachdb/cockroach:latest
-```
+~~~shell
+gcloud compute ssh roach-client
+~~~
 
 ### Intialize the cluster
 
-### Client Operator role: Connect the client to the cluster
+{% include_cached copy-clipboard.html %}
+~~~shell
+cockroach init --certs-dir=certs $ex_ip
+~~~
 
-Use this to issue a signing cert for the cluster.
+~~~txt
+Cluster successfully initialized
+~~~
+
+### Access the cluster
 
 {% include_cached copy-clipboard.html %}
-```shell
-docker run -it cockroachdb/cockroach:latest \
-sql --certs-dir="${secrets_dir}/clients/" --host="${ex_ip}"
-```
+~~~shell
+cockroach sql --certs-dir=certs --host=$node1addr
+~~~
+
+~~~txt
+# Welcome to the CockroachDB SQL shell.
+# All statements must be terminated by a semicolon.
+# To exit, type: \q.
+~~~
+
+Congratulations, you have deployed a cluster and connected using securely provisioned certificates!

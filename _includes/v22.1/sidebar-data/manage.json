@@ -269,7 +269,7 @@
                   ]
                 },
                 {
-                  "title": "Managing CockroachDB security certificates with HashiCorp Vault",
+                  "title": "Manage PKI certificates for a CockroachDB deployment with HashiCorp Vault",
                   "urls": [
                     "/${VERSION}/manage-certs-vault.html"
                   ]
