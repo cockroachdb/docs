@@ -4,13 +4,10 @@ summary: Learn how to deploy a CockroachDB cluster on Digital Ocean.
 toc: true
 toc_not_nested: true
 ssh-link: https://www.digitalocean.com/community/tutorials/how-to-connect-to-your-droplet-with-ssh
-filter_category: deploy_crdb_do
-filter_html: Secure
-filter_sort: 1
-docs_area: 
+docs_area:
 ---
 
-{% include filter-tabs.md %}
+{% include {{ page.version.version }}/filter-tabs/deploy-crdb-do.md %}
 
 This page shows you how to deploy a secure multi-node CockroachDB cluster on Digital Ocean, using Digital Ocean's managed load balancing service to distribute client traffic.
 

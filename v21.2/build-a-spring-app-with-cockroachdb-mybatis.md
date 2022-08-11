@@ -3,13 +3,10 @@ title: Build a Spring App with CockroachDB and MyBatis
 summary: Learn how to use CockroachDB from a simple Spring application with MyBatis.
 toc: true
 twitter: false
-filter_category: crud_java
-filter_html: Use <strong>MyBatis-Spring</strong>
-filter_sort: 4
 docs_area: get_started
 ---
 
-{% include filter-tabs.md %}
+{% include {{ page.version.version }}/filter-tabs/crud-java.md %}
 
 This tutorial shows you how to build a simple [Spring Boot](https://spring.io/projects/spring-boot) application with CockroachDB, using the [MyBatis-Spring-Boot-Starter module](http://mybatis.org/spring-boot-starter) for data access.
 

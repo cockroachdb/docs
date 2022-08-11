@@ -4,13 +4,10 @@ summary: Learn how to use CockroachDB from a simple CRUD application that uses t
 toc: true
 twitter: false
 referral_id: docs_node_postgres
-filter_category: crud_js
-filter_html: Use <strong>node-postgres</strong>
-filter_sort: 1
 docs_area: get_started
 ---
 
-{% include filter-tabs.md %}
+{% include {{ page.version.version }}/filter-tabs/crud-js.md %}
 
 This tutorial shows you how build a simple Node.js application with CockroachDB and the [node-postgres driver](https://node-postgres.com/).
 
@@ -60,7 +57,7 @@ All of the database operations are wrapped in a helper function named `retryTxn`
     ~~~ shell
     $ cd example-app-node-postgres
     ~~~
-    
+
 {% include {{ page.version.version }}/setup/init-bank-sample.md %}
 
 ## Step 4. Run the code
