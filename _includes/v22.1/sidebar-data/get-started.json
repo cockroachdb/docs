@@ -37,7 +37,7 @@
           ]
         },
         {
-          "title": "Go",
+          "title": "Golang",
           "urls": [
             "/${VERSION}/build-a-go-app-with-cockroachdb.html",
             "/${VERSION}/build-a-go-app-with-cockroachdb-gorm.html",
