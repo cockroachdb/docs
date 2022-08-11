@@ -59,7 +59,7 @@ The following fields are returned for each job:
 Field | Description
 ------|------------
 `job_id` | A unique ID to identify each job. This value is used if you want to control jobs (i.e., [pause](pause-job.html), [resume](resume-job.html), or [cancel](cancel-job.html) it).
-`job_type` | The type of job. Possible values: `SCHEMA CHANGE`, [`BACKUP`](backup.html), [`RESTORE`](restore.html), [`IMPORT`](import.html), and [`CREATE STATS`](create-statistics.html). <br><br> For job types for automatic jobs, see [Show automatic jobs](#show-automatic-jobs).
+`job_type` | The type of job. Possible values: `SCHEMA CHANGE`, [`BACKUP`](backup.html), [`RESTORE`](restore.html), [`IMPORT`](import.html), and [`CREATE STATS`](create-statistics.html). <br><br> For job types of automatic jobs, see [Show automatic jobs](#show-automatic-jobs).
 `description` | The statement that started the job, or a textual description of the job.
 `statement` | When `description` is a textual description of the job, the statement that started the job is returned in this column. Currently, this field is populated only for the automatic table statistics jobs.
 `user_name` | The name of the [user](security-reference/authorization.html#create-and-manage-users) who started the job.
@@ -130,9 +130,9 @@ You can filter jobs by using `SHOW JOBS` as the data source for a [`SELECT`](sel
 
 The job types of automatic jobs are:
 
-- `AUTO SPAN CONFIG RECONCILIATION`: a continuously running job that ensures that all declared [zone configurations](configure-zone.html) (`ALTER … CONFIGURE ZONE …`) are applied. For example, when `num_replicas = 7` is set on a table, the reconciliation job listens in on those changes and then informs the underlying [storage layer](architecture/storage-layer.html) to maintain 7 replicas for the table.
-- `AUTO SQL STATS COMPACTION`: an hourly job that truncates the internal `system.statement_statistics` and `system.transaction_statistics` table row count to the value in the `sql.stats.persisted_rows.max` [cluster setting](cluster-settings.html). Both tables contribute to the [`crdb_internal.statement_statistics`](crdb-internal.html#statement_statistics) and [`crdb_internal.transaction_statistics`](crdb-internal.html#transaction_statistics) tables respectively.
-- `AUTO CREATE STATS`: creates and updates [table statistics](cost-based-optimizer.html#table-statistics).
+- `AUTO SPAN CONFIG RECONCILIATION`: A continuously running job that ensures that all declared [zone configurations](configure-zone.html) (`ALTER … CONFIGURE ZONE …`) are applied. For example, when `num_replicas = 7` is set on a table, the reconciliation job listens in on those changes and then informs the underlying [storage layer](architecture/storage-layer.html) to maintain 7 replicas for the table.
+- `AUTO SQL STATS COMPACTION`: An hourly job that truncates the internal `system.statement_statistics` and `system.transaction_statistics` table row counts to the value of the `sql.stats.persisted_rows.max` [cluster setting](cluster-settings.html). Both tables contribute to the [`crdb_internal.statement_statistics`](crdb-internal.html#statement_statistics) and [`crdb_internal.transaction_statistics`](crdb-internal.html#transaction_statistics) tables, respectively.
+- `AUTO CREATE STATS`: Creates and updates [table statistics](cost-based-optimizer.html#table-statistics).
 
 ### Filter automatic jobs
 
