@@ -113,7 +113,7 @@ To restore a database:
 
     The **Restore database** module displays with backup details.
 
-1. In the **Restore to** field, enter the name of the destination database. For multi-region databases on v21.2, see [Restore a multi-region database](#restore-a-multi-region-database-to-a-new-database-in-v21-2).
+1. In the **Restore to** field, enter the name of the destination database. In v21.2 clusters, there is an alternate procedure for restoring multi-region databases, see [Restore a multi-region database in v21.2](#restore-a-multi-region-database-to-a-new-database-in-v21-2).
 
     {{site.data.alerts.callout_info}}
     [Resolve any naming conflicts](#resolve-a-database-naming-conflict) by using [`DROP`](../{{site.versions["stable"]}}/drop-database.html) or [`RENAME`](../{{site.versions["stable"]}}/rename-database.html) on the existing database. If you enter a unique name in the **Restore to** field, a new database will be created.
