@@ -22,7 +22,7 @@ This page provides a conceptual overview of Transport Layer Security (TLS) and t
 **Learn more:**
 
 - [Manage PKI certificates for a CockroachDB deployment with HashiCorp Vault](../manage-certs-vault.html)
-- [Using the CockroachDB CLI to provision a development cluster](../manage-certs-cli.html)
+- [Use the CockroachDB CLI to provision a development cluster](../manage-certs-cli.html)
 
 
 ## What is Transport Layer Security (TLS)?

@@ -22,7 +22,7 @@ PKI involves careful management of the certificates used for authentication and 
 
 - Understand [Transport Layer Security (TLS) and Public Key Infrastructure (PKI)](security-reference/transport-layer-security.html).
 - Vault:
-  - A Vault Enterprise cluster, perhaps [deployed locally](https://learn.hashicorp.com/tutorials/nomad/hashicorp-enterprise-license?in=vault/enterprise).
+  - You must have access to a Vault cluster. This can be a, a) cluster provisioned online through [HachiCorp Cloud Platform (HCP)](https://portal.cloud.hashicorp.com/services/vault), b) a Vault cluster deployed by your organization, or even c) a quickstart Vault cluster you deploy yourself in ["dev" mode](https://learn.hashicorp.com/tutorials/vault/getting-started-dev-server?in=vault/getting-started).
   - Sufficient permissions on the cluster to enable secrets engines and create policies, either via the root access token for this cluster or through a [custom policy](https://learn.hashicorp.com/tutorials/vault/policies).
 - Google Cloud Platform (GCP):
   - Create a GCP account and project.
@@ -31,40 +31,22 @@ PKI involves careful management of the certificates used for authentication and 
 See also:
 - [Build your own CA with Vault](https://learn.hashicorp.com/tutorials/vault/pki-engine)
 
-## Intro
+## Introduction
 
-### Outline
-
-- Admin operations
-  - Provision GCP Resources
-  - Create the certificate authority (CA) with Vault
-  - Create PKI roles and issue certificates for the nodes
-  - Provision each node's trust store
-  - Create a role and issue a certificate for the client
-  - Provision the Client's trust store
-  - Clean up the CA admin jumpbox
-- Node operations
-  - Prepare CockroachDB on each node
-  - Start or reset the cluster
-- Client operations
-  - Provision the client
-  - Intialize the cluster
-  - Client Operator role: Connect the client to the cluster
-
-### The strategy
+### PKI strategy
 
 PKI can be implemented in many ways; key pairs can be generated and certificates signe with open-source tools such `openssl` or even with the CockroachDB CLI, or with myriad available tools and services. The distribution of those credentials to servers and clients can be done in even more different possible ways.
 
 The key elements of the strategy here are:
 
 - To leverage the strength of Vault's secrets engines to manage the certificates.
-- To enforce short validity durations for all issued certificates (eschewing certificate revocation lists or OCSP).
+- To enforce *short validity durations for all issued certificates*, rather than employing the more heavy-weight option of [Online Certificate Status Protocol (OCSP)](manage-certs-revoke-ocsp.html)).
 
-#### Vault secrets
+### Vault secrets
 
 The solution demonstrated here uses HashiCorp Vault as a secrets management platform. This takes advantage of Vault's generally strong security model, and also eases many tasks.
 
-#### Short-lived credentials
+### Short-lived credentials
 
 If credentials are obtained by malicious actors, they can be used to impersonate (spoof) a client or server, potentially wreaking havoc on any system. Any PKI implementation must deal with this in one of two ways:
 
@@ -79,7 +61,7 @@ The approach taken here is intended to be automation friendly. Users should cons
 
 For example, a broad baseline recommendation might be to issue new certificates daily, keeping the validity duration under two days.
 
-#### Task personas
+### Task personas
 
 The work described here can be divided up into three chunks, each of which might be performed by a different person and therefore which require access to different GCP and Vault resources. Each of the three personas will therefore correspond to a GCP service account and a Vault policy.
 
@@ -89,19 +71,19 @@ persona | tasks | Vault permissions | GCP Permissions
 `node-operator` | <ul><li>Install, configure and run CockroachDB and dependencies on nodes</li></ul>|   |<ul><li>Node SSH access</li></ul>
 `client-operator` | <ul><li>Install, configure and run CockroachDB and dependencies on clients</li></ul>| |<ul><li>Client SSH access</li></ul>
 
-#### Resources 
+### Resources 
 
 Our cluster will contain three classes of compute instance:
 
 - The CA administrative jumpbox, where sensitive credentials will be handled and secure operations related to certificate authority performed.
 - Three database nodes.
-- A client, which could represent, in a more realistic scenario, either an operations jumpbox or an application server.
+- A client, which could represent, in a more realistic scenario, either an operations jumpbox for database adminstrators, or an application server.
 
 Additionally, our project's firewall rules must be configured to allow communication between nodes and from client to nodes.
 
 ## Admin operations
 
-### Provision your GCP resources
+### Provision and configure your GCP resources
 
 1. Create the CA admin jumpbox.
 
@@ -296,7 +278,6 @@ The operations in this section fall under the persona of `ca-admin`, and therefo
     ```
 1. [Install Vault](https://learn.hashicorp.com/tutorials/vault/getting-started-install) on the jumpbox, following the [instructions for **Ubuntu/Debian** Linux](https://www.vaultproject.io/downloads).
 
-
 1. Obtain the required parameters to target and authenticate to Vault.
 
     - If using HashiCorp Cloud Platform (HCP):
@@ -343,7 +324,6 @@ The operations in this section fall under the persona of `ca-admin`, and therefo
     Success! Enabled the pki secrets engine at: cockroach_client_ca/
     ~~~
     
-
 1. Set a maximum validity duration for certificates signed by your CAs. In this example this maximum duration is 48 hours, appropriate for a scenario where the certificates are provisioned each day, with another 24 hours grace period.
 
     {% include_cached copy-clipboard.html %}

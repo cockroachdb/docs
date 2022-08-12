@@ -10,7 +10,7 @@ This tutorial shows how to provision a [public key infrastructure (PKI) certific
 See also:
 
 - [Public Key Infrastructure (PKI) and Transport Layer Security (TLS)](security-reference/transport-layer-security.html)
-- [Using the CockroachDB CLI to provision a development cluster](manage-certs-cli.html).
+- [Use the CockroachDB CLI to provision a development cluster](manage-certs-cli.html).
 - [Manage PKI certificates for a CockroachDB deployment with HashiCorp Vault](manage-certs-vault.html).
 
 

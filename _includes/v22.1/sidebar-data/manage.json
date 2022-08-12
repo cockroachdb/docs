@@ -263,7 +263,7 @@
               "title": "Managing Security Certificates",
               "items": [
                 {
-                  "title": "Using the CockroachDB CLI to provision a development cluster",
+                  "title": "Use the CockroachDB CLI to provision a development cluster",
                   "urls": [
                     "/${VERSION}/manage-certs-cli.html"
                   ]

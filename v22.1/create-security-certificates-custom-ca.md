@@ -1,5 +1,5 @@
 ---
-title: Advanced PKI Certificate Scenarios
+title: Advanced Public Key Infrastructure (PKI) Certificate Scenarios
 summary: A secure CockroachDB cluster uses TLS for encrypted inter-node and client-node communication.
 toc: true
 filter_category: security_cert
@@ -8,13 +8,7 @@ filter_sort: 3
 docs_area: 
 ---
 
-This document discusses the advanced use cases for using Public Key Infrastructure (PKI) security certificates with CockroachDB. PKI certificates are used in CockroachDB for TLS encryption and  for node and client authentication.
-
-See also:
-
-- [Public Key Infrastructure (PKI) and Transport Layer Security (TLS)](security-reference/transport-layer-security.html)
-- [Using the CockroachDB CLI to provision a development cluster](manage-certs-cli.html).
-- [Manage PKI certificates for a CockroachDB deployment with HashiCorp Vault](manage-certs-vault.html).
+This document discusses the advanced use cases for using [Public Key Infrastructure (PKI)](security-reference/transport-layer-security.html) security certificates with CockroachDB. PKI certificates are used in CockroachDB for TLS encryption and for node and client authentication.
 
 Approach | Use case description
 -------------|------------
@@ -164,8 +158,12 @@ To enable certificate revocation:
       In the `strict` mode, all certificates are presumed to be invalid if the OCSP server is not reachable. Setting the cluster setting `security.ocsp.mode` to `strict` will lock you out of your CockroachDB database if your OCSP server goes down.
       {{site.data.alerts.end}}
 
+
 ## See also
 
+- [Public Key Infrastructure (PKI) and Transport Layer Security (TLS)](security-reference/transport-layer-security.html)
+- [Use the CockroachDB CLI to provision a development cluster](manage-certs-cli.html).
+- [Manage PKI certificates for a CockroachDB deployment with HashiCorp Vault](manage-certs-vault.html).
 - [Manual Deployment](manual-deployment.html): Learn about starting a multi-node secure cluster and accessing it from a client.
 - [Start a Node](cockroach-start.html): Learn more about the flags you pass when adding a node to a secure cluster
 - [Client Connection Parameters](connection-parameters.html)
