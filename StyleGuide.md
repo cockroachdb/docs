@@ -1048,7 +1048,7 @@ Sometimes you need to include files that are maintained in other places than the
 For SQL diagrams, you remotely include the entire (HTML) file as follows:
 
 ```
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/show_databases.html %} %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/show_databases.html %}
 ```
 
 For code samples, you usually want to show only part of a larger file to highlight a specific technique, or due to length considerations.
