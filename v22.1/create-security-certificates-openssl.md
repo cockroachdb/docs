@@ -309,7 +309,7 @@ In the following steps, replace the placeholder text in the code with the actual
     -outdir certs/ \
     -in client.<username_1>.csr \
     -batch
-    ~~~    
+    ~~~
 
 5. Verify the values in the `CN` field in the certificate:
 
@@ -410,7 +410,7 @@ In the following steps, replace the placeholder text in the code with the actual
     -outdir certs/ \
     -in client.<username_2>.csr \
     -batch
-    ~~~    
+    ~~~
 
 5. Verify the values in the `CN` field in the certificate:
 

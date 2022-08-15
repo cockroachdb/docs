@@ -4,13 +4,10 @@ summary: Deploy an insecure 3-node CockroachDB cluster with Kubernetes.
 toc: true
 toc_not_nested: true
 redirect_from: orchestrate-cockroachdb-with-kubernetes-insecure.html
-filter_category: crdb_single_kubernetes
-filter_html: Insecure
-filter_sort: 2
 docs_area:
 ---
 
-{% include filter-tabs.md %}
+{% include {{ page.version.version }}/filter-tabs/crdb-single-kubernetes.md %}
 
 This page shows you how to start and stop a 3-node CockroachDB insecure test cluster in a single [Kubernetes](http://kubernetes.io/) cluster, using one of the following:
 

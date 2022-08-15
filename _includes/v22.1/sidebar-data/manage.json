@@ -481,6 +481,13 @@
           "urls": [
             "/${VERSION}/logging-use-cases.html"
           ]
+        },
+
+        {
+         "title": "Export Logs From {{ site.data.products.dedicated }}",
+         "urls": [
+           "/cockroachcloud/export-logs.html"
+         ]
         }
       ]
     },

@@ -4,13 +4,10 @@ summary: Learn how to use CockroachDB from a simple Java application with the JD
 toc: true
 twitter: false
 referral_id: docs_java_jdbc
-filter_category: crud_java
-filter_html: Use <strong>JDBC</strong>
-filter_sort: 1
 docs_area: get_started
 ---
 
-{% include filter-tabs.md %}
+{% include {{ page.version.version }}/filter-tabs/crud-java.md %}
 
 This tutorial shows you how to build a simple CRUD Java application with CockroachDB and the Java JDBC driver.
 
@@ -109,7 +106,7 @@ It does all of the above using the practices we recommend for using JDBC with Co
     <section class="filter-content" markdown="1" data-scope="console">
 
     1. Paste in the command you copied earlier:
-    
+
         {% include_cached copy-clipboard.html %}
         ~~~ shell
         export JDBC_DATABASE_URL="{connection-string}"
@@ -118,9 +115,9 @@ It does all of the above using the practices we recommend for using JDBC with Co
         Where `{connection-string}` is the JDBC connection string from the command you copied earlier.
 
     </section>
-    
+
     <section class="filter-content" markdown="1" data-scope="ccloud">
-    
+
     1. Use the `cockroach convert-url` command to convert the connection string that you copied from the {{ site.data.products.cloud }} Console to a [valid connection string for JDBC connections](connect-to-the-database.html?filters=java):
 
         {% include_cached copy-clipboard.html %}

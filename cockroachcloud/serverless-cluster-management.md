@@ -2,13 +2,10 @@
 title: Manage a CockroachDB Serverless Cluster
 summary: Manage your cluster's schema, data, and more.
 toc: true
-filter_category: cluster_mgmt
-filter_html: CockroachDB Serverless
-filter_sort: 1
 docs_area: manage
 ---
 
-{% include filter-tabs.md %}
+{% include cockroachcloud/filter-tabs/cluster-management.md %}
 
 This page describes the cluster management and cluster deletion workflows for {{ site.data.products.serverless }}.
 
@@ -45,7 +42,7 @@ The **Overview** page displays details about the selected {{ site.data.products.
 
 For more information, see [Cluster Overview Page](cluster-overview-page.html).
 
-## Edit your spend limit  
+## Edit your spend limit
 
 You can edit your spend limit from the **Overview** page. The change in your spend limit will affect current and upcoming billing cycles. See [Planning your cluster](plan-your-cluster.html) for more information on resource usage.
 
