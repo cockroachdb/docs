@@ -7,7 +7,7 @@ docs_area: manage
 
 Users may authenticate to the [{{ site.data.products.db }} Console](https://cockroachlabs.cloud) using Single Sign-On (SSO). GitHub, Google, and Microsoft are supported as identity providers (IdPs).
 
-[Enterprise authentication features](#private-preview-enterprise-authentication) are currently available in Private Preview. Reach out to your Cockroach Labs team to enquire about the private preview of Enterprise Authentication for Cloud SSO.
+[Enterprise authentication features](#preview-enterprise-authentication) are currently available in Preview. Reach out to your Cockroach Labs team to enquire about the preview of Enterprise Authentication for Cloud SSO.
 
 Authentication with a centralized identity managed by a dedicated IdP offers several security advantages:
 
@@ -15,7 +15,7 @@ Authentication with a centralized identity managed by a dedicated IdP offers sev
 - Administrators avoid responsibility for managing an additional set of credentials and tying those to other identities and credentials. Every additional credential or identity management operation introduces risk as well as costing effort, so minimizing these is doubly advantageous.
 - Administrators can onboard and offboard users quickly and efficiently.
 
-## Private Preview: Enterprise authentication
+## Preview: Enterprise authentication
 
 ### Support for SAML and OIDC identity protocols
 
@@ -39,7 +39,7 @@ This optional enterprise feature removes the need to [invite users to your organ
 
 ### How to enable enterprise authentication for {{ site.data.products.db }}
 
-Reach out to your Cockroach Labs team to enquire about the private preview of Enterprise Authentication for Cloud SSO.
+Reach out to your Cockroach Labs team to enquire about the preview of Enterprise Authentication for Cloud SSO.
 
 {{site.data.alerts.callout_success}}
 After Enterprise Authentication is enabled, your Cockroach Labs team or the support team will reach out again to finalize and confirm the setup.
