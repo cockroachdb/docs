@@ -5,7 +5,7 @@ toc: true
 docs_area: manage.security
 ---
 
-This tutorial walks the user through implementing [public key infrastructure (PKI)](security-reference/transport-layer-security.html) using [Vault PKI Secrets Engine](https://www.vaultproject.io/docs/secrets/pki) for a {{ site.data.products.core }} cluster deployed in Google Cloud Platform (GCP).
+This tutorial guides the user through implementing [public key infrastructure (PKI)](security-reference/transport-layer-security.html) using [Vault PKI Secrets Engine](https://www.vaultproject.io/docs/secrets/pki) for a {{ site.data.products.core }} cluster deployed in Google Cloud Platform (GCP).
 
 PKI involves careful management of the certificates used for authentication and encryption in network traffic between servers and clients.
 
@@ -64,7 +64,7 @@ The work described here can be divided up into three chunks, each of which might
 
 persona | tasks | Vault permissions | GCP Permissions
 ----|------|-------|---
-`ca-admin` | <ul><li>Manage CA lifycyle</li><li>Issue node certificates</li><li>Issue client certificates</li></ul>| <ul><li>Admin</li></ul>|<ul><li>CA jumpbox access</li><li>Node SSH access</li><li>Client SSH access</li></ul>
+`ca-admin` | <ul><li>Manage CA lifecyle</li><li>Issue node certificates</li><li>Issue client certificates</li></ul>| <ul><li>Admin</li></ul>|<ul><li>CA jumpbox access</li><li>Node SSH access</li><li>Client SSH access</li></ul>
 `node-operator` | <ul><li>Install, configure and run CockroachDB and dependencies on nodes</li></ul>|   |<ul><li>Node SSH access</li></ul>
 `client-operator` | <ul><li>Install, configure and run CockroachDB and dependencies on clients</li></ul>| |<ul><li>Client SSH access</li></ul>
 
@@ -74,7 +74,7 @@ Our cluster will contain three classes of compute instance:
 
 - The CA administrative jumpbox, where sensitive credentials will be handled and secure operations related to certificate authority performed.
 - Database nodes. These examples use a three-node cluster.
-- A client, which could represent, in a more realistic scenario, either an operations jumpbox for database adminstrators, or an application server.
+- A client, which could represent, in a more realistic scenario, either an operations jumpbox for database administrators, or an application server.
 
 Additionally, our project's firewall rules must be configured to allow communication between nodes and from client to nodes.
 
@@ -100,7 +100,7 @@ Additionally, our project's firewall rules must be configured to allow communica
 
 1. Configure cluster firewall rules.
 
-    Our rules will allow nodes to send requests to eachother, and to recieve requests from clients (as specified with tags).
+    Our rules will allow nodes to send requests to each other, and to receive requests from clients (as specified with tags).
 
     {% include_cached copy-clipboard.html %}
     ```shell
@@ -179,7 +179,7 @@ Additionally, our project's firewall rules must be configured to allow communica
 
 - Option 1: Create a TCP load balancer. Visit the load balancer page in the GCP console, and create a TCP load balancer, selecting your node instances as targets for a new back-end service, and reserving a static IP address for your front-end service. This IP address will serve as the load balancer IP, `lb_ip`, in the configuration manifest in the following step.
 
-- Option 2: Use one of the nodes as a load balancer. Any node in a CockroachDB cluster hande SQL requests, which includes load-balancing work across nodes in the cluster. As a development mode short, cut, simply use the `INTERNAL_IP` for one of your nodes as `lb_ip` in the configuration manifest in the following step.
+- Option 2: Use one of the nodes as a load balancer. Any node in a CockroachDB cluster handle SQL requests, which includes load-balancing work across nodes in the cluster. As a development mode short, cut, simply use the `INTERNAL_IP` for one of your nodes as `lb_ip` in the configuration manifest in the following step.
 
 1. Compile an environment manifest
 
@@ -227,7 +227,7 @@ Additionally, our project's firewall rules must be configured to allow communica
 
 The operations in this section are performed by the`ca-admin` persona, and therefore require admin Vault access and SSH access to the CA admin jumpbox.
 
-#### Step 1: Access and prepare the CA admin jumpbox.
+#### Step 1: Access and prepare the CA admin jumpbox
 
 1. Connect to the CA admin jumpbox using SSH.
 
@@ -683,7 +683,7 @@ SSH onto the client.
 gcloud compute ssh roach-client
 ~~~
 
-### Intialize the cluster
+### Initialize the cluster
 
 {% include_cached copy-clipboard.html %}
 ~~~shell

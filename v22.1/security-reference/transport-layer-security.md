@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.security
 ---
 
-This page provides a conceptual overview of Transport Layer Security (TLS) and the related notion of Public Key Infrastructre (PKI), and sketches the security-architecture considerations in play when using CockroachDB.
+This page provides a conceptual overview of Transport Layer Security (TLS) and the related notion of Public Key Infrastructure (PKI), and sketches the security-architecture considerations in play when using CockroachDB.
 
 
 **Page contents:**
@@ -93,9 +93,9 @@ At its core, PKI is a hierarchy of cryptographically-backed trust relationships 
 
 - **Subscribers** wish to use the PKI to prove their identity to the world and offer secure services to others.
 - **Relying parties** wish to rely on the PKI to authenticate and connect with subscribers.
-- **Certificate Authorities (CA)** are responsible for verifying the identity of subscribers (which can include subornidate certificate authorties).
+- **Certificate Authorities (CA)** are responsible for verifying the identity of subscribers (which can include subordinate certificate authorities).
 
-### Certificates, signing, trust and authority
+### Certificates, signing, trust, and authority
 
 The core mechanism of PKI is the PKI certificate, also commonly known as a "security certificate", "digital certificate" or "TLS certificate" (because it is used in TLS), or abbreviated "cert". In TLS the [x509 certificate format](https://en.wikipedia.org/wiki/X.509) is used.
 
