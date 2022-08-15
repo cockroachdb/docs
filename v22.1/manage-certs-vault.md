@@ -28,9 +28,6 @@ PKI involves careful management of the certificates used for authentication and 
   - Create a GCP account and project.
   - Install and configure the Google Cloud CLI (gcloud) and enable [Google CA Service](https://console.cloud.google.com/security/cas).
 
-See also:
-- [Build your own CA with Vault](https://learn.hashicorp.com/tutorials/vault/pki-engine)
-
 ## Introduction
 
 ### PKI strategy
@@ -53,7 +50,7 @@ If credentials are obtained by malicious actors, they can be used to impersonate
 - By using a revocation mechanism, so that existing certificates can be invalidated. Two standard solutions are Certificate Revocation Lists (CRLS) and the Online Certificate Status Protocol (OCSP).
 - By issuing only certificates with short validity durations, so that any compromised certificate quickly becomes unusable. 
 
-CockroachDB does support OCSP, but not CRls. To learn more, read [Using Online Certificate Status Protocol (OCSP) with CockroachDB](manage-certs-revoke-ocsp.html).
+CockroachDB does support OCSP, but not CRLs. To learn more, read [Using Online Certificate Status Protocol (OCSP) with CockroachDB](manage-certs-revoke-ocsp.html).
 
 Without OCSP, there is a premium on enforcing short validity durations for certificates; otherwise, stolen credentials may be used to work persistent mischief over a long window.
 
@@ -178,30 +175,16 @@ Additionally, our project's firewall rules must be configured to allow communica
     roach-node-3  us-central1-a  n2-standard-2               10.128.0.5   34.170.109.109  RUNNING
     ~~~
 
-1. Reserve a static IP address for the cluster.
+1. Create or designate a load balancer endpoint. You can do this either by creating a TCP load balancer with a static IP address, or, as a short-cut in development, by simply designating one of the nodes as your load balancer:
 
-    {% include_cached copy-clipboard.html %}
-    ~~~shell
-    gcloud compute addresses create roach-point
-    ~~~
-    
-    ~~~txt
-    Created [https://www.googleapis.com/compute/v1/projects/pki-docs-test1/global/addresses/roach-point].
-    ~~~
+- Option 1: Create a TCP load balancer. Visit the load balancer page in the GCP console, and create a TCP load balancer, selecting your node instances as targets for a new back-end service, and reserving a static IP address for your front-end service. This IP address will serve as the load balancer IP, `lb_ip`, in the configuration manifest in the following step.
 
-1. Fetch the static IP address.
+- Option 2: Use one of the nodes as a load balancer. Any node in a CockroachDB cluster hande SQL requests, which includes load-balancing work across nodes in the cluster. As a development mode short, cut, simply use the `INTERNAL_IP` for one of your nodes as `lb_ip` in the configuration manifest in the following step.
 
-    {% include_cached copy-clipboard.html %}
-    ~~~shell
-    gcloud compute addresses list
-    ~~~
-    
-    ~~~txt
-    NAME         ADDRESS/RANGE  TYPE      PURPOSE  NETWORK  REGION  SUBNET  STATUS
-    roach-point  34.120.212.70  EXTERNAL                                    RESERVED
-    ~~~
+1. Compile an environment manifest
 
-1. List the names and network addresses of your compute instances.
+    Collect the network names and IP addresses of the resources, which you should be able to glean from the output of `gcloud compute instances list`:
+
     {% include_cached copy-clipboard.html %}
     ~~~shell
     gcloud compute instances list
@@ -216,11 +199,7 @@ Additionally, our project's firewall rules must be configured to allow communica
     roach-node-3      us-central1-a  n2-standard-2               10.128.0.5   34.170.109.109  RUNNING
     ~~~
 
-1. Compile an environment manifest
-
-    Collect the network names and IP addresses of these resources, which you should be able to glean from the output of `gcloud compute instances list`
-
-    For ease of use, save the following in a file, for example called `cockroach-cluster.env`. Then initialize your shell by pasting in the contents or running `source cockroach-cluster.env`. 
+    For ease of use, save the required information in a file, for example called `cockroach-cluster.env`. Then initialize your shell by pasting in the contents or running `source cockroach-cluster.env`.
 
     {% include_cached copy-clipboard.html %}
     ```shell
@@ -228,8 +207,8 @@ Additionally, our project's firewall rules must be configured to allow communica
     # replace with your project ID
     export PROJECT_ID=pki-docs-test1
 
-    # replace with your cluster's static IP
-    export ex_ip=35.238.8.215
+    # replace with your cluster's load-balancer IP.
+    export lb_ip=35.238.8.215
 
     # replace with your compute instance names and *internal* IP addresses
     export node1name=roach-node-1
@@ -279,19 +258,18 @@ The operations in this section fall under the persona of `ca-admin`, and therefo
 1. [Install Vault](https://learn.hashicorp.com/tutorials/vault/getting-started-install) on the jumpbox, following the [instructions for **Ubuntu/Debian** Linux](https://www.vaultproject.io/downloads).
 
 1. Obtain the required parameters to target and authenticate to Vault.
+    
+    1. Option 1: If using HashiCorp Cloud Platform (HCP):
 
-    - If using HashiCorp Cloud Platform (HCP):
-        
-        Go to the [HCP console](https://portal.cloud.hashicorp.com), choose Vault from the **Services** menu and then select your cluster.
+        1. Go to the [HCP console](https://portal.cloud.hashicorp.com), choose Vault from the **Services** menu and then select your cluster.
 
-        Find the **Public Cluster URL** for your Vault cluster, and set it as the `VAULT_ADDR` environment variable in your shell.
+        1. Find the **Public Cluster URL** for your Vault cluster. This will be set as the `VAULT_ADDR` environment variable, in the following step.
 
-        Generate an admin token by clicking **Generate token**, and set it as the `VAULT_TOKEN` environment variable.
+        1. Generate an admin token by clicking **Generate token**. This will be set as the `VAULT_TOKEN` environment variable, in the following step.
 
-    - If using a Vault deployment internal to your organization, contact your Vault administrator for a token and the appropriate endpoint.
+    1. Option 2: If using a Vault deployment internal to your organization, contact your Vault administrator for a token and the appropriate endpoint.
 
-    - If using a development Vault server (*suitable only for tutorial/testing purposes*):
-        Start the Vault development server and obtain credentials locally on your CA admin jumpbox by running `vault server --dev`.
+    1. Option 3: If using a development Vault server (*suitable only for tutorial/testing purposes*), start the Vault development server and obtain credentials locally on your CA admin jumpbox by running `vault server --dev`.
 
 1. Initialize your shell for Vault on the jumpbox
 
@@ -424,7 +402,6 @@ In Vault, a PKI role is a template for a certificate.
 
     {% include_cached copy-clipboard.html %}
     ~~~shell
-
     vault write "cockroach_cluster_ca/roles/node" \
     allow_any_name=true \
     client_flag=true \
@@ -449,25 +426,24 @@ In Vault, a PKI role is a template for a certificate.
 
     {% include_cached copy-clipboard.html %}
     ~~~shell
-
     vault write cockroach_cluster_ca/issue/node \
     common_name="node" \
     alt_names="roachnode1,localhost,node" \
-    ip_sans="${node1addr},${ex_ip}" \
+    ip_sans="${node1addr},${lb_ip}" \
     max_ttl=48h \
     --format=json > "${secrets_dir}/node1/certs.json"
 
     vault write cockroach_cluster_ca/issue/node \
     common_name="node" \
     alt_names="${node2name},localhost,node" \
-    ip_sans="${node2addr},${ex_ip}" \
+    ip_sans="${node2addr},${lb_ip}" \
     max_ttl=48h \
     --format=json > "${secrets_dir}/node2/certs.json"
 
     vault write cockroach_cluster_ca/issue/node \
     common_name="node" \
     alt_names="${node3name},localhost,node" \
-    ip_sans="${node3addr},${ex_ip}" \
+    ip_sans="${node3addr},${lb_ip}" \
     max_ttl=48h \
     --format=json > "${secrets_dir}/node3/certs.json"
     ~~~
@@ -491,10 +467,6 @@ In Vault, a PKI role is a template for a certificate.
 ~~~shell
 chmod 0600  ${secrets_dir}/*/node.key
 chown $USER ${secrets_dir}/*/node.key
-~~~
-
-~~~txt
-
 ~~~
 
 ### Provision each node's credentials and [trust store](security-reference/transport-layer-security.html#trust-store)
@@ -521,7 +493,6 @@ chown $USER ${secrets_dir}/*/node.key
 
 #### Create a PKI role for the root  Issue a root client certificate
 Generate a private key/public certificate pair for the root SQL user.
-This is a very powerful private key, as anyone 
 
 1.  Generate the client role:
     
@@ -716,7 +687,7 @@ gcloud compute ssh roach-client
 
 {% include_cached copy-clipboard.html %}
 ~~~shell
-cockroach init --certs-dir=certs $ex_ip
+cockroach init --certs-dir=certs $lb_ip
 ~~~
 
 ~~~txt

@@ -68,9 +68,14 @@ Encryption using a key pair is "asymmetric", in that different keys are used to 
 
 Symmetric encryption is more efficient than asymmetric encryption, but it requires all parties to have the single shared key prior to the exchange.
 
-With asymmetric encryption, by contrast, each party can share their public key, allowing anyone to send them messages that only they can decrypt with their private key. In the context of internet communication
+With asymmetric encryption, by contrast, each party can share their public key, allowing anyone to send them messages that only they can decrypt with their private key.
 
-In the TLS protocol, asymmetric encryption using the public/private key pairs is used to securely exchange random data from that is used to create shared **session keys**, which are then used by both parties to (symmetrically) encrypt and decrypt data for the remainder of the session. Since a session key is created with information shared using asymmetric encryption, and is used only for the duration of a session, TLS combines the best of both asymmetric encryption (the ability to establish an encrypted communication channel without having to have first securely shared a key) and symmetric encryption (computational efficiency).
+The TLS protocol employs both asymmetric and symmetric encryption:
+
+- Asymmetric encryption using the public/private key pairs is used to securely exchange random data that is used to create shared **session keys**
+- Session keys are then used by both parties to (symmetrically) encrypt and decrypt data for the remainder of the session.
+
+Since a session key is created with information shared using asymmetric encryption, and is used only for the duration of a session, TLS combines the best of both asymmetric encryption (the ability to establish an encrypted communication channel without having to have first securely shared a key) and symmetric encryption (computational efficiency).
 
 {{site.data.alerts.callout_info}}
 The generation and management of TLS session keys is fully automated within the TLS protocol. You do not ever need to provision or manage TLS session keys.
@@ -92,7 +97,7 @@ At its core, PKI is a hierarchy of cryptographically-backed trust relationships 
 
 ### Certificates, signing, trust and authority
 
-The core mechanism of PKI is a the PKI certificate, also known as a 'security certificate', 'digital certificate' or 'TLS certificate' (because it is used in TLS), or abbreviated "cert".
+The core mechanism of PKI is the PKI certificate, also commonly known as a "security certificate", "digital certificate" or "TLS certificate" (because it is used in TLS), or abbreviated "cert". In TLS the [x509 certificate format](https://en.wikipedia.org/wiki/X.509) is used.
 
 A PKI certificate is a file containing the following:
 
@@ -109,7 +114,9 @@ On its own, such a digital certificate is of no more value than a paper certific
 
 The premise of PKI is that if I present you with a certificate says that I work for the Cockroach Labs documentation team, and you trust the certificate that signed it (for example, a Cockroach Labs certificate authority), because you trust the signing certificate you trust that I work for the documentation team (or at least, I did when the certificate was signed).
 
-Generally, given that you can put your trust in the organization that backs the Certificate Authority who has signed a server's public certificate, you can extend your trust that the holder of the private key corresponding to that certificate is who the certificate says they are. For example, this is how your web browser or mobile app knows that it's actually talking to your bank, rather than an imposter. Furthermore, one Certificate Authority may grant certify that another party is authorized to issue certificates on its behalf, acting as a **subordinate CA**.
+Generally, given that you can put your trust in the organization that backs the Certificate Authority who has signed a server's public certificate, you can extend your trust that the holder of the private key corresponding to that certificate is who the certificate says they are. For example, this is how your web browser or mobile app knows that it's actually talking to your bank, rather than an imposter.
+
+Furthermore, one Certificate Authority may grant certify that another party is authorized to issue certificates on its behalf, acting as a **subordinate CA**.
 
 ### Public and private PKIs
 
@@ -156,12 +163,12 @@ Currently, mutual TLS authentication, in which the client as well as the server 
 
 ### Default mode 
 
-By default, CockroachDB clusters require TLS. Client connection requests must made with `sslmode=on`.
+By default, CockroachDB clusters require TLS. Client connection requests must be made with `sslmode=on`.
 The CockroachDB CLI `cockroach sql` command, by default, is made with `sslmode=on`.
 
 Clients always require a public certificate for the CA that issued the server certificate.
 
-If the connection is mutually TLS authenticated (i.e., if the client authentication method is a certificate rather than a username/password combination), then a private key/public certificate pair for the client is also required.
+If the connection is mutually TLS-authenticated (i.e., if the client authentication method is a certificate rather than a username/password combination), then a private key/public certificate pair for the client is also required.
 
 ### `--accept-sql-without-tls` mode
 
@@ -188,7 +195,7 @@ CockroachDB ignores operating system certificate trust stores.
 
 ## TLS between CockroachDB nodes
 
-Connections between CockroachDB nodes are always mutually TLS authenticated. Each node must have at least one private-key/public certificate pair, which it can use both as server and as client when initiating internode traffic.
+Connections between CockroachDB nodes are always mutually TLS-authenticated. Each node must have at least one private-key/public certificate pair, which it can use both as server and as client when initiating internode traffic.
 
 ### CockroachDB Cloud
 
@@ -220,12 +227,12 @@ In turn, which authentication methods are available depends on the sort of envir
 
 {{ site.data.products.db }} does not support certificate-authenticated client requests. TLS is used to authenticate the server and encrypt all traffic, but the user must authenticate to the database with a username/password combination.
 
-Because the server must still be TLS authenticated, the client must know to trust the certificate authority that signed the public certificate identifying the server. The path to the CA's public certificate is passed as the `sslrootcert` parameter in a [database connecton string](../connect-to-the-database.html), or by being placed in the directory specified by the `certs-dir` argument in a connection made with the [`cockroach sql`](../cockroach-sql.html) CLI command.
+Because the server must still be TLS-authenticated, the client must know to trust the certificate authority that signed the public certificate identifying the server. The path to the CA's public certificate is passed as the `sslrootcert` parameter in a [database connecton string](../connect-to-the-database.html), or by being placed in the directory specified by the `certs-dir` argument in a connection made with the [`cockroach sql`](../cockroach-sql.html) CLI command.
 
 ### Self-Hosted CockroachDB
 
 {{site.data.alerts.callout_info}}
-Customers who deploy and manage their own CockroachDB clusters must provision and manage certificates on each nodes, implementing their own PKI security. This entails ensuring that credentials are carefully controlled, monitoring for signs of compromise and mitigating the impact of potential credential leaks. Authorization for issuing credentials is particularly critical, and this includes issuing private key/public certificate pairs for CockroachDB nodes or clients. Unmitigated compromise of either of these can have devastating business impact.
+Customers who deploy and manage their own CockroachDB clusters must provision and manage certificates on each node, implementing their own PKI security. This entails that you must ensure credentials are carefully controlled, monitoring for signs of compromise and mitigating the impact of potential credential leaks. Authorization for issuing credentials is particularly critical, and this includes issuing private key/public certificate pairs for CockroachDB nodes or clients. Unmitigated compromise of either of these can have devastating business impact.
 
 Choosing a strategy for maintaining solid private PKI is important and complex, and depends on your total system requirements, total security threat model, and available resources.
 
@@ -238,7 +245,7 @@ Choosing a strategy for maintaining solid private PKI is important and complex, 
 
 #### Non-TLS client authentication
 
-When using a non-TLS client authentication method, such as username/password or GSSAPI/Kerberos (Enterprise only), the server must still be TLS authenticated. Therefore, the client must know to trust the certificate authority that signed the public certificate identifying the server. Therefore, the root CA certificate, called `ca.crt`, must be provided to client authentication attempts. This can be passed as the `sslrootcert` parameter in a [database connecton string](../connect-to-the-database.html), or by being placed in the directory specified by the `certs-dir` argument in a connection made with the [`cockroach sql`](../cockroach-sql.html) CLI command.
+When using a non-TLS client authentication method, such as username/password or GSSAPI/Kerberos (Enterprise only), the server must still be TLS-authenticated. Therefore, the client must know to trust the certificate authority that signed the public certificate identifying the server. Therefore, the root CA certificate, called `ca.crt`, must be provided to client authentication attempts. This can be passed as the `sslrootcert` parameter in a [database connecton string](../connect-to-the-database.html), or by being placed in the directory specified by the `certs-dir` argument in a connection made with the [`cockroach sql`](../cockroach-sql.html) CLI command.
 
 #### TLS client authentication
 

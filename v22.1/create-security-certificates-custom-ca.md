@@ -8,7 +8,8 @@ filter_sort: 3
 docs_area: 
 ---
 
-This document discusses the advanced use cases for using [Public Key Infrastructure (PKI)](security-reference/transport-layer-security.html) security certificates with CockroachDB. PKI certificates are used in CockroachDB for TLS encryption and for node and client authentication.
+This document discusses the use of advanced [Public Key Infrastructure (PKI)](security-reference/transport-layer-security.html) systems and certificates issued by them with CockroachDB.
+ security certificates with CockroachDB. PKI certificates are used in CockroachDB for TLS encryption and for node and client authentication.
 
 Approach | Use case description
 -------------|------------

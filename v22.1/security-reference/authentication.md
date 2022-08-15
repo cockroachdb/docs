@@ -9,7 +9,7 @@ This page give an overview of CockroachDB's security features for authenticating
 
 Instead, you might be looking for:
 
-- [Logging in to the {{ site.data.products.db }} web console. ](../../cockroachcloud/authentication.html).
+- [Logging in to the {{ site.data.products.db }} web console](../../cockroachcloud/authentication.html).
 - [Accessing the DB console on {{ site.data.products.core }} clusters](../ui-overview.html).
 
 ## Authentication configuration
@@ -19,7 +19,7 @@ CockroachDB allows fine-grained configuration of which database connection attem
 - **Who** is making the attempt (SQL user).
 - **Where** on the internet (IP Address) the attempt is coming from.
 
-CockroachDB's authentication behavior is configured using a domain-specific language (DSL), shared with PostgreSQL, called host-based authentication (HBA).
+CockroachDB's authentication behavior is configured using a domain-specific language (DSL) called host-based authentication (HBA). HBA syntax is shared with PostgreSQL.
 
 A specific CockroachDB cluster's authentication behavior is configured by setting its `server.host_based_authentication.configuration` [cluster setting](../cluster-settings.html), using the [`SET CLUSTER SETTING` statement](../set-cluster-setting.html), which accepts a single text field that must be a correctly formatted HBA manifest. Inspect the current setting with [`SHOW CLUSTER SETTING`.](../show-cluster-setting.html)
 
