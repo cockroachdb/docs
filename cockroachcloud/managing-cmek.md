@@ -242,7 +242,7 @@ To add a region to a multi-region cluster, update your cluster's region definiti
 
 1. Construct the data payload JSON to update you region definitions.
 
-    The payload format depends on ccording to which cloud provider you use:
+    The payload format depends on which cloud provider you use:
     - **AWS**:
         {% include_cached copy-clipboard.html %}
         ```json
