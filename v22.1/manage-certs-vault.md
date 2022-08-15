@@ -12,15 +12,15 @@ PKI involves careful management of the certificates used for authentication and 
 **Goals**:
 
 - Deploy a secure three-node CockroachDB cluster in Google Cloud Platform.
-- Create two certificate authority (CA), one each
-- Define PKI roles CockroachDB nodes and clients
-- Issue private key/public certificate pairs for use by the CockroachDB nodes comprising our cluster
+- Create two certificate authorities (CAs), one each for clients and for cluster nodes
+- Define PKI roles for CockroachDB nodes and clients
+- Issue private key/public certificate pairs for use by our CockroachDB cluster nodes
 - Issue a private key/public certificate pair for use by the CockroachDB client
 - Access the cluster using the client credentials
 
 **Prerequisites**:
 
-- Understand [Transport Layer Security (TLS) and Public Key Infrastructure (PKI)](security-reference/transport-layer-security.html).
+- Review [Transport Layer Security (TLS) and Public Key Infrastructure (PKI)](security-reference/transport-layer-security.html).
 - Vault:
   - You must have access to a Vault cluster. This can be a, a) cluster provisioned online through [HachiCorp Cloud Platform (HCP)](https://portal.cloud.hashicorp.com/services/vault), b) a Vault cluster deployed by your organization, or even c) a quickstart Vault cluster you deploy yourself in ["dev" mode](https://learn.hashicorp.com/tutorials/vault/getting-started-dev-server?in=vault/getting-started).
   - Sufficient permissions on the cluster to enable secrets engines and create policies, either via the root access token for this cluster or through a [custom policy](https://learn.hashicorp.com/tutorials/vault/policies).
