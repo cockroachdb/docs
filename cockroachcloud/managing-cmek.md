@@ -258,16 +258,16 @@ To add a region to a multi-region cluster, update your cluster's region definiti
                         "region": "us-west1",
                         "key_spec": {
                             "type": "AWS_KMS",
-                            "uri": "id-of-key",
-                            "auth_principal": "name-of-role-with-kms-access"
+                            "uri": "{id-of-key}",
+                            "auth_principal": "{role-with-kms-access}"
                         }
                     },
                     {
                         "region": "us-central1",
                         "key_spec": {
                             "type": "AWS_KMS",
-                            "uri": "id-of-key-2",
-                            "auth_principal": "name-of-role-with-kms-access-2"
+                            "uri": "{id-of-key-2}",
+                            "auth_principal": "{another-role-with-kms-access}""
                         }
                     }
                 ],
