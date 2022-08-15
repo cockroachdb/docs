@@ -665,7 +665,7 @@ gcloud beta compute ssh --command './start_roach.sh' "${node3name}"
 
 #### Reset the nodes
 
-To cause an already running cluster to switch to the new credentials, send a `SIGHUP` signal to each node.
+To start using the new credentials on a running cluster, send a `SIGHUP` signal to each node.
 
 {% include_cached copy-clipboard.html %}
 ```shell
