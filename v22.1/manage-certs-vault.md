@@ -41,7 +41,7 @@ The key elements of the strategy here are:
 
 ### Vault secrets
 
-The solution demonstrated here uses HashiCorp Vault as a secrets management platform. This takes advantage of Vault's generally strong security model, and also eases many tasks.
+The solution demonstrated here uses HashiCorp Vault to manage these credentials as secrets. This approach benefit from Vault's generally strong security model and ease of use.
 
 ### Short-lived credentials
 
