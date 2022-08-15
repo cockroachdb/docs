@@ -41,11 +41,11 @@ The key elements of the strategy here are:
 
 ### Vault secrets
 
-The solution demonstrated here uses HashiCorp Vault to manage these credentials as secrets. This approach benefit from Vault's generally strong security model and ease of use.
+The solution demonstrated here uses HashiCorp Vault to manage these credentials as secrets. This approach benefits from Vault's generally strong security model and ease of use.
 
 ### Short-lived credentials
 
-If credentials are obtained by malicious actors, they can be used to impersonate (spoof) a client or server, potentially wreaking havoc on any system. Any PKI implementation must deal with this in one of two ways:
+If credentials are obtained by malicious actors, they can be used to impersonate (spoof) a client or server. Any PKI implementation must prevent this type of impersonation:
 
 - By using a revocation mechanism, so that existing certificates can be invalidated. Two standard solutions are Certificate Revocation Lists (CRLS) and the Online Certificate Status Protocol (OCSP).
 - By issuing only certificates with short validity durations, so that any compromised certificate quickly becomes unusable. 
@@ -54,13 +54,13 @@ CockroachDB does support OCSP, but not CRLs. To learn more, read [Using Online C
 
 Without OCSP, there is a premium on enforcing short validity durations for certificates; otherwise, stolen credentials may be used to work persistent mischief over a long window.
 
-The approach taken here is intended to be automation friendly. Users should consider automating PKI-related operations to reduce latency and ease repition, hence reducing the time-cost of frequently issuing fresh certificates.
+The approach taken here can be automated. Users should consider automating PKI-related operations to reduce latency, repetition, and mistakes.
 
-For example, a broad baseline recommendation might be to issue new certificates daily, keeping the validity duration under two days.
+For example, you might choose to issue new certificates daily, and for those certificates to remain valid for two days.
 
 ### Task personas
 
-The work described here can be divided up into three chunks, each of which might be performed by a different person and therefore which require access to different GCP and Vault resources. Each of the three personas will therefore correspond to a GCP service account and a Vault policy.
+The work described here can be divided up into three chunks, each of which might be performed by a different team or individual, and each of which might require access to different resources in both GCP and Vault. Each of the three personas in the following table correspond to a GCP service account and a Vault policy.
 
 persona | tasks | Vault permissions | GCP Permissions
 ----|------|-------|---
@@ -73,7 +73,7 @@ persona | tasks | Vault permissions | GCP Permissions
 Our cluster will contain three classes of compute instance:
 
 - The CA administrative jumpbox, where sensitive credentials will be handled and secure operations related to certificate authority performed.
-- Three database nodes.
+- Database nodes. These examples use a three-node cluster.
 - A client, which could represent, in a more realistic scenario, either an operations jumpbox for database adminstrators, or an application server.
 
 Additionally, our project's firewall rules must be configured to allow communication between nodes and from client to nodes.
@@ -98,7 +98,7 @@ Additionally, our project's firewall rules must be configured to allow communica
     ca-admin-jumpbox  us-central1-a  n1-standard-1               10.128.0.59  35.184.145.196  RUNNING
     ```
 
-1. Configure cluster firewall rules
+1. Configure cluster firewall rules.
 
     Our rules will allow nodes to send requests to eachother, and to recieve requests from clients (as specified with tags).
 
@@ -120,7 +120,7 @@ Additionally, our project's firewall rules must be configured to allow communica
 
 1. Create node instances
 
-    Create three compute instances to use as CockroachDB nodes. Follow the guidelines described [here](deploy-cockroachdb-on-google-cloud-platform.html#step-2-create-instances), and additionally, specify the `node-operator` service account as the managing service account.
+    Create three compute instances to use as CockroachDB nodes. Follow the guidelines described in [Deploy CockroachDB on Google Cloud Platform](deploy-cockroachdb-on-google-cloud-platform.html#step-2-create-instances), and additionally, specify the `node-operator` service account as the managing service account.
 
     {{site.data.alerts.callout_info}}
     Here we add the network tag 'roach-node', which will allow our firewall rule to apply to the nodes instances.
@@ -225,11 +225,11 @@ Additionally, our project's firewall rules must be configured to allow communica
 
 ### Provision the certificate authorities (CAs) with Vault
 
-The operations in this section fall under the persona of `ca-admin`, and therefore require admin Vault access and ssh access to the CA admin jumpbox.
+The operations in this section are performed by the`ca-admin` persona, and therefore require admin Vault access and SSH access to the CA admin jumpbox.
 
 #### Step 1: Access and prepare the CA admin jumpbox.
 
-1. SSH onto the CA admin jumpbox.
+1. Connect to the CA admin jumpbox using SSH.
 
     {% include_cached copy-clipboard.html %}
     ~~~shell
@@ -238,11 +238,11 @@ The operations in this section fall under the persona of `ca-admin`, and therefo
 
 1. Initialize your shell inside the jumpbox with your cluster information by running the contents of your `cockroach-cluster.env` file.
 
-1. Create a secrets directory on the jumpbox
+1. Create a secrets directory on the jumpbox.
 
-    We need somewhere to put key and certificate files while we work. By working on the secure CA jumpbox, which can be carefully gated behind IAM policies controlling SSH access, we minimize the risk of leaking a sensitive credential. Remember that credentials can be leaked other ways&mdash;for example by printing out a private key or plain-text password to your terminal in a public place where a camera is pointed at your laptop's screen.
+    We need somewhere to put key and certificate files while we work. By working on the secure CA jumpbox, which can be carefully gated behind IAM policies controlling SSH access, we minimize the risk of leaking a sensitive credential. Remember that credentials can be leaked other ways, such as by printing out a private key or plain-text password to your terminal in a public place where a camera is pointed at your laptop's screen.
 
-    Public certificates are not such an issue if they leak, but private keys for nodes and clients are critical secrets and must be managed with extreme care.
+    Public certificates are less sensitive if they leak, but private keys for nodes and clients are critical secrets and must be managed with extreme care.
 
     {% include_cached copy-clipboard.html %}
     ```shell
@@ -318,7 +318,7 @@ The operations in this section fall under the persona of `ca-admin`, and therefo
 1. Generate a root credential pair for each CA. Certificates created with this CA/secrets engine will be signed with the private key generated here. 
 
     {{site.data.alerts.callout_info}}
-    Note that the CA private key cannot be exported from Vault, preventing it from being leaked and used to issue fraudulent certificates.
+    The CA private key cannot be exported from Vault. This safeguards it from being leaked and used to issue fraudulent certificates.
 
     The CA public certificate is downloaded in the resulting JSON payload. 
 
