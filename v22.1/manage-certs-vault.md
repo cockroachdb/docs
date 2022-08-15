@@ -393,7 +393,7 @@ The operations in this section are performed by the`ca-admin` persona, and there
 
 In Vault, a PKI role is a template for a certificate.
 
-1.  Create a node role. The role will be used to generate certifates for the all cluster nodes.
+1.  Create a node role. The role will be used to generate certificates for the all cluster nodes.
 
     {{site.data.alerts.callout_info}}
     Note that certificate attributes must be provided with Vault's specific parameter syntax, which is documented here: 
