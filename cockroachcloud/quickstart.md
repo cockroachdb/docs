@@ -430,7 +430,7 @@ For reference information about connecting to CockroachDB with supported client 
     ~~~
 
     The code sample in this directory does the following:
-      1. Connects to {{ site.data.products.db }} with the [JDBC driver](https://jdbc.postgresql.org) using the JDBC connectiong string set in the `JDBC_DATABASE_URL` environment variable.
+      1. Connects to {{ site.data.products.db }} with the [JDBC driver](https://jdbc.postgresql.org) using the JDBC connection string set in the `JDBC_DATABASE_URL` environment variable.
       1. Creates a table.
       1. Inserts some data into the table.
       1. Reads the inserted data.
