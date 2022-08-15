@@ -1,35 +1,43 @@
 ---
-title: Authentication
+title: SQL Authentication
 summary: An overview of Cluster Authentication Configuration capabilities and interface syntax
 toc: true
 docs_area: reference.security
 ---
 
-CockroachDB allows fine-grained configuration of which database connect attempts it allows to proceed to the authentication stage, and which authentication methods it will accept, based on:
+This page give an overview of CockroachDB's security features for authenticating the identity of SQL users attempting to connect to the cluster.
+
+Instead, you might be looking for:
+
+- [Logging in to the {{ site.data.products.db }} web console](../../cockroachcloud/authentication.html).
+- [Accessing the DB console on {{ site.data.products.core }} clusters](../ui-overview.html).
+
+## Authentication configuration
+
+CockroachDB allows fine-grained configuration of which database connection attempts it allows to proceed to the authentication stage, and which authentication methods it accepts, based on:
 
 - **Who** is making the attempt (SQL user).
 - **Where** on the internet (IP Address) the attempt is coming from.
+
+CockroachDB's authentication behavior is configured using a domain-specific language (DSL) called host-based authentication (HBA). HBA syntax is shared with PostgreSQL.
+
+A specific CockroachDB cluster's authentication behavior is configured by setting its `server.host_based_authentication.configuration` [cluster setting](../cluster-settings.html), using the [`SET CLUSTER SETTING` statement](../set-cluster-setting.html), which accepts a single text field that must be a correctly formatted HBA manifest. Inspect the current setting with [`SHOW CLUSTER SETTING`.](../show-cluster-setting.html)
 
 ## Currently supported authentication methods
 
 Authentication Method | CockroachDB Cloud | Supported in CockroachDB Core | CockroachDB Enterprise Support  
 -------------|------------|-----|----
 password              |      ✓              |           ✓                    |    ✓
-<a href="scram-authentication.html">SCRAM-SHA-256</a>         |      ✓              |           ✓                    |    ✓
+[SCRAM-SHA-256](scram-authentication.html)         |      ✓              |           ✓                    |    ✓
 certificate              |      &nbsp;         |           ✓                    |    ✓
+username/password combination              |      ✓              |           ✓                    |    ✓
+[certificate](transport-layer-security.html)              |      &nbsp;         |           ✓                    |    ✓
 GSS                   |      &nbsp;         |           &nbsp;               |    ✓
 
 All options also support the following no-op 'authentication methods' (authentication is not actually performed):
 
 - `reject`: unconditionally rejects the connection attempt.
 - `trust`: unconditionally rejects the connection attempt.
-
-
-## Authentication configuration
-
-CockroachDB's authentication behavior is configured using a domain-specific language (DSL), shared with PostgreSQL, called host-based authentication (HBA).
-
-A specific CockroachDB cluster's authentication behavior is configured by setting its `server.host_based_authentication.configuration` [cluster setting](../cluster-settings.html), using the [`SET CLUSTER SETTING` statement](../set-cluster-setting.html), which accepts a single text field that must be a correctly formatted HBA manifest. Inspect the current setting with [`SHOW CLUSTER SETTING`.](../show-cluster-setting.html)
 
 ### HBA configuration syntax
 
@@ -66,6 +74,19 @@ Each rule definition contains up to 6 values.
   - `gss`: user may authenticate with a GSSAPI token.
   - `reject`: server rejects connection without performing authentication.
   - `trust`: server allows connection without performing authentication.
+
+## The unstated, unchangeable `root` access rule
+
+The `root` SQL user can always authenticate using username/password or certificate, as if the first rule of the configuration were:
+```
+# TYPE    DATABASE      USER           ADDRESS             METHOD
+  host    all           root           all                 root
+```
+
+This rule is not displayed in the configuration, and cannot be overridden.
+This ensures that access to the cluster can always be recovered, but it also means that access with root credentials cannot be restricted by IP range at the authentication configuration level.
+
+{{ site.data.products.dedicated }} or {{ site.data.products.core }} customers can and should enforce network protections, preventing access attempts from any sources other than a valid ones such as application servers or a secure operations jumpbox.
 
 ## Default behavior
 

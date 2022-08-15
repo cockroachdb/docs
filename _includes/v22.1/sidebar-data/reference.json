@@ -1432,6 +1432,35 @@
             ]
           },
           {
+            "title": "Public Key Infrastructure (PKI) and Transport Layer Security (TLS)",
+            "urls": [
+              "/${VERSION}/security-reference/transport-layer-security.html"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Performance Optimization",
+        "items": [
+          {
+            "title": "Indexes",
+            "urls": [
+              "/${VERSION}/indexes.html"
+            ]
+          },
+          {
+            "title": "Cost-Based Optimizer",
+            "urls": [
+              "/${VERSION}/cost-based-optimizer.html"
+            ]
+          },
+          {
+            "title": "Vectorized Execution Engine",
+            "urls": [
+              "/${VERSION}/vectorized-execution.html"
+            ]
+          },
+          {
             "title": "Customer-Managed Encryption Keys (CMEK)",
             "urls": [
               "/cockroachcloud/cmek.html"

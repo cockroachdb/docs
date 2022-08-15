@@ -260,6 +260,35 @@
           "title": "Secure CockroachDB Self-Hosted Clusters",
           "items": [
             {
+              "title": "Managing Security Certificates",
+              "items": [
+                {
+                  "title": "Use the CockroachDB CLI to provision a development cluster",
+                  "urls": [
+                    "/${VERSION}/manage-certs-cli.html"
+                  ]
+                },
+                {
+                  "title": "Manage PKI certificates for a CockroachDB deployment with HashiCorp Vault",
+                  "urls": [
+                    "/${VERSION}/manage-certs-vault.html"
+                  ]
+                },
+                {
+                  "title": "Create Security Certificates using OpenSSL",
+                  "urls": [
+                    "/${VERSION}/create-security-certificates-openssl.html"
+                  ]
+                },
+                {
+                  "title": "Using Online Certificate Status Protocol (OCSP) with CockroachDB",
+                  "urls": [
+                    "/${VERSION}/manage-certs-revoke-ocsp.html"
+                  ]
+                }
+              ]
+            },
+            {
               "title": "Authentication",
               "urls": [
                 "/${VERSION}/authentication.html"

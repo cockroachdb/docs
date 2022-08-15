@@ -1,21 +1,12 @@
 ---
-title: Create Security Certificates using a Custom CA
+title: Advanced Public Key Infrastructure (PKI) Certificate Scenarios
 summary: A secure CockroachDB cluster uses TLS for encrypted inter-node and client-node communication.
 toc: true
 docs_area:
 ---
 
-To secure your CockroachDB cluster's inter-node and client-node communication, you need to provide a Certificate Authority (CA) certificate that has been used to sign keys and certificates (SSLs) for:
-
-- Nodes
-- Clients
-- DB Console (optional)
-
-To create these certificates and keys, use the `cockroach cert` [commands](cockroach-commands.html) with the appropriate subcommands and flags, use [`openssl` commands](https://wiki.openssl.org/index.php/), or use a [custom CA](create-security-certificates-custom-ca.html) (for example, a public CA or your organizational CA).
-
-{% include {{ page.version.version }}/filter-tabs/security-cert.md %}
-
-This document discusses the following advanced use cases for using security certificates with CockroachDB:
+This document discusses the use of advanced [Public Key Infrastructure (PKI)](security-reference/transport-layer-security.html) systems and certificates issued by them with CockroachDB.
+ security certificates with CockroachDB. PKI certificates are used in CockroachDB for TLS encryption and for node and client authentication.
 
 Approach | Use case description
 -------------|------------
@@ -30,8 +21,8 @@ On [accessing the DB Console](ui-overview.html#db-console-access) for a secure c
 For secure clusters, you can avoid getting the warning message by using a certificate issued by a public CA whose certificates are trusted by browsers, in addition to the CockroachDB-created certificates.
 
 1. Request a certificate from a public CA (for example, [Let's Encrypt](https://letsencrypt.org/)). The certificate must have the IP addresses and DNS names used to reach the DB Console listed in the `Subject Alternative Name` field.
-2. Rename the certificate and key as `ui.crt` and `ui.key`.
-3. Add the `ui.crt` and `ui.key` to the [certificate directory](cockroach-cert.html#certificate-directory). `ui.key` must meet the [permission requirements check](cockroach-cert.html#key-file-permissions) on macOS, Linux, and other UNIX-like systems. If your cluster is deployed using containers, update the containers to include the new certificate and key.
+2. Rename the certificate and key files to `ui.crt` and `ui.key`.
+3. Add the `ui.crt` and `ui.key` files to the [trust store](security-reference/transport-layer-security.html#trust-store). `ui.key` must meet the [permission requirements check](cockroach-cert.html#key-file-permissions) on macOS, Linux, and other UNIX-like systems. If your cluster is deployed using containers, update the containers to include the new certificate and key.
 4. The cockroach process reads certificates only when the process starts.
 
    - In a manually-deployed cluster, load the `ui.crt` certificate without restarting the node by issuing a `SIGHUP` signal to the cockroach process:
@@ -168,6 +159,9 @@ To enable certificate revocation:
 
 ## See also
 
+- [Public Key Infrastructure (PKI) and Transport Layer Security (TLS)](security-reference/transport-layer-security.html)
+- [Use the CockroachDB CLI to provision a development cluster](manage-certs-cli.html).
+- [Manage PKI certificates for a CockroachDB deployment with HashiCorp Vault](manage-certs-vault.html).
 - [Manual Deployment](manual-deployment.html): Learn about starting a multi-node secure cluster and accessing it from a client.
 - [Start a Node](cockroach-start.html): Learn more about the flags you pass when adding a node to a secure cluster
 - [Client Connection Parameters](connection-parameters.html)
