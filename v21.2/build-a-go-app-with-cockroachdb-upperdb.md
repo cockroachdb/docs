@@ -3,13 +3,10 @@ title: Build a Go App with CockroachDB and upper/db
 summary: Learn how to use CockroachDB from a simple Go application with the upper/db data access layer.
 toc: true
 twitter: false
-filter_category: crud_go
-filter_html: Use <strong>upper/db</strong>
-filter_sort: 4
 docs_area: get_started
 ---
 
-{% include filter-tabs.md %}
+{% include {{ page.version.version }}/filter-tabs/crud-go.md %}
 
 This tutorial shows you how build a simple Go application with CockroachDB and the [upper/db](https://upper.io/) data access layer.
 

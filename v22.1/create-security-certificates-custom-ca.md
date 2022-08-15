@@ -2,10 +2,7 @@
 title: Advanced Public Key Infrastructure (PKI) Certificate Scenarios
 summary: A secure CockroachDB cluster uses TLS for encrypted inter-node and client-node communication.
 toc: true
-filter_category: security_cert
-filter_html: Use custom CA
-filter_sort: 3
-docs_area: 
+docs_area:
 ---
 
 This document discusses the use of advanced [Public Key Infrastructure (PKI)](security-reference/transport-layer-security.html) systems and certificates issued by them with CockroachDB.

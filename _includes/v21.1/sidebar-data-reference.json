@@ -1252,6 +1252,12 @@
                 ]
               },
               {
+               "title": "<code>cockroach auth-session</code>",
+               "urls": [
+                 "/${VERSION}/cockroach-auth-session.html"
+               ]
+              },
+              {
                 "title": "<code>cockroach dump</code>",
                 "urls": [
                   "/${VERSION}/cockroach-dump.html"

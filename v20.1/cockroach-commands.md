@@ -21,6 +21,7 @@ Command | Usage
 [`cockroach sql`](cockroach-sql.html) | Use the built-in SQL client.
 [`cockroach sqlfmt`](cockroach-sqlfmt.html) | Reformat SQL queries for enhanced clarity.
 [`cockroach node`](cockroach-node.html) | List node IDs, show their status, decommission nodes for removal, or recommission nodes.
+[`cockroach auth-session`](cockroach-auth-session.html) | Create and manage web sessions and authentication tokens to the HTTP interface from the command line.
 [`cockroach dump`](cockroach-dump.html) | Back up a table by outputting the SQL statements required to recreate the table and all its rows.
 [`cockroach demo`](cockroach-demo.html) | Start a temporary, in-memory CockroachDB cluster, and open an interactive SQL shell to it.
 [`cockroach gen`](cockroach-gen.html) | Generate manpages, a bash completion file, example SQL data, or an HAProxy configuration file for a running cluster.

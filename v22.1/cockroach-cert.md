@@ -3,9 +3,6 @@ title: cockroach cert
 summary: A secure CockroachDB cluster uses TLS for encrypted inter-node and client-node communication.
 toc: true
 key: create-security-certificates.html
-filter_category: security_cert
-filter_html: Use cockroach cert
-filter_sort: 1
 docs_area: reference.cli
 ---
 
@@ -17,7 +14,7 @@ To secure your CockroachDB cluster's inter-node and client-node communication, y
 
 To create these certificates and keys, use the `cockroach cert` [commands](cockroach-commands.html) with the appropriate subcommands and flags, use [`openssl` commands](https://wiki.openssl.org/index.php/), or use a [custom CA](create-security-certificates-custom-ca.html) (for example, a public CA or your organizational CA).
 
-{% include filter-tabs.md %}
+{% include {{ page.version.version }}/filter-tabs/security-cert.md %}
 
 {{site.data.alerts.callout_success}}For details about when and how to change security certificates without restarting nodes, see <a href="rotate-certificates.html">Rotate Security Certificates</a>.{{site.data.alerts.end}}
 

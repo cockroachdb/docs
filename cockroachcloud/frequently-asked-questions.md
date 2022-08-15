@@ -2,15 +2,12 @@
 title: CockroachDB Cloud FAQs
 summary: Get answers to frequently asked questions about CockroachDB Cloud
 toc: true
-filter_category: cloud_faqs
-filter_html: CockroachDB Dedicated
-filter_sort: 2
 docs_area: get_started
 ---
 
 This page answers the frequently asked questions about {{ site.data.products.serverless }} and {{ site.data.products.dedicated }}.
 
-{% include filter-tabs.md %}
+{% include cockroachcloud/filter-tabs/cloud-faqs.md %}
 
 ## General
 

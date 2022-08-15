@@ -3,13 +3,10 @@ title: Connect to a CockroachDB Serverless Cluster
 summary: Learn how to connect and start interacting with your free cluster.
 toc: true
 redirect_from: connect-to-a-free-cluster.html
-filter_category: conn_crdb_cloud
-filter_html: CockroachDB Serverless
-filter_sort: 1
 docs_area: deploy
 ---
 
-{% include filter-tabs.md %}
+{% include cockroachcloud/filter-tabs/crdb-cloud-connection.md %}
 
 This page shows you how to connect to your {{ site.data.products.serverless }} cluster. If you'd like to follow along with a video walkthrough, see [How to connect to {{ site.data.products.db }} and Import Data](https://www.youtube.com/watch?v=XJZD1rorEQE).
 
@@ -29,7 +26,7 @@ This page shows you how to connect to your {{ site.data.products.serverless }} c
 1. _(Optional)_ If you have multiple SQL users or databases, you can:
     - Select the SQL user you want to connect with from the **SQL user** dropdown.
     - Select the database you want to connect to from the **Database** dropdown.
-    
+
 ## Step 2. Connect to your cluster
 
 1. Select a connection method from the **Select option** dropdown (the instructions below will adjust accordingly):
@@ -100,7 +97,7 @@ For connection examples and code snippets in your language, see the following:
     ~~~
 
     You are now connected to the built-in SQL client, and can now run [CockroachDB SQL statements](learn-cockroachdb-sql.html).
-    
+
   </section>
 
 ## What's next

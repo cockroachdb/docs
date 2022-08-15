@@ -4,13 +4,10 @@ summary: Learn how to deploy CockroachDB on Google Cloud Platform's Compute Engi
 toc: true
 toc_not_nested: true
 ssh-link: https://cloud.google.com/compute/docs/instances/connecting-to-instance
-filter_category: deploy_crdb_gce
-filter_html: Insecure
-filter_sort: 2
-docs_area: 
+docs_area:
 ---
 
-{% include filter-tabs.md %}
+{% include {{ page.version.version }}/filter-tabs/deploy-crdb-gce.md %}
 
 This page shows you how to manually deploy an insecure multi-node CockroachDB cluster on Google Cloud Platform's Compute Engine (GCE), using Google's TCP Proxy Load Balancing service to distribute client traffic.
 

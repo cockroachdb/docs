@@ -292,7 +292,7 @@ For reference information about connecting to CockroachDB with supported client 
     ~~~
 
     The code sample in this directory does the following:
-      1. Connects to {{ site.data.products.db }} with the [node-postgres driver](https://node-postgres.com) using the connectiong string set in the `DATABASE_URL` environment variable.
+      1. Connects to {{ site.data.products.db }} with the [node-postgres driver](https://node-postgres.com) using the connection string set in the `DATABASE_URL` environment variable.
       1. Creates a table.
       1. Inserts some data into the table.
       1. Reads the inserted data.
@@ -337,7 +337,7 @@ For reference information about connecting to CockroachDB with supported client 
     ~~~
 
     The code sample in this directory does the following:
-      1. Connects to {{ site.data.products.db }} with the [psycopg2 driver](https://www.psycopg.org) using the connectiong string set in the `DATABASE_URL` environment variable.
+      1. Connects to {{ site.data.products.db }} with the [psycopg2 driver](https://www.psycopg.org) using the connection string set in the `DATABASE_URL` environment variable.
       1. Creates a table.
       1. Inserts some data into the table.
       1. Reads the inserted data.
@@ -382,7 +382,7 @@ For reference information about connecting to CockroachDB with supported client 
     ~~~
 
     The code sample in this directory does the following:
-      1. Connects to {{ site.data.products.db }} with the [pgx driver](https://github.com/jackc/pgx) using the connectiong string set in the `DATABASE_URL` environment variable.
+      1. Connects to {{ site.data.products.db }} with the [pgx driver](https://github.com/jackc/pgx) using the connection string set in the `DATABASE_URL` environment variable.
       1. Creates a table.
       1. Inserts some data into the table.
       1. Reads the inserted data.
@@ -430,7 +430,7 @@ For reference information about connecting to CockroachDB with supported client 
     ~~~
 
     The code sample in this directory does the following:
-      1. Connects to {{ site.data.products.db }} with the [JDBC driver](https://jdbc.postgresql.org) using the JDBC connectiong string set in the `JDBC_DATABASE_URL` environment variable.
+      1. Connects to {{ site.data.products.db }} with the [JDBC driver](https://jdbc.postgresql.org) using the JDBC connection string set in the `JDBC_DATABASE_URL` environment variable.
       1. Creates a table.
       1. Inserts some data into the table.
       1. Reads the inserted data.
