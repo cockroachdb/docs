@@ -11,7 +11,10 @@ After downloading your desired release, learn how to [install CockroachDB](../{{
 {% assign sections = site.data.releases | map: "release_type" | uniq | reverse %}
 {% comment %} Fetch the list of all release types (currently Testing, Production) {% endcomment %}
 
-{% assign versions = site.data.versions | sort: "release_date" | reverse %}
+{% assign released_versions = site.data.releases | map: "major_version" | uniq | reverse %}
+{% comment %} Fetch the list of the major versions of all releases that currently exist {% endcomment %}
+
+{% assign versions = site.data.versions | where_exp: "versions", "released_versions contains versions.major_version" | sort: "release_date" | reverse %}
 {% comment %} Fetch all major versions (e.g., v21.2), sorted in reverse chronological order. {% endcomment %}
 
 {% assign latest_hotfix = site.data.releases | where_exp: "latest_hotfix", "latest_hotfix.major_version == site.versions['stable']" | where: "withdrawn", "false"  | sort: "release_date" | reverse | first %}
