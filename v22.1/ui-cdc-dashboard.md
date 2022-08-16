@@ -20,7 +20,7 @@ This graph shows the maximum latency for resolved timestamps of any running chan
 <img src="{{ 'images/v22.1/ui_max_changefeed.png' | relative_url }}" alt="DB Console Max Changefeed Latency graph" style="border:1px solid #eee;max-width:100%" />
 
 {{site.data.alerts.callout_info}}
-The maximum latency for resolved timestamps is distinct from and slower than the commit-to-emit latency for individual change messages. For more information about resolved timestamps, see [Ordering guarantees](use-changefeeds.html#ordering-guarantees).
+The maximum latency for resolved timestamps is distinct from and slower than the commit-to-emit latency for individual change messages. For more information about resolved timestamps, see [Ordering guarantees](changefeed-messages.html#ordering-guarantees).
 {{site.data.alerts.end}}
 
 ## Sink Byte Traffic

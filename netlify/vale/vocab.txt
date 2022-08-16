@@ -61,6 +61,7 @@ cgo
 changangela
 changefeed
 changefeeds
+changefeed's
 changeset
 changesets
 checkpointing
@@ -103,6 +104,7 @@ datatypes
 datetime
 dayofweek
 dayofyear
+DBeaver
 dchenk
 ddl
 deallocated
@@ -186,6 +188,7 @@ guanqun
 gzip
 haines
 hao
+HAProxy
 hardcoded
 hashicorp
 heartbeated
@@ -280,6 +283,8 @@ link_prefix
 liquibase
 liveness
 livestream
+lockholder
+lockholders
 lockless
 loiselle
 lookups
@@ -346,6 +351,7 @@ numerics
 offboard
 offlined
 oid
+OIDs
 oli
 ons
 onwards
@@ -355,6 +361,7 @@ operator_version
 orchstrations
 ordinality
 overallocating
+ORMs
 owsiany
 page_prefix
 Pak
@@ -434,6 +441,8 @@ rehomed
 rehoming
 reformats
 relicense
+remote_include
+remote_include_version
 replacewith
 repo
 repos
@@ -582,6 +591,8 @@ txns
 typechecking
 tz
 udt
+UDF
+UDFs
 ui
 uid
 uksouth
@@ -627,6 +638,7 @@ uris
 url
 userfile
 userspace
+usertable
 utils
 uuid
 vaidya

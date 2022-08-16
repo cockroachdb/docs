@@ -62,8 +62,7 @@ If your organization has an annual contract with {{ site.data.products.db }}, th
 Under the **Credits** section, you can see more information about each of your organization's contracts. Contracts are listed in the order in which they will be used.
 
 Under the **Spend over time** section, you can see a table of each of your organization's clusters and the costs they have accrued.
-{% comment %}
+
 ## View invoices
 
 You can view all of your organization's past invoices on the **Invoices** tab of the **Billing** page. Download any invoice to see the details of your charges for a billing period.
-{% endcomment %}

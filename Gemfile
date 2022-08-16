@@ -10,7 +10,6 @@ gem "jekyll-redirect-from", "~> 0.15"
 gem "liquid-c", "~> 4.0.0"
 gem "redcarpet", "~> 3.5"
 gem "rss"
-gem "sassc", "~> 2.2"
 gem "webrick"
 
 group :jekyll_plugins do

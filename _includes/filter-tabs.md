@@ -2,21 +2,42 @@
 
 The filter-tabs.md file is used to create a filter bar at the top of the page to navigate to different but related URLs/.md files. This is useful in scenarios such as toggling between different Ruby tutorials in different URLs.
 
-To generate the filter bar in a specific location within a document, place the following liquid block in its own line in the locatino of the document you wish to put it:
+To generate the filter bar in a specific location within a document, create a new Markdown file in the _includes/<version>/filter-tabs folder.
 
-{% include filter-tabs.md %}
+List each tab name in the tab_names_html variable, separated by a semicolon. HTML is supported here.
 
-In order to properly utilize this file, the following three items must be added to the YAML front matter of each page to be filtered:
+List each file name with the HTML extension in the html_page_names variable, separated by a semicolon.
 
-filter_category: The name of the group of filter tabs. For instance, all filter tabs within the Ruby tutorials use crud_ruby as the filter category.
-filter_html: The HTML of the text to be used for that page's tab in the filter.
-filter_sort: The sort order of that particular page's tab in the filter. If this value is accidentally set to be the same across two or more pages, those pages will be sorted by alphabetical order of their file name.
+Then, include the filter-tabs.md file. For any pages in docs/cockroachcloud, set page_folder to "cockroachcloud". Otherwise, use page.version.version.
+
+Example 1:
+
+{% assign tab_names_html = "CockroachDB Serverless;CockroachDB Dedicated" %}
+{% assign html_page_names = "serverless-faqs.html;frequently-asked-questions.html" %}
+
+{% include filter-tabs.md tab_names=tab_names_html page_names=html_page_names page_folder="cockroachcloud" %}
+
+Example 2:
+
+{% assign tab_names_html = "Use <strong>JDBC</strong>;Use <strong>Hibernate</strong>;Use <strong>jOOQ</strong>;Use <strong>MyBatis-Spring</strong>" %}
+{% assign html_page_names = "build-a-java-app-with-cockroachdb.html;build-a-java-app-with-cockroachdb-hibernate.html;build-a-java-app-with-cockroachdb-jooq.html;build-a-spring-app-with-cockroachdb-mybatis.html" %}
+
+{% include filter-tabs.md tab_names=tab_names_html page_names=html_page_names page_folder=page.version.version %}
+
 {% endcomment %}
 
-{% assign fpage = site.pages | where: "filter_category", page.filter_category | where_exp: "p", "p.version.version == page.version.version" | sort: "filter_sort" %}
+{% assign tab_names = include.tab_names | split: ";" %}
+{% assign page_names = include.page_names | split: ";" %}
 
+{% assign ns = tab_names.size %}
+{% assign ps = page_names.size %}
+
+{% if ns == ps %}
+{% assign ul = ns | minus: 1 %}
 <div class="filters clearfix">
-    {% for x in fpage %}
-    <a href="/docs{{ x.url }}"><button class="filter-button{% if x.url == page.url %} current{% endif %}">{{ x.filter_html }}</button></a>
+    {% for x in (0..ul) %}
+    {% assign url = "/" | append: include.page_folder | append: "/" | append: page_names[x] %}
+    <a href="/docs{{ url }}"><button class="filter-button{% if url == page.url %} current{% endif %}">{{ tab_names[x] }}</button></a>
     {% endfor %}
 </div>
+{% endif %}

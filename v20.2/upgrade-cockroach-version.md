@@ -217,12 +217,31 @@ Once you are satisfied with the new version:
 
 1. Start the [`cockroach sql`](cockroach-sql.html) shell against any node in the cluster.
 
-2. Re-enable auto-finalization:
+1. Re-enable auto-finalization:
 
     {% include copy-clipboard.html %}
     ~~~ sql
     > RESET CLUSTER SETTING cluster.preserve_downgrade_option;
     ~~~
+
+1. Check the cluster version to confirm that the finalize step has completed:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    > SHOW CLUSTER SETTING version;
+    ~~~
+
+{{site.data.alerts.callout_danger}}
+If you intend to continue upgrading to **v21.1 or later**, you must ensure that any previously decommissioned nodes are fully decommissioned. Otherwise, they will block the upgrade. For instructions, see [Check decommissioned nodes](#check-decommissioned-nodes).
+{{site.data.alerts.end}}
+
+### Check decommissioned nodes
+
+Check the `membership` field in the [output of `cockroach node status --decommission`](cockroach-node.html). Nodes with `decommissioned` membership are fully decommissioned, while nodes with `decommissioning` membership have not completed the process. If there are `decommissioning` nodes in your cluster, this will block the upgrade.
+
+**Before upgrading from v20.2 to v21.1**, you must manually change the status of any `decommissioning` nodes to `decommissioned`. To do this, [run `cockroach node decommission`](remove-nodes.html#step-2-start-the-decommissioning-process-on-the-nodes) on these nodes and confirm that they update to `decommissioned`.
+
+In case a decommissioning process is hung, [recommission](remove-nodes.html#recommission-nodes) and then [decommission those nodes](remove-nodes.html#remove-multiple-nodes) again, and confirm that they update to `decommissioned`.
 
 ## Troubleshooting
 

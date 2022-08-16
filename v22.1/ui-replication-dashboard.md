@@ -85,7 +85,7 @@ Quiescent | The number of replicas that haven't been accessed for a while.
 
 <img src="{{ 'images/v22.1/ui_replica_snapshots.png' | relative_url }}" alt="DB Console Replica Snapshots" style="border:1px solid #eee;max-width:100%" />
 
-Usually the nodes in a [Raft group](architecture/replication-layer.html#raft) stay synchronized by following along the log message by message.  However, if a node is far enough behind the log (e.g., if it was offline or is a new node getting up to speed), rather than send all the individual messages that changed the range, the cluster can send it a snapshot of the range and it can start following along from there.  Commonly this is done preemptively, when the cluster can predict that a node will need to catch up, but occasionally the Raft protocol itself will request the snapshot.
+Usually the nodes in a [Raft group](architecture/replication-layer.html#raft) stay synchronized by following along with the log message by message.  However, if a node is far enough behind the log (e.g., if it was offline or is a new node getting up to speed), rather than send all the individual messages that changed the range, the cluster can send it a snapshot of the range and it can start following along from there.  Commonly this is done preemptively, when the cluster can predict that a node will need to catch up, but occasionally the Raft protocol itself will request the snapshot.
 
 Metric | Description
 -------|------------
@@ -94,6 +94,18 @@ Applied (Raft-initiated) | The number of snapshots applied to nodes per second t
 Applied (Learner) | The number of snapshots applied to nodes per second that were anticipated ahead of time (e.g., because a node was about to be added to a Raft group).  This metric replaces the `Applied (Preemptive)` metric in 19.2 and onwards.
 Applied (Preemptive) | The number of snapshots applied to nodes per second that were anticipated ahead of time (e.g., because a node was about to be added to a Raft group). This metric was used in pre-v19.2 releases and will be removed in future releases.
 Reserved | The number of slots reserved per second for incoming snapshots that will be sent to a node.
+
+## Snapshots Data Received
+
+<img src="{{ 'images/v22.1/ui_replica_snapshots_data.png' | relative_url }}" alt="DB Console Replica Snapshots Data Received" style="border:1px solid #eee;max-width:100%" />
+
+The **Snapshots Data Received** graph shows the rate of data received in bytes by each node via [Raft snapshot transfers](architecture/replication-layer.html#snapshots).
+
+On hovering over the graph, the value for the following metric is displayed:
+
+Metric | Description
+-------|------------
+`{node}` | The rate of snapshot data received in bytes per node.
 
 ## Circuit Breaker Tripped Replicas
 
@@ -109,7 +121,7 @@ On hovering over the graph, the value for the following metric is displayed:
 
 Metric | Description
 -------|------------
-`<node>` | The number of replicas on that node for which the per-replica circuit breaker is currently tripped.
+`{node}` | The number of replicas on that node for which the per-replica circuit breaker is currently tripped.
 
 ## Circuit Breaker Tripped Events
 
@@ -123,7 +135,7 @@ When individual ranges become temporarily unavailable, requests to those ranges 
 
 Metric | Description
 -------|------------
-`<node>` | The number of `ReplicaUnavailableError` events on that node since the `cockroach` process started.
+`{node}` | The number of `ReplicaUnavailableError` events on that node since the `cockroach` process started.
 
 ## Other graphs
 

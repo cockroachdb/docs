@@ -1,3 +1,5 @@
+---
+---
 /*!
  * Bootstrap Grid v4.5.2 (https://getbootstrap.com/)
  * Copyright 2011-2020 The Bootstrap Authors
@@ -16,14 +18,14 @@ html {
   box-sizing: inherit;
 }
 
-@import "functions";
-@import "variables";
+@import "bs/functions";
+@import "bs/variables";
 
-@import "mixins/breakpoints";
-@import "mixins/grid-framework";
-@import "mixins/grid";
+@import "bs/mixins/breakpoints";
+@import "bs/mixins/grid-framework";
+@import "bs/mixins/grid";
 
-@import "grid";
-@import "utilities/display";
-@import "utilities/flex";
-@import "utilities/spacing";
+@import "bs/grid";
+@import "bs/utilities/display";
+@import "bs/utilities/flex";
+@import "bs/utilities/spacing";

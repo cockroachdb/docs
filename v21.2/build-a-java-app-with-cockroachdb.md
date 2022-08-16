@@ -4,13 +4,10 @@ summary: Learn how to use CockroachDB from a simple Java application with the JD
 toc: true
 twitter: false
 referral_id: docs_java_jdbc
-filter_category: crud_java
-filter_html: Use <strong>JDBC</strong>
-filter_sort: 1
 docs_area: get_started
 ---
 
-{% include filter-tabs.md %}
+{% include {{ page.version.version }}/filter-tabs/crud-java.md %}
 
 This tutorial shows you how to build a simple CRUD Java application with CockroachDB and the Java JDBC driver.
 
