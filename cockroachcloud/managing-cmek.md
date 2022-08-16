@@ -1,5 +1,5 @@
 ---
-title: Managing Customer-Managed Encryption Keys (CMEK) for CockroachDB Dedicated
+title: Manage Customer-Managed Encryption Keys (CMEK) for CockroachDB Dedicated
 summary: Tutorial for getting a dedicated cluster up and running with Customer-Managed Encryption Keys (CMEK)
 toc: true
 docs_area: manage.security
