@@ -1092,7 +1092,7 @@ The general process to follow and use this is as follows:
     - `tab_names_html` is a semicolon-separated list of the HTML-supported tab names.
     - `html_page_names` is a semicolon-separated list of the page names with the `.html` extension.
     - `<crdb_version>` is `"cockroachcloud"` (with quotes) for any CockroachDB Cloud docs and `page.version.version` (without quotes) for any versioned docs (v21.2 and later).
-3. Paste `{% include <CRDB version>/filter-tabs/<filter-tab-include>.html %}` in the desired position on each page listed in `html_page_names`.
+3. Paste `{% include <CRDB version>/filter-tabs/<filter-tab-include>.html %}` in the position you wish to display the tabs in each page listed in `html_page_names`.
   
 #### Technical limitations of include files
 
