@@ -200,6 +200,8 @@ Field | Description
 `is_decommissioning` | If `true`, the node is either undergoing or has completed the [decommissioning process](node-shutdown.html?filters=decommission#node-shutdown-sequence).
 `is_draining` | If `true`, the node is either undergoing or has completed the [draining process](node-shutdown.html#node-shutdown-sequence).
 
+If the rebalancing stalls during decommissioning, replicas that have yet to move are printed to the [SQL shell](cockroach-sql.html) and written to the [`OPS` logging channel](logging-overview.html#logging-channels) with the message `possible decommission stall detected`. [By default](configure-logs.html#default-logging-configuration), the `OPS` channel logs output to a `cockroach.log` file.
+
 ### `node recommission`
 
 Field | Description
