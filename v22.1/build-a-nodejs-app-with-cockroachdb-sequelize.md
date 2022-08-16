@@ -4,13 +4,10 @@ summary: Learn how to use CockroachDB from a simple Node.js application with the
 toc: true
 twitter: false
 referral_id: docs_node_sequelize
-filter_category: crud_js
-filter_html: Use <strong>Sequelize</strong>
-filter_sort: 2
 docs_area: get_started
 ---
 
-{% include filter-tabs.md %}
+{% include {{ page.version.version }}/filter-tabs/crud-js.md %}
 
 This tutorial shows you how build a simple Node.js application with CockroachDB and the [Sequelize](https://sequelize.org/) ORM.
 

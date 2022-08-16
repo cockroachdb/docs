@@ -4,13 +4,10 @@ summary: Learn how to use CockroachDB from a simple Python application with SQLA
 toc: true
 twitter: false
 referral_id: docs_python_sqlalchemy
-filter_category: crud_python
-filter_html: <strong>SQLAlchemy</strong>
-filter_sort: 2
 docs_area: get_started
 ---
 
-{% include filter-tabs.md %}
+{% include {{ page.version.version }}/filter-tabs/crud-python.md %}
 
 {% include cockroach_u_pydev.md %}
 

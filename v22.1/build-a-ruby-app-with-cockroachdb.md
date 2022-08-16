@@ -4,13 +4,10 @@ summary: Learn how to use CockroachDB from a simple Ruby application with the pg
 toc: true
 twitter: false
 referral_id: docs_ruby_pg
-filter_category: crud_ruby
-filter_html: Use <strong>pg</strong>
-filter_sort: 1
 docs_area: get_started
 ---
 
-{% include filter-tabs.md %}
+{% include {{ page.version.version }}/filter-tabs/crud-ruby.md %}
 
 This tutorial shows you how build a simple Ruby application with CockroachDB and the [Ruby pg driver](https://deveiate.org/code/pg/PG/Connection.html).
 

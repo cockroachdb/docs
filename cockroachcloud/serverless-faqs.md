@@ -3,15 +3,12 @@ title: CockroachDB Serverless FAQs
 summary: Get answers to frequently asked questions about CockroachDB Serverless
 toc: true
 redirect_from: free-faqs.html
-filter_category: cloud_faqs
-filter_html: CockroachDB Serverless
-filter_sort: 1
 docs_area: get_started
 ---
 
 This page answers the frequently asked questions about {{ site.data.products.serverless }} and {{ site.data.products.dedicated }}.
 
-{% include filter-tabs.md %}
+{% include cockroachcloud/filter-tabs/cloud-faqs.md %}
 
 ## General
 

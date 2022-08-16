@@ -16,7 +16,7 @@ This document describes the rationale for restricting database access to specifi
 
 {{ site.data.products.serverless }} and {{ site.data.products.dedicated }} both include industry-standard security controls at the network and infrastructure levels, and {{ site.data.products.core }} may be deployed with any measure of network security one cares to put in place. Nevertheless, a hardened authentication configuration offers a powerful measure of [security in depth](https://en.wikipedia.org/wiki/Defense_in_depth_(computing)).
 
-Limiting allowed database connections to secure IP addresses reduces the risk that your cluster is compromised, because a potential attacker who acquires database credentials (e.g., username/password combinations or client TLS certificates) cannot use those credentials without also gaining infrastructure access. Infrastructure access can and should be protected with multifactor authentication and restricted to appropriate parties using infrastructure-level IAM.
+Limiting allowed database connections to secure IP addresses reduces the risk that your cluster is compromised, because a potential attacker who acquires database credentials (e.g., username/password combinations or client [PKI certificates](transport-layer-security.html#certificates-signing-trust-and-authority)) cannot use those credentials without also gaining infrastructure access. Infrastructure access can and should be protected with multifactor authentication and restricted to appropriate parties using infrastructure-level IAM.
 
 ## Step 1: Provision and access your cluster
 
@@ -24,7 +24,7 @@ Limiting allowed database connections to secure IP addresses reduces the risk th
 
 From the {{ site.data.products.serverless }} Cloud Console, select your new cluster and click the **Connect** button to obtain your connection credentials from the **Connection Info** pane in the CockroachDB Cloud Console.
 
-You'll also need to download the cluster's root TLS certificate, so that your client can authenticate the database server as it connects.
+You'll also need to download the cluster's [Certificate Authority certificate](transport-layer-security.html#certificates-signing-trust-and-authority), so that your client can authenticate the database server as it connects.
 
 Open a SQL shell against your cluster.
 
@@ -99,7 +99,7 @@ Failed running "sql"
 
 ## Step 5: Access your cluster via the jumpbox
 
-Finally, let's attempt the connection from the jumpbox. You'll need to use `scp` to transfer the cluster's root TLS certificate to the jumpbox, so that your client there can use it to authenticate the server. Then shell into the jumpbox with the `gcloud gcompute ssh` and run your connection command from inside the jumpbox.
+Finally, let's attempt the connection from the jumpbox. You'll need to use `scp` to transfer the cluster's root [CA certificate](transport-layer-security.html#certificates-signing-trust-and-authority) to the jumpbox, so that your client there can use it to authenticate the server. Then shell into the jumpbox with the `gcloud gcompute ssh` and run your connection command from inside the jumpbox.
 
 ```shell
 gcloud compute scp root.crt roach-jump-box:root.crt

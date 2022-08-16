@@ -4,13 +4,10 @@ summary: Learn how to use CockroachDB from a simple Ruby script with the Active 
 toc: true
 twitter: false
 referral_id: docs_ruby_activerecord
-filter_category: crud_ruby
-filter_html: Use <strong>Active Record</strong>
-filter_sort: 2
 docs_area: get_started
 ---
 
-{% include filter-tabs.md %}
+{% include {{ page.version.version }}/filter-tabs/crud-ruby.md %}
 
 This tutorial shows you how build a simple Ruby application with CockroachDB and [Active Record](http://guides.rubyonrails.org/active_record_basics.html). CockroachDB provides an Active Record adapter for CockroachDB as a [RubyGem](https://rubygems.org/gems/activerecord-cockroachdb-adapter).
 

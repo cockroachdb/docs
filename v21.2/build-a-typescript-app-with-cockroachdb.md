@@ -4,13 +4,10 @@ summary: Learn how to use CockroachDB with the TypeORM framework.
 toc: true
 twitter: false
 referral_id: docs_typescript_typeorm
-filter_category: crud_js
-filter_html: Use <strong>TypeORM</strong>
-filter_sort: 5
 docs_area: get_started
 ---
 
-{% include filter-tabs.md %}
+{% include {{ page.version.version }}/filter-tabs/crud-js.md %}
 
 This tutorial shows you how run a simple application built with [TypeORM](https://typeorm.io/#/).
 

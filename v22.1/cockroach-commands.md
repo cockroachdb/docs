@@ -21,6 +21,7 @@ Command | Usage
 [`cockroach sqlfmt`](cockroach-sqlfmt.html) | Reformat SQL queries for enhanced clarity.
 [`cockroach node`](cockroach-node.html) | List node IDs, show their status, decommission nodes for removal, or recommission nodes.
 [`cockroach nodelocal upload`](cockroach-nodelocal-upload.html) | Upload a file to the `externalIODir` on a node's local file system.
+[`cockroach auth-session`](cockroach-auth-session.html) | Create and manage web sessions and authentication tokens to the HTTP interface from the command line.
 [`cockroach demo`](cockroach-demo.html) | Start a temporary, in-memory CockroachDB cluster, and open an interactive SQL shell to it.
 [`cockroach debug ballast`](cockroach-debug-ballast.html) | Create a large, unused file in a node's storage directory that you can delete if the node runs out of disk space.
 [`cockroach debug encryption-active-key`](cockroach-debug-encryption-active-key.html) | View the encryption algorithm and store key.

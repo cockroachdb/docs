@@ -2,13 +2,10 @@
 title: Start a Local Cluster (Secure)
 summary: Run a secure multi-node CockroachDB cluster locally, using TLS certificates to encrypt network communication.
 toc: true
-filter_category: start_a_cluster
-filter_html: Secure
-filter_sort: 1
 docs_area: deploy
 ---
 
-{% include filter-tabs.md %}
+{% include {{ page.version.version }}/filter-tabs/start-a-cluster.md %}
 
 Once you've [installed CockroachDB](install-cockroachdb.html), it's simple to run a secure multi-node cluster locally, using [TLS certificates](cockroach-cert.html) to encrypt network communication.
 
@@ -164,7 +161,7 @@ You can use either [`cockroach cert`](cockroach-cert.html) commands or [`openssl
     status:              initialized new cluster
     clusterID:           b2537de3-166f-42c4-aae1-742e094b8349
     nodeID:              1
-    ~~~    
+    ~~~
 
 ## Step 3. Use the built-in SQL client
 
@@ -318,7 +315,7 @@ The CockroachDB [DB Console](ui-overview.html) gives you insight into the overal
 
     <img src="{{ 'images/v22.1/ui_cluster_overview_3_nodes.png' | relative_url }}" alt="DB Console" style="border:1px solid #eee;max-width:100%" />
 
-    This demonstrates CockroachDB's [automated replication](demo-replication-and-rebalancing.html) of data via the Raft consensus protocol.    
+    This demonstrates CockroachDB's [automated replication](demo-replication-and-rebalancing.html) of data via the Raft consensus protocol.
 
     {{site.data.alerts.callout_info}}
     Capacity metrics can be incorrect when running multiple nodes on a single machine. For more details, see this [limitation](known-limitations.html#available-capacity-metric-in-the-db-console).
@@ -457,7 +454,7 @@ Adding capacity is as simple as starting more nodes with `cockroach start`.
     kill -TERM 4622
     ~~~
 
-2. To restart the cluster at a later time, run the same `cockroach start` commands as earlier from the directory containing the nodes' data stores.  
+2. To restart the cluster at a later time, run the same `cockroach start` commands as earlier from the directory containing the nodes' data stores.
 
     If you do not plan to restart the cluster, you may want to remove the nodes' data stores and the certificate directories:
 

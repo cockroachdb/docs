@@ -12,6 +12,9 @@ defaults:
     type: pages
   values:
     layout: page
+sass:
+  sass_dir: css
+  style: compressed
 exclude:
 - __tests__
 - netlify

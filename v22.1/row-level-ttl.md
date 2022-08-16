@@ -458,9 +458,9 @@ HINT: use `RESET (ttl)` to remove TTL from the table
 
 ## Changefeeds
 
-Row-level TTL interacts with [changefeeds](use-changefeeds.html) in the following ways:
+Row-level TTL interacts with [changefeeds](create-and-configure-changefeeds.html) in the following ways:
 
-- When expired rows are deleted, a [changefeed delete message](use-changefeeds.html#delete-messages) is emitted.
+- When expired rows are deleted, a [changefeed delete message](changefeed-messages.html#delete-messages) is emitted.
 
 ## Backup and restore
 

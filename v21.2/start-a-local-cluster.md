@@ -3,13 +3,10 @@ title: Start a Local Cluster (Insecure)
 summary: Run an insecure multi-node CockroachDB cluster locally with each node listening on a different port.
 toc: true
 toc_not_nested: true
-filter_category: start_a_cluster
-filter_html: Insecure
-filter_sort: 2
 docs_area: deploy
 ---
 
-{% include filter-tabs.md %}
+{% include {{ page.version.version }}/filter-tabs/start-a-cluster.md %}
 
 Once you've [installed CockroachDB](install-cockroachdb.html), it's simple to run an insecure multi-node cluster locally.
 
@@ -386,7 +383,7 @@ Adding capacity is as simple as starting more nodes with `cockroach start`.
     kill -TERM 4622
     ~~~
 
-2. To restart the cluster at a later time, run the same `cockroach start` commands as earlier from the directory containing the nodes' data stores.  
+2. To restart the cluster at a later time, run the same `cockroach start` commands as earlier from the directory containing the nodes' data stores.
 
     If you do not plan to restart the cluster, you may want to remove the nodes' data stores:
 

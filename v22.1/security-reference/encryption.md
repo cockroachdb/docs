@@ -9,7 +9,7 @@ This page offers an overview of CockroachDB's encryption features.
 
 ## Encryption in flight
 
-CockroachDB uses either TLS 1.2 or TLS 1.3 for inter-node and client-node [authentication](authentication.html) as well as setting up a secure communication channel. Once the secure channel is set up, all inter-node and client-node network communication is encrypted using a [shared encryption key](https://en.wikipedia.org/wiki/Transport_Layer_Security) as per the TLS 1.2 protocol. This feature is enabled by default for all secure clusters and needs no additional configuration.
+Network traffic in CockroachDB, between nodes as well as from clients to nodes, is encrypted with [Transport Layer Security (TLS)](./transport-layer-security.html).
 
 ## Encryption at rest
 

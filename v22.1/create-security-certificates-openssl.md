@@ -2,21 +2,19 @@
 title: Create Security Certificates using OpenSSL
 summary: A secure CockroachDB cluster uses TLS for encrypted inter-node and client-node communication.
 toc: true
-filter_category: security_cert
-filter_html: Use OpenSSL
-filter_sort: 2
 docs_area: 
 ---
 
-To secure your CockroachDB cluster's inter-node and client-node communication, you need to provide a Certificate Authority (CA) certificate that has been used to sign keys and certificates (SSLs) for:
+This tutorial shows how to provision a [public key infrastructure (PKI) certificate authority (CA)](security-reference/transport-layer-security.html) for a {{ site.data.products.core }} cluster deployed in Google Cloud Platform (GCP).
 
-- Nodes
-- Clients
-- DB Console (optional)
+See also:
+
+- [Public Key Infrastructure (PKI) and Transport Layer Security (TLS)](security-reference/transport-layer-security.html)
+- [Use the CockroachDB CLI to provision a development cluster](manage-certs-cli.html).
+- [Manage PKI certificates for a CockroachDB deployment with HashiCorp Vault](manage-certs-vault.html).
+
 
 To create these certificates and keys, use the `cockroach cert` [commands](cockroach-commands.html) with the appropriate subcommands and flags, use [`openssl` commands](https://wiki.openssl.org/index.php/), or use a [custom CA](create-security-certificates-custom-ca.html) (for example, a public CA or your organizational CA).
-
-{% include filter-tabs.md %}
 
 ## Subcommands
 
@@ -311,7 +309,7 @@ In the following steps, replace the placeholder text in the code with the actual
     -outdir certs/ \
     -in client.<username_1>.csr \
     -batch
-    ~~~    
+    ~~~
 
 5. Verify the values in the `CN` field in the certificate:
 
@@ -412,7 +410,7 @@ In the following steps, replace the placeholder text in the code with the actual
     -outdir certs/ \
     -in client.<username_2>.csr \
     -batch
-    ~~~    
+    ~~~
 
 5. Verify the values in the `CN` field in the certificate:
 
