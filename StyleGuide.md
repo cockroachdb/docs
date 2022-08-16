@@ -1040,7 +1040,7 @@ _Note_: In the previous link, Cloud = Dedicated and Core = Self-Hosted.
 
 ##### Remote includes
 
-Sometimes you need to include files that are maintained in other places than the `cockroachdb/docs` repo but referenced in our docs. The `remote_include` tag is used for this. We most often use this tag for:
+Sometimes, you need to include files that are maintained in other places than the `cockroachdb/docs` repo but referenced in our docs. The `remote_include` tag is used for this. We most often use this tag for:
 
 - SQL diagrams, which are maintained in the `cockroachdb/cockroach` repo
 - Code samples, which are maintained in various repos
