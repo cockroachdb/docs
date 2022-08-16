@@ -234,7 +234,7 @@ To rotate the CMEK keys for one or more cluster regions:
       --data "@cmek_config.json"
     ```
 
-## Add a region to a multi-region CMEK-enabled cluster
+## Add a region to a CMEK-enabled cluster
 
 To add a region to a cluster that already has CMEK enabled, update your cluster's region definitions using the {{ site.data.products.db }} API [Update Cluster](https://www.cockroachlabs.com/docs/api/cloud/v1#operation/CockroachCloud_UpdateCluster) endpoint.
 
@@ -244,16 +244,16 @@ To add a region to a cluster that already has CMEK enabled, update your cluster'
     - **AWS**:
         {% include_cached copy-clipboard.html %}
         ```json
-        # cmek_config.json
+        # cmek_aws_config.json
         {
             "dedicated": {
                 "region_nodes": {
-                    "us-west1": 3,
-                    "us-central1": 5
+                    "us-west-1": 3,
+                    "us-central-1": 5
                 },
                 "cmek_region_specs": [
                     {
-                        "region": "us-west1",
+                        "region": "us-west-1",
                         "key_spec": {
                             "type": "AWS_KMS",
                             "uri": "{id-of-key}",
@@ -261,10 +261,10 @@ To add a region to a cluster that already has CMEK enabled, update your cluster'
                         }
                     },
                     {
-                        "region": "us-central1",
+                        "region": "us-central-1",
                         "key_spec": {
                             "type": "AWS_KMS",
-                            "uri": "{id-of-key-2}",
+                            "uri": "{id-of-another-key}",
                             "auth_principal": "{another-role-with-kms-access}"
                         }
                     }
@@ -276,12 +276,40 @@ To add a region to a cluster that already has CMEK enabled, update your cluster'
         }
         ```
     - **GCP**:
-
         {% include_cached copy-clipboard.html %}
         ```json
-
+        # cmek_gcp_config.json
+        {
+            "dedicated": {
+                "region_nodes": {
+                    "us-west1": 3,
+                    "us-central1": 5
+                },
+                "cmek_region_specs": [
+                    {
+                        "region": "us-west1",
+                        "key_spec": {
+                            "type": "GCP_KMS",
+                            "uri": "{id-of-key}",
+                            "auth_principal": "{service-account-with-kms-access}"
+                        }
+                    },
+                    {
+                        "region": "us-central1",
+                        "key_spec": {
+                            "type": "GCP_KMS",
+                            "uri": "{id-of-another-key}",
+                            "auth_principal": "{another-service-account-with-kms-access}"
+                        }
+                    }
+                ],
+                "hardware": {
+                    "machine_type": "n2-standard-8"
+                }
+            }
+        }
         ```
-1. Send the request to the update cluster endpoint:
+1. Send the request as a `PATCH` to the cluster endpoint:
 
     {% include_cached copy-clipboard.html %}
     ~~~shell
