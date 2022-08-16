@@ -43,7 +43,7 @@ This section gives a high level overview of the operations involved with impleme
 
 1. To start the process, contact {{ site.data.products.dedicated }} by reaching out to your account team, or [creating a support ticket](https://support.cockroachlabs.com/). You must provide your **Organization ID**, which you can find in your [Organization settings page](https://cockroachlabs.cloud/settings).
 
-They will enable the CMEK feature for your {{ site.data.products.db }} Organization.
+Your account team will enable the CMEK feature for your {{ site.data.products.db }} organization.
 
 1. [Create a {{ site.data.products.db }} service account](console-access-management.html#service-accounts).
 1. [Create an API key](console-access-management.html#create-api-keys) for the service account to use.
@@ -238,7 +238,7 @@ To rotate the CMEK keys for one or more cluster regions:
 
 ## Add a region to a multi-region CMEK-enabled cluster
 
-To add a region to a multi-region cluster, update your cluster's region definitions using the CockroachDB Cloud API [Update Cluster](https://www.cockroachlabs.com/docs/api/cloud/v1#operation/CockroachCloud_UpdateCluster) endpoint.
+To add a region to a cluster that already has CMEK enabled, update your cluster's region definitions using the {{ site.data.products.db }} API [Update Cluster](https://www.cockroachlabs.com/docs/api/cloud/v1#operation/CockroachCloud_UpdateCluster) endpoint.
 
 1. Construct the data payload JSON to update you region definitions.
 
@@ -267,7 +267,7 @@ To add a region to a multi-region cluster, update your cluster's region definiti
                         "key_spec": {
                             "type": "AWS_KMS",
                             "uri": "{id-of-key-2}",
-                            "auth_principal": "{another-role-with-kms-access}""
+                            "auth_principal": "{another-role-with-kms-access}"
                         }
                     }
                 ],
@@ -305,7 +305,7 @@ To add a region to a multi-region cluster, update your cluster's region definiti
 
 Revoking access to the CMEK means disabling all encryption/decryption of data in your cluster, which means preventing reading and writing any data from or to your cluster. This likely implies a shutdown of your service, with significant business implications. This is a disaster mitigation tactic to be used only in a scenario involving a severe, business critical security breach.
 
-This can be done temporarily or permanently. This action is performed at the level of your cloud provider.
+Within your KMS platform, you can revoke access to the CMEK temporarily or permanently.
 
 ### Step 1. Revoke IAM access
 
