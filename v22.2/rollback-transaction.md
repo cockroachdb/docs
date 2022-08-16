@@ -5,6 +5,14 @@ toc: true
 docs_area: reference.sql
 ---
 
+{% assign rd = site.data.releases | where_exp: "rd", "rd.major_version == page.version.version" | first %}
+
+{% if rd %}
+{% assign remote_include_version = page.version.version | replace: "v", "" %}
+{% else %}
+{% assign remote_include_version = site.versions["stable"] | replace: "v", "" %}
+{% endif %}
+
 The `ROLLBACK` [statement](sql-statements.html) aborts the current [transaction](transactions.html) and all of its [nested transactions](transactions.html#nested-transactions), discarding all transactional updates made by statements included in the transaction.
 
 There are two ways to use `ROLLBACK`:
@@ -21,7 +29,7 @@ There are two ways to use `ROLLBACK`:
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/rollback_transaction.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ remote_include_version }}/grammar_svg/rollback_transaction.html %}
 </div>
 
 ## Required privileges

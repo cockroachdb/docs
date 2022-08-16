@@ -5,6 +5,14 @@ toc: true
 docs_area: reference.sql
 ---
 
+{% assign rd = site.data.releases | where_exp: "rd", "rd.major_version == page.version.version" | first %}
+
+{% if rd %}
+{% assign remote_include_version = page.version.version | replace: "v", "" %}
+{% else %}
+{% assign remote_include_version = site.versions["stable"] | replace: "v", "" %}
+{% endif %}
+
 The `ALTER RANGE ... RELOCATE` statement is a subcommand of [`ALTER RANGE`](alter-range.html). It is used to move a lease or [replica](architecture/overview.html#architecture-replica) between [stores](cockroach-start.html#store). This is helpful in an emergency situation to relocate data in the cluster.
 
 {{site.data.alerts.callout_danger}}
@@ -20,7 +28,7 @@ If you prefer to use a key based approach to relocating replicas and leases, see
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/alter_range_relocate.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ remote_include_version }}/grammar_svg/alter_range_relocate.html %}
 </div>
 
 ## Required privileges

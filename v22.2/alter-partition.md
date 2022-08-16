@@ -5,6 +5,14 @@ toc: true
 docs_area: reference.sql
 ---
 
+{% assign rd = site.data.releases | where_exp: "rd", "rd.major_version == page.version.version" | first %}
+
+{% if rd %}
+{% assign remote_include_version = page.version.version | replace: "v", "" %}
+{% else %}
+{% assign remote_include_version = site.versions["stable"] | replace: "v", "" %}
+{% endif %}
+
 The `ALTER PARTITION` [statement](sql-statements.html) is used to configure replication zones for [partitioning](partitioning.html). See the [`CONFIGURE ZONE`](configure-zone.html) subcommand for more details.
 
 {% include enterprise-feature.md %}
@@ -12,7 +20,7 @@ The `ALTER PARTITION` [statement](sql-statements.html) is used to configure repl
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/alter_zone_partition.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ remote_include_version }}/grammar_svg/alter_zone_partition.html %}
 </div>
 
 ## Required privileges

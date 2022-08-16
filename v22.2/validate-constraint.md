@@ -5,6 +5,14 @@ toc: true
 docs_area: reference.sql
 ---
 
+{% assign rd = site.data.releases | where_exp: "rd", "rd.major_version == page.version.version" | first %}
+
+{% if rd %}
+{% assign remote_include_version = page.version.version | replace: "v", "" %}
+{% else %}
+{% assign remote_include_version = site.versions["stable"] | replace: "v", "" %}
+{% endif %}
+
 The `VALIDATE CONSTRAINT` [statement](sql-statements.html) is part of `ALTER TABLE` and checks whether values in a column match a [constraint](constraints.html) on the column. This statement is especially useful after applying a constraint to an existing column via [`ADD CONSTRAINT`](add-constraint.html). In this case, `VALIDATE CONSTRAINT` can be used to find values already in the column that do not match the constraint.
 
 {% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
@@ -18,15 +26,15 @@ The user must have the `CREATE` [privilege](security-reference/authorization.htm
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/validate_constraint.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ remote_include_version }}/grammar_svg/validate_constraint.html %}
 </div>
 
 ## Parameters
 
- Parameter         | Description                                                                 
+ Parameter         | Description
 -------------------+-----------------------------------------------------------------------------
  `table_name`      | The name of the table in which the constraint you'd like to validate lives.
- `constraint_name` | The name of the constraint on `table_name` you'd like to validate.          
+ `constraint_name` | The name of the constraint on `table_name` you'd like to validate.
 
 ## Viewing schema changes
 

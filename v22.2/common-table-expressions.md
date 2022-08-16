@@ -5,6 +5,14 @@ toc: true
 docs_area: reference.sql
 ---
 
+{% assign rd = site.data.releases | where_exp: "rd", "rd.major_version == page.version.version" | first %}
+
+{% if rd %}
+{% assign remote_include_version = page.version.version | replace: "v", "" %}
+{% else %}
+{% assign remote_include_version = site.versions["stable"] | replace: "v", "" %}
+{% endif %}
+
 A _common table expression_ (CTE), also called a `WITH` query, provides a shorthand name to a possibly complex [subquery](subqueries.html) before it is used in a larger query context. This improves the readability of SQL code.
 
 You can use CTEs in combination with [`SELECT` clauses](select-clause.html) and [`INSERT`](insert.html), [`DELETE`](delete.html), [`UPDATE`](update.html), and [`UPSERT`](upsert.html) data-modifying statements.
@@ -12,7 +20,7 @@ You can use CTEs in combination with [`SELECT` clauses](select-clause.html) and 
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/with_clause.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ remote_include_version }}/grammar_svg/with_clause.html %}
 </div>
 
 ## Parameters

@@ -5,6 +5,14 @@ toc: true
 docs_area: reference.sql
 ---
 
+{% assign rd = site.data.releases | where_exp: "rd", "rd.major_version == page.version.version" | first %}
+
+{% if rd %}
+{% assign remote_include_version = page.version.version | replace: "v", "" %}
+{% else %}
+{% assign remote_include_version = site.versions["stable"] | replace: "v", "" %}
+{% endif %}
+
 The `SET (storage parameter)` [statement](sql-statements.html) sets a storage parameter on an existing table or index.
 
 {{site.data.alerts.callout_info}}
@@ -16,7 +24,7 @@ The `SET (storage parameter)` is a subcommand of [`ALTER TABLE`](alter-table.htm
 **alter_table_set_storage_param ::=**
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/alter_table_set_storage_param.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ remote_include_version }}/grammar_svg/alter_table_set_storage_param.html %}
 </div>
 
 {% comment %} need alter index diagram here {% endcomment %}

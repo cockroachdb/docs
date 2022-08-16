@@ -2,8 +2,16 @@
 title: ALTER SCHEMA
 summary: The ALTER SCHEMA statement modifies a user-defined schema in a database.
 toc: true
-docs_area: reference.sql 
+docs_area: reference.sql
 ---
+
+{% assign rd = site.data.releases | where_exp: "rd", "rd.major_version == page.version.version" | first %}
+
+{% if rd %}
+{% assign remote_include_version = page.version.version | replace: "v", "" %}
+{% else %}
+{% assign remote_include_version = site.versions["stable"] | replace: "v", "" %}
+{% endif %}
 
 The `ALTER SCHEMA` [statement](sql-statements.html) modifies a user-defined [schema](sql-name-resolution.html#naming-hierarchy). CockroachDB currently supports changing the name of the schema and the owner of the schema.
 
@@ -12,7 +20,7 @@ The `ALTER SCHEMA` [statement](sql-statements.html) modifies a user-defined [sch
 ## Syntax
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/alter_schema.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ remote_include_version }}/grammar_svg/alter_schema.html %}
 </div>
 
 ### Parameters

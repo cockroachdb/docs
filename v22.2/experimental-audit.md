@@ -2,8 +2,16 @@
 title: EXPERIMENTAL_AUDIT
 summary: Use the EXPERIMENTAL_AUDIT subcommand to turn SQL audit logging on or off for a table.
 toc: true
-docs_area: reference.sql 
+docs_area: reference.sql
 ---
+
+{% assign rd = site.data.releases | where_exp: "rd", "rd.major_version == page.version.version" | first %}
+
+{% if rd %}
+{% assign remote_include_version = page.version.version | replace: "v", "" %}
+{% else %}
+{% assign remote_include_version = site.versions["stable"] | replace: "v", "" %}
+{% endif %}
 
 `EXPERIMENTAL_AUDIT` is a subcommand of [`ALTER TABLE`](alter-table.html). When applied to a table, it enables or disables the recording of SQL audit events to the [`SENSITIVE_ACCESS`](logging.html#sensitive_access) logging channel for that table.
 
@@ -31,7 +39,7 @@ CockroachDB stores audit log information in a way that ensures durability, but n
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/experimental_audit.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ remote_include_version }}/grammar_svg/experimental_audit.html %}
 </div>
 
 ## Required privileges

@@ -5,6 +5,14 @@ toc: true
 docs_area: reference.sql
 ---
 
+{% assign rd = site.data.releases | where_exp: "rd", "rd.major_version == page.version.version" | first %}
+
+{% if rd %}
+{% assign remote_include_version = page.version.version | replace: "v", "" %}
+{% else %}
+{% assign remote_include_version = site.versions["stable"] | replace: "v", "" %}
+{% endif %}
+
 The `EXPORT` [statement](sql-statements.html) exports tabular data or the results of arbitrary `SELECT` statements to the following:
 
 - CSV files
@@ -24,7 +32,7 @@ After the export has been initiated, you can cancel it with [`CANCEL QUERY`](can
 
 ## Synopsis
 
-<div>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/export.html %}</div>
+<div>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ remote_include_version }}/grammar_svg/export.html %}</div>
 
 {{site.data.alerts.callout_info}}
 The `EXPORT` statement cannot be used within a [transaction](transactions.html).
@@ -117,7 +125,7 @@ The following provide connection examples to cloud storage providers. For more i
 
 <div class="filters clearfix">
   <button class="filter-button" data-scope="s3">Amazon S3</button>
-  <button class="filter-button" data-scope="azure">Azure Storage</button>  
+  <button class="filter-button" data-scope="azure">Azure Storage</button>
   <button class="filter-button" data-scope="gcs">Google Cloud Storage</button>
 </div>
 

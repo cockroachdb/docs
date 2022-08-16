@@ -5,6 +5,14 @@ toc: false
 docs_area: reference.cluster_settings
 ---
 
+{% assign rd = site.data.releases | where_exp: "rd", "rd.major_version == page.version.version" | first %}
+
+{% if rd %}
+{% assign remote_include_version = page.version.version | replace: "v", "" %}
+{% else %}
+{% assign remote_include_version = site.versions["stable"] | replace: "v", "" %}
+{% endif %}
+
 Cluster settings apply to all nodes of a CockroachDB cluster and control, for example, whether or not to share diagnostic details with Cockroach Labs as well as advanced options for debugging and cluster tuning.
 
 They can be updated anytime after a cluster has been started, but only by a member of the `admin` role, to which the `root` user belongs by default.
@@ -19,7 +27,7 @@ In contrast to cluster-wide settings, node-level settings apply to a single node
 These cluster settings have a broad impact on CockroachDB internals and affect all applications, workloads, and users running on a CockroachDB cluster. For some settings, a [session setting](set-vars.html#supported-variables) could be a more appropriate scope.
 {{site.data.alerts.end}}
 
-{% remote_include https://raw.githubusercontent.com/cockroachdb/cockroach/release-{{ page.version.version | replace: "v", "" }}/docs/generated/settings/settings.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/cockroach/release-{{ remote_include_version }}/docs/generated/settings/settings.html %}
 
 ## View current cluster settings
 

@@ -5,6 +5,14 @@ toc: true
 docs_area: reference.sql
 ---
 
+{% assign rd = site.data.releases | where_exp: "rd", "rd.major_version == page.version.version" | first %}
+
+{% if rd %}
+{% assign remote_include_version = page.version.version | replace: "v", "" %}
+{% else %}
+{% assign remote_include_version = site.versions["stable"] | replace: "v", "" %}
+{% endif %}
+
 The `REVOKE` [statement](sql-statements.html) revokes [privileges](security-reference/authorization.html#managing-privileges) from [users and/or roles](security-reference/authorization.html#users-and-roles). For the list of privileges that can be granted to and revoked from users and roles, see [`GRANT`](grant.html).
 
 You can use `REVOKE` to directly revoke privileges from a role or user, or you can revoke membership to an existing role, which effectively revokes that role's privileges.
@@ -14,7 +22,7 @@ You can use `REVOKE` to directly revoke privileges from a role or user, or you c
 ## Syntax
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/revoke.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ remote_include_version }}/grammar_svg/revoke.html %}
 </div>
 
 ### Parameters

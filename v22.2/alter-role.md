@@ -5,6 +5,14 @@ toc: true
 docs_area: reference.sql
 ---
 
+{% assign rd = site.data.releases | where_exp: "rd", "rd.major_version == page.version.version" | first %}
+
+{% if rd %}
+{% assign remote_include_version = page.version.version | replace: "v", "" %}
+{% else %}
+{% assign remote_include_version = site.versions["stable"] | replace: "v", "" %}
+{% endif %}
+
 Use the `ALTER ROLE` [statement](sql-statements.html) to add, change, or remove a [role's](create-role.html) password, change the role options for a role, and set default [session variable](set-vars.html) values for a role.
 
 {{site.data.alerts.callout_info}}
@@ -23,7 +31,7 @@ Since the keywords `ROLE` and `USER` can now be used interchangeably in SQL stat
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/alter_role.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ remote_include_version }}/grammar_svg/alter_role.html %}
 </div>
 
 ## Parameters
@@ -268,4 +276,3 @@ root@:26257/movr> SHOW timezone;
 - [`cockroach cert`](cockroach-cert.html)
 - [SQL Statements](sql-statements.html)
 - [Authorization Best Practices](security-reference/authorization.html#authorization-best-practices)
-

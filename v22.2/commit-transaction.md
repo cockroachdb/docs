@@ -5,6 +5,14 @@ toc: true
 docs_area: reference.sql
 ---
 
+{% assign rd = site.data.releases | where_exp: "rd", "rd.major_version == page.version.version" | first %}
+
+{% if rd %}
+{% assign remote_include_version = page.version.version | replace: "v", "" %}
+{% else %}
+{% assign remote_include_version = site.versions["stable"] | replace: "v", "" %}
+{% endif %}
+
 The `COMMIT` [statement](sql-statements.html) commits the current [transaction](transactions.html) or, when using [advanced client-side transaction retries](advanced-client-side-transaction-retries.html), clears the connection to allow new transactions to begin.
 
 When using [advanced client-side transaction retries](advanced-client-side-transaction-retries.html), statements issued after [`SAVEPOINT`](savepoint.html) are committed when [`RELEASE SAVEPOINT`](release-savepoint.html) is issued instead of `COMMIT`. However, you must still issue a `COMMIT` statement to clear the connection for the next transaction.
@@ -15,7 +23,7 @@ For non-retryable transactions, if statements in the transaction [generated any 
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/commit_transaction.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ remote_include_version }}/grammar_svg/commit_transaction.html %}
 </div>
 
 ## Required privileges

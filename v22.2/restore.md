@@ -5,6 +5,14 @@ toc: true
 docs_area: reference.sql
 ---
 
+{% assign rd = site.data.releases | where_exp: "rd", "rd.major_version == page.version.version" | first %}
+
+{% if rd %}
+{% assign remote_include_version = page.version.version | replace: "v", "" %}
+{% else %}
+{% assign remote_include_version = site.versions["stable"] | replace: "v", "" %}
+{% endif %}
+
 The `RESTORE` [statement](sql-statements.html) restores your cluster's schemas and data from [a `BACKUP`](backup.html) stored on services such as AWS S3, Google Cloud Storage, or NFS.
 
 Because CockroachDB is designed with high fault tolerance, restores are designed primarily for disaster recovery, i.e., restarting your cluster if it loses a majority of its nodes. Isolated issues (such as small-scale node outages) do not require any intervention.
@@ -38,7 +46,7 @@ You can restore:
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/restore.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ remote_include_version }}/grammar_svg/restore.html %}
 </div>
 
 ## Parameters
@@ -398,11 +406,11 @@ When you run `RESTORE` with `new_db_name`, the existing database that was origin
 ~~~
 database_name
 --------------+
-defaultdb     
-bank          
-new_bank      
-postgres      
-system        
+defaultdb
+bank
+new_bank
+postgres
+system
 ~~~
 
 #### Remove the foreign key before restore
@@ -614,11 +622,11 @@ When you run `RESTORE` with `new_db_name`, the existing database that was origin
 ~~~
 database_name
 --------------+
-defaultdb     
-bank          
-new_bank      
-postgres      
-system        
+defaultdb
+bank
+new_bank
+postgres
+system
 ~~~
 
 #### Remove the foreign key before restore
@@ -832,11 +840,11 @@ When you run `RESTORE` with `new_db_name`, the existing database that was origin
 ~~~
 database_name
 --------------+
-defaultdb     
-bank          
-new_bank      
-postgres      
-system        
+defaultdb
+bank
+new_bank
+postgres
+system
 ~~~
 
 #### Remove the foreign key before restore

@@ -5,6 +5,14 @@ toc: true
 docs_area: reference.sql
 ---
 
+{% assign rd = site.data.releases | where_exp: "rd", "rd.major_version == page.version.version" | first %}
+
+{% if rd %}
+{% assign remote_include_version = page.version.version | replace: "v", "" %}
+{% else %}
+{% assign remote_include_version = site.versions["stable"] | replace: "v", "" %}
+{% endif %}
+
 The `UPSERT` [statement](sql-statements.html) inserts rows in cases where specified values do not violate uniqueness constraints and updates rows in cases where values do violate uniqueness constraints. `UPSERT` considers uniqueness only for [primary key](primary-key.html) columns.
 
 ## `UPSERT` vs. `INSERT ON CONFLICT`
@@ -50,7 +58,7 @@ The user must have the `INSERT`, `SELECT`, and `UPDATE` [privileges](security-re
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/upsert.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ remote_include_version }}/grammar_svg/upsert.html %}
 </div>
 
 ## Parameters

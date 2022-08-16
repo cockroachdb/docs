@@ -5,6 +5,14 @@ toc: true
 docs_area: reference.sql
 ---
 
+{% assign rd = site.data.releases | where_exp: "rd", "rd.major_version == page.version.version" | first %}
+
+{% if rd %}
+{% assign remote_include_version = page.version.version | replace: "v", "" %}
+{% else %}
+{% assign remote_include_version = site.versions["stable"] | replace: "v", "" %}
+{% endif %}
+
 The `IMPORT INTO` [statement](sql-statements.html) imports CSV, Avro, or delimited data into an [existing table](create-table.html), by appending new rows into the table.
 
 ## Considerations
@@ -49,7 +57,7 @@ Learn more about [cloud storage for bulk operations](use-cloud-storage-for-bulk-
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/import_into.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ remote_include_version }}/grammar_svg/import_into.html %}
 </div>
 
 {{site.data.alerts.callout_info}}
@@ -80,7 +88,7 @@ For examples showing how to use the `DELIMITED DATA` format, see the [Examples](
 
 You can control the `IMPORT` process's behavior using any of the following key-value pairs as a `<option>  [= <value>]`.
 
-Key                 | <div style="width:130px">Context</div> | Value                                                                                                                             
+Key                 | <div style="width:130px">Context</div> | Value
 --------------------+-----------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 `delimiter`            | `CSV DATA `     | The unicode character that delimits columns in your rows. **Default: `,`**. <br><br> Example: To use tab-delimited values: `IMPORT INTO foo (..) CSV DATA ('file.csv') WITH delimiter = e'\t';`
 `comment`              | `CSV DATA `     | The unicode character that identifies rows to skip. <br><br> Example: `IMPORT INTO foo (..) CSV DATA ('file.csv') WITH comment = '#';`
@@ -358,7 +366,7 @@ The column order in your `IMPORT` statement must match the column order in the C
       'azure://{CONTAINER NAME}/{customers2.csv}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}',
       'azure://{CONTAINER NAME}/{customers3.csv}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}',
       'azure://{CONTAINER NAME}/{customers4.csv}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}',
-      'azure://{CONTAINER NAME}/{customers5.csv}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}',    
+      'azure://{CONTAINER NAME}/{customers5.csv}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}',
     );
 ~~~
 

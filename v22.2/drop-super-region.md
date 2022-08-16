@@ -5,8 +5,16 @@ toc: true
 docs_area: reference.sql
 ---
 
+{% assign rd = site.data.releases | where_exp: "rd", "rd.major_version == page.version.version" | first %}
+
+{% if rd %}
+{% assign remote_include_version = page.version.version | replace: "v", "" %}
+{% else %}
+{% assign remote_include_version = site.versions["stable"] | replace: "v", "" %}
+{% endif %}
+
  The `ALTER DATABASE .. DROP SUPER REGION` [statement](sql-statements.html) drops a [super region](multiregion-overview.html#super-regions) from a [multi-region database](multiregion-overview.html).
- 
+
 {% include enterprise-feature.md %}
 
 {{site.data.alerts.callout_info}}
@@ -18,7 +26,7 @@ docs_area: reference.sql
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/alter_database_drop_super_region.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ remote_include_version }}/grammar_svg/alter_database_drop_super_region.html %}
 </div>
 
 ## Parameters
