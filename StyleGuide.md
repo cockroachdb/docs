@@ -1040,7 +1040,7 @@ _Note_: In the previous link, Cloud = Dedicated and Core = Self-Hosted.
 
 ##### Remote includes
 
-Sometimes you need to include files that are maintained in other places than the `cockroachdb/docs` repo but referenced in our docs. The `remote_include` tag is used for this. We most often use this tag for:
+Sometimes, you need to include files that are maintained in other places than the `cockroachdb/docs` repo but referenced in our docs. The `remote_include` tag is used for this. We most often use this tag for:
 
 - SQL diagrams, which are maintained in the `cockroachdb/cockroach` repo
 - Code samples, which are maintained in various repos
@@ -1048,7 +1048,7 @@ Sometimes you need to include files that are maintained in other places than the
 For SQL diagrams, you remotely include the entire (HTML) file as follows:
 
 ```
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/show_databases.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/show_databases.html %}
 ```
 
 For code samples, you usually want to show only part of a larger file to highlight a specific technique, or due to length considerations.
