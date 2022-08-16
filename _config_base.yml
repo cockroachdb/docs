@@ -12,9 +12,6 @@ defaults:
     type: pages
   values:
     layout: page
-sass:
-  sass_dir: css
-  style: compressed
 exclude:
 - __tests__
 - netlify
@@ -98,5 +95,14 @@ release_info:
     name: v22.1.5
     start_time: 2022-07-27 13:34:27.897839 +0000 UTC
     version: v22.1.5
+  v22.2:
+    build_time: 2022-08-16 10:15:48.318507 (go1.17)
+    docker_image: cockroachdb/cockroach-unstable
+    name: v22.2-alpha.1
+    start_time: 2022-08-16 10:15:48.318607 +0000 UTC
+    version: v22.2-alpha.1
+sass:
+  sass_dir: css
+  style: compressed
 site_title: CockroachDB Docs
 url: https://www.cockroachlabs.com

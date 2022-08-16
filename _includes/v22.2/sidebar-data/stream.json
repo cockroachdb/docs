@@ -1,0 +1,87 @@
+{
+  "title": "Stream Data",
+  "is_top_level": true,
+  "items": [
+    {
+      "title": "Change Data Capture Overview",
+      "urls": [
+        "/${VERSION}/change-data-capture-overview.html"
+      ]
+    },
+    {
+      "title": "Get Started with Changefeeds",
+      "items": [
+        {
+          "title": "Create and Configure Changefeeds",
+          "urls": [
+            "/${VERSION}/create-and-configure-changefeeds.html"
+          ]
+        },
+        {
+          "title": "Changefeed Messages",
+          "urls": [
+            "/${VERSION}/changefeed-messages.html"
+          ]
+        },
+        {
+          "title": "Changefeed Sinks",
+          "urls": [
+            "/${VERSION}/changefeed-sinks.html"
+          ]
+        },
+        {
+          "title": "Changefeed Examples",
+          "urls": [
+            "/${VERSION}/changefeed-examples.html"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Work with Changefeeds",
+      "items": [
+        {
+          "title": "Changefeeds on Tables with Column Families",
+          "urls": [
+            "/${VERSION}/changefeeds-on-tables-with-column-families.html"
+          ]
+        },
+        {
+          "title": "Changefeeds in Multi-Region Deployments",
+          "urls": [
+            "/${VERSION}/changefeeds-in-multi-region-deployments.html"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Monitor and Debug Changefeeds",
+      "urls": [
+        "/${VERSION}/monitor-and-debug-changefeeds.html"
+      ]
+    },
+    {
+    "title": "Tutorials",
+    "items": [
+      {
+        "title": "Stream a Changefeed from CockroachDB Cloud to Snowflake",
+        "urls": [
+          "/cockroachcloud/stream-changefeed-to-snowflake-aws.html"
+        ]
+      },
+      {
+        "title": "Stream a Changefeed to a Confluent Cloud Kafka Cluster",
+        "urls": [
+          "/${VERSION}/stream-a-changefeed-to-a-confluent-cloud-kafka-cluster.html"
+        ]
+      }
+    ]
+  },
+    {
+      "title": "Advanced Changefeed Configuration",
+      "urls": [
+        "/${VERSION}/advanced-changefeed-configuration.html"
+      ]
+    }
+  ]
+}
