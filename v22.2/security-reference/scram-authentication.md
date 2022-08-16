@@ -67,10 +67,6 @@ This section details how to use SCRAM authentication rather than plaintext passw
 1. [Enable SCRAM-SHA-256 password encryption](#enabling-scram-sha-256-authentication-for-new-users-roles)
 2. [Migrate pre-existing users](#migrating-existing-users-roles-to-scram-sha-256-authentication)
 
-{{site.data.alerts.callout_info}}
-SCRAM authentication can only be used after the upgrade to v22.1 has been finalized.
-{{site.data.alerts.end}}
-
 ### Enabling SCRAM-SHA-256 authentication for new users/roles
 
 To enable SCRAM-SHA-256 encoding of newly defined passwords, set the `server.user_login.password_encryption` [cluster setting](../cluster-settings.html) to `scram-sha-256`. When this setting is set to `scram-sha-256`, passwords created with the following SQL statements will be managed and authenticated according to SCRAM-SHA-256.

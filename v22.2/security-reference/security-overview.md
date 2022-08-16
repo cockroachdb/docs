@@ -14,7 +14,7 @@ docs_area: reference.security
 
 [Sign up for a CockroachDB Cloud account!](https://www.cockroachlabs.com/get-started-cockroachdb/)
 
-{% include /v22.1/dedicated-pci-compliance.md %}
+{% include {{ page.version.version }}/dedicated-pci-compliance.md %}
 
 Learn more: [Integrate {{ site.data.products.dedicated }} with Satori](../satori-integration.html)
 
@@ -24,7 +24,7 @@ Cockroach Labs maintains <a href="https://github.com/cockroachdb/cockroach">Cock
 
 {{ site.data.products.core }} here refers to the situation of a user deploying and operating their own cluster.
 
-{{ site.data.products.enterprise }} refers to an ongoing paid license relationship with Cockroach Labs. This license unlocks advanced features (see below). In this situation the customer maintains full control over their data, compute, and network resources while benefiting from the expertise of the Cockroach Labs' Enterprise Support staff. 
+{{ site.data.products.enterprise }} refers to an ongoing paid license relationship with Cockroach Labs. This license unlocks advanced features (see below). In this situation the customer maintains full control over their data, compute, and network resources while benefiting from the expertise of the Cockroach Labs' Enterprise Support staff.
 
 - See the [list of Enterprise features](../enterprise-licensing.html)
 - Read the [licensing FAQ](../licensing-faqs.html)
@@ -188,4 +188,3 @@ Cockroach Labs maintains <a href="https://github.com/cockroachdb/cockroach">Cock
   <td>CockroachDB, as a distributed SQL database, is uniquely resilient by nature. A cluster can tolerate node failures as long as the majority of nodes remain functional. See <a href="../demo-fault-tolerance-and-recovery.html">Disaster Recovery.</a></td>
  </tr>
 </table>
-

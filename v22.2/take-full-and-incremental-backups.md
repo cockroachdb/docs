@@ -182,7 +182,7 @@ Then, create nightly incremental backups based off of the full backups you've al
 This will add the incremental backup to the default `/incrementals` directory at the root of the backup collection's directory. With incremental backups in the `/incrementals` directory, you can apply different lifecycle/retention policies from cloud storage providers to the `/incrementals` directory as needed.
 
 {{site.data.alerts.callout_info}}
-In v21.2 and earlier, incremental backups were stored in the same directory as their full backup (i.e., `collectionURI/subdirectory`). If an incremental backup command points to a subdirectory with incremental backups created in v21.2 and earlier, v22.1 will write the incremental backup to the v21.2 default location. To use the prior behavior on a backup that does not already contain incremental backups in the full backup subdirectory, use the `incremental_location` option, as shown in this [example](#backup-earlier-behavior).
+In v21.2 and earlier, incremental backups were stored in the same directory as their full backup (i.e., `collectionURI/subdirectory`). If an incremental backup command points to a subdirectory with incremental backups created in v21.2 and earlier, v22.1 and later will write the incremental backup to the v21.2 default location. To use the v21.2 behavior on a backup that does not already contain incremental backups in the full backup subdirectory, use the `incremental_location` option, as shown in this [example](#backup-earlier-behavior).
 {{site.data.alerts.end}}
 
 If it's ever necessary, you can then use the [`RESTORE`][restore] statement to restore your cluster, database(s), and/or table(s). Restoring from incremental backups requires previous full and incremental backups.
