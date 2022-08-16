@@ -27,7 +27,7 @@ Your cluster's spend limit is the maximum you could be charged in a month. If yo
 
 We recommend setting your spend limit to about 30% higher than your expected usage to prevent unexpected throttling. To learn about tuning your workload to reduce costs, see [Optimize Your {{ site.data.products.serverless }} Workload](optimize-serverless-workload.html).
 
-All [Console Admins](console-access-management.html#console-admin) will receive email alerts when your cluster reaches 75% and 100% of its burst capacity or storage limit. If you set a spend limit, you will also receive alerts at 50%, 75%, and 100% of your spend limit.
+All [Console Admins](console-access-management.html#console-admin) will receive email alerts when a free cluster reaches 75% and 100% of its burst capacity or storage limit. For clusters with a spend limit, you will receive alerts at 50%, 75%, and 100% of your spend limit.
 
 ## Free vs. paid usage
 

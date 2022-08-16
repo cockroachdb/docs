@@ -37,9 +37,7 @@ You can create a maximum of five Serverless clusters per organization.
 
 ### What is a Request Unit?
 
-With {{ site.data.products.serverless }}, you are charged for the storage and activity of your cluster. All cluster activity, including SQL queries, bulk operations, and background jobs, is measured in [Request Units](learn-about-request-units.html), or RUs. RUs are an abstracted metric that represent the size and complexity of requests made to your cluster.
-
-For example, fetching a single 64 byte row by its key costs about 1 RUs, while a write of the same row costs about 7 RUs (which includes 3-way replication.) Request Unit consumption scales to zero when your cluster has no activity, so you will only be charged for what you use.
+With {{ site.data.products.serverless }}, you are charged for the storage and activity of your cluster. All cluster activity, including SQL queries, bulk operations, and background jobs, is measured in [Request Units](learn-about-request-units.html), or RUs. RUs are an abstracted metric that represent the size and complexity of requests made to your cluster. See [Learn About Request Units](learn-about-request-units.html) for more information.
 
 ### Do I have to pay for {{ site.data.products.serverless }}?
 
