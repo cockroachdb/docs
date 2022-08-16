@@ -1077,6 +1077,8 @@ On some pages in our docs, there are tabs at the top of the page that will link 
   
 You can use [`filter-tabs.md`](https://github.com/cockroachdb/docs/blob/master/_includes/filter-tabs.md) to simplify the process for any `cockroachcloud` docs or docs for v21.2 and later.
 
+**Note:** this include file is used only when navigating to different URLs/pages. This should not be used for creating tabs within a single page.
+
 The general process to follow and use this is as follows:
   
 1. Identify each page to be linked to a filter tab.
