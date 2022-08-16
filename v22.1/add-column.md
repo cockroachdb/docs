@@ -61,8 +61,8 @@ $ cockroach demo bank
 ~~~
 
 ~~~
-  column_name | data_type | is_nullable | column_default | generation_expression |  indices  | is_hidden
---------------+-----------+-------------+----------------+-----------------------+-----------+------------
+  column_name | data_type | is_nullable | column_default | generation_expression |  indices    | is_hidden
+--------------+-----------+-------------+----------------+-----------------------+-------------+------------
   id          | INT8      |    false    | NULL           |                       | {bank_pkey} |   false
   balance     | INT8      |    true     | NULL           |                       | {bank_pkey} |   false
   payload     | STRING    |    true     | NULL           |                       | {bank_pkey} |   false
@@ -83,8 +83,8 @@ $ cockroach demo bank
 ~~~
 
 ~~~
-  column_name | data_type | is_nullable | column_default | generation_expression |  indices  | is_hidden
---------------+-----------+-------------+----------------+-----------------------+-----------+------------
+  column_name | data_type | is_nullable | column_default | generation_expression |  indices    | is_hidden
+--------------+-----------+-------------+----------------+-----------------------+-------------+------------
   id          | INT8      |    false    | NULL           |                       | {bank_pkey} |   false
   balance     | INT8      |    true     | NULL           |                       | {bank_pkey} |   false
   payload     | STRING    |    true     | NULL           |                       | {bank_pkey} |   false
