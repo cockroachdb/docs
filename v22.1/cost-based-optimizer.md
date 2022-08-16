@@ -228,6 +228,11 @@ Only the following statements use the plan cache:
 - [`UPSERT`](upsert.html)
 - [`DELETE`](delete.html)
 
+The optimizer can cache statements if they are: 
+
+- Prepared statements.
+- Non-prepared statements using identical constant values.
+
 ## Join reordering
 
 For a query involving multiple joins, the cost-based optimizer will explore additional [join orderings](joins.html) in an attempt to find the lowest-cost execution plan, which can lead to significantly better performance in some cases.
