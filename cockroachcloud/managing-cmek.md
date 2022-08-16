@@ -7,8 +7,6 @@ docs_area: manage.security
 
 [Customer-Managed Encryption Keys (CMEK)](cmek.html) for {{ site.data.products.dedicated }} allow the customer to delegate responsibility for the work of encrypting their cluster data to {{ site.data.products.dedicated }}, while maintaining the ability to completely revoke {{ site.data.products.dedicated }}'s access.
 
-{% include cockroachcloud/cockroachcloud-ask-admin.md %}
-
 This page shows how to enable [Customer-Managed Encryption Keys (CMEK)](cmek.html) for a {{ site.data.products.dedicated }} cluster.
 
 To follow this procedure requires admin access to your {{ site.data.products.dedicated }} organization, and the ability to create and manage identity and access management (IAM) and key management (KMS) services in your organization's cloud, i.e., your Google Cloud Platform (GCP) project or Amazon Web Services (AWS) account.
