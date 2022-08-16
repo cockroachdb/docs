@@ -35,6 +35,18 @@ var pageConfig = {
   tocNotNested: {% if page.toc_not_nested %}true{% else %}false{% endif %}
 };
 </script>
+<script>
+  function whenAvailable(name, callback) {
+    var interval = 500; // ms
+    window.setTimeout(function() {
+        if (window[name]) {
+            callback(window[name]);
+        } else {
+            whenAvailable(name, callback);
+        }
+    }, interval);
+  }
+</script>
 
 <script src="{{ 'js/jquery.min.js' | relative_url }}"></script>
 
@@ -50,7 +62,6 @@ var pageConfig = {
 <link rel="preconnect dns-prefetch" href="//cockroach-labs-docs.imgix.net" />
 
 <link rel="preload" href="//go.cockroachlabs.com/js/forms2/js/forms2.min.js" as="script" />
-<script src="//go.cockroachlabs.com/js/forms2/js/forms2.min.js"></script>
 
 <link rel="preload" href="{{ "/fonts/SourceSansPro-Regular.ttf" | relative_url }}" as="font" crossorigin="anonymous" />
 <link rel="preload" href="{{ "/fonts/SourceSansPro-SemiBold.ttf" | relative_url }}" as="font" crossorigin="anonymous" />
