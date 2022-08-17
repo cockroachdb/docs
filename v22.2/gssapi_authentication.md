@@ -3,9 +3,10 @@ title: GSSAPI Authentication (Enterprise)
 summary: Learn about the GSSAPI authentication features for secure CockroachDB clusters.
 toc: true
 docs_area: manage
+keywords: authentication, ldap, kerberos, gssapi
 ---
 
-CockroachDB supports the Generic Security Services API (GSSAPI) with Kerberos authentication.
+CockroachDB supports the Generic Security Services API (GSSAPI) with Kerberos authentication. Although CockroachDB does not support communicating directly with an LDAP service, GSSAPI with Kerberos can be configured to communicate with your LDAP service to authenticate users.
 
 {% include enterprise-feature.md %}
 
@@ -16,7 +17,7 @@ CockroachDB supports the Generic Security Services API (GSSAPI) with Kerberos au
 - A GSSAPI-compatible PostgreSQL Client (psql, etc.)
 - A client machine with a Kerberos client installed and configured
 
-## Configuring KDC for CockroachDB
+## Configure KDC for CockroachDB
 
 To use Kerberos authentication with CockroachDB, configure a Kerberos service principal name (SPN) for CockroachDB and generate a valid keytab file with the following specifications:
 
@@ -78,7 +79,7 @@ $ kadmin.local -q "ktadd -k keytab postgres/client2.cockroach.industries@COCKROA
 Copy the resulting keytab to the database nodes. If clients are connecting to multiple addresses (more than one load balancer, or clients connecting directly to nodes), you will need to generate a keytab for each client endpoint.  You may want to merge your keytabs together for easier management.  The `ktutil` command can be used to read multiple keytab files and output them into a single output [here](https://web.mit.edu/kerberos/krb5-devel/doc/admin/admin_commands/ktutil.html).
 
 
-## Configuring the CockroachDB node
+## Configure the CockroachDB node
 1. Copy the keytab file to a location accessible by the `cockroach` binary.
 
 2. [Create certificates](cockroach-cert.html) for inter-node and `root` user authentication:
@@ -162,7 +163,7 @@ Copy the resulting keytab to the database nodes. If clients are connecting to mu
     > GRANT ALL ON DATABASE defaultdb TO carl;
     ~~~
 
-## Configuring the client
+## Configure the client
 
 {{site.data.alerts.callout_info}}
 The `cockroach sql` shell does not yet support GSSAPI authentication. You need to use a GSSAPI-compatible PostgreSQL client, such as PostgreSQL's `psql` client.
