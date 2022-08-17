@@ -36,12 +36,6 @@ Since the keywords `ROLE` and `USER` can now be used interchangeably in SQL stat
 
 ## Parameters
 
-<style>
-table td:first-child {
-    min-width: 225px;
-}
-</style>
-
 Parameter | Description
 ----------|-------------
 `role_name` | The name of the role to alter.

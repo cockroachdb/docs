@@ -31,12 +31,6 @@ The user must have the `DELETE` and `SELECT` [privileges](security-reference/aut
 
 ## Parameters
 
-<style>
-table td:first-child {
-    min-width: 225px;
-}
-</style>
-
  Parameter | Description
 -----------|-------------
  `common_table_expr` | See [Common Table Expressions](common-table-expressions.html).

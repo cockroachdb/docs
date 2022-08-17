@@ -79,12 +79,6 @@ The user must have the `CREATE` [privilege](security-reference/authorization.htm
 
 ## Parameters
 
-<style>
-table td:first-child {
-    min-width: 225px;
-}
-</style>
-
  Parameter | Description
 -----------|-------------
  `IF NOT EXISTS` | Create a new table only if a table of the same name does not already exist in the database; if one does exist, do not return an error.<br><br>Note that `IF NOT EXISTS` checks the table name only; it does not check if an existing table has the same columns, indexes, constraints, etc., of the new table.

@@ -27,12 +27,6 @@ The user must have the `DROP` [privilege](security-reference/authorization.html#
 
 ## Parameters
 
-<style>
-table td:first-child {
-    min-width: 225px;
-}
-</style>
-
  Parameter | Description
 -----------|------------
 `IF EXISTS` |  Drop the sequence only if it exists; if it does not exist, do not return an error.

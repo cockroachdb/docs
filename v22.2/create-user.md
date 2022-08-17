@@ -38,12 +38,6 @@ The keywords `ROLE` and `USER` can be used interchangeably in SQL statements for
 
 ## Parameters
 
-<style>
-table td:first-child {
-    min-width: 225px;
-}
-</style>
-
  Parameter | Description
 -----------|-------------
 `name` | The name of the user you want to create.<br><br>Usernames are case-insensitive; must start with a letter, number, or underscore; must contain only letters, numbers, or underscores; and must be between 1 and 63 characters.

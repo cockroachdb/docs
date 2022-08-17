@@ -36,12 +36,6 @@ The user must have the `CREATE` [privilege](security-reference/authorization.htm
 
 ## Parameters
 
-<style>
-table td:first-child {
-    min-width: 225px;
-}
-</style>
-
  Parameter | Description
 -----------|------------
 `seq_name` | The name of the sequence to be created, which must be unique within its database and follow the [identifier rules](keywords-and-identifiers.html#identifiers). When the parent database is not set as the default, the name must be formatted as `database.seq_name`.
