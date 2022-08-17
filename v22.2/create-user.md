@@ -23,7 +23,7 @@ You can use the keywords `ROLE` and `USER` interchangeably. `CREATE USER` is equ
 
 ## Synopsis
 
-See [Synopsis](create-role.html#synopsis).
+See [`CREATE ROLE`: Synopsis](create-role.html#synopsis).
 
 ## Parameters
 

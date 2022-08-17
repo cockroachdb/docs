@@ -20,7 +20,7 @@ Non-admin users cannot drop admin users. To drop non-admin users, the user must 
 
 ## Synopsis
 
-See [Synopsis](drop-role.html#synopsis).
+See [`DROP ROLE`: Synopsis](drop-role.html#synopsis).
 
 ## Parameters
 

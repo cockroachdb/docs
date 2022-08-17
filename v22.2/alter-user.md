@@ -19,7 +19,7 @@ To alter other users, the user must be a member of the `admin` role or have the 
 
 ## Synopsis
 
-See [Synopsis](alter-role.html#synopsis).
+See [`ALTER ROLE`: Synopsis](alter-role.html#synopsis).
 
 ## Parameters
 
