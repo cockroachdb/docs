@@ -1,8 +1,4 @@
-whenAvailable("$", function() {
-  $(mainExecute);
-});
-
-function mainExecute() {
+$(function() {
   const $sidebar = $('#sidebar');
   const $sidebars = $('.js-sidebar');
 
@@ -47,7 +43,7 @@ function mainExecute() {
     // }));
     // sidebar.show();
   });
-}
+});
 
 // called from sidebar.js.html
 function renderSidebar(sidebar) {
