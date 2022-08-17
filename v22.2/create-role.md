@@ -56,12 +56,6 @@ Unless a role is a member of the `admin` role, additional [privileges](#paramete
 
 ## Parameters
 
-<style>
-table td:first-child {
-    min-width: 225px;
-}
-</style>
-
 Parameter | Description
 ----------|-------------
 `name` | The name of the role to create. Role names are case-insensitive; must start with either a letter or underscore; must contain only letters, numbers, periods, or underscores; and must be between 1 and 63 characters.<br><br>Note that roles and [users](create-user.html) share the same namespace and must be unique.

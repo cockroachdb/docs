@@ -30,12 +30,6 @@ The `ALTER SEQUENCE` [statement](sql-statements.html) applies a [schema change](
 
 ## Parameters
 
-<style>
-table td:first-child {
-    min-width: 225px;
-}
-</style>
-
  Parameter | Description
 -----------|------------
 `IF EXISTS` | Modify the sequence only if it exists; if it does not exist, do not return an error.
