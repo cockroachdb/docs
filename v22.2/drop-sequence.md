@@ -30,7 +30,7 @@ The user must have the `DROP` [privilege](security-reference/authorization.html#
  Parameter | Description
 -----------|------------
 `IF EXISTS` |  Drop the sequence only if it exists; if it does not exist, do not return an error.
-`sequence_name` | The name of the sequence you want to drop. Find the sequence name with `SHOW CREATE` on the table that uses the sequence.
+`sequence_name_list` | A comma-separated list of sequence names. Find the sequence name with `SHOW CREATE` on the table that uses the sequence.
 `RESTRICT` | _(Default)_ Do not drop the sequence if any objects (such as [constraints](constraints.html) and tables) use it.
 `CASCADE` | Not yet implemented. Currently, you can only drop a sequence if nothing depends on it.
 

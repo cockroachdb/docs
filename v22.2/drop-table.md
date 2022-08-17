@@ -32,7 +32,7 @@ The user must have the `DROP` [privilege](security-reference/authorization.html#
 Parameter | Description
 ----------|------------
 `IF EXISTS`   | Drop the table if it exists; if it does not exist, do not return an error.
-`table_name`  | A comma-separated list of table names. To find table names, use [`SHOW TABLES`](show-tables.html).
+`table_name_list`  | A comma-separated list of table names. To find table names, use [`SHOW TABLES`](show-tables.html).
 `CASCADE` | Drop all objects (such as [constraints](constraints.html) and [views](views.html)) that depend on the table.<br><br>`CASCADE` does not list objects it drops, so should be used cautiously.
 `RESTRICT`    | _(Default)_ Do not drop the table if any objects (such as [constraints](constraints.html) and [views](views.html)) depend on it.
 
