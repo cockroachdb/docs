@@ -36,13 +36,14 @@ var pageConfig = {
 };
 </script>
 <script>
-  function whenAvailable(name, callback) {
+  function whenAvailable(name, callback, isDeepFunction = false) {
     var interval = 500; // ms
+    var evaluation = isDeepFunction ? name : window[name];
     window.setTimeout(function() {
-        if (window[name]) {
-            callback(window[name]);
+        if (evaluation) {
+            callback();
         } else {
-            whenAvailable(name, callback);
+            whenAvailable(name, callback, isDeepFunction);
         }
     }, interval);
   }
