@@ -1,4 +1,4 @@
-$(function() {
+function navgocoSidebarInit() {
   const $sidebar = $('#sidebar');
   const $sidebars = $('.js-sidebar');
 
@@ -43,7 +43,7 @@ $(function() {
     // }));
     // sidebar.show();
   });
-});
+}
 
 // called from sidebar.js.html
 function renderSidebar(sidebar) {
@@ -143,6 +143,8 @@ function renderSidebar(sidebar) {
     .find("li.active")
     .parents('li')
     .toggleClass("active");
+  
+  navgocoSidebarInit();
 };
 
 
