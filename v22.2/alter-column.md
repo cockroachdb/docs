@@ -17,8 +17,9 @@ docs_area: reference.sql
 
 - Set, change, or drop a column's [`DEFAULT` constraint](default-value.html).
 - Set or drop a column's [`NOT NULL` constraint](not-null.html).
--  Set, change, or drop an [`ON UPDATE` expression](create-table.html#on-update-expressions).
+- Set, change, or drop an [`ON UPDATE` expression](create-table.html#on-update-expressions).
 - Change a column's [data type](data-types.html).
+- Set the [visibility](#set-the-visibility-of-a-column) of a column.
 
 {% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
@@ -52,7 +53,7 @@ The user must have the `CREATE` [privilege](security-reference/authorization.htm
 
 {% include {{ page.version.version }}/misc/schema-change-view-job.md %}
 
-## Altering column data types
+## Alter column data types
 
 Support for altering column data types is [experimental](experimental-features.html), with [certain limitations](#limitations-on-altering-data-types). To enable column type altering, set the `enable_experimental_alter_column_type_general` [session variable](set-vars.html) to `true`.
 
@@ -102,7 +103,7 @@ If the column has a defined [`DEFAULT` value](default-value.html), you can remov
 
 ### Set `NOT NULL` constraint
 
-Setting the  [`NOT NULL` constraint](not-null.html) specifies that the column cannot contain `NULL` values.
+To specify that the column cannot contain `NULL` values, set the [`NOT NULL` constraint](not-null.html).
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -289,6 +290,75 @@ NOTICE: ALTER COLUMN TYPE changes are finalized asynchronously; further schema c
   30.72 percent
   3.16 percent
 (10 rows)
+~~~
+
+### Set the visibility of a column
+
+To specify that a column won't be returned when using `*` in a [`SELECT` clause](select-clause.html), set the `NOT VISIBLE` property. You can set the `NOT VISIBLE` property only on individual columns.
+
+For example, the `users` table of the [`movr` database](movr.html) contains the `credit_card` column. If you don't want users to see that column when running `SELECT * FROM users;`, you can hide it as follows:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> ALTER TABLE users ALTER COLUMN credit_card SET NOT VISIBLE;
+~~~
+
+When you run `SELECT *`, the column doesn't appear:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM users WHERE city = 'rome';
+~~~
+
+~~~
+id                                     | city |       name        |            address
+---------------------------------------+------+-------------------+--------------------------------
+e6666666-6666-4800-8000-00000000002d   | rome | Misty Adams       | 82289 Natasha River Suite 12
+eb851eb8-51eb-4800-8000-00000000002e   | rome | Susan Morse       | 49364 Melissa Squares Suite 4
+f0a3d70a-3d70-4000-8000-00000000002f   | rome | Victoria Jennings | 31562 Krista Squares Suite 62
+f5c28f5c-28f5-4000-8000-000000000030   | rome | Eric Perez        | 57624 Kelly Forks
+fae147ae-147a-4000-8000-000000000031   | rome | Richard Bullock   | 21194 Alexander Estate
+(5 rows)
+~~~
+
+The column is still selectable if you name it directly in the `target_elem` parameter:
+
+~~~ sql
+> SELECT id, credit_card FROM users WHERE city = 'rome';
+~~~
+
+~~~
+id                                     | credit_card
+---------------------------------------+--------------
+e6666666-6666-4800-8000-00000000002d   | 4418943046
+eb851eb8-51eb-4800-8000-00000000002e   | 0655485426
+f0a3d70a-3d70-4000-8000-00000000002f   | 2232698265
+f5c28f5c-28f5-4000-8000-000000000030   | 2620636730
+fae147ae-147a-4000-8000-000000000031   | 2642076323
+(5 rows)
+~~~
+
+To unhide the column, run:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> ALTER TABLE users ALTER COLUMN credit_card SET VISIBLE;
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> SELECT * from user WHERE city = 'rome';
+~~~
+
+~~~
+                   id                  | city |       name        |            address            | credit_card
+---------------------------------------+------+-------------------+-------------------------------+--------------
+  e6666666-6666-4800-8000-00000000002d | rome | Misty Adams       | 82289 Natasha River Suite 12  |  4418943046
+  eb851eb8-51eb-4800-8000-00000000002e | rome | Susan Morse       | 49364 Melissa Squares Suite 4 |  0655485426
+  f0a3d70a-3d70-4000-8000-00000000002f | rome | Victoria Jennings | 31562 Krista Squares Suite 62 |  2232698265
+  f5c28f5c-28f5-4000-8000-000000000030 | rome | Eric Perez        | 57624 Kelly Forks             |  2620636730
+  fae147ae-147a-4000-8000-000000000031 | rome | Richard Bullock   | 21194 Alexander Estate        |  2642076323
+(5 rows)
 ~~~
 
 ## See also
