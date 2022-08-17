@@ -108,7 +108,7 @@ To return just the `create_statement` value:
 
 ### Show the `CREATE TABLE` statement for a table with a hidden column
 
-If one or more columns is [`NOT VISIBLE`](not-visible.html) within a table, `SHOW CREATE` will display the `NOT VISIBLE` flag after those columns.
+If one or more columns is [`NOT VISIBLE`](create-table.html#not-visible-property) within a table, `SHOW CREATE` will display the `NOT VISIBLE` flag after those columns.
 
 Start by setting the `credit_card` field to `NOT VISIBLE`:
 
