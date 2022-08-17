@@ -15,7 +15,7 @@ For a developer-centric overview of optimizing SQL statement performance, see [O
 
 Use the [slow query log](logging-use-cases.html#sql_perf) or DB Console to detect slow queries in your cluster.
 
-High latency SQL statements are displayed on the [Statements](ui-statements-page.html) page of the DB Console. To view the Statements page, [access the DB Console](ui-overview.html#db-console-access) and click **Statements** on the left.
+High latency SQL statements are displayed on the [Statements](ui-statements-page.html) page of the DB Console. To view the Statements page, [access the DB Console](ui-overview.html#access-the-db-console) and click **Statements** on the left.
 
 You can also check the [service latency graph](ui-sql-dashboard.html#service-latency-sql-99th-percentile) and the [CPU graph](ui-hardware-dashboard.html#cpu-percent) on the SQL and Hardware Dashboards, respectively. If the graphs show latency spikes or CPU usage spikes, these might indicate slow queries in your cluster.
 
@@ -98,7 +98,7 @@ Throughput is affected by the disk I/O, CPU usage, and network latency. Use the 
 
 ## Single hot node
 
-A *hot node* is one that has much higher resource usage than other nodes. To determine if you have a hot node in your cluster, [access the DB Console](ui-overview.html#db-console-access) and check the following:
+A *hot node* is one that has much higher resource usage than other nodes. To determine if you have a hot node in your cluster, [access the DB Console](ui-overview.html#access-the-db-console) and check the following:
 
 - Click **Metrics** and navigate to the following graphs. Hover over each graph to see the per-node values of the metrics. If one of the nodes has a higher value, you have a hot node in your cluster.
   - [**Replication** dashboard](ui-replication-dashboard.html) > **Average Queries per Store** graph
@@ -124,7 +124,7 @@ A *hot node* is one that has much higher resource usage than other nodes. To det
 
 ## INSERT/UPDATE statements are slow
 
-Use the [Statements page](ui-statements-page.html) to identify the slow [SQL statements](sql-statements.html). To view the Statements page, [access the DB Console](ui-overview.html#db-console-access) and then click Statements on the left.
+Use the [Statements page](ui-statements-page.html) to identify the slow [SQL statements](sql-statements.html). To view the Statements page, [access the DB Console](ui-overview.html#access-the-db-console) and then click Statements on the left.
 
 Refer to the following documents to improve `INSERT` / `UPDATE` performance:
 

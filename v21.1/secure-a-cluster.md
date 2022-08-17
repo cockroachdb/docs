@@ -284,7 +284,7 @@ CockroachDB also comes with a number of [built-in workloads](cockroach-workload.
 
 The CockroachDB [DB Console](ui-overview.html) gives you insight into the overall health of your cluster as well as the performance of the client workload.
 
-1. On secure clusters, [certain pages of the DB Console](ui-overview.html#db-console-access) can only be accessed by `admin` users.
+1. On secure clusters, [certain pages of the DB Console](ui-overview.html#access-the-db-console) can only be accessed by `admin` users.
 
     Run the [`cockroach sql`](cockroach-sql.html) command against node 1:
 

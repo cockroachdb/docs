@@ -16,7 +16,7 @@ The **Jobs** page of the DB Console provides details about long-running tasks pe
 
 All users can see their own jobs, and `admin` users can view all jobs performed across all nodes in the cluster.
 
-To view these details, [access the DB Console](ui-overview.html#db-console-access) and click **Jobs** in the left-hand navigation.
+To view these details, [access the DB Console](ui-overview.html#access-the-db-console) and click **Jobs** in the left-hand navigation.
 
 ## Filter jobs
 

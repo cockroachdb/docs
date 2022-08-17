@@ -909,7 +909,7 @@ The Operator separates traffic into three ports:
 | Protocol | Default | Description                                                         | Custom Resource Field |
 |----------|---------|---------------------------------------------------------------------|-----------------------|
 | gRPC     | 26258   | Used for node connections                                           | `grpcPort`            |
-| HTTP     | 8080    | Used to [access the DB Console](ui-overview.html#db-console-access) | `httpPort`            |
+| HTTP     | 8080    | Used to [access the DB Console](ui-overview.html#access-the-db-console) | `httpPort`            |
 | SQL      | 26257   | Used for SQL shell access                                           | `sqlPort`             |
 
 Specify alternate port numbers in the custom resource (for example, to match the default port `5432` on PostgreSQL):

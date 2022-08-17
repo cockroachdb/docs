@@ -5,7 +5,7 @@ toc: true
 ---
 
 {{site.data.alerts.callout_info}}
-On a secure cluster, this area of the DB Console can only be accessed by an `admin` user. See [DB Console access](ui-overview.html#db-console-access).
+On a secure cluster, this area of the DB Console can only be accessed by an `admin` user. See [Access the DB Console](ui-overview.html#access-the-db-console).
 {{site.data.alerts.end}}
 
  The **Transactions** page helps you:
@@ -17,7 +17,7 @@ On a secure cluster, this area of the DB Console can only be accessed by an `adm
 In contrast with the [**Statements** page](ui-statements-page.html), which displays [SQL statement fingerprints](ui-statements-page.html#sql-statement-fingerprints), the **Transactions** page displays SQL statement fingerprints grouped by [transaction](transactions.html).
 {{site.data.alerts.end}}
 
-To view this page, [access the DB Console](ui-overview.html#db-console-access) and click **Transactions** in the left-hand navigation.
+To view this page, [access the DB Console](ui-overview.html#access-the-db-console) and click **Transactions** in the left-hand navigation.
 
 ## Search and filter by application
 

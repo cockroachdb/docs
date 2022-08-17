@@ -7,7 +7,7 @@ docs_area: reference.db_console
 
 The **Hardware** dashboard lets you monitor the hardware utilization of your cluster. This includes CPU usage, disk throughput, network traffic, storage capacity, and memory.
 
-To view this dashboard, [access the DB Console](ui-overview.html#db-console-access), click **Metrics** in the left-hand navigation, and select **Dashboard** > **Hardware**.
+To view this dashboard, [access the DB Console](ui-overview.html#access-the-db-console), click **Metrics** in the left-hand navigation, and select **Dashboard** > **Hardware**.
 
 {% include {{ page.version.version }}/ui/ui-metrics-navigation.md %}
 

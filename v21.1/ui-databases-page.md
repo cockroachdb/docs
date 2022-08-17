@@ -5,7 +5,7 @@ toc: true
 ---
 
 {{site.data.alerts.callout_info}}
-On a secure cluster, this area of the DB Console can only be accessed by an `admin` user. See [DB Console access](ui-overview.html#db-console-access).
+On a secure cluster, this area of the DB Console can only be accessed by an `admin` user. See [Access the DB Console](ui-overview.html#access-the-db-console).
 {{site.data.alerts.end}}
 
 The **Databases** page of the DB Console provides details of the following:
@@ -14,7 +14,7 @@ The **Databases** page of the DB Console provides details of the following:
 - The tables in each database.
 - The grants assigned to each user.
 
-To view this page, [access the DB Console](ui-overview.html#db-console-access) and click **Databases** in the left-hand navigation.
+To view this page, [access the DB Console](ui-overview.html#access-the-db-console) and click **Databases** in the left-hand navigation.
 
 ## Tables view
 

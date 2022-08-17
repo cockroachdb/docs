@@ -99,7 +99,7 @@ To start a new cluster with the correct `--locality` flags:
     $ cockroach init --insecure --host=<address of any node>
     ~~~
 
-1. [Access the DB Console](ui-overview.html#db-console-access).
+1. [Access the DB Console](ui-overview.html#access-the-db-console).
 
 1. If the node list displays, click the selector <img src="{{ 'images/v22.2/node-map.png' | relative_url }}" alt="Node map selector" /> and select **Node Map**.
 

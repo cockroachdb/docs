@@ -13,7 +13,7 @@ The **Node Map** is useful for:
 This page guides you through the process of setting up and enabling the Node Map.
 
 {{site.data.alerts.callout_info}}
-On a secure cluster, this area of the DB Console can only be accessed by an `admin` user. See [DB Console access](ui-overview.html#db-console-access).
+On a secure cluster, this area of the DB Console can only be accessed by an `admin` user. See [Access the DB Console](ui-overview.html#access-the-db-console).
 {{site.data.alerts.end}}
 
 {% include enterprise-feature.md %}
@@ -100,7 +100,7 @@ Use the [`cockroach init`](cockroach-init.html) command to perform a one-time in
 $ cockroach init --insecure --host=<address of any node>
 ~~~
 
-[Access the DB Console](ui-overview.html#db-console-access). The following page is displayed:
+[Access the DB Console](ui-overview.html#access-the-db-console). The following page is displayed:
 
 <img src="{{ 'images/v21.1/ui-node-map-before-license.png' | relative_url }}" alt="DB Console" style="border:1px solid #eee;max-width:100%" />
 

@@ -4,7 +4,7 @@ summary: Implement single sign-on (SSO) for DB Console access.
 toc: true
 ---
 
-Single sign-on (SSO) allows a CockroachDB user to access the DB Console in a secure cluster via an external identity provider. When SSO is configured and enabled, the [DB Console login page](ui-overview.html#db-console-access) will display an OAuth login button in addition to the password access option.
+Single sign-on (SSO) allows a CockroachDB user to access the DB Console in a secure cluster via an external identity provider. When SSO is configured and enabled, the [DB Console login page](ui-overview.html#access-the-db-console) will display an OAuth login button in addition to the password access option.
 
 CockroachDB supports SSO via [OpenID Connect (OIDC)](https://openid.net/connect/), an authentication layer built on top of OAuth 2.0.
 
@@ -140,7 +140,7 @@ These steps demonstrate how to enable SSO authentication for the DB Console on a
 	> SET CLUSTER SETTING server.oidc_authentication.enabled = true;
 	~~~
 
-	When the user [accesses the DB Console](ui-overview.html#db-console-access), they will be able to log in with their Google account.
+	When the user [accesses the DB Console](ui-overview.html#access-the-db-console), they will be able to log in with their Google account.
 
 	<img src="{{ 'images/v20.2/ui_login_sso.png' | relative_url }}" alt="DB Console Single Sign-on" style="border:1px solid #eee;max-width:50%" />
 

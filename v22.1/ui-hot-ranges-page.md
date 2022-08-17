@@ -13,7 +13,7 @@ The **Hot Ranges** page of the DB Console provides details about ranges receivin
 
 When [optimizing](performance-best-practices-overview.html#hot-spots) or [troubleshooting](query-behavior-troubleshooting.html#single-hot-node) statement performance, this page can help you identify nodes, ranges, or tables that are experiencing hot spots.
 
-To view this page, [access the DB Console](ui-overview.html#db-console-access) and click **Hot Ranges** in the left-hand navigation.
+To view this page, [access the DB Console](ui-overview.html#access-the-db-console) and click **Hot Ranges** in the left-hand navigation.
 
 ## Filter hot ranges
 

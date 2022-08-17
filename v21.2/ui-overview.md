@@ -55,7 +55,7 @@ The [Jobs](ui-jobs-page.html) page shows details of jobs running in the cluster.
 
 The [Advanced Debug](ui-debug-pages.html) page provides advanced monitoring and troubleshooting reports. These include details about data distribution, the state of specific queues, and slow query metrics. These details are largely intended for use by CockroachDB developers.
 
-## DB Console access
+## Access the DB Console
 
 You can access the DB Console from every node at `http://<host>:<http-port>`, or `http://<host>:8080` by default.
 
@@ -65,7 +65,7 @@ You can access the DB Console from every node at `http://<host>:<http-port>`, or
 
 For guidance on accessing the DB Console in the context of cluster deployment, see [Start a Local Cluster](start-a-local-cluster.html) and [Manual Deployment](manual-deployment.html).
 
-### Proxy DB Console
+### Proxy DB Console connections
 
 If your CockroachDB cluster is behind a load balancer, you may wish to proxy your DB Console connection to a different node in the cluster from the node you first connect to. This is useful in deployments where a third-party load balancer otherwise determines which CockroachDB node you connect to in DB Console, or where web management access is limited to a subset of CockroachDB instances in a cluster.
 

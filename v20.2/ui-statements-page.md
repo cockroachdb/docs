@@ -5,7 +5,7 @@ toc: true
 ---
 
 {{site.data.alerts.callout_info}}
-On a secure cluster, this area of the DB Console can only be accessed by an `admin` user. See [DB Console access](ui-overview.html#db-console-access).
+On a secure cluster, this area of the DB Console can only be accessed by an `admin` user. See [Access the DB Console](ui-overview.html#access-the-db-console).
 {{site.data.alerts.end}}
 
 The **Statements** page helps you:
@@ -14,7 +14,7 @@ The **Statements** page helps you:
 - View SQL statement [details](#statement-details-page).
 - Download SQL statement [diagnostics](#diagnostics) for troubleshooting.
 
-To view this page, [access the DB Console](ui-overview.html#db-console-access) and click **Statements** in the left-hand navigation.
+To view this page, [access the DB Console](ui-overview.html#access-the-db-console) and click **Statements** in the left-hand navigation.
 
 ## Search and filter by application
 

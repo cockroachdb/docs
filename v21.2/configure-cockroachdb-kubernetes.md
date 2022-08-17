@@ -226,7 +226,7 @@ The Operator separates network traffic into three ports:
 | Protocol | Default | Description                                                         | Custom Resource Field |
 |----------|---------|---------------------------------------------------------------------|-----------------------|
 | gRPC     | 26258   | Used for node connections                                           | `grpcPort`            |
-| HTTP     | 8080    | Used to [access the DB Console](ui-overview.html#db-console-access) | `httpPort`            |
+| HTTP     | 8080    | Used to [access the DB Console](ui-overview.html#access-the-db-console) | `httpPort`            |
 | SQL      | 26257   | Used for SQL shell access                                           | `sqlPort`             |
 
 Specify alternate port numbers in the Operator's [custom resource](deploy-cockroachdb-with-kubernetes.html#initialize-the-cluster) (for example, to match the default port `5432` on PostgreSQL):

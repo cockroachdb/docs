@@ -4,7 +4,7 @@ summary: The Overview dashboard lets you monitor important SQL performance, repl
 toc: true
 ---
 
-The **Overview** dashboard lets you monitor important SQL performance, replication, and storage metrics. To view this dashboard, [access the DB Console](ui-overview.html#db-console-access) and click **Metrics** on the left-hand navigation bar. The **Overview** dashboard is displayed by default.
+The **Overview** dashboard lets you monitor important SQL performance, replication, and storage metrics. To view this dashboard, [access the DB Console](ui-overview.html#access-the-db-console) and click **Metrics** on the left-hand navigation bar. The **Overview** dashboard is displayed by default.
 
 {% include {{ page.version.version }}/ui/ui-metrics-navigation.md %}
 

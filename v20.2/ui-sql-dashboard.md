@@ -4,7 +4,7 @@ summary: The SQL dashboard lets you monitor the performance of your SQL queries.
 toc: true
 ---
 
-The **SQL** dashboard in the DB Console lets you monitor the performance of your SQL queries. To view this dashboard, [access the DB Console](ui-overview.html#db-console-access), click **Metrics** on the left-hand navigation bar, and then select **Dashboard** > **SQL**.
+The **SQL** dashboard in the DB Console lets you monitor the performance of your SQL queries. To view this dashboard, [access the DB Console](ui-overview.html#access-the-db-console), click **Metrics** on the left-hand navigation bar, and then select **Dashboard** > **SQL**.
 
 {% include {{ page.version.version }}/ui/ui-metrics-navigation.md %}
 

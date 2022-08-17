@@ -21,7 +21,7 @@ If a cluster becomes unavailable, most of the monitoring tools in the following 
 
 The [DB Console](ui-overview.html) displays essential metrics about a cluster's health, such as node status, number of unavailable ranges, and queries per second and service latency across the cluster. This tool is designed to help you optimize cluster performance and troubleshoot issues. The DB Console is accessible from every node at `http://<host>:<http-port>`, or `http://<host>:8080` by default.
 
-For more information on accessing the DB Console, see [Access DB Console](ui-overview.html#db-console-access).
+For more information on accessing the DB Console, see [Access DB Console](ui-overview.html#access-the-db-console).
 
 ### Cluster API
 

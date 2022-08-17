@@ -7,7 +7,7 @@ docs_area: reference.db_console
 
 The **Replication** dashboard in the DB Console lets you monitor the replication metrics for your cluster.
 
-To view this dashboard, [access the DB Console](ui-overview.html#db-console-access), click **Metrics** in the left-hand navigation, and select **Dashboard** > **Replication**.
+To view this dashboard, [access the DB Console](ui-overview.html#access-the-db-console), click **Metrics** in the left-hand navigation, and select **Dashboard** > **Replication**.
 
 ## Review of CockroachDB terminology
 

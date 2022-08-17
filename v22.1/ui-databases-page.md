@@ -13,7 +13,7 @@ The **Databases** page of the DB Console provides details of the following:
 - The tables in each database and the indexes on each table.
 - The grants assigned to each role and user.
 
-To view this page, [access the DB Console](ui-overview.html#db-console-access) and click **Databases** in the left-hand navigation.
+To view this page, [access the DB Console](ui-overview.html#access-the-db-console) and click **Databases** in the left-hand navigation.
 
 ## Databases
 

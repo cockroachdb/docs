@@ -914,7 +914,7 @@ The pod uses the `root` client certificate created earlier by the `setup.py` scr
 
 To access the cluster's [DB Console](ui-overview.html):
 
-1. On secure clusters, [certain pages of the DB Console](ui-overview.html#db-console-access) can only be accessed by `admin` users.
+1. On secure clusters, [certain pages of the DB Console](ui-overview.html#access-the-db-console) can only be accessed by `admin` users.
 
     Get a shell into the pod with the `cockroach` binary created earlier and start the CockroachDB [built-in SQL client](cockroach-sql.html):
 

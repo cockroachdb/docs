@@ -10,7 +10,7 @@ On a secure cluster, this area of the DB Console can only be accessed by a SQL u
 
 <span class="version-tag">New in v20.2:</span> The **Sessions** page of the DB Console provides details of all open sessions in the cluster.
 
-To view this page, [access the DB Console](ui-overview.html#db-console-access) and click **Sessions** in the left-hand navigation.
+To view this page, [access the DB Console](ui-overview.html#access-the-db-console) and click **Sessions** in the left-hand navigation.
 
 ## Sessions list
 

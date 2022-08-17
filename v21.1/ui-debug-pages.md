@@ -8,7 +8,7 @@ toc: true
 Most of the functionality on this page can only be accessed by an `admin` user. See [DB Console security](ui-overview.html#db-console-security).
 {{site.data.alerts.end}}
 
-The **Advanced Debug** page of the DB Console provides links to advanced monitoring and troubleshooting reports and cluster configuration details. To view this page, [access the DB Console](ui-overview.html#db-console-access) and click **Advanced Debug** in the left-hand navigation.
+The **Advanced Debug** page of the DB Console provides links to advanced monitoring and troubleshooting reports and cluster configuration details. To view this page, [access the DB Console](ui-overview.html#access-the-db-console) and click **Advanced Debug** in the left-hand navigation.
 
 {{site.data.alerts.callout_info}}
 These pages are experimental and undocumented. If you find an issue, let us know through [these channels](https://www.cockroachlabs.com/community/).
@@ -28,11 +28,11 @@ The following debug reports and configuration views are useful for monitoring an
 Report | Description | Access level
 --------|-----|--------
 [Custom Time Series Chart](ui-custom-chart-debug-page.html) | Create a custom chart of time series data. | All users
-Problem Ranges | View ranges in your cluster that are unavailable, underreplicated, slow, or have other problems. | [`admin` users only on secure clusters](ui-overview.html#db-console-access)
+Problem Ranges | View ranges in your cluster that are unavailable, underreplicated, slow, or have other problems. | [`admin` users only on secure clusters](ui-overview.html#access-the-db-console)
 Network Latency | Check latencies between all nodes in your cluster. | All users
-Data Distribution and Zone Configs | View the distribution of table data across nodes and verify zone configuration. | [`admin` users only on secure clusters](ui-overview.html#db-console-access)
+Data Distribution and Zone Configs | View the distribution of table data across nodes and verify zone configuration. | [`admin` users only on secure clusters](ui-overview.html#access-the-db-console)
 Cluster Settings | View cluster settings and their configured values. | All users can view data according to their privileges
-Localities | Check node localities for your cluster. | [`admin` users only on secure clusters](ui-overview.html#db-console-access)
+Localities | Check node localities for your cluster. | [`admin` users only on secure clusters](ui-overview.html#access-the-db-console)
 
 ## Even More Advanced Debugging
 
@@ -40,7 +40,7 @@ The **Even More Advanced Debugging** section of the page lists additional report
 
 ## Raw Status Endpoints (JSON)
 
-Depending on your [access level](ui-overview.html#db-console-access), the endpoints listed here provide access to:
+Depending on your [access level](ui-overview.html#access-the-db-console), the endpoints listed here provide access to:
 
 - [Log files](logging-overview.html)
 - Node status

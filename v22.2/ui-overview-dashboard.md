@@ -7,7 +7,7 @@ docs_area: reference.db_console
 
 The **Overview** dashboard lets you monitor important SQL performance, replication, and storage metrics.
 
-To view this dashboard, [access the DB Console](ui-overview.html#db-console-access) and click **Metrics** on the left-hand navigation bar. The **Overview** dashboard is displayed by default.
+To view this dashboard, [access the DB Console](ui-overview.html#access-the-db-console) and click **Metrics** on the left-hand navigation bar. The **Overview** dashboard is displayed by default.
 
 The time-series data displayed in DB Console graphs is stored within the CockroachDB cluster and accumulates for 30 days before being truncated. For details about managing this process, see this [FAQ](operational-faqs.html#can-i-reduce-or-disable-the-storage-of-time-series-data). As a result, for the first 30 days or so of a cluster's life, you will see a steady increase in disk usage and the number of ranges even if you aren't writing data to the cluster.
 

@@ -28,7 +28,7 @@ Area | Description
 [Jobs](ui-jobs-page.html) | Details of jobs running in the cluster.
 [Advanced Debug](ui-debug-pages.html) | Advanced monitoring and troubleshooting reports. These include details about data distribution, the state of specific queues, and slow query metrics. These details are largely intended for use by CockroachDB developers.
 
-## DB Console access
+## Access the DB Console
 
 The DB Console is accessible from every node at `http://<host>:<http-port>`, or `http://<host>:8080` by default.
 

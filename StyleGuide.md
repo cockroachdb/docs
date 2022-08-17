@@ -270,7 +270,7 @@ At the page level, a task could take two different forms: a page with multiple, 
   **Example:** Connect to a Cluster, not Connect to Your Cluster
 - Lead with the verb. Don't bury it at the end of the heading.
 
-  **Example:** Access DB Console, not DB Console Access.
+  **Example:** Access the DB Console, not DB Console Access.
 
 - Present the steps as an ordered list.
 

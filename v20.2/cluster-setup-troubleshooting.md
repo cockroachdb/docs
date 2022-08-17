@@ -241,7 +241,7 @@ If you’re running a secure cluster, be sure to monitor your certificate expira
 
 To check the certificate expiration date:
 
-1. [Access the DB Console](ui-overview.html#db-console-access).
+1. [Access the DB Console](ui-overview.html#access-the-db-console).
 2. Click the gear icon on the left-hand navigation bar to access the **Advanced Debugging** page.
 3. Scroll down to the **Even More Advanced Debugging** section. Click **All Nodes**. The **Node Diagnostics** page appears. Click the certificates for each node and check the expiration date for each certificate in the Valid Until field.
 
@@ -292,7 +292,7 @@ Following are some of the possible issues you might have while planning capacity
 -   Running storage at 100% utilization read/write will causes poor service time.
 -   Running network at 100% utilization causes response between databases and client to be poor.
 
-**Solution:** [Access the DB Console](ui-overview.html#db-console-access) and navigate to **Metrics > Hardware** dashboard to monitor the following metrics:
+**Solution:** [Access the DB Console](ui-overview.html#access-the-db-console) and navigate to **Metrics > Hardware** dashboard to monitor the following metrics:
 
 First, check adequate capacity was available for the incident for the following components.
 
@@ -336,7 +336,7 @@ If Go allocated memory is larger than a few hundred megabytes, you might have en
 
 **Solution:** To determine Go/CGo allocated memory:
 
-1. [Access the DB Console](ui-overview.html#db-console-access).
+1. [Access the DB Console](ui-overview.html#access-the-db-console).
 
 2. Navigate to **Metrics > Runtime** dashboard, and check the **Memory Usage** graph.
 
@@ -402,7 +402,7 @@ When a CockroachDB node dies (or is partitioned) the under-replicated range coun
 
 To identify under-replicated/unavailable ranges:
 
-1.  [Access the DB Console](ui-overview.html#db-console-access).
+1.  [Access the DB Console](ui-overview.html#access-the-db-console).
 
 2.  On the **Cluster Overview** page, check the **Replication Status**. If the **Under-replicated ranges** or **Unavailable ranges** count is non-zero, then you have under-replicated or unavailable ranges in your cluster.
 
@@ -414,7 +414,7 @@ On the DB Console’s Cluster Overview page, check if any nodes are down. If the
 
 If you still see under-replicated/unavailable ranges on the Cluster Overview page, investigate further:
 
-1.  [Access the DB Console](ui-overview.html#db-console-access)
+1.  [Access the DB Console](ui-overview.html#access-the-db-console)
 2.  Click the gear icon on the left-hand navigation bar to access the **Advanced Debugging** page.
 2.  Click **Problem Ranges**.
 3.  In the **Connections** table, identify the node with the under-replicated/unavailable ranges and click the node ID in the Node column.

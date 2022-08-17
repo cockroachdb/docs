@@ -6,7 +6,7 @@ toc: true
 
 The **Storage** dashboard lets you monitor the storage utilization of your cluster.
 
-To view this dashboard, [access the DB Console](ui-overview.html#db-console-access), click **Metrics** in the left-hand navigation, and select **Dashboard** > **Storage**.
+To view this dashboard, [access the DB Console](ui-overview.html#access-the-db-console), click **Metrics** in the left-hand navigation, and select **Dashboard** > **Storage**.
 
 {% include {{ page.version.version }}/ui/ui-metrics-navigation.md %}
 

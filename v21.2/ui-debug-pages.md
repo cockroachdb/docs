@@ -7,7 +7,7 @@ docs_area: reference.db_console
 
 {% include {{ page.version.version }}/ui/admin-access.md %}
 
-The **Advanced Debug** page of the DB Console provides links to advanced monitoring and troubleshooting reports and cluster configuration details. To view this page, [access the DB Console](ui-overview.html#db-console-access) and click **Advanced Debug** in the left-hand navigation.
+The **Advanced Debug** page of the DB Console provides links to advanced monitoring and troubleshooting reports and cluster configuration details. To view this page, [access the DB Console](ui-overview.html#access-the-db-console) and click **Advanced Debug** in the left-hand navigation.
 
 {{site.data.alerts.callout_info}}
 These pages are experimental and undocumented. If you find an issue, let us know through [these channels](https://www.cockroachlabs.com/community/).
@@ -27,9 +27,9 @@ The following debug reports are useful for monitoring and troubleshooting Cockro
 Report | Description | Access level
 --------|-----|--------
 [Custom Time Series Chart](ui-custom-chart-debug-page.html) | Create a custom chart of time series data. | All users.
-Problem Ranges | View ranges in your cluster that are unavailable, under-replicated, slow, or have other problems. | [`admin` users only on secure clusters](ui-overview.html#db-console-access).
-Data Distribution and Zone Configs | View the distribution of table data across nodes and verify zone configuration. | [`admin` users only on secure clusters](ui-overview.html#db-console-access).
-Statement Diagnostics History  | Diagnostic bundles for all statements executed on the cluster.  | [`admin` users only on secure clusters](ui-overview.html#db-console-access).
+Problem Ranges | View ranges in your cluster that are unavailable, under-replicated, slow, or have other problems. | [`admin` users only on secure clusters](ui-overview.html#access-the-db-console).
+Data Distribution and Zone Configs | View the distribution of table data across nodes and verify zone configuration. | [`admin` users only on secure clusters](ui-overview.html#access-the-db-console).
+Statement Diagnostics History  | Diagnostic bundles for all statements executed on the cluster.  | [`admin` users only on secure clusters](ui-overview.html#access-the-db-console).
 
 ## Configuration
 
@@ -38,7 +38,7 @@ The following configuration settings are useful for monitoring and troubleshooti
 Configuration | Description | Access level
 --------|-----|--------
 Cluster Settings | View cluster settings and their configured values. | All users can view data according to their privileges.
-Localities | Check node localities for your cluster. | [`admin` users only on secure clusters](ui-overview.html#db-console-access).
+Localities | Check node localities for your cluster. | [`admin` users only on secure clusters](ui-overview.html#access-the-db-console).
 
 ## Even More Advanced Debugging
 
@@ -50,7 +50,7 @@ The **Even More Advanced Debugging** section of the page lists additional report
 These endpoints are deprecated in favor of the [Cluster API](monitoring-and-alerting.html#cluster-api).
 {{site.data.alerts.end}}
 
-Depending on your [access level](ui-overview.html#db-console-access), the endpoints listed here provide access to:
+Depending on your [access level](ui-overview.html#access-the-db-console), the endpoints listed here provide access to:
 
 - [Log files](logging-overview.html)
 - Metrics

@@ -28,7 +28,7 @@ Approach | Use case description
 
 ## Accessing the DB Console for a secure cluster
 
-On [accessing the DB Console](ui-overview.html#db-console-access) for a secure cluster, your web browser will consider the CockroachDB-issued certificate invalid, because the browser hasn't been configured to trust the CA that issued the certificate.
+On [accessing the DB Console](ui-overview.html#access-the-db-console) for a secure cluster, your web browser will consider the CockroachDB-issued certificate invalid, because the browser hasn't been configured to trust the CA that issued the certificate.
 
 For secure clusters, you can avoid getting the warning message by using a certificate issued by a public CA whose certificates are trusted by browsers, in addition to the CockroachDB-created certificates:
 

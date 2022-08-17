@@ -7,7 +7,7 @@ docs_area: reference.db_console
 
 The **Network Latency** page displays round-trip latencies between all nodes in your cluster. Latency is the time required to transmit a packet across a network, and is highly dependent on your network topology. Use this page to determine whether your latency is appropriate for your [topology pattern](topology-patterns.html), or to identify nodes with unexpected latencies.
 
-To view this page, [access the DB Console](ui-overview.html#db-console-access) and click **Network Latency** in the left-hand navigation.
+To view this page, [access the DB Console](ui-overview.html#access-the-db-console) and click **Network Latency** in the left-hand navigation.
 
 ## Sort and filter network latency
 

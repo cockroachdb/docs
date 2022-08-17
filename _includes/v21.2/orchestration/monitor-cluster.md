@@ -2,7 +2,7 @@ To access the cluster's [DB Console](ui-overview.html):
 
 {% if page.secure == true %}
 
-1. On secure clusters, [certain pages of the DB Console](ui-overview.html#db-console-access) can only be accessed by `admin` users.
+1. On secure clusters, [certain pages of the DB Console](ui-overview.html#access-the-db-console) can only be accessed by `admin` users.
 
     Get a shell into the pod and start the CockroachDB [built-in SQL client](cockroach-sql.html):
 
