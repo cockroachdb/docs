@@ -1,20 +1,22 @@
-<script src="{{ 'js/initSidebar.js' | relative_url }}"></script>
+<script src="{{ 'js/initSidebar.js' | relative_url }}" defer></script>
 
 <script>
   (function(){
-    const sidebar = {
-      baseUrl: "{{ site.baseurl }}",
-      isVersionDirectory: function (d) {
-        // Version directories either are one of the named version
-        // aliases specified in _config.yml or have the form "vX.X",
-        // like "v1.0" or "v1.10".
-        return {{ site.versions | jsonify }}[d] || /^v\d+.\d+$/.test(d);
-      },
-      items: {%- include {{ page.sidebar_data }} -%}
-    };
-
-    // implemented in initSidebar.js
-    renderSidebar(sidebar);
+    whenAvailable("renderSidebar", function() {
+      const sidebar = {
+        baseUrl: "{{ site.baseurl }}",
+        isVersionDirectory: function (d) {
+          // Version directories either are one of the named version
+          // aliases specified in _config.yml or have the form "vX.X",
+          // like "v1.0" or "v1.10".
+          return {{ site.versions | jsonify }}[d] || /^v\d+.\d+$/.test(d);
+        },
+        items: {%- include {{ page.sidebar_data }} -%}
+      };
+  
+      // implemented in initSidebar.js
+      renderSidebar(sidebar);
+    });
   })();
 </script>
 
