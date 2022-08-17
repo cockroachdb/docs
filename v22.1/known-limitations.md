@@ -10,6 +10,12 @@ This page describes newly identified limitations in the CockroachDB {{page.relea
 
 ## New limitations
 
+### DB Console Metrics page performance regression
+
+A performance regression exists for v22.1.4 and v22.1.5 that causes [DB Console Metrics pages](../v21.2/ui-overview-dashboard.html) to fail to load, or to load slower than expected, when attempting to display metrics graphs. This regression is fixed in the upcoming v22.1.6 release.
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/85636)
+
 ### A multi-region table cannot be restored into a non-multi-region table
 
 You cannot [restore](restore.html) a multi-region table into a non-multi-region table.
