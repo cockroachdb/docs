@@ -7,23 +7,12 @@ docs_area: reference.sql
 
 The `CREATE USER` [statement](sql-statements.html) creates SQL users, which let you control [privileges](security-reference/authorization.html#managing-privileges) on your databases and tables.
 
+You can use the keywords `ROLE` and `USER` interchangeably. `CREATE USER` is equivalent to [`CREATE ROLE`](create-role.html), with one exception: `CREATE ROLE` sets the `NOLOGIN` [role option](#role-options), which prevents the new role from being used to log in to the database. You can use `CREATE ROLE` and specify the `LOGIN` [role option](#role-options) to achieve the same result as `CREATE USER`.
+
 {% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
-
-{{site.data.alerts.callout_info}}
-The keywords `ROLE` and `USER` can be used interchangeably in SQL statements for enhanced PostgreSQL compatibility.
-
-`CREATE USER` is equivalent to the statement `CREATE ROLE`, with one exception: `CREATE ROLE` sets the [`NOLOGIN`](#parameters) option by default, preventing the new role from being used to log in to the database. You can use `CREATE ROLE` and specify the [`LOGIN`](#parameters) option to achieve the same result as `CREATE USER`.
-{{site.data.alerts.end}}
 
 ## Considerations
 
-- Usernames:
-    - Are case-insensitive
-    - Must start with a letter, number, or underscore
-    - Must contain only letters, numbers, periods, or underscores
-    - Must be between 1 and 63 characters.
-    -  Cannot be `none`.
-    -  Cannot start with `pg_` or `crdb_internal`. Object names with these prefixes are reserved for [system catalogs](system-catalogs.html).
 - After creating users, you must [grant them privileges to databases and tables](grant.html).
 - All users belong to the `public` role, to which you can [grant](grant.html) and [revoke](revoke.html) privileges.
 - On secure clusters, you must [create client certificates for users](cockroach-cert.html#create-the-certificate-and-key-pair-for-a-client) and users must [authenticate their access to the cluster](#user-authentication).
@@ -34,7 +23,7 @@ The keywords `ROLE` and `USER` can be used interchangeably in SQL statements for
 
 ## Synopsis
 
-<section>{% include {{ page.version.version }}/sql/generated/diagrams/create_user.html %}</section>
+See [Synopsis](create-role.html#synopsis).
 
 ## Parameters
 
@@ -46,30 +35,22 @@ table td:first-child {
 
  Parameter | Description
 -----------|-------------
-`name` | The name of the user you want to create.<br><br>Usernames are case-insensitive; must start with a letter, number, or underscore; must contain only letters, numbers, or underscores; and must be between 1 and 63 characters.
+`name` | The name of the user to create.
 `WITH role_option` | Apply a [role option](#role-options) to the role.
 
-## Role options
+### User names
 
-Role option | Description
-------------|--------------
-`CANCELQUERY`/`NOCANCELQUERY` | Allow or disallow a user to cancel [queries](cancel-query.html) and [sessions](cancel-session.html) of other users. Without this role option, users can only cancel their own queries and sessions. Even with the `CANCELQUERY` role option, non-`admin` users cannot cancel `admin` queries or sessions. This option should usually be combined with `VIEWACTIVITY` so that the user can view other users' query and session information. <br><br>By default, the role option is set to `NOCANCELQUERY` for all non-`admin` users.
-`CONTROLCHANGEFEED`/`NOCONTROLCHANGEFEED` | Allow or disallow a user to run [`CREATE CHANGEFEED`](create-changefeed.html) on tables they have `SELECT` privileges on. <br><br>By default, the role option is set to `NOCONTROLCHANGEFEED` for all non-`admin` users.
-`CONTROLJOB`/`NOCONTROLJOB` | Allow or disallow a user to [pause](pause-job.html), [resume](resume-job.html), and [cancel](cancel-job.html) jobs. Non-`admin` users cannot control jobs created by `admin` users. <br><br>By default, the role option is set to `NOCONTROLJOB` for all non-`admin` users.
-`CREATEDB`/`NOCREATEDB` | Allow or disallow a user to [create](create-database.html) or [rename](rename-database.html) a database. The user is assigned as the owner of the database. <br><br>By default, the role option is set to `NOCREATEDB` for all non-`admin` users.
-`CREATELOGIN`/`NOCREATELOGIN` | Allow or disallow a user to manage authentication using the `WITH PASSWORD`, `VALID UNTIL`, and `LOGIN/NOLOGIN` role options. <br><br>By default, the role option is set to `NOCREATELOGIN` for all non-`admin` users.
-`CREATEROLE`/`NOCREATEROLE` |  Allow or disallow a new user to create, [alter](alter-user.html), and [drop](drop-user.html) other non-`admin` users. <br><br>By default, the role option is set to `NOCREATEROLE` for all non-`admin` users.
-`LOGIN`/`NOLOGIN` | Allow or disallow a user to log in with one of the [client authentication methods](authentication.html#client-authentication). Setting the role option to `NOLOGIN` prevents the user from logging in using any authentication method.
-`MODIFYCLUSTERSETTING`/`NOMODIFYCLUSTERSETTING` | Allow or disallow a user to modify the [cluster settings](cluster-settings.html) with the `sql.defaults` prefix. <br><br>By default, the role option is set to `NOMODIFYCLUSTERSETTING` for all non-`admin` users.
-`PASSWORD password`/`PASSWORD NULL` | The credential the user uses to [authenticate their access to a secure cluster](authentication.html#client-authentication). A password should be entered as a [string literal](sql-constants.html#string-literals). For compatibility with PostgreSQL, a password can also be entered as an identifier. <br><br>To prevent a user from using [password authentication](authentication.html#client-authentication) and to mandate [certificate-based client authentication](authentication.html#client-authentication), [set the password as `NULL`](create-role.html#prevent-a-role-from-using-password-authentication).
-`SQLLOGIN`/`NOSQLLOGIN` | Allow or disallow a user to log in using the SQL CLI with one of the [client authentication methods](authentication.html#client-authentication). The role option to `NOSQLLOGIN` prevents the user from logging in using the SQL CLI with any authentication method while retaining the ability to log in to DB Console. It is possible to have both `NOSQLLOGIN` and `LOGIN` set for a user and `NOSQLLOGIN` takes precedence on restrictions. <br><br>Without any role options all login behavior is permitted.
-`VALID UNTIL` |  The date and time (in the [`timestamp`](timestamp.html) format) after which the [password](#parameters) is not valid.
-`VIEWACTIVITY`/`NOVIEWACTIVITY` | Allow or disallow a user to see other users' [queries](show-statements.html) and [sessions](show-sessions.html) using `SHOW STATEMENTS`, `SHOW SESSIONS`, and the [**Statements**](ui-statements-page.html) and [**Transactions**](ui-transactions-page.html) pages in the DB Console. `VIEWACTIVITY` also permits visibility of node hostnames and IP addresses in the DB Console. With `NOVIEWACTIVITY`, the `SHOW` commands show only the user's own data, and DB Console pages redact node hostnames and IP addresses.<br><br>By default, the role option is set to `NOVIEWACTIVITY` for all non-`admin` users.
-`VIEWCLUSTERSETTING` / `NOVIEWCLUSTERSETTING` | Allow or disallow a user to view the [cluster settings](cluster-settings.html) with `SHOW CLUSTER SETTING` or to access the [**Cluster Settings**](ui-debug-pages.html) page in the DB Console. <br><br>By default, the role option is set to `NOVIEWCLUSTERSETTING` for all non-`admin` users.
-`VIEWACTIVITYREDACTED`/`NOVIEWACTIVITYREDACTED` | Allow or disallow a user to see other users' queries and sessions using `SHOW STATEMENTS`, `SHOW SESSIONS`, and the Statements and Transactions pages in the DB Console. With `VIEWACTIVITYREDACTED`, a user will not have access to the usage of statements diagnostics bundle (which can contain PII information) in the DB Console, and will not be able to list queries containing [constants](sql-constants.html) for other users when using the `listSessions` endpoint through the [Cluster API](cluster-api.html). It is possible to have both `VIEWACTIVITY` and `VIEWACTIVITYREDACTED`, and `VIEWACTIVITYREDACTED` takes precedence on restrictions. If the user has `VIEWACTIVITY` but doesn't have `VIEWACTIVITYREDACTED`, they will be able to see DB Console pages and have access to the statements diagnostics bundle. <br><br>By default, the role option is set to `NOVIEWACTIVITYREDACTED` for all non-`admin` users.
+- Are case-insensitive.
+- Must start with either a letter or underscore.
+- Must contain only letters, numbers, periods, or underscores.
+- Must be between 1 and 63 characters.
+- Cannot be `none`.
+- Cannot start with `pg_` or `crdb_internal`. Object names with these prefixes are reserved for [system catalogs](system-catalogs.html).
+- User and role names share the same namespace and must be unique.
 
+### Role options
 
-
+{% include {{page.version.version}}/sql/role-options.md %}
 
 ## User authentication
 
