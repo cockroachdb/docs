@@ -29,7 +29,7 @@ Note that if multiple mutations inside the same statement affect different table
 
 ### `transaction_rows_read_err` and `transaction_rows_written_err` do not halt query execution
 
-The `transaction_rows_read_err` and `transaction_rows_written_err` [session settings](set-vars.html) limit the number of row read or written by a single [transaction](transactions.html#limit-the-number-of-rows-written-or-read-in-a-transaction). These session settings will fail the transaction with an error, but not until the current query finishes executing and the results have been returned to the client.
+The `transaction_rows_read_err` and `transaction_rows_written_err` [session settings](set-vars.html) limit the number of rows read or written by a single [transaction](transactions.html#limit-the-number-of-rows-written-or-read-in-a-transaction). These session settings will fail the transaction with an error, but not until the current query finishes executing and the results have been returned to the client.
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/70473)
 
