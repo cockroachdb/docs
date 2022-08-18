@@ -179,7 +179,7 @@ When the SQL shell connects (or reconnects) to a CockroachDB node, it prints a w
 The **Version** and **Cluster ID** details are particularly noteworthy:
 
 - When the client and server versions of CockroachDB are the same, the shell prints the `Server version` followed by `(same version as client)`.
-- When the client and server versions are different, the shell prints both the `Client version` and `Server version`. In this case, you may want to [plan an upgrade](upgrade-cockroach-version.html) of older client or server versions.
+- When the client and server versions are different, the shell prints both the `Client version` and `Server version`. In this case, you may want to [plan an upgrade](upgrade-cockroach-version.html) of earlier client or server versions.
 - Since every CockroachDB cluster has a unique ID, you can use the `Cluster ID` field to verify that your client is always connecting to the correct cluster.
 
 ### Commands
