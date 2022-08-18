@@ -21,7 +21,7 @@ The `ALTER USER` [statement](sql-statements.html) can be used to add, change, or
 
 ## Synopsis
 
-<div>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/alter_user_password.html %}</div>
+<section>{% include {{ page.version.version }}/sql/generated/diagrams/alter_user_password.html %}</section>
 
 ## Parameters
 
