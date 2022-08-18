@@ -5,13 +5,10 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `DROP USER` [statement](sql-statements.html) removes one or more SQL users.
+The `DROP USER` [statement](sql-statements.html) removes one or more SQL users. You can use the keywords `ROLE` and `USER` interchangeably. `DROP USER` is an alias for [`DROP ROLE`](drop-role.html).
 
 {% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
-{{site.data.alerts.callout_info}}
- Since the keywords `ROLE` and `USER` can now be used interchangeably in SQL statements for enhanced PostgreSQL compatibility, `DROP USER` is now an alias for [`DROP ROLE`](drop-role.html).
-{{site.data.alerts.end}}
 
 ## Consideration
 
@@ -23,13 +20,13 @@ Non-admin users cannot drop admin users. To drop non-admin users, the user must 
 
 ## Synopsis
 
-<div>{% include {{ page.version.version }}/sql/generated/diagrams/drop_user.html %}</div>
+See [`DROP ROLE`: Synopsis](drop-role.html#synopsis).
 
 ## Parameters
 
  Parameter | Description
 -----------|-------------
-`user_name` | The username of the user to remove. To remove multiple users, use a comma-separate list of usernames.<br><br>You can use [`SHOW USERS`](show-users.html) to find usernames.
+`user_name` | The name of the user to remove. To remove multiple users, use a comma-separate list of usernames.<br><br>You can use [`SHOW USERS`](show-users.html) to find usernames.
 
 ## Example
 

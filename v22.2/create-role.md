@@ -15,27 +15,15 @@ docs_area: reference.sql
 
 The `CREATE ROLE` [statement](sql-statements.html) creates SQL [roles](security-reference/authorization.html#users-and-roles), which are groups containing any number of roles and users as members. You can assign [privileges](security-reference/authorization.html#privileges) to roles, and all members of the role (regardless of whether if they are direct or indirect members) will inherit the role's privileges.
 
+You can use the keywords `ROLE` and `USER` interchangeably. [`CREATE USER`](create-user.html) is equivalent to `CREATE ROLE`, with one exception: `CREATE ROLE` sets the `NOLOGIN` [role option](#role-options), which prevents the new role from being used to log in to the database. You can use `CREATE ROLE` and specify the `LOGIN` [role option](#role-options) to achieve the same result as `CREATE USER`.
+
 {% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
-
-{{site.data.alerts.callout_info}}
-The keywords `ROLE` and `USER` can be used interchangeably in SQL statements for enhanced PostgreSQL compatibility.
-
-`CREATE USER` is equivalent to the statement `CREATE ROLE`, with one exception: `CREATE ROLE` sets the [`NOLOGIN`](#parameters) option by default, preventing the new role from being used to log in to the database. You can use `CREATE ROLE` and specify the [`LOGIN`](#parameters) option to achieve the same result as `CREATE USER`.
-{{site.data.alerts.end}}
 
 ## Considerations
 
-- Role names:
-    - Are case-insensitive
-    - Must start with either a letter or underscore
-    - Must contain only letters, numbers, periods, or underscores
-    - Must be between 1 and 63 characters.
-    -  Cannot be `none`.
-    -  Cannot start with `pg_` or `crdb_internal`. Object names with these prefixes are reserved for [system catalogs](system-catalogs.html).
-- After creating roles, you must [grant them privileges to databases and tables](grant.html).
-- Roles and users can be members of roles.
-- Roles and users share the same namespace and must be unique.
+- After creating a role, you must [grant it privileges to databases and tables](grant.html).
 - All [privileges](security-reference/authorization.html#privileges) of a role are inherited by all of its members.
+- Users and roles can be members of roles.
 - Role options of a role are not inherited by any of its members.
 - There is no limit to the number of members in a role.
 - Membership loops are not allowed (direct: `A is a member of B is a member of A` or indirect: `A is a member of B is a member of C ... is a member of A`).
@@ -44,8 +32,8 @@ The keywords `ROLE` and `USER` can be used interchangeably in SQL statements for
 
 Unless a role is a member of the `admin` role, additional [privileges](#parameters) are required to manage other roles.
 
-- To create other roles, a role must have the [`CREATEROLE`](#create-a-role-that-can-create-other-roles-and-manage-authentication-methods-for-the-new-roles) role option.
-- To add the `LOGIN` capability for other roles so that they may log in as users, a role must also have the [`CREATELOGIN`](#create-a-role-that-can-create-other-roles-and-manage-authentication-methods-for-the-new-roles) role option.
+- To create other roles, a role must have the [`CREATEROLE`](#create-a-role-that-can-create-other-roles-and-manage-authentication-methods-for-the-new-roles) [role option](#role-options).
+- To add the `LOGIN` capability for other roles so that they can log in as users, a role must also have the [`CREATELOGIN`](#create-a-role-that-can-create-other-roles-and-manage-authentication-methods-for-the-new-roles) role option.
 - To be able to grant or revoke membership to a role for additional roles, a member of the role must be set as a [role admin](security-reference/authorization.html#role-admin) for that role.
 
 ## Synopsis
@@ -58,27 +46,20 @@ Unless a role is a member of the `admin` role, additional [privileges](#paramete
 
 Parameter | Description
 ----------|-------------
-`name` | The name of the role to create. Role names are case-insensitive; must start with either a letter or underscore; must contain only letters, numbers, periods, or underscores; and must be between 1 and 63 characters.<br><br>Note that roles and [users](create-user.html) share the same namespace and must be unique.
-`WITH role_option` | Apply a [role option](#role-options) to the role.
+`name` | The name of the role to create.
+`WITH role_option` | Apply a [role option](#role-options) to a role.
 
-### Role options
+### Role names
 
-Role option | Description
-------------|--------------
-`CANCELQUERY`/`NOCANCELQUERY` | Allow or disallow a role to cancel [queries](cancel-query.html) and [sessions](cancel-session.html) of other roles. Without this role option, roles can only cancel their own queries and sessions. Even with the `CANCELQUERY` role option, non-`admin` roles cannot cancel `admin` queries or sessions. This option should usually be combined with `VIEWACTIVITY` so that the role can view other roles' query and session information. <br><br>By default, the role option is set to `NOCANCELQUERY` for all non-`admin` roles.
-`CONTROLCHANGEFEED`/`NOCONTROLCHANGEFEED` | Allow or disallow a role to run [`CREATE CHANGEFEED`](create-changefeed.html) on tables they have `SELECT` privileges on. <br><br>By default, the role option is set to `NOCONTROLCHANGEFEED` for all non-`admin` roles.
-`CONTROLJOB`/`NOCONTROLJOB` | Allow or disallow a role to [pause](pause-job.html), [resume](resume-job.html), and [cancel](cancel-job.html) jobs. Non-`admin` roles cannot control jobs created by `admin` roles. <br><br>By default, the role option is set to `NOCONTROLJOB` for all non-`admin` roles.
-`CREATEDB`/`NOCREATEDB` | Allow or disallow a role to [create](create-database.html) or [rename](rename-database.html) a database. The role is assigned as the owner of the database. <br><br>By default, the role option is set to `NOCREATEDB` for all non-`admin` roles.
-`CREATELOGIN`/`NOCREATELOGIN` | Allow or disallow a role to manage authentication using the `WITH PASSWORD`, `VALID UNTIL`, and `LOGIN/NOLOGIN` role options. <br><br>By default, the role option is set to `NOCREATELOGIN` for all non-`admin` roles.
-`CREATEROLE`/`NOCREATEROLE` |  Allow or disallow a new role to create, [alter](alter-role.html), and [drop](drop-role.html) other non-`admin` roles. <br><br>By default, the role option is set to `NOCREATEROLE` for all non-`admin` roles.
-`LOGIN`/`NOLOGIN` | Allow or disallow a role to log in with one of the [client authentication methods](authentication.html#client-authentication). Setting the role option to `NOLOGIN` prevents the role from logging in using any authentication method.
-`MODIFYCLUSTERSETTING`/`NOMODIFYCLUSTERSETTING` | Allow or disallow a role to modify the [cluster settings](cluster-settings.html) with the `sql.defaults` prefix. <br><br>By default, the role option is set to `NOMODIFYCLUSTERSETTING` for all non-`admin` roles.
-`PASSWORD password`/`PASSWORD NULL` | The credential the role uses to [authenticate their access to a secure cluster](authentication.html#client-authentication). A password should be entered as a [string literal](sql-constants.html#string-literals). For compatibility with PostgreSQL, a password can also be entered as an identifier. <br><br>To prevent a role from using [password authentication](authentication.html#client-authentication) and to mandate [certificate-based client authentication](authentication.html#client-authentication), [set the password as `NULL`](#prevent-a-role-from-using-password-authentication).
-`SQLLOGIN`/`NOSQLLOGIN` | Allow or disallow a role to log in using the SQL CLI with one of the [client authentication methods](authentication.html#client-authentication). The role option to `NOSQLLOGIN` prevents the role from logging in using the SQL CLI with any authentication method while retaining the ability to log in to DB Console. It is possible to have both `NOSQLLOGIN` and `LOGIN` set for a role and `NOSQLLOGIN` takes precedence on restrictions. <br><br>Without any role options all login behavior is permitted.
-`VALID UNTIL` |  The date and time (in the [`timestamp`](timestamp.html) format) after which the [password](#parameters) is not valid.
-`VIEWACTIVITY`/`NOVIEWACTIVITY` | Allow or disallow a role to see other roles' [queries](show-statements.html) and [sessions](show-sessions.html) using `SHOW STATEMENTS`, `SHOW SESSIONS`, and the [**Statements**](ui-statements-page.html) and [**Transactions**](ui-transactions-page.html) pages in the DB Console. `VIEWACTIVITY` also permits visibility of node hostnames and IP addresses in the DB Console. With `NOVIEWACTIVITY`, the `SHOW` commands show only the role's own data, and DB Console pages redact node hostnames and IP addresses.<br><br>By default, the role option is set to `NOVIEWACTIVITY` for all non-`admin` roles.
-`VIEWCLUSTERSETTING` / `NOVIEWCLUSTERSETTING` | Allow or disallow a role to view the [cluster settings](cluster-settings.html) with `SHOW CLUSTER SETTING` or to access the [**Cluster Settings**](ui-debug-pages.html) page in the DB Console. <br><br>By default, the role option is set to `NOVIEWCLUSTERSETTING` for all non-`admin` roles.
-`VIEWACTIVITYREDACTED`/`NOVIEWACTIVITYREDACTED` | Allow or disallow a role to see other roles' queries and sessions using `SHOW STATEMENTS`, `SHOW SESSIONS`, and the Statements and Transactions pages in the DB Console. With `VIEWACTIVITYREDACTED`, a user will not have access to the usage of statements diagnostics bundle (which can contain PII information) in the DB Console, and will not be able to list queries containing [constants](sql-constants.html) for other users when using the `listSessions` endpoint through the [Cluster API](cluster-api.html). It is possible to have both `VIEWACTIVITY` and `VIEWACTIVITYREDACTED`, and `VIEWACTIVITYREDACTED` takes precedence on restrictions. If the user has `VIEWACTIVITY` but doesn't have `VIEWACTIVITYREDACTED`, they will be able to see DB Console pages and have access to the statements diagnostics bundle. <br><br>By default, the role option is set to `NOVIEWACTIVITYREDACTED` for all non-`admin` roles.
+- Are case-insensitive.
+- Must start with either a letter or underscore.
+- Must contain only letters, numbers, periods, or underscores.
+- Must be between 1 and 63 characters.
+- Cannot be `none`.
+- Cannot start with `pg_` or `crdb_internal`. Object names with these prefixes are reserved for [system catalogs](system-catalogs.html).
+- User and role names share the same namespace and must be unique.
+
+{% include {{page.version.version}}/sql/role-options.md %}
 
 ## Examples
 
@@ -173,7 +154,7 @@ root       |                                       | {admin}
 
 ### Create a role that can create other roles and manage authentication methods for the new roles
 
-The following example allows the role to [create other users](create-user.html) and [manage authentication methods](authentication.html#client-authentication) for them:
+The following example allows the role to [create other users](create-role.html) and [manage authentication methods](authentication.html#client-authentication) for them:
 
 ~~~ sql
 root@:26257/defaultdb> CREATE ROLE can_create_role WITH CREATEROLE CREATELOGIN;
@@ -335,6 +316,7 @@ root                       |                                       | {admin}
 
 - [Authorization](authorization.html)
 - [Authorization Best Practices](security-reference/authorization.html#authorization-best-practices)
+- [`ALTER ROLE`](alter-role.html)
 - [`DROP ROLE`](drop-role.html)
 - [`GRANT`](grant.html)
 - [`REVOKE`](revoke.html)
