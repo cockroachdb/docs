@@ -48,7 +48,7 @@ By default, session variables are set for the duration of the current session. A
 ### SET LOCAL
 
 <div>
-  {% include {{ page.version.version }}/sql/generated/diagrams/set_local.html %}
+  {% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ remote_include_version }}/grammar_svg/set_local.html %}
 </div>
 
 {{site.data.alerts.callout_info}}

@@ -53,7 +53,6 @@ The user must have the `CREATE` [privilege](security-reference/authorization.htm
 
 {% include {{ page.version.version }}/misc/schema-change-view-job.md %}
 
-
 {% include {{page.version.version}}/sql/querying-partitions.md %}
 
 ## Examples

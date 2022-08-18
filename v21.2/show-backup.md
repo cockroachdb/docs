@@ -16,7 +16,7 @@ The `SHOW BACKUP` [statement](sql-statements.html) lists the contents of a backu
 ## Synopsis
 
 <div>
-{% include {{ page.version.version }}/sql/generated/diagrams/show_backup.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/show_backup.html %}
 </div>
 
 ## Parameters
