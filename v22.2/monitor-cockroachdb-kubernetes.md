@@ -77,31 +77,32 @@ If you're on Hosted GKE, before starting, make sure the email address associated
     This ensures that there is a Prometheus job and monitoring data only for the `my-release-cockroachdb` service, not for the `my-release-cockroach-public` service.
     </section>
 
-1. Install [CoreOS's Prometheus Operator](https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/release-0.43/bundle.yaml):
+1. Determine the latest version of [CoreOS's Prometheus Operator](https://github.com/prometheus-operator/prometheus-operator/releases/) and run the following to download and apply the latest `bundle.yaml` definition file:
 
     {{site.data.alerts.callout_info}}
-    We recommend checking for the latest Prometheus Operator [release version](https://github.com/prometheus-operator/prometheus-operator/blob/master/RELEASE.md) and specifying this version in the following command.
+    Be sure to specify the latest [CoreOS Prometheus Operator](https://github.com/prometheus-operator/prometheus-operator/releases/) version in the following command, in place of this example's use of version `v0.58.0`.
     {{site.data.alerts.end}}
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl apply \
-    -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.47.1/bundle.yaml
+    -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.58.0/bundle.yaml \
+    --server-side
     ~~~
 
     ~~~
-    customresourcedefinition.apiextensions.k8s.io/alertmanagers.monitoring.coreos.com created
-    customresourcedefinition.apiextensions.k8s.io/podmonitors.monitoring.coreos.com created
-    customresourcedefinition.apiextensions.k8s.io/probes.monitoring.coreos.com created
-    customresourcedefinition.apiextensions.k8s.io/prometheuses.monitoring.coreos.com created
-    customresourcedefinition.apiextensions.k8s.io/prometheusrules.monitoring.coreos.com created
-    customresourcedefinition.apiextensions.k8s.io/servicemonitors.monitoring.coreos.com created
-    customresourcedefinition.apiextensions.k8s.io/thanosrulers.monitoring.coreos.com created
-    clusterrolebinding.rbac.authorization.k8s.io/prometheus-operator configured
-    clusterrole.rbac.authorization.k8s.io/prometheus-operator configured
-    deployment.apps/prometheus-operator created
-    serviceaccount/prometheus-operator configured
-    service/prometheus-operator created
+    customresourcedefinition.apiextensions.k8s.io/alertmanagers.monitoring.coreos.com serverside-applied
+    customresourcedefinition.apiextensions.k8s.io/podmonitors.monitoring.coreos.com serverside-applied
+    customresourcedefinition.apiextensions.k8s.io/probes.monitoring.coreos.com serverside-applied
+    customresourcedefinition.apiextensions.k8s.io/prometheuses.monitoring.coreos.com serverside-applied
+    customresourcedefinition.apiextensions.k8s.io/prometheusrules.monitoring.coreos.com serverside-applied
+    customresourcedefinition.apiextensions.k8s.io/servicemonitors.monitoring.coreos.com serverside-applied
+    customresourcedefinition.apiextensions.k8s.io/thanosrulers.monitoring.coreos.com serverside-applied
+    clusterrolebinding.rbac.authorization.k8s.io/prometheus-operator serverside-applied
+    clusterrole.rbac.authorization.k8s.io/prometheus-operator serverside-applied
+    deployment.apps/prometheus-operator serverside-applied
+    serviceaccount/prometheus-operator serverside-applied
+    service/prometheus-operator serverside-applied
     ~~~
 
 1. Confirm that the `prometheus-operator` has started:
