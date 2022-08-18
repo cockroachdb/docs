@@ -18,7 +18,7 @@ The `RESET (storage parameter)` [statement](sql-statements.html) reverts the val
 {{site.data.alerts.callout_info}}
 The `RESET (storage parameter)` is a subcommand of [`ALTER TABLE`](alter-table.html).
 
-To reset a storage parameter on an existing index, you must drop and [recreate the index with the storage parameter](with-storage-parameter.html).
+To reset a storage parameter on an existing index, you must drop and [recreate the index without the storage parameter](with-storage-parameter.html).
 {{site.data.alerts.end}}
 
 ## Syntax

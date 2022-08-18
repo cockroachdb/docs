@@ -1,6 +1,6 @@
 | Parameter name      | Description | Data type | Default value |
 |---------------------+----------------------+-----+------|
-| `exclude_data_from_backup` | **New in v22.1:** Excludes the data in this table from any future backups. | Boolean | `false` |
+| `exclude_data_from_backup` | Excludes the data in this table from any future backups. | Boolean | `false` |
 | `ttl` | Signifies if a TTL is active. Automatically set and controls the reset of all TTL-related storage parameters. | N/A | N/A |
 | `ttl_automatic_column` | If set, use the value of the `crdb_internal_expiration` hidden column. Always set to `true` and cannot be reset. | Boolean | `true` |
 | `ttl_delete_batch_size` | The number of rows to [delete](delete.html) at a time. Minimum: `1`. | Integer | `100` |
