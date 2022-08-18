@@ -28,20 +28,30 @@ Download the binary and copy it into your `PATH`.
 <div class="filter-content" markdown="1" data-scope="linux">
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-curl https://binaries.cockroachdb.com/cockroach-sql-{{ release.version }}.linux-amd64 --output cockroach-sql-{{ release.version }}.linux-amd64 && sudo cp -i cockroach-sql-{{ release.version }}.linux-amd64 /usr/local/bin/cockroach-sql && sudo chmod 755 /usr/local/bin/cockroach-sql && if [ ! -f /usr/local/bin/cockroach ]; then sudo ln -s /usr/local/bin/cockroach-sql /usr/local/bin/cockroach; fi
+curl https://binaries.cockroachdb.com/cockroach-sql-{{ page.release_info.version }}.linux-amd64.tgz | tar -xz && sudo cp -i cockroach-sql-{{ page.release_info.version }}.linux-amd64/cockroach-sql /usr/local/bin/ && if [ ! -f /usr/local/bin/cockroach ]; then sudo ln -s /usr/local/bin/cockroach-sql /usr/local/bin/cockroach; fi
 ~~~
+
+If you don't have an existing `cockroach` binary in `/usr/local/bin` this will create a symbolic link to `cockroach` so you can use the `cockroach sql` command.
 </div>
 <div class="filter-content" markdown="1" data-scope="mac">
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-curl https://binaries.cockroachdb.com/cockroach-sql-{{ release.version }}.darwin-10.9-amd64 --output cockroach-sql-{{ release.version }}.darwin-10.9-amd64 && sudo cp -i cockroach-sql-{{ release.version }}.darwin-10.9-amd64 /usr/local/bin/cockroach-sql && sudo chmod 755 /usr/local/bin/cockroach-sql && if [ ! -f /usr/local/bin/cockroach ]; then sudo ln -s /usr/local/bin/cockroach-sql /usr/local/bin/cockroach; fi
+curl https://binaries.cockroachdb.com/cockroach-sql-{{ r.version }}.darwin-10.9-amd64.tgz | tar -xz && sudo cp -i cockroach-sql-{{ r.version }}.darwin-10.9-amd64/cockroach-sql /usr/local/bin && if [ ! -f /usr/local/bin/cockroach ]; then sudo ln -s /usr/local/bin/cockroach-sql /usr/local/bin/cockroach; fi
 ~~~
+
+If you don't have an existing `cockroach` binary in `/usr/local/bin` this will create a symbolic link to `cockroach` so you can use the `cockroach sql` command.
 </div>
 <div class="filter-content" markdown="1" data-scope="windows">
+
+Open a PowerShell terminal as an Administrator, then run the following command:
+
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-$ErrorActionPreference = "Stop"; [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12;$ProgressPreference = 'SilentlyContinue'; $null = New-Item -Type Directory -Force $env:appdata/cockroach; Invoke-WebRequest -Uri https://binaries.cockroachdb.com/cockroach-sql-{{ release.version }}.windows-6.2-amd64.exe -OutFile $env:appdata/cockroach/cockroach-sql.exe; $Env:PATH += ";$env:appdata/cockroach/cockroach-sql"; if (!(Test-Path "$env:appdata/cockroach/cockroach.exe")) { New-Item -ItemType SymbolicLink -Path $env:appdata/cockroach/cockroach.exe -Target $env:appdata/cockroach/cockroach-sql.exe }
+$ErrorActionPreference = "Stop"; [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12;$ProgressPreference = 'SilentlyContinue'; $null = New-Item -Type Directory -Force $env:appdata/cockroach; Invoke-WebRequest -Uri https://binaries.cockroachdb.com/cockroach-sql-{{ page.release_info.version }}.windows-6.2-amd64.zip -OutFile cockroach-sql.zip; Expand-Archive -Force -Path cockroach-sql.zip; Copy-Item -Force "cockroach-sql/cockroach-sql-{{ page.release_info.version }}.windows-6.2-amd64/cockroach-sql.exe" -Destination $env:appdata/cockroach; $Env:PATH += ";$env:appdata/cockroach"; if (!(Test-Path "$env:appdata/cockroach/cockroach.exe")) { New-Item -ItemType SymbolicLink -Path $env:appdata/cockroach/cockroach.exe -Target $env:appdata/cockroach/cockroach-sql.exe }
 ~~~
+
+If you don't have an existing `cockroach` binary in `$env:appdata/cockroach/` this will create a symbolic link to `cockroach` so you can use the `cockroach sql` command.
+
 </div>
 
 Or you can download the [binary from the releases page](../releases/{{ page.version.version }}.html) and install it manually.
