@@ -1,6 +1,6 @@
 ---
 title: RESET (storage parameter)
-summary: RESET (storage parameter) applies a storage parameter to a table or an index.
+summary: RESET (storage parameter) resets a storage parameter on an existing table.
 toc: true
 docs_area: reference.sql
 ---
@@ -13,10 +13,12 @@ docs_area: reference.sql
 {% assign remote_include_version = site.versions["stable"] | replace: "v", "" %}
 {% endif %}
 
-The `RESET (storage parameter)` [statement](sql-statements.html) reverts the value of a storage parameter on a table or an index to its default value.
+The `RESET (storage parameter)` [statement](sql-statements.html) reverts the value of a storage parameter on a table to its default value.
 
 {{site.data.alerts.callout_info}}
-The `SET (storage parameter)` is a subcommand of [`ALTER TABLE`](alter-table.html) and [`ALTER INDEX`](alter-index.html).
+The `RESET (storage parameter)` is a subcommand of [`ALTER TABLE`](alter-table.html).
+
+To reset a storage parameter on an existing index, you must drop and [recreate the index with the storage parameter](with-storage-parameter.html).
 {{site.data.alerts.end}}
 
 ## Syntax
@@ -31,17 +33,12 @@ The `SET (storage parameter)` is a subcommand of [`ALTER TABLE`](alter-table.htm
 
 ## Command parameters
 
-| Parameter           | Description                                                                                                                |
+| Parameter           | Description          |
 |---------------------+----------------------|
-| `table`             | The table to which you are setting the parameter.                                                                                         |
-| `index`             | The index to which you are setting the parameter.                                                                                         |
-| `parameter_name`    | The name of the storage parameter you are changing. See [Storage parameters](#list-of-storage-parameters) for a list of available parameters. |
+| `table`             | The table to which you are setting the parameter.                                                                                     |
+| `parameter_name`    | The name of the storage parameter you are changing. See [Storage parameters](#storage-parameters) for a list of available parameters. |
 
-## List of storage parameters
-
-### Index parameters
-
-{% include {{ page.version.version }}/misc/index-storage-parameters.md %}
+## Storage parameters
 
 ### Table parameters
 

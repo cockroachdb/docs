@@ -1,6 +1,6 @@
 ---
 title: SET (storage parameter)
-summary: SET (storage parameter) applies a storage parameter to a table or an index after table or index creation.
+summary: SET (storage parameter) applies a storage parameter to an existing table.
 toc: true
 docs_area: reference.sql
 ---
@@ -13,10 +13,12 @@ docs_area: reference.sql
 {% assign remote_include_version = site.versions["stable"] | replace: "v", "" %}
 {% endif %}
 
-The `SET (storage parameter)` [statement](sql-statements.html) sets a storage parameter on an existing table or index.
+The `SET (storage parameter)` [statement](sql-statements.html) sets a storage parameter on an existing table.
 
 {{site.data.alerts.callout_info}}
-The `SET (storage parameter)` is a subcommand of [`ALTER TABLE`](alter-table.html) and [`ALTER INDEX`](alter-index.html).
+The `SET (storage parameter)` is a subcommand of [`ALTER TABLE`](alter-table.html).
+
+To set a storage parameter on an existing index, you must drop and [recreate the index with the storage parameter](with-storage-parameter.html).
 {{site.data.alerts.end}}
 
 ## Syntax
@@ -31,17 +33,13 @@ The `SET (storage parameter)` is a subcommand of [`ALTER TABLE`](alter-table.htm
 
 ## Command parameters
 
-| Parameter           | Description                                                                                                                |
+| Parameter           | Description          |
 |---------------------+----------------------|
 | `table`             | The table to which you are setting the parameter.                                                                                         |
 | `index`             | The index to which you are setting the parameter.                                                                                         |
-| `parameter_name`    | The name of the storage parameter. See [Storage parameters](#list-of-storage-parameters) for a list of available parameters. |
+| `parameter_name`    | The name of the storage parameter. See [Storage parameters](#storage-parameters) for a list of available parameters. |
 
-## List of storage parameters
-
-### Index parameters
-
-{% include {{ page.version.version }}/misc/index-storage-parameters.md %}
+## Storage parameters
 
 ### Table parameters
 
@@ -55,7 +53,7 @@ The user must be a member of the [`admin`](security-reference/authorization.html
 
 ### Exclude a table's data from backups
 
-In some situations, you may want to exclude a table's row data from a [backup](backup.html). For example, you have a table that contains high-churn data that you would like to [garbage collect](architecture/storage-layer.html#garbage-collection) more quickly than the [incremental backup](take-full-and-incremental-backups.html#incremental-backups) schedule for the database or cluster holding the table. You can use the `exclude_data_from_backup = true` parameter with a [`CREATE TABLE`](create-table.html#create-a-table-with-data-excluded-from-backup) or `ALTER TABLE` statement to mark a table's row data for exclusion from a backup.
+{% include_cached new-in.html version="v22.1" %} In some situations, you may want to exclude a table's row data from a [backup](backup.html). For example, you have a table that contains high-churn data that you would like to [garbage collect](architecture/storage-layer.html#garbage-collection) more quickly than the [incremental backup](take-full-and-incremental-backups.html#incremental-backups) schedule for the database or cluster holding the table. You can use the `exclude_data_from_backup = true` parameter with a [`CREATE TABLE`](create-table.html#create-a-table-with-data-excluded-from-backup) or `ALTER TABLE` statement to mark a table's row data for exclusion from a backup.
 
 For more detail and an example through the backup and [restore](restore.html) process using this parameter, see [Take Full and Incremental Backups](take-full-and-incremental-backups.html#exclude-a-tables-data-from-backups).
 
