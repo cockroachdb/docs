@@ -169,7 +169,7 @@ For an example of an identity column, see [Create a table with an identity colum
 
 ### `NOT VISIBLE` property
 
-The `NOT VISIBLE` property specifies a column won't be returned when using `*` in a [`SELECT` clause](select-clause.html). You can apply the `NOT VISIBLE` property only to individual columns. For an example, see [Show the `CREATE TABLE` statement for a table with a hidden column](show-create.html#show-the-create-table-statement-for-a-table-with-a-hidden-column).
+The `NOT VISIBLE` property specifies a column will not be returned when using `*` in a [`SELECT` clause](select-clause.html). You can apply the `NOT VISIBLE` property only to individual columns. For an example, refer to [Show the `CREATE TABLE` statement for a table with a hidden column](show-create.html#show-the-create-table-statement-for-a-table-with-a-hidden-column).
 
 ## Create a table like an existing table
 

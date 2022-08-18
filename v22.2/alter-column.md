@@ -303,7 +303,7 @@ For example, the `users` table of the [`movr` database](movr.html) contains the 
 > ALTER TABLE users ALTER COLUMN credit_card SET NOT VISIBLE;
 ~~~
 
-When you run `SELECT *`, the column doesn't appear:
+When you run `SELECT *`, the column does not appear:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
