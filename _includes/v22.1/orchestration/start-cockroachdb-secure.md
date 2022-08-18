@@ -17,6 +17,8 @@
       secretName: cockroachdb.node
     ~~~
 
+1. The StatefulSet configuration deploys CockroachDB into the `default` namespace. To use a different namespace, search for `kind: RoleBinding` and change its `subjects.namespace` property to the name of the namespace. Otherwise, a `failed to read secrets` error occurs when you attempt to follow the steps in [Initialize the cluster](#initialize-the-cluster).
+
 {{site.data.alerts.callout_info}}
 By default, this manifest specifies CPU and memory resources that are appropriate for the virtual machines used in this deployment example. On a production cluster, you should substitute values that are appropriate for your machines and workload. For details on configuring your deployment, see [Configure the Cluster](configure-cockroachdb-kubernetes.html?filters=manual).
 {{site.data.alerts.end}}

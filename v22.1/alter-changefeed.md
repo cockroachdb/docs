@@ -67,7 +67,7 @@ To alter a changefeed, the user must be a member of the `admin` role or have the
 To use the `ALTER CHANGEFEED` statement to modify a changefeed, it is necessary to first pause the running changefeed. The following example demonstrates creating a changefeed, pausing the changefeed, modifying it, and then resuming the changefeed.
 
 {{site.data.alerts.callout_info}}
-For more information on enabling and using changefeeds, see [Use Changefeeds](use-changefeeds.html).
+For more information on enabling changefeeds, see [Create and Configure Changefeeds](create-and-configure-changefeeds.html).
 {{site.data.alerts.end}}
 
 1. First, create the changefeed. This example changefeed will emit change messages to a cloud storage sink on two watched tables. The emitted messages will include the [`resolved`](create-changefeed.html#resolved-option), [`updated`](create-changefeed.html#updated-option), and [`schema_change_policy`](create-changefeed.html#schema-policy) options:
@@ -227,7 +227,7 @@ To remove a table with column families as a target from the changefeed, you must
     ALTER CHANGEFEED {job_ID} DROP database.table;
     ~~~
 
-For further discussion on using the `FAMILY` keyword and `split_column_families`, see [Tables with column families in changefeeds](use-changefeeds.html#changefeeds-on-tables-with-column-families).
+For further discussion on using the `FAMILY` keyword and `split_column_families`, see [Tables with column families in changefeeds](changefeeds-on-tables-with-column-families.html).
 
 ## Known limitations
 
