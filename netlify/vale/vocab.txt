@@ -636,6 +636,7 @@ underprovisioning
 underreplicated
 underreplication
 unencrypted
+unhide
 unicode
 unindexed
 uniquness
