@@ -30,7 +30,7 @@ The `SET` statement can set a session variable for the duration of the current s
 ### SET SESSION
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/set_session.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/set_session.html %}
 </div>
 
 {{site.data.alerts.callout_info}}

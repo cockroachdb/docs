@@ -10,11 +10,11 @@ The `SPLIT AT` [statement](sql-statements.html) forces a range split at the spec
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/split_table_at.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/split_table_at.html %}
 </div>
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/split_index_at.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/split_index_at.html %}
 </div>
 
 ## Required privileges
@@ -151,7 +151,7 @@ Suppose that you want MovR to offer ride-sharing services, in addition to vehicl
 );
 ~~~
 
-The table's compound primary key is on the `city` and `dl` columns. Note that the table automatically generates an `id` and a `dl` [using supported SQL functions](functions-and-operators.html), if they are not provided.
+The table's compound primary key is on the `city` and `dl` columns. Note that the table automatically generates an `id` and a `dl` value [using supported SQL functions](functions-and-operators.html) if they are not provided.
 
 Because this table has several columns in common with the `users` table, you can populate the table with values from the `users` table with an `INSERT` statement:
 
@@ -265,7 +265,7 @@ You can specify the time at which a split enforcement expires by adding a `WITH 
 (3 rows)
 ~~~
 
-You can see the split's expiration date in the `split_enforced_until` column. The `crdb_internal.ranges` table also contains information about ranges in your CockroachDB cluster, including the `split_enforced_until` column.
+You can see the split's expiration date in the `split_enforced_until` column. The [`crdb_internal.ranges`](crdb-internal.html) table also contains information about ranges in your CockroachDB cluster, including the `split_enforced_until` column.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -299,3 +299,5 @@ You can see the split's expiration date in the `split_enforced_until` column. Th
 - [Replication Layer](architecture/replication-layer.html)
 - [`SHOW JOBS`](show-jobs.html)
 - [`UNSPLIT AT`](unsplit-at.html)
+- [`ALTER TABLE`](alter-table.html)
+- [`ALTER INDEX`](alter-index.html)

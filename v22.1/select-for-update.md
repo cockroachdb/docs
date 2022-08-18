@@ -13,7 +13,7 @@ docs_area: reference.sql
 The following diagram shows the supported syntax for the optional `FOR` locking clause of a `SELECT` statement.
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/for_locking.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/for_locking.html %}
 </div>
 
 For the full `SELECT` statement syntax documentation, see [Selection Queries](selection-queries.html).
@@ -50,56 +50,7 @@ The user must have the `SELECT` and `UPDATE` [privileges](security-reference/aut
 
 This example uses `SELECT FOR UPDATE` to lock a row inside a transaction, forcing other transactions that want to update the same row to wait for the first transaction to complete. The other transactions that want to update the same row are effectively put into a queue based on when they first try to read the value of the row.
 
-This example assumes you are running a [local unsecured cluster](start-a-local-cluster.html).
-
-First, connect to the running cluster (call this Terminal 1):
-
-{% include_cached copy-clipboard.html %}
-~~~ shell
-cockroach sql --insecure
-~~~
-
-Next, create a table and insert some rows:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-CREATE TABLE kv (k INT PRIMARY KEY, v INT);
-INSERT INTO kv (k, v) VALUES (1, 5), (2, 10), (3, 15);
-~~~
-
-Next, we'll start a [transaction](transactions.html) and lock the row we want to operate on:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-BEGIN;
-SELECT * FROM kv WHERE k = 1 FOR UPDATE;
-~~~
-
-Hit enter twice in the [SQL client](cockroach-sql.html) to send the input so far to be evaluated.  This will result in the following output:
-
-~~~
-  k | v
-+---+----+
-  1 | 5
-(1 row)
-~~~
-
-Now open another terminal and connect to the database from a second client (call this Terminal 2):
-
-{% include_cached copy-clipboard.html %}
-~~~ shell
-cockroach sql --insecure
-~~~
-
-From Terminal 2, start a transaction and try to lock the same row for updates that is already being accessed by the transaction we opened in Terminal 1:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-BEGIN;
-SELECT * FROM kv WHERE k = 1 FOR UPDATE;
-~~~
-
-Hit enter twice to send the input so far to be evaluated. Because Terminal 1 has already locked this row, the `SELECT FOR UPDATE` statement from Terminal 2 will appear to "wait".
+{% include {{page.version.version}}/sql/select-for-update-example-partial.md %}
 
 Back in Terminal 1, update the row and commit the transaction:
 

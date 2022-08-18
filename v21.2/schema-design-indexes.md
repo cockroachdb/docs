@@ -73,6 +73,8 @@ Here are some best practices for creating and using indexes:
 
     Columns listed in a filtering [`WHERE` clause](select-clause.html#parameters) with the equality operators (`=` or `IN`) should come first in the index, before those referenced with inequality operators (`<`, `>`).
 
+    Columns with a higher cardinality (higher number of distinct values) should be placed in the index before columns with a lower cardinality. If the cardinality of the columns you wish to add to the index are similar, test multiple column arrangements in a non-production environment to determine the most performant arrangement.
+
 - Avoid indexing on sequential values. Writes to indexes with sequential keys can result in range hot spots that negatively affect performance. Instead, use [randomly generated unique IDs](performance-best-practices-overview.html#unique-id-best-practices) or [multi-column keys](performance-best-practices-overview.html#use-multi-column-primary-keys).
 
     If you are working with a table that *must* be indexed on sequential keys, use [hash-sharded indexes](hash-sharded-indexes.html). For details about the mechanics and performance improvements of hash-sharded indexes in CockroachDB, see our [Hash Sharded Indexes Unlock Linear Scaling for Sequential Workloads](https://www.cockroachlabs.com/blog/hash-sharded-indexes-unlock-linear-scaling-for-sequential-workloads/) blog post.

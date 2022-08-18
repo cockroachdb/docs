@@ -11,7 +11,7 @@ The `CANCEL JOB` [statement](sql-statements.html) lets you stop long-running job
 - [`BACKUP`](backup.html) and [`RESTORE`](restore.html) jobs
 - [User-created table statistics](create-statistics.html) jobs
 - [Automatic table statistics](cost-based-optimizer.html#table-statistics) jobs
-- [Changefeeds](use-changefeeds.html)
+- [Changefeeds](create-changefeed.html)
 - [Scheduled backup](manage-a-backup-schedule.html) jobs
 - [Schema change](online-schema-changes.html) jobs (see [Limitations](#limitations) for exceptions)
 
@@ -27,7 +27,7 @@ To cancel a job, the user must be a member of the `admin` role or must have the 
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/cancel_job.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/cancel_job.html %}
 </div>
 
 ## Parameters

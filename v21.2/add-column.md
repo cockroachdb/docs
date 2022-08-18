@@ -14,7 +14,7 @@ docs_area: reference.sql
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/add_column.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/add_column.html %}
 </div>
 
 
@@ -61,12 +61,12 @@ $ cockroach demo bank
 ~~~
 
 ~~~
-  column_name | data_type | is_nullable | column_default | generation_expression |  indices  | is_hidden
---------------+-----------+-------------+----------------+-----------------------+-----------+------------
-  id          | INT8      |    false    | NULL           |                       | {primary} |   false
-  balance     | INT8      |    true     | NULL           |                       | {primary} |   false
-  payload     | STRING    |    true     | NULL           |                       | {primary} |   false
-  active      | BOOL      |    true     | NULL           |                       | {primary} |   false
+  column_name | data_type | is_nullable | column_default | generation_expression |  indices    | is_hidden
+--------------+-----------+-------------+----------------+-----------------------+-------------+------------
+  id          | INT8      |    false    | NULL           |                       | {bank_pkey} |   false
+  balance     | INT8      |    true     | NULL           |                       | {bank_pkey} |   false
+  payload     | STRING    |    true     | NULL           |                       | {bank_pkey} |   false
+  active      | BOOL      |    true     | NULL           |                       | {bank_pkey} |   false
 (4 rows)
 ~~~
 
@@ -83,14 +83,14 @@ $ cockroach demo bank
 ~~~
 
 ~~~
-  column_name | data_type | is_nullable | column_default | generation_expression |  indices  | is_hidden
---------------+-----------+-------------+----------------+-----------------------+-----------+------------
-  id          | INT8      |    false    | NULL           |                       | {primary} |   false
-  balance     | INT8      |    true     | NULL           |                       | {primary} |   false
-  payload     | STRING    |    true     | NULL           |                       | {primary} |   false
-  active      | BOOL      |    true     | NULL           |                       | {primary} |   false
-  location    | STRING    |    true     | NULL           |                       | {primary} |   false
-  currency    | STRING    |    true     | NULL           |                       | {primary} |   false
+  column_name | data_type | is_nullable | column_default | generation_expression |  indices    | is_hidden
+--------------+-----------+-------------+----------------+-----------------------+-------------+------------
+  id          | INT8      |    false    | NULL           |                       | {bank_pkey} |   false
+  balance     | INT8      |    true     | NULL           |                       | {bank_pkey} |   false
+  payload     | STRING    |    true     | NULL           |                       | {bank_pkey} |   false
+  active      | BOOL      |    true     | NULL           |                       | {bank_pkey} |   false
+  location    | STRING    |    true     | NULL           |                       | {bank_pkey} |   false
+  currency    | STRING    |    true     | NULL           |                       | {bank_pkey} |   false
 (6 rows)
 ~~~
 
@@ -106,15 +106,15 @@ $ cockroach demo bank
 > SHOW COLUMNS FROM bank;
 ~~~
 ~~~
-  column_name | data_type | is_nullable |     column_default     | generation_expression |  indices  | is_hidden
---------------+-----------+-------------+------------------------+-----------------------+-----------+------------
-  id          | INT8      |    false    | NULL                   |                       | {primary} |   false
-  balance     | INT8      |    true     | NULL                   |                       | {primary} |   false
-  payload     | STRING    |    true     | NULL                   |                       | {primary} |   false
-  active      | BOOL      |    true     | NULL                   |                       | {primary} |   false
-  location    | STRING    |    true     | NULL                   |                       | {primary} |   false
-  currency    | STRING    |    true     | NULL                   |                       | {primary} |   false
-  interest    | DECIMAL   |    false    | 1.3:::DECIMAL::DECIMAL |                       | {primary} |   false
+  column_name | data_type | is_nullable |     column_default     | generation_expression |  indices    | is_hidden
+--------------+-----------+-------------+------------------------+-----------------------+-------------+------------
+  id          | INT8      |    false    | NULL                   |                       | {bank_pkey} |   false
+  balance     | INT8      |    true     | NULL                   |                       | {bank_pkey} |   false
+  payload     | STRING    |    true     | NULL                   |                       | {bank_pkey} |   false
+  active      | BOOL      |    true     | NULL                   |                       | {bank_pkey} |   false
+  location    | STRING    |    true     | NULL                   |                       | {bank_pkey} |   false
+  currency    | STRING    |    true     | NULL                   |                       | {bank_pkey} |   false
+  interest    | DECIMAL   |    false    | 1.3:::DECIMAL::DECIMAL |                       | {bank_pkey} |   false
 (7 rows)
 ~~~
 
@@ -130,16 +130,16 @@ $ cockroach demo bank
 > SHOW COLUMNS FROM bank;
 ~~~
 ~~~
-  column_name | data_type | is_nullable | column_default | generation_expression |          indices           | is_hidden
---------------+-----------+-------------+----------------+-----------------------+----------------------------+------------
-  id          | INT8      |    false    | NULL           |                       | {bank_address_key,primary} |   false
-  balance     | INT8      |    true     | NULL           |                       | {primary}                  |   false
-  payload     | STRING    |    true     | NULL           |                       | {primary}                  |   false
-  active      | BOOL      |    true     | NULL           |                       | {primary}                  |   false
-  location    | STRING    |    true     | NULL           |                       | {primary}                  |   false
-  currency    | STRING    |    true     | NULL           |                       | {primary}                  |   false
-  interest    | DECIMAL   |    false    | 1.3:::DECIMAL  |                       | {primary}                  |   false
-  address     | STRING    |    true     | NULL           |                       | {bank_address_key,primary} |   false
+  column_name | data_type | is_nullable | column_default | generation_expression |          indices             | is_hidden
+--------------+-----------+-------------+----------------+-----------------------+------------------------------+------------
+  id          | INT8      |    false    | NULL           |                       | {bank_address_key,bank_pkey} |   false
+  balance     | INT8      |    true     | NULL           |                       | {bank_pkey}                  |   false
+  payload     | STRING    |    true     | NULL           |                       | {bank_pkey}                  |   false
+  active      | BOOL      |    true     | NULL           |                       | {bank_pkey}                  |   false
+  location    | STRING    |    true     | NULL           |                       | {bank_pkey}                  |   false
+  currency    | STRING    |    true     | NULL           |                       | {bank_pkey}                  |   false
+  interest    | DECIMAL   |    false    | 1.3:::DECIMAL  |                       | {bank_pkey}                  |   false
+  address     | STRING    |    true     | NULL           |                       | {bank_address_key,bank_pkey} |   false
 (8 rows)
 ~~~
 
@@ -163,17 +163,17 @@ $ cockroach demo bank
 > SHOW COLUMNS FROM bank;
 ~~~
 ~~~
-  column_name | data_type | is_nullable | column_default | generation_expression |          indices           | is_hidden
---------------+-----------+-------------+----------------+-----------------------+----------------------------+------------
-  id          | INT8      |    false    | NULL           |                       | {bank_address_key,primary} |   false
-  balance     | INT8      |    true     | NULL           |                       | {primary}                  |   false
-  payload     | STRING    |    true     | NULL           |                       | {primary}                  |   false
-  active      | BOOL      |    true     | NULL           |                       | {primary}                  |   false
-  location    | STRING    |    true     | NULL           |                       | {primary}                  |   false
-  currency    | STRING    |    true     | NULL           |                       | {primary}                  |   false
-  interest    | DECIMAL   |    false    | 1.3:::DECIMAL  |                       | {primary}                  |   false
-  address     | STRING    |    true     | NULL           |                       | {bank_address_key,primary} |   false
-  cust_number | INT8      |    true     | NULL           |                       | {primary}                  |   false
+  column_name | data_type | is_nullable | column_default | generation_expression |          indices             | is_hidden
+--------------+-----------+-------------+----------------+-----------------------+------------------------------+------------
+  id          | INT8      |    false    | NULL           |                       | {bank_address_key,bank_pkey} |   false
+  balance     | INT8      |    true     | NULL           |                       | {bank_pkey}                  |   false
+  payload     | STRING    |    true     | NULL           |                       | {bank_pkey}                  |   false
+  active      | BOOL      |    true     | NULL           |                       | {bank_pkey}                  |   false
+  location    | STRING    |    true     | NULL           |                       | {bank_pkey}                  |   false
+  currency    | STRING    |    true     | NULL           |                       | {bank_pkey}                  |   false
+  interest    | DECIMAL   |    false    | 1.3:::DECIMAL  |                       | {bank_pkey}                  |   false
+  address     | STRING    |    true     | NULL           |                       | {bank_address_key,bank_pkey} |   false
+  cust_number | INT8      |    true     | NULL           |                       | {bank_pkey}                  |   false
 
 (9 rows)
 ~~~
@@ -183,11 +183,11 @@ $ cockroach demo bank
 > SHOW CONSTRAINTS FROM bank;
 ~~~
 ~~~
-  table_name |       constraint_name        | constraint_type |                      details                       | validated
--------------+------------------------------+-----------------+----------------------------------------------------+------------
-  bank       | bank_address_key             | UNIQUE          | UNIQUE (address ASC)                               |   true
-  bank       | fk_cust_number_ref_customers | FOREIGN KEY     | FOREIGN KEY (cust_number) REFERENCES customers(id) |   true
-  bank       | primary                      | PRIMARY KEY     | PRIMARY KEY (id ASC)                               |   true
+  table_name |    constraint_name    | constraint_type |                      details                       | validated
+-------------+-----------------------+-----------------+----------------------------------------------------+------------
+  bank       | bank_address_key      | UNIQUE          | UNIQUE (address ASC)                               |     t
+  bank       | bank_cust_number_fkey | FOREIGN KEY     | FOREIGN KEY (cust_number) REFERENCES customers(id) |     t
+  bank       | bank_pkey             | PRIMARY KEY     | PRIMARY KEY (id ASC)                               |     t
 (3 rows)
 ~~~
 
@@ -203,18 +203,18 @@ $ cockroach demo bank
 > SHOW COLUMNS FROM bank;
 ~~~
 ~~~
-  column_name |     data_type     | is_nullable | column_default | generation_expression |          indices           | is_hidden
---------------+-------------------+-------------+----------------+-----------------------+----------------------------+------------
-  id          | INT8              |    false    | NULL           |                       | {bank_address_key,primary} |   false
-  balance     | INT8              |    true     | NULL           |                       | {primary}                  |   false
-  payload     | STRING            |    true     | NULL           |                       | {primary}                  |   false
-  active      | BOOL              |    true     | NULL           |                       | {primary}                  |   false
-  location    | STRING            |    true     | NULL           |                       | {primary}                  |   false
-  currency    | STRING            |    true     | NULL           |                       | {primary}                  |   false
-  interest    | DECIMAL           |    false    | 1.3:::DECIMAL  |                       | {primary}                  |   false
-  address     | STRING            |    true     | NULL           |                       | {bank_address_key,primary} |   false
-  cust_number | INT8              |    true     | NULL           |                       | {primary}                  |   false
-  more_names  | STRING COLLATE en |    true     | NULL           |                       | {primary}                  |   false
+  column_name |     data_type     | is_nullable | column_default | generation_expression |          indices             | is_hidden
+--------------+-------------------+-------------+----------------+-----------------------+------------------------------+------------
+  id          | INT8              |    false    | NULL           |                       | {bank_address_key,bank_pkey} |   false
+  balance     | INT8              |    true     | NULL           |                       | {bank_pkey}                  |   false
+  payload     | STRING            |    true     | NULL           |                       | {bank_pkey}                  |   false
+  active      | BOOL              |    true     | NULL           |                       | {bank_pkey}                  |   false
+  location    | STRING            |    true     | NULL           |                       | {bank_pkey}                  |   false
+  currency    | STRING            |    true     | NULL           |                       | {bank_pkey}                  |   false
+  interest    | DECIMAL           |    false    | 1.3:::DECIMAL  |                       | {bank_pkey}                  |   false
+  address     | STRING            |    true     | NULL           |                       | {bank_address_key,bank_pkey} |   false
+  cust_number | INT8              |    true     | NULL           |                       | {bank_pkey}                  |   false
+  more_names  | STRING COLLATE en |    true     | NULL           |                       | {bank_pkey}                  |   false
 (10 rows)
 ~~~
 
@@ -246,7 +246,7 @@ $ cockroach demo bank
              |     cust_number INT8 NULL,
              |     more_names STRING COLLATE en NULL,
              |     location1 STRING NULL,
-             |     CONSTRAINT "primary" PRIMARY KEY (id ASC),
+             |     CONSTRAINT bank_pkey PRIMARY KEY (id ASC),
              |     CONSTRAINT fk_cust_number_ref_customers FOREIGN KEY (cust_number) REFERENCES customers(id),
              |     UNIQUE INDEX bank_address_key (address ASC),
              |     FAMILY fam_0_id_balance_payload (id, balance, payload, active, location, currency, interest, address, cust_number, more_names),
@@ -282,7 +282,7 @@ $ cockroach demo bank
              |     more_names STRING COLLATE en NULL,
              |     location1 STRING NULL,
              |     location2 STRING NULL,
-             |     CONSTRAINT "primary" PRIMARY KEY (id ASC),
+             |     CONSTRAINT bank_pkey PRIMARY KEY (id ASC),
              |     CONSTRAINT fk_cust_number_ref_customers FOREIGN KEY (cust_number) REFERENCES customers(id),
              |     UNIQUE INDEX bank_address_key (address ASC),
              |     FAMILY fam_0_id_balance_payload (id, balance, payload, active, location, currency, interest, address, cust_number, more_names),
@@ -319,7 +319,7 @@ $ cockroach demo bank
              |     location1 STRING NULL,
              |     location2 STRING NULL,
              |     new_name STRING NULL,
-             |     CONSTRAINT "primary" PRIMARY KEY (id ASC),
+             |     CONSTRAINT bank_pkey PRIMARY KEY (id ASC),
              |     CONSTRAINT fk_cust_number_ref_customers FOREIGN KEY (cust_number) REFERENCES customers(id),
              |     UNIQUE INDEX bank_address_key (address ASC),
              |     FAMILY fam_0_id_balance_payload (id, balance, payload, active, location, currency, interest, address, cust_number, more_names),

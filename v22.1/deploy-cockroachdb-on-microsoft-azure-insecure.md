@@ -4,13 +4,10 @@ summary: Learn how to deploy CockroachDB on Microsoft Azure.
 toc: true
 toc_not_nested: true
 ssh-link: https://docs.microsoft.com/en-us/azure/virtual-machines/linux/mac-create-ssh-keys
-filter_category: deploy_crdb_ma
-filter_html: Insecure
-filter_sort: 2
-docs_area: 
+docs_area:
 ---
 
-{% include filter-tabs.md %}
+{% include {{ page.version.version }}/filter-tabs/deploy-crdb-ma.md %}
 
 This page shows you how to manually deploy an insecure multi-node CockroachDB cluster on Microsoft Azure, using Azure's managed load balancing service to distribute client traffic.
 
@@ -78,11 +75,7 @@ To enable this in Azure, you must create a Resource Group, Virtual Network, and 
 
 - Run at least 3 nodes to [ensure survivability](recommended-production-settings.html#topology).
 
-- Use compute-optimized [F-series](https://docs.microsoft.com/en-us/azure/virtual-machines/fsv2-series) VMs with [Premium Storage](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/premium-storage) or local SSD storage with a Linux filesystem such as `ext4` (not the Windows `ntfs` filesystem). For example, Cockroach Labs has used `Standard_F16s_v2` VMs (16 vCPUs and 32 GiB of RAM per VM) for internal testing.
-
-    - If you choose local SSD storage, on reboot, the VM can come back with the `ntfs` filesystem. Be sure your automation monitors for this and reformats the disk to the Linux filesystem you chose initially.
-
-- **Do not** use ["burstable" B-series](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/b-series-burstable) VMs, which limit the load on a single core. Also, Cockroach Labs has experienced data corruption issues on A-series VMs and irregular disk performance on D-series VMs, so we recommend avoiding those as well.
+{% include {{ page.version.version }}/prod-deployment/recommended-instances-azure.md %}
 
 - When creating the VMs, make sure to select the **Resource Group**, **Virtual Network**, and **Network Security Group** you created.
 

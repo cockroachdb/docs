@@ -68,7 +68,9 @@ The `STORING` clause specifies columns which are not part of the index key but s
 
 {% include {{page.version.version}}/sql/covering-index.md %}
 
-Note that the synonym `COVERING` is also supported.
+The synonym `COVERING` is also supported.
+
+#### Example
 
 For example, say we have a table with three columns, two of which are indexed:
 

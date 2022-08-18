@@ -7,7 +7,7 @@ docs_area: manage
 
 Users may authenticate to the [{{ site.data.products.db }} Console](https://cockroachlabs.cloud) using Single Sign-On (SSO). GitHub, Google, and Microsoft are supported as identity providers (IdPs).
 
-[Enterprise authentication features](#private-preview-enterprise-authentication) are currently available in Private Preview. Reach out to your Cockroach Labs team or file a [support ticket](https://support.cockroachlabs.com/) to enquire about the private preview of Enterprise Authentication for Cloud SSO.
+{% include cockroachcloud/private-preview.md %}
 
 Authentication with a centralized identity managed by a dedicated IdP offers several security advantages:
 
@@ -15,7 +15,7 @@ Authentication with a centralized identity managed by a dedicated IdP offers sev
 - Administrators avoid responsibility for managing an additional set of credentials and tying those to other identities and credentials. Every additional credential or identity management operation introduces risk as well as costing effort, so minimizing these is doubly advantageous.
 - Administrators can onboard and offboard users quickly and efficiently.
 
-## Private Preview: Enterprise authentication
+## Preview: Enterprise authentication
 
 ### Support for SAML and OIDC identity protocols
 
@@ -39,7 +39,7 @@ This optional enterprise feature removes the need to [invite users to your organ
 
 ### How to enable enterprise authentication for {{ site.data.products.db }}
 
-Reach out to your Cockroach Labs team or file a [support ticket](https://support.cockroachlabs.com/) to enquire about the private preview of Enterprise Authentication for Cloud SSO.
+Reach out to your Cockroach Labs team to enquire about the preview of Enterprise Authentication for Cloud SSO.
 
 {{site.data.alerts.callout_success}}
 After Enterprise Authentication is enabled, your Cockroach Labs team or the support team will reach out again to finalize and confirm the setup.
@@ -47,26 +47,26 @@ After Enterprise Authentication is enabled, your Cockroach Labs team or the supp
 
 ## {{ site.data.products.db }} SSO Frequently Asked Questions (FAQ)
 
-### Will it work if I try to sign in with SSO without explicitly setting it up for my account, if I already use an email from an SSO Provider (e.g., my-example-account@gmail.com)?
+### Will it work if I try to sign in with SSO without explicitly setting it up for my account, if I already use an email from an SSO Provider such as Gmail?
 
-No, that won't work until you set up SSO for your account with that specific identity provider. Using an email associated with an SSO provider (Google, GitHub, or Microsoft) does not automatically enable SSO.
+Yes, as long as the email address associated with your SSO provider is exactly the same as the one associated with your existing {{ site.data.products.db }} account. After successfully signing in, you will be prompted to approve the updated authentication method for your account.
 
-To change your SSO method to use that provider, visit **My Account** in the [{{ site.data.products.db }} Console](https://cockroachlabs.cloud).
+To view your current authentication method, visit **My Account** in the [{{ site.data.products.db }} Console](https://cockroachlabs.cloud).
 
 ### Once I change my active login method to a new SSO provider, can I still sign in using my email/password combination or my GitHub identity?
 
-No. Only one authentication method can be active for each {{ site.data.products.db }} Console user at a time. Visit **My Account** in the [{{ site.data.products.db }} Console](https://cockroachlabs.cloud) to configure which authentication method is active.
+No. Only one authentication method can be active for each {{ site.data.products.db }} Console user. Visit **My Account** in the [{{ site.data.products.db }} Console](https://cockroachlabs.cloud) to view or update your active authentication method.
 
 ### Does this change how administrators invite users?
 
-At the moment, no. The [workflow for inviting team members](console-access-management.html#invite-team-members-to-cockroachdb-cloud) to {{ site.data.products.db }} remains the same.
+The [workflow for inviting team members](console-access-management.html#invite-team-members-to-cockroachdb-cloud) to {{ site.data.products.db }} remains the same. If Enterprise Authentication is enabled for your {{ site.data.products.db }} organization, then you don't need to invite SSO users.
 
 ### As an admin, how do I deprovision a user's access to {{ site.data.products.db }} Console if they leave the relevant project?
 
-If a user is using SSO, deleting the user's identity at the level of the SSO provider (e.g., deleting their Google account), will remove their access to the {{ site.data.products.db }} organization.
+If a user is using SSO, deleting the user's identity at the level of the SSO provider (for example, by deleting a user's GCP account) also removes their access to the {{ site.data.products.db }} organization.
 
-To remove a user's access to {{ site.data.products.db }} without deleting their SSO identity, you can [remove their {{ site.data.products.db }} user identity from your org](console-access-management.html#delete-a-team-member) in the console.
+To remove a user's access to {{ site.data.products.db }} without deleting their SSO identity, you can [remove their {{ site.data.products.db }} user identity from your {{ site.data.products.db}} organization](console-access-management.html#delete-a-team-member).
 
 ### Can admins require a particular login method for their {{ site.data.products.db }} organization?
 
-Currently, no.
+Yes, as long as Enterprise Authentication is enabled for your {{ site.data.products.db }} organization.

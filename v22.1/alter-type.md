@@ -10,13 +10,15 @@ The `ALTER TYPE` [statement](sql-statements.html) modifies a user-defined, [enum
 {% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
 {{site.data.alerts.callout_info}}
-You can only [cancel](cancel-job.html) `ALTER TYPE` [schema change jobs](online-schema-changes.html) that drop values. All other `ALTER TYPE` schema change jobs are non-cancellable.
+You can only [cancel](cancel-job.html) `ALTER TYPE` [schema change jobs](online-schema-changes.html) that drop values. This is because when you drop a value, CockroachDB searches through every row that could contain the `ENUM` value, which could take a long time.
+
+All other `ALTER TYPE` schema change jobs are non-cancellable.
 {{site.data.alerts.end}}
 
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/alter_type.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/alter_type.html %}
 </div>
 
 ## Parameters

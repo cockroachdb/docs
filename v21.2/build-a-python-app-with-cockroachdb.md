@@ -4,13 +4,10 @@ summary: Learn how to use CockroachDB from a simple Python application with the 
 toc: true
 twitter: false
 referral_id: docs_python_psycopg2
-filter_category: crud_python
-filter_html: <strong>psycopg2</strong>
-filter_sort: 1
 docs_area: get_started
 ---
 
-{% include filter-tabs.md %}
+{% include {{ page.version.version }}/filter-tabs/crud-python.md %}
 
 {% include cockroach_u_pydev.md %}
 
@@ -53,7 +50,7 @@ For other ways to install psycopg2, see the [official documentation](http://init
 
 ## Step 4. Run the code
 
-1. Set the `DATABASE_URL` environment variable to the connection string to your {{ site.data.products.db }} cluster:
+1. Set the `DATABASE_URL` environment variable to the connection string to your cluster:
 
     <section class="filter-content" markdown="1" data-scope="local">
 

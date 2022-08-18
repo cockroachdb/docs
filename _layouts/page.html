@@ -22,7 +22,9 @@ layout: default
 {% endunless %}
 ">
   <h1 class="post-title-main">{{ page.title }}</h1>
-
+  {% unless page.contribute == false %}
+        {% include contribute-options.html %}
+  {% endunless %}
 </div>
 {% endif %}
 
@@ -62,12 +64,10 @@ layout: default
 
    {{content}}
 
-   {% if page.toc != true %}
-     {% if page.feedback != false %}
-        {% include feedback-widget.html %}
-     {% endif %}
+   {% if page.feedback != false %}
+      {% include feedback-widget-bottom.html %}
    {% endif %}
-   {% comment %} Show feedback widget at bottom of page when there is no page toc.{% endcomment %}
+   {% comment %} Show feedback widget at bottom of page.{% endcomment %}
 
    {% if page.docs_area %}
      <script>

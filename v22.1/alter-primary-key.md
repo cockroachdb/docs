@@ -34,7 +34,7 @@ To change an existing primary key without creating a secondary index from that p
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/alter_primary_key.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/alter_primary_key.html %}
 </div>
 
 ## Parameters
@@ -93,9 +93,8 @@ You can add a column and change the primary key with a couple of `ALTER TABLE` s
              |     name STRING NOT NULL,
              |     email STRING NULL,
              |     id UUID NOT NULL DEFAULT gen_random_uuid(),
-             |     CONSTRAINT "primary" PRIMARY KEY (id ASC),
-             |     UNIQUE INDEX users_name_key (name ASC),
-             |     FAMILY "primary" (name, email, id)
+             |     CONSTRAINT users_pkey PRIMARY KEY (id ASC),
+             |     UNIQUE INDEX users_name_key (name ASC)
              | )
 (1 row)
 ~~~

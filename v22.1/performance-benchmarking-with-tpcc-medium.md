@@ -4,15 +4,12 @@ summary: Benchmark CockroachDB against TPC-C with 15 nodes on `c5d.4xlarge` mach
 toc: true
 toc_not_nested: true
 key: performance-benchmarking-with-tpc-c-10k-warehouses.html
-filter_category: perf_bench_tpc-c
-filter_html: Medium
-filter_sort: 4
 docs_area: reference.benchmarking
 ---
 
 This page shows you how to reproduce [CockroachDB TPC-C performance benchmarking results](performance.html#scale). Across all scales, CockroachDB can process tpmC (new order transactions per minute) at near maximum efficiency. Start by choosing the scale you're interested in:
 
-{% include filter-tabs.md %}
+{% include {{ page.version.version }}/filter-tabs/perf-bench-tpc-c.md %}
 
 | Workload             | Cluster size                                            | Warehouses | Data size |
 |----------------------+---------------------------------------------------------+------------+-----------|
@@ -267,7 +264,7 @@ _elapsed_______tpmC____efc__avg(ms)__p50(ms)__p90(ms)__p95(ms)__p99(ms)_pMax(ms)
 
     CockroachDB works well on commodity hardware in public cloud, private cloud, on-prem, and hybrid environments. For hardware recommendations, see our [Production Checklist](recommended-production-settings.html#hardware).
 
-    Cockroach Labs creates a yearly cloud report focused on evaluating hardware performance. For more information, see the [2021 Cloud Report](https://www.cockroachlabs.com/blog/2021-cloud-report/).
+    {% include {{ page.version.version }}/prod-deployment/cloud-report.md %}
 
 - Performance Tuning
 
