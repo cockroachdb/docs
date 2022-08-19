@@ -1045,12 +1045,16 @@ Sometimes, you need to include files that are maintained in other places than th
 - SQL diagrams, which are maintained in the `cockroachdb/cockroach` repo
 - Code samples, which are maintained in various repos
 
-For SQL diagrams, you remotely include the entire (HTML) file as follows:
+###### SQL diagrams
+  
+For [SQL diagrams](https://cockroachlabs.atlassian.net/wiki/spaces/ED/pages/1134166645/SQL+Grammar+Documentation#Add-a-SQL-diagram-to-a-SQL-reference-page), you remotely include the entire (HTML) file as follows:
 
 ```
 {% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/show_databases.html %}
 ```
 
+###### Code samples
+  
 For code samples, you usually want to show only part of a larger file to highlight a specific technique, or due to length considerations.
 
 To accomplish this, the `remote_include` tag lets you pass arguments (usually named `START {text}` and `END {text}` by convention) that pull in the text of the remote file between `START {text}` and `END {text}`.
