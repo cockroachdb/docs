@@ -731,7 +731,10 @@ $ go get -u github.com/lib/pq
 ~~~
 ```
 
-**Copy to Clipboard** should be used for every code block that can be **executed**.
+Notes for usage:
+  
+- **Copy to Clipboard** should be used for every code block that can be **executed**. 
+- There must be a line break above the `{% include_cached copy-clipboard.html %}` line.
 
 #### Placeholders
 
