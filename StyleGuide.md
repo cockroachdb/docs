@@ -1021,40 +1021,19 @@ The syntax is a little hard to read inline, but based on some experimenting it a
 Formatted for easier reading, the template code looks like:
 
 ```
-{% if page.name == "cost-based-optimizer.md" %}  
-Locality-optimized search  
-{% else %}  
-[Locality-optimized search](cost-based-optimizer.html#locality-optimized-search-in-multi-region-clusters)  
-{% endif %}  
+{% if page.name == "cost-based-optimizer.md" %}
+Locality-optimized search
+{% else %}
+[Locality-optimized search](cost-based-optimizer.html#locality-optimized-search-in-multi-region-clusters)
+{% endif %}
 ```
-
-##### Different content depending on CockroachCloud or Self-Hosted
-
-Sometimes, you must use an include file on both a CockroachCloud and a Self-Hosted page. This requires that the links be resolved differently depending on the page that the include file is being referenced from.
-
-For instructions showing how to use relative links that differ depending on the page type, see [Use relative links to Cloud and Core topics in _include files](https://cockroachlabs.atlassian.net/wiki/x/woBZl).
-
-_Note_: In the previous link, Cloud = Dedicated and Core = Self-Hosted.
 
 <a name="remote-includes"></a>
 
 ##### Remote includes
 
-Sometimes, you need to include files that are maintained in other places than the `cockroachdb/docs` repo but referenced in our docs. The `remote_include` tag is used for this. We most often use this tag for:
+Sometimes, you need to include files that are maintained in other places than the `cockroachdb/docs` repo but referenced in our docs. The `remote_include` tag is used for this. We most often use this tag for code samples, which are maintained in various repos.
 
-- SQL diagrams, which are maintained in the `cockroachdb/cockroach` repo
-- Code samples, which are maintained in various repos
-
-###### SQL diagrams
-  
-For [SQL diagrams](https://cockroachlabs.atlassian.net/wiki/spaces/ED/pages/1134166645/SQL+Grammar+Documentation#Add-a-SQL-diagram-to-a-SQL-reference-page), you remotely include the entire (HTML) file as follows:
-
-```
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/show_databases.html %}
-```
-
-###### Code samples
-  
 For code samples, you usually want to show only part of a larger file to highlight a specific technique, or due to length considerations.
 
 To accomplish this, the `remote_include` tag lets you pass arguments (usually named `START {text}` and `END {text}` by convention) that pull in the text of the remote file between `START {text}` and `END {text}`.
