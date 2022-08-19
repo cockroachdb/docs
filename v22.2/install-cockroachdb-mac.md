@@ -65,6 +65,7 @@ If you previously installed CockroachDB via Homebrew, run <code>brew uninstall c
           <li>Click <b>General</b>.</li>
           <li>The message <b>"cockroach" was blocked from use because it is not from an identified developer</b> displays. Click <b>Allow Anyway</b>.</li>
           <li>Run the <code>cockroach</code> command again.</li>
+          <li>The message <b>macOS cannot verify the developer of “cockroach”. Are you sure you want to open it?</b> appears. Click <b>Open</b>. The command runs as expected.</li>
       </ol>
     </li>
     <div class="bs-callout bs-callout--info"><div class="bs-callout__label">Note:</div>
