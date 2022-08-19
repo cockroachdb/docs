@@ -1,4 +1,4 @@
-whenAvailable('select2', mainExecute);
+whenAvailable('select2', mainExecute, true);
 function mainExecute() {
   $(function() {
     function updateChart(db, column) {
