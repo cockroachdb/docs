@@ -39,7 +39,7 @@ $ cockroach-sql --insecure \
 
 ### Execute SQL statement within the SQL shell
 
-This example assume that we have already started the SQL shell (see examples above).
+This example assumes that we have already started the SQL shell (see examples above).
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -142,7 +142,7 @@ $ cockroach-sql --insecure \
   🐥    | 🐢
 ~~~
 
-However, you can explicitly set `--format` to another format, for example, `tsv` or `html`:
+However, you can explicitly set `--format` to another format (e.g., `tsv` or `html`):
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -200,7 +200,7 @@ chick	turtle
 🐥	🐢
 ~~~
 
-However, you can explicitly set `--format` to another format, for example, `table`:
+However, you can explicitly set `--format` to another format (e.g., `table`):
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -428,7 +428,7 @@ Future versions of the SQL client may opt to use a different back-end for readin
 
 ### Allow potentially unsafe SQL statements
 
-The `--safe-updates` flag defaults to `true`. This prevents SQL statements that may have broad, undesired side-effects. For example, by default, we cannot use `DELETE` without a `WHERE` clause to delete all rows from a table:
+The `--safe-updates` flag defaults to `true`. This prevents SQL statements that may have broad, undesired side effects. For example, by default, we cannot use `DELETE` without a `WHERE` clause to delete all rows from a table:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -473,7 +473,9 @@ $ cockroach-sql --insecure --safe-updates=false --execute="DELETE FROM db1.t1"
 DELETE 10
 ~~~
 
-{{site.data.alerts.callout_info}}Potentially unsafe SQL statements can also be allowed/disallowed for an entire session via the <code>sql_safe_updates</code> <a href="set-vars.html">session variable</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}
+Potentially unsafe SQL statements can also be allowed/disallowed for an entire session via the `sql_safe_updates` [session variable](set-vars.html).
+{{site.data.alerts.end}}
 
 ### Reveal the SQL statements sent implicitly by the command-line utility
 
@@ -569,16 +571,16 @@ $ cockroach start-single-node --insecure --socket-dir=/tmp
 ~~~
 
 ~~~
-CockroachDB node starting at 2020-10-12 04:02:54.971369 +0000 UTC (took 1.3s)
-build:               CCL v20.2.0 @ 2020/10/06 17:15:06 (go1.13.14)
+CockroachDB node starting at {{ now | date: "%Y-%m-%d %H:%M:%S.%6 +0000 UTC" }} (took 1.3s)
+build:               CCL {{page.release_info.version}} @ {{page.release_info.build_time}}
 webui:               http://Jesses-MBP-2:8080
 sql:                 postgresql://root@Jesses-MBP-2:26257?sslmode=disable
 RPC client flags:    ./cockroach <client cmd> --host=Jesses-MBP-2:26257 --insecure
 socket:              /tmp/.s.PGSQL.26257
-logs:                /Users/jesseseldess/Downloads/cockroach-v20.2.0-beta.4.darwin-10.9-amd64/cockroach-data/logs
-temp dir:            /Users/jesseseldess/Downloads/cockroach-v20.2.0-beta.4.darwin-10.9-amd64/cockroach-data/cockroach-temp805054895
-external I/O path:   /Users/jesseseldess/Downloads/cockroach-v20.2.0-beta.4.darwin-10.9-amd64/cockroach-data/extern
-store[0]:            path=/Users/jesseseldess/Downloads/cockroach-v20.2.0-beta.4.darwin-10.9-amd64/cockroach-data
+logs:                /Users/jesseseldess/Downloads/cockroach-{{ page.release-info.version }}.darwin-10.9-amd64/cockroach-data/logs
+temp dir:            /Users/jesseseldess/Downloads/cockroach-{{ page.release-info.version }}.darwin-10.9-amd64/cockroach-data/cockroach-temp805054895
+external I/O path:   /Users/jesseseldess/Downloads/cockroach-{{ page.release-info.version }}.darwin-10.9-amd64/cockroach-data/extern
+store[0]:            path=/Users/jesseseldess/Downloads/cockroach-{{ page.release-info.version }}.darwin-10.9-amd64/cockroach-data
 storage engine:      pebble
 status:              initialized new cluster
 clusterID:           455ad71d-21d4-424a-87ad-8097b6b5b99f
