@@ -165,7 +165,7 @@ When the SQL shell connects (or reconnects) to a CockroachDB node, it prints a w
 # All statements must be terminated by a semicolon.
 # To exit, type: \q.
 #
-# Server version: CockroachDB CCL {{page.release_info.version}} (x86_64-apple-darwin17.7.0, built 2019/09/13 00:07:19, go1.12.6) (same version as client)
+# Server version: CockroachDB CCL {{page.release_info.version}} (x86_64-apple-darwin17.7.0, built {{page.release_info.build_time}}) (same version as client)
 # Cluster ID: 7fb9f5b4-a801-4851-92e9-c0db292d03f1
 #
 # Enter \? for a brief introduction.
