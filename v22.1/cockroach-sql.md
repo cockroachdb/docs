@@ -8,7 +8,7 @@ docs_area: reference.cli
 
 CockroachDB comes with a built-in client for executing SQL statements from an interactive shell or directly from the command line. To use this client, run the `cockroach sql` [command](cockroach-commands.html) as described below.
 
-To exit the interactive shell, use `\q`, `quit`, `exit`, or `ctrl-d`.
+To exit the interactive shell, use **\q**, **quit**, **exit**, or **Ctrl+D**.
 
 {{site.data.alerts.callout_success}}
 If you want to experiment with CockroachDB SQL but do not have a cluster already running, you can use the [`cockroach demo`](cockroach-demo.html) command to open a shell to a temporary, in-memory cluster.
@@ -55,7 +55,7 @@ Exit the interactive SQL shell:
 ~~~
 
 ~~~ shell
-ctrl-d
+Ctrl+d
 ~~~
 
 View help:
