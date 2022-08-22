@@ -55,7 +55,7 @@ Exit the interactive SQL shell:
 ~~~
 
 ~~~ shell
-Ctrl+d
+> Ctrl+D
 ~~~
 
 View help:
