@@ -15,9 +15,9 @@ The `cockroach-sql` command is a client for executing SQL statements from an int
 `cockroach-sql` is functionally equivalent to the [`cockroach sql` command](cockroach-sql.html).
 {{site.data.alerts.end}}
 
-To exit the interactive shell, use `\q`, `quit`, `exit`, or `ctrl-d`.
+To exit the interactive shell, enter **\q**, **quit**, **exit**, or **Ctrl+D**.
 
-The output of `cockroach-sql` is part of a stable interface, and can be used programmatically, with the exception of informational output lines that begin with the hash symbol (`#`). Informational output can change from release to release, and should not be used programmatically.
+The output of `cockroach-sql` when used non-interactively is part of a stable interface, and can be used programmatically, with the exception of informational output lines that begin with the hash symbol (`#`). Informational output can change from release to release, and should not be used programmatically.
 
 ## Install `cockroach-sql`
 

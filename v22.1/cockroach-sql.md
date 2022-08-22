@@ -14,7 +14,7 @@ To exit the interactive shell, use `\q`, `quit`, `exit`, or `ctrl-d`.
 If you want to experiment with CockroachDB SQL but do not have a cluster already running, you can use the [`cockroach demo`](cockroach-demo.html) command to open a shell to a temporary, in-memory cluster.
 {{site.data.alerts.end}}
 
-The output of `cockroach sql` is part of a stable interface, and can be used programmatically, with the exception of informational output lines that begin with the hash symbol (`#`). Informational output can change from release to release, and should not be used programmatically.
+The output of `cockroach sql` when used non-interactively is part of a stable interface, and can be used programmatically, with the exception of informational output lines that begin with the hash symbol (`#`). Informational output can change from release to release, and should not be used programmatically.
 
 ## Prerequisites
 
