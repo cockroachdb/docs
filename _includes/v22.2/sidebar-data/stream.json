@@ -47,6 +47,12 @@
           ]
         },
         {
+          "title": "Export Data with Changefeeds",
+          "urls": [
+            "/${VERSION}/export-data-with-changefeeds.html"
+          ]
+        },
+        {
           "title": "Changefeeds in Multi-Region Deployments",
           "urls": [
             "/${VERSION}/changefeeds-in-multi-region-deployments.html"

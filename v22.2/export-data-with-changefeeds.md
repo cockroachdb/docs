@@ -19,10 +19,6 @@ Although this option offers an alternative way to export data out of your databa
 - Changefeeds do not offer any [filtering capabilities](export.html#export-using-a-select-statement).
 - Changefeeds can emit [duplicate messages](changefeed-messages.html#ordering-guarantees).
 
-{{site.data.alerts.callout_info}}
-{% include {{ page.version.version }}/cdc/initial-scan-limit-alter-changefeed.md %}
-{{site.data.alerts.end}}
-
 To create a changefeed that will only complete an initial scan of a table(s), run the following:
 
 ~~~ sql
