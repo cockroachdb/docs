@@ -283,7 +283,7 @@ For examples of starting changefeeds on tables with column families, see the fol
     {{site.data.alerts.callout_info}}
     You can find details of your changefeed job using [`SHOW CHANGEFEED JOBS`](show-jobs.html#show-changefeed-jobs). Changefeeds streaming to [Kafka](changefeed-sinks.html#kafka) or [Google Cloud Pub/Sub](changefeed-sinks.html#google-cloud-pub-sub) will populate the `topics` field in the `SHOW CHANGEFEED JOBS` output. 
     
-    When using the `FAMILY` keyword, the `topics` field will display `topic.family`, e.g., `office_dogs.employee,office_dogs.dogs`. With the `split_column_families` option set, `topics` will show the topic name and a family placeholder `topic.{family}`, e.g., `office_dogs.{family}`.
+    When using the `FAMILY` keyword, the `topics` field will display in the format `topic.family`, e.g., `office_dogs.employee,office_dogs.dogs`. With the `split_column_families` option set, `topics` will show the topic name and a family placeholder `topic.{family}`, e.g., `office_dogs.{family}`.
     {{site.data.alerts.end}}
 
 1. Update one of the values in the table:
