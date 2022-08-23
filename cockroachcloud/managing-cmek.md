@@ -323,9 +323,6 @@ To add a region to a cluster that already has CMEK enabled, update your cluster'
       --data "@cmek_config.json"
     ~~~
 
-    ~~~txt
-
-    ~~~
 
 ## Revoke CMEK for a cluster
 
