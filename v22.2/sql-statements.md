@@ -14,14 +14,14 @@ In the [`cockroach` SQL shell](cockroach-sql.html#help), use `\h [statement]` to
 Statement | Usage
 ----------|------------
 [`ADD COLUMN`](add-column.html) | Add a column to a table.
-[`ADD REGION`](add-region.html) | Add a [region](multiregion-overview.html#database-regions) to a database. [Multi-region features](multiregion-overview.html) require an [Enterprise license](enterprise-licensing.html).
+[`ADD REGION`](add-region.html) | Add a [region](multiregion-overview.html#database-regions) to a database. [Multi-region features](multiregion-overview.html) require an [{{ site.data.products.enterprise }} license](enterprise-licensing.html).
 [`ADD SUPER REGION`](add-super-region.html) | Add a super region made up of a set of regions added with [`ADD REGION`](add-region.html) such that data from [regional tables](regional-tables.html) will be stored in only those regions.
 [`ADD CONSTRAINT`](add-constraint.html) | Add a constraint to a column.
 [`ALTER COLUMN`](alter-column.html) | Change a column's [default constraint](default-value.html), [`NOT NULL` constraint](not-null.html), or [data type](data-types.html).
 [`ALTER DATABASE`](alter-database.html) | Apply a schema change to a database.
 [`ALTER DEFAULT PRIVILEGES`](alter-default-privileges.html) | Change the default [privileges](security-reference/authorization.html#privileges) for objects created by specific roles/users in the current database.
 [`ALTER INDEX`](alter-index.html) | Apply a schema change to an index.
-[`ALTER PARTITION`](alter-partition.html) | Configure the replication zone for a partition. [Partitioning](partitioning.html) requires an [Enterprise license](enterprise-licensing.html).
+[`ALTER PARTITION`](alter-partition.html) | Configure the replication zone for a partition. [Partitioning](partitioning.html) requires an [{{ site.data.products.enterprise }} license](enterprise-licensing.html).
 [`ALTER PRIMARY KEY`](alter-primary-key.html) | Change the [primary key](primary-key.html) of a table.
 [`ALTER RANGE`](alter-range.html) | Configure the replication zone for a system range.
 [`ALTER SCHEMA`](alter-schema.html) | Alter a user-defined schema.
@@ -46,7 +46,7 @@ Statement | Usage
 [`DROP CONSTRAINT`](drop-constraint.html) | Remove constraints from a column.
 [`DROP DATABASE`](drop-database.html) | Remove a database and all its objects.
 [`DROP INDEX`](drop-index.html) | Remove an index for a table.
-[`DROP REGION`](drop-region.html) | Drop a [region](multiregion-overview.html#database-regions) from a database. [Multi-region features](multiregion-overview.html) require an [Enterprise license](enterprise-licensing.html).
+[`DROP REGION`](drop-region.html) | Drop a [region](multiregion-overview.html#database-regions) from a database. [Multi-region features](multiregion-overview.html) require an [{{ site.data.products.enterprise }} license](enterprise-licensing.html).
 [`DROP SUPER REGION`](drop-super-region.html) | Drop a super region made up of a set of [database regions](multiregion-overview.html#super-regions).
 [`DROP SCHEMA`](drop-schema.html) | Drop a user-defined schema.
 [`DROP SEQUENCE`](drop-sequence.html) | Remove a sequence.
@@ -54,7 +54,7 @@ Statement | Usage
 [`DROP TYPE`](drop-type.html) | Remove a user-defined, [enumerated data type](enum.html).
 [`DROP VIEW`](drop-view.html)| Remove a view.
 [`EXPERIMENTAL_AUDIT`](experimental-audit.html) | Turn SQL audit logging on or off for a table.
-[`PARTITION BY`](partition-by.html) | Partition, re-partition, or un-partition a table or secondary index. [Partitioning](partitioning.html) requires an [Enterprise license](enterprise-licensing.html).
+[`PARTITION BY`](partition-by.html) | Partition, re-partition, or un-partition a table or secondary index. [Partitioning](partitioning.html) requires an [{{ site.data.products.enterprise }} license](enterprise-licensing.html).
 [`REFRESH`](refresh.html) | Refresh the stored query results of a [materialized view](views.html#materialized-views).
 [`RENAME COLUMN`](rename-column.html) | Rename a column in a table.
 [`RENAME CONSTRAINT`](rename-constraint.html) | Rename a constraint on a column.
@@ -62,7 +62,7 @@ Statement | Usage
 [`RENAME INDEX`](rename-index.html) | Rename an index for a table.
 [`RENAME TABLE`](rename-table.html) | Rename a table or move a table between databases.
 [`SET SCHEMA`](set-schema.html) | Change the schema of a table.
-[`SET PRIMARY REGION`](set-primary-region.html) | Assign a [primary region](multiregion-overview.html#database-regions) to a multi-region database, or change an existing primary region. [Multi-region features](multiregion-overview.html) require an [Enterprise license](enterprise-licensing.html).
+[`SET PRIMARY REGION`](set-primary-region.html) | Assign a [primary region](multiregion-overview.html#database-regions) to a multi-region database, or change an existing primary region. [Multi-region features](multiregion-overview.html) require an [{{ site.data.products.enterprise }} license](enterprise-licensing.html).
 [`SHOW COLUMNS`](show-columns.html) | View details about columns in a table.
 [`SHOW CONSTRAINTS`](show-constraints.html) | List constraints on a table.
 [`SHOW CREATE`](show-create.html) | View the `CREATE` statement for a database, table, view, or sequence.
@@ -71,7 +71,7 @@ Statement | Usage
 [`SHOW FULL TABLE SCANS`](show-full-table-scans.html) | List recent queries that used a full table scan.
 [`SHOW INDEX`](show-index.html) | View index information for a table or database.
 [`SHOW LOCALITY`](show-locality.html) | View the locality of the current node.
-[`SHOW PARTITIONS`](show-partitions.html) | List partitions in a database. [Partitioning](partitioning.html) requires an [Enterprise license](enterprise-licensing.html).
+[`SHOW PARTITIONS`](show-partitions.html) | List partitions in a database. [Partitioning](partitioning.html) requires an [{{ site.data.products.enterprise }} license](enterprise-licensing.html).
 [`SHOW REGIONS`](show-regions.html) | List the [cluster regions](multiregion-overview.html#cluster-regions) or [database regions](multiregion-overview.html#database-regions) in a [multi-region cluster](multiregion-overview.html).
 [`SHOW SUPER REGIONS`](show-super-regions.html) | List the [super regions](multiregion-overview.html#super-regions) associated with a database in a [multi-region cluster](multiregion-overview.html).
 [`SHOW SCHEMAS`](show-schemas.html) | List the schemas in a database.
@@ -92,7 +92,7 @@ Statement | Usage
 [`CREATE TABLE AS`](create-table-as.html) | Create a new table in a database using the results from a [selection query](selection-queries.html).
 [`COPY FROM`](copy-from.html) | Copy data from a third-party client to a CockroachDB cluster.<br>For compatibility with PostgreSQL drivers and ORMs, CockroachDB supports `COPY FROM` statements issued only from third-party clients; you cannot issue `COPY FROM` statements from the [`cockroach` SQL shell](cockroach-sql.html). To import data from files, use an [`IMPORT`](import.html) statement instead.
 [`DELETE`](delete.html) | Delete specific rows from a table.
-[`EXPORT`](export.html) | Export an entire table's data, or the results of a `SELECT` statement, to CSV files. This statement requires an [Enterprise license](enterprise-licensing.html).
+[`EXPORT`](export.html) | Export an entire table's data, or the results of a `SELECT` statement, to CSV files.
 [`IMPORT`](import.html) | Bulk-insert CSV data into a new table.
 [`IMPORT INTO`](import-into.html) | Bulk-insert CSV data into an existing table.
 [`INSERT`](insert.html) | Insert rows into a table.
@@ -176,7 +176,7 @@ Statement | Usage
 
 ## Job management statements
 
-Jobs in CockroachDB represent tasks that might not complete immediately, such as schema changes or Enterprise backups or restores.
+Jobs in CockroachDB represent tasks that might not complete immediately, such as schema changes or {{ site.data.products.enterprise }} backups or restores.
 
 Statement | Usage
 ----------|------------
@@ -189,20 +189,22 @@ Statement | Usage
 
 Statement | Usage
 ----------|------------
-[`BACKUP`](backup.html) | Create disaster recovery backups of databases and tables.
-[`RESTORE`](restore.html) | Restore databases and tables using your backups.
+[`BACKUP`](backup.html) | Create disaster recovery backups of clusters, databases, and tables.
+[`RESTORE`](restore.html) | Restore clusters, databases, and tables using your backups.
 [`SHOW BACKUP`](show-backup.html) | List the contents of a backup.
-[`CREATE SCHEDULE FOR BACKUP`](create-schedule-for-backup.html) | Create a schedule for periodic backups.
+[`CREATE SCHEDULE FOR BACKUP`](create-schedule-for-backup.html) | Create a schedule for periodic backups. Core users can only use backup scheduling for full backups of clusters, databases, or tables.To use the other backup features, you need an [{{ site.data.products.enterprise }} license](enterprise-licensing.html).
 [`SHOW SCHEDULES`](show-schedules.html) | View information on backup schedules.
 [`PAUSE SCHEDULES`](pause-schedules.html) | Pause backup schedules.
 [`RESUME SCHEDULES`](resume-schedules.html) | Resume paused backup schedules.
 [`DROP SCHEDULES`](drop-schedules.html) | Drop backup schedules.
+[`ALTER BACKUP`](alter-backup.html) | Add a new [KMS encryption key](take-and-restore-encrypted-backups.html#use-key-management-service) to an encrypted backup. Adding new KMS encryption keys requires an [{{ site.data.products.enterprise }} license](enterprise-licensing.html).
 
-## Changefeed statements ({{ site.data.products.enterprise }})
+## Changefeed statements
 
 [Change data capture](change-data-capture-overview.html) (CDC) provides an {{ site.data.products.enterprise }} and core version of row-level change subscriptions for downstream processing.
 
 Statement | Usage
 ----------|------------
-[`CREATE CHANGEFEED`](create-changefeed.html) | _Enterprise_ Create a new changefeed to stream row-level changes in a configurable format to a configurable sink (Kafka or a cloud storage sink).
-[`EXPERIMENTAL CHANGEFEED FOR`](changefeed-for.html) | _(Core)_ Create a new changefeed to stream row-level changes to the client indefinitely until the underlying connection is closed or the changefeed is canceled.
+[`CREATE CHANGEFEED`](create-changefeed.html) | [**({{ site.data.products.enterprise }})**](enterprise-licensing.html) Create a new changefeed to stream row-level changes in a configurable format to a configurable sink ([Kafka](changefeed-sinks.html#kafka) or a [cloud storage sink](changefeed-sinks.html#cloud-storage-sink)).
+[`EXPERIMENTAL CHANGEFEED FOR`](changefeed-for.html) | **(Core)** Create a new changefeed to stream row-level changes to the client indefinitely until the underlying connection is closed or the changefeed is canceled.
+[`ALTER CHANGEFEED`](alter-changefeed.html) | Modify an existing changefeed. Modifying a changefeed requires an [{{ site.data.products.enterprise }} license](enterprise-licensing.html).
