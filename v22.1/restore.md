@@ -38,7 +38,7 @@ You can restore:
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/restore.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/restore.html %}
 </div>
 
 ## Parameters
@@ -51,7 +51,7 @@ You can restore:
  `LATEST` | Restore the most recent backup in the given collection URI. See the [Restore from the most recent backup](#restore-from-the-most-recent-backup) example.
  <a name="subdir-param"></a>`subdirectory` | Restore from a specific subdirectory in the given collection URI. See the [Restore a specific backup](#restore-a-specific-backup) example.
  `localityURI` | The URI where a [locality-aware backup](take-and-restore-locality-aware-backups.html) is stored. When restoring from an incremental locality-aware backup, you need to include **every** locality ever used, even if it was only used once.<br/><br/>For information about this URL structure, see [Backup File URLs](#backup-file-urls).
- `AS OF SYSTEM TIME timestamp` | Restore data as it existed as of [`timestamp`](as-of-system-time.html). You can restore point-in-time data only if you had taken full or incremental backup [with revision history](take-backups-with-revision-history-and-restore-from-a-point-in-time.html).
+ <a name="as-of-system-time"></a>`AS OF SYSTEM TIME timestamp` | Restore data as it existed as of [`timestamp`](as-of-system-time.html). You can restore point-in-time data only if you had taken full or incremental backup [with revision history](take-backups-with-revision-history-and-restore-from-a-point-in-time.html).
  `restore_options_list` | Control your backup's behavior with [these options](#options).
 
 ### Options
@@ -91,6 +91,8 @@ You can restore:
 - [A full cluster](#full-cluster)
 - [Databases](#databases)
 - [Tables](#tables)
+
+`RESTORE` will only restore the latest data in an object (table, database, cluster), or the latest data as per an [`AS OF SYSTEM TIME` restore](#as-of-system-time). That is, a restore will not include historical data even if you ran your backup with [`revision_history`](backup.html#with-revision-history). This means that if you issue an `AS OF SYSTEM TIME` query on a restored object, the query will fail or the response will be incorrect because there is no historical data to query. For example, if you restore a table at `2022-07-13 10:38:00`, it is not then possible to read or [back up](backup.html) that table at `2022-07-13 10:37:00` or earlier. This is also the case for backups with `revision_history` that might try to initiate a revision start time earlier than `2022-07-13 10:38:00`.
 
 {{site.data.alerts.callout_info}}
 You can exclude a table's row data from a backup using the [`exclude_data_from_backup`](take-full-and-incremental-backups.html#exclude-a-tables-data-from-backups) parameter. With this parameter set, a table will be empty when restored.
@@ -182,11 +184,10 @@ CockroachDB does **not** support incremental-only restores.
 
 ## Performance
 
-The `RESTORE` process minimizes its impact to the cluster's performance by distributing work to all nodes. Subsets of the restored data (known as ranges) are evenly distributed among randomly selected nodes, with each range initially restored to only one node. Once the range is restored, the node begins replicating it others.
-
-{{site.data.alerts.callout_info}}
-When a `RESTORE` fails or is canceled, partially restored data is properly cleaned up. This can have a minor, temporary impact on cluster performance.
-{{site.data.alerts.end}}
+- The `RESTORE` process minimizes its impact to the cluster's performance by distributing work to all nodes. Subsets of the restored data (known as ranges) are evenly distributed among randomly selected nodes, with each range initially restored to only one node. Once the range is restored, the node begins replicating it others.
+- When a `RESTORE` fails or is canceled, partially restored data is properly cleaned up. This can have a minor, temporary impact on cluster performance.
+- {% include_cached new-in.html version="v22.1" %} A restore job will pause if a node in the cluster runs out of disk space. See [Viewing and controlling restore jobs](#viewing-and-controlling-restore-jobs) for information on resuming and showing the progress of restore jobs.
+- {% include_cached new-in.html version="v22.1" %} A restore job will [pause](pause-job.html) instead of entering a `failed` state if it continues to encounter transient errors once it has retried a maximum number of times. Once the restore has paused, you can either [resume](resume-job.html) or [cancel](cancel-job.html) it.
 
 ## Restoring to multi-region databases
 
@@ -895,7 +896,6 @@ For more detail on using this option with `BACKUP`, see [Incremental backups wit
 
 ## Known limitations
 
-- {% include {{ page.version.version }}/known-limitations/restore-aost.md %} [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/53044)
 - To successfully [restore a table into a multi-region database](#restoring-to-multi-region-databases), it is necessary for the order and regions to match between the source and destination database. See the [Known Limitations](known-limitations.html#using-restore-with-multi-region-table-localities) page for detail on ordering and matching regions. [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/71071)
 - {% include {{ page.version.version }}/known-limitations/restore-tables-non-multi-reg.md %}
 

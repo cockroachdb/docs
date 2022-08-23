@@ -96,7 +96,7 @@ CockroachDB supports the following `options` parameters. After the first `option
 
 Parameter | Description
 ----------|-------------
-`--cluster=<cluster name>` | Specifies the cluster name when connecting to [{{ site.data.products.serverless-plan }} clusters](connect-to-the-database-cockroachcloud.html#connect).
+`--cluster=<cluster name>` | Specifies the cluster name when connecting to [{{ site.data.products.serverless }} clusters](connect-to-the-database-cockroachcloud.html#connect).
 `-c <session_variable>=<value>` | **New in v21.1:** Sets a [session variable](set-vars.html) for the SQL session.
 
 {{site.data.alerts.callout_info}}

@@ -11,6 +11,7 @@ layout: null
 /docs/advisories/advisories.html /docs/advisories/index.html 301
 
 # Renamed pages
+/docs/install-client-drivers.html /docs/stable/install-client-drivers.html 301
 /docs/stable/operate-cockroachdb-kubernetes /docs/stable/kubernetes-overview.html 301
 /docs/stable/operate-cockroachdb-kubernetes.html /docs/stable/kubernetes-overview.html 301
 /docs/v21.2/operate-cockroachdb-kubernetes.html /docs/stable/kubernetes-overview.html 301
@@ -341,7 +342,12 @@ layout: null
 /docs/stable/orchetrate-cockroachdb-with-kubernetes-multi-region.html /docs/stable/orchestrate-cockroachdb-with-kubernetes-multi-cluster.html 301
 
 # Removed pages
+/docs/stable/orchestrate-cockroachdb-with-docker-swarm.html /docs/stable/orchestration.html 301
+/docs/v22.1/orchestrate-cockroachdb-with-docker-swarm.html /docs/stable/orchestration.html 301
+/docs/v21.2/orchestrate-cockroachdb-with-docker-swarm.html /docs/stable/orchestration.html 301
+/docs/v21.1/orchestrate-cockroachdb-with-docker-swarm.html /docs/stable/orchestration.html 301
 /docs/tutorials/build-a-python-app-with-cockroachdb-interactive.html /docs/stable/build-a-python-app-with-cockroachdb.html 301
+/docs/stable/sql-playground.html /docs/tutorials/sql-playground.html 301
 /docs/v22.1/sql-playground.html /docs/tutorials/sql-playground.html 301
 /docs/v21.2/sql-playground.html /docs/tutorials/sql-playground.html 301
 /docs/v20.2/sql-playground.html /docs/tutorials/sql-playground.html 301
@@ -357,6 +363,7 @@ layout: null
 /docs/v21.1/hello-world-java-jdbc.html /docs/cockroachcloud/quickstart.html 301
 /docs/v21.1/hello-world-node-postgres.html /docs/cockroachcloud/quickstart.html 301
 /docs/v21.1/hello-world-python-sqlalchemy.html /docs/cockroachcloud/quickstart.html 301
+/docs/v21.2/hello-world-go-gorm /docs/cockroachcloud/quickstart.html 301
 /docs/v21.2/hello-world-go-gorm.html /docs/cockroachcloud/quickstart.html 301
 /docs/v21.2/hello-world-go-pgx.html /docs/cockroachcloud/quickstart.html 301
 /docs/v21.2/hello-world-java-jdbc.html /docs/cockroachcloud/quickstart.html 301
@@ -463,6 +470,7 @@ layout: null
 /docs/show-database.html /docs/stable/show-vars.html 301
 /docs/v22.1/convert-to-schema.html /docs/v22.1/alter-database.html 301
 /docs/stable/convert-to-schema.html /docs/stable/alter-database.html 301
+/docs/v22.1/use-changefeeds.html /docs/v22.1/changefeed-messages.html 301
 
 #CockroachDB Cloud release notes
 

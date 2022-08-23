@@ -18,7 +18,7 @@ with other constructs to form more complex [selection queries](selection-queries
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/simple_select_clause.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/simple_select_clause.html %}
 </div>
 
 

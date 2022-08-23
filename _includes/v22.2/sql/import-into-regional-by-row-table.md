@@ -1,0 +1,1 @@
+`IMPORT` and `IMPORT INTO` cannot directly import data to [`REGIONAL BY ROW`](set-locality.html#regional-by-row) tables that are part of [multi-region databases](multiregion-overview.html).  For more information, including a workaround for this limitation, see [Known Limitations](known-limitations.html#import-into-a-regional-by-row-table).

@@ -11,7 +11,7 @@ The `DROP INDEX` [statement](sql-statements.html) removes indexes from tables.
 
 ## Synopsis
 
-<div>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/drop_index.html %}</div>
+<div>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/drop_index.html %}</div>
 
 ## Required privileges
 
@@ -37,6 +37,10 @@ The user must have the `CREATE` [privilege](security-reference/authorization.htm
 {% include {{page.version.version}}/sql/movr-statements.md %}
 
 ### Remove an index with no dependencies
+
+{{site.data.alerts.callout_danger}}
+{% include {{ page.version.version }}/known-limitations/drop-unique-index-from-create-table.md %}
+{{site.data.alerts.end}}
 
 Suppose you create an index on the `name` and `city` columns of the `users` table:
 

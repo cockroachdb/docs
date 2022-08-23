@@ -2,5 +2,5 @@ baseurl: /docs
 destination: _site/docs
 homepage_title: CockroachDB Docs
 versions:
+  dev: v22.2
   stable: v22.1
-  dev: v22.1

@@ -1,0 +1,1 @@
+{% remote_include  https://raw.githubusercontent.com/cockroachdb/cockroach-operator/master/version.txt %}

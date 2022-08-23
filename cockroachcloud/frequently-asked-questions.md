@@ -2,15 +2,12 @@
 title: CockroachDB Cloud FAQs
 summary: Get answers to frequently asked questions about CockroachDB Cloud
 toc: true
-filter_category: cloud_faqs
-filter_html: CockroachDB Dedicated
-filter_sort: 2
 docs_area: get_started
 ---
 
 This page answers the frequently asked questions about {{ site.data.products.serverless }} and {{ site.data.products.dedicated }}.
 
-{% include filter-tabs.md %}
+{% include cockroachcloud/filter-tabs/cloud-faqs.md %}
 
 ## General
 
@@ -179,5 +176,9 @@ The [**{{ site.data.products.db }} Status** page](https://status.cockroachlabs.c
 ### What do I do if my queries are too slow?
 
 To optimize schema design to achieve your performance goals, we recommend working with our Sales Engineering team before you set up your cluster. You can also read our [SQL Performance Best Practices](../{{site.versions["stable"]}}/performance-best-practices-overview.html) and [Query Performance Optimization](../{{site.versions["stable"]}}/make-queries-fast.html) docs for more information.
+
+### Can I monitor my cluster with third-party tools?
+
+Yes, {{ site.data.products.dedicated }} clusters support an integration with Datadog that enables data collection and alerting on a subset of CockroachDB metrics. Enabling the Datadog integration on your {{ site.data.products.dedicated }} cluster will apply additional charges to your **Datadog** bill. See [Monitor with Datadog](monitoring-page.html#monitor-with-datadog) for more information.
 
 If you need additional help, contact [Support](https://support.cockroachlabs.com/hc/en-us).

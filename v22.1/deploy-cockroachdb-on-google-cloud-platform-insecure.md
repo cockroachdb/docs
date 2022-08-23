@@ -4,13 +4,10 @@ summary: Learn how to deploy CockroachDB on Google Cloud Platform's Compute Engi
 toc: true
 toc_not_nested: true
 ssh-link: https://cloud.google.com/compute/docs/instances/connecting-to-instance
-filter_category: deploy_crdb_gce
-filter_html: Insecure
-filter_sort: 2
-docs_area: 
+docs_area:
 ---
 
-{% include filter-tabs.md %}
+{% include {{ page.version.version }}/filter-tabs/deploy-crdb-gce.md %}
 
 This page shows you how to manually deploy an insecure multi-node CockroachDB cluster on Google Cloud Platform's Compute Engine (GCE), using Google's TCP Proxy Load Balancing service to distribute client traffic.
 
@@ -59,9 +56,7 @@ Applications will not connect directly to your CockroachDB nodes. Instead, they'
 
 - Run at least 3 nodes to [ensure survivability](recommended-production-settings.html#topology).
 
-- Use `n2-standard` or `n2-highcpu` [predefined VMs](https://cloud.google.com/compute/pricing#predefined_machine_types), or [custom VMs](https://cloud.google.com/compute/pricing#custommachinetypepricing), with [Local SSDs](https://cloud.google.com/compute/docs/disks/#localssds) or [SSD persistent disks](https://cloud.google.com/compute/docs/disks/#pdspecs). For example, Cockroach Labs has used `n2-standard-16` (16 vCPUs and 64 GiB of RAM per VM, local SSD) for internal testing.
-
-- **Do not** use `f1` or `g1` [shared-core machines](https://cloud.google.com/compute/docs/machine-types#sharedcore), which limit the load on a single core.
+{% include {{ page.version.version }}/prod-deployment/recommended-instances-gcp.md %}
 
 - If you used a tag for your firewall rules, when you create the instance, click **Management, security, disks, networking, sole tenancy**. Under the **Networking** tab, in the **Network tags** field, enter **cockroachdb**.
 

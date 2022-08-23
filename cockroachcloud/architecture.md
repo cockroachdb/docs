@@ -36,9 +36,9 @@ The diagram below shows a high-level representation of a {{ site.data.products.d
 
 <img src="{{ 'images/cockroachcloud/multiregion-diagram.png' | relative_url }}" alt="Multi-region architecture" style="width:100%; max-width:800px" />
 
-## {{ site.data.products.serverless-plan }}
+## {{ site.data.products.serverless }}
 
-{{ site.data.products.serverless }} is a fully-managed, auto-scaling deployment of CockroachDB. Being familiar with the following concepts will help you understand our Serverless architecture. While {{ site.data.products.serverless }} is in beta, it is ideal for lightweight applications, starter projects, development environments, and proofs of concept.
+{{ site.data.products.serverless }} is a fully-managed, auto-scaling deployment of CockroachDB. Being familiar with the following concepts will help you understand our Serverless architecture. {{ site.data.products.serverless }} is ideal for lightweight applications, starter projects, development environments, and proofs of concept.
 
 ### Architecture
 

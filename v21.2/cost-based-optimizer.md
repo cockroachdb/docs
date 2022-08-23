@@ -102,6 +102,16 @@ SET CLUSTER SETTING sql.stats.histogram_collection.enabled = false;
 
 When `sql.stats.histogram_collection.enabled` is set to `false`, histograms are never collected, either as part of automatic statistics collection or by manually invoking [`CREATE STATISTICS`](create-statistics.html).
 
+## Control whether the optimizer creates a plan with a full scan
+
+Even if you have [secondary indexes](schema-design-indexes.html), the optimizer may determine that a full table scan will be faster. For example, if you add a secondary index to a table with a large number of rows and find that a statement plan is not using the secondary index, then it is likely that performing a full table scan using the primary key is faster than doing a secondary index scan plus an [index join](indexes.html#example).
+
+You can disable statement plans that perform full table scans with the `disallow_full_table_scans` [session variable](set-vars.html).
+
+If you disable full scans, you can set the `large_full_scan_rows` session variable to specify the maximum table size allowed for a full scan. If no alternative plan is possible, the optimizer will return an error.
+
+If you disable full scans, and you provide an [index hint](table-expressions.html#force-index-selection), the optimizer will try to avoid a full scan while also respecting the index hint. If this is not possible, the optimizer will return an error. If you do not provide an index hint, the optimizer will return an error, the full scan will be logged, and the `sql.guardrails.full_scan_rejected.count` [metric](ui-overview-dashboard.html) will be updated.
+
 ## Locality optimized search in multi-region clusters
 
 In [multi-region deployments](multiregion-overview.html), the optimizer, in concert with the [SQL engine](architecture/sql-layer.html), will avoid sending requests to nodes in other regions when it can instead read a value from a unique column that is stored locally. This capability is known as _locality optimized search_.
@@ -151,6 +161,8 @@ To change this setting, which is controlled by the `reorder_joins_limit` [sessio
 ~~~ sql
 > SET reorder_joins_limit = 0;
 ~~~
+
+To disable this feature, set the variable to `0`. You can configure the default `reorder_joins_limit` session setting with the [cluster setting](cluster-settings.html) `sql.defaults.reorder_joins_limit`, which has a default value of `8`.
 
 {{site.data.alerts.callout_danger}}
 We strongly recommend not setting this value higher than 8 to avoid performance degradation. If set too high, the cost of generating and costing execution plans can end up dominating the total execution time of the query.

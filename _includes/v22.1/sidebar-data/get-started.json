@@ -30,6 +30,7 @@
         {
           "title": "Python",
           "urls": [
+            "/${VERSION}/build-a-python-app-with-cockroachdb-psycopg3.html",
             "/${VERSION}/build-a-python-app-with-cockroachdb.html",
             "/${VERSION}/build-a-python-app-with-cockroachdb-sqlalchemy.html",
             "/${VERSION}/build-a-python-app-with-cockroachdb-django.html",
@@ -37,7 +38,7 @@
           ]
         },
         {
-          "title": "Go",
+          "title": "Golang",
           "urls": [
             "/${VERSION}/build-a-go-app-with-cockroachdb.html",
             "/${VERSION}/build-a-go-app-with-cockroachdb-gorm.html",

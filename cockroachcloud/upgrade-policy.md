@@ -5,7 +5,7 @@ toc: true
 docs_area: manage
 ---
 
-This page describes the upgrade policy for {{ site.data.products.db }}.
+This page describes the upgrade policy for {{ site.data.products.db }}. For self-hosted clusters, see the CockroachDB [Release Support Policy](../releases/release-support-policy.html).
 
 {{ site.data.products.db }} supports the latest major version of CockroachDB and the version immediately preceding it. Support for these versions includes patch version updates and security patches.
 
@@ -39,7 +39,7 @@ If you see problems after the upgrade has been finalized, it will not be possibl
 
 ### End of Support for older CockroachDB versions
 
-As CockroachDB releases new major versions, older versions reach their End of Support (EOS) on {{ site.data.products.db }}. A CockroachDB version reaches EOS when it is 2 major versions behind the latest version. For example, now that CockroachDB v21.2 has been released, CockroachDB v20.2 has reached EOS.
+As CockroachDB releases new major versions, older versions reach their End of Support (EOS) on {{ site.data.products.db }}. A CockroachDB version reaches EOS when it is two major versions behind the latest version. For example, when CockroachDB v21.2 was released, CockroachDB v20.2 reached EOS.
 
 Clusters running unsupported CockroachDB versions are not eligible for our [availability SLA](https://www.cockroachlabs.com/cloud-terms-and-conditions). Further downgrades in support may occur as per the [CockroachDB Release Support Policy](../releases/release-support-policy.html).
 

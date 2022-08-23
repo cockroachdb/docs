@@ -19,7 +19,7 @@ In CockroachDB, the following are aliases for `EXPLAIN ANALYZE`:
 
 ## Synopsis
 
-<div>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/explain_analyze.html %}</div>
+<div>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/explain_analyze.html %}</div>
 
 ## Parameters
 
@@ -204,6 +204,51 @@ For example, the following `EXPLAIN ANALYZE` statement executes a simple query a
 (28 rows)
 
 Time: 694ms total (execution 694ms / network 0ms)
+~~~
+
+If you perform a join, the estimated max memory allocation is also reported for the join. For example:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+EXPLAIN ANALYZE SELECT * FROM vehicles JOIN rides ON rides.vehicle_id = vehicles.id and rides.city = vehicles.city limit 100;
+~~~
+~~~
+                        info
+-----------------------------------------------------
+  planning time: 1ms
+  execution time: 18ms
+  distribution: full
+  vectorized: true
+  rows read from KV: 3,173 (543 KiB)
+  cumulative time spent in KV: 37ms
+  maximum memory usage: 820 KiB
+  network usage: 3.3 KiB (2 messages)
+  regions: us-east1
+
+  • limit
+  │ nodes: n1
+  │ regions: us-east1
+  │ actual row count: 100
+  │ estimated row count: 100
+  │ count: 100
+  │
+  └── • lookup join
+      │ nodes: n1, n2, n3
+      │ regions: us-east1
+      │ actual row count: 194
+      │ KV time: 31ms
+      │ KV contention time: 0µs
+      │ KV rows read: 173
+      │ KV bytes read: 25 KiB
+      │ estimated max memory allocated: 300 KiB
+      │ estimated row count: 13,837
+      │ table: vehicles@vehicles_pkey
+      │ equality: (city, vehicle_id) = (city,id)
+      │ equality cols are key
+      │
+      └── • scan
+  ...
+(41 rows)
 ~~~
 
 ### `EXPLAIN ANALYZE (DISTSQL)`

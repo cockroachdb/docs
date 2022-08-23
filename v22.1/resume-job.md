@@ -11,7 +11,7 @@ docs_area: reference.sql
  - [`BACKUP`](backup.html) and [`RESTORE`](restore.html) jobs
  - [User-created table statistics](create-statistics.html) jobs
  - [Automatic table statistics](cost-based-optimizer.html#table-statistics) jobs
- - [Changefeeds](use-changefeeds.html)
+ - [Changefeeds](create-changefeed.html)
  - [Schema change](online-schema-changes.html) jobs
  -  [Scheduled backup](manage-a-backup-schedule.html) jobs
 
@@ -22,7 +22,7 @@ To resume a job, the user must be a member of the `admin` role or must have the 
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/resume_job.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/resume_job.html %}
 </div>
 
 ## Parameters

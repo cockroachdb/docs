@@ -1,19 +1,14 @@
 ---
-title: Create a CockroachDB Serverless (beta) Cluster
-summary: Learn how to create a cluster using CockroachDB Serverless (beta).
+title: Create a CockroachDB Serverless Cluster
+summary: Learn how to create a cluster using CockroachDB Serverless.
 toc: true
 redirect_from: create-a-free-cluster.html
-filter_category: create_cluster_cloud
-filter_html: CockroachDB Serverless (beta)
-filter_sort: 1
 docs_area: deploy
 ---
 
-{% include filter-tabs.md %}
+{% include cockroachcloud/filter-tabs/create-cluster-cloud.md %}
 
 This page walks you through the process of creating a cluster using {{ site.data.products.serverless }}. Note that only [{{ site.data.products.db }} Console Administrators](console-access-management.html#console-admin) can create clusters. If you are a Developer and need to create a cluster, contact your {{ site.data.products.db }} Administrator.
-
-{% include cockroachcloud/free-limitations.md %}
 
 ## Before you begin
 

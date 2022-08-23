@@ -45,7 +45,7 @@ When a node is permanently removed, the following stages occur in sequence:
 
 An operator [initiates the decommissioning process](#decommission-the-node) on the node.
 
-The node's [`is_decommissioning`](cockroach-node.html#node-status) field is set to `true` and its `membership` status is set to `decommissioning`, which causes its replicas to be rebalanced to other nodes.
+The node's [`is_decommissioning`](cockroach-node.html#node-status) field is set to `true` and its `membership` status is set to `decommissioning`, which causes its replicas to be rebalanced to other nodes. If the rebalancing stalls during decommissioning, replicas that have yet to move are printed to the [SQL shell](cockroach-sql.html) and written to the [`OPS` logging channel](logging-overview.html#logging-channels). [By default](configure-logs.html#default-logging-configuration), the `OPS` channel logs output to a `cockroach.log` file.
 
 The node's [`/health?ready=1` endpoint](monitoring-and-alerting.html#health-ready-1) continues to consider the node "ready" so that the node can function as a gateway to route SQL client connections to relevant data.
 
@@ -345,6 +345,8 @@ Although [draining automatically follows decommissioning](#draining), we recomme
 
 Run [`cockroach node decommission`](cockroach-node.html) to decommission the node and rebalance its range replicas. For specific instructions and additional guidelines, see the [example](#remove-nodes).
 
+If the rebalancing stalls during decommissioning, replicas that have yet to move are printed to the [SQL shell](cockroach-sql.html) and written to the [`OPS` logging channel](logging-overview.html#logging-channels) with the message `possible decommission stall detected`. [By default](configure-logs.html#default-logging-configuration), the `OPS` channel logs output to a `cockroach.log` file.
+
 {{site.data.alerts.callout_danger}}
 Do **not** terminate the node process, delete the storage volume, or remove the VM before a `decommissioning` node has [changed its membership status](#status-change) to `decommissioned`. Prematurely terminating the process will prevent the node from rebalancing all of its range replicas onto other nodes gracefully, cause transient query errors in client applications, and leave the remaining ranges under-replicated and vulnerable to loss of [quorum](architecture/replication-layer.html#overview) if another node goes down.
 {{site.data.alerts.end}}
@@ -414,11 +416,11 @@ cockroach node status --decommission --certs-dir=certs --host={address of any li
 ~~~
 
 ~~~
-  id |     address     |   sql_address   |              build              |         started_at         |         updated_at         | locality | is_available | is_live | gossiped_replicas | is_decommissioning |   membership   | is_draining
------+-----------------+-----------------+---------------------------------+----------------------------+----------------------------+----------+--------------+---------+-------------------+--------------------+----------------+--------------
-   1 | localhost:26257 | localhost:26257 | v22.1.0-alpha.1-791-ga0f0df7927 | 2022-02-11 02:11:55.07734  | 2022-02-11 02:17:28.202777 |          | true         | true    |                73 | false              | active         | true
-   2 | localhost:26258 | localhost:26258 | v22.1.0-alpha.1-791-ga0f0df7927 | 2022-02-11 02:11:56.203535 | 2022-02-11 02:17:29.465841 |          | true         | true    |                73 | false              | active         | false
-   3 | localhost:26259 | localhost:26259 | v22.1.0-alpha.1-791-ga0f0df7927 | 2022-02-11 02:11:56.406667 | 2022-02-11 02:17:29.588486 |          | true         | true    |                73 | false              | active         | false
+  id |     address     |   sql_address   |          build          |         started_at         |         updated_at         | locality | is_available | is_live | gossiped_replicas | is_decommissioning |   membership   | is_draining
+-----+-----------------+-----------------+-------------------------+----------------------------+----------------------------+----------+--------------+---------+-------------------+--------------------+----------------+--------------
+   1 | localhost:26257 | localhost:26257 | v22.1.0-791-ga0f0df7927 | 2022-02-11 02:11:55.07734  | 2022-02-11 02:17:28.202777 |          | true         | true    |                73 | false              | active         | true
+   2 | localhost:26258 | localhost:26258 | v22.1.0-791-ga0f0df7927 | 2022-02-11 02:11:56.203535 | 2022-02-11 02:17:29.465841 |          | true         | true    |                73 | false              | active         | false
+   3 | localhost:26259 | localhost:26259 | v22.1.0-791-ga0f0df7927 | 2022-02-11 02:11:56.406667 | 2022-02-11 02:17:29.588486 |          | true         | true    |                73 | false              | active         | false
 (3 rows)
 ~~~
 
@@ -434,13 +436,13 @@ cockroach node status --decommission --certs-dir=certs --host={address of any li
 ~~~
 
 ~~~
-  id |     address     |   sql_address   |              build              |         started_at         |         updated_at         | locality | is_available | is_live | gossiped_replicas | is_decommissioning |   membership   | is_draining
------+-----------------+-----------------+---------------------------------+----------------------------+----------------------------+----------+--------------+---------+-------------------+--------------------+----------------+--------------
-   1 | localhost:26257 | localhost:26257 | v22.1.0-alpha.1-791-ga0f0df7927 | 2022-02-11 02:11:55.07734  | 2022-02-11 02:17:28.202777 |          | true         | true    |                73 | false              | active         | false
-   2 | localhost:26258 | localhost:26258 | v22.1.0-alpha.1-791-ga0f0df7927 | 2022-02-11 02:11:56.203535 | 2022-02-11 02:17:29.465841 |          | true         | true    |                73 | false              | active         | false
-   3 | localhost:26259 | localhost:26259 | v22.1.0-alpha.1-791-ga0f0df7927 | 2022-02-11 02:11:56.406667 | 2022-02-11 02:17:29.588486 |          | true         | true    |                73 | false              | active         | false
-   4 | localhost:26260 | localhost:26260 | v22.1.0-alpha.1-791-ga0f0df7927 | 2022-02-11 02:11:56.914003 | 2022-02-11 02:16:39.032709 |          | false        | false   |                 0 | true               | decommissioned | true
-   5 | localhost:26261 | localhost:26261 | v22.1.0-alpha.1-791-ga0f0df7927 | 2022-02-11 02:11:57.613508 | 2022-02-11 02:16:39.615783 |          | false        | false   |                 0 | true               | decommissioned | true
+  id |     address     |   sql_address   |          build          |         started_at         |         updated_at         | locality | is_available | is_live | gossiped_replicas | is_decommissioning |   membership   | is_draining
+-----+-----------------+-----------------+-------------------------+----------------------------+----------------------------+----------+--------------+---------+-------------------+--------------------+----------------+--------------
+   1 | localhost:26257 | localhost:26257 | v22.1.0-791-ga0f0df7927 | 2022-02-11 02:11:55.07734  | 2022-02-11 02:17:28.202777 |          | true         | true    |                73 | false              | active         | false
+   2 | localhost:26258 | localhost:26258 | v22.1.0-791-ga0f0df7927 | 2022-02-11 02:11:56.203535 | 2022-02-11 02:17:29.465841 |          | true         | true    |                73 | false              | active         | false
+   3 | localhost:26259 | localhost:26259 | v22.1.0-791-ga0f0df7927 | 2022-02-11 02:11:56.406667 | 2022-02-11 02:17:29.588486 |          | true         | true    |                73 | false              | active         | false
+   4 | localhost:26260 | localhost:26260 | v22.1.0-791-ga0f0df7927 | 2022-02-11 02:11:56.914003 | 2022-02-11 02:16:39.032709 |          | false        | false   |                 0 | true               | decommissioned | true
+   5 | localhost:26261 | localhost:26261 | v22.1.0-791-ga0f0df7927 | 2022-02-11 02:11:57.613508 | 2022-02-11 02:16:39.615783 |          | false        | false   |                 0 | true               | decommissioned | true
 (5 rows)
 ~~~
 
@@ -522,7 +524,7 @@ To drain and shut down a node that was started in the foreground with [`cockroac
 
     ~~~
     CockroachDB node starting at 2022-02-11 06:25:24.922474 +0000 UTC (took 5.1s)
-    build:               CCL v22.1.0-alpha.1-791-ga0f0df7927 @ 2022/02/02 20:08:24 (go1.17.6)
+    build:               CCL v22.1.0-791-ga0f0df7927 @ 2022/02/02 20:08:24 (go1.17.6)
     webui:               https://localhost:8080
     sql:                 postgresql://root@localhost:26257/defaultdb?sslcert=certs%2Fclient.root.crt&sslkey=certs%2Fclient.root.key&sslmode=verify-full&sslrootcert=certs%2Fca.crt
     sql (JDBC):          jdbc:postgresql://localhost:26257/defaultdb?sslcert=certs%2Fclient.root.crt&sslkey=certs%2Fclient.root.key&sslmode=verify-full&sslrootcert=certs%2Fca.crt&user=root
@@ -667,13 +669,13 @@ $ cockroach node status --decommission --certs-dir=certs --host={address of any 
 ~~~
 
 ~~~
-  id |     address     |   sql_address   |              build              |         started_at         |         updated_at         | locality | is_available | is_live | gossiped_replicas | is_decommissioning |   membership   | is_draining
------+-----------------+-----------------+---------------------------------+----------------------------+----------------------------+----------+--------------+---------+-------------------+--------------------+----------------+--------------
-   1 | localhost:26257 | localhost:26257 | v22.1.0-alpha.1-791-ga0f0df7927 | 2022-02-11 02:11:55.07734  | 2022-02-11 02:17:28.202777 |          | true         | true    |                73 | false              | active         | false
-   2 | localhost:26258 | localhost:26258 | v22.1.0-alpha.1-791-ga0f0df7927 | 2022-02-11 02:11:56.203535 | 2022-02-11 02:17:29.465841 |          | true         | true    |                73 | false              | active         | false
-   3 | localhost:26259 | localhost:26259 | v22.1.0-alpha.1-791-ga0f0df7927 | 2022-02-11 02:11:56.406667 | 2022-02-11 02:17:29.588486 |          | true         | true    |                73 | false              | active         | false
-   4 | localhost:26260 | localhost:26260 | v22.1.0-alpha.1-791-ga0f0df7927 | 2022-02-11 02:11:56.914003 | 2022-02-11 02:16:39.032709 |          | false        | false   |                 0 | true               | decommissioned | true
-   5 | localhost:26261 | localhost:26261 | v22.1.0-alpha.1-791-ga0f0df7927 | 2022-02-11 02:11:57.613508 | 2022-02-11 02:16:39.615783 |          | false        | false   |                 0 | true               | decommissioned | true
+  id |     address     |   sql_address   |          build          |         started_at         |         updated_at         | locality | is_available | is_live | gossiped_replicas | is_decommissioning |   membership   | is_draining
+-----+-----------------+-----------------+-------------------------+----------------------------+----------------------------+----------+--------------+---------+-------------------+--------------------+----------------+--------------
+   1 | localhost:26257 | localhost:26257 | v22.1.0-791-ga0f0df7927 | 2022-02-11 02:11:55.07734  | 2022-02-11 02:17:28.202777 |          | true         | true    |                73 | false              | active         | false
+   2 | localhost:26258 | localhost:26258 | v22.1.0-791-ga0f0df7927 | 2022-02-11 02:11:56.203535 | 2022-02-11 02:17:29.465841 |          | true         | true    |                73 | false              | active         | false
+   3 | localhost:26259 | localhost:26259 | v22.1.0-791-ga0f0df7927 | 2022-02-11 02:11:56.406667 | 2022-02-11 02:17:29.588486 |          | true         | true    |                73 | false              | active         | false
+   4 | localhost:26260 | localhost:26260 | v22.1.0-791-ga0f0df7927 | 2022-02-11 02:11:56.914003 | 2022-02-11 02:16:39.032709 |          | false        | false   |                 0 | true               | decommissioned | true
+   5 | localhost:26261 | localhost:26261 | v22.1.0-791-ga0f0df7927 | 2022-02-11 02:11:57.613508 | 2022-02-11 02:16:39.615783 |          | false        | false   |                 0 | true               | decommissioned | true
 (5 rows)
 ~~~
 
@@ -709,12 +711,12 @@ $ cockroach node status --decommission --certs-dir=certs --host={address of any 
 ~~~
 
 ~~~
-  id |     address     |   sql_address   |              build              |         started_at         |         updated_at         | locality | is_available | is_live | gossiped_replicas | is_decommissioning |   membership   | is_draining
------+-----------------+-----------------+---------------------------------+----------------------------+----------------------------+----------+--------------+---------+-------------------+--------------------+----------------+--------------
-   1 | localhost:26257 | localhost:26257 | v22.1.0-alpha.1-791-ga0f0df7927 | 2022-02-11 02:45:45.970862 | 2022-02-11 05:32:43.233458 |          | false        | false   |                 0 | false              | active         | true
-   2 | localhost:26258 | localhost:26258 | v22.1.0-alpha.1-791-ga0f0df7927 | 2022-02-11 02:46:40.32999  | 2022-02-11 05:42:28.577662 |          | true         | true    |                73 | false              | active         | false
-   3 | localhost:26259 | localhost:26259 | v22.1.0-alpha.1-791-ga0f0df7927 | 2022-02-11 02:46:47.20388  | 2022-02-11 05:42:27.467766 |          | true         | true    |                73 | false              | active         | false
-   4 | localhost:26260 | localhost:26260 | v22.1.0-alpha.1-791-ga0f0df7927 | 2022-02-11 02:11:56.914003 | 2022-02-11 02:16:39.032709 |          | true         | true    |                73 | false              | active         | false
+  id |     address     |   sql_address   |          build          |         started_at         |         updated_at         | locality | is_available | is_live | gossiped_replicas | is_decommissioning |   membership   | is_draining
+-----+-----------------+-----------------+-------------------------+----------------------------+----------------------------+----------+--------------+---------+-------------------+--------------------+----------------+--------------
+   1 | localhost:26257 | localhost:26257 | v22.1.0-791-ga0f0df7927 | 2022-02-11 02:45:45.970862 | 2022-02-11 05:32:43.233458 |          | false        | false   |                 0 | false              | active         | true
+   2 | localhost:26258 | localhost:26258 | v22.1.0-791-ga0f0df7927 | 2022-02-11 02:46:40.32999  | 2022-02-11 05:42:28.577662 |          | true         | true    |                73 | false              | active         | false
+   3 | localhost:26259 | localhost:26259 | v22.1.0-791-ga0f0df7927 | 2022-02-11 02:46:47.20388  | 2022-02-11 05:42:27.467766 |          | true         | true    |                73 | false              | active         | false
+   4 | localhost:26260 | localhost:26260 | v22.1.0-791-ga0f0df7927 | 2022-02-11 02:11:56.914003 | 2022-02-11 02:16:39.032709 |          | true         | true    |                73 | false              | active         | false
 (4 rows)
 ~~~
 
@@ -750,12 +752,12 @@ $ cockroach node status --decommission --certs-dir=certs --host={address of any 
 ~~~
 
 ~~~
-  id |     address     |   sql_address   |              build              |         started_at         |         updated_at         | locality | is_available | is_live | gossiped_replicas | is_decommissioning |   membership   | is_draining
------+-----------------+-----------------+---------------------------------+----------------------------+----------------------------+----------+--------------+---------+-------------------+--------------------+----------------+--------------
-   1 | localhost:26257 | localhost:26257 | v22.1.0-alpha.1-791-ga0f0df7927 | 2022-02-11 02:45:45.970862 | 2022-02-11 06:07:40.697734 |          | false        | false   |                 0 | true               | decommissioned | true
-   2 | localhost:26258 | localhost:26258 | v22.1.0-alpha.1-791-ga0f0df7927 | 2022-02-11 02:46:40.32999  | 2022-02-11 05:42:28.577662 |          | true         | true    |                73 | false              | active         | false
-   3 | localhost:26259 | localhost:26259 | v22.1.0-alpha.1-791-ga0f0df7927 | 2022-02-11 02:46:47.20388  | 2022-02-11 05:42:27.467766 |          | true         | true    |                73 | false              | active         | false
-   4 | localhost:26260 | localhost:26260 | v22.1.0-alpha.1-791-ga0f0df7927 | 2022-02-11 02:11:56.914003 | 2022-02-11 02:16:39.032709 |          | true         | true    |                73 | false              | active         | false
+  id |     address     |   sql_address   |          build          |         started_at         |         updated_at         | locality | is_available | is_live | gossiped_replicas | is_decommissioning |   membership   | is_draining
+-----+-----------------+-----------------+-------------------------+----------------------------+----------------------------+----------+--------------+---------+-------------------+--------------------+----------------+--------------
+   1 | localhost:26257 | localhost:26257 | v22.1.0-791-ga0f0df7927 | 2022-02-11 02:45:45.970862 | 2022-02-11 06:07:40.697734 |          | false        | false   |                 0 | true               | decommissioned | true
+   2 | localhost:26258 | localhost:26258 | v22.1.0-791-ga0f0df7927 | 2022-02-11 02:46:40.32999  | 2022-02-11 05:42:28.577662 |          | true         | true    |                73 | false              | active         | false
+   3 | localhost:26259 | localhost:26259 | v22.1.0-791-ga0f0df7927 | 2022-02-11 02:46:47.20388  | 2022-02-11 05:42:27.467766 |          | true         | true    |                73 | false              | active         | false
+   4 | localhost:26260 | localhost:26260 | v22.1.0-791-ga0f0df7927 | 2022-02-11 02:11:56.914003 | 2022-02-11 02:16:39.032709 |          | true         | true    |                73 | false              | active         | false
 (4 rows)
 ~~~
 

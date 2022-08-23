@@ -254,12 +254,6 @@ If you are [performing an `IMPORT` of a `PGDUMP`](migrate-from-postgres.html) wi
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/50225)
 
-### Historical reads on restored objects
-
-{% include {{ page.version.version }}/known-limitations/restore-aost.md %}
-
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/53044)
-
 ### Spatial support limitations
 
 CockroachDB supports efficiently storing and querying [spatial data](spatial-data.html), with the following limitations:
@@ -656,3 +650,7 @@ CockroachDB performs a full-table scan on all inserts when using [partitioned un
 A workaround is to use [stored computed columns](computed-columns.html).
 
 [Tracking GitHub Issues](https://github.com/cockroachdb/cockroach/issues/68132)
+
+### Remove a `UNIQUE` index created as part of `CREATE TABLE`
+
+{% include {{ page.version.version }}/known-limitations/drop-unique-index-from-create-table.md %}

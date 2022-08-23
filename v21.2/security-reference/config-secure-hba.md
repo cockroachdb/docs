@@ -14,7 +14,7 @@ This document describes the rationale for restricting database access to specifi
 
 ## Why customize your authentication configuration?
 
-{{ site.data.products.serverless-plan }} and {{ site.data.products.dedicated }} both include industry-standard security controls at the network and infrastructure levels, and {{ site.data.products.core }} may be deployed with any measure of network security one cares to put in place. Nevertheless, a hardened authentication configuration offers a powerful measure of [security in depth](https://en.wikipedia.org/wiki/Defense_in_depth_(computing)).
+{{ site.data.products.serverless }} and {{ site.data.products.dedicated }} both include industry-standard security controls at the network and infrastructure levels, and {{ site.data.products.core }} may be deployed with any measure of network security one cares to put in place. Nevertheless, a hardened authentication configuration offers a powerful measure of [security in depth](https://en.wikipedia.org/wiki/Defense_in_depth_(computing)).
 
 Limiting allowed database connections to secure IP addresses reduces the risk that your cluster is compromised, because a potential attacker who acquires database credentials (e.g., username/password combinations or client TLS certificates) cannot use those credentials without also gaining infrastructure access. Infrastructure access can and should be protected with multifactor authentication and restricted to appropriate parties using infrastructure-level IAM.
 
@@ -24,7 +24,7 @@ Limiting allowed database connections to secure IP addresses reduces the risk th
 
 From the {{ site.data.products.serverless }} Cloud Console, select your new cluster and click the **Connect** button to obtain your connection credentials from the **Connection Info** pane in the CockroachDB Cloud Console.
 
-You'll also need to download the cluster's root TLS certificate, so that your client can authenticate the database server as it connects.
+You must also download the cluster's root CA certificate, so that your [client can authenticate](../../cockroachcloud/authentication.html#connecting-sql-clients) the database server as it connects.
 
 Open a SQL shell against your cluster.
 

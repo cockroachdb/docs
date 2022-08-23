@@ -1,5 +1,5 @@
 ---
-title: CockroachDB Cloud Release Notes
+title: CockroachDB Cloud Releases
 summary: Changelog for CockroachDB Cloud.
 toc: true
 redirect-from: index-cockroachcloud.html
@@ -8,13 +8,53 @@ docs_area: releases
 
 CockroachDB Cloud supports the latest major version of CockroachDB and the version immediately preceding it. All clusters are subject to automatic upgrades to the latest supported minor version. [{{ site.data.products.serverless }}](../cockroachcloud/quickstart.html) clusters are subject to automatic upgrades for both minor and major releases while Serverless is in beta. For more information, see the [{{ site.data.products.db }} Upgrade Policy](../cockroachcloud/upgrade-policy.html).
 
+For details on features that are not supported in {{ site.data.products.serverless }}, see [Unsupported Features in {{ site.data.products.serverless }}](../cockroachcloud/serverless-unsupported-features.html).
+
 Get future release notes emailed to you:
 
 {% include marketo.html %}
 
 {{site.data.alerts.callout_version}}
-As of June 6, 2022, CockroachDB [v22.1.1](v22.1.html) is available on {{ site.data.products.dedicated }} clusters. {{ site.data.products.serverless }} clusters are running CockroachDB [v21.2.10](v21.2.html).
+As of August 1, 2022, {{ site.data.products.serverless }} clusters are running CockroachDB [v22.1.4](v22.1.html#v22-1-4) and new {{ site.data.products.dedicated }} clusters are running CockroachDB [v22.1.5](v22.1.html#v22-1-5).
 {{site.data.alerts.end}}
+
+## August 8, 2022
+
+<h3>Console changes</h3>
+
+- {{ site.data.products.dedicated }} users can now choose any of the available hardware options when [configuring a cluster](../cockroachcloud/create-your-cluster.html). Previously, there were restrictions based on which storage and compute combinations were recommended for best performance.
+- In the [**Connect to your cluster**](../cockroachcloud/connect-to-your-cluster.html) dialog, your previous SQL user, database, and connection method selections are now cached to make it easier to re-connect to your cluster.
+
+<h3>Bug fixes</h3>
+
+- Fixed a bug where the **SQL Activity** tab for clusters running different CockroachDB versions did not always load version-appropriate UI components.
+- Fixed a bug where the **Statements** table on a transaction's [**Transaction Details** page](../cockroachcloud/transactions-page.html) sometimes showed an incorrect number of statements.
+
+## July 28, 2022
+
+<h3>General changes</h3>
+
+- All of your organization's [invoices](../cockroachcloud/billing-management.html#view-invoices) are now available on the **Billing** page.
+
+## July 27, 2022
+
+<h3>General changes</h3>
+
+- You can now [add and remove regions](../cockroachcloud/cluster-management.html#add-or-remove-regions-from-a-cluster) from {{ site.data.products.dedicated }} clusters through the {{ site.data.products.db }} Console. This change makes it easier to support users in new locations or scale down your cluster.
+
+## July 6, 2022
+
+<h3>Console changes</h3>
+
+- The [**Connect to your cluster**](../{{site.versions["stable"]}}/connect-to-the-database.html) dialog now includes code snippets for [supported languages and tools](../{{site.versions["stable"]}}/third-party-database-tools.html).
+- The [**Connect to your cluster**](../cockroachcloud/connect-to-a-serverless-cluster.html) dialog for clusters running CockroachDB [v22.1](v22.1.html) now loads more quickly.
+- If users log in using an [SSO](../cockroachcloud/cloud-sso.html) method other than the one they have used previously, they will now be asked if they want to switch to the new login method.
+- Previously, {{ site.data.products.dedicated }} users could only choose storage amounts within the [recommendations](../cockroachcloud/plan-your-cluster.html?filters=dedicated) for the selected machine size. Now, a warning message will appear if the storage is outside the recommended range, but any storage option can be selected.
+- The date and time selection on the [**Statements**](../cockroachcloud/statements-page.html) and [**Transactions**](../cockroachcloud/transactions-page.html) pages now defaults to UTC and has an improved design.
+
+<h3>Bug fixes</h3>
+
+- The [**Statements** page](../cockroachcloud/statements-page.html) no longer crashes when a search term contains `*`.
 
 ## June 6, 2022
 
@@ -27,7 +67,7 @@ As of June 6, 2022, CockroachDB [v22.1.1](v22.1.html) is available on {{ site.da
 
 - When creating a [SQL user](../cockroachcloud/console-access-management.html#sql-users) or regenerating a SQL user's password, the generated password is now hidden until the user clicks **Reveal password**.
 
-<h3>API</h3>
+<h3>Cloud API changes</h3>
 
 - Paginated [API](../cockroachcloud/cloud-api.html) endpoints now accept a single `page` parameter for next or previous pages. Pagination response messages now contain only two fields: `next_page` and `previous_page`, whose values can be used for the `page` field in a followup call.
 
@@ -184,7 +224,7 @@ As of June 6, 2022, CockroachDB [v22.1.1](v22.1.html) is available on {{ site.da
 
 <h3>Bug fixes</h3>
 
-- Fixed a bug where, if a user had reached the maximum number of {{ site.data.products.serverless }} clusters and refreshed the **Create your cluster** page, the {{ site.data.products.serverless-plan }} plan was auto-selected even though it is disabled.
+- Fixed a bug where, if a user had reached the maximum number of {{ site.data.products.serverless }} clusters and refreshed the **Create your cluster** page, the {{ site.data.products.serverless }} plan was auto-selected even though it is disabled.
 - Fixed a bug where clicking **Cancel** while logging in with GitHub would report and internal error.
 - Fixed a bug where organization deletion was temporarily broken.
 - Fixed a bug that was preventing the **Request Units** and **SQL Statements** graphs on the {{ site.data.products.serverless }} [Cluster Overview](../cockroachcloud/cluster-overview-page.html#cluster-overview-metrics) page from updating after a certain amount of time.

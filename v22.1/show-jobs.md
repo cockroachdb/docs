@@ -36,14 +36,14 @@ By default, only the `root` user can execute `SHOW JOBS`.
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/show_jobs.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/show_jobs.html %}
 </div>
 
 ## Parameters
 
  Parameter | Description
 -----------|-------------
-`SHOW AUTOMATIC JOBS` | Show [automatic table statistics](cost-based-optimizer.html#table-statistics). For an example, see [Show automatic jobs](#show-automatic-jobs).
+`SHOW AUTOMATIC JOBS` | Show jobs performed for internal CockroachDB operations. See [Show automatic jobs](#show-automatic-jobs).
 `SHOW JOBS WHEN COMPLETE` | Block `SHOW JOB` until the provided job ID reaches a terminal state. For an example, see [Show job when complete](#show-job-when-complete).
 `select_stmt` | A [selection query](selection-queries.html) that specifies the `job_id`(s) to view.
 `job_id` | The ID of the job to view.
@@ -59,11 +59,11 @@ The following fields are returned for each job:
 Field | Description
 ------|------------
 `job_id` | A unique ID to identify each job. This value is used if you want to control jobs (i.e., [pause](pause-job.html), [resume](resume-job.html), or [cancel](cancel-job.html) it).
-`job_type` | The type of job. Possible values: `SCHEMA CHANGE`, [`BACKUP`](backup.html), [`RESTORE`](restore.html), [`IMPORT`](import.html), and [`CREATE STATS`](create-statistics.html). <br><br> For `SHOW AUTOMATIC JOBS`, the possible value is [`AUTO CREATE STATS`](cost-based-optimizer.html#table-statistics).
+`job_type` | The type of job. Possible values: `SCHEMA CHANGE`, [`BACKUP`](backup.html), [`RESTORE`](restore.html), [`IMPORT`](import.html), and [`CREATE STATS`](create-statistics.html). <br><br> For job types of automatic jobs, see [Show automatic jobs](#show-automatic-jobs).
 `description` | The statement that started the job, or a textual description of the job.
 `statement` | When `description` is a textual description of the job, the statement that started the job is returned in this column. Currently, this field is populated only for the automatic table statistics jobs.
 `user_name` | The name of the [user](security-reference/authorization.html#create-and-manage-users) who started the job.
-`status` | The job's current state. Possible values: `pending`, `running`, `paused`, `failed`, `succeeded`, or `canceled`.
+`status` | The job's current state. Possible values: `pending`, `running`, `paused`, `failed`, `retrying`, `reverting`, `succeeded`, and `canceled`.
 `running_status` | The job's detailed running status, which provides visibility into the progress of the dropping or truncating of tables (i.e., [`DROP TABLE`](drop-table.html), [`DROP DATABASE`](drop-database.html), or [`TRUNCATE`](truncate.html)). For dropping or truncating jobs, the detailed running status is determined by the status of the table at the earliest stage of the schema change. The job is completed when the GC TTL expires and both the table data and ID is deleted for each of the tables involved. Possible values: `draining names`, `waiting for GC TTL`, `RocksDB compaction`, or `NULL` (when the status cannot be determined). <br><br>For the `SHOW AUTOMATIC JOBS` statement, the value of this field is `NULL`.
 `created` | The `TIMESTAMP` when the job was created.
 `started` | The `TIMESTAMP` when the job began running first.
@@ -119,11 +119,20 @@ You can filter jobs by using `SHOW JOBS` as the data source for a [`SELECT`](sel
 ~~~
 
 ~~~
-    job_id           |       job_type      |                    description                      |...
-+--------------------+---------------------+-----------------------------------------------------+...
-  438235476849557505 | AUTO CREATE STATS   | Table statistics refresh for defaultdb.public.users |...
-(1 row)
+    job_id           |       job_type                  |                    description                       |...
++--------------------+---------------------------------+------------------------------------------------------+...
+  786475982730133505 | AUTO SPAN CONFIG RECONCILIATION | reconciling span configurations                      |...
+  786483120403382274 | AUTO SQL STATS COMPACTION       | automatic SQL Stats compaction                       |...
+  786476180299579393 | AUTO CREATE STATS               | Table statistics refresh for movr.public.promo_codes |...
+...
+(8 rows)
 ~~~
+
+The job types of automatic jobs are:
+
+- `AUTO SPAN CONFIG RECONCILIATION`: A continuously running job that ensures that all declared [zone configurations](configure-zone.html) (`ALTER … CONFIGURE ZONE …`) are applied. For example, when `num_replicas = 7` is set on a table, the reconciliation job listens in on those changes and then informs the underlying [storage layer](architecture/storage-layer.html) to maintain 7 replicas for the table.
+- `AUTO SQL STATS COMPACTION`: An hourly job that truncates the internal `system.statement_statistics` and `system.transaction_statistics` table row counts to the value of the `sql.stats.persisted_rows.max` [cluster setting](cluster-settings.html). Both tables contribute to the [`crdb_internal.statement_statistics`](crdb-internal.html#statement_statistics) and [`crdb_internal.transaction_statistics`](crdb-internal.html#transaction_statistics) tables, respectively.
+- `AUTO CREATE STATS`: Creates and updates [table statistics](cost-based-optimizer.html#table-statistics).
 
 ### Filter automatic jobs
 
@@ -135,15 +144,16 @@ You can filter jobs by using `SHOW AUTOMATIC JOBS` as the data source for a [`SE
 ~~~
 
 ~~~
-    job_id           |       job_type      |                    description                      | ...
-+--------------------+---------------------+-----------------------------------------------------+ ...
-  438235476849557505 | AUTO CREATE STATS   | Table statistics refresh for defaultdb.public.users | ...
-(1 row)
+        job_id       |         job_type          |                             description                             |                                         statement                                          | user_name |  status   | ...
+  786483120403382274 | AUTO SQL STATS COMPACTION | automatic SQL Stats compaction                                      |                                                                                            | node      | succeeded | ...
+  786476180299579393 | AUTO CREATE STATS         | Table statistics refresh for movr.public.promo_codes                | CREATE STATISTICS __auto__ FROM [110] WITH OPTIONS THROTTLING 0.9 AS OF SYSTEM TIME '-30s' | root      | succeeded | ...
+...
+(7 rows)
 ~~~
 
 ### Show changefeed jobs
 
- You can display specific fields relating to changefeed jobs by running `SHOW CHANGEFEED JOBS`. These fields include:
+You can display specific fields relating to changefeed jobs by running `SHOW CHANGEFEED JOBS`. These fields include:
 
 * [`high_water_timestamp`](monitor-and-debug-changefeeds.html#monitor-a-changefeed): Guarantees all changes before or at this time have been emitted.
 * [`sink_uri`](create-changefeed.html#sink-uri): The destination URI of the configured sink for a changefeed.
