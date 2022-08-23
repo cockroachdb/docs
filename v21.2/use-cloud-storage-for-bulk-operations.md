@@ -288,11 +288,11 @@ This table outlines the actions that each operation performs against the storage
 
 
 <div class="filters clearfix">
-  <button class="filter-button" data-scope="s3">Amazon S3</button>
-  <button class="filter-button" data-scope="gcs">Google Cloud Storage</button>
+  <button class="filter-button" data-scope="s3-perms">Amazon S3</button>
+  <button class="filter-button" data-scope="gcs-perms">Google Cloud Storage</button>
 </div>
 
-<section class="filter-content" markdown="1" data-scope="s3">
+<section class="filter-content" markdown="1" data-scope="s3-perms">
 
 These [actions](https://docs.aws.amazon.com/AmazonS3/latest/API/API_Operations_Amazon_Simple_Storage_Service.html) are the minimum access permissions to be set in an Amazon S3 bucket policy:
 
@@ -336,7 +336,7 @@ An example S3 bucket policy for a **backup**:
 
 </section>
 
-<section class="filter-content" markdown="1" data-scope="gcs">
+<section class="filter-content" markdown="1" data-scope="gcs-perms">
 
 In Google Cloud Storage, you can grant users roles that define their access level to the storage bucket. For the purposes of running CockroachDB operations to your bucket, the following table lists the permissions that represent the minimum level required for each operation. GCS provides different levels of granularity for defining the roles in which these permissions reside. You can assign roles that already have these [permissions](https://cloud.google.com/storage/docs/access-control/iam-permissions) configured, or make your own custom roles that include these permissions. 
 
