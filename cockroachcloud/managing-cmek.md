@@ -289,7 +289,7 @@ To add a region to a cluster that already has CMEK enabled, update your cluster'
                     {
                         "region": "us-west1",
                         "key_spec": {
-                            "type": "GCP_KMS",
+                            "type": "GCP_CLOUD_KMS",
                             "uri": "{id-of-key}",
                             "auth_principal": "{service-account-with-kms-access}"
                         }
@@ -309,7 +309,7 @@ To add a region to a cluster that already has CMEK enabled, update your cluster'
             }
         }
         ```
-1. Send the request as a `PATCH` to the cluster endpoint:
+1. Send the payload as a `PATCH` request to the cluster endpoint:
 
     {% include_cached copy-clipboard.html %}
     ~~~shell
