@@ -297,7 +297,7 @@ To add a region to a cluster that already has CMEK enabled, update your cluster'
                     {
                         "region": "us-central1",
                         "key_spec": {
-                            "type": "GCP_KMS",
+                            "type": "GCP_CLOUD_KMS",
                             "uri": "{id-of-another-key}",
                             "auth_principal": "{another-service-account-with-kms-access}"
                         }
