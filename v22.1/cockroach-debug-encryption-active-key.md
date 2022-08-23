@@ -20,7 +20,7 @@ $ cockroach debug encryption-active-key [path specified by the store flag]
 
 ## Example
 
-Start a node with encryption-at-rest enabled:
+Start a node with {{ site.data.products.enterprise }} Encryption At Rest enabled:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell

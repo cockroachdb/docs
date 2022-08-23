@@ -202,7 +202,7 @@ An insecure cluster comes with serious risks:
 - Any user, connecting as `root`, can read or write any data in your cluster.
 - There is no network encryption or authentication, and thus no confidentiality.
 
-Therefore, to deploy CockroachDB in production, it is strongly recommended to [use TLS certificates to authenticate](authentication.html) the identity of nodes and clients and to encrypt in-flight data between nodes and clients. You can use either the built-in [`cockroach cert` commands](cockroach-cert.html) or [`openssl` commands](create-security-certificates-openssl.html) to generate security certificates for your deployment. Regardless of which option you choose, you'll need the following files:
+Therefore, to deploy CockroachDB in production, it is strongly recommended to [use TLS certificates to authenticate](authentication.html) the identity of nodes and clients and to encrypt data in transit between nodes and clients. You can use either the built-in [`cockroach cert` commands](cockroach-cert.html) or [`openssl` commands](create-security-certificates-openssl.html) to generate security certificates for your deployment. Regardless of which option you choose, you'll need the following files:
 
 - A certificate authority (CA) certificate and key, used to sign all of the other certificates.
 - A separate certificate and key for each node in your deployment, with the common name `node`.
