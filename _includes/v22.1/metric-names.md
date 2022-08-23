@@ -1,5 +1,6 @@
 Name | Description
 -----|-----
+
 `abortspanbytes` | Number of bytes in the abort span
 `abortspanbytes` | Number of bytes in the abort span
 `addsstable.applications` | Number of SSTable ingestions applied (i.e., applied by Replicas)
@@ -622,6 +623,20 @@ Name | Description
 `rpc.method.transferlease.recv` | Number of TransferLease requests processed
 `rpc.method.truncatelog.recv` | Number of TruncateLog requests processed
 `rpc.method.writebatch.recv` | Number of WriteBatch requests processed
+`schedules.BACKUP.failed` | Number of BACKUP jobs failed
+`schedules.BACKUP.started` | Number of BACKUP jobs started
+`schedules.BACKUP.succeeded` | Number of BACKUP jobs succeeded
+`schedules.error` | Number of schedules which did not execute successfully
+`schedules.malformed` | Number of malformed schedules
+`schedules.round.jobs-started` | The number of jobs started
+`schedules.round.reschedule-skip` | The number of schedules rescheduled due to SKIP policy
+`schedules.round.reschedule-wait` | The number of schedules rescheduled due to WAIT policy
+`schedules.scheduled-row-level-ttl-executor.failed` | Number of scheduled-row-level-ttl-executor jobs failed
+`schedules.scheduled-row-level-ttl-executor.started` | Number of scheduled-row-level-ttl-executor jobs started
+`schedules.scheduled-row-level-ttl-executor.succeeded` | Number of scheduled-row-level-ttl-executor jobs succeeded
+`schedules.scheduled-sql-stats-compaction-executor.failed` | Number of scheduled-sql-stats-compaction-executor jobs failed
+`schedules.scheduled-sql-stats-compaction-executor.started` | Number of scheduled-sql-stats-compaction-executor jobs started
+`schedules.scheduled-sql-stats-compaction-executor.succeeded` | Number of scheduled-sql-stats-compaction-executor jobs succeeded
 `seconds_until_enterprise_license_expiry` | Seconds until enterprise license expiry (0 if no license present or running without enterprise features)
 `security.certificate.expiration.ca` | Expiration timestamp in seconds since Unix epoch for the CA certificate. 0 means no certificate or error.
 `security.certificate.expiration.node` | Expiration timestamp in seconds since Unix epoch for the node certificate. 0 means no certificate or error.
