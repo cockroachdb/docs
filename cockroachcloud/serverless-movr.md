@@ -101,21 +101,23 @@ Run the `movr` workload for 1 minute using the same SQL connection string as bef
      60.0s        0          85297         1421.6      0.7      0.3      2.6      7.1     30.4
   ~~~
       
-## Step 5. Calculate your budget
+## Step 5. View your usage costs
 
 1. In the {{ site.data.products.db }} Console, close the **Connect to cluster** dialog to return to your cluster's [**Overview** page](cluster-overview-page.html).
 
-1. In the **Usage this month** section, note the number of RUs your cluster used. You can also see the **Request Units** graph for a breakdown of how many RUs per second you were using over the last minute.
+1. In the **Usage this month** section, click **Estimate usage cost**.
 
-1. Multiply your usage over one minute by the number of minutes in a month (60 mins/hr * 24 hrs/day * 31 days/month = 44640 mins/month) to estimate how many RUs the workload would use in a month. For example, if you used 1800 RUs: 1800 RUs/min * 44640 mins/month = 80,352,000 RUs/month. The actual usage will vary based on the variability of the workload and the number of days in the month.
+    The **Estimate cost based on usage** dialog appears.
+    
+1. Select **Past 30 minutes** as the time frame.
 
-1. Calculate your budget. The workload is estimated to use about 80 million RUs per month, and you are given up to 250M free RUs per month, so the free {{ site.data.products.serverless }} offering should be sufficient for your usage.
+The **Spend over time** graph will be populated with the RU and storage you used running the `movr` workload, as well as any other usage you had over the last 30 minutes. The **Monthly estimate for this workload** is calculated based on this usage. Ideally your spend limit should be higher than this estimate to allow for any variability in the workload over the month. A cluster's spend limit is meant to prevent you from accidentally spending more than you are comfortable with, not to be the most accurate prediction of your costs.
 
 ## Next steps
 
 The MovR team can monitor their usage in the {{ site.data.products.db }} Console, and they will receive [email alerts](alerts-page.html#configure-alerts) when the cluster approaches 50%, 75%, and 100% of its spend limit. If their workload grows and they reach the limits of the {{ site.data.products.serverless }} free offering, they can then [set a spend limit](serverless-cluster-management.html#edit-your-spend-limit).
 
-To estimate an actual budget for your cluster, you should run your real workload and gather usage data. You can always [edit your spend limit](serverless-cluster-management.html) if your initial estimate turns out to be inaccurate.
+To estimate the actual costs for your cluster, you should run your real workload and gather usage data. You can always [edit your spend limit](serverless-cluster-management.html) if your initial estimate turns out to be inaccurate or your budget changes.
 
 ## See also
 
