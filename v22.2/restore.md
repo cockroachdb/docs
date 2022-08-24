@@ -73,6 +73,8 @@ You can control `RESTORE` behavior using any of the following in the `restore_op
 `debug_pause_on`                                                    | `"error" `                                    |  Use to have a `RESTORE` [job](show-jobs.html) self pause when it encounters an error. The `RESTORE` job can then be [resumed](resume-job.html) after the error has been fixed or [canceled](cancel-job.html) to rollback the job. <br><br>Example: `WITH debug_pause_on='error'`
 `incremental_location`<a name="incr-location"></a> | [`STRING`](string.html) | Restore an incremental backup from the alternate collection URI the backup was originally taken with. <br><br>See [Restore incremental backups](#restore-from-incremental-backups) for more detail.
 <a name="new-db-name"></a>`new_db_name`                             | Database name                                 | Rename a database during a restore with `RESTORE DATABASE movr ... WITH new_db_name = new_movr`. The existing backed-up database can remain active while the same database is restored with a different name. <br><br> See [Rename a database on restore](#rename-a-database-on-restore).
+<span class="version-tag">New in v22.2:</span> `schema_only` | N/A | Verify that a backup is valid by running `RESTORE ... schema_only`, which will complete a regular restore without restoring any user table data. See [Backup Validation](backup-validation.html#validate-the-restore-of-a-backup) for detail and an example. For specifics around cluster backups, see [Cluster-level backup validation](backup-validation.html#cluster-level-backup-validation).
+<span class="version-tag">New in v22.2:</span> `verify_backup_table_data` | N/A | Run a `schema_only` restore **and** have the restore read all user data from external storage, verify checksums, and discard the data before writing it to disk. You must also include the `schema_only` option in the `RESTORE` statement with `verify_backup_table_data`. For more detail, see [Backup Validation](backup-validation.html#validate-the-restore-of-backup-table-data).
 
 ### Backup file URLs
 
@@ -467,6 +469,24 @@ RESTORE TABLE movr.users FROM LATEST IN 's3://{bucket_name}?AWS_ACCESS_KEY_ID={k
 
 For more detail on using this option with `BACKUP`, see [Incremental backups with explicitly specified destinations](take-full-and-incremental-backups.html#incremental-backups-with-explicitly-specified-destinations).
 
+#### Validate a backup with restore
+
+Using the `schema_only` and `verify_backup_table_data` options with restore, provides two different levels of backup validation:
+
+- To validate that a backup is restorable, you can run `RESTORE` with the `schema_only` option, which will complete a restore **without** restoring any user table data. This process is significantly faster than running a regular restore for the purposes of validation. 
+
+    ~~~sql
+    RESTORE DATABASE movr FROM '2022/09/19-134123.64' IN 's3://bucket?AWS_ACCESS_KEY_ID={Access Key ID}&AWS_SECRET_ACCESS_KEY={Secret Access Key}' WITH schema_only;
+    ~~~
+
+- `verify_backup_table_data` will run a `schema_only` restore **and** have the restore read all user data from external storage, verify checksums, and discard the data before writing it to disk. To use `verify_backup_table_data`, you must include `schema_only` in the statement:
+
+    ~~~sql
+    RESTORE DATABASE movr FROM LATEST IN 's3://bucket?AWS_ACCESS_KEY_ID={Access Key ID}&AWS_SECRET_ACCESS_KEY={Secret Access Key}' WITH schema_only, verify_backup_table_data;
+    ~~~
+
+For detailed examples, see [Backup Validation](backup-validation.html).
+
 </section>
 
 <section class="filter-content" markdown="1" data-scope="azure">
@@ -680,6 +700,24 @@ RESTORE TABLE movr.users FROM LATEST IN 'azure://{container name}?AZURE_ACCOUNT_
 ~~~
 
 For more detail on using this option with `BACKUP`, see [Incremental backups with explicitly specified destinations](take-full-and-incremental-backups.html#incremental-backups-with-explicitly-specified-destinations).
+
+#### Validate a backup with restore
+
+Using the `schema_only` and `verify_backup_table_data` options with restore, provides two different levels of backup validation:
+
+- To validate that a backup is restorable, you can run `RESTORE` with the `schema_only` option, which will complete a restore **without** restoring any user table data. This process is significantly faster than running a regular restore for the purposes of validation. 
+
+    ~~~sql
+    RESTORE DATABASE movr FROM '2022/09/19-134123.64' IN 'azure://{container name}?AZURE_ACCOUNT_NAME={account name}&AZURE_ACCOUNT_KEY={url-encoded key}' WITH schema_only;
+    ~~~
+
+- `verify_backup_table_data` will run a `schema_only` restore **and** have the restore read all user data from external storage, verify checksums, and discard the data before writing it to disk. To use `verify_backup_table_data`, you must include `schema_only` in the statement:
+
+    ~~~sql
+    RESTORE DATABASE movr FROM LATEST IN 'azure://{container name}?AZURE_ACCOUNT_NAME={account name}&AZURE_ACCOUNT_KEY={url-encoded key}' WITH schema_only, verify_backup_table_data;
+    ~~~
+
+For detailed examples, see [Backup Validation](backup-validation.html).
 
 </section>
 
@@ -898,6 +936,24 @@ RESTORE TABLE movr.users FROM LATEST IN 'gs://{bucket name}?AUTH=specified&CREDE
 ~~~
 
 For more detail on using this option with `BACKUP`, see [Incremental backups with explicitly specified destinations](take-full-and-incremental-backups.html#incremental-backups-with-explicitly-specified-destinations).
+
+#### Validate a backup with restore
+
+Using the `schema_only` and `verify_backup_table_data` options with restore, provides two different levels of backup validation:
+
+- To validate that a backup is restorable, you can run `RESTORE` with the `schema_only` option, which will complete a restore **without** restoring any user table data. This process is significantly faster than running a regular restore for the purposes of validation. 
+
+    ~~~sql
+    RESTORE DATABASE movr FROM '2022/09/19-134123.64' IN 'gs://{bucket name}?AUTH=specified&CREDENTIALS={encoded key}' WITH schema_only;
+    ~~~
+
+- `verify_backup_table_data` will run a `schema_only` restore **and** have the restore read all user data from external storage, verify checksums, and discard the data before writing it to disk. To use `verify_backup_table_data`, you must include `schema_only` in the statement:
+
+    ~~~sql
+    RESTORE DATABASE movr FROM LATEST IN 'gs://{bucket name}?AUTH=specified&CREDENTIALS={encoded key}' WITH schema_only, verify_backup_table_data;
+    ~~~
+
+For detailed examples, see [Backup Validation](backup-validation.html).
 
 </section>
 
