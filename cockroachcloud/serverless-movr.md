@@ -111,6 +111,8 @@ Run the `movr` workload for 1 minute using the same SQL connection string as bef
     
 1. Select **Past 30 minutes** as the time frame.
 
+    Your **Monthly estimate for this workload** is displayed.
+
 The **Spend over time** graph will be populated with the RU and storage you used running the `movr` workload, as well as any other usage you had over the last 30 minutes. The **Monthly estimate for this workload** is calculated based on this usage. Ideally your spend limit should be higher than this estimate to allow for any variability in the workload over the month. A cluster's spend limit is meant to prevent you from accidentally spending more than you are comfortable with, not to be the most accurate prediction of your costs.
 
 ## Next steps
