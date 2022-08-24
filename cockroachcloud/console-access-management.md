@@ -35,7 +35,7 @@ Learn more about [managing SQL users' privileges](../{{site.versions["stable"]}}
 Every {{ site.data.products.db }} user is either a Developer or a Console Admin for the organization. 
 
 {{site.data.alerts.callout_danger}}
-Both Console Admins and Developers have access to all the information on the **SQL Activity** and **Databases** pages in the {{ site.data.products.db }} Console because they can create SQL users with the [`admin` role](../{{site.versions["stable"]}}/security-reference/authorization.html#admin-role).
+Both Console Admins and Developers have access to all the information on the **SQL Activity** and **Databases** pages.
 {{site.data.alerts.end}}
 
 ### Developer
