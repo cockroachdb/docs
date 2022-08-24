@@ -11,6 +11,7 @@ gem "liquid-c", "~> 4.0.0"
 gem "redcarpet", "~> 3.5"
 gem "rss"
 gem "webrick"
+gem "jekyll-minifier"
 
 group :jekyll_plugins do
     gem "jekyll-include-cache"
