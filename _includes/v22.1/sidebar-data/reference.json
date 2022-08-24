@@ -1614,6 +1614,12 @@
                 ]
               }
             ]
+          },
+          {
+            "title": "The <code>cockroach-sql</code> command",
+            "urls": [
+              "/${VERSION}/cockroach-sql-binary.html"
+            ]
           }
         ]
       },

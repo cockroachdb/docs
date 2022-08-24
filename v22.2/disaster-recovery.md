@@ -308,14 +308,14 @@ If you are outside of the garbage collection window, you will need to use a [bac
 ### Restore to a point in time
 
 - If you are a core user, use a [backup](backup.html) that was taken with [`AS OF SYSTEM TIME`](as-of-system-time.html) to restore to a specific point.
-- If you are an Enterprise user, use your [backup](backup.html) file to [restore to a point in time](take-backups-with-revision-history-and-restore-from-a-point-in-time.html) where you are certain there was no corruption. Note that the backup must have been taken with [revision history](backup.html#with-revision-history).
+- If you are an {{ site.data.products.enterprise }} user, use your [backup](backup.html) file to [restore to a point in time](take-backups-with-revision-history-and-restore-from-a-point-in-time.html) where you are certain there was no corruption. Note that the backup must have been taken with [revision history](backup.html#with-revision-history).
 
 ### Create a new backup
 
 If your cluster is running, you do not have a backup that encapsulates the time you want to [restore](restore.html) to, and the data you want to recover is still in the [garbage collection window](configure-replication-zones.html#replication-zone-variables), there are two actions you can take:
 
 - If you are a core user, trigger a [backup](backup.html) using [`AS OF SYSTEM TIME`](as-of-system-time.html) to create a new backup that encapsulates the specific time. The `AS OF SYSTEM TIME` must be within the [garbage collection window](configure-replication-zones.html#replication-zone-variables) (default is 25 hours).
-- If you are an Enterprise user, trigger a new [backup `with_revision_history`](take-backups-with-revision-history-and-restore-from-a-point-in-time.html) and you will have a backup you can use to restore to the desired point in time within the [garbage collection window](configure-replication-zones.html#replication-zone-variables) (default is 25 hours).
+- If you are an {{ site.data.products.enterprise }} user, trigger a new [backup `with_revision_history`](take-backups-with-revision-history-and-restore-from-a-point-in-time.html) and you will have a backup you can use to restore to the desired point in time within the [garbage collection window](configure-replication-zones.html#replication-zone-variables) (default is 25 hours).
 
 ### Recover from corrupted data in a database or table
 
@@ -332,8 +332,8 @@ If the table you are restoring has foreign keys, [careful consideration](restore
 CockroachDB maintains a secure environment for your data. However, there are bad actors who may find ways to gain access or expose important security information. In the event that this happens, there are a few things you can do to get ahead of a security issue:
 
 - If you have [changefeeds to cloud storage sinks](#changefeeds-to-cloud-storage), cancel the changefeed job and restart it with new access credentials.
-- If you are using [encryption at rest](#encryption-at-rest), rotate the store key(s).
-- If you are using [wire encryption / TLS](#wire-encryption-tls), rotate your keys.
+- If you are using [{{ site.data.products.enterprise }} Encryption At Rest](#encryption-at-rest), rotate the store key(s).
+- If you are using [wire encryption in transit / TLS](#wire-encryption-tls), rotate your keys.
 
 ### Changefeeds to cloud storage
 
