@@ -27,6 +27,8 @@ After the export has been initiated, you can cancel it with [`CANCEL QUERY`](can
 
  The user must have the `SELECT` [privilege](security-reference/authorization.html#managing-privileges) on the table being exported, unless the [destination URI requires `admin` privileges](import.html#source-privileges).
 
+ {% include {{ page.version.version }}/misc/s3-compatible-warning.md %}
+
 ## Parameters
 
  Parameter | Description

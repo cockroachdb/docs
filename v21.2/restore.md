@@ -40,6 +40,8 @@ For guidance on the syntax for backups and restores, see the [`BACKUP`](backup.h
 
 {% include {{ page.version.version }}/misc/non-http-source-privileges.md %}
 
+{% include {{ page.version.version }}/misc/s3-compatible-warning.md %}
+
 ## Synopsis
 
 <div>

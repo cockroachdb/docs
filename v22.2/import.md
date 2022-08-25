@@ -51,6 +51,8 @@ The user must have the `CREATE` [privileges](security-reference/authorization.ht
 
 {% include {{ page.version.version }}/misc/source-privileges.md %}
 
+{% include {{ page.version.version }}/misc/s3-compatible-warning.md %}
+
 ## Synopsis
 
 <div>
