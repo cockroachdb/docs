@@ -52,6 +52,7 @@ Included in this guide:
   - [Lists](#lists)
   - [Images](#images)
   - [Include files](#include-files)
+  - [Tabs](#tabs)
 - [Terminology and word usage](#terminology-and-word-usage)
 
 ## Style and tone
@@ -1081,6 +1082,69 @@ Include files have the following technical limitations:
 - They cannot be used in [Markdown tables](#tables). For example, this is why [the guidance about how to use version tags in tables](#version-tags-tables) is provided.
 - A [remote include](#remote-includes) file in another repo that contains an [include file](#include-files) that references something in `cockroachdb/docs` will fail to pull in and render that include file.
 - Include files containing a paragraph followed by a code block do not render correctly in the context of both paragraphs and lists in the files they are included from due to a limitation in our [Markdown](#markdown) renderer.
+
+<a name="tabs"></a>
+
+### Tabs
+  
+To allow your reader to select from two or more versions of on-page content, use a tabset. This might be appropriate for:
+  - install procedurals with different steps for the different supported platforms
+  - reference material where the Enterprise and non-Enterprise versions of a feature differ
+  - demonstrating how to connect from an example application in each supported programming language.
+
+To add tabs to your copy, you first define the tabset, then declare each tab's content:
+
+To define the tabset:
+
+```
+<div class="filters clearfix">
+  <button class="filter-button" data-scope="aws-log-export">AWS CloudWatch</button>
+  <button class="filter-button" data-scope="gcp-log-export">GCP Cloud Logging</button>
+</div>
+```
+
+This example declares two tabs. Then, when ready to define the content within each tab:
+  
+```
+<section class="filter-content" markdown="1" data-scope="aws-log-export">
+
+1. To configure log export to AWS CloudWatch, start by following this step right here!
+...
+</section>
+
+<section class="filter-content" markdown="1" data-scope="gcp-log-export">
+
+1. To configure log export to GCP Cloud Logging, start by following this step right here!
+...
+</section>
+
+## This content outside of tabs
+
+```
+#### Linking into tabbed content
+
+To link to content that is contained within a tab, you must add the `filter` component to your link, in one of the following fashions:
+
+- To link to the top of a target page, with a specific tab selected:
+
+  ```
+  [Core changefeeds](create-and-configure-changefeeds.html?filters=core)
+  ```
+
+  This takes us to the top of `create-and-configure-changefeeds.html` and ensures the tab matching `data-scope: core` is selected.
+ 
+- For linking to a header contained within a tabset:
+
+  ```
+  [Create with column families](changefeeds-on-tables-with-column-families.html?filters=core#create-a-core-changefeed-on-a-table-with-column-families)
+  ```
+  
+  This takes us directly to the `create-a-core-changefeed-on-a-table-with-column-families` header, within the `data-scope: core` tab.
+
+Considerations:
+
+- If you intend to link to a header present on two or more tabsets on the same page, the header targets must be uniquely named. If you require identical header names, use explicit, unique HTML anchor names for each (in form `<a name="uniquename"></a>` as shown under [Links](#links).
+- For the first-defined tab, specifying its `filter` value in a link is functionally the same as omitting it. For all other tabs, the explicit filter name is required. You can think of this first tab as the "default" tab in this context: if not otherwise specificed, Jekyll will always open with the first tab's contents displayed.
 
 ## Terminology and word usage
 
