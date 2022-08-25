@@ -17,19 +17,95 @@ Cockroach determines which encryption algorithm to use based on the size of the 
 | AES-192 | 192 bits (24 bytes) | 56 bytes |
 | AES-256 | 256 bits (32 bytes) | 64 bytes |
 
-Generating a key file can be done using the `cockroach` CLI:
+You can generate a store key for your cluster any of a several ways:
+
+
+### Using the `cockroach` CLI
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach gen encryption-key -s 128 /path/to/my/aes-128.key
 ~~~
 
-Or the equivalent [openssl](https://www.openssl.org/docs/man1.1.1/man1/openssl.html) CLI command:
+### Using [OpenSSL](https://www.openssl.org/docs/man1.1.1/man1/openssl.html) CLI command
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 $ openssl rand -out /path/to/my/aes-128.key 48
 ~~~
+
+### Using HashiCorp Vault
+
+First we need to enable the transit secret engine, which is going to handle the user creation for us.
+
+{% include_cached copy-clipboard.html %}
+~~~shell
+vault secrets enable transit
+~~~
+
+~~~txt
+
+~~~
+
+Next we need to create the exportable key. 
+
+
+{% include_cached copy-clipboard.html %}
+~~~shell
+$ vault write -f transit/keys/crdb-key -exportable=true 
+~~~
+
+~~~txt
+
+~~~
+
+And finally export it.
+
+{% include_cached copy-clipboard.html %}
+~~~shell
+vault read /transit/export/encryption-key/crdb-key/1
+
+~~~
+
+~~~txt
+Key     Value
+---     -----
+keys    map[1:6kkUAMq4EgIJKEmFxl97bQaBn0n9FL6FbRoUeCBtVhE=]
+name    crdb-key
+type    aes256-gcm96
+~~~
+
+But stop, since the exportable key is “just” 256 bits and cockroachDB has a special mechanic here. Let me quote our docs “The key file must contain random data making up the key ID (32 bytes) and the actual key (16, 24, or 32 bytes depending on the encryption algorithm).”
+
+So, the 256 bits from the exportable key would be required as an identifier and there would be no bits left for the actual key. So we have to tweak it a bit. We are going to add some random data at the beginning to use as key identifier and the actual Vault key as the real encryption key. 
+
+copy the key into a file e.g. key_from_valut.key
+
+{% include_cached copy-clipboard.html %}
+~~~shell
+openssl rand -out final_aes.key 32
+base64 -d key_from_valut.key >> final_aes.key
+~~~
+
+~~~txt
+
+~~~
+
+
+Now we can place the “final_aes.key” where the CockroachDB process will be able to pick it up. 
+
+{% include_cached copy-clipboard.html %}
+~~~shell
+cockroach start --join=crdb-node-1:26257,crdb-node-2:26257,crdb-node-3:26257 --store=/mnt/disks/persistent_storage/cockroach/data  --locality=region=${region},zone=${zone} --certs-dir=/vault --enterprise-encryption=path=/mnt/disks/persistent_storage/cockroach/data,key=/vault/final_aes.key,old-key=plain
+
+~~~
+
+~~~txt
+
+~~~
+
+
+
 
 ## Starting a node with encryption
 
