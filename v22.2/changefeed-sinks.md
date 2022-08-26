@@ -9,7 +9,7 @@ docs_area: stream_data
 
 - [Kafka](#kafka)
 - [Google Cloud Pub/Sub](#google-cloud-pub-sub)
-- [Cloud Storage](#cloud-storage-sink)
+- [Cloud Storage](#cloud-storage-sink) / HTTP
 - [Webhook](#webhook-sink)
 
 See [`CREATE CHANGEFEED`](create-changefeed.html) for more detail on the [query parameters](create-changefeed.html#query-parameters) available when setting up a changefeed.
@@ -182,6 +182,12 @@ Examples of supported cloud storage sink URIs:
 
 ~~~
 'gs://{BUCKET NAME}/{PATH}?AUTH=specified&CREDENTIALS={ENCODED KEY}'
+~~~
+
+### HTTP
+
+~~~
+http://localhost:8080/{PATH}
 ~~~
 
 ### Cloud storage parameters
