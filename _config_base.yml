@@ -96,11 +96,11 @@ release_info:
     start_time: 2022-08-22 14:17:14.803026 +0000 UTC
     version: v22.1.6
   v22.2:
-    build_time: 2022-08-16 10:15:48.318507 (go1.17)
+    build_time: 2022-08-30 00:00:00 (go1.17)
     docker_image: cockroachdb/cockroach-unstable
-    name: v22.2
-    start_time: 2022-08-16 10:15:48.318607 +0000 UTC
-    version: v22.2
+    name: v22.2.0-alpha.1
+    start_time: 2022-08-26 10:55:11.692728 +0000 UTC
+    version: v22.2.0-alpha.1
 sass:
   sass_dir: css
   style: compressed
