@@ -5,16 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-{% assign rd = site.data.releases | where_exp: "rd", "rd.major_version == page.version.version" | first %}
-
-{% if rd %}
-{% assign remote_include_version = page.version.version | replace: "v", "" %}
-{% else %}
-{% assign remote_include_version = site.versions["stable"] | replace: "v", "" %}
-{% endif %}
-
 The `UNIQUE` [constraint](constraints.html) specifies that each non-`NULL` value in the constrained column must be unique.
-
 
 ## Details
 
@@ -41,7 +32,7 @@ For an example that uses unique indexes, see [Add a unique index to a `REGIONAL 
 ### Column level
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/unique_column_level.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/unique_column_level.html %}
 </div>
 
 Parameter | Description
@@ -67,7 +58,7 @@ Parameter | Description
 ### Table level
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/unique_table_level.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/unique_table_level.html %}
 </div>
 
 Parameter | Description

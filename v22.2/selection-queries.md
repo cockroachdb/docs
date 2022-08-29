@@ -6,19 +6,7 @@ key: selection-clauses.html
 docs_area: reference.sql
 ---
 
-{% assign rd = site.data.releases | where_exp: "rd", "rd.major_version == page.version.version" | first %}
-
-{% if rd %}
-{% assign remote_include_version = page.version.version | replace: "v", "" %}
-{% else %}
-{% assign remote_include_version = site.versions["stable"] | replace: "v", "" %}
-{% endif %}
-
-Selection queries read and process data in CockroachDB.  They are more
-general than [simple `SELECT` clauses](select-clause.html): they can
-group one or more [selection clauses](#selection-clauses) with [set
-operations](#set-operations) and can request a [specific
-ordering](order-by.html) or [row limit](limit-offset.html).
+Selection queries read and process data in CockroachDB.  They are more general than [simple `SELECT` clauses](select-clause.html): they can group one or more [selection clauses](#selection-clauses) with [set operations](#set-operations) and can request a [specific ordering](order-by.html) or [row limit](limit-offset.html).
 
 Selection queries can occur:
 
@@ -30,7 +18,7 @@ Selection queries can occur:
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/select.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/select.html %}
 </div>
 
 ## Parameters
@@ -65,7 +53,7 @@ Form | Usage
 ### Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/select_clause.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/select_clause.html %}
 </div>
 
 ### `VALUES` clause
@@ -73,7 +61,7 @@ Form | Usage
 #### Syntax
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/values_clause.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/values_clause.html %}
 </div>
 
 A `VALUES` clause defines tabular data defined by the expressions
@@ -104,7 +92,7 @@ you can modify these names with [`AS`](table-expressions.html#aliased-table-expr
 #### Syntax
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/table_clause.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/table_clause.html %}
 </div>
 
 A `TABLE` clause reads tabular data from a specified table. The
@@ -154,7 +142,7 @@ set operations or as main component in a selection query.
 ### Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/set_operation.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/set_operation.html %}
 </div>
 
 ### Set operators

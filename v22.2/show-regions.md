@@ -5,20 +5,12 @@ toc: true
 docs_area: reference.sql
 ---
 
-{% assign rd = site.data.releases | where_exp: "rd", "rd.major_version == page.version.version" | first %}
-
-{% if rd %}
-{% assign remote_include_version = page.version.version | replace: "v", "" %}
-{% else %}
-{% assign remote_include_version = site.versions["stable"] | replace: "v", "" %}
-{% endif %}
-
- The `SHOW REGIONS` [statement](sql-statements.html) lists the [cluster regions](multiregion-overview.html#cluster-regions) for a multi-region cluster, or the [database regions](multiregion-overview.html#database-regions) for the databases in a multi-region cluster.
+The `SHOW REGIONS` [statement](sql-statements.html) lists the [cluster regions](multiregion-overview.html#cluster-regions) for a multi-region cluster, or the [database regions](multiregion-overview.html#database-regions) for the databases in a multi-region cluster.
 
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/show_regions.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/show_regions.html %}
 </div>
 
 ## Required privileges

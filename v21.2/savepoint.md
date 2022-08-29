@@ -14,7 +14,7 @@ A savepoint is a marker that defines the beginning of a [nested transaction](tra
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/savepoint.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/savepoint.html %}
 </div>
 
 ## Required privileges

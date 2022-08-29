@@ -5,14 +5,6 @@ toc: true
 docs_area: reference.sql
 ---
 
-{% assign rd = site.data.releases | where_exp: "rd", "rd.major_version == page.version.version" | first %}
-
-{% if rd %}
-{% assign remote_include_version = page.version.version | replace: "v", "" %}
-{% else %}
-{% assign remote_include_version = site.versions["stable"] | replace: "v", "" %}
-{% endif %}
-
 The `DROP ROLE` [statement](sql-statements.html) removes one or more SQL roles. You can use the keywords `ROLE` and `USER` interchangeably. [`DROP USER`](drop-user.html) is an alias for `DROP ROLE`.
 
 {% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
@@ -29,7 +21,7 @@ Non-admin roles cannot drop admin roles. To drop non-admin roles, the role must 
 
 ## Synopsis
 
-<div>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/drop_role.html %}</div>
+<div>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/drop_role.html %}</div>
 
 ## Parameters
 

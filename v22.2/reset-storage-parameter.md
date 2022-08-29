@@ -5,14 +5,6 @@ toc: true
 docs_area: reference.sql
 ---
 
-{% assign rd = site.data.releases | where_exp: "rd", "rd.major_version == page.version.version" | first %}
-
-{% if rd %}
-{% assign remote_include_version = page.version.version | replace: "v", "" %}
-{% else %}
-{% assign remote_include_version = site.versions["stable"] | replace: "v", "" %}
-{% endif %}
-
 The `RESET (storage parameter)` [statement](sql-statements.html) reverts the value of a storage parameter on a table to its default value.
 
 {{site.data.alerts.callout_info}}
@@ -26,7 +18,7 @@ To reset a storage parameter on an existing index, you must drop and [recreate t
 **alter_table_reset_storage_param ::=**
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/alter_table_reset_storage_param.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/alter_table_reset_storage_param.html %}
 </div>
 
 {% comment %} need alter index diagram here {% endcomment %}
