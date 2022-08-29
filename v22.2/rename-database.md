@@ -20,7 +20,7 @@ The `RENAME TO` clause is part of [`ALTER DATABASE`](alter-database.html), and c
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ remote_include_version }}/grammar_svg/rename_database.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/rename_database.html %}
 </div>
 
 ## Required privileges

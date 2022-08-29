@@ -22,7 +22,7 @@ No [privileges](security-reference/authorization.html#managing-privileges) are r
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ remote_include_version }}/grammar_svg/show_savepoint_status.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/show_savepoint_status.html %}
 </div>
 
 ## Response

@@ -22,7 +22,7 @@ You can use `REVOKE` to directly revoke privileges from a role or user, or you c
 ## Syntax
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ remote_include_version }}/grammar_svg/revoke.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/revoke.html %}
 </div>
 
 ### Parameters

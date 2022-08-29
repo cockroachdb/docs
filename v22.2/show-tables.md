@@ -23,7 +23,7 @@ While a table or view is being [dropped](drop-table.html), `SHOW TABLES` will li
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ remote_include_version }}/grammar_svg/show_tables.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/show_tables.html %}
 </div>
 
 ## Required privileges

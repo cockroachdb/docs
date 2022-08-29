@@ -56,7 +56,7 @@ To use the `SHOW CLUSTER SETTING` statement, a user must either be a member of t
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ remote_include_version }}/grammar_svg/show_cluster_setting.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/show_cluster_setting.html %}
 </div>
 
 ## Parameters

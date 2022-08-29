@@ -24,7 +24,7 @@ Use the `SHOW PARTITIONS` [statement](sql-statements.html) to view details about
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ remote_include_version }}/grammar_svg/show_partitions.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/show_partitions.html %}
 </div>
 
 ## Required privileges

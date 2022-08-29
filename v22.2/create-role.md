@@ -39,7 +39,7 @@ Unless a role is a member of the `admin` role, additional [privileges](#paramete
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ remote_include_version }}/grammar_svg/create_role.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/create_role.html %}
 </div>
 
 ## Parameters

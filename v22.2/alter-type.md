@@ -26,7 +26,7 @@ All other `ALTER TYPE` schema change jobs are non-cancellable.
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ remote_include_version }}/grammar_svg/alter_type.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/alter_type.html %}
 </div>
 
 ## Parameters

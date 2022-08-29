@@ -26,7 +26,7 @@ docs_area: reference.sql
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ remote_include_version }}/grammar_svg/alter_database_add_super_region.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/alter_database_add_super_region.html %}
 </div>
 
 ## Parameters

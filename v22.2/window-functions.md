@@ -37,7 +37,7 @@ Window frames are defined in [`OVER` clauses](sql-grammar.html#over_clause) or [
 <div class="filter-content" markdown="1" data-scope="basic">
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ remote_include_version }}/grammar_svg/window_definition.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/window_definition.html %}
 </div>
 
 ### Parameters
@@ -55,13 +55,13 @@ Parameter | Description
 <div class="filter-content" markdown="1" data-scope="expanded">
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ remote_include_version }}/grammar_svg/window_definition.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/window_definition.html %}
 </div>
 
 **opt_frame_clause ::=**
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ remote_include_version }}/grammar_svg/opt_frame_clause.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/opt_frame_clause.html %}
 </div>
 
 ### Parameters
