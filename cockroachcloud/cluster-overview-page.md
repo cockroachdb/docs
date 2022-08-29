@@ -34,18 +34,16 @@ This panel displays operational statistics for your cluster.
 | Field               | Description                                                                                                                                         |
 |---------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------|
 | Throughput          | The cluster throughput in queries per second (QPS).                                                                                                 |
-| P99 latency         | The 99th percentile of service latency. This value indicates the time within which the cluster executed 99 percent of queries over the last minute. |
-| Databases           | The number of databases in the cluster.                                                                                                             |
-| Tables              | The total number of system and user-created tables in your databases.                                                                               |
+| P99 latency         | The 99th percentile of service latency. This value indicates the time within which the cluster executed 99 percent of queries over the last minute. |                                                                             |
 | Open sessions       | The number of open sessions in the cluster.                                                                                                         |
 
 ## Cluster Overview metrics
 
 These time-series graphs display important cluster metrics over time.
 
-You can use the month selector above the graphs to view data for a specific month.
+You can use the timeframe selector above the graphs to view data for a specific time period.
 
-### Storage used
+### Storage Used
 
 The **Storage Used** graph displays the amount of data being stored in the cluster over time. This is the logical number of live bytes and does not account for compression or replication.
 

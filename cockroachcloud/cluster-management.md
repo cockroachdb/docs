@@ -148,6 +148,16 @@ You can add or remove up to nine regions at a time through the Console. Note tha
 1. In the **Confirmation** dialog, verify your new cluster configuration.
 1. Click **OK**.
 
+## Create a database
+
+You can use the [**Databases** page](databases-page.html) to create a new database from the {{ site.data.products.db }} Console.
+
+1. Navigate to the **Databases** page from the **Overview** page of your cluster.
+1. Click **Add database**.
+1. Enter a name for the new database.
+1. *(Optional)* Deselect the checkbox if you don't want this to be the default database used when connecting to your cluster.
+1. Click **Create**.
+
 ## Restore data from a backup
 
 Cockroach Labs runs full backups daily and incremental backups hourly for every {{ site.data.products.dedicated }} cluster. The full backups are retained for 30 days and incremental backups for 7 days.
