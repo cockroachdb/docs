@@ -9,7 +9,7 @@ The **Databases** page of the {{ site.data.products.db }} Console allows you to 
 
 - The databases configured.
 - The tables in each database and the indexes on each table.
-- The grants assigned to each role and user.
+- The grants assigned to each user.
 
 To view this page, navigate to your [**Cluster Overview** page](cluster-overview-page.html) and click **Databases** in the left-hand navigation.
 
@@ -17,7 +17,7 @@ To view this page, navigate to your [**Cluster Overview** page](cluster-overview
 
 The **Databases** page shows:
 
-- Whether [automatic statistics collection](cost-based-optimizer.html#table-statistics) is enabled for the cluster.
+- Whether [automatic statistics collection](../{{site.versions["stable"]}}/cost-based-optimizer.html#table-statistics) is enabled for the cluster.
 - A list of the databases on the cluster.
 - The **Add database** button, which allows you to create a new database.
 
@@ -49,17 +49,17 @@ Click a **table name** to view table details.
 
 ### Table details
 
-The table details page contains details of a table. It contains an **Overview** tab and a **Grants** tab displays the users and [grants](grant.html) associated with the table.
+The table details page contains details of a table. It contains an **Overview** tab and a **Grants** tab displays the users and [grants](../{{site.versions["stable"]}}/grant.html) associated with the table.
 
 #### Overview tab
 
-The **Overview** tab displays the SQL statements used to [create the table](create-table.html), table details, and index statistics.
+The **Overview** tab displays the SQL statements used to [create the table](../{{site.versions["stable"]}}/create-table.html), table details, and index statistics.
 
 The table details include:
 
 - **Database**: the database in which the table is found.
 - **Indexes**: the names of the indexes defined on the table.
-- **Auto Stats Collection**: whether [automatic statistics collection](cost-based-optimizer.html#table-statistics) is enabled.
+- **Auto Stats Collection**: whether [automatic statistics collection](../{{site.versions["stable"]}}/cost-based-optimizer.html#table-statistics) is enabled.
 
 #### Index details
 
@@ -75,7 +75,7 @@ The following information is displayed for each index:
 
 ## Grants view
 
-The **Grants** view shows the [privileges](security-reference/authorization.html#managing-privileges) granted to users and roles for each database.
+The **Grants** view shows the [privileges](../{{site.versions["stable"]}}/security-reference/authorization.html#managing-privileges) granted to users and roles for each database.
 
 The following information is displayed for each table:
 
@@ -84,4 +84,4 @@ The following information is displayed for each table:
 | User       | The name of the SQL user.         |
 | Grants     | The list of grants for the user.  |
 
-For more details about grants and privileges, see [`GRANT`](grant.html).
+For more details about grants and privileges, see [`GRANT`](../{{site.versions["stable"]}}/grant.html).
