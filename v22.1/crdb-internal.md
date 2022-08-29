@@ -414,7 +414,7 @@ LIMIT
     10
 ~~~
 
-~~~ 
+~~~
   database_name | table_name |                txn_id                |             ts             |  lock_key_pretty   | lock_strength | granted | contended
 ----------------+------------+--------------------------------------+----------------------------+--------------------+---------------+---------+------------
   bank          | bank       | 7f0e262f-78e6-4a52-ad4e-d3cd5a851c82 | 2022-07-27 18:59:09.358877 | /Table/110/1/82/0  | Exclusive     |  true   |   false
@@ -1124,10 +1124,10 @@ The `sql.contention.event_store.duration_threshold` [cluster setting](cluster-se
 Column | Type | Description
 ------------|-----|------------
 `collection_ts` | `TIMESTAMPTZ NOT NULL` | The timestamp when the transaction contention event was collected.
-`blocking_txn_id` | `UUID NOT NULL` | The ID of the blocking transaction. You can join this column into the [`cluster_contention_events`](#cluster_contention_events).
+`blocking_txn_id` | `UUID NOT NULL` | The ID of the blocking transaction. You can join this column into the [`cluster_contention_events`](#cluster_contention_events) table.
 `blocking_txn_fingerprint_id` | `BYTES NOT NULL`| The ID of the blocking transaction fingerprint. To surface historical information about the transactions that caused the contention, you can join this column into the [`statement_statistics`](#statement_statistics) and [`transaction_statistics`](#transaction_statistics) tables to surface historical information about the transactions that caused the contention.
-`waiting_txn_id` | `UUID NOT NULL` |  The ID of the waiting transaction. You can join this column into the [`cluster_contention_events`](#cluster_contention_events).
-`waiting_txn_fingerprint_id` | `BYTES NOT NULL` |  The ID of the waiting transaction fingerprint. To surface historical information about the transactions that caused the contention, you can join this column into the [`statement_statistics`](#statement_statistics) and [`transaction_statistics`](#transaction_statistics) tables
+`waiting_txn_id` | `UUID NOT NULL` | The ID of the waiting transaction. You can join this column into the [`cluster_contention_events`](#cluster_contention_events) table.
+`waiting_txn_fingerprint_id` | `BYTES NOT NULL` | The ID of the waiting transaction fingerprint. To surface historical information about the transactions that caused the contention, you can join this column into the [`statement_statistics`](#statement_statistics) and [`transaction_statistics`](#transaction_statistics) tables.
 `contention_duration` | `INTERVAL NOT NULL` | The interval of time the waiting transaction spent waiting for the blocking transaction.
 `contending_key` | `BYTES NOT NULL` | The key on which the transactions contended.
 
@@ -1135,7 +1135,7 @@ Column | Type | Description
 
 The following example shows how to join the `transaction_contention_events` table with `transaction_statistics` and `statement_statistics` tables to extract blocking and waiting transaction information.
 
-1. Display contention table removing in-progress transactions
+1. Display contention table removing in-progress transactions.
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -1159,7 +1159,7 @@ The following example shows how to join the `transaction_contention_events` tabl
     (2 rows)
     ~~~
 
-1. Display counts for each blocking and waiting transaction fingerprint pair
+1. Display counts for each blocking and waiting transaction fingerprint pair.
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -1186,7 +1186,7 @@ The following example shows how to join the `transaction_contention_events` tabl
     (3 rows)
     ~~~
 
-1. Join to show blocking statements text
+1. Join to show blocking statements text.
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
