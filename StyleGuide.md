@@ -1081,9 +1081,9 @@ Use [`filter-tabs.md`](https://github.com/cockroachdb/docs/blob/master/_includes
 
 The general process to follow and use this is as follows:
   
-1. Identify each page to be linked to a filter tab.
-    - Make a note of each HTML page name (e.g., `install-cockroachdb-mac.html`).
-    - Identify the desired HTML-supported tab name (e.g., `Install on <strong>Mac</strong>`).
+1. Identify each page to be linked from a filter tab.
+    - Make a note of each HTML page filename (e.g., `install-cockroachdb-mac.html`).
+    - Draft a tab name (e.g., `Install on <strong>Mac</strong>`)—the text to display on the tab itself. This supports HTML, not Markdown.
 2. Create an include Markdown file within `_includes/<CRDB version>/filter-tabs` with the following structure:
     ```
     {% assign tab_names_html = "Tab Name 1;Tab Name 2;Tab Name 3" %}
@@ -1092,7 +1092,7 @@ The general process to follow and use this is as follows:
     {% include filter-tabs.md tab_names=tab_names_html page_names=html_page_names page_folder=<CRDB version> %}
     ```
     - `tab_names_html` is a semicolon-separated list of the HTML-supported tab names.
-    - `html_page_names` is a semicolon-separated list of the page names with the `.html` extension.
+    - `html_page_names` is a semicolon-separated list of the page filenames with the `.html` extension.
     - `<crdb_version>` is `"cockroachcloud"` (with quotes) for any CockroachDB Cloud docs and `page.version.version` (without quotes) for any versioned docs (v21.2 and later).
 3. For each page listed in `html_page_names`, paste `{% include <CRDB version>/filter-tabs/<filter-tab-include>.html %}` in the position where you want the tabs to be included.
   
