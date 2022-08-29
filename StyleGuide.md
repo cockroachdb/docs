@@ -1073,7 +1073,32 @@ CREATE DATABASE movr PRIMARY REGION "gcp-us-east1" REGIONS "gcp-us-east1", "gcp-
 ```
 
 For more information about the `remote_include` tag, see the README in the [jekyll-remote-include](https://github.com/cockroachdb/jekyll-remote-include) repo.
+  
+#### Filter tabs
+  
+On some pages in our docs, there are tabs at the top of the page that will link to different pages at different hyperlinks. For example, in the [Install CockroachDB docs](https://www.cockroachlabs.com/docs/stable/install-cockroachdb.html), there are links to the Mac, Linux, and Windows pages at the top of the page.
+  
+Use [`filter-tabs.md`](https://github.com/cockroachdb/docs/blob/master/_includes/filter-tabs.md) to specify these tabs for any `cockroachcloud` docs or docs for CockroachDB v21.2 and later.
 
+**Note:** this include file only produces tabs that link to different URLs/pages. It cannot be used for creating tabs within a single page.
+
+The general process to follow and use this is as follows:
+  
+1. Identify each page to be linked from a filter tab.
+    - Make a note of each HTML page filename (e.g., `install-cockroachdb-mac.html`).
+    - Draft a tab name (e.g., `Install on <strong>Mac</strong>`)—the text to display on the tab itself. This supports HTML, not Markdown.
+2. Create an include Markdown file within `_includes/<CRDB version>/filter-tabs` with the following structure:
+    ```
+    {% assign tab_names_html = "Tab Name 1;Tab Name 2;Tab Name 3" %}
+    {% assign html_page_names = "page-name-1.html;page-name-2.html;page-name-3.html" %}
+
+    {% include filter-tabs.md tab_names=tab_names_html page_names=html_page_names page_folder=<CRDB version> %}
+    ```
+    - `tab_names_html` is a semicolon-separated list of the HTML-supported tab names.
+    - `html_page_names` is a semicolon-separated list of the page filenames with the `.html` extension.
+    - `<crdb_version>` is `"cockroachcloud"` (with quotes) for any CockroachDB Cloud docs and `page.version.version` (without quotes) for any versioned docs (v21.2 and later).
+3. For each page listed in `html_page_names`, paste `{% include <CRDB version>/filter-tabs/<filter-tab-include>.html %}` in the position where you want the tabs to be included.
+  
 #### Technical limitations of include files
 
 Include files have the following technical limitations:
