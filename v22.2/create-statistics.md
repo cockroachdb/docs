@@ -24,7 +24,7 @@ By default, CockroachDB [automatically generates statistics](cost-based-optimize
 ## Syntax
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ remote_include_version }}/grammar_svg/create_stats.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/create_stats.html %}
 </div>
 
 ## Parameters
@@ -47,7 +47,7 @@ For [PostgreSQL compatibility](postgresql-compatibility.html), CockroachDB suppo
 ### Alias syntax
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ remote_include_version }}/grammar_svg/analyze.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/analyze.html %}
 </div>
 
 ### Alias parameters

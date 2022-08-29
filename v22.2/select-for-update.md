@@ -21,7 +21,7 @@ docs_area: reference.sql
 The following diagram shows the supported syntax for the optional `FOR` locking clause of a `SELECT` statement.
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ remote_include_version }}/grammar_svg/for_locking.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/for_locking.html %}
 </div>
 
 For the full `SELECT` statement syntax documentation, see [Selection Queries](selection-queries.html).

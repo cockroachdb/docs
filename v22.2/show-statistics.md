@@ -19,7 +19,7 @@ By default, CockroachDB [automatically generates statistics](cost-based-optimize
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ remote_include_version }}/grammar_svg/show_stats.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/show_stats.html %}
 </div>
 
 ## Required Privileges

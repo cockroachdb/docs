@@ -29,7 +29,7 @@ For an example, see [Grant default privileges to a specific role](#grant-default
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ remote_include_version }}/grammar_svg/alter_default_privileges.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/alter_default_privileges.html %}
 </div>
 
 ### Parameters

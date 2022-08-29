@@ -18,7 +18,7 @@ Use the `SHOW ZONE CONFIGURATIONS` [statement](sql-statements.html) to view deta
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ remote_include_version }}/grammar_svg/show_zone.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/show_zone.html %}
 </div>
 
 ## Required privileges

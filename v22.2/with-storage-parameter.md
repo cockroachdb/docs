@@ -20,13 +20,13 @@ The `WITH (storage parameter)` [statement](sql-statements.html) sets a storage p
 **create_index_with_storage_param ::=**
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ remote_include_version }}/grammar_svg/create_index_with_storage_param.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/create_index_with_storage_param.html %}
 </div>
 
 **create_table_with_storage_param ::=**
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ remote_include_version }}/grammar_svg/create_table_with_storage_param.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/create_table_with_storage_param.html %}
 </div>
 
 

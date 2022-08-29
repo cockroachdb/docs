@@ -38,7 +38,7 @@ The `SET` statement can set a session variable for the duration of the current s
 ### SET SESSION
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ remote_include_version }}/grammar_svg/set_session.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/set_session.html %}
 </div>
 
 {{site.data.alerts.callout_info}}
@@ -48,7 +48,7 @@ By default, session variables are set for the duration of the current session. A
 ### SET LOCAL
 
 <div>
-  {% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ remote_include_version }}/grammar_svg/set_local.html %}
+  {% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/set_local.html %}
 </div>
 
 {{site.data.alerts.callout_info}}

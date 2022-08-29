@@ -31,7 +31,7 @@ For information about removing other constraints, see [Constraints: Remove Const
 
 ## Synopsis
 
-<div>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ remote_include_version }}/grammar_svg/drop_constraint.html %}</div>
+<div>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/drop_constraint.html %}</div>
 
 ## Required privileges
 

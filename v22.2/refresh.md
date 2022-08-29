@@ -26,7 +26,7 @@ The user must be the [owner](owner-to.html) of the materialized view or have [ad
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ remote_include_version }}/grammar_svg/refresh_materialized_views.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/refresh_materialized_views.html %}
 </div>
 
 ## Parameters

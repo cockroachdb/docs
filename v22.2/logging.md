@@ -13,4 +13,4 @@ docs_area: reference.logging
 {% assign remote_include_version = site.versions["stable"] | replace: "v", "" %}
 {% endif %}
 
-{% remote_include https://raw.githubusercontent.com/cockroachdb/cockroach/release-{{ remote_include_version }}/docs/generated/logging.md %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/cockroach/release-22.1/docs/generated/logging.md %}

@@ -29,7 +29,7 @@ You can use the keywords `ROLE` and `USER` interchangeably. [`ALTER USER`](alter
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ remote_include_version }}/grammar_svg/alter_role.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/alter_role.html %}
 </div>
 
 ## Parameters

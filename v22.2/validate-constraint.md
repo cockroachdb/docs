@@ -26,7 +26,7 @@ The user must have the `CREATE` [privilege](security-reference/authorization.htm
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ remote_include_version }}/grammar_svg/validate_constraint.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/validate_constraint.html %}
 </div>
 
 ## Parameters
