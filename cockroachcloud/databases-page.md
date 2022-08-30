@@ -11,7 +11,7 @@ The **Databases** page of the {{ site.data.products.db }} Console allows you to 
 - The tables in each database and the indexes on each table.
 - The grants assigned to each user.
 
-To view this page, navigate to your [**Cluster Overview** page](cluster-overview-page.html) and click **Databases** in the left-hand navigation.
+To view this page, click **Databases** in the left-hand navigation of the {{ site.data.products.db }} Console.
 
 ## Databases
 
