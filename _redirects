@@ -524,3 +524,6 @@ layout: null
 {% endfor -%}
 
 /docs/frequently-asked-questions.html /docs/stable/frequently-asked-questions.html  301
+
+/docs/v22.2/doc1.html /docs/v22.2/doc2.html 301
+/docs/v22.2/doc2.html /docs/v22.2/doc3.html 301
