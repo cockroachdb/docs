@@ -228,7 +228,7 @@ Only the following statements use the plan cache:
 - [`UPSERT`](upsert.html)
 - [`DELETE`](delete.html)
 
-The optimizer can cache statements if they are: 
+The optimizer can use cached plans if they are: 
 
 - Prepared statements.
 - Non-prepared statements using identical constant values.
