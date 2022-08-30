@@ -377,7 +377,6 @@ operator_version
 orchstrations
 ordinality
 ORMs
-ORed
 overallocating
 owsiany
 page_prefix
