@@ -441,8 +441,10 @@ Enter a line break between a heading and its content.
 
 #### Bold
 
-Use bold text to emphasize an important word or phrase, when referring to the name of a UI section or field, or to create visual separation and callouts (e.g., **Example:**). Do not combine bold with italic.
+Use bold text to emphasize an important word or phrase, or to create visual separation and callouts (e.g., **Example:**). Do not combine bold with italic.
 
+Bold text should be used whenever referring to the name of a UI section or field. The name should only be in bold if it appears verbatim in the UI. Some UI sections, such as tables, are not labeled in the UI and should not be bolded when named in the documentation.
+  
 To bold a word or phrase, surround the text with two asterisks (`**`).
 
 **Examples:**
