@@ -41,11 +41,28 @@ Checking **Per Node** displays statistics for each node, which could show whethe
 
 ## Available metrics
 
+Select your CockroachDB deployment to see the metrics available:
+
 {{site.data.alerts.callout_info}}
 This list is taken directly from the source code and is subject to change. Some of the metrics listed below are already visible in other areas of the [DB Console](ui-overview.html).
 {{site.data.alerts.end}}
 
+<div class="filters clearfix">
+  <button class="filter-button" data-scope="metric-names">Self-Hosted and Dedicated</button>
+  <button class="filter-button" data-scope="metric-names-serverless">Serverless</button>
+</div>
+
+<section class="filter-content" markdown="1" data-scope="metric-names">
+
 {% include {{page.version.version}}/metric-names.md %}
+
+</section>
+
+<section class="filter-content" markdown="1" data-scope="metric-names-serverless">
+
+{% include {{page.version.version}}/metric-names-serverless.md %}
+
+</section>
 
 ## See also
 
