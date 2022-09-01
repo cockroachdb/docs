@@ -5,10 +5,10 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `COPY FROM` statement copies data from third-party clients to tables in your cluster.
+The `COPY FROM` statement copies data from [`cockroach sql`](cockroach-sql.html) or other [third party clients](install-client-drivers.html) to tables in your cluster.
 
 {{site.data.alerts.callout_info}}
-CockroachDB currently only supports `COPY FROM` statements issued from third-party clients, for compatibility with PostgreSQL drivers and ORMs. `COPY FROM` statements cannot be issued from the [`cockroach` SQL shell](cockroach-sql.html). To copy data from a file to your cluster, we recommend using an [`IMPORT`](import.html) statement instead.
+To copy data from a file to your cluster, we recommend using an [`IMPORT`](import.html) statement instead.
 {{site.data.alerts.end}}
 
 ## Syntax
@@ -44,37 +44,22 @@ Only members of the `admin` role can run `COPY` statements. By default, the `roo
 
 {% include {{ page.version.version }}/known-limitations/copy-syntax.md %}
 
-## Example
+## Examples
 
-The following example copies data from the PostgreSQL [`psql` client](https://www.postgresql.org/docs/current/app-psql.html) into a demo CockroachDB cluster. To follow along, make sure that you have [PostgreSQL](https://www.postgresql.org/download/) installed.
-
-Run [`cockroach demo`](cockroach-demo.html) to start a temporary, in-memory cluster with the [`movr` database](movr.html) preloaded:
+To run the examples, use [`cockroach demo`](cockroach-demo.html) to start a temporary, in-memory cluster with the [`movr` database](movr.html) preloaded.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-$ cockroach demo
+cockroach demo
 ~~~
 
-Take note of the `(sql)` connection string listed under `Connection parameters` in the welcome message of the demo cluster's SQL shell:
+### Copy tab delimited data
 
-~~~
-# Connection parameters:
-...
-#   (sql) postgres://demo:demo11762@127.0.0.1:26257?sslmode=require
-~~~
-
-Open a new terminal window, and connect to your demo cluster with `psql`, using the connection string provided for the demo cluster, with the `movr` database specified:
-
-{% include_cached copy-clipboard.html %}
-~~~ shell
-$ psql postgres://demo:demo11762@127.0.0.1:26257?sslmode=require
-~~~
-
-In the `psql` shell, run the following command to start copying data from `psql` to the `users` table:
+In the SQL shell, run the following command to start copying data to the `users` table:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> movr=# COPY users FROM STDIN;
+COPY users FROM STDIN;
 ~~~
 
 The following prompt should appear:
@@ -84,31 +69,124 @@ Enter data to be copied followed by a newline.
 End with a backslash and a period on a line by itself, or an EOF signal.
 ~~~
 
-Enter some tab-delimited data that you want copied to the `users` table:
+Enter some tab-delimited data that you want copied to the `users` table.
 
-{% include_cached copy-clipboard.html %}
+{{site.data.alerts.callout_info}}
+You may need to edit the following rows after copying them to make sure the delimiters are tab characters.
+{{site.data.alerts.end}}
+
 ~~~
->> 8a3d70a3-d70a-4000-8000-00000000001d seattle	Hannah	400 Broad St	0987654321
->> 9eb851eb-851e-4800-8000-00000000001e	new york	Carl	53 W 23rd St	5678901234
->> \.
+8a3d70a3-d70a-4000-8000-00000000001d	seattle	Hannah	'400 Broad St'	0987654321
+~~~
+
+~~~
+9eb851eb-851e-4800-8000-00000000001e	new york	Carl	'53 W 23rd St'	5678901234
+~~~
+
+~~~
+\.
 ~~~
 
 ~~~
 COPY 2
 ~~~
 
-In the demo cluster's shell, query the `users` table for the rows that you just inserted:
+In the SQL shell, query the `users` table for the rows that you just inserted:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM users WHERE id IN ('8a3d70a3-d70a-4000-8000-00000000001d', '9eb851eb-851e-4800-8000-00000000001e');
+SELECT * FROM users WHERE id IN ('8a3d70a3-d70a-4000-8000-00000000001d', '9eb851eb-851e-4800-8000-00000000001e');
 ~~~
 
 ~~~
-                   id                  |   city   |  name  |   address    | credit_card
----------------------------------------+----------+--------+--------------+--------------
-  8a3d70a3-d70a-4000-8000-00000000001d | seattle  | Hannah | 400 Broad St | 0987654321
-  9eb851eb-851e-4800-8000-00000000001e | new york | Carl   | 53 W 23rd St | 5678901234
+                  id                  |   city   |  name  |    address     | credit_card
+--------------------------------------+----------+--------+----------------+-------------
+ 9eb851eb-851e-4800-8000-00000000001e | new york | Carl   | '53 W 23rd St' | 5678901234
+ 8a3d70a3-d70a-4000-8000-00000000001d | seattle  | Hannah | '400 Broad St' | 0987654321
+(2 rows)
+~~~
+
+### Copy CSV delimited data
+
+Run the following SQL statement to create a new table that you will load with CSV formatted data:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE TABLE setecastronomy (name STRING, phrase STRING);
+~~~
+
+Run the following command to start copying data to the table:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+COPY setecastronomy FROM STDIN WITH CSV;
+~~~
+
+You will see the following prompt:
+
+~~~
+Enter data to be copied followed by a newline.
+End with a backslash and a period on a line by itself, or an EOF signal.
+~~~
+
+Enter the data, followed by a backslash and period on a line by itself:
+
+{% include_cached copy-clipboard.html %}
+~~~
+"My name is Werner Brandes","My voice is my passport"
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~
+\.
+~~~
+
+~~~
+COPY 1
+~~~
+
+To copy CSV data into CockroachDB and specify an escape character for quoting the fields, enter the following statement:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+COPY setecastronomy FROM STDIN WITH CSV DELIMITER ',' ESCAPE '\';
+~~~
+
+You will see the following prompt:
+
+~~~
+Enter data to be copied followed by a newline.
+End with a backslash and a period on a line by itself, or an EOF signal.
+~~~
+
+Enter the data, followed by a backslash and period on a line by itself:
+
+{% include_cached copy-clipboard.html %}
+~~~
+"My name is Werner Brandes","\"My\" \"voice\" \"is\" \"my\" \"passport\""
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~
+\.
+~~~
+
+~~~
+COPY 1
+~~~
+
+To view the data, enter the following query:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT * FROM setecastronomy;
+~~~
+
+~~~
+            name            |              phrase
+----------------------------+------------------------------------
+  My name is Werner Brandes | "My" "voice" "is" "my" "passport"
+  My name is Werner Brandes | My voice is my passport
 (2 rows)
 ~~~
 
@@ -117,5 +195,6 @@ In the demo cluster's shell, query the `users` table for the rows that you just 
 - [`IMPORT`](import.html)
 - [`IMPORT INTO`](import-into.html)
 - [`EXPORT`](export.html)
+- [Install a Driver or ORM Framework](install-client-drivers.html)
 - [Migrate from PostgreSQL](migrate-from-postgres.html)
 - [Migration Overview](migration-overview.html)

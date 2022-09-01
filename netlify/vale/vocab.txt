@@ -60,6 +60,7 @@ Cartesian
 CAs
 castagnoli
 casted
+catchup
 ccloud
 centralindia
 centralus
@@ -71,6 +72,7 @@ changefeeds
 changeset
 changesets
 checkpointing
+checksummed
 chu
 cleartext
 CLI
@@ -109,6 +111,7 @@ datasources
 datastores
 datatypes
 datetime
+datums
 dayofweek
 dayofyear
 DBeaver
@@ -164,6 +167,7 @@ firewalled
 firewalling
 firouz
 fluentd
+forecasted
 fortran
 francecentral
 francesouth
@@ -453,13 +457,16 @@ redcarpet
 reformats
 rehomed
 rehoming
+rekeyed
 relicense
 remote_include
 replacewith
+replanning
 repo
 repos
 repudiability
 rescanned
+restore's
 retryable
 riak
 rocksdb

@@ -13,7 +13,7 @@ If you are not satisfied with your SQL query performance, follow the instruction
 
 If you have already optimized your SQL queries as described in [Optimize Statement Performance Overview][fast] and are still having issues such as:
 
-- Hanging or "stuck" queries
+- [Hanging or "stuck" queries](query-behavior-troubleshooting.html#hanging-or-stuck-queries), usually due to contention with long-running transactions
 - Queries that are slow some of the time (but not always)
 - Low throughput of queries
 
