@@ -43,6 +43,8 @@ You can restore:
 
 {% include {{ page.version.version }}/misc/non-http-source-privileges.md %}
 
+{% include {{ page.version.version }}/misc/s3-compatible-warning.md %}
+
 ## Synopsis
 
 <div>
