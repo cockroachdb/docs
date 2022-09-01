@@ -41,6 +41,12 @@
       "title": "Work with Changefeeds",
       "items": [
         {
+          "title": "Changefeed Expressions",
+          "urls": [
+            "/${VERSION}/changefeed-expressions.html"
+          ]
+        },
+        {
           "title": "Changefeeds on Tables with Column Families",
           "urls": [
             "/${VERSION}/changefeeds-on-tables-with-column-families.html"

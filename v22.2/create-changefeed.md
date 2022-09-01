@@ -13,6 +13,12 @@ The `CREATE CHANGEFEED` [statement](sql-statements.html) creates a new {{ site.d
 
 We recommend reading the [Changefeed Messages](changefeed-messages.html) page for detail on understanding how changefeeds emit messages and [Create and Configure Changefeeds](create-and-configure-changefeeds.html) for important usage considerations.
 
+The [examples](#examples) on this page provide the foundational syntax of the `CREATE CHANGEFEED` statement. For examples on more specific use cases with changefeeds see the following pages:
+
+- [Changefeed Expressions](changefeed-expressions.html)
+- [Changefeeds on Tables with Column Families](changefeeds-on-tables-with-column-families.html)
+- [Export Data with Changefeeds](export-data-with-changefeeds.html)
+
 ## Required privileges
 
 To create a changefeed, the user must be a member of the `admin` role or have the [`CREATECHANGEFEED`](create-user.html#create-a-user-that-can-control-changefeeds) parameter set.
@@ -28,8 +34,20 @@ To create a changefeed, the user must be a member of the `admin` role or have th
 Parameter | Description
 ----------|------------
 `table_name` | The name of the table (or tables in a comma separated list) to create a changefeed for.<br><br>**Note:** Before creating a changefeed, consider the number of changefeeds versus the number of tables to include in a single changefeed. Each scenario can have an impact on total memory usage or changefeed performance. See [Create and Configure Changefeeds](create-and-configure-changefeeds.html) for more detail.
-`sink` | The location of the configurable sink. The scheme of the URI indicates the type. For more information, see [Sink URI](#sink-uri) below.
-`option` / `value` | For a list of available options and their values, see [Options](#options) below.
+`sink` | The location of the configurable sink. The scheme of the URI indicates the type. For more information, see [Sink URI](#sink-uri).
+`option` / `value` | For a list of available options and their values, see [Options](#options).
+
+### Changefeed expression parameters
+
+The [Changefeed Expressions](changefeed-expressions.html) page provides detail on the functionality, syntax, and use cases for changefeeds created with expressions. 
+
+Parameter | Description
+----------|------------
+`sink` | The location of the configurable sink. The scheme of the URI indicates the type. For more information, see [Sink URI](#sink-uri).
+`option` / `value` | For a list of available options and their values, see [Options](#options).
+`target_list` | The columns to emit data from.
+`changefeed_target_expr` | The target table for the changefeed.
+`opt_where_clause` | An optional `WHERE` clause to apply filters to the table.
 
 ### Sink URI
 
