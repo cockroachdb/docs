@@ -48,6 +48,7 @@ Included in this guide:
   - [Code](#code)
   - [Examples](#examples)
   - [Version tags](#version-tags)
+  - [Version references](#version-references)
   - [Tables](#tables)
   - [Lists](#lists)
   - [Images](#images)
@@ -830,6 +831,36 @@ If a feature is new in a GA release, use the major release number for the releas
 If a feature has been backported to a previous version in a patch release, use the minor release number for the release version tag (e.g., `{% include_cached new-in.html version="v21.2.10" %}`).
 
 Version tags should only refer to the version of the docset that contains them. For example, the version tag `{% include_cached new-in.html version="v21.1.9" %}` should only be on pages in `v21.1` directories.
+
+### Version references
+
+To refer to a static version of CockroachDB:
+
+~~~
+{{site.versions["v22.2"]}}
+~~~
+
+To dynamically refer to the stable version of CockroachDB, as determined each time the site is built:
+
+~~~
+{{site.versions["stable"]}}
+~~~
+
+{{site.data.alerts.callout_danger}}
+If you use a `stable` link on a versioned page which is for a previous version, the link points to a different version  of CockroachDB than the version the page documents. Similarly, if you use a `stable` link on a page for the current version and then a new version is added, the link points to a different version than the version the page documents. If this is a problem, use one of the following methods instead.
+{{site.data.alerts.end}}
+
+To refer to a page's minor version (for example, {{page.version.version}}) (as represented by its subdirectory within the docs repo):
+
+~~~
+{{page.version.version}}
+~~~
+
+To refer to a page's patch version (for example, {{ page.release_info.name }}):
+
+~~~
+{{ page.release_info.name }}
+~~~
 
 ### Tables
 
