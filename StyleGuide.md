@@ -846,11 +846,9 @@ To dynamically refer to the stable version of CockroachDB, as determined each ti
 {{site.versions["stable"]}}
 ~~~
 
-{{site.data.alerts.callout_danger}}
-If you use a `stable` link on a versioned page which is for a previous version, the link points to a different version  of CockroachDB than the version the page documents. Similarly, if you use a `stable` link on a page for the current version and then a new version is added, the link points to a different version than the version the page documents. If this is a problem, use one of the following methods instead.
-{{site.data.alerts.end}}
+**Warning**: If you use a `stable` link on a versioned page which is for a previous version, the link points to a different version  of CockroachDB than the version the page documents. Similarly, if you use a `stable` link on a page for the current version and then a new version is added, the link points to a different version than the version the page documents. If this is a problem, use one of the following methods instead.
 
-To refer to a page's minor version (for example, {{page.version.version}}) (as represented by its subdirectory within the docs repo):
+To refer to a page's minor version (for example, {{page.version.version}}), which matches its top-level subdirectory within the docs repo:
 
 ~~~
 {{page.version.version}}
