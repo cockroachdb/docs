@@ -1,2 +1,3 @@
 css/customstyles.css.map binary
 css/customstyles.css -merge
+*.md diff=markdown
