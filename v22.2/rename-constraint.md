@@ -5,14 +5,6 @@ toc: true
 docs_area: reference.sql
 ---
 
-{% assign rd = site.data.releases | where_exp: "rd", "rd.major_version == page.version.version" | first %}
-
-{% if rd %}
-{% assign remote_include_version = page.version.version | replace: "v", "" %}
-{% else %}
-{% assign remote_include_version = site.versions["stable"] | replace: "v", "" %}
-{% endif %}
-
 The `RENAME CONSTRAINT` [statement](sql-statements.html) changes the name of a constraint on a column.
 
 {% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
@@ -26,7 +18,7 @@ It is not possible to rename a constraint for a column referenced by a view. For
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/rename_constraint.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/rename_constraint.html %}
 </div>
 
 ## Required privileges

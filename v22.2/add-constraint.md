@@ -5,15 +5,6 @@ toc: true
 docs_area: reference.sql
 ---
 
-{% assign rd = site.data.releases | where_exp: "rd", "rd.major_version == page.version.version" | first %}
-
-{% if rd %}
-{% assign remote_include_version = page.version.version | replace: "v", "" %}
-{% else %}
-{% assign remote_include_version = site.versions["stable"] | replace: "v", "" %}
-{% endif %}
-
-
 The `ADD CONSTRAINT` [statement](sql-statements.html) is part of `ALTER TABLE` and can add the following [constraints](constraints.html) to columns:
 
 - [`UNIQUE`](#add-the-unique-constraint)
@@ -31,7 +22,7 @@ The [`DEFAULT`](default-value.html) and [`NOT NULL`](not-null.html) constraints 
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/add_constraint.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/add_constraint.html %}
 </div>
 
 ## Required privileges

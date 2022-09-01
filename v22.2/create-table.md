@@ -6,14 +6,6 @@ keywords: gin, gin index, gin indexes, inverted index, inverted indexes, acceler
 docs_area: reference.sql
 ---
 
-{% assign rd = site.data.releases | where_exp: "rd", "rd.major_version == page.version.version" | first %}
-
-{% if rd %}
-{% assign remote_include_version = page.version.version | replace: "v", "" %}
-{% else %}
-{% assign remote_include_version = site.versions["stable"] | replace: "v", "" %}
-{% endif %}
-
 The `CREATE TABLE` [statement](sql-statements.html) creates a new table in a database.
 
 {% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
@@ -34,67 +26,67 @@ To create a table, the user must have one of the following:
 </div><p></p>
 
 <div class="filter-content" markdown="1" data-scope="basic">
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/create_table.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/create_table.html %}
 </div>
 
 <div class="filter-content" markdown="1" data-scope="expanded">
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/create_table.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/create_table.html %}
 </div>
 
 **opt_persistence_temp_table ::=**
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/opt_persistence_temp_table.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/opt_persistence_temp_table.html %}
 </div>
 
 **column_def ::=**
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/column_def.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/column_def.html %}
 </div>
 
 **col_qualification ::=**
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/col_qualification.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/col_qualification.html %}
 </div>
 
 **index_def ::=**
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/index_def.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/index_def.html %}
 </div>
 
 **family_def ::=**
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/family_def.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/family_def.html %}
 </div>
 
 **table_constraint ::=**
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/table_constraint.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/table_constraint.html %}
 </div>
 
 **like_table_option_list::=**
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/like_table_option_list.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/like_table_option_list.html %}
 </div>
 
 **opt_with_storage_parameter_list ::=**
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/opt_with_storage_parameter_list.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/opt_with_storage_parameter_list.html %}
 </div>
 
 **opt_locality ::=**
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/opt_locality.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/opt_locality.html %}
 </div>
 
 </div>

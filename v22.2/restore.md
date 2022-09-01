@@ -5,14 +5,6 @@ toc: true
 docs_area: reference.sql
 ---
 
-{% assign rd = site.data.releases | where_exp: "rd", "rd.major_version == page.version.version" | first %}
-
-{% if rd %}
-{% assign remote_include_version = page.version.version | replace: "v", "" %}
-{% else %}
-{% assign remote_include_version = site.versions["stable"] | replace: "v", "" %}
-{% endif %}
-
 The `RESTORE` [statement](sql-statements.html) restores your cluster's schemas and data from [a `BACKUP`](backup.html) stored on services such as AWS S3, Google Cloud Storage, or NFS.
 
 Because CockroachDB is designed with high fault tolerance, restores are designed primarily for disaster recovery, i.e., restarting your cluster if it loses a majority of its nodes. Isolated issues (such as small-scale node outages) do not require any intervention.
@@ -48,7 +40,7 @@ You can restore:
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/restore.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/restore.html %}
 </div>
 
 ## Parameters

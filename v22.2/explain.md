@@ -5,14 +5,6 @@ toc: true
 docs_area: reference.sql
 ---
 
-{% assign rd = site.data.releases | where_exp: "rd", "rd.major_version == page.version.version" | first %}
-
-{% if rd %}
-{% assign remote_include_version = page.version.version | replace: "v", "" %}
-{% else %}
-{% assign remote_include_version = site.versions["stable"] | replace: "v", "" %}
-{% endif %}
-
 The `EXPLAIN` [statement](sql-statements.html) returns CockroachDB's statement plan for a [preparable statement](sql-grammar.html#preparable_stmt). You can use this information to optimize the query.
 
 {{site.data.alerts.callout_success}}
@@ -37,7 +29,7 @@ For more information about indexing and table scans, see [Find the Indexes and K
 
 ## Synopsis
 
-<div>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/explain.html %}</div>
+<div>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/explain.html %}</div>
 
 ## Required privileges
 

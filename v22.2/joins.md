@@ -6,14 +6,6 @@ keywords: gin, gin index, gin indexes, inverted index, inverted indexes, acceler
 docs_area: reference.sql
 ---
 
-{% assign rd = site.data.releases | where_exp: "rd", "rd.major_version == page.version.version" | first %}
-
-{% if rd %}
-{% assign remote_include_version = page.version.version | replace: "v", "" %}
-{% else %}
-{% assign remote_include_version = site.versions["stable"] | replace: "v", "" %}
-{% endif %}
-
 A `JOIN` expression, also called a _join_, combines the results of two or more [table expressions](table-expressions.html) based on conditions on the values of particular columns (i.e., equality columns). A join is a particular kind of table expression.
 
 A `JOIN` expression defines a data source in the `FROM` sub-clause of a [`SELECT` clause](select-clause.html) or as parameter to a [`TABLE` clause](selection-queries.html#table-clause).
@@ -24,7 +16,7 @@ The [cost-based optimizer](cost-based-optimizer.html) supports hint syntax to fo
 
 ## Synopsis
 
-<div>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/joined_table.html %}</div>
+<div>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/joined_table.html %}</div>
 
 ## Parameters
 

@@ -5,14 +5,6 @@ toc: true
 docs_area: reference.sql
 ---
 
-{% assign rd = site.data.releases | where_exp: "rd", "rd.major_version == page.version.version" | first %}
-
-{% if rd %}
-{% assign remote_include_version = page.version.version | replace: "v", "" %}
-{% else %}
-{% assign remote_include_version = site.versions["stable"] | replace: "v", "" %}
-{% endif %}
-
 The `PRIMARY KEY` [constraint](constraints.html) specifies that the constrained columns' values must uniquely identify each row. A table can only have one primary key, but it can have multiple [unique constraints](unique.html).
 
 You should explicitly define a table's primary key in the [`CREATE TABLE`](create-table.html) statement. If you don't define a primary key at table creation time, CockroachDB will create a `rowid` column that is `NOT VISIBLE`, use the [`unique_rowid()` function](functions-and-operators.html#id-generation-functions) as its default value, and use that as the table's primary key.
@@ -26,7 +18,7 @@ You can [change the primary key](#changing-primary-key-columns) of an existing t
 ### Column level
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/primary_key_column_level.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/primary_key_column_level.html %}
 </div>
 
  Parameter | Description
@@ -54,7 +46,7 @@ You can [change the primary key](#changing-primary-key-columns) of an existing t
 ### Table level
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/primary_key_table_level.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/primary_key_table_level.html %}
 </div>
 
  Parameter | Description

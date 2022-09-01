@@ -5,14 +5,6 @@ toc: true
 docs_area: reference.sql
 ---
 
-{% assign rd = site.data.releases | where_exp: "rd", "rd.major_version == page.version.version" | first %}
-
-{% if rd %}
-{% assign remote_include_version = page.version.version | replace: "v", "" %}
-{% else %}
-{% assign remote_include_version = site.versions["stable"] | replace: "v", "" %}
-{% endif %}
-
 The `NOT NULL` [constraint](constraints.html) specifies a column may not contain [`NULL`](null-handling.html) values.
 
 ## Details
@@ -36,7 +28,7 @@ The `NOT NULL` [constraint](constraints.html) specifies a column may not contain
 You can only apply the `NOT NULL` constraint to individual columns.
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/not_null_column_level.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/not_null_column_level.html %}
 </div>
 
  Parameter | Description

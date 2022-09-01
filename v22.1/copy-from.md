@@ -14,7 +14,7 @@ To copy data from a file to your cluster, we recommend using an [`IMPORT`](impor
 ## Syntax
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/copy_from.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/copy_from.html %}
 </div>
 
 ### Parameters

@@ -5,16 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-{% assign rd = site.data.releases | where_exp: "rd", "rd.major_version == page.version.version" | first %}
-
-{% if rd %}
-{% assign remote_include_version = page.version.version | replace: "v", "" %}
-{% else %}
-{% assign remote_include_version = site.versions["stable"] | replace: "v", "" %}
-{% endif %}
-
 The `RESET` [statement](sql-statements.html) resets a [cluster setting](set-cluster-setting.html) to its default value for the client session.
-
 
 ## Required privileges
 
@@ -23,7 +14,7 @@ Only members of the `admin` role can modify cluster settings. By default, the `r
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/reset_csetting.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/reset_csetting.html %}
 </div>
 
 ## Parameters
