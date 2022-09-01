@@ -29,8 +29,9 @@ Backup / Restore Type             | Description                                 
 [Locality-aware backup and restore](take-and-restore-locality-aware-backups.html) | A backup where each node writes files only to the backup destination that matches the node locality configured at node startup.                              | {{ site.data.products.dedicated }}<br>{{ site.data.products.core }} with an [{{ site.data.products.enterprise }} license](enterprise-licensing.html)
 [Scheduled backup](manage-a-backup-schedule.html)                  | A schedule for periodic backups.                                                                                                                             | {{ site.data.products.dedicated }}<br>{{ site.data.products.core }} with an [{{ site.data.products.enterprise }} license](enterprise-licensing.html)  
 [Automated backup](../cockroachcloud/backups-page.html)                 | Cockroach Labs runs full backups daily and incremental backups hourly for every CockroachDB Cloud cluster.                                                   | {{ site.data.products.db }} clusters                                                                                                                                     
-
 ## Backup and restore SQL statements
+
+The following table outlines SQL statements you can use to create, configure, pause, and show backup and restore jobs:
 
 The following table outlines SQL statements you can use to create, configure, pause, and show backup and restore jobs:
 
@@ -44,6 +45,11 @@ The following table outlines SQL statements you can use to create, configure, pa
 [`SHOW BACKUP`](show-backup.html)  | Show a backup's details at the [backup collection's](take-full-and-incremental-backups.html#backup-collections) storage location.     
 [`RESTORE`](restore.html)      | Restore full and incremental backups.
 [`ALTER BACKUP`](alter-backup.html) | Add a new [KMS encryption key](take-and-restore-encrypted-backups.html#use-key-management-service) to an encrypted backup.
+[`CREATE SCHEDULE FOR BACKUP`](create-schedule-for-backup.html) | Create a schedule for periodic backups.
+[`SHOW SCHEDULES`](show-schedules.html) | View information on backup schedules.
+[`PAUSE SCHEDULES`](pause-schedules.html) | Pause backup schedules.
+[`RESUME SCHEDULES`](resume-schedules.html) | Resume paused backup schedules.
+[`DROP SCHEDULES`](drop-schedules.html) | Drop backup schedules.
 
 ## Backup storage
 
