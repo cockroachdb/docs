@@ -848,13 +848,13 @@ To dynamically refer to the stable version of CockroachDB, as determined each ti
 
 **Warning**: If you use a `stable` link on a versioned page which is for a previous version, the link points to a different version  of CockroachDB than the version the page documents. Similarly, if you use a `stable` link on a page for the current version and then a new version is added, the link points to a different version than the version the page documents. If this is a problem, use one of the following methods instead.
 
-To refer to a page's minor version (for example, {{page.version.version}}), which matches its top-level subdirectory within the docs repo:
+Pages that document CockroachDB itself exist within subdirectories that represent minor versions. To refer to a page's minor version (for example, v22.2), which matches its top-level subdirectory within the docs repo:
 
 ~~~
 {{page.version.version}}
 ~~~
 
-To refer to a page's patch version (for example, {{ page.release_info.name }}):
+A minor version of CockroachDB receives updates as patches. To refer to a page's current patch version (for example, v22.1.7):
 
 ~~~
 {{ page.release_info.name }}
