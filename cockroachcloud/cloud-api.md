@@ -40,6 +40,37 @@ Authorization: Bearer {secret_key}
 
 Where `{secret_key}` is the [secret key string you stored when you created the API key in the Console](console-access-management.html#create-api-keys).
 
+## Set the API version
+
+The `Cc-Version` HTTP header specifies the version of the Cloud API to use. If you omit the `Cc-Version` header, the Cloud API will default to version `2022-03-31` (the initial release of the Cloud API). The Cloud API uses date-based versions of the form `YYYY-MM-DD`, in [ISO 8601 format](https://www.w3.org/TR/NOTE-datetime).
+
+If you set an invalid version, you will get an HTTP 400 response with the message "invalid Cc-Version."
+
+<div class="filters clearfix">
+    <button class="filter-button page-level" data-scope="curl"><strong>curl</strong></button>
+    <button class="filter-button page-level" data-scope="raw"><strong>Raw</strong></button>
+</div>
+
+<section class="filter-content" markdown="1" data-scope="curl">
+{% include_cached copy-clipboard.html %}
+~~~ shell
+curl --request GET \
+  --url 'https://cockroachlabs.cloud/api/v1/clusters' \
+  --header 'Authorization: Bearer {secret_key}' \
+  --header 'Cc-Version: {version}'
+~~~
+</section>
+
+<section class="filter-content" markdown="1" data-scope="raw">
+{% include_cached copy-clipboard.html %}
+~~~ text
+Authorization: Bearer {secret_key}
+Cc-Version: {version}
+~~~
+</section>
+
+Where `{secret_key}` is the [secret key string you stored when you created the API key in the Console](console-access-management.html#create-api-keys) and `{version}` is the version of the Cloud API.
+
 ## Create a new cluster
 
 To create a cluster, send a `POST` request to the `/v1/clusters` endpoint. The service account associated with the secret key must have `ADMIN` or `CREATE` [permission](console-access-management.html#service-accounts) to create new clusters.
