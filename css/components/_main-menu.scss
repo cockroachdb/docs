@@ -90,7 +90,7 @@ $navbar-light-color: #000;
   &.show {
     .dropdown-toggle {
       &:before {
-        background: url("../images/icon-chevron-up.svg");
+        background: url("images/icon-chevron-up.svg");
         background-size: 11px 15px;
         background-repeat: no-repeat;
         width: 15px;
@@ -108,7 +108,7 @@ $navbar-light-color: #000;
       height: 11px;
       bottom: 0;
       left: 50%;
-      background: url("../images/icon-chevron-down.svg");
+      background: url("images/icon-chevron-down.svg");
       background-size: 11px 15px;
       background-repeat: no-repeat;
     }
@@ -296,7 +296,7 @@ $navbar-light-color: #000;
     .dropdown-menu {
       border-top-left-radius: 0;
       border-top-right-radius: 0;
-      background-image: url(../images/nav-bg.svg);
+      background-image: url(images/nav-bg.svg);
       background-repeat: no-repeat;
       padding: 20px;
       margin-top: none;
@@ -318,7 +318,7 @@ $navbar-light-color: #000;
         height: 11px;
         bottom: 0;
         left: 50%;
-        background: url("../images/icon-chevron-down.svg");
+        background: url("images/icon-chevron-down.svg");
         background-size: 11px 15px;
         background-repeat: no-repeat;
       }
@@ -330,7 +330,7 @@ $navbar-light-color: #000;
     &.show {
       .dropdown-toggle {
         &:before {
-          background: url("../images/icon-chevron-up.svg");
+          background: url("images/icon-chevron-up.svg");
         }
       }
     }

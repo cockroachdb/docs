@@ -23,7 +23,7 @@
     }
 
     &.install {
-      .landing-page__tutorial--tile-icon { content: url(../images/cl-download.svg); }
+      .landing-page__tutorial--tile-icon { content: url(images/cl-download.svg); }
       .landing-page__tutorial--tile-label {
         &:after {
           content: 'Install';
@@ -36,7 +36,7 @@
     }
 
     &.start-cluster {
-      .landing-page__tutorial--tile-icon { content: url(../images/cl-flag-finish.svg); }
+      .landing-page__tutorial--tile-icon { content: url(images/cl-flag-finish.svg); }
       .landing-page__tutorial--tile-label {
         &:after {
           content: 'Start cluster';
@@ -49,7 +49,7 @@
     }
 
     &.build-app {
-      .landing-page__tutorial--tile-icon { content: url(../images/cl-settings.svg); }
+      .landing-page__tutorial--tile-icon { content: url(images/cl-settings.svg); }
       .landing-page__tutorial--tile-label {
         &:after { content: 'Build an app'; }
       }
