@@ -5,14 +5,14 @@ toc: true
 docs_area: reference.sql
 ---
 
- The `SHOW FULL TABLE SCANS` [statement](sql-statements.html) lists recent queries for which CockroachDB performed a full table scan during query execution.
+The `SHOW FULL TABLE SCANS` [statement](sql-statements.html) lists recent queries for which CockroachDB performed a full table scan during query execution.
 
 Limiting the number of queries that require full table scans can help you optimize query execution performance. For more information on query performance optimization, see [Optimize Statement Performance](make-queries-fast.html) and [SQL Tuning with `EXPLAIN`](sql-tuning-with-explain.html).
 
 ## Syntax
 
 <div>
-{% include {{ page.version.version }}/sql/generated/diagrams/show_full_scans.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/show_full_scans.html %}
 </div>
 
 ## Required privileges

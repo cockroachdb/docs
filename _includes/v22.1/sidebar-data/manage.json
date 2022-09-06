@@ -187,7 +187,7 @@
               "urls": [],
               "items": [
                 {
-                  "title": "Managing Customer-Managed Encryption Keys (CMEK) for CockroachDB Dedicated",
+                  "title": "Manage Customer-Managed Encryption Keys (CMEK) for CockroachDB Dedicated",
                   "urls": [
                     "/cockroachcloud/managing-cmek.html"
                   ]

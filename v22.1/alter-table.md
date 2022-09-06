@@ -29,6 +29,7 @@ Subcommand | Description | Can combine with other subcommands?
 [`RENAME COLUMN`](rename-column.html) | Change the names of columns. | Yes
 [`RENAME CONSTRAINT`](rename-constraint.html) | Change constraints columns. | Yes
 [`RENAME TO`](rename-table.html) | Change the names of tables. | No
+[`RESET (storage parameter)`](reset-storage-parameter.html) | Reset a storage parameter on a table to its default value. | Yes
 [`SET SCHEMA`](set-schema.html) |  Change the [schema](sql-name-resolution.html) of a table. | No
 [`SPLIT AT`](split-at.html) | Force a [range split](architecture/distribution-layer.html#range-splits) at the specified row in the table. | No
 [`UNSPLIT AT`](unsplit-at.html) | Remove a range split enforcement in the table. | No

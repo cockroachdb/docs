@@ -5,25 +5,18 @@ toc: true
 docs_area: reference.sql
 ---
 
-{% assign rd = site.data.releases | where_exp: "rd", "rd.major_version == page.version.version" | first %}
-
-{% if rd %}
-{% assign remote_include_version = page.version.version | replace: "v", "" %}
-{% else %}
-{% assign remote_include_version = site.versions["stable"] | replace: "v", "" %}
-{% endif %}
-
 `ALTER COLUMN` is a subcommand of [`ALTER TABLE`](alter-table.html). You can use `ALTER COLUMN` to do the following:
 
 - Set, change, or drop a column's [`DEFAULT` constraint](default-value.html).
 - Set or drop a column's [`NOT NULL` constraint](not-null.html).
--  Set, change, or drop an [`ON UPDATE` expression](create-table.html#on-update-expressions).
+- Set, change, or drop an [`ON UPDATE` expression](create-table.html#on-update-expressions).
 - Change a column's [data type](data-types.html).
+- Set the [visibility](#set-the-visibility-of-a-column) of a column.
 
 {% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
 {{site.data.alerts.callout_info}}
-Support for altering column types is [experimental](experimental-features.html), with certain limitations. For details, see [Altering column data types](#altering-column-data-types).
+Support for altering column types is [experimental](experimental-features.html), with certain limitations. For details, see [Altering column data types](#alter-column-data-types).
 {{site.data.alerts.end}}
 
 {% include {{ page.version.version }}/sql/combine-alter-table-commands.md %}
@@ -31,7 +24,7 @@ Support for altering column types is [experimental](experimental-features.html),
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ remote_include_version }}/grammar_svg/alter_column.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/alter_column.html %}
 </div>
 
 ## Required privileges
@@ -45,14 +38,14 @@ The user must have the `CREATE` [privilege](security-reference/authorization.htm
 | `table_name` | The name of the table with the column to modify. |
 | `column_name` | The name of the column to modify. |
 | `SET DEFAULT a_expr` | The new [default value](default-value.html). |
-| `typename` | The new [data type](data-types.html) you want to use.<br> Support for altering column types is [experimental](experimental-features.html), with certain limitations. For details, see [Altering column data types](#altering-column-data-types). |
+| `typename` | The new [data type](data-types.html) you want to use.<br> Support for altering column types is [experimental](experimental-features.html), with certain limitations. For details, see [Altering column data types](#alter-column-data-types). |
 | `USING a_expr` |  How to compute a new column value from the old column value. |
 
 ## View schema changes
 
 {% include {{ page.version.version }}/misc/schema-change-view-job.md %}
 
-## Altering column data types
+## Alter column data types
 
 Support for altering column data types is [experimental](experimental-features.html), with [certain limitations](#limitations-on-altering-data-types). To enable column type altering, set the `enable_experimental_alter_column_type_general` [session variable](set-vars.html) to `true`.
 
@@ -102,7 +95,7 @@ If the column has a defined [`DEFAULT` value](default-value.html), you can remov
 
 ### Set `NOT NULL` constraint
 
-Setting the  [`NOT NULL` constraint](not-null.html) specifies that the column cannot contain `NULL` values.
+To specify that the column cannot contain `NULL` values, set the [`NOT NULL` constraint](not-null.html).
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -289,6 +282,75 @@ NOTICE: ALTER COLUMN TYPE changes are finalized asynchronously; further schema c
   30.72 percent
   3.16 percent
 (10 rows)
+~~~
+
+### Set the visibility of a column
+
+To specify that a column won't be returned when using `*` in a [`SELECT` clause](select-clause.html), set the `NOT VISIBLE` property. You can set the `NOT VISIBLE` property only on individual columns.
+
+For example, the `users` table of the [`movr` database](movr.html) contains the `credit_card` column. If you don't want users to see that column when running `SELECT * FROM users;`, you can hide it as follows:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> ALTER TABLE users ALTER COLUMN credit_card SET NOT VISIBLE;
+~~~
+
+When you run `SELECT *`, the column does not appear:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM users WHERE city = 'rome';
+~~~
+
+~~~
+id                                     | city |       name        |            address
+---------------------------------------+------+-------------------+--------------------------------
+e6666666-6666-4800-8000-00000000002d   | rome | Misty Adams       | 82289 Natasha River Suite 12
+eb851eb8-51eb-4800-8000-00000000002e   | rome | Susan Morse       | 49364 Melissa Squares Suite 4
+f0a3d70a-3d70-4000-8000-00000000002f   | rome | Victoria Jennings | 31562 Krista Squares Suite 62
+f5c28f5c-28f5-4000-8000-000000000030   | rome | Eric Perez        | 57624 Kelly Forks
+fae147ae-147a-4000-8000-000000000031   | rome | Richard Bullock   | 21194 Alexander Estate
+(5 rows)
+~~~
+
+The column is still selectable if you name it directly in the `target_elem` parameter:
+
+~~~ sql
+> SELECT id, credit_card FROM users WHERE city = 'rome';
+~~~
+
+~~~
+id                                     | credit_card
+---------------------------------------+--------------
+e6666666-6666-4800-8000-00000000002d   | 4418943046
+eb851eb8-51eb-4800-8000-00000000002e   | 0655485426
+f0a3d70a-3d70-4000-8000-00000000002f   | 2232698265
+f5c28f5c-28f5-4000-8000-000000000030   | 2620636730
+fae147ae-147a-4000-8000-000000000031   | 2642076323
+(5 rows)
+~~~
+
+To unhide the column, run:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> ALTER TABLE users ALTER COLUMN credit_card SET VISIBLE;
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> SELECT * from user WHERE city = 'rome';
+~~~
+
+~~~
+                   id                  | city |       name        |            address            | credit_card
+---------------------------------------+------+-------------------+-------------------------------+--------------
+  e6666666-6666-4800-8000-00000000002d | rome | Misty Adams       | 82289 Natasha River Suite 12  |  4418943046
+  eb851eb8-51eb-4800-8000-00000000002e | rome | Susan Morse       | 49364 Melissa Squares Suite 4 |  0655485426
+  f0a3d70a-3d70-4000-8000-00000000002f | rome | Victoria Jennings | 31562 Krista Squares Suite 62 |  2232698265
+  f5c28f5c-28f5-4000-8000-000000000030 | rome | Eric Perez        | 57624 Kelly Forks             |  2620636730
+  fae147ae-147a-4000-8000-000000000031 | rome | Richard Bullock   | 21194 Alexander Estate        |  2642076323
+(5 rows)
 ~~~
 
 ## See also

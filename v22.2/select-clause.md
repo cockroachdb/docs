@@ -6,14 +6,6 @@ key: select.html
 docs_area: reference.sql
 ---
 
-{% assign rd = site.data.releases | where_exp: "rd", "rd.major_version == page.version.version" | first %}
-
-{% if rd %}
-{% assign remote_include_version = page.version.version | replace: "v", "" %}
-{% else %}
-{% assign remote_include_version = site.versions["stable"] | replace: "v", "" %}
-{% endif %}
-
 The simple `SELECT` clause is the main SQL syntax to read and process
 existing data.
 
@@ -26,7 +18,7 @@ with other constructs to form more complex [selection queries](selection-queries
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ remote_include_version }}/grammar_svg/simple_select_clause.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/simple_select_clause.html %}
 </div>
 
 
@@ -44,7 +36,7 @@ Parameter | Description
 ----------|-------------
 `DISTINCT` or `ALL` | See [Eliminate Duplicate Rows](#eliminate-duplicate-rows).
 `DISTINCT ON ( a_expr [, ...] )` | `DISTINCT ON` followed by a list of [scalar expressions](scalar-expressions.html) within parentheses. See [Eliminate Duplicate Rows](#eliminate-duplicate-rows).
-`target_elem` | A [scalar expression](scalar-expressions.html) to compute a column in each result row, or `*` to automatically retrieve all columns from the `FROM` clause.<br><br>If `target_elem` contains an [aggregate function](functions-and-operators.html#aggregate-functions), a `GROUP BY` clause can be used to further control the aggregation.
+`target_elem` | A [scalar expression](scalar-expressions.html) to compute a column in each result row.<br><br>`*` automatically retrieves all columns. If a column has the [`NOT VISIBLE` property](create-table.html#not-visible-property), it is not returned with `*`.<br><br>If `target_elem` contains an [aggregate function](functions-and-operators.html#aggregate-functions), a `GROUP BY` clause can be used to further control the aggregation.
 `table_ref` | The [table expression](table-expressions.html) you want to retrieve data from.<br><br>Using two or more table expressions in the `FROM` sub-clause, separated with a comma, is equivalent to a [`CROSS JOIN`](joins.html) expression.
 `AS OF SYSTEM TIME timestamp` | Retrieve data as it existed [as of `timestamp`](as-of-system-time.html). <br><br>**Note**: Because `AS OF SYSTEM TIME` returns historical data, your reads might be stale.
 `WHERE a_expr` | <a name="where-clause"></a> Only retrieve rows that return `TRUE` for `a_expr`, which must be a [scalar expression](scalar-expressions.html) that returns Boolean values using columns (e.g., `<column> = <value>`).

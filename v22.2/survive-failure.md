@@ -5,15 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-{% assign rd = site.data.releases | where_exp: "rd", "rd.major_version == page.version.version" | first %}
-
-{% if rd %}
-{% assign remote_include_version = page.version.version | replace: "v", "" %}
-{% else %}
-{% assign remote_include_version = site.versions["stable"] | replace: "v", "" %}
-{% endif %}
-
- The `ALTER DATABASE ... SURVIVE {ZONE,REGION} FAILURE` [statement](sql-statements.html) sets the [survival goal](multiregion-overview.html#survival-goals) for a [multi-region database](multiregion-overview.html).
+The `ALTER DATABASE ... SURVIVE {ZONE,REGION} FAILURE` [statement](sql-statements.html) sets the [survival goal](multiregion-overview.html#survival-goals) for a [multi-region database](multiregion-overview.html).
 
 {{site.data.alerts.callout_info}}
 `SURVIVE {ZONE,REGION} FAILURE` is a subcommand of [`ALTER DATABASE`](alter-database.html).
@@ -22,7 +14,7 @@ docs_area: reference.sql
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ remote_include_version }}/grammar_svg/alter_database_survival_goal.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/alter_database_survival_goal.html %}
 </div>
 
 ## Parameters

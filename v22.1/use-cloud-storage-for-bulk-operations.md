@@ -32,7 +32,7 @@ Azure                                                       | `azure`     | Stor
 Google Cloud                                                | `gs`        | Bucket name                                      | `AUTH`: `implicit`, or `specified` (default: `specified`); `CREDENTIALS` <br><br>For more information, see [Authentication - Google Cloud Storage](#authentication).     
 HTTP                                                        | `http`      | Remote host                                      | N/A <br><br>For more information, see [Authentication - HTTP](#authentication).      
 NFS/Local&nbsp;[<sup>1</sup>](#considerations)              | `nodelocal` | `nodeID` or `self` [<sup>2</sup>](#considerations) (see [Example file URLs](#example-file-urls)) | N/A
-S3-compatible services                                     | `s3`        | Bucket name                                      | **Warning**: Unlike Amazon S3, Google Cloud Storage, and Azure storage options, the usage of S3-compatible services is not actively tested by Cockroach Labs. <br><br>`AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_SESSION_TOKEN`, `AWS_REGION`&nbsp;[<sup>3</sup>](#considerations) (optional), `AWS_ENDPOINT`<br><br>For more information, see [Authentication - S3-compatible services](#authentication).
+S3-compatible services                                     | `s3`        | Bucket name                                      | {{site.data.alerts.callout_danger}} While Cockroach Labs actively tests Amazon S3, Google Cloud Storage, and Azure Storage, we **do not** test S3-compatible services (e.g., [MinIO](https://min.io/), [Red Hat Ceph](https://docs.ceph.com/en/pacific/radosgw/s3/)).{{site.data.alerts.end}}<br><br>`AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_SESSION_TOKEN`, `AWS_REGION`&nbsp;[<sup>3</sup>](#considerations) (optional), `AWS_ENDPOINT`<br><br>For more information, see [Authentication - S3-compatible services](#authentication).
 
 {{site.data.alerts.callout_success}}
 The location parameters often contain special characters that need to be URI-encoded. Use Javascript's [encodeURIComponent](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent) function or Go language's [url.QueryEscape](https://golang.org/pkg/net/url/#QueryEscape) function to URI-encode the parameters. Other languages provide similar functions to URI-encode special characters.
@@ -218,7 +218,7 @@ If you cannot run a full proxy, you can disable external HTTP(S) access (as well
 <section class="filter-content" markdown="1" data-scope="s3compatible">
 
 {{site.data.alerts.callout_danger}}
-Unlike Amazon S3, Google Cloud Storage, and Azure storage options, the usage of S3-compatible services is not actively tested by Cockroach Labs.
+Unlike Amazon S3, Google Cloud Storage, and Azure Storage options, the usage of S3-compatible services is not actively tested by Cockroach Labs.
 {{site.data.alerts.end}}
 
 A custom root CA can be appended to the system's default CAs by setting the `cloudstorage.http.custom_ca` [cluster setting](cluster-settings.html), which will be used when verifying certificates from an S3-compatible service.
@@ -287,11 +287,11 @@ This table outlines the actions that each operation performs against the storage
 </table>
 
 <div class="filters clearfix">
-  <button class="filter-button" data-scope="s3">Amazon S3</button>
-  <button class="filter-button" data-scope="gcs">Google Cloud Storage</button>
+  <button class="filter-button" data-scope="s3-perms">Amazon S3</button>
+  <button class="filter-button" data-scope="gcs-perms">Google Cloud Storage</button>
 </div>
 
-<section class="filter-content" markdown="1" data-scope="s3">
+<section class="filter-content" markdown="1" data-scope="s3-perms">
 
 These [actions](https://docs.aws.amazon.com/AmazonS3/latest/API/API_Operations_Amazon_Simple_Storage_Service.html) are the minimum access permissions to be set in an Amazon S3 bucket policy:
 
@@ -334,7 +334,7 @@ An example S3 bucket policy for a **backup**:
 
 </section>
 
-<section class="filter-content" markdown="1" data-scope="gcs">
+<section class="filter-content" markdown="1" data-scope="gcs-perms">
 
 In Google Cloud Storage, you can grant users roles that define their access level to the storage bucket. For the purposes of running CockroachDB operations to your bucket, the following table lists the permissions that represent the minimum level required for each operation. GCS provides different levels of granularity for defining the roles in which these permissions reside. You can assign roles that already have these [permissions](https://cloud.google.com/storage/docs/access-control/iam-permissions) configured, or make your own custom roles that include these permissions. 
 

@@ -11,6 +11,4 @@
 
 The following parameters are included for PostgreSQL compatibility and do not affect how CockroachDB runs:
 
-| Parameter name |
-|---------------------|
-| `fillfactor` |
+- `fillfactor`

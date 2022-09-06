@@ -5,17 +5,9 @@ toc: true
 docs_area: reference.sql
 ---
 
-{% assign rd = site.data.releases | where_exp: "rd", "rd.major_version == page.version.version" | first %}
-
-{% if rd %}
-{% assign remote_include_version = page.version.version | replace: "v", "" %}
-{% else %}
-{% assign remote_include_version = site.versions["stable"] | replace: "v", "" %}
-{% endif %}
-
 The `SET` [statement](sql-statements.html) can modify one of the session configuration variables. These can also be queried via [`SHOW`](show-vars.html). By default, session variable values are set for the duration of the current session.
 
- CockroachDB supports setting session variables for the duration of a single transaction, using [the `LOCAL` keyword](#set-local).
+CockroachDB supports setting session variables for the duration of a single transaction, using [the `LOCAL` keyword](#set-local).
 
 {{site.data.alerts.callout_info}}
 The `SET` statement for session variables is unrelated to the other [`SET TRANSACTION`](set-transaction.html) and [`SET CLUSTER SETTING`](cluster-settings.html#change-a-cluster-setting) statements.
@@ -38,7 +30,7 @@ The `SET` statement can set a session variable for the duration of the current s
 ### SET SESSION
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ remote_include_version }}/grammar_svg/set_session.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/set_session.html %}
 </div>
 
 {{site.data.alerts.callout_info}}
@@ -48,7 +40,7 @@ By default, session variables are set for the duration of the current session. A
 ### SET LOCAL
 
 <div>
-  {% include {{ page.version.version }}/sql/generated/diagrams/set_local.html %}
+  {% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/set_local.html %}
 </div>
 
 {{site.data.alerts.callout_info}}
