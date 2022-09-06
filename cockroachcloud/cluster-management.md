@@ -155,7 +155,6 @@ You can use the [**Databases** page](databases-page.html) to create a new databa
 1. Navigate to the **Databases** page from the **Overview** page of your cluster.
 1. Click **Add database**.
 1. Enter a name for the new database.
-1. *(Optional)* Deselect the checkbox if you don't want this to be the default database used when connecting to your cluster.
 1. Click **Create**.
 
 ## Restore data from a backup

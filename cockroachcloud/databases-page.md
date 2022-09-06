@@ -5,7 +5,7 @@ toc: true
 docs_area: manage
 ---
 
-The **Databases** page of the {{ site.data.products.db }} Console allows you to create new databases and provides details of the following:
+The **Databases** page of the {{ site.data.products.db }} Console allows you to create, edit, and delete databases and provides details of the following:
 
 - The databases configured.
 - The tables in each database and the indexes on each table.
@@ -19,7 +19,7 @@ The **Databases** page shows:
 
 - Whether [automatic statistics collection](../{{site.versions["stable"]}}/cost-based-optimizer.html#table-statistics) is enabled for the cluster.
 - A list of the databases on the cluster.
-- The **Add database** button, which allows you to create a new database.
+- The **Add database** button, which allows you to [create a new database](serverless-cluster-management.html#create-a-database).
 
 The following information is displayed for each database:
 
