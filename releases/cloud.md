@@ -23,7 +23,7 @@ As of August 29, 2022, {{ site.data.products.serverless }} clusters are running 
 <h3> Console changes </h3>
 
 - Previously, when trying to remove a region from a three-region cluster, only the second and third regions were removable. Two regions must be removed at once because a two-region cluster is not a valid configuration, but users can now select any two regions to remove.
-- You can now [create a database](../cockroachcloud/serverless-cluster-management.html#create-a-database) directly from the [**Databases**](../cockroachcloud/databases-page.html) of the {{ site.data.products.db }} Console.
+- You can now [create a database](../cockroachcloud/serverless-cluster-management.html#create-a-database) directly from the [**Databases** page](../cockroachcloud/databases-page.html) of the {{ site.data.products.db }} Console.
 - The character limit for cluster names was raised from 20 to 40 characters.
 
 <h3> Cloud API changes </h3>
