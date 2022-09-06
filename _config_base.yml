@@ -12,6 +12,35 @@ defaults:
     type: pages
   values:
     layout: page
+sass:
+  sass_dir: css
+  style: compressed
+jekyll-minifier:
+  exclude: 
+    - '**.html'
+  preserve_php: true                # Default: false
+  remove_spaces_inside_tags: false   # Default: true
+  remove_multi_spaces: false         # Default: true
+  remove_comments: true             # Default: true
+  remove_intertag_spaces: false      # Default: false
+  remove_quotes: false              # Default: false
+  compress_css: false                # Default: true
+  compress_javascript: true         # Default: true
+  compress_json: true               # Default: true
+  simple_doctype: false             # Default: false
+  remove_script_attributes: false   # Default: false
+  remove_style_attributes: false    # Default: false
+  remove_link_attributes: false     # Default: false
+  remove_form_attributes: false     # Default: false
+  remove_input_attributes: false    # Default: false
+  remove_javascript_protocol: false # Default: false
+  remove_http_protocol: false       # Default: false
+  remove_https_protocol: false      # Default: false
+  preserve_line_breaks: false       # Default: false
+  simple_boolean_attributes: false  # Default: false
+  compress_js_templates: false      # Default: false
+  uglifier_args:                    # Default: (empty)
+    harmony: true
 exclude:
 - __tests__
 - netlify
@@ -27,7 +56,8 @@ keep_files:
 - _internal
 markdown: Redcarpet
 plugins:
-- jekyll-include-cache
+  - jekyll-include-cache
+  - jekyll-minifier
 release_info:
   v1.0:
     build_time: 2018/02/13 15:13:51 (go1.8.3)
