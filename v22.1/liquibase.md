@@ -20,7 +20,7 @@ Before you begin the tutorial, do the following:
 
 To install the Liquibase binary on your machine:
 
-1. Download the latest version of the [Liquibase command-line tool](https://www.liquibase.org/download). CockroachDB is fully compatible with Liquibase versions 4.2.0 and greater. We use the binary download of Liquibase 4.20, for macOS.
+1. Download the latest version of the [Liquibase command-line tool](https://www.liquibase.org/download). CockroachDB is fully compatible with Liquibase versions 4.2.0 and greater. This tutorial uses the binary download of Liquibase 4.2.0 for macOS.
 
     {{site.data.alerts.callout_info}}
     In this tutorial, we go through a manual installation, using a download of the binary version of the Liquibase command-line tool. If you are new to Liquibase, you can also use the [Liquibase Installer](https://www.liquibase.org/get-started/using-the-liquibase-installer) to get started. The installer comes with some example properties and changelog files, an example H2 database, and a distribution of AdoptOpenJDK.
@@ -94,13 +94,15 @@ The Liquibase command-line tool uses the PostgreSQL JDBC driver to connect to Co
 
 To install the driver for Liquibase:
 
-1. Download the JDBC driver from [the PostgreSQL website](https://jdbc.postgresql.org/download.html).
+1. Download the latest JDBC driver from [the PostgreSQL website](https://jdbc.postgresql.org/download.html).
 1. Place the driver in the `lib` directory of the Liquibase binary. For example:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ cp ~/Downloads/postgresql-42.2.9.jar liquibase-4.2.0-bin/lib/
+    $ cp ~/Downloads/postgresql-{version}.jar liquibase-4.2.0-bin/lib/
     ~~~
+
+Where `{version}` is the latest stable version.
 
 {{site.data.alerts.callout_success}}
 If you are using Liquibase in the context of a separate Java application, we recommend that you use a dependency management tool, like [Maven](https://docs.liquibase.com/tools-integrations/maven/home.html), to download the driver.

@@ -5,14 +5,6 @@ toc: true
 docs_area: reference.sql
 ---
 
-{% assign rd = site.data.releases | where_exp: "rd", "rd.major_version == page.version.version" | first %}
-
-{% if rd %}
-{% assign remote_include_version = page.version.version | replace: "v", "" %}
-{% else %}
-{% assign remote_include_version = site.versions["stable"] | replace: "v", "" %}
-{% endif %}
-
 The `CREATE TYPE` [statement](sql-statements.html) creates a new, [enumerated data type](enum.html) in a database.
 
 {% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
@@ -24,7 +16,7 @@ CockroachDB currently only supports [enumerated user-defined types](enum.html).
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ remote_include_version }}/grammar_svg/create_type.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/create_type.html %}
 </div>
 
 ## Parameters

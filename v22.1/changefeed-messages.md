@@ -234,6 +234,13 @@ CockroachDB Type | Avro Type | Avro Logical Type
 The `DECIMAL` type is a union between Avro `STRING` and Avro `DECIMAL` types.
 {{site.data.alerts.end}}
 
+## CSV
+
+You can use the [`format=csv`](create-changefeed.html#format) option to emit CSV format messages from your changefeed. However, there are the following limitations with this option:
+
+- It **only** works in combination with the [`initial_scan = 'only'`](create-changefeed.html#initial-scan) option.
+- It does **not** work when used with the [`diff`](create-changefeed.html#diff-opt) or [`resolved`](create-changefeed.html#resolved-option) options.
+
 ## See also
 
 - [Online Schema Changes](online-schema-changes.html)

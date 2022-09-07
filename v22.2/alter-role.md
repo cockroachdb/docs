@@ -5,14 +5,6 @@ toc: true
 docs_area: reference.sql
 ---
 
-{% assign rd = site.data.releases | where_exp: "rd", "rd.major_version == page.version.version" | first %}
-
-{% if rd %}
-{% assign remote_include_version = page.version.version | replace: "v", "" %}
-{% else %}
-{% assign remote_include_version = site.versions["stable"] | replace: "v", "" %}
-{% endif %}
-
 Use the `ALTER ROLE` [statement](sql-statements.html) to add, change, or remove a [role's](create-role.html) password, change the role options for a role, and set default [session variable](set-vars.html) values for a role.
 
 You can use the keywords `ROLE` and `USER` interchangeably. [`ALTER USER`](alter-user.html) is an alias for `ALTER ROLE`.
@@ -29,7 +21,7 @@ You can use the keywords `ROLE` and `USER` interchangeably. [`ALTER USER`](alter
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ remote_include_version }}/grammar_svg/alter_role.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/alter_role.html %}
 </div>
 
 ## Parameters

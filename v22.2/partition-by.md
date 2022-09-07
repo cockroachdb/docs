@@ -5,14 +5,6 @@ toc: true
 docs_area: reference.sql
 ---
 
-{% assign rd = site.data.releases | where_exp: "rd", "rd.major_version == page.version.version" | first %}
-
-{% if rd %}
-{% assign remote_include_version = page.version.version | replace: "v", "" %}
-{% else %}
-{% assign remote_include_version = site.versions["stable"] | replace: "v", "" %}
-{% endif %}
-
 `PARTITION BY` is a subcommand of [`ALTER TABLE`](alter-table.html) and [`ALTER INDEX`](alter-index.html) that is used to partition, re-partition, or un-partition a table or secondary index. After defining partitions, [`CONFIGURE ZONE`](configure-zone.html) is used to control the replication and placement of partitions.
 
 {% include {{page.version.version}}/sql/use-multiregion-instead-of-partitioning.md %}
@@ -34,13 +26,13 @@ If the primary key in your existing table does not meet the requirements, you ca
 **alter_table_partition_by_stmt ::=**
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ remote_include_version }}/grammar_svg/alter_table_partition_by.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/alter_table_partition_by.html %}
 </div>
 
 **alter_index_partition_by_stmt ::=**
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ remote_include_version }}/grammar_svg/alter_index_partition_by.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/alter_index_partition_by.html %}
 </div>
 
 ## Parameters

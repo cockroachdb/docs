@@ -2,22 +2,26 @@
 <form id="release-mktoForm_1083" class="mkto-install-form"></form>
 <p class="js-ty-mktoForm_1083" style="display: none;">Thanks!</p>
 <script>
-    const MktoForms21083 = MktoForms2;
-    MktoForms21083.loadForm('//go.cockroachlabs.com', '350-QIN-827', 1083, function (form) {
-        const form_mktoForm_1083 = $('#release-mktoForm_1083');
-        form.render(form_mktoForm_1083)
-        form.onSuccess(function (values, followUpUrl) {
-            form.getFormElem().hide();
-            document.querySelector('.js-ty-mktoForm_1083').style.display = 'block';
-            return false;
+    whenAvailable("MktoForms2", function() {
+        const MktoForms21083 = MktoForms2;
+        MktoForms21083.loadForm('//go.cockroachlabs.com', '350-QIN-827', 1083, function (form) {
+            const form_mktoForm_1083 = $('#release-mktoForm_1083');
+            form.render(form_mktoForm_1083)
+            form.onSuccess(function (values, followUpUrl) {
+                form.getFormElem().hide();
+                document.querySelector('.js-ty-mktoForm_1083').style.display = 'block';
+                return false;
+            });
+            // Move button next to input
+            MktoForms21083.whenReady(function (form) {
+                $('#release-mktoForm_1083 input').css('width', '');
+                $('#release-mktoForm_1083 .mktoButtonWrap').css('margin-left', '');
+                $('#release-mktoForm_1083 .mktoButtonRow').css('display', 'flex');
+                $('#release-mktoForm_1083 .mktoButtonRow').insertAfter('#release-mktoForm_1083 #Email');
+            });
         });
-        // Move button next to input
-        MktoForms21083.whenReady(function (form) {
-            $('#release-mktoForm_1083 input').css('width', '');
-            $('#release-mktoForm_1083 .mktoButtonWrap').css('margin-left', '');
-            $('#release-mktoForm_1083 .mktoButtonRow').css('display', 'flex');
-            $('#release-mktoForm_1083 .mktoButtonRow').insertAfter('#release-mktoForm_1083 #Email');
-        });
+    
     });
+
 </script>
 {% endraw %}

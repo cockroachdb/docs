@@ -37,6 +37,10 @@ Parameter                               | Description
 
 When the listed parameters are used together in the same statement, all changes will apply at the same time with no particular order of operations.
 
+{{site.data.alerts.callout_info}}
+{% include {{ page.version.version }}/cdc/initial-scan-limit-alter-changefeed.md %}
+{{site.data.alerts.end}}
+
 ### Options
 
 Consider the following when specifying options with `ALTER CHANGEFEED`:
@@ -48,13 +52,13 @@ Consider the following when specifying options with `ALTER CHANGEFEED`:
   - [`end_time`](create-changefeed.html#end-time)
   - [`initial_scan_only`](create-changefeed.html#initial-scan)
 
-- <a name="scan-details"></a> To use [`initial_scan`](create-changefeed.html#initial-scan) or `no_initial_scan` with `ALTER CHANGEFEED`, it is necessary to define a `WITH` clause when running `ADD`. This will set these options on the specific table(s):
+- <a name="scan-details"></a> To use [`initial_scan`](create-changefeed.html#initial-scan) with `ALTER CHANGEFEED`, it is necessary to define a `WITH` clause when running `ADD`. This will set these options on the specific table(s):
 
     ~~~ sql
     ALTER CHANGEFEED {job ID} ADD movr.rides, movr.vehicles WITH initial_scan SET updated UNSET resolved;
     ~~~
 
-    Adding the `initial_scan` option will trigger an initial scan on the newly added table. You may also explicitly define `no_initial_scan`, though this is already the default behavior. The changefeed does not track the application of this option post scan. This means that you will not see the option listed in output or after a `SHOW CHANGEFEED JOB` statement.
+    Setting `initial_scan` will trigger an initial scan on the newly added table. You may also explicitly define `no_initial_scan`, though this is already the default behavior. The changefeed does not track the application of this option post scan. This means that you will not see the option listed in output or after a `SHOW CHANGEFEED JOB` statement.
 
 ## Required privileges
 
@@ -233,13 +237,14 @@ For further discussion on using the `FAMILY` keyword and `split_column_families`
 
 - It is necessary to [`PAUSE`](pause-job.html) the changefeed before performing any `ALTER CHANGEFEED` statement. [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/77171)
 - `ALTER CHANGEFEED` will accept duplicate targets without sending an error. [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/78285)
-- CockroachDB does not keep track of the `initial_scan` or `initial_scan_only` options applied to tables. For example:
+- CockroachDB does not keep track of the [`initial_scan`](create-changefeed.html#initial-scan) or `initial_scan_only` options applied to tables. For example:
 
     ~~~ sql
     ALTER CHANGEFEED {job_ID} ADD table WITH initial_scan;
     ~~~
 
     This will trigger an initial scan of the table and the changefeed will track `table`. The changefeed will **not** track `initial_scan` specified as an option, so it will not display in the output or after a `SHOW CHANGEFEED JOB` statement.
+- {% include {{ page.version.version }}/cdc/initial-scan-limit-alter-changefeed.md %}
 
 ## See also
 

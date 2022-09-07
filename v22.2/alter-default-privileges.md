@@ -6,15 +6,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-{% assign rd = site.data.releases | where_exp: "rd", "rd.major_version == page.version.version" | first %}
-
-{% if rd %}
-{% assign remote_include_version = page.version.version | replace: "v", "" %}
-{% else %}
-{% assign remote_include_version = site.versions["stable"] | replace: "v", "" %}
-{% endif %}
-
- The `ALTER DEFAULT PRIVILEGES` [statement](sql-statements.html) changes the [default privileges](security-reference/authorization.html#default-privileges) on objects created by [users/roles](security-reference/authorization.html#roles) in the current database.
+The `ALTER DEFAULT PRIVILEGES` [statement](sql-statements.html) changes the [default privileges](security-reference/authorization.html#default-privileges) on objects created by [users/roles](security-reference/authorization.html#roles) in the current database.
 
 {{site.data.alerts.callout_info}}
 The creator of an object is also the object's [owner](security-reference/authorization.html#object-ownership). Any roles that are members of the owner role have `ALL` privileges on the object. Altering the default privileges of objects created by a role does not affect that role's privileges as the object's owner. The default privileges granted to other users/roles are always in addition to the ownership (i.e., `ALL`) privileges given to the creator of the object.
@@ -29,7 +21,7 @@ For an example, see [Grant default privileges to a specific role](#grant-default
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ remote_include_version }}/grammar_svg/alter_default_privileges.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/alter_default_privileges.html %}
 </div>
 
 ### Parameters

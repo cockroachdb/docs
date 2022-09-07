@@ -89,6 +89,21 @@ For a simple but complete example app, see [Build a Simple CRUD Node.js App with
 
 ## Python Drivers
 
+### psycopg3
+
+**Support level:** Full
+
+To install the Python psycopg3 driver:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+$ pip3 install "psycopg[binary]"
+~~~
+
+For other ways to install psycopg3, see the [official documentation](https://www.psycopg.org/psycopg3/docs/basic/install.html).
+
+For a simple but complete example app, see [Build a Python App with CockroachDB and psycopg3](build-a-python-app-with-cockroachdb-psycopg3.html).
+
 ### psycopg2
 
 **Support level:** Full
@@ -251,7 +266,7 @@ For a simple but complete example app, see [Build a Go App with CockroachDB and 
 
 **Support level:** Full
 
-Download and set up the Java JDBC driver as described in the [official documentation](https://jdbc.postgresql.org/documentation/head/setup.html). We recommend using the PostgreSQL JDBC 42.2.9 driver.
+Download and set up the latest Java JDBC driver as described in the [official documentation](https://jdbc.postgresql.org/documentation/head/setup.html).
 
 For a simple but complete example app, see [Build a Java App with CockroachDB and JDBC](build-a-java-app-with-cockroachdb.html).
 
@@ -266,9 +281,11 @@ You can use [Gradle](https://gradle.org/install) or [Maven](https://maven.apache
 If you are using Gradle, add the following to your `dependencies`:
 
 ~~~ groovy
-implementation 'org.hibernate:hibernate-core:5.4.19.Final'
-implementation 'org.postgresql:postgresql:42.2.9'
+implementation 'org.hibernate:hibernate-core:{version}.Final'
+implementation 'org.postgresql:postgresql:{version}'
 ~~~
+
+Where `{version}` is the latest stable version.
 
 For a simple but complete example app that uses Gradle for dependency management, see [Build a Java App with CockroachDB and Hibernate](build-a-java-app-with-cockroachdb-hibernate.html).
 
@@ -278,13 +295,15 @@ If you are using Maven, add the following to your `<dependencies>`:
 <dependency>
     <groupId>org.hibernate</groupId>
     <artifactId>hibernate-core</artifactId>
-    <version>5.4.19.Final</version>
+    <version>{version}.Final</version>
 </dependency>
 <dependency>
     <groupId>org.postgresql</groupId>
     <artifactId>postgresql</artifactId>
 </dependency>
 ~~~
+
+Where `{version}` is the latest stable version.
 
 For a complete example app that uses Maven for dependency management, see [Build a Spring App with CockroachDB and Spring Data JPA (Hibernate)](build-a-spring-app-with-cockroachdb-jpa.html).
 
