@@ -7,7 +7,7 @@ docs_area: manage
 
 {{ site.data.products.dedicated }} users with clusters on the AWS platform can use the [Cloud API](cloud-api.html) to configure log export to [AWS CloudWatch](https://aws.amazon.com/cloudwatch/). Once the export is configured, logs will flow from all nodes in all regions of your {{ site.data.products.dedicated }} cluster to your CloudWatch log sink.
 
-{% include cockroachcloud/private-preview.md %}
+{% include feature-phases/preview-opt-in.md %}
 
 
 #### Availability 
