@@ -5,6 +5,10 @@ toc: true
 docs_area: migrate
 ---
 
+{{site.data.alerts.callout_success}}
+We recommend [using AWS Database Migration Service (DMS) to migrate data](aws-dms.html) from PostgreSQL to CockroachDB.
+{{site.data.alerts.end}}
+
 This page has instructions for migrating data from PostgreSQL to CockroachDB using [`IMPORT`][import]'s support for reading [`pg_dump`][pgdump] files.
 
 The examples below pull real data from [Amazon S3](https://aws.amazon.com/s3/).  They use the [employees data set](https://github.com/datacharmer/test_db) that is also used in the [MySQL docs](https://dev.mysql.com/doc/employee/en/).  The data was imported to PostgreSQL using [pgloader][pgloader], and then modified for use here as explained below.

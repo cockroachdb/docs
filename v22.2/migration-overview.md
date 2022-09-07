@@ -1,80 +1,92 @@
 ---
-title: Migration Overview
-summary: Learn how to migrate data into a CockroachDB cluster.
+title: Migrate Your Database to CockroachDB
+summary: Learn how to migrate your database to a CockroachDB cluster.
 toc: true
 docs_area: migrate
 ---
 
-CockroachDB supports [importing](import.html) data from the following databases:
+This page summarizes the steps of migrating a database to CockroachDB:
 
-- MySQL
-- Oracle (using CSV)
-- PostgreSQL (and  PostGIS)
+1. [Test and update your schema to work with CockroachDB.](#step-1-test-and-update-your-schema)
+1. [Move your data into CockroachDB.](#step-2-move-your-data-to-cockroachdb)
+1. [Test and update your application.](#step-3-test-and-update-your-application)
 
-and from the following data formats:
+{{site.data.alerts.callout_info}}
+If you need to migrate data from a {{ site.data.products.serverless }} cluster to a {{ site.data.products.dedicated }} cluster, see [Migrate data from Serverless to Dedicated](../cockroachcloud/migrate-from-serverless-to-dedicated.html).
+{{site.data.alerts.end}}
 
-- CSV/TSV
-- Avro
--  ESRI Shapefiles (`.shp`) (using `shp2pgsql`)
--  OpenStreetMap data files (`.pbf`) (using `osm2pgsql`)
--  GeoPackage data files (`.gpkg`) (using `ogr2ogr`)
--  GeoJSON data files (`.geojson`) (using `ogr2ogr`)
+## Step 1. Test and update your schema
 
-This page lists general considerations to be aware of as you plan your migration to CockroachDB.
+To begin a new migration to CockroachDB, extract the [data definition language (DDL)](sql-statements.html#data-definition-statements) of the source database. It is simplest to migrate your database schema to a new CockroachDB database before migrating the data.
 
-In addition to the information listed below, see the following pages for specific instructions and considerations that apply to the database (or data format) you're migrating from:
+You will likely need to update your schema by converting the data definition statements to CockroachDB-compatible statements. This can be due to:
 
-- [Migrate from Oracle][oracle]
-- [Migrate from PostgreSQL][postgres]
-- [Migrate from MySQL][mysql]
-- [Migrate from CSV][csv]
-- [Migrate from Avro][avro]
-- [Migrate from Shapefiles][shp]
-- [Migrate from OpenStreetMap][pbf]
-- [Migrate from GeoPackage][gpkg]
-- [Migrate from GeoJSON][geojson]
+- [Unimplemented features.](#unimplemented-features)
+- [Differences from other databases.](#differences-from-other-databases)
+
+If you are migrating from a PostgreSQL database, [use the **Schema Conversion Tool**](../cockroachcloud/migrations-page.html) on the {{ site.data.products.db }} Console to analyze your schema for SQL incompatibilities. The tool will identify and help you resolve errors in your schema, and then create a new CockroachDB database to which you can [move your data](#step-2-move-data-to-cockroachdb).
+
+### Unimplemented features
+
+CockroachDB supports the [PostgreSQL wire protocol](https://www.postgresql.org/docs/current/protocol.html) and the majority of PostgreSQL syntax. However, the following PostgreSQL features do not yet exist in CockroachDB:
+
+{% include {{page.version.version}}/sql/unsupported-postgres-features.md %}
+
+If your source database uses any of the preceding features, you may need to implement workarounds in your schema design, in your [data manipulation language (DML)](sql-statements.html#data-manipulation-statements) when [moving data to the new database](#step-2-move-your-data-to-cockroachdb), or in your [application code](#step-3-test-and-update-your-application).
+
+For more details on the CockroachDB SQL implementation, see [SQL Feature Support](sql-feature-support).
+
+### Differences from other databases
+
+Consider the following CockroachDB attributes and best practices:
+
+- Instead of using a sequence to define a primary key column, we recommend that you use [multi-column primary keys](performance-best-practices-overview.html#use-multi-column-primary-keys) or the [`UUID`](uuid.html) datatype for primary key columns. For more information, see [`CREATE SEQUENCE`](create-sequence.html#considerations).
+
+	- {% include {{page.version.version}}/performance/use-hash-sharded-indexes.md %}
+
+- When importing data, we recommend that you always have an explicit primary key defined on every table. For more information, see [Select primary key columns](schema-design-table.html#select-primary-key-columns).
+
+- By default on CockroachDB, `INT` is an alias for `INT8`, which creates 64-bit signed integers. Depending on your source database or application requirements, you may need to change the integer size to `4`. For example, [PostgreSQL defaults to 32-bit integers](https://www.postgresql.org/docs/9.6/datatype-numeric.html). For more information, see [Considerations for 64-bit signed integers](int.html#considerations-for-64-bit-signed-integers).
+
+For additional considerations specific to other databases and data formats, see the corresponding documentation linked in [Step 2. Move your data to CockroachDB](#step-2-move-data-to-cockroachdb).
+
+## Step 2. Move your data to CockroachDB
+
+We recommend [using AWS Database Migration Service (DMS) to migrate data](aws-dms.html) from any database to CockroachDB.
+
+You can also migrate data using [`IMPORT`](import.html). For more information, see the documentation for migrating data from the following databases:
+
+- [PostgreSQL](migrate-from-postgres.html) (and PostGIS)
+- [MySQL](migrate-from-mysql.html)
+- [Oracle](migrate-from-oracle.html) (using CSV)
+
+And from the following data formats:
+
+- [CSV/TSV](migrate-from-csv.html)
+- [Avro](migrate-from-avro.html)
+- [ESRI Shapefiles](migrate-from-shapefiles.html) (`.shp`) (using `shp2pgsql`)
+- [OpenStreetMap data files](migrate-from-openstreetmap.html) (`.pbf`) (using `osm2pgsql`)
+- [GeoPackage data files](migrate-from-geopackage.html) (`.gpkg`) (using `ogr2ogr`)
+- [GeoJSON data files](migrate-from-geojson.html) (`.geojson`) (using `ogr2ogr`)
 
 {% include {{ page.version.version }}/misc/import-perf.md %}
 
-## File storage during import
+## Step 3. Test and update your application
 
-During migration, all of the features of [`IMPORT`][import] that interact with external file storage assume that every node has the exact same view of that storage.  In other words, in order to import from a file, every node needs to have the same access to that file.
+As the final step of migration, you will likely need to make changes to how your application interacts with the database. For example, refer to [features that differ from PostgreSQL](postgresql-compatibility.html#features-that-differ-from-postgresql).
 
-## Schema and application changes
+Unless you changed the integer size when [migrating the schema](#differences-from-other-databases), your application should also be written to handle 64-bit integers. For more information, see [Considerations for 64-bit signed integers](int.html#considerations-for-64-bit-signed-integers).
 
-In general, you are likely to have to make changes to your schema, and how your app interacts with the database.  We **strongly recommend testing your application against CockroachDB** to ensure that:
+We **strongly recommend testing your application against CockroachDB** to ensure that:
 
 1. The state of your data is what you expect post-migration.
-2. Performance is as expected for your application's workloads.  You may need to apply some [best practices for optimizing SQL performance in CockroachDB](performance-best-practices-overview.html).
-
-## Data type sizes
-
-Above a certain size, many data types such as [`STRING`](string.html)s, [`DECIMAL`](decimal.html)s, [`ARRAY`](array.html), [`BYTES`](bytes.html), and [`JSONB`](jsonb.html) may run into performance issues due to [write amplification](architecture/storage-layer.html#write-amplification).  See each data type's documentation for its recommended size limits.
+2. Performance is sufficient for your application's workloads. Follow the [SQL Performance Best Practices](performance-best-practices-overview.html) and implement [transaction retry logic](transactions.html#transaction-retries).
 
 ## See also
 
-- [`IMPORT`][import]
-- [Import Performance Best Practices](import-performance-best-practices.html)
-- [Migrate from Oracle][oracle]
-- [Migrate from CSV][csv]
-- [Migrate from MySQL][mysql]
-- [Migrate from PostgreSQL][postgres]
-- [Migrate from Avro][avro]
+- [Migrations Page](migrations-page.html)
 - [Can a PostgreSQL or MySQL application be migrated to CockroachDB?](frequently-asked-questions.html#can-a-postgresql-or-mysql-application-be-migrated-to-cockroachdb)
 - [PostgreSQL Compatibility](postgresql-compatibility.html)
+- [Create a Database](schema-design-database.html)
+- [Create a User-defined Schema](schema-design-schema.html)
 - [Back Up and Restore](take-full-and-incremental-backups.html)
-- [Use the Built-in SQL Client](cockroach-sql.html)
-- [`cockroach` Commands Overview](cockroach-commands.html)
-
-<!-- Links -->
-
-[oracle]: migrate-from-oracle.html
-[postgres]: migrate-from-postgres.html
-[mysql]: migrate-from-mysql.html
-[csv]: migrate-from-csv.html
-[import]: import.html
-[avro]: migrate-from-avro.html
-[shp]: migrate-from-shapefiles.html
-[pbf]: migrate-from-openstreetmap.html
-[gpkg]: migrate-from-geopackage.html
-[geojson]: migrate-from-geojson.html
