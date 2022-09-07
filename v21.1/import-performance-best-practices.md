@@ -47,10 +47,6 @@ CockroachDB imports the files that you give it, and does not further split them.
 If you split the data into _more_ files than you have nodes, it will not have a large impact on performance.
 {{site.data.alerts.end}}
 
-### File storage during import
-
-During migration, all of the features of [`IMPORT`][import] that interact with external file storage assume that every node has the exact same view of that storage. In other words, in order to import from a file, every node needs to have the same access to that file.
-
 ## Choose a performant import format
 
 Import formats do not have the same performance because of the way they are processed. Below, import formats are listed from fastest to slowest:
@@ -136,10 +132,6 @@ However, in **large** imports, it may be preferable to remove the secondary inde
 - [Remove the secondary indexes](drop-index.html)
 - [Perform the import](import-into.html)
 - [Create a secondary index](schema-design-indexes.html#create-a-secondary-index)
-
-### Data type sizes
-
-Above a certain size, many data types such as [`STRING`](string.html)s, [`DECIMAL`](decimal.html)s, [`ARRAY`](array.html), [`BYTES`](bytes.html), and [`JSONB`](jsonb.html) may run into performance issues due to [write amplification](architecture/storage-layer.html#write-amplification). See each data type's documentation for its recommended size limits.
 
 ## See also
 
