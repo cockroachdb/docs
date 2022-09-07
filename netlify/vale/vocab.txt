@@ -478,6 +478,7 @@ RPC
 RPCs
 rss
 runtimes
+rus
 rushi
 rwx
 sangnetra
