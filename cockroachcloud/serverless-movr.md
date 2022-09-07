@@ -8,47 +8,32 @@ docs_area: get_started
 
 This tutorial shows you how to initialize and run the [MovR](../{{site.versions["stable"]}}/movr.html) workload on a {{ site.data.products.serverless }} cluster, then use the [Request Unit](serverless-faqs.html#what-is-a-request-unit) consumption data to estimate a sufficient budget for the MovR workload.
 
+{{site.data.alerts.callout_info}}
+The cost estimation tool in [Step 5](#step-5-view-your-usage-costs) is not currently available for organizations billed through Credits.
+{{site.data.alerts.end}}
+
 ## Overview
 
-[MovR](../{{site.versions["stable"]}}/movr.html) is a fictional company that offers users a platform for sharing vehicles, like scooters, bicycles, and skateboards, in select cities across the United States and Europe. The MovR team wants to use {{ site.data.products.serverless }} to run their high-growth, variable workload. They decide to test out a sample workload to see how it will perform and how much it will cost to run.
+[MovR](../{{site.versions["stable"]}}/movr.html) is a fictional company that offers users a platform for sharing vehicles, like scooters, bicycles, and skateboards, in select cities across the United States and Europe. You want to use {{ site.data.products.serverless }} to run MovR's high-growth, variable workload. You decide to test out a sample workload to see how it will perform and how much it will cost to run.
 
 ## Before you begin
 
 - Make sure you have already [installed CockroachDB](../{{site.versions["stable"]}}/install-cockroachdb.html).
-- [Create a {{ site.data.products.serverless }} cluster](quickstart.html).
+- [Create a {{ site.data.products.serverless }} cluster](create-a-serverless-cluster.html).
 
-## Step 1. Get the cluster connection string
+## Step 1. Create the `movr` database
+
+1. Navigate to your cluster's [**Databases** page](databases-page.html).
+1. Click the **Add Database** button.
+1. Enter `movr` as the database name. 
+1. Click **Create**.
+
+## Step 2. Get the cluster connection string
 
 1. On the cluster's [**Overview** page](cluster-overview-page.html), click **Connect**.
-1. Select **General connection string** from the **Select option** dropdown.
-1. Open the **General connection string** section, then copy the connection string provided and save it in a secure location.
-
-## Step 2. Create the `movr` database
-
-1. Connect to the SQL shell using the connection string you copied in [Step 1](#step-1-get-the-cluster-connection-string):
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    cockroach sql --url \
-    'postgresql://<username>:<password>@serverless-host>:26257/defaultdb?sslmode=verify-full&options=--cluster%3D<routing-id>'
-    ~~~
-    
-    Where:
-      - `<username>` is the SQL user. By default, this is your {{ site.data.products.db }} account username.
-      - `<password>` is the password for the SQL user. The password will be shown only once in the **Connect to cluster** dialog after creating the cluster.
-      - `<serverless-host>` is the hostname of the {{ site.data.products.serverless }} cluster.
-      - `<routing-id>` identifies your tenant cluster on a [multi-tenant host](architecture.html#architecture). For example, `funny-skunk-123`.
-
-1. In the SQL shell, create the `movr` database:
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    CREATE DATABASE movr;
-    ~~~
-  
-1. Return to the **Connect to cluster** dialog from [Step 1](#step-1-get-the-cluster-connection-string) and select `movr` from the **Database** dropdown. You may have to refresh the page for `movr` to appear in the dropdown.
-
-1. Copy the new **General connection string**.
+1. Select `movr` from the **Database** dropdown.
+1. Select **General connection string** from the **Select option/language** dropdown.
+1. Copy the connection string displayed and save it in a secure location.
 
 ## Step 3. Load the `movr` workload
 
@@ -57,18 +42,20 @@ Exit the SQL shell and [load the `movr` dataset](../{{site.versions["stable"]}}/
   {% include copy-clipboard.html %}
   ~~~ shell
   cockroach workload init movr \
-  'postgresql://<username>:<password>@serverless-host>:26257/movr?sslmode=verify-full&options=--cluster%3D<routing-id>'
+  "postgresql://<username>:<password>@serverless-host>:26257/movr?sslmode=verify-full&options=--cluster%3D<routing-id>"
   ~~~
+
+  The following error may occur but will not affect the rest of this tutorial: `pq: unimplemented: operation is unsupported in multi-tenancy mode`.
 
 ## Step 4. Run the workload
 
-Run the `movr` workload for 1 minute using the same SQL connection string as before:
+Run the `movr` workload for 30 minutes using the same SQL connection string as before:
 
   {% include copy-clipboard.html %}
   ~~~ shell
   cockroach workload run movr \
-  --duration=1m \
-  'postgresql://<username>:<password>@serverless-host>:26257/movr?sslmode=verify-full&options=--cluster%3D<routing-id>'
+  --duration=30m \
+  "postgresql://<username>:<password>@serverless-host>:26257/movr?sslmode=verify-full&options=--cluster%3D<routing-id>"
   ~~~
 
   You'll see per-operation statistics print to standard output every second:
@@ -94,21 +81,16 @@ Run the `movr` workload for 1 minute using the same SQL connection string as bef
   ...
   ~~~
 
-  After the specified duration (1 minute in this case), the workload will stop and you'll see totals printed to standard output:
+  After the specified duration (30 minutes in this case), the workload will stop and you'll see totals printed to standard output:
 
   ~~~
   _elapsed___errors_____ops(total)___ops/sec(cum)__avg(ms)__p50(ms)__p95(ms)__p99(ms)_pMax(ms)__result
-     60.0s        0          85297         1421.6      0.7      0.3      2.6      7.1     30.4
+   1800.1s        0           5061            2.8    355.9    209.7   1073.7   2684.4   5368.7  
   ~~~
       
 ## Step 5. View your usage costs
 
-1. In the {{ site.data.products.db }} Console, close the **Connect to cluster** dialog to return to your cluster's [**Overview** page](cluster-overview-page.html).
-
-1. In the **Usage this month** section, click **Estimate usage cost**.
-
-    The **Estimate cost based on usage** dialog appears.
-    
+1. In the **Usage this month** section of your cluster's [**Overview** page](cluster-overview-page.html), click **Estimate usage cost**.
 1. Select **Past 30 minutes** as the time frame.
 
     Your **Monthly estimate for this workload** is displayed.
