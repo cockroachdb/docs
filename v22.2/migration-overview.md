@@ -84,7 +84,7 @@ We **strongly recommend testing your application against CockroachDB** to ensure
 
 ## See also
 
-- [Migrations Page](migrations-page.html)
+- [Migrations Page](../cockroachcloud/migrations-page.html)
 - [Can a PostgreSQL or MySQL application be migrated to CockroachDB?](frequently-asked-questions.html#can-a-postgresql-or-mysql-application-be-migrated-to-cockroachdb)
 - [PostgreSQL Compatibility](postgresql-compatibility.html)
 - [Create a Database](schema-design-database.html)

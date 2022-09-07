@@ -34,7 +34,7 @@ CockroachDB supports the [PostgreSQL wire protocol](https://www.postgresql.org/d
 
 If your source database uses any of the preceding features, you may need to implement workarounds in your schema design, in your [data manipulation language (DML)](sql-statements.html#data-manipulation-statements) when [moving data to the new database](#step-2-move-your-data-to-cockroachdb), or in your [application code](#step-3-test-and-update-your-application).
 
-For more details on the CockroachDB SQL implementation, see [SQL Feature Support](sql-feature-support).
+For more details on the CockroachDB SQL implementation, see [SQL Feature Support](sql-feature-support.html).
 
 ### Differences from other databases
 
@@ -84,7 +84,7 @@ We **strongly recommend testing your application against CockroachDB** to ensure
 
 ## See also
 
-- [Migrations Page](migrations-page.html)
+- [Migrations Page](../cockroachcloud/migrations-page.html)
 - [Can a PostgreSQL or MySQL application be migrated to CockroachDB?](frequently-asked-questions.html#can-a-postgresql-or-mysql-application-be-migrated-to-cockroachdb)
 - [PostgreSQL Compatibility](postgresql-compatibility.html)
 - [Create a Database](schema-design-database.html)
