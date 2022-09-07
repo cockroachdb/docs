@@ -24,7 +24,7 @@ You will likely need to update your schema by converting the data definition sta
 - [Unimplemented features.](#unimplemented-features)
 - [Differences from other databases.](#differences-from-other-databases)
 
-If you are migrating from a PostgreSQL database, [use the **Schema Conversion Tool**](../cockroachcloud/migrations-page.html) on the {{ site.data.products.db }} Console to analyze your schema for SQL incompatibilities. The tool will identify and help you resolve errors in your schema, and then create a new CockroachDB database to which you can [move your data](#step-2-move-data-to-cockroachdb).
+If you are migrating from a PostgreSQL database, [use the **Schema Conversion Tool**](../cockroachcloud/migrations-page.html) on the {{ site.data.products.db }} Console to analyze your schema for SQL incompatibilities. The tool will identify and help you resolve errors in your schema, and then create a new CockroachDB database to which you can [move your data](#step-2-move-your-data-to-cockroachdb).
 
 ### Unimplemented features
 
@@ -48,7 +48,7 @@ Consider the following CockroachDB attributes and best practices:
 
 - By default on CockroachDB, `INT` is an alias for `INT8`, which creates 64-bit signed integers. Depending on your source database or application requirements, you may need to change the integer size to `4`. For example, [PostgreSQL defaults to 32-bit integers](https://www.postgresql.org/docs/9.6/datatype-numeric.html). For more information, see [Considerations for 64-bit signed integers](int.html#considerations-for-64-bit-signed-integers).
 
-For additional considerations specific to other databases and data formats, see the corresponding documentation linked in [Step 2. Move your data to CockroachDB](#step-2-move-data-to-cockroachdb).
+For additional considerations specific to other databases and data formats, see the corresponding documentation linked in [Step 2. Move your data to CockroachDB](#step-2-move-your-data-to-cockroachdb).
 
 ## Step 2. Move your data to CockroachDB
 
