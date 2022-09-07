@@ -1,3 +1,3 @@
 {{site.data.alerts.callout_info}}
-**This feature is in private preview**, and only available to select users. The interface and output are subject to change. We do not recommend using this feature in production.
+**This feature is in private preview** and is only available to select users. This feature is subject to change. This feature is not intended for use in production.
 {{site.data.alerts.end}}
