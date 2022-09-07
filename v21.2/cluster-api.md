@@ -37,13 +37,17 @@ Endpoint | Name | Description
 
 All endpoints except `/health` and `/login` require authentication using a session token. To obtain a session token, you will need:
 
-* A [SQL role](create-role.html) that is a member of the [`admin` role](security-reference/authorization.html#admin-role) and has login permissions and a password. You will use these credentials with the `/login` endpoint to retrieve the session token which you can then use with further API calls.
+* A [SQL role](create-role.html) that is a member of the [`admin` role](security-reference/authorization.html#admin-role) and has login permissions and a password.
 
 To connect with the API on a secure cluster, you will need:
 
 * The CA cert used by the cluster or any intermediary proxy server, either in the client's cert store as a trusted certificate authority or as a file manually specified by the HTTP request (for example, using curl's [cacert](https://curl.se/docs/manpage.html#--cacert)).  
 
 ## Authentication
+
+To create and manage web sessions and authentication tokens to the Cluster API from the command line, use the [`cockroach auth-session`](cockroach-auth-session.html) CLI command.
+
+Alternatively, you may also request a token directly from the `/login` endpoint using the following instructions:
 
 1. Request a session token using the `/login` endpoint. For example:
 
