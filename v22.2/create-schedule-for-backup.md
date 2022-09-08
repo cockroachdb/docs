@@ -17,7 +17,7 @@ To use the other backup features, you need an [Enterprise license](enterprise-li
 
 ## Required privileges
 
-{% include {{ page.version.version }}/backups/new-backup-privileges.md %}
+{% include {{ page.version.version }}/backups/updated-backup-privileges.md %}
 
 ### Existing required privileges
 
