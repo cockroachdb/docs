@@ -32,7 +32,7 @@ Before starting the tutorial, do the following:
 ## Step 2. Create a Vercel project
 
 1. From the [Vercel dashboard](https://vercel.com/dashboard), click **Add new...** > **Project**.
-1. Select the `prisma-examples` repository you forked in [Step 1](#step-1) to import.
+1. Select the `prisma-examples` repository you forked in [Step 1](#step-1-get-the-code) to import.
 1. From the **Framework preset** dropdown, select **Next.js**.
 1. In the **Root directory** field, click **Edit**.
 1. Select the **typescript** > **rest-nextjs-api-routes** directory.
