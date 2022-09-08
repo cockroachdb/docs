@@ -208,7 +208,7 @@ Perform the following steps to enable log export from your {{ site.data.products
     curl --request POST \
       --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/logexport \
       --header "Authorization: Bearer {secret_key}" \
-      --data '{"type": "GCP_CLOUDWATCH", "log_name": "{log_name}", "auth_principal": "{gcp_project_id}"}'
+      --data '{"type": "GCP_CLOUD_LOGGING", "log_name": "{log_name}", "auth_principal": "{gcp_project_id}"}'
     ~~~
 
     Where:
