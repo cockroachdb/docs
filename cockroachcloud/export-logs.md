@@ -18,13 +18,17 @@ To configure and manage log export for your {{ site.data.products.dedicated }} c
 https://cockroachlabs.cloud/api/v1/clusters/{your_cluster_id}/logexport
 ~~~
 
-The following methods are available:
+Access to the `logexport` endpoint requires a valid {{ site.data.products.db }} [service account](console-access-management.html#service-accounts) with the appropriate permissions.
 
-Method | Description
---- | ---
-`GET` | Returns the current status of the log export configuration.
-`POST` | Enables log export, or updates an existing log export configuration.
-`DELETE` | Disables log export, halting all log export to AWS CloudWatch.
+The following methods are available for use with the `logexport` endpoint, and require the service account permissions listed:
+
+Method | Required permissions | Description
+--- | --- | ---
+`GET` | `ADMIN` or `EDIT` | Returns the current status of the log export configuration.
+`POST` | `ADMIN`, `EDIT`, or `READ` | Enables log export, or updates an existing log export configuration.
+`DELETE` | `ADMIN` | Disables log export, halting all log export to AWS CloudWatch.
+
+See [Service accounts](console-access-management.html#service-accounts) for instructions on configuring a service account with these required permissions.
 
 ## Enable log export
 
