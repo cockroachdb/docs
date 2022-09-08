@@ -12,9 +12,6 @@ defaults:
     type: pages
   values:
     layout: page
-sass:
-  sass_dir: css
-  style: compressed
 exclude:
 - __tests__
 - netlify
@@ -82,21 +79,34 @@ release_info:
     version: v20.2.19
   v21.1:
     build_time: 2022-05-09 00:00:00 (go1.15)
+    crdb_branch_name: release-21.1
     docker_image: cockroachdb/cockroach
     name: v21.1.19
     start_time: 2022-05-10 14:15:58.748869 +0000 UTC
     version: v21.1.19
   v21.2:
-    build_time: 2022-08-01 00:00:00 (go1.16)
+    build_time: 2022-08-29 00:00:00 (go1.16)
+    crdb_branch_name: release-21.2
     docker_image: cockroachdb/cockroach
-    name: v21.2.14
-    start_time: 2022-08-01 11:15:52.188207 +0000 UTC
-    version: v21.2.14
+    name: v21.2.15
+    start_time: 2022-08-26 14:48:15.734048 +0000 UTC
+    version: v21.2.15
   v22.1:
-    build_time: 2022-07-28 00:00:00 (go1.17)
+    build_time: 2022-08-23 00:00:00 (go1.17)
+    crdb_branch_name: release-22.1
     docker_image: cockroachdb/cockroach
-    name: v22.1.5
-    start_time: 2022-07-27 13:34:27.897839 +0000 UTC
-    version: v22.1.5
+    name: v22.1.6
+    start_time: 2022-08-22 14:17:14.803026 +0000 UTC
+    version: v22.1.6
+  v22.2:
+    build_time: 2022-09-06 00:00:00 (go1.17)
+    docker_image: cockroachdb/cockroach-unstable
+    name: v22.2.0-alpha.2
+    start_time: 2022-09-06 15:29:41.099818 +0000 UTC
+    version: v22.2.0-alpha.2
+    crdb_branch_name: master
+sass:
+  sass_dir: css
+  style: compressed
 site_title: CockroachDB Docs
 url: https://www.cockroachlabs.com

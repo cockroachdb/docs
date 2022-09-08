@@ -1,13 +1,11 @@
 ---
-title: Managing Customer-Managed Encryption Keys (CMEK) for CockroachDB Dedicated
+title: Manage Customer-Managed Encryption Keys (CMEK) for CockroachDB Dedicated
 summary: Tutorial for getting a dedicated cluster up and running with Customer-Managed Encryption Keys (CMEK)
 toc: true
 docs_area: manage.security
 ---
 
 [Customer-Managed Encryption Keys (CMEK)](cmek.html) for {{ site.data.products.dedicated }} allow the customer to delegate responsibility for the work of encrypting their cluster data to {{ site.data.products.dedicated }}, while maintaining the ability to completely revoke {{ site.data.products.dedicated }}'s access.
-
-{% include cockroachcloud/cockroachcloud-ask-admin.md %}
 
 This page shows how to enable [Customer-Managed Encryption Keys (CMEK)](cmek.html) for a {{ site.data.products.dedicated }} cluster.
 
@@ -43,7 +41,7 @@ This section gives a high level overview of the operations involved with impleme
 
 1. To start the process, contact {{ site.data.products.dedicated }} by reaching out to your account team, or [creating a support ticket](https://support.cockroachlabs.com/). You must provide your **Organization ID**, which you can find in your [Organization settings page](https://cockroachlabs.cloud/settings).
 
-    They will enable the CMEK feature for your {{ site.data.products.db }} Organization.
+Your account team will enable the CMEK feature for your {{ site.data.products.db }} organization.
 
 1. [Create a {{ site.data.products.db }} service account](console-access-management.html#service-accounts).
 1. [Create an API key](console-access-management.html#create-api-keys) for the service account to use.
@@ -236,11 +234,101 @@ To rotate the CMEK keys for one or more cluster regions:
       --data "@cmek_config.json"
     ```
 
+## Add a region to a CMEK-enabled cluster
+
+To add a region to a cluster that already has CMEK enabled, update your cluster's region definitions using the {{ site.data.products.db }} API [Update Cluster](https://www.cockroachlabs.com/docs/api/cloud/v1#operation/CockroachCloud_UpdateCluster) endpoint.
+
+1. Construct the data payload JSON to update you region definitions.
+
+    The payload format depends on which cloud provider you use:
+    - **AWS**:
+        {% include_cached copy-clipboard.html %}
+        ```json
+        # cmek_aws_config.json
+        {
+            "dedicated": {
+                "region_nodes": {
+                    "us-west-1": 3,
+                    "us-central-1": 5
+                },
+                "cmek_region_specs": [
+                    {
+                        "region": "us-west-1",
+                        "key_spec": {
+                            "type": "AWS_KMS",
+                            "uri": "{id-of-key}",
+                            "auth_principal": "{role-with-kms-access}"
+                        }
+                    },
+                    {
+                        "region": "us-central-1",
+                        "key_spec": {
+                            "type": "AWS_KMS",
+                            "uri": "{id-of-another-key}",
+                            "auth_principal": "{another-role-with-kms-access}"
+                        }
+                    }
+                ],
+                "hardware": {
+                    "machine_type": "n2-standard-8"
+                }
+            }
+        }
+        ```
+    - **GCP**:
+        {% include_cached copy-clipboard.html %}
+        ```json
+        # cmek_gcp_config.json
+        {
+            "dedicated": {
+                "region_nodes": {
+                    "us-west1": 3,
+                    "us-central1": 5
+                },
+                "cmek_region_specs": [
+                    {
+                        "region": "us-west1",
+                        "key_spec": {
+                            "type": "GCP_CLOUD_KMS",
+                            "uri": "{id-of-key}",
+                            "auth_principal": "{service-account-with-kms-access}"
+                        }
+                    },
+                    {
+                        "region": "us-central1",
+                        "key_spec": {
+                            "type": "GCP_CLOUD_KMS",
+                            "uri": "{id-of-another-key}",
+                            "auth_principal": "{another-service-account-with-kms-access}"
+                        }
+                    }
+                ],
+                "hardware": {
+                    "machine_type": "n2-standard-8"
+                }
+            }
+        }
+        ```
+1. Send the payload as a `PATCH` request to the cluster endpoint:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~shell
+    
+    CLUSTER_ID= #{ your cluster ID }
+    API_KEY= #{ your API key }
+    curl --request PATCH \
+      --url "https://cockroachlabs.cloud/api/v1/clusters/${CLUSTER_ID}" \
+      --header "Authorization: Bearer ${API_KEY}" \
+      --header 'content-type: application/json' \
+      --data "@cmek_config.json"
+    ~~~
+
+
 ## Revoke CMEK for a cluster
 
 Revoking access to the CMEK means disabling all encryption/decryption of data in your cluster, which means preventing reading and writing any data from or to your cluster. This likely implies a shutdown of your service, with significant business implications. This is a disaster mitigation tactic to be used only in a scenario involving a severe, business critical security breach.
 
-This can be done temporarily or permanently. This action is performed at the level of your Cloud Provider.
+Within your KMS platform, you can revoke access to the CMEK temporarily or permanently.
 
 ### Step 1. Revoke IAM access
 

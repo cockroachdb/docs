@@ -43,10 +43,12 @@ The user must have the `CREATE` [privileges](security-reference/authorization.ht
 
 {% include {{ page.version.version }}/misc/source-privileges.md %}
 
+{% include {{ page.version.version }}/misc/s3-compatible-warning.md %}
+
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/import_dump.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/import_dump.html %}
 </div>
 
 ## Parameters

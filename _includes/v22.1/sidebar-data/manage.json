@@ -6,12 +6,6 @@
       "title": "Manage CockroachDB Cloud Clusters",
       "items": [
         {
-          "title": "Plan Your Cluster",
-          "urls": [
-            "/cockroachcloud/plan-your-cluster.html"
-          ]
-        },
-        {
           "title": "Manage a CockroachDB Serverless Cluster",
           "urls": [
             "/cockroachcloud/serverless-cluster-management.html"
@@ -193,7 +187,7 @@
               "urls": [],
               "items": [
                 {
-                  "title": "Managing Customer-Managed Encryption Keys (CMEK) for CockroachDB Dedicated",
+                  "title": "Manage Customer-Managed Encryption Keys (CMEK) for CockroachDB Dedicated",
                   "urls": [
                     "/cockroachcloud/managing-cmek.html"
                   ]

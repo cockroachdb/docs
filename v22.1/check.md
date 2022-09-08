@@ -36,7 +36,7 @@ You can also add `CHECK` constraints to a table using [`ADD CONSTRAINT`](add-con
 ### Column level
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/check_column_level.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/check_column_level.html %}
 </div>
 
  Parameter | Description
@@ -65,7 +65,7 @@ The following example specifies the column-level `CHECK` constraint that a `quan
 ### Table level
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/check_table_level.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/check_table_level.html %}
 </div>
 
  Parameter | Description

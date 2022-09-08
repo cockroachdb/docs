@@ -20,21 +20,19 @@ CockroachDB does not support indexing geospatial types in default [primary keys]
 
 At a high level, a spatial index is just like any other [index](indexes.html). Its purpose is to improve your database's performance by helping SQL locate data without having to look through every row of a table.
 
-Spatial indexes store information about spatial objects, but they are used for the same tasks as any other index type, i.e.:
+Spatial indexes store information about spatial objects, but they are used for the same tasks as any other index type, i.e.,
 
-- Fast filtering of lists of shapes based on spatial predicate functions such as `ST_Contains`.
+- Fast filtering of lists of shapes based on spatial predicate functions such as [`ST_Contains`](st_contains.html).
 
 - Speeding up joins that involve spatial data columns.
 
 Spatial indexes differ from other types of indexes as follows:
 
-- They are specialized to operate on 2-dimensional `GEOMETRY` and `GEOGRAPHY` data types. They are stored by CockroachDB as a special type of [GIN index](inverted-indexes.html). For more details, [see below](#details).
+- They are specialized to operate on 2-dimensional `GEOMETRY` and `GEOGRAPHY` data types. They are stored by CockroachDB as a special type of [GIN index](inverted-indexes.html). For specifics, see [Details](#details).
 
-- If needed, they can be tuned to store looser or tighter coverings of the shapes being indexed, depending on the needs of your application. Tighter coverings are more expensive to generate, store, and update, but can perform better in some cases because they return fewer false positives during the initial index lookup. Tighter coverings can also lead to worse performance due to more rows in the index, and more scans at the storage layer.  That's why we recommend that most users should not need to change the default settings. For more information, see [Tuning spatial indexes](#tuning-spatial-indexes) below.
+- If needed, they can be tuned to store looser or tighter coverings of the shapes being indexed, depending on the needs of your application. Tighter coverings are more expensive to generate, store, and update, but can perform better in some cases because they return fewer false positives during the initial index lookup. Tighter coverings can also lead to worse performance due to more rows in the index, and more scans at the storage layer.  That's why we recommend that most users should not need to change the default settings. For more information, see [Tuning spatial indexes](#tuning-spatial-indexes).
 
 ## How CockroachDB's spatial indexing works
-
-### Overview
 
 There are two main approaches to building geospatial indexes:
 
@@ -50,25 +48,25 @@ CockroachDB uses the "divide the space" approach for the following reasons:
 - It requires no balancing operations, unlike [R-tree indexes](https://en.wikipedia.org/wiki/R-tree).
 - Inserts under this approach require no locking.
 - Bulk ingest is simpler to implement than under other approaches.
-- It allows advanced users to make a per-object tradeoff between index size and false positives during index creation. (See [Tuning spatial indexes](#tuning-spatial-indexes) below.)
+- It allows advanced users to make a per-object tradeoff between index size and false positives during index creation. (See [Tuning spatial indexes](#tuning-spatial-indexes).)
 
 Whichever approach to indexing is used, when an object is indexed, a "covering" shape (i.e., a bounding box) is constructed that completely encompasses the indexed object. Index queries work by looking for containment or intersection between the covering shape for the query object and the indexed covering shapes. This retrieves false positives but no false negatives.
 
 ### Details
 
-Under the hood, CockroachDB uses the [S2 geometry library](https://s2geometry.io/) to divide the space being indexed into a [quadtree](https://en.wikipedia.org/wiki/Quadtree) data structure with a set number of levels and a data-independent shape. Each node in the quadtree (really, [S2 cell](https://s2geometry.io/devguide/s2cell_hierarchy.html)) represents some part of the indexed space and is divided once horizontally and once vertically to produce 4 child cells in the next level. The image below shows visually how a location (marked in red) is represented using levels of a quadtree:
+Under the hood, CockroachDB uses the [S2 geometry library](https://s2geometry.io/) to divide the space being indexed into a [quadtree](https://en.wikipedia.org/wiki/Quadtree) data structure with a set number of levels and a data-independent shape. Each node in the quadtree (really, [S2 cell](https://s2geometry.io/devguide/s2cell_hierarchy.html)) represents some part of the indexed space and is divided once horizontally and once vertically to produce 4 child cells in the next level. The following image shows visually how a location (marked in red) is represented using levels of a quadtree:
 
 <img style="display: block; margin-left: auto; margin-right: auto; width: 50%" src="{{ 'images/v22.1/geospatial/quadtree.png' | relative_url }}" alt="Quadtree">
 
-Visually, you can think of the S2 library as enclosing a sphere in a cube. We map from points on each face of the cube to points on the face of the sphere. As you can see in the 2-dimensional picture below, there is a projection that occurs in this mapping: the lines entering from the left mark points on the cube face, and are "refracted" by the material of the cube face before touching the surface of the sphere. This projection reduces the distortion that would occur if the points on the cube face were projected straight onto the sphere.
+Visually, you can think of the S2 library as enclosing a sphere in a cube. We map from points on each face of the cube to points on the face of the sphere. As you can see in the following 2-dimensional picture, there is a projection that occurs in this mapping: the lines entering from the left mark points on the cube face, and are "refracted" by the material of the cube face before touching the surface of the sphere. This projection reduces the distortion that would occur if the points on the cube face were projected straight onto the sphere.
 
 <img style="display: block; margin-left: auto; margin-right: auto; width: 50%" src="{{ 'images/v22.1/geospatial/s2-cubed-sphere-2d.png' | relative_url }}" alt="S2 Cubed Sphere - 2D">
 
-Next, let's look at a 3-dimensional image that shows the cube and sphere more clearly. Each cube face is mapped to the quadtree data structure mentioned above, and each node in the quadtree is numbered using a [Hilbert space-filling curve](https://en.wikipedia.org/wiki/Hilbert_curve) which preserves locality of reference. In the image below, you can imagine the points of the Hilbert curve on the rear face of the cube being projected onto the sphere in the center. The use of a space-filling curve means that two shapes that are near each other on the sphere are very likely to be near each other on the line that makes up the Hilbert curve. This is good for performance.
+Next, let's look at a 3-dimensional image that shows the cube and sphere more clearly. Each cube face is mapped to the quadtree data structure mentioned, and each node in the quadtree is numbered using a [Hilbert space-filling curve](https://en.wikipedia.org/wiki/Hilbert_curve) which preserves locality of reference. In the following image, you can imagine the points of the Hilbert curve on the rear face of the cube being projected onto the sphere in the center. The use of a space-filling curve means that two shapes that are near each other on the sphere are very likely to be near each other on the line that makes up the Hilbert curve. This is good for performance.
 
 <img style="display: block; margin-left: auto; margin-right: auto; width: 50%" src="{{ 'images/v22.1/geospatial/s2-cubed-sphere-3d.png' | relative_url }}" alt="S2 Cubed Sphere - 3D">
 
-When you index a spatial object, a covering is computed using some number of the cells in the quadtree. The number of covering cells can vary per indexed object by passing special arguments to `CREATE INDEX` that tell CockroachDB how many levels of S2 cells to use. The leaf nodes of the S2 quadtree are at level 30, and for `GEOGRAPHY` measure 1cm across the Earth's surface. By default, `GEOGRAPHY` indexes use up to level 30, and get this level of precision. We also use S2 cell coverings in a slightly different way for `GEOMETRY` indexes. The precision you get there is the bounding length of the `GEOMETRY` index divided by 4^30. For more information, see [Tuning spatial indexes](#tuning-spatial-indexes) below.
+When you index a spatial object, a covering is computed using some number of the cells in the quadtree. The number of covering cells can vary per indexed object by passing special arguments to `CREATE INDEX` that tell CockroachDB how many levels of S2 cells to use. The leaf nodes of the S2 quadtree are at level 30, and for `GEOGRAPHY` measure 1cm across the Earth's surface. By default, `GEOGRAPHY` indexes use up to level 30, and get this level of precision. We also use S2 cell coverings in a slightly different way for `GEOMETRY` indexes. The precision you get there is the bounding length of the `GEOMETRY` index divided by 4^30. For more information, see [Tuning spatial indexes](#tuning-spatial-indexes).
 
 CockroachDB stores spatial indexes as a special type of [GIN index](inverted-indexes.html). The spatial index maps from a location, which is a square cell in the quadtree, to one or more shapes whose [coverings](spatial-glossary.html#covering) include that location. Since a location can be used in the covering for multiple shapes, and each shape can have multiple locations in its covering, there is a many-to-many relationship between locations and shapes.
 
@@ -86,10 +84,10 @@ Another consideration is that the larger index created for a tighter covering is
 
 We strongly recommend leaving your spatial indexes at the default settings unless you can take at least the following steps:
 
-1. Verify the coverings that will be generated meet your accuracy expectations by using the `st_s2covering` function as shown in [Viewing an object's S2 covering](#viewing-an-objects-s2-covering) below.
-2. Do extensive performance tests to make sure the indexes that use the non-default coverings actually provide a performance benefit.
+1. Verify the coverings that will be generated meet your accuracy expectations by using the `st_s2covering` function as shown in [View an object's S2 covering](#view-an-objects-s2-covering).
+1. Do extensive performance tests to make sure the indexes that use the non-default coverings actually provide a performance benefit.
 
-### Visualizing index coverings
+### Visualize index coverings
 
 In what follows we will visualize how index coverings change as we change the `s2_max_cells` parameter, which determines how much work CockroachDB will perform to find a tight covering of a shape.
 
@@ -99,20 +97,20 @@ We will generate coverings for the following geometry object, which describes a 
 'SRID=4326;LINESTRING(-76.4955 42.4405,  -75.6608 41.4102,-73.5422 41.052, -73.929 41.707, -76.4955 42.4405)'
 ~~~
 
-The animated image below shows the S2 coverings that are generated as we increase the `s2_max_cells` parameter (described below) from the 1 to 30 (minimum to maximum):
+The animated following image shows the S2 coverings that are generated as we increase the `s2_max_cells` parameter from the 1 to 30 (minimum to maximum):
 
 <img style="display: block; margin-left: auto; margin-right: auto; width: 50%" src="{{ 'images/v22.1/geospatial/s2-coverings.gif' | relative_url }}" alt="Animated GIF of S2 Coverings - Levels 1 to 30">
 
-Below are the same images presented in a grid. You can see that as we turn up the `s2_max_cells` parameter, more work is done by CockroachDB to discover a tighter and tighter covering (that is, a covering using more and smaller cells). The covering for this particular shape reaches a reasonable level of accuracy when `s2_max_cells` reaches 10, and stops improving much past 12.
+Here are the same images presented in a grid. You can see that as we turn up the `s2_max_cells` parameter, more work is done by CockroachDB to discover a tighter and tighter covering (that is, a covering using more and smaller cells). The covering for this particular shape reaches a reasonable level of accuracy when `s2_max_cells` reaches 10, and stops improving much past 12.
 
 <img style="display: block; margin-left: auto; margin-right: auto; width: 50%" src="{{ 'images/v22.1/geospatial/s2-coverings-tiled.png' | relative_url }}" alt="Static image of S2 Coverings - Levels 1 to 30">
 
 ### Index tuning parameters
 
-The following parameters are supported by both `CREATE INDEX` and the [built-in function](functions-and-operators.html#spatial-functions) `st_s2covering`. The latter is useful for seeing what kinds of coverings would be generated by an index with various tuning parameters if you were to create it. For an example showing how to use these parameters with `st_s2covering`, see [viewing an object's S2 covering](#viewing-an-objects-s2-covering) below.
+The following parameters are supported by both `CREATE INDEX` and the [built-in function](functions-and-operators.html#spatial-functions) `st_s2covering`. The latter is useful for seeing what kinds of coverings would be generated by an index with various tuning parameters if you were to create it. For an example showing how to use these parameters with `st_s2covering`, see [View an object's S2 covering](#view-an-objects-s2-covering).
 
 {{site.data.alerts.callout_info}}
-If a shape falls outside the bounding coordinates determined by the `geometry_*` settings below, there will be a performance loss in that such shapes may not be eliminated by the index lookup, but the database will still return the correct answers.
+If a shape falls outside the bounding coordinates determined by the following `geometry_*` settings, there will be a performance loss in that such shapes may not be eliminated by the index lookup, but the database will still return the correct answers.
 {{site.data.alerts.end}}
 
 | Option           | Default value                                 | Description                                                                                                                                                                                                                                                                                                                                                                                                                                     |
@@ -127,7 +125,7 @@ If a shape falls outside the bounding coordinates determined by the `geometry_*`
 
 ## Examples
 
-### Viewing an object's S2 covering
+### View an object's S2 covering
 
 Here is an example showing how to pass the [spatial index tuning parameters](#index-tuning-parameters) to `st_s2covering`. It generates [GeoJSON](https://geojson.org) output showing both a shape and the S2 covering that would be generated for that shape in your index, if you passed the same parameters to `CREATE INDEX`. You can paste this output into [geojson.io](http://geojson.io) to see what it looks like.
 
@@ -138,7 +136,8 @@ CREATE TABLE tmp_viz (id INT8, geom GEOMETRY);
 INSERT INTO tmp_viz (id, geom)
 VALUES (1, st_geomfromtext('LINESTRING(-76.8261 42.1727,  -75.6608 41.4102,-73.5422 41.052, -73.929 41.707,  -76.8261 42.1727)'));
 
-INSERT INTO tmp_viz (id, geom) VALUES (2, st_s2covering(st_geomfromtext('LINESTRING(-76.8261 42.1727,  -75.6608 41.4102,-73.5422 41.052, -73.929 41.707,  -76.8261 42.1727)'), 's2_max_cells=20,s2_max_level=12,s2_level_mod=3,geometry_min_x=-180,geometry_max_x=180,geometry_min_y=-180,geometry_max_y=180'));
+INSERT INTO tmp_viz (id, geom)
+VALUES (2, st_s2covering(st_geomfromtext('LINESTRING(-76.8261 42.1727,  -75.6608 41.4102,-73.5422 41.052, -73.929 41.707,  -76.8261 42.1727)'), 's2_max_cells=20,s2_max_level=12,s2_level_mod=3,geometry_min_x=-180,geometry_max_x=180,geometry_min_y=-180,geometry_max_y=180'));
 
 SELECT ST_AsGeoJSON(st_collect(geom)) FROM tmp_viz;
 ~~~
@@ -148,26 +147,22 @@ SELECT ST_AsGeoJSON(st_collect(geom)) FROM tmp_viz;
 {"type":"GeometryCollection","geometries":[{"type":"LineString","coordinates":[[-76.8261,42.1727],[-75.6608,41.4102],[-73.5422,41.052],[-73.929,41.707],[-76.8261,42.1727]]},{"type":"MultiPolygon","coordinates":[[[[-76.904296875,42.099609375],[-76.81640625,42.099609375],[-76.81640625,42.1875],[-76.904296875,42.1875],[-76.904296875,42.099609375]]],[[[-76.81640625,42.099609375],[-76.728515625,42.099609375],[-76.728515625,42.1875],[-76.81640625,42.1875],[-76.81640625,42.099609375]]],[[[-76.728515625,42.099609375],[-76.640625,42.099609375],[-76.640625,42.1875],[-76.728515625,42.1875],[-76.728515625,42.099609375]]],[[[-76.728515625,42.01171875],[-76.640625,42.01171875],[-76.640625,42.099609375],[-76.728515625,42.099609375],[-76.728515625,42.01171875]]],[[[-76.640625,41.484375],[-75.9375,41.484375],[-75.9375,42.1875],[-76.640625,42.1875],[-76.640625,41.484375]]],[[[-74.53125,40.78125],[-73.828125,40.78125],[-73.828125,41.484375],[-74.53125,41.484375],[-74.53125,40.78125]]],[[[-73.828125,40.78125],[-73.125,40.78125],[-73.125,41.484375],[-73.828125,41.484375],[-73.828125,40.78125]]],[[[-73.828125,41.484375],[-73.740234375,41.484375],[-73.740234375,41.572265625],[-73.828125,41.572265625],[-73.828125,41.484375]]],[[[-74.53125,41.484375],[-73.828125,41.484375],[-73.828125,42.1875],[-74.53125,42.1875],[-74.53125,41.484375]]],[[[-75.234375,41.484375],[-74.53125,41.484375],[-74.53125,42.1875],[-75.234375,42.1875],[-75.234375,41.484375]]],[[[-75.234375,40.78125],[-74.53125,40.78125],[-74.53125,41.484375],[-75.234375,41.484375],[-75.234375,40.78125]]],[[[-75.322265625,41.30859375],[-75.234375,41.30859375],[-75.234375,41.396484375],[-75.322265625,41.396484375],[-75.322265625,41.30859375]]],[[[-75.41015625,41.30859375],[-75.322265625,41.30859375],[-75.322265625,41.396484375],[-75.41015625,41.396484375],[-75.41015625,41.30859375]]],[[[-75.5859375,41.396484375],[-75.498046875,41.396484375],[-75.498046875,41.484375],[-75.5859375,41.484375],[-75.5859375,41.396484375]]],[[[-75.5859375,41.30859375],[-75.498046875,41.30859375],[-75.498046875,41.396484375],[-75.5859375,41.396484375],[-75.5859375,41.30859375]]],[[[-75.498046875,41.30859375],[-75.41015625,41.30859375],[-75.41015625,41.396484375],[-75.498046875,41.396484375],[-75.498046875,41.30859375]]],[[[-75.673828125,41.396484375],[-75.5859375,41.396484375],[-75.5859375,41.484375],[-75.673828125,41.484375],[-75.673828125,41.396484375]]],[[[-75.76171875,41.396484375],[-75.673828125,41.396484375],[-75.673828125,41.484375],[-75.76171875,41.484375],[-75.76171875,41.396484375]]],[[[-75.849609375,41.396484375],[-75.76171875,41.396484375],[-75.76171875,41.484375],[-75.849609375,41.484375],[-75.849609375,41.396484375]]],[[[-75.9375,41.484375],[-75.234375,41.484375],[-75.234375,42.1875],[-75.9375,42.1875],[-75.9375,41.484375]]]]}]}
 ~~~
 
-When you paste the JSON output above into [geojson.io](http://geojson.io), it generates the picture below, which shows both the `LINESTRING` and its S2 covering based on the options you passed to `st_s2covering`.
+When you paste the JSON output into [geojson.io](http://geojson.io), it generates the following picture, which shows both the `LINESTRING` and its S2 covering based on the options you passed to `st_s2covering`.
 
 <img style="display: block; margin-left: auto; margin-right: auto; width: 50%" src="{{ 'images/v22.1/geospatial/s2-linestring-example-covering.png' | relative_url }}" alt="S2 LINESTRING example covering">
 
 ### Create a spatial index
 
-The example below shows how to create a spatial index on a `GEOMETRY` object using the default settings:
+The following example shows how to create a spatial index on a `GEOMETRY` object using the default settings:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE INDEX geom_idx_1 ON some_spatial_table USING GIST(geom);
 ~~~
 
-~~~
-CREATE INDEX
-~~~
-
 ### Create a spatial index with non-default tuning parameters
 
-The examples below show how to create spatial indexes with non-default settings for some of the [spatial index tuning parameters](#index-tuning-parameters):
+The following examples show how to create spatial indexes with non-default settings for some of the [spatial index tuning parameters](#index-tuning-parameters):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -175,10 +170,6 @@ CREATE INDEX geom_idx_1 ON geo_table1 USING GIST(geom) WITH (s2_level_mod=3);
 CREATE INDEX geom_idx_2 ON geo_table2 USING GIST(geom) WITH (geometry_min_x=0, s2_max_level=15)
 CREATE INDEX geom_idx_3 ON geo_table3 USING GIST(geom) WITH (s2_max_level=10)
 CREATE INDEX geom_idx_4 ON geo_table4 USING GIST(geom) WITH (geometry_min_x=0, s2_max_level=15);
-~~~
-
-~~~
-CREATE INDEX
 ~~~
 
 ### Create spatial indexes during table definition
@@ -204,10 +195,6 @@ CREATE TABLE public.geo_table (
 )
 ~~~
 
-~~~
-CREATE TABLE
-~~~
-
 ### Create a spatial index that uses all of the tuning parameters
 
 This example shows how to set all of the [spatial index tuning parameters](#index-tuning-parameters) at the same time. It is extremely unlikely you will ever need to set all of the options at once; this example is being provided to show the syntax.
@@ -221,25 +208,17 @@ CREATE INDEX geom_idx
         geometry_min_y = -180, geometry_max_y = 180);
 ~~~
 
-~~~
-CREATE INDEX
-~~~
-
 {{site.data.alerts.callout_danger}}
-As noted above, most users should not change the default settings. There is a risk that you will get worse performance by changing the default settings.
+As noted, most users should not change the default settings. There is a risk that you will get worse performance by changing the default settings.
 {{site.data.alerts.end}}
 
 ### Create a spatial index on a `GEOGRAPHY` object
 
-The example below shows how to create a spatial index on a `GEOGRAPHY` object using the default settings:
+The following example shows how to create a spatial index on a `GEOGRAPHY` object using the default settings:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE INDEX geog_idx_3 ON geo_table USING GIST(geog);
-~~~
-
-~~~
-CREATE INDEX
 ~~~
 
 ## See also
