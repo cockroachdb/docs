@@ -17,10 +17,10 @@ Cockroach determines which encryption algorithm to use based on the size of the 
 | AES-192 | 192 bits (24 bytes) | 56 bytes |
 | AES-256 | 256 bits (32 bytes) | 64 bytes |
 
-You can generate a store key for your cluster any of a several ways:
+You can generate a store key for your cluster by using the `cockroach` CLI, the `openssl` CLI, or Hashicorp Vault.
 
 
-### Using the `cockroach` CLI
+### Use the `cockroach` CLI
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -36,7 +36,7 @@ $ openssl rand -out /path/to/my/aes-128.key 48
 
 ### Using HashiCorp Vault
 
-First we need to enable the transit secret engine, which is going to handle the user creation for us.
+1. Enable the transit secret engine, which creates users on your behalf.
 
 {% include_cached copy-clipboard.html %}
 ~~~shell
@@ -79,7 +79,7 @@ But stop, since the exportable key is “just” 256 bits and cockroachDB has a 
 
 So, the 256 bits from the exportable key would be required as an identifier and there would be no bits left for the actual key. So we have to tweak it a bit. We are going to add some random data at the beginning to use as key identifier and the actual Vault key as the real encryption key. 
 
-copy the key into a file e.g. key_from_valut.key
+1. Copy the key into a file named `key_from_value.key`.
 
 {% include_cached copy-clipboard.html %}
 ~~~shell
