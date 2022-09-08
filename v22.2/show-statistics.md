@@ -4,14 +4,6 @@ summary: The SHOW STATISTICS statement lists table statistics.
 toc: true
 ---
 
-{% assign rd = site.data.releases | where_exp: "rd", "rd.major_version == page.version.version" | first %}
-
-{% if rd %}
-{% assign remote_include_version = page.version.version | replace: "v", "" %}
-{% else %}
-{% assign remote_include_version = site.versions["stable"] | replace: "v", "" %}
-{% endif %}
-
 The `SHOW STATISTICS` [statement](sql-statements.html) lists [table statistics](create-statistics.html) used by the [cost-based optimizer](cost-based-optimizer.html).
 
 By default, CockroachDB [automatically generates statistics](cost-based-optimizer.html#table-statistics) on all indexed columns and up to 100 non-indexed columns, and automatically collects [multi-column statistics](create-statistics.html#create-statistics-on-multiple-columns) on the columns that prefix each index.
@@ -19,7 +11,7 @@ By default, CockroachDB [automatically generates statistics](cost-based-optimize
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ remote_include_version }}/grammar_svg/show_stats.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/show_stats.html %}
 </div>
 
 ## Required Privileges

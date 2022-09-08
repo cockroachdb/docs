@@ -18,7 +18,7 @@ To set a storage parameter on an existing index, you must drop and [recreate the
 **alter_table_set_storage_param ::=**
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/alter_table_set_storage_param.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/alter_table_set_storage_param.html %}
 </div>
 
 {% comment %} need alter index diagram here {% endcomment %}

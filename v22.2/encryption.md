@@ -28,7 +28,7 @@ You can generate a store key for your cluster by using the `cockroach` CLI, the 
 cockroach gen encryption-key -s 128 $CERTS_DIR/crdb.key
 ~~~
 
-### Using [OpenSSL](https://www.openssl.org/docs/man1.1.1/man1/openssl.html) CLI command
+### Use [OpenSSL](https://www.openssl.org/docs/man1.1.1/man1/openssl.html)
 
 **Prerequisite:** You must have OpenSSL installed on your machine.
 
@@ -37,14 +37,14 @@ cockroach gen encryption-key -s 128 $CERTS_DIR/crdb.key
 openssl rand -out $CERTS_DIR/crdb.key 48
 ~~~
 
-### Using HashiCorp Vault
+### Use HashiCorp Vault
 
 #### Prerequisites
 
-- You must have access to a Vault cluster. This can be either:
-	a. A cluster provisioned online through [HachiCorp Cloud Platform (HCP)](https://portal.cloud.hashicorp.com/services/vault).
-	b. A Vault cluster deployed by your organization.
-	c. A quickstart Vault cluster you deploy yourself in ["dev" mode](https://learn.hashicorp.com/tutorials/vault/getting-started-dev-server?in=vault/getting-started).
+- You must have access to a Vault cluster. For the purposes of the tutorial, any of the following are fine:
+	- A cluster provisioned online through [HachiCorp Cloud Platform (HCP)](https://portal.cloud.hashicorp.com/services/vault).
+	- A Vault cluster deployed by your organization.
+	- A quickstart Vault cluster you deploy yourself in ["dev" mode](https://learn.hashicorp.com/tutorials/vault/getting-started-dev-server?in=vault/getting-started).
 - Sufficient permissions on the cluster to enable secrets engines and create policies, either via the root access token for this cluster or through a [custom policy](https://learn.hashicorp.com/tutorials/vault/policies).
 - You must have OpenSSL installed on your machine.
 

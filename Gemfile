@@ -1,3 +1,4 @@
+git_source(:github) { |name| "https://github.com/#{name}.git" }
 # frozen_string_literal: true
 source "https://rubygems.org"
 

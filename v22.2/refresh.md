@@ -5,15 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-{% assign rd = site.data.releases | where_exp: "rd", "rd.major_version == page.version.version" | first %}
-
-{% if rd %}
-{% assign remote_include_version = page.version.version | replace: "v", "" %}
-{% else %}
-{% assign remote_include_version = site.versions["stable"] | replace: "v", "" %}
-{% endif %}
-
- Stored query results in [materialized view](views.html#materialized-views) are not automatically updated to reflect the latest state of the table(s) they query. The `REFRESH` [statement](sql-statements.html) updates the stored query results of a materialized view.
+Stored query results in [materialized view](views.html#materialized-views) are not automatically updated to reflect the latest state of the table(s) they query. The `REFRESH` [statement](sql-statements.html) updates the stored query results of a materialized view.
 
 {{site.data.alerts.callout_info}}
 CockroachDB does not support materialized views that are refreshed on [transaction commit](commit-transaction.html).
@@ -26,7 +18,7 @@ The user must be the [owner](owner-to.html) of the materialized view or have [ad
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ remote_include_version }}/grammar_svg/refresh_materialized_views.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/refresh_materialized_views.html %}
 </div>
 
 ## Parameters

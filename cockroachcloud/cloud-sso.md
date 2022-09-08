@@ -7,7 +7,7 @@ docs_area: manage
 
 Users may authenticate to the [{{ site.data.products.db }} Console](https://cockroachlabs.cloud) using Single Sign-On (SSO). GitHub, Google, and Microsoft are supported as identity providers (IdPs).
 
-{% include cockroachcloud/private-preview.md %}
+{% include feature-phases/preview-opt-in.md %}
 
 Authentication with a centralized identity managed by a dedicated IdP offers several security advantages:
 
