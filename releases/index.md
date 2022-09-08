@@ -57,7 +57,7 @@ After downloading your desired release, learn how to [install CockroachDB](../{{
 <tr>
   <td>Version</td>
   <td>Date</td>
-  <td>Download</td>
+  <td>Downloads</td>
 </tr>
 </thead>
 
@@ -76,16 +76,31 @@ After downloading your desired release, learn how to [install CockroachDB](../{{
         {% else %} {% comment %} Add download links for all non-withdrawn versions. {% endcomment %}
             <td class="os-release-cell">
                 <section class="filter-content" data-scope="linux">
-                    <a class="os-release-link" href="https://binaries.cockroachdb.com/cockroach-{{ r.version }}.linux-amd64.tgz">64-bit Binary (full)</a>
-                    {% unless nosha_releases contains v.major_version or s == "Testing" %}
-                        <a class="os-release-link" href="https://binaries.cockroachdb.com/cockroach-{{ r.version }}.linux-amd64.tgz.sha256sum">Full Binary SHA256</a>
-                    {% endunless %}
-                    {% if r.has_sql_only != "false" %}
-                    <a class="os-release-link" href="https://binaries.cockroachdb.com/cockroach-sql-{{ r.version }}.linux-amd64.tgz">64-bit Binary (SQL shell)</a>
+                <p>Intel 64-bit: <a class="os-release-link" href="https://binaries.cockroachdb.com/cockroach-{{ r.version }}.linux-amd64.tgz">Full Binary</a>
+                {% unless nosha_releases contains v.major_version or s == "Testing" %}
+                    <a class="os-release-link" href="https://binaries.cockroachdb.com/cockroach-{{ r.version }}.linux-amd64.tgz.sha256sum">Full SHA256</a>
+                {% endunless %}
+                {% if r.has_sql_only != "false" %}
+                    <a class="os-release-link" href="https://binaries.cockroachdb.com/cockroach-sql-{{ r.version }}.linux-amd64.tgz">SQL Shell Binary</a>
                     {% unless nosha_releases contains v.major_version or s == "Testing" %}
                         <a class="os-release-link" href="https://binaries.cockroachdb.com/cockroach-sql-{{ r.version }}.linux-amd64.tgz.sha256sum">SQL Shell Binary SHA256</a>
                     {% endunless %}
+                {% endif %}
+                </p>
+                {% comment %}Binaries supported only for 22.2+{% endcomment %}
+                {% if v.major_version == "v22.2" %}
+                    <p>Graviton 64-bit (<b>Experimental</b>): <a class="os-release-link" href="https://binaries.cockroachdb.com/cockroach-{{ r.version }}.linux-3.7.10-gnu-aarch64.tgz">Full Binary</a>
+                    {% unless nosha_releases contains v.major_version or s == "Testing" %}
+                        <a class="os-release-link" href="https://binaries.cockroachdb.com/cockroach-{{ r.version }}.linux-3.7.10-gnu-aarch64.sha256sum">Full Binary</a>
+                    {% endunless %}
+                    {% if r.has_sql_only != "false" %}
+                        <a class="os-release-link" href="https://binaries.cockroachdb.com/cockroach-sql-{{ r.version }}.linux-3.7.10-gnu-aarch64.tgz">SQL shell Binary</a>
+                        {% unless nosha_releases contains v.major_version or s == "Testing" %}
+                            <a class="os-release-link" href="https://binaries.cockroachdb.com/cockroach-sql-{{ r.version }}.linux-3.7.10-gnu-aarch64.tgz.sha256sum">SQL Shell Binary SHA256</a>
+                       {% endunless %}
                     {% endif %}
+                    </p>
+                {% endif %}
 
                 </section>
                 <section class="filter-content" data-scope="mac">
