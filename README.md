@@ -1,3 +1,5 @@
+[![Netlify Status](https://api.netlify.com/api/v1/badges/726fb55f-85c8-454a-8a82-8a8f99c18d83/deploy-status)](https://app.netlify.com/sites/cockroachdb-docs/deploys)
+
 # CockroachDB Docs
 
 This repository contains the source files for the CockroachDB documentation available at [cockroachlabs.com/docs](https://cockroachlabs.com/docs).
