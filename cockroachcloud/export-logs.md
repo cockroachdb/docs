@@ -230,7 +230,7 @@ Perform the following steps to enable log export from your {{ site.data.products
 
 1. Once log export has been enabled, you can access logs from your {{ site.data.products.dedicated }} cluster directly in GCP Cloud Logging's [Log Explorer](https://console.cloud.google.com/logs/query).
 
-</section>
+</section> 
 
 ## Monitor the status of a log export configuration
 
