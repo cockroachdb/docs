@@ -12,7 +12,7 @@
 <meta name="robots" content="nocache">
 {%- comment -%} Inject robots tags for all 404 pages, all pages where the sitemap is false, or all pages in dev that are also in stable {%- endcomment -%}
 {% else %}
-{%- unless page.url contains site.versions["stable"] or page.url contains site.versions["dev"] or page.url contains 'cockroachcloud/' or page.url contains 'releases/' or page.url contains 'advisories/' -%}
+{%- unless page.url contains site.versions["stable"] or page.url contains site.versions["dev"] or page.url contains 'cockroachcloud/' or page.url contains 'releases/' or page.url contains 'advisories/' or page.path == "index.md" -%}
 {%- comment -%} Otherwise, inject robots tags for all pages that are not in stable, cockroachcloud, releases, advisories, or any pages in dev that are not in stable. {%- endcomment -%}
 <meta name="robots" content="noindex">
 <meta name="robots" content="nofollow">
