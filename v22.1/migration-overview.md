@@ -28,7 +28,7 @@ If you are migrating from a PostgreSQL database, [use the **Schema Conversion To
 
 ### Unimplemented features
 
-CockroachDB supports the [PostgreSQL wire protocol](https://www.postgresql.org/docs/current/protocol.html) and the majority of PostgreSQL syntax. However, the following PostgreSQL features do not yet exist in CockroachDB:
+CockroachDB supports the [PostgreSQL wire protocol](https://www.postgresql.org/docs/current/protocol.html) and is largely compatible with PostgreSQL syntax. However, the following PostgreSQL features do not yet exist in CockroachDB:
 
 {% include {{page.version.version}}/sql/unsupported-postgres-features.md %}
 
