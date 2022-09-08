@@ -7,6 +7,8 @@ docs_area: manage
 
 {{ site.data.products.dedicated }} users can use the [Cloud API](cloud-api.html) to configure log export to [AWS CloudWatch](https://aws.amazon.com/cloudwatch/) or [GCP Cloud Logging](https://cloud.google.com/logging). Once the export is configured, logs will flow from all nodes in all regions of your {{ site.data.products.dedicated }} cluster to your chosen cloud log sink.
 
+The {{ site.data.products.dedicated }} log export feature is only available on clusters created after April 1, 2022 (AWS) or June 9, 2022 (GCP).
+
 {% include feature-phases/preview-opt-in.md %}
 
 ## The `logexport` endpoint
@@ -34,6 +36,10 @@ Method | Description
 </div>
 
 <section class="filter-content" markdown="1" data-scope="aws-log-export">
+
+{{site.data.alerts.callout_info}}
+The {{ site.data.products.dedicated }} log export feature is only available on AWS-hosted clusters created after April 1, 2022.
+{{site.data.alerts.end}}
 
 Perform the following steps to enable log export from your {{ site.data.products.dedicated }} cluster to AWS CloudWatch.
 
@@ -152,6 +158,10 @@ Perform the following steps to enable log export from your {{ site.data.products
 
 <section class="filter-content" markdown="1" data-scope="gcp-log-export">
 
+{{site.data.alerts.callout_info}}
+The {{ site.data.products.dedicated }} log export feature is only available on GCP-hosted clusters created after June 9, 2022.
+{{site.data.alerts.end}}
+
 Perform the following steps to enable log export from your {{ site.data.products.dedicated }} cluster to GCP Cloud Logging.
 
 1. Find your {{ site.data.products.dedicated }} organization ID in the {{ site.data.products.db }} [organization settings page](https://cockroachlabs.cloud/settings).
@@ -268,6 +278,10 @@ Where:
 - `{cluster_id}` is your {{ site.data.products.dedicated }} cluster's cluster ID, which can be found in the URL of your [Cloud Console](https://cockroachlabs.cloud/clusters/) for the specific cluster you wish to configure, resembling `f78b7feb-b6cf-4396-9d7f-494982d7d81e`.
 - `{secret_key}` is your {{ site.data.products.dedicated }} API key. See [API Access](console-access-management.html) for instructions on generating this key.
 
+## Limitations
+
+- The {{ site.data.products.dedicated }} log export feature is only available on clusters created after April 1, 2022 (AWS) or June 9, 2022 (GCP).
+- {{ site.data.products.dedicated }} clusters hosted on AWS can only export logs to AWS CloudWatch. Similarly, {{ site.data.products.dedicated }} clusters hosted on GCP can only export logs to GCP Cloud Logging.
 
 ## {{ site.data.products.dedicated }} log export Frequently Asked Questions (FAQ)
 
