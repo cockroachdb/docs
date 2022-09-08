@@ -24,24 +24,6 @@
           ]
         },
         {
-          "title": "Migrate from PostgreSQL",
-          "urls": [
-            "/${VERSION}/migrate-from-postgres.html"
-          ]
-        },
-        {
-          "title": "Migrate from Oracle",
-          "urls": [
-            "/${VERSION}/migrate-from-oracle.html"
-          ]
-        },
-        {
-          "title": "Migrate from MySQL",
-          "urls": [
-            "/${VERSION}/migrate-from-mysql.html"
-          ]
-        },
-        {
           "title": "Migrate from CSV",
           "urls": [
             "/${VERSION}/migrate-from-csv.html"

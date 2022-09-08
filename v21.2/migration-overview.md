@@ -54,15 +54,10 @@ For additional considerations specific to other databases and data formats, see 
 
 We recommend [using AWS Database Migration Service (DMS) to migrate data](aws-dms.html) from any database to CockroachDB.
 
-You can also migrate data using [`IMPORT`](import.html). For more information, see the documentation for migrating data from the following databases:
+Alternatively, use `IMPORT` to [migrate CSV data](migrate-from-csv.html).
 
-- [PostgreSQL](migrate-from-postgres.html) (and PostGIS)
-- [MySQL](migrate-from-mysql.html)
-- [Oracle](migrate-from-oracle.html) (using CSV)
+You can also migrate data from the following data formts:
 
-And from the following data formats:
-
-- [CSV/TSV](migrate-from-csv.html)
 - [Avro](migrate-from-avro.html)
 - [ESRI Shapefiles](migrate-from-shapefiles.html) (`.shp`) (using `shp2pgsql`)
 - [OpenStreetMap data files](migrate-from-openstreetmap.html) (`.pbf`) (using `osm2pgsql`)
