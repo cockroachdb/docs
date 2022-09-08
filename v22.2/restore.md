@@ -34,15 +34,17 @@ From v22.2, CockroachDB supports a restore privilege model that provides finer c
 
 {% include_cached new-in.html version="v22.2" %} You can grant the `RESTORE` privilege to a user or role depending on the type of restore required:
 
-- Cluster: Grant the user `RESTORE` privilege at the system level.
-- Database: Grant the user `RESTORE` privilege at the system level to restore databases onto the cluster.
-- Table: Grant the user `RESTORE` privilege at the database level to restore schema objects into the database.
+Restore | Privilege
+-------+-----------
+Cluster | Grant a user the `RESTORE` privilege at the system level.
+Database | Grant a user the `RESTORE` privilege at the system level to restore databases onto the cluster.
+Table | Grant a user the `RESTORE` privilege at the database level to restore schema objects into the database.
 
-See [`GRANT`](grant.html) for detail on granting privileges to a role or user.
+There is no inheritance with the listed privileges. For example, if a user is granted system-level restore privileges, this does not give the user the privilege to restore a table. Furthermore, if you run an [`ALTER DEFAULT PRIVILEGES`](alter-default-privileges.html) statement to grant a user the `RESTORE` privilege, this will only apply to newly created tables.
 
 Members of the [`admin` role](security-reference/authorization.html#admin-role) can run all levels of `RESTORE` without the need to grant a specific `RESTORE` privilege.
 
-There is no inheritance with the listed privileges. For example, if a user is granted system-level restore privileges, this does not give the user the privilege to restore a table. Furthermore, if you run an [`ALTER DEFAULT PRIVILEGES`](alter-default-privileges.html) statement to grant a user the `RESTORE` privilege, this will only apply to newly created tables.
+See [`GRANT`](grant.html) for detail on granting privileges to a role or user.
 
 ### Existing required privileges
 

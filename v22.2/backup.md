@@ -45,7 +45,7 @@ To view the contents of an backup created with the `BACKUP` statement, use [`SHO
 
 ## Required privileges
 
-{% include {{ page.version.version }}/backups/new-backup-privileges.md %}
+{% include {{ page.version.version }}/backups/updated-backup-privileges.md %}
 
 ### Existing required privileges
 
