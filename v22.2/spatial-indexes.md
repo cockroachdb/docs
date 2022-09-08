@@ -20,7 +20,7 @@ CockroachDB does not support indexing geospatial types in default [primary keys]
 
 At a high level, a spatial index is just like any other [index](indexes.html). Its purpose is to improve your database's performance by helping SQL locate data without having to look through every row of a table.
 
-Spatial indexes store information about spatial objects, but they are used for the same tasks as any other index type, i.e.:
+Spatial indexes store information about spatial objects, but they are used for the same tasks as any other index type, i.e.,
 
 - Fast filtering of lists of shapes based on spatial predicate functions such as [`ST_Contains`](st_contains.html).
 
