@@ -3,26 +3,23 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="{% if page.summary %}{{ page.summary | strip_html | strip_newlines | truncate: 160 }}{% endif %}">
 <meta name="keywords" content="{% if page.tags %}{{ page.tags | join: ', ' | escape }}{% endif %}">
-{% assign x = site.data.versions | where_exp: "m", "m.major_version == page.version.version" | first %}
-{% comment %} This line queries the information in versions.csv and returns the current page's version. {% endcomment %}
-
-{% unless x.maint_supp_exp_date == "N/A" or x.asst_supp_exp_date == "N/A" %}
-{% comment %} If the current page version has a maintenance or assistance support expiration date of N/A (meaning it's not yet released), we skip all code inside of the unless block. {% endcomment %}
-
-{% assign today = "today" | date: "%s" %}
-{% comment %} Fetch today's date and format it in seconds. {% endcomment %}
-
-{% assign a = x.asst_supp_exp_date | date: "%s" %}
-{% comment %} Format the assistance support expiration date for the given page version in seconds. {% endcomment %}
-
-{% if page.version and a < today %}
-{% comment %} If the page version exists and the assistance support expiration date has passed, include the additional meta tags {% endcomment %}
-  <meta name="robots" content="noindex">
-  <meta name="robots" content="nofollow">
-  <meta name="robots" content="noarchive">
-  <meta name="robots" content="nocache">
-{% endif %}
-{% endunless %}
+{%- capture stable_pages_names -%}{%- include_cached stable_page_names.md -%}{%- endcapture -%}
+{%- comment -%} Fetch all the names of all the stable pages to compare against the dev pages {%- endcomment -%}
+{%- if page.url contains '404' or page.sitemap == false or page.url contains site.versions["dev"] and stable_pages_names contains page.name %}
+<meta name="robots" content="noindex">
+<meta name="robots" content="nofollow">
+<meta name="robots" content="noarchive">
+<meta name="robots" content="nocache">
+{%- comment -%} Inject robots tags for all 404 pages, all pages where the sitemap is false, or all pages in dev that are also in stable {%- endcomment -%}
+{% else %}
+{%- unless page.url contains site.versions["stable"] or page.url contains site.versions["dev"] or page.url contains 'cockroachcloud/' or page.url contains 'releases/' or page.url contains 'advisories/' -%}
+{%- comment -%} Otherwise, inject robots tags for all pages that are not in stable, cockroachcloud, releases, advisories, or any pages in dev that are not in stable. {%- endcomment -%}
+<meta name="robots" content="noindex">
+<meta name="robots" content="nofollow">
+<meta name="robots" content="noarchive">
+<meta name="robots" content="nocache">
+{% endunless -%}
+{%- endif -%}
 <title>{{ page.title }} | {{ site.site_title }}</title>
 <link rel="canonical" href="{{ page.canonical | absolute_url }}">
 <link rel="shortcut icon" href="{{ 'images/favicon.png' | relative_url }}" type="image/png">
