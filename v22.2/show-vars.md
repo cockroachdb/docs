@@ -5,6 +5,8 @@ toc: true
 docs_area: reference.sql
 ---
 
+THIS IS A TEST.  DO NOT MERGE ME.  I AM A TEST.
+
 Use the `SHOW` [statement](sql-statements.html) to display the value of one or all of the session variables. You configure session variables using [`SET`](set-vars.html).
 
 ## Required privileges
