@@ -38,6 +38,21 @@ The **Overview** page displays details about the selected {{ site.data.products.
 
 For more information, see [Cluster Overview Page](cluster-overview-page.html).
 
+## Estimate usage cost
+
+{{site.data.alerts.callout_info}}
+This feature is not available if your organization is billed through [Credits](billing-management.html#view-credits-balance).
+{{site.data.alerts.end}}
+
+To see an estimate of your monthly cost, you should first run your workload for at least 30 minutes.
+
+1. In the **Usage this month** section of your cluster's [**Overview** page](cluster-overview-page.html), click **Estimate usage cost**.
+1. Select a time frame in which your workload was active.
+
+    Your used RUs, used storage, and spend from the selected time frame will be shown along with your monthly cost estimate.
+
+The monthly cost estimate is calculated using simple extrapolation that assumes your workload during the selected time frame is an accurate representative of your workload over the month. If you haven't been running a workload for at least the length of the selected time frame, your results will likely be inaccurate. It's also important to note that this estimate does not account for the [free resources](learn-about-pricing.html#free-vs-paid-usage) granted to every {{ site.data.products.serverless }} cluster, which you would have to use up before spending anything.
+
 ## Edit your spend limit
 
 You can edit your spend limit from the **Overview** page. The change in your spend limit will affect current and upcoming billing cycles. See [Planning your cluster](plan-your-cluster.html) for more information on resource usage.

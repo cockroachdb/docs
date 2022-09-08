@@ -19,7 +19,7 @@ The **Cluster settings** panel displays the settings you chose during [cluster c
 
 ## Usage this month
 
-The **Usage this month** panel displays your cluster usage statistics for the current month.
+The **Usage this month** panel displays your cluster usage statistics for the current month. You can click [**Estimate usage cost**](serverless-cluster-management.html#estimate-usage-cost) to open a tool that estimates your monthly costs based on your workload during a selected time frame.
 
 | Field         | Description                                                                                                                                                                                                                                                                      |
 |---------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
