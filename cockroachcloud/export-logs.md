@@ -7,7 +7,7 @@ docs_area: manage
 
 {{ site.data.products.dedicated }} users with clusters on the AWS platform can use the [Cloud API](cloud-api.html) to configure log export to [AWS CloudWatch](https://aws.amazon.com/cloudwatch/). Once the export is configured, logs will flow from all nodes in all regions of your {{ site.data.products.dedicated }} cluster to your CloudWatch log sink.
 
-{% include cockroachcloud/private-preview.md %}
+{% include feature-phases/preview-opt-in.md %}
 
 
 #### Availability 
@@ -123,7 +123,8 @@ Perform the following steps to enable log export from your {{ site.data.products
 
     {% include_cached copy-clipboard.html %}
     ~~~shell
-    curl -X POST https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/logexport \
+    curl --request POST \
+      --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/logexport \
       --header "Authorization: Bearer {secret_key}" \
       --data '{"type": "AWS_CLOUDWATCH", "log_name": "{log_group_name}", "auth_principal": "{role_arn}"}'
     ~~~
@@ -138,7 +139,8 @@ Perform the following steps to enable log export from your {{ site.data.products
 
     {% include_cached copy-clipboard.html %}
     ~~~shell
-    curl -X GET https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/logexport \
+    curl --request GET \
+      --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/logexport \
       --header "Authorization: Bearer {secret_key}"
     ~~~
 
@@ -150,7 +152,8 @@ To check the status of an existing {{ site.data.products.dedicated }} log export
 
 {% include_cached copy-clipboard.html %}
 ~~~shell
-curl -X GET https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/logexport \
+curl --request GET \
+  --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/logexport \
   --header "Authorization: Bearer {secret_key}"
 ~~~
 
@@ -169,7 +172,8 @@ To disable an existing {{ site.data.products.dedicated }} log export configurati
 
 {% include_cached copy-clipboard.html %}
 ~~~shell
-curl -X DELETE https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/logexport \
+curl --request DELETE \
+  --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/logexport \
   --header "Authorization: Bearer {secret_key}"
 ~~~
 
@@ -179,13 +183,27 @@ Where:
 - `{secret_key}` is your {{ site.data.products.dedicated }} API key. See [API Access](console-access-management.html) for instructions on generating this key.
 
 
-## Limitations
+## {{ site.data.products.dedicated }} log export Frequently Asked Questions (FAQ)
 
-- Logs exported in this fashion retain [`redactable`](/docs/{{site.versions["stable"]}}/configure-logs.html#redact-logs) markers, but are **not** themselves redacted. Do not use this feature with sensitive log messages that you do not wish to export.
-- Only one log export configuration is possible per cluster.
-- A cluster log configuration is shared by all nodes in all regions in the cluster. 
-- Only the following CockroachDB [log channels](/docs/{{site.versions["stable"]}}/logging-overview.html#logging-channels) are supported for export in this manner: `SESSIONS`,`OPS`, `HEALTH`, `STORAGE`, `SQL_SCHEMA`, `USER_ADMIN`, `PRIVILEGES`, `SENSITIVE_ACCESS`, `SQL_EXEC`, and `SQL_PERF`. Other log channels are not exportable from {{ site.data.products.dedicated }}.
-- To export the [SQL Audit Log](/docs/{{site.versions["stable"]}}/sql-audit-logging.html) via the `SENSITIVE_ACCESS` log channel, you must additionally enable audit logging for the desired tables using the [`ALTER TABLE ...EXPERIMENTAL_AUDIT`](/docs/{{site.versions["stable"]}}/experimental-audit.html) statement.
+### Is it possible to configure exported logs to be redacted at source?
+
+Logs exported in this fashion retain [`redactable`](/docs/{{site.versions["stable"]}}/configure-logs.html#redact-logs) markers, but are **not** themselves redacted. If you need to redact sensitive log data, you can use these `redactable` markers to do so once log entries have been written to AWS CloudWatch.
+
+### Is it possible to configure multiple log export configurations to send different log channels to different log groups in AWS CloudWatch?
+
+No, only one log export configuration is currently possible per cluster.
+
+### For a multi-region cluster, are the logs from all regions exported to one CloudWatch region?
+
+No, logs for each region in your cluster are exported to the corresponding CloudWatch region configured for your account. Ensure that the target AWS CloudWatch log group is configured with the same name in all target regions, and that the [IAM role](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html) you are using has permission to access each regional log group.
+
+### What log channels are supported?
+
+Currently, the following CockroachDB [log channels](/docs/{{site.versions["stable"]}}/logging-overview.html#logging-channels) are supported for export in this manner: `SESSIONS`,`OPS`, `HEALTH`, `STORAGE`, `SQL_SCHEMA`, `USER_ADMIN`, `PRIVILEGES`, `SENSITIVE_ACCESS`, `SQL_EXEC`, and `SQL_PERF`. Other log channels are not exportable from {{ site.data.products.dedicated }}.
+
+### Is it possible to include SQL audit logs as part of the log export capability?
+
+Yes, the [SQL Audit Log](/docs/{{site.versions["stable"]}}/sql-audit-logging.html) is exported via the `SENSITIVE_ACCESS` log channel by default, as long as you have previously enabled audit logging on desired tables using the [`ALTER TABLE ...EXPERIMENTAL_AUDIT`](/docs/{{site.versions["stable"]}}/experimental-audit.html) statement.
 
 ## Troubleshooting
 

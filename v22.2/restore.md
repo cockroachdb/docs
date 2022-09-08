@@ -5,14 +5,6 @@ toc: true
 docs_area: reference.sql
 ---
 
-{% assign rd = site.data.releases | where_exp: "rd", "rd.major_version == page.version.version" | first %}
-
-{% if rd %}
-{% assign remote_include_version = page.version.version | replace: "v", "" %}
-{% else %}
-{% assign remote_include_version = site.versions["stable"] | replace: "v", "" %}
-{% endif %}
-
 The `RESTORE` [statement](sql-statements.html) restores your cluster's schemas and data from [a `BACKUP`](backup.html) stored on services such as AWS S3, Google Cloud Storage, or NFS.
 
 Because CockroachDB is designed with high fault tolerance, restores are designed primarily for disaster recovery, i.e., restarting your cluster if it loses a majority of its nodes. Isolated issues (such as small-scale node outages) do not require any intervention.
@@ -29,7 +21,7 @@ You can restore:
 
 - `RESTORE` cannot restore backups made by newer versions of CockroachDB.
 - `RESTORE` is a blocking statement. To run a restore job asynchronously, use the `DETACHED` option. See [Options](#options) for more usage detail.
-- `RESTORE` no longer requires an Enterprise license, regardless of the options passed to it or to the backup it is restoring.
+- `RESTORE` no longer requires an {{ site.data.products.enterprise }} license, regardless of the options passed to it or to the backup it is restoring.
 - [Zone configurations](configure-zone.html) present on the destination cluster prior to a restore will be **overwritten** during a [cluster restore](restore.html#full-cluster) with the zone configurations from the [backed up cluster](backup.html#backup-a-cluster). If there were no customized zone configurations on the cluster when the backup was taken, then after the restore the destination cluster will use the zone configuration from the [`RANGE DEFAULT` configuration](configure-replication-zones.html#view-the-default-replication-zone).
 - You cannot restore a backup of a multi-region database into a single-region database.
 - When the [`exclude_data_from_backup`](take-full-and-incremental-backups.html#exclude-a-tables-data-from-backups) parameter is set on a table, the table will not contain row data when restored.
@@ -43,10 +35,12 @@ You can restore:
 
 {% include {{ page.version.version }}/misc/non-http-source-privileges.md %}
 
+{% include {{ page.version.version }}/misc/s3-compatible-warning.md %}
+
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ remote_include_version }}/grammar_svg/restore.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/restore.html %}
 </div>
 
 ## Parameters
@@ -116,8 +110,13 @@ You can exclude a table's row data from a backup using the [`exclude_data_from_b
 - All [tables](create-table.html) (which automatically includes their [indexes](indexes.html))
 - All [views](views.html)
 
+Also, a full cluster restore will:
+
+- Restore [temporary tables](temporary-tables.html) to their original database during a full cluster restore.
+- Drop the cluster's `defaultdb` and `postgres` [pre-loaded databases](show-databases.html#preloaded-databases) before the restore begins. You can only restore `defaultdb` and `postgres` if they are present in the original [backup](take-full-and-incremental-backups.html).
+
 {{site.data.alerts.callout_info}}
-When you restore a full cluster with an Enterprise license, it will restore the [Enterprise license](enterprise-licensing.html) of the cluster you are restoring from. If you want to use a different license in the new cluster, make sure to [update the license](licensing-faqs.html#set-a-license) **after** the restore is complete.
+When you restore a full cluster with an {{ site.data.products.enterprise }} license, it will restore the [{{ site.data.products.enterprise }} license](enterprise-licensing.html) of the cluster you are restoring from. If you want to use a different license in the new cluster, make sure to [update the license](licensing-faqs.html#set-a-license) **after** the restore is complete.
 {{site.data.alerts.end}}
 
 #### Databases

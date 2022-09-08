@@ -16,7 +16,7 @@ The user must have the `CREATE` [privilege](security-reference/authorization.htm
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/comment.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/comment.html %}
 </div>
 
 ## Parameters

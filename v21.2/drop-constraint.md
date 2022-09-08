@@ -23,7 +23,7 @@ For information about removing other constraints, see [Constraints: Remove Const
 
 ## Synopsis
 
-<div>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/drop_constraint.html %}</div>
+<div>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/drop_constraint.html %}</div>
 
 ## Required privileges
 

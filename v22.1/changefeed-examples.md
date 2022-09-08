@@ -92,11 +92,13 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
     > CREATE CHANGEFEED FOR TABLE office_dogs, employees INTO 'kafka://localhost:9092';
     ~~~
     ~~~
-
             job_id       
     +--------------------+
       360645287206223873
     (1 row)
+
+    NOTICE: changefeed will emit to topic office_dogs
+    NOTICE: changefeed will emit to topic employees
     ~~~
 
     This will start up the changefeed in the background and return the `job_id`. The changefeed writes to Kafka.
@@ -241,6 +243,9 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
     +--------------------+
       360645287206223873
     (1 row)
+
+    NOTICE: changefeed will emit to topic office_dogs
+    NOTICE: changefeed will emit to topic employees
     ~~~
 
     This will start up the changefeed in the background and return the `job_id`. The changefeed writes to Kafka.

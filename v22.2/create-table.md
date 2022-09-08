@@ -6,14 +6,6 @@ keywords: gin, gin index, gin indexes, inverted index, inverted indexes, acceler
 docs_area: reference.sql
 ---
 
-{% assign rd = site.data.releases | where_exp: "rd", "rd.major_version == page.version.version" | first %}
-
-{% if rd %}
-{% assign remote_include_version = page.version.version | replace: "v", "" %}
-{% else %}
-{% assign remote_include_version = site.versions["stable"] | replace: "v", "" %}
-{% endif %}
-
 The `CREATE TABLE` [statement](sql-statements.html) creates a new table in a database.
 
 {% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
@@ -34,67 +26,67 @@ To create a table, the user must have one of the following:
 </div><p></p>
 
 <div class="filter-content" markdown="1" data-scope="basic">
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ remote_include_version }}/grammar_svg/create_table.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/create_table.html %}
 </div>
 
 <div class="filter-content" markdown="1" data-scope="expanded">
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ remote_include_version }}/grammar_svg/create_table.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/create_table.html %}
 </div>
 
 **opt_persistence_temp_table ::=**
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ remote_include_version }}/grammar_svg/opt_persistence_temp_table.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/opt_persistence_temp_table.html %}
 </div>
 
 **column_def ::=**
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ remote_include_version }}/grammar_svg/column_def.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/column_def.html %}
 </div>
 
 **col_qualification ::=**
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ remote_include_version }}/grammar_svg/col_qualification.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/col_qualification.html %}
 </div>
 
 **index_def ::=**
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ remote_include_version }}/grammar_svg/index_def.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/index_def.html %}
 </div>
 
 **family_def ::=**
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ remote_include_version }}/grammar_svg/family_def.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/family_def.html %}
 </div>
 
 **table_constraint ::=**
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ remote_include_version }}/grammar_svg/table_constraint.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/table_constraint.html %}
 </div>
 
 **like_table_option_list::=**
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ remote_include_version }}/grammar_svg/like_table_option_list.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/like_table_option_list.html %}
 </div>
 
 **opt_with_storage_parameter_list ::=**
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ remote_include_version }}/grammar_svg/opt_with_storage_parameter_list.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/opt_with_storage_parameter_list.html %}
 </div>
 
 **opt_locality ::=**
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ remote_include_version }}/grammar_svg/opt_locality.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/opt_locality.html %}
 </div>
 
 </div>
@@ -128,8 +120,9 @@ CockroachDB supports the following column qualifications:
 - [Collations](collate.html)
 - [Column family assignments](column-families.html)
 - [`DEFAULT` expressions](default-value.html)
--  [`ON UPDATE` expressions](#on-update-expressions)
--  [Identity columns](#identity-columns) (sequence-populated columns)
+- [`ON UPDATE` expressions](#on-update-expressions)
+- [Identity columns](#identity-columns) (sequence-populated columns)
+- `NOT VISIBLE`
 
 ### `ON UPDATE` expressions
 
@@ -153,7 +146,7 @@ For an example of `ON UPDATE`, see [Add a column with an `ON UPDATE` expression]
 
 ### Identity columns
 
- *Identity columns* are columns that are populated with values in a [sequence](create-sequence.html). When you create an identity column, CockroachDB creates a sequence and sets the default value for the identity column to the result of the `nextval()` [built-in function](functions-and-operators.html) on the sequence.
+*Identity columns* are columns that are populated with values in a [sequence](create-sequence.html). When you create an identity column, CockroachDB creates a sequence and sets the default value for the identity column to the result of the `nextval()` [built-in function](functions-and-operators.html) on the sequence.
 
 To create an identity column, add a `GENERATED BY DEFAULT AS IDENTITY`/`GENERATED ALWAYS AS IDENTITY` clause to the column definition, followed by [sequence options](create-sequence.html#parameters). If you do not specify any sequence options in the column definition, the column assumes the default options of [`CREATE SEQUENCE`](create-sequence.html).
 
@@ -165,6 +158,10 @@ Note the following limitations of identity columns:
 - Unlike PostgreSQL, CockroachDB does not support using the `OVERRIDING SYSTEM VALUE` clause in `INSERT`/`UPDATE`/`UPSERT` statements to overwrite `GENERATED ALWAYS AS IDENTITY` identity column values.
 
 For an example of an identity column, see [Create a table with an identity column](#create-a-table-with-an-identity-column).
+
+### `NOT VISIBLE` property
+
+The `NOT VISIBLE` property specifies a column will not be returned when using `*` in a [`SELECT` clause](select-clause.html). You can apply the `NOT VISIBLE` property only to individual columns. For an example, refer to [Show the `CREATE TABLE` statement for a table with a hidden column](show-create.html#show-the-create-table-statement-for-a-table-with-a-hidden-column).
 
 ## Create a table like an existing table
 
@@ -430,7 +427,6 @@ In this example, we use `ON DELETE CASCADE` (i.e., when row referenced by a fore
 +----+------+------+----------+---------------+--------+------------------+-----+
 (0 rows)
 ~~~
-
 
 ### Create a table with a check constraint
 
@@ -981,6 +977,7 @@ To set `exclude_data_from_backup` on an existing table, see the [Exclude a table
 - [`DELETE`](delete.html)
 - [`DROP TABLE`](drop-table.html)
 - [`RENAME TABLE`](rename-table.html)
+- [`SHOW CREATE`](show-create.html)
 - [`SHOW TABLES`](show-tables.html)
 - [`SHOW COLUMNS`](show-columns.html)
 - [Column Families](column-families.html)

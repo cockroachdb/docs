@@ -10,7 +10,7 @@ filter_sort: 1
 docs_area: get_started
 ---
 
-{% include filter-tabs.md %}
+{% include {{ page.version.version }}/filter-tabs/crud-python.md %}
 
 {% include cockroach_u_pydev.md %}
 

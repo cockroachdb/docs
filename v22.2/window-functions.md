@@ -5,14 +5,6 @@ toc: true
 docs_area: reference.sql
 ---
 
-{% assign rd = site.data.releases | where_exp: "rd", "rd.major_version == page.version.version" | first %}
-
-{% if rd %}
-{% assign remote_include_version = page.version.version | replace: "v", "" %}
-{% else %}
-{% assign remote_include_version = site.versions["stable"] | replace: "v", "" %}
-{% endif %}
-
 CockroachDB supports the application of a function over a subset of the rows returned by a [selection query][selection-query]. Such a function is known as a _window function_, and it allows you to compute values by operating on more than one row at a time. The subset of rows a window function operates on is known as a _window frame_.
 
 For a complete list of supported window functions, see [Functions and Operators](functions-and-operators.html#window-functions).
@@ -37,7 +29,7 @@ Window frames are defined in [`OVER` clauses](sql-grammar.html#over_clause) or [
 <div class="filter-content" markdown="1" data-scope="basic">
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ remote_include_version }}/grammar_svg/window_definition.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/window_definition.html %}
 </div>
 
 ### Parameters
@@ -55,13 +47,13 @@ Parameter | Description
 <div class="filter-content" markdown="1" data-scope="expanded">
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ remote_include_version }}/grammar_svg/window_definition.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/window_definition.html %}
 </div>
 
 **opt_frame_clause ::=**
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ remote_include_version }}/grammar_svg/opt_frame_clause.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/opt_frame_clause.html %}
 </div>
 
 ### Parameters

@@ -40,10 +40,12 @@ For guidance on the syntax for backups and restores, see the [`BACKUP`](backup.h
 
 {% include {{ page.version.version }}/misc/non-http-source-privileges.md %}
 
+{% include {{ page.version.version }}/misc/s3-compatible-warning.md %}
+
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/restore.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/restore.html %}
 </div>
 
 ## Parameters
@@ -95,6 +97,8 @@ You can restore:
 - [Databases](#databases)
 - [Tables](#tables)
 
+`RESTORE` will only restore the latest data in an object (table, database, cluster), or the latest data as per an [`AS OF SYSTEM TIME` restore](#as-of-system-time). That is, a restore will not include historical data even if you ran your backup with [`revision_history`](backup.html#with-revision-history). This means that if you issue an `AS OF SYSTEM TIME` query on a restored object, the query will fail or the response will be incorrect because there is no historical data to query. For example, if you restore a table at `2022-07-13 10:38:00`, it is not then possible to read or [back up](backup.html) that table at `2022-07-13 10:37:00` or earlier. This is also the case for backups with `revision_history` that might try to initiate a revision start time earlier than `2022-07-13 10:38:00`.
+
 #### Full cluster
 
  A full cluster restore can only be run on a target cluster with no user-created databases or tables. Restoring a full cluster includes:
@@ -105,7 +109,7 @@ You can restore:
 - All [tables](create-table.html) (which automatically includes their [indexes](indexes.html))
 - All [views](views.html)
 
-`RESTORE` will only restore the latest data in an object (table, database, cluster), or the latest data as per an [`AS OF SYSTEM TIME` restore](#as-of-system-time). That is, a restore will not include historical data even if you ran your backup with [`revision_history`](backup.html#with-revision-history). This means that if you issue an `AS OF SYSTEM TIME` query on a restored object, the query will fail or the response will be incorrect because there is no historical data to query. For example, if you restore a table at `2022-07-13 10:38:00`, it is not then possible to read or [back up](backup.html) that table at `2022-07-13 10:37:00` or earlier. This is also the case for backups with `revision_history` that might try to initiate a revision start time earlier than `2022-07-13 10:38:00`.
+Furthermore, [temporary tables](temporary-tables.html) will restore to [`defaultdb`](show-databases.html#preloaded-databases).
 
 {{site.data.alerts.callout_info}}
 When you restore a full cluster with an Enterprise license, it will restore the [Enterprise license](enterprise-licensing.html) of the cluster you are restoring from. If you want to use a different license in the new cluster, make sure to [update the license](licensing-faqs.html#set-a-license) _after_ the restore is complete.

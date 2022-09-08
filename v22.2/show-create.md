@@ -5,14 +5,6 @@ toc: true
 docs_area: reference.sql
 ---
 
-{% assign rd = site.data.releases | where_exp: "rd", "rd.major_version == page.version.version" | first %}
-
-{% if rd %}
-{% assign remote_include_version = page.version.version | replace: "v", "" %}
-{% else %}
-{% assign remote_include_version = site.versions["stable"] | replace: "v", "" %}
-{% endif %}
-
 The `SHOW CREATE` [statement](sql-statements.html) shows the `CREATE` statement for an existing [database](create-database.html), [table](create-table.html), [view](create-view.html), or [sequence](create-sequence.html).
 
 ## Required privileges
@@ -22,7 +14,7 @@ The user must have any [privilege](security-reference/authorization.html#managin
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ remote_include_version }}/grammar_svg/show_create.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/show_create.html %}
 </div>
 
 ## Parameters
@@ -75,8 +67,7 @@ Field | Description
              |     dl STRING NULL,
              |     address STRING NULL,
              |     CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
-             |     UNIQUE INDEX drivers_dl_key (dl ASC),
-             |     FAMILY "primary" (id, city, name, dl, address)
+             |     UNIQUE INDEX drivers_dl_key (dl ASC)
              | )
 (1 row)
 ~~~
@@ -98,8 +89,7 @@ To return just the `create_statement` value:
       dl STRING NULL,
       address STRING NULL,
       CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
-      UNIQUE INDEX drivers_dl_key (dl ASC),
-      FAMILY "primary" (id, city, name, dl, address)
+      UNIQUE INDEX drivers_dl_key (dl ASC)
   )
 (1 row)
 ~~~
@@ -107,6 +97,36 @@ To return just the `create_statement` value:
 {{site.data.alerts.callout_info}}
 `SHOW CREATE TABLE` also lists any partitions and zone configurations defined on primary and secondary indexes of a table. If partitions are defined, but no zones are configured, the `SHOW CREATE TABLE` output includes a warning.
 {{site.data.alerts.end}}
+
+### Show the `CREATE TABLE` statement for a table with a hidden column
+
+If one or more columns is [`NOT VISIBLE`](create-table.html#not-visible-property) within a table, `SHOW CREATE` will display the `NOT VISIBLE` flag after those columns.
+
+Start by setting the `credit_card` field to `NOT VISIBLE`:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> ALTER TABLE public.users ALTER COLUMN credit_card SET NOT VISIBLE;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW CREATE TABLE users;
+~~~
+
+~~~
+table_name   |                      create_statement
+-------------+--------------------------------------------------------------
+users        | CREATE TABLE public.users (
+             |     id UUID NOT NULL,
+             |     city VARCHAR NOT NULL,
+             |     name VARCHAR NULL,
+             |     address VARCHAR NULL,
+             |     credit_card VARCHAR NOT VISIBLE NULL,
+             |     CONSTRAINT users_pkey PRIMARY KEY (city ASC, id ASC)
+             | )
+(1 row)
+~~~
 
 ### Show the `CREATE VIEW` statement for a view
 
@@ -215,8 +235,7 @@ If you [add a comment](comment-on.html) on a table, `SHOW CREATE TABLE` will dis
              |     name VARCHAR NULL,
              |     address VARCHAR NULL,
              |     credit_card VARCHAR NULL,
-             |     CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
-             |     FAMILY "primary" (id, city, name, address, credit_card)
+             |     CONSTRAINT users_pkey PRIMARY KEY (city ASC, id ASC)
              | );
              | COMMENT ON TABLE public.users IS 'This table contains information about users.'
 (1 row)
@@ -238,8 +257,7 @@ To return just the `create_statement` value:
       name VARCHAR NULL,
       address VARCHAR NULL,
       credit_card VARCHAR NULL,
-      CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
-      FAMILY "primary" (id, city, name, address, credit_card)
+      CONSTRAINT users_pkey PRIMARY KEY (city ASC, id ASC)
   );
   COMMENT ON TABLE public.users IS 'This table contains information about users.'
 (1 row)
@@ -289,8 +307,7 @@ All tables will be [`REGIONAL BY TABLE`](set-locality.html#regional-by-table) in
              |     address VARCHAR NULL,
              |     credit_card VARCHAR NULL,
              |     crdb_region public.crdb_internal_region NOT VISIBLE NOT NULL DEFAULT default_to_database_primary_region(gateway_region())::public.crdb_internal_region,
-             |     CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
-             |     FAMILY "primary" (id, city, name, address, credit_card, crdb_region)
+             |     CONSTRAINT users_pkey PRIMARY KEY (city ASC, id ASC)
              | ) LOCALITY REGIONAL BY ROW;
              | COMMENT ON TABLE public.users IS 'This table contains information about users.'
 (1 row)
@@ -317,8 +334,7 @@ Note that this statement also returns the [`ALTER` statements](alter-table.html)
       address VARCHAR NULL,
       credit_card VARCHAR NULL,
       crdb_region public.crdb_internal_region NOT VISIBLE NOT NULL DEFAULT default_to_database_primary_region(gateway_region())::public.crdb_internal_region,
-      CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
-      FAMILY "primary" (id, city, name, address, credit_card, crdb_region)
+      CONSTRAINT users_pkey PRIMARY KEY (city ASC, id ASC)
   ) LOCALITY REGIONAL BY ROW;
   COMMENT ON TABLE public.users IS 'This table contains information about users.';
   CREATE TABLE public.vehicles (
@@ -330,9 +346,8 @@ Note that this statement also returns the [`ALTER` statements](alter-table.html)
       status VARCHAR NULL,
       current_location VARCHAR NULL,
       ext JSONB NULL,
-      CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
-      INDEX vehicles_auto_index_fk_city_ref_users (city ASC, owner_id ASC),
-      FAMILY "primary" (id, city, type, owner_id, creation_time, status, current_location, ext)
+      CONSTRAINT vehicles_pkey PRIMARY KEY (city ASC, id ASC),
+      INDEX vehicles_auto_index_fk_city_ref_users (city ASC, owner_id ASC)
   ) LOCALITY REGIONAL BY TABLE IN PRIMARY REGION;
   CREATE TABLE public.rides (
       id UUID NOT NULL,
@@ -345,10 +360,9 @@ Note that this statement also returns the [`ALTER` statements](alter-table.html)
       start_time TIMESTAMP NULL,
       end_time TIMESTAMP NULL,
       revenue DECIMAL(10,2) NULL,
-      CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
+      CONSTRAINT rides_pkey PRIMARY KEY (city ASC, id ASC),
       INDEX rides_auto_index_fk_city_ref_users (city ASC, rider_id ASC),
       INDEX rides_auto_index_fk_vehicle_city_ref_vehicles (vehicle_city ASC, vehicle_id ASC),
-      FAMILY "primary" (id, city, vehicle_city, rider_id, vehicle_id, start_address, end_address, start_time, end_time, revenue),
       CONSTRAINT check_vehicle_city_city CHECK (vehicle_city = city)
   ) LOCALITY REGIONAL BY TABLE IN PRIMARY REGION;
   CREATE TABLE public.vehicle_location_histories (
@@ -357,8 +371,7 @@ Note that this statement also returns the [`ALTER` statements](alter-table.html)
       "timestamp" TIMESTAMP NOT NULL,
       lat FLOAT8 NULL,
       long FLOAT8 NULL,
-      CONSTRAINT "primary" PRIMARY KEY (city ASC, ride_id ASC, "timestamp" ASC),
-      FAMILY "primary" (city, ride_id, "timestamp", lat, long)
+      CONSTRAINT vehicle_location_histories_pkey PRIMARY KEY (city ASC, ride_id ASC, "timestamp" ASC)
   ) LOCALITY REGIONAL BY TABLE IN PRIMARY REGION;
   CREATE TABLE public.promo_codes (
       code VARCHAR NOT NULL,
@@ -366,8 +379,7 @@ Note that this statement also returns the [`ALTER` statements](alter-table.html)
       creation_time TIMESTAMP NULL,
       expiration_time TIMESTAMP NULL,
       rules JSONB NULL,
-      CONSTRAINT "primary" PRIMARY KEY (code ASC),
-      FAMILY "primary" (code, description, creation_time, expiration_time, rules)
+      CONSTRAINT promo_codes_pkey PRIMARY KEY (code ASC)
   ) LOCALITY REGIONAL BY TABLE IN PRIMARY REGION;
   CREATE TABLE public.user_promo_codes (
       city VARCHAR NOT NULL,
@@ -375,8 +387,7 @@ Note that this statement also returns the [`ALTER` statements](alter-table.html)
       code VARCHAR NOT NULL,
       "timestamp" TIMESTAMP NULL,
       usage_count INT8 NULL,
-      CONSTRAINT "primary" PRIMARY KEY (city ASC, user_id ASC, code ASC),
-      FAMILY "primary" (city, user_id, code, "timestamp", usage_count)
+      CONSTRAINT user_promo_codes_pkey PRIMARY KEY (city ASC, user_id ASC, code ASC)
   ) LOCALITY REGIONAL BY TABLE IN PRIMARY REGION;
   CREATE TABLE public.drivers (
       id UUID NOT NULL,
@@ -385,8 +396,7 @@ Note that this statement also returns the [`ALTER` statements](alter-table.html)
       dl STRING NULL,
       address STRING NULL,
       CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
-      UNIQUE INDEX drivers_dl_key (dl ASC),
-      FAMILY "primary" (id, city, name, dl, address)
+      UNIQUE INDEX drivers_dl_key (dl ASC)
   ) LOCALITY REGIONAL BY TABLE IN PRIMARY REGION;
   CREATE VIEW public.user_view (city, name) AS SELECT city, name FROM movr.public.users;
   CREATE SEQUENCE public.desc_customer_list MINVALUE -9223372036854775808 MAXVALUE -1 INCREMENT -2 START -1;

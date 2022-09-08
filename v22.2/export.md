@@ -5,14 +5,6 @@ toc: true
 docs_area: reference.sql
 ---
 
-{% assign rd = site.data.releases | where_exp: "rd", "rd.major_version == page.version.version" | first %}
-
-{% if rd %}
-{% assign remote_include_version = page.version.version | replace: "v", "" %}
-{% else %}
-{% assign remote_include_version = site.versions["stable"] | replace: "v", "" %}
-{% endif %}
-
 The `EXPORT` [statement](sql-statements.html) exports tabular data or the results of arbitrary `SELECT` statements to the following:
 
 - CSV files
@@ -32,7 +24,7 @@ After the export has been initiated, you can cancel it with [`CANCEL QUERY`](can
 
 ## Synopsis
 
-<div>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ remote_include_version }}/grammar_svg/export.html %}</div>
+<div>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/export.html %}</div>
 
 {{site.data.alerts.callout_info}}
 The `EXPORT` statement cannot be used within a [transaction](transactions.html).
@@ -41,6 +33,8 @@ The `EXPORT` statement cannot be used within a [transaction](transactions.html).
 ## Required privileges
 
  The user must have the `SELECT` [privilege](security-reference/authorization.html#managing-privileges) on the table being exported, unless the [destination URI requires `admin` privileges](import.html#source-privileges).
+
+ {% include {{ page.version.version }}/misc/s3-compatible-warning.md %}
 
 ## Parameters
 

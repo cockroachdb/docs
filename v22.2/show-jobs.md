@@ -5,14 +5,6 @@ toc: true
 docs_area: reference.sql
 ---
 
-{% assign rd = site.data.releases | where_exp: "rd", "rd.major_version == page.version.version" | first %}
-
-{% if rd %}
-{% assign remote_include_version = page.version.version | replace: "v", "" %}
-{% else %}
-{% assign remote_include_version = site.versions["stable"] | replace: "v", "" %}
-{% endif %}
-
 The `SHOW JOBS` [statement](sql-statements.html) lists all of the types of long-running tasks your cluster has performed in the last 12 hours, including:
 
 {% include {{ page.version.version }}/sql/schema-changes.md %}
@@ -44,7 +36,7 @@ By default, only the `root` user can execute `SHOW JOBS`.
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ remote_include_version }}/grammar_svg/show_jobs.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/show_jobs.html %}
 </div>
 
 ## Parameters
@@ -166,6 +158,8 @@ You can display specific fields relating to changefeed jobs by running `SHOW CHA
 * [`high_water_timestamp`](monitor-and-debug-changefeeds.html#monitor-a-changefeed): Guarantees all changes before or at this time have been emitted.
 * [`sink_uri`](create-changefeed.html#sink-uri): The destination URI of the configured sink for a changefeed.
 * `full_table_names`: The full [name resolution](sql-name-resolution.html) for a table. For example, `defaultdb.public.mytable` refers to the `defaultdb` database, the `public` schema, and the table `mytable` table.
+- `topics`: The topic name to which [Kafka](changefeed-sinks.html#kafka) and [Google Cloud Pub/Sub](changefeed-sinks.html#google-cloud-pub-sub) changefeed messages will emit. If you start a changefeed with the [`split_column_families`](create-changefeed.html#split-column-families) option targeting a table with [multiple column families](changefeeds-on-tables-with-column-families.html), the `SHOW CHANGEFEED JOBS` output will show the topic name with a family placeholder. For example, `topic.{family}`.
+- [`format`](create-changefeed.html#format): The format of the changefeed messages, e.g., `json`, `avro`.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
