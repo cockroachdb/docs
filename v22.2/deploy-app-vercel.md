@@ -9,6 +9,11 @@ docs_area: get_started
 
 This tutorial shows you how to use [Vercel](https://vercel.com/) to deploy a web application built with [Next.js](https://nextjs.org/), [Express](https://expressjs.com/), [Prisma](https://www.prisma.io/), and {{ site.data.products.serverless }}.
 
+<div class="filters clearfix">
+    <button class="filter-button page-level" data-scope="browser"><strong>Use your browser</strong></button>
+    <button class="filter-button page-level" data-scope="local"><strong>Use the command line</strong></button>
+</div>
+
 ## Prerequisites
 
 Before starting the tutorial, do the following:
@@ -17,6 +22,54 @@ Before starting the tutorial, do the following:
 
 1. Create a [Vercel](https://vercel.com/signup) account.
 
+<section class="filter-content" markdown="1" data-scope="browser">
+
+## Step 1. Get the code
+
+1. Create a [GitHub](https://github.com/) account if you haven't already.
+1. In GitHub, [create your own fork](https://docs.github.com/en/get-started/quickstart/fork-a-repo#forking-a-repository) of CockroachDB's [`prisma-examples` repo](https://github.com/cockroachdb/prisma-examples).
+
+## Step 2. Create a Vercel project
+
+1. From the [Vercel dashboard](https://vercel.com/dashboard), click **Add new...** > **Project**.
+1. Select the `prisma-examples` repository you forked in [Step 1](#step-1) to import.
+1. From the **Framework preset** dropdown, select **Next.js**.
+1. In the **Root directory** field, click **Edit**.
+1. Select the **typescript** > **rest-nextjs-api-routes** directory.
+1. Click **Continue**.
+1. Open the **Build and Output Settings** and toggle the build command's **Override** switch to on.
+1. Enter `yarn prisma db push && yarn next build` as the **Build command**.
+1. Click **Deploy**.
+
+    Your deployment will fail until you integrate CockroachDB in the next step, so you can leave this screen without waiting for it to finish.
+
+## Step 3. Integrate CockroachDB
+
+1. Navigate to the [CockroachDB page](https://vercel.com/integrations/cockroachdb) of Vercel's integration marketplace.
+1. Click **Add Integration**.
+1. Select your Vercel account and click **Continue**.
+1. Select either **All Projects** or the project you just created and click **Continue**.
+1. Accept the permissions and click **Add Integration**.
+
+    A window will pop up prompting you to log in to {{ site.data.products.db }} if you haven't already.
+    
+1. In the {{ site.data.products.db }} pop-up window, select the organization in which you want to create a new {{ site.data.products.serverless }} cluster.
+1. Click **Create**.
+
+    After a few seconds, your cluster will be created and the pop-up window will close automatically. Once this is done, your Vercel project will have the `DATABASE_URL` environment variable automatically populated with the connection string for your new cluster.
+
+## Step 3. Deploy the application
+
+1. Navigate to the **Overview** page for your Vercel project.
+1. Select the **Deployments** tab.
+1. Click **Redeploy**.
+1. Click **Redeploy** again from the pop-up dialog.
+
+    Your project will be deployed in a few seconds. You can view the final product by clicking on the **Domain** link on your project's **Overview** page.
+
+</section>
+<section class="filter-content" markdown="1" data-scope="local">
+ 
 ## Step 1. Create a {{ site.data.products.serverless }} cluster
 
 {% include cockroachcloud/quickstart/create-a-free-cluster.md %}
@@ -126,6 +179,8 @@ The connection string is pre-populated with your username, cluster name, and oth
     ~~~
 
     Follow the links provided to view and manage your deployed application.
+    
+</section>
 
 ## See also
 
