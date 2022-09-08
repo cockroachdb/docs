@@ -45,14 +45,16 @@ To view the contents of an backup created with the `BACKUP` statement, use [`SHO
 
 ## Required privileges
 
+{% include {{ page.version.version }}/backups/new-backup-privileges.md %}
+
+### Existing required privileges
+
 - [Full cluster backups](take-full-and-incremental-backups.html#full-backups) can only be run by members of the [`admin` role](security-reference/authorization.html#admin-role). By default, the `root` user belongs to the `admin` role.
 - For all other backups, the user must have [read access](security-reference/authorization.html#managing-privileges) on all objects being backed up. Database backups require `CONNECT` privileges, and table backups require `SELECT` privileges. Backups of user-defined schemas, or backups containing user-defined types, require `USAGE` privileges.
-- `BACKUP` requires full read and write permissions to its target destination.
-- `BACKUP` does **not** require delete or overwrite permissions to its target destination. This allows `BACKUP` to write to cloud storage buckets that have [object locking](use-cloud-storage-for-bulk-operations.html#object-locking) configured. We recommend enabling object locking in cloud storage buckets to protect the validity of a backup.
 
 ### Destination privileges
 
-{% include {{ page.version.version }}/backups/destination-file-privileges.md %}
+{% include {{ page.version.version }}/backups/destination-privileges.md %}
 
 {% include {{ page.version.version }}/misc/s3-compatible-warning.md %}
 

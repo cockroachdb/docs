@@ -33,16 +33,17 @@ The user must have the `INSERT` and `DROP` [privileges](security-reference/autho
 
 #### Source privileges
 
-The source file URL does _not_ require the `ADMIN` role in the following scenarios:
+The user that runs `IMPORT INTO` to external storage does **not** require the `ADMIN` role in the following scenarios:
 
-- S3 and GS using `SPECIFIED` (and not `IMPLICIT`) credentials. Azure is always `SPECIFIED` by default.
+- Amazon S3 and Google Cloud Storage using `SPECIFIED` credentials. Azure Storage is always `SPECIFIED` by default.
 - [Userfile](use-userfile-for-bulk-operations.html)
 
-The source file URL _does_ require the `ADMIN` role in the following scenarios:
+{% include_cached new-in.html version="v22.2" %} You can grant a user the `EXTERNALIOIMPLICITACCESS` system privilege. This privilege allows a user without the `admin` role to interact with a cloud storage resource using `IMPLICIT` authentication.
 
-- S3 or GS using `IMPLICIT` credentials
-- Use of a [custom endpoint](https://docs.aws.amazon.com/sdk-for-go/api/aws/endpoints/) on S3
-- [Nodelocal](cockroach-nodelocal-upload.html), [HTTP](use-a-local-file-server-for-bulk-operations.html), or [HTTPS](use-a-local-file-server-for-bulk-operations.html)
+The user that runs `IMPORT INTO` to external storage **does** require the [`admin` role](security-reference/authorization.html#admin-role) in the following scenarios:
+
+- Use of a [custom endpoint](https://docs.aws.amazon.com/sdk-for-go/api/aws/endpoints/) on S3.
+- [Nodelocal](cockroach-nodelocal-upload.html), [HTTP](use-a-local-file-server-for-bulk-operations.html), or [HTTPS](use-a-local-file-server-for-bulk-operations.html).
 
 {% include {{ page.version.version }}/misc/s3-compatible-warning.md %}
 
