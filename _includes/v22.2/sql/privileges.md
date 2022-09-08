@@ -11,3 +11,6 @@ Privilege | Levels
 `UPDATE` | Table
 `USAGE`  | Schema, Type
 `ZONECONFIG` | Database, Table
+`BACKUP` | System, Database, Table
+`RESTORE` | System, Database
+`EXTERNALIOIMPLICITACCESS` | System
