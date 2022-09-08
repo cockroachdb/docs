@@ -12,8 +12,8 @@ docs_area: migrate
 
 The **Migrations** page on the {{ site.data.products.db }} Console features a **Schema Conversion Tool** that helps you:
 
-- Convert a schema from another database for use with CockroachDB.
-- Create a new database that uses a converted schema.
+- Convert a schema from a PostgreSQL database for use with CockroachDB.
+- Create a new database that uses the converted schema.
 
 {{site.data.alerts.callout_info}}
 On the **Migrations** page, a *migration* refers to converting a schema for use with CockroachDB and creating a new database that uses the schema. It does not include moving data to the new database. For details on all steps required to complete a database migration, see [Migrate Your Database to CockroachDB](../{{version_prefix}}migration-overview.html).
@@ -38,7 +38,7 @@ The dump file must be less than 4 MB. `INSERT` and `COPY` statements will be ign
 To begin a database migration:
 
 1. Click the upload box and select a `.sql` file, or drop a `.sql` file directly into the box. 
-1. Wait for the schema to be analyzed. A progress indicator is displayed. Depending on the size and complexity of the SQL dump, analyzing the schema can require up to several minutes.
+1. Wait for the schema to be analyzed. A loading screen is displayed. Depending on the size and complexity of the SQL dump, analyzing the schema can require up to several minutes.
 1. When analysis is complete, review the [**Summary Report**](#summary-report) and edit, add, or remove SQL statements in the [**Statements** list]#statements-list).
 
 ## Migrations table
@@ -84,7 +84,7 @@ The **Statement Status** graph displays the number of successful statements (gre
 The **Suggestions** graph displays the number of each suggestion type:
 
 - **Sequences** represents a statement that uses a sequence to define a primary key column. [Using a sequence for a primary key column is not recommended.](../{{version_prefix}}create-sequence.html#considerations)
-- **Default INT size** represents a statement that was **added** to change the integer size to `4`. [By default, CockroachDB uses `INT8`.](../{{version_prefix}}int.html#considerations-for-64-bit-signed-integers)
+- **Default INT size** represents a statement that was **added** to change the integer size to `4`. [By default, CockroachDB uses `INT8`.](../{{version_prefix}}int.html#considerations-for-64-bit-signed-integers). If you don't want to change the integer size, you can remove this statement in the [**Statements** list](#statements-list).
 - **Missing Primary Key** represents a statement that does not define an explicit primary key for a table. [Defining an explicit primary key on every table is recommended.](../{{version_prefix}}schema-design-table.html#select-primary-key-columns)
 
 {{site.data.alerts.callout_success}}
@@ -100,7 +100,7 @@ To [finalize the schema](#finalize-the-schema) and create a new database for mig
 Otherwise, use the **Statements** list to review and resolve errors. Navigate the list by scrolling or by clicking the arrows and **Scroll to Top** button on the bottom-right.
 
 {{site.data.alerts.callout_info}}
-Incidental errors do not block finalization. This is because they are caused by errors in other SQL statements, and will disappear as you resolve those errors.
+Incidental errors do not block finalization. This is because they are caused by errors in other SQL statements, and will likely disappear as you resolve those errors.
 {{site.data.alerts.end}}
 
 By default, the **Statements** list displays both successful and failed statements. To view only the statements that failed, check **Collapse successful statements**.
@@ -119,14 +119,14 @@ To remove or add a statement, click the ellipsis above the statement and then cl
 
 Respond to errors and suggestions according to the following guidelines:
 
-|          Type         |                                                                                                                                                                                               Solution                                                                                                                                                                                               |
-|-----------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|          Type         |                                                                                                                                                                                                          Solution                                                                                                                                                                                                         |
+|-----------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Unimplemented feature | The feature does not yet exist on CockroachDB. Implement a workaround by editing the statement and adding statements. Otherwise, remove the statement from the schema. If a link to a tracking issue is included, click the link for further context. For more information about unimplemented features, see [Migrate Your Database to CockroachDB](../{{version_prefix}}migration-overview.html#unimplemented-features). |
-| Statement error       | Edit the statement to fix the error. Otherwise, remove the statement from the schema.                                                                                                                                                                                                                                                                                                                |
+| Statement error       | Edit the statement to fix the error. Otherwise, remove the statement from the schema.                                                                                                                                                                                                                                                                                                                                     |
 | Not executed          | Remove the statement from the schema. You can include it when [moving data to the new database](../{{version_prefix}}migration-overview.html#step-2-move-your-data-to-cockroachdb).                                                                                                                                                                                                                                       |
-| Missing user          | Click the **Add User** button next to the error message. This adds the missing user to the cluster.                                                                                                                                                                                                                                                                                                  |
-| Incidental error      | Resolve the earlier failed statement that caused the incidental error.                                                                                                                                                                                                                                                                                                                               |
-| Suggestion            | Review and take any actions relevant to the suggestion. Then check **Acknowledge**.                                                                                                                                                                                                                                                                                                                  |
+| Missing user          | Click the **Add User** button next to the error message. You must be a member of the [`admin` role](user-authorization.html). This adds the missing user to the cluster.                                                                                                                                                                                                                                                  |
+| Incidental error      | Resolve the earlier failed statement that caused the incidental error.                                                                                                                                                                                                                                                                                                                                                    |
+| Suggestion            | Review and take any actions relevant to the suggestion. Then check **Acknowledge**.                                                                                                                                                                                                                                                                                                                                       |
 
 If you have made changes to any statements, [retry the migration](#retry-the-migration) to update the number of **Statements Total**, **Errors**, **Incidental Errors**, and **Suggestions**.
 
