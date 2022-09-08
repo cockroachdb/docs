@@ -126,6 +126,10 @@ BACKUP DATABASE <database> INTO 's3://{bucket name}/{path in bucket}/?AWS_ACCESS
 
 If the `AUTH` parameter is `implicit`, the access keys can be omitted and [the credentials will be loaded from the environment](https://docs.aws.amazon.com/sdk-for-go/api/aws/session/) (i.e., the machines running the backup).
 
+{{site.data.alerts.callout_info}}
+{% include {{ page.version.version }}/misc/external-io-privilege.md %}
+{{site.data.alerts.end}}
+
 {% include_cached copy-clipboard.html %}
 ~~~sql
 BACKUP DATABASE <database> INTO 's3://{bucket name}/{path}?AUTH=implicit';
@@ -165,6 +169,10 @@ BACKUP DATABASE <database> INTO 'gs://{bucket name}/{path}?AUTH=specified&CREDEN
 ### Implicit authentication
 
 For CockroachDB instances that are running within a Google Cloud Environment, [environment data](https://cloud.google.com/docs/authentication/production#providing_credentials_to_your_application) can be used from the [service account](https://cloud.google.com/iam/docs/creating-managing-service-accounts) to implicitly access resources within the storage bucket.
+
+{{site.data.alerts.callout_info}}
+{% include {{ page.version.version }}/misc/external-io-privilege.md %}
+{{site.data.alerts.end}}
 
 For CockroachDB clusters running in other environments, `implicit` authentication access can still be set up manually with the following steps:
 

@@ -42,7 +42,7 @@ See [`GRANT`](grant.html) for detail on granting privileges to a role or user.
 
 Members of the [`admin` role](security-reference/authorization.html#admin-role) can run all levels of `RESTORE` without the need to grant a specific `RESTORE` privilege.
 
-There is no inheritance with the listed privileges. For example, if a user is granted system-level restore privileges, this does not give the user the privilege to restire a table. Furthermore, if you run an [`ALTER DEFAULT PRIVILEGES`](alter-default-privileges.html) statement to grant a user the `RESTORE` privilege, this will only apply to newly created tables.
+There is no inheritance with the listed privileges. For example, if a user is granted system-level restore privileges, this does not give the user the privilege to restore a table. Furthermore, if you run an [`ALTER DEFAULT PRIVILEGES`](alter-default-privileges.html) statement to grant a user the `RESTORE` privilege, this will only apply to newly created tables.
 
 ### Existing required privileges
 
@@ -56,7 +56,7 @@ The user that runs `RESTORE` from cloud storage does **not** require the [`admin
 - Amazon S3 and Google Cloud Storage using `SPECIFIED` credentials. Azure Storage is always `SPECIFIED` by default.
 - [Userfile](use-userfile-for-bulk-operations.html)
 
-{% include_cached new-in.html version="v22.2" %} You can grant a user the `EXTERNALIOIMPLICITACCESS` [system privilege](security-reference/authorization.html#supported-privileges). This privilege allows a user without the `admin` role to interact with a cloud storage resource using `IMPLICIT` authentication.
+{% include {{ page.version.version }}/misc/external-io-privilege.md %}
 
 The user that runs `RESTORE` from cloud storage **does** require the [`admin` role](security-reference/authorization.html#admin-role) in the following scenarios:
 
