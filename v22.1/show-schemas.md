@@ -14,7 +14,7 @@ The `CONNECT` [privilege](security-reference/authorization.html#managing-privile
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/show_schemas.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/show_schemas.html %}
 </div>
 
 ## Parameters

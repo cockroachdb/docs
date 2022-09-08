@@ -9,10 +9,6 @@ docs_area: manage
 
 This page describes the cluster management and cluster deletion workflows for {{ site.data.products.serverless }}.
 
-## Planning your cluster
-
-Before making any changes to your cluster's configuration, review the [requirements and recommendations](plan-your-cluster.html) for {{ site.data.products.db }} cluster configuration.
-
 ## View Clusters page
 
 On [logging in to the {{ site.data.products.db }} Console](https://cockroachlabs.cloud/), the **Clusters** page is displayed. The **Clusters** page provides a high-level view of your clusters.

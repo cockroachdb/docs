@@ -48,6 +48,7 @@ Included in this guide:
   - [Code](#code)
   - [Examples](#examples)
   - [Version tags](#version-tags)
+  - [Version references](#version-references)
   - [Tables](#tables)
   - [Lists](#lists)
   - [Images](#images)
@@ -441,8 +442,10 @@ Enter a line break between a heading and its content.
 
 #### Bold
 
-Use bold text to emphasize an important word or phrase, when referring to the name of a UI section or field, or to create visual separation and callouts (e.g., **Example:**). Do not combine bold with italic.
+Use bold text to emphasize an important word or phrase, or to create visual separation and callouts (e.g., **Example:**). Do not combine bold with italic.
 
+Use bold text when you refer to the name of a UI section or field. The name should be in bold only if it appears verbatim in the UI. If a UI element, such as a table, is not labeled in the UI, do not bold when you reference the element in the documentation.
+  
 To bold a word or phrase, surround the text with two asterisks (`**`).
 
 **Examples:**
@@ -831,6 +834,34 @@ If a feature has been backported to a previous version in a patch release, use t
 
 Version tags should only refer to the version of the docset that contains them. For example, the version tag `{% include_cached new-in.html version="v21.1.9" %}` should only be on pages in `v21.1` directories.
 
+### Version references
+
+To refer to a static version of CockroachDB:
+
+~~~
+{{site.versions["v22.2"]}}
+~~~
+
+To dynamically refer to the stable version of CockroachDB, as determined each time the site is built:
+
+~~~
+{{site.versions["stable"]}}
+~~~
+
+**Warning**: If you use a `stable` link on a versioned page which is for a previous version, the link points to a different version  of CockroachDB than the version the page documents. Similarly, if you use a `stable` link on a page for the current version and then a new version is added, the link points to a different version than the version the page documents. If this is a problem, use one of the following methods instead.
+
+Pages that document CockroachDB itself exist within subdirectories that represent minor versions. To refer to a page's minor version (for example, v22.2), which matches its top-level subdirectory within the docs repo:
+
+~~~
+{{page.version.version}}
+~~~
+
+A minor version of CockroachDB receives updates as patches. To refer to a page's current patch version (for example, v22.1.7):
+
+~~~
+{{ page.release_info.name }}
+~~~
+
 ### Tables
 
 Use tables to display structured information in an easy-to-read format. We use two types of tables: [Markdown](#markdown) and [HTML](#html).
@@ -1024,35 +1055,18 @@ The syntax is a little hard to read inline, but based on some experimenting it a
 Formatted for easier reading, the template code looks like:
 
 ```
-{% if page.name == "cost-based-optimizer.md" %}  
-Locality-optimized search  
-{% else %}  
-[Locality-optimized search](cost-based-optimizer.html#locality-optimized-search-in-multi-region-clusters)  
-{% endif %}  
+{% if page.name == "cost-based-optimizer.md" %}
+Locality-optimized search
+{% else %}
+[Locality-optimized search](cost-based-optimizer.html#locality-optimized-search-in-multi-region-clusters)
+{% endif %}
 ```
-
-##### Different content depending on CockroachCloud or Self-Hosted
-
-Sometimes, you must use an include file on both a CockroachCloud and a Self-Hosted page. This requires that the links be resolved differently depending on the page that the include file is being referenced from.
-
-For instructions showing how to use relative links that differ depending on the page type, see [Use relative links to Cloud and Core topics in _include files](https://cockroachlabs.atlassian.net/wiki/x/woBZl).
-
-_Note_: In the previous link, Cloud = Dedicated and Core = Self-Hosted.
 
 <a name="remote-includes"></a>
 
 ##### Remote includes
 
-Sometimes, you need to include files that are maintained in other places than the `cockroachdb/docs` repo but referenced in our docs. The `remote_include` tag is used for this. We most often use this tag for:
-
-- SQL diagrams, which are maintained in the `cockroachdb/cockroach` repo
-- Code samples, which are maintained in various repos
-
-For SQL diagrams, you remotely include the entire (HTML) file as follows:
-
-```
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/show_databases.html %}
-```
+Sometimes, you need to include files that are maintained in other places than the `cockroachdb/docs` repo but referenced in our docs. The `remote_include` tag is used for this. We most often use this tag for code samples, which are maintained in various repos.
 
 For code samples, you usually want to show only part of a larger file to highlight a specific technique, or due to length considerations.
 

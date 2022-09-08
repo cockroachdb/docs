@@ -5,16 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-{% assign rd = site.data.releases | where_exp: "rd", "rd.major_version == page.version.version" | first %}
-
-{% if rd %}
-{% assign remote_include_version = page.version.version | replace: "v", "" %}
-{% else %}
-{% assign remote_include_version = site.versions["stable"] | replace: "v", "" %}
-{% endif %}
-
 The `DEFAULT` value [constraint](constraints.html) specifies a value to write into the constrained column if one is not defined in an `INSERT` statement. The value may be either a hard-coded literal or an expression that is evaluated at the time the row is created.
-
 
 ## Details
 
@@ -30,7 +21,7 @@ You can also add the `DEFAULT` value constraint to an existing table through [`A
 {{site.data.alerts.end}}
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ remote_include_version }}/grammar_svg/default_value_column_level.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/default_value_column_level.html %}
 </div>
 
  Parameter | Description

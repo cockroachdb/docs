@@ -24,7 +24,7 @@ We use the Kubernetes offerings in AWS and GCP (EKS and GKE respectively) to run
 
 ### Security and Connection
 
-{{ site.data.products.dedicated }} clusters are single tenant. This means each new cluster gets its own project in GCP or its own account in AWS. No two {{ site.data.products.dedicated }} clusters share any resources with each other. Since these clusters are within their own accounts and projects, they are also in a default virtual private cloud (VPC). Users connect to a {{ site.data.products.dedicated }} cluster by using a load balancer in front of each region which leads to one connection string per region. Unless you set up [VPC peering](network-authorization.html#vpc-peering) or [AWS PrivateLink](network-authorization.html#aws-privatelink), your cluster will use TLS 1.3 protocol for encrypting inter-node and client-node communication.
+{{ site.data.products.dedicated }} clusters are single tenant. This means that each new cluster gets its own virtual network (VPC in AWS and GCP), compute (cluster nodes), data storage (cluster disks) and IAM resources. Users connect to a {{ site.data.products.dedicated }} cluster by using a load balancer in front of each region which leads to one connection string per region. Unless you set up [VPC peering](network-authorization.html#vpc-peering) or [AWS PrivateLink](network-authorization.html#aws-privatelink), your cluster will use TLS 1.3 protocol for encrypting inter-node and client-node communication.
 
 {{ site.data.products.db }} clusters also use digital certificates for inter-node authentication, [SSL modes](authentication.html#ssl-mode-settings) for node identity verification, and password authentication for client identity verification. See [Authentication](authentication.html) for more details.
 
@@ -62,7 +62,7 @@ Finally, the SQL pods communicate with the KV layer to access data managed by th
 
 #### Baseline
 
-Baseline performance for a Serverless cluster is 100 RUs per second, and any usage above that is called [burst performance](#cockroachdb-cloud-terms). Clusters start with 10M RUs of free burst capacity each month and earn 100 RUs per second up to a maximum of 250M free RUs per month. Earned RUs can be used immediately or accumulated as burst capacity. If you use all of your burst capacity, your cluster will revert to baseline performance.
+Baseline performance for a Serverless cluster is 100 [Request Units](learn-about-request-units.html), or RUs, per second, and any usage above that is called [burst performance](#cockroachdb-cloud-terms). Clusters start with 10M RUs of free burst capacity each month and earn 100 RUs per second up to a maximum of 250M free RUs per month. Earned RUs can be used immediately or accumulated as burst capacity. If you use all of your burst capacity, your cluster will revert to baseline performance.
 
 The following diagram shows how RUs are accumulated and consumed:
 

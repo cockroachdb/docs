@@ -1,6 +1,6 @@
 #### Kubernetes version
 
-Kubernetes 1.18 or higher is required in order to use our current configuration files. If you need to run on a previous version of Kubernetes, we keep configuration files in the versioned subdirectories of the [CockroachDB Kubernetes repository](https://github.com/cockroachdb/cockroach/tree/master/cloud/kubernetes) (e.g., [v1.7](https://github.com/cockroachdb/cockroach/tree/master/cloud/kubernetes/v1.7)).
+To deploy CockroachDB {{page.version.version}}, Kubernetes 1.18 or higher is required. Cockroach Labs strongly recommends that you use a Kubernetes version that is [eligible for patch support by the Kubernetes project](https://kubernetes.io/releases/).
 
 #### Kubernetes Operator
 
