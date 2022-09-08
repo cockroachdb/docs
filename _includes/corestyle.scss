@@ -26,6 +26,8 @@
 @import "utils/backgrounds";
 @import "utils/type";
 
+$images-url: "{{site.url}}/docs/images/";
+
 html {
   height: 100%;
 }
@@ -190,7 +192,7 @@ ul, ol {
 
 a.external:after{
   display: inline-block;
-  content: url(images/external.svg);
+  content: url(#{$images-url}/external.svg);
   padding-left: 4px;
 }
 
@@ -821,10 +823,148 @@ a.accordion-toggle {
   color: $neutral-800;
 }
 
-@import "css/theme-blue.css";
+@import "{{site.url}}/docs/css/theme-blue.css";
 
 a.btn-primary {
   &:hover {
     color: #fff;
   }
+}
+
+// hosturls require jekyll
+
+.col-sidebar{
+  .form-control {
+    background-image: url("#{$images-url}icon-mag-glass.svg");
+  }
+}
+
+.main-nav {
+  .navbar {
+    .dropdown-menu {
+      background-image: url(#{$images-url}nav-bg.svg);
+    }
+    .dropdown-toggle {
+      &:before {
+        background-image: url("#{$images-url}icon-chevron-down.svg");
+      }
+    }
+    // Opened menu
+    &.show {
+      .dropdown-toggle {
+        &:before {
+          background-image: url("#{$images-url}icon-chevron-up.svg");
+        }
+      }
+    }
+  }
+}
+
+.col-sidebar{
+  .form-control {
+    background-image: url("#{$images-url}icon-mag-glass.svg");
+  }
+}
+
+#sidebar,
+.js-sidebar {
+  .burger{
+    content: url(#{$images-url}hamburger.svg);
+  }
+
+  ul {
+    li{
+      .nav-expand {
+        content: url(#{$images-url}arrow-down.svg);
+      }
+    }
+  }
+}
+
+.landing-page__tutorial--tile {
+  &.install {
+    .landing-page__tutorial--tile-icon { content: url(#{$images-url}cl-download.svg); }
+  }
+
+  &.start-cluster {
+    .landing-page__tutorial--tile-icon { content: url(#{$images-url}cl-flag-finish.svg); }
+  }
+
+  &.build-app {
+    .landing-page__tutorial--tile-icon { content: url(#{$images-url}cl-settings.svg); }
+  }
+}
+
+.version-tag {
+  &:before {
+    margin-right: 5px;
+    background: url(#{$images-url}icon-megaphone.png) no-repeat center center;
+  }
+}
+
+#version-switcher {
+  .tier-1 {
+    a {
+      .arrow {
+        content: url(#{$images-url}caret-filled-down-blue.svg);
+      }
+    }
+  }
+}
+
+.megamenu {
+  &.show {
+    .dropdown-toggle {
+      &:before {
+        background-image: url("#{$images-url}icon-chevron-up.svg");
+      }
+    }
+  }
+  .dropdown-toggle {
+    &:before {
+      background-image: url("#{$images-url}/icon-chevron-down.svg");
+    }
+  }
+}
+
+
+@media (min-width: 700px) {
+	#os-tabs {
+		button {
+			&#mac {
+
+				&:before {
+					background-image: url(#{$images-url}icon-apple.png);
+	        }
+			}
+
+			&#linux {
+
+				&:before {
+					background-image: url(#{$images-url}icon-linux.png);
+	        }
+			}
+
+			&#windows {
+
+				&:before {
+					background-image: url(#{$images-url}icon-windows.png);
+	        }
+			}
+
+			&#source {
+
+				&:before {
+					background-image: url(#{$images-url}icon-zipfile.png);
+				}
+			}
+
+			&#docker {
+
+				&:before {
+					background-image: url(#{$images-url}icon-docker.png);
+				}
+			}
+		}
+	}
 }
