@@ -23,10 +23,8 @@ cp _site/docs/404.html _site/404.html
 
 # Set up htmltest
 
-curl https://htmltest.wjdp.uk | bash
-echo "debug 0"
+curl https://htmltest.wjdp.uk | bash > /dev/null 2>&1
 ./bin/build.sh>/dev/null 2>&1
-echo "debug 1"
 
 # Run htmltest to check external links on scheduled nightly runs
 # (see .github/workflows/nightly.yml)
@@ -44,12 +42,8 @@ if [[ "$CONTEXT" = "production" ]]; then
 	ALGOLIA_API_KEY=$PROD_ALGOLIA_API_KEY bundle exec jekyll algolia --config _config_base.yml --builds-config _config_cockroachdb.yml
 fi;
 
-echo "debug 2"
 # Run htmltest, but skip checking external links to speed things up
 ./bin/htmltest --skip-external
-
-echo "debug 3"
-
 if [[ $? != 0 ]]; then
   exit 1
 fi;
