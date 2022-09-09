@@ -16,8 +16,8 @@ After downloading your desired release, learn how to [install CockroachDB](../{{
 
 The following binaries are not suitable for production environments:
 
-- **Testing** binaries allow you to test and validate features that will be released in the next major or minor version of CockroachDB.
-- **Experimental** binaries allow you to deploy CockroachDB on architectures that are not yet supported in production.
+- **Testing** binaries allow you to validate the next major or minor version of CockroachDB while it is in development. A testing release is categorized by its level of maturity, moving from Alpha to Beta to Release Candidate (RC).
+- **Experimental** binaries allow you to deploy CockroachDB on architectures that are not yet qualified for production use.
 
 {% assign sections = site.data.releases | map: "release_type" | uniq | reverse %}
 {% comment %} Fetch the list of all release types (currently Testing, Production) {% endcomment %}
