@@ -62,7 +62,7 @@ The following screenshot shows the active statement execution for `SELECT city, 
 
 <img src="{{ 'images/v22.2/transaction-execution.png' | relative_url }}" alt="Transaction execution" style="border:1px solid #eee;max-width:100%" />
 
-If you click the execution ID in the **Transaction Execution ID** column, the [**Transaction Execution** details page](#active-execution-details-page) displays.
+If you click the execution ID in the **Transaction Execution ID** column, the [**Transaction Execution** details page](#transaction-execution-details-page) displays.
 
 <img src="{{ 'images/v22.2/transaction-execution-details.png' | relative_url }}" alt="Transaction execution details" style="border:1px solid #eee;max-width:100%" />
 

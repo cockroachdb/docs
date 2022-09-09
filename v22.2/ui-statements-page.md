@@ -62,7 +62,7 @@ The following screenshot shows the active statement execution for `SELECT city, 
 
 <img src="{{ 'images/v22.2/statement-execution.png' | relative_url }}" alt="Statement execution" style="border:1px solid #eee;max-width:100%" />
 
-If you click the execution ID in the **Statement Execution ID** column, the [**Statement Execution** details page](#active-execution-details-page) displays.
+If you click the execution ID in the **Statement Execution ID** column, the [**Statement Execution** details page](#statement-execution-details-page) displays.
 
 <img src="{{ 'images/v22.2/statement-execution-details.png' | relative_url }}" alt="Statement execution details" style="border:1px solid #eee;max-width:100%" />
 
