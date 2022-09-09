@@ -25,8 +25,13 @@ AZ
 AZs
 backfilled
 backfilling
+backfill
+backfiller
 backfills
 backoff
+backport
+backports
+backporting
 backpressure
 backpressured
 backtraces
@@ -46,6 +51,7 @@ boolean
 booleans
 brandhorst
 brazilsouth
+bugfix
 burstable
 bzip
 CA
