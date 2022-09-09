@@ -23,14 +23,16 @@ cp _site/docs/404.html _site/404.html
 
 # Set up htmltest
 
-go get -u github.com/wjdp/htmltest > /dev/null
-pushd $GOPATH/src/github.com/wjdp/htmltest && ./build.sh>/dev/null 2>&1 && popd
+curl https://htmltest.wjdp.uk | bash
+echo "debug 0"
+./bin/build.sh>/dev/null 2>&1
+echo "debug 1"
 
 # Run htmltest to check external links on scheduled nightly runs
 # (see .github/workflows/nightly.yml)
 
 if [[ "$INCOMING_HOOK_TITLE" = "nightly" ]]; then
-	$GOPATH/src/github.com/wjdp/htmltest/bin/htmltest
+	./bin/htmltest
 	if [[ $? != 0 ]]; then
           exit 1
         fi;
@@ -42,8 +44,11 @@ if [[ "$CONTEXT" = "production" ]]; then
 	ALGOLIA_API_KEY=$PROD_ALGOLIA_API_KEY bundle exec jekyll algolia --config _config_base.yml --builds-config _config_cockroachdb.yml
 fi;
 
+echo "debug 2"
 # Run htmltest, but skip checking external links to speed things up
-$GOPATH/src/github.com/wjdp/htmltest/bin/htmltest --skip-external
+./bin/htmltest --skip-external
+
+echo "debug 3"
 
 if [[ $? != 0 ]]; then
   exit 1
