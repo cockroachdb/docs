@@ -7,7 +7,7 @@ Column | Description
 -----|------------
 Statement Execution ID | The execution ID of the statement execution.
 Statement Execution | The [statement fingerprint](ui-statements-page.html#statements-table) of the statement execution.
-Status | The status of the execution: Preparing or Executing.
+Status | The status of the execution: Preparing, Waiting, or Executing.
 Start Time | The time the execution started.
 Time Spent Waiting | The time the execution spent waiting for access to resources.
 Application | The name specified by the [`application_name`](show-vars.html#supported-variables) session setting.
@@ -20,7 +20,7 @@ The details page provides the following details on the statement execution.
 
 - **Start Time (UTC)**: the time the execution started.
 - **Elapsed Time**: the time elapsed since the execution started.
-- **Status**: the status of the execution: Preparing or Executing.
+- **Status**: the status of the execution: Preparing, Waiting, or Executing.
 - **Full Scan**: whether the execution performed a full scan of the table.
 - **Application Name**: the name specified by the [`application_name`]({{ link_prefix }}show-vars.html#supported-variables) session setting.
 - **User Name**: the name of the user running the statement.

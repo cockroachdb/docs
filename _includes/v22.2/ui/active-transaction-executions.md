@@ -8,7 +8,7 @@ Column | Description
 -----|------------
 Transaction Execution ID | The execution ID of the statement transaction.
 Most Recent Statement | The [statement fingerprint](ui-statements-page.html#statements-table) of the most recently executed statement in the transaction.
-Status | The status of the execution: Preparing or Executing.
+Status | The status of the execution: Preparing, Waiting, or Executing.
 Start Time (UTC) | The time the execution started.
 Elapsed Time | The time elapsed since the transaction started.
 Time Spent Waiting | The time the execution spent waiting for access to resources.
@@ -24,7 +24,7 @@ The details page provides the following details on the transaction execution.
 
 - **Start Time (UTC)**: the time the execution started.
 - **Elapsed Time**: the time elapsed since the transaction started.
-- **Status**: the status of the execution: Preparing or Executing.
+- **Status**: the status of the execution: Preparing, Waiting, or Executing.
 - **Priority**: the [priority](transactions.html#transaction-priorities) of the transaction.
 - **Full Scan**: whether the execution performed a full scan of the table.
 - **Internal Retries**: the number of retries of statements in the transaction.
