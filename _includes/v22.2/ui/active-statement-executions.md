@@ -6,7 +6,7 @@ Click <img src="{{ 'images/common/ui-columns-button.png' | relative_url }}" alt=
 Column | Description
 -----|------------
 Statement Execution ID | The execution ID of the statement execution.
-Statement Execution | The [statement fingerprint](ui-statements-page.html#statements-table) of the statement execution.
+Statement Execution | The SQL statement that was executed.
 Status | The status of the execution: Preparing, Waiting, or Executing.
 Start Time | The time the execution started.
 Time Spent Waiting | The time the execution spent waiting for access to resources.
