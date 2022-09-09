@@ -6,25 +6,35 @@ function build {
 	  exit 1
 	fi;
 }
-
+echo "DEBUG 1"
 # Transform API spec for API docs generation
 pushd api/
 npx swagger2openapi api-spec.json > spec_30.json
 npx snippet-enricher-cli --targets="shell_curl" --input=spec_30.json > spec_30_enriched.json
 rm spec_30.json
 popd
+echo "DEBUG 2"
+
 
 gem install bundler --silent
 bundle install --quiet
 build _config_cockroachdb.yml
+echo "DEBUG 3"
+
 
 cp _site/docs/_redirects _site/_redirects
 cp _site/docs/404.html _site/404.html
+echo "DEBUG 4"
 
 # Set up htmltest
 
-go get -u github.com/wjdp/htmltest > /dev/null
+go install github.com/wjdp/htmltest@latest > /dev/null
+
+echo "DEBUG 5"
+
 pushd $GOPATH/src/github.com/wjdp/htmltest && ./build.sh>/dev/null 2>&1 && popd
+
+echo "DEBUG 6"
 
 # Run htmltest to check external links on scheduled nightly runs
 # (see .github/workflows/nightly.yml)

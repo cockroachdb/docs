@@ -2,7 +2,7 @@
 
 Click <img src="{{ 'images/common/ui-columns-button.png' | relative_url }}" alt="Column selector" /> to select the columns to display in the table.
 
-The Transactions table gives details for each SQL statement fingerprint in the transaction:
+The Transactions table gives details for each transaction fingerprint in the transaction:
 
 Column | Description
 -----|------------
@@ -22,4 +22,4 @@ Statements | Number of SQL statements in the transaction.
 Significant transactions on your database are likely to have a high execution count or number of rows read.
 {{site.data.alerts.end}}
 
-To view transaction details, click a transaction fingerprint in the **Transactions** column to open the **Transaction Details** page.
+To view details of a transaction, click a transaction fingerprint in the **Transactions** column to open the **Transaction Details** page.

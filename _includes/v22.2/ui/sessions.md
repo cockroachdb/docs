@@ -66,6 +66,10 @@ The **Cancel session** button ends the session. The client that holds this sessi
   - **Execution Start Time** is the timestamp at which the statement was run.
   - **Distributed Execution?** shows whether the statement uses [Distributed SQL (DistSQL)]({{ link_prefix }}architecture/sql-layer.html#distsql) optimization.
 
+- **Most Recent Transaction Fingerprints Executed**
+
+  A list of the most recent transaction fingerprint IDs represented in hexadecimal executed by this session.
+
 ## See also
 
 - [`SHOW SESSIONS`]({{ link_prefix }}show-sessions.html)
