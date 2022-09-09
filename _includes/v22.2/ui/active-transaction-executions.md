@@ -6,7 +6,7 @@ The Active Executions table gives details for each transaction fingerprint in th
 
 Column | Description
 -----|------------
-Transaction Execution ID | The execution ID of the statement transaction.
+Transaction Execution ID | The execution ID of the transaction.
 Most Recent Statement | The most recently executed statement in the transaction.
 Status | The status of the execution: Preparing, Waiting, or Executing.
 Start Time (UTC) | The time the execution started.
