@@ -23,6 +23,8 @@ cp _site/docs/404.html _site/404.html
 
 # Set up htmltest
 
+echo "GOPATH: ${GOPATH}"
+
 go get -u github.com/wjdp/htmltest > /dev/null
 pushd $GOPATH/src/github.com/wjdp/htmltest && ./build.sh>/dev/null 2>&1 && popd
 
