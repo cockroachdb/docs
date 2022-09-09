@@ -151,13 +151,14 @@ The following binaries are not suitable for production environments:
 </section>
 
 <section class="filter-content" data-scope="windows">
-    {% include windows_warning.md %}{% comment %} Show warning about Windows being in experimental mode. {% endcomment %}
+    Windows 8 or higher is required.
+
     <table class="release-table">
     <thead>
         <tr>
             <td>Version</td>
             <td>Date</td>
-            <td>Intel 64-bit Downloads</td>
+            <td>Intel 64-bit (<b>Experimental</b>) Downloads</td>
         </tr>
     </thead>
     <tbody>
