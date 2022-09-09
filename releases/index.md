@@ -50,6 +50,14 @@ After downloading your desired release, learn how to [install CockroachDB](../{{
 
         {% assign releases = site.data.releases | where_exp: "releases", "releases.major_version == v.major_version" | where_exp: "releases", "releases.release_type == s" | sort: "release_date" | reverse %} {% comment %} Fetch all releases for that major version based on release type (Production/Testing). {% endcomment %}
 
+        {% assign v_linux_arm = "false" %}
+        {% for r in releases %}
+            {% if r.linux_arm == "true" %}
+                {% assign v_linux_arm = "true" %}
+                {% break %}
+            {% endif %}
+        {% endfor %}
+
         {% if releases[0] %}
 ### {{ s }} Releases
 
@@ -59,8 +67,10 @@ After downloading your desired release, learn how to [install CockroachDB](../{{
         <tr>
             <td>Version</td>
             <td>Date</td>
-            <td>Architecture</td>
-            <td>Downloads</td>
+            <td>Intel 64-bit Downloads</td>
+        {% if v_linux_arm == "true" %}
+            <td>ARM 64-bit (<b>Experimental</b>) Downloads</td>
+        {% endif %}
         </tr>
     </thead>
     <tbody>
@@ -73,7 +83,6 @@ After downloading your desired release, learn how to [install CockroachDB](../{{
                 {% endif %}
             </td>
             <td>{{ r.release_date }}</td> {% comment %} Release date of the release. {% endcomment %}
-            <td>Intel 64-bit</td>
                 {% if r.withdrawn == "true" %} {% comment %} Suppress withdrawn releases. {% endcomment %}
             <td><span class="badge badge-gray">Withdrawn</span></td>
                 {% else %} {% comment %} Add download links for all non-withdrawn versions. {% endcomment %}
@@ -83,12 +92,7 @@ After downloading your desired release, learn how to [install CockroachDB](../{{
                 <br /><a href="https://binaries.cockroachdb.com/cockroach-sql-{{ r.version }}.linux-amd64.tgz">SQL Shell Binary</a> (<a href="https://binaries.cockroachdb.com/cockroach-sql-{{ r.version }}.linux-amd64.tgz.sha256sum">SHA256</a>)
                     {% endif %}
                 {% endif %}
-            </tr>
                 {% if r.linux_arm == "true" %}
-            <tr {% if r.version == latest_hotfix.version %}class="latest"{% endif %}> {% comment %} Add "Latest" class to release if it's the latest release. {% endcomment %}{% comment %}Version and date columns from previous row{% endcomment %}
-                <td />
-                <td />
-                <td>ARM 64-bit<br />(<b>Experimental</b>)</td>
                     {% if r.withdrawn == "true" %} {% comment %} Suppress withdrawn releases. {% endcomment %}{% comment %}Version and date columns joined with previous row{% endcomment %}
                 <td><span class="badge badge-gray">Withdrawn</span></td>
                     {% else %} {% comment %} Add download links for all non-withdrawn versions. {% endcomment %}
@@ -99,8 +103,8 @@ After downloading your desired release, learn how to [install CockroachDB](../{{
                         {% endif %}
                 </td>
                     {% endif %}
-            </tr>
                 {% endif %}
+            </tr>
             {% endfor %} {% comment %}Releases {% endcomment %}
         </tbody>
     </table>
@@ -112,8 +116,7 @@ After downloading your desired release, learn how to [install CockroachDB](../{{
         <tr>
             <td>Version</td>
             <td>Date</td>
-            <td>Architecture</td>
-            <td>Downloads</td>
+            <td>Intel 64-bit Downloads</td>
         </tr>
     </thead>
     <tbody>
@@ -126,7 +129,6 @@ After downloading your desired release, learn how to [install CockroachDB](../{{
                 {% endif %}
             </td>
             <td>{{ r.release_date }}</td> {% comment %} Release date of the release. {% endcomment %}
-            <td>Intel 64-bit</td>
                 {% if r.withdrawn == "true" %} {% comment %} Suppress withdrawn releases. {% endcomment %}
             <td><span class="badge badge-gray">Withdrawn</span></td>
                 {% else %} {% comment %} Add download links for all non-withdrawn versions. {% endcomment %}
@@ -152,8 +154,7 @@ After downloading your desired release, learn how to [install CockroachDB](../{{
         <tr>
             <td>Version</td>
             <td>Date</td>
-            <td>Architecture</td>
-            <td>Downloads</td>
+            <td>Intel 64-bit Downloads</td>
         </tr>
     </thead>
     <tbody>
@@ -166,7 +167,6 @@ After downloading your desired release, learn how to [install CockroachDB](../{{
                 {% endif %}
             </td>
             <td>{{ r.release_date }}</td> {% comment %} Release date of the release. {% endcomment %}
-            <td>Intel 64-bit</td>
                 {% if r.withdrawn == "true" %} {% comment %} Suppress withdrawn releases. {% endcomment %}
             <td><span class="badge badge-gray">Withdrawn</span></td>
                 {% else %} {% comment %} Add download links for all non-withdrawn versions. {% endcomment %}
@@ -194,7 +194,6 @@ After downloading your desired release, learn how to [install CockroachDB](../{{
         <tr>
             <td>Version</td>
             <td>Date</td>
-            <td>Architecture</td>
             <td>Docker image tag</td>
         </tr>
     </thead>
@@ -208,8 +207,6 @@ After downloading your desired release, learn how to [install CockroachDB](../{{
             {% endif %}
             </td>
             <td>{{ r.release_date }}</td> {% comment %} Release date of the release. {% endcomment %}
-            <td>Intel 64-bit</td>
-            <td>
                 {% if r.withdrawn == "true" %} {% comment %} Suppress withdrawn releases. {% endcomment %}
                 <span class="badge badge-gray">Withdrawn</span></td>
                 {% else %}
@@ -233,7 +230,6 @@ After downloading your desired release, learn how to [install CockroachDB](../{{
         <tr>
             <td>Version</td>
             <td>Date</td>
-            <td>Architecture</td>
             <td>Source</td>
         </tr>
     </thead>
@@ -247,7 +243,6 @@ After downloading your desired release, learn how to [install CockroachDB](../{{
         {% endif %}
             </td>
             <td>{{ r.release_date }}</td> {% comment %} Release date of the release. {% endcomment %}
-            <td>Intel 64-bit</td>
         {% if r.withdrawn == "true" %} {% comment %} Suppress withdrawn releases. {% endcomment %}
             <td><span class="badge badge-gray">Withdrawn</span></td>
         {% else %} {% comment %} Add download links for all non-withdrawn versions. {% endcomment %}
