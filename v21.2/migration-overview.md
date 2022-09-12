@@ -56,7 +56,7 @@ We recommend [using AWS Database Migration Service (DMS) to migrate data](aws-dm
 
 Alternatively, use `IMPORT` to [migrate CSV data](migrate-from-csv.html).
 
-You can also migrate data from the following data formts:
+You can also migrate data from the following data formats:
 
 - [Avro](migrate-from-avro.html)
 - [ESRI Shapefiles](migrate-from-shapefiles.html) (`.shp`) (using `shp2pgsql`)

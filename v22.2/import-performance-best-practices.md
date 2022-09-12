@@ -52,7 +52,7 @@ If you split the data into **more** files than you have nodes, it will not have 
 
 ### File storage during import
 
-During migration, all of the features of [`IMPORT`][import] that interact with external file storage assume that every node has the exact same view of that storage. In other words, in order to import from a file, every node needs to have the same access to that file.
+During migration, all of the features of [`IMPORT`](import.html) that interact with external file storage assume that every node has the exact same view of that storage. In other words, in order to import from a file, every node needs to have the same access to that file.
 
 ## Choose a performant import format
 

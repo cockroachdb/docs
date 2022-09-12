@@ -39,7 +39,7 @@ To begin a database migration:
 
 1. Click the upload box and select a `.sql` file, or drop a `.sql` file directly into the box. 
 1. Wait for the schema to be analyzed. A loading screen is displayed. Depending on the size and complexity of the SQL dump, analyzing the schema can require up to several minutes.
-1. When analysis is complete, review the [**Summary Report**](#summary-report) and edit, add, or remove SQL statements in the [**Statements** list]#statements-list).
+1. When analysis is complete, review the [**Summary Report**](#summary-report) and edit, add, or remove SQL statements in the [**Statements** list](#statements-list).
 
 ## Migrations table
 
@@ -48,7 +48,7 @@ If you have attempted at least one migration, the Migrations table is displayed 
 |     Column     |                                                                                         Description                                                                                          |
 |----------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Migration Name | The filename of the `.sql` file that was [uploaded](#upload-a-sql-dump).                                                                                                                       |
-| Status         | The status of the migration: `READY FOR REVIEW`, `READY TO FINALIZE`, or `FINALIZED`. Migrations with `READY TO FINALIZE` status can be [finalized](#finalize-the-schema).                    |
+| Status         | The status of the migration: `READY FOR REVIEW`, `READY TO FINALIZE`, or `FINALIZED`. You can [finalize](#finalize-the-schema) migrations with `READY TO FINALIZE` status.                    |
 | Date Imported  | The timestamp when the SQL dump was uploaded.                                                                                                                                                |
 | Last Updated   | The timestamp when the [SQL statements](#statements-list) were updated.                                                                                                                      |
 | Errors         | The number of SQL errors preventing a migration from attaining `READY TO FINALIZE` status. |
@@ -59,7 +59,7 @@ To view the [**Summary Report**](#summary-report) or [**Statements** list](#stat
 
 The **Summary Report** displays the results of the schema analysis:
 
-- The number of **statements total** that were analyzed in the `.sql` file that you [uploaded](#upload-a-sql-dump).
+- The number of **statements total** in the [uploaded](#upload-a-sql-dump) `.sql` file that were analyzed.
 - The number of **errors** in SQL statements that are blocking [finalization](#finalize-the-schema). Errors are further categorized on the [**Statement Status**](#statement-status) graph.
 - The number of **incidental errors** in SQL statements that are caused by errors in other SQL statements.
 - The number of **suggestions** that were made regarding [differences from other databases](../{{version_prefix}}migration-overview.html#differences-from-other-databases).
@@ -74,7 +74,7 @@ The **Statement Status** graph displays the number of successful statements (gre
 
 - **OK** represents a successful statement.
 - **Unimplemented Feature** represents a statement that uses an [unimplemented feature](../{{version_prefix}}migration-overview.html#unimplemented-features).
-- **Statement Error** represents a statement that failed for a reason unrelated to an unimplemented feature or missing user.
+- **Statement Error** represents a statement that failed for a reason other than a missing user or unimplemented feature.
 - **Not Executed** represents a statement that was not executed by the tool.
 - **Missing User** represents a statement that references a nonexistent user. 
 - **Incidental Error** represents a statement that failed because another SQL statement encountered one of the preceding error types.
@@ -84,7 +84,7 @@ The **Statement Status** graph displays the number of successful statements (gre
 The **Suggestions** graph displays the number of each suggestion type:
 
 - **Sequences** represents a statement that uses a sequence to define a primary key column. [Using a sequence for a primary key column is not recommended.](../{{version_prefix}}create-sequence.html#considerations)
-- **Default INT size** represents a statement that was **added** to change the integer size to `4`. [By default, CockroachDB uses `INT8`.](../{{version_prefix}}int.html#considerations-for-64-bit-signed-integers). If you don't want to change the integer size, you can remove this statement in the [**Statements** list](#statements-list).
+- **Default INT size** represents a statement that was **added** to change the integer size to `4`. [By default, CockroachDB uses `INT8`.](../{{version_prefix}}int.html#considerations-for-64-bit-signed-integers) If you don't want to change the integer size, you can remove this statement in the [**Statements** list](#statements-list).
 - **Missing Primary Key** represents a statement that does not define an explicit primary key for a table. [Defining an explicit primary key on every table is recommended.](../{{version_prefix}}schema-design-table.html#select-primary-key-columns)
 
 {{site.data.alerts.callout_success}}
