@@ -33,3 +33,6 @@ Set a [`REGION` survival goal](multiregion-overview.html#surviving-region-failur
 - [Topology Patterns](topology-patterns.html)
 - [Disaster Recovery](disaster-recovery.html)
 - [Migrate to Multi-Region SQL](migrate-to-multiregion-sql.html)
+- [Secondary regions](multiregion-overview.html#secondary-regions)
+- [`SET SECONDARY REGION`](set-secondary-region.html)
+- [`DROP SECONDARY REGION`](drop-secondary-region.html)

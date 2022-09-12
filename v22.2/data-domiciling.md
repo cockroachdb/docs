@@ -272,3 +272,6 @@ Using CockroachDB as part of your approach to data domiciling has several limita
 - [When to Use `REGIONAL` vs. `GLOBAL` Tables](when-to-use-regional-vs-global-tables.html)
 - [When to Use `ZONE` vs. `REGION` Survival Goals](when-to-use-zone-vs-region-survival-goals.html)
 - [`ADD REGION`](add-region.html)
+- [Secondary regions](multiregion-overview.html#secondary-regions)
+- [`ALTER DATABASE ... SET SECONDARY REGION`](set-secondary-region.html)
+- [`ALTER DATABASE ... DROP SECONDARY REGION`](drop-secondary-region.html)
