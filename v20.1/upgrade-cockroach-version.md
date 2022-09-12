@@ -281,4 +281,4 @@ In the event of catastrophic failure or corruption, the only option will be to s
 - [View Node Details](cockroach-node.html)
 - [Collect Debug Information](cockroach-debug-zip.html)
 - [View Version Details](cockroach-version.html)
-- [Release notes for our latest version](../releases/{{page.release_info.version}}.html)
+- [Release notes for our latest version](../releases/{{page.version.version}}.html)
