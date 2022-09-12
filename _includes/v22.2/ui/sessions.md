@@ -68,7 +68,7 @@ The **Cancel session** button ends the session. The client that holds this sessi
 
 - **Most Recent Transaction Fingerprints Executed**
 
-  A list of the most recent transaction fingerprint IDs, represented in hexadecimal, executed by this session. The fingerprint ID is a link to the [Transaction Details page](ui-transactions-page.html##transaction-details-page) for the transaction. When you click the link, in order to fetch and render the transaction details, the global date range is changed to the session's start and end time.
+  A list of the most recent transaction fingerprint IDs, represented in hexadecimal, executed by this session. The fingerprint ID is a link to the [Transaction Details page](ui-transactions-page.html#transaction-details-page) for the transaction. When you click the link, in order to fetch and render the transaction details, the global date range is changed to the session's start and end time.
 
 ## See also
 
