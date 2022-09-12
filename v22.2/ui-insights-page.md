@@ -22,7 +22,7 @@ The Workload Insights tab displays insights related to transaction and statement
 
 ### Transaction Executions view
 
-To view this view, click **Insights** in the left-hand navigation of the DB Console. The **Workload Insights > Transaction Executions** view is selected.
+To display this view, click **Insights** in the left-hand navigation of the DB Console. The **Workload Insights > Transaction Executions** view is selected.
 
 The **Transaction Executions** view provides an overview of all transaction executions that have been flagged with insights.
 
