@@ -21,7 +21,7 @@ To view this page, [access the DB Console](ui-overview.html#db-console-access) a
 {% include_cached new-in.html version="v22.2" %} The database, table details, and index details pages show recommendations to drop indexes based on index usage. You can traverse the database and table views to determine which indexes have recommendations.
 
 You configure the threshold for determining when to drop an index due to low usage in the `sql.index_recommendation.drop_unused_duration` [cluster setting](cluster-settings.html). The default value is 7 days.
-For other settings, see [Schema insight settings](ui-insights-page.html#schema-insight-settings).
+For other settings, see [Schema insight settings](ui-insights-page.html#schema-insights-settings).
 
 ## Databases
 

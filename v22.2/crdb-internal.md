@@ -29,7 +29,7 @@ Table name | Description| Use in production
 [`cluster_contended_keys`](#cluster_contended_keys)  | Contains information about [contended](performance-best-practices-overview.html#transaction-contention) keys in your cluster.| ✓
 [`cluster_contended_tables`](#cluster_contended_tables)  | Contains information about [contended](performance-best-practices-overview.html#transaction-contention) tables in your cluster.| ✓
 [`cluster_contention_events`](#cluster_contention_events)  | Contains information about [contention](performance-best-practices-overview.html#transaction-contention) in your cluster.| ✓
-[`cluster_locks`](#cluster_locks)  | Contains information about [locks](architecture/transaction-layer.html#concurrency-control) held by [transactions](transactions.html) on specific [keys](architecture/overview.html#architecture-range). | ✓
+[`cluster_locks`](#cluster_locks) | Contains information about [locks](architecture/transaction-layer.html#concurrency-control) held by [transactions](transactions.html) on specific [keys](architecture/overview.html#architecture-range). | ✓
 `cluster_database_privileges` | Contains information about the [database privileges](security-reference/authorization.html#privileges) on your cluster.| ✗
 `cluster_execution_insights`  | Contains information about SQL statement executions on your cluster.| ✗
 `cluster_distsql_flows` | Contains information about the flows of the [DistSQL execution](architecture/sql-layer.html#distsql) scheduled in your cluster.| ✗
@@ -60,7 +60,7 @@ Table name | Description| Use in production
 `lost_descriptors_with_data` | Contains information about table descriptors that have been deleted but still have data left over in storage.| ✗
 `node_build_info` | Contains information about nodes in your cluster.| ✗
 `node_contention_events`| Contains information about contention on the gateway node of your cluster.| ✗
-`node_execution_insights` | Contains information about SQL statement executions on the gateway node of your cluster.  | ✗
+`node_execution_insights` | Contains information about SQL statement executions on the gateway node of your cluster.| ✗
 `node_distsql_flows` | Contains information about the flows of the [DistSQL execution](architecture/sql-layer.html#distsql) scheduled on nodes in your cluster.| ✗
 `node_inflight_trace_spans` | Contains information about currently in-flight spans in the current node.| ✗
 `node_metrics` | Contains metrics for nodes in your cluster.| ✗
@@ -844,6 +844,7 @@ Column | Type | Description
 `statistics` | `JSONB NOT NULL` | Statistics for the statement. See [`statistics` column](#statistics-column).
 `sampled_plan` | `JSONB NOT NULL` | The sampled query plan of the current statement statistics. This column is unfilled if there is no sampled query plan.
 `aggregation_interval` | `INTERVAL NOT NULL` | The interval over which statistics are aggregated.
+`index_recommendations` | `STRING[] NOT NULL`  | An array of strings containing index recommendations of the format `<type> : <sql query>`.
 
 #### `metadata` column
 
