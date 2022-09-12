@@ -139,11 +139,10 @@ in this case to create an index on the ride start time that stores the rider ID.
 
 To display this view, click **Insights** in the left-hand navigation of the DB Console and select **Schema Insights**.
 
-This view lists the indexes that have not been used and should be dropped and or the ones that should be created, altered, or replaced (based on statements execution).
+This view lists the indexes that have not been used and should be dropped and or the ones that should be created, altered, or replaced (based on statement execution).
 
 - The drop recommendations are the same as those on the [Databases](ui-databases-page.html) page.
-- The create, alter, and replace recommendations are the same as those on the [Explain Plans tab](ui-statements-page.html#insights) on the Statements page. The Explain Plans Details shows all recommendations,
-but this page shows only the latest recommendations for that fingerprint.
+- The create, alter, and replace recommendations are the same as those on the [Explain Plans tab](ui-statements-page.html#insights) on the Statements page. The Explain Plans tab shows all recommendations, however this page shows only the latest recommendations for that statement fingerprint.
 
 The following screenshot shows the insight that displays after you run the query described in [Use the right index]({{ link_prefix }}apply-statement-performance-rules.html#rule-2-use-the-right-index) 6 or more times:
 
@@ -151,10 +150,10 @@ The following screenshot shows the insight that displays after you run the query
 
 - **Insights:** Contains one of the following insight types: **Create Index**, **Alter Index**, **Replace Index**, **Drop Unused Index**.
 - **Details:** Details for each insight. Different insight types display different details fields:
-    - Create, Alter, or Replace Index: a Statement Fingerprint field, that displays the statement fingerprint that would be optimized with the creation, alteration, or replacement of the index, and a Recommendation field, that displays the SQL query to create, alter, or replace the index.
-    - Drop Unused Index: an Index field, that displays the name of the index to drop, as well as a Description field, that displays the reason for dropping the index.
+    - Create, Alter, or Replace Index: a Statement Fingerprint field, which displays the statement fingerprint that would be optimized with the creation, alteration, or replacement of the index, and a Recommendation field, which displays the SQL query to create, alter, or replace the index.
+    - Drop Unused Index: an Index field, which displays the name of the index to drop, and a Description field, which displays the reason for dropping the index.
 
-Click the action button in the final column to executes the corresponding SQL query to realize the schema insight.
+To realize the schema insight, click the action button in the final column to execute the SQL query.
 
 ## Configuration
 
