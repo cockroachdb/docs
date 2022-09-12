@@ -35,7 +35,8 @@ Field | Description  | `SHOW REGIONS` | `SHOW REGIONS FROM CLUSTER` | `SHOW REGI
 `region` | The name of the region. | ✓ | ✓ | ✓
 `zones` | The availability zones for the region. | ✓ | ✓ | ✓
 `database_names` | A set of database names that use the region. | ✓ | |
-`primary_region_of` | A set of database names for which the region is the primary region. | ✓ | |
+`primary_region_of` | A set of database names for which the region is the [primary region](set-primary-region.html). | ✓ | |
+`secondary_region_of` | A set of database names for which the region is the [secondary region](multiregion-overview.html#secondary-regions). | ✓ | |
 `database`| The name of the database that uses the region.  | | | ✓
 `primary` | If `true`, indicates that the region is the primary region. | | | ✓
 
@@ -46,6 +47,7 @@ Field | Description
 `database_name` | The name of the database.
 `regions` | A set of region names in use by the database.
 `primary_region` | The primary region of the database.
+`secondary_region` | The secondary region of the database.
 
 ## Examples
 
@@ -116,28 +118,21 @@ SHOW REGIONS FROM DATABASE movr;
 ~~~
 
 ~~~
-  database |   region   | primary |            zones
------------+------------+---------+------------------------------
-  movr     | us-east    |  true   | {us-east-a,us-east-b}
-  movr     | us-central |  false  | {us-central-a,us-central-b}
-  movr     | us-west    |  false  | {us-west-a,us-west-b}
+  database |   region   | primary | secondary |            zones
+-----------+------------+---------+-----------+------------------------------
+  movr     | us-east    |    t    |     f     | {us-east-a,us-east-b}
+  movr     | us-central |    f    |     f     | {us-central-a,us-central-b}
+  movr     | us-west    |    f    |     f     | {us-west-a,us-west-b}
 (3 rows)
 ~~~
+
+<span class="version-tag">New in v22.2:</span> The `secondary` column in each row says whether that region has been made a _secondary region_ for failover purposes. For more information, see [Secondary regions](multiregion-overview.html#secondary-regions).
 
 With `movr` set as the current database, the following statement returns the same results:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW REGIONS FROM DATABASE;
-~~~
-
-~~~
-  database |   region   | primary |            zones
------------+------------+---------+------------------------------
-  movr     | us-east    |  true   | {us-east-a,us-east-b}
-  movr     | us-central |  false  | {us-central-a,us-central-b}
-  movr     | us-west    |  false  | {us-west-a,us-west-b}
-(3 rows)
 ~~~
 
 ### View the regions for all databases in a cluster
@@ -198,4 +193,7 @@ SHOW REGIONS FROM ALL DATABASES;
 - [`ADD SUPER REGION`](add-super-region.html)
 - [`DROP SUPER REGION`](drop-super-region.html)
 - [`SHOW SUPER REGIONS`](show-super-regions.html)
+- [Secondary regions](multiregion-overview.html#secondary-regions)
+- [`SET SECONDARY REGION`](set-secondary-region.html)
+- [`DROP SECONDARY REGION`](drop-secondary-region.html)
 - [SQL Statements](sql-statements.html)

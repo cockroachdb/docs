@@ -439,6 +439,12 @@
                 ]
               },
               {
+                "title": "<code>DROP SECONDARY REGION</code> (Enterprise)",
+                "urls": [
+                  "/${VERSION}/drop-secondary-region.html"
+                ]
+              },
+              {
                 "title": "<code>DROP SUPER REGION</code> (Enterprise)",
                 "urls": [
                   "/${VERSION}/drop-super-region.html"
@@ -742,6 +748,12 @@
                 "title": "<code>SET SCHEMA</code>",
                 "urls": [
                   "/${VERSION}/set-schema.html"
+                ]
+              },
+              {
+                "title": "<code>SET SECONDARY REGION</code> (Enterprise)",
+                "urls": [
+                  "/${VERSION}/set-secondary-region.html"
                 ]
               },
               {
