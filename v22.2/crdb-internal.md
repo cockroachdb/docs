@@ -31,6 +31,7 @@ Table name | Description| Use in production
 [`cluster_contention_events`](#cluster_contention_events)  | Contains information about [contention](performance-best-practices-overview.html#transaction-contention) in your cluster.| ✓
 [`cluster_locks`](#cluster_locks)  | Contains information about [locks](architecture/transaction-layer.html#concurrency-control) held by [transactions](transactions.html) on specific [keys](architecture/overview.html#architecture-range). | ✓
 `cluster_database_privileges` | Contains information about the [database privileges](security-reference/authorization.html#privileges) on your cluster.| ✗
+`cluster_execution_insights`  | Contains information about SQL statement executions on your cluster.| ✗
 `cluster_distsql_flows` | Contains information about the flows of the [DistSQL execution](architecture/sql-layer.html#distsql) scheduled in your cluster.| ✗
 `cluster_inflight_traces` | Contains information about in-flight [tracing](show-trace.html) in your cluster.| ✗
 [`cluster_queries`](#cluster_queries) | Contains information about queries running on your cluster.| ✓
@@ -59,6 +60,7 @@ Table name | Description| Use in production
 `lost_descriptors_with_data` | Contains information about table descriptors that have been deleted but still have data left over in storage.| ✗
 `node_build_info` | Contains information about nodes in your cluster.| ✗
 `node_contention_events`| Contains information about contention on the gateway node of your cluster.| ✗
+`node_execution_insights` | Contains information about SQL statement executions on the gateway node of your cluster.  | ✗
 `node_distsql_flows` | Contains information about the flows of the [DistSQL execution](architecture/sql-layer.html#distsql) scheduled on nodes in your cluster.| ✗
 `node_inflight_trace_spans` | Contains information about currently in-flight spans in the current node.| ✗
 `node_metrics` | Contains metrics for nodes in your cluster.| ✗

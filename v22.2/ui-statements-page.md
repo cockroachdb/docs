@@ -7,7 +7,7 @@ docs_area: reference.db_console
 
 {% include {{ page.version.version }}/ui/admin-access.md %}
 
-The **Statements** page  of the DB Console helps you:
+The **Statements** page of the DB Console helps you:
 
 - Identify frequently executed or high latency [SQL statements](sql-statements.html).
 - View SQL statement fingerprint [details](#statement-fingerprint-page).

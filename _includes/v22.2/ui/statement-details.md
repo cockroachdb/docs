@@ -18,7 +18,25 @@ The **Overview** section displays the SQL statement fingerprint and execution at
 - **Transaction type**: the type of transaction ([implicit]({{ link_prefix }}transactions.html#individual-statements) or [explicit]({{ link_prefix }}transactions.html#sql-statements)).
 - **Last execution time**: when the statement was last executed.
 
-The following screenshot shows the statement fingerprint of the query described in [Use the right index]({{ link_prefix }}apply-statement-performance-rules.html#rule-2-use-the-right-index):
+Run the query described in [Use the right index]({{ link_prefix }}apply-statement-performance-rules.html#rule-2-use-the-right-index):
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT
+  name, count(rides.id) AS sum
+FROM
+  users JOIN rides ON users.id = rides.rider_id
+WHERE
+  rides.start_time BETWEEN '2018-12-31 00:00:00' AND '2020-01-01 00:00:00'
+GROUP BY
+  name
+ORDER BY
+  sum DESC
+LIMIT
+  10;
+~~~
+
+The following screenshot shows the statement fingerprint of the query:
 
 <img src="{{ 'images/v22.2/ui_statement_fingerprint_overview.png' | relative_url }}" alt="Statement fingerprint overview" style="border:1px solid #eee;max-width:100%" />
 
@@ -32,23 +50,38 @@ Charts following the execution attributes display statement fingerprint statisti
 - **Execution Count**: the total number of executions. It is calculated as the sum of first attempts and retries.
 - **Contention**: the amount of time spent waiting for resources.
 
-The following charts summarize the executions of the statement fingerprint illustrated in the preceding section:
+The following charts summarize the executions of the statement fingerprint illustrated in [Overview](#overview):
 
 <img src="{{ 'images/v22.2/ui_statement_fingerprint_charts.png' | relative_url }}" alt="Statement fingerprint charts" style="border:1px solid #eee;max-width:100%" />
 
 ### Explain Plans
 
-The **Explain Plans** tab displays statement plans for an [explainable statement]({{ link_prefix }}sql-grammar.html#preparable_stmt) in the selected [time interval](#time-interval). You can use this information to optimize the query. For more information about plans, see [`EXPLAIN`]({{ link_prefix }}explain.html).
+The **Explain Plans** tab displays statement plans for an [explainable statement]({{ link_prefix }}sql-grammar.html#preparable_stmt) in the selected [time interval](#time-interval).
+You can use this information to optimize the query. For more information about plans, see [`EXPLAIN`]({{ link_prefix }}explain.html).
 
-The following screenshot shows two executions of the query discussed in the preceding sections:
+The following screenshot shows an execution of the query discussed in [Overview](#overview):
 
 <img src="{{ 'images/v22.2/ui_plan_table.png' | relative_url }}" alt="Plan table" style="border:1px solid #eee;max-width:100%" />
 
-The plan table shows statistics for the execution and whether the execution was distributed or used the [vectorized execution engine]({{ link_prefix }}vectorized-execution.html). In the screenshot, the **Average Execution Time** column show that the second execution at `20:37`, which uses the index, takes less time than the first execution.
+The plan table shows the plan gist, whether there are insights for the plan, statistics for the execution and whether the execution used a full scan, was distributed, or used the [vectorized execution engine]({{ link_prefix }}vectorized-execution.html).
 
-To display the plan that was executed, click a plan ID. When you click the plan ID `13182663282122740000`, the following plan displays:
+To display the plan that was executed and the insight, click the plan gist. For the plan gist `AgHUAQIABQAAAAHYAQIAiA...`, the following plan displays:
 
 <img src="{{ 'images/v22.2/ui_statement_plan.png' | relative_url }}" alt="Plan table" style="border:1px solid #eee;max-width:100%" />
+
+#### Insights
+
+{% include_cached new-in.html version="v22.2" %} If you run the statement 6 or more times, the plan table will be updated to indicate that there is 1 insight.
+
+When you click the gist, a table of insights that describe how to improve the performance will follow the plan.
+
+<img src="{{ 'images/v22.2/plan_with_insight.png' | relative_url }}" alt="Plan with insight" style="border:1px solid #eee;max-width:100%" />
+
+In this case the insight is recommending that you create an index on the `start_time` column of the `rides` table and storing the `rider_id`.
+
+If you click **Create Index**, a confirmation dialog displays warning you of the cost of [online schema changes](online-schema-changes.html). If you click **Apply** to create the index and then re-run the command, the **Explain Plans** tab will show that the second execution (in this case at `19:40`), which uses the index and has no insight, takes less time than the first 6 executions.
+
+<img src="{{ 'images/v22.2/ui_statement_plan_2.png' | relative_url }}" alt="Plan table after index" style="border:1px solid #eee;max-width:100%" />
 
 ### Diagnostics
 
