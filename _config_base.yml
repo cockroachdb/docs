@@ -28,6 +28,7 @@ keep_files:
 markdown: Redcarpet
 plugins:
 - jekyll-include-cache
+- jekyll-last-modified-at
 release_info:
   v1.0:
     build_time: 2018/02/13 15:13:51 (go1.8.3)
