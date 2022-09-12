@@ -1,14 +1,14 @@
 ---
 title: SET SCHEMA
-summary: The SET SCHEMA statement changes the schema of a table.
+summary: The SET SCHEMA statement changes the schema of a table or function.
 toc: true
 docs_area: reference.sql
 ---
 
-The `SET SCHEMA` [statement](sql-statements.html) changes the [schema](sql-name-resolution.html) of a [table](create-table.html).
+The `SET SCHEMA` [statement](sql-statements.html) changes the [schema](sql-name-resolution.html) of a [table](create-table.html) or a [function](create-function.html).
 
 {{site.data.alerts.callout_info}}
-`SET SCHEMA` is a subcommand of [`ALTER TABLE`](alter-table.html).
+`SET SCHEMA` is a subcommand of [`ALTER TABLE`](alter-table.html) and [`ALTER FUNCTION`](alter-function.html).
 
 CockroachDB also supports `SET SCHEMA` as an [alias for setting the `search_path` session variable](set-vars.html#supported-variables).
 {{site.data.alerts.end}}
@@ -17,7 +17,7 @@ CockroachDB also supports `SET SCHEMA` as an [alias for setting the `search_path
 
 ## Required privileges
 
-The user must have the `DROP` [privilege](security-reference/authorization.html#managing-privileges) on the table, and the `CREATE` privilege on the schema.
+The user must have the `DROP` [privilege](security-reference/authorization.html#managing-privileges) on the table or function, and the `CREATE` privilege on the schema.
 
 ## Syntax
 
@@ -27,12 +27,18 @@ The user must have the `DROP` [privilege](security-reference/authorization.html#
 ALTER TABLE [IF EXISTS] <name> SET SCHEMA <newschemaname>
 ~~~
 
+### Functions
+
+~~~
+ALTER FUNCTION <name> SET SCHEMA <newschemaname>
+~~~
+
 ## Parameters
 
  Parameter | Description
 -----------|-------------
- `name` | The name of the table to alter.
- `newschemaname` | The name of the table's new schema.
+ `name` | The name of the table or function to alter.
+ `newschemaname` | The name of the new schema.
 
 ## Examples
 

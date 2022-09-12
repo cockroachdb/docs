@@ -122,6 +122,12 @@
                 ]
               },
               {
+                "title": "User-Defined Functions",
+                "urls": [
+                  "/${VERSION}/user-defined-functions.html"
+                ]
+              },
+              {
                 "title": "<code>NULL</code> Handling",
                 "urls": [
                   "/${VERSION}/null-handling.html"
@@ -190,6 +196,12 @@
                 "title": "<code>ALTER DEFAULT PRIVILEGES</code>",
                 "urls": [
                   "/${VERSION}/alter-default-privileges.html"
+                ]
+              },
+              {
+                "title": "<code>ALTER FUNCTION</code>",
+                "urls": [
+                  "/${VERSION}/alter-function.html"
                 ]
               },
               {
@@ -343,6 +355,12 @@
                 ]
               },
               {
+                "title": "<code>CREATE FUNCTION</code>",
+                "urls": [
+                  "/${VERSION}/create-function.html"
+                ]
+              },
+              {
                 "title": "<code>CREATE INDEX</code>",
                 "urls": [
                   "/${VERSION}/create-index.html"
@@ -430,6 +448,12 @@
                 "title": "<code>DROP DATABASE</code>",
                 "urls": [
                   "/${VERSION}/drop-database.html"
+                ]
+              },
+              {
+                "title": "<code>DROP FUNCTION</code>",
+                "urls": [
+                  "/${VERSION}/drop-function.html"
                 ]
               },
               {

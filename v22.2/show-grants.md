@@ -9,7 +9,7 @@ docs_area: reference.sql
 The `SHOW GRANTS` [statement](sql-statements.html) lists one of the following:
 
 - The [roles](security-reference/authorization.html#sql-users) granted to [users](security-reference/authorization.html#sql-users) in a cluster.
-- The [privileges](security-reference/authorization.html#managing-privileges) [granted](grant.html) to [users](security-reference/authorization.html#sql-users) on [databases](create-database.html), [schemas](create-schema.html), [tables](create-table.html), or [user-defined types](enum.html).
+- The [privileges](security-reference/authorization.html#managing-privileges) [granted](grant.html) to [users](security-reference/authorization.html#sql-users) on [databases](create-database.html), [user-defined functions](create-function.html), [schemas](create-schema.html), [tables](create-table.html), or [user-defined types](enum.html).
 
 ## Syntax
 
@@ -18,7 +18,7 @@ The `SHOW GRANTS` [statement](sql-statements.html) lists one of the following:
 Use the following syntax to show the privileges granted to users on database objects:
 
 ~~~
-SHOW GRANTS [ON [DATABASE | SCHEMA | TABLE | TYPE] <targets...>] [FOR <users...>]
+SHOW GRANTS [ON [DATABASE | FUNCTION | SCHEMA | TABLE | TYPE] <targets...>] [FOR <users...>]
 ~~~
 
 When `DATABASE` is omitted, the schema, tables, and types in the [current database](sql-name-resolution.html#current-database) are listed.
@@ -43,11 +43,12 @@ Parameter    | Description
 
 ### Privilege grants
 
-The `SHOW GRANTS ON [DATABASE | SCHEMA | TABLE | TYPE]` statement can return the following fields, depending on the target object specified:
+The `SHOW GRANTS ON [DATABASE | FUNCTION| SCHEMA | TABLE | TYPE]` statement can return the following fields, depending on the target object specified:
 
 Field            | Description
 -----------------|-----------------------------------------------------------------------------------------------------
 `database_name`  | The name of the database.
+`function_name`  | The name of the user-defined function.
 `schema_name`    | The name of the schema.
 `table_name`     | The name of the table.
 `type_name`      | The name of the user-defined type.
@@ -330,6 +331,10 @@ To list all grants for all users and roles on the current database and its table
   movr          | public      | status    | max     | ALL             | true
 (1 row)
 ~~~
+
+## Show grants on user-defined functions
+
+
 
 ### Show role memberships
 
