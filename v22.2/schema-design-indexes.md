@@ -231,17 +231,17 @@ To view the indexes in the `vehicles` table, issue a [`SHOW INDEXES`](show-index
 ~~~
 
 ~~~
-  table_name |     index_name     | non_unique | seq_in_index |  column_name  | direction | storing | implicit
--------------+--------------------+------------+--------------+---------------+-----------+---------+-----------
-  vehicles   | type_available_idx |    true    |            1 | type          | ASC       |  false  |  false
-  vehicles   | type_available_idx |    true    |            2 | available     | ASC       |  false  |  false
-  vehicles   | type_available_idx |    true    |            3 | last_location | N/A       |  true   |  false
-  vehicles   | type_available_idx |    true    |            4 | id            | ASC       |  false  |   true
-  vehicles   | vehicles_pkey      |   false    |            1 | id            | ASC       |  false  |  false
-  vehicles   | vehicles_pkey      |   false    |            2 | type          | N/A       |  true   |  false
-  vehicles   | vehicles_pkey      |   false    |            3 | creation_time | N/A       |  true   |  false
-  vehicles   | vehicles_pkey      |   false    |            4 | available     | N/A       |  true   |  false
-  vehicles   | vehicles_pkey      |   false    |            5 | last_location | N/A       |  true   |  false
+  table_name |     index_name     | non_unique | seq_in_index |  column_name  | direction | storing | implicit | visible
+-------------+--------------------+------------+--------------+---------------+-----------+---------+----------+----------
+  vehicles   | type_available_idx |     t      |            1 | type          | ASC       |    f    |    f     |    t
+  vehicles   | type_available_idx |     t      |            2 | available     | ASC       |    f    |    f     |    t
+  vehicles   | type_available_idx |     t      |            3 | last_location | N/A       |    t    |    f     |    t
+  vehicles   | type_available_idx |     t      |            4 | id            | ASC       |    f    |    t     |    t
+  vehicles   | vehicles_pkey      |     f      |            1 | id            | ASC       |    f    |    f     |    t
+  vehicles   | vehicles_pkey      |     f      |            2 | type          | N/A       |    t    |    f     |    t
+  vehicles   | vehicles_pkey      |     f      |            3 | creation_time | N/A       |    t    |    f     |    t
+  vehicles   | vehicles_pkey      |     f      |            4 | available     | N/A       |    t    |    f     |    t
+  vehicles   | vehicles_pkey      |     f      |            5 | last_location | N/A       |    t    |    f     |    t
 (9 rows)
 ~~~
 

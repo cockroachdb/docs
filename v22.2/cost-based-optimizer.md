@@ -179,17 +179,23 @@ If a table does not have an average size statistic available for a column, it us
 
 The optimizer uses `avg_size` to cost scans and relevant joins. Costing scans per row regardless of the size of the columns comprising the row doesn't account for time to read or transport a large number of bytes over the network. This can lead to undesirable plans when there are multiple options for scans or joins that read directly from tables.
 
-Cockroach Labs recommends that you allow the optimizer to consider column size when costing plans. If you are an advanced user and need to disable using `avg_size` for troubleshooting or performance tuning reasons, you can disable it by setting the `cost_scans_with_default_col_size` [session variable](set-vars.html) to true with `SET cost_scans_with_default_col_size=true`.
+Cockroach Labs recommends that you allow the optimizer to consider column size when costing plans. If you are an advanced user and need to disable using `avg_size` for troubleshooting or performance tuning reasons, you can disable it by setting the `cost_scans_with_default_col_size` [session variable](set-vars.html#cost-scans-with-default-col-size) to true with `SET cost_scans_with_default_col_size=true`.
 
 ## Control whether the optimizer creates a plan with a full scan
 
 Even if you have [secondary indexes](schema-design-indexes.html), the optimizer may determine that a full table scan will be faster. For example, if you add a secondary index to a table with a large number of rows and find that a statement plan is not using the secondary index, then it is likely that performing a full table scan using the primary key is faster than doing a secondary index scan plus an [index join](indexes.html#example).
 
-You can disable statement plans that perform full table scans with the `disallow_full_table_scans` [session variable](set-vars.html).
+You can disable statement plans that perform full table scans with the `disallow_full_table_scans` [session variable](set-vars.html#disallow-full-table-scans).
 
 If you disable full scans, you can set the `large_full_scan_rows` session variable to specify the maximum table size allowed for a full scan. If no alternative plan is possible, the optimizer will return an error.
 
 If you disable full scans, and you provide an [index hint](table-expressions.html#force-index-selection), the optimizer will try to avoid a full scan while also respecting the index hint. If this is not possible, the optimizer will return an error. If you do not provide an index hint, the optimizer will return an error, the full scan will be logged, and the `sql.guardrails.full_scan_rejected.count` [metric](ui-overview-dashboard.html) will be updated.
+
+## Control whether the optimzer uses indexes marked as not visible
+
+You can specify that an [index is not visible](alter-index.html#set-an-index-to-be-not-visible) to the cost-based optimizer(i.e. it won't be used in queries unless specifically selected with a hint). This allows you to create an index and check for corruption without affecting production queries.
+
+You can instruct the optimizer to always use not visible indexes with the `optimizer_use_not_visible_indexes` [session variable](set-vars.html#optimizer-use-not-visible-indexes). By default, the variable is set to `off`.
 
 ## Locality optimized search in multi-region clusters
 
@@ -228,7 +234,7 @@ Only the following statements use the plan cache:
 - [`UPSERT`](upsert.html)
 - [`DELETE`](delete.html)
 
-The optimizer can use cached plans if they are: 
+The optimizer can use cached plans if they are:
 
 - Prepared statements.
 - Non-prepared statements using identical constant values.

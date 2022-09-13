@@ -55,6 +55,7 @@ Parameter | Description
 `opt_where_clause` |  An optional `WHERE` clause that defines the predicate boolean expression of a [partial index](partial-indexes.html).
 `USING HASH` |  Creates a [hash-sharded index](hash-sharded-indexes.html).
 `WITH storage_parameter` |  A comma-separated list of [spatial index tuning parameters](spatial-indexes.html#index-tuning-parameters). Supported parameters include `fillfactor`, `s2_max_level`, `s2_level_mod`, `s2_max_cells`, `geometry_min_x`, `geometry_max_x`, `geometry_min_y`, and `geometry_max_y`. The `fillfactor` parameter is a no-op, allowed for PostgreSQL-compatibility.<br><br>For details, see [Spatial index tuning parameters](spatial-indexes.html#index-tuning-parameters). For an example, see [Create a spatial index that uses all of the tuning parameters](spatial-indexes.html#create-a-spatial-index-that-uses-all-of-the-tuning-parameters).
+`opt_index_visible` | Specify whether the index is visible to the [cost-based optimizer](cost-based-optimizer.html). For an example, see [Set an index to be not visible](alter-index.html#set-an-index-to-be-not-visible).
 `CONCURRENTLY` |  Optional, no-op syntax for PostgreSQL compatibility. All indexes are created concurrently in CockroachDB.
 
 ## Viewing schema changes
