@@ -9,9 +9,9 @@ To filter the sessions, click the **Filters** field.
 - To filter by [application]({{ link_prefix }}connection-parameters.html#additional-connection-parameters), select **App** and choose one or more applications.
 
     - Queries from the SQL shell are displayed under the `$ cockroach` app.
-    - If you haven't set `application_name` in a client connection string, it appears as `unset`.
+    - If you have not set `application_name` in a client connection string, it appears as `unset`.
 
-- To filter by username or session status, select **Username** or **Session Status** and choose one or more checkboxes.
+- To filter by username or session status, select **Username** or **Session Status** and check one or more checkboxes.
 - To filter by session duration, specify the session time and unit.
 
 Click <img src="{{ 'images/common/ui-columns-button.png' | relative_url }}" alt="Column selector" /> to select the columns to display in the table.
@@ -23,7 +23,7 @@ Column | Description
 Session Start Time (UTC) | The timestamp at which the session started.
 Session Duration | The amount of time the session has been open.
 Session Active Duration | The amount of time transactions were executing while the session was open.
-Status  | The status of the session: Active, Closed, or Idle. A session is Active if it has an open explicit or implicit transaction (individual SQL statement) with a statement that is actively running or waiting to acquire a lock. A session is Closed if it has closed the connection to CockroachDB. A session is Idle if it is not executing a statement.
+Status  | The status of the session: `Active`, `Closed`, or `Idle`. A session is `Active` if it has an open explicit or implicit transaction (individual SQL statement) with a statement that is actively running or waiting to acquire a lock. A session is `Closed` if it has closed the connection to CockroachDB. A session is `Idle` if it is not executing a statement.
 Most Recent Statement | If more than one statement is executing, the most recent statement. If the session is Idle, the last statement.
 Statement Start Time (UTC) | The timestamp at which the statement started.
 Transaction Count | The number of transactions completed in the session.
