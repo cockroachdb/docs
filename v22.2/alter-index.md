@@ -87,10 +87,9 @@ For examples, see [Split an index](split-at.html#split-an-index) and [Unsplit an
 
 ### Set an index to be not visible
 
-You can specify that a index is not visible to the [cost-based optimizer](cost-based-optimizer.html) (i.e. it won't be used in queries unless specifically selected with a hint). This allows you to create an index and check for corruption without affecting production queries.
+You can specify that an index is not visible to the [cost-based optimizer](cost-based-optimizer.html##control-whether-the-optimzer-uses-indexes-marked-as-not-visible) (i.e. it won't be used in queries unless specifically selected with a hint). This allows you to create an index and check for corruption without affecting production queries.
 
 {% include {{ page.version.version }}/demo_movr.md %}
-
 
 1. Show the indexes on the `rides` table.
 
@@ -122,7 +121,7 @@ You can specify that a index is not visible to the [cost-based optimizer](cost-b
     (17 rows)
     ~~~
 
-1. Explain a query that filters on revenue.
+1. Explain the query that filters on revenue. Since there is no index on the `revenue` column, the query performs a full scan.
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -201,7 +200,7 @@ You can specify that a index is not visible to the [cost-based optimizer](cost-b
     (27 rows)
     ~~~
 
-1. Explain the behavior with the index.
+1. Explain the query behavior with the index. The query uses the new `rides_revenue_idx` index and scans many fewer rows.
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -228,11 +227,11 @@ You can specify that a index is not visible to the [cost-based optimizer](cost-b
     > ALTER INDEX rides_revenue_idx NOT VISIBLE;
     ~~~
 
-1. View the index visibility.
+1. View the table indexes and verify that the index visibility for `rides_revenue_idx` is `f`.
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    > SHOW INDEXES FROM users;
+    > SHOW INDEXES FROM rides;
     ~~~
 
     ~~~
@@ -268,7 +267,7 @@ You can specify that a index is not visible to the [cost-based optimizer](cost-b
     (27 rows)
     ~~~
 
-1. Explain the query behavior with the index not visible to the optimizer.
+1. Explain the query behavior with the index not visible to the optimizer. With the index not visible, the optimizer reverts to full scan and recommends that you make the index visible.
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
