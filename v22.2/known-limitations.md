@@ -595,3 +595,5 @@ If the execution of a [join](joins.html) query exceeds the limit set for memory-
 ### User-defined functions
 
 {% include {{ page.version.version }}/known-limitations/udf-changefeed-expression.md %}
+
+{% include {{ page.version.version }}/known-limitations/udf-limitations.md %}

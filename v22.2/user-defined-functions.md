@@ -6,26 +6,32 @@ key: sql-expressions.html
 docs_area: reference.sql
 ---
 
-{% include_cached new-in.html version="v22.2" %} A user-defined function (UDF) is a named function defined at the database that can be called in queries and other contexts. CockroachDB supports invoking UDFs in `SELECT`, `FROM`, and `WHERE` clauses of DML statements.
+{% include_cached new-in.html version="v22.2" %} A user-defined function (UDF) is a named function defined at the database that can be called in queries and other contexts. CockroachDB supports invoking UDFs in `SELECT`, `FROM`, and `WHERE` clauses of [DML statements](sql-statements.html#data-manipulation-statements).
+
+## Overview
 
 The basic components of a user-defined function are a name, list of arguments, return type, volatility, language, and function body.
 
 - An argument has a _mode_ and a _type_. CockroachDB supports the `IN` argument mode. The type can be a built-in type, [user-defined enum](enum.html), or implicit record type. CockroachDB **does not** support default values for arguments.
-- The return type can be a built-in type, user-defined enum, implicit record type, `SETOF`, and `VOID`. `SETOF` allows returning multiple rows rather than a single value. `VOID` indicates that there is no return type and `NULL` will always be returned.  If the return type of the function is not `VOID`, the last statement of a UDF must be a `SELECT`.
-- The [volatility qualifier](functions-and-operators.html#function-volatility) indicates whether the function has side effects. The default is `VOLATILE`. A function with side-effects must be `VOLATILE` to prevent the optimizer from precomputing the function. A `VOLATILE` function will see mutations to data made by the SQL command calling the function, while a `STABLE` or `IMMUTABLE` function will not.
-- `[NOT] LEAKPROOF` is a type of volatility, rather than a volatility qualifier. It indicates that a function has no side effects and that it communicates nothing that is dependent on its arguments besides its return value (e.g., it cannot throw an error). `LEAKPROOF` must be preceded by `IMMUTABLE`. `NOT LEAKPROOF` is allowed with any volatility qualifier and has no effect.
+- The return type can be a built-in type, user-defined enum, implicit record type, or `VOID`. `VOID` indicates that there is no return type and `NULL` will always be returned.  If the return type of the function is not `VOID`, the last statement of a UDF must be a `SELECT`.
+- The [volatility](functions-and-operators.html#function-volatility) indicates whether the function has side effects. The default is `VOLATILE`.
+  - Annotate a function with side effects with `VOLATILE`. This also prevents the [cost-based optimizer](cost-based-optimizer.html) from pre-evaluating the function.
+  - A `STABLE` or `IMMUTABLE` function does not mutate data.
+  - `LEAKPROOF` indicates that a function has no side effects and that it communicates nothing that depends on its arguments besides the return value (i.e., it cannot throw an error that depends on the value of its arguments). You must precede `LEAKPROOF` with `IMMUTABLE`. `NOT LEAKPROOF` is allowed with any other volatility.
 - The language specifies the language of the function body. CockroachDB supports the language `SQL`.
 - The function body can reference arguments by name or by their ordinal in the function definition with the syntax `$1`.
 
-## Example
+## Examples
 
-### Create a UDF that returns a sum of integers
+The following examples show how to create and invoke a simple UDF and view the definition of the UDF.
+
+### Create a UDF
 
 The following is a UDF that returns the sum of two integers:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-CREATE OR REPLACE FUNCTION add(a INT, b INT) RETURNS INT IMMUTABLE LEAKPROOF LANGUAGE SQL AS 'SELECT a + b';
+CREATE FUNCTION add(a INT, b INT) RETURNS INT IMMUTABLE LEAKPROOF LANGUAGE SQL AS 'SELECT a + b';
 ~~~
 
 where:
@@ -37,9 +43,16 @@ where:
 - language: `SQL`
 - function body: `'SELECT a + b'`
 
-### Invoke the UDF
+Alternatively, you could define this function as:
 
-You invoke the UDF like any other [built-in function](functions-and-operators.html). For example:
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE FUNCTION add(a INT, b INT) RETURNS INT IMMUTABLE LEAKPROOF LANGUAGE SQL AS 'SELECT $1 + $2';
+~~~
+
+### Invoke a UDF
+
+You invoke the UDF like a [built-in function](functions-and-operators.html). For example:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -53,7 +66,7 @@ SELECT add(3,5) as sum;
 (1 row)
 ~~~
 
-### View the UDF definition
+### View a UDF definition
 
 To view the `add` function definition, run:
 
@@ -79,12 +92,18 @@ SHOW CREATE FUNCTION add;
 
 ## Known limitations
 
+User-defined functions are not supported in:
+
 {% include {{ page.version.version }}/known-limitations/udf-changefeed-expression.md %}
+
+{% include {{ page.version.version }}/known-limitations/udf-limitations.md %}
+
 
 ## See also
 
 - [`CREATE FUNCTION`](create-function.html)
 - [`ALTER FUNCTION`](alter-function.html)
 - [`DROP FUNCTION`](drop-function.html)
+- [`SHOW CREATE`](show-create.html)
 - [SQL Statements](sql-statements.html)
 - [Functions and Operators](functions-and-operators.html)

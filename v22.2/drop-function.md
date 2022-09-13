@@ -6,13 +6,13 @@ keywords:
 docs_area: reference.sql
 ---
 
-The `DROP FUNCTION` [statement](sql-statements.html) drops a [user-defined function](user-defined-functions.html) from a database.
+The `DROP FUNCTION` [statement](sql-statements.html) drops one or more [user-defined functions](user-defined-functions.html) from a schema.
 
 {% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
 ## Required privileges
 
-To drop a function, a user must have the `DROP` [privilege](security-reference/authorization.html#managing-privileges) on a database.
+To drop a function, a user must have the `DROP` [privilege](security-reference/authorization.html#managing-privileges) on the function.
 
 ## Synopsis
 
@@ -24,7 +24,8 @@ To drop a function, a user must have the `DROP` [privilege](security-reference/a
 
 Parameter | Description
 ----------|------------
-
+`func_name` | The name of one of more functions to drop.
+`func_args_list` | A list of the function arguments.
 
 ## See also
 

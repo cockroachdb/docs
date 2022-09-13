@@ -6,13 +6,13 @@ keywords:
 docs_area: reference.sql
 ---
 
-The `CREATE FUNCTION` [statement](sql-statements.html) creates a [user-defined function](user-defined-functions.html) for a database.
+The `CREATE FUNCTION` [statement](sql-statements.html) creates a [user-defined function](user-defined-functions.html) for a schema.
 
 {% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
 ## Required privileges
 
-- To define a function, a user must have [`CREATE` privilege](security-reference/authorization.html#supported-privileges) on a database.
+- To define a function, a user must have [`CREATE` privilege](security-reference/authorization.html#supported-privileges) on a schema.
 - To define a function with a [user-defined type](create-type.html), a user must have `USAGE` privilege on a user-defined type.
 - To resolve functions, a user must have at least the `USAGE` privilege on a schema.
 - To call a function, a user must have `EXECUTE` privilege on the function.
@@ -30,7 +30,10 @@ If you grant `EXECUTE` privilege as a default privilege at the database level, n
 
 Parameter | Description
 ----------|------------
-
+`func_create_name` | The name of the function.
+`func_arg_with_default_list` | A list of arguments.
+`func_arg_type` | The type returned by the function.
+`func_as` | The body of the function.
 
 ## Example
 

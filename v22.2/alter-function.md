@@ -20,7 +20,7 @@ Subcommand | Description
 
 ## Required privileges
 
-To alter a function, a user must have the `DROP` [privilege](security-reference/authorization.html#managing-privileges) on a database.
+To alter a function, a user must have the `DROP` [privilege](security-reference/authorization.html#managing-privileges) on a schema.
 
 ## Synopsis
 
@@ -32,7 +32,10 @@ To alter a function, a user must have the `DROP` [privilege](security-reference/
 
 Parameter | Description
 ----------|------------
-
+`function_with_argtypes` | The name of the function with optional function arguments to alter.
+`name` | The new name of the function.
+`role_spec` | The role to set as the owner of the function.
+`schema_name` | The name of the new schema.
 
 ## See also
 
