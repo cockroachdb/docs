@@ -7,8 +7,7 @@ docs_area: reference.db_console
 
 {% include {{ page.version.version }}/ui/admin-access.md %}
 
-The **Statements** page offers two views on statements: **Statement Fingerprints**, which represents one or more completed SQL statements; and **Active Executions**,
-which represents individual statement executions in progress.
+The **Statements** page offers two views on statements: **Statement Fingerprints**, which represents one or more completed SQL statements; and **Active Executions**, which represents individual statement executions in progress.
 
 Choose a view by selecting the **Statement Fingerprints** or **Active Executions** radio button. The selection is retained when you switch between the **Statements** and **Transactions** tabs on the **SQL Activity** page.
 
@@ -32,7 +31,7 @@ To view this page, click **SQL Activity** in the left-hand navigation of the {{ 
 
 The **Statements** tab is selected. The **Statement Fingerprints** radio button is selected and the [Statements table](#statements-table) displays.
 
-The following screenshot shows the statement fingerprint for `SELECT city, id FROM vehicles WHERE city = $1` while running the [`movr` workload](cockroach-workload.html#run-the-movr-workload).
+The following screenshot shows the statement fingerprint for `SELECT city, id FROM vehicles WHERE city = $1` while running the [`movr` workload](cockroach-workload.html#run-the-movr-workload):
 
 <img src="{{ 'images/v22.2/statement-fingerprint.png' | relative_url }}" alt="Statement fingerprint" style="border:1px solid #eee;max-width:100%" />
 
@@ -58,7 +57,7 @@ The **Statements** tab is selected. Click the **Active Executions** radio button
 Active executions are polled every 10 seconds. Faster-running executions will potentially disappear upon each refresh.
 {{site.data.alerts.end}}
 
-The following screenshot shows the active statement execution for `SELECT city, id FROM vehicles WHERE city = 'washington dc'`:
+The following screenshot shows the active statement execution for `SELECT city, id FROM vehicles WHERE city = 'washington dc'` while running the [`movr` workload](cockroach-workload.html#run-the-movr-workload):
 
 <img src="{{ 'images/v22.2/statement-execution.png' | relative_url }}" alt="Statement execution" style="border:1px solid #eee;max-width:100%" />
 
