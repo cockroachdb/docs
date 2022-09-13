@@ -17,7 +17,7 @@ If you need to migrate data from a {{ site.data.products.serverless }} cluster t
 
 ## Step 1. Test and update your schema
 
-To begin a new migration to CockroachDB, extract the [data definition language (DDL)](sql-statements.html#data-definition-statements) of the source database. It is simplest to migrate your database schema to a new CockroachDB database before migrating the data.
+To begin a new migration to CockroachDB, extract the [data definition language (DDL)](sql-statements.html#data-definition-statements) of the source database. We strongly recommend migrating your database schema to a new CockroachDB database before migrating the data.
 
 You will likely need to update your schema by converting the data definition statements to CockroachDB-compatible statements. This can be due to:
 

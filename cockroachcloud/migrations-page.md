@@ -108,7 +108,7 @@ By default, the **Statements** list displays both successful and failed statemen
 Statements are displayed as follows:
 
 - A statement that succeeded is displayed without further detail.
-- A statement that failed is displayed with `[error]` and a message with error details. If the failure was due to an incidental error, the message also states `This error may automatically resolve once an earlier statement no longer errors`.
+- A statement that failed is displayed with `[error]` and a message with error details. If the failure was due to an incidental error, the message also states: `This error may automatically resolve once an earlier statement no longer errors`.
 - A statement with a suggestion is displayed with `[suggestion]`, a message with suggestion details, and an **Acknowledge** checkbox.
 
 To edit a statement, click the statement and enter your changes. Your changes are saved when you click outside the statement.
