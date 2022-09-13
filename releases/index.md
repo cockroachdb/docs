@@ -19,6 +19,8 @@ The following binaries are not suitable for production environments:
 - **Testing** binaries allow you to validate the next major or minor version of CockroachDB while it is in development. A testing release is categorized by its level of maturity, moving from Alpha to Beta to Release Candidate (RC).
 - **Experimental** binaries allow you to deploy CockroachDB on architectures that are not yet qualified for production use.
 
+{{ experimental_js_warning }}
+
 {% assign sections = site.data.releases | map: "release_type" | uniq | reverse %}
 {% comment %} Fetch the list of all release types (currently Testing, Production) {% endcomment %}
 
@@ -102,9 +104,9 @@ The following binaries are not suitable for production environments:
                 <td><span class="badge badge-gray">Withdrawn</span></td>
                     {% else %} {% comment %} Add download links for all non-withdrawn versions. {% endcomment %}
                 <td>
-                    <div><a href="https://binaries.cockroachdb.com/cockroach-{{ r.version }}.linux-3.7.10-gnu-aarch64.tgz">Full Binary</a> (<a href="https://binaries.cockroachdb.com/cockroach-{{ r.version }}.linux-3.7.10-gnu-aarch64.sha256sum">SHA256</a>)</div>
+                    <div><a onclick="ExperimentalAlert();" href="https://binaries.cockroachdb.com/cockroach-{{ r.version }}.linux-3.7.10-gnu-aarch64.tgz">Full Binary</a> (<a href="https://binaries.cockroachdb.com/cockroach-{{ r.version }}.linux-3.7.10-gnu-aarch64.sha256sum">SHA256</a>)</div>
                         {% if r.has_sql_only != "false" %}
-                    <div><a href="https://binaries.cockroachdb.com/cockroach-sql-{{ r.version }}.linux-3.7.10-gnu-aarch64.tgz">SQL shell Binary</a> (<a href="https://binaries.cockroachdb.com/cockroach-sql-{{ r.version }}.linux-3.7.10-gnu-aarch64.tgz.sha256sum">SHA256</a>)</div>
+                    <div><a onclick="ExperimentalAlert();" href="https://binaries.cockroachdb.com/cockroach-sql-{{ r.version }}.linux-3.7.10-gnu-aarch64.tgz">SQL shell Binary</a> (<a href="https://binaries.cockroachdb.com/cockroach-sql-{{ r.version }}.linux-3.7.10-gnu-aarch64.tgz.sha256sum">SHA256</a>)</div>
                         {% endif %}
                 </td>
                     {% endif %}
@@ -177,9 +179,9 @@ The following binaries are not suitable for production environments:
                     {% if r.no_windows == "true" %}
                 N/A
                     {% else %}
-                <div><a href="https://binaries.cockroachdb.com/cockroach-{{ r.version }}.windows-6.2-amd64.zip">Full Binary</a> (<a href="https://binaries.cockroachdb.com/cockroach-{{ r.version }}.windows-6.2-amd64.zip.sha256sum">SHA256</a>)</div>
+                <div><a onclick="ExperimentalAlert();" href="https://binaries.cockroachdb.com/cockroach-{{ r.version }}.windows-6.2-amd64.zip">Full Binary</a> (<a href="https://binaries.cockroachdb.com/cockroach-{{ r.version }}.windows-6.2-amd64.zip.sha256sum">SHA256</a>)</div>
                         {% if r.has_sql_only != "false" %}
-                <div><a href="https://binaries.cockroachdb.com/cockroach-sql-{{ r.version }}.windows-6.2-amd64.zip">SQL shell Binary</a> (<a href="https://binaries.cockroachdb.com/cockroach-sql-{{ r.version }}.windows-6.2-amd64.zip.sha256sum">SHA256</a>)</div>
+                <div><a onclick="ExperimentalAlert();" href="https://binaries.cockroachdb.com/cockroach-sql-{{ r.version }}.windows-6.2-amd64.zip">SQL shell Binary</a> (<a href="https://binaries.cockroachdb.com/cockroach-sql-{{ r.version }}.windows-6.2-amd64.zip.sha256sum">SHA256</a>)</div>
                         {% endif %}
                     {% endif %}
                 {% endif %}
@@ -279,3 +281,9 @@ This calendar versioning scheme began with v19.1. Prior releases use a different
 - A major release is produced twice a year indicating major enhancements to product functionality. A change in the `YY.R` component denotes a major release.
 
 - A patch (or maintenance) release is produced to roll out critical bug and security fixes. A change in the `PP` component denotes a patch release.
+
+<script>
+function ExperimentalAlert() { 
+    alert('This experimental download is not yet qualified for production use.');
+}
+</script>
