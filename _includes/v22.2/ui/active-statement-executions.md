@@ -7,8 +7,8 @@ Column | Description
 -----|------------
 Statement Execution ID | The execution ID of the statement execution.
 Statement Execution | The SQL statement that was executed.
-Status | The status of the execution: Preparing, Waiting, or Executing.
-Start Time | The time the execution started.
+Status | The status of the execution: `Preparing`, `Waiting`, or `Executing`.
+Start Time | The timestamp the execution started.
 Time Spent Waiting | The time the execution spent waiting and experiencing lock contention.
 Application | The name specified by the [`application_name`](show-vars.html#supported-variables) session setting.
 
@@ -18,15 +18,15 @@ To view details of an active statement execution, click an execution ID in the *
 
 The Statement Execution details page provides the following details on the statement execution.
 
-- **Start Time (UTC)**: the time the execution started.
-- **Elapsed Time**: the time elapsed since the execution started.
-- **Status**: the status of the execution: Preparing, Waiting, or Executing.
-- **Full Scan**: whether the execution performed a full scan of the table.
-- **Application Name**: the name specified by the [`application_name`]({{ link_prefix }}show-vars.html#supported-variables) session setting.
-- **User Name**: the name of the user running the statement.
-- **Client Address**: the IP address and port of the client that opened the session in which the statement is running.
-- **Session ID**: link to the [session](ui-sessions-page.html) in which the transaction is running.
-- **Transaction Execution ID**: link to the ID of the [transaction](ui-transactions-page.html#active-executions-table) in which the statement is executing.
+- **Start Time (UTC)**: The timestamp the execution started.
+- **Elapsed Time**: The time elapsed since the execution started.
+- **Status**: The status of the execution: `Preparing`, `Waiting`, or `Executing`.
+- **Full Scan**: Whether the execution performed a full scan of the table.
+- **Application Name**: The name specified by the [`application_name`]({{ link_prefix }}show-vars.html#supported-variables) session setting.
+- **User Name**: The name of the user running the statement.
+- **Client Address**: The IP address and port of the client that opened the session in which the statement is running.
+- **Session ID**: Link to the [session](ui-sessions-page.html) in which the transaction is running.
+- **Transaction Execution ID**: Link to the ID of the [transaction](ui-transactions-page.html#active-executions-table) in which the statement is executing.
 
 ## See also
 

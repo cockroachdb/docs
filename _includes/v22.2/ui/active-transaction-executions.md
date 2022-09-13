@@ -8,7 +8,7 @@ Column | Description
 -----|------------
 Transaction Execution ID | The execution ID of the transaction.
 Most Recent Statement | The most recently executed statement in the transaction.
-Status | The status of the execution: Preparing, Waiting, or Executing.
+Status | The status of the execution: `Preparing`, `Waiting`, or `Executing`.
 Start Time (UTC) | The time the execution started.
 Elapsed Time | The time elapsed since the transaction started.
 Time Spent Waiting | The amount of time the execution experienced lock contention.
@@ -22,15 +22,15 @@ To view details of an active transaction execution, click an execution ID in the
 
 The Transaction Execution details page provides the following details on the transaction execution.
 
-- **Start Time (UTC)**: the time the execution started.
-- **Elapsed Time**: the time elapsed since the transaction started.
-- **Status**: the status of the execution: Preparing, Waiting, or Executing.
-- **Priority**: the [priority](transactions.html#transaction-priorities) of the transaction.
-- **Full Scan**: whether the execution performed a full scan of the table.
-- **Internal Retries**: the number of retries of statements in the transaction.
-- **Last Retry Reason**: the reason for the last statement retry.
-- **Number of Statements**: the number of statements in the transaction.
-- **Application Name**: the name specified by the [`application_name`]({{ link_prefix }}show-vars.html#supported-variables) session setting.
+- **Start Time (UTC)**: The time the execution started.
+- **Elapsed Time**: The time elapsed since the transaction started.
+- **Status**: The status of the execution: `Preparing`, `Waiting`, or `Executing`.
+- **Priority**: The [priority](transactions.html#transaction-priorities) of the transaction.
+- **Full Scan**: Whether the execution performed a full scan of the table.
+- **Internal Retries**: The number of retries of statements in the transaction.
+- **Last Retry Reason**: The reason for the last statement retry.
+- **Number of Statements**: The number of statements in the transaction.
+- **Application Name**: The name specified by the [`application_name`]({{ link_prefix }}show-vars.html#supported-variables) session setting.
 - **Most Recent Statement Execution ID**: Link to the ID of the most recently [executed statement](ui-statements-page.html#active-executions-table) in the transaction.
 - **Session ID**: Link to the ID of the [session](ui-sessions-page.html) in which the transaction is running.
 
