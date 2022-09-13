@@ -31,9 +31,10 @@ If you grant `EXECUTE` privilege as a default privilege at the database level, n
 Parameter | Description
 ----------|------------
 `func_create_name` | The name of the function.
-`func_arg_with_default_list` | A list of arguments.
+`func_arg` | A function argument.
 `func_arg_type` | The type returned by the function.
 `func_as` | The body of the function.
+`opt_routine_body` | ???
 
 ## Example
 
