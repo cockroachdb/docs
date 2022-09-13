@@ -8,7 +8,7 @@
        url('../fonts/Adelle-Bold.eot?#iefix') format('embedded-opentype');
   font-weight: normal;
   font-style: normal;
-  font-display: optional;
+  font-display: fallback;
 }
 
 @font-face {
@@ -21,7 +21,7 @@
        url('../fonts/AvenirLTStd-Roman.eot?#iefix') format('embedded-opentype');
   font-weight: normal;
   font-style: normal;
-  font-display: optional;
+  font-display: fallback;
 }
 
 @font-face {
@@ -34,7 +34,7 @@
        url('../fonts/AvenirLTStd-Oblique.eot?#iefix') format('embedded-opentype');
   font-weight: normal;
   font-style: normal;
-  font-display: optional;
+  font-display: fallback;
 }
 
 @font-face {
@@ -47,7 +47,7 @@
        url('../fonts/AvenirLTStd-Heavy.eot?#iefix') format('embedded-opentype');
   font-weight: normal;
   font-style: normal;
-  font-display: optional;
+  font-display: fallback;
 }
 
 @font-face {
@@ -55,7 +55,7 @@
   src: url('../fonts/SourceCodePro-Regular.ttf');
   font-weight: normal;
   font-style: normal;
-  font-display: optional;
+  font-display: fallback;
 }
 
 @mixin font-props {
@@ -75,7 +75,7 @@
   src: url('../fonts/SourceSansPro-Regular.ttf');
   font-weight: normal;
   font-style: normal;
-  font-display: optional;
+  font-display: fallback;
 }
 
 @font-face {
@@ -83,7 +83,7 @@
   src: url('../fonts/SourceSansPro-Light.ttf');
   font-weight: normal;
   font-style: normal;
-  font-display: optional;
+  font-display: fallback;
 }
 
 @font-face {
@@ -91,7 +91,7 @@
   src: url('../fonts/SourceSansPro-SemiBold.ttf');
   font-weight: normal;
   font-style: normal;
-  font-display: optional;
+  font-display: fallback;
 }
 
 @font-face {
@@ -99,7 +99,7 @@
   src: url('../fonts/SourceSansPro-Bold.ttf');
   font-weight: normal;
   font-style: normal;
-  font-display: optional;
+  font-display: fallback;
 }
 
 @mixin sourcesanspro_r($size) {font-family: 'SourceSansPro-Regular', sans-serif; font-size:$size; @include font-props;}
@@ -113,7 +113,7 @@
   src: url('../fonts/Poppins-Regular.ttf');
   font-weight: 400;
   font-style: normal;
-  font-display: optional;
+  font-display: fallback;
 }
 
 @font-face {
@@ -121,7 +121,7 @@
   src: url('../fonts/Poppins-SemiBold.ttf');
   font-weight: 600;
   font-style: normal;
-  font-display: optional;
+  font-display: fallback;
 }
 
 @mixin poppins($size) {font-family: 'Poppins', sans-serif; font-size:$size; @include font-props;}
