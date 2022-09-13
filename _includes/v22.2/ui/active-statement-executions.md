@@ -12,11 +12,11 @@ Start Time | The time the execution started.
 Time Spent Waiting | The time the execution spent waiting and experiencing lock contention.
 Application | The name specified by the [`application_name`](show-vars.html#supported-variables) session setting.
 
-To view details of an active statement execution, click an execution ID in the **Statement Execution ID** column to open the **Statement Execution** details page.
+To view details of an active statement execution, click an execution ID in the **Statement Execution ID** column to open the [**Statement Execution** details page](#statement-execution-details-page).
 
 ## Statement Execution details page
 
-The details page provides the following details on the statement execution.
+The Statement Execution details page provides the following details on the statement execution.
 
 - **Start Time (UTC)**: the time the execution started.
 - **Elapsed Time**: the time elapsed since the execution started.

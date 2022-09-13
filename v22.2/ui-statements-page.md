@@ -7,10 +7,10 @@ docs_area: reference.db_console
 
 {% include {{ page.version.version }}/ui/admin-access.md %}
 
-The **Statements** page offers two views on statements: **Statement Fingerprints**, which represents one or more completed SQL statements and **Active Executions**,
+The **Statements** page offers two views on statements: **Statement Fingerprints**, which represents one or more completed SQL statements; and **Active Executions**,
 which represents individual statement executions in progress.
 
-You choose a view by selecting the **Statement Fingerprints** or **Active Executions** radio button. The selection is retained when you switch between the Statements and Transactions tabs on the SQL Activity page.
+Choose a view by selecting the **Statement Fingerprints** or **Active Executions** radio button. The selection is retained when you switch between the **Statements** and **Transactions** tabs on the **SQL Activity** page.
 
 {{site.data.alerts.callout_success}}
 If you haven't yet executed any queries in the cluster as a user, this page will be blank.
@@ -44,7 +44,7 @@ If you click the statement fingerprint in the **Statements** column, the [**Stat
 
 The **Active Executions** view helps you:
 
-- Understand and tune workload performance, particularly long-running statements.
+- Understand and tune workload performance, particularly for long-running statements.
 
 {% if page.cloud != true %}
 To display this view, click **SQL Activity** in the left-hand navigation of the DB Console.
@@ -55,7 +55,7 @@ To display this view, click **SQL Activity** in the left-hand navigation of the 
 The **Statements** tab is selected. Click the **Active Executions** radio button. The [Active Executions table](#active-executions-table) displays.
 
 {{site.data.alerts.callout_info}}
-Active executions are polled every 10 seconds and fast-running executions will potentially disappear upon each refresh.
+Active executions are polled every 10 seconds. Faster-running executions will potentially disappear upon each refresh.
 {{site.data.alerts.end}}
 
 The following screenshot shows the active statement execution for `SELECT city, id FROM vehicles WHERE city = 'washington dc'`:

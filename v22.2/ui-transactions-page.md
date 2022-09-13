@@ -7,13 +7,13 @@ docs_area: reference.db_console
 
 {% include {{ page.version.version }}/ui/admin-access.md %}
 
-The **Transactions** page offers two views on transactions: **Transaction Fingerprints**, which represents one or more completed SQL transactions and **Active Executions**,
+The **Transactions** page offers two views on transactions: **Transaction Fingerprints**, which represents one or more completed SQL transactions; and **Active Executions**,
 which represents individual transaction executions in progress.
 
-You choose a view by selecting the **Transaction Fingerprints** or **Active Executions** radio button. The selection is retained when you switch between the Statements and Transactions tabs on the SQL Activity page.
+Choose a view by selecting the **Transaction Fingerprints** or **Active Executions** radio button. The selection is retained when you switch between the **Statements** and **Transactions** tabs on the **SQL Activity** page.
 
 {{site.data.alerts.callout_success}}
-In contrast to the [**Statements** page](ui-statements-page.html), which displays [SQL statement fingerprints](ui-statements-page.html#sql-statement-fingerprints), the **Transactions** page displays transaction fingerprints, that is, SQL statement fingerprints grouped by [transaction](transactions.html).
+In contrast to the [**Statements** page](ui-statements-page.html), which displays [SQL statement fingerprints](ui-statements-page.html#sql-statement-fingerprints), the **Transactions** page displays _transaction fingerprints_, which are SQL statement fingerprints grouped by [transaction](transactions.html).
 {{site.data.alerts.end}}
 
 ## Transaction Fingerprints view
@@ -21,7 +21,7 @@ In contrast to the [**Statements** page](ui-statements-page.html), which display
 The **Transaction Fingerprints** view helps you:
 
 - Identify frequently [retried]({{ link_prefix }}transactions.html#transaction-retries) transactions.
-- [Troubleshoot]({{ link_prefix }}query-behavior-troubleshooting.html) high latency transactions or execution failures.
+- [Troubleshoot]({{ link_prefix }}query-behavior-troubleshooting.html) high-latency transactions or execution failures.
 - View transaction [details](#transaction-details-page).
 
 {% if page.cloud != true %}
@@ -44,7 +44,7 @@ If you click the transaction fingerprint in the **Transactions** column, the [**
 
 The **Active Executions** view helps you:
 
-- Understand and tune workload performance, particularly long-running transactions.
+- Understand and tune workload performance, particularly for long-running transactions.
 
 {% if page.cloud != true %}
 To display this view, click **SQL Activity** in the left-hand navigation of the DB Console.
@@ -55,7 +55,7 @@ To display this view, click **SQL Activity** in the left-hand navigation of the 
 The **Statements** tab is selected. Click the **Transactions** tab and the **Active Executions** radio button. The [Active Executions table](#active-executions-table) displays.
 
 {{site.data.alerts.callout_info}}
-Active executions are polled every 10 seconds and fast-running executions will potentially disappear upon each refresh.
+Active executions are polled every 10 seconds. Faster-running executions will potentially disappear upon each refresh.
 {{site.data.alerts.end}}
 
 The following screenshot shows the active statement execution for `SELECT city, id FROM vehicles WHERE city = 'paris'`:

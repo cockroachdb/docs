@@ -11,16 +11,16 @@ Most Recent Statement | The most recently executed statement in the transaction.
 Status | The status of the execution: Preparing, Waiting, or Executing.
 Start Time (UTC) | The time the execution started.
 Elapsed Time | The time elapsed since the transaction started.
-Time Spent Waiting | The time the execution spent waiting and experiencing lock contention.
+Time Spent Waiting | The amount of time the execution experienced lock contention.
 Statements | The number of statements in the transaction.
-Retries | The number of times statements are retried.
+Retries | The number of times statements in the transaction were retried.
 Application | The name specified by the [`application_name`](show-vars.html#supported-variables) session setting.
 
-To view details of an active transaction execution, click an execution ID in the **Transaction Execution ID** column to open the **Transaction Execution** details page.
+To view details of an active transaction execution, click an execution ID in the **Transaction Execution ID** column to open the [**Transaction Execution** details page](#transaction-execution-details-page).
 
 ## Transaction Execution details page
 
-The details page provides the following details on the transaction execution.
+The Transaction Execution details page provides the following details on the transaction execution.
 
 - **Start Time (UTC)**: the time the execution started.
 - **Elapsed Time**: the time elapsed since the transaction started.
@@ -32,7 +32,7 @@ The details page provides the following details on the transaction execution.
 - **Number of Statements**: the number of statements in the transaction.
 - **Application Name**: the name specified by the [`application_name`]({{ link_prefix }}show-vars.html#supported-variables) session setting.
 - **Most Recent Statement Execution ID**: Link to the ID of the most recently [executed statement](ui-statements-page.html#active-executions-table) in the transaction.
-- **Session ID**: Link to the [session](ui-sessions-page.html) in which the transaction is running.
+- **Session ID**: Link to the ID of the [session](ui-sessions-page.html) in which the transaction is running.
 
 ## See also
 
