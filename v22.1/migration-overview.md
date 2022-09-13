@@ -40,11 +40,11 @@ For more details on the CockroachDB SQL implementation, see [SQL Feature Support
 
 Consider the following CockroachDB attributes and best practices:
 
+- When importing data, we recommend that you always have an explicit primary key defined on every table. For more information, see [Primary key best practices](schema-design-table.html#primary-key-best-practices).
+
 - Instead of using a sequence to define a primary key column, we recommend that you use [multi-column primary keys](performance-best-practices-overview.html#use-multi-column-primary-keys) or the [`UUID`](uuid.html) datatype for primary key columns. For more information, see [`CREATE SEQUENCE`](create-sequence.html#considerations).
 
 	- {% include {{page.version.version}}/performance/use-hash-sharded-indexes.md %}
-
-- When importing data, we recommend that you always have an explicit primary key defined on every table. For more information, see [Select primary key columns](schema-design-table.html#select-primary-key-columns).
 
 - By default on CockroachDB, `INT` is an alias for `INT8`, which creates 64-bit signed integers. Depending on your source database or application requirements, you may need to change the integer size to `4`. For example, [PostgreSQL defaults to 32-bit integers](https://www.postgresql.org/docs/9.6/datatype-numeric.html). For more information, see [Considerations for 64-bit signed integers](int.html#considerations-for-64-bit-signed-integers).
 
