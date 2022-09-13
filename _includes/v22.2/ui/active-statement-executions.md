@@ -9,7 +9,7 @@ Statement Execution ID | The execution ID of the statement execution.
 Statement Execution | The SQL statement that was executed.
 Status | The status of the execution: Preparing, Waiting, or Executing.
 Start Time | The time the execution started.
-Time Spent Waiting | The time the execution spent waiting for access to resources.
+Time Spent Waiting | The time the execution spent waiting and experiencing lock contention.
 Application | The name specified by the [`application_name`](show-vars.html#supported-variables) session setting.
 
 To view details of an active statement execution, click an execution ID in the **Statement Execution ID** column to open the **Statement Execution** details page.

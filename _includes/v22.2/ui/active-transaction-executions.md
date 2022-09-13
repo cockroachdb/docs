@@ -11,7 +11,7 @@ Most Recent Statement | The most recently executed statement in the transaction.
 Status | The status of the execution: Preparing, Waiting, or Executing.
 Start Time (UTC) | The time the execution started.
 Elapsed Time | The time elapsed since the transaction started.
-Time Spent Waiting | The time the execution spent waiting for access to resources.
+Time Spent Waiting | The time the execution spent waiting and experiencing lock contention.
 Statements | The number of statements in the transaction.
 Retries | The number of times statements are retried.
 Application | The name specified by the [`application_name`](show-vars.html#supported-variables) session setting.
