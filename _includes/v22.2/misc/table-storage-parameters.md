@@ -2,10 +2,10 @@
 |---------------------+----------------------+-----+------|
 | `exclude_data_from_backup` | Excludes the data in this table from any future backups. | Boolean | `false` |
 | `ttl` | Signifies if a TTL is active. Automatically set and controls the reset of all TTL-related storage parameters. | N/A | N/A |
-| `ttl_automatic_column` | If set, use the value of the `crdb_internal_expiration` hidden column. Always set to `true` and cannot be reset. | Boolean | `true` |
 | `ttl_delete_batch_size` | The number of rows to [delete](delete.html) at a time. Minimum: `1`. | Integer | `100` |
 | `ttl_delete_rate_limit` | The maximum number of rows to be deleted per second (rate limit). `0` means no limit. | Integer | `0` |
 | `ttl_expire_after` | The [interval](interval.html) when a TTL will expire. This parameter is required to enable TTL. Minimum: `'1 microsecond'`.<br/><br/>Use `RESET (ttl)` to remove from the table. | Interval | N/A |
+| `ttl_expiration_expression` | An expression that returns a timestamp to support custom calculation when a TTL will expire. | Interval | N/A |
 | `ttl_job_cron` | The frequency at which the TTL job runs. | [CRON syntax](https://cron.help) | `'@hourly'` |
 | `ttl_label_metrics` | Whether or not [TTL metrics](row-level-ttl.html#ttl-metrics) are labelled by table name (at the risk of added cardinality). | Boolean | `false` |
 | `ttl_pause` | If set, stops the TTL job from executing. | Boolean | `false` |
