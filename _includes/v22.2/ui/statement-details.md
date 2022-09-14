@@ -104,13 +104,13 @@ Diagnostics will be collected a maximum of *N* times for a given activated finge
 
 #### Activate diagnostics collection and download bundles
 
-<img src="{{ 'images/v22.2/ui_activate_diagnostics.png' | relative_url }}" alt="Statements diagnostics" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v22.2/ui_activate_diagnostics.png' | relative_url }}" alt="Activate statement diagnostics" style="border:1px solid #eee;max-width:100%" />
 
 To activate diagnostics collection:
 
 1. Click the **Activate diagnostics** button. The **Activate statement diagnostics** dialog displays.
 
-    <img src="{{ 'images/v22.2/ui_activate_diagnostics_dialog.png' | relative_url }}" alt="Statements diagnostics" style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/v22.2/ui_activate_diagnostics_dialog.png' | relative_url }}" alt="Statements diagnostics dialog" style="border:1px solid #eee;max-width:100%" />
 
 1. Choose whether to activate collection on the next statement execution (default) or if execution latency exceeds a certain time. If you choose the latter, accept the default latency of 100 milliseconds, or specify a different time. All executions of the statement fingerprint will run slower until diagnostics are collected.
 1. Choose whether the request should expire after 15 minutes, or after a different the time, or disable automatic expiration by deselecting the checkbox.
@@ -118,11 +118,11 @@ To activate diagnostics collection:
 
 A row  with the activation time and collection status is added to the **Statement diagnostics** table.
 
-<img src="{{ 'images/v22.2/ui_statement_diagnostics.png' | relative_url }}" alt="Statement diagnostics" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v22.2/ui_statement_diagnostics.png' | relative_url }}" alt="Statement diagnostics table" style="border:1px solid #eee;max-width:100%" />
 
 The collection status values are:
 
-- **READY**: indicates that the diagnostics have been collected. To download the diagnostics bundle, click <img src="{{ 'images/v22.2/ui-download-button.png' | relative_url }}" alt="Download bundle" /> **Bundle (.zip)**.
+- **READY**: indicates that the diagnostics have been collected. To download the diagnostics bundle, click <img src="{{ 'images/v22.2/ui-download-button.png' | relative_url }}" alt="Down arrow" /> **Bundle (.zip)**.
 - **WAITING**: indicates that a SQL statement matching the fingerprint has not yet been recorded. To cancel diagnostics collection, click the **Cancel request** button.
 - **ERROR**: indicates that the attempt at diagnostics collection failed.
 
@@ -135,7 +135,7 @@ Although fingerprints are periodically cleared from the Statements page, all dia
 - Click **Advanced Debug** in the left-hand navigation and click [Statement Diagnostics History](ui-debug-pages.html#reports).
 {% endif %}
 
-Click <img src="{{ 'images/v22.2/ui-download-button.png' | relative_url }}" alt="Download bundle" /> **Bundle (.zip)** to download any diagnostics bundle.
+Click <img src="{{ 'images/v22.2/ui-download-button.png' | relative_url }}" alt="Down arrow" /> **Bundle (.zip)** to download any diagnostics bundle.
 
 ## See also
 
