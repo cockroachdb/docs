@@ -8,15 +8,15 @@ The details displayed on the **Statement Fingerprint** page reflect the [time in
 
 The **Overview** section displays the SQL statement fingerprint and execution attributes:
 
-- **Nodes**: the nodes on which the statements executed. Click a node ID to view node statistics. **Nodes** are not displayed for {{ site.data.products.serverless }} clusters.
-- **Regions**: the regions on which the statements executed. **Regions** are not displayed for {{ site.data.products.serverless }} clusters.
-- **Database**: the database on which the statements executed.
-- **App**: the name specified by the [`application_name`]({{ link_prefix }}show-vars.html#supported-variables) session setting. Click the name to view all statements run by that application.
-- **Failed?**: whether the statement failed to execute.
-- **Full scan?**: whether the execution performed a full scan of the table.
-- **Vectorized execution?**: whether the execution used the [vectorized execution engine]({{ link_prefix }}vectorized-execution.html).
-- **Transaction type**: the type of transaction ([implicit]({{ link_prefix }}transactions.html#individual-statements) or [explicit]({{ link_prefix }}transactions.html#sql-statements)).
-- **Last execution time**: when the statement was last executed.
+- **Nodes**: The nodes on which the statements executed. Click a node ID to view node statistics. **Nodes** are not displayed for {{ site.data.products.serverless }} clusters.
+- **Regions**: The regions on which the statements executed. **Regions** are not displayed for {{ site.data.products.serverless }} clusters.
+- **Database**: The database on which the statements executed.
+- **Application Name**: The name specified by the [`application_name`]({{ link_prefix }}show-vars.html#supported-variables) session setting. Click the name to view all statements run by that application.
+- **Failed?**: Whether the statement failed to execute.
+- **Full scan?**: Whether the execution performed a full scan of the table.
+- **Vectorized execution?**: Whether the execution used the [vectorized execution engine]({{ link_prefix }}vectorized-execution.html).
+- **Transaction type**: The type of transaction ([implicit]({{ link_prefix }}transactions.html#individual-statements) or [explicit]({{ link_prefix }}transactions.html#sql-statements)).
+- **Last execution time**: When the statement was last executed.
 
 Run the query described in [Use the right index]({{ link_prefix }}apply-statement-performance-rules.html#rule-2-use-the-right-index):
 
@@ -44,11 +44,11 @@ The following screenshot shows the statement fingerprint of the query:
 
 Charts following the execution attributes display statement fingerprint statistics:
 
-- **Statement Execution and Planning Time**: the time taken by the [planner]({{ link_prefix }}architecture/sql-layer.html#sql-parser-planner-executor) to create an execution plan and for CockroachDB to execute statements.
-- **Rows Processed**: the total number of rows read and written.
-- **Execution Retries**: the number of [retries]({{ link_prefix }}transactions.html#transaction-retries).
-- **Execution Count**: the total number of executions. It is calculated as the sum of first attempts and retries.
-- **Contention**: the amount of time spent waiting for resources.
+- **Statement Execution and Planning Time**: The time taken by the [planner]({{ link_prefix }}architecture/sql-layer.html#sql-parser-planner-executor) to create an execution plan and for CockroachDB to execute statements.
+- **Rows Processed**: The total number of rows read and written.
+- **Execution Retries**: The number of [retries]({{ link_prefix }}transactions.html#transaction-retries).
+- **Execution Count**: The total number of executions. It is calculated as the sum of first attempts and retries.
+- **Contention**: The amount of time spent waiting for resources.
 
 The following charts summarize the executions of the statement fingerprint illustrated in [Overview](#overview):
 

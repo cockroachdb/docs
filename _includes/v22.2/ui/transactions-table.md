@@ -8,6 +8,7 @@ Column | Description
 -----|------------
 Transactions | The [SQL statement fingerprints]({{ page_prefix }}statements-page.html#sql-statement-fingerprints) that make up the transaction. To view the transaction fingerprint and details, click to open the [Transaction Details page](#transaction-details-page).
 Execution Count | Cumulative number of executions of this transaction within the [time interval](#time-interval). <br><br>The bar indicates the ratio of runtime success (gray) to [retries]({{ link_prefix }}transactions.html#transaction-retries) (red) for the transaction.
+Application Name | The name specified by the [`application_name`]({{ link_prefix }}show-vars.html#supported-variables) session setting. Click the name to view all statements run by that application.
 Rows Processed | Average number of rows read and written while executing statements with this fingerprint within the time interval.
 Bytes Read | Aggregation of all bytes [read from disk]({{ link_prefix }}architecture/life-of-a-distributed-transaction.html#reads-from-the-storage-layer) across all operators for this transaction within the time interval. <br><br>The gray bar indicates the mean number of bytes read from disk. The blue bar indicates one standard deviation from the mean.
 Transaction Time | Average [planning and execution time]({{ link_prefix }}architecture/sql-layer.html#sql-parser-planner-executor) of this transaction within the time interval. <br><br>The gray bar indicates the mean latency. The blue bar indicates one standard deviation from the mean.

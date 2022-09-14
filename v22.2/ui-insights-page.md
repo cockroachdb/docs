@@ -142,7 +142,7 @@ To display this view, click **Insights** in the left-hand navigation of the DB C
 This view lists the indexes that have not been used and should be dropped and or the ones that should be created, altered, or replaced (based on statement execution).
 
 - The drop recommendations are the same as those on the [Databases](ui-databases-page.html) page.
-- The create, alter, and replace recommendations are the same as those on the [Explain Plans tab](ui-statements-page.html#insights) on the Statements page. The Explain Plans tab shows all recommendations, however this page shows only the latest recommendations for that statement fingerprint.
+- The create, alter, and replace recommendations are the same as those on the [Explain Plans tab](ui-statements-page.html#insights) on the Statements page. The Explain Plans tab shows all recommendations, however this page shows only the latest recommendations for that statement fingerprint. If you execute a statement again after creating or updating an index, the recommendation disappears.
 
 The following screenshot shows the insight that displays after you run the query described in [Use the right index]({{ link_prefix }}apply-statement-performance-rules.html#rule-2-use-the-right-index) 6 or more times:
 
