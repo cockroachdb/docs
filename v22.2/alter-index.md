@@ -87,7 +87,7 @@ For examples, see [Split an index](split-at.html#split-an-index) and [Unsplit an
 
 ### Set an index to be not visible
 
-You can specify that an index is not visible to the [cost-based optimizer](cost-based-optimizer.html##control-whether-the-optimzer-uses-indexes-marked-as-not-visible) (i.e. it won't be used in queries unless specifically selected with a hint). This allows you to create an index and check for corruption without affecting production queries.
+You can specify that an index is not visible to the [cost-based optimizer](cost-based-optimizer.html#control-whether-the-optimzer-uses-indexes-marked-as-not-visible) (i.e. it won't be used in queries unless specifically selected with a hint). This allows you to create an index and check for corruption without affecting production queries.
 
 {% include {{ page.version.version }}/demo_movr.md %}
 
