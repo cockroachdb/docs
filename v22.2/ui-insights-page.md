@@ -153,7 +153,7 @@ The following screenshot shows the insight that displays after you run the query
     - Create, Alter, or Replace Index: a Statement Fingerprint field, which displays the statement fingerprint that would be optimized with the creation, alteration, or replacement of the index, and a Recommendation field, which displays the SQL query to create, alter, or replace the index.
     - Drop Unused Index: an Index field, which displays the name of the index to drop, and a Description field, which displays the reason for dropping the index.
 
-To realize the schema insight, click the action button in the final column to execute the SQL query.
+To realize the schema insight, click the action button in the final column to execute the SQL statement. A confirmation dialog displays warning you of the cost of [online schema changes](online-schema-changes.html) and a button to copy the SQL statement for later execution in a SQL client.
 
 ## Configuration
 

@@ -79,7 +79,9 @@ When you click the gist, a table of insights that describe how to improve the pe
 
 In this case the insight is recommending that you create an index on the `start_time` column of the `rides` table and storing the `rider_id`.
 
-If you click **Create Index**, a confirmation dialog displays warning you of the cost of [online schema changes](online-schema-changes.html). If you click **Apply** to create the index and then re-run the command, the **Explain Plans** tab will show that the second execution (in this case at `19:40`), which uses the index and has no insight, takes less time than the first 6 executions.
+If you click **Create Index**, a confirmation dialog displays warning you of the cost of [online schema changes](online-schema-changes.html) and a button to copy the SQL statement for later execution in a SQL client.
+
+If you click **Apply** to create the index and then re-run the command, the **Explain Plans** tab will show that the second execution (in this case at `19:40`), which uses the index and has no insight, takes less time than the first 6 executions.
 
 <img src="{{ 'images/v22.2/ui_statement_plan_2.png' | relative_url }}" alt="Plan table after index" style="border:1px solid #eee;max-width:100%" />
 

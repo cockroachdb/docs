@@ -18,6 +18,7 @@ Network | Amount of [data transferred over the network]({{ link_prefix }}archite
 Retries | Cumulative number of [retries]({{ link_prefix }}transactions.html#transaction-retries) of this transaction within the time interval.
 Regions/Nodes | The region and nodes in which the transaction was executed. <br><br>**Regions/Nodes** are not visible for {{ site.data.products.serverless }} clusters.
 Statements | Number of SQL statements in the transaction.
+Transaction Fingerprint ID | The ID of the transaction fingerprint.
 
 {{site.data.alerts.callout_info}}
 Significant transactions on your database are likely to have a high execution count or number of rows read.
