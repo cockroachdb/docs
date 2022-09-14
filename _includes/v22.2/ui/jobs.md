@@ -1,5 +1,5 @@
 {{site.data.alerts.callout_info}}
-By default, jobs are deleted every 14 days. You can change this interval using the `jobs.retention_time` [cluster setting](cluster-settings.html).
+By default, jobs are deleted every 14 days. You can change this interval using the `jobs.retention_time` [cluster setting]({{ link_prefix }}cluster-settings.html).
 
 The Jobs list is designed for you to manage pending work. It is not intended to display the canonical record of all jobs that have run. If you need a historical record of all jobs you have run, you should log this information externally.
 {{site.data.alerts.end}}
@@ -17,7 +17,7 @@ The following screenshot shows `ALTER TABLE` jobs:
 Use the controls to filter jobs:
 
 - Use the **Status** menu to filter jobs by [job status](#job-status).
-- Use the **Type** menu to filter jobs by type. [Automatic table statistics](cost-based-optimizer.html#table-statistics) jobs are not displayed even when the **Type** menu is set to **All**. To view these jobs, set **Type** to **Auto-Statistics Creation**.
+- Use the **Type** menu to filter jobs by type. [Automatic table statistics]({{ link_prefix }}cost-based-optimizer.html#table-statistics) jobs are not displayed even when the **Type** menu is set to **All**. To view these jobs, set **Type** to **Auto-Statistics Creation**.
 - Use the **Show** menu to toggle between showing the latest 50 jobs or all jobs on the cluster.
 
 The following are displayed for each job:
@@ -26,12 +26,12 @@ Column | Description
 ----------|------------
 Description | SQL statement that created the job.
 Status | Current [job status](#job-status) or completion progress.
-Job ID | Unique job ID. This value is used to [pause](pause-job.html), [resume](resume-job.html), or [cancel](cancel-job.html) jobs.
+Job ID | Unique job ID. This value is used to [pause]({{ link_prefix }}pause-job.html), [resume]({{ link_prefix }}resume-job.html), or [cancel]({{ link_prefix }}cancel-job.html) jobs.
 User Name | User that created the job.
 Creation Time (UTC) | Date and time the job was created.
 Modified Time (UTC) | Date and time the job was modified.
 Last Execution Time (UTC) | Date and time the job was last executed.
-High-water Timestamp  | A checkpoint for a [changefeed job's progress](monitor-and-debug-changefeeds.html#monitor-a-changefeed) that guarantees that all changes before (or at) the timestamp have been emitted. Hover over the high-water timestamp to view the [system time](as-of-system-time.html).
+High-water Timestamp  | A checkpoint for a [changefeed job's progress]({{ link_prefix }}monitor-and-debug-changefeeds.html#monitor-a-changefeed) that guarantees that all changes before (or at) the timestamp have been emitted. Hover over the high-water timestamp to view the [system time]({{ link_prefix }}as-of-system-time.html).
 Execution Count | Number of times the job was executed.
 Coordinator Node | ID of the coordinating node.
 
@@ -42,10 +42,10 @@ To view [job details](#job-details), click the job description.
 Status | Description
 -------|------------
 `PENDING` | Job is created but has not started running.
-`PAUSED` | Job is [paused](pause-job.html).
+`PAUSED` | Job is [paused]({{ link_prefix }}pause-job.html).
 `FAILED` | Job failed to complete.
 `SUCCEEDED` | Job successfully completed.
-`CANCELED` | Job was [cancelled](cancel-job.html).
+`CANCELED` | Job was [cancelled]({{ link_prefix }}cancel-job.html).
 `RUNNING`  | Job is running. A job that is running will be displayed with its percent completion and time remaining, rather than the `RUNNING` status.
 `REVERTING`| Job failed or was canceled and its changes are being reverted.
 `RETRYING` | Job is retrying another job that failed.
@@ -58,7 +58,7 @@ The job ID, creation time, user, status, and error messages (if any) are also sh
 
 ## See also
 
-- [`SHOW JOBS`](show-jobs.html)
-- [Troubleshooting Overview](troubleshooting-overview.html)
-- [Support Resources](support-resources.html)
-- [Raw Status Endpoints](monitoring-and-alerting.html#raw-status-endpoints)
+- [`SHOW JOBS`]({{ link_prefix }}show-jobs.html)
+- [Troubleshooting Overview]({{ link_prefix }}troubleshooting-overview.html)
+- [Support Resources]({{ link_prefix }}support-resources.html)
+- [Raw Status Endpoints]({{ link_prefix }}monitoring-and-alerting.html#raw-status-endpoints)
