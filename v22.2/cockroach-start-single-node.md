@@ -37,11 +37,15 @@ The `cockroach start-single-node` flags are identical to [`cockroach start`](coc
 
 ### General
 
+{% capture docker_env_variable_list %}<p><ul><li><code>COCKROACH_DATABASE</code>: The name of the database to create (if necessary) and start by default.</li><li><code>OCKROACH_USER</code>: The name of the database user to create by default if it not exist.</li><li><code>COCKROACH_PASSWORD</code>: The password to set for the user specified in `COCKROACH_USER`. Omit to use no password.</li></ul></p>{% endcapture %}
+
 Flag | Description
 -----|-----------
 `--attrs` | **Not relevant for single-node clusters.** Arbitrary strings, separated by colons, specifying node capability, which might include specialized hardware or number of cores, for example:<br><br>`--attrs=ram:64gb`<br><br>These can be used to influence the location of data replicas. See [Configure Replication Zones](configure-replication-zones.html#replication-constraints) for full details.
 `--background` | Runs the node in the background. Control is returned to the shell only once the node is ready to accept requests, so this is recommended over appending `&` to the command. This flag is **not** available in Windows environments.<br><br>**Note:** `--background` is suitable for writing automated test suites or maintenance procedures that need a temporary server process running in the background. It is not intended to be used to start a long-running server, because it does not fully detach from the controlling terminal. Consider using a service manager or a tool like [daemon(8)](https://www.freebsd.org/cgi/man.cgi?query=daemon&sektion=8) instead.
 `--cache` | The total size for caches, shared evenly if there are multiple storage devices. This can be a percentage (notated as a decimal or with `%`) or any bytes-based unit, for example: <br><br>`--cache=.25`<br>`--cache=25%`<br>`--cache=1000000000 ----> 1000000000 bytes`<br>`--cache=1GB ----> 1000000000 bytes`<br>`--cache=1GiB ----> 1073741824 bytes` <br><br><strong>Note:</strong> If you use the `%` notation, you might need to escape the `%` sign, for instance, while configuring CockroachDB through `systemd` service files. For this reason, it's recommended to use the decimal notation instead.<br><br>**Note:** The sum of `--cache`, `--max-sql-memory`, and `--max-tsdb-memory` should not exceed 75% of the memory available to the `cockroach` process.<br><br>**Default:** `128MiB`<br><br>The default cache size is reasonable for local development clusters. For production deployments, this should be increased to 25% or higher. Increasing the cache size will generally improve the node's read performance. See [Recommended Production Settings](recommended-production-settings.html#cache-and-sql-memory-size) for more details.
+`-e`, `--env` | **Relevant only for single-node clusters started with Docker on Linux or macOS. Not supported for production use.**  A key-value pair that represents a supported Docker environment variable. Provide the `-e` or `--env` flag separately for each environment variable that you set. Each environmental variable is set in the login shell for the user who runs the CockroachDB Docker image and can be used in shell scripts. The following environmental variables are supported: {{ docker_env_variable_list }}
+`--env-file` | **Relevant only for single-node clusters started with Docker on Linux or macOS. Not supported for production use.** The path to a file that contains key-value pairs that represent supported Docker environment variables, one key-value pair per line. The following environmental variables are supported. {{ docker_env_variable_list }}
 `--external-io-dir` | The path of the external IO directory with which the local file access paths are prefixed while performing backup and restore operations using local node directories or NFS drives. If set to `disabled`, backups and restores using local node directories and NFS drives are disabled.<br><br>**Default:** `extern` subdirectory of the first configured [`store`](#store).<br><br>To set the `--external-io-dir` flag to the locations you want to use without needing to restart nodes, create symlinks to the desired locations from within the `extern` directory.
 `--listening-url-file` | The file to which the node's SQL connection URL will be written on successful startup, in addition to being printed to the [standard output](#standard-output).<br><br>This is particularly helpful in identifying the node's port when an unused port is assigned automatically (`--port=0`).
 `--locality` | **Not relevant for single-node clusters.** Arbitrary key-value pairs that describe the location of the node. Locality might include country, region, datacenter, rack, etc. For more details, see [Locality](cockroach-start.html#locality) below.
@@ -95,6 +99,13 @@ By default, `cockroach start-single-node` writes all messages to log files, and 
 #### Defaults
 
 See the [default logging configuration](configure-logs.html#default-logging-configuration).
+
+## Docker-specific features of single-node clusters
+
+When you use the CockroachDB Docker image to start a single-node cluster, the following features can be helpful when testing or developing applications. These features are not supported for multi-node clusters.
+
+- You can set the following environment variables when you initialize the Docker container, either individually with the `-e` or `--env` flag, or from a file with the `--env-file` flag. {{ docker_env_variable_list }} These environment variables are ignored in a multi-node cluster. See [Flags](#flags) for more details.
+- You can run arbitrary initialization scripts from a directory or a named Docker volume on the Docker host. Mount the directory or volume onto the `/docker-entrypoint-initdb.d` directory in the container using the `-v` or `--volume` flag. The directory is not created automatically. The directory's contents are ignored in a multi-node cluster.
 
 ## Standard output
 

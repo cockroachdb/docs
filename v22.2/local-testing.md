@@ -84,6 +84,17 @@ To test bulk operations like [`IMPORT`](import.html), [`BACKUP`](backup.html), o
 
 For more details, see [Use a Local File Server for Bulk Operations](use-a-local-file-server-for-bulk-operations.html).
 
+## Use Docker-specific testing and development tools
+
+Additional testing and development tools are available when you start a single-node cluster using the CockroachDB Docker image.
+
+- You can specify the name of the default database, the default user, and the password for the default user using Docker environment variables.
+- You can mount a directory or volume containing arbitrary initialization scripts onto the `/docker-entrypoint-initdb.d` directory within the running container, and those scripts are run automatically when the container starts.
+
+These tools are not available for multi-node clusters; attempts to use them will be ignored.
+
+For more information, refer to [Docker-specific features of single-node clusters](cockroach-start-single-node.html#docker-specific-features-of-single-node-clusters).
+
 ## See also
 
 - [Error Handling and Troubleshooting](error-handling-and-troubleshooting.html)
