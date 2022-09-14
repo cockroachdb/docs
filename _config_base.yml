@@ -12,35 +12,6 @@ defaults:
     type: pages
   values:
     layout: page
-sass:
-  sass_dir: css
-  style: compressed
-jekyll-minifier:
-  exclude: 
-    - '**.html'
-  preserve_php: true                # Default: false
-  remove_spaces_inside_tags: false   # Default: true
-  remove_multi_spaces: false         # Default: true
-  remove_comments: true             # Default: true
-  remove_intertag_spaces: false      # Default: false
-  remove_quotes: false              # Default: false
-  compress_css: false                # Default: true
-  compress_javascript: true         # Default: true
-  compress_json: true               # Default: true
-  simple_doctype: false             # Default: false
-  remove_script_attributes: false   # Default: false
-  remove_style_attributes: false    # Default: false
-  remove_link_attributes: false     # Default: false
-  remove_form_attributes: false     # Default: false
-  remove_input_attributes: false    # Default: false
-  remove_javascript_protocol: false # Default: false
-  remove_http_protocol: false       # Default: false
-  remove_https_protocol: false      # Default: false
-  preserve_line_breaks: false       # Default: false
-  simple_boolean_attributes: false  # Default: false
-  compress_js_templates: false      # Default: false
-  uglifier_args:                    # Default: (empty)
-    harmony: true
 exclude:
 - __tests__
 - netlify
@@ -52,12 +23,38 @@ exclude:
 - package-lock.json
 include:
 - _redirects
+jekyll-minifier:
+  compress_css: 'false'
+  compress_javascript: 'true'
+  compress_js_templates: 'false'
+  compress_json: 'true'
+  exclude:
+  - '**.html'
+  preserve_line_breaks: 'false'
+  preserve_php: 'true'
+  remove_comments: 'true'
+  remove_form_attributes: 'false'
+  remove_http_protocol: 'false'
+  remove_https_protocol: 'false'
+  remove_input_attributes: 'false'
+  remove_intertag_spaces: 'false'
+  remove_javascript_protocol: 'false'
+  remove_link_attributes: 'false'
+  remove_multi_spaces: 'false'
+  remove_quotes: 'false'
+  remove_script_attributes: 'false'
+  remove_spaces_inside_tags: 'false'
+  remove_style_attributes: 'false'
+  simple_boolean_attributes: 'false'
+  simple_doctype: 'false'
+  uglifier_args:
+    harmony: 'true'
 keep_files:
 - _internal
 markdown: Redcarpet
 plugins:
-  - jekyll-include-cache
-  - jekyll-minifier
+- jekyll-include-cache
+- jekyll-minifier
 release_info:
   v1.0:
     build_time: 2018/02/13 15:13:51 (go1.8.3)
@@ -121,12 +118,12 @@ release_info:
     start_time: 2022-08-26 14:48:15.734048 +0000 UTC
     version: v21.2.15
   v22.1:
-    build_time: 2022-08-23 00:00:00 (go1.17)
+    build_time: 2022-09-15 00:00:00 (go1.17)
     crdb_branch_name: release-22.1
     docker_image: cockroachdb/cockroach
-    name: v22.1.6
-    start_time: 2022-08-22 14:17:14.803026 +0000 UTC
-    version: v22.1.6
+    name: v22.1.7
+    start_time: 2022-09-14 15:30:38.220165 +0000 UTC
+    version: v22.1.7
   v22.2:
     build_time: 2022-09-12 00:00:00 (go1.17)
     crdb_branch_name: master
