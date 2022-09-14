@@ -46,6 +46,7 @@ Statement | Usage
 [`DROP CONSTRAINT`](drop-constraint.html) | Remove constraints from a column.
 [`DROP DATABASE`](drop-database.html) | Remove a database and all its objects.
 [`DROP INDEX`](drop-index.html) | Remove an index for a table.
+[`DROP OWNED BY`] | Drop all objects owned by and any grants on objects not owned by a role.
 [`DROP REGION`](drop-region.html) | Drop a [region](multiregion-overview.html#database-regions) from a database. [Multi-region features](multiregion-overview.html) require an [{{ site.data.products.enterprise }} license](enterprise-licensing.html).
 [`DROP SUPER REGION`](drop-super-region.html) | Drop a super region made up of a set of [database regions](multiregion-overview.html#super-regions).
 [`DROP SCHEMA`](drop-schema.html) | Drop a user-defined schema.
