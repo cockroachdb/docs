@@ -290,7 +290,7 @@ Every [`DELETE`](delete.html) or [`UPDATE`](update.html) statement constructs a 
 
 ## Dropping an index interleaved into another index on the same table
 
-{{site.data.alerts.callout_info}}Resolved as of [v1.1-alpha.20170831](../releases/v1.1-alpha.20170831.html). See <a href="https://github.com/cockroachdb/cockroach/pull/17860">#17860</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}Resolved as of [v1.1-alpha.20170831](../releases/v1.1.html#v1-1-alpha-20170831.html). See <a href="https://github.com/cockroachdb/cockroach/pull/17860">#17860</a>.{{site.data.alerts.end}}
 
 In the unlikely case that you [interleave](interleave-in-parent.html) an index into another index on the same table and then [drop](drop-index.html) the interleaved index, future DDL operations on the table will fail.
 
