@@ -9,7 +9,7 @@ Column | Description
 Transaction Execution ID | The execution ID of the transaction.
 Most Recent Statement | The most recently executed statement in the transaction.
 Status | The status of the execution: `Preparing`, `Waiting`, or `Executing`.
-Start Time (UTC) | The time the execution started.
+Start Time (UTC) | A timestamp started by the execution.
 Elapsed Time | The time elapsed since the transaction started.
 Time Spent Waiting | The amount of time the execution experienced lock contention.
 Statements | The number of statements in the transaction.

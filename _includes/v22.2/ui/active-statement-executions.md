@@ -8,7 +8,7 @@ Column | Description
 Statement Execution ID | The execution ID of the statement execution.
 Statement Execution | The SQL statement that was executed.
 Status | The status of the execution: `Preparing`, `Waiting`, or `Executing`.
-Start Time | The timestamp the execution started.
+Start Time (UTC) | A timestamp started by the execution.
 Time Spent Waiting | The time the execution spent waiting and experiencing lock contention.
 Application | The name specified by the [`application_name`](show-vars.html#supported-variables) session setting.
 
