@@ -11,7 +11,8 @@ The `DROP OWNED BY` [statement](sql-statements.html) drops all objects owned by 
 
 ## Required privileges
 
-The role must have the `DROP` [privilege](security-reference/authorization.html#managing-privileges) on the specified objects.
+The role must have the `DROP` [privilege](security-reference/authorization.html#managing-privileges) on the specified objects. `DROP OWNED BY` cannot be performed if the
+user has synthetic privileges.
 
 ## Synopsis
 
