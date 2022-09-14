@@ -392,6 +392,12 @@
               "urls": [
                 "/cockroachcloud/transactions-page.html"
               ]
+            },
+            {
+              "title": "Jobs Page",
+              "urls": [
+                "/cockroachcloud/jobs-page.html"
+              ]
             }
           ]
         },
