@@ -18,7 +18,7 @@ Subcommand | Description
 [`RENAME TO`](rename-index.html) | Change the name of an index.
 [`SPLIT AT`](split-at.html) | Force a [range split](architecture/distribution-layer.html#range-splits) at the specified row in the index.
 [`UNSPLIT AT`](unsplit-at.html) | Remove a range split enforcement in the index.
-`[NOT] VISIBLE`| Set whether an index is visible to the [cost-based optimizer](cost-based-optimizer.html#control-whether-the-optimzer-uses-an-index). If not visible, the index won't be used in queries unless specifically selected with [index hint](indexes.html#selection). For an example, see [Set an index to be not visible](#set-an-index-to-be-not-visible).
+`[NOT] VISIBLE`| Set whether an index is visible to the [cost-based optimizer](cost-based-optimizer.html#control-whether-the-optimizer-uses-an-index). If not visible, the index won't be used in queries unless specifically selected with [index hint](indexes.html#selection). For an example, see [Set an index to be not visible](#set-an-index-to-be-not-visible).
 
 ## View schema changes
 

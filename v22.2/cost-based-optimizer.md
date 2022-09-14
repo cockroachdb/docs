@@ -191,7 +191,7 @@ If you disable full scans, you can set the [`large_full_scan_rows` session varia
 
 If you disable full scans, and you provide an [index hint](indexes.html#selection), the optimizer will try to avoid a full scan while also respecting the index hint. If this is not possible, the optimizer will return an error. If you do not provide an index hint, the optimizer will return an error, the full scan will be logged, and the `sql.guardrails.full_scan_rejected.count` [metric](ui-overview-dashboard.html) will be updated.
 
-## Control whether the optimzer uses an index
+## Control whether the optimizer uses an index
 
 You can specify whether an [index is visible](alter-index.html#set-an-index-to-be-not-visible) to the cost-based optimizer. If not visible, the index won't be used in queries unless specifically selected with an [index hint](indexes.html#selection). This allows you to create an index and check for corruption without affecting production queries. For an example, see [Set an index to be not visible](alter-index.html#set-an-index-to-be-not-visible).
 
