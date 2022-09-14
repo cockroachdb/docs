@@ -411,6 +411,6 @@ Every [`DELETE`](delete.html) or [`UPDATE`](update.html) statement constructs a 
 
 ### `cockroach dump` does not support cyclic foreign key references
 
-{{site.data.alerts.callout_info}}Resolved as of <a href="../releases/v2.1.0-alpha.20180507.html">v2.1.0-alpha.20180507</a>. See <a href="https://github.com/cockroachdb/cockroach/pull/24716">#24716</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}Resolved as of <a href="../releases/v2.1.html#v2-1-0-alpha-20180507.html">v2.1.0-alpha.20180507</a>. See <a href="https://github.com/cockroachdb/cockroach/pull/24716">#24716</a>.{{site.data.alerts.end}}
 
 {% include {{ page.version.version }}/known-limitations/dump-cyclic-foreign-keys.md %}
