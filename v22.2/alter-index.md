@@ -18,6 +18,7 @@ Subcommand | Description
 [`RENAME TO`](rename-index.html) | Change the name of an index.
 [`SPLIT AT`](split-at.html) | Force a [range split](architecture/distribution-layer.html#range-splits) at the specified row in the index.
 [`UNSPLIT AT`](unsplit-at.html) | Remove a range split enforcement in the index.
+`[NOT] VISIBLE`| Set whether an index is visible to the [cost-based optimizer](cost-based-optimizer.html#control-whether-the-optimzer-uses-an-index). If not visible, the index won't be used in queries unless specifically selected with [index hint](indexes.html#selection). For an example, see [Set an index to be not visible](#set-an-index-to-be-not-visible).
 
 ## View schema changes
 
@@ -87,11 +88,9 @@ For examples, see [Split an index](split-at.html#split-an-index) and [Unsplit an
 
 ### Set an index to be not visible
 
-You can specify that an index is not visible to the [cost-based optimizer](cost-based-optimizer.html#control-whether-the-optimzer-uses-indexes-marked-as-not-visible) (i.e. it won't be used in queries unless specifically selected with a hint). This allows you to create an index and check for corruption without affecting production queries.
-
 {% include {{ page.version.version }}/demo_movr.md %}
 
-1. Show the indexes on the `rides` table.
+1. Show the indexes on the `rides` table. In the last column, `visible`, you can see that all indexes have the value `t`.
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -110,13 +109,7 @@ You can specify that an index is not visible to the [cost-based optimizer](cost-
       rides      | rides_auto_index_fk_vehicle_city_ref_vehicles |     t      |            4 | id            | ASC       |    f    |    t     |    t
       rides      | rides_pkey                                    |     f      |            1 | city          | ASC       |    f    |    f     |    t
       rides      | rides_pkey                                    |     f      |            2 | id            | ASC       |    f    |    f     |    t
-      rides      | rides_pkey                                    |     f      |            3 | vehicle_city  | N/A       |    t    |    f     |    t
-      rides      | rides_pkey                                    |     f      |            4 | rider_id      | N/A       |    t    |    f     |    t
-      rides      | rides_pkey                                    |     f      |            5 | vehicle_id    | N/A       |    t    |    f     |    t
-      rides      | rides_pkey                                    |     f      |            6 | start_address | N/A       |    t    |    f     |    t
-      rides      | rides_pkey                                    |     f      |            7 | end_address   | N/A       |    t    |    f     |    t
-      rides      | rides_pkey                                    |     f      |            8 | start_time    | N/A       |    t    |    f     |    t
-      rides      | rides_pkey                                    |     f      |            9 | end_time      | N/A       |    t    |    f     |    t
+      ...
       rides      | rides_pkey                                    |     f      |           10 | revenue       | N/A       |    t    |    f     |    t
     (17 rows)
     ~~~
@@ -160,7 +153,7 @@ You can specify that an index is not visible to the [cost-based optimizer](cost-
     > CREATE INDEX ON rides (revenue) STORING (vehicle_city, rider_id, vehicle_id, start_address, end_address, start_time, end_time);
     ~~~
 
-1. Show the indexes on the rides table;
+1. Display the indexes on the `rides` table to verify the newly created index `rides_revenue_idx`.
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -179,22 +172,7 @@ You can specify that an index is not visible to the [cost-based optimizer](cost-
       rides      | rides_auto_index_fk_vehicle_city_ref_vehicles |     t      |            4 | id            | ASC       |    f    |    t     |    t
       rides      | rides_pkey                                    |     f      |            1 | city          | ASC       |    f    |    f     |    t
       rides      | rides_pkey                                    |     f      |            2 | id            | ASC       |    f    |    f     |    t
-      rides      | rides_pkey                                    |     f      |            3 | vehicle_city  | N/A       |    t    |    f     |    t
-      rides      | rides_pkey                                    |     f      |            4 | rider_id      | N/A       |    t    |    f     |    t
-      rides      | rides_pkey                                    |     f      |            5 | vehicle_id    | N/A       |    t    |    f     |    t
-      rides      | rides_pkey                                    |     f      |            6 | start_address | N/A       |    t    |    f     |    t
-      rides      | rides_pkey                                    |     f      |            7 | end_address   | N/A       |    t    |    f     |    t
-      rides      | rides_pkey                                    |     f      |            8 | start_time    | N/A       |    t    |    f     |    t
-      rides      | rides_pkey                                    |     f      |            9 | end_time      | N/A       |    t    |    f     |    t
-      rides      | rides_pkey                                    |     f      |           10 | revenue       | N/A       |    t    |    f     |    t
-      rides      | rides_revenue_idx                             |     t      |            1 | revenue       | ASC       |    f    |    f     |    t
-      rides      | rides_revenue_idx                             |     t      |            2 | vehicle_city  | N/A       |    t    |    f     |    t
-      rides      | rides_revenue_idx                             |     t      |            3 | rider_id      | N/A       |    t    |    f     |    t
-      rides      | rides_revenue_idx                             |     t      |            4 | vehicle_id    | N/A       |    t    |    f     |    t
-      rides      | rides_revenue_idx                             |     t      |            5 | start_address | N/A       |    t    |    f     |    t
-      rides      | rides_revenue_idx                             |     t      |            6 | end_address   | N/A       |    t    |    f     |    t
-      rides      | rides_revenue_idx                             |     t      |            7 | start_time    | N/A       |    t    |    f     |    t
-      rides      | rides_revenue_idx                             |     t      |            8 | end_time      | N/A       |    t    |    f     |    t
+      ...
       rides      | rides_revenue_idx                             |     t      |            9 | city          | ASC       |    f    |    t     |    t
       rides      | rides_revenue_idx                             |     t      |           10 | id            | ASC       |    f    |    t     |    t
     (27 rows)
@@ -227,7 +205,7 @@ You can specify that an index is not visible to the [cost-based optimizer](cost-
     > ALTER INDEX rides_revenue_idx NOT VISIBLE;
     ~~~
 
-1. View the table indexes and verify that the index visibility for `rides_revenue_idx` is `f`.
+1. Display the table indexes and verify that the index visibility for `rides_revenue_idx` is `f`.
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -246,14 +224,7 @@ You can specify that an index is not visible to the [cost-based optimizer](cost-
       rides      | rides_auto_index_fk_vehicle_city_ref_vehicles |     t      |            4 | id            | ASC       |    f    |    t     |    t
       rides      | rides_pkey                                    |     f      |            1 | city          | ASC       |    f    |    f     |    t
       rides      | rides_pkey                                    |     f      |            2 | id            | ASC       |    f    |    f     |    t
-      rides      | rides_pkey                                    |     f      |            3 | vehicle_city  | N/A       |    t    |    f     |    t
-      rides      | rides_pkey                                    |     f      |            4 | rider_id      | N/A       |    t    |    f     |    t
-      rides      | rides_pkey                                    |     f      |            5 | vehicle_id    | N/A       |    t    |    f     |    t
-      rides      | rides_pkey                                    |     f      |            6 | start_address | N/A       |    t    |    f     |    t
-      rides      | rides_pkey                                    |     f      |            7 | end_address   | N/A       |    t    |    f     |    t
-      rides      | rides_pkey                                    |     f      |            8 | start_time    | N/A       |    t    |    f     |    t
-      rides      | rides_pkey                                    |     f      |            9 | end_time      | N/A       |    t    |    f     |    t
-      rides      | rides_pkey                                    |     f      |           10 | revenue       | N/A       |    t    |    f     |    t
+      ...
       rides      | rides_revenue_idx                             |     t      |            1 | revenue       | ASC       |    f    |    f     |    f
       rides      | rides_revenue_idx                             |     t      |            2 | vehicle_city  | N/A       |    t    |    f     |    f
       rides      | rides_revenue_idx                             |     t      |            3 | rider_id      | N/A       |    t    |    f     |    f
@@ -298,3 +269,8 @@ You can specify that an index is not visible to the [cost-based optimizer](cost-
          SQL command: ALTER INDEX rides@rides_revenue_idx VISIBLE;
     (19 rows)
     ~~~
+
+## See also
+
+- [`CREATE INDEX`](create-index.html)
+- [`CREATE TABLE`](create-table.html)

@@ -189,13 +189,13 @@ You can disable statement plans that perform full table scans with the [`disallo
 
 If you disable full scans, you can set the [`large_full_scan_rows` session variable](set-vars.html#large-full-scan-rows) to specify the maximum table size allowed for a full scan. If no alternative plan is possible, the optimizer will return an error.
 
-If you disable full scans, and you provide an [index hint](table-expressions.html#force-index-selection), the optimizer will try to avoid a full scan while also respecting the index hint. If this is not possible, the optimizer will return an error. If you do not provide an index hint, the optimizer will return an error, the full scan will be logged, and the `sql.guardrails.full_scan_rejected.count` [metric](ui-overview-dashboard.html) will be updated.
+If you disable full scans, and you provide an [index hint](indexes.html#selection), the optimizer will try to avoid a full scan while also respecting the index hint. If this is not possible, the optimizer will return an error. If you do not provide an index hint, the optimizer will return an error, the full scan will be logged, and the `sql.guardrails.full_scan_rejected.count` [metric](ui-overview-dashboard.html) will be updated.
 
-## Control whether the optimzer uses indexes marked as not visible
+## Control whether the optimzer uses an index
 
-You can specify that an [index is not visible](alter-index.html#set-an-index-to-be-not-visible) to the cost-based optimizer(i.e. it won't be used in queries unless specifically selected with a hint). This allows you to create an index and check for corruption without affecting production queries.
+You can specify whether an [index is visible](alter-index.html#set-an-index-to-be-not-visible) to the cost-based optimizer. If not visible, the index won't be used in queries unless specifically selected with an [index hint](indexes.html#selection). This allows you to create an index and check for corruption without affecting production queries. For an example, see [Set an index to be not visible](alter-index.html#set-an-index-to-be-not-visible).
 
-You can instruct the optimizer to always use not visible indexes with the [`optimizer_use_not_visible_indexes` session variable](set-vars.html#optimizer-use-not-visible-indexes). By default, the variable is set to `off`.
+You can instruct the optimizer to use indexes marked as `NOT VISIBLE` with the [`optimizer_use_not_visible_indexes` session variable](set-vars.html#optimizer-use-not-visible-indexes). By default, the variable is set to `off`.
 
 ## Locality optimized search in multi-region clusters
 
