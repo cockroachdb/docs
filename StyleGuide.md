@@ -414,7 +414,7 @@ A release note helps users understand what they gain from upgrading to the versi
 #### Examples
 
 - [CockroachDB Cloud Release Notes](https://www.cockroachlabs.com/docs/releases/cloud.html)
-- [What's New in v21.2.5](https://www.cockroachlabs.com/docs/releases/v21.2.5.html)
+- [What's New in v21.2.5](https://www.cockroachlabs.com/docs/releases/v21.2.html#v21-2-5)
 
 ## Components
 

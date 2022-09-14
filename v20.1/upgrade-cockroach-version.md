@@ -40,7 +40,7 @@ Verify the overall health of your cluster using the [Admin UI](admin-ui-overview
 
 ### Review breaking changes
 
-Review the [backward-incompatible changes in v20.1](../releases/v20.1.0.html#backward-incompatible-changes), and if any affect your application, make necessary changes.
+Review the [backward-incompatible changes in v20.1](../releases/v20.1.html#v20-1-0-backward-incompatible-changes), and if any affect your application, make necessary changes.
 
 ### Let ongoing bulk operations finish
 
