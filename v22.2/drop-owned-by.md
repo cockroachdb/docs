@@ -32,5 +32,6 @@ The role must have the `DROP` [privilege](security-reference/authorization.html#
 
 ## See also
 - [`REASSIGN OWNED`](reassign-owned.html)
+- [`DROP ROLE`](drop-role.html)
 - [SQL Statements](sql-statements.html)
 - [Online Schema Changes](online-schema-changes.html)
