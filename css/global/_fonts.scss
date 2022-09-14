@@ -1,62 +1,3 @@
-@font-face {
-  font-family: 'Adelle-Bold';
-  src: url('../fonts/Adelle-Bold.eot');
-  src: url('../fonts/Adelle-Bold.woff2') format('woff2'),
-       url('../fonts/Adelle-Bold.woff') format('woff'),
-       url('../fonts/Adelle-Bold.ttf') format('truetype'),
-       url('../fonts/Adelle-Bold.svg#Adelle-Bold') format('svg'),
-       url('../fonts/Adelle-Bold.eot?#iefix') format('embedded-opentype');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'AvenirLTStd-Roman';
-  src: url('../fonts/AvenirLTStd-Roman.eot');
-  src: url('../fonts/AvenirLTStd-Roman.woff2') format('woff2'),
-       url('../fonts/AvenirLTStd-Roman.woff') format('woff'),
-       url('../fonts/AvenirLTStd-Roman.ttf') format('truetype'),
-       url('../fonts/AvenirLTStd-Roman.svg#AvenirLTStd-Roman') format('svg'),
-       url('../fonts/AvenirLTStd-Roman.eot?#iefix') format('embedded-opentype');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'AvenirLTStd-Oblique';
-  src: url('../fonts/AvenirLTStd-Oblique.eot');
-  src: url('../fonts/AvenirLTStd-Oblique.woff2') format('woff2'),
-       url('../fonts/AvenirLTStd-Oblique.woff') format('woff'),
-       url('../fonts/AvenirLTStd-Oblique.ttf') format('truetype'),
-       url('../fonts/AvenirLTStd-Oblique.svg#AvenirLTStd-Oblique') format('svg'),
-       url('../fonts/AvenirLTStd-Oblique.eot?#iefix') format('embedded-opentype');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'AvenirLTStd-Heavy';
-  src: url('../fonts/AvenirLTStd-Heavy.eot');
-  src: url('../fonts/AvenirLTStd-Heavy.woff2') format('woff2'),
-       url('../fonts/AvenirLTStd-Heavy.woff') format('woff'),
-       url('../fonts/AvenirLTStd-Heavy.ttf') format('truetype'),
-       url('../fonts/AvenirLTStd-Heavy.svg#AvenirLTStd-Heavy') format('svg'),
-       url('../fonts/AvenirLTStd-Heavy.eot?#iefix') format('embedded-opentype');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'SourceCodePro-Regular';
-  src: url('../fonts/SourceCodePro-Regular.ttf');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-}
 
 @mixin font-props {
   font-weight:normal;
@@ -70,59 +11,10 @@
 @mixin avenir_o($size) {font-family: 'AvenirLTStd-Oblique', serif; font-size:$size; @include font-props;}
 @mixin avenir_h($size) {font-family: 'AvenirLTStd-Heavy', serif; font-size:$size; @include font-props;}
 
-@font-face {
-  font-family: 'SourceSansPro-Regular';
-  src: url('../fonts/SourceSansPro-Regular.ttf');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'SourceSansPro-Light';
-  src: url('../fonts/SourceSansPro-Light.ttf');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'SourceSansPro-SemiBold';
-  src: url('../fonts/SourceSansPro-SemiBold.ttf');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'SourceSansPro-Bold';
-  src: url('../fonts/SourceSansPro-Bold.ttf');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-}
-
 @mixin sourcesanspro_r($size) {font-family: 'SourceSansPro-Regular', sans-serif; font-size:$size; @include font-props;}
 @mixin sourcesanspro_m($size) {font-family: 'SourceSansPro-SemiBold', sans-serif; font-size:$size; @include font-props;}
 @mixin sourcesanspro_b($size) {font-family: 'SourceSansPro-Bold', sans-serif; font-size:$size; @include font-props;}
 
 // Poppins
-
-@font-face {
-  font-family: 'Poppins';
-  src: url('../fonts/Poppins-Regular.ttf');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Poppins-SemiBold';
-  src: url('../fonts/Poppins-SemiBold.ttf');
-  font-weight: 600;
-  font-style: normal;
-  font-display: swap;
-}
-
 @mixin poppins($size) {font-family: 'Poppins', sans-serif; font-size:$size; @include font-props;}
 @mixin poppins_sb($size) {font-family: 'Poppins-SemiBold', sans-serif; font-size:$size; @include font-props;}

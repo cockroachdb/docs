@@ -44,7 +44,7 @@ To create a table, the user must have one of the following:
 **column_def ::=**
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/column_def.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/column_table_def.html %}
 </div>
 
 **col_qualification ::=**

@@ -1,5 +1,5 @@
 {{ $currentPage := . }}
-<div class="shadow-sm main-nav-wrapper position-fixed w-100">
+<div class="shadow-sm main-nav-wrapper position-fixed w-100" data-nosnippet>
 
 <div class="container-xl main-nav main-nav-contained-800 ">
   <nav class="navbar navbar-expand-lg navbar-light">
@@ -33,7 +33,7 @@
             </div>
             <div id="collapseProduct" class="collapse" aria-labelledby="mobileProduct" data-parent="#accordionExample">
               <div class="card-body bg-gray-f4">
-                {% include nav-product.html %}
+                {% include_cached nav-product.html %}
               </div>
             </div>
           </div>
@@ -50,7 +50,7 @@
             </div>
             <div id="collapseSolutions" class="collapse" aria-labelledby="mobileSolutions" data-parent="#accordionExample">
               <div class="card-body bg-gray-f4">
-                {% include nav-solutions.html %}
+                {% include_cached nav-solutions.html %}
               </div>
             </div>
           </div>
@@ -68,7 +68,7 @@
             </div>
             <div id="collapseResources" class="collapse" aria-labelledby="mobileResources" data-parent="#accordionExample">
               <div class="card-body bg-gray-f4">
-                {% include nav-resources.html %}
+                {% include_cached nav-resources.html %}
               </div>
             </div>
           </div>
@@ -86,7 +86,7 @@
             </div>
             <div id="collapseDocs" class="collapse" aria-labelledby="mobileDocs" data-parent="#accordionExample">
               <div class="card-body bg-gray-f4">
-                {% include nav-docs.html %}
+                {% include_cached nav-docs.html %}
               </div>
             </div>
           </div>
@@ -104,7 +104,7 @@
             </div>
             <div id="collapseCompany" class="collapse" aria-labelledby="mobileCompany" data-parent="#accordionExample">
               <div class="card-body bg-gray-f4">
-                {% include nav-company.html %}
+                {% include_cached nav-company.html %}
               </div>
             </div>
           </div>
@@ -149,7 +149,7 @@
           aria-haspopup="true"
           aria-expanded="false">Product</a>
           <div class="dropdown-menu w-100 p-45" aria-labelledby="navbarDropdown">
-            {% include nav-product.html %}
+            {% include_cached nav-product.html %}
           </div>
         </li>
 
@@ -163,7 +163,7 @@
           aria-haspopup="true"
           aria-expanded="false">Solutions</a>
           <div class="dropdown-menu w-100 p-45" aria-labelledby="navbarDropdown">
-            {% include nav-solutions.html %}
+            {% include_cached nav-solutions.html %}
           </div>
         </li>
 
@@ -177,7 +177,7 @@
           aria-haspopup="true"
           aria-expanded="false">Resources</a>
           <div class="dropdown-menu w-100 p-45" aria-labelledby="navbarDropdown">
-            {% include nav-resources.html %}
+            {% include_cached nav-resources.html %}
           </div>
         </li>
 
@@ -192,7 +192,7 @@
           aria-haspopup="true"
           aria-expanded="false">Docs</a>
           <div class="dropdown-menu w-100 p-45 docs" aria-labelledby="navbarDropdown">
-            {% include nav-docs.html %}
+            {% include_cached nav-docs.html %}
           </div>
         </li>
 
@@ -206,7 +206,7 @@
           aria-haspopup="true"
           aria-expanded="false">Company</a>
           <div class="dropdown-menu w-100 p-45 company" aria-labelledby="navbarDropdown">
-            {% include nav-company.html %}
+            {% include_cached nav-company.html %}
           </div>
         </li>
       </ul>

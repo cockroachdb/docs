@@ -24,7 +24,6 @@ body.sidenav-open{
   }
   .form-control {
     max-width: 196px;
-    background: url("../images/icon-mag-glass.svg");
     background-size: 17px 17px;
     background-repeat: no-repeat;
     background-position: 10px center;
@@ -97,10 +96,6 @@ body.sidenav-open{
     }
   }
 
-  .burger{
-    content: url(../images/hamburger.svg);
-  }
-
   ul {
     margin: 0;
     padding: 0;
@@ -110,7 +105,6 @@ body.sidenav-open{
       padding: 4px 0 4px 20px;
       margin: 0;
       .nav-expand {
-        content: url(../images/arrow-down.svg);
         position: absolute;
         top: 13px;
         left: 2px;

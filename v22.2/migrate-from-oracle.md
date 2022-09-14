@@ -5,6 +5,10 @@ toc: true
 docs_area: migrate
 ---
 
+{{site.data.alerts.callout_success}}
+We recommend [using AWS Database Migration Service (DMS) to migrate data](aws-dms.html) from Oracle to CockroachDB.
+{{site.data.alerts.end}}
+
 This page has instructions for migrating data from Oracle into CockroachDB by [importing](import.html) CSV files. Note that `IMPORT` only works for creating new tables. For information on how to add CSV data to existing tables, see [`IMPORT INTO`](import-into.html).
 
 To illustrate this process, we use the following sample data and tools:
@@ -14,10 +18,6 @@ To illustrate this process, we use the following sample data and tools:
 - [SQL*Plus](https://docs.oracle.com/database/121/SQPUG/ch_three.htm), the interactive and batch query tool that comes with every Oracle Database installation.
 
 {% include {{ page.version.version }}/misc/import-perf.md %}
-
-{{site.data.alerts.callout_info}}
-To migrate from Oracle to CockroachDB using the AWS Database Migration Service, see [Migrate with AWS Database Migration Service (DMS)](aws-dms.html).
-{{site.data.alerts.end}}
 
 ## Step 1. Export the Oracle schema
 
