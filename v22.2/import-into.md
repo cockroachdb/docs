@@ -156,6 +156,8 @@ CockroachDB uses the URL provided to construct a secure API call to the service 
 - [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html)
 - [Use a Local File Server for Bulk Operations](use-a-local-file-server-for-bulk-operations.html)
 
+{% include {{ page.version.version }}/misc/external-connection-note.md %}
+
 ## Performance
 
 - All nodes are used during the import job, which means all nodes' CPU and RAM will be partially consumed by the `IMPORT` task in addition to serving normal traffic.
@@ -181,6 +183,8 @@ Pausing and then resuming an `IMPORT INTO` job will cause it to restart from the
 ## Examples
 
 The following provide connection examples to cloud storage providers. For more information on connecting to different storage options, read [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html).
+
+{% include {{ page.version.version }}/misc/external-connection-note.md %}
 
 We recommend reading the [Considerations](#considerations) section for important details when working with `IMPORT INTO`.
 

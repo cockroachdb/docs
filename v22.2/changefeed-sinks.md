@@ -41,6 +41,8 @@ Example of a Kafka sink URI:
 'kafka://broker.address.com:9092?topic_prefix=bar_&tls_enabled=true&ca_cert=LS0tLS1CRUdJTiBDRVJUSUZ&sasl_enabled=true&sasl_user={sasl user}&sasl_password={url-encoded password}&sasl_mechanism=SASL-SCRAM-SHA-256'
 ~~~
 
+{% include {{ page.version.version }}/misc/external-connection-kafka.md %}
+
 <a name ="kafka-parameters"></a>The following table lists the available parameters for Kafka URIs:
 
 URI Parameter      | Description

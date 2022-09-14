@@ -88,6 +88,8 @@ CockroachDB uses the URL provided to construct a secure API call to the service 
 
 - [Use a Local File Server for Bulk Operations](use-a-local-file-server-for-bulk-operations.html)
 
+{% include {{ page.version.version }}/misc/external-connection-note.md %}
+
 ## Functional details
 
 You can restore:
@@ -233,6 +235,8 @@ If initiated correctly, the statement returns when the restore is finished or if
 ## Examples
 
 {% include {{ page.version.version }}/backups/bulk-auth-options.md %}
+
+{% include {{ page.version.version }}/misc/external-connection-note.md %}
 
 <div class="filters clearfix">
   <button class="filter-button" data-scope="s3">Amazon S3</button>

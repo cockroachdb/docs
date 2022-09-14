@@ -60,6 +60,8 @@ For more information, see the following:
 - [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html)
 - [Use a Local File Server for Bulk Operations](use-a-local-file-server-for-bulk-operations.html)
 
+{% include {{ page.version.version }}/misc/external-connection-note.md %}
+
 ### Export options
 
 You can control the [`EXPORT`](export.html) process's behavior using any of the following key-value pairs as a `kv_option`.
@@ -116,6 +118,8 @@ CockroachDB types map to [Parquet types](https://github.com/apache/parquet-forma
 ## Examples
 
 The following provide connection examples to cloud storage providers. For more information on connecting to different storage options, read [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html).
+
+{% include {{ page.version.version }}/misc/external-connection-note.md %}
 
 <div class="filters clearfix">
   <button class="filter-button" data-scope="s3">Amazon S3</button>

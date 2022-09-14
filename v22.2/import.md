@@ -128,6 +128,8 @@ CockroachDB uses the URL provided to construct a secure API call to the service 
 - [Use `userfile` for Bulk Operations](use-userfile-for-bulk-operations.html)
 - [Use a Local File Server for Bulk Operations](use-a-local-file-server-for-bulk-operations.html)
 
+{% include {{ page.version.version }}/misc/external-connection-note.md %}
+
 ### Table users and privileges
 
 Imported tables are treated as new tables, so you must [`GRANT`](grant.html) privileges to them.
@@ -155,6 +157,8 @@ If initiated correctly, the statement returns when the import is finished or if 
 ## Examples
 
 The following provide connection examples to cloud storage providers. For more information on connecting to different storage options, read [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html).
+
+{% include {{ page.version.version }}/misc/external-connection-note.md %}
 
 <div class="filters clearfix">
   <button class="filter-button" data-scope="s3">Amazon S3</button>
