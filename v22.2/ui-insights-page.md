@@ -83,7 +83,7 @@ The **Statement Executions** view provides an overview of all statement executio
 
 To display this view, click **Insights** in the left-hand navigation of the DB Console and select **Workload Insights > Statement Executions**.
 
-The rows in this page page are populated from the [`crdb_internal.cluster_execution_insights`](crdb-internal.html) table.
+The rows in this page are populated from the [`crdb_internal.cluster_execution_insights`](crdb-internal.html) table.
 The results displayed on the Statement Executions view will be available as long as the number of rows in each node is less than `sql.insights.execution_insights_capacity`.
 
 - **Statement Execution ID**: The execution ID of the latest execution with the statement fingerprint.
