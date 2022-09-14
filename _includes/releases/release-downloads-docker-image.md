@@ -4,18 +4,18 @@
 {% comment %} set the release and version based on the include.release parameter {% endcomment %}
 
 {% if release.withdrawn == "true" %}{% comment %} if the release is withdrawn, automatically disable the download links and Docker image {% endcomment %}
-<h3 id="{{ release.version | downcase | replace: "-", "-" }}-downloads">Downloads</h3>{% comment %} take the version name, force it to be lowercase, and replace all periods with hyphens. {% endcomment %}
+<h3 id="{{ release.version | downcase | replace: ".", "-" }}-downloads">Downloads</h3>{% comment %} take the version name, force it to be lowercase, and replace all periods with hyphens. {% endcomment %}
 {{site.data.alerts.callout_danger}}
 This patch release has been withdrawn{% if include.advisory_key %} due to [this technical advisory](../advisories/{{ include.advisory_key }}.html){% endif %}. All the changes listed as part of this release will be in the next release. Do not upgrade to this release.
 {{site.data.alerts.end}}
 
-<h3 id="{{ release.version | downcase | replace: "-", "-" }}-docker-image">Docker image</h3>{% comment %} we use a manual <h3> tag here to account for the duplicated headers {% endcomment %}
+<h3 id="{{ release.version | downcase | replace: ".", "-" }}-docker-image">Docker image</h3>{% comment %} we use a manual <h3> tag here to account for the duplicated headers {% endcomment %}
 
 {{site.data.alerts.callout_danger}}
 This release was withdrawn, and we've removed the links to the downloads and Docker image.
 {{site.data.alerts.end}}
 {% else %}
-<h3 id="{{ release.version | downcase | replace: "-", "-" }}-downloads">Downloads</h3>
+<h3 id="{{ release.version | downcase | replace: ".", "-" }}-downloads">Downloads</h3>
 
 {% if release.has_sql_only != "false" %}
 <h4>Full CockroachDB executable</h4>
@@ -45,7 +45,7 @@ This release was withdrawn, and we've removed the links to the downloads and Doc
 
 {% if release.release_type == "Testing" %}{% include releases/experimental-test-release.md %}{% endif %}{% comment %} warn users about using testing releases for production environments {% endcomment %}
 
-<h3 id="{{ release.version | downcase | replace: "-", "-" }}-docker-image">Docker image</h3>
+<h3 id="{{ release.version | downcase | replace: ".", "-" }}-docker-image">Docker image</h3>
 
 {% include_cached copy-clipboard.html %}
 ~~~shell
