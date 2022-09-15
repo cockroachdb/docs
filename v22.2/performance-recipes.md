@@ -65,7 +65,7 @@ This section describes how to use CockroachDB commands and dashboards to identif
     <td><ul><li><a href="#slow-writes">Remove unnecessary indexes.</a></li></ul></td>
   </tr>
   <tr>
-    <td><ul><li>You experience high latency on queries that cannot be explained by something like contention or a suboptimal query plan. You might also see high CPU on one or more nodes.</li></ul></td>
+    <td><ul><li>You experience high latency on queries that cannot be explained by high contention or a suboptimal query plan. You might also see high CPU on one or more nodes.</li></ul></td>
     <td><ul><li>You are scanning over large numbers of <a href="architecture/storage-layer.html#mvcc">MVCC versions</a>. This is similar to how a full table scan can be slow.</li></ul></td>
     <td><ul><li><a href="#too-much-mvcc-garbage">Configure CockroachDB to clean up unnecessary MVCC garbage.</a></li></ul></td>
   </tr>
@@ -184,7 +184,7 @@ A low percentage can cause statements to scan more data (MVCC values) than requi
 
 #### Configure CockroachDB to clean up MVCC garbage
 
-Reduce the [GC TTL](configure-replication-zones.html#gc-ttlseconds) of the table as much as possible.
+Reduce the [`gc.ttlseconds`](configure-replication-zones.html#gc-ttlseconds) zone configuration of the table as much as possible.
 
 ## See also
 

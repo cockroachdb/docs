@@ -53,7 +53,7 @@ The following information is displayed for each table:
 | Columns                        | The number of columns in the table.                                                                      |
 | Indexes                        | The number of indexes in the table. If there is an index recommendation, a caution icon will display.    |
 | Regions                        | The regions and nodes on which the table data is stored. This is not displayed on a single-node cluster. |
-| % of Live Data                 | % of total uncompressed logical data that has not been modified (updated or deleted).                    |
+| % of Live Data                 | Percent of total uncompressed logical data that has not been modified (updated or deleted).              |
 | Table Stats Last Updated (UTC) | The last time table statistics were created or updated.                                                  |
 
 Click a **table name** to view table details.
