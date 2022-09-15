@@ -16,9 +16,13 @@ The following screenshot shows `ALTER TABLE` jobs:
 
 Use the controls to filter jobs:
 
-- Use the **Status** menu to filter jobs by [job status](#job-status).
-- Use the **Type** menu to filter jobs by type. [Automatic table statistics]({{ link_prefix }}cost-based-optimizer.html#table-statistics) jobs are not displayed even when the **Type** menu is set to **All**. To view these jobs, set **Type** to **Auto-Statistics Creation**.
-- Use the **Show** menu to toggle between showing the latest 50 jobs or all jobs on the cluster.
+- **Status**: filter jobs by [job status](#job-status).
+- **Type**: filter jobs by type. [Automatic table statistics]({{ link_prefix }}cost-based-optimizer.html#table-statistics) jobs are not displayed even when the **Type** menu is set to **All**. To view these jobs, set **Type** to **Auto-Statistics Creation**.
+- **Show**: toggle between showing the latest 50 jobs or all jobs.
+
+The status line after the filters shows the number of jobs displayed and a message indicating the oldest time (in UTC) that jobs are shown for. The oldest time is calculated as `now -` the duration of the `jobs.retention_time` [cluster setting](cluster-settings.html), set to 28 days by default.
+
+The table is paginated with 20 jobs per page. Click the page controls following the table to traverse pages.
 
 The following are displayed for each job:
 
