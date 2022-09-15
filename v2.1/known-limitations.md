@@ -140,7 +140,7 @@ This conversion is currently only well defined for a small range of integers, i.
 
 ### Importing data using the PostgreSQL COPY protocol
 
-Currently, the built-in SQL shell provided with CockroachDB (`cockroach sql` / `cockroach demo`) does not support importing data using the `COPY` statement. Users can use the `psql` client command provided with PostgreSQL to load this data into CockroachDB instead. 
+Currently, the built-in SQL shell provided with CockroachDB (`cockroach sql` / `cockroach demo`) does not support importing data using the `COPY` statement. Users can use the `psql` client command provided with PostgreSQL to load this data into CockroachDB instead.
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/16392)
 
@@ -342,6 +342,8 @@ Every [`DELETE`](delete.html) or [`UPDATE`](update.html) statement constructs a 
 
 ### `cockroach dump` does not support cyclic foreign key references
 
-{{site.data.alerts.callout_info}}Resolved as of <a href="../releases/v2.1.html#v2-1-0-alpha-20180507.html">v2.1.0-alpha.20180507</a>. See <a href="https://github.com/cockroachdb/cockroach/pull/24716">#24716</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}
+Resolved as of [v2.1.0-alpha.20180507](../releases/v2.1.html#v2-1-0-alpha-20180507). See [#24716](https://github.com/cockroachdb/cockroach/pull/24716).
+{{site.data.alerts.end}}
 
 {% include {{ page.version.version }}/known-limitations/dump-cyclic-foreign-keys.md %}
