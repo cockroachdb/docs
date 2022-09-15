@@ -12,7 +12,7 @@ layout: default
 {% comment %} Show the version switcher only if 1) the current page has a version and 2) the current page isn't the home page of the docs. {% endcomment %}
 
 {% if page.homepage != true %}
-  {% assign post_header_class = "post-header mb3" %}
+  {% assign post_header_class = "post-header mb-3" %}
   {% unless page.homepage %}
     {% unless page.version %}
      {% assign post_header_class = post_header_class | append:  " mt-5" %}
