@@ -13,13 +13,17 @@ docs_area: reference.sql
 The basic components of a user-defined function are a name, list of arguments, return type, volatility, language, and function body.
 
 - An argument has a _mode_ and a _type_. CockroachDB supports the `IN` argument mode. The type can be a built-in type, [user-defined enum](enum.html), or implicit record type. CockroachDB **does not** support default values for arguments.
-- The return type can be a built-in type, user-defined enum, implicit record type, or `VOID`. `VOID` indicates that there is no return type and `NULL` will always be returned.  If the return type of the function is not `VOID`, the last statement of a UDF must be a `SELECT`.
+- The return type can be a built-in type, user-defined enum, implicit record type, or `VOID`. `VOID` indicates that there is no return type and `NULL` will always be returned. If the return type of the function is not `VOID`, the last statement of a UDF must be a `SELECT`.
 - The [volatility](functions-and-operators.html#function-volatility) indicates whether the function has side effects. The default is `VOLATILE`.
   - Annotate a function with side effects with `VOLATILE`. This also prevents the [cost-based optimizer](cost-based-optimizer.html) from pre-evaluating the function.
   - A `STABLE` or `IMMUTABLE` function does not mutate data.
   - `LEAKPROOF` indicates that a function has no side effects and that it communicates nothing that depends on its arguments besides the return value (i.e., it cannot throw an error that depends on the value of its arguments). You must precede `LEAKPROOF` with `IMMUTABLE`. `NOT LEAKPROOF` is allowed with any other volatility.
 - The language specifies the language of the function body. CockroachDB supports the language `SQL`.
-- The function body can reference arguments by name or by their ordinal in the function definition with the syntax `$1`.
+- The function body:
+  - Can reference arguments by name or by their ordinal in the function definition with the syntax `$1`.
+  - Can be enclosed in a single line with single quotes `''` or multiple lines with `$$`.
+  - Can reference tables.
+  - Can reference only the `SELECT` statement.
 
 ## Examples
 
@@ -50,6 +54,15 @@ Alternatively, you could define this function as:
 CREATE FUNCTION add(a INT, b INT) RETURNS INT IMMUTABLE LEAKPROOF LANGUAGE SQL AS 'SELECT $1 + $2';
 ~~~
 
+or
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE FUNCTION add(a INT, b INT) RETURNS INT LANGUAGE SQL AS $$
+  SELECT a + b;
+$$;
+~~~
+
 ### Invoke a UDF
 
 You invoke the UDF like a [built-in function](functions-and-operators.html). For example:
@@ -75,6 +88,8 @@ To view the `add` function definition, run:
 SHOW CREATE FUNCTION add;
 ~~~
 
+If you don't specify a schema for the function `add` when you create it, the default schema is `public`:
+
 ~~~
   function_name |                 create_statement
 ----------------+---------------------------------------------------
@@ -94,7 +109,9 @@ SHOW CREATE FUNCTION add;
 
 User-defined functions are not supported in:
 
+<!--
 {% include {{ page.version.version }}/known-limitations/udf-changefeed-expression.md %}
+-->
 
 {% include {{ page.version.version }}/known-limitations/udf-limitations.md %}
 

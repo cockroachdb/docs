@@ -37,6 +37,62 @@ Parameter | Description
 `role_spec` | The role to set as the owner of the function.
 `schema_name` | The name of the new schema.
 
+## Examples
+
+### Rename a function
+
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> CREATE FUNCTION add(a INT, b INT) RETURNS INT IMMUTABLE LEAKPROOF LANGUAGE SQL AS 'SELECT $1 + $2';
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> ALTER FUNCTION add(a INT, b INT) RENAME TO sum;
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> SHOW CREATE FUNCTION sum;
+~~~
+
+The schema for the function `sum` is `public`:
+
+~~~
+  function_name |                 create_statement
+----------------+---------------------------------------------------
+  sum           | CREATE FUNCTION public.sum(IN a INT8, IN b INT8)
+                |     RETURNS INT8
+                |     IMMUTABLE
+                |     LEAKPROOF
+                |     CALLED ON NULL INPUT
+                |     LANGUAGE SQL
+                |     AS $$
+                |     SELECT $1 + $2;
+                | $$
+(1 row)
+~~~
+
+Since `sum` is a [built-in function](functions-and-operators.html#aggregate-functions), you must specify the `public` schema to invoke your user-defined `sum` function:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> SELECT public.sum(1,2);
+~~~
+
+If you don't, you will get an error:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT sum(1,2);
+~~~
+
+~~~
+ERROR: unknown signature: sum(int, int)
+SQLSTATE: 42883
+~~~
+
 ## See also
 
 - [User-Defined Functions](user-defined-functions.html)

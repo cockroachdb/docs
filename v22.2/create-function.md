@@ -36,12 +36,18 @@ Parameter | Description
 `func_as` | The body of the function.
 `opt_routine_body` | ???
 
-## Example
+## Examples
+
+### Create a function to compute the square of integers
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-CREATE OR REPLACE FUNCTION sq(a INT) RETURNS INT AS 'SELECT a*a' LANGUAGE SQL;
-SELECT sq(2);
+> CREATE OR REPLACE FUNCTION sq(a INT) RETURNS INT AS 'SELECT a*a' LANGUAGE SQL;
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> SELECT sq(2);
 ~~~
 
 ~~~
@@ -49,6 +55,50 @@ SELECT sq(2);
 -----
   4
 (1 row)
+~~~
+
+{% include {{page.version.version}}/sql/movr-statements.md %}
+
+#### Create a function that references a table
+
+The following statement defines a function that returns the number of rows in the `users` table.
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> CREATE FUNCTION num_users() RETURNS INT AS 'SELECT count(*) from users' LANGUAGE SQL;
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> SELECT num_users();
+~~~
+
+~~~
+  num_users
+-------------
+         50
+(1 row)
+~~~
+
+#### Create a function that uses a `WHERE` clause
+
+The following statement defines a function that returns the total revenue for rides taken in European cities.
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> CREATE OR REPLACE FUNCTION total_euro_revenue() RETURNS DECIMAL LANGUAGE SQL AS $$
+  SELECT SUM(revenue) FROM rides WHERE city IN ('paris', 'rome', 'amsterdam')
+  $$;
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> SELECT total_euro_revenue();
+~~~
+~~~
+  total_euro_revenue
+----------------------
+             8468.00
 ~~~
 
 ## See also
