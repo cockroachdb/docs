@@ -295,6 +295,10 @@ Currently, the following CockroachDB [log channels](/docs/{{site.versions["stabl
 
 Yes, the [SQL Audit Log](/docs/{{site.versions["stable"]}}/sql-audit-logging.html) is exported via the `SENSITIVE_ACCESS` log channel by default, as long as you have previously enabled audit logging on desired tables using the [`ALTER TABLE ...EXPERIMENTAL_AUDIT`](/docs/{{site.versions["stable"]}}/experimental-audit.html) statement.
 
+### Can I use an AWS External ID with the log export feature?
+
+No, the {{ site.data.products.dedicated }} log export feature does not support use of an AWS External ID. You must configure a cross-account IAM Role as described in the [Enable log export](#enable-log-export) instructions.
+
 ## Troubleshooting
 
 ### AWS CloudWatch
