@@ -293,3 +293,4 @@ v21.2.15,v21.2,2022-08-29,false,False,Production,False,go1.16,2326e63d4a9ad62b19
 v22.2.0-alpha.2,v22.2,2022-09-06,false,False,Testing,False,go1.17,d676dcb809083388a3a280a7f9d5c8230b1682e6,cockroachdb/cockroach-unstable,true
 v21.1.20,v21.1,2022-09-12,false,False,Production,False,go1.15,d03dba52dc78c98a680b53e82d7f8825c8ab1da5,cockroachdb/cockroach,false
 v22.2.0-alpha.3,v22.2,2022-09-12,false,False,Testing,False,go1.17,bcc1682b3a433f46cfb85bb38fe2d2f456019422,cockroachdb/cockroach-unstable,true
+v21.1.21,v21.1,2022-09-15,false,False,Production,False,go1.17,dd345173f3ef06b031cf470c67ae14dd0503a091,cockroachdb/cockroach,false,false
