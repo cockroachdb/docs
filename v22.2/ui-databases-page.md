@@ -24,13 +24,15 @@ The **Databases** page shows:
 
 The following information is displayed for each database:
 
-| Column        | Description                                                                                                             |
-|---------------|-------------------------------------------------------------------------------------------------------------------------|
-| Databases     | The name of the database.                                                                                               |
-| Size          | Approximate disk size across all table replicas in the database.                                                        |
-| Tables        | The number of tables in the database.                                                                                   |
-| Range count   | The number of ranges across all tables in the  database.                                                                |
-| Regions/nodes | The regions and nodes on which the tables in the database are located. This is not displayed on a single-node cluster.  |
+| Column                | Description                                                                                                             |
+|-----------------------|-------------------------------------------------------------------------------------------------------------------------|
+| Databases             | The name of the database.                                                                                               |
+| Size                  | Approximate disk size across all table replicas in the database.                                                        |
+| Tables                | The number of tables in the database.                                                                                   |
+| Range Count           | The number of ranges across all tables in the database.                                                                 |
+| Regions/Nodes         | The regions and nodes on which the tables in the database are located. This is not displayed on a single-node cluster.  |
+| Index Recommendations | The number of index recommendations for the database.                                                                   |
+
 
 Click a **database name** to open the **Tables** page.
 
@@ -44,14 +46,15 @@ The **Tables** view shows the tables in your database.
 The following information is displayed for each table:
 
 | Column                         | Description                                                                                              |
-|--------------------------------|----------------------------------------------------------------------------------------------------------|
+| ------------------------------ | -------------------------------------------------------------------------------------------------------- |
 | Tables                         | The name of the table.                                                                                   |
 | Replication Size               | The approximate disk size of all replicas of this table on the cluster.                                  |
 | Ranges                         | The number of ranges in the table.                                                                       |
 | Columns                        | The number of columns in the table.                                                                      |
-| Indexes                        | The number of indexes in the table.                                                                      |
+| Indexes                        | The number of indexes in the table. If there is an index recommendation, a caution icon will display.    |
 | Regions                        | The regions and nodes on which the table data is stored. This is not displayed on a single-node cluster. |
-| Table Stats Last Updated (UTC) | The last time table statistics were created or updated.   |
+| % of Live Data                 | % of total uncompressed logical data that has not been modified (updated or deleted).                    |
+| Table Stats Last Updated (UTC) | The last time table statistics were created or updated.                                                  |
 
 Click a **table name** to view table details.
 
@@ -65,14 +68,15 @@ The **Overview** tab displays the SQL statements used to [create the table](crea
 
 The table details include:
 
-- **Size**: the approximate disk size of all replicas of this table on the cluster.
-- **Replicas**: the number of [replicas](architecture/replication-layer.html) of this table on the cluster.
-- **Ranges**: the number of [ranges](architecture/glossary.html#architecture-range) in this table.
-- **Table Stats Last Updated**: the last time table statistics were created or updated.
-- **Auto Stats Collection**: whether [automatic statistics collection](cost-based-optimizer.html#table-statistics) is enabled.
-- **Regions/nodes**: the regions and nodes on which the table data is stored. This is not displayed on a single-node cluster.
-- **Database**: the database in which the table is found.
-- **Indexes**: the names of the indexes defined on the table.
+- **Size**: The approximate disk size of all replicas of this table on the cluster.
+- **Replicas**: The number of [replicas](architecture/replication-layer.html) of this table on the cluster.
+- **Ranges**: The number of [ranges](architecture/glossary.html#architecture-range) in this table.
+- **% of Live Data**: Percent of total uncompressed logical data that has not been modified (updated or deleted).
+- **Table Stats Last Updated**: The last time table statistics were created or updated.
+- **Auto Stats Collection**: Whether [automatic statistics collection](cost-based-optimizer.html#table-statistics) is enabled.
+- **Regions/Nodes**: The regions and nodes on which the table data is stored. This is not displayed on a single-node cluster.
+- **Database**: The database in which the table is found.
+- **Indexes**: The names of the indexes defined on the table.
 
 #### Index details
 
@@ -82,11 +86,12 @@ Index statistics accumulate from the time an index was created or when statistic
 
 The following information is displayed for each index:
 
-| Column           | Description                                                                |
-|------------------|----------------------------------------------------------------------------|
-| Indexes          | The name of the index.                                                     |
-| Total Reads      | The number of times the index was read since index statistics were reset.  |
-| Last Used (UTC)  | The time the index was created, last read, or index statistics were reset. |
+| Column                | Description                                                                |
+|-----------------------|----------------------------------------------------------------------------|
+| Indexes               | The name of the index.                                                     |
+| Total Reads           | The number of times the index was read since index statistics were reset.  |
+| Last Used (UTC)       | The time the index was created, last read, or index statistics were reset. |
+| Index Recommendations | A recommendation to drop the index if it is unused.                        |
 
 Click an **index name** to view index details. The index details page displays the query used to create the index, the number of times the index was read since index statistics were reset, and the time the index was last read.
 

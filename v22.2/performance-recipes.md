@@ -64,6 +64,11 @@ This section describes how to use CockroachDB commands and dashboards to identif
     <td><ul><li>Your tables have long write times.</li></ul></td>
     <td><ul><li><a href="#slow-writes">Remove unnecessary indexes.</a></li></ul></td>
   </tr>
+  <tr>
+    <td><ul><li>You experience high latency on queries that cannot be explained by something like contention or a suboptimal query plan. You might also see high CPU on one or more nodes.</li></ul></td>
+    <td><ul><li>You are scanning over large numbers of <a href="architecture/storage-layer.html#mvcc">MVCC versions</a>. This is similar to how a full table scan can be slow.</li></ul></td>
+    <td><ul><li><a href="#too-much-mvcc-garbage">Configure CockroachDB to clean up unnecessary MVCC garbage.</a></li></ul></td>
+  </tr>
 </table>
 
 ## Solutions
@@ -166,6 +171,20 @@ ORDER BY total_reads ASC;
 ~~~
 
 Use the values in the `total_reads` and `last_read` columns to identify indexes that have low usage or are stale and could be dropped.
+
+### Too much MVCC garbage
+
+#### Indicators that your tables have too much MVCC garbage
+
+In the [Databases](ui-databases-page.html#tables-view) page, the Tables view has a column about the % of live data for each table. For example:
+
+<img src="{{ 'images/v22.2/ui_databases_live_data.png' | relative_url }}" alt="Table live data" style="border:1px solid #eee;max-width:100%" />
+
+A low percentage can cause statements to scan more data (MVCC values) than required, which can reduce performance.
+
+#### Configure CockroachDB to clean up MVCC garbage
+
+Reduce the [GC TTL](configure-replication-zones.html#gc-ttlseconds) of the table as much as possible.
 
 ## See also
 
