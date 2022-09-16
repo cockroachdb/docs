@@ -14,10 +14,10 @@ In this tutorial, you will plan a vacation from New York City to the [Adirondack
 + Creating [indexes](spatial-indexes.html) on spatial data.
 + Performing [joins](joins.html) on spatial data, and using [`EXPLAIN`](explain.html) to make sure indexes are effective.
 + Visualizing the output of your queries using free tools like <https://geojson.io>
-
+<!--
 <div class="clearfix">
   <a class="btn btn-outline-primary" href="../tutorials/demo-spatial-tutorial-interactive.html" target="_blank" rel="noopener">Run this in your browser &rarr;</a>
-</div>
+</div>-->
 
 ## Step 1. Review the scenario
 

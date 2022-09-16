@@ -7,10 +7,10 @@ docs_area: deploy
 ---
 
 This page guides you through a simple demonstration of how CockroachDB can store and query unstructured [`JSONB`](jsonb.html) data from a third-party API, as well as how a [GIN index](inverted-indexes.html) can optimize your queries.
-
+<!--
 <div class="clearfix">
   <a class="btn btn-outline-primary" href="../tutorials/demo-json-support-interactive.html" target="_blank" rel="noopener">Run this in your browser &rarr;</a>
-</div>
+</div>-->
 
 ## Step 1. Install prerequisites
 
