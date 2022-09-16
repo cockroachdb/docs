@@ -22,7 +22,7 @@ To view details of an active transaction execution, click an execution ID in the
 
 The Transaction Execution details page provides the following details on the transaction execution.
 
-- **Start Time (UTC)**: The time the execution started.
+- **Start Time (UTC)**: The timestamp when the execution started.
 - **Elapsed Time**: The time elapsed since the transaction started.
 - **Status**: The status of the execution: `Preparing`, `Waiting`, or `Executing`.
 - **Priority**: The [priority](transactions.html#transaction-priorities) of the transaction.

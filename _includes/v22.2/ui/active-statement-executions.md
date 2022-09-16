@@ -18,7 +18,7 @@ To view details of an active statement execution, click an execution ID in the *
 
 The Statement Execution details page provides the following details on the statement execution.
 
-- **Start Time (UTC)**: The timestamp the execution started.
+- **Start Time (UTC)**: The timestamp when the execution started.
 - **Elapsed Time**: The time elapsed since the execution started.
 - **Status**: The status of the execution: `Preparing`, `Waiting`, or `Executing`.
 - **Full Scan**: Whether the execution performed a full scan of the table.
