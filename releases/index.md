@@ -22,12 +22,6 @@ After downloading your desired release, learn how to [install CockroachDB](../{{
 
 {% for v in versions %} {% comment %} Iterate through all major versions {% endcomment %}
 
-{% assign oldreleases = "v1.0,v1.1,v2.0,v2.1,v19.1,v19.2,v20.1" | split: "," %}
-
-{% if oldreleases contains v.major_version %}
-  {% assign old_release_format = "True" %}
-{% endif %} {% comment %} For all releases prior to and including 20.1, we use different logic to generate the page (vXX.Y.Z.html vs vXX.Y.html#vXX-Y-Z). {% endcomment %}
-
 {% assign nosha_releases = "v1.0,v1.1,v2.0,v2.1,v19.1,v19.2,v20.1,v20.2" | split: "," %} {% comment %} For all Production releases 21.1 and later, we provide sha256sum files as well. {% endcomment %}
 
 ## {{ v.major_version }}
@@ -65,7 +59,7 @@ After downloading your desired release, learn how to [install CockroachDB](../{{
 {% for r in releases %}
     <tr {% if r.version == latest_hotfix.version %}class="latest"{% endif %}> {% comment %} Add "Latest" class to release if it's the latest release. {% endcomment %}
         <td>
-            <a href="{% if old_release_format %}{{ r.version }}.html{% else %}{{ v.major_version }}.html#{{ r.version | replace: ".", "-" }}{% endif %}">{{ r.version }}</a> {% comment %} Add link to each release r. {% endcomment %}
+            <a href="{{ v.major_version }}.html#{{ r.version | replace: ".", "-" }}">{{ r.version }}</a> {% comment %} Add link to each release r. {% endcomment %}
             {% if r.version == latest_hotfix.version %}
                 <span class="badge-new">Latest</span> {% comment %} Add "Latest" badge to release if it's the latest release. {% endcomment %}
             {% endif %}
