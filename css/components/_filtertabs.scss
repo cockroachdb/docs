@@ -280,41 +280,6 @@
 				height: 22px;
 				content: ''; 
 			}
-
-			&#mac {
-
-				&:before {
-					background-image: url(../images/icon-apple.png);
-	        }
-			}
-
-			&#linux {
-
-				&:before {
-					background-image: url(../images/icon-linux.png);
-	        }
-			}
-
-			&#windows {
-
-				&:before {
-					background-image: url(../images/icon-windows.png);
-	        }
-			}
-
-			&#source {
-
-				&:before {
-					background-image: url(../images/icon-zipfile.png);
-				}
-			}
-
-			&#docker {
-
-				&:before {
-					background-image: url(../images/icon-docker.png);
-				}
-			}
 		}
 	}
 
