@@ -1,0 +1,30 @@
+#!/bin/bash
+
+# Find all changed files for this commit
+# Compute the diff only once to save a small amount of time.
+CHANGED_FILES=$(git diff --name-only --cached --diff-filter=ACMR)
+# Get only changed files that match our file suffix pattern
+
+illegal_patterns=("(A3T[A-Z0-9]|AKIA|AGPA|AIDA|AROA|AIPA|ANPA|ANVA|ASIA)[A-Z0-9]{16}" "gh[oprsu]_\w{36}")
+# an array of regular expressions containing illegal character sequences
+
+for x in "${CHANGED_FILES[@]}";
+do
+	for y in "${illegal_patterns[@]}";
+	do
+		tmp=$(egrep -in $y $x)
+		if [ ! -z "$tmp" ]
+		then
+			OUTPUT+=$(echo '\n')
+			OUTPUT+=$(echo "${x} - Violates ${y} - Line #")
+			OUTPUT+=$(echo $tmp)
+		fi
+	done
+done
+
+if [ ! -z "$OUTPUT" ]
+then
+	echo "Error: Commit failed. Secret key found in one or more files:" >&2
+  echo -e ${OUTPUT} >&2
+	exit 1
+fi

@@ -15,7 +15,7 @@ Subcommand | Description
 -----------|------------
 [`CONFIGURE ZONE`](configure-zone.html) | [Configure replication zones](configure-replication-zones.html) for a database.
 [`OWNER TO`](owner-to.html) |  Change the owner of a database.
-[`RENAME`](rename-database.html) | Change the name of a database.
+[`RENAME TO`](rename-database.html) | Change the name of a database.
 [`ADD REGION`](add-region.html) |  Add a region to a [multi-region database](multiregion-overview.html).
 [`DROP REGION`](drop-region.html) |  Drop a region from a [multi-region database](multiregion-overview.html).
 [`SET PRIMARY REGION`](set-primary-region.html) |  Set the primary region of a [multi-region database](multiregion-overview.html).

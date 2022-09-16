@@ -155,7 +155,7 @@ pq: unsupported binary operator: <collatedstring{en}> || <collatedstring{en}>
 
 ## Quoting collation locales containing uppercase letters
 
-{{site.data.alerts.callout_info}}Resolved as of <a href="../releases/v1.0.1.html">v1.0.1</a>. See <a href="https://github.com/cockroachdb/cockroach/pull/15917">#15917</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}Resolved as of <a href="../releases/v1.0.html#v1-0-1">v1.0.1</a>. See <a href="https://github.com/cockroachdb/cockroach/pull/15917">#15917</a>.{{site.data.alerts.end}}
 
 Quoting a [collation](collate.html) locale containing uppercase letters results in an error, for example:
 
@@ -179,20 +179,20 @@ As a workaround, make the locale lowercase or remove the quotes, for example:
 
 ## Creating views with array types
 
-{{site.data.alerts.callout_info}}Resolved as of <a href="../releases/v1.0.1.html">v1.0.1</a>. See <a href="https://github.com/cockroachdb/cockroach/pull/15913">#15913</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}Resolved as of <a href="../releases/v1.0.html#v1-0-1">v1.0.1</a>. See <a href="https://github.com/cockroachdb/cockroach/pull/15913">#15913</a>.{{site.data.alerts.end}}
 
 Because arrays are not supported, attempting to [create a view](create-view.html) with an array in the `SELECT` query crashes the node that receives the request.
 
 ## Dropping a database containing views
 
-{{site.data.alerts.callout_info}}Resolved as of <a href="../releases/v1.0.1.html">v1.0.1</a>. See <a href="https://github.com/cockroachdb/cockroach/pull/15983">#15983</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}Resolved as of <a href="../releases/v1.0.html#v1-0-1">v1.0.1</a>. See <a href="https://github.com/cockroachdb/cockroach/pull/15983">#15983</a>.{{site.data.alerts.end}}
 
 When a [view](views.html) queries multiple tables or a single table multiple times (e.g., via [`UNION`](select.html#combine-multiple-selects-union-intersect-except)), dropping the
 database containing the tables fails silently.
 
 ## Qualifying a column that comes from a view
 
-{{site.data.alerts.callout_info}}Resolved as of <a href="../releases/v1.0.1.html">v1.0.1</a>. See <a href="https://github.com/cockroachdb/cockroach/pull/15984">#15984</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}Resolved as of <a href="../releases/v1.0.html#v1-0-1">v1.0.1</a>. See <a href="https://github.com/cockroachdb/cockroach/pull/15984">#15984</a>.{{site.data.alerts.end}}
 
 It is not possible to fully qualify a column that comes from a view because the view gets replaced by an anonymous subquery, for example:
 
@@ -270,7 +270,7 @@ As a workaround, list the columns explicitly, for example:
 
 ## Running on Windows as a non-admin user
 
-{{site.data.alerts.callout_info}}Resolved as of <a href="../releases/v1.0.1.html">v1.0.1</a>. See <a href="https://github.com/cockroachdb/cockroach/pull/15916">#15916</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}Resolved as of <a href="../releases/v1.0.html#v1-0-1">v1.0.1</a>. See <a href="https://github.com/cockroachdb/cockroach/pull/15916">#15916</a>.{{site.data.alerts.end}}
 
 By default, CockroachDB periodically rotates the file it writes logs to, as well as a symlink pointing to the file it's currently using. However, on Windows, non-admin users cannot create symlinks, which prevents CockroachDB from starting because it cannot create logs.
 
@@ -290,7 +290,7 @@ Every [`DELETE`](delete.html) or [`UPDATE`](update.html) statement constructs a 
 
 ## Dropping an index interleaved into another index on the same table
 
-{{site.data.alerts.callout_info}}Resolved as of [v1.1-alpha.20170831](../releases/v1.1-alpha.20170831.html). See <a href="https://github.com/cockroachdb/cockroach/pull/17860">#17860</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}Resolved as of [v1.1-alpha.20170831](../releases/v1.1.html#v1-1-alpha-20170831.html). See <a href="https://github.com/cockroachdb/cockroach/pull/17860">#17860</a>.{{site.data.alerts.end}}
 
 In the unlikely case that you [interleave](interleave-in-parent.html) an index into another index on the same table and then [drop](drop-index.html) the interleaved index, future DDL operations on the table will fail.
 

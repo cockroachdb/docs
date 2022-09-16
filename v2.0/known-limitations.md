@@ -24,7 +24,7 @@ Most client drivers and frameworks use the text format to pass placeholder value
 
 ### Enterprise backup/restore during rolling upgrades
 
-{{site.data.alerts.callout_info}}Resolved as of <a href="../releases/v2.0.1.html">v2.0.1</a>. See <a href="https://github.com/cockroachdb/cockroach/pull/24515">#24515</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}Resolved as of <a href="../releases/v2.0.html#v2-0-1">v2.0.1</a>. See <a href="https://github.com/cockroachdb/cockroach/pull/24515">#24515</a>.{{site.data.alerts.end}}
 
 In the upgrade process, after upgrading all binaries to v2.0, it's recommended to monitor the cluster's stability and performance for at least one day and only then finalize the upgrade by increasing the `version` cluster setting. However, in the window during which binaries are running v2.0 but the cluster version is still not increased, it is not possible to run enterprise [`BACKUP`](backup.html) and [`RESTORE`](restore.html) jobs.
 
@@ -38,7 +38,7 @@ In the v1.1 release, the limit referred to a whole transaction (i.e., the sum of
 
 ### Memory flags with non-integer values and a unit suffix
 
-{{site.data.alerts.callout_info}}Resolved as of <a href="../releases/v2.0.1.html">v2.0.1</a>. See <a href="https://github.com/cockroachdb/cockroach/pull/24388">#24388</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}Resolved as of <a href="../releases/v2.0.html#v2-0-1">v2.0.1</a>. See <a href="https://github.com/cockroachdb/cockroach/pull/24388">#24388</a>.{{site.data.alerts.end}}
 
 The `--cache` and `--max-sql-memory` flags of the [`cockroach start`](start-a-node.html) command do not support non-integer values with a unit suffix, for example, `--cache=1.5GiB`.
 
@@ -54,7 +54,7 @@ As a workaround, use integer values or a percentage, for example, `--cache=1536M
 
 ### Check constraints with `INSERT ... ON CONFLICT`
 
-{{site.data.alerts.callout_info}}Resolved as of <a href="../releases/v2.0.4.html">v2.0.4</a>. See <a href="https://github.com/cockroachdb/cockroach/pull/26699">#26699</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}Resolved as of <a href="../releases/v2.0.html#v2-0-4">v2.0.4</a>. See <a href="https://github.com/cockroachdb/cockroach/pull/26699">#26699</a>.{{site.data.alerts.end}}
 
 [`CHECK`](check.html) constraints are not properly enforced on updated values resulting from [`INSERT ... ON CONFLICT`](insert.html) statements. Consider the following example:
 
