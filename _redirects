@@ -497,7 +497,7 @@ layout: null
 
 #CockroachDB Self-Hosted release notes
 
-{% assign rn_rdr = "v20.2,v21.1,v21.2" | split: "," -%}
+{% assign rn_rdr = "v1.0,v1.1,v2.0,v2.1,v19.1,v19.2,v20.1,v20.2,v21.1,v21.2" | split: "," -%}
 {%- assign rns = site.data.releases | where_exp: "rns", "rn_rdr contains rns.major_version" -%}
 {%- for r in rns -%}
 {%- capture old_url -%}releases/{{ r.version }}{%- endcapture -%}

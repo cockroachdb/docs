@@ -2,7 +2,7 @@
   display: inline-block;
   position: relative;
   color: $cl_blue_note;
-  @include avenir_r(13px);
+  @include sourcesanspro_r(13px);
   line-height: 20px;
   margin-left: 5px;
 
@@ -18,7 +18,7 @@
 
 p, .clickable-header {
   .version-tag {
-    @include avenir_r(15px);
+    @include sourcesanspro_r(15px);
     line-height: 30px;
   }
 }

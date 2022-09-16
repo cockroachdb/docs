@@ -10,6 +10,7 @@ layout: null
       {%- unless page.url contains '404' or page.sitemap == false or page.url contains site.versions["dev"] and stable_pages_names contains page.name %}
   <url>
     <loc>{{ page.canonical | absolute_url | replace: dev_path, "/dev/" }}</loc>
+    <lastmod>{{ page.last_modified_at | date: "%Y-%m-%dT%H:%M:%S%z" }}</lastmod>
   </url>
       {%- endunless -%}
     {%- endif -%}
