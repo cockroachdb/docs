@@ -7,22 +7,22 @@ docs_area: reference.db_console
 
 {% include {{ page.version.version }}/ui/admin-access.md %}
 
-The **Insights** page provides insights into and actions you can take to improve the performance of your application.
+{% include_cached new-in.html version="v22.2" %}  The **Insights** page exposes problems that CockroachDB has detected in your workloads and schemas. The page also offers recommendations to improve the performance of your workloads.
 
-{% include_cached new-in.html version="v22.2" %} The **Insights** page  of the DB Console helps you:
+The **Insights** page helps you:
 
 - Identify high latency [SQL transactions](transactions.html) and [SQL statements](sql-statements.html).
 - Identify SQL statements with [high retry counts](transactions.html#automatic-retries), [slow execution](query-behavior-troubleshooting.html#identify-slow-queries), or [suboptimal plans](cost-based-optimizer.html).
-- Identify [Indexes](indexes.html) that should be created, altered, replaced, or dropped to achieve read and write performance objectives.
+- Identify [Indexes](indexes.html) that should be created, altered, replaced, or dropped to improve performance.
 
 
 ## Workload Insights tab
 
-The Workload Insights tab displays insights related to transaction and statement executions.
+The **Workload Insights** tab displays insights related to transaction and statement executions.
 
 ### Transaction Executions view
 
-To display this view, click **Insights** in the left-hand navigation of the DB Console. The **Workload Insights > Transaction Executions** view is selected.
+To display this view, click **Insights** in the left-hand navigation of the DB Console.
 
 The **Transaction Executions** view provides an overview of all transaction executions that have been flagged with insights.
 
@@ -30,7 +30,7 @@ The rows in this page are populated from the [`crdb_internal.transaction_content
 The results displayed in the Transaction Executions view will be available as long as the corresponding row in the `crdb_internal.transaction_contention_events` table exists
 and as long as the rows in each node use less space than `sql.contention.event_store.capacity`.
 
-Transaction executions with the insight High Contention are transactions that experienced contention.
+Transaction executions with the **High Contention** insight are transactions that experienced contention.
 
 - **Transaction Execution ID**: The execution ID of the latest execution with the transaction fingerprint.
 - **Transaction Fingerprint ID**: The transaction fingerprint ID of the latest transaction execution.
@@ -161,7 +161,7 @@ You can configure the behavior of insights using the following [cluster settings
 
 ### Workload insights settings
 
-You can configure whether and what insights display in [Workload Insights](#workload-insights-tab) with the following cluster settings.
+You can configure [Workload Insights](#workload-insights-tab) with the following cluster settings.
 
 | Setting                                                                | Default value | Description                                                                                                                                                    | Where used                           |
 |------------------------------------------------------------------------|---------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------|
@@ -176,7 +176,7 @@ You can configure whether and what insights display in [Workload Insights](#work
 
 ### Schema insights settings
 
-You can configure whether and what index recommendations display in [Schema Insights](#schema-insights-view) and the [Databases page](ui-databases-page.html) with the following cluster settings.
+You can configure the index recommendations in [Schema Insights](#schema-insights-view) and the [Databases page](ui-databases-page.html) with the following cluster settings.
 
 | Setting                                                                | Default value | Description                                                                                                             | Where used                           |
 |------------------------------------------------------------------------|---------------|-------------------------------------------------------------------------------------------------------------------------|--------------------------------------|
