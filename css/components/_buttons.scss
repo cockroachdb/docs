@@ -28,6 +28,7 @@
 
 .btn-redirect {
 	@include button();
+	white-space: break-spaces;
 	color: #FFFFFF;
 	background: linear-gradient(-90deg, $spanish-roast 0%, #0037A5 48.3%, $electric-purple 100%);
 	box-shadow: none;
@@ -124,7 +125,7 @@
 	@include button();
 	display: none;
 	height: 30px;
-	@include avenir_h(10px);
+	@include sourcesanspro_b(10px);
 	line-height: 13px;
 	background-color: $electric-purple;
 	border-color: $electric-purple;

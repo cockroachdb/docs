@@ -22,13 +22,13 @@
 	width: 600px;
 
 	.news-header {
-		@include adelle_b(36px);
+		@include sourcesanspro_b(36px);
 		color: #FFFFFF;
 		line-height: 48px;
 	}
 
 	.news-subheader {
-		@include avenir_r(17px);
+		@include sourcesanspro_r(17px);
 		line-height: 30px;
 		margin-bottom: 20px;
 		padding: 30px 50px 0;
@@ -109,7 +109,7 @@
 	@include groovy(all);
 
 	.news-header {
-		@include adelle_b(25px);
+		@include sourcesanspro_b(25px);
 		color: #FFFFFF;
 		line-height: 33px;
 	}
@@ -177,7 +177,7 @@
 			text-align: center;
 			width: 100%;
 			color: #FFFFFF;
-			@include avenir_r(16px);
+			@include sourcesanspro_r(16px);
 		}
 	}
 
@@ -201,7 +201,7 @@
 	}
 	input {
 		height: 40px;
-		@include avenir_r(14px);
+		@include sourcesanspro_r(14px);
 		line-height: 40px;
 		color: $cl_blue;
 		border: 1px solid $cl_gray_medium;
@@ -353,7 +353,7 @@
 		.submitted-message {
 			text-align: left;
 			width: 100%;
-			@include avenir_r(16px);
+			@include sourcesanspro_r(16px);
 		}
 	}
 }

@@ -1,63 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    {% include head.html %}
+{% include head.html %}
   </head>
   <body>
-
-    {% include main-menu-serverless.html %}
-
-    {% for hash in page.allowed_hashes %}
-        <a id="{{ hash }}" style="display: none"></a>
-    {% endfor %}
-
+{% include_cached main-menu-serverless.html %}
+{% for hash in page.allowed_hashes %}
+    <a id="{{ hash }}" style="display: none"></a>
+{% endfor %}
     <div class="container-fluid">
-
       <div class="row" id="maincontent">
-        <div class="nav-docs-mobile d-flex d-lg-none w-100 justify-content-between align-items-center px-4 py-2 border-top border-bottom" data-toggle="collapse" data-target="#sidebarMenu" aria-expanded="false" aria-controls="sidebarMenu">
+        <div class="nav-docs-mobile d-flex d-lg-none w-100 justify-content-between align-items-center px-4 py-2 border-top border-bottom" data-toggle="collapse" data-target="#sidebarMenu" aria-expanded="false" aria-controls="sidebarMenu" data-nosnippet>
           <div class="h3 m-0">
             Docs Menu
           </div>
-          <div class="sidenav-arrow mr-4"><div class="arrow-down"></div></div>
-        </div>
-        <nav
-          id="sidebarMenu"
-          class="col-lg-2 d-lg-block sidebar collapse border-right pt-3 pr-md-0"
-        >
-          {% include sidebar.html %}
-        </nav>
-
-        {% if page.toc == true %}
-        {% if page.homepage != true %}
-        <!-- Smaller column col-xl-8 -->
-        <main role="main" class="col col-lg-8 ml-sm-auto px-lg-5">
-        {% endif %}
-        {% else %}
-        <!-- larger column col-xl-10 -->
-        <main role="main" class="ml-sm-auto col-lg-10 px-lg-5">
-        {% endif %}
-            {{content}}
-        </main>
-        {% if page.toc == true %}
-        <div class="toc-col col-md-2">
-            <div class="toc-col-contents">  <!-- lets all elements scroll -->
-              <div id="toc-right">
-              </div>
-              {% if page.feedback != false %}
-                 {% include feedback-widget-toc.html %}
-              {% endif %}
-
-              {% comment %} Show feedback widget under toc. {% endcomment %}
-              <div class="cf-5329-area-16738"></div>
+          <div class="sidenav-arrow mr-4">
+            <div class="arrow-down">
             </div>
           </div>
-        {% endif %}
+        </div>
+        <nav id="sidebarMenu" class="col-lg-2 d-lg-block sidebar collapse border-right pt-3 pr-md-0">
+{% include sidebar.html %}
+        </nav>
+{% if page.toc == true %}
+  {% if page.homepage != true %}
+        <!-- Smaller column col-xl-8 -->
+        <main role="main" class="col col-lg-8 ml-sm-auto px-lg-5">
+  {% endif %}
+{% else %}
+        <!-- larger column col-xl-10 -->
+        <main role="main" class="ml-sm-auto col-lg-10 px-lg-5">
+{% endif %}
+{{content}}
+        </main>
+{% if page.toc == true %}
+        <div class="toc-col col-md-2">
+          <div class="toc-col-contents">  <!-- lets all elements scroll -->
+            <div id="toc-right">
+            </div>
+  {% if page.feedback != false %}
+    {% include feedback-widget-toc.html %}
+  {% endif %} {% comment %} Show feedback widget under toc. {% endcomment %}
+            <div class="cf-5329-area-16738">
+            </div>
+          </div>
+        </div>
+{% endif %}
       </div>
     </div>
 
-    {% include_cached footer.html %}
+{% include_cached footer.html %}
 
-    {% include sidebar.js.html %}
+{% include sidebar.js.html %}
     <script src="//go.cockroachlabs.com/js/forms2/js/forms2.min.js" defer></script>
     <script src="{{ 'js/jquery.cookie.min.js' | relative_url }}" defer></script>
     <script src="{{ 'js/jquery.navgoco.min.js' | relative_url }}" defer></script>
@@ -70,19 +64,19 @@
     <script src="{{ 'js/customscripts.js' | relative_url }}" defer></script>
     <script src="{{ 'js/setDocsContext.js' | relative_url }}" defer></script>
     <script src="{{ 'js/anchor.js' | relative_url }}" defer></script>
-    {% if page.homepage != true %}
+{% if page.homepage != true %}
         <script>
           whenAvailable('anchors', function() {
             anchors.add('h2, h3, h4, h5');
           });
         </script>
-    {% endif %}
+{% endif %}
     <script src="{{ 'js/tocRightScrollHighlight.js' | relative_url }}" defer></script>
-    {% include_cached google_tag_manager.html %}
-    {% include_cached google_remarketing.html %}
-    {% if page.twitter == true %}
-      {% include_cached twitter_analytics.html %}
-    {% endif %}
+{% include_cached google_tag_manager.html %}
+{% include_cached google_remarketing.html %}
+{% if page.twitter == true %}
+  {% include_cached twitter_analytics.html %}
+{% endif %}
 
   </body>
 </html>
