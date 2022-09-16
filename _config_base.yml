@@ -54,6 +54,7 @@ keep_files:
 markdown: Redcarpet
 plugins:
 - jekyll-include-cache
+- jekyll-last-modified-at
 - jekyll-minifier
 release_info:
   v1.0:
