@@ -37,6 +37,12 @@ cockroach demo --global --nodes 9 --no-example-database --insecure
 
 This simulated multi-region deployment will take advantage of CockroachDB's [multi-region SQL statements](multiregion-overview.html) to deliver improved ease of use and performance.
 
+{{site.data.alerts.callout_info}}
+You must use the IP address shown at the SQL prompt to run the following steps.
+
+This is necessary because the demo cluster may use a randomly allocated local IP that is not the `127.0.0.1` shown here.
+{{site.data.alerts.end}}
+
 ## Step 2. Import the TPC-C dataset
 
 CockroachDB comes with a number of [built-in workloads](cockroach-workload.html) for simulating client traffic. This step features CockroachDB's version of the [TPC-C](http://www.tpc.org/tpcc/) workload.
