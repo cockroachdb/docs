@@ -230,4 +230,4 @@ In the event of catastrophic failure or corruption, the only option will be to s
 - [View Node Details](view-node-details.html)
 - [Collect Debug Information](debug-zip.html)
 - [View Version Details](view-version-details.html)
-- [Release notes for our latest version](../releases/{{page.release_info.version}}.html)
+- [Release notes for our latest version](../releases/{{page.version.version}}.html)

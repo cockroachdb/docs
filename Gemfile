@@ -12,9 +12,11 @@ gem "liquid-c", "~> 4.0.0"
 gem "redcarpet", "~> 3.5"
 gem "rss"
 gem "webrick"
+gem "jekyll-minifier"
 
 group :jekyll_plugins do
     gem "jekyll-include-cache"
     gem 'jekyll-algolia', "~> 1.0", path: "./jekyll-algolia-dev"
     gem 'jekyll-remote-include', github: 'ianjevans/jekyll-remote-include', tag: 'v1.1.6'
+    gem "jekyll-last-modified-at"
   end
