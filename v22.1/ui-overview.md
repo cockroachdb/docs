@@ -72,7 +72,16 @@ If your CockroachDB cluster is behind a load balancer, you may wish to proxy you
 You can accomplish this using one of these methods:
 
 - Once connected to DB Console, use the **Web server** dropdown menu from the [**Advanced Debug**](ui-debug-pages.html#license-and-node-information) page to select a different node to proxy to.
-- Use the `remote_node_id` parameter in your DB Console URL to proxy directly to a specific node. For example, use `http://<host>:<http-port>/?remote_node_id=2` to proxy directly to node `2`. 
+- Use the `remote_node_id` parameter in your DB Console URL to proxy directly to a specific node. For example, use the following to proxy directly to node `2`:
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    https://<host>:<http-port>/?remote_node_id=2
+    ~~~
+- Provide a `remote_node_id` cookie value to `curl` or `wget` when accessing the [Cluster API](cluster-api.html) or a specific metrics endpoint such as [`_status/vars`](monitoring-and-alerting.html#prometheus-endpoint). For example, use the following to proxy directly to node `2` and access the `_status/vars` endpoint:
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    curl -X GET --cookie "remote_node_id=2" https://<host>:<http-port>/_status/vars
+    ~~~
 
 ## DB Console security considerations
 
