@@ -898,7 +898,9 @@ a.btn-primary {
 .version-tag {
   &:before {
     margin-right: 5px;
-    background: url(#{$images-url}icon-megaphone.png) no-repeat center center;
+    background-image: url(#{$images-url}icon-megaphone.png);
+    background-repeat: no-repeat;
+    background-position: center center;
   }
 }
 
