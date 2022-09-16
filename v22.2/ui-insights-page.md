@@ -7,14 +7,13 @@ docs_area: reference.db_console
 
 {% include {{ page.version.version }}/ui/admin-access.md %}
 
-{% include_cached new-in.html version="v22.2" %}  The **Insights** page exposes problems that CockroachDB has detected in your workloads and schemas. The page also offers recommendations to improve the performance of your workloads.
+{% include_cached new-in.html version="v22.2" %} The **Insights** page exposes problems that CockroachDB has detected in your workloads and schemas. The page also offers recommendations to improve the performance of your workloads.
 
 The **Insights** page helps you:
 
 - Identify high latency [SQL transactions](transactions.html) and [SQL statements](sql-statements.html).
 - Identify SQL statements with [high retry counts](transactions.html#automatic-retries), [slow execution](query-behavior-troubleshooting.html#identify-slow-queries), or [suboptimal plans](cost-based-optimizer.html).
 - Identify [Indexes](indexes.html) that should be created, altered, replaced, or dropped to improve performance.
-
 
 ## Workload Insights tab
 
@@ -26,9 +25,7 @@ To display this view, click **Insights** in the left-hand navigation of the DB C
 
 The **Transaction Executions** view provides an overview of all transaction executions that have been flagged with insights.
 
-The rows in this page are populated from the [`crdb_internal.transaction_contention_events`](crdb-internal.html#transaction_contention_events) table.
-The results displayed in the Transaction Executions view will be available as long as the corresponding row in the `crdb_internal.transaction_contention_events` table exists
-and as long as the rows in each node use less space than `sql.contention.event_store.capacity`.
+The rows in this page are populated from the [`crdb_internal.transaction_contention_events`](crdb-internal.html#transaction_contention_events) table. The results displayed in the Transaction Executions view will be available as long as the corresponding row in the `crdb_internal.transaction_contention_events` table exists and as long as the rows in each node use less space than `sql.contention.event_store.capacity`.
 
 Transaction executions with the **High Contention** insight are transactions that experienced contention.
 
@@ -83,8 +80,7 @@ The **Statement Executions** view provides an overview of all statement executio
 
 To display this view, click **Insights** in the left-hand navigation of the DB Console and select **Workload Insights > Statement Executions**.
 
-The rows in this page are populated from the [`crdb_internal.cluster_execution_insights`](crdb-internal.html) table.
-The results displayed on the Statement Executions view will be available as long as the number of rows in each node is less than `sql.insights.execution_insights_capacity`.
+The rows in this page are populated from the [`crdb_internal.cluster_execution_insights`](crdb-internal.html) table. The results displayed on the Statement Executions view will be available as long as the number of rows in each node is less than `sql.insights.execution_insights_capacity`.
 
 - **Statement Execution ID**: The execution ID of the latest execution with the statement fingerprint.
 - **Statement Fingerprint ID**: The statement fingerprint ID of the latest statement execution.
@@ -94,7 +90,9 @@ The results displayed on the Statement Executions view will be available as long
   - **High Retry Count**: The statement execution experienced a high number of retries according to the threshold set in `sql.insights.high_retry_count.threshold`.
   - **Suboptimal Plan**: The statement execution experienced a suboptimal plan.
   - **Failed**: The statement execution failed.
-  - **Slow Execution**: The statement execution experienced slow execution according to the threshold set in
+  - **Slow Execution**: The statement experienced slow execution. Depending on the settings in [Configuration](#configuration), either of the following conditions trigger this insight:
+      - Execution time is greater than the value of `sql.insights.latency_threshold`.
+      - Anomaly detection is enabled (`sql.insights.anomaly_detection.enabled`) and execution time is greater than the value of `sql.insights.anomaly_detection.latency_threshold`.
 - **Start Time (UTC)**: The time the statement execution started.
 - **Elapsed Time**: The time that elapsed to complete the statement execution.
 - **User Name**: The name of the user that invoked the statement execution.
@@ -150,8 +148,8 @@ The following screenshot shows the insight that displays after you run the query
 
 - **Insights:** Contains one of the following insight types: **Create Index**, **Alter Index**, **Replace Index**, **Drop Unused Index**.
 - **Details:** Details for each insight. Different insight types display different details fields:
-    - Create, Alter, or Replace Index: a Statement Fingerprint field, which displays the statement fingerprint that would be optimized with the creation, alteration, or replacement of the index, and a Recommendation field, which displays the SQL query to create, alter, or replace the index.
-    - Drop Unused Index: an Index field, which displays the name of the index to drop, and a Description field, which displays the reason for dropping the index.
+    - **Create Index**, **Alter Index**, or **Replace Index**: a Statement Fingerprint field, which displays the statement fingerprint that would be optimized with the creation, alteration, or replacement of the index, and a Recommendation field, which displays the SQL query to create, alter, or replace the index.
+    - **Drop Unused Index**: an Index field, which displays the name of the index to drop, and a Description field, which displays the reason for dropping the index.
 
 To realize the schema insight, click the action button in the final column to execute the SQL statement. A confirmation dialog displays warning you of the cost of [online schema changes](online-schema-changes.html) and a button to copy the SQL statement for later execution in a SQL client.
 
@@ -163,26 +161,26 @@ You can configure the behavior of insights using the following [cluster settings
 
 You can configure [Workload Insights](#workload-insights-tab) with the following cluster settings.
 
-| Setting                                                                | Default value | Description                                                                                                                                                    | Where used                           |
-|------------------------------------------------------------------------|---------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------|
-|`sql.insights.anomaly_detection.enabled`                                | `true`        | Whether or not insight detection is enabled.                                                                                                                   | Statement executions                 |
-|`sql.insights.anomaly_detection.latency_threshold`                      | `50 ms`       | The latency threshold at which a statement execution is detected and flagged for insights.                                                                     | Statement executions                 |
-|`sql.insights.anomaly_detection.memory_limit`                           | `1` MiB       | The maximum amount of memory allowed for tracking statement latencies.                                                                                         | Statement executions                 |
-|`sql.insights.latency_threshold`                                        | `100 ms`      | The threshold at which the contention duration of a contended transaction is considered High Contention Time or statement execution is flagged for insights.   | Statement and Transaction executions |
-|`sql.insights.high_retry_count.threshold`                               | `10`          | The threshold at which a retry count is considered High Retry Count.                                                                                           | Statement executions                 |
-|`sql.insights.execution_insights_capacity`                              | `1000`        | The maximum number of execution insights stored in each node.                                                                                                  | Statement executions                 |
-|`sql.contention.event_store.capacity`                                   | `64 MiB`      | The in-memory storage capacity of the contention event store in each nodes.                                                                                    | Transaction executions               |
-|`sql.contention.event_store.duration_threshold`                         | `0`           | The minimum contention duration to cause contention events to be collected into the `crdb_internal.transaction_contention_events` table.                       | Transaction executions               |
+| Setting                                                                | Default value | Description                                                                                                                                                                                   | Where used                           |
+|------------------------------------------------------------------------|---------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------|
+|`sql.insights.anomaly_detection.enabled`                                | `true`        | Whether or not anomaly insight detection is enabled. When true, CockroachDB checks if [execution latency](ui-sql-dashboard.html#kv-execution-latency-99th-percentile) was `> p99 && > 2*p50`. | Statement executions                 |
+|`sql.insights.anomaly_detection.latency_threshold`                      | `50 ms`       | The latency threshold at which a statement execution is detected and flagged for insights.                                                                                                    | Statement executions                 |
+|`sql.insights.anomaly_detection.memory_limit`                           | `1` MiB       | The maximum amount of memory allowed for tracking statement latencies.                                                                                                                        | Statement executions                 |
+|`sql.insights.latency_threshold`                                        | `100 ms`      | The threshold at which the contention duration of a contended transaction is considered **High Contention** or statement execution is flagged for insights.                                   | Statement and Transaction executions |
+|`sql.insights.high_retry_count.threshold`                               | `10`          | The threshold at which a retry count is considered **High Retry Count**.                                                                                                                      | Statement executions                 |
+|`sql.insights.execution_insights_capacity`                              | `1000`        | The maximum number of execution insights stored in each node.                                                                                                                                 | Statement executions                 |
+|`sql.contention.event_store.capacity`                                   | `64 MiB`      | The in-memory storage capacity of the contention event store in each nodes.                                                                                                                   | Transaction executions               |
+|`sql.contention.event_store.duration_threshold`                         | `0`           | The minimum contention duration to cause contention events to be collected into the `crdb_internal.transaction_contention_events` table.                                                      | Transaction executions               |
 
 ### Schema insights settings
 
-You can configure the index recommendations in [Schema Insights](#schema-insights-view) and the [Databases page](ui-databases-page.html) with the following cluster settings.
+You can configure the index recommendations in [Schema Insights view](#schema-insights-view) view, [Explain Plans tab](ui-statements-page.html#insights), and the [Databases page](ui-databases-page.html) with the following cluster settings.
 
 | Setting                                                                | Default value | Description                                                                                                             | Where used                           |
 |------------------------------------------------------------------------|---------------|-------------------------------------------------------------------------------------------------------------------------|--------------------------------------|
-|`sql.metrics.statement_details.index_recommendation_collection.enabled` | `true`        | Whether or not index recommendations are enabled.                                                                       | Schema Insights and Databases        |
+|`sql.metrics.statement_details.index_recommendation_collection.enabled` | `true`        | Whether or not index recommendations are enabled for indexes that could be or are used during statement execution.      | Schema Insights and Explain Plans tab|
 |`sql.index_recommendation.drop_unused_duration`                         | `7 days`      | Duration of time an index must be unused before a recommendation to drop it.                                            | Schema Insights and Databases        |
-|`sql.metrics.statement_details.max_mem_reported_idx_recommendations`    | `5000`        | The maximum number of reported index recommendations stored in memory.                                                  | Schema Insights and Databases        |
+|`sql.metrics.statement_details.max_mem_reported_idx_recommendations`    | `5000`        | The maximum number of reported index recommendations stored in memory.                                                  | Schema Insights and Explain Plans tab|
 
 ## See also
 
@@ -190,5 +188,3 @@ You can configure the index recommendations in [Schema Insights](#schema-insight
 - [Transactions page](ui-transactions-page.html)
 - [Databases page](ui-databases-page.html)
 - [Assign privileges](security-reference/authorization.html#managing-privileges)
-- [`GRANT`](grant.html)
-- [Raw status endpoints](monitoring-and-alerting.html#raw-status-endpoints)

@@ -16,7 +16,7 @@ The **Overview** section displays the SQL statement fingerprint and execution at
 - **Full scan?**: Whether the execution performed a full scan of the table.
 - **Vectorized execution?**: Whether the execution used the [vectorized execution engine]({{ link_prefix }}vectorized-execution.html).
 - **Transaction type**: The type of transaction ([implicit]({{ link_prefix }}transactions.html#individual-statements) or [explicit]({{ link_prefix }}transactions.html#sql-statements)).
-- **Last execution time**: When the statement was last executed.
+- **Last execution time**: The timestamp when the statement was last executed.
 
 Run the query described in [Use the right index]({{ link_prefix }}apply-statement-performance-rules.html#rule-2-use-the-right-index):
 
@@ -56,24 +56,35 @@ The following charts summarize the executions of the statement fingerprint illus
 
 ### Explain Plans
 
-The **Explain Plans** tab displays statement plans for an [explainable statement]({{ link_prefix }}sql-grammar.html#preparable_stmt) in the selected [time interval](#time-interval).
-You can use this information to optimize the query. For more information about plans, see [`EXPLAIN`]({{ link_prefix }}explain.html).
+The **Explain Plans** tab displays statement plans for an [explainable statement]({{ link_prefix }}sql-grammar.html#preparable_stmt) in the selected [time interval](#time-interval). You can use this information to optimize the query. For more information about plans, see [`EXPLAIN`]({{ link_prefix }}explain.html).
 
 The following screenshot shows an execution of the query discussed in [Overview](#overview):
 
 <img src="{{ 'images/v22.2/ui_plan_table.png' | relative_url }}" alt="Plan table" style="border:1px solid #eee;max-width:100%" />
 
-The plan table shows the plan gist, whether there are insights for the plan, statistics for the execution and whether the execution used a full scan, was distributed, or used the [vectorized execution engine]({{ link_prefix }}vectorized-execution.html).
+The plan table shows the following details:
 
-To display the plan that was executed and the insight, click the plan gist. For the plan gist `AgHUAQIABQAAAAHYAQIAiA...`, the following plan displays:
+Column | Description
+-----|----
+Plan Gist | A sequence of bytes representing the flattened tree of operators and various operator specific metadata of the statement plan.
+Insights | The number of [insights](#insights) for the plan. To configure the properties for determining when to trigger insights, see [Schema insight settings](ui-insights-page.html#schema-insights-settings).
+Last Execution Time | The timestamp when the statement was last executed.
+Average Execution Time | The average execution time for all the executions of the plan.
+Execution Count | The number of times the plan was executed.
+Average Rows Read | The average number of rows read when the plan was executed.
+Full Scan | Whether the execution performed a full scan of the table.
+Distributed | Whether the execution was distributed.
+Vectorized | Whether the execution used the [vectorized execution engine]({{ link_prefix }}vectorized-execution.html).
+
+To display the plan that was executed, click the plan gist. For the plan gist `AgHUAQIABQAAAAHYAQIAiA...`, the following plan displays:
 
 <img src="{{ 'images/v22.2/ui_statement_plan.png' | relative_url }}" alt="Plan table" style="border:1px solid #eee;max-width:100%" />
 
 #### Insights
 
-{% include_cached new-in.html version="v22.2" %} If you run the statement 6 or more times, the plan table will be updated to indicate that there is 1 insight.
+{% include_cached new-in.html version="v22.2" %} If you run the query discussed in [Overview](#overview) 6 or more times, the plan table will be updated to indicate that there is 1 insight.
 
-When you click the gist, a table of insights that describe how to improve the performance will follow the plan.
+When you click the plan gist, a table of insights that describe how to improve the performance will follow the plan.
 
 <img src="{{ 'images/v22.2/plan_with_insight.png' | relative_url }}" alt="Plan with insight" style="border:1px solid #eee;max-width:100%" />
 
