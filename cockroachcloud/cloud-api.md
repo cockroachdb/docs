@@ -449,3 +449,126 @@ If the request was successful, the client will receive a list of available regio
 Where:
 
   - `{region_array}` is a string array of regions available from the cloud infrastructure provider.
+
+## List all the SQL users in a cluster
+
+To list the SQL users in a cluster send a `GET` request to the `/v1/clusters/{cluster_id}/sql-users` endpoint. The service account associated with the secret key must have `ADMIN` or `READ` [permission](console-access-management.html#service-accounts) to list the SQL users.
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+curl --request GET \
+  --url 'https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/sql-users' \
+  --header 'Authorization: Bearer {secret_key}'
+~~~
+
+Where:
+
+  - `{cluster_id}` is the unique ID of this cluster.
+  {{site.data.alerts.callout_info}}
+  The cluster ID used in the Cloud API is different than the routing ID used when [connecting to clusters](connect-to-a-serverless-cluster.html).
+  {{site.data.alerts.end}}
+  
+If the request was successful, the client will receive a list of SQL users.
+
+~~~ json
+{
+  "users": [
+    {
+      "name": "{user name}"
+    }
+  ],
+  ...
+}
+~~~
+
+Where `{user name}` is the SQL username of the user.
+
+## Create a new SQL user
+
+To create a new SQL user send a `POST` request to the `/v1/clusters/{cluster_id}/sql-users` endpoint. The service account associated with the secret key must have `ADMIN` [permission](console-access-management.html#service-accounts) to create new SQL users. By default the newly created SQL user is a member of the `admin` role. An `admin` SQL user has full privileges for all databases and tables in your cluster. This user can also create additional users and grant them appropriate privileges.
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+curl --request POST \
+  --url 'https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/sql-users' \
+  --header 'Authorization: Bearer {secret_key}' \
+  --data '{"name":"{sql_username}","password":"{password}"}'
+~~~
+
+Where:
+
+- `{cluster_id}` is the unique ID of this cluster.
+{{site.data.alerts.callout_info}}
+The cluster ID used in the Cloud API is different than the routing ID used when [connecting to clusters](connect-to-a-serverless-cluster.html).
+{{site.data.alerts.end}}
+- `{sql_username}` is the username of the new SQL user you want to create.
+- `{password}` is the new user's password.
+
+If the request was successful, the client will receive a response with the name of the new user.
+
+~~~ json
+{
+  "name": "{sql_username}"
+}
+~~~
+
+Where `{sql_username}` is the username of the newly created SQL user.
+
+## Delete a SQL user
+
+To delete a SQL user send a `DELETE` request to the `/v1/clusters/{cluster_id}/sql-users/{sql_username}` endpoint. The service account associated with the secret key must have `ADMIN` [permission](console-access-management.html#service-accounts) to delete SQL users.
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+curl --request DELETE \
+  --url 'https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/sql-users/{sql_username}'' \
+  --header 'Authorization: Bearer {secret_key}'
+~~~
+
+Where:
+- `{cluster_id}` is the unique ID of this cluster.
+{{site.data.alerts.callout_info}}
+The cluster ID used in the Cloud API is different than the routing ID used when [connecting to clusters](connect-to-a-serverless-cluster.html).
+{{site.data.alerts.end}}
+- `{sql_username}` is the username of the SQL user you want to delete.
+
+If the request was successful, the client will receive a response with the name of the deleted user.
+
+~~~ json
+{
+  "name": "{sql_username}"
+}
+~~~
+
+Where `{sql_username}` is the username of the deleted SQL user.
+
+## Change a SQL user's password
+
+To change a SQL user's password send a `PUT` request to the `/v1/clusters/{cluster_id}/sql-users/{sql_username}/password` endpoint. The service account associated with the secret key must have `ADMIN` [permission](console-access-management.html#service-accounts) to change a SQL user's password.
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+curl --request PUT \
+  --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/sql-users/{sql_username}/password \
+  --header 'Authorization: Bearer {secret_key}' \
+  --data '{"password":"{new_password}"}'
+~~~
+
+Where:
+- `{cluster_id}` is the unique ID of this cluster.
+{{site.data.alerts.callout_info}}
+The cluster ID used in the Cloud API is different than the routing ID used when [connecting to clusters](connect-to-a-serverless-cluster.html).
+{{site.data.alerts.end}}
+- `{sql_username}` is the username of the SQL user whose password you want to change.
+- `{new_password}` is the new password for the SQL user.
+
+
+If the request was successful, the client will receive a response with the name of the SQL user whose password was changed.
+
+~~~ json
+{
+  "name": "{sql_username}"
+}
+~~~
+
+Where `{sql_username}` is the name of the SQL user whose password was changed.

@@ -2,13 +2,10 @@
 title: Create a CockroachDB Dedicated Cluster
 summary: Learn how to create your CockroachDB Dedicated cluster.
 toc: true
-filter_category: create_cluster_cloud
-filter_html: CockroachDB Dedicated
-filter_sort: 2
 docs_area: deploy
 ---
 
-{% include filter-tabs.md %}
+{% include cockroachcloud/filter-tabs/create-cluster-cloud.md %}
 
 This page walks you through the process of creating a {{ site.data.products.dedicated }} cluster. Note that only [{{ site.data.products.db }} Console Administrators](console-access-management.html#console-admin) can create clusters. If you are a Developer and need to create a cluster, contact your {{ site.data.products.db }} Administrator.
 
@@ -87,7 +84,7 @@ The choice of hardware per node determines the [cost](#step-2-select-the-cloud-p
     Storage space cannot be removed from a node once added.
     {{site.data.alerts.end}}
 
-    You can choose up to 150 GiB per vCPU. See [Step 2](#step-2-select-the-cloud-provider) for pricing information. When selecting your storage capacity, consider the following factors:
+    We recommending choosing up to 150 GiB per vCPU. See [Step 2](#step-2-select-the-cloud-provider) for pricing information. When selecting your storage capacity, consider the following factors:
 
     Factor | Description
     ----------|------------

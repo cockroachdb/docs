@@ -1,15 +1,32 @@
 ---
-title: Migrate from PostgreSQL
+title: Migrate a PostgreSQL database
 summary: Learn how to migrate data from PostgreSQL into a CockroachDB cluster.
 toc: true
+keywords: copy
 docs_area: migrate
 ---
+
+{{site.data.alerts.callout_success}}
+We recommend [using AWS Database Migration Service (DMS) to migrate data](aws-dms.html) from PostgreSQL to CockroachDB.
+{{site.data.alerts.end}}
 
 This page has instructions for migrating data from PostgreSQL to CockroachDB using [`IMPORT`][import]'s support for reading [`pg_dump`][pgdump] files.
 
 The examples pull real data from [Amazon S3](https://aws.amazon.com/s3/). They use the [employees data set](https://github.com/datacharmer/test_db) that is also used in the [MySQL docs](https://dev.mysql.com/doc/employee/en/). The data was imported to PostgreSQL using [pgloader][pgloader], and then modified for use here as explained below.
 
 {% include {{ page.version.version }}/misc/import-perf.md %}
+
+## Pre-migration considerations
+
+### Primary keys
+
+PostgreSQL and CockroachDB have different best practices surrounding [primary keys](primary-key.html) on tables. While it's common to see sequences and auto-incrementing primary keys in PostgreSQL, these features can cause hotspots within your cluster when reading or writing large amounts of data. Cockroach Labs recommends that you use [multi-column primary keys](performance-best-practices-overview.html#use-multi-column-primary-keys) or the [`UUID`](uuid.html) datatype for primary key columns.
+
+If you are working with a table that must be indexed on sequential keys, consider using [hash-sharded indexes](hash-sharded-indexes.html). We recommend doing thorough performance testing with and without hash-sharded indexes to see which works best for your application.
+
+For further information, see [Unique ID best practices](performance-best-practices-overview.html#unique-id-best-practices) and [3 Basic Rules for Choosing Indexes](https://www.cockroachlabs.com/blog/how-to-choose-db-index-keys/).
+
+<!-- tk add example on schema with SCT. use pg_dump -s on employees db. -->
 
 ## Step 1. Dump the PostgreSQL database
 
@@ -125,7 +142,7 @@ The simplest way to import a table dump is to run [`IMPORT`][import]. It reads t
 ~~~
 
 ~~~
-       job_id       |  status   | fraction_completed |  rows  | index_entries | system_records |  bytes   
+       job_id       |  status   | fraction_completed |  rows  | index_entries | system_records |  bytes
 --------------------+-----------+--------------------+--------+---------------+----------------+----------
  383855569817436161 | succeeded |                  1 | 300024 |             0 |              0 | 11534293
 (1 row)

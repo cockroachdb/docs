@@ -15,7 +15,7 @@ swap:
   master: main, principal, primary, or manager
   slave: secondary, subordinate, or worker
   native: core, built-in, top-level, integrated, or "built for"
-  old: existing, previous, first, or original
+  'old|older': existing, previous, first, earlier, prior, or original
   hit: select, reach, experience, reduction, or visit
   hits: visits, results
   'walkthrough|walk-through': tutorial

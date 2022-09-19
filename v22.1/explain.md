@@ -18,10 +18,6 @@ Using `EXPLAIN` output, you can optimize your queries as follows:
 - Restructure queries to require fewer levels of processing. Queries with fewer levels execute more quickly.
 - Avoid scanning an entire table, which is the slowest way to access data. [Create indexes](indexes.html) that contain at least one of the columns that the query is filtering in its `WHERE` clause.
 
-     You can disable statement plans that perform full table scans with the `disallow_full_table_scans` [session variable](set-vars.html). When `disallow_full_table_scans=on`, attempting to execute a query with a plan that includes a full table scan will return an error.
-
-     The statement planner uses the [cost-based optimizer](cost-based-optimizer.html) to create statement plans. Even after adding secondary indexes, the optimizer may decide that a full table scan will be faster. For example, if you add a secondary index to a table with a large number of rows and see that a statement plan isn't using the secondary index, it is likely that performing a full table scan using the primary key is faster than doing a secondary index scan plus an [index join](indexes.html#example).
-
 You can find out if your queries are performing entire table scans by using `EXPLAIN` to see which:
 
 - Indexes the query uses; shown as the value of the `table` property.
@@ -33,7 +29,7 @@ For more information about indexing and table scans, see [Find the Indexes and K
 
 ## Synopsis
 
-<div>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/explain.html %}</div>
+<div>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/explain.html %}</div>
 
 ## Required privileges
 
@@ -135,6 +131,56 @@ The output also describes a set of properties, some global to the query, some sp
     The number of index recommendations, followed by the recommendation and statement. The recommendation to create an index on the `rides` table and [store](indexes.html#storing-columns) the `vehicle_city`, `rider_id`, `vehicle_id`, `start_address`, `end_address`, `start_time`, and `end_time` columns will eliminate the full scan of the `rides` table.
 
     Index recommendations are displayed by default. To disable index recommendations, set the `index_recommendations_enabled` [session variable](set-vars.html) to `false`.
+
+
+Suppose you create the recommended index:
+
+{% include_cached copy-clipboard.html %}
+~~~
+CREATE INDEX ON rides (revenue) STORING (vehicle_city, rider_id, vehicle_id, start_address, end_address, start_time, end_time);
+~~~
+
+The next `EXPLAIN` call demonstrates that the estimated row count is 10% of the table:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+EXPLAIN SELECT * FROM rides WHERE revenue > 90 ORDER BY revenue ASC;
+~~~
+~~~
+                                        info
+------------------------------------------------------------------------------------
+  distribution: local
+  vectorized: true
+
+  • scan
+    estimated row count: 12,647 (10% of the table; stats collected 22 seconds ago)
+    table: rides@rides_revenue_idx
+    spans: (/90 - ]
+(7 rows)
+~~~
+
+If you then limit the number of returned rows:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+EXPLAIN SELECT * FROM rides WHERE revenue > 90 ORDER BY revenue ASC limit 10;
+~~~
+
+The limit is reflected both in the estimated row count and a `limit` property:
+
+~~~
+                                       info
+-----------------------------------------------------------------------------------
+  distribution: local
+  vectorized: true
+
+  • scan
+    estimated row count: 10 (<0.01% of the table; stats collected 32 seconds ago)
+    table: rides@rides_revenue_idx
+    spans: (/90 - ]
+    limit: 10
+(8 rows)
+~~~
 
 ### Join queries
 
@@ -284,6 +330,52 @@ Time: 3ms total (execution 3ms / network 0ms)
 ~~~
 
 Because the `INSERT` includes an `ON CONFLICT` clause, the query requires more than a simple `insert` operation. CockroachDB must check the provided values against the values in the database, to ensure that the `UNIQUE` constraint on `name`, `city`, and `id` is not violated. The output also lists the indexes available to detect conflicts (the `arbiter indexes`), including the `users_city_id_name_key` index.
+
+### Alter queries
+
+If you alter a table to split a range as described in [Split a table](split-at.html#split-a-table), the `EXPLAIN` command returns the target table and index names and a `NULL` expiry timestamp:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+EXPLAIN ALTER TABLE users SPLIT AT VALUES ('chicago'), ('new york'), ('seattle');
+~~~
+
+~~~
+               info
+----------------------------------
+  distribution: local
+  vectorized: true
+
+  • split
+  │ index: users@users_pkey
+  │ expiry: CAST(NULL AS STRING)
+  │
+  └── • values
+        size: 1 column, 3 rows
+(9 rows)
+~~~
+
+If you alter a table to split a range as described in [Set the expiration on a split enforcement](split-at.html#set-the-expiration-on-a-split-enforcement), the `EXPLAIN` command returns the target table and index names and the expiry timestamp:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+EXPLAIN ALTER TABLE vehicles SPLIT AT VALUES ('chicago'), ('new york'), ('seattle') WITH EXPIRATION '2022-08-10 23:30:00+00:00';
+~~~
+
+~~~
+                  info
+-----------------------------------------
+  distribution: local
+  vectorized: true
+
+  • split
+  │ index: vehicles@vehicles_pkey
+  │ expiry: '2022-08-10 23:30:00+00:00'
+  │
+  └── • values
+        size: 1 column, 3 rows
+(9 rows)
+~~~
 
 ### Options
 

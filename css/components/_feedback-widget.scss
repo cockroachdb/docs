@@ -1,11 +1,9 @@
 /* Feedback question and buttons */
 
-#feedback-prompt {
+#feedback-prompt-toc, #feedback-prompt-bottom {
   display: inline-block;
-  padding: 25px;
-  // background-color: $cl_green_light;
   font-size: 17px;
-  line-height: 1;
+  margin-left: 24px;
 
   form {
     display: inline-block;
@@ -14,13 +12,26 @@
   .yes-button,
   .no-button {
     img {
+      width: 25px;
       vertical-align: middle;
-      margin: 0 8px 4px 0;
-    }
-    &:hover {
-      box-shadow: -4px 4px 7px -3px rgba(25, 15, 51, 0.5);
+      margin: 0 10px 0 0;
     }
   }
+  .yes-button {
+    padding-left: 5px;
+  }
+  .no-button img {
+    padding-top: 12px;
+  }
+    // &:hover {
+    //   box-shadow: -4px 4px 7px -3px rgba(25, 15, 51, 0.5);
+    // }
+}
+
+.post-content #feedback-prompt-bottom {
+    margin-bottom: 50px;
+    margin-top: 50px;
+    padding: 25px
 }
 
 // #feedback-prompt p {
@@ -30,11 +41,10 @@
 
 .feedback-question {
   display: block;
-  line-height: 0;
-  margin-right: 15px;
+  // margin-right: 5px;
   vertical-align: bottom;
-  @include avenir_r(17px);
-  line-height: 22px;
+  line-height: 4px;
+  @include sourcesanspro_r(16px);
 
   @include at-query($min, $screen-xsm) { display: inline-block; }
 }
@@ -43,7 +53,8 @@
   .feedback-question {
     font-size: 14px;
   }
-  #feedback-prompt p.feedback-response {
+  #feedback-prompt p.feedback-response-toc,
+  #feedback-prompt p.feedback-response-bottom {
     line-height: 20px;
     font-size: 14px;
   }
@@ -52,29 +63,14 @@
 #yes-button,
 #no-button,
 #feedback-prompt input[type="submit"] {
-  width: 88px;
-  height: 50px;
-  margin: 0 5px;
-  padding: 0;
-  display: inline-block;
   vertical-align: bottom;
-  // background-color: $cl_green_light;
   color: $electric-purple !important;
   @include button-text;
   line-height: 45px;
   // text-transform: uppercase;
   text-align: center;
   text-decoration: none !important;
-  border: 2px solid $electric-purple;
-  border-radius: 5px;
-  outline: none;
   @include groovy(background-color);
-
-  &:hover {
-    // background-color: $cl_blue;
-    // color: #fff !important;
-    // border-bottom: none;
-  }
 }
 
 form[class*="hs-form"] {

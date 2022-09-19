@@ -42,7 +42,7 @@ Alternatively, you can download a binary or run our official Kubernetes configur
 
 There are three way to use and deploy CockroachDB:
 
-- **{{ site.data.products.serverless }}**: A multi-tenant CockroachDB deployment, managed by Cockroach Labs, in a single region and cloud (AWS or GCP). {{ site.data.products.serverless-plan }} lets you create and start clusters instantly. This deployment option is good for starter projects and evaluations.
+- **{{ site.data.products.serverless }}**: A multi-tenant CockroachDB deployment, managed by Cockroach Labs, in a single region and cloud (AWS or GCP). {{ site.data.products.serverless }} lets you create and start clusters instantly. This deployment option is good for starter projects and evaluations.
 - **{{ site.data.products.dedicated }}**: A single tenant CockroachDB deployment, managed by Cockroach Labs, in a single, multi-region cloud (AWS or GCP). This deployment option is good for mission-critical databases and projects that require [Enterprise features](enterprise-licensing.html).
 - **{{ site.data.products.core }}**: A self-managed CockroachDB deployment, backed by Cockroach Labs Support, for multiple clouds and regions. This deployment option is good if you require complete control over the database environment and require [Enterprise features](enterprise-licensing.html).
 

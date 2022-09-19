@@ -147,47 +147,6 @@ ERROR: external network access is disabled
 
 You must [set up billing information](billing-management.html) for your organization to use cloud storage. If you don't have a credit card on file, you will be limited to `userfile` storage for [bulk operations](run-bulk-operations.html).
 
-### Deleted non-system databases
-
-If you deleted all non-system databases on your cluster, you will see errors in the {{ site.data.products.db }} Console.
-
-<h4>Solution</h4>
-
-Connect to the `system` database using `cockroach sql` and create a new database.
-
-1. Copy your connection string in the {{ site.data.products.db }} Console by navigating to **Cluster Overview** > **Connect** > **Step 2. Connect** > **Connection string**.
-1. Change the database name in the connection string to `system`. For example, for the following connection string:
-
-    ~~~
-    postgresql://<username>:<password>@<serverless-host>:26257/defaultdb?sslmode=verify-full&options=--cluster%3D<routing-id>
-    ~~~
-
-    Change `defaultdb` to `system`.
-
-    ~~~
-    postgresql://<username>:<password>@<serverless-host>:26257/system?sslmode=verify-full&options=--cluster%3D<routing-id>
-    ~~~
-
-    Where:
-    - `<username>` is the SQL user. By default, this is your {{ site.data.products.db }} account username.
-    - `<password>` is the password for the SQL user. The password will be shown only once in the **Connection info** dialog after creating the cluster.
-    - `<serverless-host>` is the hostname of the {{ site.data.products.serverless }} cluster.
-    - `<routing-id>` identifies your tenant cluster on a [multi-tenant host](architecture.html#architecture). For example, `funny-skunk-123`.
-
-1. Connect to the cluster using the modified connection string with `cockroach sql`.
-
-    ~~~ shell
-    cockroach sql --url "postgresql://<username>:<password>@<serverless-host>:26257/system?sslmode=verify-full&options=--cluster%3D<routing-id>"
-    ~~~
-
-    You will connect to the `system` database on your cluster.
-
-1. Create a new `defaultdb` database.
-
-    ~~~ sql
-    CREATE DATABASE IF NOT EXISTS defaultdb;
-    ~~~
-
 ## Security errors
 
 ### Incorrect certs path

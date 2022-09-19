@@ -14,15 +14,19 @@ docs_area: reference.security
 
 [Sign up for a CockroachDB Cloud account!](https://www.cockroachlabs.com/get-started-cockroachdb/)
 
+{% include /v22.1/dedicated-pci-compliance.md %}
+
+Learn more: [Integrate {{ site.data.products.dedicated }} with Satori](../satori-integration.html)
+
 ### Self-Hosted
 
 Cockroach Labs maintains <a href="https://github.com/cockroachdb/cockroach">CockroachDB as an open-source core</a>, which is available to operate under a number of different licensing options, including several free options.
 
 {{ site.data.products.core }} here refers to the situation of a user deploying and operating their own cluster.
 
-{{ site.data.products.enterprise }} refers to an ongoing paid license relationship with Cockroach Labs. This license unlocks advanced features (see below). In this situation the customer maintains full control over their data, compute, and network resources while benefiting from the expertise of the Cockroach Labs' Enterprise Support staff. 
+{{ site.data.products.enterprise }} refers to an ongoing paid license relationship with Cockroach Labs. This license unlocks advanced features (see below). In this situation the customer maintains full control over their data, compute, and network resources while benefiting from the expertise of the Cockroach Labs' {{ site.data.products.enterprise }} Support staff. 
 
-- See the [list of Enterprise features](../enterprise-licensing.html)
+- See the [list of {{ site.data.products.enterprise }} features](../enterprise-licensing.html)
 - Read the [licensing FAQ](../licensing-faqs.html)
 - [Contact our sales team](mailto:sales@cockroachlabs.com) for further questions about {{ site.data.products.enterprise }}
 
@@ -100,35 +104,35 @@ Cockroach Labs maintains <a href="https://github.com/cockroachdb/cockroach">Cock
    <td>✓</td>
    <td>✓</td>
    <td>✓</td>
-   <td>Encryption-in-flight using TLS 1.3</td>
+   <td>Encryption in transit using TLS 1.3</td>
  </tr>
  <tr>
   <td>✓</td>
   <td>✓</td>
   <td>✓</td>
   <td>✓</td>
-  <td>Backups for AWS clusters are encrypted-at-rest using <a href="https://docs.aws.amazon.com/AmazonS3/latest/dev/UsingServerSideEncryption.html">AWS S3’s server-side encryption</a></td>
+  <td>Backups for AWS clusters are encrypted at rest using <a href="https://docs.aws.amazon.com/AmazonS3/latest/dev/UsingServerSideEncryption.html">AWS S3’s server-side encryption</a></td>
  </tr>
  <tr>
   <td>✓</td>
   <td>✓</td>
   <td>✓</td>
   <td>✓</td>
-  <td>Backups for GCP clusters are encrypted-at-rest using <a href="https://cloud.google.com/storage/docs/encryption/default-keys">Google-managed server-side encryption keys</a></td>
+  <td>Backups for GCP clusters are encrypted at rest using <a href="https://cloud.google.com/storage/docs/encryption/default-keys">Google-managed server-side encryption keys</a></td>
  </tr>
  <tr>
   <td>✓</td>
   <td>✓</td>
   <td>✓</td>
   <td>✓</td>
-  <td>Industry standard encryption-at-rest provided at the infrastructure level by your chosen infrastructure-as-a-service (IAAS) provider, either Google Cloud Platform (GCP) or Amazon Web Services (AWS). See documentation for <a href="https://cloud.google.com/compute/docs/disks#pd_encryption">GCP persistent disk encryption</a> or <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html">AWS Elastic Block Storage</a>.
+  <td>Industry-standard encryption at rest is provided at the infrastructure level by your chosen deployment environment, such as Google Cloud Platform (GCP), Amazon Web Services (AWS), or Microsoft Azure. You can learn more about <a href="https://cloud.google.com/compute/docs/disks#pd_encryption">GCP persistent disk encryption</a>, <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html">AWS Elastic Block Storage</a>, or <a href="https://docs.microsoft.com/en-us/azure/virtual-machines/disk-encryption-overview">Azure managed disk encryption</a>.
  </tr>
  <tr>
   <td>&nbsp;</td>
   <td>&nbsp;</td>
   <td>&nbsp;</td>
   <td>✓</td>
-  <td>Cockroach Labs' proprietary storage-level <a href="encryption.html#encryption-at-rest-enterprise">encryption-at-rest service</a> implementing the <a href="https://en.wikipedia.org/wiki/Advanced_Encryption_Standard">Advanced Encryption Standard (AED)</a></td>
+  <td>Cockroach Labs' proprietary storage-level <a href="encryption.html#encryption-at-rest-enterprise">{{ site.data.products.enterprise }} Encryption At Rest service</a> implementing the <a href="https://en.wikipedia.org/wiki/Advanced_Encryption_Standard">Advanced Encryption Standard (AED)</a></td>
  </tr>
  <tr>
    <td rowspan="2" ><a href="authorization.html">Authorization</a></td>

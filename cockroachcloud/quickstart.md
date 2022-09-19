@@ -19,8 +19,6 @@ This page shows you how to get started with CockroachDB quickly. You'll create a
 
 To get started with {{ site.data.products.db }} using {{ site.data.products.dedicated }} clusters, see [Quickstart with {{ site.data.products.dedicated }}](quickstart-trial-cluster.html).
 
-{% include cockroachcloud/free-limitations.md %}
-
 </section>
 
 <section class="filter-content" markdown="1" data-scope="local">
@@ -61,7 +59,7 @@ Follow these steps to create a {{ site.data.products.serverless }} cluster using
 Follow these steps to create a {{ site.data.products.serverless }} cluster using the <code>ccloud</code> CLI tool.
 
 {{site.data.alerts.callout_info}}
-The <code>ccloud</code> CLI tool is in beta.
+The <code>ccloud</code> CLI tool is in Preview.
 {{site.data.alerts.end}}
 
 <h2>Install <code>ccloud</code></h2>
@@ -117,9 +115,16 @@ The **Connect to cluster** dialog shows information about how to connect to your
 
 <section class="filter-content" markdown="1" data-scope="java">
 
-{% include cockroachcloud/quickstart/get-connection-string.md %}
+The **Connect to cluster** dialog shows information about how to connect to your cluster.
 
-1. If you haven't already, install the [`cockroach` binary](../{{site.versions["stable"]}}/install-cockroachdb.html) and add it to your OS's `PATH`.
+1. Select **Java** from the **Select option** dropdown.
+1. Copy the `JDBC_DATABASE_URL` environment variable command provided and save it in a secure location.
+
+    This Quickstart uses default certificates, so you can skip the **Download CA Cert** instructions.
+
+    {{site.data.alerts.callout_info}}
+    The connection string is pre-populated with your username, password, cluster name, and other details. Your password, in particular, will be provided *only once*. Save it in a secure place (Cockroach Labs recommends a password manager) to connect to your cluster in the future. If you forget your password, you can reset it by going to the [**SQL Users** page](user-authorization.html).
+    {{site.data.alerts.end}}
 
 </section>
 
@@ -219,79 +224,41 @@ Use the [JDBC driver](https://jdbc.postgresql.org/) in a Java application.
 <section class="filter-content" markdown="1" data-scope="java">
 
 <section class="filter-content" markdown="1" data-scope="mac">
-1. Use the `cockroach convert-url` command to convert the connection string that you copied earlier to a [valid connection string for JDBC connections](../{{site.versions["stable"]}}/connect-to-the-database.html?filters=java):
+In a terminal set the `JDBC_DATABASE_URL` environment variable to the connection string by running the command that you copied earlier:
 
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    cockroach convert-url --url "<connection-string>"
-    ~~~
+{% include_cached copy-clipboard.html %}
+~~~ shell
+export JDBC_DATABASE_URL="<jdbc-connection-string>"
+~~~
 
-    ~~~
-    ...
-
-    # Connection URL for JDBC (Java and JVM-based languages):
-    jdbc:postgresql://{host}:{port}/{database}?options=--cluster%3D{routing-id}&password={password}&sslmode=verify-full&user={username}
-    ~~~
-
-1. Set the `JDBC_DATABASE_URL` environment variable to the JDBC-compatible connection string:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    export JDBC_DATABASE_URL="<jdbc-connection-string>"
-    ~~~
-
-    The code sample uses the connection string stored in the environment variable `JDBC_DATABASE_URL` to connect to your cluster.
+The code sample uses the connection string stored in the environment variable `JDBC_DATABASE_URL` to connect to your cluster.
 </section>
 
 <section class="filter-content" markdown="1" data-scope="linux">
-1. Use the `cockroach convert-url` command to convert the connection string that you copied earlier to a [valid connection string for JDBC connections](../{{site.versions["stable"]}}/connect-to-the-database.html?filters=java):
+In a terminal set the `JDBC_DATABASE_URL` environment variable to the connection string by running the command that you copied earlier:
 
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    cockroach convert-url --url "<connection-string>"
-    ~~~
+{% include_cached copy-clipboard.html %}
+~~~ shell
+export JDBC_DATABASE_URL="<jdbc-connection-string>"
+~~~
 
-    ~~~
-    ...
-
-    # Connection URL for JDBC (Java and JVM-based languages):
-    jdbc:postgresql://{host}:{port}/{database}?options=--cluster%3D{routing-id}&password={password}&sslmode=verify-full&user={username}
-    ~~~
-
-1. Set the `JDBC_DATABASE_URL` environment variable to the JDBC-compatible connection string:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    export JDBC_DATABASE_URL="<jdbc-connection-string>"
-    ~~~
-
-    The code sample uses the connection string stored in the environment variable `JDBC_DATABASE_URL` to connect to your cluster.
+The code sample uses the connection string stored in the environment variable `JDBC_DATABASE_URL` to connect to your cluster.
 </section>
 
 <section class="filter-content" markdown="1" data-scope="windows">
-1. Use the `cockroach convert-url` command to convert the connection string that you copied earlier to a [valid connection string for JDBC connections](../{{site.versions["stable"]}}/connect-to-the-database.html?filters=java):
+In a terminal set the `JDBC_DATABASE_URL` environment variable to the connection string by running the command that you copied earlier:
 
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    cockroach convert-url --url "<connection-string>"
-    ~~~
+{% include_cached copy-clipboard.html %}
+~~~ shell
+$env:JDBC_DATABASE_URL = "<jdbc-connection-string>"
+~~~
 
-    ~~~
-    ...
-
-    # Connection URL for JDBC (Java and JVM-based languages):
-    jdbc:postgresql://{host}:{port}/{database}?options=--cluster%3D{routing-id}&password={password}&sslmode=verify-full&user={username}
-    ~~~
-
-1. Set the `JDBC_DATABASE_URL` environment variable to the JDBC-compatible connection string:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $env:JDBC_DATABASE_URL = "<jdbc-connection-string>"
-    ~~~
-
-    The code sample uses the connection string stored in the environment variable `JDBC_DATABASE_URL` to connect to your cluster.
+The code sample uses the connection string stored in the environment variable `JDBC_DATABASE_URL` to connect to your cluster.
 </section>
+
+{{site.data.alerts.callout_success}}
+For reference information about connecting to CockroachDB with supported client drivers, see [Connect to a CockroachDB Cluster](../../docs/stable/connect-to-the-database.html).
+{{site.data.alerts.end}}
 
 </section>
 
@@ -325,7 +292,7 @@ Use the [JDBC driver](https://jdbc.postgresql.org/) in a Java application.
     ~~~
 
     The code sample in this directory does the following:
-      1. Connects to {{ site.data.products.db }} with the [node-postgres driver](https://node-postgres.com) using the connectiong string set in the `DATABASE_URL` environment variable.
+      1. Connects to {{ site.data.products.db }} with the [node-postgres driver](https://node-postgres.com) using the connection string set in the `DATABASE_URL` environment variable.
       1. Creates a table.
       1. Inserts some data into the table.
       1. Reads the inserted data.
@@ -370,7 +337,7 @@ Use the [JDBC driver](https://jdbc.postgresql.org/) in a Java application.
     ~~~
 
     The code sample in this directory does the following:
-      1. Connects to {{ site.data.products.db }} with the [psycopg2 driver](https://www.psycopg.org) using the connectiong string set in the `DATABASE_URL` environment variable.
+      1. Connects to {{ site.data.products.db }} with the [psycopg2 driver](https://www.psycopg.org) using the connection string set in the `DATABASE_URL` environment variable.
       1. Creates a table.
       1. Inserts some data into the table.
       1. Reads the inserted data.
@@ -415,7 +382,7 @@ Use the [JDBC driver](https://jdbc.postgresql.org/) in a Java application.
     ~~~
 
     The code sample in this directory does the following:
-      1. Connects to {{ site.data.products.db }} with the [pgx driver](https://github.com/jackc/pgx) using the connectiong string set in the `DATABASE_URL` environment variable.
+      1. Connects to {{ site.data.products.db }} with the [pgx driver](https://github.com/jackc/pgx) using the connection string set in the `DATABASE_URL` environment variable.
       1. Creates a table.
       1. Inserts some data into the table.
       1. Reads the inserted data.
@@ -427,7 +394,7 @@ Use the [JDBC driver](https://jdbc.postgresql.org/) in a Java application.
     ~~~ shell
     $ go mod init basic-sample
     ~~~
-    
+
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     go mod tidy
@@ -463,7 +430,7 @@ Use the [JDBC driver](https://jdbc.postgresql.org/) in a Java application.
     ~~~
 
     The code sample in this directory does the following:
-      1. Connects to {{ site.data.products.db }} with the [JDBC driver](https://jdbc.postgresql.org) using the JDBC connectiong string set in the `JDBC_DATABASE_URL` environment variable.
+      1. Connects to {{ site.data.products.db }} with the [JDBC driver](https://jdbc.postgresql.org) using the JDBC connection string set in the `JDBC_DATABASE_URL` environment variable.
       1. Creates a table.
       1. Inserts some data into the table.
       1. Reads the inserted data.
@@ -494,6 +461,7 @@ Use the [JDBC driver](https://jdbc.postgresql.org/) in a Java application.
 - [Learn CockroachDB SQL](learn-cockroachdb-sql.html).
 - [Create and manage SQL users](user-authorization.html).
 - Explore our [example apps](../{{site.versions["stable"]}}/example-apps.html) for examples on how to build applications using your preferred driver or ORM and run it on CockroachDB.
+- [Migrate your existing data](../{{site.versions["stable"]}}/migration-overview.html).
 
 ## Learn more
 

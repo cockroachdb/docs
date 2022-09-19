@@ -16,7 +16,7 @@ The user must have the `DROP` [privilege](security-reference/authorization.html#
 ## Syntax
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/drop_schema.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/drop_schema.html %}
 </div>
 
 ### Parameters

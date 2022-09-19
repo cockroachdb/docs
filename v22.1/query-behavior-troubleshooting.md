@@ -13,11 +13,52 @@ For a developer-centric overview of optimizing SQL statement performance, see [O
 
 ## Query issues
 
+### Hanging or stuck queries
+
+When you experience a hanging or stuck query and the cluster is healthy (i.e., no [unavailable ranges](ui-replication-dashboard.html#unavailable-ranges), [network partitions](cluster-setup-troubleshooting.html#network-partition), etc), the cause could be a long-running transaction holding [write intents](architecture/transaction-layer.html#write-intents) open against the same rows as your query.
+
+Such long-running queries can hold intents open for (practically) unlimited durations. If your query tries to access those rows, it may have to wait for that transaction to complete (by [committing](commit-transaction.html) or [rolling back](rollback-transaction.html)) before it can make progress.
+
+This situation is hard to diagnose via the [Transactions](ui-transactions-page.html) and [Statements](ui-statements-page.html) pages in the [DB Console](ui-overview.html) since contention is only reported after the conflict has been resolved (which in this scenario may be never).
+
+In these cases, you will need to take the following steps.
+
+1. [Find long running transactions](#step-1-find-long-running-transactions)
+1. [Find client sessions for those transactions](#step-2-find-the-client-session)
+1. [Cancel the transaction or session](#step-3-cancel-the-transaction-or-session)
+
+#### Step 1. Find long-running transactions
+
+Run the following query against the [`crdb_internal.cluster_transactions`](crdb-internal.html#cluster_transactions) table to list transactions that have been running longer than 10 minutes.
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT now() - start AS dur, * FROM crdb_internal.cluster_transactions WHERE now() - start > '10m'::INTERVAL ORDER BY dur DESC LIMIT 10
+~~~
+
+For each row in the results, if the `txn_string` column shows `lock=true` (or `seq > 0`), the transaction associated with that row is a writing transaction, and its open write intents will block access for other transactions.
+If the query returns lots of transactions, it is often the case than a single transaction is blocking others, and those may be blocking yet others. Try to look for the oldest, longest-running transaction and cancel that one first; that may be sufficient to unblock all of the others.
+
+#### Step 2. Find the client session
+
+Next, find the client session owning the long-running transaction by querying the [`crdb_internal.cluster_sessions`](crdb-internal.html#cluster_sessions) table. You will need the value of the `id` column from the query in the previous step.
+This step is necessary if you want to cancel the entire session the transaction is associated with.
+
+~~~ sql
+SELECT * FROM crdb_internal.cluster_sessions WHERE kv_txn = {id_column_from_previous_query}
+~~~
+
+#### Step 3. Cancel the transaction or session
+
+Finally, cancel the longest-running transaction you found in [Step 1](#step-1-find-long-running-transactions) using [`CANCEL QUERY`](cancel-query.html) and check if that resolves the problem.
+
+If you want to cancel the whole session for that transaction, use [`CANCEL SESSION`](cancel-session.html) using the session ID you found in [Step 2](#step-2-find-the-client-session).
+
 ### Identify slow queries
 
 Use the [slow query log](logging-use-cases.html#sql_perf) or DB Console to detect slow queries in your cluster.
 
-High latency SQL statements are displayed on the [Statements](ui-statements-page.html) page of the DB Console.
+You can identify high-latency SQL statements on the [Statements](ui-statements-page.html) page of the DB Console. You can collect richer diagnostics of a high-latency statement by creating a [diagnostics bundle](ui-statements-page.html#diagnostics) when a statement fingerprint exceeds a certain latency.
 
 You can also check the [service latency graph](ui-sql-dashboard.html#service-latency-sql-99th-percentile) and the [CPU graph](ui-hardware-dashboard.html#cpu-percent) on the SQL and Hardware Dashboards, respectively. If the graphs show latency spikes or CPU usage spikes, these might indicate slow queries in your cluster.
 
@@ -103,7 +144,7 @@ docker run -d --name jaeger \
 
 ### Queries are always slow
 
-If you have consistently slow queries in your cluster, use the [Statement Details](ui-statements-page.html#statement-details-page) page to drill down to an individual statement and [collect diagnostics](ui-statements-page.html#diagnostics) for the statement. A diagnostics bundle contains a record of transaction events across nodes for the SQL statement.
+If you have consistently slow queries in your cluster, use the [Statement Fingerprint](ui-statements-page.html#statement-fingerprint-page) page to drill down to an individual statement and [collect diagnostics](ui-statements-page.html#diagnostics) for the statement. A diagnostics bundle contains a record of transaction events across nodes for the SQL statement.
 
 You can also use an [`EXPLAIN ANALYZE`](explain-analyze.html) statement, which executes a SQL query and returns a physical query plan with execution statistics. You can use query plans to troubleshoot slow queries by indicating where time is being spent, how long a processor (i.e., a component that takes streams of input rows and processes them according to a specification) is not doing work, etc.
 
@@ -245,6 +286,10 @@ Throughput is affected by the disk I/O, CPU usage, and network latency. Use the 
 - CPU usage: [CPU percent](ui-hardware-dashboard.html#cpu-percent)
 
 - Network latency: [Network Latency](ui-network-latency-page.html)
+
+### Query runs out of memory
+
+If your query returns the error code `SQLSTATE: 53200` with the message `ERROR: root: memory budget exceeded`, follow the guidelines in [memory budget exceeded](common-errors.html#memory-budget-exceeded).
 
 ## Node issues
 

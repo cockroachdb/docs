@@ -43,12 +43,14 @@ The source file URL _does_ require the `ADMIN` role in the following scenarios:
 - Use of a [custom endpoint](https://docs.aws.amazon.com/sdk-for-go/api/aws/endpoints/) on S3
 - [Nodelocal](cockroach-nodelocal-upload.html), [HTTP](use-a-local-file-server-for-bulk-operations.html), or [HTTPS](use-a-local-file-server-for-bulk-operations.html)
 
+{% include {{ page.version.version }}/misc/s3-compatible-warning.md %}
+
 Learn more about [cloud storage for bulk operations](use-cloud-storage-for-bulk-operations.html).
 
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/import_into.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/import_into.html %}
 </div>
 
 {{site.data.alerts.callout_info}}

@@ -2,19 +2,12 @@
 title: Manage a CockroachDB Serverless Cluster
 summary: Manage your cluster's schema, data, and more.
 toc: true
-filter_category: cluster_mgmt
-filter_html: CockroachDB Serverless (beta)
-filter_sort: 1
 docs_area: manage
 ---
 
-{% include filter-tabs.md %}
+{% include cockroachcloud/filter-tabs/cluster-management.md %}
 
 This page describes the cluster management and cluster deletion workflows for {{ site.data.products.serverless }}.
-
-## Planning your cluster
-
-Before making any changes to your cluster's configuration, review the [requirements and recommendations](plan-your-cluster.html) for {{ site.data.products.db }} cluster configuration.
 
 ## View Clusters page
 
@@ -45,7 +38,7 @@ The **Overview** page displays details about the selected {{ site.data.products.
 
 For more information, see [Cluster Overview Page](cluster-overview-page.html).
 
-## Edit your spend limit  
+## Edit your spend limit
 
 You can edit your spend limit from the **Overview** page. The change in your spend limit will affect current and upcoming billing cycles. See [Planning your cluster](plan-your-cluster.html) for more information on resource usage.
 
@@ -71,7 +64,7 @@ Deleting a cluster will delete all cluster data.
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
-Free {{ site.data.products.serverless-plan }} clusters are subject to deletion after 6 months of no activity.
+Free {{ site.data.products.serverless }} clusters are subject to deletion after 6 months of no activity.
 {{site.data.alerts.end}}
 
 Proceed with the following steps only if you are sure you want to delete a cluster:

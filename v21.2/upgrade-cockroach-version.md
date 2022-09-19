@@ -16,6 +16,10 @@ Run [`cockroach sql`](cockroach-sql.html) against any node in the cluster to ope
 > SHOW CLUSTER SETTING version;
 ~~~
 
+{{site.data.alerts.callout_info}}
+If you are upgrading from any cluster version prior to v21.1, then **before upgrading from v20.2 to v21.1**, you must ensure that any previously decommissioned nodes are fully decommissioned. Otherwise, they will block the upgrade. For instructions, see [Check decommissioned nodes](#check-decommissioned-nodes).
+{{site.data.alerts.end}}
+
 To upgrade to a new version, you must first be on a production [release](../releases/) of the previous version. The release does not need to be the latest production release of the previous version, but it **must be a production release** and not a testing release (alpha/beta).
 
 Therefore, to upgrade to v21.2:
@@ -40,8 +44,6 @@ Verify the overall health of your cluster using the [DB Console](ui-cluster-over
 
 - Under **Node Status**, make sure all nodes that should be live are listed as such. If any nodes are unexpectedly listed as `SUSPECT` or `DEAD`, identify why the nodes are offline and either restart them or [decommission](node-shutdown.html?filters=decommission#remove-nodes) them before beginning your upgrade. If there are `DEAD` and non-decommissioned nodes in your cluster, it will not be possible to finalize the upgrade (either automatically or manually).
 
-    - Make sure any decommissioning nodes have been fully decommissioned. Check the `membership` field in the [output of `cockroach node status --decommission`](node-shutdown.html?filters=decommission#cockroach-node-status). Nodes with `decommissioned` membership are fully decommissioned, while nodes with `decommissioning` membership have not completed the process. In case the decommissioning process is hung, [recommission](node-shutdown.html?filters=decommission#recommission-nodes) and then [decommission those nodes](node-shutdown.html?filters=decommission#remove-nodes) again, and confirm that their membership changes to `decommissioned`.
-
 - Under **Replication Status**, make sure there are `0` under-replicated and unavailable ranges. Otherwise, performing a rolling upgrade increases the risk that ranges will lose a majority of their replicas and cause cluster unavailability. Therefore, it's important to identify and resolve the cause of range under-replication and/or unavailability before beginning your upgrade.
 
 - In the **Node List**:
@@ -49,6 +51,14 @@ Verify the overall health of your cluster using the [DB Console](ui-cluster-over
 
 - In the **Metrics** dashboards:
     - Make sure [CPU](common-issues-to-monitor.html#cpu-usage), [memory](common-issues-to-monitor.html#database-memory-usage), and [storage](common-issues-to-monitor.html#storage-capacity) capacity are within acceptable values for each node. Nodes must be able to tolerate some increase in case the new version uses more resources for your workload. If any of these metrics is above healthy limits, consider [adding nodes](cockroach-start.html) to your cluster before beginning your upgrade.
+
+### Check decommissioned nodes
+
+Check the `membership` field in the [output of `cockroach node status --decommission`](node-shutdown.html?filters=decommission#cockroach-node-status). Nodes with `decommissioned` membership are fully decommissioned, while nodes with `decommissioning` membership have not completed the process. If there are `decommissioning` nodes in your cluster, this will block the upgrade.
+
+If you are upgrading from any cluster version prior to v21.1, then **before upgrading from v20.2 to v21.1**, you must manually change the status of any `decommissioning` nodes to `decommissioned`. To do this, [run `cockroach node decommission`](node-shutdown.html?filters=decommission#step-3-decommission-the-nodes) on these nodes and confirm that they update to `decommissioned`.
+
+In case a decommissioning process is hung, [recommission](node-shutdown.html?filters=decommission#recommission-nodes) and then [decommission those nodes](node-shutdown.html?filters=decommission#remove-nodes) again, and confirm that they update to `decommissioned`.
 
 ### Review breaking changes
 

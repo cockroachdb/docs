@@ -14,7 +14,7 @@ No [privileges](security-reference/authorization.html#managing-privileges) are r
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/show_sequences.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/show_sequences.html %}
 </div>
 
 ## Parameters

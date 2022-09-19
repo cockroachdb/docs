@@ -14,7 +14,7 @@ You can use `GRANT` to directly grant privileges to a role or user, or you can g
 ## Syntax
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/grant.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/grant.html %}
 </div>
 
 ### Parameters

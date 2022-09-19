@@ -18,7 +18,7 @@ The user must have any [privilege](security-reference/authorization.html#managin
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/show_constraints.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/show_constraints.html %}
 </div>
 
 ## Parameters

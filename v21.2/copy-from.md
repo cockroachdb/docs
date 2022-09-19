@@ -14,7 +14,7 @@ CockroachDB currently only supports `COPY FROM` statements issued from third-par
 ## Syntax
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/copy_from.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/copy_from.html %}
 </div>
 
 ### Parameters

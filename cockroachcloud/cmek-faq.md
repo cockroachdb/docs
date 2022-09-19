@@ -5,6 +5,10 @@ toc: true
 docs_area: manage.security
 ---
 
+This article provides answers to common questions about [Customer-Managed Encryption Keys (CMEK)](cmek.html).
+
+{% include cockroachcloud/cockroachcloud-ask-admin.md %}
+
 ## If we don’t enable CMEK for our {{ site.data.products.dedicated }} clusters, are those encrypted in some manner by default?
 
 Yes, the {{ site.data.products.dedicated }} clusters are encrypted by default by the way of encrypting the cloud disks used to store the data, using cloud provider managed keys.
@@ -15,11 +19,13 @@ Yes, the data encryption key is rotated automatically once every month. It’s n
 
 ## Can we rotate the CMEK for a cluster after a certain time or at some periodic interval?
 
-Not yet. The ability to rotate CMEK would be available at a later time. Once that’s ready, you could do it ad-hoc, or at a periodic interval using your own managed scheduling mechanism.
+{% include cockroachcloud/cmek-rotation-types.md %}
+
+To learn more about rotating a CMEK key using the {{ site.data.products.db }} API, visit [Rotate a CMEK key](managing-cmek.html#rotate-a-cmek-key).
 
 ## If we enable CMEK for a cluster that has been in use for some time, is the existing data encrypted at that time?
 
-{{ site.data.products.dedicated }} does not force encryption of the older data but instead relies on normal storage engine churn for desired encryption. That means the new key is used to encrypt new writes, while the old data remains unencrypted unless it’s rewritten.
+{{ site.data.products.dedicated }} does not force encryption of previously-written data but instead relies on normal storage engine churn for desired encryption. That means the new key is used to encrypt newly-written data, while previously-written data remains unencrypted unless it’s rewritten.
 
 ## Are {{ site.data.products.dedicated }} managed backups also encrypted using the CMEK?
 

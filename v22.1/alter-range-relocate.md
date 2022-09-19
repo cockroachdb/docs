@@ -20,7 +20,7 @@ If you prefer to use a key based approach to relocating replicas and leases, see
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/alter_range_relocate.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/alter_range_relocate.html %}
 </div>
 
 ## Required privileges

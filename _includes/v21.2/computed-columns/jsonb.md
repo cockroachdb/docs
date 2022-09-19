@@ -40,3 +40,31 @@ Then, insert a few rows of data:
 ~~~
 
 The primary key `id` is computed as a field from the `profile` column.  Additionally the `age` column is computed from the profile column data as well.
+
+This example shows how add a stored computed column with a [coerced type](scalar-expressions.html#explicit-type-coercions):
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE TABLE json_data (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    json_info JSONB
+);
+INSERT INTO json_data (json_info) VALUES ('{"amount": "123.45"}');
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER TABLE json_data ADD COLUMN amount DECIMAL AS ((json_info->>'amount')::DECIMAL) STORED;
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT * FROM json_data;
+~~~
+
+~~~
+                   id                  |      json_info       | amount
+---------------------------------------+----------------------+---------
+  e7c3d706-1367-4d77-bfb4-386dfdeb10f9 | {"amount": "123.45"} | 123.45
+(1 row)
+~~~

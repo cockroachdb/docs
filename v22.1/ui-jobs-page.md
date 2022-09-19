@@ -36,21 +36,24 @@ The Jobs list is designed for you to manage pending work. It is not intended to 
 
 Use the **Jobs** list to see your recently created and completed jobs.
 
-- For changefeeds, the table displays a [high-water timestamp that advances as the changefeed progresses](monitor-and-debug-changefeeds.html#monitor-a-changefeed). This is a guarantee that all changes before or at the timestamp have been emitted. Hover over the high-water timestamp to view the [system time](as-of-system-time.html).
+- [Automatic table statistics](cost-based-optimizer.html#table-statistics) jobs are not displayed even when the **Type** menu is set to **All**. To view these jobs, set **Type** to **Automatic-Statistics Creation** as described in [Filter jobs](#filter-jobs).
 
-- [Automatic table statistics](cost-based-optimizer.html#table-statistics) jobs are not displayed even when the **Type** menu is set to **All**. To view these jobs, set **Type** to **Automatic-Statistics Creation** as described [above](#filter-jobs).
+- To view [job details](#job-details), click the job description.
 
-- To view [job details](#job-details), click on the job description.
+The following screenshot shows **Import** jobs:
 
-<img src="{{ 'images/v22.1/ui_jobs_page_new.png' | relative_url }}" alt="DB Console Jobs Page" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v22.1/ui_jobs_page.png' | relative_url }}" alt="DB Console Jobs Page" style="border:1px solid #eee;max-width:100%" />
 
-Parameter | Description
+Column | Description
 ----------|------------
 Description | SQL statement that created the job.
-Job ID | Unique job ID. This value is used to [pause](pause-job.html), [resume](resume-job.html), or [cancel](cancel-job.html) jobs.
-Users | User that created the job.
-Creation Time | Date and time the job was created.
 Status | Current [job status](#job-status) or completion progress.
+Job ID | Unique job ID. This value is used to [pause](pause-job.html), [resume](resume-job.html), or [cancel](cancel-job.html) jobs.
+User Name | User that created the job.
+Creation Time (UTC) | Date and time the job was created.
+Last Execution Time (UTC) | Date and time the job was last executed.
+High-water Timestamp  | A checkpoint for a [changefeed job's progress](monitor-and-debug-changefeeds.html#monitor-a-changefeed) that guarantees that all changes before (or at) the timestamp have been emitted. Hover over the high-water timestamp to view the [system time](as-of-system-time.html).
+Execution Count | Number of times the job was executed.
 
 ### Job status
 
@@ -61,14 +64,15 @@ Status | Description
 `FAILED` | Job failed to complete.
 `SUCCEEDED` | Job successfully completed.
 `CANCELED` | Job was [cancelled](cancel-job.html).
-
-A job that is currently running will be displayed with its percent completion and time remaining, rather than the `RUNNING` status.
+`RUNNING`  | Job is running. A job that is running will be displayed with its percent completion and time remaining, rather than the `RUNNING` status.
+`REVERTING`| Job failed or was canceled and its changes are being reverted.
+`RETRYING` | Job is retrying another job that failed.
 
 ## Job details
 
-Click any description on the [jobs list](#jobs-list) to see the full SQL statement that created the job.
+Click a description on the [jobs list](#jobs-list) to see the full SQL statement that created the job.
 
-The job ID, creation time, users, status, and error messages (if any) are also shown.
+The job ID, creation time, user, status, and error messages (if any) are also shown.
 
 <img src="{{ 'images/v22.1/ui_jobs_page_details.png' | relative_url }}" alt="DB Console Jobs Page" style="border:1px solid #eee;max-width:100%" />
 

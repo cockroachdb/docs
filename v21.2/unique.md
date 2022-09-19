@@ -33,7 +33,7 @@ For an example that uses unique indexes, see [Add a unique index to a `REGIONAL 
 ### Column level
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/unique_column_level.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/unique_column_level.html %}
 </div>
 
 Parameter | Description
@@ -59,7 +59,7 @@ Parameter | Description
 ### Table level
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/unique_table_level.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/unique_table_level.html %}
 </div>
 
 Parameter | Description

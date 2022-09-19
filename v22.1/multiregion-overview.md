@@ -6,14 +6,14 @@ keywords: gin, gin index, gin indexes, inverted index, inverted indexes, acceler
 docs_area: deploy
 ---
 
-This page provides an overview of CockroachDB multi-region features.
+This page provides an overview of CockroachDB multi-region capabilities.
 
 ## Overview
 
-CockroachDB multi-region capabilities make it easier to run global applications. To take advantage of these capabilities, you should understand the following concepts:
+CockroachDB multi-region capabilities make it easier to run global applications. To use these capabilities effectively, you should understand the following concepts:
 
 - [_Cluster region_](#cluster-regions) is a geographic region that you specify at node start time.
-- [_Database region_](#database-regions) is a geographic region that a given database operates within. You must choose a database region from the list of available cluster regions.
+- [_Database region_](#database-regions) is a geographic region in which a database operates. You must choose a database region from the list of available cluster regions.
 - [_Survival goal_](#survival-goals) dictates how many simultaneous failure(s) a database can survive.
 - [_Table locality_](#table-locality) determines how CockroachDB optimizes access to a table's data.
 
@@ -184,6 +184,8 @@ The features listed in this section make working with multi-region clusters easi
 This behavior also applies to [GIN indexes](inverted-indexes.html).
 
 For an example that uses unique indexes but applies to all indexes on `REGIONAL BY ROW` tables, see [Add a unique index to a `REGIONAL BY ROW` table](add-constraint.html#add-a-unique-index-to-a-regional-by-row-table).
+
+Regional by row tables can take advantage of [hash-sharded indexes](hash-sharded-indexes.html) provided the `crdb_region` column is not part of the columns in the hash-sharded index.
 
 ## Schema changes in multi-region clusters
 

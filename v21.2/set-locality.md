@@ -16,7 +16,7 @@ While CockroachDB is processing an `ALTER TABLE .. SET LOCALITY` statement that 
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/alter_table_locality.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/alter_table_locality.html %}
 </div>
 
 ## Parameters

@@ -1,6 +1,6 @@
 #### Kubernetes version
 
-Kubernetes 1.18 or higher is required in order to use our current configuration files. If you need to run on an older version of Kubernetes, we keep configuration files in the versioned subdirectories of the [CockroachDB Kubernetes repository](https://github.com/cockroachdb/cockroach/tree/master/cloud/kubernetes) (e.g., [v1.7](https://github.com/cockroachdb/cockroach/tree/master/cloud/kubernetes/v1.7)).
+To deploy CockroachDB {{page.version.version}}, Kubernetes 1.18 or higher is required. Cockroach Labs strongly recommends that you use a Kubernetes version that is [eligible for patch support by the Kubernetes project](https://kubernetes.io/releases/).
 
 #### Kubernetes Operator
 
@@ -8,9 +8,13 @@ The CockroachDB Kubernetes Operator currently deploys clusters in a single regio
 
 #### Helm version
 
-Helm 3.0 or higher is required when using our instructions to deploy via Helm.
+The CockroachDB Helm chart requires Helm 3.0 or higher. If you attempt to use an incompatible Helm version, an error like the following occurs:
 
-The CockroachDB Helm chart is compatible with Kubernetes versions 1.22 and earlier (the latest version as of this writing). However, no new feature development is currently planned. 
+~~~ shell
+Error: UPGRADE FAILED: template: cockroachdb/templates/tests/client.yaml:6:14: executing "cockroachdb/templates/tests/client.yaml" at <.Values.networkPolicy.enabled>: nil pointer evaluating interface {}.enabled
+~~~
+
+The CockroachDB Helm chart is compatible with Kubernetes versions 1.22 and earlier (the latest version as of this writing). However, no new feature development is currently planned.  
 
 #### Resources
 
