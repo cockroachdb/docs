@@ -88,7 +88,7 @@ A database migration task, also known as a replication task, controls what data 
 ### Step 2.2. Task settings
 
 1. For the **Editing mode** radio button, keep **Wizard** selected.
-1. For the **Target table preparation mode**, select **Truncate**, **Drop tables on target**, or **Do nothing**. In order to use **Drop tables on target**, you must [create a new `dms` user](#create-a-new-dms-user) and ensure [`BatchApplyEnabled`](#batchapplyenabled) is set to `False`. Also note that primary keys must be explicitly defined in **all** source tables.
+1. For the **Target table preparation mode**, select **Truncate**, **Drop tables on target**, or **Do nothing**.
     <img src="{{ 'images/v22.2/aws-dms-task-settings.png' | relative_url }}" alt="AWS-DMS-Task-Settings" style="max-width:100%" />
 1. Check the **Enable CloudWatch logs** option. We highly recommend this for troubleshooting potential migration issues. 
 1. For the **Target Load**, select **Detailed debug**.
@@ -128,25 +128,6 @@ If your migration failed for some reason, you can check the checkbox next to the
 
 ## Optional configurations
 
-### Create a new `dms` user
-
-Creating a `dms` user is necessary when using **Drop tables on target** as a target table preparation mode.
-
-1. [Connect to your {{ site.data.products.serverless }} cluster](../cockroachcloud/connect-to-a-serverless-cluster.html).
-
-1. In the SQL client, create a new `dms` admin user to handle the migration. Replace `'<password>'` with a strong password:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ sql
-    > CREATE USER dms WITH PASSWORD '<password>';
-    > GRANT admin TO dms;
-    > ALTER USER dms SET expect_and_ignore_not_visible_columns_in_copy = true;
-    ~~~
-
-    {{site.data.alerts.callout_danger}}
-    Do not use this user for normal SQL activity. The `expect_and_ignore_not_visible_columns_in_copy` session variable may make it behave unpredictably for normal usage.
-    {{site.data.alerts.end}}
-
 ### AWS PrivateLink
 
 If using {{ site.data.products.dedicated }}, you can enable [AWS PrivateLink](https://aws.amazon.com/privatelink/) to securely connect your AWS application with your {{ site.data.products.dedicated }} cluster using a private endpoint. To configure AWS PrivateLink with {{ site.data.products.dedicated }}, see [Network Authorization](../cockroachcloud/network-authorization.html#aws-privatelink).
@@ -154,10 +135,6 @@ If using {{ site.data.products.dedicated }}, you can enable [AWS PrivateLink](ht
 ### `BatchApplyEnabled`
 
 The `BatchApplyEnabled` setting can improve replication performance and is recommended for larger workloads.
-
-{{site.data.alerts.callout_info}}
-If you enable this setting, then you must set your target table preparation mode to **Truncate** or **Do nothing**.
-{{site.data.alerts.end}}
 
 1. Open the existing database migration task.
 1. Choose your task, and then choose **Modify**.
