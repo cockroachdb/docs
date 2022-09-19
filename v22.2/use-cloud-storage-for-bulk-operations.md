@@ -165,7 +165,7 @@ For example, if you want to provide a user access to complete a bulk operation t
 
     The `Resource` here is the Amazon Resource Name (ARN) of the role you created in step 1. You can copy this from the role's **Summary** page.
 
-    The `sts:AssumeRole` permission provides the user with a temporary set of security credentials that gives them access to an S3 bucket to which they would not have access with their user-based permissions.
+    The `sts:AssumeRole` permission allows the user to obtain a temporary set of security credentials that gives them access to an S3 bucket to which they would not have access with their user-based permissions.
 
 1. <a name="step-3-assume"></a> Return to your IAM role's **Summary** page, and click on the **Trust Relationships** tab. Add a trust policy into the role, which will define the users that can assume the role. 
 
@@ -193,7 +193,7 @@ For example, if you want to provide a user access to complete a bulk operation t
 1. Run the bulk operation. It is necessary to pass in the S3 bucket's URL with the IAM user's access key ID and secret access key, if using [specified authentication](#specified-authentication). Otherwise, use `AUTH=IMPLICIT` for [implicit authentication](#implicit-authentication). For assuming the role, pass the assumed role's ARN, which you can copy from the IAM role's summary page:
 
     ~~~sql
-    BACKUP DATABASE movr INTO "s3://{bucket name}?AWS_ACCESS_KEY_ID={user key}&AWS_SECRET_ACCESS_KEY={user secret key}&ASSUME_ROLE=arn:aws:iam::{account ID}:role/{role name}" AS OF SYSTEM TIME '-10s';
+    BACKUP DATABASE movr INTO 's3://{bucket name}?AWS_ACCESS_KEY_ID={user key}&AWS_SECRET_ACCESS_KEY={user secret key}&ASSUME_ROLE=arn:aws:iam::{account ID}:role/{role name}' AS OF SYSTEM TIME '-10s';
     ~~~
 
     CockroachDB also supports authentication for assuming roles when taking encrypted backups. To use with an encrypted backup, pass the `ASSUME_ROLE` parameter to the KMS URI as well as the bucket's: 
@@ -205,9 +205,9 @@ For example, if you want to provide a user access to complete a bulk operation t
 
     For more information on the AWS KMS URI formats, see [Take and Restore Encrypted Backups](take-and-restore-encrypted-backups.html).
 
-#### Chaining
+#### Role chaining
 
-Beyond a user assuming a role, it is also possible to "chain" roles to create a path for users to assume roles to particular operations. Role chaining is when roles assume another role rather than a user assuming a single role. In this way, the role chain passes the request for access to the final role in the chain, which prevents the need to grant several sets of temporary security tokens. Role chaining could be useful when a third-party organization needs access to your Amazon S3 bucket to complete a bulk operation. Or, your organization could grant roles based on limited-privilege levels.
+Beyond a user assuming a role, it is also possible to "chain" roles to create a path for users to assume roles to particular operations. Role chaining allows a user to assume a role through an intermediate role(s) instead of the user directly assuming a role. In this way, the role chain passes the request for access to the final role in the chain. Role chaining could be useful when a third-party organization needs access to your Amazon S3 bucket to complete a bulk operation. Or, your organization could grant roles based on limited-privilege levels.
 
 Assuming the role follows the same approach outlined in the previous section. The additional required step to chain roles is to ensure that the ARN of role A, which is assuming role B, is present in role B's trust policy with the `sts:AssumeRole` action. 
 
