@@ -20,7 +20,12 @@ Subcommand | Description
 
 ## Required privileges
 
-To alter a function, a user must have the `DROP` [privilege](security-reference/authorization.html#managing-privileges) on a schema.
+To alter a function, a user must have:
+
+- [Own](security-reference/authorization.html#object-ownership) the function.
+- `DROP` [privilege](security-reference/authorization.html#managing-privileges) on the schema.
+- To alter owner, the new owner must have `CREATE` privilege on the schema.
+- To set schema, must have `CREATE` privilege on the new schema.
 
 ## Synopsis
 
@@ -81,6 +86,12 @@ Since `sum` is a [built-in function](functions-and-operators.html#aggregate-func
 > SELECT public.sum(1,2);
 ~~~
 
+~~~
+  sum
+-------
+    3
+~~~
+
 If you don't, you will get an error:
 
 {% include_cached copy-clipboard.html %}
@@ -89,8 +100,8 @@ SELECT sum(1,2);
 ~~~
 
 ~~~
-ERROR: unknown signature: sum(int, int)
-SQLSTATE: 42883
+ERROR: ambiguous function class on sum
+SQLSTATE: 42725
 ~~~
 
 ## See also

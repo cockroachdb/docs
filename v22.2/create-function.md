@@ -1,22 +1,22 @@
 ---
 title: CREATE FUNCTION
-summary: The CREATE FUNCTION statement creates a user-defined function for a database.
+summary: The CREATE FUNCTION statement creates a user-defined function.
 toc: true
 keywords:
 docs_area: reference.sql
 ---
 
-The `CREATE FUNCTION` [statement](sql-statements.html) creates a [user-defined function](user-defined-functions.html) for a schema.
+The `CREATE FUNCTION` [statement](sql-statements.html) creates a [user-defined function](user-defined-functions.html).
 
 {% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
 ## Required privileges
 
-- To define a function, a user must have [`CREATE` privilege](security-reference/authorization.html#supported-privileges) on a schema.
+- To define a function, a user must have [`CREATE` privilege](security-reference/authorization.html#supported-privileges) on the schema.
 - To define a function with a [user-defined type](create-type.html), a user must have `USAGE` privilege on a user-defined type.
-- To resolve functions, a user must have at least the `USAGE` privilege on a schema.
+- To resolve functions, a user must have at least the `USAGE` privilege on the schema.
 - To call a function, a user must have `EXECUTE` privilege on the function.
-- A user must have privileges on all the objects referenced in the function body at execution time. Privileges on referenced objects can be revoked and later function calls can fail due to lack of permission.
+- A user must have privileges on all the objects referenced in the function body at function definition and execution time. Privileges on referenced objects can be revoked and later function calls can fail due to lack of permission.
 
 If you grant `EXECUTE` privilege as a default privilege at the database level, newly created functions inherit that privilege from the database.
 
