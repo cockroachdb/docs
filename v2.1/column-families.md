@@ -14,7 +14,7 @@ This page explains how CockroachDB organizes columns into families as well as ca
 
 ## Default behavior
 
-When a table is created, all columns are stored as a single column family.  
+When a table is created, all columns are stored as a single column family.
 
 This default approach ensures efficient key-value storage and performance in most cases. However, when frequently updated columns are grouped with seldom updated columns, the seldom updated columns are nonetheless rewritten on every update. Especially when the seldom updated columns are large, it's more performant to split them into a distinct family.
 
@@ -22,7 +22,7 @@ This default approach ensures efficient key-value storage and performance in mos
 
 ### Assign column families on table creation
 
-To manually assign a column family on [table creation](create-table.html), use the `FAMILY` keyword.  
+To manually assign a column family on [table creation](create-table.html), use the `FAMILY` keyword.
 
 For example, let's say we want to create a table to store an immutable blob of data (`data BYTES`) with a last accessed timestamp (`last_accessed TIMESTAMP`). Because we know that the blob of data will never get updated, we use the `FAMILY` keyword to break it into a separate column family:
 
@@ -94,7 +94,7 @@ When using the [`ALTER TABLE .. ADD COLUMN`](add-column.html) statement to add a
 
 ## Compatibility with past releases
 
-Using the [`beta-20160714`](../releases/beta-20160714.html) release makes your data incompatible with versions earlier than the [`beta-20160629`](../releases/beta-20160629.html) release.
+Using the [`beta-20160714`](../releases/v1.0.html#beta-20160714) release makes your data incompatible with versions earlier than the [`beta-20160629`](../releases/v1.0.html#beta-20160629) release.
 
 ## See also
 

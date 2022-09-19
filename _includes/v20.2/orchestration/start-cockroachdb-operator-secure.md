@@ -4,11 +4,13 @@ The Operator is currently supported for GKE only.
 
 ### Install the Operator
 
+{% capture latest_operator_version %}{% include_cached latest_operator_version.md %}{% endcapture %}
+
 1. Apply the [CustomResourceDefinition (CRD)](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/#customresourcedefinitions) for the Operator:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl apply -f https://raw.githubusercontent.com/cockroachdb/cockroach-operator/{{site.operator_version}}/install/crds.yaml
+    $ kubectl apply -f https://raw.githubusercontent.com/cockroachdb/cockroach-operator/v{{ latest_operator_version }}/install/crds.yaml
     ~~~
 
     ~~~
@@ -19,7 +21,7 @@ The Operator is currently supported for GKE only.
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl apply -f https://raw.githubusercontent.com/cockroachdb/cockroach-operator/{{site.operator_version}}/install/operator.yaml
+    $ kubectl apply -f https://raw.githubusercontent.com/cockroachdb/cockroach-operator/v{{ latest_operator_version }}/install/operator.yaml
     ~~~
 
     ~~~
@@ -49,7 +51,7 @@ On a production cluster, you will need to modify the StatefulSet configuration w
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ curl -O https://raw.githubusercontent.com/cockroachdb/cockroach-operator/{{site.operator_version}}/examples/example.yaml
+    $ curl -O https://raw.githubusercontent.com/cockroachdb/cockroach-operator/v{{ latest_operator_version }}/examples/example.yaml
     ~~~
 
     {% include copy-clipboard.html %}

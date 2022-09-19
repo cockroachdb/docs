@@ -80,7 +80,7 @@ Once in a stable state, the risk of this issue recurring can be mitigated by inc
 
 ### Requests to restarted node in need of snapshots may hang
 
-When a node is offline, the [Raft logs](architecture/replication-layer.html#raft-logs) for the ranges on the node get truncated. When the node comes back online, it therefore often needs [Raft snapshots](architecture/replication-layer.html#snapshots) to get many of its ranges back up-to-date. While in this state, requests to a range will hang until its snapshot has been applied, which can take a long time.  
+When a node is offline, the [Raft logs](architecture/replication-layer.html#raft-logs) for the ranges on the node get truncated. When the node comes back online, it therefore often needs [Raft snapshots](architecture/replication-layer.html#snapshots) to get many of its ranges back up-to-date. While in this state, requests to a range will hang until its snapshot has been applied, which can take a long time.
 
 To work around this limitation, you can adjust the `kv.snapshot_recovery.max_rate` [cluster setting](cluster-settings.html) to temporarily relax the throughput rate limiting applied to snapshots. For example, changing the rate limiting from the default 8 MB/s, at which 1 GB of snapshots takes at least 2 minutes, to 64 MB/s can result in an 8x speedup in snapshot transfers and, therefore, a much shorter interruption of requests to an impacted node:
 
@@ -411,6 +411,8 @@ Every [`DELETE`](delete.html) or [`UPDATE`](update.html) statement constructs a 
 
 ### `cockroach dump` does not support cyclic foreign key references
 
-{{site.data.alerts.callout_info}}Resolved as of <a href="../releases/v2.1.0-alpha.20180507.html">v2.1.0-alpha.20180507</a>. See <a href="https://github.com/cockroachdb/cockroach/pull/24716">#24716</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}
+Resolved as of [v2.1.0-alpha.20180507](../releases/v2.1.html#v2-1-0-alpha-20180507). See [#24716](https://github.com/cockroachdb/cockroach/pull/24716).
+{{site.data.alerts.end}}
 
 {% include {{ page.version.version }}/known-limitations/dump-cyclic-foreign-keys.md %}

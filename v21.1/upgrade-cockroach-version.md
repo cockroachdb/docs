@@ -38,6 +38,10 @@ Run [`cockroach sql`](cockroach-sql.html) against any node in the cluster to ope
 > SHOW CLUSTER SETTING version;
 ~~~
 
+{{site.data.alerts.callout_info}}
+**Before upgrading from v20.2 to v21.1**, you must ensure that any previously decommissioned nodes are fully decommissioned. Otherwise, they will block the upgrade. For instructions, see [Check decommissioned nodes](#check-decommissioned-nodes).
+{{site.data.alerts.end}}
+
 To upgrade to {{ latest.version }}, you must be running{% if prior.version %} either{% endif %}:
 
 - **A {{ previous_version }} production release:** {{ previous_version }}.0 to {{ previous_latest_prod.version }}
@@ -74,6 +78,14 @@ Verify the overall health of your cluster using the [DB Console](ui-overview.htm
 - In the **Node List**:
     - Make sure all nodes are on the same version. If any nodes are behind, upgrade them to the cluster's current version first, and then start this process over.
     - Make sure capacity and memory usage are reasonable for each node. Nodes must be able to tolerate some increase in case the new version uses more resources for your workload. Also go to **Metrics > Dashboard: Hardware** and make sure CPU percent is reasonable across the cluster. If there's not enough headroom on any of these metrics, consider [adding nodes](cockroach-start.html) to your cluster before beginning your upgrade.
+
+### Check decommissioned nodes
+
+Check the `membership` field in the [output of `cockroach node status --decommission`](cockroach-node.html). Nodes with `decommissioned` membership are fully decommissioned, while nodes with `decommissioning` membership have not completed the process. If there are `decommissioning` nodes in your cluster, this will block the upgrade.
+
+**Before upgrading from v20.2 to v21.1**, you must manually change the status of any `decommissioning` nodes to `decommissioned`. To do this, [run `cockroach node decommission`](remove-nodes.html#step-2-start-the-decommissioning-process-on-the-nodes) on these nodes and confirm that they update to `decommissioned`.
+
+In case a decommissioning process is hung, [recommission](remove-nodes.html#recommission-nodes) and then [decommission those nodes](remove-nodes.html#remove-multiple-nodes) again, and confirm that they update to `decommissioned`.
 
 ### Review breaking changes
 
@@ -268,6 +280,13 @@ Once you are satisfied with the new version:
     {{site.data.alerts.callout_info}}
     This statement can take up to a minute to complete, depending on the amount of data in the cluster, as it kicks off various internal maintenance and migration tasks. During this time, the cluster will experience a small amount of additional load.
     {{site.data.alerts.end}}    
+
+1. Check the cluster version to confirm that the finalize step has completed:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    > SHOW CLUSTER SETTING version;
+    ~~~
 
 ## Troubleshooting
 

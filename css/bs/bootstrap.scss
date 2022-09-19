@@ -5,30 +5,30 @@
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  */
 
-@import "functions";
-@import "variables";
+@import "bs/functions";
+@import "bs/variables";
 
-@import "mixins";
+@import "bs/mixins";
 // Custom CRL Mixins
-@import "../mixins/buttons";
+@import "mixins/buttons";
 
-@import "root";
-@import "reboot";
+@import "bs/root";
+@import "bs/reboot";
 // @import "type";
-@import "images";
+@import "bs/images";
 // @import "code";
-@import "grid";
+@import "bs/grid";
 // @import "tables";
-@import "forms";
-@import "buttons";
-@import "transitions";
-@import "dropdown";
-@import "button-group";
-@import "input-group";
+@import "bs/forms";
+@import "bs/buttons";
+@import "bs/transitions";
+@import "bs/dropdown";
+@import "bs/button-group";
+@import "bs/input-group";
 // @import "custom-forms";
-@import "nav";
-@import "navbar";
-@import "card";
+@import "bs/nav";
+@import "bs/navbar";
+@import "bs/card";
 // @import "breadcrumb";
 // @import "pagination";
 // @import "badge";
@@ -40,9 +40,9 @@
 // @import "close";
 // @import "toasts";
 // @import "modal";
-@import "tooltip";
+@import "bs/tooltip";
 // @import "popover";
 // @import "carousel";
 // @import "spinners";
-@import "utilities";
+@import "bs/utilities";
 // @import "print";

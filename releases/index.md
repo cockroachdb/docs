@@ -11,19 +11,16 @@ After downloading your desired release, learn how to [install CockroachDB](../{{
 {% assign sections = site.data.releases | map: "release_type" | uniq | reverse %}
 {% comment %} Fetch the list of all release types (currently Testing, Production) {% endcomment %}
 
-{% assign versions = site.data.versions | sort: "release_date" | reverse %}
+{% assign released_versions = site.data.releases | map: "major_version" | uniq | reverse %}
+{% comment %} Fetch the list of the major versions of all releases that currently exist {% endcomment %}
+
+{% assign versions = site.data.versions | where_exp: "versions", "released_versions contains versions.major_version" | sort: "release_date" | reverse %}
 {% comment %} Fetch all major versions (e.g., v21.2), sorted in reverse chronological order. {% endcomment %}
 
 {% assign latest_hotfix = site.data.releases | where_exp: "latest_hotfix", "latest_hotfix.major_version == site.versions['stable']" | where: "withdrawn", "false"  | sort: "release_date" | reverse | first %}
 {% comment %} For the latest GA version, find the latest hotfix that is not withdrawn. {% endcomment %}
 
 {% for v in versions %} {% comment %} Iterate through all major versions {% endcomment %}
-
-{% assign oldreleases = "v1.0,v1.1,v2.0,v2.1,v19.1,v19.2,v20.1" | split: "," %}
-
-{% if oldreleases contains v.major_version %}
-  {% assign old_release_format = "True" %}
-{% endif %} {% comment %} For all releases prior to and including 20.1, we use different logic to generate the page (vXX.Y.Z.html vs vXX.Y.html#vXX-Y-Z). {% endcomment %}
 
 {% assign nosha_releases = "v1.0,v1.1,v2.0,v2.1,v19.1,v19.2,v20.1,v20.2" | split: "," %} {% comment %} For all Production releases 21.1 and later, we provide sha256sum files as well. {% endcomment %}
 
@@ -62,7 +59,7 @@ After downloading your desired release, learn how to [install CockroachDB](../{{
 {% for r in releases %}
     <tr {% if r.version == latest_hotfix.version %}class="latest"{% endif %}> {% comment %} Add "Latest" class to release if it's the latest release. {% endcomment %}
         <td>
-            <a href="{% if old_release_format %}{{ r.version }}.html{% else %}{{ v.major_version }}.html#{{ r.version | replace: ".", "-" }}{% endif %}">{{ r.version }}</a> {% comment %} Add link to each release r. {% endcomment %}
+            <a href="{{ v.major_version }}.html#{{ r.version | replace: ".", "-" }}">{{ r.version }}</a> {% comment %} Add link to each release r. {% endcomment %}
             {% if r.version == latest_hotfix.version %}
                 <span class="badge-new">Latest</span> {% comment %} Add "Latest" badge to release if it's the latest release. {% endcomment %}
             {% endif %}
@@ -73,33 +70,44 @@ After downloading your desired release, learn how to [install CockroachDB](../{{
         {% else %} {% comment %} Add download links for all non-withdrawn versions. {% endcomment %}
             <td class="os-release-cell">
                 <section class="filter-content" data-scope="linux">
-                    <a class="os-release-link" href="https://binaries.cockroachdb.com/cockroach-{{ r.version }}.linux-amd64.tgz">Precompiled 64-bit Binary (full)</a>
-                    {% if r.has_sql_only != "false" %}
-                    <a class="os-release-link" href="https://binaries.cockroachdb.com/cockroach-sql-{{ r.version }}.linux-amd64">Precompiled 64-bit Binary (SQL shell only)</a>
-                    {% endif %}
+                    <a class="os-release-link" href="https://binaries.cockroachdb.com/cockroach-{{ r.version }}.linux-amd64.tgz">64-bit Binary (full)</a>
                     {% unless nosha_releases contains v.major_version or s == "Testing" %}
-                        <a class="os-release-link" href="https://binaries.cockroachdb.com/cockroach-{{ r.version }}.linux-amd64.tgz.sha256sum">SHA256</a>
+                        <a class="os-release-link" href="https://binaries.cockroachdb.com/cockroach-{{ r.version }}.linux-amd64.tgz.sha256sum">Full Binary SHA256</a>
                     {% endunless %}
+                    {% if r.has_sql_only != "false" %}
+                    <a class="os-release-link" href="https://binaries.cockroachdb.com/cockroach-sql-{{ r.version }}.linux-amd64.tgz">64-bit Binary (SQL shell)</a>
+                    {% unless nosha_releases contains v.major_version or s == "Testing" %}
+                        <a class="os-release-link" href="https://binaries.cockroachdb.com/cockroach-sql-{{ r.version }}.linux-amd64.tgz.sha256sum">SQL Shell Binary SHA256</a>
+                    {% endunless %}
+                    {% endif %}
+
                 </section>
                 <section class="filter-content" data-scope="mac">
-                    <a class="os-release-link" href="https://binaries.cockroachdb.com/cockroach-{{ r.version }}.darwin-10.9-amd64.tgz">Precompiled 64-bit Binary</a>
-                    {% if r.has_sql_only != "false" %}
-                    <a class="os-release-link" href="https://binaries.cockroachdb.com/cockroach-sql-{{ r.version }}.darwin-10.9-amd64">Precompiled 64-bit Binary (SQL shell only)</a>
-                    {% endif %}
+                    <a class="os-release-link" href="https://binaries.cockroachdb.com/cockroach-{{ r.version }}.darwin-10.9-amd64.tgz">64-bit Binary</a>
                     {% unless nosha_releases contains v.major_version or s == "Testing" %}
-                        <a class="os-release-link" href="https://binaries.cockroachdb.com/cockroach-{{ r.version }}.darwin-10.9-amd64.tgz.sha256sum">SHA256</a>
+                        <a class="os-release-link" href="https://binaries.cockroachdb.com/cockroach-{{ r.version }}.darwin-10.9-amd64.tgz.sha256sum">Full Binary SHA256</a>
                     {% endunless %}
+                    {% if r.has_sql_only != "false" %}
+                    <a class="os-release-link" href="https://binaries.cockroachdb.com/cockroach-sql-{{ r.version }}.darwin-10.9-amd64.tgz">64-bit Binary (SQL shell)</a>
+                    {% unless nosha_releases contains v.major_version or s == "Testing" %}
+                        <a class="os-release-link" href="https://binaries.cockroachdb.com/cockroach-sql-{{ r.version }}.darwin-10.9-amd64.tgz.sha256sum">SQL Shell Binary SHA256</a>
+                    {% endunless %}
+                    {% endif %}
+
                 </section>
                 <section class="filter-content" data-scope="windows">
                 {% if r.no_windows == "true" %}
                     N/A
                 {% else %}
-                    <a class="os-release-link" href="https://binaries.cockroachdb.com/cockroach-{{ r.version }}.windows-6.2-amd64.zip">Precompiled 64-bit Binary</a>
+                    <a class="os-release-link" href="https://binaries.cockroachdb.com/cockroach-{{ r.version }}.windows-6.2-amd64.zip">64-bit Binary</a>
                     {% unless nosha_releases contains v.major_version or s == "Testing" %}
-                        <a class="os-release-link" href="https://binaries.cockroachdb.com/cockroach-{{ r.version }}.windows-6.2-amd64.zip.sha256sum">SHA256</a>
+                        <a class="os-release-link" href="https://binaries.cockroachdb.com/cockroach-{{ r.version }}.windows-6.2-amd64.zip.sha256sum">Full Binary SHA256</a>
                     {% endunless %}
                     {% if r.has_sql_only != "false" %}
-                    <a class="os-release-link" href="https://binaries.cockroachdb.com/cockroach-sql-{{ r.version }}.windows-6.2-amd64.exe">Precompiled 64-bit Binary (SQL shell only)</a>
+                    <a class="os-release-link" href="https://binaries.cockroachdb.com/cockroach-sql-{{ r.version }}.windows-6.2-amd64.zip">64-bit Binary (SQL shell)</a>
+                    {% unless nosha_releases contains v.major_version or s == "Testing" %}
+                        <a class="os-release-link" href="https://binaries.cockroachdb.com/cockroach-sql-{{ r.version }}.windows-6.2-amd64.zip.sha256sum">SQL Shell Binary SHA256</a>
+                    {% endunless %}
                     {% endif %}
                 {% endif %}
                 </section>

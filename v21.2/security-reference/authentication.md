@@ -1,5 +1,5 @@
 ---
-title: Authentication
+title: SQL Authentication
 summary: An overview of Cluster Authentication Configuration capabilities and interface syntax
 toc: true
 docs_area: reference.security

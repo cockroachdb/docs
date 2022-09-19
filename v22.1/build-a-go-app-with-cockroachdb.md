@@ -4,13 +4,10 @@ summary: Learn how to use CockroachDB from a simple Go application with the Go p
 toc: true
 twitter: false
 referral_id: docs_go_pgx
-filter_category: crud_go
-filter_html: Use <strong>pgx</strong>
-filter_sort: 1
 docs_area: get_started
 ---
 
-{% include filter-tabs.md %}
+{% include {{ page.version.version }}/filter-tabs/crud-go.md %}
 
 This tutorial shows you how build a simple CRUD Go application with CockroachDB and the [Go pgx driver](https://pkg.go.dev/github.com/jackc/pgx).
 

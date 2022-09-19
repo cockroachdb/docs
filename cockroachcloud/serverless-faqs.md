@@ -1,17 +1,14 @@
 ---
-title: CockroachDB Serverless (beta) FAQs
-summary: Get answers to frequently asked questions about CockroachDB Serverless (beta)
+title: CockroachDB Serverless FAQs
+summary: Get answers to frequently asked questions about CockroachDB Serverless
 toc: true
 redirect_from: free-faqs.html
-filter_category: cloud_faqs
-filter_html: CockroachDB Serverless (beta)
-filter_sort: 1
 docs_area: get_started
 ---
 
 This page answers the frequently asked questions about {{ site.data.products.serverless }} and {{ site.data.products.dedicated }}.
 
-{% include filter-tabs.md %}
+{% include cockroachcloud/filter-tabs/cloud-faqs.md %}
 
 ## General
 
@@ -37,7 +34,7 @@ You can create a maximum of five Serverless clusters per organization.
 
 ### What is a Request Unit?
 
-All resource usage in {{ site.data.products.serverless }} is measured in Request Units, or RUs. RUs represent the compute and I/O resources used by a query. All database operations cost a certain amount of RUs depending on the resources used. For example, a "small read" might cost 2 RUs, and a "large read" such as a full table scan with indexes might cost 100 RUs.
+With {{ site.data.products.serverless }}, you are charged for the storage and activity of your cluster. All cluster activity, including SQL queries, bulk operations, and background jobs, is measured in [Request Units](learn-about-request-units.html), or RUs. RUs are an abstracted metric that represent the size and complexity of requests made to your cluster. See [Learn About Request Units](learn-about-request-units.html) for more information.
 
 ### Do I have to pay for {{ site.data.products.serverless }}?
 
@@ -65,7 +62,7 @@ For examples of applications that use free clusters, check out the following [Ha
 - [mntr.tech](https://devpost.com/software/mntr-tech)
 - [curbshop.online](https://devpost.com/software/curbshop-online)
 
-Paid Serverless clusters include additional resources to maintain higher performance. They are ideal for applications with varying workloads and spikes in traffic. We do not recommend using {{ site.data.products.serverless-plan }} for production applications that need an SLA while it is still in beta.
+Paid Serverless clusters include additional resources to maintain higher performance. They are ideal for applications with varying workloads and spikes in traffic.
 
 ### How do I connect to my cluster?
 
@@ -84,16 +81,6 @@ When automatic statistics collection starts your cluster may consume RUs above t
 ### What is the cold start latency of a Serverless cluster?
 
 When a Serverless cluster is idle, it will scale down to zero and consume no RUs. When the cluster becomes active again it will begin serving requests within a fraction of a second, typically around 600 milliseconds.
-
-## Beta release
-
-### What does it mean for {{ site.data.products.serverless-plan }} to be in beta?
-
-{{ site.data.products.serverless }} is in beta while we continue to add new features and improve our own testing for existing features. We don’t provide a Support Policy or Service Level Agreement (SLA) for beta products.
-
-### Where can I submit feedback or bugs on the beta?
-
-You can submit feedback or log any bugs you find through [this survey](https://forms.gle/jWNgmCFtF4y15ePw5).
 
 ## Security
 
@@ -152,7 +139,7 @@ We don't recommend `userfile` for `EXPORT` operations. You can either add billin
 
 ### Is change data capture available to me?
 
-Yes, {{ site.data.products.serverless-plan }} clusters have access to both [Core Changefeeds](../{{site.versions["stable"]}}/changefeed-examples.html#create-a-core-changefeed) and [Enterprise Changefeeds](../{{site.versions["stable"]}}/changefeed-examples.html).
+Yes, {{ site.data.products.serverless }} clusters have access to both [Core Changefeeds](../{{site.versions["stable"]}}/changefeed-examples.html#create-a-core-changefeed) and [Enterprise Changefeeds](../{{site.versions["stable"]}}/changefeed-examples.html).
 
 ### Can I backup my {{ site.data.products.serverless }} cluster? Does Cockroach Labs take backups of my cluster?
 

@@ -3,11 +3,14 @@ layout: null
 ---
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  {%- assign stable_pages_names = site.pages | where_exp: "stable_pages", "stable_pages.url contains site.versions['stable']" | map: "name" -%}
+  {%- assign dev_path = "/" | append: site.versions["dev"] | append: "/" -%}
   {%- for page in site.pages -%}
-    {%- if page.url contains site.versions["stable"] or page.url contains 'cockroachcloud/' or page.url contains 'releases/' or page.url contains 'advisories/' -%}
-      {%- unless page.url contains '404' or page.sitemap == false %}
+    {%- if page.url contains site.versions["stable"] or page.url contains site.versions["dev"] or page.url contains 'cockroachcloud/' or page.url contains 'releases/' or page.url contains 'advisories/' -%}
+      {%- unless page.url contains '404' or page.sitemap == false or page.url contains site.versions["dev"] and stable_pages_names contains page.name %}
   <url>
-    <loc>{{ page.canonical | absolute_url }}</loc>
+    <loc>{{ page.canonical | absolute_url | replace: dev_path, "/dev/" }}</loc>
+    <lastmod>{{ page.last_modified_at | date: "%Y-%m-%dT%H:%M:%S%z" }}</lastmod>
   </url>
       {%- endunless -%}
     {%- endif -%}
