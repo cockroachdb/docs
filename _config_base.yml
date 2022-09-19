@@ -30,6 +30,7 @@ jekyll-minifier:
   compress_json: 'true'
   exclude:
   - '**.html'
+  - 'js/rapidoc-min.js'
   preserve_line_breaks: 'false'
   preserve_php: 'true'
   remove_comments: 'true'
