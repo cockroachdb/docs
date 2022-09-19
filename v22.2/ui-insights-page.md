@@ -88,11 +88,14 @@ The rows in this page are populated from the [`crdb_internal.cluster_execution_i
 - **Insights**: The insight for the statement execution.
   - **High Contention**: The statement execution experienced high contention time according to the threshold set in `sql.insights.latency_threshold`.
   - **High Retry Count**: The statement execution experienced a high number of retries according to the threshold set in `sql.insights.high_retry_count.threshold`.
-  - **Suboptimal Plan**: The statement execution experienced a suboptimal plan.
+  - **Suboptimal Plan**: The statement execution has resulted in one or more [index recommendations](#schema-insights-view) that would improve the plan.
   - **Failed**: The statement execution failed.
   - **Slow Execution**: The statement experienced slow execution. Depending on the settings in [Configuration](#configuration), either of the following conditions trigger this insight:
+
       - Execution time is greater than the value of `sql.insights.latency_threshold`.
       - Anomaly detection is enabled (`sql.insights.anomaly_detection.enabled`) and execution time is greater than the value of `sql.insights.anomaly_detection.latency_threshold`.
+
+        For details, see [Detect slow executions](#detect-slow-executions).
 - **Start Time (UTC)**: The time the statement execution started.
 - **Elapsed Time**: The time that elapsed to complete the statement execution.
 - **User Name**: The name of the user that invoked the statement execution.
@@ -148,6 +151,7 @@ The following screenshot shows the insight that displays after you run the query
 
 - **Insights:** Contains one of the following insight types: **Create Index**, **Alter Index**, **Replace Index**, **Drop Unused Index**.
 - **Details:** Details for each insight. Different insight types display different details fields:
+
     - **Create Index**, **Alter Index**, or **Replace Index**: a Statement Fingerprint field, which displays the statement fingerprint that would be optimized with the creation, alteration, or replacement of the index, and a Recommendation field, which displays the SQL query to create, alter, or replace the index.
     - **Drop Unused Index**: an Index field, which displays the name of the index to drop, and a Description field, which displays the reason for dropping the index.
 
@@ -171,6 +175,24 @@ You can configure [Workload Insights](#workload-insights-tab) with the following
 |`sql.insights.execution_insights_capacity`                              | `1000`        | The maximum number of execution insights stored in each node.                                                                                                                                 | Statement executions                 |
 |`sql.contention.event_store.capacity`                                   | `64 MiB`      | The in-memory storage capacity of the contention event store in each nodes.                                                                                                                   | Transaction executions               |
 |`sql.contention.event_store.duration_threshold`                         | `0`           | The minimum contention duration to cause contention events to be collected into the `crdb_internal.transaction_contention_events` table.                                                      | Transaction executions               |
+
+#### Detect slow executions
+
+There are two different methods for detecting slow executions. By default, they are both enabled and you can configure them based on your workload.
+
+The first method flags all executions running longer than `sql.insights.latency_threshold`. You can think of this as something like the [slow query log](logging-use-cases.html#sql_perf).
+
+The second method attempts to detect **unusually slow executions**. You can enable this detection with `sql.insights.anomaly_detection.enabled` and configure it with `sql.insights.anomaly_detection.latency_threshold`.
+CockroachDB will then keep a streaming histogram in memory for each distinct statement fingerprint that has seen an execution latency longer than `sql.insights.anomaly_detection.latency_threshold` and flag any execution with a latency in the 99th percentile (`> p99`) for its fingerprint.
+
+Additional controls are placed to filter out less actionable executions:
+
+- The execution's latency must also be longer than twice the median latency (`> 2*p50`) for that fingerprint. This ensures that `p99` means something.
+- The execution's latency must also be longer than `sql.insights.anomaly_detection.latency_threshold`. Slower-than usual executions are less interesting if they’re still fast enough.
+
+The `sql.insights.anomaly_detection.memory_limit` cluster setting limits the amount of memory available for tracking these streaming latency histograms. When this threshold is surpassed, the least-recently touched histogram is evicted. The default of `1 MiB` is sufficient for tracking ~1K fingerprints.
+
+You can track the `sql.insights.anomaly_detection.memory` and `sql.insights.anomaly_detection.evictions` metrics to determine if the settings are appropriate for your workload. If you see a steady stream of evictions or churn, you can either raise the `sql.insights.anomaly_detection.memory_limit` cluster setting, to allow for more storage, or raise the `sql.insights.anomaly_detection.latency_threshold` cluster setting, to examine fewer statement fingerprints.
 
 ### Schema insights settings
 
