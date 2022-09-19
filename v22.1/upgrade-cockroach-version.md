@@ -44,18 +44,18 @@ If you are upgrading from any cluster version prior to v21.1, then **before upgr
 
 To upgrade to {{ latest.version }}, you must be running{% if prior.version %} either{% endif %}:
 
-- **A {{ previous_version }} production release:** {{ previous_version }}.0 to {{ previous_latest_prod.version }}
 {% if prior.version %}
-- **Any earlier {{ page.version.version }} release:** {{ earliest.version }} to {{ prior.version }}
+- **Any earlier {{ page.version.version }} release:** {{ earliest.version }} to {{ prior.version }}.
 {% endif %}
+- **A {{ previous_version }} production release:** {{ previous_version }}.0 to {{ previous_latest_prod.version }}.
 
 If you are running any other version, take the following steps **before** continuing on this page:
 
-| Version                                        | Action(s) before upgrading to any {{ page.version.version }} release                                                                                                                                                   |
-|------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| {{ previous_version}} testing release          | [Upgrade to a {{ previous_version }} production release](../{{ previous_version }}/upgrade-cockroach-version.html)                                                                                                     |
-| Pre-{{ previous_version }} production release  | Upgrade through each subsequent major release, [ending with a {{ previous_version }} production release](../{{ previous_version }}/upgrade-cockroach-version.html)                                                     |
-| Pre-{{ page.version.version }} testing release | Upgrade to a corresponding production release; then upgrade through each subsequent major release, [ending with a {{ previous_version }} production release](../{{ previous_version }}/upgrade-cockroach-version.html) |
+|                    Version                     |                                                                           Action(s) before upgrading to any {{ page.version.version }} release                                                                          |
+|------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Pre-{{ page.version.version }} testing release | Upgrade to a corresponding production release; then upgrade through each subsequent major release, [ending with a {{ previous_version }} production release](../{{ previous_version }}/upgrade-cockroach-version.html). |
+| Pre-{{ previous_version }} production release  | Upgrade through each subsequent major release, [ending with a {{ previous_version }} production release](../{{ previous_version }}/upgrade-cockroach-version.html).                                                     |
+| {{ previous_version}} testing release          | [Upgrade to a {{ previous_version }} production release](../{{ previous_version }}/upgrade-cockroach-version.html).                                                                                                     |
 
 When you are ready to upgrade to {{ latest.version }}, continue to [step 2](#step-2-prepare-to-upgrade).
 
