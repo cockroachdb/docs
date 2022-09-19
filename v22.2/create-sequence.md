@@ -31,17 +31,17 @@ The user must have the `CREATE` [privilege](security-reference/authorization.htm
  Parameter | Description
 -----------|------------
 `seq_name` | The name of the sequence to be created, which must be unique within its database and follow the [identifier rules](keywords-and-identifiers.html#identifiers). When the parent database is not set as the default, the name must be formatted as `database.seq_name`.
-`INCREMENT` | The value by which the sequence is incremented. A negative number creates a descending sequence. A positive number creates an ascending sequence.<br><br>**Default:** `1`
-`MINVALUE` | The minimum value of the sequence. Default values apply if not specified or if you enter `NO MINVALUE`.<br><br>**Default for ascending:** `1` <br><br>**Default for descending:** `MININT`
-`MAXVALUE` | The maximum value of the sequence. Default values apply if not specified or if you enter `NO MAXVALUE`.<br><br>**Default for ascending:** `MAXINT` <br><br>**Default for descending:** `-1`
-`START [WITH]` | The first value of the sequence. <br><br>**Default for ascending:** `1` <br><br>**Default for descending:** `-1`
+`INCREMENT` | The value by which the sequence is incremented. A negative number creates a descending sequence. A positive number creates an ascending sequence.<br><br>**Default:** `1`.
+`MINVALUE` | The minimum value of the sequence. Default values apply if not specified or if you enter `NO MINVALUE`.<br><br>**Default for ascending:** `1` <br><br>**Default for descending:** `MININT`.
+`MAXVALUE` | The maximum value of the sequence. Default values apply if not specified or if you enter `NO MAXVALUE`.<br><br>**Default for ascending:** `MAXINT` <br><br>**Default for descending:** `-1`.
+`START [WITH]` | The first value of the sequence. <br><br>**Default for ascending:** `1` <br><br>**Default for descending:** `-1`.
 `RESTART [WITH]` | Sets `nextval` to the specified number, or back to the original `START` value.
 `NO CYCLE` | All sequences are set to `NO CYCLE` and the sequence will not wrap.
-`CACHE` | The number of sequence values to cache in memory for reuse in the session. A cache size of `1` means that there is no cache, and cache sizes of less than `1` are not valid.<br><br>**Default:** `1` (sequences are not cached by default)
-`OWNED BY column_name` <a name="owned-by"></a> | Associates the sequence to a particular column. If that column or its parent table is dropped, the sequence will also be dropped.<br>Specifying an owner column with `OWNED BY` replaces any existing owner column on the sequence. To remove existing column ownership on the sequence and make the column free-standing, specify `OWNED BY NONE`.<br><br>**Default:** `NONE`
+`CACHE` | The number of sequence values to cache in memory for reuse in the session. A cache size of `1` means that there is no cache, and cache sizes of less than `1` are not valid.<br><br>**Default:** `1` (sequences are not cached by default).
+`OWNED BY column_name` <a name="owned-by"></a> | Associates the sequence to a particular column. If that column or its parent table is dropped, the sequence will also be dropped.<br>Specifying an owner column with `OWNED BY` replaces any existing owner column on the sequence. To remove existing column ownership on the sequence and make the column free-standing, specify `OWNED BY NONE`.<br><br>**Default:** `NONE`.
 `opt_temp` |  Defines the sequence as a session-scoped temporary sequence. For more information, see [Temporary sequences](#temporary-sequences).<br><br>**Support for temporary sequences is [experimental](experimental-features.html#temporary-objects)**.
 
-<!-- CYCLE | Not yet implemented. The sequence will wrap around when the sequence value hits the maximum or minimum value.
+<!-- CYCLE | Not yet implemented. The sequence will wrap around when the sequence value reaches the maximum or minimum value.
 -->
 
 ## Sequence functions
