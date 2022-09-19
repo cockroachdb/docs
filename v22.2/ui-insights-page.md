@@ -168,7 +168,7 @@ You can configure [Workload Insights](#workload-insights-tab) with the following
 | Setting                                                                | Default value | Description                                                                                                                                                                                   | Where used                           |
 |------------------------------------------------------------------------|---------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------|
 |`sql.insights.anomaly_detection.enabled`                                | `true`        | Whether or not anomaly insight detection is enabled. When true, CockroachDB checks if [execution latency](ui-sql-dashboard.html#kv-execution-latency-99th-percentile) was `> p99 && > 2*p50`. | Statement executions                 |
-|`sql.insights.anomaly_detection.latency_threshold`                      | `50 ms`       | The latency threshold at which a statement execution is detected and flagged for insights.                                                                                                    | Statement executions                 |
+|`sql.insights.anomaly_detection.latency_threshold`                      | `50 ms`       | The latency threshold that triggers monitoring a statement fingerprint for unusually slow execution.                                                                                          | Statement executions                 |
 |`sql.insights.anomaly_detection.memory_limit`                           | `1` MiB       | The maximum amount of memory allowed for tracking statement latencies.                                                                                                                        | Statement executions                 |
 |`sql.insights.latency_threshold`                                        | `100 ms`      | The threshold at which the contention duration of a contended transaction is considered **High Contention** or statement execution is flagged for insights.                                   | Statement and Transaction executions |
 |`sql.insights.high_retry_count.threshold`                               | `10`          | The threshold at which a retry count is considered **High Retry Count**.                                                                                                                      | Statement executions                 |
@@ -180,17 +180,17 @@ You can configure [Workload Insights](#workload-insights-tab) with the following
 
 There are two different methods for detecting slow executions. By default, they are both enabled and you can configure them based on your workload.
 
-The first method flags all executions running longer than `sql.insights.latency_threshold`. You can think of this as something like the [slow query log](logging-use-cases.html#sql_perf).
+The first method flags all executions running longer than `sql.insights.latency_threshold`. You can think of this as analogous to the [slow query log](logging-use-cases.html#sql_perf).
 
 The second method attempts to detect **unusually slow executions**. You can enable this detection with `sql.insights.anomaly_detection.enabled` and configure it with `sql.insights.anomaly_detection.latency_threshold`.
 CockroachDB will then keep a streaming histogram in memory for each distinct statement fingerprint that has seen an execution latency longer than `sql.insights.anomaly_detection.latency_threshold` and flag any execution with a latency in the 99th percentile (`> p99`) for its fingerprint.
 
 Additional controls filter out less actionable executions:
 
-- The execution's latency must also be longer than twice the median latency (`> 2*p50`) for that fingerprint. This ensures that `p99` means something.
-- The execution's latency must also be longer than `sql.insights.anomaly_detection.latency_threshold`. Slower-than usual executions are less interesting if they’re still fast enough.
+- The execution's latency must also be longer than twice the median latency (`> 2*p50`) for that fingerprint. This ensures that the elevated latency is significant enough to warrant attention.
+- The execution's latency must also be longer than `sql.insights.anomaly_detection.latency_threshold`. Slower-than-usual executions are less interesting if they're still fast enough.
 
-The `sql.insights.anomaly_detection.memory_limit` cluster setting limits the amount of memory available for tracking these streaming latency histograms. When this threshold is surpassed, the least-recently touched histogram is evicted. The default of `1 MiB` is sufficient for tracking ~1K fingerprints.
+The `sql.insights.anomaly_detection.memory_limit` cluster setting limits the amount of memory available for tracking these streaming latency histograms. When this threshold is surpassed, the least-recently touched histogram is evicted. The default of `1 MiB` is sufficient for tracking about a thousand fingerprints.
 
 You can track the `sql.insights.anomaly_detection.memory` and `sql.insights.anomaly_detection.evictions` metrics to determine if the settings are appropriate for your workload. If you see a steady stream of evictions or churn, you can either raise the `sql.insights.anomaly_detection.memory_limit` cluster setting, to allow for more storage, or raise the `sql.insights.anomaly_detection.latency_threshold` cluster setting, to examine fewer statement fingerprints.
 
