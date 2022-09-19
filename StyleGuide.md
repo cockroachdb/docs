@@ -1121,6 +1121,7 @@ This example declares two tabs. Then, when ready to define the content within ea
 ## This content outside of tabs
 
 ```
+
 #### Linking into tabbed content
 
 To link to content that is contained within a tab, you must add the `filter` component to your link, in one of the following fashions:
