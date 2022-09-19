@@ -6,12 +6,12 @@ To filter the sessions, click the **Filters** field.
 
 <img src="{{ 'images/v22.2/ui-session-filter.png' | relative_url }}" alt="Session filter" />
 
-- To filter by [application]({{ link_prefix }}connection-parameters.html#additional-connection-parameters), select **App** and choose one or more applications.
+- To filter by [application]({{ link_prefix }}connection-parameters.html#additional-connection-parameters), select **Application Name** and choose one or more applications.
 
     - Queries from the SQL shell are displayed under the `$ cockroach` app.
     - If you have not set `application_name` in a client connection string, it appears as `unset`.
 
-- To filter by username or session status, select **Username** or **Session Status** and check one or more checkboxes.
+- To filter by username or session status, select **User Name** or **Session Status** and check one or more checkboxes.
 - To filter by session duration, specify the session time and unit.
 
 Click <img src="{{ 'images/common/ui-columns-button.png' | relative_url }}" alt="Column selector" /> to select the columns to display in the table.
