@@ -3,9 +3,6 @@ title: cockroach cert
 summary: A secure CockroachDB cluster uses TLS for encrypted inter-node and client-node communication.
 toc: true
 key: create-security-certificates.html
-filter_category: security_cert
-filter_html: Use cockroach cert
-filter_sort: 1
 docs_area: reference.cli
 ---
 
@@ -17,7 +14,7 @@ To secure your CockroachDB cluster's inter-node and client-node communication, y
 
 To create these certificates and keys, use the `cockroach cert` [commands](cockroach-commands.html) with the appropriate subcommands and flags, use [`openssl` commands](https://wiki.openssl.org/index.php/), or use a [custom CA](create-security-certificates-custom-ca.html) (for example, a public CA or your organizational CA).
 
-{% include filter-tabs.md %}
+{% include {{ page.version.version }}/filter-tabs/security-cert.md %}
 
 {{site.data.alerts.callout_success}}For details about when and how to change security certificates without restarting nodes, see <a href="rotate-certificates.html">Rotate Security Certificates</a>.{{site.data.alerts.end}}
 
@@ -81,16 +78,16 @@ To reduce the likelihood of a malicious user or process accessing a certificate 
 - The user that the CockroachDB process runs as.
 - The system `root` user (not to be confused with the [CockroachDB `root` user](security-reference/authorization.html#root-user)) and the group that the CockroachDB process runs in.
 
-For example, if running the CockroachDB process as a system user named `cockroach`, we can determine the group that the process will run in by running `id cockroach`:
+For example, if running the CockroachDB process as a system user named `cockroach`, we can use the `id cockroach` command to list each group the `cockroach` user is a member of:
 
 ```shell
 id cockroach
 uid=1000(cockroach) gid=1000(cockroach) groups=1000(cockroach),1000(cockroach)
 ```
 
-In the output, we can see that the system user `cockroach` is also in the `cockroach` group (with the group id or gid of 1000).
+In the output, we can see that the system user `cockroach` is in the `cockroach` group (with the group ID or gid `1000`).
 
-If the key file is owned by the system `root` user (who has a user ID of 0), CockroachDB won't be able to read it unless it has permission to read because of its group membership. Because we know that CockroachDB is running in the `cockroach` group, we can allow CockroachDB to read the key by changing the group owner of the key file to the `cockroach` group. We then give the group read permissions by running `chmod`.
+If the key file is owned by the system `root` user (who has user ID `0`), CockroachDB won't be able to read it unless it has permission to read because of its group membership. Because we know that CockroachDB user is a member of the `cockroach` group, we can allow CockroachDB to read the key by changing the group owner of the key file to the `cockroach` group. We then give the group read permissions by running `chmod`. Notice that the `others` group has no permissions (the `0` of `740`). Only the `cockroach` user, a member of the `cockroach` group, or the system `root` user has permission to read the key.
 
 ```shell
 sudo chgrp cockroach ui.key

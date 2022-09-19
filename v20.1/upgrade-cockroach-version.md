@@ -40,7 +40,7 @@ Verify the overall health of your cluster using the [Admin UI](admin-ui-overview
 
 ### Review breaking changes
 
-Review the [backward-incompatible changes in v20.1](../releases/v20.1.0.html#backward-incompatible-changes), and if any affect your application, make necessary changes.
+Review the [backward-incompatible changes in v20.1](../releases/v20.1.html#v20-1-0-backward-incompatible-changes), and if any affect your application, make necessary changes.
 
 ### Let ongoing bulk operations finish
 
@@ -281,4 +281,4 @@ In the event of catastrophic failure or corruption, the only option will be to s
 - [View Node Details](cockroach-node.html)
 - [Collect Debug Information](cockroach-debug-zip.html)
 - [View Version Details](cockroach-version.html)
-- [Release notes for our latest version](../releases/{{page.release_info.version}}.html)
+- [Release notes for our latest version](../releases/{{page.version.version}}.html)

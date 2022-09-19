@@ -48,9 +48,11 @@ Included in this guide:
   - [Code](#code)
   - [Examples](#examples)
   - [Version tags](#version-tags)
+  - [Version references](#version-references)
   - [Tables](#tables)
   - [Lists](#lists)
   - [Images](#images)
+  - [Include files](#include-files)
 - [Terminology and word usage](#terminology-and-word-usage)
 
 ## Style and tone
@@ -184,6 +186,7 @@ Avoid using socially-charged terms for features and technical concepts.
 - Ensure commas and periods are inside quotation marks, e.g., _CockroachDB's availability model is described as "Multi-Active Availability."_ Place other punctuation outside quotation marks, e.g., _What is "Multi-Active Availability"?_ . When any type of punctuation is part of a quote, place it inside the quotation marks, e.g., _To phrase it in the form of a question: "Who are the top 10 users by number of rides on a given date?"_.
 - Avoid using slashes `/` and ampersands `&` as conjunctions in place of **or** and **and** respectively, unless space is very limited (e.g., in a table).
 - Avoid using _and/or_ unless space is very limited (e.g., in a table). Instead, decide whether **and** or **or** can stand alone or make use of **both** when the inclusivity must be explicit, e.g., **x or y or both**.
+- When listing a range of versions, do not use a dash. Instead, separate the first and last versions with `to` (for example, `v22.1.0 to v22.1.4`).
 
 For more detail about how to format text, see [Components](#components).
 
@@ -411,7 +414,7 @@ A release note helps users understand what they gain from upgrading to the versi
 #### Examples
 
 - [CockroachDB Cloud Release Notes](https://www.cockroachlabs.com/docs/releases/cloud.html)
-- [What's New in v21.2.5](https://www.cockroachlabs.com/docs/releases/v21.2.5.html)
+- [What's New in v21.2.5](https://www.cockroachlabs.com/docs/releases/v21.2.html#v21-2-5)
 
 ## Components
 
@@ -439,8 +442,10 @@ Enter a line break between a heading and its content.
 
 #### Bold
 
-Use bold text to emphasize an important word or phrase, when referring to the name of a UI section or field, or to create visual separation and callouts (e.g., **Example:**). Do not combine bold with italic.
+Use bold text to emphasize an important word or phrase, or to create visual separation and callouts (e.g., **Example:**). Do not combine bold with italic.
 
+Use bold text when you refer to the name of a UI section or field. The name should be in bold only if it appears verbatim in the UI. If a UI element, such as a table, is not labeled in the UI, do not bold when you reference the element in the documentation.
+  
 To bold a word or phrase, surround the text with two asterisks (`**`).
 
 **Examples:**
@@ -471,7 +476,7 @@ Do not use underlined text in CockroachDB docs. If it seems beneficial to emphas
 
 Whenever a CockroachDB feature is referenced, provide a link to the relevant documentation. You can also provide links to external resources, but only if the resource is confirmed to be accurate by a technical reviewer or the author is a Cockroach Labs SME and no CockroachDB documentation covers the topic.
 
-Use Markdown reference-style links when several parts of the same page refer to the same target URL (e.g., [Release Notes](https://raw.githubusercontent.com/cockroachdb/docs/master/releases/v2.1.0-alpha.20180507.md)).
+Use Markdown reference-style links when several parts of the same page refer to the same target URL (e.g., [Release Notes](releases/v22.1.html)).
 
 Link capitalization should match our [capitalization rules](#capitalization-rules) for page titles and headers:
 
@@ -622,7 +627,7 @@ In the past, the person assigned to known limitations is usually someone with ex
 
 Document all known limitations on the [Known Limitations](https://www.cockroachlabs.com/docs/stable/known-limitations.html) page.
 
-If the limitation is related to a feature documented elsewhere on our docs site, you should also add the limitation to the page that documents that feature, under a dedicated "Known limitations" header. To avoid duplication, create a file in `_includes/vX.X/known-limitations` and include the file in both places.
+If the limitation is related to a feature documented elsewhere on our docs site, you should also add the limitation to the page that documents that feature, under a dedicated "Known limitations" header. To avoid duplication, create an [include file](#include-files) in `_includes/vX.X/known-limitations` and include the file in both places.
 
 #### How to document known limitations
 
@@ -670,8 +675,7 @@ When the time comes to document known limitations, keep in mind that you are doc
 
 All product names except CockroachDB should be written as Liquid variables unless part of front-matter, file names, or non-Markdown files. Use the following code in place of product names:
 
-- **CockroachDB Serverless (beta)** : `{{ site.data.products.serverless }}`
-- **CockroachDB Serverless** : `{{ site.data.products.serverless-plan }}`
+- **CockroachDB Serverless** : `{{ site.data.products.serverless }}`
 - **CockroachDB Dedicated** : `{{ site.data.products.dedicated }}`
 - **CockroachDB Self-Hosted** : `{{ site.data.products.core }}`
 - **Enterprise** : `{{ site.data.products.enterprise }}`
@@ -730,7 +734,10 @@ $ go get -u github.com/lib/pq
 ~~~
 ```
 
-**Copy to Clipboard** should be used for every code block that can be **executed**.
+Notes for usage:
+  
+- **Copy to Clipboard** should be used for every code block that can be **executed**. 
+- There must be a line break above the `{% include_cached copy-clipboard.html %}` line.
 
 #### Placeholders
 
@@ -815,6 +822,8 @@ To add a version tag, use the following Liquid tag:
 {% include_cached new-in.html version="v22.1" %}
 ~~~
 
+<a name="version-tags-tables"></a>
+
 Note: If using a version tag inside of a Markdown table, use `<span class="version-tag">New in vXX.Y:</span>` or `<span class="version-tag">New in vXX.Y.Z:</span>` instead.
 
 Put version tags at the beginning of a paragraph, sentence, or description in a table cell.
@@ -825,9 +834,39 @@ If a feature has been backported to a previous version in a patch release, use t
 
 Version tags should only refer to the version of the docset that contains them. For example, the version tag `{% include_cached new-in.html version="v21.1.9" %}` should only be on pages in `v21.1` directories.
 
+### Version references
+
+To refer to a static version of CockroachDB:
+
+~~~
+{{site.versions["v22.2"]}}
+~~~
+
+To dynamically refer to the stable version of CockroachDB, as determined each time the site is built:
+
+~~~
+{{site.versions["stable"]}}
+~~~
+
+**Warning**: If you use a `stable` link on a versioned page which is for a previous version, the link points to a different version  of CockroachDB than the version the page documents. Similarly, if you use a `stable` link on a page for the current version and then a new version is added, the link points to a different version than the version the page documents. If this is a problem, use one of the following methods instead.
+
+Pages that document CockroachDB itself exist within subdirectories that represent minor versions. To refer to a page's minor version (for example, v22.2), which matches its top-level subdirectory within the docs repo:
+
+~~~
+{{page.version.version}}
+~~~
+
+A minor version of CockroachDB receives updates as patches. To refer to a page's current patch version (for example, v22.1.7):
+
+~~~
+{{ page.release_info.name }}
+~~~
+
 ### Tables
 
 Use tables to display structured information in an easy-to-read format. We use two types of tables: [Markdown](#markdown) and [HTML](#html).
+
+<a name="markdown"></a>
 
 #### Markdown
 
@@ -970,10 +1009,122 @@ Use the following HTML and Liquid to include an image in a Markdown page:
 
 Example: [Decommission Nodes](https://www.cockroachlabs.com/docs/stable/remove-nodes.html#step-1-check-the-node-before-decommissioning)
 
+<a name="include-files"></a>
+
+### Include files
+
+Sometimes content needs to be duplicated across two or more pages in the documentation. For example, there may be several pages that need the same cluster setup, but describe how to use different features. Or a very specific [note](#notes) or [warning](#warnings) needs to be added to several different pages.
+
+In these situations, you will need to use an _include file_. An include file is a separate Markdown file (stored in `_includes/some/shared-file.md`) where you will write content that is shared across multiple pages.
+
+For more information about include files, see [the Jekyll `include` documentation](https://jekyllrb.com/docs/includes/).
+
+_Note_: Using include files adds complexity to the docs site architecture and build process. It also makes writing the documentation more tricky, because instead of working on text in one document, the writer has to jump between two or more files. If you can link to existing content rather than using an include file, strongly consider doing that instead.
+
+There are [basic](#basic-include-file-usage) and [advanced](#advanced-include-file-usage) methods for using include files. Use the basic method unless you are sure you need the advanced.
+
+<a name="basic-include-file-usage"></a>
+
+#### Basic include file usage
+
+The basic method for using an include file is:
+
+1. Find (or create) a block of content that you want to make appear on two or more different pages.
+1. Create a new file in the subdirectory of the `_includes` directory associated with the product you are working on. For example, if you are working on CockroachDB Self-Hosted v22.1, the directory will be `_includes/v22.1/`. If you are working on CockroachDB Dedicated, it will be `_includes/cockroachcloud`. If the include text is not version- or product-specific, put it in the `common` folder.
+1. In the pages where you want the included content to appear, add an `include` tag like one of the following: for CockroachDB Self-Hosted, `{% include {{page.version.version}}/some/shared-file.md %}`; for CockroachDB Dedicated, `{% include cockroachcloud/some/shared-file.md %}`.
+
+The contents of `shared-file.md` will now appear on all of the pages where you added the `include` tag.
+
+<a name="advanced-include-file-usage"></a>
+
+#### Advanced include file usage
+
+##### Different content depending on page name
+
+There may be cases where the content of the include file will need to vary slightly depending on what pages that content is being shared into. For example, while working on [cockroachdb/docs#12216](https://github.com/cockroachdb/docs/pull/12216),  I needed a way to:
+
+- Have text be a link on the [Known Limitations](https://www.cockroachlabs.com/docs/stable/known-limitations) page.
+- Have that same text _not_ be a link on the [Cost-Based Optimizer](https://www.cockroachlabs.com/docs/stable/cost-based-optimizer) page (since it would be a self-referring link).
+
+The way to do this in Jekyll (with its templating language Liquid) is to add the following content to an include file that is shared into both pages:
+
+    {% if page.name == "cost-based-optimizer.md" %} Locality-optimized search {% else %} [Locality-optimized search](cost-based-optimizer.html#locality-optimized-search-in-multi-region-clusters) {% endif %} only works for queries selecting a limited number of records (up to 10,000 unique keys). Also, it does not yet work with [`LIMIT`](limit-offset.html) clauses.
+
+The syntax is a little hard to read inline, but based on some experimenting it appears that it _must_ be written as one line so as not to introduce line breaks in the resulting text.
+
+Formatted for easier reading, the template code looks like:
+
+```
+{% if page.name == "cost-based-optimizer.md" %}
+Locality-optimized search
+{% else %}
+[Locality-optimized search](cost-based-optimizer.html#locality-optimized-search-in-multi-region-clusters)
+{% endif %}
+```
+
+<a name="remote-includes"></a>
+
+##### Remote includes
+
+Sometimes, you need to include files that are maintained in other places than the `cockroachdb/docs` repo but referenced in our docs. The `remote_include` tag is used for this. We most often use this tag for code samples, which are maintained in various repos.
+
+For code samples, you usually want to show only part of a larger file to highlight a specific technique, or due to length considerations.
+
+To accomplish this, the `remote_include` tag lets you pass arguments (usually named `START {text}` and `END {text}` by convention) that pull in the text of the remote file between `START {text}` and `END {text}`.
+
+For example, the file `movr-flask-application.md` (which becomes the page [Develop a Global Web Application](https://www.cockroachlabs.com/docs/v22.1/movr-flask-application.html)) has the following `remote_include`:
+
+```
+{% remote_include https://raw.githubusercontent.com/cockroachlabs/movr-flask/v2-doc-includes/dbinit.sql ||-- START database ||-- END database %}
+```
+
+If you browse to the `dbinit.sql` file, you will find the following SQL code block that uses those start and end tags:
+
+```
+-- START database
+CREATE DATABASE movr PRIMARY REGION "gcp-us-east1" REGIONS "gcp-us-east1", "gcp-europe-west1", "gcp-us-west1";
+-- END database
+```
+
+For more information about the `remote_include` tag, see the README in the [jekyll-remote-include](https://github.com/cockroachdb/jekyll-remote-include) repo.
+  
+#### Filter tabs
+  
+On some pages in our docs, there are tabs at the top of the page that will link to different pages at different hyperlinks. For example, in the [Install CockroachDB docs](https://www.cockroachlabs.com/docs/stable/install-cockroachdb.html), there are links to the Mac, Linux, and Windows pages at the top of the page.
+  
+Use [`filter-tabs.md`](https://github.com/cockroachdb/docs/blob/master/_includes/filter-tabs.md) to specify these tabs for any `cockroachcloud` docs or docs for CockroachDB v21.2 and later.
+
+**Note:** this include file only produces tabs that link to different URLs/pages. It cannot be used for creating tabs within a single page.
+
+The general process to follow and use this is as follows:
+  
+1. Identify each page to be linked from a filter tab.
+    - Make a note of each HTML page filename (e.g., `install-cockroachdb-mac.html`).
+    - Draft a tab name (e.g., `Install on <strong>Mac</strong>`)—the text to display on the tab itself. This supports HTML, not Markdown.
+2. Create an include Markdown file within `_includes/<CRDB version>/filter-tabs` with the following structure:
+    ```
+    {% assign tab_names_html = "Tab Name 1;Tab Name 2;Tab Name 3" %}
+    {% assign html_page_names = "page-name-1.html;page-name-2.html;page-name-3.html" %}
+
+    {% include filter-tabs.md tab_names=tab_names_html page_names=html_page_names page_folder=<CRDB version> %}
+    ```
+    - `tab_names_html` is a semicolon-separated list of the HTML-supported tab names.
+    - `html_page_names` is a semicolon-separated list of the page filenames with the `.html` extension.
+    - `<crdb_version>` is `"cockroachcloud"` (with quotes) for any CockroachDB Cloud docs and `page.version.version` (without quotes) for any versioned docs (v21.2 and later).
+3. For each page listed in `html_page_names`, paste `{% include <CRDB version>/filter-tabs/<filter-tab-include>.html %}` in the position where you want the tabs to be included.
+  
+#### Technical limitations of include files
+
+Include files have the following technical limitations:
+
+- They cannot be used in [Markdown tables](#tables). For example, this is why [the guidance about how to use version tags in tables](#version-tags-tables) is provided.
+- A [remote include](#remote-includes) file in another repo that contains an [include file](#include-files) that references something in `cockroachdb/docs` will fail to pull in and render that include file.
+- Include files containing a paragraph followed by a code block do not render correctly in the context of both paragraphs and lists in the files they are included from due to a limitation in our [Markdown](#markdown) renderer.
+
 ## Terminology and word usage
 
 Term | Classification | Note
 --- |:---:| ---
 Postgres | 🔴 | This is a nickname for PostgreSQL. Use PostgreSQL instead: it's the official name, our docs site and Google treat these as synonyms, and Cmd+F on `Postgres` will still find `PostgreSQL`.
 PostgreSQL | 🟢 | Preferred over Postgres.
-vxx.x.x | 🟢 | This is the correct way to refer to any version of CockroachDB (for example, `v21.1.8`). Preferred over `version xx.x.x`.
+vxx.x.x | 🟢 | This is the correct way to refer to any version of CockroachDB (for example, `v21.1.8`). Preferred over `version xx.x.x`. When listing a range of versions, separate the first and last version numbers with `to` (for example, `v22.1.0 to v22.1.4`). [Do not use a dash.](#punctuation-rules)

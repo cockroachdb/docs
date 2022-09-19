@@ -19,8 +19,6 @@ This page shows you how to get started with CockroachDB quickly. You'll create a
 
 To get started with {{ site.data.products.db }} using {{ site.data.products.dedicated }} clusters, see [Quickstart with {{ site.data.products.dedicated }}](quickstart-trial-cluster.html).
 
-{% include cockroachcloud/free-limitations.md %}
-
 </section>
 
 <section class="filter-content" markdown="1" data-scope="local">
@@ -121,7 +119,7 @@ The **Connect to cluster** dialog shows information about how to connect to your
 
 1. Select **Java** from the **Select option** dropdown.
 1. Copy the `JDBC_DATABASE_URL` environment variable command provided and save it in a secure location.
-    
+
     This Quickstart uses default certificates, so you can skip the **Download CA Cert** instructions.
 
     {{site.data.alerts.callout_info}}
@@ -294,7 +292,7 @@ For reference information about connecting to CockroachDB with supported client 
     ~~~
 
     The code sample in this directory does the following:
-      1. Connects to {{ site.data.products.db }} with the [node-postgres driver](https://node-postgres.com) using the connectiong string set in the `DATABASE_URL` environment variable.
+      1. Connects to {{ site.data.products.db }} with the [node-postgres driver](https://node-postgres.com) using the connection string set in the `DATABASE_URL` environment variable.
       1. Creates a table.
       1. Inserts some data into the table.
       1. Reads the inserted data.
@@ -339,7 +337,7 @@ For reference information about connecting to CockroachDB with supported client 
     ~~~
 
     The code sample in this directory does the following:
-      1. Connects to {{ site.data.products.db }} with the [psycopg2 driver](https://www.psycopg.org) using the connectiong string set in the `DATABASE_URL` environment variable.
+      1. Connects to {{ site.data.products.db }} with the [psycopg2 driver](https://www.psycopg.org) using the connection string set in the `DATABASE_URL` environment variable.
       1. Creates a table.
       1. Inserts some data into the table.
       1. Reads the inserted data.
@@ -384,7 +382,7 @@ For reference information about connecting to CockroachDB with supported client 
     ~~~
 
     The code sample in this directory does the following:
-      1. Connects to {{ site.data.products.db }} with the [pgx driver](https://github.com/jackc/pgx) using the connectiong string set in the `DATABASE_URL` environment variable.
+      1. Connects to {{ site.data.products.db }} with the [pgx driver](https://github.com/jackc/pgx) using the connection string set in the `DATABASE_URL` environment variable.
       1. Creates a table.
       1. Inserts some data into the table.
       1. Reads the inserted data.
@@ -396,7 +394,7 @@ For reference information about connecting to CockroachDB with supported client 
     ~~~ shell
     $ go mod init basic-sample
     ~~~
-    
+
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     go mod tidy
@@ -432,7 +430,7 @@ For reference information about connecting to CockroachDB with supported client 
     ~~~
 
     The code sample in this directory does the following:
-      1. Connects to {{ site.data.products.db }} with the [JDBC driver](https://jdbc.postgresql.org) using the JDBC connectiong string set in the `JDBC_DATABASE_URL` environment variable.
+      1. Connects to {{ site.data.products.db }} with the [JDBC driver](https://jdbc.postgresql.org) using the JDBC connection string set in the `JDBC_DATABASE_URL` environment variable.
       1. Creates a table.
       1. Inserts some data into the table.
       1. Reads the inserted data.
@@ -463,6 +461,7 @@ For reference information about connecting to CockroachDB with supported client 
 - [Learn CockroachDB SQL](learn-cockroachdb-sql.html).
 - [Create and manage SQL users](user-authorization.html).
 - Explore our [example apps](../{{site.versions["stable"]}}/example-apps.html) for examples on how to build applications using your preferred driver or ORM and run it on CockroachDB.
+- [Migrate your existing data](../{{site.versions["stable"]}}/migration-overview.html).
 
 ## Learn more
 

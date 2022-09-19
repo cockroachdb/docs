@@ -20,7 +20,7 @@ For compatibility with PostgreSQL, CockroachDB supports the `ANALYZE`/`ANALYSE` 
 ## Syntax
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/create_stats.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/create_stats.html %}
 </div>
 
 ## Parameters
@@ -43,7 +43,7 @@ The user must have the `CREATE` [privilege](security-reference/authorization.htm
 ### Alias syntax
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/analyze.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/analyze.html %}
 </div>
 
 ### Alias parameters

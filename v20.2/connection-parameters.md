@@ -88,7 +88,7 @@ Parameter | Description | Default value
 `sslrootcert` | Path to the [CA certificate](cockroach-cert.html), when `sslmode` is not `disable`. | Empty string.
 `sslcert` | Path to the [client certificate](cockroach-cert.html), when `sslmode` is not `disable`. | Empty string.
 `sslkey` | Path to the [client private key](cockroach-cert.html), when `sslmode` is not `disable`. | Empty string.
-`options` | Additional command-line options to be passed to the server. Specify the cluster name when connecting to {{ site.data.products.serverless-plan }}-tier clusters by setting `options=--cluster=<cluster name>`. | Empty string
+`options` | Additional command-line options to be passed to the server. Specify the cluster name when connecting to {{ site.data.products.serverless }}-tier clusters by setting `options=--cluster=<cluster name>`. | Empty string
 
 ### Secure connections with URLs
 

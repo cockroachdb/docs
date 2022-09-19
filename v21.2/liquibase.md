@@ -94,13 +94,15 @@ The Liquibase command-line tool uses the PostgreSQL JDBC driver to connect to Co
 
 To install the driver for Liquibase:
 
-1. Download the JDBC driver from [the PostgreSQL website](https://jdbc.postgresql.org/download.html).
+1. Download the latest JDBC driver from [the PostgreSQL website](https://jdbc.postgresql.org/download.html).
 1. Place the driver in the `lib` directory of the Liquibase binary. For example:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ cp ~/Downloads/postgresql-42.2.9.jar liquibase-4.2.0-bin/lib/
+    $ cp ~/Downloads/postgresql-{version}.jar liquibase-4.2.0-bin/lib/
     ~~~
+
+Where `{version}` is the latest stable version.
 
 {{site.data.alerts.callout_success}}
 If you are using Liquibase in the context of a separate Java application, we recommend that you use a dependency management tool, like [Maven](https://docs.liquibase.com/tools-integrations/maven/home.html), to download the driver.
@@ -110,7 +112,7 @@ If you are using Liquibase in the context of a separate Java application, we rec
 
 When you [started a secure CockroachDB cluster](secure-a-cluster.html), you should have created a user `max`. You should have also given this user the [`admin` role](security-reference/authorization.html#admin-role), which grants all privileges to all databases on the cluster. In this tutorial, Liquibase runs schema changes as the `max` user.
 
-To authenticate connection requests to CockroachDB from the Liquibase client, you need to generate some certificates for `max`. Use [`cockroach cert`](cockroach-cert.html#synopsis) to generate the certificates:
+To authenticate connection requests to CockroachDB from the Liquibase client, you need to generate some certificates for `max`. Use [`cockroach cert`](cockroach-cert.html) to generate the certificates:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
