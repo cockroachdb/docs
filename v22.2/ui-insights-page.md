@@ -185,7 +185,7 @@ The first method flags all executions running longer than `sql.insights.latency_
 The second method attempts to detect **unusually slow executions**. You can enable this detection with `sql.insights.anomaly_detection.enabled` and configure it with `sql.insights.anomaly_detection.latency_threshold`.
 CockroachDB will then keep a streaming histogram in memory for each distinct statement fingerprint that has seen an execution latency longer than `sql.insights.anomaly_detection.latency_threshold` and flag any execution with a latency in the 99th percentile (`> p99`) for its fingerprint.
 
-Additional controls are placed to filter out less actionable executions:
+Additional controls filter out less actionable executions:
 
 - The execution's latency must also be longer than twice the median latency (`> 2*p50`) for that fingerprint. This ensures that `p99` means something.
 - The execution's latency must also be longer than `sql.insights.anomaly_detection.latency_threshold`. Slower-than usual executions are less interesting if they’re still fast enough.
