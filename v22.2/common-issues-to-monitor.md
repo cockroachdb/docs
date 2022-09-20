@@ -266,7 +266,7 @@ With insufficient disk I/O, you may also see:
 
 Because each node needs to update a liveness record on disk, maxing out disk bandwidth can cause liveness heartbeats to be missed.
 
-- The **Node Heartbeat Latency: 99th percentile** and **Node Heartbeat Latency: 90th percentile** graphs on the Distributed Dashboard show the time elapsed between [node liveness](cluster-setup-troubleshooting.html#node-liveness-issues) heartbeats.
+- The [**Node Heartbeat Latency: 99th percentile**](ui-distributed-dashboard.html#node-heartbeat-latency-99th-percentile) and [**Node Heartbeat Latency: 90th percentile**](ui-distributed-dashboard.html#node-heartbeat-latency-90th-percentile) graphs on the [Distributed Dashboard](ui-distributed-dashboard.html) show the time elapsed between [node liveness](cluster-setup-troubleshooting.html#node-liveness-issues) heartbeats.
 
     {% include {{ page.version.version }}/prod-deployment/healthy-node-heartbeat-latency.md %}
 
