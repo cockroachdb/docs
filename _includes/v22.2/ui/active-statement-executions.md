@@ -28,7 +28,7 @@ The Statement Execution details page provides the following details on the state
 - **Session ID**: Link to the [session](ui-sessions-page.html) in which the transaction is running.
 - **Transaction Execution ID**: Link to the ID of the [transaction](ui-transactions-page.html#active-executions-table) in which the statement is executing.
 
-If a statement is waiting, the statement execution details are followed by Contention Insights and details of the statement on which the blocked statement is waiting.
+If a statement is waiting, the statement execution details are followed by Contention Insights and details of the statement execution on which the blocked statement execution is waiting.
 
 <img src="{{ 'images/v22.2/waiting-statement.png' | relative_url }}" alt="Movr rides transactions" style="border:1px solid #eee;max-width:100%" />
 
