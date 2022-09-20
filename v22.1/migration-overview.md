@@ -24,7 +24,10 @@ You will likely need to update your schema by converting the data definition sta
 - [Unimplemented features.](#unimplemented-features)
 - [Differences from other databases.](#differences-from-other-databases)
 
-If you are migrating from a PostgreSQL database, [use the **Schema Conversion Tool**](../cockroachcloud/migrations-page.html) on the {{ site.data.products.db }} Console to analyze your schema for SQL incompatibilities. The tool will identify and help you resolve errors in your schema, and then create a new CockroachDB database to which you can [move your data](#step-2-move-your-data-to-cockroachdb).
+If you are migrating from a PostgreSQL database, use the following CockroachDB Molt migration tools:
+
+- [Use the **Schema Conversion Tool**](../cockroachcloud/migrations-page.html) on the {{ site.data.products.db }} Console to analyze your schema for SQL incompatibilities. The tool will identify and help you resolve errors in your schema, and then create a new CockroachDB database with the converted schema.
+- [Move your data](#step-2-move-your-data-to-cockroachdb) to the new database using [AWS DMS](aws-dms.html).
 
 ### Unimplemented features
 
