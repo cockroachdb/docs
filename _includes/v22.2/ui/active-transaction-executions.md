@@ -34,6 +34,10 @@ The Transaction Execution details page provides the following details on the tra
 - **Most Recent Statement Execution ID**: Link to the ID of the most recently [executed statement](ui-statements-page.html#active-executions-table) in the transaction.
 - **Session ID**: Link to the ID of the [session](ui-sessions-page.html) in which the transaction is running.
 
+If a transaction is waiting, the transaction details are followed by Contention Insights and details of the transaction on which the blocked transaction is waiting.
+
+<img src="{{ 'images/v22.2/waiting-transaction.png' | relative_url }}" alt="Movr rides transactions" style="border:1px solid #eee;max-width:100%" />
+
 ## See also
 
 - [Transactions]({{ link_prefix }}transactions.html)
