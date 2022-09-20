@@ -67,7 +67,7 @@ You can identify high-latency SQL statements (slow queries) using one of the fol
 If these graphs reveal latency spikes, CPU usage spikes, or slow requests, these might indicate slow queries in your cluster.
 
 You can also collect richer diagnostics of a high-latency statement by creating a [diagnostics bundle](ui-statements-page.html#diagnostics) when a statement fingerprint exceeds a certain latency.
-
+ 
 {{site.data.alerts.callout_info}}
 {% include {{ page.version.version }}/prod-deployment/resolution-untuned-query.md %}
 {{site.data.alerts.end}}
