@@ -93,9 +93,7 @@ The rows in this page are populated from the [`crdb_internal.cluster_execution_i
   - **Slow Execution**: The statement experienced slow execution. Depending on the settings in [Configuration](#configuration), either of the following conditions trigger this insight:
 
       - Execution time is greater than the value of `sql.insights.latency_threshold`.
-      - Anomaly detection is enabled (`sql.insights.anomaly_detection.enabled`) and execution time is greater than the value of `sql.insights.anomaly_detection.latency_threshold`.
-
-        For details, see [Detect slow executions](#detect-slow-executions).
+      - Anomaly detection is enabled (`sql.insights.anomaly_detection.enabled`), execution time is greater than the value of `sql.insights.anomaly_detection.latency_threshold`, and [execution latency](ui-sql-dashboard.html#kv-execution-latency-99th-percentile) is `> p99 && > 2*p50`. For details, see [Detect slow executions](#detect-slow-executions).
 - **Start Time (UTC)**: The time the statement execution started.
 - **Elapsed Time**: The time that elapsed to complete the statement execution.
 - **User Name**: The name of the user that invoked the statement execution.
@@ -192,7 +190,7 @@ Additional controls filter out less actionable executions:
 
 The `sql.insights.anomaly_detection.memory_limit` cluster setting limits the amount of memory available for tracking these streaming latency histograms. When this threshold is surpassed, the least-recently touched histogram is evicted. The default of `1 MiB` is sufficient for tracking about a thousand fingerprints.
 
-You can track the `sql.insights.anomaly_detection.memory` and `sql.insights.anomaly_detection.evictions` metrics to determine if the settings are appropriate for your workload. If you see a steady stream of evictions or churn, you can either raise the `sql.insights.anomaly_detection.memory_limit` cluster setting, to allow for more storage, or raise the `sql.insights.anomaly_detection.latency_threshold` cluster setting, to examine fewer statement fingerprints.
+You can track the `sql.insights.anomaly_detection.memory` and `sql.insights.anomaly_detection.evictions` [metrics](ui-custom-chart-debug-page.html) to determine if the settings are appropriate for your workload. If you see a steady stream of evictions or churn, you can either raise the `sql.insights.anomaly_detection.memory_limit` cluster setting, to allow for more storage, or raise the `sql.insights.anomaly_detection.latency_threshold` cluster setting, to examine fewer statement fingerprints.
 
 ### Schema insights settings
 
