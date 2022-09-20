@@ -2,16 +2,16 @@
 title: Migrate with AWS Database Migration Service (DMS)
 summary: Learn how to use AWS Database Migration Service (DMS) to migrate data to a CockroachDB target cluster.
 toc: true
-docs_area: develop
+docs_area: migrate
 ---
 
-This page has instructions for setting up [AWS DMS](https://aws.amazon.com/dms/) to migrate data to CockroachDB from an existing, publicly-hosted database containing application data such as MySQL, Oracle, or PostgreSQL.
+This page has instructions for setting up [AWS Database Migration Service (DMS)](https://aws.amazon.com/dms/) to migrate data to CockroachDB from an existing, publicly hosted database containing application data such as MySQL, Oracle, or PostgreSQL.
 
 For a detailed tutorial about using AWS DMS and information about specific migration tasks, see the [AWS DMS documentation site](https://docs.aws.amazon.com/dms/latest/userguide/Welcome.html).
 
-We have tested AWS DMS with CockroachDB as a target enough to claim **preview-level** support. If you encounter problems in CockroachDB, please [open an issue](https://github.com/cockroachdb/cockroach/issues/new) with details to help us make progress toward full support.
+{% include feature-phases/preview.md %}
 
-For any issues related to AWS DMS, aside from its interaction with CockroachDB as a migration target, please reach out to [AWS Support](https://aws.amazon.com/contact-us/).
+For any issues related to AWS DMS, aside from its interaction with CockroachDB as a migration target, contact [AWS Support](https://aws.amazon.com/contact-us/).
 
 {{site.data.alerts.callout_info}}
 Using CockroachDB as a source database within AWS DMS is unsupported.
@@ -19,13 +19,19 @@ Using CockroachDB as a source database within AWS DMS is unsupported.
 
 ## Before you begin
 
-Ensure the following items are completed prior to starting this tutorial:
+Complete the following items before starting this tutorial:
 
+- Configure a [replication instance](https://docs.aws.amazon.com/dms/latest/userguide/CHAP_ReplicationInstance.Creating.html) in AWS.
 - Configure a [source endpoint](https://docs.aws.amazon.com/dms/latest/userguide/CHAP_Source.html) in AWS pointing to your source database.
-- Configure a [replication instance](https://docs.aws.amazon.com/dms/latest/userguide/CHAP_ReplicationInstance.html) in AWS.
-- Ensure you have a secure, publicly available CockroachDB cluster running v22.1 GA or later.
+- Ensure you have a secure, publicly available CockroachDB cluster running v22.1.6 or later.
+- Manually create all schema objects in the target CockroachDB cluster. This is required in order for AWS DMS to populate data successfully.
+    - If you are migrating from a PostgreSQL database, [use the **Schema Conversion Tool**](../cockroachcloud/migrations-page.html) to convert and export your schema.
 
-As of publishing, AWS DMS supports migrations from these relational databases (for a more accurate view of what's currently supported, see [Sources for AWS DMS](https://docs.aws.amazon.com/dms/latest/userguide/CHAP_Introduction.Sources.html)):
+    {{site.data.alerts.callout_info}}
+    All tables must have an explicitly defined primary key. For more guidance, see [Migrate Your Database to CockroachDB](migration-overview.html#step-1-test-and-update-your-schema).
+    {{site.data.alerts.end}}
+
+As of publishing, AWS DMS supports migrations from these relational databases (for a more accurate view of what is currently supported, see [Sources for AWS DMS](https://docs.aws.amazon.com/dms/latest/userguide/CHAP_Introduction.Sources.html)):
 
 - Amazon Aurora
 - Amazon DocumentDB (with MongoDB compatibility)
@@ -46,17 +52,20 @@ As of publishing, AWS DMS supports migrations from these relational databases (f
 1. Open **Endpoints** in the sidebar. A list of endpoints will display, if any exist.
 1. In the top-right portion of the window, select **Create endpoint**.
     <img src="{{ 'images/v22.1/aws-dms-create-endpoint.png' | relative_url }}" alt="AWS-DMS-Create-Endpoint" style="max-width:100%" />
+
+    A configuration page will open.
 1. In the **Endpoint type** section, select **Target endpoint**.
 1. Supply an **Endpoint identifier** to identify the new target endpoint.
-1. For the **Target engine** dropdown, select **PostgreSQL**.
-1. For the **Access to endpoint database** radio button, select the **Provide access information manually**.
-1. Enter the **Server name**, **Port**, **User name**, **Password**, and **Database name** of your CockroachDB cluster.
+1. In the **Target engine** dropdown, select **PostgreSQL**.
+1. Under **Access to endpoint database**, select **Provide access information manually**.
+1. Enter the **Server name** and **Port** of your CockroachDB cluster.
+1. Supply a **User name**, **Password**, and **Database name** from your CockroachDB cluster.
     {{site.data.alerts.callout_info}}
-    To connect to a {{ site.data.products.serverless }} cluster, use `{routing-id}.{database}` for the **Database name**. For more information, see [Connect to a {{ site.data.products.serverless }} Cluster](../cockroachcloud/connect-to-a-serverless-cluster.html?filters=connection-parameters#step-2-connect-to-your-cluster).
+    To connect to a {{ site.data.products.serverless }} cluster, set the **Database name** to `{routing-id}.{database}`. For information about where to find these parameters, see [Connect to a {{ site.data.products.serverless }} Cluster](../cockroachcloud/connect-to-a-serverless-cluster.html?filters=connection-parameters#step-2-connect-to-your-cluster).
     {{site.data.alerts.end}}
     <img src="{{ 'images/v22.1/aws-dms-endpoint-configuration.png' | relative_url }}" alt="AWS-DMS-Endpoint-Configuration" style="max-width:100%" />
-1. You can test the connection if needed under **Test endpoint connection (optional)**.
-1. Create the endpoint by selecting **Create endpoint**.
+1. If needed, you can test the connection under **Test endpoint connection (optional)**.
+1. To create the endpoint, select **Create endpoint**.
     <img src="{{ 'images/v22.1/aws-dms-test-endpoint.png' | relative_url }}" alt="AWS-DMS-Test-Endpoint" style="max-width:100%" />
 
 ## Step 2. Create a database migration task
@@ -68,6 +77,8 @@ A database migration task, also known as a replication task, controls what data 
 1. While in **AWS DMS**, select **Database migration tasks** in the sidebar. A list of database migration tasks will display, if any exist.
 1. In the top-right portion of the window, select **Create task**.
     <img src="{{ 'images/v22.1/aws-dms-create-db-migration-task.png' | relative_url }}" alt="AWS-DMS-Create-DB-Migration-Task" style="max-width:100%" />
+
+    A configuration page will open.
 1. Supply a **Task identifier** to identify the replication task.
 1. Select the **Replication instance** and **Source database endpoint** you created prior to starting this tutorial.
 1. For the **Target database endpoint** dropdown, select the CockroachDB endpoint created in the previous section.
@@ -77,31 +88,29 @@ A database migration task, also known as a replication task, controls what data 
 ### Step 2.2. Task settings
 
 1. For the **Editing mode** radio button, keep **Wizard** selected.
-1. For the **Target table preparation mode**, select either **Truncate** or **Do nothing**.
+1. For the **Target table preparation mode**, select **Truncate** or **Do nothing**.
     <img src="{{ 'images/v22.1/aws-dms-task-settings.png' | relative_url }}" alt="AWS-DMS-Task-Settings" style="max-width:100%" />
-1. Manually create all schema objects in the target CockroachDB cluster. This step is required in order for the migration to populate data successfully.
-    {{site.data.alerts.callout_info}}
-    All tables must have a primary key associated with them. For more information, see [Primary Key Constraint](primary-key.html).
-    {{site.data.alerts.end}}
+1. Check the **Enable CloudWatch logs** option. We highly recommend this for troubleshooting potential migration issues. 
+1. For the **Target Load**, select **Detailed debug**.
+    <img src="{{ 'images/v22.1/aws-dms-cloudwatch-logs.png' | relative_url }}" alt="AWS-DMS-CloudWatch-Logs" style="max-width:100%" />
 
 {{site.data.alerts.callout_info}}
 **Drop tables on target** is unsupported at this time.
 {{site.data.alerts.end}}
 
-{{site.data.alerts.callout_success}}
-When specifying a range of tables, you must ensure the following before data migration can successfully occur:
-
-- The column names within each table being migrated from the source database to CockroachDB are identical.
-- The column types for the columns within each table being migrated from the source database to CockroachDB are compatible.
-{{site.data.alerts.end}}
-
-{% comment %}In order to use **Drop tables on target**, you must [create a new `dms` user](#create-a-new-dms-user) and ensure [`BatchApplyEnabled`](#batchapplyenabled) is set to `False`. {% endcomment %}
-
 ### Step 2.3. Table mappings
+
+{{site.data.alerts.callout_info}}
+When specifying a range of tables to migrate, the following aspects of the source and target database schema **must** match:
+
+- Column names must be identical.
+- Column types must be compatible.
+- Column nullability must be identical.
+{{site.data.alerts.end}}
 
 1. For the **Editing mode** radio button, keep **Wizard** selected.
 1. Select **Add new selection rule**.
-1. In the **Schema** drop down, select **Enter a schema**.
+1. In the **Schema** dropdown, select **Enter a schema**.
 1. Supply the appropriate **Source name** (schema name), **Table name**, and **Action**.
     <img src="{{ 'images/v22.1/aws-dms-table-mappings.png' | relative_url }}" alt="AWS-DMS-Table-Mappings" style="max-width:100%" />
 
@@ -123,55 +132,19 @@ If your migration failed for some reason, you can check the checkbox next to the
 
 ## Optional configurations
 
-{% comment %}
-### Create a new `dms` user
-
-Creating a `dms` user is necessary when using **Drop tables on target** as a target table preparation mode.
-
-1. [Connect to your {{ site.data.products.serverless }} cluster](../cockroachcloud/connect-to-a-serverless-cluster.html).
-
-1. In the SQL client, create a new `dms` admin user to handle the migration. Replace `'<password>'` with a strong password:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ sql
-    > CREATE USER dms WITH PASSWORD '<password>';
-    > GRANT admin TO dms;
-    > ALTER USER dms SET expect_and_ignore_not_visible_columns_in_copy = true;
-    ~~~
-
-    {{site.data.alerts.callout_danger}}
-    Do not use this user for normal SQL activity. The `expect_and_ignore_not_visible_columns_in_copy` session variable may make it behave unpredictably for normal usage.
-    {{site.data.alerts.end}}
-{% endcomment %}
-
 ### AWS PrivateLink
 
 If using {{ site.data.products.dedicated }}, you can enable [AWS PrivateLink](https://aws.amazon.com/privatelink/) to securely connect your AWS application with your {{ site.data.products.dedicated }} cluster using a private endpoint. To configure AWS PrivateLink with {{ site.data.products.dedicated }}, see [Network Authorization](../cockroachcloud/network-authorization.html#aws-privatelink).
 
-### CloudWatch logs
-
-You can Enable CloudWatch logs for extra insight about the replication. To enable CloudWatch logs:
-
-1. Edit the existing replication task.
-1. Under **Task settings**, select **Enable CloudWatch logs**. From here, you can specify logging levels for each event type:
-    <img src="{{ 'images/v22.1/aws-dms-cloudwatch-logs.png' | relative_url }}" alt="AWS-DMS-CloudWatch-Logs" style="max-width:100%" />
-
 ### `BatchApplyEnabled`
 
-The `BatchApplyEnabled` setting can improve replication performance and is recommended for larger workloads. {% comment %}If you enable this setting, then you must set your target table preparation mode to **Truncate** or **Do nothing**.{% endcomment %}
+The `BatchApplyEnabled` setting can improve replication performance and is recommended for larger workloads.
 
 1. Open the existing database migration task.
 1. Choose your task, and then choose **Modify**.
 1. From the **Task settings** section, switch the **Editing mode** from **Wizard** to **JSON editor**. Locate the `BatchApplyEnabled` setting and change its value to `true`. Information about the `BatchApplyEnabled` setting can be found [here](https://aws.amazon.com/premiumsupport/knowledge-center/dms-batch-apply-cdc-replication/).
 
 <img src="{{ 'images/v22.1/aws-dms-batchapplyenabled.png' | relative_url }}" alt="AWS-DMS-BatchApplyEnabled" style="max-width:100%" />
-
-{% comment %}
-
-{{site.data.alerts.callout_info}}
-`BatchApplyEnabled` does not work when using **Drop tables on target** as a target table preparation mode. Thus, all schema-related changes must be manually copied over if using `BatchApplyEnabled`.
-{{site.data.alerts.end}}
-{% endcomment %}
 
 ## Known limitations
 
@@ -182,69 +155,60 @@ The `BatchApplyEnabled` setting can improve replication performance and is recom
 > SELECT table_catalog, table_schema, table_name, column_name FROM information_schema.columns WHERE is_hidden = 'YES';
 ~~~
 
-- **Drop tables on target** is currently not supported and will error on import.
+- **Drop tables on target** is not supported on v22.1 and earlier, and will error on import.
 
-{% comment %}
-- Not all schema objects are migrated when using **Drop tables on target** as a target table preparation mode. Thus, it is not supported at this time. A list of supported DDL statements within AWS DMS are mentioned [here](https://docs.aws.amazon.com/dms/latest/userguide/CHAP_Introduction.SupportedDDL.html). Any statements outside of that (creating or modifying foreign keys, secondary indexes, constraints, etc.) will have to be run manually in the target database.
-{% endcomment %}
+- On v22.1.0 to v22.1.6, a migration may fail if there is an odd number of `"` characters in a row. AWS DMS will return an error message like the following: `[TARGET_LOAD ]D: Command failed to load data with exit error code 0.`. This is resolved in [v22.1.7 and later](../releases/v22.1.html).
 
 ## Troubleshooting common issues
 
-Run the following query from within the target CockroachDB cluster to identify common problems with any tables that may be migrated:
+- For visibility into migration problems:
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> WITH
-    invalid_columns
-        AS (
-            SELECT
-                'Table '
-                || table_schema
-                || '.'
-                || table_name
-                || ' has column '
-                || column_name
-                || ' which is hidden. Either drop the column or mark it as not hidden for DMS to work.'
-                    AS fix_me
-            FROM
-                information_schema.columns
-            WHERE
-                is_hidden = 'YES'
-                AND table_name NOT LIKE 'awsdms_%'
-        ),
-    invalid_version
-        AS (
-            SELECT
-                'This cluster is on a version of CockroachDB which does not support AWS DMS. CockroachDB v21.2.13+ or v22.1+ is required.'
-                    AS fix_me
-            WHERE
-                split_part(
-                    substr(
-                        substring(
-                            version(),
-                            e'v\\d+\\.\\d+.\\d+'
+    - Check the `SQL_EXEC` [logging channel](logging-overview.html#logging-channels) for log messages related to `COPY` statements and the tables you are migrating.
+    - Check the [Amazon CloudWatch logs that you configured](#step-2-2-task-settings) for messages containing `SQL_ERROR`.
+
+- Run the following query from within the target CockroachDB cluster to identify common problems with any tables that were migrated. If problems are found, explanatory messages will be returned in the `cockroach sql` shell.
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    > WITH
+        invalid_columns
+            AS (
+                SELECT
+                    'Table '
+                    || table_schema
+                    || '.'
+                    || table_name
+                    || ' has column '
+                    || column_name
+                    || ' which is hidden. Either drop the column or mark it as not hidden for DMS to work.'
+                        AS fix_me
+                FROM
+                    information_schema.columns
+                WHERE
+                    is_hidden = 'YES'
+                    AND table_name NOT LIKE 'awsdms_%'
+            ),
+        invalid_version
+            AS (
+                SELECT
+                    'This cluster is on a version of CockroachDB which does not support AWS DMS. CockroachDB v21.2.13+ or v22.1+ is required.'
+                        AS fix_me
+                WHERE
+                    split_part(
+                        substr(
+                            substring(
+                                version(),
+                                e'v\\d+\\.\\d+.\\d+'
+                            ),
+                            2
                         ),
-                        2
-                    ),
-                    '.',
-                    1
-                )::INT8
-                < 22
-                AND NOT
-                        (
-                            split_part(
-                                substr(
-                                    substring(
-                                        version(),
-                                        e'v\\d+\\.\\d+.\\d+'
-                                    ),
-                                    2
-                                ),
-                                '.',
-                                1
-                            )::INT8
-                            = 21
-                            AND split_part(
+                        '.',
+                        1
+                    )::INT8
+                    < 22
+                    AND NOT
+                            (
+                                split_part(
                                     substr(
                                         substring(
                                             version(),
@@ -253,52 +217,76 @@ Run the following query from within the target CockroachDB cluster to identify c
                                         2
                                     ),
                                     '.',
-                                    2
+                                    1
                                 )::INT8
-                                = 2
-                            AND split_part(
-                                    substr(
-                                        substring(
-                                            version(),
-                                            e'v\\d+\\.\\d+.\\d+'
+                                = 21
+                                AND split_part(
+                                        substr(
+                                            substring(
+                                                version(),
+                                                e'v\\d+\\.\\d+.\\d+'
+                                            ),
+                                            2
                                         ),
+                                        '.',
                                         2
-                                    ),
-                                    '.',
-                                    3
-                                )::INT8
-                                >= 13
-                        )
-        ),
-    has_no_pk
-        AS (
-            SELECT
-                'Table '
-                || a.table_schema
-                || '.'
-                || a.table_name
-                || ' has column '
-                || a.column_name
-                || ' has no explicit PRIMARY KEY. Ensure you are not using target mode "Drop tables on target" and that this table has a PRIMARY KEY.'
-                    AS fix_me
-            FROM
-                information_schema.key_column_usage AS a
-                JOIN information_schema.columns AS b ON
-                        a.table_schema = b.table_schema
-                        AND a.table_name = b.table_name
-                        AND a.column_name = b.column_name
-            WHERE
-                b.is_hidden = 'YES'
-                AND a.column_name = 'rowid'
-                AND a.table_name NOT LIKE 'awsdms_%'
-        )
-SELECT fix_me FROM has_no_pk
-UNION ALL SELECT fix_me FROM invalid_columns
-UNION ALL SELECT fix_me FROM invalid_version;
-~~~
+                                    )::INT8
+                                    = 2
+                                AND split_part(
+                                        substr(
+                                            substring(
+                                                version(),
+                                                e'v\\d+\\.\\d+.\\d+'
+                                            ),
+                                            2
+                                        ),
+                                        '.',
+                                        3
+                                    )::INT8
+                                    >= 13
+                            )
+            ),
+        has_no_pk
+            AS (
+                SELECT
+                    'Table '
+                    || a.table_schema
+                    || '.'
+                    || a.table_name
+                    || ' has column '
+                    || a.column_name
+                    || ' has no explicit PRIMARY KEY. Ensure you are not using target mode "Drop tables on target" and that this table has a PRIMARY KEY.'
+                        AS fix_me
+                FROM
+                    information_schema.key_column_usage AS a
+                    JOIN information_schema.columns AS b ON
+                            a.table_schema = b.table_schema
+                            AND a.table_name = b.table_name
+                            AND a.column_name = b.column_name
+                WHERE
+                    b.is_hidden = 'YES'
+                    AND a.column_name = 'rowid'
+                    AND a.table_name NOT LIKE 'awsdms_%'
+            )
+    SELECT fix_me FROM has_no_pk
+    UNION ALL SELECT fix_me FROM invalid_columns
+    UNION ALL SELECT fix_me FROM invalid_version;
+    ~~~
+
+- Refer to Debugging Your AWS DMS Migrations ([Part 1](https://aws.amazon.com/blogs/database/debugging-your-aws-dms-migrations-what-to-do-when-things-go-wrong-part-1/), [Part 2](https://aws.amazon.com/blogs/database/debugging-your-aws-dms-migrations-what-to-do-when-things-go-wrong-part-2/), and [Part 3](https://aws.amazon.com/blogs/database/debugging-your-aws-dms-migrations-what-to-do-when-things-go-wrong-part-3/)) on the AWS Database Blog.
+
+- If the migration is still failing, [contact Support](https://support.cockroachlabs.com) and include the following information when filing an issue:
+    - Source database name.
+    - CockroachDB version.
+    - Source database schema.
+    - CockroachDB database schema.
+    - Any relevant logs (e.g., the last 100 lines preceding the AWS DMS failure).
+    - Ideally, a sample dataset formatted as a database dump file or CSV.
 
 ## See Also
 
+- [Migrate Your Database to CockroachDB](migration-overview.html)
+- [Schema Conversion Tool](../cockroachcloud/migrations-page.html)
 - [`cockroach demo`](cockroach-demo.html)
 - [AWS DMS documentation](https://docs.aws.amazon.com/dms/latest/userguide/Welcome.html)
 - [Client connection parameters](connection-parameters.html)
