@@ -27,7 +27,7 @@ The **Replication** dashboard displays the following time series graphs:
 
 <img src="{{ 'images/v22.1/ui_ranges.png' | relative_url }}" alt="DB Console Ranges" style="border:1px solid #eee;max-width:100%" />
 
-The **Ranges** graph shows you various details about the status of ranges.
+The **Ranges** graph displays various details about the status of ranges.
 
 - In the node view, the graph shows details about ranges on the node.
 

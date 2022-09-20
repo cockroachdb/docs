@@ -21,9 +21,9 @@ The **Distributed** dashboard displays the following time series graphs:
 
 <img src="{{ 'images/v22.1/ui_batches.png' | relative_url }}" alt="DB Console batches graph" style="border:1px solid #eee;max-width:100%" />
 
-The **Batches** graph shows you various details about [`BatchRequest`](architecture/distribution-layer.html#batchrequest) traffic in the [Distribution layer](architecture/distribution-layer.html).html).
+The **Batches** graph displays various details about [`BatchRequest`](architecture/distribution-layer.html#batchrequest) traffic in the [Distribution layer](architecture/distribution-layer.html).
 
-On hovering over the graph, the values for the following metrics are displayed:
+Hovering over the graph displays values for the following metrics:
 
 Metric | Description
 --------|----
@@ -34,9 +34,9 @@ Partial Batches | The number of partial `BatchRequests` made, as tracked by the 
 
 <img src="{{ 'images/v22.1/ui_rpcs.png' | relative_url }}" alt="DB Console RPCs graph" style="border:1px solid #eee;max-width:100%" />
 
-The **RPCs** graph shows you various details about [`RPC`](architecture/distribution-layer.html#grpc) traffic in the [Distribution layer](architecture/distribution-layer.html).
+The **RPCs** graph displays various details about [`RPC`](architecture/distribution-layer.html#grpc) traffic in the [Distribution layer](architecture/distribution-layer.html).
 
-On hovering over the graph, the values for the following metrics are displayed:
+Hovering over the graph displays values for the following metrics:
 
 Metric | Description
 --------|----
@@ -47,9 +47,9 @@ Local Fast-path | The number of local fast-path RPC calls made, as tracked by th
 
 <img src="{{ 'images/v22.1/ui_rpc_errors.png' | relative_url }}" alt="DB Console RPC errors graph" style="border:1px solid #eee;max-width:100%" />
 
-The **RPC Errors** graph shows you various details about [`RPC`](architecture/distribution-layer.html#grpc) errors encountered in the [Distribution layer](architecture/distribution-layer.html).
+The **RPC Errors** graph displays various details about [`RPC`](architecture/distribution-layer.html#grpc) errors encountered in the [Distribution layer](architecture/distribution-layer.html).
 
-On hovering over the graph, the values for the following metrics are displayed:
+Hovering over the graph displays values for the following metrics:
 
 Metric | Description
 --------|----
@@ -60,9 +60,9 @@ Not Leaseholder Errors | The number of `NotLeaseHolderErrors` logged, as tracked
 
 <img src="{{ 'images/v22.1/ui_kv_transactions.png' | relative_url }}" alt="DB Console KV transactions graph" style="border:1px solid #eee;max-width:100%" />
 
-The **KV Transactions** graph shows you various details about transactions in the [Transaction layer](architecture/transaction-layer.html).
+The **KV Transactions** graph displays various details about transactions in the [Transaction layer](architecture/transaction-layer.html).
 
-On hovering over the graph, the values for the following metrics are displayed:
+Hovering over the graph displays values for the following metrics:
 
 Metric | Description
 --------|----
@@ -74,9 +74,9 @@ Aborted | The number of aborted KV transactions, as tracked by the `txn.aborts` 
 
 <img src="{{ 'images/v22.1/ui_kv_transactions_99.png' | relative_url }}" alt="DB Console KV transaction durations: 99th percentile graph" style="border:1px solid #eee;max-width:100%" />
 
-The **KV Transaction Durations: 99th percentile** graph shows you the 99th percentile of transaction durations over a one-minute period.
+The **KV Transaction Durations: 99th percentile** graph displays the 99th percentile of transaction durations over a one-minute period.
 
-On hovering over the graph, the values for the following metrics are displayed:
+Hovering over the graph displays values for the following metrics:
 
 Metric | Description
 --------|----
@@ -86,9 +86,9 @@ Metric | Description
 
 <img src="{{ 'images/v22.1/ui_kv_transactions_90.png' | relative_url }}" alt="DB Console KV transaction durations: 90th percentile graph" style="border:1px solid #eee;max-width:100%" />
 
-The **KV Transaction Durations: 90th percentile** graph shows you the 90th percentile of transaction durations over a one-minute period.
+The **KV Transaction Durations: 90th percentile** graph displays the 90th percentile of transaction durations over a one-minute period.
 
-On hovering over the graph, the values for the following metrics are displayed:
+Hovering over the graph displays values for the following metrics:
 
 Metric | Description
 --------|----
@@ -98,9 +98,9 @@ Metric | Description
 
 <img src="{{ 'images/v22.1/ui_node_heartbeat_99.png' | relative_url }}" alt="DB Console node heartbeat latency: 99th percentile graph" style="border:1px solid #eee;max-width:100%" />
 
-The **Node Heartbeat Latency: 99th percentile** graph shows you the 99th percentile of time elapsed between [node liveness](cluster-setup-troubleshooting.html#node-liveness-issues) heartbeats on the cluster over a one-minute period.
+The **Node Heartbeat Latency: 99th percentile** graph displays the 99th percentile of time elapsed between [node liveness](cluster-setup-troubleshooting.html#node-liveness-issues) heartbeats on the cluster over a one-minute period.
 
-On hovering over the graph, the values for the following metrics are displayed:
+Hovering over the graph displays values for the following metrics:
 
 Metric | Description
 --------|----
@@ -110,9 +110,9 @@ Metric | Description
 
 <img src="{{ 'images/v22.1/ui_node_heartbeat_90.png' | relative_url }}" alt="DB Console node heartbeat latency: 90th percentile graph" style="border:1px solid #eee;max-width:100%" />
 
-The **Node Heartbeat Latency: 90th percentile** graph shows you the 90th percentile of time elapsed between [node liveness](cluster-setup-troubleshooting.html#node-liveness-issues) heartbeats on the cluster over a one-minute period.
+The **Node Heartbeat Latency: 90th percentile** graph displays the 90th percentile of time elapsed between [node liveness](cluster-setup-troubleshooting.html#node-liveness-issues) heartbeats on the cluster over a one-minute period.
 
-On hovering over the graph, the values for the following metrics are displayed:
+Hovering over the graph displays values for the following metrics:
 
 Metric | Description
 --------|----

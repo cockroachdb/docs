@@ -21,9 +21,9 @@ The **Queues** dashboard displays the following time series graphs:
 
 <img src="{{ 'images/v22.1/ui_queue_failures.png' | relative_url }}" alt="DB Console queue failures graph" style="border:1px solid #eee;max-width:100%" />
 
-The **Queue Processing Failures** graph shows you processing failures experienced across various queuing systems.
+The **Queue Processing Failures** graph displays processing failures experienced across various queuing systems.
 
-On hovering over the graph, the values for the following metrics are displayed:
+Hovering over the graph displays values for the following metrics:
 
 Metric | Description
 --------|----
@@ -40,9 +40,9 @@ Time Series Maintenance | The number of replicas which failed processing in the 
 
 <img src="{{ 'images/v22.1/ui_queue_time.png' | relative_url }}" alt="DB Console queue processing time graph" style="border:1px solid #eee;max-width:100%" />
 
-The **Queue Processing Times** graph shows you the processing rate across various queue systems.
+The **Queue Processing Times** graph displays the processing rate across various queue systems.
 
-On hovering over the graph, the values for the following metrics are displayed:
+Hovering over the graph displays values for the following metrics:
 
 Metric | Description
 --------|----
@@ -59,9 +59,9 @@ Time Series Maintenance | The processing rate for the time series maintenance qu
 
 <img src="{{ 'images/v22.1/ui_replicagc_queue.png' | relative_url }}" alt="DB Console replica GC queue graph" style="border:1px solid #eee;max-width:100%" />
 
-The **Replica GC Queue** graph shows you various details about the health and performance of the replica garbage collection queue.
+The **Replica GC Queue** graph displays various details about the health and performance of the replica garbage collection queue.
 
-On hovering over the graph, the values for the following metrics are displayed:
+Hovering over the graph displays values for the following metrics:
 
 Metric | Description
 --------|----
@@ -73,9 +73,9 @@ Replicas Removed | The number of replica removals attempted in the replica garba
 
 <img src="{{ 'images/v22.1/ui_replication_queue.png' | relative_url }}" alt="DB Console replication queue graph" style="border:1px solid #eee;max-width:100%" />
 
-The **Replication Queue** graph shows you various details about the health and performance of the replication queue.
+The **Replication Queue** graph displays various details about the health and performance of the replication queue.
 
-On hovering over the graph, the values for the following metrics are displayed:
+Hovering over the graph displays values for the following metrics:
 
 Metric | Description
 --------|----
@@ -93,9 +93,9 @@ Replicas in Purgatory | The number of replicas in the replication queue's purgat
 
 <img src="{{ 'images/v22.1/ui_split_queue.png' | relative_url }}" alt="DB Console split queue graph" style="border:1px solid #eee;max-width:100%" />
 
-The **Split Queue** graph shows you various details about the health and performance of the split queue.
+The **Split Queue** graph displays various details about the health and performance of the split queue.
 
-On hovering over the graph, the values for the following metrics are displayed:
+Hovering over the graph displays values for the following metrics:
 
 Metric | Description
 --------|----
@@ -106,9 +106,9 @@ Pending Actions | The number of pending replicas in the split queue, as tracked 
 
 <img src="{{ 'images/v22.1/ui_merge_queue.png' | relative_url }}" alt="DB Console merge queue graph" style="border:1px solid #eee;max-width:100%" />
 
-The **Merge Queue** graph shows you various details about the health and performance of the merge queue.
+The **Merge Queue** graph displays various details about the health and performance of the merge queue.
 
-On hovering over the graph, the values for the following metrics are displayed:
+Hovering over the graph displays values for the following metrics:
 
 Metric | Description
 --------|----
@@ -119,9 +119,9 @@ Pending Actions | The number of pending replicas in the merge queue, as tracked 
 
 <img src="{{ 'images/v22.1/ui_gc_queue.png' | relative_url }}" alt="DB Console GC queue graph" style="border:1px solid #eee;max-width:100%" />
 
-The **GC Queue** graph shows you various details about the health and performance of the garbage collection queue.
+The **GC Queue** graph displays various details about the health and performance of the garbage collection queue.
 
-On hovering over the graph, the values for the following metrics are displayed:
+Hovering over the graph displays values for the following metrics:
 
 Metric | Description
 --------|----
@@ -132,9 +132,9 @@ Pending Actions | The number of pending replicas in the garbage collection queue
 
 <img src="{{ 'images/v22.1/ui_raftlog_queue.png' | relative_url }}" alt="DB Console Raft log queue graph" style="border:1px solid #eee;max-width:100%" />
 
-The **Raft Log Queue** graph shows you various details about the health and performance of the Raft log queue.
+The **Raft Log Queue** graph displays various details about the health and performance of the Raft log queue.
 
-On hovering over the graph, the values for the following metrics are displayed:
+Hovering over the graph displays values for the following metrics:
 
 Metric | Description
 --------|----
@@ -145,9 +145,9 @@ Pending Actions | The number of pending replicas in the Raft log queue, as track
 
 <img src="{{ 'images/v22.1/ui_raftsnapshot_queue.png' | relative_url }}" alt="DB Console Raft snapshot queue graph" style="border:1px solid #eee;max-width:100%" />
 
-The **Raft Snapshot Queue** graph shows you various details about the health and performance of the Raft repair queue.
+The **Raft Snapshot Queue** graph displays various details about the health and performance of the Raft repair queue.
 
-On hovering over the graph, the values for the following metrics are displayed:
+Hovering over the graph displays values for the following metrics:
 
 Metric | Description
 --------|----
@@ -158,9 +158,9 @@ Pending Actions | The number of pending replicas in the Raft repair queue, as tr
 
 <img src="{{ 'images/v22.1/ui_consistencychecker_queue.png' | relative_url }}" alt="DB Console consistency checker queue graph" style="border:1px solid #eee;max-width:100%" />
 
-The **Consistency Checker Queue** graph shows you various details about the health and performance of the consistency checker queue.
+The **Consistency Checker Queue** graph displays various details about the health and performance of the consistency checker queue.
 
-On hovering over the graph, the values for the following metrics are displayed:
+Hovering over the graph displays values for the following metrics:
 
 Metric | Description
 --------|----
@@ -171,9 +171,9 @@ Pending Actions | The number of pending replicas in the consistency checker queu
 
 <img src="{{ 'images/v22.1/ui_tsmaintenance_queue.png' | relative_url }}" alt="DB Console time series maintenance queue graph" style="border:1px solid #eee;max-width:100%" />
 
-The **Time Series Maintenance Queue** graph shows you various details about the health and performance of the time series maintenance queue.
+The **Time Series Maintenance Queue** graph displays various details about the health and performance of the time series maintenance queue.
 
-On hovering over the graph, the values for the following metrics are displayed:
+Hovering over the graph displays values for the following metrics:
 
 Metric | Description
 --------|----

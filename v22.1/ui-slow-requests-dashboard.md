@@ -21,9 +21,9 @@ The **Slow Requests** dashboard displays the following time series graphs:
 
 <img src="{{ 'images/v22.1/ui_slow_raft.png' | relative_url }}" alt="DB Console slow Raft proposals graph" style="border:1px solid #eee;max-width:100%" />
 
-The **Slow Raft Proposals** graph shows you requests that have been stuck for longer than usual in [Raft](architecture/replication-layer.html#raft).
+The **Slow Raft Proposals** graph displays requests that have been stuck for longer than usual in [Raft](architecture/replication-layer.html#raft).
 
-On hovering over the graph, the values for the following metrics are displayed:
+Hovering over the graph displays values for the following metrics:
 
 Metric | Description
 --------|----
@@ -33,9 +33,9 @@ Slow Raft Proposals | The number of requests that have been stuck for longer tha
 
 <img src="{{ 'images/v22.1/ui_slow_distsender.png' | relative_url }}" alt="DB Console slow DistSender RPCs graph" style="border:1px solid #eee;max-width:100%" />
 
-The **Slow DistSender RPCs** graph shows you requests that have been stuck for longer than usual in [`DistSender`](architecture/distribution-layer.html#distsender).
+The **Slow DistSender RPCs** graph displays requests that have been stuck for longer than usual in [`DistSender`](architecture/distribution-layer.html#distsender).
 
-On hovering over the graph, the values for the following metrics are displayed:
+Hovering over the graph displays values for the following metrics:
 
 Metric | Description
 --------|----
@@ -45,9 +45,9 @@ Slow DistSender RPCs | The number of requests that have been stuck for longer th
 
 <img src="{{ 'images/v22.1/ui_slow_lease.png' | relative_url }}" alt="DB Console slow lease acquisitions graph" style="border:1px solid #eee;max-width:100%" />
 
-The **Slow Lease Acquisitions** graph shows you requests that have been stuck for longer than usual while attempting to acquire a [lease](architecture/replication-layer.html#leases).
+The **Slow Lease Acquisitions** graph displays requests that have been stuck for longer than usual while attempting to acquire a [lease](architecture/replication-layer.html#leases).
 
-On hovering over the graph, the values for the following metrics are displayed:
+Hovering over the graph displays values for the following metrics:
 
 Metric | Description
 --------|----
@@ -57,9 +57,9 @@ Slow Lease Acquisitions | The number of requests that have been stuck for longer
 
 <img src="{{ 'images/v22.1/ui_slow_latch.png' | relative_url }}" alt="DB Console slow latch acquisitions graph" style="border:1px solid #eee;max-width:100%" />
 
-The **Slow Latch Acquisitions** graph shows you requests that have been stuck for longer than usual while attempting to acquire a [latch](architecture/transaction-layer.html#latch-manager).
+The **Slow Latch Acquisitions** graph displays requests that have been stuck for longer than usual while attempting to acquire a [latch](architecture/transaction-layer.html#latch-manager).
 
-On hovering over the graph, the values for the following metrics are displayed:
+Hovering over the graph displays values for the following metrics:
 
 Metric | Description
 --------|----
