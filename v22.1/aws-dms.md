@@ -2,14 +2,14 @@
 title: Migrate with AWS Database Migration Service (DMS)
 summary: Learn how to use AWS Database Migration Service (DMS) to migrate data to a CockroachDB target cluster.
 toc: true
-docs_area: develop
+docs_area: migrate
 ---
 
-This page has instructions for setting up [AWS Database Migration Service (DMS)](https://aws.amazon.com/dms/) to migrate data to CockroachDB from an existing, publicly-hosted database containing application data such as MySQL, Oracle, or PostgreSQL.
+This page has instructions for setting up [AWS Database Migration Service (DMS)](https://aws.amazon.com/dms/) to migrate data to CockroachDB from an existing, publicly hosted database containing application data such as MySQL, Oracle, or PostgreSQL.
 
 For a detailed tutorial about using AWS DMS and information about specific migration tasks, see the [AWS DMS documentation site](https://docs.aws.amazon.com/dms/latest/userguide/Welcome.html).
 
-We have tested AWS DMS with CockroachDB as a target enough to claim **preview-level** support. If you encounter problems in CockroachDB, [open an issue](https://github.com/cockroachdb/cockroach/issues/new) with details to help us make progress toward full support.
+{% include {{ page.version.version }}/feature-phases/preview.md %}
 
 For any issues related to AWS DMS, aside from its interaction with CockroachDB as a migration target, contact [AWS Support](https://aws.amazon.com/contact-us/).
 
@@ -110,7 +110,7 @@ When specifying a range of tables to migrate, the following aspects of the sourc
 
 1. For the **Editing mode** radio button, keep **Wizard** selected.
 1. Select **Add new selection rule**.
-1. In the **Schema** drop down, select **Enter a schema**.
+1. In the **Schema** dropdown, select **Enter a schema**.
 1. Supply the appropriate **Source name** (schema name), **Table name**, and **Action**.
     <img src="{{ 'images/v22.1/aws-dms-table-mappings.png' | relative_url }}" alt="AWS-DMS-Table-Mappings" style="max-width:100%" />
 
@@ -166,7 +166,7 @@ The `BatchApplyEnabled` setting can improve replication performance and is recom
     - Check the `SQL_EXEC` [logging channel](logging-overview.html#logging-channels) for log messages related to `COPY` statements and the tables you are migrating.
     - Check the [Amazon CloudWatch logs that you configured](#step-2-2-task-settings) for messages containing `SQL_ERROR`.
 
-- Run the following query from within the target CockroachDB cluster to identify common problems with any tables that were migrated:
+- Run the following query from within the target CockroachDB cluster to identify common problems with any tables that were migrated. If problems are found, explanatory messages will be returned in the `cockroach sql` shell.
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
