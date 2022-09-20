@@ -28,10 +28,10 @@ The `ALTER SEQUENCE` [statement](sql-statements.html) applies a [schema change](
 `sequence_name` | The name of the sequence.
 `RENAME TO sequence_name` | Rename the sequence to `sequence_name`, which must be unique to its database and follow these [identifier rules](keywords-and-identifiers.html#identifiers). Name changes do not propagate to the  table(s) using the sequence.<br><br>Note that `RENAME TO` can be used to move a sequence from one database to another, but it cannot be used to move a sequence from one schema to another. To change a sequence's schema, use `ALTER SEQUENCE ...SET SCHEMA` instead.
 `CYCLE`/`NO CYCLE` | The sequence will wrap around when the sequence value reaches the maximum or minimum value. `CYCLE` is not implemented. If `NO CYCLE` is set, the sequence will not wrap.
-`OWNED BY column_name` | Associates the sequence to a particular column. If that column or its parent table is dropped, the sequence will also be dropped.<br><br>Specifying an owner column with `OWNED BY` replaces any existing owner column on the sequence. To remove existing column ownership on the sequence and make the column free-standing, specify `OWNED BY NONE`.<br><br>**Default:** `NONE`.
+`OWNED BY column_name` | Associates the sequence to a particular column. If that column or its parent table is dropped, the sequence will also be dropped.<br><br>Specifying an owner column with `OWNED BY` replaces any existing owner column on the sequence. To remove existing column ownership on the sequence and make the column free-standing, specify `OWNED BY NONE`.<br><br>**Default:** `NONE`
 `CACHE` |  The number of sequence values to cache in memory for reuse in the session. A cache size of `1` means that there is no cache, and cache sizes of less than `1` are not valid.<br><br>**Default:** `1` (sequences are not cached by default)
-`MINVALUE` | The new minimum value of the sequence. <br><br>**Default:** `1`.
-`MAXVALUE` | The new maximum value of the sequence. <br><br>**Default:** `9223372036854775807`.
+`MINVALUE` | The new minimum value of the sequence. <br><br>**Default:** `1`
+`MAXVALUE` | The new maximum value of the sequence. <br><br>**Default:** `9223372036854775807`
 `INCREMENT` | The new value by which the sequence is incremented. A negative number creates a descending sequence. A positive number creates an ascending sequence.
 `START [WITH]` | The value the sequence starts at if you `RESTART` or if the sequence reaches `MAXVALUE` and `CYCLE` is set.
 `RESTART [WITH]` | Sets `nextval` to the specified number, or back to the original `START` value.
