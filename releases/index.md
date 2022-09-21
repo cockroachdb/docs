@@ -35,11 +35,7 @@ The following binaries are not suitable for production environments:
 
 {% for v in versions %} {% comment %} Iterate through all major versions {% endcomment %}
 
-    {% assign oldreleases = "v1.0,v1.1,v2.0,v2.1,v19.1,v19.2,v20.1" | split: "," %}
 
-    {% if oldreleases contains v.major_version %}
-        {% assign old_release_format = "True" %}
-    {% endif %} {% comment %} For all releases prior to and including 20.1, we use different logic to generate the page (vXX.Y.Z.html vs vXX.Y.html#vXX-Y-Z). {% endcomment %}
 
     {% assign nosha_releases = "v1.0,v1.1,v2.0,v2.1,v19.1,v19.2,v20.1,v20.2" | split: "," %} {% comment %} For all Production releases 21.1 and later, we provide sha256sum files as well. {% endcomment %}
 
