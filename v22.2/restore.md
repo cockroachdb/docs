@@ -29,18 +29,18 @@ You can restore:
 ## Required privileges
 
 {{site.data.alerts.callout_info}}
-From v22.2, CockroachDB supports a restore privilege model that provides finer control over a user's privilege to restore a backup. There is continued support for the [existing privilege model](#existing-required-privileges) in v22.2. However, this will be removed in v23.1.
+From v22.2, CockroachDB supports a restore privilege model that provides finer control over a user's privilege to restore a backup. There is continued support for the [existing privilege model](#existing-required-privileges) in v22.2. However, this will be removed in a future release.
 {{site.data.alerts.end}}
 
 {% include_cached new-in.html version="v22.2" %} You can grant the `RESTORE` privilege to a user or role depending on the type of restore required:
 
 Restore | Privilege
 -------+-----------
-Cluster | Grant a user the `RESTORE` privilege at the system level.
-Database | Grant a user the `RESTORE` privilege at the system level to restore databases onto the cluster.
-Table | Grant a user the `RESTORE` privilege at the database level to restore schema objects into the database.
+Cluster | Grant a user the system level `RESTORE` privilege.
+Database | Grant a user the system level `RESTORE` privilege to restore databases onto the cluster.
+Table | Grant a user the database level `RESTORE` privilege to restore schema objects into the database.
 
-There is no inheritance with the listed privileges. For example, if a user is granted system-level restore privileges, this does not give the user the privilege to restore a table. Furthermore, if you run an [`ALTER DEFAULT PRIVILEGES`](alter-default-privileges.html) statement to grant a user the `RESTORE` privilege, this will only apply to newly created tables.
+The listed privileges do not cascade to objects lower in the schema tree. For example, if you are granted system-level restore privileges, this does not give you the privilege to restore a table. If you need the `RESTORE` privilege on a database to apply to all newly created tables in that database, use [`DEFAULT PRIVILEGES`](security-reference/authorization.html#default-privileges).
 
 Members of the [`admin` role](security-reference/authorization.html#admin-role) can run all levels of `RESTORE` without the need to grant a specific `RESTORE` privilege.
 
@@ -53,17 +53,18 @@ See [`GRANT`](grant.html) for detail on granting privileges to a role or user.
 
 ### Source privileges
 
-The user that runs `RESTORE` from cloud storage does **not** require the [`admin` role](security-reference/authorization.html#admin-role) in the following scenarios:
+{% include {{ page.version.version }}/misc/external-io-privilege.md %}
+
+`EXTERNALIOIMPLICITACCESS` or [`admin`](security-reference/authorization.html#admin-role) is required for the following scenarios:
+
+- To interact with a cloud storage resource using [`IMPLICIT` authentication](use-cloud-storage-for-bulk-operations.html#authentication).
+- Use of a [custom endpoint](https://docs.aws.amazon.com/sdk-for-go/api/aws/endpoints/) on S3.
+- [Nodelocal](cockroach-nodelocal-upload.html)
+
+No special privilege is required for: 
 
 - Amazon S3 and Google Cloud Storage using `SPECIFIED` credentials. Azure Storage is always `SPECIFIED` by default.
 - [Userfile](use-userfile-for-bulk-operations.html)
-
-{% include {{ page.version.version }}/misc/external-io-privilege.md %}
-
-The user that runs `RESTORE` from cloud storage **does** require the [`admin` role](security-reference/authorization.html#admin-role) in the following scenarios:
-
-- Use of a [custom endpoint](https://docs.aws.amazon.com/sdk-for-go/api/aws/endpoints/) on S3.
-- [Nodelocal](cockroach-nodelocal-upload.html)
 
 We recommend using [cloud storage for bulk operations](use-cloud-storage-for-bulk-operations.html).
 

@@ -1,1 +1,1 @@
-{% include_cached new-in.html version="v22.2" %} You can grant a user the `EXTERNALIOIMPLICITACCESS` [system privilege](security-reference/authorization.html#supported-privileges). This privilege allows a user without the `admin` role to interact with a cloud storage resource using `IMPLICIT` authentication.
+{% include_cached new-in.html version="v22.2" %} You can grant a user the `EXTERNALIOIMPLICITACCESS` [system privilege](security-reference/authorization.html#supported-privileges).

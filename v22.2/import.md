@@ -41,17 +41,21 @@ The user must have the `CREATE` [privileges](security-reference/authorization.ht
 
 ### Source privileges
 
-The user that runs `IMPORT` to external storage does **not** require the `ADMIN` role in the following scenarios:
+{% include {{ page.version.version }}/misc/external-io-privilege.md %}
+
+`EXTERNALIOIMPLICITACCESS` or [`admin`](security-reference/authorization.html#admin-role) is required for the following scenarios:
+
+- To interact with a cloud storage resource using [`IMPLICIT` authentication](use-cloud-storage-for-bulk-operations.html#authentication).
+- Use of a [custom endpoint](https://docs.aws.amazon.com/sdk-for-go/api/aws/endpoints/) on S3.
+- [Nodelocal](cockroach-nodelocal-upload.html)
+- [HTTP](use-a-local-file-server-for-bulk-operations.html) or HTTPS.
+
+No special privilege is required for: 
 
 - Amazon S3 and Google Cloud Storage using `SPECIFIED` credentials. Azure Storage is always `SPECIFIED` by default.
 - [Userfile](use-userfile-for-bulk-operations.html)
 
-{% include {{ page.version.version }}/misc/external-io-privilege.md %}
-
-The user that runs `IMPORT` to external storage **does** require the [`admin` role](security-reference/authorization.html#admin-role) in the following scenarios:
-
-- Use of a [custom endpoint](https://docs.aws.amazon.com/sdk-for-go/api/aws/endpoints/) on S3.
-- [Nodelocal](cockroach-nodelocal-upload.html), [HTTP](use-a-local-file-server-for-bulk-operations.html), or [HTTPS](use-a-local-file-server-for-bulk-operations.html).
+We recommend using [cloud storage for bulk operations](use-cloud-storage-for-bulk-operations.html).
 
 {% include {{ page.version.version }}/misc/s3-compatible-warning.md %}
 
