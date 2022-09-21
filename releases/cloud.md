@@ -18,6 +18,12 @@ Get future release notes emailed to you:
 As of August 29, 2022, {{ site.data.products.serverless }} clusters are running CockroachDB [v22.1.6](v22.1.html#v22-1-6) and new {{ site.data.products.dedicated }} clusters are running CockroachDB [v22.1.6](v22.1.html#v22-1-6).
 {{site.data.alerts.end}}
 
+## September 16, 2022
+
+<h3>Console changes</h3>
+
+- A tool to [estimate your monthly cost](../cockroachcloud/serverless-cluster-management.html#estimate-usage-cost) based on your workload is now available for {{ site.data.products.serverless }} clusters.
+
 ## September 8, 2022
 
 <h3> Console changes </h3>
