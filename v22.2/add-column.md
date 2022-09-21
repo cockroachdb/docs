@@ -5,6 +5,10 @@ toc: true
 docs_area: reference.sql
 ---
 
+This is an Enterprise feature. This sentence should produce a warning.
+
+This line should be fine.
+
 `ADD COLUMN` is a subcommand of [`ALTER TABLE`](alter-table.html). Use `ADD COLUMN` to add columns to existing tables.
 
 {% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}

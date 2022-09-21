@@ -2,17 +2,15 @@ name: Vale Linting
 on: [pull_request]
 
 jobs:
-  prose:
+  vale:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
       uses: actions/checkout@master
 
     - name: Vale
-      uses: errata-ai/vale-action@v2.0.1
+      uses: errata-ai/vale-action@reviewdog
       with:
-        config: https://raw.githubusercontent.com/cockroachdb/docs/${{github.sha}}/.vale.ini
-        files: __onlyModified
-        onlyAnnotateModifiedLines: true
+        files: ${{ steps.changed_files.outputs.all_modified_files }}
       env:
         GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
