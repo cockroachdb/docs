@@ -80,7 +80,7 @@ The following binaries are not suitable for production environments:
             {% for r in releases %}
         <tr {% if r.version == latest_hotfix.version %}class="latest"{% endif %}> {% comment %} Add "Latest" class to release if it's the latest release. {% endcomment %}
             <td>
-                <a href="{% if old_release_format %}{{ r.version }}.html{% else %}{{ v.major_version }}.html#{{ r.version | replace: ".", "-" }}{% endif %}">{{ r.version }}</a> {% comment %} Add link to each release r. {% endcomment %}
+                <a href="{{ v.major_version }}.html#{{ r.version | replace: ".", "-" }}">{{ r.version }}</a> {% comment %} Add link to each release r. {% endcomment %}
                 {% if r.version == latest_hotfix.version %}
                 <span class="badge-new">Latest</span> {% comment %} Add "Latest" badge to release if it's the latest release. {% endcomment %}
                 {% endif %}
@@ -126,7 +126,7 @@ The following binaries are not suitable for production environments:
         {% for r in releases %}
         <tr {% if r.version == latest_hotfix.version %}class="latest"{% endif %}> {% comment %} Add "Latest" class to release if it's the latest release. {% endcomment %}
             <td>
-                <a href="{% if old_release_format %}{{ r.version }}.html{% else %}{{ v.major_version }}.html#{{ r.version | replace: ".", "-" }}{% endif %}">{{ r.version }}</a> {% comment %} Add link to each release r. {% endcomment %}
+                <a href="{{ v.major_version }}.html#{{ r.version | replace: ".", "-" }}">{{ r.version }}</a> {% comment %} Add link to each release r. {% endcomment %}
                 {% if r.version == latest_hotfix.version %}
                 <span class="badge-new">Latest</span> {% comment %} Add "Latest" badge to release if it's the latest release. {% endcomment %}
                 {% endif %}
@@ -163,7 +163,7 @@ The following binaries are not suitable for production environments:
         {% for r in releases %}
         <tr {% if r.version == latest_hotfix.version %}class="latest"{% endif %}> {% comment %} Add "Latest" class to release if it's the latest release. {% endcomment %}
             <td>
-                <a href="{% if old_release_format %}{{ r.version }}.html{% else %}{{ v.major_version }}.html#{{ r.version | replace: ".", "-" }}{% endif %}">{{ r.version }}</a> {% comment %} Add link to each release r. {% endcomment %}
+                <a href="{{ v.major_version }}.html#{{ r.version | replace: ".", "-" }}">{{ r.version }}</a> {% comment %} Add link to each release r. {% endcomment %}
                 {% if r.version == latest_hotfix.version %}
                 <span class="badge-new">Latest</span> {% comment %} Add "Latest" badge to release if it's the latest release. {% endcomment %}
                 {% endif %}
@@ -203,7 +203,7 @@ The following binaries are not suitable for production environments:
         {% for r in releases %}
         <tr {% if r.version == latest_hotfix.version %}class="latest"{% endif %}> {% comment %} Add "Latest" class to release if it's the latest release. {% endcomment %}
             <td>
-                <a href="{% if old_release_format %}{{ r.version }}.html{% else %}{{ v.major_version }}.html#{{ r.version | replace: ".", "-" }}{% endif %}">{{ r.version }}</a> {% comment %} Add link to each release r. {% endcomment %}
+                <a href="{{ v.major_version }}.html#{{ r.version | replace: ".", "-" }}">{{ r.version }}</a> {% comment %} Add link to each release r. {% endcomment %}
             {% if r.version == latest_hotfix.version %}
                 <span class="badge-new">Latest</span> {% comment %} Add "Latest" badge to release if it's the latest release. {% endcomment %}
             {% endif %}
@@ -239,7 +239,7 @@ The following binaries are not suitable for production environments:
     {% for r in releases %}
         <tr {% if r.version == latest_hotfix.version %}class="latest"{% endif %}> {% comment %} Add "Latest" class to release if it's the latest release. {% endcomment %}
             <td>
-                <a href="{% if old_release_format %}{{ r.version }}.html{% else %}{{ v.major_version }}.html#{{ r.version | replace: ".", "-" }}{% endif %}">{{ r.version }}</a> {% comment %} Add link to each release r. {% endcomment %}
+                <a href="{{ v.major_version }}.html#{{ r.version | replace: ".", "-" }}">{{ r.version }}</a> {% comment %} Add link to each release r. {% endcomment %}
         {% if r.version == latest_hotfix.version %}
                 <span class="badge-new">Latest</span> {% comment %} Add "Latest" badge to release if it's the latest release. {% endcomment %}
         {% endif %}
