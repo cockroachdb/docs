@@ -67,7 +67,7 @@ This section describes how to use CockroachDB commands and dashboards to identif
   <tr>
     <td><ul><li>You experience high latency on queries that cannot be explained by high contention or a suboptimal query plan. You might also see high CPU on one or more nodes.</li></ul></td>
     <td><ul><li>You are scanning over large numbers of <a href="architecture/storage-layer.html#mvcc">MVCC versions</a>. This is similar to how a full table scan can be slow.</li></ul></td>
-    <td><ul><li><a href="#too-many-mvcc-versions">Configure CockroachDB to purge unneeded MVCC versions.</a></li></ul></td>
+    <td><ul><li><a href="#too-many-mvcc-values">Configure CockroachDB to purge unneeded MVCC values.</a></li></ul></td>
   </tr>
 </table>
 
@@ -172,9 +172,9 @@ ORDER BY total_reads ASC;
 
 Use the values in the `total_reads` and `last_read` columns to identify indexes that have low usage or are stale and could be dropped.
 
-### Too many MVCC versions
+### Too many MVCC values
 
-#### Indicators that your tables have too many MVCC versions
+#### Indicators that your tables have too many MVCC values
 
 In the [Databases](ui-databases-page.html#tables-view) page in the DB Console, the Tables view show the percent of live data for each table. For example:
 
@@ -182,9 +182,9 @@ In the [Databases](ui-databases-page.html#tables-view) page in the DB Console, t
 
 In this example, at `37.3%` the `vehicles` table would be considered to have a low percentage of live data. In the worst cases, the percentage can be `0%`.
 
-A low percentage can cause statements to scan more data ([MVCC versions](architecture/storage-layer.html#mvcc)) than required, which can reduce performance.
+A low percentage can cause statements to scan more data ([MVCC values](architecture/storage-layer.html#mvcc)) than required, which can reduce performance.
 
-#### Configure CockroachDB to purge MVCC versions
+#### Configure CockroachDB to purge MVCC values
 
 Reduce the [`gc.ttlseconds`](configure-replication-zones.html#gc-ttlseconds) zone configuration of the table as much as possible.
 
