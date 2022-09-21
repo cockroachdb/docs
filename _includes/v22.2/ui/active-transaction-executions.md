@@ -28,7 +28,7 @@ The Transaction Execution details page provides the following details on the tra
 - **Priority**: The [priority](transactions.html#transaction-priorities) of the transaction.
 - **Full Scan**: Whether the execution performed a full scan of the table.
 - **Internal Retries**: The number of retries of statements in the transaction.
-- **Last Retry Reason**: The reason for the last statement retry.
+- **Last Retry Reason**: The [reason](transaction-retry-error-reference.html) for the last statement retry.
 - **Number of Statements**: The number of statements in the transaction.
 - **Application Name**: The name specified by the [`application_name`]({{ link_prefix }}show-vars.html#supported-variables) session setting.
 - **Most Recent Statement Execution ID**: Link to the ID of the most recently [executed statement](ui-statements-page.html#active-executions-table) in the transaction.
