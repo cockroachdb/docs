@@ -19,17 +19,18 @@ For guidance on the syntax for `SHOW BACKUP FROM`, see the [examples](#examples)
 
 `SHOW BACKUP` requires read permissions to its target destination.
 
-The user that runs `SHOW BACKUP` to external storage does **not** require the [`admin` role](security-reference/authorization.html#admin-role) in the following scenarios:
+{% include {{ page.version.version }}/misc/external-io-privilege.md %}
+
+`EXTERNALIOIMPLICITACCESS` or [`admin`](security-reference/authorization.html#admin-role) is required for the following scenarios:
+
+- To interact with a cloud storage resource using [`IMPLICIT` authentication](use-cloud-storage-for-bulk-operations.html#authentication).
+- Use of a [custom endpoint](https://docs.aws.amazon.com/sdk-for-go/api/aws/endpoints/) on S3.
+- [Nodelocal](cockroach-nodelocal-upload.html)
+
+No special privilege is required for: 
 
 - Amazon S3 and Google Cloud Storage using `SPECIFIED` credentials. Azure Storage is always `SPECIFIED` by default.
 - [Userfile](use-userfile-for-bulk-operations.html)
-
-{% include {{ page.version.version }}/misc/external-io-privilege.md %}
-
-The user that runs `SHOW BACKUP` to external storage **does** require the [`admin` role](security-reference/authorization.html#admin-role) in the following scenarios:
-
-- Use of a [custom endpoint](https://docs.aws.amazon.com/sdk-for-go/api/aws/endpoints/) on S3.
-- [Nodelocal](cockroach-nodelocal-upload.html)
 
 We recommend using [cloud storage for bulk operations](use-cloud-storage-for-bulk-operations.html).
 
