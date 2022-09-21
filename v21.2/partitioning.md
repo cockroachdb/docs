@@ -21,10 +21,10 @@ Table partitioning helps you reduce latency and cost:
 
 Table partitioning involves a combination of CockroachDB features:
 
-- [Node Attributes](#node-attributes)
-- [Enterprise License](#enterprise-license)
-- [Table Creation](#table-creation)
-- [Replication Zones](#replication-zones)
+- [Node attributes](#node-attributes)
+- [Enterprise license](#enterprise-license)
+- [Table creation](#table-creation)
+- [Replication zones](#replication-zones)
 
 ### Node attributes
 
@@ -98,7 +98,7 @@ For instance, consider the database of a global online learning portal that has 
     PRIMARY KEY (country, id));
 ~~~
 
-**Primary Key Considerations**
+##### Primary key considerations
 
 - The order in which the columns are defined in the primary key is important. The partitions and subpartitions need to follow that order. In the example of the online learning portal, if you define the primary key as `(country, expected_graduation_date, id)`, the primary partition is by `country`, and then subpartition is by `expected_graduation_date`. You cannot skip `country` and partition by `expected_graduation_date`.
 
@@ -536,7 +536,7 @@ You should see the following output:
 (2 rows)
 ~~~
 
-### Define subpartitions on a Table
+### Define subpartitions on a table
 
 A list partition can itself be partitioned, forming a subpartition. There is no limit on the number of levels of subpartitioning; that is, list partitions can be infinitely nested.
 
@@ -670,7 +670,7 @@ You should see the following output:
 Time: 11.586626ms
 ~~~
 
-### Repartition a Table
+### Repartition a table
 
 Consider the partitioned table of students of RoachLearn. Suppose the table has been partitioned on range to store the current students on fast and expensive storage devices (example: SSD) and store the data of the graduated students on slower, cheaper storage devices(example: HDD). Now suppose we want to change the date after which the students will be considered current to `2018-08-15`. We can achieve this by using the [`PARTITION BY`](partition-by.html) subcommand of the [`ALTER TABLE`](alter-table.html) command.
 
@@ -681,7 +681,7 @@ Consider the partitioned table of students of RoachLearn. Suppose the table has 
     PARTITION current VALUES FROM ('2018-08-15') TO (MAXVALUE));
 ~~~
 
-### Unpartition a Table
+### Unpartition a table
 
 You can remove the partitions on a table by using the [`PARTITION BY NOTHING`](partition-by.html) syntax:
 
@@ -715,7 +715,7 @@ Other databases use partitioning for three additional use cases: secondary index
 
 - {% include {{ page.version.version }}/known-limitations/partitioning-with-placeholders.md %}
 
-- CockroachDB does not currently support dropping a single partition from a table. In order to remove partitions, you can [repartition](#repartition-a-table) the table.
+- {% include {{ page.version.version }}/known-limitations/drop-single-partition.md %}
 
 ## See also
 

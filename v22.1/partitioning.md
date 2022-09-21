@@ -722,7 +722,7 @@ Other databases use partitioning for three additional use cases: secondary index
 
 - {% include {{ page.version.version }}/known-limitations/partitioning-with-placeholders.md %}
 
-- CockroachDB does not currently support dropping a single partition from a table. In order to remove partitions, you can [repartition](#repartition-a-table) the table.
+- {% include {{ page.version.version }}/known-limitations/drop-single-partition.md %}
 
 ## See also
 
