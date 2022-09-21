@@ -17,44 +17,46 @@
           <form id="news-mktoForm_1085"></form>
           <p class="js-ty_1085" style="display: none;">Thanks!</p>
           <script>
-
-          const NewsMktoForms21085 = MktoForms2;
-          const Newsform_mktoForm_1085 = $('#news-mktoForm_1085'); 
-          NewsMktoForms21085.loadForm("//go.cockroachlabs.com", "350-QIN-827", 1085, function(form_1085) {
-            form_1085.render(Newsform_mktoForm_1085);
-            form_1085.onSuccess(function(values, followUpUrl) {
-              form_1085.getFormElem().hide();
-              document.querySelector('.js-ty_1085').style.display = 'block';
-              return false;
+            whenAvailable("MktoForms2", function() {
+              const NewsMktoForms21085 = MktoForms2;
+              const Newsform_mktoForm_1085 = $('#news-mktoForm_1085'); 
+              NewsMktoForms21085.loadForm("//go.cockroachlabs.com", "350-QIN-827", 1085, function(form_1085) {
+                form_1085.render(Newsform_mktoForm_1085);
+                form_1085.onSuccess(function(values, followUpUrl) {
+                  form_1085.getFormElem().hide();
+                  document.querySelector('.js-ty_1085').style.display = 'block';
+                  return false;
+                });
+                // Move button next to input
+                NewsMktoForms21085.whenReady(function () {
+                  $('#news-mktoForm_1085 .mktoButtonRow').insertAfter('#news-mktoForm_1085 #Email');
+                  $('#news-mktoForm_1085 .mktoButtonRow').css('display', 'flex');
+                });
+              });
             });
-            // Move button next to input
-            NewsMktoForms21085.whenReady(function () {
-              $('#news-mktoForm_1085 .mktoButtonRow').insertAfter('#news-mktoForm_1085 #Email');
-              $('#news-mktoForm_1085 .mktoButtonRow').css('display', 'flex');
-            });
-          });
           </script>
           {% else %}
-          <form id="news-mktoForm_1083"></form>
-          <p class="js-ty_1083" style="display: none;">Thanks!</p>
-          <script>
-          const NewsMktoForms21083 = MktoForms2;
-          const Newsform_mktoForm_1083 = $('#news-mktoForm_1083'); 
-
-          NewsMktoForms21083.loadForm("//go.cockroachlabs.com", "350-QIN-827", 1083, function(form_1083){
-             form_1083.render(Newsform_mktoForm_1083);
-             form_1083.onSuccess(function(values, followUpUrl) {
-              form_1083.getFormElem().hide();
-              document.querySelector('.js-ty_1083').style.display = 'block';
-              return false;
-            }); 
-            // Move button next to input
-            NewsMktoForms21083.whenReady(function () {
-              $('#news-mktoForm_1083 .mktoButtonRow').insertAfter('#news-mktoForm_1083 #Email');
-              $('#news-mktoForm_1083 .mktoButtonRow').css('display', 'flex');
-            });
-
-          });</script>
+            <form id="news-mktoForm_1083"></form>
+            <p class="js-ty_1083" style="display: none;">Thanks!</p>
+            <script>
+              whenAvailable("MktoForms2", function() {
+                const NewsMktoForms21083 = MktoForms2;
+                const Newsform_mktoForm_1083 = $('#news-mktoForm_1083'); 
+                NewsMktoForms21083.loadForm("//go.cockroachlabs.com", "350-QIN-827", 1083, function(form_1083){
+                  form_1083.render(Newsform_mktoForm_1083);
+                  form_1083.onSuccess(function(values, followUpUrl) {
+                    form_1083.getFormElem().hide();
+                    document.querySelector('.js-ty_1083').style.display = 'block';
+                    return false;
+                  }); 
+                  // Move button next to input
+                  NewsMktoForms21083.whenReady(function () {
+                    $('#news-mktoForm_1083 .mktoButtonRow').insertAfter('#news-mktoForm_1083 #Email');
+                    $('#news-mktoForm_1083 .mktoButtonRow').css('display', 'flex');
+                  });
+                });
+              });
+            </script>
           {% endif %}
           
         </div>
@@ -64,6 +66,7 @@
   <div class="newsletter-close">
     <img
       src="{{ 'images/close_icon.png' | relative_url }}"
+      alt="close icon"
       style="max-width: 25px;"
       data-proofer-ignore
     />

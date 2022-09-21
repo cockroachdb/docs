@@ -95,7 +95,7 @@ However, unlike table data, system ranges cannot use epoch-based leases because 
 
 #### How leases are transferred from a dead node
 
-When a node disconnects, the process by which each of its leases is transferred to a healthy node is as follows:
+When the cluster needs to access a range on a leaseholder node that is dead, that range's lease must be transferred to a healthy node. This process is as follows:
 
 1. The dead node's liveness record, which is stored in a system range, has an expiration time of 9 seconds, and is heartbeated every 4.5 seconds. When the node dies, the amount of time the cluster has to wait for the record to expire varies, but on average is 6.75 seconds.
 1. A healthy node attempts to acquire the lease. This is rejected because lease acquisition can only happen on the Raft leader, which the healthy node is not (yet). Therefore, a Raft election must be held.

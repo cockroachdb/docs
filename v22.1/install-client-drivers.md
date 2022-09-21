@@ -89,6 +89,21 @@ For a simple but complete example app, see [Build a Simple CRUD Node.js App with
 
 ## Python Drivers
 
+### psycopg3
+
+**Support level:** Full
+
+To install the Python psycopg3 driver:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+$ pip3 install "psycopg[binary]"
+~~~
+
+For other ways to install psycopg3, see the [official documentation](https://www.psycopg.org/psycopg3/docs/basic/install.html).
+
+For a simple but complete example app, see [Build a Python App with CockroachDB and psycopg3](build-a-python-app-with-cockroachdb-psycopg3.html).
+
 ### psycopg2
 
 **Support level:** Full
@@ -251,7 +266,7 @@ For a simple but complete example app, see [Build a Go App with CockroachDB and 
 
 **Support level:** Full
 
-Download and set up the Java JDBC driver as described in the [official documentation](https://jdbc.postgresql.org/documentation/head/setup.html). We recommend using the PostgreSQL JDBC 42.2.9 driver.
+Download and set up the latest Java JDBC driver as described in the [official documentation](https://jdbc.postgresql.org/documentation/head/setup.html).
 
 For a simple but complete example app, see [Build a Java App with CockroachDB and JDBC](build-a-java-app-with-cockroachdb.html).
 
@@ -266,9 +281,11 @@ You can use [Gradle](https://gradle.org/install) or [Maven](https://maven.apache
 If you are using Gradle, add the following to your `dependencies`:
 
 ~~~ groovy
-implementation 'org.hibernate:hibernate-core:5.4.19.Final'
-implementation 'org.postgresql:postgresql:42.2.9'
+implementation 'org.hibernate:hibernate-core:{version}.Final'
+implementation 'org.postgresql:postgresql:{version}'
 ~~~
+
+Where `{version}` is the latest stable version.
 
 For a simple but complete example app that uses Gradle for dependency management, see [Build a Java App with CockroachDB and Hibernate](build-a-java-app-with-cockroachdb-hibernate.html).
 
@@ -278,13 +295,15 @@ If you are using Maven, add the following to your `<dependencies>`:
 <dependency>
     <groupId>org.hibernate</groupId>
     <artifactId>hibernate-core</artifactId>
-    <version>5.4.19.Final</version>
+    <version>{version}.Final</version>
 </dependency>
 <dependency>
     <groupId>org.postgresql</groupId>
     <artifactId>postgresql</artifactId>
 </dependency>
 ~~~
+
+Where `{version}` is the latest stable version.
 
 For a complete example app that uses Maven for dependency management, see [Build a Spring App with CockroachDB and Spring Data JPA (Hibernate)](build-a-spring-app-with-cockroachdb-jpa.html).
 
@@ -321,11 +340,11 @@ For a simple but complete example app, see [Build a Ruby App with CockroachDB an
 
 ## Ruby ORM frameworks
 
-### ActiveRecord
+### Active Record
 
 **Support level:** Full
 
-To install ActiveRecord, the [pg driver](https://rubygems.org/gems/pg), and a [CockroachDB Ruby package](https://github.com/cockroachdb/activerecord-cockroachdb-adapter) that accounts for some minor differences between CockroachDB and PostgreSQL:
+To install Active Record, the [pg driver](https://rubygems.org/gems/pg), and a [CockroachDB Ruby package](https://github.com/cockroachdb/activerecord-cockroachdb-adapter) that accounts for some minor differences between CockroachDB and PostgreSQL:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -333,10 +352,10 @@ $ gem install activerecord pg activerecord-cockroachdb-adapter
 ~~~
 
 {{site.data.alerts.callout_info}}
-The exact command above will vary depending on the desired version of ActiveRecord. Specifically, version 5.1.x of ActiveRecord requires version 0.2.x of the adapter; version 5.2.x of ActiveRecord requires version 5.2.x of the adapter; version 6.0.x of ActiveRecord requires version 6.0.x of the adapter.
+The exact command above will vary depending on the desired version of Active Record. Specifically, version 6.0.x of Active Record requires version 6.0.x of the adapter and version 7.0.x of Active Record requires version 7.0.x of the adapter.
 {{site.data.alerts.end}}
 
-For a simple but complete example app, see [Build a Ruby App with CockroachDB and ActiveRecord](build-a-ruby-app-with-cockroachdb-activerecord.html).
+For a simple but complete example app, see [Build a Ruby App with CockroachDB and Active Record](build-a-ruby-app-with-cockroachdb-activerecord.html).
 
 </section>
 

@@ -40,10 +40,12 @@ For guidance on the syntax for backups and restores, see the [`BACKUP`](backup.h
 
 {% include {{ page.version.version }}/misc/non-http-source-privileges.md %}
 
+{% include {{ page.version.version }}/misc/s3-compatible-warning.md %}
+
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/restore.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/restore.html %}
 </div>
 
 ## Parameters
@@ -56,7 +58,7 @@ For guidance on the syntax for backups and restores, see the [`BACKUP`](backup.h
 `LATEST` | Restore the most recent backup in the given location. See the [Restore the most recent backup](#restore-the-most-recent-backup) example.
 <a name="subdir-param"></a>`subdirectory` | Restore from a specific subdirectory in the given collection URI. See the [Restore a specific backup](#restore-a-specific-backup) example.
  `partitioned_backup_location` | The URL where a [locality-aware backup](take-and-restore-locality-aware-backups.html) is stored. When restoring from an incremental locality-aware backup, you need to include _every_ locality ever used, even if it was only used once.<br/><br/>For information about this URL structure, see [Backup File URLs](#backup-file-urls).
- `AS OF SYSTEM TIME timestamp` | Restore data as it existed as of [`timestamp`](as-of-system-time.html). You can restore point-in-time data only if you had taken full or incremental backup [with revision history](take-backups-with-revision-history-and-restore-from-a-point-in-time.html).
+ <a name="as-of-system-time"></a>`AS OF SYSTEM TIME timestamp` | Restore data as it existed as of [`timestamp`](as-of-system-time.html). You can restore point-in-time data only if you had taken full or incremental backup [with revision history](take-backups-with-revision-history-and-restore-from-a-point-in-time.html).
  `restore_options_list` | Control your backup's behavior with [these options](#options).
 
 ### Options
@@ -95,6 +97,8 @@ You can restore:
 - [Databases](#databases)
 - [Tables](#tables)
 
+`RESTORE` will only restore the latest data in an object (table, database, cluster), or the latest data as per an [`AS OF SYSTEM TIME` restore](#as-of-system-time). That is, a restore will not include historical data even if you ran your backup with [`revision_history`](backup.html#with-revision-history). This means that if you issue an `AS OF SYSTEM TIME` query on a restored object, the query will fail or the response will be incorrect because there is no historical data to query. For example, if you restore a table at `2022-07-13 10:38:00`, it is not then possible to read or [back up](backup.html) that table at `2022-07-13 10:37:00` or earlier. This is also the case for backups with `revision_history` that might try to initiate a revision start time earlier than `2022-07-13 10:38:00`.
+
 #### Full cluster
 
  A full cluster restore can only be run on a target cluster with no user-created databases or tables. Restoring a full cluster includes:
@@ -104,6 +108,8 @@ You can restore:
 - All [databases](create-database.html)
 - All [tables](create-table.html) (which automatically includes their [indexes](indexes.html))
 - All [views](views.html)
+
+Furthermore, [temporary tables](temporary-tables.html) will restore to [`defaultdb`](show-databases.html#preloaded-databases).
 
 {{site.data.alerts.callout_info}}
 When you restore a full cluster with an Enterprise license, it will restore the [Enterprise license](enterprise-licensing.html) of the cluster you are restoring from. If you want to use a different license in the new cluster, make sure to [update the license](licensing-faqs.html#set-a-license) _after_ the restore is complete.
@@ -828,7 +834,6 @@ After the restore completes, add the `users` to the existing `system.users` tabl
 
 ## Known limitations
 
-- {% include {{ page.version.version }}/known-limitations/restore-aost.md %} [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/53044)
 - To successfully [restore a table into a multi-region database](#restoring-to-multi-region-databases), it is necessary for the order and regions to match between the source and destination database. See the [Known Limitations](known-limitations.html#using-restore-with-multi-region-table-localities) page for detail on ordering and matching regions. [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/71071)
 - {% include {{ page.version.version }}/known-limitations/restore-tables-non-multi-reg.md %}
 

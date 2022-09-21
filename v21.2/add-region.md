@@ -20,7 +20,7 @@ In order to add a region with `ADD REGION`, you must first set a primary databas
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/alter_database_add_region.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/alter_database_add_region.html %}
 </div>
 
 ## Parameters

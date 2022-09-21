@@ -1,0 +1,1 @@
+Disable Linux memory swapping. Over-allocating memory on production machines can lead to unexpected performance issues when pages have to be read back into memory.

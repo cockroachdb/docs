@@ -16,7 +16,7 @@ The [cost-based optimizer](cost-based-optimizer.html) supports hint syntax to fo
 
 ## Synopsis
 
-<div>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/joined_table.html %}</div>
+<div>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/joined_table.html %}</div>
 
 <div markdown="1"></div>
 

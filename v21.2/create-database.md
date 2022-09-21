@@ -16,7 +16,7 @@ To create a database, the user must be a member of the `admin` role or must have
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/create_database.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/create_database.html %}
 </div>
 
 ## Parameters

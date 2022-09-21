@@ -4,13 +4,10 @@ summary: Learn how to use CockroachDB from a simple CRUD application that uses t
 toc: true
 twitter: false
 referral_id: docs_node_knexjs
-filter_category: crud_js
-filter_html: Use <strong>Knex.js</strong>
-filter_sort: 3
 docs_area: get_started
 ---
 
-{% include filter-tabs.md %}
+{% include {{ page.version.version }}/filter-tabs/crud-js.md %}
 
 This tutorial shows you how build a simple Node.js application with CockroachDB and [Knex.js](https://knexjs.org/).
 

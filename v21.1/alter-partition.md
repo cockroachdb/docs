@@ -11,7 +11,7 @@ The `ALTER PARTITION` [statement](sql-statements.html) is used to configure repl
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/alter_zone_partition.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version | replace: "v", "" }}/grammar_svg/alter_zone_partition.html %}
 </div>
 
 ## Required privileges

@@ -18,7 +18,7 @@ In contrast to cluster-wide settings, node-level settings apply to a single node
 Many cluster settings are intended for tuning CockroachDB internals. Before changing these settings, we strongly encourage you to discuss your goals with Cockroach Labs; otherwise, you use them at your own risk.
 {{site.data.alerts.end}}
 
-{% remote_include https://raw.githubusercontent.com/cockroachdb/cockroach/release-19.1/docs/generated/settings/settings.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/cockroach/release-{{ page.version.version | replace: "v", "" }}/docs/generated/settings/settings.html %}
 
 ## View current cluster settings
 

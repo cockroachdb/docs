@@ -1,10 +1,8 @@
 /* Feedback question and buttons */
 
-#feedback-prompt {
+#feedback-prompt-toc, #feedback-prompt-bottom {
   display: inline-block;
   font-size: 17px;
-  line-height: 1;
-  // float: right;
   margin-left: 24px;
 
   form {
@@ -14,16 +12,23 @@
   .yes-button,
   .no-button {
     img {
+      width: 25px;
       vertical-align: middle;
-      margin: 0 4px 4px 0;
+      margin: 0 10px 0 0;
     }
+  }
+  .yes-button {
+    padding-left: 5px;
+  }
+  .no-button img {
+    padding-top: 12px;
+  }
     // &:hover {
     //   box-shadow: -4px 4px 7px -3px rgba(25, 15, 51, 0.5);
     // }
-  }
 }
 
-.post-content #feedback-prompt {
+.post-content #feedback-prompt-bottom {
     margin-bottom: 50px;
     margin-top: 50px;
     padding: 25px
@@ -36,9 +41,9 @@
 
 .feedback-question {
   display: block;
-  line-height: 0;
   // margin-right: 5px;
   vertical-align: bottom;
+  line-height: 4px;
   @include sourcesanspro_r(16px);
 
   @include at-query($min, $screen-xsm) { display: inline-block; }
@@ -48,7 +53,8 @@
   .feedback-question {
     font-size: 14px;
   }
-  #feedback-prompt p.feedback-response {
+  #feedback-prompt p.feedback-response-toc,
+  #feedback-prompt p.feedback-response-bottom {
     line-height: 20px;
     font-size: 14px;
   }

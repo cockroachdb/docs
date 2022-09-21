@@ -11,7 +11,7 @@ The **Alerts** page allows you to toggle {{ site.data.products.db }} alerts, sen
 The **Alerts** page is accessible on {{ site.data.products.dedicated }} clusters. For {{ site.data.products.serverless }} clusters, all [Console Admins](console-access-management.html#console-admin) will automatically receive email alerts when your cluster reaches 75% and 100% of its burst capacity or storage limit. If you set a spend limit, you will also receive alerts at 50%, 75%, and 100% of your spend limit.
 {{site.data.alerts.end}}
 
-If alerts are enabled, {{ site.data.products.db }} will send alerts to [specified email receipients](#configure-alerts) when the following usage metrics are detected:
+If alerts are enabled, {{ site.data.products.db }} will send alerts to [specified email recipients](#configure-alerts) when the following usage metrics are detected:
 
 **Storage Utilization:**
 
@@ -29,6 +29,8 @@ If alerts are enabled, {{ site.data.products.db }} will send alerts to [specifie
 - Node-level available memory is **10% or less** on *average* for at least 90 minutes.
 
 If you receive an alert repeatedly, you may need to [optimize your workload](../stable/make-queries-fast.html) or [scale your {{ site.data.products.db }} cluster](cluster-management.html?filters=dedicated#add-or-remove-nodes-from-a-cluster).
+
+[Console Admins](console-access-management.html#console-admin) will also receive email alerts when your cluster undergoes an automatic [patch version upgrade](upgrade-policy.html#patch-version-upgrades).
 
 {{site.data.alerts.callout_success}}
 When scaling your cluster, we recommend first scaling VMs to include more than 2 vCPUs each. If this doesn't sufficiently improve performance, then add more nodes.

@@ -18,7 +18,7 @@ The user must have the `DELETE` and `SELECT` [privileges](security-reference/aut
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/delete.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/delete.html %}
 </div>
 
 ## Parameters

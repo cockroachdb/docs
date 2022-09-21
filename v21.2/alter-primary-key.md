@@ -34,7 +34,7 @@ To change an existing primary key without creating a secondary index from that p
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/alter_primary_key.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/alter_primary_key.html %}
 </div>
 
 ## Parameters

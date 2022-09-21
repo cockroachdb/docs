@@ -16,7 +16,7 @@ The `ALTER DATABASE .. DROP REGION` [statement](sql-statements.html) drops a [re
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/alter_database_drop_region.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/alter_database_drop_region.html %}
 </div>
 
 ## Parameters

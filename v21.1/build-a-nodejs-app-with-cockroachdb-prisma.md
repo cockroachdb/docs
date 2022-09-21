@@ -75,7 +75,7 @@ This tutorial shows you how build a simple Node.js application with CockroachDB 
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ prisma migrate dev --name init
+    $ node_modules/.bin/prisma migrate dev --name init
     ~~~
 
     You should see the following output:

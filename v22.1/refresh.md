@@ -15,20 +15,19 @@ CockroachDB does not support materialized views that are refreshed on [transacti
 
 The user must be the [owner](owner-to.html) of the materialized view or have [admin](security-reference/authorization.html#admin-role) privileges.
 
-## Syntax
+## Synopsis
 
-~~~
-REFRESH MATERIALIZED VIEW [CONCURRENTLY] view_name [WITH [NO] DATA]
-~~~
+<div>
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/refresh_materialized_views.html %}
+</div>
 
 ## Parameters
 
  Parameter | Description
 -----------|-------------
-`CONCURRENTLY` | (*Default behavior*) This keyword is a no-op, added for PostgreSQL compatibility. All materialized views are refreshed concurrently with other jobs.
+`opt_concurrently` | `CONCURRENTLY` (Default behavior) This keyword has no effect. It is present for PostgreSQL compatibility. All materialized views are refreshed concurrently with other jobs.
 `view_name` | The name of the materialized view to refresh.
-`WITH NO DATA` | Drop the query results of the materialized view from storage.
-`WITH DATA` | (*Default behavior*) Refresh the stored query results.
+`opt_clear_data` | `WITH DATA` (Default behavior) Refresh the stored query results. <br>`WITH NO DATA` Drop the query results of the materialized view from storage.
 
 ## Example
 

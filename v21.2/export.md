@@ -19,13 +19,15 @@ After the export has been initiated, you can cancel it with [`CANCEL QUERY`](can
 
 ## Synopsis
 
-<div>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/export.html %}</div>
+<div>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/export.html %}</div>
 
 {{site.data.alerts.callout_info}}The <code>EXPORT</code> statement cannot be used within a <a href=transactions.html>transaction</a>.{{site.data.alerts.end}}
 
 ## Required privileges
 
  The user must have the `SELECT` [privilege](security-reference/authorization.html#managing-privileges) on the table being exported, unless the [destination URI requires `admin` privileges](import.html#source-privileges).
+
+ {% include {{ page.version.version }}/misc/s3-compatible-warning.md %}
 
 ## Parameters
 

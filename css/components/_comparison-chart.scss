@@ -33,7 +33,7 @@
   th {
     border-top: none;
     border-bottom: 2px solid $cl_blue;
-    @include avenir_h(12px);
+    @include sourcesanspro_b(12px);
     line-height: 28px; // vertical spacing
     color: $spanish-roast;
     text-align: center;
@@ -56,7 +56,7 @@
     vertical-align: middle;
     border: none;
     border-left: 1px solid $cl_gray_light;
-    @include avenir_r(12px);
+    @include sourcesanspro_r(12px);
     line-height: 20px;
     padding: 10px 0;
 
@@ -77,7 +77,7 @@
   }
 
   td.comparison-chart__feature {
-    @include avenir_r(12px);
+    @include sourcesanspro_r(12px);
     line-height: 20px;
     font-weight: normal;
     color: $cl_blue;

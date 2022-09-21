@@ -16,7 +16,7 @@ Use the `SHOW PARTITIONS` [statement](sql-statements.html) to view details about
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/show_partitions.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/show_partitions.html %}
 </div>
 
 ## Required privileges
@@ -50,7 +50,7 @@ Field | Description
 
 {% include {{page.version.version}}/sql/movr-statements-geo-partitioned-replicas.md %}
 
-The `movr` database in this example is pre-partitioned. For information about partitioning tables, see [Define Table Partitions](partitioning.html) or [`PARTION BY`](partition-by.html).
+The `movr` database in this example is pre-partitioned. For information about partitioning tables, see [Define Table Partitions](partitioning.html) or [`PARTITION BY`](partition-by.html).
 
 ### Show table partitions
 

@@ -362,7 +362,7 @@ FROM  crdb_internal.index_usage_statistics AS us
 JOIN crdb_internal.table_indexes ti
 ON us.index_id = ti.index_id AND us.table_id = ti.descriptor_id
 WHERE last_read < NOW() - INTERVAL '1 WEEK'
-ORDER BY total_access desc;
+ORDER BY total_reads desc;
 ~~~
 
 ##### Which indexes are infrequently used? Are there any unused indexes?

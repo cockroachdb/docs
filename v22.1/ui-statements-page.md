@@ -10,7 +10,7 @@ docs_area: reference.db_console
 The **Statements** page  of the DB Console helps you:
 
 - Identify frequently executed or high latency [SQL statements](sql-statements.html).
-- View SQL statement [details](#statement-details-page).
+- View SQL statement fingerprint [details](#statement-fingerprint-page).
 - Download SQL statement [diagnostics](#diagnostics) for troubleshooting.
 
 To view this page, click **SQL Activity** in the left-hand navigation of the DB Console. The **Statements** tab is selected.
@@ -25,7 +25,12 @@ By default, the Statements page shows SQL statements from all applications and d
 
 ### Search statements
 
-To search using the search field, type a string over `Search Statements` and press `Enter`. The list of statements is filtered by the string.
+To search using the search field:
+
+1. Type a string over `Search Statements`. {% include_cached new-in.html version="v22.1.4" %} To search for exact terms in order, wrap the search string in quotes.
+1. Press `Enter`.
+
+    The list of statements is filtered by the string.
 
 {% include {{ page.version.version }}/ui/statements-filter.md %}
 

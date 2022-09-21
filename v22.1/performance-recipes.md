@@ -42,7 +42,7 @@ This section describes how to use CockroachDB commands and dashboards to identif
     <td><ul>
       <li>The statement plan produced by <a href="explain.html"><code>EXPLAIN</code></a> or <a href="explain-analyze.html"><code>EXPLAIN ANALYZE</code></a> indicates that the statement uses a full table scan.</li>
       <li>Querying the <code>crdb_internal.node_statement_statistics</code> table indicates that you have full table scans in some statement's plans.</li>
-      <li>Viewing the statement plan on the <a href="ui-statements-page.html#statement-details-page">Statement details page</a> of the DB Console indicates that the plan contains full table scans.</li>
+      <li>Viewing the statement plan on the <a href="ui-statements-page.html#statement-fingerprint-page">Statement Fingerprint page</a> of the DB Console indicates that the plan contains full table scans.</li>
       <li>Running the <a href="show-full-table-scans.html"><code>SHOW FULL TABLE SCANS</code></a> statement returns results.</li>
       <li>The <a href="ui-sql-dashboard.html#full-table-index-scans">Full Table/Index Scans graph</a> in the DB Console is showing spikes over time.</li>
     </ul>
@@ -105,7 +105,7 @@ Full table scans often result in poor statement performance.
     FROM crdb_internal.node_statement_statistics
     WHERE full_scan = true;
     ~~~
-* Viewing the statement plan on the [Statement details page](ui-statements-page.html#statement-details-page) of the DB Console indicates that the plan contains full table scans.
+* Viewing the statement plan on the [Statement details page](ui-statements-page.html#statement-fingerprint-page) of the DB Console indicates that the plan contains full table scans.
 * The statement plans returned by the [`EXPLAIN`](sql-tuning-with-explain.html) and [`EXPLAIN ANALYZE` commands](explain-analyze.html) indicate that there are full table scans.
 * The [Full Table/Index Scans graph](ui-sql-dashboard.html#full-table-index-scans) in the DB Console is showing spikes over time.
 

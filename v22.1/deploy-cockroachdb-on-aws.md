@@ -4,14 +4,10 @@ summary: Learn how to deploy CockroachDB on Amazon's AWS EC2 platform.
 toc: true
 toc_not_nested: true
 ssh-link: http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html
-filter_category: deploy_crdb_aws
-filter_html: Secure
-filter_sort: 1
-
 docs_area:
 ---
 
-{% include filter-tabs.md %}
+{% include {{ page.version.version }}/filter-tabs/deploy-crdb-aws.md %}
 
 This page shows you how to manually deploy a secure multi-node CockroachDB cluster on Amazon's AWS EC2 platform, using AWS's managed load balancing service to distribute client traffic.
 
@@ -70,9 +66,7 @@ Open the [Amazon EC2 console](https://console.aws.amazon.com/ec2/) and [launch a
 
 - Your instances will rely on Amazon Time Sync Service for clock synchronization. When choosing an AMI, note that some machines are preconfigured to use Amazon Time Sync Service (e.g., Amazon Linux AMIs) and others are not.
 
-- Use `m5` instances, ranging from `m5.xlarge` to `m5.8xlarge`, with SSD-backed [EBS volumes](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-volume-types.html). To simulate bare-metal deployments, use `m5d` with [SSD Instance Store volumes](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ssd-instance-store.html). `m5a`, `m6i`, and `m6a` instances are also acceptable. CockroachDB does **not** support Arm-based `m6g` instances.
-
-  - **Do not** use [burstable performance instances](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/burstable-performance-instances.html), which limit the load on a single core.
+{% include {{ page.version.version }}/prod-deployment/recommended-instances-aws.md %}
 
 - Note the ID of the VPC you select. You will need to look up its IP range when setting inbound rules for your security group.
 

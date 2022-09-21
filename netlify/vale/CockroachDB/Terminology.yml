@@ -11,7 +11,7 @@ swap:
   'CockroachDB Serverless': "{{ site.data.products.serverless }}"
   'CockroachDB Dedicated': "{{ site.data.products.dedicated }}"
   CockroachCloud: "{{ site.data.products.db }}"
-  Enterprise: Enterprise
+  Enterprise: "{{ site.data.products.enterprise }}"
   raft: Raft
   Raft Group: Raft group
   Admin UI: DB Console

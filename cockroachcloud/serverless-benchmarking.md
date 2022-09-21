@@ -9,7 +9,7 @@ This page describes {{ site.data.products.serverless }} performance benchmarking
 
 ## Introduction
 
-{{ site.data.products.serverless }} is a fully-managed, auto-scaling deployment of CockroachDB. This page describes what you can expect from the free {{ site.data.products.serverless-plan }} baseline performance of 100 RU/s and the burst performance for the same cluster. For more information about how {{ site.data.products.serverless-plan }} scales based on your workload, see [Architecture](architecture.html#performance).
+{{ site.data.products.serverless }} is a fully-managed, auto-scaling deployment of CockroachDB. This page describes what you can expect from the free {{ site.data.products.serverless }} baseline performance of 100 RU/s and the burst performance for the same cluster. For more information about how {{ site.data.products.serverless }} scales based on your workload, see [Architecture](architecture.html#performance).
 
 ### What are RUs?
 
