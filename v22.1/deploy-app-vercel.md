@@ -48,7 +48,7 @@ Before starting the tutorial, do the following:
 1. Navigate to the [CockroachDB page](https://vercel.com/integrations/cockroachdb) of Vercel's integration marketplace.
 1. Click **Add Integration**.
 1. Select your Vercel account and click **Continue**.
-1. Select either **All Projects** or the project you just created and click **Continue**.
+1. Select the project you just created and click **Continue**.
 1. Accept the permissions and click **Add Integration**.
 
     A window will pop up prompting you to log in to {{ site.data.products.db }} if you haven't already.
