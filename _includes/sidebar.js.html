@@ -97,7 +97,7 @@
             // This condition makes it possible to use external
             // urls in the sidebar.
             if (!/^https?:/.test(url)) {
-              url = sidebar.baseUrl + url;
+              url = sidebar.siteUrl + sidebar.baseUrl + url;
             }
             return url;
           });
@@ -148,6 +148,7 @@
     };
     const sidebar = {
       baseUrl: "{{ site.baseurl }}",
+      siteUrl: "{{ site.url }}",
       isVersionDirectory: function (d) {
         // Version directories either are one of the named version
         // aliases specified in _config.yml or have the form "vX.X",
