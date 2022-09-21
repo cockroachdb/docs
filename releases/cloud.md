@@ -15,14 +15,29 @@ Get future release notes emailed to you:
 {% include marketo.html %}
 
 {{site.data.alerts.callout_version}}
-As of August 23, 2022, {{ site.data.products.serverless }} clusters are running CockroachDB [v22.1.5](v22.1.html#v22-1-5) and new {{ site.data.products.dedicated }} clusters are running CockroachDB [v22.1.5](v22.1.html#v22-1-5).
+As of August 29, 2022, {{ site.data.products.serverless }} clusters are running CockroachDB [v22.1.6](v22.1.html#v22-1-6) and new {{ site.data.products.dedicated }} clusters are running CockroachDB [v22.1.6](v22.1.html#v22-1-6).
 {{site.data.alerts.end}}
 
-## September 10, 2022
+## September 24, 2022
 
 <h3>Console changes</h3>
 
 - You can now [create a database](../cockroachcloud/serverless-cluster-management.html#create-a-database) directly from the [**Databases** page](../cockroachcloud/databases-page.html) of the {{ site.data.products.db }} Console.
+
+## September 8, 2022
+
+<h3> Console changes </h3>
+
+- Previously, when trying to remove a region from a three-region cluster, only the second and third regions were removable. Two regions must be removed at once because a two-region cluster is not a valid configuration, but users can now select any two regions to remove.
+- The character limit for cluster names was raised from 20 to 40 characters.
+
+<h3> Cloud API changes </h3>
+
+- Added the ability to create, edit, and delete a database through the [Cloud API](../cockroachcloud/cloud-api.html).
+
+<h3> Bug fixes </h3>
+
+- In the {{ site.data.products.serverless }} connection dialog, the inline password input has been given a placeholder value to prevent it from interacting in unexpected ways with password managers.
 
 ## August 8, 2022
 
@@ -486,7 +501,7 @@ CockroachCloud now requires a user to have a CockroachCloud account before accep
 In addition to various updates, enhancements, and bug fixes, this beta release includes the following major highlights:
 
 - CockroachCloud pricing is now available on the [pricing page](https://www.cockroachlabs.com/pricing/).
-- CockroachCloud clusters running CockroachDB v19.2 have been upgraded to [v19.2.4](https://www.cockroachlabs.com/docs/releases/v19.2.4.html). All new clusters will now be created with CockroachDB v19.2.4.
+- CockroachCloud clusters running CockroachDB v19.2 have been upgraded to [v19.2.4](v19.2.html#v19-2-4). All new clusters will now be created with CockroachDB v19.2.4.
 - CockroachCloud now offers two options for per-node hardware configuration instead of three options. The hardware configuration [pricing](../cockroachcloud/create-your-cluster.html#step-2-select-the-cloud-provider) has been updated accordingly.
 
 <h3>Security changes</h3>
