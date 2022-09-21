@@ -11,7 +11,7 @@ This page describes newly identified limitations in the CockroachDB v1.1 release
 
 ### Enterprise restores after creating, dropping, or truncating tables
 
-{{site.data.alerts.callout_info}}As of <a href="../releases/v1.1.1.html">v1.1.1</a>, it is no longer possible to create an incremental backup if a table has been created, dropped, or truncated after the full backup. This prevents attempts to restore from a broken backup. See <a href="https://github.com/cockroachdb/cockroach/pull/19286">#19286</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}As of <a href="../releases/v1.1.html#v1-1-1">v1.1.1</a>, it is no longer possible to create an incremental backup if a table has been created, dropped, or truncated after the full backup. This prevents attempts to restore from a broken backup. See <a href="https://github.com/cockroachdb/cockroach/pull/19286">#19286</a>.{{site.data.alerts.end}}
 
 It is not possible to perform an [enterprise `RESTORE`](restore.html) from a full [`BACKUP`](backup.html) with incremental backups if you [created](create-table.html), [dropped](drop-table.html), or [truncated](truncate.html) any tables after the full backup. Attempting to restore in this case will fail with an error.
 
@@ -19,7 +19,7 @@ As a workaround, any time you create, drop, or truncate a table, perform another
 
 ### Maximum cluster size
 
-{{site.data.alerts.callout_info}}Resolved as of <a href="../releases/v1.2-alpha.20171026.html">v1.2-alpha.20171026</a>. See <a href="https://github.com/cockroachdb/cockroach/pull/18970">#17016</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}Resolved as of <a href="../releases/v1.2.html#v1-2-alpha-20171026">v1.2-alpha.20171026</a>. See <a href="https://github.com/cockroachdb/cockroach/pull/18970">#17016</a>.{{site.data.alerts.end}}
 
 The locations of all ranges in a cluster are stored in a two-level index at the beginning of the key-space, known as [meta ranges](architecture/distribution-layer.html#meta-ranges), where the first level (`meta1`) addresses the second, and the second level (`meta2`) addresses data in the cluster. A limitation in v1.1 prevents `meta2` from being split; thus, the max size of a single range, 64MiB by default, limits the overall size of a cluster to 64TB. Clusters beyond this size will experience problems.
 

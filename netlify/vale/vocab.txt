@@ -323,6 +323,7 @@ maxroach
 mayank
 memtable
 memtables
+metacommand
 metatables
 Metricbeat
 meunier
@@ -337,6 +338,7 @@ moreutils
 movr
 msg
 multiargument
+multicolumn
 multifactor
 multiregion
 multiset
@@ -374,6 +376,7 @@ offboard
 offlined
 oid
 OIDs
+OOMs
 oli
 ons
 onwards

@@ -34,18 +34,19 @@ The user must have the `CREATE` [privilege](security-reference/authorization.htm
 `INCREMENT` | The value by which the sequence is incremented. A negative number creates a descending sequence. A positive number creates an ascending sequence.<br><br>**Default:** `1`
 `MINVALUE` | The minimum value of the sequence. Default values apply if not specified or if you enter `NO MINVALUE`.<br><br>**Default for ascending:** `1` <br><br>**Default for descending:** `MININT`
 `MAXVALUE` | The maximum value of the sequence. Default values apply if not specified or if you enter `NO MAXVALUE`.<br><br>**Default for ascending:** `MAXINT` <br><br>**Default for descending:** `-1`
-`START` | The first value of the sequence. <br><br>**Default for ascending:** `1` <br><br>**Default for descending:** `-1`
-`NO CYCLE` | Currently, all sequences are set to `NO CYCLE` and the sequence will not wrap.
-`CACHE` |  The number of sequence values to cache in memory for reuse in the session. A cache size of `1` means that there is no cache, and cache sizes of less than `1` are not valid.<br><br>**Default:** `1` (sequences are not cached by default)
+`START [WITH]` | The first value of the sequence. <br><br>**Default for ascending:** `1` <br><br>**Default for descending:** `-1`
+`RESTART [WITH]` | Sets `nextval` to the specified number, or back to the original `START` value.
+`NO CYCLE` | All sequences are set to `NO CYCLE` and the sequence will not wrap.
+`CACHE` | The number of sequence values to cache in memory for reuse in the session. A cache size of `1` means that there is no cache, and cache sizes of less than `1` are not valid.<br><br>**Default:** `1` (sequences are not cached by default)
 `OWNED BY column_name` <a name="owned-by"></a> | Associates the sequence to a particular column. If that column or its parent table is dropped, the sequence will also be dropped.<br>Specifying an owner column with `OWNED BY` replaces any existing owner column on the sequence. To remove existing column ownership on the sequence and make the column free-standing, specify `OWNED BY NONE`.<br><br>**Default:** `NONE`
-`opt_temp` |  Defines the sequence as a session-scoped temporary sequence. For more information, see [Temporary sequences](#temporary-sequences).<br><br>**Support for temporary sequences is [experimental](experimental-features.html#temporary-objects)**.
+`opt_temp` | Defines the sequence as a session-scoped temporary sequence. For more information, see [Temporary sequences](#temporary-sequences).
 
-<!-- CYCLE | Not yet implemented. The sequence will wrap around when the sequence value hits the maximum or minimum value.
+<!-- CYCLE | Not yet implemented. The sequence will wrap around when the sequence value reaches the maximum or minimum value.
 -->
 
 ## Sequence functions
 
-We support the following [SQL sequence functions](functions-and-operators.html):
+CockroachDB supports the following [SQL sequence functions](functions-and-operators.html):
 
 - `nextval('seq_name')`
 - `currval('seq_name')`
@@ -54,7 +55,7 @@ We support the following [SQL sequence functions](functions-and-operators.html):
 
 ## Temporary sequences
 
- CockroachDB supports session-scoped temporary sequences. Unlike persistent sequences, temporary sequences can only be accessed from the session in which they were created, and they are dropped at the end of the session. You can create temporary sequences on both persistent tables and [temporary tables](temporary-tables.html).
+CockroachDB supports session-scoped temporary sequences. Unlike persistent sequences, temporary sequences can only be accessed from the session in which they were created, and they are dropped at the end of the session. You can create temporary sequences on both persistent tables and [temporary tables](temporary-tables.html).
 
 {{site.data.alerts.callout_danger}}
 **This is an experimental feature**. The interface and output are subject to change. For details, see the tracking issue [cockroachdb/cockroach#46260](https://github.com/cockroachdb/cockroach/issues/46260).

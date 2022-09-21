@@ -9,8 +9,6 @@ docs_area: releases
 
 {% assign versions = site.data.versions | where_exp: "versions", "versions.release_date <= today" | sort: "release_date" | reverse %} {% comment %} Get all versions (e.g., v21.2) sorted in reverse chronological order. {% endcomment %}
 
-{% assign oldreleases = "v1.0,v1.1,v2.0,v2.1,v19.1,v19.2,v20.1" | split: "," %} {% comment %} For all releases prior to and including 20.1, we use different logic to generate the page (vXX.Y.Z.html vs vXX.Y.html#vXX-Y-Z). {% endcomment %}
-
 This page explains Cockroach Labs' policy for supporting [major releases](../releases/) of CockroachDB.
 
 {{site.data.alerts.callout_info}}
@@ -51,12 +49,8 @@ Date format: YYYY-MM-DD
   {% for v in versions %}
     {% assign r_latest = site.data.releases | where_exp: "r_latest", "r_latest.major_version == v.major_version" | where: "withdrawn", "false" | sort: "release_date" | last | map: "version" %} {% comment %} Calculate the latest non-withdrawn release for a version v. {% endcomment %}
 
-    {% if oldreleases contains v.major_version %}
-      {% assign old_release_format = "True" %}
-    {% endif %}
-
     <tr{% if v.asst_supp_exp_date < today %} class=eol{% endif %}>
-      <td><a href="{% if old_release_format %}{{ r_latest }}.html{% else %}{{ v.major_version }}.html{% endif %}">{{ v.major_version }}{% if v.asst_supp_exp_date < today %}*{% endif %}</a></td>
+      <td><a href="{{ v.major_version }}.html">{{ v.major_version }}{% if v.asst_supp_exp_date < today %}*{% endif %}</a></td>
       <td>{{ v.release_date }}</td>
       <td>{{ v.maint_supp_exp_date }}</td>
       <td>{{ v.asst_supp_exp_date }}</td>
