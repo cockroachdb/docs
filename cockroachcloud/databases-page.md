@@ -2,6 +2,7 @@
 title: Databases Page
 summary: The Databases page of the CockroachDB Cloud Console provides details about databases configured, the tables in each database, and the grants assigned to each user.
 toc: true
+cloud: true
 docs_area: manage
 ---
 
@@ -13,13 +14,15 @@ The **Databases** page of the {{ site.data.products.db }} Console allows you to 
 
 To view this page, click **Databases** in the left-hand navigation of the {{ site.data.products.db }} Console.
 
+{% include common/ui/databases-page.md %}
+
 ## Databases
 
 The **Databases** page shows:
 
 - Whether [automatic statistics collection](../{{site.versions["stable"]}}/cost-based-optimizer.html#table-statistics) is enabled for the cluster.
 - A list of the databases on the cluster.
-- The **Add database** button, which allows you to [create a new database](serverless-cluster-management.html#create-a-database).
+
 
 The following information is displayed for each database:
 
