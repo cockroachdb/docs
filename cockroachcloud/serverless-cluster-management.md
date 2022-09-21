@@ -49,7 +49,7 @@ The monthly cost estimate is calculated using simple extrapolation that assumes 
 1. In the **Usage this month** section of your cluster's [**Overview** page](cluster-overview-page.html), click **Estimate usage cost**.
 1. Select a time frame in which your workload was active.
 
-    Your used RUs, used storage, and spend from the selected time frame will be shown along with your monthly cost estimate. The spend and cost estimate do not account for the [free resources](learn-about-pricing.html#free-vs-paid-usage) granted to every {{ site.data.products.serverless }} cluster, which you would have to use up before being charged.
+    Your used [RUs](learn-about-request-units.html), used storage, and spend from the selected time frame will be shown along with your monthly cost estimate. The spend and cost estimate do not account for the [free resources](learn-about-pricing.html#free-vs-paid-usage) granted to every {{ site.data.products.serverless }} cluster, which you would have to use up before being charged.
 
 ## Edit your spend limit
 
