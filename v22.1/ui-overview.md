@@ -28,6 +28,9 @@ The Metrics page provides dashboards for all types of CockroachDB metrics.
 - [SQL dashboard](ui-sql-dashboard.html) has metrics about SQL connections, byte traffic, queries, transactions, and service latency.
 - [Storage dashboard](ui-storage-dashboard.html) has metrics about storage capacity and file descriptors.
 - [Replication dashboard](ui-replication-dashboard.html) has metrics about how data is replicated across the cluster, e.g., range status, replicas per store, and replica quiescence.
+- [Distributed dashboard](ui-distributed-dashboard.html) has metrics about distribution tasks across the cluster, including RPCs, transactions, and node heartbeats.
+- [Queues dashboard](ui-queues-dashboard.html) has metrics about the health and performance of various queueing systems in CockroachDB, including the garbage collection and Raft log queues.
+- [Slow requests dashboard](ui-slow-requests-dashboard.html) has metrics about important cluster tasks that take longer than expected to complete, including Raft proposals and lease acquisitions.
 - [Changefeeds dashboard](ui-cdc-dashboard.html) has metrics about the [changefeeds](change-data-capture-overview.html) created across your cluster.
 - [Overload dashboard](ui-overload-dashboard.html) has metrics about the performance of the parts of your cluster relevant to the cluster's [admission control system](admission-control.html).
 
