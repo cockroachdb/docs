@@ -62,7 +62,7 @@
     &-text {
       margin-top: 3px;
       @include button-text;
-      @include avenir_r(12px);
+      @include sourcesanspro_r(12px);
       font-weight: bold;
       text-transform: uppercase;
 

@@ -229,4 +229,4 @@ These final steps are required after upgrading from v1.1.x to v2.0. For upgrades
 - [View Node Details](view-node-details.html)
 - [Collect Debug Information](debug-zip.html)
 - [View Version Details](view-version-details.html)
-- [Release notes for our latest version](../releases/{{page.release_info.version}}.html)
+- [Release notes for our latest version](../releases/{{page.version.version}}.html)
