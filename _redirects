@@ -342,6 +342,18 @@ layout: null
 /docs/stable/orchetrate-cockroachdb-with-kubernetes-multi-region.html /docs/stable/orchestrate-cockroachdb-with-kubernetes-multi-cluster.html 301
 
 # Removed pages
+/docs/stable/migrate-from-postgres.html /docs/stable/migration-overview.html 301
+/docs/v22.2/migrate-from-postgres.html /docs/v22.2/migration-overview.html 301
+/docs/v22.1/migrate-from-postgres.html /docs/v22.1/migration-overview.html 301
+/docs/v21.2/migrate-from-postgres.html /docs/v21.2/migration-overview.html 301
+/docs/stable/migrate-from-mysql.html /docs/stable/migration-overview.html 301
+/docs/v22.2/migrate-from-mysql.html /docs/v22.2/migration-overview.html 301
+/docs/v22.1/migrate-from-mysql.html /docs/v22.1/migration-overview.html 301
+/docs/v21.2/migrate-from-mysql.html /docs/v21.2/migration-overview.html 301
+/docs/stable/migrate-from-oracle.html /docs/stable/migration-overview.html 301
+/docs/v22.2/migrate-from-oracle.html /docs/v22.2/migration-overview.html 301
+/docs/v22.1/migrate-from-oracle.html /docs/v22.1/migration-overview.html 301
+/docs/v21.2/migrate-from-oracle.html /docs/v21.2/migration-overview.html 301
 /docs/stable/orchestrate-cockroachdb-with-docker-swarm.html /docs/stable/orchestration.html 301
 /docs/v22.1/orchestrate-cockroachdb-with-docker-swarm.html /docs/stable/orchestration.html 301
 /docs/v21.2/orchestrate-cockroachdb-with-docker-swarm.html /docs/stable/orchestration.html 301
