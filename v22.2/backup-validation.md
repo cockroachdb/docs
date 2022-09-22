@@ -8,8 +8,8 @@ docs_area: manage
 {% include_cached new-in.html version="v22.2" %} CockroachDB provides backup validation tools to ensure that backups you have in storage are restorable. You can use the following option patterns with [`SHOW BACKUP`](show-backup.html) and [`RESTORE`](restore.html) to validate a [cluster](backup.html#backup-a-cluster), [database](backup.html#backup-a-database), or [table](backup.html#backup-a-table-or-view) backup. The three options result in increasing levels of backup validation:
 
 1. `SHOW BACKUP ... WITH check_files`: Check that all files belonging to a backup are in the expected location in storage. See [Validate backup files](#validate-backup-files) for an example.
-1. `RESTORE ... WITH schema_only`: Restore the schema from the backup to verify that it is valid without restoring any table user data. See [Validate the restore of a backup](#validate-the-restore-of-a-backup) for an example.
-1. `RESTORE ... WITH schema_only, verify_backup_table_data`: Run a `schema_only` restore **and** have the restore read all user data from external storage, verify checksums, and discard the data before writing it to disk. To use `verify_backup_table_data`, you must include `schema_only` in the statement. See [Validate the restore of backup table data](#validate-the-restore-of-backup-table-data) for an example.
+1. `RESTORE ... WITH schema_only`: Restore the schema from the backup to verify that it is valid without restoring any table user data. See [Validate the restore of a backup](#validate-a-backup-is-restorable) for an example.
+1. `RESTORE ... WITH schema_only, verify_backup_table_data`: Run a `schema_only` restore **and** have the restore read all user data from external storage, verify checksums, and discard the data before writing it to disk. To use `verify_backup_table_data`, you must include `schema_only` in the statement. See [Validate the restore of backup table data](#validate-backup-table-data-is-restorable) for an example.
 
 The options that give the most validation coverage will increase the runtime of the check. That is, `verify_backup_table_data` will take a longer time to validate a backup compared to `check_files` or `schema_only` alone. Despite that, each of these validation options provide a quicker way to validate a backup over running a "regular" restore.
 
@@ -44,7 +44,7 @@ SHOW BACKUPS IN "s3://bucket?AWS_ACCESS_KEY_ID={Access Key ID}&AWS_SECRET_ACCESS
 
 To validate that a backup is restorable, you can run `RESTORE` with the `schema_only` option, which will complete a restore **without** restoring any user table data. This process is significantly faster than running a [regular restore](restore.html#examples) for the purposes of validation. 
 
-`schema_only` restores produce close to complete validation coverage on backups. However, this restore type does not read or write from any of the SST files, which store the backed-up user table data. You can use `SHOW BACKUP ... WITH check_files` in addition to a `schema_only` restore to check that these files are present for a restore operation. Or, you can use `schema_only` in combination with `verify_backup_table_data`. See [Validate the restore of backup user data](#validate-the-restore-of-backup-table-data).
+`schema_only` restores produce close to complete validation coverage on backups. However, this restore type does not read or write from any of the SST files, which store the backed-up user table data. You can use `SHOW BACKUP ... WITH check_files` in addition to a `schema_only` restore to check that these files are present for a restore operation. Or, you can use `schema_only` in combination with `verify_backup_table_data`. See [Validate the restore of backup user data](#validate-backup-table-data-is-restorable).
 
 Run `RESTORE` with either `LATEST` or the specific backup you would like to restore:
 
