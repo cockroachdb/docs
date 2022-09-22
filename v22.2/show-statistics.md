@@ -80,7 +80,7 @@ The following example shows 3 historical statistics collections and the subseque
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> SHOW STATISTICS FOR TABLE rides with FORECAST;
+> SHOW STATISTICS FOR TABLE rides WITH FORECAST;
 ~~~
 
 ~~~
