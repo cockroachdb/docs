@@ -29,7 +29,9 @@ You can restore:
 ## Required privileges
 
 {{site.data.alerts.callout_info}}
-From v22.2, CockroachDB supports a restore privilege model that provides finer control over a user's privilege to restore a backup. There is continued support for the [existing privilege model](#existing-required-privileges) in v22.2. However, this will be removed in a future release.
+From v22.2, CockroachDB supports a restore privilege model that provides finer control over a user's privilege to restore a backup. We recommend implementing this privilege model for restores.
+
+There is continued support for the [existing privilege model](#existing-required-privileges) in v22.2. However, this will be removed in a future release.
 {{site.data.alerts.end}}
 
 {% include_cached new-in.html version="v22.2" %} You can grant the `RESTORE` privilege to a user or role depending on the type of restore required:
@@ -42,7 +44,7 @@ Table | Grant a user the database level `RESTORE` privilege to restore schema ob
 
 The listed privileges do not cascade to objects lower in the schema tree. For example, if you are granted system-level restore privileges, this does not give you the privilege to restore a table. If you need the `RESTORE` privilege on a database to apply to all newly created tables in that database, use [`DEFAULT PRIVILEGES`](security-reference/authorization.html#default-privileges).
 
-Members of the [`admin` role](security-reference/authorization.html#admin-role) can run all levels of `RESTORE` without the need to grant a specific `RESTORE` privilege.
+Members of the [`admin` role](security-reference/authorization.html#admin-role) can run all levels of `RESTORE` without the need to grant a specific `RESTORE` privilege. However, we recommend using the `RESTORE` privilege model, which provides stronger access control.
 
 See [`GRANT`](grant.html) for detail on granting privileges to a role or user.
 
@@ -66,7 +68,7 @@ No special privilege is required for:
 - Amazon S3 and Google Cloud Storage using `SPECIFIED` credentials. Azure Storage is always `SPECIFIED` by default.
 - [Userfile](use-userfile-for-bulk-operations.html)
 
-We recommend using [cloud storage for bulk operations](use-cloud-storage-for-bulk-operations.html).
+{% include {{ page.version.version }}/misc/bulk-permission-note.md %}
 
 {% include {{ page.version.version }}/misc/s3-compatible-warning.md %}
 
