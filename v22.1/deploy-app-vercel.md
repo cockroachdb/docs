@@ -10,7 +10,7 @@ docs_area: get_started
 This tutorial shows you how to use [Vercel](https://vercel.com/) to deploy a web application built with [Next.js](https://nextjs.org/), [Express](https://expressjs.com/), [Prisma](https://www.prisma.io/), and {{ site.data.products.serverless }}.
 
 <div class="filters clearfix">
-    <button class="filter-button page-level" data-scope="browser"><strong>Use your browser</strong></button>
+    <button class="filter-button page-level" data-scope="browser"><strong>Use the browser</strong></button>
     <button class="filter-button page-level" data-scope="local"><strong>Use the command line</strong></button>
 </div>
 
