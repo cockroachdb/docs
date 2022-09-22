@@ -33,9 +33,10 @@ The following binaries are not suitable for production environments:
 {% assign latest_hotfix = site.data.releases | where_exp: "latest_hotfix", "latest_hotfix.major_version == site.versions['stable']" | where: "withdrawn", "false"  | sort: "release_date" | reverse | first %}
 {% comment %} For the latest GA version, find the latest hotfix that is not withdrawn. {% endcomment %}
 
+{% comment %}Assign the JS for the experimental download prompt and store it in the Liquid variable experimental_download_js {% endcomment %}
+{% capture experimental_download_js %}{% include_cached releases/experimental_download_dialog.md %}{% endcapture %}
+
 {% for v in versions %} {% comment %} Iterate through all major versions {% endcomment %}
-
-
 
     {% assign nosha_releases = "v1.0,v1.1,v2.0,v2.1,v19.1,v19.2,v20.1,v20.2" | split: "," %} {% comment %} For all Production releases 21.1 and later, we provide sha256sum files as well. {% endcomment %}
 
@@ -100,9 +101,9 @@ The following binaries are not suitable for production environments:
                 <td><span class="badge badge-gray">Withdrawn</span></td>
                     {% else %} {% comment %} Add download links for all non-withdrawn versions. {% endcomment %}
                 <td>
-                    <div><a onclick="ExperimentalAlert();" href="https://binaries.cockroachdb.com/cockroach-{{ r.version }}.linux-3.7.10-gnu-aarch64.tgz">Full Binary</a> (<a href="https://binaries.cockroachdb.com/cockroach-{{ r.version }}.linux-3.7.10-gnu-aarch64.sha256sum">SHA256</a>)</div>
+                    <div><a onclick="{{ experimental_download_js }}" href="https://binaries.cockroachdb.com/cockroach-{{ r.version }}.linux-3.7.10-gnu-aarch64.tgz">Full Binary</a> (<a href="https://binaries.cockroachdb.com/cockroach-{{ r.version }}.linux-3.7.10-gnu-aarch64.sha256sum">SHA256</a>)</div>
                         {% if r.has_sql_only != "false" %}
-                    <div><a onclick="ExperimentalAlert();" href="https://binaries.cockroachdb.com/cockroach-sql-{{ r.version }}.linux-3.7.10-gnu-aarch64.tgz">SQL shell Binary</a> (<a href="https://binaries.cockroachdb.com/cockroach-sql-{{ r.version }}.linux-3.7.10-gnu-aarch64.tgz.sha256sum">SHA256</a>)</div>
+                    <div><a onclick="{{ experimental_download_js }}" href="https://binaries.cockroachdb.com/cockroach-sql-{{ r.version }}.linux-3.7.10-gnu-aarch64.tgz">SQL shell Binary</a> (<a href="https://binaries.cockroachdb.com/cockroach-sql-{{ r.version }}.linux-3.7.10-gnu-aarch64.tgz.sha256sum">SHA256</a>)</div>
                         {% endif %}
                 </td>
                     {% endif %}
@@ -176,9 +177,9 @@ The following binaries are not suitable for production environments:
                     {% if r.no_windows == "true" %}
                 N/A
                     {% else %}
-                <div><a onclick="ExperimentalAlert();" href="https://binaries.cockroachdb.com/cockroach-{{ r.version }}.windows-6.2-amd64.zip">Full Binary</a> (<a href="https://binaries.cockroachdb.com/cockroach-{{ r.version }}.windows-6.2-amd64.zip.sha256sum">SHA256</a>)</div>
+                <div><a onclick="{{ experimental_download_js }}" href="https://binaries.cockroachdb.com/cockroach-{{ r.version }}.windows-6.2-amd64.zip">Full Binary</a> (<a href="https://binaries.cockroachdb.com/cockroach-{{ r.version }}.windows-6.2-amd64.zip.sha256sum">SHA256</a>)</div>
                         {% if r.has_sql_only != "false" %}
-                <div><a onclick="ExperimentalAlert();" href="https://binaries.cockroachdb.com/cockroach-sql-{{ r.version }}.windows-6.2-amd64.zip">SQL shell Binary</a> (<a href="https://binaries.cockroachdb.com/cockroach-sql-{{ r.version }}.windows-6.2-amd64.zip.sha256sum">SHA256</a>)</div>
+                <div><a onclick="{{ experimental_download_js }}" href="https://binaries.cockroachdb.com/cockroach-sql-{{ r.version }}.windows-6.2-amd64.zip">SQL shell Binary</a> (<a href="https://binaries.cockroachdb.com/cockroach-sql-{{ r.version }}.windows-6.2-amd64.zip.sha256sum">SHA256</a>)</div>
                         {% endif %}
                     {% endif %}
                 {% endif %}
@@ -278,5 +279,3 @@ This calendar versioning scheme began with v19.1. Prior releases use a different
 - A major release is produced twice a year indicating major enhancements to product functionality. A change in the `YY.R` component denotes a major release.
 
 - A patch (or maintenance) release is produced to roll out critical bug and security fixes. A change in the `PP` component denotes a patch release.
-
-{% include_cached releases/experimental_download_dialog.md %}

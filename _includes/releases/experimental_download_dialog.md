@@ -1,5 +1,1 @@
-<script>
-function ExperimentalAlert() { 
-    confirm('This experimental binary is not yet qualified for production use. Click OK to start the download.');
-}
-</script>
+return confirm('This experimental binary is not yet qualified for production use. Click OK to start the download.');
