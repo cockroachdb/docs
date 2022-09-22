@@ -22,7 +22,12 @@ This release was withdrawn, and we've removed the links to the downloads and Doc
 {% endif %}
 
 <div><div id="os-tabs" class="filters clearfix">
+{% if release.linux_arm == "false" %}
     <a href="https://binaries.cockroachdb.com/cockroach-{{ release.version }}.linux-amd64.tgz"><button id="linux" class="filter-button" data-scope="linux" data-eventcategory="linux-binary-release-notes">Linux</button></a>
+{% else %}
+    <a href="https://binaries.cockroachdb.com/cockroach-{{ release.version }}.linux-amd64.tgz"><button id="linux" class="filter-button" data-scope="linux" data-eventcategory="linux-binary-release-notes">Linux Intel</button></a>
+    <a href="https://binaries.cockroachdb.com/cockroach-{{ release.version }}.linux-arm64.tgz"><button id="linux" class="filter-button" data-scope="linux" data-eventcategory="linux-binary-release-notes">Linux ARM<br/>(<b>Experimental</b>)</button></a>
+{% endif %}
     <a href="https://binaries.cockroachdb.com/cockroach-{{ release.version }}.darwin-10.9-amd64.tgz"><button id="mac" class="filter-button" data-scope="mac" data-eventcategory="mac-binary-release-notes">Mac</button></a>
     <a href="https://binaries.cockroachdb.com/cockroach-{{ release.version }}.windows-6.2-amd64.zip"><button id="windows" class="filter-button" data-scope="windows" data-eventcategory="windows-binary-release-notes">Windows</button></a>
     <a target="_blank" rel="noopener" href="https://github.com/cockroachdb/cockroach/releases/tag/{{ release.version }}"><button id="source" class="filter-button" data-scope="source" data-eventcategory="source-release-notes">Source</button></a
@@ -32,6 +37,12 @@ This release was withdrawn, and we've removed the links to the downloads and Doc
 <h4>SQL-only command-line client executable</h4>
 
 <div><div id="os-tabs" class="filters clearfix">
+{% if release.linux_arm == "false" %}
+    <a href="https://binaries.cockroachdb.com/cockroach-sql-{{ release.version }}.linux-amd64.tgz"><button id="linux" class="filter-button" data-scope="linux" data-eventcategory="linux-binary-release-notes">Linux</button></a>
+{% else %}
+    <a href="https://binaries.cockroachdb.com/cockroach-sql-{{ release.version }}.linux-amd64.tgz"><button id="linux" class="filter-button" data-scope="linux" data-eventcategory="linux-binary-release-notes">Linux Intel</button></a>
+    <a href="https://binaries.cockroachdb.com/cockroach-sql-{{ release.version }}.linux-arm64.tgz"><button id="linux" class="filter-button" data-scope="linux" data-eventcategory="linux-binary-release-notes">Linux ARM<br/>(<b>Experimental</b>)</button></a>
+{% endif %}
     <a href="https://binaries.cockroachdb.com/cockroach-sql-{{ release.version }}.linux-amd64.tgz"><button id="linux" class="filter-button" data-scope="linux" data-eventcategory="linux-binary-release-notes">Linux</button></a>
     <a href="https://binaries.cockroachdb.com/cockroach-sql-{{ release.version }}.darwin-10.9-amd64.tgz"><button id="mac" class="filter-button" data-scope="mac" data-eventcategory="mac-binary-release-notes">Mac</button></a>
     <a href="https://binaries.cockroachdb.com/cockroach-sql-{{ release.version }}.windows-6.2-amd64.zip"><button id="windows" class="filter-button" data-scope="windows" data-eventcategory="windows-binary-release-notes">Windows</button></a>
