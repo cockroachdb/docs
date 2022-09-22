@@ -8,7 +8,7 @@ docs_area: manage
 {% include_cached new-in.html version="v22.2" %} CockroachDB provides backup validation tools to ensure that backups you have in storage are restorable. You can use the following option patterns with [`SHOW BACKUP`](show-backup.html) and [`RESTORE`](restore.html) to validate a [cluster](backup.html#backup-a-cluster), [database](backup.html#backup-a-database), or [table](backup.html#backup-a-table-or-view) backup. The three options result in increasing levels of backup validation:
 
 1. `SHOW BACKUP ... WITH check_files`: Check that all files belonging to a backup are in the expected location in storage. See [Validate backup files](#validate-backup-files) for an example.
-1. `RESTORE ... WITH schema_only`: Restore a backup to verify that it is valid without restoring any user table data. See [Validate the restore of a backup](#validate-the-restore-of-a-backup) for an example.
+1. `RESTORE ... WITH schema_only`: Restore the schema from the backup to verify that it is valid without restoring any table user data. See [Validate the restore of a backup](#validate-the-restore-of-a-backup) for an example.
 1. `RESTORE ... WITH schema_only, verify_backup_table_data`: Run a `schema_only` restore **and** have the restore read all user data from external storage, verify checksums, and discard the data before writing it to disk. To use `verify_backup_table_data`, you must include `schema_only` in the statement. See [Validate the restore of backup table data](#validate-the-restore-of-backup-table-data) for an example.
 
 The options that give the most validation coverage will increase the runtime of the check. That is, `verify_backup_table_data` will take a longer time to validate a backup compared to `check_files` or `schema_only` alone. Despite that, each of these validation options provide a quicker way to validate a backup over running a "regular" restore.
@@ -40,7 +40,7 @@ SHOW BACKUPS IN "s3://bucket?AWS_ACCESS_KEY_ID={Access Key ID}&AWS_SECRET_ACCESS
 
 {% include {{ page.version.version }}/backups/check-files-validate.md %}
 
-## Validate the restore of a backup
+## Validate a backup is restorable
 
 To validate that a backup is restorable, you can run `RESTORE` with the `schema_only` option, which will complete a restore **without** restoring any user table data. This process is significantly faster than running a [regular restore](restore.html#examples) for the purposes of validation. 
 
@@ -58,6 +58,8 @@ RESTORE DATABASE movr FROM "2022/09/19-134123.64" IN "s3://bucket?AWS_ACCESS_KEY
   797982663104856065 | succeeded |                  1 |    0 |             0 |     0
 (1 row)
 ~~~
+
+You can also use the [`new_db_name` option](restore.html#rename-a-database-on-restore) to restore a database to a different name. For example, `new_db_name = test_movr`.
 
 To verify that the table schemas are in place, check the tables:
 
@@ -102,7 +104,7 @@ It is important to note that [full cluster restores](restore.html#full-cluster) 
 
 Once you have successfully validated a cluster-level restore, the restore system data cannot be reverted. However, you can drop the databases and tables as per the previous command.
 
-## Validate the restore of backup table data
+## Validate backup table data is restorable
 
 A restore with the `verify_backup_table_data` option will perform a `schema_only` restore and the following:
 
@@ -119,21 +121,7 @@ It is necessary to include `schema_only` when you run a restore with `verify_bac
 RESTORE DATABASE movr FROM LATEST IN "s3://bucket?AWS_ACCESS_KEY_ID={Access Key ID}&AWS_SECRET_ACCESS_KEY={Secret Access Key}" WITH schema_only, verify_backup_table_data;
 ~~~
 
-Similarly, to just `schema_only` restores, you'll find the table schemas restored. You'll also receive estimated row counts as the restore reads the files during the process: 
-
-~~~
-  schema_name |         table_name         | type  | owner | estimated_row_count | locality
---------------+----------------------------+-------+-------+---------------------+-----------
-  public      | promo_codes                | table | root  |                1000 | NULL
-  public      | rides                      | table | root  |                 500 | NULL
-  public      | user_promo_codes           | table | root  |                   5 | NULL
-  public      | users                      | table | root  |                  50 | NULL
-  public      | vehicle_location_histories | table | root  |                1000 | NULL
-  public      | vehicles                   | table | root  |                  15 | NULL
-(6 rows)
-~~~
-
-If a file is not present or unreadable in the backup, you'll receive an error. 
+Similarly, to just `schema_only` restores, you'll find the table schemas restored. If a file is not present or unreadable in the backup, you'll receive an error. 
 
 ## See also
 
