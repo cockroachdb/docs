@@ -124,7 +124,7 @@ For more details about grants and privileges, see [`GRANT`]({{ link_prefix }}gra
 
 ## See also
 
-- [Statements page](ui-statements-page.html)
-- [Assign privileges](security-reference/authorization.html#managing-privileges)
-- [`GRANT`](grant.html)
-- [Raw status endpoints](monitoring-and-alerting.html#raw-status-endpoints)
+- [Statements page]({{ link_prefix }}ui-statements-page.html)
+- [Assign privileges]({{ link_prefix }}security-reference/authorization.html#managing-privileges)
+- [`GRANT`]({{ link_prefix }}grant.html)
+- [Raw status endpoints]({{ link_prefix }}monitoring-and-alerting.html#raw-status-endpoints)
