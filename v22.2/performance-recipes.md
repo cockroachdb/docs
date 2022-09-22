@@ -176,13 +176,13 @@ Use the values in the `total_reads` and `last_read` columns to identify indexes 
 
 #### Indicators that your tables have too many MVCC values
 
-In the [Databases](ui-databases-page.html#tables-view) page in the DB Console, the Tables view show the percent of live data for each table. For example:
+In the [Databases](ui-databases-page.html#tables-view) page in the DB Console, the Tables view shows the percentage of live data for each table. For example:
 
 <img src="{{ 'images/v22.2/ui_databases_live_data.png' | relative_url }}" alt="Table live data" style="border:1px solid #eee;max-width:100%" />
 
 In this example, at `37.3%` the `vehicles` table would be considered to have a low percentage of live data. In the worst cases, the percentage can be `0%`.
 
-A low percentage can cause statements to scan more data ([MVCC values](architecture/storage-layer.html#mvcc)) than required, which can reduce performance.
+A low percentage of live data can cause statements to scan more data ([MVCC values](architecture/storage-layer.html#mvcc)) than required, which can reduce performance.
 
 #### Configure CockroachDB to purge MVCC values
 

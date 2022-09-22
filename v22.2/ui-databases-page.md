@@ -71,7 +71,7 @@ The table details include:
 - **Size**: The approximate disk size of all replicas of this table on the cluster.
 - **Replicas**: The number of [replicas](architecture/replication-layer.html) of this table on the cluster.
 - **Ranges**: The number of [ranges](architecture/glossary.html#architecture-range) in this table.
-- **% of Live Data**: Percent of total uncompressed logical data that has not been modified (updated or deleted).
+- **% of Live Data**: Percentage of total uncompressed logical data that has not been modified (updated or deleted).
 - **Table Stats Last Updated**: The last time table statistics were created or updated.
 - **Auto Stats Collection**: Whether [automatic statistics collection](cost-based-optimizer.html#table-statistics) is enabled.
 - **Regions/Nodes**: The regions and nodes on which the table data is stored. This is not displayed on a single-node cluster.
