@@ -71,12 +71,12 @@ Parameter      | Description
 
 The `WITH FORECAST` option calculates and displays forecasted statistics along with the existing table statistics. The forecast is a simple regression model that predicts how the statistics have changed since they were last collected.
 
-CockroachDB generates forecasted statistics when a couple of conditions are met:
+CockroachDB generates forecasted statistics when the following conditions are met:
 
 - There need to be at least 3 historical statistics collections.
 - The historical statistics need to closely fit a linear pattern.
 
-The following example shows 3 historical statistics collections and the subsequent forecast.
+The following example shows 3 historical statistics collections and the subsequent forecast:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
