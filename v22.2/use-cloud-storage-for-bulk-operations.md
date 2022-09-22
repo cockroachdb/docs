@@ -140,6 +140,10 @@ aws ec2 associate-iam-instance-profile --iam-instance-profile Name={example prof
 
 ### Assume role authentication
 
+{{site.data.alerts.callout_info}}
+CockroachDB supports assume role authentication on clusters running v22.2. Authenticating to cloud storage with `ASSUME_ROLE` on clusters running versions v22.1 and earlier, or mixed versions, is not supported and will result in failed bulk operations.
+{{site.data.alerts.end}}
+
 {% include_cached new-in.html version="v22.2" %} To limit the control over Amazon S3 buckets, you can create IAM roles for users to assume. IAM roles do not have an association to a particular user. The role contains permissions that define the operations a user (or [Principal](https://docs.aws.amazon.com/IAM/latest/UserGuide/intro-structure.html#intro-structure-principal)) can complete. An IAM user can then assume a role to undertake a CockroachDB backup, restore, import, etc. As a result, the IAM user only has access to the assigned role, rather than having unlimited access to an S3 bucket. 
 
 {{site.data.alerts.callout_success}}
