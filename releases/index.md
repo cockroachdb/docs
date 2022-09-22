@@ -279,8 +279,4 @@ This calendar versioning scheme began with v19.1. Prior releases use a different
 
 - A patch (or maintenance) release is produced to roll out critical bug and security fixes. A change in the `PP` component denotes a patch release.
 
-<script>
-function ExperimentalAlert() { 
-    alert('This experimental download is not yet qualified for production use.');
-}
-</script>
+{% include_cached releases/experimental_download_dialog.md %}
