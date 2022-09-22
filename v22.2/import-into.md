@@ -27,11 +27,11 @@ Optimize import operations in your applications by following our [Import Perform
 
 ## Required privileges
 
-#### Table privileges
+### Table privileges
 
 The user must have the `INSERT` and `DROP` [privileges](security-reference/authorization.html#managing-privileges) on the specified table. (`DROP` is required because the table is taken offline during the `IMPORT INTO`.)
 
-#### Source privileges
+### Source privileges
 
 {% include {{ page.version.version }}/misc/external-io-privilege.md %}
 
@@ -47,7 +47,7 @@ No special privilege is required for:
 - Amazon S3 and Google Cloud Storage using `SPECIFIED` credentials. Azure Storage is always `SPECIFIED` by default.
 - [Userfile](use-userfile-for-bulk-operations.html)
 
-We recommend using [cloud storage for bulk operations](use-cloud-storage-for-bulk-operations.html).
+{% include {{ page.version.version }}/misc/bulk-permission-note.md %}
 
 {% include {{ page.version.version }}/misc/s3-compatible-warning.md %}
 
