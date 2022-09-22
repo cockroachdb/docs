@@ -11,11 +11,4 @@ No special privilege is required for:
 - Amazon S3 and Google Cloud Storage using `SPECIFIED` credentials. Azure Storage is always `SPECIFIED` by default.
 - [Userfile](use-userfile-for-bulk-operations.html)
 
-We recommend using [cloud storage for bulk operations](use-cloud-storage-for-bulk-operations.html).
-
-#### Destination permissions
-
-- `BACKUP` requires full read and write permissions to its target destination.
-- `BACKUP` does **not** require delete or overwrite permissions to its target destination. This allows `BACKUP` to write to cloud storage buckets that have object locking configured. We recommend enabling [object locking](use-cloud-storage-for-bulk-operations.html#object-locking) in cloud storage buckets to protect the validity of a backup.
-
-For more detail, see [Storage permissions](use-cloud-storage-for-bulk-operations.html#storage-permissions).
+{% include {{ page.version.version }}/misc/bulk-permission-note.md %}
