@@ -24,6 +24,12 @@ As of August 29, 2022, {{ site.data.products.serverless }} clusters are running 
 
 - You can now [create a database](../cockroachcloud/serverless-cluster-management.html#create-a-database) directly from the [**Databases** page](../cockroachcloud/databases-page.html) of the {{ site.data.products.db }} Console.
 
+## September 16, 2022
+
+<h3>Console changes</h3>
+
+- A tool to [estimate your monthly cost](../cockroachcloud/serverless-cluster-management.html#estimate-usage-cost) based on your workload is now available for {{ site.data.products.serverless }} clusters.
+
 ## September 8, 2022
 
 <h3> Console changes </h3>
