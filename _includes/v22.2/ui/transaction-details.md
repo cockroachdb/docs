@@ -14,14 +14,3 @@ The details displayed on the **Transaction Details** page reflect the [time inte
 
 
 The [Statements page]({{ page_prefix }}statements-page.html) displays the statement fingerprints of all the statements in the transaction. To display the [details of a statement fingerprint]({{ page_prefix }}statements-page.html#statement-fingerprint-page), click a statement fingerprint.
-
-## See also
-
-- [Transactions]({{ link_prefix }}transactions.html)
-- [Transaction Layer]({{ link_prefix }}architecture/transaction-layer.html)
-- [Run Multi-Statement Transactions]({{ link_prefix }}run-multi-statement-transactions.html)
-{% if page.cloud != true %}
-- [Transaction latency graphs](ui-sql-dashboard.html#transactions)
-{% endif %}
-- [Transaction retries]({{ link_prefix }}transactions.html#transaction-retries)
-- [Statements Page]({{ page_prefix }}statements-page.html)

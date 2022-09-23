@@ -56,11 +56,11 @@ If you want to cancel the whole session for that transaction, use [`CANCEL SESSI
 
 ### Identify slow queries
 
-Use the [slow query log](logging-use-cases.html#sql_perf) or DB Console to detect slow queries in your cluster.
-
 You can identify high-latency SQL statements on the [Insights](ui-insights-page.html) or [Statements](ui-statements-page.html) pages of the DB Console. You can collect richer diagnostics of a high-latency statement by creating a [diagnostics bundle](ui-statements-page.html#diagnostics) when a statement fingerprint exceeds a certain latency.
 
-You can also check the [service latency graph](ui-sql-dashboard.html#service-latency-sql-99th-percentile) and the [CPU graph](ui-hardware-dashboard.html#cpu-percent) on the SQL and Hardware Dashboards, respectively. If the graphs show latency spikes or CPU usage spikes, these might indicate slow queries in your cluster.
+If these graphs reveal latency spikes, CPU usage spikes, or slow requests, these might indicate slow queries in your cluster.
+
+You can also collect richer diagnostics of a high-latency statement by creating a [diagnostics bundle](ui-statements-page.html#diagnostics) when a statement fingerprint exceeds a certain latency.
 
 {{site.data.alerts.callout_info}}
 {% include {{ page.version.version }}/prod-deployment/resolution-untuned-query.md %}
