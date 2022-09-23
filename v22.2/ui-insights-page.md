@@ -1,6 +1,6 @@
 ---
 title: Insights Page
-summary: The Insights page provides insights into and actions you can take to improve the performance of your application.
+summary: The Insights page exposes problems that CockroachDB has detected in your workloads and schemas and offers recommendations to improve the performance of your workloads.
 toc: true
 docs_area: reference.db_console
 ---
@@ -11,7 +11,6 @@ docs_area: reference.db_console
 
 The **Insights** page helps you:
 
-- Identify high latency [SQL transactions](transactions.html) and [SQL statements](sql-statements.html).
 - Identify SQL statements with [high retry counts](transactions.html#automatic-retries), [slow execution](query-behavior-troubleshooting.html#identify-slow-queries), or [suboptimal plans](cost-based-optimizer.html).
 - Identify [Indexes](indexes.html) that should be created, altered, replaced, or dropped to improve performance.
 
@@ -59,20 +58,20 @@ Additional details include:
 
 ##### Contention Time Insights
 
-- **Time Spent Waiting**: The amount of time the transaction execution spent waiting.
-- **Blocked Schema**: The name of the schema on which the transaction execution was running when it waited.
-- **Blocked Database**: The name of the database on which the transaction execution was running when it waited.
-- **Blocked Table**: The name of the table on which the transaction execution was running when it waited.
+- **Time Spent Waiting**: The amount of time the transaction execution spent waiting for access to a resource being used by another transaction.
+- **Blocked Schema**: The name of the schema that the transaction attempted to access when it was blocked by another transaction.
+- **Blocked Database**: The name of the database that the transaction attempted to access when it was blocked by another transaction.
+- **Blocked Table**: The name of the table that the transaction attempted to access when it was blocked by another transaction.
 
-##### Transactions waiting with ID
+##### Transactions with ID waited on
 
-The list of the transaction executions that waited on the blocking transaction execution contains the following information about each transaction:
+This section provides details of the transaction executions that block the transaction flagged with the High Contention:
 
-- **Transaction Execution ID**: The execution ID of the execution with the transaction fingerprint.
-- **Transaction Fingerprint ID**: The transaction fingerprint ID of the transaction execution.
-- **Transaction Execution**: The transaction fingerprint of the transaction execution.
-- **Start Time (UTC)**: The time the transaction execution started.
-- **Elapsed Time**: The time that elapsed to complete the transaction execution.
+- **Transaction Execution ID**: The execution ID of the blocking transaction execution.
+- **Transaction Fingerprint ID**: The transaction fingerprint ID of the blocking transaction execution.
+- **Transaction Execution**: The transaction fingerprint of the blocking transaction execution.
+- **Start Time (UTC)**: The time the blocking transaction execution started.
+- **Elapsed Time**: The time that elapsed to complete the blocking transaction execution.
 
 ### Statement Executions view
 

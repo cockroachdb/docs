@@ -48,7 +48,7 @@ The SQL Activity page summarizes SQL activity in your cluster.
 
 ### Insights
 
-The [Insights](ui-insights-page.html) page provides insights into and actions you can take to improve the performance of your application.
+The [Insights](ui-insights-page.html) page surfaces problematic health signals and enables you to quickly find optimization opportunities to maximize database efficiency. The Insights page contains workload-level and schema-level insights.
 
 ### Network Latency
 
