@@ -12,7 +12,7 @@ docs_area: reference.db_console
 The **Insights** page helps you:
 
 - Identify SQL statements with [high retry counts](transactions.html#automatic-retries), [slow execution](query-behavior-troubleshooting.html#identify-slow-queries), or [suboptimal plans](cost-based-optimizer.html).
-- Identify [Indexes](indexes.html) that should be created, altered, replaced, or dropped to improve performance.
+- Identify [indexes](indexes.html) that should be created, altered, replaced, or dropped to improve performance.
 
 ## Workload Insights tab
 
