@@ -25,7 +25,7 @@ The role must have the `DROP` [privilege](security-reference/authorization.html#
 -----------|------------
 `role_spec_list` | The source role, or a comma-separated list of source roles.
 `RESTRICT` | _(Default)_ Do not drop ownership if any objects (such as [constraints](constraints.html) and tables) use it.
-`CASCADE` | Drop other objects that depend on the objects being dropped.<br><br>`CASCADE` does not list objects it drops, so should be used cautiously.
+`CASCADE` | Not implemented.
 
 
 ## Known limitations
@@ -33,6 +33,7 @@ The role must have the `DROP` [privilege](security-reference/authorization.html#
 - [Enum](enum.html) types are not dropped.
 
 ## See also
+
 - [`REASSIGN OWNED`](reassign-owned.html)
 - [`DROP ROLE`](drop-role.html)
 - [SQL Statements](sql-statements.html)
