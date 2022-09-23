@@ -1,6 +1,6 @@
 ---
 title: Insights Page
-summary: The Insights page exposes problems that CockroachDB has detected in your workloads and schemas and offers recommendations to improve the performance of your workloads.
+summary: The Insights page exposes problems that CockroachDB has detected in your workloads and schemas.
 toc: true
 docs_area: reference.db_console
 ---
