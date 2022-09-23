@@ -174,12 +174,11 @@ When `sql.stats.histogram_collection.enabled` is set to `false`, histograms are 
 
 ### Control whether the `avg_size` statistic is used to cost scans
 
-The `avg_size` table statistic represents the average size of a table column.
-If a table does not have an average size statistic available for a column, it uses the default value of 4 bytes.
+The `avg_size` table statistic represents the average size of a table column. If a table does not have an average size statistic available for a column, it uses the default value of 4 bytes.
 
 The optimizer uses `avg_size` to cost scans and relevant joins. Costing scans per row regardless of the size of the columns comprising the row doesn't account for time to read or transport a large number of bytes over the network. This can lead to undesirable plans when there are multiple options for scans or joins that read directly from tables.
 
-Cockroach Labs recommends that you allow the optimizer to consider column size when costing plans. If you are an advanced user and need to disable using `avg_size` for troubleshooting or performance tuning reasons, you can disable it by setting the [`cost_scans_with_default_col_size` session variable](set-vars.html#cost-scans-with-default-col-size) to true with `SET cost_scans_with_default_col_size=true`.
+Cockroach Labs recommends that you allow the optimizer to consider column size when costing plans. If you are an advanced user and need to disable using `avg_size` for troubleshooting or performance tuning reasons, set the [`cost_scans_with_default_col_size` session variable](set-vars.html#cost-scans-with-default-col-size) to `true` with `SET cost_scans_with_default_col_size=true`.
 
 ## Control whether the optimizer creates a plan with a full scan
 
@@ -193,7 +192,7 @@ If you disable full scans, and you provide an [index hint](indexes.html#selectio
 
 ## Control whether the optimizer uses an index
 
-You can specify whether an [index is visible](alter-index.html#set-an-index-to-be-not-visible) to the cost-based optimizer. If not visible, the index won't be used in queries unless specifically selected with an [index hint](indexes.html#selection). This allows you to create an index and check for corruption without affecting production queries. For an example, see [Set an index to be not visible](alter-index.html#set-an-index-to-be-not-visible).
+You can specify whether an [index is visible](alter-index.html#set-an-index-to-be-not-visible) to the cost-based optimizer. If not visible, the index won't be used in queries unless specifically selected with an [index hint](indexes.html#selection). This allows you to create an index and check for query plan changes without affecting production queries. For an example, see [Set an index to be not visible](alter-index.html#set-an-index-to-be-not-visible).
 
 You can instruct the optimizer to use indexes marked as `NOT VISIBLE` with the [`optimizer_use_not_visible_indexes` session variable](set-vars.html#optimizer-use-not-visible-indexes). By default, the variable is set to `off`.
 
