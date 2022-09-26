@@ -30,6 +30,7 @@ If you're on Hosted GKE, before starting, make sure the email address associated
 1. From your local workstation, edit the `cockroachdb` service to add the `prometheus: cockroachdb` label:
 
     <section class="filter-content" markdown="1" data-scope="operator">
+
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl label svc cockroachdb prometheus=cockroachdb
@@ -40,9 +41,11 @@ If you're on Hosted GKE, before starting, make sure the email address associated
     ~~~
 
     This ensures that only the `cockroachdb` (not the `cockroach-public` service) is being monitored by a Prometheus job.
+
     </section>
 
     <section class="filter-content" markdown="1" data-scope="manual">
+
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl label svc cockroachdb prometheus=cockroachdb
@@ -53,9 +56,11 @@ If you're on Hosted GKE, before starting, make sure the email address associated
     ~~~
 
     This ensures that only the `cockroachdb` (not the `cockroach-public` service) is being monitored by a Prometheus job.
+
     </section>
 
     <section class="filter-content" markdown="1" data-scope="helm">
+
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl label svc my-release-cockroachdb prometheus=cockroachdb
@@ -66,6 +71,7 @@ If you're on Hosted GKE, before starting, make sure the email address associated
     ~~~
 
     This ensures that there is a Prometheus job and monitoring data only for the `my-release-cockroachdb` service, not for the `my-release-cockroach-public` service.
+
     </section>
 
 1. Determine the latest version of [CoreOS's Prometheus Operator](https://github.com/prometheus-operator/prometheus-operator/releases/) and run the following to download and apply the latest `bundle.yaml` definition file:

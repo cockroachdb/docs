@@ -256,9 +256,11 @@ $ cockroach start \
 --cache=.25 \
 --max-sql-memory=.25
 ~~~
+
 </div>
 
 <div class="filter-content" markdown="1" data-scope="insecure">
+
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach start \
@@ -288,26 +290,31 @@ $ cockroach start \
 --cache=.25 \
 --max-sql-memory=.25
 ~~~
+
 </div>
 
 Then run the [`cockroach init`](cockroach-init.html) command against any node to perform a one-time cluster initialization:
 
 <div class="filter-content" markdown="1" data-scope="secure">
+
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach init \
 --certs-dir=certs \
 --host=<address of any node>
 ~~~
+
 </div>
 
 <div class="filter-content" markdown="1" data-scope="insecure">
+
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach init \
 --insecure \
 --host=<address of any node>
 ~~~
+
 </div>
 
 ### Start a multi-node cluster across private networks
@@ -366,6 +373,7 @@ $ cockroach init \
 To add a node to an existing cluster, run the `cockroach start` command, setting the `--join` flag to the same addresses you used when [starting the cluster](#start-a-multi-node-cluster):
 
 <div class="filter-content" markdown="1" data-scope="secure">
+
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach start \
@@ -375,9 +383,11 @@ $ cockroach start \
 --cache=.25 \
 --max-sql-memory=.25
 ~~~
+
 </div>
 
 <div class="filter-content" markdown="1" data-scope="insecure">
+
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach start \
@@ -387,6 +397,7 @@ $ cockroach start \
 --cache=.25 \
 --max-sql-memory=.25
 ~~~
+
 </div>
 
 ### Create a table with node locality information

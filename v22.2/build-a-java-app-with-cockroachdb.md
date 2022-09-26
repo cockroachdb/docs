@@ -138,6 +138,7 @@ It does all of the above using the practices we recommend for using JDBC with Co
         ~~~ shell
         export JDBC_DATABASE_URL="{jdbc-connection-string}"
         ~~~
+
     </section>
 
 ## Step 4. Run the code
@@ -250,6 +251,7 @@ Specifically, it does the following:
 2. Given an overall update size of 500 rows (for example), split it into batches of size 128 and execute each batch in turn.
 3. Finally, commit the batches of statements you've just executed.
 
+{% include_cached copy-clipboard.html %}
 ~~~ java
 int BATCH_SIZE = 128;
 connection.setAutoCommit(false);
