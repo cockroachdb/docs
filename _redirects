@@ -538,3 +538,9 @@ layout: null
 {% endfor -%}
 
 /docs/frequently-asked-questions.html /docs/stable/frequently-asked-questions.html  301
+
+{% comment %} Delete the if block below as soon as v22.2 becomes GA {% endcomment %}
+{% if site.versions["stable"] = "v22.1" %}
+/docs/stable/ui-insights-page.html /docs/dev/ui-insights-page.html 301
+/docs/stable/ui-insights-page /docs/dev/ui-insights-page.html 301
+{% endif %}

@@ -1740,6 +1740,12 @@
             ]
           },
           {
+            "title": "Insights Page",
+            "urls": [
+              "/${VERSION}/ui-insights-page.html"
+            ]
+          },
+          {
             "title": "Network Latency Page",
             "urls": [
               "/${VERSION}/ui-network-latency-page.html"
