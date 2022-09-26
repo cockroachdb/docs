@@ -36,6 +36,7 @@
 }
 
 #toc-right {
+  min-height: 65vh;
   max-height: 85vh;
   padding-right: 10px;
   background: #ffffff;
@@ -46,6 +47,10 @@
 
 #toc-right::-webkit-scrollbar {
   display: none;
+}
+
+#mobile-toc-toggler {
+  @include poppins_sb(16px);
 }
 
 #toc,
@@ -110,14 +115,6 @@
         margin: 0;
         padding: 0 0 0 10px;
       }
-    }
-
-    &:before {
-      content: "On this page";
-      @include poppins_sb(16px);
-      line-height: 24px;
-      padding-bottom: 10px;
-      display: inline-block;
     }
   }
 

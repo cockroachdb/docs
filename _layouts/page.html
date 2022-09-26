@@ -21,7 +21,9 @@ layout: default
 <div class="{{ post_header_class }}">
   <h1 class="post-title-main">{{ page.title }}</h1>
   {% unless page.contribute == false %}
-    {% include contribute-options.html %}
+    <div class="d-lg-none d-block">
+      {% include contribute-options.html %}
+    </div>
   {% endunless %}
 </div>
 {% endif %}
@@ -35,7 +37,10 @@ page TOC to h2 headers only, set `toc_not_nested: true` in the page's
 front-matter.
 {% endcomment %}
 {% if page.toc %}
-  <div id="toc"></div>
+  <div id="mobile-toc-toggler" class="d-inline-block">
+    On this page <span class="carat-arrow-down d-inline-flex"><img src="/docs/images/carat-down-fill.svg" alt="Carat arrow pointing down"></span>
+  </div>
+  <div id="toc" class="d-none"></div>
 {% endif %}
 {% include_cached unsupported-version.md major_version=page.version.version %}
 
