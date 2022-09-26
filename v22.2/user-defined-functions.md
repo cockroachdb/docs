@@ -14,10 +14,10 @@ The basic components of a user-defined function are a name, list of arguments, r
 
 - An argument has a _mode_ and a _type_. CockroachDB supports the `IN` argument mode. The type can be a built-in type, [user-defined enum](enum.html), or implicit record type. CockroachDB **does not** support default values for arguments.
 - The return type can be a built-in type, user-defined enum, implicit record type, or `VOID`. `VOID` indicates that there is no return type and `NULL` will always be returned. If the return type of the function is not `VOID`, the last statement of a UDF must be a `SELECT`.
-- The [volatility](functions-and-operators.html#function-volatility) indicates whether the function has side effects. The default is `VOLATILE`.
+- The [volatility](functions-and-operators.html#function-volatility) indicates whether the function has side effects. `VOLATILE` and `NOT LEAKPROOF` are the default.
   - Annotate a function with side effects with `VOLATILE`. This also prevents the [cost-based optimizer](cost-based-optimizer.html) from pre-evaluating the function.
   - A `STABLE` or `IMMUTABLE` function does not mutate data.
-  - `LEAKPROOF` indicates that a function has no side effects and that it communicates nothing that depends on its arguments besides the return value (i.e., it cannot throw an error that depends on the value of its arguments). You must precede `LEAKPROOF` with `IMMUTABLE`. `NOT LEAKPROOF` is allowed with any other volatility.
+  - `LEAKPROOF` indicates that a function has no side effects and that it communicates nothing that depends on its arguments besides the return value (i.e., it cannot throw an error that depends on the value of its arguments). You must precede `LEAKPROOF` with `IMMUTABLE` and only `IMMUTABLE` can be set to `LEAKPROOF`. `NOT LEAKPROOF` is allowed with any other volatility.
 - The language specifies the language of the function body. CockroachDB supports the language `SQL`.
 - The function body:
   - Can reference arguments by name or by their ordinal in the function definition with the syntax `$1`.
