@@ -36,6 +36,9 @@
 {% if page.toc == true %}
         <div class="toc-col col-md-2">
           <div class="toc-col-contents">  <!-- lets all elements scroll -->
+            <div class="d-none d-lg-block pb-1">
+              {% include contribute-options.html %}
+            </div>
             <div id="toc-right">
             </div>
   {% if page.feedback != false %}
