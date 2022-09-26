@@ -23,7 +23,7 @@ As of August 29, 2022, {{ site.data.products.serverless }} clusters are running 
 <h3> Bug fixes </h3>
 
 - The {{ site.data.products.db }} Console now utilizes the same [cluster setting](../stable/cluster-settings.html) as the DB Console, `sql.index_recommendation.drop_unused_duration`, as a threshold value for dropping unused indexes.
-- Fixed a bug where [AWS PrivateLink](../cockroachcloud/network-authorization#aws-privatelink) endpoints could fail to create but display an error message that said they were still creating.
+- Fixed a bug where [AWS PrivateLink](../cockroachcloud/network-authorization.html#aws-privatelink) endpoints could fail to create but display an error message that said they were still creating.
 
 ## September 16, 2022
 
