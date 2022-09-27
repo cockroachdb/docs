@@ -244,6 +244,12 @@
           ]
         },
         {
+          "title": "Multi-Region Zone Config Extensions",
+          "urls": [
+            "/${VERSION}/zone-config-extensions.html"
+          ]
+        },
+        {
           "title": "Topology Patterns",
           "items": [
             {
