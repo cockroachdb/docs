@@ -947,6 +947,20 @@ a.btn-primary {
 	        }
 			}
 
+      &#linux-intel {
+
+				&:before {
+					background-image: url(#{$images-url}icon-linux.png);
+	        }
+			}
+
+      &#linux-arm {
+
+				&:before {
+					background-image: url(#{$images-url}icon-linux.png);
+	        }
+			}
+
 			&#windows {
 
 				&:before {

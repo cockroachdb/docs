@@ -6,8 +6,8 @@ keywords: load data infile
 docs_area: migrate
 ---
 
-{{site.data.alerts.callout_success}}
-We recommend [using AWS Database Migration Service (DMS)](aws-dms.html) to migrate data from MySQL to CockroachDB.
+{{site.data.alerts.callout_danger}}
+The instructions on this page require updates. We currently recommend [using AWS Database Migration Service (DMS) to migrate data](aws-dms.html) from MySQL to CockroachDB. You can also [migrate from CSV](migrate-from-csv.html).
 {{site.data.alerts.end}}
 
 This page has instructions for migrating data from MySQL to CockroachDB using [`IMPORT`](import.html)'s support for reading [`mysqldump`][mysqldump] files.

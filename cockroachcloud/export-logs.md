@@ -7,6 +7,8 @@ docs_area: manage
 
 {{ site.data.products.dedicated }} users can use the [Cloud API](cloud-api.html) to configure log export to [AWS CloudWatch](https://aws.amazon.com/cloudwatch/) or [GCP Cloud Logging](https://cloud.google.com/logging). Once the export is configured, logs will flow from all nodes in all regions of your {{ site.data.products.dedicated }} cluster to your chosen cloud log sink.
 
+The {{ site.data.products.dedicated }} log export feature is only available on clusters created after August 11, 2022 (AWS) or September 9, 2022 (GCP).
+
 {% include feature-phases/preview-opt-in.md %}
 
 ## The `logexport` endpoint
@@ -18,13 +20,17 @@ To configure and manage log export for your {{ site.data.products.dedicated }} c
 https://cockroachlabs.cloud/api/v1/clusters/{your_cluster_id}/logexport
 ~~~
 
-The following methods are available:
+Access to the `logexport` endpoint requires a valid {{ site.data.products.db }} [service account](console-access-management.html#service-accounts) with the appropriate permissions.
 
-Method | Description
---- | ---
-`GET` | Returns the current status of the log export configuration.
-`POST` | Enables log export, or updates an existing log export configuration.
-`DELETE` | Disables log export, halting all log export to AWS CloudWatch.
+The following methods are available for use with the `logexport` endpoint, and require the listed service account permissions:
+
+Method | Required permissions | Description
+--- | --- | ---
+`GET` | `ADMIN`, `EDIT`, or `READ` | Returns the current status of the log export configuration.
+`POST` | `ADMIN` or `EDIT` | Enables log export, or updates an existing log export configuration.
+`DELETE` | `ADMIN` | Disables log export, halting all log export to AWS CloudWatch.
+
+See [Service accounts](console-access-management.html#service-accounts) for instructions on configuring a service account with these required permissions.
 
 ## Enable log export
 
@@ -34,6 +40,10 @@ Method | Description
 </div>
 
 <section class="filter-content" markdown="1" data-scope="aws-log-export">
+
+{{site.data.alerts.callout_info}}
+The {{ site.data.products.dedicated }} log export feature is only available on AWS-hosted clusters created after August 11, 2022.
+{{site.data.alerts.end}}
 
 Perform the following steps to enable log export from your {{ site.data.products.dedicated }} cluster to AWS CloudWatch.
 
@@ -152,6 +162,10 @@ Perform the following steps to enable log export from your {{ site.data.products
 
 <section class="filter-content" markdown="1" data-scope="gcp-log-export">
 
+{{site.data.alerts.callout_info}}
+The {{ site.data.products.dedicated }} log export feature is only available on GCP-hosted clusters created after September 9, 2022.
+{{site.data.alerts.end}}
+
 Perform the following steps to enable log export from your {{ site.data.products.dedicated }} cluster to GCP Cloud Logging.
 
 1. Find your {{ site.data.products.dedicated }} organization ID in the {{ site.data.products.db }} [organization settings page](https://cockroachlabs.cloud/settings).
@@ -268,6 +282,10 @@ Where:
 - `{cluster_id}` is your {{ site.data.products.dedicated }} cluster's cluster ID, which can be found in the URL of your [Cloud Console](https://cockroachlabs.cloud/clusters/) for the specific cluster you wish to configure, resembling `f78b7feb-b6cf-4396-9d7f-494982d7d81e`.
 - `{secret_key}` is your {{ site.data.products.dedicated }} API key. See [API Access](console-access-management.html) for instructions on generating this key.
 
+## Limitations
+
+- The {{ site.data.products.dedicated }} log export feature is only available on clusters created after August 11, 2022 (AWS) or September 9, 2022 (GCP).
+- {{ site.data.products.dedicated }} clusters hosted on AWS can only export logs to AWS CloudWatch. Similarly, {{ site.data.products.dedicated }} clusters hosted on GCP can only export logs to GCP Cloud Logging.
 
 ## {{ site.data.products.dedicated }} log export Frequently Asked Questions (FAQ)
 
@@ -294,6 +312,10 @@ Currently, the following CockroachDB [log channels](/docs/{{site.versions["stabl
 ### Is it possible to include SQL audit logs as part of the log export capability?
 
 Yes, the [SQL Audit Log](/docs/{{site.versions["stable"]}}/sql-audit-logging.html) is exported via the `SENSITIVE_ACCESS` log channel by default, as long as you have previously enabled audit logging on desired tables using the [`ALTER TABLE ...EXPERIMENTAL_AUDIT`](/docs/{{site.versions["stable"]}}/experimental-audit.html) statement.
+
+### Can I use an AWS External ID with the log export feature?
+
+No, the {{ site.data.products.dedicated }} log export feature does not support use of an AWS External ID. You must configure a cross-account IAM Role as described in the [Enable log export](#enable-log-export) instructions.
 
 ## Troubleshooting
 

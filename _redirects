@@ -10,6 +10,20 @@ layout: null
 /docs/advisories/ /docs/advisories/index.html 301!
 /docs/advisories/advisories.html /docs/advisories/index.html 301
 
+# Pages undergoing maintenance
+/docs/stable/migrate-from-postgres.html /docs/stable/migration-overview.html 301
+/docs/v22.2/migrate-from-postgres.html /docs/v22.2/migration-overview.html 301
+/docs/v22.1/migrate-from-postgres.html /docs/v22.1/migration-overview.html 301
+/docs/v21.2/migrate-from-postgres.html /docs/v21.2/migration-overview.html 301
+/docs/stable/migrate-from-mysql.html /docs/stable/migration-overview.html 301
+/docs/v22.2/migrate-from-mysql.html /docs/v22.2/migration-overview.html 301
+/docs/v22.1/migrate-from-mysql.html /docs/v22.1/migration-overview.html 301
+/docs/v21.2/migrate-from-mysql.html /docs/v21.2/migration-overview.html 301
+/docs/stable/migrate-from-oracle.html /docs/stable/migration-overview.html 301
+/docs/v22.2/migrate-from-oracle.html /docs/v22.2/migration-overview.html 301
+/docs/v22.1/migrate-from-oracle.html /docs/v22.1/migration-overview.html 301
+/docs/v21.2/migrate-from-oracle.html /docs/v21.2/migration-overview.html 301
+
 # Renamed pages
 /docs/install-client-drivers.html /docs/stable/install-client-drivers.html 301
 /docs/stable/operate-cockroachdb-kubernetes /docs/stable/kubernetes-overview.html 301
