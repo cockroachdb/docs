@@ -18,7 +18,7 @@ Subcommand | Description
 [`RENAME TO`](rename-index.html) | Change the name of an index.
 [`SPLIT AT`](split-at.html) | Force a [range split](architecture/distribution-layer.html#range-splits) at the specified row in the index.
 [`UNSPLIT AT`](unsplit-at.html) | Remove a range split enforcement in the index.
-`[NOT] VISIBLE`| Set whether an index is visible to the [cost-based optimizer](cost-based-optimizer.html#control-whether-the-optimizer-uses-an-index). If not visible, the index won't be used in queries unless specifically selected with [index hint](indexes.html#selection). For an example, see [Set an index to be not visible](#set-an-index-to-be-not-visible).
+`[NOT] VISIBLE`| Set whether an index is visible to the [cost-based optimizer](cost-based-optimizer.html#control-whether-the-optimizer-uses-an-index). If not visible, the index will not be used in queries unless specifically selected with [index hint](indexes.html#selection). For an example, see [Set an index to be not visible](#set-an-index-to-be-not-visible).
 
 ## View schema changes
 
@@ -90,7 +90,7 @@ For examples, see [Split an index](split-at.html#split-an-index) and [Unsplit an
 
 {% include {{ page.version.version }}/demo_movr.md %}
 
-1. Show the indexes on the `rides` table. In the last column, `visible`, you can see that all indexes have the value `t`.
+1. Show the indexes on the `rides` table. In the last column, `visible`, you can see that all indexes have the value `t` (true).
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -114,7 +114,7 @@ For examples, see [Split an index](split-at.html#split-an-index) and [Unsplit an
     (17 rows)
     ~~~
 
-1. Explain the query that filters on revenue. Since there is no index on the `revenue` column, the query performs a full scan.
+1. Explain a query that filters on revenue. Since there is no index on the `revenue` column, the query performs a full scan.
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -178,7 +178,7 @@ For examples, see [Split an index](split-at.html#split-an-index) and [Unsplit an
     (27 rows)
     ~~~
 
-1. Explain the query behavior with the index. The query uses the new `rides_revenue_idx` index and scans many fewer rows.
+1. Explain the query behavior after creating the index. The query now uses the `rides_revenue_idx` index and scans many fewer rows.
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -198,14 +198,14 @@ For examples, see [Split an index](split-at.html#split-an-index) and [Unsplit an
     (7 rows)
     ~~~
 
-1. Alter the index to be not visible to the optimizer.
+1. Alter the index to be not visible to the optimizer, specifying the `NOT VISIBLE` clause.
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
     > ALTER INDEX rides_revenue_idx NOT VISIBLE;
     ~~~
 
-1. Display the table indexes and verify that the index visibility for `rides_revenue_idx` is `f`.
+1. Display the table indexes and verify that the index visibility for `rides_revenue_idx` is `f` (false).
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -238,7 +238,7 @@ For examples, see [Split an index](split-at.html#split-an-index) and [Unsplit an
     (27 rows)
     ~~~
 
-1. Explain the query behavior with the index not visible to the optimizer. With the index not visible, the optimizer reverts to full scan and recommends that you make the index visible.
+1. Explain the query behavior after making the index not visible to the optimizer. With the index not visible, the optimizer reverts to full scan and recommends that you make the index visible.
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql

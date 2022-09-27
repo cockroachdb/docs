@@ -192,7 +192,7 @@ If you disable full scans, and you provide an [index hint](indexes.html#selectio
 
 ## Control whether the optimizer uses an index
 
-You can specify whether an [index is visible](alter-index.html#set-an-index-to-be-not-visible) to the cost-based optimizer. If not visible, the index won't be used in queries unless specifically selected with an [index hint](indexes.html#selection). This allows you to create an index and check for query plan changes without affecting production queries. For an example, see [Set an index to be not visible](alter-index.html#set-an-index-to-be-not-visible).
+You can specify [whether an index is visible](alter-index.html#set-an-index-to-be-not-visible) to the cost-based optimizer. If not visible, the index will not be used in queries unless specifically selected with an [index hint](indexes.html#selection). This allows you to create an index and check for query plan changes without affecting production queries. For an example, see [Set an index to be not visible](alter-index.html#set-an-index-to-be-not-visible).
 
 You can instruct the optimizer to use indexes marked as `NOT VISIBLE` with the [`optimizer_use_not_visible_indexes` session variable](set-vars.html#optimizer-use-not-visible-indexes). By default, the variable is set to `off`.
 
