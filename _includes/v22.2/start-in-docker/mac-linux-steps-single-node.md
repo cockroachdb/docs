@@ -17,20 +17,15 @@ This section shows how to start a single-node cluster that uses these features.
 
 ### Step 1. Create Docker volumes for the node
 
-Cockroach Labs recommends that you store cluster data in a Docker volume or bind mount rather than in the storage layer of the running container. Otherwise, if a Docker container is inadvertently deleted, its data is inaccessible.
+Cockroach Labs recommends that you store cluster data in a Docker volume rather than in the storage layer of the running container. Otherwise, if a Docker container is inadvertently deleted, its data is inaccessible.
 
-1. Create the [Docker volume](https://docs.docker.com/storage/volumes/) where the cluster will store its data:
+To create the [Docker volume](https://docs.docker.com/storage/volumes/) where the cluster will store its data:
 
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    docker volume create roach-single
-    ~~~
-1.  (Optional) Create the Docker volume that will contain initialization scripts that run automatically after CockroachDB starts:
+{% include_cached copy-clipboard.html %}
+~~~ shell
+docker volume create roach-single
+~~~
 
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    docker volume create roach-single-scripts
-    ~~~
 
 
 ### Step 2. Start the cluster
@@ -41,7 +36,7 @@ Cockroach Labs recommends that you store cluster data in a Docker volume or bind
  
     - Stores its data in the `roach-single` volume on the Docker host, which is mounted on the `/cockroach/cockroach-data` directory within the container.
     - If the `/cockroach/cockroach-data` within the container is empty, the specified database, user, and password are created automatically. Instead of specifying each value directly by using the `-e` or `--env` flag, you can store them in a file on the Docker host. Use one key-value pair per line and set the `--env-file` flag to the file's path.
-    - Mounts the `roach-single-scripts` volume on the `/docker-entrypoint-initdb.d` directory within the container. Initialization scripts stored in this volume are run after CockroachDB starts and the default database, user, and password are initialized.
+    - Bind-mounts the `~/init-scripts` directory on the Docker host onto the `/docker-entrypoint-initdb.d` directory within the container. Initialization scripts stored in this directory are run after CockroachDB starts and the default database, user, and password are initialized.
     - Accepts database client connections on IP address 172.18.0.3 (which resolves to the hostname `roach-single` within the Docker container) on port 26257.
     - Accepts connections to the DB Console on IP address 172.18.0.3 (which resolves to the hostname `roach-single` within the Docker container) on port 8080.
 
@@ -57,7 +52,7 @@ Cockroach Labs recommends that you store cluster data in a Docker volume or bind
               --advertise-addr=172.18.0.3 \
               -p 26257:26257 -p 8080:8080 \
               -v "roach-single:/cockroach/cockroach-data" \
-              -v "roach-single-scripts:/docker-entrypoint-initdb.d" \
+              -v "~/init-scripts:/docker-entrypoint-initdb.d" \
               cockroachdb/cockroach:latest start-single-node
     ~~~
 
@@ -125,10 +120,9 @@ Cockroach Labs recommends that you store cluster data in a Docker volume or bind
     docker rm roach-single
     ~~~
 
-1. If you do not plan to restart the cluster, you can also remove the Docker volumes:
+1. If you do not plan to restart the cluster, you can also remove the Docker volume that contains the cluster's data:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     docker volume rm roach-single
-    docker volume rm roach-single-scripts
     ~~~
