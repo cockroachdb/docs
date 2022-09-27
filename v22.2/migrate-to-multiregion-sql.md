@@ -311,6 +311,7 @@ SHOW ZONE CONFIGURATION FROM TABLE promo_codes;
 - [Secondary regions](multiregion-overview.html#secondary-regions)
 - [`SET SECONDARY REGION`](set-secondary-region.html)
 - [`DROP SECONDARY REGION`](drop-secondary-region.html)
+- [Zone Config Extensions](zone-config-extensions.html)
 
 <!-- Reference Links -->
 
