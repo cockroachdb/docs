@@ -6,11 +6,6 @@
   {% assign page_prefix = "ui-" %}
 {% endif %}
 
-{% if page.cloud != true %}
-if not cloud
-{% endif %}
-
-
 ## Databases
 
 The **Databases** page shows:
@@ -18,7 +13,7 @@ The **Databases** page shows:
 - Whether [automatic statistics collection]({{ link_prefix }}cost-based-optimizer.html#table-statistics) is enabled for the cluster.
 - A list of the databases on the cluster.
 {% if page.cloud == true %}
-- The **Add database** button, which allows you to [create a new database](serverless-cluster-management.html#create-a-database).if not cloud
+- The **Add database** button, which allows you to [create a new database](serverless-cluster-management.html#create-a-database).
 {% endif %}
 
 The following information is displayed for each database:
@@ -26,14 +21,14 @@ The following information is displayed for each database:
 | Column        | Description                                                                                                             |
 |---------------|-------------------------------------------------------------------------------------------------------------------------|
 | Databases     | The name of the database.                                                                                               |
-{% if page.cloud != true %}
+{% if page.cloud != true  -%}
 | Size          | Approximate disk size across all table replicas in the database.                                                        |
-{% endif %}
+{% endif -%}
 | Tables        | The number of tables in the database.                                                                                   |
-{% if page.cloud != true %}
+{% if page.cloud != true  -%}
 | Range count   | The number of ranges across all tables in the  database.                                                                |
 | Regions/nodes | The regions and nodes on which the tables in the database are located. This is not displayed on a single-node cluster.  |
-{% endif %}
+{% endif -%}
 
 Click a **database name** to open the **Tables** page.
 
@@ -49,15 +44,15 @@ The following information is displayed for each table:
 | Column                         | Description                                                                                              |
 |--------------------------------|----------------------------------------------------------------------------------------------------------|
 | Tables                         | The name of the table.                                                                                   |
-{% if page.cloud != true %}
+{% if page.cloud != true -%}
 | Replication Size               | The approximate disk size of all replicas of this table on the cluster.                                  |
 | Ranges                         | The number of ranges in the table.                                                                       |
-{% endif %}
+{% endif -%}
 | Columns                        | The number of columns in the table.                                                                      |
 | Indexes                        | The number of indexes in the table.                                                                      |
-{% if page.cloud != true %}
+{% if page.cloud != true -%}
 | Regions                        | The regions and nodes on which the table data is stored. This is not displayed on a single-node cluster. |
-{% endif %}
+{% endif -%}
 | Table Stats Last Updated (UTC) | The last time table statistics were created or updated.   |
 
 Click a **table name** to view table details.
@@ -111,13 +106,13 @@ The following information is displayed for each table:
 
 | Column     | Description                       |
 |------------|-----------------------------------|
-{% if page.cloud != true %}
+{% if page.cloud != true -%}
 | Tables     | The name of the table.            |
-{% endif %}
+{% endif -%}
 | Users      | The number of users of the table. |
-{% if page.cloud != true %}
+{% if page.cloud != true -%}
 | Roles      | The list of roles on the table.   |
-{% endif %}
+{% endif -%}
 | Grants     | The list of grants of the table.  |
 
 For more details about grants and privileges, see [`GRANT`]({{ link_prefix }}grant.html).
