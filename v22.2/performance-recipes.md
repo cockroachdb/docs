@@ -66,7 +66,7 @@ This section describes how to use CockroachDB commands and dashboards to identif
   </tr>
   <tr>
     <td><ul><li>You experience high latency on queries that cannot be explained by high contention or a suboptimal query plan. You might also see high CPU on one or more nodes.</li></ul></td>
-    <td><ul><li>You are scanning over large numbers of <a href="architecture/storage-layer.html#mvcc">MVCC versions</a>. This is similar to how a full table scan can be slow.</li></ul></td>
+    <td><ul><li>You may be scanning over large numbers of <a href="architecture/storage-layer.html#mvcc">MVCC versions</a>. This is similar to how a full table scan can be slow.</li></ul></td>
     <td><ul><li><a href="#too-many-mvcc-values">Configure CockroachDB to purge unneeded MVCC values.</a></li></ul></td>
   </tr>
 </table>
