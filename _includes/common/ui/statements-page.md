@@ -31,8 +31,8 @@ The following statements cannot be represented by the same fingerprint:
 - `INSERT INTO orders(product_id, customer_id, transaction_id) VALUES (380, 11, 11098)`
 - `INSERT INTO new_order(product_id, customer_id, transaction_id) VALUES (380, 11, 11098)`
 - `INSERT INTO new_order(product_id, customer_id, transaction_id) VALUES ($1, 11, 11098)`
-- `INSERT INTO new_order(product_id, customer_id, transaction_id) VALUES ($1, $2, 11098)`
-- `INSERT INTO new_order(product_id, customer_id, transaction_id) VALUES ($1, $2, $3)`
+- `INSERT INTO new_order(product_id, customer_id, transaction_id) VALUES ($1, $1, 11098)`
+- `INSERT INTO new_order(product_id, customer_id, transaction_id) VALUES ($1, $1, $1)`
 
 It is possible to see the same fingerprint listed multiple times in the following scenarios:
 
