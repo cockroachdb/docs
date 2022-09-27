@@ -111,7 +111,7 @@ Statements are displayed as follows:
 - A statement that failed is displayed with `[error]` and a message with error details. If the failure was due to an incidental error, the message also states: `This error may automatically resolve once an earlier statement no longer errors`.
 - A statement with a suggestion is displayed with `[suggestion]`, a message with suggestion details, and an **Acknowledge** checkbox.
 
-To edit a statement, click the statement and enter your changes. Your changes are saved when you click outside the statement.
+To edit a statement, click the **Edit** button or the statement itself and enter your changes. Your changes are saved when you click outside the statement, or when you click the **Save** button. Click **Cancel** to discard your changes.
 
 To remove or add a statement, click the ellipsis above the statement and then click **Delete statement**, **Add statement above**, or **Add statement below**.
 

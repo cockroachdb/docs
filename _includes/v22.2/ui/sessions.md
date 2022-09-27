@@ -6,24 +6,27 @@ To filter the sessions, click the **Filters** field.
 
 <img src="{{ 'images/v22.2/ui-session-filter.png' | relative_url }}" alt="Session filter" />
 
-To filter by [application]({{ link_prefix }}connection-parameters.html#additional-connection-parameters), select **App** and choose one or more applications.
+- To filter by [application]({{ link_prefix }}connection-parameters.html#additional-connection-parameters), select **Application Name** and choose one or more applications.
 
-- Queries from the SQL shell are displayed under the `$ cockroach` app.
-- If you haven't set `application_name` in a client connection string, it appears as `unset`.
+    - Queries from the SQL shell are displayed under the `$ cockroach` app.
+    - If you have not set `application_name` in a client connection string, it appears as `unset`.
 
-To filter by session duration, specify the session time and unit.
+- To filter by username or session status, select **User Name** or **Session Status** and check one or more checkboxes.
+- To filter by session duration, specify the session time and unit.
 
 Click <img src="{{ 'images/common/ui-columns-button.png' | relative_url }}" alt="Column selector" /> to select the columns to display in the table.
 
-The following are displayed for each session:
+The following properties are displayed for each session:
 
 Column | Description
 --------- | -----------
 Session Start Time (UTC) | The timestamp at which the session started.
 Session Duration | The amount of time the session has been open.
-Status  | The status of the session: Active or Idle. A session is Active if it has an open explicit or implicit transaction (individual SQL statement) with a statement that is actively running or waiting to acquire a lock. A session is Idle if it is not executing a statement.
+Session Active Duration | The amount of time transactions were executing while the session was open.
+Status  | The status of the session: `Active`,  `Idle`, or `Closed`. A session is `Active` if it has an open explicit or implicit transaction (individual SQL statement) with a statement that is actively running or waiting to acquire a lock. A session is `Idle` if it has no open transaction. A session is `Closed` if it has closed the connection to CockroachDB.
 Most Recent Statement | If more than one statement is executing, the most recent statement. If the session is Idle, the last statement.
 Statement Start Time (UTC) | The timestamp at which the statement started.
+Transaction Count | The number of transactions completed in the session.
 Memory Usage | Amount of memory currently allocated to the session followed by the maximum amount of memory the session has ever been allocated.
 Client IP Address | The IP address and port of the client that opened the session.
 User Name | The user that opened the session.
@@ -65,6 +68,10 @@ The **Cancel session** button ends the session. The client that holds this sessi
   - The SQL statement.
   - **Execution Start Time** is the timestamp at which the statement was run.
   - **Distributed Execution?** shows whether the statement uses [Distributed SQL (DistSQL)]({{ link_prefix }}architecture/sql-layer.html#distsql) optimization.
+
+- **Most Recent Transaction Fingerprints Executed**
+
+  A list of the most recent transaction fingerprint IDs, represented in hexadecimal, executed by this session. The fingerprint ID is a link to the [Transaction Details page](ui-transactions-page.html#transaction-details-page) for the transaction. When you click the link, in order to fetch and render the transaction details, the global date range is changed to the session's start and end time.
 
 ## See also
 

@@ -704,7 +704,7 @@ Column | Type | Description
 `active_queries` | `STRING` | The SQL queries active in the session.
 `last_active_query` | `STRING` | The most recently completed SQL query in the session.
 `session_start` | `TIMESTAMP` | The timestamp at which the session started.
-`oldest_query_start` | `TIMESTAMP` | The timestamp at which the oldest currently active SQL query in the session started.
+`active_query_start` | `TIMESTAMP` | The timestamp at which the currently active SQL query in the session started.
 `kv_txn` | `STRING` | The ID of the current key-value transaction for the session.
 `alloc_bytes` | `INT8` | The number of bytes allocated by the session.
 `max_alloc_bytes` | `INT8` | The maximum number of bytes allocated by the session.
@@ -716,7 +716,7 @@ Column | Type | Description
 SELECT * FROM crdb_internal.cluster_sessions where application_name = 'movr';
 ~~~
 ~~~
-  node_id |            session_id            | user_name | client_address  | application_name |                       active_queries                       |               last_active_query               |       session_start       |     oldest_query_start     |                kv_txn                | alloc_bytes | max_alloc_bytes
+  node_id |            session_id            | user_name | client_address  | application_name |                       active_queries                       |               last_active_query               |       session_start       |     active_query_start     |                kv_txn                | alloc_bytes | max_alloc_bytes
 ----------+----------------------------------+-----------+-----------------+------------------+------------------------------------------------------------+-----------------------------------------------+---------------------------+----------------------------+--------------------------------------+-------------+------------------
         1 | 16f762c2af917e800000000000000001 | root      | 127.0.0.1:49198 | movr             | SELECT city, id FROM vehicles WHERE city = 'washington dc' | SELECT city, id FROM vehicles WHERE city = $1 | 2022-06-10 22:26:16.39059 | 2022-06-10 22:28:00.646594 | 7883cbe3-7cf3-4155-a1a8-82d1211c9ffa |      133120 |          163840
 (1 row)
