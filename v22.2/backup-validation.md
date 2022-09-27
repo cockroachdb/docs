@@ -5,7 +5,9 @@ toc: true
 docs_area: manage
 ---
 
-{% include_cached new-in.html version="v22.2" %} CockroachDB provides backup validation tools to ensure that backups you have in storage are restorable. You can use the following option patterns with [`SHOW BACKUP`](show-backup.html) and [`RESTORE`](restore.html) to validate a [cluster](backup.html#backup-a-cluster), [database](backup.html#backup-a-database), or [table](backup.html#backup-a-table-or-view) backup. The three options result in increasing levels of backup validation:
+{% include_cached new-in.html version="v22.2" %} CockroachDB provides backup validation tools to check that backups you have in storage are restorable. Although a successful restore completely validates a backup, the validation tools offer a lighter weight alternative.
+
+You can use the following option patterns with [`SHOW BACKUP`](show-backup.html) and [`RESTORE`](restore.html) to validate a [cluster](backup.html#backup-a-cluster), [database](backup.html#backup-a-database), or [table](backup.html#backup-a-table-or-view) backup. The three options result in increasing levels of backup validation:
 
 1. `SHOW BACKUP ... WITH check_files`: Check that all files belonging to a backup are in the expected location in storage. See [Validate backup files](#validate-backup-files) for an example.
 1. `RESTORE ... WITH schema_only`: Restore the schema from the backup to verify that it is valid without restoring any table user data. See [Validate a backup is restorable](#validate-a-backup-is-restorable) for an example.
