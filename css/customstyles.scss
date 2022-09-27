@@ -77,8 +77,11 @@
 }
 
 .foreign-key-video__container {
-  position: relative;
-	height: 0;
+  height: 0;
+	overflow: hidden;
+	padding-bottom: 56.25%;
+	padding-top: 30px;
+	position: relative;
   iframe {
     position: absolute;
     top: 0;

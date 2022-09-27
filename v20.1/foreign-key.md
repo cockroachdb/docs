@@ -14,7 +14,7 @@ For example, given an `orders` table and a `customers` table, if you create a co
 To learn more about the basics of foreign keys, watch the video below:
 
 <div class="foreign-key-video__container">
-  <iframe width="560" height="315" src="https://www.youtube.com/embed/5kiMg7GXAsY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+  <iframe src="https://www.youtube.com/embed/5kiMg7GXAsY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </div>
 
 {{site.data.alerts.callout_success}}
