@@ -59,7 +59,7 @@ Parameter | Description
 
 {% include {{page.version.version}}/sql/movr-statements.md %}
 
-#### Create a function that references a table
+### Create a function that references a table
 
 The following statement defines a function that returns the number of rows in the `users` table.
 
@@ -80,7 +80,7 @@ The following statement defines a function that returns the number of rows in th
 (1 row)
 ~~~
 
-#### Create a function that uses a `WHERE` clause
+### Create a function that uses a `WHERE` clause
 
 The following statement defines a function that returns the total revenue for rides taken in European cities.
 
