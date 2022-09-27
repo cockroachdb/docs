@@ -270,6 +270,8 @@ karan
 karthik
 keepalive
 keepalives
+keyspace
+keyspaces
 kenji
 kenjiro
 kerberos
@@ -323,6 +325,7 @@ maxroach
 mayank
 memtable
 memtables
+metacommand
 metatables
 Metricbeat
 meunier
@@ -337,6 +340,7 @@ moreutils
 movr
 msg
 multiargument
+multicolumn
 multifactor
 multiregion
 multiset
@@ -374,6 +378,7 @@ offboard
 offlined
 oid
 OIDs
+OOMs
 oli
 ons
 onwards
@@ -654,6 +659,7 @@ unicode
 unindexed
 uniquness
 unix
+unmarshalling
 unpartition
 unpartitioned
 unpartitioning
@@ -677,6 +683,7 @@ userspace
 usertable
 utils
 uuid
+v_linux_arm
 vaidya
 variadic
 vasilev

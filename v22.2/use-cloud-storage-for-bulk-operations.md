@@ -27,7 +27,7 @@ URLs for the files you want to import must use the format shown below. For examp
 
 Location                                                    | Scheme      | Host                                             | Parameters                                                                 
 ------------------------------------------------------------+-------------+--------------------------------------------------+----------------------------------------------------------------------------
-Amazon                                                      | `s3`        | Bucket name                                      | `AUTH`: optional `implicit` or `specified` (default: `specified`); `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, [`AWS_SESSION_TOKEN`](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp_use-resources.html). For more information, see [Authentication - Amazon S3](#authentication). <br><br>`S3_STORAGE_CLASS`: Specify the Amazon S3 storage class for created objects. **Default**: `STANDARD`. See [Amazon S3 storage classes](#amazon-s3-storage-classes) for the available classes.                              
+Amazon                                                      | `s3`        | Bucket name                                      | [`AUTH`](#authentication): `implicit` or `specified` (default: `specified`). When using `specified` pass user's `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`.<br><br>[`ASSUME_ROLE`](#assume-role-authentication) (optional): Pass the [ARN](https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html) of the role to assume. Use in combination with `AUTH=implicit` or `specified`.<br><br>[`AWS_SESSION_TOKEN`](#authentication) (optional): For more information, see Amazon's guide on [temporary credentials](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp_use-resources.html). <br><br>[`S3_STORAGE_CLASS`](#amazon-s3-storage-classes) (optional): Specify the Amazon S3 storage class for created objects. **Default**: `STANDARD`.                          
 Azure                                                       | `azure`     | Storage container                                | `AZURE_ACCOUNT_KEY`, `AZURE_ACCOUNT_NAME` <br><br>For more information, see [Authentication - Azure Storage](#authentication).
 Google Cloud                                                | `gs`        | Bucket name                                      | `AUTH`: `implicit`, or `specified` (default: `specified`); `CREDENTIALS` <br><br>For more information, see [Authentication - Google Cloud Storage](#authentication).     
 HTTP                                                        | `http`      | Remote host                                      | N/A <br><br>For more information, see [Authentication - HTTP](#authentication).      
@@ -109,7 +109,7 @@ When running bulk operations to and from a storage bucket, authentication setup 
 
 <section class="filter-content" markdown="1" data-scope="s3">
 
-The `AUTH` parameter passed to the file URL must be set to either `specified` or `implicit`. The following sections describe how to set up each authentication method.
+You can either authenticate to Amazon S3 with [specified](#specified-authentication) or [implicit](#implicit-authentication) authentication. To have users assume IAM roles to complete bulk operations on an S3 bucket, you can also configure [assume role](#assume-role-authentication) authentication in addition to specified or implicit.
 
 ### Specified authentication
 
@@ -137,6 +137,115 @@ You [can associate an EC2 instance with an IAM role](https://docs.aws.amazon.com
 ~~~shell
 aws ec2 associate-iam-instance-profile --iam-instance-profile Name={example profile} --region={us-east-2} --instance-id {instance example}
 ~~~
+
+### Assume role authentication
+
+{{site.data.alerts.callout_info}}
+CockroachDB supports assume role authentication on clusters running v22.2. Authenticating to cloud storage with `ASSUME_ROLE` on clusters running versions v22.1 and earlier, or mixed versions, is not supported and will result in failed bulk operations.
+{{site.data.alerts.end}}
+
+{% include_cached new-in.html version="v22.2" %} To limit the control access to your Amazon S3 buckets, you can create IAM roles for users to assume. IAM roles do not have an association to a particular user. The role contains permissions that define the operations a user (or [Principal](https://docs.aws.amazon.com/IAM/latest/UserGuide/intro-structure.html#intro-structure-principal)) can complete. An IAM user can then assume a role to undertake a CockroachDB backup, restore, import, etc. As a result, the IAM user only has access to the assigned role, rather than having unlimited access to an S3 bucket. 
+
+{{site.data.alerts.callout_success}}
+Role assumption applies the principle of least privilege rather than directly providing privilege to a user. Creating IAM roles to manage access to AWS resources is Amazon's recommended approach compared to giving access straight to IAM users.
+{{site.data.alerts.end}}
+
+For example, to configure a user to assume an IAM role that allows a bulk operation to an Amazon S3 bucket, take the following steps:
+
+1. Create a role that contains a policy to interact with the S3 buckets depending on the operation your user needs to complete. See the [Storage permissions](#storage-permissions) section for details on the minimum permissions each CockroachDB bulk operation requires. You can create an IAM role in[ Amazon's Management console](https://aws.amazon.com/console/), under the **IAM** and then **Policies** menu. Alternately, you can use the [AWS CLI](https://docs.aws.amazon.com/cli/v1/userguide/cli-configure-quickstart.html).
+
+1. <a name="step-2-user"></a> If you do not already have the user that needs to assume the role, [create the user](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html). Under **IAM** in the Amazon console, navigate to **Users** and **Add users**. You can then add the necessary permissions by clicking on the **Permissions** tab. Ensure that the IAM user has [`sts:AssumeRole` permissions](https://docs.aws.amazon.com/STS/latest/APIReference/API_AssumeRole.html) attached. The following policy will give the user assume role permissions: 
+
+    ~~~json
+    {
+    "Version": "2012-10-17",
+    "Statement": {
+        "Effect": "Allow",
+        "Action": "sts:AssumeRole",
+        "Resource": "arn:aws:iam::{account ID}:role/{role name}"
+        }
+    }
+    ~~~
+
+    The `Resource` here is the Amazon Resource Name (ARN) of the role you created in step 1. You can copy this from the role's **Summary** page.
+
+    The `sts:AssumeRole` permission allows the user to obtain a temporary set of security credentials that gives them access to an S3 bucket to which they would not have access with their user-based permissions.
+
+1. <a name="step-3-assume"></a> Return to your IAM role's **Summary** page, and click on the **Trust Relationships** tab. Add a trust policy into the role, which will define the users that can assume the role. 
+
+    The following trust policy provides the user the privilege to assume the role:
+
+    ~~~json
+    {
+        "Version": "2012-10-17",
+        "Statement": [
+            {
+                "Effect": "Allow",
+                "Principal": {
+                    "AWS": "arn:aws:iam::123456789123:user/{user}"
+                },
+                "Action": "sts:AssumeRole"
+            }
+        ]
+    }
+    ~~~
+    When creating a trust policy consider the following:
+    - In the trust policy you need to include the ARN of the user that you want to assume the role under `Principal`. You can also include the [`Condition` attribute](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements_condition.html) to further control access to the Amazon S3 bucket. For example, this could limit the operation to a specified date range, to users with multi-factor authentication enabled, or to specific IP addresses.  
+    - If you set the `Principal` ARN to `root`, this will allow any IAM user in the account with the `AssumeRole` permission to access the Amazon S3 bucket as per the defined IAM role permissions.
+    - When the IAM user takes on the role to perform a bulk operation, they are temporarily granted the permissions contained in the role. That is, not the permissions specified in their user profile.
+
+1. Run the bulk operation. If using [specified authentication](#specified-authentication), pass in the S3 bucket's URL with the IAM user's `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`. If using [implicit authentication](#implicit-authentication), specify `AUTH=IMPLICIT` instead. For assuming the role, pass the assumed role's ARN, which you can copy from the IAM role's summary page:
+
+    ~~~sql
+    BACKUP DATABASE movr INTO 's3://{bucket name}?AWS_ACCESS_KEY_ID={user key}&AWS_SECRET_ACCESS_KEY={user secret key}&ASSUME_ROLE=arn:aws:iam::{account ID}:role/{role name}' AS OF SYSTEM TIME '-10s';
+    ~~~
+
+    CockroachDB also supports authentication for assuming roles when taking encrypted backups. To use with an encrypted backup, pass the `ASSUME_ROLE` parameter to the KMS URI as well as the bucket's: 
+
+    ~~~sql
+    BACKUP INTO 's3://{bucket name}?AWS_ACCESS_KEY_ID={user key}&AWS_SECRET_ACCESS_KEY={user secret key}&ASSUME_ROLE={ARN}'
+    WITH kms = 'aws:///{key}?AWS_ACCESS_KEY_ID={user key}&AWS_SECRET_ACCESS_KEY={user secret key}&REGION={region}&ASSUME_ROLE={ARN}';
+    ~~~
+
+    For more information on AWS KMS URI formats, see [Take and Restore Encrypted Backups](take-and-restore-encrypted-backups.html).
+
+#### Role chaining
+
+Beyond a user assuming a role, it is also possible to "chain" roles to create a path for users to assume roles to particular operations. Role chaining allows a user to assume a role through an intermediate role(s) instead of the user directly assuming a role. In this way, the role chain passes the request for access to the final role in the chain. Role chaining could be useful when a third-party organization needs access to your Amazon S3 bucket to complete a bulk operation. Or, your organization could grant roles based on limited-privilege levels.
+
+Assuming the role follows the same approach outlined in the previous section. The additional required step to chain roles is to ensure that the ARN of role A, which is assuming role B, is present in role B's trust policy with the `sts:AssumeRole` action. 
+
+The role B's trust policy must contain:
+
+~~~json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": "arn:aws:iam::{account-A-ID}:role/{role A name}"
+      },
+      "Action": "sts:AssumeRole"
+    }
+  ]
+}
+~~~
+
+In a chain of three roles, role C's trust policy needs to include role B in the same way. For example, to chain three roles so that a user could assume role C, it is necessary to verify the following:
+
+ User &rarr; | Role A &rarr;    | Role B &rarr;  | Role C
+------------------------------------------+-----------+---------+---------
+Has permission to assume role A. See [step 2](#step-2-user). | Has a trust policy that permits the user to assume role A. See [step 3](#step-3-assume). | Has a trust policy that permits role A to assume role B. | Has a trust policy that permits role B to assume role C.
+ | Needs permission to assume role B. | Needs permission to assume role C. |
+
+When passing a chained role into `BACKUP`, it will follow this pattern:
+
+~~~sql
+BACKUP DATABASE movr INTO "s3://{bucket name}?AWS_ACCESS_KEY_ID={user's key}&AWS_SECRET_ACCESS_KEY={user's secret key}&ASSUME_ROLE={role A ARN},{role B ARN},{role C ARN}" AS OF SYSTEM TIME '-10s';
+~~~
+
+Each chained role is listed separated by a `,`. You can copy the ARN of the role from its summary page.
 
 </section>
 

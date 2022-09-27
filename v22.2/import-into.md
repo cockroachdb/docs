@@ -192,7 +192,7 @@ We recommend reading the [Considerations](#considerations) section for important
 
 <section class="filter-content" markdown="1" data-scope="s3">
 
-{% include {{ page.version.version }}/backups/aws-auth-note.md %}
+{% include {{ page.version.version }}/misc/auth-intro-examples.md %}
 
 ### Import into a new table from a CSV file
 

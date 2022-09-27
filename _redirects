@@ -10,6 +10,20 @@ layout: null
 /docs/advisories/ /docs/advisories/index.html 301!
 /docs/advisories/advisories.html /docs/advisories/index.html 301
 
+# Pages undergoing maintenance
+/docs/stable/migrate-from-postgres.html /docs/stable/migration-overview.html 301
+/docs/v22.2/migrate-from-postgres.html /docs/v22.2/migration-overview.html 301
+/docs/v22.1/migrate-from-postgres.html /docs/v22.1/migration-overview.html 301
+/docs/v21.2/migrate-from-postgres.html /docs/v21.2/migration-overview.html 301
+/docs/stable/migrate-from-mysql.html /docs/stable/migration-overview.html 301
+/docs/v22.2/migrate-from-mysql.html /docs/v22.2/migration-overview.html 301
+/docs/v22.1/migrate-from-mysql.html /docs/v22.1/migration-overview.html 301
+/docs/v21.2/migrate-from-mysql.html /docs/v21.2/migration-overview.html 301
+/docs/stable/migrate-from-oracle.html /docs/stable/migration-overview.html 301
+/docs/v22.2/migrate-from-oracle.html /docs/v22.2/migration-overview.html 301
+/docs/v22.1/migrate-from-oracle.html /docs/v22.1/migration-overview.html 301
+/docs/v21.2/migrate-from-oracle.html /docs/v21.2/migration-overview.html 301
+
 # Renamed pages
 /docs/install-client-drivers.html /docs/stable/install-client-drivers.html 301
 /docs/stable/operate-cockroachdb-kubernetes /docs/stable/kubernetes-overview.html 301
@@ -497,7 +511,7 @@ layout: null
 
 #CockroachDB Self-Hosted release notes
 
-{% assign rn_rdr = "v20.2,v21.1,v21.2" | split: "," -%}
+{% assign rn_rdr = "v1.0,v1.1,v2.0,v2.1,v19.1,v19.2,v20.1,v20.2,v21.1,v21.2" | split: "," -%}
 {%- assign rns = site.data.releases | where_exp: "rns", "rn_rdr contains rns.major_version" -%}
 {%- for r in rns -%}
 {%- capture old_url -%}releases/{{ r.version }}{%- endcapture -%}
@@ -508,6 +522,12 @@ layout: null
 
 /docs/releases/v22.1.0-alpha.1.html /docs/releases/v22.1.html#v22-1-0-alpha-1 301
 /docs/releases/v22.1.0-alpha.1 /docs/releases/v22.1.html#v22-1-0-alpha-1 301
+
+{% comment %} Delete the if block below as soon as v22.2 becomes GA {% endcomment %}
+{% if site.versions["stable"] == "v22.1" %}
+/docs/stable/ui-insights-page.html /docs/dev/ui-insights-page.html 301
+/docs/stable/ui-insights-page /docs/dev/ui-insights-page.html 301
+{% endif %}
 
 # Redirects for Homebrew
 /docs/secure-a-cluster.html /docs/stable/secure-a-cluster.html 301
@@ -524,3 +544,4 @@ layout: null
 {% endfor -%}
 
 /docs/frequently-asked-questions.html /docs/stable/frequently-asked-questions.html  301
+

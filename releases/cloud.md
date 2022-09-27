@@ -18,6 +18,12 @@ Get future release notes emailed to you:
 As of August 29, 2022, {{ site.data.products.serverless }} clusters are running CockroachDB [v22.1.6](v22.1.html#v22-1-6) and new {{ site.data.products.dedicated }} clusters are running CockroachDB [v22.1.6](v22.1.html#v22-1-6).
 {{site.data.alerts.end}}
 
+## September 16, 2022
+
+<h3>Console changes</h3>
+
+- A tool to [estimate your monthly cost](../cockroachcloud/serverless-cluster-management.html#estimate-usage-cost) based on your workload is now available for {{ site.data.products.serverless }} clusters.
+
 ## September 8, 2022
 
 <h3> Console changes </h3>
@@ -495,7 +501,7 @@ CockroachCloud now requires a user to have a CockroachCloud account before accep
 In addition to various updates, enhancements, and bug fixes, this beta release includes the following major highlights:
 
 - CockroachCloud pricing is now available on the [pricing page](https://www.cockroachlabs.com/pricing/).
-- CockroachCloud clusters running CockroachDB v19.2 have been upgraded to [v19.2.4](https://www.cockroachlabs.com/docs/releases/v19.2.4.html). All new clusters will now be created with CockroachDB v19.2.4.
+- CockroachCloud clusters running CockroachDB v19.2 have been upgraded to [v19.2.4](v19.2.html#v19-2-4). All new clusters will now be created with CockroachDB v19.2.4.
 - CockroachCloud now offers two options for per-node hardware configuration instead of three options. The hardware configuration [pricing](../cockroachcloud/create-your-cluster.html#step-2-select-the-cloud-provider) has been updated accordingly.
 
 <h3>Security changes</h3>
