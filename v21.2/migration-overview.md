@@ -55,7 +55,7 @@ For additional considerations specific to other databases and data formats, see 
 
 ## Step 2. Move your data to CockroachDB
 
-We recommend [using AWS Database Migration Service (DMS) to migrate data](aws-dms.html) from any database to CockroachDB.
+We recommend [using AWS Database Migration Service (DMS) to migrate data](aws-dms.html) from any database, such as PostgreSQL, MySQL, or Oracle, to CockroachDB.
 
 Alternatively, use `IMPORT` to [migrate CSV data](migrate-from-csv.html).
 

@@ -260,7 +260,7 @@ For more information on how to create a changefeed that emits an [Avro](https://
 (1 row)
 ~~~
 
-For step-by-step guidance on creating a changefeed connected to a cloud storage sink, see the [Changefeed Examples](changefeed-examples.html#create-a-changefeed-connected-to-a-cloud-storage-sink) page. The parameters table on the [Changefeed Sinks](changefeed-sinks.html#cloud-parameters) page provides a list of the available cloud storage parameters.
+For step-by-step guidance on creating a changefeed connected to a cloud storage sink, see the [Changefeed Examples](changefeed-examples.html#create-a-changefeed-connected-to-a-cloud-storage-sink) page. The parameters table on the [Changefeed Sinks](changefeed-sinks.html#cloud-storage-parameters) page provides a list of the available cloud storage parameters.
 
 ### Create a changefeed with an S3 storage class
 
