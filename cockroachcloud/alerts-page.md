@@ -28,6 +28,11 @@ If alerts are enabled, {{ site.data.products.db }} will send alerts to [specifie
 - Cluster-wide available memory is **20% or less** on *average* for at least 60 minutes.
 - Node-level available memory is **10% or less** on *average* for at least 90 minutes.
 
+**CMEK:**
+
+- Cluster Node unable to start due to CMEK key access failure.
+- Encrypted backup failed due to CMEK key access failure.
+
 If you receive an alert repeatedly, you may need to [optimize your workload](../stable/make-queries-fast.html) or [scale your {{ site.data.products.db }} cluster](cluster-management.html?filters=dedicated#add-or-remove-nodes-from-a-cluster).
 
 [Console Admins](console-access-management.html#console-admin) will also receive email alerts when your cluster undergoes an automatic [patch version upgrade](upgrade-policy.html#patch-version-upgrades).
