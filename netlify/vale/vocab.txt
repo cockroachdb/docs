@@ -94,6 +94,7 @@ collatedstring
 colocated
 comms
 comodo
+composable
 composability
 concats
 config
