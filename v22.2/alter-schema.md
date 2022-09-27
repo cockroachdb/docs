@@ -34,6 +34,10 @@ Parameter | Description
 
 ### Rename a schema
 
+{{site.data.alerts.callout_info}}
+You cannot rename a schema if a [table](create-table.html) in the schema is used by a [view](create-view.html) or [user-defined function](user-defined-functions.html).
+{{site.data.alerts.end}}
+
 Suppose that you access the [SQL shell](cockroach-sql.html) as user `root`, and [create a new user](create-user.html) `max` and [a schema](create-schema.html) `org_one` with `max` as the owner:
 
 {% include_cached copy-clipboard.html %}
