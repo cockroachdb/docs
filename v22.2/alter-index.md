@@ -18,7 +18,10 @@ Subcommand | Description
 [`RENAME TO`](rename-index.html) | Change the name of an index.
 [`SPLIT AT`](split-at.html) | Force a [range split](architecture/distribution-layer.html#range-splits) at the specified row in the index.
 [`UNSPLIT AT`](unsplit-at.html) | Remove a range split enforcement in the index.
-`[NOT] VISIBLE`| Set whether an index is visible to the [cost-based optimizer](cost-based-optimizer.html#control-whether-the-optimizer-uses-an-index). If not visible, the index will not be used in queries unless specifically selected with [index hint](indexes.html#selection). For an example, see [Set an index to be not visible](#set-an-index-to-be-not-visible).
+
+## Index visibility
+
+Use `[NOT] VISIBLE` to set whether an index is visible to the [cost-based optimizer](cost-based-optimizer.html#control-whether-the-optimizer-uses-an-index). If not visible, the index will not be used in queries unless specifically selected with [index hint](indexes.html#selection). For an example, see [Set an index to be not visible](#set-an-index-to-be-not-visible).
 
 ## View schema changes
 
@@ -28,55 +31,7 @@ Subcommand | Description
 
 {% include {{ page.version.version }}/sql/movr-statements-geo-partitioned-replicas.md %}
 
-### Rename an index
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> CREATE INDEX on users(name);
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SHOW INDEXES FROM users;
-~~~
-
-~~~
- table_name |   index_name   | non_unique | seq_in_index | column_name | direction | storing | implicit | visible
--------------+----------------+------------+--------------+-------------+-----------+---------+----------+----------
-  users      | users_name_idx |     t      |            1 | name        | ASC       |    f    |    f     |    t
-  users      | users_name_idx |     t      |            2 | city        | ASC       |    f    |    t     |    t
-  users      | users_name_idx |     t      |            3 | id          | ASC       |    f    |    t     |    t
-  users      | users_pkey     |     f      |            1 | city        | ASC       |    f    |    f     |    t
-  users      | users_pkey     |     f      |            2 | id          | ASC       |    f    |    f     |    t
-  users      | users_pkey     |     f      |            3 | name        | N/A       |    t    |    f     |    t
-  users      | users_pkey     |     f      |            4 | address     | N/A       |    t    |    f     |    t
-  users      | users_pkey     |     f      |            5 | credit_card | N/A       |    t    |    f     |    t
-(8 rows)
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> ALTER INDEX users@users_name_idx RENAME TO name_idx;
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SHOW INDEXES FROM users;
-~~~
-
-~~~
-  table_name | index_name | non_unique | seq_in_index | column_name | direction | storing | implicit | visible
--------------+------------+------------+--------------+-------------+-----------+---------+----------+----------
-  users      | name_idx   |     t      |            1 | name        | ASC       |    f    |    f     |    t
-  users      | name_idx   |     t      |            2 | city        | ASC       |    f    |    t     |    t
-  users      | name_idx   |     t      |            3 | id          | ASC       |    f    |    t     |    t
-  users      | users_pkey |     f      |            1 | city        | ASC       |    f    |    f     |    t
-  users      | users_pkey |     f      |            2 | id          | ASC       |    f    |    f     |    t
-  users      | users_pkey |     f      |            3 | name        | N/A       |    t    |    f     |    t
-  users      | users_pkey |     f      |            4 | address     | N/A       |    t    |    f     |    t
-  users      | users_pkey |     f      |            5 | credit_card | N/A       |    t    |    f     |    t
-(8 rows)
-~~~
+{% include {{ page.version.version }}/sql/rename-index.md %}
 
 ### Create a replication zone for a secondary index
 
@@ -104,11 +59,6 @@ For examples, see [Split an index](split-at.html#split-an-index) and [Unsplit an
       rides      | rides_auto_index_fk_city_ref_users            |     t      |            2 | rider_id      | ASC       |    f    |    f     |    t
       rides      | rides_auto_index_fk_city_ref_users            |     t      |            3 | id            | ASC       |    f    |    t     |    t
       rides      | rides_auto_index_fk_vehicle_city_ref_vehicles |     t      |            1 | vehicle_city  | ASC       |    f    |    f     |    t
-      rides      | rides_auto_index_fk_vehicle_city_ref_vehicles |     t      |            2 | vehicle_id    | ASC       |    f    |    f     |    t
-      rides      | rides_auto_index_fk_vehicle_city_ref_vehicles |     t      |            3 | city          | ASC       |    f    |    t     |    t
-      rides      | rides_auto_index_fk_vehicle_city_ref_vehicles |     t      |            4 | id            | ASC       |    f    |    t     |    t
-      rides      | rides_pkey                                    |     f      |            1 | city          | ASC       |    f    |    f     |    t
-      rides      | rides_pkey                                    |     f      |            2 | id            | ASC       |    f    |    f     |    t
       ...
       rides      | rides_pkey                                    |     f      |           10 | revenue       | N/A       |    t    |    f     |    t
     (17 rows)
@@ -165,14 +115,15 @@ For examples, see [Split an index](split-at.html#split-an-index) and [Unsplit an
     -------------+-----------------------------------------------+------------+--------------+---------------+-----------+---------+----------+----------
       rides      | rides_auto_index_fk_city_ref_users            |     t      |            1 | city          | ASC       |    f    |    f     |    t
       rides      | rides_auto_index_fk_city_ref_users            |     t      |            2 | rider_id      | ASC       |    f    |    f     |    t
-      rides      | rides_auto_index_fk_city_ref_users            |     t      |            3 | id            | ASC       |    f    |    t     |    t
-      rides      | rides_auto_index_fk_vehicle_city_ref_vehicles |     t      |            1 | vehicle_city  | ASC       |    f    |    f     |    t
-      rides      | rides_auto_index_fk_vehicle_city_ref_vehicles |     t      |            2 | vehicle_id    | ASC       |    f    |    f     |    t
-      rides      | rides_auto_index_fk_vehicle_city_ref_vehicles |     t      |            3 | city          | ASC       |    f    |    t     |    t
-      rides      | rides_auto_index_fk_vehicle_city_ref_vehicles |     t      |            4 | id            | ASC       |    f    |    t     |    t
-      rides      | rides_pkey                                    |     f      |            1 | city          | ASC       |    f    |    f     |    t
-      rides      | rides_pkey                                    |     f      |            2 | id            | ASC       |    f    |    f     |    t
       ...
+      rides      | rides_revenue_idx                             |     t      |            1 | revenue       | ASC       |    f    |    f     |    t
+      rides      | rides_revenue_idx                             |     t      |            2 | vehicle_city  | N/A       |    t    |    f     |    t
+      rides      | rides_revenue_idx                             |     t      |            3 | rider_id      | N/A       |    t    |    f     |    t
+      rides      | rides_revenue_idx                             |     t      |            4 | vehicle_id    | N/A       |    t    |    f     |    t
+      rides      | rides_revenue_idx                             |     t      |            5 | start_address | N/A       |    t    |    f     |    t
+      rides      | rides_revenue_idx                             |     t      |            6 | end_address   | N/A       |    t    |    f     |    t
+      rides      | rides_revenue_idx                             |     t      |            7 | start_time    | N/A       |    t    |    f     |    t
+      rides      | rides_revenue_idx                             |     t      |            8 | end_time      | N/A       |    t    |    f     |    t
       rides      | rides_revenue_idx                             |     t      |            9 | city          | ASC       |    f    |    t     |    t
       rides      | rides_revenue_idx                             |     t      |           10 | id            | ASC       |    f    |    t     |    t
     (27 rows)
@@ -218,12 +169,6 @@ For examples, see [Split an index](split-at.html#split-an-index) and [Unsplit an
       rides      | rides_auto_index_fk_city_ref_users            |     t      |            1 | city          | ASC       |    f    |    f     |    t
       rides      | rides_auto_index_fk_city_ref_users            |     t      |            2 | rider_id      | ASC       |    f    |    f     |    t
       rides      | rides_auto_index_fk_city_ref_users            |     t      |            3 | id            | ASC       |    f    |    t     |    t
-      rides      | rides_auto_index_fk_vehicle_city_ref_vehicles |     t      |            1 | vehicle_city  | ASC       |    f    |    f     |    t
-      rides      | rides_auto_index_fk_vehicle_city_ref_vehicles |     t      |            2 | vehicle_id    | ASC       |    f    |    f     |    t
-      rides      | rides_auto_index_fk_vehicle_city_ref_vehicles |     t      |            3 | city          | ASC       |    f    |    t     |    t
-      rides      | rides_auto_index_fk_vehicle_city_ref_vehicles |     t      |            4 | id            | ASC       |    f    |    t     |    t
-      rides      | rides_pkey                                    |     f      |            1 | city          | ASC       |    f    |    f     |    t
-      rides      | rides_pkey                                    |     f      |            2 | id            | ASC       |    f    |    f     |    t
       ...
       rides      | rides_revenue_idx                             |     t      |            1 | revenue       | ASC       |    f    |    f     |    f
       rides      | rides_revenue_idx                             |     t      |            2 | vehicle_city  | N/A       |    t    |    f     |    f
