@@ -8,6 +8,10 @@ docs_area: get_started
 
 This tutorial shows you how build a simple Rust application with CockroachDB and the [Rust-Postgres driver](https://github.com/sfackler/rust-postgres).
 
+## Before you begin
+
+You must have Rust and Cargo installed. For instructions on installing Rust and Cargo, see the [Cargo documentation](https://doc.rust-lang.org/cargo/getting-started/installation.html).
+
 ## Step 1. Start CockroachDB
 
 {% include {{ page.version.version }}/setup/sample-setup.md %}
@@ -61,6 +65,13 @@ The `transfer_funds` function calls `execute_txn` to perform the actual transfer
 
 ## Step 3. Run the code
 
+1. In a terminal go to the `example-app-rust-postgres` directory.
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    cd example-app-rust-postgres
+    ~~~
+
 1. Set the `DATABASE_URL` environment variable to the connection string to your {{ site.data.products.db }} cluster:
 
     <section class="filter-content" markdown="1" data-scope="local">
@@ -74,18 +85,33 @@ The `transfer_funds` function calls `execute_txn` to perform the actual transfer
 
     <section class="filter-content" markdown="1" data-scope="cockroachcloud">
 
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ export DATABASE_URL="{connection-string}"
-    ~~~
+    1. Edit the connection string you copied earlier and replace `sslmode=verify-full` with `sslmode=require`.
 
-    Where `{connection-string}` is the connection string you copied earlier.
+        {{site.data.alerts.callout_danger}}
+        You **must** change the `sslmode` in your connection string to `sslmode=require`, as the Rust `postgres` driver does not recognize `sslmode=verify-full`. This example uses `postgres-openssl`, which will perform host verification when the `sslmode=require` option is set, so `require` is functionally equivalent to `verify-full`.
+        {{site.data.alerts.end}}
+
+        For example:
+
+        ~~~
+        postgresql://maxroach:ThisIsNotAGoodPassword@free-tier4.aws-us-west-2.cockroachlabs.cloud:26257/bank?options=--cluster%3Ddim-dog-147&sslmode=require
+        ~~~
+
+    
+    2. Set the `DATABASE_URL` environment variable to the modified connection string.
+    
+        {% include_cached copy-clipboard.html %}
+        ~~~ shell
+        $ export DATABASE_URL="{connection-string}"
+        ~~~
+
+        Where `{connection-string}` is the modified connection string.
 
     </section>
 
     The app uses the connection string saved to the `DATABASE_URL` environment variable to connect to your cluster and execute the code.
 
-1. Run the code to create a table and insert some rows:
+2. Run the code to create a table and insert some rows:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
