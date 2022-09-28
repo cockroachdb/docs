@@ -40,15 +40,15 @@ The [Databases](ui-databases-page.html) page shows details about the system and 
 
 ### SQL Activity
 
-The SQL Activity page summarizes SQL activity in your cluster.
+The **SQL Activity** page summarizes SQL activity in your cluster.
 
-- [Statements](ui-statements-page.html) shows frequently executed and high latency [SQL statements](sql-statements.html) with the option to collect statement [diagnostics](ui-statements-page.html#diagnostics).
-- [Transactions](ui-transactions-page.html) show details about transactions running on the cluster.
-- [Sessions](ui-sessions-page.html) shows details about open sessions in the cluster.
+- [**Statements**](ui-statements-page.html) shows frequently executed and high-latency [SQL statements](sql-statements.html) with the option to collect statement [diagnostics](ui-statements-page.html#diagnostics).
+- [**Transactions**](ui-transactions-page.html) shows details about transactions running on the cluster.
+- [**Sessions**](ui-sessions-page.html) shows details about open sessions in the cluster.
 
 ### Insights
 
-The [Insights](ui-insights-page.html) page surfaces problematic health signals and enables you to quickly find optimization opportunities to maximize database efficiency. The Insights page contains workload-level and schema-level insights.
+The [**Insights**](ui-insights-page.html) page exposes problematic health signals and enables you to quickly find optimization opportunities to maximize database efficiency. The **Insights** page contains workload-level and schema-level insights.
 
 ### Network Latency
 

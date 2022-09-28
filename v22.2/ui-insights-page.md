@@ -24,28 +24,28 @@ To display this view, click **Insights** in the left-hand navigation of the DB C
 
 The **Transaction Executions** view provides an overview of all transaction executions that have been flagged with insights.
 
-The rows in this page are populated from the [`crdb_internal.transaction_contention_events`](crdb-internal.html#transaction_contention_events) table. The results displayed in the Transaction Executions view will be available as long as the corresponding row in the `crdb_internal.transaction_contention_events` table exists and as long as the rows in each node use less space than `sql.contention.event_store.capacity`.
+The rows in this page are populated from the [`crdb_internal.transaction_contention_events`](crdb-internal.html#transaction_contention_events) table. The results displayed in the **Transaction Executions** view will be available as long as the corresponding row in the `crdb_internal.transaction_contention_events` table exists and as long as the rows in each node use less space than `sql.contention.event_store.capacity`.
 
 Transaction executions with the **High Contention** insight are transactions that experienced contention.
 
 - **Transaction Execution ID**: The execution ID of the latest execution with the transaction fingerprint.
 - **Transaction Fingerprint ID**: The transaction fingerprint ID of the latest transaction execution.
 - **Transaction Execution**: The transaction fingerprint of the latest transaction execution.
-- **Insights**: the insight for the transaction execution.
+- **Insights**: The insight for the transaction execution.
   - **High Contention**: The transaction execution experienced high contention time according to the threshold set in `sql.insights.latency_threshold`.
-- **Start Time (UTC)**: The time the transaction execution started.
+- **Start Time (UTC)**: The timestamp when the transaction execution started.
 - **Contention Time**: The amount of time the transaction execution spent waiting in contention.
-- **Application Name**: The name specified by the [`application_name`](show-vars.html#supported-variables) session setting.
+- **Application Name**: The name specified by the [`application_name` session setting](show-vars.html#supported-variables).
 
-The following screenshot shows the execution of a transaction in the [ycsb](cockroach-workload.html#run-the-ycsb-workload) workload flagged with High Contention:
+The following screenshot shows the execution of a transaction in the [`ycsb`](cockroach-workload.html#run-the-ycsb-workload) workload flagged with **High Contention**:
 
 <img src="{{ 'images/v22.2/transaction_execution.png' | relative_url }}" alt="Transaction execution" style="border:1px solid #eee;max-width:100%" />
 
 To view details of the execution, click an execution ID in the **Transaction Execution ID** column.
 
-#### Transaction Executions Details
+#### Transaction execution details
 
-The **Transaction Executions Details** view provides more details on a transaction execution insight.
+The transaction execution details view provides more details on a transaction execution insight.
 
 The following screenshot shows the execution details of the transaction execution in the preceding section:
 
@@ -56,21 +56,21 @@ Additional details include:
 - **Start Time (UTC)**: The time the transaction execution started.
 - **Transaction Fingerprint ID**: The transaction fingerprint ID of the transaction execution.
 
-##### Contention Time Insights
+##### Contention Insights
 
 - **Time Spent Waiting**: The amount of time the transaction execution spent waiting for access to a resource being used by another transaction.
 - **Blocked Schema**: The name of the schema that the transaction attempted to access when it was blocked by another transaction.
 - **Blocked Database**: The name of the database that the transaction attempted to access when it was blocked by another transaction.
 - **Blocked Table**: The name of the table that the transaction attempted to access when it was blocked by another transaction.
 
-##### Transactions with ID waited on
+##### Transaction with ID {transaction ID} waited on
 
-This section provides details of the transaction executions that block the transaction flagged with the High Contention:
+This section provides details of the transaction executions that block the transaction ID flagged with **High Contention**:
 
 - **Transaction Execution ID**: The execution ID of the blocking transaction execution.
 - **Transaction Fingerprint ID**: The transaction fingerprint ID of the blocking transaction execution.
 - **Transaction Execution**: The transaction fingerprint of the blocking transaction execution.
-- **Start Time (UTC)**: The time the blocking transaction execution started.
+- **Start Time (UTC)**: The timestamp when the blocking transaction execution started.
 - **Elapsed Time**: The time that elapsed to complete the blocking transaction execution.
 
 ### Statement Executions view
@@ -79,7 +79,7 @@ The **Statement Executions** view provides an overview of all statement executio
 
 To display this view, click **Insights** in the left-hand navigation of the DB Console and select **Workload Insights > Statement Executions**.
 
-The rows in this page are populated from the [`crdb_internal.cluster_execution_insights`](crdb-internal.html) table. The results displayed on the Statement Executions view will be available as long as the number of rows in each node is less than `sql.insights.execution_insights_capacity`.
+The rows in this page are populated from the [`crdb_internal.cluster_execution_insights`](crdb-internal.html) table. The results displayed on the **Statement Executions** view will be available as long as the number of rows in each node is less than `sql.insights.execution_insights_capacity`.
 
 - **Statement Execution ID**: The execution ID of the latest execution with the statement fingerprint.
 - **Statement Fingerprint ID**: The statement fingerprint ID of the latest statement execution.
@@ -93,7 +93,7 @@ The rows in this page are populated from the [`crdb_internal.cluster_execution_i
 
       - Execution time is greater than the value of `sql.insights.latency_threshold`.
       - Anomaly detection is enabled (`sql.insights.anomaly_detection.enabled`), execution time is greater than the value of `sql.insights.anomaly_detection.latency_threshold`, and [execution latency](ui-sql-dashboard.html#kv-execution-latency-99th-percentile) is `> p99 && > 2*p50`. For details, see [Detect slow executions](#detect-slow-executions).
-- **Start Time (UTC)**: The time the statement execution started.
+- **Start Time (UTC)**: The timestamp when the statement execution started.
 - **Elapsed Time**: The time that elapsed to complete the statement execution.
 - **User Name**: The name of the user that invoked the statement execution.
 - **Application Name**: The name specified by the [`application_name`](show-vars.html#supported-variables) session setting.
@@ -114,8 +114,8 @@ To view details of the execution, click an execution ID in the **Statement Execu
 
 The **Statement Execution Details** view provides more details on a statement execution insight. Additional information includes:
 
-- **Start Time**: The time the statement execution started.
-- **End Time**: The time the statement execution ended.
+- **Start Time**: The timestamp when the statement execution started.
+- **End Time**: The timestamp when the statement execution ended.
 - **Elapsed Time**: The time that elapsed during statement execution.
 - **Rows Read**: The total number of rows read.
 - **Rows Written**: The total number of rows written.
@@ -124,23 +124,25 @@ The **Statement Execution Details** view provides more details on a statement ex
 - **Session ID**: The ID of the [session](ui-sessions-page.html) the statement was executed from.
 - **Transaction Fingerprint ID**: The ID of the transaction fingerprint for the statement execution.
 - **Transaction Execution ID**: The ID of the transaction execution for the statement execution.
-- **Statement Fingerprint ID**: The fingerprint ID of the statement fingerprint for the statement execution..
+- **Statement Fingerprint ID**: The fingerprint ID of the statement fingerprint for the statement execution.
 
 The following screenshot shows the execution details of the statement execution in the preceding section:
 
 <img src="{{ 'images/v22.2/statement_execution_details.png' | relative_url }}" alt="Statement execution details" style="border:1px solid #eee;max-width:100%" />
 
-The Insights column shows the name of the insight, in this case **Suboptimal Plan**, the Details column provides details on the insight, and the final column contains a button to perform a query to mitigate the cause of the insight,
-in this case to create an index on the ride start time that stores the rider ID.
+The **Insights** column shows the name of the insight, in this case **Suboptimal Plan**; the **Details** column provides details on the insight; and the final column contains a **Create Index** button.
+
+Click the **Create Index** button to perform a query to mitigate the cause of the insight,
+in this case to create an index on the ride `start_time` that stores the `rider_id`.
 
 ## Schema Insights view
 
 To display this view, click **Insights** in the left-hand navigation of the DB Console and select **Schema Insights**.
 
-This view lists the indexes that have not been used and should be dropped and or the ones that should be created, altered, or replaced (based on statement execution).
+This view lists the indexes that have not been used and should be dropped, and/or the ones that should be created, altered, or replaced (based on statement execution).
 
-- The drop recommendations are the same as those on the [Databases](ui-databases-page.html) page.
-- The create, alter, and replace recommendations are the same as those on the [Explain Plans tab](ui-statements-page.html#insights) on the Statements page. The Explain Plans tab shows all recommendations, however this page shows only the latest recommendations for that statement fingerprint. If you execute a statement again after creating or updating an index, the recommendation disappears.
+- The drop recommendations are the same as those on the [**Databases**](ui-databases-page.html) page.
+- The create, alter, and replace recommendations are the same as those on the [Explain Plans tab](ui-statements-page.html#insights) on the Statements page. Whereas the **Explain Plans** tab shows all recommendations, the **Schema Insights** view shows only the latest recommendations for that statement fingerprint. If you execute a statement again after creating or updating an index, the recommendation disappears.
 
 The following screenshot shows the insight that displays after you run the query described in [Use the right index]({{ link_prefix }}apply-statement-performance-rules.html#rule-2-use-the-right-index) 6 or more times:
 
@@ -149,10 +151,10 @@ The following screenshot shows the insight that displays after you run the query
 - **Insights:** Contains one of the following insight types: **Create Index**, **Alter Index**, **Replace Index**, **Drop Unused Index**.
 - **Details:** Details for each insight. Different insight types display different details fields:
 
-    - **Create Index**, **Alter Index**, or **Replace Index**: a Statement Fingerprint field, which displays the statement fingerprint that would be optimized with the creation, alteration, or replacement of the index, and a Recommendation field, which displays the SQL query to create, alter, or replace the index.
-    - **Drop Unused Index**: an Index field, which displays the name of the index to drop, and a Description field, which displays the reason for dropping the index.
+    - **Create Index**, **Alter Index**, or **Replace Index**: A **Statement Fingerprint** field displays the statement fingerprint that would be optimized with the creation, alteration, or replacement of the index; and a **Recommendation** field displays the SQL query to create, alter, or replace the index.
+    - **Drop Unused Index**: An **Index** field displays the name of the index to drop; and a **Description** field displays the reason for dropping the index.
 
-To realize the schema insight, click the action button in the final column to execute the SQL statement. A confirmation dialog displays warning you of the cost of [online schema changes](online-schema-changes.html) and a button to copy the SQL statement for later execution in a SQL client.
+To realize the schema insight, click the action button in the final column to execute the SQL statement. A confirmation dialog displays a warning about the cost of [online schema changes](online-schema-changes.html) and a button to copy the SQL statement for later execution in a SQL client.
 
 ## Configuration
 
@@ -160,7 +162,7 @@ You can configure the behavior of insights using the following [cluster settings
 
 ### Workload insights settings
 
-You can configure [Workload Insights](#workload-insights-tab) with the following cluster settings.
+You can configure [**Workload Insights**](#workload-insights-tab) with the following cluster settings.
 
 | Setting                                                                | Default value | Description                                                                                                                                                                                   | Where used                           |
 |------------------------------------------------------------------------|---------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------|
@@ -177,28 +179,28 @@ You can configure [Workload Insights](#workload-insights-tab) with the following
 
 There are two different methods for detecting slow executions. By default, they are both enabled and you can configure them based on your workload.
 
-The first method flags all executions running longer than `sql.insights.latency_threshold`. You can think of this as analogous to the [slow query log](logging-use-cases.html#sql_perf).
+The first method flags all executions running longer than `sql.insights.latency_threshold`. This is analogous to checking the [slow query log](logging-use-cases.html#sql_perf).
 
 The second method attempts to detect **unusually slow executions**. You can enable this detection with `sql.insights.anomaly_detection.enabled` and configure it with `sql.insights.anomaly_detection.latency_threshold`.
-CockroachDB will then keep a streaming histogram in memory for each distinct statement fingerprint that has seen an execution latency longer than `sql.insights.anomaly_detection.latency_threshold` and flag any execution with a latency in the 99th percentile (`> p99`) for its fingerprint.
+CockroachDB will then keep a streaming histogram in memory for each distinct statement fingerprint that has seen an execution latency longer than `sql.insights.anomaly_detection.latency_threshold`, and will flag any execution with a latency in the 99th percentile (`> p99`) for its fingerprint.
 
-Additional controls filter out less actionable executions:
+Additional controls filter out executions that are less actionable:
 
 - The execution's latency must also be longer than twice the median latency (`> 2*p50`) for that fingerprint. This ensures that the elevated latency is significant enough to warrant attention.
-- The execution's latency must also be longer than `sql.insights.anomaly_detection.latency_threshold`. Slower-than-usual executions are less interesting if they're still fast enough.
+- The execution's latency must also be longer than `sql.insights.anomaly_detection.latency_threshold`. Some executions are slower than usual, but are still fast enough for the workload.
 
-The `sql.insights.anomaly_detection.memory_limit` cluster setting limits the amount of memory available for tracking these streaming latency histograms. When this threshold is surpassed, the least-recently touched histogram is evicted. The default of `1 MiB` is sufficient for tracking about a thousand fingerprints.
+The `sql.insights.anomaly_detection.memory_limit` cluster setting limits the amount of memory available for tracking these streaming latency histograms. When this threshold is surpassed, the least-recently touched histogram is evicted. The default of `1 MiB` is sufficient for tracking about 1,000 fingerprints.
 
-You can track the `sql.insights.anomaly_detection.memory` and `sql.insights.anomaly_detection.evictions` [metrics](ui-custom-chart-debug-page.html) to determine if the settings are appropriate for your workload. If you see a steady stream of evictions or churn, you can either raise the `sql.insights.anomaly_detection.memory_limit` cluster setting, to allow for more storage, or raise the `sql.insights.anomaly_detection.latency_threshold` cluster setting, to examine fewer statement fingerprints.
+You can track the `sql.insights.anomaly_detection.memory` and `sql.insights.anomaly_detection.evictions` [metrics](ui-custom-chart-debug-page.html) to determine if the settings are appropriate for your workload. If you see a steady stream of evictions or churn, you can either raise the `sql.insights.anomaly_detection.memory_limit` cluster setting, to allow for more storage; or raise the `sql.insights.anomaly_detection.latency_threshold` cluster setting, to examine fewer statement fingerprints.
 
 ### Schema insights settings
 
-You can configure the index recommendations in [Schema Insights view](#schema-insights-view) view, [Explain Plans tab](ui-statements-page.html#insights), and the [Databases page](ui-databases-page.html) with the following cluster settings.
+You can configure the index recommendations in the [**Schema Insights** view](#schema-insights-view), [**Explain Plans** tab](ui-statements-page.html#insights), and [**Databases** page](ui-databases-page.html) with the following cluster settings.
 
 | Setting                                                                | Default value | Description                                                                                                             | Where used                           |
 |------------------------------------------------------------------------|---------------|-------------------------------------------------------------------------------------------------------------------------|--------------------------------------|
 |`sql.metrics.statement_details.index_recommendation_collection.enabled` | `true`        | Whether or not index recommendations are enabled for indexes that could be or are used during statement execution.      | Schema Insights and Explain Plans tab|
-|`sql.index_recommendation.drop_unused_duration`                         | `7 days`      | Duration of time an index must be unused before a recommendation to drop it.                                            | Schema Insights and Databases        |
+|`sql.index_recommendation.drop_unused_duration`                         | `7 days`      | The duration of time an index must be unused before a recommendation to drop it.                                            | Schema Insights and Databases        |
 |`sql.metrics.statement_details.max_mem_reported_idx_recommendations`    | `5000`        | The maximum number of reported index recommendations stored in memory.                                                  | Schema Insights and Explain Plans tab|
 
 ## See also

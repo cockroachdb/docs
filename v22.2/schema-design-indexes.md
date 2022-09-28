@@ -109,7 +109,7 @@ The [`EXPLAIN`](explain.html#success-responses) command provides index recommend
 
 - Drop unused indexes whenever possible.
 
-  - In the DB Console, visit the [Databases page](ui-databases-page.html) and traverse databases and tables to find [index recommendations](ui-databases-page.html#index-recommendations) and actions to drop unused indexes.
+  - In the DB Console, visit the [**Databases** page](ui-databases-page.html) and check databases and tables for [**Index Recommendations**](ui-databases-page.html#index-recommendations) to drop unused indexes.
 
   - To understand usage statistics for an index, query the [`crdb_internal.index_usage_statistics`](crdb-internal.html#index_usage_statistics) table.
 

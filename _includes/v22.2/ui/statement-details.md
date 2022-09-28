@@ -36,7 +36,7 @@ LIMIT
   10;
 ~~~
 
-The following screenshot shows the statement fingerprint of the query:
+The following screenshot shows the statement fingerprint of the query described in [Use the right index]({{ link_prefix }}apply-statement-performance-rules.html#rule-2-use-the-right-index):
 
 <img src="{{ 'images/v22.2/ui_statement_fingerprint_overview.png' | relative_url }}" alt="Statement fingerprint overview" style="border:1px solid #eee;max-width:100%" />
 
@@ -66,8 +66,8 @@ The plan table shows the following details:
 
 Column | Description
 -----|----
-Plan Gist | A sequence of bytes representing the flattened tree of operators and various operator specific metadata of the statement plan.
-Insights | The number of [insights](#insights) for the plan. To configure the properties for determining when to trigger insights, see [Schema insight settings](ui-insights-page.html#schema-insights-settings).
+Plan Gist | A sequence of bytes representing the flattened tree of operators and operator-specific metadata of the statement plan.
+Insights | The number of [insights](#insights) for the plan. To configure when to trigger insights, see [Schema insights settings](ui-insights-page.html#schema-insights-settings).
 Last Execution Time | The timestamp when the statement was last executed.
 Average Execution Time | The average execution time for all the executions of the plan.
 Execution Count | The number of times the plan was executed.
@@ -90,7 +90,7 @@ When you click the plan gist, a table of insights that describe how to improve t
 
 In this case the insight is recommending that you create an index on the `start_time` column of the `rides` table and storing the `rider_id`.
 
-If you click **Create Index**, a confirmation dialog displays warning you of the cost of [online schema changes](online-schema-changes.html) and a button to copy the SQL statement for later execution in a SQL client.
+If you click **Create Index**, a confirmation dialog displays a warning about the cost of [online schema changes](online-schema-changes.html) and a button to copy the SQL statement for later execution in a SQL client.
 
 If you click **Apply** to create the index and then execute the statement again, the **Explain Plans** tab will show that the second execution (in this case at `19:40`), which uses the index and has no insight, takes less time than the first 6 executions.
 

@@ -18,9 +18,9 @@ To view this page, [access the DB Console](ui-overview.html#db-console-access) a
 
 ## Index recommendations
 
-{% include_cached new-in.html version="v22.2" %} The database, table details, and index details pages show recommendations to drop indexes based on index usage. You can traverse the database and table views to determine which indexes have recommendations.
+{% include_cached new-in.html version="v22.2" %} The [**Databases**](#databases), [table details](#table-details), and [index details](#index-details) pages show recommendations to drop indexes based on index usage. You can traverse the **Databases** and **Tables** views to determine which indexes have recommendations.
 
-You configure the threshold for determining when to drop an index due to low usage in the `sql.index_recommendation.drop_unused_duration` [cluster setting](cluster-settings.html). The default value is 7 days.
+To configure the threshold for determining when to drop an index due to low usage, change the [`sql.index_recommendation.drop_unused_duration` cluster setting](cluster-settings.html). The default value is 7 days.
 
 ## Databases
 
@@ -97,7 +97,7 @@ The following information is displayed for each index:
 | Last Used (UTC)       | The time the index was created, last read, or index statistics were reset. |
 | Index Recommendations | A recommendation to drop the index if it is unused.                        |
 
-Click an **index name** to view index details. The index details page displays the query used to create the index, the number of times the index was read since index statistics were reset, the time the index was last read, and the reason for the index recommendation.
+Click an index name to view index details. The index details page displays the query used to create the index, the number of times the index was read since index statistics were reset, the time the index was last read, and the reason for the index recommendation.
 
 ## Grants view
 

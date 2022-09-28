@@ -76,7 +76,7 @@ Transaction contention occurs when transactions issued from multiple clients at 
 
 #### Indicators that your application is experiencing transaction contention
 
-* In the [Insights > Workload Insights > Transaction Executions](ui-insights-page.html) view, transaction executions display the High Contention Time insight.
+* In the [Insights > Workload Insights > Transaction Executions](ui-insights-page.html) view, transaction executions display the **High Contention** insight.
 * Your application is experiencing degraded performance with transaction errors like `SQLSTATE: 40001`, `RETRY_WRITE_TOO_OLD`, and `RETRY_SERIALIZABLE`. See [Transaction Retry Error Reference](transaction-retry-error-reference.html).
 * The [SQL Statement Contention graph](ui-sql-dashboard.html#sql-statement-contention) is showing spikes over time.
 <img src="{{ 'images/v22.2/ui-statement-contention.png' | relative_url }}" alt="SQL Statement Contention graph in the DB Console" style="border:1px solid #eee;max-width:100%" />
@@ -141,7 +141,7 @@ If the [Overview dashboard](ui-overview-dashboard.html) in the DB Console shows 
 
 [Secondary indexes](schema-design-indexes.html) can improve application read performance. However, there is overhead in maintaining secondary indexes that can affect your write performance. You should profile your tables periodically to determine whether an index is worth the overhead. To identify infrequently accessed indexes that could be candidates to drop, do one of the following:
 
-- In the DB Console, visit the [Databases page](ui-databases-page.html) and traverse databases and tables to find [index recommendations](ui-databases-page.html#index-recommendations) to drop unused indexes.
+- In the DB Console, visit the [**Databases** page](ui-databases-page.html) and check databases and tables for [**Index Recommendations**](ui-databases-page.html#index-recommendations) to drop unused indexes.
 - Run a join query against the [`crdb_internal.index_usage_statistics`](crdb-internal.html#index_usage_statistics) and `crdb_internal.table_indexes` tables:
 
     {% include_cached copy-clipboard.html %}
@@ -169,7 +169,7 @@ If the [Overview dashboard](ui-overview-dashboard.html) in the DB Console shows 
     (9 rows)
     ~~~
 
-    Use the values in the `total_reads` and `last_read` columns to identify indexes that have low usage or are stale and could be dropped.
+    Use the values in the `total_reads` and `last_read` columns to identify indexes that have low usage or are stale and can be dropped.
 
 ## See also
 
