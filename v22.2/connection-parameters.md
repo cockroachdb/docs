@@ -188,7 +188,7 @@ This specifies a connection for the `root` user to an insecure cluster listening
 
 ## Connect using discrete parameters
 
-Most [`cockroach` Commands Overview](cockroach-commands.html) accept connection
+Most [`cockroach` commands](cockroach-commands.html) accept connection
 parameters as separate, discrete command-line flags, in addition (or
 in replacement) to `--url` which [specifies all parameters as a
 URL](#connect-using-a-url).
