@@ -82,11 +82,13 @@ To display the plan that was executed, click the plan gist. For the plan gist `A
 
 #### Insights
 
-{% include_cached new-in.html version="v22.2" %} If you run the query discussed in [Overview](#overview) 6 or more times, the plan table will be updated to indicate that there is 1 insight.
+{% include_cached new-in.html version="v22.2" %} The plan table displays the number of insights related to the plan. If a plan has at least 1 insight, when you click the plan gist, a table of insights that describe how to improve the performance will follow the plan.
 
-When you click the plan gist, a table of insights that describe how to improve the performance will follow the plan.
+The following screenshot shows 1 insight found after running the query discussed in [Overview](#overview) 6 or more times:
 
 <img src="{{ 'images/v22.2/plan_with_insight.png' | relative_url }}" alt="Plan with insight" style="border:1px solid #eee;max-width:100%" />
+
+CockroachDB uses the threshold of 6 executions before offering an insight because it assumes that you are no longer merely experimenting with a query at that point.
 
 In this case the insight is recommending that you create an index on the `start_time` column of the `rides` table and storing the `rider_id`.
 

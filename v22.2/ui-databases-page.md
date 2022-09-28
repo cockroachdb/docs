@@ -73,14 +73,14 @@ The **Overview** tab displays the SQL statements used to [create the table](crea
 
 The table details include:
 
-- **Size**: the approximate disk size of all replicas of this table on the cluster.
-- **Replicas**: the number of [replicas](architecture/replication-layer.html) of this table on the cluster.
-- **Ranges**: the number of [ranges](architecture/glossary.html#architecture-range) in this table.
-- **Table Stats Last Updated**: the last time table statistics were created or updated.
-- **Auto Stats Collection**: whether [automatic statistics collection](cost-based-optimizer.html#table-statistics) is enabled.
-- **Regions/Nodes**: the regions and nodes on which the table data is stored. This is not displayed on a single-node cluster.
-- **Database**: the database in which the table is found.
-- **Indexes**: the names of the indexes defined on the table.
+- **Size**: The approximate disk size of all replicas of this table on the cluster.
+- **Replicas**: The number of [replicas](architecture/replication-layer.html) of this table on the cluster.
+- **Ranges**: The number of [ranges](architecture/glossary.html#architecture-range) in this table.
+- **Table Stats Last Updated**: The last time table statistics were created or updated.
+- **Auto Stats Collection**: Whether [automatic statistics collection](cost-based-optimizer.html#table-statistics) is enabled.
+- **Regions/Nodes**: The regions and nodes on which the table data is stored. This is not displayed on a single-node cluster.
+- **Database**: The database in which the table is found.
+- **Indexes**: The names of the indexes defined on the table.
 
 #### Index details
 

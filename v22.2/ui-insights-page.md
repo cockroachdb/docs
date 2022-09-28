@@ -7,7 +7,7 @@ docs_area: reference.db_console
 
 {% include {{ page.version.version }}/ui/admin-access.md %}
 
-{% include_cached new-in.html version="v22.2" %} The **Insights** page exposes problems that CockroachDB has detected in your workloads and schemas. The page also offers recommendations to improve the performance of your workloads.
+{% include_cached new-in.html version="v22.2" %} The **Insights** page exposes problems that CockroachDB has detected in your workloads and schemas. The page also offers recommendations to improve the performance of your workloads. These are called *insights* in the DB Console.
 
 The **Insights** page helps you:
 
@@ -26,7 +26,7 @@ The **Transaction Executions** view provides an overview of all transaction exec
 
 The rows in this page are populated from the [`crdb_internal.transaction_contention_events`](crdb-internal.html#transaction_contention_events) table. The results displayed in the **Transaction Executions** view will be available as long as the corresponding row in the `crdb_internal.transaction_contention_events` table exists and as long as the rows in each node use less space than `sql.contention.event_store.capacity`.
 
-Transaction executions with the **High Contention** insight are transactions that experienced contention.
+Transaction executions with the **High Contention** insight are transactions that experienced [contention](transactions.html#transaction-contention).
 
 - **Transaction Execution ID**: The execution ID of the latest execution with the transaction fingerprint.
 - **Transaction Fingerprint ID**: The transaction fingerprint ID of the latest transaction execution.
@@ -147,6 +147,8 @@ This view lists the indexes that have not been used and should be dropped, and/o
 The following screenshot shows the insight that displays after you run the query described in [Use the right index]({{ link_prefix }}apply-statement-performance-rules.html#rule-2-use-the-right-index) 6 or more times:
 
 <img src="{{ 'images/v22.2/schema_insight.png' | relative_url }}" alt="Schema insight" style="border:1px solid #eee;max-width:100%" />
+
+CockroachDB uses the threshold of 6 executions before offering an insight because it assumes that you are no longer merely experimenting with a query at that point.
 
 - **Insights:** Contains one of the following insight types: **Create Index**, **Alter Index**, **Replace Index**, **Drop Unused Index**.
 - **Details:** Details for each insight. Different insight types display different details fields:
