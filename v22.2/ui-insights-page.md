@@ -132,8 +132,7 @@ The following screenshot shows the execution details of the statement execution 
 
 The **Insights** column shows the name of the insight, in this case **Suboptimal Plan**; the **Details** column provides details on the insight; and the final column contains a **Create Index** button.
 
-Click the **Create Index** button to perform a query to mitigate the cause of the insight,
-in this case to create an index on the ride `start_time` that stores the `rider_id`.
+Click the **Create Index** button to perform a query to mitigate the cause of the insight, in this case to create an index on the ride `start_time` that stores the `rider_id`.
 
 ## Schema Insights view
 
