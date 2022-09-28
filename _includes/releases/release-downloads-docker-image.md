@@ -65,5 +65,3 @@ This release was withdrawn, and we've removed the links to the downloads and Doc
 $ docker pull {{ release.docker_image }}:{{ release.version }}
 ~~~
 {% endif %}
-
-{% include_cached releases/experimental_download_dialog.md %}

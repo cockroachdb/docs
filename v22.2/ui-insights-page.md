@@ -13,3 +13,10 @@ The **Insights** page helps you:
 - Identify [indexes](indexes.html) that should be created, altered, replaced, or dropped to improve performance.
 
 This feature is under development.
+
+## See also
+
+- [Statements page](ui-statements-page.html)
+- [Transactions page](ui-transactions-page.html)
+- [Databases page](ui-databases-page.html)
+- [Assign privileges](security-reference/authorization.html#managing-privileges)
