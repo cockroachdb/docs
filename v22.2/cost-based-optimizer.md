@@ -178,7 +178,7 @@ The `avg_size` table statistic represents the average size of a table column. If
 
 The optimizer uses `avg_size` to cost scans and relevant joins. Costing scans per row regardless of the size of the columns comprising the row doesn't account for time to read or transport a large number of bytes over the network. This can lead to undesirable plans when there are multiple options for scans or joins that read directly from tables.
 
-Cockroach Labs recommends that you allow the optimizer to consider column size when costing plans. If you are an advanced user and need to disable using `avg_size` for troubleshooting or performance tuning reasons, set the [`cost_scans_with_default_col_size` session variable](set-vars.html#cost-scans-with-default-col-size) to `true` with `SET cost_scans_with_default_col_size=true`.
+We recommend that you allow the optimizer to consider column size when costing plans. If you are an advanced user and need to disable using `avg_size` for troubleshooting or performance tuning reasons, set the [`cost_scans_with_default_col_size` session variable](set-vars.html#cost-scans-with-default-col-size) to `true` with `SET cost_scans_with_default_col_size=true`.
 
 ## Control whether the optimizer creates a plan with a full scan
 
