@@ -1,0 +1,5 @@
+Single Sign-On (SSO) allows members of your {{ site.data.products.db }} organization to authenticate using an identity from Github, Google, or Microsoft instead of using an email address and password.
+
+[Basic SSO](/docs/cockroachcloud/cloud-org-sso.html#basic-sso) is enabled by default for each {{ site.data.products.db }} organization, and, users can authenticate to [{{ site.data.products.db }} Console](https://cockroachlabs.cloud) with any Github, Google, or Microsoft identity or using their email address and a password.
+
+[Cloud Organization SSO](/docs/cockroachcloud/cloud-org-sso.html#cloud-organization-sso) provides additional customization and capabilities to help organizations meet their security and compliance requirements. For example, it supports autoprovisioning, allows you to restrict the email addresses that can log in using a given method, allows you to connect to your IdP using the [Security Access Markup Language (SAML)](https://en.wikipedia.org/wiki/Security_Assertion_Markup_Language) and [OpenID Connect (OIDC)](https://openid.net/connect/) identity protocols.

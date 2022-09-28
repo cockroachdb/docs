@@ -9,7 +9,7 @@ Before you [create a {{ site.data.products.db }} cluster](create-your-cluster.ht
 
 ## Choose an authentication method
 
-You may authenticate to {{ site.data.products.db }} console using an email and password, or with [Single Sign-on (SSO)](cloud-sso.html). The console supports SSO provided by GitHub, Google, and Microsoft.
+You may authenticate to {{ site.data.products.db }} console using an email and password, or with [Single Sign-on (SSO)](cloud-org-sso.html). The console supports SSO provided by GitHub, Google, and Microsoft, as well as identity providers with support for OIDC or SAML protocols..
 
 SSO provides security benefits. This includes not having to manage an additional credential, and perhaps most importantly, that SSO providers support multi-factor authentication (MFA). For best security, we recommend that all {{ site.data.products.db }} users authenticate with SSO, with MFA enabled.
 
