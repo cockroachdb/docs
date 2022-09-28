@@ -1,6 +1,7 @@
 1. Launch a temporary interactive pod and start the [built-in SQL client](cockroach-sql.html) inside it:
 
     <section class="filter-content" markdown="1" data-scope="manual">
+
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl run cockroachdb -it \
@@ -11,9 +12,11 @@
     --insecure \
     --host=cockroachdb-public
     ~~~
+
     </section>
 
     <section class="filter-content" markdown="1" data-scope="helm">
+
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl run cockroachdb -it \
@@ -24,6 +27,7 @@
     --insecure \
     --host=my-release-cockroachdb-public
     ~~~    
+
     </section>
 
 2. Run some basic [CockroachDB SQL statements](learn-cockroachdb-sql.html):
