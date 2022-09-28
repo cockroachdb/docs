@@ -6,7 +6,20 @@ docs_area: releases
 toc_not_nested: true
 ---
 
+{% comment %}
+NOTE TO WRITERS: This file contains interleaved HTML and Liquid. To ease maintenance and readability
+of this file, block-level HTML is indented in relation to the other HTML, and block-level Liquid is
+indented in relation to the other Liquid. Please try to keep the indentation consistent. Thank you!
+{% endcomment %}
+
 After downloading your desired release, learn how to [install CockroachDB](../{{site.versions["stable"]}}/install-cockroachdb.html). Also be sure to review Cockroach Labs' [Release Support Policy](release-support-policy.html).
+
+The following binaries are not suitable for production environments:
+
+- **Testing** binaries allow you to validate the next major or minor version of CockroachDB while it is in development. A testing release is categorized by its level of maturity, moving from Alpha to Beta to Release Candidate (RC).
+- **Experimental** binaries allow you to deploy CockroachDB on architectures that are not yet qualified for production use.
+
+{{ experimental_js_warning }}
 
 {% assign sections = site.data.releases | map: "release_type" | uniq | reverse %}
 {% comment %} Fetch the list of all release types (currently Testing, Production) {% endcomment %}
@@ -20,9 +33,12 @@ After downloading your desired release, learn how to [install CockroachDB](../{{
 {% assign latest_hotfix = site.data.releases | where_exp: "latest_hotfix", "latest_hotfix.major_version == site.versions['stable']" | where: "withdrawn", "false"  | sort: "release_date" | reverse | first %}
 {% comment %} For the latest GA version, find the latest hotfix that is not withdrawn. {% endcomment %}
 
+{% comment %}Assign the JS for the experimental download prompt and store it in the Liquid variable experimental_download_js {% endcomment %}
+{% capture experimental_download_js %}{% include_cached releases/experimental_download_dialog.md %}{% endcapture %}
+
 {% for v in versions %} {% comment %} Iterate through all major versions {% endcomment %}
 
-{% assign nosha_releases = "v1.0,v1.1,v2.0,v2.1,v19.1,v19.2,v20.1,v20.2" | split: "," %} {% comment %} For all Production releases 21.1 and later, we provide sha256sum files as well. {% endcomment %}
+    {% assign nosha_releases = "v1.0,v1.1,v2.0,v2.1,v19.1,v19.2,v20.1,v20.2" | split: "," %} {% comment %} For all Production releases 21.1 and later, we provide sha256sum files as well. {% endcomment %}
 
 ## {{ v.major_version }}
 
@@ -34,102 +50,223 @@ After downloading your desired release, learn how to [install CockroachDB](../{{
     <button id="source" class="filter-button" data-scope="source">Source</button>
 </div>
 
-<section class="filter-content" data-scope="windows"> {% comment %} Show warning about Windows being in experimental mode. {% endcomment %}
-{% include windows_warning.md %}
-</section>
+    {% for s in sections %} {% comment %} For each major version, iterate through the sections. {% endcomment %}
 
-{% for s in sections %} {% comment %} For each major version, iterate through the sections. {% endcomment %}
+        {% assign releases = site.data.releases | where_exp: "releases", "releases.major_version == v.major_version" | where_exp: "releases", "releases.release_type == s" | sort: "release_date" | reverse %} {% comment %} Fetch all releases for that major version based on release type (Production/Testing). {% endcomment %}
 
-{% assign releases = site.data.releases | where_exp: "releases", "releases.major_version == v.major_version" | where_exp: "releases", "releases.release_type == s" | sort: "release_date" | reverse %} {% comment %} Fetch all releases for that major version based on release type (Production/Testing). {% endcomment %}
+        {% assign v_linux_arm = "false" %}
+        {% for r in releases %}
+            {% if r.linux_arm == "true" %}
+                {% assign v_linux_arm = "true" %}
+                {% break %}
+            {% endif %}
+        {% endfor %}
 
-{% if releases[0] %}
-
+        {% if releases[0] %}
 ### {{ s }} Releases
 
-<table class="release-table">
-<thead>
-<tr>
-  <td>Version</td>
-  <td>Date</td>
-  <td>Download</td>
-</tr>
-</thead>
+<section class="filter-content" data-scope="linux">
+    <table class="release-table">
+    <thead>
+        <tr>
+            <td>Version</td>
+            <td>Date</td>
+            <td>Intel 64-bit Downloads</td>
+        {% if v_linux_arm == "true" %}
+            <td>ARM 64-bit (<b>Experimental</b>) Downloads</td>
+        {% endif %}
+        </tr>
+    </thead>
+    <tbody>
+            {% for r in releases %}
+        <tr {% if r.version == latest_hotfix.version %}class="latest"{% endif %}> {% comment %} Add "Latest" class to release if it's the latest release. {% endcomment %}
+            <td>
+                <a href="{{ v.major_version }}.html#{{ r.version | replace: ".", "-" }}">{{ r.version }}</a> {% comment %} Add link to each release r. {% endcomment %}
+                {% if r.version == latest_hotfix.version %}
+                <span class="badge-new">Latest</span> {% comment %} Add "Latest" badge to release if it's the latest release. {% endcomment %}
+                {% endif %}
+            </td>
+            <td>{{ r.release_date }}</td> {% comment %} Release date of the release. {% endcomment %}
+                {% if r.withdrawn == "true" %} {% comment %} Suppress withdrawn releases. {% endcomment %}
+            <td><span class="badge badge-gray">Withdrawn</span></td>
+                {% else %} {% comment %} Add download links for all non-withdrawn versions. {% endcomment %}
+            <td>
+                <div><a href="https://binaries.cockroachdb.com/cockroach-{{ r.version }}.linux-amd64.tgz">Full Binary</a> (<a href="https://binaries.cockroachdb.com/cockroach-{{ r.version }}.linux-amd64.tgz.sha256sum">SHA256</a>)</div>
+                    {% if r.has_sql_only != "false" %}
+                <div><a href="https://binaries.cockroachdb.com/cockroach-sql-{{ r.version }}.linux-amd64.tgz">SQL Shell Binary</a> (<a href="https://binaries.cockroachdb.com/cockroach-sql-{{ r.version }}.linux-amd64.tgz.sha256sum">SHA256</a>)</div>
+                    {% endif %}
+                {% endif %}
+                {% if r.linux_arm == "true" %}
+                    {% if r.withdrawn == "true" %} {% comment %} Suppress withdrawn releases. {% endcomment %}{% comment %}Version and date columns joined with previous row{% endcomment %}
+                <td><span class="badge badge-gray">Withdrawn</span></td>
+                    {% else %} {% comment %} Add download links for all non-withdrawn versions. {% endcomment %}
+                <td>
+                    <div><a onclick="{{ experimental_download_js }}" href="https://binaries.cockroachdb.com/cockroach-{{ r.version }}.linux-3.7.10-gnu-aarch64.tgz">Full Binary</a> (<a href="https://binaries.cockroachdb.com/cockroach-{{ r.version }}.linux-3.7.10-gnu-aarch64.tgz.sha256sum">SHA256</a>)</div>
+                        {% if r.has_sql_only != "false" %}
+                    <div><a onclick="{{ experimental_download_js }}" href="https://binaries.cockroachdb.com/cockroach-sql-{{ r.version }}.linux-3.7.10-gnu-aarch64.tgz">SQL shell Binary</a> (<a href="https://binaries.cockroachdb.com/cockroach-sql-{{ r.version }}.linux-3.7.10-gnu-aarch64.tgz.sha256sum">SHA256</a>)</div>
+                        {% endif %}
+                </td>
+                    {% endif %}
+                {% endif %}
+            </tr>
+            {% endfor %} {% comment %}Releases {% endcomment %}
+        </tbody>
+    </table>
+</section>
 
-<tbody>
-{% for r in releases %}
-    <tr {% if r.version == latest_hotfix.version %}class="latest"{% endif %}> {% comment %} Add "Latest" class to release if it's the latest release. {% endcomment %}
-        <td>
-            <a href="{{ v.major_version }}.html#{{ r.version | replace: ".", "-" }}">{{ r.version }}</a> {% comment %} Add link to each release r. {% endcomment %}
+<section class="filter-content" data-scope="mac">
+    <table class="release-table">
+    <thead>
+        <tr>
+            <td>Version</td>
+            <td>Date</td>
+            <td>Intel 64-bit Downloads</td>
+        </tr>
+    </thead>
+    <tbody>
+        {% for r in releases %}
+        <tr {% if r.version == latest_hotfix.version %}class="latest"{% endif %}> {% comment %} Add "Latest" class to release if it's the latest release. {% endcomment %}
+            <td>
+                <a href="{{ v.major_version }}.html#{{ r.version | replace: ".", "-" }}">{{ r.version }}</a> {% comment %} Add link to each release r. {% endcomment %}
+                {% if r.version == latest_hotfix.version %}
+                <span class="badge-new">Latest</span> {% comment %} Add "Latest" badge to release if it's the latest release. {% endcomment %}
+                {% endif %}
+            </td>
+            <td>{{ r.release_date }}</td> {% comment %} Release date of the release. {% endcomment %}
+                {% if r.withdrawn == "true" %} {% comment %} Suppress withdrawn releases. {% endcomment %}
+            <td><span class="badge badge-gray">Withdrawn</span></td>
+                {% else %} {% comment %} Add download links for all non-withdrawn versions. {% endcomment %}
+            <td>
+                <div><a href="https://binaries.cockroachdb.com/cockroach-{{ r.version }}.darwin-10.9-amd64.tgz">Full Binary</a> (<a href="https://binaries.cockroachdb.com/cockroach-{{ r.version }}.darwin-10.9-amd64.tgz.sha256sum">SHA256</a>)</div>
+                    {% if r.has_sql_only != "false" %}
+                <div><a href="https://binaries.cockroachdb.com/cockroach-sql-{{ r.version }}.darwin-10.9-amd64.tgz">SQL shell Binary</a> (<a href="https://binaries.cockroachdb.com/cockroach-sql-{{ r.version }}.darwin-10.9-amd64.tgz.sha256sum">SHA256</a>)</div>
+                    {% endif %}
+            </td>
+                {% endif %}
+        </tr>
+        {% endfor %}
+    </tbody>
+    </table>
+</section>
+
+<section class="filter-content" data-scope="windows">
+    Windows 8 or higher is required.
+
+    <table class="release-table">
+    <thead>
+        <tr>
+            <td>Version</td>
+            <td>Date</td>
+            <td>Intel 64-bit (<b>Experimental</b>) Downloads</td>
+        </tr>
+    </thead>
+    <tbody>
+        {% for r in releases %}
+        <tr {% if r.version == latest_hotfix.version %}class="latest"{% endif %}> {% comment %} Add "Latest" class to release if it's the latest release. {% endcomment %}
+            <td>
+                <a href="{{ v.major_version }}.html#{{ r.version | replace: ".", "-" }}">{{ r.version }}</a> {% comment %} Add link to each release r. {% endcomment %}
+                {% if r.version == latest_hotfix.version %}
+                <span class="badge-new">Latest</span> {% comment %} Add "Latest" badge to release if it's the latest release. {% endcomment %}
+                {% endif %}
+            </td>
+            <td>{{ r.release_date }}</td> {% comment %} Release date of the release. {% endcomment %}
+                {% if r.withdrawn == "true" %} {% comment %} Suppress withdrawn releases. {% endcomment %}
+            <td><span class="badge badge-gray">Withdrawn</span></td>
+                {% else %} {% comment %} Add download links for all non-withdrawn versions. {% endcomment %}
+            <td>
+                    {% if r.no_windows == "true" %}
+                N/A
+                    {% else %}
+                <div><a onclick="{{ experimental_download_js }}" href="https://binaries.cockroachdb.com/cockroach-{{ r.version }}.windows-6.2-amd64.zip">Full Binary</a> (<a href="https://binaries.cockroachdb.com/cockroach-{{ r.version }}.windows-6.2-amd64.zip.sha256sum">SHA256</a>)</div>
+                        {% if r.has_sql_only != "false" %}
+                <div><a onclick="{{ experimental_download_js }}" href="https://binaries.cockroachdb.com/cockroach-sql-{{ r.version }}.windows-6.2-amd64.zip">SQL shell Binary</a> (<a href="https://binaries.cockroachdb.com/cockroach-sql-{{ r.version }}.windows-6.2-amd64.zip.sha256sum">SHA256</a>)</div>
+                        {% endif %}
+                    {% endif %}
+                {% endif %}
+            </td>
+        </tr>
+            {% endfor %}
+    </tbody>
+</table>
+</section>
+
+<section class="filter-content" data-scope="docker">
+    <p>Docker images for CockroachDB are published on <a class="external" href="https://hub.docker.com/r/cockroachdb/cockroach/tags)">Docker Hub</a>.</p>
+    <table class="release-table">
+    <thead>
+        <tr>
+            <td>Version</td>
+            <td>Date</td>
+            <td>Docker image tag</td>
+        </tr>
+    </thead>
+    <tbody>
+        {% for r in releases %}
+        <tr {% if r.version == latest_hotfix.version %}class="latest"{% endif %}> {% comment %} Add "Latest" class to release if it's the latest release. {% endcomment %}
+            <td>
+                <a href="{{ v.major_version }}.html#{{ r.version | replace: ".", "-" }}">{{ r.version }}</a> {% comment %} Add link to each release r. {% endcomment %}
             {% if r.version == latest_hotfix.version %}
                 <span class="badge-new">Latest</span> {% comment %} Add "Latest" badge to release if it's the latest release. {% endcomment %}
             {% endif %}
-        </td>
-        <td>{{ r.release_date }}</td> {% comment %} Release date of the release. {% endcomment %}
-        {% if r.withdrawn == "true" %} {% comment %} Suppress withdrawn releases. {% endcomment %}
-            <td class="os-release-cell"><span class="badge badge-gray">Withdrawn</span></td>
-        {% else %} {% comment %} Add download links for all non-withdrawn versions. {% endcomment %}
-            <td class="os-release-cell">
-                <section class="filter-content" data-scope="linux">
-                    <a class="os-release-link" href="https://binaries.cockroachdb.com/cockroach-{{ r.version }}.linux-amd64.tgz">64-bit Binary (full)</a>
-                    {% unless nosha_releases contains v.major_version or s == "Testing" %}
-                        <a class="os-release-link" href="https://binaries.cockroachdb.com/cockroach-{{ r.version }}.linux-amd64.tgz.sha256sum">Full Binary SHA256</a>
-                    {% endunless %}
-                    {% if r.has_sql_only != "false" %}
-                    <a class="os-release-link" href="https://binaries.cockroachdb.com/cockroach-sql-{{ r.version }}.linux-amd64.tgz">64-bit Binary (SQL shell)</a>
-                    {% unless nosha_releases contains v.major_version or s == "Testing" %}
-                        <a class="os-release-link" href="https://binaries.cockroachdb.com/cockroach-sql-{{ r.version }}.linux-amd64.tgz.sha256sum">SQL Shell Binary SHA256</a>
-                    {% endunless %}
-                    {% endif %}
-
-                </section>
-                <section class="filter-content" data-scope="mac">
-                    <a class="os-release-link" href="https://binaries.cockroachdb.com/cockroach-{{ r.version }}.darwin-10.9-amd64.tgz">64-bit Binary</a>
-                    {% unless nosha_releases contains v.major_version or s == "Testing" %}
-                        <a class="os-release-link" href="https://binaries.cockroachdb.com/cockroach-{{ r.version }}.darwin-10.9-amd64.tgz.sha256sum">Full Binary SHA256</a>
-                    {% endunless %}
-                    {% if r.has_sql_only != "false" %}
-                    <a class="os-release-link" href="https://binaries.cockroachdb.com/cockroach-sql-{{ r.version }}.darwin-10.9-amd64.tgz">64-bit Binary (SQL shell)</a>
-                    {% unless nosha_releases contains v.major_version or s == "Testing" %}
-                        <a class="os-release-link" href="https://binaries.cockroachdb.com/cockroach-sql-{{ r.version }}.darwin-10.9-amd64.tgz.sha256sum">SQL Shell Binary SHA256</a>
-                    {% endunless %}
-                    {% endif %}
-
-                </section>
-                <section class="filter-content" data-scope="windows">
-                {% if r.no_windows == "true" %}
-                    N/A
+            </td>
+            <td>{{ r.release_date }}</td> {% comment %} Release date of the release. {% endcomment %}
+                {% if r.withdrawn == "true" %} {% comment %} Suppress withdrawn releases. {% endcomment %}
+                <span class="badge badge-gray">Withdrawn</span></td>
                 {% else %}
-                    <a class="os-release-link" href="https://binaries.cockroachdb.com/cockroach-{{ r.version }}.windows-6.2-amd64.zip">64-bit Binary</a>
-                    {% unless nosha_releases contains v.major_version or s == "Testing" %}
-                        <a class="os-release-link" href="https://binaries.cockroachdb.com/cockroach-{{ r.version }}.windows-6.2-amd64.zip.sha256sum">Full Binary SHA256</a>
-                    {% endunless %}
-                    {% if r.has_sql_only != "false" %}
-                    <a class="os-release-link" href="https://binaries.cockroachdb.com/cockroach-sql-{{ r.version }}.windows-6.2-amd64.zip">64-bit Binary (SQL shell)</a>
-                    {% unless nosha_releases contains v.major_version or s == "Testing" %}
-                        <a class="os-release-link" href="https://binaries.cockroachdb.com/cockroach-sql-{{ r.version }}.windows-6.2-amd64.zip.sha256sum">SQL Shell Binary SHA256</a>
-                    {% endunless %}
+                    {% if r.no_source == "true" %}
+                N/A
+                    {% else %}
+                <code>cockroachdb/cockroach{% if r.version contains "-" %}-unstable{% endif %}:{{ r.version }}</code>
                     {% endif %}
-                {% endif %}
-                </section>
-                <section class="filter-content" data-scope="docker">
-                    <code>cockroachdb/cockroach{% if r.version contains "-" %}-unstable{% endif %}:{{ r.version }}</code>
-                </section>
-                <section class="filter-content" data-scope="source">
-                {% if r.no_source == "true" %}
-                    N/A
-                {% else %}
-                    <a target="_blank" rel="noopener" href="https://github.com/cockroachdb/cockroach/releases/tag/{{ r.version }}">Source</a>
-                {% endif %}
-                </section>
             </td>
         {% endif %}
-    </tr>
-{% endfor %}
-</tbody>
-</table>
-{% endif %}
-{% endfor %}
-{% endfor %}
+        </tr>
+    {% endfor %}
+    </tbody>
+    </table>
+</section>
+
+<section class="filter-content" data-scope="source">
+    <p>The source code for CockroachDB is hosted in the <a href="https://github.com/cockroachdb/cockroach/releases/">cockroachdb/cockroach</a> repository on Github.</p>
+    <table class="release-table">
+    <thead>
+        <tr>
+            <td>Version</td>
+            <td>Date</td>
+            <td>Source</td>
+        </tr>
+    </thead>
+    <tbody>
+    {% for r in releases %}
+        <tr {% if r.version == latest_hotfix.version %}class="latest"{% endif %}> {% comment %} Add "Latest" class to release if it's the latest release. {% endcomment %}
+            <td>
+                <a href="{{ v.major_version }}.html#{{ r.version | replace: ".", "-" }}">{{ r.version }}</a> {% comment %} Add link to each release r. {% endcomment %}
+        {% if r.version == latest_hotfix.version %}
+                <span class="badge-new">Latest</span> {% comment %} Add "Latest" badge to release if it's the latest release. {% endcomment %}
+        {% endif %}
+            </td>
+            <td>{{ r.release_date }}</td> {% comment %} Release date of the release. {% endcomment %}
+        {% if r.withdrawn == "true" %} {% comment %} Suppress withdrawn releases. {% endcomment %}
+            <td><span class="badge badge-gray">Withdrawn</span></td>
+        {% else %} {% comment %} Add download links for all non-withdrawn versions. {% endcomment %}
+            <td>
+            {% if r.no_source == "true" %}
+                N/A
+            {% else %}
+                <a class="external" href="https://github.com/cockroachdb/cockroach/releases/tag/{{ r.version }}">View on Github</a>
+            {% endif %}
+            </td>
+        {% endif %}
+        </tr>
+    {% endfor %}
+    </tbody>
+    </table>
+</section>
+
+
+{% endif %} {% comment %}if releases[0]{% endcomment %}
+{% endfor %} {% comment %}Sections {% endcomment %}
+{% endfor %} {% comment %}Versions{% endcomment %}
 
 ## Release naming
 

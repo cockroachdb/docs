@@ -270,6 +270,8 @@ karan
 karthik
 keepalive
 keepalives
+keyspace
+keyspaces
 kenji
 kenjiro
 kerberos
@@ -681,6 +683,7 @@ userspace
 usertable
 utils
 uuid
+v_linux_arm
 vaidya
 variadic
 vasilev
