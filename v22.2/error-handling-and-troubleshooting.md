@@ -67,6 +67,27 @@ However, you may need to access the underlying cluster to troubleshoot issues wh
 
 For more information about how to troubleshoot cluster-level issues, see [Troubleshoot Cluster Setup](cluster-setup-troubleshooting.html).
 
+## Troubleshoot SQL client application problems
+
+### High client CPU load or connection pool exhaustion when SCRAM Password-based Authentication is enabled
+
+When [SASL/SCRAM-SHA-256 Secure Password-based Authentication](security-reference/scram-authentication.html) (SCRAM Authentication) is enabled on a cluster, some additional CPU load is incurred on client applications, which are responsible for handling SCRAM hashing. It's important to plan for this additional CPU load to avoid performance degredation, CPU starvation, and connection pool exhaustion on the client. For example, the following set of circumstances can exhaust the client application's resources:
+
+1. SCRAM Authentication is enabled on the cluster.
+1. The client is constrained on CPU resources.
+1. The client driver's connection pool has no defined maximum number of connections.
+1. The client application issues transactions concurrently.
+
+Each new connection uses more CPU than connecting to a cluster without SCRAM Authentication enabled. Because of this additional CPU load, each transaction is slower, and a larger quantity of concurrent transactions mean a larger number of concurrent connections are in use. In this situation, it can be difficult for the client application to recover.
+
+To mitigate against this situation, Cockroach Labs recommends that you take the following steps.
+
+- Allocate more CPU resources to client applications when SCRAM Authentication is enabled.
+- Limit the maximum number of connections in the client driver's connection pool.
+- Limit the maxumum number of concurrent transactions the client application can issue.
+- Test the performance of your client application with the increased CPU allocation, limited number of connections, and limited number of concurrent transactions against types of workloads you expect it to handle in production before rolling the changes out to production.
+
+
 ## See also
 
 ### Tasks
