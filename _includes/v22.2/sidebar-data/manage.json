@@ -394,6 +394,12 @@
               ]
             },
             {
+              "title": "Databases Page",
+              "urls": [
+                "/cockroachcloud/databases-page.html"
+              ]
+            },
+            {
               "title": "Jobs Page",
               "urls": [
                 "/cockroachcloud/jobs-page.html"

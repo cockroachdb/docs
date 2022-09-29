@@ -18,6 +18,12 @@ Get future release notes emailed to you:
 As of August 29, 2022, {{ site.data.products.serverless }} clusters are running CockroachDB [v22.1.6](v22.1.html#v22-1-6) and new {{ site.data.products.dedicated }} clusters are running CockroachDB [v22.1.6](v22.1.html#v22-1-6).
 {{site.data.alerts.end}}
 
+## September 24, 2022
+
+<h3>Console changes</h3>
+
+- You can now [create a database](../cockroachcloud/serverless-cluster-management.html#create-a-database) directly from the [**Databases** page](../cockroachcloud/databases-page.html) of the {{ site.data.products.db }} Console.
+
 ## September 16, 2022
 
 <h3>Console changes</h3>
