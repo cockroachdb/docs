@@ -844,7 +844,7 @@ Column | Type | Description
 `statistics` | `JSONB NOT NULL` | Statistics for the statement. See [`statistics` column](#statistics-column).
 `sampled_plan` | `JSONB NOT NULL` | The sampled query plan of the current statement statistics. This column is unfilled if there is no sampled query plan.
 `aggregation_interval` | `INTERVAL NOT NULL` | The interval over which statistics are aggregated.
-`index_recommendations` | `STRING[] NOT NULL` | An array of strings containing [index recommendations](ui-insights-page.html#schema-insights-view) of the format `<type> : <sql query>`.
+`index_recommendations` | `STRING[] NOT NULL` | An array of strings containing [index recommendations](ui-insights-page.html#schema-insights-view) of the format `{type} : {sql query}`.
 
 #### `metadata` column
 
