@@ -18,24 +18,6 @@ The **Overview** section displays the SQL statement fingerprint and execution at
 - **Transaction type**: The type of transaction ([implicit]({{ link_prefix }}transactions.html#individual-statements) or [explicit]({{ link_prefix }}transactions.html#sql-statements)).
 - **Last execution time**: The timestamp when the statement was last executed.
 
-Run the query described in [Use the right index]({{ link_prefix }}apply-statement-performance-rules.html#rule-2-use-the-right-index):
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-SELECT
-  name, count(rides.id) AS sum
-FROM
-  users JOIN rides ON users.id = rides.rider_id
-WHERE
-  rides.start_time BETWEEN '2018-12-31 00:00:00' AND '2020-01-01 00:00:00'
-GROUP BY
-  name
-ORDER BY
-  sum DESC
-LIMIT
-  10;
-~~~
-
 The following screenshot shows the statement fingerprint of the query described in [Use the right index]({{ link_prefix }}apply-statement-performance-rules.html#rule-2-use-the-right-index):
 
 <img src="{{ 'images/v22.2/ui_statement_fingerprint_overview.png' | relative_url }}" alt="Statement fingerprint overview" style="border:1px solid #eee;max-width:100%" />
@@ -88,7 +70,9 @@ The following screenshot shows 1 insight found after running the query discussed
 
 <img src="{{ 'images/v22.2/plan_with_insight.png' | relative_url }}" alt="Plan with insight" style="border:1px solid #eee;max-width:100%" />
 
+{{site.data.alerts.callout_info}}
 CockroachDB uses the threshold of 6 executions before offering an insight because it assumes that you are no longer merely experimenting with a query at that point.
+{{site.data.alerts.end}}
 
 In this case the insight is recommending that you create an index on the `start_time` column of the `rides` table and storing the `rider_id`.
 
