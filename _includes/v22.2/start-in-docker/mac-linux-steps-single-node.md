@@ -1,7 +1,7 @@
 When you use the `cockroach start-single-node` command to start a single-node cluster with Docker, additional features are available to help with testing and development.
 
 {{site.data.alerts.callout_danger}}
-Single-node clusters are not highly-available or fault-tolerant. They are not appropriate for production use.
+Single-node clusters are not highly available or fault tolerant. They are not appropriate for production use.
 {{site.data.alerts.end}}
 
 - You can optionally set the following [Docker environment variables](https://docs.docker.com/engine/reference/commandline/run/#set-environment-variables--e---env---env-file) to create a database and user automatically and to set a password for the user.
@@ -19,7 +19,7 @@ This section shows how to start a single-node cluster that uses these features.
 
 Cockroach Labs recommends that you store cluster data in a Docker volume rather than in the storage layer of the running container. Otherwise, if a Docker container is inadvertently deleted, its data is inaccessible.
 
-To create the [Docker volume](https://docs.docker.com/storage/volumes/) where the cluster will store its data:
+To create the [Docker volume](https://docs.docker.com/storage/volumes/) where the cluster will store its data, run the following:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -33,7 +33,7 @@ docker volume create roach-single
     The following command starts a single-node cluster that:
  
     - Stores its data in the `roach-single` volume on the Docker host, which is mounted on the `/cockroach/cockroach-data` directory within the container.
-    - If the `/cockroach/cockroach-data` within the container is empty, the specified database, user, and password are created automatically.
+    - If the `/cockroach/cockroach-data` directory within the container is empty, creates the specified database, user, and password automatically.
       {{site.data.alerts.callout_success}}
       Instead of specifying each value directly by using the `-e` or `--env` flag, you can store them in a file on the Docker host. Use one key-value pair per line and set the `--env-file` flag to the file's path.
       {{site.data.alerts.end}}
