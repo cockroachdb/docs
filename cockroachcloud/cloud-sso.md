@@ -77,4 +77,4 @@ Yes, as long as Enterprise Authentication is enabled for your {{ site.data.produ
 
 ### What default role is assigned to users when auto-provisioning is enabled in a {{ site.data.products.db }} organization?
 
-The `Developer` role is assigned by default to autoprovisioned users.
+The `Developer` role is assigned by default to auto-provisioned users.
