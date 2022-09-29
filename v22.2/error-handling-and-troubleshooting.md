@@ -67,6 +67,23 @@ However, you may need to access the underlying cluster to troubleshoot issues wh
 
 For more information about how to troubleshoot cluster-level issues, see [Troubleshoot Cluster Setup](cluster-setup-troubleshooting.html).
 
+## Troubleshoot SQL client application problems
+
+### High client CPU load or connection pool exhaustion when SCRAM Password-based Authentication is enabled
+
+When [SASL/SCRAM-SHA-256 Secure Password-based Authentication](security-reference/scram-authentication.html) (SCRAM Authentication) is enabled on a cluster, some additional CPU load is incurred on client applications, which are responsible for handling SCRAM hashing. It's important to plan for this additional CPU load to avoid performance degradation, CPU starvation, and connection pool exhaustion on the client. For example, the following set of circumstances can exhaust the client application's resources:
+
+1. SCRAM Authentication is enabled on the cluster.
+1. The client driver's connection pool has no defined maximum number of connections.
+1. The client application issues transactions concurrently.
+
+In this situation, each new connection uses more CPU than connecting to a cluster without SCRAM Authentication enabled. Because of this additional CPU load, each concurrent transaction is slower, and a larger quantity of concurrent transactions can accumulate, in conjunction with a larger number of concurrent connections. In this situation, it can be difficult for the client application server to recover.
+
+To mitigate against this situation, Cockroach Labs recommends that you:
+
+{% include_cached {{page.version.version}}/scram-authentication-recommendations.md %}
+
+
 ## See also
 
 ### Tasks
