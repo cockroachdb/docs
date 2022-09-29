@@ -173,7 +173,7 @@ As of August 29, 2022, {{ site.data.products.serverless }} clusters are running 
 
     GCP                              | AWS
     ---------------------------------|------------
-    Oregon (`us-west2`)              | Mumbai (`ap-south-1`)
+    California (`us-west2`)              | Mumbai (`ap-south-1`)
     Sao Paulo (`southamerica-east1`) | Frankfurt (`eu-central-1`)
     South Carolina (`us-east1`)      | N. Virginia (`us-east-1`)
 
