@@ -15,21 +15,27 @@
         </div>
 
         <section class="filter-content" markdown="1" data-scope="secure">
+
         {% include_cached copy-clipboard.html %}
         ~~~ shell
         $ cockroach workload init movr 'postgresql://root@localhost:26257?sslcert=certs%2Fclient.root.crt&sslkey=certs%2Fclient.root.key&sslmode=verify-full&sslrootcert=certs%2Fca.crt'
         ~~~
+
         </section>
 
         <section class="filter-content" markdown="1" data-scope="insecure">
+
         {% include_cached copy-clipboard.html %}
         ~~~ shell
         $ cockroach workload init movr 'postgresql://root@localhost:26257?sslmode=disable'
         ~~~
+
         </section>
+
     1. Use [`cockroach sql`](cockroach-sql.html) to open an interactive SQL shell and set `movr` as the  [current database](sql-name-resolution.html#current-database):
 
         <section class="filter-content" markdown="1" data-scope="secure">
+
         {% include_cached copy-clipboard.html %}
         ~~~ shell
         $ cockroach sql --certs-dir=certs --host=localhost:26257
@@ -39,9 +45,11 @@
         ~~~ sql
         > USE movr;
         ~~~
+
         </section>
 
         <section class="filter-content" markdown="1" data-scope="insecure">
+
         {% include_cached copy-clipboard.html %}
         ~~~ shell
         $ cockroach sql --insecure --host=localhost:26257
@@ -51,4 +59,5 @@
         ~~~ sql
         > USE movr;
         ~~~        
+
         </section>

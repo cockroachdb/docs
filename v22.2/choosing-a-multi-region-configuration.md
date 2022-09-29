@@ -66,3 +66,6 @@ Different databases and tables within the same cluster can each use different co
 - [Topology Patterns](topology-patterns.html)
 - [Disaster Recovery](disaster-recovery.html)
 - [Low Latency Reads and Writes in a Multi-Region Cluster](demo-low-latency-multi-region-deployment.html)
+- [Secondary regions](multiregion-overview.html#secondary-regions)
+- [`SET SECONDARY REGION`](set-secondary-region.html)
+- [`DROP SECONDARY REGION`](drop-secondary-region.html)

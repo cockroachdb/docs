@@ -100,6 +100,35 @@ For more information about data domiciling using `PLACEMENT RESTRICTED`, see [Da
 Super regions rely on the underlying [replication zone system](configure-replication-zones.html), which was historically built for performance, not for domiciling. The replication system's top priority is to prevent the loss of data and it may override the zone configurations if necessary to ensure data durability. For more information, see [Configure Replication Zones](https://www.cockroachlabs.com/docs/v21.2/configure-replication-zones#types-of-constraints).
 {{site.data.alerts.end}}
 
+{{site.data.alerts.callout_info}}
+If you are using super regions in your cluster, there are additional constraints when using [secondary regions](#secondary-regions):
+<ul>
+  <li>If the [primary region](set-primary-region.html) is in a super region, the secondary region **must** be a region within the primary's super region.</li>
+  <li>If the primary region is not in a super region, the secondary region **must not** be within a super region.</li>
+</ul>
+{{site.data.alerts.end}}
+
+## Secondary regions
+
+<span class="version-tag">New in v22.2:</span> Secondary regions allow you to define a [database region](#database-regions) that will be used for failover in the event your [primary region](set-primary-region.html) goes down.  In other words, the secondary region will act as the primary region if the original primary region fails.
+
+Secondary regions work as follows: when a secondary region is added to a database, a [lease preference](configure-replication-zones.html#lease_preferences) is added to the tables and indexes in that database to ensure that two [voting replicas](configure-replication-zones.html#num_voters) are moved into the secondary region.
+
+This behavior is an improvement over versions of CockroachDB prior to v22.2.  In those versions, when the primary region failed, the [leaseholders](architecture/replication-layer.html#leases) would be transferred to another [database region](#database-regions) at random, which could have negative effects on performance.
+
+For more information about how to use secondary regions, see:
+
+- [`SET SECONDARY REGION`](set-secondary-region.html)
+- [`DROP SECONDARY REGION`](drop-secondary-region.html)
+
+{{site.data.alerts.callout_info}}
+If you are using [super regions](#super-regions) in your cluster, there are additional constraints when using secondary regions:
+<ul>
+  <li>If the [primary region](set-primary-region.html) is in a super region, the secondary region **must** be a region within the primary's super region.</li>
+  <li>If the primary region is not in a super region, the secondary region **must not** be within a super region.</li>
+</ul>
+{{site.data.alerts.end}}
+
 ## Survival goals
 
 A _survival goal_ dictates how many simultaneous failure(s) a database can survive. All tables within the same database operate with the **same survival goal**. Each database can have its own survival goal setting.
@@ -204,3 +233,5 @@ Regional by row tables can take advantage of [hash-sharded indexes](hash-sharded
 - [Develop and Deploy a Global Application](movr-flask-overview.html)
 - [Low Latency Reads and Writes in a Multi-Region Cluster](demo-low-latency-multi-region-deployment.html)
 - [Migrate to Multi-Region SQL](migrate-to-multiregion-sql.html)
+- [`SET SECONDARY REGION`](set-secondary-region.html)
+- [`ALTER DATABASE ... DROP SECONDARY REGION`](drop-secondary-region.html)

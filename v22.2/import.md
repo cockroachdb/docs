@@ -164,7 +164,7 @@ The following provide connection examples to cloud storage providers. For more i
 
 <section class="filter-content" markdown="1" data-scope="s3">
 
-{% include {{ page.version.version }}/backups/aws-auth-note.md %}
+{% include {{ page.version.version }}/misc/auth-intro-examples.md %}
 
 ### Import a PostgreSQL database dump
 
