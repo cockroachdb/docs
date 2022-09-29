@@ -14,8 +14,8 @@ CockroachDB's support for SCRAM-SHA-256 is PostgreSQL-compatible. PostgreSQL cli
 **Contents:**
 
 - [Conceptual Overview of SASL and SCRAM](#sasl-scram-and-scram-sha-256)
-- [Guidance for implementing SCRAM-SHA-256 authentication in CockroachDB](#implementing-scram-authentication-in-your-cockroachdb-cluster)
-- [Guidance for implementing strict isolation of plaintext credentials (separation of concerns)](#implementing-strict-isolation-of-plaintext-credentials )
+- [Guidance for implementing SCRAM-SHA-256 authentication in CockroachDB](#implement-scram-authentication-in-your-cockroachdb-cluster)
+- [Guidance for implementing strict isolation of plaintext credentials (separation of concerns)](#implement-strict-isolation-of-plaintext-credentials )
 
 ## SASL, SCRAM and SCRAM-SHA-256
 
@@ -38,7 +38,11 @@ In SCRAM authentication, the client does the encryption work in order to produce
 Adopting SCRAM, in contrast to plaintext password authentication, therefore offers additional protection against distributed denial-of-service (DDoS) attacks against CockroachDB, by preventing a CPU overload of the server to compute password hashes.
 
 {{site.data.alerts.callout_info}}
-Note that SCRAM authentication does impose an additional computational load on your application servers, which need to compute the client proof for each authentication. Therefore, we recommend migrating your user population in batches when migrating to SCRAM authentication. This process will allow you to evaluate the impact on performance and resource consumption, and make any necessary adjustments.
+SCRAM authentication imposes additional computational load on your application servers, which need to compute the client proof for each authentication. Additional changes may be required to your application, such as limiting the number of connections in your application's connection pool or limiting the number of concurrent transactions that your client allows. Cockroach Labs recommends that you:
+
+{% include_cached {{page.version.version}}/scram-authentication-recommendations.md %}
+
+For more details, refer to [Troubleshoot SQL client application problems](../error-handling-and-troubleshooting.html#troubleshoot-sql-client-application-problems)
 {{site.data.alerts.end}}
 
 #### Defense from replay attacks
@@ -56,18 +60,18 @@ Most importantly, it removes the possibility of any credential spill from your C
 
 This not only reduces the impact of any compromises to the database, but also makes it a far less attractive target.
 
-Full separation of concerns requires more than just enabling SCRAM-SHA-256 authentication. The additional requirements are detailed [here](#implementing-strict-isolation-of-plaintext-credentials).
+Full separation of concerns requires more than just enabling SCRAM-SHA-256 authentication. The additional requirements are detailed [here](#implement-strict-isolation-of-plaintext-credentials).
 
-## Implementing SCRAM authentication in your CockroachDB Cluster
+## Implement SCRAM authentication in your CockroachDB Cluster
 
 This section details how to use SCRAM authentication rather than plaintext password authentication.
 
 **Requirements for implementing SCRAM-SHA-256**:
 
-1. [Enable SCRAM-SHA-256 password encryption](#enabling-scram-sha-256-authentication-for-new-users-roles)
-2. [Migrate pre-existing users](#migrating-existing-users-roles-to-scram-sha-256-authentication)
+1. [Enable SCRAM-SHA-256 password encryption](#enable-scram-sha-256-authentication-for-new-users-roles)
+2. [Migrate pre-existing users](#migrate-existing-users-roles-to-scram-sha-256-authentication)
 
-### Enabling SCRAM-SHA-256 authentication for new users/roles
+### Enable SCRAM-SHA-256 authentication for new users/roles
 
 To enable SCRAM-SHA-256 encoding of newly defined passwords, set the `server.user_login.password_encryption` [cluster setting](../cluster-settings.html) to `scram-sha-256`. When this setting is set to `scram-sha-256`, passwords created with the following SQL statements will be managed and authenticated according to SCRAM-SHA-256.
 
@@ -93,10 +97,10 @@ SELECT username, "hashedPassword" FROM system.users WHERE username='hypothetical
 ~~~
 
 {{site.data.alerts.callout_info}}
-The procedure documented here, creating a SCRAM-SHA-256-authenticated user by passing a *plaintext* password to the CockroachDB client, achieves the benefit of not requiring the plaintext password to be transmitted over the network; this offers good protection from replay attacks in case attackers bypass TLS. But it does not achieve full separation of concerns by isolating the plaintext password to a delegated service. The necessary additional steps to achieve this are documented in [Implementing strict isolation of plaintext credentials](#implementing-strict-isolation-of-plaintext-credentials).
+The procedure documented here, creating a SCRAM-SHA-256-authenticated user by passing a *plaintext* password to the CockroachDB client, achieves the benefit of not requiring the plaintext password to be transmitted over the network; this offers good protection from replay attacks in case attackers bypass TLS. But it does not achieve full separation of concerns by isolating the plaintext password to a delegated service. The necessary additional steps to achieve this are documented in [Implementing strict isolation of plaintext credentials](#implement-strict-isolation-of-plaintext-credentials).
 {{site.data.alerts.end}}
 
-### Migrating existing users/roles to SCRAM-SHA-256 authentication
+### Migrate existing users/roles to SCRAM-SHA-256 authentication
 
 #### Eventual migration
 
@@ -115,11 +119,11 @@ SET CLUSTER SETTING server.user_login.upgrade_bcrypt_stored_passwords_to_scram.e
 
 It is not possible to automatically convert credentials to SCRAM in bulk, without client participation. To implement SCRAM for all SQL user accounts simultaneously, use [`ALTER USER <USERNAME> WITH PASSWORD`](../alter-user.html) statements instead.
 
-## Implementing strict isolation of plaintext credentials
+## Implement strict isolation of plaintext credentials
 
 Plaintext credentials are a valuable asset to malicious agents; known as ["credential stuffing,"](https://en.wikipedia.org/wiki/Credential_stuffing) re-use of stolen passwords is a persistent problem throughout the ecosystem of internet services. Hence, any system that handles plaintext credentials becomes a favorable target for malicious attackers with potentially weak points in the system.
 
-While the measures [described previously](#implementing-scram-authentication-in-your-cockroachdb-cluster) allow CockroachDB to avoid transmitting plaintext passwords across the network, the  credentials still have a footprint within CockroachDB: they are transmitted in plaintext from the CockroachDB client to the server, and are hence vulnerable in transit. While the secrets are protected in transit by TLS, CA certificate server authentication is not infallible.
+While the measures [described previously](#implement-scram-authentication-in-your-cockroachdb-cluster) allow CockroachDB to avoid transmitting plaintext passwords across the network, the  credentials still have a footprint within CockroachDB: they are transmitted in plaintext from the CockroachDB client to the server, and are hence vulnerable in transit. While the secrets are protected in transit by TLS, CA certificate server authentication is not infallible.
 
 Moreover, the plaintext credentials must be handled in memory by CockroachDB in order to generate the hashes on the server, and this offers a potential opportunity for hypothetical attackers who have compromised your node's runtime environment. It is architecturally stronger to perform all handling of plaintext credentials for your system with a dedicated, hardened, specialized environment and process. This entails removing all handling of plaintext credentials from CockroachDB.
 
@@ -127,24 +131,24 @@ It is possible to operate a CockroachDB cluster in such a way that it never hand
 
 **Requirements for strict isolation**:
 
-- Handling plaintext credentials securely
-- Configuring your cluster settings
-- Managing users with pre-hashed passwords
+- Handle plaintext credentials securely
+- Configure your cluster settings
+- Manage users with pre-hashed passwords
 
-### Migrating from password to SCRAM
+### Migrate from password to SCRAM
 
 If a cluster had previously allowed plaintext password authentication (i.e., any cluster that began on a version prior to v22.1), you must carefully migrate to SCRAM-SHA-256 authentication in the following phases:
 
-1. Instead of creating and rotating user passwords by passing plaintext passwords into SQL statements, as described [previously](#enabling-scram-sha-256-authentication-for-new-users-roles), you must instead generate CockroachDB/PostgreSQL-formatted SCRAM-SHA-256 hashes and enter those directly into the client, as described in the [following section](#managing-users-with-pre-hashed-passwords).
-2. You must block clients from sending plaintext passwords to CockroachDB during authentication by [customizing your cluster's authentication configuration](#configuring-your-cluster-settings-for-strict-credential-isolation) so that only the `scram-sha-256` and `cert-scram-sha-256` methods, and neither `password` nor `cert-password`, are allowed.
+1. Instead of creating and rotating user passwords by passing plaintext passwords into SQL statements, as described [previously](#enable-scram-sha-256-authentication-for-new-users-roles), you must instead generate CockroachDB/PostgreSQL-formatted SCRAM-SHA-256 hashes and enter those directly into the client, as described in the [following section](#manage-users-with-pre-hashed-passwords).
+2. You must block clients from sending plaintext passwords to CockroachDB during authentication by [customizing your cluster's authentication configuration](#configure-your-cluster-settings-for-strict-credential-isolation) so that only the `scram-sha-256` and `cert-scram-sha-256` methods, and neither `password` nor `cert-password`, are allowed.
 3. After steps (1) and (2) are complete, you must update any previously created passwords with externally generated SCRAM-SHA-256 hashes, and continue to generate your own hashes for all user creation and password update operations.
 
 Note the importance of rotating passwords twice, both in steps (1) and again in (3), with different passwords.  Step (1) ensures that clients at step (2) can continue to connect after non-SCRAM logins are blocked. However, between step (1) and step (2) it is still possible for CockroachDB to receive plaintext passwords from clients, and so the passwords used at step (1) are not fully protected yet. After step (2), CockroachDB will not learn plaintext passwords from clients any more; then after step 3 it will not know plaintext passwords at all.
 
-### Configuring your cluster settings for strict credential isolation
+### Configure your cluster settings for strict credential isolation
 
 To enable strict credential isolation from CockroachDB, additional cluster settings are required beyond simply enabling SCRAM authentication, as detailed in [Enabling SCRAM-SHA-256 authentication for new users/roles
-](#enabling-scram-sha-256-authentication-for-new-users-roles).
+](#enable-scram-sha-256-authentication-for-new-users-roles).
 
 Required cluster settings:
 
@@ -174,7 +178,7 @@ Allow *only* `scram-sha-256` (not the weaker `password`) in your [Authentication
 {{site.data.alerts.callout_danger}}
 After this change, users will not be able to sign in with plaintext passwords. All critical SQL users must be migrated to SCRAM-SHA-256 authentication before making this change:
 1. All client drivers must be updated to a version that supports SCRAM handshakes.
-2. All stored credentials for client apps must be updated to use SCRAM encoded passwords. This procedure is detailed in [Migrating existing users/roles to SCRAM-SHA-256 authentication](#migrating-existing-users-roles-to-scram-sha-256-authentication).
+2. All stored credentials for client apps must be updated to use SCRAM encoded passwords. This procedure is detailed in [Migrating existing users/roles to SCRAM-SHA-256 authentication](#migrate-existing-users-roles-to-scram-sha-256-authentication).
 {{site.data.alerts.end}}
 
 {% include_cached copy-clipboard.html %}
@@ -188,21 +192,21 @@ SET CLUSTER SETTING server.host_based_authentication.configuration TO '
 # any other lower-priority rules ...
 ~~~
 
-### Handling plaintext credentials securely
+### Handle cleartext credentials securely
 
-Using SCRAM authentication, a CockroachdDB cluster need not store or handle the plaintext passwords used by clients to authenticate. However, to achieve full separation of concerns, the plaintext credentials must be isolated so that they are exposed as little as possible in transit, storage, and during computation.
+Using SCRAM authentication, a CockroachdDB cluster need not store or handle the cleartext passwords used by clients to authenticate. However, to achieve full separation of concerns, the cleartext credentials must be isolated so that they are exposed as little as possible in transit, storage, and during computation.
 
-Generally, this can be best achieved by handling plaintext credentials only in a dedicated credential management environment, such as a secure compute instance or secure physical workstation.
+Generally, this can be best achieved by handling cleartext credentials only in a dedicated credential management environment, such as a secure compute instance or secure physical workstation.
 
 That environment must be provisioned with:
 
-- A tool for [creating PostgreSQL/CockroachDB-formatted SCRAM-SHA-256 hashes](#managing-users-with-pre-hashed-passwords), such as the example script provided in the [appendix](#appendix-python-scram-hashing-script).
+- A tool for [creating PostgreSQL/CockroachDB-formatted SCRAM-SHA-256 hashes](#manage-users-with-pre-hashed-passwords), such as the example script provided in the [appendix](#appendix-python-scram-hashing-script).
 - A CockroachDB client with ['USER CREATE/ALTER privileges'](../create-user.html#create-a-user-that-can-create-other-users-and-manage-authentication-methods-for-the-new-users).
 - Access, with write privileges, to a secrets store where the plaintext passwords will be persisted.
 
-On that instance, [generate SCRAM salted password hashes](#managing-users-with-pre-hashed-passwords), manage the users via CockroachdDB client, as described in the following section, and persist the secrets in the secrets store.
+On that instance, [generate SCRAM salted password hashes](#manage-users-with-pre-hashed-passwords), manage the users via CockroachdDB client, as described in the following section, and persist the secrets in the secrets store.
 
-## Managing users with pre-hashed passwords
+## Manage users with pre-hashed passwords
 
 [Many database tools](https://passlib.readthedocs.io/en/stable/lib/passlib.hash.scram.html) support SCRAM-SHA-256 and can be used to calculate the hashes servers will need for authentication.
 
