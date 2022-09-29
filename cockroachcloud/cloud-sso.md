@@ -25,7 +25,7 @@ With support for SAML and OIDC, {{ site.data.products.db }} allows enterprise or
 
 ### Custom sign-in page
 
-With Enterprise Authentication, customers get a unique and private sign-in URL for their {{ site.data.products.db }} organization, and will no longer use the [public sign-in URL](https://cockroachlabs.cloud).
+When {{ site.data.products.enterprise }} Authentication is enabled, members of your {{ site.data.products.db }} organization use a unique and private sign-in page and can no longer sign in using the [public sign-in URL](https://cockroachlabs.cloud).
 
 ### Extended configuration options
 
@@ -73,8 +73,8 @@ Yes, as long as Enterprise Authentication is enabled for your {{ site.data.produ
 
 ### Which authentication flows are supported with Enterprise Authentication? Is it possible to enable the identity provider initiated flow?
 
-Enterprise Authentication currently supports only a Service Provider (CockroachDB Cloud) initiated flow. The identity provider initiated flow can not be enabled yet.
+{{ site.data.products.enterprise }} Authentication supports only a flow initiated by {{ site.data.products.db }}. Initiation from the IdP is not supported.
 
-### What default role is assigned to users when autoprovisioning is enabled in a CockroachDB Cloud org?
+### What default role is assigned to users when auto-provisioning is enabled in a {{ site.data.products.db }} organization?
 
-`Developer role` is assigned by default to autoprovisioned users.
+The `Developer` role is assigned by default to autoprovisioned users.
