@@ -23,7 +23,7 @@ Complete the following items before starting this tutorial:
 
 - Configure a [replication instance](https://docs.aws.amazon.com/dms/latest/userguide/CHAP_ReplicationInstance.Creating.html) in AWS.
 - Configure a [source endpoint](https://docs.aws.amazon.com/dms/latest/userguide/CHAP_Source.html) in AWS pointing to your source database.
-- Ensure you have a secure, publicly available CockroachDB cluster running v21.2.15 or later.
+- Ensure you have a secure, publicly available CockroachDB cluster running v21.2.16 or later.
 - Manually create all schema objects in the target CockroachDB cluster. This is required in order for AWS DMS to populate data successfully.
     - If you are migrating from a PostgreSQL database, [use the **Schema Conversion Tool**](../cockroachcloud/migrations-page.html) to convert and export your schema.
 
