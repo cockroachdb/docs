@@ -113,12 +113,12 @@ release_info:
     start_time: 2022-09-14 12:48:52.570761 +0000 UTC
     version: v21.1.21
   v21.2:
-    build_time: 2022-08-29 00:00:00 (go1.16)
+    build_time: 2022-09-29 00:00:00 (go1.17)
     crdb_branch_name: release-21.2
     docker_image: cockroachdb/cockroach
-    name: v21.2.15
-    start_time: 2022-08-26 14:48:15.734048 +0000 UTC
-    version: v21.2.15
+    name: v21.2.16
+    start_time: 2022-09-29 18:03:32.389265 +0000 UTC
+    version: v21.2.16
   v22.1:
     build_time: 2022-09-29 00:00:00 (go1.17)
     crdb_branch_name: release-22.1
