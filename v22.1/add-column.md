@@ -11,6 +11,8 @@ docs_area: reference.sql
 
 {% include {{ page.version.version }}/sql/combine-alter-table-commands.md %}
 
+[This URL will fail](this-url-will-fail.html)
+
 ## Synopsis
 
 <div>
