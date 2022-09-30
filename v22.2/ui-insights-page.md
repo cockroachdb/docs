@@ -28,7 +28,7 @@ The rows in this page are populated from the [`crdb_internal.transaction_content
 
 Transaction executions with the **High Contention** insight are transactions that experienced [contention](transactions.html#transaction-contention).
 
-- **Transaction Execution ID**: The execution ID of the latest execution with the transaction fingerprint.
+- **Latest Transaction Execution ID**: The execution ID of the latest execution with the transaction fingerprint.
 - **Transaction Fingerprint ID**: The transaction fingerprint ID of the latest transaction execution.
 - **Transaction Execution**: The transaction fingerprint of the latest transaction execution.
 - **Insights**: The insight for the transaction execution.
@@ -37,31 +37,24 @@ Transaction executions with the **High Contention** insight are transactions tha
 - **Contention Time**: The amount of time the transaction execution spent waiting in contention.
 - **Application Name**: The name specified by the [`application_name` session setting](show-vars.html#supported-variables).
 
-The following screenshot shows the execution of a transaction in the [`ycsb`](cockroach-workload.html#run-the-ycsb-workload) workload flagged with **High Contention**:
+The following screenshot shows the execution of a transaction flagged with **High Contention**:
 
 <img src="{{ 'images/v22.2/transaction_execution.png' | relative_url }}" alt="Transaction execution" style="border:1px solid #eee;max-width:100%" />
 
-To view details of the execution, click an execution ID in the **Transaction Execution ID** column.
+To view details of the execution, click an execution ID in the **Latest Transaction Execution ID** column.
 
 #### Transaction execution details
 
-The transaction execution details view provides more details on a transaction execution insight.
+The transaction execution details view provides more details on a transaction execution insight. Additional information includes:
+
+- **Start Time (UTC)**: The time the transaction execution started.
+- **Transaction Fingerprint ID**: The transaction fingerprint ID of the transaction execution.
 
 The following screenshot shows the execution details of the transaction execution in the preceding section:
 
 <img src="{{ 'images/v22.2/transaction_execution_details.png' | relative_url }}" alt="Transaction execution details" style="border:1px solid #eee;max-width:100%" />
 
-Additional details include:
-
-- **Start Time (UTC)**: The time the transaction execution started.
-- **Transaction Fingerprint ID**: The transaction fingerprint ID of the transaction execution.
-
-##### Contention Insights
-
-- **Time Spent Waiting**: The amount of time the transaction execution spent waiting for access to a resource being used by another transaction.
-- **Blocked Schema**: The name of the schema that the transaction attempted to access when it was blocked by another transaction.
-- **Blocked Database**: The name of the database that the transaction attempted to access when it was blocked by another transaction.
-- **Blocked Table**: The name of the table that the transaction attempted to access when it was blocked by another transaction.
+The **Insights** column shows the name of the insight, in this case **High Contention**; the **Details** column provides details on the insight.
 
 ##### Transaction with ID {transaction ID} waited on
 
@@ -69,9 +62,13 @@ This section provides details of the transaction executions that block the trans
 
 - **Transaction Execution ID**: The execution ID of the blocking transaction execution.
 - **Transaction Fingerprint ID**: The transaction fingerprint ID of the blocking transaction execution.
-- **Transaction Execution**: The transaction fingerprint of the blocking transaction execution.
-- **Start Time (UTC)**: The timestamp when the blocking transaction execution started.
-- **Elapsed Time**: The time that elapsed to complete the blocking transaction execution.
+- **Transaction Execution**: The queries attempted in the transaction.
+- **Contention Start Time (UTC)**: The timestamp at which contention was detected for the transaction.
+- **Contention Time**: The time transactions with this execution id was [in contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention) with other transactions within the specified time interval.
+- **Schema Name**: The name of the contended schema.
+- **Database Name**: The name of the contended database.
+- **Table Name**: The name of the contended table.
+- **Index Name**: The name of the contended index.
 
 ### Statement Executions view
 
@@ -110,9 +107,9 @@ The following screenshot shows the statement execution of the query described in
 
 To view details of the execution, click an execution ID in the **Statement Execution ID** column.
 
-#### Statement Execution Details
+#### Statement execution details
 
-The **Statement Execution Details** view provides more details on a statement execution insight. Additional information includes:
+The statement execution details view provides more details on a statement execution insight. Additional information includes:
 
 - **Start Time**: The timestamp when the statement execution started.
 - **End Time**: The timestamp when the statement execution ended.
