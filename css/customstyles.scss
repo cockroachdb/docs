@@ -75,3 +75,18 @@
     box-shadow: none;
   }
 }
+
+.foreign-key-video__container {
+  height: 0;
+	overflow: hidden;
+	padding-bottom: 34.25%;
+	padding-top: 30px;
+	position: relative;
+  iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+}

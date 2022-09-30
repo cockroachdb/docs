@@ -188,24 +188,30 @@ To connect to your cluster with your application, use the connection string prov
 1. Copy the connection string provided in the Console, which will be used to connect your application to {{ site.data.products.db }}:
 
     <section class="filter-content" markdown="1" data-scope="mac">
+
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     'postgresql://<user>@<cluster-name>-<short-id>.<region>.<host>:26257/<database>?sslmode=verify-full&sslrootcert='$HOME'/Library/CockroachCloud/certs/<cluster-name>-ca.crt'
     ~~~
+
     </section>
 
     <section class="filter-content" markdown="1" data-scope="linux">
+
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     'postgresql://<user>@<cluster-name>-<short-id>.<region>.<host>:26257/<database>?sslmode=verify-full&sslrootcert='$HOME'/Library/CockroachCloud/certs/<cluster-name>-ca.crt'
     ~~~
+
     </section>
 
     <section class="filter-content" markdown="1" data-scope="windows">
+
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     "postgresql://<user>@<cluster-name>-<short-id>.<region>.<host>:26257/<database>?sslmode=verify-full&sslrootcert=$env:appdata\CockroachCloud\certs\$<cluster-name>-ca.crt"
     ~~~
+
     </section>
 
 1. Add your copied connection string to your application code.
@@ -226,7 +232,6 @@ For examples, see the following:
 
   <section class="filter-content" markdown="1" data-scope="connection-parameters">
 To connect to your cluster with a [CockroachDB-compatible tool](../{{site.versions["stable"]}}/third-party-database-tools.html), use the connection parameters provided in the Console.
-
   </section>
 
 ## What's next

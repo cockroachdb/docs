@@ -147,17 +147,21 @@ These steps perform an upgrade to the latest {{ page.version.version }} release,
     </div>
 
     <div class="filter-content" markdown="1" data-scope="mac">
+
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ curl https://binaries.cockroachdb.com/cockroach-{{latest.version}}.darwin-10.9-amd64.tgz|tar -xzf -
     ~~~
+
     </div>
 
     <div class="filter-content" markdown="1" data-scope="linux">
+
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ curl https://binaries.cockroachdb.com/cockroach-{{latest.version}}.linux-amd64.tgz|tar -xzf -
     ~~~
+
     </div>
 
 1. If you use `cockroach` in your `$PATH`, rename the outdated `cockroach` binary, and then move the new one into its place:
@@ -169,6 +173,7 @@ These steps perform an upgrade to the latest {{ page.version.version }} release,
     <p></p>
 
     <div class="filter-content" markdown="1" data-scope="mac">
+
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     i="$(which cockroach)"; mv "$i" "$i"_old
@@ -178,9 +183,11 @@ These steps perform an upgrade to the latest {{ page.version.version }} release,
     ~~~ shell
     $ cp -i cockroach-{{latest.version}}.darwin-10.9-amd64/cockroach /usr/local/bin/cockroach
     ~~~
+
     </div>
 
     <div class="filter-content" markdown="1" data-scope="linux">
+
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     i="$(which cockroach)"; mv "$i" "$i"_old
@@ -190,6 +197,7 @@ These steps perform an upgrade to the latest {{ page.version.version }} release,
     ~~~ shell
     $ cp -i cockroach-{{latest.version}}.linux-amd64/cockroach /usr/local/bin/cockroach
     ~~~
+
     </div>
 
 1. Start the node to have it rejoin the cluster.

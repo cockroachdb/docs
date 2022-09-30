@@ -19,6 +19,8 @@ If a database's [zone configuration](configure-replication-zones.html) has been 
 To remove existing, manually-configured zones from a database (and unblock `SET PRIMARY REGION` statements on the database), use an [`ALTER DATABASE ... CONFIGURE ZONE DISCARD`](configure-zone.html#remove-a-replication-zone) statement.
 {{site.data.alerts.end}}
 
+<span class="version-tag">New in v22.2:</span> [Secondary regions](multiregion-overview.html#secondary-regions) allow you to define a [database region](multiregion-overview.html#database-regions) that will be used for failover in the event your [primary region](set-primary-region.html) goes down. For more information, see [Secondary regions](multiregion-overview.html#secondary-regions).
+
 ## Synopsis
 
 <div>
@@ -232,5 +234,8 @@ SHOW REGIONS FROM DATABASE foo;
 - [`ADD REGION`](add-region.html)
 - [`DROP REGION`](drop-region.html)
 - [`SHOW REGIONS`](show-regions.html)
+- [Secondary regions](multiregion-overview.html#secondary-regions)
+- [`SET SECONDARY REGION`](set-secondary-region.html)
+- [`DROP SECONDARY REGION`](drop-secondary-region.html)
 - [`ALTER TABLE`](alter-table.html)
 - [SQL Statements](sql-statements.html)

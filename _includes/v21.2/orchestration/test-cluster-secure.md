@@ -37,6 +37,7 @@ $ kubectl create \
 </section>
 
 <section class="filter-content" markdown="1" data-scope="manual">
+
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 $ kubectl create \

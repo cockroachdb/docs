@@ -72,30 +72,38 @@ The [role option of the user](create-role.html#role-options) logging in must be 
 
 Start the interactive SQL shell:
 
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach-sql <flags>
 ~~~
 
 Execute SQL from the command line:
 
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach-sql -e="<sql statement>;<sql statement>" -e="<sql-statement>" <flags>
 ~~~
+
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ echo "<sql statement>;<sql statement>" | cockroach-sql <flags>
 ~~~
+
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach-sql <flags> -f file-containing-statements.sql
 ~~~
 
 Exit the interactive SQL shell:
 
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > \q
 ~~~
 
 View help:
 
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach-sql --help
 ~~~
