@@ -145,7 +145,7 @@ ERROR: external network access is disabled
 
 <h4>Solution</h4>
 
-You must [set up billing information](billing-management.html) for your organization to use cloud storage. If you don't have a credit card on file, you will be limited to `userfile` storage for [bulk operations](run-bulk-operations.html).
+You must [set up billing information](billing-management.html) for your organization to use cloud storage, but you don't have to set a spend limit. If you don't have a credit card on file, you will be limited to `userfile` storage for [bulk operations](run-bulk-operations.html).
 
 ### Outbound I/O is disabled
 
@@ -157,7 +157,7 @@ pq: Outbound IO is disabled by configuration
 
 <h4>Solution</h4>
 
-You must [set up billing information](billing-management.html) for your organization to use [Core](../{{site.versions["stable"]}}/changefeed-examples.html#create-a-core-changefeed) and [Enterprise](../{{site.versions["stable"]}}/changefeed-examples.html) changefeeds.
+You must [set up billing information](billing-management.html) for your organization to use [Core](../{{site.versions["stable"]}}/changefeed-examples.html#create-a-core-changefeed) and [Enterprise](../{{site.versions["stable"]}}/changefeed-examples.html) changefeeds, but you don't have to set a spend limit.
 
 ## Security errors
 
