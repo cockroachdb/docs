@@ -142,7 +142,7 @@ We don't recommend `userfile` for `EXPORT` operations. You can either add billin
 Yes, {{ site.data.products.serverless }} clusters have access to both [Core changefeeds](../{{site.versions["stable"]}}/changefeed-examples.html#create-a-core-changefeed) and [Enterprise changefeeds](../{{site.versions["stable"]}}/changefeed-examples.html) once you have [billing information on file](billing-management.html) for your organization.
 
 {{site.data.alerts.callout_info}}
-Creating a [changefeed](../{{site.versions["stable"]}}/stable/create-and-configure-changefeeds.html) for a {{ site.data.products.serverless }} cluster without first entering billing information will cause the following error: `pq: Outbound IO is disabled by configuration`.
+Creating a [changefeed](../{{site.versions["stable"]}}/create-and-configure-changefeeds.html) for a {{ site.data.products.serverless }} cluster without first entering billing information will cause the following error: `pq: Outbound IO is disabled by configuration`.
 {{site.data.alerts.end}}
 
 ### Can I backup my {{ site.data.products.serverless }} cluster? Does Cockroach Labs take backups of my cluster?
