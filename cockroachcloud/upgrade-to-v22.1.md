@@ -3,7 +3,6 @@ title: Upgrade to CockroachDB v22.1
 summary: Learn how to upgrade your CockroachDB cluster to v22.1.
 toc: true
 docs_area: manage
-page_version: v22.1
 ---
 
 Now that [CockroachDB v22.1](../releases/v22.1.html) is available, a [Console Admin](console-access-management.html#console-admin) can upgrade your {{ site.data.products.dedicated }} cluster from the {{ site.data.products.db }} Console. This page guides you through the process for an Admin.
@@ -41,7 +40,7 @@ Approximately 72 hours after the node has been restarted, the upgrade will be au
 
 ## Step 4. Prepare to upgrade
 
- Before starting the upgrade, complete the following steps.
+Before starting the upgrade, complete the following steps.
 
 <section class="filter-content" markdown="1" data-scope="single-node">
 
@@ -55,9 +54,10 @@ The [**SQL Users**](user-authorization.html#create-a-sql-user) and [**Monitoring
 
 ### Review breaking changes
 
-{% assign rd = site.data.versions | where_exp: "rd", "rd.major_version == page.page_version" | first %}
+{% assign rd = site.data.versions | where_exp: "rd", "rd.major_version == page.version.version" | first %}
+{% assign page_version_anchor = page.version.version | replace: ".","-" %}
 
-Review the [backward-incompatible changes in {{ page.page_version }}](../releases/{{ page.page_version }}.html{% unless rd.release_date == "N/A" or rd.release_date > today %}#{{ page.page_version | replace: ".", "-" }}-0-backward-incompatible-changes{% endunless %}) and [deprecated features](../releases/{{ page.page_version }}.html#{% unless rd.release_date == "N/A" or rd.release_date > today %}{{ page.page_version | replace: ".", "-" }}-0-deprecations{% endunless %}). If any affect your applications, make the necessary changes before proceeding.
+Review the [backward-incompatible changes in {{ page.version.version }}](../releases/{{ page.version.version }}.html{% unless rd.release_date == "N/A" or rd.release_date > today %}#{{ page_version_anchor }}-0-backward-incompatible-changes{% endunless %}) and [deprecated features](../releases/{{ page.version.version }}.html#{% unless rd.release_date == "N/A" or rd.release_date > today %}{{ page_version_anchor }}-0-deprecations{% endunless %}). If any affect your applications, make the necessary changes before proceeding.
 
 ## Step 5. Start the upgrade
 
